@@ -96,10 +96,11 @@ def $reference_return_location_defined(S, z) = $reference_return_store(S_checked
 def $reference_return_store(S, pvalue) = S -- if S.COMPLETION =/= NORMAL
 def $reference_return_store(S, pvalue) = $call_location_reference($location_write(S, S.LOCATION, pvalue))
   -- if S.COMPLETION = NORMAL
-  -- if $reference_return_used(S)
+  -- if $reference_return_used(S) \/ $finally_return_pending(S)
 def $reference_return_store(S, pvalue) = $location_write(S, S.LOCATION, pvalue)[.RESULT = KNOWN PNULL]
   -- if S.COMPLETION = NORMAL
   -- if ~$reference_return_used(S)
+  -- if ~$finally_return_pending(S)
 
 ;; Source VALUE designation notices even when its operand already owns a cell.
 def $reference_return_notice(S, poperand) = false
@@ -130,10 +131,15 @@ def $reference_return_materialize(S, poperand, pvalue) = S -- if S.COMPLETION =/
 def $reference_return_materialize(S, REFERENCE n, pvalue) = S[.RESULT = REFERENCE n]
   -- if S.COMPLETION = NORMAL
   -- if $finally_return_pending(S)
+def $reference_return_materialize(S, poperand, pvalue) = S[.RESULT = KNOWN pvalue]
+  -- if S.COMPLETION = NORMAL
+  -- if ~$reference_return_used(S)
+  -- if $finally_return_pending(S)
+  -- if ~$reference_operand(poperand)
 def $reference_return_materialize(S, poperand, pvalue) = S[.RESULT = KNOWN PNULL]
   -- if S.COMPLETION = NORMAL
   -- if ~$reference_return_used(S)
-  -- if ~$finally_return_pending(S) \/ ~$reference_operand(poperand)
+  -- if ~$finally_return_pending(S)
 def $reference_return_materialize(S, REFERENCE n, pvalue) = S[.RESULT = REFERENCE n]
   -- if S.COMPLETION = NORMAL
   -- if $reference_return_used(S)

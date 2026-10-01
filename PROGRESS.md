@@ -63,6 +63,11 @@ stages (63 assertions), and three retained finite native/model sources pass;
 the unsupported control is not native agreement.
 [Ledger](coverage/semantics/include-no-file-guard-review.json).
 
+A separate module99 candidate retains unused reference-return operands through
+finalizers while preserving used temporary aliases. Five current-base source
+comparisons and two paused stages (30 assertions) pass. It has no dependency on
+the pending generic156 replay. [Ledger](coverage/semantics/reference-unused-finally-current-author.json).
+
 By-reference typed return conversion 186 needs captured-alias write-back and a
 generic post-`finally` rejection replay. Weak parameters, properties,
 constrained references, interpolation,

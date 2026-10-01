@@ -1,0 +1,53 @@
+{
+  "status": "private_candidate",
+  "base": "30b85e249",
+  "scope": "Retain an unused by-reference return operand until the existing post-finally type check, then discard only the caller result. Used non-reference results keep their fresh-reference behavior.",
+  "implementation": {
+    "path": "spec/semantics/99-reference-returns.watsup",
+    "sha256": "38943505ebfcbd770bcd0ad8210eade8e84284f195c7e680226c884add81536a",
+    "reviewed_private_increment": "95e2c84a6",
+    "unapproved_replay_dependency": false
+  },
+  "authority": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_return",
+    "vendor/php-src/Zend/zend_compile.c::zend_handle_loops_and_finally_ex"
+  ],
+  "source": {
+    "report": ".tools/finally-source-2atysvt6/report.json",
+    "sha256": "6d78b2f1b791feaa85fb3d9ea69d5003d67efd2752ebb6f96c186be9e5c488e9",
+    "result": "pass",
+    "selection": "ref-unused-",
+    "exact_agreements": 5,
+    "sources": {
+      "ref-unused-cv-finally": "109682ce15ea4786baafcf84b7798cdcb6b8a206b71b90a14e45f76e67ba5cf5",
+      "ref-unused-value-finally": "a6864c6840cc2ad71b991de473986a812064a8dfc8b38ea6db59f50b7f2fa983",
+      "ref-unused-call-finally": "8aa496c604694723914fe2897f6abcbdb70d10a161198ebec5183093a8bad2a6",
+      "ref-unused-used-literal-finally": "601e1c936c9293b50a984fc247cac1beb1b4419262b23c64477a6646a3f423cf",
+      "ref-unused-used-call-finally": "fcb055283a09668801d76498b2743f2974323e19fd701c95afb926c30b340347"
+    }
+  },
+  "paused": {
+    "report": ".tools/reference-unused-finally-protocol-pxmnuzaz/report.json",
+    "sha256": "ede610ae189e012d9d2d805375a14586d900564b712b03f0290469718d4c9639",
+    "result": "pass",
+    "stable": true,
+    "stages": 2,
+    "assertions": 30,
+    "runner": "tests/semantics/reference_unused_finally_protocol.py"
+  },
+  "isolation": "Only the reviewed99 helper increment, five fixture additions, and a dedicated two-stage protocol runner are taken onto the current canonical base. No REF_RECHECK/REF_REPLAY code or old replay catalogue is imported.",
+  "historical_private_evidence": {
+    "worktree": "../user-string-typed-ref-current",
+    "ledger": "coverage/semantics/reference-unused-finally-author.json",
+    "scope": "Earlier549025684-base evidence remains historical, including the discarded draft; it is not the current-base gate."
+  },
+  "replay": [
+    "python3 tests/semantics/finally.py --match ref-unused-",
+    "python3 tests/semantics/reference_unused_finally_protocol.py"
+  ],
+  "limits": [
+    "Generic156 protected-region replay remains separate and unapproved.",
+    "Typed reference object conversion186 remains separate and incomplete."
+  ],
+  "raw_policy": "Reports and generated sources remain ignored under this worktree .tools; report inputs bind the exact current modules, binaries, profile and runners."
+}

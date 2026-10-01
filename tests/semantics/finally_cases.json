@@ -193,5 +193,30 @@
     "id": "transfer-generated-catch-to-try",
     "source": "<?php $i=0;try{T:echo \"T\";if($i++===0){1/0;}else{echo \"F\";}}catch(DivisionByZeroError){echo \"C\";goto T;}finally{echo \"Z\";}",
     "status": "normal"
+  },
+  {
+    "id": "ref-unused-cv-finally",
+    "source": "<?php $x=\"s\";function &f():string{global $x;try{return $x;}finally{echo \"F;\";}}try{f();echo \"OK;\";}catch(TypeError $e){echo \"E;\";}",
+    "status": "normal"
+  },
+  {
+    "id": "ref-unused-value-finally",
+    "source": "<?php function &f():string{try{return \"s\";}finally{echo \"F;\";}}try{f();echo \"OK;\";}catch(TypeError $e){echo \"E;\";}",
+    "status": "normal"
+  },
+  {
+    "id": "ref-unused-call-finally",
+    "source": "<?php function g(){return \"s\";}function &f():string{try{return g();}finally{echo \"F;\";}}try{f();echo \"OK;\";}catch(TypeError $e){echo \"E;\";}",
+    "status": "normal"
+  },
+  {
+    "id": "ref-unused-used-literal-finally",
+    "source": "<?php function &f():string{try{return \"s\";}finally{echo \"F;\";}}$a=&f();$b=&$a;$b=\"t\";echo \"a=\",$a,\";\";",
+    "status": "normal"
+  },
+  {
+    "id": "ref-unused-used-call-finally",
+    "source": "<?php function g(){return \"s\";}function &f():string{try{return g();}finally{echo \"F;\";}}$a=&f();$b=&$a;$b=\"t\";echo \"a=\",$a,\";\";",
+    "status": "normal"
   }
 ]
