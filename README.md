@@ -244,7 +244,9 @@ Ordinary [`Closure::call`](docs/semantics/CLOSURE-CALL.md) temporarily changes
 receiver/scope, evaluates arguments before binding validation, preserves original
 wrapper arguments and returns values from reference-returning closures. Its
 [bounded review](coverage/semantics/closure-call-review.json) includes a current
-canonical projection and focused installed checks; argument-form extensions remain pending.
+canonical projection and focused installed checks. Current private named receiver
+and isolated reference-formal gates pass; their integration and unpacking remain
+pending ([argument review](coverage/semantics/closure-call-arguments-review.json)).
 [Print expressions](docs/semantics/SOURCE-PRINT.md) preserve output effects while
 returning constant integer 1, including folded expressions and reference demand.
 Source, compiler and paused ownership checks cover admitted conversions;

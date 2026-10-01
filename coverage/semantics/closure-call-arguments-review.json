@@ -1,0 +1,134 @@
+{
+  "result": "private-current-base-bounded-gates-passed-installation-pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json",
+  "scope": "Literal Closure::call on REALCLOSURE: named newThis in any named argument position; fixed/variadic reference formals receive warning-producing values through isolated temporary cells; original outer values and labels survive conversion/body writes. Finite source/forged-state controls only.",
+  "implementation": {
+    "canonical_base": "6ce116cfbedb49efe4fbfa523c9936cbe5fe4771",
+    "source14_freeze": "65bacd230241899457e7759189fb3eef33cf44b4",
+    "current_fixture_freeze": "c29c9f54220aefa9ce4aeddca0dcc53702675f2a",
+    "current_fingerprint": "028faf0bbb340f211fa6c24d333eb69a1f561aa91fc0dcb657cdfa263e58b82b",
+    "files": 1261,
+    "later_base_bridge": "pending; canonical52502471 adds exit-origin cleanup",
+    "installed_identity": "pending"
+  },
+  "behavior": [
+    "Outer expressions finish before receiver binding and reference-formal warnings; later throws override deferred inner-name errors.",
+    "Preparation replays original forwarded order, allowing an earlier reference warning before a later unknown/overwriting name; invalid/static/stdClass receivers suppress argument-reference warnings.",
+    "Each reference formal receives a fresh cell, including typed and variadic formals. Outer caller cells stay unchanged; normal arrays copy while nested reference elements remain shared.",
+    "Pending preparation authenticates RAW/SENT values, source keys, site/line, exact allocation prefix/extent and isolation from original caller/source/argument roots.",
+    "Named receiver selection excludes newThis from forwarding and retains the selected closure through later variable rebinding. Original wrapper labels/order/scalar values remain independent of inner writes."
+  ],
+  "current_gates": {
+    "author_reference_source14": {
+      "path": ".tools/closure-call-formals-current/.tools/method-runtime-u1_hoqbv/report.json",
+      "sha256": "765614d9ab6e0fded4e7962f210901e73329506b0841d9c0573fc300f570d07f",
+      "cases": 14,
+      "fingerprint": "fbe04574abb9d1dad955073ffde19decb8c86e56a72ad8323513340c75689332"
+    },
+    "independent_reference_source14": {
+      "path": ".tools/closure-call-formals-current/.tools/method-runtime-fc0viike/report.json",
+      "sha256": "47151da3cf29ce7be5d11e55b2ad7712419b2433ae199f7542ac9c179bb1b0bf",
+      "cases": 14,
+      "fingerprint": "028faf0bbb340f211fa6c24d333eb69a1f561aa91fc0dcb657cdfa263e58b82b"
+    },
+    "independent_reference_paused9": {
+      "path": ".tools/closure-call-formals-current/.tools/closure-call-protocol-o8k1rfmk/report.json",
+      "sha256": "6a84e161945936ac4b106c152617d0122474d958b2a0f7605e6302d591a7207b",
+      "stages": 9,
+      "assertions": 175,
+      "stable": true
+    },
+    "author_named_source11": {
+      "path": ".tools/closure-call-formals-current/.tools/method-runtime-ywur0cs2/report.json",
+      "sha256": "8958aa585e5dbef567f1eceae5996f1ecb007a3f37f3a60592e9589541c2f282",
+      "cases": 11,
+      "fingerprint": "028faf0bbb340f211fa6c24d333eb69a1f561aa91fc0dcb657cdfa263e58b82b"
+    },
+    "author_named_paused5": {
+      "path": ".tools/closure-call-formals-current/.tools/closure-call-protocol-fheznghw/report.json",
+      "sha256": "f4c018647839bdea8cffe0a904af2c835c8c81d90ba1ae7510ddf6b737323188",
+      "stages": 5,
+      "assertions": 62,
+      "stable": true
+    }
+  },
+  "fixture_projection": "Author source14 retains65bacd/fbe04574 identity. c29 changes only the paused expectation: closure metadata remains valid while the task/global validators reject a forged caller alias. The independent current14/9 and named11/5 bind c29/028faf0b; all source14 direct inputs match65.",
+  "native_bindings": {
+    "reference14": {
+      "catalogue": "tests/semantics/closure_call_reference_formal_cases.json",
+      "catalogue_sha256": "a3e56d9aa691a506368793809db5adfb434bcaa549eab41eff557dcf8a0ba4a2",
+      "audit": ".tools/closure-call-formals-current/.tools/calls-review-native-bindings-formals-current-65bacd.json",
+      "audit_sha256": "90e6611a2ba24c09add4c52e66e0d2a1edc981d13419ae5b9f303e4d61db3937"
+    },
+    "named11": {
+      "catalogue": "tests/semantics/closure_call_next_named_cases.json",
+      "catalogue_sha256": "029d21af3e4b47df46f742e53bd9518e8ffed65fc10d55fe3a65d28bf4ae2ed4",
+      "audit": ".tools/closure-call-receiver/.tools/calls-review-native-bindings-named-16fdab.json",
+      "audit_sha256": "9a38712cac4ad3a2bc335b0544794d0b7fc592afdfc2ce1f2add85fc4cc2a138"
+    },
+    "normalization": "Only exact original source filename bytes become {FILE}; full source/stdout/stderr/exit tuples and pinned PHP/profile are retained. Old grouped named9 archives do not record individual commands; later named controls and reference bindings retain their recorded commands.",
+    "limit": "All named11 archives and old12 reference archives omit explicit host environment; new reference binding-priority2 record LC_ALL/TZ only. This is exact source/binary/profile/tuple provenance with the stated command limits, not full environment or offline build closure."
+  },
+  "runtime": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "adapter_sha256": "9fa8a62125cc34baf80965a829fb4aa946875aa40b1b3a8d6e90cd732b2bcaf2",
+    "numeric_sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+    "provision": ".tools/closure-call-formals-current/.tools/closure-call-current-runtime-provision.json",
+    "adapter_exact_source_build": ".tools/calls-review-adapter-current-build.json",
+    "adapter_build_audit_sha256": "25ff8f60ffd0bed64190fbaaacbbb9e039e739dfa90a9ea67b3acde6dec5e070",
+    "limit": "SHA-verified existing canonical binaries; exact adapter rebuilt with existing toolchain/libraries. No fresh full offline dependency rebuild.",
+    "installed_runtime_audit": {
+      "path": ".tools/calls-independent-installed-review-aed684.json",
+      "sha256": "80d4cd3975a5327c8fac72b623da7d5ea3c23cda320429ea4503fc89d2d3a0c1",
+      "provider_manifest": "coverage/semantics/request-provider-build.json",
+      "scope": "Same verified current adapter and optional request-only clock provider as ordinary installed audit; no new full rebuild."
+    }
+  },
+  "explicit_boundary": {
+    "path": ".tools/closure-call-formals-current/.tools/closure-call-boundaries-j9l3xp5v/report.json",
+    "sha256": "2bf2a8f88e7f55c4160ecfa6b0ff07608092539deb84789a850ca0ed1074a897",
+    "cases": 1,
+    "result": "stable explicit Unsupported/CLI1/receiver representation; not native agreement"
+  },
+  "preserved_failures": [
+    {
+      "path": ".tools/closure-call-formals-current/.tools/closure-call-protocol-7kswm9h2/report.json",
+      "sha256": "34db69aa827e8cffe59bda431d74cb681e814359b43023932a8ad91664e30896",
+      "classification": "stable fixture-scope failure:5 stages pass, one invalid negative closure-only expectation; direct/global alias rejection passed"
+    },
+    {
+      "path": ".tools/closure-call-formals/.tools/closure-call-protocol-qp4_p5at/report.json",
+      "sha256": "a9ebd84aee91e1591bfc9ae4ee9d7fe4f2dc7c06393cdd34cf13aaebfbba372f",
+      "classification": "historical3 passing stages,2 record-literal parser failures and1 incorrect main-frame LOCALS expectation; no paused acceptance"
+    }
+  ],
+  "historical_named_review": {
+    "freeze": "16fdab426916913bdde68b7de3820bcb731b6957",
+    "path": ".tools/closure-call-receiver/.tools/calls-independent-named-review-16fdab.json",
+    "sha256": "196a077448cee0b331fdab92aa6619ce08cceaedd4c643324c0f2dbcb7232f75",
+    "scope": "earlier independent11 sources/7 paused stages and author17 stages, old private adapter18b; current named11/5 bridge is distinct"
+  },
+  "independent_current_index": {
+    "path": ".tools/closure-call-formals-current/.tools/calls-independent-formal-named-review-c29.json",
+    "sha256": "829f61ef7808e1452df9cf20f4658e1c99ad1e3a83ceed1eb69da02b623e05e9",
+    "scope": "bounded current formal14/9 and named11/5 review; later canonical projection and installation pending"
+  },
+  "required_open": [
+    "Later canonical projection/installed extension identity.",
+    "Generic91 deferred real-closure default cache: genuine source-derived cache is rejected by default_caches_valid despite matching output; separate repair/proof controls required.",
+    "Unpacking, broader receiver/captured wrappers, computed call names, array callables and source __invoke.",
+    "Generic99 cancelled temporary-return Notice timing and generic METHOD_TARGET/SCOPED_TARGET never fallthrough wording.",
+    "Full182/core closure, arbitrary-state proof and fresh complete offline rebuild remain unestablished."
+  ],
+  "recovery": "Ignored raw reports/native archives remain in the named private worktrees. Replay current catalogues with method_runtime.py --catalogue; paused driver imports closure_call_protocol.run(cases=None, extra_inputs=()) and records exact companion driver hashes. Do not relabel earlier fingerprints.",
+  "separate_default_cache_counterexample": {
+    "path": ".tools/closure-call-formals-current/.tools/calls-review-generic91-default-cache-diagnostic-c29.json",
+    "sha256": "1762adbd61e7cc7d460f131658d2a6972f6019ceb6d55a343756a97cb49aac28",
+    "source": "ordinary real closure with deferred constant default, once/twice",
+    "result": "source2 matches native; diagnostic2 shows authentic cache fails global invariant",
+    "paused_report": ".tools/closure-call-formals-current/.tools/closure-call-protocol-fuxb3mez/report.json",
+    "paused_sha256": "7a543db2b3db3c087d7e70a507cccc14d80481369a2aaf9040be9e064f962e9b",
+    "classification": "required separate generic91 repair; not forwarding rejection or acceptance"
+  }
+}
