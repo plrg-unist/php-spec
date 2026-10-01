@@ -2,6 +2,21 @@
 
 This table preserves the scope and evidence links for bounded reviewed increments. A row does not by itself claim current canonical installation or complete-core closure. The current checkpoint is in [PROGRESS.md](PROGRESS.md).
 
+## Recent installed checkpoints
+
+These entries preserve bounded acceptance; their ledgers distinguish private,
+projected and installed observations.
+
+| Checkpoint | Installed scope and evidence |
+| --- | --- |
+| 35b226471 finite mutable context | Three source controls, 107 directory-pause, 19 adapter, 57 INI and 46 saved-frame assertions. Earlier full28 belongs to the pre-interface base. [Ledger](coverage/semantics/include-mutable-context-review.json) |
+| badc320f28b /5d717bbeb finite-mode dispatch | Provider fixture repair and explicit no-snapshot Unsupported dispatch; one checked Unsupported control, six stages/63 assertions and three retained finite native/model sources. [Ledger](coverage/semantics/include-no-file-guard-review.json) |
+| 08b929694 unused reference returns | Five installed sources and two stages/30 assertions retain unused operands through finalizers without losing used temporary aliases. [Ledger](coverage/semantics/reference-unused-finally-installed.json) |
+| b54f984b4 exit-origin cleanup | Six installed sources and two stages/64 assertions cover suppression and saved-caller foreach cleanup. Private six-stage/163 and retained126 assertions keep their original identities. [Ledger](coverage/semantics/exit-origin-author.json) |
+| 7b1392648 selected configuration calls | The 949 four-source/nine-stage113 bridge projects across reference-return retention; one installed interaction source matches both branches and exact Notice bytes. Original full35 remains historical. [Ledger](coverage/semantics/include-dynamic-selected-review.json) |
+| aed684e4a ordinary Closure::call | Focused installed selected-call, typed-string callback and reference-finalizer checks pass; private36-source/seven-stage evidence retains its prior snapshot. [Ledger](coverage/semantics/closure-call-review.json) |
+| 9cdadc172 named/reference Closure::call | Three installed sources and two stages/58 assertions cover named receivers and isolated reference forwarding; unpacking and deferred default caches remain open. [Ledger](coverage/semantics/closure-call-arguments-review.json) |
+
 ## Subsequent reviewed increments
 
 | Modules | Behavior and evidence |

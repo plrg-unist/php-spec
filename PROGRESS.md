@@ -26,111 +26,61 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 ## Current checkpoint
 
-The current canonical semantic checkpoint is **9cdadc172** (named/reference `Closure::call`),
-following exit-origin cleanup **b54f984b4**, ordinary calls **aed684e4a**,
-selected configuration calls **7b1392648**, unused reference-return
-retention **08b929694**, finite-mode
-dispatch guard **5d717bbeb**, mutable file context **35b226471** and
-provider-fixture repair **badc320f28b**. It retains weak typed string returns, interface,
-Closure-binding and source-Throwable code. Interfaces check
-ordered links, nominal membership, method variance, abstract obligations and
-authenticated `Exception`/`Error` ancestry for direct or transitive
-`implements Throwable`. Their [ledger](coverage/semantics/interface-author.json)
-separates installed compiler/runtime checks from historical syntax evidence.
+The current canonical semantic checkpoint is **9cdadc172** (named/reference
+`Closure::call`), installed at **e458517eb** after exit-origin cleanup
+**b54f984b4**. [Milestone history](MILESTONE-HISTORY.md) and the linked ledgers
+retain bounded installed counts and historical snapshot identities.
 
-File inclusion and generic file traces, resolver-null identity, directory
-open-failure diagnostics, static/scoped methods, first-class callables,
-Closure binding, source Throwable subclasses, and echo/print/cast/eval/concat
-object-string callbacks are installed. The bounded source, paused and bridge
-counts belong in [milestone history](MILESTONE-HISTORY.md) and their linked
-ledgers. [Include contract](docs/semantics/INCLUDE-SOURCES.md) ·
+Installed code includes finite file context and selected configuration calls,
+weak by-value typed string returns, interfaces, Closure binding/calls, source
+Throwable subclasses, and echo/print/cast/eval/concat object-string callbacks.
+[Include contract](docs/semantics/INCLUDE-SOURCES.md) ·
 [method contract](docs/semantics/SOURCE-METHODS.md) ·
 [string contract](docs/semantics/USER-STRING.md).
 
 ## Active work and remaining obligations
 
-Weak by-value typed string returns 185 are installed. The historical
-source-Throwable catalogue, paused stages, two-file strictness and
-Closure-binding bridge pass. On the installed tree, a class implementing an
-interface-declared `__toString` matches PHP under a measured 90-second model
-limit; one paused marker stage and inventory pass. The same source times out
-under the generic 45-second runner; both failed reports remain distinct from
-the bounded agreement.
-[Ledger](coverage/semantics/user-string-typed-author.json).
-
-Finite mutable include context is installed at **35b226471** on typed returns **e4d3b837b**. Versioned lookup keys, narrow `include_path` mutations, and authenticated finite `chdir` facts pass three installed source controls (including typed-return callback output `77`), 107 directory-pause, 19 adapter, 57 INI and 46 saved-frame assertions. The earlier 28-source catalogue remains historical to the interface/Closure base. [Ledger](coverage/semantics/include-mutable-context-review.json). Stringable operands and broader OS/INI behavior stay open.
-
-Reached configuration calls without finite file mode return explicit
-`Unsupported` before scalar dispatch. One checked source control, six paused
-stages (63 assertions), and three retained finite native/model sources pass;
-the unsupported control is not native agreement.
-[Ledger](coverage/semantics/include-no-file-guard-review.json).
-
-Module99 retains unused reference-return operands through finalizers while
-preserving used temporary aliases. Five installed source comparisons and two
-paused stages (30 assertions) pass, independently of pending generic156 replay.
-[Ledger](coverage/semantics/reference-unused-finally-installed.json).
-
-Exit-origin cleanup is installed at **b54f984b4** independently of return replay.
-Six installed sources preserve exact output and exit status; two public paused
-stages (64 assertions) cover suppression and saved-caller foreach cleanup.
-Private six-stage evidence (163 assertions), retained exit checks (126 assertions),
-the original pause failure and draft reporting assertion remain distinct.
-[Ledger](coverage/semantics/exit-origin-author.json).
-Generic156 recovery, temporary-return Notice timing and conversion186 remain open.
-
-Selected configuration calls authenticate computed strings and pipes across
-argument evaluation, saved frames and a `chdir` pause. Four source comparisons
-and nine paused stages (113 assertions) at **949b6a938** project across the
-installed reference-return change. One current source
-matches both unused reference-return branches while a selection is saved,
-including exact Notice bytes. The original 35-source and retained-frame gates
-remain historical; the maintained catalogue now contains 36 sources.
-[Ledger](coverage/semantics/include-dynamic-selected-review.json).
-
-Ordinary `Closure::call` 182 has passed bounded source, paused and compatibility
-review, with focused installed selected-call, typed-string callback and
-reference-return finalizer checks. Private36-source/7-stage evidence retains its
-earlier executable snapshot. Named receivers and isolated reference formals are
-installed with a focused three-source/two-stage forwarding/exit bridge; their
-private sources11/stages5 and sources14/stages9 retain prior snapshot identities.
-Unpacking remains open. A source-derived deferred
-real-closure default cache still fails its global state guard and requires a
-separate generic91 repair.
-[Ledger](coverage/semantics/closure-call-review.json).
-[Argument extension review](coverage/semantics/closure-call-arguments-review.json).
-
-The Stringable-`chdir` candidate passes 52 maintained native/model comparisons,
-11 mutable-context stages (134 assertions), five directory stages (207 assertions),
-46 saved-include and 42 saved-eval assertions, and retained typed/eval/Throwable
-bridges. Independent review approves this bounded private scope; installation
-is pending. Declaring callback identity and explicit invocation traces are
-covered. The nested-conversion producer alone uses 180 seconds after a measured
-five-request replay; each model request keeps its 60-second limit. Earlier
-nine-source evidence and the interrupted 50-source run remain distinct.
+The Stringable-`chdir` candidate passes its full 52-source catalogue, mutable
+and directory ownership protocols, and retained saved-frame/typed/eval/Throwable
+gates at **15d2451bf**. One current **1043567c4** source bridges the new reference
+forwarding task while a Stringable conversion is saved; installation remains
+pending. Callback traces retain declaring identity and explicit invocation
+frames. The nested-conversion producer alone uses 180 seconds after a measured
+five-request replay; model requests keep their 60-second limit. Earlier
+nine-source evidence and the interrupted 50-source prefix remain separate.
 [Ledger](coverage/semantics/include-stringable-chdir-review.json).
 
-By-reference typed return conversion 186 needs captured-alias write-back and a
-generic post-`finally` rejection replay. Weak parameters, properties,
-constrained references, interpolation,
-dynamic names and other string contexts remain separate consumers. Source
-`__invoke` and callable/string precedence, `Closure::call`, array callables,
-inherited internal interface method signatures, constants, static/readonly
-members, traits, hooks, traversal, output handlers and lifecycle callbacks
-remain active core obligations. The inventory still needs its pending
-`calls.static-variables` row reconciled with accepted bounded named, main and
-Closure static bindings ([named](coverage/semantics/function-statics-review.json),
-[main](coverage/semantics/main-statics-review.json),
-[Closure](coverage/semantics/closures-review.json)); broader static-variable
+Generic156 return/Notice replay remains open. By-reference typed string return
+conversion186 still needs captured-alias write-back and post-`finally` rejection.
+Deferred real-Closure default caches fail the global state guard and need a
+separate generic91 repair.
+[Argument review](coverage/semantics/closure-call-arguments-review.json).
+
+Weak parameter and property string conversion, constrained references,
+interpolation and dynamic names remain separate consumers. The inverse typed
+string& object-parameter/config callback combination is untested. Source
+`__invoke`, callable/string precedence, array callables, inherited internal
+interface signatures, constants, static/readonly members, traits, hooks,
+traversal, output handlers and lifecycle callbacks remain active core work.
+File inclusion still needs named/unpacked object operands for `chdir`, broader
+OS/INI behavior and transformed wrappers. Rocq interaction-tree semantics and
+BOLA proofs follow completed PHP core semantics.
+
+The inventory's pending `calls.static-variables` row still needs reconciliation
+with accepted bounded [named](coverage/semantics/function-statics-review.json),
+[main](coverage/semantics/main-statics-review.json) and
+[Closure](coverage/semantics/closures-review.json) bindings; wider static-variable
 obligations remain open.
-Canonical file inclusion still needs stringable `chdir` operands, wider OS/INI
-failure modes and transformed wrappers. Rocq
-interaction-tree semantics and BOLA proofs follow the completed PHP core.
 
 ## Validation limits
 
-The authorized concurrency cap is five numeric/model campaigns, with explicit
-slot handoffs. The [resource receipt](.tools/resume-recovery-20261001/resource-audit-10second.json)
-records available memory, CPU and pressure observations supporting that cap.
+The authorized cap is five numeric/model campaigns with explicit slot handoffs.
+The [resource receipt](.tools/resume-recovery-20261001/resource-audit-10second.json)
+records the CPU, memory and pressure observations supporting that cap.
 
-The reviewed source, paused-state and syntax results are bounded observations, not complete-core acceptance. Interrupted runs, timeouts, Unsupported and budget controls are never native agreements. A fresh offline network-isolated rebuild and full current-source closure are still required. The [migration ledger](coverage/semantics/throwable-migration-review.json) and [artifact guide](docs/ARTIFACTS.md) retain deferred failures and raw evidence locations.
+Reviewed source, paused-state and syntax results are bounded observations,
+not complete-core acceptance. Interrupted runs, timeouts, Unsupported and budget
+controls are never native agreements. A fresh offline network-isolated rebuild
+and full current-source closure remain required. The
+[migration ledger](coverage/semantics/throwable-migration-review.json) and
+[artifact guide](docs/ARTIFACTS.md) retain deferred failures and raw evidence.
