@@ -11,6 +11,10 @@ CASES = [
      b'class C { public string $name="x"; } $nm=function(){global $a,$r;$a=null;'
      b'$r="s";A::$x=9;return $this->name;}; $a=new A;$r=&$a->p;'
      b'echo $a::${$nm->call(new C)},"|",$r;', {}, False),
+    ('named-reference-static-isolation', b'<?php class A{public static string $p="3";} '
+     b'$r=&A::$p;$f=function(int &$x){$x=9;return $x;};'
+     b'echo $f->call(x:A::$p,newThis:new A),"|",A::$p==="3"?"S":"N","|",'
+     b'$r==="3"?"S":"N";', {}, False),
 ]
 
 
