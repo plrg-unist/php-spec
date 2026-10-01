@@ -27,7 +27,7 @@ Its returned bytes stay in the completion, leaving the inherited private
 `string` cache unchanged. If it throws, the new Throwable replaces the old
 one and receives an internal `__toString()` trace frame.
 
-The private finite 189 candidate also checks source `__wakeup` overrides.
+The installed finite 189 increment also checks source `__wakeup` overrides.
 Built-in parents require a public concrete method and accept a sole variadic
 parameter. An omitted return emits their tentative-void deprecation at the
 source method; a source ancestor supplies its own signature instead, including

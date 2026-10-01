@@ -33,7 +33,7 @@ named/reference `Closure::call` **9cdadc172**.
 [Milestone history](MILESTONE-HISTORY.md) and the linked ledgers
 retain bounded installed counts and historical snapshot identities.
 
-The finite 189 candidate adds inherited Stringable/Throwable and
+The installed finite 189 increment adds inherited Stringable/Throwable and
 Exception/Error/ErrorException method contracts, plus source `__wakeup`
 case, variadic, selected-parent and tentative-return checks. Historical
 66-source/full-test evidence, renewed frozen9 source66/30/14 and 23 paused
@@ -41,14 +41,17 @@ groups retain their original identities. The a33 source/callback bridge is
 also preserved. The property/default-cache bridge passes five sources and
 four paused groups/65 assertions. Its catalogue832 projection preserves189
 semantic bytes and passes full-module elaboration plus native166 occupancy.
+Installed checkpoint `cbd5236d2` passes the provider/property source (`23`) and
+16 rollback assertions at the actual 1289-artifact fingerprint. The ledger retains
+the separate receipt failure caused by the extra existing request-clock binary.
 [Historical ledger](coverage/semantics/interface-internal-review.json) ·
 [Renewed ledger](coverage/semantics/interface-internal-renewed-review.json).
 
 Seven explicit Unsupported controls still bound compiler publication, including
 some previously admitted typed external-root paths. Real declaration publication
 and diagnostic ordering is the immediate next milestone, before constants183/184.
-Two reporting-timing originals remain Unsupported controls. This finite candidate
-is reviewed for installation and does not close classes/interfaces or core PHP.
+Two reporting-timing originals remain Unsupported controls. This increment
+does not close classes/interfaces or core PHP.
 
 Installed code includes finite file context, selected configuration calls and
 weak positional Stringable-`chdir` operands,

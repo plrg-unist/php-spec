@@ -222,8 +222,8 @@ binds source, compiler, syntax and paused-state checks. Other internal-class
 bodies and method callbacks remain open.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
-obligations, and add finite `Stringable`/`Throwable` nominal ancestry. A private
-[finite internal-method candidate](coverage/semantics/interface-internal-renewed-review.json)
+obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed
+[finite internal-method increment](coverage/semantics/interface-internal-renewed-review.json)
 adds inherited contracts and source `__wakeup` linking checks. Other internal
 interface tables, constants and hooked properties remain open.
 [Public object properties](docs/semantics/SOURCE-PROPERTIES.md) now have typed
