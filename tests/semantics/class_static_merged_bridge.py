@@ -42,19 +42,22 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def main():
+def main(cases=CASES, script=__file__):
     modules = json.loads((ROOT / 'spec/semantics/modules.json').read_text())
     watched = [*modules, 'spec/semantics/modules.json', 'bin/php-semantics',
                'frontend/worker.php', 'frontend/wire.php', '.tools/php-file.so',
                'tests/semantics/profile.json', 'tests/semantics/class_static_merged_bridge.py',
                '.tools/php/bin/php', '_build/default/adapter/main.exe']
+    script_name = str(Path(script).resolve().relative_to(ROOT))
+    if script_name not in watched:
+        watched.append(script_name)
     before = {name: digest(ROOT / name) for name in watched}
     out = Path(tempfile.mkdtemp(prefix='class-static-merged-', dir=ROOT / '.tools'))
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_text())
     flags = [arg for key, value in profile.items() for arg in ('-d', key + '=' + value)]
     env = dict(os.environ, LC_ALL='C', TZ='UTC')
     rows = []
-    for case_id, source_bytes, files, finite in CASES:
+    for case_id, source_bytes, files, finite in cases:
         directory = out / case_id
         directory.mkdir()
         source = directory / 'source.php'
