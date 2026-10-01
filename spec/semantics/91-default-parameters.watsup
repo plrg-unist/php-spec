@@ -23,10 +23,14 @@ def $default_required(psparam :: psparam_tail*) = $default_required(psparam_tail
 dec $default_required_text(psparam*) : preqbytes
 def $default_required_text(psparam*) = $ptascii("exactly ") -- if $default_required(psparam*) = |$call_fixed_parameters(psparam*)|
 def $default_required_text(psparam*) = $ptascii("at least ") -- if $default_required(psparam*) =/= |$call_fixed_parameters(psparam*)|
+dec $call_function_name(pstate, pfunction) : preqbytes
+def $call_function_name(S, pfunction) = pfunction.NAME -- otherwise
+dec $call_function_kind(pstate) : preqbytes
+def $call_function_kind(S) = $ptascii("function") -- otherwise
 
 def $default_begin(S, pfunction, n) = S[.TODO = [DEFAULT_RECEIVE pfunction.ORIGIN n]]
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
-def $default_begin(S, pfunction, n) = $throw_scalar(S, "ArgumentCountError", $ptascii("Too few arguments to function ") ++ pfunction.NAME ++ $ptascii("(), ") ++ $ntunsigned(pcallcontext.ARGC) ++ $wrapper_passed_suffix(S, pcallcontext) ++ $ptascii(" and ") ++ $default_required_text(pfunction.SIGNATURE.PARAMETERS) ++ $ntunsigned($default_required(pfunction.SIGNATURE.PARAMETERS)) ++ $ptascii(" expected"), $default_parameter_line(S, pfunction.ORIGIN, n))
+def $default_begin(S, pfunction, n) = $throw_scalar(S, "ArgumentCountError", $ptascii("Too few arguments to function ") ++ $call_function_name(S, pfunction) ++ $ptascii("(), ") ++ $ntunsigned(pcallcontext.ARGC) ++ $wrapper_passed_suffix(S, pcallcontext) ++ $ptascii(" and ") ++ $default_required_text(pfunction.SIGNATURE.PARAMETERS) ++ $ntunsigned($default_required(pfunction.SIGNATURE.PARAMETERS)) ++ $ptascii(" expected"), $default_parameter_line(S, pfunction.ORIGIN, n))
   -- if $default_at(pfunction.DEFAULTS, n) = eps
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)

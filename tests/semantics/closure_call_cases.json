@@ -346,5 +346,89 @@
     "native_group": ".tools/calls-review-reference-return-21v41lo5/native.json",
     "native_raw_sha256": "796a8154bea72dbe19b85e8945bbd92989e80d998c84560755571d42a5773af0",
     "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json"
+  },
+  {
+    "id": "call-review-typed-parameter-reject",
+    "native_group": ".tools/calls-review-types-dg0928v0/call-review-typed-parameter-reject/native.json",
+    "native_raw_sha256": "c3e5cb2652094de351f8bc66613ae9eb5271db1ccfb03cb6d02a7508b5682d7c",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A {} $c=function(int $x){}; $c->call(new A,[]);",
+    "source_sha256": "671fd25838eb873d172066e03287cb5e45d8b0a014392ebfc6f2eabcda99b842",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQTo6e2Nsb3N1cmU6e0ZJTEV9OjF9KCk6IEFyZ3VtZW50ICMxICgkeCkgbXVzdCBiZSBvZiB0eXBlIGludCwgYXJyYXkgZ2l2ZW4gaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIFtpbnRlcm5hbCBmdW5jdGlvbl06IEEtPntjbG9zdXJlOntGSUxFfToxfShBcnJheSkKIzEge0ZJTEV9KDEpOiBDbG9zdXJlLT5jYWxsKE9iamVjdChBKSwgQXJyYXkpCiMyIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "exit_status": 255
+  },
+  {
+    "id": "call-review-inner-arity",
+    "native_group": ".tools/calls-review-types-dg0928v0/call-review-inner-arity/native.json",
+    "native_raw_sha256": "ddbb328df07c79ad5c0efbb3370b8444dbcbaaa1029b37ce956a09383065c9c1",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A {} $c=function($x){}; $c->call(new A);",
+    "source_sha256": "d43edfeca68dc35b94017a101f2781f32e73344172e5971b3ab4f47f07a9c293",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEFyZ3VtZW50Q291bnRFcnJvcjogVG9vIGZldyBhcmd1bWVudHMgdG8gZnVuY3Rpb24gQTo6e2Nsb3N1cmU6e0ZJTEV9OjF9KCksIDAgcGFzc2VkIGFuZCBleGFjdGx5IDEgZXhwZWN0ZWQgaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIFtpbnRlcm5hbCBmdW5jdGlvbl06IEEtPntjbG9zdXJlOntGSUxFfToxfSgpCiMxIHtGSUxFfSgxKTogQ2xvc3VyZS0+Y2FsbChPYmplY3QoQSkpCiMyIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "exit_status": 255
+  },
+  {
+    "id": "call-review-strict-caller-weak-parameter",
+    "native_group": ".tools/calls-review-types-dg0928v0/call-review-strict-caller-weak-parameter/native.json",
+    "native_raw_sha256": "9144b19b7c0b146df67d9cbca0c831a6e544b40b839b0c184ebeb55d461407c7",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php declare(strict_types=1); class A {} $c=function(int $x){echo $x;}; $c->call(new A,\"1\");",
+    "source_sha256": "453d37e382fc862f026a0e4be912ca05169f864482d222f2829db808b304b23e",
+    "status": "normal",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "call-review-typed-return-reject",
+    "native_group": ".tools/calls-review-qualification-qgpkf1rd/call-review-typed-return-reject/native.json",
+    "native_raw_sha256": "1d33d5470660d38f6372744a508ab94022686cf22c16c4784ffdad0d195eb3e0",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A {} $c=function():int{return [];}; $c->call(new A);",
+    "source_sha256": "121227b226d7b0c9be5e6723e338cf57431eeb43c391708ec3a824a705b21d54",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQTo6e2Nsb3N1cmU6e0ZJTEV9OjF9KCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSByZXR1cm5lZCBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAgW2ludGVybmFsIGZ1bmN0aW9uXTogQS0+e2Nsb3N1cmU6e0ZJTEV9OjF9KCkKIzEge0ZJTEV9KDEpOiBDbG9zdXJlLT5jYWxsKE9iamVjdChBKSkKIzIge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 255
+  },
+  {
+    "id": "call-review-typed-return-fallthrough",
+    "native_group": ".tools/calls-review-qualification-qgpkf1rd/call-review-typed-return-fallthrough/native.json",
+    "native_raw_sha256": "24d2fb2fbc7cacf43c9ef94a9ec9fc9c0eeb980534a1d1350c03b6ec60c16c1a",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A {} $c=function():int{}; $c->call(new A);",
+    "source_sha256": "d0b7279cac123f376144a952e443fb0eb538c811fa973e14401c4617f6871db7",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQTo6e2Nsb3N1cmU6e0ZJTEV9OjF9KCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgaW50LCBub25lIHJldHVybmVkIGluIHtGSUxFfToxClN0YWNrIHRyYWNlOgojMCBbaW50ZXJuYWwgZnVuY3Rpb25dOiBBLT57Y2xvc3VyZTp7RklMRX06MX0oKQojMSB7RklMRX0oMSk6IENsb3N1cmUtPmNhbGwoT2JqZWN0KEEpKQojMiB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+    "exit_status": 255
+  },
+  {
+    "id": "call-review-never-fallthrough",
+    "native_group": ".tools/calls-review-qualification-qgpkf1rd/call-review-never-fallthrough/native.json",
+    "native_raw_sha256": "9f2ecc57d9cefd62568ec044b67c2531fffdc68f8d9f8312d38fdda5ebb35c76",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A {} $c=function():never{}; $c->call(new A);",
+    "source_sha256": "aa70b4b8c5882ae6aaf6d5ae3000d83ba6047290bfc8365e69848941f6429216",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQTo6e2Nsb3N1cmU6e0ZJTEV9OjF9KCk6IG5ldmVyLXJldHVybmluZyBtZXRob2QgbXVzdCBub3QgaW1wbGljaXRseSByZXR1cm4gaW4ge0ZJTEV9OjEKU3RhY2sgdHJhY2U6CiMwIFtpbnRlcm5hbCBmdW5jdGlvbl06IEEtPntjbG9zdXJlOntGSUxFfToxfSgpCiMxIHtGSUxFfSgxKTogQ2xvc3VyZS0+Y2FsbChPYmplY3QoQSkpCiMyIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "exit_status": 255
+  },
+  {
+    "id": "call-review-typed-variadic-reject",
+    "native_group": ".tools/calls-review-qualification-qgpkf1rd/call-review-typed-variadic-reject/native.json",
+    "native_raw_sha256": "d1b64b14651da6ac1a3009dc1bf0064a18316376455c090f27dfb92aa3bf251e",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A {} $c=function(int ...$xs){}; $c->call(new A,[]);",
+    "source_sha256": "6e0d6b7d4fef48ef5e94c70452dd5a905dd6ca51a89a8176c2aaeca0c63861aa",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQTo6e2Nsb3N1cmU6e0ZJTEV9OjF9KCk6IEFyZ3VtZW50ICMxIG11c3QgYmUgb2YgdHlwZSBpbnQsIGFycmF5IGdpdmVuIGluIHtGSUxFfToxClN0YWNrIHRyYWNlOgojMCBbaW50ZXJuYWwgZnVuY3Rpb25dOiBBLT57Y2xvc3VyZTp7RklMRX06MX0oQXJyYXkpCiMxIHtGSUxFfSgxKTogQ2xvc3VyZS0+Y2FsbChPYmplY3QoQSksIEFycmF5KQojMiB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+    "exit_status": 255
   }
 ]

@@ -275,9 +275,12 @@ def $call_task_valid(S, CLOSURE_CALL_ARGS pclosurecall) = ($closure_call_task_va
 def $call_task_valid(S, CLOSURE_CALL_SEND pclosurecall) = $closure_call_task_valid(S, pclosurecall)
 def $call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall) = $closure_call_task_valid(S, pclosurecall)
 def $task_nodes(CLOSURE_CALL_RESULT porigin z) = eps
-def $call_task_valid(S, CLOSURE_CALL_RESULT porigin z) = true
+dec $closure_call_result_valid(pstate, porigin, int) : bool
+def $closure_call_result_valid(S, porigin, z) = true
   -- if $closure_call_args_at(S, porigin) = phpType7*
   -- if $call_line_valid(S, (porigin), z)
+def $closure_call_result_valid(S, porigin, z) = false -- otherwise
+def $call_task_valid(S, CLOSURE_CALL_RESULT porigin z) = $closure_call_result_valid(S, porigin, z)
 rule PhpStep/closure-call-result: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_VALUE S_read.RESULT]
   -- if S.TODO = (CLOSURE_CALL_RESULT porigin z) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z)
@@ -470,6 +473,14 @@ def $wrapper_context_valid(S, pcallcontext) = true
   -- if $closure_call_wrapper_slots_valid(pnamedargs.SLOTS, pnamedargs_shape.SLOTS)
   -- if $closure_call_wrapper_names_valid(pnamedargs.NAMED, pnamedargs_shape.NAMED)
 
+def $call_function_name(S, pfunction) = pclassdesc.NAME ++ $ptascii("::") ++ pfunction.NAME
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+def $call_function_kind(S) = $ptascii("method")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
 def $trace_context_class(S, pcallcontext) = (pclassdesc.NAME)
   -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_class

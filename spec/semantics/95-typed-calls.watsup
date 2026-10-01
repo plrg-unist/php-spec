@@ -73,7 +73,7 @@ def $typed_parameter_conversion(S, psparam, pvalue) = $typed_reference_conversio
 def $typed_parameter_value(S, pfunction, n, pvalue) = $typed_apply(S, ptypeconversion, $default_parameter_line(S, pfunction.ORIGIN, n))
   -- if ptypeconversion = $typed_parameter_conversion(S, pfunction.SIGNATURE.PARAMETERS[n], pvalue)
   -- if ptypeconversion =/= TYPEREJECT
-def $typed_parameter_value(S, pfunction, n, pvalue) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ psparam.NAME ++ $ptascii(") must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given") ++ $wrapper_called_suffix(S, pcallcontext), $default_parameter_line(S, pfunction.ORIGIN, n))
+def $typed_parameter_value(S, pfunction, n, pvalue) = $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ psparam.NAME ++ $ptascii(") must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given") ++ $wrapper_called_suffix(S, pcallcontext), $default_parameter_line(S, pfunction.ORIGIN, n))
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
   -- if $typed_parameter_conversion(S, psparam, pvalue) = TYPEREJECT
   -- if S.CURRENT = (pcallcontext)
@@ -138,7 +138,7 @@ def $typed_return_checked(S, z, b_source) = $typed_apply(S, ptypeconversion, z)
   -- if S.RESULT = KNOWN pvalue
   -- if ptypeconversion = $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, b_source)
   -- if ptypeconversion =/= TYPEREJECT
-def $typed_return_checked(S, z, b_source) = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" returned"), z)
+def $typed_return_checked(S, z, b_source) = $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" returned"), z)
   -- if S.COMPLETION = NORMAL
   -- if S.CURRENT = (pcallcontext)
   -- if ~$eval_top_level(S)
@@ -149,11 +149,11 @@ rule PhpStep/type-fallthrough-void: S ~> S[.TODO = $reference_empty_task(S, pfun
   -- if S.TODO = (TYPE_FALLTHROUGH porigin) :: ptask*
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if "void" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
-rule PhpStep/type-fallthrough-never: S ~> $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): never-returning function must not implicitly return"), pfunction.ENDLINE)
+rule PhpStep/type-fallthrough-never: S ~> $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): never-returning ") ++ $call_function_kind(S) ++ $ptascii(" must not implicitly return"), pfunction.ENDLINE)
   -- if S.TODO = (TYPE_FALLTHROUGH porigin) :: ptask*
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if "never" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
-rule PhpStep/type-fallthrough-value: S ~> $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", none returned"), pfunction.ENDLINE)
+rule PhpStep/type-fallthrough-value: S ~> $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", none returned"), pfunction.ENDLINE)
   -- if S.TODO = (TYPE_FALLTHROUGH porigin) :: ptask*
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if ~("void" <- $ptmasks(pfunction.SIGNATURE.RETURNS) \/ "never" <- $ptmasks(pfunction.SIGNATURE.RETURNS))

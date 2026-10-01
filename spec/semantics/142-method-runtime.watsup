@@ -1263,6 +1263,7 @@ def $wrapper_trace(S, pcallcontext) = [{FILE $call_sourcefile(S.FILES, porigin),
   -- if pvalue* = $wrapper_values(S, pnamedargs.SLOTS)
 def $wrapper_context_valid(S, pcallcontext) = true
   -- if ~$wrapper_site(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
+  -- if ~$closure_call_target($context_target(pcallcontext))
   -- if pcallcontext.WRAPPER = eps
 def $wrapper_context_valid(S, pcallcontext) = true
   -- if $wrapper_site(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
