@@ -26,10 +26,11 @@ catalogue = []
 for line in (ROOT / 'spec/semantics/126-class-compiler.watsup').read_text().splitlines():
     if not line.startswith('  INTERNAL '):
         continue
-    expressions = re.findall(r'\((\$ptascii\("[^"]+"\)(?: \+\+ \[92\] \+\+ \$ptascii\("[^"]+"\))*)\)', line)
-    assert len(expressions) == 2, line
-    key, name = ['\\'.join(re.findall(r'\$ptascii\("([^"]+)"\)', expr)) for expr in expressions]
-    kind = re.search(r'"(class|interface|trait|enum)"[,]?$', line).group(1)
+    row = re.fullmatch(r'  INTERNAL (\[[0-9, ]+\]) (\[[0-9, ]+\]) "(class|interface|trait|enum)"[,]? ;; (.+)', line)
+    assert row, line
+    key, name = [bytes(json.loads(expr)).decode('ascii') for expr in row.group(1, 2)]
+    kind = row.group(3)
+    assert row.group(4) == name, line
     assert key == name.lower(), line
     catalogue.append({'name': name, 'kind': kind})
 assert len(oracle) == len(catalogue) == 166
