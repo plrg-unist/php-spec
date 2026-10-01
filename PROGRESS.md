@@ -70,11 +70,12 @@ preserving used temporary aliases. Five installed source comparisons and two
 paused stages (30 assertions) pass, independently of pending generic156 replay.
 [Ledger](coverage/semantics/reference-unused-finally-installed.json).
 
-Exit-origin cleanup is a private prerequisite for reference-return replay.
-Six original sources preserve exact output and exit status. Paused tests cover
-public resumption, saved frames, suppression and foreach cleanup; the original
-ordinary-finalizer pause failure and draft reporting assertion remain distinct
-from accepted checks. [Ledger](coverage/semantics/exit-origin-author.json).
+Exit-origin cleanup is installed at **b54f984b4** independently of return replay.
+Six installed sources preserve exact output and exit status; two public paused
+stages (64 assertions) cover suppression and saved-caller foreach cleanup.
+Private six-stage evidence (163 assertions), retained exit checks (126 assertions),
+the original pause failure and draft reporting assertion remain distinct.
+[Ledger](coverage/semantics/exit-origin-author.json).
 Generic156 recovery, temporary-return Notice timing and conversion186 remain open.
 
 Selected configuration calls authenticate computed strings and pipes across

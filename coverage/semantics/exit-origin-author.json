@@ -1,5 +1,5 @@
 {
-  "status": "private_reviewed",
+  "status": "installed_reviewed",
   "base": "aed684e4a184a8500c7e2c318fd480f0db393bd8",
   "evidence_root": ".tools/reference-exit-origin-current",
   "scope": "Module148 clears discarded active ORIGIN at exit production/unwind and requires empty ORIGIN at EXIT_UNWIND; saved frames and existing cleanup remain unchanged. No generic156/186 implementation imported.",
@@ -102,5 +102,34 @@
     "ledger": ".tools/exit-origin-review.json",
     "sha256": "469b4f0ba34bdb55fd09df1f7a52da06781ff52371a158d07adbda1e3f541e92",
     "verdict": "accepted_scoped"
+  },
+  "private_status": "private_reviewed",
+  "installed": {
+    "base": "6ce116cfbedb49efe4fbfa523c9936cbe5fe4771",
+    "implementation_commit": "b54f984b495c629e4e784ad8d438c93387b41728",
+    "evidence_root": ".",
+    "source": {
+      "report": ".tools/finally-source-f45ndz6a/report.json",
+      "sha256": "413a2d70432f7fc0fdb89d07dac3fd9fc36817f59b1c7422d8e1c9f4a8dbaf86",
+      "result": "pass",
+      "exact_agreements": 6,
+      "inputs": 190
+    },
+    "paused": {
+      "report": ".tools/exit-origin-protocol-u7h8o_eb/report.json",
+      "sha256": "d34e803c86ffba43283672f4dccef8c06ba17c8edce8f033c895374410ca0b37",
+      "result": "pass",
+      "stable": true,
+      "stages": 2,
+      "assertions": 64,
+      "inputs": 189,
+      "selection": "foreach"
+    },
+    "scope": "Current canonical path bridge with public suppression/saved-caller iterator cleanup; private new6/163 and retained6/126 remain distinct evidence.",
+    "review": {
+      "ledger": ".tools/reference-exit-origin-current/.tools/exit-origin-installed-review.json",
+      "sha256": "db03e8140dec2aa22effcbcd13fe867083c23551f2b79a4230e6251f33966e24",
+      "verdict": "accepted_scoped"
+    }
   }
 }

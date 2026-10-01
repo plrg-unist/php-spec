@@ -37,6 +37,10 @@ protected-region marker. The [origin cleanup ledger](../../coverage/semantics/ex
 separates six exact sources, paused cleanup checks, the original invalid pause,
 and retained exit controls.
 
+The installed bridge at **b54f984b4** preserves six original native tuples and
+passes two public paused stages (64 assertions), including saved caller
+iterators and inherited suppression before terminal reporting restoration.
+
 Shutdown functions, destructors, output callbacks, user error handlers and
 Stringable conversion callbacks remain open dependencies. This increment does
 not claim full request shutdown or general Throwable/catch/finally semantics.
