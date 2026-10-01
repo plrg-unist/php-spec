@@ -1,0 +1,86 @@
+[
+  {
+    "id": "closure-default-deferred-once",
+    "native_group": ".tools/closure-default-cache-native-299ndbq2/closure-default-deferred-once/native.json",
+    "native_raw_sha256": "8cc3b0a891c5a70826d47dbaa4b6b3ab4ccc73f0c350d98d813174f617c72239",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php const C=1; $c=function($x=C){echo $x;}; $c();",
+    "source_sha256": "d852f24586b128ea170044f520cc3e0d7e09227b9d410fa6f973c3c3c4c282c1",
+    "status": "normal",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "closure-default-deferred-twice",
+    "native_group": ".tools/closure-default-cache-native-299ndbq2/closure-default-deferred-twice/native.json",
+    "native_raw_sha256": "97ebb0f80583462ca53db4c6d61bea952dd434f962ab20b6d28d1014c48b165e",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php const C=1; $c=function($x=C){echo $x;}; $c(); $c();",
+    "source_sha256": "80dc6895af6729f07ca56f5c5f2074d23d5d8c83a574268fb9a456b9e2f1c22e",
+    "status": "normal",
+    "stdout_base64": "MTE=",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "arrow-default-deferred-once",
+    "native_group": ".tools/closure-default-cache-native-299ndbq2/arrow-default-deferred-once/native.json",
+    "native_raw_sha256": "9f8015967f71706a48da35ae7dd640dcc1db5a73f18d1fe1f7f1b1fb33014981",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php const C=1; $c=fn($x=C)=>$x; echo $c();",
+    "source_sha256": "13b803c53bda091df3ae0417004bc8b0ee32310ba626e50ca2ed818ab762891c",
+    "status": "normal",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "arrow-default-deferred-twice",
+    "native_group": ".tools/closure-default-cache-native-299ndbq2/arrow-default-deferred-twice/native.json",
+    "native_raw_sha256": "f55dfb6e626b8f9868e1f758659c605254431c30c5254947ed49faa85084839c",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php const C=1; $c=fn($x=C)=>$x; echo $c().$c();",
+    "source_sha256": "084c0fcc2fbdc63cde53db19a79b6b7da9304d760e1e714eaa3b10ac16b2212b",
+    "status": "normal",
+    "stdout_base64": "MTE=",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "closure-default-after-retirement",
+    "native_group": ".tools/closure-default-cache-native-299ndbq2/closure-default-after-retirement/native.json",
+    "native_raw_sha256": "2e42d5e70114bc1af7b36dee04e85bd21bd06bf464e8677731fef7d76b668e7d",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php const C=1; $c=function($x=C){echo $x;}; $c(); $c=null; echo \"R\";",
+    "source_sha256": "04a8f3d1eb385ff014333035b21acc179e9502873b766bb7bafc4c884c93de3b",
+    "status": "normal",
+    "stdout_base64": "MVI=",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "closure-default-stored-literal",
+    "native_group": ".tools/closure-default-cache-native-299ndbq2/closure-default-stored-literal/native.json",
+    "native_raw_sha256": "1c93cd5696bd46c2f7b8cb8de3d51730e58586c749c8bc125d320ce66856b5a6",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php $c=function($x=1){echo $x;}; $c();",
+    "source_sha256": "b5f33146ac216bcf0cd9cd59208475ca64439737863950556116d95337ed1d07",
+    "status": "normal",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "arrow-default-stored-literal",
+    "native_group": ".tools/closure-default-cache-native-299ndbq2/arrow-default-stored-literal/native.json",
+    "native_raw_sha256": "095655e974773577c115f9b3d80be3ae1344119466612e92c1195170c8864913",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php $c=fn($x=1)=>$x; echo $c();",
+    "source_sha256": "acc591cfe313a3bded94767e3df75757a5f3602bc27e8e7951c708111cbec4b3",
+    "status": "normal",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  }
+]

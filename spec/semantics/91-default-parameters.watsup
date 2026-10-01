@@ -116,6 +116,10 @@ dec $default_function_at(pfunction*, porigin) : pfunction?
 def $default_function_at(eps, porigin) = eps
 def $default_function_at(pfunction :: pfunction_tail*, porigin) = (pfunction) -- if $default_origin_at(pfunction.DEFAULTS, porigin) = (pdefault)
 def $default_function_at(pfunction :: pfunction_tail*, porigin) = $default_function_at(pfunction_tail*, porigin) -- if $default_origin_at(pfunction.DEFAULTS, porigin) = eps
+dec $default_closure_node(pcnode) : bool
+def $default_closure_node(NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata) = true
+def $default_closure_node(NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata) = true
+def $default_closure_node(pcnode) = false -- otherwise
 def $default_caches_valid(S, eps) = true
 def $default_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
   -- if $default_function_at(S.FUNCTIONS, pdefaultcache.ORIGIN) = (pfunction)
@@ -134,6 +138,21 @@ def $default_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
   -- if $default_origin_at(pfunction.DEFAULTS, pdefaultcache.ORIGIN) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
+  -- if $default_cache_at(pdefaultcache_tail*, pdefaultcache.ORIGIN) = eps
+  -- if $default_cacheable(pdefaultcache.CLASS)
+  -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S.ALLOCATIONS)
+  -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
+  -- if $default_caches_valid(S, pdefaultcache_tail*)
+def $default_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
+  -- if $default_function_at(S.CLOSURETEMPLATES, pdefaultcache.ORIGIN) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (pcnode)
+  -- if $default_closure_node(pcnode)
+  -- if $default_origin_at(pfunction.DEFAULTS, pdefaultcache.ORIGIN) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if $default_parameter_origin(S, pfunction.ORIGIN, pdefault.INDEX) = PORIGIN n_unit pcpath_param
+  -- if pdefault.ORIGIN = PORIGIN n_unit (pcpath_param ++ [PCFIELD 6])
+  -- if $origin_node(S.SOURCES, pdefault.ORIGIN) = (expression)
+  -- if $compiled_read(S, pdefault.ORIGIN) = eps
   -- if $default_cache_at(pdefaultcache_tail*, pdefaultcache.ORIGIN) = eps
   -- if $default_cacheable(pdefaultcache.CLASS)
   -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S.ALLOCATIONS)
