@@ -35,9 +35,19 @@ retain bounded installed counts and historical snapshot identities.
 
 The private 189 candidate adds finite inherited Stringable/Throwable and
 Exception/Error/ErrorException method contracts. Its original 66-source,
-independent replay/guard and full-test evidence remain historical to the
-candidate's reviewed base and provider-fixture repair.
-[189 ledger](coverage/semantics/interface-internal-review.json).
+independent replay, forged-method and fixture-repaired full-test evidence is
+preserved in the [historical ledger](coverage/semantics/interface-internal-review.json).
+Renewed source `__wakeup` checks cover declaration case, variadics, selected
+parent signatures and tentative return notices. Separate replays of the 30
+admitted new controls, original 66 and independent 14 pass; 23 independent
+paused groups and the affected full-test pipe target pass on frozen9.
+The rebased projection onto canonical a33b5bef2 is pending current-base review.
+Seven explicit Unsupported controls bound compiler publication dependencies,
+including some previously admitted typed external-root paths. The immediate
+compiler publication milestone must remove that restriction before constants.
+Two reporting-timing originals remain Unsupported controls.
+[Renewed ledger](coverage/semantics/interface-internal-renewed-review.json).
+
 
 Installed code includes finite file context, selected configuration calls and
 weak positional Stringable-`chdir` operands,
@@ -97,6 +107,10 @@ traversal, output handlers and lifecycle callbacks remain active core work.
 File inclusion still needs named/unpacked object operands for `chdir`, broader
 OS/INI behavior and transformed wrappers. Rocq interaction-tree semantics and
 BOLA proofs follow completed PHP core semantics.
+
+The immediate [compiler declaration-order milestone](coverage/semantics/compiler-declaration-order-review.json)
+must publish and link early declarations before later compilation diagnostics
+or failure, then remove the interim rooted `__wakeup` guard before constants.
 
 The inventory marks `calls.static-variables` partial, binding the accepted
 [named](coverage/semantics/function-statics-review.json),

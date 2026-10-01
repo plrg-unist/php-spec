@@ -1,0 +1,164 @@
+{
+  "status": "reviewed_interim_boundary_real_compiler_publication_required_next",
+  "followup": "compiler-declaration-activation-order immediately after189",
+  "requirement": "Publish/link eligible class and named-function declarations in compilation order, preserving earlier notices/errors before later compiler diagnostics/failure and class availability before textual executable declaration. Capture/authenticate dynamic entry availability and actual early publication; preserve deferred repeated declarations and parser/modifier preflight. Remove the interim Unsupported guards after the real mechanism is reviewed, before constants183/184.",
+  "investigation": {
+    "report": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/reviewer-compiler-declaration-order-investigation.json",
+    "sha256": "3e2eaa63a4d9818df1fc0429137cb49c06b3e04628c18f8f66025b8ca6b307ca",
+    "fingerprint_sha256": "59fd3c2f55dbb8c2b7532b10610400760301d17bc5bc13b87a065134c1cff8b8",
+    "finding": "N10 loses an earlier rooted tentative-return notice before later compile rejection, or reverses it after later compiler warning. N12 reverses the same order inside eval using an earlier active source parent. Exact statuses agreed; diagnostic bytes did not."
+  },
+  "interim_boundary": {
+    "known_local": "An actually EARLY owned __wakeup in a selected Exception/Error/ErrorException source chain followed by later compiler diagnostics or abrupt compilation returns Unsupported. Capture diagnostic count after the owning class methods compile.",
+    "external": "A top-level owned __wakeup whose preceding local parent chain reaches a source parent with potential Throwable-root ancestry in earlier source-unit descriptors returns Unsupported. This includes local intermediate classes and duplicate earlier descriptors.",
+    "conservative_scope": "Potential earlier-unit ancestry includes unpublished conditional descriptors; it does not prove historical activation. The guard also bounds some previously admitted typed external-root declarations. Ordinary or unresolved forward ancestry is preserved.",
+    "preserved": "Conditional/function declarations, known local deferred parent chains, and selected ordinary EARLY parents remain admitted.",
+    "authentication": "The same pure earlier-unit guard applies in compile_source_ready and eval_source_ppstate. Source-byte projection checks ancestry descriptors; later-unit descriptors are excluded and no recursive state validity call is added."
+  },
+  "controls": [
+    {
+      "id": "wakeup_early_notice_before_later_compile_fatal",
+      "source_sha256": "28709b749cc1254b74aae4da00e4cb701ac2ee08c212a960595ae0f96b1d3fc9",
+      "native_group": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/wakeup-early-compile-native.json",
+      "native_sha256": "ccb2241e505284bb77e9aa5aed110e6bf3286db17ff17b4b027b5b6f4a2bf62b",
+      "model_expected": "unsupported",
+      "classification": "explicit_admission_boundary_not_native_agreement",
+      "native_observed_exit_status": 255
+    },
+    {
+      "id": "wakeup_early_notice_before_later_compile_warning",
+      "source_sha256": "c75c058a62c96f8d12d94960fb36d90a2e370cb60627d8de8ca19f2f5a27c8bc",
+      "native_group": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/wakeup-early-compile-native.json",
+      "native_sha256": "ccb2241e505284bb77e9aa5aed110e6bf3286db17ff17b4b027b5b6f4a2bf62b",
+      "model_expected": "unsupported",
+      "classification": "explicit_admission_boundary_not_native_agreement",
+      "native_observed_exit_status": 0
+    },
+    {
+      "id": "wakeup_eval_external_root_early_notice",
+      "source_sha256": "bce18f9070ff971eb65d6780b450c48e12980ddcbcda262bf3fb30383f38b4b3",
+      "native_group": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/wakeup-eval-order-native.json",
+      "native_sha256": "12f43eb89a28ed7109d3d74f3bc4f7fc28f18a4e48f6c92d9119db5f962abc26",
+      "model_expected": "unsupported",
+      "classification": "explicit_admission_boundary_not_native_agreement",
+      "native_observed_exit_status": 0
+    },
+    {
+      "id": "wakeup_eval_external_root_through_local_middle",
+      "source_sha256": "98a5f19617bd16e605de2bf74b84ac3a01cd806eefb984bbcf563d3169623072",
+      "native_group": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/wakeup-compiler-boundary-native.json",
+      "native_sha256": "9a981dbab5f7912d402846a94fb4562e1ae0eaf1dcfca44b796dd498c984ebbc",
+      "model_expected": "unsupported",
+      "classification": "explicit_admission_boundary_not_native_agreement",
+      "native_observed_exit_status": 0
+    },
+    {
+      "id": "wakeup_eval_external_root_link_before_prior_output",
+      "source_sha256": "bb6d83c504019f8754906a7792f03ad693b5545a8bbcabe1cc2ad7e7ce2b768b",
+      "native_group": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/wakeup-external-publication-native.json",
+      "native_sha256": "c4ac2e980c107fc87de5909d6ac88891a01c1620c8e6f768d4da61c04d24f37a",
+      "model_expected": "unsupported",
+      "classification": "explicit_admission_boundary_not_native_agreement",
+      "native_observed_exit_status": 255
+    },
+    {
+      "id": "wakeup_eval_duplicate_conditional_external_root",
+      "source_sha256": "684ee327830e6098f04f1e0cd93ae7e1200de8bc440cfdd3b1ebb644fb150c5d",
+      "native_group": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/wakeup-duplicate-parent-native.json",
+      "native_sha256": "678241d93b8c5f89dd1bff2a109c34f933d372f43bb358bb30859e2819a51d2f",
+      "model_expected": "unsupported",
+      "classification": "explicit_admission_boundary_not_native_agreement",
+      "native_observed_exit_status": 0
+    },
+    {
+      "id": "wakeup_local_dead_ordinary_rooted_early_parent",
+      "source_sha256": "8fca151d3510ae619340bb94e7f5dc0af65b00f69b4b58ddca05fba9273e617c",
+      "native_group": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/wakeup-local-parent-selection-native.json",
+      "native_sha256": "78de89e808e78b7a95293975032da0636c914f01239508c91ed2bb65fef1c501",
+      "model_expected": "unsupported",
+      "classification": "explicit_admission_boundary_not_native_agreement",
+      "native_observed_exit_status": 0
+    }
+  ],
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "boundary_gate": {
+    "raw_report": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/author-boundary-hjibep99/report.json",
+    "raw_report_sha256": "6807c3a72712cc5a2cf0c2447b7b82bd784b2affd3a2a46873f5484dd9943215",
+    "raw_result": "fail_retained",
+    "classification": "explicit_admission_boundary_not_native_agreement",
+    "audit": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/author-boundary-cli-contract-audit.json",
+    "audit_sha256": "c30396170b8f22103190cc064458170b5d52683b35068a207fe97f1364484be5",
+    "audited_result": "pass",
+    "controls": 7,
+    "fingerprint_sha256": "1761c137a0ed4575858b4555b47a65dc43aa30857f7e54d3e020da8281180199",
+    "independent_audit": {
+      "report": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/reviewer-boundary-seven-cli-audit.json",
+      "sha256": "7d0a1852117f6a1d2bf4ce03e20d8e008372dabacfd8c661eebea356ef22bbb4",
+      "result": "pass",
+      "classification": "explicit_admission_boundary_not_native_agreement"
+    }
+  },
+  "additional_native_publication_control": {
+    "id": "wakeup_eval_external_typed_publication_before_new",
+    "source_sha256": "8db320705655ab0ac20dec48c000c78836e135e40f819b23849d7f599e71beaf",
+    "native_group": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/wakeup-external-typed-publication-native.json",
+    "native_sha256": "22c6eaf193d4e38dbe2985e7840ca855e91ef055a9c7a05c6c95f77578fe65a0",
+    "native_exit_status": 0,
+    "finding": "Typed public wakeup through an earlier active source root is early-published before new B() inside eval, even without a tentative notice. The same interim guard bounds this declaration-availability dependency; no additional model or native-agreement count."
+  },
+  "followup_native_phase_controls": {
+    "native_report": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/compiler-publication-priority-native.json",
+    "sha256": "0eac7e96748d8cda2faa9e78c6af70b1e81682d1a23e4d3ecf42d5146c567597",
+    "classification": "native_only_followup_calibration_not_model_agreement",
+    "controls": [
+      {
+        "id": "compiler_publication_before_final_goto_error",
+        "source_sha256": "b764cf7c00cc9f1479dfaf96fde97f21cd7dd80e69c8c94cffed936bdb944750",
+        "native_exit_status": 255
+      },
+      {
+        "id": "compiler_publication_later_misplaced_namespace",
+        "source_sha256": "3290e6cf391c50a723380d41978cd266cd32d7951f33b539567c11e7e5ceab9c",
+        "native_exit_status": 255
+      },
+      {
+        "id": "compiler_publication_later_duplicate_import",
+        "source_sha256": "535650091e4697873df0f87941abce5107660bbae91087b0f711b34ad96339b6",
+        "native_exit_status": 255
+      },
+      {
+        "id": "compiler_publication_prefix_survives_catchable_compile_error",
+        "source_sha256": "0df59ee3d97599f22e6ad4c492e9d144806478ae57f09ae458ab7c0d24a0ffd9",
+        "native_exit_status": 255
+      }
+    ],
+    "finding": "Earlier rooted tentative notice precedes undefined-goto, misplaced-namespace and duplicate-import compilation failures. The readonly-method eval modifier error preempts earlier class publication: catch prints CompileError, then new A() fails. Distinguish whole-unit parser/modifier preflight from ordered declaration compilation."
+  },
+  "followup_entry_availability_controls": {
+    "scope": "Native-only next-milestone calibration, not189 source agreements. Captured entry availability must differ from later active registry; actual early publication must differ from runtime declaration activation.",
+    "native_report": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/compiler-entry-context-native.json",
+    "native_sha256": "9933e5e39f4be15a311a295fc80e238439228cfbda8ba5346408fd935e07c7fa",
+    "cases": [
+      {
+        "id": "compiler_entry_parent_activated_after_eval_entry",
+        "source_sha256": "adec128b6f5b0f7be938b1adc08280872f5ae24b4c99c60a1508fcfab6c79b6d",
+        "exit_status": 0
+      },
+      {
+        "id": "compiler_entry_deferred_repeated_declaration",
+        "source_sha256": "10b45aa6b1fd7ffc974e184cbb8d1e9cc6a2dca4ec288371cef805bbed2f5662",
+        "exit_status": 255
+      }
+    ]
+  },
+  "independent_boundary_handoff": {
+    "report": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/reviewer-final-bounded-handoff.json",
+    "report_sha256": "d3dfdb4e83bcdf2a7d22cba3bbd0b6b07e412517de56cf71eac1ef82bc0376dc",
+    "scope": "Bounded current guard/source/resume authenticity only; architecture constraints are not approval of a new publication representation."
+  },
+  "paired_final_acceptance": {
+    "report": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/reviewer-final-acceptance.json",
+    "report_sha256": "12cf34b1d263967743982ac8941bb72fe89de84fbdc1df8fe0737efab7b5af05",
+    "scope": "Finite189 interim admission boundary only; no approval of a new compiler-publication representation."
+  }
+}

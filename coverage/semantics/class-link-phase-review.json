@@ -1,0 +1,36 @@
+{
+  "status": "ruled_out_for_two_exact_sources",
+  "obligation": "No open source-parent phase defect is established by these controls; exact native/model tuples agree.",
+  "scope": "Existing non-wakeup ordinary and Throwable-rooted source parent signatures; new owned rooted __wakeup paths use shared activation.",
+  "native": {
+    "report": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/wakeup-timing-native.json",
+    "sha256": "5efd8700013bd50feec55baec3435c8fffa337cd73ae92d3c4437d6bf7562812",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "controls": [
+      {
+        "id": "source_parent_void_override_missing",
+        "source_sha256": "d0d410a6051afcc31d361ee315d7459ddd516da66f1b485e9fed03351ffe7851"
+      },
+      {
+        "id": "rooted_source_parent_void_override_missing",
+        "source_sha256": "3a80e8c97237823f853baba5cbb43a4f1f94868a7295f3be45eee41ca42fe78e"
+      }
+    ],
+    "outcome": "fatal, exit255, exact stderr at B::f line3 including Stack trace and #0 {main}"
+  },
+  "model": {
+    "result": "pass",
+    "exact": 2,
+    "report": ".tools/interfaces-internal-current/.tools/method-runtime-21st2glh/report.json",
+    "report_sha256": "de3529115bfd7014b06f2612a66d16ea70652acb942b67837749dbeee11f2680",
+    "fingerprint_sha256": "59fd3c2f55dbb8c2b7532b10610400760301d17bc5bc13b87a065134c1cff8b8",
+    "status": "static_rejection",
+    "observable_tuple": "stdout, stderr including stack trace, and exit_status exactly match pinned PHP"
+  },
+  "required_gate": "The separate early rooted wakeup/deprecation ordering investigation remains in interface-internal-renewed-review.json; it is not this ruled-out inference.",
+  "phase_correction": {
+    "native_lint_report": ".tools/interfaces-internal-current/.tools/interface-189-renewed-review/wakeup-native-phase-lint.json",
+    "sha256": "c9a0f7f5e257250738805d3428aa7266829906fe3d1cbf3c5c15d70fec438d5f",
+    "finding": "Native -l rejects both f sources. Stack traces also occur in maintained compiler-shape errors, so a trace does not establish runtime rather than compile/link phase."
+  }
+}

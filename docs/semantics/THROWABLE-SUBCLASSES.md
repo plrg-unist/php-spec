@@ -27,6 +27,21 @@ Its returned bytes stay in the completion, leaving the inherited private
 `string` cache unchanged. If it throws, the new Throwable replaces the old
 one and receives an internal `__toString()` trace frame.
 
+The private finite 189 candidate also checks source `__wakeup` overrides.
+Built-in parents require a public concrete method and accept a sole variadic
+parameter. An omitted return emits their tentative-void deprecation at the
+source method; a source ancestor supplies its own signature instead, including
+through empty intermediate classes. Source parent methods are checked before
+inherited built-ins, and `ErrorException::getSeverity` precedes its inherited
+`__wakeup`. Activation and paused-link authentication share these predicates.
+Early-root declarations followed by later compiler diagnostics, and top-level
+owned `__wakeup` through potential rooted parents from earlier source units,
+remain Unsupported pending [compiler publication order](../../coverage/semantics/compiler-declaration-order-review.json).
+The [renewed review](../../coverage/semantics/interface-internal-renewed-review.json)
+separates source agreements, reporting-mask controls and historical evidence.
+Serialization lifecycle invocation and ReturnTypeWillChange attributes remain
+required.
+
 The project-local PHP 8.5.10 native probes under ignored
 `.tools/throwable-subclass-probes` pin inherited/source cast order, final
 getter owner diagnostics, protected override values, and terminal callback
