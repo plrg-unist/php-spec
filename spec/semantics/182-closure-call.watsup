@@ -5,6 +5,13 @@ dec $closure_call_reference_formal(psparam*) : bool
 def $closure_call_reference_formal(eps) = false
 def $closure_call_reference_formal(psparam :: psparam_tail*) = true -- if psparam.BYREF
 def $closure_call_reference_formal(psparam :: psparam_tail*) = $closure_call_reference_formal(psparam_tail*) -- if ~psparam.BYREF
+dec $closure_call_forward_args_at(pstate, porigin) : phpType7*
+def $closure_call_forward_args_at(S, porigin) = phpType7_tail*
+  -- if $closure_call_args_at(S, porigin) = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7_tail*
+def $closure_call_forward_args_at(S, porigin) = $closure_call_forward_source(phpType7*)
+  -- if $closure_call_args_at(S, porigin) = (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7_tail*
+  -- if phpType7* = (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7_tail*
+  -- if $closure_call_named_form(phpType7*)
 def $closure_call_args_at(S, porigin) = phpType7*
   -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if $ptlc($base64(text_name)) = $ptascii("call")
@@ -70,11 +77,31 @@ dec $closure_call_source_keys(phpType7*, nat) : pkey*
 def $closure_call_source_keys(eps, n) = eps
 def $closure_call_source_keys((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, n) = (KINT $(n + 1)) :: $closure_call_source_keys(phpType7*, $(n + 1))
 def $closure_call_source_keys((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, n) = (KSTRING $base64(text)) :: $closure_call_source_keys(phpType7*, $(n + 1))
+dec $closure_call_named_form(phpType7*) : bool
+def $closure_call_named_form(eps) = true
+def $closure_call_named_form((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $closure_call_named_form(phpType7*)
+def $closure_call_named_form(phpType7*) = false -- otherwise
+dec $closure_call_newthis_name(phpType3) : bool
+def $closure_call_newthis_name(NIdentifier (BYTES text) metadata) = ($base64(text) = $ptascii("newThis"))
+def $closure_call_newthis_name(phpType3) = false -- otherwise
+dec $closure_call_forward_source(phpType7*) : phpType7*
+def $closure_call_forward_source(eps) = eps
+def $closure_call_forward_source((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $closure_call_forward_source(phpType7*)
+  -- if $base64(text) = $ptascii("newThis")
+def $closure_call_forward_source((NArg phpType3 expression phpType4_ref phpType4_unpack metadata) :: phpType7*) = (NArg phpType3 expression phpType4_ref phpType4_unpack metadata) :: $closure_call_forward_source(phpType7*)
+  -- if ~$closure_call_newthis_name(phpType3)
+dec $closure_call_newthis_seen(phpType7*) : bool
+def $closure_call_newthis_seen(eps) = false
+def $closure_call_newthis_seen((NArg phpType3 expression phpType4_ref phpType4_unpack metadata) :: phpType7*) = ($closure_call_newthis_name(phpType3) \/ $closure_call_newthis_seen(phpType7*))
+dec $closure_call_forward_index(phpType7*, nat) : nat
+def $closure_call_forward_index((NArg ABSENT expression phpType4_ref phpType4_unpack metadata) :: phpType7*, n) = $nabs($(n - 1))
+  -- if $(n > 0)
+def $closure_call_forward_index((NArg (NIdentifier (BYTES text) metadata_name) expression phpType4_ref phpType4_unpack metadata) :: phpType7*, n) = n
 dec $closure_call_arg_key(phpType3, nat) : pkey
 def $closure_call_arg_key(ABSENT, n) = KINT $(n + 1)
 def $closure_call_arg_key(NIdentifier (BYTES text) metadata_name, n) = KSTRING $base64(text)
 dec $closure_call_named_seen((pkey, poperand)*, preqbytes) : bool
-dec $closure_call_outer_duplicate((pkey, poperand)*, phpType3) : bool
+dec $closure_call_outer_duplicate(pvalue?, (pkey, poperand)*, phpType3) : bool
 def $closure_call_named_seen(eps, n_name*) = false
 def $closure_call_named_seen((KSTRING n_name*, poperand) :: (pkey_tail, poperand_tail)*, n_name*) = true
 def $closure_call_named_seen((KSTRING n_other*, poperand) :: (pkey_tail, poperand_tail)*, n_name*) = $closure_call_named_seen((pkey_tail, poperand_tail)*, n_name*)
@@ -134,6 +161,7 @@ def $closure_call_variable_value_valid(S, preqbytes, PNULL) = true
 def $closure_call_variable_value_valid(S, preqbytes, PNULL) = true
   -- if $lookup(S.ENV, preqbytes) = eps
 def $closure_call_variable_value_valid(S, preqbytes, pvalue) = false -- otherwise
+dec $closure_call_named_receiver_auth(pstate, pclosurecall) : bool
 dec $closure_call_receiver_object(pstate, pvalue) : bool
 dec $closure_call_nonobject(pvalue) : bool
 def $closure_call_nonobject(POBJECT n) = false
@@ -154,9 +182,40 @@ def $closure_call_initial_receiver_valid(S, pclosurecall) = true
   -- if pclosurecall.INDEX = 1
   -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
   -- if ~$bind_simple_variable(expression)
+def $closure_call_initial_receiver_valid(S, pclosurecall) = $closure_call_named_receiver_auth(S, pclosurecall)
+  -- if $(pclosurecall.INDEX > 0)
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
+  -- if $closure_call_named_form((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*)
+def $closure_call_initial_receiver_valid(S, pclosurecall) = true
+  -- if pclosurecall.INDEX = 0
+  -- if pclosurecall.FIRST = eps
+  -- if pclosurecall.RECEIVER = eps
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if $closure_call_named_form(phpType7*)
 def $closure_call_initial_receiver_valid(S, pclosurecall) = true
   -- if pclosurecall.INDEX =/= 1
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if ~$closure_call_named_form(phpType7*)
 def $closure_call_initial_receiver_valid(S, pclosurecall) = false -- otherwise
+def $closure_call_named_receiver_auth(S, pclosurecall) = true
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if n_previous = $(pclosurecall.INDEX - 1)
+  -- if phpType7*[n_previous] = NArg (NIdentifier (BYTES text) metadata_name) (NExprVariable (BYTES text_var) metadata_var) (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if $base64(text) = $ptascii("newThis")
+  -- if pclosurecall.FIRST = (pvalue)
+  -- if $closure_call_variable_value_valid(S, $base64(text_var), pvalue)
+def $closure_call_named_receiver_auth(S, pclosurecall) = true
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if n_previous = $(pclosurecall.INDEX - 1)
+  -- if phpType7*[n_previous] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if $base64(text) = $ptascii("newThis")
+  -- if ~$bind_simple_variable(expression)
+def $closure_call_named_receiver_auth(S, pclosurecall) = true
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if n_previous = $(pclosurecall.INDEX - 1)
+  -- if phpType7*[n_previous] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if $base64(text) =/= $ptascii("newThis")
+def $closure_call_named_receiver_auth(S, pclosurecall) = false -- otherwise
 
 dec $closure_call_task_valid(pstate, pclosurecall) : bool
 dec $closure_call_progress_valid(pstate, pclosurecall) : bool
@@ -183,6 +242,42 @@ def $closure_call_pending_object(S, n_receiver) = true
   -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_receiver] = STDINSTANCE
 def $closure_call_pending_object(S, n_receiver) = false -- otherwise
+dec $closure_call_named_receiver_valid(pstate, pclosurecall, phpType7*) : bool
+def $closure_call_named_receiver_valid(S, pclosurecall, phpType7_done*) = true
+  -- if ~$closure_call_newthis_seen(phpType7_done*)
+  -- if pclosurecall.FIRST = eps
+  -- if pclosurecall.RECEIVER = eps
+def $closure_call_named_receiver_valid(S, pclosurecall, phpType7_done*) = true
+  -- if $closure_call_newthis_seen(phpType7_done*)
+  -- if pclosurecall.FIRST = (POBJECT n_receiver)
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $closure_call_pending_object(S, n_receiver)
+def $closure_call_named_receiver_valid(S, pclosurecall, phpType7_done*) = true
+  -- if $closure_call_newthis_seen(phpType7_done*)
+  -- if pclosurecall.FIRST = (pvalue)
+  -- if $closure_call_nonobject(pvalue)
+  -- if pclosurecall.RECEIVER = eps
+def $closure_call_named_receiver_valid(S, pclosurecall, phpType7_done*) = false -- otherwise
+def $closure_call_progress_valid(S, pclosurecall) = true
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7_all*
+  -- if phpType7_all* = (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
+  -- if $closure_call_named_form(phpType7_all*)
+  -- if $origin_node(S.SOURCES, pclosurecall.SITE) = (NExprMethodCall expression_site (NIdentifier (BYTES text_name) metadata_name_site) (SEQUENCE phpType7_all*) metadata_site)
+  -- if $ptlc($base64(text_name)) = $ptascii("call")
+  -- if pclosurecall.LINE = $runtime_line(S, eps, NExprMethodCall expression_site (NIdentifier (BYTES text_name) metadata_name_site) (SEQUENCE phpType7_all*) metadata_site)
+  -- if $(pclosurecall.INDEX > 0)
+  -- if $(pclosurecall.INDEX <= |phpType7_tail*| + 1)
+  -- if phpType7_done* = phpType7_all*[0:pclosurecall.INDEX]
+  -- if phpType7_forward* = $closure_call_forward_source(phpType7_done*)
+  -- if $(pclosurecall.SOURCE < |S.OBJECTS|)
+  -- if (HOBJECT pclosurecall.SOURCE) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pclosurecall.SOURCE] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_callable(S, pclosurecall.SOURCE)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if $closure_call_named_receiver_valid(S, pclosurecall, phpType7_done*)
+  -- if $closure_call_raw_keys(pclosurecall.RAW) = $closure_call_source_keys(phpType7_forward*, 0)
+  -- if $closure_call_raw_unique_names(pclosurecall.RAW)
+  -- if $closure_call_invalid_sent_valid(S, pfunction, pclosurecall, phpType7_forward*)
 def $closure_call_progress_valid(S, pclosurecall) = true
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
   -- if $origin_node(S.SOURCES, pclosurecall.SITE) = (NExprMethodCall expression (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
@@ -198,7 +293,7 @@ def $closure_call_progress_valid(S, pclosurecall) = true
   -- if pclosurecall.RAW = eps
   -- if pclosurecall.ERROR = eps
 def $closure_call_progress_valid(S, pclosurecall) = true
-  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7_first :: phpType7_tail*
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg ABSENT expression_first (BOOLEAN false) (BOOLEAN false) metadata_first) :: phpType7_tail*
   -- if $(pclosurecall.INDEX > 0)
   -- if $(pclosurecall.INDEX <= |phpType7_tail*| + 1)
   -- if pclosurecall.RECEIVER = (n_receiver)
@@ -215,7 +310,7 @@ def $closure_call_progress_valid(S, pclosurecall) = true
   -- if $named_slots_valid(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver, 0, pclosurecall.SENT.SLOTS, pnamedargs_shape.SLOTS)
   -- if $named_entries_valid(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|, pclosurecall.SENT.NAMED, pnamedargs_shape.NAMED)
 def $closure_call_progress_valid(S, pclosurecall) = true
-  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7_first :: phpType7_tail*
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg ABSENT expression_first (BOOLEAN false) (BOOLEAN false) metadata_first) :: phpType7_tail*
   -- if $(pclosurecall.INDEX > 0)
   -- if $(pclosurecall.INDEX <= |phpType7_tail*| + 1)
   -- if pclosurecall.RECEIVER = (n_receiver)
@@ -237,7 +332,7 @@ def $closure_call_progress_valid(S, pclosurecall) = true
   -- if $named_slots_valid(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver, 0, pclosurecall.SENT.SLOTS, pnamedargs_shape.SLOTS)
   -- if $named_entries_valid(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|, pclosurecall.SENT.NAMED, pnamedargs_shape.NAMED)
 def $closure_call_progress_valid(S, pclosurecall) = true
-  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7_first :: phpType7_tail*
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg ABSENT expression_first (BOOLEAN false) (BOOLEAN false) metadata_first) :: phpType7_tail*
   -- if $(pclosurecall.INDEX > 0)
   -- if $(pclosurecall.INDEX <= |phpType7_tail*| + 1)
   -- if pclosurecall.RECEIVER = (n_receiver)
@@ -255,7 +350,7 @@ def $closure_call_progress_valid(S, pclosurecall) = true
   -- if $closure_call_raw_unique_names(pclosurecall.RAW)
   -- if $closure_call_source_error(pfunction.SIGNATURE.PARAMETERS, phpType7_tail*[0:n_done], 0, {SLOTS eps, NAMED eps}) = (preqbytes)
 def $closure_call_progress_valid(S, pclosurecall) = true
-  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7_first :: phpType7_tail*
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg ABSENT expression_first (BOOLEAN false) (BOOLEAN false) metadata_first) :: phpType7_tail*
   -- if $(pclosurecall.INDEX > 0)
   -- if $(pclosurecall.INDEX <= |phpType7_tail*| + 1)
   -- if pclosurecall.FIRST = (pvalue)
@@ -290,16 +385,17 @@ rule PhpStep/closure-call-argument: S ~> S[.TODO = [$at_task($origin_child((pclo
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
   -- if $(pclosurecall.INDEX < |phpType7*|)
   -- if phpType7*[pclosurecall.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata
-  -- if $(pclosurecall.INDEX > 0) \/ phpType3 = ABSENT
+  -- if $(pclosurecall.INDEX > 0) \/ phpType3 = ABSENT \/ $closure_call_named_form(phpType7*)
 rule PhpStep/closure-call-argument-unsupported: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure::call argument form"]
   -- if S.TODO = (CLOSURE_CALL_ARGS pclosurecall) :: ptask_tail*
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
   -- if $(pclosurecall.INDEX < |phpType7*|)
   -- if phpType7*[pclosurecall.INDEX] = NArg phpType3 expression (BOOLEAN b_ref) (BOOLEAN b_unpack) metadata
-  -- if b_ref \/ b_unpack \/ (pclosurecall.INDEX = 0 /\ phpType3 =/= ABSENT)
+  -- if b_ref \/ b_unpack \/ (pclosurecall.INDEX = 0 /\ phpType3 =/= ABSENT /\ ~$closure_call_named_form(phpType7*))
 rule PhpStep/closure-call-send-this: S ~> S_read[.TODO = (CLOSURE_CALL_ARGS pclosurecall[.FIRST = (POBJECT n_receiver)][.RECEIVER = (n_receiver)][.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
   -- if pclosurecall.INDEX = 0
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
   -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n_receiver)
@@ -312,6 +408,7 @@ def $closure_call_receiver_object(S, pvalue) = false -- otherwise
 rule PhpStep/closure-call-send-this-invalid: S ~> S_read[.TODO = (CLOSURE_CALL_ARGS pclosurecall[.FIRST = (pvalue)][.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
   -- if pclosurecall.INDEX = 0
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
   -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
@@ -319,18 +416,53 @@ rule PhpStep/closure-call-send-this-invalid: S ~> S_read[.TODO = (CLOSURE_CALL_A
 rule PhpStep/closure-call-send-this-unsupported: S ~> S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure::call newThis object representation"]
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
   -- if pclosurecall.INDEX = 0
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n_receiver)
+  -- if ~$closure_call_receiver_object(S_read, POBJECT n_receiver)
+rule PhpStep/closure-call-send-named-this: S ~> S_read[.TODO = (CLOSURE_CALL_ARGS pclosurecall[.FIRST = (POBJECT n_receiver)][.RECEIVER = (n_receiver)][.INDEX = $(pclosurecall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
+  -- if pclosurecall.FIRST = eps
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if $closure_call_named_form(phpType7*)
+  -- if phpType7*[pclosurecall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if $base64(text) = $ptascii("newThis")
+  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n_receiver)
+  -- if $closure_call_receiver_object(S_read, POBJECT n_receiver)
+rule PhpStep/closure-call-send-named-this-invalid: S ~> S_read[.TODO = (CLOSURE_CALL_ARGS pclosurecall[.FIRST = (pvalue)][.INDEX = $(pclosurecall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
+  -- if pclosurecall.FIRST = eps
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if $closure_call_named_form(phpType7*)
+  -- if phpType7*[pclosurecall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if $base64(text) = $ptascii("newThis")
+  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $closure_call_nonobject(pvalue)
+rule PhpStep/closure-call-send-named-this-unsupported: S ~> S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure::call newThis object representation"]
+  -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
+  -- if pclosurecall.FIRST = eps
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if $closure_call_named_form(phpType7*)
+  -- if phpType7*[pclosurecall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if $base64(text) = $ptascii("newThis")
   -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n_receiver)
   -- if ~$closure_call_receiver_object(S_read, POBJECT n_receiver)
 rule PhpStep/closure-call-send-forward: S ~> S_read[.TODO = (CLOSURE_CALL_ARGS pclosurecall[.INDEX = $(pclosurecall.INDEX + 1)][.SENT = $named_store(pclosurecall.SENT, $named_arg_target(pfunction, NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata_arg, n_forward), KNOWN pvalue)][.RAW = pclosurecall.RAW ++ [($closure_call_arg_key(phpType3, n_forward), KNOWN pvalue)]]) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
-  -- if $(pclosurecall.INDEX > 0)
   -- if pclosurecall.ERROR = eps
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if $(pclosurecall.INDEX > 0) \/ $closure_call_named_form(phpType7*)
   -- if phpType7*[pclosurecall.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata_arg
-  -- if ~$closure_call_outer_duplicate(pclosurecall.RAW, phpType3)
-  -- if n_forward = $(pclosurecall.INDEX - 1)
+  -- if ~$closure_call_newthis_name(phpType3)
+  -- if ~$closure_call_outer_duplicate(pclosurecall.FIRST, pclosurecall.RAW, phpType3)
+  -- if n_forward = $closure_call_forward_index(phpType7*, pclosurecall.INDEX)
   -- if S.OBJECTS[pclosurecall.SOURCE] = REALCLOSURE porigin pitem* pstaticcell*
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
@@ -341,24 +473,29 @@ rule PhpStep/closure-call-send-abrupt: S ~> S_read[.TODO = eps]
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
   -- if S_read.COMPLETION =/= NORMAL
-def $closure_call_outer_duplicate((pkey, poperand)*, NIdentifier (BYTES text) metadata_name) = ($base64(text) = $ptascii("newThis") \/ $closure_call_named_seen((pkey, poperand)*, $base64(text)))
-def $closure_call_outer_duplicate((pkey, poperand)*, phpType3) = false -- otherwise
+def $closure_call_outer_duplicate(eps, (pkey, poperand)*, NIdentifier (BYTES text) metadata_name) = false
+  -- if $base64(text) = $ptascii("newThis")
+def $closure_call_outer_duplicate(eps, (pkey, poperand)*, NIdentifier (BYTES text) metadata_name) = $closure_call_named_seen((pkey, poperand)*, $base64(text))
+  -- if $base64(text) =/= $ptascii("newThis")
+def $closure_call_outer_duplicate((pvalue), (pkey, poperand)*, NIdentifier (BYTES text) metadata_name) = ($base64(text) = $ptascii("newThis") \/ $closure_call_named_seen((pkey, poperand)*, $base64(text)))
+def $closure_call_outer_duplicate(pvalue?, (pkey, poperand)*, phpType3) = false -- otherwise
 rule PhpStep/closure-call-send-duplicate-outer: S ~> $throwable_allocate(S_read[.TODO = ptask_tail*][.ORIGIN = (pclosurecall.SITE)], "Error", $ptascii("Named parameter $") ++ $c_string($base64(text_name)) ++ $ptascii(" overwrites previous argument"), $named_line(S, (pclosurecall.SITE), pclosurecall.INDEX), $eval_exception_trace_raw(S_read))
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
   -- if $(pclosurecall.INDEX > 0)
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
   -- if phpType7*[pclosurecall.INDEX] = NArg (NIdentifier (BYTES text_name) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
-  -- if $closure_call_outer_duplicate(pclosurecall.RAW, NIdentifier (BYTES text_name) metadata_name)
+  -- if $closure_call_outer_duplicate(pclosurecall.FIRST, pclosurecall.RAW, NIdentifier (BYTES text_name) metadata_name)
   -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
   -- if S_read.COMPLETION = NORMAL
 rule PhpStep/closure-call-send-named-abrupt: S ~> S_read[.TODO = (CLOSURE_CALL_ARGS pclosurecall[.INDEX = $(pclosurecall.INDEX + 1)][.SENT = {SLOTS eps, NAMED eps}][.RAW = pclosurecall.RAW ++ [(KSTRING $base64(text_name), KNOWN pvalue)]][.ERROR = (n_message*)]) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
-  -- if $(pclosurecall.INDEX > 0)
   -- if pclosurecall.ERROR = eps
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if $(pclosurecall.INDEX > 0) \/ $closure_call_named_form(phpType7*)
   -- if phpType7*[pclosurecall.INDEX] = NArg (NIdentifier (BYTES text_name) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
-  -- if ~$closure_call_outer_duplicate(pclosurecall.RAW, NIdentifier (BYTES text_name) metadata_name)
-  -- if n_forward = $(pclosurecall.INDEX - 1)
+  -- if $base64(text_name) =/= $ptascii("newThis")
+  -- if ~$closure_call_outer_duplicate(pclosurecall.FIRST, pclosurecall.RAW, NIdentifier (BYTES text_name) metadata_name)
+  -- if n_forward = $closure_call_forward_index(phpType7*, pclosurecall.INDEX)
   -- if S.OBJECTS[pclosurecall.SOURCE] = REALCLOSURE porigin pitem* pstaticcell*
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
@@ -372,8 +509,9 @@ rule PhpStep/closure-call-send-after-error: S ~> S_read[.TODO = (CLOSURE_CALL_AR
   -- if pclosurecall.ERROR = (preqbytes)
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
   -- if phpType7*[pclosurecall.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata_arg
-  -- if ~$closure_call_outer_duplicate(pclosurecall.RAW, phpType3)
-  -- if n_forward = $(pclosurecall.INDEX - 1)
+  -- if ~$closure_call_newthis_name(phpType3)
+  -- if ~$closure_call_outer_duplicate(pclosurecall.FIRST, pclosurecall.RAW, phpType3)
+  -- if n_forward = $closure_call_forward_index(phpType7*, pclosurecall.INDEX)
   -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
@@ -385,8 +523,7 @@ rule PhpStep/closure-call-missing-this: S ~> $throwable_allocate(S[.TODO = ptask
   -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
   -- if pclosurecall.FIRST = eps
   -- if pclosurecall.RECEIVER = eps
-  -- if $closure_call_args_at(S, pclosurecall.SITE) = eps
-  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS eps, HASARGS true}
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $closure_call_trace_raw(S, pclosurecall.RAW), HASARGS true}
 rule PhpStep/closure-call-invalid-this: S ~> $throwable_allocate(S[.TODO = ptask_tail*][.ORIGIN = (pclosurecall.SITE)], "TypeError", $ptascii("Closure::call(): Argument #1 ($newThis) must be of type object, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"), pclosurecall.LINE, [ptraceframe] ++ $eval_exception_trace_raw(S))
   -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
   -- if pclosurecall.FIRST = (pvalue)
@@ -457,19 +594,30 @@ def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = $call_arity(S_
   -- if S_entered.CURRENT = (pcallcontext)
 
 def $named_call_shape(S, CLOSURE_CALL_TARGET n_source n_receiver, (porigin_site)) = $named_shape(pfunction.SIGNATURE.PARAMETERS, phpType7_tail*, 0, {SLOTS eps, NAMED eps})
-  -- if $closure_call_args_at(S, porigin_site) = phpType7_first :: phpType7_tail*
+  -- if $closure_call_args_at(S, porigin_site) = (NArg ABSENT expression_first (BOOLEAN false) (BOOLEAN false) metadata_first) :: phpType7_tail*
+  -- if $target_function(S, CLOSURE_CALL_TARGET n_source n_receiver) = (pfunction)
+def $named_call_shape(S, CLOSURE_CALL_TARGET n_source n_receiver, (porigin_site)) = $named_shape(pfunction.SIGNATURE.PARAMETERS, $closure_call_forward_source(phpType7*), 0, {SLOTS eps, NAMED eps})
+  -- if $closure_call_args_at(S, porigin_site) = (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
+  -- if phpType7* = (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
+  -- if $closure_call_named_form(phpType7*)
   -- if $target_function(S, CLOSURE_CALL_TARGET n_source n_receiver) = (pfunction)
 def $named_call_valid(S, CLOSURE_CALL_TARGET n_source n_receiver, (porigin_site)) = true
-  -- if $closure_call_args_at(S, porigin_site) = phpType7_first :: phpType7_tail*
+  -- if $closure_call_args_at(S, porigin_site) = (NArg ABSENT expression_first (BOOLEAN false) (BOOLEAN false) metadata_first) :: phpType7_tail*
   -- if $target_function(S, CLOSURE_CALL_TARGET n_source n_receiver) = (pfunction)
   -- if $named_source_valid(pfunction.SIGNATURE.PARAMETERS, phpType7_tail*, 0, false, {SLOTS eps, NAMED eps})
+def $named_call_valid(S, CLOSURE_CALL_TARGET n_source n_receiver, (porigin_site)) = true
+  -- if $closure_call_args_at(S, porigin_site) = (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
+  -- if phpType7* = (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
+  -- if $closure_call_named_form(phpType7*)
+  -- if $target_function(S, CLOSURE_CALL_TARGET n_source n_receiver) = (pfunction)
+  -- if $named_source_valid(pfunction.SIGNATURE.PARAMETERS, $closure_call_forward_source(phpType7*), 0, false, {SLOTS eps, NAMED eps})
 
 def $wrapper_context_valid(S, pcallcontext) = true
   -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
   -- if pcallcontext.WRAPPER = (pnamedargs)
   -- if pcallcontext.CALLSITE = (porigin_site)
-  -- if $closure_call_args_at(S, porigin_site) = phpType7_first :: phpType7_tail*
-  -- if pnamedargs_shape = $closure_call_wrapper_shape(phpType7_tail*)
+  -- if phpType7_forward* = $closure_call_forward_args_at(S, porigin_site)
+  -- if pnamedargs_shape = $closure_call_wrapper_shape(phpType7_forward*)
   -- if $closure_call_wrapper_slots_valid(pnamedargs.SLOTS, pnamedargs_shape.SLOTS)
   -- if $closure_call_wrapper_names_valid(pnamedargs.NAMED, pnamedargs_shape.NAMED)
 
