@@ -1,4 +1,4 @@
-;; Class-owned methods are callable targets only through an active receiver.
+;; Instance targets retain receivers; static targets retain class identities.
 dec $scoped_ctor_arm_at(pstate, porigin) : bool
 dec $scoped_ctor_private_denied(pstate, pmethoddesc, nat?) : bool
 dec $method_functions(pmethoddesc*) : pfunction*
@@ -41,14 +41,22 @@ def $effective_method(S, porigin, ptbytes, n) = eps -- otherwise
 
 ;; A private method has its own declaring-class identity even when a child
 ;; installs the same name in the effective table.
-dec $method_lexical_private(pstate, nat, ptbytes, porigin?) : pmethoddesc?
-def $method_lexical_private(S, n, ptbytes, (porigin_scope)) = (pmethoddesc)
+dec $method_class_private(pstate, porigin, ptbytes, porigin?) : pmethoddesc?
+def $method_class_private(S, porigin_class, ptbytes, (porigin_scope)) = (pmethoddesc)
   -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
   -- if $method_named(pclassdesc_scope.METHODS, ptbytes) = (pmethoddesc)
   -- if pmethoddesc.VISIBILITY = PROPERTY_PRIVATE
-  -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $class_origin_matches(S, porigin_class, pclassdesc_scope.NAME, |S.CLASSES|)
+def $method_class_private(S, porigin_class, ptbytes, porigin?) = eps -- otherwise
+dec $method_lexical_private(pstate, nat, ptbytes, porigin?) : pmethoddesc?
+def $method_lexical_private(S, n, ptbytes, porigin?) = $method_class_private(S, porigin_class, ptbytes, porigin?)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
 def $method_lexical_private(S, n, ptbytes, porigin?) = eps -- otherwise
+dec $method_class_selected(pstate, porigin, ptbytes, porigin?) : pmethoddesc?
+def $method_class_selected(S, porigin_class, ptbytes, porigin?) = (pmethoddesc)
+  -- if $method_class_private(S, porigin_class, ptbytes, porigin?) = (pmethoddesc)
+def $method_class_selected(S, porigin_class, ptbytes, porigin?) = $effective_method(S, porigin_class, ptbytes, |S.CLASSES|)
+  -- if $method_class_private(S, porigin_class, ptbytes, porigin?) = eps
 dec $method_selected_scope(pstate, nat, ptbytes, porigin?) : pmethoddesc?
 def $method_selected_scope(S, n, ptbytes, porigin?) = (pmethoddesc)
   -- if $method_lexical_private(S, n, ptbytes, porigin?) = (pmethoddesc)
@@ -109,11 +117,13 @@ def $new_has_ctor(S, preqbytes) = true
 def $new_has_ctor(S, preqbytes) = false -- otherwise
 
 def $target_nodes(METHOD_TARGET n porigin) = [HOBJECT n]
+def $target_nodes(STATIC_METHOD_TARGET porigin_class porigin_method) = eps
 dec $scoped_receiver_nodes(nat?) : pnode*
 def $scoped_receiver_nodes((n)) = [HOBJECT n]
 def $scoped_receiver_nodes(eps) = eps
 def $target_nodes(SCOPED_TARGET porigin_class porigin_method porigin_called n_receiver? poperand_selector) = $scoped_receiver_nodes(n_receiver?) ++ $operand_nodes(poperand_selector)
 def $target_instance(METHOD_TARGET n porigin) = eps
+def $target_instance(STATIC_METHOD_TARGET porigin_class porigin_method) = eps
 def $target_instance(SCOPED_TARGET porigin_class porigin_method porigin_called n_receiver? poperand_selector) = eps
 def $target_receiver(S, METHOD_TARGET n porigin) = eps
   -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
@@ -121,27 +131,25 @@ def $target_receiver(S, METHOD_TARGET n porigin) = eps
 def $target_receiver(S, METHOD_TARGET n porigin) = (n)
   -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
   -- if ~pmethoddesc.STATIC
+def $target_receiver(S, STATIC_METHOD_TARGET porigin_class porigin_method) = eps
 def $target_receiver(S, SCOPED_TARGET porigin_class porigin_method porigin_called n_receiver? poperand_selector) = n_receiver?
 def $target_lexical_class(S, METHOD_TARGET n porigin) = (pmethoddesc.OWNER)
   -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
+def $target_lexical_class(S, STATIC_METHOD_TARGET porigin_class porigin_method) = (pmethoddesc.OWNER)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
 def $target_lexical_class(S, SCOPED_TARGET porigin_class porigin_method porigin_called n_receiver? poperand_selector) = (pmethoddesc.OWNER)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
 def $target_lexical_class(S, pcalltarget) = eps -- otherwise
 def $target_called_class(S, METHOD_TARGET n porigin) = (porigin_class)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
+def $target_called_class(S, STATIC_METHOD_TARGET porigin_class porigin_method) = (porigin_class)
 def $target_called_class(S, SCOPED_TARGET porigin_class porigin_method porigin_called n_receiver? poperand_selector) = (porigin_called)
 def $target_called_class(S, pcalltarget) = eps -- otherwise
 dec $method_target_eligible(pstate, porigin, pmethoddesc) : bool
 dec $scoped_selector_class(pstate, poperand) : porigin?
 dec $scoped_receiver_valid(pstate, porigin, pmethoddesc, nat?) : bool
 def $scoped_selector_class(S, KNOWN (PSTRING n*)) = $class_named(S.CLASSNAMES, $ptlc(n*))
-def $scoped_selector_class(S, KNOWN (POBJECT n)) = (porigin_class)
-  -- if $(n < |S.OBJECTS|)
-  -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = INSTANCE porigin_class
-  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
-  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
 def $scoped_selector_class(S, poperand) = eps -- otherwise
 def $scoped_receiver_valid(S, porigin_class, pmethoddesc, eps) = true -- if pmethoddesc.STATIC
 def $scoped_receiver_valid(S, porigin_class, pmethoddesc, (n)) = true
@@ -171,6 +179,13 @@ def $target_function(S, METHOD_TARGET n porigin) = (pmethoddesc.FUNCTION)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
   -- if $class_links_valid(S)
   -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
+  -- if $method_target_eligible(S, porigin_class, pmethoddesc)
+def $target_function(S, STATIC_METHOD_TARGET porigin_class porigin_method) = (pmethoddesc.FUNCTION)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $class_links_valid(S)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
   -- if $method_target_eligible(S, porigin_class, pmethoddesc)
 def $target_function(S, pcalltarget) = eps -- otherwise
 def $method_target_eligible(S, porigin_class, pmethoddesc) = true
@@ -256,6 +271,12 @@ def $method_call_origin_valid(S, n, pmethoddesc, porigin_site) = true
   -- if $method_selected_scope(S, n, pmethoddesc.NAME, porigin_scope?) = (pmethoddesc)
   -- if $method_accessible(S, pmethoddesc, porigin_scope?)
 def $method_call_origin_valid(S, n, pmethoddesc, porigin_site) = false -- otherwise
+dec $static_method_call_origin_valid(pstate, porigin, pmethoddesc, porigin) : bool
+def $static_method_call_origin_valid(S, porigin_class, pmethoddesc, porigin_site) = true
+  -- if porigin_scope? = $method_site_scope(S, pmethoddesc.FUNCTION.ORIGIN, porigin_site)
+  -- if $method_class_selected(S, porigin_class, pmethoddesc.NAME, porigin_scope?) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, porigin_scope?)
+def $static_method_call_origin_valid(S, porigin_class, pmethoddesc, porigin_site) = false -- otherwise
 
 def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
@@ -293,15 +314,29 @@ def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
 def $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site)) = true
   -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $method_source_name(phpType20, pmethoddesc.NAME)
   -- if $method_call_origin_valid(S, n, pmethoddesc, porigin_site)
 def $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site)) = true
   -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $method_source_name(phpType20, pmethoddesc.NAME)
   -- if $method_call_origin_valid(S, n, pmethoddesc, porigin_site)
+def $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_site)) = true
+  -- if $target_function(S, STATIC_METHOD_TARGET porigin_class porigin_method) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, pmethoddesc.NAME)
+  -- if $static_method_call_origin_valid(S, porigin_class, pmethoddesc, porigin_site)
+def $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_site)) = true
+  -- if $target_function(S, STATIC_METHOD_TARGET porigin_class porigin_method) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, pmethoddesc.NAME)
+  -- if $static_method_call_origin_valid(S, porigin_class, pmethoddesc, porigin_site)
 def $method_call_selected(S, METHOD_TARGET n porigin_method, (PORIGIN n_unit pcpath)) = true
   -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
@@ -434,6 +469,16 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $getter_select(S_read, 
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION =/= NORMAL
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method_args_task(STATIC_METHOD_TARGET porigin_class pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S_read.OBJECTS|)
+  -- if S_read.OBJECTS[n] = INSTANCE porigin_class
+  -- if $method_selected_scope(S_read, n, ptbytes, $method_current_scope(S_read)) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
+  -- if $method_accessible(S_read, pmethoddesc, $method_current_scope(S_read))
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S_read = $resolve_at(S, poperand, z)
@@ -442,6 +487,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method
   -- if $(n < |S_read.OBJECTS|)
   -- if S_read.OBJECTS[n] = INSTANCE porigin_class
   -- if $method_selected_scope(S_read, n, ptbytes, $method_current_scope(S_read)) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
   -- if $method_accessible(S_read, pmethoddesc, $method_current_scope(S_read))
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $method_denied(S_read, pmethoddesc, ptbytes, $method_current_scope(S_read), false, z)[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
@@ -704,7 +750,7 @@ def $scoped_dynamic_class(S, z) = $throw_scalar(S_read, "Error", $ptascii("Class
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (PSTRING n*)
   -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = eps
-def $scoped_dynamic_class(S, z) = S_read
+def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING pclassdesc.NAME)]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
@@ -989,16 +1035,6 @@ def $scoped_name_task(S, phpType19, KNOWN (PSTRING n_class*), phpType7*, z) = tr
   -- if $class_named(S.CLASSNAMES, $ptlc(n_class*)) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.NAME = n_class*
-  -- if $origin_child((porigin), [PCFIELD 1]) = (PORIGIN n_unit pcpath)
-  -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_name, b))
-def $scoped_name_task(S, phpType19, KNOWN (POBJECT n_class), phpType7*, z) = true
-  -- if S.ORIGIN = (porigin)
-  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 expression_name (SEQUENCE phpType7*) metadata)
-  -- if $scoped_class_task(S, phpType19, expression_name, phpType7*, z)
-  -- if $property_computed_name(expression_name)
-  -- if ~$ppscoped_named(phpType19)
-  -- if $scoped_selector_class(S, KNOWN (POBJECT n_class)) = (porigin_class)
   -- if $origin_child((porigin), [PCFIELD 1]) = (PORIGIN n_unit pcpath)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_name, b))

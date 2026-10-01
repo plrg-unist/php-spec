@@ -26,6 +26,7 @@ def $task_nodes(METHOD_CONVERT pcalltarget porigin_site z) = $target_nodes(pcall
 dec $method_capture_requested(pstate, pcalltarget) : porigin?
 def $method_capture_requested(S, METHOD_TARGET n porigin_method) = (porigin_class)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
+def $method_capture_requested(S, STATIC_METHOD_TARGET porigin_class porigin_method) = (porigin_class)
 def $method_capture_requested(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector) = (porigin_requested)
 def $method_capture_requested(S, pcalltarget) = eps -- otherwise
 
@@ -123,7 +124,7 @@ def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosu
   -- if $method_source_name(phpType20, pmethoddesc.NAME)
   -- if pclosurescope.RECEIVER = eps
   -- if pclosurescope.CALLED = porigin_requested
-  -- if $effective_method(S, porigin_requested, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+  -- if $method_class_selected(S, porigin_requested, pmethoddesc.NAME, $closure_source_class(S, porigin_site)) = (pmethoddesc)
   -- if $method_accessible(S, pmethoddesc, $closure_source_class(S, porigin_site))
 def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)

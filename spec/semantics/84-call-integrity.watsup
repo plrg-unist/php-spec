@@ -181,6 +181,7 @@ def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
 def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
+def $call_selected_valid(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call)) = $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call))
 def $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_call)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_call)
 def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
 dec $call_line_valid(pstate, porigin?, int) : bool
@@ -275,6 +276,7 @@ def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
   -- if pcallcontext.NAME = pfunction.NAME
+  -- if pcallcontext.INSTANCE = $target_instance($context_target(pcallcontext))
   -- if pcallcontext.RECEIVER = $target_receiver(S, $context_target(pcallcontext))
   -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, $context_target(pcallcontext))
   -- if pcallcontext.CALLED_CLASS = $target_called_class(S, $context_target(pcallcontext))
