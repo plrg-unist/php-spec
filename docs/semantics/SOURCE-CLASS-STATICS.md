@@ -43,14 +43,24 @@ Binding checks before replacing the prior alias source, so a rejected binding
 preserves the old row and cell. Instance and class sources share the same checked
 cell writer without conflating their declaring identities.
 
+Simple assignment through a typed property declaration converts against that declaration
+before checking the live alias's other type sources. The assignment expression
+returns the converted value. Assignment through a variable alias instead checks
+the original value against each source, so its conversions and diagnostics can
+differ. Compound updates of an aliased property also use those generic source
+checks. A failed check preserves the shared cell, row and ordered sources.
+
 Typed object-to-string assignments remain explicit dependencies pending resumable
-property and constrained-reference consumers. A successful consumer must inspect
-the live static row after the callback: `__toString` may replace it with a different
-alias. It must preserve callback effects and route the converted value through
-the current cell's constraints. Typed reference return conversion has a distinct
-Zend timing contract and does not authorize weakening these ordinary writes.
+property and constrained-reference consumers. Simple assignment through a typed property
+declaration must inspect the live static row after the callback: `__toString` may replace it with a
+different alias, whose current constraints must check the converted value.
+CV constrained-reference assignment has separate timing: conversion can overwrite
+the captured cell after the callback adds a type source, leaving an exceptional
+backing value; later ordinary writes still check all live type sources. Its witness
+remains separate from the initially unconstrained typed reference-return path.
+These pending consumers preserve callback effects without broad type exemptions.
 Ordinary singleton references correctly unwrap during clone. A mismatched value
-left by reference-return conversion needs separate copied-value provenance when
+left by exceptional reference conversion needs separate copied-value provenance when
 that unwrap produces a direct property slot.
 
 Pinned source routes: `zend_compile_static_prop` in `zend_compile.c`,

@@ -14,6 +14,10 @@ Writes through variables, array elements, property aliases, compound updates,
 unpack destinations and by-reference object traversal check every source before
 changing the cell. Any scalar conversions must agree on one resulting value;
 conflicting conversions and rejected types leave the old value in place.
+Simple assignment through typed property syntax first converts against the selected
+declaration, then checks that result against the live cell sources. Variable,
+untyped property and dynamic property aliases and aliased compound updates keep
+the original-value checks.
 By-reference parameter and return type checks do not coerce a cell held by a
 typed property, although ordinary variable references may be coerced. Typed
 reference increment/decrement at integer bounds uses PHP's special overflow

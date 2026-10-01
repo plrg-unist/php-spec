@@ -56,7 +56,19 @@ Deferred real-Closure default caches fail the global state guard and need a
 separate generic91 repair.
 [Argument review](coverage/semantics/closure-call-arguments-review.json).
 
-Static class properties 187/188 have a private bounded candidate **fac931481** rebased onto installed ordinary `Closure::call` base **6ce116cf**. Two current source bridges match private escaped static aliases (`7|7`) and live static writes during a computed-name callback after receiver/type-source retirement (`9|s`). Paired review confirms unchanged static semantics; original eight source/155 selector/27 unwind gates retain their **eba7158f0/87c7f71fb** fingerprints, and earlier54+9/13 comparisons remain historical. The selector records class identity without retaining its object and discards both metadata markers atomically; lookup checks visibility before staticness. [Contract](docs/semantics/SOURCE-CLASS-STATICS.md) · [Ledger](coverage/semantics/class-static-properties.json). Integration review, typed property/constrained-reference object conversion, separate default-false186 witness support, exceptional singleton clone provenance and readonly/asymmetric-set consumers remain open.
+Static class properties 187/188 remain private on accepted base **52502471d**.
+The narrow136/188 scalar repair converts a simple typed property assignment
+against its declaration before checking shared sources; CV, untyped, dynamic and
+aliased compound writes retain generic reference checks. Current21 scalar sources,
+four paused stages (132 assertions), nine reference controls and two Closure::call
+bridges pass. Final review and integration remain pending. Prior
+Closure::call bridges and ownership/authentication matrices keep their original
+fingerprints in the [ledger](coverage/semantics/class-static-properties.json).
+The [contract](docs/semantics/SOURCE-CLASS-STATICS.md) records declaration ownership,
+class-only selector capture, atomic marker cleanup and visibility-before-staticness.
+Typed property/constrained-reference object conversion, separate default-false186
+witness support, exceptional singleton clone provenance and readonly/asymmetric
+set access remain open.
 
 Weak parameter and property string conversion, constrained references,
 interpolation and dynamic names remain separate consumers. The inverse typed

@@ -8,7 +8,10 @@ reuse its slot; visibility narrowing is checked first. Inherited private
 declarations retain separate declaring-class slots and impose no child type
 constraint. Early and deferred links enforce the same conditions. Reads, writes,
 `unset`, `isset`, `empty` and computed names use the same slots; writes apply
-the declared type and report the declaring class. Dynamic properties use the
+the declared type and report the declaring class. A simple typed property assignment
+converts against its declaration before checking the current alias's other type
+sources, and returns the converted value. Aliased compound updates keep the generic
+reference checks. Dynamic properties use the
 same storage, with the pinned deprecation on ordinary source classes and no
 deprecation on `stdClass`. A leading-NUL computed name raises the engine error
 for read, write and unset, while quiet tests remain silent.
