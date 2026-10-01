@@ -56,13 +56,13 @@ Deferred real-Closure default caches fail the global state guard and need a
 separate generic91 repair.
 [Argument review](coverage/semantics/closure-call-arguments-review.json).
 
-Static class properties 187/188 remain private on installed named/reference
-`Closure::call` base **e458517eb**. Three current bridges match private escaped
-static aliases, callback receiver/type-source retirement with live static writes,
-and named reference-formal isolation from a typed static alias. The reviewed
-**52502471d** scalar component retains its original 21 source comparisons,
-132 paused assertions, nine reference controls and two bridge fingerprints; unchanged property bytes support a separate
-compatibility projection. Candidate review passes; installation remains pending.
+Static class properties 187/188 remain private on installed Stringable-`chdir`
+base **a33b5bef2**. One current source matches nested conversion/directory pauses,
+computed-name class capture, receiver/type-source retirement and a live typed
+static alias write (`TCR9|s|9`). Property rules match the reviewed **e458517eb** candidate; shared30/40 also
+carry the canonical Stringable fields. The three call bridges and
+**52502471d** scalar component retain their original fingerprints under a separate
+compatibility projection. Renewed review and installation remain pending.
 [Ledger](coverage/semantics/class-static-properties.json) ·
 [contract](docs/semantics/SOURCE-CLASS-STATICS.md).
 Typed property/CV-reference object conversion, separate default-false186 witness
