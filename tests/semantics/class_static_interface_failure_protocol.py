@@ -10,8 +10,8 @@ import tempfile
 from recorded_worker import Worker
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = (b'<?php interface I { public function f(); } function go(){ '
-          b'class A implements I { public static $x=1; } } go();')
+SOURCE = (b'<?php interface I { public function f(); } class P {public static $p=3;} function go(){ '
+          b'class A extends P implements I { public static $x=1; } } go();')
 
 
 def main():
@@ -41,12 +41,16 @@ def main():
         'S = $drive(S_initial[.COMPLETION = NORMAL], 2048)',
         'S.COMPLETION = FATAL ptbytes_message 1',
         'ptbytes_message = $ptascii("Class A contains 1 abstract method and must therefore be declared abstract or implement the remaining method (I::f)")',
-        'S.CLASSES = [pclassdesc_i,pclassdesc_a]',
+        'S.CLASSES = [pclassdesc_i,pclassdesc_p,pclassdesc_a]',
         'pclassdesc_i.KIND = "interface" /\\ pclassdesc_a.KIND = "class"',
         'pclassdesc_a.PROPERTIES = [ppropertydesc_x]',
         'ppropertydesc_x.STATIC',
-        'S.CLASSNAMES = [($ptascii("i"),pclassdesc_i.ORIGIN)]',
-        'S.CLASSSTATICS = eps /\\ S.LINKEDINTERFACES = eps /\\ S.LINKEDPARENTS = eps',
+        'S.CLASSNAMES = [($ptascii("i"),pclassdesc_i.ORIGIN),($ptascii("p"),pclassdesc_p.ORIGIN)]',
+        'pclassdesc_p.PROPERTIES = [ppropertydesc_p]',
+        'S.CLASSSTATICS = [pclassstatic_p]',
+        'pclassstatic_p.DECL = ppropertydesc_p.ORIGIN',
+        'pclassstatic_p.STATE = PROP_VALUE (DIRECT (PINT 3))',
+        'S.LINKEDINTERFACES = eps /\\ S.LINKEDPARENTS = eps',
         '$class_state_valid(S)',
         '$heap_valid($heap_graph(S))',
     ]

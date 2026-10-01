@@ -67,8 +67,9 @@ def main():
         actual = json.loads(model.stdout)
         expected = {'stdout': base64.b64encode(native.stdout).decode(),
                     'stderr': base64.b64encode(native.stderr).decode(), 'exit_status': native.returncode}
-        passed = model.returncode == 0 and not model.stderr and all(
-            actual.get(key) == value for key, value in expected.items())
+        passed = (model.returncode == 0 and not model.stderr
+                  and actual.get('status') in {'normal', 'php_error', 'static_rejection', 'explicit_exit'}
+                  and all(actual.get(key) == value for key, value in expected.items()))
         rows.append({'id': case_id, 'pass': passed, 'source_sha256': digest(source),
                      'files': {name: digest(directory / name) for name in files},
                      'snapshot_sha256': digest(snapshot_path) if files else None,

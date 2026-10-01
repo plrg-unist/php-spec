@@ -42,6 +42,10 @@ CASES = [
     ('dynamic-name', '<?php class A { public static $x=1; } $n="x"; A::${$n}=7; echo A::$x;'),
     ('dynamic-class-lowercase', '<?php class A { public static $x=1; } $c="a"; $n="x"; echo $c::${$n};'),
     ('dynamic-object-class', '<?php class A { public static $x=1; } $a=new A; $a::$x=7; echo A::$x;'),
+    ('captured-class-callback', '<?php class A { public static $x=1; } class B { public static $x=2; } function nm(){global $c;$c="B";echo "N";return "x";} $c="a";echo $c::${nm()},"|",$c;'),
+    ('captured-object-callback', '<?php class A { public static $x=1; } class B { public static $x=2; } function nm(){global $a,$b;$a=$b;echo "N";return "x";} $a=new A;$b=new B;echo $a::${nm()},"|",$a::$x;'),
+    ('nested-name-callback', '<?php class A { public static $x=1; } class B { public static $x=2; } function nm(){global $c;$n="x";echo B::${$n};$c="B";return "x";} $c="a";echo $c::${nm()},"|",$c;'),
+    ('throwing-name-callback', '<?php class A { public static $x=1; } function nm(){global $a;unset($a);throw new Exception("boom");} $a=new A;try{echo $a::${nm()};}catch(Exception $e){echo "C";}finally{echo "F";}echo "|",A::$x;'),
     ('class-name-order', '<?php class A { public static $x=1; } function cls(){echo "C";return "A";} function nm(){echo "N";return "x";} function val(){echo "V";return 7;} cls()::${nm()}=val(); echo "|",A::$x;'),
     ('private-write-order', '<?php class A { private static $x=1; } function val(){echo "V";return 7;} try{A::$x=val();}catch(Error $e){echo "E";}'),
     ('unset-error', '<?php class A { public static $x=1; } try{unset(A::$x);}catch(Error $e){echo $e->getMessage();} echo "|",A::$x;'),
@@ -50,6 +54,16 @@ CASES = [
     ('array-cow', '<?php class A { public static array $x=[1]; } $a=A::$x; $a[0]=2; echo A::$x[0],"|",$a[0];'),
     ('typed-array-autoinit', '<?php class A { public static int $x; } try{A::$x[]=1;}catch(TypeError $e){echo $e->getMessage();}'),
     ('interface-static', '<?php interface I {} class A implements I { public static $x=7; } echo A::$x;'),
+    ('private-instance-static-read', '<?php class A { private $x=1; } try{echo A::$x;}catch(Error $e){echo $e->getMessage();}'),
+    ('protected-instance-static-read', '<?php class A { protected $x=1; } try{echo A::$x;}catch(Error $e){echo $e->getMessage();}'),
+    ('public-instance-static-read', '<?php class A { public $x=1; } try{echo A::$x;}catch(Error $e){echo $e->getMessage();}'),
+    ('inherited-instance-static-read', '<?php class A { private $x=1; } class B extends A {} try{echo B::$x;}catch(Error $e){echo $e->getMessage();}'),
+    ('private-instance-static-write', '<?php class A { private $x=1; } function v(){echo "V";return 2;}try{A::$x=v();}catch(Error $e){echo "|",$e->getMessage();}'),
+    ('private-instance-static-reference', '<?php class A { private $x=1; } try{$r=&A::$x;}catch(Error $e){echo $e->getMessage();}'),
+    ('private-instance-static-quiet', '<?php class A { private $x=1; } echo isset(A::$x)?"Y":"N","|",empty(A::$x)?"Y":"N","|",A::$x??"F";'),
+    ('accessible-instance-static-read', '<?php class A { private $x=1; public static function f(){return self::$x;} } try{echo A::f();}catch(Error $e){echo $e->getMessage();}'),
+    ('static-array-embedded-reference', '<?php class A { public static array $x=[1]; } $r=&A::$x[0];$copy=A::$x;$copy[0]=7;echo A::$x[0],"|",$r,"|",$copy[0];'),
+    ('parent-interface-runtime-failure', '<?php interface I {public function f();}class P {public static $p=3;}function go(){class A extends P implements I {public static $x=1;}}go();'),
 ]
 
 
@@ -85,7 +99,9 @@ def main():
         actual = json.loads(model.stdout)
         expected = {'stdout': base64.b64encode(native.stdout).decode(),
                     'stderr': base64.b64encode(native.stderr).decode(), 'exit_status': native.returncode}
-        passed = model.returncode == 0 and not model.stderr and all(actual.get(key) == value for key, value in expected.items())
+        passed = (model.returncode == 0 and not model.stderr
+                  and actual.get('status') in {'normal', 'php_error', 'static_rejection', 'explicit_exit'}
+                  and all(actual.get(key) == value for key, value in expected.items()))
         rows.append({'id': case_id, 'pass': passed, 'source_sha256': digest(source),
                      'actual': actual, 'native': expected})
         print(case_id, passed, actual.get('status'), flush=True)

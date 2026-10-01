@@ -19,9 +19,11 @@ def $pprefetchbody(P, pcpath, NExprStaticPropertyFetch phpType19 (NVarLikeIdenti
 def $pprefetchbody(P, pcpath, NExprStaticPropertyFetch phpType19 expression_name metadata) = $ppclearvalue($ppmemo($ppstatic_refetch_class(P, pcpath, phpType19), pcpath ++ [PCFIELD 1], expression_name))
   -- if $class_static_computed_name(expression_name)
 
+dec $class_static_info(pstate, porigin, ptbytes) : ppropertydesc?
+def $class_static_info(S, porigin_requested, ptbytes) = $ppproperty_desc_at($property_info_layout(S, porigin_requested, |S.CLASSES|), ptbytes)
 dec $class_static_select(pstate, porigin, ptbytes) : ppropertydesc?
 def $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
-  -- if $ppproperty_desc_at($property_info_layout(S, porigin_requested, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if $class_static_info(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if ppropertydesc.STATIC
 def $class_static_select(S, porigin_requested, ptbytes) = eps -- otherwise
 
@@ -37,13 +39,24 @@ def $class_static_accessible(S, ppropertydesc) = true
   -- if $property_protected_allowed(S, ppropertydesc)
 def $class_static_accessible(S, ppropertydesc) = false -- otherwise
 
+;; Zend checks access before rejecting an instance declaration reached through
+;; static syntax. Quiet lookup still treats either denial as an absent value.
+dec $class_static_undeclared(pstate, porigin, ptbytes) : bool
+def $class_static_undeclared(S, porigin_requested, ptbytes) = true
+  -- if $class_static_info(S, porigin_requested, ptbytes) = eps
+def $class_static_undeclared(S, porigin_requested, ptbytes) = true
+  -- if $class_static_info(S, porigin_requested, ptbytes) = (ppropertydesc)
+  -- if $class_static_accessible(S, ppropertydesc)
+  -- if ~ppropertydesc.STATIC
+def $class_static_undeclared(S, porigin_requested, ptbytes) = false -- otherwise
+
 dec $class_static_read(pstate, porigin, ptbytes, int) : pstate
 def $class_static_read(S, porigin_requested, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Access to undeclared static property ") ++ pclassdesc.NAME ++ $ptascii("::$") ++ $c_string(ptbytes), z)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
-  -- if $class_static_select(S, porigin_requested, ptbytes) = eps
+  -- if $class_static_undeclared(S, porigin_requested, ptbytes)
 def $class_static_read(S, porigin_requested, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access ") ++ $property_visibility_name(ppropertydesc.VISIBILITY) ++ $ptascii(" property ") ++ pclassdesc.NAME ++ $ptascii("::$") ++ ppropertydesc.NAME, z)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
-  -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
+  -- if $class_static_info(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if ~$class_static_accessible(S, ppropertydesc)
 def $class_static_read(S, porigin_requested, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Typed static property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" must not be accessed before initialization"), z)
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
@@ -68,10 +81,10 @@ def $class_static_set(pclassstatic :: pclassstatic_tail*, ppropertyid, ppropstat
 dec $class_static_store_value(pstate, porigin, ptbytes, pvalue, int) : pstate
 def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Access to undeclared static property ") ++ pclassdesc.NAME ++ $ptascii("::$") ++ $c_string(ptbytes), z)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
-  -- if $class_static_select(S, porigin_requested, ptbytes) = eps
+  -- if $class_static_undeclared(S, porigin_requested, ptbytes)
 def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Cannot access ") ++ $property_visibility_name(ppropertydesc.VISIBILITY) ++ $ptascii(" property ") ++ pclassdesc.NAME ++ $ptascii("::$") ++ ppropertydesc.NAME, z)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
-  -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
+  -- if $class_static_info(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if ~$class_static_accessible(S, ppropertydesc)
 def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = $write_cell_checked(S, n_cell, pvalue, z)
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
