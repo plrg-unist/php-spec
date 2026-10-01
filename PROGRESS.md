@@ -26,9 +26,10 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 ## Current checkpoint
 
-The latest installed semantic checkpoint is **35b226471** (mutable file
-context; installed status **75aa21099**) on the weak typed string returns,
-interface, Closure-binding and source-Throwable code. Interfaces check
+The current semantic code checkpoint is **5d717bbeb** (finite-mode dispatch
+guard), following mutable file context **35b226471** and the provider-fixture
+repair **badc320f28b**. It retains weak typed string returns, interface,
+Closure-binding and source-Throwable code. Interfaces check
 ordered links, nominal membership, method variance, abstract obligations and
 authenticated `Exception`/`Error` ancestry for direct or transitive
 `implements Throwable`. Their [ledger](coverage/semantics/interface-author.json)
@@ -55,6 +56,12 @@ the bounded agreement.
 [Ledger](coverage/semantics/user-string-typed-author.json).
 
 Finite mutable include context is installed at **35b226471** on typed returns **e4d3b837b**. Versioned lookup keys, narrow `include_path` mutations, and authenticated finite `chdir` facts pass three installed source controls (including typed-return callback output `77`), 107 directory-pause, 19 adapter, 57 INI and 46 saved-frame assertions. The earlier 28-source catalogue remains historical to the interface/Closure base. [Ledger](coverage/semantics/include-mutable-context-review.json). Dynamic selected calls, stringable operands and broader OS/INI behavior stay open.
+
+Reached configuration calls without finite file mode return explicit
+`Unsupported` before scalar dispatch. One checked source control, six paused
+stages (63 assertions), and three retained finite native/model sources pass;
+the unsupported control is not native agreement.
+[Ledger](coverage/semantics/include-no-file-guard-review.json).
 
 By-reference typed return conversion 186 needs captured-alias write-back and a
 generic post-`finally` rejection replay. Weak parameters, properties,
