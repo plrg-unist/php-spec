@@ -278,7 +278,6 @@ def $task_nodes(CLOSURE_CALL_RESULT porigin z) = eps
 def $call_task_valid(S, CLOSURE_CALL_RESULT porigin z) = true
   -- if $closure_call_args_at(S, porigin) = phpType7*
   -- if $call_line_valid(S, (porigin), z)
-def $call_task_valid(S, CLOSURE_CALL_RESULT porigin z) = false -- otherwise
 rule PhpStep/closure-call-result: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_VALUE S_read.RESULT]
   -- if S.TODO = (CLOSURE_CALL_RESULT porigin z) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z)
