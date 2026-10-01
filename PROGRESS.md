@@ -62,7 +62,7 @@ static aliases, callback receiver/type-source retirement with live static writes
 and named reference-formal isolation from a typed static alias. The reviewed
 **52502471d** scalar component retains its original 21 source comparisons,
 132 paused assertions, nine reference controls and two bridge fingerprints; unchanged property bytes support a separate
-compatibility projection. Integration review remains pending.
+compatibility projection. Candidate review passes; installation remains pending.
 [Ledger](coverage/semantics/class-static-properties.json) ·
 [contract](docs/semantics/SOURCE-CLASS-STATICS.md).
 Typed property/CV-reference object conversion, separate default-false186 witness
