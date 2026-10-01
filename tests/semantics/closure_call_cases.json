@@ -298,5 +298,41 @@
     "stdout_base64": "RQ==",
     "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBOYW1lZCBwYXJhbWV0ZXIgJG5ld1RoaXMgb3ZlcndyaXRlcyBwcmV2aW91cyBhcmd1bWVudCBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
     "exit_status": 255
+  },
+  {
+    "id": "call-named-body-trace",
+    "source": "<?php class A {} $c=function($x,$y){throw new Exception(\"x\");}; $c->call(new A,y:2,x:1);",
+    "source_sha256": "5beecf463e0a0b8e185290a542035265fb54b6e3c078f0a72eb5851bec179ed8",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEV4Y2VwdGlvbjogeCBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAgW2ludGVybmFsIGZ1bmN0aW9uXTogQS0+e2Nsb3N1cmU6e0ZJTEV9OjF9KDEsIDIpCiMxIHtGSUxFfSgxKTogQ2xvc3VyZS0+Y2FsbChPYmplY3QoQSksIHk6IDIsIHg6IDEpCiMyIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "exit_status": 255,
+    "native_group": ".tools/calls-review-named-body-s04e558d/native.json",
+    "native_raw_sha256": "d89e4f32ccf759265f7405ce971cefe4f19f85381c0af7f073b61f4041ddf9e2",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json"
+  },
+  {
+    "id": "call-undefined-first-variable",
+    "source": "<?php $c=function($x){}; try {$c->call($missing,1);} catch (TypeError $e) {echo \"C\";}",
+    "source_sha256": "bfe217fc95a2ba67793a8ffdccc63fcc8770d676543607a1d79a1b844529ff5d",
+    "status": "normal",
+    "stdout_base64": "Qw==",
+    "stderr_template_base64": "V2FybmluZzogVW5kZWZpbmVkIHZhcmlhYmxlICRtaXNzaW5nIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 0,
+    "native_group": ".tools/closure-call-authenticity-native-__74eedq/native.json",
+    "native_raw_sha256": "e8d603372cbdda35238e5e15428309b552abb4dec1b5b0d820015e00871fd0ab",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json"
+  },
+  {
+    "id": "call-named-original-values-after-binding",
+    "source": "<?php class A {} $c=function(int $x,int $y){$x=9;throw new Exception(\"x\");}; $c->call(new A,y:\"2\",x:\"1\");",
+    "source_sha256": "c615de78b94a652890048e6dc0711d1e6e9657550501791aace7931ade241598",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEV4Y2VwdGlvbjogeCBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAgW2ludGVybmFsIGZ1bmN0aW9uXTogQS0+e2Nsb3N1cmU6e0ZJTEV9OjF9KDksIDIpCiMxIHtGSUxFfSgxKTogQ2xvc3VyZS0+Y2FsbChPYmplY3QoQSksIHk6ICcyJywgeDogJzEnKQojMiB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+    "exit_status": 255,
+    "native_group": ".tools/calls-review-wrapper-values-db9q2slm/native.json",
+    "native_raw_sha256": "ce8b0507fda8c5fe83c6d50389a064b5a3472d8720221ee0d2161cb0dc53c841",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json"
   }
 ]

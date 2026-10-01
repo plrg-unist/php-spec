@@ -29,6 +29,7 @@ CASES = {
             '$heap_valid($heap_graph(S))',
             'HOBJECT n_a <- $task_nodes(CLOSURE_CALL_ARGS pclosurecall)',
             '~$call_task_valid(S, CLOSURE_CALL_ARGS pclosurecall[.SOURCE = n_b])',
+            '~$call_task_valid(S, CLOSURE_CALL_ARGS pclosurecall[.LINE = $(pclosurecall.LINE + 100)])',
         ],
     },
     'call-receiver': {
@@ -119,6 +120,9 @@ CASES = {
             '$heap_valid($heap_graph(S))',
             '~$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall[.ERROR = ($ptascii("forged"))])',
             '~$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall[.SENT = pnamedargs[.NAMED = [($ptascii("x"), KNOWN PNULL)]]])',
+            '~$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall[.RAW = [(KSTRING n_name*, VARIABLE $ptascii("x") 1), pclosurecall.RAW[1]]])',
+            '~$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall[.RAW = [(KSTRING n_name*, REFERENCE n_raw), pclosurecall.RAW[1]]])',
+            '~$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall[.LINE = $(pclosurecall.LINE + 100)])',
         ],
     },
     'call-raw-sent': {
@@ -132,6 +136,39 @@ CASES = {
             '$closure_state_valid(S)',
             '$heap_valid($heap_graph(S))',
             '~$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall[.RAW = [(KINT 1, KNOWN (PINT 9))]])',
+            '~$call_task_valid(S, CLOSURE_CALL_INVOKE pclosurecall[.LINE = $(pclosurecall.LINE + 100)])',
+        ],
+    },
+    'call-undefined-first-variable': {
+        'source': '<?php $c=function($x){}; try {$c->call($missing,1);} catch (TypeError $e) {echo "C";}',
+        'stage': ('S.TODO = (CLOSURE_CALL_ARGS pclosurecall) :: ptask_tail* '
+                  '-- if pclosurecall.INDEX = 1'),
+        'checks': [
+            'pclosurecall.FIRST = (PNULL)',
+            'pclosurecall.RECEIVER = eps',
+            '$call_task_valid(S, CLOSURE_CALL_ARGS pclosurecall)',
+            '$call_descriptors_valid(S)',
+            '$closure_state_valid(S)',
+            '$heap_valid($heap_graph(S))',
+            '~$call_task_valid(S, CLOSURE_CALL_ARGS pclosurecall[.FIRST = (PINT 1)])',
+        ],
+    },
+    'call-named-body-wrapper': {
+        'source': '<?php class A {} $c=function($x,$y){throw new Exception("x");}; $c->call(new A,y:2,x:1);',
+        'stage': ('S.CURRENT = (pcallcontext) '
+                  '-- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver '
+                  '-- if pcallcontext.WRAPPER = (pnamedargs)'),
+        'checks': [
+            'pnamedargs.SLOTS = eps',
+            'pnamedargs.NAMED = [($ptascii("y"), KNOWN (PINT 2)), ($ptascii("x"), KNOWN (PINT 1))]',
+            'pcallcontext.ARGC = 2',
+            'pcallcontext.NAMED = eps',
+            '$wrapper_context_valid(S, pcallcontext)',
+            '$call_descriptors_valid(S)',
+            '$closure_state_valid(S)',
+            '$heap_valid($heap_graph(S))',
+            '~$wrapper_context_valid(S, pcallcontext[.WRAPPER = (pnamedargs[.NAMED = [($ptascii("x"), KNOWN (PINT 1)), ($ptascii("y"), KNOWN (PINT 2))]])])',
+            '~$wrapper_context_valid(S, pcallcontext[.WRAPPER = (pnamedargs[.NAMED = [($ptascii("y"), VARIABLE $ptascii("x") 1), ($ptascii("x"), KNOWN (PINT 1))]])])',
         ],
     },
 }
