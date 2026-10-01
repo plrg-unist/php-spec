@@ -1,0 +1,38 @@
+[
+  {
+    "id": "call-forwarding-525-selected-rebound",
+    "native_group": ".tools/calls-forwarding-525-native-dbluelce/call-forwarding-525-selected-rebound/native.json",
+    "native_raw_sha256": "beb6af7daa3db543c99825809c713a32262e5e1599cfd805b501376f34c8e861",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A {} $a=\"1\"; $c=function(int &$x){$x=2;echo $x;}; $c->call(x:$a,newThis:(function()use (&$c){$c=function(){echo \"wrong\";};return new A;})()); echo $a;",
+    "source_sha256": "1f3ff617ae167638f7d30e89665efe7155e37108801eefd8786698580c6f81a0",
+    "status": "normal",
+    "stdout_base64": "MjE=",
+    "stderr_template_base64": "V2FybmluZzogQTo6e2Nsb3N1cmU6e0ZJTEV9OjF9KCk6IEFyZ3VtZW50ICMxICgkeCkgbXVzdCBiZSBwYXNzZWQgYnkgcmVmZXJlbmNlLCB2YWx1ZSBnaXZlbiBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "exit_status": 0
+  },
+  {
+    "id": "call-forwarding-525-named-typed-originals",
+    "native_group": ".tools/calls-forwarding-525-native-dbluelce/call-forwarding-525-named-typed-originals/native.json",
+    "native_raw_sha256": "4a69136e594adad185ec6092c61ca503f89609f1f59d1714495416ce4118f768",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A {} $a=\"1\"; $b=\"2\"; $c=function(int &$x,int &$y){$x=9;$y=8;throw new Exception(\"x\");}; $c->call(y:$b,newThis:new A,x:$a);",
+    "source_sha256": "e74285f71f5108ecad50af23f457f38b36f1cca074bd0aebed885f1c846bf2dc",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "V2FybmluZzogQTo6e2Nsb3N1cmU6e0ZJTEV9OjF9KCk6IEFyZ3VtZW50ICMyICgkeSkgbXVzdCBiZSBwYXNzZWQgYnkgcmVmZXJlbmNlLCB2YWx1ZSBnaXZlbiBpbiB7RklMRX0gb24gbGluZSAxCldhcm5pbmc6IEE6OntjbG9zdXJlOntGSUxFfToxfSgpOiBBcmd1bWVudCAjMSAoJHgpIG11c3QgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZSwgdmFsdWUgZ2l2ZW4gaW4ge0ZJTEV9IG9uIGxpbmUgMQpGYXRhbCBlcnJvcjogVW5jYXVnaHQgRXhjZXB0aW9uOiB4IGluIHtGSUxFfToxClN0YWNrIHRyYWNlOgojMCBbaW50ZXJuYWwgZnVuY3Rpb25dOiBBLT57Y2xvc3VyZTp7RklMRX06MX0oOSwgOCkKIzEge0ZJTEV9KDEpOiBDbG9zdXJlLT5jYWxsKE9iamVjdChBKSwgeTogJzInLCB4OiAnMScpCiMyIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "exit_status": 255
+  },
+  {
+    "id": "call-forwarding-525-inner-exit",
+    "native_group": ".tools/calls-forwarding-525-native-dbluelce/call-forwarding-525-inner-exit/native.json",
+    "native_raw_sha256": "82d1ff2c3fbb37e86c423cafc222b347ea64ea71f19b0e33dd5040a48a0b1139",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A {} $a=\"1\"; $c=function(int &$x){$x=9;echo $x;exit(7);}; try{foreach([0] as $k){$c->call(x:$a,newThis:new A);}}finally{echo \"F\";} echo \"T\";",
+    "source_sha256": "ba0bcd649b4d1e86cca7d28d1827500c26ad499d20e0282c58bff1ef766c7d47",
+    "status": "normal",
+    "stdout_base64": "OQ==",
+    "stderr_template_base64": "V2FybmluZzogQTo6e2Nsb3N1cmU6e0ZJTEV9OjF9KCk6IEFyZ3VtZW50ICMxICgkeCkgbXVzdCBiZSBwYXNzZWQgYnkgcmVmZXJlbmNlLCB2YWx1ZSBnaXZlbiBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "exit_status": 7
+  }
+]
