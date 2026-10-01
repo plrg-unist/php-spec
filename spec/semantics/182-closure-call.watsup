@@ -622,7 +622,8 @@ def $closure_call_forward_valid(S, pclosurecall, n_done, pnamedargs, n_base) = f
 def $call_task_valid(S, CLOSURE_CALL_FORWARD pclosurecall n_done pnamedargs n_base) = $closure_call_forward_valid(S, pclosurecall, n_done, pnamedargs, n_base)
 def $task_nodes(CLOSURE_CALL_FORWARD pclosurecall n_done pnamedargs n_base) = $task_nodes(CLOSURE_CALL_INVOKE pclosurecall) ++ $named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED)
 
-rule PhpStep/closure-call-forward-start: S ~> S[.TODO = (CLOSURE_CALL_FORWARD pclosurecall 0 {SLOTS eps, NAMED eps} |S.STORE|) :: ptask_tail*]
+rule PhpStep/closure-call-forward-start: S ~> S[.TODO = (CLOSURE_CALL_FORWARD pclosurecall 0 {SLOTS eps, NAMED eps} n_base) :: ptask_tail*]
+  -- if n_base = |S.STORE|
   -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_class
