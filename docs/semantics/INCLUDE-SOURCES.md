@@ -79,3 +79,13 @@ ledger](../../coverage/semantics/include-dynamic-selected-review.json) separates
 the historical 35-source catalogue from the projected four-source/nine-stage
 bridge and one current reference-return interaction. Broader callable forms
 and stringable `chdir` operands remain open.
+
+The private Stringable increment runs a weak positional operand's checked
+`__toString` callback before requesting a directory fact, using the CWD after
+the callback. Strict or non-stringable operands raise `TypeError` before the
+callback; returned NUL bytes raise `ValueError` before an OS request. That
+error's inner `chdir` frame contains the converted string, while an explicit
+`Closure->__invoke` frame retains the original object. Callback throws retain
+the callback, intrinsic and explicit invocation frames across nested calls.
+The [Stringable ledger](../../coverage/semantics/include-stringable-chdir-review.json)
+tracks the required current and retained gates; installation remains pending.
