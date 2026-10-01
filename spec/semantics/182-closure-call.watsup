@@ -5,6 +5,8 @@ dec $closure_call_reference_formal(psparam*) : bool
 def $closure_call_reference_formal(eps) = false
 def $closure_call_reference_formal(psparam :: psparam_tail*) = true -- if psparam.BYREF
 def $closure_call_reference_formal(psparam :: psparam_tail*) = $closure_call_reference_formal(psparam_tail*) -- if ~psparam.BYREF
+dec $closure_call_named_form(phpType7*) : bool
+dec $closure_call_forward_source(phpType7*) : phpType7*
 dec $closure_call_forward_args_at(pstate, porigin) : phpType7*
 def $closure_call_forward_args_at(S, porigin) = phpType7_tail*
   -- if $closure_call_args_at(S, porigin) = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7_tail*
@@ -77,14 +79,12 @@ dec $closure_call_source_keys(phpType7*, nat) : pkey*
 def $closure_call_source_keys(eps, n) = eps
 def $closure_call_source_keys((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, n) = (KINT $(n + 1)) :: $closure_call_source_keys(phpType7*, $(n + 1))
 def $closure_call_source_keys((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, n) = (KSTRING $base64(text)) :: $closure_call_source_keys(phpType7*, $(n + 1))
-dec $closure_call_named_form(phpType7*) : bool
 def $closure_call_named_form(eps) = true
 def $closure_call_named_form((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $closure_call_named_form(phpType7*)
 def $closure_call_named_form(phpType7*) = false -- otherwise
 dec $closure_call_newthis_name(phpType3) : bool
 def $closure_call_newthis_name(NIdentifier (BYTES text) metadata) = ($base64(text) = $ptascii("newThis"))
 def $closure_call_newthis_name(phpType3) = false -- otherwise
-dec $closure_call_forward_source(phpType7*) : phpType7*
 def $closure_call_forward_source(eps) = eps
 def $closure_call_forward_source((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $closure_call_forward_source(phpType7*)
   -- if $base64(text) = $ptascii("newThis")
