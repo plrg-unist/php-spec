@@ -33,23 +33,22 @@ named/reference `Closure::call` **9cdadc172**.
 [Milestone history](MILESTONE-HISTORY.md) and the linked ledgers
 retain bounded installed counts and historical snapshot identities.
 
-The private 189 candidate adds finite inherited Stringable/Throwable and
-Exception/Error/ErrorException method contracts. Its original 66-source,
-independent replay, forged-method and fixture-repaired full-test evidence is
-preserved in the [historical ledger](coverage/semantics/interface-internal-review.json).
-Renewed source `__wakeup` checks cover declaration case, variadics, selected
-parent signatures and tentative return notices. Separate replays of the 30
-admitted new controls, original 66 and independent 14 pass; 23 independent
-paused groups and the affected full-test pipe target pass on frozen9.
-The reviewed projection onto canonical a33b5bef2 passes eight retained sources for189,
-one Closure and two Stringable controls, plus four independent paused groups.
-Final current-base integration awaits the isolated property/generic91 projection.
-Seven explicit Unsupported controls bound compiler publication dependencies,
-including some previously admitted typed external-root paths. The immediate
-compiler publication milestone must remove that restriction before constants.
-Two reporting-timing originals remain Unsupported controls.
+The finite 189 candidate adds inherited Stringable/Throwable and
+Exception/Error/ErrorException method contracts, plus source `__wakeup`
+case, variadic, selected-parent and tentative-return checks. Historical
+66-source/full-test evidence, renewed frozen9 source66/30/14 and 23 paused
+groups retain their original identities. The a33 source/callback bridge is
+also preserved. The property/default-cache bridge passes five sources and
+four paused groups/65 assertions. Its catalogue832 projection preserves189
+semantic bytes and passes full-module elaboration plus native166 occupancy.
+[Historical ledger](coverage/semantics/interface-internal-review.json) ·
 [Renewed ledger](coverage/semantics/interface-internal-renewed-review.json).
 
+Seven explicit Unsupported controls still bound compiler publication, including
+some previously admitted typed external-root paths. Real declaration publication
+and diagnostic ordering is the immediate next milestone, before constants183/184.
+Two reporting-timing originals remain Unsupported controls. This finite candidate
+is reviewed for installation and does not close classes/interfaces or core PHP.
 
 Installed code includes finite file context, selected configuration calls and
 weak positional Stringable-`chdir` operands,
