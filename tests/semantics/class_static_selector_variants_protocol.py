@@ -25,11 +25,15 @@ CASES = [
         '$lookup(S.ENV,$ptascii("b")) = (n_b_cell)',
         'S.STORE[n_a_cell] = DEFINED (POBJECT n_a)',
         'S.STORE[n_b_cell] = DEFINED (POBJECT n_b)',
-        'poperand = KNOWN (POBJECT n_a)',
-    ], '(KNOWN (POBJECT n_b))', [
+        'poperand = KNOWN (PSTRING $ptascii("A"))',
+        '$heap_owners($heap_graph(S),HOBJECT n_a) = 1',
+    ], '(KNOWN (PSTRING $ptascii("B")))', [
         'S_head.STORE[n_a_cell] = DEFINED (POBJECT n_b)',
         '$task_nodes(STATIC_PROP_NAME phpType19 poperand z) = eps',
-        '$task_nodes(STATIC_PROP_CAPTURE porigin poperand z) = [HOBJECT n_a]',
+        '$task_nodes(STATIC_PROP_CAPTURE porigin poperand z) = eps',
+        '~((HOBJECT n_a) <- S_head.ALLOCATIONS)',
+        'S_raw = S_head[.TODO = (STATIC_PROP_NAME phpType19 (KNOWN (POBJECT n_b)) z) :: (STATIC_PROP_CAPTURE porigin (KNOWN (POBJECT n_b)) z) :: ptask_tail*]',
+        '~$call_descriptors_valid(S_raw)',
     ]),
     ('nested', b'<?php class A { public static $x=1; } class B { public static $x=2; } '
      b'function nm(){global $c;$n="x";echo B::${$n};$c="B";return "x";} '

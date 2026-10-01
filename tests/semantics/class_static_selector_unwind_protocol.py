@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exception search releases a computed selector and its marker together."""
+"""Exception search discards the selected class and its marker together."""
 import base64
 import hashlib
 import json
@@ -10,11 +10,20 @@ import tempfile
 from recorded_worker import Worker
 
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = (b'<?php class A { public static $x=1; } '
+SOURCE = (b'<?php class A { public int $p=1; public static $x=1; } '
           b'function nm(){global $a;$a=null;throw new Exception("boom");} '
-          b'$a=new A;try{echo $a::${nm()};}catch(Exception $e){echo "C";} '
+          b'$a=new A;$r=&$a->p;try{echo $a::${nm()};}catch(Exception $e){echo "C";} '
           b'finally{echo "F";}echo "|",A::$x;')
 HELPERS = '''
+dec $static_name_capture_head(pstate) : bool
+def $static_name_capture_head(S) = true
+  -- if S.TODO = (AT porigin_name (EVAL expression_name)) :: (STATIC_PROP_NAME phpType19 poperand z) :: (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*
+def $static_name_capture_head(S) = false -- otherwise
+dec $static_name_capture_seek(pstate,nat) : pstate
+def $static_name_capture_seek(S,n) = S -- if $static_name_capture_head(S)
+def $static_name_capture_seek(S,n) = $static_name_capture_seek($drive_steps(S[.COMPLETION = NORMAL],1),$nabs($(n - 1)))
+  -- if ~$static_name_capture_head(S)
+  -- if $(n > 0)
 dec $static_name_throw_head(pstate) : bool
 def $static_name_throw_head(S) = true
   -- if S.TODO = (THROW_SEARCH n) :: (STATIC_PROP_NAME phpType19 poperand z) :: (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*
@@ -55,14 +64,24 @@ def main():
                + json.dumps(base64.b64encode(str(source).encode()).decode()) + ')')
     checks = [
         'S_initial = ' + initial,
-        'S = $static_name_throw_seek(S_initial[.COMPLETION = NORMAL],256)',
+        'S_capture = $static_name_capture_seek(S_initial[.COMPLETION = NORMAL],256)',
+        'S_capture.TODO = (AT porigin_name (EVAL expression_name)) :: (STATIC_PROP_NAME phpType19 poperand z) :: (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*',
+        'poperand = KNOWN (PSTRING $ptascii("A"))',
+        '$lookup(S_capture.ENV,$ptascii("a")) = (n_cell)',
+        'S_capture.STORE[n_cell] = DEFINED (POBJECT n_selector)',
+        '$lookup(S_capture.ENV,$ptascii("r")) = (n_refcell)',
+        '$propref_at(S_capture.PROPREFS,n_refcell) = (ppropref)',
+        '$heap_owners($heap_graph(S_capture),HOBJECT n_selector) = 1',
+        '$task_nodes(STATIC_PROP_NAME phpType19 poperand z) = eps /\\ $task_nodes(STATIC_PROP_CAPTURE porigin poperand z) = eps',
+        '$call_descriptors_valid(S_capture) /\\ $class_state_valid(S_capture) /\\ $heap_valid($heap_graph(S_capture))',
+        'S = $static_name_throw_seek(S_capture[.COMPLETION = NORMAL],256)',
         'S.TODO = (THROW_SEARCH n_exception) :: (STATIC_PROP_NAME phpType19 poperand z) :: (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*',
         'S.ORIGIN = (porigin)',
-        'poperand = KNOWN (POBJECT n_selector)',
+        'poperand = KNOWN (PSTRING $ptascii("A"))',
         'S.OBJECTS[n_selector] = INSTANCE porigin_class',
-        '$lookup(S.ENV,$ptascii("a")) = (n_cell)',
         'S.STORE[n_cell] = DEFINED PNULL',
-        '(HOBJECT n_selector) <- $machine_roots(S)',
+        '~((HOBJECT n_selector) <- S.ALLOCATIONS)',
+        '$propref_at(S.PROPREFS,n_refcell) = eps /\\ S.STORE[n_refcell] = DEFINED (PINT 1)',
         '$call_descriptors_valid(S) /\\ $class_state_valid(S) /\\ $heap_valid($heap_graph(S))',
         'S_after = $drive_steps(S[.COMPLETION = NORMAL],1)',
         'S_after.TODO = (THROW_SEARCH n_exception) :: ptask_tail*',
