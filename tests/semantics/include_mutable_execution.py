@@ -22,6 +22,7 @@ CASES = {
     'dynamic-restore': b"<?php set_include_path('sub'); $f='ini_restore'; $f('include_path'); echo set_include_path('z');",
     'dynamic-ini-set': b"<?php $f='ini_set'; echo $f(option:'include_path',value:'sub');",
     'dynamic-mutated-callee': b'<?php $f="set_include_path"; function mutate(){global $f; $f="ini_restore"; return "sub";} echo $f(mutate()),"|",set_include_path("end");',
+    'dynamic-ref-finally': b"<?php function &r($tmp):string{$x='sub';try{if($tmp)return 'sub';return $x;}finally{echo 'R';}} function arg(){global $f;r(false);r(true);$f='ini_restore';return 'sub';} $f='set_include_path'; echo $f(arg()),'|',set_include_path('end');",
     'dynamic-caught-reentry': b'<?php function g($x){$f="set_include_path"; return $f($x ? throw new Exception("boom") : "sub");} try{g(true);}catch(Throwable $e){} echo g(false);',
     'dynamic-pipe': b'<?php $f="set_include_path"; echo "sub" |> $f;',
     'fixed-pipe': b'<?php echo "sub" |> set_include_path(...);',
