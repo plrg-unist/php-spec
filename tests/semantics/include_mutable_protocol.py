@@ -11,6 +11,13 @@ from recorded_worker import Worker
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = [
+    ('no-file-chdir', b"<?php chdir('.'); echo 'X';",
+     'S.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"', [
+         'S.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"',
+         'S.FILECWD = eps',
+         'S.FILEINCLUDEPATH = eps',
+         '$outputs(S.EVENTS) = eps',
+     ]),
     ('direct', b"<?php echo set_include_path('sub');",
      'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*', [
          'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*',
@@ -144,9 +151,13 @@ def main():
         finally:
             frontend.close()
             adapter.close()
-        start = '$php_file_run(' + checked['fixture'] + ', 0, $base64(' + json.dumps(b64(str(source_path.resolve()).encode())) + '), $base64(' + json.dumps(b64(str(ROOT.resolve()).encode())) + '))'
-        conditions = ['S_initial = ' + start,
-                      'S = $seek(S_initial[.COMPLETION = NORMAL],1000)[.COMPLETION = NORMAL]'] + checks
+        if name == 'no-file-chdir':
+            start = '$php_run(' + checked['fixture'] + ', 300, ' + json.dumps(b64(str(source_path.resolve()).encode())) + ')'
+            conditions = ['S_initial = ' + start, 'S = S_initial'] + checks
+        else:
+            start = '$php_file_run(' + checked['fixture'] + ', 0, $base64(' + json.dumps(b64(str(source_path.resolve()).encode())) + '), $base64(' + json.dumps(b64(str(ROOT.resolve()).encode())) + '))'
+            conditions = ['S_initial = ' + start,
+                          'S = $seek(S_initial[.COMPLETION = NORMAL],1000)[.COMPLETION = NORMAL]'] + checks
         fixture = directory / 'protocol.watsup'
         fixture.write_text(PREFIX.replace('STAGE', stage) + '\ndec $main() : bool\ndef $main() = true\n'
                            + ''.join('  -- if ' + line + '\n' for line in conditions))
