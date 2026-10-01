@@ -173,7 +173,9 @@ def main():
                          '--file-snapshot', str(snapshot_path), '--steps', '100000', '--timeout', '60']
         native_command = [str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(main_path)]
         process_cwd = directory if name == 'chdir-relative' else ROOT
-        model = subprocess.run(model_command, cwd=process_cwd, env=environment, capture_output=True, timeout=90)
+        # Two directory pauses plus include replay measured 150s; each request keeps its 60s cap.
+        model_producer_timeout = 180 if name == 'chdir-stringable-nested-conversion' else 90
+        model = subprocess.run(model_command, cwd=process_cwd, env=environment, capture_output=True, timeout=model_producer_timeout)
         native = subprocess.run(native_command, cwd=process_cwd, env=environment, capture_output=True, timeout=30)
         for label, result in [('model', model), ('native', native)]:
             (directory / (label + '.stdout')).write_bytes(result.stdout)
@@ -192,6 +194,7 @@ def main():
                         'local_sha256': digest(local), 'alternate_sha256': digest(alternate),
                         'mutate_sha256': digest(mutate) if mutate.exists() else None,
                         'model_command': model_command, 'native_command': native_command,
+                        'model_producer_timeout': model_producer_timeout,
                         'process_cwd': str(process_cwd.resolve()),
                         'model_process_exit': model.returncode, 'native_exit': native.returncode,
                         'model_status': outcome.get('status'),
