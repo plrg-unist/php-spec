@@ -93,7 +93,8 @@ reference-return finalizer checks. Private36-source/7-stage evidence retains its
 earlier executable snapshot. Named receivers, unpacking and reference formals
 remain active extensions. Current private named receiver sources11/stages5 and
 reference-formal sources14/stages9 pass on the verified current adapter; canonical
-projection and installed identity remain pending. A source-derived deferred
+projection has a passing focused forwarding/exit bridge; installed identity
+remains pending. A source-derived deferred
 real-closure default cache still fails its global state guard and requires a
 separate generic91 repair.
 [Ledger](coverage/semantics/closure-call-review.json).

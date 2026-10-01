@@ -55,7 +55,8 @@ ordering and trace defects and does not establish current acceptance.
 
 The [argument extension review](../../coverage/semantics/closure-call-arguments-review.json)
 records current private named receiver and reference-formal source/state gates;
-their canonical installation and later-base bridge are pending. A separate
+the focused later-base forwarding/exit bridge passes; canonical installation
+remains pending. A separate
 source-derived deferred-default cache counterexample remains a required generic
 closure/default repair; these forwarding catalogues do not cover that branch.
 
