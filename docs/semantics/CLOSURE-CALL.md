@@ -57,7 +57,7 @@ The [argument extension review](../../coverage/semantics/closure-call-arguments-
 separates private named receiver and reference-formal gates from the focused
 installed forwarding/exit source/state checks. A separate
 [default-cache guard repair](../../coverage/semantics/closure-default-cache-review.json)
-passed bounded private Closure/arrow source and paused checks. Installation and
+passed bounded private Closure/arrow checks and a current typed-static source/state bridge. Installation and
 scoped class defaults remain pending; these forwarding catalogues do not cover
 that branch.
 

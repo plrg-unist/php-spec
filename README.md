@@ -119,9 +119,9 @@ omitted receives, declaration context, observable caches and fresh reference/arr
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)
 binds exact909 source, protocol, state and production checks.
 A separate [Closure default-cache repair](coverage/semantics/closure-default-cache-review.json)
-passed seven source comparisons and five paused stages privately. It authenticates
-deferred Closure/arrow defaults after object retirement; installation and scoped
-class defaults remain pending.
+passed seven sources and five paused stages privately, then a current typed-static
+bridge with one source and three stages. It authenticates deferred Closure/arrow
+defaults after object retirement; installation and scoped class defaults remain pending.
 [Source strict_types declarations](docs/semantics/SOURCE-STRICT-DECLARATIONS.md) now
 execute with source-checked unit/function flags; [independent review](coverage/semantics/strict-declaration-review.json)
 binds917 source, protocol, cache/resume and complete weak-state bridges.

@@ -19,10 +19,11 @@ default index/expression and absent compiled pool; stored literal defaults canno
 be relabeled as deferred caches. Existing uniqueness, value-class and heap checks
 remain in force. Seven source comparisons and five paused stages (107 assertions)
 passed privately, including authentic caches after object retirement and forged
-descriptor rejection. [The review](../../coverage/semantics/closure-default-cache-review.json)
-keeps that acceptance separate from pending installation and scoped class defaults.
-Class-constant declarations and `self::class` defaults currently return explicit
-Unsupported before the scope probes can establish cache reuse behavior.
+descriptor rejection. A current typed-static bridge passes one source and three
+paused stages (69 assertions). [The review](../../coverage/semantics/closure-default-cache-review.json)
+preserves both snapshots with installation and scoped class defaults pending.
+Prior class-constant and `self::class` probes stopped at explicit Unsupported
+before establishing cache reuse behavior.
 
 Receive tasks require the actual current callee, omitted index, previously initialized parameter slots and the exact source-derived queue shape. Bind tasks require their parameter context and final queue position. Observer readiness clauses are disjoint between stages requiring the current result and stages relying only on recorded facts. Retained actual-source counterexamples cover trailing tasks and ternary/coalesce readiness before their finite repairs.
 
