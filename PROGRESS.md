@@ -56,19 +56,18 @@ Deferred real-Closure default caches fail the global state guard and need a
 separate generic91 repair.
 [Argument review](coverage/semantics/closure-call-arguments-review.json).
 
-Static class properties 187/188 remain private on accepted base **52502471d**.
-The narrow136/188 scalar repair converts a simple typed property assignment
-against its declaration before checking shared sources; CV, untyped, dynamic and
-aliased compound writes retain generic reference checks. Current21 scalar sources,
-four paused stages (132 assertions), nine reference controls and two Closure::call
-bridges pass. Final review and integration remain pending. Prior
-Closure::call bridges and ownership/authentication matrices keep their original
-fingerprints in the [ledger](coverage/semantics/class-static-properties.json).
-The [contract](docs/semantics/SOURCE-CLASS-STATICS.md) records declaration ownership,
-class-only selector capture, atomic marker cleanup and visibility-before-staticness.
-Typed property/constrained-reference object conversion, separate default-false186
-witness support, exceptional singleton clone provenance and readonly/asymmetric
-set access remain open.
+Static class properties 187/188 remain private on installed named/reference
+`Closure::call` base **e458517eb**. Three current bridges match private escaped
+static aliases, callback receiver/type-source retirement with live static writes,
+and named reference-formal isolation from a typed static alias. The reviewed
+**52502471d** scalar component retains its original 21 source comparisons,
+132 paused assertions, nine reference controls and two bridge fingerprints; unchanged property bytes support a separate
+compatibility projection. Integration review remains pending.
+[Ledger](coverage/semantics/class-static-properties.json) ·
+[contract](docs/semantics/SOURCE-CLASS-STATICS.md).
+Typed property/CV-reference object conversion, separate default-false186 witness
+support, exceptional singleton clone provenance and readonly/asymmetric set access
+remain open.
 
 Weak parameter and property string conversion, constrained references,
 interpolation and dynamic names remain separate consumers. The inverse typed
