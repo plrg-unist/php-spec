@@ -142,5 +142,29 @@
     "stdout_base64": "MTI=",
     "stderr_template_base64": "V2FybmluZzogQTo6e2Nsb3N1cmU6e0ZJTEV9OjF9KCk6IEFyZ3VtZW50ICMyICgkeSkgbXVzdCBiZSBwYXNzZWQgYnkgcmVmZXJlbmNlLCB2YWx1ZSBnaXZlbiBpbiB7RklMRX0gb24gbGluZSAxCldhcm5pbmc6IEE6OntjbG9zdXJlOntGSUxFfToxfSgpOiBBcmd1bWVudCAjMSAoJHgpIG11c3QgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZSwgdmFsdWUgZ2l2ZW4gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
     "exit_status": 0
+  },
+  {
+    "id": "call-ref-static-binding-priority",
+    "native_group": ".tools/calls-review-ref-binding-priority-native-d7xksgz7/call-ref-static-binding-priority/native.json",
+    "native_raw_sha256": "55617c1c0522adec0476e0b14091cbc4aea57c1a1bed67db0f1edf26e266d714",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php class A {} $c=static function(&$x){}; echo $c->call(new A,z:(function(){echo \"E\";return 1;})(),x:(function(){echo \"L\";return 2;})()); echo \"R\";",
+    "source_sha256": "7859853c3a7a4430f94f209558c55417633dedb2550c6f0627192de99b7a21ac",
+    "status": "normal",
+    "stdout_base64": "RUxS",
+    "stderr_template_base64": "V2FybmluZzogQ2Fubm90IGJpbmQgYW4gaW5zdGFuY2UgdG8gYSBzdGF0aWMgY2xvc3VyZSwgdGhpcyB3aWxsIGJlIGFuIGVycm9yIGluIFBIUCA5IGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 0
+  },
+  {
+    "id": "call-ref-stdclass-binding-priority",
+    "native_group": ".tools/calls-review-ref-binding-priority-native-d7xksgz7/call-ref-stdclass-binding-priority/native.json",
+    "native_raw_sha256": "d7b4c62be6bab32e11ace06ca999279b94f2c7afc287a5c77b6dbccea7502574",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "source": "<?php $c=function(&$x){}; echo $c->call(new stdClass,z:(function(){echo \"E\";return 1;})(),x:(function(){echo \"L\";return 2;})()); echo \"R\";",
+    "source_sha256": "7ae5576922dc54f708e0837a9e4c4d3941c0d84ac59da7617ecbab291ad74f36",
+    "status": "normal",
+    "stdout_base64": "RUxS",
+    "stderr_template_base64": "V2FybmluZzogQ2Fubm90IGJpbmQgY2xvc3VyZSB0byBzY29wZSBvZiBpbnRlcm5hbCBjbGFzcyBzdGRDbGFzcywgdGhpcyB3aWxsIGJlIGFuIGVycm9yIGluIFBIUCA5IGluIHtGSUxFfSBvbiBsaW5lIDEK",
+    "exit_status": 0
   }
 ]
