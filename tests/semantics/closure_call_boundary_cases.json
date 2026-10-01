@@ -1,18 +1,5 @@
 [
   {
-    "id": "call-args-byref-writeback",
-    "native_group": "closure-call-args-native.json",
-    "native_raw_sha256": "d407db876f53e7c4d42c6ddfef44924bd6babee55715f8ece993de55425f38e0",
-    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
-    "source": "<?php class A{} $c=function(&$x){$x=7;}; $x=1; $c->call(new A,$x); echo $x;",
-    "source_sha256": "731d37aa74b3d50a3cfac1553ff1ac1487a0315b0d9e3633e0a4f0021c84911b",
-    "status": "unsupported",
-    "stdout_base64": "",
-    "stderr_template_base64": "",
-    "exit_status": null,
-    "reason": "Closure::call by-reference formal"
-  },
-  {
     "id": "call-closure-object-boundary",
     "native_group": "closure-call-invalid-priority-native.json",
     "native_raw_sha256": "c7f226dde05412bb896a6cabd2ffee41e306a45a4696c8edde31fb00a060bae5",
