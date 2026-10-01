@@ -169,6 +169,10 @@ dec $throwable_link_kind(ptbytes) : text?
 dec $throwable_layout(text) : ppropertydesc*
 dec $throwable_nominal(text, preqbytes, nat) : bool
 dec $throwable_final_issue(text, pmethoddesc*) : pmethodissue
+dec $pil_root_method_issue(text, pclassdesc) : pmethodissue
+dec $pil_root_wakeup_notice(pstate, pclassdesc, text) : pstate
+dec $pil_parent_wakeup_notice(pstate, pclassdesc, porigin) : pstate
+dec $pil_rooted_method_issue(pstate, pclassdesc, porigin, text) : pmethodissue
 dec $class_method_link_issue(pstate, pclassdesc, porigin) : pmethodissue
 dec $class_throwable_kind(pstate, porigin, nat) : text?
 dec $throwable_member(pstate, nat) : bool

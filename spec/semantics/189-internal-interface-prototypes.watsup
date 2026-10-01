@@ -120,3 +120,94 @@ def $pil_internal_later_infos(S, pclassdesc_child, ppmethodinherited :: ppmethod
 def $pil_internal_later_infos(S, pclassdesc_child, ppmethodinherited :: ppmethodinherited_tail*, ppmethodinherited_prior*) = pmethodissue
   -- if $pil_internal_later_one(S, pclassdesc_child, ppmethodinherited, ppmethodinherited_prior*) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
+
+;; __wakeup is concrete in each admitted built-in parent, with tentative void.
+;; Source ancestors replace that selected contract with their ordinary method.
+dec $pil_root_wakeup_issue(text, pclassdesc) : pmethodissue
+def $pil_root_wakeup_issue(text_kind, pclassdesc) = METHOD_OK
+  -- if $method_named(pclassdesc.METHODS, $ptascii("__wakeup")) = eps
+def $pil_root_wakeup_issue(text_kind, pclassdesc) = METHOD_ISSUE ($ptascii("Cannot make non static method ") ++ $pil_concrete_owner(text_kind, pmethoddesc.NAME) ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() static in class ") ++ pclassdesc.NAME) pmethoddesc.FUNCTION.LINE
+  -- if $method_named(pclassdesc.METHODS, $ptascii("__wakeup")) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
+def $pil_root_wakeup_issue(text_kind, pclassdesc) = METHOD_ISSUE ($ptascii("Cannot make non abstract method ") ++ $pil_concrete_owner(text_kind, pmethoddesc.NAME) ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() abstract in class ") ++ pclassdesc.NAME) pmethoddesc.FUNCTION.LINE
+  -- if $method_named(pclassdesc.METHODS, $ptascii("__wakeup")) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ pmethoddesc.ABSTRACT
+def $pil_root_wakeup_issue(text_kind, pclassdesc) = METHOD_ISSUE ($ptascii("Access level to ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() must be public (as in class ") ++ $pil_concrete_owner(text_kind, pmethoddesc.NAME) ++ [41]) pmethoddesc.FUNCTION.LINE
+  -- if $method_named(pclassdesc.METHODS, $ptascii("__wakeup")) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
+def $pil_root_wakeup_issue(text_kind, pclassdesc) = METHOD_OK
+  -- if $method_named(pclassdesc.METHODS, $ptascii("__wakeup")) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $ppmethod_wakeup_args_valid(pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS)
+  -- if $ppmethod_wakeup_return_valid(pmethoddesc.FUNCTION.SIGNATURE.RETURNS)
+def $pil_root_wakeup_issue(text_kind, pclassdesc) = METHOD_UNSUPPORTED "invalid compiled __wakeup signature" -- otherwise
+
+;; ErrorException inserts its own final getter before Exception's method table.
+dec $pil_root_priority_issue(text, pclassdesc) : pmethodissue
+def $pil_root_priority_issue(text_kind, pclassdesc) = METHOD_ISSUE ($ptascii("Cannot override final method ErrorException::") ++ pmethoddesc.NAME ++ $ptascii("()")) pmethoddesc.FUNCTION.LINE
+  -- if text_kind = "ErrorException"
+  -- if $method_named(pclassdesc.METHODS, $ptascii("__wakeup")) = (pmethoddesc_wakeup)
+  -- if $method_named(pclassdesc.METHODS, $ptascii("getseverity")) = (pmethoddesc)
+def $pil_root_priority_issue(text_kind, pclassdesc) = METHOD_OK -- otherwise
+dec $pil_root_before_wakeup_issue(text, pclassdesc) : pmethodissue
+def $pil_root_before_wakeup_issue(text_kind, pclassdesc) = pmethodissue
+  -- if $pil_root_priority_issue(text_kind, pclassdesc) = pmethodissue
+  -- if pmethodissue =/= METHOD_OK
+def $pil_root_before_wakeup_issue(text_kind, pclassdesc) = $pil_root_wakeup_issue(text_kind, pclassdesc)
+  -- if $pil_root_priority_issue(text_kind, pclassdesc) = METHOD_OK
+def $pil_root_method_issue(text_kind, pclassdesc) = pmethodissue
+  -- if $pil_root_before_wakeup_issue(text_kind, pclassdesc) = pmethodissue
+  -- if pmethodissue =/= METHOD_OK
+def $pil_root_method_issue(text_kind, pclassdesc) = $throwable_final_issue(text_kind, pclassdesc.METHODS)
+  -- if $pil_root_before_wakeup_issue(text_kind, pclassdesc) = METHOD_OK
+
+dec $pil_class_infos(ppmethodinherited*) : ppmethodinherited*
+def $pil_class_infos(eps) = eps
+def $pil_class_infos((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*) = (PPMINHERITED pmethoddesc pclassdesc) :: $pil_class_infos(ppmethodinherited_tail*)
+  -- if pclassdesc.KIND = "class"
+def $pil_class_infos((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*) = $pil_class_infos(ppmethodinherited_tail*)
+  -- if pclassdesc.KIND =/= "class"
+dec $pil_without_wakeup(ppmethodinherited*) : ppmethodinherited*
+def $pil_without_wakeup(eps) = eps
+def $pil_without_wakeup((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*) = $pil_without_wakeup(ppmethodinherited_tail*)
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__wakeup")
+def $pil_without_wakeup((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*) = (PPMINHERITED pmethoddesc pclassdesc) :: $pil_without_wakeup(ppmethodinherited_tail*)
+  -- if $ptlc(pmethoddesc.NAME) =/= $ptascii("__wakeup")
+def $pil_layout_extra(S, porigin, ppmethodinherited*, n) = $pil_without_wakeup($pil_info_extra(S, porigin, ppmethodinherited*, n))
+  -- if $class_throwable_kind(S, porigin, n) = (text_kind)
+  -- if ~$pil_info_named($pil_class_infos(ppmethodinherited*), $ptascii("__wakeup"))
+def $pil_layout_extra(S, porigin, ppmethodinherited*, n) = $pil_info_extra(S, porigin, ppmethodinherited*, n) -- otherwise
+dec $pil_parent_root_wakeup_issue(pstate, pclassdesc, porigin, text) : pmethodissue
+def $pil_parent_root_wakeup_issue(S, pclassdesc, porigin_parent, text_kind) = METHOD_OK
+  -- if $pil_info_named($pil_class_infos($method_info_layout(S, porigin_parent, |S.CLASSES|)), $ptascii("__wakeup"))
+def $pil_parent_root_wakeup_issue(S, pclassdesc, porigin_parent, text_kind) = $pil_root_before_wakeup_issue(text_kind, pclassdesc)
+  -- if ~$pil_info_named($pil_class_infos($method_info_layout(S, porigin_parent, |S.CLASSES|)), $ptascii("__wakeup"))
+
+dec $pil_rooted_after_source(pstate, pclassdesc, porigin, text, pmethodissue) : pmethodissue
+dec $pil_rooted_after_wakeup(pstate, pclassdesc, porigin, text, pmethodissue) : pmethodissue
+dec $pil_rooted_after_final(pstate, pclassdesc, porigin, pmethodissue) : pmethodissue
+def $pil_rooted_method_issue(S, pclassdesc, porigin_parent, text_kind) = $pil_rooted_after_source(S, pclassdesc, porigin_parent, text_kind, $method_override_items(S, pclassdesc, $pil_class_infos($method_info_layout(S, porigin_parent, |S.CLASSES|))))
+  -- if $method_named(pclassdesc.METHODS, $ptascii("__wakeup")) = (pmethoddesc)
+def $pil_rooted_method_issue(S, pclassdesc, porigin_parent, text_kind) = $pil_rooted_after_final(S, pclassdesc, porigin_parent, $throwable_final_issue(text_kind, pclassdesc.METHODS))
+  -- if $method_named(pclassdesc.METHODS, $ptascii("__wakeup")) = eps
+def $pil_rooted_after_source(S, pclassdesc, porigin_parent, text_kind, METHOD_OK) = $pil_rooted_after_wakeup(S, pclassdesc, porigin_parent, text_kind, $pil_parent_root_wakeup_issue(S, pclassdesc, porigin_parent, text_kind))
+def $pil_rooted_after_source(S, pclassdesc, porigin_parent, text_kind, pmethodissue) = pmethodissue -- otherwise
+def $pil_rooted_after_wakeup(S, pclassdesc, porigin_parent, text_kind, METHOD_OK) = $pil_rooted_after_final(S, pclassdesc, porigin_parent, $throwable_final_issue(text_kind, pclassdesc.METHODS))
+def $pil_rooted_after_wakeup(S, pclassdesc, porigin_parent, text_kind, pmethodissue) = pmethodissue -- otherwise
+def $pil_rooted_after_final(S, pclassdesc, porigin_parent, METHOD_OK) = $method_link_issue(S, pclassdesc, porigin_parent)
+def $pil_rooted_after_final(S, pclassdesc, porigin_parent, pmethodissue) = pmethodissue -- otherwise
+
+def $pil_root_wakeup_notice(S, pclassdesc, text_kind) = S_notice[.ORIGIN = S.ORIGIN]
+  -- if $pil_root_before_wakeup_issue(text_kind, pclassdesc) = METHOD_OK
+  -- if $method_named(pclassdesc.METHODS, $ptascii("__wakeup")) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = eps
+  -- if $pmcdisplay($pmdeclaration($pmethod_user(pmethoddesc, pclassdesc, $call_sourcefile(S.FILES, pclassdesc.ORIGIN)), $pil_scope(S, pclassdesc), 14)) = PMTEXT ptbytes_decl
+  -- if S_notice = $report_event(S[.ORIGIN = (pmethoddesc.OWNER)], DIAGNOSTIC "Deprecated" ($ptascii("Return type of ") ++ ptbytes_decl ++ $ptascii(" should either be compatible with ") ++ $pil_concrete_owner(text_kind, pmethoddesc.NAME) ++ $ptascii("::__wakeup(): void, or the #[") ++ [92] ++ $ptascii("ReturnTypeWillChange] attribute should be used to temporarily suppress the notice")) pmethoddesc.FUNCTION.LINE, 8192)
+def $pil_root_wakeup_notice(S, pclassdesc, text_kind) = S -- otherwise
+def $pil_parent_wakeup_notice(S, pclassdesc, porigin_parent) = $pil_root_wakeup_notice(S, pclassdesc, text_kind)
+  -- if $class_throwable_kind(S, porigin_parent, |S.CLASSES|) = (text_kind)
+  -- if ~$pil_info_named($pil_class_infos($method_info_layout(S, porigin_parent, |S.CLASSES|)), $ptascii("__wakeup"))
+  -- if $method_override_items($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, $pil_class_infos($method_info_layout(S, porigin_parent, |S.CLASSES|))) = METHOD_OK
+def $pil_parent_wakeup_notice(S, pclassdesc, porigin_parent) = S -- otherwise

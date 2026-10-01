@@ -1100,7 +1100,7 @@ def $ctor_frames_pairs_valid(S, pframe :: pframe_tail*) = ($ctor_pairs_valid(S[.
 ;; type variance both use the active parent graph, including conditional classes.
 dec $method_info_layout(pstate, porigin, nat) : ppmethodinherited*
 def $method_info_layout(S, porigin, 0) = eps
-def $method_info_layout(S, porigin, n) = ppmethodinherited* ++ $pil_info_extra(S, porigin, ppmethodinherited*, n)
+def $method_info_layout(S, porigin, n) = ppmethodinherited* ++ $pil_layout_extra(S, porigin, ppmethodinherited*, n)
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
@@ -1114,6 +1114,11 @@ def $method_info_layout(S, porigin, n) = ppmethodinherited* ++ $pil_info_extra(S
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
+  -- if ppmethodinherited* = $ppmethod_own(pclassdesc, pclassdesc.METHODS)
+def $method_info_layout(S, porigin, n) = ppmethodinherited* ++ $pil_layout_extra(S, porigin, ppmethodinherited*, n)
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (INTERNAL_THROWABLE_PARENT text_kind)
   -- if ppmethodinherited* = $ppmethod_own(pclassdesc, pclassdesc.METHODS)
 def $method_info_layout(S, porigin, n) = eps -- otherwise
 

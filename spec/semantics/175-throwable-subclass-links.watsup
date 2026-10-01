@@ -28,10 +28,10 @@ def $throwable_final_issue(text_kind, pmethoddesc :: pmethoddesc_tail*) = $throw
 
 def $class_method_link_issue(S, pclassdesc, porigin_parent) = pmethodissue
   -- if $class_throwable_kind(S, porigin_parent, |S.CLASSES|) = (text_kind)
-  -- if $throwable_final_issue(text_kind, pclassdesc.METHODS) = pmethodissue
+  -- if $pil_rooted_method_issue(S, pclassdesc, porigin_parent, text_kind) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
-def $class_method_link_issue(S, pclassdesc, porigin_parent) = $method_link_issue(S, pclassdesc, porigin_parent)
+def $class_method_link_issue(S, pclassdesc, porigin_parent) = METHOD_OK
   -- if $class_throwable_kind(S, porigin_parent, |S.CLASSES|) = (text_kind)
-  -- if $throwable_final_issue(text_kind, pclassdesc.METHODS) = METHOD_OK
+  -- if $pil_rooted_method_issue(S, pclassdesc, porigin_parent, text_kind) = METHOD_OK
 def $class_method_link_issue(S, pclassdesc, porigin_parent) = $method_link_issue(S, pclassdesc, porigin_parent)
   -- if $class_throwable_kind(S, porigin_parent, |S.CLASSES|) = eps
