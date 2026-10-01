@@ -1,67 +1,130 @@
 {
-  "scope": "Private selected-call provenance for dynamic set_include_path, ini_set, ini_restore and chdir",
-  "base": "68119bb22945b34f3190d78af2e543f6b02b3a1c",
-  "code_commit": "369d81127",
-  "test_commit": "acad1a6452c68be92646694558bc43a59307b4ad",
+  "scope": "Bounded selected-call provenance for dynamic set_include_path, ini_set, ini_restore and chdir",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "status": "Independently reviewed private current-base candidate; installation pending.",
+  "base": "afcb32ec28c1ca03e7d55819c4cb72dae9553dcf",
+  "code_commit": "7b1392648",
+  "source_freeze": "56076f4afd201a8b2ffc9773af3118b99e5a25cf",
   "contract": "A reached dynamic string call or computed pipe to one of the four configuration intrinsics appends a source-site, lookup-byte, kind, line and owning-frame selection record with a monotone nonce before evaluating arguments. CONFIG and CHDIR tasks carry that nonce through saved frames and external pauses. Direct source-fixed calls, optimized fixed pipes and owned first-class intrinsic closures use their existing source or object identity. Historical selections remain in the private state after abrupt unwind; only the newest selection at the same source site and owner depth may be active. The log authenticates reached transitions within private state, not an arbitrary coherent replacement of the entire state.",
-  "source": {
-    "command": "python3 tests/semantics/include_mutable_execution.py",
-    "report": ".tools/include-dynamic-intrinsic/.tools/include-mutable-ffg3rjq6/report.json",
-    "sha256": "baac4333f78030aa93a159b5d5697b89857a58eb02a075e6133496a0a96deb4a",
-    "result": "35 exact native/model raw stdout, stderr and exit comparisons; zero failed rows",
-    "watched_inputs": 198,
-    "input_changes": 0,
-    "added_cases": ["dynamic-restore", "dynamic-ini-set", "dynamic-mutated-callee", "dynamic-caught-reentry", "dynamic-pipe", "fixed-pipe", "dynamic-chdir"],
-    "raw_examples": "dynamic-mutated-callee .:|sub; dynamic-chdir 7; the other five added rows .:; all added rows have empty stderr and exit 0"
-  },
-  "paused": {
-    "command": "python3 tests/semantics/include_mutable_protocol.py",
-    "report": ".tools/include-dynamic-intrinsic/.tools/include-mutable-protocol-hr32cizl/report.json",
-    "sha256": "5ebe37096f0abdbfeea87279d0ea9d4afd94e686a560a927764063a02d63d2db",
-    "result": "8 source-derived stages, 107 assertions, including dynamic selected-kind forgery, AT-wrapped duplicate, saved owner frame, caught same-site reentry with stale nonce, and CHDIR_AWAIT task/context nonce mismatch",
-    "watched_inputs": 200,
+  "current_interaction": {
+    "selector": "Import include_mutable_execution; narrow CASES in memory to dynamic-ref-finally; call main().",
+    "report": ".tools/include-dynamic-current/.tools/include-mutable-6009za3l/report.json",
+    "sha256": "a24158c92ded6dad52e67264c417794dd8e8c6847c7a911742af54510fd4b199",
+    "result": "One exact normal native/model tuple: stdout RR.:|sub, complete Notice stderr with the original source filename and line 1, exit 0. Both unused reference CV/value branches run through finally while a selected call is saved.",
+    "declared_inputs": 198,
     "input_changes": 0
   },
-  "retained": [
-    {
-      "command": "python3 tests/semantics/include_chdir_protocol.py",
-      "report": ".tools/include-dynamic-intrinsic/.tools/include-chdir-protocol-wyugvpbe/report.json",
-      "sha256": "af677eafcd37af99db063b55513be5ec3b5d06c15d91725f0926fae74577c503",
-      "result": "3 stages, 107 assertions pass",
-      "watched_inputs": 200
+  "projected_gates": {
+    "freeze": "949b6a938c82f8d2aee7989a936286153c0608f7",
+    "source": {
+      "report": ".tools/include-dynamic-current/.tools/include-mutable-u0ubx968/report.json",
+      "sha256": "c6d80241cd498a7fb509f2559c3b118dfc5c449da5dcd53ad2ac41c7ffba8439",
+      "result": "Four exact normal source tuples: dynamic-mutated-callee .:|sub, dynamic-caught-reentry .:, dynamic-pipe .:, dynamic-chdir 7; empty stderr and exit 0.",
+      "declared_inputs": 198,
+      "input_changes_during_run": 0,
+      "current_input_differences": [
+        "spec/semantics/99-reference-returns.watsup",
+        "tests/semantics/include_mutable_execution.py"
+      ]
     },
-    {
-      "command": "python3 tests/semantics/include_saved_protocol.py",
-      "report": ".tools/include-dynamic-intrinsic/.tools/include-saved-protocol-wnf4cjp_/report.json",
-      "sha256": "f539a563aab0b281d30e9d3ef4b03e7c68c4e1051a077d2c7119b536e4b12f6b",
-      "result": "46 saved-frame assertions pass",
-      "watched_inputs": 202
+    "paused": {
+      "report": ".tools/include-dynamic-current/.tools/include-mutable-protocol-zeiggl5i/report.json",
+      "sha256": "ba32ad3b6726567d8d39e552920ece861e07b58e774f80b8a0d4fbf21d662730",
+      "result": "Nine source-derived stages / 113 assertions: no-file6, direct14, first-class10, unpack11, restore9, dynamic-bound22, dynamic-saved11, dynamic-reentry15, dynamic-chdir-pending15.",
+      "declared_inputs": 200,
+      "input_changes_during_run": 0,
+      "current_input_differences": [
+        "spec/semantics/99-reference-returns.watsup"
+      ]
     },
-    {
-      "command": "python3 tests/semantics/eval_saved_protocol.py",
-      "report": ".tools/include-dynamic-intrinsic/.tools/eval-saved-protocol-hil8zg9y/report.json",
-      "sha256": "b23238d2532ba5e22948e1b9173379c11036e50a36c43ffa169feadecf6f46b9",
-      "result": "42 saved eval assertions pass",
-      "watched_inputs": 191
+    "compatibility": "The installed module99 delta affects only normal unused by-reference return operands with a pending finally. All original 35 source templates and all nine pause sources contain no by-reference return declarations. The one maintained added source is the only execution-helper change; original templates are byte-identical. These reports retain their 949 identities and are projected, not fresh full-catalogue reruns."
+  },
+  "historical_guard_bridge": "Relative to e093 the semantic inputs differ only by the installed five-line module172 no-file guard and the installed module99 delta; the execution helper additionally contains one new maintained row. Finite FILEINCLUDEPATH starts present and remains present across mutations, including a present empty string, so the guard is unreachable throughout the historical 35-source finite catalogue. Original eight stage definitions remain byte-identical, plus the installed no-file stage. Historical retained gates keep their original scope and identity.",
+  "runtime_provenance": {
+    "report": ".tools/include-dynamic-current/.tools/dynamic-reference-current-runtime.json",
+    "sha256": "984145ef44641b44c76d719a705ae305106d70457d9f79c355df2650a7ea0596",
+    "boundary": "Five compiled-component source files and four physically copied runtime binaries remain identical to canonical afcb. Existing binaries reused; no fresh build or portability claim. Current authored .watsup modules are loaded at execution time."
+  },
+  "checks": "Production source and paused fixtures execute their specification compilation stages. Semantic inventory: 169 constructors / 306 obligations, consistent. Maintained source catalogue: 36 rows; only one was run freshly after the module99 rebase.",
+  "review": "Independent reviewer resume_audit approved the exact dynamic code and source partition, the 949 raw gates, the full35 historical raw evidence, both compatibility projections, and the current interaction/runtime receipts. This compact ledger and the scoped PROGRESS/INCLUDE-SOURCES updates are independently approved.",
+  "historical": {
+    "base": "68119bb22945b34f3190d78af2e543f6b02b3a1c",
+    "code_commit": "369d81127",
+    "test_commit": "acad1a6452c68be92646694558bc43a59307b4ad",
+    "source": {
+      "command": "python3 tests/semantics/include_mutable_execution.py",
+      "report": ".tools/include-dynamic-intrinsic/.tools/include-mutable-ffg3rjq6/report.json",
+      "sha256": "baac4333f78030aa93a159b5d5697b89857a58eb02a075e6133496a0a96deb4a",
+      "result": "35 exact native/model raw stdout, stderr and exit comparisons; zero failed rows",
+      "watched_inputs": 198,
+      "input_changes": 0,
+      "added_cases": [
+        "dynamic-restore",
+        "dynamic-ini-set",
+        "dynamic-mutated-callee",
+        "dynamic-caught-reentry",
+        "dynamic-pipe",
+        "fixed-pipe",
+        "dynamic-chdir"
+      ],
+      "raw_examples": "dynamic-mutated-callee .:|sub; dynamic-chdir 7; the other five added rows .:; all added rows have empty stderr and exit 0"
     },
-    {
-      "command": "python3 tests/semantics/include_chdir_adapter_protocol.py",
-      "report": ".tools/include-dynamic-intrinsic/.tools/include-chdir-adapter-z8wgvr08/report.json",
-      "sha256": "5f54510c6b7995f58f6c169c845d50d5fa3e47ec0d595cf832aecca598a09eed",
-      "result": "19 checked adapter assertions pass",
-      "watched_inputs": 197
-    }
-  ],
-  "retained_input_changes": 0,
-  "independent_selected_replay": {
-    "selector": "Import include_mutable_execution; narrow CASES in memory to dynamic-mutated-callee, dynamic-caught-reentry, dynamic-pipe and dynamic-chdir; call main() without editing source inputs.",
-    "report": ".tools/include-dynamic-intrinsic/.tools/include-mutable-wihdlqbr/report.json",
-    "sha256": "316e2f6e37de549d6a03f38979a29ceead637bb99d7632935933ba0df5b66811",
-    "result": "4 of 4 exact native/model raw stdout, stderr and exit comparisons; 198 of 198 watched inputs current",
-    "raw_stdout": [".:|sub", ".:", ".:", "7"],
-    "raw_stderr": "empty for all four; exit 0 for all four"
+    "paused": {
+      "command": "python3 tests/semantics/include_mutable_protocol.py",
+      "report": ".tools/include-dynamic-intrinsic/.tools/include-mutable-protocol-hr32cizl/report.json",
+      "sha256": "5ebe37096f0abdbfeea87279d0ea9d4afd94e686a560a927764063a02d63d2db",
+      "result": "8 source-derived stages, 107 assertions, including dynamic selected-kind forgery, AT-wrapped duplicate, saved owner frame, caught same-site reentry with stale nonce, and CHDIR_AWAIT task/context nonce mismatch",
+      "watched_inputs": 200,
+      "input_changes": 0
+    },
+    "retained": [
+      {
+        "command": "python3 tests/semantics/include_chdir_protocol.py",
+        "report": ".tools/include-dynamic-intrinsic/.tools/include-chdir-protocol-wyugvpbe/report.json",
+        "sha256": "af677eafcd37af99db063b55513be5ec3b5d06c15d91725f0926fae74577c503",
+        "result": "3 stages, 107 assertions pass",
+        "watched_inputs": 200
+      },
+      {
+        "command": "python3 tests/semantics/include_saved_protocol.py",
+        "report": ".tools/include-dynamic-intrinsic/.tools/include-saved-protocol-wnf4cjp_/report.json",
+        "sha256": "f539a563aab0b281d30e9d3ef4b03e7c68c4e1051a077d2c7119b536e4b12f6b",
+        "result": "46 saved-frame assertions pass",
+        "watched_inputs": 202
+      },
+      {
+        "command": "python3 tests/semantics/eval_saved_protocol.py",
+        "report": ".tools/include-dynamic-intrinsic/.tools/eval-saved-protocol-hil8zg9y/report.json",
+        "sha256": "b23238d2532ba5e22948e1b9173379c11036e50a36c43ffa169feadecf6f46b9",
+        "result": "42 saved eval assertions pass",
+        "watched_inputs": 191
+      },
+      {
+        "command": "python3 tests/semantics/include_chdir_adapter_protocol.py",
+        "report": ".tools/include-dynamic-intrinsic/.tools/include-chdir-adapter-z8wgvr08/report.json",
+        "sha256": "5f54510c6b7995f58f6c169c845d50d5fa3e47ec0d595cf832aecca598a09eed",
+        "result": "19 checked adapter assertions pass",
+        "watched_inputs": 197
+      }
+    ],
+    "retained_input_changes": 0,
+    "independent_selected_replay": {
+      "selector": "Import include_mutable_execution; narrow CASES in memory to dynamic-mutated-callee, dynamic-caught-reentry, dynamic-pipe and dynamic-chdir; call main() without editing source inputs.",
+      "report": ".tools/include-dynamic-intrinsic/.tools/include-mutable-wihdlqbr/report.json",
+      "sha256": "316e2f6e37de549d6a03f38979a29ceead637bb99d7632935933ba0df5b66811",
+      "result": "4 of 4 exact native/model raw stdout, stderr and exit comparisons; 198 of 198 declared inputs matched the historical e093 freeze",
+      "raw_stdout": [
+        ".:|sub",
+        ".:",
+        ".:",
+        "7"
+      ],
+      "raw_stderr": "empty for all four; exit 0 for all four"
+    },
+    "excluded_control": "A parenthesized leading-slash literal builtin call reached the pre-existing initial literal builtin lowering Unsupported boundary. The earlier 35-pass/one-Unsupported diagnostic report .tools/include-dynamic-intrinsic/.tools/include-mutable-7aw0knq0/report.json (SHA-256 edd56759be4f87beb5644149b6b78bd981bc994027f63f2ef104843d4184e6f5) is historical after the catalogue edit and is not counted as an exact source agreement. A prior all-failed diagnostic report .tools/include-dynamic-intrinsic/.tools/include-mutable-5o72n5es/report.json (SHA-256 ca848ed8af2029338f4ca22ef0004b701ecc0f9dce73c5d4a56627bca7ec3a85) captured a SpecTec non-pure-premise rule error; the recursive premise was replaced before the current campaign.",
+    "freeze": "e093e565defeaa69c2d9cc80a08712441bae43b2",
+    "status": "Historical pre-guard observations on their recorded inputs; not fresh current-base closure."
   },
   "identity": "The source report records case-source and snapshot hashes; the new paused report records source and fixture hashes. Both record declared tool/input hashes and unchanged vendored PHP-Parser identity. The four retained reports record their declared input hashes. Report files and raw streams remain ignored under .tools.",
-  "excluded_control": "A parenthesized leading-slash literal builtin call reached the pre-existing initial literal builtin lowering Unsupported boundary. The earlier 35-pass/one-Unsupported diagnostic report .tools/include-dynamic-intrinsic/.tools/include-mutable-7aw0knq0/report.json (SHA-256 edd56759be4f87beb5644149b6b78bd981bc994027f63f2ef104843d4184e6f5) is historical after the catalogue edit and is not counted as an exact source agreement. A prior all-failed diagnostic report .tools/include-dynamic-intrinsic/.tools/include-mutable-5o72n5es/report.json (SHA-256 ca848ed8af2029338f4ca22ef0004b701ecc0f9dce73c5d4a56627bca7ec3a85) captured a SpecTec non-pure-premise rule error; the recursive premise was replaced before the current campaign.",
-  "remaining": "Other dynamic callable families, stringable chdir operands, wider OS/INI operations, warning-handler effects and transformed wrappers remain separate required work. This private increment is not installed or complete-core acceptance."
+  "remaining": "Stringable chdir operands, other dynamic callable families, wider OS/INI operations, warning-handler effects and transformed wrappers remain separate required work. This bounded increment is not complete-core acceptance."
 }

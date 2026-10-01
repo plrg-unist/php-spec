@@ -67,15 +67,15 @@ next CWD; failure supplies `strerror` bytes and errno, while PHP warning
 rendering remains authored semantics. A compiled file retains its original
 lookup context even after a nested call changes the globals. Once membership
 continues to use canonical opened paths. The [mutable-context ledger](../../coverage/semantics/include-mutable-context-review.json)
-records the bounded source and paused checks. Dynamic ownerless intrinsic
-selection and wider OS/INI behavior remain open. Other permission and path
-errors need source comparisons.
+records the bounded source and paused checks. Wider OS/INI behavior remains
+open. Other permission and path errors need source comparisons.
 
-A private follow-up records the selected intrinsic before evaluating arguments
-for computed string calls and pipes to `set_include_path`, `ini_set`,
-`ini_restore` and `chdir`. Its monotone selection nonce is checked across saved
+Computed string calls and pipes to `set_include_path`, `ini_set`, `ini_restore`
+and `chdir` record the selected intrinsic before evaluating arguments. A
+monotone selection nonce is checked across saved
 frames and the `chdir` provider pause. Direct calls, fixed pipes and owned
 first-class closures retain their existing provenance. The [selected-call
-ledger](../../coverage/semantics/include-dynamic-selected-review.json) records
-35 exact source rows and eight paused stages on the private tree. Installation
-and broader callable forms remain open.
+ledger](../../coverage/semantics/include-dynamic-selected-review.json) separates
+the historical 35-source catalogue from the projected four-source/nine-stage
+bridge and one current reference-return interaction. Broader callable forms
+and stringable `chdir` operands remain open.

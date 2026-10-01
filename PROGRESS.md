@@ -26,9 +26,10 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 ## Current checkpoint
 
-The current semantic code checkpoint is **08b929694** (unused reference-return
-retention), following finite-mode dispatch guard **5d717bbeb**, mutable file
-context **35b226471** and provider-fixture repair **badc320f28b**. It retains weak typed string returns, interface,
+The current semantic code checkpoint is **7b1392648** (selected configuration
+calls), following unused reference-return retention **08b929694**, finite-mode
+dispatch guard **5d717bbeb**, mutable file context **35b226471** and
+provider-fixture repair **badc320f28b**. It retains weak typed string returns, interface,
 Closure-binding and source-Throwable code. Interfaces check
 ordered links, nominal membership, method variance, abstract obligations and
 authenticated `Exception`/`Error` ancestry for direct or transitive
@@ -55,7 +56,7 @@ under the generic 45-second runner; both failed reports remain distinct from
 the bounded agreement.
 [Ledger](coverage/semantics/user-string-typed-author.json).
 
-Finite mutable include context is installed at **35b226471** on typed returns **e4d3b837b**. Versioned lookup keys, narrow `include_path` mutations, and authenticated finite `chdir` facts pass three installed source controls (including typed-return callback output `77`), 107 directory-pause, 19 adapter, 57 INI and 46 saved-frame assertions. The earlier 28-source catalogue remains historical to the interface/Closure base. [Ledger](coverage/semantics/include-mutable-context-review.json). Dynamic selected calls, stringable operands and broader OS/INI behavior stay open.
+Finite mutable include context is installed at **35b226471** on typed returns **e4d3b837b**. Versioned lookup keys, narrow `include_path` mutations, and authenticated finite `chdir` facts pass three installed source controls (including typed-return callback output `77`), 107 directory-pause, 19 adapter, 57 INI and 46 saved-frame assertions. The earlier 28-source catalogue remains historical to the interface/Closure base. [Ledger](coverage/semantics/include-mutable-context-review.json). Stringable operands and broader OS/INI behavior stay open.
 
 Reached configuration calls without finite file mode return explicit
 `Unsupported` before scalar dispatch. One checked source control, six paused
@@ -68,10 +69,13 @@ preserving used temporary aliases. Five installed source comparisons and two
 paused stages (30 assertions) pass, independently of pending generic156 replay.
 [Ledger](coverage/semantics/reference-unused-finally-installed.json).
 
-Private selected configuration calls authenticate computed strings and pipes
-across argument evaluation, saved frames and a `chdir` pause. The original
-**e093e565d** catalogue (35 sources, eight stages and 107 assertions) remains
-historical after the finite-mode guard; current-base validation is pending.
+Selected configuration calls authenticate computed strings and pipes across
+argument evaluation, saved frames and a `chdir` pause. Four source comparisons
+and nine paused stages (113 assertions) at **949b6a938** project across the
+installed reference-return change. One current source
+matches both unused reference-return branches while a selection is saved,
+including exact Notice bytes. The original 35-source and retained-frame gates
+remain historical; the maintained catalogue now contains 36 sources.
 [Ledger](coverage/semantics/include-dynamic-selected-review.json).
 
 By-reference typed return conversion 186 needs captured-alias write-back and a
@@ -81,8 +85,13 @@ dynamic names and other string contexts remain separate consumers. Source
 `__invoke` and callable/string precedence, `Closure::call`, array callables,
 inherited internal interface method signatures, constants, static/readonly
 members, traits, hooks, traversal, output handlers and lifecycle callbacks
-remain active core obligations. Canonical file inclusion still needs the
-private dynamic selected-call increment installed, stringable `chdir` operands, wider OS/INI
+remain active core obligations. The inventory still needs its pending
+`calls.static-variables` row reconciled with accepted bounded named, main and
+Closure static bindings ([named](coverage/semantics/function-statics-review.json),
+[main](coverage/semantics/main-statics-review.json),
+[Closure](coverage/semantics/closures-review.json)); broader static-variable
+obligations remain open.
+Canonical file inclusion still needs stringable `chdir` operands, wider OS/INI
 failure modes and transformed wrappers. Rocq
 interaction-tree semantics and BOLA proofs follow the completed PHP core.
 
