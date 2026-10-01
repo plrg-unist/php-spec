@@ -193,7 +193,8 @@ def vendor_identity():
     return tree
 
 
-def main():
+def main(cases=None, extra_inputs=()):
+    cases = CASES if cases is None else cases
     out = Path(tempfile.mkdtemp(prefix='include-mutable-protocol-', dir=ROOT / '.tools'))
     print(out, flush=True)
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
@@ -205,12 +206,13 @@ def main():
               ROOT / 'frontend/SourcePrinter.php', ROOT / 'frontend/encoding.php', ROOT / 'frontend/wire.php',
               ROOT / 'frontend/wire.py', ROOT / 'spec/schema.json', ROOT / 'spec/php.watsup',
               ROOT / 'adapter/main.ml', ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so',
-              ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/recorded_worker.py', Path(__file__)]
+              ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/recorded_worker.py', Path(__file__),
+              *extra_inputs]
     before = {str(path.relative_to(ROOT)): digest(path) for path in inputs}
     vendor_before = vendor_identity()
     results = []
     modules_args = [str(path) for path in modules]
-    for name, source, stage, checks in CASES:
+    for name, source, stage, checks in cases:
         directory = out / name
         directory.mkdir()
         source_path = directory / 'main.php'

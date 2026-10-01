@@ -1,0 +1,26 @@
+[
+  {
+    "id": "selected-static-default-cache",
+    "native_group": ".tools/method-current-bridge-native-m73bq31s/selected-static-default-cache/native.json",
+    "native_raw_sha256": "4191e2c7df7f9efdf0e0113626b44d600c864a7559196f9c69638bee63ae8f04",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php const C=1;class A{public int $p=1;public static string $s=\"\";public static function f($x){echo \"F\";}}function arg(){global $a,$r;$a=null;$r=\"s\";echo \"W\";$c=function($x=C){self::$s=$x;};$c->call(new A);echo A::$s===\"1\"?\"D\":\"E\";return 0;}$a=new A;$r=&$a->p;$a->f(arg());echo \"|\",$r;",
+    "source_sha256": "9d83a918ab60371807e1e0815e50466a1f1d845e81fef793922a29572a0ff5f1",
+    "status": "normal",
+    "stdout_base64": "V0RGfHM=",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "direct-static-body-trace",
+    "native_group": ".tools/method-class-selector-native-bv32ugc2/direct-static-body-trace/native.json",
+    "native_raw_sha256": "5c0c17dcfeb583cb7fa58202895336ab793a73c44e1513fd2a502ce2e77651b7",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public static function f($x){throw new Exception(\"x\");}} $a=new A;$a->f(1);",
+    "source_sha256": "b69b07d4ef91be0da3bb4151c32c66256d20717a0657cb604291d5af87bfe0c3",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEV4Y2VwdGlvbjogeCBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDEpOiBBOjpmKDEpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "exit_status": 255
+  }
+]
