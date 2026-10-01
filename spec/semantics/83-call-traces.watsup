@@ -116,7 +116,7 @@ def $trace_context(S, pbinding*, eps) = eps
 def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $ptascii("__toString"), CLASS ($object_name(S, n)), TYPE ($ptascii("->")), ARGS eps, HASARGS true}]
   -- if $terminal_string_context(S, pcallcontext)
   -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
-def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $ptascii("__toString"), CLASS $trace_context_class(S, pcallcontext), TYPE ($ptascii("->")), ARGS eps, HASARGS true}] ++ $config_trace_frames(S, pconfigcall, [POBJECT n])
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE ($ptascii("->")), ARGS eps, HASARGS true}] ++ $config_trace_frames(S, pconfigcall, [POBJECT n])
   -- if ~$terminal_string_context(S, pcallcontext)
   -- if $config_string_trace_context(S, pcallcontext)
   -- if S.FRAMES = pframe :: pframe_tail*

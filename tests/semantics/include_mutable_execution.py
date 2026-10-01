@@ -58,6 +58,7 @@ CASES = {
     'chdir-stringable-invoke-throw': b'<?php class O { function __toString(): string { throw new Exception("X"); } } $f=chdir(...); $f->__invoke(new O);',
     'chdir-stringable-invoke-nested-throw': b'<?php class O { function __toString(): string { $this->g(); return "sub"; } function g(): void { throw new Exception("X"); } } $f=chdir(...); $f->__invoke(new O);',
     'chdir-stringable-inherited-invoke-throw': b'<?php class P {function __toString():string {throw new Exception("X");}} class O extends P {} $f=chdir(...); $f->__invoke(new O);',
+    'chdir-stringable-inherited-case-invoke-throw': b'<?php class P {function __ToStRiNg():string {throw new Exception("X");}} class O extends P {} $f=chdir(...); $f->__invoke(new O);',
     'chdir-stringable-strict': b'<?php declare(strict_types=1); class O { function __toString(): string { echo "S"; return "sub"; } } try { chdir(new O); } catch (TypeError $e) { echo "T"; } echo include "one.php";',
     'chdir-object-nonstringable': b'<?php class O {} try { chdir(new O); } catch (TypeError $e) { echo "T"; } echo include "one.php";',
     'chdir-stringable-dynamic': b"<?php class O { function __toString(): string { echo 'S'; return '__SUB__'; } } $f='chdir'; echo $f(new O)?'T':'F'; echo include 'one.php';",
