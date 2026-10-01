@@ -16,6 +16,7 @@ projected and installed observations.
 | 7b1392648 selected configuration calls | The 949 four-source/nine-stage113 bridge projects across reference-return retention; one installed interaction source matches both branches and exact Notice bytes. Original full35 remains historical. [Ledger](coverage/semantics/include-dynamic-selected-review.json) |
 | aed684e4a ordinary Closure::call | Focused installed selected-call, typed-string callback and reference-finalizer checks pass; private36-source/seven-stage evidence retains its prior snapshot. [Ledger](coverage/semantics/closure-call-review.json) |
 | 9cdadc172 named/reference Closure::call | Three installed sources and two stages/58 assertions cover named receivers and isolated reference forwarding; unpacking and deferred default caches remain open. [Ledger](coverage/semantics/closure-call-arguments-review.json) |
+| 1043567c4 Stringable chdir | Three installed sources and a directory stage with 52 assertions cover post-callback CWD, inherited callback spelling and saved reference-forwarding traces. The full catalogue/protocol/retained evidence keeps its 15d2451bf projection; the historical catalogue of 44 sources and interrupted run of 50 sources remain distinct. [Ledger](coverage/semantics/include-stringable-chdir-review.json) |
 
 ## Subsequent reviewed increments
 

@@ -26,29 +26,29 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 ## Current checkpoint
 
-The current canonical semantic checkpoint is **9cdadc172** (named/reference
-`Closure::call`), installed at **e458517eb** after exit-origin cleanup
-**b54f984b4**. [Milestone history](MILESTONE-HISTORY.md) and the linked ledgers
+The current canonical semantic checkpoint is Stringable-`chdir` **1043567c4**,
+installed at **0b6a15cbb** on named/reference `Closure::call` **9cdadc172**.
+[Milestone history](MILESTONE-HISTORY.md) and the linked ledgers
 retain bounded installed counts and historical snapshot identities.
 
-Installed code includes finite file context and selected configuration calls,
+Installed code includes finite file context, selected configuration calls and
+weak positional Stringable-`chdir` operands,
 weak by-value typed string returns, interfaces, Closure binding/calls, source
 Throwable subclasses, and echo/print/cast/eval/concat object-string callbacks.
 [Include contract](docs/semantics/INCLUDE-SOURCES.md) ·
 [method contract](docs/semantics/SOURCE-METHODS.md) ·
 [string contract](docs/semantics/USER-STRING.md).
 
-## Active work and remaining obligations
-
-The Stringable-`chdir` candidate passes its full 52-source catalogue, mutable
-and directory ownership protocols, and retained saved-frame/typed/eval/Throwable
-gates at **15d2451bf**. One current **1043567c4** source bridges the new reference
-forwarding task while a Stringable conversion is saved; installation remains
-pending. Callback traces retain declaring identity and explicit invocation
-frames. The nested-conversion producer alone uses 180 seconds after a measured
-five-request replay; model requests keep their 60-second limit. Earlier
+The Stringable ledger separates the projected catalogue of 52 sources and
+protocol/retained evidence
+at **15d2451bf** from three installed sources and one directory stage/52 assertions.
+Callback traces preserve declaring identity and explicit invocation frames.
+The nested-conversion producer alone uses 180 seconds after a measured
+five-request replay; model requests keep their 60-second limit. Historical
 nine-source evidence and the interrupted 50-source prefix remain separate.
 [Ledger](coverage/semantics/include-stringable-chdir-review.json).
+
+## Active work and remaining obligations
 
 Generic156 return/Notice replay remains open. By-reference typed string return
 conversion186 still needs captured-alias write-back and post-`finally` rejection.

@@ -80,7 +80,7 @@ the historical 35-source catalogue from the projected four-source/nine-stage
 bridge and one current reference-return interaction. Broader callable forms
 remain open.
 
-The reviewed Stringable candidate runs a weak positional operand's checked
+The installed Stringable increment runs a weak positional operand's checked
 `__toString` callback before requesting a directory fact, using the CWD after
 the callback. Strict or non-stringable operands raise `TypeError` before the
 callback; returned NUL bytes raise `ValueError` before an OS request. That
@@ -89,6 +89,6 @@ error's inner `chdir` frame contains the converted string, while an explicit
 the declaring class and original method spelling, the intrinsic and explicit
 invocation frames across nested calls.
 The [Stringable ledger](../../coverage/semantics/include-stringable-chdir-review.json)
-binds 52 maintained source comparisons, callback/directory ownership checks and
-retained saved-frame/typed/eval/Throwable gates; installation remains pending.
+separates the projected full catalogue/protocol/retained gates from three installed
+sources and one directory stage/52 assertions.
 Named or unpacked object operands and broader OS/INI behavior remain open.
