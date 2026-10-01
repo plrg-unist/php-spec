@@ -17,6 +17,7 @@ projected and installed observations.
 | aed684e4a ordinary Closure::call | Focused installed selected-call, typed-string callback and reference-finalizer checks pass; private36-source/seven-stage evidence retains its prior snapshot. [Ledger](coverage/semantics/closure-call-review.json) |
 | 9cdadc172 named/reference Closure::call | Three installed sources and two stages/58 assertions cover named receivers and isolated reference forwarding; unpacking and deferred default caches remain open. [Ledger](coverage/semantics/closure-call-arguments-review.json) |
 | 1043567c4 Stringable chdir | Three installed sources and a directory stage with 52 assertions cover post-callback CWD, inherited callback spelling and saved reference-forwarding traces. The full catalogue/protocol/retained evidence keeps its 15d2451bf projection; the historical catalogue of 44 sources and interrupted run of 50 sources remain distinct. [Ledger](coverage/semantics/include-stringable-chdir-review.json) |
+| a993dd191 ordinary origin cleanup | Installed fatal source1 and exact current/restored-caller stages/108 assertions preserve diagnostics and validate discarded continuation cleanup. The private current source2 plus origin108/config10/interface16 and historical composite6/329 remain distinct. [Ledger](coverage/semantics/error-origin-author.json) |
 
 ## Subsequent reviewed increments
 

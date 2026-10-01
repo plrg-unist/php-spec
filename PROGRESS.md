@@ -7,7 +7,8 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-The released canonical checkpoint is **d386a9f5d**, with finite inherited
+The installed canonical checkpoint is **a993dd191**, with ordinary fatal and
+Unsupported origin retirement, finite inherited
 internal method contracts 189 at **cbd5236d2** and the constant internal
 catalogue accepted at **832250521**. Installed code also includes deferred
 Closure/arrow cache authentication 91, ordinary class static properties,
@@ -24,10 +25,9 @@ before constants183/184; it must remove the interim rooted wakeup guard.
 [Renewed interface ledger](coverage/semantics/interface-internal-renewed-review.json)
 · [declaration-order milestone](coverage/semantics/compiler-declaration-order-review.json).
 
-Ordinary fatal/Unsupported origin retirement and its focused current-base bridge
-are privately reviewed and await installation. They preserve diagnostic origins,
-traces and saved-frame cleanup. The ledger retains the original failures,
-fixture corrections, composite pauses and timeout separately.
+Installed origin retirement preserves diagnostic origins, traces and saved-frame
+cleanup. Its ledger distinguishes the minimal installed checks from the private
+current bridge, original failures, fixture corrections, composite pauses and timeout.
 [Cleanup ledger](coverage/semantics/error-origin-author.json).
 
 ## Validated baseline
