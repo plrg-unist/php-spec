@@ -232,16 +232,16 @@ dec $dir_request_start(pstate, pconfigcall, nat*) : pstate
 dec $config_object(pvalue) : bool
 def $config_object(POBJECT n) = true
 def $config_object(pvalue) = false -- otherwise
-dec $config_error(pstate, pconfigcall, text, preqbytes) : pstate
-def $config_error(S, pconfigcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pconfigcall.SITE)], text, preqbytes, pconfigcall.LINE, $source_trace_prefixed(S, [ptraceframe, ptraceframe_invoke]))
+def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe, ptraceframe_invoke]
   -- if $config_method_receiver(S, pconfigcall)
-  -- if pvalue* = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if pvalue_original* = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
-  -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
-def $config_error(S, pconfigcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pconfigcall.SITE)], text, preqbytes, pconfigcall.LINE, $source_trace_prefixed(S, [ptraceframe]))
+  -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue_original*, 0), HASARGS true}
+def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe]
   -- if ~$config_method_receiver(S, pconfigcall)
-  -- if pvalue* = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
+dec $config_error(pstate, pconfigcall, text, preqbytes) : pstate
+def $config_error(S, pconfigcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pconfigcall.SITE)], text, preqbytes, pconfigcall.LINE, $source_trace_prefixed(S, $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))))
 dec $config_plural(nat) : preqbytes
 def $config_plural(1) = eps
 def $config_plural(n) = $ptascii("s") -- otherwise
@@ -415,12 +415,13 @@ rule PhpStep/config-string-result: S ~> $dir_request_start_with_conversion(S_rec
   -- if n_owner = |S.FRAMES|
   -- if pdirconversion = {NONCE n_conversion, CALLSITE pconfigcall.SITE, CALLLINE pconfigcall.LINE, OBJECT n_object, RESULT n_requested*, SELECTION pconfigcall.SELECTION, OWNERDEPTH n_owner}
   -- if S_record = S[.DIRCONVSEQ = $(n_conversion + 1)][.DIRCONVERSIONS = S.DIRCONVERSIONS ++ [pdirconversion]][.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
-rule PhpStep/config-string-nul: S ~> $config_error(S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*], pconfigcall, "ValueError", $ptascii("chdir(): Argument #1 ($directory) must not contain any null bytes"))
+rule PhpStep/config-string-nul: S ~> $throwable_allocate(S_call, "ValueError", $ptascii("chdir(): Argument #1 ($directory) must not contain any null bytes"), pconfigcall.LINE, $source_trace_prefixed(S_call, $config_trace_frames(S_call, pconfigcall, [PSTRING n_requested*])))
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
   -- if S.ORIGIN = (porigin_child)
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
   -- if S.RESULT = KNOWN (PSTRING n_requested*)
   -- if 0 <- n_requested*
+  -- if S_call = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
 
 ;; The selected intrinsic and each saved argument must derive from the source.
 dec $selected_task_nonce(ptask) : nat?
