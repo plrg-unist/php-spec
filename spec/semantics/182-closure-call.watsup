@@ -576,9 +576,9 @@ rule PhpStep/closure-call-invoke: S ~> $closure_call_enter(S[.TODO = ptask_tail*
 ;; The internal API forwards values in outer source order. Reference formals
 ;; warn and receive fresh cells, never the caller's reference operands.
 dec $closure_call_reference_name(psparam*, nat) : ptbytes
-def $closure_call_reference_name(psparam*, n) = $ptascii(" ($") ++ psparam.NAME ++ [41]
-  -- if $(n < |$call_fixed_parameters(psparam*)|)
-  -- if psparam = psparam*[n]
+def $closure_call_reference_name(psparam_parameters*, n) = $ptascii(" ($") ++ psparam.NAME ++ [41]
+  -- if $(n < |$call_fixed_parameters(psparam_parameters*)|)
+  -- if $call_parameter_at(psparam_parameters*, n) = (psparam)
 def $closure_call_reference_name(psparam*, n) = eps -- otherwise
 dec $closure_call_forward_operand(pstate, pfunction, nat, pnamedtarget, pvalue, int) : pstate
 def $closure_call_forward_operand(S, pfunction, n_receiver, pnamedtarget, pvalue, z) = S[.RESULT = KNOWN pvalue]
