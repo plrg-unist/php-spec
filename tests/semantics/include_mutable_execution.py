@@ -63,6 +63,7 @@ CASES = {
     'chdir-stringable-first-class': b"<?php class O { function __toString(): string { echo 'S'; return '__SUB__'; } } $f=chdir(...); echo $f(new O)?'T':'F'; echo include 'one.php';",
     'chdir-stringable-nested-throw': b'<?php class O { function __toString(): string { $this->g(); return "sub"; } function g(): void { throw new Exception("X"); } } chdir(new O);',
     'chdir-stringable-mutate-cwd': b"<?php class O { function __toString(): string { chdir('__SUB__'); return '..'; } } echo chdir(new O)?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-nested-conversion': b"<?php class P { function __toString():string { echo 'P'; return '__SUB__'; } } class O { function __toString():string { echo 'O'; $g='chdir'; $g(new P); return '..'; } } $f='chdir'; echo $f(new O)?'T':'F'; echo include 'one.php';",
 }
 
 
@@ -130,7 +131,7 @@ def main():
                             'cwd': b64(cwd_key), 'include_path': b64(include_path),
                             'status': 'opened', 'resolved': b64(opened),
                             'opened': b64(opened), 'source': b64(target.read_bytes())})
-        if name == 'chdir-stringable-mutate-cwd':
+        if name in ('chdir-stringable-mutate-cwd', 'chdir-stringable-nested-conversion'):
             case_cwd = os.fsencode(directory.resolve())
             opened = os.fsencode(local.resolve())
             entries.append({'caller': b64(main_bytes), 'requested': b64(b'one.php'),
@@ -157,7 +158,7 @@ def main():
         if name == 'chdir-relative':
             chdir_entries.append({'cwd': b64(cwd), 'requested': b64(b'sub'),
                                   'status': 'success', 'next_cwd': b64(sub_bytes)})
-        if name == 'chdir-stringable-mutate-cwd':
+        if name in ('chdir-stringable-mutate-cwd', 'chdir-stringable-nested-conversion'):
             chdir_entries.append({'cwd': b64(sub_bytes), 'requested': b64(b'..'),
                                   'status': 'success',
                                   'next_cwd': b64(os.fsencode(directory.resolve()))})
