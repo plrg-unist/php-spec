@@ -1,59 +1,151 @@
 {
-  "scope": "Private checked Stringable operand conversion for finite-provider chdir",
-  "base": "e093e565defeaa69c2d9cc80a08712441bae43b2",
-  "code_commit": "0b49204e0",
-  "test_commit": "4f88e5979",
-  "contract": "A weak positional chdir object with a source-checked __toString method runs the callback before requesting an OS directory fact. The original object remains in the call for trace and selection provenance. The resulting bytes enter an append-only conversion log; the pending DIRCONTEXT requires its exact latest record, owning frame, source site, call line, selected-call nonce and object. The callback can change CWD before the outer request, whose lookup captures the new CWD. Direct, computed-string and owned first-class calls share this route. Strict or non-stringable objects raise TypeError before callback; NUL returned by the callback raises ValueError before any OS request. Ordinary no-snapshot chdir has one explicit Unsupported reached transition.",
-  "source_selected": {
-    "selector": "Import include_mutable_execution; retain the eight IDs beginning chdir-stringable- plus chdir-object-nonstringable in CASES; call main() without editing source inputs.",
-    "report": ".tools/include-stringable-chdir/.tools/include-mutable-nrj1lpqb/report.json",
-    "sha256": "ca7afaa9ec2e561341cba1efd104958d01011e05f6c7f9ccd91d6c2233922deb",
-    "result": "9/9 exact native/model raw stdout, stderr and exit comparisons; weak, dynamic and first-class output ST7; NUL outputs SV8; strict and non-stringable output T8; nested and multiline uncaught traces exit 255; callback CWD mutation outputs T8",
-    "watched_inputs": 198,
-    "input_changes": 0
+  "scope": "Checked weak positional Stringable operands for finite-provider chdir: direct, computed strings and owned first-class calls",
+  "target": "PHP8.5.10 CLI NTS64-bit; pinned private native oracle, maintained profile and C locale",
+  "source_freeze": "15d2451bf408b4ae046e60434fa887d2f4185bfc",
+  "canonical_base": "52502471d284efa51e934649eb827f23ccfd1bdf (semantic base b54f984b4)",
+  "contract": "The checked callback runs before the OS fact, which captures post-callback CWD. Original-object, owning-frame, source-site, call-line, conversion-record and selected-call nonce provenance remain authenticated. Strict and non-Stringable operands fail before callback; NUL results fail before OS lookup. NUL traces use the converted inner string and original outer explicit-invoke object. Callback throws preserve declaring class, original method spelling and the explicit wrapper across nested calls.",
+  "fresh_gate_freeze": {
+    "maintained_sources": {
+      "report": ".tools/include-selected-chdir-current/.tools/include-mutable-ifoantnk/report.json",
+      "sha256": "38455de44392b59819dab0d1963badc7f0c97e5442b97e932b104eb9e6fa7099",
+      "result": "52 exact raw native/model tuples:44 normal0+8 php_error255",
+      "watched_inputs": 199,
+      "input_changes": 0
+    },
+    "mutable_protocol": {
+      "report": ".tools/include-selected-chdir-current/.tools/include-mutable-protocol-lltattdd/report.json",
+      "sha256": "766c84e3f5924c1273f0dead7dd127be197ec1935cb0baf47844c299224903ca",
+      "result": "11 stages134 assertions, including six explicit Unsupported guards",
+      "watched_inputs": 201,
+      "input_changes": 0
+    },
+    "directory_protocol": {
+      "report": ".tools/include-selected-chdir-current/.tools/include-chdir-protocol-r2d4cenn/report.json",
+      "sha256": "e499985d1de4e46339acc1bf0e0c93e1fed6231cde297f27e48d8bf65ad1b864",
+      "result": "5 stages207 authenticated ownership/freshness/forgery assertions",
+      "watched_inputs": 201,
+      "input_changes": 0
+    },
+    "saved_include": {
+      "report": ".tools/include-selected-chdir-current/.tools/include-saved-protocol-ru2oxp4_/report.json",
+      "sha256": "fb89012afcc1cc3489d083c774d9b549b116d1c61d779bd10819de379e6ab069",
+      "result": "46 retained paused assertions",
+      "watched_inputs": 203,
+      "input_changes": 0
+    },
+    "saved_eval": {
+      "report": ".tools/include-selected-chdir-current/.tools/eval-saved-protocol-rga56z3d/report.json",
+      "sha256": "1eeccfe7628cf031fc2eb24ff4b312938b67e10fba44798677bf7b30c11e9610",
+      "result": "42 retained paused assertions; low-budget control is separate from agreement",
+      "watched_inputs": 192,
+      "input_changes": 0
+    },
+    "typed_bridge": {
+      "report": ".tools/include-selected-chdir-current/.tools/user-string-typed-bridge-0_oqmz0e/report.json",
+      "sha256": "52e06b4ceafa240a2634a1e7b74890532ec2aa353fd19dd15c0ef03652c66b64",
+      "result": "4 exact defining-file ordinary/nested strictness tuples:2 normal0+2 php_error255",
+      "watched_inputs": 190,
+      "input_changes": 0
+    },
+    "eval_bridge": {
+      "report": ".tools/include-selected-chdir-current/.tools/user-string-eval-bridge-37bdkko1/report.json",
+      "sha256": "553d9dad91a5e13ae0f4a963f6149107c695322840f527478046306c4e03d2a8",
+      "result": "3 exact retained include/eval tuples:2 normal0+1 php_error255",
+      "watched_inputs": 190,
+      "input_changes": 0
+    },
+    "throwable_bridge": {
+      "report": ".tools/include-selected-chdir-current/.tools/trace-probes-p_o_4fxj/report.json",
+      "sha256": "b71a1b8db6e74aaf08b96be699adcda13d317bce96344bd7dbe3f6784750b6d9",
+      "result": "4 exact normal0 generated-wrapper/getclass/eval-function/eval-nested-runtime trace tuples; zero controls",
+      "watched_inputs": 189,
+      "input_changes": 0
+    }
   },
-  "directory_paused": {
-    "command": "python3 tests/semantics/include_chdir_protocol.py",
-    "report": ".tools/include-stringable-chdir/.tools/include-chdir-protocol-zx1tzm0p/report.json",
-    "sha256": "ae0c7c6232dda18334c79c3a86a3b3d317c6e53372e9984a44c164f11ccfc31a",
-    "result": "5 source-derived stages and 205 assertions pass, including direct and dynamic object-conversion freshness, forged request bytes, conversion nonce and selected-call nonce",
-    "watched_inputs": 200,
-    "input_changes": 0
+  "metadata_projection": {
+    "report": ".tools/include-selected-chdir-current/.tools/stringable-final-base-projection.json",
+    "sha256": "cb4f09c029f777143100f3a4cdf1d8a801a73f7718f4d47b46669a624c8d26a9",
+    "result": "Eight declared input sets, five component sources, four physical binaries and1,731 canonical shared-library inputs match after the docs-only525 rebase; semantic/test/component bytes are unchanged from15"
   },
-  "callback_paused": {
-    "selector": "Import include_mutable_protocol; retain no-file-chdir, stringable-entered and stringable-dynamic-entered in CASES; call main() without editing source inputs.",
-    "report": ".tools/include-stringable-chdir/.tools/include-mutable-protocol-76brlu18/report.json",
-    "sha256": "d6483889e377826a6e576ed410e29a49b8df67ad3db892ec0f62d738d06b08c2",
-    "result": "3 source-derived stages and 27 assertions pass: no-snapshot one-step Unsupported, callback context source/call-line ownership, and forged saved-frame selected nonce",
-    "watched_inputs": 200,
-    "input_changes": 0
+  "producer_limits": {
+    "per_request_seconds": 60,
+    "steps": 100000,
+    "ordinary_outer_seconds": 90,
+    "nested_conversion_outer_seconds": 180,
+    "exception_case": "chdir-stringable-nested-conversion",
+    "reason": "Five bounded requests take150.45s in the measured replay; the old aggregate90s cap interrupted the final row"
   },
-  "historical_pilot": "The earlier two-row direct pilot .tools/include-stringable-chdir/.tools/include-mutable-evzjmivh/report.json (SHA-256 9442de22be240e256f80f26403d495287aae892b0519262ad49f37ea95b6cd72) predates the saved-frame trace and maintained test edits; it remains diagnostic, not current evidence.",
-  "remaining": "Full maintained catalogue and retained eval/include/Throwable checks on the post-guard tree remain required before any canonical lease. Named/unpacked object arguments, broader OS/INI profiles and transformed wrappers remain separate required follow-ups. This guarded private checkpoint is independently approved within its bounded scope; it is not installed or complete-core acceptance.",
-  "guard_commit": "d840475a2",
-  "historical_after_guard": "The selected nine-source, five-stage directory, three-stage callback/no-file, independent three-source and retained eval/include reports predate the added 173 object-eligibility guard or the paused test assertion; retain their raw outcomes as pre-guard evidence only.",
-  "current_guard_paused": {
-    "selector": "Import include_chdir_protocol; retain only stringable in CASES; call main() without editing source inputs.",
-    "report": ".tools/include-stringable-chdir/.tools/include-chdir-protocol-orv0oom4/report.json",
-    "sha256": "185d84a03e30c42303306d0a25c6ccecbd4fc78dbd9aac9e52e96fd49560ccfe",
-    "result": "48 source-derived assertions pass, including replacing the pending object with non-Stringable STDINSTANCE",
-    "watched_inputs": 200,
-    "input_changes": 0
+  "runtime": {
+    "successful_component_build": {
+      "report": ".tools/include-selected-chdir-current/.tools/stringable-current-build-explicit/report.json",
+      "sha256": "87cf501a1f0d5c1077e4bbc88ffa1b3c0509bd565fb70b4b9466174c065a940d",
+      "result": "Both explicit-root component commands exit0; canonical opam/shared libraries reused; no full fresh offline dependency-build claim"
+    },
+    "current_base_equality": {
+      "report": ".tools/include-selected-chdir-current/.tools/stringable-current-base-runtime.json",
+      "sha256": "c74de9be5dbd2550e548ad53d3f8dd65bf1e49ea86977082b0624520191d17d4",
+      "result": "Current15/canonical525 five source/four physical binary hashes agree;1,731 canonical shared-library inputs unchanged"
+    },
+    "failed_implicit_root_attempt": {
+      "report": ".tools/include-selected-chdir-current/.tools/stringable-current-build/report.json",
+      "sha256": "baaa72cdf5db5480d67ef516aeaa08d48883b6d03453fd2df0f8f3b4f67384c3",
+      "result": "Exit1 preserved as failed; requested fresh_target flag does not establish build success"
+    },
+    "optional_context": {
+      "report": ".tools/include-selected-chdir-current/.tools/stringable-current-build-explicit/optional-runtime-context.json",
+      "sha256": "ec698f2b720b71a9f1b694c52805ae8d6dc687add8fbbc024f727e3bf80dc84d",
+      "result": "Private request-clock.so absent/canonical present; these frontend commands load only php-file.so and the profile has no extension setting"
+    }
   },
-  "current_guard_source": {
-    "selector": "Import include_mutable_execution; retain only chdir-stringable-mutate-cwd in CASES; call main() without editing source inputs.",
-    "report": ".tools/include-stringable-chdir/.tools/include-mutable-c8e0r4z4/report.json",
-    "sha256": "a66b4886d36681ebc31bc87a836c3f2268bc7fd44b7b5b61ed19cf50c4e64a56",
-    "result": "1/1 exact native/model raw stdout T8, empty stderr, exit 0",
-    "watched_inputs": 198,
-    "input_changes": 0
+  "diagnostics_and_repairs": {
+    "initial_three_trace_failures": {
+      "report": ".tools/include-selected-chdir-current/.tools/include-mutable-y3buji9r/report.json",
+      "sha256": "c53627969a4f55529acb99719dd6964c84568f3fd4b933694ce12cca52c6fd46",
+      "result": "Original600:three fatal-stderr mismatches, never agreements"
+    },
+    "inherited_owner_failure": {
+      "report": ".tools/include-selected-chdir-current/.tools/include-mutable-ss1ljs44/report.json",
+      "sha256": "fd6152aedfda392e4ca63e20a731b23ec20bee9cff22b9770d2f5c8583a25bcc",
+      "result": "Original341:callback O versus native declaring P; failed diagnostic"
+    },
+    "mixed_case_failure": {
+      "report": ".tools/include-selected-chdir-current/.tools/include-mutable-m9zh2yvs/report.json",
+      "sha256": "7c1a3ba46cfa2768be594d6a6c92cb89aabe0961712382613baaa17698f4088f",
+      "result": "Original190 trace3:two exact controls plus one method-spelling mismatch; whole diagnostic failed"
+    },
+    "declaring_identity_controls": {
+      "report": ".tools/include-selected-chdir-current/.tools/include-mutable-qid9xtq0/report.json",
+      "sha256": "6f25632656cdad8da4689606c587d486879b6332d76fa5879a270826ac0a2d1b",
+      "result": "Original412 focused3 independently passed before the timing-only helper change and disjoint148 rebase; overlaps fresh52"
+    },
+    "nested_timing": {
+      "report": ".tools/include-selected-chdir-current/.tools/stringable-nested-timing-ejvx6frv/report.json",
+      "sha256": "265f5ecc5002e8a8b698aa9064ec1cb25877a0c78aef4b91e6948fc47b1a4b19",
+      "result": "Original412:exact OPT8/empty stderr/normal0 in150.45s across five unchanged60s requests; HEAD/input/four-fixture hashes stable; overlaps fresh52"
+    },
+    "closure_call_context_bridge": {
+      "report": ".tools/include-selected-chdir-current/.tools/include-mutable-1wbut0jn/report.json",
+      "sha256": "014e36f71089325a6f941c593354b40202d1915cdf226c490f33f7d2a7d12c2f",
+      "result": "Original341 separate fatal255 bridge across182/160/83 independently passed; historical projection, separate from maintained52"
+    },
+    "interrupted_full50": {
+      "report": ".tools/include-selected-chdir-current/.tools/include-mutable-djj7602t/incomplete-archive.json",
+      "sha256": "df19810ef1b674c5715e2a4e441784b549abf37673703ae15e9395c2a23e0241",
+      "result": "Original341:diagnostic49-row prefix then nested producer90 timeout; no final input attestation and no full50 or49 catalogue acceptance"
+    }
   },
-  "independent_current_guard": {
-    "selector": "Paired reviewer imported include_mutable_execution, retained only chdir-stringable-nested-throw in CASES, and called main() without editing source inputs.",
-    "report": ".tools/include-stringable-chdir/.tools/include-mutable-s5f7vmfr/report.json",
-    "sha256": "f5a728ce6430e3fd6bd2a2b8e697b010308bc00ec4fbeac5151c7c8ff9d6ec96",
-    "result": "1/1 exact raw native/model fatal stderr and exit 255",
-    "watched_inputs": 198,
-    "input_changes": 0
-  }
+  "historical_guarded_checkpoint": {
+    "ledger": ".tools/include-stringable-chdir/coverage/semantics/include-stringable-chdir-review.json",
+    "sha256": "567438f86345c015b12340e9b76ec7c0403628fdd95d82a6461cc773b1bd5c31",
+    "head": "df403f970",
+    "boundary": "Original44 catalogue identity retained. Nine-source/five-directory205/three-callback27 gates are pre-guard historical; post-guard evidence is source1 T8,paused48 and independent nested-throw1. All original report paths/hashes remain in this immutable prior ledger."
+  },
+  "coordination": {
+    "authorized_numeric_cap": 5,
+    "resource_receipt": ".tools/resume-recovery-20261001/resource-audit-10second.json",
+    "sha256": "36aac23115404c768902d4c3fd32c8efbf7f671243e415ef689e54da01ef63ed",
+    "rule": "One campaign per numbered slot, explicit direct handoffs; this serial matrix has exited"
+  },
+  "review": "All eight fresh gate families are independently approved. Scoped ledger/PROGRESS/INCLUDE-SOURCES metadata await final review; installation is pending.",
+  "remaining": "Named/unpacked object operands, broader OS/INI profiles, transformed wrappers and lifecycle remain required core follow-ups; no complete-core acceptance or full fresh offline rebuild claim."
 }

@@ -26,7 +26,7 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 ## Current checkpoint
 
-The current semantic code checkpoint is **9cdadc172** (named/reference `Closure::call`),
+The current canonical semantic checkpoint is **9cdadc172** (named/reference `Closure::call`),
 following exit-origin cleanup **b54f984b4**, ordinary calls **aed684e4a**,
 selected configuration calls **7b1392648**, unused reference-return
 retention **08b929694**, finite-mode
@@ -100,10 +100,15 @@ separate generic91 repair.
 [Ledger](coverage/semantics/closure-call-review.json).
 [Argument extension review](coverage/semantics/closure-call-arguments-review.json).
 
-Private Stringable-`chdir` code follows the installed selected-call increment.
-Its earlier nine-source and callback/conversion checks remain historical;
-current-base source closure, retained validation and paired acceptance are
-pending. [Ledger](coverage/semantics/include-stringable-chdir-review.json).
+The Stringable-`chdir` candidate passes 52 maintained native/model comparisons,
+11 mutable-context stages (134 assertions), five directory stages (207 assertions),
+46 saved-include and 42 saved-eval assertions, and retained typed/eval/Throwable
+bridges. Independent review approves this bounded private scope; installation
+is pending. Declaring callback identity and explicit invocation traces are
+covered. The nested-conversion producer alone uses 180 seconds after a measured
+five-request replay; each model request keeps its 60-second limit. Earlier
+nine-source evidence and the interrupted 50-source run remain distinct.
+[Ledger](coverage/semantics/include-stringable-chdir-review.json).
 
 By-reference typed return conversion 186 needs captured-alias write-back and a
 generic post-`finally` rejection replay. Weak parameters, properties,
@@ -123,5 +128,9 @@ failure modes and transformed wrappers. Rocq
 interaction-tree semantics and BOLA proofs follow the completed PHP core.
 
 ## Validation limits
+
+The authorized concurrency cap is five numeric/model campaigns, with explicit
+slot handoffs. The [resource receipt](.tools/resume-recovery-20261001/resource-audit-10second.json)
+records available memory, CPU and pressure observations supporting that cap.
 
 The reviewed source, paused-state and syntax results are bounded observations, not complete-core acceptance. Interrupted runs, timeouts, Unsupported and budget controls are never native agreements. A fresh offline network-isolated rebuild and full current-source closure are still required. The [migration ledger](coverage/semantics/throwable-migration-review.json) and [artifact guide](docs/ARTIFACTS.md) retain deferred failures and raw evidence locations.
