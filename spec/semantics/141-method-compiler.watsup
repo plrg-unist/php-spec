@@ -8,7 +8,6 @@ def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 3, PCINDEX n]
 def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 5, PCINDEX n]
   -- if pchheader.KIND = "class"
 dec $ppmethod_at(pmethoddesc*, ptbytes) : bool
-dec $ppmethod_find(pmethoddesc*, ptbytes) : pmethoddesc?
 dec $ppmethod_magic(ptbytes) : bool
 dec $ppmethod_tostring(ptbytes) : bool
 dec $ppmethod_returns(ptbytes, pssignature) : pssignature
@@ -269,7 +268,6 @@ dec $ppmethod_child_desc(ppstate, pchheader, pmethoddesc*) : pclassdesc
 dec $ppmethod_early_one(ppstate, pclassdesc, ppmethodinherited, pmethoddesc*, pvclasses) : ppstate
 dec $ppmethod_early_result(ppstate, pmethoddesc, pclassdesc, pmethoddesc, pclassdesc, pvclasses, pmcheck) : ppstate
 dec $ppmethod_early_items(ppstate, pclassdesc, ppmethodinherited*, pmethoddesc*, pvclasses) : ppstate
-dec $ppmethod_root_kind(pclassdesc*, pclassdesc, nat) : text?
 dec $ppmethod_abstracts(ppmethodinherited*) : ppmethodinherited*
 dec $ppmethod_abstract_names(ppmethodinherited*, nat) : ptbytes
 dec $ppmethod_abstract_message(pclassdesc, ppmethodinherited*) : ptbytes?

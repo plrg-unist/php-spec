@@ -250,20 +250,22 @@ def $compiler_diagnostics(S, (PLDIAGNOSTIC "fatal" text ptbytes* pllocation) :: 
 
 dec $request_compile(pstate, ppstate) : pstate
 dec $compile_source_ready(pstate, ppstate) : pstate
+dec $compile_source_ordered(pstate, ppstate) : pstate
 dec $compile_source(pstate, ppstate) : pstate
 def $compile_source(S, P) = $scope_check($compile_source_ready($request_compile(S, P), P))
-def $compile_source_ready(S, P) = $compiler_diagnostics(S[.COMPLETION = pcompletion][.SOURCES = pcunit_sources*][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, pcompletion, P.FOLD.SOURCE.ID)], P.DIAGNOSTICS)
+def $compile_source_ready(S, P) = $compile_source_ordered(S, $ppwakeup_order_guard(S, P))
+def $compile_source_ordered(S, P) = $compiler_diagnostics(S[.COMPLETION = pcompletion][.SOURCES = pcunit_sources*][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, pcompletion, P.FOLD.SOURCE.ID)], P.DIAGNOSTICS)
   -- if P.COMPLETION = PPCABRUPT pcompletion
   -- if $pool_sources(S.SOURCES, P.FOLD.SOURCE) = (pcunit_sources*)
-def $compile_source_ready(S, P) = $compiler_diagnostics(S[.SOURCES = pcunit_sources*], P.DIAGNOSTICS)
+def $compile_source_ordered(S, P) = $compiler_diagnostics(S[.SOURCES = pcunit_sources*], P.DIAGNOSTICS)
   -- if P.COMPLETION = PPCNAMESPACE
   -- if $pool_sources(S.SOURCES, P.FOLD.SOURCE) = (pcunit_sources*)
-def $compile_source_ready(S, P) = $compile_pool($compiler_diagnostics(S, P.DIAGNOSTICS), P, $ppconstants(P))
+def $compile_source_ordered(S, P) = $compile_pool($compiler_diagnostics(S, P.DIAGNOSTICS), P, $ppconstants(P))
   -- if P.COMPLETION = PPCNORMAL
-def $compile_source_ready(S, P) = S[.COMPLETION = UNSUPPORTED "invalid compiled source registry"]
+def $compile_source_ordered(S, P) = S[.COMPLETION = UNSUPPORTED "invalid compiled source registry"]
   -- if P.COMPLETION = PPCABRUPT pcompletion
   -- if $pool_sources(S.SOURCES, P.FOLD.SOURCE) = eps
-def $compile_source_ready(S, P) = S[.COMPLETION = UNSUPPORTED "invalid compiled source registry"]
+def $compile_source_ordered(S, P) = S[.COMPLETION = UNSUPPORTED "invalid compiled source registry"]
   -- if P.COMPLETION = PPCNAMESPACE
   -- if $pool_sources(S.SOURCES, P.FOLD.SOURCE) = eps
 

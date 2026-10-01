@@ -460,16 +460,18 @@ def $eval_units_bound(S, pcunit :: pcunit_tail*) = $eval_units_bound(S, pcunit_t
 def $eval_units_bound(S, pcunit :: pcunit_tail*) = (($eval_binding_at(S.EVALBINDINGS, pcunit.ID) =/= eps /\ $file_binding_at(S.FILEBINDINGS, pcunit.ID) = eps) \/ ($eval_binding_at(S.EVALBINDINGS, pcunit.ID) = eps /\ $file_binding_at(S.FILEBINDINGS, pcunit.ID) =/= eps)) /\ $eval_units_bound(S, pcunit_tail*)
   -- if $(pcunit.ID > 0)
 dec $file_source_ppstate(pstate, pcunit) : ppstate
-def $eval_source_ppstate(S, pcunit) = $file_source_ppstate(S, pcunit)
+dec $eval_source_ppstate_body(pstate, pcunit) : ppstate
+def $eval_source_ppstate(S, pcunit) = $ppwakeup_order_guard(S, $eval_source_ppstate_body(S, pcunit))
+def $eval_source_ppstate_body(S, pcunit) = $file_source_ppstate(S, pcunit)
   -- if $file_binding_at(S.FILEBINDINGS, pcunit.ID) = (pfilebinding)
-def $eval_source_ppstate(S, pcunit) = $ppstart_eval_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST), (pclassdesc.NAME))
+def $eval_source_ppstate_body(S, pcunit) = $ppstart_eval_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST), (pclassdesc.NAME))
   -- if $eval_binding_at(S.EVALBINDINGS, pcunit.ID) = (pevalbinding)
   -- if pevalbinding.CLASS = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
-def $eval_source_ppstate(S, pcunit) = $ppstart_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST))
+def $eval_source_ppstate_body(S, pcunit) = $ppstart_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST))
   -- if $eval_binding_at(S.EVALBINDINGS, pcunit.ID) = (pevalbinding)
   -- if pevalbinding.CLASS = eps
-def $eval_source_ppstate(S, pcunit) = $ppstart_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST))
+def $eval_source_ppstate_body(S, pcunit) = $ppstart_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST))
   -- if pcunit.ID = 0
   -- if $eval_binding_at(S.EVALBINDINGS, pcunit.ID) = eps
 def $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program) = $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P)

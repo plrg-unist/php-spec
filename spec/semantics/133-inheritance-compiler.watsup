@@ -60,6 +60,94 @@ def $ppclass_prior_early(pclassdesc :: pclassdesc_tail*, ptbytes) = (pclassdesc)
 def $ppclass_prior_early(pclassdesc :: pclassdesc_tail*, ptbytes) = $ppclass_prior_early(pclassdesc_tail*, ptbytes)
   -- if ~(pclassdesc.EARLY /\ $ptlc(pclassdesc.NAME) = $ptlc(ptbytes))
 
+;; Interim bounds until compilation publishes each declaration before later
+;; diagnostics. Notes remain compiler-only and recompile from source bytes.
+dec $ppclass_prior_any(pclassdesc*, ptbytes) : pclassdesc?
+dec $ppmethod_find(pmethoddesc*, ptbytes) : pmethoddesc?
+dec $ppmethod_root_kind(pclassdesc*, pclassdesc, nat) : text?
+def $ppclass_prior_any(eps, ptbytes) = eps
+def $ppclass_prior_any(pclassdesc :: pclassdesc_tail*, ptbytes) = (pclassdesc)
+  -- if $ptlc(pclassdesc.NAME) = $ptlc(ptbytes)
+def $ppclass_prior_any(pclassdesc :: pclassdesc_tail*, ptbytes) = $ppclass_prior_any(pclassdesc_tail*, ptbytes)
+  -- if $ptlc(pclassdesc.NAME) =/= $ptlc(ptbytes)
+dec $ppclass_root_ancestry(pclassdesc*, ptbytes, nat) : bool
+dec $ppclass_root_items(pclassdesc*, pclassdesc*, ptbytes, nat) : bool
+def $ppclass_root_ancestry(pclassdesc_all*, ptbytes, n) = true
+  -- if $(n > 0) /\ $throwable_link_kind(ptbytes) =/= eps
+def $ppclass_root_ancestry(pclassdesc_all*, ptbytes, n) = $ppclass_root_items(pclassdesc_all*, pclassdesc_all*, ptbytes, n)
+  -- if $(n > 0) /\ $throwable_link_kind(ptbytes) = eps
+def $ppclass_root_ancestry(pclassdesc_all*, ptbytes, n) = false -- otherwise
+def $ppclass_root_items(pclassdesc_all*, eps, ptbytes, n) = false
+def $ppclass_root_items(pclassdesc_all*, pclassdesc :: pclassdesc_tail*, ptbytes, n) = true
+  -- if $ptlc(pclassdesc.NAME) = $ptlc(ptbytes)
+  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $ppclass_root_ancestry(pclassdesc_all*, ptbytes_parent, $nabs($(n - 1)))
+def $ppclass_root_items(pclassdesc_all*, pclassdesc :: pclassdesc_tail*, ptbytes, n) = $ppclass_root_items(pclassdesc_all*, pclassdesc_tail*, ptbytes, n)
+  -- if $ptlc(pclassdesc.NAME) =/= $ptlc(ptbytes) \/ pclassdesc.KIND =/= "class" \/ pclassdesc.PARENT = eps
+def $ppclass_root_items(pclassdesc_all*, pclassdesc :: pclassdesc_tail*, ptbytes, n) = $ppclass_root_items(pclassdesc_all*, pclassdesc_tail*, ptbytes, n)
+  -- if $ptlc(pclassdesc.NAME) = $ptlc(ptbytes) /\ pclassdesc.KIND = "class"
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if ~$ppclass_root_ancestry(pclassdesc_all*, ptbytes_parent, $nabs($(n - 1)))
+dec $ppclass_external_parent(pclassdesc*, ptbytes, nat) : ptbytes?
+def $ppclass_external_parent(pclassdesc_all*, ptbytes, n) = (ptbytes)
+  -- if $(n > 0) /\ ~$class_internal(ptbytes)
+  -- if $ppclass_prior_any(pclassdesc_all*, ptbytes) = eps
+def $ppclass_external_parent(pclassdesc_all*, ptbytes, n) = $ppclass_external_parent(pclassdesc_all*, ptbytes_parent, $nabs($(n - 1)))
+  -- if $(n > 0) /\ ~$class_internal(ptbytes)
+  -- if $ppclass_prior_any(pclassdesc_all*, ptbytes) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+def $ppclass_external_parent(pclassdesc_all*, ptbytes, n) = eps -- otherwise
+dec $ppclass_early_root(pclassdesc*, ptbytes) : bool
+def $ppclass_early_root(pclassdesc*, ptbytes) = true
+  -- if $throwable_link_kind(ptbytes) =/= eps
+def $ppclass_early_root(pclassdesc*, ptbytes) = true
+  -- if $throwable_link_kind(ptbytes) = eps
+  -- if $ppclass_prior_early(pclassdesc*, ptbytes) = (pclassdesc_parent)
+  -- if $ppmethod_root_kind(pclassdesc*, pclassdesc_parent, $nabs($(|pclassdesc*| + 1))) =/= eps
+def $ppclass_early_root(pclassdesc*, ptbytes) = false -- otherwise
+dec $ppclass_wakeup_order(ppstate, pcpath, pchheader, bool, pmethoddesc*) : ppstate
+def $ppclass_wakeup_order(P, pcpath, pchheader, true, pmethoddesc*) = P[.WAKEUPORDER = P.WAKEUPORDER ++ [PPWAKEKNOWN n_diagnostics]]
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if $ppmethod_find(pmethoddesc*, $ptascii("__wakeup")) =/= eps
+  -- if $ppclass_early_root(P.CLASSES, ptbytes_parent)
+  -- if n_diagnostics = |P.DIAGNOSTICS|
+def $ppclass_wakeup_order(P, pcpath, pchheader, false, pmethoddesc*) = P[.WAKEUPORDER = P.WAKEUPORDER ++ [PPWAKEEXTERNAL ptbytes_external]]
+  -- if P.EARLY = (pcpath)
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if $ppmethod_find(pmethoddesc*, $ptascii("__wakeup")) =/= eps
+  -- if $ppclass_external_parent(P.CLASSES, ptbytes_parent, $nabs($(|P.CLASSES| + 1))) = (ptbytes_external)
+def $ppclass_wakeup_order(P, pcpath, pchheader, b, pmethoddesc*) = P -- otherwise
+dec $ppwakeup_later(ppwakeuporder*, nat, ppcompletion) : bool
+def $ppwakeup_later(eps, n_diagnostics, ppcompletion) = false
+def $ppwakeup_later((PPWAKEKNOWN n) :: ppwakeuporder_tail*, n_diagnostics, ppcompletion) = true
+  -- if $(n_diagnostics > n) \/ ppcompletion =/= PPCNORMAL
+def $ppwakeup_later((PPWAKEKNOWN n) :: ppwakeuporder_tail*, n_diagnostics, PPCNORMAL) = $ppwakeup_later(ppwakeuporder_tail*, n_diagnostics, PPCNORMAL)
+  -- if $(n_diagnostics <= n)
+def $ppwakeup_later((PPWAKEEXTERNAL ptbytes) :: ppwakeuporder_tail*, n_diagnostics, ppcompletion) = $ppwakeup_later(ppwakeuporder_tail*, n_diagnostics, ppcompletion)
+def $ppwakeup_order_finish(P) = $ppunsupported(P[.DIAGNOSTICS = eps], "early rooted wakeup linking before later compilation diagnostics")
+  -- if $ppwakeup_later(P.WAKEUPORDER, |P.DIAGNOSTICS|, P.COMPLETION)
+def $ppwakeup_order_finish(P) = P -- otherwise
+dec $ppclass_earlier_units(pclassdesc*, nat) : pclassdesc*
+def $ppclass_earlier_units(eps, n_unit) = eps
+def $ppclass_earlier_units(pclassdesc :: pclassdesc_tail*, n_unit) = pclassdesc :: $ppclass_earlier_units(pclassdesc_tail*, n_unit)
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+  -- if $(n < n_unit)
+def $ppclass_earlier_units(pclassdesc :: pclassdesc_tail*, n_unit) = $ppclass_earlier_units(pclassdesc_tail*, n_unit)
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+  -- if $(n >= n_unit)
+dec $ppwakeup_external_root(ppwakeuporder*, pclassdesc*) : bool
+def $ppwakeup_external_root(eps, pclassdesc*) = false
+def $ppwakeup_external_root((PPWAKEEXTERNAL ptbytes) :: ppwakeuporder_tail*, pclassdesc*) = true
+  -- if $ppclass_root_ancestry(pclassdesc*, ptbytes, $nabs($(|pclassdesc*| + 1)))
+def $ppwakeup_external_root((PPWAKEEXTERNAL ptbytes) :: ppwakeuporder_tail*, pclassdesc*) = $ppwakeup_external_root(ppwakeuporder_tail*, pclassdesc*)
+  -- if ~$ppclass_root_ancestry(pclassdesc*, ptbytes, $nabs($(|pclassdesc*| + 1)))
+def $ppwakeup_external_root((PPWAKEKNOWN n) :: ppwakeuporder_tail*, pclassdesc*) = $ppwakeup_external_root(ppwakeuporder_tail*, pclassdesc*)
+def $ppwakeup_order_guard(S, P) = $ppunsupported(P[.DIAGNOSTICS = eps], "external potential-root wakeup early publication")
+  -- if $ppwakeup_external_root(P.WAKEUPORDER, $ppclass_earlier_units(S.CLASSES, P.FOLD.SOURCE.ID))
+def $ppwakeup_order_guard(S, P) = P -- otherwise
+
 dec $ppclass_parent_known(pclassdesc*, ptbytes?) : bool
 def $ppclass_parent_known(pclassdesc*, eps) = true
 def $ppclass_parent_known(pclassdesc*, (ptbytes)) = ($class_internal(ptbytes) \/ $ppclass_prior_early(pclassdesc*, ptbytes) =/= eps)
@@ -140,8 +228,9 @@ def $ppclass_early_link_check(P, pchheader) = P
   -- if pchheader.READONLY = pclassdesc_parent.READONLY
 
 dec $ppclass_inherited_add(ppstate, pcpath, pchheader, bool, ppropertydesc*, pmethoddesc*) : ppstate
-def $ppclass_inherited_add(P, pcpath, pchheader, b, ppropertydesc*, pmethoddesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND pchheader.KIND, NAME pchheader.NAME, PARENT pchheader.PARENT, INTERFACES $ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*), PROPERTIES ppropertydesc*, METHODS pmethoddesc*, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY b, LINE P.LOCATION.LINE }]]
+def $ppclass_inherited_add(P, pcpath, pchheader, b, ppropertydesc*, pmethoddesc*) = P_order[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND pchheader.KIND, NAME pchheader.NAME, PARENT pchheader.PARENT, INTERFACES $ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*), PROPERTIES ppropertydesc*, METHODS pmethoddesc*, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY b, LINE P.LOCATION.LINE }]]
   -- if P.COMPLETION = PPCNORMAL
+  -- if P_order = $ppclass_wakeup_order(P, pcpath, pchheader, b, pmethoddesc*)
 def $ppclass_inherited_add(P, pcpath, pchheader, b, ppropertydesc*, pmethoddesc*) = P -- otherwise
 
 dec $ppclass_inherited(ppstate, pcpath, pchheader, ppropertydesc*, pmethoddesc*) : ppstate
