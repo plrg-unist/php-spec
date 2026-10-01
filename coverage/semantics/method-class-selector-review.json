@@ -1,0 +1,288 @@
+{
+  "result": "bounded-private-static-method-selector-repair-and-fdef-bridge-accepted-installation-pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "behavior": [
+    "Scoped object selectors normalize to canonical class identity before computed-name evaluation; direct static selection uses a class/method target without an owning selector object.",
+    "Fetched direct receivers remain owned through computed-name evaluation until the selected descriptor is known static. Receiver-bearing calls and scoped nonstatic receivers retain their owners.",
+    "Direct static captures authenticate lexical private-parent selection separately from child effective lookup; current and saved call contexts require exact target INSTANCE identity."
+  ],
+  "private_implementation": {
+    "base": "e458517ebbac30e7545ce57e495840978caf2dac",
+    "semantic_source_freeze": "be42625fca6120ed6f234f48fb7c13219c000ad5",
+    "fixture_corrected_freeze": "8abb326f168bb7dbea500152018699ca0b7b91ef",
+    "source_fingerprint": "b6427b6c76a6b94c7e07991b950c4df87a78b49dce05c6c7d0b02e016aaba686",
+    "corrected_fingerprint": "3f8fc8662e0486d33753bbd8af74e1dacc87503ed2c914dc78bc73d4e80fe0f2",
+    "fingerprint_files": 1266
+  },
+  "private_gates": {
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-current/.tools/method-runtime-x0fqjdrv/report.json",
+      "sha256": "735fb68f1a8a1549d40d4368db90ac58f7b758bc02809996d6ee9000eaa3edcd",
+      "cases": 11,
+      "result": "pass",
+      "snapshot": "be426"
+    },
+    "source_native_audit": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-current/.tools/calls-review-method-static-source-be426.json",
+      "sha256": "3d429dd55eb4b69b24befd288c752c6ca1b995e9073f3f66326ecaf3ff268325"
+    },
+    "full_paused_report": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-current/.tools/closure-call-protocol-ipz8xquz/report.json",
+      "sha256": "9e42d7490b5de5b7c10fe5e3e97fc245d4f836e84ddaff6bf46c1ae61e478492",
+      "stages": 14,
+      "assertions": 272,
+      "result": "fail",
+      "stable": true,
+      "passing_subset": {
+        "stages": 13,
+        "assertions": 252
+      },
+      "failure": "The remaining 20-assertion fixture omitted METHOD_RESULT from the scoped call tail."
+    },
+    "full_paused_raw_audit": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-current/.tools/calls-review-method-static-paused-be426.json",
+      "sha256": "7c9d7a6518e7d846e7608ba92b916240bfbfcae6006e07dea8fe9ba242cb8410"
+    },
+    "affected_replay": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-current/.tools/closure-call-protocol-n66yzj0x/report.json",
+      "sha256": "93d2b30af48c41aa0050709dee859397869d67239b28959fd65e59cf3d08a36f",
+      "snapshot": "8abb",
+      "stages": 1,
+      "assertions": 20,
+      "result": "pass",
+      "stable": true
+    },
+    "independent_acceptance": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-current/.tools/calls-independent-method-static-repair-8abb.json",
+      "sha256": "0bc46dc15b12c7412dba754e4183615d1ae14f87b4fe1a0cd610bece83616995"
+    },
+    "scope": "Source11 at be426, unaffected13/252 within the failed full report, and corrected1/20 at8abb are separate identities. No whole14 PASS report or installed agreement is inferred."
+  },
+  "preserved_diagnostics": {
+    "ownership_baseline": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-current/.tools/method-runtime-jq7sqv_n/report.json",
+      "sha256": "6979e9af94d480eda4687c517ca74aa67197f74e3e797bbbdf1e1d8c05c0bc51",
+      "result": "fail",
+      "cases": 6,
+      "actual": "Three EF|1 lifetime mismatches against native WF|s, with three separate agreements."
+    },
+    "ownership_baseline_audit": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-current/.tools/calls-review-method-class-selector-baseline-e458.json",
+      "sha256": "088be479bb26b4770d55d5aab3c3d12864822cbbed35f16c3ed6604d26182219"
+    },
+    "private_capture_source": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-current/.tools/method-runtime-jz4r3yd4/report.json",
+      "sha256": "c5345b7e5c7c7e4d9067f69df371d631981192a1861e14faba4e535c78520adb",
+      "model_status": "interpreter_failure",
+      "runner_exit_status": 1,
+      "native_stdout": "C",
+      "native_exit_status": 0
+    },
+    "context_capture_defect_probe": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-current/.tools/closure-call-protocol-42ajxpbx/report.json",
+      "sha256": "6c40d4f9952530ba98be4105daded25327e9219bc6bbd64b38837bc72f9a593e",
+      "stages": 2,
+      "assertions": 43,
+      "result": "pass-as-defect-demonstration",
+      "scope": "Genuine private wrapper rejected; forged live static INSTANCE accepted before repair. This is not fixed-behavior acceptance."
+    },
+    "context_capture_defect_audit": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-current/.tools/calls-review-method-static-auth-diagnostic-f86.json",
+      "sha256": "fb2cbe6200e57338e621bef3ffb4082c885669b3a75c9b7ecab830ea58f43a5e"
+    }
+  },
+  "current_projection": {
+    "base": "8bbfb882923a114490c448b656ed84db616e135b",
+    "semantic_projection": "6c7e4b3ed3b1f193f558bc0c46452d288e369fd5",
+    "author_proof": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/.tools/method-class-selector-8bb-projection.json",
+      "sha256": "db057adcdf434deae744eb7ec7e03a300cc5fef35e452003838cf20f74838764"
+    },
+    "independent_proof": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/.tools/calls-review-method-static-projection-8bb.json",
+      "sha256": "758aa3ad7cc67b2a0a5d50fd1b6f62e447f97e88018865755a0be17107d28b5c"
+    },
+    "scope": "One new private worktree preserves historical8abb. Canonical storage declaration placement is retained with only STATIC_METHOD_TARGET added. Reviewed142/173/catalogue/protocol bytes are unchanged;84 additionally preserves exactly the installed CONFIG call-line rules. Runtime and 43 native files were copied byte-identically. This historical8bb projection is preserved separately from later_fdef."
+  },
+  "current_bridge": {
+    "result": "bounded-historical-8bb-base-bridge-accepted",
+    "catalogue": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/tests/semantics/method_class_selector_current_bridge_cases.json",
+      "sha256": "a7364a6e9d1e4b8bed172a2abd1dfaa4499bc6216eded51885202fa90d1ac0bb"
+    },
+    "driver": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/tests/semantics/method_class_selector_current_bridge_protocol.py",
+      "sha256": "cae46d73c47f4117b2174312693c605292fdc1d1d8048aadcb3365c593cd8a9d"
+    },
+    "helper": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/tests/semantics/include_mutable_protocol.py",
+      "sha256": "6a9006371bbff50bf98d0eaa3d920b7bc2215e2e341b06d437d8703acdc1c4c1"
+    },
+    "native_ordinary": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/.tools/method-current-bridge-native-m73bq31s/selected-static-default-cache/native.json",
+      "sha256": "4191e2c7df7f9efdf0e0113626b44d600c864a7559196f9c69638bee63ae8f04"
+    },
+    "native_config": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/.tools/method-current-bridge-native-m73bq31s/config-entered-instance/native.json",
+      "sha256": "f55b1e2539b055fedd66f59167d61a88c96522ee7e68ee96662beb7d342b0aec"
+    },
+    "scope": "Source1 remains at0d170/d138; finite2/59 is at36c/bd50. The original attempted1 setup failure remains separate; no failed full2 state gate is inferred. Ordinary source WDF|s covers selected static receiver retirement, typed static storage and a global deferred Closure default. Finite entered CONFIG authenticates METHOD_TARGET INSTANCE=eps and rejects a live receiver substituted as INSTANCE; native CONFIG TCR is not full-source model agreement.",
+    "original_preflight": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/.tools/calls-review-method-static-current-bridge-preflight-6c7.json",
+      "sha256": "936dfac27048d2f55be117b7311daee32d44d588643088a50023ea58fd16f782"
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/.tools/method-runtime-k9dnl0a4/report.json",
+      "sha256": "4396b10883b4b9f974685c4f0710ba3dbb7e5f58b24a25b5fea701fd2e15c700",
+      "freeze": "0d1709f7931815b6288da84bd6b02a648b5816fc",
+      "fingerprint": "d1386cb5c82c25b5509f298c62e723e5e3e82209f8f92f17525a837facac4f02",
+      "cases": 1,
+      "result": "pass"
+    },
+    "paused": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/.tools/include-mutable-protocol-y5fhb8xx/report.json",
+      "sha256": "87f8e2e27694d07557a8ac0181ab48d57bb00326716a8d807cdf30a42c54de9d",
+      "freeze": "36c9636a6dd17eee6565c2f03bc27168f14f5552",
+      "fingerprint": "bd50d80815c094cc210742fba8c5416fb9e169948b279fc823351ad3f32423cd",
+      "stages": 2,
+      "assertions": 59,
+      "inputs": 206,
+      "result": "pass",
+      "input_changes": []
+    },
+    "setup_failure": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/.tools/calls-review-method-static-current-fixture-failure-0d170.json",
+      "sha256": "ee3add7925626e606322bc859c33e8894cd208160ab9be67266fd2dd337b9fe1",
+      "category": "generated-body-elaboration-failure",
+      "attempted_stages": 1,
+      "state_assertions_executed": false,
+      "unattempted": "CONFIG stage; helper aborted before a structured full report."
+    },
+    "fixture_correction": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/.tools/calls-review-method-static-current-fixture-correction.json",
+      "sha256": "aba2b20b056ae7ad3e8e3e8677af6943bc689f9ed2bde591b72611f4d2c77f5c",
+      "scope": "Only five carrier-binding clauses were added. Semantics, helper, source and runtime bytes are unchanged."
+    },
+    "full_body_elaboration": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/.tools/method-static-body-elaboration-c7wsaip4/report.json",
+      "sha256": "d8889d762ddef7f52811c7e488956f51116c0cf1e25dbdd7e1fd35dd690e8c32",
+      "phase": "elaboration-only",
+      "state_assertions_executed": false,
+      "scope": "Both complete corrected bodies compile; the original unbound full-body control rejects. This is separate from runtime pause acceptance."
+    },
+    "independent_acceptance": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-latest/.tools/calls-independent-method-static-current-bridge-36c.json",
+      "sha256": "454d469de6d241e8e6531239d5cc3d70b85c533128f5e447429fb2b9fc271bab"
+    }
+  },
+  "canonical_integration": {
+    "result": "pending",
+    "scope": "Private fdef source2/finite2/59 bounded acceptance is complete. Exact clean candidate approval and focused actual installed gates are required before installation acceptance."
+  },
+  "provenance_limits": [
+    "Private native11 exact source/PHP/profile/commands/full stdout/stderr/exit tuples are audited. Six records pin cwd and five older records omit it; LC_ALL/TZ overrides alone are recorded and other inherited host environment is unarchived.",
+    "Both fresh bridge native records pin command/cwd/PHP/profile and LC_ALL/TZ, with other inherited host environment unarchived.",
+    "Existing verified adapter/runtime reused; no fresh full offline dependency rebuild or full callable/core equivalence proof."
+  ],
+  "required_followups": {
+    "dynamic_rebound_private_capture": {
+      "result": "separate-changed-scope-repair-accepted-privately-later-base-install-and-called-channels-open",
+      "stdout": "WA|s",
+      "receiver_lifetime_native": {
+        "path": "/home/user/workspace/php-spec/.tools/calls-review-rebound-private-lifetime-native-7jluh9hv/native.json",
+        "sha256": "4730bf593b0ef4cadb195fc217a18ca7cdaa1c15826b8daf267daaeb5bd124dd"
+      },
+      "producer_lifetime_native": {
+        "path": "/home/user/workspace/php-spec/.tools/calls-review-rebound-private-producer-native-ifjl6god/native.json",
+        "sha256": "2b6d4c665992b528a88919d052fd531610ce2b632d4625f8120ee3406cae606a"
+      },
+      "scope": "The original source failure and source-derived guard diagnosis are preserved separately. Non-owning executed-scope capture evidence is accepted only in a separate private source16/paused11 milestone; its later canonical projection/install and unchanged-lexical called-class channels remain open. No rebound certificate is imported by this142 selector candidate.",
+      "source_failure": {
+        "path": "/home/user/workspace/php-spec/.tools/rebound-method-capture-current/.tools/method-runtime-nbytuprh/report.json",
+        "sha256": "810c4dcb260260c5bb79c92803004127d7c24686bb5cd045fdba27853f48ee7c",
+        "freeze": "36c9636a6dd17eee6565c2f03bc27168f14f5552",
+        "fingerprint": "bd50d80815c094cc210742fba8c5416fb9e169948b279fc823351ad3f32423cd",
+        "model_status": "interpreter_failure",
+        "runner_exit_status": 1
+      },
+      "source_failure_audit": {
+        "path": "/home/user/workspace/php-spec/.tools/rebound-method-capture-current/.tools/calls-review-rebound-private-source-failure-36c.json",
+        "sha256": "1dfcc7b1be075d49938b43b8c7da4e9a0332f75269ba0d1e59fe82bf4ecf6fb5"
+      },
+      "separate_private_review": {
+        "path": "/home/user/workspace/php-spec/.tools/rebound-method-capture-repair/.tools/calls-independent-rebound-capture-repair-ee8.json",
+        "sha256": "c4804bc77eec49521dab635d6d91293dfb1ee215099803f70ac9bc676cdff0ba"
+      },
+      "separate_called_diagnostic": {
+        "path": "/home/user/workspace/php-spec/.tools/rebound-called-class-current/.tools/calls-review-rebound-called-class-diagnostic-ee8.json",
+        "sha256": "583f6232001715d30c82d626f4c2b09d2e171010a717ff619abe09d48e666568"
+      }
+    },
+    "other": [
+      "Closure::call unpacking, array callables and source __invoke.",
+      "Broader method/capture/lifecycle cases, complete-core validation and fresh offline rebuild."
+    ]
+  },
+  "recovery": "Raw reports and native archives remain ignored at the recorded absolute paths. The original be426 failed14 and corrected8abb replay retain their bytes; regenerate maintained source/paused cases with the pinned profile and verified runtime, preserving all classifications.",
+  "later_fdef": {
+    "result": "bounded-current-base-bridge-independently-accepted",
+    "base": "fdef6285d0b5d42832eef5d5fd790238e22ee28f",
+    "freeze": "3dcce327753eaa110b04fc5575b950867e2b741e",
+    "fingerprint": {
+      "sha256": "87aa3f33e28f838b95edada4e164bf1754cbcda72350527c4e6c97d493f2305c",
+      "files": 1294,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "projection": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-fdef/.tools/method-static-fdef-projection.json",
+      "sha256": "ae08adae564cf3c113bcddf34c353a1a58034637b674d64dc29ecf00170cebce"
+    },
+    "provision": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-fdef/.tools/method-static-fdef-provision.json",
+      "sha256": "d8613f45861315c4816074e6c45d402f0a537064ba511f214fa5a132e1e428f7"
+    },
+    "preflight": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-fdef/.tools/calls-review-method-static-fdef-preflight.json",
+      "sha256": "4953dda19e9e968427871d141877d4176584e240fd807db3f8c7142bc0140c68"
+    },
+    "clean_receipt": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-fdef/.tools/calls-review-method-static-fdef-clean-3dc.json",
+      "sha256": "98c039ea0e6a4e06cfcc6e876e9381d2b7b9c166f147304f3547bbdb012281d8"
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-fdef/.tools/method-runtime-pn3k4og2/report.json",
+      "sha256": "69c581446075c2d6e7633120504710f1c621d951f092507b9ecd45d5fb42fc0f",
+      "cases": 2,
+      "result": "pass",
+      "inputs": 188
+    },
+    "paused": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-fdef/.tools/include-mutable-protocol-dpq25i9k/report.json",
+      "sha256": "3af3b4e23b34c531c3e0c1665663d3eb9298bb75d1f361bf95202d1b8208d6df",
+      "stages": 2,
+      "assertions": 59,
+      "result": "pass",
+      "inputs": 207,
+      "input_changes": []
+    },
+    "scope": "One projection of accepted e42 onto released fdef preserves installed189 registry/layout, ordinary83 origin retirement/unwind guards, CONFIG hooks and maintained runner/module inputs. Source2 covers WDF retirement/default/property coexistence and fatal STATIC method trace. Finite2/59 checks retired selector/cache and entered CONFIG INSTANCE with global forgery rejection. CONFIG stages use explicit finite initialization; native TCR alone is not full-source model agreement. Earlier source11 and mixed13+1 paused acceptance keep their original identities; no broad matrix rerun or rebound repair imported.",
+    "independent_review": {
+      "path": "/home/user/workspace/php-spec/.tools/method-class-selector-fdef/.tools/calls-independent-method-static-fdef-bridge-3dc.json",
+      "sha256": "fac5d978c5d99ed3423276e6f572c106e9d7819b4c011d44c1a93b6e4c97e43b"
+    }
+  }
+}

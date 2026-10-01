@@ -249,10 +249,13 @@ route. Typed object conversion remains a separate consumer.
 short-circuits only the active property/dimension chain, skips later names and
 keys, and preserves quiet probes and by-reference argument error ordering. Its
 [review](coverage/semantics/nullsafe-properties-review.json) binds source,
-compiler and paused-state controls. [Public instance methods and constructors](docs/semantics/SOURCE-METHODS.md)
-now execute ordinary/nullsafe calls, inherited dispatch, bound closures and
-`Closure->__invoke` trampolines. Nonpublic methods, static and readonly
-members, hooks and user magic methods remain open.
+compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
+execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
+bound closures and `Closure->__invoke` trampolines. A bounded
+[selector repair](coverage/semantics/method-class-selector-review.json) preserves
+static class identity after object retirement. Its current source2 and finite2
+checks pass; installation and rebound capture authorization remain separate.
+Readonly members, hooks and user magic methods remain open.
 Ordinary [`Closure::call`](docs/semantics/CLOSURE-CALL.md) temporarily changes
 receiver/scope, evaluates arguments before binding validation, preserves original
 wrapper arguments and returns values from reference-returning closures. Its

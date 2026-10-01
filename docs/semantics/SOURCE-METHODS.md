@@ -51,10 +51,12 @@ uses that arm. Class expressions resolve their type and lookup before a
 computed method name; literal class lookup follows the computed name.
 
 Scoped selected tasks retain requested, declaring and called class origins,
-the receiver, and the original class selector. Dynamic object selectors stay
-rooted during computed-name evaluation, argument sending and entered/saved
-frames. Source checks revalidate class identity, receiver, visibility and
-forwarding context at those boundaries. A fully correlated forgery of a
+the genuine receiver, and the captured class selector. An object class selector
+normalizes to the canonical class name before computed-name evaluation; ordinary
+owners determine its lifetime. Direct calls use `STATIC_METHOD_TARGET` after
+selecting a static descriptor, retaining class identity without an object root.
+Source checks revalidate class identity, receiver, visibility and forwarding
+context after selector retirement. A fully correlated forgery of a
 completed dynamic class string or method name and all matching target origins
 cannot be reconstructed from the admitted paused state; the protocol records
 this limit explicitly.
@@ -64,12 +66,13 @@ selection, before any argument send or method entry. Capture checks visibility
 at that point and stores the selected declaring descriptor, called class and
 nonstatic bound receiver in an owned `Closure` object. Rebinding the source
 variable does not change that receiver. Static captures retain their called
-class without retaining an object class selector; a temporary selector stays
-rooted through conversion and is released afterward. Invocation uses the
+class without retaining an object class selector. A fetched direct receiver
+stays owned through computed-name evaluation until static selection releases
+that temporary owner. Invocation uses the
 captured method body and shared declaring-origin static cells. Its trace frame
 names the declaring class and method directly, with `->` for nonstatic methods
 and `::` for static methods, without an extra `Closure->__invoke` frame.
-Literal source selectors and method names, effective lookup, visibility and
+Literal source selectors and method names, executed class selection, visibility and
 live captured receiver are rechecked in paused tasks and closure rows. As with
 scoped calls, a correlated substitution of a completed dynamic selector or
 method name cannot be reconstructed after its expression has returned.
@@ -77,12 +80,14 @@ method name cannot be reconstructed after its expression has returned.
 Ordinary and nullsafe calls evaluate receiver and computed name in the pinned
 order. A CV receiver can be read after name effects; a fetched property receiver
 already denotes its value. Null skips the active nullsafe chain before names and
-arguments. The selected target then owns its receiver throughout argument sending.
+arguments. Receiver-bearing targets own their receiver throughout argument sending.
 Calls reuse the positional/named/unpacked/variadic and reference protocols.
 Construction allocates before arguments, calls the effective inherited constructor,
 and retains the new object independently of the constructor's ignored return.
 
 Contexts distinguish closure identity, receiver, lexical class and called class.
+Current and saved contexts require `INSTANCE` to match their selected target;
+static and ordinary method calls have no closure instance identity.
 `$this`, `self::class`, `parent::class`, `static::class`, `__CLASS__` and `__METHOD__`
 use those channels. Explicit closures/arrows inherit applicable class context and
 nonstatic receivers; named nested functions clear it. The sparse `CLOSURESCOPES`
@@ -107,6 +112,16 @@ extra wrapper trace and terminal cleanup. Diagnostic names containing NUL bytes
 use native C-string display while lookup and argument identities retain full bytes.
 
 ## Validation and remaining scope
+
+The [selector repair review](../../coverage/semantics/method-class-selector-review.json)
+keeps eleven historical source agreements, thirteen passing stages from a failed
+fourteen-stage report, and its corrected affected stage separate. The current
+fdef projection preserves installed interface, CONFIG and error-unwind rules;
+two exact source tuples and two finite stages/59 assertions pass. Earlier setup
+and fixture failures keep their identities. Installation is pending. Rebound
+private capture authorization is reviewed in a separate private milestone;
+its later projection, installation and unchanged-lexical called-class channels
+remain open.
 
 Maintained commands are `method_compiler.py`, `method_runtime.py`,
 `method_visibility_protocol.py`, `method_modifier_phase.py` and

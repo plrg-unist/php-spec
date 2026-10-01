@@ -81,9 +81,11 @@ The independent private lanes currently include:
   projection is reviewed but its semantic bridges are pending.
   [Private include ledger](.tools/include-config-ini-option-current/coverage/semantics/include-stringable-ini-option-review.json)
   · [pipe ledger](.tools/include-config-pipe-string-current/coverage/semantics/include-config-pipe-string-review.json).
-- Calls: static-method142 and a bounded called-class mixed-snapshot
-  aggregate are privately reviewed; installation and retained receiver-free116
-  coverage remain pending. Callable capture remains open.
+- Calls: static-method142 has reviewed fdef source2 and finite2/59 evidence;
+  installation remains pending. The called-class mixed-snapshot aggregate is
+  privately reviewed, with receiver-free116 independent coverage still pending.
+  Callable capture remains open.
+  [Selector ledger](coverage/semantics/method-class-selector-review.json).
 - Properties: private197 review **a778904d** accepts combined-fdef source1,
   cleanup55 and body elaboration, separately from historical21/eight572.
   Asymmetric static access200/201 is the next lane; delayed writes remain open.
