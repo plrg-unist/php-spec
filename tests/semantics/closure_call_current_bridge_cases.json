@@ -1,0 +1,38 @@
+[
+  {
+    "id": "call-current-selected-return-callback",
+    "source": "<?php class A {} class R { function __toString():string {global $fn; $fn=\"other\"; echo \"T\";return \"7\";} } function sink($x){echo \"S\";return $x;} function other($x){return \"O\";} $fn=\"sink\"; $c=function():string {try{return new R;}finally{echo \"F\";}}; echo $fn($c->call(new A)),\":\",$fn;",
+    "source_sha256": "c5f12cfd6d3263e6ba82ca2f4179ba33a9ac63ad155dfd77d424c10e3ec18f48",
+    "status": "normal",
+    "stdout_base64": "VEZTNzpvdGhlcg==",
+    "exit_status": 0,
+    "native_group": ".tools/closure-call-current-bridge-native-th2a8wdd/native.json",
+    "native_raw_sha256": "7174633b1c0b312b0a3699598d3227e3b26a4f3370d12ed4f28ded2d185b58a6",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "stderr_template_base64": ""
+  },
+  {
+    "id": "call-current-reference-finally-unwrapped",
+    "source": "<?php class A {} $x=1; $c=function &()use (&$x){try{return $x;}finally{echo \"F\";}}; $v=&$c->call(new A); $v=2; echo $x;",
+    "source_sha256": "a9c9cc6dabdb9dce40fa32a312a96012c998bdb712835f56abcd0b830dd3b5d6",
+    "status": "normal",
+    "stdout_base64": "RjE=",
+    "exit_status": 0,
+    "native_group": ".tools/closure-call-current-bridge-native-th2a8wdd/native.json",
+    "native_raw_sha256": "7174633b1c0b312b0a3699598d3227e3b26a4f3370d12ed4f28ded2d185b58a6",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "stderr_template_base64": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgYXNzaWduZWQgYnkgcmVmZXJlbmNlIGluIHtGSUxFfSBvbiBsaW5lIDEK"
+  },
+  {
+    "id": "call-current-unused-reference-finally",
+    "source": "<?php class A {} $x=1; $c=function &()use (&$x){try{return $x;}finally{echo \"F\";}}; $c->call(new A); echo $x;",
+    "source_sha256": "5d7148f9682530fdae67ea7c612dccc2ed05bfe187b1eab8415457141c4511e7",
+    "status": "normal",
+    "stdout_base64": "RjE=",
+    "exit_status": 0,
+    "native_group": ".tools/closure-call-unused-finally-native-ois5_r_3/native.json",
+    "native_raw_sha256": "3b27cf3608c915cdee230924a1b10134c1b5558686b4542f6c060f8b617bee5c",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json",
+    "stderr_template_base64": ""
+  }
+]

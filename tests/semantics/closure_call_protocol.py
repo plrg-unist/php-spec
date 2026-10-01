@@ -234,16 +234,17 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def run():
+def run(cases=None, extra_inputs=()):
+    cases = CASES if cases is None else cases
     output = Path(tempfile.mkdtemp(prefix='closure-call-protocol-', dir=ROOT / '.tools'))
     inputs = [*MODULES, ROOT / 'spec/semantics/modules.json', ROOT / 'spec/php.watsup',
               ROOT / 'spec/schema.json', ROOT / 'frontend/worker.php',
               ROOT / '_build/default/adapter/main.exe',
               ROOT / 'tests/semantics/_build/default/numeric_runner.exe',
-              ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so', Path(__file__)]
+              ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so', Path(__file__), *extra_inputs]
     before = {str(path.relative_to(ROOT)): digest(path) for path in inputs}
     records = []
-    for name, case in CASES.items():
+    for name, case in cases.items():
         directory = output / name
         directory.mkdir()
         source = directory / 'source.php'
