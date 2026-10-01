@@ -54,9 +54,8 @@ and four-stage passing reports are historical: their subset missed argument
 ordering and trace defects and does not establish current acceptance.
 
 The [argument extension review](../../coverage/semantics/closure-call-arguments-review.json)
-records current private named receiver and reference-formal source/state gates;
-the focused later-base forwarding/exit bridge passes; canonical installation
-remains pending. A separate
+separates private named receiver and reference-formal gates from the focused
+installed forwarding/exit source/state checks. A separate
 source-derived deferred-default cache counterexample remains a required generic
 closure/default repair; these forwarding catalogues do not cover that branch.
 

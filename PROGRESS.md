@@ -26,8 +26,9 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 ## Current checkpoint
 
-The current semantic code checkpoint is **aed684e4a** (ordinary `Closure::call`),
-following selected configuration calls **7b1392648**, unused reference-return
+The current semantic code checkpoint is **9cdadc172** (named/reference `Closure::call`),
+following exit-origin cleanup **b54f984b4**, ordinary calls **aed684e4a**,
+selected configuration calls **7b1392648**, unused reference-return
 retention **08b929694**, finite-mode
 dispatch guard **5d717bbeb**, mutable file context **35b226471** and
 provider-fixture repair **badc320f28b**. It retains weak typed string returns, interface,
@@ -90,11 +91,10 @@ remain historical; the maintained catalogue now contains 36 sources.
 Ordinary `Closure::call` 182 has passed bounded source, paused and compatibility
 review, with focused installed selected-call, typed-string callback and
 reference-return finalizer checks. Private36-source/7-stage evidence retains its
-earlier executable snapshot. Named receivers, unpacking and reference formals
-remain active extensions. Current private named receiver sources11/stages5 and
-reference-formal sources14/stages9 pass on the verified current adapter; canonical
-projection has a passing focused forwarding/exit bridge; installed identity
-remains pending. A source-derived deferred
+earlier executable snapshot. Named receivers and isolated reference formals are
+installed with a focused three-source/two-stage forwarding/exit bridge; their
+private sources11/stages5 and sources14/stages9 retain prior snapshot identities.
+Unpacking remains open. A source-derived deferred
 real-closure default cache still fails its global state guard and requires a
 separate generic91 repair.
 [Ledger](coverage/semantics/closure-call-review.json).
