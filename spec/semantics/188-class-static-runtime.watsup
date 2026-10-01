@@ -86,11 +86,13 @@ def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = $throw
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
   -- if $class_static_info(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if ~$class_static_accessible(S, ppropertydesc)
+;; Typed property syntax verifies its declaration before assigning a live alias.
 def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = $write_cell_checked(S, n_cell, pvalue, z)
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
   -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
+  -- if ppropertydesc.TYPE = eps
 def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = S[.CLASSSTATICS = $class_static_set(S.CLASSSTATICS, ppropertydesc.ORIGIN, PROP_VALUE (DIRECT pvalue))][.RESULT = KNOWN pvalue]
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
@@ -101,7 +103,6 @@ def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = $write
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
-  -- if ~$property_alias(pclassstatic.STATE)
   -- if ppropertydesc.TYPE =/= eps
   -- if ptypeconversion = $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S))
   -- if ptypeconversion =/= TYPEREJECT
@@ -114,7 +115,6 @@ def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = S_conv
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
-  -- if ~$property_alias(pclassstatic.STATE)
   -- if ppropertydesc.TYPE =/= eps
   -- if ptypeconversion = $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S))
   -- if ptypeconversion =/= TYPEREJECT
@@ -127,7 +127,6 @@ def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = S_conv
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
-  -- if ~$property_alias(pclassstatic.STATE)
   -- if ppropertydesc.TYPE =/= eps
   -- if ptypeconversion = $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S))
   -- if ptypeconversion =/= TYPEREJECT
@@ -137,7 +136,6 @@ def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = $throw
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
-  -- if ~$property_alias(pclassstatic.STATE)
   -- if $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S)) = TYPEREJECT
 def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED "class static storage integrity"] -- otherwise
 
@@ -271,9 +269,15 @@ def $location_reference(S, CLASS_STATIC ppropertyid) = false
 def $location_reference(S, CLASS_STATIC ppropertyid) = false
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
   -- if pclassstatic.STATE = PROP_VALUE (DIRECT pvalue)
+def $location_write(S, CLASS_STATIC ppropertyid, pvalue) = $write_cell_checked(S, n_cell, pvalue, $property_current_line(S))
+  -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
+  -- if $class_static_accessible(S, ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
 def $location_write(S, CLASS_STATIC ppropertyid, pvalue) = $class_static_store_value(S, porigin_decl, ppropertydesc.NAME, pvalue, $property_current_line(S))
   -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
   -- if $property_declaring_class(S.CLASSES, ppropertyid) = (porigin_decl)
+  -- if ~$class_static_accessible(S, ppropertydesc) \/ $update_alias_cell(S, CLASS_STATIC ppropertyid) = eps
 
 def $array_auto_init_check(S, CLASS_STATIC ppropertyid, z) = $array_auto_init_check(S, ROOT n_cell, z)
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
