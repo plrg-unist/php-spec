@@ -1,0 +1,14 @@
+[
+  {
+    "id": "default-cache-typed-static-forwarding",
+    "native_group": ".tools/default-cache-static-bridge-native-w3xtc_js/native.json",
+    "native_raw_sha256": "339c7b97fc48f3ed420a834bac96d5709a89ff31fd8d9f790a982d9db320396f",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php const C=1;const D=2;class A{public static string $p=\"\";} $c=function($x=C){self::$p=$x;};$c->call(new A);echo A::$p===\"1\"?\"S\":\"N\";$c->call(new A);echo A::$p===\"1\"?\"S\":\"N\";$c=null;$d=fn($x=D)=>A::$p=$x;$d();echo A::$p===\"2\"?\"A\":\"N\";$d=null;echo \"R\";",
+    "source_sha256": "5e2dd0310763386183b0811dd8bfdb9ec56cd33e5d9b7fc02cdfb5cf3fbdc156",
+    "status": "normal",
+    "stdout_base64": "U1NBUg==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  }
+]
