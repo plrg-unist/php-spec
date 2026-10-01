@@ -35,7 +35,7 @@ CASES = {
             'S_bad = S[.TODO = (CLOSURE_CALL_FORWARD pclosurecall 1 pnamedargs_bad n_cell_a) :: ptask_tail*]',
             '~$call_task_valid(S_bad, CLOSURE_CALL_FORWARD pclosurecall 1 pnamedargs_bad n_cell_a)',
             '~$call_descriptors_valid(S_bad)',
-            '~$closure_state_valid(S_bad)',
+            '$closure_state_valid(S_bad)',
             '~$call_task_valid(S, CLOSURE_CALL_FORWARD pclosurecall[.LINE = $(pclosurecall.LINE + 100)] 0 pnamedargs n_base)',
         ],
     },
