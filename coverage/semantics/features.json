@@ -7254,15 +7254,42 @@
     {
       "id": "calls.static-variables",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+      "implementation": [
+        "spec/semantics/111-function-statics-compiler.watsup",
+        "spec/semantics/112-function-statics.watsup",
+        "spec/semantics/113-main-statics-compiler.watsup",
+        "spec/semantics/114-main-statics.watsup",
+        "spec/semantics/115-closure-compiler.watsup",
+        "spec/semantics/116-closures.watsup"
       ],
-      "review": null,
+      "helper_tests": [
+        "tests/semantics/function_static_compiler.py",
+        "tests/semantics/function_statics_protocol.py",
+        "tests/semantics/function_statics_state.py",
+        "tests/semantics/main_static_compiler.py",
+        "tests/semantics/main_statics_protocol.py",
+        "tests/semantics/main_statics_state.py",
+        "tests/semantics/closure_compiler.py",
+        "tests/semantics/closures_protocol.py",
+        "tests/semantics/closures_state.py"
+      ],
+      "source_tests": [
+        "tests/semantics/function_statics.py",
+        "tests/semantics/main_statics.py",
+        "tests/semantics/closures.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "coverage/semantics/function-statics-review.json",
+        "coverage/semantics/main-statics-review.json",
+        "coverage/semantics/closures-review.json",
+        "docs/semantics/SOURCE-FUNCTION-STATICS.md",
+        "docs/semantics/SOURCE-MAIN-STATICS.md",
+        "docs/semantics/SOURCE-CLOSURES.md"
+      ],
+      "review": "Bounded named111/112, initial-main113/114 and explicit-Closure115/116 statics are independently accepted: initialized persistent reference cells, null initialization, recursive winners and distinct function/main/instance storage. Their historical 999/048498dc, 1008/2829c2a0 and 1017/9325300f evidence stays separate. Method/inherited, bind and clone interactions have further bounded milestones; broader trait/inheritance sharing, repeated include/eval activation, lifecycle/GC and full current-source static branch closure remain required. No complete static-variable or callable-family acceptance.",
       "planned_source_tests": [
         "tests/semantics/conformance/function-statics.php"
       ]

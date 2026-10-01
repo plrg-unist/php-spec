@@ -83,11 +83,13 @@ File inclusion still needs named/unpacked object operands for `chdir`, broader
 OS/INI behavior and transformed wrappers. Rocq interaction-tree semantics and
 BOLA proofs follow completed PHP core semantics.
 
-The inventory's pending `calls.static-variables` row still needs reconciliation
-with accepted bounded [named](coverage/semantics/function-statics-review.json),
+The inventory marks `calls.static-variables` partial, binding the accepted
+[named](coverage/semantics/function-statics-review.json),
 [main](coverage/semantics/main-statics-review.json) and
-[Closure](coverage/semantics/closures-review.json) bindings; wider static-variable
-obligations remain open.
+[Closure](coverage/semantics/closures-review.json) static-cell milestones to their
+historical evidence. Broader trait/inheritance sharing, clone/bind interactions,
+include/eval reactivation and lifecycle/GC still need complete current-source
+static coverage.
 
 ## Validation limits
 
