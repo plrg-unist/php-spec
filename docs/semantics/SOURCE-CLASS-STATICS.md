@@ -22,9 +22,12 @@ Quiet lookup treats denial, nonstatic declarations, absence and uninitialized
 storage as absent. Names remain case sensitive; class strings use the ordinary
 case-insensitive class lookup and do not inherit lexical import aliases.
 
-The class selector is evaluated before a computed property name. A paired
-`STATIC_PROP_CAPTURE` retains the exact selector and source occurrence while
-`STATIC_PROP_NAME` consumes the name. The capture alone owns its selector root.
+The class selector is evaluated before a computed property name. An object
+selector becomes its selected class name; it does not retain the object. Losing
+the object's last owner removes its instance-property type sources before the
+name callback writes through an alias. A paired `STATIC_PROP_CAPTURE` records
+the class name and source occurrence while `STATIC_PROP_NAME` consumes the name.
+Both markers carry metadata and add no heap root.
 Current and saved callback queues require matching adjacent pairs and exactly
 one capture per occurrence. Changing a consuming marker, deleting either half,
 duplicating a pair or changing its source/line fails the consistency checks.
@@ -51,6 +54,7 @@ left by reference-return conversion needs separate copied-value provenance when
 that unwrap produces a direct property slot.
 
 Pinned source routes: `zend_compile_static_prop` in `zend_compile.c`,
+`ZEND_FETCH_CLASS` in `zend_vm_def.h`,
 `zend_std_get_static_property_with_info` and `zend_class_init_statics` in
 `zend_object_handlers.c`, `zend_assign_to_typed_prop` and reference constraint
 helpers in `zend_execute.c`, and `do_inherit_property` in `zend_inheritance.c`.

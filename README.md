@@ -234,7 +234,7 @@ casts and clone updates. Private declaring slots preserve ancestor lexical selec
 same-name shadows and inherited-private dynamic fallback.
 The private [class static property contract](docs/semantics/SOURCE-CLASS-STATICS.md)
 models declaration-owned cells, inherited sharing, typed aliases and captured
-computed selectors. Its [bounded review](coverage/semantics/class-static-properties.json)
+class identity for computed selectors. Its [bounded review](coverage/semantics/class-static-properties.json)
 is not yet installed; typed object conversion remains a separate consumer.
 [Nullsafe property access](docs/semantics/SOURCE-NULLSAFE-PROPERTIES.md)
 short-circuits only the active property/dimension chain, skips later names and
