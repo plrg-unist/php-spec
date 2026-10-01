@@ -20,8 +20,10 @@ be relabeled as deferred caches. Existing uniqueness, value-class and heap check
 remain in force. Seven source comparisons and five paused stages (107 assertions)
 passed privately, including authentic caches after object retirement and forged
 descriptor rejection. A current typed-static bridge passes one source and three
-paused stages (69 assertions). [The review](../../coverage/semantics/closure-default-cache-review.json)
-preserves both snapshots with installation and scoped class defaults pending.
+paused stages (69 assertions). Installed checks pass one source and the selected
+stage after object retirement (27 assertions) at the actual runtime.
+[The review](../../coverage/semantics/closure-default-cache-review.json)
+preserves all three snapshots. Scoped class defaults remain open.
 Prior class-constant and `self::class` probes stopped at explicit Unsupported
 before establishing cache reuse behavior.
 

@@ -26,9 +26,9 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 ## Current checkpoint
 
-The current canonical checkpoint is ordinary class static properties 187/188 at
-**269dfd360**, on Stringable-`chdir` **0b6a15cbb** and named/reference
-`Closure::call` **9cdadc172**.
+The current canonical checkpoint is deferred Closure/arrow cache authentication
+91 at **aee33be9c**, on ordinary class static properties **269dfd360**,
+Stringable-`chdir` **0b6a15cbb** and named/reference `Closure::call` **9cdadc172**.
 [Milestone history](MILESTONE-HISTORY.md) and the linked ledgers
 retain bounded installed counts and historical snapshot identities.
 
@@ -54,11 +54,10 @@ nine-source evidence and the interrupted 50-source prefix remain separate.
 
 Generic156 return/Notice replay remains open. By-reference typed string return
 conversion186 still needs captured-alias write-back and post-`finally` rejection.
-A separate generic91 guard passed seven source comparisons and five paused
-stages (107 assertions) privately. It authenticates deferred Closure/arrow
-caches through surviving source templates after object retirement. One current
-typed-static source and three stages (69 assertions) pass; installation remains
-pending. Prior class-constant and
+Generic91 deferred Closure/arrow cache authentication is installed. Its focused
+source and stage after object retirement pass 27 assertions at the actual
+runtime. Earlier private seven-source/five-stage and current-base one-source/
+three-stage gates keep their original identities. Prior class-constant and
 `self::class` default probes stopped at explicit Unsupported, establishing no
 cache-key mismatch. Scoped defaults remain a required followup.
 [Argument review](coverage/semantics/closure-call-arguments-review.json) ·

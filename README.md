@@ -118,10 +118,10 @@ binds source, allocation-class, state/resume and shared quiet/call checks.
 omitted receives, declaration context, observable caches and fresh reference/array
 ownership. [Independent acceptance](coverage/semantics/default-parameter-review.json)
 binds exact909 source, protocol, state and production checks.
-A separate [Closure default-cache repair](coverage/semantics/closure-default-cache-review.json)
-passed seven sources and five paused stages privately, then a current typed-static
-bridge with one source and three stages. It authenticates deferred Closure/arrow
-defaults after object retirement; installation and scoped class defaults remain pending.
+A separate [Closure default-cache guard](coverage/semantics/closure-default-cache-review.json)
+authenticates deferred Closure/arrow defaults after object retirement. Installed
+checks pass one typed static source and one stage with 27 assertions; earlier
+private gates retain separate identities. Scoped class defaults remain open.
 [Source strict_types declarations](docs/semantics/SOURCE-STRICT-DECLARATIONS.md) now
 execute with source-checked unit/function flags; [independent review](coverage/semantics/strict-declaration-review.json)
 binds917 source, protocol, cache/resume and complete weak-state bridges.
