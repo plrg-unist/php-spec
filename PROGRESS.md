@@ -26,15 +26,17 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 ## Current checkpoint
 
-The current canonical semantic checkpoint is Stringable-`chdir` **1043567c4**,
-installed at **0b6a15cbb** on named/reference `Closure::call` **9cdadc172**.
+The current canonical checkpoint is ordinary class static properties 187/188 at
+**269dfd360**, on Stringable-`chdir` **0b6a15cbb** and named/reference
+`Closure::call` **9cdadc172**.
 [Milestone history](MILESTONE-HISTORY.md) and the linked ledgers
 retain bounded installed counts and historical snapshot identities.
 
 Installed code includes finite file context, selected configuration calls and
 weak positional Stringable-`chdir` operands,
-weak by-value typed string returns, interfaces, Closure binding/calls, source
-Throwable subclasses, and echo/print/cast/eval/concat object-string callbacks.
+weak by-value typed string returns, interfaces, Closure binding/calls, ordinary
+backed static properties, source Throwable subclasses, and echo/print/cast/eval/concat
+object-string callbacks.
 [Include contract](docs/semantics/INCLUDE-SOURCES.md) ·
 [method contract](docs/semantics/SOURCE-METHODS.md) ·
 [string contract](docs/semantics/USER-STRING.md).
@@ -56,24 +58,21 @@ Deferred real-Closure default caches fail the global state guard and need a
 separate generic91 repair.
 [Argument review](coverage/semantics/closure-call-arguments-review.json).
 
-Static class properties 187/188 remain private on installed Stringable-`chdir`
-base **a33b5bef2**. One current source matches nested conversion/directory pauses,
-computed-name class capture, receiver/type-source retirement and a live typed
-static alias write (`TCR9|s|9`). Property rules match the reviewed **e458517eb** candidate; shared30/40 also
-carry the canonical Stringable fields. The three call bridges and
-**52502471d** scalar component retain their original fingerprints under a separate
-compatibility projection. Renewed review and installation remain pending.
+Ordinary static properties 187/188 are installed. One exact combined source
+(`TCR9|s|9`) and one pause with 32 assertions cover nested Stringable
+`chdir`, computed-name capture/source retirement, live static aliases and scalar
+declaration conversion before alias checks. The e458 call bridges and 525 scalar
+component evidence retain historical fingerprints under reviewed projections.
 [Ledger](coverage/semantics/class-static-properties.json) ·
 [contract](docs/semantics/SOURCE-CLASS-STATICS.md).
-Typed property/CV-reference object conversion, separate default-false186 witness
-support, exceptional singleton clone provenance and readonly/asymmetric set access
-remain open.
+Typed property/CV-reference object conversion, default-false186 witness support,
+exceptional singleton clone provenance and readonly/asymmetric set access remain open.
 
 Weak parameter and property string conversion, constrained references,
 interpolation and dynamic names remain separate consumers. The inverse typed
 string& object-parameter/config callback combination is untested. Source
 `__invoke`, callable/string precedence, array callables, inherited internal
-interface signatures, constants, static/readonly members, traits, hooks,
+interface signatures, constants, remaining static members, readonly access, traits, hooks,
 traversal, output handlers and lifecycle callbacks remain active core work.
 File inclusion still needs named/unpacked object operands for `chdir`, broader
 OS/INI behavior and transformed wrappers. Rocq interaction-tree semantics and

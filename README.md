@@ -232,10 +232,11 @@ compiler and paused-state gates. [Instance property visibility](docs/semantics/S
 visibility, mangled storage keys and consistent access across aliases, traversal,
 casts and clone updates. Private declaring slots preserve ancestor lexical selection,
 same-name shadows and inherited-private dynamic fallback.
-The private [class static property contract](docs/semantics/SOURCE-CLASS-STATICS.md)
+The [class static property contract](docs/semantics/SOURCE-CLASS-STATICS.md)
 models declaration-owned cells, inherited sharing, typed aliases and captured
 class identity for computed selectors. Its [bounded review](coverage/semantics/class-static-properties.json)
-is not yet installed. Simple typed property assignment converts its declaration
+records installed source and paused controls alongside historical matrices.
+Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
 route. Typed object conversion remains a separate consumer.
 [Nullsafe property access](docs/semantics/SOURCE-NULLSAFE-PROPERTIES.md)
