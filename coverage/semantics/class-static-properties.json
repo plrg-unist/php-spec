@@ -91,7 +91,7 @@
       "provenance": "68119bb229 rebase before1d5cdba70/fc97906c5;185 watched inputs stable on that earlier tree, not current exact-tree evidence."
     }
   ],
-  "limits": "Ordinary static access is a bounded checkpoint, not full property-family closure or canonical installation. Typed ordinary property/constrained-reference object-to-string consumers remain TYPEDEPENDENT.186 reference-return conversion needs separate transition-admitted backing-value evidence; singleton declared-property alias cloning150 must preserve the reference wrapper. Readonly, asymmetric set access, promotion, traits, hooks and magic remain open. The repaired pair rejects one-sided selector/source/line changes, orphans, duplicates and AT-wrapped markers; current-state consistency does not reconstruct execution history when an adversary replaces the entire state. Missing default pools are explicit Unsupported; forged missing-pool evidence is not source-reachable. Older40/9 matrices and32/13 storage reports retain historical scope; timeouts and Unsupported are never agreement.",
+  "limits": "Ordinary static access is a bounded checkpoint, not full property-family closure or canonical installation. Typed ordinary property/constrained-reference object-to-string consumers remain TYPEDEPENDENT.186 reference-return conversion needs separate transition-admitted backing-value evidence; exceptional singleton clone values need copied-value provenance after Zend correctly unwraps the reference into a direct slot. Readonly, asymmetric set access, promotion, traits, hooks and magic remain open. The repaired pair rejects one-sided selector/source/line changes, orphans, duplicates and AT-wrapped markers; current-state consistency does not reconstruct execution history when an adversary replaces the entire state. Missing default pools are explicit Unsupported; forged missing-pool evidence is not source-reachable. Older40/9 matrices and32/13 storage reports retain historical scope; timeouts and Unsupported are never agreement.",
   "source_differentials": [
     {
       "name": "class-static source",
@@ -313,5 +313,24 @@
       "classification": "failed capture-only pilot: GLOBALS access Unsupported without REQUEST facts; replaced by direct global alias null assignment",
       "agreement": false
     }
-  ]
+  ],
+  "clone_contract_correction": {
+    "kind": "native-only source contract; no model agreement claimed",
+    "report": ".tools/static-property-consumers/.tools/clone-declared-alias-native-mepvbnw2/report.json",
+    "sha256": "be141ea6a90c3b6f46238291aa0a081f5274887c3038ad14443a53e4a01f6824",
+    "controls": [
+      "typed singleton declared reference",
+      "untyped singleton declared reference",
+      "private singleton declared reference",
+      "dynamic stdClass singleton reference"
+    ],
+    "observed_stdout": "1|2 in all4 controls",
+    "source": "vendor/php-src/Zend/zend_objects.c zend_objects_clone_members calls zval_add_ref; vendor/php-src/Zend/zend_variables.c zval_add_ref unwraps singleton after copy. Existing150 merge_item is correct for these ordinary cases.",
+    "dependency": "186 conversion may leave a mismatched typed backing value; cloning its singleton alias copies a mismatched DIRECT value and needs separate provenance propagation. Ordinary alias identity must not be changed to preserve that exceptional value.",
+    "independent_amendment": {
+      "report": ".tools/static-property-candidate/.tools/static-review-clone-scope-correction.json",
+      "sha256": "626d3de8e1f65b06543ab29866b59c7ff7a7eedb7b4e39fd1e787bbc26140dc3",
+      "scope": "Withdraws earlier ordinary singleton alias-preservation inference; keeps immutable acceptance notes and explicitly limits exceptional ALIAS-to-DIRECT propagation."
+    }
+  }
 }

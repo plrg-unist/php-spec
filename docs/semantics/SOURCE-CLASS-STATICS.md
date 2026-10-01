@@ -46,8 +46,9 @@ the live static row after the callback: `__toString` may replace it with a diffe
 alias. It must preserve callback effects and route the converted value through
 the current cell's constraints. Typed reference return conversion has a distinct
 Zend timing contract and does not authorize weakening these ordinary writes.
-Singleton declared-property alias cloning also needs a separate source-correct
-repair before accepting the reference-return callback lifecycle.
+Ordinary singleton references correctly unwrap during clone. A mismatched value
+left by reference-return conversion needs separate copied-value provenance when
+that unwrap produces a direct property slot.
 
 Pinned source routes: `zend_compile_static_prop` in `zend_compile.c`,
 `zend_std_get_static_property_with_info` and `zend_class_init_statics` in

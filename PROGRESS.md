@@ -56,7 +56,7 @@ Deferred real-Closure default caches fail the global state guard and need a
 separate generic91 repair.
 [Argument review](coverage/semantics/closure-call-arguments-review.json).
 
-Static class properties 187/188 have a private bounded candidate on this base. The repaired selector captures its receiver across name callbacks and unwinds both markers atomically; lookup checks visibility before staticness. Fresh 54-source and independent 13-source comparisons pass, alongside 151 selector and 17 unwind assertions. The earlier 40+9 matrices and typed-return/include bridges retain their original provenance. [Contract](docs/semantics/SOURCE-CLASS-STATICS.md) · [Ledger](coverage/semantics/class-static-properties.json). Canonical installation, typed property/constrained-reference object conversion, the 186 callback witness and singleton declared-property alias cloning remain open.
+Static class properties 187/188 have a private bounded candidate on this base. The repaired selector captures its receiver across name callbacks and unwinds both markers atomically; lookup checks visibility before staticness. Fresh 54-source and independent 13-source comparisons pass, alongside 151 selector and 17 unwind assertions. The earlier 40+9 matrices and typed-return/include bridges retain their original provenance. [Contract](docs/semantics/SOURCE-CLASS-STATICS.md) · [Ledger](coverage/semantics/class-static-properties.json). Canonical installation, typed property/constrained-reference object conversion, the 186 callback witness and exceptional singleton clone provenance remain open.
 
 Weak parameter and property string conversion, constrained references,
 interpolation and dynamic names remain separate consumers. The inverse typed
