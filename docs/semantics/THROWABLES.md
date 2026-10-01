@@ -39,6 +39,16 @@ array value; the renderers and terminal observer read that same graph.
 `__toString` updates the private string cache. Pending/uncaught completion and
 search/binding tasks root the object and its trace arrays. Rethrow retains
 identity and allocation trace. `S.TRACE` is transient error-unwind state only.
+
+Non-Throwable fatal and Unsupported frame cleanup retires the discarded active
+origin while retaining the diagnostic `ERRORORIGIN` and captured `TRACE`.
+Saved caller contexts survive until their own restoration and cleanup. A pending
+`ERROR_UNWIND` must be the sole task, with an empty active origin and an abrupt
+completion admitted by the module40 producer. This checks the current state
+shape; it does not prove an arbitrary prior error history.
+The [ledger](../../coverage/semantics/error-origin-author.json) separates original
+pause failures, fixture corrections, source observations and current review.
+
 Frame arrays preserve PHP's ordered `file`, `line`, `function`, optional
 `class`/`type`, and `args` keys. Arguments snapshot values at allocation:
 arrays use ordinary COW, references contribute their current value, and

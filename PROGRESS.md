@@ -5,6 +5,31 @@ Target: PHP 8.5.10 CLI NTS 64-bit. [PLAN.md](PLAN.md) defines complete core;
 source agreement does not establish complete semantics. Large evidence remains
 outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
+## Current checkpoint
+
+The released canonical checkpoint is **d386a9f5d**, with finite inherited
+internal method contracts 189 at **cbd5236d2** and the constant internal
+catalogue accepted at **832250521**. Installed code also includes deferred
+Closure/arrow cache authentication 91, ordinary class static properties,
+Stringable-`chdir`, and named/reference `Closure::call`.
+[Milestone history](MILESTONE-HISTORY.md) links the bounded installed evidence
+and preserves distinct historical, projected and installed fingerprints.
+
+The finite 189 increment covers inherited Stringable/Throwable and
+Exception/Error/ErrorException contracts plus source `__wakeup` checks.
+Seven explicit Unsupported controls still bound compiler publication, and two
+reporting-timing originals remain Unsupported. Real early declaration
+publication and diagnostic ordering is the immediate next compiler milestone,
+before constants183/184; it must remove the interim rooted wakeup guard.
+[Renewed interface ledger](coverage/semantics/interface-internal-renewed-review.json)
+· [declaration-order milestone](coverage/semantics/compiler-declaration-order-review.json).
+
+Ordinary fatal/Unsupported origin retirement is privately reviewed and awaiting
+its current-base bridge and installation. It preserves diagnostic origins,
+traces and saved-frame cleanup. Its ledger retains the original failures,
+fixture corrections, composite paused evidence and timeout separately.
+[Cleanup ledger](coverage/semantics/error-origin-author.json).
+
 ## Validated baseline
 
 The accepted post-arrow integration checkpoint is **1026/0ec57507**, with
@@ -19,120 +44,50 @@ profiles and independent audits:
 | Callable | 946 maintained rows in 18 suites plus one explicit regression; 1,894 responses |
 | Ordinary | 5,706 source comparisons (4,060 normal, 1,006 PHP errors, 640 static rejections), 21 separate controls; 11,435 process records |
 
-These counts are observations, not unique PHP programs. The ordinary profile
-inherits process environment subject to the producer's LC_ALL/TZ settings;
-request and callable gates have their own profiles. Interrupted prefixes,
-timeouts, runner failures, Unsupported and budget controls are not agreements.
-
-## Current checkpoint
-
-The current canonical checkpoint is constant internal catalogue **d3de15011**,
-on deferred Closure/arrow cache authentication 91 **aee33be9c**, ordinary
-class static properties **269dfd360**, Stringable-`chdir` **0b6a15cbb** and
-named/reference `Closure::call` **9cdadc172**.
-[Milestone history](MILESTONE-HISTORY.md) and the linked ledgers
-retain bounded installed counts and historical snapshot identities.
-
-The installed finite 189 increment adds inherited Stringable/Throwable and
-Exception/Error/ErrorException method contracts, plus source `__wakeup`
-case, variadic, selected-parent and tentative-return checks. Historical
-66-source/full-test evidence, renewed frozen9 source66/30/14 and 23 paused
-groups retain their original identities. The a33 source/callback bridge is
-also preserved. The property/default-cache bridge passes five sources and
-four paused groups/65 assertions. Its catalogue832 projection preserves189
-semantic bytes and passes full-module elaboration plus native166 occupancy.
-Installed checkpoint `cbd5236d2` passes the provider/property source (`23`) and
-16 rollback assertions at the actual 1289-artifact fingerprint. The ledger retains
-the separate receipt failure caused by the extra existing request-clock binary.
-[Historical ledger](coverage/semantics/interface-internal-review.json) ·
-[Renewed ledger](coverage/semantics/interface-internal-renewed-review.json).
-
-Seven explicit Unsupported controls still bound compiler publication, including
-some previously admitted typed external-root paths. Real declaration publication
-and diagnostic ordering is the immediate next milestone, before constants183/184.
-Two reporting-timing originals remain Unsupported controls. This increment
-does not close classes/interfaces or core PHP.
-
-Installed code includes finite file context, selected configuration calls and
-weak positional Stringable-`chdir` operands,
-weak by-value typed string returns, interfaces, Closure binding/calls, ordinary
-backed static properties, source Throwable subclasses, and echo/print/cast/eval/concat
-object-string callbacks.
-[Include contract](docs/semantics/INCLUDE-SOURCES.md) ·
-[method contract](docs/semantics/SOURCE-METHODS.md) ·
-[string contract](docs/semantics/USER-STRING.md).
-
-The Stringable ledger separates the projected catalogue of 52 sources and
-protocol/retained evidence
-at **15d2451bf** from three installed sources and one directory stage/52 assertions.
-Callback traces preserve declaring identity and explicit invocation frames.
-The nested-conversion producer alone uses 180 seconds after a measured
-five-request replay; model requests keep their 60-second limit. Historical
-nine-source evidence and the interrupted 50-source prefix remain separate.
-[Ledger](coverage/semantics/include-stringable-chdir-review.json).
-
-The internal catalogue preserves all 166 ordered key/display/kind values.
-Complete old/new value equality, the native catalogue and two installed
-original-source tuples pass. The 129-byte inherited-callback program retains
-its 155-byte absolute filename and snapshot/CWD, completing under the unchanged
-60-second request limit. Prior timeouts and instrumented profiles remain
-separate diagnoses; named operands and property witnesses are still pending.
-[Catalogue ledger](coverage/semantics/internal-class-catalogue-review.json).
+These are observations, not unique PHP programs. The ordinary profile inherits
+process environment subject to LC_ALL/TZ settings; request and callable gates
+have their own profiles. Their counts are not interchangeable.
 
 ## Active work and remaining obligations
 
-Generic156 return/Notice replay remains open. By-reference typed string return
-conversion186 still needs captured-alias write-back and post-`finally` rejection.
-Generic91 deferred Closure/arrow cache authentication is installed. Its focused
-source and stage after object retirement pass 27 assertions at the actual
-runtime. Earlier private seven-source/five-stage and current-base one-source/
-three-stage gates keep their original identities. Prior class-constant and
-`self::class` default probes stopped at explicit Unsupported, establishing no
-cache-key mismatch. Scoped defaults remain a required followup.
-[Argument review](coverage/semantics/closure-call-arguments-review.json) ·
-[default-cache review](coverage/semantics/closure-default-cache-review.json).
+Generic156 delayed reference-return replay remains open, including runtime
+foreach/switch owners and consumed finalizers. Temporary-return Notice timing
+and typed by-reference string conversion186 require separate repairs, captured
+operand ownership, write-back and post-finally rejection. Weak parameter and
+property string conversion, constrained references, interpolation and dynamic
+names remain separate consumers; the inverse typed string-reference object
+parameter/config callback combination is untested.
+[Finally contract](docs/semantics/SOURCE-FINALLY.md) ·
+[string contract](docs/semantics/USER-STRING.md).
 
-Ordinary static properties 187/188 are installed. One exact combined source
-(`TCR9|s|9`) and one pause with 32 assertions cover nested Stringable
-`chdir`, computed-name capture/source retirement, live static aliases and scalar
-declaration conversion before alias checks. The e458 call bridges and 525 scalar
-component evidence retain historical fingerprints under reviewed projections.
-[Ledger](coverage/semantics/class-static-properties.json) ·
-[contract](docs/semantics/SOURCE-CLASS-STATICS.md).
-Typed property/CV-reference object conversion, default-false186 witness support,
-exceptional singleton clone provenance and readonly/asymmetric set access remain open.
+Ordinary static properties187/188 and generic91 deferred default-cache
+authentication are installed. Typed property/CV-reference object conversion,
+default-false186 witness support, exceptional singleton clone provenance,
+readonly/asymmetric set access and scoped defaults remain open.
+[Property ledger](coverage/semantics/class-static-properties.json) ·
+[property contract](docs/semantics/SOURCE-CLASS-STATICS.md) ·
+[default-cache ledger](coverage/semantics/closure-default-cache-review.json).
 
-Weak parameter and property string conversion, constrained references,
-interpolation and dynamic names remain separate consumers. The inverse typed
-string& object-parameter/config callback combination is untested. Source
-`__invoke`, callable/string precedence, array callables, inherited internal
-interface signatures, constants, remaining static members, readonly access, traits, hooks,
-traversal, output handlers and lifecycle callbacks remain active core work.
-File inclusion still needs named/unpacked object operands for `chdir`, broader
-OS/INI behavior and transformed wrappers. Rocq interaction-tree semantics and
-BOLA proofs follow completed PHP core semantics.
-
-The immediate [compiler declaration-order milestone](coverage/semantics/compiler-declaration-order-review.json)
-must publish and link early declarations before later compilation diagnostics
-or failure, then remove the interim rooted `__wakeup` guard before constants.
-
-The inventory marks `calls.static-variables` partial, binding the accepted
+Source `__invoke`, callable/string precedence, array callables, constants,
+remaining static members, traits, hooks, traversal, output handlers and
+lifecycle callbacks remain active core work. File inclusion still needs
+named/unpacked object operands for `chdir`, broader OS/INI behavior and
+transformed wrappers. Static-variable coverage remains partial across trait
+and inheritance sharing, clone/bind, include/eval reactivation and lifecycle/GC.
+[Include contract](docs/semantics/INCLUDE-SOURCES.md) ·
+[method contract](docs/semantics/SOURCE-METHODS.md) ·
 [named](coverage/semantics/function-statics-review.json),
 [main](coverage/semantics/main-statics-review.json) and
-[Closure](coverage/semantics/closures-review.json) static-cell milestones to their
-historical evidence. Broader trait/inheritance sharing, clone/bind interactions,
-include/eval reactivation and lifecycle/GC still need complete current-source
-static coverage.
+[Closure](coverage/semantics/closures-review.json) static-cell ledgers.
+Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.
 
 ## Validation limits
 
 The authorized cap is five numeric/model campaigns with explicit slot handoffs.
 The [resource receipt](.tools/resume-recovery-20261001/resource-audit-10second.json)
-records the CPU, memory and pressure observations supporting that cap.
-
-Reviewed source, paused-state and syntax results are bounded observations,
-not complete-core acceptance. Interrupted runs, timeouts, Unsupported and budget
-controls are never native agreements. A fresh offline network-isolated rebuild
-and full current-source closure remain required. The
-[migration ledger](coverage/semantics/throwable-migration-review.json) and
+records the observations supporting that cap. Reviewed source, paused-state and
+syntax results are bounded evidence. Interrupted runs, timeouts, Unsupported
+and budget controls are never native agreements. A fresh offline,
+network-isolated rebuild and full current-source closure remain required.
+The [migration ledger](coverage/semantics/throwable-migration-review.json) and
 [artifact guide](docs/ARTIFACTS.md) retain deferred failures and raw evidence.

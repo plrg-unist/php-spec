@@ -1,0 +1,179 @@
+{
+  "status": "private_reviewed",
+  "base": "52502471d284efa51e934649eb827f23ccfd1bdf",
+  "evidence_root": ".tools/reference-error-origin-current",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Three83 ORIGIN clears retire only discarded active continuation context;84 requires singleton ERROR_UNWIND, empty ORIGIN and40-compatible abrupt payload. TRACE/ERRORORIGIN, existing iterator/suppression and saved-frame cleanup are retained. No generic156/186 or terminal176 trace changes.",
+  "semantic_and_runner_hashes": {
+    "spec/semantics/83-call-traces.watsup": "1476af3fdf94e0e3555574e56e33173f4cc3e6e77cd04572021967fae70248ce",
+    "spec/semantics/84-call-integrity.watsup": "bf3ed1ff2f60d11871d6b721389a68aced3116c53807214c607fa82e0753d8ea",
+    "tests/semantics/error_origin_protocol.py": "2ccfe499fbc78e03ef11efc9e7d6c78ad9d561d403fdb547b9357001a9f86e5b",
+    "tests/semantics/finally_cases.json": "0f00ccef97f17b93ef867aada5beeadab95067543dccc3cbbdd18febc5c22488"
+  },
+  "baselines": [
+    {
+      "report": ".tools/error-origin-baseline-m8bz_wi3/report.json",
+      "sha256": "175411c591afc396197e216093eb31d6fd4587dc6e21d990cfb44c32ba7c73d5",
+      "result": "one descriptor failure plus one positive",
+      "audit": "Protected callee fails descriptor assertion after trace/origin/heap checks; caller try has no finally. Original driver retained at .tools/error-origin-baseline-m8bz_wi3/driver.py."
+    },
+    {
+      "report": ".tools/error-origin-baseline-qjt4uk_4/report.json",
+      "sha256": "d64c054712107904427fade1be9e84efad7baddc1bdb3113a1cf0de0c7bdaa65",
+      "result": "two descriptor failures",
+      "audit": "Exact source delta adds caller finally; current callee and restored protected caller fail only descriptor assertion. Original driver and83 retained in ignored evidence."
+    }
+  ],
+  "elaboration": {
+    "report": ".tools/error-origin-elaboration-y7ho5bzi/report.json",
+    "sha256": "7e2b7b2c6ab1886bc82792db0435919c9ed609d34f75f969fe7908753bdc8837",
+    "result": "pass",
+    "scope": "All-module AL check and constant fixture; no source acceptance",
+    "review": {
+      "report": ".tools/error-origin-elaboration-review.json",
+      "sha256": "f23956ed62d085c79ff69f7befa2d5e378ec165d3cc5e4bacfe2d4272b71854c"
+    }
+  },
+  "native_fatal_pin": {
+    "report": ".tools/error-origin-fatal-native-_3owxo6_/report.json",
+    "sha256": "b71bb0a80ddabd3d73ec13fe2a94a9f3af6ee5f690a23491cd525ae62a2b3550",
+    "result": "native_only",
+    "scope": "Original deferred redeclaration: empty stdout/status255, original declaration line2/redeclaration line5, caller f line8; no finalizer effects. Original script input ad60 is recoverable from .tools/error-origin-protocol-xmh2h13n/driver.py; other native inputs remain unchanged."
+  },
+  "paused_draft": {
+    "report": ".tools/error-origin-protocol-xmh2h13n/report.json",
+    "sha256": "75d5569bc8eba8bbdf1a86854b6332dbf359a9d33a3b529e1dde7264c688f0a8",
+    "result": "fail",
+    "accepted_stages": 3,
+    "accepted_assertions": 161,
+    "passing_ids": [
+      "protected-callee",
+      "restored-protected-caller",
+      "suppressed-current-foreach"
+    ],
+    "fixture_elaboration_failures": [
+      "saved-outer-foreach",
+      "fatal-protected-callee",
+      "fatal-restored-protected-caller"
+    ],
+    "audit": "The later three never execute semantic assertions; saved heap-owner expectation also corrected by source audit before rerun. First three source/stage/assertion data remains identical under current driver; only old script input differs, retained as driver.py."
+  },
+  "corrected_driver_review": {
+    "report": ".tools/error-origin-corrected-driver-review.json",
+    "sha256": "b834ad79edc233714cfafe1b022883d222c4e6563878bf1db365806980422167",
+    "scope": "Pre-gate fixture-only review; generated-body elaboration mode executes constant main and records zero semantic assertions"
+  },
+  "pending": [
+    "One latest released-base rebase/bridge and canonical installation under root lease",
+    "Generic156 runtime loop/foreach/switch/finalizer recovery, separate99 Notice timing and186 conversion remain required milestones"
+  ],
+  "limits": [
+    "Unsupported lifecycle controls are not native agreements.",
+    "Payload guard establishes current producer shape, not arbitrary historical error provenance.",
+    "First3/161 acceptance belongs to preserved failed draft; no current raw6-pass report claimed."
+  ],
+  "baseline_recovery": {
+    "original83": ".tools/error-origin-83-before.watsup",
+    "sha256": "5429caa1a10bebadc20880dadfa9142a4127d4a357e45825aa2f35091c33ed2c",
+    "driver_copies": [
+      ".tools/error-origin-baseline-m8bz_wi3/driver.py",
+      ".tools/error-origin-baseline-qjt4uk_4/driver.py"
+    ]
+  },
+  "generated_fixture_smoke": [
+    {
+      "report": ".tools/error-origin-protocol-582viu9a/report.json",
+      "sha256": "b3eabec2590d585511c9b501b64d5ddf207e4217445950d8edb13b9ee700d665",
+      "result": "pass",
+      "stages": 1,
+      "semantic_assertions": 0
+    },
+    {
+      "report": ".tools/error-origin-protocol-67i6nt2x/report.json",
+      "sha256": "d9d05fa2179c8ba58bd6097d332fc1960aa480e4c485bbfdbee22dfb45eacc5c",
+      "result": "pass",
+      "stages": 2,
+      "semantic_assertions": 0
+    },
+    {
+      "report": ".tools/error-origin-protocol-qvla0tb9/report.json",
+      "sha256": "a07ced808207db79db1dc110c7fa92677cfd72045d3de6735d309c6393d82f9f",
+      "result": "pass",
+      "stages": 1,
+      "semantic_assertions": 0,
+      "current_inputs": 190
+    }
+  ],
+  "saved_foreach_timeout": {
+    "recovery": ".tools/error-origin-protocol-edyq19oa/timeout-recovery.json",
+    "sha256": "80cefc61e9bdec7ed4e2e19c5012ec36bb435fc5b8f4970f4010524b8859dc48",
+    "result": "timeout",
+    "seconds": 300,
+    "child_exit_status": null,
+    "input_audit": "Original run did not persist before-map/report; do not infer stability or child output from absence.",
+    "disposition": "Semantic result unknown; preserve original driver/full source/fixture/command. Only eight redundant descriptor-copy checks removed in current saved stage; direct guards and genuine full states retained."
+  },
+  "validation": {
+    "retained_source": {
+      "report": ".tools/finally-source-csfnofom/report.json",
+      "sha256": "b9762d77da3ff04da24ba238496f7acb6a3ea89305edee62aeeeafbf7b75d0cf",
+      "result": "pass",
+      "sources": 2,
+      "current_inputs": 190,
+      "scope": "Original-source native/model stdout, stderr, exit and outcome tags exact; native/model process exits retained separately."
+    },
+    "paused_composite": {
+      "result": "pass",
+      "stages": 6,
+      "assertions": 329,
+      "parts": [
+        {
+          "report": ".tools/error-origin-protocol-xmh2h13n/report.json",
+          "sha256": "75d5569bc8eba8bbdf1a86854b6332dbf359a9d33a3b529e1dde7264c688f0a8",
+          "accepted_stages": 3,
+          "assertions": 161,
+          "compatibility": "Only passing first three stages retained. Sources, stage predicates and generated assertion tails are byte-identical under current driver; old script input recovered from driver.py. Full report remains failed."
+        },
+        {
+          "report": ".tools/error-origin-protocol-jw2dtxr7/report.json",
+          "sha256": "a79f6207134956f53302530ac9f11f743aa4b67bbc16f3a3c03bdb9aceabf866",
+          "result": "pass",
+          "stages": 2,
+          "assertions": 106,
+          "current_inputs": 190
+        },
+        {
+          "report": ".tools/error-origin-protocol-mbzrq3xo/report.json",
+          "sha256": "287424f3b0ab2fcc0da01fb29da8a17b91130ccc30e11d452fabb2747be6e793",
+          "result": "pass",
+          "stages": 1,
+          "assertions": 62,
+          "current_inputs": 190
+        }
+      ],
+      "scope": "Source-derived Unsupported/fatal lifecycle, whole versus public resumed equality, current/saved origin retirement, iterator/suppression cleanup, diagnostic roots and malformed task controls. No current raw six-pass report is claimed."
+    }
+  },
+  "reduced_driver_review": {
+    "report": ".tools/error-origin-reduced-driver-review.json",
+    "sha256": "82daab1618c7319fa76985e87228c7edb2afa8cc3160d78d24a6d95c4125455a",
+    "scope": "Only saved stage removes eight redundant full descriptor-copy checks; direct shape controls and genuine current/restored/terminal descriptors remain. Timeout reporting preserves partial buffers, null child status and post-input audit."
+  },
+  "fixture_recovery": {
+    "initial_driver": ".tools/error-origin-protocol-xmh2h13n/driver.py",
+    "corrected_driver": ".tools/error-origin-driver-reviewed-3565c7d0.py",
+    "initial_fixture_failures": "Three binding elaboration failures before model execution; first three passing stages preserved.",
+    "corrected_smokes": "582viu9a and67i6nt2x used the preserved3565 driver; zero semantic assertions.",
+    "timeout": "Original300-second edyq19oa outcome remains unknown; current saved62 passes under reduced2cc driver without raising the ceiling."
+  },
+  "review": {
+    "report": ".tools/error-origin-candidate-review.json",
+    "sha256": "8185ded1acead146916067c446db2bb01aa476ae5b90514b2aeade29bc0d9425",
+    "scope": "Exact narrow seven-path candidate on525, retained source2 and honest composite6/329; excludes generic156/186 and installed acceptance."
+  }
+}

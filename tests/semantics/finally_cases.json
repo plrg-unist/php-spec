@@ -248,5 +248,15 @@
     "id": "exit-origin-top-level-finalizer",
     "source": "<?php try{echo \"T;\";}finally{echo \"F;\";exit(7);}",
     "status": "explicit_exit"
+  },
+  {
+    "id": "error-origin-retained-fatal",
+    "source": "<?php\nclass A {}\nfunction f() {\n try {\n  if (true) { class A {} }\n } finally { echo \"BAD;\"; }\n}\ntry { f(); } finally { echo \"BAD;\"; }\n",
+    "status": "php_error"
+  },
+  {
+    "id": "error-origin-retained-trace",
+    "source": "<?php\nfunction f($arg){try{throw new Exception(\"X\");}finally{echo \"F;\";}}\ntry{f([7]);}catch(Exception $e){echo $e->getFile(),\"|\",$e->getLine(),\"|\",$e->getTraceAsString();}finally{echo \"G;\";}\n",
+    "status": "normal"
   }
 ]

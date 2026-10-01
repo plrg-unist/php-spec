@@ -257,6 +257,7 @@ def $call_reference_task_valid(S, pcalltarget_function, n, (porigin)) = true
   -- if S.ORIGIN = $origin_child((porigin), [PCFIELD n_field, PCINDEX n, PCFIELD 1])
 def $call_reference_task_valid(S, pcalltarget_function, n, porigin?) = false -- otherwise
 dec $call_task_valid(pstate, ptask) : bool
+def $call_task_valid(S, ERROR_UNWIND pcompletion) = (S.TODO = [ERROR_UNWIND pcompletion] /\ S.ORIGIN = eps /\ pcompletion =/= NORMAL /\ pcompletion =/= BUDGET /\ pcompletion =/= SOURCE_PENDING /\ ~$exit_completion(pcompletion) /\ ~$throwable_pending(pcompletion))
 def $call_task_valid(S, AT porigin ptask) = $call_task_valid(S[.ORIGIN = (porigin)], ptask)
 def $call_task_valid(S, CALL_REF_PREP pcalltarget_function n porigin?) = $call_reference_task_valid(S, pcalltarget_function, n, porigin?)
 def $call_task_valid(S, CALL_REF_FETCH pcalltarget_function n porigin?) = $call_reference_task_valid(S, pcalltarget_function, n, porigin?)
