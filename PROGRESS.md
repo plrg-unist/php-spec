@@ -78,6 +78,12 @@ including exact Notice bytes. The original 35-source and retained-frame gates
 remain historical; the maintained catalogue now contains 36 sources.
 [Ledger](coverage/semantics/include-dynamic-selected-review.json).
 
+Ordinary `Closure::call` 182 has passed bounded source, paused and compatibility
+review, including a private current-canonical projection with selected calls,
+typed-string callbacks and reference-return finalizers. Installation is pending;
+named receivers, unpacking and reference formals remain active extensions.
+[Ledger](coverage/semantics/closure-call-review.json).
+
 By-reference typed return conversion 186 needs captured-alias write-back and a
 generic post-`finally` rejection replay. Weak parameters, properties,
 constrained references, interpolation,

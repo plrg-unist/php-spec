@@ -32,7 +32,8 @@ the outer result resolves any returned reference without exposing its alias.
 The result task authenticates its literal call site and compiled line.
 
 The repaired private freeze passed its bounded source, paused-state, independent
-review and retained compatibility gates. Its current canonical bridge remains
+review and retained compatibility gates. A focused current canonical projection
+also passed source and paused interaction checks; installation identity remains
 pending in the [ledger](../../coverage/semantics/closure-call-review.json). Old 13-source
 and four-stage passing reports are historical: their subset missed argument
 ordering and trace defects and does not establish current acceptance.

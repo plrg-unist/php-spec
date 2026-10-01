@@ -1,5 +1,5 @@
 {
-  "result": "private-bounded-review-passed-current-canonical-bridge-pending",
+  "result": "bounded-private-and-current-canonical-projection-review-passed-installation-pending",
   "target": "PHP 8.5.10 CLI NTS 64-bit, tests/semantics/profile.json",
   "scope": "Literal Closure::call on ordinary REALCLOSURE, positional newThis, by-value positional/named forwarding, scalar newThis errors, static/stdClass binding warnings, original outer trace arguments. Required extensions remain explicit.",
   "implementation": {
@@ -7,7 +7,11 @@
     "recovered_commit": "74038d64a0b11dd417b712859650b11c2a229aff",
     "rebased_deferred_freeze": "d681101c8",
     "repaired_freeze": "1dc58c2688f02561cb1b6fe81aee45777c21e9cc",
-    "reference_result_freeze": "20365bc73"
+    "reference_result_freeze": "20365bc73",
+    "current_semantic_base": "0fcbce05587729ac1058795d15ee4be6dad0bef0",
+    "current_canonical_commit": "87c7f71fb02d22f438384b8d4d2067c57164497a",
+    "current_source_paused_freeze": "acb896917",
+    "current_projection": "c56b5b8bbfc66731d39007d4b943e1bc16837ce7"
   },
   "source_provenance": [
     "Zend/zend_closures.c::ZEND_METHOD(Closure, call)",
@@ -142,7 +146,7 @@
     }
   },
   "current_gates": {
-    "result": "Author9 and independent36 exact source; author12/161 and independent7/121 paused; retained4 compatibility all passed on immutable1dc58. Latest canonical bridge pending.",
+    "result": "Private1dc58 gates passed; later current-base projection is recorded under canonical_bridge, installed identity pending.",
     "source_catalogue": "tests/semantics/closure_call_cases.json",
     "source_cases": 36,
     "source_sha256": "5c531e5e307c5657187fe5015175240931ea05f2323e8a296463d1df05d71676",
@@ -221,5 +225,59 @@
     "sha256": "3b157ac977bed870f96559ab492e31ed44da54762170de12c36dee112405dd2c",
     "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "canonical_bridge": {
+    "result": "author and independent bounded review passed; installed identity pending",
+    "base_relation": "Private0fcb projection; canonical87c7 differs only in include-dynamic ledger. No executable input changes from that documentation commit.",
+    "scope": "Focused9 preserved ordinary controls plus fresh3 selected/typed callback and used/unused reference-finally interactions. Source36 and paused7/121 remain historical to1dc58, not relabeled.",
+    "code_projection": "Module182/result/demand byte-identical to1dc58; installed99 finally retention and CLOSURE_CALL_TARGET demand exclusion coexist.",
+    "fingerprint_sha256": "6817e67a852eee6f97714aa3790bf30d7b2845fe9e837d2e4ea192479ec016de",
+    "author_source": {
+      "result": "12/12 exact and stable",
+      "report": ".tools/closure-call-auth-current/.tools/method-runtime-hiqvp686/report.json",
+      "sha256": "de84942a70b7126ad3e3317f790bb35c7ba49f256ede3cf856530f36c36f5e82",
+      "catalogue": ".tools/closure-call-auth-current/.tools/closure-call-current-focus.json",
+      "catalogue_sha256": "80668b4d46506a05da5d9e75f8fc2ed59150edece1f44f354ffaef9c59d0ba8f"
+    },
+    "author_paused": {
+      "result": "12/12 stable;161 assertions",
+      "report": ".tools/closure-call-auth-current/.tools/closure-call-protocol-qsk0ur8e/report.json",
+      "sha256": "878b5ba63e14f573a163e3087f97417ae86f52b0462eaa6df873f4c68377236b"
+    },
+    "author_interaction_paused": {
+      "result": "2/2 stable;25 assertions",
+      "report": ".tools/closure-call-auth-current/.tools/closure-call-protocol-aoy1n1cn/report.json",
+      "sha256": "c842283a36df62f0f1526e7337f8bfa6416af0f842208ec14379fedb27d0ef74"
+    },
+    "retained_compatibility": {
+      "result": "4/4 exact and stable; separately scoped",
+      "report": ".tools/closure-call-auth-current/.tools/method-runtime-sqrwf83v/report.json",
+      "sha256": "0f191fe78d944bfd31bf24fe5bd86d3ce03901b90609800fec8977c52fa4ce44",
+      "catalogue_sha256": "3554774b76887ca76298fc90c956188c44f9dfdeb2f5f1034295e7787208ed74"
+    },
+    "independent_source": {
+      "result": "3/3 exact and stable; fresh interaction sources",
+      "report": ".tools/closure-call-auth-current/.tools/method-runtime-ekb7bw4d/report.json",
+      "sha256": "f350eacaf93b7e452a238c53303c8006d42474fe96bd462fef5e6b32366fff7d"
+    },
+    "independent_paused": {
+      "result": "2/2 stable;36 assertions; inner unused demand, original wrapper, caller alias identity, global RESULT line/site rejection",
+      "report": ".tools/closure-call-auth-current/.tools/closure-call-protocol-mrvdpc_f/report.json",
+      "sha256": "caca4cc8ac1f6df9c7000bf5da8a4355fce2161b812fca3e0a78197b150c01a4"
+    },
+    "independent_review": {
+      "result": "passed within bounded projection scope",
+      "report": ".tools/closure-call-auth-current/.tools/calls-independent-current-review-acb896.json",
+      "sha256": "0c029497549835efb133b43a63ae059542adf236db3fdc02c02e42193365255a"
+    },
+    "fresh_native_audit": {
+      "result": "3/3 exact original sources/raw tuples; only source filename normalization",
+      "report": ".tools/closure-call-auth-current/.tools/calls-review-native-bindings-current-bridge.json",
+      "sha256": "3eb7774a8c3d7454ba62a958584a026eede3b93e213c6879adb6f44f4d923317",
+      "catalogue": "tests/semantics/closure_call_current_bridge_cases.json",
+      "catalogue_sha256": "6d191ce01a7f5e23cfc399664264c3674c855ff14eb610896f97c43702195318"
+    },
+    "build": "Pinned existing binaries reused and SHA verified; no fresh offline rebuild claim",
+    "recovery_note": ".tools/closure-call-auth-current/.tools/closure-call-worktree-recovery.json"
   }
 }

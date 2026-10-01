@@ -240,6 +240,11 @@ compiler and paused-state controls. [Public instance methods and constructors](d
 now execute ordinary/nullsafe calls, inherited dispatch, bound closures and
 `Closure->__invoke` trampolines. Nonpublic methods, static and readonly
 members, hooks and user magic methods remain open.
+Ordinary [`Closure::call`](docs/semantics/CLOSURE-CALL.md) temporarily changes
+receiver/scope, evaluates arguments before binding validation, preserves original
+wrapper arguments and returns values from reference-returning closures. Its
+[bounded review](coverage/semantics/closure-call-review.json) includes a current
+canonical projection; installation and argument-form extensions remain pending.
 [Print expressions](docs/semantics/SOURCE-PRINT.md) preserve output effects while
 returning constant integer 1, including folded expressions and reference demand.
 Source, compiler and paused ownership checks cover admitted conversions;
