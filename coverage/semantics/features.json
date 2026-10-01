@@ -8252,23 +8252,33 @@
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/30-storage.watsup",
         "spec/semantics/79-call-frames.watsup",
-        "spec/semantics/173-method-callables.watsup"
+        "spec/semantics/173-method-callables.watsup",
+        "spec/semantics/187-class-static-storage.watsup",
+        "spec/semantics/188-class-static-runtime.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/class_static_selector_variants_protocol.py",
+        "tests/semantics/class_static_selector_unwind_protocol.py",
+        "tests/semantics/class_static_interface_failure_protocol.py"
+      ],
       "source_tests": [
         "tests/semantics/static_method_cases.json",
         "tests/semantics/static_method_protocol.py",
         "tests/semantics/first_class_method_cases.json",
-        "tests/semantics/first_class_method_overlap_cases.json"
+        "tests/semantics/first_class_method_overlap_cases.json",
+        "tests/semantics/class_static_properties.py",
+        "tests/semantics/class_static_references.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "docs/semantics/SOURCE-METHODS.md",
-        "coverage/semantics/first-class-method-review.json"
+        "coverage/semantics/first-class-method-review.json",
+        "docs/semantics/SOURCE-CLASS-STATICS.md",
+        "coverage/semantics/class-static-properties.json"
       ],
-      "review": "Bounded static descriptors and scoped calls model visibility, override priority, forwarding called classes, active nonstatic receivers, literal and parser-folded constructor arms, dynamic class/name order, and source-owned selected targets. First-class source method captures preserve descriptors, called classes, receivers and direct trace frames; finite internal getter and Closure->__invoke captures, interface methods and broader class integration remain open."
+      "review": "Bounded static descriptors and scoped calls model visibility, override priority, forwarding called classes, active nonstatic receivers, literal and parser-folded constructor arms, dynamic class/name order, and source-owned selected targets. First-class source method captures preserve descriptors, called classes, receivers and direct trace frames; finite internal getter and Closure->__invoke captures, interface methods and broader class integration remain open. Private187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). The bounded ordinary checkpoint leaves typed object-string property/reference consumers,186 witness lifecycle, singleton declared alias cloning, readonly and asymmetric set access open."
     },
     {
       "id": "classes.instance-lookup",
@@ -8306,18 +8316,24 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/141-method-compiler.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/187-class-static-storage.watsup",
+        "spec/semantics/188-class-static-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/method_compiler.py",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/method_wrapper_protocol.py"
+        "tests/semantics/method_wrapper_protocol.py",
+        "tests/semantics/class_static_properties.py",
+        "tests/semantics/class_static_references.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "docs/semantics/SOURCE-CLASS-STATICS.md",
+        "coverage/semantics/class-static-properties.json"
       ],
-      "review": "Admitted instance calls and class-bound closures retain a distinct called class for static::class while lexical self/parent use declaring scope (methods-review.json). Bounded scoped static calls forward self/parent/static, explicit class calls select that class, and nonstatic scoped calls use the active receiver class (SOURCE-METHODS.md). Broader late-static-binding behavior remains open.",
+      "review": "Admitted instance calls and class-bound closures retain a distinct called class for static::class while lexical self/parent use declaring scope (methods-review.json). Bounded scoped static calls forward self/parent/static, explicit class calls select that class, and nonstatic scoped calls use the active receiver class (SOURCE-METHODS.md). Broader late-static-binding behavior remains open. Private187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). The bounded ordinary checkpoint leaves typed object-string property/reference consumers,186 witness lifecycle, singleton declared alias cloning, readonly and asymmetric set access open.",
       "planned_source_tests": [
         "tests/semantics/conformance/variance-static-intersection-first.php",
         "tests/semantics/conformance/variance-static-intersection-second.php"
@@ -8379,7 +8395,9 @@
         "spec/semantics/135-property-compiler.watsup",
         "spec/semantics/136-property-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/187-class-static-storage.watsup",
+        "spec/semantics/188-class-static-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -8393,16 +8411,20 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/class_static_properties.py",
+        "tests/semantics/class_static_references.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
         "coverage/semantics/properties-review.json",
         "docs/semantics/SOURCE-PROPERTY-VISIBILITY.md",
         "coverage/semantics/property-visibility-review.json",
-        "coverage/semantics/property-private-review.json"
+        "coverage/semantics/property-private-review.json",
+        "docs/semantics/SOURCE-CLASS-STATICS.md",
+        "coverage/semantics/class-static-properties.json"
       ],
-      "review": "Public/protected/private backed declarations retain typed defaults, invariant inherited overrides and original prototype visibility. Writes and typed aliases use canonical slot keys; diagnostics use declaring identity and raw names. Hooks, readonly/static/promotion and broader type forms remain open. Historical properties-review.json and current property-visibility-review.json retain separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities."
+      "review": "Public/protected/private backed declarations retain typed defaults, invariant inherited overrides and original prototype visibility. Writes and typed aliases use canonical slot keys; diagnostics use declaring identity and raw names. Hooks, readonly/promotion and broader type forms remain open. Historical properties-review.json and current property-visibility-review.json retain separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Private187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). The bounded ordinary checkpoint leaves typed object-string property/reference consumers,186 witness lifecycle, singleton declared alias cloning, readonly and asymmetric set access open."
     },
     {
       "id": "properties.uninitialized",
@@ -8413,7 +8435,9 @@
         "spec/semantics/135-property-compiler.watsup",
         "spec/semantics/136-property-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/187-class-static-storage.watsup",
+        "spec/semantics/188-class-static-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -8427,16 +8451,20 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/class_static_properties.py",
+        "tests/semantics/class_static_references.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
         "coverage/semantics/properties-review.json",
         "docs/semantics/SOURCE-PROPERTY-VISIBILITY.md",
         "coverage/semantics/property-visibility-review.json",
-        "coverage/semantics/property-private-review.json"
+        "coverage/semantics/property-private-review.json",
+        "docs/semantics/SOURCE-CLASS-STATICS.md",
+        "coverage/semantics/class-static-properties.json"
       ],
-      "review": "Typed no-default public/protected/private slots are distinct from null and unset. Reads, quiet probes and reference initialization obey lexical visibility and source type constraints. Magic property paths remain open; properties-review.json, property-references-review.json and property-visibility-review.json record their respective scopes. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities."
+      "review": "Typed no-default public/protected/private slots are distinct from null and unset. Reads, quiet probes and reference initialization obey lexical visibility and source type constraints. Magic property paths remain open; properties-review.json, property-references-review.json and property-visibility-review.json record their respective scopes. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Private187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). The bounded ordinary checkpoint leaves typed object-string property/reference consumers,186 witness lifecycle, singleton declared alias cloning, readonly and asymmetric set access open."
     },
     {
       "id": "properties.readonly",
@@ -8609,7 +8637,9 @@
       "implementation": [
         "spec/semantics/136-property-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/187-class-static-storage.watsup",
+        "spec/semantics/188-class-static-runtime.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -8622,16 +8652,20 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/class_static_properties.py",
+        "tests/semantics/class_static_references.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
         "coverage/semantics/properties-review.json",
         "docs/semantics/SOURCE-PROPERTY-VISIBILITY.md",
         "coverage/semantics/property-visibility-review.json",
-        "coverage/semantics/property-private-review.json"
+        "coverage/semantics/property-private-review.json",
+        "docs/semantics/SOURCE-CLASS-STATICS.md",
+        "coverage/semantics/class-static-properties.json"
       ],
-      "review": "Public/protected/private property dimensions, compound writes and aliases preserve COW and typed constraints through captured physical keys. Protected resolution and scalar-error display are reviewed in property-visibility-review.json; readonly, hooks and magic remain open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities."
+      "review": "Public/protected/private property dimensions, compound writes and aliases preserve COW and typed constraints through captured physical keys. Protected resolution and scalar-error display are reviewed in property-visibility-review.json; readonly, hooks and magic remain open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Private187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). The bounded ordinary checkpoint leaves typed object-string property/reference consumers,186 witness lifecycle, singleton declared alias cloning, readonly and asymmetric set access open."
     },
     {
       "id": "properties.reference-constraints",
@@ -8646,7 +8680,9 @@
         "spec/semantics/136-property-runtime.watsup",
         "spec/semantics/138-property-references.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/187-class-static-storage.watsup",
+        "spec/semantics/188-class-static-runtime.watsup"
       ],
       "helper_tests": [
         "tests/semantics/property_reference_compiler.py",
@@ -8663,16 +8699,20 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/class_static_properties.py",
+        "tests/semantics/class_static_references.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
         "coverage/semantics/property-references-review.json",
         "docs/semantics/SOURCE-PROPERTY-VISIBILITY.md",
         "coverage/semantics/property-visibility-review.json",
-        "coverage/semantics/property-private-review.json"
+        "coverage/semantics/property-private-review.json",
+        "docs/semantics/SOURCE-CLASS-STATICS.md",
+        "coverage/semantics/class-static-properties.json"
       ],
-      "review": "Public/protected/private reference cells carry ordered non-owning typed sources keyed by object and physical slot. Unconstrained binding coerces before detaching the old source; constrained binding is atomic, reports FIRST-source conflicts and preserves conversion effects. Self-rebinding removes/adds the source. By-reference parameter/return no-coercion rules remain separate. Nullsafe sends, overflow and clone aliases retain their reviewed bounds; static/readonly/hooks/magic remain open. Historical property-references-review.json and current property-visibility-review.json record separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities."
+      "review": "Public/protected/private reference cells carry ordered non-owning typed sources keyed by object and physical slot. Unconstrained binding coerces before detaching the old source; constrained binding is atomic, reports FIRST-source conflicts and preserves conversion effects. Self-rebinding removes/adds the source. By-reference parameter/return no-coercion rules remain separate. Nullsafe sends, overflow and clone aliases retain their reviewed bounds; readonly/hooks/magic remain open. Historical property-references-review.json and current property-visibility-review.json record separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Private187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). The bounded ordinary checkpoint leaves typed object-string property/reference consumers,186 witness lifecycle, singleton declared alias cloning, readonly and asymmetric set access open."
     },
     {
       "id": "declarations.constants",

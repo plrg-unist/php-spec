@@ -3,8 +3,9 @@
 Modules153/154 extend backed instance properties with protected and private access.
 The scope includes reads, writes, quiet tests, unset, computed names, aliases,
 compound and dimension writes, foreach, casts, comparison and clone updates.
-Static, asymmetric-set, readonly, promoted and hooked
-properties and magic access remain separate dependencies.
+[Class static access](SOURCE-CLASS-STATICS.md) has a separate bounded contract.
+Asymmetric-set, readonly, promoted and hooked properties and magic access remain
+separate dependencies.
 
 A descriptor retains its raw `NAME` and declaring source origin, and adds
 `VISIBILITY` and canonical `KEY`. Public keys are raw names; protected keys are

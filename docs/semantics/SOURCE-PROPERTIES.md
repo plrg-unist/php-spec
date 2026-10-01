@@ -28,5 +28,6 @@ binds source, compiler and paused-state checks. Public property references
 and by-reference object traversal are documented separately in
 [SOURCE-PROPERTY-REFERENCES.md](SOURCE-PROPERTY-REFERENCES.md). Protected/private access and
 mangled storage keys are described in [SOURCE-PROPERTY-VISIBILITY.md](SOURCE-PROPERTY-VISIBILITY.md).
-Static/readonly members, hooks, magic access and scalar-to-object property
-population remain open obligations. Public constructors are implemented separately.
+[Class static members](SOURCE-CLASS-STATICS.md) have a separate bounded storage
+and access contract. Readonly members, hooks, magic access and scalar-to-object
+property population remain open obligations. Public constructors are implemented separately.

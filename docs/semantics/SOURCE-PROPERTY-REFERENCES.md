@@ -27,5 +27,6 @@ compiler and runtime changes are in modules 137 and 138, with central writer
 and cursor changes in earlier modules. Nullsafe property reference sends and public method dispatch are implemented in
 their respective modules. [Property visibility](SOURCE-PROPERTY-VISIBILITY.md)
 uses physical slot keys for constraints and raw names for diagnostics, including
-independent same-name private slots. Static, readonly, hooked and magic property
-access remain dependencies.
+independent same-name private slots. [Class static sources](SOURCE-CLASS-STATICS.md)
+share the constraint writer through distinct declaration IDs. Resumable string
+conversion, readonly, hooked and magic property access remain dependencies.
