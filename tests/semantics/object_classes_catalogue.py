@@ -26,7 +26,7 @@ catalogue = []
 for line in (ROOT / 'spec/semantics/126-class-compiler.watsup').read_text().splitlines():
     if not line.startswith('  INTERNAL '):
         continue
-    row = re.fullmatch(r'  INTERNAL (\[[0-9, ]+\]) (\[[0-9, ]+\]) "(class|interface|trait|enum)"[,]? ;; (.+)', line)
+    row = re.fullmatch(r'  INTERNAL \((\[[0-9, ]+\])\) \((\[[0-9, ]+\])\) "(class|interface|trait|enum)"[,]? ;; (.+)', line)
     assert row, line
     key, name = [bytes(json.loads(expr)).decode('ascii') for expr in row.group(1, 2)]
     kind = row.group(3)
