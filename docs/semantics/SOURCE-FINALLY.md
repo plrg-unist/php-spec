@@ -12,9 +12,9 @@ repeat the declared return-type check after finalization.
 
 Unused reference calls also retain their selected cell or evaluated temporary
 until that check. Used temporary results keep the ordinary fresh reference.
-The isolated [retention ledger](../../coverage/semantics/reference-unused-finally-current-author.json)
-records five exact sources and two paused stages (30 assertions) on the current
-base; protected-region rejection replay and object conversion remain separate.
+The installed [retention ledger](../../coverage/semantics/reference-unused-finally-installed.json)
+records five exact sources and two paused stages (30 assertions). Protected-region
+rejection replay and object conversion remain separate.
 
 Compilation visits the try body, each catch header/body, then finally. Break and
 continue join the ordered goto pass-two stream without generating goto targets.

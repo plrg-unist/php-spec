@@ -26,9 +26,9 @@ timeouts, runner failures, Unsupported and budget controls are not agreements.
 
 ## Current checkpoint
 
-The current semantic code checkpoint is **5d717bbeb** (finite-mode dispatch
-guard), following mutable file context **35b226471** and the provider-fixture
-repair **badc320f28b**. It retains weak typed string returns, interface,
+The current semantic code checkpoint is **08b929694** (unused reference-return
+retention), following finite-mode dispatch guard **5d717bbeb**, mutable file
+context **35b226471** and provider-fixture repair **badc320f28b**. It retains weak typed string returns, interface,
 Closure-binding and source-Throwable code. Interfaces check
 ordered links, nominal membership, method variance, abstract obligations and
 authenticated `Exception`/`Error` ancestry for direct or transitive
@@ -63,10 +63,10 @@ stages (63 assertions), and three retained finite native/model sources pass;
 the unsupported control is not native agreement.
 [Ledger](coverage/semantics/include-no-file-guard-review.json).
 
-A separate module99 candidate retains unused reference-return operands through
-finalizers while preserving used temporary aliases. Five current-base source
-comparisons and two paused stages (30 assertions) pass. It has no dependency on
-the pending generic156 replay. [Ledger](coverage/semantics/reference-unused-finally-current-author.json).
+Module99 retains unused reference-return operands through finalizers while
+preserving used temporary aliases. Five installed source comparisons and two
+paused stages (30 assertions) pass, independently of pending generic156 replay.
+[Ledger](coverage/semantics/reference-unused-finally-installed.json).
 
 By-reference typed return conversion 186 needs captured-alias write-back and a
 generic post-`finally` rejection replay. Weak parameters, properties,

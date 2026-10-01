@@ -1,0 +1,45 @@
+{
+  "status": "installed_reviewed",
+  "base": "30b85e249",
+  "implementation_commit": "08b929694",
+  "scope": "Module99 unused reference-return operand retention through the existing post-finally check; used temporary references preserved. No generic156 replay or186 conversion imported.",
+  "private_candidate": {
+    "commit": "ff579a126",
+    "root": ".tools/reference-unused-finally-current",
+    "author_ledger": "coverage/semantics/reference-unused-finally-current-author.json",
+    "review_ledger": ".tools/returns-unused-finally-current-review.json",
+    "review_sha256": "058628b3c6676b4c7af9e04d0b6bd214e9ac8c9aa3c39b6d3520d0b2fe829a40"
+  },
+  "source": {
+    "report": ".tools/finally-source-75jegpcr/report.json",
+    "sha256": "a78143a53f73be94961c9bee1a506902613e0a0251e703bdcffd7b5abdb14040",
+    "result": "pass",
+    "exact_agreements": 5
+  },
+  "paused": {
+    "report": ".tools/reference-unused-finally-protocol-sfl0rgeh/report.json",
+    "sha256": "f648dd58e49d9e2a803bd9479501cdf20eca73519fbde544994eebea8edb4c79",
+    "result": "pass",
+    "stable": true,
+    "stages": 2,
+    "assertions": 30
+  },
+  "static_checks": [
+    "git diff --check",
+    "python3 scripts/check-semantic-inventory.py"
+  ],
+  "replay": [
+    "python3 tests/semantics/finally.py --match ref-unused-",
+    "python3 tests/semantics/reference_unused_finally_protocol.py"
+  ],
+  "limits": [
+    "Generic156 phase/lifecycle and runtime-owner recovery remain unapproved.",
+    "Typed reference object conversion186 remains private and incomplete."
+  ],
+  "raw_policy": "Generated source/native/model/protocol artifacts remain ignored; report input maps bind installed modules, binaries, profile and runners.",
+  "review": {
+    "ledger": ".tools/reference-unused-finally-current/.tools/returns-unused-finally-installed-review.json",
+    "sha256": "58ce0f12772a800a68ea1e8cc00509171113bd626dfb12f543dde184645445b3",
+    "verdict": "accepted_scoped"
+  }
+}
