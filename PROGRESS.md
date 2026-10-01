@@ -50,6 +50,14 @@ five-request replay; model requests keep their 60-second limit. Historical
 nine-source evidence and the interrupted 50-source prefix remain separate.
 [Ledger](coverage/semantics/include-stringable-chdir-review.json).
 
+The private internal-catalogue candidate **d3de15011** preserves all 166 ordered
+name/kind values as literal bytes. Complete old/new value equality, the native
+catalogue and two original-source tuples pass; installation is pending. The
+129-byte inherited-callback program retains its 155-byte absolute filename and
+snapshot/CWD, completing in 2.921 seconds under the unchanged 60-second request
+limit. Named operands and property witnesses remain separate pending work.
+[Catalogue ledger](coverage/semantics/internal-class-catalogue-review.json).
+
 ## Active work and remaining obligations
 
 Generic156 return/Notice replay remains open. By-reference typed string return

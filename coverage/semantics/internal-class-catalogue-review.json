@@ -1,0 +1,107 @@
+{
+  "scope": "Value-preserving constant folding of the finite internal class catalogue; no additional PHP behavior or inventory completion.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base": "8bbfb882923a114490c448b656ed84db616e135b",
+  "source_freeze": "d3de150118321997f0a81f56e3ec5b2bbcfc5348",
+  "status": "Private code and all focused gates independently approved; installation pending.",
+  "change": "Replace only the 166 catalogue key/display conversions with grouped literal byte arrays. Preserve exact keys, display names, kinds and order; lookup, authenticity guards, ptascii and interpreter settings are unchanged. Update only the dependent native extractor grammar/checks.",
+  "value_proof": {
+    "rows": 166,
+    "before": {
+      "path": ".tools/internal-catalogue-current/.tools/internal-catalogue-before.watsup",
+      "sha256": "235ba04be4482be5b4d9752614368e1f6bf69eef14706affd6935db16c5c85ad"
+    },
+    "vectors": {
+      "path": ".tools/internal-catalogue-current/.tools/internal-catalogue-vectors.json",
+      "sha256": "c0eff37788db86a4d5c1d5227493b54171af7ea7fc74a8841a2b58245a925fa0"
+    },
+    "whole_value_fixture": {
+      "path": ".tools/internal-catalogue-current/.tools/internal-catalogue-equivalence.watsup",
+      "sha256": "58f500f6f59ee0e05f6f7fe884c6799d5e5758ecdc2591fa5317f39eb25e4b12"
+    },
+    "result": "Both reviewers independently decoded all old printable-ASCII expressions and namespace separators (92); every ordered key/display/kind vector equals the new constants."
+  },
+  "runtime": {
+    "provisioning": {
+      "path": ".tools/internal-catalogue-current/.tools/catalogue-runtime-provision.json",
+      "sha256": "7bf4513d64fae08b39356c311352ca2029ae68f1b1a1d5a4a5bbab5bf18fa323"
+    },
+    "boundary": "Receipt retains its original c298 provisioning HEAD: exact-source checked reuse of five compiled components, four physical binaries and 1,731 canonical SpecTec library files. These remain unchanged at d3; no fresh or offline rebuild claim. Optional request-clock context is not equated or loaded by these gates."
+  },
+  "driver": {
+    "path": ".tools/internal-catalogue-current/.tools/catalogue-validation.py",
+    "sha256": "7b6833951bf8411002bbb877376c848a7f7f67ea236c5f39d7a7cc2ad592fe32"
+  },
+  "gates": [
+    {
+      "kind": "Full-module elaboration smoke",
+      "report": {
+        "path": ".tools/internal-catalogue-current/.tools/catalogue-smoke-gy5yy_kd/report.json",
+        "sha256": "17fb7e7634a5a279acdbaa6983c20d9a1c263e0a7978c11b04116e5d4e9b9889"
+      },
+      "result": "All 182 ordered modules (spec/php.watsup plus 181 semantic modules), constant true fixture: true, empty stderr, exit 0; no native agreement."
+    },
+    {
+      "kind": "Complete old/new catalogue value equality",
+      "report": {
+        "path": ".tools/internal-catalogue-current/.tools/catalogue-equivalence-m7bu09ry/report.json",
+        "sha256": "6ce0bff9939b27243c014109c2feea2b2fd300e6b4c512ead99414e0b73e4098"
+      },
+      "result": "All 166 ordered rows equal in the numeric interpreter: true, empty stderr, exit 0."
+    },
+    {
+      "kind": "Native catalogue",
+      "report": {
+        "path": ".tools/internal-catalogue-current/.tools/catalogue-native-ncsukjzu/report.json",
+        "sha256": "5f8071ec60edb50ae097e4e97b01d3d781f5a64da7cd538ccb060ab62de172c7"
+      },
+      "result": "Actual pinned PHP -n -r output matches all 166 ordered names/kinds; helper PASS. Catalogue rows are not source programs."
+    },
+    {
+      "kind": "Original source differential checks",
+      "report": {
+        "path": ".tools/internal-catalogue-current/.tools/catalogue-sources-kvuasixy/report.json",
+        "sha256": "517aab3a6fe2fdc2f3ffad6bad974814e30d562bffdaca7ee3c103028cda93a8"
+      },
+      "agreements": 2,
+      "result": "Inherited mixed-case Stringable callback has exact empty stdout/full 809-byte fatal stderr/exit 255; genuine Throwable subclass construction/catch has exact O/empty stderr/normal 0. Both accepted, checked programs."
+    }
+  ],
+  "provenance": "Every current gate binds 212 input hashes, 1,731 library hashes and the four unchanged original inherited-source fixtures before/after. Source, snapshot, original CWD, profile, raw streams and commands remain archived; no input drift.",
+  "source_limits": {
+    "producer_seconds": 90,
+    "model_request_seconds": 60,
+    "steps": 100000,
+    "native_seconds": 30,
+    "locale": "C"
+  },
+  "cost_observation": {
+    "program_bytes": 129,
+    "original_absolute_filename_bytes": 155,
+    "historical_baseline": {
+      "path": ".tools/include-config-arguments-current/.tools/named-positional-a33-timing-hl_x5ct5/report.json",
+      "sha256": "01ef4ea3ce056ce2e45955ebf1d3d748b3e01c1ddcf297afe7d59468f687b1bc"
+    },
+    "baseline": "Exact a33/0b6 source and runtime control timed out at 60.060 seconds (wall 60.162, CPU 60.135); no agreement.",
+    "current": "The unchanged original program/snapshot/CWD at d3 completes in 2.921 wall / 2.917 CPU seconds with exact native fatal tuple and unchanged limits. Distinct checkpoint identities are retained; no precise speedup ratio claimed.",
+    "instrumented_profile": {
+      "path": ".tools/include-config-arguments-current/.tools/named-seek-profile-afmcnsfl/report.json",
+      "sha256": "e7ea089f9951afc2983d1b2004b6c2b21f59fe617eb5d6034f160be30e58fae6"
+    },
+    "profile_scope": "Diagnostic hooks, not semantic acceptance: 50,384,588 ptasciidigit calls dominate repeated catalogue construction. Instrumentation overhead and non-additive inclusive timings remain explicit."
+  },
+  "preserved_failure": {
+    "report": {
+      "path": ".tools/internal-catalogue-current/.tools/catalogue-equivalence-4uw1gkkp/report.json",
+      "sha256": "90dcbcdd127db3a2b76fc5ea91130b3e3aa7a86feec45af05fc1866430dbdf24"
+    },
+    "result": "c298 ungrouped-list syntax failure, exit 1 before evaluation; zero acceptance. d3 changes only necessary grouping/extractor grammar."
+  },
+  "independent_review": {
+    "path": ".tools/internal-catalogue-current/.tools/internal-catalogue-properties-final-review.json",
+    "sha256": "8276302ae3bf2f2dbbeefd56b7f27262a09c8d7cf19af3891e4b7a5d8256bd37"
+  },
+  "review": "Independent resume_audit and properties_verify reviews approve the exact catalogue values, code scope, runtime boundary and all four focused gate families; resume_audit additionally approves this compact ledger and scoped documentation.",
+  "remaining": "Named Stringable-chdir operands and property witness gates remain separately pending. Complete PHP core and a fresh offline network-isolated rebuild/full current-source closure remain open.",
+  "installed": null
+}

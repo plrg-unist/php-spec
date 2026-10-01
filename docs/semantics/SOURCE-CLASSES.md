@@ -8,7 +8,10 @@ timing separate from compiled source. Redeclaration reports the original name
 and location; occupied internal class, interface and enum names follow the
 pinned CLI `-n` catalogue of 166 names. Enum kinds use
 `ReflectionClass::isEnum()`. The catalogue supplies names and diagnostic kinds,
-not internal bodies.
+not internal bodies. Its key/display names are literal byte vectors, preserving
+all 166 ordered values while avoiding repeated ASCII conversion. Complete
+old/new value equality and the pinned native catalogue are recorded in the
+[catalogue review](../../coverage/semantics/internal-class-catalogue-review.json).
 
 `new` resolves a named, concrete user class before allocating an object in the
 existing owned heap. The current admitted form has no constructor arguments or
