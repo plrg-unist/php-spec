@@ -1,0 +1,106 @@
+{
+  "status": "private_reviewed",
+  "base": "aed684e4a184a8500c7e2c318fd480f0db393bd8",
+  "evidence_root": ".tools/reference-exit-origin-current",
+  "scope": "Module148 clears discarded active ORIGIN at exit production/unwind and requires empty ORIGIN at EXIT_UNWIND; saved frames and existing cleanup remain unchanged. No generic156/186 implementation imported.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json"
+  },
+  "semantic_and_runner_hashes": {
+    "spec/semantics/148-core-intrinsics.watsup": "0ba4eb145c433f372b5fb030b5d5c16316a676e75505a33b0d00b137fc05ca2f",
+    "tests/semantics/finally_cases.json": "236fb4882f3abb3f22707a107e74647c24c117f612938665b345db63bd88f8ce",
+    "tests/semantics/exit_origin_protocol.py": "5a8e6a456407e8b3f2b2167514ec8f75bc3cf48199554077533693289fafc842"
+  },
+  "source": {
+    "report": ".tools/finally-source-7894br3v/report.json",
+    "sha256": "6222776eb80c0e57f22c027b938a786ab98c73563a31caa4ad1106ccf47b81b6",
+    "result": "pass",
+    "exact_agreements": 6,
+    "inputs": 190,
+    "selection": "exit-origin"
+  },
+  "paused": {
+    "accepted_stages": 6,
+    "accepted_assertions": 163,
+    "unchanged_positive_fixtures": {
+      "report": ".tools/exit-origin-protocol-x5l08nww/report.json",
+      "sha256": "88e4761a0b50b11aa5aad47537d94ca06513c5a90da0f681166ab07518ff157d",
+      "result": "fail",
+      "stable": true,
+      "passing_stages": 5,
+      "failed_stages": [
+        "suppressed-foreach-unwind"
+      ],
+      "assertions": 161,
+      "disposition": "Historical draft: only the suppressed callee pause expected the caller mask too early; five unchanged source-derived fixtures remain positive evidence."
+    },
+    "corrected_affected_stage": {
+      "report": ".tools/exit-origin-protocol-9cd8lyv4/report.json",
+      "sha256": "78ec4471f29a15ab4427c37c241cc5ae7f4792b55c8b5f20adb657571b1d8706",
+      "result": "pass",
+      "stable": true,
+      "stages": 1,
+      "assertions": 31,
+      "inputs": 189
+    },
+    "compatibility": "The current script changes only suppressed-foreach pause assertions. The other five generated fixtures/checks are unchanged. Six-stage acceptance combines those five positives with the corrected current stage; the old six-stage report remains fail.",
+    "checks": [
+      "Public drive versus whole execution",
+      "Current and saved-frame cleanup",
+      "Suppressed callee mask and restored terminal reporting",
+      "Current/saved foreach iterator release",
+      "Empty retired origin and forged origin rejection",
+      "Heap/descriptors and terminal CURRENT/FRAMES/TODO"
+    ]
+  },
+  "retained_protocol": {
+    "report": ".tools/exit-protocol-fv7tpffc/report.json",
+    "sha256": "5025e74b0d4d32b5b33d5e1433c978fb2a982a30b920b95725eba9aa3918b33d",
+    "result": "pass",
+    "stages": 6,
+    "assertions": 126,
+    "fingerprint": "8e8f7c9262070bb99f068fb18dec07a8adf7074d24cdfdf6c3155e8a3f3abb11"
+  },
+  "retained_source": {
+    "report": ".tools/exit-expressions-u55dmw5a/report.json",
+    "sha256": "893f95a1b2d710b9f01ba070f7ff8e62da62aad363d65914a3106a355b1de849",
+    "result": "pass",
+    "sources": 2,
+    "selection": "suppressed",
+    "native_claim": "observable_tuple_only: current model versus preserved pinned native records, not a fresh oracle rerun",
+    "fingerprint": "8e8f7c9262070bb99f068fb18dec07a8adf7074d24cdfdf6c3155e8a3f3abb11",
+    "direct_inputs": 185
+  },
+  "baseline_failure": {
+    "report": ".tools/exit-origin-protocol-wejc5cbo/report.json",
+    "sha256": "12ff7bbd2bea49ffbe42e6d15c5a3a45824f66994f83d69ac43fb26bbb0d5a17",
+    "result": "fail",
+    "stable": true,
+    "stages": 1,
+    "disposition": "Original aed684e4a module148 fails the first descriptor check at ordinary finalizer EXIT_UNWIND. This diagnostic is not acceptance."
+  },
+  "source_routes": [
+    "Zend/zend_vm_def.h: ZEND_EXIT, ZEND_BEGIN_SILENCE, ZEND_END_SILENCE",
+    "Zend/zend_execute.c: cleanup_live_vars ZEND_LIVE_SILENCE"
+  ],
+  "replay": [
+    "python3 tests/semantics/finally.py --match exit-origin",
+    "python3 tests/semantics/exit_origin_protocol.py",
+    "python3 tests/semantics/exit_protocol.py",
+    "python3 tests/semantics/exit_expressions.py --match suppressed"
+  ],
+  "limits": [
+    "Generic156 recovery and virtual-origin catch-body pause checks remain private/unapproved.",
+    "Loop/switch/foreach and active-finalizer replay recovery remain required milestones.",
+    "Temporary-reference-return Notice timing and typed by-reference conversion186 remain open."
+  ],
+  "raw_policy": "Original sources, native/model raw tuples, checked fixtures and runner output remain ignored under evidence_root; report input maps bind the local authored modules and binaries. Build symlinks and private reference manifest are excluded from commits.",
+  "review": {
+    "ledger": ".tools/exit-origin-review.json",
+    "sha256": "469b4f0ba34bdb55fd09df1f7a52da06781ff52371a158d07adbda1e3f541e92",
+    "verdict": "accepted_scoped"
+  }
+}

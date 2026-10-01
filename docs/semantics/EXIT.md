@@ -30,6 +30,13 @@ owners without capturing a Throwable trace or executing ordinary finally
 continuations. Request global/static roots remain available for subsequent
 lifecycle integration.
 
+Exit clears the active source origin with the discarded continuation. Saved
+frames keep their own context until they unwind. A budget pause during exit
+can therefore resume from a catch or finalizer without requiring a discarded
+protected-region marker. The [origin cleanup ledger](../../coverage/semantics/exit-origin-author.json)
+separates six exact sources, paused cleanup checks, the original invalid pause,
+and retained exit controls.
+
 Shutdown functions, destructors, output callbacks, user error handlers and
 Stringable conversion callbacks remain open dependencies. This increment does
 not claim full request shutdown or general Throwable/catch/finally semantics.

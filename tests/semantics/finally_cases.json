@@ -218,5 +218,35 @@
     "id": "ref-unused-used-call-finally",
     "source": "<?php function g(){return \"s\";}function &f():string{try{return g();}finally{echo \"F;\";}}$a=&f();$b=&$a;$b=\"t\";echo \"a=\",$a,\";\";",
     "status": "normal"
+  },
+  {
+    "id": "exit-origin-function-finalizer",
+    "source": "<?php function f(){try{echo \"T;\";}finally{echo \"F;\";exit(7);}}f();",
+    "status": "explicit_exit"
+  },
+  {
+    "id": "exit-origin-function-catch",
+    "source": "<?php function f(){try{throw new Exception(\"x\");}catch(Exception $e){echo \"C;\";exit(7);}finally{echo \"BAD;\";}}f();",
+    "status": "explicit_exit"
+  },
+  {
+    "id": "exit-origin-method-finalizer",
+    "source": "<?php class C{function f(){try{echo \"T;\";}finally{echo \"F;\";exit(7);}}}$c=new C;$c->f();",
+    "status": "explicit_exit"
+  },
+  {
+    "id": "exit-origin-suppressed-foreach",
+    "source": "<?php function f(){foreach([1,2] as &$v){try{echo \"T;\";}finally{echo \"F;\";exit(7);}}}@f();",
+    "status": "explicit_exit"
+  },
+  {
+    "id": "exit-origin-outer-foreach",
+    "source": "<?php function f(){try{echo \"T;\";}finally{echo \"F;\";exit(7);}}function h(){foreach([1,2] as &$v){f();}}@h();",
+    "status": "explicit_exit"
+  },
+  {
+    "id": "exit-origin-top-level-finalizer",
+    "source": "<?php try{echo \"T;\";}finally{echo \"F;\";exit(7);}",
+    "status": "explicit_exit"
   }
 ]

@@ -126,13 +126,13 @@ def $exit_conversion(pvalue, false) = $typed_weak(["int", "string"], pvalue)
   -- if pvalue =/= PNULL
 def $exit_conversion(pvalue, b) = TYPEREJECT -- otherwise
 dec $exit_finish(pstate) : pstate
-def $exit_finish(S) = S[.TODO = eps][.COMPLETION = EXITED $ntprecision32(z)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
+def $exit_finish(S) = S[.TODO = eps][.ORIGIN = eps][.COMPLETION = EXITED $ntprecision32(z)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (PINT z)
-def $exit_finish(S) = S[.TODO = eps][.COMPLETION = EXITED 0][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
+def $exit_finish(S) = S[.TODO = eps][.ORIGIN = eps][.COMPLETION = EXITED 0][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (PSTRING eps)
-def $exit_finish(S) = S[.TODO = eps][.EVENTS = S.EVENTS ++ [OUTPUT n*]][.COMPLETION = EXITED 0][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
+def $exit_finish(S) = S[.TODO = eps][.ORIGIN = eps][.EVENTS = S.EVENTS ++ [OUTPUT n*]][.COMPLETION = EXITED 0][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (PSTRING n*)
   -- if n* =/= eps
@@ -162,7 +162,7 @@ rule PhpStep/exit-invoke: S ~> $exit_receive(S[.TODO = ptask_tail*], pexitcall)
 ;; Request globals/statics remain roots for the future shutdown protocol.
 def $exit_completion(EXITED z) = true
 def $exit_completion(pcompletion) = false -- otherwise
-def $exit_start_unwind(S, z) = $error_release_iterators($silence_unwind(S))[.CONSTCONTEXT = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = [EXIT_UNWIND z]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+def $exit_start_unwind(S, z) = $error_release_iterators($silence_unwind(S))[.CONSTCONTEXT = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = [EXIT_UNWIND z]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
 def $drive_steps(S, n) = $drive_steps($exit_start_unwind(S, z), n)
   -- if S.COMPLETION = EXITED z
   -- if S.FRAMES =/= eps
@@ -217,6 +217,7 @@ dec $exit_unwind_valid(pstate, int) : bool
 def $exit_unwind_valid(S, z) = true
   -- if z = $ntprecision32(z)
   -- if S.TODO = [EXIT_UNWIND z]
+  -- if S.ORIGIN = eps
   -- if S.TRACE = eps
   -- if S.ERRORORIGIN = eps
   -- if S.CONSTCONTEXT = eps
