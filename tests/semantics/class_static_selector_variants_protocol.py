@@ -12,19 +12,33 @@ from recorded_worker import Worker
 ROOT = Path(__file__).resolve().parents[2]
 CASES = [
     ('casefold', b'<?php class A { public static $x=1; } class B { public static $x=2; } '
-     b'function nm(){echo "N";return "x";} $c="a"; echo $c::${nm()};', [
+     b'function nm(){global $c;$c="B";echo "N";return "x";} $c="a"; echo $c::${nm()};', [
         'poperand = KNOWN (PSTRING n_class*)',
         '$ptlc(n_class*) = $ptascii("a")',
-        '~$call_task_valid(S, STATIC_PROP_NAME phpType19 (KNOWN (PSTRING $ptascii("B"))) z)',
+    ], '(KNOWN (PSTRING $ptascii("B")))', [
+        '$lookup(S_head.ENV,$ptascii("c")) = (n_class_cell)',
+        'S_head.STORE[n_class_cell] = DEFINED (PSTRING $ptascii("B"))',
     ]),
     ('object', b'<?php class A { public static $x=1; } class B { public static $x=2; } '
-     b'function nm(){echo "N";return "x";} $a=new A; $b=new B; echo $a::${nm()};', [
+     b'function nm(){global $a,$b;$a=$b;echo "N";return "x";} $a=new A; $b=new B; echo $a::${nm()};', [
         '$lookup(S.ENV,$ptascii("a")) = (n_a_cell)',
         '$lookup(S.ENV,$ptascii("b")) = (n_b_cell)',
         'S.STORE[n_a_cell] = DEFINED (POBJECT n_a)',
         'S.STORE[n_b_cell] = DEFINED (POBJECT n_b)',
         'poperand = KNOWN (POBJECT n_a)',
-        '~$call_task_valid(S, STATIC_PROP_NAME phpType19 (KNOWN (POBJECT n_b)) z)',
+    ], '(KNOWN (POBJECT n_b))', [
+        'S_head.STORE[n_a_cell] = DEFINED (POBJECT n_b)',
+        '$task_nodes(STATIC_PROP_NAME phpType19 poperand z) = eps',
+        '$task_nodes(STATIC_PROP_CAPTURE porigin poperand z) = [HOBJECT n_a]',
+    ]),
+    ('nested', b'<?php class A { public static $x=1; } class B { public static $x=2; } '
+     b'function nm(){global $c;$n="x";echo B::${$n};$c="B";return "x";} '
+     b'$c="a";echo $c::${nm()};', [
+        'poperand = KNOWN (PSTRING n_class*)',
+        '$ptlc(n_class*) = $ptascii("a")',
+    ], '(KNOWN (PSTRING $ptascii("B")))', [
+        '$lookup(S_head.ENV,$ptascii("c")) = (n_class_cell)',
+        'S_head.STORE[n_class_cell] = DEFINED (PSTRING $ptascii("B"))',
     ]),
 ]
 HELPERS = '''
@@ -42,14 +56,29 @@ def $static_name_seek(S,n) = S -- if $static_name_pending(S.TODO) =/= eps
 def $static_name_seek(S,n) = $static_name_seek($drive_steps(S[.COMPLETION = NORMAL],1),$nabs($(n - 1)))
   -- if $static_name_pending(S.TODO) = eps
   -- if $(n > 0)
-dec $static_name_head(pstate) : bool
-def $static_name_head(S) = true
+dec $static_name_head(pstate,porigin) : bool
+def $static_name_head(S,porigin) = true
+  -- if S.ORIGIN = (porigin)
   -- if S.TODO = (STATIC_PROP_NAME phpType19 poperand z) :: ptask_tail*
-def $static_name_head(S) = false -- otherwise
-dec $static_name_head_seek(pstate,nat) : pstate
-def $static_name_head_seek(S,n) = S -- if $static_name_head(S)
-def $static_name_head_seek(S,n) = $static_name_head_seek($drive_steps(S[.COMPLETION = NORMAL],1),$nabs($(n - 1)))
-  -- if ~$static_name_head(S)
+def $static_name_head(S,porigin) = false -- otherwise
+dec $static_name_head_seek(pstate,porigin,nat) : pstate
+def $static_name_head_seek(S,porigin,n) = S -- if $static_name_head(S,porigin)
+def $static_name_head_seek(S,porigin,n) = $static_name_head_seek($drive_steps(S[.COMPLETION = NORMAL],1),porigin,$nabs($(n - 1)))
+  -- if ~$static_name_head(S,porigin)
+  -- if $(n > 0)
+dec $static_name_without_capture(ptask*,porigin) : ptask*
+def $static_name_without_capture(eps,porigin) = eps
+def $static_name_without_capture((STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*,porigin) = ptask_tail*
+def $static_name_without_capture(ptask :: ptask_tail*,porigin) = ptask :: $static_name_without_capture(ptask_tail*,porigin)
+  -- if $class_static_capture_origin(ptask) =/= (porigin)
+dec $static_name_saved(pstate,porigin,phpType19,poperand,int) : bool
+def $static_name_saved(S,porigin,phpType19,poperand,z) = $class_static_name_pair_present(pframe.TODO,porigin,phpType19,poperand,z)
+  -- if S.FRAMES = pframe :: pframe_tail*
+def $static_name_saved(S,porigin,phpType19,poperand,z) = false -- otherwise
+dec $static_name_callback_seek(pstate,porigin,phpType19,poperand,int,nat) : pstate
+def $static_name_callback_seek(S,porigin,phpType19,poperand,z,n) = S -- if $static_name_saved(S,porigin,phpType19,poperand,z)
+def $static_name_callback_seek(S,porigin,phpType19,poperand,z,n) = $static_name_callback_seek($drive_steps(S[.COMPLETION = NORMAL],1),porigin,phpType19,poperand,z,$nabs($(n - 1)))
+  -- if ~$static_name_saved(S,porigin,phpType19,poperand,z)
   -- if $(n > 0)
 '''
 
@@ -70,7 +99,7 @@ def main():
     adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter')
     reports = []
     try:
-        for name, source_bytes, extra in CASES:
+        for name, source_bytes, extra, forged_operand, after in CASES:
             directory = out / name
             directory.mkdir()
             source = directory / 'source.php'
@@ -85,17 +114,50 @@ def main():
                 'S_initial = ' + initial,
                 'S = $static_name_seek(S_initial[.COMPLETION = NORMAL], 128)',
                 '$static_name_pending(S.TODO) = ((phpType19,poperand,z))',
+                'S.ORIGIN = (porigin)',
                 'S.RESULT = poperand',
                 '$call_task_valid(S, STATIC_PROP_NAME phpType19 poperand z)',
+                '$call_task_valid(S, STATIC_PROP_CAPTURE porigin poperand z)',
                 '$call_descriptors_valid(S) /\\ $class_state_valid(S) /\\ $heap_valid($heap_graph(S))',
                 *extra,
-                'S_head = $static_name_head_seek(S[.COMPLETION = NORMAL], 128)',
-                'S_head.TODO = (STATIC_PROP_NAME phpType19 poperand z) :: ptask_tail*',
+                '~$call_task_valid(S, STATIC_PROP_NAME phpType19 ' + forged_operand + ' z)',
+                'S_callback = $static_name_callback_seek(S[.COMPLETION = NORMAL],porigin,phpType19,poperand,z,128)',
+                'S_callback.FRAMES = pframe :: pframe_tail*',
+                '$call_descriptors_valid(S_callback)',
+                '~$call_frames_valid(S_callback,[pframe[.TODO = $static_name_without_capture(pframe.TODO,porigin)]] ++ pframe_tail*)',
+                'S_head = $static_name_head_seek(S_callback[.COMPLETION = NORMAL], porigin, 256)',
+                'S_head.TODO = (STATIC_PROP_NAME phpType19 poperand z) :: (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*',
                 'S_head.RESULT = KNOWN (PSTRING ([120]))',
                 '$call_task_valid(S_head, STATIC_PROP_NAME phpType19 poperand z)',
+                '$call_task_valid(S_head, STATIC_PROP_CAPTURE porigin poperand z)',
                 '$call_descriptors_valid(S_head) /\\ $class_state_valid(S_head) /\\ $heap_valid($heap_graph(S_head))',
+                *after,
+                'S_forged = S_head[.TODO = (STATIC_PROP_NAME phpType19 ' + forged_operand + ' z) :: (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*]',
+                '~$call_task_valid(S_forged, STATIC_PROP_NAME phpType19 ' + forged_operand + ' z)',
+                '~$call_descriptors_valid(S_forged)',
+                'S_deleted = S_head[.TODO = (STATIC_PROP_NAME phpType19 poperand z) :: ptask_tail*]',
+                '~$call_task_valid(S_deleted, STATIC_PROP_NAME phpType19 poperand z)',
+                '~$call_descriptors_valid(S_deleted)',
+                'S_orphan = S_head[.TODO = (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*]',
+                '~$call_task_valid(S_orphan, STATIC_PROP_CAPTURE porigin poperand z)',
+                '~$call_descriptors_valid(S_orphan)',
+                'S_duplicate_capture = S_head[.TODO = (STATIC_PROP_NAME phpType19 poperand z) :: (STATIC_PROP_CAPTURE porigin poperand z) :: (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*]',
+                '~$call_descriptors_valid(S_duplicate_capture)',
+                'S_duplicate_name = S_head[.TODO = (STATIC_PROP_NAME phpType19 poperand z) :: (STATIC_PROP_NAME phpType19 poperand z) :: (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*]',
+                '~$call_descriptors_valid(S_duplicate_name)',
+                'S_wrapped_capture = S_head[.TODO = S_head.TODO ++ [AT porigin (STATIC_PROP_CAPTURE porigin poperand z)]]',
+                '~$call_descriptors_valid(S_wrapped_capture)',
+                'S_wrapped_name = S_head[.TODO = S_head.TODO ++ [AT porigin (STATIC_PROP_NAME phpType19 poperand z)]]',
+                '~$call_descriptors_valid(S_wrapped_name)',
+                'S_wrong_origin = S_head[.TODO = (STATIC_PROP_NAME phpType19 poperand z) :: (STATIC_PROP_CAPTURE (PORIGIN 0 eps) poperand z) :: ptask_tail*]',
+                '~$call_descriptors_valid(S_wrong_origin)',
+                '~$call_task_valid(S_head, STATIC_PROP_NAME phpType19 poperand $(z + 1))',
+                '~$call_task_valid(S_head, STATIC_PROP_CAPTURE porigin poperand $(z + 1))',
+                '~$call_task_valid(S_head[.CODE = eps], STATIC_PROP_NAME phpType19 poperand z)',
+                '~$call_task_valid(S_head[.ORIGIN = (PORIGIN 0 eps)], STATIC_PROP_NAME phpType19 poperand z)',
                 'S_done = $drive(S_head[.COMPLETION = NORMAL], 2048)',
                 'S_done.COMPLETION = NORMAL',
+                'S_done.TODO = eps',
             ]
             fixture = directory / 'protocol.watsup'
             fixture.write_text(HELPERS + 'dec $main() : bool\ndef $main() = true\n'

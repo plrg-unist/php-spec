@@ -311,22 +311,25 @@ rule PhpStep/class-static-class-literal: S ~> $class_static_prepare_base(S_class
   -- if S.TODO = (STATIC_PROP_CLASS phpType19 (NVarLikeIdentifier (BYTES text) metadata_name) z) :: ptask_tail*
   -- if S_class = $scoped_class_prepare(S, phpType19, z)
   -- if S_class.COMPLETION = NORMAL
-rule PhpStep/class-static-class-computed: S ~> S_class[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), STATIC_PROP_NAME phpType19 S_class.RESULT z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/class-static-class-computed: S ~> S_class[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), STATIC_PROP_NAME phpType19 S_class.RESULT z, STATIC_PROP_CAPTURE porigin S_class.RESULT z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (STATIC_PROP_CLASS phpType19 expression_name z) :: ptask_tail*
   -- if $class_static_computed_name(expression_name)
   -- if S_class = $scoped_class_prepare(S, phpType19, z)
   -- if S_class.COMPLETION = NORMAL
+  -- if S.ORIGIN = (porigin)
 rule PhpStep/class-static-class-abrupt: S ~> S_class[.TODO = eps]
   -- if S.TODO = (STATIC_PROP_CLASS phpType19 phpType31 z) :: ptask_tail*
   -- if S_class = $scoped_class_prepare(S, phpType19, z)
   -- if S_class.COMPLETION =/= NORMAL
 rule PhpStep/class-static-name: S ~> $class_static_prepare_base(S_name[.TODO = ptask_tail*], poperand_selector, n_name*, z)
-  -- if S.TODO = (STATIC_PROP_NAME phpType19 poperand_selector z) :: ptask_tail*
+  -- if S.TODO = (STATIC_PROP_NAME phpType19 poperand_selector z) :: (STATIC_PROP_CAPTURE porigin poperand_selector z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
 rule PhpStep/class-static-name-abrupt: S ~> S_name[.TODO = eps]
-  -- if S.TODO = (STATIC_PROP_NAME phpType19 poperand_selector z) :: ptask_tail*
+  -- if S.TODO = (STATIC_PROP_NAME phpType19 poperand_selector z) :: (STATIC_PROP_CAPTURE porigin poperand_selector z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
 
@@ -359,20 +362,47 @@ def $class_static_class_task_valid(S, phpType19, phpType31, z) = true
 def $class_static_class_task_valid(S, phpType19, phpType31, z) = false -- otherwise
 def $call_task_valid(S, STATIC_PROP_CLASS phpType19 phpType31 z) = $class_static_class_task_valid(S, phpType19, phpType31, z)
 dec $class_static_name_task_valid(pstate, phpType19, poperand, int) : bool
-dec $class_static_name_task_present(ptask*, phpType19, poperand, int) : bool
-def $class_static_name_task_present(eps, phpType19, poperand, z) = false
-def $class_static_name_task_present((STATIC_PROP_NAME phpType19 poperand z) :: ptask_tail*, phpType19, poperand, z) = true
-def $class_static_name_task_present(ptask :: ptask_tail*, phpType19, poperand, z) = $class_static_name_task_present(ptask_tail*, phpType19, poperand, z)
-  -- if ptask =/= STATIC_PROP_NAME phpType19 poperand z
+;; The capture owns the selector across name callbacks. The consuming marker
+;; must agree with that separate source-bound value, including after EVAL.
+dec $class_static_name_pair_present(ptask*, porigin, phpType19, poperand, int) : bool
+dec $class_static_capture_origin(ptask) : porigin?
+def $class_static_capture_origin(STATIC_PROP_CAPTURE porigin poperand z) = (porigin)
+def $class_static_capture_origin(ptask) = eps -- otherwise
+dec $class_static_capture_count(ptask*, porigin) : nat
+def $class_static_capture_count(eps, porigin) = 0
+def $class_static_capture_count((STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*, porigin) = $(1 + $class_static_capture_count(ptask_tail*, porigin))
+def $class_static_capture_count(ptask :: ptask_tail*, porigin) = $class_static_capture_count(ptask_tail*, porigin)
+  -- if $class_static_capture_origin(ptask) =/= (porigin)
+dec $class_static_name_marker(ptask) : bool
+def $class_static_name_marker(STATIC_PROP_NAME phpType19 poperand z) = true
+def $class_static_name_marker(STATIC_PROP_CAPTURE porigin poperand z) = true
+def $class_static_name_marker(AT porigin ptask) = $class_static_name_marker(ptask)
+def $class_static_name_marker(ptask) = false -- otherwise
+dec $class_static_name_pairs_valid(ptask*) : bool
+def $class_static_name_pairs_valid(eps) = true
+def $class_static_name_pairs_valid((STATIC_PROP_NAME phpType19 poperand z) :: (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*) = $class_static_name_pairs_valid(ptask_tail*)
+def $class_static_name_pairs_valid(ptask :: ptask_tail*) = $class_static_name_pairs_valid(ptask_tail*)
+  -- if ~$class_static_name_marker(ptask)
+def $class_static_name_pairs_valid(ptask*) = false -- otherwise
+dec $class_static_name_pair_head(ptask*, porigin, phpType19, poperand, int) : bool
+def $class_static_name_pair_head((STATIC_PROP_NAME phpType19 poperand z) :: (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*, porigin, phpType19, poperand, z) = true
+def $class_static_name_pair_head(ptask*, porigin, phpType19, poperand, z) = false -- otherwise
+def $class_static_name_pair_present(eps, porigin, phpType19, poperand, z) = false
+def $class_static_name_pair_present((STATIC_PROP_NAME phpType19 poperand z) :: (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*, porigin, phpType19, poperand, z) = true
+def $class_static_name_pair_present(ptask :: ptask_tail*, porigin, phpType19, poperand, z) = $class_static_name_pair_present(ptask_tail*, porigin, phpType19, poperand, z)
+  -- if ~$class_static_name_pair_head(ptask :: ptask_tail*, porigin, phpType19, poperand, z)
 dec $class_static_name_capture_valid(pstate, phpType19, poperand, int) : bool
 def $class_static_name_capture_valid(S, phpType19, poperand, z) = (S.RESULT = poperand)
   -- if S.TODO = (AT porigin_name (EVAL expression_name)) :: (STATIC_PROP_NAME phpType19 poperand z) :: ptask_tail*
 def $class_static_name_capture_valid(S, phpType19, poperand, z) = (S.RESULT = poperand)
   -- if S.TODO = (EVAL expression_name) :: (STATIC_PROP_NAME phpType19 poperand z) :: ptask_tail*
-def $class_static_name_capture_valid(S, phpType19, poperand, z) = $class_static_name_task_present(S.TODO, phpType19, poperand, z) -- otherwise
+def $class_static_name_capture_valid(S, phpType19, poperand, z) = true -- otherwise
 def $class_static_name_task_valid(S, phpType19, KNOWN (PSTRING n_class*), z) = true
   -- if $class_static_name_capture_valid(S, phpType19, KNOWN (PSTRING n_class*), z)
   -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $class_static_capture_count(S.TODO, PORIGIN n pcpath) = 1
+  -- if $class_static_name_pairs_valid(S.TODO)
+  -- if $class_static_name_pair_present(S.TODO, PORIGIN n pcpath, phpType19, KNOWN (PSTRING n_class*), z)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
   -- if $class_static_computed_name(expression_name)
   -- if $class_static_class_task_valid(S, phpType19, expression_name, z)
@@ -384,6 +414,9 @@ def $class_static_name_task_valid(S, phpType19, KNOWN (PSTRING n_class*), z) = t
 def $class_static_name_task_valid(S, phpType19, KNOWN (PSTRING n_class*), z) = true
   -- if $class_static_name_capture_valid(S, phpType19, KNOWN (PSTRING n_class*), z)
   -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $class_static_capture_count(S.TODO, PORIGIN n pcpath) = 1
+  -- if $class_static_name_pairs_valid(S.TODO)
+  -- if $class_static_name_pair_present(S.TODO, PORIGIN n pcpath, phpType19, KNOWN (PSTRING n_class*), z)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
   -- if $class_static_computed_name(expression_name)
   -- if $class_static_class_task_valid(S, phpType19, expression_name, z)
@@ -397,6 +430,9 @@ def $class_static_name_task_valid(S, phpType19, KNOWN (PSTRING n_class*), z) = t
 def $class_static_name_task_valid(S, phpType19, KNOWN (POBJECT n_class), z) = true
   -- if $class_static_name_capture_valid(S, phpType19, KNOWN (POBJECT n_class), z)
   -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $class_static_capture_count(S.TODO, PORIGIN n pcpath) = 1
+  -- if $class_static_name_pairs_valid(S.TODO)
+  -- if $class_static_name_pair_present(S.TODO, PORIGIN n pcpath, phpType19, KNOWN (POBJECT n_class), z)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
   -- if $class_static_computed_name(expression_name)
   -- if $class_static_class_task_valid(S, phpType19, expression_name, z)
@@ -407,6 +443,18 @@ def $class_static_name_task_valid(S, phpType19, KNOWN (POBJECT n_class), z) = tr
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_name) = ((z_name, b))
 def $class_static_name_task_valid(S, phpType19, poperand_selector, z) = false -- otherwise
 def $call_task_valid(S, STATIC_PROP_NAME phpType19 poperand_selector z) = $class_static_name_task_valid(S, phpType19, poperand_selector, z)
+dec $class_static_capture_task_valid(pstate, porigin, poperand, int) : bool
+def $class_static_capture_task_valid(S, porigin, poperand, z) = $class_static_name_task_valid(S, phpType19, poperand, z)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
+def $class_static_capture_task_valid(S, porigin, poperand, z) = false -- otherwise
+def $call_task_valid(S, STATIC_PROP_CAPTURE porigin poperand z) = $class_static_capture_task_valid(S, porigin, poperand, z)
+
+;; Every shared unwinder discards the consuming marker and its owned capture
+;; together, so exception search never exposes an orphaned selector root.
+def $return_discard(S, STATIC_PROP_NAME phpType19 poperand z) = S[.TODO = ptask_unwind :: ptask_tail*]
+  -- if S.TODO = ptask_unwind :: (STATIC_PROP_CAPTURE porigin poperand z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
 
 ;; The shared reference continuation retains the class declaration as a
 ;; location. Its source and type constraints are authenticated separately.
