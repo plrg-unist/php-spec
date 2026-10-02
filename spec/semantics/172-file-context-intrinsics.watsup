@@ -17,11 +17,15 @@ dec $config_invoke_valid(pstate, pconfigcall) : bool
 dec $config_strict(pstate, pconfigcall) : bool
 dec $config_destination(pintrinsic, preqbytes?, nat) : nat?
 dec $config_string_source(pstate, pconfigcall) : (porigin, int)?
+dec $config_string_kind(pintrinsic) : bool
+def $config_string_kind(INTRINSIC_CHDIR) = true
+def $config_string_kind(INTRINSIC_SET_INCLUDE_PATH) = true
+def $config_string_kind(pintrinsic) = false -- otherwise
 def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
   -- if $(|pcpath_child| >= 3)
   -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
   -- if $intrinsic_argument(S, PORIGIN n_unit pcpath_parent, 0) = ((expression, false, preqbytes?, PORIGIN n_unit pcpath_child, z_child))
-  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0)
+  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0) \/ $config_destination(INTRINSIC_SET_INCLUDE_PATH, preqbytes?, 0) = (0)
   -- if $intrinsic_count(S, PORIGIN n_unit pcpath_parent) = (1)
   -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
 def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
@@ -35,13 +39,13 @@ def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
   -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
   -- if pcpath_child[$nabs($(|pcpath_child| - 2))] = PCINDEX n_index
   -- if $intrinsic_argument(S, PORIGIN n_unit pcpath_parent, n_index) = ((expression, false, preqbytes?, PORIGIN n_unit pcpath_child, z_child))
-  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0)
+  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0) \/ $config_destination(INTRINSIC_SET_INCLUDE_PATH, preqbytes?, 0) = (0)
   -- if $exit_callable_arguments(S, PORIGIN n_unit pcpath_parent) = PCALLARGUMENTS phpType7* n_field
   -- if $call_unpack_present(phpType7*)
   -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
 def $config_string_child_site(S, porigin_site, z) = false -- otherwise
 def $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = true
-  -- if pconfigcall.KIND = INTRINSIC_CHDIR
+  -- if $config_string_kind(pconfigcall.KIND)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
   -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
   -- if pconfigcall.LINE = z_call
@@ -324,9 +328,15 @@ def $config_receive(S, pconfigcall) = $diagnostic(S, "Deprecated", $ptascii("set
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
   -- if ~$config_strict(S, pconfigcall)
   -- if S.TODO = ptask :: ptask_tail*
-def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "include_path intrinsic stringable object conversion"]
+def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_include_path(): Argument #1 ($include_path) must be of type string, ") ++ $typed_given(S, POBJECT n) ++ $ptascii(" given"))
   -- if pconfigcall.KIND = INTRINSIC_SET_INCLUDE_PATH
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
+  -- if $config_strict(S, pconfigcall) \/ ~$stringable_instance(S, n)
+def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "set_include_path stringable object argument needs a checked source"]
+  -- if pconfigcall.KIND = INTRINSIC_SET_INCLUDE_PATH
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
+  -- if ~$config_strict(S, pconfigcall)
+  -- if $stringable_instance(S, n)
 def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_include_path(): Argument #1 ($include_path) must be of type string, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
   -- if pconfigcall.KIND = INTRINSIC_SET_INCLUDE_PATH
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
@@ -334,6 +344,9 @@ def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError",
   -- if ~$config_object(pvalue)
   -- if ~(pvalue = PNULL /\ ~$config_strict(S, pconfigcall))
 ;; Only the include_path directive is modeled. PHP treats its spelling as exact.
+def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("ini_set(): Argument #2 ($value) must be of type string|int|float|bool|null"))
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PSTRING n_option*)), NAMED_SENT (KNOWN (POBJECT n))]
 def $config_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.FILEINCLUDEPATH = ($ptascii(".:"))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PSTRING n_option*))]
@@ -444,6 +457,7 @@ rule PhpStep/config-invoke-unbound: S ~> S[.COMPLETION = UNSUPPORTED "include_pa
   -- if ~$config_invoke_valid(S, pconfigcall)
 rule PhpStep/config-string-result: S ~> $dir_request_start_with_conversion(S_record, pconfigcall, n_requested*, (n_conversion))
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_CHDIR
   -- if S.ORIGIN = (porigin_child)
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
   -- if S.RESULT = KNOWN (PSTRING n_requested*)
@@ -452,7 +466,24 @@ rule PhpStep/config-string-result: S ~> $dir_request_start_with_conversion(S_rec
   -- if n_owner = |S.FRAMES|
   -- if pdirconversion = {NONCE n_conversion, CALLSITE pconfigcall.SITE, CALLLINE pconfigcall.LINE, OBJECT n_object, RESULT n_requested*, SELECTION pconfigcall.SELECTION, OWNERDEPTH n_owner}
   -- if S_record = S[.DIRCONVSEQ = $(n_conversion + 1)][.DIRCONVERSIONS = S.DIRCONVERSIONS ++ [pdirconversion]][.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
-rule PhpStep/config-string-nul: S ~> $throwable_allocate(S_call, "ValueError", $ptascii("chdir(): Argument #1 ($directory) must not contain any null bytes"), pconfigcall.LINE, $source_trace_prefixed(S_call, $config_trace_frames(S_call, pconfigcall, [PSTRING n_requested*])))
+;; Zend reads the old INI value after the callback, including its nested mutations.
+rule PhpStep/config-set-string-result: S ~> S[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*][.FILEINCLUDEPATH = (n_requested*)][.RESULT = KNOWN (PSTRING n_old*)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_SET_INCLUDE_PATH
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if S.FILEINCLUDEPATH = (n_old*)
+  -- if S.RESULT = KNOWN (PSTRING n_requested*)
+  -- if n_requested* =/= eps
+  -- if ~(0 <- n_requested*)
+rule PhpStep/config-set-string-empty: S ~> S[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_SET_INCLUDE_PATH
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if S.FILEINCLUDEPATH = (n_old*)
+  -- if S.RESULT = KNOWN (PSTRING eps)
+rule PhpStep/config-string-nul: S ~> $throwable_allocate(S_call, "ValueError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($") ++ $config_parameter_name(pconfigcall.KIND, 0) ++ $ptascii(") must not contain any null bytes"), pconfigcall.LINE, $source_trace_prefixed(S_call, $config_trace_frames(S_call, pconfigcall, [PSTRING n_requested*])))
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
   -- if S.ORIGIN = (porigin_child)
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
