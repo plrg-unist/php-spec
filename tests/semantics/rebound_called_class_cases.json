@@ -1,0 +1,86 @@
+[
+  {
+    "id": "eps-lexical-called-original",
+    "native_group": ".tools/calls-review-global-scope-called-native-l0gazydb/native.json",
+    "native_raw_sha256": "91f1e60ec3d216db6de3136f3af63fa3ef1886c62d6789d4377f7f6c2999520e",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public int $p=1;public static function f(){echo \"A\";}} $a=new A;$r=&$a->p;$c=function()use($a){return static::f(...);};$bound=$c->bindTo($a,null);$cb=$bound();$bound=null;$c=null;$a=null;try{$r=\"s\";echo \"W\";}catch(TypeError $e){echo \"E\";}$cb();echo \"|\",$r;",
+    "source_sha256": "0a6bb960e48d9b464e21cab753cf65ff4269fb1940135ecb711d2d595d993c8d",
+    "status": "normal",
+    "stdout_base64": "V0F8cw==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "nonempty-same-lexical-called-original",
+    "native_group": ".tools/calls-review-nonempty-same-lex-called-native-8zur8zzb/native.json",
+    "native_raw_sha256": "7ec730dca81d6f1bd6e18dfd7443ee1537291b236964976f4391e0394b19d938",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public static function make($b){return function()use($b){return static::f(...);};}}class B{public int $p=1;public static function f(){echo \"B\";}}$b=new B;$r=&$b->p;$c=A::make($b);$bound=$c->bindTo($b,\"A\");$cb=$bound();$bound=null;$b=null;$c=null;try{$r=\"s\";echo \"W\";}catch(TypeError $e){echo \"E\";}$cb();echo \"|\",$r;",
+    "source_sha256": "db252e87c2b2f82fc11a56d93f4fd975626a56153c6d2d0c9a14658966448273",
+    "status": "normal",
+    "stdout_base64": "V0J8cw==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "eps-lexical-called-clone",
+    "native_group": ".tools/called-channel-clone-native-o__7739a/eps-lexical-called-clone/native.json",
+    "native_raw_sha256": "fab49807da6b8df83dd01dd430b6d1dce4f2023bf90f159b6f780ae0eaf1535b",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public int $p=1;public static function f(){echo \"A\";}} $a=new A;$r=&$a->p;$c=function()use($a){return static::f(...);};$bound=$c->bindTo($a,null);$cb=$bound();$copy=clone $cb;$cb=null;$bound=null;$c=null;$a=null;try{$r=\"s\";echo \"W\";}catch(TypeError $e){echo \"E\";}$copy();echo \"|\",$r;",
+    "source_sha256": "32d9d629dc1d6e7f9acd64f2d1d657701823ab8143b70bb2961d3efdf8053461",
+    "status": "normal",
+    "stdout_base64": "V0F8cw==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "nonempty-same-lexical-called-clone",
+    "native_group": ".tools/called-channel-clone-native-o__7739a/nonempty-same-lexical-called-clone/native.json",
+    "native_raw_sha256": "84914fd7e5c2d19a74ea638b3a773ffb447049d22bb0666a28713ceda0b9a53d",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public static function make($b){return function()use($b){return static::f(...);};}}class B{public int $p=1;public static function f(){echo \"B\";}}$b=new B;$r=&$b->p;$c=A::make($b);$bound=$c->bindTo($b,\"A\");$cb=$bound();$copy=clone $cb;$cb=null;$bound=null;$b=null;$c=null;try{$r=\"s\";echo \"W\";}catch(TypeError $e){echo \"E\";}$copy();echo \"|\",$r;",
+    "source_sha256": "100fc207bf5f45665806ebf2f86f700a048c96c0f63f62ce6bc8956ebdf20261",
+    "status": "normal",
+    "stdout_base64": "V0J8cw==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "source-owned-method-keeps-eps-evidence",
+    "native_group": ".tools/calls-review-source-owned-called-native-mybtant6/native.json",
+    "native_raw_sha256": "b4c524066bc05a6f5388abfcb65d50dbc2d23ff3ff3c8b7b3a3531c70e50e6a9",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class P{protected static function f(){echo \"P\";}public function cap(){return static::f(...);}}class C extends P{public int $p=1;}$o=new C;$r=&$o->p;$cb=$o->cap();$o=null;try{$r=\"s\";echo \"W\";}catch(TypeError $e){echo \"E\";}$cb();echo \"|\",$r;",
+    "source_sha256": "20e4d62e60fc681a2276233d055b9ad55f9565c6870ad1a3c770382ab2710806",
+    "status": "normal",
+    "stdout_base64": "V1B8cw==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "fixed-global-literal-has-no-called-class",
+    "native_group": ".tools/called-fixed-literal-native-6dvtd_za/fixed-global-literal-has-no-called-class/native.json",
+    "native_raw_sha256": "73ada92b9382eb9d9798af7dbe99ba3c2309a9c14eeb1920317bdebd93706922",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public static function f(){echo \"A\";}}$cb=(function(){return static::f(...);})();$cb();",
+    "source_sha256": "cf6ff0d9bf41a08da2920f060e29197af715a7ccb93cfde5f13dc6728f7942a7",
+    "status": "php_error",
+    "stdout_base64": "",
+    "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgYWNjZXNzICJzdGF0aWMiIHdoZW4gbm8gY2xhc3Mgc2NvcGUgaXMgYWN0aXZlIGluIHtGSUxFfToxClN0YWNrIHRyYWNlOgojMCB7RklMRX0oMSk6IHtjbG9zdXJlOntGSUxFfToxfSgpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxCg==",
+    "exit_status": 255
+  },
+  {
+    "id": "fixed-class-literal-inherits-called-descendant",
+    "native_group": ".tools/called-fixed-literal-native-6dvtd_za/fixed-class-literal-inherits-called-descendant/native.json",
+    "native_raw_sha256": "85cb9ac83f662268b26e16f4c4e5cc94bb860f33acff69a353ed95ff1c7fb727",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public static function f(){echo \"A\";}public static function cap(){return (function(){return static::f(...);})();}}class C extends A{public static function f(){echo \"C\";}}class B{public static function f(){echo \"B\";}}$cb=C::cap();$cb();",
+    "source_sha256": "98d102ead42f3a5aadb852c35b6c192d393ce5db5cd5bf1d84698cd06294ed7b",
+    "status": "normal",
+    "stdout_base64": "Qw==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  }
+]

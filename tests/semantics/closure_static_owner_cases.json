@@ -1,0 +1,38 @@
+[
+  {
+    "id": "static-method-created-nonstatic-closure",
+    "native_group": ".tools/static-owner-closure-native-yses937a/static-method-created-nonstatic-closure/native.json",
+    "native_raw_sha256": "e939795eea995d577be5e92941b9481965aa249a76c999afcb83b302313338a9",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public static function make(){return function(){return 1;};}}$c=A::make();echo $c();",
+    "source_sha256": "2f99160068608d9ee67e3644932aafa9b5be20a774c963f31b7bb51227a684a7",
+    "status": "normal",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "static-method-created-closure-can-bind-unrelated",
+    "native_group": ".tools/static-owner-closure-native-yses937a/static-method-created-closure-can-bind-unrelated/native.json",
+    "native_raw_sha256": "a52a6915eed50384ac313ec7c2e45fbf8ef6ac9b69b35442827735c2a2ac9c51",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public static function make(){return function(){return $this->p;};}}class B{public int $p=2;}$c=A::make();$bound=$c->bindTo(new B,\"A\");echo $bound();",
+    "source_sha256": "bcad8276da6645cc7f20d2a7a1f97b90b9479dd25cda5dc02b0dc86373936655",
+    "status": "normal",
+    "stdout_base64": "Mg==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "static-method-bound-outer-inner-retains-receiver",
+    "native_group": ".tools/calls-review-static-owner-bound-inner-native-qv_ku59i/native.json",
+    "native_raw_sha256": "d19310c265681738955f47e0551571b738d298b55e8c7ccd3178a7654ecf636d",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public int $p=7;public static function make(){return function(){return function(){return $this->p;};};}}$a=new A;$r=&$a->p;$c=A::make();$bound=$c->bindTo($a,\"A\");$inner=$bound();$bound=null;$a=null;$c=null;try{$r=\"s\";echo \"W\";}catch(TypeError $e){echo \"E\";}echo $inner();",
+    "source_sha256": "1aeabdc6aabea3377597a6338e95d13bd23c725d3fd58edb3bd7bff622fff82b",
+    "status": "normal",
+    "stdout_base64": "RTc=",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  }
+]
