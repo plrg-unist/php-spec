@@ -27,9 +27,9 @@ records the separate parse-only bridge; the [exception-kind extension](coverage/
 records the later CompileError classification. [Reached eval execution](docs/semantics/DYNAMIC-EVAL.md)
 and [finite-provider include/require](docs/semantics/INCLUDE-SOURCES.md) use checked
 machine pauses. A finite version-2 provider supports checked CWD and
-`include_path` changes. The private [named Stringable `chdir` increment](coverage/semantics/include-named-current-review.json)
-admits `directory:`; installation and broader path, stream and INI behavior
-remain pending.
+`include_path` changes. [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
+admits `directory:` through computed and owned callable forms. Broader path,
+stream and INI behavior remain pending.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,

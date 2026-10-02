@@ -79,15 +79,14 @@ readonly/asymmetric set access and scoped defaults remain open.
 
 The independent private lanes currently include:
 
-- Include/configuration: named-only projection **a0b41f499** over installed
-  capture code accepts author source17/four185 and independent source2/two89
-  on **1f354b61/1302**. Earlier c8 named
-  **7868add84**/docs **524c9b18a** keep their original source/state identities.
-  All five installations remain pending. Array unpack, Stringable SET/Restore
-  and INI-option retain reviewed private checkpoints. PIPE source24/returned2,
-  callback210 plus48 Unsupported guards and directory158 remain private;
-  real CONFIG `__invoke` wrapper pipes remain Unsupported. The copied-c8
-  renderer/content bridge remains separate, uninstalled evidence.
+- Include/configuration: named Stringable `chdir` is installed at **09907c150**
+  on **1f354b61/1302**, with author source17/four185 and independent source2/two89.
+  Earlier calls-base **a0b41f499** and c8 **7868add84**/docs **524c9b18a** retain
+  separate receipts. Array unpack, Stringable SET/Restore and INI-option remain
+  reviewed private increments. PIPE source24/returned2, callback210 plus48
+  Unsupported guards and directory158 remain private; real CONFIG `__invoke`
+  wrapper pipes remain Unsupported. The copied-c8 renderer/content bridge is
+  separate, uninstalled evidence.
   [Named ledger](coverage/semantics/include-named-current-review.json)
   · [pipe ledger](.tools/include-config-pipe-string-current/coverage/semantics/include-config-pipe-string-review.json).
 - Calls: rebound capture, called-class and receiver-creation116 are installed at
