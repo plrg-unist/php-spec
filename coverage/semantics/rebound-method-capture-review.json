@@ -1,0 +1,339 @@
+{
+  "scope": "Private bounded executing-scope and same-lexical called-class method capture repairs; canonical projection and installation pending.",
+  "result": "Changed-scope16/11 accepted at ee8; static-owner prerequisite3/65 at67a; called-channel review accepted across363/ddfdd/3dbf mixed snapshots. This metadata draft is uncommitted.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "implementation": {
+    "base": "36c9636a6dd17eee6565c2f03bc27168f14f5552",
+    "code_commit": "009a69f94",
+    "tested_commit": "ee8df322bef1788ac4f22e82f0ad3126c47f99ab",
+    "fingerprint": {
+      "sha256": "0d5e57a69d68a9ff2decce113d13355e02af28a6956ce2e59af7b26abfee08d9",
+      "files": 1293
+    },
+    "inputs": [
+      {
+        "path": "spec/semantics/30-storage.watsup",
+        "sha256": "539b847081fab9e961a8cd7eec354fac4333090e27738a949eb1e5bc07e3a7b5"
+      },
+      {
+        "path": "spec/semantics/83-call-traces.watsup",
+        "sha256": "606c4233f57e31e5fac95e79afc5c7dee98cdbd31262fbed450795655f25aac3"
+      },
+      {
+        "path": "spec/semantics/173-method-callables.watsup",
+        "sha256": "abdc02194e44a9a1075b7feabc511f6a993b23f44fab3e21048d35cdc90e210c"
+      },
+      {
+        "path": "spec/semantics/174-internal-method-callables.watsup",
+        "sha256": "a6c14224f0b9b55c3afab9e6f4b76ab67d7ad9a13e13db189b22228143b0fb78"
+      },
+      {
+        "path": "tests/semantics/method_class_selector_protocol.py",
+        "sha256": "96f29f06a2ac9450fd1369dbfc364c4b318b401448abc29959cc79888b4bd068"
+      },
+      {
+        "path": "tests/semantics/static_method_protocol.py",
+        "sha256": "b02956ed3ed2d342e3e3cf47d5f4081ab7a6d76582a8164792e5cd68e23e2fe1"
+      },
+      {
+        "path": "tests/semantics/rebound_method_capture_cases.json",
+        "sha256": "104c40b3de167f694ac82c5def502cce6a750d4273c96eacf5a1147a9db41228"
+      },
+      {
+        "path": "tests/semantics/rebound_method_capture_protocol.py",
+        "sha256": "157933c8aeaa8f1c4150fee0fc2c26b169073fc6d26674f48c35cbc5e1d88f25"
+      }
+    ]
+  },
+  "representation": "Optional METHODCLOSURE evidence records producing FUNCTION, concrete CALLSITE, executing LEXICAL_CLASS and CALLED_CLASS origins. Creation copies CURRENT; clone preserves it. Origins add no object/cell ownership roots.",
+  "authentication": "Replay exact nearest enclosing registered Closure/Arrow template, source occurrence, invocation topology, fixed literal/template/newThis/member-name correlations, registered classes and selected-method access independently of retired producer/current frames. Authorizing lexical scope is separate from callee OWNER.",
+  "private_gates": {
+    "source": {
+      "report": {
+        "path": ".tools/method-runtime-s2uqoj4d/report.json",
+        "sha256": "cc6693243ee8cafb4449b8bc67cabdfd54e34a7dcd613dda4928af05b5ae5bae"
+      },
+      "result": "pass",
+      "sources": 16,
+      "direct_inputs": 187,
+      "independent_audit": {
+        "path": ".tools/calls-review-rebound-capture-source16-ee8.json",
+        "sha256": "c8d22f1378fbf032b378cf049b8c30f80ea0d7a9bfd32308c26362ab6c6c7a02"
+      }
+    },
+    "paused": {
+      "report": {
+        "path": ".tools/closure-call-protocol-fxc_eryt/report.json",
+        "sha256": "1e0f7aa9e7df9b062e959808026107ad527859c36fbf7e971b417c1cd8d47202"
+      },
+      "result": "pass",
+      "stable": true,
+      "stages": 11,
+      "assertions": 368,
+      "watched_inputs": 194
+    },
+    "elaboration_only": {
+      "report": {
+        "path": ".tools/rebound-capture-body-smoke-c3hlnph5/report.json",
+        "sha256": "98e49f980df00aba29a3f42ddfde3553e4cdca86811145625c0eda018e4dd82f"
+      },
+      "independent_audit": {
+        "path": ".tools/calls-review-rebound-capture-full-body-elaboration-ee8.json",
+        "sha256": "c729ec20482e3acad6367728c2db2cf49e84329545f5585de0a62f14db5fee0e"
+      },
+      "result": "pass",
+      "scope": "All335 listed check clauses and11 stage patterns elaborated with main=true. No state assertions executed by this smoke."
+    },
+    "independent_review": {
+      "path": ".tools/calls-independent-rebound-capture-repair-ee8.json",
+      "sha256": "c4804bc77eec49521dab635d6d91293dfb1ee215099803f70ac9bc676cdff0ba"
+    }
+  },
+  "historical_defect": {
+    "raw_root": ".tools/rebound-method-capture-current/.tools",
+    "source_report_sha256": "810c4dcb260260c5bb79c92803004127d7c24686bb5cd045fdba27853f48ee7c",
+    "source_audit_sha256": "1dfcc7b1be075d49938b43b8c7da4e9a0332f75269ba0d1e59fe82bf4ecf6fb5",
+    "source_status": "interpreter_failure",
+    "cli_exit_status": 1,
+    "diagnostic_report_sha256": "566cf977c3d047ca8d6053eee24e663d6547fc254d4c1207f9dc1b52561bfaea",
+    "diagnostic_audit_sha256": "49d05eab44a8b4da9f1f07535302676a7656efc9e112b6642c150b84283f84a5",
+    "diagnostic_scope": "One source-derived stage/42 assertions observed valid temporaryA selection then source-scope rejection of a genuine rootless stored capture. Defect observation, not repaired acceptance."
+  },
+  "runtime_provenance": {
+    "provision_manifest": {
+      "path": ".tools/rebound-capture-repair-provision.json",
+      "sha256": "0e7ec4bd6e78380f2aac112f639f0cf4dde6e50604011ae8b70000a5ddacf0f1"
+    },
+    "native_preflight": {
+      "path": ".tools/calls-review-rebound-capture-repair-preflight.json",
+      "sha256": "d7ca30a73d5ddfbf4ac4895de016a17ef4119ec3a753ae0a045a8dc059b4aa94"
+    },
+    "scope": "Pinned adapter/numeric/PHP/native helper/profile/optional clock copies reused byte-identically. Existing exact-source adapter build provenance retained; no fresh offline dependency rebuild. Ordinary gates do not explicitly load request-clock.",
+    "native_environment": "All16 native commands/cwd/source/profile/raw tuples and LC_ALL=C/TZ=UTC overrides verified; other inherited host environment unarchived."
+  },
+  "raw_recovery": {
+    "root": ".tools/rebound-method-capture-repair/.tools",
+    "instructions": "Recover the clean tested commit/provision manifest and verify independent review/hash pins before maintained producer replay. Preserve separate original36c defect and called-only failure trees."
+  },
+  "open": [
+    "Later canonical projection and installed identity; independently reviewed static142 candidate938 remains uninstalled because protected Git metadata is read-only.",
+    "Confirmed nested receiver-free scope invariant, null-bound instance-owned Closure/Arrow creation and new-inner executed receiver/scope channels.",
+    "Inherited explicitly static producer and Arrow-specific called-channel coverage; include/eval inherited activation.",
+    "Complete historical reachability and arbitrary retired dynamic operand/name/binding values.",
+    "Remaining Closure::call unpack, source __invoke, callable/string precedence and array callables.",
+    "Fresh offline full rebuild and complete-core/Rocq/BOLA validation."
+  ],
+  "static_method_default_scope_prerequisite": {
+    "raw_root": ".tools/rebound-called-class-repair/.tools",
+    "base": "6f6c1d9f1555b1ee39af348ce5423d865ab33ecc",
+    "code_commit": "c7445f1b2fb44fa263e3e1cdaacfebff040b27ad",
+    "tested_commit": "67a637a52d506798d6d71dc6f4bbc6d207dcba0a",
+    "fingerprint": {
+      "sha256": "761ff8e5bf6d82ff9d4f375bacb0778772c41d33d839704d386aec991439f0d9",
+      "files": 1295
+    },
+    "scope": "A registered nonstatic template whose exact nearest owner is a registered STATIC source method has a receiver-free default scope. The receiver-object row excludes that direct-owner shape. Recursive receiver_forbidden and operational181 literal-static/binding rules are unchanged.",
+    "inputs": [
+      {
+        "path": "spec/semantics/116-closures.watsup",
+        "sha256": "23906c3c8047faa37f1650efce01ab38cdd75264c7d02142a76ab6c568d4e128"
+      },
+      {
+        "path": "tests/semantics/closure_static_owner_cases.json",
+        "sha256": "e6a12e02d38b1b4ddaf83ee000fcb9acd368a81fc9310784f599bb6db5c67892"
+      },
+      {
+        "path": "tests/semantics/closure_static_owner_protocol.py",
+        "sha256": "3bf51587108f9950150cb50db47f0df9dfe5fc9efae43548a1552aab615a7db3"
+      }
+    ],
+    "source": {
+      "report": {
+        "path": ".tools/method-runtime-s7y27fc9/report.json",
+        "sha256": "1ce8cfeb5c370725a8d34677d2c5c908167fa88ffeb3e189228b1d7fc727fc51"
+      },
+      "sources": 3,
+      "result": "pass",
+      "tuples": "1,2,E7; empty stderr/exit0",
+      "direct_inputs": 187
+    },
+    "paused": {
+      "report": {
+        "path": ".tools/closure-call-protocol-cl42hcea/report.json",
+        "sha256": "875b9df1f604bdb9db0df5c1f2142be0539afad16ad39789231486ccad466e97"
+      },
+      "stages": 2,
+      "assertions": 65,
+      "result": "pass",
+      "stable": true,
+      "watched_inputs": 194,
+      "scope": "Valid default receiver-EPS row rejects forged live same-A receiver while heap remains valid; nested inner retains executed A after outer/caller retirement."
+    },
+    "elaboration_only": {
+      "report": {
+        "path": ".tools/static-owner-full-body-my28fmz6/report.json",
+        "sha256": "b1bd3670ceed993bbfda274c40c4ab865717a1278dc249578995b762cc028b0a"
+      },
+      "scope": "Two complete bodies/59 listed checks compile with main=true; no state assertions execute."
+    },
+    "independent_review": {
+      "path": ".tools/calls-independent-closure-static-owner-prerequisite-67a.json",
+      "sha256": "675270b52fdb98fdda09e99e4e373eed947cb1722a3d5051d71dd3d8da46ac48"
+    },
+    "historical_defect": {
+      "report": {
+        "path": ".tools/closure-call-protocol-kg_lfxby/report.json",
+        "sha256": "8b502c8f7f535398b3850ad2754ccaa53f935b66a2bf782dd57ccbac85aab427"
+      },
+      "audit": {
+        "path": ".tools/calls-review-rebound-called-nonempty-split-78-defect.json",
+        "sha256": "90e36bb5b94e38ca1f4c2fbd1a8d10f8a3e5a5a55f70b3cb6dac1875f771b8a9"
+      },
+      "stages": 1,
+      "assertions": 78,
+      "scope": "Unchanged6f6 diagnostic observed rejected original default row and a later called capture from an invalid prefix; no repaired behavior."
+    },
+    "limit": "Private bounded prerequisite, not later-base or installed acceptance. Native3 commands/cwd/profile/binary/LC_ALL/TZ are pinned; other host environment is inherited/unarchived. Existing runtime copies are not a fresh offline rebuild.",
+    "nested_receiver_free_followup": {
+      "native": {
+        "path": ".tools/static-owner-nested-free-native-i30igob6/native.json",
+        "sha256": "26305e9a68490d7b66c1290a9757d63b8304d591ca9d0f6118f76d36ad957552"
+      },
+      "tuple": "1 / empty stderr / exit0",
+      "scope": "Exact source1 agrees, but source-derived1/35 observes a genuine inner receiver-EPS row rejected by local/global scope validation. Separate repair required; the old E7 receiver-tampering negative must remain meaningful.",
+      "independent_review": {
+        "path": ".tools/calls-independent-static-owner-nested-free-state-67a.json",
+        "sha256": "5f80c003144c06213a59fa5f1c769dec399c7d3417d72196fd869fcf98d6b3c5"
+      }
+    }
+  },
+  "historical_called_only_defect": {
+    "raw_root": ".tools/rebound-called-class-current/.tools",
+    "source_sha256": "0a6bb960e48d9b464e21cab753cf65ff4269fb1940135ecb711d2d595d993c8d",
+    "native_raw_sha256": "91f1e60ec3d216db6de3136f3af63fa3ef1886c62d6789d4377f7f6c2999520e",
+    "native_tuple": "WA|s / empty stderr / exit0",
+    "model_report": "method-runtime-0x4hwrit/report.json",
+    "model_report_sha256": "d2fad9d32b1b84092952f50511482d2a7361eab4dccbddf2732de9b4cbe7c31b",
+    "independent_audit": "calls-review-rebound-called-class-source-failure-ee8.json",
+    "independent_audit_sha256": "847528380df6fa4a6d34e42fcca23440aa39efd3671fc8d28ec18a91336b607a",
+    "tested_commit": "ee8df322bef1788ac4f22e82f0ad3126c47f99ab",
+    "fingerprint": "0d5e57a69d68a9ff2decce113d13355e02af28a6956ce2e59af7b26abfee08d9",
+    "actual_status": "interpreter_failure",
+    "cli_exit_status": 1,
+    "scope": "Historical lexical-eps/calledA interpreter_failure and48-assertion authority-loss diagnosis. The bounded repair is recorded under called_class_repair.",
+    "diagnostic": {
+      "report": "closure-call-protocol-ciegvmiv/report.json",
+      "report_sha256": "5f5b834aab8fb3981957366be2d0c45e14dde591c271690fe836a11ef8f7c95d",
+      "independent_audit": "calls-review-rebound-called-class-diagnostic-ee8.json",
+      "independent_audit_sha256": "583f6232001715d30c82d626f4c2b09d2e171010a717ff619abe09d48e666568",
+      "stages": 1,
+      "assertions": 48,
+      "watched_inputs": 194,
+      "stable": true,
+      "scope": "Defect observation. Valid bound producer/current lexical eps and calledA; conversion emits eps evidence and a rootless stored descriptor with valid function/heap. Explicit calledA in_scope succeeds, but same-lex certificate admission and source-only stored authority reject."
+    }
+  },
+  "historical_called_nonempty_defect": {
+    "raw_root": ".tools/rebound-called-class-repair/.tools",
+    "source_sha256": "db252e87c2b2f82fc11a56d93f4fd975626a56153c6d2d0c9a14658966448273",
+    "native": {
+      "path": ".tools/calls-review-nonempty-same-lex-called-native-8zur8zzb/native.json",
+      "sha256": "7ec730dca81d6f1bd6e18dfd7443ee1537291b236964976f4391e0394b19d938"
+    },
+    "native_tuple": "WB|s / empty stderr / exit0",
+    "original_source_failure": {
+      "path": ".tools/method-runtime-wxrk89ei/report.json",
+      "sha256": "baccf988c145ed6e5749c04141be67edab2b33e0f20136bb28ddec0eee8cc1bc"
+    },
+    "actual_status": "interpreter_failure/CLI1; no modeled PHP output tuple",
+    "original54_failure": {
+      "path": ".tools/closure-call-protocol-uj9p9l_m/report.json",
+      "sha256": "5a6ce66596d29869d5f41282d86d6f2ece21f98611d23ac7b9c42c98eb8d1b00"
+    },
+    "original54_scope": "Required preconversion global positive failed; no postconversion assertions executed.",
+    "original77_setup_failure": {
+      "path": ".tools/closure-call-protocol-237102cp/report.json",
+      "sha256": "55decdeef4715f8e73fde67890bc0a7f18193a1a2cebfa2ef4e1e64f7e31b311"
+    },
+    "original77_scope": "Wrong optional GLOBALTABLE carrier type; elaboration failed before all state assertions.",
+    "globally_valid54": {
+      "report": {
+        "path": ".tools/closure-call-protocol-0ajlnrkh/report.json",
+        "sha256": "abe22ecaf17174554b43096447e937ae4d4e58158d4397fc23abccfbddc3c11b"
+      },
+      "driver": {
+        "path": ".tools/rebound-called-nonempty-diagnostic.py",
+        "sha256": "4bf0ff8b6a3a2300034ff85af55a89b082b6fbe8a23210ab931d5487511b3ef1"
+      },
+      "tested_commit": "67a637a52d506798d6d71dc6f4bbc6d207dcba0a",
+      "stages": 1,
+      "assertions": 54,
+      "stable": true,
+      "scope": "Byte-identical54 recipe after116 prerequisite proves global/closure/heap before conversion, then EPS authority loss despite explicit executed-called-B success. Defect observation, not repaired native agreement."
+    }
+  },
+  "called_class_repair": {
+    "raw_root": ".tools/rebound-called-class-repair/.tools",
+    "implementation": {
+      "code_commit": "238c06e1703775ecbe37d7faa2f75767eaf75245",
+      "original_test_commit": "36323f13ad4dfa478b1da5bfabcc973d7a7cf114",
+      "test_only_minimization": "ddfdd78a250074041027f6bed072faed12785c2e",
+      "pure_guard_order_commit": "3dbf9dcedee9daf612f9c2e59c1aebd1cee6e39c",
+      "current_fingerprint": {
+        "sha256": "a7839639a99288965acbad6f5e31b90b43c4f8fd6610427f5549467151b7377a",
+        "files": 1297
+      }
+    },
+    "scope": "Exact first-class static:: capture in registered nonstatic enclosing activations preserves unchanged lexical eps/calledA and lexicalA/calledB; named-method EPS authority, source-fixed literal correlations, clone and zero-root ownership are preserved.",
+    "evidence": {
+      "original_source7": {
+        "report": ".tools/method-runtime-509v6hx6/report.json",
+        "sha256": "0208d7ed3f1d4455ab77efbd523261f01d9e42cddf9506c2cd95ed9665753cd5",
+        "commit": "36323f13ad4dfa478b1da5bfabcc973d7a7cf114",
+        "result": "pass"
+      },
+      "original_state": {
+        "commit": "36323f13ad4dfa478b1da5bfabcc973d7a7cf114",
+        "completed_stages": 6,
+        "assertions": 284,
+        "final_stage_assertions": 74,
+        "final_result": "Timeout at unchanged300s; no numeric tuple or standard final report."
+      },
+      "affected_state": {
+        "report": ".tools/closure-call-protocol-4eolo211/report.json",
+        "sha256": "d41577d3e6e7df85811e299be80de916dbb37118db579cc20b2bd5b594321650",
+        "commit": "ddfdd78a250074041027f6bed072faed12785c2e",
+        "stages": 1,
+        "assertions": 50,
+        "result": "pass"
+      },
+      "current_original_PP_source": {
+        "report": ".tools/method-runtime-i1kbdwi_/report.json",
+        "sha256": "e2422544111ddbd38d102971000459d31367a7afae68110309d336a9780a9162",
+        "sources": 1,
+        "result": "pass",
+        "budget": "Unchanged45/55; original earlier timeout phase/timings were unarchived."
+      },
+      "current_retained_state": {
+        "report": ".tools/closure-call-protocol-w7tyq7bz/report.json",
+        "sha256": "368ae2eec2605059399676ec5063794af0b0b8dc779f92d841bbac9c47c13ff9",
+        "stages": 2,
+        "assertions": 85,
+        "stable": true
+      },
+      "current_called_positive": {
+        "report": ".tools/closure-call-protocol-zp7exuic/report.json",
+        "sha256": "04caad4aa20f3f944b00fd88afa176f11536dc42045f286f1694b27ecbd93c18",
+        "stages": 1,
+        "assertions": 60,
+        "stable": true
+      }
+    },
+    "independent_review": {
+      "path": ".tools/calls-independent-called-class-review-3dbf.json",
+      "sha256": "fcd7beadb532093c4baa916a85963ebdb4529fa07a05cc7ad2f7a94098f73eb8"
+    },
+    "limit": "No fresh whole7/334 standard report. Six284 at363 and affected50 atddfdd remain separate; current60 repeats an original stage. Exact guard permutation preserves conditions/bindings; fresh PP/85/60 verify affected paths, not timeout timing causality. Compile-only313 executes no state assertions. Earlier fixed-global A agreement remains in the failed retained2 report atddfdd. Private scope only."
+  },
+  "temporary_gate": "returns_verify remains paused until explicit user resumption. No blocked engine experiment, substituted returns verification, unaccepted returns merge or dependent work is included. Newly authored metadata remains uncommitted pending writable Git."
+}

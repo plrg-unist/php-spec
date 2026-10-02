@@ -85,10 +85,12 @@ The independent private lanes currently include:
   [Private include ledger](.tools/include-config-ini-option-current/coverage/semantics/include-stringable-ini-option-review.json)
   · [pipe ledger](.tools/include-config-pipe-string-current/coverage/semantics/include-config-pipe-string-review.json).
 - Calls: static-method142 is installed with accepted source2 and finite
-  CONFIG1/26 gates. Rebound capture, called-class and receiver-creation116 repairs
-  remain separate reviewed private milestones; current-base projection and
-  installation are pending. Callable capture remains open.
-  [Selector ledger](coverage/semantics/method-class-selector-review.json).
+  CONFIG1/26 gates. Rebound capture, called-class and receiver-creation116 have a
+  current-c8bee projection on **44edf5d2/1302**: author and independent source35
+  and finite40 stages pass, plus independent creator2/89. Canonical installation
+  remains pending. Arbitrary retired binding history and source `__invoke`/array classification
+  remain open. [Capture ledger](coverage/semantics/method-capture-current-review.json)
+  · [selector ledger](coverage/semantics/method-class-selector-review.json).
 - Properties: private197 review **a778904d** accepts combined-fdef source1,
   cleanup55 and body elaboration, separately from historical21/eight572.
   Declaration200 is privately accepted; direct-access201 **203d8ba7** awaits

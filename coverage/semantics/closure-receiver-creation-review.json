@@ -1,0 +1,87 @@
+{
+  "result": "bounded-private-receiver-creation-repair-accepted-recorded-privately",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "anchor_commit": "3dbf9dcedee9daf612f9c2e59c1aebd1cee6e39c",
+  "fingerprint": {
+    "sha256": "0118018732014ed8fc9686d58e0cb0f44871742a899fd4666a69599bec0357d2",
+    "files": 1299
+  },
+  "implementation": {
+    "spec/semantics/30-storage.watsup": "d5883bb10bd50f155b6a1cb02d20937db3a4d50cf8ad80560fb593cd328bb80c",
+    "spec/semantics/116-closures.watsup": "1d97320f712ef08da0ed167508d7f9e976a72e152c412499ff373d40fe5406c6",
+    "spec/semantics/173-method-callables.watsup": "3aeaf588eaede4405364824512742525e1cd5a92f76119bdb1d3f2ffd7d2855e"
+  },
+  "representation": "Nested REALCLOSURE scope rows record nearest producing FUNCTION origin, concrete CALLSITE origin and effective child receiver-presence bit. Origins add no owning roots; clone preserves the tuple. METHODCLOSURE rows require CREATIONeps.",
+  "creation": "Authenticate the current call context, registered nearest Closure/Arrow template, exact source invocation and effective child receiver. An explicitly static child discards the producer receiver. Stored replay remains total and source-specific without rereading retired producer values.",
+  "gates": {
+    "author_source5": {
+      "path": "/home/user/workspace/php-spec/.tools/rebound-called-class-repair/.tools/method-runtime-cw_5xzia/report.json",
+      "sha256": "8bbb08e07c68d268ffad43f3f28a08e90bf0941285b86a85cbe9445fce4fc84f",
+      "cases": 5,
+      "result": "pass"
+    },
+    "author_serial_states": {
+      "path": "/home/user/workspace/php-spec/.tools/rebound-called-class-repair/.tools/receiver-creation-state-pp_7gfd1/report.json",
+      "sha256": "0e09b94013524866d0c261663b96f5fc6d0ef5d6f35e3b83db474652c51ea6dc",
+      "stages": 9,
+      "assertions": 337,
+      "result": "pass",
+      "stable": true
+    },
+    "independent_E7_source1": {
+      "path": "/home/user/workspace/php-spec/.tools/rebound-called-class-repair/.tools/calls-review-receiver-creation-independent-source-01180187.json",
+      "sha256": "8e39e6c6429b55a3efb7413af0b4a881a1db6e3de2343aacc8ca274db8c27a96"
+    },
+    "independent_active_retired2": {
+      "path": "/home/user/workspace/php-spec/.tools/rebound-called-class-repair/.tools/closure-call-protocol-qfnin7uk/report.json",
+      "sha256": "40d924a36a28878dd4dbaf70a65de9b87f1da02b015e625c148b31f0a1b254f6",
+      "result": "pass",
+      "stages": 2,
+      "assertions": 89,
+      "stable": true
+    },
+    "elaboration_only": {
+      "path": "/home/user/workspace/php-spec/.tools/rebound-called-class-repair/.tools/receiver-creation-full-body-hhcp4g5a/report.json",
+      "sha256": "0f23b2fab83a37807d5a6d2ef4e7417899225b972b4d5e8c4c115910e63e076c",
+      "bodies": 9,
+      "listed_clauses": 310,
+      "state_assertions_executed": 0,
+      "result": "pass"
+    }
+  },
+  "independent_review": {
+    "path": "/home/user/workspace/php-spec/.tools/rebound-called-class-repair/.tools/calls-independent-receiver-creation-review-01180187.json",
+    "sha256": "f4f5abed9d716b27924a0f19516a8fbd067023e7c402e67be7617acad37883f0"
+  },
+  "preserved_failures": {
+    "original_nested_scope": {
+      "path": "/home/user/workspace/php-spec/.tools/calls-independent-static-owner-nested-free-state-67a.json",
+      "sha256": "5f80c003144c06213a59fa5f1c769dec399c7d3417d72196fd869fcf98d6b3c5"
+    },
+    "compile_failure_and_two_clause_fixture_correction": {
+      "path": "/home/user/workspace/php-spec/.tools/rebound-called-class-repair/.tools/calls-review-receiver-creation-smoke-failure-and-fixture-correction.json",
+      "sha256": "af83777b5c9ba6f88854a5830f40d506a08f6f1cee0df570b406625bff9c3ebc"
+    }
+  },
+  "limits": [
+    "Old default35 and E7-retired30 payloads remain unchanged. E7 retains its genuine receiver and rejects a row-only receiverEPS mutation after retirement.",
+    "Correlating receiverEPS with bitfalse can satisfy stored structural replay; the same forgery fails authentic active capture/task/global checks while the actual receiver-bearing producer is present. The tuple does not authenticate arbitrary correlated retired dynamic histories.",
+    "Source5, E7 source1, author9/337 and independent2/89 are separate finite selections. Earlier main16/11 and mixed called-class evidence retain distinct snapshots, with no fresh whole-family claim.",
+    "Existing source lexical/called-class admission is unchanged. Nullable-bound and executed changed-scope inner creation, inherited static templates, include/eval, object __invoke, other callable forms and unpack remain open.",
+    "Native source, complete command/profile, cwd and LC_ALL/TZ overrides are pinned; other host environment is inherited/unarchived. Verified runtime copies do not establish a fresh complete offline rebuild. The optional clock is not explicitly loaded by these ordinary gates.",
+    "No current-base projection/install acceptance. No unaccepted returns changes or engine experiment imported."
+  ],
+  "recovery": "Raw archives remain ignored under the recorded private root. The maintained source catalogue and protocol regenerate the cases with the pinned profile/runtime; full-body smoke and serial wrappers remain separately fingerprinted in the raw audits.",
+  "private_recording": {
+    "semantic_commit": "58c050b3de321fae704912136e57151f8860ab44",
+    "test_commit": "6c50d8e485883cb17109806f0bbc69fa8a684d8e",
+    "recording_scope": "Exact accepted private code/test bytes from manifest036d and patch219ad; no new execution or current-base acceptance.",
+    "old_manifest": {
+      "path": ".tools/calls-dev-final-handoff-20261002/manifest.json",
+      "sha256": "036d1e7c7af5d0129706882ef2bacff45646e8711b3efc0004043274eadea8a7"
+    },
+    "historical_called_ledger_sha256": "e44e56474bcaff6d11f511e3a71391cabebaeaae10b078c306e2cde2a137c681",
+    "historical_called_metadata": "Retained byte-exact, including then-current Git/installation wording; external static142 is now independently accepted at e9af/c8bee. Earlier mixed snapshots remain separate.",
+    "next": "Project the capture union onto canonical c8bee with installed142/189/83/84 preserved, then new exact review and focused gates."
+  }
+}
