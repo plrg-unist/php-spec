@@ -198,6 +198,16 @@ def $method_target_eligible(S, porigin_class, pmethoddesc) = true
   -- if $class_origin_matches(S, porigin_class, pclassdesc_owner.NAME, |S.CLASSES|)
 def $method_target_eligible(S, porigin_class, pmethoddesc) = false -- otherwise
 
+;; Bare object calls select the runtime table, without lexical-private redirect.
+def $object_invoke_method(S, n) = (pmethoddesc)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__invoke"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $target_function(S, METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc.FUNCTION)
+def $object_invoke_method(S, n) = eps -- otherwise
+
 dec $method_source_name(phpType20, ptbytes) : bool
 def $method_source_name(NIdentifier (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
 def $method_source_name(expression_name, ptbytes) = true
@@ -311,6 +321,13 @@ def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
   -- if $closure_callable(S, n)
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
 
+def $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site)) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $ppcall_dynamic(expression)
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if $firstclass_evaluated(S, porigin_site)
+  -- if $object_invoke_method(S, n) = (pmethoddesc)
+  -- if porigin_method = pmethoddesc.FUNCTION.ORIGIN
 def $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site)) = true
   -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
@@ -438,7 +455,6 @@ def $method_capture(S, true, z) = (S_read, S_read.RESULT)
   -- if ~$method_base_value(S.BASE)
   -- if S_read = $base_read(S, S.BASE, z)
 
-dec $method_args_task(pcalltarget, phpType7*, porigin?, int) : ptask
 def $method_args_task(pcalltarget, phpType7*, (porigin), z) = METHOD_CONVERT pcalltarget porigin z
   -- if $ppfirstclass(phpType7*)
 def $method_args_task(pcalltarget, phpType7*, porigin?, z) = UNPACK_ARGS {FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX 0, SENT {SLOTS eps, NAMED eps}, CALLSITE porigin?, LINE z}
@@ -974,7 +990,6 @@ def $method_prep_task(S, phpType20, phpType7*, b_nullsafe, b_base, z) = false --
 dec $method_receiver_is_variable(expression) : bool
 def $method_receiver_is_variable(NExprVariable phpType32 metadata) = true
 def $method_receiver_is_variable(expression) = false -- otherwise
-dec $method_receiver_operand_valid(pstate, expression, poperand) : bool
 def $method_receiver_operand_valid(S, NExprVariable phpType32 metadata, VARIABLE n_name* z) = true
   -- if $cv_name(phpType32) = (n_name*)
   -- if ~$direct_this(phpType32)

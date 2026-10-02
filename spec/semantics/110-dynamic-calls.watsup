@@ -1,3 +1,6 @@
+dec $firstclass_evaluated(pstate, porigin) : bool
+dec $method_args_task(pcalltarget, phpType7*, porigin?, int) : ptask
+dec $method_receiver_operand_valid(pstate, expression, poperand) : bool
 dec $dynamic_fixed_name(pstate, porigin) : preqbytes?
 dec $dynamic_lookup(pstate, porigin, int, int) : pstate
 dec $dynamic_arguments(pstate, porigin) : phpType7*
@@ -86,10 +89,15 @@ def $dynamic_value(S, porigin, z_init, z_call) = $dynamic_name(S, n*, $dynamic_l
 def $dynamic_value(S, porigin, z_init, z_call) = S[.COMPLETION = UNSUPPORTED "array callable"]
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (PARRAY n)
+def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = $method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, $dynamic_arguments(S, porigin), (porigin), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $object_invoke_method(S, n) = (pmethoddesc)
 def $dynamic_value(S, porigin, z_init, z_call) = $throw_scalar(S, "Error", $ptascii("Object of type ") ++ $object_name(S, n) ++ $ptascii(" is not callable"), z_init)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $class_plain_instance(S, n)
+  -- if $object_invoke_method(S, n) = eps
 def $dynamic_value(S, porigin, z_init, z_call) = $throw_scalar(S, "Error", $ptascii("Value of type ") ++ $type_bytes(pvalue) ++ $ptascii(" is not callable"), z_init)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue
@@ -167,10 +175,20 @@ def $dynamic_cv_name(S, PORIGIN n pcpath) = $unpack_class_name(pcode, pcunit, pc
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
 dec $dynamic_operand_valid(pstate, porigin) : bool
+dec $dynamic_this_site(pstate, porigin) : bool
+def $dynamic_this_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall (NExprVariable phpType32 metadata_variable) phpType6 metadata)
+  -- if $direct_this(phpType32)
+def $dynamic_this_site(S, porigin) = false -- otherwise
+def $dynamic_operand_valid(S, porigin) = $method_receiver_operand_valid(S, expression, S.RESULT)
+  -- if $dynamic_this_site(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall expression phpType6 metadata)
 def $dynamic_operand_valid(S, porigin) = true
+  -- if ~$dynamic_this_site(S, porigin)
   -- if $dynamic_cv_name(S, porigin) = (ptbytes)
   -- if S.RESULT = VARIABLE ptbytes z
 def $dynamic_operand_valid(S, porigin) = $unpack_owned(S, S.RESULT)
+  -- if ~$dynamic_this_site(S, porigin)
   -- if $dynamic_cv_name(S, porigin) = eps
 def $dynamic_operand_valid(S, porigin) = false -- otherwise
 def $dynamic_result_valid(S) = $dynamic_result_valid(S[.TODO = ptask :: ptask_tail*])
@@ -179,4 +197,8 @@ def $dynamic_result_valid(S) = $dynamic_result_valid(S[.TODO = ptask_tail*])
   -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
 def $dynamic_result_valid(S) = $dynamic_operand_valid(S, porigin)
   -- if S.TODO = (CALL_DYNAMIC porigin z_init z_call) :: ptask_tail*
+def $dynamic_result_valid(S) = $dynamic_operand_valid(S, porigin)
+  -- if S.TODO = (FIRSTCLASS_CONVERT porigin z_init z_convert) :: ptask_tail*
+  -- if $firstclass_evaluated(S, porigin)
+  -- if $dynamic_fixed_name(S, porigin) = eps
 def $dynamic_result_valid(S) = true -- otherwise

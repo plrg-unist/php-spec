@@ -137,9 +137,13 @@ def $typed_callback_array(S, n) = true
   -- if $entry_value(S, pitem_method) = PSTRING ptbytes
 def $typed_callback_array(S, n) = false -- otherwise
 
+dec $object_invoke_method(pstate, nat) : pmethoddesc?
 dec $typed_callable(pstate, pvalue) : bool?
 def $typed_callable(S, POBJECT n) = (true) -- if $typed_closure(S, n)
-def $typed_callable(S, POBJECT n) = (false) -- if $class_plain_instance(S, n)
+def $typed_callable(S, POBJECT n) = (true) -- if $object_invoke_method(S, n) = (pmethoddesc)
+def $typed_callable(S, POBJECT n) = (false)
+  -- if $class_plain_instance(S, n)
+  -- if $object_invoke_method(S, n) = eps
 def $typed_callable(S, POBJECT n) = eps -- if ~$typed_closure(S, n) /\ ~$class_plain_instance(S, n) /\ ~$throwable_object(S, n)
 def $typed_callable(S, PSTRING ptbytes) = (true) -- if $typed_registered(S, ptbytes)
 def $typed_callable(S, PSTRING ptbytes) = eps

@@ -1,5 +1,4 @@
 ;; Conversion retains the registered target identity without entering its body.
-dec $firstclass_evaluated(pstate, porigin) : bool
 def $firstclass_evaluated(S, PORIGIN n pcpath) = true
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z, b))
@@ -66,10 +65,20 @@ def $firstclass_value(S, porigin, z_init) = $throw_scalar(S, "Error", $ptascii("
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $class_plain_instance(S, n)
+  -- if $object_invoke_method(S, n) = eps
 def $firstclass_value(S, porigin, z_init) = $throw_scalar(S, "Error", $ptascii("Value of type ") ++ $type_bytes(pvalue) ++ $ptascii(" is not callable"), z_init)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue
   -- if $constant_nonstring_scalar(pvalue)
+
+;; Resolved object conversion carries the emitted conversion line; the existing
+;; three-argument helper remains shared with internal noncallable controls.
+dec $firstclass_object_value(pstate, porigin, int, int) : pstate
+def $firstclass_object_value(S, porigin, z_init, z_convert) = S[.TODO = (METHOD_CONVERT (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) porigin z_convert) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $object_invoke_method(S, n) = (pmethoddesc)
+def $firstclass_object_value(S, porigin, z_init, z_convert) = $firstclass_value(S, porigin, z_init) -- otherwise
 
 dec $firstclass_convert(pstate, porigin, int, int) : pstate
 def $firstclass_convert(S, porigin, z_init, z_convert) = S -- if S.COMPLETION =/= NORMAL
@@ -85,11 +94,12 @@ def $firstclass_convert(S, porigin, z_init, z_convert) = $firstclass_name(S, pre
   -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)
   -- if $firstclass_evaluated(S, porigin)
   -- if $dynamic_fixed_name(S, porigin) = (preqbytes)
-def $firstclass_convert(S, porigin, z_init, z_convert) = $firstclass_value($resolve_at(S, S.RESULT, z_init), porigin, z_init)
+def $firstclass_convert(S, porigin, z_init, z_convert) = $firstclass_object_value($resolve_at(S, S.RESULT, z_init), porigin, z_init, z_convert)
   -- if S.COMPLETION = NORMAL
   -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)
   -- if $firstclass_evaluated(S, porigin)
   -- if $dynamic_fixed_name(S, porigin) = eps
+  -- if $dynamic_operand_valid(S, porigin)
 
 rule PhpStep/firstclass-convert: S ~> $firstclass_convert(S[.TODO = ptask_tail*], porigin, z_init, z_convert)
   -- if S.TODO = (FIRSTCLASS_CONVERT porigin z_init z_convert) :: ptask_tail*

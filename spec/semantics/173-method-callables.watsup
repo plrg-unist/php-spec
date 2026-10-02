@@ -195,6 +195,13 @@ def $method_capture_producer_this_valid(S, porigin_site, pmethodcapture) = true
   -- if ~$method_capture_this(expression)
 def $method_capture_producer_this_valid(S, porigin_site, pmethodcapture) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
+def $method_capture_producer_this_valid(S, porigin_site, pmethodcapture) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*) /\ $ppcall_dynamic(expression)
+  -- if $firstclass_evaluated(S, porigin_site)
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if $function_at(S.CLOSURETEMPLATES, pmethodcapture.FUNCTION) = (pfunction)
+  -- if ~$method_capture_this(expression) \/ ~$closure_static(S, pfunction)
 def $method_capture_producer_this_valid(S, porigin_site, pmethodcapture) = false -- otherwise
 
 dec $method_capture_certificate_valid(pstate, porigin, pmethodcapture?) : bool
@@ -221,6 +228,13 @@ def $method_capture_site(S, porigin_site, pmethoddesc) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
   -- if $ppfirstclass(phpType7*)
   -- if $method_capture_source_name(phpType20, $ptlc(pmethoddesc.NAME))
+def $method_capture_site(S, porigin_site, pmethoddesc) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*) /\ $ppcall_dynamic(expression)
+  -- if $firstclass_evaluated(S, porigin_site)
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
 def $method_capture_site(S, porigin_site, pmethoddesc) = false -- otherwise
 
 dec $method_convert_valid(pstate, pcalltarget, porigin, int) : bool
@@ -363,6 +377,17 @@ def $method_capture_in_scope(S, pmethoddesc, porigin_site, porigin_requested, pc
   -- if $effective_method(S, porigin_requested, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
   -- if $method_capture_called_site(phpType19, pmethoddesc, porigin_requested, pclosurescope, porigin_called?)
   -- if $method_accessible(S, pmethoddesc, porigin_lexical?)
+def $method_capture_in_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope, porigin_lexical?, porigin_called?) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*) /\ $ppcall_dynamic(expression)
+  -- if $firstclass_evaluated(S, porigin_site)
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if ~$method_capture_this(expression) \/ porigin_called? = eps \/ porigin_called? = (porigin_requested)
+  -- if pclosurescope.CREATION = eps
+  -- if pclosurescope.RECEIVER = (n_receiver)
+  -- if pclosurescope.CALLED = porigin_requested
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_requested
+  -- if $object_invoke_method(S, n_receiver) = (pmethoddesc)
 def $method_capture_in_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope, porigin_lexical?, porigin_called?) = false -- otherwise
 dec $method_capture_live(pstate, pmethoddesc, porigin, porigin, pclosurescope) : bool
 def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = $method_capture_in_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope, $closure_source_class(S, porigin_site), eps)
