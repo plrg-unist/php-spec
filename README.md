@@ -255,11 +255,12 @@ bound closures and `Closure->__invoke` trampolines. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
-capture, called-class and receiver-creation116 repairs have a current-base
-[projection](coverage/semantics/method-capture-current-review.json) with author
-and independent source35/finite40-stage gates, plus independent creator2/89.
-Canonical installation remains pending. Their [authority contract](docs/semantics/METHOD-CAPTURE-AUTHORITY.md)
-keeps retired-history limits explicit.
+capture, called-class and receiver-creation116 repairs are
+[installed](coverage/semantics/method-capture-current-review.json) at **c536d1f74**.
+Author and independent gates each accept nine sources and seventeen finite
+stages/541 maintained assertions; the reviewer also accepts creator2/89.
+The earlier source35/finite40-stage projection retains its own identity. Their
+[authority contract](docs/semantics/METHOD-CAPTURE-AUTHORITY.md) keeps retired-history limits explicit.
 Readonly members, hooks and user magic methods remain open.
 Ordinary [`Closure::call`](docs/semantics/CLOSURE-CALL.md) temporarily changes
 receiver/scope, evaluates arguments before binding validation, preserves original

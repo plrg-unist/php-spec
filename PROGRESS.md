@@ -7,10 +7,16 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Installed selector142 checkpoint is **e9af13fd0**, with semantics **9ad9b012e**
-and tests **386beb19e** over **fdef6285d**. Author and independent gates accept
-source2 and finite CONFIG1/26 on **87aa3f33/1294**; whole-source ordinary CONFIG
-agreement remains untested here. Earlier installed code **a993dd191** includes
+Installed capture checkpoint is **c536d1f74**, with code **094761c66** and
+tests through **8795d9c39** over **c8bee41e6**. Author and independent gates each
+accept source9 and seventeen finite stages/541 maintained assertions on
+**44edf5d2/1302**; the reviewer also accepts creator2/89.
+[Capture review](coverage/semantics/method-capture-current-review.json) keeps
+preinstallation source35/state40 and historical evidence separate.
+
+Earlier selector142 checkpoint **e9af13fd0** accepts source2 and finite CONFIG1/26
+on **87aa3f33/1294**. Whole-source ordinary CONFIG agreement remains untested
+here. Earlier installed code **a993dd191** includes
 ordinary fatal and Unsupported origin retirement, finite inherited internal
 method contracts 189 at **cbd5236d2** and the constant
 internal catalogue accepted at **832250521**. Installed code also includes deferred
@@ -73,40 +79,47 @@ readonly/asymmetric set access and scoped defaults remain open.
 
 The independent private lanes currently include:
 
-- Include/configuration: named operands, array unpack, Stringable
-  `set_include_path`/`ini_restore`, and `ini_set` option conversion have reviewed
-  private checkpoints. Their current canonical projection and installation are
-  pending. Pipe source24, two returned-callable sources, six paused stages/258
-  assertions and two directory stages/158 assertions pass private review,
-  with retained controls separate. The repaired fixture
-  distinguishes intermediate ownership from terminal release; real `__invoke`
-  wrapper pipes remain Unsupported. The current-fdef five-increment content
-  projection is reviewed but its semantic bridges are pending.
-  [Private include ledger](.tools/include-config-ini-option-current/coverage/semantics/include-stringable-ini-option-review.json)
+- Include/configuration: named-only private **7868add84** accepts author
+  source17/four185 and independent source2/two89 on **05db9b78/1293**, with
+  reviewed docs **524c9b18a**. Fresh accepted-capture projection and the five
+  separate installations remain pending. Array unpack, Stringable SET/Restore
+  and INI-option retain reviewed private checkpoints. PIPE source24/returned2,
+  callback210 plus48 Unsupported guards and directory158 remain private;
+  real CONFIG `__invoke` wrapper pipes remain Unsupported. The copied-c8
+  renderer/content bridge is separate, uninstalled evidence.
+  [Named ledger](.tools/include-dev-12-current/coverage/semantics/include-named-current-review.json)
   · [pipe ledger](.tools/include-config-pipe-string-current/coverage/semantics/include-config-pipe-string-review.json).
-- Calls: static-method142 is installed with accepted source2 and finite
-  CONFIG1/26 gates. Rebound capture, called-class and receiver-creation116 have a
-  current-c8bee projection on **44edf5d2/1302**: author and independent source35
-  and finite40 stages pass, plus independent creator2/89. Canonical installation
-  remains pending. Arbitrary retired binding history and source `__invoke`/array classification
-  remain open. [Capture ledger](coverage/semantics/method-capture-current-review.json)
+- Calls: rebound capture, called-class and receiver-creation116 are installed at
+  **c536d1f74**, with source9/finite17 stages/541 maintained assertions accepted
+  by both actors and independent creator2/89. The earlier current-c8 projection
+  accepts source35/state40; forty bodies elaborate with zero state execution.
+  Static142 and finite CONFIG1/26 guards remain accepted. Arbitrary correlated
+  retired binding history and source `__invoke`/array classification remain open.
+  [Capture ledger](coverage/semantics/method-capture-current-review.json)
   · [selector ledger](coverage/semantics/method-class-selector-review.json).
-- Properties: private197 review **a778904d** accepts combined-fdef source1,
-  cleanup55 and body elaboration, separately from historical21/eight572.
-  Declaration200 is privately accepted; direct-access201 **203d8ba7** awaits
-  fixture correction. Its first two finite stages/112 assertions pass; three
-  remaining stages and all52 source cases are unrun. Runtime/deferred writes and
-  current-master installation remain open.
-- Compiler: publication190–196 remains private. Freeze16 passes nine finite
-  budget runs; full publication/native terminal acceptance and current-master
-  projection remain pending. Earlier failed and partial reports retain their
-  identities. Constants183/184 depend on publication.
-- Argument introspection198/199 remains private on fdef. Native tests exposed
-  delayed key/property selector ordering and nullsafe by-reference sends.
-  The bounded correction design is reviewed; corrected code, independent gates
-  and installation remain pending. Generator/Fiber/handler interactions are
-  later gates. The ignored [core roadmap](.tools/core-roadmap-11/roadmap.txt)
-  guides remaining milestones and inventory gaps; it establishes no closure.
+- Properties: the bounded private-c8 projection of typed static Stringable
+  assignment197 and default-false reference infrastructure is accepted, with
+  archival tip **55bbaf047**; no186 producer or installation is claimed.
+  Author source2/private41/corrected callback63 and independent source1/68 remain
+  separate from historical21/eight572. Declaration200 is privately accepted
+  and archived at **502654618**. Direct201 accepts author54 native/model source
+  tuples and independent source3/three188; earlier203d2/112,1c4/170 and failures
+  remain distinct. Fresh actual-master projection/installation, delayed receivers,
+  non-CV reference acquisition and full201 remain open.
+- Compiler: publication190–196 remains private/unaccepted. Freeze17 has four
+  bounded runtime passes; receiver-free/null-scope fails before SOURCE_PENDING.
+  The null/null181 producer repair has source-only approval; runtime renewal,
+  native18/file20, current capture compatibility and full publication/syntax remain
+  pending. Earlier freezes and failures retain their identities. Constants183/184
+  depend on publication.
+- Argument introspection198/199 remains private on fdef. All111 ordinary
+  native/model tuples agree; the original112 aggregate remains FAIL with a
+  separately accepted focused status correction. Finite evidence combines its
+  original16/373 pass subset with four corrected legal fixtures/87, preserving
+  the failed aggregate; no fresh full source/finite run is claimed. Compatibility
+  corrections, independent state/final code review and installation remain pending.
+  Generator/Fiber/handler interactions are later gates. The ignored
+  [core roadmap](.tools/core-roadmap-11/roadmap.txt) guides remaining obligations.
 
 `returns_verify` is temporarily paused by the user. Preserve its branches and
 evidence; do not retry the blocked engine experiment, substitute a reviewer,
@@ -134,13 +147,13 @@ syntax results are bounded evidence. Interrupted runs, timeouts, Unsupported
 and budget controls are never native agreements. A fresh offline,
 network-isolated rebuild and full current-source closure remain required.
 
-Root's force-index write and the refreshed integrator's
+Root's force-index write and the fresh actor's
 [write check](.tools/git-integration-static142-permission-20261002.json) succeeded.
-Static142 is installed with accepted bounded gates. The old author's denied
-[recheck](.tools/calls-static142-git-write-recheck.json) and
-[staging receipt](.tools/calls-static142-git-add-denial-20261002.json) remain
-historical and actor-specific. Further integrations use sole canonical writer
-leases.
+Static142 and the capture union are installed with accepted bounded gates. The
+legacy author's denied [recheck](.tools/calls-static142-git-write-recheck.json)
+and [staging receipt](.tools/calls-static142-git-add-denial-20261002.json) remain
+historical and actor-specific. Fresh implementors integrate independently reviewed
+milestones under temporary coordinated canonical writer leases.
 
 The [migration ledger](coverage/semantics/throwable-migration-review.json) and
 [artifact guide](docs/ARTIFACTS.md) retain deferred failures and raw evidence.

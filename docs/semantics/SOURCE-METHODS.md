@@ -122,12 +122,15 @@ CONFIG stage/26 assertions. CONFIG uses source-derived finite initialization;
 whole-source ordinary CONFIG/native TCR agreement remains untested here. The
 earlier fdef source2 and finite2/59 retain their private identities, alongside
 setup and fixture failures. Rebound capture, called-class and receiver-creation116
-repairs retain separate private reviews. The current-c8bee
+repairs retain separate private reviews. Their current-c8bee
 [projection](../../coverage/semantics/method-capture-current-review.json) passes
 author and independent source groups16/7/3/5/2/2 and forty finite stages, plus
 independent creator2/89. Forty fixture bodies elaborate with zero state execution.
-Canonical installation remains pending; [capture authority](METHOD-CAPTURE-AUTHORITY.md) does not reconstruct
-arbitrary retired dynamic binding history.
+Installed checkpoint **c536d1f74**, on **44edf5d2/1302**, separately accepts nine
+sources and seventeen finite stages/541 maintained assertions for each actor,
+plus independent creator2/89. These checks preserve selector, INSTANCE,
+interface, origin-retirement and finite CONFIG guards. [Capture authority](METHOD-CAPTURE-AUTHORITY.md)
+does not reconstruct arbitrary retired dynamic binding history.
 
 Maintained commands are `method_compiler.py`, `method_runtime.py`,
 `method_visibility_protocol.py`, `method_modifier_phase.py` and

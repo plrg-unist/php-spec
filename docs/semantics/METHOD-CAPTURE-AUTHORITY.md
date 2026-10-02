@@ -34,8 +34,12 @@ keeps installed STATIC_METHOD_TARGET selection, interface189, current/saved
 INSTANCE roles and ordinary origin retirement. Author and independent source
 groups 16/7/3/5/2/2 and finite groups 11/7/9/6/2/1/1/2/1 pass on 44edf5d2/1302,
 with independent creator2/89. Forty bodies elaborate with zero state execution.
-Canonical installation remains pending.
-The new current called 7/334 pass does not rewrite the older mixed-snapshot results.
+The separately accepted installed checkpoint **c536d1f74** uses the same
+**44edf5d2/1302** implementation. Author and independent gates each pass nine
+sources and seventeen finite stages/541 maintained assertions; the reviewer
+also passes creator2/89. These checks preserve the selected selector, internal,
+origin-retirement and CONFIG contracts. The current called 7/334 pass does not
+rewrite the older mixed-snapshot results.
 Finite entered CONFIG1/26 does not establish ordinary CONFIG/native agreement.
 
 The bound-Closure fatal trace-class correction in module 181 remains separate
