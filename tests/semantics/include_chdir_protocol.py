@@ -17,6 +17,8 @@ CASES = [
     ('function', b"<?php function f(){return chdir('__SUB__');} f(); echo include 'one.php';", b'__SUB__', True, True),
     ('stringable', b"<?php class O { function __toString(): string { return '__SUB__'; } } chdir(new O); echo include 'one.php';", b'__SUB__', True, False),
     ('stringable-dynamic', b"<?php class O { function __toString(): string { return '__SUB__'; } } $f='chdir'; $f(new O); echo include 'one.php';", b'__SUB__', True, False),
+    ('stringable-named-dynamic', b"<?php class O { function __toString():string { return '__SUB__'; } } $f='chdir'; $f(directory:new O); echo include 'one.php';", b'__SUB__', True, False),
+    ('stringable-named-invoke', b"<?php class O { function __toString():string { return '__SUB__'; } } $f=chdir(...); $f->__invoke(directory:new O); echo include 'one.php';", b'__SUB__', True, False),
 ]
 
 
@@ -142,12 +144,37 @@ def main():
                 '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CONVERSION = eps])])',
                 '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.REQUESTED = ' + seq(b'forged') + '])])',
             ]
-        if name == 'stringable-dynamic':
+        if name in ('stringable-dynamic', 'stringable-named-dynamic'):
             checks += [
                 'pconfigcall.SELECTION = (n_selection)',
                 'S_initial.SELECTEDCALLS[n_selection] = pselectedcall',
                 '$selected_entry_active_valid(S_initial,pselectedcall)',
                 '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CALL = pconfigcall[.SELECTION = eps]])])',
+            ]
+        if name.startswith('stringable-named'):
+            checks += [
+                'pconfigcall.NAMED',
+                'pconfigcall.INDEX = 1',
+                'pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]',
+                'pdirconversion.OBJECT = n_object',
+                '(HOBJECT n_object) <- $task_nodes(CHDIR_AWAIT pconfigcall 0)',
+                '~$config_invoke_valid(S_initial,pconfigcall[.NAMED = false])',
+                '~$dir_requested_valid(S_initial,pdircontext[.CALL = pconfigcall[.NAMED = false]])',
+                '~$dir_requested_valid(S_initial,pdircontext[.CALL = pconfigcall[.SENT = [NAMED_SENT (KNOWN (POBJECT 999))]]])',
+                '~$call_descriptors_valid(S_initial[.DIRCONVERSIONS = [pdirconversion[.OBJECT = 999]]])',
+                '~$call_descriptors_valid(S_initial[.DIRCONVERSIONS = [pdirconversion[.OWNERDEPTH = 999]]])',
+                '~$call_descriptors_valid(S_initial[.DIRCONVERSIONS = [pdirconversion[.NONCE = 999]]])',
+                '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CONVERSION = (999)])])',
+                '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CALL = pconfigcall[.INDEX = 0]])])',
+                '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CALL = pconfigcall[.LINE = 999]])])',
+                '~$call_descriptors_valid(S_initial[.ALLOCATIONS = eps])',
+            ]
+        if name == 'stringable-named-invoke':
+            checks += [
+                'pconfigcall.OWNER = (n_owner)',
+                '(HOBJECT n_owner) <- $task_nodes(CHDIR_AWAIT pconfigcall 0)',
+                '~$dir_requested_valid(S_initial,pdircontext[.CALL = pconfigcall[.OWNER = eps]])',
+                '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CALL = pconfigcall[.OWNER = (999)]])])',
             ]
         fixture = directory / 'protocol.watsup'
         fixture.write_text('dec $main() : bool\ndef $main() = true\n'

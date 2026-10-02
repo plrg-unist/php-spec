@@ -15,17 +15,20 @@ def $config_kind(INTRINSIC_CHDIR) = true
 def $config_kind(pintrinsic) = false -- otherwise
 dec $config_invoke_valid(pstate, pconfigcall) : bool
 dec $config_strict(pstate, pconfigcall) : bool
+dec $config_destination(pintrinsic, preqbytes?, nat) : nat?
 def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
   -- if $(|pcpath_child| >= 3)
   -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
-  -- if $intrinsic_argument(S, PORIGIN n_unit pcpath_parent, 0) = ((expression, false, eps, PORIGIN n_unit pcpath_child, z_child))
+  -- if $intrinsic_argument(S, PORIGIN n_unit pcpath_parent, 0) = ((expression, false, preqbytes?, PORIGIN n_unit pcpath_child, z_child))
+  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0)
   -- if $intrinsic_count(S, PORIGIN n_unit pcpath_parent) = (1)
   -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
 def $config_string_child_site(S, porigin_site, z) = false -- otherwise
 def $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = true
   -- if pconfigcall.KIND = INTRINSIC_CHDIR
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
-  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, eps, porigin_child, z_child))
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, preqbytes?, porigin_child, z_child))
+  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0)
   -- if pconfigcall.LINE = z_call
   -- if $config_string_child_site(S, porigin_child, z_call)
   -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
@@ -98,7 +101,6 @@ def $config_parameter(INTRINSIC_INI_SET, preqbytes) = (1) -- if preqbytes = $pta
 def $config_parameter(INTRINSIC_INI_RESTORE, preqbytes) = (0) -- if preqbytes = $ptascii("option")
 def $config_parameter(INTRINSIC_CHDIR, preqbytes) = (0) -- if preqbytes = $ptascii("directory")
 def $config_parameter(pintrinsic, preqbytes) = eps -- otherwise
-dec $config_destination(pintrinsic, preqbytes?, nat) : nat?
 def $config_destination(pintrinsic, eps, n) = (n)
 def $config_destination(pintrinsic, (preqbytes), n) = $config_parameter(pintrinsic, preqbytes)
 dec $config_send_check(pstate, pconfigcall, preqbytes?, int) : pstate
@@ -365,7 +367,7 @@ def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError",
   -- if pconfigcall.KIND = INTRINSIC_CHDIR
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
   -- if $config_strict(S, pconfigcall) \/ ~$stringable_instance(S, n)
-def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "chdir stringable object argument needs a checked positional source"]
+def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "chdir stringable object argument needs a checked positional or directory-named source"]
   -- if pconfigcall.KIND = INTRINSIC_CHDIR
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
   -- if ~$config_strict(S, pconfigcall)
@@ -384,7 +386,8 @@ def $config_string_launch(S, pconfigcall) = true
   -- if S.FILEINCLUDEPATH =/= eps
   -- if S.FILECWD =/= eps
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
-  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, eps, porigin_child, z_child))
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, preqbytes?, porigin_child, z_child))
+  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0)
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
 def $config_string_launch(S, pconfigcall) = false -- otherwise
 rule PhpStep/config-stringable-call: S ~> $user_string_begin(S[.ORIGIN = (porigin_child)], n_object, porigin_child, pconfigcall.LINE, CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child pconfigcall.LINE, ptask_tail*)
@@ -392,7 +395,8 @@ rule PhpStep/config-stringable-call: S ~> $user_string_begin(S[.ORIGIN = (porigi
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $config_string_launch(S, pconfigcall)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
-  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, eps, porigin_child, z_child))
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, preqbytes?, porigin_child, z_child))
+  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0)
 rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)

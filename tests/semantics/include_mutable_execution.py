@@ -66,6 +66,23 @@ CASES = {
     'chdir-stringable-nested-throw': b'<?php class O { function __toString(): string { $this->g(); return "sub"; } function g(): void { throw new Exception("X"); } } chdir(new O);',
     'chdir-stringable-mutate-cwd': b"<?php class O { function __toString(): string { chdir('__SUB__'); return '..'; } } echo chdir(new O)?'T':'F'; echo include 'one.php';",
     'chdir-stringable-nested-conversion': b"<?php class P { function __toString():string { echo 'P'; return '__SUB__'; } } class O { function __toString():string { echo 'O'; $g='chdir'; $g(new P); return '..'; } } $f='chdir'; echo $f(new O)?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-named': b"<?php class O { function __toString():string { echo 'S'; return '__SUB__'; } } echo chdir(directory:new O)?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-named-selection': b"<?php class O { function __toString():string { echo 'S'; return '__SUB__'; } } function swap($v){global $f; echo 'A'; $f='ini_restore'; return new O;} $f='chdir'; echo $f(directory:swap($f))?'T':'F'; echo include 'one.php'; echo '|',$f;",
+    'chdir-stringable-named-first-class': b"<?php class O { function __toString():string { echo 'S'; return '__SUB__'; } } $f=chdir(...); echo $f(directory:new O)?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-named-invoke': b"<?php class O { function __toString():string { echo 'S'; return '__SUB__'; } } $f=chdir(...); echo $f->__invoke(directory:new O)?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-named-mutate-cwd': b"<?php class O { function __toString():string { echo 'S'; chdir('__SUB__'); return '..'; } } echo chdir(directory:new O)?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-named-nul': b'<?php class O { function __toString():string { echo "S"; return "a\\0b"; } } chdir(directory:new O);',
+    'chdir-stringable-named-invoke-nul': b'<?php class O { function __toString():string { echo "S"; return "a\\0b"; } } $f=chdir(...); $f->__invoke(directory:new O);',
+    'chdir-stringable-named-inherited-case-throw': b'<?php class P { function __ToStRiNg():string { throw new Exception("X"); } } class O extends P {} $f=chdir(...); $f->__invoke(directory:new O);',
+    'chdir-stringable-named-strict': b'<?php declare(strict_types=1); class O { function __toString():string { echo "S"; return "sub"; } } chdir(directory:new O);',
+    'chdir-stringable-named-strict-first-class': b'<?php declare(strict_types=1); class O { function __toString():string { echo "S"; return "sub"; } } $f=chdir(...); $f(directory:new O);',
+    'chdir-stringable-named-strict-invoke': b'<?php declare(strict_types=1); class O { function __toString():string { echo "S"; return "a\\0b"; } } $f=chdir(...); $f->__invoke(directory:new O);',
+    'chdir-object-named-nonstringable': b'<?php class O {} chdir(directory:new O);',
+    'chdir-object-named-unknown': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a(){echo "A"; return new O;} $f=chdir(...); $f->__invoke(bad:a());',
+    'chdir-object-named-case': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a(){echo "A"; return new O;} chdir(Directory:a());',
+    'chdir-object-named-duplicate': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a($s){echo $s; return new O;} chdir(a("A"),directory:a("B"));',
+    'chdir-object-named-count': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a($s){echo $s; return new O;} chdir(a("A"),a("B"));',
+    'chdir-object-named-invoke-count': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a($s){echo $s; return new O;} $f=chdir(...); $f->__invoke(a("A"),a("B"));',
 }
 
 
@@ -133,7 +150,7 @@ def main():
                             'cwd': b64(cwd_key), 'include_path': b64(include_path),
                             'status': 'opened', 'resolved': b64(opened),
                             'opened': b64(opened), 'source': b64(target.read_bytes())})
-        if name in ('chdir-stringable-mutate-cwd', 'chdir-stringable-nested-conversion'):
+        if name in ('chdir-stringable-mutate-cwd', 'chdir-stringable-nested-conversion', 'chdir-stringable-named-mutate-cwd'):
             case_cwd = os.fsencode(directory.resolve())
             opened = os.fsencode(local.resolve())
             entries.append({'caller': b64(main_bytes), 'requested': b64(b'one.php'),
@@ -160,7 +177,7 @@ def main():
         if name == 'chdir-relative':
             chdir_entries.append({'cwd': b64(cwd), 'requested': b64(b'sub'),
                                   'status': 'success', 'next_cwd': b64(sub_bytes)})
-        if name in ('chdir-stringable-mutate-cwd', 'chdir-stringable-nested-conversion'):
+        if name in ('chdir-stringable-mutate-cwd', 'chdir-stringable-nested-conversion', 'chdir-stringable-named-mutate-cwd'):
             chdir_entries.append({'cwd': b64(sub_bytes), 'requested': b64(b'..'),
                                   'status': 'success',
                                   'next_cwd': b64(os.fsencode(directory.resolve()))})
