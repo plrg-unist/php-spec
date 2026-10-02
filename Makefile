@@ -267,6 +267,7 @@ test-semantics: build
 	python3 tests/semantics/include_protocol.py
 	python3 tests/semantics/include_mutable_execution.py
 	python3 tests/semantics/include_mutable_protocol.py
+	python3 tests/semantics/include_ini_prefix_protocol.py
 	python3 tests/semantics/include_chdir_protocol.py
 	python3 tests/semantics/include_chdir_adapter_protocol.py
 	python3 tests/semantics/include_saved_protocol.py
