@@ -7,9 +7,12 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Canonical Git HEAD is **fdef6285d**, a documentation checkpoint over installed
-code **a993dd191**, with ordinary fatal and Unsupported origin retirement,
-finite inherited internal method contracts 189 at **cbd5236d2** and the constant
+Installed selector142 checkpoint is **e9af13fd0**, with semantics **9ad9b012e**
+and tests **386beb19e** over **fdef6285d**. Author and independent gates accept
+source2 and finite CONFIG1/26 on **87aa3f33/1294**; whole-source ordinary CONFIG
+agreement remains untested here. Earlier installed code **a993dd191** includes
+ordinary fatal and Unsupported origin retirement, finite inherited internal
+method contracts 189 at **cbd5236d2** and the constant
 internal catalogue accepted at **832250521**. Installed code also includes deferred
 Closure/arrow cache authentication 91, ordinary class static properties,
 Stringable-`chdir`, and named/reference `Closure::call`.
@@ -81,23 +84,27 @@ The independent private lanes currently include:
   projection is reviewed but its semantic bridges are pending.
   [Private include ledger](.tools/include-config-ini-option-current/coverage/semantics/include-stringable-ini-option-review.json)
   · [pipe ledger](.tools/include-config-pipe-string-current/coverage/semantics/include-config-pipe-string-review.json).
-- Calls: static-method142 has reviewed fdef source2 and finite2/59 evidence;
-  installation remains pending. The called-class mixed-snapshot aggregate is
-  privately reviewed, with receiver-free116 independent coverage still pending.
-  Callable capture remains open.
+- Calls: static-method142 is installed with accepted source2 and finite
+  CONFIG1/26 gates. Rebound capture, called-class and receiver-creation116 repairs
+  remain separate reviewed private milestones; current-base projection and
+  installation are pending. Callable capture remains open.
   [Selector ledger](coverage/semantics/method-class-selector-review.json).
 - Properties: private197 review **a778904d** accepts combined-fdef source1,
   cleanup55 and body elaboration, separately from historical21/eight572.
-  Asymmetric static access200/201 is the next lane; delayed writes remain open.
-- Compiler: declaration publication190–196 is private work. Historical private
-  raw observations show its first three groups passing, the rebound group
-  failing, and later groups unrun. Publication Unsupported controls remain
-  unaccepted. The reviewed195 bounds repair still encounters a valid-history
-  rejection under diagnosis; constants183/184 depend on publication.
-- Argument introspection198/199 has a development/review pair. Implementation
-  and validation remain pending. The ignored
-  [core roadmap](.tools/core-roadmap-11/roadmap.txt) guides remaining milestones
-  and inventory gaps; it establishes no closure.
+  Declaration200 is privately accepted; direct-access201 **203d8ba7** awaits
+  fixture correction. Its first two finite stages/112 assertions pass; three
+  remaining stages and all52 source cases are unrun. Runtime/deferred writes and
+  current-master installation remain open.
+- Compiler: publication190–196 remains private. Freeze16 passes nine finite
+  budget runs; full publication/native terminal acceptance and current-master
+  projection remain pending. Earlier failed and partial reports retain their
+  identities. Constants183/184 depend on publication.
+- Argument introspection198/199 remains private on fdef. Native tests exposed
+  delayed key/property selector ordering and nullsafe by-reference sends.
+  The bounded correction design is reviewed; corrected code, independent gates
+  and installation remain pending. Generator/Fiber/handler interactions are
+  later gates. The ignored [core roadmap](.tools/core-roadmap-11/roadmap.txt)
+  guides remaining milestones and inventory gaps; it establishes no closure.
 
 `returns_verify` is temporarily paused by the user. Preserve its branches and
 evidence; do not retry the blocked engine experiment, substitute a reviewer,
@@ -125,13 +132,13 @@ syntax results are bounded evidence. Interrupted runs, timeouts, Unsupported
 and budget controls are never native agreements. A fresh offline,
 network-isolated rebuild and full current-source closure remain required.
 
-Git write access is restored after the orchestrator's successful authorized
-write check; the earlier denied
-[recheck](.tools/calls-static142-git-write-recheck.json) remains historical.
-Reviewed integrations resume under sole canonical writer leases. Calls holds
-that lease for static142; installation has not yet occurred, and it waits for
-the frozen fdef bridge to finish. This documentation edit grants no semantic
-writer lease.
+Root's force-index write and the refreshed integrator's
+[write check](.tools/git-integration-static142-permission-20261002.json) succeeded.
+Static142 is installed with accepted bounded gates. The old author's denied
+[recheck](.tools/calls-static142-git-write-recheck.json) and
+[staging receipt](.tools/calls-static142-git-add-denial-20261002.json) remain
+historical and actor-specific. Further integrations use sole canonical writer
+leases.
 
 The [migration ledger](coverage/semantics/throwable-migration-review.json) and
 [artifact guide](docs/ARTIFACTS.md) retain deferred failures and raw evidence.

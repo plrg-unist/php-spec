@@ -253,8 +253,9 @@ compiler and paused-state controls. [Source methods and constructors](docs/seman
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
-static class identity after object retirement. Its current source2 and finite2
-checks pass; installation and rebound capture authorization remain separate.
+static class identity after object retirement. Its installed author and independent
+gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
+capture, called-class and receiver-creation116 repairs remain private.
 Readonly members, hooks and user magic methods remain open.
 Ordinary [`Closure::call`](docs/semantics/CLOSURE-CALL.md) temporarily changes
 receiver/scope, evaluates arguments before binding validation, preserves original

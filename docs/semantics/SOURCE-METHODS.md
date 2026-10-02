@@ -115,13 +115,15 @@ use native C-string display while lookup and argument identities retain full byt
 
 The [selector repair review](../../coverage/semantics/method-class-selector-review.json)
 keeps eleven historical source agreements, thirteen passing stages from a failed
-fourteen-stage report, and its corrected affected stage separate. The current
-fdef projection preserves installed interface, CONFIG and error-unwind rules;
-two exact source tuples and two finite stages/59 assertions pass. Earlier setup
-and fixture failures keep their identities. Installation is pending. Rebound
-private capture authorization is reviewed in a separate private milestone;
-its later projection, installation and unchanged-lexical called-class channels
-remain open.
+fourteen-stage report, and its corrected affected stage separate. Installed
+checkpoint **e9af13fd0** preserves interface, CONFIG and error-unwind rules.
+Author and independent gates each pass two exact source tuples and one finite
+CONFIG stage/26 assertions. CONFIG uses source-derived finite initialization;
+whole-source ordinary CONFIG/native TCR agreement remains untested here. The
+earlier fdef source2 and finite2/59 retain their private identities, alongside
+setup and fixture failures. Rebound capture, called-class and receiver-creation116
+repairs have separate private reviews; current-base projection and installation
+remain pending.
 
 Maintained commands are `method_compiler.py`, `method_runtime.py`,
 `method_visibility_protocol.py`, `method_modifier_phase.py` and
