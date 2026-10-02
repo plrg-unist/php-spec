@@ -1,0 +1,62 @@
+[
+  {
+    "id": "nested-free-closure",
+    "native_group": ".tools/receiver-free-creation-native-y6hzp4gm/nested-free-closure/native.json",
+    "native_raw_sha256": "f9792a8de3267b13dc1e7d9dc2cfcc07a9d5403308db21c44c5df89d38e030fc",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public static function make(){return function(){return function(){return 1;};};}}$c=A::make();$inner=$c();echo $inner();",
+    "source_sha256": "082fea5aee2eeb586c0244626286a380da9820d862628fc664dec81a26d61be8",
+    "status": "normal",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "nested-free-arrow-chain",
+    "native_group": ".tools/receiver-free-creation-native-y6hzp4gm/nested-free-arrow-chain/native.json",
+    "native_raw_sha256": "da466daf91896a6167250d765539af0b43784e81f2c94982255d6313b590f217",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public static function make(){return function(){return fn()=>function(){return 1;};};}}$c=A::make();$middle=$c();$inner=$middle();$c=null;$middle=null;echo $inner();",
+    "source_sha256": "2500af4061b5f306ba11abbdc276b78395594f2e033874ddde4ab0ace64ed81a",
+    "status": "normal",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "nested-free-clone-retired",
+    "native_group": ".tools/receiver-free-creation-native-y6hzp4gm/nested-free-clone-retired/native.json",
+    "native_raw_sha256": "d83a457a73d32d0902a8b1b1e229046772069bf685e59d30cfac39653a3c7bf4",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public static function make(){return function(){return function(){return 1;};};}}$c=A::make();$inner=$c();$copy=clone $inner;$inner=null;$c=null;echo $copy();",
+    "source_sha256": "10d85be932d0ee2f62e4579ac0de33ad39dfc9acac43dcfb967e0e55da1b9e60",
+    "status": "normal",
+    "stdout_base64": "MQ==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "static-child-discards-active-receiver",
+    "native_group": ".tools/receiver-free-creation-native-y6hzp4gm/static-child-discards-active-receiver/native.json",
+    "native_raw_sha256": "de503d473e80051534bf89bf51cfc698d2a2d418f558e0c337e9857c8b7177bb",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public int $p=7;public static function make(){return function(){return static function(){return 7;};};}}$a=new A;$r=&$a->p;$c=A::make();$bound=$c->bindTo($a,\"A\");$inner=$bound();$bound=null;$a=null;$c=null;try{$r=\"s\";echo \"W\";}catch(TypeError $e){echo \"E\";}echo $inner();",
+    "source_sha256": "7a94609dc1ba6469471d1316b74cfbe7d790e738b9aa6a08a08800501ebd879e",
+    "status": "normal",
+    "stdout_base64": "Vzc=",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  },
+  {
+    "id": "instance-owned-nested-receiver",
+    "native_group": ".tools/nested-receiver-free-instance-native-9l1ot9hq/native.json",
+    "native_raw_sha256": "05a214d7f73852f3ada6e979f5e78f1456d62dc47f15fd1eeee2eea8be1f4146",
+    "native_profile": "PHP 8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "source": "<?php class A{public int $p=7;public function make(){return function(){return function(){return $this->p;};};}}$a=new A;$c=$a->make();$inner=$c();echo $inner();",
+    "source_sha256": "b41b3ce0bf81792c47041f50ddba4dce548c09c19963d3b29ebb201f1a62c4b1",
+    "status": "normal",
+    "stdout_base64": "Nw==",
+    "stderr_template_base64": "",
+    "exit_status": 0
+  }
+]
