@@ -110,7 +110,7 @@ source2/two139. The ledger preserves earlier private evidence, its original
 active fixture failure and corrected state checks separately. Wider OS/INI
 behavior and Traversable operands remain open.
 
-The bounded [private Stringable SET increment](../../coverage/semantics/include-set-current-review.json)
+The bounded [installed Stringable SET increment](../../coverage/semantics/include-set-current-review.json)
 runs authenticated weak conversion before reading the old live `include_path`.
 A nonempty NUL-free result installs the value and returns the old value after
 the callback. Empty results return `false`; NUL raises `ValueError`. Both preserve
@@ -118,6 +118,10 @@ callback-installed INI state. Strict direct/first-class calls and non-Stringable
 operands reject before the callback; owned `Closure->__invoke` retains weak
 conversion. `ini_set` rejects an object value before option lookup or mutation.
 Source and paused-state checks separately bind the captured receiver, owner,
-saved operand and abrupt cleanup. These checks use NUL-free old INI values;
+saved operand and abrupt cleanup. Installed author checks cover source24/four107
+and shared source3/directory1/81, with six separate Unsupported controls.
+Independent source2 tuples were recovered unchanged; fresh owner79/finally50
+checks and original raw audits complete the bounded installed gate.
+These checks use NUL-free old INI values;
 embedded-NUL old-value returns and leading-NUL scalar INI values remain the
-separate INI-option increment. Installation, Restore and broader INI remain open.
+separate INI-option increment. Restore and broader INI remain open.

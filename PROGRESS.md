@@ -7,7 +7,16 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Installed capture checkpoint is **c536d1f74**, with code **094761c66** and
+Installed Stringable SET evidence binds tested **13c9c4ddf**, with code
+**3e3608369** over **9c8d8cab0**, on **d7d59e41/1302**. Author gates accept
+source27 and five finite stages/188 assertions; six Unsupported checks remain
+separate. Independent gates accept the recovered source2 tuples and fresh
+owner79/finally50. [SET review](coverage/semantics/include-set-current-review.json)
+preserves the unknown original source2 launcher exit, NUL-free old-value limits
+and distinct private evidence. Restore, INI05 C-prefix repairs and full core
+closure remain open.
+
+Earlier capture checkpoint is **c536d1f74**, with code **094761c66** and
 tests through **8795d9c39** over **c8bee41e6**. Author and independent gates each
 accept source9 and seventeen finite stages/541 maintained assertions on
 **44edf5d2/1302**; the reviewer also accepts creator2/89.
@@ -86,10 +95,11 @@ The independent private lanes currently include:
   Unsupported controls) and named source3/four185. Independent fresh source2/two139
   passes; earlier private **63cd23b84** evidence and the original active fixture
   failure retain separate receipts.
-  Stringable SET is accepted privately at **3e3608369** on **d7d59e41/1302**:
-  author source24/four107, shared source3/directory1/81 and six separate
-  Unsupported checks; independent fresh source2/owner79/finally50. Old-value
-  witnesses are NUL-free; installation and INI05 C-prefix repairs remain pending.
+  Stringable SET is installed at tested **13c9c4ddf**, code **3e3608369**, on
+  **d7d59e41/1302**: author source24/four107, shared source3/directory1/81 and
+  six separate Unsupported checks; independent recovered source2 and fresh
+  owner79/finally50. Old-value witnesses are NUL-free; INI05 C-prefix repairs
+  remain pending.
   Restore and INI-option remain reviewed private increments.
   PIPE source24/returned2, callback210 plus48 Unsupported guards and directory158
   remain private; real CONFIG `__invoke` wrapper pipes remain Unsupported.
