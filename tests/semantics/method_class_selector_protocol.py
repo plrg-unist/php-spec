@@ -184,7 +184,7 @@ CASES = {
             '~$call_task_valid(S, METHOD_CONVERT (' + DIRECT_TARGET + ') porigin_site $(z + 100))',
             'S_after = $drive_steps(S[.COMPLETION = NORMAL], 1)',
             'S_after.RESULT = KNOWN (POBJECT n_closure)',
-            'S_after.OBJECTS[n_closure] = METHODCLOSURE porigin_method porigin_site porigin_class',
+            'S_after.OBJECTS[n_closure] = METHODCLOSURE porigin_method porigin_site porigin_class eps',
             '$closure_scope_at(S_after.CLOSURESCOPES, n_closure) = (pclosurescope)',
             'pclosurescope.RECEIVER = eps',
             'pclosurescope.CALLED = porigin_class',
@@ -206,7 +206,7 @@ CASES = {
             *GUARDS,
             'S_after = $drive_steps(S[.COMPLETION = NORMAL], 1)',
             'S_after.RESULT = KNOWN (POBJECT n_closure)',
-            'S_after.OBJECTS[n_closure] = METHODCLOSURE porigin_method porigin_site porigin_class',
+            'S_after.OBJECTS[n_closure] = METHODCLOSURE porigin_method porigin_site porigin_class eps',
             '$closure_scope_at(S_after.CLOSURESCOPES, n_closure) = (pclosurescope)',
             'pclosurescope.LEXICAL = pmethoddesc.OWNER',
             'pclosurescope.CALLED = porigin_class',
@@ -245,7 +245,7 @@ CASES = {
         'stage': ('S.CURRENT = (pcallcontext) -- if S.FRAMES = pframe :: pframe_tail* '
                   '-- if pframe.CONTEXT = (pcallcontext_saved) '
                   '-- if pcallcontext_saved.TARGET = CLOSURE_TARGET n_closure '
-                  '-- if S.OBJECTS[n_closure] = METHODCLOSURE porigin_method porigin_site porigin_class'),
+                  '-- if S.OBJECTS[n_closure] = METHODCLOSURE porigin_method porigin_site porigin_class eps'),
         'checks': [
             'pcallcontext.INSTANCE = eps',
             'pcallcontext_saved.INSTANCE = (n_closure)',

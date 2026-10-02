@@ -61,8 +61,10 @@ def $closure_bound_receiver(S, pfunction) = pcallcontext.RECEIVER
   -- if ~$closure_static(S, pfunction)
   -- if S.CURRENT = (pcallcontext)
 def $closure_bound_receiver(S, pfunction) = eps -- otherwise
+dec $closure_creation_scope(pstate, porigin) : bool
+dec $closure_creation_stamp(pstate, pfunction) : pclosurecreation?
 dec $closure_scope_append(pstate, pfunction, nat) : pstate
-def $closure_scope_append(S, pfunction, n) = S[.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL porigin_lexical, CALLED porigin_called, RECEIVER $closure_bound_receiver(S, pfunction)}]]
+def $closure_scope_append(S, pfunction, n) = S[.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL porigin_lexical, CALLED porigin_called, RECEIVER $closure_bound_receiver(S, pfunction), CREATION $closure_creation_stamp(S, pfunction)}]]
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.LEXICAL_CLASS = (porigin_lexical)
   -- if pcallcontext.CALLED_CLASS = (porigin_called)
@@ -370,6 +372,60 @@ def $closure_receiver_forbidden(S, porigin) = $closure_receiver_forbidden(S, por
   -- if $function_at(S.CLOSURETEMPLATES, porigin_owner) = (pfunction_owner)
 def $closure_receiver_forbidden(S, porigin) = false -- otherwise
 
+dec $closure_static_method_owner(pstate, porigin) : bool
+def $closure_static_method_owner(S, porigin) = true
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if ~$closure_static(S, pfunction)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (porigin_owner)
+  -- if $class_method_origin(S.CLASSES, porigin_owner) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
+def $closure_static_method_owner(S, porigin) = false -- otherwise
+
+;; The creator tuple is borrowed source evidence, not an object owner.
+dec $closure_receiver_present(nat?) : bool
+def $closure_receiver_present(eps) = false
+def $closure_receiver_present((n)) = true
+
+dec $closure_nested_creation(pstate, porigin) : bool
+def $closure_nested_creation(S, porigin) = true
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (porigin_owner)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin_owner) = (pfunction_owner)
+def $closure_nested_creation(S, porigin) = false -- otherwise
+
+def $closure_creation_stamp(S, pfunction) = ({FUNCTION pcallcontext.FUNCTION, CALLSITE porigin_call, RECEIVER $closure_receiver_present($closure_bound_receiver(S, pfunction))})
+  -- if $closure_nested_creation(S, pfunction.ORIGIN)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), pfunction.ORIGIN), eps) = (pcallcontext.FUNCTION)
+  -- if pcallcontext.CALLSITE = (porigin_call)
+  -- if $call_current_valid(S)
+  -- if $closure_creation_scope(S, pfunction.ORIGIN)
+def $closure_creation_stamp(S, pfunction) = eps -- otherwise
+
+dec $closure_receiver_free_ancestry(pstate, porigin) : bool
+def $closure_receiver_free_ancestry(S, porigin) = true
+  -- if $closure_static_method_owner(S, porigin)
+def $closure_receiver_free_ancestry(S, porigin) = $closure_receiver_free_ancestry(S, porigin_owner)
+  -- if ~$closure_static_method_owner(S, porigin)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if ~$closure_static(S, pfunction)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (porigin_owner)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin_owner) = (pfunction_owner)
+  -- if ~$closure_static(S, pfunction_owner)
+def $closure_receiver_free_ancestry(S, porigin) = false -- otherwise
+
+dec $closure_scope_creation_valid(pstate, porigin, pclosurescope) : bool
+def $closure_scope_creation_valid(S, porigin, pclosurescope) = (pclosurescope.CREATION = eps)
+  -- if ~$closure_nested_creation(S, porigin)
+def $closure_scope_creation_valid(S, porigin, pclosurescope) = true
+  -- if $closure_nested_creation(S, porigin)
+  -- if pclosurescope.CREATION = (pclosurecreation)
+  -- if pclosurecreation.RECEIVER = $closure_receiver_present(pclosurescope.RECEIVER)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (pclosurecreation.FUNCTION)
+  -- if $function_at(S.CLOSURETEMPLATES, pclosurecreation.FUNCTION) = (pfunction_owner)
+  -- if $method_capture_invocation_valid(S, {FUNCTION pclosurecreation.FUNCTION, CALLSITE (pclosurecreation.CALLSITE), LEXICAL_CLASS (pclosurescope.LEXICAL), CALLED_CLASS (pclosurescope.CALLED)}, pclosurecreation.CALLSITE)
+def $closure_scope_creation_valid(S, porigin, pclosurescope) = false -- otherwise
+
 dec $closure_scope_row_valid(pstate, pclosurescope) : bool
 def $closure_scope_row_valid(S, pclosurescope) = true
   -- if n = pclosurescope.OBJECT
@@ -377,19 +433,22 @@ def $closure_scope_row_valid(S, pclosurescope) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
   -- if $closure_source_class(S, porigin) = (pclosurescope.LEXICAL)
+  -- if $closure_scope_creation_valid(S, porigin, pclosurescope)
   -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc_lexical)
   -- if $class_at(S.CLASSES, pclosurescope.CALLED) = (pclassdesc_called)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_called.NAME)) = (pclosurescope.CALLED)
   -- if $class_origin_matches(S, pclosurescope.CALLED, pclassdesc_lexical.NAME, |S.CLASSES|)
   -- if pclosurescope.RECEIVER = eps
-  -- if $closure_receiver_forbidden(S, porigin)
+  -- if $closure_receiver_forbidden(S, porigin) \/ $closure_receiver_free_ancestry(S, porigin)
 def $closure_scope_row_valid(S, pclosurescope) = true
   -- if n = pclosurescope.OBJECT
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
   -- if $closure_source_class(S, porigin) = (pclosurescope.LEXICAL)
+  -- if $closure_scope_creation_valid(S, porigin, pclosurescope)
   -- if ~$closure_receiver_forbidden(S, porigin)
+  -- if ~$closure_static_method_owner(S, porigin)
   -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc_lexical)
   -- if $class_at(S.CLASSES, pclosurescope.CALLED) = (pclassdesc_called)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_called.NAME)) = (pclosurescope.CALLED)
@@ -444,7 +503,6 @@ def $closure_scope_owners_valid(S, pcpath, porigin :: porigin_tail*) = true
   -- if $closure_scope_owners_valid(S, pcpath, porigin_tail*)
 def $closure_scope_owners_valid(S, pcpath, porigin*) = false -- otherwise
 
-dec $closure_creation_scope(pstate, porigin) : bool
 def $closure_creation_scope(S, porigin) = ($closure_creation_owners($all_functions(S), porigin) = eps)
   -- if S.CURRENT = eps
 def $closure_creation_scope(S, porigin) = true
@@ -457,6 +515,28 @@ def $closure_creation_scope(S, porigin) = true
   -- if $closure_scope_owners_valid(S, pfunction.BODY, porigin_owner*)
 def $closure_creation_scope(S, porigin) = false -- otherwise
 
+dec $closure_capture_scope_valid(pstate, pfunction, nat) : bool
+def $closure_capture_scope_valid(S, pfunction, n) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $call_current_valid(S)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_lexical)
+  -- if pcallcontext.CALLED_CLASS = (porigin_called)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+  -- if pclosurescope.LEXICAL = porigin_lexical
+  -- if pclosurescope.CALLED = porigin_called
+  -- if pclosurescope.RECEIVER = $closure_bound_receiver(S, pfunction)
+  -- if pclosurescope.CREATION = $closure_creation_stamp(S, pfunction)
+def $closure_capture_scope_valid(S, pfunction, n) = true
+  -- if S.CURRENT = eps
+  -- if $call_current_valid(S)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+def $closure_capture_scope_valid(S, pfunction, n) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $call_current_valid(S)
+  -- if pcallcontext.LEXICAL_CLASS = eps \/ pcallcontext.CALLED_CLASS = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+def $closure_capture_scope_valid(S, pfunction, n) = false -- otherwise
+
 dec $closure_capture_valid(pstate, nat, nat) : bool
 def $closure_capture_valid(S, n, n_slot) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
@@ -466,6 +546,7 @@ def $closure_capture_valid(S, n, n_slot) = true
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if $closure_capture_prefix(S, pitem*, $closure_lexicals(pfunction.CODE.EXPRESSIONS), n_slot)
   -- if $closure_creation_scope(S, porigin)
+  -- if $closure_capture_scope_valid(S, pfunction, n)
 def $closure_capture_valid(S, n, n_slot) = false -- otherwise
 
 def $call_task_valid(S, CLOSURE_CAPTURE n n_slot) = $closure_capture_valid(S, n, n_slot)

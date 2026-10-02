@@ -115,7 +115,7 @@ CASES = {
         'source': ('<?php class A {public static function f(){echo static::class;}} '
                    'class B extends A {} $c=A::f(...); $c();'),
         'stage': ('S.RESULT = KNOWN (POBJECT n) '
-                  '-- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested '
+                  '-- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested eps '
                   '-- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)'),
         'checks': [
             '$closure_scope_row_valid(S, pclosurescope)',
@@ -128,7 +128,7 @@ CASES = {
                    'class B extends A {public function f(){echo "B";}} '
                    '$c=(new B)->f(...); $c();'),
         'stage': ('S.RESULT = KNOWN (POBJECT n) '
-                  '-- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested '
+                  '-- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested eps '
                   '-- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)'),
         'checks': [
             '$closure_scope_row_valid(S, pclosurescope)',
@@ -136,7 +136,7 @@ CASES = {
             '$class_at(S.CLASSES, porigin_a) = (pclassdesc_a)',
             '$method_named(pclassdesc_a.METHODS, $ptascii("f")) = (pmethoddesc_a)',
             '~$closure_scope_row_valid(S[.OBJECTS = $object_set(S.OBJECTS, n, '
-            'METHODCLOSURE pmethoddesc_a.FUNCTION.ORIGIN porigin_site porigin_requested)], '
+            'METHODCLOSURE pmethoddesc_a.FUNCTION.ORIGIN porigin_site porigin_requested eps)], '
             'pclosurescope[.LEXICAL = pmethoddesc_a.OWNER])',
         ],
     },
@@ -170,7 +170,7 @@ CASES = {
         'source': ('<?php class A {public static function f(){echo "F";}} '
                    '$c=(new A)::f(...); $c();'),
         'stage': ('S.RESULT = KNOWN (POBJECT n_closure) '
-                  '-- if S.OBJECTS[n_closure] = METHODCLOSURE porigin_method porigin_site porigin_requested '
+                  '-- if S.OBJECTS[n_closure] = METHODCLOSURE porigin_method porigin_site porigin_requested eps '
                   '-- if $closure_scope_at(S.CLOSURESCOPES, n_closure) = (pclosurescope)'),
         'checks': [
             '$closure_scope_row_valid(S, pclosurescope)',

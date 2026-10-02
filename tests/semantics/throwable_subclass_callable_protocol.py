@@ -24,7 +24,7 @@ STAGES = [
          '$closure_live_object_valid(S,n)',
          '$closure_callable(S,n)',
          '$node_children(S,HOBJECT n) = [HOBJECT n_receiver]',
-         '~$closure_scope_complete(S[.CLOSURESCOPES = [{OBJECT n, LEXICAL PORIGIN 0 eps, CALLED PORIGIN 0 eps, RECEIVER eps}]], S.ALLOCATIONS)',
+         '~$closure_scope_complete(S[.CLOSURESCOPES = [{OBJECT n, LEXICAL PORIGIN 0 eps, CALLED PORIGIN 0 eps, RECEIVER eps, CREATION eps}]], S.ALLOCATIONS)',
          '~$getter_capture_live(S[.OBJECTS = $object_set(S.OBJECTS,n,GETTERCLOSURE n_receiver GET_MESSAGE text_base porigin_site)],n)',
          '~$getter_capture_live(S[.OBJECTS = $object_set(S.OBJECTS,n,GETTERCLOSURE 9999 GET_SEVERITY text_base porigin_site)],n)',
          '~$getter_capture_live(S[.OBJECTS = $object_set(S.OBJECTS,n,GETTERCLOSURE n_receiver GET_SEVERITY text_base porigin_class)],n)',

@@ -26,7 +26,7 @@ def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if $ptlc(preqbytes) = $ptascii("closure")
-  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
 
 dec $invoke_capture_source(pstate, porigin) : bool
 def $invoke_capture_source(S, porigin_site) = true
