@@ -293,7 +293,7 @@ def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCou
   -- if |pconfigcall.SENT| = $config_required(pconfigcall.KIND)
   -- if $config_missing(pconfigcall.SENT, 0) = (n)
 ;; Mutation occurs only after every source argument has been bound and converted.
-def $config_receive(S, pconfigcall) = S_value[.TODO = ptask_tail*][.FILEINCLUDEPATH = (n_new*)][.RESULT = KNOWN (PSTRING n_old*)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $config_receive(S, pconfigcall) = S_value[.TODO = ptask_tail*][.FILEINCLUDEPATH = (n_new*)][.RESULT = KNOWN (PSTRING $c_string(n_old*))][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_SET_INCLUDE_PATH
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
   -- if S.FILEINCLUDEPATH = (n_old*)
@@ -369,7 +369,7 @@ def $config_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.FILEINCLUDEPATH = 
   -- if S_value = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN (PSTRING n_new*)
-  -- if n_new* =/= eps
+  -- if $c_string(n_new*) =/= eps
   -- if S.TODO = ptask :: ptask_tail*
 def $config_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
@@ -385,7 +385,8 @@ def $config_receive(S, pconfigcall) = S_value[.TODO = ptask_tail*][.RESULT = KNO
   -- if ptypeconversion =/= TYPEREJECT
   -- if S_value = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
   -- if S_value.COMPLETION = NORMAL
-  -- if S_value.RESULT = KNOWN (PSTRING eps)
+  -- if S_value.RESULT = KNOWN (PSTRING n_new*)
+  -- if $c_string(n_new*) = eps
   -- if S.TODO = ptask :: ptask_tail*
 def $config_receive(S, pconfigcall) = $dir_request_start(S_value, pconfigcall, n_requested*)
   -- if pconfigcall.KIND = INTRINSIC_CHDIR
@@ -467,7 +468,7 @@ rule PhpStep/config-string-result: S ~> $dir_request_start_with_conversion(S_rec
   -- if pdirconversion = {NONCE n_conversion, CALLSITE pconfigcall.SITE, CALLLINE pconfigcall.LINE, OBJECT n_object, RESULT n_requested*, SELECTION pconfigcall.SELECTION, OWNERDEPTH n_owner}
   -- if S_record = S[.DIRCONVSEQ = $(n_conversion + 1)][.DIRCONVERSIONS = S.DIRCONVERSIONS ++ [pdirconversion]][.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
 ;; Zend reads the old INI value after the callback, including its nested mutations.
-rule PhpStep/config-set-string-result: S ~> S[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*][.FILEINCLUDEPATH = (n_requested*)][.RESULT = KNOWN (PSTRING n_old*)][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/config-set-string-result: S ~> S[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*][.FILEINCLUDEPATH = (n_requested*)][.RESULT = KNOWN (PSTRING $c_string(n_old*))][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_SET_INCLUDE_PATH
   -- if S.ORIGIN = (porigin_child)
