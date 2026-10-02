@@ -28,9 +28,9 @@ records the later CompileError classification. [Reached eval execution](docs/sem
 and [finite-provider include/require](docs/semantics/INCLUDE-SOURCES.md) use checked
 machine pauses. A finite version-2 provider supports checked CWD and
 `include_path` changes. [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
-admits `directory:` through computed and owned callable forms. The private
+admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
-has separately accepted source and paused-state checks; installation remains pending.
+preserves captured array arguments and has separate source and paused-state checks.
 Broader path, stream and INI behavior remain pending.
 
 All required non-system inputs are local and pinned. See

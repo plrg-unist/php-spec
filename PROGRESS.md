@@ -81,10 +81,11 @@ The independent private lanes currently include:
 
 - Include/configuration: named Stringable `chdir` is installed at **09907c150**
   on **1f354b61/1302**, with author source17/four185 and independent source2/two89.
-  The unpack-only current **63cd23b84** on **294357f9** passes author source23/six208,
-  retained source3/four38 (six Unsupported controls) and named source3/four185;
-  independent source2/two139 passes with the original active fixture failure
-  preserved and source2 reused once. Installation remains pending.
+  Array-unpacked configuration calls are installed at **7423fc162** on
+  **d2764798/1302**: author source23/six208, retained source3/four38 (six
+  Unsupported controls) and named source3/four185. Independent fresh source2/two139
+  passes; earlier private **63cd23b84** evidence and the original active fixture
+  failure retain separate receipts.
   Stringable SET/Restore and INI-option remain reviewed private increments.
   PIPE source24/returned2, callback210 plus48 Unsupported guards and directory158
   remain private; real CONFIG `__invoke` wrapper pipes remain Unsupported.
