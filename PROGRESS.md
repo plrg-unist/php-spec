@@ -86,13 +86,18 @@ The independent private lanes currently include:
   Unsupported controls) and named source3/four185. Independent fresh source2/two139
   passes; earlier private **63cd23b84** evidence and the original active fixture
   failure retain separate receipts.
-  Stringable SET/Restore and INI-option remain reviewed private increments.
+  Stringable SET is accepted privately at **3e3608369** on **d7d59e41/1302**:
+  author source24/four107, shared source3/directory1/81 and six separate
+  Unsupported checks; independent fresh source2/owner79/finally50. Old-value
+  witnesses are NUL-free; installation and INI05 C-prefix repairs remain pending.
+  Restore and INI-option remain reviewed private increments.
   PIPE source24/returned2, callback210 plus48 Unsupported guards and directory158
   remain private; real CONFIG `__invoke` wrapper pipes remain Unsupported.
   Earlier c8/calls-base named and copied-c8 renderer/content bridges keep their
   separate receipts. Wider OS/INI behavior and lifecycle remain open.
   [Named ledger](coverage/semantics/include-named-current-review.json)
   · [unpack ledger](coverage/semantics/include-unpacked-current-review.json)
+  · [SET ledger](coverage/semantics/include-set-current-review.json)
   · [pipe ledger](.tools/include-config-pipe-string-current/coverage/semantics/include-config-pipe-string-review.json).
 - Calls: rebound capture, called-class and receiver-creation116 are installed at
   **c536d1f74**, with source9/finite17 stages/541 maintained assertions accepted

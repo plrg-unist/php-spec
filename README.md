@@ -31,6 +31,8 @@ machine pauses. A finite version-2 provider supports checked CWD and
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
 preserves captured array arguments and has separate source and paused-state checks.
+[Stringable SET](coverage/semantics/include-set-current-review.json) has bounded
+private source and callback ownership/cleanup checks; installation is pending.
 Broader path, stream and INI behavior remain pending.
 
 All required non-system inputs are local and pinned. See
