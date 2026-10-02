@@ -82,13 +82,20 @@ remain open.
 
 The installed Stringable increment runs a weak positional operand's checked
 `__toString` callback before requesting a directory fact, using the CWD after
-the callback. Strict or non-stringable operands raise `TypeError` before the
-callback; returned NUL bytes raise `ValueError` before an OS request. That
-error's inner `chdir` frame contains the converted string, while an explicit
-`Closure->__invoke` frame retains the original object. Callback throws retain
-the declaring class and original method spelling, the intrinsic and explicit
-invocation frames across nested calls.
+the callback. Strict direct/first-class calls and non-stringable operands raise
+`TypeError` before the callback; returned NUL bytes raise `ValueError` before
+an OS request. That error's inner `chdir` frame contains the converted string,
+while an explicit `Closure->__invoke` frame retains the original object.
+Callback throws retain the declaring class and original method spelling,
+the intrinsic and explicit invocation frames across nested calls.
 The [Stringable ledger](../../coverage/semantics/include-stringable-chdir-review.json)
 separates the projected full catalogue/protocol/retained gates from three installed
 sources and one directory stage/52 assertions.
-Named or unpacked object operands and broader OS/INI behavior remain open.
+The private named increment admits exactly `directory:` for the callback and
+directory pause, including computed and owned callable forms. Unknown,
+duplicate and count errors precede conversion; explicit `Closure->__invoke`
+keeps weak conversion from a strict caller. Its
+[current ledger](../../coverage/semantics/include-named-current-review.json)
+separates fresh calls-base author source17/four185 and independent source2/two89
+from older c8 evidence and actual installation. Array-unpacked operands and
+broader OS/INI behavior remain open.

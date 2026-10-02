@@ -79,15 +79,16 @@ readonly/asymmetric set access and scoped defaults remain open.
 
 The independent private lanes currently include:
 
-- Include/configuration: named-only private **7868add84** accepts author
-  source17/four185 and independent source2/two89 on **05db9b78/1293**, with
-  reviewed docs **524c9b18a**. Fresh accepted-capture projection and the five
-  separate installations remain pending. Array unpack, Stringable SET/Restore
+- Include/configuration: named-only projection **a0b41f499** over installed
+  capture code accepts author source17/four185 and independent source2/two89
+  on **1f354b61/1302**. Earlier c8 named
+  **7868add84**/docs **524c9b18a** keep their original source/state identities.
+  All five installations remain pending. Array unpack, Stringable SET/Restore
   and INI-option retain reviewed private checkpoints. PIPE source24/returned2,
   callback210 plus48 Unsupported guards and directory158 remain private;
   real CONFIG `__invoke` wrapper pipes remain Unsupported. The copied-c8
-  renderer/content bridge is separate, uninstalled evidence.
-  [Named ledger](.tools/include-dev-12-current/coverage/semantics/include-named-current-review.json)
+  renderer/content bridge remains separate, uninstalled evidence.
+  [Named ledger](coverage/semantics/include-named-current-review.json)
   · [pipe ledger](.tools/include-config-pipe-string-current/coverage/semantics/include-config-pipe-string-review.json).
 - Calls: rebound capture, called-class and receiver-creation116 are installed at
   **c536d1f74**, with source9/finite17 stages/541 maintained assertions accepted
