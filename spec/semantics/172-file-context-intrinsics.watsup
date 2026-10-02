@@ -16,6 +16,7 @@ def $config_kind(pintrinsic) = false -- otherwise
 dec $config_invoke_valid(pstate, pconfigcall) : bool
 dec $config_strict(pstate, pconfigcall) : bool
 dec $config_destination(pintrinsic, preqbytes?, nat) : nat?
+dec $config_string_source(pstate, pconfigcall) : (porigin, int)?
 def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
   -- if $(|pcpath_child| >= 3)
   -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
@@ -23,12 +24,26 @@ def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
   -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0)
   -- if $intrinsic_count(S, PORIGIN n_unit pcpath_parent) = (1)
   -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
+def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
+  -- if $(|pcpath_child| >= 3)
+  -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
+  -- if pcpath_child[$nabs($(|pcpath_child| - 2))] = PCINDEX n_index
+  -- if $intrinsic_argument(S, PORIGIN n_unit pcpath_parent, n_index) = ((expression, true, eps, PORIGIN n_unit pcpath_child, z_child))
+  -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
+def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
+  -- if $(|pcpath_child| >= 3)
+  -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
+  -- if pcpath_child[$nabs($(|pcpath_child| - 2))] = PCINDEX n_index
+  -- if $intrinsic_argument(S, PORIGIN n_unit pcpath_parent, n_index) = ((expression, false, preqbytes?, PORIGIN n_unit pcpath_child, z_child))
+  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0)
+  -- if $exit_callable_arguments(S, PORIGIN n_unit pcpath_parent) = PCALLARGUMENTS phpType7* n_field
+  -- if $call_unpack_present(phpType7*)
+  -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
 def $config_string_child_site(S, porigin_site, z) = false -- otherwise
 def $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = true
   -- if pconfigcall.KIND = INTRINSIC_CHDIR
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
-  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, preqbytes?, porigin_child, z_child))
-  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0)
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
   -- if pconfigcall.LINE = z_call
   -- if $config_string_child_site(S, porigin_child, z_call)
   -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
@@ -57,12 +72,12 @@ def $config_string_trace_context(S, pcallcontext) = true
 def $config_string_trace_context(S, pcallcontext) = false -- otherwise
 def $config_dynamic_selection(S, pintrinsic, porigin) = ($config_kind(pintrinsic) /\ $dynamic_site(S, (porigin)) /\ $dynamic_fixed_name(S, porigin) = eps)
 def $config_pipe_selection(S, pintrinsic, porigin) = ($config_kind(pintrinsic) /\ $pipe_site(S, porigin) /\ $pipe_fixed_name(S, porigin) = eps)
-def $intrinsic_prepare(S, pintrinsic, z, n_owner?) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, SELECTION eps, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $intrinsic_prepare(S, pintrinsic, z, n_owner?) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, SELECTION eps, LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_kind(pintrinsic)
   -- if S.ORIGIN = (porigin)
-def $intrinsic_pipe(S, pintrinsic, pvalue, porigin, z, n_owner?) = S[.TODO = (CONFIG_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER n_owner?, SELECTION eps, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $intrinsic_pipe(S, pintrinsic, pvalue, porigin, z, n_owner?) = S[.TODO = (CONFIG_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER n_owner?, SELECTION eps, LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_kind(pintrinsic)
-def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, eps) = eps
   -- if $intrinsic_lookup(preqbytes_lookup, eps) = (pintrinsic)
@@ -73,7 +88,7 @@ def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_ca
   -- if n_nonce = S.SELECTSEQ
   -- if n_depth = |S.FRAMES|
   -- if pselectedcall = {NONCE n_nonce, SITE porigin, KIND pintrinsic, ORIGINAL preqbytes_original, LOOKUP preqbytes_lookup, DEPTH n_depth, LINE z_call}
-def $pipe_name(S, preqbytes_original, preqbytes_lookup, eps, pvalue, porigin, z_send, z_lookup, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $pipe_name(S, preqbytes_original, preqbytes_lookup, eps, pvalue, porigin, z_send, z_lookup, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, eps) = eps
   -- if $intrinsic_lookup(preqbytes_lookup, eps) = (pintrinsic)
@@ -86,6 +101,7 @@ def $pipe_name(S, preqbytes_original, preqbytes_lookup, eps, pvalue, porigin, z_
   -- if pselectedcall = {NONCE n_nonce, SITE porigin, KIND pintrinsic, ORIGINAL preqbytes_original, LOOKUP preqbytes_lookup, DEPTH n_depth, LINE z_call}
 
 dec $config_nodes(pconfigcall) : pnode*
+;; PACKS are historical capture certificates; only real argument/receiver owners root values.
 def $config_nodes(pconfigcall) = $exit_owner_nodes(pconfigcall.OWNER) ++ $named_slots_roots(pconfigcall.SENT)
 def $task_nodes(CONFIG_ARGS pconfigcall) = $config_nodes(pconfigcall)
 def $task_nodes(CONFIG_SEND pconfigcall) = $config_nodes(pconfigcall)
@@ -142,22 +158,40 @@ rule PhpStep/config-arguments-done: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall) :
   -- if S.TODO = (CONFIG_ARGS pconfigcall) :: ptask_tail*
   -- if $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)
 
-dec $config_unpack_prefix(pstate, pconfigcall, pentry*) : pconfigcall?
-def $config_unpack_prefix(S, pconfigcall, eps) = (pconfigcall)
-def $config_unpack_prefix(S, pconfigcall, (ENTRY pkey pitem) :: pentry*) = $config_unpack_prefix(S, $config_sent(pconfigcall, KNOWN $entry_value(S, pitem), preqbytes?), pentry*)
+dec $config_unpack_valid(pstate, pconfigcall, poperand, nat) : bool
+dec $config_pack_capture(pstate, pentry*) : pentry*
+def $config_pack_capture(S, eps) = eps
+def $config_pack_capture(S, (ENTRY pkey pitem) :: pentry*) = (ENTRY pkey (DIRECT $entry_value(S, pitem))) :: $config_pack_capture(S, pentry*)
+dec $config_pack_named(pentry*) : bool
+def $config_pack_named(eps) = false
+def $config_pack_named((ENTRY (KSTRING preqbytes) pitem) :: pentry*) = true
+def $config_pack_named((ENTRY (KINT z) pitem) :: pentry*) = $config_pack_named(pentry*)
+dec $config_replay_send(pconfigcall, poperand, preqbytes?, bool) : pconfigcall?
+def $config_replay_send(pconfigcall, poperand, preqbytes?, b_order) = ($config_sent(pconfigcall, poperand, preqbytes?))
+  -- if ~(b_order /\ preqbytes? = eps)
+  -- if $config_destination(pconfigcall.KIND, preqbytes?, |pconfigcall.SENT|) = (n)
+  -- if $named_slot_at(pconfigcall.SENT, n) = NAMED_HOLE
+def $config_replay_send(pconfigcall, poperand, preqbytes?, b_order) = eps -- otherwise
+dec $config_pack_prefix(pconfigcall, pentry*, bool) : pconfigcall?
+def $config_pack_prefix(pconfigcall, eps, b_order) = (pconfigcall)
+def $config_pack_prefix(pconfigcall, (ENTRY pkey (DIRECT pvalue)) :: pentry*, b_order) = $config_pack_prefix(pconfigcall_next, pentry*, (b_order \/ preqbytes? =/= eps))
   -- if preqbytes? = $exit_key_name(pkey)
-  -- if S_checked = $config_send_check(S, pconfigcall, preqbytes?, pconfigcall.LINE)
-  -- if S_checked.COMPLETION = NORMAL
-def $config_unpack_prefix(S, pconfigcall, pentry*) = eps -- otherwise
+  -- if $config_replay_send(pconfigcall, KNOWN pvalue, preqbytes?, b_order) = (pconfigcall_next)
+def $config_pack_prefix(pconfigcall, pentry*, b_order) = eps -- otherwise
+dec $config_pack_last(pconfigcall) : pconfigpack?
+def $config_pack_last(pconfigcall) = (pconfigcall.PACKS[$nabs($(|pconfigcall.PACKS| - 1))])
+  -- if pconfigcall.PACKS =/= eps
+def $config_pack_last(pconfigcall) = eps -- otherwise
 rule PhpStep/config-unpack-start: S ~> S[.TODO = [$at_task((porigin), EVAL expression), CONFIG_UNPACK_PREP pconfigcall] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_ARGS pconfigcall) :: ptask_tail*
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
-rule PhpStep/config-unpack-array: S ~> S_value[.TODO = (CONFIG_UNPACK_NEXT pconfigcall S_value.RESULT 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/config-unpack-array: S ~> S_value[.TODO = (CONFIG_UNPACK_NEXT pconfigcall[.PACKS = pconfigcall.PACKS ++ [pconfigpack]] S_value.RESULT 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
   -- if S_value = $resolve_at(S, S.RESULT, z)
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN (PARRAY n)
+  -- if pconfigpack = {INDEX pconfigcall.INDEX, SITE porigin, LINE z, ARRAY n, ITEMS $config_pack_capture(S_value, S_value.ARRAYS[n].ITEMS)}
 rule PhpStep/config-unpack-type: S ~> $throw_scalar(S_value, "TypeError", $ptascii("Only arrays and Traversables can be unpacked, ") ++ $noctor_unpack_type_bytes(S_value, pvalue) ++ $ptascii(" given"), z)
   -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
@@ -170,30 +204,31 @@ rule PhpStep/config-unpack-abrupt: S ~> S_value
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
   -- if S_value = $resolve_at(S, S.RESULT, z)
   -- if S_value.COMPLETION =/= NORMAL
-rule PhpStep/config-unpack-item: S ~> S_checked[.TODO = (CONFIG_UNPACK_NEXT pconfigcall poperand $(n_cursor + 1)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/config-unpack-item: S ~> S_checked[.TODO = (CONFIG_UNPACK_NEXT ($config_sent(pconfigcall, KNOWN pvalue, preqbytes_key?)) poperand $(n_cursor + 1)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_UNPACK_NEXT pconfigcall poperand n_cursor) :: ptask_tail*
-  -- if poperand = KNOWN (PARRAY n)
-  -- if $(n_cursor < |S.ARRAYS[n].ITEMS|)
-  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY pkey pitem
+  -- if $config_unpack_valid(S, pconfigcall, poperand, n_cursor)
+  -- if $config_pack_last(pconfigcall) = (pconfigpack)
+  -- if $(n_cursor < |pconfigpack.ITEMS|)
+  -- if pconfigpack.ITEMS[n_cursor] = ENTRY pkey (DIRECT pvalue)
   -- if preqbytes_key? = $exit_key_name(pkey)
-  -- if $config_unpack_prefix(S, pconfigcall, S.ARRAYS[n].ITEMS[0:n_cursor]) = (pconfigcall_prefix)
-  -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
-  -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes_key?, z)
+  -- if b_order = $config_pack_named(pconfigpack.ITEMS[0:n_cursor])
+  -- if S_checked = $config_send_check(S, pconfigcall[.NAMED = b_order], preqbytes_key?, pconfigpack.LINE)
   -- if S_checked.COMPLETION = NORMAL
 rule PhpStep/config-unpack-item-error: S ~> S_checked
   -- if S.TODO = (CONFIG_UNPACK_NEXT pconfigcall poperand n_cursor) :: ptask_tail*
-  -- if poperand = KNOWN (PARRAY n)
-  -- if $(n_cursor < |S.ARRAYS[n].ITEMS|)
-  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY pkey pitem
+  -- if $config_unpack_valid(S, pconfigcall, poperand, n_cursor)
+  -- if $config_pack_last(pconfigcall) = (pconfigpack)
+  -- if $(n_cursor < |pconfigpack.ITEMS|)
+  -- if pconfigpack.ITEMS[n_cursor] = ENTRY pkey (DIRECT pvalue)
   -- if preqbytes_key? = $exit_key_name(pkey)
-  -- if $config_unpack_prefix(S, pconfigcall, S.ARRAYS[n].ITEMS[0:n_cursor]) = (pconfigcall_prefix)
-  -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
-  -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes_key?, z)
+  -- if b_order = $config_pack_named(pconfigpack.ITEMS[0:n_cursor])
+  -- if S_checked = $config_send_check(S, pconfigcall[.NAMED = b_order], preqbytes_key?, pconfigpack.LINE)
   -- if S_checked.COMPLETION =/= NORMAL
-rule PhpStep/config-unpack-done: S ~> S[.TODO = (CONFIG_ARGS pconfigcall_prefix[.INDEX = $(pconfigcall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = (CONFIG_UNPACK_NEXT pconfigcall (KNOWN (PARRAY n)) n_cursor) :: ptask_tail*
-  -- if n_cursor = |S.ARRAYS[n].ITEMS|
-  -- if $config_unpack_prefix(S, pconfigcall, S.ARRAYS[n].ITEMS) = (pconfigcall_prefix)
+rule PhpStep/config-unpack-done: S ~> S[.TODO = (CONFIG_ARGS pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_UNPACK_NEXT pconfigcall poperand n_cursor) :: ptask_tail*
+  -- if $config_unpack_valid(S, pconfigcall, poperand, n_cursor)
+  -- if $config_pack_last(pconfigcall) = (pconfigpack)
+  -- if n_cursor = |pconfigpack.ITEMS|
 
 dec $config_required(pintrinsic) : nat
 def $config_required(INTRINSIC_SET_INCLUDE_PATH) = 1
@@ -386,8 +421,7 @@ def $config_string_launch(S, pconfigcall) = true
   -- if S.FILEINCLUDEPATH =/= eps
   -- if S.FILECWD =/= eps
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
-  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, preqbytes?, porigin_child, z_child))
-  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0)
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
 def $config_string_launch(S, pconfigcall) = false -- otherwise
 rule PhpStep/config-stringable-call: S ~> $user_string_begin(S[.ORIGIN = (porigin_child)], n_object, porigin_child, pconfigcall.LINE, CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child pconfigcall.LINE, ptask_tail*)
@@ -395,8 +429,7 @@ rule PhpStep/config-stringable-call: S ~> $user_string_begin(S[.ORIGIN = (porigi
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $config_string_launch(S, pconfigcall)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
-  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, preqbytes?, porigin_child, z_child))
-  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = (0)
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
 rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
@@ -544,8 +577,54 @@ def $config_source_prefix(pintrinsic, (NArg phpType3 expression (BOOLEAN false) 
   -- if $named_slot_at(pnamedslot*, n) = NAMED_HOLE
   -- if ~(b /\ preqbytes? = eps)
 def $config_source_prefix(pintrinsic, phpType7*, pnamedslot*, b) = eps -- otherwise
+dec $config_pack_items_valid(pentry*) : bool
+def $config_pack_items_valid(eps) = true
+def $config_pack_items_valid((ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($entry_lookup(pentry*, pkey) = eps /\ $config_pack_items_valid(pentry*))
+def $config_pack_items_valid(pentry*) = false -- otherwise
+dec $config_pack_source_valid(pstate, pconfigcall, pconfigpack) : bool
+def $config_pack_source_valid(S, pconfigcall, pconfigpack) = true
+  -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigpack.INDEX) = ((expression, true, eps, pconfigpack.SITE, pconfigpack.LINE))
+  -- if $(pconfigpack.ARRAY < |S.ARRAYS|)
+  -- if $config_pack_items_valid(pconfigpack.ITEMS)
+def $config_pack_source_valid(S, pconfigcall, pconfigpack) = false -- otherwise
+;; Completed ARRAY identities are historical: never reread their possibly retired contents.
+dec $config_source_replay(pstate, pconfigcall, pconfigcall, pconfigpack*) : (pconfigcall, pconfigpack*)?
+def $config_source_replay(S, pconfigcall, pconfigcall_prefix, pconfigpack*) = ((pconfigcall_prefix, pconfigpack*))
+  -- if pconfigcall_prefix.INDEX = pconfigcall.INDEX
+def $config_source_replay(S, pconfigcall, pconfigcall_prefix, pconfigpack*) = $config_source_replay(S, pconfigcall, pconfigcall_next[.INDEX = $(pconfigcall_prefix.INDEX + 1)], pconfigpack*)
+  -- if $(pconfigcall_prefix.INDEX < pconfigcall.INDEX)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall_prefix.INDEX) = ((expression, false, preqbytes?, porigin, z))
+  -- if $config_destination(pconfigcall.KIND, preqbytes?, |pconfigcall_prefix.SENT|) = (n)
+  -- if $named_slot_at(pconfigcall.SENT, n) = NAMED_SENT poperand
+  -- if $config_replay_send(pconfigcall_prefix, poperand, preqbytes?, pconfigcall_prefix.NAMED) = (pconfigcall_next)
+def $config_source_replay(S, pconfigcall, pconfigcall_prefix, pconfigpack :: pconfigpack_tail*) = $config_source_replay(S, pconfigcall, pconfigcall_next[.INDEX = $(pconfigcall_prefix.INDEX + 1)], pconfigpack_tail*)
+  -- if $(pconfigcall_prefix.INDEX < pconfigcall.INDEX)
+  -- if pconfigpack.INDEX = pconfigcall_prefix.INDEX
+  -- if $config_pack_source_valid(S, pconfigcall, pconfigpack)
+  -- if $config_pack_prefix(pconfigcall_prefix, pconfigpack.ITEMS, false) = (pconfigcall_next)
+def $config_source_replay(S, pconfigcall, pconfigcall_prefix, pconfigpack*) = eps -- otherwise
+dec $config_pack_sites(pentry*, porigin, int) : (porigin, int)*
+def $config_pack_sites(eps, porigin, z) = eps
+def $config_pack_sites(pentry :: pentry_tail*, porigin, z) = (porigin, z) :: $config_pack_sites(pentry_tail*, porigin, z)
+dec $config_source_sites(pstate, pconfigcall, nat, pconfigpack*) : ((porigin, int)*)?
+def $config_source_sites(S, pconfigcall, n_index, eps) = (eps)
+  -- if n_index = pconfigcall.INDEX
+def $config_source_sites(S, pconfigcall, n_index, pconfigpack*) = ((porigin, z) :: (porigin_tail, z_tail)*)
+  -- if $(n_index < pconfigcall.INDEX)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, n_index) = ((expression, false, preqbytes?, porigin, z))
+  -- if $config_source_sites(S, pconfigcall, $(n_index + 1), pconfigpack*) = ((porigin_tail, z_tail)*)
+def $config_source_sites(S, pconfigcall, n_index, pconfigpack :: pconfigpack_tail*) = ($config_pack_sites(pconfigpack.ITEMS, pconfigpack.SITE, pconfigpack.LINE) ++ (porigin_tail, z_tail)*)
+  -- if $(n_index < pconfigcall.INDEX)
+  -- if pconfigpack.INDEX = n_index
+  -- if $config_pack_source_valid(S, pconfigcall, pconfigpack)
+  -- if $config_source_sites(S, pconfigcall, $(n_index + 1), pconfigpack_tail*) = ((porigin_tail, z_tail)*)
+def $config_source_sites(S, pconfigcall, n_index, pconfigpack*) = eps -- otherwise
+def $config_string_source(S, pconfigcall) = ((porigin, z))
+  -- if $config_source_sites(S, pconfigcall, 0, pconfigcall.PACKS) = ([(porigin, z)])
+def $config_string_source(S, pconfigcall) = eps -- otherwise
 dec $config_sent_shape(pstate, pconfigcall) : bool
 def $config_sent_shape(S, pconfigcall) = true
+  -- if pconfigcall.PACKS = eps
   -- if $exit_callable_arguments(S, pconfigcall.SITE) = PCALLARGUMENTS phpType7* n_field
   -- if $(pconfigcall.INDEX <= |phpType7*|)
   -- if phpType7_prefix* = phpType7*[0:pconfigcall.INDEX]
@@ -553,12 +632,13 @@ def $config_sent_shape(S, pconfigcall) = true
   -- if $config_source_prefix(pconfigcall.KIND, phpType7_prefix*, eps, false) = ((pnamedslot*, pconfigcall.NAMED))
   -- if $getclass_slot_shape(pconfigcall.SENT) = $getclass_slot_shape(pnamedslot*)
 def $config_sent_shape(S, pconfigcall) = true
-  -- if $exit_callable_arguments(S, pconfigcall.SITE) = PCALLARGUMENTS phpType7* n_field
-  -- if $(pconfigcall.INDEX <= |phpType7*|)
-  -- if $call_unpack_present(phpType7*[0:pconfigcall.INDEX])
-  -- if (~$exit_prefix_named(phpType7*[0:pconfigcall.INDEX]) \/ pconfigcall.NAMED)
+  -- if pconfigcall.PACKS =/= eps
+  -- if $config_source_replay(S, pconfigcall, pconfigcall[.INDEX = 0][.SENT = eps][.NAMED = false][.PACKS = eps], pconfigcall.PACKS) = ((pconfigcall_prefix, eps))
+  -- if pconfigcall_prefix.SENT = pconfigcall.SENT
+  -- if pconfigcall_prefix.NAMED = pconfigcall.NAMED
 def $config_sent_shape(S, pconfigcall) = true
   -- if $pipe_site(S, pconfigcall.SITE)
+  -- if pconfigcall.PACKS = eps
   -- if pconfigcall.INDEX = 1
   -- if |pconfigcall.SENT| = 1
   -- if ~pconfigcall.NAMED
@@ -587,15 +667,18 @@ def $call_task_valid(S, CONFIG_UNPACK_PREP pconfigcall) = $config_pending_valid(
 def $config_invoke_valid(S, pconfigcall) = ($config_call_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall) /\ $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX))
 def $call_task_valid(S, CONFIG_INVOKE pconfigcall) = $config_invoke_valid(S, pconfigcall)
 def $call_task_valid(S, CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) = $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
-dec $config_unpack_valid(pstate, pconfigcall, poperand, nat) : bool
 def $config_unpack_valid(S, pconfigcall, KNOWN (PARRAY n), n_cursor) = true
   -- if $config_call_valid(S, pconfigcall)
-  -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
-  -- if $(n < |S.ARRAYS|)
+  -- if $config_source_replay(S, pconfigcall, pconfigcall[.INDEX = 0][.SENT = eps][.NAMED = false][.PACKS = eps], pconfigcall.PACKS) = ((pconfigcall_prefix, [pconfigpack]))
+  -- if pconfigpack.INDEX = pconfigcall.INDEX
+  -- if $config_pack_source_valid(S, pconfigcall, pconfigpack)
+  -- if pconfigpack.ARRAY = n
   -- if (HARRAY n) <- S.ALLOCATIONS
-  -- if $(n_cursor <= |S.ARRAYS[n].ITEMS|)
-  -- if $config_sent_shape(S, pconfigcall)
-  -- if $config_unpack_prefix(S, pconfigcall, S.ARRAYS[n].ITEMS[0:n_cursor]) = (pconfigcall_prefix)
+  -- if pconfigpack.ITEMS = $config_pack_capture(S, S.ARRAYS[n].ITEMS)
+  -- if $(n_cursor <= |pconfigpack.ITEMS|)
+  -- if $config_pack_prefix(pconfigcall_prefix, pconfigpack.ITEMS[0:n_cursor], false) = (pconfigcall_next)
+  -- if pconfigcall_next.SENT = pconfigcall.SENT
+  -- if pconfigcall_next.NAMED = pconfigcall.NAMED
 def $config_unpack_valid(S, pconfigcall, poperand, n_cursor) = false -- otherwise
 def $call_task_valid(S, CONFIG_UNPACK_NEXT pconfigcall poperand n_cursor) = $config_unpack_valid(S, pconfigcall, poperand, n_cursor)
 def $config_result_valid(S) = $config_result_valid(S[.ORIGIN = (porigin)][.TODO = ptask :: ptask_tail*])

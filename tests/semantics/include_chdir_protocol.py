@@ -19,6 +19,7 @@ CASES = [
     ('stringable-dynamic', b"<?php class O { function __toString(): string { return '__SUB__'; } } $f='chdir'; $f(new O); echo include 'one.php';", b'__SUB__', True, False),
     ('stringable-named-dynamic', b"<?php class O { function __toString():string { return '__SUB__'; } } $f='chdir'; $f(directory:new O); echo include 'one.php';", b'__SUB__', True, False),
     ('stringable-named-invoke', b"<?php class O { function __toString():string { return '__SUB__'; } } $f=chdir(...); $f->__invoke(directory:new O); echo include 'one.php';", b'__SUB__', True, False),
+    ('stringable-unpack-dynamic', b"<?php class O { function __toString():string { return '__SUB__'; } } $f='chdir'; $f(...[],...['directory'=>new O],...[]); echo include 'one.php';", b'__SUB__', True, False),
 ]
 
 
@@ -144,7 +145,7 @@ def main():
                 '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CONVERSION = eps])])',
                 '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.REQUESTED = ' + seq(b'forged') + '])])',
             ]
-        if name in ('stringable-dynamic', 'stringable-named-dynamic'):
+        if name in ('stringable-dynamic', 'stringable-named-dynamic', 'stringable-unpack-dynamic'):
             checks += [
                 'pconfigcall.SELECTION = (n_selection)',
                 'S_initial.SELECTEDCALLS[n_selection] = pselectedcall',
@@ -167,6 +168,38 @@ def main():
                 '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CONVERSION = (999)])])',
                 '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CALL = pconfigcall[.INDEX = 0]])])',
                 '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CALL = pconfigcall[.LINE = 999]])])',
+                '~$call_descriptors_valid(S_initial[.ALLOCATIONS = eps])',
+            ]
+        if name == 'stringable-unpack-dynamic':
+            checks += [
+                'pconfigcall.INDEX = 3',
+                'pconfigcall.NAMED',
+                'pconfigcall.PACKS = [pconfigpack_first,pconfigpack_object,pconfigpack_last]',
+                'pconfigpack_first.INDEX = 0',
+                'pconfigpack_object.INDEX = 1',
+                'pconfigpack_last.INDEX = 2',
+                'pconfigpack_first.ITEMS = eps',
+                'pconfigpack_last.ITEMS = eps',
+                'pconfigpack_object.ITEMS = [ENTRY (KSTRING $ptascii("directory")) (DIRECT (POBJECT n_object))]',
+                'pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]',
+                'pdirconversion.OBJECT = n_object',
+                '$config_string_source(S_initial,pconfigcall) = ((pconfigpack_object.SITE,pconfigpack_object.LINE))',
+                '(HOBJECT n_object) <- $config_nodes(pconfigcall)',
+                '~((HARRAY pconfigpack_object.ARRAY) <- $config_nodes(pconfigcall))',
+                '$config_invoke_valid(S_initial,pconfigcall[.PACKS = [pconfigpack_first,pconfigpack_object[.ARRAY = pconfigpack_first.ARRAY],pconfigpack_last]])',
+                '~$config_invoke_valid(S_initial,pconfigcall[.PACKS = eps])',
+                '~$config_invoke_valid(S_initial,pconfigcall[.NAMED = false])',
+                '~$config_invoke_valid(S_initial,pconfigcall[.PACKS = [pconfigpack_object,pconfigpack_first,pconfigpack_last]])',
+                '~$config_invoke_valid(S_initial,pconfigcall[.PACKS = [pconfigpack_first,pconfigpack_object]])',
+                '~$config_invoke_valid(S_initial,pconfigcall[.PACKS = [pconfigpack_first,pconfigpack_object,pconfigpack_last,pconfigpack_last]])',
+                '~$config_invoke_valid(S_initial,pconfigcall[.PACKS = [pconfigpack_first,pconfigpack_object[.INDEX = 0],pconfigpack_last]])',
+                '~$config_invoke_valid(S_initial,pconfigcall[.PACKS = [pconfigpack_first,pconfigpack_object[.SITE = PORIGIN 999 eps],pconfigpack_last]])',
+                '~$config_invoke_valid(S_initial,pconfigcall[.PACKS = [pconfigpack_first,pconfigpack_object[.LINE = 999],pconfigpack_last]])',
+                '~$config_invoke_valid(S_initial,pconfigcall[.PACKS = [pconfigpack_first,pconfigpack_object[.ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_object))]],pconfigpack_last]])',
+                '~$config_invoke_valid(S_initial,pconfigcall[.PACKS = [pconfigpack_first,pconfigpack_object[.ITEMS = [ENTRY (KSTRING $ptascii("directory")) (DIRECT PNULL)]],pconfigpack_last]])',
+                '~$dir_requested_valid(S_initial,pdircontext[.CALL = pconfigcall[.SENT = eps]])',
+                '~$call_descriptors_valid(S_initial[.DIRCONTEXT = (pdircontext[.CALL = pconfigcall[.PACKS = eps]])])',
+                '~$call_descriptors_valid(S_initial[.DIRCONVERSIONS = [pdirconversion[.OBJECT = 999]]])',
                 '~$call_descriptors_valid(S_initial[.ALLOCATIONS = eps])',
             ]
         if name == 'stringable-named-invoke':

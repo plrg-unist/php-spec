@@ -54,7 +54,9 @@ syntax pintrinsic = INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC
 syntax pexitcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT poperand*, NAMED bool, OWNER nat?, LINE int }
 syntax pclonecall = { SITE porigin, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, LINE int }
 syntax pgetclasscall = { SITE porigin, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, LINE int }
-syntax pconfigcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, SELECTION nat?, LINE int }
+;; Completed unpack certificates borrow values from SENT, never heap owners.
+syntax pconfigpack = { INDEX nat, SITE porigin, LINE int, ARRAY nat, ITEMS pentry* }
+syntax pconfigcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, SELECTION nat?, LINE int, PACKS pconfigpack* }
 syntax pselectedcall = { NONCE nat, SITE porigin, KIND pintrinsic, ORIGINAL nat*, LOOKUP nat*, DEPTH nat, LINE int }
 syntax pgettermethod = GET_MESSAGE | GET_CODE | GET_FILE | GET_LINE | GET_PREVIOUS | GET_TRACE | GET_TRACE_STRING | GET_TO_STRING | GET_SEVERITY
 syntax pgettercall = {SITE porigin, RECEIVER nat, BASE text, METHOD pgettermethod, CAPTURE nat?, INDEX nat, SENT poperand*, LINE int}

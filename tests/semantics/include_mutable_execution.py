@@ -83,6 +83,30 @@ CASES = {
     'chdir-object-named-duplicate': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a($s){echo $s; return new O;} chdir(a("A"),directory:a("B"));',
     'chdir-object-named-count': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a($s){echo $s; return new O;} chdir(a("A"),a("B"));',
     'chdir-object-named-invoke-count': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a($s){echo $s; return new O;} $f=chdir(...); $f->__invoke(a("A"),a("B"));',
+    'chdir-stringable-unpack-positional': b"<?php class O { function __toString():string { echo 'S'; return '__SUB__'; } } echo chdir(...[new O])?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-unpack-selection': b"<?php class O { function __toString():string { echo 'S'; return '__SUB__'; } } function swap(){global $f; echo 'A'; $f='ini_restore'; return ['directory'=>new O];} $f='chdir'; echo $f(...swap())?'T':'F'; echo include 'one.php'; echo '|',$f;",
+    'chdir-stringable-unpack-ordinary-before-empty': b"<?php class O { function __toString():string { echo 'S'; return '__SUB__'; } } echo chdir(new O,...[])?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-unpack-ordinary-after-empty': b"<?php class O { function __toString():string { echo 'S'; return '__SUB__'; } } echo chdir(...[],directory:new O)?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-unpack-first-class-empty': b"<?php class O { function __toString():string { echo 'S'; return '__SUB__'; } } $f=chdir(...); echo $f(...[],...['directory'=>new O],...[])?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-unpack-invoke': b"<?php class O { function __toString():string { echo 'S'; return '__SUB__'; } } $f=chdir(...); echo $f->__invoke(...['directory'=>new O])?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-unpack-capture-retired': b"<?php class O {function __toString():string {global $x,$a; echo ($x==='changed' && $a===[])?'E':'N'; echo 'T'; throw new Exception('X');}} $x=new O; $a=['directory'=>&$x]; function later(){global $x,$a; echo 'A'; $x='changed'; $a=[]; return [];} $f=chdir(...); $f->__invoke(...$a,...later());",
+    'chdir-stringable-unpack-mutate-cwd': b"<?php class O { function __toString():string { echo 'S'; chdir('__SUB__'); return '..'; } } echo chdir(...['directory'=>new O])?'T':'F'; echo include 'one.php';",
+    'chdir-stringable-unpack-nul': b'<?php class O { function __toString():string { echo "S"; return "a\\0b"; } } chdir(...[new O]);',
+    'chdir-stringable-unpack-invoke-nul': b'<?php class O { function __toString():string { echo "S"; return "a\\0b"; } } $f=chdir(...); $f->__invoke(...["directory"=>new O]);',
+    'chdir-stringable-unpack-inherited-case-throw': b'<?php class P { function __ToStRiNg():string { throw new Exception("X"); } } class O extends P {} $f=chdir(...); $f->__invoke(...[],...["directory"=>new O],...[]);',
+    'chdir-stringable-unpack-strict': b'<?php declare(strict_types=1); class O { function __toString():string { echo "S"; return "sub"; } } chdir(...[new O]);',
+    'chdir-stringable-unpack-strict-first-class': b'<?php declare(strict_types=1); class O { function __toString():string { echo "S"; return "sub"; } } $f=chdir(...); $f(...["directory"=>new O]);',
+    'chdir-stringable-unpack-strict-invoke': b'<?php declare(strict_types=1); class O { function __toString():string { echo "S"; return "a\\0b"; } } $f=chdir(...); $f->__invoke(...["directory"=>new O]);',
+    'chdir-object-unpack-unknown': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a(){echo "A"; return new O;} $f=chdir(...); $f->__invoke(...["bad"=>a()]);',
+    'chdir-object-unpack-duplicate': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a($s){echo $s; return new O;} chdir(...[a("A")],...["directory"=>a("B")]);',
+    'chdir-object-unpack-array-order': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a($s){echo $s; return new O;} function later(){echo "L"; return [];} chdir(...["directory"=>a("A"),a("B")],...later());',
+    'chdir-object-unpack-pack-order': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a($s){echo $s; return new O;} $f=chdir(...); $f->__invoke(...["directory"=>a("A")],...[a("B")]);',
+    'chdir-object-unpack-empty-count': b'<?php $f=chdir(...); $f->__invoke(...[],...[]);',
+    'chdir-object-unpack-positional-count': b'<?php class O { function __toString():string { echo "T"; return "sub"; } } function a($s){echo $s; return new O;} chdir(...[a("A"),a("B")]);',
+    'set-unpack-retained': b"<?php echo set_include_path(...['include_path'=>'__SUB__']); echo include 'one.php';",
+    'ini-set-unpack-retained': b"<?php echo ini_set(...['value'=>'__SUB__'],...['option'=>'include_path']); echo include 'one.php';",
+    'ini-restore-unpack-retained': b"<?php set_include_path('__SUB__'); ini_restore(...['option'=>'include_path']); echo include 'one.php';",
+
 }
 
 
@@ -150,7 +174,7 @@ def main():
                             'cwd': b64(cwd_key), 'include_path': b64(include_path),
                             'status': 'opened', 'resolved': b64(opened),
                             'opened': b64(opened), 'source': b64(target.read_bytes())})
-        if name in ('chdir-stringable-mutate-cwd', 'chdir-stringable-nested-conversion', 'chdir-stringable-named-mutate-cwd'):
+        if name in ('chdir-stringable-mutate-cwd', 'chdir-stringable-nested-conversion', 'chdir-stringable-named-mutate-cwd', 'chdir-stringable-unpack-mutate-cwd'):
             case_cwd = os.fsencode(directory.resolve())
             opened = os.fsencode(local.resolve())
             entries.append({'caller': b64(main_bytes), 'requested': b64(b'one.php'),
@@ -177,7 +201,7 @@ def main():
         if name == 'chdir-relative':
             chdir_entries.append({'cwd': b64(cwd), 'requested': b64(b'sub'),
                                   'status': 'success', 'next_cwd': b64(sub_bytes)})
-        if name in ('chdir-stringable-mutate-cwd', 'chdir-stringable-nested-conversion', 'chdir-stringable-named-mutate-cwd'):
+        if name in ('chdir-stringable-mutate-cwd', 'chdir-stringable-nested-conversion', 'chdir-stringable-named-mutate-cwd', 'chdir-stringable-unpack-mutate-cwd'):
             chdir_entries.append({'cwd': b64(sub_bytes), 'requested': b64(b'..'),
                                   'status': 'success',
                                   'next_cwd': b64(os.fsencode(directory.resolve()))})
