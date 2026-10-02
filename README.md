@@ -268,6 +268,13 @@ Author and independent gates each accept nine sources and seventeen finite
 stages/541 maintained assertions; the reviewer also accepts creator2/89.
 The earlier source35/finite40-stage projection retains its own identity. Their
 [authority contract](docs/semantics/METHOD-CAPTURE-AUTHORITY.md) keeps retired-history limits explicit.
+A private [public object `__invoke` union](coverage/semantics/source-invoke-current-review.json)
+adds runtime-class dispatch, first-class capture and ordinary `callable` typing.
+Its current union with installed SET accepts 54 author sources and
+49 finite stages/1,475 maintained assertions. The reviewer accepts 70 sources
+and 58 stages/1,935 assertions on **b3a02ebc/1304**.
+Canonical installation remains pending. Transformed weak wrappers,
+nonpublic/static publication, array callables and other magic protocols remain open.
 Readonly members, hooks and user magic methods remain open.
 Ordinary [`Closure::call`](docs/semantics/CLOSURE-CALL.md) temporarily changes
 receiver/scope, evaluates arguments before binding validation, preserves original

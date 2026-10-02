@@ -109,13 +109,18 @@ The independent private lanes currently include:
   · [unpack ledger](coverage/semantics/include-unpacked-current-review.json)
   · [SET ledger](coverage/semantics/include-set-current-review.json)
   · [pipe ledger](.tools/include-config-pipe-string-current/coverage/semantics/include-config-pipe-string-review.json).
-- Calls: rebound capture, called-class and receiver-creation116 are installed at
-  **c536d1f74**, with source9/finite17 stages/541 maintained assertions accepted
-  by both actors and independent creator2/89. The earlier current-c8 projection
-  accepts source35/state40; forty bodies elaborate with zero state execution.
-  Static142 and finite CONFIG1/26 guards remain accepted. Arbitrary correlated
-  retired binding history and source `__invoke`/array classification remain open.
-  [Capture ledger](coverage/semantics/method-capture-current-review.json)
+- Calls: public/default-public nonstatic source `__invoke` is accepted privately
+  at **486874ba6**, on **b3a02ebc/1304** over installed SET **13c9c4ddf**.
+  Author gates accept source54/finite49/1,475; independent gates accept
+  source70/finite58/1,935. The independent FIRST7/331 and SET79/finally50
+  run before the common finite49. Final SET **4015f160d** metadata is composed
+  separately; canonical CALLS installation remains pending. Existing capture,
+  named/unpack and finite CONFIG guards are retained. Historical47ed/9c8
+  acceptance and the unexecuted named294 blueprint keep distinct identities.
+  Array classification, callable/string precedence, nonpublic/static publication,
+  transformed weak wrappers, real CONFIG PIPE and correlated retired history remain open.
+  [Public invocation ledger](coverage/semantics/source-invoke-current-review.json)
+  · [capture ledger](coverage/semantics/method-capture-current-review.json)
   · [selector ledger](coverage/semantics/method-class-selector-review.json).
 - Properties: the bounded private-c8 projection of typed static Stringable
   assignment197 and default-false reference infrastructure is accepted, with
@@ -146,7 +151,7 @@ evidence; do not retry the blocked engine experiment, substitute a reviewer,
 merge changes awaiting its validation, or begin work depending on those
 unaccepted changes. Independent work proceeds from the accepted baseline.
 
-Source `__invoke`, callable/string precedence, array callables, remaining
+Nonpublic/static `__invoke` publication, array callables, remaining
 static members, traits, hooks, traversal, output handlers, broader OS/INI
 behavior, transformed wrappers and lifecycle callbacks remain core obligations.
 Static-variable coverage remains partial across trait

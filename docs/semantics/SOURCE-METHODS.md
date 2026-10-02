@@ -94,6 +94,34 @@ nonstatic receivers; named nested functions clear it. The sparse `CLOSURESCOPES`
 table is source-authenticated and follows live closure ownership. Inherited
 method statics share declaring-origin storage; overrides have distinct storage.
 
+## Public object invocation
+
+The private [public `__invoke` candidate](../../coverage/semantics/source-invoke-current-review.json)
+supports bare object calls and object first-class conversion through the runtime
+class method table. It keeps the real receiver before argument effects, the
+declaring owner for inherited bodies and the receiver class for called scope.
+A dual-role Stringable object uses `__invoke` as its callee without a string cast.
+Ordinary by-value `callable` parameters admit these public invokable objects.
+
+Conversion authenticates the evaluated source and ordinary CV, direct `$this`
+or owned non-CV operand before resolution. Selected targets then retain their
+receiver independently of a changed CV. Unfinished saved conversion tasks use
+structural checks; the operand guard runs at the active conversion boundary.
+Capture certificates add no receiver or issuer roots.
+
+The current private union on installed SET **13c9c4ddf** accepts
+54 author sources and 49 finite stages/1,475 maintained assertions.
+Independent checks accept 70 sources and 58 stages/1,935 assertions,
+including FIRST7/331 then SET owner79/finally50 before the common49.
+These gates bind **486874ba6/b3a02ebc/1304**. Canonical installation remains
+pending; final SET **4015f160d** metadata has a separate source identity bridge.
+Earlier9c8/fec4 source65/finite45/1,368 and zero-state body elaboration,
+private **63879c77d** and the unexecuted named294 blueprint retain their
+original receipts. Captured-clone native `SFT7` and bare `ASFT7`/throw `ASF`
+observations remain distinct original composition evidence.
+Nonpublic/static declaration timing, transformed weak wrappers and real CONFIG
+PIPE replay remain separate. Native-only destructor observations are not model credit.
+
 ## Closure invocation and ownership
 
 `Closure->__invoke` and its nullsafe/computed forms route real and named closures

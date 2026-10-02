@@ -3728,10 +3728,21 @@
       "obligations": [
         "calls.first-class-callable"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/110-dynamic-calls.watsup",
+        "spec/semantics/120-first-class-callables.watsup",
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/173-method-callables.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/source_invoke_cases.json"
+      ],
+      "review": "Public/default-public nonstatic source object dispatch/capture and ordinary by-value callable typing have bounded current-private SET13c/486874/b3a02ebc-1304 acceptance: author source54/finite49-1475; independent source70/finite58-1935, own FIRST7-331 then SET79/finally50 before common49. Final installed SET4015 metadata is retained; canonical CALLS installation remains pending. Historical47ed/9c8 and unexecuted294 keep distinct identities. Full first-class/array classification, __call/__callStatic, transformed weak wrappers, nonpublic/static publication and correlated retired history remain open.",
+      "helper_tests": [
+        "tests/semantics/source_invoke_protocol.py"
+      ]
     }
   ],
   "runtime_obligations": [
@@ -8395,15 +8406,30 @@
     {
       "id": "classes.magic-call",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/110-dynamic-calls.watsup",
+        "spec/semantics/120-first-class-callables.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/173-method-callables.watsup",
+        "spec/semantics/95-type-values.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/source_invoke_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/source_invoke_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_API.c",
+        "coverage/semantics/source-invoke-current-review.json"
+      ],
+      "review": "Public/default-public nonstatic source object dispatch/capture and ordinary by-value callable typing have bounded current-private SET13c/486874/b3a02ebc-1304 acceptance: author source54/finite49-1475; independent source70/finite58-1935, own FIRST7-331 then SET79/finally50 before common49. Final installed SET4015 metadata is retained; canonical CALLS installation remains pending. Historical47ed/9c8 and unexecuted294 keep distinct identities. Full first-class/array classification, __call/__callStatic, transformed weak wrappers, nonpublic/static publication and correlated retired history remain open."
     },
     {
       "id": "classes.magic-string",
