@@ -81,13 +81,17 @@ The independent private lanes currently include:
 
 - Include/configuration: named Stringable `chdir` is installed at **09907c150**
   on **1f354b61/1302**, with author source17/four185 and independent source2/two89.
-  Earlier calls-base **a0b41f499** and c8 **7868add84**/docs **524c9b18a** retain
-  separate receipts. Array unpack, Stringable SET/Restore and INI-option remain
-  reviewed private increments. PIPE source24/returned2, callback210 plus48
-  Unsupported guards and directory158 remain private; real CONFIG `__invoke`
-  wrapper pipes remain Unsupported. The copied-c8 renderer/content bridge is
-  separate, uninstalled evidence.
+  The unpack-only current **63cd23b84** on **294357f9** passes author source23/six208,
+  retained source3/four38 (six Unsupported controls) and named source3/four185;
+  independent source2/two139 passes with the original active fixture failure
+  preserved and source2 reused once. Installation remains pending.
+  Stringable SET/Restore and INI-option remain reviewed private increments.
+  PIPE source24/returned2, callback210 plus48 Unsupported guards and directory158
+  remain private; real CONFIG `__invoke` wrapper pipes remain Unsupported.
+  Earlier c8/calls-base named and copied-c8 renderer/content bridges keep their
+  separate receipts. Wider OS/INI behavior and lifecycle remain open.
   [Named ledger](coverage/semantics/include-named-current-review.json)
+  · [unpack ledger](coverage/semantics/include-unpacked-current-review.json)
   · [pipe ledger](.tools/include-config-pipe-string-current/coverage/semantics/include-config-pipe-string-review.json).
 - Calls: rebound capture, called-class and receiver-creation116 are installed at
   **c536d1f74**, with source9/finite17 stages/541 maintained assertions accepted

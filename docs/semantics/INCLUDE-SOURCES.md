@@ -98,5 +98,13 @@ keeps weak conversion from a strict caller. Its
 [ledger](../../coverage/semantics/include-named-current-review.json) separates
 installed author source17/four185 and independent source2/two89 from earlier
 private calls-base and c8 evidence. Live-object ownership, saved operands and
-exception cleanup have separate paused-state checks. Array-unpacked operands
-and broader OS/INI behavior remain open.
+exception cleanup have separate paused-state checks.
+
+The private [unpack increment](../../coverage/semantics/include-unpacked-current-review.json)
+captures array entries before later arguments can change referenced cells or
+retire the source array. Active array identity, keys, cursor and consumed prefix
+remain exact. Completed certificates borrow captured values without adding
+heap roots; historical array IDs and integer-key numbers are documentary.
+The current private checks accept author source23/six208 and independent
+source2/two139. The ledger preserves the original active fixture failure,
+corrected state checks and source2 reuse separately; installation remains pending. Wider OS/INI behavior and Traversable operands remain open.
