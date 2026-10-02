@@ -7,10 +7,10 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-The installed canonical checkpoint is **a993dd191**, with ordinary fatal and
-Unsupported origin retirement, finite inherited
-internal method contracts 189 at **cbd5236d2** and the constant internal
-catalogue accepted at **832250521**. Installed code also includes deferred
+Canonical Git HEAD is **fdef6285d**, a documentation checkpoint over installed
+code **a993dd191**, with ordinary fatal and Unsupported origin retirement,
+finite inherited internal method contracts 189 at **cbd5236d2** and the constant
+internal catalogue accepted at **832250521**. Installed code also includes deferred
 Closure/arrow cache authentication 91, ordinary class static properties,
 Stringable-`chdir`, and named/reference `Closure::call`.
 [Milestone history](MILESTONE-HISTORY.md) links the bounded installed evidence
@@ -68,11 +68,44 @@ readonly/asymmetric set access and scoped defaults remain open.
 [property contract](docs/semantics/SOURCE-CLASS-STATICS.md) ·
 [default-cache ledger](coverage/semantics/closure-default-cache-review.json).
 
-Source `__invoke`, callable/string precedence, array callables, constants,
-remaining static members, traits, hooks, traversal, output handlers and
-lifecycle callbacks remain active core work. File inclusion still needs
-named/unpacked object operands for `chdir`, broader OS/INI behavior and
-transformed wrappers. Static-variable coverage remains partial across trait
+The independent private lanes currently include:
+
+- Include/configuration: named operands, array unpack, Stringable
+  `set_include_path`/`ini_restore`, and `ini_set` option conversion have reviewed
+  private checkpoints. Their current canonical projection and installation are
+  pending. Pipe source24, two returned-callable sources, six paused stages/258
+  assertions and two directory stages/158 assertions pass private review,
+  with retained controls separate. The repaired fixture
+  distinguishes intermediate ownership from terminal release; real `__invoke`
+  wrapper pipes remain Unsupported. The current-fdef five-increment content
+  projection is reviewed but its semantic bridges are pending.
+  [Private include ledger](.tools/include-config-ini-option-current/coverage/semantics/include-stringable-ini-option-review.json)
+  · [pipe ledger](.tools/include-config-pipe-string-current/coverage/semantics/include-config-pipe-string-review.json).
+- Calls: static-method142 and a bounded called-class mixed-snapshot
+  aggregate are privately reviewed; installation and retained receiver-free116
+  coverage remain pending. Callable capture remains open.
+- Properties: private197 review **a778904d** accepts combined-fdef source1,
+  cleanup55 and body elaboration, separately from historical21/eight572.
+  Asymmetric static access200/201 is the next lane; delayed writes remain open.
+- Compiler: declaration publication190–196 is private work. Historical private
+  raw observations show its first three groups passing, the rebound group
+  failing, and later groups unrun. Publication Unsupported controls remain
+  unaccepted. The reviewed195 bounds repair still encounters a valid-history
+  rejection under diagnosis; constants183/184 depend on publication.
+- Argument introspection198/199 has a development/review pair. Implementation
+  and validation remain pending. The ignored
+  [core roadmap](.tools/core-roadmap-11/roadmap.txt) guides remaining milestones
+  and inventory gaps; it establishes no closure.
+
+`returns_verify` is temporarily paused by the user. Preserve its branches and
+evidence; do not retry the blocked engine experiment, substitute a reviewer,
+merge changes awaiting its validation, or begin work depending on those
+unaccepted changes. Independent work proceeds from the accepted baseline.
+
+Source `__invoke`, callable/string precedence, array callables, remaining
+static members, traits, hooks, traversal, output handlers, broader OS/INI
+behavior, transformed wrappers and lifecycle callbacks remain core obligations.
+Static-variable coverage remains partial across trait
 and inheritance sharing, clone/bind, include/eval reactivation and lifecycle/GC.
 [Include contract](docs/semantics/INCLUDE-SOURCES.md) ·
 [method contract](docs/semantics/SOURCE-METHODS.md) ·
@@ -89,5 +122,14 @@ records the observations supporting that cap. Reviewed source, paused-state and
 syntax results are bounded evidence. Interrupted runs, timeouts, Unsupported
 and budget controls are never native agreements. A fresh offline,
 network-isolated rebuild and full current-source closure remain required.
+
+Git write access is restored after the orchestrator's successful authorized
+write check; the earlier denied
+[recheck](.tools/calls-static142-git-write-recheck.json) remains historical.
+Reviewed integrations resume under sole canonical writer leases. Calls holds
+that lease for static142; installation has not yet occurred, and it waits for
+the frozen fdef bridge to finish. This documentation edit grants no semantic
+writer lease.
+
 The [migration ledger](coverage/semantics/throwable-migration-review.json) and
 [artifact guide](docs/ARTIFACTS.md) retain deferred failures and raw evidence.
