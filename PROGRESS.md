@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Borrowed strict-identity reads208 retain the old reference cell across warning
+callbacks without adding an owner; nested saved callers and throw cleanup are
+checked. Defined ordinary `$GLOBALS[key]` uses the real global table. Private
+**f15d1f056** passes six normal tuples plus a zero-agreement control and author3/162;
+independent three model comparisons reuse native originals and two/130 pass.
+Fresh getter/setter **f9592b6ca** accepts author source1/74 and independent source1/111;
+current method-string **c67e3511f** accepts source1/77. Their [ledger](coverage/semantics/warning-reads-review.json)
+keeps profiles/revisions separate; publication adds no execution or rebuild credit.
+
 Public concrete class-method strings distinguish callable reception from fixed
 and computed dispatch/capture. Selected methods retain owner/called class and
 receiver ownership through mutation, clone and retirement. Compiler119 clears
@@ -44,7 +53,7 @@ failures and interrupted evidence.
 - Calls: broader class/method-string consumers, nonpublic/static `__invoke` publication,
   compound/scope-dependent array resolution, magic/autoload/internal consumers,
   transformed wrappers and real CONFIG PIPE. Only the selected captured-static
-  array and string Closure PIPE routes are covered; ordinary `$GLOBALS` remains partial.
+  array and string Closure PIPE routes are covered; defined ordinary `$GLOBALS[key]` is admitted; missing-global warnings and whole-table snapshots remain partial.
 - Include/configuration: CONFIG PIPE, broader warning producers, wider directives
   and reporting readback, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.

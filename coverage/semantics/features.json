@@ -5112,7 +5112,8 @@
         "tests/semantics/function_call_protocol.py",
         "tests/semantics/function_references.py",
         "tests/semantics/function_reference_state.py",
-        "tests/semantics/function_reference_protocol.py"
+        "tests/semantics/function_reference_protocol.py",
+        "tests/semantics/warning_read_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
@@ -5121,7 +5122,7 @@
         "docs/semantics/SOURCE-CALLS.md",
         "coverage/semantics/reference-parameter-review.json"
       ],
-      "review": "Historical prerequisite review: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Historical first-call source activation: Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
+      "review": "Historical prerequisite review: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Historical first-call source activation: Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Defined ordinary direct GLOBALS keys now use the genuine global table without request-mode facts, preserving callback local/global isolation and reference rebinding. warning-reads-review.json keeps private/current evidence separate; missing-global warnings, whole-table snapshots and request auto-globals remain bounded."
     },
     {
       "id": "storage.superglobals",
@@ -9613,17 +9614,26 @@
         "spec/semantics/206-error-handlers.watsup",
         "spec/semantics/207-error-handler-runtime.watsup",
         "spec/semantics/163-throwable-trace-storage.watsup",
-        "spec/semantics/164-throwable-trace-methods.watsup"
+        "spec/semantics/164-throwable-trace-methods.watsup",
+        "spec/semantics/208-warning-read-continuations.watsup"
       ],
       "helper_tests": [
         "tests/semantics/error_handler_protocol.py",
         "tests/semantics/error_handler_prepare.py",
-        "tests/semantics/error_handler_property_protocol.py"
+        "tests/semantics/error_handler_property_protocol.py",
+        "tests/semantics/warning_read_protocol.py",
+        "tests/semantics/warning_read_prepare.py",
+        "tests/semantics/warning_read_static_set_protocol.py",
+        "tests/semantics/warning_read_string_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/error_handler_cases.py",
         "tests/semantics/error_handler_run.py",
-        "tests/semantics/error_handler_array_registration.py"
+        "tests/semantics/error_handler_array_registration.py",
+        "tests/semantics/warning_read_cases.py",
+        "tests/semantics/warning_read_run.py",
+        "tests/semantics/warning_read_static_set.php",
+        "tests/semantics/warning_read_string.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c",
@@ -9633,7 +9643,7 @@
         "vendor/php-src/Zend/zend_API.c",
         "vendor/php-src/main/main.c"
       ],
-      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim."
+      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Accepted208 adds initially-reference left-CV identity reads with a genuine saved borrowed pointer and no extra cell owner. Privatef15 author6 normal+control0/three162 and independent3 models(native reuse)/two130 remain distinct from fresh getter/setterf959 author1/74+independent1/111 and current method-stringc67 source1/77. warning-reads-review.json binds original raw/peers and source-equivalent publication. Plain-CV wrappers, other read producers and full core remain open."
     },
     {
       "id": "diagnostics.exception-handler-stack",

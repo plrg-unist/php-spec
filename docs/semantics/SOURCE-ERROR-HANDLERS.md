@@ -36,8 +36,10 @@ its stack without adding heap owners. Fatal bailout precedes raw restoration.
 Missing-CV read continuations suspend the existing consumer and retain a null
 result even if the callback defines the variable. The admitted consumers are
 output, simple assignment, unary signs and six arithmetic/identity operators.
-Missing-left binaries retain the later right read; missing-right binaries require
-a known or temporary left value. Live/reference left operands, truth/cast/copy,
+Missing-left binaries retain the later right read; missing-right binaries admit
+known or temporary values and initially-reference CVs in strict identity comparisons.
+Module208 retains the borrowed old cell through the saved caller without adding
+an owner; rebinding and in-place alias writes remain distinct. Other live left operands, truth/cast/copy,
 read-modify-write, dimensions and other eligible warning producers remain
 explicitly `Unsupported`, rather than running a callback after a consumer.
 
