@@ -1,5 +1,5 @@
 {
-  "scope": "Partial class-constant source catalogue: original25, separately tested inheritance/update12 and cross-unit5. Retained native tuples; no fresh native execution or whole-family claim.",
+  "scope": "Partial class-constant catalogue50: original25, inheritance/update12, cross-unit5 and eight actual-current interaction agreements across separately preserved revisions. Retained native tuples, no new native or whole-family claim.",
   "cases": [
     {
       "id": "earlier_class_typed_fold",
@@ -798,6 +798,150 @@
       "status": "normal",
       "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-9-v2/raw/01-foreign_nested_array_import_is_cow/command.json",
       "native_raw_sha256": "28723f1efe78471199ac0e551870eb956ed5916ea0e909cbbb392f794a9b9ca0",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "public_static_read_updates_constants",
+      "source": "<?php\nclass C {const X=MISSING; public static int $p=1;}\necho \"before\";\necho C::$p;\n",
+      "source_sha256": "734b2fed7e7001c2d84f55b36e61663973165ca37bd2fa52422be6b3ff7fae0b",
+      "stdout_base64": "YmVmb3Jl",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIk1JU1NJTkciIGluIHtGSUxFfTo0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgNAo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constants-master-13/.tools/class-constants/current-paired7/raw/00-public_static_read_updates_constants-native/command.json",
+      "native_raw_sha256": "2d229bb6653203a98452b855c1577136b810714c4c5f7b1e6b6775206af61b88",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "private_static_read_precedes_constants",
+      "source": "<?php\nclass C {const X=MISSING; private static int $p=1;}\necho \"before\";\necho C::$p;\n",
+      "source_sha256": "cba61c3ec5b155d755a479283f53acb5d6925eef9edd02b3e3ec63cda7eeb14d",
+      "stdout_base64": "YmVmb3Jl",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgYWNjZXNzIHByaXZhdGUgcHJvcGVydHkgQzo6JHAgaW4ge0ZJTEV9OjQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSA0Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constants-master-13/.tools/class-constants/current-paired7/raw/01-private_static_read_precedes_constants-native/command.json",
+      "native_raw_sha256": "919f68a683381d424cecba645700251264f8530e6a233072e27db0cd36ae9f58",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "literal_array_fcc_owner_called_cache",
+      "source": "<?php\nclass A {const X=N; public static function f(){echo self::X; echo static::X;}}\nclass B extends A {const X=M;}\nconst N=1; const M=2;\n$f=[B::class,\"f\"](...);\n$f();\n$g=clone $f;\n$g();\n",
+      "source_sha256": "ea7b79fbaee1df309a04b834743b05ec53390d4770ff853a88b723db98d987a4",
+      "stdout_base64": "MTIxMg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constants-master-13/.tools/class-constants/current-paired7/raw/02-literal_array_fcc_owner_called_cache-native/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "handler_callback_deferred_constant",
+      "source": "<?php\nclass A {const X=N;}\nconst N=7;\nfunction h($n,$m){echo A::X; return true;}\nset_error_handler(\"h\");\ntrigger_error(\"go\",1024);\n",
+      "source_sha256": "e1aacbf7ca15cb6d3e31b859c5dcb9d0ace7f324c616c9563c2ef2a6f11c33e0",
+      "stdout_base64": "Nw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constants-master-13/.tools/class-constants/current-paired7-rest9/raw/03-handler_callback_deferred_constant-native/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "completed_static_reference_alias",
+      "source": "<?php\nclass C {const X=N; public static int $p=1;}\nconst N=1;\nnew C;\n$a=[2];\nC::$p =& $a[0];\necho C::$p;\n$a[0]=3;\necho C::$p;\n",
+      "source_sha256": "8a7b45e6c5fd970a4aae8fdd5ce5edaa914040474585a5c1a3a63ddb07463c5d",
+      "stdout_base64": "MjM=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constants-master-13/.tools/class-constants/current-paired7-rest9/raw/05-completed_static_reference_alias-native/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "static_unset_skips_constant_update",
+      "source": "<?php\nclass C {const X=MISSING; public static int $p=1;}\necho \"before\";\nunset(C::$p);\n",
+      "source_sha256": "b261137b4393637063d14dd8109ac2071e8200c5bd1147e397b59ebd6dec9395",
+      "stdout_base64": "YmVmb3Jl",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBBdHRlbXB0IHRvIHVuc2V0IHN0YXRpYyBwcm9wZXJ0eSBDOjokcCBpbiB7RklMRX06NApTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDQK",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constants-master-13/.tools/class-constants/current-paired7-rest9/raw/06-static_unset_skips_constant_update-native/command.json",
+      "native_raw_sha256": "441a9a9f8b05e452b64fbb47c62798375cf490c19405971c4f69e507d472a345",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "borrowed_identity_deferred_array_cache",
+      "source": "<?php\nclass A{const X=[N];}\nconst N=7;\nfunction h($n,$m){echo A::X[0];return true;}\nset_error_handler(\"h\");\n$v=1;$alias=&$v;\nif($v===$missing){echo \"eq\";}else{echo \"ne\";}\necho A::X[0];\n",
+      "source_sha256": "e78050cdf4f43ac6a5b881f41e9ad46d6827a391f905092897a91b1bea6b3e8e",
+      "stdout_base64": "N25lNw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constants-warning-13/.tools/class-constants/borrowed-paired1/raw/00-borrowed-array-cache-native/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "staticcall_completed_constant_table",
+      "source": "<?php\nclass C{const X=N;public static int $p=1;public static function &get(){return self::$p;}}\nconst N=2;\nnew C;\n$r =& C::get();\n$r=3;\necho C::$p,C::X;\n",
+      "source_sha256": "a77274b426c0a6a7fcb782f42db2172809fac39cd0aa1860a85a2c0b0c49ef74",
+      "stdout_base64": "MzI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constants-final-13/.tools/class-constants/staticcall-paired1/raw/00-completed-table-staticcall-native/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "native_profile": {
         "display_errors": "stderr",
         "log_errors": "0",
