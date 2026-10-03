@@ -7494,7 +7494,8 @@
         "tests/semantics/pipe_protocol.py",
         "tests/semantics/array_callables_protocol.py",
         "tests/semantics/class_method_strings_protocol.py",
-        "tests/semantics/include_mutable_protocol.py"
+        "tests/semantics/include_mutable_protocol.py",
+        "tests/semantics/include_chdir_pipe_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/pipe.py",
@@ -7514,7 +7515,7 @@
         "coverage/semantics/class-method-strings-current-review.json",
         "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Parser-owned direct-arrow grouping and compile-phase rejection are reviewed with a 30,980-entry classified syntax gate. Runtime value forcing, named user/closure targets and reference-result mode are reviewed with 12 source outcomes, original-source replays and paused task/ownership checks. The selected captured-static ARRAYMETHODCLOSURE route has an independently audited author source control in array-callables-current-review.json. Broader builtin/method/direct-array/object PIPE consumers remain open. Selected captured static STRINGMETHODCLOSURE PIPE has a strict independently audited author source control (class-method-strings-current-review.json); broader direct method-string PIPE remains open. Unary CONFIG getter/SET/Restore PIPE has bounded original-source and held-left/source/owner/state checks (include-config-pipe-review.json); ordinary Closure invocation retains caller strictness. Wider CONFIG/provider and callable consumers remain partial. Current borrowed-warning composition adds two focused normal/throwing source checks; earlier gates retain their revisions."
+      "review": "Parser-owned direct-arrow grouping and compile-phase rejection are reviewed with a 30,980-entry classified syntax gate. Runtime value forcing, named user/closure targets and reference-result mode are reviewed with 12 source outcomes, original-source replays and paused task/ownership checks. The selected captured-static ARRAYMETHODCLOSURE route has an independently audited author source control in array-callables-current-review.json. Broader builtin/method/direct-array/object PIPE consumers remain open. Selected captured static STRINGMETHODCLOSURE PIPE has a strict independently audited author source control (class-method-strings-current-review.json); broader direct method-string PIPE remains open. Unary CONFIG getter/SET/Restore PIPE has bounded original-source and held-left/source/owner/state checks (include-config-pipe-review.json); ordinary Closure invocation retains caller strictness. Wider CONFIG/provider and callable consumers remain partial. Current borrowed-warning composition adds two focused normal/throwing source checks; earlier gates retain their revisions. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3, authenticating post-callback CWD and held lhs; wider OS services/lifecycle remain partial."
     },
     {
       "id": "calls.callable-visibility",
@@ -9838,7 +9839,8 @@
         "tests/semantics/include_mutable_protocol.py",
         "tests/semantics/include_chdir_protocol.py",
         "tests/semantics/include_chdir_adapter_protocol.py",
-        "tests/semantics/include_ini_prefix_protocol.py"
+        "tests/semantics/include_ini_prefix_protocol.py",
+        "tests/semantics/include_chdir_pipe_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
@@ -9861,7 +9863,7 @@
         "coverage/semantics/include-ini-readback-review.json",
         "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.require",
@@ -9884,7 +9886,8 @@
         "tests/semantics/include_mutable_protocol.py",
         "tests/semantics/include_chdir_protocol.py",
         "tests/semantics/include_chdir_adapter_protocol.py",
-        "tests/semantics/include_ini_prefix_protocol.py"
+        "tests/semantics/include_ini_prefix_protocol.py",
+        "tests/semantics/include_chdir_pipe_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
@@ -9907,7 +9910,7 @@
         "coverage/semantics/include-ini-readback-review.json",
         "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.include-once",
@@ -9930,7 +9933,8 @@
         "tests/semantics/include_mutable_protocol.py",
         "tests/semantics/include_chdir_protocol.py",
         "tests/semantics/include_chdir_adapter_protocol.py",
-        "tests/semantics/include_ini_prefix_protocol.py"
+        "tests/semantics/include_ini_prefix_protocol.py",
+        "tests/semantics/include_chdir_pipe_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
@@ -9953,7 +9957,7 @@
         "coverage/semantics/include-ini-readback-review.json",
         "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.require-once",
@@ -9976,7 +9980,8 @@
         "tests/semantics/include_mutable_protocol.py",
         "tests/semantics/include_chdir_protocol.py",
         "tests/semantics/include_chdir_adapter_protocol.py",
-        "tests/semantics/include_ini_prefix_protocol.py"
+        "tests/semantics/include_ini_prefix_protocol.py",
+        "tests/semantics/include_chdir_pipe_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
@@ -9999,7 +10004,7 @@
         "coverage/semantics/include-ini-readback-review.json",
         "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.source-identity",
@@ -10022,7 +10027,8 @@
         "tests/semantics/include_mutable_protocol.py",
         "tests/semantics/include_chdir_protocol.py",
         "tests/semantics/include_chdir_adapter_protocol.py",
-        "tests/semantics/include_ini_prefix_protocol.py"
+        "tests/semantics/include_ini_prefix_protocol.py",
+        "tests/semantics/include_chdir_pipe_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
@@ -10045,7 +10051,7 @@
         "coverage/semantics/include-ini-readback-review.json",
         "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.source-failure",
@@ -10068,7 +10074,8 @@
         "tests/semantics/include_mutable_protocol.py",
         "tests/semantics/include_chdir_protocol.py",
         "tests/semantics/include_chdir_adapter_protocol.py",
-        "tests/semantics/include_ini_prefix_protocol.py"
+        "tests/semantics/include_ini_prefix_protocol.py",
+        "tests/semantics/include_chdir_pipe_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
@@ -10091,7 +10098,7 @@
         "coverage/semantics/include-ini-readback-review.json",
         "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.included-declarations",
@@ -10114,7 +10121,8 @@
         "tests/semantics/include_mutable_protocol.py",
         "tests/semantics/include_chdir_protocol.py",
         "tests/semantics/include_chdir_adapter_protocol.py",
-        "tests/semantics/include_ini_prefix_protocol.py"
+        "tests/semantics/include_ini_prefix_protocol.py",
+        "tests/semantics/include_chdir_pipe_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
@@ -10137,7 +10145,7 @@
         "coverage/semantics/include-ini-readback-review.json",
         "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.included-return",
@@ -10160,7 +10168,8 @@
         "tests/semantics/include_mutable_protocol.py",
         "tests/semantics/include_chdir_protocol.py",
         "tests/semantics/include_chdir_adapter_protocol.py",
-        "tests/semantics/include_ini_prefix_protocol.py"
+        "tests/semantics/include_ini_prefix_protocol.py",
+        "tests/semantics/include_chdir_pipe_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
@@ -10183,7 +10192,7 @@
         "coverage/semantics/include-ini-readback-review.json",
         "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.autoload-registration",
