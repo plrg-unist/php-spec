@@ -546,7 +546,8 @@ def $class_static_ref_base_task(S, porigin_requested, ptbytes, z) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_requested)
 def $class_static_ref_base_task(S, porigin_requested, ptbytes, z) = false -- otherwise
 dec $class_static_ref_selector_matches(pstate, phpType19, poperand) : bool
-def $class_static_ref_selector_matches(S, phpType19, KNOWN (PSTRING ptbytes_class)) = ($class_static_selector_source_name(S[.ORIGIN = $origin_child(S.ORIGIN, [PCFIELD 0])], phpType19) = (ptbytes_class))
+;; Selector validation uses the static-property occurrence, including receivers.
+def $class_static_ref_selector_matches(S, phpType19, KNOWN (PSTRING ptbytes_class)) = ($class_static_selector_source_name(S, phpType19) = (ptbytes_class))
   -- if $ppscoped_named(phpType19) \/ $class_static_literal_class(phpType19)
 def $class_static_ref_selector_matches(S, phpType19, KNOWN (PSTRING ptbytes_class)) = ($class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) =/= eps)
   -- if ~$ppscoped_named(phpType19)
@@ -566,7 +567,7 @@ def $class_static_ref_pending_task(S, poperand_class, poperand_name, z) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprAssignRef (NExprStaticPropertyFetch phpType19 phpType31 metadata_property) expression_rhs metadata)
   -- if $class_static_ref_assignment_task(S, expression_rhs, z)
   -- if $reference_cv(expression_rhs) = eps
-  -- if $class_static_ref_selector_matches(S, phpType19, poperand_class)
+  -- if $class_static_ref_selector_matches(S[.ORIGIN = $origin_child(S.ORIGIN, [PCFIELD 0])], phpType19, poperand_class)
   -- if $class_static_ref_operand_matches(S, phpType31, poperand_name)
 def $class_static_ref_pending_task(S, poperand_class, poperand_name, z) = false -- otherwise
 def $class_static_ref_fetch_task(S, z) = true
