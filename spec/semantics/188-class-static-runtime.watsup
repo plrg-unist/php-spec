@@ -151,14 +151,20 @@ def $coalesce_assign(S, BASE_CLASS_STATIC porigin_requested ptbytes, poperand, z
 
 dec $class_static_acquire(pstate, porigin, ptbytes, int) : pstate
 def $class_static_acquire(S, porigin_requested, ptbytes, z) = S[.LOCATION = CLASS_STATIC ppropertydesc.ORIGIN]
+  -- if $class_constant_static_reference_ready(S, porigin_requested, ptbytes, z)
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
 def $class_static_acquire(S, porigin_requested, ptbytes, z) = $class_static_read(S, porigin_requested, ptbytes, z)
+  -- if $class_constant_static_reference_ready(S, porigin_requested, ptbytes, z)
   -- if $class_static_select(S, porigin_requested, ptbytes) = eps
 def $class_static_acquire(S, porigin_requested, ptbytes, z) = $class_static_read(S, porigin_requested, ptbytes, z)
+  -- if $class_constant_static_reference_ready(S, porigin_requested, ptbytes, z)
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if ~$class_static_accessible(S, ppropertydesc)
+
+def $class_static_acquire(S, porigin_requested, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "class constant update before static reference"]
+  -- if ~$class_constant_static_reference_ready(S, porigin_requested, ptbytes, z)
 
 dec $class_static_attach_source(pstate, ppropertyid, nat) : pstate
 def $class_static_attach_source(S, ppropertyid, n_cell) = S[.PROPREFS = $propref_attach(S.PROPREFS, n_cell, CLASS_PROP_SOURCE ppropertyid)]

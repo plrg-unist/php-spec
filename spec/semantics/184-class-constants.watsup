@@ -576,12 +576,24 @@ rule PhpStep/class-constant-construct: S ~> $constructor_start_ready(S[.TODO = p
 rule PhpStep/class-constant-construct-noctor: S ~> $noctor_start_ready(S[.TODO = ptask_tail*], ptbytes, phpType7*, z)
   -- if S.TODO = (CLASS_CONST_CONSTRUCT ptbytes phpType7* false z) :: ptask_tail*
 
+dec $class_constant_static_unset_tail(ptask*) : bool
+def $class_constant_static_unset_tail((ORIGIN_RETURN porigin?) :: ptask_tail*) = $class_constant_static_unset_tail(ptask_tail*)
+def $class_constant_static_unset_tail(UNSET_ARRAY :: ptask_tail*) = true
+def $class_constant_static_unset_tail(ptask*) = false -- otherwise
+
 dec $class_constant_static_work(pstate, poperand, ptbytes, int) : ptask*
 def $class_constant_static_work(S, poperand, ptbytes, z) = $class_constant_table_tasks(S, porigin, z, |S.CLASSES|)
+  -- if ~$class_constant_static_unset_tail(S.TODO)
   -- if $scoped_selector_class(S, poperand) = (porigin)
   -- if $class_static_select(S, porigin, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
 def $class_constant_static_work(S, poperand, ptbytes, z) = eps -- otherwise
+;; Synchronous indirect/reference acquisition cannot suspend for a table update.
+;; Retain a precise boundary until that selected operation has a continuation.
+dec $class_constant_static_reference_ready(pstate, porigin, ptbytes, int) : bool
+def $class_constant_static_reference_ready(S, porigin, ptbytes, z) = ($class_constant_static_work(S, KNOWN (PSTRING pclassdesc.NAME), ptbytes, z) = eps)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $class_constant_static_reference_ready(S, porigin, ptbytes, z) = true -- otherwise
 def $class_static_prepare_base(S, poperand, ptbytes, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_STATIC poperand ptbytes z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ptask_work* = $class_constant_static_work(S, poperand, ptbytes, z)
   -- if ptask_work* =/= eps
