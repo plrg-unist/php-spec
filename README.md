@@ -281,6 +281,13 @@ The [class static property contract](docs/semantics/SOURCE-CLASS-STATICS.md)
 models declaration-owned cells, inherited sharing, typed aliases and captured
 class identity for computed selectors. Its [bounded review](coverage/semantics/class-static-properties.json)
 records installed source and paused controls alongside historical matrices.
+Backed static final/asymmetric setters distinguish lexical permission from called
+scope, preserve delayed RHS/receiver ordering and typed escaped aliases, and
+check raw object slots before writable interior access. The
+[setter review](coverage/semantics/static-setter-access-review.json) separates
+declaration/source/state checks from the fresh inherited method-array interaction.
+Readonly/hooks, instance asymmetric setters and static-method reference acquisition
+remain open.
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
 route. Typed object conversion remains a separate consumer.

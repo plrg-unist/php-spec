@@ -1,0 +1,115 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "status": "independently accepted bounded private setter implementation; integration pending",
+  "scope": [
+    "Backed static final/asymmetric declarations, setter normalization and inheritance diagnostic order.",
+    "Lexical setter permission with called-scope errors, direct writes, dimensions/updates and escaped typed aliases.",
+    "Deferred literal/CV targets versus early dynamic class/name-call effects, writable nested receivers, reference demand and exact unset continuations."
+  ],
+  "current_interactions": [
+    {
+      "tested_revision": "ca2f35018811c90539f9bd8a34d11bd85f5baf5b",
+      "base": "0489f65062787af0ba440fe5e8cfe484c993fc0f",
+      "sources": 1,
+      "finite_assertions": 0,
+      "observation": "Tx|x|x, normal0, empty stderr, null diagnostic/reason",
+      "command": "python3 tests/semantics/static_set_access.py --select array-inherited-setter",
+      "cwd": "/home/user/workspace/php-spec/.tools/property-static-set-current-array-13",
+      "report": {
+        "path": ".tools/property-static-set-dev13/author-9iw57hiu/report.json",
+        "sha256": "ef81a33cb0504de0fc0e8334d0395a71ca1cde0653b4a221c3849afc5012828d"
+      },
+      "release": {
+        "path": ".tools/property-static-set-dev13/author-9iw57hiu/RELEASE.json",
+        "sha256": "18d63cca51d9529cc5d990ad68744141138f5739be253c0c98368e018010753d"
+      },
+      "independent_raw_review": {
+        "path": ".tools/property-static-set-review13/current-array-original-source-accepted.json",
+        "sha256": "ba92e6af53c404f75ac45f52fa26a685f9be20df9645fff25c677a371e62d1d5"
+      }
+    }
+  ],
+  "earlier_bounded_checks": {
+    "declaration_and_consumers": {
+      "tested_revision": "0e7108c03ee97eb5ab709b82fa773cc7e1ffd12c",
+      "source_comparisons": 63,
+      "compiler_cases": 43,
+      "compiler_clauses": 258,
+      "finite_cases": 7,
+      "finite_assertions": 280,
+      "separate_unsupported_compiler_controls": 2,
+      "review": {
+        "path": ".tools/property-static-set-review13/author-continuation-originals-accepted.json",
+        "sha256": "1772d1957f1718b5e736fc8307628709a82ad5b3bde934d9d89a05eb36dcb8ae"
+      }
+    },
+    "receiver_and_unset": {
+      "source_comparisons": 11,
+      "finite_assertions": 148,
+      "provenance": "Source3 at715eb500; source1 at44d02a38; source6 at00da1489; live-alias35 at6fb21297; affected unset source1 and25/34/28/26 at3bcfcd862. These are distinct original runs, not a current-master replay.",
+      "reviews": [
+        {
+          "path": ".tools/property-static-set-review13/receiver-partial-originals-qualified.json",
+          "sha256": "cbb1495a3287b70ca2a35496e3f18702d473d75e0d30dc49c21d6461021d3d4e"
+        },
+        {
+          "path": ".tools/property-static-set-review13/receiver-promotion-partial-originals-qualified.json",
+          "sha256": "e4bce410ea7dba4066285a2a8c54002ee515f192e353bab9954b89ea22582021"
+        },
+        {
+          "path": ".tools/property-static-set-review13/receiver-alias-source-six-qualified.json",
+          "sha256": "cbab163801fd8f486bd6a512cf681307656efdb8ae30cd38d075fea0f44e09d8"
+        },
+        {
+          "path": ".tools/property-static-set-review13/receiver-live-alias-35-qualified.json",
+          "sha256": "ff2dfa6fc8f018725f62839b9768bd7df2b1c0d7f3b44f247c3f610cf9cb2fae"
+        },
+        {
+          "path": ".tools/property-static-set-review13/receiver-unset-originals-accepted.json",
+          "sha256": "a4deb991316955920d40618dd569349f67d20d849ce3b21a7f3511104326f26a"
+        }
+      ]
+    },
+    "independent_sources": {
+      "first_two": {
+        "path": ".tools/property-static-set-review13/independent-first-two-originals-qualified.json",
+        "sha256": "06d84356e3148ac3940d280b5826afee279d554f8881867df558fc42ac9edf86"
+      },
+      "corrected_instance_reference_source": {
+        "path": ".tools/property-static-set-dev13/independent-instance-alias-original-raw-accepted.json",
+        "sha256": "fff010a72db4d0868fd33ad0d6f75c5e00975e43dd3890fb58ed0132bab33d56"
+      },
+      "count": 3,
+      "provenance": "First two original lexical/called-scope sources remain at0e7108; corrected third instance-reference spelling passes at3bcf. The original static-reference spelling remains model Unsupported."
+    }
+  },
+  "runtime": {
+    "oracle": ".tools/php/bin/php",
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "other": "inherited"
+    },
+    "source_limits_seconds": {
+      "native": 30,
+      "model_process": 90,
+      "application": 60
+    },
+    "steps": 100000,
+    "rebuild": false,
+    "provision": {
+      "path": ".tools/property-static-set-current-array-13/.tools/static-set-runtime-provision-current-array.json",
+      "sha256": "96889e0a5be45d665527224538b58da2fc4e6b1b2ad0a8ca69cefd7dabedeb52"
+    }
+  },
+  "preserved_failures": "Original early-link fixture, missing PROPERTY foreach continuation, alias-export fixture, source-origin guard and double-unset-tail failures remain at their original private roots/raw paths. Only affected checks were repeated; unused elaborations have zero state credit.",
+  "remaining": [
+    "StaticCall reference-assignment acquisition (ordinary untyped route) remains Unsupported; corrected instance-reference tests do not implement it.",
+    "Instance asymmetric setters, readonly, hooks, traits/magic and broader delayed receiver/Stringable/reference consumers.",
+    "Typed by-reference conversion186 and returns_verify remain unaccepted/paused.",
+    "Full combined current-source coverage and final fresh offline rebuild remain open."
+  ],
+  "recovery": "Original private roots and .tools/property-static-set-dev13 / property-static-set-review13 retain commands, full original streams, checked packets, failures and releases; no bulky raw artifacts are tracked."
+}

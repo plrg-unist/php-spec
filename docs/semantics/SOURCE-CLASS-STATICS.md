@@ -3,9 +3,11 @@
 Modules 187/188 implement backed static declarations in ordinary source classes,
 including public, protected and private access, typed defaults and uninitialized
 values, reads, assignment, quiet tests, dimensions, updates and reference binding.
-Readonly, asymmetric set access, promotion, traits, hooks and magic remain separate
-obligations. The [ledger](../../coverage/semantics/class-static-properties.json)
-keeps historical source matrices distinct from current-base bridges and reviews.
+Modules 200/201 add backed static asymmetric setters and final declarations.
+Readonly, instance asymmetric setters, promotion, traits, hooks and magic remain
+separate obligations. The [storage ledger](../../coverage/semantics/class-static-properties.json)
+and [setter ledger](../../coverage/semantics/static-setter-access-review.json)
+keep historical tests distinct from current interaction checks.
 
 Each declaration owns one `CLASSSTATICS` row keyed by its declaring property ID.
 An inherited declaration resolves to that same row; a redeclaration owns a new
@@ -22,6 +24,20 @@ Quiet lookup treats denial, nonstatic declarations, absence and uninitialized
 storage as absent. Names remain case sensitive; class strings use the ordinary
 case-insensitive class lookup and do not inherit lexical import aliases.
 
+Explicit setter flags are checked before equivalent read/set visibility is
+normalized away. Genuine private(set) is implicitly final; private/private(set)
+normalizes to an ordinary private declaration. Explicit final/private rejection
+precedes type/default compilation, and inherited finality precedes static/type
+override errors. Linking checks run at source entry or the declaration's reached
+runtime publication point, rather than merely constructing compiler descriptors.
+
+Setter permission uses lexical declaring scope; diagnostics retain the called
+scope. Simple assignment checks read access before fetching a deferred CV RHS,
+then checks setter permission before Stringable conversion. Compound/update and
+new reference consumers deny before fetching their deferred CV RHS. Reference
+and dimension fetch flags retain their initialization/type effects and any prior
+exception. A legally escaped alias remains writable under its ordered type sources.
+
 The class selector is evaluated before a computed property name. An object
 selector becomes its selected class name; it does not retain the object. Losing
 the object's last owner removes its instance-property type sources before the
@@ -34,6 +50,18 @@ duplicating a pair or changing its source/line fails the consistency checks.
 Shared exception, return and goto unwinding discards both halves together. These
 checks authenticate the declared source and independently retained operand; they
 are not a proof of execution history for an adversary replacing an entire state.
+
+Non-CV reference assignment and writable property chains preserve pending bases.
+Literal class lookup and property-name CV reads occur at the delayed fetch after
+the RHS; dynamic class selection and name-call effects remain early. Pending
+operands are rooted and source/line authenticated, including saved callbacks.
+Read and quiet operations retain their separate access modes. Writable interior
+access permits a raw direct object slot, but denies a reference-wrapped static
+slot even when its referent is an object. An uninitialized W receiver checks the
+setter, RW raises its read error first, and UNSET skips an undefined receiver.
+Nested chains, by-reference sends/returns/foreach and destructuring retain that
+demand. Property foreach promotes a shared typed cell; normal and abrupt unset
+helpers preserve the already-consumed task's original continuation tail.
 
 An aliased typed row carries a non-owning `CLASS_PROP_SOURCE` in the shared
 reference constraint list. Validation checks both the source's live row/cell and
@@ -56,7 +84,10 @@ implements weak simple object assignment. It rereads the live static row after
 side effects, caller scope and cleanup. The current nested Restore source,
 earlier ARG/callable source and focused INI source2/755 gates have independent
 original-raw acceptance with separate tested identities. Instance/compound
-consumers and broader receiver/reference acquisition remain open.
+Stringable consumers and broader receiver/reference acquisition remain open.
+Reference assignment from a static method call is still Unsupported; the
+independent escaped-alias check uses the accepted untyped instance-method
+reference route and does not close that missing behavior.
 
 CV constrained-reference object assignment has separate timing: conversion can
 overwrite the captured cell after a callback adds a type source, leaving an

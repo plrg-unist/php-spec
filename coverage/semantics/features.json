@@ -2134,14 +2134,21 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/187-class-static-storage.watsup",
+        "spec/semantics/188-class-static-runtime.watsup",
+        "spec/semantics/197-property-string-runtime.watsup",
+        "spec/semantics/200-static-set-compiler.watsup",
+        "spec/semantics/201-static-set-runtime.watsup"
       ],
       "source_tests": [
-        "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/static_set_access.py",
+        "tests/semantics/typed_static_string_assignment.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Backed static declarations187/188 and setters200/201 model finality/normalization, lexical write permission, called-scope diagnostics and deferred target/RHS ordering. Raw direct object receivers differ from aliased static slots; escaped aliases retain their type sources. static-setter-access-review.json keeps compiler, original source, state and current method-array checks distinct. Readonly, hooks, instance asymmetric setters, wider delayed receivers and static-method reference acquisition remain open.",
+      "helper_tests": [
+        "tests/semantics/static_set_compiler.py",
+        "tests/semantics/static_set_access_protocol.py"
+      ]
     },
     {
       "node": "Expr_Ternary",
@@ -3427,14 +3434,17 @@
       "obligations": [
         "properties.typed",
         "properties.readonly",
-        "properties.asymmetric-instance"
+        "properties.asymmetric-instance",
+        "properties.asymmetric-static"
       ],
       "status": "partial",
       "implementation": [
         "spec/semantics/135-property-compiler.watsup",
         "spec/semantics/136-property-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/187-class-static-storage.watsup",
+        "spec/semantics/200-static-set-compiler.watsup"
       ],
       "source_tests": [
         "tests/semantics/property_compiler.py",
@@ -3448,9 +3458,13 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/static_set_access.py"
       ],
-      "review": "Public/protected/private backed instance properties use source-authenticated descriptors and mangled canonical slot keys. Lexical access covers ordinary/computed/quiet/write/unset/reference consumers, invariant inheritance, foreach and casts; static/readonly/promotion/hooks/magic remain dependencies. See properties-review.json, property-references-review.json and property-visibility-review.json for distinct evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities."
+      "review": "Public/protected/private backed instance properties use source-authenticated descriptors and mangled canonical slot keys. Lexical access covers ordinary/computed/quiet/write/unset/reference consumers, invariant inheritance, foreach and casts; static/readonly/promotion/hooks/magic remain dependencies. See properties-review.json, property-references-review.json and property-visibility-review.json for distinct evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Backed static final/asymmetric declarations normalize equal access, enforce inheritance priority and source-entry linking (static-setter-access-review.json); static readonly and instance asymmetric setters remain open.",
+      "helper_tests": [
+        "tests/semantics/static_set_compiler.py"
+      ]
     },
     {
       "node": "Stmt_Return",
@@ -8711,15 +8725,29 @@
     {
       "id": "properties.asymmetric-static",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_object_handlers.c"
+      "implementation": [
+        "spec/semantics/200-static-set-compiler.watsup",
+        "spec/semantics/201-static-set-runtime.watsup",
+        "spec/semantics/188-class-static-runtime.watsup",
+        "spec/semantics/197-property-string-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/static_set_compiler.py",
+        "tests/semantics/static_set_access_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/static_set_access.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c",
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "coverage/semantics/static-setter-access-review.json"
+      ],
+      "review": "Backed static declarations187/188 and setters200/201 model finality/normalization, lexical write permission, called-scope diagnostics and deferred target/RHS ordering. Raw direct object receivers differ from aliased static slots; escaped aliases retain their type sources. static-setter-access-review.json keeps compiler, original source, state and current method-array checks distinct. Readonly, hooks, instance asymmetric setters, wider delayed receivers and static-method reference acquisition remain open."
     },
     {
       "id": "properties.hooks",
