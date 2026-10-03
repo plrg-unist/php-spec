@@ -14,13 +14,13 @@ def $ppinterface_add(P, pcpath, pchheader, pmethoddesc*) = P[.CLASSES = P.CLASSE
   -- if P.COMPLETION = PPCNORMAL
 def $ppinterface_add(P, pcpath, pchheader, pmethoddesc*) = P -- otherwise
 
-def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppinterface_add(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pcpath, pchheader, pmethoddesc*)
+def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppinterface_add(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pcpath, pchheader, pmethoddesc*)
   -- if pchheader.KIND = "interface"
   -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
   -- if pchheader.BODY = SEQUENCE statement*
   -- if PPMEMBERS P_next eps pmethoddesc* = $ppmember_groups(P_header, pcpath, 0, statement*, eps, eps, pchheader)
 
-def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root($ppclass_diagnostics(P, pchdiagnostic*), pcpath, pchheader, eps, eps)
+def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root($ppclass_diagnostics(P, pchdiagnostic*), pcpath, pchheader, eps, eps)
   -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ pchheader.INTERFACES =/= eps /\ pchheader.BODY = SEQUENCE eps
 
 def $ppstatement(P, pcpath, NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = $ppclass_result(P_line, pcpath, $pchcompile(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata, false, $ppclass_context(P_line)))
@@ -56,9 +56,10 @@ def $ppinterface_property(P, flags, SEQUENCE eps) = $ppconstant_error(P, $ptasci
 def $ppinterface_property(P, flags, phpType37) = $ppunsupported(P, "interface hooked properties") -- otherwise
 
 dec $ppinterface_method(ppstate, pcpath, int, bool, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
-def $ppmethod_one(P, pcpath, NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppinterface_method($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, b, $base64(text), phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader)
+def $ppmethod_one(P, pcpath, NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppinterface_method($pplocate(P, pcpath, z_line), pcpath, flags, b, $base64(text), phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader)
   -- if pchheader.KIND = "interface"
-  -- if $($source_line(metadata) > 0 /\ $source_line(metadata) <= $source_end_line(metadata))
+  -- if z_line = $declaration_method_keyword_line(metadata, metadata_name)
+  -- if $(z_line > 0)
 
 def $ppinterface_method(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS P[.COMPLETION = PPCABRUPT (COMPILETHROWN $ptascii("Cannot use the readonly modifier on a method") P.LOCATION.LINE)] ppropertydesc* pmethoddesc*
   -- if $ppproperty_flag(flags, 64)

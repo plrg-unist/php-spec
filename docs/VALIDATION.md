@@ -112,3 +112,5 @@ enumerates all state-prefixed scanner rules. Optional disposable instrumentation
 records actual parser reductions and scanner rule actions on source fixtures.
 The ordinary oracle and vendored sources remain unchanged. Coverage of a rule
 is evidence of exercising it, not proof of parser or semantic correctness.
+
+SpecTec record field values use one or more atoms (`exp_atom+`); parenthesize a list field value, for example `{SENT ([KNOWN PNULL, KNOWN PNULL])}`.

@@ -1,0 +1,58 @@
+;; Recompile one unit to its completed image. This source/footprint check does
+;; not consult declaration history or recursively validate the live state.
+dec $compilation_pool_offset(pconstant*, pconstant*) : nat?
+dec $compilation_array_constant(pconstant) : bool
+dec $declaration_compiler_state(ppstate) : ppstate
+def $compilation_pool_offset(eps, eps) = (0)
+def $compilation_pool_offset((PCONSTANT pcpath (PARRAY n_local)) :: pconstant*, (PCONSTANT pcpath (PARRAY n_actual)) :: pconstant_tail*) = (n_offset)
+  -- if $(n_local <= n_actual)
+  -- if n_offset = $nabs($(n_actual - n_local))
+def $compilation_pool_offset(pconstant :: pconstant_tail*, pconstant :: pconstant_actual*) = $compilation_pool_offset(pconstant_tail*, pconstant_actual*)
+  -- if ~$compilation_array_constant(pconstant)
+def $compilation_pool_offset(pconstant*, pconstant_tail*) = eps -- otherwise
+def $compilation_array_constant(PCONSTANT pcpath (PARRAY n)) = true
+def $compilation_array_constant(pconstant) = false -- otherwise
+
+dec $compilation_pool_arrays(pstate, parray*, nat, pnode*) : bool
+def $compilation_pool_arrays(S, parray*, n_offset, eps) = true
+def $compilation_pool_arrays(S, parray*, n_offset, (HARRAY n_local) :: pnode*) = $compilation_pool_arrays(S, parray*, n_offset, pnode*)
+  -- if $(n_local < |parray*| /\ n_local + n_offset < |S.ARRAYS|)
+  -- if n_actual = $(n_local + n_offset)
+  -- if S.ARRAYS[n_actual] = parray*[n_local]
+  -- if (HARRAY n_actual) <- S.ALLOCATIONS
+def $compilation_pool_arrays(S, parray*, n_offset, pnode*) = false -- otherwise
+
+dec $compilation_pool_valid(pstate, nat, ppinstalled) : bool
+def $compilation_pool_valid(S, n_unit, ppinstalled) = true
+  -- if $pool_at(S.POOLS, n_unit) = (ppool)
+  -- if $compilation_pool_offset(ppinstalled.CONSTANTS, ppool.CONSTANTS) = (n_offset)
+  -- if ppool.CONSTANTS = $pool_shift_constants(ppinstalled.CONSTANTS, n_offset)
+  -- if $compilation_pool_arrays(S, $pool_shift_arrays(ppinstalled.ARRAYS, n_offset), n_offset, ppinstalled.ALLOCATIONS)
+def $compilation_pool_valid(S, n_unit, ppinstalled) = false -- otherwise
+
+dec $compilation_image_valid(pstate, pcunit, ppstate) : bool
+def $compilation_image_valid(S, pcunit, P) = true
+  -- if pcunit = $pcsource(pcunit.ID, pcunit.AST)
+  -- if P.FOLD.SOURCE = pcunit
+  -- if ~$declaration_parser_rejects($declaration_preflight(pcunit.OCCURRENCES))
+  -- if $code_at(S.CODE, pcunit.ID) = (P.INSTALLED.CODE)
+  -- if $closure_unit_templates(S.CLOSURETEMPLATES, pcunit.ID) = P.INSTALLED.CLOSURETEMPLATES
+  -- if $compilation_pool_valid(S, pcunit.ID, P.INSTALLED)
+def $compilation_image_valid(S, pcunit, P) = false -- otherwise
+
+def $compilation_projection(S, pcunit) = (P.INSTALLED)
+  -- if P = $declaration_compiler_state($eval_source_ppstate(S, pcunit))
+  -- if $compilation_image_valid(S, pcunit, P)
+def $compilation_projection(S, pcunit) = eps -- otherwise
+
+dec $declaration_complete_item(pdeclaration, nat) : bool
+def $declaration_complete_item(PDEXIT n_unit PCSCOMPLETE, n_unit) = true
+def $declaration_complete_item(pdeclaration, n_unit) = false -- otherwise
+def $declaration_unit_complete(eps, n_unit) = false
+def $declaration_unit_complete(pdeclaration :: pdeclaration_tail*, n_unit) = true
+  -- if $declaration_complete_item(pdeclaration, n_unit)
+def $declaration_unit_complete(pdeclaration :: pdeclaration_tail*, n_unit) = $declaration_unit_complete(pdeclaration_tail*, n_unit)
+  -- if ~$declaration_complete_item(pdeclaration, n_unit)
+
+def $declaration_parser_rejects((COMPILETHROWN ptbytes z)) = true
+def $declaration_parser_rejects(pcompletion?) = false -- otherwise

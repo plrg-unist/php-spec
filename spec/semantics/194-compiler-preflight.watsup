@@ -1,0 +1,189 @@
+;; Parser-form modifier/encoding failures precede every declaration checkpoint.
+;; A rejected checked main AST is retained only in its terminal history record.
+dec $declaration_parser_node(pcnode) : pcompletion?
+dec $declaration_parser_method(int, metadata, metadata) : pcompletion?
+dec $declaration_parser_class(int, phpType3, metadata) : pcompletion?
+dec $declaration_parser_span(metadata, bool) : int?
+dec $declaration_parser_inside(metadata, metadata) : int?
+dec $declaration_parser_line(metadata, ptbytes) : pcompletion?
+def $declaration_parser_line(metadata, ptbytes) = (COMPILETHROWN ptbytes z)
+  -- if z = $source_line(metadata)
+  -- if $(z > 0 /\ z <= $source_end_line(metadata))
+def $declaration_parser_line(metadata, ptbytes) = (UNSUPPORTED "parser modifier source line") -- otherwise
+
+dec $declaration_method_keyword_item(metadataEntry) : int*
+dec $declaration_method_start_item(metadataEntry) : int*
+dec $declaration_method_end_item(metadataEntry) : int*
+dec $declaration_method_keyword_lines(metadata) : int*
+dec $declaration_method_start_lines(metadata) : int*
+dec $declaration_method_end_lines(metadata) : int*
+def $declaration_method_keyword_item(MmethodKeywordLine z) = [z]
+def $declaration_method_keyword_item(metadataEntry) = eps -- otherwise
+def $declaration_method_start_item(MstartLine z) = [z]
+def $declaration_method_start_item(metadataEntry) = eps -- otherwise
+def $declaration_method_end_item(MendLine z) = [z]
+def $declaration_method_end_item(metadataEntry) = eps -- otherwise
+def $declaration_method_keyword_lines(eps) = eps
+def $declaration_method_keyword_lines(metadataEntry :: metadataEntry_tail*) = $declaration_method_keyword_item(metadataEntry) ++ $declaration_method_keyword_lines(metadataEntry_tail*)
+def $declaration_method_start_lines(eps) = eps
+def $declaration_method_start_lines(metadataEntry :: metadataEntry_tail*) = $declaration_method_start_item(metadataEntry) ++ $declaration_method_start_lines(metadataEntry_tail*)
+def $declaration_method_end_lines(eps) = eps
+def $declaration_method_end_lines(metadataEntry :: metadataEntry_tail*) = $declaration_method_end_item(metadataEntry) ++ $declaration_method_end_lines(metadataEntry_tail*)
+def $declaration_method_source_line(metadata) = z
+  -- if $declaration_method_keyword_lines(metadata) = [z]
+  -- if $declaration_method_start_lines(metadata) = [z_start]
+  -- if $declaration_method_end_lines(metadata) = [z_end]
+  -- if $(z_start > 0 /\ z >= z_start /\ z <= z_end)
+def $declaration_method_source_line(metadata) = z
+  -- if $declaration_method_keyword_lines(metadata) = eps
+  -- if $declaration_method_start_lines(metadata) = [z]
+  -- if $declaration_method_end_lines(metadata) = [z]
+  -- if $(z > 0)
+def $declaration_method_source_line(metadata) = 0 -- otherwise
+def $declaration_method_keyword_line(metadata, metadata_name) = z
+  -- if z = $declaration_method_source_line(metadata)
+  -- if $declaration_method_start_lines(metadata_name) = [z_name]
+  -- if $(z > 0 /\ z <= z_name /\ z_name <= $source_end_line(metadata))
+def $declaration_method_keyword_line(metadata, metadata_name) = 0 -- otherwise
+dec $declaration_parser_method_line(metadata, metadata, ptbytes) : pcompletion?
+def $declaration_parser_method_line(metadata, metadata_name, ptbytes) = (COMPILETHROWN ptbytes z)
+  -- if z = $declaration_method_keyword_line(metadata, metadata_name)
+  -- if $(z > 0)
+def $declaration_parser_method_line(metadata, metadata_name, ptbytes) = (UNSUPPORTED "parser method keyword source line")
+  -- if $declaration_method_keyword_line(metadata, metadata_name) = 0
+
+;; Raw header token positions distinguish the first parser-form failure.
+syntax pmethodmodifierorder = (int, int, int)
+dec $declaration_method_modifier_item(metadataEntry, int) : int*
+dec $declaration_method_modifier_tokens(metadata, int) : int*
+def $declaration_method_modifier_item(MmethodKeywordTokenPos z, 0) = [z]
+def $declaration_method_modifier_item(MmethodReadonlyTokenPos z, 64) = [z]
+def $declaration_method_modifier_item(MmethodAbstractTokenPos z, 16) = [z]
+def $declaration_method_modifier_item(MmethodFinalTokenPos z, 32) = [z]
+def $declaration_method_modifier_item(metadataEntry, int) = eps -- otherwise
+def $declaration_method_modifier_tokens(eps, int) = eps
+def $declaration_method_modifier_tokens(metadataEntry :: metadataEntry_tail*, int) = $declaration_method_modifier_item(metadataEntry, int) ++ $declaration_method_modifier_tokens(metadataEntry_tail*, int)
+dec $declaration_method_modifier_order(metadata, metadata) : pmethodmodifierorder?
+def $declaration_method_modifier_order(metadata, metadata_name) = ((z_readonly, z_abstract, z_final))
+  -- if $declaration_parser_span(metadata, true) = (z_start)
+  -- if $declaration_parser_inside(metadata, metadata_name) = (z_name)
+  -- if $declaration_method_modifier_tokens(metadata, 0) = [z_keyword]
+  -- if $declaration_method_modifier_tokens(metadata, 64) = [z_readonly]
+  -- if $declaration_method_modifier_tokens(metadata, 16) = [z_abstract]
+  -- if $declaration_method_modifier_tokens(metadata, 32) = [z_final]
+  -- if $(z_start <= z_readonly /\ z_start <= z_abstract /\ z_start <= z_final /\ z_readonly < z_keyword /\ z_abstract < z_keyword /\ z_final < z_keyword /\ z_keyword < z_name)
+  -- if $(z_readonly =/= z_abstract /\ z_readonly =/= z_final /\ z_abstract =/= z_final)
+def $declaration_method_modifier_order(metadata, metadata_name) = eps -- otherwise
+
+def $declaration_parser_method(flags, metadata, metadata_name) = $declaration_parser_method_line(metadata, metadata_name, $ptascii("Cannot use the final modifier on an abstract method"))
+  -- if $ppproperty_flag(flags, 64) /\ $ppproperty_flag(flags, 16) /\ $ppproperty_flag(flags, 32)
+  -- if $declaration_method_modifier_order(metadata, metadata_name) = ((z_readonly, z_abstract, z_final))
+  -- if $(z_abstract < z_readonly /\ z_final < z_readonly)
+def $declaration_parser_method(flags, metadata, metadata_name) = $declaration_parser_method_line(metadata, metadata_name, $ptascii("Cannot use the readonly modifier on a method"))
+  -- if $ppproperty_flag(flags, 64) /\ $ppproperty_flag(flags, 16) /\ $ppproperty_flag(flags, 32)
+  -- if $declaration_method_modifier_order(metadata, metadata_name) = ((z_readonly, z_abstract, z_final))
+  -- if $(z_readonly < z_abstract \/ z_readonly < z_final)
+def $declaration_parser_method(flags, metadata, metadata_name) = (UNSUPPORTED "combined method modifier token order")
+  -- if $ppproperty_flag(flags, 64) /\ $ppproperty_flag(flags, 16) /\ $ppproperty_flag(flags, 32)
+  -- if $declaration_method_modifier_order(metadata, metadata_name) = eps
+def $declaration_parser_method(flags, metadata, metadata_name) = $declaration_parser_method_line(metadata, metadata_name, $ptascii("Cannot use the readonly modifier on a method"))
+  -- if $ppproperty_flag(flags, 64) /\ ~($ppproperty_flag(flags, 16) /\ $ppproperty_flag(flags, 32))
+def $declaration_parser_method(flags, metadata, metadata_name) = $declaration_parser_method_line(metadata, metadata_name, $ptascii("Cannot use the final modifier on an abstract method"))
+  -- if ~$ppproperty_flag(flags, 64) /\ $ppproperty_flag(flags, 16) /\ $ppproperty_flag(flags, 32)
+def $declaration_parser_method(flags, metadata, metadata_name) = eps -- otherwise
+def $declaration_parser_class(flags, phpType3, metadata) = $declaration_parser_line(metadata, $ptascii("Cannot use the final modifier on an abstract class"))
+  -- if phpType3 =/= ABSENT /\ $ppproperty_flag(flags, 16) /\ $ppproperty_flag(flags, 32)
+def $declaration_parser_class(flags, ABSENT, metadata) = (UNSUPPORTED "combined anonymous parser modifiers")
+  -- if $ppproperty_flag(flags, 16) /\ $ppproperty_flag(flags, 32)
+def $declaration_parser_class(flags, ABSENT, metadata) = $declaration_parser_line(metadata, $ptascii("Cannot use the abstract modifier on an anonymous class"))
+  -- if $ppproperty_flag(flags, 16) /\ ~$ppproperty_flag(flags, 32)
+def $declaration_parser_class(flags, ABSENT, metadata) = $declaration_parser_line(metadata, $ptascii("Cannot use the final modifier on an anonymous class"))
+  -- if ~$ppproperty_flag(flags, 16) /\ $ppproperty_flag(flags, 32)
+def $declaration_parser_class(flags, phpType3, metadata) = eps -- otherwise
+dec $declaration_encoding_literal(expression) : bool
+def $declaration_encoding_literal(NScalarInt phpType24 metadata) = true
+def $declaration_encoding_literal(NScalarFloat phpType41 metadata) = true
+def $declaration_encoding_literal(NScalarString phpType33 metadata) = true
+def $declaration_encoding_literal(expression) = false -- otherwise
+def $declaration_parser_node(NStmtClassMethod phpType14 (INTEGER flags) phpType4 phpType11 phpType16 phpType18 phpType47 metadata) = $declaration_parser_method(flags, metadata, $pcmetadata(phpType11))
+def $declaration_parser_node(NStmtClass phpType14 (INTEGER flags) phpType3 phpType44 phpType42 phpType23 metadata) = $declaration_parser_class(flags, phpType3, metadata)
+def $declaration_parser_node(NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = $declaration_parser_line(metadata, $ptascii("Encoding must be a literal"))
+  -- if $ptlc($base64(text)) = $ptascii("encoding") /\ ~$declaration_encoding_literal(expression)
+def $declaration_parser_node(pcnode) = eps -- otherwise
+
+;; Attribute arguments are parsed before their enclosing declaration's
+;; modifiers. Identifier token order preserves method modifier reduction order;
+;; an encoding declaration reduces after its complete value expression.
+syntax pdeclparserfault = (int, pcompletion)
+dec $declaration_parser_token_item(metadataEntry, bool) : int*
+dec $declaration_parser_tokens(metadata, bool) : int*
+dec $declaration_parser_token(metadata, bool) : int?
+def $declaration_parser_token_item(MstartTokenPos z, true) = [z]
+def $declaration_parser_token_item(MendTokenPos z, false) = [z]
+def $declaration_parser_token_item(metadataEntry, bool) = eps -- otherwise
+def $declaration_parser_tokens(eps, bool) = eps
+def $declaration_parser_tokens(metadataEntry :: metadataEntry_tail*, bool) = $declaration_parser_token_item(metadataEntry, bool) ++ $declaration_parser_tokens(metadataEntry_tail*, bool)
+def $declaration_parser_token(metadata, bool) = (z)
+  -- if $declaration_parser_tokens(metadata, bool) = [z]
+  -- if $(z >= 0)
+def $declaration_parser_token(metadata, bool) = eps -- otherwise
+def $declaration_parser_span(metadata, true) = (z_start)
+  -- if $declaration_parser_token(metadata, true) = (z_start)
+  -- if $declaration_parser_token(metadata, false) = (z_end)
+  -- if $(z_start <= z_end)
+def $declaration_parser_span(metadata, false) = (z_end)
+  -- if $declaration_parser_token(metadata, true) = (z_start)
+  -- if $declaration_parser_token(metadata, false) = (z_end)
+  -- if $(z_start <= z_end)
+def $declaration_parser_span(metadata, bool) = eps -- otherwise
+def $declaration_parser_inside(metadata, metadata_name) = (z_name_start)
+  -- if $declaration_parser_span(metadata, true) = (z_start)
+  -- if $declaration_parser_span(metadata, false) = (z_end)
+  -- if $declaration_parser_span(metadata_name, true) = (z_name_start)
+  -- if $declaration_parser_span(metadata_name, false) = (z_name_end)
+  -- if $(z_start <= z_name_start /\ z_name_end <= z_end)
+def $declaration_parser_inside(metadata, metadata_name) = eps -- otherwise
+dec $declaration_parser_rank(pcnode) : int?
+def $declaration_parser_rank(NStmtClassMethod phpType14 (INTEGER flags) phpType4 phpType11 phpType16 phpType18 phpType47 metadata) = $declaration_parser_inside(metadata, $pcmetadata(phpType11))
+def $declaration_parser_rank(NStmtClass phpType14 (INTEGER flags) (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 phpType23 metadata) = $declaration_parser_inside(metadata, metadata_name)
+def $declaration_parser_rank(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 phpType42 phpType23 metadata) = $declaration_parser_span(metadata, true)
+def $declaration_parser_rank(NDeclareItem phpType11 expression metadata) = $declaration_parser_span(metadata, false)
+def $declaration_parser_rank(pcnode) = eps -- otherwise
+dec $declaration_parser_fault(pcnode) : pdeclparserfault?
+def $declaration_parser_fault(pcnode) = ((z, pcompletion))
+  -- if $declaration_parser_node(pcnode) = (pcompletion)
+  -- if $declaration_parser_rank(pcnode) = (z)
+def $declaration_parser_fault(pcnode) = ((-1, UNSUPPORTED "parser modifier order source positions"))
+  -- if $declaration_parser_node(pcnode) = (pcompletion)
+  -- if $declaration_parser_rank(pcnode) = eps
+def $declaration_parser_fault(pcnode) = eps
+  -- if $declaration_parser_node(pcnode) = eps
+dec $declaration_parser_first(pdeclparserfault?, pdeclparserfault?) : pdeclparserfault?
+def $declaration_parser_first(eps, pdeclparserfault?) = pdeclparserfault?
+def $declaration_parser_first((pdeclparserfault), eps) = (pdeclparserfault)
+def $declaration_parser_first(((z_left, pcompletion_left)), ((z_right, pcompletion_right))) = ((z_left, pcompletion_left))
+  -- if $(z_left < z_right)
+def $declaration_parser_first(((z_left, pcompletion_left)), ((z_right, pcompletion_right))) = ((z_right, pcompletion_right))
+  -- if $(z_right < z_left)
+def $declaration_parser_first(((z, pcompletion)), ((z, pcompletion))) = ((z, pcompletion))
+def $declaration_parser_first(((z, pcompletion_left)), ((z, pcompletion_right))) = ((-1, UNSUPPORTED "conflicting parser modifier source positions"))
+  -- if pcompletion_left =/= pcompletion_right
+dec $declaration_preflight_faults(pcoccurrence*) : pdeclparserfault?
+def $declaration_preflight_faults(eps) = eps
+def $declaration_preflight_faults((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $declaration_parser_first($declaration_parser_fault(pcnode), $declaration_preflight_faults(pcoccurrence*))
+dec $declaration_parser_completion(pdeclparserfault?) : pcompletion?
+def $declaration_parser_completion(eps) = eps
+def $declaration_parser_completion(((z, pcompletion))) = (pcompletion)
+def $declaration_preflight(pcoccurrence*) = $declaration_parser_completion($declaration_preflight_faults(pcoccurrence*))
+
+def $declaration_compiler_state(P) = P[.COMPLETION = PPCABRUPT (UNSUPPORTED text)][.DIAGNOSTICS = eps][.PUBLICATIONS = eps][.INSTALLED = $ppimage_empty(P.FOLD.SOURCE.ID)]
+  -- if $declaration_preflight(P.FOLD.SOURCE.OCCURRENCES) = (UNSUPPORTED text)
+def $declaration_compiler_state(P) = P -- otherwise
+
+def $declaration_compile_preflight(S, P, eps) = $declaration_compile(S, P)
+def $declaration_compile_preflight(S, P, (pcompletion)) = $declaration_exit(S[.TODO = eps][.COMPLETION = pcompletion], 0, PCSMAINREJECT P.FOLD.SOURCE.AST)
+  -- if P.FOLD.SOURCE.ID = 0
+def $declaration_compile_preflight(S, P, (UNSUPPORTED text)) = $declaration_compile(S, $declaration_compiler_state(P))
+  -- if $(P.FOLD.SOURCE.ID > 0)
+def $declaration_compile_preflight(S, P, (COMPILETHROWN ptbytes z)) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "accepted dynamic parser-rejected AST"]
+  -- if $(P.FOLD.SOURCE.ID > 0)

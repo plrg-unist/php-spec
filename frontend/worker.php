@@ -273,6 +273,28 @@ while (($line = fgets(STDIN)) !== false) {
                         if ($classLine === null) throw new RuntimeException('Named class keyword token is missing');
                         $node->setAttribute('classKeywordLine', $classLine);
                     }
+                    if ($node instanceof PhpParser\Node\Stmt\ClassMethod) {
+                        $methodLine = null;
+                        $methodToken = null;
+                        for ($index = $node->getStartTokenPos(); $index < $node->name->getStartTokenPos(); ++$index) {
+                            if ($tokens[$index]->id === T_FUNCTION) {
+                                $methodLine = $tokens[$index]->line;
+                                $methodToken = $index;
+                            }
+                        }
+                        if ($methodLine === null) throw new RuntimeException('Method keyword token is missing');
+                        $node->setAttribute('methodKeywordLine', $methodLine);
+                        if (($node->flags & (PhpParser\Modifiers::READONLY | PhpParser\Modifiers::ABSTRACT | PhpParser\Modifiers::FINAL))
+                            === (PhpParser\Modifiers::READONLY | PhpParser\Modifiers::ABSTRACT | PhpParser\Modifiers::FINAL)) {
+                            $node->setAttribute('methodKeywordTokenPos', $methodToken);
+                            $positions = [T_READONLY => 'methodReadonlyTokenPos', T_ABSTRACT => 'methodAbstractTokenPos', T_FINAL => 'methodFinalTokenPos'];
+                            for ($index = $methodToken - 1; $index >= $node->getStartTokenPos(); --$index) {
+                                $token = $tokens[$index]->id;
+                                if (!in_array($token, [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_READONLY, T_ABSTRACT, T_FINAL], true)) break;
+                                if (isset($positions[$token])) $node->setAttribute($positions[$token], $index);
+                            }
+                        }
+                    }
                     if ($node instanceof PhpParser\Node\Stmt\If_ || $node instanceof PhpParser\Node\Stmt\ElseIf_ || $node instanceof PhpParser\Node\Stmt\Else_ || $node instanceof PhpParser\Node\Stmt\While_ || $node instanceof PhpParser\Node\Stmt\Do_ || $node instanceof PhpParser\Node\Stmt\For_ || $node instanceof PhpParser\Node\Stmt\Foreach_) {
                         $index = $node->getStartTokenPos() + 1;
                         if (!($node instanceof PhpParser\Node\Stmt\Do_) && !($node instanceof PhpParser\Node\Stmt\Else_)) {

@@ -1,0 +1,128 @@
+;; zend_can_early_bind probes methods before typed properties. A definite
+;; mismatch stops the probe too; only unresolved availability defers linking.
+syntax pdeclprobe = DECLREADY | DECLDEFER | DECLUNSUPPORTED text
+
+dec $declaration_method_compare(pstate, pclassdesc, pmethoddesc, pclassdesc, pmethoddesc) : pmcheck
+def $declaration_method_compare(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = $pmcompare(PMUSER $pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pmethod_scope(pclassdesc_child, $method_all_ancestor_names(S, pclassdesc_child.ORIGIN, |S.CLASSES|)), PMUSER $pmethod_user(pmethoddesc_parent, pclassdesc_parent, $call_sourcefile(S.FILES, pclassdesc_parent.ORIGIN)), $pmethod_scope(pclassdesc_parent, $method_all_ancestor_names(S, pclassdesc_parent.ORIGIN, |S.CLASSES|)), $method_active_registry(S, S.CLASSNAMES))
+
+dec $declaration_method_signature(pstate, pclassdesc, pmethoddesc, pclassdesc, pmethoddesc) : pmcheck
+def $declaration_method_signature(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = $declaration_method_compare(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto)
+  -- if $ptlc(pmethoddesc_parent.NAME) = $ptascii("__construct")
+  -- if $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) = (PPMINHERITED pmethoddesc_proto pclassdesc_proto)
+def $declaration_method_signature(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = $declaration_method_compare(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) -- otherwise
+
+dec $declaration_method_one(pstate, pclassdesc, ppmethodinherited) : pmcheck
+def $declaration_method_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = PMCHECK PVYES eps
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = eps
+def $declaration_method_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = PMCHECK PVYES eps
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if $pmethod_independent_private(pmethoddesc_parent)
+def $declaration_method_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = PMCHECK PVNO eps
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
+  -- if pmethoddesc_parent.FINAL \/ $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) =/= eps \/ (pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+def $declaration_method_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = PMCHECK PVYES eps
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
+  -- if ~pmethoddesc_parent.FINAL /\ $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $ptlc(pmethoddesc_parent.NAME) = $ptascii("__construct") /\ ~pmethoddesc_parent.ABSTRACT
+  -- if $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) = eps
+def $declaration_method_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = PMCHECK PVNO eps
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
+  -- if ~pmethoddesc_parent.FINAL /\ $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ pmethoddesc_parent.ABSTRACT \/ $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) =/= eps
+  -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) =/= eps
+def $declaration_method_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = $declaration_method_signature(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent)
+  -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
+  -- if ~$pmethod_independent_private(pmethoddesc_parent)
+  -- if ~pmethoddesc_parent.FINAL /\ $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
+  -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ pmethoddesc_parent.ABSTRACT \/ $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) =/= eps
+  -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
+
+dec $declaration_method_items(pstate, pclassdesc, ppmethodinherited*) : pmcheck
+dec $declaration_method_yes(pmcheck) : bool
+def $declaration_method_items(S, pclassdesc, eps) = PMCHECK PVYES eps
+def $declaration_method_items(S, pclassdesc, ppmethodinherited :: ppmethodinherited_tail*) = $declaration_method_items(S, pclassdesc, ppmethodinherited_tail*)
+  -- if $declaration_method_one(S, pclassdesc, ppmethodinherited) = PMCHECK PVYES ptbytes*
+def $declaration_method_items(S, pclassdesc, ppmethodinherited :: ppmethodinherited_tail*) = pmcheck
+  -- if $declaration_method_one(S, pclassdesc, ppmethodinherited) = pmcheck
+  -- if ~$declaration_method_yes(pmcheck)
+def $declaration_method_yes(PMCHECK PVYES ptbytes*) = true
+def $declaration_method_yes(pmcheck) = false -- otherwise
+
+dec $declaration_property_scope(pstate, ppropertydesc) : pvclass?
+def $declaration_property_scope(S, ppropertydesc) = $pvregistry($method_active_registry(S, S.CLASSNAMES), $property_declaring_name(S.CLASSES, porigin))
+  -- if ppropertydesc.ORIGIN = porigin
+def $declaration_property_scope(S, ppropertydesc) = ($pil_internal_scope($ptascii(text_kind)))
+  -- if ppropertydesc.ORIGIN = INTERNAL_PROPERTY text_kind ptbytes
+
+dec $declaration_invariant(pvresult, pvresult) : pmcheck
+dec $declaration_pvunsupported(pvresult) : bool
+def $declaration_invariant(PVUNSUPPORTED text, pvresult) = PMUNSUPPORTED text
+def $declaration_invariant(pvresult, PVUNSUPPORTED text) = PMUNSUPPORTED text
+  -- if ~$declaration_pvunsupported(pvresult)
+def $declaration_invariant(pvresult_left, pvresult_right) = PMCHECK PVNO eps
+  -- if ~$declaration_pvunsupported(pvresult_left) /\ ~$declaration_pvunsupported(pvresult_right)
+  -- if pvresult_left = PVINCOMPATIBLE \/ pvresult_right = PVINCOMPATIBLE
+def $declaration_invariant(PVCOMPATIBLE, PVCOMPATIBLE) = PMCHECK PVYES eps
+def $declaration_invariant(pvresult_left, pvresult_right) = PMCHECK PVUNRESOLVED eps
+  -- if ~$declaration_pvunsupported(pvresult_left) /\ ~$declaration_pvunsupported(pvresult_right)
+  -- if pvresult_left =/= PVINCOMPATIBLE /\ pvresult_right =/= PVINCOMPATIBLE
+  -- if pvresult_left =/= PVCOMPATIBLE \/ pvresult_right =/= PVCOMPATIBLE
+def $declaration_pvunsupported(PVUNSUPPORTED text) = true
+def $declaration_pvunsupported(pvresult) = false -- otherwise
+
+dec $declaration_property_one(pstate, pclassdesc, ppropertydesc) : pmcheck
+def $declaration_property_one(S, pclassdesc_child, ppropertydesc_parent) = PMCHECK PVYES eps
+  -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PRIVATE \/ ppropertydesc_parent.TYPE = eps \/ $ppproperty_desc_at(pclassdesc_child.PROPERTIES, ppropertydesc_parent.NAME) = eps
+def $declaration_property_one(S, pclassdesc_child, ppropertydesc_parent) = PMCHECK PVYES eps
+  -- if ppropertydesc_parent.VISIBILITY =/= PROPERTY_PRIVATE /\ ppropertydesc_parent.TYPE =/= eps
+  -- if $ppproperty_desc_at(pclassdesc_child.PROPERTIES, ppropertydesc_parent.NAME) = (ppropertydesc_child)
+  -- if ppropertydesc_child.TYPE = eps \/ $ppproperty_type_equal(ppropertydesc_child.TYPE, ppropertydesc_parent.TYPE)
+def $declaration_property_one(S, pclassdesc_child, ppropertydesc_parent) = $declaration_invariant($pvcovariant(ppropertydesc_child.TYPE, pvclass_child, ppropertydesc_parent.TYPE, pvclass_parent, pvclasses), $pvcovariant(ppropertydesc_parent.TYPE, pvclass_parent, ppropertydesc_child.TYPE, pvclass_child, pvclasses))
+  -- if ppropertydesc_parent.VISIBILITY =/= PROPERTY_PRIVATE /\ ppropertydesc_parent.TYPE =/= eps
+  -- if $ppproperty_desc_at(pclassdesc_child.PROPERTIES, ppropertydesc_parent.NAME) = (ppropertydesc_child)
+  -- if ppropertydesc_child.TYPE =/= eps /\ ~$ppproperty_type_equal(ppropertydesc_child.TYPE, ppropertydesc_parent.TYPE)
+  -- if $declaration_property_scope(S, ppropertydesc_child) = (pvclass_child)
+  -- if $declaration_property_scope(S, ppropertydesc_parent) = (pvclass_parent)
+  -- if pvclasses = $method_active_registry(S, S.CLASSNAMES)
+def $declaration_property_one(S, pclassdesc_child, ppropertydesc_parent) = PMUNSUPPORTED "property probe declaring scope" -- otherwise
+
+dec $declaration_property_items(pstate, pclassdesc, ppropertydesc*) : pmcheck
+def $declaration_property_items(S, pclassdesc, eps) = PMCHECK PVYES eps
+def $declaration_property_items(S, pclassdesc, ppropertydesc :: ppropertydesc_tail*) = $declaration_property_items(S, pclassdesc, ppropertydesc_tail*)
+  -- if $declaration_method_yes($declaration_property_one(S, pclassdesc, ppropertydesc))
+def $declaration_property_items(S, pclassdesc, ppropertydesc :: ppropertydesc_tail*) = pmcheck
+  -- if pmcheck = $declaration_property_one(S, pclassdesc, ppropertydesc)
+  -- if ~$declaration_method_yes(pmcheck)
+
+dec $declaration_probe_result(pmcheck) : pdeclprobe
+def $declaration_probe_result(PMCHECK PVUNRESOLVED ptbytes*) = DECLDEFER
+def $declaration_probe_result(PMCHECK pvstatus ptbytes*) = DECLREADY -- if pvstatus =/= PVUNRESOLVED
+def $declaration_probe_result(PMUNSUPPORTED text) = DECLUNSUPPORTED text
+dec $declaration_parent_probe(pstate, pclassdesc, porigin, pmcheck) : pdeclprobe
+def $declaration_parent_probe(S, pclassdesc, porigin_parent, PMCHECK PVYES ptbytes*) = $declaration_probe_result($declaration_property_items(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|)))
+def $declaration_parent_probe(S, pclassdesc, porigin_parent, pmcheck) = $declaration_probe_result(pmcheck)
+  -- if ~$declaration_method_yes(pmcheck)
+
+dec $declaration_class_probe(pstate, pclassdesc) : pdeclprobe
+def $declaration_class_probe(S, pclassdesc) = DECLDEFER
+  -- if $class_internal(pclassdesc.NAME) \/ $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) =/= eps \/ pclassdesc.INTERFACES =/= eps
+def $declaration_class_probe(S, pclassdesc) = DECLREADY
+  -- if ~$class_internal(pclassdesc.NAME) /\ $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps /\ pclassdesc.INTERFACES = eps
+  -- if pclassdesc.PARENT = eps
+def $declaration_class_probe(S, pclassdesc) = DECLREADY
+  -- if ~$class_internal(pclassdesc.NAME) /\ $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps /\ pclassdesc.INTERFACES = eps
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $class_internal(ptbytes_parent)
+def $declaration_class_probe(S, pclassdesc) = DECLDEFER
+  -- if ~$class_internal(pclassdesc.NAME) /\ $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps /\ pclassdesc.INTERFACES = eps
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if ~$class_internal(ptbytes_parent) /\ $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = eps
+def $declaration_class_probe(S, pclassdesc) = $declaration_parent_probe(S_link, pclassdesc, porigin_parent, $declaration_method_items(S_link, pclassdesc, $method_info_layout(S, porigin_parent, |S.CLASSES|)))
+  -- if ~$class_internal(pclassdesc.NAME) /\ $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps /\ pclassdesc.INTERFACES = eps
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if ~$class_internal(ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if S_link = $method_link_state(S, pclassdesc, porigin_parent)
