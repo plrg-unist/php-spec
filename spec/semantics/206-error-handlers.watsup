@@ -1,0 +1,240 @@
+;; PHP 8.5.10 Zend handler registration stores a raw zval and an int32 mask.
+;; The existing CONFIG transport supplies evaluated positional/named/unpacked
+;; values and source certificates; these APIs do not require file-mode facts.
+def $intrinsic_name(INTRINSIC_ERROR_REPORTING) = $ptascii("error_reporting")
+def $intrinsic_name(INTRINSIC_SET_ERROR_HANDLER) = $ptascii("set_error_handler")
+def $intrinsic_name(INTRINSIC_RESTORE_ERROR_HANDLER) = $ptascii("restore_error_handler")
+def $intrinsic_name(INTRINSIC_GET_ERROR_HANDLER) = $ptascii("get_error_handler")
+def $intrinsic_name(INTRINSIC_TRIGGER_ERROR) = $ptascii("trigger_error")
+def $intrinsic_name(INTRINSIC_USER_ERROR) = $ptascii("user_error")
+def $intrinsic_named(preqbytes) = (INTRINSIC_ERROR_REPORTING) -- if $ptlc(preqbytes) = $ptascii("error_reporting")
+def $intrinsic_named(preqbytes) = (INTRINSIC_SET_ERROR_HANDLER) -- if $ptlc(preqbytes) = $ptascii("set_error_handler")
+def $intrinsic_named(preqbytes) = (INTRINSIC_RESTORE_ERROR_HANDLER) -- if $ptlc(preqbytes) = $ptascii("restore_error_handler")
+def $intrinsic_named(preqbytes) = (INTRINSIC_GET_ERROR_HANDLER) -- if $ptlc(preqbytes) = $ptascii("get_error_handler")
+def $intrinsic_named(preqbytes) = (INTRINSIC_TRIGGER_ERROR) -- if $ptlc(preqbytes) = $ptascii("trigger_error")
+def $intrinsic_named(preqbytes) = (INTRINSIC_USER_ERROR) -- if $ptlc(preqbytes) = $ptascii("user_error")
+def $error_api_kind(INTRINSIC_ERROR_REPORTING) = true
+def $error_api_kind(INTRINSIC_SET_ERROR_HANDLER) = true
+def $error_api_kind(INTRINSIC_RESTORE_ERROR_HANDLER) = true
+def $error_api_kind(INTRINSIC_GET_ERROR_HANDLER) = true
+def $error_api_kind(INTRINSIC_TRIGGER_ERROR) = true
+def $error_api_kind(INTRINSIC_USER_ERROR) = true
+def $error_api_kind(pintrinsic) = false -- otherwise
+def $config_kind(pintrinsic) = true -- if $error_api_kind(pintrinsic)
+def $config_parameter(INTRINSIC_ERROR_REPORTING, preqbytes) = (0) -- if preqbytes = $ptascii("error_level")
+def $config_parameter(INTRINSIC_SET_ERROR_HANDLER, preqbytes) = (0) -- if preqbytes = $ptascii("callback")
+def $config_parameter(INTRINSIC_SET_ERROR_HANDLER, preqbytes) = (1) -- if preqbytes = $ptascii("error_levels")
+def $config_parameter(INTRINSIC_TRIGGER_ERROR, preqbytes) = (0) -- if preqbytes = $ptascii("message")
+def $config_parameter(INTRINSIC_TRIGGER_ERROR, preqbytes) = (1) -- if preqbytes = $ptascii("error_level")
+def $config_parameter(INTRINSIC_USER_ERROR, preqbytes) = $config_parameter(INTRINSIC_TRIGGER_ERROR, preqbytes)
+def $config_parameter_name(INTRINSIC_ERROR_REPORTING, 0) = $ptascii("error_level")
+def $config_parameter_name(INTRINSIC_SET_ERROR_HANDLER, 0) = $ptascii("callback")
+def $config_parameter_name(INTRINSIC_SET_ERROR_HANDLER, 1) = $ptascii("error_levels")
+def $config_parameter_name(INTRINSIC_TRIGGER_ERROR, 0) = $ptascii("message")
+def $config_parameter_name(INTRINSIC_TRIGGER_ERROR, 1) = $ptascii("error_level")
+def $config_parameter_name(INTRINSIC_USER_ERROR, n) = $config_parameter_name(INTRINSIC_TRIGGER_ERROR, n)
+
+dec $error_api_min(pintrinsic) : nat
+def $error_api_min(INTRINSIC_SET_ERROR_HANDLER) = 1
+def $error_api_min(INTRINSIC_TRIGGER_ERROR) = 1
+def $error_api_min(INTRINSIC_USER_ERROR) = 1
+def $error_api_min(pintrinsic) = 0 -- otherwise
+dec $error_api_max(pintrinsic) : nat
+def $error_api_max(INTRINSIC_ERROR_REPORTING) = 1
+def $error_api_max(INTRINSIC_SET_ERROR_HANDLER) = 2
+def $error_api_max(INTRINSIC_TRIGGER_ERROR) = 2
+def $error_api_max(INTRINSIC_USER_ERROR) = 2
+def $error_api_max(pintrinsic) = 0 -- otherwise
+dec $error_api_value(pconfigcall, nat, pvalue) : pvalue
+def $error_api_value(pconfigcall, n, pvalue_default) = pvalue
+  -- if $named_slot_at(pconfigcall.SENT, n) = NAMED_SENT (KNOWN pvalue)
+def $error_api_value(pconfigcall, n, pvalue_default) = pvalue_default -- otherwise
+dec $error_api_arity(pstate, pconfigcall) : pstate
+def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects ") ++ $ptascii("exactly 0 arguments, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
+  -- if $error_api_max(pconfigcall.KIND) = 0
+  -- if pconfigcall.SENT =/= eps
+def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects at least 1 argument, 0 given"))
+  -- if $error_api_min(pconfigcall.KIND) = 1
+  -- if pconfigcall.SENT = eps
+def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects at most ") ++ $decimal_integer(n_max) ++ $ptascii(" argument") ++ $config_plural(n_max) ++ $ptascii(", ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
+  -- if n_max = $error_api_max(pconfigcall.KIND)
+  -- if $(n_max > 0 /\ |pconfigcall.SENT| > n_max)
+def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($") ++ $config_parameter_name(pconfigcall.KIND, 0) ++ $ptascii(") not passed"))
+  -- if $error_api_min(pconfigcall.KIND) = 1
+  -- if pconfigcall.SENT = NAMED_HOLE :: pnamedslot*
+  -- if $(|pconfigcall.SENT| <= $error_api_max(pconfigcall.KIND))
+def $error_api_arity(S, pconfigcall) = S -- otherwise
+
+dec $error_int32(int) : int
+def $error_int32(i) = $(i_mod - 4294967296) -- if i_mod = $long_and(i, 4294967295) -- if $(i_mod >= 2147483648)
+def $error_int32(i) = i_mod -- if i_mod = $long_and(i, 4294967295) -- if $(i_mod < 2147483648)
+dec $error_long_conversion(pvalue, bool) : ptypeconversion
+def $error_long_conversion(PINT i, b) = TYPEVALUE (PINT i)
+def $error_long_conversion(pvalue, false) = $typed_weak(["int"], pvalue) -- if $typed_scalar(pvalue) -- if $typed_tag(pvalue) =/= "int"
+def $error_long_conversion(pvalue, b) = TYPEREJECT -- otherwise
+dec $error_api_long(pstate, pconfigcall, nat, pvalue) : pstate
+dec $error_trigger_kind(pintrinsic) : bool
+dec $error_trigger_message(pstate, pconfigcall) : preqbytes?
+dec $error_trigger_trace_values(pstate, pconfigcall) : pvalue*
+dec $error_api_error(pstate, pconfigcall, text, preqbytes) : pstate
+def $error_api_error(S, pconfigcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pconfigcall.SITE)], text, preqbytes, pconfigcall.LINE, $source_trace_prefixed(S, $config_trace_frames(S, pconfigcall, $error_trigger_trace_values(S, pconfigcall))))
+  -- if $error_trigger_kind(pconfigcall.KIND)
+  -- if $error_trigger_message(S, pconfigcall) =/= eps
+def $error_api_error(S, pconfigcall, text, preqbytes) = $config_error(S, pconfigcall, text, preqbytes)
+  -- if ~$error_trigger_kind(pconfigcall.KIND) \/ $error_trigger_message(S, pconfigcall) = eps
+def $error_api_long(S, pconfigcall, n, pvalue) = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
+  -- if ptypeconversion = $error_long_conversion(pvalue, $config_strict(S, pconfigcall))
+  -- if ptypeconversion =/= TYPEREJECT
+def $error_api_long(S, pconfigcall, n, pvalue) = $error_api_error(S, pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(pconfigcall.KIND, n) ++ $ptascii(") must be of type int, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if $error_long_conversion(pvalue, $config_strict(S, pconfigcall)) = TYPEREJECT
+  -- if pvalue =/= PNULL
+def $error_api_long(S, pconfigcall, n, PNULL) = S[.COMPLETION = UNSUPPORTED "error API nullable scalar conversion diagnostic"]
+
+dec $error_handler_value(perrorhandler) : pvalue
+def $error_handler_value({CALLBACK eps, LEVELS i}) = PNULL
+def $error_handler_value({CALLBACK (pvalue), LEVELS i}) = pvalue
+def $error_handler_roots({CALLBACK eps, LEVELS i}) = eps
+def $error_handler_roots({CALLBACK (pvalue), LEVELS i}) = $value_nodes(pvalue)
+def $error_handler_stack_roots(eps) = eps
+def $error_handler_stack_roots(perrorhandler :: perrorhandler_tail*) = $error_handler_roots(perrorhandler) ++ $error_handler_stack_roots(perrorhandler_tail*)
+def $error_handler_eligible(S, i) = true
+  -- if S.ERRORHANDLER.CALLBACK =/= eps
+  -- if $long_and(S.ERRORHANDLER.LEVELS, i) =/= 0
+  -- if ~(i <- [1,4,16,32,64,128])
+def $error_handler_eligible(S, i) = false -- otherwise
+dec $error_handler_restore(pstate, pvalue) : pstate
+;; Only the raw callable is restored automatically. The mask remains live.
+def $error_handler_restore(S, pvalue) = S[.ERRORHANDLER.CALLBACK = (pvalue)] -- if S.ERRORHANDLER.CALLBACK = eps
+def $error_handler_restore(S, pvalue) = S -- otherwise
+dec $error_handler_pop(pstate) : pstate
+def $error_handler_pop(S) = S[.ERRORHANDLER = perrorhandler][.ERRORHANDLERS = perrorhandler_tail*] -- if S.ERRORHANDLERS = perrorhandler :: perrorhandler_tail*
+def $error_handler_pop(S) = S[.ERRORHANDLER.CALLBACK = eps] -- if S.ERRORHANDLERS = eps
+dec $error_handler_invalid(pvalue) : preqbytes
+def $error_handler_invalid(PSTRING n*) = $ptascii("function \"") ++ $c_string(n*) ++ $ptascii("\" not found or invalid function name")
+def $error_handler_invalid(pvalue) = $ptascii("no array or string given") -- otherwise
+;; Zend's callback-parameter errors differ from direct array-call errors.
+dec $error_handler_array_invalid(pstate, nat) : preqbytes?
+def $error_handler_array_invalid(S, n) = ($ptascii("array callback must have exactly two members"))
+  -- if $array_shape_error(S, n) = ($ptascii("Array callback must have exactly two elements"))
+def $error_handler_array_invalid(S, n) = ($ptascii("array callback has to contain indices 0 and 1"))
+  -- if $array_shape_error(S, n) = ($ptascii("Array callback has to contain indices 0 and 1"))
+def $error_handler_array_invalid(S, n) = ($ptascii("first array member is not a valid class name or object"))
+  -- if $array_shape_error(S, n) = ($ptascii("First array member is not a valid class name or object"))
+def $error_handler_array_invalid(S, n) = ($ptascii("second array member is not a valid method"))
+  -- if $array_shape_error(S, n) = ($ptascii("Second array member is not a valid method"))
+def $error_handler_array_invalid(S, n) = eps -- otherwise
+dec $error_handler_registration(pstate, pconfigcall, pvalue) : pstate
+def $error_handler_registration(S, pconfigcall, pvalue) = S_mask[.ERRORHANDLERS = S.ERRORHANDLER :: S.ERRORHANDLERS][.ERRORHANDLER = {CALLBACK (pvalue), LEVELS $error_int32(i)}][.RESULT = KNOWN $error_handler_value(S.ERRORHANDLER)]
+  -- if $typed_callable(S, pvalue) = (true)
+  -- if S_mask = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 30719))
+  -- if S_mask.COMPLETION = NORMAL
+  -- if S_mask.RESULT = KNOWN (PINT i)
+def $error_handler_registration(S, pconfigcall, PNULL) = S_mask[.ERRORHANDLERS = S.ERRORHANDLER :: S.ERRORHANDLERS][.ERRORHANDLER.CALLBACK = eps][.RESULT = KNOWN $error_handler_value(S.ERRORHANDLER)]
+  -- if S_mask = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 30719))
+  -- if S_mask.COMPLETION = NORMAL
+def $error_handler_registration(S, pconfigcall, pvalue) = S_mask
+  -- if pvalue = PNULL \/ $typed_callable(S, pvalue) = (true)
+  -- if S_mask = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 30719))
+  -- if S_mask.COMPLETION =/= NORMAL
+def $error_handler_registration(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_error_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ $error_handler_invalid(pvalue))
+  -- if pvalue =/= PNULL
+  -- if ~$is_array_value(pvalue)
+  -- if $typed_callable(S, pvalue) = (false)
+def $error_handler_registration(S, pconfigcall, PARRAY n) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_error_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ n_reason*)
+  -- if $typed_callable(S, PARRAY n) = (false)
+  -- if $error_handler_array_invalid(S, n) = (n_reason*)
+def $error_handler_registration(S, pconfigcall, PARRAY n) = S[.COMPLETION = UNSUPPORTED "error-handler array callback resolution"]
+  -- if $typed_callable(S, PARRAY n) = (false)
+  -- if $error_handler_array_invalid(S, n) = eps
+def $error_handler_registration(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "error-handler callable registration form"]
+  -- if $typed_callable(S, pvalue) = eps
+
+def $error_trigger_kind(INTRINSIC_TRIGGER_ERROR) = true
+def $error_trigger_kind(INTRINSIC_USER_ERROR) = true
+def $error_trigger_kind(pintrinsic) = false -- otherwise
+def $error_trigger_message(S, pconfigcall) = (n*) -- if $error_api_value(pconfigcall, 0, PNULL) = PSTRING n*
+def $error_trigger_message(S, pconfigcall) = ($echo_value(pvalue))
+  -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
+  -- if pvalue =/= PNULL
+  -- if $typed_scalar(pvalue)
+  -- if ~$typed_string_value(pvalue)
+  -- if ~$config_strict(S, pconfigcall)
+def $error_trigger_message(S, pconfigcall) = eps -- otherwise
+dec $error_trigger_level(pstate, pconfigcall) : int?
+def $error_trigger_level(S, pconfigcall) = (i)
+  -- if S_level = $error_api_long(S[.ERRORHANDLER.CALLBACK = eps][.REPORTING = 0], pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 1024))
+  -- if S_level.COMPLETION = NORMAL
+  -- if S_level.RESULT = KNOWN (PINT i)
+def $error_trigger_level(S, pconfigcall) = eps -- otherwise
+dec $error_trigger_receive(pstate, pconfigcall) : pstate
+def $error_trigger_receive(S, pconfigcall) = S_level[.TODO = (ERROR_TRIGGER_PHASE pconfigcall 0) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if $error_trigger_message(S, pconfigcall) = (n*)
+  -- if S_level = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 1024))
+  -- if S_level.COMPLETION = NORMAL
+  -- if S_level.RESULT = KNOWN (PINT i)
+  -- if i <- [256,512,1024,16384]
+  -- if S.TODO = ptask :: ptask_tail*
+def $error_trigger_receive(S, pconfigcall) = $error_api_error(S_level, pconfigcall, "ValueError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #2 ($error_level) must be one of E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE, or E_USER_DEPRECATED"))
+  -- if $error_trigger_message(S, pconfigcall) = (n*)
+  -- if S_level = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 1024))
+  -- if S_level.COMPLETION = NORMAL
+  -- if S_level.RESULT = KNOWN (PINT i)
+  -- if ~(i <- [256,512,1024,16384])
+def $error_trigger_receive(S, pconfigcall) = S_level
+  -- if $error_trigger_message(S, pconfigcall) = (n*)
+  -- if S_level = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 1024))
+  -- if S_level.COMPLETION =/= NORMAL
+def $error_trigger_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($message) must be of type string, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
+  -- if $error_trigger_message(S, pconfigcall) = eps
+  -- if pvalue =/= PNULL
+  -- if ~$config_object(pvalue)
+def $error_trigger_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "error API Stringable or null message conversion"]
+  -- if $error_trigger_message(S, pconfigcall) = eps
+  -- if $error_api_value(pconfigcall, 0, PNULL) = PNULL \/ $config_object($error_api_value(pconfigcall, 0, PNULL))
+
+dec $error_api_body(pstate, pconfigcall) : pstate
+def $error_api_body(S, pconfigcall) = S[.RESULT = KNOWN (PINT S.REPORTING)]
+  -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
+  -- if $error_api_value(pconfigcall, 0, PNULL) = PNULL
+def $error_api_body(S, pconfigcall) = S_level[.REPORTING = $error_int32(i)][.REPORTINGINI = $decimal_integer(i)][.RESULT = KNOWN (PINT S.REPORTING)]
+  -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
+  -- if $error_api_value(pconfigcall, 0, PNULL) = pvalue
+  -- if pvalue =/= PNULL
+  -- if S_level = $error_api_long(S, pconfigcall, 0, pvalue)
+  -- if S_level.COMPLETION = NORMAL
+  -- if S_level.RESULT = KNOWN (PINT i)
+  -- if i =/= S.REPORTING
+def $error_api_body(S, pconfigcall) = S_level[.RESULT = KNOWN (PINT S.REPORTING)]
+  -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
+  -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
+  -- if pvalue =/= PNULL
+  -- if S_level = $error_api_long(S, pconfigcall, 0, pvalue)
+  -- if S_level.COMPLETION = NORMAL
+  -- if S_level.RESULT = KNOWN (PINT S.REPORTING)
+def $error_api_body(S, pconfigcall) = S_level
+  -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
+  -- if $error_api_value(pconfigcall, 0, PNULL) = pvalue
+  -- if pvalue =/= PNULL
+  -- if S_level = $error_api_long(S, pconfigcall, 0, pvalue)
+  -- if S_level.COMPLETION =/= NORMAL
+def $error_api_body(S, pconfigcall) = $error_handler_registration(S, pconfigcall, $error_api_value(pconfigcall, 0, PNULL)) -- if pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER
+def $error_api_body(S, pconfigcall) = $error_handler_pop(S)[.RESULT = KNOWN (PBOOL true)] -- if pconfigcall.KIND = INTRINSIC_RESTORE_ERROR_HANDLER
+def $error_api_body(S, pconfigcall) = S[.RESULT = KNOWN $error_handler_value(S.ERRORHANDLER)] -- if pconfigcall.KIND = INTRINSIC_GET_ERROR_HANDLER
+def $error_api_body(S, pconfigcall) = $error_trigger_receive(S, pconfigcall) -- if $error_trigger_kind(pconfigcall.KIND)
+dec $error_api_receive(pstate, pconfigcall) : pstate
+def $error_api_receive(S, pconfigcall) = S_arity -- if S_arity = $error_api_arity(S, pconfigcall) -- if S_arity.COMPLETION =/= NORMAL
+def $error_api_receive(S, pconfigcall) = S_body[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_arity = $error_api_arity(S, pconfigcall)
+  -- if S_arity.COMPLETION = NORMAL
+  -- if ~$error_trigger_kind(pconfigcall.KIND)
+  -- if S_body = $error_api_body(S_arity, pconfigcall)
+  -- if S.TODO = ptask :: ptask_tail*
+def $error_api_receive(S, pconfigcall) = $error_api_body(S_arity, pconfigcall)
+  -- if S_arity = $error_api_arity(S, pconfigcall)
+  -- if S_arity.COMPLETION = NORMAL
+  -- if $error_trigger_kind(pconfigcall.KIND)
+rule PhpStep/error-api-invoke: S ~> $error_api_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $error_api_kind(pconfigcall.KIND)
+  -- if $config_invoke_valid(S, pconfigcall)

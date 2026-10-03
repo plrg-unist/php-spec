@@ -10,10 +10,18 @@ def $event_source(S, WARNING n_name* z) = WARNING_SOURCE n n_name* z
 def $event_source(S, DIAGNOSTIC text n_message* z) = DIAGNOSTIC_SOURCE n text n_message* z
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $(n > 0)
+def $event_source(S, DIAGNOSTIC_STACK text n_message* z n_trace*) = DIAGNOSTIC_STACK_SOURCE n text n_message* z n_trace*
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $(n > 0)
 def $event_source(S, pevent) = pevent -- otherwise
-def $report_event(S, pevent, i_level) = S[.EVENTS = S.EVENTS ++ [$event_source(S, pevent)]]
+dec $error_handler_eligible(pstate, int) : bool
+def $report_event(S, pevent, i_level) = S[.ERRORFATALTRACE = eps][.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"]
+  -- if $error_handler_eligible(S, i_level)
+def $report_event(S, pevent, i_level) = S[.ERRORFATALTRACE = eps][.EVENTS = S.EVENTS ++ [$event_source(S, pevent)]]
+  -- if ~$error_handler_eligible(S, i_level)
   -- if $long_and(S.REPORTING, i_level) =/= 0
-def $report_event(S, pevent, i_level) = S
+def $report_event(S, pevent, i_level) = S[.ERRORFATALTRACE = eps]
+  -- if ~$error_handler_eligible(S, i_level)
   -- if $long_and(S.REPORTING, i_level) = 0
 
 dec $silence_restore(pstate, int) : pstate

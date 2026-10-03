@@ -1,0 +1,411 @@
+dec $error_entered_call_valid(pstate, perrorcall) : bool
+dec $error_default(pstate, pevent, int) : pstate
+dec $error_level_name(int) : text
+dec $error_user_deprecation() : preqbytes
+dec $error_dispatch(pstate, int, preqbytes, int, pevent, ptask) : pstate
+dec $error_handler_values(pstate, perrorcall) : pvalue*
+dec $error_handler_operands(pstate, pcalltarget, pvalue*, nat, int) : (pstate, poperand*)
+dec $error_handler_enter(pstate, perrorcall, pcalltarget, pfunction) : pstate
+dec $error_missing_operand(pstate, poperand) : bool
+dec $error_simple_read(ptask) : bool
+dec $error_read_shape(ptask, poperand, pbase) : perrorread?
+dec $error_read_line(ptask, int) : int
+dec $error_read_operand(perrorread) : poperand
+dec $error_read_plan(pstate) : perrorread?
+dec $error_variable_source(pstate, porigin?, pcpath, preqbytes) : bool
+dec $error_binary_source(pcnode) : pbin?
+dec $error_read_source(pstate, perrorread) : bool
+dec $code_expression_at_source(pstate, porigin, pcpath) : int?
+dec $error_read_valid(pstate, perrorread) : bool
+dec $error_context_frame_call(pcallcontext, pframe*) : perrorcall?
+dec $error_context_frame_head(pcallcontext, pframe*) : perrorcall?
+dec $error_context_current_call(pstate, pcallcontext) : perrorcall?
+dec $error_context_call(pstate, pcallcontext) : perrorcall?
+dec $error_context_anchor(pstate, pcallcontext, pcallcontext?, pframe*) : bool
+dec $error_handler_registered(pstate, perrorhandler) : bool
+dec $error_trace_capture(pstate, int, ptask) : pstate
+dec $error_fallback_finish(pstate, pvalue) : pstate
+dec $error_default_event(pstate, pevent) : pevent
+dec $error_trace_arguments(pstate, (pkey, pvalue)*) : preqbytes
+dec $error_trace_location(ptraceframe) : preqbytes
+dec $error_trace_call(ptraceframe) : preqbytes
+dec $error_trace_lines(pstate, ptraceframe*, nat) : preqbytes
+
+;; Dispatch is a source execution boundary, not a delayed report after a write.
+;; Zend captures fatal arguments before the callback. Any later error clears
+;; this request-global snapshot, including a masked warning inside the callback.
+def $error_trace_capture(S, 256, ERROR_TRIGGER_PHASE pconfigcall n) = S[.ERRORFATALTRACE = $source_trace_prefixed(S, $config_trace_frames(S, pconfigcall, $error_trigger_trace_values(S, pconfigcall)))]
+def $error_trace_capture(S, i, ptask) = S[.ERRORFATALTRACE = eps] -- if i =/= 256
+def $error_default(S, pevent, 256) = S[.TODO = eps][.TRACE = S.ERRORFATALTRACE][.ERRORFATALTRACE = eps][.COMPLETION = USERFATAL n_message* z ($long_and(S.REPORTING, 256) =/= 0)]
+  -- if pevent = DIAGNOSTIC "Fatal error" n_message* z
+def $error_default(S, pevent, i) = S[.EVENTS = S.EVENTS ++ [$error_default_event(S, pevent)]]
+  -- if i =/= 256
+  -- if $long_and(S.REPORTING, i) =/= 0
+def $error_default(S, pevent, i) = S -- if i =/= 256 -- if $long_and(S.REPORTING, i) = 0
+;; A handler-false fallback calls zend_error_cb directly and keeps the last
+;; fatal snapshot. Serialize its display now, without adding owning event roots.
+def $error_default_event(S, pevent) = $event_source(S, pevent) -- if S.ERRORFATALTRACE = eps
+def $error_default_event(S, DIAGNOSTIC text n_message* z) = $event_source(S, DIAGNOSTIC_STACK text n_message* z ($error_trace_lines(S, S.ERRORFATALTRACE, 0)))
+  -- if S.ERRORFATALTRACE =/= eps
+def $error_default_event(S, WARNING n_name* z) = $event_source(S, DIAGNOSTIC_STACK "Warning" ($ptascii("Undefined variable $") ++ n_name*) z ($error_trace_lines(S, S.ERRORFATALTRACE, 0)))
+  -- if S.ERRORFATALTRACE =/= eps
+def $error_trace_arguments(S, eps) = eps
+def $error_trace_arguments(S, [(pkey, pvalue)]) = $trace_argument_prefix(pkey) ++ $trace_value_text(S, pvalue)
+def $error_trace_arguments(S, (pkey, pvalue) :: (pkey_tail, pvalue_tail)*) = $trace_argument_prefix(pkey) ++ $trace_value_text(S, pvalue) ++ $ptascii(", ") ++ $error_trace_arguments(S, (pkey_tail, pvalue_tail)*)
+  -- if (pkey_tail, pvalue_tail)* =/= eps
+def $error_trace_location(ptraceframe) = $ptascii("[internal function]")
+  -- if ptraceframe.FILE = eps
+  -- if ptraceframe.LINE = $(-1)
+def $error_trace_location(ptraceframe) = ptraceframe.FILE ++ [40] ++ $decimal_integer(ptraceframe.LINE) ++ [41] -- otherwise
+def $error_trace_call(ptraceframe) = ptraceframe.FUNCTION -- if ptraceframe.CLASS = eps
+def $error_trace_call(ptraceframe) = n_class* ++ n_type* ++ ptraceframe.FUNCTION
+  -- if ptraceframe.CLASS = (n_class*)
+  -- if ptraceframe.TYPE = (n_type*)
+def $error_trace_lines(S, eps, n) = $ptascii("#") ++ $ntunsigned(n) ++ $ptascii(" {main}")
+def $error_trace_lines(S, ptraceframe :: ptraceframe_tail*, n) = $ptascii("#") ++ $ntunsigned(n) ++ [32] ++ $error_trace_location(ptraceframe) ++ $ptascii(": ") ++ $error_trace_call(ptraceframe) ++ [40] ++ $error_trace_arguments(S, ptraceframe.ARGS) ++ [41,10] ++ $error_trace_lines(S, ptraceframe_tail*, $(n + 1))
+def $error_level_name(256) = "Fatal error"
+def $error_level_name(512) = "Warning"
+def $error_level_name(1024) = "Notice"
+def $error_level_name(8192) = "Deprecated"
+def $error_level_name(16384) = "Deprecated"
+def $error_user_deprecation() = $ptascii("Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead")
+def $error_dispatch(S, i, n_message*, z, pevent, ptask_resume) = S_trace[.TODO = (ERROR_HANDLER_INVOKE {SITE porigin, LEVEL i, MESSAGE n_message*, LINE z, EVENT pevent, CALLBACK pvalue, TARGET eps, RESUME ptask_resume}) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_trace = $error_trace_capture(S, i, ptask_resume)
+  -- if $error_handler_eligible(S, i)
+  -- if S.ERRORHANDLER.CALLBACK = (pvalue)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = ptask :: ptask_tail*
+def $error_dispatch(S, i, n_message*, z, pevent, ptask_resume) = $error_default(S_trace[.TODO = ptask_resume :: ptask_tail*], pevent, i)
+  -- if S_trace = $error_trace_capture(S, i, ptask_resume)
+  -- if ~$error_handler_eligible(S, i)
+  -- if S.TODO = ptask :: ptask_tail*
+
+rule PhpStep/error-trigger-deprecated: S ~> $error_dispatch(S, 8192, $error_user_deprecation(), pconfigcall.LINE, DIAGNOSTIC "Deprecated" $error_user_deprecation() pconfigcall.LINE, ERROR_TRIGGER_PHASE pconfigcall 1)
+  -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 0) :: ptask_tail*
+  -- if $error_trigger_level(S, pconfigcall) = (256)
+rule PhpStep/error-trigger-no-deprecation: S ~> S[.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*]
+  -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 0) :: ptask_tail*
+  -- if $error_trigger_level(S, pconfigcall) = (i)
+  -- if i =/= 256
+rule PhpStep/error-trigger-dispatch: S ~> $error_dispatch(S, i, n_message*, pconfigcall.LINE, DIAGNOSTIC $error_level_name(i) n_message* pconfigcall.LINE, ERROR_TRIGGER_PHASE pconfigcall 2)
+  -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*
+  -- if $error_trigger_level(S, pconfigcall) = (i)
+  -- if $error_trigger_message(S, pconfigcall) = (n_message*)
+rule PhpStep/error-trigger-done: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 2) :: ptask_tail*
+def $task_nodes(ERROR_TRIGGER_PHASE pconfigcall n) = $config_nodes(pconfigcall)
+def $selected_task_nonce(ERROR_TRIGGER_PHASE pconfigcall n) = pconfigcall.SELECTION
+def $selected_task_nonce(ERROR_HANDLER_INVOKE perrorcall) = $selected_task_nonce(perrorcall.RESUME)
+def $selected_task_nonce(ERROR_HANDLER_RESULT perrorcall) = $selected_task_nonce(perrorcall.RESUME)
+def $call_task_valid(S, ERROR_TRIGGER_PHASE pconfigcall n) = ($error_trigger_kind(pconfigcall.KIND) /\ $config_invoke_valid(S, pconfigcall) /\ $(n <= 2) /\ $error_trigger_level(S, pconfigcall) =/= eps /\ $error_trigger_message(S, pconfigcall) =/= eps)
+
+;; Only a selected ordinary source body is admitted here. Native/internal,
+;; array and unimplemented visibility forms are visible pending dependencies.
+def $error_handler_target(S, PSTRING n*) = (pfunction.ORIGIN)
+  -- if $call_target(S, $typed_callable_name(n*), eps) = (pfunction)
+def $error_handler_target(S, POBJECT n) = (CLOSURE_TARGET n)
+  -- if $closure_callable(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+def $error_handler_target(S, POBJECT n) = (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN)
+  -- if $object_invoke_method(S, n) = (pmethoddesc)
+def $error_handler_target(S, pvalue) = eps -- otherwise
+def $error_handler_values(S, perrorcall) = [PINT perrorcall.LEVEL, PSTRING perrorcall.MESSAGE, PSTRING n_file*, PINT perrorcall.LINE]
+  -- if n_file* = $call_sourcefile(S.FILES, perrorcall.SITE)
+  -- if n_file* =/= eps
+def $error_handler_values(S, perrorcall) = [PINT perrorcall.LEVEL, PSTRING perrorcall.MESSAGE, PNULL, PINT perrorcall.LINE]
+  -- if $call_sourcefile(S.FILES, perrorcall.SITE) = eps
+def $error_handler_operands(S, pcalltarget, eps, n, z) = (S, eps)
+def $error_handler_operands(S, pcalltarget, pvalue :: pvalue_tail*, n, z) = (S_next, (KNOWN pvalue) :: poperand*)
+  -- if ~$call_parameter_reference(S, pcalltarget, n)
+  -- if $error_handler_operands(S, pcalltarget, pvalue_tail*, $(n + 1), z) = (S_next, poperand*)
+def $error_handler_operands(S, pcalltarget, pvalue :: pvalue_tail*, n, z) = (S_next, (REFERENCE n_cell) :: poperand*)
+  -- if $call_parameter_reference(S, pcalltarget, n)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
+  -- if S_cell = $call_fresh_reference($error_default(S[.ERRORFATALTRACE = eps], DIAGNOSTIC "Warning" (pfunction.NAME ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be passed by reference, value given")) z, 2), pvalue)
+  -- if S_cell.RESULT = REFERENCE n_cell
+  -- if $error_handler_operands(S_cell, pcalltarget, pvalue_tail*, $(n + 1), z) = (S_next, poperand*)
+def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = $call_arity($target_after_enter($call_enter(S_args, pfunction, poperand*, (perrorcall.SITE), perrorcall.LINE), pcalltarget), pfunction, 4, (perrorcall.SITE), perrorcall.LINE)
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if perrorcall_entered = perrorcall[.TARGET = (pcalltarget)]
+  -- if S_pending = S[.ERRORHANDLER.CALLBACK = eps][.TODO = (ERROR_HANDLER_RESULT perrorcall_entered) :: ptask_tail*]
+  -- if $error_handler_operands(S_pending, pcalltarget, $error_handler_values(S, perrorcall), 0, perrorcall.LINE) = (S_args, poperand*)
+rule PhpStep/error-handler-enter: S ~> $error_handler_enter(S, perrorcall, pcalltarget, pfunction)
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if $error_call_valid(S, perrorcall)
+  -- if perrorcall.TARGET = eps
+  -- if $error_handler_eligible(S, perrorcall.LEVEL)
+  -- if S.ERRORHANDLER.CALLBACK = (perrorcall.CALLBACK)
+  -- if $error_handler_target(S, perrorcall.CALLBACK) = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+rule PhpStep/error-handler-reference-return: S ~> S[.COMPLETION = UNSUPPORTED "error-handler reference-return body"]
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if $error_call_valid(S, perrorcall)
+  -- if $error_handler_target(S, perrorcall.CALLBACK) = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF
+rule PhpStep/error-handler-pending-callable: S ~> S[.COMPLETION = UNSUPPORTED "error-handler callback body outside admitted source callable forms"]
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if $error_call_valid(S, perrorcall)
+  -- if $error_handler_target(S, perrorcall.CALLBACK) = eps
+  -- if $typed_callable(S, perrorcall.CALLBACK) = (true) \/ $typed_callable(S, perrorcall.CALLBACK) = eps \/ $is_array_value(perrorcall.CALLBACK)
+rule PhpStep/error-handler-invalid-callback: S ~> $error_handler_restore($throw_scalar(S, "Error", $ptascii("Invalid callback ") ++ $error_handler_invalid(perrorcall.CALLBACK), perrorcall.LINE), perrorcall.CALLBACK)
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if $error_call_valid(S, perrorcall)
+  -- if $error_handler_target(S, perrorcall.CALLBACK) = eps
+  -- if $typed_callable(S, perrorcall.CALLBACK) = (false)
+  -- if ~$is_array_value(perrorcall.CALLBACK)
+;; A fatal default bails out before Zend reaches automatic raw restoration.
+def $error_fallback_finish(S, pvalue) = $error_handler_restore(S, pvalue) -- if S.COMPLETION = NORMAL
+def $error_fallback_finish(S, pvalue) = S -- if S.COMPLETION =/= NORMAL
+rule PhpStep/error-handler-fallback: S ~> $error_fallback_finish($error_default(S[.TODO = perrorcall.RESUME :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], perrorcall.EVENT, perrorcall.LEVEL), perrorcall.CALLBACK)
+  -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
+  -- if S.RESULT = KNOWN (PBOOL false)
+rule PhpStep/error-handler-handled: S ~> $error_handler_restore(S[.TODO = perrorcall.RESUME :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], perrorcall.CALLBACK)
+  -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
+  -- if S.RESULT = KNOWN pvalue
+  -- if pvalue =/= PBOOL false
+def $return_discard(S, ERROR_HANDLER_RESULT perrorcall) = $error_handler_restore(S, perrorcall.CALLBACK)
+def $task_nodes(ERROR_HANDLER_INVOKE perrorcall) = $value_nodes(perrorcall.CALLBACK) ++ $task_nodes(perrorcall.RESUME)
+def $task_nodes(ERROR_HANDLER_RESULT perrorcall) = $value_nodes(perrorcall.CALLBACK) ++ $task_nodes(perrorcall.RESUME)
+
+;; A missing read produces the uninitialized/null value even when the callback
+;; defines that same CV. No source expression is evaluated a second time.
+def $error_missing_operand(S, VARIABLE n* z) = true
+  -- if ~$environment_blocked(S, n*)
+  -- if $lookup(S.ENV, n*) = eps
+def $error_missing_operand(S, VARIABLE n* z) = true
+  -- if ~$environment_blocked(S, n*)
+  -- if $lookup(S.ENV, n*) = (n_cell)
+  -- if S.STORE[n_cell] = UNDEFINED
+def $error_missing_operand(S, poperand) = false -- otherwise
+def $error_simple_read(EMIT z) = true
+def $error_simple_read(PRINT_EMIT porigin z) = true
+def $error_simple_read(WRITE_NAME n* z) = true
+def $error_simple_read(UNARY punary z) = true
+def $error_simple_read(ptask) = false -- otherwise
+def $error_read_shape(ptask, VARIABLE n* z, pbase) = ({ORIGINAL ptask, INPUT VARIABLE n* z, BASE pbase, NAME n*, LINE z_read, TASK ptask, RESULT KNOWN PNULL})
+  -- if $error_simple_read(ptask)
+  -- if z_read = $error_read_line(ptask, z)
+def $error_read_shape(BINARY_RIGHT pbin (VARIABLE n* z_origin) z, poperand, pbase) = ({ORIGINAL BINARY_RIGHT pbin (VARIABLE n* z_origin) z, INPUT poperand, BASE pbase, NAME n*, LINE z, TASK BINARY_RIGHT pbin (KNOWN PNULL) z, RESULT poperand})
+def $error_read_shape(BINARY_RIGHT pbin (KNOWN pvalue) z, VARIABLE n* z_origin, pbase) = ({ORIGINAL BINARY_RIGHT pbin (KNOWN pvalue) z, INPUT VARIABLE n* z_origin, BASE pbase, NAME n*, LINE z, TASK BINARY_RIGHT pbin (KNOWN pvalue) z, RESULT KNOWN PNULL})
+def $error_read_shape(ptask, poperand, pbase) = eps -- otherwise
+def $error_read_line(EMIT z, z_origin) = z_origin
+def $error_read_line(PRINT_EMIT porigin z, z_origin) = z_origin
+def $error_read_line(WRITE_NAME n* z, z_origin) = z
+def $error_read_line(UNARY punary z, z_origin) = z
+def $error_read_operand(perrorread) = VARIABLE perrorread.NAME perrorread.LINE
+def $error_read_plan(S) = (perrorread)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $error_read_shape(ptask, S.RESULT, S.BASE) = (perrorread)
+  -- if $error_missing_operand(S, $error_read_operand(perrorread))
+  -- if $error_read_source(S, perrorread)
+def $error_read_plan(S) = eps -- otherwise
+def $error_read_pending(S) = ($error_handler_eligible(S, 2) /\ $error_read_plan(S) =/= eps)
+def $error_read_begin(S) = $error_dispatch(S, 2, $ptascii("Undefined variable $") ++ perrorread.NAME, perrorread.LINE, WARNING perrorread.NAME perrorread.LINE, ERROR_READ_RESULT perrorread)
+  -- if $error_read_plan(S) = (perrorread)
+rule PhpStep/error-read-resume: S ~> S[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]
+  -- if S.TODO = (ERROR_READ_RESULT perrorread) :: ptask_tail*
+  -- if $error_read_valid(S, perrorread)
+;; ORIGINAL and INPUT are provenance alternatives, not additional owners.
+def $task_nodes(ERROR_READ_RESULT perrorread) = $task_nodes(perrorread.TASK) ++ $operand_nodes(perrorread.RESULT) ++ $base_nodes(perrorread.BASE)
+
+def $error_variable_source(S, (porigin), pcpath, n*) = true
+  -- if $origin_child((porigin), pcpath) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (NExprVariable (BYTES text) metadata)
+  -- if $base64(text) = n*
+  -- if ~$this_name(n*) /\ ~$psautoglobal(n*)
+def $error_variable_source(S, porigin?, pcpath, n*) = false -- otherwise
+def $error_binary_source(NExprBinaryOpPlus expression_left expression_right metadata) = (ADD)
+def $error_binary_source(NExprBinaryOpMinus expression_left expression_right metadata) = (SUBTRACT)
+def $error_binary_source(NExprBinaryOpMul expression_left expression_right metadata) = (MULTIPLY)
+def $error_binary_source(NExprBinaryOpDiv expression_left expression_right metadata) = (DIVIDE)
+def $error_binary_source(NExprBinaryOpIdentical expression_left expression_right metadata) = (IDENTICAL)
+def $error_binary_source(NExprBinaryOpNotIdentical expression_left expression_right metadata) = (NOTIDENTICAL)
+def $error_binary_source(pcnode) = eps -- otherwise
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if perrorread.ORIGINAL = EMIT z
+  -- if $echo_emit_source(S, porigin, z)
+  -- if $error_variable_source(S, S.ORIGIN, eps, perrorread.NAME)
+  -- if perrorread.LINE = z
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if perrorread.ORIGINAL = PRINT_EMIT porigin z
+  -- if $print_task_valid(S, porigin, z)
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], perrorread.NAME)
+  -- if perrorread.LINE = z
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = WRITE_NAME n_target* z
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign expression_left expression_right metadata)
+  -- if $reference_cv(expression_left) = (n_target*)
+  -- if $runtime_line(S, [PCFIELD 0], expression_left) = z
+  -- if perrorread.LINE = z
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 1], perrorread.NAME)
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = UNARY POSITIVE z
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprUnaryPlus expression metadata)
+  -- if $runtime_line(S, [PCFIELD 0], expression) = z
+  -- if perrorread.LINE = z
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], perrorread.NAME)
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = UNARY NEGATIVE z
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprUnaryMinus expression metadata)
+  -- if $runtime_line(S, [PCFIELD 0], expression) = z
+  -- if perrorread.LINE = z
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], perrorread.NAME)
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (VARIABLE n* z_origin) z
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $error_binary_source(pcnode) = (pbin)
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], n*)
+  -- if perrorread.NAME = n*
+  -- if perrorread.LINE = z
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = BINARY_RIGHT pbin (KNOWN pvalue) z
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $error_binary_source(pcnode) = (pbin)
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 1], perrorread.NAME)
+  -- if perrorread.LINE = z
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+def $error_read_source(S, perrorread) = false -- otherwise
+def $code_expression_at_source(S, PORIGIN n pcpath_parent, pcpath) = (z)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent ++ pcpath) = ((z, b))
+def $code_expression_at_source(S, porigin, pcpath) = eps -- otherwise
+def $error_read_valid(S, perrorread) = ($error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread) /\ $error_read_source(S, perrorread))
+def $call_task_valid(S, ERROR_READ_RESULT perrorread) = $error_read_valid(S, perrorread)
+
+;; Source-derived continuation certificates distinguish these C callbacks from
+;; a source AST call with four arguments. Current and saved frames share checks.
+def $error_call_valid(S, perrorcall) = true
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.RESUME = ERROR_READ_RESULT perrorread
+  -- if $error_read_valid(S, perrorread)
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = perrorread.LINE
+  -- if perrorcall.MESSAGE = $ptascii("Undefined variable $") ++ perrorread.NAME
+  -- if perrorcall.EVENT = WARNING perrorread.NAME perrorread.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.RESUME = ERROR_TRIGGER_PHASE pconfigcall 1
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $error_trigger_kind(pconfigcall.KIND)
+  -- if pconfigcall.SITE = perrorcall.SITE
+  -- if $error_trigger_level(S, pconfigcall) = (256)
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $error_user_deprecation()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.RESUME = ERROR_TRIGGER_PHASE pconfigcall 2
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $error_trigger_kind(pconfigcall.KIND)
+  -- if pconfigcall.SITE = perrorcall.SITE
+  -- if $error_trigger_level(S, pconfigcall) = (perrorcall.LEVEL)
+  -- if perrorcall.LEVEL <- [256,512,1024,16384]
+  -- if $error_trigger_message(S, pconfigcall) = (perrorcall.MESSAGE)
+  -- if perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.EVENT = DIAGNOSTIC $error_level_name(perrorcall.LEVEL) perrorcall.MESSAGE perrorcall.LINE
+def $error_call_valid(S, perrorcall) = false -- otherwise
+def $call_task_valid(S, ERROR_HANDLER_INVOKE perrorcall) = ($error_call_valid(S, perrorcall) /\ perrorcall.TARGET = eps /\ S.ERRORHANDLER.CALLBACK = (perrorcall.CALLBACK) /\ $error_handler_eligible(S, perrorcall.LEVEL))
+def $error_entered_call_valid(S, perrorcall) = true
+  -- if $error_call_valid(S, perrorcall)
+  -- if perrorcall.TARGET = (pcalltarget)
+  -- if $error_handler_target(S, perrorcall.CALLBACK) = (pcalltarget)
+def $error_entered_call_valid(S, perrorcall) = false -- otherwise
+def $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall) = $error_entered_call_valid(S, perrorcall)
+def $error_context_frame_head(pcallcontext, pframe :: pframe_caller :: pframe_tail*) = (perrorcall)
+  -- if pframe.CONTEXT = (pcallcontext)
+  -- if pframe_caller.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+def $error_context_frame_head(pcallcontext, pframe*) = eps -- otherwise
+def $error_context_frame_call(pcallcontext, pframe*) = (perrorcall)
+  -- if $error_context_frame_head(pcallcontext, pframe*) = (perrorcall)
+def $error_context_frame_call(pcallcontext, pframe :: pframe_tail*) = $error_context_frame_call(pcallcontext, pframe_tail*)
+  -- if $error_context_frame_head(pcallcontext, pframe :: pframe_tail*) = eps
+def $error_context_frame_call(pcallcontext, eps) = eps
+def $error_context_current_call(S, pcallcontext) = (perrorcall)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+def $error_context_current_call(S, pcallcontext) = eps -- otherwise
+def $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if $error_context_current_call(S, pcallcontext) = (perrorcall)
+def $error_context_call(S, pcallcontext) = $error_context_frame_call(pcallcontext, S.FRAMES)
+  -- if $error_context_current_call(S, pcallcontext) = eps
+def $error_context_kind(S, pcallcontext) = true -- if $error_context_call(S, pcallcontext) =/= eps
+def $error_context_kind(S, pcallcontext) = false -- otherwise
+def $error_context_anchor(S, pcallcontext, (pcallcontext), pframe :: pframe_tail*) = true
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if pframe.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.TARGET = (pcallcontext.TARGET)
+  -- if $error_call_valid(S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO], perrorcall)
+def $error_context_anchor(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $error_context_anchor(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
+  -- if pcallcontext_other? =/= (pcallcontext)
+def $error_context_anchor(S, pcallcontext, pcallcontext_other?, pframe*) = false -- otherwise
+def $error_context_valid(S, pcallcontext) = true
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if $error_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)
+  -- if perrorcall.TARGET = (pcallcontext.TARGET)
+  -- if pcallcontext.CALLSITE = (perrorcall.SITE)
+  -- if pcallcontext.LINE = perrorcall.LINE
+  -- if $error_handler_target(S, perrorcall.CALLBACK) = (pcallcontext.TARGET)
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if pcallcontext.WRAPPER = eps
+  -- if pcallcontext.NAMED = eps
+  -- if pcallcontext.ARGC = 4
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if n_received = $call_received(4, n_fixed)
+  -- if |pcallcontext.EXTRA| = $(4 - n_received)
+  -- if $call_sent_operands_valid(S, pcallcontext.TARGET, n_received, pcallcontext.EXTRA)
+def $error_context_valid(S, pcallcontext) = false -- otherwise
+;; Handler arguments come from Zend's four-value dispatch, not source call args.
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $error_context_valid(S, pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $unpack_defined_prefix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n_received)
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ERROR_TRIGGER_PHASE pconfigcall n
+def $error_context_trigger(S, pcallcontext) = eps -- otherwise
+def $error_context_direct_trigger(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $error_context_trigger(S, pcallcontext) =/= eps
+def $error_context_direct_trigger(S) = false -- otherwise
+def $wrapper_called_suffix(S, pcallcontext) = eps
+  -- if $error_context_trigger(S, pcallcontext) =/= eps
+def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed")
+  -- if $error_context_trigger(S, pcallcontext) =/= eps
+;; Legacy ZPP converts the message zval in place; the level zval stays raw.
+def $error_trigger_trace_values(S, pconfigcall) = $trace_extra(S, $getclass_trace_operands($named_slot_set(pconfigcall.SENT, 0, KNOWN (PSTRING n*))))
+  -- if $error_trigger_message(S, pconfigcall) = (n*)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}] ++ $config_trace_frames(S, pconfigcall, $error_trigger_trace_values(S, pconfigcall))
+  -- if $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
+def $error_handlers_valid(S, eps) = true
+def $error_handlers_valid(S, perrorhandler :: perrorhandler_tail*) = true
+  -- if $reporting_valid(perrorhandler.LEVELS)
+  -- if $error_handler_registered(S, perrorhandler)
+  -- if $error_handler_roots(perrorhandler) = pnode*
+  -- if (pnode <- S.ALLOCATIONS)*
+  -- if $error_handlers_valid(S, perrorhandler_tail*)
+def $error_handlers_valid(S, perrorhandler*) = false -- otherwise
+
+def $error_handler_registered(S, {CALLBACK eps, LEVELS i}) = true
+def $error_handler_registered(S, {CALLBACK (pvalue), LEVELS i}) = ($typed_callable(S, pvalue) = (true) \/ $typed_callable(S, pvalue) = eps)

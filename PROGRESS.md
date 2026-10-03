@@ -7,25 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Public concrete source method arrays205 support callable admission, dynamic
-selection and first-class capture/clone. Immutable selected targets preserve
-referenced-member choices, inherited owner/called class and receiver ownership.
-Private author29/seven249 and independent17/five217 remain distinct from the
-current publication/property/Restore/ARG source1 and corrected finite100.
-Current two-slot INI composition **f9f47f115/61370c98/1353** accepts a fresh
-normal source and finite103: the saved array-selected Owner/Child frame keeps its
-argument, callbacks retain both operands, and converted-option value rejection
-preserves raw mutation and cleanup. The
-[array ledger](coverage/semantics/array-callables-current-review.json) preserves
-original failures, separate Unsupported controls and tested revisions.
-Compound/scope-dependent, nonpublic/magic/autoload/internal callable resolution
-and full core remain open. Shared type classification adds no return agreement.
+Reporting and ordinary source error handlers206/207 now pass four arguments
+through authenticated callback frames. Registration/restoration, live masks and
+replacement handlers, false fallback, throw/finally cleanup and bounded missing-CV
+read continuations are implemented. Fresh current-master author source2/75 and
+independent source1/87 check property rollback, internal trace readback164,
+array-selected caller arguments and exact callback-array errors. Earlier private
+source23/eight298 and independent source3/three240 retain mixed provenance in the
+[handler ledger](coverage/semantics/error-handlers-review.json).
 
 The installed families compose as follows; each linked ledger states its limits
 and distinguishes historical evidence from current interaction checks.
 
 | Family | Current behavior and evidence |
 | --- | --- |
+| Error handlers/reporting206/207 | Ordinary named, closure and public source-object callbacks retain four arguments and genuine saved frames; masks, replacements, restoration, throw and fatal fallback compose with current properties/calls. Broader producers/API/callable forms and reporting readback remain open. [Handler ledger](coverage/semantics/error-handlers-review.json). |
+| Method arrays205 | Public source method arrays retain immutable selected receiver/owner/called-class certificates through dynamic calls and capture. Current two-slot INI checkpoint **f9f47f115/61370c98/1353** accepts source1/finite103; broader resolution remains open. [Array ledger](coverage/semantics/array-callables-current-review.json). |
 | Include/configuration | Two-slot `ini_set` converts the normalized option before value rejection and full-name lookup, then samples the full raw old value after callbacks. Null/empty/leading-NUL updates return false; current SENT arrays remain live while completed unpack containers may retire. Tested **8cc6d7da5/0100a13d/1349** accepts source3/finite83. [INI ledger](coverage/semantics/include-stringable-ini-option-review.json). |
 | Stringable SET/Restore and paths | SET separates raw INI bytes from effective C-string paths. Weak Restore uses exact full-name lookup and preserves callback mutations on misses. Current ARG/Restore checks retain caller arguments and zero-argument callbacks. [Restore](coverage/semantics/include-stringable-restore-review.json), [prefix](coverage/semantics/include-ini-prefix-review.json), [SET](coverage/semantics/include-set-current-review.json). |
 | Typed static properties197 | Weak simple Stringable assignment rechecks live aliases and retains paired callback owners. Current Restore/ARG/INI composition preserves full property bytes, caller arguments and normal/throw cleanup. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json). |
@@ -61,8 +58,9 @@ failures and interrupted evidence.
   partial across trait/inheritance sharing, bind/clone, include/eval reactivation
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
-- Control and compiler: Generator/Fiber/handler families, broader callback argument
-  consumers, constants183/184 and reporting-mask/error_reporting obligations.
+- Control and diagnostics: Generator/Fiber, remaining warning/read producers,
+  exception/lifecycle handlers and broader API/callable argument consumers.
+  Constants183/184 and compiler reporting/handler interactions remain open.
 
 `returns_verify` is temporarily paused by the user. Preserve its branches and
 evidence; do not retry the blocked engine experiment, substitute a reviewer,

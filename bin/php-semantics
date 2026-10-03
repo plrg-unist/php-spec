@@ -153,6 +153,16 @@ def observe(state, filename):
             unit, severity, message, line = event['args']
             stderr += (severity.encode() + b': ' + bytes(map(int, message)) + b' in '
                        + source_filename(unit) + b' on line ' + str(line).encode() + b'\n')
+        elif event['tag'] in {'DIAGNOSTIC_STACK', 'DIAGNOSTIC_STACK_SOURCE'}:
+            if event['tag'] == 'DIAGNOSTIC_STACK_SOURCE':
+                unit, severity, message, line, trace = event['args']
+                event_file = source_filename(unit)
+            else:
+                severity, message, line, trace = event['args']
+                event_file = os.fsencode(filename)
+            stderr += (severity.encode() + b': ' + bytes(map(int, message)) + b' in '
+                       + event_file + b' on line ' + str(line).encode()
+                       + b'\nStack trace:\n' + bytes(map(int, trace)) + b'\n')
     def array_items(array_id):
         return state['ARRAYS'][array_id]['ITEMS']
 
@@ -249,7 +259,7 @@ def observe(state, filename):
     if uncaught_chain:
         location = bytes(map(int, field(uncaught_chain[0], 'file')['args'][0]))
     diagnostic = None
-    status = {'NORMAL': 'normal', 'EXITED': 'explicit_exit', 'FATAL': 'php_error', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection', 'COMPILETHROWN': 'static_rejection',
+    status = {'NORMAL': 'normal', 'EXITED': 'explicit_exit', 'FATAL': 'php_error', 'USERFATAL': 'php_error', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection', 'COMPILETHROWN': 'static_rejection',
               'UNSUPPORTED': 'unsupported', 'BUDGET': 'budget_exhausted'}[tag]
     exit_status = 0 if tag == 'NORMAL' else None
     if tag == 'EXITED':
@@ -296,6 +306,14 @@ def observe(state, filename):
             stderr += (b'Fatal error: Uncaught ' + classname.encode() + message_part + b' in ' + location
                        + b':' + str(line).encode() + b'\nStack trace:\n' + stack + b'  thrown in ' + location
                        + b' on line ' + str(line).encode() + b'\n')
+        exit_status = 255
+    elif tag == 'USERFATAL':
+        message, line, display = bytes(map(int, fields[0])), int(fields[1]), fields[2]
+        diagnostic = {'class': 'Error', 'message': b64(message), 'line': line}
+        if display:
+            stderr += (b'Fatal error: ' + message + b' in ' + location
+                       + b' on line ' + str(line).encode()
+                       + (b'\nStack trace:\n' + stack if state.get('TRACE') else b'\n'))
         exit_status = 255
     elif tag == 'COMPILETHROWN':
         message, line = bytes(map(int, fields[0])), int(fields[1])

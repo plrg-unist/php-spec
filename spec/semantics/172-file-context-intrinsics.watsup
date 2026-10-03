@@ -7,6 +7,7 @@ def $intrinsic_named(preqbytes) = (INTRINSIC_SET_INCLUDE_PATH) -- if $ptlc(preqb
 def $intrinsic_named(preqbytes) = (INTRINSIC_INI_SET) -- if $ptlc(preqbytes) = $ptascii("ini_set")
 def $intrinsic_named(preqbytes) = (INTRINSIC_INI_RESTORE) -- if $ptlc(preqbytes) = $ptascii("ini_restore")
 def $intrinsic_named(preqbytes) = (INTRINSIC_CHDIR) -- if $ptlc(preqbytes) = $ptascii("chdir")
+dec $error_api_kind(pintrinsic) : bool
 dec $config_kind(pintrinsic) : bool
 def $config_kind(INTRINSIC_SET_INCLUDE_PATH) = true
 def $config_kind(INTRINSIC_INI_SET) = true
@@ -523,11 +524,13 @@ rule PhpStep/config-stringable-call: S ~> $user_string_begin(S[.ORIGIN = (porigi
 rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
+  -- if ~$error_api_kind(pconfigcall.KIND)
   -- if S.FILEINCLUDEPATH =/= eps
   -- if ~$config_string_launch(S, pconfigcall)
 rule PhpStep/config-invoke-no-file: S ~> S[.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
+  -- if ~$error_api_kind(pconfigcall.KIND)
   -- if S.FILEINCLUDEPATH = eps
 rule PhpStep/config-invoke-unbound: S ~> S[.COMPLETION = UNSUPPORTED "include_path intrinsic selection has no source binding"]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*

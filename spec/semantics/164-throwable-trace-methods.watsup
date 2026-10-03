@@ -30,7 +30,8 @@ dec $trace_frame_line(pstate, nat, nat) : preqbytes
 def $trace_frame_line(S, n_frame, n_index) = $ptascii("#") ++ $ntunsigned(n_index) ++ $ptascii(" [internal function]: ") ++ $trace_frame_call(S, n_frame) ++ [40] ++ $trace_frame_arguments(S, n_frame) ++ [41,10]
   -- if $entry_lookup(S.ARRAYS[n_frame].ITEMS, KSTRING $ptascii("file")) = eps
   -- if $entry_lookup(S.ARRAYS[n_frame].ITEMS, KSTRING $ptascii("line")) = eps
-  -- if $trace_array_field(S, n_frame, $ptascii("function")) = PSTRING $ptascii("__toString")
+  -- if $trace_array_field(S, n_frame, $ptascii("function")) = PSTRING preqbytes_function
+  -- if preqbytes_function =/= eps
 def $trace_frame_line(S, n_frame, n_index) = $ptascii("#") ++ $ntunsigned(n_index) ++ [32] ++ preqbytes_file ++ [40] ++ $decimal_integer(z_line) ++ $ptascii("): ") ++ $trace_frame_call(S, n_frame) ++ [40] ++ $trace_frame_arguments(S, n_frame) ++ [41,10]
   -- if $trace_array_field(S, n_frame, $ptascii("file")) = PSTRING preqbytes_file
   -- if $trace_array_field(S, n_frame, $ptascii("line")) = PINT z_line

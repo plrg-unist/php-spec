@@ -106,6 +106,8 @@ def $throwable_materialize(S) = S -- otherwise
 
 ;; Producers historically clear TODO. Authenticate the two supported transitions
 ;; against the predecessor; never infer identity from stack length.
+dec $error_call_valid(pstate, perrorcall) : bool
+dec $error_handler_target(pstate, pvalue) : pcalltarget?
 dec $throwable_continuation(pstate, pstate) : pstate
 dec $static_string_result_task(ptask) : bool
 def $throwable_continuation(S, S_next) = S_next[.TODO = ptask_tail*]
@@ -118,6 +120,16 @@ def $throwable_continuation(S, S_next) = S_next
   -- if S_next.FRAMES = pframe :: S.FRAMES
   -- if pframe.CONTEXT = S.CURRENT
   -- if pframe.TODO = ptask_tail*
+  -- if pframe.ORIGIN = S.ORIGIN
+  -- if pframe.SILENCES = S.SILENCES
+def $throwable_continuation(S, S_next) = S_next
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if $error_call_valid(S, perrorcall)
+  -- if S_next.FRAMES = pframe :: S.FRAMES
+  -- if pframe.CONTEXT = S.CURRENT
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall_entered) :: ptask_tail*
+  -- if $error_handler_target(S, perrorcall.CALLBACK) = (pcalltarget)
+  -- if perrorcall_entered = perrorcall[.TARGET = (pcalltarget)]
   -- if pframe.ORIGIN = S.ORIGIN
   -- if pframe.SILENCES = S.SILENCES
 def $throwable_continuation(S, S_next) = S_next[.TODO = eps][.COMPLETION = UNSUPPORTED "unaudited Throwable frame transition"] -- otherwise
