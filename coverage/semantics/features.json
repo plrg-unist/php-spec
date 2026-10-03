@@ -2134,6 +2134,8 @@
       ],
       "status": "partial",
       "implementation": [
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/45-constant-context.watsup",
         "spec/semantics/187-class-static-storage.watsup",
         "spec/semantics/188-class-static-runtime.watsup",
         "spec/semantics/197-property-string-runtime.watsup",
@@ -2141,10 +2143,12 @@
         "spec/semantics/201-static-set-runtime.watsup"
       ],
       "source_tests": [
+        "tests/semantics/array_omissions.py",
+        "tests/semantics/validate.py",
         "tests/semantics/static_set_access.py",
         "tests/semantics/typed_static_string_assignment.py"
       ],
-      "review": "Backed static declarations187/188 and setters200/201 model finality/normalization, lexical write permission, called-scope diagnostics and deferred target/RHS ordering. Raw direct object receivers differ from aliased static slots; escaped aliases retain their type sources. static-setter-access-review.json keeps compiler, original source, state and current method-array checks distinct. Readonly, hooks, instance asymmetric setters, wider delayed receivers and static-method reference acquisition remain open.",
+      "review": "Backed static declarations187/188 and setters200/201 model finality/normalization, lexical write permission, called-scope diagnostics and deferred target/RHS ordering. Raw direct object receivers differ from aliased static slots; escaped aliases retain their type sources. static-setter-access-review.json keeps compiler, original source, state and current method-array checks distinct. Readonly, hooks, instance asymmetric setters, wider delayed receivers and static-method reference acquisition remain open. Earlier constant-prepass routes retain array-omission-review.json evidence.",
       "helper_tests": [
         "tests/semantics/static_set_compiler.py",
         "tests/semantics/static_set_access_protocol.py"

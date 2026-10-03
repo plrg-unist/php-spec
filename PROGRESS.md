@@ -7,14 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Reporting and ordinary source error handlers206/207 now pass four arguments
-through authenticated callback frames. Registration/restoration, live masks and
-replacement handlers, false fallback, throw/finally cleanup and bounded missing-CV
-read continuations are implemented. Fresh current-master author source2/75 and
-independent source1/87 check property rollback, internal trace readback164,
-array-selected caller arguments and exact callback-array errors. Earlier private
-source23/eight298 and independent source3/three240 retain mixed provenance in the
-[handler ledger](coverage/semantics/error-handlers-review.json).
+Backed static final/asymmetric setters200/201 preserve declaration priority,
+lexical permissions, called-scope diagnostics and delayed RHS/receiver fetches.
+Raw direct object slots differ from aliased static slots; legally escaped typed
+aliases remain writable. Foreach cell promotion and normal/error unset tails are
+checked. Declaration/source/compiler and receiver/unset originals keep distinct
+tested revisions; the fresh method-array source at **ca2f35018** returns
+`Tx|x|x`, and the current handler source at **e667df72b** returns `TH4x|x|x`
+through genuine saved frames. The [setter ledger](coverage/semantics/static-setter-access-review.json)
+records their bounded scope, original failures and remaining reference routes.
 
 The installed families compose as follows; each linked ledger states its limits
 and distinguishes historical evidence from current interaction checks.
@@ -26,6 +27,7 @@ and distinguishes historical evidence from current interaction checks.
 | Include/configuration | Two-slot `ini_set` converts the normalized option before value rejection and full-name lookup, then samples the full raw old value after callbacks. Null/empty/leading-NUL updates return false; current SENT arrays remain live while completed unpack containers may retire. Tested **8cc6d7da5/0100a13d/1349** accepts source3/finite83. [INI ledger](coverage/semantics/include-stringable-ini-option-review.json). |
 | Stringable SET/Restore and paths | SET separates raw INI bytes from effective C-string paths. Weak Restore uses exact full-name lookup and preserves callback mutations on misses. Current ARG/Restore checks retain caller arguments and zero-argument callbacks. [Restore](coverage/semantics/include-stringable-restore-review.json), [prefix](coverage/semantics/include-ini-prefix-review.json), [SET](coverage/semantics/include-set-current-review.json). |
 | Typed static properties197 | Weak simple Stringable assignment rechecks live aliases and retains paired callback owners. Current Restore/ARG/INI composition preserves full property bytes, caller arguments and normal/throw cleanup. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json). |
+| Static setters200/201 | Backed final/asymmetric declarations normalize equivalent setters and preserve inheritance/error priority; direct and indirect consumers retain lexical access, live raw-slot checks and typed aliases. [Setter ledger](coverage/semantics/static-setter-access-review.json). |
 | Argument introspection198/199 | Ordinary current and saved frames retain genuine named/unpacked argument views through invocation and callbacks. [Argument ledger](coverage/semantics/argument-introspection-calls-current-review.json). |
 | Public invocation and callable typing | Public source `__invoke` is installed at **18a1383d7**; callable-before-string parameter admission at **b8a6f43f8** preserves dual-role objects across weak/strict, union order, inheritance and ownership. [Invocation](coverage/semantics/source-invoke-current-review.json), [parameter reception](coverage/semantics/callable-string-current-review.json). |
 | Selection and capture | Source method selection preserves owner/called class; capture/clone retains selected targets and scoped defaults/static cells without retaining retired origin-only creators. [Capture](coverage/semantics/method-capture-current-review.json), [default caches](coverage/semantics/closure-default-cache-review.json). |
@@ -48,12 +50,13 @@ failures and interrupted evidence.
   parsing and PIPE, then wider directives, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: broader weak parameter/property conversion,
-  constrained-reference object conversion, delayed receivers and non-CV reference
-  acquisition. Generic156 return replay, temporary-return Notice timing and typed
+  constrained-reference object conversion, wider nonstatic delayed receivers and
+  static-method reference acquisition. Named error constants such as E_USER_NOTICE
+  remain unsupported by initial lookup; the handled-notice check uses literal1024. Generic156 return replay, temporary-return Notice timing and typed
   by-reference string conversion186 remain open; accepted ordinary by-value
   classification does not close them. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
-- Objects and lifetime: remaining static members, traits, hooks, readonly/asymmetric
+- Objects and lifetime: remaining static members, traits, hooks, readonly/instance asymmetric
   access, traversal, output handlers and lifecycle callbacks. Static cells remain
   partial across trait/inheritance sharing, bind/clone, include/eval reactivation
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),

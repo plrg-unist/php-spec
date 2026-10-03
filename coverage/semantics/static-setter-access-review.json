@@ -1,6 +1,6 @@
 {
   "target": "PHP 8.5.10 CLI NTS 64-bit",
-  "status": "independently accepted bounded private setter implementation; integration pending",
+  "status": "independently accepted bounded partial static setter implementation",
   "scope": [
     "Backed static final/asymmetric declarations, setter normalization and inheritance diagnostic order.",
     "Lexical setter permission with called-scope errors, direct writes, dimensions/updates and escaped typed aliases.",
@@ -27,6 +27,32 @@
         "path": ".tools/property-static-set-review13/current-array-original-source-accepted.json",
         "sha256": "ba92e6af53c404f75ac45f52fa26a685f9be20df9645fff25c677a371e62d1d5"
       }
+    },
+    {
+      "tested_revision": "e667df72b7b1a0d2bace017d9d349132d3454121",
+      "base": "9b6f70755728ccdfdcb6805ef70777c100482169",
+      "sources": 1,
+      "finite_assertions": 0,
+      "observation": "TH4x|x|x, normal0, empty stderr, null diagnostic/reason",
+      "meaning": "Inherited array method keeps lexicalA/calledB across Stringable conversion and a genuine four-argument handled-notice callback.",
+      "command": "python3 tests/semantics/static_set_access.py --select handler-array-inherited-setter",
+      "cwd": "/home/user/workspace/php-spec/.tools/property-static-set-results-13",
+      "report": {
+        "path": ".tools/property-static-set-dev13/author-vd3d4azj/report.json",
+        "sha256": "4666503b1c008f414959bbf978317cdaaba68ab854c7fa52a0f45b20cec4b97c"
+      },
+      "release": {
+        "path": ".tools/property-static-set-dev13/author-vd3d4azj/RELEASE.json",
+        "sha256": "b09453e94f33d7ded8a280c6d3887112d604e1c741596dbc19aa4f796bbd56af"
+      },
+      "independent_raw_review": {
+        "path": ".tools/property-static-set-review13/current-handler-notice-original-source-accepted.json",
+        "sha256": "30577d1b5903ff7d75b5c31fd1109644f937309c05f6f2834fef128090b90716"
+      },
+      "used_input_freeze": {
+        "path": ".tools/property-static-set-results-13/.tools/static-set-freeze-current-handler-notice.json",
+        "sha256": "c2cc205ff1993a67fdabe8bd6420d7dff73c42786fa5747af087a1f24580905d"
+      }
     }
   ],
   "earlier_bounded_checks": {
@@ -41,7 +67,8 @@
       "review": {
         "path": ".tools/property-static-set-review13/author-continuation-originals-accepted.json",
         "sha256": "1772d1957f1718b5e736fc8307628709a82ad5b3bde934d9d89a05eb36dcb8ae"
-      }
+      },
+      "provenance": "The63/43-258/seven280 total carries original prefix10source/22compiler-114/returned35 at45109079 plus remaining53source/21compiler-144/six245 at0e7108 after a fixture-only source-entry correction; it is not a fresh prefix replay at0e7108."
     },
     "receiver_and_unset": {
       "source_comparisons": 11,
