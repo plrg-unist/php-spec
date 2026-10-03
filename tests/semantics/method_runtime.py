@@ -44,16 +44,22 @@ def run(match, catalogue=DEFAULT_CASES):
         assert sha(source) == row['source_sha256'], row['id']
         command = [str(ROOT / 'bin/php-semantics'), str(source),
                    '--steps', '100000', '--timeout', '45']
-        result = subprocess.run(command, cwd=directory, env=environment,
-                                capture_output=True, timeout=55)
-        (directory / 'runner.stdout').write_bytes(result.stdout)
-        (directory / 'runner.stderr').write_bytes(result.stderr)
-        (directory / 'runner.status.json').write_text(json.dumps({'exit_status': result.returncode}) + '\n')
+        stdout_path, stderr_path = directory / 'runner.stdout', directory / 'runner.stderr'
+        with stdout_path.open('wb') as stdout_stream, stderr_path.open('wb') as stderr_stream:
+            try:
+                result = subprocess.run(command, cwd=directory, env=environment,
+                                        stdout=stdout_stream, stderr=stderr_stream, timeout=55)
+                status = result.returncode
+            except subprocess.TimeoutExpired:
+                status = None
+        stdout, stderr = stdout_path.read_bytes(), stderr_path.read_bytes()
+        (directory / 'runner.status.json').write_text(json.dumps({'exit_status': status}) + '\n')
         try:
-            actual = json.loads(result.stdout)
+            actual = json.loads(stdout)
         except json.JSONDecodeError:
             actual = {'status': 'runner_failure'}
-        passed = result.returncode == 0 and not result.stderr and actual.get('status') == row['status']
+        passed = status == 0 and not stderr and actual.get('status') == row['status']
+        passed = passed and actual.get('frontend') == 'accepted' and actual.get('checked') == 'program' and actual.get('reason') is None
         passed = passed and actual.get('exit_status') == row['exit_status']
         stderr = base64.b64decode(row['stderr_template_base64']).replace(
             b'{FILE}', str(source).encode())
@@ -64,14 +70,18 @@ def run(match, catalogue=DEFAULT_CASES):
                         'native_raw_sha256': row['native_raw_sha256'],
                         'native_profile': row.get('native_profile', shared_profile),
                         'source_sha256': row['source_sha256'],
-                        'runner_exit_status': result.returncode,
+                        'runner_exit_status': status,
                         'actual': actual})
         print(row['id'], passed, actual.get('status'), flush=True)
+        if not passed:
+            break
     assert before == types.syntax_validation.implementation_fingerprint(), 'implementation changed during run'
     assert all(sha(ROOT / name) == digest for name, digest in direct.items()), 'direct input changed during run'
     report = {'result': 'pass' if all(row['pass'] for row in records) else 'fail',
               'selection': match, 'selected_cases': len(selected),
               'catalogue_cases': len(cases),
+              'completed_cases': len(records),
+              'conditional_unrun': [row['id'] for row in selected[len(records):]],
               'fingerprint': before, 'direct_inputs': direct, 'raw': str(out), 'records': records}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(out, report['result'])
