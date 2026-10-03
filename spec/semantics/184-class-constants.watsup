@@ -11,7 +11,6 @@ dec $class_constant_update_marker(ptask) : bool
 dec $class_constant_selection_valid(pstate, pclassconstantcontext) : bool
 dec $class_constant_binding_head(ptask*, porigin) : bool
 dec $class_constant_table_done(pstate, porigin) : bool
-dec $class_constant_history_valid(pstate) : bool
 dec $class_constant_table_tasks(pstate, porigin, int, nat) : ptask*
 dec $class_constant_table_order(pstate, porigin, nat) : porigin*
 dec $class_constant_table_blocks(pstate, ptask*, porigin*) : bool
@@ -36,7 +35,6 @@ def $class_constant_origin(pclassdesc :: pclassdesc_tail*, porigin) = (pclasscon
 def $class_constant_origin(pclassdesc :: pclassdesc_tail*, porigin) = $class_constant_origin(pclassdesc_tail*, porigin)
   -- if $class_constant_origin_in(pclassdesc.CONSTANTS, porigin) = eps
 
-dec $class_constant_lookup(pstate, porigin, ptbytes, nat) : pclassconstantdesc?
 dec $class_constant_inherited(pstate, porigin, ptbytes, nat) : pclassconstantdesc?
 dec $class_constant_interfaces(pstate, pilref*, ptbytes, nat) : pclassconstantdesc?
 def $class_constant_lookup(S, porigin, ptbytes, n) = (pclassconstantdesc)
@@ -326,7 +324,6 @@ def $class_constant_error_origin(S) = S.ORIGIN -- otherwise
 
 def $class_constant_runtime_type(S, ptbranch*, pvalue) = ($class_constant_value_type(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
 
-dec $class_constant_caches_valid(pstate, pdefaultcache*) : bool
 def $class_constant_caches_valid(S, eps) = true
 def $class_constant_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
   -- if $class_constant_origin(S.CLASSES, pdefaultcache.ORIGIN) = (pclassconstantdesc)

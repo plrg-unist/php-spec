@@ -1,5 +1,76 @@
 ;; Class constants are immutable source descriptors. Folded values remain in
 ;; the initializer's unit pool; deferred values are initialized by184.
+dec $class_constant_history_valid(pstate) : bool
+dec $class_constant_caches_valid(pstate, pdefaultcache*) : bool
+dec $class_constant_lookup(pstate, porigin, ptbytes, nat) : pclassconstantdesc?
+
+;; A unit sees only publications and cache fills preceding its own PDENTER.
+;; The snapshot is a compiler input; its descriptors never join the new image.
+dec $class_constant_compile_enter(pdeclaration, nat) : bool
+def $class_constant_compile_enter(PDENTER n porigin? z, n) = true
+def $class_constant_compile_enter(pdeclaration, n) = false -- otherwise
+dec $class_constant_compile_prefix(pdeclaration*, nat, nat) : nat?
+def $class_constant_compile_prefix((PDENTER n porigin? z) :: pdeclaration*, n, n_prefix) = (n_prefix)
+def $class_constant_compile_prefix(pdeclaration :: pdeclaration_tail*, n, n_prefix) = $class_constant_compile_prefix(pdeclaration_tail*, n, $(n_prefix + 1))
+  -- if ~$class_constant_compile_enter(pdeclaration, n)
+def $class_constant_compile_prefix(eps, n, n_prefix) = eps
+dec $class_constant_event_ordinal(pclassconstantevent) : nat
+def $class_constant_event_ordinal(CCLINK porigin n) = n
+def $class_constant_event_ordinal(CCCACHE porigin porigin_trigger n) = n
+def $class_constant_event_ordinal(CCUPDATE porigin porigin_root porigin_trigger n) = n
+dec $class_constant_compile_history(pclassconstantevent*, nat) : pclassconstantevent*
+def $class_constant_compile_history(eps, n) = eps
+def $class_constant_compile_history(pclassconstantevent :: pclassconstantevent_tail*, n) = pclassconstantevent :: $class_constant_compile_history(pclassconstantevent_tail*, n)
+  -- if $($class_constant_event_ordinal(pclassconstantevent) <= n)
+def $class_constant_compile_history(pclassconstantevent :: pclassconstantevent_tail*, n) = eps
+  -- if $($class_constant_event_ordinal(pclassconstantevent) > n)
+dec $class_constant_compile_events(pstate, pclassconstantevent*, pstate) : pstate?
+def $class_constant_compile_events(S, eps, S_entry) = (S_entry)
+def $class_constant_compile_events(S, (CCLINK porigin n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSES = S_entry.CLASSES ++ [pclassdesc]][.CLASSNAMES = S_entry.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), porigin)]])
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $class_constant_compile_events(S, (CCCACHE porigin porigin_trigger n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSCONSTANTCACHE = S_entry.CLASSCONSTANTCACHE ++ [pdefaultcache]])
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+def $class_constant_compile_events(S, (CCUPDATE porigin porigin_root porigin_trigger n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $class_constant_compile_events(S, pclassconstantevent*, S_entry) = eps -- otherwise
+def $class_constant_compile_entry(S, n) = $class_constant_compile_events(S, pclassconstantevent*, S[.CLASSES = eps][.CLASSNAMES = eps][.CLASSCONSTANTCACHE = eps][.CLASSCONSTANTHISTORY = pclassconstantevent*][.DECLARATIONS = S.DECLARATIONS[0:n_prefix]])
+  -- if $(n > 0)
+  -- if $class_constant_compile_prefix(S.DECLARATIONS, n, 0) = (n_prefix)
+  -- if $class_constant_history_valid(S) /\ $class_constant_caches_valid(S, S.CLASSCONSTANTCACHE)
+  -- if pclassconstantevent* = $class_constant_compile_history(S.CLASSCONSTANTHISTORY, n_prefix)
+def $class_constant_compile_entry(S, n) = eps -- otherwise
+
+dec $class_constant_compile_value(pstate, pclassconstantdesc) : (pvalue, pvalueclass)?
+def $class_constant_compile_value(S, pclassconstantdesc) = ((pvalue, pvalueclass))
+  -- if pclassconstantdesc.FOLDED
+  -- if $pool_value(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalue)
+  -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalueclass)
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+def $class_constant_compile_value(S, pclassconstantdesc) = ((pdefaultcache.VALUE, pdefaultcache.CLASS))
+  -- if ~pclassconstantdesc.FOLDED
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+  -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
+def $class_constant_compile_value(S, pclassconstantdesc) = eps -- otherwise
+
+;; Import constant arrays into this unit's allocation space. Objects and
+;; reference-bearing arrays are never compile-time substitutions.
+dec $pfclass_import(pstate, pstate, pvalue, nat) : (pstate, pvalue)?
+dec $pfclass_import_entries(pstate, pstate, pentry*, nat) : (pstate, pentry*)?
+def $pfclass_import(S_external, S, pvalue, n) = ((S, pvalue))
+  -- if $constant_nonstring_scalar(pvalue)
+def $pfclass_import(S_external, S, PSTRING ptbytes, n) = ((S, PSTRING ptbytes))
+def $pfclass_import(S_external, S, PARRAY n_array, n) = ((S_array, PARRAY n_new))
+  -- if $(n > 0 /\ n_array < |S_external.ARRAYS|)
+  -- if HARRAY n_array <- S_external.ALLOCATIONS
+  -- if $pfclass_import_entries(S_external, S, S_external.ARRAYS[n_array].ITEMS, $nabs($(n - 1))) = ((S_entries, pentry*))
+  -- if S_array = $allocate_array(S_entries, S_external.ARRAYS[n_array][.ITEMS = pentry*])
+  -- if S_array.RESULT = KNOWN (PARRAY n_new)
+def $pfclass_import(S_external, S, pvalue, n) = eps -- otherwise
+def $pfclass_import_entries(S_external, S, eps, n) = ((S, eps))
+def $pfclass_import_entries(S_external, S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*, n) = ((S_tail, (ENTRY pkey (DIRECT pvalue_new)) :: pentry_new*))
+  -- if $pfclass_import(S_external, S, pvalue, n) = ((S_value, pvalue_new))
+  -- if $pfclass_import_entries(S_external, S_value, pentry_tail*, n) = ((S_tail, pentry_new*))
+def $pfclass_import_entries(S_external, S, pentry*, n) = eps -- otherwise
+
 def $ppclass_constants(eps, porigin) = eps
 def $ppclass_constants(pclassconstantdesc :: pclassconstantdesc_tail*, porigin) = pclassconstantdesc :: $ppclass_constants(pclassconstantdesc_tail*, porigin)
   -- if pclassconstantdesc.OWNER = porigin
@@ -140,6 +211,18 @@ def $pfclass_constant_current(F, ptbytes) = false -- otherwise
 
 dec $pfclass_constant_named(pfstate, pcpath, ptbytes, ptbytes, nat) : pclassconstantdesc?
 dec $pfclass_constant_parent(pfstate, pclassdesc, ptbytes, nat) : pclassconstantdesc?
+dec $pfclass_constant_budget(pfstate) : nat
+def $pfclass_constant_budget(F) = $(|F.CLASSES| + |S_external.CLASSES|)
+  -- if F.EXTERNAL = (S_external)
+def $pfclass_constant_budget(F) = |F.CLASSES| -- otherwise
+dec $pfclass_constant_prior(pfstate, ptbytes) : pclassdesc?
+def $pfclass_constant_prior(F, ptbytes) = (pclassdesc)
+  -- if $ppclass_prior_early(F.CLASSES, ptbytes) = (pclassdesc)
+def $pfclass_constant_prior(F, ptbytes) = $class_at(S_external.CLASSES, porigin)
+  -- if $ppclass_prior_early(F.CLASSES, ptbytes) = eps
+  -- if F.EXTERNAL = (S_external)
+  -- if $class_named(S_external.CLASSNAMES, $ptlc(ptbytes)) = (porigin)
+def $pfclass_constant_prior(F, ptbytes) = eps -- otherwise
 def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = (pclassconstantdesc)
   -- if F.CLASSCONTEXT = (ptcontext)
   -- if $ptlc(ptcontext.OWNER) = $ptlc(ptbytes_class)
@@ -153,6 +236,11 @@ def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = $pfclass_con
   -- if ~$pfclass_constant_current(F, ptbytes_class)
   -- if $ppclass_prior_early(F.CLASSES, ptbytes_class) = (pclassdesc)
   -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) = eps
+def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = $class_constant_lookup(S_external, porigin, ptbytes, n)
+  -- if ~$pfclass_constant_current(F, ptbytes_class)
+  -- if $ppclass_prior_early(F.CLASSES, ptbytes_class) = eps
+  -- if F.EXTERNAL = (S_external)
+  -- if $class_named(S_external.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin)
 def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = eps -- otherwise
 def $pfclass_constant_parent(F, pclassdesc, ptbytes, n) = (pclassconstantdesc)
   -- if $(n > 0)
@@ -168,15 +256,15 @@ def $pfclass_constant_visible(F, pclassconstantdesc) = true
   -- if pclassconstantdesc.VISIBILITY =/= PROPERTY_PUBLIC
   -- if F.CLASSCONTEXT = (ptcontext)
   -- if $ptlc(ptcontext.OWNER) = $ptlc(pclassconstantdesc.OWNERNAME)
-dec $pfclass_constant_owner_below(pclassdesc*, ptbytes, ptbytes, nat) : bool
-def $pfclass_constant_owner_below(pclassdesc_registry*, ptbytes_owner, ptbytes_scope, n) = true
+dec $pfclass_constant_owner_below(pfstate, ptbytes, ptbytes, nat) : bool
+def $pfclass_constant_owner_below(F, ptbytes_owner, ptbytes_scope, n) = true
   -- if $ptlc(ptbytes_owner) = $ptlc(ptbytes_scope)
-def $pfclass_constant_owner_below(pclassdesc_registry*, ptbytes_owner, ptbytes_scope, n) = $pfclass_constant_owner_below(pclassdesc_registry*, ptbytes_parent, ptbytes_scope, $nabs($(n - 1)))
+def $pfclass_constant_owner_below(F, ptbytes_owner, ptbytes_scope, n) = $pfclass_constant_owner_below(F, ptbytes_parent, ptbytes_scope, $nabs($(n - 1)))
   -- if $(n > 0) /\ $ptlc(ptbytes_owner) =/= $ptlc(ptbytes_scope)
-  -- if $ppclass_prior_early(pclassdesc_registry*, ptbytes_owner) = (pclassdesc)
+  -- if $pfclass_constant_prior(F, ptbytes_owner) = (pclassdesc)
   -- if pclassdesc.PARENT = (ptbytes_parent)
-def $pfclass_constant_owner_below(pclassdesc_registry*, ptbytes_owner, ptbytes_scope, n) = false -- otherwise
-def $pfclass_constant_visible(F, pclassconstantdesc) = $pfclass_constant_owner_below(F.CLASSES, pclassconstantdesc.OWNERNAME, ptcontext.OWNER, |F.CLASSES|)
+def $pfclass_constant_owner_below(F, ptbytes_owner, ptbytes_scope, n) = false -- otherwise
+def $pfclass_constant_visible(F, pclassconstantdesc) = $pfclass_constant_owner_below(F, pclassconstantdesc.OWNERNAME, ptcontext.OWNER, $pfclass_constant_budget(F))
   -- if pclassconstantdesc.VISIBILITY = PROPERTY_PROTECTED
   -- if F.CLASSCONTEXT = (ptcontext)
   -- if $ptlc(ptcontext.OWNER) =/= $ptlc(pclassconstantdesc.OWNERNAME)
@@ -194,10 +282,20 @@ def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_mem
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if $pfclass_constant_name(F, phpType19, pvalue_class?) = (ptbytes_class)
   -- if $pfclass_constant_member(phpType20, pvalue_member?) = (ptbytes)
-  -- if $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, |F.CLASSES|) = (pclassconstantdesc)
+  -- if $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, $pfclass_constant_budget(F)) = (pclassconstantdesc)
   -- if pclassconstantdesc.FOLDED /\ $pfclass_constant_visible(F, pclassconstantdesc)
   -- if pclassconstantdesc.INITIALIZER = PORIGIN F.SOURCE.ID pcpath_initializer
   -- if $pffact(F.FACTS, pcpath_initializer) = (pvalue)
+def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $pfclass_constant_value(F[.MEMORY = S_imported], pcpath, pvalue_imported, (pvalueclass), z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.EXTERNAL = (S_external)
+  -- if $pfclass_constant_name(F, phpType19, pvalue_class?) = (ptbytes_class)
+  -- if $pfclass_constant_member(phpType20, pvalue_member?) = (ptbytes)
+  -- if $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, $pfclass_constant_budget(F)) = (pclassconstantdesc)
+  -- if pclassconstantdesc.INITIALIZER = PORIGIN n_initializer pcpath_initializer
+  -- if n_initializer =/= F.SOURCE.ID /\ $pfclass_constant_visible(F, pclassconstantdesc)
+  -- if $class_constant_compile_value(S_external, pclassconstantdesc) = ((pvalue, pvalueclass))
+  -- if $pfclass_import(S_external, F.MEMORY, pvalue, $(|S_external.ARRAYS| + 1)) = ((S_imported, pvalue_imported))
 def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = F[.VALUE = eps] -- otherwise
 
 dec $ppclass_constant_fetch(ppstate, pcpath, phpType19, phpType20, metadata) : ppstate

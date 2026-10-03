@@ -465,18 +465,18 @@ dec $eval_source_ppstate_body(pstate, pcunit) : ppstate
 def $eval_source_ppstate(S, pcunit) = $eval_source_ppstate_body(S, pcunit)
 def $eval_source_ppstate_body(S, pcunit) = $file_source_ppstate(S, pcunit)
   -- if $file_binding_at(S.FILEBINDINGS, pcunit.ID) = (pfilebinding)
-def $eval_source_ppstate_body(S, pcunit) = $ppstart_eval_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST), (pclassdesc.NAME))
+def $eval_source_ppstate_body(S, pcunit) = $ppstart_eval_state(S, pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST), (pclassdesc.NAME))
   -- if $eval_binding_at(S.EVALBINDINGS, pcunit.ID) = (pevalbinding)
   -- if pevalbinding.CLASS = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
-def $eval_source_ppstate_body(S, pcunit) = $ppstart_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST))
+def $eval_source_ppstate_body(S, pcunit) = $ppstart_eval_state(S, pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST), eps)
   -- if $eval_binding_at(S.EVALBINDINGS, pcunit.ID) = (pevalbinding)
   -- if pevalbinding.CLASS = eps
 def $eval_source_ppstate_body(S, pcunit) = $ppstart_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST))
   -- if pcunit.ID = 0
   -- if $eval_binding_at(S.EVALBINDINGS, pcunit.ID) = eps
 def $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program) = $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P)
-  -- if P = $ppstart_eval_cwd(pevalcontext.UNIT, program, pevalcontext.FILE, $call_request_cwd(S.REQUEST), $eval_compiler_class(S))
+  -- if P = $ppstart_eval_state(S, pevalcontext.UNIT, program, pevalcontext.FILE, $call_request_cwd(S.REQUEST), $eval_compiler_class(S))
   -- if ~$declaration_parser_rejects($declaration_preflight(P.FOLD.SOURCE.OCCURRENCES))
   -- if pevalbinding = {UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS}
   -- if S_compiled = $compile_source_append(S[.COMPLETION = NORMAL][.EVALBINDINGS = S.EVALBINDINGS ++ [pevalbinding]], P)
