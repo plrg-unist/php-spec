@@ -1,0 +1,236 @@
+[
+  {
+    "id": "instance-positional-value",
+    "source": "<?php class Worker{public function run($v){echo get_class($this),\":\",$v;}}$cb=[new Worker,\"run\"];$cb(\"p\");",
+    "source_sha256": "b24ff15aabe202b7b4a5f733ea6194b360506bc22f5ba23157da5a3bbc465012",
+    "expected_model": "normal",
+    "purpose": "Public concrete source instance selection.",
+    "expected_normal_stdout": "Worker:p"
+  },
+  {
+    "id": "reversed-keys-default-public-inherited-named",
+    "source": "<?php class Owner{function run($v){echo __CLASS__,\"/\",static::class,\":\",$v;}}class Child extends Owner{}$cb=[1=>\"RuN\",0=>new Child];$cb(v:\"n\");",
+    "source_sha256": "d56a6c6f6638f395e68ae75d59eaca3dab0bd53b6e596205e224a557470f2053",
+    "expected_model": "normal",
+    "purpose": "Integer keys, insertion order, default public and inherited owner/called class.",
+    "expected_normal_stdout": "Owner/Child:n"
+  },
+  {
+    "id": "strict-qualified-static-array-unpack",
+    "source": "<?php declare(strict_types=1);namespace N;class Owner{public static function run($v){echo __CLASS__,\"/\",static::class,\":\",$v,\":\",func_num_args(),\":\",func_get_arg(0);}}class Child extends Owner{}function receive(callable $value){$value(...[\"v\"=>\"s\"]);}receive([\"\\N\\Child\",\"rUn\"]);",
+    "source_sha256": "a2bdf87037dfb2847b7b45323197fdde55df02d3ed75b4e80c2c85560712b72c",
+    "expected_model": "normal",
+    "purpose": "Fully qualified class string and static inherited target with strict callable reception. Current accepted ARG198/199 observes the array-selected inherited frame after named unpack.",
+    "expected_normal_stdout": "N\\Owner/N\\Child:s:1:s"
+  },
+  {
+    "id": "object-static-no-this-selected-class",
+    "source": "<?php class Owner{public static function run($v){echo static::class,isset($this)?\"BAD;\":\"-\",$v;}}class Child extends Owner{}function drop(&$receiver,&$cb){$receiver=null;$cb=null;return \"s\";}$receiver=new Child;$cb=[$receiver,\"run\"];$cb(drop($receiver,$cb));",
+    "source_sha256": "5fef65eb1ed7484bf44dcafbf3c86fa220e8b34d6e0f8909fa44187a874fb6db",
+    "expected_model": "normal",
+    "purpose": "Static selection through an object carries called class without retaining this.",
+    "expected_normal_stdout": "Child-s"
+  },
+  {
+    "id": "reference-selector-mutation",
+    "source": "<?php class First{public function run($v){echo \"F\",$v;}}class Second{public function other($v){echo \"BAD;\";}}function change(&$r,&$m,&$cb){$r=new Second;$m=\"other\";$cb=null;return \"!\";}$r=new First;$m=\"run\";$cb=[&$r,&$m];$cb(change($r,$m,$cb));",
+    "source_sha256": "e60c1d2fb2d5de2ef98d8c6f1061cfc06eeb10b21b55516889fe0fc0ed524af7",
+    "expected_model": "normal",
+    "purpose": "Dereferenced selection survives replacement of both members and the original callee.",
+    "expected_normal_stdout": "F!"
+  },
+  {
+    "id": "capture-clone-member-retirement",
+    "source": "<?php class First{public function run($v){echo \"F\",$v;}}class Second{public function other($v){echo \"BAD;\";}}$r=new First;$m=\"run\";$cb=[&$r,&$m];$f=$cb(...);$g=clone $f;$cb=null;$r=new Second;$m=\"other\";unset($f);$g(v:\"c\");",
+    "source_sha256": "64098ce3b19f835633f39ca6ba9cfb3d82f442043deaf74ff9f1a31e917f5af4",
+    "expected_model": "normal",
+    "purpose": "Clone retains selected receiver and method after original array/referenced cells change.",
+    "expected_normal_stdout": "Fc"
+  },
+  {
+    "id": "capture-clone-shared-method-static-deferred-default",
+    "source": "<?php const V=3;class Owner{public function run($v=V){static $n=0;echo ++$n,\":\",$v,\";\";}}class Child extends Owner{}$cb=[new Child,\"run\"];$f=$cb(...);$g=clone $f;$cb();$f();$g();unset($cb,$f,$g);",
+    "source_sha256": "d922b26d042c87e7a26016d1490c0c38dc50bf3a4ef5cf937a4b9bff1d11b753",
+    "expected_model": "normal",
+    "purpose": "Array call/capture/clone share method static cells and the source deferred default cache.",
+    "expected_normal_stdout": "1:3;2:3;3:3;"
+  },
+  {
+    "id": "captured-closure-nominal-and-invoke-alias",
+    "source": "<?php class Worker{public function run($v){echo $v;}}function receive(Closure $value){echo get_class($value);$alias=$value->__invoke(...);$alias(\"a\");$value->__invoke(v:\"b\");}$f=([new Worker,\"run\"])(...);receive($f);",
+    "source_sha256": "0600c6915706d374196b60ceab2333ea6c80b6a02ea56c77f4c85d4f2bda05d6",
+    "expected_model": "normal",
+    "purpose": "New captured object participates in Closure nominal reception and __invoke alias consumers.",
+    "expected_normal_stdout": "Closureab"
+  },
+  {
+    "id": "weak-callable-string-array-owned-named",
+    "source": "<?php class Worker{public function run($v){echo \"W\",$v;}}function receive(callable|string $value){$value(v:\"u\");}receive(value:[new Worker,\"run\"]);",
+    "source_sha256": "5f3dcb0971339eed0e536ab1f1d8065b17f6c75ad8f1bd5a07492c4ac33235e2",
+    "expected_model": "normal",
+    "purpose": "Weak callable|string admits the array without scalar conversion and named send.",
+    "expected_normal_stdout": "Wu"
+  },
+  {
+    "id": "strict-reversed-array-byref-writeback",
+    "source": "<?php declare(strict_types=1);class Worker{public function run(&$v){$v=\"set\";echo \"I\";}}function receive(string|callable &$value,&$v){$value(...[\"v\"=>&$v]);}$value=[new Worker,\"run\"];$v=\"old\";receive($value,$v);echo $v;",
+    "source_sha256": "3b3e1617d02d3ed5eab9276e5eed17403f44e3fe8ff3f80f6dfed24b7b20277e",
+    "expected_model": "normal",
+    "purpose": "Strict reversed union/by-reference reception and unpacked reference writeback.",
+    "expected_normal_stdout": "Iset"
+  },
+  {
+    "id": "method-frame-nonstatic-class-truth-only",
+    "source": "<?php class Owner{public function run(){echo \"BAD;\";}public function receive(callable $value){echo \"A\";try{$value();}catch(Error $e){echo \":\",$e->getMessage();}}}$x=new Owner;$x->receive([\"Owner\",\"run\"]);",
+    "source_sha256": "ad7eb5e41e1a5ae1402a7e50e128fa12b5d2f8aee61c951814b7d2fad84ebb65",
+    "expected_model": "normal",
+    "purpose": "Method-frame admission does not manufacture a dynamic class-string instance target.",
+    "expected_normal_stdout": "A:Non-static method Owner::run() cannot be called statically"
+  },
+  {
+    "id": "wrong-count-precedes-arguments",
+    "source": "<?php class Worker{public function run($v){echo \"BAD;\";}}function side(){echo \"BAD;\";}$cb=[new Worker,\"run\",0];try{$cb(side());}catch(Error $e){echo $e->getMessage();}",
+    "source_sha256": "e6186a6addf4746bb361c2c984c2227d8a084cc36a096beb9197e1030b57213e",
+    "expected_model": "normal",
+    "purpose": "Count rejection occurs before argument effects.",
+    "expected_normal_stdout": "Array callback must have exactly two elements"
+  },
+  {
+    "id": "wrong-keys-precedes-arguments",
+    "source": "<?php class Worker{public function run($v){echo \"BAD;\";}}function side(){echo \"BAD;\";}$cb=[1=>\"run\",2=>new Worker];try{$cb(side());}catch(Error $e){echo $e->getMessage();}",
+    "source_sha256": "4e0a88d5c2ad6be0d39ce5992b80451c58f1c11b7f102f75c2c388b852cf8551",
+    "expected_model": "normal",
+    "purpose": "Known key shape rejection before arguments.",
+    "expected_normal_stdout": "Array callback has to contain indices 0 and 1"
+  },
+  {
+    "id": "invalid-first-member-order",
+    "source": "<?php function side(){echo \"BAD;\";}$cb=[17,18];try{$cb(side());}catch(Error $e){echo $e->getMessage();}",
+    "source_sha256": "7f5ca4a997d0c82d3342f53b278932c37813223948ad1be840d0de0bc19e900d",
+    "expected_model": "normal",
+    "purpose": "Receiver kind is checked before method kind.",
+    "expected_normal_stdout": "First array member is not a valid class name or object"
+  },
+  {
+    "id": "invalid-method-before-unknown-class",
+    "source": "<?php function side(){echo \"BAD;\";}$cb=[\"MissingCallbackClass\",17];try{$cb(side());}catch(Error $e){echo $e->getMessage();}",
+    "source_sha256": "6d66d184c1008737c8fbe0de65b26f70b180d7bf9a5f155498255ea6cda0d3a0",
+    "expected_model": "normal",
+    "purpose": "Second member shape precedes class/autoload lookup.",
+    "expected_normal_stdout": "Second array member is not a valid method"
+  },
+  {
+    "id": "nul-method-lookup-not-truncated",
+    "source": "<?php class Worker{public function run(){echo \"BAD;\";}}$cb=[new Worker,\"run\\0tail\"];try{$cb();}catch(Error $e){echo $e->getMessage();}",
+    "source_sha256": "0522d3b6ce986d02d24cb843c4efa79e4e78f2e289f9f1fc1d84960f2d28634c",
+    "expected_model": "normal",
+    "purpose": "Full-byte method lookup differs from diagnostic C-string rendering.",
+    "expected_normal_stdout": "Call to undefined method Worker::run()"
+  },
+  {
+    "id": "empty-method-lookup",
+    "source": "<?php class Worker{public function run(){echo \"BAD;\";}}$cb=[new Worker,\"\"];try{$cb();}catch(Error $e){echo $e->getMessage();}",
+    "source_sha256": "6748abc0e2250c9a5bc5900a1a88fe26d03176b138b855c7bcea35eeb1c14256",
+    "expected_model": "normal",
+    "purpose": "Empty string is a valid member type but fails method lookup.",
+    "expected_normal_stdout": "Call to undefined method Worker::()"
+  },
+  {
+    "id": "typed-missing-method-rejection",
+    "source": "<?php class Worker{}function receive(callable $value){echo \"BAD;\";}receive([new Worker,\"missing\"]);",
+    "source_sha256": "5e1180f9a39563d1cdca5022817a6583ea2d7aff5486d9246cd0e3376a2335a5",
+    "expected_model": "php_error",
+    "purpose": "Known public source class without method rejects callable reception."
+  },
+  {
+    "id": "typed-class-nonstatic-global-rejection",
+    "source": "<?php class Worker{public function run(){echo \"BAD;\";}}function receive(callable $value){echo \"BAD;\";}receive([\"Worker\",\"run\"]);",
+    "source_sha256": "02718923189ad3264f22dbc4a17fe3ec75a1c3ab6d7a3a09ecbde21536067eb1",
+    "expected_model": "php_error",
+    "purpose": "Global class-string nonstatic has no receiving implicit this."
+  },
+  {
+    "id": "unknown-class-service-boundary",
+    "source": "<?php $cb=[\"MissingCallbackClass\",\"run\"];$cb();",
+    "source_sha256": "47ee85f3650a1b2df872764e1b9da83322333d0053a0970107c9f87c04374641",
+    "expected_model": "unsupported",
+    "purpose": "Missing class/autoload service stays explicit."
+  },
+  {
+    "id": "compound-method-service-boundary",
+    "source": "<?php class Owner{public static function run(){echo \"I\";}}class Child extends Owner{}function receive(callable $value){$value();}receive([\"Child\",\"Owner::run\"]);",
+    "source_sha256": "f58df109c6090596d1f71c72760c5809f478e70ec1790e199aab53c04d3f839d",
+    "expected_model": "unsupported",
+    "purpose": "Compound method API/deprecation semantics remain separate."
+  },
+  {
+    "id": "nonpublic-method-service-boundary",
+    "source": "<?php class Worker{private function run(){echo \"BAD;\";}}$cb=[new Worker,\"run\"];$cb();",
+    "source_sha256": "018bbd25e299fd67311da266b48c6aa2f4f60179406b06c23a0e6ba243e615b9",
+    "expected_model": "unsupported",
+    "purpose": "Visibility-sensitive array lookup remains explicitly separate."
+  },
+  {
+    "id": "magic-method-service-boundary",
+    "source": "<?php class Worker{public function __call($name,$args){echo $name;}}$cb=[new Worker,\"run\"];$cb();",
+    "source_sha256": "ce75c7ecb699365fa74afb4b14ee61bad5ad824790ee7c37539918aaaca21d7f",
+    "expected_model": "unsupported",
+    "purpose": "Magic method trampoline is not fabricated by the public resolver."
+  },
+  {
+    "id": "array-method-current-ini-prefix",
+    "source": "<?php class Worker{public function run(){ini_set(\"include_path\",\"first\\0tail\");echo ini_set(\"include_path\",\"after\")===\"first\\0tail\"?\"R\":\"BAD;\";ini_set(\"include_path\",\"first\\0tail\");echo \":\",set_include_path(\"last\");}}function receive(callable $value){$value();}receive([new Worker,\"run\"]);",
+    "source_sha256": "37095dd28ab64c7ec8092e0d5aef1168f70941c958ac003bae38e80167311b4c",
+    "expected_model": "normal",
+    "purpose": "Current raw/effective INI behavior inside an admitted array-selected source method.",
+    "expected_normal_stdout": "R:first",
+    "profile": "file"
+  },
+  {
+    "id": "captured-closure-missing-method-error",
+    "source": "<?php class Worker{public function run(){echo \"BAD;\";}}function side(){echo \"BAD;\";}$f=([new Worker,\"run\"])(...);try{$f->missing(side());}catch(Error $e){echo $e->getMessage();}",
+    "source_sha256": "8e2795e9e0291af3a470a66b493e058aef6d5959b5086c49f09d556da80b8477",
+    "expected_model": "normal",
+    "purpose": "New closure tag rejects undefined methods before their argument effects.",
+    "expected_normal_stdout": "Call to undefined method Closure::missing()"
+  },
+  {
+    "id": "captured-closure-known-bind-consumer-boundary",
+    "source": "<?php class Worker{public function run(){echo \"I\";}}$f=([new Worker,\"run\"])(...);$g=$f->bindTo(new Worker);$g();",
+    "source_sha256": "d6347a7e2254871d0860de2bddae06503c07fde130ba459ab318f958f8b68e0e",
+    "expected_model": "unsupported",
+    "purpose": "Known Closure binding consumer stays explicit rather than becoming a stuck new object tag."
+  },
+  {
+    "id": "stdclass-callable-array-type",
+    "source": "<?php\nfunction f(callable $x) {} f([new stdClass,'m']);\n",
+    "expected_model": "php_error",
+    "purpose": "Retain the accepted known stdClass callable-array type rejection.",
+    "source_sha256": "68b77d50a69fd047b84b12a637ab0aa71a84a37a83b4f12d195a7e2b90870b54"
+  },
+  {
+    "id": "stdclass-array-missing-method-before-arguments",
+    "source": "<?php function side(){echo \"BAD;\";}$cb=[new stdClass,\"m\"];try{$cb(side());}catch(Error $e){echo $e->getMessage();}",
+    "expected_model": "normal",
+    "purpose": "Known stdClass has no methods; direct failure precedes argument evaluation.",
+    "expected_normal_stdout": "Call to undefined method stdClass::m()",
+    "source_sha256": "c1941003e15d0dc00e112808f23eeb9e6837189acb87720cdbcc87a8785fa8ab"
+  },
+  {
+    "id": "captured-static-closure-pipe-owner-called-class",
+    "source": "<?php class Owner{public static function run($v){echo __CLASS__,\"/\",static::class,\":\",$v;}}class Child extends Owner{}$f=([new Child,\"run\"])(...);\"p\" |> $f;",
+    "expected_model": "normal",
+    "purpose": "Captured new closure tag uses the inherited static owner/called class through PIPE.",
+    "expected_normal_stdout": "Owner/Child:p",
+    "source_sha256": "c568992b11060ecdc16dfb484efb84b350a84277ed365db99e42d0b7e2e2395b"
+  },
+  {
+    "id": "array-capture-current-publication-restore-property",
+    "source": "<?php\nclass Holder { public static string $value = \"old\"; }\nclass Inner {\n    public function __toString(): string {\n        echo \"p\", func_num_args();\n        return \"value\";\n    }\n}\nclass Option {\n    public function __toString(): string {\n        echo \"o\", func_num_args();\n        Holder::$value = new Inner;\n        ini_set(\"include_path\", \"mutated\");\n        return \"include_path\\0tail\";\n    }\n}\nclass Owner {\n    public function run($v) {\n        echo __CLASS__, \"/\", static::class, \":\", func_num_args(), \":\", func_get_arg(0), \"|\";\n        ini_restore(new Option);\n        echo ini_set(\"include_path\", \"after\") === \"mutated\" ? \"K\" : \"BAD\";\n        echo \"|\", Holder::$value, \"|\", func_num_args(), \":\", func_get_arg(0);\n    }\n}\nclass Child extends Owner {}\nclass Creator {}\n$f = null;\n$maker = function() use (&$f) { $f = [new Child, \"run\"](...); };\n$maker->call(new Creator);\nunset($maker);\n$copy = clone $f;\nunset($f);\n$copy(...[\"v\" => \"x\"]);\nunset($copy);\n",
+    "source_sha256": "c3ca189e80916acad5d97f4f95490f572b46b210fe9d64c298e665246695069f",
+    "expected_model": "normal",
+    "kind": "file-source",
+    "purpose": "Retired maker/creator array capture clone retains argument views through Restore option and nested typed static conversion under current declaration publication.",
+    "expected_normal_stdout": "Owner/Child:1:x|o0p0K|value|1:x"
+  }
+]
