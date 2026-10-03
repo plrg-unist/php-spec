@@ -9,8 +9,8 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 Two-slot `ini_set` converts the normalized option before value rejection and
 full-name lookup, then samples the full raw old value after callbacks. Strict
-non-string options reject; null, empty and leading-NUL include-path updates
-return false. Current SENT arrays must remain allocated; completed unpack
+direct calls reject non-string options; owned calls parse weakly. Null, empty
+and leading-NUL include-path updates return false. Current SENT arrays must remain allocated; completed unpack
 containers may retire. Tested **8cc6d7da5**, over accepted compiler/property
 **d5208161a**, on **0100a13d/1349**, accepts three fresh normal source tuples
 and the complete independent 83-assertion fixture. Nested property callbacks

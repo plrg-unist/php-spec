@@ -153,8 +153,8 @@ remains a separate shared option-parser obligation.
 The [two-slot INI increment](../../coverage/semantics/include-stringable-ini-option-review.json)
 binds normalized `option` destination0 independently of written named/unpacked
 argument order. Weak scalar/Stringable options convert before array/object value
-rejection and full-name lookup. Strict non-string options reject; weak null
-options emit a deprecation before value validation. A valid `include_path` update
+rejection and full-name lookup. Strict direct calls reject non-string options;
+owned calls parse weakly. Weak null options deprecate before value validation. A valid `include_path` update
 returns the full raw old value sampled after the callback. Null, empty and
 leading-NUL values return false without mutation; valid interior-NUL values retain
 all bytes. Option-name matching remains full-byte, independent of the effective
