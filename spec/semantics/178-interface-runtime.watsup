@@ -76,14 +76,14 @@ def $pil_activate(S, S_parent, pclassdesc, PILMISSINGRESULT ptbytes) = $throw_sc
 def $pil_activate(S, S_parent, pclassdesc, PILUNSUPPORTED text) = S[.COMPLETION = UNSUPPORTED text]
   -- if S_parent.COMPLETION = NORMAL
 
-def $activate_class(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_activate(S, S, pclassdesc, $pil_checked(S, pclassdesc, $pil_fetch(S, pclassdesc.INTERFACES, eps))))
+def $activate_class_body(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_activate(S, S, pclassdesc, $pil_checked(S, pclassdesc, $pil_fetch(S, pclassdesc.INTERFACES, eps))))
   -- if S.COMPLETION = NORMAL
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if pclassdesc.PARENT = eps
   -- if pclassdesc.INTERFACES =/= eps
   -- if $class_static_initial(S, pclassdesc.PROPERTIES) = (pclassstatic*)
-def $activate_class(S, pclassdesc) = $activate_parented_class(S, pclassdesc, ptbytes_parent)
+def $activate_class_body(S, pclassdesc) = $activate_parented_class(S, pclassdesc, ptbytes_parent)
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "class"
   -- if ~$class_internal(pclassdesc.NAME)
@@ -93,7 +93,7 @@ def $activate_class(S, pclassdesc) = $activate_parented_class(S, pclassdesc, ptb
   -- if $class_static_initial(S, pclassdesc.PROPERTIES) = (pclassstatic*)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = eps
   -- if ~$class_internal(ptbytes_parent)
-def $activate_class(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_parent_activate(S, pclassdesc, ptbytes_parent, $pil_fetch(S, pclassdesc.INTERFACES, eps)))
+def $activate_class_body(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_parent_activate(S, pclassdesc, ptbytes_parent, $pil_fetch(S, pclassdesc.INTERFACES, eps)))
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "class"
   -- if ~$class_internal(pclassdesc.NAME)
@@ -109,13 +109,13 @@ def $pil_parent_activate(S, pclassdesc, ptbytes_parent, PILFETCHED pilref* ) = S
 def $pil_parent_activate(S, pclassdesc, ptbytes_parent, PILFETCHED pilref* ) = $pil_activate(S, S_parent, pclassdesc, $pil_check(S_parent, pclassdesc, pilref*, eps, eps))
   -- if S_parent = $activate_parented_class(S, pclassdesc, ptbytes_parent)
   -- if S_parent.COMPLETION = NORMAL
-def $activate_class(S, pclassdesc) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]]
+def $activate_class_body(S, pclassdesc) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]]
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "interface"
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if pclassdesc.INTERFACES = eps
-def $activate_class(S, pclassdesc) = $pil_fatal(S, pclassdesc, $ptascii("Cannot redeclare ") ++ $ptascii(pclassdesc_old.KIND) ++ [32] ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41])
+def $activate_class_body(S, pclassdesc) = $pil_fatal(S, pclassdesc, $ptascii("Cannot redeclare ") ++ $ptascii(pclassdesc_old.KIND) ++ [32] ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41])
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "interface"
   -- if ~$class_internal(pclassdesc.NAME)
@@ -127,13 +127,13 @@ rule PhpStep/interface-declaration-early: S ~> S[.TODO = ptask_tail*]
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if pclassdesc.EARLY
+  -- if $declaration_early(S.DECLARATIONS, porigin, PPCLASS)
 rule PhpStep/interface-declaration-runtime: S ~> $activate_class(S[.TODO = ptask_tail*], pclassdesc)
   -- if S.TODO = (STMT (NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if ~pclassdesc.EARLY
+  -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
 
 def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot instantiate interface ") ++ pclassdesc.NAME, z)
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin)

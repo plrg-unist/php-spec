@@ -81,7 +81,21 @@ RETIRED_FOREACH_KEYS = [('vendor/php-src/Zend/tests/errmsg/errmsg_042.phpt',
   "Syntax error, unexpected T_DOUBLE_ARROW, expecting '[' or T_OBJECT_OPERATOR or T_NULLSAFE_OBJECT_OPERATOR "
   'on line 3',
   'Key element cannot be a reference')]
-for source_id, source_hash, frontend_message, lint_message in RETIRED_ARRAY_HOLES + RETIRED_FOREACH_KEYS:
+# Namespace placement now reaches the checked compiler; its old frontend failures
+# must not become active exemptions again.
+RETIRED_NAMESPACE_PLACEMENT = [('vendor/php-src/Zend/tests/function_outside_namespace.phpt',
+  '78a38e38f8ff4403f7c6730157041bb7222e6abffc47afc07d8478e548e86b93',
+  'Namespace declaration statement has to be the very first statement in the script on line 5',
+  'Namespace declaration statement has to be the very first statement or after any declare call in the script'),
+ ('vendor/php-src/Zend/tests/namespaces/ns_068.phpt',
+  '7bf82c71ee023486b0fa7bb63008f3ec5a4390c5ebb897fd30390a330897ae28',
+  'Namespace declaration statement has to be the very first statement in the script on line 3',
+  'Namespace declaration statement has to be the very first statement or after any declare call in the script'),
+ ('vendor/php-src/Zend/tests/namespaces/ns_083.phpt',
+  'a2baa591d147e6f71633f82a9736d8663b31c4fccb685e2bd6a506fdf294eb47',
+  'Namespace declaration statement has to be the very first statement in the script on line 4',
+  'Namespace declaration statement has to be the very first statement or after any declare call in the script')]
+for source_id, source_hash, frontend_message, lint_message in RETIRED_ARRAY_HOLES + RETIRED_FOREACH_KEYS + RETIRED_NAMESPACE_PLACEMENT:
     retired_record = {'id': source_id, 'sha256': source_hash, 'ini': {}}
     retired_result = {
         'status': 'unreviewed_phase_difference',

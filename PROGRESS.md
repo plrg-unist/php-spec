@@ -144,12 +144,18 @@ The independent private lanes currently include:
   tuples and independent source3/three188; earlier203d2/112,1c4/170 and failures
   remain distinct. Fresh actual-master projection/installation, delayed receivers,
   non-CV reference acquisition and full201 remain open.
-- Compiler: publication190–196 remains private/unaccepted. Freeze17 has four
-  bounded runtime passes; receiver-free/null-scope fails before SOURCE_PENDING.
-  The null/null181 producer repair has source-only approval; runtime renewal,
-  native18/file20, current capture compatibility and full publication/syntax remain
-  pending. Earlier freezes and failures retain their identities. Constants183/184
-  depend on publication.
+- Compiler: publication190–196 remains private. Source20 accepts eighteen
+  retained-native comparisons/file20 and separate195 controls; old5c44
+  maintained25, compatibility15 and life11 retain their bounded identities.
+  SET/publication a114 accepts34 controls; modifier a11 accepts fresh native8,
+  production8 and finite26/286. Syntax15/109 belongs to e183; its original SL/AL
+  exit1 and the old failed compatibility aggregate remain preserved with distinct
+  corrections. Fresh CALLS/compiler coupling at ce4bf/aabf accepts source10
+  and finite13/326, with invocation, capture and default-cache guards intact.
+  Full classified syntax/inventory and the fresh copied offline rebuild remain
+  open. Historical freezes/failures stay retained.
+  Reporting-mask/error_reporting controls remain separate core obligations.
+  Installation and Constants183/184 publication dependencies remain pending.
 - Argument introspection198/199 remains private on fdef. All111 ordinary
   native/model tuples agree; the original112 aggregate remains FAIL with a
   separately accepted focused status correction. Finite evidence combines its

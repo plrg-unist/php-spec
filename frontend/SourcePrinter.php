@@ -35,6 +35,38 @@ final class SourcePrinter extends PhpParser\PrettyPrinter\Standard {
         return $chunks;
     }
 
+    protected function pStmt_ClassMethod(PhpParser\Node\Stmt\ClassMethod $node): string {
+        $combined = PhpParser\Modifiers::READONLY | PhpParser\Modifiers::ABSTRACT | PhpParser\Modifiers::FINAL;
+        if (($node->flags & $combined) !== $combined) return parent::pStmt_ClassMethod($node);
+        $positions = [];
+        $keyword = $node->getAttribute('methodKeywordTokenPos');
+        $start = $node->getStartTokenPos();
+        $end = $node->getEndTokenPos();
+        $nameStart = $node->name->getStartTokenPos();
+        $nameEnd = $node->name->getEndTokenPos();
+        if ($start < 0 || $start > $end || $nameStart < $start || $nameStart > $nameEnd || $nameEnd > $end
+            || !is_int($keyword) || $keyword < $start || $keyword >= $nameStart) {
+            throw new RuntimeException('Combined method modifier keyword position is invalid');
+        }
+        foreach (['readonly' => 'methodReadonlyTokenPos', 'abstract' => 'methodAbstractTokenPos', 'final' => 'methodFinalTokenPos'] as $modifier => $attribute) {
+            $position = $node->getAttribute($attribute);
+            if (!is_int($position) || $position < $start || $position >= $keyword) {
+                throw new RuntimeException('Combined method modifier position is invalid');
+            }
+            $positions[$modifier] = $position;
+        }
+        if (count(array_unique($positions)) !== 3) throw new RuntimeException('Combined method modifier positions conflict');
+        asort($positions, SORT_NUMERIC);
+        return $this->pAttrGroups($node->attrGroups)
+             . $this->pModifiers($node->flags & ~$combined) . implode(' ', array_keys($positions)) . ' '
+             . 'function ' . ($node->byRef ? '&' : '') . $this->p($node->name)
+             . '(' . $this->pParams($node->params) . ')'
+             . (null !== $node->returnType ? ': ' . $this->p($node->returnType) : '')
+             . (null !== $node->stmts
+                ? $this->nl . '{' . $this->pStmts($node->stmts) . $this->nl . '}'
+                : ';');
+    }
+
     protected function pStmt_Declare(PhpParser\Node\Stmt\Declare_ $node): string {
         $header = 'declare (' . $this->pCommaSeparated($node->declares) . ')';
         $selected = null;

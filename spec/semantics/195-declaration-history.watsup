@@ -1,0 +1,199 @@
+;; Source images authenticate once per unit in this pass. The live prefix is
+;; then reconstructed without calling any full-state/projection validator.
+syntax pdeclimages = DECLIMAGES (nat, ppstate)* | DECLIMAGEINVALID
+dec $declaration_images(pstate, pcunit*) : pdeclimages
+def $declaration_images(S, eps) = DECLIMAGES eps
+def $declaration_images(S, pcunit :: pcunit_tail*) = DECLIMAGES ((pcunit.ID, P) :: (n, P_tail)*)
+  -- if P = $declaration_compiler_state($eval_source_ppstate(S, pcunit))
+  -- if $compilation_image_valid(S, pcunit, P)
+  -- if $declaration_images(S, pcunit_tail*) = DECLIMAGES (n, P_tail)*
+def $declaration_images(S, pcunit*) = DECLIMAGEINVALID -- otherwise
+
+dec $declaration_compiler_at((nat, ppstate)*, nat) : ppstate?
+def $declaration_compiler_at(eps, n) = eps
+def $declaration_compiler_at((n, P) :: (n_tail, P_tail)*, n) = (P)
+def $declaration_compiler_at((n_other, P) :: (n_tail, P_tail)*, n) = $declaration_compiler_at((n_tail, P_tail)*, n)
+  -- if n_other =/= n
+dec $declaration_image_classes((nat, ppstate)*) : pclassdesc*
+dec $declaration_image_functions((nat, ppstate)*) : pfunction*
+def $declaration_image_classes(eps) = eps
+def $declaration_image_classes((n, P) :: (n_tail, P_tail)*) = P.INSTALLED.CLASSES ++ $declaration_image_classes((n_tail, P_tail)*)
+def $declaration_image_functions(eps) = eps
+def $declaration_image_functions((n, P) :: (n_tail, P_tail)*) = P.INSTALLED.FUNCTIONS ++ $declaration_image_functions((n_tail, P_tail)*)
+
+dec $declaration_entered(pdeclaration*, nat) : bool
+dec $declaration_enter_item(pdeclaration, nat) : bool
+def $declaration_enter_item(PDENTER n porigin? z, n) = true
+def $declaration_enter_item(pdeclaration, n) = false -- otherwise
+def $declaration_entered(eps, n) = false
+def $declaration_entered(pdeclaration :: pdeclaration_tail*, n) = true
+  -- if $declaration_enter_item(pdeclaration, n)
+def $declaration_entered(pdeclaration :: pdeclaration_tail*, n) = $declaration_entered(pdeclaration_tail*, n)
+  -- if ~$declaration_enter_item(pdeclaration, n)
+dec $declaration_files_entered(pdeclaration*, psourcefile*) : bool
+def $declaration_files_entered(pdeclaration*, eps) = true
+def $declaration_files_entered(pdeclaration*, (SOURCEFILE n ptbytes) :: psourcefile*) = ($declaration_entered(pdeclaration*, n) /\ $declaration_files_entered(pdeclaration*, psourcefile*))
+dec $declaration_entry_site(pdeclaration*, nat) : porigin?
+def $declaration_entry_site(eps, n) = eps
+def $declaration_entry_site((PDENTER n porigin? z) :: pdeclaration*, n) = porigin?
+def $declaration_entry_site(pdeclaration :: pdeclaration_tail*, n) = $declaration_entry_site(pdeclaration_tail*, n)
+  -- if ~$declaration_enter_item(pdeclaration, n)
+
+dec $declaration_history_seed(pstate) : pstate
+def $declaration_history_seed(S) = S[.CLASSNAMES = eps][.CALLABLES = eps][.CLASSSTATICS = eps][.LINKEDPARENTS = eps][.LINKEDINTERFACES = eps][.DECLARATIONS = eps][.EVENTS = eps][.COMPLETION = NORMAL][.TODO = eps][.ERRORORIGIN = eps][.TRACE = eps][.CURRENT = eps][.FRAMES = eps][.EVALCONTEXTS = eps][.FILECONTEXTS = eps][.SILENCES = eps][.CONSTCONTEXT = eps][.DEFAULTCACHE = eps]
+
+dec $declaration_registries_equal(pstate, pstate) : bool
+def $declaration_registries_equal(S, S_prefix) = (S.CLASSNAMES = S_prefix.CLASSNAMES /\ S.CALLABLES = S_prefix.CALLABLES /\ S.LINKEDPARENTS = S_prefix.LINKEDPARENTS /\ S.LINKEDINTERFACES = S_prefix.LINKEDINTERFACES)
+dec $declaration_units_entered(pdeclaration*, pcunit*) : bool
+def $declaration_units_entered(pdeclaration*, eps) = true
+def $declaration_units_entered(pdeclaration*, pcunit :: pcunit_tail*) = ($declaration_entered(pdeclaration*, pcunit.ID) /\ $declaration_units_entered(pdeclaration*, pcunit_tail*))
+dec $declaration_failures_entered(pdeclaration*, pfailedsource*) : bool
+def $declaration_failures_entered(pdeclaration*, eps) = true
+def $declaration_failures_entered(pdeclaration*, pfailedsource :: pfailedsource_tail*) = ($declaration_entered(pdeclaration*, pfailedsource.UNIT) /\ $declaration_failures_entered(pdeclaration*, pfailedsource_tail*))
+
+dec $declaration_active_class(pstate, porigin?) : bool
+def $declaration_active_class(S, eps) = true
+def $declaration_active_class(S, (porigin)) = true
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+def $declaration_active_class(S, porigin?) = false -- otherwise
+dec $declaration_entry_binding(pstate, pstate, nat, porigin?) : bool
+dec $declaration_service_scope(pstate, porigin, porigin?) : bool
+dec $declaration_file_wait(pfilecontext*, nat, porigin, pstate) : bool
+dec $declaration_file_wait_item(pfilecontext, nat, porigin, pstate) : bool
+def $declaration_entry_binding(S, S_prefix, 0, eps) = (S_prefix.DECLARATIONS = eps)
+def $declaration_entry_binding(S, S_prefix, n, (porigin)) = $declaration_active_class(S_prefix, pevalbinding.CLASS)
+  -- if $(n > 0)
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = (pevalbinding)
+  -- if pevalbinding.SITE = porigin
+  -- if $declaration_service_scope(S_prefix, porigin, pevalbinding.CLASS)
+  -- if $file_binding_at(S.FILEBINDINGS, n) = eps
+def $declaration_entry_binding(S, S_prefix, n, (porigin)) = $declaration_active_class(S_prefix, pfilebinding.CLASS)
+  -- if $(n > 0)
+  -- if $file_binding_at(S.FILEBINDINGS, n) = (pfilebinding)
+  -- if pfilebinding.SITE = porigin
+  -- if $declaration_service_scope(S_prefix, porigin, pfilebinding.CLASS)
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = eps
+def $declaration_entry_binding(S, S_prefix, n, (porigin)) = true
+  -- if $(n > 0)
+  -- if $failed_source_at(S.FAILEDSOURCES, n) = (pfailedsource)
+  -- if pfailedsource.SITE = porigin
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = eps /\ $file_binding_at(S.FILEBINDINGS, n) = eps
+def $declaration_entry_binding(S, S_prefix, n, (porigin)) = true
+  -- if $(n > 0)
+  -- if $eval_context_at(S.EVALCONTEXTS, n) = (pevalcontext)
+  -- if pevalcontext.PHASE = PARSER_WAIT /\ pevalcontext.SITE = porigin
+  -- if $source_unit(S.SOURCES, n) = eps /\ $failed_source_at(S.FAILEDSOURCES, n) = eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = eps /\ $file_binding_at(S.FILEBINDINGS, n) = eps
+  -- if $declaration_service_scope(S_prefix, porigin, pevalcontext.LEXICAL_CLASS)
+  -- if $declaration_active_class(S_prefix, pevalcontext.LEXICAL_CLASS)
+def $declaration_entry_binding(S, S_prefix, n, (porigin)) = true
+  -- if $(n > 0)
+  -- if $source_unit(S.SOURCES, n) = eps /\ $failed_source_at(S.FAILEDSOURCES, n) = eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = eps /\ $file_binding_at(S.FILEBINDINGS, n) = eps
+  -- if $declaration_file_wait(S.FILECONTEXTS, n, porigin, S_prefix)
+def $declaration_entry_binding(S, S_prefix, n, porigin?) = false -- otherwise
+def $declaration_file_wait(eps, n, porigin, S_prefix) = false
+def $declaration_file_wait_item(pfilecontext, n, porigin, S_prefix) = true
+  -- if pfilecontext.PHASE = FILE_PARSE_WAIT /\ pfilecontext.UNIT = (n) /\ pfilecontext.SITE = porigin
+  -- if $declaration_service_scope(S_prefix, porigin, pfilecontext.LEXICAL_CLASS)
+  -- if $declaration_active_class(S_prefix, pfilecontext.LEXICAL_CLASS)
+def $declaration_file_wait_item(pfilecontext, n, porigin, S_prefix) = false -- otherwise
+def $declaration_file_wait(pfilecontext :: pfilecontext_tail*, n, porigin, S_prefix) = true
+  -- if $declaration_file_wait_item(pfilecontext, n, porigin, S_prefix)
+def $declaration_file_wait(pfilecontext :: pfilecontext_tail*, n, porigin, S_prefix) = $declaration_file_wait(pfilecontext_tail*, n, porigin, S_prefix)
+  -- if ~$declaration_file_wait_item(pfilecontext, n, porigin, S_prefix)
+
+dec $declaration_service_available(pstate, porigin?) : bool
+dec $declaration_cause_valid(pstate, porigin, pdeclcause) : bool
+dec $declaration_history_final(pstate, pstate) : bool
+def $declaration_history_final(S, S_prefix) = ($declaration_registries_equal(S, S_prefix) /\ $declaration_units_entered(S_prefix.DECLARATIONS, S.SOURCES) /\ $declaration_failures_entered(S_prefix.DECLARATIONS, S.FAILEDSOURCES))
+dec $declaration_stop_terminal(pcompletion) : bool
+def $declaration_stop_terminal(THROWN text ptbytes z) = false
+def $declaration_stop_terminal(COMPILETHROWN ptbytes z) = false
+def $declaration_stop_terminal(NORMAL) = false
+def $declaration_stop_terminal(pcompletion) = true -- otherwise
+
+dec $declaration_history_fold(pstate, pstate, (nat, ppstate)*, pdeclaration*, nat) : bool
+dec $declaration_history_compiled(pstate, pstate, (nat, ppstate)*, pdeclaration*, nat, pstate) : bool
+def $declaration_history_fold(S, S_prefix, (n, P)*, eps, n_next) = $declaration_history_final(S, S_prefix)
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next porigin? z) :: pdeclaration*, n_next) = $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled)
+  -- if $declaration_entry_binding(S, S_prefix, n_next, porigin?)
+  -- if $declaration_service_available(S_prefix, porigin?)
+  -- if $declaration_compiler_at((n, P)*, n_next) = (P_current)
+  -- if S_compiled = $declaration_fold($declaration_enter(S_prefix[.REPORTING = z][.COMPLETION = NORMAL][.ERRORORIGIN = eps], n_next, porigin?), P_current, P_current.PUBLICATIONS, 0, 0)
+def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_fold(S, S_compiled[.COMPLETION = NORMAL][.TODO = eps], (n, P)*, pdeclaration_tail*, $(n_next + 1))
+  -- if ~$declaration_stop_terminal(S_compiled.COMPLETION)
+  -- if n_prefix = $nabs($(|S_prefix.DECLARATIONS| + 1))
+  -- if $(n_prefix <= |S_compiled.DECLARATIONS|)
+  -- if n_count = $nabs($(|S_compiled.DECLARATIONS| - n_prefix))
+  -- if $(n_count <= |pdeclaration*|)
+  -- if S_compiled.DECLARATIONS[n_prefix:n_count] = pdeclaration*[0:n_count]
+  -- if n_remaining = $nabs($(|pdeclaration*| - n_count))
+  -- if pdeclaration_tail* = pdeclaration*[n_count:n_remaining]
+def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_final(S, S_compiled)
+  -- if $declaration_stop_terminal(S_compiled.COMPLETION)
+  -- if n_prefix = $nabs($(|S_prefix.DECLARATIONS| + 1))
+  -- if n_count = |pdeclaration*|
+  -- if $(|S_compiled.DECLARATIONS| = n_prefix + n_count)
+  -- if S_compiled.DECLARATIONS[n_prefix:n_count] = pdeclaration*
+  -- if S.COMPLETION = S_compiled.COMPLETION
+  -- if S.ERRORORIGIN = S_compiled.ERRORORIGIN
+  -- if S.COMPILESTOP = ($(n_next > 0) /\ $eval_static_completion(S_compiled.COMPLETION))
+def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = false -- otherwise
+
+;; A rejected dynamic unit has no accepted image; a pending segment is only
+;; its entry. Both still consume the same fresh unit identity.
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next (porigin) z) :: (PDEXIT n_next PCSREJECT) :: pdeclaration*, n_next) = $declaration_history_fold(S, $declaration_exit($declaration_enter(S_prefix[.REPORTING = z], n_next, (porigin)), n_next, PCSREJECT), (n, P)*, pdeclaration*, $(n_next + 1))
+  -- if $declaration_compiler_at((n, P)*, n_next) = eps
+  -- if $failed_source_at(S.FAILEDSOURCES, n_next) = (pfailedsource)
+  -- if pfailedsource.SITE = porigin
+  -- if $declaration_entry_binding(S, S_prefix, n_next, (porigin))
+  -- if $declaration_service_available(S_prefix, (porigin))
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next (porigin) z) :: pdeclaration_tail*, n_next) = $declaration_history_final(S, $declaration_enter(S_prefix[.REPORTING = z], n_next, (porigin)))
+  -- if pdeclaration_tail* = eps
+  -- if S.COMPLETION = SOURCE_PENDING /\ S.REPORTING = z
+  -- if $declaration_compiler_at((n, P)*, n_next) = eps /\ $failed_source_at(S.FAILEDSOURCES, n_next) = eps
+  -- if $declaration_entry_binding(S, S_prefix, n_next, (porigin))
+  -- if $declaration_service_available(S_prefix, (porigin))
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER 0 eps z) :: (PDEXIT 0 (PCSMAINREJECT program)) :: pdeclaration_tail*, 0) = $declaration_history_final(S, S_prefix)
+  -- if pdeclaration_tail* = eps
+  -- if S_prefix.DECLARATIONS = eps /\ S.SOURCES = eps /\ S.FAILEDSOURCES = eps /\ S.CLASSES = eps /\ S.FUNCTIONS = eps /\ S.CLOSURETEMPLATES = eps /\ S.CODE = eps /\ S.POOLS = eps
+  -- if S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.EVALCONTEXTS = eps /\ S.FILECONTEXTS = eps /\ S.EVALBINDINGS = eps /\ S.FILEBINDINGS = eps /\ S.SERVICELEFT = eps
+  -- if $declaration_preflight($pcsource(0, program).OCCURRENCES) = (pcompletion)
+  -- if S.COMPLETION = pcompletion /\ S.REPORTING = z /\ ~S.COMPILESTOP /\ S.ERRORORIGIN = eps
+
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRCLASS porigin pdeclcause) :: pdeclaration*, n_next) = $declaration_history_fold(S, S_published[.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRCLASS porigin pdeclcause]], (n, P)*, pdeclaration*, n_next)
+  -- if $declaration_cause_valid(S_prefix, porigin, pdeclcause)
+  -- if $class_at(S_prefix.CLASSES, porigin) = (pclassdesc)
+  -- if S_published = $activate_class_body(S_prefix[.COMPLETION = NORMAL], pclassdesc)
+  -- if S_published.COMPLETION = NORMAL
+  -- if S_published.CLASSNAMES = S_prefix.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), porigin)]
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRFUNCTION porigin pdeclcause) :: pdeclaration*, n_next) = $declaration_history_fold(S, S_published[.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRFUNCTION porigin pdeclcause]], (n, P)*, pdeclaration*, n_next)
+  -- if $declaration_cause_valid(S_prefix, porigin, pdeclcause)
+  -- if $function_at(S_prefix.FUNCTIONS, porigin) = (pfunction)
+  -- if S_published = $activate_function_body(S_prefix[.COMPLETION = NORMAL], pfunction)
+  -- if S_published.COMPLETION = NORMAL
+  -- if S_published.CALLABLES = S_prefix.CALLABLES ++ [($ptlc(pfunction.NAME), porigin)]
+def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration*, n_next) = false -- otherwise
+
+def $declaration_history_valid(S) = $declaration_history_fold(S, $declaration_history_seed(S), (n, P)*, S.DECLARATIONS, 0)
+  -- if $declaration_files_entered(S.DECLARATIONS, S.FILES)
+  -- if $declaration_images(S, S.SOURCES) = DECLIMAGES (n, P)*
+  -- if S.CLASSES = $declaration_image_classes((n, P)*)
+  -- if S.FUNCTIONS = $declaration_image_functions((n, P)*)
+def $declaration_history_valid(S) = false -- otherwise
+
+
+;; Abrupt/pending entry cannot bypass source/history authentication. Pure
+;; constant/numeric helper states have no installed compilation footprint.
+dec $declaration_helper_state(pstate) : bool
+def $declaration_helper_state(S) = (S.FILES = eps /\ S.SOURCES = eps /\ S.FAILEDSOURCES = eps /\ S.EVALCONTEXTS = eps /\ S.FILECONTEXTS = eps /\ S.EVALBINDINGS = eps /\ S.FILEBINDINGS = eps /\ S.DECLARATIONS = eps /\ S.CLASSES = eps /\ S.FUNCTIONS = eps /\ S.CLOSURETEMPLATES = eps /\ S.CODE = eps /\ S.POOLS = eps /\ S.CLASSNAMES = eps /\ S.CALLABLES = eps /\ S.CLASSSTATICS = eps)
+def $declaration_entry_check(S) = S
+  -- if $declaration_helper_state(S)
+def $declaration_entry_check(S) = S
+  -- if ~$declaration_helper_state(S)
+  -- if $declaration_history_valid(S) /\ $eval_state_valid(S) /\ $class_statics_valid(S)
+def $declaration_entry_check(S) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid declaration publication history"]
+  -- if ~$declaration_helper_state(S)
+  -- if ~($declaration_history_valid(S) /\ $eval_state_valid(S) /\ $class_statics_valid(S))

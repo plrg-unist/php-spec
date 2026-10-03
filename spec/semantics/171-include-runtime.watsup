@@ -258,7 +258,7 @@ def $file_open_resume_valid(S, FILE_OPENED n_nonce n_caller* n_requested* n_reso
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if $file_once_kind(pfilecontext.KIND)
   -- if ((n_resolved* =/= eps /\ n_resolved* <- S.INCLUDEDOPENED) \/ n_opened* <- S.INCLUDEDOPENED)
-def $file_open_resume_valid(S, FILE_OPENED n_nonce n_caller* n_requested* n_resolved* n_opened* n_bytes*) = S_next[.FILES = S_next.FILES ++ [SOURCEFILE n_unit n_opened*]][.FILECONTEXTS = pfilecontext_next :: pfilecontext_tail*][.TODO = (FILE_PARSE_AWAIT n_nonce) :: pfilecontext.TAIL][.COMPLETION = SOURCE_PENDING]
+def $file_open_resume_valid(S, FILE_OPENED n_nonce n_caller* n_requested* n_resolved* n_opened* n_bytes*) = $declaration_enter(S_next, n_unit, (pfilecontext.SITE))[.FILES = S_next.FILES ++ [SOURCEFILE n_unit n_opened*]][.FILECONTEXTS = pfilecontext_next :: pfilecontext_tail*][.TODO = (FILE_PARSE_AWAIT n_nonce) :: pfilecontext.TAIL][.COMPLETION = SOURCE_PENDING]
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if (~$file_once_kind(pfilecontext.KIND) \/ (~(n_resolved* =/= eps /\ n_resolved* <- S.INCLUDEDOPENED) /\ ~(n_opened* <- S.INCLUDEDOPENED)))
   -- if n_unit = $next_eval_unit(S.FILES)
@@ -330,31 +330,35 @@ def $file_include_after_compile(preqbytes_all*, n_opened*) = preqbytes_all*
   -- if n_opened* <- preqbytes_all*
 
 dec $file_parse_resume_accepted(pstate, pfilecontext, pfilecontext*, program) : pstate
+dec $file_parse_resume_rejected(pstate, pfilecontext, pfilecontext*, pfailedkind, nat*, int) : pstate
 def $file_parse_resume_accepted(S, pfilecontext, pfilecontext_tail*, program) = $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P)
   -- if pfilecontext.UNIT = (n_unit)
   -- if pfilecontext.RESOLVED = (n_resolved*)
   -- if pfilecontext.OPENED = (n_opened*)
   -- if pfilecontext.BYTES = (n_bytes*)
   -- if P = $ppstart_eval_cwd(n_unit, program, n_opened*, S.FILECWD, $eval_compiler_class(S))
+  -- if ~$declaration_parser_rejects($declaration_preflight(P.FOLD.SOURCE.OCCURRENCES))
   -- if pfilebinding = {UNIT n_unit, SITE pfilecontext.SITE, KIND pfilecontext.KIND, REQUESTED pfilecontext.REQUESTED, RESOLVED n_resolved*, OPENED n_opened*, BYTES n_bytes*, CLASS pfilecontext.LEXICAL_CLASS}
   -- if S_compiled = $compile_source_append(S[.COMPLETION = NORMAL][.FILEBINDINGS = S.FILEBINDINGS ++ [pfilebinding]], P)
+def $file_parse_resume_accepted(S, pfilecontext, pfilecontext_tail*, program) = $file_parse_resume_rejected(S, pfilecontext, pfilecontext_tail*, FAILED_COMPILE, ptbytes_message, z)
+  -- if pfilecontext.UNIT = (n_unit)
+  -- if $declaration_preflight($pcsource(n_unit, program).OCCURRENCES) = (COMPILETHROWN ptbytes_message z)
 dec $file_parse_resume_valid(pstate, psourceresponse) : pstate
 def $file_parse_resume_valid(S, SOURCE_ACCEPT n_unit n_bytes* program) = $file_parse_resume_accepted(S, pfilecontext, pfilecontext_tail*, program)
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
-dec $file_parse_resume_rejected(pstate, pfilecontext, pfilecontext*, pfailedkind, nat*, int) : pstate
 def $file_parse_resume_rejected(S, pfilecontext, pfilecontext_tail*, pfailedkind, n_message*, z) = S_object[.FILECONTEXTS = pfilecontext_tail*][.TODO = (THROW_SEARCH n_object) :: pfilecontext.TAIL][.ORIGIN = (pfilecontext.SITE)][.SERVICELEFT = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.CONSTCONTEXT = eps]
   -- if pfilecontext.UNIT = (n_unit)
   -- if pfilecontext.OPENED = (n_opened*)
   -- if pfilecontext.BYTES = (n_bytes*)
   -- if pfailedsource = {UNIT n_unit, SITE pfilecontext.SITE, BYTES n_bytes*, FILE n_opened*, ISFILE true, KIND pfailedkind, MESSAGE n_message*, LINE z}
-  -- if S_object = $throwable_materialize(S[.FAILEDSOURCES = pfailedsource :: S.FAILEDSOURCES][.ORIGIN = (PORIGIN n_unit eps)][.COMPLETION = THROWN $failed_source_kind(pfailedkind) n_message* z])
+  -- if S_object = $throwable_materialize($declaration_exit(S, n_unit, PCSREJECT)[.FAILEDSOURCES = pfailedsource :: S.FAILEDSOURCES][.ORIGIN = (PORIGIN n_unit eps)][.COMPLETION = THROWN $failed_source_kind(pfailedkind) n_message* z])
   -- if S_object.COMPLETION = THROWING n_object
 def $file_parse_resume_rejected(S, pfilecontext, pfilecontext_tail*, pfailedkind, n_message*, z) = S_object[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps]
   -- if pfilecontext.UNIT = (n_unit)
   -- if pfilecontext.OPENED = (n_opened*)
   -- if pfilecontext.BYTES = (n_bytes*)
   -- if pfailedsource = {UNIT n_unit, SITE pfilecontext.SITE, BYTES n_bytes*, FILE n_opened*, ISFILE true, KIND pfailedkind, MESSAGE n_message*, LINE z}
-  -- if S_object = $throwable_materialize(S[.FAILEDSOURCES = pfailedsource :: S.FAILEDSOURCES][.ORIGIN = (PORIGIN n_unit eps)][.COMPLETION = THROWN $failed_source_kind(pfailedkind) n_message* z])
+  -- if S_object = $throwable_materialize($declaration_exit(S, n_unit, PCSREJECT)[.FAILEDSOURCES = pfailedsource :: S.FAILEDSOURCES][.ORIGIN = (PORIGIN n_unit eps)][.COMPLETION = THROWN $failed_source_kind(pfailedkind) n_message* z])
   -- if ~$eval_allocated_throw(S_object.COMPLETION)
 def $file_parse_resume_valid(S, SOURCE_PARSE_REJECT n_unit n_bytes* n_message* z) = $file_parse_resume_rejected(S, pfilecontext, pfilecontext_tail*, FAILED_PARSE, n_message*, z)
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
