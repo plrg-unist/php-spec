@@ -100,9 +100,12 @@ Twenty-five retained-native comparisons agree across successive source revisions
 (7 normal/17 PHP errors/1 static rejection); two finite programs pass16+13 predicates.
 The later linking slice accepts twelve further tuples (6 normal/5 static/1 PHP
 error) and five finite programs with27+13+19+18+16 predicates.
+A separate cross-unit slice accepts five further tuples (3 normal/2 static)
+and one finite fixture/31 predicates: compilation sees only earlier published
+values, and later cache fills cannot change a stored child image.
 [The constants ledger](coverage/semantics/class-constants-current-review.json)
-preserves distinct tested revisions and original failures. The admitted cross-unit
-folding phase gap prevents canonical integration; Closure/FCC initializers and
+preserves distinct tested revisions and original failures. Composition with the
+latest accepted runtime is next; Closure/FCC initializers remain Unsupported and
 remaining constant consumers are open. Reporting-mask/error_reporting remains a
 later core obligation.
 

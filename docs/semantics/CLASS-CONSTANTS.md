@@ -1,8 +1,8 @@
 # Source class constants
 
 The private183/184 increment extends the existing user-constant compiler and
-expression machine for PHP8.5.10 CLI. It remains partial: cross-unit folding and
-legal Closure/FCC initializers are required before the next integration proposal.
+expression machine for PHP8.5.10 CLI. The implemented scalar/array subset remains
+partial; legal Closure/FCC initializers are explicitly Unsupported.
 
 Class descriptors retain each constant's declaring owner, visibility, type,
 initializer origin and folding status; folded values remain in initializer unit pools. Earlier available scalar constants can fold;
@@ -46,8 +46,16 @@ The [ledger](../../coverage/semantics/class-constants-current-review.json) retai
 original failures, including the refuted native update hypothesis. Maintained
 source and finite commands are in `Makefile`; raw files stay outside Git.
 
-The admitted cross-unit substitution phase gap still prevents canonical readiness.
-Unretained computed/scoped table-update selectors are explicitly Unsupported.
+Included/evaluated units import only earlier published scalar/constant-array
+values that were folded or successfully cached before that unit entered. Uncached
+initializers stay lazy even when their referenced global is now defined. Imported
+arrays are copied into the new pool, and later fills cannot retroactively change
+a compiled image. Five further native comparisons (3 normal/2 static) and one
+finite fixture/31 predicates validate this boundary. The original negative
+transport expectation is retained as a fixture failure.
+
+Current-master composition remains next. Unretained computed/scoped table-update
+selectors are explicitly Unsupported.
 Additional open scope
 includes constant modifier grammar/admission, attributes, traits/enums/internal
 constants and the existing broader default/property consumers. No reporting-mask,

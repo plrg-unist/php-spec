@@ -114,7 +114,9 @@ broader class-constant contexts remain unfinished.
 [Class constants](docs/semantics/CLASS-CONSTANTS.md) now preserve owner-scoped lazy
 values, strict types, array caches, inheritance checks and global/default
 diagnostics in the private183/184 increment. Class linking and completed table
-updates have distinct histories; cross-unit folding and Closure/FCC remain open.
+updates have distinct histories. Included units fold only scalar/constant-array
+values available at their compilation entry; later cache fills cannot rewrite an
+earlier image. Closure/FCC initializers remain Unsupported and the family partial.
 [Foreach syntax and prechecks](docs/semantics/FOREACH-COMPILER.md) preserve reference
 and list keys through checked printing and report exact compiler errors;
 [independent review](coverage/semantics/foreach-publication-review.json) verifies
