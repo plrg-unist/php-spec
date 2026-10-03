@@ -141,9 +141,10 @@ The independent private lanes currently include:
   SET/publication a114 accepts34 controls; modifier a11 accepts fresh native8,
   production8 and finite26/286. Syntax15/109 belongs to e183; its original SL/AL
   exit1 and the old failed compatibility aggregate remain preserved with distinct
-  corrections. The accepted CALLS source is merged privately at aabf; its fresh
-  source10/finite13/326 gates, full classified syntax/inventory and fresh copied
-  offline rebuild remain open. Historical freezes/failures stay retained.
+  corrections. Fresh CALLS/compiler coupling at ce4bf/aabf accepts source10
+  and finite13/326, with invocation, capture and default-cache guards intact.
+  Full classified syntax/inventory and the fresh copied offline rebuild remain
+  open. Historical freezes/failures stay retained.
   Reporting-mask/error_reporting controls remain separate core obligations.
   Installation and Constants183/184 publication dependencies remain pending.
 - Argument introspection198/199 remains private on fdef. All111 ordinary
