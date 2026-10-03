@@ -5,7 +5,7 @@ import argument_introspection_calls_protocol as union
 PREFIX = union.PREFIX
 SOURCE = (b'<?php declare(strict_types=1);class ArgIniInner13{public function __invoke($a){'
           b'ini_set("include_path","live\\0tail");echo func_num_args(),func_get_arg(0),'
-          b'func_get_args()[0],get_include_path(),"|";return "union-path";}}'
+          b'func_get_args()[0],ini_set("include_path","live\\0tail"),"|";return "union-path";}}'
           b'class ArgIniString13{public function __toString():string{$i=new ArgIniInner13;'
           b'return $i(7);}}$f=set_include_path(...);'
           b'echo $f->__invoke(...["include_path"=>new ArgIniString13]);')
