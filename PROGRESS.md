@@ -7,6 +7,15 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Typed static Stringable assignment197 now composes with accepted ARG198/199,
+callable-first parameter admission and raw/effective INI171/172. Tested **f19c0a0bc**
+on **b0dbe76ce** accepts the fresh `func_get_arg(0)` → typed property source tuple
+`BS|ok`. The earlier focused INI union **a09291886** accepts source2 and755 finite
+assertions (normal266, throw256, captured file165, static68); its original normal329
+timeout has no state credit. Prior **b566** author31/independent15 evidence remains
+distinct. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json).
+Reused local executables and source-equivalent publication add no rebuild or
+new execution credit; broader consumers and full core remain open.
 Stringable Restore now converts weak options through checked callbacks and uses
 full-name lookup: exact `include_path` resets the initial raw value, while
 empty, case and NUL-name misses preserve callback mutations. Original tested
@@ -144,13 +153,13 @@ Current family status:
   or paused-return dependency is claimed.
   [Invocation ledger](coverage/semantics/source-invoke-current-review.json)
   · [callable parameter ledger](coverage/semantics/callable-string-current-review.json).
-- Properties197: the bounded CALLS×SET private **b566** increment is accepted
-  and uninstalled. Current INI composition accepts source2 full-byte/live-old/
-  throw tuples; focused normal266 and throw256 finite checks are independently
-  accepted. Original normal329 timeout has zero state credit; restored file165
-  and original static68 controls still await acceptance. Delayed receivers,
-  non-CV reference acquisition and broader property semantics remain open.
-  [Current private ledger](.tools/property-postini197-current-13/coverage/semantics/typed-static-string-assignment-review.json).
+- Properties197: weak simple typed static Stringable assignment, live-row alias
+  rechecks and callback ownership are implemented and independently accepted in
+  the current ARG/CALLS/INI composition above. Full-byte INI/property separation,
+  leading-NUL rejection, inherited capture/file and original static controls pass.
+  Delayed receivers, non-CV reference acquisition, constrained-reference object
+  conversion, readonly/asymmetric access and broader consumers remain open.
+  [Property ledger](coverage/semantics/typed-static-string-assignment-review.json).
 - Compiler publication190–196 has bounded private copied11 acceptance: source30
   (eight normal, one exit, nine PHP errors, twelve static rejections), history6/107,
   modifier26/286, classified syntax30980 and inventory/offline checks on private

@@ -50,15 +50,18 @@ the original value against each source, so its conversions and diagnostics can
 differ. Compound updates of an aliased property also use those generic source
 checks. A failed check preserves the shared cell, row and ordered sources.
 
-Typed object-to-string assignments remain explicit dependencies pending resumable
-property and constrained-reference consumers. Simple assignment through a typed property
-declaration must inspect the live static row after the callback: `__toString` may replace it with a
-different alias, whose current constraints must check the converted value.
-CV constrained-reference assignment has separate timing: conversion can overwrite
-the captured cell after the callback adds a type source, leaving an exceptional
-backing value; later ordinary writes still check all live type sources. Its witness
-remains separate from the initially unconstrained typed reference-return path.
-These pending consumers preserve callback effects without broad type exemptions.
+The bounded [typed static Stringable consumer197](TYPED-STATIC-STRING.md)
+implements weak simple object assignment. It rereads the live static row after
+`__toString`, checks the current alias's ordered constraints and preserves callback
+side effects, caller scope and cleanup. The current ARG/callable source and focused
+INI source2/755 gates have independent original-raw acceptance; earlier CALLS/SET
+checks retain their own identities. Instance/compound consumers and broader
+receiver/reference acquisition remain open.
+
+CV constrained-reference object assignment has separate timing: conversion can
+overwrite the captured cell after a callback adds a type source, leaving an
+exceptional backing value. Its authenticated186 producer remains unimplemented;
+ordinary source execution cannot mint the synthetic reference-conversion witness.
 Ordinary singleton references correctly unwrap during clone. A mismatched value
 left by exceptional reference conversion needs separate copied-value provenance when
 that unwrap produces a direct property slot.
