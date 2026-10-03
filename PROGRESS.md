@@ -94,12 +94,17 @@ completed mutations and freezes saved callers while retiring active file replies
 the fresh copied revision from later INI/argument/Restore compositions.
 Private constants183/184 now preserve declaring-owner lazy values, successful
 caches, array copy-on-write, global/default restoration and AST/VM diagnostics.
+Inheritance checks preserve final/ambiguity/access/type priority; linking and
+completed class updates remain distinct from individual cache fills.
 Twenty-five retained-native comparisons agree across successive source revisions
 (7 normal/17 PHP errors/1 static rejection); two finite programs pass16+13 predicates.
+The later linking slice accepts twelve further tuples (6 normal/5 static/1 PHP
+error) and five finite programs with27+13+19+18+16 predicates.
 [The constants ledger](coverage/semantics/class-constants-current-review.json)
-preserves failures and cutoffs. Inheritance validation/table-update flags,
-cross-unit folding, Closure/FCC initializers and remaining constant consumers are
-open. Reporting-mask/error_reporting remains a later core obligation.
+preserves distinct tested revisions and original failures. The admitted cross-unit
+folding phase gap prevents canonical integration; Closure/FCC initializers and
+remaining constant consumers are open. Reporting-mask/error_reporting remains a
+later core obligation.
 
 Installed origin retirement preserves diagnostic origins, traces and saved-frame
 cleanup. Its ledger distinguishes the minimal installed checks from the private
