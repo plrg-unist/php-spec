@@ -123,7 +123,7 @@ def prepare_fatal(directory, restore=False, property_assignment=False):
         '~$file_parse_response_valid(S_fatal,' + accepted + ')',
         '$drive_steps(S_fatal,1) = S_fatal', '$drive_steps(S_fatal,1000) = S_fatal']
     if property_assignment:
-        conditions[conditions.index('S_fatal.CLASSES = [pclassdesc_o,pclassdesc_a]')] = 'S_fatal.CLASSES = [pclassdesc_c,pclassdesc_o,pclassdesc_a]'
+        conditions[conditions.index('S_fatal.CLASSES = [pclassdesc_o,pclassdesc_a]')] = 'S_fatal.CLASSES = [pclassdesc_o,pclassdesc_c,pclassdesc_a]'
         history = next(index for index, condition in enumerate(conditions) if condition.startswith('S_fatal.DECLARATIONS ='))
         conditions[history] = conditions[history].replace('PDENTER 0 eps 30719,PDEXIT', 'PDENTER 0 eps 30719,PDECLASS 0 pclassdesc_c.ORIGIN,PDEXIT')
         conditions += [
