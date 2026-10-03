@@ -490,6 +490,7 @@ def $property_ref_assignment_task(S, expression_rhs, z) = $class_static_ref_assi
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprAssignRef (NExprStaticPropertyFetch phpType19 phpType31 metadata_property) expression_rhs metadata)
 def $property_ref_assignment_task(S, expression_rhs, z) = false -- otherwise
 dec $property_ref_base_task(pstate, pbase, int) : bool
+dec $property_pending_ref_task(pstate, pbase, int) : bool
 dec $property_ref_name_matches(phpType20, ptbytes) : bool
 def $property_ref_name_matches(NIdentifier (BYTES text) metadata_name, ptbytes) = (ptbytes = $base64(text))
 def $property_ref_name_matches(phpType20, ptbytes) = true
@@ -505,6 +506,7 @@ def $property_ref_base_task(S, BASE_PROPERTY (POBJECT n_object) ptbytes, z) = tr
   -- if (HOBJECT n_object) <- S.ALLOCATIONS
 def $property_ref_base_task(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = $class_static_ref_base_task(S, porigin_requested, ptbytes, z)
 def $property_ref_base_task(S, BASE_CLASS_STATIC_PENDING poperand_class poperand_name, z) = $class_static_ref_pending_task(S, poperand_class, poperand_name, z)
+def $property_ref_base_task(S, BASE_PROPERTY_PENDING pbase poperand z_base, z) = $property_pending_ref_task(S, BASE_PROPERTY_PENDING pbase poperand z_base, z)
 def $property_ref_base_task(S, pbase, z) = false -- otherwise
 dec $property_ref_rhs_cv(pstate, nat*) : bool
 def $property_ref_rhs_cv(S, n_name*) = true
@@ -523,6 +525,7 @@ dec $property_ref_demand(pstate) : bool
 def $property_ref_property_base(BASE_PROPERTY pvalue ptbytes) = true
 def $property_ref_property_base(pbase) = false -- otherwise
 dec $property_ref_fetch_result_valid(pstate, phpType20) : bool
+dec $property_pending_base(pbase) : bool
 def $property_ref_demand(S) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $(|pcpath| > 0)
@@ -553,6 +556,7 @@ def $property_ref_fetch_result_valid(S, phpType20) = $property_ref_name_matches(
 def $property_ref_fetch_result_valid(S, phpType20) = false
   -- if S.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*
   -- if ~$property_ref_property_base(S.BASE)
+  -- if ~$property_pending_base(S.BASE)
 def $property_ref_fetch_result_valid(S, phpType20) = true -- otherwise
 def $property_ref_fetch_task(S, z) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)

@@ -149,3 +149,257 @@ rule PhpStep/foreach-prep-class-static: S ~> S[.TODO = [$at_task($origin_child(S
   -- if S.TODO = (FOREACH_PREP statement z) :: ptask_tail*
   -- if statement = NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
   -- if expression_iterable = NExprStaticPropertyFetch phpType19 phpType31 metadata_property
+
+;; Writable object-property chains retain the static address until the delayed
+;; fetch. In particular, a non-CV RHS can wrap the live slot in a reference.
+dec $property_static_chain(expression) : bool
+def $property_static_chain(NExprStaticPropertyFetch phpType19 phpType31 metadata) = true
+def $property_static_chain(NExprPropertyFetch expression phpType20 metadata) = $property_static_chain(expression)
+def $property_static_chain(expression) = false -- otherwise
+dec $property_writer_tail(ptask*) : bool
+def $property_writer_tail((ORIGIN_RETURN porigin?) :: ptask_tail*) = $property_writer_tail(ptask_tail*)
+def $property_writer_tail((DIM_INDEX expression z) :: ptask_tail*) = $property_writer_tail(ptask_tail*)
+def $property_writer_tail((DIM_APPEND z) :: ptask_tail*) = $property_writer_tail(ptask_tail*)
+def $property_writer_tail((PROPERTY_BASE_PREP phpType20 z) :: ptask_tail*) = true
+def $property_writer_tail((ASSIGN_PREP expression_target expression) :: ptask_tail*) = true
+def $property_writer_tail((COMPOUND_PREP pbin expression_target expression z) :: ptask_tail*) = true
+def $property_writer_tail((UPDATE_PREP pupdate b z) :: ptask_tail*) = true
+def $property_writer_tail((COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*) = true
+def $property_writer_tail((PROPERTY_REF_PREP expression z) :: ptask_tail*) = true
+def $property_writer_tail((PROPERTY_REF_FETCH z) :: ptask_tail*) = true
+def $property_writer_tail((ACQUIRE_ARRAY z) :: ptask_tail*) = true
+def $property_writer_tail((REF_ARRAY_PREP expression z) :: ptask_tail*) = true
+def $property_writer_tail((CALL_REF_FETCH pcalltarget n porigin?) :: ptask_tail*) = true
+def $property_writer_tail((RETURN_REF_FETCH z) :: ptask_tail*) = true
+def $property_writer_tail((FOREACH_DIM (NStmtForeach expression phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) z) :: ptask_tail*) = $ppforeach_references(expression_value, b_ref)
+def $property_writer_tail(UNSET_ARRAY :: ptask_tail*) = true
+def $property_writer_tail(ptask*) = false -- otherwise
+def $property_pending_receiver(S, expression) = ($property_static_chain(expression) /\ $property_writer_tail(ptask_tail*))
+  -- if S.TODO = ptask :: ptask_tail*
+def $property_pending_receiver(S, expression) = false -- otherwise
+
+dec $property_receiver_source_line(pstate) : int
+rule PhpStep/property-pending-base: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), PROPERTY_BASE_PREP phpType20 $runtime_line(S, eps, NExprPropertyFetch expression phpType20 metadata)] ++ ptask_tail*]
+  -- if S.TODO = (DIM_PREP (NExprPropertyFetch expression phpType20 metadata)) :: ptask_tail*
+  -- if $property_pending_receiver(S, expression)
+  -- if ~$ppnullsafe(NExprPropertyFetch expression phpType20 metadata)
+rule PhpStep/property-pending-literal: S ~> S[.TODO = ptask_tail*][.BASE = BASE_PROPERTY_PENDING S.BASE (KNOWN (PSTRING $base64(text))) $property_receiver_source_line(S)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (PROPERTY_BASE_PREP (NIdentifier (BYTES text) metadata_name) z) :: ptask_tail*
+rule PhpStep/property-pending-computed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), PROPERTY_BASE_NAME S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (PROPERTY_BASE_PREP expression z) :: ptask_tail*
+  -- if $property_computed_name(expression)
+rule PhpStep/property-pending-name: S ~> S[.TODO = ptask_tail*][.BASE = BASE_PROPERTY_PENDING pbase $captured_name(S, [PCFIELD 1], S.RESULT) $property_receiver_source_line(S)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (PROPERTY_BASE_NAME pbase z) :: ptask_tail*
+
+dec $property_static_pending_base(pstate, poperand, poperand, int) : pstate
+def $property_static_pending_base(S, poperand_class, poperand_name, z) = S_class
+  -- if S_class = $class_static_prepare_base(S, poperand_class, eps, z)
+  -- if S_class.COMPLETION =/= NORMAL
+def $property_static_pending_base(S, poperand_class, poperand_name, z) = S_name
+  -- if S_class = $class_static_prepare_base(S, poperand_class, eps, z)
+  -- if S_class.COMPLETION = NORMAL
+  -- if S_name = $resolve_name(S_class, poperand_name, z)
+  -- if S_name.COMPLETION =/= NORMAL
+def $property_static_pending_base(S, poperand_class, poperand_name, z) = S_name[.BASE = BASE_CLASS_STATIC porigin_requested ptbytes]
+  -- if S_class = $class_static_prepare_base(S, poperand_class, eps, z)
+  -- if S_class.COMPLETION = NORMAL
+  -- if S_class.BASE = BASE_CLASS_STATIC porigin_requested ptbytes_unused
+  -- if S_name = $resolve_name(S_class, poperand_name, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING ptbytes)
+
+dec $property_pending_resolve(pstate, pbase, poperand, ppmode, int, int) : pstate
+dec $property_receiver_fetch(pstate, pbase, ppmode, int) : pstate
+def $property_receiver_fetch(S, BASE_CLASS_STATIC_PENDING poperand_class poperand_name, ppmode, z) = S_base
+  -- if S_base = $property_static_pending_base(S, poperand_class, poperand_name, z)
+  -- if S_base.COMPLETION =/= NORMAL
+def $property_receiver_fetch(S, BASE_CLASS_STATIC_PENDING poperand_class poperand_name, ppmode, z) = $property_receiver_fetch(S_base, S_base.BASE, ppmode, z)
+  -- if S_base = $property_static_pending_base(S, poperand_class, poperand_name, z)
+  -- if S_base.COMPLETION = NORMAL
+def $property_receiver_fetch(S, BASE_CLASS_STATIC porigin ptbytes, PPIS, z) = $quiet_base(S, BASE_CLASS_STATIC porigin ptbytes, z)
+def $property_receiver_fetch(S, BASE_CLASS_STATIC porigin ptbytes, ppmode, z) = S_place
+  -- if ppmode = PPW \/ ppmode = PPRW \/ ppmode = PPUNSET
+  -- if S_place = $class_static_acquire(S, porigin, ptbytes, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $property_receiver_fetch(S, BASE_CLASS_STATIC porigin ptbytes, PPRW, z) = S_read
+  -- if S_read = $class_static_read(S, porigin, ptbytes, z)
+  -- if S_read.COMPLETION =/= NORMAL
+  -- if $class_static_select(S, porigin, ptbytes) = (ppropertydesc)
+  -- if $class_static_accessible(S, ppropertydesc)
+def $property_receiver_fetch(S, BASE_CLASS_STATIC porigin ptbytes, PPUNSET, z) = S_place[.RESULT = KNOWN PNULL]
+  -- if S_place = $class_static_acquire(S, porigin, ptbytes, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_place.LOCATION = CLASS_STATIC ppropertyid
+  -- if $class_static_at(S_place.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_INITIAL
+def $property_receiver_fetch(S, BASE_CLASS_STATIC porigin ptbytes, PPW, z) = $class_static_indirect_check(S_place[.RESULT = KNOWN PNULL], ppropertydesc, true, z)
+  -- if S_place = $class_static_acquire(S, porigin, ptbytes, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if $class_static_select(S_place, porigin, ptbytes) = (ppropertydesc)
+  -- if $class_static_at(S_place.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_INITIAL
+def $property_receiver_fetch(S, BASE_CLASS_STATIC porigin ptbytes, ppmode, z) = $class_static_indirect_check(S_place[.RESULT = KNOWN $entry_value(S_place, pitem)], ppropertydesc, true, z)
+  -- if ppmode = PPW \/ ppmode = PPRW \/ ppmode = PPUNSET
+  -- if S_place = $class_static_acquire(S, porigin, ptbytes, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if $class_static_select(S_place, porigin, ptbytes) = (ppropertydesc)
+  -- if $class_static_at(S_place.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE pitem
+def $property_receiver_fetch(S, BASE_PROPERTY_PENDING pbase poperand z_base, ppmode, z) = S_base
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, ppmode, z_base, z)
+  -- if S_base.COMPLETION =/= NORMAL
+def $property_receiver_fetch(S, BASE_PROPERTY_PENDING pbase poperand z_base, ppmode, z) = $property_quiet(S_base, pvalue, ptbytes, z)
+  -- if ppmode = PPUNSET \/ ppmode = PPIS
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, ppmode, z_base, z)
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.BASE = BASE_PROPERTY pvalue ptbytes
+def $property_receiver_fetch(S, BASE_PROPERTY_PENDING pbase poperand z_base, ppmode, z) = $property_read(S_base, pvalue, ptbytes, z)
+  -- if ppmode = PPW \/ ppmode = PPRW
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, ppmode, z_base, z)
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.BASE = BASE_PROPERTY pvalue ptbytes
+
+def $property_pending_resolve(S, pbase, poperand_name, ppmode, z_receiver, z_name) = S_receiver
+  -- if S_receiver = $property_receiver_fetch(S, pbase, ppmode, z_receiver)
+  -- if S_receiver.COMPLETION =/= NORMAL
+def $property_pending_resolve(S, pbase, poperand_name, ppmode, z_receiver, z_name) = S_name
+  -- if S_receiver = $property_receiver_fetch(S, pbase, ppmode, z_receiver)
+  -- if S_receiver.COMPLETION = NORMAL
+  -- if S_name = $resolve_name(S_receiver, poperand_name, z_name)
+  -- if S_name.COMPLETION =/= NORMAL
+def $property_pending_resolve(S, pbase, poperand_name, ppmode, z_receiver, z_name) = S_name[.BASE = BASE_PROPERTY pvalue ptbytes][.RESULT = KNOWN PNULL]
+  -- if S_receiver = $property_receiver_fetch(S, pbase, ppmode, z_receiver)
+  -- if S_receiver.COMPLETION = NORMAL
+  -- if S_receiver.RESULT = KNOWN pvalue
+  -- if S_name = $resolve_name(S_receiver, poperand_name, z_name)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING ptbytes)
+
+def $base_acquire(S, BASE_PROPERTY_PENDING pbase poperand z_base, z) = S_base
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPW, z_base, z)
+  -- if S_base.COMPLETION =/= NORMAL
+def $base_acquire(S, BASE_PROPERTY_PENDING pbase poperand z_base, z) = $base_acquire(S_base, S_base.BASE, z)
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPW, z_base, z)
+  -- if S_base.COMPLETION = NORMAL
+def $rw_base(S, BASE_PROPERTY_PENDING pbase poperand z_base, pstringfetch, z) = S_base
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPRW, z_base, z)
+  -- if S_base.COMPLETION =/= NORMAL
+def $rw_base(S, BASE_PROPERTY_PENDING pbase poperand z_base, pstringfetch, z) = $rw_base(S_base, S_base.BASE, pstringfetch, z)
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPRW, z_base, z)
+  -- if S_base.COMPLETION = NORMAL
+def $base_find(S, BASE_PROPERTY_PENDING pbase poperand z_base, z) = S_base
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPUNSET, z_base, z)
+  -- if S_base.COMPLETION =/= NORMAL
+def $base_find(S, BASE_PROPERTY_PENDING pbase poperand z_base, z) = $base_find(S_base, S_base.BASE, z)
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPUNSET, z_base, z)
+  -- if S_base.COMPLETION = NORMAL
+def $quiet_base(S, BASE_PROPERTY_PENDING pbase poperand z_base, z) = S_base
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPIS, z_base, z)
+  -- if S_base.COMPLETION =/= NORMAL
+def $quiet_base(S, BASE_PROPERTY_PENDING pbase poperand z_base, z) = $quiet_base(S_base, S_base.BASE, z)
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPIS, z_base, z)
+  -- if S_base.COMPLETION = NORMAL
+def $assign_array(S, BASE_PROPERTY_PENDING pbase poperand z_base, poperand_rhs, z) = S_base
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPW, z_base, z)
+  -- if S_base.COMPLETION =/= NORMAL
+def $assign_array(S, BASE_PROPERTY_PENDING pbase poperand z_base, poperand_rhs, z) = $assign_array(S_base, S_base.BASE, poperand_rhs, z)
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPW, z_base, z)
+  -- if S_base.COMPLETION = NORMAL
+def $unset_array(S, BASE_PROPERTY_PENDING pbase poperand z_base) = S_base[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPUNSET, z_base, $property_current_line(S))
+  -- if S_base.COMPLETION =/= NORMAL
+def $unset_array(S, BASE_PROPERTY_PENDING pbase poperand z_base) = $unset_array(S_base, S_base.BASE)
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPUNSET, z_base, $property_current_line(S))
+  -- if S_base.COMPLETION = NORMAL
+def $coalesce_assign(S, BASE_PROPERTY_PENDING pbase poperand z_base, poperand_rhs, z) = $assign_array(S, BASE_PROPERTY_PENDING pbase poperand z_base, poperand_rhs, z)
+def $memoized_write_base(S, BASE_PROPERTY_PENDING pbase poperand z_base, pcpath) = BASE_PROPERTY_PENDING pbase poperand z_base
+def $reference_acquire(S, BASE_PROPERTY_PENDING pbase poperand z_base, z) = $base_acquire(S, BASE_PROPERTY_PENDING pbase poperand z_base, z)
+def $call_reference_base(S, BASE_PROPERTY_PENDING pbase poperand z_base, z) = $reference_acquire(S, BASE_PROPERTY_PENDING pbase poperand z_base, z)
+def $assign_array_reference(S, BASE_PROPERTY_PENDING pbase poperand z_base, n_cell, z) = S_base
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPW, z_base, z)
+  -- if S_base.COMPLETION =/= NORMAL
+def $assign_array_reference(S, BASE_PROPERTY_PENDING pbase poperand z_base, n_cell, z) = $assign_array_reference(S_base, S_base.BASE, n_cell, z)
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPW, z_base, z)
+  -- if S_base.COMPLETION = NORMAL
+def $assign_array_reference_cv(S, BASE_PROPERTY_PENDING pbase poperand z_base, n_name*, z) = S_base
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPW, z_base, z)
+  -- if S_base.COMPLETION =/= NORMAL
+def $assign_array_reference_cv(S, BASE_PROPERTY_PENDING pbase poperand z_base, n_name*, z) = $assign_array_reference_cv(S_base, S_base.BASE, n_name*, z)
+  -- if S_base = $property_pending_resolve(S, pbase, poperand, PPW, z_base, z)
+  -- if S_base.COMPLETION = NORMAL
+rule PhpStep/property-pending-reference-source: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression), PROPERTY_REF_CAPTURE S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (PROPERTY_REF_PREP expression z) :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY_PENDING pbase poperand z_base
+  -- if $reference_cv(expression) = eps
+
+;; Captures borrow checked source selectors; active class lookup is deliberately
+;; absent for a named class until the consuming fetch.
+def $property_pending_base(BASE_PROPERTY_PENDING pbase poperand z) = true
+def $property_pending_base(pbase) = false -- otherwise
+def $property_receiver_source_line(S) = $runtime_line(S, [PCFIELD 0], expression)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression phpType20 metadata)
+def $property_receiver_source_line(S) = 0 -- otherwise
+dec $property_pending_name_valid(pstate, phpType20, poperand, pcpath) : bool
+def $property_pending_name_valid(S, NIdentifier (BYTES text) metadata, KNOWN (PSTRING ptbytes), pcpath) = (ptbytes = $base64(text))
+def $property_pending_name_valid(S, expression, VARIABLE n_name* z, pcpath) = ($reference_cv(expression) = (n_name*) /\ z = $runtime_line(S, pcpath, expression))
+  -- if $property_computed_name(expression)
+  -- if $reference_cv(expression) =/= eps
+def $property_pending_name_valid(S, expression, poperand, pcpath) = true
+  -- if $property_computed_name(expression)
+  -- if $reference_cv(expression) = eps
+def $property_pending_name_valid(S, phpType20, poperand, pcpath) = false -- otherwise
+dec $property_pending_static_name_valid(pstate, phpType31, poperand) : bool
+dec $property_pending_source_base(pstate, pbase, expression) : bool
+def $property_pending_source_base(S, BASE_CLASS_STATIC_PENDING poperand_class poperand_name, NExprStaticPropertyFetch phpType19 phpType31 metadata) = true
+  -- if $class_static_source_task(S, NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $class_static_ref_selector_matches(S, phpType19, poperand_class)
+  -- if $property_pending_static_name_valid(S, phpType31, poperand_name)
+def $property_pending_source_base(S, BASE_PROPERTY_PENDING pbase poperand z, NExprPropertyFetch expression phpType20 metadata) = true
+  -- if $property_source_task(S, NExprPropertyFetch expression phpType20 metadata)
+  -- if z = $property_receiver_source_line(S)
+  -- if $property_pending_source_base(S[.ORIGIN = $origin_child(S.ORIGIN, [PCFIELD 0])], pbase, expression)
+  -- if $property_pending_name_valid(S, phpType20, poperand, [PCFIELD 1])
+def $property_pending_source_base(S, pbase, expression) = false -- otherwise
+def $property_pending_static_name_valid(S, NVarLikeIdentifier (BYTES text) metadata, KNOWN (PSTRING ptbytes)) = (ptbytes = $base64(text))
+def $property_pending_static_name_valid(S, expression, poperand) = $property_pending_name_valid(S, expression, poperand, [PCFIELD 1])
+  -- if $class_static_computed_name(expression)
+def $property_pending_static_name_valid(S, phpType31, poperand) = false -- otherwise
+dec $property_pending_prep_valid(pstate, pbase, phpType20, int) : bool
+def $property_pending_prep_valid(S, pbase, phpType20, z) = true
+  -- if $property_prep_task(S, phpType20, z)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression phpType20 metadata)
+  -- if $property_pending_source_base(S[.ORIGIN = $origin_child(S.ORIGIN, [PCFIELD 0])], pbase, expression)
+def $property_pending_prep_valid(S, pbase, phpType20, z) = false -- otherwise
+def $call_task_valid(S, PROPERTY_BASE_PREP phpType20 z) = $property_pending_prep_valid(S, S.BASE, phpType20, z)
+dec $property_pending_name_task_valid(pstate, pbase, int) : bool
+def $property_pending_name_task_valid(S, pbase, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression_receiver expression_name metadata)
+  -- if $property_computed_name(expression_name)
+  -- if $property_pending_prep_valid(S, pbase, expression_name, z)
+def $property_pending_name_task_valid(S, pbase, z) = false -- otherwise
+def $call_task_valid(S, PROPERTY_BASE_NAME pbase z) = $property_pending_name_task_valid(S, pbase, z)
+def $property_pending_ref_task(S, pbase, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignRef expression_target expression_rhs metadata)
+  -- if $property_ref_assignment_task(S, expression_rhs, z)
+  -- if $property_pending_source_base(S[.ORIGIN = $origin_child(S.ORIGIN, [PCFIELD 0])], pbase, expression_target)
+def $property_pending_ref_task(S, pbase, z) = false -- otherwise
+def $property_ref_fetch_result_valid(S, phpType20) = $property_pending_source_base(S, S.BASE, expression)
+  -- if S.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*
+  -- if $property_pending_base(S.BASE)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+dec $property_pending_assign_valid(pstate, pbase, int, bool) : bool
+def $property_pending_assign_valid(S, pbase, z, b) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign expression_target expression_rhs metadata)
+  -- if $property_assign_task(S, expression_target, expression_rhs)
+  -- if z = $runtime_line(S, [PCFIELD 0], expression_target)
+  -- if b = $assignment_self(expression_target, expression_rhs)
+  -- if $property_pending_source_base(S[.ORIGIN = $origin_child(S.ORIGIN, [PCFIELD 0])], pbase, expression_target)
+def $property_pending_assign_valid(S, pbase, z, b) = false -- otherwise
+def $call_task_valid(S, ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_base) z b) = $property_pending_assign_valid(S, BASE_PROPERTY_PENDING pbase poperand z_base, z, b)
