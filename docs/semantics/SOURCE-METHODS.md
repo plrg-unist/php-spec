@@ -105,8 +105,8 @@ Ordinary by-value `callable` parameters admit these public invokable objects.
 [Callable/string parameter reception](../../coverage/semantics/callable-string-current-review.json)
 retains known callable members before weak `__toString` conversion, independent
 of union order. Reviewed weak/strict, inherited, value/reference and unpacked
-checks preserve the object and its ownership. Broader array and class/method
-classification remains open.
+checks preserve the object and its ownership. Public source method arrays have the bounded contract below; broader
+class/method classification remains open.
 
 Conversion authenticates the evaluated source and ordinary CV, direct `$this`
 or owned non-CV operand before resolution. Selected targets then retain their
@@ -129,6 +129,43 @@ retain their original receipts. Captured-clone native `SFT7` and bare `ASFT7`/th
 `ASF` observations remain distinct original composition evidence.
 Nonpublic/static declaration timing, transformed weak wrappers and real CONFIG
 PIPE replay remain separate. Native-only destructor observations are not model credit.
+
+## Public source method arrays
+
+Module205 shares structural resolution between callable admission, dynamic calls
+and first-class conversion. Arrays require exactly integer keys0/1 regardless
+of insertion order; members are dereferenced before class/method lookup. Public
+concrete source instance/static methods retain declaring owner and called class.
+Method lookup uses full bytes and case folding, without Stringable conversion or
+NUL truncation. Known-invalid arrays reject before argument effects; unavailable
+services remain explicit Unsupported.
+
+Class-string nonstatic admission uses the receiving method's lexical scope and
+active receiver. It can admit a parent descriptor on a child even when the child
+has overridden that method. This truth-only result does not create a dispatch
+target: direct dynamic class-string calls still reject nonstatic methods.
+
+Selection stores the chosen descriptor, source site/lines and requested/called
+class or instance receiver. Later argument effects cannot replace that choice
+by changing either referenced array member. Instance targets own only the selected
+receiver; static selection keeps class identity, and ordinary owners determine
+the original object's lifetime. Array-origin Closure
+objects preserve that certificate, clone scopes and method static cells without
+retaining the original array, maker or temporary creator. Captured static methods
+also pass through the existing Closure PIPE route. Broader binding/Closure
+consumers and arbitrary retired dynamic binding history remain separate.
+
+The [array review](../../coverage/semantics/array-callables-current-review.json)
+binds distinct private author29/seven249 and independent17/five217 observations,
+plus one fresh current publication/Restore/property/ARG source and its corrected
+finite witness/100. A separate current INI option/value witness checks the selected
+Owner/Child argument frame, two original callback operands and converted-option
+value rejection, with full raw mutation and cleanup. Unsupported controls and
+original failures stay separate; ordinary
+`$GLOBALS` behavior remains partial. Compound or scope-dependent names,
+nonpublic/magic/autoload/internal resolution and full callable closure remain open.
+Shared ordinary type classification adds no new return agreement or paused-return
+validation.
 
 ## Closure invocation and ownership
 

@@ -202,7 +202,8 @@
         "spec/semantics/62-list-values.watsup",
         "spec/semantics/63-list-control.watsup",
         "spec/semantics/64-list-compiler.watsup",
-        "spec/semantics/33-runtime-compiler.watsup"
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/205-array-callables.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -215,12 +216,18 @@
         "tests/semantics/destructuring.py",
         "tests/semantics/destructuring_compiler.py",
         "tests/semantics/destructuring_mechanism.py",
-        "coverage/semantics/destructuring-source.json"
+        "coverage/semantics/destructuring-source.json",
+        "tests/semantics/array_callables.py",
+        "tests/semantics/array_callables_cases.json"
       ],
-      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending. Prior ordinary array/omission/reference contracts remain covered by their historical reviews. Current scalar/array destructuring and retained compiler-result effects are also accepted77f8d3c0 (destructuring-review.json); object/frame contexts remain pending.",
+      "review": "Array-valued unpack source activation accepted in4ca826d2 with independent array-unpack-review.json:155 exact sources+24 outcome negatives,31 state programs/2454 assertions,42 compiler lints+10 descriptor controls, and8 independent source/state programs/1368 assertions. Integer append/string replacement, singleton/shared reference transfer, builder ownership and constant/runtime error phases are reviewed. Traversable objects/callbacks and full family closure remain pending. Prior ordinary array/omission/reference contracts remain covered by their historical reviews. Current scalar/array destructuring and retained compiler-result effects are also accepted77f8d3c0 (destructuring-review.json); object/frame contexts remain pending. Selected public concrete method arrays now classify, dispatch and capture/clone with receiver retirement (array-callables-current-review.json); nonpublic/magic/autoload/internal and scope-dependent array resolution remain open.",
       "helper_tests": [
         "tests/semantics/ownership.py",
-        "coverage/semantics/ownership.json"
+        "coverage/semantics/ownership.json",
+        "tests/semantics/array_callables_protocol.py"
+      ],
+      "evidence": [
+        "coverage/semantics/array-callables-current-review.json"
       ]
     },
     {
@@ -3733,15 +3740,22 @@
         "spec/semantics/110-dynamic-calls.watsup",
         "spec/semantics/120-first-class-callables.watsup",
         "spec/semantics/142-method-runtime.watsup",
-        "spec/semantics/173-method-callables.watsup"
+        "spec/semantics/173-method-callables.watsup",
+        "spec/semantics/205-array-callables.watsup"
       ],
       "source_tests": [
         "tests/semantics/method_runtime.py",
-        "tests/semantics/source_invoke_cases.json"
+        "tests/semantics/source_invoke_cases.json",
+        "tests/semantics/array_callables.py",
+        "tests/semantics/array_callables_cases.json"
       ],
-      "review": "Public/default-public nonstatic source object dispatch/capture and ordinary by-value callable typing have bounded installed18a/b3a02ebc-1304 acceptance over final SET4015: author source21/finite20-537; independent source37/finite29-997, FIRST7-331 then SET79/finally50. Strict original streams/exits and fresh checked fixtures are independently audited. Private486874 source54/49-1475 and source70/58-1935, historical47ed/9c8 and unexecuted294 retain separate identities. Full first-class/array classification, __call/__callStatic, transformed weak wrappers, nonpublic/static publication and correlated retired history remain open.",
+      "review": "Public/default-public nonstatic source object dispatch/capture and ordinary by-value callable typing have bounded installed18a/b3a02ebc-1304 acceptance over final SET4015: author source21/finite20-537; independent source37/finite29-997, FIRST7-331 then SET79/finally50. Strict original streams/exits and fresh checked fixtures are independently audited. Private486874 source54/49-1475 and source70/58-1935, historical47ed/9c8 and unexecuted294 retain separate identities. Broader first-class/array classification, __call/__callStatic, transformed weak wrappers, nonpublic/static publication and correlated retired history remain open. Selected public concrete method arrays now classify, dispatch and capture/clone with receiver retirement (array-callables-current-review.json); nonpublic/magic/autoload/internal and scope-dependent array resolution remain open.",
       "helper_tests": [
-        "tests/semantics/source_invoke_protocol.py"
+        "tests/semantics/source_invoke_protocol.py",
+        "tests/semantics/array_callables_protocol.py"
+      ],
+      "evidence": [
+        "coverage/semantics/array-callables-current-review.json"
       ]
     }
   ],
@@ -4730,12 +4744,14 @@
         "spec/semantics/95-type-values.watsup",
         "spec/semantics/95-typed-calls.watsup",
         "spec/semantics/84-call-integrity.watsup",
-        "spec/semantics/197-property-string-runtime.watsup"
+        "spec/semantics/197-property-string-runtime.watsup",
+        "spec/semantics/205-array-callables.watsup"
       ],
       "helper_tests": [
         "tests/semantics/callable_string_protocol.py",
         "tests/semantics/callable_string_ini_protocol.py",
-        "tests/semantics/typed_static_string_protocol.py"
+        "tests/semantics/typed_static_string_protocol.py",
+        "tests/semantics/array_callables_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/typed_functions.py",
@@ -4750,7 +4766,9 @@
         "tests/semantics/callable_string_ini_cases.json",
         "tests/semantics/typed_static_string_assignment.py",
         "tests/semantics/typed_static_callable.py",
-        "tests/semantics/typed_static_restore.py"
+        "tests/semantics/typed_static_restore.py",
+        "tests/semantics/array_callables.py",
+        "tests/semantics/array_callables_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
@@ -4758,9 +4776,10 @@
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/typed-function-review.json",
         "coverage/semantics/callable-string-current-review.json",
-        "coverage/semantics/typed-static-string-assignment-review.json"
+        "coverage/semantics/typed-static-string-assignment-review.json",
+        "coverage/semantics/array-callables-current-review.json"
       ],
-      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Weak noncallable Stringable callbacks, broader callable typing/reference constraints and full family closure remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json).",
+      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Weak noncallable Stringable callbacks, broader callable typing/reference constraints and full family closure remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json). Public source method-array admission has separate parameter/selection evidence in array-callables-current-review.json; shared ordinary return classification receives no new return agreement.",
       "planned_source_tests": [
         "tests/semantics/conformance/weak-type.php"
       ]
@@ -4775,12 +4794,14 @@
         "spec/semantics/95-type-values.watsup",
         "spec/semantics/95-typed-calls.watsup",
         "spec/semantics/84-call-integrity.watsup",
-        "spec/semantics/197-property-string-runtime.watsup"
+        "spec/semantics/197-property-string-runtime.watsup",
+        "spec/semantics/205-array-callables.watsup"
       ],
       "helper_tests": [
         "tests/semantics/callable_string_protocol.py",
         "tests/semantics/callable_string_ini_protocol.py",
-        "tests/semantics/typed_static_string_protocol.py"
+        "tests/semantics/typed_static_string_protocol.py",
+        "tests/semantics/array_callables_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/typed_functions.py",
@@ -4794,7 +4815,9 @@
         "tests/semantics/callable_string_ini.py",
         "tests/semantics/callable_string_ini_cases.json",
         "tests/semantics/typed_static_string_assignment.py",
-        "tests/semantics/typed_static_callable.py"
+        "tests/semantics/typed_static_callable.py",
+        "tests/semantics/array_callables.py",
+        "tests/semantics/array_callables_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
@@ -4802,9 +4825,10 @@
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/typed-function-review.json",
         "coverage/semantics/callable-string-current-review.json",
-        "coverage/semantics/typed-static-string-assignment-review.json"
+        "coverage/semantics/typed-static-string-assignment-review.json",
+        "coverage/semantics/array-callables-current-review.json"
       ],
-      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Weak noncallable Stringable callbacks, broader callable typing/reference constraints and full family closure remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json).",
+      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Weak noncallable Stringable callbacks, broader callable typing/reference constraints and full family closure remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json). Public source method-array admission has separate parameter/selection evidence in array-callables-current-review.json; shared ordinary return classification receives no new return agreement.",
       "planned_source_tests": [
         "tests/semantics/conformance/strict-type.php"
       ]
@@ -7185,9 +7209,12 @@
         "spec/semantics/115-closure-compiler.watsup",
         "spec/semantics/116-closures.watsup",
         "spec/semantics/141-method-compiler.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/205-array-callables.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/array_callables_protocol.py"
+      ],
       "source_tests": [
         "tests/semantics/closures.py",
         "tests/semantics/closures_protocol.py",
@@ -7195,15 +7222,18 @@
         "tests/semantics/closure_compiler.py",
         "tests/semantics/method_compiler.py",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/method_wrapper_protocol.py"
+        "tests/semantics/method_wrapper_protocol.py",
+        "tests/semantics/array_callables.py",
+        "tests/semantics/array_callables_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "vendor/php-src/Zend/zend_closures.c",
         "coverage/semantics/closures-review.json",
-        "coverage/semantics/arrows-review.json"
+        "coverage/semantics/arrows-review.json",
+        "coverage/semantics/array-callables-current-review.json"
       ],
-      "review": "Explicit and arrow closures retain captures, reference/static cells, source origins and owned callable identities (closures-review.json, arrows-review.json). Class-bound lexical/called scope, applicable receivers and ordinary/nullsafe Closure->__invoke now execute; the wrapper receives weakly and traces original arguments (methods-review.json). Rebinding services, clone, dynamic lifetime and collection remain open.",
+      "review": "Explicit and arrow closures retain captures, reference/static cells, source origins and owned callable identities (closures-review.json, arrows-review.json). Class-bound lexical/called scope, applicable receivers and ordinary/nullsafe Closure->__invoke now execute; the wrapper receives weakly and traces original arguments (methods-review.json). Selected public array-origin method closures retain receiver/scopes/static cells through capture and clone, including origin-only maker retirement (array-callables-current-review.json). Broader rebinding, clone/lifecycle and collection remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/closure-capture.php"
       ]
@@ -7271,23 +7301,28 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/119-first-class-compiler.watsup",
-        "spec/semantics/120-first-class-callables.watsup"
+        "spec/semantics/120-first-class-callables.watsup",
+        "spec/semantics/205-array-callables.watsup"
       ],
       "helper_tests": [
         "tests/semantics/first_class_compiler.py",
-        "tests/semantics/first_class_protocol.py"
+        "tests/semantics/first_class_protocol.py",
+        "tests/semantics/array_callables_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/first_class.py"
+        "tests/semantics/first_class.py",
+        "tests/semantics/array_callables.py",
+        "tests/semantics/array_callables_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "vendor/php-src/Zend/zend_closures.c",
         "coverage/semantics/first-class-review.json",
-        "docs/semantics/SOURCE-FIRST-CLASS-CALLABLES.md"
+        "docs/semantics/SOURCE-FIRST-CLASS-CALLABLES.md",
+        "coverage/semantics/array-callables-current-review.json"
       ],
-      "review": "Named user-function conversion and existing real/arrow/named callable object identity are reviewed with 17 source outcomes, four separate reference-context pairs and three paused-state stages/49 assertions. Builtin, method, array and constant-context conversion remain open; no full callable-family closure."
+      "review": "Named user-function conversion and existing real/arrow/named callable object identity are reviewed with 17 source outcomes, four separate reference-context pairs and three paused-state stages/49 assertions. Public concrete source method arrays now support first-class capture/clone and receiver retirement (array-callables-current-review.json). Broader internal, compound/scope-dependent or constant-context conversion and full callable closure remain open."
     },
     {
       "id": "calls.static-variables",
@@ -7369,23 +7404,28 @@
       "implementation": [
         "spec/semantics/121-pipe-compiler.watsup",
         "spec/semantics/122-pipe-compiler.watsup",
-        "spec/semantics/123-pipe-runtime.watsup"
+        "spec/semantics/123-pipe-runtime.watsup",
+        "spec/semantics/205-array-callables.watsup"
       ],
       "helper_tests": [
         "tests/pipe_parentheses.py",
-        "tests/semantics/pipe_protocol.py"
+        "tests/semantics/pipe_protocol.py",
+        "tests/semantics/array_callables_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/pipe.py"
+        "tests/semantics/pipe.py",
+        "tests/semantics/array_callables.py",
+        "tests/semantics/array_callables_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/pipe-syntax-review.json",
         "coverage/semantics/pipe-review.json",
-        "docs/semantics/SOURCE-PIPE.md"
+        "docs/semantics/SOURCE-PIPE.md",
+        "coverage/semantics/array-callables-current-review.json"
       ],
-      "review": "Parser-owned direct-arrow grouping and compile-phase rejection are reviewed with a 30,980-entry classified syntax gate. Runtime value forcing, named user/closure targets and reference-result mode are reviewed with 12 source outcomes, original-source replays and paused task/ownership checks. Builtin/method/array/object callables remain open."
+      "review": "Parser-owned direct-arrow grouping and compile-phase rejection are reviewed with a 30,980-entry classified syntax gate. Runtime value forcing, named user/closure targets and reference-result mode are reviewed with 12 source outcomes, original-source replays and paused task/ownership checks. The selected captured-static ARRAYMETHODCLOSURE route has an independently audited author source control in array-callables-current-review.json. Broader builtin/method/direct-array/object PIPE consumers remain open."
     },
     {
       "id": "calls.callable-visibility",
@@ -8467,12 +8507,14 @@
         "spec/semantics/141-method-compiler.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/173-method-callables.watsup",
-        "spec/semantics/95-type-values.watsup"
+        "spec/semantics/95-type-values.watsup",
+        "spec/semantics/205-array-callables.watsup"
       ],
       "helper_tests": [
         "tests/semantics/source_invoke_protocol.py",
         "tests/semantics/callable_string_protocol.py",
-        "tests/semantics/callable_string_ini_protocol.py"
+        "tests/semantics/callable_string_ini_protocol.py",
+        "tests/semantics/array_callables_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/method_runtime.py",
@@ -8480,16 +8522,19 @@
         "tests/semantics/callable_string.py",
         "tests/semantics/callable_string_cases.json",
         "tests/semantics/callable_string_ini.py",
-        "tests/semantics/callable_string_ini_cases.json"
+        "tests/semantics/callable_string_ini_cases.json",
+        "tests/semantics/array_callables.py",
+        "tests/semantics/array_callables_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/Zend/zend_API.c",
         "coverage/semantics/source-invoke-current-review.json",
-        "coverage/semantics/callable-string-current-review.json"
+        "coverage/semantics/callable-string-current-review.json",
+        "coverage/semantics/array-callables-current-review.json"
       ],
-      "review": "Public/default-public nonstatic source __invoke dispatch/capture and callable typing retain bounded installed18a evidence. Known dual callable|string parameter reception is validated privately at f39 and on the current INI composition c852; see callable-string-current-review.json. General array/class-method classification, __call/__callStatic, nonpublic/static publication, transformed weak wrappers and correlated retired history remain open."
+      "review": "Public/default-public nonstatic source __invoke dispatch/capture and callable typing retain bounded installed18a evidence. Known dual callable|string parameter reception is validated privately at f39 and on the current INI composition c852; see callable-string-current-review.json. Selected public concrete source method arrays share admission, dispatch and capture (array-callables-current-review.json). Compound/scope-dependent names, nonpublic/magic/autoload/internal array resolution, __call/__callStatic, nonpublic/static publication, transformed weak wrappers and correlated retired history remain open."
     },
     {
       "id": "classes.magic-string",

@@ -305,8 +305,15 @@ adds runtime-class dispatch, first-class capture and ordinary `callable` typing.
 Installed **18a1383d7/b3a02ebc/1304** accepts 21 author sources and
 20 finite stages/537 maintained assertions. Independent checks accept 37 sources
 and 29 stages/997 assertions, including FIRST7/331 then SET79/finally50.
-Transformed weak wrappers, nonpublic/static publication, array callables
-and other magic protocols remain open.
+Transformed weak wrappers, nonpublic/static publication and other magic
+protocols remain open. Public concrete source method arrays now share callable
+admission, dynamic dispatch and first-class capture/clone. Selected receivers
+and method choices survive referenced-member mutation and array retirement;
+static selections retain called class without an object root. The
+[array review](coverage/semantics/array-callables-current-review.json) separates
+the private source/state gates from current publication/Restore/property/ARG
+and two-slot INI interactions. Scope-dependent names, nonpublic/magic/autoload and internal array
+consumers remain open.
 Readonly members, hooks and user magic methods remain open.
 Ordinary [`Closure::call`](docs/semantics/CLOSURE-CALL.md) temporarily changes
 receiver/scope, evaluates arguments before binding validation, preserves original
