@@ -226,6 +226,7 @@ test-semantics: build
 	python3 tests/semantics/method_compiler.py
 	python3 tests/semantics/method_runtime.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
+	python3 tests/semantics/compiler_publication_protocol.py
 	python3 tests/semantics/method_visibility_frontend.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/method_visibility_cases.json
 	python3 tests/semantics/method_visibility_protocol.py
