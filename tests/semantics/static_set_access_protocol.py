@@ -15,7 +15,7 @@ from typed_static_string_protocol import PREFIX as STRING_PREFIX, initial_checks
 STAGES = ['reference-uninitialized-error-chain', 'dimension-null-error-chain',
           'reference-nullable-initialization', 'string-callback-denied',
           'private-string-callback-allowed', 'protected-string-callback-allowed', 'reference-return-denied',
-          'receiver-rhs-live-alias', 'receiver-uninitialized-unset']
+          'receiver-rhs-live-alias', 'receiver-uninitialized-unset', 'receiver-direct-demands']
 PREFIX = STRING_PREFIX + r'''
 dec $set_protocol_phase(pstate,nat) : bool
 def $set_protocol_phase(S,0) = true
@@ -33,6 +33,8 @@ def $set_protocol_phase(S,4) = true
 def $set_protocol_phase(S,5) = true
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
   -- if S.BASE = BASE_PROPERTY_PENDING pbase poperand z_receiver
+def $set_protocol_phase(S,6) = true
+  -- if S.TODO = (FOREACH_NEXT n_iterator (HCELL n_cell) statement porigin? z) :: ptask_tail*
 def $set_protocol_phase(S,n) = false -- otherwise
 dec $set_protocol_seek(pstate,nat,nat) : pstate
 def $set_protocol_seek(S,n_phase,n) = S
@@ -77,6 +79,37 @@ def before(initial, phase):
 
 
 def checks(initial, name):
+    if name == 'receiver-direct-demands':
+        result = ['S_initial = ' + initial,
+                  'S_found = $set_protocol_seek(S_initial,6,4096)',
+                  'S_found.COMPLETION = NORMAL \\/ S_found.COMPLETION = BUDGET',
+                  'S_before = S_found[.COMPLETION = NORMAL]',
+                  'S_before.TODO = (FOREACH_NEXT n_iterator (HCELL n_cell) statement porigin? z) :: ptask_tail*',
+                  'S_before.CLASSSTATICS = [pclassstatic]',
+                  'pclassstatic.STATE = PROP_VALUE (DIRECT (POBJECT n_object))',
+                  '$objectprops_record_at(S_before.OBJECTPROPS,n_object) = (pobjectprops)',
+                  '$property_slot_at(pobjectprops.SLOTS,$ptascii("a")) = (ppropertyslot)',
+                  'ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell) /\\ ppropertyslot.DECL = (porigin_decl)',
+                  'S_before.STORE[n_cell] = DEFINED (PARRAY n_array)',
+                  'n_cell <- S_before.REFCELLS /\\ (HCELL n_cell) <- S_before.ALLOCATIONS',
+                  '$propref_at(S_before.PROPREFS,n_cell) = (ppropref)',
+                  'ppropref.SOURCES = [OBJECT_PROP_SOURCE n_object $ptascii("a") porigin_decl]',
+                  'S_before.ITERATORS = [ITERATOR n_iterator n_array true ([(CURSOR n_array 0)])]',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_before).ROOTS) = 1',
+                  '$heap_owners($heap_graph(S_before),HCELL n_cell) = 2',
+                  *valid('S_before'),
+                  'S_done = $drive_steps(S_before,4096)',
+                  'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.ITERATORS = eps',
+                  '$static_protocol_output(S_done.EVENTS) = $ptascii("4|5|7|3|unset")',
+                  '$objectprops_record_at(S_done.OBJECTPROPS,n_object) = (pobjectprops_done)',
+                  '$property_slot_at(pobjectprops_done.SLOTS,$ptascii("a")) = (ppropertyslot_done)',
+                  'ppropertyslot_done.STATE = PROP_VALUE (ALIAS n_cell)',
+                  'S_done.STORE[n_cell] = DEFINED (PARRAY n_array)',
+                  '$propref_at(S_done.PROPREFS,n_cell) = (ppropref)',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_done).ROOTS) = 0',
+                  '$heap_owners($heap_graph(S_done),HCELL n_cell) = 1',
+                  *valid('S_done')]
+        return result, 'S_done'
     if name.startswith('receiver-'):
         phase = 4 if name == 'receiver-rhs-live-alias' else 5
         result = ['S_initial = ' + initial,
