@@ -10,6 +10,17 @@ dec $class_constant_update_blocks(pstate, ptask*, porigin*) : bool
 dec $class_constant_update_marker(ptask) : bool
 dec $class_constant_selection_valid(pstate, pclassconstantcontext) : bool
 dec $class_constant_binding_head(ptask*, porigin) : bool
+dec $class_constant_table_done(pstate, porigin) : bool
+dec $class_constant_history_valid(pstate) : bool
+dec $class_constant_table_tasks(pstate, porigin, int, nat) : ptask*
+dec $class_constant_table_order(pstate, porigin, nat) : porigin*
+dec $class_constant_table_blocks(pstate, ptask*, porigin*) : bool
+dec $class_constant_update_origins(pclassconstantdesc*, porigin*) : porigin*
+dec $class_constant_update_site(pstate, porigin, porigin) : bool
+dec $class_constant_parent_chain(pstate, porigin, porigin, nat) : bool
+dec $class_constant_values_done(pclassconstantdesc*, porigin*) : bool
+dec $class_constant_cache_origins(pdefaultcache*) : porigin*
+dec $class_constant_table_task(pstate, porigin, int, ptask*) : bool
 ;; Lookup resolves the requested class, but initialization and its cache belong
 ;; to the declaration's owner. Visibility is checked before deferred evaluation.
 dec $class_constant_origin(pclassdesc*, porigin) : pclassconstantdesc?
@@ -236,9 +247,10 @@ rule PhpStep/class-constant-member-abrupt: S ~> S_name[.TODO = ptask_tail*]
 
 dec $class_constant_restore(pstate, pclassconstantcontext, pclassconstantcontext*) : pstate
 def $class_constant_restore(S, pclassconstantcontext, pclassconstantcontext_tail*) = S[.CLASSCONSTANTINIT = pclassconstantcontext_tail*][.CONSTCONTEXT = pclassconstantcontext.PREVIOUS][.ORIGIN = pclassconstantcontext.ORIGIN]
-rule PhpStep/class-constant-bind: S ~> $class_constant_result($class_constant_restore(S_value[.TODO = ptask_tail*][.CLASSCONSTANTCACHE = S_value.CLASSCONSTANTCACHE ++ [{ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
+rule PhpStep/class-constant-bind: S ~> $class_constant_result($class_constant_restore(S_value[.TODO = ptask_tail*][.CLASSCONSTANTCACHE = S_value.CLASSCONSTANTCACHE ++ [{ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]][.CLASSCONSTANTHISTORY = S_value.CLASSCONSTANTHISTORY ++ [CCCACHE porigin porigin_trigger n_prefix]], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
   -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if pclassconstantcontext.ORIGIN = (porigin_trigger)
   -- if pclassconstantcontext.DECL = porigin
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
@@ -248,6 +260,7 @@ rule PhpStep/class-constant-bind: S ~> $class_constant_result($class_constant_re
   -- if $class_constant_runtime_type(S_value, pclassconstantdesc.TYPE, pvalue_raw)
   -- if pvalue = $class_constant_typed_value(pclassconstantdesc.TYPE, pvalue_raw)
   -- if pvalueclass = $constant_class(S_value, pclassconstantdesc.INITIALIZER)
+  -- if n_prefix = |S_value.DECLARATIONS|
 rule PhpStep/class-constant-bind-type: S ~> $throw_scalar($class_constant_restore(S_value[.TODO = ptask_tail*], pclassconstantcontext, pclassconstantcontext_tail*), "TypeError", $ptascii("Cannot assign ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" to class constant ") ++ pclassconstantdesc.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc.NAME ++ $ptascii(" of type ") ++ $pttypename(pclassconstantdesc.TYPE), pconstantcontext.LINE)
   -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
@@ -393,7 +406,7 @@ def $class_constant_context_valid(S, pconstantcontext) = true
   -- if $constant_branches_valid(S)
 def $class_constant_context_valid(S, pconstantcontext) = false -- otherwise
 
-def $class_constant_state_valid(S) = ($class_constant_caches_valid(S, S.CLASSCONSTANTCACHE) /\ $class_constant_stack_valid(S, S.CLASSCONSTANTINIT) /\ $class_constant_previous_valid(S) /\ $class_constant_bindings(S.TODO) = $class_constant_contexts(S.CLASSCONSTANTINIT) /\ $class_constant_pairs_valid(S.TODO) /\ $class_constant_update_blocks(S, S.TODO, eps))
+def $class_constant_state_valid(S) = ($class_constant_history_valid(S) /\ $class_constant_table_blocks(S, S.TODO, eps) /\ $class_constant_caches_valid(S, S.CLASSCONSTANTCACHE) /\ $class_constant_stack_valid(S, S.CLASSCONSTANTINIT) /\ $class_constant_previous_valid(S) /\ $class_constant_bindings(S.TODO) = $class_constant_contexts(S.CLASSCONSTANTINIT) /\ $class_constant_pairs_valid(S.TODO) /\ $class_constant_update_blocks(S, S.TODO, eps))
 
 dec $class_constant_source_task(pstate, phpType19, phpType20) : bool
 def $class_constant_source_task(S, phpType19, phpType20) = true
@@ -513,27 +526,50 @@ def $class_constant_update_pending(S, pclassconstantdesc :: pclassconstantdesc_t
 def $class_constant_update_pending(S, pclassconstantdesc :: pclassconstantdesc_tail*, porigin_seen*) = pclassconstantdesc.ORIGIN :: $class_constant_update_pending(S, pclassconstantdesc_tail*, porigin_seen* ++ [pclassconstantdesc.ORIGIN])
   -- if ~pclassconstantdesc.FOLDED /\ $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps /\ ~(pclassconstantdesc.ORIGIN <- porigin_seen*)
 dec $class_constant_updates(pstate, porigin) : porigin*
+def $class_constant_updates(S, porigin) = eps -- if $class_constant_table_done(S, porigin)
 def $class_constant_updates(S, porigin) = $class_constant_update_pending(S, $class_constant_update_order(S, porigin, |S.CLASSES|), eps)
+  -- if ~$class_constant_table_done(S, porigin)
 dec $class_constant_update_tasks(porigin*, int) : ptask*
 def $class_constant_update_tasks(eps, z) = eps
 def $class_constant_update_tasks(porigin :: porigin_tail*, z) = (CLASS_CONST_UPDATE porigin z) :: $class_constant_update_tasks(porigin_tail*, z)
 
-dec $class_constant_new_pending(pstate, ptbytes) : porigin*
-def $class_constant_new_pending(S, ptbytes) = $class_constant_updates(S, porigin)
+dec $class_constant_table_parent_tasks(pstate, porigin, int, nat) : ptask*
+def $class_constant_table_parent_tasks(S, porigin, z, n) = $class_constant_table_tasks(S, porigin_parent, z, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $class_constant_table_parent_tasks(S, porigin, z, n) = eps -- otherwise
+
+def $class_constant_table_order(S, porigin, 0) = eps
+def $class_constant_table_order(S, porigin, n) = eps
+  -- if $(n > 0) /\ $class_constant_table_done(S, porigin)
+def $class_constant_table_order(S, porigin, n) = $class_constant_table_order(S, porigin_parent, $nabs($(n - 1))) ++ [porigin]
+  -- if $(n > 0) /\ ~$class_constant_table_done(S, porigin)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $class_constant_table_order(S, porigin, n) = [porigin] -- otherwise
+
+def $class_constant_table_tasks(S, porigin, z, 0) = eps
+def $class_constant_table_tasks(S, porigin, z, n) = eps
+  -- if $(n > 0) /\ $class_constant_table_done(S, porigin)
+def $class_constant_table_tasks(S, porigin, z, n) = $class_constant_table_parent_tasks(S, porigin, z, n) ++ $class_constant_update_tasks($class_constant_update_pending(S, $class_constant_layout(S, porigin, n), $class_constant_update_origins($class_constant_parent_layout(S, porigin, n), eps)), z) ++ [CLASS_CONST_TABLE_UPDATE porigin z]
+  -- if $(n > 0) /\ ~$class_constant_table_done(S, porigin)
+
+;; Table completion is distinct from an individual successful constant fetch.
+dec $class_constant_new_work(pstate, ptbytes, int) : ptask*
+def $class_constant_new_work(S, ptbytes, z) = $class_constant_table_tasks(S, porigin, z, |S.CLASSES|)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ ~pclassdesc.ABSTRACT
-def $class_constant_new_pending(S, ptbytes) = eps -- otherwise
-def $constructor_start(S, ptbytes, phpType7*, z) = S[.TODO = $class_constant_update_tasks(porigin*, z) ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* true z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if porigin* = $class_constant_new_pending(S, ptbytes)
-  -- if porigin* =/= eps
+def $class_constant_new_work(S, ptbytes, z) = eps -- otherwise
+def $constructor_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* true z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ptask_work* = $class_constant_new_work(S, ptbytes, z)
+  -- if ptask_work* =/= eps
 def $constructor_start(S, ptbytes, phpType7*, z) = $constructor_start_ready(S, ptbytes, phpType7*, z)
-  -- if $class_constant_new_pending(S, ptbytes) = eps
-def $noctor_start(S, ptbytes, phpType7*, z) = S[.TODO = $class_constant_update_tasks(porigin*, z) ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* false z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if porigin* = $class_constant_new_pending(S, ptbytes)
-  -- if porigin* =/= eps
+  -- if $class_constant_new_work(S, ptbytes, z) = eps
+def $noctor_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* false z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ptask_work* = $class_constant_new_work(S, ptbytes, z)
+  -- if ptask_work* =/= eps
 def $noctor_start(S, ptbytes, phpType7*, z) = $noctor_start_ready(S, ptbytes, phpType7*, z)
-  -- if $class_constant_new_pending(S, ptbytes) = eps
+  -- if $class_constant_new_work(S, ptbytes, z) = eps
 rule PhpStep/class-constant-update: S ~> $class_constant_value(S[.TODO = DISCARD :: ptask_tail*], pclassconstantdesc, CLASS_CONST_UPDATE_SELECT porigin_class, pclassconstantdesc.OWNERNAME, z)
   -- if S.TODO = (CLASS_CONST_UPDATE porigin z) :: ptask_tail*
   -- if $class_constant_update_target(S, ptask_tail*) = (porigin_class)
@@ -543,17 +579,25 @@ rule PhpStep/class-constant-construct: S ~> $constructor_start_ready(S[.TODO = p
 rule PhpStep/class-constant-construct-noctor: S ~> $noctor_start_ready(S[.TODO = ptask_tail*], ptbytes, phpType7*, z)
   -- if S.TODO = (CLASS_CONST_CONSTRUCT ptbytes phpType7* false z) :: ptask_tail*
 
-dec $class_constant_static_pending(pstate, poperand, ptbytes) : porigin*
-def $class_constant_static_pending(S, poperand, ptbytes) = $class_constant_updates(S, porigin)
+dec $class_constant_static_work(pstate, poperand, ptbytes, int) : ptask*
+def $class_constant_static_work(S, poperand, ptbytes, z) = $class_constant_table_tasks(S, porigin, z, |S.CLASSES|)
   -- if $scoped_selector_class(S, poperand) = (porigin)
   -- if $class_static_select(S, porigin, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
-def $class_constant_static_pending(S, poperand, ptbytes) = eps -- otherwise
-def $class_static_prepare_base(S, poperand, ptbytes, z) = S[.TODO = $class_constant_update_tasks(porigin*, z) ++ [CLASS_CONST_STATIC poperand ptbytes z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if porigin* = $class_constant_static_pending(S, poperand, ptbytes)
-  -- if porigin* =/= eps
+def $class_constant_static_work(S, poperand, ptbytes, z) = eps -- otherwise
+def $class_static_prepare_base(S, poperand, ptbytes, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_STATIC poperand ptbytes z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ptask_work* = $class_constant_static_work(S, poperand, ptbytes, z)
+  -- if ptask_work* =/= eps
+  -- if S.ORIGIN = (porigin_trigger)
+  -- if $scoped_selector_class(S, poperand) = (porigin_class)
+  -- if $class_constant_update_site(S, porigin_trigger, porigin_class)
+def $class_static_prepare_base(S, poperand, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "unretained class table selector"]
+  -- if $class_constant_static_work(S, poperand, ptbytes, z) =/= eps
+  -- if S.ORIGIN = (porigin_trigger)
+  -- if $scoped_selector_class(S, poperand) = (porigin_class)
+  -- if ~$class_constant_update_site(S, porigin_trigger, porigin_class)
 def $class_static_prepare_base(S, poperand, ptbytes, z) = $class_static_prepare_base_ready(S, poperand, ptbytes, z)
-  -- if $class_constant_static_pending(S, poperand, ptbytes) = eps
+  -- if $class_constant_static_work(S, poperand, ptbytes, z) = eps
 rule PhpStep/class-constant-static: S ~> $class_static_prepare_base_ready(S[.TODO = ptask_tail*], poperand, ptbytes, z)
   -- if S.TODO = (CLASS_CONST_STATIC poperand ptbytes z) :: ptask_tail*
 def $task_nodes(CLASS_CONST_STATIC poperand ptbytes z) = $operand_nodes(poperand)
@@ -570,7 +614,7 @@ def $class_constant_constructor_task(S, ptbytes, phpType7*, b_ctor, z) = true
   -- if z = $runtime_line(S, eps, NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if $class_constant_constructor_ready(S, ptbytes, phpType7*, b_ctor, z)
 def $class_constant_constructor_task(S, ptbytes, phpType7*, b_ctor, z) = false -- otherwise
-def $class_constant_constructor_ready(S, ptbytes, phpType7*, b_ctor, z) = ($class_constant_new_pending(S, ptbytes) = eps)
+def $class_constant_constructor_ready(S, ptbytes, phpType7*, b_ctor, z) = ($class_constant_new_work(S, ptbytes, z) = eps)
   -- if S.TODO = (CLASS_CONST_CONSTRUCT ptbytes phpType7* b_ctor z) :: ptask_tail*
 def $class_constant_constructor_ready(S, ptbytes, phpType7*, b_ctor, z) = true -- otherwise
 def $call_task_valid(S, CLASS_CONST_CONSTRUCT ptbytes phpType7* b_ctor z) = $class_constant_constructor_task(S, ptbytes, phpType7*, b_ctor, z)
@@ -584,7 +628,7 @@ def $class_constant_static_task(S, poperand, ptbytes, z) = true
   -- if z = $runtime_line(S, eps, NExprStaticPropertyFetch phpType19 phpType31 metadata)
   -- if $class_constant_static_ready(S, poperand, ptbytes, z)
 def $class_constant_static_task(S, poperand, ptbytes, z) = false -- otherwise
-def $class_constant_static_ready(S, poperand, ptbytes, z) = ($class_constant_static_pending(S, poperand, ptbytes) = eps)
+def $class_constant_static_ready(S, poperand, ptbytes, z) = ($class_constant_static_work(S, poperand, ptbytes, z) = eps)
   -- if S.TODO = (CLASS_CONST_STATIC poperand ptbytes z) :: ptask_tail*
 def $class_constant_static_ready(S, poperand, ptbytes, z) = true -- otherwise
 def $call_task_valid(S, CLASS_CONST_STATIC poperand ptbytes z) = $class_constant_static_task(S, poperand, ptbytes, z)
@@ -658,7 +702,6 @@ def $class_constant_update_target(S, ptask :: ptask_tail*) = $class_constant_upd
 
 ;; Remaining updates are unique and source ordered. Cached entries may remain
 ;; after nested initialization, but every uncached, nonbusy slot must be present.
-dec $class_constant_update_origins(pclassconstantdesc*, porigin*) : porigin*
 def $class_constant_update_origins(eps, porigin_seen*) = eps
 def $class_constant_update_origins(pclassconstantdesc :: pclassconstantdesc_tail*, porigin_seen*) = $class_constant_update_origins(pclassconstantdesc_tail*, porigin_seen*)
   -- if pclassconstantdesc.FOLDED \/ pclassconstantdesc.ORIGIN <- porigin_seen*
@@ -684,6 +727,7 @@ def $class_constant_update_sequence(S, porigin_class, porigin_remaining*) = true
 def $class_constant_update_sequence(S, porigin_class, porigin_remaining*) = false -- otherwise
 
 def $class_constant_update_blocks(S, eps, porigin*) = (porigin* = eps)
+def $class_constant_update_blocks(S, (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*, porigin_acc*) = $class_constant_update_blocks(S, ptask_tail*, porigin_acc*)
 def $class_constant_update_blocks(S, (CLASS_CONST_UPDATE porigin z) :: ptask_tail*, porigin_acc*) = $class_constant_update_blocks(S, ptask_tail*, porigin_acc* ++ [porigin])
 def $class_constant_update_blocks(S, (CLASS_CONST_CONSTRUCT ptbytes phpType7* b_ctor z) :: ptask_tail*, porigin_acc*) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_class)
@@ -696,5 +740,241 @@ def $class_constant_update_blocks(S, (CLASS_CONST_STATIC poperand ptbytes z) :: 
 def $class_constant_update_blocks(S, ptask :: ptask_tail*, eps) = $class_constant_update_blocks(S, ptask_tail*, eps)
   -- if ~$class_constant_update_marker(ptask)
 def $class_constant_update_blocks(S, ptask*, porigin*) = false -- otherwise
+def $class_constant_update_marker(CLASS_CONST_TABLE_UPDATE porigin z) = true
 def $class_constant_update_marker(CLASS_CONST_UPDATE porigin z) = true
 def $class_constant_update_marker(ptask) = $class_constant_update_continuation(ptask) -- otherwise
+
+;; Real inheritance checks finality, ambiguity, access and covariance in order.
+dec $class_constant_access_narrower(ppropertyvisibility, ppropertyvisibility) : bool
+def $class_constant_access_narrower(PROPERTY_PUBLIC, ppropertyvisibility) = false
+def $class_constant_access_narrower(PROPERTY_PROTECTED, ppropertyvisibility) = (ppropertyvisibility = PROPERTY_PUBLIC)
+def $class_constant_access_narrower(PROPERTY_PRIVATE, ppropertyvisibility) = (ppropertyvisibility =/= PROPERTY_PRIVATE)
+dec $class_constant_covariance(pstate, pclassconstantdesc, pclassconstantdesc) : pvresult
+def $class_constant_covariance(S, pclassconstantdesc_parent, pclassconstantdesc_child) = PVCOMPATIBLE
+  -- if pclassconstantdesc_parent.VISIBILITY = PROPERTY_PRIVATE \/ pclassconstantdesc_parent.TYPE = eps
+def $class_constant_covariance(S, pclassconstantdesc_parent, pclassconstantdesc_child) = PVINCOMPATIBLE
+  -- if pclassconstantdesc_parent.VISIBILITY =/= PROPERTY_PRIVATE /\ pclassconstantdesc_parent.TYPE =/= eps
+  -- if pclassconstantdesc_child.TYPE = eps
+def $class_constant_covariance(S, pclassconstantdesc_parent, pclassconstantdesc_child) = $pvcovariant(pclassconstantdesc_child.TYPE, pvclass_child, pclassconstantdesc_parent.TYPE, pvclass_parent, pvclasses)
+  -- if pclassconstantdesc_parent.VISIBILITY =/= PROPERTY_PRIVATE /\ pclassconstantdesc_parent.TYPE =/= eps /\ pclassconstantdesc_child.TYPE =/= eps
+  -- if pvclasses = $method_active_registry(S, S.CLASSNAMES)
+  -- if $pvregistry(pvclasses, pclassconstantdesc_child.OWNERNAME) = (pvclass_child)
+  -- if $pvregistry(pvclasses, pclassconstantdesc_parent.OWNERNAME) = (pvclass_parent)
+def $class_constant_covariance(S, pclassconstantdesc_parent, pclassconstantdesc_child) = PVUNSUPPORTED "constant declaring type scope" -- otherwise
+
+dec $class_constant_kind(pclassdesc) : ptbytes
+def $class_constant_kind(pclassdesc) = $ptascii("Class") -- if pclassdesc.KIND = "class"
+def $class_constant_kind(pclassdesc) = $ptascii("Interface") -- otherwise
+dec $class_constant_type_issue(pclassdesc, pclassconstantdesc, pclassconstantdesc, pvresult) : pmethodissue
+def $class_constant_type_issue(pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child, PVCOMPATIBLE) = METHOD_OK
+def $class_constant_type_issue(pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child, PVINCOMPATIBLE) = METHOD_COMPILEISSUE ($ptascii("Type of ") ++ pclassconstantdesc_child.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc_child.NAME ++ $ptascii(" must be compatible with ") ++ pclassconstantdesc_parent.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc_parent.NAME ++ $ptascii(" of type ") ++ $pttypename(pclassconstantdesc_parent.TYPE)) pclassdesc.LINE
+def $class_constant_type_issue(pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child, PVNEEDS ptbytes*) = METHOD_UNSUPPORTED "unresolved inherited class constant type"
+def $class_constant_type_issue(pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child, PVUNSUPPORTED text) = METHOD_UNSUPPORTED text
+
+dec $class_constant_visibility_suffix(ppropertyvisibility) : ptbytes
+def $class_constant_visibility_suffix(PROPERTY_PUBLIC) = eps
+def $class_constant_visibility_suffix(ppropertyvisibility) = $ptascii(" or weaker") -- otherwise
+
+dec $class_constant_override_issue(pstate, pclassdesc, pclassconstantdesc, pclassconstantdesc) : pmethodissue
+def $class_constant_override_issue(S, pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child) = METHOD_COMPILEISSUE (pclassconstantdesc_child.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc_child.NAME ++ $ptascii(" cannot override final constant ") ++ pclassconstantdesc_parent.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc_parent.NAME) pclassdesc.LINE
+  -- if pclassconstantdesc_parent.OWNER =/= pclassconstantdesc_child.OWNER /\ pclassconstantdesc_parent.FINAL
+def $class_constant_override_issue(S, pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child) = METHOD_COMPILEISSUE ($class_constant_kind(pclassdesc) ++ [32] ++ pclassdesc.NAME ++ $ptascii(" inherits both ") ++ pclassconstantdesc_child.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc_child.NAME ++ $ptascii(" and ") ++ pclassconstantdesc_parent.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc_parent.NAME ++ $ptascii(", which is ambiguous")) pclassdesc.LINE
+  -- if ~(pclassconstantdesc_parent.OWNER =/= pclassconstantdesc_child.OWNER /\ pclassconstantdesc_parent.FINAL)
+  -- if pclassconstantdesc_child.OWNER =/= pclassconstantdesc_parent.OWNER /\ pclassconstantdesc_child.OWNER =/= pclassdesc.ORIGIN
+def $class_constant_override_issue(S, pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child) = METHOD_COMPILEISSUE ($ptascii("Access level to ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pclassconstantdesc_child.NAME ++ $ptascii(" must be ") ++ $property_visibility_name(pclassconstantdesc_parent.VISIBILITY) ++ $ptascii(" (as in ") ++ $ptascii(pclassdesc_parent.KIND) ++ [32] ++ pclassconstantdesc_parent.OWNERNAME ++ [41] ++ $class_constant_visibility_suffix(pclassconstantdesc_parent.VISIBILITY)) pclassdesc.LINE
+  -- if ~(pclassconstantdesc_parent.OWNER =/= pclassconstantdesc_child.OWNER /\ pclassconstantdesc_parent.FINAL)
+  -- if pclassconstantdesc_child.OWNER = pclassconstantdesc_parent.OWNER \/ pclassconstantdesc_child.OWNER = pclassdesc.ORIGIN
+  -- if $class_constant_access_narrower(pclassconstantdesc_child.VISIBILITY, pclassconstantdesc_parent.VISIBILITY)
+  -- if $class_at(S.CLASSES, pclassconstantdesc_parent.OWNER) = (pclassdesc_parent)
+def $class_constant_override_issue(S, pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child) = $class_constant_type_issue(pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child, $class_constant_covariance(S, pclassconstantdesc_parent, pclassconstantdesc_child))
+  -- if ~(pclassconstantdesc_parent.OWNER =/= pclassconstantdesc_child.OWNER /\ pclassconstantdesc_parent.FINAL)
+  -- if pclassconstantdesc_child.OWNER = pclassconstantdesc_parent.OWNER \/ pclassconstantdesc_child.OWNER = pclassdesc.ORIGIN
+  -- if ~$class_constant_access_narrower(pclassconstantdesc_child.VISIBILITY, pclassconstantdesc_parent.VISIBILITY)
+
+dec $class_constant_inherit_items(pstate, pclassdesc, pclassconstantdesc*, pclassconstantdesc*) : pmethodissue
+def $class_constant_inherit_items(S, pclassdesc, pclassconstantdesc_existing*, eps) = METHOD_OK
+def $class_constant_inherit_items(S, pclassdesc, pclassconstantdesc_existing*, pclassconstantdesc_parent :: pclassconstantdesc_tail*) = $class_constant_inherit_items(S, pclassdesc, $class_constant_merge(pclassconstantdesc_existing*, [pclassconstantdesc_parent]), pclassconstantdesc_tail*)
+  -- if $class_constant_desc(pclassconstantdesc_existing*, pclassconstantdesc_parent.NAME) = eps
+def $class_constant_inherit_items(S, pclassdesc, pclassconstantdesc_existing*, pclassconstantdesc_parent :: pclassconstantdesc_tail*) = $class_constant_inherit_items(S, pclassdesc, pclassconstantdesc_existing*, pclassconstantdesc_tail*)
+  -- if $class_constant_desc(pclassconstantdesc_existing*, pclassconstantdesc_parent.NAME) = (pclassconstantdesc_child)
+  -- if $class_constant_override_issue(S, pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child) = METHOD_OK
+def $class_constant_inherit_items(S, pclassdesc, pclassconstantdesc_existing*, pclassconstantdesc_parent :: pclassconstantdesc_tail*) = pmethodissue
+  -- if $class_constant_desc(pclassconstantdesc_existing*, pclassconstantdesc_parent.NAME) = (pclassconstantdesc_child)
+  -- if pmethodissue = $class_constant_override_issue(S, pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child)
+  -- if pmethodissue =/= METHOD_OK
+
+def $class_constant_parent_issue(S, pclassdesc, porigin_parent) = $class_constant_inherit_items(S, pclassdesc, pclassdesc.CONSTANTS, $class_constant_layout(S, porigin_parent, |S.CLASSES|))
+def $class_constant_interface_issue(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*) = $class_constant_inherit_items(S, pclassdesc, $class_constant_interface_layout(S, pilref_seen*, |S.CLASSES|, $class_constant_merge(pclassdesc.CONSTANTS, $class_constant_parent_layout(S, pclassdesc.ORIGIN, |S.CLASSES|))), $class_constant_layout(S, porigin, |S.CLASSES|))
+def $class_constant_interface_issue(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*) = METHOD_OK
+
+;; Cache fills and successful publication carry declaration-prefix ordinals.
+;; Their order reconstructs the linking-time AST flag without owning values.
+def $class_constant_cache_origins(eps) = eps
+def $class_constant_cache_origins(pdefaultcache :: pdefaultcache_tail*) = pdefaultcache.ORIGIN :: $class_constant_cache_origins(pdefaultcache_tail*)
+dec $class_constant_flag((porigin, bool)*, porigin) : bool?
+def $class_constant_flag(eps, porigin) = eps
+def $class_constant_flag((porigin, b) :: (porigin_tail, b_tail)*, porigin) = (b)
+def $class_constant_flag((porigin_other, b) :: (porigin_tail, b_tail)*, porigin) = $class_constant_flag((porigin_tail, b_tail)*, porigin)
+  -- if porigin_other =/= porigin
+dec $class_constant_flag_done((porigin, bool)*, porigin) : (porigin, bool)*
+def $class_constant_flag_done(eps, porigin) = eps
+def $class_constant_flag_done((porigin, b) :: (porigin_tail, b_tail)*, porigin) = (porigin, true) :: (porigin_tail, b_tail)*
+def $class_constant_flag_done((porigin_other, b) :: (porigin_tail, b_tail)*, porigin) = (porigin_other, b) :: $class_constant_flag_done((porigin_tail, b_tail)*, porigin)
+  -- if porigin_other =/= porigin
+dec $class_constant_flag_origins((porigin, bool)*) : porigin*
+def $class_constant_flag_origins(eps) = eps
+def $class_constant_flag_origins((porigin, b) :: (porigin_tail, b_tail)*) = porigin :: $class_constant_flag_origins((porigin_tail, b_tail)*)
+dec $class_constant_name_origins((preqbytes, porigin)*) : porigin*
+def $class_constant_name_origins(eps) = eps
+def $class_constant_name_origins((preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = porigin :: $class_constant_name_origins((preqbytes_tail, porigin_tail)*)
+
+def $class_constant_values_done(eps, porigin_cached*) = true
+def $class_constant_values_done(pclassconstantdesc :: pclassconstantdesc_tail*, porigin_cached*) = $class_constant_values_done(pclassconstantdesc_tail*, porigin_cached*)
+  -- if pclassconstantdesc.FOLDED \/ pclassconstantdesc.ORIGIN <- porigin_cached*
+def $class_constant_values_done(pclassconstantdesc*, porigin_cached*) = false -- otherwise
+dec $class_constant_publication_item(pdeclaration, porigin) : bool
+def $class_constant_publication_item(PDECLASS n porigin, porigin) = true
+def $class_constant_publication_item(PDRCLASS porigin pdeclcause, porigin) = true
+def $class_constant_publication_item(pdeclaration, porigin) = false -- otherwise
+dec $class_constant_history_exit_item(pdeclaration, nat) : bool
+def $class_constant_history_exit_item(PDEXIT n_unit pcompilestop, n_unit) = true
+def $class_constant_history_exit_item(pdeclaration, n_unit) = false -- otherwise
+dec $class_constant_history_exited(pdeclaration*, nat, nat) : bool
+def $class_constant_history_exited(pdeclaration*, 0, n_unit) = false
+def $class_constant_history_exited(eps, n, n_unit) = false
+def $class_constant_history_exited((PDEXIT n_unit pcompilestop) :: pdeclaration*, n, n_unit) = true
+  -- if $(n > 0)
+def $class_constant_history_exited(pdeclaration :: pdeclaration_tail*, n, n_unit) = $class_constant_history_exited(pdeclaration_tail*, $nabs($(n - 1)), n_unit)
+  -- if $(n > 0)
+  -- if ~$class_constant_history_exit_item(pdeclaration, n_unit)
+dec $class_constant_history_trigger(pstate, porigin, nat) : bool
+def $class_constant_history_trigger(S, PORIGIN n_unit pcpath, n_prefix) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (expression)
+  -- if $class_constant_trigger(expression)
+  -- if $class_constant_history_exited(S.DECLARATIONS, n_prefix, n_unit)
+def $class_constant_history_trigger(S, porigin, n_prefix) = false -- otherwise
+dec $class_constant_parent_done(pstate, porigin, (porigin, bool)*) : bool
+def $class_constant_parent_done(S, porigin, (porigin_flag, b_flag)*) = ($class_constant_flag((porigin_flag, b_flag)*, porigin_parent) = (true))
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $class_constant_parent_done(S, porigin, (porigin_flag, b_flag)*) = true -- otherwise
+
+dec $class_constant_history_fold(pstate, pclassconstantevent*, (porigin, bool)*, porigin*, nat) : pclassconstantflags
+def $class_constant_history_fold(S, eps, (porigin_flag, b_flag)*, porigin_cached*, n_previous) = CCFLAGS (porigin_flag, b_flag)* porigin_cached*
+def $class_constant_history_fold(S, (CCLINK porigin n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, n_previous) = $class_constant_history_fold(S, pclassconstantevent*, (porigin_flag, b_flag)* ++ [(porigin, b_done)], porigin_cached*, n)
+  -- if $(n_previous <= n /\ 0 < n /\ n <= |S.DECLARATIONS|)
+  -- if $class_constant_publication_item(S.DECLARATIONS[$nabs($(n - 1))], porigin)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin) = eps
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+  -- if b_done = $class_constant_values_done($class_constant_layout(S, porigin, |S.CLASSES|), porigin_cached*)
+def $class_constant_history_fold(S, (CCCACHE porigin porigin_trigger n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, n_previous) = $class_constant_history_fold(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached* ++ [porigin], n)
+  -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
+  -- if ~(porigin <- porigin_cached*)
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if ~pclassconstantdesc.FOLDED
+  -- if $class_constant_flag((porigin_flag, b_flag)*, pclassconstantdesc.OWNER) = (b_owner)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+  -- if $class_constant_history_trigger(S, porigin_trigger, n)
+def $class_constant_history_fold(S, (CCUPDATE porigin porigin_root porigin_trigger n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, n_previous) = $class_constant_history_fold(S, pclassconstantevent*, $class_constant_flag_done((porigin_flag, b_flag)*, porigin), porigin_cached*, n)
+  -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin) = (false)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_root) = (b_root)
+  -- if $class_constant_values_done($class_constant_layout(S, porigin, |S.CLASSES|), porigin_cached*)
+  -- if $class_constant_parent_done(S, porigin, (porigin_flag, b_flag)*)
+  -- if $class_constant_history_trigger(S, porigin_trigger, n)
+  -- if $class_constant_update_site(S, porigin_trigger, porigin_root)
+  -- if $class_constant_parent_chain(S, porigin_root, porigin, |S.CLASSES|)
+def $class_constant_history_fold(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, n_previous) = CCBAD -- otherwise
+
+def $class_constant_history_valid(S) = true
+  -- if $class_constant_history_fold(S, S.CLASSCONSTANTHISTORY, eps, eps, 0) = CCFLAGS (porigin_flag, b_flag)* porigin_cached*
+  -- if $class_constant_flag_origins((porigin_flag, b_flag)*) = $class_constant_name_origins(S.CLASSNAMES)
+  -- if porigin_cached* = $class_constant_cache_origins(S.CLASSCONSTANTCACHE)
+def $class_constant_history_valid(S) = false -- otherwise
+def $class_constant_table_done(S, porigin) = true
+  -- if $class_constant_history_fold(S, S.CLASSCONSTANTHISTORY, eps, eps, 0) = CCFLAGS (porigin_flag, b_flag)* porigin_cached*
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin) = (true)
+def $class_constant_table_done(S, porigin) = false -- otherwise
+
+def $class_constant_publish(S, S_published, pclassdesc) = S_published[.CLASSCONSTANTHISTORY = S_published.CLASSCONSTANTHISTORY ++ [CCLINK pclassdesc.ORIGIN n_prefix]]
+  -- if S.COMPLETION = NORMAL /\ S_published.COMPLETION = NORMAL
+  -- if S_published.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]
+  -- if n_prefix = |S_published.DECLARATIONS|
+def $class_constant_publish(S, S_published, pclassdesc) = S_published -- otherwise
+
+;; A completed table belongs to the actual source-selected requested class or
+;; one of its source parents. Computed selectors without a retained source
+;; certificate are not silently treated as authentic historical updates.
+def $class_constant_parent_chain(S, porigin, porigin, n) = true
+  -- if $(n > 0)
+def $class_constant_parent_chain(S, porigin_root, porigin, n) = $class_constant_parent_chain(S, porigin_parent, porigin, $nabs($(n - 1)))
+  -- if $(n > 0) /\ porigin_root =/= porigin
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_root) = (SOURCE_PARENT porigin_parent)
+def $class_constant_parent_chain(S, porigin_root, porigin, n) = false -- otherwise
+
+def $class_constant_update_site(S, PORIGIN n pcpath, porigin_root) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew phpType28 phpType6 metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_root)
+def $class_constant_update_site(S, PORIGIN n pcpath, porigin_root) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_root)
+def $class_constant_update_site(S, porigin_trigger, porigin_root) = true
+  -- if $origin_node(S.SOURCES, porigin_trigger) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if ~$ppscoped_named(phpType19)
+  -- if $origin_child((porigin_trigger), [PCFIELD 0]) = (porigin_class)
+  -- if $compiled_read(S, porigin_class) = (PSTRING ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_root)
+def $class_constant_update_site(S, porigin_trigger, porigin_root) = false -- otherwise
+
+def $class_constant_table_task(S, porigin, z, eps) = false
+def $class_constant_table_task(S, porigin, z, (CLASS_CONST_CONSTRUCT ptbytes phpType7* b_ctor z) :: ptask_tail*) = true
+  -- if $class_constant_constructor_task(S, ptbytes, phpType7*, b_ctor, z)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_root)
+  -- if porigin <- $class_constant_table_order(S, porigin_root, |S.CLASSES|)
+  -- if S.ORIGIN = (porigin_trigger)
+  -- if $class_constant_update_site(S, porigin_trigger, porigin_root)
+def $class_constant_table_task(S, porigin, z, (CLASS_CONST_STATIC poperand ptbytes z) :: ptask_tail*) = true
+  -- if $class_constant_static_task(S, poperand, ptbytes, z)
+  -- if $scoped_selector_class(S, poperand) = (porigin_root)
+  -- if porigin <- $class_constant_table_order(S, porigin_root, |S.CLASSES|)
+  -- if S.ORIGIN = (porigin_trigger)
+  -- if $class_constant_update_site(S, porigin_trigger, porigin_root)
+def $class_constant_table_task(S, porigin, z, ptask :: ptask_tail*) = $class_constant_table_task(S, porigin, z, ptask_tail*)
+  -- if ~$class_constant_update_continuation(ptask)
+def $class_constant_table_task(S, porigin, z, ptask*) = false -- otherwise
+def $call_task_valid(S, CLASS_CONST_TABLE_UPDATE porigin z) = $class_constant_table_task(S, porigin, z, S.TODO)
+
+rule PhpStep/class-constant-table-complete: S ~> S[.TODO = ptask_tail*][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCUPDATE porigin porigin_root porigin_trigger n_prefix]]
+  -- if S.TODO = (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_trigger)
+  -- if $class_constant_update_target(S, ptask_tail*) = (porigin_root)
+  -- if $class_constant_update_site(S, porigin_trigger, porigin_root)
+  -- if $class_constant_parent_chain(S, porigin_root, porigin, |S.CLASSES|)
+  -- if $class_constant_values_done($class_constant_layout(S, porigin, |S.CLASSES|), $class_constant_cache_origins(S.CLASSCONSTANTCACHE))
+  -- if $class_constant_table_parent_tasks(S, porigin, z, |S.CLASSES|) = eps
+  -- if n_prefix = |S.DECLARATIONS|
+
+def $class_constant_table_blocks(S, eps, porigin_acc*) = (porigin_acc* = eps)
+def $class_constant_table_blocks(S, (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*, porigin_acc*) = $class_constant_table_blocks(S, ptask_tail*, porigin_acc* ++ [porigin])
+def $class_constant_table_blocks(S, (CLASS_CONST_UPDATE porigin z) :: ptask_tail*, porigin_acc*) = $class_constant_table_blocks(S, ptask_tail*, porigin_acc*)
+def $class_constant_table_blocks(S, (CLASS_CONST_CONSTRUCT ptbytes phpType7* b_ctor z) :: ptask_tail*, porigin_acc*) = true
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_root)
+  -- if porigin_acc* = $class_constant_table_order(S, porigin_root, |S.CLASSES|)
+  -- if $class_constant_table_blocks(S, ptask_tail*, eps)
+def $class_constant_table_blocks(S, (CLASS_CONST_STATIC poperand ptbytes z) :: ptask_tail*, porigin_acc*) = true
+  -- if $scoped_selector_class(S, poperand) = (porigin_root)
+  -- if porigin_acc* = $class_constant_table_order(S, porigin_root, |S.CLASSES|)
+  -- if $class_constant_table_blocks(S, ptask_tail*, eps)
+def $class_constant_table_blocks(S, ptask :: ptask_tail*, eps) = $class_constant_table_blocks(S, ptask_tail*, eps)
+  -- if ~$class_constant_update_marker(ptask)
+def $class_constant_table_blocks(S, ptask*, porigin_acc*) = false -- otherwise
+
+
+;; Linking failures retain Zend's fatal trace, including delayed early binding
+;; before the first body effect. Parser/immediate initializer errors are separate.
+def $class_constant_link_error(S, PORIGIN n pcpath, ptbytes_message, z) = S[.COMPLETION = STATICBYTES ptbytes_message z][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, STATICBYTES ptbytes_message z, n)][.TRACE = $eval_exception_trace(S)]

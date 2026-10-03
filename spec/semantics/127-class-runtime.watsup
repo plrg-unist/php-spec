@@ -19,7 +19,8 @@ def $class_named((preqbytes_other, porigin) :: (preqbytes_tail, porigin_tail)*, 
 dec $activate_class(pstate, pclassdesc) : pstate
 dec $activate_class_body(pstate, pclassdesc) : pstate
 dec $declaration_class_success(pstate, pstate, pclassdesc) : pstate
-def $activate_class(S, pclassdesc) = $declaration_class_success(S, $activate_class_body(S, pclassdesc), pclassdesc)
+dec $class_constant_publish(pstate, pstate, pclassdesc) : pstate
+def $activate_class(S, pclassdesc) = $class_constant_publish(S, $declaration_class_success(S, $activate_class_body(S, pclassdesc), pclassdesc), pclassdesc)
 dec $class_static_initial(pstate, ppropertydesc*) : pclassstatic*?
 dec $class_static_commit(pstate, pclassstatic*) : pstate
 dec $class_static_finish(pstate, pclassdesc, pstate) : pstate
