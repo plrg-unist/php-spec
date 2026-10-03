@@ -309,6 +309,7 @@ dec $default_caches_valid(pstate, pdefaultcache*) : bool
 dec $static_result_valid(pstate) : bool
 dec $clone_result_valid(pstate) : bool
 dec $getclass_result_valid(pstate) : bool
+dec $arginfo_result_valid(pstate) : bool
 dec $config_result_valid(pstate) : bool
 dec $selected_log_valid(pstate, pselectedcall*, nat) : bool
 dec $dir_state_valid(pstate) : bool
@@ -348,6 +349,7 @@ def $call_descriptors_valid(S) = true
   -- if $exit_result_valid(S)
   -- if $clone_result_valid(S)
   -- if $getclass_result_valid(S)
+  -- if $arginfo_result_valid(S)
   -- if $config_result_valid(S)
   -- if $dir_state_valid(S)
   -- if $throwable_result_valid(S)

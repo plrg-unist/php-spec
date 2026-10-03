@@ -32,7 +32,7 @@ rule PhpStep/unpack-next-source: S ~> S[.TODO = [$at_task($unpack_origin(S, punp
   -- if S.TODO = (UNPACK_ARGS punpackcall) :: ptask_tail*
   -- if punpackcall.ARGUMENTS = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType7*
   -- if punpackcall_next = punpackcall[.ARGUMENTS = phpType7*]
-rule PhpStep/unpack-explicit-source: S ~> S[.TODO = [$at_task($unpack_origin(S, punpackcall), $named_argument_task(pfunction, pnamedtarget, expression)), UNPACK_SEND punpackcall[.ARGUMENTS = phpType7*]] ++ ptask_tail*]
+rule PhpStep/unpack-explicit-source: S ~> S[.TODO = [$at_task($unpack_origin(S, punpackcall), $arginfo_reference_task(S, punpackcall.FUNCTION, $named_index(pfunction.SIGNATURE.PARAMETERS, pnamedtarget), punpackcall.CALLSITE, $unpack_origin(S, punpackcall), expression, $named_argument_task(pfunction, pnamedtarget, expression))), UNPACK_SEND punpackcall[.ARGUMENTS = phpType7*]] ++ ptask_tail*]
   -- if S.TODO = (UNPACK_ARGS punpackcall) :: ptask_tail*
   -- if punpackcall.ARGUMENTS = (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*
   -- if $target_function(S, punpackcall.FUNCTION) = (pfunction)

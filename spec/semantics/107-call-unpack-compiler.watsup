@@ -31,6 +31,7 @@ dec $ppunpack_node(pcode, pcunit, pcpath, expression) : punpackclass?
 dec $ppunpack_list_class(punpackclass?) : punpackclass?
 dec $ppunpack_function_class(pcode, pcpath, phpType19) : punpackclass?
 dec $ppunpack_call_class(pcodename*, pcpath) : punpackclass?
+dec $pparginfo_call(pcode, pcpath) : bool
 def $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_VALUE)
   -- if pcode.UNIT = pcunit.ID
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, true))
@@ -55,6 +56,7 @@ def $ppunpack_node(pcode, pcunit, pcpath, NExprVariable phpType32 metadata) = (U
 def $ppunpack_node(pcode, pcunit, pcpath, NExprAssignRef expression_1 expression_2 metadata) = (UNPACK_VAR)
 def $ppunpack_node(pcode, pcunit, pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = $ppunpack_function_class(pcode, pcpath, phpType19)
   -- if ~$ppfirstclass(phpType7*)
+  -- if ~$pparginfo_call(pcode, pcpath)
 def $ppunpack_node(pcode, pcunit, pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = (UNPACK_VALUE)
   -- if $ppfirstclass(phpType7*)
 def $ppunpack_node(pcode, pcunit, pcpath, NExprAssign expression_pattern expression_rhs metadata) = (UNPACK_VAR)

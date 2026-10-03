@@ -1,6 +1,8 @@
 ;; BEGIN/END retain the child's operand kind, including a known constant.
 ;; Keep an effect root so folded parents still enter the silenced evaluation.
 dec $ppsilenced(ppstate, pcpath) : ppstate
+;; zend_compile_var_inner rejects a suppression write before its child.
+def $pptemporary(NExprErrorSuppress expression metadata) = true
 def $ppdispatch(P, pcpath, NExprErrorSuppress expression metadata, PPR) = $ppsilenced($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath)
 def $ppsilenced(P, pcpath) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEFFECT pcpath]]
   -- if P.COMPLETION = PPCNORMAL
