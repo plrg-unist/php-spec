@@ -453,7 +453,7 @@ rule PhpStep/property-reference-source: S ~> S_target[.TODO = [$at_task($origin_
   -- if $property_ref_property_base(S.BASE)
   -- if S_target = $reference_acquire(S, S.BASE, z)
   -- if S_target.COMPLETION = NORMAL
-rule PhpStep/property-reference-source-cv: S ~> S_target[.TODO = (PROPERTY_REF_BIND_CV S.BASE n_name* z) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+rule PhpStep/property-reference-source-cv: S ~> S_target[.TODO = (PROPERTY_REF_BIND_CV S_target.BASE n_name* z) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_REF_PREP expression z) :: ptask_tail*
   -- if $reference_cv(expression) = (n_name*)
   -- if S_target = $reference_acquire(S, S.BASE, z)

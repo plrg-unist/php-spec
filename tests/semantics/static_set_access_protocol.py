@@ -114,6 +114,7 @@ def checks(initial, name):
                 *valid('S_after')]
         else:
             result += [
+                'S_before.TODO = UNSET_ARRAY :: ptask_tail*',
                 'S_before.BASE = BASE_PROPERTY_PENDING (BASE_CLASS_STATIC_PENDING poperand_class poperand_static) poperand_name z_receiver',
                 'poperand_class = KNOWN (PSTRING $ptascii("A")) /\\ poperand_static = KNOWN (PSTRING $ptascii("p")) /\\ poperand_name = KNOWN (PSTRING $ptascii("x"))',
                 'pclassstatic.STATE = PROP_INITIAL',
