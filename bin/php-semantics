@@ -237,7 +237,7 @@ def observe(state, filename):
     stack = b''
     for i, frame in enumerate(state.get('TRACE', [])):
         args = [(key, value) for key, value in frame['ARGS']]
-        stack += trace_frame(i, bytes(map(int, frame['FILE'])), int(frame['LINE']),
+        stack += trace_frame(i, None if not frame['FILE'] and int(frame['LINE']) == -1 else bytes(map(int, frame['FILE'])), int(frame['LINE']),
                              bytes(map(int, frame['FUNCTION'])),
                              bytes(map(int, frame['CLASS'])) if frame['CLASS'] is not None else None,
                              bytes(map(int, frame['TYPE'])) if frame['TYPE'] is not None else b'', args)

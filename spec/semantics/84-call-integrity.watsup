@@ -4,6 +4,7 @@ dec $dynamic_unit_code_valid(ppstate, pcode) : bool
 dec $dynamic_result_valid(pstate) : bool
 dec $unpack_unit_code_valid(ppstate, pcode) : bool
 dec $unpack_result_valid(pstate) : bool
+dec $compilation_projection(pstate, pcunit) : ppinstalled?
 dec $call_extent_valid(pstate, pcallcontext) : bool
 dec $named_present(phpType7*) : bool
 dec $call_argument_paths(pcodeexpr*) : pcpath*
@@ -136,16 +137,8 @@ def $call_unit_names_valid(S, P) = true
 def $call_unit_names_valid(S, P) = false -- otherwise
 
 dec $call_unit_projection(pstate, pcunit) : pfunctioncheck
-def $call_unit_projection(S, pcunit) = FUNCTIONCHECK eps
-  -- if ~$call_declarations($pcsource(pcunit.ID, pcunit.AST).OCCURRENCES)
-  -- if $code_at(S.CODE, pcunit.ID) = (pcode)
-  -- if ~pcode.STRICT
-  -- if $call_argument_paths(pcode.EXPRESSIONS) = eps
-def $call_unit_projection(S, pcunit) = FUNCTIONCHECK P.FUNCTIONS
-  -- if $call_declarations($pcsource(pcunit.ID, pcunit.AST).OCCURRENCES)
-  -- if P = $eval_source_ppstate(S, pcunit)
-  -- if P.COMPLETION = PPCNORMAL
-  -- if $call_unit_names_valid(S, P)
+def $call_unit_projection(S, pcunit) = FUNCTIONCHECK ppinstalled.FUNCTIONS
+  -- if $compilation_projection(S, pcunit) = (ppinstalled)
 def $call_unit_projection(S, pcunit) = FUNCTIONINVALID -- otherwise
 dec $call_projection(pstate, pcunit*) : pfunctioncheck
 def $call_projection(S, eps) = FUNCTIONCHECK eps
@@ -162,12 +155,6 @@ def $call_registry_valid(pfunction_registry*, (preqbytes, porigin) :: (preqbytes
   -- if $callable_at((preqbytes_tail, porigin_tail)*, preqbytes) = eps
   -- if $call_registry_valid(pfunction_registry*, (preqbytes_tail, porigin_tail)*)
 def $call_registry_valid(pfunction_registry*, (preqbytes, porigin)*) = false -- otherwise
-dec $call_early_bound((preqbytes, porigin)*, pfunction) : bool
-def $call_early_bound((preqbytes, porigin)*, pfunction) = (~pfunction.EARLY \/ $callable_at((preqbytes, porigin)*, $ptlc(pfunction.NAME)) = (pfunction.ORIGIN))
-dec $call_early_bindings((preqbytes, porigin)*, pfunction*) : bool
-def $call_early_bindings((preqbytes, porigin)*, eps) = true
-def $call_early_bindings((preqbytes, porigin)*, pfunction :: pfunction_tail*) = ($call_early_bound((preqbytes, porigin)*, pfunction) /\ $call_early_bindings((preqbytes, porigin)*, pfunction_tail*))
-
 dec $call_candidate(preqbytes, preqbytes, preqbytes?) : bool
 def $call_candidate(preqbytes_name, preqbytes_primary, eps) = ($ptlc(preqbytes_name) = $ptlc(preqbytes_primary))
 def $call_candidate(preqbytes_name, preqbytes_primary, (preqbytes_fallback)) = ($ptlc(preqbytes_name) = $ptlc(preqbytes_primary) \/ $ptlc(preqbytes_name) = $ptlc(preqbytes_fallback))
@@ -329,7 +316,6 @@ def $call_descriptors_valid(S) = true
   -- if $call_projection(S, S.SOURCES) = FUNCTIONCHECK S.FUNCTIONS
   -- if $class_state_valid(S)
   -- if $call_registry_valid(S.FUNCTIONS, S.CALLABLES)
-  -- if $call_early_bindings(S.CALLABLES, S.FUNCTIONS)
   -- if $call_tasks_valid(S, S.TODO)
   -- if $selected_log_valid(S, S.SELECTEDCALLS, 0)
   -- if $stringify_pairs_valid(S, S.TODO)

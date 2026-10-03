@@ -5,12 +5,12 @@ Compressed historical evidence is stored outside Git; see the
 
 This project specifies the abstract syntax of **PHP 8.5.10** and connects
 PHP-Parser 5.8.0 to checked P4-SpecTec values. The grammar/scanner inventory
-contains 169 constructors. The current [inheritance syntax audit](coverage/semantics/inheritance-review.json)
-classified all 30,980 corpus entries and independently bridged 306 exact syntax
-inputs to this checkout. Earlier [frontend repair](coverage/frontend-syntax-repair.json)
-and [switch syntax](coverage/semantics/switch-review.json) audits remain historical.
-The [portability evidence](coverage/portability.json) records an offline rebuild
-before these audits; the current syntax gate used copied executables.
+contains 169 constructors. The [publication review](coverage/semantics/compiler-publication-review.json)
+records a fresh offline rebuild of private revision `4b3c1a85`, including the
+complete classified gate for 30,980 corpus entries/profiles and grammar/scanner/encoding
+inventories. Earlier [inheritance](coverage/semantics/inheritance-review.json),
+[frontend repair](coverage/frontend-syntax-repair.json), [switch syntax](coverage/semantics/switch-review.json)
+and [portability](coverage/portability.json) records retain their original scopes.
 Executable core semantics are now being implemented; see the
 [plan](PLAN.md), [progress](PROGRESS.md) and [core contract](docs/semantics/CORE.md).
 The syntax reports above do not establish semantic coverage. BOLA verification
@@ -78,6 +78,15 @@ source execution regressions; unfinished behavior returns explicit Unsupported.
 Reviewed truth/logical operators and ternary preserve PHP's distinct compiler
 and runtime phases; [truth evidence](coverage/semantics/truth-review.json) records
 source comparisons, selected-value copying and budget resumption.
+Eligible classes and named functions publish in compilation order, so earlier
+notices and declarations survive later compiler diagnostics. Parser and modifier
+preflight preserve their distinct first errors, while declaration history binds
+entry availability, repeated execution and failure. Compile-stop freezes caller
+snapshots and preserves completed effects; it retires the active source request
+without ordinary unwinding. [Publication evidence](coverage/semantics/compiler-publication-review.json)
+links source30, history107, modifier286 and later interaction checks.
+Two reporting-mask/error_reporting controls and broader core obligations remain open.
+
 [Loose and ordered comparisons](docs/semantics/COMPARISONS.md) now cover scalar
 and array values, with [independent evidence](coverage/semantics/comparison-review.json).
 [Prefix/postfix increment and decrement](docs/semantics/UPDATES.md) execute for

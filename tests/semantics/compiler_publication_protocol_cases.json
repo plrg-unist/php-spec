@@ -1,0 +1,142 @@
+{
+  "scope": "Genuine compiler/source-drive publication histories and altered source-derived histories. Native observable comparisons are a distinct catalogue.",
+  "cases": [
+    {
+      "id": "notice-before-later-warning",
+      "source": "<?php\nclass A extends Exception { public function __wakeup() {} }\nclass B { private function __WAKEUP() {} }\necho \"OK\\n\";\n",
+      "source_sha256": "c75c058a62c96f8d12d94960fb36d90a2e370cb60627d8de8ca19f2f5a27c8bc",
+      "checks": [
+        "P.COMPLETION = PPCNORMAL",
+        "S.COMPLETION = NORMAL",
+        "S.CLASSES = [pclassdesc_a, pclassdesc_b]",
+        "pclassdesc_a.NAME = $ptascii(\"A\")",
+        "pclassdesc_b.NAME = $ptascii(\"B\")",
+        "S.DECLARATIONS = [PDENTER 0 eps 30719, PDECLASS 0 pclassdesc_a.ORIGIN, PDECLASS 0 pclassdesc_b.ORIGIN, PDEXIT 0 PCSCOMPLETE]",
+        "S.EVENTS = [DIAGNOSTIC \"Deprecated\" ptbytes_deprecated 2, DIAGNOSTIC \"Warning\" ptbytes_warning 3]",
+        "$declaration_history_valid(S)",
+        "S_forged = S[.DECLARATIONS = [PDENTER 0 eps 30719, PDECLASS 0 pclassdesc_b.ORIGIN, PDEXIT 0 PCSCOMPLETE]][.CLASSNAMES = [($ptascii(\"b\"), pclassdesc_b.ORIGIN)]][.LINKEDPARENTS = eps]",
+        "~$declaration_history_valid(S_forged)",
+        "S_done = $drive(S, 1000)",
+        "S_done.COMPLETION = NORMAL",
+        "S_done.EVENTS = S.EVENTS ++ [OUTPUT ([79, 75, 10])]"
+      ]
+    },
+    {
+      "id": "notice-before-later-compiler-fatal",
+      "source": "<?php\nclass A extends Exception { public function __wakeup() {} }\nclass B { public function __WAKEUP(): int {} }\n",
+      "source_sha256": "28709b749cc1254b74aae4da00e4cb701ac2ee08c212a960595ae0f96b1d3fc9",
+      "checks": [
+        "P.COMPLETION = PPCABRUPT (STATICBYTES ptbytes_fatal 3)",
+        "S.COMPLETION = STATICBYTES ptbytes_fatal 3",
+        "S.CLASSES = [pclassdesc_a]",
+        "pclassdesc_a.NAME = $ptascii(\"A\")",
+        "S.DECLARATIONS = [PDENTER 0 eps 30719, PDECLASS 0 pclassdesc_a.ORIGIN, PDEXIT 0 PCSCOMPILER]",
+        "S.EVENTS = [DIAGNOSTIC \"Deprecated\" ptbytes_deprecated 2]",
+        "S.TODO = eps",
+        "$declaration_history_valid(S)",
+        "~$declaration_site_available(S, PORIGIN 0 ([PCINDEX 0]), 10)",
+        "S_forged = S[.DECLARATIONS = [PDENTER 0 eps 30719, PDECLASS 0 pclassdesc_a.ORIGIN, PDEXIT 0 PCSCOMPLETE]]",
+        "~$declaration_history_valid(S_forged)"
+      ]
+    },
+    {
+      "id": "completed-callable-and-pool-prefix",
+      "source": "<?php\nclass Ready {}\nfunction Before(){return [1,[2]];}\nclass Broken { public function __wakeup():int{} }\nfunction After(){}\n",
+      "source_sha256": "d395bb6d0c0f6c8d3d773d2a238c482328aed878ae87febab08cd3665aee3e30",
+      "checks": [
+        "P.COMPLETION = PPCABRUPT (STATICBYTES ptbytes_fatal 4)",
+        "S.COMPLETION = STATICBYTES ptbytes_fatal 4",
+        "S.CLASSES = [pclassdesc_ready]",
+        "pclassdesc_ready.NAME = $ptascii(\"Ready\")",
+        "S.FUNCTIONS = [pfunction_before]",
+        "pfunction_before.NAME = $ptascii(\"Before\")",
+        "S.DECLARATIONS = [PDENTER 0 eps 30719, PDECLASS 0 pclassdesc_ready.ORIGIN, PDEFUNCTION 0 pfunction_before.ORIGIN, PDEXIT 0 PCSCOMPILER]",
+        "$compilation_image_valid(S, P.FOLD.SOURCE, P)",
+        "$(|P.INSTALLED.ARRAYS| > 0)",
+        "$declaration_history_valid(S)",
+        "$declaration_site_available(S, PORIGIN 0 (pfunction_before.BODY ++ [PCINDEX 0]), 10)",
+        "~$declaration_site_available(S, PORIGIN 0 ([PCINDEX 0]), 10)",
+        "S.TODO = eps",
+        "S_forged = S[.DECLARATIONS = [PDENTER 0 eps 30719, PDECLASS 0 pclassdesc_ready.ORIGIN, PDEXIT 0 PCSCOMPILER]][.CALLABLES = eps]",
+        "~$declaration_history_valid(S_forged)"
+      ]
+    },
+    {
+      "id": "rebound-closure-runtime-cause",
+      "source": "<?php\nclass A {}\n$f = function(){class R {}};\n$f->call(new A);\necho \"OK\\n\";\n",
+      "source_sha256": "5505590ddf003d40932cd153113327b4d0f0ae4918d381c00fc7a88bd22a1288",
+      "checks": [
+        "P.COMPLETION = PPCNORMAL",
+        "S_done = $drive(S, 1000)",
+        "S_done.COMPLETION = NORMAL",
+        "S_done.EVENTS = [OUTPUT ([79, 75, 10])]",
+        "S_done.CLASSES = [pclassdesc_a, pclassdesc_r]",
+        "S_done.CLOSURETEMPLATES = [pfunction_closure]",
+        "S_done.DECLARATIONS = [PDENTER 0 eps 30719, PDECLASS 0 pclassdesc_a.ORIGIN, PDEXIT 0 PCSCOMPLETE, PDRCLASS pclassdesc_r.ORIGIN pdeclcause]",
+        "pdeclcause.UNIT = 0",
+        "pdeclcause.CALLS = [(porigin_function, porigin_callsite?, porigin_lexical?, porigin_called?)]",
+        "porigin_function = pfunction_closure.ORIGIN",
+        "porigin_callsite? = (porigin_site)",
+        "porigin_lexical? = (pclassdesc_a.ORIGIN)",
+        "porigin_called? = (pclassdesc_a.ORIGIN)",
+        "$declaration_history_valid(S_done)",
+        "porigin_forged? = (pclassdesc_r.ORIGIN)",
+        "pdeclcause_forged = pdeclcause[.CALLS = [(porigin_function, porigin_callsite?, porigin_forged?, porigin_forged?)]]",
+        "S_forged = S_done[.DECLARATIONS = [PDENTER 0 eps 30719, PDECLASS 0 pclassdesc_a.ORIGIN, PDEXIT 0 PCSCOMPLETE, PDRCLASS pclassdesc_r.ORIGIN pdeclcause_forged]]",
+        "~$declaration_history_valid(S_forged)"
+      ]
+    },
+    {
+      "id": "rejected-main-history-erasure",
+      "source": "<?php\nclass Prefix {}\nclass Bad { public readonly function f() {} }\n",
+      "source_sha256": "bc7b82df8e9072437f9cc140ce0a3529ed4758bbb9ccfa5f0c38431f42e535c8",
+      "checks": [
+        "S.COMPLETION = COMPILETHROWN ptbytes_reject 3",
+        "S.SOURCES = eps",
+        "S.CLASSES = eps",
+        "S.FUNCTIONS = eps",
+        "S.CLOSURETEMPLATES = eps",
+        "S.CODE = eps",
+        "S.POOLS = eps",
+        "S.CLASSNAMES = eps",
+        "S.DECLARATIONS = [PDENTER 0 eps 30719, PDEXIT 0 (PCSMAINREJECT P.FOLD.SOURCE.AST)]",
+        "$declaration_history_valid(S)",
+        "$declaration_entry_check(S) = S",
+        "S_erased = S[.DECLARATIONS = eps]",
+        "S_erased.FILES = S.FILES",
+        "~$declaration_helper_state(S_erased)",
+        "~$declaration_history_valid(S_erased)",
+        "S_rejected = $declaration_entry_check(S_erased)",
+        "S_rejected.COMPLETION = UNSUPPORTED \"invalid declaration publication history\"",
+        "S_helper = $initial_state(STATICERROR \"synthetic helper\" 1)",
+        "$declaration_helper_state(S_helper)",
+        "$declaration_entry_check(S_helper) = S_helper"
+      ]
+    },
+    {
+      "id": "fixed-newthis-existing-scope-forgery",
+      "source": "<?php\nclass A {}\nclass B {}\n$f = function(){class R {}};\n$f->call(new A);\necho \"OK\\n\";\n",
+      "source_sha256": "166079a7d2c158519afdcee67a2e00242a50bca119fbb0724b1bb035c9bc28ce",
+      "checks": [
+        "P.COMPLETION = PPCNORMAL",
+        "S_done = $drive(S, 1000)",
+        "S_done.COMPLETION = NORMAL",
+        "S_done.CLASSES = [pclassdesc_a, pclassdesc_b, pclassdesc_r]",
+        "pclassdesc_a.NAME = $ptascii(\"A\")",
+        "pclassdesc_b.NAME = $ptascii(\"B\")",
+        "S_done.CLOSURETEMPLATES = [pfunction_closure]",
+        "S_done.DECLARATIONS = [PDENTER 0 eps 30719, PDECLASS 0 pclassdesc_a.ORIGIN, PDECLASS 0 pclassdesc_b.ORIGIN, PDEXIT 0 PCSCOMPLETE, PDRCLASS pclassdesc_r.ORIGIN pdeclcause]",
+        "pdeclcause.CALLS = [(porigin_function, porigin_callsite?, porigin_lexical?, porigin_called?)]",
+        "porigin_function = pfunction_closure.ORIGIN",
+        "porigin_callsite? = (porigin_site)",
+        "porigin_lexical? = (pclassdesc_a.ORIGIN)",
+        "porigin_called? = (pclassdesc_a.ORIGIN)",
+        "$declaration_history_valid(S_done)",
+        "porigin_forged? = (pclassdesc_b.ORIGIN)",
+        "pdeclcause_forged = pdeclcause[.CALLS = [(porigin_function, porigin_callsite?, porigin_forged?, porigin_forged?)]]",
+        "S_forged = S_done[.DECLARATIONS = [PDENTER 0 eps 30719, PDECLASS 0 pclassdesc_a.ORIGIN, PDECLASS 0 pclassdesc_b.ORIGIN, PDEXIT 0 PCSCOMPLETE, PDRCLASS pclassdesc_r.ORIGIN pdeclcause_forged]]",
+        "~$declaration_history_valid(S_forged)"
+      ]
+    }
+  ]
+}

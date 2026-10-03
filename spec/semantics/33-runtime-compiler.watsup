@@ -226,7 +226,6 @@ dec $export_classes((pcpath, pvalueclass)*) : pconstant*
 def $export_classes(eps) = eps
 def $export_classes((pcpath, pvalueclass) :: (pcpath_tail, pvalueclass_tail)*) = (PCCLASS pcpath pvalueclass) :: $export_classes((pcpath_tail, pvalueclass_tail)*)
 
-dec $compile_pool(pstate, ppstate, ppconstants) : pstate
 dec $compiler_diagnostics(pstate, pldiagnostic*) : pstate
 dec $compiled_error_origin(porigin?, pcompletion, nat) : porigin?
 def $compiled_error_origin(porigin?, STATICBYTES n_message* z, n) = (PORIGIN n eps)
@@ -243,47 +242,32 @@ def $compiler_event(text, n_message*, pllocation) = DIAGNOSTIC_SOURCE pllocation
   -- if $(pllocation.UNIT > 0)
 def $compiler_event(text, n_message*, pllocation) = DIAGNOSTIC text n_message* pllocation.LINE
   -- if pllocation.UNIT = 0
+def $compiler_diagnostics(S, pldiagnostic*) = S
+  -- if S.COMPLETION =/= NORMAL
 def $compiler_diagnostics(S, eps) = S
-def $compiler_diagnostics(S, (PLDIAGNOSTIC "warning" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics(S[.EVENTS = S.EVENTS ++ [$compiler_event("Warning", $plmessage(PLDIAGNOSTIC "warning" text ptbytes* pllocation), pllocation)]], pldiagnostic*)
-def $compiler_diagnostics(S, (PLDIAGNOSTIC "deprecated" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics(S[.EVENTS = S.EVENTS ++ [$compiler_event("Deprecated", $plmessage(PLDIAGNOSTIC "deprecated" text ptbytes* pllocation), pllocation)]], pldiagnostic*)
-def $compiler_diagnostics(S, (PLDIAGNOSTIC "fatal" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics(S[.COMPLETION = STATICBYTES $plmessage(PLDIAGNOSTIC "fatal" text ptbytes* pllocation) pllocation.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, STATICBYTES eps pllocation.LINE, pllocation.UNIT)], pldiagnostic*)
+  -- if S.COMPLETION = NORMAL
+def $compiler_diagnostics(S, (PLDIAGNOSTIC "warning" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics($report_event(S, $compiler_event("Warning", $plmessage(PLDIAGNOSTIC "warning" text ptbytes* pllocation), pllocation), 2), pldiagnostic*)
+  -- if S.COMPLETION = NORMAL
+def $compiler_diagnostics(S, (PLDIAGNOSTIC "deprecated" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics($report_event(S, $compiler_event("Deprecated", $plmessage(PLDIAGNOSTIC "deprecated" text ptbytes* pllocation), pllocation), 8192), pldiagnostic*)
+  -- if S.COMPLETION = NORMAL
+def $compiler_diagnostics(S, (PLDIAGNOSTIC "fatal" text ptbytes* pllocation) :: pldiagnostic*) = S[.COMPLETION = STATICBYTES $plmessage(PLDIAGNOSTIC "fatal" text ptbytes* pllocation) pllocation.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, STATICBYTES eps pllocation.LINE, pllocation.UNIT)]
+  -- if S.COMPLETION = NORMAL
 
 dec $request_compile(pstate, ppstate) : pstate
 dec $compile_source_ready(pstate, ppstate) : pstate
-dec $compile_source_ordered(pstate, ppstate) : pstate
+dec $declaration_compile(pstate, ppstate) : pstate
+dec $declaration_enter(pstate, nat, porigin?) : pstate
+dec $declaration_exit(pstate, nat, pcompilestop) : pstate
+dec $declaration_preflight(pcoccurrence*) : pcompletion?
+dec $declaration_parser_rejects(pcompletion?) : bool
+dec $declaration_compile_preflight(pstate, ppstate, pcompletion?) : pstate
 dec $compile_source(pstate, ppstate) : pstate
-def $compile_source(S, P) = $scope_check($compile_source_ready($request_compile(S, P), P))
-def $compile_source_ready(S, P) = $compile_source_ordered(S, $ppwakeup_order_guard(S, P))
-def $compile_source_ordered(S, P) = $compiler_diagnostics(S[.COMPLETION = pcompletion][.SOURCES = pcunit_sources*][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, pcompletion, P.FOLD.SOURCE.ID)], P.DIAGNOSTICS)
-  -- if P.COMPLETION = PPCABRUPT pcompletion
-  -- if $pool_sources(S.SOURCES, P.FOLD.SOURCE) = (pcunit_sources*)
-def $compile_source_ordered(S, P) = $compiler_diagnostics(S[.SOURCES = pcunit_sources*], P.DIAGNOSTICS)
-  -- if P.COMPLETION = PPCNAMESPACE
-  -- if $pool_sources(S.SOURCES, P.FOLD.SOURCE) = (pcunit_sources*)
-def $compile_source_ordered(S, P) = $compile_pool($compiler_diagnostics(S, P.DIAGNOSTICS), P, $ppconstants(P))
-  -- if P.COMPLETION = PPCNORMAL
-def $compile_source_ordered(S, P) = S[.COMPLETION = UNSUPPORTED "invalid compiled source registry"]
-  -- if P.COMPLETION = PPCABRUPT pcompletion
-  -- if $pool_sources(S.SOURCES, P.FOLD.SOURCE) = eps
-def $compile_source_ordered(S, P) = S[.COMPLETION = UNSUPPORTED "invalid compiled source registry"]
-  -- if P.COMPLETION = PPCNAMESPACE
-  -- if $pool_sources(S.SOURCES, P.FOLD.SOURCE) = eps
-
-def $compile_pool(S, P, PPCINVALID text) = S[.COMPLETION = UNSUPPORTED text]
-def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = $install_classes($install_functions(S_installed, P.FUNCTIONS), P.CLASSES)[.CLOSURETEMPLATES = S.CLOSURETEMPLATES ++ P.CLOSURETEMPLATES][.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)][.CODE = S.CODE ++ [{ STRICT P.ENV.STRICT, GLOBALS P.GLOBALS, UNIT P.FOLD.SOURCE.ID, EXPRESSIONS ($compiled_operands(P, P.EXPRESSIONS) ++ $compiled_gotos(P.GOTOS, P.LABELS) ++ $compiled_writes(P.WRITES)), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) }]]
-  -- if P.FOLD.MEMORY.ENV = eps
-  -- if P.FOLD.MEMORY.STORE = eps
-  -- if P.FOLD.MEMORY.REFCELLS = eps
-  -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*) ++ $export_classes(P.FOLD.CLASSFACTS))
-  -- if S_installed.COMPLETION = NORMAL
-def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S_installed
-  -- if P.FOLD.MEMORY.ENV = eps
-  -- if P.FOLD.MEMORY.STORE = eps
-  -- if P.FOLD.MEMORY.REFCELLS = eps
-  -- if S_installed = $install_pool(S, P.FOLD.SOURCE, P.FOLD.MEMORY.ARRAYS, P.FOLD.MEMORY.ALLOCATIONS, $export_constants((pcpath, pvalue)*) ++ $export_classes(P.FOLD.CLASSFACTS))
-  -- if S_installed.COMPLETION =/= NORMAL
-def $compile_pool(S, P, PPCCONSTANTS (pcpath, pvalue)*) = S[.COMPLETION = UNSUPPORTED "compiler variable storage in constant pool"]
-  -- if (P.FOLD.MEMORY.ENV =/= eps \/ P.FOLD.MEMORY.STORE =/= eps \/ P.FOLD.MEMORY.REFCELLS =/= eps)
+dec $compile_source_begin(pstate, ppstate) : pstate
+def $compile_source(S, P) = $scope_check($compile_source_begin($request_compile(S, P), P))
+def $compile_source_begin(S, P) = $compile_source_ready($declaration_enter(S, P.FOLD.SOURCE.ID, eps), P)
+  -- if S.COMPLETION = NORMAL
+def $compile_source_begin(S, P) = S -- if S.COMPLETION =/= NORMAL
+def $compile_source_ready(S, P) = $declaration_compile_preflight(S, P, $declaration_preflight(P.FOLD.SOURCE.OCCURRENCES))
 
 ;; Deferred fetch descriptors follow actual ordinary compiler access, including
 ;; variable/dimension ancestors. Name and key expressions retain read access.

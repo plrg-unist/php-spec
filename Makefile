@@ -24,6 +24,7 @@ test: build
 	python3 tests/file_provider_protocol.py
 	python3 tests/encoding_mutation.py
 	python3 tests/source_context_metadata.py
+	python3 tests/namespace_placement.py
 	python3 tests/ternary_metadata.py
 	python3 tests/destructuring_metadata.py
 	python3 tests/foreach_targets.py
@@ -33,6 +34,7 @@ test: build
 	python3 tests/pipe_parentheses.py
 	python3 tests/switch_case_separator.py
 	python3 tests/class_keyword_metadata.py
+	python3 tests/method_keyword_metadata.py
 	python3 tests/array_omission_metadata.py
 	python3 tests/concat_line_metadata.py
 	python3 tests/nullary_line_metadata.py
@@ -233,6 +235,10 @@ test-semantics: build
 	python3 tests/semantics/nullsafe_properties_protocol.py
 	python3 tests/semantics/method_compiler.py
 	python3 tests/semantics/method_runtime.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
+	python3 tests/semantics/compiler_publication_protocol.py
+	python3 tests/semantics/compiler_method_modifier_guards.py
+	python3 tests/semantics/compiler_ini_publication_guards.py
 	python3 tests/semantics/method_visibility_frontend.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/method_visibility_cases.json
 	python3 tests/semantics/method_visibility_protocol.py

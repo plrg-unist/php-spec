@@ -171,57 +171,19 @@ def $ppproperty_desc_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = (pprope
   -- if ppropertydesc.NAME = ptbytes
 def $ppproperty_desc_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = $ppproperty_desc_at(ppropertydesc_tail*, ptbytes)
   -- if ppropertydesc.NAME =/= ptbytes
-dec $ppproperty_info_own(ppropertydesc*, ptbytes) : ppropertyinherited*
-def $ppproperty_info_own(eps, ptbytes) = eps
-def $ppproperty_info_own(ppropertydesc :: ppropertydesc_tail*, ptbytes) = (PPIHERITED ppropertydesc ptbytes) :: $ppproperty_info_own(ppropertydesc_tail*, ptbytes)
-dec $ppproperty_info_extra(ppropertyinherited*, ppropertydesc*) : ppropertyinherited*
-def $ppproperty_info_extra(eps, ppropertydesc*) = eps
-def $ppproperty_info_extra((PPIHERITED ppropertydesc ptbytes) :: ppropertyinherited_tail*, ppropertydesc_own*) = $ppproperty_info_extra(ppropertyinherited_tail*, ppropertydesc_own*)
-  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc.NAME) = (ppropertydesc_existing)
-def $ppproperty_info_extra((PPIHERITED ppropertydesc ptbytes) :: ppropertyinherited_tail*, ppropertydesc_own*) = (PPIHERITED ppropertydesc ptbytes) :: $ppproperty_info_extra(ppropertyinherited_tail*, ppropertydesc_own*)
-  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc.NAME) = eps
-dec $ppproperty_early_info(pclassdesc*, pclassdesc) : ppropertyinherited*
-def $ppproperty_early_info(pclassdesc_all*, pclassdesc) = $ppproperty_info_own(pclassdesc.PROPERTIES, pclassdesc.NAME) ++ $ppproperty_info_extra($ppproperty_early_info(pclassdesc_all*, pclassdesc_parent), pclassdesc.PROPERTIES)
-  -- if pclassdesc.PARENT = (ptbytes_parent)
-  -- if $ppclass_prior_early(pclassdesc_all*, ptbytes_parent) = (pclassdesc_parent)
-def $ppproperty_early_info(pclassdesc_all*, pclassdesc) = $ppproperty_info_own(pclassdesc.PROPERTIES, pclassdesc.NAME) -- otherwise
-dec $ppproperty_early_one(ppstate, pchheader, ppropertyinherited, ppropertydesc*) : ppstate
-def $ppproperty_early_one(P, pchheader, PPIHERITED ppropertydesc_parent ptbytes_parent, ppropertydesc_children*) = P
-  -- if $ppproperty_desc_at(ppropertydesc_children*, ppropertydesc_parent.NAME) = eps
-def $ppproperty_early_one(P, pchheader, PPIHERITED ppropertydesc_parent ptbytes_parent, ppropertydesc_children*) = P
-  -- if $ppproperty_desc_at(ppropertydesc_children*, ppropertydesc_parent.NAME) = (ppropertydesc_child)
-  -- if $ppproperty_inherit_message(pchheader.NAME, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = eps
-def $ppproperty_early_one(P, pchheader, PPIHERITED ppropertydesc_parent ptbytes_parent, ppropertydesc_children*) = $ppconstant_error(P, ptbytes_error, P.LOCATION.LINE)
-  -- if $ppproperty_desc_at(ppropertydesc_children*, ppropertydesc_parent.NAME) = (ppropertydesc_child)
-  -- if $ppproperty_inherit_message(pchheader.NAME, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = (ptbytes_error)
-dec $ppproperty_early_items(ppstate, pchheader, ppropertyinherited*, ppropertydesc*) : ppstate
-def $ppproperty_early_items(P, pchheader, eps, ppropertydesc*) = P
-  -- if P.COMPLETION = PPCNORMAL
-def $ppproperty_early_items(P, pchheader, ppropertyinherited*, ppropertydesc*) = P
-  -- if P.COMPLETION =/= PPCNORMAL
-def $ppproperty_early_items(P, pchheader, ppropertyinherited :: ppropertyinherited_tail*, ppropertydesc*) = $ppproperty_early_items($ppproperty_early_one(P, pchheader, ppropertyinherited, ppropertydesc*), pchheader, ppropertyinherited_tail*, ppropertydesc*)
-  -- if P.COMPLETION = PPCNORMAL
-def $ppproperty_early_check(P, pchheader, ppropertydesc*) = P
-  -- if P.COMPLETION =/= PPCNORMAL
-def $ppproperty_early_check(P, pchheader, ppropertydesc*) = $ppproperty_early_items(P, pchheader, $ppproperty_early_info(P.CLASSES, pclassdesc_parent), ppropertydesc*)
-  -- if P.COMPLETION = PPCNORMAL
-  -- if pchheader.PARENT = (ptbytes_parent)
-  -- if $ppclass_prior_early(P.CLASSES, ptbytes_parent) = (pclassdesc_parent)
-def $ppproperty_early_check(P, pchheader, ppropertydesc*) = P -- otherwise
-
 dec $ppclass_properties_root(ppstate, pcpath, pchheader, ppropertydesc*, pmethoddesc*) : ppstate
 def $ppclass_properties_root(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppclass_properties_root(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND pchheader.KIND, NAME pchheader.NAME, PARENT eps, INTERFACES $ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*), PROPERTIES ppropertydesc*, METHODS pmethoddesc*, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY ($ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*) = eps /\ P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]]
   -- if P.COMPLETION = PPCNORMAL
 
-def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root(P_props[.LOCATION = P_header.LOCATION][.FOLD = P_props.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, eps)
+def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root(P_props[.LOCATION = P_header.LOCATION][.FOLD = P_props.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, eps)
   -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps
   -- if $ppproperty_body(pchheader.BODY)
   -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
   -- if pchheader.BODY = SEQUENCE statement*
   -- if PPROPERTIES P_props ppropertydesc* = $ppproperty_groups(P_header, pcpath, 0, statement*, eps, pchheader)
-def $ppclass_result(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_inherited(P_props[.LOCATION = P_header.LOCATION][.FOLD = P_props.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, eps)
+def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_inherited(P_props[.LOCATION = P_header.LOCATION][.FOLD = P_props.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, eps)
   -- if pchheader.KIND = "class" /\ pchheader.PARENT =/= eps
   -- if $ppproperty_body(pchheader.BODY)
   -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
