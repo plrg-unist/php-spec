@@ -107,14 +107,14 @@ def checks(initial, name):
                        'ppropertyslot.STATE = PROP_UNSET',
                        'S_after.OBJECTS = S_before.OBJECTS']
         else:
-            result += ['S_before.BASE = BASE_CLASS_STATIC porigin_class $ptascii("p")',
+            result += ['S_before.BASE = BASE_CLASS_STATIC porigin_class $ptascii("q")',
                        'S_after.TODO = (THROW_SEARCH n_new) :: ptask_tail*',
-                       '$throwable_field(S_after,n_new,"message") = PSTRING $ptascii("Attempt to unset static property A::$p")',
+                       '$throwable_field(S_after,n_new,"message") = PSTRING $ptascii("Attempt to unset static property A::$q")',
                        '$throwable_field(S_after,n_new,"line") = PINT 1']
         result += [*valid('S_after'),
                    'S_done = $drive_steps(S_after,4096)',
                    'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps',
-                   '$static_protocol_output(S_done.EVENTS) = $ptascii("E|Attempt to unset static property A::$p|unset|1")',
+                   '$static_protocol_output(S_done.EVENTS) = $ptascii("N|unset|P|Cannot access private property O::$y|S|Attempt to unset static property A::$q|A|Cannot indirectly modify private(set) property A::$p from global scope|1|1")',
                    *valid('S_done')]
         return result, 'S_done'
     if name == 'receiver-direct-demands':
