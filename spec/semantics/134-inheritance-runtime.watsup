@@ -44,6 +44,8 @@ def $class_property_override_issue(S, pclassdesc_child, ppropertydesc_parent :: 
   -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_found)
   -- if $ppproperty_inherit_message(pclassdesc_child.NAME, $property_declaring_name(S.CLASSES, ppropertydesc_parent.ORIGIN), ppropertydesc_parent, ppropertydesc_found) = eps
 
+dec $class_constant_parent_issue(pstate, pclassdesc, porigin) : pmethodissue
+dec $class_constant_link_error(pstate, porigin, ptbytes, int) : pstate
 dec $method_link_state(pstate, pclassdesc, porigin) : pstate
 def $method_link_state(S, pclassdesc, porigin_parent) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]][.LINKEDPARENTS = S.LINKEDPARENTS ++ [CLASSLINK pclassdesc.ORIGIN (SOURCE_PARENT porigin_parent)]]
 
@@ -71,6 +73,20 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FA
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
   -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = (ptbytes_message)
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $class_constant_link_error(S, pclassdesc.ORIGIN, ptbytes_message, z)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ ~pclassdesc_parent.FINAL
+  -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
+  -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
+  -- if $class_constant_parent_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent) = METHOD_COMPILEISSUE ptbytes_message z
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = UNSUPPORTED text]
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ ~pclassdesc_parent.FINAL
+  -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
+  -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
+  -- if $class_constant_parent_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent) = METHOD_UNSUPPORTED text
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_parent_wakeup_notice(S, pclassdesc, porigin_parent)[.COMPLETION = FATAL ptbytes_message z]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
@@ -78,6 +94,7 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_parent_wakeup
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
   -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
+  -- if $class_constant_parent_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent) = METHOD_OK
   -- if METHOD_ISSUE ptbytes_message z = $class_method_link_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent)
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = UNSUPPORTED text]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
@@ -86,6 +103,7 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = UN
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
   -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
+  -- if $class_constant_parent_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent) = METHOD_OK
   -- if METHOD_UNSUPPORTED text = $class_method_link_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent)
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_parent_wakeup_notice(S, pclassdesc, porigin_parent)[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]][.LINKEDPARENTS = S.LINKEDPARENTS ++ [CLASSLINK pclassdesc.ORIGIN (SOURCE_PARENT porigin_parent)]]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
@@ -94,6 +112,7 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_parent_wakeup
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
   -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
+  -- if $class_constant_parent_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent) = METHOD_OK
   -- if $class_method_link_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent) = METHOD_OK
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend non-readonly class stdClass")) pclassdesc.LINE]
   -- if $ptlc(ptbytes_parent) = $ptascii("stdclass")
@@ -195,6 +214,7 @@ def $class_link_entry_valid(S, pclasslink_prefix*, CLASSLINK porigin_child (SOUR
   -- if pclassdesc_child.READONLY = pclassdesc_parent.READONLY
   -- if $class_link_parent_precedes(pclasslink_prefix*, pclassdesc_parent)
   -- if $class_property_override_issue(S, pclassdesc_child, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc_child.PROPERTIES) = eps
+  -- if $class_constant_parent_issue(S, pclassdesc_child, porigin_parent) = METHOD_OK
   -- if $class_method_link_issue(S, pclassdesc_child, porigin_parent) = METHOD_OK
 def $class_link_entry_valid(S, pclasslink_prefix*, CLASSLINK porigin_child STDCLASS_PARENT) = true
   -- if $class_link_at(pclasslink_prefix*, porigin_child) = eps

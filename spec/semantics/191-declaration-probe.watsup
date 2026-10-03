@@ -1,4 +1,4 @@
-;; zend_can_early_bind probes methods before typed properties. A definite
+;; zend_can_early_bind probes methods before typed properties and constants. A definite
 ;; mismatch stops the probe too; only unresolved availability defers linking.
 syntax pdeclprobe = DECLREADY | DECLDEFER | DECLUNSUPPORTED text
 
@@ -101,8 +101,31 @@ dec $declaration_probe_result(pmcheck) : pdeclprobe
 def $declaration_probe_result(PMCHECK PVUNRESOLVED ptbytes*) = DECLDEFER
 def $declaration_probe_result(PMCHECK pvstatus ptbytes*) = DECLREADY -- if pvstatus =/= PVUNRESOLVED
 def $declaration_probe_result(PMUNSUPPORTED text) = DECLUNSUPPORTED text
+dec $declaration_constant_one(pstate, pclassdesc, pclassconstantdesc) : pmcheck
+def $declaration_constant_one(S, pclassdesc, pclassconstantdesc_parent) = PMCHECK PVYES eps
+  -- if pclassconstantdesc_parent.VISIBILITY = PROPERTY_PRIVATE \/ pclassconstantdesc_parent.TYPE = eps \/ $class_constant_desc(pclassdesc.CONSTANTS, pclassconstantdesc_parent.NAME) = eps
+def $declaration_constant_one(S, pclassdesc, pclassconstantdesc_parent) = PMCHECK PVYES eps
+  -- if pclassconstantdesc_parent.VISIBILITY =/= PROPERTY_PRIVATE /\ pclassconstantdesc_parent.TYPE =/= eps
+  -- if $class_constant_desc(pclassdesc.CONSTANTS, pclassconstantdesc_parent.NAME) = (pclassconstantdesc_child)
+  -- if pclassconstantdesc_child.TYPE = eps
+def $declaration_constant_one(S, pclassdesc, pclassconstantdesc_parent) = $pmcollect(PMCHECK PVYES eps, $class_constant_covariance(S, pclassconstantdesc_parent, pclassconstantdesc_child))
+  -- if pclassconstantdesc_parent.VISIBILITY =/= PROPERTY_PRIVATE /\ pclassconstantdesc_parent.TYPE =/= eps
+  -- if $class_constant_desc(pclassdesc.CONSTANTS, pclassconstantdesc_parent.NAME) = (pclassconstantdesc_child)
+  -- if pclassconstantdesc_child.TYPE =/= eps
+
+dec $declaration_constant_items(pstate, pclassdesc, pclassconstantdesc*) : pmcheck
+def $declaration_constant_items(S, pclassdesc, eps) = PMCHECK PVYES eps
+def $declaration_constant_items(S, pclassdesc, pclassconstantdesc :: pclassconstantdesc_tail*) = $declaration_constant_items(S, pclassdesc, pclassconstantdesc_tail*)
+  -- if $declaration_method_yes($declaration_constant_one(S, pclassdesc, pclassconstantdesc))
+def $declaration_constant_items(S, pclassdesc, pclassconstantdesc :: pclassconstantdesc_tail*) = pmcheck
+  -- if pmcheck = $declaration_constant_one(S, pclassdesc, pclassconstantdesc)
+  -- if ~$declaration_method_yes(pmcheck)
+dec $declaration_property_probe(pstate, pclassdesc, porigin, pmcheck) : pdeclprobe
+def $declaration_property_probe(S, pclassdesc, porigin_parent, PMCHECK PVYES ptbytes*) = $declaration_probe_result($declaration_constant_items(S, pclassdesc, $class_constant_layout(S, porigin_parent, |S.CLASSES|)))
+def $declaration_property_probe(S, pclassdesc, porigin_parent, pmcheck) = $declaration_probe_result(pmcheck)
+  -- if ~$declaration_method_yes(pmcheck)
 dec $declaration_parent_probe(pstate, pclassdesc, porigin, pmcheck) : pdeclprobe
-def $declaration_parent_probe(S, pclassdesc, porigin_parent, PMCHECK PVYES ptbytes*) = $declaration_probe_result($declaration_property_items(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|)))
+def $declaration_parent_probe(S, pclassdesc, porigin_parent, PMCHECK PVYES ptbytes*) = $declaration_property_probe(S, pclassdesc, porigin_parent, $declaration_property_items(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|)))
 def $declaration_parent_probe(S, pclassdesc, porigin_parent, pmcheck) = $declaration_probe_result(pmcheck)
   -- if ~$declaration_method_yes(pmcheck)
 

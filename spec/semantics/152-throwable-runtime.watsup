@@ -86,11 +86,11 @@ def $closure_live_object_valid(S, n) = true
 ;; Allocation snapshots the failing frame before any owner is discarded.
 def $throwable_allocate(S, text, preqbytes, z, ptraceframe*) = S_trace[.OBJECTS = S_trace.OBJECTS ++ [THROWABLE pthrowable]][.OBJECTPROPS = S_trace.OBJECTPROPS ++ [{OBJECT n, SLOTS $throwable_slots(text, preqbytes, $call_sourcefile(S.FILES, porigin), z, n_trace, PNULL), MATERIALIZED false}]][.ALLOCATIONS = S_trace.ALLOCATIONS ++ [HOBJECT n]][.COMPLETION = THROWING n][.TRACE = eps][.ERRORORIGIN = eps]
   -- if $throwable_kind(text)
-  -- if S.ORIGIN = (porigin)
+  -- if $class_constant_error_origin(S) = (porigin)
   -- if S_trace = $trace_materialize(S, ptraceframe*)
   -- if S_trace.RESULT = KNOWN (PARRAY n_trace)
   -- if n = |S_trace.OBJECTS|
-  -- if pthrowable = {KIND text, ORIGIN S.ORIGIN}
+  -- if pthrowable = {KIND text, ORIGIN (porigin)}
 def $throwable_allocate(S, text, preqbytes, z, ptraceframe*) = S[.COMPLETION = UNSUPPORTED "invalid Throwable allocation context"] -- otherwise
 
 def $throwable_pending(THROWN text preqbytes z) = true
