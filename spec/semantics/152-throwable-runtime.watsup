@@ -107,8 +107,10 @@ def $throwable_materialize(S) = S -- otherwise
 ;; Producers historically clear TODO. Authenticate the two supported transitions
 ;; against the predecessor; never infer identity from stack length.
 dec $throwable_continuation(pstate, pstate) : pstate
+dec $static_string_result_task(ptask) : bool
 def $throwable_continuation(S, S_next) = S_next[.TODO = ptask_tail*]
   -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$static_string_result_task(ptask)
   -- if S_next.FRAMES = S.FRAMES
   -- if S_next.CURRENT = S.CURRENT
 def $throwable_continuation(S, S_next) = S_next
@@ -223,9 +225,9 @@ def $throwable_strict_sources(S, pvalue, pproptypesource :: pproptypesource_tail
   -- if $propref_descriptor(S, pproptypesource) = (ppropertydesc)
   -- if ~($typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue))
 dec $throwable_bind_cell(pstate, nat, nat, int) : pstate
-def $throwable_bind_cell(S, n_cell, n_object, z) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED (POBJECT n_object))]
+def $throwable_bind_cell(S, n_cell, n_object, z) = $reference_coercion_store(S, n_cell, DEFINED (POBJECT n_object))
   -- if $propref_at(S.PROPREFS, n_cell) = eps
-def $throwable_bind_cell(S, n_cell, n_object, z) = S_checked[.STORE = $set_cell(S_checked.STORE, n_cell, DEFINED (POBJECT n_object))]
+def $throwable_bind_cell(S, n_cell, n_object, z) = $reference_coercion_store(S_checked, n_cell, DEFINED (POBJECT n_object))
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if S_checked = $throwable_strict_sources(S, POBJECT n_object, ppropref.SOURCES, z)
   -- if S_checked.COMPLETION = NORMAL

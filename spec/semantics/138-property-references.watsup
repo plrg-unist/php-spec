@@ -93,6 +93,74 @@ def $proprefs_prune(ppropref_list*, pobjectprops :: pobjectprops_tail*, pnode*) 
 dec $propref_unique_sources(pproptypesource*) : bool
 def $propref_unique_sources(eps) = true
 def $propref_unique_sources(pproptypesource_head :: pproptypesource_tail*) = (~$propref_has(pproptypesource_tail*, pproptypesource_head) /\ $propref_unique_sources(pproptypesource_tail*))
+;; Weak reference-return conversion may write a captured cell after its callback
+;; attaches new type sources. This evidence validates only the resulting backing
+;; value; ordinary type acceptance never consults it. Admission belongs to186.
+dec $reference_coercion_at(prefcoercion*, nat) : prefcoercion?
+def $reference_coercion_at(eps, n_cell) = eps
+def $reference_coercion_at(prefcoercion :: prefcoercion_tail*, n_cell) = (prefcoercion)
+  -- if prefcoercion.CELL = n_cell
+def $reference_coercion_at(prefcoercion :: prefcoercion_tail*, n_cell) = $reference_coercion_at(prefcoercion_tail*, n_cell)
+  -- if prefcoercion.CELL =/= n_cell
+dec $reference_coercion_remove(prefcoercion*, nat) : prefcoercion*
+def $reference_coercion_remove(eps, n_cell) = eps
+def $reference_coercion_remove(prefcoercion :: prefcoercion_tail*, n_cell) = $reference_coercion_remove(prefcoercion_tail*, n_cell)
+  -- if prefcoercion.CELL = n_cell
+def $reference_coercion_remove(prefcoercion :: prefcoercion_tail*, n_cell) = prefcoercion :: $reference_coercion_remove(prefcoercion_tail*, n_cell)
+  -- if prefcoercion.CELL =/= n_cell
+dec $reference_coercion_function(pfunction) : bool
+def $reference_coercion_function(pfunction) = (pfunction.SIGNATURE.BYREF /\ ~pfunction.CODE.STRICT /\ "string" <- $ptmasks(pfunction.SIGNATURE.RETURNS) /\ ~("mixed" <- $ptmasks(pfunction.SIGNATURE.RETURNS)) /\ ~("object" <- $ptmasks(pfunction.SIGNATURE.RETURNS)) /\ ~("callable" <- $ptmasks(pfunction.SIGNATURE.RETURNS)) /\ ~$typed_class_type(pfunction.SIGNATURE.RETURNS, $ptascii("Stringable")))
+def $reference_coercion_source(S, PORIGIN n pcpath, z) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NStmtReturn expression metadata)
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction)
+  -- if $reference_coercion_function(pfunction)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((z, false))
+def $reference_coercion_source(S, porigin, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $reference_coercion_function(pfunction)
+  -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z)
+def $reference_coercion_source(S, porigin, z) = false -- otherwise
+dec $reference_coercion_row_valid(pstate, prefcoercion) : bool
+def $reference_coercion_row_valid(S, prefcoercion) = true
+  -- if (HCELL prefcoercion.CELL) <- S.ALLOCATIONS
+  -- if prefcoercion.CELL <- S.REFCELLS
+  -- if $(prefcoercion.CELL < |S.STORE|)
+  -- if S.STORE[prefcoercion.CELL] = DEFINED (PSTRING prefcoercion.VALUE)
+  -- if $reference_coercion_source(S, prefcoercion.SITE, prefcoercion.LINE)
+def $reference_coercion_row_valid(S, prefcoercion) = false -- otherwise
+dec $reference_coercion_rows_valid(pstate, prefcoercion*) : bool
+def $reference_coercion_rows_valid(S, eps) = true
+def $reference_coercion_rows_valid(S, prefcoercion :: prefcoercion_tail*) = ($reference_coercion_row_valid(S, prefcoercion) /\ $reference_coercion_at(prefcoercion_tail*, prefcoercion.CELL) = eps /\ $reference_coercion_rows_valid(S, prefcoercion_tail*))
+def $reference_coercions_valid(S) = $reference_coercion_rows_valid(S, S.REFCOERCIONS)
+def $reference_coercion_value(S, n_cell, PSTRING n_text*) = true
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = (prefcoercion)
+  -- if prefcoercion.VALUE = n_text*
+  -- if $reference_coercion_row_valid(S, prefcoercion)
+def $reference_coercion_value(S, n_cell, pvalue) = false -- otherwise
+def $reference_coercion_clear(S, n_cell) = S[.REFCOERCIONS = $reference_coercion_remove(S.REFCOERCIONS, n_cell)]
+def $reference_coercion_store(S, n_cell, pslot) = $reference_coercion_clear(S, n_cell)[.STORE = $set_cell(S.STORE, n_cell, pslot)]
+def $reference_coercions_prune(eps, pnode*) = eps
+def $reference_coercions_prune(prefcoercion :: prefcoercion_tail*, pnode*) = prefcoercion :: $reference_coercions_prune(prefcoercion_tail*, pnode*)
+  -- if (HCELL prefcoercion.CELL) <- pnode*
+def $reference_coercions_prune(prefcoercion :: prefcoercion_tail*, pnode*) = $reference_coercions_prune(prefcoercion_tail*, pnode*)
+  -- if ~((HCELL prefcoercion.CELL) <- pnode*)
+def $reference_coercion_producer(S, n_cell, porigin, z) = false -- otherwise
+dec $reference_coercion_admission(pstate, nat, porigin, int, ptbytes) : bool
+def $reference_coercion_admission(S, n_cell, porigin, z, n_text*) = true
+  -- if $reference_coercion_producer(S, n_cell, porigin, z)
+  -- if $reference_coercion_source(S, porigin, z)
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if n_cell <- S.REFCELLS
+  -- if $(n_cell < |S.STORE|)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (PSTRING n_text*)
+def $reference_coercion_admission(S, n_cell, porigin, z, n_text*) = false -- otherwise
+def $reference_coercion_write(S, n_cell, porigin, z, n_text*) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED (PSTRING n_text*))][.REFCOERCIONS = {CELL n_cell, SITE porigin, LINE z, VALUE n_text*} :: $reference_coercion_remove(S.REFCOERCIONS, n_cell)]
+  -- if $reference_coercion_admission(S, n_cell, porigin, z, n_text*)
+def $reference_coercion_write(S, n_cell, porigin, z, n_text*) = S[.COMPLETION = UNSUPPORTED "invalid reference coercion producer"]
+  -- if ~$reference_coercion_admission(S, n_cell, porigin, z, n_text*)
+
 dec $propref_source_valid(pstate, nat, pproptypesource) : bool
 def $propref_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes porigin_decl) = true
   -- if $(n_cell < |S.STORE|)
@@ -109,7 +177,7 @@ def $propref_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes porigin
   -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ppropertydesc.TYPE =/= eps
   -- if S.STORE[n_cell] = DEFINED pvalue
-  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue)
+  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue)
 def $propref_source_valid(S, n_cell, CLASS_PROP_SOURCE ppropertyid) = true
   -- if $(n_cell < |S.STORE|)
   -- if n_cell <- S.REFCELLS
@@ -119,7 +187,7 @@ def $propref_source_valid(S, n_cell, CLASS_PROP_SOURCE ppropertyid) = true
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
   -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
-  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue)
+  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue)
 def $propref_source_valid(S, n_cell, pproptypesource) = false -- otherwise
 dec $propref_sources_valid(pstate, nat, pproptypesource*) : bool
 def $propref_sources_valid(S, n_cell, eps) = true
@@ -262,9 +330,9 @@ def $propref_coerced_agreement(S, pvalue_original, (pproptypesource_first), (pva
 def $propref_coerced_agreement(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_current, pvalue_new, pproptypesource_tail*, z) = PROP_REJECT ($propref_conflict(S, pproptypesource_first, pproptypesource_current, pvalue_original, z))
   -- if ~$strict_identical(pvalue_coerced, pvalue_new)
 
-def $write_cell_checked(S, n_cell, pvalue, z) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED pvalue)][.RESULT = KNOWN pvalue]
+def $write_cell_checked(S, n_cell, pvalue, z) = $reference_coercion_store(S, n_cell, DEFINED pvalue)[.RESULT = KNOWN pvalue]
   -- if $propref_at(S.PROPREFS, n_cell) = eps
-def $write_cell_checked(S, n_cell, pvalue, z) = S_checked[.STORE = $set_cell(S_checked.STORE, n_cell, DEFINED pvalue_new)][.RESULT = KNOWN pvalue_new]
+def $write_cell_checked(S, n_cell, pvalue, z) = $reference_coercion_store(S_checked, n_cell, DEFINED pvalue_new)[.RESULT = KNOWN pvalue_new]
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if $propref_check(S, pvalue, eps, eps, ppropref.SOURCES, z) = PROP_ACCEPT S_checked pvalue_new
 def $write_cell_checked(S, n_cell, pvalue, z) = S_checked
@@ -306,7 +374,7 @@ def $property_bind_type(S, ppropertydesc, n_cell, pvalue, z) = S_checked
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if S_checked = $typed_apply(S, ptypeconversion, z)
   -- if S_checked.COMPLETION =/= NORMAL
-def $property_bind_type(S, ppropertydesc, n_cell, pvalue, z) = S_converted[.STORE = $set_cell(S_converted.STORE, n_cell, DEFINED pvalue_new)]
+def $property_bind_type(S, ppropertydesc, n_cell, pvalue, z) = $reference_coercion_store(S_converted, n_cell, DEFINED pvalue_new)
   -- if ~($typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue))
   -- if ptypeconversion = $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S))
   -- if ptypeconversion =/= TYPEREJECT

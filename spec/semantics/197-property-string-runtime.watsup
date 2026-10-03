@@ -1,0 +1,206 @@
+;; Typed declared static assignment converts a scratch value before writing
+;; through the current row. The capture alone retains the original RHS owner.
+def $static_string_site_valid(S, PORIGIN n pcpath, z) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprAssign (NExprStaticPropertyFetch phpType19 phpType31 metadata_property) expression_rhs metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if ~pcode.STRICT
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_assignment, b_assignment))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z, b_target))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z_rhs, b_rhs))
+def $static_string_site_valid(S, porigin, z) = false -- otherwise
+
+dec $static_string_reference_rhs(expression) : bool
+def $static_string_reference_rhs(NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = true
+  -- if ~$ppfirstclass(phpType7*)
+def $static_string_reference_rhs(NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata) = true
+  -- if ~$ppfirstclass(phpType7*)
+def $static_string_reference_rhs(NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata) = true
+  -- if ~$ppfirstclass(phpType7*)
+def $static_string_reference_rhs(NExprAssignRef expression_left expression_right metadata) = true
+def $static_string_reference_rhs(expression) = false -- otherwise
+
+dec $static_string_rhs_valid(pstate, pstaticstring) : bool
+def $static_string_rhs_valid(S, pstaticstring) = true
+  -- if pstaticstring.RHS = VARIABLE n_name* z_name
+  -- if $origin_child((pstaticstring.SITE), [PCFIELD 1]) = (porigin_rhs)
+  -- if $origin_node(S.SOURCES, porigin_rhs) = (NExprVariable phpType32 metadata)
+  -- if $reference_cv(NExprVariable phpType32 metadata) = (n_name*)
+  -- if $variable_line(phpType32, metadata) = z_name
+def $static_string_rhs_valid(S, pstaticstring) = true
+  -- if pstaticstring.RHS = KNOWN (POBJECT pstaticstring.OBJECT)
+  -- if $origin_child((pstaticstring.SITE), [PCFIELD 1]) = (porigin_rhs)
+  -- if $origin_node(S.SOURCES, porigin_rhs) = (expression_rhs)
+  -- if $reference_cv(expression_rhs) = eps
+  -- if (HOBJECT pstaticstring.OBJECT) <- S.ALLOCATIONS
+def $static_string_rhs_valid(S, pstaticstring) = true
+  -- if pstaticstring.RHS = REFERENCE n_cell
+  -- if $origin_child((pstaticstring.SITE), [PCFIELD 1]) = (porigin_rhs)
+  -- if $origin_node(S.SOURCES, porigin_rhs) = (expression_rhs)
+  -- if $static_string_reference_rhs(expression_rhs)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+def $static_string_rhs_valid(S, pstaticstring) = false -- otherwise
+
+;; These facts are permanent/source facts. Saved stringify-frame validation
+;; does not substitute the caller ENV or CURRENT into every shared predicate.
+dec $static_string_record_valid(pstate, pstaticstring) : bool
+def $static_string_record_valid(S, pstaticstring) = true
+  -- if $static_string_site_valid(S, pstaticstring.SITE, pstaticstring.LINE)
+  -- if $class_at(S.CLASSES, pstaticstring.CLASS) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pstaticstring.CLASS)
+  -- if $class_static_select(S, pstaticstring.CLASS, pstaticstring.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = pstaticstring.DECL
+  -- if $class_static_at(S.CLASSSTATICS, pstaticstring.DECL) = (pclassstatic)
+  -- if "string" <- $ptmasks(ppropertydesc.TYPE)
+  -- if $(pstaticstring.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pstaticstring.OBJECT] = INSTANCE porigin_object
+  -- if ~$typed_exact(ppropertydesc.TYPE, POBJECT pstaticstring.OBJECT)
+  -- if ~$typed_class_chain(S, ppropertydesc.TYPE, porigin_object, |S.CLASSES|)
+  -- if ~$typed_class_type(ppropertydesc.TYPE, $ptascii("Stringable"))
+  -- if $effective_method(S, porigin_object, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~pmethoddesc.ABSTRACT
+  -- if $static_string_rhs_valid(S, pstaticstring)
+def $static_string_record_valid(S, pstaticstring) = false -- otherwise
+
+dec $static_string_target_valid(pstate, pstaticstring) : bool
+def $static_string_target_valid(S, pstaticstring) = true
+  -- if S.ORIGIN = (pstaticstring.SITE)
+  -- if $origin_node(S.SOURCES, pstaticstring.SITE) = (NExprAssign (NExprStaticPropertyFetch phpType19 phpType31 metadata_property) expression_rhs metadata)
+  -- if $class_static_ref_requested(S, pstaticstring.CLASS, phpType19)
+  -- if $class_static_ref_name_matches(phpType31, pstaticstring.NAME)
+  -- if $class_static_select(S, pstaticstring.CLASS, pstaticstring.NAME) = (ppropertydesc)
+  -- if $class_static_accessible(S, ppropertydesc)
+def $static_string_target_valid(S, pstaticstring) = false -- otherwise
+
+dec $static_string_capture(pstate, pbase, int) : pstaticstring?
+def $static_string_capture(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = (pstaticstring)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
+  -- if $class_static_accessible(S, ppropertydesc)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $typed_conversion_at(S_read, ppropertydesc.TYPE, POBJECT n, $property_strict(S_read)) = TYPEDEPENDENT "user object string conversion"
+  -- if pstaticstring = {SITE porigin_site, CLASS porigin_requested, DECL ppropertydesc.ORIGIN, NAME ptbytes, OBJECT n, RHS S.RESULT, LINE z}
+  -- if $static_string_record_valid(S_read, pstaticstring)
+  -- if $static_string_target_valid(S_read, pstaticstring)
+def $static_string_capture(S, pbase, z) = eps -- otherwise
+def $static_string_callback_candidate(S) = true
+  -- if S.TODO = (ASSIGN_ARRAY pbase z b) :: ptask_tail*
+  -- if $static_string_capture(S, pbase, z) = (pstaticstring)
+def $static_string_callback_candidate(S) = false -- otherwise
+
+dec $static_string_marker(ptask) : bool
+def $static_string_marker(STATIC_STRING_RESULT pstaticstring) = true
+def $static_string_marker(STATIC_STRING_CAPTURE pstaticstring) = true
+def $static_string_marker(AT porigin ptask) = $static_string_marker(ptask)
+def $static_string_marker(ptask) = false -- otherwise
+def $static_string_result_task(STATIC_STRING_RESULT pstaticstring) = true
+def $static_string_result_task(ptask) = false -- otherwise
+dec $static_string_scratch_marker(ptask) : bool
+def $static_string_scratch_marker(STRINGIFY_RESULT n porigin z) = true
+def $static_string_scratch_marker(AT porigin ptask) = $static_string_scratch_marker(ptask)
+def $static_string_scratch_marker(ptask) = false -- otherwise
+dec $static_string_wrapped_scratch(ptask) : bool
+def $static_string_wrapped_scratch(AT porigin ptask) = $static_string_scratch_marker(ptask)
+def $static_string_wrapped_scratch(ptask) = false -- otherwise
+dec $static_string_pairs_valid(ptask*) : bool
+def $static_string_pairs_valid(eps) = true
+def $static_string_pairs_valid((STATIC_STRING_RESULT pstaticstring) :: (STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*) = $static_string_pairs_valid(ptask_tail*)
+def $static_string_pairs_valid(ptask :: ptask_tail*) = $static_string_pairs_valid(ptask_tail*)
+  -- if ~$static_string_marker(ptask)
+  -- if ~$static_string_wrapped_scratch(ptask)
+def $static_string_pairs_valid(ptask*) = false -- otherwise
+dec $static_string_capture_count(ptask*, porigin) : nat
+dec $static_string_capture_origin(ptask) : porigin?
+def $static_string_capture_origin(STATIC_STRING_CAPTURE pstaticstring) = (pstaticstring.SITE)
+def $static_string_capture_origin(ptask) = eps -- otherwise
+def $static_string_capture_count(eps, porigin) = 0
+def $static_string_capture_count((STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*, porigin) = $(1 + $static_string_capture_count(ptask_tail*, porigin))
+  -- if pstaticstring.SITE = porigin
+def $static_string_capture_count(ptask :: ptask_tail*, porigin) = $static_string_capture_count(ptask_tail*, porigin)
+  -- if $static_string_capture_origin(ptask) =/= (porigin)
+dec $static_string_pair_present(ptask*, pstaticstring) : bool
+dec $static_string_pair_head(ptask*, pstaticstring) : bool
+def $static_string_pair_head((STATIC_STRING_RESULT pstaticstring) :: (STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*, pstaticstring) = true
+def $static_string_pair_head(ptask*, pstaticstring) = false -- otherwise
+def $static_string_pair_present(eps, pstaticstring) = false
+def $static_string_pair_present((STATIC_STRING_RESULT pstaticstring) :: (STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*, pstaticstring) = true
+def $static_string_pair_present(ptask :: ptask_tail*, pstaticstring) = $static_string_pair_present(ptask_tail*, pstaticstring)
+  -- if ~$static_string_pair_head(ptask :: ptask_tail*, pstaticstring)
+dec $static_string_pair_receiver(ptask*, pstaticstring) : bool
+dec $static_string_scratch_head(ptask*, pstaticstring) : bool
+def $static_string_scratch_head(ptask :: (STATIC_STRING_RESULT pstaticstring) :: (STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*, pstaticstring) = $static_string_scratch_marker(ptask)
+def $static_string_scratch_head(ptask*, pstaticstring) = false -- otherwise
+dec $static_string_receiver_matches(ptask, pstaticstring) : bool
+def $static_string_receiver_matches(STRINGIFY_RESULT n porigin z, pstaticstring) = (n = pstaticstring.OBJECT /\ porigin = pstaticstring.SITE /\ z = pstaticstring.LINE)
+def $static_string_receiver_matches(ptask, pstaticstring) = false -- otherwise
+def $static_string_pair_receiver(eps, pstaticstring) = true
+def $static_string_pair_receiver(ptask :: (STATIC_STRING_RESULT pstaticstring) :: (STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*, pstaticstring) = $static_string_receiver_matches(ptask, pstaticstring)
+  -- if $static_string_scratch_marker(ptask)
+def $static_string_pair_receiver(ptask :: ptask_tail*, pstaticstring) = $static_string_pair_receiver(ptask_tail*, pstaticstring)
+  -- if ~$static_string_scratch_head(ptask :: ptask_tail*, pstaticstring)
+
+dec $static_string_completed_operand(poperand) : bool
+def $static_string_completed_operand(KNOWN (PSTRING ptbytes)) = true
+def $static_string_completed_operand(poperand) = false -- otherwise
+dec $static_string_result_phase_valid(pstate, pstaticstring) : bool
+def $static_string_result_phase_valid(S, pstaticstring) = $static_string_result_phase_valid(S[.TODO = ptask :: ptask_tail*], pstaticstring)
+  -- if S.TODO = (AT porigin ptask) :: ptask_tail*
+def $static_string_result_phase_valid(S, pstaticstring) = $static_string_result_phase_valid(S[.TODO = ptask_tail*], pstaticstring)
+  -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
+def $static_string_result_phase_valid(S, pstaticstring) = $static_string_completed_operand(S.RESULT)
+  -- if S.TODO = (STATIC_STRING_RESULT pstaticstring) :: ptask_tail*
+def $static_string_result_phase_valid(S, pstaticstring) = true -- otherwise
+
+dec $static_string_task_valid(pstate, pstaticstring) : bool
+def $static_string_task_valid(S, pstaticstring) = true
+  -- if $static_string_record_valid(S, pstaticstring)
+  -- if $static_string_target_valid(S, pstaticstring)
+  -- if $static_string_pairs_valid(S.TODO)
+  -- if $static_string_capture_count(S.TODO, pstaticstring.SITE) = 1
+  -- if $static_string_pair_present(S.TODO, pstaticstring)
+  -- if $static_string_pair_receiver(S.TODO, pstaticstring)
+  -- if $static_string_result_phase_valid(S, pstaticstring)
+def $static_string_task_valid(S, pstaticstring) = false -- otherwise
+def $call_task_valid(S, STATIC_STRING_RESULT pstaticstring) = $static_string_task_valid(S, pstaticstring)
+def $call_task_valid(S, STATIC_STRING_CAPTURE pstaticstring) = $static_string_task_valid(S, pstaticstring)
+def $task_nodes(STATIC_STRING_RESULT pstaticstring) = eps
+def $task_nodes(STATIC_STRING_CAPTURE pstaticstring) = $operand_nodes(pstaticstring.RHS)
+
+def $stringify_source(S, porigin_site, z, STATIC_STRING_RESULT pstaticstring) = (pstaticstring.SITE = porigin_site /\ pstaticstring.LINE = z /\ $static_string_record_valid(S, pstaticstring))
+def $stringify_consumer_tail_valid(S, porigin_site, z, STATIC_STRING_RESULT pstaticstring, (STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*) = $stringify_source(S, porigin_site, z, STATIC_STRING_RESULT pstaticstring)
+def $static_string_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigin_site), z) = true
+  -- if $static_string_site_valid(S, porigin_site, z)
+  -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_site)
+def $static_string_pending_line_valid(S, pcalltarget, porigin?, z) = false -- otherwise
+def $static_string_context_line_valid(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $static_string_site_valid(S, porigin_site, pcallcontext.LINE)
+  -- if $stringify_context_kind(S, pcallcontext)
+def $static_string_context_line_valid(S, pcallcontext) = false -- otherwise
+
+rule PhpStep/static-string-begin: S ~> $user_string_begin(S_read, pstaticstring.OBJECT, pstaticstring.SITE, z, STATIC_STRING_RESULT pstaticstring, (STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*)
+  -- if S.TODO = (ASSIGN_ARRAY pbase z b) :: ptask_tail*
+  -- if $static_string_capture(S, pbase, z) = (pstaticstring)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+
+rule PhpStep/static-string-complete: S ~> S_written[.HELD = S.HELD]
+  -- if S.TODO = (STATIC_STRING_RESULT pstaticstring) :: (STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*
+  -- if $static_string_task_valid(S, pstaticstring)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_inputs = S[.TODO = ptask_tail*][.HELD = S.HELD ++ $operand_nodes(pstaticstring.RHS)]
+  -- if S_written = $class_static_store_value(S_inputs, pstaticstring.CLASS, pstaticstring.NAME, PSTRING ptbytes, pstaticstring.LINE)
+
+;; Discard the companion before the next public integrity check. Callback
+;; exceptions retain their identity; ordinary live-write errors get this same
+;; atomic tail when152 reconstructs the predecessor's pending continuation.
+def $return_discard(S, STATIC_STRING_RESULT pstaticstring) = S[.TODO = ptask_unwind :: ptask_tail*]
+  -- if S.TODO = ptask_unwind :: (STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*
+  -- if S.ORIGIN = (pstaticstring.SITE)
+def $throwable_continuation(S, S_next) = S_next[.TODO = ptask_tail*]
+  -- if S.TODO = (STATIC_STRING_RESULT pstaticstring) :: (STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*
+  -- if $static_string_task_valid(S, pstaticstring)
+  -- if S_next.FRAMES = S.FRAMES
+  -- if S_next.CURRENT = S.CURRENT
