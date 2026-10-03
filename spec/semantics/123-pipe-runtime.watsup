@@ -10,6 +10,8 @@ def $pipe_rhs_origin(PORIGIN n pcpath) = PORIGIN n (pcpath ++ [PCFIELD 1])
 
 dec $pipe_fixed_name(pstate, porigin) : (preqbytes, preqbytes?)?
 def $pipe_fixed_name(S, PORIGIN n pcpath) = ((preqbytes, preqbytes_fallback?))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if $pppipe_optimized(expression_right)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 1]) = ((preqbytes, preqbytes_fallback?))
 def $pipe_fixed_name(S, porigin) = eps -- otherwise

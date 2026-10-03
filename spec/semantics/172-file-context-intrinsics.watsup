@@ -43,6 +43,16 @@ def $config_string_object(pconfigcall) = (n)
   -- if pconfigcall.KIND =/= INTRINSIC_INI_SET
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
 def $config_string_object(pconfigcall) = eps -- otherwise
+;; PIPE owns the materialized left child, not an argument-list occurrence.
+def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
+  -- if $(|pcpath_child| > 0)
+  -- if n_parent = $(|pcpath_child| - 1)
+  -- if pcpath_child[n_parent:1] = [PCFIELD 0]
+  -- if porigin_parent = PORIGIN n_unit pcpath_child[0:n_parent]
+  -- if $pipe_site(S, porigin_parent)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_pipe_send(pcode.EXPRESSIONS, pcpath_child[0:n_parent]) = (z_send)
+  -- if $pipe_lines_valid(S[.ORIGIN = (porigin_parent)], porigin_parent, z_send, z_call)
 def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
   -- if $(|pcpath_child| >= 3)
   -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
@@ -931,13 +941,22 @@ def $config_option_source_replay(S, pconfigcall, pconfigcall_prefix, pconfigpack
   -- if $config_option_source_replay(S, pconfigcall, pconfigcall_next[.INDEX = $(pconfigcall_prefix.INDEX + 1)], pconfigpack_tail*) = ((pconfigcall_end, (porigin_tail, z_tail)*))
 def $config_option_source_replay(S, pconfigcall, pconfigcall_prefix, pconfigpack*) = eps -- otherwise
 def $config_string_source(S, pconfigcall) = ((porigin, z))
+  -- if ~$pipe_site(S, pconfigcall.SITE)
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
   -- if $config_option_source_replay(S, pconfigcall, pconfigcall[.INDEX = 0][.SENT = eps][.NAMED = false][.PACKS = eps], pconfigcall.PACKS) = ((pconfigcall_end, [(porigin, z)]))
   -- if pconfigcall_end.SENT = pconfigcall.SENT
   -- if pconfigcall_end.NAMED = pconfigcall.NAMED
 def $config_string_source(S, pconfigcall) = ((porigin, z))
+  -- if ~$pipe_site(S, pconfigcall.SITE)
   -- if pconfigcall.KIND =/= INTRINSIC_INI_SET
   -- if $config_source_sites(S, pconfigcall, 0, pconfigcall.PACKS) = ([(porigin, z)])
+def $config_string_source(S, pconfigcall) = ((PORIGIN n_unit (pcpath ++ [PCFIELD 0]), z_send))
+  -- if pconfigcall.KIND =/= INTRINSIC_INI_SET
+  -- if pconfigcall.SITE = PORIGIN n_unit pcpath
+  -- if $pipe_site(S, pconfigcall.SITE)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_pipe_send(pcode.EXPRESSIONS, pcpath) = (z_send)
+  -- if $pipe_lines_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall.SITE, z_send, pconfigcall.LINE)
 def $config_string_source(S, pconfigcall) = eps -- otherwise
 dec $config_sent_shape(pstate, pconfigcall) : bool
 def $config_sent_shape(S, pconfigcall) = true
