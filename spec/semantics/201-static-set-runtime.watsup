@@ -145,6 +145,7 @@ def $foreach_reference_acquire(S, pbase, z) = $reference_acquire(S, pbase, z) --
 def $foreach_reference_at(S, CLASS_STATIC ppropertyid, pvalue) = S[.CELL = n_cell]
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
   -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
+def $foreach_reference_at(S, PROPERTY n_object ptbytes, pvalue) = $property_reference_fetch(S, n_object, ptbytes, $property_current_line(S))
 rule PhpStep/foreach-prep-class-static: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_iterable), FOREACH_DIM statement z] ++ ptask_tail*]
   -- if S.TODO = (FOREACH_PREP statement z) :: ptask_tail*
   -- if statement = NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
