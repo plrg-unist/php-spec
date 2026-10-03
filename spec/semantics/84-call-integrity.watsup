@@ -298,6 +298,7 @@ dec $call_frames_valid(pstate, pframe*) : bool
 def $call_frames_valid(S, eps) = true
 def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid(S[.ORIGIN = pframe.ORIGIN][.CURRENT = pframe.CONTEXT][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD], pframe.TODO) /\ $borrowed_read_scope_valid(S[.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD]) /\ $call_saved_context_valid(S, pframe) /\ $call_frames_valid(S, pframe_tail*))
 dec $user_constants_valid(pstate, puserconstant*) : bool
+dec $class_constant_state_valid(pstate) : bool
 dec $constant_context_valid(pstate) : bool
 dec $default_caches_valid(pstate, pdefaultcache*) : bool
 dec $static_result_valid(pstate) : bool
@@ -353,6 +354,7 @@ def $call_descriptors_valid(S) = true
   -- if $silences_valid(S)
   -- if $error_handlers_valid(S, S.ERRORHANDLER :: S.ERRORHANDLERS)
   -- if $user_constants_valid(S, S.USERCONSTANTS)
+  -- if $class_constant_state_valid(S)
   -- if $constant_context_valid(S)
   -- if $default_caches_valid(S, S.DEFAULTCACHE)
   -- if $static_cells_valid(S, S.STATICS)

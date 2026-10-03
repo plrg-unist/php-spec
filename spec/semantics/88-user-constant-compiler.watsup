@@ -1,3 +1,5 @@
+dec $ppclass_constant_initializer(ppstate) : bool
+dec $ppconstant_member_validate(ppstate, pcpath, phpType20) : ppstate
 ;; User constants compile their initializer before declaration-name checks.
 ;; Constant AST validation follows existing45 folding and its original redirects.
 dec $ppconstant_validate(ppstate, pcpath, pcnode) : ppstate
@@ -26,7 +28,7 @@ def $ppconstant_list(P, pcpath, n, eps) = P
 def $ppconstant_list(P, pcpath, n, (NConst phpType11 expression metadata) :: phpType46*) = $ppconstant_list($ppconstant_name($ppconstant_expr(P, pcpath ++ [PCINDEX n, PCFIELD 1], expression), pcpath ++ [PCINDEX n], phpType11), pcpath, $(n + 1), phpType46*)
   -- if P.COMPLETION = PPCNORMAL
 
-def $ppconstant_expr(P, pcpath, expression) = $ppconstant_emit($ppconstant_validate($ppfoldresult(P, $pfprepare(P.FOLD[.CONSTANT = true], pcpath, expression, P.ENV, P.LOCATION.LINE)), pcpath, expression), pcpath, expression)[.FOLD.CONSTANT = false]
+def $ppconstant_expr(P, pcpath, expression) = $ppconstant_emit($ppconstant_validate($ppfoldresult(P, $pfprepare($ppclass_fold(P)[.CONSTANT = true], pcpath, expression, P.ENV, P.LOCATION.LINE)), pcpath, expression), pcpath, expression)[.FOLD.CONSTANT = false]
 
 def $ppconstant_emit(P, pcpath, expression) = $ppcall_done($ppexpr(P, pcpath, expression, PPR), pcpath, P.LOCATION.LINE)
 
@@ -69,11 +71,14 @@ def $ppconstant_node(P, pcpath, pcnode) = $ppconstant_children($ppconstant_locat
   -- if $ppconstant_allowed(pcnode)
 def $ppconstant_node(P, pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppunsupported(P, "first-class callable constant initializer")
 def $ppconstant_node(P, pcpath, NExprClosure phpType14 phpType4 phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata) = $ppunsupported(P, "closure constant initializer")
+def $ppconstant_node(P, pcpath, NExprNew phpType28 phpType6 metadata) = $ppconstant_error(P, $ptascii("New expressions are not supported in this context"), $nabs($source_line(metadata)))
+  -- if $ppclass_constant_initializer(P)
 def $ppconstant_node(P, pcpath, NExprNew phpType28 phpType6 metadata) = $ppunsupported(P, "object constant initializer")
+  -- if ~$ppclass_constant_initializer(P)
 def $ppconstant_node(P, pcpath, NExprPropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
 def $ppconstant_node(P, pcpath, NExprNullsafePropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
 def $ppconstant_node(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppunsupported(P, "first-class callable constant initializer")
-def $ppconstant_node(P, pcpath, NExprClassConstFetch phpType19 phpType20 metadata) = $ppconstant_class(P, pcpath ++ [PCFIELD 0], phpType19)
+def $ppconstant_node(P, pcpath, NExprClassConstFetch phpType19 phpType20 metadata) = $ppconstant_member_validate($ppconstant_class(P, pcpath ++ [PCFIELD 0], phpType19), pcpath ++ [PCFIELD 1], phpType20)
 def $ppconstant_node(P, pcpath, pcnode) = $ppcheck(P, $context_error("Constant expression contains invalid operations", P.LOCATION.LINE))
   -- otherwise
 
@@ -110,7 +115,7 @@ def $ppconstant_location(P, NExprConstFetch name metadata) = P[.LOCATION.LINE = 
 def $ppconstant_location(P, pcnode) = P
   -- otherwise
 
-;; Class constants remain unconnected, but these source static restrictions apply
+;; Source static restrictions apply
 ;; after folded branch selection and before any runtime class lookup.
 def $ppconstant_class(P, pcpath, phpType19) = $ppconstant_error(P, $ptascii("\"static::\" is not allowed in compile-time constants"), P.LOCATION.LINE)
   -- if phpType19 = name
@@ -119,5 +124,10 @@ def $ppconstant_class(P, pcpath, phpType19) = $ppconstant_error(P, $ptascii("\"s
 def $ppconstant_class(P, pcpath, phpType19) = $ppconstant_error(P, $ptascii("Dynamic class names are not allowed in compile-time class constant references"), P.LOCATION.LINE)
   -- if phpType19 = expression
   -- if $pffact(P.FOLD.FACTS, pcpath) = eps
-def $ppconstant_class(P, pcpath, phpType19) = $ppunsupported(P, "constant class-constant lookup")
+def $ppconstant_class(P, pcpath, phpType19) = P
   -- otherwise
+
+def $ppclass_constant_initializer(P) = (ptcontext.POSITION = PTCONSTANT) -- if P.CLASSCONTEXT = (ptcontext)
+def $ppclass_constant_initializer(P) = false -- otherwise
+def $ppconstant_member_validate(P, pcpath, NIdentifier phpType33 metadata) = P
+def $ppconstant_member_validate(P, pcpath, expression) = $ppconstant_validate(P, pcpath, expression)

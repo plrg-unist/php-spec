@@ -65,8 +65,8 @@ def $method_selected_scope(S, n, ptbytes, porigin?) = $effective_method(S, porig
   -- if S.OBJECTS[n] = INSTANCE porigin_class
 def $method_selected_scope(S, n, ptbytes, porigin?) = eps -- otherwise
 dec $method_current_scope(pstate) : porigin?
-def $method_current_scope(S) = pcallcontext.LEXICAL_CLASS -- if S.CURRENT = (pcallcontext)
-def $method_current_scope(S) = eps -- otherwise
+def $method_current_scope(S) = pcallcontext.LEXICAL_CLASS -- if S.CURRENT = (pcallcontext) -- if S.CLASSCONSTANTINIT = eps
+def $method_current_scope(S) = eps -- if S.CURRENT = eps /\ S.CLASSCONSTANTINIT = eps
 dec $method_called_scope(pstate) : porigin?
 def $method_called_scope(S) = pcallcontext.CALLED_CLASS -- if S.CURRENT = (pcallcontext)
 def $method_called_scope(S) = eps -- otherwise
@@ -729,19 +729,16 @@ rule PhpStep/method-parent-no-parent: S ~> $throw_scalar(S[.TODO = ptask_tail*],
 dec $scoped_source_name(pstate, phpType19) : preqbytes?
 def $scoped_source_name(S, NName (BYTES text) metadata) = (pclassdesc.NAME)
   -- if $ptlc($base64(text)) = $ptascii("self")
-  -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
+  -- if $method_current_scope(S) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
 def $scoped_source_name(S, NName (BYTES text) metadata) = (pclassdesc_parent.NAME)
   -- if $ptlc($base64(text)) = $ptascii("parent")
-  -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
+  -- if $method_current_scope(S) = (porigin_class)
   -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
 def $scoped_source_name(S, NName (BYTES text) metadata) = ($ptascii(text_kind))
   -- if $ptlc($base64(text)) = $ptascii("parent")
-  -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
+  -- if $method_current_scope(S) = (porigin_class)
   -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (INTERNAL_THROWABLE_PARENT text_kind)
 def $scoped_source_name(S, NName (BYTES text) metadata) = (pclassdesc.NAME)
   -- if $ptlc($base64(text)) = $ptascii("static")
@@ -937,21 +934,22 @@ rule PhpStep/scoped-name-type: S ~> $throw_scalar(S_name, "Error", $ptascii("Met
   -- if ~$method_string(pvalue)
 
 dec $constructor_start(pstate, preqbytes, phpType7*, int) : pstate
-def $constructor_start(S, preqbytes, phpType7*, z) = S_new[.TODO = [$method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), CTOR_RESULT n] ++ S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $constructor_start_ready(pstate, preqbytes, phpType7*, int) : pstate
+def $constructor_start_ready(S, preqbytes, phpType7*, z) = S_new[.TODO = [$method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), CTOR_RESULT n] ++ S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_new = $new_class(S, preqbytes, z)
   -- if S_new.COMPLETION = NORMAL
   -- if S_new.RESULT = KNOWN (POBJECT n)
   -- if S_new.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S_new, porigin_class, $ptascii("__construct"), |S_new.CLASSES|) = (pmethoddesc)
   -- if $method_accessible(S_new, pmethoddesc, $method_current_scope(S_new))
-def $constructor_start(S, preqbytes, phpType7*, z) = $method_denied(S_new, pmethoddesc, $ptascii("__construct"), $method_current_scope(S_new), true, z)[.TODO = eps]
+def $constructor_start_ready(S, preqbytes, phpType7*, z) = $method_denied(S_new, pmethoddesc, $ptascii("__construct"), $method_current_scope(S_new), true, z)[.TODO = eps]
   -- if S_new = $new_class(S, preqbytes, z)
   -- if S_new.COMPLETION = NORMAL
   -- if S_new.RESULT = KNOWN (POBJECT n)
   -- if S_new.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S_new, porigin_class, $ptascii("__construct"), |S_new.CLASSES|) = (pmethoddesc)
   -- if ~$method_accessible(S_new, pmethoddesc, $method_current_scope(S_new))
-def $constructor_start(S, preqbytes, phpType7*, z) = S_new
+def $constructor_start_ready(S, preqbytes, phpType7*, z) = S_new
   -- if S_new = $new_class(S, preqbytes, z)
   -- if S_new.COMPLETION =/= NORMAL
 

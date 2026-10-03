@@ -79,6 +79,8 @@ dec $pil_order_rooted(pstate, pclassdesc, pmethodissue) : pmethodissue
 dec $pil_parent_source_infos(pstate, pclassdesc) : ppmethodinherited*
 dec $pil_seen_throwable(pstate, pilref*) : bool
 dec $pil_order_checked(pstate, pclassdesc, pilref, pilref*, ppmethodinherited*) : pmethodissue
+dec $pil_order_checked_methods(pstate, pclassdesc, pilref, pilref*, ppmethodinherited*) : pmethodissue
+dec $class_constant_interface_issue(pstate, pclassdesc, pilref, pilref*) : pmethodissue
 dec $pil_order_checked_after(pstate, pclassdesc, pilref, pilref*, ppmethodinherited*, pmethodissue) : pmethodissue
 dec $pil_order_items_seen(pstate, pclassdesc, pilref*, pilref*, ppmethodinherited*) : pmethodissue
 dec $pil_scope(pstate, pclassdesc) : pvclass
@@ -200,11 +202,11 @@ def $pil_seen_throwable(S, (PILSOURCE ptbytes porigin) :: pilref_tail*) = true
   -- if $pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|)
 def $pil_seen_throwable(S, (PILSOURCE ptbytes porigin) :: pilref_tail*) = $pil_seen_throwable(S, pilref_tail*)
   -- if ~$pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|)
-def $pil_order_checked(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, ppmethodinherited_all*) = $pil_order_checked_after(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, ppmethodinherited_all*, $pil_internal_later_infos(S, pclassdesc, $pil_proto_source(S, porigin, |S.CLASSES|), $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_parent_source_infos(S, pclassdesc) ++ $pil_proto_refs(S, pilref_seen*, |S.CLASSES|)))
+def $pil_order_checked_methods(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, ppmethodinherited_all*) = $pil_order_checked_after(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, ppmethodinherited_all*, $pil_internal_later_infos(S, pclassdesc, $pil_proto_source(S, porigin, |S.CLASSES|), $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_parent_source_infos(S, pclassdesc) ++ $pil_proto_refs(S, pilref_seen*, |S.CLASSES|)))
   -- if $pil_seen_throwable(S, pilref_seen*)
-def $pil_order_checked(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited_all*) = $pil_order_checked_after(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited_all*, $pil_internal_source_infos(S, $pil_info_missing(eps, $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_parent_source_infos(S, pclassdesc) ++ $pil_proto_refs(S, pilref_seen*, |S.CLASSES|))))
+def $pil_order_checked_methods(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited_all*) = $pil_order_checked_after(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited_all*, $pil_internal_source_infos(S, $pil_info_missing(eps, $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_parent_source_infos(S, pclassdesc) ++ $pil_proto_refs(S, pilref_seen*, |S.CLASSES|))))
   -- if $ptlc(ptbytes) = $ptascii("throwable")
-def $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited_all*) = $pil_order_one(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited_all*) -- otherwise
+def $pil_order_checked_methods(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited_all*) = $pil_order_one(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited_all*) -- otherwise
 def $pil_order_checked_after(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*, METHOD_OK) = $pil_order_one(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*)
 def $pil_order_checked_after(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*, pmethodissue) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
@@ -251,6 +253,8 @@ def $pil_methods_valid(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)
 def $pil_methods_valid(S, (preqbytes, porigin)*) = false -- otherwise
 
 def $pil_method_fatal(S, PORIGIN n pcpath, ptbytes_message, z) = S[.COMPLETION = FATAL ptbytes_message z][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL ptbytes_message z, n)][.TRACE = $eval_exception_trace(S)]
+def $pil_method_publish(S, S_candidate, pclassdesc) = $class_constant_link_error(S, pclassdesc.ORIGIN, ptbytes_message, z)
+  -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_COMPILEISSUE ptbytes_message z
 def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_method_fatal(S, porigin_selected, ptbytes_message, z)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_FILEISSUE ptbytes_message z porigin_selected
 def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, z)
@@ -264,3 +268,10 @@ def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_fatal(S, pclassdesc, 
 def $pil_method_publish(S, S_candidate, pclassdesc) = S_candidate
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_OK
   -- if pclassdesc.KIND = "interface" \/ $pil_abstract_message(S_candidate, pclassdesc) = eps
+
+;; Each interface's constants precede its methods; later interfaces stay later.
+def $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) = pmethodissue
+  -- if pmethodissue = $class_constant_interface_issue(S, pclassdesc, pilref, pilref_seen*)
+  -- if pmethodissue =/= METHOD_OK
+def $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) = $pil_order_checked_methods(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*)
+  -- if $class_constant_interface_issue(S, pclassdesc, pilref, pilref_seen*) = METHOD_OK

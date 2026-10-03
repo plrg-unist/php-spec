@@ -67,6 +67,7 @@ def $ppmethod_body(phpType23) = false -- otherwise
 def $ppmethod_members(eps, b) = b
 def $ppmethod_members((NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata) :: statement_tail*, b) = $ppmethod_members(statement_tail*, b)
 def $ppmethod_members((NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) :: statement_tail*, b) = $ppmethod_members(statement_tail*, true)
+def $ppmethod_members((NStmtClassConst phpType14 phpType24 phpType18 phpType45 metadata) :: statement_tail*, b) = $ppmethod_members(statement_tail*, true)
 def $ppmethod_members(statement*, b) = false -- otherwise
 
 def $ppmember_groups(P, pcpath, n, statement*, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS P ppropertydesc* pmethoddesc*

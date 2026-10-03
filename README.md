@@ -122,7 +122,13 @@ values, reference history and compiler/runtime rejection phases. Its
 sources; Traversable objects remain unfinished. Array call arguments are covered by the later call-unpack checkpoint below.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
-class-constant lookup remain unfinished.
+broader class-constant contexts remain unfinished.
+[Class constants](docs/semantics/CLASS-CONSTANTS.md) now preserve owner-scoped lazy
+values, strict types, array caches, inheritance checks and global/default
+diagnostics in the private183/184 increment. Class linking and completed table
+updates have distinct histories. Included units fold only scalar/constant-array
+values available at their compilation entry; later cache fills cannot rewrite an
+earlier image. Closure/FCC initializers remain Unsupported and the family partial.
 [Foreach syntax and prechecks](docs/semantics/FOREACH-COMPILER.md) preserve reference
 and list keys through checked printing and report exact compiler errors;
 [independent review](coverage/semantics/foreach-publication-review.json) verifies
@@ -277,7 +283,7 @@ and `implements` declarations, enforce method prototypes and abstract
 obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed
 [finite internal-method increment](coverage/semantics/interface-internal-renewed-review.json)
 adds inherited contracts and source `__wakeup` linking checks. Other internal
-interface tables, constants and hooked properties remain open.
+interface tables, broader constant linking and hooked properties remain open.
 [Public object properties](docs/semantics/SOURCE-PROPERTIES.md) now have typed
 and uninitialized slots, source-backed defaults, inherited public overrides,
 dynamic names, direct access, live foreach, casts and comparison. The

@@ -1,0 +1,312 @@
+;; Class constants are immutable source descriptors. Folded values remain in
+;; the initializer's unit pool; deferred values are initialized by184.
+dec $class_constant_history_valid(pstate) : bool
+dec $class_constant_caches_valid(pstate, pdefaultcache*) : bool
+dec $class_constant_lookup(pstate, porigin, ptbytes, nat) : pclassconstantdesc?
+
+;; A unit sees only publications and cache fills preceding its own PDENTER.
+;; The snapshot is a compiler input; its descriptors never join the new image.
+dec $class_constant_compile_enter(pdeclaration, nat) : bool
+def $class_constant_compile_enter(PDENTER n porigin? z, n) = true
+def $class_constant_compile_enter(pdeclaration, n) = false -- otherwise
+dec $class_constant_compile_prefix(pdeclaration*, nat, nat) : nat?
+def $class_constant_compile_prefix((PDENTER n porigin? z) :: pdeclaration*, n, n_prefix) = (n_prefix)
+def $class_constant_compile_prefix(pdeclaration :: pdeclaration_tail*, n, n_prefix) = $class_constant_compile_prefix(pdeclaration_tail*, n, $(n_prefix + 1))
+  -- if ~$class_constant_compile_enter(pdeclaration, n)
+def $class_constant_compile_prefix(eps, n, n_prefix) = eps
+dec $class_constant_event_ordinal(pclassconstantevent) : nat
+def $class_constant_event_ordinal(CCLINK porigin n) = n
+def $class_constant_event_ordinal(CCCACHE porigin porigin_trigger n) = n
+def $class_constant_event_ordinal(CCUPDATE porigin porigin_root porigin_trigger n) = n
+dec $class_constant_compile_history(pclassconstantevent*, nat) : pclassconstantevent*
+def $class_constant_compile_history(eps, n) = eps
+def $class_constant_compile_history(pclassconstantevent :: pclassconstantevent_tail*, n) = pclassconstantevent :: $class_constant_compile_history(pclassconstantevent_tail*, n)
+  -- if $($class_constant_event_ordinal(pclassconstantevent) <= n)
+def $class_constant_compile_history(pclassconstantevent :: pclassconstantevent_tail*, n) = eps
+  -- if $($class_constant_event_ordinal(pclassconstantevent) > n)
+dec $class_constant_compile_events(pstate, pclassconstantevent*, pstate) : pstate?
+def $class_constant_compile_events(S, eps, S_entry) = (S_entry)
+def $class_constant_compile_events(S, (CCLINK porigin n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSES = S_entry.CLASSES ++ [pclassdesc]][.CLASSNAMES = S_entry.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), porigin)]])
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $class_constant_compile_events(S, (CCCACHE porigin porigin_trigger n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSCONSTANTCACHE = S_entry.CLASSCONSTANTCACHE ++ [pdefaultcache]])
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+def $class_constant_compile_events(S, (CCUPDATE porigin porigin_root porigin_trigger n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $class_constant_compile_events(S, pclassconstantevent*, S_entry) = eps -- otherwise
+def $class_constant_compile_entry(S, n) = $class_constant_compile_events(S, pclassconstantevent*, S[.CLASSES = eps][.CLASSNAMES = eps][.CLASSCONSTANTCACHE = eps][.CLASSCONSTANTHISTORY = pclassconstantevent*][.DECLARATIONS = S.DECLARATIONS[0:n_prefix]])
+  -- if $(n > 0)
+  -- if $class_constant_compile_prefix(S.DECLARATIONS, n, 0) = (n_prefix)
+  -- if $class_constant_history_valid(S) /\ $class_constant_caches_valid(S, S.CLASSCONSTANTCACHE)
+  -- if pclassconstantevent* = $class_constant_compile_history(S.CLASSCONSTANTHISTORY, n_prefix)
+def $class_constant_compile_entry(S, n) = eps -- otherwise
+
+dec $class_constant_compile_value(pstate, pclassconstantdesc) : (pvalue, pvalueclass)?
+def $class_constant_compile_value(S, pclassconstantdesc) = ((pvalue, pvalueclass))
+  -- if pclassconstantdesc.FOLDED
+  -- if $pool_value(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalue)
+  -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalueclass)
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+def $class_constant_compile_value(S, pclassconstantdesc) = ((pdefaultcache.VALUE, pdefaultcache.CLASS))
+  -- if ~pclassconstantdesc.FOLDED
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+  -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
+def $class_constant_compile_value(S, pclassconstantdesc) = eps -- otherwise
+
+;; Import constant arrays into this unit's allocation space. Objects and
+;; reference-bearing arrays are never compile-time substitutions.
+dec $pfclass_import(pstate, pstate, pvalue, nat) : (pstate, pvalue)?
+dec $pfclass_import_entries(pstate, pstate, pentry*, nat) : (pstate, pentry*)?
+def $pfclass_import(S_external, S, pvalue, n) = ((S, pvalue))
+  -- if $constant_nonstring_scalar(pvalue)
+def $pfclass_import(S_external, S, PSTRING ptbytes, n) = ((S, PSTRING ptbytes))
+def $pfclass_import(S_external, S, PARRAY n_array, n) = ((S_array, PARRAY n_new))
+  -- if $(n > 0 /\ n_array < |S_external.ARRAYS|)
+  -- if HARRAY n_array <- S_external.ALLOCATIONS
+  -- if $pfclass_import_entries(S_external, S, S_external.ARRAYS[n_array].ITEMS, $nabs($(n - 1))) = ((S_entries, pentry*))
+  -- if S_array = $allocate_array(S_entries, S_external.ARRAYS[n_array][.ITEMS = pentry*])
+  -- if S_array.RESULT = KNOWN (PARRAY n_new)
+def $pfclass_import(S_external, S, pvalue, n) = eps -- otherwise
+def $pfclass_import_entries(S_external, S, eps, n) = ((S, eps))
+def $pfclass_import_entries(S_external, S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*, n) = ((S_tail, (ENTRY pkey (DIRECT pvalue_new)) :: pentry_new*))
+  -- if $pfclass_import(S_external, S, pvalue, n) = ((S_value, pvalue_new))
+  -- if $pfclass_import_entries(S_external, S_value, pentry_tail*, n) = ((S_tail, pentry_new*))
+def $pfclass_import_entries(S_external, S, pentry*, n) = eps -- otherwise
+
+def $ppclass_constants(eps, porigin) = eps
+def $ppclass_constants(pclassconstantdesc :: pclassconstantdesc_tail*, porigin) = pclassconstantdesc :: $ppclass_constants(pclassconstantdesc_tail*, porigin)
+  -- if pclassconstantdesc.OWNER = porigin
+def $ppclass_constants(pclassconstantdesc :: pclassconstantdesc_tail*, porigin) = $ppclass_constants(pclassconstantdesc_tail*, porigin)
+  -- if pclassconstantdesc.OWNER =/= porigin
+
+dec $class_constant_desc(pclassconstantdesc*, ptbytes) : pclassconstantdesc?
+def $class_constant_desc(eps, ptbytes) = eps
+def $class_constant_desc(pclassconstantdesc :: pclassconstantdesc_tail*, ptbytes) = (pclassconstantdesc)
+  -- if pclassconstantdesc.NAME = ptbytes
+def $class_constant_desc(pclassconstantdesc :: pclassconstantdesc_tail*, ptbytes) = $class_constant_desc(pclassconstantdesc_tail*, ptbytes)
+  -- if pclassconstantdesc.NAME =/= ptbytes
+
+def $ppclass_fold(P) = P.FOLD[.CLASSES = P.CLASSES][.CLASSCONSTANTS = P.CLASSCONSTANTS][.CLASSCONTEXT = P.CLASSCONTEXT]
+dec $ppclass_constant_group(ppstate, pcpath, porigin, int, phpType18, phpType46*, pchheader, int) : ppstate
+dec $ppclass_constant_items(ppstate, pcpath, porigin, nat, int, phpType18, phpType46*, pchheader, int) : ppstate
+dec $ppclass_constant_typed(ppstate, pcpath, porigin, int, ptbytes, expression, ptresult, pchheader, int) : ppstate
+dec $ppclass_constant_flags(ppstate, pcpath, porigin, int, ptbytes, expression, ptbranch*, pchheader, int) : ppstate
+dec $ppclass_constant_value(ppstate, pcpath, porigin, int, ptbytes, ptbranch*, pchheader, int) : ppstate
+dec $ppclass_constant_finish(ppstate, pcpath, porigin, int, ptbytes, ptbranch*, pchheader, int) : ppstate
+dec $ppclass_constant_context(ppstate, pchheader, ptbytes, int) : ptcontext
+dec $ppclass_constant_expression(ppstate, pcpath, expression, pchheader, int) : ppstate
+
+def $ppmember_groups(P, pcpath, n, (NStmtClassConst (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType46*) metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppproperty_group_line_valid(P, metadata)
+  -- if pcpath_group = $ppmember_path(pcpath, pchheader, n)
+  -- if P_next = $ppclass_constant_group($pplocate(P, pcpath_group, $source_line(metadata)), pcpath_group, PORIGIN P.FOLD.SOURCE.ID pcpath, flags, phpType18, phpType46*, pchheader, $source_line(metadata))
+
+def $ppclass_constant_group(P, pcpath, porigin, flags, phpType18, phpType46*, pchheader, z) = $ppclass_constant_items(P, pcpath ++ [PCFIELD 3], porigin, 0, flags, phpType18, phpType46*, pchheader, z)
+def $ppclass_constant_items(P, pcpath, porigin, n, flags, phpType18, phpType46*, pchheader, z) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppclass_constant_items(P, pcpath, porigin, n, flags, phpType18, eps, pchheader, z) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppclass_constant_items(P, pcpath, porigin, n, flags, phpType18, (NConst (NIdentifier (BYTES text) metadata_name) expression metadata) :: phpType46*, pchheader, z) = $ppclass_constant_items(P_next, pcpath, porigin, $(n + 1), flags, phpType18, phpType46*, pchheader, z)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pcpath_item = pcpath ++ [PCINDEX n]
+  -- if ptbytes = $base64(text)
+  -- if P_next = $ppclass_constant_typed(P, pcpath_item, porigin, flags, ptbytes, expression, $ptype_normalize(phpType18, $ppclass_constant_context(P, pchheader, ptbytes, z)), pchheader, z)
+def $ppclass_constant_items(P, pcpath, porigin, n, flags, phpType18, phpType46*, pchheader, z) = $ppunsupported(P, "invalid class constant declaration") -- otherwise
+
+def $ppclass_constant_context(P, pchheader, ptbytes, z) = { NAMESPACE P.ENV.NAMESPACE, IMPORTS P.ENV.CLASSES, SCOPE PTKNOWN pchheader.NAME pchheader.PARENT, POSITION PTCONSTANT, OWNER pchheader.NAME, MEMBER ptbytes, FILE P.LOCATION.FILE, LINE $nabs(z) }
+def $ppclass_constant_typed(P, pcpath, porigin, flags, ptbytes, expression, PTUNSUPPORTED text, pchheader, z) = $ppunsupported(P, text)
+def $ppclass_constant_typed(P, pcpath, porigin, flags, ptbytes, expression, PTERROR ptdiagnostic*, pchheader, z) = $ppproperty_diagnostics(P, ptdiagnostic*)
+def $ppclass_constant_typed(P, pcpath, porigin, flags, ptbytes, expression, PTOK ptbranch* ptdiagnostic*, pchheader, z) = $ppclass_constant_flags($ppproperty_diagnostics(P, ptdiagnostic*), pcpath, porigin, flags, ptbytes, expression, ptbranch*, pchheader, z)
+
+def $ppclass_constant_flags(P, pcpath, porigin, flags, ptbytes, expression, ptbranch*, pchheader, z) = $ppconstant_error(P, $ptascii("Private constant ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii(" cannot be final as it is not visible to other classes"), $nabs(z))
+  -- if $ppproperty_flag(flags, 4) /\ $ppproperty_flag(flags, 32)
+def $ppclass_constant_flags(P, pcpath, porigin, flags, ptbytes, expression, ptbranch*, pchheader, z) = $ppclass_constant_value($ppclass_constant_expression(P, pcpath ++ [PCFIELD 1], expression, pchheader, z), pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z)
+  -- if flags <- [0,1,2,4,32,33,34]
+def $ppclass_constant_flags(P, pcpath, porigin, flags, ptbytes, expression, ptbranch*, pchheader, z) = $ppunsupported(P, "class constant modifier metadata") -- otherwise
+
+def $ppclass_constant_expression(P, pcpath, expression, pchheader, z) = P_next[.CLASSCONTEXT = P.CLASSCONTEXT][.LOCATION = P.LOCATION][.FOLD = P_next.FOLD[.CLASSCONTEXT = P.FOLD.CLASSCONTEXT][.CONSTANT = P.FOLD.CONSTANT]]
+  -- if ptcontext = $ppclass_constant_context(P, pchheader, eps, z)
+  -- if P_next = $ppconstant_expr(P[.CLASSCONTEXT = (ptcontext)][.FOLD = $ppclass_fold(P)[.CLASSCONTEXT = (ptcontext)]], pcpath, expression)
+
+dec $class_constant_value_type(ptbranch*, pvalue) : bool
+dec $class_constant_typed_value(ptbranch*, pvalue) : pvalue
+def $class_constant_value_type(ptbranch*, pvalue) = $ppproperty_value_valid(ptbranch*, pvalue)
+def $class_constant_typed_value(ptbranch*, PINT i) = PFLOAT $float_of_int(i)
+  -- if ptbranch* =/= eps /\ ~$typed_exact(ptbranch*, PINT i) /\ "float" <- $ptmasks(ptbranch*)
+def $class_constant_typed_value(ptbranch*, pvalue) = pvalue -- otherwise
+
+dec $class_constant_replace_fact(pffact*, pcpath, pvalue) : pffact*
+def $class_constant_replace_fact(eps, pcpath, pvalue) = eps
+def $class_constant_replace_fact((PFFACT pcpath pvalue_old z) :: pffact*, pcpath, pvalue) = (PFFACT pcpath pvalue z) :: $class_constant_replace_fact(pffact*, pcpath, pvalue)
+def $class_constant_replace_fact((PFFACT pcpath_other pvalue_old z) :: pffact*, pcpath, pvalue) = (PFFACT pcpath_other pvalue_old z) :: $class_constant_replace_fact(pffact*, pcpath, pvalue)
+  -- if pcpath_other =/= pcpath
+
+dec $class_constant_replace_operand(ppexprdone*, pcpath, pvalue) : ppexprdone*
+def $class_constant_replace_operand(eps, pcpath, pvalue) = eps
+def $class_constant_replace_operand((PPCEXPR pcpath n pvalue_old?) :: ppexprdone_tail*, pcpath, pvalue) = (PPCEXPR pcpath n (pvalue)) :: $class_constant_replace_operand(ppexprdone_tail*, pcpath, pvalue)
+def $class_constant_replace_operand((PPCEXPR pcpath_other n pvalue_old?) :: ppexprdone_tail*, pcpath, pvalue) = (PPCEXPR pcpath_other n pvalue_old?) :: $class_constant_replace_operand(ppexprdone_tail*, pcpath, pvalue)
+  -- if pcpath_other =/= pcpath
+def $class_constant_replace_operand((PPCEFFECT pcpath_effect) :: ppexprdone_tail*, pcpath, pvalue) = (PPCEFFECT pcpath_effect) :: $class_constant_replace_operand(ppexprdone_tail*, pcpath, pvalue)
+
+def $ppclass_constant_value(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppclass_constant_value(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z) = $ppconstant_error(P, $ptascii("Cannot use ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" as value for class constant ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii(" of type ") ++ $pttypename(ptbranch*), $nabs(z))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (pvalue)
+  -- if ~$class_constant_value_type(ptbranch*, pvalue)
+def $ppclass_constant_value(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z) = $ppclass_constant_finish(P[.FOLD = P.FOLD[.VALUE = (pvalue_new)][.FACTS = $class_constant_replace_fact(P.FOLD.FACTS, pcpath ++ [PCFIELD 1], pvalue_new)]][.EXPRESSIONS = $class_constant_replace_operand(P.EXPRESSIONS, pcpath ++ [PCFIELD 1], pvalue_new)], pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (pvalue)
+  -- if $class_constant_value_type(ptbranch*, pvalue)
+  -- if pvalue_new = $class_constant_typed_value(ptbranch*, pvalue)
+def $ppclass_constant_value(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z) = $ppclass_constant_finish(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z)
+  -- if P.COMPLETION = PPCNORMAL /\ P.FOLD.VALUE = eps
+
+def $ppclass_constant_finish(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z) = $ppconstant_error(P, $ptascii("Access type for interface constant ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii(" must be public"), $nabs(z))
+  -- if pchheader.KIND = "interface" /\ $ppmethod_visibility(flags) =/= PROPERTY_PUBLIC
+def $ppclass_constant_finish(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z) = $ppconstant_error(P, $ptascii("A class constant must not be called 'class'; it is reserved for class name fetching"), $nabs(z))
+  -- if (pchheader.KIND =/= "interface" \/ $ppmethod_visibility(flags) = PROPERTY_PUBLIC) /\ $ptlc(ptbytes) = $ptascii("class")
+def $ppclass_constant_finish(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z) = $ppconstant_error(P, $ptascii("Cannot redefine class constant ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes, $nabs(z))
+  -- if (pchheader.KIND =/= "interface" \/ $ppmethod_visibility(flags) = PROPERTY_PUBLIC) /\ $ptlc(ptbytes) =/= $ptascii("class")
+  -- if $class_constant_desc($ppclass_constants(P.CLASSCONSTANTS, porigin), ptbytes) =/= eps
+def $ppclass_constant_finish(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z) = P[.CLASSCONSTANTS = P.CLASSCONSTANTS ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, OWNER porigin, OWNERNAME pchheader.NAME, NAME ptbytes, VISIBILITY $ppmethod_visibility(flags), FINAL $ppproperty_flag(flags,32), TYPE ptbranch*, INITIALIZER PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 1]), FOLDED (P.FOLD.VALUE =/= eps), LINE $nabs(z) }]]
+  -- if (pchheader.KIND =/= "interface" \/ $ppmethod_visibility(flags) = PROPERTY_PUBLIC) /\ $ptlc(ptbytes) =/= $ptascii("class")
+  -- if $class_constant_desc($ppclass_constants(P.CLASSCONSTANTS, porigin), ptbytes) = eps
+
+;; Only the active source class and classes already available to the compiler
+;; permit substitution. Descriptors from an unbound declaration are not values.
+dec $class_constant_enclosing(pcunit, pcpath) : porigin?
+dec $class_constant_class_node(pcnode) : bool
+def $class_constant_class_node(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = true
+def $class_constant_class_node(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = true
+def $class_constant_class_node(pcnode) = false -- otherwise
+def $class_constant_enclosing(pcunit, pcpath) = (PORIGIN pcunit.ID pcpath)
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (pcnode)
+  -- if $class_constant_class_node(pcnode)
+def $class_constant_enclosing(pcunit, pcpath) = $class_constant_enclosing(pcunit, pcpath[0:$nabs($(|pcpath| - 1))])
+  -- if pcpath =/= eps
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (pcnode)
+  -- if ~$class_constant_class_node(pcnode)
+def $class_constant_enclosing(pcunit, pcpath) = eps -- otherwise
+
+dec $pfclass_constant_name(pfstate, phpType19, pvalue?) : ptbytes?
+def $pfclass_constant_name(F, NName (BYTES text) metadata, pvalue?) = (ptcontext.OWNER)
+  -- if $ptlc($base64(text)) = $ptascii("self") /\ ~F.CLOSURE
+  -- if F.CLASSCONTEXT = (ptcontext)
+def $pfclass_constant_name(F, name, pvalue?) = (pnreference.RESOLVED)
+  -- if $ppscoped_named(name) /\ ~$ppscoped_keyword(name)
+  -- if $pnclassresolve(F.ENV, name) = PNRESOLVED pnreference
+def $pfclass_constant_name(F, phpType19, (PSTRING ptbytes)) = (ptbytes)
+  -- if ~$ppscoped_named(phpType19)
+def $pfclass_constant_name(F, phpType19, pvalue?) = eps -- otherwise
+
+dec $pfclass_constant_member(phpType20, pvalue?) : ptbytes?
+def $pfclass_constant_member(NIdentifier (BYTES text) metadata, pvalue?) = ($base64(text))
+def $pfclass_constant_member(phpType20, (PSTRING ptbytes)) = (ptbytes)
+def $pfclass_constant_member(phpType20, pvalue?) = eps -- otherwise
+
+dec $pfclass_constant_current(pfstate, ptbytes) : bool
+def $pfclass_constant_current(F, ptbytes) = ($ptlc(ptcontext.OWNER) = $ptlc(ptbytes))
+  -- if F.CLASSCONTEXT = (ptcontext)
+def $pfclass_constant_current(F, ptbytes) = false -- otherwise
+
+dec $pfclass_constant_named(pfstate, pcpath, ptbytes, ptbytes, nat) : pclassconstantdesc?
+dec $pfclass_constant_parent(pfstate, pclassdesc, ptbytes, nat) : pclassconstantdesc?
+dec $pfclass_constant_budget(pfstate) : nat
+def $pfclass_constant_budget(F) = $(|F.CLASSES| + |S_external.CLASSES|)
+  -- if F.EXTERNAL = (S_external)
+def $pfclass_constant_budget(F) = |F.CLASSES| -- otherwise
+dec $pfclass_constant_prior(pfstate, ptbytes) : pclassdesc?
+def $pfclass_constant_prior(F, ptbytes) = (pclassdesc)
+  -- if $ppclass_prior_early(F.CLASSES, ptbytes) = (pclassdesc)
+def $pfclass_constant_prior(F, ptbytes) = $class_at(S_external.CLASSES, porigin)
+  -- if $ppclass_prior_early(F.CLASSES, ptbytes) = eps
+  -- if F.EXTERNAL = (S_external)
+  -- if $class_named(S_external.CLASSNAMES, $ptlc(ptbytes)) = (porigin)
+def $pfclass_constant_prior(F, ptbytes) = eps -- otherwise
+def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = (pclassconstantdesc)
+  -- if F.CLASSCONTEXT = (ptcontext)
+  -- if $ptlc(ptcontext.OWNER) = $ptlc(ptbytes_class)
+  -- if $class_constant_enclosing(F.SOURCE, pcpath) = (porigin)
+  -- if $class_constant_desc($ppclass_constants(F.CLASSCONSTANTS, porigin), ptbytes) = (pclassconstantdesc)
+def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = (pclassconstantdesc)
+  -- if ~$pfclass_constant_current(F, ptbytes_class)
+  -- if $ppclass_prior_early(F.CLASSES, ptbytes_class) = (pclassdesc)
+  -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) = (pclassconstantdesc)
+def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = $pfclass_constant_parent(F, pclassdesc, ptbytes, n)
+  -- if ~$pfclass_constant_current(F, ptbytes_class)
+  -- if $ppclass_prior_early(F.CLASSES, ptbytes_class) = (pclassdesc)
+  -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) = eps
+def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = $class_constant_lookup(S_external, porigin, ptbytes, n)
+  -- if ~$pfclass_constant_current(F, ptbytes_class)
+  -- if $ppclass_prior_early(F.CLASSES, ptbytes_class) = eps
+  -- if F.EXTERNAL = (S_external)
+  -- if $class_named(S_external.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin)
+def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = eps -- otherwise
+def $pfclass_constant_parent(F, pclassdesc, ptbytes, n) = (pclassconstantdesc)
+  -- if $(n > 0)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $pfclass_constant_named(F[.CLASSCONTEXT = eps], eps, ptbytes_parent, ptbytes, $nabs($(n - 1))) = (pclassconstantdesc)
+  -- if pclassconstantdesc.VISIBILITY =/= PROPERTY_PRIVATE
+def $pfclass_constant_parent(F, pclassdesc, ptbytes, n) = eps -- otherwise
+
+dec $pfclass_constant_visible(pfstate, pclassconstantdesc) : bool
+def $pfclass_constant_visible(F, pclassconstantdesc) = true
+  -- if pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC
+def $pfclass_constant_visible(F, pclassconstantdesc) = true
+  -- if pclassconstantdesc.VISIBILITY =/= PROPERTY_PUBLIC
+  -- if F.CLASSCONTEXT = (ptcontext)
+  -- if $ptlc(ptcontext.OWNER) = $ptlc(pclassconstantdesc.OWNERNAME)
+dec $pfclass_constant_owner_below(pfstate, ptbytes, ptbytes, nat) : bool
+def $pfclass_constant_owner_below(F, ptbytes_owner, ptbytes_scope, n) = true
+  -- if $ptlc(ptbytes_owner) = $ptlc(ptbytes_scope)
+def $pfclass_constant_owner_below(F, ptbytes_owner, ptbytes_scope, n) = $pfclass_constant_owner_below(F, ptbytes_parent, ptbytes_scope, $nabs($(n - 1)))
+  -- if $(n > 0) /\ $ptlc(ptbytes_owner) =/= $ptlc(ptbytes_scope)
+  -- if $pfclass_constant_prior(F, ptbytes_owner) = (pclassdesc)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+def $pfclass_constant_owner_below(F, ptbytes_owner, ptbytes_scope, n) = false -- otherwise
+def $pfclass_constant_visible(F, pclassconstantdesc) = $pfclass_constant_owner_below(F, pclassconstantdesc.OWNERNAME, ptcontext.OWNER, $pfclass_constant_budget(F))
+  -- if pclassconstantdesc.VISIBILITY = PROPERTY_PROTECTED
+  -- if F.CLASSCONTEXT = (ptcontext)
+  -- if $ptlc(ptcontext.OWNER) =/= $ptlc(pclassconstantdesc.OWNERNAME)
+def $pfclass_constant_visible(F, pclassconstantdesc) = false -- otherwise
+
+def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = F
+  -- if F.MEMORY.COMPLETION =/= NORMAL
+dec $pfclass_constant_value(pfstate, pcpath, pvalue, pvalueclass?, int) : pfstate
+def $pfclass_constant_value(F, pcpath, pvalue, pvalueclass?, z) = $pfclass_record($pfremember(F, pcpath, (pvalue), z), pcpath, pvalueclass?)
+  -- if F.CONSTANT
+def $pfclass_constant_value(F, pcpath, pvalue, pvalueclass?, z) = $pfremember(F, pcpath, (pvalue), z)
+  -- if ~F.CONSTANT
+
+def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $pfclass_constant_value(F, pcpath, pvalue, $pfclass_at(F.CLASSFACTS, pcpath_initializer), z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if $pfclass_constant_name(F, phpType19, pvalue_class?) = (ptbytes_class)
+  -- if $pfclass_constant_member(phpType20, pvalue_member?) = (ptbytes)
+  -- if $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, $pfclass_constant_budget(F)) = (pclassconstantdesc)
+  -- if pclassconstantdesc.FOLDED /\ $pfclass_constant_visible(F, pclassconstantdesc)
+  -- if pclassconstantdesc.INITIALIZER = PORIGIN F.SOURCE.ID pcpath_initializer
+  -- if $pffact(F.FACTS, pcpath_initializer) = (pvalue)
+def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $pfclass_constant_value(F[.MEMORY = S_imported], pcpath, pvalue_imported, (pvalueclass), z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.EXTERNAL = (S_external)
+  -- if $pfclass_constant_name(F, phpType19, pvalue_class?) = (ptbytes_class)
+  -- if $pfclass_constant_member(phpType20, pvalue_member?) = (ptbytes)
+  -- if $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, $pfclass_constant_budget(F)) = (pclassconstantdesc)
+  -- if pclassconstantdesc.INITIALIZER = PORIGIN n_initializer pcpath_initializer
+  -- if n_initializer =/= F.SOURCE.ID /\ $pfclass_constant_visible(F, pclassconstantdesc)
+  -- if $class_constant_compile_value(S_external, pclassconstantdesc) = ((pvalue, pvalueclass))
+  -- if $pfclass_import(S_external, F.MEMORY, pvalue, $(|S_external.ARRAYS| + 1)) = ((S_imported, pvalue_imported))
+def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = F[.VALUE = eps] -- otherwise
+
+dec $ppclass_constant_fetch(ppstate, pcpath, phpType19, phpType20, metadata) : ppstate
+dec $ppclass_constant_member(ppstate, pcpath, phpType20) : ppstate
+def $ppdispatch(P, pcpath, NExprClassConstFetch phpType19 phpType20 metadata, PPR) = $ppclass_constant_fetch(P, pcpath, phpType19, phpType20, metadata)
+  -- if ~$pfclassname_member(phpType20)
+def $ppclass_constant_fetch(P, pcpath, phpType19, phpType20, metadata) = P_fold
+  -- if P_fold = $ppfoldresult(P, $pfprepare($ppclass_fold(P), pcpath, NExprClassConstFetch phpType19 phpType20 metadata, P.ENV, P.LOCATION.LINE))
+  -- if P_fold.COMPLETION =/= PPCNORMAL \/ P_fold.FOLD.VALUE =/= eps
+def $ppclass_constant_fetch(P, pcpath, phpType19, phpType20, metadata) = $ppclass_constant_member($ppscoped_class(P_fold, pcpath, phpType19), pcpath, phpType20)
+  -- if P_fold = $ppfoldresult(P, $pfprepare($ppclass_fold(P), pcpath, NExprClassConstFetch phpType19 phpType20 metadata, P.ENV, P.LOCATION.LINE))
+  -- if P_fold.COMPLETION = PPCNORMAL /\ P_fold.FOLD.VALUE = eps
+def $ppclass_constant_member(P, pcpath, NIdentifier phpType33 metadata) = $pplocate($ppclearvalue(P), pcpath, $source_line(metadata))
+def $ppclass_constant_member(P, pcpath, expression) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 1], expression, PPR))

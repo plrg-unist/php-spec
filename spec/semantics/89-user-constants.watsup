@@ -1,3 +1,4 @@
+dec $class_constant_context_valid(pstate, pconstantcontext) : bool
 dec $default_code_below(pcoccurrence*, pcpath) : bool
 dec $default_below(pcoccurrence*, pcpath) : bool
 dec $default_context_valid(pstate, pconstantcontext) : bool
@@ -75,13 +76,15 @@ rule PhpStep/constant-bind-abrupt: S ~> S_value
 
 def $constant_runtime_line(S, z) = pconstantcontext.LINE
   -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if ~$class_constant_ast_active(S)
 def $constant_runtime_line(S, z) = z
-  -- if S.CONSTCONTEXT = eps
+  -- if S.CONSTCONTEXT = eps \/ $class_constant_ast_active(S)
 
 ;; Compiler designations and active constant roots are checked without replaying
 ;; their values or reconstructing declaration history.
 dec $constant_node_below(pcnode, pcpath, pcpath) : bool
 def $constant_node_below(NConst phpType11 expression metadata, pcpath_decl, pcpath) = $effect_below(pcpath_decl, pcpath)
+def $constant_node_below(NStmtClassConst phpType14 phpType24 phpType18 phpType45 metadata, pcpath_decl, pcpath) = $effect_below(pcpath_decl ++ [PCFIELD 3], pcpath)
 def $constant_node_below(pcnode, pcpath_decl, pcpath) = false -- otherwise
 dec $constant_below(pcoccurrence*, pcpath) : bool
 def $constant_below(eps, pcpath) = false
@@ -136,13 +139,18 @@ def $constant_context_valid(S) = ($constant_bindings(S, S.TODO) = eps)
   -- if S.CONSTCONTEXT = eps
 def $constant_context_valid(S) = true
   -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.CLASSCONSTANTINIT = eps
   -- if $constant_declaration(S, pconstantcontext.ORIGIN) = ((preqbytes, pconstantcontext.LINE))
   -- if $constant_bindings(S, S.TODO) = [pconstantcontext.ORIGIN]
   -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
   -- if $constant_branches_valid(S)
+def $constant_context_valid(S) = $class_constant_context_valid(S, pconstantcontext)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.CLASSCONSTANTINIT =/= eps
 def $constant_context_valid(S) = $default_context_valid(S, pconstantcontext)
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if $constant_declaration(S, pconstantcontext.ORIGIN) = eps
+  -- if S.CLASSCONSTANTINIT = eps
 def $constant_context_valid(S) = false -- otherwise
 
 dec $static_below(pcoccurrence*, pcpath) : bool

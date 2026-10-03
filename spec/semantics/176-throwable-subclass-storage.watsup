@@ -183,7 +183,7 @@ def $ctor_start(S, n, pctorcallmode, z) = S[.TODO = (CTOR_ARGS {SITE porigin_sit
   -- if $throwable_member(S, n)
   -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
 
-def $constructor_start(S, preqbytes, phpType7*, z) = $ctor_start(S_new, n, CTOR_NEW, z)
+def $constructor_start_ready(S, preqbytes, phpType7*, z) = $ctor_start(S_new, n, CTOR_NEW, z)
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
   -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
   -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = eps

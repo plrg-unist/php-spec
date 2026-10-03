@@ -43,7 +43,7 @@ def $ppdefaults_ready(P_outer, P, pcpath, ptbytes, statement*, metadata, psconti
   -- if n_index = |pscontinuation.SIGNATURE.PARAMETERS|
   -- if P.COMPLETION = PPCNORMAL
 
-def $ppdefault_prepare(P, pcpath, expression) = $ppconstant_emit($ppconstant_validate($ppfoldresult(P, $pfprepare(P.FOLD, pcpath, expression, P.ENV, P.LOCATION.LINE)), pcpath, expression), pcpath, expression)
+def $ppdefault_prepare(P, pcpath, expression) = $ppconstant_emit($ppconstant_validate($ppfoldresult(P, $pfprepare($ppclass_fold(P), pcpath, expression, P.ENV, P.LOCATION.LINE)), pcpath, expression), pcpath, expression)
 
 dec $ppdefault_value_kind(pvalue) : text
 def $ppdefault_kind(eps) = "deferred"
