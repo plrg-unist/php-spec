@@ -4,7 +4,7 @@ syntax pbinding = BIND nat* nat
 syntax poperand = KNOWN pvalue | VARIABLE nat* int | REFERENCE nat
 syntax porigin = PORIGIN nat pcpath
 syntax ppropertyid = porigin | INTERNAL_PROPERTY text ptbytes
-syntax pbase = BASE_VALUE poperand | BASE_GLOBAL poperand int | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int | BASE_PROPERTY pvalue ptbytes | BASE_CHAIN_PROPERTY pvalue ptbytes int | BASE_CLASS_STATIC porigin ptbytes | BASE_SHORT
+syntax pbase = BASE_VALUE poperand | BASE_GLOBAL poperand int | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int | BASE_PROPERTY pvalue ptbytes | BASE_CHAIN_PROPERTY pvalue ptbytes int | BASE_CLASS_STATIC porigin ptbytes | BASE_CLASS_STATIC_PENDING poperand poperand | BASE_SHORT
 syntax pnode = HCELL nat | HARRAY nat | HOBJECT nat
 syntax plocation = ROOT nat | ELEMENT nat pkey | PROPERTY nat ptbytes | CLASS_STATIC ppropertyid | NOWHERE
 syntax pvstage = PVFOLD | PVEXEC
@@ -22,7 +22,7 @@ syntax pfunction = { DEFAULTS pdefault*, ORIGIN porigin, NAME ptbytes, SIGNATURE
 syntax ppropertyvisibility = PROPERTY_PUBLIC | PROPERTY_PROTECTED | PROPERTY_PRIVATE
 syntax pmethoddesc = { NAME ptbytes, FUNCTION pfunction, OWNER porigin, VISIBILITY ppropertyvisibility, STATIC bool, FINAL bool, ABSTRACT bool }
 syntax ppropdefault = PROP_UNINITIALIZED | PROP_NULL | PROP_STORED porigin | PROP_LITERAL pvalue
-syntax ppropertydesc = { ORIGIN ppropertyid, NAME ptbytes, KEY ptbytes, VISIBILITY ppropertyvisibility, STATIC bool, TYPE ptbranch*, DEFAULT ppropdefault, LINE nat }
+syntax ppropertydesc = { ORIGIN ppropertyid, NAME ptbytes, KEY ptbytes, VISIBILITY ppropertyvisibility, SETVISIBILITY ppropertyvisibility?, FINAL bool, STATIC bool, TYPE ptbranch*, DEFAULT ppropdefault, LINE nat }
 syntax ppropstate = PROP_INITIAL | PROP_UNSET | PROP_VALUE pitem
 syntax ppropertyslot = { DECL ppropertyid?, NAME ptbytes, STATE ppropstate }
 syntax pobjectprops = { OBJECT nat, SLOTS ppropertyslot*, MATERIALIZED bool }
@@ -466,6 +466,10 @@ dec $wrapper_arguments(pstate, pcallcontext) : phpType7*
 dec $wrapper_passed_suffix(pstate, pcallcontext) : preqbytes
 
 ;; Property source names are resolved once; captured locations store physical keys.
+dec $class_static_set_allowed(pstate, ppropertydesc) : bool
+dec $class_static_store_value(pstate, porigin, ptbytes, pvalue, int) : pstate
+dec $class_static_reference_fetch(pstate, ppropertyid, int) : pstate
+
 syntax ppropertyaccess = PROPERTY_ACCESS ptbytes | PROPERTY_DENIED ppropertydesc | PROPERTY_BADNAME
 dec $property_resolve(pstate, nat, ptbytes) : ppropertyaccess
 dec $property_visible_name(pstate, nat, ptbytes) : ptbytes
@@ -475,6 +479,10 @@ dec $property_store_key(pstate, nat, ptbytes, pvalue, int) : pstate
 dec $ppproperty_visibility(int) : ppropertyvisibility
 dec $ppproperty_key(int, ptbytes, ptbytes) : ptbytes
 dec $ppproperty_inherit_message(ptbytes, ptbytes, ppropertydesc, ppropertydesc) : ptbytes?
+dec $ppproperty_static_supported(int) : bool
+dec $ppproperty_set_visibility(int) : ppropertyvisibility?
+dec $ppproperty_final(int) : bool
+dec $ppproperty_set_issue(int, ptbranch*, ptbytes, ptbytes) : ptbytes?
 dec $ppproperty_desc_at(ppropertydesc*, ptbytes) : ppropertydesc?
 dec $property_accessible(pstate, nat, ptbytes) : bool
 dec $property_read(pstate, pvalue, ptbytes, int) : pstate

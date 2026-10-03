@@ -1,0 +1,151 @@
+;; Setter authorization concerns the declaration syntax, not an escaped CV alias.
+def $class_static_set_allowed(S, ppropertydesc) = true
+  -- if ppropertydesc.SETVISIBILITY = eps \/ ppropertydesc.SETVISIBILITY = (PROPERTY_PUBLIC)
+def $class_static_set_allowed(S, ppropertydesc) = true
+  -- if ppropertydesc.SETVISIBILITY = (PROPERTY_PRIVATE)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN)
+def $class_static_set_allowed(S, ppropertydesc) = true
+  -- if ppropertydesc.SETVISIBILITY = (PROPERTY_PROTECTED)
+  -- if $property_protected_allowed(S, ppropertydesc)
+def $class_static_set_allowed(S, ppropertydesc) = false -- otherwise
+
+dec $class_static_set_scope(pstate) : ptbytes
+def $class_static_set_scope(S) = $ptascii("scope ") ++ pclassdesc.NAME
+  -- if $method_called_scope(S) = (porigin_scope)
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc)
+def $class_static_set_scope(S) = $ptascii("global scope") -- otherwise
+dec $class_static_set_message(pstate, ppropertydesc, ptbytes) : ptbytes
+def $class_static_set_message(S, ppropertydesc, ptbytes_operation) = $ptascii("Cannot ") ++ ptbytes_operation ++ [32] ++ $property_visibility_name(ppropertyvisibility) ++ $ptascii("(set) property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" from ") ++ $class_static_set_scope(S)
+  -- if ppropertydesc.SETVISIBILITY = (ppropertyvisibility)
+
+;; Static address flags may have raised an error already. Zend's subsequent
+;; setter error retains that object as its previous exception, in the same step.
+dec $class_static_set_error(pstate, ppropertydesc, ptbytes, int) : pstate
+def $class_static_set_error(S, ppropertydesc, ptbytes_operation, z) = $throw_scalar(S, "Error", $class_static_set_message(S, ppropertydesc, ptbytes_operation), z)
+  -- if S.COMPLETION = NORMAL
+def $class_static_set_error(S, ppropertydesc, ptbytes_operation, z) = $throwable_previous(S_new, n_new, n_old)
+  -- if $throwable_pending(S.COMPLETION)
+  -- if S_old = $throwable_materialize(S)
+  -- if S_old.COMPLETION = THROWING n_old
+  -- if S_new = $throwable_materialize($throw_scalar(S_old[.COMPLETION = NORMAL], "Error", $class_static_set_message(S_old, ppropertydesc, ptbytes_operation), z))
+  -- if S_new.COMPLETION = THROWING n_new
+def $class_static_set_error(S, ppropertydesc, ptbytes_operation, z) = S -- otherwise
+
+dec $class_static_raw_object(pstate, ppropertyid) : bool
+def $class_static_raw_object(S, ppropertyid) = true
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE (DIRECT (POBJECT n_object))
+def $class_static_raw_object(S, ppropertyid) = false -- otherwise
+dec $class_static_indirect_check(pstate, ppropertydesc, bool, int) : pstate
+def $class_static_indirect_check(S, ppropertydesc, b_object, z) = $class_static_set_error(S, ppropertydesc, $ptascii("indirectly modify"), z)
+  -- if ~$class_static_set_allowed(S, ppropertydesc)
+  -- if ~b_object \/ ~$class_static_raw_object(S, ppropertydesc.ORIGIN)
+def $class_static_indirect_check(S, ppropertydesc, b_object, z) = S -- otherwise
+
+def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = $class_static_set_error(S, ppropertydesc, $ptascii("modify"), z)
+  -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
+  -- if $class_static_accessible(S, ppropertydesc)
+  -- if ~$class_static_set_allowed(S, ppropertydesc)
+def $class_static_store_value(S, porigin_requested, ptbytes, pvalue, z) = $class_static_store_ordinary(S, porigin_requested, ptbytes, pvalue, z) -- otherwise
+
+;; FETCH_STATIC_PROP_W checks its own declaration's array admission first.
+;; Generic location_array subsequently checks any additional alias constraints.
+dec $class_static_promotes_array(pstate, ppropertyid) : bool
+def $class_static_promotes_array(S, ppropertyid) = true
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_INITIAL
+def $class_static_promotes_array(S, ppropertyid) = true
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE pitem
+  -- if $entry_value(S, pitem) = PNULL \/ $entry_value(S, pitem) = PBOOL false
+def $class_static_promotes_array(S, ppropertyid) = false -- otherwise
+dec $class_static_dimension_flags(pstate, ppropertydesc, int) : pstate
+def $class_static_dimension_flags(S, ppropertydesc, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot auto-initialize an array inside property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), z)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if $class_static_promotes_array(S, ppropertydesc.ORIGIN)
+  -- if ~$typed_exact(ppropertydesc.TYPE, PARRAY 0)
+def $class_static_dimension_flags(S, ppropertydesc, z) = S -- otherwise
+
+def $base_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = $class_static_indirect_check($class_static_dimension_flags(S_place, ppropertydesc, z), ppropertydesc, true, z)
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if $class_static_select(S_place, porigin_requested, ptbytes) = (ppropertydesc)
+  -- if S_place.LOCATION = CLASS_STATIC ppropertydesc.ORIGIN
+def $base_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = S_place
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $reference_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = $class_static_indirect_check(S_place, ppropertydesc, false, z)
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if $class_static_select(S_place, porigin_requested, ptbytes) = (ppropertydesc)
+def $reference_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = S_place
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $call_reference_base(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = $class_static_acquire(S, porigin_requested, ptbytes, z)
+
+def $class_static_reference_fetch(S, ppropertyid, z) = $class_static_indirect_check(S_ref, ppropertydesc, false, z)
+  -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
+  -- if S_ref = $class_static_reference_fetch_ordinary(S, ppropertyid, z)
+
+dec $class_static_find(pstate, porigin, ptbytes, int) : pstate
+def $class_static_find(S, porigin_requested, ptbytes, z) = S_place
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $class_static_find(S, porigin_requested, ptbytes, z) = S_place[.LOCATION = NOWHERE][.RESULT = KNOWN PNULL]
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_place.LOCATION = CLASS_STATIC ppropertyid
+  -- if $class_static_at(S_place.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_INITIAL
+def $class_static_find(S, porigin_requested, ptbytes, z) = $class_static_indirect_check(S_place[.RESULT = KNOWN $entry_value(S_place, pitem)], ppropertydesc, true, z)
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if $class_static_select(S_place, porigin_requested, ptbytes) = (ppropertydesc)
+  -- if S_place.LOCATION = CLASS_STATIC ppropertydesc.ORIGIN
+  -- if $class_static_at(S_place.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE pitem
+def $base_find(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = $class_static_find(S, porigin_requested, ptbytes, z)
+
+;; A whole-slot compound/update read retains read-before-initialization order
+;; and has no object-interior exception to setter access.
+def $rw_base(S, BASE_CLASS_STATIC porigin_requested ptbytes, pstringfetch, z) = S_read
+  -- if S_read = $class_static_read(S, porigin_requested, ptbytes, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $rw_base(S, BASE_CLASS_STATIC porigin_requested ptbytes, pstringfetch, z) = $class_static_indirect_check(S_read[.LOCATION = CLASS_STATIC ppropertydesc.ORIGIN], ppropertydesc, false, z)
+  -- if S_read = $class_static_read(S, porigin_requested, ptbytes, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if $class_static_select(S_read, porigin_requested, ptbytes) = (ppropertydesc)
+
+;; A deferred CV RHS is fetched only after ordinary target read visibility.
+def $assign_array(S, BASE_CLASS_STATIC porigin_requested ptbytes, poperand, z) = S_place
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $assign_array(S, BASE_CLASS_STATIC porigin_requested ptbytes, poperand, z) = S_read
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S_place, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $assign_array(S, BASE_CLASS_STATIC porigin_requested ptbytes, poperand, z) = $class_static_store_value(S_read, porigin_requested, ptbytes, pvalue, z)
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S_place, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+
+;; By-reference foreach is a REF fetch, including for scalar/object values.
+def $foreach_reference_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = $class_static_reference_fetch(S_place, ppropertyid, z)
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_place.LOCATION = CLASS_STATIC ppropertyid
+def $foreach_reference_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = S_place
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $foreach_reference_acquire(S, pbase, z) = $reference_acquire(S, pbase, z) -- otherwise
+def $foreach_reference_at(S, CLASS_STATIC ppropertyid, pvalue) = S[.CELL = n_cell]
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
+rule PhpStep/foreach-prep-class-static: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression_iterable), FOREACH_DIM statement z] ++ ptask_tail*]
+  -- if S.TODO = (FOREACH_PREP statement z) :: ptask_tail*
+  -- if statement = NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
+  -- if expression_iterable = NExprStaticPropertyFetch phpType19 phpType31 metadata_property

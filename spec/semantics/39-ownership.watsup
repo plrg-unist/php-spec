@@ -107,6 +107,7 @@ def $base_nodes(BASE_APPEND pbase z) = $base_nodes(pbase)
 def $base_nodes(BASE_PROPERTY pvalue ptbytes) = $value_nodes(pvalue)
 def $base_nodes(BASE_CHAIN_PROPERTY pvalue ptbytes z) = $value_nodes(pvalue)
 def $base_nodes(BASE_CLASS_STATIC porigin ptbytes) = eps
+def $base_nodes(BASE_CLASS_STATIC_PENDING poperand_class poperand_name) = $operand_nodes(poperand_class) ++ $operand_nodes(poperand_name)
 def $base_nodes(BASE_SHORT) = eps
 
 dec $task_nodes(ptask) : pnode*
