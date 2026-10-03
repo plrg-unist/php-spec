@@ -3,8 +3,8 @@
 This slice targets PHP 8.5.10 CLI NTS 64-bit. Modules206/207 implement
 `error_reporting`, `set_error_handler`, `restore_error_handler`,
 `get_error_handler`, `trigger_error` and `user_error` through the checked source
-call machinery. Its bounded source/frame gates are accepted privately; the
-current-master interaction gates and canonical installation remain pending.
+call machinery. Its bounded private source/frame gates and fresh current-master property,
+array-caller and trace interactions are independently accepted.
 
 Registration stores the raw callback and signed32 mask, and pushes the previous
 pair even when clearing the callback. Dispatch resolves the raw callback again
@@ -44,8 +44,8 @@ explicitly `Unsupported`, rather than running a callback after a consumer.
 Remaining null/Stringable API conversions, broader internal/array/visibility callback forms,
 reference-return callbacks, exception handlers and lifecycle dispatch remain open.
 Frameless named/method trace formatting in164 now accepts the authenticated
-nonempty function field. Current property and array-caller readback gates remain
-pending before installation.
+nonempty function field. Current property and array-caller readback gates validate these shapes on the
+tested private source composition.
 `REPORTINGINI` records reporting setters; it is not wider INI readback or a new
 request-profile initializer. Uncaught/fatal reporting outside this slice and
 broader global/reference behavior also remain core obligations.
@@ -60,12 +60,13 @@ plus one Unsupported ingress control with zero agreement credit. Author eight
 fixtures/298 and independent three/240 pass across retained and focused runs;
 the independent three normal source comparisons retain their native originals.
 Original allocation, fatal-stack, pooled-array, checkpoint and receive-validator
-failures remain preserved. New current-master interaction checks are separate,
-with no inherited execution credit. The [review ledger](../../coverage/semantics/error-handlers-review.json)
+failures remain preserved. Fresh current-master author source2/75 and independent
+source1/87 are separate, with no inherited execution credit. The [review ledger](../../coverage/semantics/error-handlers-review.json)
 locates the exact revisions, raw commands, exits and mixed evidence. Local tools
-are reused; installation, a fresh offline rebuild and complete core remain open.
+are reused; a fresh combined offline rebuild and complete core remain open.
 
-From the private project root, prepare and run the exact report separately:
+In a private project root with the built local SpecTec algorithmic tool at
+`.tools/p4spectec-algo-reused`, prepare and run the exact report separately:
 
 ```sh
 python3 -B tests/semantics/error_handler_prepare.py
