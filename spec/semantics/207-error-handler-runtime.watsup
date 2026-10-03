@@ -2,7 +2,6 @@ dec $error_entered_call_valid(pstate, perrorcall) : bool
 dec $error_default(pstate, pevent, int) : pstate
 dec $error_level_name(int) : text
 dec $error_user_deprecation() : preqbytes
-dec $error_dispatch(pstate, int, preqbytes, int, pevent, ptask) : pstate
 dec $error_handler_values(pstate, perrorcall) : pvalue*
 dec $error_handler_operands(pstate, pcalltarget, pvalue*, nat, int) : (pstate, poperand*)
 dec $error_handler_enter(pstate, perrorcall, pcalltarget, pfunction) : pstate
@@ -20,7 +19,6 @@ dec $error_read_valid(pstate, perrorread) : bool
 dec $error_context_frame_call(pcallcontext, pframe*) : perrorcall?
 dec $error_context_frame_head(pcallcontext, pframe*) : perrorcall?
 dec $error_context_current_call(pstate, pcallcontext) : perrorcall?
-dec $error_context_call(pstate, pcallcontext) : perrorcall?
 dec $error_context_anchor(pstate, pcallcontext, pcallcontext?, pframe*) : bool
 dec $error_handler_registered(pstate, perrorhandler) : bool
 dec $error_trace_capture(pstate, int, ptask) : pstate
