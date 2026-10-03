@@ -147,8 +147,8 @@ Two callable-priority sources on `240bf5a75` and two current ARG sources on
 `88f8d2bd5` are separate fresh checks. The latter preserves the caller's two arguments
 and fixed vector across a callback with zero arguments and an empty vector.
 The original AL fixture type failure is retained; current 185-module SL
-compilation passes with reused executables. Primitive/null Restore parsing
-remains a separate shared option-parser obligation.
+compilation passes with reused executables. The raw-readback increment below
+adds the shared primitive/null option parser.
 
 The [two-slot INI increment](../../coverage/semantics/include-stringable-ini-option-review.json)
 binds normalized `option` destination0 independently of written named/unpacked
@@ -163,5 +163,30 @@ Current SENT object/array values remain live roots; retired completed PACKS are
 historical certificates. Current compiler/property composition `8cc6d7da5`
 accepts three normal sources and one full83 state fixture. Earlier `35fb2e410`
 author49/finite494 and independent source2 retain separate identities, as do the
-failed81/83 fixtures. Raw getters, primitive/null Restore options, PIPE, wider
-OS/INI behavior and lifecycle remain open.
+failed81/83 fixtures. PIPE, wider OS/INI behavior and lifecycle remain open.
+
+The [raw-readback increment](../../coverage/semantics/include-ini-readback-review.json)
+returns full raw bytes from `get_include_path()` and exact-name
+`ini_get('include_path')`; SET returns and file requests keep their effective
+C-string views. Weak Stringable getter options run ordinary callbacks before
+reading the live raw value. Empty, case, NUL-name and converted primitive
+misses use full-name lookup and return false; other directives remain
+Unsupported. Missing raw environment also remains Unsupported.
+The same option parser now handles primitive/null Restore calls: strict direct
+calls reject non-string options, owned calls parse weakly, and weak null
+deprecates before lookup. Argument binding/arity errors preserve evaluated side
+effects without converting rejected extra operands. Current inherited array
+calls and captured clones preserve caller arguments through zero-argument
+callbacks. The ledger separates the original ten source passes and rule-overlap
+failure from the corrected current composition; runtime/compiler binaries are
+reused, without a fresh rebuild claim.
+
+Eligible weak-null `ini_get`/`ini_restore` deprecations now suspend through
+`CONFIG_INI_NULL_RESULT`. Handlers receive four values weakly; normal handling,
+false fallback under suppression and a thrown handler preserve raw mutations
+and saved caller arguments. Internal traces retain the original null operand.
+The new validator rejects missing source code before reading strictness. Fresh
+source2 at `cf7ebe4e` and corrected61 plus independent throwing1 at `f406e96f`
+are distinct from getter17/134. Their getter rules compose unchanged with
+current setters; 198-module compilation adds no semantic execution credit.
+Other producer continuations and CONFIG PIPE remain open.

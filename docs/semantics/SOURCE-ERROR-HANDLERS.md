@@ -41,6 +41,13 @@ a known or temporary left value. Live/reference left operands, truth/cast/copy,
 read-modify-write, dimensions and other eligible warning producers remain
 explicitly `Unsupported`, rather than running a callback after a consumer.
 
+Weak-null `ini_get` and `ini_restore` are admitted internal producers. Their
+authenticated unary continuation resumes once after normal handling or false
+fallback; a thrown handler aborts lookup. Weak handler argument conversion,
+original-null trace operands, caller arguments and raw INI writes are checked
+in the [readback ledger](../../coverage/semantics/include-ini-readback-review.json).
+Other CONFIG warning producers remain open.
+
 Remaining null/Stringable API conversions, broader internal/array/visibility callback forms,
 reference-return callbacks, exception handlers and lifecycle dispatch remain open.
 Frameless named/method trace formatting in164 now accepts the authenticated

@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Raw `get_include_path`/`ini_get` retain full INI bytes and sample callback
+writes after conversion. Primitive/null Restore distinguishes strict direct
+from weak owned parsing. Getter **45d46719e** passes seventeen normal sources
+and three fixtures/134 assertions. Three fresh handler sources and one
+fixture/61 assertions retain distinct **cf7ebe4e/f406e96f** identities.
+Weak-null getter/Restore warnings suspend for
+normal, false and throwing handlers while preserving caller arguments, raw
+mutation and original trace operands. Current setter composition passes
+198-module compilation with reused tools. The [readback ledger](coverage/semantics/include-ini-readback-review.json)
+records the separate evidence; PIPE and broader INI behavior remain open.
+
 Backed static final/asymmetric setters200/201 preserve declaration priority,
 lexical permissions, called-scope diagnostics and delayed RHS/receiver fetches.
 Raw direct object slots differ from aliased static slots; legally escaped typed
@@ -24,7 +35,7 @@ and distinguishes historical evidence from current interaction checks.
 | --- | --- |
 | Error handlers/reporting206/207 | Ordinary named, closure and public source-object callbacks retain four arguments and genuine saved frames; masks, replacements, restoration, throw and fatal fallback compose with current properties/calls. Broader producers/API/callable forms and reporting readback remain open. [Handler ledger](coverage/semantics/error-handlers-review.json). |
 | Method arrays205 | Public source method arrays retain immutable selected receiver/owner/called-class certificates through dynamic calls and capture. Current two-slot INI checkpoint **f9f47f115/61370c98/1353** accepts source1/finite103; broader resolution remains open. [Array ledger](coverage/semantics/array-callables-current-review.json). |
-| Include/configuration | Two-slot `ini_set` converts the normalized option before value rejection and full-name lookup, then samples the full raw old value after callbacks. Null/empty/leading-NUL updates return false; current SENT arrays remain live while completed unpack containers may retire. Tested **8cc6d7da5/0100a13d/1349** accepts source3/finite83. [INI ledger](coverage/semantics/include-stringable-ini-option-review.json). |
+| Include/configuration | Raw getters and primitive/null Restore preserve full-name parsing and live bytes. Weak-null getter/Restore handler continuations retain original operands and caller frames. [Readback ledger](coverage/semantics/include-ini-readback-review.json). Two-slot `ini_set` priority and current SENT-array ownership remain installed. [INI ledger](coverage/semantics/include-stringable-ini-option-review.json). |
 | Stringable SET/Restore and paths | SET separates raw INI bytes from effective C-string paths. Weak Restore uses exact full-name lookup and preserves callback mutations on misses. Current ARG/Restore checks retain caller arguments and zero-argument callbacks. [Restore](coverage/semantics/include-stringable-restore-review.json), [prefix](coverage/semantics/include-ini-prefix-review.json), [SET](coverage/semantics/include-set-current-review.json). |
 | Typed static properties197 | Weak simple Stringable assignment rechecks live aliases and retains paired callback owners. Current Restore/ARG/INI composition preserves full property bytes, caller arguments and normal/throw cleanup. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json). |
 | Static setters200/201 | Backed final/asymmetric declarations normalize equivalent setters and preserve inheritance/error priority; direct and indirect consumers retain lexical access, live raw-slot checks and typed aliases. [Setter ledger](coverage/semantics/static-setter-access-review.json). |
@@ -46,8 +57,8 @@ failures and interrupted evidence.
   compound/scope-dependent array resolution, magic/autoload/internal consumers,
   transformed wrappers and real CONFIG PIPE. Only the selected captured-static
   array Closure PIPE route is covered; ordinary `$GLOBALS` remains partial.
-- Include/configuration: raw `get_include_path`/`ini_get`, primitive/null Restore
-  parsing and PIPE, then wider directives, OS services and lifecycle. The
+- Include/configuration: CONFIG PIPE, broader warning producers, wider directives
+  and reporting readback, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: broader weak parameter/property conversion,
   constrained-reference object conversion, wider nonstatic delayed receivers and

@@ -80,7 +80,8 @@ language necessity and explicit review. Each row names its inventory obligations
 rules, source-level tests and review are recorded there.
 `python3 scripts/check-semantic-inventory.py --complete` requires every entry to
 be closed; numeric/byte/coercion entries additionally require helper evidence. Source paths below are
-relative to `vendor/php-src`. All implementation/test statuses are **pending**.
+relative to `vendor/php-src`; current implementation and validation status is
+recorded in the inventory.
 Methods and inherited constraints are those of the matching stub/implementation,
 including argument binding, visibility, callbacks and abrupt completion.
 
@@ -106,6 +107,7 @@ including argument binding, visibility, callbacks and abrupt completion.
 | `WeakReference::create`, `get`; `WeakMap` and dimension/iterator methods | Reachability observations and language-triggered collection effects; `Zend/zend_weakrefs.{c,stub.php}` | `lifecycle.weak-reference`, `lifecycle.weak-map` |
 | `ob_start`, `ob_flush`, `ob_clean`, `ob_end_flush`, `ob_end_clean`, `ob_get_flush`, `ob_get_clean`, `ob_get_contents`, `ob_get_level`, `ob_get_length`, `ob_list_handlers`, `ob_get_status`, `ob_implicit_flush` | Explicit output buffering and callback/cleanup interactions; `main/output.c`, `ext/standard/basic_functions.stub.php` | `lifecycle.output-buffer-callbacks`, `environment.output-destination` |
 | `Attribute`, `ReturnTypeWillChange`, `AllowDynamicProperties`, `SensitiveParameter`, `SensitiveParameterValue`, `Override`, `Deprecated`, `NoDiscard`, `DelayedTargetValidation` | Builtin declaration checks, deprecations, discarded results and trace redaction; constructors/properties/constants follow `Zend/zend_attributes.{c,stub.php}` | `declarations` obligations with the same names |
+| `set_include_path`, `get_include_path`, `ini_set`, `ini_get`, `ini_restore`, `chdir` | Explicit include/CWD environment and callback effects; finite `include_path` behavior, with wider directives/OS services partial. `ext/standard/basic_functions.c`, `Zend/zend_ini.c`; [include contract](INCLUDE-SOURCES.md) | `dynamic.include*`, `dynamic.require*`, `environment.config` |
 | Core constants | Literal `true`/`false`/`null`, integer/float limits, PHP version/platform, `E_*`, and constants of admitted classes/APIs; explicit target/configuration values from `Zend/zend_constants.c` and the stubs | `declarations.constants`, `environment.config` |
 
 Assertions require explicit compile/runtime configuration. A known direct `assert`

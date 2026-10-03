@@ -1,0 +1,261 @@
+{
+  "scope": "Raw include_path getters, primitive/null Restore parsing and authenticated unary weak-null handler continuations; wider directives and warning producers remain partial.",
+  "status": "reviewed_private_current_parent_composition",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "getter_checkpoint": {
+    "scope": "Raw include_path getters and shared primitive/null Restore option parsing, composed with accepted ARRAY205; broader directives remain Unsupported.",
+    "status": "reviewed_current_composition",
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "accepted_base": "0489f65062787af0ba440fe5e8cfe484c993fc0f",
+    "tested_head": "45d46719e6b9b798cf1b242851533c1cbb39dcb1",
+    "implementation": {
+      "sha256": "8df057b91b45eef0efe3e6960383338190458388d0881526caef1757d36d8283",
+      "files": 1353,
+      "modules": 194
+    },
+    "contract": [
+      "get_include_path() and exact full-name ini_get return full raw FILEINCLUDEPATH bytes, including NULs; SET returns/file requests continue using the C-string prefix.",
+      "Weak Stringable option callbacks run before the late raw read; empty/case/NUL/converted-primitive misses return false without discarding mutation. Other names and absent raw environment remain Unsupported.",
+      "Strict direct unary calls reject non-string options; owned calls parse weakly. Weak null deprecates before lookup. Restore exact name resets the original profile path; misses return null without mutation.",
+      "Binding/arity failures preserve evaluated argument side effects without converting extra operands. Caller ARG views and inherited array/capture context survive ordinary callbacks and throws."
+    ],
+    "primary_engine": {
+      "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+      "files": [
+        "vendor/php-src/ext/standard/basic_functions.c",
+        "vendor/php-src/Zend/zend_ini.c",
+        "vendor/php-src/Zend/zend_API.c"
+      ],
+      "symbols": [
+        "PHP_FUNCTION(get_include_path)",
+        "PHP_FUNCTION(ini_get)",
+        "PHP_FUNCTION(ini_restore)",
+        "Z_PARAM_STR",
+        "zend_ini_get_value",
+        "zend_ini_restore"
+      ]
+    },
+    "current_checks": {
+      "normal_source_tuples": 17,
+      "author_sources": 13,
+      "independent_sources": 4,
+      "finite_fixtures": 3,
+      "finite_assertions": 134,
+      "author_assertions": 76,
+      "independent_assertions": 58,
+      "exact_null_diagnostic_sources": 2,
+      "original_command_files": 148,
+      "original_receipts": 2,
+      "owned_child_groups_closed": 37,
+      "production_SL_modules": 194,
+      "full_AL_fixtures": 3,
+      "runtime_inputs": 2011,
+      "fresh_rebuild": false
+    },
+    "historical_checks": {
+      "head": "a113afb2f4fdd42300cbb4a17c118aa04332c9b5",
+      "normal_sources_carried": 10,
+      "basis": "String/object options do not use the repaired primitive arm; fresh current array interactions check the actual accepted baseline. No old10 replay."
+    },
+    "preserved_failures": [
+      "Original --files CLI flag failed before application/native/numeric execution; all operative flags became --file-snapshot.",
+      "Original weak-false option encountered overlapping known-empty and primitive miss rules. Primitive exclusion fixes that overlap; null follows its separate diagnostic route.",
+      "Original duplicate-binding source used illegal named-before-unpack syntax; corrected source was genuinely checked. Own full58 AL reason binding changed only preqbytes to text."
+    ],
+    "runtime_and_profile": "Copied local PHP/native/adapter/numeric/compiler binaries reused. Exact commands/profile/cwd, model90/native30/request60/numeric300, steps100000 and one cleanup5 deadline are in the plan. Original child streams/exits stay ignored.",
+    "next": [
+      "CONFIG PIPE",
+      "Wider INI directives/reporting coupling, OS services and lifecycle",
+      "Full-core current combined gates and fresh offline rebuild; paused returns excluded"
+    ],
+    "references": {
+      "plan": {
+        "root": ".tools/include-dev-13-ini-readback-current",
+        "path": ".tools/ini-readback-current-plan.json",
+        "sha256": "0b50d5e9f35907d8f29259f1bf9d5fd83354a68e43448635be317c850be06ff0"
+      },
+      "pure_compilation": {
+        "root": ".tools/include-dev-13-ini-readback-current",
+        "path": ".tools/ini-readback-current-compilation/receipt.json",
+        "sha256": "4cb3cc0852420fb5ea59a22bc847e2c2c1160b8446f12c1ce3440dbc72635116"
+      },
+      "author_receipt": {
+        "root": ".tools/include-dev-13-ini-readback-current",
+        "path": ".tools/ini-readback-current-author-gw9rjxox/receipt.json",
+        "sha256": "b25abbc36762f0b8eb6bc24a012b941d1765487de17dfce82a7b9b975043e283"
+      },
+      "author_release": {
+        "root": ".tools/include-dev-13-ini-readback-current",
+        "path": ".tools/ini-readback-current-author-slot4-RELEASE.json",
+        "sha256": "01316425f52668fa6a59c19d9fb98e3b1caea8a6d039e99b93e80d5eddb52da7"
+      },
+      "author_original_review": {
+        "root": ".",
+        "path": ".tools/include-review-13/ini-readback-current-author-original-review.json",
+        "sha256": "521eefa2c38eb071d82f3e24186d575fbc46e530362a8bb8895bc8ecf32b44a8"
+      },
+      "historical_partial": {
+        "root": ".",
+        "path": ".tools/include-review-13/ini-readback-overlap-partial-review.json",
+        "sha256": "be1cf960a3692bf1f44930ec6b645ecc7265f29094b8de4dff30d9f970aa4839"
+      },
+      "overlap_clarification": {
+        "root": ".",
+        "path": ".tools/include-review-13/ini-readback-overlap-clarification.json",
+        "sha256": "2dc5357cc16282fb93e1a93dd8a89257eff792c96a4a600f684a07dbd3e41383"
+      },
+      "accepted_ARRAY205": {
+        "root": ".",
+        "path": ".tools/calls-dev13-array-callable-20261003/ARRAY205-INSTALLED-RELEASED-HANDOFF-20261004.json",
+        "sha256": "6ffe14b9511d5f7c1ad50c198a664008e2816e28f1d766066907490d22073624"
+      },
+      "current_preexecution": {
+        "root": ".",
+        "path": ".tools/include-review-13/ini-readback-current-preexecution-review.json",
+        "sha256": "5dd74be3888c669b089a11c3e877ed91aa2770847524a3e1a844c3e05474a3d5"
+      },
+      "independent_receipt": {
+        "root": ".tools/include-dev-13-ini-readback-current",
+        "path": ".tools/ini-readback-current-independent-yb9obyoy/receipt.json",
+        "sha256": "fd2b5b0315b5fe50404d743e819b71597c869689117f10acae6481f27c78eca8"
+      },
+      "independent_release": {
+        "root": ".tools/include-dev-13-ini-readback-current",
+        "path": ".tools/ini-readback-current-independent-slot4-RELEASE.json",
+        "sha256": "56550dd106ce48314a0f6225c39f3f2754c534522bfcae260c5c85cdcd6373a3"
+      },
+      "developer_own_review": {
+        "root": ".tools/include-dev-13-ini-readback-current",
+        "path": ".tools/ini-readback-current-own-developer-review.json",
+        "sha256": "bfe5c930f1ac3916780988ae47cbb0b3bb8c5909005c1aea0d320012a799e5eb"
+      },
+      "bounded_acceptance": {
+        "root": ".",
+        "path": ".tools/include-review-13/ini-readback-current-bounded-acceptance.json",
+        "sha256": "bb5875975af450a0f663d7072033fd13ba4086ca584802015fe9d0eee473c1e1"
+      }
+    },
+    "maintained_regression": {
+      "commit": "bb24ead3a89177fcf9e6a018c933a6cc08eb7a66",
+      "case": "ini-option-get-callback-raw-result",
+      "bridge": "Exact independently passed source/stage/49 checks plus unchanged guarded startup9. All45 older case bodies and PREFIX remain byte-identical; no new target evaluation."
+    },
+    "maintained_source_regressions": {
+      "cases": [
+        "ini-readback-independent-ini-getter-callback-full-raw",
+        "ini-readback-independent-ini-getter-owned-nul-name",
+        "ini-readback-independent-restore-primitive-owned-priority",
+        "ini-readback-independent-ini-readback-array-capture-owned"
+      ],
+      "bridge": "Exact four independently passed PHP byte strings; native include_path=.: matches the executed private plan. Old233 cases remain exact; no new execution credit."
+    }
+  },
+  "handler_checkpoint": {
+    "source_head": "cf7ebe4e87d9b220f12592ac7781be1d8a6d835b",
+    "corrected_head": "f406e96fc17a249a1f981ad83126483e881ae1b7",
+    "implementation": {
+      "sha256": "3e2ba77d64ab272e419482f9908308e505875f8de8e5ef299f4706cb31de0448",
+      "files": 1361,
+      "modules": 196
+    },
+    "normal_sources": 3,
+    "finite_fixtures": 1,
+    "finite_assertions": 61,
+    "accepted_original_command_files": 28,
+    "receipt_scope": "Two passed sources in original partial receipt; corrected61 and independent throwing1 have distinct successful receipts. Failed numeric original has no credit.",
+    "owned_accepted_child_groups_closed": 7,
+    "contract": [
+      "Only weak-null INI_GET/INI_RESTORE suspend through CONFIG_INI_NULL_RESULT; source/site/null/weak/line/event/level are authenticated.",
+      "Handlers receive four arguments weakly; normal handling, false fallback under suppression and throw preserve raw mutation and saved caller arguments. Internal trace retains original null.",
+      "Ordered validity guards reject missing CODE before the partial strictness lookup. All original61 assertions remain exact."
+    ],
+    "preserved_failures": [
+      {
+        "root": ".tools/include-dev-13-ini-readback-handler",
+        "path": ".tools/ini-readback-handler-compilation/receipt.json",
+        "sha256": "c3378a9a4fcaf5e4369db25534fad2b9bdf3645497e99286191b7f69a51c9753"
+      },
+      {
+        "root": ".tools/include-dev-13-ini-readback-handler",
+        "path": ".tools/ini-readback-handler-author-qgwh3n1_/receipt.json",
+        "classification": "Two source passes plus failed missing-CODE negative61; eager strictness lookup fixed, no source replay."
+      }
+    ],
+    "declaration_relocation": "Three forward declarations moved before172 consumers; all206/207 bodies preserved.",
+    "references": {
+      "author_sources": {
+        "root": ".tools/include-dev-13-ini-readback-handler",
+        "path": ".tools/ini-readback-handler-author-qgwh3n1_/receipt.json",
+        "sha256": "510b132558c4779cbcb494f30d60e492a35d4d7a9c3ccba945ae3384e0e79967"
+      },
+      "source_partial_review": {
+        "root": ".",
+        "path": ".tools/include-review-13/ini-readback-handler-author-partial-review.json",
+        "sha256": "eda91da41cc2c1cea089100bf507287948b29aac0d7a0daf344966f15bfabe35"
+      },
+      "finite61": {
+        "root": ".tools/include-dev-13-ini-readback-handler-total",
+        "path": ".tools/ini-readback-handler-total-author-wq2l4c92/receipt.json",
+        "sha256": "93feb7cd6008bf5d645d7dab09167789ce5296e6d8a6971aea14dbb12005b789"
+      },
+      "finite_review": {
+        "root": ".",
+        "path": ".tools/include-review-13/ini-readback-handler-total-author-original-review.json",
+        "sha256": "cf4be782ded7e9587280e6a3b3bac56174e565f511f0a7868e0a24d9bc98da62"
+      },
+      "author_release": {
+        "root": ".tools/include-dev-13-ini-readback-handler-total",
+        "path": ".tools/ini-readback-handler-total-author-slot4-RELEASE.json",
+        "sha256": "909d8feb764df5e2ef99f85077a00172a0fb1f12e36b1add38f763319f283a4c"
+      },
+      "independent_source": {
+        "root": ".tools/include-dev-13-ini-readback-handler-total",
+        "path": ".tools/ini-readback-handler-total-independent-djjx98m9/receipt.json",
+        "sha256": "d1254b91c071f21e6572d63c7af46046654ef236de5f78fd7278af1ab6af371e"
+      },
+      "independent_release": {
+        "root": ".tools/include-dev-13-ini-readback-handler-total",
+        "path": ".tools/ini-readback-handler-total-independent-slot4-RELEASE.json",
+        "sha256": "f4c4cfe7c816fe3b243dd1c9b6fff7e750217195dd11a177543f7bad71602d59"
+      },
+      "developer_own_review": {
+        "root": ".tools/include-dev-13-ini-readback-handler-total",
+        "path": ".tools/ini-readback-handler-own-developer-review.json",
+        "sha256": "3e4f04c139b629d75c1cb0792350ae240d115313195b25ec2325c33c352d476b"
+      },
+      "bounded_handler_acceptance": {
+        "root": ".",
+        "path": ".tools/include-review-13/ini-readback-handler-bounded-acceptance.json",
+        "sha256": "8bdc20a8372a592d3661ec6c112d3d6dd858184500c96be2a861d4c10921e585"
+      },
+      "accepted_setters": {
+        "root": ".",
+        "path": ".tools/property-static-set-dev13/publication/INSTALLED-HANDOFF.json",
+        "sha256": "8646274a8a83385ed0de61569eb77019313d33f0b75addee8f67b404a0180e6e"
+      },
+      "current_SL": {
+        "root": ".tools/include-dev-13-ini-readback-handler-final",
+        "path": ".tools/ini-readback-handler-final-compilation/receipt.json",
+        "sha256": "e8ef70417757295d20abc4c0293e36622140f44a1cc4dd083e67f45915d8dae0"
+      }
+    }
+  },
+  "current_parent_composition": {
+    "accepted_base": "b58b120dc50852e0e589678630a97b82b8d3fe2c",
+    "source_merge": "f1f019a38a4bfc468c821cca5eaf21aaf3310a36",
+    "source_promotion": "cfd78685667978be3d161eab8120e7edc0085ca4",
+    "modules": 198,
+    "basis": "Getter/handler172/206/207 match testedf406. Storage30 adds only getter tags/null task to current setters; all property endpoints and existing handler/ARG/CALLS bodies preserved. Current198 SL passes; no disjoint semantic replay.",
+    "maintained_throw_source": {
+      "case": "ini-readback-null-handler-owned-restore-throw",
+      "source_sha256": "fe611c99e1894af0755c8162fd2e8b2eb9ac067d1d8ffd56a277d8109acec8a2",
+      "basis": "Exact independently passed PHP bytes; all239 older CASES unchanged, no extra execution credit."
+    }
+  },
+  "runtime": "2011 copied inputs and existing PHP/native/adapter/numeric/compiler reused. Model90/native30/request60/numeric300, steps100000 and one cleanup5; exact cwd/profile/argv/raw/exits remain in original plans. No fresh rebuild.",
+  "next": [
+    "CONFIG PIPE",
+    "Wider INI directives/reporting coupling, OS services and lifecycle",
+    "Full-core current combined gates and fresh offline rebuild; paused returns excluded"
+  ]
+}

@@ -45,7 +45,11 @@ Current checks preserve the caller's argument vector across the callback.
 converts the option before rejecting array/object values or looking up its full
 name, and returns the raw old value after callbacks. Current property and captured
 unpack checks pass three source tuples and one finite fixture/83 assertions.
-Raw INI getters, primitive/null Restore options, PIPE and wider OS/INI remain open.
+[Raw INI readback](coverage/semantics/include-ini-readback-review.json) returns
+full `include_path` bytes, including callback writes. Primitive/null Restore
+parsing preserves strict direct refusal and weak owned calls. Eligible unary
+null deprecations suspend for handlers; normal return, false fallback and throw
+preserve raw mutation and caller arguments. PIPE and wider OS/INI remain open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
