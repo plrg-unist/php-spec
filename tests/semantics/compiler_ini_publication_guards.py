@@ -29,6 +29,8 @@ set_include_path(new O);
 '''
 FATAL_RESTORE = FATAL_MAIN.replace(b"return 'c';", b"return 'include_path';").replace(
     b'set_include_path(new O);', b'ini_restore(new O);')
+FATAL_PROPERTY = FATAL_MAIN.replace(b'set_include_path(new O);',
+    b"class C {public static string $s='old';} C::$s=new O;")
 FATAL_CHILD = b'''<?php
 class A extends Exception { public function __wakeup() {} }
 class B { public function __WAKEUP(): int {} }
@@ -48,14 +50,15 @@ def fixture(directory, prefix, conditions):
             'fixture_sha256': sha(path)}
 
 
-def prepare_fatal(directory, restore=False):
+def prepare_fatal(directory, restore=False, property_assignment=False):
     directory.mkdir()
     sub = directory / 'sub'
     sub.mkdir()
     effective = os.fsencode(sub.resolve())
     raw = effective + b'\0nested'
     main, child = directory / 'main.php', sub / 'bad.php'
-    main.write_bytes((FATAL_RESTORE if restore else FATAL_MAIN).replace(b'__SUB__', effective))
+    template = FATAL_PROPERTY if property_assignment else FATAL_RESTORE if restore else FATAL_MAIN
+    main.write_bytes(template.replace(b'__SUB__', effective))
     child.write_bytes(FATAL_CHILD)
     frontend, adapter = None, None
     try:
@@ -119,6 +122,25 @@ def prepare_fatal(directory, restore=False):
         '~$file_open_response_valid(S_fatal,' + opened + ')',
         '~$file_parse_response_valid(S_fatal,' + accepted + ')',
         '$drive_steps(S_fatal,1) = S_fatal', '$drive_steps(S_fatal,1000) = S_fatal']
+    if property_assignment:
+        conditions[conditions.index('S_fatal.CLASSES = [pclassdesc_o,pclassdesc_a]')] = 'S_fatal.CLASSES = [pclassdesc_c,pclassdesc_o,pclassdesc_a]'
+        history = next(index for index, condition in enumerate(conditions) if condition.startswith('S_fatal.DECLARATIONS ='))
+        conditions[history] = conditions[history].replace('PDENTER 0 eps 30719,PDEXIT', 'PDENTER 0 eps 30719,PDECLASS 0 pclassdesc_c.ORIGIN,PDEXIT')
+        conditions += [
+            'pclassdesc_c.NAME = $ptascii("C")',
+            'S_fatal.CLASSSTATICS = S_parse.CLASSSTATICS',
+            '$class_static_select(S_fatal,pclassdesc_c.ORIGIN,$ptascii("s")) = (ppropertydesc)',
+            '$class_static_at(S_fatal.CLASSSTATICS,ppropertydesc.ORIGIN) = (pclassstatic)',
+            'pclassstatic.STATE = PROP_VALUE (DIRECT (PSTRING $ptascii("old")))',
+            'S_fatal.FRAMES = pframe_static :: pframe_tail*',
+            'pframe_static.TODO = (STRINGIFY_RESULT n porigin_site z) :: (STATIC_STRING_RESULT pstaticstring) :: (STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*',
+            'pstaticstring.OBJECT = n', 'pstaticstring.RHS = KNOWN (POBJECT n)',
+            'S_fatal.OBJECTS[n] = INSTANCE pclassdesc_o.ORIGIN',
+            '$task_nodes(STATIC_STRING_RESULT pstaticstring) = eps',
+            '$task_nodes(STATIC_STRING_CAPTURE pstaticstring) = [HOBJECT n]',
+            '$heap_count(HOBJECT n,$tasks_nodes(pframe_static.TODO)) = 2',
+            'HOBJECT n <- S_fatal.ALLOCATIONS',
+            '$static_string_task_valid(S_fatal[.CURRENT = pframe_static.CONTEXT][.ORIGIN = pframe_static.ORIGIN][.TODO = pframe_static.TODO],pstaticstring)']
     snapshot = {'version': 2, 'main': files.b64(main_bytes), 'cwd': files.b64(cwd),
                 'include_path': files.b64(b'.:'), 'chdir_entries': [], 'entries': [
                     {'caller': files.b64(main_bytes), 'requested': files.b64(b'bad.php'),
@@ -161,7 +183,8 @@ def prepare(out):
     types.ENV = ENV
     files.Worker = GuardWorker
     rows = [prepare_fatal(out / 'conversion-file-compile-stop'),
-            prepare_fatal(out / 'restore-conversion-file-compile-stop', restore=True)]
+            prepare_fatal(out / 'restore-conversion-file-compile-stop', restore=True),
+            prepare_fatal(out / 'property-conversion-file-compile-stop', property_assignment=True)]
     name = 'invoke-interior-nul'
     template, suffix = files.CASES[name]
     row = files.prepare(name, template, suffix, out / name, invoke_frame=True)
