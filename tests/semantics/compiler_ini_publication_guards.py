@@ -109,7 +109,7 @@ def prepare_fatal(directory):
         'S_fatal.FRAMES = S_parse.FRAMES', 'S_fatal.CURRENT = S_parse.CURRENT',
         'S_fatal.CLASSES = [pclassdesc_o,pclassdesc_a]',
         'pclassdesc_o.NAME = $ptascii("O")', 'pclassdesc_a.NAME = $ptascii("A")',
-        'S_fatal.DECLARATIONS = [PDENTER 0 eps 30719,PDECLASS 0 pclassdesc_o.ORIGIN,PDEXIT 0 PCSCOMPLETE,PDENTER 1 (pfilecontext_parse.SITE) 30719,PDECLASS 1 pclassdesc_a.ORIGIN,PDEXIT 1 PCSCOMPILER]',
+        'S_fatal.DECLARATIONS = [PDENTER 0 eps 30719,PDEXIT 0 PCSCOMPLETE,PDRCLASS pclassdesc_o.ORIGIN {UNIT 0,CALLS eps},PDENTER 1 (pfilecontext_parse.SITE) 30719,PDECLASS 1 pclassdesc_a.ORIGIN,PDEXIT 1 PCSCOMPILER]',
         'S_fatal.EVENTS = [DIAGNOSTIC "Deprecated" ptbytes_deprecated 2]',
         '$declaration_history_valid(S_fatal)',
         '~$declaration_history_valid(S_fatal[.COMPILESTOP = false])',
