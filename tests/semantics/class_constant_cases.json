@@ -1,5 +1,5 @@
 {
-  "scope": "Class/interface constant declarations, owner-scoped lazy evaluation, cache reuse and global/default restoration. Retained original PHP8.5.10 source tuples. Native four-setting32767 and model baseline30719 profiles remain distinct; these controls have no reporting-sensitive diagnostic. Only the observed main filename is substituted. Cross-file controls preserve exact child names/source bytes and bind explicit file snapshots; native cwd/environment and rebuilt-copy evidence remain separate.",
+  "scope": "Partial class-constant source catalogue: original25 plus separately tested inheritance/update12. Retained native tuples; no fresh native execution or whole-family claim.",
   "cases": [
     {
       "id": "earlier_class_typed_fold",
@@ -464,6 +464,222 @@
           "source_sha256": "2bb50d7201998b6267ce71ee894f064e3031e66ea5fe2f51986069d6ec738ef9"
         }
       ]
+    },
+    {
+      "id": "final_before_visibility_and_type",
+      "source": "<?php\necho \"run\";\nclass A {final public const int X=1;}\nclass B extends A {private const string X=\"x\";}\n",
+      "source_sha256": "2e1332f01cf0d831ba5a07ff0f89a12b1e8604e1abc99d2e628e878f8fd1df37",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEI6OlggY2Fubm90IG92ZXJyaWRlIGZpbmFsIGNvbnN0YW50IEE6OlggaW4ge0ZJTEV9IG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-6/raw/00-final_before_visibility_and_type/command.json",
+      "native_raw_sha256": "51174969c952f9dd5b430e535a1b61acb16c32b4e84db39096743301645b3f40",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "individual_fetch_does_not_complete_child_update",
+      "source": "<?php\necho \"run\";\nclass A {private const X=MISSING;}\nclass B extends A {public const Y=N;}\nconst N=1;\necho B::Y;\nnew B;\necho \"after\";\n",
+      "source_sha256": "9befaf21cda59aea8123ae4215b970715148e2a72b2ced2ba32cdfcb442bd84d",
+      "stdout_base64": "cnVuMQ==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIk1JU1NJTkciIGluIHtGSUxFfTo3ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgNwo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-7/raw/00-individual_fetch_does_not_complete_child_update/command.json",
+      "native_raw_sha256": "58e6b1d06bbe1b6e55cbe5f76c4898d9c7a221cacaf07912c872fdd4b25113cf",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "cached_parent_before_conditional_child_link",
+      "source": "<?php\necho \"run\";\nclass A {private const X=MISSING; public const Y=N;}\nconst N=1;\necho A::Y;\nif (true) {class B extends A {}}\nnew B;\necho \"after\";\n",
+      "source_sha256": "9737e955e10888a75ecf603bad9be080c9d8a0fb95abc63626e9b1982881c1f5",
+      "stdout_base64": "cnVuMWFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-7/raw/01-cached_parent_before_conditional_child_link/command.json",
+      "native_raw_sha256": "cf80fb9cce88705c882463ac8a5bff4490e4f3c3d6ee5137dd5f4ec0bf6959d0",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "new_updates_private_parent_before_override",
+      "source": "<?php\necho \"run\";\nclass A {private const X=MISSING;}\nclass B extends A {public const X=1;}\necho B::X;\nnew B;\necho \"after\";\n",
+      "source_sha256": "ffd7845b57ed4315415ce9795d9abadd3acac9655c110d165c940c80a0c3d6ce",
+      "stdout_base64": "cnVuMWFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-6/raw/09-new_updates_private_parent_before_override/command.json",
+      "native_raw_sha256": "fe9010d20f979c0923984b489ba4314de6f6ac22f3d47bd75ad65379a5c3268b",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "visibility_before_covariance",
+      "source": "<?php\necho \"run\";\nclass A {public const int X=1;}\nclass B extends A {protected const string X=\"x\";}\n",
+      "source_sha256": "e1b87523877671a53d4fbe03da3728bcc285e5683a0a44a331b7bfdace4cc53c",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEFjY2VzcyBsZXZlbCB0byBCOjpYIG11c3QgYmUgcHVibGljIChhcyBpbiBjbGFzcyBBKSBpbiB7RklMRX0gb24gbGluZSA0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-6/raw/01-visibility_before_covariance/command.json",
+      "native_raw_sha256": "d100f5a3617c9de1e34021905e6743f63f463c829b01043121972013032aed12",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "typed_covariant_narrowing",
+      "source": "<?php\necho \"run\";\nclass A {const int|string X=1;}\nclass B extends A {const int X=2;}\necho B::X;\n",
+      "source_sha256": "a7832e7de2644804f24edf7ad505d1f2c1bd497f11d060698ff67e4216df42b4",
+      "stdout_base64": "cnVuMg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-6/raw/02-typed_covariant_narrowing/command.json",
+      "native_raw_sha256": "ecd315079ab31b46d1cf5aec0328800672d14c3a29b01a6a486909207d77b157",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "typed_parent_untyped_child",
+      "source": "<?php\necho \"run\";\nclass A {const int X=1;}\nclass B extends A {const X=2;}\n",
+      "source_sha256": "1640df613931fc619109afc866470110e5065e563b9e2242f67f3120e2c8ca7d",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgQjo6WCBtdXN0IGJlIGNvbXBhdGlibGUgd2l0aCBBOjpYIG9mIHR5cGUgaW50IGluIHtGSUxFfSBvbiBsaW5lIDQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-6/raw/03-typed_parent_untyped_child/command.json",
+      "native_raw_sha256": "a9a038eefcd85e209842e084b04bd04537ab50d1a33787bac4761d9778fcca76",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "interface_equal_value_ambiguity",
+      "source": "<?php\necho \"run\";\ninterface I {const X=1;}\ninterface J {const X=1;}\nclass C implements I,J {}\n",
+      "source_sha256": "472f399e28cb551273aefb97243f888b64c85896dfcc0d704caaf75929eed1de",
+      "stdout_base64": "cnVu",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIEMgaW5oZXJpdHMgYm90aCBJOjpYIGFuZCBKOjpYLCB3aGljaCBpcyBhbWJpZ3VvdXMgaW4ge0ZJTEV9IG9uIGxpbmUgNQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-6/raw/04-interface_equal_value_ambiguity/command.json",
+      "native_raw_sha256": "dc62ca9628e69851757c46c5d0c88940d951bbf4c3a72a52f537280928fcf9d4",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "interface_same_owner_diamond",
+      "source": "<?php\necho \"run\";\ninterface I {const X=1;}\ninterface L extends I {}\ninterface R extends I {}\nclass C implements L,R {}\necho C::X;\n",
+      "source_sha256": "7fe6d6a22b2af429905474cd379ed2852266a7675aac4af3065e657f08f5c0aa",
+      "stdout_base64": "cnVuMQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-6/raw/05-interface_same_owner_diamond/command.json",
+      "native_raw_sha256": "5b7d3b65608c12a5088338492f07ca8d8a66f0e6c13ead33eeda7c2783ec5f6d",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "explicit_override_resolves_ambiguity",
+      "source": "<?php\necho \"run\";\ninterface I {const X=1;}\ninterface J {const X=1;}\nclass C implements I,J {const X=2;}\necho C::X;\n",
+      "source_sha256": "b2523cb230775604e85beb0b9300a20443702639ab502abe23b53cf5f8fb435f",
+      "stdout_base64": "cnVuMg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-6/raw/06-explicit_override_resolves_ambiguity/command.json",
+      "native_raw_sha256": "431ce8292b7193d12705dd21d975f3cfa48265e9f92efe33ae99620bb01b0a41",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "private_parent_type_is_not_constraint",
+      "source": "<?php\necho \"run\";\nclass A {private const int X=1;}\nclass B extends A {public const string X=\"x\";}\necho B::X;\n",
+      "source_sha256": "4b627bb3ff1a968a969d4530211b40a3220bad342605917e79468954dd771fac",
+      "stdout_base64": "cnVueA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-6/raw/07-private_parent_type_is_not_constraint/command.json",
+      "native_raw_sha256": "a5f821c6e4bff6b749556410c911d676187396721c830cc5b94480e37d2694c1",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_final_before_method_visibility",
+      "source": "<?php\necho \"run\";\nclass A {final const X=1; public function f(){}}\nclass B extends A {const X=2; protected function f(){}}\n",
+      "source_sha256": "29b18c7a03ffc97f110a8751dc64f1d282efc5862f2a31b753124dd85eb4f3db",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEI6OlggY2Fubm90IG92ZXJyaWRlIGZpbmFsIGNvbnN0YW50IEE6OlggaW4ge0ZJTEV9IG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-6/raw/08-constant_final_before_method_visibility/command.json",
+      "native_raw_sha256": "76086ff851efbd6cb8a8e20aab3e16f6169be8d58fca47de882f99555b52ae04",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
     }
   ]
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check source-derived class-constant update order and initializer authority."""
+"""Check source-derived class-constant cache, update and initializer authority."""
 import argparse,base64,hashlib,json,os,signal,subprocess,sys,tempfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
@@ -11,12 +11,26 @@ ENV={'PATH':'/usr/bin:/bin','LC_ALL':'C','TZ':'UTC','PYTHONDONTWRITEBYTECODE':'1
 SOURCES={
  'update-order':'<?php\nclass A {const X=N; const Y=M;}\nnew A;\n',
  'literal-selection':'<?php\nclass A {const X=N;}\nclass B {const Y=M;}\nconst N=12; const M=13;\necho A::X;\n',
+ 'cache-flag-authority':'<?php\nclass A {}\nclass B {const Y=N;}\nconst N=1;\necho B::Y;\nnew A;\nnew B;\n',
+ 'failed-update-prefix':'<?php\nclass A {const X=N; const Y=MISSING;}\nconst N=1;\ntry {new A;} catch (Error $e) {}\n',
+ 'root-temporal-authority':'<?php\nclass A {const X=N;}\nconst N=1;\necho A::X;\nif (true) {class B extends A {}}\nnew B;\n',
 }
 PREFIX='''dec $class_constant_test_stage(pstate, nat) : bool
 def $class_constant_test_stage(S, 0) = true
   -- if S.TODO = (CLASS_CONST_UPDATE porigin z) :: ptask_tail*
 def $class_constant_test_stage(S, 1) = true
   -- if S.CLASSCONSTANTINIT =/= eps
+def $class_constant_test_stage(S, 4) = true
+  -- if S.CLASSCONSTANTINIT = eps
+  -- if $class_named(S.CLASSNAMES, $ptascii("b")) = (porigin_b)
+  -- if $class_constant_lookup(S, porigin_b, $ptascii("Y"), |S.CLASSES|) = (pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+def $class_constant_test_stage(S, 6) = true
+  -- if S.CLASSCONSTANTINIT = eps
+  -- if $class_named(S.CLASSNAMES, $ptascii("b")) = (porigin_b)
+  -- if $class_named(S.CLASSNAMES, $ptascii("a")) = (porigin_a)
+  -- if ~$class_constant_table_done(S, porigin_a)
+  -- if $class_constant_table_done(S, porigin_b)
 def $class_constant_test_stage(S, n) = false -- otherwise
 dec $class_constant_test_seek(pstate, nat, nat) : pstate
 def $class_constant_test_seek(S, n, n_limit) = S
@@ -46,6 +60,17 @@ CHECKS={
   'S_init.CONSTCONTEXT = (pconstantcontext)',
   '~$class_constant_state_valid(S_init[.CONSTCONTEXT = (pconstantcontext[.ORIGIN = porigin_y])])',
   '~$class_constant_state_valid(S_init[.TODO = DISCARD :: ptask_tail*])',
+  'ptask_tail* = (CLASS_CONST_TABLE_UPDATE porigin_a z) :: ptask_rest*',
+  '$class_constant_table_order(S, porigin_a, |S.CLASSES|) = [porigin_a]',
+  '~$class_constant_table_done(S, porigin_a)',
+  '~$class_constant_state_valid(S[.TODO = [CLASS_CONST_UPDATE porigin_x z, CLASS_CONST_UPDATE porigin_y z] ++ ptask_rest*])',
+  '~$class_constant_state_valid(S[.TODO = [CLASS_CONST_UPDATE porigin_x z, CLASS_CONST_UPDATE porigin_y z, CLASS_CONST_TABLE_UPDATE porigin_a z, CLASS_CONST_TABLE_UPDATE porigin_a z] ++ ptask_rest*])',
+  'S.CLASSCONSTANTHISTORY = [CCLINK porigin_a n_link]',
+  '~$class_constant_history_valid(S[.CLASSCONSTANTHISTORY = [CCLINK porigin_a 1]])',
+  '~$class_constant_state_valid(S[.CLASSCONSTANTHISTORY = eps])',
+  'S.ORIGIN = (porigin_trigger)',
+  'n_prefix = |S.DECLARATIONS|',
+  '~$class_constant_history_valid(S[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCUPDATE porigin_a porigin_a porigin_trigger n_prefix]])',
  ],
  'literal-selection':[
   'S = $class_constant_test_seek(S_initial[.COMPLETION = NORMAL], 1, 400)',
@@ -60,6 +85,62 @@ CHECKS={
   'S_forged = S[.CLASSCONSTANTINIT = [pclassconstantcontext[.DECL = pclassconstantdesc_b.ORIGIN][.SELECTION = CLASS_CONST_FETCH (KNOWN (PSTRING $ptascii("B"))) $ptascii("Y")]]][.CONSTCONTEXT = (pconstantcontext[.ORIGIN = pclassconstantdesc_b.ORIGIN])][.ORIGIN = (pclassconstantdesc_b.ORIGIN)][.TODO = [AT pclassconstantdesc_b.INITIALIZER (EVAL expression_b), CLASS_CONST_BIND pclassconstantdesc_b.ORIGIN] ++ ptask_tail*]',
   '~$class_constant_state_valid(S_forged)',
   '~$class_constant_state_valid(S[.CLASSCONSTANTINIT = [pclassconstantcontext[.LINE = 999]]])',
+ ],
+ 'cache-flag-authority':[
+  'S = $class_constant_test_seek(S_initial[.COMPLETION = NORMAL], 4, 600)',
+  '$class_named(S.CLASSNAMES, $ptascii("a")) = (porigin_a)',
+  '$class_named(S.CLASSNAMES, $ptascii("b")) = (porigin_b)',
+  '$class_constant_state_valid(S)',
+  '$class_constant_table_done(S, porigin_a)',
+  '~$class_constant_table_done(S, porigin_b)',
+  '$class_constant_updates(S, porigin_b) = eps',
+  '$class_constant_table_order(S, porigin_b, |S.CLASSES|) = [porigin_b]',
+  '$class_constant_table_tasks(S, porigin_b, 7, |S.CLASSES|) = [CLASS_CONST_TABLE_UPDATE porigin_b 7]',
+  'pcpath_new_a = [PCINDEX 4, PCFIELD 0]',
+  'porigin_new_a = PORIGIN 0 pcpath_new_a',
+  '$origin_node(S.SOURCES, porigin_new_a) = (NExprNew phpType28 phpType6 metadata)',
+  '$class_constant_update_site(S, porigin_new_a, porigin_a)',
+  '~$class_constant_update_site(S, porigin_new_a, porigin_b)',
+  'n_prefix = |S.DECLARATIONS|',
+  '~$class_constant_history_valid(S[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCUPDATE porigin_b porigin_a porigin_new_a n_prefix]])',
+  '~$class_constant_history_valid(S[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCUPDATE porigin_b porigin_b porigin_new_a n_prefix]])',
+  '~$class_constant_history_valid(S[.CLASSCONSTANTCACHE = eps])',
+ ],
+ 'failed-update-prefix':[
+  'S = $drive_steps(S_initial[.COMPLETION = NORMAL], 1200)',
+  'S.COMPLETION = NORMAL',
+  'S.TODO = eps',
+  '$class_named(S.CLASSNAMES, $ptascii("a")) = (porigin_a)',
+  '$class_constant_lookup(S, porigin_a, $ptascii("X"), |S.CLASSES|) = (pclassconstantdesc_x)',
+  '$class_constant_lookup(S, porigin_a, $ptascii("Y"), |S.CLASSES|) = (pclassconstantdesc_y)',
+  'S.CLASSCONSTANTCACHE = [pdefaultcache]',
+  'pdefaultcache.ORIGIN = pclassconstantdesc_x.ORIGIN',
+  'pdefaultcache.VALUE = PINT 1',
+  '$class_constant_state_valid(S)',
+  '~$class_constant_table_done(S, porigin_a)',
+  '$class_constant_updates(S, porigin_a) = [pclassconstantdesc_y.ORIGIN]',
+  '$class_constant_table_order(S, porigin_a, |S.CLASSES|) = [porigin_a]',
+  '$class_constant_table_tasks(S, porigin_a, 4, |S.CLASSES|) = [CLASS_CONST_UPDATE pclassconstantdesc_y.ORIGIN 4, CLASS_CONST_TABLE_UPDATE porigin_a 4]',
+  'S.CLASSCONSTANTHISTORY = [CCLINK porigin_a n_link, CCCACHE pclassconstantdesc_x.ORIGIN porigin_trigger n_prefix]',
+  '~$class_constant_history_valid(S[.CLASSCONSTANTHISTORY = [CCLINK porigin_a n_link]])',
+  '~$class_constant_history_valid(S[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCUPDATE porigin_a porigin_a porigin_trigger n_prefix]])',
+ ],
+ 'root-temporal-authority':[
+  'S = $class_constant_test_seek(S_initial[.COMPLETION = NORMAL], 6, 700)',
+  '$class_named(S.CLASSNAMES, $ptascii("a")) = (porigin_a)',
+  '$class_named(S.CLASSNAMES, $ptascii("b")) = (porigin_b)',
+  '$class_constant_state_valid(S)',
+  '~$class_constant_table_done(S, porigin_a)',
+  '$class_constant_table_done(S, porigin_b)',
+  '$class_constant_lookup(S, porigin_a, $ptascii("X"), |S.CLASSES|) = (pclassconstantdesc_x)',
+  'S.CLASSCONSTANTHISTORY = [CCLINK porigin_a n_link_a, CCCACHE pclassconstantdesc_x.ORIGIN porigin_trigger n_cache, CCLINK porigin_b n_link_b]',
+  '$class_constant_values_done($class_constant_layout(S, porigin_a, |S.CLASSES|), $class_constant_cache_origins(S.CLASSCONSTANTCACHE))',
+  'pcpath_new_b = [PCINDEX 4, PCFIELD 0]',
+  'porigin_new_b = PORIGIN 0 pcpath_new_b',
+  '$origin_node(S.SOURCES, porigin_new_b) = (NExprNew phpType28 phpType6 metadata)',
+  '$class_constant_update_site(S, porigin_new_b, porigin_b)',
+  '$class_constant_parent_chain(S, porigin_b, porigin_a, |S.CLASSES|)',
+  '~$class_constant_history_valid(S[.CLASSCONSTANTHISTORY = [CCLINK porigin_a n_link_a, CCCACHE pclassconstantdesc_x.ORIGIN porigin_trigger n_cache, CCUPDATE porigin_a porigin_b porigin_new_b n_cache, CCLINK porigin_b n_link_b]])',
  ],
 }
 
