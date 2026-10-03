@@ -193,9 +193,14 @@ preserves saved arguments, both normalized callback operands and the static
 The [string review](../../coverage/semantics/class-method-strings-current-review.json)
 keeps original source/state observations distinct from Unsupported controls.
 Broader nonpublic/magic/autoload/internal and scope-dependent strings, binding
-and transformed Closure consumers remain open. StaticCall by-reference result
-acquisition remains a separate obligation. Shared ordinary type classification
-adds no new return agreement or paused-return validation.
+and transformed Closure consumers remain open. StaticCall reference RHS acquisition
+with untyped return signatures now preserves selected lexical/called scope and
+typed static cells through97/99. Nullsafe class chains reject before ordinary or FCC
+lowering; first-class call results reject in reference context. The
+[reference review](../../coverage/semantics/static-method-reference-review.json)
+does not close untyped static-slot raw-object/scalar admission, discarded typed-slot
+getters, temporary-return Notice timing or typed return verification.
+Shared ordinary type classification adds no paused-return validation.
 
 First-class compilation clears only the completed result fold after callee
 selection. Constant-array callees retain their pooled child descriptors while

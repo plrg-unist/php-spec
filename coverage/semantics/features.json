@@ -626,7 +626,10 @@
         "spec/semantics/75-request-environment.watsup",
         "spec/semantics/76-globals.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/201-static-set-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -641,9 +644,12 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/static_set_access.py",
+        "tests/semantics/static_set_compiler.py",
+        "tests/semantics/static_set_access_protocol.py"
       ],
-      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. Public property targets and typed-source rebindings are now bounded in property-references-review.json; string offsets, callbacks, remaining frames/property forms and source GC remain open. Explicit-request GLOBALS binding/restriction paths are additionally reviewed at652d10b7/request-environment-review.json; frame/object families remain open. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities.",
+      "review": "Independent element-target review f56e12bc: 507 exact source comparisons and 25 negatives; 617 graph plus 96 boundary cases (5434 assertions), and 57 independent target topology/timing probes passed. Element assignment rebinds the entry instead of writing through its old alias cell. Direct CV source initialization follows target designation; captured non-CV sources own their reference across target COW. Existing array-literal prepass, source references, owning results and uncollected cycles remain covered. Public property targets and typed-source rebindings are now bounded in property-references-review.json; string offsets, callbacks, remaining frames/property forms and source GC remain open. Explicit-request GLOBALS binding/restriction paths are additionally reviewed at652d10b7/request-environment-review.json; frame/object families remain open. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Selected StaticCall RHS acquisition with untyped return signatures reuses97/99 for typed static cells, lexical/called scope and returned-cell cleanup. static-method-reference-review.json separates original source/state checks, first-class/nullsafe rejection, typed initialization/error priority and current getter/handler/PIPE interactions. Untyped static-slot admission, discarded typed-slot getters, temporary-return Notice timing, broader callable/magic consumers and typed return verification remain open.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json"
@@ -2126,13 +2132,23 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/201-static-set-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/static_set_access.py",
+        "tests/semantics/static_set_compiler.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Historical ordinary-array constant prepass remains in array-omission-review.json with20/45 and its existing tests. Ordinary static/scoped dispatch and capture are covered separately by static-method-review.json. Selected reference RHS acquisition with untyped return signatures preserves named/parent/self/late-static selection, typed cells and returned-cell cleanup. static-method-reference-review.json separates compiler rejection, typed initialization/error priority, independent scopes and current raw-getter/handler/PIPE interactions. Untyped static-slot admission, discarded typed-slot getters, temporary-return Notice timing, broader resolution and typed return verification remain open; status stays partial.",
+      "helper_tests": [
+        "tests/semantics/static_method_protocol.py",
+        "tests/semantics/static_set_access_protocol.py"
+      ]
     },
     {
       "node": "Expr_StaticPropertyFetch",

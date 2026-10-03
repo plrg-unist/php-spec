@@ -299,8 +299,16 @@ scope, preserve delayed RHS/receiver ordering and typed escaped aliases, and
 check raw object slots before writable interior access. The
 [setter review](coverage/semantics/static-setter-access-review.json) separates
 declaration/source/state checks from the fresh inherited method-array interaction.
-Readonly/hooks, instance asymmetric setters and static-method reference acquisition
-remain open.
+Static-method reference assignment with untyped return signatures now retains
+lexical/called scope, inherited typed static cells and returned-cell cleanup. Its
+[review](coverage/semantics/static-method-reference-review.json) separates original
+getter/alias checks from current raw-getter and nullsafe rejection controls.
+Typed fetch flags preserve initial-slot error priority and nullable aliases;
+handled borrowed reads and a Stringable CONFIG PIPE restore the inherited
+getter's scope and arguments while retaining full raw INI bytes.
+Untyped static-slot raw-object/scalar admission, readonly/hooks, instance asymmetric
+setters, discarded typed-slot getters, temporary-return Notice timing and broader
+callable/typed-reference consumers remain open.
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
 route. Typed object conversion remains a separate consumer.

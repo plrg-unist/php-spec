@@ -85,9 +85,22 @@ side effects, caller scope and cleanup. The current nested Restore source,
 earlier ARG/callable source and focused INI source2/755 gates have independent
 original-raw acceptance with separate tested identities. Instance/compound
 Stringable consumers and broader receiver/reference acquisition remain open.
-Reference assignment from a static method call is still Unsupported; the
-independent escaped-alias check uses the accepted untyped instance-method
-reference route and does not close that missing behavior.
+Static-method reference assignment with untyped return signatures now admits
+the selected typed static cells through the existing97/99 protocol. Inherited
+getters preserve lexical permission and called-scope diagnostics; legally
+escaped aliases retain the shared static row and its type source. Denied binding
+releases both the returned task owner and method-result base owner. Typed REF flags initialize nullable
+initial slots and raise the nonnullable reference-access error before return;
+a denied setter preserves that error as its previous exception. Permitted
+initialized getters retain their existing used-result route. Discarded calls can
+still leave typed object slots unwrapped; that pre-existing consumer is the next
+focused obligation. The
+[reference review](../../coverage/semantics/static-method-reference-review.json)
+keeps the original instance-spelled control and its preserved StaticCall failure
+distinct from fresh static-getter acceptance. Untyped static-slot raw-object/scalar
+admission, temporary non-reference returns, broader callable resolution and typed
+return consumers remain open. A fresh CONFIG PIPE/getter interaction retains raw
+INI bytes and restores the inherited static frame before escaping its typed cell.
 
 CV constrained-reference object assignment has separate timing: conversion can
 overwrite the captured cell after a callback adds a type source, leaving an
