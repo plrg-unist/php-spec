@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "target": "PHP8.5.10 CLI NTS64",
+  "status": "VALIDATED_CURRENT_INI_COMPOSITION",
+  "behavior": "Known callable membership defeats weak user-object string conversion in callable|string parameters, preserving the original object in either union order.",
+  "production_revision": "4ed382e43",
+  "implementation": [
+    "spec/semantics/95-type-values.watsup"
+  ],
+  "authority": {
+    "path": "vendor/php-src/Zend/zend_execute.c",
+    "symbol": "zend_check_type_slow",
+    "order": "Nominal match, callable admission, scalar conversion."
+  },
+  "tests": [
+    "tests/semantics/callable_string_cases.json",
+    "tests/semantics/callable_string.py",
+    "tests/semantics/callable_string_protocol.py",
+    "tests/semantics/callable_string_ini_cases.json",
+    "tests/semantics/callable_string_ini.py",
+    "tests/semantics/callable_string_ini_protocol.py"
+  ],
+  "private_parameter_acceptance": {
+    "tested_revision": "f39abebb0753457c225b47b4ff1ffac6b3483596",
+    "fingerprint": "04b4bd318dbabf4b5c4d945f92f470933651d2be3bea8b3abd13ae0aec2007cc",
+    "implementation_inputs": 1307,
+    "author": {
+      "sources": 25,
+      "normal": 18,
+      "php_error": 5,
+      "separate_unsupported_controls": 2,
+      "finite_fixtures": 11,
+      "assertions": 394
+    },
+    "independent": {
+      "sources": 17,
+      "normal": 12,
+      "php_error": 4,
+      "separate_unsupported_controls": 1,
+      "finite_fixtures": 8,
+      "assertions": 241
+    },
+    "acceptance": {
+      "path": "/home/user/workspace/php-spec/.tools/calls-review13-callable-precedence-20261003/callable-string-private-bounded-acceptance.json",
+      "sha256": "153e6c395c97b49dfd1ece079a0d313e7ed93912d25107f776687760f1e65d03"
+    },
+    "original_author_launcher_exit": 1,
+    "launcher_qualification": {
+      "path": "/home/user/workspace/php-spec/.tools/calls-review13-callable-precedence-20261003/author36-launcher-closure-correction-peer-review.json",
+      "sha256": "2c38925e49f6fc54fba4a34f41ac70275a657d957dda096510aa3608b88e3bd0"
+    },
+    "qualification": "All36 driver gates passed; original wrapper end scan misclassified an unrelated dune build target operand. Corrected executable-position closure was independently checked, with no target replay."
+  },
+  "current_ini_interaction": {
+    "source_parent": "7dd8c17afd52597092a33f56f429e4211bc52f98",
+    "tested_revision": "c852ab2dc4c746daf92addfc6b7b202f922ccdc3",
+    "fingerprint": {
+      "sha256": "42be4def6ab573173b7e36ace777fe3163313090033623d4e94249704c12be29",
+      "files": 1311,
+      "scope": [
+        "frontend",
+        "adapter",
+        "spec",
+        "native",
+        "tests",
+        "scripts",
+        "bin",
+        "vendor/php-parser",
+        "Makefile",
+        "dune-project",
+        "runtime binaries",
+        "encoding-spellings inventory",
+        "comparison oracle archives"
+      ]
+    },
+    "sources": 2,
+    "normal": 2,
+    "finite_fixtures": 1,
+    "assertions": 53,
+    "observations": "Weak named dual object preserves raw old first\\0tail and effective SET old first; strict reversed/unpacked dual object rejects an empty effective INI prefix. Neither stringifier runs. Finite CONFIG verifies live receiver, source/owner inverses, state identity and retirement.",
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/calls-callable-precedence-ini-current-13/.tools/callable-string-ini-model-c_4xb5ky/report.json",
+      "sha256": "ad8d621ed7742a405bd96c64490152019a01a8a0774d3213adf92af69ebb817a"
+    },
+    "release": {
+      "path": "/home/user/workspace/php-spec/.tools/calls-dev13-callable-precedence-20261003/current-INI-port-20261003/interaction-RELEASE1.json",
+      "sha256": "28929623f9b42975d1ce1aeabe200e8f4a267372e72cf676d2875cea04ba3a4c"
+    },
+    "independent_original_peer": {
+      "path": "/home/user/workspace/php-spec/.tools/calls-review13-callable-precedence-20261003/current-INI-interaction-original-raw-review.json",
+      "sha256": "20ef147f8213c9f8ffca2f114062138f4de50ca9d3c0ba843a8c2a94fb11ad9d"
+    },
+    "renewal": "New interactions only; original36/25 gates were not repeated."
+  },
+  "runtime": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "module_count": 183,
+    "local_runtime_inputs": 2011,
+    "fresh_offline_rebuild": false
+  },
+  "ordinary_return_implication": {
+    "case": "typed-return-callable-union-control",
+    "source_sha256": "91773869a75c84149fed0eb1c9a41fb92b0f5a8bde66b2ead6701e4b0d77bf01",
+    "historical_expected_model": "unsupported",
+    "current_inferred_expected_model": "normal",
+    "new_return_agreement": false,
+    "unchanged_modules": [
+      "80-call-control",
+      "95-typed-calls",
+      "185-typed-string-returns"
+    ],
+    "paused_returns_verify": "No imports, retries or dependent work."
+  },
+  "installation": null,
+  "remaining": [
+    "Weak noncallable Stringable parameter callbacks and constrained references",
+    "Array/broader class-method callable resolution, nonpublic/static publication and transformed wrappers",
+    "Related property/return consumers, PIPE, lifecycle and full core"
+  ],
+  "artifacts": ".tools/calls-dev13-callable-precedence-20261003/ and .tools/calls-review13-callable-precedence-20261003/. Original sources, raw observations and failures are preserved outside Git. Source-identical metadata composition adds no execution credit."
+}

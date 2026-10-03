@@ -4731,22 +4731,30 @@
         "spec/semantics/95-typed-calls.watsup",
         "spec/semantics/84-call-integrity.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/callable_string_protocol.py",
+        "tests/semantics/callable_string_ini_protocol.py"
+      ],
       "source_tests": [
         "tests/semantics/typed_functions.py",
         "tests/semantics/typed_runtime_cases.json",
         "tests/semantics/typed_function_compiler.py",
         "tests/semantics/typed_function_protocol.py",
         "tests/semantics/typed_function_state.py",
-        "coverage/semantics/typed-function-review.json"
+        "coverage/semantics/typed-function-review.json",
+        "tests/semantics/callable_string.py",
+        "tests/semantics/callable_string_cases.json",
+        "tests/semantics/callable_string_ini.py",
+        "tests/semantics/callable_string_ini_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/Zend/zend_vm_def.h",
-        "coverage/semantics/typed-function-review.json"
+        "coverage/semantics/typed-function-review.json",
+        "coverage/semantics/callable-string-current-review.json"
       ],
-      "review": "Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
+      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Weak noncallable Stringable callbacks, broader callable typing/reference constraints and full family closure remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/weak-type.php"
       ]
@@ -4762,22 +4770,30 @@
         "spec/semantics/95-typed-calls.watsup",
         "spec/semantics/84-call-integrity.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/callable_string_protocol.py",
+        "tests/semantics/callable_string_ini_protocol.py"
+      ],
       "source_tests": [
         "tests/semantics/typed_functions.py",
         "tests/semantics/typed_runtime_cases.json",
         "tests/semantics/typed_function_compiler.py",
         "tests/semantics/typed_function_protocol.py",
         "tests/semantics/typed_function_state.py",
-        "coverage/semantics/typed-function-review.json"
+        "coverage/semantics/typed-function-review.json",
+        "tests/semantics/callable_string.py",
+        "tests/semantics/callable_string_cases.json",
+        "tests/semantics/callable_string_ini.py",
+        "tests/semantics/callable_string_ini_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/Zend/zend_vm_def.h",
-        "coverage/semantics/typed-function-review.json"
+        "coverage/semantics/typed-function-review.json",
+        "coverage/semantics/callable-string-current-review.json"
       ],
-      "review": "Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending.",
+      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Weak noncallable Stringable callbacks, broader callable typing/reference constraints and full family closure remain open.",
       "planned_source_tests": [
         "tests/semantics/conformance/strict-type.php"
       ]
@@ -8417,19 +8433,26 @@
         "spec/semantics/95-type-values.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/source_invoke_protocol.py"
+        "tests/semantics/source_invoke_protocol.py",
+        "tests/semantics/callable_string_protocol.py",
+        "tests/semantics/callable_string_ini_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/method_runtime.py",
-        "tests/semantics/source_invoke_cases.json"
+        "tests/semantics/source_invoke_cases.json",
+        "tests/semantics/callable_string.py",
+        "tests/semantics/callable_string_cases.json",
+        "tests/semantics/callable_string_ini.py",
+        "tests/semantics/callable_string_ini_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/Zend/zend_API.c",
-        "coverage/semantics/source-invoke-current-review.json"
+        "coverage/semantics/source-invoke-current-review.json",
+        "coverage/semantics/callable-string-current-review.json"
       ],
-      "review": "Public/default-public nonstatic source object dispatch/capture and ordinary by-value callable typing have bounded installed18a/b3a02ebc-1304 acceptance over final SET4015: author source21/finite20-537; independent source37/finite29-997, FIRST7-331 then SET79/finally50. Strict original streams/exits and fresh checked fixtures are independently audited. Private486874 source54/49-1475 and source70/58-1935, historical47ed/9c8 and unexecuted294 retain separate identities. Full first-class/array classification, __call/__callStatic, transformed weak wrappers, nonpublic/static publication and correlated retired history remain open."
+      "review": "Public/default-public nonstatic source __invoke dispatch/capture and callable typing retain bounded installed18a evidence. Known dual callable|string parameter reception is validated privately at f39 and on the current INI composition c852; see callable-string-current-review.json. General array/class-method classification, __call/__callStatic, nonpublic/static publication, transformed weak wrappers and correlated retired history remain open."
     },
     {
       "id": "classes.magic-string",

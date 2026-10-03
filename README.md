@@ -141,6 +141,10 @@ now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
 binds926 source/state/protocol gates and the one-test correction bridge.
 Remaining callable/type protocols stay pending.
+[Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
+retains admitted public invokable objects before weak string conversion, in either
+union order. Independent source and RECEIVE ownership checks pass; two source
+regressions and a live-receiver CONFIG fixture/53 also pass on the current INI union.
 [Call-result reference assignment](docs/semantics/SOURCE-CALL-REFERENCE-ASSIGNMENT.md)
 now preserves target aliases, source diagnostic lines and returned-array ownership;
 [its review](coverage/semantics/call-reference-review.json) binds933 source/state/protocol

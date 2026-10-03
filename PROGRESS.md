@@ -130,7 +130,13 @@ The independent private lanes currently include:
   audited; existing capture, named/unpack and finite CONFIG/SET guards survive.
   Private **486874ba6** source54/49-1,475 and source70/58-1,935, earlier47ed/9c8
   and the unexecuted named294 blueprint retain separate identities.
-  Array classification, callable/string precedence, nonpublic/static publication,
+  [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
+  is validated privately at **f39abebb0/04b4bd31/1307**: author source25/finite11/394
+  and independent source17/finite8/241, including two/one separate Unsupported
+  controls. The current INI composition **c852ab2dc/42be4def/1311** additionally
+  passes source2 and one live-receiver CONFIG fixture/53; no original gates repeat.
+  Shared pure classification changes one ordinary return expectation without new
+  return agreement. Array classification, nonpublic/static publication,
   transformed weak wrappers, real CONFIG PIPE and correlated retired history remain open.
   [Public invocation ledger](coverage/semantics/source-invoke-current-review.json)
   · [capture ledger](coverage/semantics/method-capture-current-review.json)
