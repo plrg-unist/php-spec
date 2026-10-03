@@ -27,7 +27,7 @@ def inputs():
         'tests/semantics/warning_read_prepare.py', 'tests/semantics/warning_read_run.py',
         'bin/php-semantics', '.tools/php/bin/php', '.tools/php-file.so',
         '_build/default/adapter/main.exe', 'tests/semantics/_build/default/numeric_runner.exe',
-        '.tools/p4spectec-algo-reused', '.tools/request-clock.so')]
+        '.tools/spectec/bin/p4spectec', '.tools/request-clock.so')]
     return {str(p): describe(p) for p in paths}
 
 

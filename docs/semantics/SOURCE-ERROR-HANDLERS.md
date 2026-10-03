@@ -73,7 +73,7 @@ locates the exact revisions, raw commands, exits and mixed evidence. Local tools
 are reused; a fresh combined offline rebuild and complete core remain open.
 
 In a private project root with the built local SpecTec algorithmic tool at
-`.tools/p4spectec-algo-reused`, prepare and run the exact report separately:
+`.tools/spectec/bin/p4spectec`, prepare and run the exact report separately:
 
 ```sh
 python3 -B tests/semantics/error_handler_prepare.py

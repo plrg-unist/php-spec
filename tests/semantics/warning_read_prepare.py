@@ -57,7 +57,7 @@ def main():
             fixture.write_text(PREFIX.replace('STAGE', stage)
                 + '\ndec $main() : bool\ndef $main() = true\n'
                 + ''.join('  -- ' + (c if c.startswith('PhpStep:') else 'if ' + c) + '\n' for c in conditions))
-            producer = recorded([str(ROOT / '.tools/p4spectec-algo-reused'), 'algo', *map(str, modules), str(fixture)],
+            producer = recorded([str(ROOT / '.tools/spectec/bin/p4spectec'), 'algo', *map(str, modules), str(fixture)],
                                 directory / 'compiler', 120)
             al = directory / 'compiler.stdout'
             passed = (producer['exit'] == 0 and not producer['timeout']

@@ -65,7 +65,7 @@ def main():
                                + '\ndec $main() : bool\ndef $main() = true\n'
                                + ''.join('  -- ' + (c if c.startswith('PhpStep:') else 'if ' + c) + '\n' for c in conditions))
             # Use the reviewed recorder to retain exits and kill owned groups.
-            command = [str(ROOT / '.tools/p4spectec-algo-reused'), 'algo', *map(str, modules), str(fixture)]
+            command = [str(ROOT / '.tools/spectec/bin/p4spectec'), 'algo', *map(str, modules), str(fixture)]
             result = recorded(command, directory / 'compiler', 120)
             stdout = (directory / 'compiler.stdout').read_bytes()
             passed = result['exit'] == 0 and not result['timeout'] and not (directory / 'compiler.stderr').read_bytes() and b'\ndef $main : bool =\n' in stdout
