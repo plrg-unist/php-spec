@@ -368,7 +368,13 @@ def $config_ini_unary_kind(pintrinsic) = false -- otherwise
 dec $config_ini_null_message(pconfigcall) : preqbytes
 def $config_ini_null_message(pconfigcall) = $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Passing null to parameter #1 ($option) of type string is deprecated")
 dec $config_ini_null_valid(pstate, pconfigcall) : bool
-def $config_ini_null_valid(S, pconfigcall) = ($config_invoke_valid(S, pconfigcall) /\ $config_ini_unary_kind(pconfigcall.KIND) /\ pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)] /\ ~$config_strict(S, pconfigcall) /\ S.FILEINCLUDEPATH =/= eps)
+def $config_ini_null_valid(S, pconfigcall) = true
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $config_ini_unary_kind(pconfigcall.KIND)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
+  -- if ~$config_strict(S, pconfigcall)
+  -- if S.FILEINCLUDEPATH =/= eps
+def $config_ini_null_valid(S, pconfigcall) = false -- otherwise
 dec $config_ini_option_miss(pconfigcall, preqbytes) : bool
 def $config_ini_option_miss(pconfigcall, n_option*) = true
   -- if n_option* =/= $ptascii("include_path")
