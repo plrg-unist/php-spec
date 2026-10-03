@@ -68,7 +68,7 @@ dec $ppclass_inherited_early(ppstate, pcpath, pchheader, pmethoddesc*) : bool
 def $ppclass_inherited_early(P, pcpath, pchheader, pmethoddesc*) = (P.EARLY = (pcpath) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME) /\ $ppclass_parent_known(P.CLASSES, pchheader.PARENT) /\ $ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*) = eps)
 
 dec $ppclass_inherited_add(ppstate, pcpath, pchheader, bool, ppropertydesc*, pmethoddesc*) : ppstate
-def $ppclass_inherited_add(P, pcpath, pchheader, b, ppropertydesc*, pmethoddesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND pchheader.KIND, NAME pchheader.NAME, PARENT pchheader.PARENT, INTERFACES $ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*), PROPERTIES ppropertydesc*, METHODS pmethoddesc*, ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY b, LINE P.LOCATION.LINE }]]
+def $ppclass_inherited_add(P, pcpath, pchheader, b, ppropertydesc*, pmethoddesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND pchheader.KIND, NAME pchheader.NAME, PARENT pchheader.PARENT, INTERFACES $ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*), PROPERTIES ppropertydesc*, METHODS pmethoddesc*, CONSTANTS $ppclass_constants(P.CLASSCONSTANTS, PORIGIN P.FOLD.SOURCE.ID pcpath), ABSTRACT pchheader.ABSTRACT, FINAL pchheader.FINAL, READONLY pchheader.READONLY, EARLY b, LINE P.LOCATION.LINE }]]
   -- if P.COMPLETION = PPCNORMAL
 def $ppclass_inherited_add(P, pcpath, pchheader, b, ppropertydesc*, pmethoddesc*) = P -- otherwise
 

@@ -21,13 +21,11 @@ def $pprefetchbody(P, pcpath, NExprStaticPropertyFetch phpType19 expression_name
 
 dec $class_static_info(pstate, porigin, ptbytes) : ppropertydesc?
 def $class_static_info(S, porigin_requested, ptbytes) = $ppproperty_desc_at($property_info_layout(S, porigin_requested, |S.CLASSES|), ptbytes)
-dec $class_static_select(pstate, porigin, ptbytes) : ppropertydesc?
 def $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if $class_static_info(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if ppropertydesc.STATIC
 def $class_static_select(S, porigin_requested, ptbytes) = eps -- otherwise
 
-dec $class_static_accessible(pstate, ppropertydesc) : bool
 def $class_static_accessible(S, ppropertydesc) = true
   -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
 def $class_static_accessible(S, ppropertydesc) = true
@@ -305,12 +303,11 @@ def $unset_array(S, BASE_CLASS_STATIC porigin_requested ptbytes) = $throw_scalar
   -- if S.TODO = ptask :: ptask_tail*
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
 
-dec $class_static_prepare_base(pstate, poperand, ptbytes, int) : pstate
-def $class_static_prepare_base(S, poperand_selector, ptbytes, z) = S[.BASE = BASE_CLASS_STATIC porigin_requested ptbytes][.RESULT = KNOWN PNULL]
+def $class_static_prepare_base_ready(S, poperand_selector, ptbytes, z) = S[.BASE = BASE_CLASS_STATIC porigin_requested ptbytes][.RESULT = KNOWN PNULL]
   -- if $scoped_selector_class(S, poperand_selector) = (porigin_requested)
-def $class_static_prepare_base(S, KNOWN (PSTRING ptbytes_class), ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ ptbytes_class ++ $ptascii("\" not found"), z)
+def $class_static_prepare_base_ready(S, KNOWN (PSTRING ptbytes_class), ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ ptbytes_class ++ $ptascii("\" not found"), z)
   -- if $scoped_selector_class(S, KNOWN (PSTRING ptbytes_class)) = eps
-def $class_static_prepare_base(S, poperand_selector, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "class static selector"] -- otherwise
+def $class_static_prepare_base_ready(S, poperand_selector, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "class static selector"] -- otherwise
 
 ;; FETCH_CLASS stores the selected class entry and releases its object operand
 ;; before the property-name expression runs.
@@ -477,7 +474,6 @@ rule PhpStep/class-static-reference-assignment: S ~> S[.TODO = [$at_task($origin
 rule PhpStep/class-static-reference-acquire: S ~> S[.TODO = [DIM_PREP (NExprStaticPropertyFetch phpType19 phpType31 metadata), PROPERTY_REF_FETCH $runtime_line(S, eps, NExprStaticPropertyFetch phpType19 phpType31 metadata)] ++ ptask_tail*]
   -- if S.TODO = (ACQUIRE (NExprStaticPropertyFetch phpType19 phpType31 metadata)) :: ptask_tail*
 
-dec $class_static_ref_name_matches(phpType31, ptbytes) : bool
 def $class_static_ref_name_matches(NVarLikeIdentifier (BYTES text) metadata, ptbytes) = (ptbytes = $base64(text))
 def $class_static_ref_name_matches(phpType31, ptbytes) = true
   -- if $class_static_computed_name(phpType31)

@@ -382,7 +382,7 @@ def $eval_trace_preparser(S, pcallcontext?, pframe) = eps -- otherwise
 def $eval_trace_saved(S, pcallcontext?, eps, n_owner) = eps
 def $eval_trace_saved(S, pcallcontext?, pframe :: pframe_tail*, n_owner) = $eval_trace_preparser(S, pcallcontext?, pframe) ++ $source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, n_owner) ++ $eval_frame_context(S, pframe, pframe_tail*) ++ $eval_trace_saved(S, pframe.CONTEXT, pframe_tail*, $nabs($(n_owner - 1)))
 dec $eval_exception_trace_raw(pstate) : ptraceframe*
-def $eval_exception_trace_raw(S) = $source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, |S.FRAMES|) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $eval_trace_saved(S, S.CURRENT, S.FRAMES, $nabs($(|S.FRAMES| - 1)))
+def $eval_exception_trace_raw(S) = $class_constant_trace(S) ++ $source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, |S.FRAMES|) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $eval_trace_saved(S, S.CURRENT, S.FRAMES, $nabs($(|S.FRAMES| - 1)))
 def $source_trace_prefixed(S, ptraceframe*) = $source_trace_first(ptraceframe* ++ $eval_exception_trace_raw(S))
 def $eval_exception_trace(S) = $source_trace_first($eval_exception_trace_raw(S))
 dec $eval_compile_throw(pstate, pevalcontext, pevalcontext*, text, nat*, int) : pstate

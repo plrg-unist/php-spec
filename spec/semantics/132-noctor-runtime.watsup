@@ -111,13 +111,13 @@ def $noctor_arg_line(S, pnoctorcall) = $runtime_line(S, [PCFIELD 1, PCINDEX pnoc
   -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if phpType7*[pnoctorcall.INDEX] = NArg phpType3 expression phpType4_ref phpType4_unpack metadata_arg
 
-dec $noctor_start(pstate, preqbytes, phpType7*, int) : pstate
-def $noctor_start(S, preqbytes, phpType7*, z) = S_new[.TODO = (NOCTOR_ARGS {SITE porigin, CLASS preqbytes, OBJECT n, ARGUMENTS phpType7*, INDEX 0, SENT eps, LINE z}) :: S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $noctor_start_ready(pstate, preqbytes, phpType7*, int) : pstate
+def $noctor_start_ready(S, preqbytes, phpType7*, z) = S_new[.TODO = (NOCTOR_ARGS {SITE porigin, CLASS preqbytes, OBJECT n, ARGUMENTS phpType7*, INDEX 0, SENT eps, LINE z}) :: S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.ORIGIN = (porigin)
   -- if S_new = $new_class(S, preqbytes, z)
   -- if S_new.COMPLETION = NORMAL
   -- if S_new.RESULT = KNOWN (POBJECT n)
-def $noctor_start(S, preqbytes, phpType7*, z) = S_new
+def $noctor_start_ready(S, preqbytes, phpType7*, z) = S_new
   -- if S_new = $new_class(S, preqbytes, z)
   -- if S_new.COMPLETION =/= NORMAL
 

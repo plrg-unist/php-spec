@@ -1,3 +1,4 @@
+dec $noctor_start(pstate, preqbytes, phpType7*, int) : pstate
 ;; Compiled source descriptors and live class names are separate tables.
 def $class_at(eps, porigin) = eps
 def $class_at(pclassdesc :: pclassdesc_tail*, porigin) = (pclassdesc)
@@ -102,7 +103,7 @@ def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "invalid compiled 
   -- if ~pclassdesc.ABSTRACT
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
   -- if $property_initial_slots(S, $property_layout(S, porigin, |S.CLASSES|)) = eps
-rule PhpStep/new-class: S ~> $new_class(S[.TODO = ptask_tail*], preqbytes, $runtime_line(S, eps, NExprNew name (SEQUENCE eps) metadata))
+rule PhpStep/new-class: S ~> $noctor_start(S[.TODO = ptask_tail*], preqbytes, eps, $runtime_line(S, eps, NExprNew name (SEQUENCE eps) metadata))
   -- if S.TODO = (EVAL (NExprNew name (SEQUENCE eps) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew name (SEQUENCE eps) metadata)
