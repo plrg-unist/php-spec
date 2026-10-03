@@ -4749,7 +4749,8 @@
         "tests/semantics/callable_string_ini.py",
         "tests/semantics/callable_string_ini_cases.json",
         "tests/semantics/typed_static_string_assignment.py",
-        "tests/semantics/typed_static_callable.py"
+        "tests/semantics/typed_static_callable.py",
+        "tests/semantics/typed_static_restore.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
@@ -4759,7 +4760,7 @@
         "coverage/semantics/callable-string-current-review.json",
         "coverage/semantics/typed-static-string-assignment-review.json"
       ],
-      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Weak noncallable Stringable callbacks, broader callable typing/reference constraints and full family closure remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755 and current ARG/callable source1 BS|ok are independently accepted; prior b566 gates stay distinct (typed-static-string-assignment-review.json).",
+      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Weak noncallable Stringable callbacks, broader callable typing/reference constraints and full family closure remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json).",
       "planned_source_tests": [
         "tests/semantics/conformance/weak-type.php"
       ]
@@ -4803,7 +4804,7 @@
         "coverage/semantics/callable-string-current-review.json",
         "coverage/semantics/typed-static-string-assignment-review.json"
       ],
-      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Weak noncallable Stringable callbacks, broader callable typing/reference constraints and full family closure remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755 and current ARG/callable source1 BS|ok are independently accepted; prior b566 gates stay distinct (typed-static-string-assignment-review.json).",
+      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Weak noncallable Stringable callbacks, broader callable typing/reference constraints and full family closure remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json).",
       "planned_source_tests": [
         "tests/semantics/conformance/strict-type.php"
       ]
@@ -8024,7 +8025,7 @@
         "coverage/semantics/interface-internal-renewed-review.json",
         "coverage/semantics/class-link-phase-review.json"
       ],
-      "review": "Installed177\u2013180 at5c423b245: ordered source links, nominal relations, variance and abstract obligations. Installed finite 189 at cbd5236d2 adds inherited internal contracts and source wakeup checks, with historical evidence kept at its original identities and reviewed property/default-cache/catalogue bridges plus installed source/rollback smoke in interface-internal-renewed-review.json. Seven explicit Unsupported controls conservatively bound compiler publication/order; the real mechanism is required immediately before constants 183/184. Two reporting-timing originals remain Unsupported intrinsic controls. Earlier 30,980-source syntax/inventory evidence covers unchanged parser/AST projection. Other internal tables, hooks, traits, selectors and serialization lifecycle remain required; no family closure."
+      "review": "Installed177–180 at5c423b245: ordered source links, nominal relations, variance and abstract obligations. Installed finite 189 at cbd5236d2 adds inherited internal contracts and source wakeup checks, with historical evidence kept at its original identities and reviewed property/default-cache/catalogue bridges plus installed source/rollback smoke in interface-internal-renewed-review.json. Seven explicit Unsupported controls conservatively bound compiler publication/order; the real mechanism is required immediately before constants 183/184. Two reporting-timing originals remain Unsupported intrinsic controls. Earlier 30,980-source syntax/inventory evidence covers unchanged parser/AST projection. Other internal tables, hooks, traits, selectors and serialization lifecycle remain required; no family closure."
     },
     {
       "id": "classes.traits",
@@ -8359,7 +8360,8 @@
         "tests/semantics/class_static_properties.py",
         "tests/semantics/class_static_references.py",
         "tests/semantics/typed_static_string_assignment.py",
-        "tests/semantics/typed_static_callable.py"
+        "tests/semantics/typed_static_callable.py",
+        "tests/semantics/typed_static_restore.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
@@ -8371,7 +8373,7 @@
         "coverage/semantics/class-static-properties.json",
         "coverage/semantics/typed-static-string-assignment-review.json"
       ],
-      "review": "Bounded static descriptors and scoped calls model visibility, override priority, forwarding called classes, active nonstatic receivers, literal and parser-folded constructor arms, dynamic class/name order, and source-owned selected targets. First-class source method captures preserve descriptors, called classes, receivers and direct trace frames; finite internal getter and Closure->__invoke captures, interface methods and broader class integration remain open. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755 and current ARG/callable source1 BS|ok are independently accepted; prior b566 gates stay distinct (typed-static-string-assignment-review.json)."
+      "review": "Bounded static descriptors and scoped calls model visibility, override priority, forwarding called classes, active nonstatic receivers, literal and parser-folded constructor arms, dynamic class/name order, and source-owned selected targets. First-class source method captures preserve descriptors, called classes, receivers and direct trace frames; finite internal getter and Closure->__invoke captures, interface methods and broader class integration remain open. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json)."
     },
     {
       "id": "classes.instance-lookup",
@@ -8533,7 +8535,8 @@
         "tests/semantics/class_static_properties.py",
         "tests/semantics/class_static_references.py",
         "tests/semantics/typed_static_string_assignment.py",
-        "tests/semantics/typed_static_callable.py"
+        "tests/semantics/typed_static_callable.py",
+        "tests/semantics/typed_static_restore.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
@@ -8545,7 +8548,7 @@
         "coverage/semantics/class-static-properties.json",
         "coverage/semantics/typed-static-string-assignment-review.json"
       ],
-      "review": "Public/protected/private backed declarations retain typed defaults, invariant inherited overrides and original prototype visibility. Writes and typed aliases use canonical slot keys; diagnostics use declaring identity and raw names. Hooks, readonly/promotion and broader type forms remain open. Historical properties-review.json and current property-visibility-review.json retain separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755 and current ARG/callable source1 BS|ok are independently accepted; prior b566 gates stay distinct (typed-static-string-assignment-review.json)."
+      "review": "Public/protected/private backed declarations retain typed defaults, invariant inherited overrides and original prototype visibility. Writes and typed aliases use canonical slot keys; diagnostics use declaring identity and raw names. Hooks, readonly/promotion and broader type forms remain open. Historical properties-review.json and current property-visibility-review.json retain separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json)."
     },
     {
       "id": "properties.uninitialized",
@@ -8838,7 +8841,7 @@
         "coverage/semantics/class-static-properties.json",
         "coverage/semantics/typed-static-string-assignment-review.json"
       ],
-      "review": "Public/protected/private reference cells carry ordered non-owning typed sources keyed by object and physical slot. Unconstrained binding coerces before detaching the old source; constrained binding is atomic, reports FIRST-source conflicts and preserves conversion effects. Self-rebinding removes/adds the source. By-reference parameter/return no-coercion rules remain separate. Nullsafe sends, overflow and clone aliases retain their reviewed bounds; readonly/hooks/magic remain open. Historical property-references-review.json and current property-visibility-review.json record separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755 and current ARG/callable source1 BS|ok are independently accepted; prior b566 gates stay distinct (typed-static-string-assignment-review.json)."
+      "review": "Public/protected/private reference cells carry ordered non-owning typed sources keyed by object and physical slot. Unconstrained binding coerces before detaching the old source; constrained binding is atomic, reports FIRST-source conflicts and preserves conversion effects. Self-rebinding removes/adds the source. By-reference parameter/return no-coercion rules remain separate. Nullsafe sends, overflow and clone aliases retain their reviewed bounds; readonly/hooks/magic remain open. Historical property-references-review.json and current property-visibility-review.json record separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json)."
     },
     {
       "id": "declarations.constants",

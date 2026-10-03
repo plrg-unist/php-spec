@@ -46,6 +46,13 @@ On current ARG198/199 plus callable-first95, the fresh source f19 returns
 native30/model90/application60 limits and empty stderr. Source-equivalent
 publication and reused executables add no new gate or offline rebuild credit.
 
+The current Restore union7c5 retains that source identity and adds one fresh
+normal tuple `BPR0.:1|s\0typed`. A property callback invokes Stringable Restore;
+the option callback observes zero arguments and mutates the raw path. Restore
+then resets the initial path, observed through scalar SET, while the saved
+`store` caller retains one argument. The property keeps every returned byte.
+No getter or broader Restore behavior is claimed by this source.
+
 Instance, compound/coalescing, internal Throwable override, delayed receiver
 and broader RHS/reference consumers remain open. CV constrained-reference
 conversion has separate mutable-source and holder timing. The default-false186

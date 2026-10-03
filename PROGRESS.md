@@ -7,15 +7,19 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Typed static Stringable assignment197 now composes with accepted ARG198/199,
-callable-first parameter admission and raw/effective INI171/172. Tested **f19c0a0bc**
-on **b0dbe76ce** accepts the fresh `func_get_arg(0)` → typed property source tuple
-`BS|ok`. The earlier focused INI union **a09291886** accepts source2 and755 finite
-assertions (normal266, throw256, captured file165, static68); its original normal329
-timeout has no state credit. Prior **b566** author31/independent15 evidence remains
-distinct. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json).
-Reused local executables and source-equivalent publication add no rebuild or
-new execution credit; broader consumers and full core remain open.
+Typed static Stringable assignment197 composes with current Restore172,
+ARG198/199, callable-first admission and raw/effective INI171/172. Tested
+**7c5d4d06c** over **c95946455** accepts the nested Restore/property source
+`BPR0.:1|s\0typed`: callbacks see zero arguments, the saved caller keeps one,
+Restore resets the initial path and the property preserves all string bytes.
+Earlier **f19c0a0bc** accepts the live `func_get_arg(0)` source `BS|ok`; focused
+INI **a09291886** accepts source2/755 (normal266, throw256, captured file165,
+static68). Its original normal329 timeout has no state credit. Prior **b566**
+author31/independent15 gates remain distinct.
+[Property ledger](coverage/semantics/typed-static-string-assignment-review.json).
+Reused executables and source-equivalent publication add no rebuild or fresh
+execution credit; broader property consumers and full core remain open.
+
 Stringable Restore now converts weak options through checked callbacks and uses
 full-name lookup: exact `include_path` resets the initial raw value, while
 empty, case and NUL-name misses preserve callback mutations. Original tested
@@ -118,15 +122,15 @@ have their own profiles. Their counts are not interchangeable.
 Generic156 delayed reference-return replay remains open, including runtime
 foreach/switch owners and consumed finalizers. Temporary-return Notice timing
 and typed by-reference string conversion186 require separate repairs, captured
-operand ownership, write-back and post-finally rejection. Weak parameter and
-property string conversion, constrained references, interpolation and dynamic
+operand ownership, write-back and post-finally rejection. Broader weak parameter
+and property string conversion, constrained references, interpolation and dynamic
 names remain separate consumers; the inverse typed string-reference object
 parameter/config callback combination is untested.
 [Finally contract](docs/semantics/SOURCE-FINALLY.md) ·
 [string contract](docs/semantics/USER-STRING.md).
 
 Ordinary static properties187/188 and generic91 deferred default-cache
-authentication are installed. Typed property/CV-reference object conversion,
+authentication are installed. Broader property/CV-reference object conversion,
 default-false186 witness support, exceptional singleton clone provenance,
 readonly/asymmetric set access and scoped defaults remain open.
 [Property ledger](coverage/semantics/class-static-properties.json) ·
@@ -155,8 +159,9 @@ Current family status:
   · [callable parameter ledger](coverage/semantics/callable-string-current-review.json).
 - Properties197: weak simple typed static Stringable assignment, live-row alias
   rechecks and callback ownership are implemented and independently accepted in
-  the current ARG/CALLS/INI composition above. Full-byte INI/property separation,
-  leading-NUL rejection, inherited capture/file and original static controls pass.
+  the current Restore/ARG/CALLS/INI composition above. Nested Restore keeps
+  current/saved argument frames; full-byte INI/property separation, leading-NUL
+  rejection, inherited capture/file and original static controls pass.
   Delayed receivers, non-CV reference acquisition, constrained-reference object
   conversion, readonly/asymmetric access and broader consumers remain open.
   [Property ledger](coverage/semantics/typed-static-string-assignment-review.json).

@@ -140,9 +140,10 @@ private gates retain separate identities. Scoped class defaults remain open.
 [Typed static Stringable assignment197](docs/semantics/TYPED-STATIC-STRING.md)
 converts weak object values, then checks the live row and alias constraints while
 preserving callback effects and cleanup. The focused INI union accepts two source
-tuples and755 finite assertions; a fresh current ARG/callable witness produces
-`BS|ok` from a live `func_get_arg(0)` value. Earlier CALLS/SET/property gates keep
-their own identities in the [ledger](coverage/semantics/typed-static-string-assignment-review.json).
+tuples and755 finite assertions. Distinct current ARG/callable and nested Restore
+witnesses preserve live argument frames, callback order and full property bytes.
+Earlier CALLS/SET/property gates keep their own tested identities in the
+[ledger](coverage/semantics/typed-static-string-assignment-review.json).
 Broader property consumers,186 producers and full core remain open.
 [Source strict_types declarations](docs/semantics/SOURCE-STRICT-DECLARATIONS.md) now
 execute with source-checked unit/function flags; [independent review](coverage/semantics/strict-declaration-review.json)

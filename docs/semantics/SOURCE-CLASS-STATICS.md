@@ -53,10 +53,10 @@ checks. A failed check preserves the shared cell, row and ordered sources.
 The bounded [typed static Stringable consumer197](TYPED-STATIC-STRING.md)
 implements weak simple object assignment. It rereads the live static row after
 `__toString`, checks the current alias's ordered constraints and preserves callback
-side effects, caller scope and cleanup. The current ARG/callable source and focused
-INI source2/755 gates have independent original-raw acceptance; earlier CALLS/SET
-checks retain their own identities. Instance/compound consumers and broader
-receiver/reference acquisition remain open.
+side effects, caller scope and cleanup. The current nested Restore source,
+earlier ARG/callable source and focused INI source2/755 gates have independent
+original-raw acceptance with separate tested identities. Instance/compound
+consumers and broader receiver/reference acquisition remain open.
 
 CV constrained-reference object assignment has separate timing: conversion can
 overwrite the captured cell after a callback adds a type source, leaving an
