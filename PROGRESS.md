@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Error-handler/reporting206/207 is validated privately: author eighteen normal
+and five expected PHP-error tuples plus a separate Unsupported ingress control,
+eight finite fixtures/298, and independent three normal sources/three240.
+The independent state checks retain81/83 and correct76; original failures remain
+failed. The new composition on installed array205 **0489f6506** preserves current
+property197, compiler publication and two-slot INI. Named internal trace readback164
+is repaired; its property and array-caller interactions and canonical installation
+remain pending. [Handler review](coverage/semantics/error-handlers-review.json)
+keeps the exact tested revisions/profiles and reused-tool limits distinct.
+Broader warning producers, callback forms, reporting/INI readback, lifecycle and
+full core remain open.
+
 Public concrete source method arrays205 support callable admission, dynamic
 selection and first-class capture/clone. Immutable selected targets preserve
 referenced-member choices, inherited owner/called class and receiver ownership.

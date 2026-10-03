@@ -9499,28 +9499,62 @@
     {
       "id": "diagnostics.error-reporting",
       "milestone": "3a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend.c"
+      "implementation": [
+        "spec/semantics/206-error-handlers.watsup",
+        "spec/semantics/207-error-handler-runtime.watsup",
+        "spec/semantics/163-throwable-trace-storage.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/error_handler_protocol.py",
+        "tests/semantics/error_handler_prepare.py",
+        "tests/semantics/error_handler_property_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/error_handler_cases.py",
+        "tests/semantics/error_handler_run.py",
+        "tests/semantics/error_handler_array_registration.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c",
+        "vendor/php-src/Zend/zend_builtin_functions.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_API.c",
+        "vendor/php-src/main/main.c"
+      ],
+      "review": "Bounded private206/207: author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 (81+83+76), with mixed revisions and native reuse recorded in error-handlers-review.json. Current0489 composition preserves property/compiler/INI/array targets and repairs164 internal-frame readback; affected interaction gates and installation remain pending. Malformed callback-array shape errors are implemented, with method-resolution/dispatch and broader warning/API/exception/lifecycle/reporting readback still open. No full-family or rebuild claim."
     },
     {
       "id": "diagnostics.error-handler-stack",
       "milestone": "3a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend.c"
+      "implementation": [
+        "spec/semantics/206-error-handlers.watsup",
+        "spec/semantics/207-error-handler-runtime.watsup",
+        "spec/semantics/163-throwable-trace-storage.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/error_handler_protocol.py",
+        "tests/semantics/error_handler_prepare.py",
+        "tests/semantics/error_handler_property_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/error_handler_cases.py",
+        "tests/semantics/error_handler_run.py",
+        "tests/semantics/error_handler_array_registration.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c",
+        "vendor/php-src/Zend/zend_builtin_functions.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_API.c",
+        "vendor/php-src/main/main.c"
+      ],
+      "review": "Bounded private206/207: author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 (81+83+76), with mixed revisions and native reuse recorded in error-handlers-review.json. Current0489 composition preserves property/compiler/INI/array targets and repairs164 internal-frame readback; affected interaction gates and installation remain pending. Malformed callback-array shape errors are implemented, with method-resolution/dispatch and broader warning/API/exception/lifecycle/reporting readback still open. No full-family or rebuild claim."
     },
     {
       "id": "diagnostics.exception-handler-stack",
@@ -9538,15 +9572,32 @@
     {
       "id": "diagnostics.handler-throws",
       "milestone": "3a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend.c"
+      "implementation": [
+        "spec/semantics/206-error-handlers.watsup",
+        "spec/semantics/207-error-handler-runtime.watsup",
+        "spec/semantics/163-throwable-trace-storage.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/error_handler_protocol.py",
+        "tests/semantics/error_handler_prepare.py",
+        "tests/semantics/error_handler_property_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/error_handler_cases.py",
+        "tests/semantics/error_handler_run.py",
+        "tests/semantics/error_handler_array_registration.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c",
+        "vendor/php-src/Zend/zend_builtin_functions.c",
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_API.c",
+        "vendor/php-src/main/main.c"
+      ],
+      "review": "Bounded private206/207: author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 (81+83+76), with mixed revisions and native reuse recorded in error-handlers-review.json. Current0489 composition preserves property/compiler/INI/array targets and repairs164 internal-frame readback; affected interaction gates and installation remain pending. Malformed callback-array shape errors are implemented, with method-resolution/dispatch and broader warning/API/exception/lifecycle/reporting readback still open. No full-family or rebuild claim."
     },
     {
       "id": "diagnostics.uncaught-throwable",

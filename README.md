@@ -178,8 +178,12 @@ caller demand, alias ownership and shared-cell type coercion; [independent revie
 binds942 source/state/protocol gates and the one-state-test bridge.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
-binds951 gates and its print-only bridge. Reporting configuration, handlers,
-remaining call protocols and full callable integration remain required.
+binds951 gates and its print-only bridge. The private
+[error-handler slice](docs/semantics/SOURCE-ERROR-HANDLERS.md) implements reporting,
+registration/restoration, source callbacks and bounded missing-CV continuations.
+Author23 source/eight298 and independent three source/three240 gates pass with
+mixed provenance; current-master interactions and installation remain pending.
+Wider diagnostic/callable protocols and full core remain required.
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
 binds exact PHPT/CLI diagnostics and reproducible parser patches. Positional
