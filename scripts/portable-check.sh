@@ -3,7 +3,9 @@
 set -euo pipefail
 project_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 audit_dir=$(mktemp -d /var/tmp/php-spec-portable.XXXXXX)
-python3 - "$project_dir" "$audit_dir" <<'SEAL'
+namespace_env=(PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  OPAMROOTISOK=1 JOBS=1 DUNE_JOBS=1)
+python3 - "$project_dir" "$audit_dir" "${namespace_env[@]}" <<'SEAL'
 import hashlib, json, stat, sys
 from pathlib import Path
 root=Path(sys.argv[1]); inputs=Path(sys.argv[2])/'.tools/portable-inputs'
@@ -23,19 +25,24 @@ seals={'source-vector.json': vector(names), 'immutable-archives.json': vector((
     ('encoding-spellings.json','grammar.json','scanner.json','grammar-mapping.json','scanner-mapping.json'))}
 for name,value in seals.items():
     (inputs/name).write_text(json.dumps(value,indent=2)+'\n')
+launch={'supplied_unshare_argv': ['sudo','unshare','--mount','--net','--pid','--fork',
+        '--mount-proc','--kill-child','/bin/bash','-s','--',str(inputs.parent.parent),*sys.argv[3:]],
+        'supplied_env_i_argv': ['env','-i',*sys.argv[3:],'python3','-'],
+        'supplied_unshare_cwd': str(Path.cwd()), 'supplied_env_i_cwd': str(inputs.parent.parent)}
+(inputs/'namespace-launch.json').write_text(json.dumps(launch,indent=2)+'\n')
 SEAL
 tar -C "$project_dir" --exclude='./.git' --exclude='./.tools' \
   --exclude='./_build' --exclude='./tests/semantics/_build' --exclude='./build' \
   -cf - . | tar -C "$audit_dir" -xf -
 printf 'Portable checkout: %s\n' "$audit_dir"
-sudo unshare --mount --net --pid --fork --mount-proc --kill-child /bin/bash -s -- "$audit_dir" <<'AUDIT'
+sudo unshare --mount --net --pid --fork --mount-proc --kill-child /bin/bash -s -- "$audit_dir" "${namespace_env[@]}" <<'AUDIT'
 set -euo pipefail
 mount --make-rprivate /
 mount -t tmpfs tmpfs /home
 mount -t tmpfs tmpfs /tmp
 cd "$1"
-exec env -i PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-  OPAMROOTISOK=1 JOBS=1 DUNE_JOBS=1 python3 - <<'PHASES'
+shift
+exec env -i "$@" python3 - <<'PHASES'
 import hashlib, json, os, shutil, signal, stat, subprocess, sys, time
 from pathlib import Path
 
@@ -81,6 +88,7 @@ try:
     entry = json.loads((inputs / 'source-vector.json').read_text())
     archives = json.loads((inputs / 'immutable-archives.json').read_text())
     inventory = json.loads((inputs / 'initial-inventory.json').read_text())
+    namespace_launch = json.loads((inputs / 'namespace-launch.json').read_text())
     assert source_vector() == entry, 'copied source differs from original seal'
     assert vector(archives) == archives, 'copied immutable archives differ from original seal'
     assert vector(inventory_names) == inventory, 'copied inventory differs from original seal'
@@ -90,6 +98,9 @@ try:
                  'no_git': not (root / '.git').exists(), 'initial_tools': sorted(path.name for path in (root / '.tools').iterdir())}
     (raw / 'namespace.json').write_text(json.dumps(namespace, indent=2) + '\n')
     assert namespace['pid'] == 1 and namespace['no_git']
+    for item in namespace_launch['supplied_env_i_argv'][2:-2]:
+        key, value = item.split('=', 1)
+        assert namespace['environment'][key] == value
     assert namespace['initial_tools'] == ['portable-inputs', 'portable-raw']
     assert not (root / '_build').exists() and not (root / 'tests/semantics/_build').exists()
     mounts = {line.split()[4]: line.split(' - ', 1)[1].split()[0]
@@ -97,7 +108,7 @@ try:
     assert mounts.get('/home') == mounts.get('/tmp') == 'tmpfs'
     assert {line.split(':', 1)[0].strip() for line in namespace['network_interfaces'].splitlines()[2:]} == {'lo'}
     report.update(result='running', original_seal_inputs=vector(
-        '.tools/portable-inputs/' + name for name in ('source-vector.json', 'immutable-archives.json', 'initial-inventory.json')),
+        '.tools/portable-inputs/' + name for name in ('source-vector.json', 'immutable-archives.json', 'initial-inventory.json', 'namespace-launch.json')),
         namespace_sha256=sha(raw / 'namespace.json'))
 except Exception as error:
     report.update(result='entry_guard_failure', error=repr(error)); save(); raise SystemExit(1)
@@ -105,7 +116,8 @@ save()
 runtime = None
 for index, phase in enumerate(phases):
     directory = raw / phase['id']; directory.mkdir()
-    record = dict(phase, cwd=str(root), result='preparing', exit_status=None, pass_=False)
+    record = dict(phase, cwd=str(root), supplied_argv=phase['command'],
+                  supplied_environment=dict(os.environ), result='preparing', exit_status=None, pass_=False)
     record['pass'] = record.pop('pass_')
     report['phases'].append(record)
     persist = lambda: ((directory / 'status.json').write_text(json.dumps(record, indent=2) + '\n'), save())
@@ -136,8 +148,9 @@ for index, phase in enumerate(phases):
     started = time.monotonic()
     try:
         with (directory / 'stdout').open('wb') as stdout, (directory / 'stderr').open('wb') as stderr:
-            process = subprocess.Popen(phase['command'], cwd=root, stdout=stdout, stderr=stderr, start_new_session=True)
-            record.update(result='running', pid=process.pid, owned_pgid=process.pid)
+            process = subprocess.Popen(record['supplied_argv'], cwd=root, env=record['supplied_environment'],
+                                       stdout=stdout, stderr=stderr, start_new_session=True)
+            record.update(result='running', pid=process.pid, owned_pgid=process.pid, popen_args=process.args)
             (directory / 'command.json').write_text(json.dumps(record, indent=2) + '\n'); persist()
             try:
                 record['exit_status'] = process.wait(timeout=phase['cap_seconds'])
