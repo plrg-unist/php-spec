@@ -120,6 +120,9 @@ def run(match, catalogue=DEFAULT_CASES):
         passed = passed and actual.get('exit_status') == row['exit_status']
         stderr = base64.b64decode(row['stderr_template_base64']).replace(
             b'{FILE}', str(source).encode())
+        for child in row.get('files', []):
+            stderr = stderr.replace(b'{FILE:' + child['name'].encode() + b'}',
+                                    os.fsencode(directory / child['name']))
         passed = passed and actual.get('stdout') == row['stdout_base64']
         passed = passed and actual.get('stderr') == base64.b64encode(stderr).decode()
         records.append({'id': row['id'], 'pass': passed,

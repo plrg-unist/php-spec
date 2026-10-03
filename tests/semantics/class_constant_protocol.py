@@ -9,12 +9,14 @@ from recorded_worker import Worker
 from method_runtime import owned_members
 ENV={'PATH':'/usr/bin:/bin','LC_ALL':'C','TZ':'UTC','PYTHONDONTWRITEBYTECODE':'1','GIT_OPTIONAL_LOCKS':'0'}
 SOURCES={
+ 'temporal-prefix':'<?php\necho "run";\nclass A { public const X = N; }\nconst N = "x";\ninclude __DIR__ . "/later-cache-child.php";\necho A::X;\necho "after";\n',
  'update-order':'<?php\nclass A {const X=N; const Y=M;}\nnew A;\n',
  'literal-selection':'<?php\nclass A {const X=N;}\nclass B {const Y=M;}\nconst N=12; const M=13;\necho A::X;\n',
  'cache-flag-authority':'<?php\nclass A {}\nclass B {const Y=N;}\nconst N=1;\necho B::Y;\nnew A;\nnew B;\n',
  'failed-update-prefix':'<?php\nclass A {const X=N; const Y=MISSING;}\nconst N=1;\ntry {new A;} catch (Error $e) {}\n',
  'root-temporal-authority':'<?php\nclass A {const X=N;}\nconst N=1;\necho A::X;\nif (true) {class B extends A {}}\nnew B;\n',
 }
+TEMPORAL_CHILD='<?php\nclass B { public const int X = A::X; }\necho "child";\n'
 PREFIX='''dec $class_constant_test_stage(pstate, nat) : bool
 def $class_constant_test_stage(S, 0) = true
   -- if S.TODO = (CLASS_CONST_UPDATE porigin z) :: ptask_tail*
@@ -147,6 +149,44 @@ CHECKS={
 def sha(p):
  return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
+def temporal_conditions(source,main_fixture,child,child_fixture):
+ seq=lambda value:'('+str(list(value))+')'
+ opened='(FILE_OPENED 0 '+seq(bytes(source))+' '+seq(bytes(child))+' '+seq(bytes(child))+' '+seq(bytes(child))+' '+seq(child.read_bytes())+')'
+ accepted='(SOURCE_ACCEPT 1 '+seq(child.read_bytes())+' '+child_fixture+')'
+ return [
+  'S_resolve = $php_file_run('+main_fixture+', 1000, '+seq(bytes(source))+', '+seq(bytes(ROOT))+')',
+  'S_resolve.COMPLETION = SOURCE_PENDING',
+  'S_parse = $file_open_resume(S_resolve, '+opened+')',
+  'S_parse.COMPLETION = SOURCE_PENDING',
+  '$class_constant_compile_entry(S_parse, 1) = (S_entry)',
+  'S_entry.CLASSCONSTANTCACHE = eps',
+  '$class_named(S_entry.CLASSNAMES, $ptascii("a")) = (porigin_a)',
+  '$class_named(S_entry.CLASSNAMES, $ptascii("b")) = eps',
+  'S_running = $file_parse_resume(S_parse, '+accepted+')',
+  'S_running.COMPLETION = NORMAL',
+  'S_done = $drive_steps(S_running, 1000)',
+  'S_done.COMPLETION = NORMAL',
+  'S_done.TODO = eps',
+  'S_done.EVENTS = [OUTPUT $ptascii("run"), OUTPUT $ptascii("child"), OUTPUT $ptascii("x"), OUTPUT $ptascii("after")]',
+  '$class_constant_state_valid(S_done)',
+  '$declaration_history_valid(S_done)',
+  '$eval_state_valid(S_done)',
+  '$class_named(S_done.CLASSNAMES, $ptascii("b")) = (porigin_b)',
+  '$class_constant_lookup(S_done, porigin_a, $ptascii("X"), |S_done.CLASSES|) = (pclassconstantdesc_x)',
+  'S_done.CLASSCONSTANTHISTORY = [CCLINK porigin_a n_a, CCLINK porigin_b n_b, CCCACHE pclassconstantdesc_x.ORIGIN porigin_trigger n_cache]',
+  'n_before = $(|S_parse.DECLARATIONS| - 1)',
+  '$(n_cache > n_before)',
+  '$class_constant_compile_entry(S_done, 1) = (S_original_entry)',
+  'S_original_entry.CLASSCONSTANTCACHE = eps',
+  'S_forged = S_done[.CLASSCONSTANTHISTORY = [CCLINK porigin_a n_a, CCCACHE pclassconstantdesc_x.ORIGIN porigin_trigger n_before, CCLINK porigin_b n_b]]',
+  '$class_constant_history_valid(S_forged)',
+  '$source_unit(S_forged.SOURCES, 1) = (pcunit_child)',
+  'P_forged = $eval_source_ppstate(S_forged, pcunit_child)',
+  '~$compilation_image_valid(S_forged, pcunit_child, P_forged)',
+  '$eval_state_valid(S_forged)',
+  '~$declaration_history_valid(S_forged)',
+ ]
+
 def prepare(out):
  out=Path(out).resolve();out.mkdir(parents=True,exist_ok=False)
  types.ENV=ENV
@@ -164,7 +204,15 @@ def prepare(out):
    parsed=frontend.request({'op':'parse','source':base64.b64encode(path.read_bytes()).decode()});assert parsed['accepted'],parsed
    checked=adapter.request({'op':'check','ast':parsed['ast'],'fixture':True});assert checked['ok'],checked
    (out/(case+'.checked.json')).write_text(json.dumps(checked,indent=2)+'\n')
-   conditions=['S_initial = $php_run('+checked['fixture']+', 0, '+json.dumps(base64.b64encode(bytes(path)).decode())+')',*CHECKS[case]]
+   if case=='temporal-prefix':
+    child=out/'later-cache-child.php';child.write_bytes(TEMPORAL_CHILD.encode())
+    encoded=base64.b64encode(bytes(child)).decode()
+    parsed_child=frontend.request({'op':'parse-file','id':'0','mode':'file','profile':'cli-raw-85','requested':encoded,'resolved':encoded,'opened':encoded,'source':base64.b64encode(child.read_bytes()).decode()});assert parsed_child['accepted'],parsed_child
+    checked_child=adapter.request({'op':'check','ast':parsed_child['ast'],'fixture':True});assert checked_child['ok'],checked_child
+    (out/'later-cache-child.checked.json').write_text(json.dumps(checked_child,indent=2)+'\n')
+    conditions=temporal_conditions(path,checked['fixture'],child,checked_child['fixture'])
+   else:
+    conditions=['S_initial = $php_run('+checked['fixture']+', 0, '+json.dumps(base64.b64encode(bytes(path)).decode())+')',*CHECKS[case]]
    fixture=out/(case+'.watsup');fixture.write_text(PREFIX+'\ndec $main() : bool\ndef $main() = true\n'+''.join('  -- if '+c+'\n' for c in conditions))
    records.append({'id':case,'source':str(path),'source_sha256':sha(path),'fixture':str(fixture),'fixture_sha256':sha(fixture),'main_predicates':len(conditions)})
  finally:

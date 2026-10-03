@@ -1,5 +1,5 @@
 {
-  "scope": "Partial class-constant source catalogue: original25 plus separately tested inheritance/update12. Retained native tuples; no fresh native execution or whole-family claim.",
+  "scope": "Partial class-constant source catalogue: original25, separately tested inheritance/update12 and cross-unit5. Retained native tuples; no fresh native execution or whole-family claim.",
   "cases": [
     {
       "id": "earlier_class_typed_fold",
@@ -673,6 +673,131 @@
       "status": "static_rejection",
       "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-6/raw/08-constant_final_before_method_visibility/command.json",
       "native_raw_sha256": "76086ff851efbd6cb8a8e20aab3e16f6169be8d58fca47de882f99555b52ae04",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "prior_folded_scalar_included_typed_rejection",
+      "source": "<?php\necho \"run\";\nclass A {public const X=\"x\";}\ninclude __DIR__.\"/folded-child.php\";\necho \"after\";\n",
+      "source_sha256": "1b59c188447df9d3ac2fa90ae78d786cac2575caf094412ea62a5e997a375354",
+      "files": [
+        {
+          "name": "folded-child.php",
+          "source": "<?php\nclass B {public const int X=A::X;}\necho \"child\";\n",
+          "source_sha256": "de45f1078eb08c1787992242a587b5565a3767c5d0e42a394d4410f78bd45a17"
+        }
+      ],
+      "stdout_base64": "cnVu",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIHZhbHVlIGZvciBjbGFzcyBjb25zdGFudCBCOjpYIG9mIHR5cGUgaW50IGluIHtGSUxFOmZvbGRlZC1jaGlsZC5waHB9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-8/raw/00-prior_folded_scalar_included_typed_rejection/command.json",
+      "native_raw_sha256": "1e5aa73635d8f0ef2c1ace75524a66a0e5f16e24395498540651b351311de32c",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "prior_cached_scalar_included_typed_rejection",
+      "source": "<?php\necho \"run\";\nclass A {public const X=N;}\nconst N=\"x\";\necho A::X;\ninclude __DIR__.\"/cached-child.php\";\necho \"after\";\n",
+      "source_sha256": "1eee0b8571120075b8b42628238ca9ede8895dcdd44ffa2a914f1f8b9d253035",
+      "files": [
+        {
+          "name": "cached-child.php",
+          "source": "<?php\nclass B {public const int X=A::X;}\necho \"child\";\n",
+          "source_sha256": "de45f1078eb08c1787992242a587b5565a3767c5d0e42a394d4410f78bd45a17"
+        }
+      ],
+      "stdout_base64": "cnVueA==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIHZhbHVlIGZvciBjbGFzcyBjb25zdGFudCBCOjpYIG9mIHR5cGUgaW50IGluIHtGSUxFOmNhY2hlZC1jaGlsZC5waHB9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-8-rest2/raw/00-prior_cached_scalar_included_typed_rejection/command.json",
+      "native_raw_sha256": "cac5d2c6201a27439cce48cb0a37738d45cb66a4046ae14c8207c35f77ad7dd7",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "prior_uncached_scalar_included_typed_lazy",
+      "source": "<?php\necho \"run\";\nclass A {public const X=N;}\nconst N=\"x\";\ninclude __DIR__.\"/uncached-child.php\";\necho \"after\";\n",
+      "source_sha256": "8a43d84da26647fc83fe16a2796a969aef54b0c976a14cc24716ebcc98e83268",
+      "files": [
+        {
+          "name": "uncached-child.php",
+          "source": "<?php\nclass B {public const int X=A::X;}\necho \"child\";\n",
+          "source_sha256": "de45f1078eb08c1787992242a587b5565a3767c5d0e42a394d4410f78bd45a17"
+        }
+      ],
+      "stdout_base64": "cnVuY2hpbGRhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-8-rest2/raw/01-prior_uncached_scalar_included_typed_lazy/command.json",
+      "native_raw_sha256": "a5f5a4063d7278823924f145a763fe34a9c4aef537ab9f6b61ab35a839098e98",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "later_cache_does_not_recompile_child",
+      "source": "<?php\necho \"run\";\nclass A { public const X = N; }\nconst N = \"x\";\ninclude __DIR__ . \"/later-cache-child.php\";\necho A::X;\necho \"after\";\n",
+      "source_sha256": "318bbc7706c357580688fd60355881f3f608db29847cd59b42240924dc522d3f",
+      "files": [
+        {
+          "name": "later-cache-child.php",
+          "source": "<?php\nclass B { public const int X = A::X; }\necho \"child\";\n",
+          "source_sha256": "a82fcc6176e92f5fef6e937bf4417aba1fc4c6bdc9d508bfae2dfefbe1adecec"
+        }
+      ],
+      "stdout_base64": "cnVuY2hpbGR4YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-9-v2/raw/00-later_cache_does_not_recompile_child/command.json",
+      "native_raw_sha256": "4467280ab5a78febb3603b46c89017ed27d5d161c1f1ad60a4ddd4bedfc85f5e",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "foreign_nested_array_import_is_cow",
+      "source": "<?php\necho \"run\";\nclass A { public const X = [1, [2]]; }\ninclude __DIR__ . \"/array-child.php\";\necho A::X[1][0];\n",
+      "source_sha256": "db12fe3a2d246dc7c56ed3113b36d82a6e65bd92fdaa7b3bc654c49d8a9a4b03",
+      "files": [
+        {
+          "name": "array-child.php",
+          "source": "<?php\nclass B { public const array Y = A::X; }\n$v = B::Y;\n$v[1][0] = 9;\necho $v[1][0];\necho B::Y[1][0];\n",
+          "source_sha256": "6cc3e3101c894cf1ab4513775c658b7319a8f9bfec7d53275235484b36472d99"
+        }
+      ],
+      "stdout_base64": "cnVuOTIy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-9-v2/raw/01-foreign_nested_array_import_is_cow/command.json",
+      "native_raw_sha256": "28723f1efe78471199ac0e551870eb956ed5916ea0e909cbbb392f794a9b9ca0",
       "native_profile": {
         "display_errors": "stderr",
         "log_errors": "0",
