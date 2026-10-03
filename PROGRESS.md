@@ -7,6 +7,22 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Private INI C-prefix × accepted public invocation preparation is at code
+**23f55f946** and tests **9dd9447ed** over accepted CALLS **18a1383d7**,
+on **6ba0ee71/1305**. Its 26 checked rows preserve 29 parse/check pairs
+and 52 closed workers; production SL and thirteen complete finite AL
+fixtures compile. Proposed author source11/finite12/510 and independent
+source2/file1/165 remain unexecuted. The 2,011 local runtime inputs are
+reused, with no fresh rebuild claim.
+[Prefix ledger](coverage/semantics/include-ini-prefix-review.json).
+
+Earlier private prefix evidence binds tested **8a9f0c789**, code
+**6ef1f8faa**, on **60100433/1303**: source18 (15 normal, three expected
+PHP errors) and nine finite fixtures/377 assertions. Metadata-only
+**894eca996** preserves that identity. Current CALLS composition needs
+fresh bounded runtime acceptance before installation, followed by
+Restore04, INI05 and PIPE. Full core remains unfinished.
+
 Installed Stringable SET evidence binds tested **13c9c4ddf**, with code
 **3e3608369** over **9c8d8cab0**, on **d7d59e41/1302**. Author gates accept
 source27 and five finite stages/188 assertions; six Unsupported checks remain

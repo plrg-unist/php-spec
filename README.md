@@ -33,7 +33,10 @@ admits `directory:` through computed and owned callable forms. The installed
 preserves captured array arguments and has separate source and paused-state checks.
 [Stringable SET](coverage/semantics/include-set-current-review.json) is installed
 with bounded source and callback ownership/cleanup checks. Old-value witnesses
-are NUL-free.
+are NUL-free. A [private raw/effective INI-prefix repair](coverage/semantics/include-ini-prefix-review.json)
+accepts source18/finite377 at `8a9f0c789`. Its new composition with accepted
+public object invocation `18a1383d7` has checked sources and complete SL/AL
+compilation; renewed runtime agreement and installation remain pending.
 Broader path, stream and INI behavior remain pending.
 
 All required non-system inputs are local and pinned. See
