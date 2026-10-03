@@ -12,6 +12,12 @@ from recorded_worker import Worker
 
 ROOT = Path(__file__).resolve().parents[2]
 CASE = 'pipe-config-chdir-dynamic-live-cwd'
+PREFIX = '''dec $outputs(pevent*) : nat*
+def $outputs(eps) = eps
+def $outputs((OUTPUT n*) :: pevent*) = n* ++ $outputs(pevent*)
+def $outputs((WARNING n* z) :: pevent*) = $outputs(pevent*)
+def $outputs((DIAGNOSTIC text n* z) :: pevent*) = $outputs(pevent*)
+'''
 
 
 def b64(data):
@@ -145,7 +151,7 @@ def prepare(program, main, cwd):
                    'pfilecontext_' + name + '.CWD = ' + next_cwd,
                    '$outputs(' + state + '.EVENTS) = ' + seq(output),
                    '$call_descriptors_valid(' + state + ')']
-    return ('dec $main() : bool\ndef $main() = true\n'
+    return (PREFIX + 'dec $main() : bool\ndef $main() = true\n'
             + ''.join('  -- if ' + line + '\n' for line in checks), len(checks))
 
 
