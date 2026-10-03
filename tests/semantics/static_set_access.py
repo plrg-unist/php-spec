@@ -170,6 +170,8 @@ RECEIVER_CASES = {
     'setter-current-ini-callback': b'<?php class K{function __toString(){echo "I";ini_set("include_path","inner\\0tail");return "include_path";}}class P{function __toString(){echo "T",ini_set(new K,"outer");return "ok";}}class A{public private(set) static string $p="old";public static function put($x){self::$p=$x;echo self::$p;}}ini_set("include_path","seed");A::put(new P);echo "|",A::$p,"|",ini_set("include_path","after");',
 }
 CASES.update(RECEIVER_CASES)
+CASES['unset-continuation'] = b'<?php class O{public int $x=1;}class A{public static int $p=1;}$o=new O;unset($o->x);try{unset(A::$p);}catch(Error $e){echo "E|",$e->getMessage();}echo "|",isset($o->x)?"set":"unset","|",A::$p;'
+EXPECTED['unset-continuation'] = b'E|Attempt to unset static property A::$p|unset|1'
 denial = b'Cannot indirectly modify private(set) property A::$p from global scope'
 EXPECTED.update({
     'receiver-uninitialized-write': denial + b'|unset',

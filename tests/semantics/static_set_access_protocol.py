@@ -15,7 +15,8 @@ from typed_static_string_protocol import PREFIX as STRING_PREFIX, initial_checks
 STAGES = ['reference-uninitialized-error-chain', 'dimension-null-error-chain',
           'reference-nullable-initialization', 'string-callback-denied',
           'private-string-callback-allowed', 'protected-string-callback-allowed', 'reference-return-denied',
-          'receiver-rhs-live-alias', 'receiver-uninitialized-unset', 'receiver-direct-demands']
+          'receiver-rhs-live-alias', 'receiver-uninitialized-unset', 'receiver-direct-demands',
+          'unset-continuation-property', 'unset-continuation-static']
 PREFIX = STRING_PREFIX + r'''
 dec $set_protocol_phase(pstate,nat) : bool
 def $set_protocol_phase(S,0) = true
@@ -35,6 +36,12 @@ def $set_protocol_phase(S,5) = true
   -- if S.BASE = BASE_PROPERTY_PENDING pbase poperand z_receiver
 def $set_protocol_phase(S,6) = true
   -- if S.TODO = (FOREACH_NEXT n_iterator (HCELL n_cell) statement porigin? z) :: ptask_tail*
+def $set_protocol_phase(S,7) = true
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY (POBJECT n_object) ptbytes
+def $set_protocol_phase(S,8) = true
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.BASE = BASE_CLASS_STATIC porigin ptbytes
 def $set_protocol_phase(S,n) = false -- otherwise
 dec $set_protocol_seek(pstate,nat,nat) : pstate
 def $set_protocol_seek(S,n_phase,n) = S
@@ -79,6 +86,37 @@ def before(initial, phase):
 
 
 def checks(initial, name):
+    if name.startswith('unset-continuation-'):
+        phase = 7 if name == 'unset-continuation-property' else 8
+        result = ['S_initial = ' + initial,
+                  'S_found = $set_protocol_seek(S_initial,' + str(phase) + ',4096)',
+                  'S_found.COMPLETION = NORMAL \\/ S_found.COMPLETION = BUDGET',
+                  'S_before = S_found[.COMPLETION = NORMAL]',
+                  'S_before.TODO = UNSET_ARRAY :: ptask_tail*',
+                  *valid('S_before'),
+                  'S_after_found = $drive_steps(S_before,1)',
+                  'S_after_found.COMPLETION = BUDGET',
+                  'S_after = S_after_found[.COMPLETION = NORMAL]',
+                  'S_after.CLASSSTATICS = S_before.CLASSSTATICS',
+                  'S_after.BASE = BASE_VALUE (KNOWN PNULL)']
+        if phase == 7:
+            result += ['S_before.BASE = BASE_PROPERTY (POBJECT n_object) $ptascii("x")',
+                       'S_after.TODO = ptask_tail*',
+                       '$objectprops_record_at(S_after.OBJECTPROPS,n_object) = (pobjectprops)',
+                       '$property_slot_at(pobjectprops.SLOTS,$ptascii("x")) = (ppropertyslot)',
+                       'ppropertyslot.STATE = PROP_UNSET',
+                       'S_after.OBJECTS = S_before.OBJECTS']
+        else:
+            result += ['S_before.BASE = BASE_CLASS_STATIC porigin_class $ptascii("p")',
+                       'S_after.TODO = (THROW_SEARCH n_new) :: ptask_tail*',
+                       '$throwable_field(S_after,n_new,"message") = PSTRING $ptascii("Attempt to unset static property A::$p")',
+                       '$throwable_field(S_after,n_new,"line") = PINT 1']
+        result += [*valid('S_after'),
+                   'S_done = $drive_steps(S_after,4096)',
+                   'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps',
+                   '$static_protocol_output(S_done.EVENTS) = $ptascii("E|Attempt to unset static property A::$p|unset|1")',
+                   *valid('S_done')]
+        return result, 'S_done'
     if name == 'receiver-direct-demands':
         result = ['S_initial = ' + initial,
                   'S_found = $set_protocol_seek(S_initial,6,4096)',
@@ -311,7 +349,8 @@ def main():
         adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter')
         for name in selected:
             directory = out / name; directory.mkdir()
-            path = directory / 'source.php'; path.write_bytes(CASES[name])
+            path = directory / 'source.php'
+            path.write_bytes(CASES['unset-continuation' if name.startswith('unset-continuation-') else name])
             row = {'id': name, 'source_sha256': sha(path), 'completed': False}
             report['records'].append(row)
             parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(path.read_bytes()).decode()})
