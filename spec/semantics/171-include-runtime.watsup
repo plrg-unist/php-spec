@@ -26,11 +26,15 @@ rule PhpStep/file-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [
   -- if z = $source_line(metadata)
   -- if $file_kind_valid(n_kind)
 
+;; INI storage retains full bytes; Zend file resolution reads its C-string view.
+dec $file_include_path(preqbytes?) : preqbytes?
+def $file_include_path(eps) = eps
+def $file_include_path((preqbytes)) = ($c_string(preqbytes))
 dec $file_request_start(pstate, porigin, int, int, ptask*) : pstate
 def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.FILESEQ = $(n_nonce + 1)][.FILECONTEXTS = pfilecontext :: S.FILECONTEXTS][.TODO = (FILE_RESOLVE_AWAIT n_nonce) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
   -- if $file_site_valid(S, porigin, z, n_kind)
   -- if S.FILECWD = (preqbytes_cwd)
-  -- if S.FILEINCLUDEPATH = (preqbytes_include_path)
+  -- if $file_include_path(S.FILEINCLUDEPATH) = (preqbytes_include_path)
   -- if S.RESULT = KNOWN (PSTRING n_requested*)
   -- if n_nonce = S.FILESEQ
   -- if n_owner = |S.FRAMES|
@@ -48,13 +52,13 @@ rule PhpStep/file-request-abrupt: S ~> S_value
   -- if S_value.COMPLETION =/= NORMAL
 def $call_task_valid(S, FILE_REQUEST porigin z n_kind) = (S.ORIGIN = (porigin) /\ $file_site_valid(S, porigin, z, n_kind))
 
-def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.FILESEQ = $(pfilecontext.NONCE + 1) /\ S.FILECWD = (pfilecontext.CWD) /\ S.FILEINCLUDEPATH = (pfilecontext.INCLUDEPATH) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail*)
+def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.FILESEQ = $(pfilecontext.NONCE + 1) /\ S.FILECWD = (pfilecontext.CWD) /\ $file_include_path(S.FILEINCLUDEPATH) = (pfilecontext.INCLUDEPATH) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail*)
   -- if S.COMPLETION = SOURCE_PENDING
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if S.TODO = (FILE_RESOLVE_AWAIT pfilecontext.NONCE) :: ptask_tail*
   -- if pfilecontext.PHASE = FILE_RESOLVE_WAIT
   -- if z = $file_site_line(S, pfilecontext.SITE)
-def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.FILESEQ = $(pfilecontext.NONCE + 1) /\ S.FILECWD = (pfilecontext.CWD) /\ S.FILEINCLUDEPATH = (pfilecontext.INCLUDEPATH) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail* /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) = eps /\ $call_sourcefile(S.FILES, PORIGIN n_unit eps) = n_opened*)
+def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.FILESEQ = $(pfilecontext.NONCE + 1) /\ S.FILECWD = (pfilecontext.CWD) /\ $file_include_path(S.FILEINCLUDEPATH) = (pfilecontext.INCLUDEPATH) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail* /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) = eps /\ $call_sourcefile(S.FILES, PORIGIN n_unit eps) = n_opened*)
   -- if S.COMPLETION = SOURCE_PENDING
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if S.TODO = (FILE_PARSE_AWAIT pfilecontext.NONCE) :: ptask_tail*
@@ -119,9 +123,9 @@ def $file_marker_suffix_valid(ptask :: ptask_tail*, pfilecontext) = (ptask_tail*
 def $file_marker_suffix_valid(ptask :: ptask_tail*, pfilecontext) = $file_marker_suffix_valid(ptask_tail*, pfilecontext)
   -- if ~$file_marker_match(pfilecontext, ptask)
 dec $file_context_phase_valid(pstate, pfilecontext) : bool
-def $file_context_phase_valid(S, pfilecontext) = (pfilecontext.UNIT = eps /\ pfilecontext.RESOLVED = eps /\ pfilecontext.OPENED = eps /\ pfilecontext.BYTES = eps /\ S.FILECWD = (pfilecontext.CWD) /\ S.FILEINCLUDEPATH = (pfilecontext.INCLUDEPATH) /\ S.COMPLETION = SOURCE_PENDING /\ pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.TODO = (FILE_RESOLVE_AWAIT pfilecontext.NONCE) :: pfilecontext.TAIL)
+def $file_context_phase_valid(S, pfilecontext) = (pfilecontext.UNIT = eps /\ pfilecontext.RESOLVED = eps /\ pfilecontext.OPENED = eps /\ pfilecontext.BYTES = eps /\ S.FILECWD = (pfilecontext.CWD) /\ $file_include_path(S.FILEINCLUDEPATH) = (pfilecontext.INCLUDEPATH) /\ S.COMPLETION = SOURCE_PENDING /\ pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.TODO = (FILE_RESOLVE_AWAIT pfilecontext.NONCE) :: pfilecontext.TAIL)
   -- if pfilecontext.PHASE = FILE_RESOLVE_WAIT
-def $file_context_phase_valid(S, pfilecontext) = ($source_filename(n_opened*) /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) = eps /\ $eval_binding_at(S.EVALBINDINGS, n_unit) = eps /\ $file_binding_at(S.FILEBINDINGS, n_unit) = eps /\ S.FILECWD = (pfilecontext.CWD) /\ S.FILEINCLUDEPATH = (pfilecontext.INCLUDEPATH) /\ S.COMPLETION = SOURCE_PENDING /\ pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.TODO = (FILE_PARSE_AWAIT pfilecontext.NONCE) :: pfilecontext.TAIL /\ $call_sourcefile(S.FILES, PORIGIN n_unit eps) = n_opened*)
+def $file_context_phase_valid(S, pfilecontext) = ($source_filename(n_opened*) /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) = eps /\ $eval_binding_at(S.EVALBINDINGS, n_unit) = eps /\ $file_binding_at(S.FILEBINDINGS, n_unit) = eps /\ S.FILECWD = (pfilecontext.CWD) /\ $file_include_path(S.FILEINCLUDEPATH) = (pfilecontext.INCLUDEPATH) /\ S.COMPLETION = SOURCE_PENDING /\ pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.TODO = (FILE_PARSE_AWAIT pfilecontext.NONCE) :: pfilecontext.TAIL /\ $call_sourcefile(S.FILES, PORIGIN n_unit eps) = n_opened*)
   -- if pfilecontext.PHASE = FILE_PARSE_WAIT
   -- if pfilecontext.UNIT = (n_unit)
   -- if pfilecontext.RESOLVED = (n_resolved*)

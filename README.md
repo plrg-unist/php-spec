@@ -32,9 +32,13 @@ admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
 preserves captured array arguments and has separate source and paused-state checks.
 [Stringable SET](coverage/semantics/include-set-current-review.json) is installed
-with bounded source and callback ownership/cleanup checks. Old-value witnesses
-are NUL-free.
-Broader path, stream and INI behavior remain pending.
+with bounded source and callback ownership/cleanup checks.
+[Raw/effective INI paths](coverage/semantics/include-ini-prefix-review.json)
+preserve full `ini_set` bytes while file requests and SET old returns use the
+C-string prefix. The public object invocation union accepts 13 source cases
+and thirteen finite fixtures/675 assertions at `6e7ddca894`.
+Restore, remaining Stringable INI options, PIPE and broader path/stream behavior
+remain pending.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,

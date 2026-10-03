@@ -1,0 +1,231 @@
+{
+  "scope": "Accepted raw/effective INI-prefix and public object invocation source composition; original private tests remain explicitly identified.",
+  "status": "accepted_source_identical_composition",
+  "installed": true,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "accepted_calls_base": "18a1383d75c666e0ade00da249f02ada7b7ff594",
+  "private_root": ".tools/include-dev-13-cprefix-union",
+  "source_port": "23f55f946715c98587c2a2f7301219645f3455ab",
+  "test_increment": "9dd9447edad9abad74190497f85983af4a7d33e3",
+  "implementation": {
+    "sha256": "6ba0ee718f73692089e1e99bdb2e68aa9b693c6380de10aa8db4eb9ffc19598f",
+    "files": 1305
+  },
+  "contract": [
+    "FILEINCLUDEPATH and scalar ini_set old return retain full bytes.",
+    "File request capture, four pending/phase guards, diagnostics, and scalar/Stringable SET old return use the C-string prefix.",
+    "Leading-NUL scalar INI updates return false without mutation; nonempty prefix permits raw interior-NUL storage.",
+    "SET callback old return reads the live value after conversion.",
+    "Only pending file guards identify suffix-only changes after NUL; raw INI/state equality remains exact."
+  ],
+  "primary_engine": {
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": {
+      "vendor/php-src/ext/standard/basic_functions.c": [
+        "PHP_FUNCTION(ini_set)",
+        "ZVAL_SET_INI_STR",
+        "PHP_FUNCTION(set_include_path)",
+        "zend_ini_string",
+        "RETVAL_STRING"
+      ],
+      "vendor/php-src/Zend/zend_ini.c": [
+        "OnUpdateStringUnempty"
+      ],
+      "vendor/php-src/main/main.c": [
+        "include_path",
+        "OnUpdateStringUnempty"
+      ],
+      "vendor/php-src/Zend/zend_execute.c": [
+        "zend_include_or_eval"
+      ]
+    },
+    "file_sha256": {
+      "vendor/php-src/ext/standard/basic_functions.c": "6740ee31b026d738fb357afc9054c87b55c2bd2a6980be5838b80272d5c2225d",
+      "vendor/php-src/Zend/zend_ini.c": "f16cbafbfc0d1ea5f205c77ba08c28fb5d4681dadba12a8235723687c2e53568",
+      "vendor/php-src/main/main.c": "17a807f9cb84516fd5720b349895e21896a1a36c711d201aae1d973386fe982e",
+      "vendor/php-src/Zend/zend_execute.c": "5479cd6fd4025f013713cee297028c93c8c6a70bbf10481a8374da6e207773c8"
+    }
+  },
+  "production_files_sha256": {
+    "spec/semantics/171-include-runtime.watsup": "2773fd85ea6b110cfbc6f6f7e66ed7b3c2b92b3ff8d4e54081ae6d4ba537687d",
+    "spec/semantics/172-file-context-intrinsics.watsup": "eaaff07c4f2835422389b3234f607f1dbc311261afeee0824ea25bf52296182b"
+  },
+  "accepted_dependencies": {
+    "calls_source": {
+      "root": ".tools/include-dev-13-cprefix-union",
+      "path": ".tools/accepted-calls-source.json",
+      "sha256": "be8a129f3c77cfe028606a7fef9cda66fffbe9f61bba74fa970b80e969d4dfa7"
+    },
+    "calls_peer": {
+      "root": ".tools/include-dev-13-cprefix-union",
+      "path": ".tools/accepted-calls-source-peer.json",
+      "sha256": "3699c68c1379f348cd9fa5e83bac75f4d133b47dd10c9b4409aef96bd618ddc8"
+    },
+    "source_port_receipt": {
+      "root": ".tools/include-dev-13-cprefix-union",
+      "path": ".tools/cprefix-union-port-receipt.json",
+      "sha256": "780bc86fb32dc4b95ba38e108a1a433a9eb9bbf40d1c03f99b5f6bf279204fe8"
+    }
+  },
+  "earlier_private": {
+    "tested_head": "8a9f0c789522159a1a4218b4d11be77577b69cfc",
+    "source_commit": "6ef1f8faa0d759e450cdd2efae0eef8228782f73",
+    "metadata_child": "894eca996ac879d602d77d33bfd5dfbc992e64c4",
+    "implementation": {
+      "sha256": "60100433bb3ca1684b322a58528a89da1780bbbc06a831b7bcd37db76e219fae",
+      "files": 1303
+    },
+    "source_tuples": 18,
+    "normal": 15,
+    "php_errors": 3,
+    "finite_fixtures": 9,
+    "finite_assertions": 377,
+    "acceptance_peer": {
+      "root": ".tools/include-dev-13-cprefix-union",
+      "path": ".tools/accepted-cprefix-private-peer.json",
+      "sha256": "60fb13c715230368d9dee52229850efb8f68b65969e0827a944c2dfaf385695b"
+    },
+    "metadata_peer": {
+      "root": ".tools/include-dev-13-cprefix-union",
+      "path": ".tools/accepted-cprefix-metadata-child-peer.json",
+      "sha256": "76c5e9e3295eefa392904b9321b4e2ad850514efcd7d8923d1768de112a1fc0a"
+    },
+    "scope": "Frozen historical evidence; no current-union acceptance transfer or replay."
+  },
+  "preparation": {
+    "manifest": {
+      "root": ".tools/include-dev-13-cprefix-union",
+      "path": ".tools/cprefix-union-inputs-01/preparation.json",
+      "sha256": "9e3a2275bbe346da24f8f5d9b160628c543e41303916bdca017caef7bc102504"
+    },
+    "rows": 26,
+    "source_inputs": 13,
+    "finite_fixtures": 13,
+    "parse_check_pairs": 29,
+    "closed_workers": 52,
+    "stderr": {
+      "root": ".tools/include-dev-13-cprefix-union",
+      "path": ".tools/cprefix-union-preparation.stderr",
+      "sha256": "687aa255e27c6b98c098cace9241a1014e1cf858f1ccead410f27dc5b2d4239c"
+    },
+    "stderr_limit": "Eleven retained invalid-escape SyntaxWarnings from existing protocol PREFIX, separate from numerical stderr."
+  },
+  "compile_only": {
+    "receipt": {
+      "root": ".tools/include-dev-13-cprefix-union",
+      "path": ".tools/cprefix-union-compilation-01/receipt.json",
+      "sha256": "661b0f9887741e7429322859e99b210c92ccacde8dd4238271c678c530dd8ea3"
+    },
+    "source_head": "9dd9447edad9abad74190497f85983af4a7d33e3",
+    "production_sl": 1,
+    "full_finite_al": 13,
+    "application_evaluations": 0,
+    "limit": "Fresh pure stage checks using reused compiled helper and identical framework libraries; no project rebuild claim."
+  },
+  "runtime": {
+    "manifest": {
+      "root": ".tools/include-dev-13-cprefix-union",
+      "path": ".tools/cprefix-union-runtime-inputs.json",
+      "sha256": "63fb3d898d81835e8c9bbc80a4dc62124db292077f69f5c6a15c7710f24891ce"
+    },
+    "local_inputs": 2011,
+    "fresh_rebuild_claimed": false
+  },
+  "planned_gates": {
+    "author": {
+      "source": 11,
+      "fresh_source": 5,
+      "retained_source": 6,
+      "config_new_fixtures": 2,
+      "config_new_assertions": 90,
+      "config_retained_fixtures": 6,
+      "config_retained_assertions": 172,
+      "file_fixtures": 2,
+      "file_assertions": 174,
+      "file_phase_views": 4,
+      "calls_retained_fixtures": 2,
+      "calls_retained_assertions": 74,
+      "finite_fixtures": 12,
+      "finite_assertions": 510
+    },
+    "independent": {
+      "source": 2,
+      "file_fixtures": 1,
+      "file_assertions": 165,
+      "file_phase_views": 2
+    },
+    "executed": true,
+    "execution_authorized": false
+  },
+  "preserved_private": {
+    "restore_root": ".tools/include-config-option-string-current",
+    "restore_head": "cf2cc22b7f9beb8b45bc7af30293b4a9d8eefe6f",
+    "ini_root": ".tools/include-config-ini-option-current",
+    "ini_head": "2ca6b161292111ab3585026eddffe4a49493e497"
+  },
+  "preservation": "Original SET/private C-prefix raws, unknown SET source2 launcher exit, Restore04/INI05/dirty PIPE and all failures remain intact.",
+  "remaining": [
+    "Restore04, then dependent INI05 option/value destinations, trace and priority, then PIPE/wider OS/INI and transformed wrappers.",
+    "Other core obligations, final combined validation and a fresh offline rebuild remain unfinished; returns_verify stays user-paused and the known blocked engine experiment is excluded."
+  ],
+  "tested_revision": "6e7ddca894f66e72fd7c7908aae14b94bae6e21a",
+  "current_calls_metadata": "339553f6e5f99a43c6dcdc01862d2dd535d319ac",
+  "actual_validation": {
+    "source_tuples": 13,
+    "source_statuses": {
+      "normal": 10,
+      "php_error": 3
+    },
+    "finite_fixtures": 13,
+    "finite_assertions": 675,
+    "file_phase_views": 6,
+    "original_command_raw_files": 156,
+    "family_receipts": 7,
+    "author": {
+      "source_tuples": 11,
+      "finite_assertions": 510,
+      "summary": {
+        "root": ".tools/include-dev-13-cprefix-union",
+        "path": ".tools/cprefix-union-author-original-raw-summary.json",
+        "sha256": "247677d38465896575cf3a595e7e4502654c168e55f4b62a6d2b17ffe97d252e"
+      },
+      "release": {
+        "root": ".tools/include-dev-13-cprefix-union",
+        "path": ".tools/cprefix-union-author-slot4-release.json",
+        "sha256": "515a91e783af2cdb545444d1a2fbceb65fd1a25dc84b28685635d7ffbbdc8e28"
+      }
+    },
+    "independent": {
+      "source_tuples": 2,
+      "file_assertions": 165,
+      "summary": {
+        "root": ".tools/include-dev-13-cprefix-union",
+        "path": ".tools/cprefix-union-independent-original-raw-summary.json",
+        "sha256": "4ab244e0e4d719666f67785d8289b7d1a8cf8c5f5036d86a35deaf7883857d8f"
+      },
+      "release": {
+        "root": ".tools/include-dev-13-cprefix-union",
+        "path": ".tools/cprefix-union-independent-slot4-release.json",
+        "sha256": "5d8cf74ab7dbf9527483d07f9a2ca709d77491fa907a2c9d98f229477e0de66b"
+      },
+      "developer_raw_review": {
+        "root": ".tools/include-dev-13-cprefix-union",
+        "path": ".tools/cprefix-union-dev-own-originals-release-review.json",
+        "sha256": "fee09b85ae4882f8d0d1eb154cf6e3e3a561dd225deb1fb355860898a179ca47"
+      }
+    },
+    "acceptance_peer": {
+      "root": ".",
+      "path": ".tools/include-review-13/cprefix-calls-bounded-private-union-acceptance.json",
+      "sha256": "1fa0d041f2c86568e404ee0a6dd51a49409f1e1565ce34f0f9832e6fbefdc687"
+    },
+    "recording": "Original per-command argv/cwd/caps, separate raw child stdout/stderr, exits and full actor before/after input/mode guards. Both slot4 campaigns released; no command is currently authorized."
+  },
+  "composition": {
+    "canonical_parent": "339553f6e5f99a43c6dcdc01862d2dd535d319ac",
+    "tested_private_revision": "6e7ddca894f66e72fd7c7908aae14b94bae6e21a",
+    "source_parent": "9dd9447edad9abad74190497f85983af4a7d33e3",
+    "compatibility": "Production and helper bytes are exactly the tested union; CALLS SOURCE-METHODS and invocation ledger retain current339 bytes. Only five INCLUDE metadata bodies are composed.",
+    "publication_scope": "This body describes the source-equivalent integration tree. Actual canonical/outer publication is recorded separately; no fresh installed numerical campaign is claimed."
+  }
+}

@@ -122,6 +122,17 @@ saved operand and abrupt cleanup. Installed author checks cover source24/four107
 and shared source3/directory1/81, with six separate Unsupported controls.
 Independent source2 tuples were recovered unchanged; fresh owner79/finally50
 checks and original raw audits complete the bounded installed gate.
-These checks use NUL-free old INI values;
-embedded-NUL old-value returns and leading-NUL scalar INI values remain the
-separate INI-option increment. Restore and broader INI remain open.
+The earlier installed SET checks use NUL-free old INI values. The current
+[raw/effective prefix implementation](../../coverage/semantics/include-ini-prefix-review.json)
+retains full raw `FILEINCLUDEPATH` and scalar `ini_set` old returns.
+File request capture, pending/phase guards, diagnostics and both SET old
+returns use the C-string prefix. Leading-NUL scalar INI updates return
+`false` without mutation; nonempty prefixes permit raw interior-NUL storage.
+Suffix-only equivalence applies to pending file requests; raw INI equality
+remains exact. The public object invocation union accepts 13 original sources
+(ten normal, three expected PHP errors) and thirteen finite fixtures/675
+assertions at `6e7ddca894` on `6ba0ee71/1305`. Root, method and inherited
+captured-call file guards bind actual owner, receiver, declaring lexical class,
+called class and retained capture. Earlier private `8a9f0c789` source18/finite377
+evidence stays distinct. Restore04, remaining INI05 option conversion and
+PIPE/wider OS/INI behavior remain open.

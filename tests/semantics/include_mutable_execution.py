@@ -131,6 +131,23 @@ CASES = {
     'ini-set-object-value-strict': b"<?php declare(strict_types=1);class O {function __toString():string {echo 'T';return 'outer';}} ini_set('include_path',new O);",
     'ini-set-object-value-invoke-named': b"<?php class O {function __toString():string {echo 'T';return 'outer';}} $f=ini_set(...);$f->__invoke(value:new O,option:'include_path');",
 
+    'ini-prefix-scalar-set-old': b'<?php ini_set(\'include_path\',"a\\0b");echo set_include_path(\'end\');',
+    'ini-prefix-stringable-set-old': b'<?php class O {function __toString():string {echo \'T\';return \'end\';}} ini_set(\'include_path\',"a\\0b");echo set_include_path(new O);',
+    'ini-prefix-stringable-set-live-old': b'<?php class O {function __toString():string {ini_set(\'include_path\',"inner\\0tail");return \'end\';}} ini_set(\'include_path\',"before\\0tail");echo set_include_path(new O);',
+    'ini-prefix-ini-old-full': b'<?php echo ini_set(\'include_path\',"a\\0b"),\'|\',ini_set(\'include_path\',\'end\');',
+    'ini-prefix-leading-nul': b'<?php set_include_path(\'inner\');echo ini_set(\'include_path\',"\\0tail")?\'Y\':\'F\';echo \'|\',set_include_path(\'end\');',
+    'ini-prefix-empty': b"<?php set_include_path('inner');echo ini_set('include_path','')?'Y':'F';echo '|',set_include_path('end');",
+    'ini-prefix-null': b"<?php set_include_path('inner');echo ini_set('include_path',null)?'Y':'F';echo '|',set_include_path('end');",
+    'ini-prefix-leading-nul-preserves-raw': b'<?php ini_set(\'include_path\',"a\\0b");echo ini_set(\'include_path\',"\\0tail")?\'Y\':\'F\';echo \'|\',ini_set(\'include_path\',\'end\');',
+    'ini-prefix-callback-leading-nul': b'<?php class O {function __toString():string {echo ini_set(\'include_path\',"\\0tail")?\'Y\':\'F\';return \'end\';}} ini_set(\'include_path\',"a\\0b");echo set_include_path(new O);',
+    'ini-prefix-interior-nul-include': b'<?php ini_set(\'include_path\',"__SUB__\\0suffix");echo include \'one.php\';',
+    'ini-prefix-interior-nul-missing-require': b'<?php ini_set(\'include_path\',"__SUB__\\0suffix");require \'missing-prefix.php\';',
+    'ini-prefix-invoke-bare-old-full': b'<?php class I {function __invoke($value){return ini_set(\'include_path\',$value);}} $o=new I;$o(value:"a\\0b");echo $o(value:\'end\');',
+    'ini-prefix-invoke-capture-leading-raw': b'<?php class I {function __invoke($value){return ini_set(\'include_path\',$value);}} $o=new I;$f=$o(...);$o=0;$f("a\\0b");echo $f(value:"\\0bad")?\'Y\':\'F\';echo \'|\',set_include_path(\'end\');',
+    'ini-prefix-invoke-typed-callable': b'<?php class I {function __invoke($value){return ini_set(\'include_path\',$value);}} function feed(callable $f,string $value){return $f($value);} $o=new I;feed($o,"a\\0b");echo feed($o,\'end\');',
+    'ini-prefix-invoke-set-live-old': b'<?php class I {function __invoke(){ini_set(\'include_path\',"inner\\0tail");}} class O {function __toString():string {(new I)();return \'end\';}} ini_set(\'include_path\',"before\\0tail");echo set_include_path(new O);',
+    'ini-prefix-invoke-frame-include': b'<?php class I {function __invoke(){ini_set(\'include_path\',"__SUB__\\0suffix");echo include \'one.php\';}} (new I)();',
+
 }
 
 
@@ -212,6 +229,10 @@ def main():
                             'resolved': b64(mutate_bytes), 'opened': b64(mutate_bytes),
                             'source': b64(mutate.read_bytes())})
         missing_error = os.strerror(errno.ENOENT).encode()
+        if name == 'ini-prefix-interior-nul-missing-require':
+            entries.append({'caller': b64(main_bytes), 'requested': b64(b'missing-prefix.php'),
+                            'cwd': b64(cwd), 'include_path': b64(sub_bytes),
+                            'status': 'missing', 'stream_error': b64(missing_error)})
         chdir_entries = [
             {'cwd': b64(cwd), 'requested': b64(sub_bytes), 'status': 'success',
              'next_cwd': b64(sub_bytes)},

@@ -7,6 +7,15 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Raw INI storage and effective C-string paths are composed with public object
+invocation. The exact tested union **6e7ddca894**, on **6ba0ee71/1305**, accepts
+13 original sources (ten normal, three expected PHP errors) and thirteen finite
+fixtures/675 assertions: author source11/510 and independent source2/file165.
+The source-equivalent composition preserves current CALLS metadata **339553f6e**
+and its tested source **18a1383d7**. The 2,011 local runtime inputs and compiler
+are reused; no fresh offline rebuild is claimed.
+[Prefix ledger](coverage/semantics/include-ini-prefix-review.json).
+
 Public-source object invocation is installed at **18a1383d7**, on
 **b3a02ebc/1304**. The [CALLS ledger](coverage/semantics/source-invoke-current-review.json)
 records its bounded gates and distinct private history.
@@ -17,8 +26,8 @@ source27 and five finite stages/188 assertions; six Unsupported checks remain
 separate. Independent gates accept the recovered source2 tuples and fresh
 owner79/finally50. [SET review](coverage/semantics/include-set-current-review.json)
 preserves the unknown original source2 launcher exit, NUL-free old-value limits
-and distinct private evidence. Restore, INI05 C-prefix repairs and full core
-closure remain open.
+and distinct private evidence. Restore04, remaining INI05 option conversion,
+PIPE and full core closure remain open.
 
 Earlier capture checkpoint is **c536d1f74**, with code **094761c66** and
 tests through **8795d9c39** over **c8bee41e6**. Author and independent gates each
@@ -102,8 +111,8 @@ The independent private lanes currently include:
   Stringable SET is installed at tested **13c9c4ddf**, code **3e3608369**, on
   **d7d59e41/1302**: author source24/four107, shared source3/directory1/81 and
   six separate Unsupported checks; independent recovered source2 and fresh
-  owner79/finally50. Old-value witnesses are NUL-free; INI05 C-prefix repairs
-  remain pending.
+  owner79/finally50. Those earlier old-value witnesses are NUL-free. Current
+  raw/effective INI-prefix acceptance is recorded at the checkpoint above.
   Restore and INI-option remain reviewed private increments.
   PIPE source24/returned2, callback210 plus48 Unsupported guards and directory158
   remain private; real CONFIG `__invoke` wrapper pipes remain Unsupported.
