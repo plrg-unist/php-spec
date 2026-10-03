@@ -23,6 +23,12 @@ def descriptor(setter, final=False, read='PUBLIC'):
 
 
 CASES = {
+    'static-nullsafe-reference': ('<?php $r=&($o?->c)::f();',
+                                 [], 'Cannot take reference of a nullsafe chain'),
+    'static-nullsafe-firstclass-reference': ('<?php $r=&($o?->c)::f(...);',
+                                            [], 'Cannot take reference of a nullsafe chain'),
+    'static-firstclass-reference': ('<?php class A{public static function &get(){static $x=1;return $x;}}$r=&A::get(...);',
+                                  [], 'Cannot use result of built-in function in write context'),
     'private-set': ('<?php class A{public private(set) static int $p;}',
                     descriptor('(PROPERTY_PRIVATE)', True), None),
     'omitted-get': ('<?php class A{protected(set) static int $p=1;}',
@@ -182,6 +188,9 @@ def fixture_lines(name, checked, path):
         else:
             lines.append('S_link.COMPLETION = FATAL ($ptascii(' + json.dumps(message) + ')) '
                          + str(ERROR_LINES.get(name, 1)))
+    elif name in ['static-firstclass-reference', 'static-nullsafe-reference',
+                  'static-nullsafe-firstclass-reference']:
+        lines.append('P.COMPLETION = PPCABRUPT (STATICERROR ' + json.dumps(message) + ' 1)')
     elif message not in (None, 'unsupported'):
         lines.append('P.COMPLETION = PPCABRUPT (STATICBYTES $ptascii(' + json.dumps(message) + ') ' + str(ERROR_LINES.get(name, 1)) + ')')
     return lines

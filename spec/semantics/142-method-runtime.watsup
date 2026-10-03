@@ -1365,3 +1365,18 @@ def $reference_value_call(S) = true
   -- if S.RESULT = KNOWN pvalue
 def $reference_assignment_root(pcoccurrence*, pcpath) = true
   -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprAssignRef expression_target (NExprMethodCall expression phpType20 phpType6 metadata_call) metadata)
+
+;; Scoped calls use the existing returned-cell protocol at the same RHS boundary.
+def $acquire_call_valid(S) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 phpType6 metadata_call)
+  -- if $acquire_call_parent(S) = (NExprAssignRef expression (NExprStaticCall phpType19 phpType20 phpType6 metadata_call) metadata)
+rule PhpStep/acquire-static-call: S ~> S[.TODO = [EVAL (NExprStaticCall phpType19 phpType20 phpType6 metadata), ACQUIRE_CALL] ++ ptask_tail*]
+  -- if S.TODO = (ACQUIRE (NExprStaticCall phpType19 phpType20 phpType6 metadata)) :: ptask_tail*
+  -- if $acquire_call_valid(S)
+def $reference_value_call(S) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignRef expression_target (NExprStaticCall phpType19 phpType20 phpType6 metadata_call) metadata)
+  -- if S.RESULT = KNOWN pvalue
+def $reference_assignment_root(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprAssignRef expression_target (NExprStaticCall phpType19 phpType20 phpType6 metadata_call) metadata)

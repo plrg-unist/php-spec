@@ -82,7 +82,24 @@ def $reference_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = $cla
 def $reference_acquire(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = S_place
   -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
   -- if S_place.COMPLETION =/= NORMAL
-def $call_reference_base(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = $class_static_acquire(S, porigin_requested, ptbytes, z)
+;; Typed REF flags precede setter denial and initialize an allowed initial slot.
+;; Permitted initialized fetches retain the existing return/send protocol.
+def $call_reference_base(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = $class_static_reference_fetch(S_place, ppropertydesc.ORIGIN, z)
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if $class_static_select(S_place, porigin_requested, ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if $class_static_at(S_place.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
+  -- if ~$class_static_set_allowed(S_place, ppropertydesc) \/ pclassstatic.STATE = PROP_INITIAL
+def $call_reference_base(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = S_place
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if $class_static_select(S_place, porigin_requested, ptbytes) = (ppropertydesc)
+  -- if $class_static_at(S_place.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
+  -- if ppropertydesc.TYPE = eps \/ ($class_static_set_allowed(S_place, ppropertydesc) /\ pclassstatic.STATE =/= PROP_INITIAL)
+def $call_reference_base(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = S_place
+  -- if S_place = $class_static_acquire(S, porigin_requested, ptbytes, z)
+  -- if S_place.COMPLETION =/= NORMAL
 
 def $class_static_reference_fetch(S, ppropertyid, z) = $class_static_indirect_check(S_ref, ppropertydesc, false, z)
   -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)

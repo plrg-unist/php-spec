@@ -16,7 +16,7 @@ STAGES = ['reference-uninitialized-error-chain', 'dimension-null-error-chain',
           'reference-nullable-initialization', 'string-callback-denied',
           'private-string-callback-allowed', 'protected-string-callback-allowed', 'reference-return-denied',
           'receiver-rhs-live-alias', 'receiver-uninitialized-unset', 'receiver-direct-demands',
-          'unset-continuation-property', 'unset-continuation-static']
+          'unset-continuation-property', 'unset-continuation-static', 'static-reference-return-denied']
 PREFIX = STRING_PREFIX + r'''
 dec $set_protocol_phase(pstate,nat) : bool
 def $set_protocol_phase(S,0) = true
@@ -199,7 +199,8 @@ def checks(initial, name):
                 '$static_protocol_output(S_after.EVENTS) = eps',
                 *valid('S_after')]
         return result, 'S_after'
-    if name == 'reference-return-denied':
+    if name in ['reference-return-denied', 'static-reference-return-denied']:
+        returned_owners = 2 if name == 'static-reference-return-denied' else 1
         result = ['S_initial = ' + initial,
                   'S_found = $set_protocol_seek(S_initial,3,4096)',
                   'S_found.COMPLETION = NORMAL \\/ S_found.COMPLETION = BUDGET',
@@ -209,8 +210,9 @@ def checks(initial, name):
                   'S_before.CURRENT = eps /\\ S_before.FRAMES = eps',
                   'S_before.STORE[n_cell] = DEFINED (PINT 2)',
                   'n_cell <- S_before.REFCELLS /\\ (HCELL n_cell) <- S_before.ALLOCATIONS',
-                  '$heap_count(HCELL n_cell,$heap_graph(S_before).ROOTS) = 1',
-                  '$heap_owners($heap_graph(S_before),HCELL n_cell) = 1',
+                  *(['S_before.BASE = BASE_VALUE (REFERENCE n_cell)'] if name == 'static-reference-return-denied' else []),
+                  '$heap_count(HCELL n_cell,$heap_graph(S_before).ROOTS) = ' + str(returned_owners),
+                  '$heap_owners($heap_graph(S_before),HCELL n_cell) = ' + str(returned_owners),
                   '$static_protocol_output(S_before.EVENTS) = $ptascii("R")',
                   'S_before.CLASSSTATICS = [pclassstatic]',
                   'pclassstatic.STATE = PROP_VALUE (DIRECT (PINT 1))',
