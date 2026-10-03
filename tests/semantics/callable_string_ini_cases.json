@@ -1,0 +1,20 @@
+[
+  {
+    "id": "weak-callable-string-named-raw-effective-ini",
+    "source": "<?php class F{public function __invoke(){ini_set(\"include_path\",\"first\\0tail\");echo ini_set(\"include_path\",\"after\")===\"first\\0tail\"?\"R\":\"BAD;\";echo \":\";ini_set(\"include_path\",\"first\\0tail\");echo set_include_path(\"last\");}public function __toString():string{echo \"BAD;\";throw new Exception(\"unexpected string conversion\");}}function accept(callable|string $value){$value();}accept(value:new F);",
+    "source_sha256": "28f716296596fedc48e3c404d5649d1ad43e4498d2a36cde34440abd18bb2288",
+    "expected_model": "normal",
+    "expected_native_exit": 0,
+    "expected_normal_stdout": "R:first",
+    "purpose": "Named owned dual object must skip throwing stringifier; invoke body observes raw INI NUL bytes and effective old set_include_path prefix."
+  },
+  {
+    "id": "strict-string-callable-unpacked-empty-ini-prefix",
+    "source": "<?php declare(strict_types=1);class F{public function __invoke(){ini_set(\"include_path\",\"before\");$r=ini_set(\"include_path\",\"\\0tail\");echo $r===false?\"R\":\"BAD;\";echo set_include_path(\"after\");}public function __toString():string{echo \"BAD;\";throw new Exception(\"unexpected string conversion\");}}function accept(string|callable $value){$value();}accept(...[\"value\"=>new F]);",
+    "source_sha256": "babe73e8acf7bc0ded8dbf882cabfcdd5ec08ace4d2ff4b2438f10610503619a",
+    "expected_model": "normal",
+    "expected_native_exit": 0,
+    "expected_normal_stdout": "Rbefore",
+    "purpose": "Strict reversed union retains the owned public invokable object; its body tests empty effective INI value rejection and unchanged old include path. Stringifier must never enter."
+  }
+]
