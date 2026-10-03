@@ -187,6 +187,8 @@ EXPECTED.update({
 })
 CASES['array-inherited-setter'] = b'<?php class A{public private(set) static string $p="old";public function put($v){return static::$p=$v;}}class B extends A{}class V{function __toString(){echo "T";return "x";}}$f=[new B,"put"];echo $f(new V),"|",A::$p,"|",B::$p;'
 EXPECTED['array-inherited-setter'] = b'Tx|x|x'
+CASES['handler-array-inherited-setter'] = b'<?php set_error_handler(function($code,$message,$file,$line){echo "H",func_num_args();return true;});class A{public private(set) static string $p="old";public function put($v){return static::$p=$v;}}class B extends A{}class V{function __toString(){echo "T";trigger_error("w",E_USER_NOTICE);return "x";}}$f=[new B,"put"];echo $f(new V),"|",A::$p,"|",B::$p;'
+EXPECTED['handler-array-inherited-setter'] = b'TH4x|x|x'
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
