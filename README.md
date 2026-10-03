@@ -123,12 +123,13 @@ sources; Traversable objects remain unfinished. Array call arguments are covered
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.
-[Class constants](docs/semantics/CLASS-CONSTANTS.md) now preserve owner-scoped lazy
-values, strict types, array caches, inheritance checks and global/default
-diagnostics in the private183/184 increment. Class linking and completed table
-updates have distinct histories. Included units fold only scalar/constant-array
-values available at their compilation entry; later cache fills cannot rewrite an
-earlier image. Closure/FCC initializers remain Unsupported and the family partial.
+[Class constants](docs/semantics/CLASS-CONSTANTS.md) preserve owner-scoped lazy
+values, strict types, rooted array caches, inheritance priority and global/default
+diagnostics. Included units fold only values available at compilation entry;
+later fills cannot rewrite earlier images. Current warning-read and static-getter
+interactions preserve cache ownership and aliases. The catalogue of 50 sources keeps distinct tested revisions. Closure/FCC initializers, named
+constexpr `::class` and references into incomplete class tables remain Unsupported;
+the family stays partial.
 [Foreach syntax and prechecks](docs/semantics/FOREACH-COMPILER.md) preserve reference
 and list keys through checked printing and report exact compiler errors;
 [independent review](coverage/semantics/foreach-publication-review.json) verifies

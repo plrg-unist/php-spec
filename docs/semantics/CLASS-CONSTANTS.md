@@ -1,6 +1,6 @@
 # Source class constants
 
-The private183/184 increment extends the existing user-constant compiler and
+The 183/184 increment extends the existing user-constant compiler and
 expression machine for PHP8.5.10 CLI. The implemented scalar/array subset remains
 partial; legal Closure/FCC initializers are explicitly Unsupported.
 
@@ -54,9 +54,19 @@ a compiled image. Five further native comparisons (3 normal/2 static) and one
 finite fixture/31 predicates validate this boundary. The original negative
 transport expectation is retained as a fixture failure.
 
-Current-master composition remains next. Unretained computed/scoped table-update
-selectors are explicitly Unsupported.
-Additional open scope
-includes constant modifier grammar/admission, attributes, traits/enums/internal
-constants and the existing broader default/property consumers. No reporting-mask,
-paused return or full-core obligation is closed by this increment.
+Current-runtime checks add six native agreements for static access priority,
+runtime array FCC owner/called-class scope, handler fetch, completed reference
+aliasing and static unset. Their two source cutoffs remain separate. A later
+borrowed strict-identity callback fills a deferred array cache and reads it after
+handler retirement (`7ne7`). On the current StaticCall-reference composition,
+NewC completes its table before a getter exports the property cell; alias mutation
+changes the property while the cached constant stays unchanged (`32`). The
+maintained catalogue contains 50 agreements across these preserved revisions.
+
+Accessible references into an incomplete class table are explicitly Unsupported;
+the separate rejected control is not a native agreement. Unretained
+computed/scoped table-update selectors and named `::class` in constant expressions remain
+Unsupported, as do legal static Closure/FCC initializers. Constant modifier
+admission, attributes, traits/enums/internal constants and broader default/property
+consumers stay open. These checks reused the recorded runtime; they add no fresh
+copied rebuild, reporting-mask, paused return or full-core closure.
