@@ -588,9 +588,9 @@ def $pfclassdynamic(phpType19) = true
   -- if $parser_literal(expression) = eps
 def $pfclassdynamic(phpType19) = false -- otherwise
 def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = F[.VALUE = eps]
-  -- if $pfclassdynamic(phpType19)
+  -- if $pfclassdynamic(phpType19) \/ ~F.CONSTANT
 def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = $pfunsupported(F, "constant class-name resolution")
-  -- if ~$pfclassdynamic(phpType19)
+  -- if ~$pfclassdynamic(phpType19) /\ F.CONSTANT
 def $pfshape(NExprBinaryOpMod expression_1 expression_2 metadata) = PFBINARY MODULO expression_1 expression_2
 def $pfshape(NExprBinaryOpShiftLeft expression_1 expression_2 metadata) = PFBINARY SHIFTLEFT expression_1 expression_2
 def $pfshape(NExprBinaryOpShiftRight expression_1 expression_2 metadata) = PFBINARY SHIFTRIGHT expression_1 expression_2
