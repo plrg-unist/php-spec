@@ -508,8 +508,8 @@ def $property_current_line(S) = z
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
 def $property_current_line(S) = 0 -- otherwise
-def $unset_array(S, BASE_PROPERTY pvalue ptbytes) = $property_unset(S, pvalue, ptbytes, $property_current_line(S))[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = ptask :: ptask_tail*
+;; The UNSET_ARRAY step has already consumed its task while holding inputs.
+def $unset_array(S, BASE_PROPERTY pvalue ptbytes) = $property_unset(S, pvalue, ptbytes, $property_current_line(S))[.BASE = BASE_VALUE (KNOWN PNULL)]
 
 rule PhpStep/property-unset: S ~> S[.TODO = [DIM_PREP (NExprPropertyFetch expression phpType20 metadata), UNSET_ARRAY] ++ ptask_tail*]
   -- if S.TODO = (UNSET (NExprPropertyFetch expression phpType20 metadata)) :: ptask_tail*

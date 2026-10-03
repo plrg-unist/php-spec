@@ -270,8 +270,7 @@ def $update_alias_cell(S, CLASS_STATIC ppropertyid) = (n_cell)
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
   -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
 
-def $unset_array(S, BASE_CLASS_STATIC porigin_requested ptbytes) = $throw_scalar(S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)], "Error", $ptascii("Attempt to unset static property ") ++ pclassdesc.NAME ++ $ptascii("::$") ++ $c_string(ptbytes), $property_current_line(S))
-  -- if S.TODO = ptask :: ptask_tail*
+def $unset_array(S, BASE_CLASS_STATIC porigin_requested ptbytes) = $throw_scalar(S[.BASE = BASE_VALUE (KNOWN PNULL)], "Error", $ptascii("Attempt to unset static property ") ++ pclassdesc.NAME ++ $ptascii("::$") ++ $c_string(ptbytes), $property_current_line(S))
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
 
 dec $class_static_prepare_base(pstate, poperand, ptbytes, int) : pstate

@@ -306,8 +306,7 @@ def $assign_array(S, BASE_PROPERTY_PENDING pbase poperand z_base, poperand_rhs, 
 def $assign_array(S, BASE_PROPERTY_PENDING pbase poperand z_base, poperand_rhs, z) = $assign_array(S_base, S_base.BASE, poperand_rhs, z)
   -- if S_base = $property_pending_resolve(S, pbase, poperand, PPW, z_base, z)
   -- if S_base.COMPLETION = NORMAL
-def $unset_array(S, BASE_PROPERTY_PENDING pbase poperand z_base) = S_base[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = ptask :: ptask_tail*
+def $unset_array(S, BASE_PROPERTY_PENDING pbase poperand z_base) = S_base[.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_base = $property_pending_resolve(S, pbase, poperand, PPUNSET, z_base, $property_current_line(S))
   -- if S_base.COMPLETION =/= NORMAL
 def $unset_array(S, BASE_PROPERTY_PENDING pbase poperand z_base) = $unset_array(S_base, S_base.BASE)
