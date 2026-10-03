@@ -141,6 +141,7 @@ def $task_nodes(CONFIG_SEND pconfigcall) = $config_nodes(pconfigcall)
 def $task_nodes(CONFIG_UNPACK_PREP pconfigcall) = $config_nodes(pconfigcall)
 def $task_nodes(CONFIG_UNPACK_NEXT pconfigcall poperand n) = $config_nodes(pconfigcall) ++ $operand_nodes(poperand)
 def $task_nodes(CONFIG_INVOKE pconfigcall) = $config_nodes(pconfigcall)
+def $task_nodes(CONFIG_INI_NULL_RESULT pconfigcall) = $config_nodes(pconfigcall)
 def $task_nodes(CONFIG_STRING_RESULT pconfigcall n porigin_child z_child z_call) = [HOBJECT n] ++ $config_nodes(pconfigcall)
 
 dec $config_parameter(pintrinsic, preqbytes) : nat?
@@ -361,6 +362,10 @@ dec $config_ini_unary_kind(pintrinsic) : bool
 def $config_ini_unary_kind(INTRINSIC_INI_GET) = true
 def $config_ini_unary_kind(INTRINSIC_INI_RESTORE) = true
 def $config_ini_unary_kind(pintrinsic) = false -- otherwise
+dec $config_ini_null_message(pconfigcall) : preqbytes
+def $config_ini_null_message(pconfigcall) = $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Passing null to parameter #1 ($option) of type string is deprecated")
+dec $config_ini_null_valid(pstate, pconfigcall) : bool
+def $config_ini_null_valid(S, pconfigcall) = ($config_invoke_valid(S, pconfigcall) /\ $config_ini_unary_kind(pconfigcall.KIND) /\ pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)] /\ ~$config_strict(S, pconfigcall) /\ S.FILEINCLUDEPATH =/= eps)
 dec $config_ini_option_miss(pconfigcall, preqbytes) : bool
 def $config_ini_option_miss(pconfigcall, n_option*) = true
   -- if n_option* =/= $ptascii("include_path")
@@ -433,16 +438,23 @@ def $config_receive(S, pconfigcall) = $config_ini_unary_finish(S_option, pconfig
   -- if S_option = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
   -- if S_option.COMPLETION = NORMAL
   -- if S_option.RESULT = KNOWN (PSTRING n_option*)
+def $config_receive(S, pconfigcall) = $error_dispatch(S, 8192, $config_ini_null_message(pconfigcall), pconfigcall.LINE, DIAGNOSTIC "Deprecated" $config_ini_null_message(pconfigcall) pconfigcall.LINE, CONFIG_INI_NULL_RESULT pconfigcall)
+  -- if $config_ini_unary_kind(pconfigcall.KIND)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
+  -- if ~$config_strict(S, pconfigcall)
+  -- if $error_handler_eligible(S, 8192)
 def $config_receive(S, pconfigcall) = $config_ini_unary_finish(S_diagnostic, pconfigcall, eps)
   -- if $config_ini_unary_kind(pconfigcall.KIND)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
   -- if ~$config_strict(S, pconfigcall)
+  -- if ~$error_handler_eligible(S, 8192)
   -- if S_diagnostic = $diagnostic(S, "Deprecated", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Passing null to parameter #1 ($option) of type string is deprecated"), pconfigcall.LINE)
   -- if S_diagnostic.COMPLETION = NORMAL
 def $config_receive(S, pconfigcall) = S_diagnostic
   -- if $config_ini_unary_kind(pconfigcall.KIND)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
   -- if ~$config_strict(S, pconfigcall)
+  -- if ~$error_handler_eligible(S, 8192)
   -- if S_diagnostic = $diagnostic(S, "Deprecated", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Passing null to parameter #1 ($option) of type string is deprecated"), pconfigcall.LINE)
   -- if S_diagnostic.COMPLETION =/= NORMAL
 def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($option) must be of type string, ") ++ $typed_given(S, pvalue_option) ++ $ptascii(" given"))
@@ -608,6 +620,24 @@ rule PhpStep/config-stringable-call: S ~> $user_string_begin(S[.ORIGIN = (porigi
   -- if $config_string_launch(S, pconfigcall)
   -- if $config_string_object(pconfigcall) = (n_object)
   -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
+rule PhpStep/config-ini-null-result: S ~> $config_ini_unary_finish(S, pconfigcall, eps)
+  -- if S.TODO = (CONFIG_INI_NULL_RESULT pconfigcall) :: ptask_tail*
+  -- if $config_ini_null_valid(S, pconfigcall)
+def $error_call_valid(S, perrorcall) = true
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.RESUME = CONFIG_INI_NULL_RESULT pconfigcall
+  -- if $config_ini_null_valid(S, pconfigcall)
+  -- if pconfigcall.SITE = perrorcall.SITE
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $config_ini_null_message(pconfigcall)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = CONFIG_INI_NULL_RESULT pconfigcall
+def $error_trigger_trace_values(S, pconfigcall) = [PNULL]
+  -- if $config_ini_unary_kind(pconfigcall.KIND)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
 rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
@@ -709,6 +739,7 @@ def $selected_task_nonce(CONFIG_SEND pconfigcall) = pconfigcall.SELECTION
 def $selected_task_nonce(CONFIG_UNPACK_PREP pconfigcall) = pconfigcall.SELECTION
 def $selected_task_nonce(CONFIG_UNPACK_NEXT pconfigcall poperand n) = pconfigcall.SELECTION
 def $selected_task_nonce(CONFIG_INVOKE pconfigcall) = pconfigcall.SELECTION
+def $selected_task_nonce(CONFIG_INI_NULL_RESULT pconfigcall) = pconfigcall.SELECTION
 def $selected_task_nonce(CONFIG_STRING_RESULT pconfigcall n porigin_child z_child z_call) = pconfigcall.SELECTION
 def $selected_task_nonce(CHDIR_AWAIT pconfigcall n) = pconfigcall.SELECTION
 def $selected_task_nonce(ptask) = eps -- otherwise
@@ -943,6 +974,7 @@ def $call_task_valid(S, CONFIG_SEND pconfigcall) = $config_pending_valid(S, pcon
 def $call_task_valid(S, CONFIG_UNPACK_PREP pconfigcall) = $config_pending_valid(S, pconfigcall, true)
 def $config_invoke_valid(S, pconfigcall) = ($config_call_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall) /\ $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX))
 def $call_task_valid(S, CONFIG_INVOKE pconfigcall) = $config_invoke_valid(S, pconfigcall)
+def $call_task_valid(S, CONFIG_INI_NULL_RESULT pconfigcall) = $config_ini_null_valid(S, pconfigcall)
 def $call_task_valid(S, CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) = $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
 def $config_unpack_valid(S, pconfigcall, KNOWN (PARRAY n), n_cursor) = true
   -- if $config_call_valid(S, pconfigcall)
