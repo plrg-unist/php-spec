@@ -1,0 +1,608 @@
+;; Pinned core argument APIs read the live ordinary frame, never saved inputs.
+;; Required-reference consumers retain the compiler's TMP/VAR distinction.
+dec $arginfo_slots_live(pstate, pnamedslot*) : bool
+def $arginfo_tmp_origin(S, (PORIGIN n pcpath)) = ($pparginfo_tmp_leaf(pcode, pcunit, pcpath) =/= eps)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+def $arginfo_tmp_origin(S, porigin?) = false -- otherwise
+
+dec $arginfo_call_origin(pstate, porigin?) : bool
+def $arginfo_call_origin(S, (PORIGIN n pcpath)) = $pparginfo_call(pcode, pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall phpType19 phpType6 metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if pcode.UNIT = n
+def $arginfo_call_origin(S, (porigin)) = $arginfo_call_origin(S, $origin_child((porigin), [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
+def $arginfo_call_origin(S, (porigin)) = $arginfo_call_origin(S, $origin_child((porigin), [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression phpType20 metadata)
+def $arginfo_call_origin(S, (porigin)) = $arginfo_call_origin(S, $origin_child((porigin), [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafePropertyFetch expression phpType20 metadata)
+def $arginfo_call_origin(S, (porigin)) = $arginfo_call_origin(S, $origin_child((porigin), [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 phpType6 metadata)
+def $arginfo_call_origin(S, (porigin)) = $arginfo_call_origin(S, $origin_child((porigin), [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+def $arginfo_call_origin(S, (porigin)) = $arginfo_call_origin(S, $origin_child((porigin), [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall expression phpType20 phpType6 metadata)
+def $arginfo_call_origin(S, (porigin)) = $arginfo_call_origin(S, $origin_child((porigin), [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticPropertyFetch expression phpType31 metadata)
+def $arginfo_call_origin(S, (porigin)) = $arginfo_call_origin(S, $origin_child((porigin), [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprErrorSuppress expression metadata)
+def $arginfo_call_origin(S, (porigin)) = $arginfo_call_origin(S, $origin_child((porigin), [PCFIELD 1]))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign expression_pattern expression_rhs metadata)
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+  -- if ~$list_references(phpType13*)
+def $arginfo_call_origin(S, porigin?) = false -- otherwise
+def $arginfo_nullsafe_origin(S, (porigin)) = ($ppnullsafe(expression) /\ $arginfo_call_origin(S, (porigin)))
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+def $arginfo_nullsafe_origin(S, porigin?) = false -- otherwise
+
+dec $arginfo_tmp_dimension(pstate, porigin?) : porigin?
+def $arginfo_tmp_dimension(S, (porigin)) = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if $arginfo_tmp_origin(S, $origin_child((porigin), [PCFIELD 0]))
+def $arginfo_tmp_dimension(S, (porigin)) = $arginfo_tmp_dimension(S, $origin_child((porigin), [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if ~$arginfo_tmp_origin(S, $origin_child((porigin), [PCFIELD 0]))
+def $arginfo_tmp_dimension(S, (porigin)) = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression phpType20 metadata)
+  -- if $arginfo_tmp_origin(S, $origin_child((porigin), [PCFIELD 0]))
+def $arginfo_tmp_dimension(S, (porigin)) = $arginfo_tmp_dimension(S, $origin_child((porigin), [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression phpType20 metadata)
+  -- if ~$arginfo_tmp_origin(S, $origin_child((porigin), [PCFIELD 0]))
+def $arginfo_tmp_dimension(S, porigin?) = eps -- otherwise
+
+;; Delayed FETCHes follow all key/selector expressions. Literal CV operands
+;; remain unread; append dimensions and literal property names emit no value.
+dec $arginfo_constant_origin(pstate, porigin) : bool
+def $arginfo_constant_origin(S, PORIGIN n pcpath) = $arginfo_compiled_constant(pcode, pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+def $arginfo_constant_origin(S, porigin) = false -- otherwise
+dec $arginfo_reference_order(pstate, porigin) : porigin*
+def $arginfo_reference_order(S, porigin) = [porigin]
+  -- if $arginfo_tmp_origin(S, (porigin))
+def $arginfo_reference_order(S, porigin) = $arginfo_reference_order(S, porigin_base) ++ [porigin_key]
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression_base expression_key metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_key)
+def $arginfo_reference_order(S, porigin) = $arginfo_reference_order(S, porigin_base)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression_base ABSENT metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+def $arginfo_reference_order(S, porigin) = $arginfo_reference_order(S, porigin_base)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression_base (NIdentifier phpType33 metadata_name) metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+def $arginfo_reference_order(S, porigin) = $arginfo_reference_order(S, porigin_base) ++ [porigin_key]
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression_base expression_key metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_key)
+  -- if ~$arginfo_constant_origin(S, porigin_key)
+def $arginfo_reference_order(S, porigin) = $arginfo_reference_order(S, porigin_base)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression_base expression_key metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_key)
+  -- if $arginfo_constant_origin(S, porigin_key)
+def $arginfo_reference_order(S, porigin) = eps -- otherwise
+
+def $arginfo_reference_task(S, pcalltarget, n, porigin_call?, (porigin_arg), expression, ptask) = EVAL expression
+  -- if $call_parameter_reference(S, pcalltarget, n)
+  -- if $origin_node(S.SOURCES, porigin_arg) = (expression)
+  -- if $arginfo_nullsafe_origin(S, (porigin_arg))
+def $arginfo_reference_task(S, pcalltarget, n, (porigin_call), (porigin_arg), expression, ptask) = ARGINFO_REF_PREP { TARGET pcalltarget, CALLSITE porigin_call, ARGUMENT porigin_arg, POSITION n, DIMENSION porigin_dim, LINE $runtime_line(S[.ORIGIN = (porigin_dim)], eps, expression_dim) }
+  -- if $call_parameter_reference(S, pcalltarget, n)
+  -- if $origin_node(S.SOURCES, porigin_arg) = (expression)
+  -- if ~$ppnullsafe(expression)
+  -- if $arginfo_tmp_dimension(S, (porigin_arg)) = (porigin_dim)
+  -- if $origin_node(S.SOURCES, porigin_dim) = (expression_dim)
+def $arginfo_reference_task(S, pcalltarget, n, porigin_call?, porigin_arg?, expression, ptask) = ptask -- otherwise
+
+dec $arginfo_reference_source(pstate, pfunction, pargref, nat, nat, phpType7*) : bool
+def $arginfo_reference_source(S, pfunction, pargref, n_field, n, (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = true
+  -- if pargref.ARGUMENT = PORIGIN n_unit pcpath_arg
+  -- if (pargref.ARGUMENT) = $origin_child((pargref.CALLSITE), [PCFIELD n_field, PCINDEX n, PCFIELD 1])
+  -- if $origin_node(S.SOURCES, pargref.ARGUMENT) = (expression)
+  -- if pargref.POSITION = $named_index(pfunction.SIGNATURE.PARAMETERS, $named_target(pfunction.SIGNATURE.PARAMETERS, phpType3, n))
+def $arginfo_reference_source(S, pfunction, pargref, n_field, n, phpType7 :: phpType7_tail*) = $arginfo_reference_source(S, pfunction, pargref, n_field, $(n + 1), phpType7_tail*)
+  -- if (pargref.ARGUMENT) =/= $origin_child((pargref.CALLSITE), [PCFIELD n_field, PCINDEX n, PCFIELD 1])
+def $arginfo_reference_source(S, pfunction, pargref, n_field, n, phpType7*) = false -- otherwise
+dec $arginfo_reference_valid(pstate, pargref) : bool
+def $arginfo_reference_valid(S, pargref) = true
+  -- if S.ORIGIN = (pargref.ARGUMENT)
+  -- if $call_selected_valid(S, pargref.TARGET, (pargref.CALLSITE))
+  -- if $call_parameter_reference(S, pargref.TARGET, pargref.POSITION)
+  -- if $target_function(S, pargref.TARGET) = (pfunction)
+  -- if $call_argument_source(S, pargref.CALLSITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $arginfo_reference_source(S, pfunction, pargref, n_field, 0, phpType7*)
+  -- if $origin_node(S.SOURCES, pargref.ARGUMENT) = (expression_arg)
+  -- if ~$ppnullsafe(expression_arg)
+  -- if $arginfo_tmp_dimension(S, (pargref.ARGUMENT)) = (pargref.DIMENSION)
+  -- if $origin_node(S.SOURCES, pargref.DIMENSION) = (expression)
+  -- if pargref.LINE = $runtime_line(S[.ORIGIN = (pargref.DIMENSION)], eps, expression)
+def $arginfo_reference_valid(S, pargref) = false -- otherwise
+dec $arginfo_reference_operand(pstate, porigin, poperand) : bool
+def $arginfo_reference_operand(S, PORIGIN n pcpath, poperand) = true
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_CV)
+  -- if $exit_cv_operand(pcode, pcunit, pcpath) = (poperand)
+def $arginfo_reference_operand(S, PORIGIN n pcpath, KNOWN pvalue) = true
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (punpackclass)
+  -- if punpackclass =/= UNPACK_CV
+  -- if $arginfo_slots_live(S, [NAMED_SENT (KNOWN pvalue)])
+def $arginfo_reference_operand(S, PORIGIN n pcpath, REFERENCE n_cell) = true
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_VAR)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+def $arginfo_reference_operand(S, porigin, poperand) = false -- otherwise
+dec $arginfo_packed_result(pentry*, nat) : bool
+def $arginfo_packed_result(eps, n) = true
+def $arginfo_packed_result((ENTRY (KINT n) (DIRECT pvalue)) :: pentry*, n) = $arginfo_packed_result(pentry*, $(n + 1))
+def $arginfo_packed_result(pentry*, n) = false -- otherwise
+dec $arginfo_reference_value(pstate, pargref, pvalue) : bool
+def $arginfo_reference_value(S, pargref, PINT z) = true
+  -- if pargref.DIMENSION = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $pparginfo_tmp_leaf(pcode, pcunit, pcpath ++ [PCFIELD 0]) = (pcpath_api)
+  -- if $code_name(pcode.NAMES, pcpath_api) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) = $ptascii("func_num_args")
+  -- if S.CURRENT = (pcallcontext)
+  -- if z = pcallcontext.ARGC
+def $arginfo_reference_value(S, pargref, PARRAY n_array) = true
+  -- if pargref.DIMENSION = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $pparginfo_tmp_leaf(pcode, pcunit, pcpath ++ [PCFIELD 0]) = (pcpath_api)
+  -- if $code_name(pcode.NAMES, pcpath_api) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) = $ptascii("func_get_args")
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n_array < |S.ARRAYS|)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if |S.ARRAYS[n_array].ITEMS| = pcallcontext.ARGC
+  -- if $arginfo_packed_result(S.ARRAYS[n_array].ITEMS, 0)
+def $arginfo_reference_value(S, pargref, pvalue) = false -- otherwise
+
+dec $arginfo_reference_prefix(pstate, porigin*, poperand*) : bool
+def $arginfo_reference_prefix(S, porigin*, eps) = true
+def $arginfo_reference_prefix(S, porigin :: porigin_tail*, poperand :: poperand_tail*) = ($arginfo_reference_operand(S, porigin, poperand) /\ $arginfo_reference_prefix(S, porigin_tail*, poperand_tail*))
+def $arginfo_reference_prefix(S, porigin*, poperand*) = false -- otherwise
+dec $arginfo_reference_pending(pstate, pargref, nat, poperand*) : bool
+def $arginfo_reference_pending(S, pargref, n, poperand*) = true
+  -- if $arginfo_reference_valid(S, pargref)
+  -- if porigin_order* = $arginfo_reference_order(S, pargref.ARGUMENT)
+  -- if n = |poperand*|
+  -- if $(n <= |porigin_order*|)
+  -- if $arginfo_reference_prefix(S, porigin_order*, poperand*)
+def $arginfo_reference_pending(S, pargref, n, poperand*) = false -- otherwise
+def $call_task_valid(S, ARGINFO_REF_PREP pargref) = $arginfo_reference_valid(S, pargref)
+def $call_task_valid(S, ARGINFO_REF_VALUES pargref n poperand*) = $arginfo_reference_pending(S, pargref, n, poperand*)
+def $call_task_valid(S, ARGINFO_REF_CAPTURE pargref n poperand*) = ($arginfo_reference_pending(S, pargref, n, poperand*) /\ $(n < |$arginfo_reference_order(S, pargref.ARGUMENT)|))
+def $call_task_valid(S, ARGINFO_REF_ERROR pargref poperand*) = ($arginfo_reference_pending(S, pargref, |poperand*|, poperand*) /\ |poperand*| = |$arginfo_reference_order(S, pargref.ARGUMENT)|)
+def $task_nodes(ARGINFO_REF_VALUES pargref n poperand*) = $operands_roots(poperand*)
+def $task_nodes(ARGINFO_REF_CAPTURE pargref n poperand*) = $operands_roots(poperand*)
+def $task_nodes(ARGINFO_REF_ERROR pargref poperand*) = $operands_roots(poperand*)
+
+rule PhpStep/arginfo-reference-prepare: S ~> S[.TODO = (ARGINFO_REF_VALUES pargref 0 eps) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (ARGINFO_REF_PREP pargref) :: ptask_tail*
+rule PhpStep/arginfo-reference-next: S ~> S[.TODO = [$at_task((porigin), EVAL expression), ARGINFO_REF_CAPTURE pargref n poperand*] ++ ptask_tail*]
+  -- if S.TODO = (ARGINFO_REF_VALUES pargref n poperand*) :: ptask_tail*
+  -- if porigin_order* = $arginfo_reference_order(S, pargref.ARGUMENT)
+  -- if $(n < |porigin_order*|)
+  -- if porigin = porigin_order*[n]
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+rule PhpStep/arginfo-reference-capture: S ~> S[.TODO = (ARGINFO_REF_VALUES pargref $(n + 1) (poperand* ++ [S.RESULT])) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (ARGINFO_REF_CAPTURE pargref n poperand*) :: ptask_tail*
+rule PhpStep/arginfo-reference-ready: S ~> S[.TODO = (ARGINFO_REF_ERROR pargref poperand*) :: ptask_tail*]
+  -- if S.TODO = (ARGINFO_REF_VALUES pargref n poperand*) :: ptask_tail*
+  -- if n = |$arginfo_reference_order(S, pargref.ARGUMENT)|
+rule PhpStep/arginfo-reference-temporary: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", $ptascii("Cannot use temporary expression in write context"), pargref.LINE)
+  -- if S.TODO = (ARGINFO_REF_ERROR pargref poperand*) :: ptask_tail*
+
+dec $arginfo_reference_producer(pstate, pargref, poperand) : bool
+def $arginfo_reference_producer(S, pargref, KNOWN pvalue) = $arginfo_reference_value(S, pargref, pvalue)
+def $arginfo_reference_producer(S, pargref, poperand) = false -- otherwise
+dec $arginfo_reference_result_valid(pstate, pargref, poperand*) : bool
+def $arginfo_reference_result_valid(S, pargref, poperand :: poperand_tail*) = (S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL) /\ $arginfo_reference_producer(S, pargref, poperand))
+def $arginfo_reference_result_valid(S, pargref, poperand*) = false -- otherwise
+dec $arginfo_reference_capture_valid(pstate, pargref, nat) : bool
+def $arginfo_reference_capture_valid(S, pargref, n) = true
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if porigin_order* = $arginfo_reference_order(S, pargref.ARGUMENT)
+  -- if $(n < |porigin_order*|)
+  -- if $arginfo_reference_operand(S, porigin_order*[n], S.RESULT)
+  -- if (n =/= 0 \/ $arginfo_reference_producer(S, pargref, S.RESULT))
+def $arginfo_reference_capture_valid(S, pargref, n) = false -- otherwise
+
+def $intrinsic_name(INTRINSIC_FUNC_NUM_ARGS) = $ptascii("func_num_args")
+def $intrinsic_name(INTRINSIC_FUNC_GET_ARG) = $ptascii("func_get_arg")
+def $intrinsic_name(INTRINSIC_FUNC_GET_ARGS) = $ptascii("func_get_args")
+def $intrinsic_named(preqbytes) = (INTRINSIC_FUNC_NUM_ARGS) -- if $ptlc(preqbytes) = $ptascii("func_num_args")
+def $intrinsic_named(preqbytes) = (INTRINSIC_FUNC_GET_ARG) -- if $ptlc(preqbytes) = $ptascii("func_get_arg")
+def $intrinsic_named(preqbytes) = (INTRINSIC_FUNC_GET_ARGS) -- if $ptlc(preqbytes) = $ptascii("func_get_args")
+def $intrinsic_prepare(S, pintrinsic, z, n_owner?) = S[.TODO = (ARGINFO_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, SELECTION eps, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $arginfo_kind(pintrinsic)
+  -- if S.ORIGIN = (porigin)
+def $intrinsic_pipe(S, pintrinsic, pvalue, porigin, z, n_owner?) = S[.TODO = (ARGINFO_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER n_owner?, SELECTION eps, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $arginfo_kind(pintrinsic)
+def $arginfo_dynamic_selection(S, pintrinsic, porigin) = ($arginfo_kind(pintrinsic) /\ $dynamic_site(S, (porigin)) /\ $dynamic_fixed_name(S, porigin) = eps)
+def $arginfo_pipe_selection(S, pintrinsic, porigin) = ($arginfo_kind(pintrinsic) /\ $pipe_site(S, porigin) /\ $pipe_fixed_name(S, porigin) = eps)
+def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (ARGINFO_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, eps) = eps
+  -- if $intrinsic_lookup(preqbytes_lookup, eps) = (pintrinsic)
+  -- if $arginfo_dynamic_selection(S, pintrinsic, porigin)
+  -- if S.ORIGIN = (porigin)
+  -- if $call_line_valid(S, (porigin), z_call)
+  -- if preqbytes_lookup = $dynamic_lookup_name(preqbytes_original)
+  -- if n_nonce = S.SELECTSEQ
+  -- if n_depth = |S.FRAMES|
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin, KIND pintrinsic, ORIGINAL preqbytes_original, LOOKUP preqbytes_lookup, DEPTH n_depth, LINE z_call}
+def $pipe_name(S, preqbytes_original, preqbytes_lookup, eps, pvalue, porigin, z_send, z_lookup, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (ARGINFO_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, eps) = eps
+  -- if $intrinsic_lookup(preqbytes_lookup, eps) = (pintrinsic)
+  -- if $arginfo_pipe_selection(S, pintrinsic, porigin)
+  -- if S.ORIGIN = (porigin)
+  -- if $call_line_valid(S, (porigin), z_call)
+  -- if preqbytes_lookup = $dynamic_lookup_name(preqbytes_original)
+  -- if n_nonce = S.SELECTSEQ
+  -- if n_depth = |S.FRAMES|
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin, KIND pintrinsic, ORIGINAL preqbytes_original, LOOKUP preqbytes_lookup, DEPTH n_depth, LINE z_call}
+
+dec $arginfo_unpack_prefix(pstate, pargcall, pentry*) : pargcall?
+
+dec $arginfo_call_nodes(pargcall) : pnode*
+def $arginfo_call_nodes(pargcall) = $exit_owner_nodes(pargcall.OWNER) ++ $named_slots_roots(pargcall.SENT)
+def $task_nodes(ARGINFO_ARGS pargcall) = $arginfo_call_nodes(pargcall)
+def $task_nodes(ARGINFO_SEND pargcall) = $arginfo_call_nodes(pargcall)
+def $task_nodes(ARGINFO_UNPACK_PREP pargcall) = $arginfo_call_nodes(pargcall)
+def $task_nodes(ARGINFO_UNPACK_NEXT pargcall poperand n) = $arginfo_call_nodes(pargcall) ++ $operand_nodes(poperand)
+def $task_nodes(ARGINFO_INVOKE pargcall) = $arginfo_call_nodes(pargcall)
+
+dec $arginfo_method_receiver(pstate, pargcall) : bool
+def $arginfo_method_receiver(S, pargcall) = true
+  -- if pargcall.OWNER = (n)
+  -- if $exit_method_site(S, pargcall.SITE)
+def $arginfo_method_receiver(S, pargcall) = false -- otherwise
+dec $arginfo_wrapper_trace(pstate, pargcall, pvalue*) : ptraceframe*
+def $arginfo_wrapper_trace(S, pargcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pargcall.SITE), LINE pargcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if $arginfo_method_receiver(S, pargcall)
+def $arginfo_wrapper_trace(S, pargcall, pvalue*) = eps -- otherwise
+dec $arginfo_error(pstate, pargcall, text, preqbytes) : pstate
+def $arginfo_error(S, pargcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pargcall.SITE)], text, preqbytes, pargcall.LINE, $source_trace_prefixed(S, [ptraceframe] ++ $arginfo_wrapper_trace(S, pargcall, pvalue*)))
+  -- if pvalue* = $trace_extra(S, $getclass_trace_operands(pargcall.SENT))
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pargcall.SITE), LINE pargcall.LINE, FUNCTION $intrinsic_name(pargcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
+dec $arginfo_destination(pintrinsic, preqbytes?, nat) : nat?
+def $arginfo_destination(pintrinsic, eps, n) = (n)
+def $arginfo_destination(INTRINSIC_FUNC_GET_ARG, (preqbytes), n) = (0) -- if preqbytes = $ptascii("position")
+def $arginfo_destination(pintrinsic, preqbytes?, n) = eps -- otherwise
+dec $arginfo_send_check(pstate, pargcall, preqbytes?, int) : pstate
+def $arginfo_send_check(S, pargcall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $c_string(preqbytes), z)
+  -- if $arginfo_destination(pargcall.KIND, (preqbytes), |pargcall.SENT|) = eps
+def $arginfo_send_check(S, pargcall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Named parameter $") ++ preqbytes ++ $ptascii(" overwrites previous argument"), z)
+  -- if $arginfo_destination(pargcall.KIND, (preqbytes), |pargcall.SENT|) = (n)
+  -- if $named_slot_at(pargcall.SENT, n) = NAMED_SENT poperand
+def $arginfo_send_check(S, pargcall, eps, z) = $throw_scalar(S, "Error", $ptascii("Cannot use positional argument after named argument during unpacking"), z)
+  -- if pargcall.NAMED
+def $arginfo_send_check(S, pargcall, preqbytes?, z) = S -- otherwise
+dec $arginfo_sent(pargcall, poperand, preqbytes?) : pargcall
+def $arginfo_sent(pargcall, poperand, preqbytes?) = pargcall[.SENT = $named_slot_set(pargcall.SENT, n, poperand)][.NAMED = (pargcall.NAMED \/ preqbytes? =/= eps)]
+  -- if $arginfo_destination(pargcall.KIND, preqbytes?, |pargcall.SENT|) = (n)
+
+rule PhpStep/arginfo-argument: S ~> S[.TODO = [$at_task((porigin), EVAL expression), ARGINFO_SEND pargcall] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ARGINFO_ARGS pargcall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pargcall.SITE, pargcall.INDEX) = ((expression, false, preqbytes?, porigin, z))
+rule PhpStep/arginfo-send: S ~> S_value[.TODO = (ARGINFO_ARGS ($arginfo_sent(pargcall, S_value.RESULT, preqbytes?)[.INDEX = $(pargcall.INDEX + 1)])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ARGINFO_SEND pargcall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pargcall.SITE, pargcall.INDEX) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $arginfo_send_check(S, pargcall, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_value = $resolve_at(S_checked, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+rule PhpStep/arginfo-send-error: S ~> S_checked
+  -- if S.TODO = (ARGINFO_SEND pargcall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pargcall.SITE, pargcall.INDEX) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $arginfo_send_check(S, pargcall, preqbytes?, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+rule PhpStep/arginfo-send-abrupt: S ~> S_value
+  -- if S.TODO = (ARGINFO_SEND pargcall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pargcall.SITE, pargcall.INDEX) = ((expression, false, preqbytes?, porigin, z))
+  -- if S_checked = $arginfo_send_check(S, pargcall, preqbytes?, z)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_value = $resolve_at(S_checked, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+rule PhpStep/arginfo-arguments-done: S ~> S[.TODO = (ARGINFO_INVOKE pargcall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ARGINFO_ARGS pargcall) :: ptask_tail*
+  -- if $intrinsic_count(S, pargcall.SITE) = (pargcall.INDEX)
+
+rule PhpStep/arginfo-unpack-start: S ~> S[.TODO = [$at_task((porigin), EVAL expression), ARGINFO_UNPACK_PREP pargcall] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ARGINFO_ARGS pargcall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pargcall.SITE, pargcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+rule PhpStep/arginfo-unpack-array: S ~> S_value[.TODO = (ARGINFO_UNPACK_NEXT pargcall S_value.RESULT 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ARGINFO_UNPACK_PREP pargcall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pargcall.SITE, pargcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PARRAY n)
+rule PhpStep/arginfo-unpack-type: S ~> $throw_scalar(S_value, "TypeError", $ptascii("Only arrays and Traversables can be unpacked, ") ++ $noctor_unpack_type_bytes(S_value, pvalue) ++ $ptascii(" given"), z)
+  -- if S.TODO = (ARGINFO_UNPACK_PREP pargcall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pargcall.SITE, pargcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$is_array_value(pvalue)
+rule PhpStep/arginfo-unpack-abrupt: S ~> S_value
+  -- if S.TODO = (ARGINFO_UNPACK_PREP pargcall) :: ptask_tail*
+  -- if $intrinsic_argument(S, pargcall.SITE, pargcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+
+rule PhpStep/arginfo-unpack-item: S ~> S_checked[.TODO = (ARGINFO_UNPACK_NEXT pargcall poperand $(n_cursor + 1)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ARGINFO_UNPACK_NEXT pargcall poperand n_cursor) :: ptask_tail*
+  -- if poperand = KNOWN (PARRAY n)
+  -- if $(n_cursor < |S.ARRAYS[n].ITEMS|)
+  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY pkey pitem
+  -- if preqbytes_key? = $exit_key_name(pkey)
+  -- if $arginfo_unpack_prefix(S, pargcall, S.ARRAYS[n].ITEMS[0:n_cursor]) = (pargcall_prefix)
+  -- if $intrinsic_argument(S, pargcall.SITE, pargcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_checked = $arginfo_send_check(S, pargcall_prefix, preqbytes_key?, z)
+  -- if S_checked.COMPLETION = NORMAL
+rule PhpStep/arginfo-unpack-item-error: S ~> S_checked
+  -- if S.TODO = (ARGINFO_UNPACK_NEXT pargcall poperand n_cursor) :: ptask_tail*
+  -- if poperand = KNOWN (PARRAY n)
+  -- if $(n_cursor < |S.ARRAYS[n].ITEMS|)
+  -- if S.ARRAYS[n].ITEMS[n_cursor] = ENTRY pkey pitem
+  -- if preqbytes_key? = $exit_key_name(pkey)
+  -- if $arginfo_unpack_prefix(S, pargcall, S.ARRAYS[n].ITEMS[0:n_cursor]) = (pargcall_prefix)
+  -- if $intrinsic_argument(S, pargcall.SITE, pargcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if S_checked = $arginfo_send_check(S, pargcall_prefix, preqbytes_key?, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+rule PhpStep/arginfo-unpack-done: S ~> S[.TODO = (ARGINFO_ARGS pargcall_prefix[.INDEX = $(pargcall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ARGINFO_UNPACK_NEXT pargcall (KNOWN (PARRAY n)) n_cursor) :: ptask_tail*
+  -- if n_cursor = |S.ARRAYS[n].ITEMS|
+  -- if $arginfo_unpack_prefix(S, pargcall, S.ARRAYS[n].ITEMS) = (pargcall_prefix)
+
+;; Saved-task checks use their restored source/selection, not the child CVS.
+;; Existing84 authenticates actual and saved contexts against their own locals.
+dec $arginfo_selected_valid(pstate, pargcall) : bool
+def $arginfo_selected_valid(S, pargcall) = true
+  -- if pargcall.OWNER = eps
+  -- if pargcall.SELECTION = eps
+  -- if $exit_fixed(S, pargcall.SITE) = ((preqbytes, preqbytes_fallback?))
+  -- if $intrinsic_lookup($dynamic_lookup_name(preqbytes), preqbytes_fallback?) = (pargcall.KIND)
+def $arginfo_selected_valid(S, pargcall) = true
+  -- if pargcall.OWNER = eps
+  -- if pargcall.SELECTION = (n_nonce)
+  -- if $(n_nonce < |S.SELECTEDCALLS|)
+  -- if S.SELECTEDCALLS[n_nonce] = pselectedcall
+  -- if pselectedcall.NONCE = n_nonce
+  -- if pselectedcall.SITE = pargcall.SITE
+  -- if pselectedcall.KIND = pargcall.KIND
+  -- if pselectedcall.LINE = pargcall.LINE
+  -- if $selected_entry_source_valid(S, pselectedcall)
+  -- if ~$selected_newer_same_owner(S.SELECTEDCALLS, pselectedcall)
+def $arginfo_selected_valid(S, pargcall) = true
+  -- if pargcall.OWNER = (n)
+  -- if pargcall.SELECTION = eps
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE pargcall.KIND
+  -- if (($exit_fixed(S, pargcall.SITE) = eps /\ $exit_dynamic_site(S, pargcall.SITE)) \/ $exit_method_site(S, pargcall.SITE))
+def $arginfo_selected_valid(S, pargcall) = false -- otherwise
+dec $arginfo_source_prefix(pintrinsic, phpType7*, pnamedslot*, bool) : (pnamedslot*, bool)?
+def $arginfo_source_prefix(pintrinsic, eps, pnamedslot*, b) = ((pnamedslot*, b))
+def $arginfo_source_prefix(pintrinsic, (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, pnamedslot*, b) = $arginfo_source_prefix(pintrinsic, phpType7*, $named_slot_set(pnamedslot*, n, KNOWN PNULL), (b \/ preqbytes? =/= eps))
+  -- if preqbytes? = $exit_argument_name(phpType3)
+  -- if $arginfo_destination(pintrinsic, preqbytes?, |pnamedslot*|) = (n)
+  -- if $named_slot_at(pnamedslot*, n) = NAMED_HOLE
+  -- if ~(b /\ preqbytes? = eps)
+def $arginfo_source_prefix(pintrinsic, phpType7*, pnamedslot*, b) = eps -- otherwise
+dec $arginfo_sent_shape(pstate, pargcall) : bool
+def $arginfo_sent_shape(S, pargcall) = true
+  -- if $exit_callable_arguments(S, pargcall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pargcall.INDEX <= |phpType7*|)
+  -- if phpType7_prefix* = phpType7*[0:pargcall.INDEX]
+  -- if ~$call_unpack_present(phpType7_prefix*)
+  -- if $arginfo_source_prefix(pargcall.KIND, phpType7_prefix*, eps, false) = ((pnamedslot*, pargcall.NAMED))
+  -- if $getclass_slot_shape(pargcall.SENT) = $getclass_slot_shape(pnamedslot*)
+def $arginfo_sent_shape(S, pargcall) = true
+  -- if $exit_callable_arguments(S, pargcall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $(pargcall.INDEX <= |phpType7*|)
+  -- if $call_unpack_present(phpType7*[0:pargcall.INDEX])
+  -- if (~$exit_prefix_named(phpType7*[0:pargcall.INDEX]) \/ pargcall.NAMED)
+def $arginfo_sent_shape(S, pargcall) = true
+  -- if $pipe_site(S, pargcall.SITE)
+  -- if pargcall.INDEX = 1
+  -- if |pargcall.SENT| = 1
+  -- if ~pargcall.NAMED
+def $arginfo_sent_shape(S, pargcall) = false -- otherwise
+dec $arginfo_call_valid(pstate, pargcall) : bool
+def $arginfo_call_valid(S, pargcall) = true
+  -- if S.ORIGIN = (pargcall.SITE)
+  -- if $arginfo_kind(pargcall.KIND)
+  -- if $arginfo_selected_valid(S, pargcall)
+  -- if pargcall.SITE = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((pargcall.LINE, false))
+  -- if $intrinsic_count(S, pargcall.SITE) = (n_count)
+  -- if $(pargcall.INDEX <= n_count)
+  -- if $getclass_slots_valid(pargcall.SENT, 0, |pargcall.SENT|, pargcall.NAMED)
+  -- if $arginfo_slots_live(S, pargcall.SENT)
+def $arginfo_call_valid(S, pargcall) = false -- otherwise
+dec $arginfo_pending_valid(pstate, pargcall, bool) : bool
+def $arginfo_pending_valid(S, pargcall, b) = true
+  -- if $arginfo_call_valid(S, pargcall)
+  -- if $arginfo_sent_shape(S, pargcall)
+  -- if $intrinsic_argument(S, pargcall.SITE, pargcall.INDEX) = ((expression, b, preqbytes?, porigin, z))
+def $arginfo_pending_valid(S, pargcall, b) = false -- otherwise
+def $call_task_valid(S, ARGINFO_ARGS pargcall) = ($arginfo_call_valid(S, pargcall) /\ $arginfo_sent_shape(S, pargcall))
+def $call_task_valid(S, ARGINFO_SEND pargcall) = $arginfo_pending_valid(S, pargcall, false)
+def $call_task_valid(S, ARGINFO_UNPACK_PREP pargcall) = $arginfo_pending_valid(S, pargcall, true)
+dec $arginfo_invoke_valid(pstate, pargcall) : bool
+def $arginfo_invoke_valid(S, pargcall) = true
+  -- if $arginfo_call_valid(S, pargcall)
+  -- if $arginfo_sent_shape(S, pargcall)
+  -- if $intrinsic_count(S, pargcall.SITE) = (pargcall.INDEX)
+def $arginfo_invoke_valid(S, pargcall) = false -- otherwise
+def $call_task_valid(S, ARGINFO_INVOKE pargcall) = $arginfo_invoke_valid(S, pargcall)
+dec $arginfo_unpack_valid(pstate, pargcall, poperand, nat) : bool
+def $arginfo_unpack_valid(S, pargcall, KNOWN (PARRAY n), n_cursor) = true
+  -- if $arginfo_call_valid(S, pargcall)
+  -- if $intrinsic_argument(S, pargcall.SITE, pargcall.INDEX) = ((expression, true, preqbytes?, porigin, z))
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if $(n_cursor <= |S.ARRAYS[n].ITEMS|)
+  -- if $arginfo_sent_shape(S, pargcall)
+  -- if $arginfo_unpack_prefix(S, pargcall, S.ARRAYS[n].ITEMS[0:n_cursor]) = (pargcall_prefix)
+def $arginfo_unpack_valid(S, pargcall, poperand, n_cursor) = false -- otherwise
+def $call_task_valid(S, ARGINFO_UNPACK_NEXT pargcall poperand n_cursor) = $arginfo_unpack_valid(S, pargcall, poperand, n_cursor)
+
+dec $arginfo_pending_result_valid(pstate, pargcall, bool) : bool
+def $arginfo_pending_result_valid(S, pargcall, b) = $getclass_pending_result_valid(S, {SITE pargcall.SITE, INDEX pargcall.INDEX, SENT pargcall.SENT, NAMED pargcall.NAMED, OWNER pargcall.OWNER, LINE pargcall.LINE}, b)
+def $arginfo_result_valid(S) = $arginfo_result_valid(S[.ORIGIN = (porigin)][.TODO = ptask :: ptask_tail*])
+  -- if S.TODO = (AT porigin ptask) :: ptask_tail*
+def $arginfo_result_valid(S) = $arginfo_result_valid(S[.ORIGIN = porigin?][.TODO = ptask_tail*])
+  -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
+def $arginfo_result_valid(S) = $arginfo_pending_result_valid(S, pargcall, false)
+  -- if S.TODO = (ARGINFO_SEND pargcall) :: ptask_tail*
+def $arginfo_result_valid(S) = $arginfo_pending_result_valid(S, pargcall, true)
+  -- if S.TODO = (ARGINFO_UNPACK_PREP pargcall) :: ptask_tail*
+def $arginfo_result_valid(S) = $arginfo_reference_result_valid(S, pargref, poperand*)
+  -- if S.TODO = (ARGINFO_REF_ERROR pargref poperand*) :: ptask_tail*
+def $arginfo_result_valid(S) = $arginfo_reference_capture_valid(S, pargref, n)
+  -- if S.TODO = (ARGINFO_REF_CAPTURE pargref n poperand*) :: ptask_tail*
+def $arginfo_result_valid(S) = (S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if S.TODO = (ARGINFO_REF_VALUES pargref n poperand*) :: ptask_tail*
+def $arginfo_result_valid(S) = true -- otherwise
+
+;; Recheck an unpacked prefix without repeating observable effects.
+def $arginfo_unpack_prefix(S, pargcall, eps) = (pargcall)
+def $arginfo_unpack_prefix(S, pargcall, (ENTRY pkey pitem) :: pentry*) = $arginfo_unpack_prefix(S, $arginfo_sent(pargcall, KNOWN $entry_value(S, pitem), preqbytes?), pentry*)
+  -- if preqbytes? = $exit_key_name(pkey)
+  -- if S_checked = $arginfo_send_check(S, pargcall, preqbytes?, pargcall.LINE)
+  -- if S_checked.COMPLETION = NORMAL
+def $arginfo_unpack_prefix(S, pargcall, pentry*) = eps -- otherwise
+
+;; Current symbol-table bindings are the fixed CV view. EXTRA is receive-owned.
+dec $arginfo_values(pstate, pcallcontext) : pvalue*
+def $arginfo_values(S, pcallcontext) = $trace_parameters(S, S.ENV, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
+  -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+dec $arginfo_array(pvalue*, parray) : parray
+def $arginfo_array(eps, parray) = parray
+def $arginfo_array(pvalue :: pvalue_tail*, parray) = $arginfo_array(pvalue_tail*, $array_insert(parray, $array_append_key(parray), DIRECT pvalue))
+dec $arginfo_finish(pstate, pvalue) : pstate
+def $arginfo_finish(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+dec $arginfo_global(pstate, pargcall) : bool
+def $arginfo_global(S, pargcall) = (~$arginfo_method_receiver(S, pargcall) /\ (S.CURRENT = eps \/ $eval_trace_live(S.EVALCONTEXTS, |S.FRAMES|) =/= eps \/ $file_trace_live(S.FILECONTEXTS, |S.FRAMES|) =/= eps))
+dec $arginfo_dynamic(pstate, pargcall) : bool
+def $arginfo_dynamic(S, pargcall) = (pargcall.OWNER =/= eps \/ $exit_fixed(S, pargcall.SITE) = eps)
+dec $arginfo_global_message(pintrinsic) : preqbytes
+def $arginfo_global_message(INTRINSIC_FUNC_NUM_ARGS) = $ptascii("func_num_args() must be called from a function context")
+def $arginfo_global_message(pintrinsic) = $intrinsic_name(pintrinsic) ++ $ptascii("() cannot be called from the global scope")
+  -- if pintrinsic =/= INTRINSIC_FUNC_NUM_ARGS
+dec $arginfo_context(pstate, pargcall, int) : pstate
+def $arginfo_context(S, pargcall, z) = $arginfo_error(S, pargcall, "ValueError", $ptascii("func_get_arg(): Argument #1 ($position) must be greater than or equal to 0"))
+  -- if pargcall.KIND = INTRINSIC_FUNC_GET_ARG
+  -- if $(z < 0)
+def $arginfo_context(S, pargcall, z) = $arginfo_error(S, pargcall, "Error", $arginfo_global_message(pargcall.KIND))
+  -- if ~(pargcall.KIND = INTRINSIC_FUNC_GET_ARG /\ $(z < 0))
+  -- if $arginfo_global(S, pargcall)
+def $arginfo_context(S, pargcall, z) = $arginfo_error(S, pargcall, "Error", $ptascii("Cannot call ") ++ $intrinsic_name(pargcall.KIND) ++ $ptascii("() dynamically"))
+  -- if ~(pargcall.KIND = INTRINSIC_FUNC_GET_ARG /\ $(z < 0))
+  -- if ~$arginfo_global(S, pargcall)
+  -- if $arginfo_dynamic(S, pargcall)
+def $arginfo_context(S, pargcall, z) = $arginfo_error(S, pargcall, "ValueError", $ptascii("func_get_arg(): Argument #1 ($position) must be less than the number of the arguments passed to the currently executed function"))
+  -- if pargcall.KIND = INTRINSIC_FUNC_GET_ARG
+  -- if $(z >= 0)
+  -- if ~$arginfo_global(S, pargcall)
+  -- if ~$arginfo_dynamic(S, pargcall)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(z >= pcallcontext.ARGC)
+def $arginfo_context(S, pargcall, z) = $arginfo_finish(S, pvalue*[$nabs(z)])
+  -- if pargcall.KIND = INTRINSIC_FUNC_GET_ARG
+  -- if $(z >= 0)
+  -- if ~$arginfo_global(S, pargcall)
+  -- if ~$arginfo_dynamic(S, pargcall)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(z < pcallcontext.ARGC)
+  -- if pvalue* = $arginfo_values(S, pcallcontext)
+def $arginfo_context(S, pargcall, z) = $arginfo_finish(S, PINT pcallcontext.ARGC)
+  -- if pargcall.KIND = INTRINSIC_FUNC_NUM_ARGS
+  -- if ~$arginfo_global(S, pargcall)
+  -- if ~$arginfo_dynamic(S, pargcall)
+  -- if S.CURRENT = (pcallcontext)
+def $arginfo_context(S, pargcall, z) = S_array[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pargcall.KIND = INTRINSIC_FUNC_GET_ARGS
+  -- if ~$arginfo_global(S, pargcall)
+  -- if ~$arginfo_dynamic(S, pargcall)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S_array = $allocate_array(S, $arginfo_array($arginfo_values(S, pcallcontext), $array_empty()))
+  -- if S.TODO = ptask :: ptask_tail*
+dec $arginfo_strict(pstate, pargcall) : bool
+def $arginfo_strict(S, pargcall) = (~$arginfo_method_receiver(S, pargcall) /\ $exit_strict(S, pargcall.SITE))
+dec $arginfo_conversion(pvalue, bool) : ptypeconversion
+def $arginfo_conversion(PINT z, b) = TYPEVALUE (PINT z)
+def $arginfo_conversion(PNULL, false) = TYPEVALUE (PINT 0)
+def $arginfo_conversion(pvalue, false) = $typed_weak(["int"], pvalue)
+  -- if pvalue =/= PNULL
+  -- if $typed_tag(pvalue) =/= "int"
+def $arginfo_conversion(pvalue, b) = TYPEREJECT -- otherwise
+dec $arginfo_convert(pstate, pargcall, pvalue) : pstate
+def $arginfo_convert(S, pargcall, PNULL) = $diagnostic(S, "Deprecated", $ptascii("func_get_arg(): Passing null to parameter #1 ($position) of type int is deprecated"), pargcall.LINE)[.RESULT = KNOWN (PINT 0)]
+  -- if ~$arginfo_strict(S, pargcall)
+def $arginfo_convert(S, pargcall, pvalue) = $typed_apply(S, $arginfo_conversion(pvalue, $arginfo_strict(S, pargcall)), pargcall.LINE)
+  -- if ~(pvalue = PNULL /\ ~$arginfo_strict(S, pargcall))
+  -- if $arginfo_conversion(pvalue, $arginfo_strict(S, pargcall)) =/= TYPEREJECT
+dec $arginfo_receive(pstate, pargcall) : pstate
+def $arginfo_receive(S, pargcall) = $arginfo_error(S, pargcall, "ArgumentCountError", $intrinsic_name(pargcall.KIND) ++ $ptascii("() expects exactly 0 arguments, ") ++ $decimal_integer(|pargcall.SENT|) ++ $ptascii(" given"))
+  -- if pargcall.KIND =/= INTRINSIC_FUNC_GET_ARG
+  -- if pargcall.SENT =/= eps
+def $arginfo_receive(S, pargcall) = $arginfo_context(S, pargcall, 0)
+  -- if pargcall.KIND =/= INTRINSIC_FUNC_GET_ARG
+  -- if pargcall.SENT = eps
+def $arginfo_receive(S, pargcall) = $arginfo_error(S, pargcall, "ArgumentCountError", $ptascii("func_get_arg() expects exactly 1 argument, ") ++ $decimal_integer(|pargcall.SENT|) ++ $ptascii(" given"))
+  -- if pargcall.KIND = INTRINSIC_FUNC_GET_ARG
+  -- if |pargcall.SENT| =/= 1
+def $arginfo_receive(S, pargcall) = $arginfo_error(S, pargcall, "TypeError", $ptascii("func_get_arg(): Argument #1 ($position) must be of type int, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if pargcall.KIND = INTRINSIC_FUNC_GET_ARG
+  -- if pargcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $arginfo_conversion(pvalue, $arginfo_strict(S, pargcall)) = TYPEREJECT
+def $arginfo_receive(S, pargcall) = $arginfo_context(S_converted, pargcall, z)
+  -- if pargcall.KIND = INTRINSIC_FUNC_GET_ARG
+  -- if pargcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $arginfo_conversion(pvalue, $arginfo_strict(S, pargcall)) =/= TYPEREJECT
+  -- if S_converted = $arginfo_convert(S, pargcall, pvalue)
+  -- if S_converted.COMPLETION = NORMAL
+  -- if S_converted.RESULT = KNOWN (PINT z)
+def $arginfo_receive(S, pargcall) = S_converted
+  -- if pargcall.KIND = INTRINSIC_FUNC_GET_ARG
+  -- if pargcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $arginfo_conversion(pvalue, $arginfo_strict(S, pargcall)) =/= TYPEREJECT
+  -- if S_converted = $arginfo_convert(S, pargcall, pvalue)
+  -- if S_converted.COMPLETION =/= NORMAL
+rule PhpStep/arginfo-invoke: S ~> $arginfo_receive(S, pargcall)
+  -- if S.TODO = (ARGINFO_INVOKE pargcall) :: ptask_tail*
+  -- if $arginfo_invoke_valid(S, pargcall)
+
+;; No caller argument roots are added by this view; own SEND values remain roots.
+def $arginfo_slots_live(S, eps) = true
+def $arginfo_slots_live(S, (NAMED_SENT (KNOWN (PARRAY n))) :: pnamedslot*) = ($(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS /\ $arginfo_slots_live(S, pnamedslot*))
+def $arginfo_slots_live(S, (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*) = ($getclass_slots_live(S, [NAMED_SENT (KNOWN pvalue)]) /\ $arginfo_slots_live(S, pnamedslot*))
+  -- if ~$is_array_value(pvalue)
+def $arginfo_slots_live(S, pnamedslot*) = false -- otherwise
+
+;; Reuse the accepted dynamic-name receipt rather than reconstructing a callee CV.
+def $selected_task_nonce(ARGINFO_ARGS pargcall) = pargcall.SELECTION
+def $selected_task_nonce(ARGINFO_SEND pargcall) = pargcall.SELECTION
+def $selected_task_nonce(ARGINFO_UNPACK_PREP pargcall) = pargcall.SELECTION
+def $selected_task_nonce(ARGINFO_UNPACK_NEXT pargcall poperand n) = pargcall.SELECTION
+def $selected_task_nonce(ARGINFO_INVOKE pargcall) = pargcall.SELECTION
+def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if $arginfo_kind(pselectedcall.KIND)
+  -- if pselectedcall.LOOKUP = $dynamic_lookup_name(pselectedcall.ORIGINAL)
+  -- if $intrinsic_lookup(pselectedcall.LOOKUP, eps) = (pselectedcall.KIND)
+  -- if $call_line_valid(S, (pselectedcall.SITE), pselectedcall.LINE)
+  -- if ($arginfo_dynamic_selection(S, pselectedcall.KIND, pselectedcall.SITE) \/ $arginfo_pipe_selection(S, pselectedcall.KIND, pselectedcall.SITE))

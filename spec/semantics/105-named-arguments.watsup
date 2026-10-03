@@ -80,51 +80,51 @@ dec $named_argument_task(pfunction, pnamedtarget, expression) : ptask
 def $named_argument_task(pfunction, pnamedtarget, expression) = DIM_PREP expression
   -- if $named_reference(pfunction, pnamedtarget) /\ $call_reference_variable(expression)
 def $named_argument_task(pfunction, pnamedtarget, expression) = EVAL expression -- otherwise
-rule PhpStep/named-next: S ~> S[.TODO = [$at_task($named_origin(S, porigin?, n), $named_argument_task(pfunction, $named_arg_target(pfunction, phpType7, n), $named_expression(phpType7))), NAMED_SEND pcalltarget_function phpType7_tail* n pnamedargs porigin? z] ++ ptask_tail*]
+rule PhpStep/named-next: S ~> S[.TODO = [$at_task($named_origin(S, porigin?, n), $arginfo_reference_task(S, pcalltarget_function, $named_index(pfunction.SIGNATURE.PARAMETERS, $named_arg_target(pfunction, phpType7, n)), porigin?, $named_origin(S, porigin?, n), $named_expression(phpType7), $named_argument_task(pfunction, $named_arg_target(pfunction, phpType7, n), $named_expression(phpType7)))), NAMED_SEND pcalltarget_function phpType7_tail* n pnamedargs porigin? z] ++ ptask_tail*]
   -- if S.TODO = (NAMED_ARGS pcalltarget_function (phpType7 :: phpType7_tail*) n pnamedargs porigin? z) :: ptask_tail*
   -- if $target_function(S, pcalltarget_function) = (pfunction)
 
-dec $named_fetch(pstate, pfunction, pnamedtarget, expression, int) : pstate
-def $named_fetch(S, pfunction, pnamedtarget, expression, z) = $call_reference_base($hold_task_inputs(S), S.BASE, z)
-  -- if $named_reference(pfunction, pnamedtarget) /\ $call_reference_variable(expression) /\ ~$named_cv(expression)
-def $named_fetch(S, pfunction, pnamedtarget, expression, z) = $resolve_at(S, S.RESULT, z)
-  -- if ~$named_reference(pfunction, pnamedtarget) /\ ~$named_cv(expression)
-def $named_fetch(S, pfunction, pnamedtarget, expression, z) = S -- otherwise
+dec $named_fetch(pstate, pfunction, pnamedtarget, expression, porigin?, int) : pstate
+def $named_fetch(S, pfunction, pnamedtarget, expression, porigin_arg?, z) = $call_reference_base($hold_task_inputs(S), S.BASE, z)
+  -- if $named_reference(pfunction, pnamedtarget) /\ $call_reference_variable(expression) /\ ~$named_cv(expression) /\ ~$arginfo_nullsafe_origin(S, porigin_arg?)
+def $named_fetch(S, pfunction, pnamedtarget, expression, porigin_arg?, z) = $resolve_at(S, S.RESULT, z)
+  -- if (~$named_reference(pfunction, pnamedtarget) \/ $arginfo_nullsafe_origin(S, porigin_arg?)) /\ ~$named_cv(expression)
+def $named_fetch(S, pfunction, pnamedtarget, expression, porigin_arg?, z) = S -- otherwise
 
-dec $named_promote(pstate, pfunction, pnamedtarget, expression, int) : pstate
-def $named_promote(S, pfunction, pnamedtarget, expression, z) = S -- if S.COMPLETION =/= NORMAL
-def $named_promote(S, pfunction, pnamedtarget, expression, z) = $call_location_reference($call_reference_base($hold_task_inputs(S), S.BASE, z))
+dec $named_promote(pstate, pfunction, pnamedtarget, expression, porigin?, int) : pstate
+def $named_promote(S, pfunction, pnamedtarget, expression, porigin_arg?, z) = S -- if S.COMPLETION =/= NORMAL
+def $named_promote(S, pfunction, pnamedtarget, expression, porigin_arg?, z) = $call_location_reference($call_reference_base($hold_task_inputs(S), S.BASE, z))
   -- if S.COMPLETION = NORMAL
-  -- if $named_reference(pfunction, pnamedtarget) /\ $call_reference_variable(expression) /\ $named_cv(expression)
-def $named_promote(S, pfunction, pnamedtarget, expression, z) = $call_location_reference(S)
+  -- if $named_reference(pfunction, pnamedtarget) /\ $call_reference_variable(expression) /\ $named_cv(expression) /\ ~$arginfo_nullsafe_origin(S, porigin_arg?)
+def $named_promote(S, pfunction, pnamedtarget, expression, porigin_arg?, z) = $call_location_reference(S)
   -- if S.COMPLETION = NORMAL
-  -- if $named_reference(pfunction, pnamedtarget) /\ $call_reference_variable(expression) /\ ~$named_cv(expression)
-def $named_promote(S, pfunction, pnamedtarget, expression, z) = S -- otherwise
+  -- if $named_reference(pfunction, pnamedtarget) /\ $call_reference_variable(expression) /\ ~$named_cv(expression) /\ ~$arginfo_nullsafe_origin(S, porigin_arg?)
+def $named_promote(S, pfunction, pnamedtarget, expression, porigin_arg?, z) = S -- otherwise
 
 dec $named_send_value(pstate, pcalltarget, pnamedargs, porigin?, nat) : pstate
 def $named_send_value(S, pcalltarget_function, pnamedargs, porigin?, n) = S_fetched
   -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if phpType7 = $named_source(S, porigin?, n)
-  -- if S_fetched = $named_fetch(S, pfunction, $named_arg_target(pfunction, phpType7, |pnamedargs.SLOTS|), $named_expression(phpType7), $named_line(S, porigin?, n))
+  -- if S_fetched = $named_fetch(S, pfunction, $named_arg_target(pfunction, phpType7, |pnamedargs.SLOTS|), $named_expression(phpType7), $named_origin(S, porigin?, n), $named_line(S, porigin?, n))
   -- if S_fetched.COMPLETION =/= NORMAL
 def $named_send_value(S, pcalltarget_function, pnamedargs, porigin?, n) = S_checked
   -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if phpType7 = $named_source(S, porigin?, n)
-  -- if S_fetched = $named_fetch(S, pfunction, $named_arg_target(pfunction, phpType7, |pnamedargs.SLOTS|), $named_expression(phpType7), $named_line(S, porigin?, n))
+  -- if S_fetched = $named_fetch(S, pfunction, $named_arg_target(pfunction, phpType7, |pnamedargs.SLOTS|), $named_expression(phpType7), $named_origin(S, porigin?, n), $named_line(S, porigin?, n))
   -- if S_fetched.COMPLETION = NORMAL
   -- if S_checked = $named_check(S_fetched, pnamedargs, $named_arg_target(pfunction, phpType7, |pnamedargs.SLOTS|), phpType7, $named_line(S, porigin?, n))
   -- if S_checked.COMPLETION =/= NORMAL
-def $named_send_value(S, pcalltarget_function, pnamedargs, porigin?, n) = $call_send_parameter(S_promoted, pcalltarget_function, $named_index(pfunction.SIGNATURE.PARAMETERS, pnamedtarget), expression, porigin?, z)
+def $named_send_value(S, pcalltarget_function, pnamedargs, porigin?, n) = $call_send_parameter(S_promoted, pcalltarget_function, $named_index(pfunction.SIGNATURE.PARAMETERS, pnamedtarget), expression, porigin?, $named_origin(S, porigin?, n), z)
   -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if phpType7 = $named_source(S, porigin?, n)
   -- if expression = $named_expression(phpType7)
   -- if z = $named_line(S, porigin?, n)
   -- if pnamedtarget = $named_arg_target(pfunction, phpType7, |pnamedargs.SLOTS|)
-  -- if S_fetched = $named_fetch(S, pfunction, pnamedtarget, expression, z)
+  -- if S_fetched = $named_fetch(S, pfunction, pnamedtarget, expression, $named_origin(S, porigin?, n), z)
   -- if S_fetched.COMPLETION = NORMAL
   -- if S_checked = $named_check(S_fetched, pnamedargs, pnamedtarget, phpType7, z)
   -- if S_checked.COMPLETION = NORMAL
-  -- if S_promoted = $named_promote(S_checked, pfunction, pnamedtarget, expression, z)
+  -- if S_promoted = $named_promote(S_checked, pfunction, pnamedtarget, expression, $named_origin(S, porigin?, n), z)
   -- if S_promoted.COMPLETION = NORMAL
 def $named_send_value(S, pcalltarget_function, pnamedargs, porigin?, n) = S_promoted
   -- if $target_function(S, pcalltarget_function) = (pfunction)
@@ -132,11 +132,11 @@ def $named_send_value(S, pcalltarget_function, pnamedargs, porigin?, n) = S_prom
   -- if expression = $named_expression(phpType7)
   -- if z = $named_line(S, porigin?, n)
   -- if pnamedtarget = $named_arg_target(pfunction, phpType7, |pnamedargs.SLOTS|)
-  -- if S_fetched = $named_fetch(S, pfunction, pnamedtarget, expression, z)
+  -- if S_fetched = $named_fetch(S, pfunction, pnamedtarget, expression, $named_origin(S, porigin?, n), z)
   -- if S_fetched.COMPLETION = NORMAL
   -- if S_checked = $named_check(S_fetched, pnamedargs, pnamedtarget, phpType7, z)
   -- if S_checked.COMPLETION = NORMAL
-  -- if S_promoted = $named_promote(S_checked, pfunction, pnamedtarget, expression, z)
+  -- if S_promoted = $named_promote(S_checked, pfunction, pnamedtarget, expression, $named_origin(S, porigin?, n), z)
   -- if S_promoted.COMPLETION =/= NORMAL
 rule PhpStep/named-send: S ~> S_value[.TODO = (NAMED_ARGS pcalltarget_function phpType7* $(n + 1) $named_store(pnamedargs, $named_arg_target(pfunction, $named_source(S, porigin?, n), n), S_value.RESULT) porigin? z) :: ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (NAMED_SEND pcalltarget_function phpType7* n pnamedargs porigin? z) :: ptask_tail*

@@ -1,0 +1,108 @@
+;; The pinned compiler admits initial literal builtin routes for these bodies.
+;; Existing87 owns static write rejection; consumers reuse its bounded fact.
+def $pparginfo_builtin(ptbytes) = ($ptlc(ptbytes) <- [$ptascii("func_num_args"), $ptascii("func_get_arg"), $ptascii("func_get_args")])
+;; Constant property selectors are converted by the compiler for any receiver.
+def $ppproperty_constant_name(P, pcpath) = $ppfoldresult(P, $pfwarned(P.FOLD, pcpath, $stringify(P.FOLD.MEMORY, PARRAY n, P.LOCATION.LINE)))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (PARRAY n)
+def $ppproperty_constant_name(P, pcpath) = P -- otherwise
+;; Reject temporary write receivers before compiling their child or selector.
+def $ppproperty_receiver(P, pcpath, expression, ppmode) = $ppexpr(P, pcpath, expression, ppmode)
+  -- if ppmode = PPW \/ ppmode = PPRW \/ ppmode = PPUNSET
+  -- if $pptemporary(expression)
+;; Retain other receiver modes; optimized API calls have a separate cut.
+def $ppproperty_receiver(P, pcpath, NExprFuncCall name phpType6 metadata, ppmode) = $ppwrite_call($ppexpr(P, pcpath, NExprFuncCall name phpType6 metadata, PPR), pcpath, NExprFuncCall name phpType6 metadata, PPW)
+  -- if ppmode = PPW \/ ppmode = PPRW \/ ppmode = PPUNSET
+  -- if $pnresolve(P.ENV, PLFUNCTION, name) = PNRESOLVED pnreference
+  -- if $pparginfo_builtin(pnreference.RESOLVED)
+def $ppproperty_receiver(P, pcpath, NExprFuncCall expression phpType6 metadata, ppmode) = $ppwrite_call($ppexpr(P, pcpath, NExprFuncCall expression phpType6 metadata, PPR), pcpath, NExprFuncCall expression phpType6 metadata, PPW)
+  -- if ppmode = PPW \/ ppmode = PPRW \/ ppmode = PPUNSET
+  -- if $ppcall_literal(expression) = (ptbytes)
+  -- if $pparginfo_builtin($ppcall_literal_name(ptbytes))
+def $ppproperty_receiver(P, pcpath, expression, ppmode) = $ppexpr(P, pcpath, expression, PPR) -- otherwise
+def $ppwrite_call(P, pcpath, NExprFuncCall expression_name (SEQUENCE phpType7*) metadata, PPW) = $ppcheck(P, $context_error("Cannot use result of built-in function in write context", $ppbuiltin_errorline(P, pcpath, ptbytes, expression*, $psline(metadata))))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppcall_literal(expression_name) = (ptbytes_raw)
+  -- if ptbytes = $ptlc($ppcall_literal_name(ptbytes_raw))
+  -- if $pparginfo_builtin(ptbytes)
+  -- if $ppbuiltin_arguments(phpType7*) = (expression*)
+  -- if $ppbuiltin_tmp(P, pcpath, ptbytes, expression*)
+dec $arginfo_kind(pintrinsic) : bool
+def $arginfo_kind(INTRINSIC_FUNC_NUM_ARGS) = true
+def $arginfo_kind(INTRINSIC_FUNC_GET_ARG) = true
+def $arginfo_kind(INTRINSIC_FUNC_GET_ARGS) = true
+def $arginfo_kind(pintrinsic) = false -- otherwise
+
+;; CODE names authenticate resolution; source callable ownership distinguishes
+;; an ordinary body from signatures/defaults and included/evaluated code.
+dec $pparginfo_fallback(ptbytes?) : bool
+def $pparginfo_call(pcode, pcpath) = ($pparginfo_builtin(ptbytes) \/ $pparginfo_fallback(ptbytes_fallback?))
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, ptbytes_fallback?))
+def $pparginfo_call(pcode, pcpath) = false -- otherwise
+def $pparginfo_fallback((ptbytes)) = $pparginfo_builtin(ptbytes)
+def $pparginfo_fallback(eps) = false
+
+dec $arginfo_body(pcnode, pcpath) : pcpath?
+def $arginfo_body(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata, pcpath) = (pcpath ++ [PCFIELD 5])
+def $arginfo_body(NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata, pcpath) = (pcpath ++ [PCFIELD 6])
+def $arginfo_body(NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata, pcpath) = (pcpath ++ [PCFIELD 6])
+def $arginfo_body(NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata, pcpath) = (pcpath ++ [PCFIELD 5])
+def $arginfo_body(pcnode, pcpath) = eps -- otherwise
+dec $arginfo_closer_body(pcpath?, pcpath?) : pcpath?
+def $arginfo_closer_body(eps, pcpath?) = pcpath?
+def $arginfo_closer_body((pcpath), eps) = (pcpath)
+def $arginfo_closer_body((pcpath_left), (pcpath_right)) = (pcpath_left) -- if $(|pcpath_left| >= |pcpath_right|)
+def $arginfo_closer_body((pcpath_left), (pcpath_right)) = (pcpath_right) -- if $(|pcpath_left| < |pcpath_right|)
+dec $arginfo_source_body(pcoccurrence*, pcpath) : pcpath?
+def $arginfo_source_body(eps, pcpath) = eps
+def $arginfo_source_body((PCOCCURRENCE pcpath_owner pcnode) :: pcoccurrence*, pcpath) = $arginfo_closer_body($arginfo_body(pcnode, pcpath_owner), $arginfo_source_body(pcoccurrence*, pcpath))
+  -- if $effect_below(pcpath_owner, pcpath)
+def $arginfo_source_body((PCOCCURRENCE pcpath_owner pcnode) :: pcoccurrence*, pcpath) = $arginfo_source_body(pcoccurrence*, pcpath)
+  -- if ~$effect_below(pcpath_owner, pcpath)
+
+dec $pparginfo_initial(phpType19) : bool
+def $pparginfo_initial(name) = true
+def $pparginfo_initial(expression) = ($ppcall_literal(expression) =/= eps)
+dec $pparginfo_tmp(pcode, pcunit, pcpath) : bool
+def $pparginfo_tmp(pcode, pcunit, pcpath) = true
+  -- if pcode.UNIT = pcunit.ID
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (NExprFuncCall phpType19 (SEQUENCE eps) metadata)
+  -- if $pparginfo_initial(phpType19)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) <- [$ptascii("func_num_args"), $ptascii("func_get_args")]
+  -- if $arginfo_source_body(pcunit.OCCURRENCES, pcpath) = (pcpath_body)
+  -- if $effect_below(pcpath_body, pcpath)
+def $pparginfo_tmp(pcode, pcunit, pcpath) = false -- otherwise
+
+;; These source wrappers retain the API's checked emitted result class.
+dec $pparginfo_tmp_leaf(pcode, pcunit, pcpath) : pcpath?
+def $pparginfo_tmp_leaf(pcode, pcunit, pcpath) = (pcpath)
+  -- if $pparginfo_tmp(pcode, pcunit, pcpath)
+def $pparginfo_tmp_leaf(pcode, pcunit, pcpath) = $pparginfo_tmp_leaf(pcode, pcunit, pcpath ++ [PCFIELD 0])
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_VALUE)
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (NExprErrorSuppress expression metadata)
+def $pparginfo_tmp_leaf(pcode, pcunit, pcpath) = $pparginfo_tmp_leaf(pcode, pcunit, pcpath ++ [PCFIELD 1])
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_VALUE)
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (NExprAssign expression_pattern expression_rhs metadata)
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+  -- if ~$list_references(phpType13*)
+def $pparginfo_tmp_leaf(pcode, pcunit, pcpath) = eps -- otherwise
+
+dec $arginfo_compiled_constant(pcode, pcpath) : bool
+def $arginfo_compiled_constant(pcode, pcpath) = true
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, true))
+def $arginfo_compiled_constant(pcode, pcpath) = $arginfo_compiled_constant(pcode, pcpath_target)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $code_redirect(pcode.REDIRECTS, pcpath) = ((pcpath_target, false))
+  -- if $(|pcpath_target| > |pcpath|)
+def $arginfo_compiled_constant(pcode, pcpath) = false -- otherwise
+
+def $ppunpack_node(pcode, pcunit, pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = (UNPACK_VALUE)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $pparginfo_call(pcode, pcpath)
+  -- if $pparginfo_tmp(pcode, pcunit, pcpath)
+def $ppunpack_node(pcode, pcunit, pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = (UNPACK_VAR)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $pparginfo_call(pcode, pcpath)
+  -- if ~$pparginfo_tmp(pcode, pcunit, pcpath)

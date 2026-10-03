@@ -7405,15 +7405,33 @@
     {
       "id": "calls.argument-introspection",
       "milestone": "3b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute_API.c"
+      "implementation": [
+        "spec/semantics/198-argument-introspection-compiler.watsup",
+        "spec/semantics/199-argument-introspection-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/argument_introspection_protocol.py",
+        "tests/semantics/argument_introspection_current_protocol.py",
+        "tests/semantics/argument_introspection_calls_protocol.py",
+        "tests/semantics/argument_introspection_ini_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/argument_introspection.py",
+        "tests/semantics/argument_introspection_cases.json",
+        "tests/semantics/argument_introspection_current.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_builtin_functions.c",
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "vendor/php-src/Zend/zend_API.c",
+        "vendor/php-src/Zend/zend_API.h",
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_closures.c"
+      ],
+      "review": "Private ordinary198/199 retains fdef independent83/mixed24-445 and SET13c mixed157/29-712 with separate own2/79 and Unsupported0agreement. CALLS18a private1d615 adds author mixed source3, fresh4/241+retained15/355 and independent fresh source2/2-147, distinct profiles and preserved failures. Actual accepted INI7dd composition at f8cc91079 preserves CALLS/SET/INI endpoints and accepts fresh source1/two133 live-NUL CONFIG/PACKS/ARGINFO gates. The legal getter original is nativepass/modelUnsupported0agreement; getter admission remains a separate include review. Canonical installation remains pending; engine667/model-only17/closed996b/paused returns excluded. Generator/Fiber/handlers, fresh rebuild and full core remain open."
     },
     {
       "id": "static.independent-compile-phase",
@@ -11030,6 +11048,15 @@
       "implementation": "spec/semantics/16-static-types.watsup",
       "helper_evidence": "coverage/semantics/static-types.json",
       "source_integration": "pending"
+    },
+    {
+      "id": "optimized-argument-array-reference-list",
+      "description": "Keep general value-list reference semantics instead of the pinned internal MAKE_REF opcode140/TMP defect; optimized original has zero native agreement.",
+      "decision": "docs/semantics/DISCREPANCIES.md",
+      "oracle_evidence": "coverage/semantics/argument-introspection-engine-defect.json",
+      "implementation": "spec/semantics/63-list-control.watsup",
+      "helper_evidence": "coverage/semantics/argument-introspection-review.json",
+      "source_integration": "pending full inventory closure; bounded private source/list-store language validation is separately accepted"
     }
   ]
 }

@@ -7,6 +7,16 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Argument introspection198/199 is privately composed with accepted public object invocation
+and raw/effective INI paths at tested **f8cc91079**, over **7dd8c17af**. The focused
+live-NUL callback accepts one normal source tuple and two finite checkpoints/133,
+covering source `__invoke` argument views, saved CONFIG packs and SET's old-value
+C-prefix after nested mutation. Prior CALLS union **1d61537bf** retains distinct
+author mixed source3/finite19-596 and independent source2/finite2-147 evidence.
+[Argument union ledger](coverage/semantics/argument-introspection-calls-current-review.json).
+These bounded checks reuse local executables; a fresh offline rebuild and full
+core remain open.
+
 Raw INI storage and effective C-string paths are composed with public object
 invocation. The exact tested union **6e7ddca894**, on **6ba0ee71/1305**, accepts
 13 original sources (ten normal, three expected PHP errors) and thirteen finite
@@ -156,14 +166,22 @@ The independent private lanes currently include:
   native18/file20, current capture compatibility and full publication/syntax remain
   pending. Earlier freezes and failures retain their identities. Constants183/184
   depend on publication.
-- Argument introspection198/199 remains private on fdef. All111 ordinary
-  native/model tuples agree; the original112 aggregate remains FAIL with a
-  separately accepted focused status correction. Finite evidence combines its
-  original16/373 pass subset with four corrected legal fixtures/87, preserving
-  the failed aggregate; no fresh full source/finite run is claimed. Compatibility
-  corrections, independent state/final code review and installation remain pending.
-  Generator/Fiber/handler interactions are later gates. The ignored
-  [core roadmap](.tools/core-roadmap-11/roadmap.txt) guides remaining obligations.
+- Argument introspection198/199 is independently accepted privately: the original
+  fdef evidence is source83 and mixed24 unique states/445, with failed aggregates
+  and the engine disagreement preserved. The SET13c projection at **47040e57**
+  accepts author mixed source157/finite29-712 and independent source2/finite2-79;
+  its separately executed Unsupported control has zero agreement.
+  The CALLS18a union at **1d61537bf** accepts author mixed source3 (retained1,
+  fresh2), fresh finite4/241 and affected retained15/355; independent fresh
+  source2/finite2-147 uses its own ordinary profile. All original invalid native
+  witnesses and failed preparations remain exact.
+  [The union ledger](coverage/semantics/argument-introspection-calls-current-review.json)
+  distinguishes these identities. Composition on accepted INI **7dd8c17af**
+  preserves both source increments and at **f8cc91079** accepts source1/two133
+  live-NUL callback gates. The original legal getter witness remains nativepass/
+  modelUnsupported with zero agreement; getter admission is a separate open
+  include review. Canonical integration, Generator/Fiber/handlers, fresh rebuild
+  and full core remain open.
 
 `returns_verify` is temporarily paused by the user. Preserve its branches and
 evidence; do not retry the blocked engine experiment, substitute a reviewer,

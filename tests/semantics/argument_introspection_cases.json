@@ -1,0 +1,936 @@
+[
+  {
+    "id": "basic-live",
+    "source": "<?php function f($a,$b=8){echo func_num_args(),\"|\",func_get_arg(0),\"|\"; $a=7;unset($b);foreach(func_get_args() as $v)echo $v===null?\"N\":$v;echo \"|\";}f(1);f(2,3,4);",
+    "source_sha256": "fb4c3a43fc5be6586d754810832b5534415be0f4b4c54f06aa2d6b7656d3d538",
+    "expected_model": "normal"
+  },
+  {
+    "id": "basic-named-holes",
+    "source": "<?php function f($a=\"a\",$b=\"b\",$c=\"c\",...$tail){echo func_num_args(),\":\";foreach(func_get_args() as $v)echo $v===null?\"N\":$v;echo \"|\";}f();f(b:\"B\");f(c:\"C\",z:\"Z\");f(z:\"Z\");f(\"A\",\"B\",\"C\",\"D\",z:\"Z\");",
+    "source_sha256": "05fee5b19c6790414b1d4e99170b780fcac973e3685911aa54effa412574cd56",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fixed-reference-rebind",
+    "source": "<?php function f(&$a,$b){$r=8;$a=&$r;$b=9;$all=func_get_args();$all[0]=4;echo func_get_arg(0),func_get_arg(1),$r,$all[0];unset($a);echo func_get_arg(0)===null?\"N\":\"bad\";} $x=1;f($x,2);echo $x;",
+    "source_sha256": "49360357fbe7b8163149f43b5d7f1e3923ed5e21c02351c53ea380302cc11e88",
+    "expected_model": "normal"
+  },
+  {
+    "id": "typed-extra-copy",
+    "source": "<?php function f(int $a,int ...$v){$a=9;$v[0]=8;unset($v[1]);foreach(func_get_args() as $x)echo $x;echo func_get_arg(2);}f(\"1\",\"2\",\"3\");",
+    "source_sha256": "852f2bbc031c14cf4b01dd6e07571a8be5e3a075b29bbe734cd2a7a2ae0c0360",
+    "expected_model": "normal"
+  },
+  {
+    "id": "reference-extra-cells",
+    "source": "<?php function f(&...$v){$v[0]=7;$r=9;$v[0]=&$r;unset($v[1]);foreach(func_get_args() as $x)echo $x;echo \"|\",$v[0];}$a=1;$b=2;f($a,$b);echo \"|\",$a,$b;",
+    "source_sha256": "980264ab19e33e5956c669146a5264ac3877c0e791c961e9d2e088e9afa8e30c",
+    "expected_model": "normal"
+  },
+  {
+    "id": "packed-return-cow",
+    "source": "<?php function f($a){$all=func_get_args();$all[0][0]=7;$one=func_get_arg(0);$one[1]=8;echo $a[0],$a[1],$all[0][0],$one[1];}$a=[1,2];f($a);echo $a[0],$a[1];",
+    "source_sha256": "ab97d06febf95f54f32c7f1bbd5059aa8c83622b27bee345df2d284f3623aa92",
+    "expected_model": "normal"
+  },
+  {
+    "id": "embedded-alias-object",
+    "source": "<?php class C{public $v=1;} function f($a,$o){$all=func_get_args();$all[0][0]=7;$all[1]->v=8;$one=func_get_arg(0);$one[0]=9;echo $a[0],$o->v;} $x=1;$a=[&$x];$o=new C;f($a,$o);echo $x,$o->v;",
+    "source_sha256": "f07b7224776ba6872735b5fa99b9ad41fecd2081e6fa76163dc190c1edce305f",
+    "expected_model": "normal"
+  },
+  {
+    "id": "recursive-extra-count",
+    "source": "<?php function f($a,...$v){echo func_num_args(),func_get_arg(0);if($a)f(0,8,9);foreach(func_get_args() as $x)echo $x;echo \"|\";}f(1,7);",
+    "source_sha256": "deb9b3ea628ca9a4f2948e9eb93a6e67a9f41e8db3f16f0832d3783029328331",
+    "expected_model": "normal"
+  },
+  {
+    "id": "ordinary-method-closures",
+    "source": "<?php class C{function f($a=1){echo func_num_args(),func_get_arg(0);foreach(func_get_args() as $x)echo $x;}static function g(...$v){echo func_num_args();foreach(func_get_args() as $x)echo $x;}}$c=new C;$m=\"f\";$c->$m(2,3);$f=$c->f(...);$f(4);C::g(5,6);$h=function($a){echo func_get_arg(0);};$h->__invoke(7);$h->call($c,8);",
+    "source_sha256": "2b79b0c3623a8f37a3774e363b0ae21691ddc84afcfa04776f5581e31bc04d59",
+    "expected_model": "normal"
+  },
+  {
+    "id": "callback-current-frame",
+    "source": "<?php class C{function __toString(){echo func_num_args(),\"|\";foreach(func_get_args() as $x)echo \"bad\";return \"C\";}}function f($a){echo $a,func_get_arg(0) instanceof C?\"O\":\"bad\",func_num_args();}f(new C,2);",
+    "source_sha256": "a71d49e83b36419bac1670eaa0102faf07791cbd566fcf727c30bb5d87f55ad7",
+    "expected_model": "normal"
+  },
+  {
+    "id": "namespace-import-literals",
+    "source": "<?php namespace N;use function func_get_args as args;function f($a){foreach(args() as $x)echo $x;echo (\"func_get_arg\")(0),(false?:\"func_get_arg\")(0),(\"\\\\func_get_arg\")(0);}f(7);",
+    "source_sha256": "10187e1f453e821cc54b6f9afad86c7b37105c8337689a818a8b85955a2e01dc",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "fallback-later-publication",
+    "source": "<?php namespace N;function pick(){function func_get_arg($p){return \"L\";}return 0;}function f($a){echo func_get_arg(pick()),func_get_arg(0);}f(\"A\");",
+    "source_sha256": "dc8f7740b5eb82d25a9b44874c3cb7814647a36b73f1c0a26ae7ce524e5e4884",
+    "expected_model": "normal"
+  },
+  {
+    "id": "named-and-empty-unpack",
+    "source": "<?php function f($a){echo func_num_args(...[]),func_get_arg(...[\"position\"=>0]);foreach(func_get_args(...[]) as $x)echo $x;}f(8);",
+    "source_sha256": "cf0c6cc40534a902716bc9cbab26163b225875a463a65501b80ae5d857e2e4a0",
+    "expected_model": "normal"
+  },
+  {
+    "id": "unknown-duplicate-send",
+    "source": "<?php function e($x){echo $x;return 0;}function f($a){try{func_get_arg(nope:$missing);}catch(Error $x){echo $x->getMessage();}try{func_get_arg(e(\"A\"),position:e(\"B\"));}catch(Error $x){echo $x->getMessage();}}f(7);",
+    "source_sha256": "396ac1f86d71ecc7ece13e8ce2407d822eb3c4e881f7a3dc5561dbe86e5c11b5",
+    "expected_model": "normal"
+  },
+  {
+    "id": "weak-index-values",
+    "source": "<?php function f($a,$b){foreach([\"0\",false,true,0.5,\"0.5\",null,\" 1 \"] as $x){echo func_get_arg($x),\":\";echo $x===null?\"N\":$x;echo \"|\";}}f(\"A\",\"B\");",
+    "source_sha256": "2e73b7fb90fbbdd9658896049d36fa686ff59a6a21e501c0c76fad1720fe6239",
+    "expected_model": "normal"
+  },
+  {
+    "id": "weak-index-rejections",
+    "source": "<?php function f($a){foreach([[],new stdClass,\"x\",1e20,INF,NAN,-1,1] as $p){try{func_get_arg($p);}catch(Throwable $e){echo get_class($e),\":\",$e->getMessage(),\"|\";}}}f(7);",
+    "source_sha256": "e312c4c4c45864954da3e9033795b871d2c281f8a5ae76ab94edb8dc0add6521",
+    "expected_model": "normal"
+  },
+  {
+    "id": "strict-index-rejections",
+    "source": "<?php declare(strict_types=1);function f($a){foreach([\"0\",false,0.0,null] as $p){try{func_get_arg($p);}catch(Throwable $e){echo $e->getMessage(),\"|\";}}echo func_get_arg(0);}f(7);",
+    "source_sha256": "08f8eea3bd280a589368b728771df1fcd787f9921bb82377322d36e4fba6b83b",
+    "expected_model": "normal"
+  },
+  {
+    "id": "dynamic-bodies-priorities",
+    "source": "<?php function f($a){$g=\"func_get_arg\";$n=\"func_num_args\";$all=\"func_get_args\";try{$g();}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{$g([]);}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{$g(-1);}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{$g(99);}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{$n(1);}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{$all();}catch(Throwable $e){echo $e->getMessage(),\"|\";}}f(7);",
+    "source_sha256": "c998431a1b15f667e11d2382516bccb2271f4b7ccf450a617af45b7887017fdd",
+    "expected_model": "normal"
+  },
+  {
+    "id": "intrinsic-closures-global",
+    "source": "<?php $a=func_get_arg(...);$n=func_num_args(...);$v=func_get_args(...);try{$a(0);}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{$a->__invoke(0);}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{$n();}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{$v->__invoke();}catch(Throwable $e){echo $e->getMessage(),\"|\";}",
+    "source_sha256": "42bf2afbb81bf97d029cee5a86ef850848669030dffa7e13d4d6e6bc94d01305",
+    "expected_model": "normal"
+  },
+  {
+    "id": "intrinsic-closure-strict-wrapper",
+    "source": "<?php declare(strict_types=1);function f($a){$g=func_get_arg(...);try{$g(\"0\");}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{$g->__invoke(\"0\");}catch(Throwable $e){echo $e->getMessage(),\"|\";}}f(7);",
+    "source_sha256": "3186698457741e9b4856bb1474acec48e848d33da6a24dfafb4d84f13eb91c3c",
+    "expected_model": "normal"
+  },
+  {
+    "id": "pipe-fixed-computed",
+    "source": "<?php function f($a){echo 0 |> func_get_arg(...);$g=\"func_get_arg\";try{0 |> $g;}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{0 |> func_num_args(...);}catch(Throwable $e){echo $e->getMessage();}}f(7);",
+    "source_sha256": "abc67941921a8aa5b3e78702f8d99e00a2a48a6978f4548ac32efb567d4b139a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "eval-code-and-callee",
+    "source": "<?php function f($a){eval('try{func_get_arg(0);}catch(Throwable $e){echo $e->getMessage(),\"|\";}function inner($x){echo func_num_args(),func_get_arg(0);}');inner(8,9);echo func_get_arg(0);}f(7);",
+    "source_sha256": "497fc25b5240d158f236cd679a47ffbe24443b76adfe7f67c80e73be06fb9332",
+    "expected_model": "normal"
+  },
+  {
+    "id": "uncaught-index-trace",
+    "source": "<?php\nfunction f($a) {\n    func_get_arg(\n        -1\n    );\n}\nf(\"original\");\n",
+    "source_sha256": "9d1276bf0cf875443cc2441318c04c3ffefccd846535303f0c64ff24552e157a",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "uncaught-type-original-trace",
+    "source": "<?php function f($a){$p=\"bad\";func_get_arg($p);}f(8);",
+    "source_sha256": "ab1a988e8b8871fd8e6d3f701d1e2571f6ac959b1b829ec048d96813b8fdb4d5",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "uncaught-null-global",
+    "source": "<?php\nfunc_get_arg(\n    null\n);\n",
+    "source_sha256": "04973b8d954ee50faaca68df0af7f1520d4901ce0b7834f6f2488ea7d25739d1",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "uncaught-zero-arity",
+    "source": "<?php\nfunc_num_args(\n    \"original\"\n);\n",
+    "source_sha256": "c0e2ed5fad76852b1f12191e29887b06b470d7cfa0e241a9cc2569ba21989f99",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "temporary-write-static",
+    "source": "<?php function f($a){$x=&func_get_args()[0];}f(7);",
+    "source_sha256": "8c0e14f2fad8fb7bba59f80e4d43931a14a0843c8facafdb21fcc8e0f190fefa",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "deferred-required-reference",
+    "source": "<?php function take(&$x){}function f($a){take(func_get_args()[0]);}f(7);",
+    "source_sha256": "8dacefe0f527241edc557b07cad5332d8a1d77b5caf1d469aabc0fbf98417850",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "exit-during-index",
+    "source": "<?php function p(){exit(9);}function f($a){func_get_arg(p());echo \"bad\";}f(7);",
+    "source_sha256": "3ce4cdaa50935ba7f985be4aea036891b32fb49f76274beae59146a8ef46bff4",
+    "expected_model": "explicit_exit"
+  },
+  {
+    "id": "future-generator-control",
+    "source": "<?php function f($a){yield func_get_args();}f(7);",
+    "source_sha256": "996b827183a41bcf8fa40550f8697ef221d7abce3396e9dda2ec68605b43d547",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "variable-nullsafe-invoke",
+    "source": "<?php declare(strict_types=1);function f($a){$c=func_get_arg(...);$m=\"__INVOKE\";try{$c->$m(\"0\");}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{$c?->$m(null);}catch(Throwable $e){echo $e->getMessage(),\"|\";}$n=null;echo $n?->__invoke($missing)===null?\"N\":\"bad\";}f(7);",
+    "source_sha256": "0d38e7d3f6aeb6a2e2af1b9f807eb89072ce016484de5e5965d4a791fe3e68f4",
+    "expected_model": "normal"
+  },
+  {
+    "id": "captured-invoke-alias",
+    "source": "<?php $c=func_get_arg(...);$a=$c->__invoke(...);try{$a(0);}catch(Throwable $e){echo $e->getMessage(),\"|\";}function f($x,$a){try{$a(0);}catch(Throwable $e){echo $e->getMessage();}}f(7,$a);",
+    "source_sha256": "074249601c2d19ab83c302007194510f12c58dff8604e9a456ac2fd123d58bf0",
+    "expected_model": "normal"
+  },
+  {
+    "id": "include-code-and-restore",
+    "source": "<?php function f($a){include \"child.php\";inside(8,9);echo func_num_args(),func_get_arg(0);}f(7);",
+    "source_sha256": "81b956e0fed0c6ab620eefe3188e75b24a3d104c87b26df44db908f8e57e620e",
+    "expected_model": "normal",
+    "files": {
+      "child.php": "<?php try{func_num_args();}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{func_get_arg(-1);}catch(Throwable $e){echo $e->getMessage(),\"|\";}try{func_get_args();}catch(Throwable $e){echo $e->getMessage(),\"|\";}function inside($a){echo func_num_args(),func_get_arg(0);}"
+    }
+  },
+  {
+    "id": "actually-folded-const-routes",
+    "source": "<?php namespace N;use function func_get_arg as arg;function f($a){echo arg(0),(\"func_\".\"get_arg\")(0),(\"\\\\func_get_arg\")(0);try{(false?:\"func_get_arg\")(0);}catch(\\Throwable $e){echo \"|\",$e->getMessage();}}f(7);",
+    "source_sha256": "0853c50b6caa111749b392fcf3e0d14d7f70ed4a27d9acb536107333bdb767b9",
+    "expected_model": "normal"
+  },
+  {
+    "id": "deferred-required-reference-later",
+    "source": "<?php function f($a){take(func_get_args()[0]);}function take(&$x){echo \"bad\";}f(7);",
+    "source_sha256": "b4089b7b453a88c88faac9bcfa1af90bac9de2ddb400edec4cda8f76acced336",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "tmp-direct-reference-sends",
+    "source": "<?php function f($a){try{take(func_get_args());}catch(Throwable $e){echo $e->getMessage(),';';}try{take(func_num_args());}catch(Throwable $e){echo $e->getMessage(),';';}try{take(x:func_get_args());}catch(Throwable $e){echo $e->getMessage(),';';}}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "f62d6eff9d74bcf436d91eee08ebf559c4031196f4081c3dc9df6b7ccf988469",
+    "expected_model": "normal"
+  },
+  {
+    "id": "tmp-nested-first-key-order",
+    "source": "<?php function f($a){try{take(func_get_args()[first()][second()]);}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function second(){echo 'S';return 0;}function take(&$x){echo 'bad';}f([7]);",
+    "source_sha256": "656afd96f59b2c85dedaaf357312015a63b127ac7d21cc44e475b34c75c8e884",
+    "expected_model": "normal"
+  },
+  {
+    "id": "tmp-key-read-error-priorities",
+    "source": "<?php function f($a){try{take(func_get_args()[$missing]);}catch(Throwable $e){echo $e->getMessage(),';';}try{take(func_get_args()[[]]);}catch(Throwable $e){echo $e->getMessage(),';';}try{take(func_get_args()[new stdClass]);}catch(Throwable $e){echo $e->getMessage(),';';}}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "a14f5ded6daa32ab33a2171e17f9bae41e1e4dff9ec434d3014076aced9b64a2",
+    "expected_model": "normal"
+  },
+  {
+    "id": "tmp-named-destination-source-index",
+    "source": "<?php function f($a){try{take(y:8,x:func_get_args()[first()][second()]);}catch(Throwable $e){echo $e->getMessage(),';';}try{take(...['y'=>8],x:func_get_args()[first()][second()]);}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function second(){echo 'S';return 0;}function take(&$x,$y){echo 'bad';}f([7]);",
+    "source_sha256": "30dcd0719f65d87c5a688f867671477d4188b5c7e7ff88d4ce4589febf316eb8",
+    "expected_model": "normal"
+  },
+  {
+    "id": "tmp-method-closure-consumers",
+    "source": "<?php class C{function take(&$x){echo 'bad';}}function f($a){$o=new C;$m='take';try{$o->$m(func_get_args()[first()][second()]);}catch(Throwable $e){echo $e->getMessage(),';';}$c=function(&$x){echo 'bad';};try{$c(x:func_get_args()[first()][second()]);}catch(Throwable $e){echo $e->getMessage(),';';}try{$c->__invoke(func_num_args());}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function second(){echo 'S';return 0;}f([7]);",
+    "source_sha256": "05eb52b2621d01373eafb0fa6d1be39100b18f38f4a05db28170c903f6b219db",
+    "expected_model": "normal"
+  },
+  {
+    "id": "tmp-fq-import-reference-sends",
+    "source": "<?php namespace N;use function func_get_args as collect;function f($a){try{take(\\func_get_args());}catch(\\Throwable $e){echo $e->getMessage(),';';}try{take(x:collect()[0]);}catch(\\Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "6b73985b6b0c8de2841b67a41ede7c4c49a19526daae6d7d5ce711102ea2a356",
+    "expected_model": "normal"
+  },
+  {
+    "id": "var-parser-folded-unpacked-reference-sends",
+    "source": "<?php function f($a){take(('func_get_args')());take(('func_'.'get_args')());take(func_get_args(...[]));take(func_get_arg(position:0));echo $a;}function take(&$x){echo 'T';$x=20;}f(7);",
+    "source_sha256": "ca5c6441d301b850b0bb6afb3d837067b2f63aa0aa12bc68137c3076902acd3e",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "var-fallback-reference-consumers",
+    "source": "<?php namespace N;function f($a){take(func_get_args());take(func_get_args()[0]);echo $a;}function take(&$x){echo 'T';$x=20;}f(7);",
+    "source_sha256": "f7ac52deb57d684fee1e40b127f560cbe7310ab985a9cd8bbc5d4fece6b64070",
+    "expected_model": "normal"
+  },
+  {
+    "id": "tmp-var-unpack-consumers",
+    "source": "<?php function f($a){take(...func_get_args());take(...('func_get_args')());take(...func_get_args(...[]));echo $a;}function take(&$x){echo 'T';$x=20;}f(7);",
+    "source_sha256": "ea62b00f4af81e26f40977edd67844891c88cd43d2e0eebdbe307991a7a9eade",
+    "expected_model": "normal"
+  },
+  {
+    "id": "nested-argument-api-result-consumers",
+    "source": "<?php function f($a){echo func_get_arg(func_get_arg(0)),':';echo func_get_arg(...func_get_args()),':';echo func_num_args(...func_get_args(...[]));}f(0);",
+    "source_sha256": "194811dcec5e631b32a9bfd32b60b1c3fde7431849222618039e3fe40ded8adf",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "computed-send-effect-priorities",
+    "source": "<?php function side(){echo 'S';return 0;}function f($a){$b=[0];$o=new stdClass;$o->p=0;try{func_get_arg(nope:$b[side()]);}catch(Throwable $e){echo $e->getMessage(),';';}try{func_get_arg(position:0,position:$o->p);}catch(Throwable $e){echo $e->getMessage(),';';}$name='func_get_arg';try{$name(nope:func_get_args()[side()]);}catch(Throwable $e){echo $e->getMessage(),';';}$c=func_get_arg(...);try{$c(nope:$b[side()]);}catch(Throwable $e){echo $e->getMessage();}}f(7);",
+    "source_sha256": "5cba7ee61276d6a7686f7d8c6692c4ac911502229b4612b0c60d9fc665f75d42",
+    "expected_model": "normal"
+  },
+  {
+    "id": "tmp-multiline-first-dimension-line",
+    "source": "<?php\nfunction f($a) {\n    take(\n        func_get_args()[\n            first(\n            )\n        ][second()]\n    );\n}\nfunction first() {echo 'F'; return 0;}\nfunction second() {echo 'S'; return 0;}\nfunction take(&$x) {echo 'bad';}\nf([7]);\n",
+    "source_sha256": "f7c2b42687e374a0084a728aaf2e0ef161c0e42bf71d2061003f8a4f31d0328c",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "tmp-first-key-live-reference",
+    "source": "<?php function f($a){try{take(func_get_args()[first()][second()]);}catch(Throwable $e){echo $e->getMessage();}}function &first(){echo 'F';global $k;return $k;}function second(){echo 'S';return 0;}function take(&$x){echo 'bad';}$k=0;f([7]);",
+    "source_sha256": "d162a89ca20211754adc94ebe5cfc4656427dc682e4516b18cd913f0eed0d3ff",
+    "expected_model": "normal"
+  },
+  {
+    "id": "tmp-named-duplicate-unknown-priority",
+    "source": "<?php function f($a){$x=8;try{take(x:$x,x:func_get_args()[first()][second()]);}catch(Throwable $e){echo $e->getMessage(),';';}try{take(nope:func_get_args()[first()]);}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function second(){echo 'S';return 0;}function take(&$x){echo 'bad';}f([7]);",
+    "source_sha256": "b0fe10653c1466e6bbc71d67dbbbc7741ce751d94eedb807d87d5cac52708b84",
+    "expected_model": "normal"
+  },
+  {
+    "id": "tmp-direct-append-consumer",
+    "source": "<?php function f($a){try{take(func_get_args()[]);}catch(Throwable $e){echo $e->getMessage(),';';}try{take(x:func_get_args()[]);}catch(Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "0e2998973dd888eb2e9864558a17b833fcdcad4dca5e8d49ee917db81f296581",
+    "expected_model": "normal"
+  },
+  {
+    "id": "tmp-nested-append-consumer",
+    "source": "<?php function f($a){try{take(func_get_args()[][second()]);}catch(Throwable $e){echo $e->getMessage();}}function second(){echo 'S';return 0;}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "e9b7452835c2afb50738c23c1205575e85fc3004d9fd65ec07b50ba40f7d042a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-property-selector",
+    "source": "<?php class C{public $p=7;}function f($a){try{take(func_get_args()[first()]->{name()});}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function name(){echo 'P';return 'p';}function take(&$x){echo 'bad';}f(new C);",
+    "source_sha256": "2084b81d05f3f0e9eeba722bba23f0f474e9f38c9c4755507fd9b1e2f95d4cf8",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-property-outer-dimension",
+    "source": "<?php class C{public $p=[7];}function f($a){try{take(func_get_args()[first()]->{name()}[second()]);}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function name(){echo 'P';return 'p';}function second(){echo 'S';return 0;}function take(&$x){echo 'bad';}f(new C);",
+    "source_sha256": "0eefc6ab1a6b9595e908d1f5430db675ab84e3dab6ebd7f97a68a21a15063c4a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-property-literal-cv",
+    "source": "<?php class C{public $p=7;}function f($a){try{take(func_get_args()[first()]->{$missing});}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function take(&$x){echo 'bad';}f(new C);",
+    "source_sha256": "3f2af21d01ec802d696d52c71030d4d60763d2c8f6d736c9dab96d7647512da2",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-property-deferred-conversion",
+    "source": "<?php class C{public $p=7;}class K{function __toString(){echo 'C';return 'p';}}function f($a){try{take(func_get_args()[first()]->{name()});}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function name(){echo 'P';return new K;}function take(&$x){echo 'bad';}f(new C);",
+    "source_sha256": "5b86edcffc7589d10bdce47b60ecf31dc6df16edb00ef3ab2cc8fcfda94e1658",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-property-selector-abrupt",
+    "source": "<?php class C{public $p=7;}function f($a){try{take(func_get_args()[first()]->{name()});}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function name(){echo 'P';throw new Error('selector');}function take(&$x){echo 'bad';}f(new C);",
+    "source_sha256": "7b681f082a49b87325d8b44593ee318f635471293828d63d5a27b48603ac39ec",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-nullsafe-property",
+    "source": "<?php class C{public $p=7;}function f($a){try{take(func_get_args()[first()]?->{name()});}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function name(){echo 'P';return 'p';}function take(&$x){echo 'bad';}f(new C);",
+    "source_sha256": "cfe4c96330c36cecd6be3c1d367be76062499dbd3ec60fde8faac7eda47fbcc3",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-nullsafe-outer-dimension",
+    "source": "<?php class C{public $p=[7];}function f($a){try{take(func_get_args()[first()]?->{name()}[second()]);}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function name(){echo 'P';return 'p';}function second(){echo 'S';return 0;}function take(&$x){echo 'bad';}f(new C);",
+    "source_sha256": "4e5116b2804b22f598a49eb3330a12948d7f829a396e06dfbb968a8b9ff3f0ba",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-nullsafe-null",
+    "source": "<?php function f($a){try{take(func_get_arg(0)?->{name()}[second()]);}catch(Throwable $e){echo $e->getMessage();}}function name(){echo 'P';return 'p';}function second(){echo 'S';return 0;}function take(&$x){echo 'bad';}f(null);",
+    "source_sha256": "7df28711faf6b19908682b5f6ebd1d568a45bed8ad7a1e243af257bf481a5735",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-nullsafe-named",
+    "source": "<?php class C{public $p=[7];}function f($a){try{take(x:func_get_args()[0]?->p[side()]);}catch(Throwable $e){echo $e->getMessage();}}function side(){echo 'S';return 0;}function take(&$x){echo 'bad';}f(new C);",
+    "source_sha256": "be86273a2782756ebedc90143a529cd07ee84704009f8fa59dc630864d1721c3",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-nullsafe-after-unpack",
+    "source": "<?php class C{public $p=[7];}function f($a){try{take(...[],x:func_get_arg(0)?->p[side()]);}catch(Throwable $e){echo $e->getMessage();}}function side(){echo 'S';return 0;}function take(&$x){echo 'bad';}f(new C);",
+    "source_sha256": "fc13a1eb13faa4588c7fd2359962d16be9e13412d8aaf82f8c04ccab9a9402d4",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-nullsafe-dynamic-method",
+    "source": "<?php function f($a){$c=new C;$m='take';try{$c->$m(func_get_arg(0)?->p[side()]);}catch(Throwable $e){echo $e->getMessage();}}class C{public $p=[7];function take(&$x){echo 'bad';}}function side(){echo 'S';return 0;}f(new C);",
+    "source_sha256": "32d5d36fe255453e3fd7ff0a6c05037a7e96877ee16927b5559cf1db2242c1b1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-nullsafe-closure",
+    "source": "<?php class C{public $p=[7];}function f($a){$take=function(&$x){echo 'bad';};try{$take(func_get_args()[0]?->p[side()]);}catch(Throwable $e){echo $e->getMessage();}}function side(){echo 'S';return 0;}f(new C);",
+    "source_sha256": "5b3a6b9a2cfd612ba25959b00ecc07b8bf1e039bd351309b7f0e5f0b30cadae2",
+    "expected_model": "normal"
+  },
+  {
+    "id": "tmp-later-key-abrupt",
+    "source": "<?php function f($a){try{take(func_get_args()[first()][second()]);}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function second(){echo 'S';throw new Error('second');}function take(&$x){echo 'bad';}f([7]);",
+    "source_sha256": "f821f93858deb2b266954fa14d3a978abd229ed62c858faef2db8162991a4a61",
+    "expected_model": "normal"
+  },
+  {
+    "id": "tmp-later-literal-cv",
+    "source": "<?php function f($a){try{take(func_get_args()[first()][$missing]);}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function take(&$x){echo 'bad';}f([7]);",
+    "source_sha256": "05bfbe691ab7891ba1637a1fc31f2f7f4d7e8e19d390a076f278372a29c4e448",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-nullsafe-method-result",
+    "source": "<?php function f($a){try{take(func_get_arg(0)?->value()[side()]);}catch(Throwable $e){echo $e->getMessage();}}class C{function value(){echo 'M';return [7];}}function side(){echo 'S';return 0;}function take(&$x){echo 'bad';}f(new C);f(null);",
+    "source_sha256": "d290c27711d937aca6baaf7ee031b0559ce853043f54075d694fe374a87f92a5",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-nullsafe-after-method",
+    "source": "<?php function f($a){try{take(func_get_arg(0)->value()?->p[side()]);}catch(Throwable $e){echo $e->getMessage();}}class C{function value(){echo 'M';return new D;}}class D{public $p=[7];}function side(){echo 'S';return 0;}function take(&$x){echo 'bad';}f(new C);",
+    "source_sha256": "1c47e968445b947366db0970fb69e059c6c1ccb6ce1b4d0b012d9c3dc136fcee",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-nullsafe-static-property-class",
+    "source": "<?php function f($a){try{take(func_get_arg(0)?->name::$x[side()]);}catch(Throwable $e){echo $e->getMessage();}}class C{public $name='D';}class D{public static $x=[7];}function side(){echo 'S';return 0;}function take(&$x){echo 'bad';}f(new C);",
+    "source_sha256": "fe88ecbc223730700bc1b1923e50679506d812ae6605bc4b55dc567048af823f",
+    "expected_model": "normal"
+  },
+  {
+    "id": "mixed-nullsafe-static-call-class",
+    "source": "<?php function f($a){try{take(func_get_arg(0)?->name::value()[side()]);}catch(Throwable $e){echo $e->getMessage();}}class C{public $name='D';}class D{static function value(){echo 'M';return [7];}}function side(){echo 'S';return 0;}function take(&$x){echo 'bad';}f(new C);",
+    "source_sha256": "74f782221896c5a73c26ef069f3e052373eaadf9b6f9d1da665f1ea85041a116",
+    "expected_model": "normal"
+  },
+  {
+    "id": "direct-property-literal",
+    "source": "<?php function f($a){try{take(func_get_args()->p);}catch(Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "08c5ffd8206cbc2cf703be71978f57c538a898d4ca1583264c254a776ba0dbda",
+    "expected_model": "normal"
+  },
+  {
+    "id": "direct-property-num-args",
+    "source": "<?php function f($a){try{take(func_num_args()->p);}catch(Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "66aee357931d32c522980b5bb0355a450042817637caa4ba0209d8f6b79d5744",
+    "expected_model": "normal"
+  },
+  {
+    "id": "direct-property-computed",
+    "source": "<?php function f($a){try{take(func_get_args()->{name()});}catch(Throwable $e){echo $e->getMessage();}}function name(){echo 'P';return 'p';}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "82f170f7670883c6f187562b5a465e14f58e6da4150514b4c14423980c37e6cc",
+    "expected_model": "normal"
+  },
+  {
+    "id": "direct-property-unread-cv",
+    "source": "<?php function f($a){try{take(func_get_args()->{$missing});}catch(Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "2ac4dac681c8c222385927eeb5ecc12a0e4079569bfd60f033e8dc9cc7aa42f6",
+    "expected_model": "normal"
+  },
+  {
+    "id": "direct-property-deferred-stringable",
+    "source": "<?php class K{function __toString(){echo 'bad';return 'p';}}function f($a){try{take(func_get_args()->{name()});}catch(Throwable $e){echo $e->getMessage();}}function name(){echo 'P';return new K;}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "a6ca9bf6203dca16eb133c14388244fbfed7fecd536ba4229505ea12b95fc2bd",
+    "expected_model": "normal"
+  },
+  {
+    "id": "direct-property-outer-dimension",
+    "source": "<?php function f($a){try{take(func_get_args()->{name()}[side()]);}catch(Throwable $e){echo $e->getMessage();}}function name(){echo 'P';return 'p';}function side(){echo 'S';return 0;}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "45e85a1444a4bd67c4f6ebea271eb447477b56fca5f13e9a7852a8cfa7fb6e9c",
+    "expected_model": "normal"
+  },
+  {
+    "id": "direct-property-multiline",
+    "source": "<?php\nfunction f($a){\n take(func_get_args()->{\n name()\n });\n}\nfunction name(){echo 'P';return 'p';}\nfunction take(&$x){echo 'bad';}\nf(7);\n",
+    "source_sha256": "8a2b1c73adde67d9c2614896ed3f3a2335a29e020391357fa1d4cde183618165",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "direct-property-constant-array-selector",
+    "source": "<?php function f($a){try{take(func_get_args()->{[]});}catch(Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}echo 'B';f(7);",
+    "source_sha256": "d60ae9ddd3c28bc49e48121f3e8c4e7f6e60051fc9b930d978e7a86bc18c662a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-constant-intervening-dimension",
+    "source": "<?php function f($a){try{take(func_get_args()[0]->{[]});}catch(Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}echo 'B';f(7);",
+    "source_sha256": "a926640fcdf2e5e7805c8598963dce9da4206e2377887aaaaf6b0829105831a6",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-folded-constant-selector",
+    "source": "<?php function f($a){try{take(func_get_args()->{([]??[1])});}catch(Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}echo 'B';f(7);",
+    "source_sha256": "e2afc455dd3eef4b98b143983554e8fe51d4d45a28da09dcda3ec997f20e0f83",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-runtime-array-selector",
+    "source": "<?php function f($a){try{take(func_get_args()->{name()});}catch(Throwable $e){echo $e->getMessage();}}function name(){echo 'P';return [];}function take(&$x){echo 'bad';}echo 'B';f(7);",
+    "source_sha256": "6a46bf16668b807d766cab07ca85c9de09b00ec5986faeb2339195272eed8bd3",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-constant-warning-multiline",
+    "source": "<?php\nfunction f($a){\n try{take(func_get_args()->{\n [\n  1,\n  2\n ]\n });}catch(Throwable $e){echo $e->getMessage();}\n}\nfunction take(&$x){echo 'bad';}\necho 'B';f(7);\n",
+    "source_sha256": "5453802cbd2f5e87a23f5dcaf0881d54639608b3eaafa20f203b9cccaf00aa66",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-constant-warning-before-later-static-error",
+    "source": "<?php function f($a){take(func_get_args()->{[]});}function bad(){[1][0]=2;}echo 'bad';",
+    "source_sha256": "b2e1fc7ed9a68f69c7833668fbbde4eab236884fa28f0b4655c851cac36c9a4b",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "property-known-reference-before-selector-warning",
+    "source": "<?php function take(&$x){echo 'bad';}function f($a){take(func_get_args()->{[]});}echo 'bad';f(7);",
+    "source_sha256": "fe5e661775a921f23e7cb78d27d0de4d3b7f67a66d17cdb5285affd906f6b0a0",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "property-known-readwrite-before-selector-warning",
+    "source": "<?php function f($a){func_get_args()->{[]}+=1;}echo 'bad';f(7);",
+    "source_sha256": "4bb0fbcdb490d23b70d0914d13cbe5454f8c7fdb6a89eb4273468f265e4d0b41",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "property-unset-before-selector-warning",
+    "source": "<?php function f($a){unset(func_get_args()->{[]});}echo 'bad';f(7);",
+    "source_sha256": "8dff37c99dc7413f4083711ec7b5a2402452024c4d1e02fd959736a5aedab674",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "property-nullsafe-constant-selector",
+    "source": "<?php function f($a){$r=func_get_args()[0]?->{[]};echo $r===null?'N':'bad';}echo 'B';f(null);",
+    "source_sha256": "2f3c570d5c1569d5874f7df462af348cefe2d72883f0e582dedca74654b10797",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-erased-constant-selector",
+    "source": "<?php function f($a){false&&func_get_args()->{[]};echo 'N';}echo 'B';f(7);",
+    "source_sha256": "4e011937a1fab65016a33c5167810bb2b4231757bb59a6b52ffc22284e1cb5c9",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-generic-object-constant-selector",
+    "source": "<?php $o=new stdClass;$o->Array=7;echo 'B',$o->{[]};$o=null;echo $o?->{[]};",
+    "source_sha256": "668f79748dc5a9eac490f2a83961f5ff1fb4f4ec873452b245cca78513460bd3",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-dynamic-receiver-constant-before-error",
+    "source": "<?php function f($a){$g='func_get_args';try{$g()->{[]};}catch(Throwable $e){echo $e->getMessage();}}echo 'B';f(7);",
+    "source_sha256": "c85f7c205b5c7750ac0ffa05f44113a62558a80cf8c4fa879fc2851433791bc3",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-redirected-selector-effects",
+    "source": "<?php function f($a){try{take(func_get_args()->{false?:name()});}catch(Throwable $e){echo $e->getMessage();}}function name(){echo 'P';return 'p';}function take(&$x){echo 'bad';}echo 'B';f(7);",
+    "source_sha256": "d424e919ae86c720a0c411921c4b12e5a0b21a6f339e6594242ead2b2dd1bb9e",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-redirected-runtime-array-selector",
+    "source": "<?php function f($a){try{take(func_get_args()->{false?:name()});}catch(Throwable $e){echo $e->getMessage();}}function name(){echo 'P';return [];}function take(&$x){echo 'bad';}echo 'B';f(7);",
+    "source_sha256": "d19f0b14b76ac7f445c142e2cbb002cc96e33b4341a0fc5c58a240dabde09b30",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-redirected-bool-selector-effects",
+    "source": "<?php function f($a){try{take(func_get_args()->{false||name()});}catch(Throwable $e){echo $e->getMessage();}}function name(){echo 'P';return [];}function take(&$x){echo 'bad';}echo 'B';f(7);",
+    "source_sha256": "315204a6c962422a74ed23ff12d2aab30ee1cbc2bc6135433aeb85abc0afd51c",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-redirected-stringable-selector",
+    "source": "<?php class K{function __toString(){echo 'bad';return 'p';}}function f($a){try{take(func_get_args()->{false?:name()});}catch(Throwable $e){echo $e->getMessage();}}function name(){echo 'P';return new K;}function take(&$x){echo 'bad';}echo 'B';f(7);",
+    "source_sha256": "5a2e8b1833c37c81083af4f58767271b523068f3e6a8132a0c663374c98f50f3",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-var-get-arg-object",
+    "source": "<?php class C{public $p=7;}function f($a){take(func_get_arg(0)->p);echo $a->p;}function take(&$x){$x=9;echo $x;}f(new C);",
+    "source_sha256": "65b021d4ff30de74c3980815046414325a6100745eedfbfe5c6c0c0f227fa1be",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-var-get-arg-array",
+    "source": "<?php function f($a){take(func_get_arg(0)[0]);echo $a[0];}function take(&$x){$x=9;echo $x;}f([7]);",
+    "source_sha256": "19467ee19803d00fc687cc0b6bae802c0a484578d4a8575b0e17db3b8df555c1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-var-parser-string-object-chain",
+    "source": "<?php class C{public $p=7;}function f($a){take(('func_get_args')()[0]->p);echo $a->p;}function take(&$x){$x=9;echo $x;}f(new C);",
+    "source_sha256": "26b850c309724d0d0a664638b5f31b6ed021805371ade29a24696f5e6f94a577",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "property-var-parser-string-first-property",
+    "source": "<?php function f($a){try{take(('func_get_args')()->p);}catch(Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "226feb810051c0ff373e38e4b35bf4923f5d45d6647194c86cecee61c1db6d3c",
+    "expected_model": "normal"
+  },
+  {
+    "id": "property-forced-cv-selector",
+    "source": "<?php function f($a){try{take(func_get_args()->{false?:$missing});}catch(Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "ad849f871824509bb70d8f00405b4afcda021886bad1110c1b2a58ee164342bc",
+    "expected_model": "normal"
+  },
+  {
+    "id": "literal-direct-reference-sends",
+    "source": "<?php function f($a){try{take(('func_get_args')());}catch(Throwable $e){echo $e->getMessage(),';';}try{take(('func_'.'num_args')());}catch(Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "869c13bcc89670fed311446c239a7be4cdc0014c844600babafea8989af9496d",
+    "expected_model": "normal"
+  },
+  {
+    "id": "literal-known-direct-reference-send",
+    "source": "<?php function take(&$x){echo 'bad';}function f($a){try{take(('func_get_args')());}catch(Throwable $e){echo $e->getMessage();}}f(7);",
+    "source_sha256": "bdad6ef9ce774b2c23ce73608a85b09b591c05783db7398e6080ffebf81321ba",
+    "expected_model": "normal"
+  },
+  {
+    "id": "literal-dimension-delayed-key-order",
+    "source": "<?php function f($a){try{take(('func_'.'get_args')()[first()][second()]);}catch(Throwable $e){echo $e->getMessage();}}function first(){echo 'F';return 0;}function second(){echo 'S';return 0;}function take(&$x){echo 'bad';}f([7]);",
+    "source_sha256": "09752eb1dd2972dec429ec9a3f361be84e403da650f4f6afad8e49db59e85e61",
+    "expected_model": "normal"
+  },
+  {
+    "id": "literal-property-constant-warning",
+    "source": "<?php function f($a){try{take(('func_get_args')()->{[]});}catch(Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}echo 'B';f(7);",
+    "source_sha256": "30b2327b180bc23a7f4d0eb5bb1b91a2eec40d72c2331361b2f648e729f204ec",
+    "expected_model": "normal"
+  },
+  {
+    "id": "literal-known-property-before-selector-warning",
+    "source": "<?php function take(&$x){echo 'bad';}function f($a){take(('func_get_args')()->{[]});}echo 'bad';f(7);",
+    "source_sha256": "849ef7c6abe2e3f0fc9ee43705d47778e1fac7b328ed88f5b291223c321060e6",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "literal-readwrite-before-selector-warning",
+    "source": "<?php function f($a){('func_'.'get_args')()->{[]}+=1;}echo 'bad';f(7);",
+    "source_sha256": "6cc5ae8675382d82718f95072d285cca441eadccd4677ba634653325d1768c46",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "literal-unset-before-selector-warning",
+    "source": "<?php function f($a){unset(('func_get_args')()->{[]});}echo 'bad';f(7);",
+    "source_sha256": "132562b231414a3d2b2457be8dfe6dac2dcd219f5721d8f693e88a98a1f027f4",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "literal-known-dimension-write-cut",
+    "source": "<?php function take(&$x){echo 'bad';}function f($a){take(('func_'.'get_args')()[key()]);}function key(){echo 'bad';return 0;}f(7);",
+    "source_sha256": "8492be0ea4e2b953279aaff5761565bfe839990877093861898e971b34fc6f0b",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "literal-pair-later-coalesce-var",
+    "source": "<?php class C{public $p=7;}function f($a){take(('func_get_args'??'unused')()[0]->p);echo $a->p;}function take(&$x){$x=9;echo $x;}f(new C);",
+    "source_sha256": "68e723581dc35c3d453e0b6619e0fe0e3c82f31d6b6e78fd8a0649bca8409e8f",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "literal-pair-empty-unpack-var",
+    "source": "<?php class C{public $p=7;}function f($a){take(('func_get_args')(...[])[0]->p);echo $a->p;}function take(&$x){$x=9;echo $x;}f(new C);",
+    "source_sha256": "4712f613105c4e8a4736409aeb4b3bf3b85175040743d564a43a18d2716cd8b5",
+    "expected_model": "normal"
+  },
+  {
+    "id": "literal-namespace-global-and-import",
+    "source": "<?php namespace N;use function func_get_args as collect;function f($a){try{take(('func_get_args')()[0]);}catch(\\Throwable $e){echo $e->getMessage(),';';}try{take(collect()[0]);}catch(\\Throwable $e){echo $e->getMessage();}}function take(&$x){echo 'bad';}f(7);",
+    "source_sha256": "bda1772e743c320a795571c6837b9457d01aa6023155c14d7bf3f18ff81f540a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "literal-multiline-first-property-line",
+    "source": "<?php\nfunction f($a){\n take(('func_get_args')()->{\n name()\n });\n}\nfunction name(){echo 'P';return 'p';}\nfunction take(&$x){echo 'bad';}\nf(7);\n",
+    "source_sha256": "87701faca9680bc6dcd912bd0106b52d0f88e6d3aaf7051f43c1d5eae5918ec1",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "literal-get-arg-remains-var",
+    "source": "<?php class C{public $p=7;}function f($a){take(('func_get_arg')(0)->p);echo $a->p;}function take(&$x){$x=9;echo $x;}f(new C);",
+    "source_sha256": "1ca54f92c697a867a6262d454fb88aeb004915dabdf198b3a2e880fac94c1fe8",
+    "expected_model": "normal"
+  },
+  {
+    "id": "literal-pair-actual-compiler-const-var",
+    "source": "<?php class C{public $p=7;}function f($a){take((__NAMESPACE__.'func_get_args')()[0]->p);echo $a->p;}function take(&$x){$x=9;echo $x;}f(new C);",
+    "source_sha256": "b76438412eed2ae0a4f7af9e2d142fa87d4ecbf29a8dac8026a819e13272c889",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-direct-suppression",
+    "source": "<?php function f($a){try{take(@func_get_args());}catch(Error $e){echo 'E';}try{take(@func_num_args());}catch(Error $e){echo 'N';}echo $a;}function take(&$x){echo 'T';$x=9;}f(7);",
+    "source_sha256": "b85e99d9592e941b213656de62502f056925d8952a1a0d78144786d04cb07f7f",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-direct-list",
+    "source": "<?php function f($a){try{take(([$r]=func_get_args()));}catch(Error $e){echo 'E';}echo $a,$r;}function take(&$x){echo 'T';$x=9;}f(7);",
+    "source_sha256": "c83723102502ee0282778d33c7a9f22f117f8904884a8529f24354f556a46e39",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-suppression-dimension-order",
+    "source": "<?php function first(){echo 'K';return 0;}function second(){echo 'S';return 0;}function f($a){try{take((@func_get_args())[first()][second()]);}catch(Error $e){echo 'E';}echo $a[0];}function take(&$x){echo 'T';$x=9;}f([7]);",
+    "source_sha256": "93532fcfc393ff5da676220d3ab0572c8b09ad3f574602b9b41387f5de56fe59",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-list-dimension-order",
+    "source": "<?php function first(){echo 'K';return 0;}function second(){echo 'S';return 0;}function f($a){try{take(([$r]=func_get_args())[first()][second()]);}catch(Error $e){echo 'E';}echo $a[0],$r[0];}function take(&$x){echo 'T';$x=9;}f([7]);",
+    "source_sha256": "f80eb573fe1e6bf4a4a2e57e9670040975f9c61e7167229571f42c7a47670f61",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-suppression-property-order",
+    "source": "<?php function name(){echo 'P';return 'p';}function f($a){try{take((@func_get_args())->{name()});}catch(Error $e){echo 'E';}echo $a;}function take(&$x){echo 'T';$x=9;}f(7);",
+    "source_sha256": "32d2f332f5d5cc3f11e62a58d64a7c11a2fcafdb3cadadae2c3a63c9f8b05cee",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-list-property-order",
+    "source": "<?php function name(){echo 'P';return 'p';}function f($a){try{take(([$r]=func_get_args())->{name()});}catch(Error $e){echo 'E';}echo $a,$r;}function take(&$x){echo 'T';$x=9;}f(7);",
+    "source_sha256": "1874f6e4275aa3823c0a21aa65bbf3492b0a37c95f7b04e913bb94720733b04b",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-late-const-var-control",
+    "source": "<?php function f($a){take(@(__NAMESPACE__.'func_get_args')());take(([$r]=(__NAMESPACE__.'func_get_args')()));echo $a,$r;}function take(&$x){echo 'T';$x=9;}f(7);",
+    "source_sha256": "4e0319bcf7785a4a74055cd1b9e55e76d656b120f22c8ca40a1d40efcf4671a2",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-named-dynamic-closure",
+    "source": "<?php function f($a){$t='take';$c=take(...);try{$t(x:@func_get_args());}catch(Error $e){echo 'D';}try{$c(x:([$r]=func_get_args()));}catch(Error $e){echo 'C';}echo $a,$r;}function take(&$x){echo 'T';$x=9;}f(7);",
+    "source_sha256": "8eb5253678f99799feea9da914e3cd2dfbbdf2d284b8b27c9f2fe4e7ad81af94",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-multiline-first-dimension-argkey",
+    "source": "<?php\nfunction argkey(){echo 'K';return 0;}\nfunction f($a){\n take((@func_get_args())[\n  argkey()\n ][0]);\n}\nfunction take(&$x){echo 'T';}\nf([7]);\n",
+    "source_sha256": "4c11d593ee2153d325bbc62e44809d8589fc8f2e63e26c3c57fc7fbacc33f6e0",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "wrapper-suppressed-property-uncaught",
+    "source": "<?php\nfunction argname(){echo 'P';return 'p';}\nfunction f($a){\n take((@func_get_args())->{\n  argname()\n });\n}\nfunction take(&$x){echo 'T';}\nf(7);\n",
+    "source_sha256": "9ea928a385bee3a3a6fe34d046c332487f746c4c0782d1163a861256d964aec8",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "wrapper-list-property-uncaught",
+    "source": "<?php function argname(){echo 'P';return 'p';}function f($a){take(([$r]=func_get_args())->{argname()});}function take(&$x){echo 'T';}f(7);",
+    "source_sha256": "8dc730ed8b9de6e540a8eb2e2df63abaa6930ecfe626dcedb1e844e5f65f8954",
+    "expected_model": "php_error"
+  },
+  {
+    "id": "wrapper-nested-suppression-list-dimension",
+    "source": "<?php function argfirst(){echo 'K';return 0;}function argsecond(){echo 'S';return 0;}function f($a){try{take((@([$r]=func_get_args()))[argfirst()][argsecond()]);}catch(Error $e){echo 'E';}echo $a[0],$r[0];}function take(&$x){echo 'T';$x=9;}f([7]);",
+    "source_sha256": "0d403de4c4b4e900252044e6ed0f316b2a828a63b4c24942d535054f9ffd47ec",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-named-after-unpack-source-index",
+    "source": "<?php function f($a){$t='take';try{$t(...[],x:@func_get_args());}catch(Error $e){echo 'D';}try{$t(...[],x:([$r]=func_get_args()));}catch(Error $e){echo 'L';}echo $a,$r;}function take(&$x){echo 'T';$x=9;}f(7);",
+    "source_sha256": "5127e782cc362c51487beab5097cabf7dfe9155a6399a1b75cd82ee0c223e0e7",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-suppressed-getarg-nullsafe-read",
+    "source": "<?php class C{public $p=[7];}function f($a){try{take((@func_get_arg(0))?->p[0]);}catch(Error $e){echo 'E';}echo $a->p[0];}function take(&$x){echo 'T';$x=9;}f(new C);",
+    "source_sha256": "306a787383d382fbfdf2474717e5fa4d69ec4e130b36044f93a2d7aa27759183",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-list-getargs-nullsafe-read",
+    "source": "<?php class C{public $p=[7];}function f($a){try{take(([$r]=func_get_args())[0]?->p[0]);}catch(Error $e){echo 'E';}echo $a->p[0],$r->p[0];}function take(&$x){echo 'T';$x=9;}f(new C);",
+    "source_sha256": "470f6237dd0768fff6cd78c9b0d0dd37ce9de0ec59eb8badd3d8af670ce4e069",
+    "expected_model": "normal"
+  },
+  {
+    "id": "wrapper-reference-list-late-const-var-positive",
+    "source": "<?php function f($a){take(([&$r]=(__NAMESPACE__.'func_get_args')()));echo $a,$r;}function take(&$x){echo 'T';$x=9;}f(7);",
+    "source_sha256": "270b06094c1913470187d00cc791519bc662e927c83f34d593e8bd4747579029",
+    "expected_model": "normal",
+    "purpose": "Distinct actual compiler-CONST VAR positive; original optimized TMP Invalid-opcode control preserved unchanged."
+  },
+  {
+    "id": "language-list-unpacked-call-send",
+    "source": "<?php function f($a){take(([&$r]=func_get_args(...[])));echo $a,$r;}function take(&$x){echo 'T';$x=9;}f(7);",
+    "source_sha256": "18055e944c2a9005dcc5ca4664b384c3357b09746cc47d797c59300d0afe7775",
+    "expected_model": "normal"
+  },
+  {
+    "id": "language-list-referenced-input-private-cell",
+    "source": "<?php function f(&$a){[&$r]=func_get_args(...[]);$r=9;echo $a,$r;}$x=7;f($x);echo $x;",
+    "source_sha256": "a1a0b818bd113879d6d2712ef9c009fd36bf1f87f59bf1bc0845dace07f525aa",
+    "expected_model": "normal"
+  },
+  {
+    "id": "language-list-cv-copy-alias",
+    "source": "<?php function f(&$a){$copy=func_get_args();[&$r]=$copy;$r=9;echo $a,$copy[0],$r;}$x=7;f($x);echo $x;",
+    "source_sha256": "60f1f227e271bc098d5871b9efc3f76d7f83f65180c7b2b37e0e8bf3ccb3f40c",
+    "expected_model": "normal"
+  },
+  {
+    "id": "language-list-child-cow",
+    "source": "<?php function f($a){[&$r]=func_get_args(...[]);$r[0]=9;echo $a[0],$r[0];}f([7]);",
+    "source_sha256": "d34826821da133ca8da1dbdba62ec1343f2d2fd79b7a954fecaf27bf90cdc1e1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "language-list-embedded-reference",
+    "source": "<?php function f($a){[&$r]=func_get_args(...[]);$r[0]=9;echo $a[0],$r[0];}$cell=7;$a=[&$cell];f($a);echo $cell;",
+    "source_sha256": "0f22da722b2ebcbfc787ac0c0e46acdabdef919fc55eb3e9b9274c56d996994e",
+    "expected_model": "normal"
+  },
+  {
+    "id": "language-list-getarg-var-copy",
+    "source": "<?php function f($a){[&$r]=func_get_arg(0);$r=9;echo $a[0],$r;}f([7]);",
+    "source_sha256": "78b61af853f8c64830c298e9defacfd5980713af2f3a0f992cd3caf77d6be7c3",
+    "expected_model": "normal"
+  },
+  {
+    "id": "known-wrapper-suppressed-dimension",
+    "source": "<?php function take(&$x){}function f($a){take((@func_get_args())[0]);}f(7);",
+    "source_sha256": "6099d3c2674486392cfc1eecb2864772e63e24374ae8929ddc511e74a2bed5cf",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "known-wrapper-list-dimension",
+    "source": "<?php function take(&$x){}function f($a){take(([$r]=func_get_args())[0]);}f(7);",
+    "source_sha256": "b5b055135c4c3c634a206af7f258f3c6c10bf118c0d1f191021aa322faaab9b3",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "known-suppression-property-selector-cut",
+    "source": "<?php function take(&$x){}function f($a){take((@func_get_args())->{[]});}f(7);",
+    "source_sha256": "7e3f1565b9186bec9557203534df5bb5f181361ce6ccacb3d532cc185e46ff4b",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "known-list-property-selector-cut",
+    "source": "<?php function take(&$x){}function f($a){take(([$r]=func_get_args())->{[]});}f(7);",
+    "source_sha256": "84db36307bd4b32313202a3e232005136d6590bb91edc21249e8a5bd8ca7d841",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "generic-suppression-dimension-write",
+    "source": "<?php function take(&$x){}take((@[7])[0]);",
+    "source_sha256": "b46a2061ce636c199e42038f127fd67d5352899271390306e1becb2858fdbe31",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "suppression-dimension-assignment",
+    "source": "<?php function f($a){(@func_get_args())[0]=9;}f(7);",
+    "source_sha256": "6bec32924ad17661d9610c98fe74cbcc161d1f01aa2e896b00e1dc21bf8edd19",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "suppression-dimension-compound",
+    "source": "<?php function f($a){(@func_get_args())[0]+=9;}f(7);",
+    "source_sha256": "4b994d5c87c1260a12a87fe4695ca852056e9d04252e412418dd2bff0f530f4e",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "suppression-dimension-unset",
+    "source": "<?php function f($a){unset((@func_get_args())[0]);}f(7);",
+    "source_sha256": "772d83ac57d1177c305789e3e726e9cd6fd4c49262ff056a3c9e3ced3dd66b7d",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "suppression-property-assignment-selector-cut",
+    "source": "<?php function f($a){(@func_get_args())->{[]}=9;}f(7);",
+    "source_sha256": "82d64aa72cacd4f98ece5933a210cbc7596c716095b0d3b5482525885f8f0386",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "suppression-property-compound-selector-cut",
+    "source": "<?php function f($a){(@func_get_args())->{[]}+=9;}f(7);",
+    "source_sha256": "b70a06714d62494bce866ef56d5aae3a00fb2c7868d7751e762ef35fa12cd3b4",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "suppression-property-unset-selector-cut",
+    "source": "<?php function f($a){unset((@func_get_args())->{[]});}f(7);",
+    "source_sha256": "e13f93f6261578a3161641eb6d7d7f7808babfe6242b30623d34cdfd1b3c52df",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "suppression-multiline-child-line",
+    "source": "<?php\nfunction take(&$x){}\nfunction f($a){\n take((@\n  func_get_args()\n )[0]);\n}\nf(7);\n",
+    "source_sha256": "3da4e99e8a17651773fd2ced91169fb0da1dfbe9c3c2e5887e2f975ca697e346",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "suppression-child-warning-first-cut",
+    "source": "<?php function take(&$x){}take((@([] . 'x'))[0]);",
+    "source_sha256": "6ab06b4483debb6f05a4ce40aeadc6489b64c3167de0a2b1a900f6e9436ca760",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "suppression-child-static-fatal-first-cut",
+    "source": "<?php function take(&$x){}function f($a){take((@((unset)$a))[0]);}f(7);",
+    "source_sha256": "eab2948ff5667990b256fa450f672edfa2cd92bede1fe61113bcdabab4d5b502",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "suppression-read-preserved",
+    "source": "<?php function f($a){echo (@func_get_args())[0];}f(7);",
+    "source_sha256": "6192feb990b7ee8edfee9acbc7c1fb6439183bf95852224f4b232a7ca7816310",
+    "expected_model": "normal"
+  },
+  {
+    "id": "suppression-quiet-read-preserved",
+    "source": "<?php function f($a){echo isset((@func_get_args())[0]);}f(7);",
+    "source_sha256": "2fb463e0c94576afa86eb9374d1d49d231caef5d3d691a0405705a16a91aa099",
+    "expected_model": "normal"
+  },
+  {
+    "id": "suppression-deferred-dimension-preserved",
+    "source": "<?php function f($a){try{take((@func_get_args())[0]);}catch(Error $e){echo 'E';}echo $a;}function take(&$x){echo 'T';}f(7);",
+    "source_sha256": "4aab9628a242b9722fcd2937873ecf8c4fe381fc55115c2d572edadf6273fe82",
+    "expected_model": "normal"
+  },
+  {
+    "id": "suppression-deferred-property-preserved",
+    "source": "<?php function f($a){try{take((@func_get_args())->p);}catch(Error $e){echo 'E';}echo $a;}function take(&$x){echo 'T';}f(7);",
+    "source_sha256": "4896f61f774723ff08b968fa33ea59c75a02d0e5f93c61c1de4175fb6b9d6eb1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "generic-read-property-receiver-preserved",
+    "source": "<?php class C{public $p=7;} $c=new C;echo (@$c)->p;",
+    "source_sha256": "86036fff608d0c6b7d93e5ee553ed8601afc02901327f6efffc99d893989cd04",
+    "expected_model": "normal"
+  },
+  {
+    "id": "generic-list-property-selector-cut",
+    "source": "<?php function take(&$x){}$a=[7];take(([$r]=$a)->{[]});",
+    "source_sha256": "0d70b07992b99524ef0701f5b09090718b416f21c9392326a15bffcf0d556791",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "suppression-coalesce-refetch-write",
+    "source": "<?php function f($a){(@func_get_args())[0] ??=9;}f(7);",
+    "source_sha256": "699844b7ef777aa6bf81ad38b4a7aa281a247c41eb8a7727a0e5ebbc6ac672a8",
+    "expected_model": "static_rejection"
+  }
+]

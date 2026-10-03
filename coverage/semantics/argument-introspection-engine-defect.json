@@ -1,0 +1,120 @@
+{
+  "scope": "Pinned native internal defect; zero semantic native agreement. General list language validation is separate.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "baseline": "fdef6285d0b5d42832eef5d5fd790238e22ee28f",
+  "source": "<?php function f($a){try{take(([&$r]=func_get_args()));}catch(Error $e){echo 'E';}echo $a,$r;}function take(&$x){echo 'T';$x=9;}f(7);",
+  "source_sha256": "667ec148271193333f7d82e78f3c74c8ffadba2ad28cf3a9e2e1611a2458017f",
+  "initial_expected_model": "normal",
+  "native_outcome": "Internal Fatal error: Invalid opcode 140/2/0.; not catchable Error",
+  "native_exit": 255,
+  "model_exit": 0,
+  "raw_directory": "/home/user/workspace/php-spec/.tools/argument-introspection-current/.tools/argument-introspection-p3_xulj7/wrapper-reference-list-var-control",
+  "raw_hashes": {
+    "source.php": "667ec148271193333f7d82e78f3c74c8ffadba2ad28cf3a9e2e1611a2458017f",
+    "commands.json": "6c8d5c072cf114a4d1b89c4c59d5e6f887fbc274515de8d2b4fb3ddc346337d8",
+    "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native.stderr": "e8b024b5b4c84a72d8b2234c5b34dcfa5ef78f319ae6aaeaa29426e64a3d60fb",
+    "model.stdout": "d1ec790d1806740589bb7a57c1ef5b1c25a04d12ea0188108381bcc7cf38bfd2",
+    "model.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "original_report_sha256": "5b5a05cfd8e6ef65f63d056beedb14718e6e9de845598781b2c656120299b1f5",
+  "independent_original_raw_audit_sha256": "8668070efef1505ab9dc701680f46364f8b0b08e26a5b5a5e8066f4c6bdee62b",
+  "commands": {
+    "native": [
+      "/home/user/workspace/php-spec/.tools/argument-introspection-current/.tools/php/bin/php",
+      "-n",
+      "-d",
+      "opcache.enable_cli=0",
+      "-d",
+      "opcache.jit=disable",
+      "-d",
+      "precision=14",
+      "-d",
+      "serialize_precision=-1",
+      "-d",
+      "display_errors=stderr",
+      "-d",
+      "display_startup_errors=1",
+      "-d",
+      "html_errors=0",
+      "-d",
+      "log_errors=0",
+      "-d",
+      "error_reporting=30719",
+      "-d",
+      "date.timezone=UTC",
+      "-d",
+      "output_buffering=0",
+      "-d",
+      "implicit_flush=1",
+      "-d",
+      "zend.assertions=1",
+      "/home/user/workspace/php-spec/.tools/argument-introspection-current/.tools/argument-introspection-p3_xulj7/wrapper-reference-list-var-control/source.php"
+    ],
+    "model": [
+      "/home/user/workspace/php-spec/.tools/argument-introspection-current/bin/php-semantics",
+      "/home/user/workspace/php-spec/.tools/argument-introspection-current/.tools/argument-introspection-p3_xulj7/wrapper-reference-list-var-control/source.php",
+      "--steps",
+      "100000",
+      "--timeout",
+      "45"
+    ],
+    "cwd": "/home/user/workspace/php-spec/.tools/argument-introspection-current/.tools/argument-introspection-p3_xulj7/wrapper-reference-list-var-control",
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "files": {}
+  },
+  "source_reason": [
+    {
+      "path": "vendor/php-src/Zend/zend_compile.c",
+      "sha256": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225",
+      "lines": "3513-3527",
+      "fact": "Reference-list call RHS emits MAKE_REF after compilation; optimized API remains TMP."
+    },
+    {
+      "path": "vendor/php-src/Zend/zend_vm_def.h",
+      "sha256": "87f6d73c31a0c2865fc841efba911d512c14d672f31be25d140b10fb43451a41",
+      "line": 9262,
+      "fact": "Opcode140 MAKE_REF admits VAR|CV, not TMP."
+    }
+  ],
+  "chosen_language": {
+    "intentional_native_disagreement": true,
+    "rule": "Keep existing63/86 value-list reference semantics: requested references to non-reference elements of a by-value call array warn and get private cells; existing embedded reference cells remain shared, while CV-staged aliases retain ordinary rules.",
+    "production_list_or_engine_changes": false,
+    "validation": {
+      "status": "General language contract validated; private, no native agreement for optimized original",
+      "native_language6_report_sha256": "96f5a2136c0bacfbb262c617e7a5f3cb3b323a6cd56617775324c827d6007ba4",
+      "independent_language6_audit_sha256": "cd4142b735d540c6f9220bcabbc9246a4da0ba8ed8264a44251acc725a7b62d0",
+      "ordinary_list_store_states": [
+        "language-list-call-private-cell",
+        "language-list-cv-alias-cell"
+      ],
+      "ordinary_list_store_assertions": 38,
+      "optimized_model_only_state": "language-engine-defect-model-only",
+      "optimized_model_only_assertions": 17,
+      "optimized_model_only_report_sha256": "de1d0269c180b785ffccb9b136741ea4d0a02d31326f6a5dceecb3d6729014bd",
+      "independent_combined_state_acceptance_sha256": "7580cd79b8731414afe95e2c13f09242c208a9e22fd54fda521a8dab3d918a8f",
+      "native_reexecutions": 0,
+      "native_agreement_credit": 0,
+      "list_semantics_changes": false
+    }
+  },
+  "engine_or_paused_returns_changes": false
+}
