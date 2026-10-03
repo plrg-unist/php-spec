@@ -207,6 +207,8 @@ CASES['static-reference-borrowed-handler'] = b'<?php function h($code,$message,$
 EXPECTED['static-reference-borrowed-handler'] = b'H4same|A/B/0|2|2'
 CASES['static-reference-config-pipe'] = b'<?php class K{public function __toString(){echo "K",func_num_args();ini_set("include_path","v\\0raw");return "include_path";}}class A{public private(set) static int $p=1;public static function &ref(){$path=(new K) |> ini_get(...);echo __CLASS__,"/",static::class,"/",func_num_args(),"|",$path,"|";return static::$p;}}class B extends A{}ini_set("include_path","seed");$r=&B::ref();$r=2;echo A::$p,"|",B::$p;'
 EXPECTED['static-reference-config-pipe'] = b'K0A/B/0|v\0raw|2|2'
+CASES['static-reference-discarded-typed-slot'] = b'<?php class O{public int $x=1;}class A{public private(set) static object $p;public static function init(){self::$p=new O;}public static function &ref(){return self::$p;}}A::init();A::$p->x=2;echo A::$p->x,"|";A::ref();try{A::$p->x=3;}catch(Error $e){echo $e->getMessage(),"|";}echo A::$p->x;'
+EXPECTED['static-reference-discarded-typed-slot'] = b'2|Cannot indirectly modify private(set) property A::$p from global scope|2'
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()

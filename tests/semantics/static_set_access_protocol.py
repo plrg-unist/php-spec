@@ -16,7 +16,8 @@ STAGES = ['reference-uninitialized-error-chain', 'dimension-null-error-chain',
           'reference-nullable-initialization', 'string-callback-denied',
           'private-string-callback-allowed', 'protected-string-callback-allowed', 'reference-return-denied',
           'receiver-rhs-live-alias', 'receiver-uninitialized-unset', 'receiver-direct-demands',
-          'unset-continuation-property', 'unset-continuation-static', 'static-reference-return-denied']
+          'unset-continuation-property', 'unset-continuation-static', 'static-reference-return-denied',
+          'static-reference-discarded-typed-slot']
 PREFIX = STRING_PREFIX + r'''
 dec $set_protocol_phase(pstate,nat) : bool
 def $set_protocol_phase(S,0) = true
@@ -42,6 +43,10 @@ def $set_protocol_phase(S,7) = true
 def $set_protocol_phase(S,8) = true
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
   -- if S.BASE = BASE_CLASS_STATIC porigin ptbytes
+def $set_protocol_phase(S,9) = true
+  -- if S.TODO = (STMT (NStmtTryCatch phpType23 phpType65 phpType67 metadata)) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $static_protocol_output(S.EVENTS) = $ptascii("2|")
 def $set_protocol_phase(S,n) = false -- otherwise
 dec $set_protocol_seek(pstate,nat,nat) : pstate
 def $set_protocol_seek(S,n_phase,n) = S
@@ -86,6 +91,46 @@ def before(initial, phase):
 
 
 def checks(initial, name):
+    if name == 'static-reference-discarded-typed-slot':
+        result = ['S_initial = ' + initial,
+                  'S_found = $set_protocol_seek(S_initial,9,4096)',
+                  'S_found.COMPLETION = NORMAL \\/ S_found.COMPLETION = BUDGET',
+                  'S_before = S_found[.COMPLETION = NORMAL]',
+                  '$set_protocol_phase(S_before,9)',
+                  'S_before.CURRENT = eps /\\ S_before.FRAMES = eps',
+                  'S_before.RESULT = KNOWN PNULL /\\ S_before.BASE = BASE_VALUE (KNOWN PNULL) /\\ S_before.HELD = eps',
+                  'S_before.CLASSSTATICS = [pclassstatic]',
+                  'pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)',
+                  'S_before.STORE[n_cell] = DEFINED (POBJECT n_object)',
+                  'n_cell <- S_before.REFCELLS /\\ (HCELL n_cell) <- S_before.ALLOCATIONS /\\ (HOBJECT n_object) <- S_before.ALLOCATIONS',
+                  '$class_static_active_desc(S_before,S_before.CLASSNAMES,pclassstatic.DECL) = (ppropertydesc)',
+                  'ppropertydesc.TYPE =/= eps',
+                  'S_before.PROPREFS = [ppropref]',
+                  'ppropref.CELL = n_cell /\\ ppropref.SOURCES = [CLASS_PROP_SOURCE pclassstatic.DECL]',
+                  '$class_static_source_covered(S_before,pclassstatic,ppropertydesc)',
+                  '~$class_statics_valid(S_before[.PROPREFS = eps])',
+                  'S_before.REFCOERCIONS = eps',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_before).ROOTS) = 1',
+                  '$heap_owners($heap_graph(S_before),HCELL n_cell) = 1',
+                  '$heap_count(HOBJECT n_object,$heap_graph(S_before).ROOTS) = 0',
+                  '$heap_owners($heap_graph(S_before),HOBJECT n_object) = 1',
+                  '$property_read(S_before,POBJECT n_object,$ptascii("x"),1).RESULT = KNOWN (PINT 2)',
+                  *valid('S_before'),
+                  'S_done = $drive_steps(S_before,4096)',
+                  'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps',
+                  'S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+                  'S_done.CLASSSTATICS = S_before.CLASSSTATICS',
+                  'S_done.STORE[n_cell] = DEFINED (POBJECT n_object)',
+                  '$propref_at(S_done.PROPREFS,n_cell) = (ppropref)',
+                  'S_done.REFCOERCIONS = eps',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_done).ROOTS) = 1',
+                  '$heap_owners($heap_graph(S_done),HCELL n_cell) = 1',
+                  '$heap_count(HOBJECT n_object,$heap_graph(S_done).ROOTS) = 0',
+                  '$heap_owners($heap_graph(S_done),HOBJECT n_object) = 1',
+                  '$property_read(S_done,POBJECT n_object,$ptascii("x"),1).RESULT = KNOWN (PINT 2)',
+                  '$static_protocol_output(S_done.EVENTS) = $ptascii("2|Cannot indirectly modify private(set) property A::$p from global scope|2")',
+                  *valid('S_done')]
+        return result, 'S_done'
     if name.startswith('unset-continuation-'):
         phase = 7 if name == 'unset-continuation-property' else 8
         result = ['S_initial = ' + initial,
