@@ -50,6 +50,7 @@ def $firstclass_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback
   -- if ~$call_builtin(preqbytes_lookup, preqbytes_fallback?)
 
 dec $firstclass_value(pstate, porigin, int) : pstate
+dec $array_firstclass_value(pstate, nat, porigin, int) : pstate
 def $firstclass_value(S, porigin, z_init) = S -- if S.COMPLETION =/= NORMAL
 def $firstclass_value(S, porigin, z_init) = $firstclass_name(S, n*, $dynamic_lookup_name(n*), eps, z_init)
   -- if S.COMPLETION = NORMAL
@@ -58,7 +59,7 @@ def $firstclass_value(S, porigin, z_init) = S[.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $closure_callable(S, n)
-def $firstclass_value(S, porigin, z_init) = S[.COMPLETION = UNSUPPORTED "array first-class callable"]
+def $firstclass_value(S, porigin, z_init) = $array_firstclass_value(S, n, porigin, z_init)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (PARRAY n)
 def $firstclass_value(S, porigin, z_init) = $throw_scalar(S, "Error", $ptascii("Object of type ") ++ $object_name(S, n) ++ $ptascii(" is not callable"), z_init)

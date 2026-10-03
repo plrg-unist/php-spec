@@ -9,7 +9,10 @@ syntax pnode = HCELL nat | HARRAY nat | HOBJECT nat
 syntax plocation = ROOT nat | ELEMENT nat pkey | PROPERTY nat ptbytes | CLASS_STATIC ppropertyid | NOWHERE
 syntax pvstage = PVFOLD | PVEXEC
 syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)*
-syntax pcalltarget = porigin | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand
+syntax parrayselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, NAME ptbytes }
+syntax pcalltarget = porigin | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection
+syntax parraymode = ARRAY_ADMISSION | ARRAY_DISPATCH
+syntax parrayresolution = ARRAYRESOLVED pcalltarget porigin ptbytes | ARRAYADMITTED | ARRAYINVALID ptbytes | ARRAYUNKNOWN text
 syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass
 syntax ppool = { UNIT nat, CONSTANTS pconstant* }
 syntax pcodeexpr = CODEMATCH_LINE pcpath int | CODEMATCH_TABLE pcpath bool | CODEIMPLICIT pcpath ptbytes int | CODEARROW pcpath int | CODELEXICAL pcpath ptbytes bool int | CODESTATIC pcpath ptbytes int int bool | CODECALL_INIT pcpath int | CODEPIPE_SEND pcpath int | CODESWITCH_COMPARE pcpath int | CODESWITCH_BOOL pcpath bool | CODEGOTO pcpath pcpath | CODEARG pcpath | CODEWRITE pcpath int | CODEEXPR pcpath int bool | CODEEFFECT pcpath
@@ -74,7 +77,7 @@ syntax ptask = ARGINFO_REF_PREP pargref | ARGINFO_REF_VALUES pargref nat poperan
   | TYPE_RETURN_THROW nat porigin int
   | STATIC_STRING_RESULT pstaticstring | STATIC_STRING_CAPTURE pstaticstring
   | CLOSURE_CALL_RESULT porigin int | CLOSURE_CALL_FORWARD pclosurecall nat pnamedargs nat
-  | METHOD_CONVERT pcalltarget porigin int
+  | METHOD_CONVERT pcalltarget porigin int | ARRAY_CONVERT pcalltarget parrayselection
   | CTOR_ARGS pctorcall | CTOR_SEND pctorcall | CTOR_UNPACK_PREP pctorcall | CTOR_UNPACK_NEXT pctorcall poperand nat | CTOR_INVOKE pctorcall
   | SCOPED_CLASS phpType19 phpType20 phpType7* int | SCOPED_NAME phpType19 poperand phpType7* int
   | NOCTOR_ARGS pnoctorcall | NOCTOR_SEND pnoctorcall | NOCTOR_UNPACK_PREP pnoctorcall | NOCTOR_UNPACK_NEXT pnoctorcall poperand nat
@@ -122,7 +125,7 @@ syntax pclosurecreation = { FUNCTION porigin, CALLSITE porigin, RECEIVER bool }
 syntax pclosurescope = { OBJECT nat, LEXICAL porigin, CALLED porigin, RECEIVER nat?, CREATION pclosurecreation? }
 syntax pclosurebinding = { OBJECT nat, SITE porigin, SOURCE nat, LEXICAL porigin?, CALLED porigin?, RECEIVER nat? }
 syntax pmethodcapture = { FUNCTION porigin, CALLSITE porigin?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin? }
-syntax pobject = THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | INSTANCE porigin | STDINSTANCE
+syntax pobject = THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | INSTANCE porigin | STDINSTANCE
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
 syntax pdeclaration = PDENTER nat porigin? int | PDECLASS nat porigin | PDEFUNCTION nat porigin | PDRCLASS porigin pdeclcause | PDRFUNCTION porigin pdeclcause | PDEXIT nat pcompilestop

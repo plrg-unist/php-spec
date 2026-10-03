@@ -11,6 +11,7 @@ dec $dynamic_lookup_name(preqbytes) : preqbytes
 dec $dynamic_method_scan(preqbytes, bool, bool) : bool
 dec $dynamic_name(pstate, preqbytes, preqbytes, porigin, int, int) : pstate
 dec $dynamic_value(pstate, porigin, int, int) : pstate
+dec $array_dynamic(pstate, nat, porigin, int, int) : pstate
 
 ;; A computed name is consumed before any argument evaluation. Selected calls
 ;; then use the existing positional/named/unpack send and receive machinery.
@@ -86,7 +87,7 @@ def $dynamic_value(S, porigin, z_init, z_call) = S -- if S.COMPLETION =/= NORMAL
 def $dynamic_value(S, porigin, z_init, z_call) = $dynamic_name(S, n*, $dynamic_lookup_name(n*), porigin, z_init, z_call)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (PSTRING n*)
-def $dynamic_value(S, porigin, z_init, z_call) = S[.COMPLETION = UNSUPPORTED "array callable"]
+def $dynamic_value(S, porigin, z_init, z_call) = $array_dynamic(S, n, porigin, z_init, z_call)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (PARRAY n)
 def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = $method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, $dynamic_arguments(S, porigin), (porigin), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
