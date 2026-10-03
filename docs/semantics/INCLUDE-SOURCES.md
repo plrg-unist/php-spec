@@ -147,6 +147,21 @@ Two callable-priority sources on `240bf5a75` and two current ARG sources on
 `88f8d2bd5` are separate fresh checks. The latter preserves the caller's two arguments
 and fixed vector across a callback with zero arguments and an empty vector.
 The original AL fixture type failure is retained; current 185-module SL
-compilation passes with reused executables. Remaining INI05 option/value
-conversion, raw `get_include_path`/`ini_get` readback, PIPE/wider OS/INI behavior
-and lifecycle remain open.
+compilation passes with reused executables. Primitive/null Restore parsing
+remains a separate shared option-parser obligation.
+
+The [two-slot INI increment](../../coverage/semantics/include-stringable-ini-option-review.json)
+binds normalized `option` destination0 independently of written named/unpacked
+argument order. Weak scalar/Stringable options convert before array/object value
+rejection and full-name lookup. Strict non-string options reject; weak null
+options emit a deprecation before value validation. A valid `include_path` update
+returns the full raw old value sampled after the callback. Null, empty and
+leading-NUL values return false without mutation; valid interior-NUL values retain
+all bytes. Option-name matching remains full-byte, independent of the effective
+file-path prefix. Other real INI directives remain explicitly Unsupported.
+Current SENT object/array values remain live roots; retired completed PACKS are
+historical certificates. Current compiler/property composition `8cc6d7da5`
+accepts three normal sources and one full83 state fixture. Earlier `35fb2e410`
+author49/finite494 and independent source2 retain separate identities, as do the
+failed81/83 fixtures. Raw getters, primitive/null Restore options, PIPE, wider
+OS/INI behavior and lifecycle remain open.

@@ -7,6 +7,24 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Two-slot `ini_set` converts the normalized option before value rejection and
+full-name lookup, then samples the full raw old value after callbacks. Strict
+non-string options reject; null, empty and leading-NUL include-path updates
+return false. Current SENT arrays must remain allocated; completed unpack
+containers may retire. Tested **8cc6d7da5**, over accepted compiler/property
+**d5208161a**, on **0100a13d/1349**, accepts three fresh normal source tuples
+and the complete independent 83-assertion fixture. Nested property callbacks
+preserve argument frames, and captured unpack survives container retirement.
+Its 193-module SL and full83 AL compile; the 2,011 runtime inputs and compiler
+are reused. Earlier **35fb2e410** accepts author49 source tuples and twelve
+finite fixtures/494 assertions (464 ordinary, 30 Unsupported separate), plus
+two independent source tuples. The original wrong caught-message assertion
+and failed81/83 probes stay failed. The exact passed83 body is now a maintained
+CONFIG regression; metadata adds no execution credit.
+[INI ledger](coverage/semantics/include-stringable-ini-option-review.json).
+Next: raw `get_include_path`/`ini_get`, shared primitive/null Restore option
+parsing, then PIPE. Wider directives, lifecycle and full core remain open.
+
 Typed static Stringable assignment197 composes with current Restore172,
 ARG198/199, callable-first admission and raw/effective INI171/172. Tested
 **7c5d4d06c** over **c95946455** accepts the nested Restore/property source
@@ -30,8 +48,8 @@ empty, case and NUL-name misses preserve callback mutations. Original tested
 retain their two arguments, callbacks see zero, and strict owned Restore remains
 weak. Its 185-module SL compilation passes; the 2,011 runtime inputs and compiler
 are reused. [Restore ledger](coverage/semantics/include-stringable-restore-review.json).
-Next: INI05 option/value destinations and priority, raw `get_include_path`/`ini_get`
-readback, then PIPE. Wider INI and full core remain open.
+The two-slot INI checkpoint above extends option/value conversion separately.
+Raw getters, primitive/null Restore parsing, PIPE and wider INI remain open.
 
 Ordinary-frame argument introspection198/199 is installed in composition with
 accepted public object invocation, raw/effective INI paths and callable-first
@@ -64,8 +82,8 @@ source27 and five finite stages/188 assertions; six Unsupported checks remain
 separate. Independent gates accept the recovered source2 tuples and fresh
 owner79/finally50. [SET review](coverage/semantics/include-set-current-review.json)
 preserves the unknown original source2 launcher exit, NUL-free old-value limits
-and distinct private evidence. Remaining INI05 option conversion, raw INI
-readback, PIPE and full core closure remain open.
+and distinct private evidence. The later INI checkpoint above is separate;
+raw readback, primitive/null Restore, PIPE and full core remain open.
 
 Earlier capture checkpoint is **c536d1f74**, with code **094761c66** and
 tests through **8795d9c39** over **c8bee41e6**. Author and independent gates each
@@ -140,13 +158,13 @@ readonly/asymmetric set access and scoped defaults remain open.
 
 Current family status:
 
-- Include/configuration: raw/effective INI, Stringable SET and reviewed
-  Stringable Restore are covered by the checkpoints above. Original Restore
-  **b33** source34/finite524 and the fresh callable-priority/current ARG
-  source2+2 remain distinct. INI05 destination/value conversion, then raw
-  `get_include_path`/`ini_get` readback, then PIPE are next; wider directives and
-  OS/INI behavior remain open.
-  [Restore ledger](coverage/semantics/include-stringable-restore-review.json)
+- Include/configuration: raw/effective paths, Stringable SET/Restore and
+  two-slot INI conversion are covered by distinct checkpoints above. The current
+  nested property/captured-unpack source3/full83 checks are separate from prior
+  source51/finite494 and original failed81/83. Raw `get_include_path`/`ini_get`
+  and primitive/null Restore parsing are next, then PIPE; wider OS/INI stays open.
+  [INI ledger](coverage/semantics/include-stringable-ini-option-review.json)
+  · [Restore ledger](coverage/semantics/include-stringable-restore-review.json)
   · [INI prefix ledger](coverage/semantics/include-ini-prefix-review.json)
   · [SET ledger](coverage/semantics/include-set-current-review.json).
 - Calls: public source `__invoke` is installed at **18a1383d7**; callable-before-

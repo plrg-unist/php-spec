@@ -1,0 +1,81 @@
+{
+  "scope": "Reviewed two-slot include_path INI conversion and current compiler/property composition; historical tests retain their actual revisions.",
+  "status": "reviewed_current_composition",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "accepted_base": "d5208161ab3629d70228555b84c2e9d53076ba55",
+  "tested_head": "8cc6d7da51300bff2fbc4dc69f4137c0525899ff",
+  "implementation": {
+    "sha256": "0100a13d01198a74bd02171fa4f81c12e1fd7c975dc2fca7ed684df67c8638d2",
+    "files": 1349,
+    "modules": 193
+  },
+  "contract": [
+    "Option destination0 is independent of written named/unpacked order. Weak scalar/Stringable conversion precedes array/object value rejection and full-name lookup; strict non-string options reject.",
+    "Weak null option deprecates before value validation. Owned internal __invoke remains weak and ordinary return restores the saved caller argument frame.",
+    "Exact include_path updates return the full raw old value after callbacks. Null/empty/leading-NUL updates return false without mutation; valid interior-NUL storage remains full-byte.",
+    "Both current SENT values contribute roots and trace arguments. Object and array slots require live allocation; completed PACKS identities remain historical."
+  ],
+  "primary_engine": {
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "file": "vendor/php-src/ext/standard/basic_functions.c",
+    "symbols": [
+      "PHP_FUNCTION(ini_set)",
+      "Z_PARAM_STR",
+      "zend_ini_get_value",
+      "zend_alter_ini_entry_ex",
+      "OnUpdateStringUnempty"
+    ]
+  },
+  "current_checks": {
+    "normal_source_tuples": 3,
+    "finite_fixtures": 1,
+    "ordinary_assertions": 83,
+    "original_command_files": 28,
+    "original_receipts": 2,
+    "owned_child_groups_closed": 7,
+    "pure_SL_modules": 193,
+    "pure_full_AL": 1,
+    "runtime_inputs": 2011,
+    "fresh_rebuild": false
+  },
+  "maintained_regression": {
+    "commit": "2ca18d5250f2f5189224896d91731984ae85833f",
+    "case": "ini-option-nul-array-priority-result",
+    "source_stage_and_74_checks": "Exact passed source602359/stage/body and guarded startup9; all42 earlier CASES and PREFIX unchanged. No target replay."
+  },
+  "historical_checks": {
+    "head": "35fb2e4108d37b06f13c26b315e2e57784a00eac",
+    "author_source_tuples": 49,
+    "author_normal": 37,
+    "author_php_errors": 12,
+    "author_finite_fixtures": 12,
+    "ordinary_assertions": 464,
+    "Unsupported_assertions": 30,
+    "independent_normal_sources": 2,
+    "qualification": "Original37 passes carried into the narrow corrected12 continuation; none relabelled as current193 execution."
+  },
+  "preserved_failures": [
+    "10f original strict-false caught assertion saw native/model X11 because the fixture expected bool rather than false; corrected source alone reran.",
+    "35fb independent81 failed optional-name tuple narrowing; two explicit name checks produced83.",
+    "35fb corrected83 overclaimed the old array-slot validator. The new current CONFIG live-array invariant makes the unchanged allocation negative pass; no PHP-output disagreement was observed."
+  ],
+  "runtime_and_profile": "Local PHP/native/adapter/numeric/compiler binaries reused. Exact argv, cwd, environment, model90/native30/request60/numeric300/cleanup5 and include_path=.: are in the plan; raw child streams and exits remain in ignored archives.",
+  "next": [
+    "Full raw get_include_path/ini_get and shared primitive/null Restore parsing",
+    "PIPE, wider OS/INI/lifecycle and full-core closure",
+    "Fresh combined offline rebuild; paused returns work remains excluded"
+  ],
+  "references": {
+    "plan": {"root": ".tools/include-dev-13-ini-current", "path": ".tools/ini-current-plan.json", "sha256": "4fc57243422e6a330bec3077069dd33f1357ce48d5b4458cab74450f818a4c0d"},
+    "pure_compilation": {"root": ".tools/include-dev-13-ini-current", "path": ".tools/ini-current-compilation/receipt.json", "sha256": "fc5dd17915c075f6c7bfd07ed8d2ea26afaca35f4a0fd22c36bf7e9e9b0cc354"},
+    "author_receipt": {"root": ".tools/include-dev-13-ini-current", "path": ".tools/ini-current-author-is0yjw5j/receipt.json", "sha256": "0d31e7fee17fbfcfab5595eec33840d50404d29c3afb0c76febaf0d9197d7b06"},
+    "independent_receipt": {"root": ".tools/include-dev-13-ini-current", "path": ".tools/ini-current-independent-xmw3slrt/receipt.json", "sha256": "c314c28b93da960268926e3e55621d9f9974685aa95486d84676aaba8b40dad2"},
+    "author_release": {"root": ".tools/include-dev-13-ini-current", "path": ".tools/ini-current-author-slot4-RELEASE.json", "sha256": "5b1dc381557ed1fc4be6dc595b30cb95ac880a349b24050d6e6983981bf95745"},
+    "independent_release": {"root": ".tools/include-dev-13-ini-current", "path": ".tools/ini-current-independent-slot4-RELEASE.json", "sha256": "c3499379cbd2d59928565d88619a4f0bd1d24262c01f13d5441ab3c9a485472d"},
+    "developer_own_review": {"root": ".tools/include-dev-13-ini-current", "path": ".tools/ini-current-own-developer-review.json", "sha256": "4bf6e0d2f838d63a2b48f062a238dd787d956b495f72b96da8ee876dcd86a77b"},
+    "bounded_acceptance": {"root": ".", "path": ".tools/include-review-13/ini-current-bounded-acceptance.json", "sha256": "ed8d88fe5c18e301f7d2b7b762c43f26af066eb6424fe736692e6c0d215e8629"},
+    "maintained_regression_bridge": {"root": ".tools/include-dev-13-ini-current", "path": ".tools/ini-maintained-regression-bridge.json", "sha256": "bb4b8dffdf067e7e6a4165f48817e7d6490f5840b6d5b41f721655cc8dde71c7"},
+    "historical_author_review": {"root": ".", "path": ".tools/include-review-13/ini-author-actual-review.json", "sha256": "48e39cf799ca5267ef0063d5f3455f561b6a739d9de501793466a44e01aa8ec0"},
+    "historical_own_source2_review": {"root": ".tools/include-dev-13-ini", "path": ".tools/ini-independent-partial-developer-review.json", "sha256": "2b5e0e18e8f020206123f1e249da0a11f7a4dd2fc8b326351907b7b65e82f70a"}
+  }
+}

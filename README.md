@@ -41,8 +41,11 @@ and thirteen finite fixtures/675 assertions at `6e7ddca894`.
 converts weak options using full-name lookup, restores the initial raw path for
 exact names and preserves callback writes on empty, case and NUL-name misses.
 Current checks preserve the caller's argument vector across the callback.
-Remaining Stringable INI option/value ordering, raw INI readback, PIPE and broader
-path/stream behavior remain open.
+[Two-slot INI conversion](coverage/semantics/include-stringable-ini-option-review.json)
+converts the option before rejecting array/object values or looking up its full
+name, and returns the raw old value after callbacks. Current property and captured
+unpack checks pass three source tuples and one finite fixture/83 assertions.
+Raw INI getters, primitive/null Restore options, PIPE and wider OS/INI remain open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
