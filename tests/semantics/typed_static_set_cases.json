@@ -1,0 +1,19 @@
+{
+  "scope": "Original SET source bytes; predicted tuples require fresh native/model evidence before acceptance.",
+  "cases": [
+    {
+      "case": "set197-static-outer-named-set-live-old-normal",
+      "source": "<?php\nclass A {\n private static string $p=\"old\";\n public static function set(){echo (self::$p=new D);}\n public static function get(){return self::$p;}\n}\nclass B extends A {}\nclass P {\n public function __toString():string {\n  echo \"T\";\n  echo set_include_path(include_path:new Q);\n  return \"s\";\n }\n}\nclass D extends P {}\nclass Q {\n public function __toString():string {\n  echo \"N\";\n  ini_set(\"include_path\",\"inner\");\n  return \"outer\";\n }\n}\nini_set(\"include_path\",\"seed\");\n$spareq=new Q;\n$spared=new D;\n$b=new B;\n$b->set();\necho \"|\",B::get(),\"|\",set_include_path(\"end\");\n",
+      "source_sha256": "553e3c3d6fb5ef58e0c780b8addc9bca2a120911137ebdeea1b98b372da148c6",
+      "abrupt": false,
+      "expected_stdout": "TNinners|s|outer"
+    },
+    {
+      "case": "set197-static-outer-named-set-throw-finally",
+      "source": "<?php\nclass A {\n private static string $p=\"old\";\n public static function set(){echo (self::$p=new D);}\n public static function get(){return self::$p;}\n}\nclass B extends A {}\nclass P {\n public function __toString():string {\n  echo \"T\";\n  echo set_include_path(include_path:new Q);\n  return \"s\";\n }\n}\nclass D extends P {}\nclass Q {\n public function __toString():string {\n  echo \"N\";\n  ini_set(\"include_path\",\"inner\");\n  try {throw new Exception(\"X\");}\n  finally {echo \"F\";}\n }\n}\nini_set(\"include_path\",\"seed\");\n$spareq=new Q;\n$spared=new D;\n$b=new B;\n$b->set();\necho \"|\",B::get(),\"|\",set_include_path(\"end\");\n",
+      "source_sha256": "0437bf4c3644f4b2016b03da1899a7a18feb85b944875327b66a73f25f67b997",
+      "abrupt": true,
+      "expected_stdout": "TNF"
+    }
+  ]
+}

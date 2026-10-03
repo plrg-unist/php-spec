@@ -1,0 +1,39 @@
+{
+  "scope": "Fresh invoke / SET / static-string source bytes; predicted tuples remain UNRUN until exact native/model gates.",
+  "cases": [
+    {
+      "case": "invoke-set197-static-outer-named-set-live-old-normal",
+      "source": "<?php\nclass A {\n private static string $p=\"old\";\n public static function set(){echo (self::$p=new D);}\n public static function get(){return self::$p;}\n}\nclass B extends A {}\nclass P {\n public function __toString():string {\n  echo \"T\";\n  echo (new I)(new Q);\n  return \"s\";\n }\n}\nclass I {\n public function __invoke($inner){\n  echo \"I\";\n  return set_include_path(include_path:$inner);\n }\n}\nclass D extends P {}\nclass Q {\n public function __toString():string {\n  echo \"N\";\n  ini_set(\"include_path\",\"inner\");\n  return \"outer\";\n }\n}\nini_set(\"include_path\",\"seed\");\n$spareq=new Q;\n$spared=new D;\n$sparei=new I;\n$b=new B;\n$b->set();\necho \"|\",B::get(),\"|\",set_include_path(\"end\");\n",
+      "abrupt": false,
+      "expected_stdout": "TINinners|s|outer",
+      "expected_exit_status": 0,
+      "predicted_php_error": null,
+      "lines": {
+        "property_assignment": 4,
+        "object_invocation": 11,
+        "named_SET": 18,
+        "outer_entry": 34
+      },
+      "source_sha256": "71cc9a36a3447259518ac793e691e03e3731f5effc7ec5b3a27eee3057d2b044"
+    },
+    {
+      "case": "invoke-set197-static-outer-named-set-throw-finally",
+      "source": "<?php\nclass A {\n private static string $p=\"old\";\n public static function set(){echo (self::$p=new D);}\n public static function get(){return self::$p;}\n}\nclass B extends A {}\nclass P {\n public function __toString():string {\n  echo \"T\";\n  echo (new I)(new Q);\n  return \"s\";\n }\n}\nclass I {\n public function __invoke($inner){\n  echo \"I\";\n  return set_include_path(include_path:$inner);\n }\n}\nclass D extends P {}\nclass Q {\n public function __toString():string {\n  echo \"N\";\n  ini_set(\"include_path\",\"inner\");\n  try {throw new Exception(\"X\");}\n  finally {echo \"F\";}\n }\n}\nini_set(\"include_path\",\"seed\");\n$spareq=new Q;\n$spared=new D;\n$sparei=new I;\n$b=new B;\n$b->set();\necho \"|\",B::get(),\"|\",set_include_path(\"end\");\n",
+      "abrupt": true,
+      "expected_stdout": "TINF",
+      "expected_exit_status": 255,
+      "predicted_php_error": {
+        "class": "Exception",
+        "message": "X",
+        "line": 26
+      },
+      "lines": {
+        "property_assignment": 4,
+        "object_invocation": 11,
+        "named_SET": 18,
+        "outer_entry": 35
+      },
+      "source_sha256": "c184e27e560e499e8582899a2c9cf9750f64ed1bd1f5e453a3c2f67f8579ceb9"
+    }
+  ]
+}

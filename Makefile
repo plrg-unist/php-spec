@@ -200,6 +200,8 @@ test-semantics: build
 	python3 tests/semantics/property_references.py
 	python3 tests/semantics/property_reference_protocol.py
 	python3 tests/semantics/property_reference_incdec_protocol.py
+	python3 tests/semantics/reference_coercion_protocol.py
+	python3 tests/semantics/reference_coercion_default_cache_protocol.py
 	python3 tests/semantics/property_visibility.py
 	python3 tests/semantics/property_visibility_compiler.py
 	python3 tests/semantics/property_visibility_protocol.py
@@ -215,6 +217,9 @@ test-semantics: build
 	python3 tests/semantics/class_static_stringable_chdir_bridge.py
 	python3 tests/semantics/property_scalar_alias.py
 	python3 tests/semantics/property_scalar_alias_protocol.py
+	python3 tests/semantics/typed_static_string_assignment.py
+	python3 tests/semantics/typed_static_string_protocol.py
+	python3 tests/semantics/typed_static_callable.py
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py

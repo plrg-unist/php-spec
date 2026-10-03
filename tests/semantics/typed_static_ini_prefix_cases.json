@@ -1,0 +1,41 @@
+{
+  "scope": "Fresh raw INI / invoke / SET / typed-static source witnesses; tuples are expectations until actual native/model gates.",
+  "cases": [
+    {
+      "abrupt": false,
+      "case": "ini-prefix-invoke-set197-normal-full-property-bytes",
+      "expected_exit_status": 0,
+      "expected_stdout": "TINZinners\u0000typed|s\u0000typed|outer",
+      "expected_stdout_hex": "54494e5a696e6e6572730074797065647c730074797065647c6f75746572",
+      "lines": {
+        "named_SET": 18,
+        "object_invocation": 11,
+        "outer_entry": 35,
+        "property_assignment": 4
+      },
+      "predicted_php_error": null,
+      "source": "<?php\nclass A {\n private static string $p=\"old\";\n public static function set(){echo (self::$p=new D);}\n public static function get(){return self::$p;}\n}\nclass B extends A {}\nclass P {\n public function __toString():string {\n  echo \"T\";\n  echo (new I)(new Q);\n  return \"s\\0typed\";\n }\n}\nclass I {\n public function __invoke($inner){\n  echo \"I\";\n  return set_include_path(include_path:$inner);\n }\n}\nclass D extends P {}\nclass Q {\n public function __toString():string {\n  echo \"N\";\n  ini_set(\"include_path\",\"inner\\0tail\");\n  echo ini_set(\"include_path\",\"\\0rejected\") ? \"Y\" : \"Z\";\n  return \"outer\";\n }\n}\nini_set(\"include_path\",\"seed\\0old\");\n$spareq=new Q;\n$spared=new D;\n$sparei=new I;\n$b=new B;\n$b->set();\necho \"|\",B::get(),\"|\",set_include_path(\"end\");\n",
+      "source_sha256": "d65b4abfa78ee89f640b3879b1cc535b3e94282ef99de6bf2f1f94a15ff03233"
+    },
+    {
+      "abrupt": true,
+      "case": "ini-prefix-invoke-set197-throw-finally",
+      "expected_exit_status": 255,
+      "expected_stdout": "TINZF",
+      "expected_stdout_hex": "54494e5a46",
+      "lines": {
+        "named_SET": 18,
+        "object_invocation": 11,
+        "outer_entry": 36,
+        "property_assignment": 4
+      },
+      "predicted_php_error": {
+        "class": "Exception",
+        "line": 27,
+        "message": "X"
+      },
+      "source": "<?php\nclass A {\n private static string $p=\"old\";\n public static function set(){echo (self::$p=new D);}\n public static function get(){return self::$p;}\n}\nclass B extends A {}\nclass P {\n public function __toString():string {\n  echo \"T\";\n  echo (new I)(new Q);\n  return \"s\\0typed\";\n }\n}\nclass I {\n public function __invoke($inner){\n  echo \"I\";\n  return set_include_path(include_path:$inner);\n }\n}\nclass D extends P {}\nclass Q {\n public function __toString():string {\n  echo \"N\";\n  ini_set(\"include_path\",\"inner\\0tail\");\n  echo ini_set(\"include_path\",\"\\0rejected\") ? \"Y\" : \"Z\";\n  try {throw new Exception(\"X\");}\n  finally {echo \"F\";}\n }\n}\nini_set(\"include_path\",\"seed\\0old\");\n$spareq=new Q;\n$spared=new D;\n$sparei=new I;\n$b=new B;\n$b->set();\necho \"|\",B::get(),\"|\",set_include_path(\"end\");\n",
+      "source_sha256": "d321aa151194843fa891b623da08ba80da6a12d1e0b44566729cc1573cd250a1"
+    }
+  ]
+}
