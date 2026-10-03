@@ -7460,20 +7460,23 @@
         "spec/semantics/122-pipe-compiler.watsup",
         "spec/semantics/123-pipe-runtime.watsup",
         "spec/semantics/205-array-callables.watsup",
-        "spec/semantics/210-class-method-strings.watsup"
+        "spec/semantics/210-class-method-strings.watsup",
+        "spec/semantics/172-file-context-intrinsics.watsup"
       ],
       "helper_tests": [
         "tests/pipe_parentheses.py",
         "tests/semantics/pipe_protocol.py",
         "tests/semantics/array_callables_protocol.py",
-        "tests/semantics/class_method_strings_protocol.py"
+        "tests/semantics/class_method_strings_protocol.py",
+        "tests/semantics/include_mutable_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/pipe.py",
         "tests/semantics/array_callables.py",
         "tests/semantics/array_callables_cases.json",
         "tests/semantics/class_method_strings.py",
-        "tests/semantics/class_method_strings_cases.json"
+        "tests/semantics/class_method_strings_cases.json",
+        "tests/semantics/include_mutable_execution.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -7482,9 +7485,10 @@
         "coverage/semantics/pipe-review.json",
         "docs/semantics/SOURCE-PIPE.md",
         "coverage/semantics/array-callables-current-review.json",
-        "coverage/semantics/class-method-strings-current-review.json"
+        "coverage/semantics/class-method-strings-current-review.json",
+        "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Parser-owned direct-arrow grouping and compile-phase rejection are reviewed with a 30,980-entry classified syntax gate. Runtime value forcing, named user/closure targets and reference-result mode are reviewed with 12 source outcomes, original-source replays and paused task/ownership checks. The selected captured-static ARRAYMETHODCLOSURE route has an independently audited author source control in array-callables-current-review.json. Broader builtin/method/direct-array/object PIPE consumers remain open. Selected captured static STRINGMETHODCLOSURE PIPE has a strict independently audited author source control (class-method-strings-current-review.json); broader direct method-string PIPE remains open."
+      "review": "Parser-owned direct-arrow grouping and compile-phase rejection are reviewed with a 30,980-entry classified syntax gate. Runtime value forcing, named user/closure targets and reference-result mode are reviewed with 12 source outcomes, original-source replays and paused task/ownership checks. The selected captured-static ARRAYMETHODCLOSURE route has an independently audited author source control in array-callables-current-review.json. Broader builtin/method/direct-array/object PIPE consumers remain open. Selected captured static STRINGMETHODCLOSURE PIPE has a strict independently audited author source control (class-method-strings-current-review.json); broader direct method-string PIPE remains open. Unary CONFIG getter/SET/Restore PIPE has bounded original-source and held-left/source/owner/state checks (include-config-pipe-review.json); ordinary Closure invocation retains caller strictness. Wider CONFIG/provider and callable consumers remain partial. Current borrowed-warning composition adds two focused normal/throwing source checks; earlier gates retain their revisions."
     },
     {
       "id": "calls.callable-visibility",
@@ -9817,9 +9821,10 @@
         "coverage/semantics/include-ini-prefix-review.json",
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
-        "coverage/semantics/include-ini-readback-review.json"
+        "coverage/semantics/include-ini-readback-review.json",
+        "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw get_include_path/ini_get preserve full bytes after option callbacks; primitive/null Restore distinguishes strict direct and weak owned calls. Getter45d source17/finite134 stays separate from handlercf7 source2 and f406 corrected61+ownthrow1. Unary weak-null handler continuations retain caller arguments, original null trace operands and raw mutation; current setter union preserves tested rules and compiles198 modules. Other names/absent environment, PIPE, broader producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.require",
@@ -9862,9 +9867,10 @@
         "coverage/semantics/include-ini-prefix-review.json",
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
-        "coverage/semantics/include-ini-readback-review.json"
+        "coverage/semantics/include-ini-readback-review.json",
+        "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw get_include_path/ini_get preserve full bytes after option callbacks; primitive/null Restore distinguishes strict direct and weak owned calls. Getter45d source17/finite134 stays separate from handlercf7 source2 and f406 corrected61+ownthrow1. Unary weak-null handler continuations retain caller arguments, original null trace operands and raw mutation; current setter union preserves tested rules and compiles198 modules. Other names/absent environment, PIPE, broader producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.include-once",
@@ -9907,9 +9913,10 @@
         "coverage/semantics/include-ini-prefix-review.json",
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
-        "coverage/semantics/include-ini-readback-review.json"
+        "coverage/semantics/include-ini-readback-review.json",
+        "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw get_include_path/ini_get preserve full bytes after option callbacks; primitive/null Restore distinguishes strict direct and weak owned calls. Getter45d source17/finite134 stays separate from handlercf7 source2 and f406 corrected61+ownthrow1. Unary weak-null handler continuations retain caller arguments, original null trace operands and raw mutation; current setter union preserves tested rules and compiles198 modules. Other names/absent environment, PIPE, broader producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.require-once",
@@ -9952,9 +9959,10 @@
         "coverage/semantics/include-ini-prefix-review.json",
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
-        "coverage/semantics/include-ini-readback-review.json"
+        "coverage/semantics/include-ini-readback-review.json",
+        "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw get_include_path/ini_get preserve full bytes after option callbacks; primitive/null Restore distinguishes strict direct and weak owned calls. Getter45d source17/finite134 stays separate from handlercf7 source2 and f406 corrected61+ownthrow1. Unary weak-null handler continuations retain caller arguments, original null trace operands and raw mutation; current setter union preserves tested rules and compiles198 modules. Other names/absent environment, PIPE, broader producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.source-identity",
@@ -9997,9 +10005,10 @@
         "coverage/semantics/include-ini-prefix-review.json",
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
-        "coverage/semantics/include-ini-readback-review.json"
+        "coverage/semantics/include-ini-readback-review.json",
+        "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw get_include_path/ini_get preserve full bytes after option callbacks; primitive/null Restore distinguishes strict direct and weak owned calls. Getter45d source17/finite134 stays separate from handlercf7 source2 and f406 corrected61+ownthrow1. Unary weak-null handler continuations retain caller arguments, original null trace operands and raw mutation; current setter union preserves tested rules and compiles198 modules. Other names/absent environment, PIPE, broader producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.source-failure",
@@ -10042,9 +10051,10 @@
         "coverage/semantics/include-ini-prefix-review.json",
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
-        "coverage/semantics/include-ini-readback-review.json"
+        "coverage/semantics/include-ini-readback-review.json",
+        "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw get_include_path/ini_get preserve full bytes after option callbacks; primitive/null Restore distinguishes strict direct and weak owned calls. Getter45d source17/finite134 stays separate from handlercf7 source2 and f406 corrected61+ownthrow1. Unary weak-null handler continuations retain caller arguments, original null trace operands and raw mutation; current setter union preserves tested rules and compiles198 modules. Other names/absent environment, PIPE, broader producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.included-declarations",
@@ -10087,9 +10097,10 @@
         "coverage/semantics/include-ini-prefix-review.json",
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
-        "coverage/semantics/include-ini-readback-review.json"
+        "coverage/semantics/include-ini-readback-review.json",
+        "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw get_include_path/ini_get preserve full bytes after option callbacks; primitive/null Restore distinguishes strict direct and weak owned calls. Getter45d source17/finite134 stays separate from handlercf7 source2 and f406 corrected61+ownthrow1. Unary weak-null handler continuations retain caller arguments, original null trace operands and raw mutation; current setter union preserves tested rules and compiles198 modules. Other names/absent environment, PIPE, broader producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.included-return",
@@ -10132,9 +10143,10 @@
         "coverage/semantics/include-ini-prefix-review.json",
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
-        "coverage/semantics/include-ini-readback-review.json"
+        "coverage/semantics/include-ini-readback-review.json",
+        "coverage/semantics/include-config-pipe-review.json"
       ],
-      "review": "Raw get_include_path/ini_get preserve full bytes after option callbacks; primitive/null Restore distinguishes strict direct and weak owned calls. Getter45d source17/finite134 stays separate from handlercf7 source2 and f406 corrected61+ownthrow1. Unary weak-null handler continuations retain caller arguments, original null trace operands and raw mutation; current setter union preserves tested rules and compiles198 modules. Other names/absent environment, PIPE, broader producers/directives and full core remain partial."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. Original failures remain preserved; broader providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial."
     },
     {
       "id": "dynamic.autoload-registration",

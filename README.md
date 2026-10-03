@@ -47,9 +47,14 @@ name, and returns the raw old value after callbacks. Current property and captur
 unpack checks pass three source tuples and one finite fixture/83 assertions.
 [Raw INI readback](coverage/semantics/include-ini-readback-review.json) returns
 full `include_path` bytes, including callback writes. Primitive/null Restore
-parsing preserves strict direct refusal and weak owned calls. Eligible unary
+parsing preserves strict direct refusal and weak explicit `Closure->__invoke` calls. Eligible unary
 null deprecations suspend for handlers; normal return, false fallback and throw
-preserve raw mutation and caller arguments. PIPE and wider OS/INI remain open.
+preserve raw mutation and caller arguments.
+[Unary CONFIG PIPE](coverage/semantics/include-config-pipe-review.json) preserves
+the held left value across RHS factory effects and authenticates its compiled
+send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
+throwing borrowed-warning callbacks preserve raw mutations and caller frames.
+Wider PIPE consumers, OS/INI behavior and lifecycle remain open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,

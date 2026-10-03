@@ -154,7 +154,7 @@ The [two-slot INI increment](../../coverage/semantics/include-stringable-ini-opt
 binds normalized `option` destination0 independently of written named/unpacked
 argument order. Weak scalar/Stringable options convert before array/object value
 rejection and full-name lookup. Strict direct calls reject non-string options;
-owned calls parse weakly. Weak null options deprecate before value validation. A valid `include_path` update
+explicit `Closure->__invoke` calls parse weakly. Weak null options deprecate before value validation. A valid `include_path` update
 returns the full raw old value sampled after the callback. Null, empty and
 leading-NUL values return false without mutation; valid interior-NUL values retain
 all bytes. Option-name matching remains full-byte, independent of the effective
@@ -163,7 +163,7 @@ Current SENT object/array values remain live roots; retired completed PACKS are
 historical certificates. Current compiler/property composition `8cc6d7da5`
 accepts three normal sources and one full83 state fixture. Earlier `35fb2e410`
 author49/finite494 and independent source2 retain separate identities, as do the
-failed81/83 fixtures. PIPE, wider OS/INI behavior and lifecycle remain open.
+failed81/83 fixtures. Wider OS/INI behavior and lifecycle remain open.
 
 The [raw-readback increment](../../coverage/semantics/include-ini-readback-review.json)
 returns full raw bytes from `get_include_path()` and exact-name
@@ -173,7 +173,7 @@ reading the live raw value. Empty, case, NUL-name and converted primitive
 misses use full-name lookup and return false; other directives remain
 Unsupported. Missing raw environment also remains Unsupported.
 The same option parser now handles primitive/null Restore calls: strict direct
-calls reject non-string options, owned calls parse weakly, and weak null
+calls reject non-string options, explicit `Closure->__invoke` calls parse weakly, and weak null
 deprecates before lookup. Argument binding/arity errors preserve evaluated side
 effects without converting rejected extra operands. Current inherited array
 calls and captured clones preserve caller arguments through zero-argument
@@ -189,4 +189,21 @@ The new validator rejects missing source code before reading strictness. Fresh
 source2 at `cf7ebe4e` and corrected61 plus independent throwing1 at `f406e96f`
 are distinct from getter17/134. Their getter rules compose unchanged with
 current setters; 198-module compilation adds no semantic execution credit.
-Other producer continuations and CONFIG PIPE remain open.
+Other producer continuations remain open.
+
+The [unary CONFIG PIPE increment](../../coverage/semantics/include-config-pipe-review.json)
+replays the authenticated left child and `CODEPIPE_SEND`, rather than an ordinary
+call argument. An RHS factory's recorded subcall name cannot replace its returned
+string or Closure target; only optimized `f(...)` syntax supplies a fixed name.
+The held left object survives RHS writes that retire its original source cell.
+Ordinary Closure PIPE follows caller strictness; only explicit `Closure->__invoke`
+uses the weak wrapper entry. Getter/Restore callbacks retain full-name lookup and
+raw INI writes; SET reads the late C-prefix old value, returns false for empty
+results and raises ValueError for NUL results. A thrown callback preserves its
+mutation; one-argument INI_SET PIPE rejects arity before stringification.
+The ledger keeps twelve earlier normal source tuples and three finite
+fixtures/165 assertions. Fresh current borrowed-warning composition adds one
+normal SET and one throwing Restore callback check, without replaying those
+checkpoints. Ordinary named Restore remains a retained control. Forged roots, left children, lines, selections, owners and
+task operands reject; both original model failures remain preserved.
+CHDIR provider PIPE, broader callable consumers, OS/INI and lifecycle remain open.

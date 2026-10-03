@@ -23,3 +23,14 @@ replays, and paused ownership/authentication controls. The maintained source
 and protocol checks are `tests/semantics/pipe*`. Builtin, method, array and
 other object callables remain explicit dependencies; this is partial pipe
 coverage, not a full callable-family claim.
+
+[Unary CONFIG PIPE](../../coverage/semantics/include-config-pipe-review.json)
+authenticates the held left child and compiled send/call lines through Stringable
+getter, SET and Restore callbacks. Ordinary RHS factories return the selected
+callable; their own subcall names never become fixed targets. Ordinary Closure
+PIPE follows the source caller's strictness, while explicit `Closure->__invoke`
+uses its weak C wrapper. Twelve earlier normal source tuples and three state
+fixtures/165 assertions cover strict refusal, retired source cells, exact/full-NUL
+misses, empty/NUL SET results and thrown callbacks. Two current borrowed-warning
+checks retain real reference owners and normal/throwing callback frames. Wider
+CONFIG providers, method/array/object consumers and lifecycle remain partial.

@@ -7,6 +7,14 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Unary Stringable CONFIG PIPE authenticates the held left child and compiled
+send/call lines; ordinary RHS factories supply their returned callable. Ordinary
+Closure PIPE follows caller strictness and retains the object after its source
+cell is overwritten. The [PIPE ledger](coverage/semantics/include-config-pipe-review.json)
+separates twelve earlier normal sources/165 state assertions from two fresh
+borrowed-warning composition sources at **10c320623**. Normal handler return and
+throw preserve callback/caller frames, raw INI mutation and CONFIG cleanup.
+
 Borrowed strict-identity reads208 retain the old reference cell across warning
 callbacks without adding an owner; nested saved callers and throw cleanup are
 checked. Defined ordinary `$GLOBALS[key]` uses the real global table. Private
@@ -32,7 +40,7 @@ and distinguishes historical evidence from current interaction checks.
 | Error handlers/reporting206/207 | Ordinary named, closure and public source-object callbacks retain four arguments and genuine saved frames; masks, replacements, restoration, throw and fatal fallback compose with current properties/calls. Broader producers/API/callable forms and reporting readback remain open. [Handler ledger](coverage/semantics/error-handlers-review.json). |
 | Class-method strings210 and FCC119 | Full-byte lookup separates frame-based callable admission, computed static dispatch and fixed compatible-this selection. Captures/clone retain immutable source certificates and defaults/static cells. A named throwing handler preserves the selected static caller and arguments. [String ledger](coverage/semantics/class-method-strings-current-review.json). |
 | Method arrays205 | Public source method arrays retain immutable selected receiver/owner/called-class certificates through dynamic calls and capture. Current two-slot INI checkpoint **f9f47f115/61370c98/1353** accepts source1/finite103; broader resolution remains open. [Array ledger](coverage/semantics/array-callables-current-review.json). |
-| Include/configuration | Raw getters and primitive/null Restore preserve full-name parsing and live bytes. Weak-null getter/Restore handler continuations retain original operands and caller frames. [Readback ledger](coverage/semantics/include-ini-readback-review.json). Two-slot `ini_set` priority and current SENT-array ownership remain installed. [INI ledger](coverage/semantics/include-stringable-ini-option-review.json). |
+| Include/configuration | Unary CONFIG PIPE preserves held operands, source strictness and callback guards through normal/throwing borrowed warnings. [PIPE ledger](coverage/semantics/include-config-pipe-review.json). Raw getters, primitive/null Restore, weak-null handler continuations and two-slot INI ownership retain their separate checkpoints. [Readback](coverage/semantics/include-ini-readback-review.json), [INI](coverage/semantics/include-stringable-ini-option-review.json). |
 | Stringable SET/Restore and paths | SET separates raw INI bytes from effective C-string paths. Weak Restore uses exact full-name lookup and preserves callback mutations on misses. Current ARG/Restore checks retain caller arguments and zero-argument callbacks. [Restore](coverage/semantics/include-stringable-restore-review.json), [prefix](coverage/semantics/include-ini-prefix-review.json), [SET](coverage/semantics/include-set-current-review.json). |
 | Typed static properties197 | Weak simple Stringable assignment rechecks live aliases and retains paired callback owners. Current Restore/ARG/INI composition preserves full property bytes, caller arguments and normal/throw cleanup. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json). |
 | Static setters200/201 | Backed final/asymmetric declarations normalize equivalent setters and preserve inheritance/error priority; direct and indirect consumers retain lexical access, live raw-slot checks and typed aliases. [Setter ledger](coverage/semantics/static-setter-access-review.json). |
@@ -52,9 +60,9 @@ failures and interrupted evidence.
 
 - Calls: broader class/method-string consumers, nonpublic/static `__invoke` publication,
   compound/scope-dependent array resolution, magic/autoload/internal consumers,
-  transformed wrappers and real CONFIG PIPE. Only the selected captured-static
+  transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
   array and string Closure PIPE routes are covered; defined ordinary `$GLOBALS[key]` is admitted; missing-global warnings and whole-table snapshots remain partial.
-- Include/configuration: CONFIG PIPE, broader warning producers, wider directives
+- Include/configuration: CHDIR provider PIPE, broader warning producers, wider directives
   and reporting readback, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: broader weak parameter/property conversion,
