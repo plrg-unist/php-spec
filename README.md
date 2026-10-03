@@ -333,3 +333,9 @@ See [semantic design](docs/semantics/DESIGN.md) and
 units and structural identities. [Declaration continuation](docs/semantics/LINKING-HANDOFF.md) records the compiler
 context and linking work that remains before source activation.
 Intentional departures are recorded in [engine discrepancies](docs/semantics/DISCREPANCIES.md).
+
+[Ordinary argument introspection](docs/semantics/ARGUMENT-INTROSPECTION.md)
+reads live fixed parameters and retained positional extras, with fresh result
+arrays and native receive/context priorities. Bounded private checks cover
+inherited source object invocation and Stringable SET ownership; broader
+Generator/Fiber and unfinished callback interactions remain open.

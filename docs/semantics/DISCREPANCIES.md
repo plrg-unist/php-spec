@@ -4,6 +4,25 @@ This ledger separates intentional departures from observed engine irregularities
 that the specification must reproduce. Only explicitly chosen departures belong
 in the intentional-divergence inventory.
 
+## Optimized argument array in a reference list
+
+PHP 8.5.10 compiles `[&$r]=func_get_args()` in an ordinary body to MAKE_REF
+with a TMP operand. Its opcode140 handler admits VAR|CV, so the retained source
+fails internally with `Invalid opcode 140/2/0.` before the list stores its leaf.
+This is an engine defect, not a catchable PHP exception. The engine is unchanged.
+
+The specification keeps general list language behavior: a requested reference
+to a non-reference element of a by-value call array warns and receives a private
+cell. Embedded reference cells stay shared; a CV-staged array can retain its own
+element alias. Nested arrays and embedded references keep ordinary COW
+and alias rules. This deliberate native disagreement has zero agreement credit.
+Six same-API nonoptimized/CV/COW source controls and reached private-cell/CV-alias
+list stores validate this language behavior. The optimized source separately
+passes17 model-only state assertions, with zero native agreement.
+[The separate record](../../coverage/semantics/argument-introspection-engine-defect.json)
+binds original source, native/model commands, raw outcomes and pinned compiler/VM
+source facts. Earlier engine-defect records remain unchanged.
+
 ## Namespace-relative `static` declaration types
 
 PHP 8.5.10 accepts the syntax `namespace\static`. In a named class without a
