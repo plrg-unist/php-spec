@@ -1,0 +1,56 @@
+;; zend_API.c:zend_declare_typed_property validates explicit setters before
+;; normalization. Genuine private(set), unlike equivalent private access, is final.
+;; zend_compile_prop_decl rejects explicit final/private at group entry, before
+;; compiling any property's type or default. Implicit private(set) is added later.
+def $ppproperty_group(P, pcpath, flags, phpType18, phpType57*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P, $ptascii("Property cannot be both final and private"), $nabs(z))) ppropertydesc*
+  -- if $ppproperty_flag(flags, 32) /\ $ppproperty_flag(flags, 4)
+def $ppproperty_static_supported(flags) = (flags <- [8, 9, 10, 12, 40, 41, 42, 44, 136, 137, 138, 140, 168, 169, 170, 172, 264, 265, 266, 268, 296, 297, 298, 300, 520, 521, 522, 524, 552, 553, 554, 556])
+dec $ppproperty_raw_set(int) : ppropertyvisibility?
+def $ppproperty_raw_set(flags) = (PROPERTY_PRIVATE) -- if $ppproperty_flag(flags, 512)
+def $ppproperty_raw_set(flags) = (PROPERTY_PROTECTED) -- if $ppproperty_flag(flags, 256)
+def $ppproperty_raw_set(flags) = (PROPERTY_PUBLIC) -- if $ppproperty_flag(flags, 128)
+def $ppproperty_raw_set(flags) = eps -- otherwise
+def $ppproperty_set_visibility(flags) = (ppropertyvisibility)
+  -- if $ppproperty_raw_set(flags) = (ppropertyvisibility)
+  -- if ppropertyvisibility =/= $ppproperty_visibility(flags)
+def $ppproperty_set_visibility(flags) = eps -- otherwise
+def $ppproperty_final(flags) = ($ppproperty_flag(flags, 32) \/ $ppproperty_set_visibility(flags) = (PROPERTY_PRIVATE))
+dec $ppproperty_visibility_rank(ppropertyvisibility) : int
+def $ppproperty_visibility_rank(PROPERTY_PUBLIC) = 1
+def $ppproperty_visibility_rank(PROPERTY_PROTECTED) = 2
+def $ppproperty_visibility_rank(PROPERTY_PRIVATE) = 4
+def $ppproperty_set_issue(flags, eps, ptbytes_owner, ptbytes) = ($ptascii("Property with asymmetric visibility ") ++ ptbytes_owner ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" must have type"))
+  -- if $ppproperty_raw_set(flags) =/= eps
+def $ppproperty_set_issue(flags, ptbranch*, ptbytes_owner, ptbytes) = ($ptascii("Visibility of property ") ++ ptbytes_owner ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" must not be weaker than set visibility"))
+  -- if ptbranch* =/= eps
+  -- if $ppproperty_raw_set(flags) = (ppropertyvisibility)
+  -- if $($ppproperty_visibility_rank($ppproperty_visibility(flags)) > $ppproperty_visibility_rank(ppropertyvisibility))
+def $ppproperty_set_issue(flags, ptbranch*, ptbytes_owner, ptbytes) = eps -- otherwise
+
+;; do_inherit_property checks finality before private independence, then static
+;; identity and setter access before read access and backed type invariance.
+dec $ppproperty_effective_set(ppropertydesc) : ppropertyvisibility
+def $ppproperty_effective_set(ppropertydesc) = ppropertyvisibility
+  -- if ppropertydesc.SETVISIBILITY = (ppropertyvisibility)
+def $ppproperty_effective_set(ppropertydesc) = ppropertydesc.VISIBILITY
+  -- if ppropertydesc.SETVISIBILITY = eps
+dec $ppproperty_set_narrowed(ppropertydesc, ppropertydesc) : bool
+def $ppproperty_set_narrowed(ppropertydesc_parent, ppropertydesc_child) = $($ppproperty_visibility_rank(ppropertyvisibility) > $ppproperty_visibility_rank($ppproperty_effective_set(ppropertydesc_parent)))
+  -- if ppropertydesc_parent.VISIBILITY =/= PROPERTY_PRIVATE
+  -- if ppropertydesc_parent.STATIC = ppropertydesc_child.STATIC
+  -- if ppropertydesc_child.SETVISIBILITY = (ppropertyvisibility)
+def $ppproperty_set_narrowed(ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
+dec $ppproperty_set_name(ppropertyvisibility?) : ptbytes
+def $ppproperty_set_name(eps) = $ptascii("omitted")
+def $ppproperty_set_name((ppropertyvisibility)) = $property_visibility_name(ppropertyvisibility) ++ $ptascii("(set)")
+dec $ppproperty_set_weaker(ppropertyvisibility?) : ptbytes
+def $ppproperty_set_weaker(eps) = eps
+def $ppproperty_set_weaker((ppropertyvisibility)) = $ptascii(" or weaker")
+def $ppproperty_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = ($ptascii("Cannot override final property ") ++ ptbytes_parent ++ $ptascii("::$") ++ ppropertydesc_parent.NAME)
+  -- if ppropertydesc_parent.FINAL
+def $ppproperty_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = ($ptascii("Set access level of ") ++ ptbytes_child ++ $ptascii("::$") ++ ppropertydesc_child.NAME ++ $ptascii(" must be ") ++ $ppproperty_set_name(ppropertydesc_parent.SETVISIBILITY) ++ $ptascii(" (as in class ") ++ ptbytes_parent ++ [41] ++ $ppproperty_set_weaker(ppropertydesc_parent.SETVISIBILITY))
+  -- if ~ppropertydesc_parent.FINAL
+  -- if $ppproperty_set_narrowed(ppropertydesc_parent, ppropertydesc_child)
+def $ppproperty_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = $ppproperty_nonfinal_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child)
+  -- if ~ppropertydesc_parent.FINAL
+  -- if ~$ppproperty_set_narrowed(ppropertydesc_parent, ppropertydesc_child)

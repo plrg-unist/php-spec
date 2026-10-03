@@ -2,6 +2,7 @@
 ;; that cell and carry no heap edge of their own.
 dec $class_static_ref_assignment_task(pstate, expression, int) : bool
 dec $class_static_ref_base_task(pstate, porigin, ptbytes, int) : bool
+dec $class_static_ref_pending_task(pstate, poperand, poperand, int) : bool
 dec $class_static_ref_fetch_task(pstate, int) : bool
 def $propref_at(eps, n) = eps
 def $propref_at(ppropref :: ppropref_tail*, n) = (ppropref)
@@ -443,20 +444,23 @@ def $assign_array_reference_cv(S, BASE_PROPERTY pvalue ptbytes, n_name*, z) = $a
   -- if S_cell = $acquire_name(S_target, n_name*)
   -- if S_cell.COMPLETION = NORMAL
 
+dec $property_ref_property_base(pbase) : bool
 rule PhpStep/property-reference-assignment: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP (NExprPropertyFetch expression_receiver phpType20 metadata_property)), PROPERTY_REF_PREP expression $runtime_line(S, [PCFIELD 0], NExprPropertyFetch expression_receiver phpType20 metadata_property)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprAssignRef (NExprPropertyFetch expression_receiver phpType20 metadata_property) expression metadata)) :: ptask_tail*
 rule PhpStep/property-reference-source: S ~> S_target[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression), PROPERTY_REF_CAPTURE S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_REF_PREP expression z) :: ptask_tail*
   -- if $reference_cv(expression) = eps
+  -- if $property_ref_property_base(S.BASE)
   -- if S_target = $reference_acquire(S, S.BASE, z)
   -- if S_target.COMPLETION = NORMAL
-rule PhpStep/property-reference-source-cv: S ~> S_target[.TODO = (PROPERTY_REF_BIND_CV S.BASE n_name* z) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+rule PhpStep/property-reference-source-cv: S ~> S_target[.TODO = (PROPERTY_REF_BIND_CV S_target.BASE n_name* z) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_REF_PREP expression z) :: ptask_tail*
   -- if $reference_cv(expression) = (n_name*)
   -- if S_target = $reference_acquire(S, S.BASE, z)
   -- if S_target.COMPLETION = NORMAL
 rule PhpStep/property-reference-target-abrupt: S ~> S_target[.TODO = eps]
   -- if S.TODO = (PROPERTY_REF_PREP expression z) :: ptask_tail*
+  -- if $property_ref_property_base(S.BASE) \/ $reference_cv(expression) =/= eps
   -- if S_target = $reference_acquire(S, S.BASE, z)
   -- if S_target.COMPLETION =/= NORMAL
 rule PhpStep/property-reference-capture: S ~> S[.TODO = (PROPERTY_REF_BIND pbase S.CELL z) :: ptask_tail*][.RESULT = KNOWN PNULL]
@@ -486,6 +490,7 @@ def $property_ref_assignment_task(S, expression_rhs, z) = $class_static_ref_assi
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprAssignRef (NExprStaticPropertyFetch phpType19 phpType31 metadata_property) expression_rhs metadata)
 def $property_ref_assignment_task(S, expression_rhs, z) = false -- otherwise
 dec $property_ref_base_task(pstate, pbase, int) : bool
+dec $property_pending_ref_task(pstate, pbase, int) : bool
 dec $property_ref_name_matches(phpType20, ptbytes) : bool
 def $property_ref_name_matches(NIdentifier (BYTES text) metadata_name, ptbytes) = (ptbytes = $base64(text))
 def $property_ref_name_matches(phpType20, ptbytes) = true
@@ -500,6 +505,8 @@ def $property_ref_base_task(S, BASE_PROPERTY (POBJECT n_object) ptbytes, z) = tr
   -- if $class_plain_instance(S, n_object)
   -- if (HOBJECT n_object) <- S.ALLOCATIONS
 def $property_ref_base_task(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = $class_static_ref_base_task(S, porigin_requested, ptbytes, z)
+def $property_ref_base_task(S, BASE_CLASS_STATIC_PENDING poperand_class poperand_name, z) = $class_static_ref_pending_task(S, poperand_class, poperand_name, z)
+def $property_ref_base_task(S, BASE_PROPERTY_PENDING pbase poperand z_base, z) = $property_pending_ref_task(S, BASE_PROPERTY_PENDING pbase poperand z_base, z)
 def $property_ref_base_task(S, pbase, z) = false -- otherwise
 dec $property_ref_rhs_cv(pstate, nat*) : bool
 def $property_ref_rhs_cv(S, n_name*) = true
@@ -515,10 +522,10 @@ def $property_ref_rhs_noncv(S) = true
 def $property_ref_rhs_noncv(S) = false -- otherwise
 dec $property_ref_fetch_task(pstate, int) : bool
 dec $property_ref_demand(pstate) : bool
-dec $property_ref_property_base(pbase) : bool
 def $property_ref_property_base(BASE_PROPERTY pvalue ptbytes) = true
 def $property_ref_property_base(pbase) = false -- otherwise
 dec $property_ref_fetch_result_valid(pstate, phpType20) : bool
+dec $property_pending_base(pbase) : bool
 def $property_ref_demand(S) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $(|pcpath| > 0)
@@ -549,6 +556,7 @@ def $property_ref_fetch_result_valid(S, phpType20) = $property_ref_name_matches(
 def $property_ref_fetch_result_valid(S, phpType20) = false
   -- if S.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*
   -- if ~$property_ref_property_base(S.BASE)
+  -- if ~$property_pending_base(S.BASE)
 def $property_ref_fetch_result_valid(S, phpType20) = true -- otherwise
 def $property_ref_fetch_task(S, z) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)

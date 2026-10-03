@@ -225,6 +225,9 @@ test-semantics: build
 	python3 tests/semantics/typed_static_string_protocol.py
 	python3 tests/semantics/typed_static_callable.py
 	python3 tests/semantics/typed_static_restore.py
+	python3 tests/semantics/static_set_compiler.py
+	python3 tests/semantics/static_set_access.py
+	python3 tests/semantics/static_set_access_protocol.py
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py

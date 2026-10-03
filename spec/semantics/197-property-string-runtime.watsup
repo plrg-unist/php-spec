@@ -70,6 +70,7 @@ def $static_string_target_valid(S, pstaticstring) = true
   -- if $class_static_ref_name_matches(phpType31, pstaticstring.NAME)
   -- if $class_static_select(S, pstaticstring.CLASS, pstaticstring.NAME) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
+  -- if $class_static_set_allowed(S, ppropertydesc)
 def $static_string_target_valid(S, pstaticstring) = false -- otherwise
 
 dec $static_string_capture(pstate, pbase, int) : pstaticstring?
@@ -77,6 +78,7 @@ def $static_string_capture(S, BASE_CLASS_STATIC porigin_requested ptbytes, z) = 
   -- if S.ORIGIN = (porigin_site)
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
+  -- if $class_static_set_allowed(S, ppropertydesc)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
