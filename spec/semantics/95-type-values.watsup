@@ -168,6 +168,7 @@ def $user_string_coercion(S, ptbranch*, POBJECT n, false) = true
   -- if "string" <- $ptmasks(ptbranch*)
   -- if ~$typed_exact(ptbranch*, POBJECT n)
   -- if ~$typed_object_exact(S, ptbranch*, POBJECT n)
+  -- if ~("callable" <- $ptmasks(ptbranch*)) \/ ~($typed_callable(S, POBJECT n) = (true))
   -- if $stringable_instance(S, n)
 def $user_string_coercion(S, ptbranch*, pvalue, b) = false -- otherwise
 
