@@ -173,6 +173,8 @@ Current family status:
   fixture/42 predicates, with count0 before mutation and compile-stop.
   Accepted Restore adds one paired fatal source and one finite fixture/42: the
   callback sees count0 and its completed raw mutation survives the compiler cut.
+  Typed-static conversion adds one paired fatal source and one finite fixture/57:
+  the old row and captured RHS remain owned in the frozen caller.
   [Publication ledger](coverage/semantics/compiler-publication-review.json)
   separates tested revisions and original failures. Full core remains open.
 - Argument introspection198/199 is installed with bounded acceptance at the
