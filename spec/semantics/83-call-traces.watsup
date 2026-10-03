@@ -173,7 +173,7 @@ dec $source_trace_prefixed(pstate, ptraceframe*) : ptraceframe*
 dec $error_unwind_trace(pstate) : ptraceframe*
 def $error_unwind_trace(S) = S.TRACE -- if S.COMPLETION = USERFATAL n* z b
 def $error_unwind_trace(S) = $eval_exception_trace(S) -- otherwise
-def $start_error_unwind(S) = $error_release_iterators($silence_unwind(S))[.CONSTCONTEXT = eps][.TRACE = $error_unwind_trace(S)][.ERRORORIGIN = S.ORIGIN][.TODO = [ERROR_UNWIND S.COMPLETION]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+def $start_error_unwind(S) = $error_release_iterators($silence_unwind(S))[.CLASSCONSTANTINIT = eps][.CONSTCONTEXT = eps][.TRACE = $error_unwind_trace(S)][.ERRORORIGIN = S.ORIGIN][.TODO = [ERROR_UNWIND S.COMPLETION]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
 dec $error_unwind(pstate, pcompletion) : pstate
 def $error_unwind(S, pcompletion) = $error_release_iterators($silence_unwind($restore_frame(S)))[.TODO = [ERROR_UNWIND pcompletion]][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
   -- if S.FRAMES =/= eps

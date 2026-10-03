@@ -2,7 +2,7 @@
 ;; A compiled source instance owns this store; it is not recreated on execution.
 syntax pffact = PFFACT pcpath pvalue int
 syntax pfcontext = PFCONTEXT pcpath plenv
-syntax pfstate = { DEFAULT bool, CLASSFACTS (pcpath, pvalueclass)*, CONSTANT bool, FUNCTION ptbytes, CLASSCONTEXT ptcontext?, CLOSURE bool, SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
+syntax pfstate = { CLASSES pclassdesc*, CLASSCONSTANTS pclassconstantdesc*, EXTERNAL pstate?, DEFAULT bool, CLASSFACTS (pcpath, pvalueclass)*, CONSTANT bool, FUNCTION ptbytes, CLASSCONTEXT ptcontext?, CLOSURE bool, SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
 syntax pfshape = PFMAGIC pmagic int | PFSCALAR pvalue int | PFNAME name | PFBINARY pbin expression expression
   | PFUNARY punary expression | PFDIM expression phpType5
   | PFARRAY phpType13* | PFNOT expression | PFSHORT bool expression expression
@@ -68,7 +68,7 @@ dec $pfcontext_at(pfcontext*, pcpath) : plenv?
 dec $pfcontextualize(pfstate, pcpath) : pfstate
 
 dec $pfbegin(nat, program) : pfstate
-def $pfbegin(n, program) = { DEFAULT false, CLASSFACTS eps, CONSTANT false, FUNCTION eps, CLASSCONTEXT eps, CLOSURE false, SOURCE $pcsource(n, program), FILE eps, CWD eps, MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
+def $pfbegin(n, program) = { CLASSES eps, CLASSCONSTANTS eps, EXTERNAL eps, DEFAULT false, CLASSFACTS eps, CONSTANT false, FUNCTION eps, CLASSCONTEXT eps, CLOSURE false, SOURCE $pcsource(n, program), FILE eps, CWD eps, MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
 dec $pfnode(expression) : pcnode
 def $pfnode(expression) = expression
 dec $pfoccurrence(pcoccurrence*, pcpath, expression) : bool
@@ -578,18 +578,8 @@ dec $pfmember_known(phpType20, pvalue?) : bool
 def $pfmember_known(NIdentifier phpType33 metadata, pvalue?) = true
 def $pfmember_known(phpType20, (PSTRING n*)) = true
 def $pfmember_known(phpType20, pvalue?) = false -- otherwise
-dec $pfclassconstantdone(pfstate, bool) : pfstate
-def $pfclassconstantdone(F, b) = F
-  -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfclassconstantdone(F, true) = $pfunsupported(F, "constant class-constant lookup")
-  -- if F.MEMORY.COMPLETION = NORMAL
-  -- if ~F.CONSTANT
-def $pfclassconstantdone(F, true) = F[.VALUE = eps]
-  -- if F.MEMORY.COMPLETION = NORMAL
-  -- if F.CONSTANT
-def $pfclassconstantdone(F, false) = F[.VALUE = eps]
-  -- if F.MEMORY.COMPLETION = NORMAL
-def $pfdispatch(F, pcpath, PFCLASSCONST phpType19 phpType20, z) = $pfclassconstantdone(F_member, ($pfclass_known(phpType19, F_class.VALUE) /\ $pfmember_known(phpType20, F_member.VALUE)))
+dec $pfclass_constant(pfstate, pcpath, phpType19, pvalue?, phpType20, pvalue?, int) : pfstate
+def $pfdispatch(F, pcpath, PFCLASSCONST phpType19 phpType20, z) = $pfclass_constant(F_member, pcpath, phpType19, F_class.VALUE, phpType20, F_member.VALUE, z)
   -- if F_class = $pfclasspart(F, pcpath ++ [PCFIELD 0], phpType19, z)
   -- if F_member = $pfmemberkey(F_class, pcpath ++ [PCFIELD 1], phpType20, z)
 dec $pfclassdynamic(phpType19) : bool

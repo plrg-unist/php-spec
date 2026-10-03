@@ -40,7 +40,7 @@ def $declaration_entry_site(pdeclaration :: pdeclaration_tail*, n) = $declaratio
   -- if ~$declaration_enter_item(pdeclaration, n)
 
 dec $declaration_history_seed(pstate) : pstate
-def $declaration_history_seed(S) = S[.CLASSNAMES = eps][.CALLABLES = eps][.CLASSSTATICS = eps][.LINKEDPARENTS = eps][.LINKEDINTERFACES = eps][.DECLARATIONS = eps][.EVENTS = eps][.COMPLETION = NORMAL][.TODO = eps][.ERRORORIGIN = eps][.TRACE = eps][.CURRENT = eps][.FRAMES = eps][.EVALCONTEXTS = eps][.FILECONTEXTS = eps][.SILENCES = eps][.CONSTCONTEXT = eps][.DEFAULTCACHE = eps]
+def $declaration_history_seed(S) = S[.CLASSNAMES = eps][.CALLABLES = eps][.CLASSSTATICS = eps][.LINKEDPARENTS = eps][.LINKEDINTERFACES = eps][.DECLARATIONS = eps][.CLASSCONSTANTHISTORY = eps][.CLASSCONSTANTCACHE = eps][.CLASSCONSTANTINIT = eps][.EVENTS = eps][.COMPLETION = NORMAL][.TODO = eps][.ERRORORIGIN = eps][.TRACE = eps][.CURRENT = eps][.FRAMES = eps][.EVALCONTEXTS = eps][.FILECONTEXTS = eps][.SILENCES = eps][.CONSTCONTEXT = eps][.DEFAULTCACHE = eps]
 
 dec $declaration_registries_equal(pstate, pstate) : bool
 def $declaration_registries_equal(S, S_prefix) = (S.CLASSNAMES = S_prefix.CLASSNAMES /\ S.CALLABLES = S_prefix.CALLABLES /\ S.LINKEDPARENTS = S_prefix.LINKEDPARENTS /\ S.LINKEDINTERFACES = S_prefix.LINKEDINTERFACES)

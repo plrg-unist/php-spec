@@ -35,7 +35,7 @@ def $ctor_start(S, n, pctorcallmode, z) = S[.TODO = (CTOR_ARGS {SITE porigin, RE
   -- if S.OBJECTS[n] = THROWABLE pthrowable
 def $ctor_method_start(S, n, z) = $ctor_start(S[.TODO = ptask_tail*], n, CTOR_METHOD, z)
   -- if S.TODO = ptask :: ptask_tail*
-def $constructor_start(S, preqbytes, phpType7*, z) = $ctor_start(S_new, n, CTOR_NEW, z)
+def $constructor_start_ready(S, preqbytes, phpType7*, z) = $ctor_start(S_new, n, CTOR_NEW, z)
   -- if $throwable_constructor_kind(preqbytes) = (text_kind)
   -- if S_new = $new_class(S, preqbytes, z)
   -- if S_new.COMPLETION = NORMAL

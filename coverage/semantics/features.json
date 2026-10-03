@@ -1486,16 +1486,20 @@
         "spec/semantics/20-machine.watsup",
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/141-method-compiler.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/183-class-constant-compiler.watsup",
+        "spec/semantics/184-class-constants.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/method_compiler.py",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/method_wrapper_protocol.py"
+        "tests/semantics/method_wrapper_protocol.py",
+        "tests/semantics/class_constant_cases.json",
+        "tests/semantics/class_constant_protocol.py"
       ],
-      "review": "Named ::class plus lexical self::class/parent::class and runtime called-scope static::class execute for admitted class and closure contexts (methods-review.json). Earlier constant prepass remains in array-omission-review.json. General class constants, dynamic class names and static-member lookup remain open."
+      "review": "Private183/184 preserves declaring-owner lazy values, successful caches/COW, global/default restoration, AST/VM diagnostics and ordered constant inheritance. Earlier source25/finite16+13 and later source12/finite93 retain distinct cutoffs. Link/cache/table history rejects temporal and update-task corruption. A separate source5/finite31 slice binds folding to compilation-entry prior values and rejects retrospective cache changes. Current-master composition remains next; legal Closure/FCC initializers stay Unsupported, and attributes/broader consumers remain open. See class-constants-current-review.json; no whole-family closure."
     },
     {
       "node": "Expr_Clone",
@@ -2930,10 +2934,16 @@
       "obligations": [
         "declarations.typed-class-constants"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/183-class-constant-compiler.watsup",
+        "spec/semantics/184-class-constants.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/class_constant_cases.json",
+        "tests/semantics/class_constant_protocol.py"
+      ],
+      "review": "Private183/184 preserves declaring-owner lazy values, successful caches/COW, global/default restoration, AST/VM diagnostics and ordered constant inheritance. Earlier source25/finite16+13 and later source12/finite93 retain distinct cutoffs. Link/cache/table history rejects temporal and update-task corruption. A separate source5/finite31 slice binds folding to compilation-entry prior values and rejects retrospective cache changes. Current-master composition remains next; legal Closure/FCC initializers stay Unsupported, and attributes/broader consumers remain open. See class-constants-current-review.json; no whole-family closure."
     },
     {
       "node": "Stmt_ClassMethod",
@@ -8998,15 +9008,26 @@
     {
       "id": "declarations.typed-class-constants",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_attributes.c"
+      "implementation": [
+        "spec/semantics/183-class-constant-compiler.watsup",
+        "spec/semantics/184-class-constants.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/class_constant_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/class_constant_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_constants.c",
+        "vendor/php-src/Zend/zend_API.c",
+        "vendor/php-src/Zend/zend_ast.c",
+        "coverage/semantics/class-constants-current-review.json"
+      ],
+      "review": "Private183/184 preserves declaring-owner lazy values, successful caches/COW, global/default restoration, AST/VM diagnostics and ordered constant inheritance. Earlier source25/finite16+13 and later source12/finite93 retain distinct cutoffs. Link/cache/table history rejects temporal and update-task corruption. A separate source5/finite31 slice binds folding to compilation-entry prior values and rejects retrospective cache changes. Current-master composition remains next; legal Closure/FCC initializers stay Unsupported, and attributes/broader consumers remain open. See class-constants-current-review.json; no whole-family closure."
     },
     {
       "id": "declarations.constant-closures",
