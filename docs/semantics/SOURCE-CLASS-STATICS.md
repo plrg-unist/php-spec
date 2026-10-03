@@ -91,10 +91,11 @@ getters preserve lexical permission and called-scope diagnostics; legally
 escaped aliases retain the shared static row and its type source. Denied binding
 releases both the returned task owner and method-result base owner. Typed REF flags initialize nullable
 initial slots and raise the nonnullable reference-access error before return;
-a denied setter preserves that error as its previous exception. Permitted
-initialized getters retain their existing used-result route. Discarded calls can
-still leave typed object slots unwrapped; that pre-existing consumer is the next
-focused obligation. The
+a denied setter preserves that error as its previous exception. Initialized
+typed slots also acquire their reference wrapper when the caller discards the
+result. Ordinary by-value getters leave the raw slot unchanged. After a discarded
+reference return, static storage alone owns the cell, its edge retains the object,
+and the declaration type source remains attached. The
 [reference review](../../coverage/semantics/static-method-reference-review.json)
 keeps the original instance-spelled control and its preserved StaticCall failure
 distinct from fresh static-getter acceptance. Untyped static-slot raw-object/scalar

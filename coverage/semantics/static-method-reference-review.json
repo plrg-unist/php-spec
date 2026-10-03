@@ -1,16 +1,49 @@
 {
-  "status": "partial; selected used StaticCall reference results accepted",
+  "status": "partial; selected used and discarded typed-slot StaticCall reference getters accepted",
   "target": "PHP 8.5.10 CLI NTS 64-bit",
-  "tested_current_revision": "b41a2ef26cc9d12d88e52b44feab104f271e90f2",
-  "accepted_base": "6c31e475eb3c3766e9a1a05fd33c97f6ac8c6816",
-  "scope": "Ordinary untyped return signatures, selected genuine reference getters of typed static slots, named/parent/self/late-static selection, lexical/called scope, escaped aliases and returned-cell cleanup. Existing 97/99 return machinery is unchanged.",
+  "tested_current_revision": "b93ec622a4d7f17f7b4cbe32b110bb2fd4c8310a",
+  "scope": "Ordinary untyped return signatures, selected genuine reference getters of typed static slots, named/parent/self/late-static selection, lexical/called scope, used and discarded aliases and returned-cell cleanup. Existing 97/99 return machinery is unchanged.",
   "implementation": [
     "spec/semantics/141-method-compiler.watsup",
     "spec/semantics/142-method-runtime.watsup",
     "spec/semantics/201-static-set-runtime.watsup"
   ],
   "engine_routes": "Zend/zend_compile.c:zend_compile_assign_ref, zend_compile_return, zend_assert_not_short_circuited; Zend/zend_execute.c:zend_fetch_static_property_address_ex, zend_handle_fetch_obj_flags; authored Zend/zend_vm_def.h static reference fetch/return handlers at the vendored 8.5.10 pin.",
-  "behavior": "StaticCall AssignRef RHS shares the scoped method selector and authentic returned-cell protocol. Nullsafe chains reject before ordinary/FCC lowering; FCC results reject in reference context. Typed REF flags run before denied setters or initial-slot returns; nullable slots retain their type source and nonnullable access errors retain priority. Initialized permitted used getters keep their previous route.",
+  "behavior": "StaticCall AssignRef RHS shares the scoped method selector and authentic returned-cell protocol. Nullsafe chains reject before ordinary/FCC lowering; FCC results reject in reference context. Typed REF flags always run before return, preserving nullable initialization, nonnullable error priority and alias creation even for discarded initialized-slot results. Ordinary by-value getters leave the raw slot unchanged.",
+  "discarded_getter_checks": {
+    "revision": "b93ec622a4d7f17f7b4cbe32b110bb2fd4c8310a",
+    "scope": "Preserved291-byte discarded-call counterexample plus affected305-byte used getter; both strict native/model normal tuples pass. One source-reached checkpoint passes42 clauses for exact alias/type source, sole static cell root/owner1, object root0/owner1 and absent temporary owners before and after the denied write.",
+    "original_report": {
+      "path": ".tools/property-static-set-dev13/author-or_f3m_l/report.json",
+      "sha256": "9e42dfa4c2e98a9fce5f5eb124070a39b0ba1f34ffd9a665c7f10e2b41d03a6d"
+    },
+    "driver_exit": 0,
+    "release": {
+      "path": ".tools/property-static-set-dev13/author-or_f3m_l/RELEASE.json",
+      "sha256": "a9180c2bfc061a14d627a39baac3c936459218fbc6384fc71738b1da67da0360"
+    },
+    "raw_peer": {
+      "path": ".tools/property-static-reference-review13/discarded-getter-author-original-raw-accepted.json",
+      "sha256": "1b03e550bad3ea2b9043da66814ae083802e7e0dc8dd0c94abb1ce8a0f68e4a9"
+    },
+    "independent_source": {
+      "source_sha256": "4aa845e82c40997f67b09bbe42eb319c5ee9dca814409f6f8714065e96c84b68",
+      "scope": "One inherited ignored by-value versus suppressed ignored genuine reference getter, both ownerA/calledB/argc0. Exact VA/B/0|2|RA/B/0|indirect denial|2; strict native/model normal tuples pass.",
+      "original_report": {
+        "path": ".tools/property-static-reference-review13/independent-discarded-run-4lfqlfoq/source-result.json",
+        "sha256": "84a07f8eb6edf8ad3c872d975353d4b2c810347dae7533568d8ab60dc64458f4"
+      },
+      "driver_exit": 0,
+      "release": {
+        "path": ".tools/property-static-reference-review13/independent-discarded-run-4lfqlfoq/slot3-release.json",
+        "sha256": "d69bce07fe0d87c99621d89756162bb95343fbf9df46fdfe5fb38675da453c59"
+      },
+      "raw_peer": {
+        "path": ".tools/property-static-set-dev13/independent-discarded-original-raw-accepted.json",
+        "sha256": "7c439e301716b5a72988cd097cf6b0ae87d1ae7b714674c5ed480fcbd39f5ab7"
+      }
+    }
+  },
   "checks_at_distinct_revisions": [
     {
       "revision": "803b10327fa13a70e7057cccfa449640962d374e",
@@ -88,7 +121,7 @@
   ],
   "independent_sources": {
     "first_source_revision": "6c76d0c50ab5c5658b8d4bce3f9ce63da2779c3c",
-    "first_source_scope": "Preserved original static getter distinguishes raw-object interior mutation, wrapped-slot denial and legal escaped alias mutation. Its initialized-permitted route remains unchanged; no replay credit.",
+    "first_source_scope": "Historical preserved static getter distinguishes raw-object interior mutation, wrapped-slot denial and legal escaped alias mutation. Its initialized-permitted route was unchanged at the earlier e094 milestone; the fresh affected used getter atb93 validates the later all-typed fetch change.",
     "first_source_peer": {
       "path": ".tools/property-static-reference-review13/independent-current-stop-originals-qualified.json",
       "sha256": "4333c092330edaafeeaaba28adf9f2e67a49ef10b36b71b4505392dabb9df958"
@@ -105,18 +138,18 @@
     }
   },
   "reproduction": {
-    "current_cwd": ".tools/property-static-reference-pipe-13",
+    "current_cwd": ".tools/property-static-reference-discard-13",
     "source_command": [
       "python3",
       "tests/semantics/static_set_access.py",
       "--select",
-      "static-reference-config-pipe"
+      "static-reference-discarded-typed-slot"
     ],
     "recorded_outer_cwd": "project root",
     "recorded_outer_command": [
       "python3",
       ".tools/property-static-set-dev13/run-author.py",
-      ".tools/property-static-reference-pipe-13/.tools/static-reference-author-plan.json"
+      ".tools/property-static-reference-discard-13/.tools/static-reference-author-plan.json"
     ],
     "environment": {
       "LC_ALL": "C",
@@ -144,13 +177,27 @@
       ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
       "_build/default/adapter/main.exe": "9fa8a62125cc34baf80965a829fb4aa946875aa40b1b3a8d6e90cd732b2bcaf2",
       "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7"
-    }
+    },
+    "affected_used_command": [
+      "python3",
+      "tests/semantics/static_set_access.py",
+      "--select",
+      "static-reference-escaped-alias"
+    ],
+    "state_command": [
+      "python3",
+      "tests/semantics/static_set_access_protocol.py",
+      "--select",
+      "static-reference-discarded-typed-slot"
+    ]
   },
-  "preservation": "Original missing StaticCall route, wrong FCC completion constructor, owner-count fixture, indirect-diagnostic mismatch and duplicate-otherwise elaboration failures remain at their original ignored roots. Only affected checks were repeated; literal-maintrue elaborations have zero state credit. Current6c31 PIPE/208/getter/callable endpoints are retained; metadata-only publication adds no execution credit.",
+  "preservation": "Original missing StaticCall route, wrong FCC completion constructor, owner-count fixture, indirect-diagnostic mismatch and duplicate-otherwise elaboration failures remain at their original ignored roots. Only affected checks were repeated; literal-maintrue elaborations have zero state credit. Current93279 CHDIR tests/docs and PIPE/208/getter/callable endpoints are retained; metadata-only publication adds no execution credit.",
   "remaining": [
-    "Discarded initialized typed-object getter calls can leave the slot unwrapped. This untouched pre-existing 99 statement-call demand route is the next narrow consumer repair; preserved UNRUN source .tools/property-static-reference-review13/unused-typed-slot-reference.php SHA55957adc5ca5278aab505f3eec81f47c992af8fc030a6c4ed1df7e8cb32f3fd8.",
     "Untyped static-slot raw-object/scalar reference-return admission, non-reference temporary-return Notice timing, broader callable/magic/static resolution and result consumers.",
     "Typed-return verification/typed by-reference conversion186; returns_verify remains paused with no dependency/import.",
     "Final combined current-source validation and fresh copied-path network-isolated offline rebuild."
-  ]
+  ],
+  "source_equivalence": "Final private composition keeps all three source/test endpoints exact testedb93 on released93279. The intervening CHDIR milestone changes only tests/docs, not production201/97/99/123/172 or the used executables. Those accepted current endpoints and CHDIR tests/docs are preserved; composition/metadata adds no execution credit.",
+  "tested_base": "d5f3e2009189d4ce30cca49e62c7642cddbcdf07",
+  "composition_base": "93279f5a778f113979134ec8969de2a1d8de7178"
 }

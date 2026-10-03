@@ -315,8 +315,11 @@ getter/alias checks from current raw-getter and nullsafe rejection controls.
 Typed fetch flags preserve initial-slot error priority and nullable aliases;
 handled borrowed reads and a Stringable CONFIG PIPE restore the inherited
 getter's scope and arguments while retaining full raw INI bytes.
+Discarded genuine reference getters also wrap initialized typed slots; ordinary
+by-value getters leave them unchanged. Post-return checks retain only the static
+cell owner and its property type source.
 Untyped static-slot raw-object/scalar admission, readonly/hooks, instance asymmetric
-setters, discarded typed-slot getters, temporary-return Notice timing and broader
+setters, temporary-return Notice timing and broader
 callable/typed-reference consumers remain open.
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference

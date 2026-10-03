@@ -198,8 +198,10 @@ with untyped return signatures now preserves selected lexical/called scope and
 typed static cells through97/99. Nullsafe class chains reject before ordinary or FCC
 lowering; first-class call results reject in reference context. The
 [reference review](../../coverage/semantics/static-method-reference-review.json)
-does not close untyped static-slot raw-object/scalar admission, discarded typed-slot
-getters, temporary-return Notice timing or typed return verification.
+also checks discarded genuine reference getters: typed slots acquire an alias
+before return, while ordinary by-value getters leave them raw. It does not close
+untyped static-slot raw-object/scalar admission, temporary-return Notice timing
+or typed return verification.
 Shared ordinary type classification adds no paused-return validation.
 
 First-class compilation clears only the completed result fold after callee
