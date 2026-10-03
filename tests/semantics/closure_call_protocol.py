@@ -353,7 +353,7 @@ def run(cases=None, extra_inputs=()):
             + json.dumps(base64.b64encode(str(source).encode()).decode()) + ')\n'
             '  -- if S = $seek(S_initial[.COMPLETION = NORMAL], 2000)[.COMPLETION = NORMAL]\n'
             '  -- if ' + case['stage'] + '\n'
-            + ''.join('  -- if ' + clause + '\n' for clause in case['checks']))
+            + ''.join('  -- ' + ('' if clause.startswith('PhpStep:') else 'if ') + clause + '\n' for clause in case['checks']))
         result = subprocess.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
                                  *map(str, MODULES), str(fixture)], capture_output=True,
                                 text=True, timeout=300)
