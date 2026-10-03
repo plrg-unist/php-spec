@@ -24,6 +24,7 @@ test: build
 	python3 tests/file_provider_protocol.py
 	python3 tests/encoding_mutation.py
 	python3 tests/source_context_metadata.py
+	python3 tests/namespace_placement.py
 	python3 tests/ternary_metadata.py
 	python3 tests/destructuring_metadata.py
 	python3 tests/foreach_targets.py

@@ -64,6 +64,7 @@ function parseWithEncoding(PhpParser\Parser &$parser, string $source, bool $chec
     } catch (PhpParser\Error $error) {
         if ($error->getRawMessage() !== 'Cannot use the final modifier on an abstract class member'
             && $error->getRawMessage() !== 'Constructor __construct() cannot be static'
+            && $error->getRawMessage() !== 'Namespace declaration statement has to be the very first statement in the script'
             && !(str_starts_with($error->getRawMessage(), 'Method ')
                 && str_ends_with($error->getRawMessage(), '() cannot be readonly'))) throw $error;
         $lexer = new FileLexer();
@@ -74,7 +75,10 @@ function parseWithEncoding(PhpParser\Parser &$parser, string $source, bool $chec
         foreach ($errors->getErrors() as $retryError) {
             if (!isFinalAbstractMethodError($retryError, $ast)
                 && !isStaticConstructorError($retryError, $ast)
-                && !isReadonlyMethodError($retryError, $ast)) throw $retryError;
+                && !isReadonlyMethodError($retryError, $ast)
+                && !($ast !== null
+                    && $retryError->getRawMessage() === 'Namespace declaration statement has to be the very first statement in the script'
+                    && namespaceStructureErrorMatches($retryError, $ast))) throw $retryError;
         }
     }
     $phpSyntaxFileInfo = $lexer->info;
