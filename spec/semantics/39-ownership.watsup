@@ -267,7 +267,7 @@ def $separate_location_array(S, n) = $duplicate_array(S_live, n)
 ;; machine temporaries, not ENV or uncollected cycles. Budget exhaustion is a
 ;; tool observation and must retain the interrupted machine state.
 dec $release_temporaries(pstate) : pstate
-def $release_temporaries(S) = S[.CONSTCONTEXT = eps][.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps][.ITERATORS = eps]
+def $release_temporaries(S) = S[.BORROWEDREAD = eps][.CONSTCONTEXT = eps][.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps][.ITERATORS = eps]
 
 def $task_nodes(LIST_PATTERN expression poperand z) = $operand_nodes(poperand)
 def $task_nodes(LIST_NEXT poperand n phpType13* z) = $operand_nodes(poperand)

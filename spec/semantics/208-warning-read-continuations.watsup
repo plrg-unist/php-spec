@@ -1,0 +1,80 @@
+;; IS_IDENTICAL/IS_NOT_IDENTICAL dereference the first CV before fetching the
+;; second one. The old reference payload remains a borrowed pointer even when
+;; the error callback rebinds the original name. Its real owners keep it alive.
+dec $identity_read_source(pstate, pidentityread) : bool
+def $identity_read_source(S, pidentityread) = true
+  -- if pidentityread.OP = IDENTICAL \/ pidentityread.OP = NOTIDENTICAL
+  -- if $origin_node(S.SOURCES, pidentityread.SITE) = (pcnode)
+  -- if $error_binary_source(pcnode) = (pidentityread.OP)
+  -- if $error_variable_source(S, (pidentityread.SITE), [PCFIELD 0], pidentityread.LEFT)
+  -- if $error_variable_source(S, (pidentityread.SITE), [PCFIELD 1], pidentityread.RIGHT)
+  -- if $code_expression_at_source(S, pidentityread.SITE, [PCFIELD 0]) = (pidentityread.LEFTLINE)
+  -- if $code_expression_at_source(S, pidentityread.SITE, [PCFIELD 1]) = (pidentityread.LINE)
+def $identity_read_source(S, pidentityread) = false -- otherwise
+
+dec $identity_read_live(pstate, pidentityread) : bool
+def $identity_read_live(S, pidentityread) = true
+  -- if (HCELL pidentityread.CELL) <- S.ALLOCATIONS
+  -- if $(pidentityread.CELL < |S.STORE|)
+  -- if S.STORE[pidentityread.CELL] = DEFINED pvalue
+  -- if $($heap_owners($heap_prune($heap_graph(S)), HCELL pidentityread.CELL) > 0)
+def $identity_read_live(S, pidentityread) = false -- otherwise
+
+def $identity_read_plan(S) = (pidentityread)
+  -- if S.BORROWEDREAD = eps
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (BINARY_RIGHT pbin (VARIABLE n_left* z_left) z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE n_right* z_right
+  -- if $error_missing_operand(S, VARIABLE n_right* z)
+  -- if ~$environment_blocked(S, n_left*)
+  -- if $lookup(S.ENV, n_left*) = (n_cell)
+  -- if n_cell <- S.REFCELLS
+  -- if pidentityread = {SITE porigin, OP pbin, LEFT n_left*, LEFTLINE z_left, RIGHT n_right*, LINE z, CELL n_cell, BASE S.BASE}
+  -- if $identity_read_source(S, pidentityread)
+  -- if $identity_read_live(S, pidentityread)
+def $identity_read_plan(S) = eps -- otherwise
+
+def $identity_read_begin(S, pidentityread) = $error_dispatch(S[.BORROWEDREAD = (pidentityread)], 2, $ptascii("Undefined variable $") ++ pidentityread.RIGHT, pidentityread.LINE, WARNING pidentityread.RIGHT pidentityread.LINE, ERROR_IDENTITY_RESULT pidentityread)
+  -- if $identity_read_plan(S) = (pidentityread)
+
+;; The separate active/saved pointer anchors the consumer certificate after a
+;; callback changes name bindings. It is moved by save_frame/restore_frame and
+;; deliberately omitted from both machine and frame ownership roots.
+dec $identity_read_valid(pstate, pidentityread) : bool
+def $identity_read_valid(S, pidentityread) = (S.BORROWEDREAD = (pidentityread) /\ S.ORIGIN = (pidentityread.SITE) /\ $(pidentityread.CELL < |S.STORE|) /\ $identity_read_source(S, pidentityread))
+dec $identity_read_count(ptask*, pidentityread) : nat
+dec $identity_task_count(ptask, pidentityread) : nat
+def $identity_task_count(ERROR_IDENTITY_RESULT pidentityread, pidentityread) = 1
+def $identity_task_count(ERROR_HANDLER_INVOKE perrorcall, pidentityread) = $identity_task_count(perrorcall.RESUME, pidentityread)
+def $identity_task_count(ERROR_HANDLER_RESULT perrorcall, pidentityread) = $identity_task_count(perrorcall.RESUME, pidentityread)
+def $identity_task_count(AT porigin ptask, pidentityread) = $identity_task_count(ptask, pidentityread)
+def $identity_task_count(ptask, pidentityread) = 0 -- otherwise
+def $identity_read_count(eps, pidentityread) = 0
+def $identity_read_count(ptask :: ptask_tail*, pidentityread) = $($identity_task_count(ptask, pidentityread) + $identity_read_count(ptask_tail*, pidentityread))
+def $borrowed_read_scope_valid(S) = true -- if S.BORROWEDREAD = eps
+def $borrowed_read_scope_valid(S) = ($identity_read_source(S, pidentityread) /\ $(pidentityread.CELL < |S.STORE|) /\ $identity_read_count(S.TODO, pidentityread) = 1)
+  -- if S.BORROWEDREAD = (pidentityread)
+def $call_task_valid(S, ERROR_IDENTITY_RESULT pidentityread) = $identity_read_valid(S, pidentityread)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ERROR_IDENTITY_RESULT pidentityread
+  -- if $identity_read_valid(S, pidentityread)
+  -- if perrorcall.SITE = pidentityread.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pidentityread.LINE
+  -- if perrorcall.MESSAGE = $ptascii("Undefined variable $") ++ pidentityread.RIGHT
+  -- if perrorcall.EVENT = WARNING pidentityread.RIGHT pidentityread.LINE
+
+rule PhpStep/identity-read-resume: S ~> $binary_apply(S[.TODO = ptask_tail*][.BORROWEDREAD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pidentityread.OP, pvalue, PNULL, pidentityread.LINE)
+  -- if S.TODO = (ERROR_IDENTITY_RESULT pidentityread) :: ptask_tail*
+  -- if $identity_read_valid(S, pidentityread)
+  -- if $identity_read_live(S, pidentityread)
+  -- if S.STORE[pidentityread.CELL] = DEFINED pvalue
+rule PhpStep/identity-read-expired: S ~> S[.BORROWEDREAD = eps][.COMPLETION = UNSUPPORTED "borrowed identity operand lifetime"]
+  -- if S.TODO = (ERROR_IDENTITY_RESULT pidentityread) :: ptask_tail*
+  -- if $identity_read_valid(S, pidentityread)
+  -- if ~$identity_read_live(S, pidentityread)
+def $task_nodes(ERROR_IDENTITY_RESULT pidentityread) = $base_nodes(pidentityread.BASE)
+def $identity_read_discard(S, ERROR_IDENTITY_RESULT pidentityread) = S[.BORROWEDREAD = eps]
+  -- if S.BORROWEDREAD = (pidentityread)
+def $identity_read_discard(S, ptask) = S -- otherwise
+def $return_discard(S, ERROR_IDENTITY_RESULT pidentityread) = $identity_read_discard(S, ERROR_IDENTITY_RESULT pidentityread)

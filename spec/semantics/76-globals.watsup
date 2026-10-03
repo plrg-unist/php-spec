@@ -30,15 +30,12 @@ rule PhpStep/globals-read: S ~> S_snapshot[.TODO = ptask_tail*]
 rule PhpStep/globals-prepare-value: S ~> S[.TODO = [$at_task(S.ORIGIN, EVAL expression), DIM_CAPTURE] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP expression) :: ptask_tail*
   -- if $ppglobals_base(expression)
+;; A direct key uses FETCH_GLOBAL even without explicit request facts. The
+;; whole-table snapshot and unavailable auto-globals keep their own boundaries.
 rule PhpStep/globals-prepare-name: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_key), GLOBAL_NAME $runtime_line(S, [PCFIELD 1], expression_key)] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*
   -- if $ppglobals_base(expression)
   -- if phpType5 = expression_key
-  -- if S.REQUEST = (Q)
-rule PhpStep/globals-missing-request: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "request environment variable"]
-  -- if S.TODO = (DIM_PREP (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*
-  -- if $ppglobals_base(expression)
-  -- if S.REQUEST = eps
 rule PhpStep/globals-name: S ~> S[.TODO = ptask_tail*][.BASE = BASE_GLOBAL $captured_name(S, [PCFIELD 1], S.RESULT) z][.RESULT = KNOWN PNULL]
   -- if S.TODO = (GLOBAL_NAME z) :: ptask_tail*
 
@@ -58,16 +55,16 @@ dec $global_bind_name(pstate, nat*) : pstate
 
 dec $global_missing(pstate, nat*, int) : pstate
 dec $global_read_name(pstate, nat*, int) : pstate
-def $global_read_local(S, n_name*, z) = $read_name(S, n_name*, z) -- if $this_name(n_name*)
+def $global_read_local(S, n_name*, z) = $read_name(S, n_name*, z) -- if $this_name(n_name*) \/ $environment_blocked(S, n_name*)
 def $global_read_local(S, n_name*, z) = S[.RESULT = KNOWN pvalue]
-  -- if ~$this_name(n_name*)
+  -- if ~$environment_blocked(S, n_name*)
   -- if $lookup(S.ENV, n_name*) = (n)
   -- if S.STORE[n] = DEFINED pvalue
 def $global_read_local(S, n_name*, z) = $global_missing(S, n_name*, z)
-  -- if ~$this_name(n_name*)
+  -- if ~$environment_blocked(S, n_name*)
   -- if $lookup(S.ENV, n_name*) = eps
 def $global_read_local(S, n_name*, z) = $global_missing(S, n_name*, z)
-  -- if ~$this_name(n_name*)
+  -- if ~$environment_blocked(S, n_name*)
   -- if $lookup(S.ENV, n_name*) = (n)
   -- if S.STORE[n] = UNDEFINED
 def $global_missing(S, n_name*, z) = $diagnostic(S, "Warning", [85,110,100,101,102,105,110,101,100,32,103,108,111,98,97,108,32,118,97,114,105,97,98,108,101,32,36] ++ n_name*, z)[.RESULT = KNOWN PNULL]

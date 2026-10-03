@@ -293,9 +293,10 @@ def $call_saved_context_valid(S, pframe) = $call_context_valid(S, pcallcontext, 
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
 def $call_saved_context_valid(S, pframe) = false -- otherwise
+dec $borrowed_read_scope_valid(pstate) : bool
 dec $call_frames_valid(pstate, pframe*) : bool
 def $call_frames_valid(S, eps) = true
-def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid(S[.ORIGIN = pframe.ORIGIN][.CURRENT = pframe.CONTEXT][.TODO = pframe.TODO], pframe.TODO) /\ $call_saved_context_valid(S, pframe) /\ $call_frames_valid(S, pframe_tail*))
+def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid(S[.ORIGIN = pframe.ORIGIN][.CURRENT = pframe.CONTEXT][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD], pframe.TODO) /\ $borrowed_read_scope_valid(S[.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD]) /\ $call_saved_context_valid(S, pframe) /\ $call_frames_valid(S, pframe_tail*))
 dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $constant_context_valid(pstate) : bool
 dec $default_caches_valid(pstate, pdefaultcache*) : bool
@@ -322,6 +323,7 @@ def $call_descriptors_valid(S) = true
   -- if $class_state_valid(S)
   -- if $call_registry_valid(S.FUNCTIONS, S.CALLABLES)
   -- if $call_tasks_valid(S, S.TODO)
+  -- if $borrowed_read_scope_valid(S)
   -- if $selected_log_valid(S, S.SELECTEDCALLS, 0)
   -- if $stringify_pairs_valid(S, S.TODO)
   -- if $ctor_pairs_valid(S, S.TODO)

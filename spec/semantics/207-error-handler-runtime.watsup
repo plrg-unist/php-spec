@@ -11,6 +11,9 @@ dec $error_read_shape(ptask, poperand, pbase) : perrorread?
 dec $error_read_line(ptask, int) : int
 dec $error_read_operand(perrorread) : poperand
 dec $error_read_plan(pstate) : perrorread?
+dec $identity_read_plan(pstate) : pidentityread?
+dec $identity_read_begin(pstate, pidentityread) : pstate
+dec $identity_read_discard(pstate, ptask) : pstate
 dec $error_variable_source(pstate, porigin?, pcpath, preqbytes) : bool
 dec $error_binary_source(pcnode) : pbin?
 dec $error_read_source(pstate, perrorread) : bool
@@ -166,7 +169,7 @@ rule PhpStep/error-handler-handled: S ~> $error_handler_restore(S[.TODO = perror
   -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
   -- if S.RESULT = KNOWN pvalue
   -- if pvalue =/= PBOOL false
-def $return_discard(S, ERROR_HANDLER_RESULT perrorcall) = $error_handler_restore(S, perrorcall.CALLBACK)
+def $return_discard(S, ERROR_HANDLER_RESULT perrorcall) = $error_handler_restore($identity_read_discard(S, perrorcall.RESUME), perrorcall.CALLBACK)
 def $task_nodes(ERROR_HANDLER_INVOKE perrorcall) = $value_nodes(perrorcall.CALLBACK) ++ $task_nodes(perrorcall.RESUME)
 def $task_nodes(ERROR_HANDLER_RESULT perrorcall) = $value_nodes(perrorcall.CALLBACK) ++ $task_nodes(perrorcall.RESUME)
 
@@ -202,7 +205,9 @@ def $error_read_plan(S) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
 def $error_read_plan(S) = eps -- otherwise
-def $error_read_pending(S) = ($error_handler_eligible(S, 2) /\ $error_read_plan(S) =/= eps)
+def $error_read_pending(S) = ($error_handler_eligible(S, 2) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps))
+def $error_read_begin(S) = $identity_read_begin(S, pidentityread)
+  -- if $identity_read_plan(S) = (pidentityread)
 def $error_read_begin(S) = $error_dispatch(S, 2, $ptascii("Undefined variable $") ++ perrorread.NAME, perrorread.LINE, WARNING perrorread.NAME perrorread.LINE, ERROR_READ_RESULT perrorread)
   -- if $error_read_plan(S) = (perrorread)
 rule PhpStep/error-read-resume: S ~> S[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]
@@ -347,7 +352,7 @@ def $error_context_anchor(S, pcallcontext, (pcallcontext), pframe :: pframe_tail
   -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if pframe.ORIGIN = (perrorcall.SITE)
   -- if perrorcall.TARGET = (pcallcontext.TARGET)
-  -- if $error_call_valid(S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO], perrorcall)
+  -- if $error_call_valid(S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD], perrorcall)
 def $error_context_anchor(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $error_context_anchor(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
   -- if pcallcontext_other? =/= (pcallcontext)
 def $error_context_anchor(S, pcallcontext, pcallcontext_other?, pframe*) = false -- otherwise
