@@ -33,8 +33,9 @@ dec $firstclass_allocate(pstate, pfunction) : pstate
 def $firstclass_allocate(S, pfunction) = S[.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE pfunction.ORIGIN]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if n = |S.OBJECTS|
 
+dec $string_firstclass(pstate, ptbytes, int) : pstate
 dec $firstclass_name(pstate, preqbytes, preqbytes, preqbytes?, int) : pstate
-def $firstclass_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, z_init) = S[.COMPLETION = UNSUPPORTED "static method first-class callable"]
+def $firstclass_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, z_init) = $string_firstclass(S, preqbytes_original, z_init)
   -- if $dynamic_method_scan(preqbytes_original, false, false)
 def $firstclass_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, z_init) = $firstclass_allocate(S, pfunction)
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)

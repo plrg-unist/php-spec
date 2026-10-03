@@ -12,6 +12,7 @@ dec $dynamic_method_scan(preqbytes, bool, bool) : bool
 dec $dynamic_name(pstate, preqbytes, preqbytes, porigin, int, int) : pstate
 dec $dynamic_value(pstate, porigin, int, int) : pstate
 dec $array_dynamic(pstate, nat, porigin, int, int) : pstate
+dec $string_dynamic(pstate, ptbytes, porigin, int, int) : pstate
 
 ;; A computed name is consumed before any argument evaluation. Selected calls
 ;; then use the existing positional/named/unpack send and receive machinery.
@@ -68,7 +69,7 @@ def $dynamic_method_scan(eps, b_previous, b_method) = b_method
 def $dynamic_method_scan(58 :: n*, b_previous, b_method) = $dynamic_method_scan(n*, true, b_previous)
 def $dynamic_method_scan(n :: n_tail*, b_previous, b_method) = $dynamic_method_scan(n_tail*, false, b_method) -- if n =/= 58
 
-def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S[.COMPLETION = UNSUPPORTED "static method string callable"]
+def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = $string_dynamic(S, preqbytes_original, porigin, z_init, z_call)
   -- if $dynamic_method_scan(preqbytes_original, false, false)
 def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S[.TODO = $named_start(pfunction, $dynamic_arguments(S, porigin), (porigin), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)

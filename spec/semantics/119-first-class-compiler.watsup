@@ -6,7 +6,7 @@ def $ppfirstclass(phpType7*) = false -- otherwise
 ;; CALLABLE_CONVERT is emitted at the compiler location left by callee
 ;; compilation. It can differ from the call root on a multiline callee.
 dec $ppfirstclass_done(ppstate, pcpath) : ppstate
-def $ppfirstclass_done(P, pcpath) = $ppcall_expression(P, pcpath, P.LOCATION.LINE)
+def $ppfirstclass_done(P, pcpath) = $ppcall_expression($ppclearvalue(P), pcpath, P.LOCATION.LINE)
 def $ppexpr(P, pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR) = $ppfirstclass_done($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR)), pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata, PPR), pcpath)
   -- if P.COMPLETION = PPCNORMAL
 
