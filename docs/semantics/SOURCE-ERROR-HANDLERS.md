@@ -41,7 +41,7 @@ a known or temporary left value. Live/reference left operands, truth/cast/copy,
 read-modify-write, dimensions and other eligible warning producers remain
 explicitly `Unsupported`, rather than running a callback after a consumer.
 
-Null/Stringable API conversions, broader internal/array/visibility callback forms,
+Remaining null/Stringable API conversions, broader internal/array/visibility callback forms,
 reference-return callbacks, exception handlers and lifecycle dispatch remain open.
 Frameless named/method trace formatting in164 now accepts the authenticated
 nonempty function field. Current property and array-caller readback gates remain
