@@ -134,5 +134,19 @@ remains exact. The public object invocation union accepts 13 original sources
 assertions at `6e7ddca894` on `6ba0ee71/1305`. Root, method and inherited
 captured-call file guards bind actual owner, receiver, declaring lexical class,
 called class and retained capture. Earlier private `8a9f0c789` source18/finite377
-evidence stays distinct. Restore04, remaining INI05 option conversion and
-PIPE/wider OS/INI behavior remain open.
+evidence stays distinct.
+The [Stringable Restore increment](../../coverage/semantics/include-stringable-restore-review.json)
+converts weak option objects through ordinary checked callbacks. Lookup compares
+the full converted bytes: exact `include_path` resets the initial raw value;
+empty, case and NUL-name misses return null and preserve callback mutations.
+Direct strict calls reject objects; owned internal `Closure->__invoke` remains
+weak. Source-site, invocation owner and child-line authentication survives both
+paths. Original `b33f42f080` accepts 34 source tuples and thirteen finite
+fixtures/524 assertions, with 28 other-directive Unsupported checks separate.
+Two callable-priority sources on `240bf5a75` and two current ARG sources on
+`88f8d2bd5` are separate fresh checks. The latter preserves the caller's two arguments
+and fixed vector across a callback with zero arguments and an empty vector.
+The original AL fixture type failure is retained; current 185-module SL
+compilation passes with reused executables. Remaining INI05 option/value
+conversion, raw `get_include_path`/`ini_get` readback, PIPE/wider OS/INI behavior
+and lifecycle remain open.

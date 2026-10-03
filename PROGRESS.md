@@ -7,6 +7,19 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Stringable Restore now converts weak options through checked callbacks and uses
+full-name lookup: exact `include_path` resets the initial raw value, while
+empty, case and NUL-name misses preserve callback mutations. Original tested
+**b33f42f080** accepts 34 source tuples and thirteen finite fixtures/524 assertions
+(496 ordinary, 28 Unsupported separate). Two fresh callable-priority sources on
+**240bf5a75** remain distinct. Current ARG composition **88f8d2bd5**, over
+**b0dbe76ce** on **14344140/1322**, accepts two further normal sources: callers
+retain their two arguments, callbacks see zero, and strict owned Restore remains
+weak. Its 185-module SL compilation passes; the 2,011 runtime inputs and compiler
+are reused. [Restore ledger](coverage/semantics/include-stringable-restore-review.json).
+Next: INI05 option/value destinations and priority, raw `get_include_path`/`ini_get`
+readback, then PIPE. Wider INI and full core remain open.
+
 Ordinary-frame argument introspection198/199 is installed in composition with
 accepted public object invocation, raw/effective INI paths and callable-first
 parameter admission. Tested **244837b72**, over **b8a6f43f8**, accepts one fresh
@@ -38,8 +51,8 @@ source27 and five finite stages/188 assertions; six Unsupported checks remain
 separate. Independent gates accept the recovered source2 tuples and fresh
 owner79/finally50. [SET review](coverage/semantics/include-set-current-review.json)
 preserves the unknown original source2 launcher exit, NUL-free old-value limits
-and distinct private evidence. Restore04, remaining INI05 option conversion,
-PIPE and full core closure remain open.
+and distinct private evidence. Remaining INI05 option conversion, raw INI
+readback, PIPE and full core closure remain open.
 
 Earlier capture checkpoint is **c536d1f74**, with code **094761c66** and
 tests through **8795d9c39** over **c8bee41e6**. Author and independent gates each
@@ -113,14 +126,13 @@ readonly/asymmetric set access and scoped defaults remain open.
 
 Current family status:
 
-- Include/configuration: raw/effective INI and Stringable SET are installed at
-  the checkpoints above. Restore04 is privately accepted at **b33** with
-  34 source tuples (24 normal, ten PHP errors) and thirteen finite fixtures/524
-  checks, including 28 separate Unsupported assertions. Composition on current
-  **b8a6** awaits two fresh source interactions; Restore is not installed.
-  INI05 destination/value conversion and full-byte `get_include_path`/`ini_get`
-  readback are next; broader directives, PIPE and OS/INI behavior remain open.
-  [Restore acceptance](.tools/include-review-13/restore-bounded-private-acceptance.json)
+- Include/configuration: raw/effective INI, Stringable SET and reviewed
+  Stringable Restore are covered by the checkpoints above. Original Restore
+  **b33** source34/finite524 and the fresh callable-priority/current ARG
+  source2+2 remain distinct. INI05 destination/value conversion, then raw
+  `get_include_path`/`ini_get` readback, then PIPE are next; wider directives and
+  OS/INI behavior remain open.
+  [Restore ledger](coverage/semantics/include-stringable-restore-review.json)
   · [INI prefix ledger](coverage/semantics/include-ini-prefix-review.json)
   · [SET ledger](coverage/semantics/include-set-current-review.json).
 - Calls: public source `__invoke` is installed at **18a1383d7**; callable-before-

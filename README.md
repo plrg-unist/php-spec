@@ -37,8 +37,12 @@ with bounded source and callback ownership/cleanup checks.
 preserve full `ini_set` bytes while file requests and SET old returns use the
 C-string prefix. The public object invocation union accepts 13 source cases
 and thirteen finite fixtures/675 assertions at `6e7ddca894`.
-Restore, remaining Stringable INI options, PIPE and broader path/stream behavior
-remain pending.
+[Stringable Restore](coverage/semantics/include-stringable-restore-review.json)
+converts weak options using full-name lookup, restores the initial raw path for
+exact names and preserves callback writes on empty, case and NUL-name misses.
+Current checks preserve the caller's argument vector across the callback.
+Remaining Stringable INI option/value ordering, raw INI readback, PIPE and broader
+path/stream behavior remain open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
