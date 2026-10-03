@@ -1,0 +1,469 @@
+{
+  "scope": "Class/interface constant declarations, owner-scoped lazy evaluation, cache reuse and global/default restoration. Retained original PHP8.5.10 source tuples. Native four-setting32767 and model baseline30719 profiles remain distinct; these controls have no reporting-sensitive diagnostic. Only the observed main filename is substituted. Cross-file controls preserve exact child names/source bytes and bind explicit file snapshots; native cwd/environment and rebuilt-copy evidence remain separate.",
+  "cases": [
+    {
+      "id": "earlier_class_typed_fold",
+      "source": "<?php\necho \"run\";\nclass A { const X=\"x\"; }\nclass B { const int X=A::X; }\necho B::X;\n",
+      "source_sha256": "ed28fc7f9f3456542a4c4c2f1acaecbb9a88cebc29a48f694400affe5c68a370",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIHZhbHVlIGZvciBjbGFzcyBjb25zdGFudCBCOjpYIG9mIHR5cGUgaW50IGluIHtGSUxFfSBvbiBsaW5lIDQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-2/raw/00-earlier_class_typed_fold/command.json",
+      "native_raw_sha256": "4958ba33a7743258fa5e0d1caa278331ab2683adcd482ea349c7fb8b8784b654",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "forward_class_typed_lazy",
+      "source": "<?php\necho \"run\";\nclass B { const int X=A::X; }\nclass A { const X=\"x\"; }\necho B::X;\n",
+      "source_sha256": "f882b426da82e5169badf3a4e9f4269bacc551cda5aa790bcef58aa62050c9d3",
+      "stdout_base64": "cnVu",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBzdHJpbmcgdG8gY2xhc3MgY29uc3RhbnQgQjo6WCBvZiB0eXBlIGludCBpbiB7RklMRX06NQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDUK",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-2/raw/01-forward_class_typed_lazy/command.json",
+      "native_raw_sha256": "bee6b406400b627c7215e2a3b84f86e1e98744c25881a8c16d19152a7279c23b",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "inherited_declaring_owner",
+      "source": "<?php\nclass A { protected const X=self::Y; private const Y=11; public static function v(){return static::X;} }\nclass B extends A { const Y=22; }\necho B::v();\n",
+      "source_sha256": "32a030c5000f8a24648d3010ada71c7ab0e2180fedf694cf31120113c3709e12",
+      "stdout_base64": "MTE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-2/raw/02-inherited_declaring_owner/command.json",
+      "native_raw_sha256": "c468c5cafe1e7990bdd02a4a84745019880ea0a99b470f1c7470005384f547ba",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "visibility_before_lazy_failure",
+      "source": "<?php\necho \"before\";\nclass A { private const X=MISSING; }\necho A::X;\n",
+      "source_sha256": "dd5cf45f7689332f89b91a21f3d767059b245bd69d7b08c20450ba6f1af36da4",
+      "stdout_base64": "YmVmb3Jl",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgYWNjZXNzIHByaXZhdGUgY29uc3RhbnQgQTo6WCBpbiB7RklMRX06NApTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDQK",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-2/raw/03-visibility_before_lazy_failure/command.json",
+      "native_raw_sha256": "7557e791ba4bef723bf4f196ea33b7b5e1b6647c620673e37d77fd6346d15e3c",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "literal_dynamic_selector_order",
+      "source": "<?php\nfunction c(){echo \"C\";return \"Missing\";}\nfunction n(){echo \"N\";return \"X\";}\ntry { echo Missing::{n()}; } catch(Error $e) { echo \"L\"; }\ntry { echo c()::{n()}; } catch(Error $e) { echo \"D\"; }\n",
+      "source_sha256": "daf7dfba35a617ca0221f29f38acf0d8876ef6773f99bda9132de58ba11b0fd6",
+      "stdout_base64": "TkxDRA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-2/raw/04-literal_dynamic_selector_order/command.json",
+      "native_raw_sha256": "17ce72be6113ffeacd8d7270012b5eeb64039036dff24300d5335c9765cbde6e",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "typed_float_and_constant_array_cow",
+      "source": "<?php\nclass A { const float F=1; const X=[1]; }\necho A::F===1.0 ? \"f\" : \"i\";\n$v=A::X; $v[0]=3; echo A::X[0],$v[0];\n",
+      "source_sha256": "8a29c8b9b0da02d24e4b179929150b945a57d451350ca4e87c51aadd8d14ce57",
+      "stdout_base64": "ZjEz",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-2/raw/05-typed_float_and_constant_array_cow/command.json",
+      "native_raw_sha256": "eb4a3dac0a589844da3a120983a412ba7b92e793042b38d7086c6e16b92001cb",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "failed_lazy_initialization_retry",
+      "source": "<?php\nclass A { const X=MISSING; }\ntry { echo A::X; } catch(Error $e) { echo \"caught\"; }\nconst MISSING=12;\necho A::X;\n",
+      "source_sha256": "ed5db8bf54adfb730f7e296518af58bff02a0040e40c0ddd4b1d6a22629b674e",
+      "stdout_base64": "Y2F1Z2h0MTI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-2/raw/06-failed_lazy_initialization_retry/command.json",
+      "native_raw_sha256": "0670f846cca90b5818406afc6eb87df205f57647b88c345d6b3e091c4ccf8b66",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "new_initializes_before_constructor",
+      "source": "<?php\necho \"before\";\nclass A { const X=MISSING; function __construct(){echo \"CTOR\";} }\nnew A;\n",
+      "source_sha256": "367e79c0278fd5d2bf08edb14309a6446e60722a796f9797b68014053dc51154",
+      "stdout_base64": "YmVmb3Jl",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIk1JU1NJTkciIGluIHtGSUxFfTo0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgNAo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-2/raw/07-new_initializes_before_constructor/command.json",
+      "native_raw_sha256": "5f7f6400c0e633098543c729f9b8ecb906d3be86e1ab5b59ed058b1a95890048",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "ordinary_missing_class_before_member_type",
+      "source": "<?php\necho Missing::{42};\n",
+      "source_sha256": "cdfe36f9c69bb2eb23ec1217f437bb2d6f147d06a5f9438b160edf3e59300318",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDbGFzcyAiTWlzc2luZyIgbm90IGZvdW5kIGluIHtGSUxFfToyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMgo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-3/raw/00-ordinary_missing_class_before_member_type/command.json",
+      "native_raw_sha256": "5fd7b75e61d03df4dd4f907741fe87aff198ee1dd08518f321a559759e14e57d",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "initializer_member_type_before_class",
+      "source": "<?php\nclass C {\n const X=Missing::{42};\n}\necho C::X;\n",
+      "source_sha256": "5300261f5f60ca60fab7ad97af17f2c51704736ed7f06afa8375c6d72461841b",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IHVzZSB2YWx1ZSBvZiB0eXBlIGludCBhcyBjbGFzcyBjb25zdGFudCBuYW1lIGluIHtGSUxFfTozClN0YWNrIHRyYWNlOgojMCB7RklMRX0oNSk6IFtjb25zdGFudCBleHByZXNzaW9uXSgpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAzCg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-3/raw/01-initializer_member_type_before_class/command.json",
+      "native_raw_sha256": "b2968004927faf4247a90b46a6318bbabcb9b6c6ef5e6d1e81c088b13b6fb386",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "initializer_dynamic_class_is_not_magic",
+      "source": "<?php\nclass C {\n const X=self::{N};\n}\nconst N=\"CLASS\";\necho C::X;\n",
+      "source_sha256": "493cfa543863223f4e6cc2cae06f98af2089d6d7b7907bd44704b0b4f796d306",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgc2VsZjo6Q0xBU1MgaW4ge0ZJTEV9OjMKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSg2KTogW2NvbnN0YW50IGV4cHJlc3Npb25dKCkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDMK",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-3/raw/02-initializer_dynamic_class_is_not_magic/command.json",
+      "native_raw_sha256": "6295d8b57c907b18d72142593f111b0bfc8aaffc703c5e1bf50cd9302591050a",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "compound_initializer_error_origin",
+      "source": "<?php\nclass A {\n const X=1/MISSING;\n}\necho A::X;\n",
+      "source_sha256": "497eae776ca3abf6561ac2dd928ddfc82b0d12c0c6b4cf7766a3e452fadfd1e4",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIk1JU1NJTkciIGluIHtGSUxFfTozClN0YWNrIHRyYWNlOgojMCB7RklMRX0oNSk6IFtjb25zdGFudCBleHByZXNzaW9uXSgpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAzCg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-3/raw/03-compound_initializer_error_origin/command.json",
+      "native_raw_sha256": "e0e47220d8357acde53875820153ba08a6420597a40279fef4f4beb8792754e6",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "cycle_preserves_requested_keyword",
+      "source": "<?php\nclass A {\n const X=self::Y;\n const Y=self::X;\n}\necho A::X;\n",
+      "source_sha256": "1c21b51c682d519c947303132313b693d3c669364f35e116fd0448ce50b9ba0e",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgZGVjbGFyZSBzZWxmLXJlZmVyZW5jaW5nIGNvbnN0YW50IHNlbGY6OlkgaW4ge0ZJTEV9OjMKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSg2KTogW2NvbnN0YW50IGV4cHJlc3Npb25dKCkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDMK",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-3/raw/04-cycle_preserves_requested_keyword/command.json",
+      "native_raw_sha256": "2520e8c7c8c7db0c7e06a707274496546f0af46b7c4ed8e3c2d70d44b022a9ba",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "private_parent_is_not_inherited",
+      "source": "<?php\nclass A {private const X=1;}\nclass B extends A {}\necho B::X;\n",
+      "source_sha256": "7f7e8709006504d25916ea8164a28da1ba9b6ac6602b3937de879969424c5def",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgQjo6WCBpbiB7RklMRX06NApTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDQK",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-3/raw/05-private_parent_is_not_inherited/command.json",
+      "native_raw_sha256": "be1332b9ed9c999c81ae0de9b5f2ccd54b50a53b9f35c5884f6e9ba4dbad6767",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "lazy_global_context_restore",
+      "source": "<?php\nclass A{const X=N;}\nconst N=12;\nconst G=A::X;\necho G;\n",
+      "source_sha256": "2b4655424f0f326a60efa01806874a0172eb100c3ac1231e604e920b03d43e4c",
+      "stdout_base64": "MTI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-5/raw/00-lazy_global_context_restore/command.json",
+      "native_raw_sha256": "14ae6babac25550a6fc518560a80d3ad0440347f456de827ced78f2cec4d813f",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "lazy_default_context_and_cache",
+      "source": "<?php\nclass A{const X=N;}\nfunction f($x=A::X){echo $x;}\nconst N=12;\nf(); f();\n",
+      "source_sha256": "661af1650eebb5cbe7f19a4750e50c898468a90431dd5aef7c091e8c527f3639",
+      "stdout_base64": "MTIxMg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-5/raw/01-lazy_default_context_and_cache/command.json",
+      "native_raw_sha256": "4aba6a79ee9380e7b71fd96718cb429da5a4c6a53554356884cf0a8a4f646a78",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "lazy_array_cache_cow",
+      "source": "<?php\nclass A{const X=[N];}\nconst N=1;\n$v=A::X; $v[0]=3; echo A::X[0],$v[0];\n",
+      "source_sha256": "06174a0fb76e691d5650fbbc51018c824b0ec59b49cff65b35781eeb27004d78",
+      "stdout_base64": "MTM=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-5/raw/02-lazy_array_cache_cow/command.json",
+      "native_raw_sha256": "c48bb46be16a69b0e1e3bd69e346ca3b693e20d0ce187439e69b6fe46782829b",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "global_member_type_before_class",
+      "source": "<?php\necho \"run\";\nconst X=Missing::{42};\n",
+      "source_sha256": "cad5c863c7d8352f95bd6b7d5a421be16f11b49bffd069519b6f85cd2888ab73",
+      "stdout_base64": "cnVu",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IHVzZSB2YWx1ZSBvZiB0eXBlIGludCBhcyBjbGFzcyBjb25zdGFudCBuYW1lIGluIHtGSUxFfTozClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMwo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-4/raw/00-global_member_type_before_class/command.json",
+      "native_raw_sha256": "36c879674c3c4823476bf77c0751c36f6b0aea8b3e0fc87aac22ea66b3a71d48",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "default_member_type_before_class",
+      "source": "<?php\necho \"run\";\nfunction f($x=Missing::{42}) {echo \"body\";}\nf();\n",
+      "source_sha256": "b8cceec186822a12e41b5a57e4d1c682b7ba7956f554935fc4b8cc780b5cd524",
+      "stdout_base64": "cnVu",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IHVzZSB2YWx1ZSBvZiB0eXBlIGludCBhcyBjbGFzcyBjb25zdGFudCBuYW1lIGluIHtGSUxFfTozClN0YWNrIHRyYWNlOgojMCB7RklMRX0oNCk6IGYoKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMwo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-4/raw/01-default_member_type_before_class/command.json",
+      "native_raw_sha256": "0f2f9194d61bc8e6b602376e2b3b7781d0c42df9c265b0d51ed2de29d4f78880",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "global_dynamic_class_is_not_magic",
+      "source": "<?php\necho \"run\";\nclass C {}\nconst N=\"CLASS\";\nconst X=C::{N};\n",
+      "source_sha256": "b8a2dd1d5121ff7fbbacc91368241e8f7002b3cef70bdf9d8114b7fe5bee3378",
+      "stdout_base64": "cnVu",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgQzo6Q0xBU1MgaW4ge0ZJTEV9OjUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-4/raw/02-global_dynamic_class_is_not_magic/command.json",
+      "native_raw_sha256": "7e6d93c1251b8861df9ee7e63f89b1dd2e80ebb3dd55b27aa96ffe7f052ffaa7",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "default_dynamic_class_is_not_magic",
+      "source": "<?php\necho \"run\";\nclass C {}\nconst N=\"CLASS\";\nfunction f($x=C::{N}) {echo \"body\";}\nf();\n",
+      "source_sha256": "e23d2c1200e5a91328cc76e2592d552bf99ea9e23e908cdfc6ed52e8f6aeb751",
+      "stdout_base64": "cnVu",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgQzo6Q0xBU1MgaW4ge0ZJTEV9OjUKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSg2KTogZigpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-4/raw/03-default_dynamic_class_is_not_magic/command.json",
+      "native_raw_sha256": "0119ad500b857a3dbf073ee50db5f071cc19eed1f0ce7bbdc10ec789fed20d65",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "same_line_compound_trace",
+      "source": "<?php class A{const X=1/MISSING;} echo A::X;\n",
+      "source_sha256": "3e708677dc8e23b3aef0ca98791cb82e7566721d6356784e3c58a3927e33afea",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIk1JU1NJTkciIGluIHtGSUxFfToxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-4/raw/04-same_line_compound_trace/command.json",
+      "native_raw_sha256": "d83bab8b5319799b330efbd7b78cb5d59030764975dda00e757ea0e39c987c93",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "compound_typed_bind_trace",
+      "source": "<?php\necho \"run\";\nclass A {\n const int X=MISSING . \"\";\n}\nconst MISSING=\"x\";\necho A::X;\n",
+      "source_sha256": "c74d9b171ea5a287ef76ec86b2d9f2af058cb6f02bb106a7ae22e3a54d2d6db7",
+      "stdout_base64": "cnVu",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBzdHJpbmcgdG8gY2xhc3MgY29uc3RhbnQgQTo6WCBvZiB0eXBlIGludCBpbiB7RklMRX06NwpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDcK",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-4/raw/05-compound_typed_bind_trace/command.json",
+      "native_raw_sha256": "03dcd3c100252fb131be3f2d42067e2d040c912e788189490eb25692a850705d",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "cross_file_simple_location",
+      "source": "<?php\necho \"run\";\ninclude __DIR__ . \"/cross_file_simple_child.php\";\necho A::X;\n",
+      "source_sha256": "6afea8224382c04e6baf77c5bd241e408908a7c4f2b153ffa6a1b9b18f9e6f5c",
+      "stdout_base64": "cnVu",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIk1JU1NJTkciIGluIHtGSUxFfTo0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgNAo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-4/raw/06-cross_file_simple_location/command.json",
+      "native_raw_sha256": "a06606ed52481c718ba290406b0b99fe2a6f5337184f84ef4a4f67904d1293b7",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "files": [
+        {
+          "name": "cross_file_simple_child.php",
+          "source": "<?php\nclass A { const X=MISSING; }\n",
+          "source_sha256": "4ece2faafe5729fc38a3df66d149519702795751962971a87d27166d659b272a"
+        }
+      ]
+    },
+    {
+      "id": "cross_file_typed_bind_location",
+      "source": "<?php\necho \"run\";\ninclude __DIR__ . \"/cross_file_typed_child.php\";\nconst MISSING=\"x\";\necho A::X;\n",
+      "source_sha256": "964c03e4fb139282860c13ef7633280fa8124c695076151b030f5f02cb12f11b",
+      "stdout_base64": "cnVu",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBzdHJpbmcgdG8gY2xhc3MgY29uc3RhbnQgQTo6WCBvZiB0eXBlIGludCBpbiB7RklMRX06NQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDUK",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-4/raw/07-cross_file_typed_bind_location/command.json",
+      "native_raw_sha256": "1b907c554f55e4dae4b13e727f967736fd20fe6765800195ce0cd4291a76e584",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "files": [
+        {
+          "name": "cross_file_typed_child.php",
+          "source": "<?php\nclass A {\n const int X=MISSING . \"\";\n}\n",
+          "source_sha256": "2bb50d7201998b6267ce71ee894f064e3031e66ea5fe2f51986069d6ec738ef9"
+        }
+      ]
+    }
+  ]
+}

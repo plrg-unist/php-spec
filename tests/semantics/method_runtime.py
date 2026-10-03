@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Replay retained instance method/constructor sources against the checked CLI."""
+"""Compare retained original source tuples against the checked CLI."""
 from pathlib import Path
 import argparse
 import base64
 import hashlib
 import json
 import os
+import signal
 import subprocess
 import tempfile
 
@@ -17,6 +18,19 @@ DEFAULT_CASES = ROOT / 'tests/semantics/method_runtime_cases.json'
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def owned_members(pgid):
+    members = []
+    for path in Path('/proc').iterdir():
+        if not path.name.isdigit():
+            continue
+        try:
+            if int((path / 'stat').read_text().rsplit(')', 1)[1].split()[2]) == pgid:
+                members.append(int(path.name))
+        except (OSError, ValueError):
+            pass
+    return members
 
 
 def run(match, catalogue=DEFAULT_CASES):
@@ -44,21 +58,64 @@ def run(match, catalogue=DEFAULT_CASES):
         assert sha(source) == row['source_sha256'], row['id']
         command = [str(ROOT / 'bin/php-semantics'), str(source),
                    '--steps', '100000', '--timeout', '45']
+        entries = []
+        for child in row.get('files', []):
+            assert Path(child['name']).name == child['name'], 'invalid child filename'
+            path = directory / child['name']
+            path.write_bytes(child['source'].encode())
+            assert sha(path) == child['source_sha256'], child['name']
+            encoded = base64.b64encode(os.fsencode(path)).decode()
+            entries.append({'caller': base64.b64encode(os.fsencode(source)).decode(),
+                            'requested': encoded, 'status': 'opened',
+                            'resolved': encoded, 'opened': encoded,
+                            'source': base64.b64encode(path.read_bytes()).decode()})
+        if entries:
+            snapshot = directory / 'snapshot.json'
+            snapshot.write_text(json.dumps({'version': 1,
+                'main': base64.b64encode(os.fsencode(source)).decode(),
+                'cwd': base64.b64encode(os.fsencode(directory)).decode(),
+                'include_path': base64.b64encode(b'.:').decode(), 'entries': entries}) + '\n')
+            command += ['--file-snapshot', str(snapshot)]
         stdout_path, stderr_path = directory / 'runner.stdout', directory / 'runner.stderr'
+        producer = {'supplied_argv': command, 'supplied_cwd': str(directory),
+                    'supplied_environment': environment, 'host_timeout_seconds': 55,
+                    'observed_exit': None, 'cleanup_exit': None, 'status': 'prepared'}
+        command_path = directory / 'runner.command.json'
+        command_path.write_text(json.dumps(producer, indent=2) + '\n')
         with stdout_path.open('wb') as stdout_stream, stderr_path.open('wb') as stderr_stream:
+            process = None
             try:
-                result = subprocess.run(command, cwd=directory, env=environment,
-                                        stdout=stdout_stream, stderr=stderr_stream, timeout=55)
-                status = result.returncode
+                process = subprocess.Popen(command, cwd=directory, env=environment,
+                    stdout=stdout_stream, stderr=stderr_stream, start_new_session=True)
+                producer.update(popen_args=process.args, pid=process.pid,
+                                owned_pgid=process.pid, status='running')
+                command_path.write_text(json.dumps(producer, indent=2) + '\n')
+                producer['observed_exit'] = process.wait(timeout=55)
             except subprocess.TimeoutExpired:
-                status = None
+                producer['timeout_expired'] = True
+            finally:
+                if process is not None:
+                    try:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    except ProcessLookupError:
+                        pass
+                    try:
+                        producer['cleanup_exit'] = process.wait(timeout=5)
+                    except subprocess.TimeoutExpired:
+                        producer['cleanup_timeout'] = True
+                    producer['owned_group_after'] = owned_members(process.pid)
+                producer['status'] = 'closed'
+                command_path.write_text(json.dumps(producer, indent=2) + '\n')
+        status = producer['observed_exit']
         stdout, stderr = stdout_path.read_bytes(), stderr_path.read_bytes()
         (directory / 'runner.status.json').write_text(json.dumps({'exit_status': status}) + '\n')
         try:
             actual = json.loads(stdout)
         except json.JSONDecodeError:
             actual = {'status': 'runner_failure'}
-        passed = status == 0 and not stderr and actual.get('status') == row['status']
+        passed = (status == 0 and producer['cleanup_exit'] == 0
+                  and producer.get('owned_group_after') == [] and not stderr
+                  and actual.get('status') == row['status'])
         passed = passed and actual.get('frontend') == 'accepted' and actual.get('checked') == 'program' and actual.get('reason') is None
         passed = passed and actual.get('exit_status') == row['exit_status']
         stderr = base64.b64decode(row['stderr_template_base64']).replace(
@@ -70,19 +127,22 @@ def run(match, catalogue=DEFAULT_CASES):
                         'native_raw_sha256': row['native_raw_sha256'],
                         'native_profile': row.get('native_profile', shared_profile),
                         'source_sha256': row['source_sha256'],
+                        'command_record': str(command_path),
                         'runner_exit_status': status,
                         'actual': actual})
         print(row['id'], passed, actual.get('status'), flush=True)
         if not passed:
             break
-    assert before == types.syntax_validation.implementation_fingerprint(), 'implementation changed during run'
-    assert all(sha(ROOT / name) == digest for name, digest in direct.items()), 'direct input changed during run'
-    report = {'result': 'pass' if all(row['pass'] for row in records) else 'fail',
+    stable = before == types.syntax_validation.implementation_fingerprint() and all(
+        sha(ROOT / name) == digest for name, digest in direct.items())
+    report = {'result': 'pass' if stable and len(records) == len(selected)
+              and all(row['pass'] for row in records) else 'fail',
               'selection': match, 'selected_cases': len(selected),
               'catalogue_cases': len(cases),
               'completed_cases': len(records),
               'conditional_unrun': [row['id'] for row in selected[len(records):]],
-              'fingerprint': before, 'direct_inputs': direct, 'raw': str(out), 'records': records}
+              'fingerprint': before, 'direct_inputs': direct, 'inputs_stable': stable,
+              'raw': str(out), 'records': records}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(out, report['result'])
     return report['result'] == 'pass'
