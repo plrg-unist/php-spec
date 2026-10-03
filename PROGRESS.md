@@ -7,15 +7,17 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Argument introspection198/199 is privately composed with accepted public object invocation
-and raw/effective INI paths at tested **f8cc91079**, over **7dd8c17af**. The focused
-live-NUL callback accepts one normal source tuple and two finite checkpoints/133,
-covering source `__invoke` argument views, saved CONFIG packs and SET's old-value
-C-prefix after nested mutation. Prior CALLS union **1d61537bf** retains distinct
-author mixed source3/finite19-596 and independent source2/finite2-147 evidence.
+Ordinary-frame argument introspection198/199 is installed in composition with
+accepted public object invocation, raw/effective INI paths and callable-first
+parameter admission. Tested **244837b72**, over **b8a6f43f8**, accepts one fresh
+normal source tuple and two finite checkpoints/106: the callable object survives
+weak `callable|string` reception and its named source `__invoke` keeps genuine
+current and saved argument frames. Prior INI composition **f8cc91079** accepts
+source1/two133; prior CALLS union **1d61537bf** retains distinct author mixed
+source3/finite19-596 and independent source2/finite2-147 evidence.
 [Argument union ledger](coverage/semantics/argument-introspection-calls-current-review.json).
-These bounded checks reuse local executables; a fresh offline rebuild and full
-core remain open.
+Source-equivalent installation adds no fresh execution credit. Local executables
+are reused; a fresh offline rebuild and full core remain open.
 
 Raw INI storage and effective C-string paths are composed with public object
 invocation. The exact tested union **6e7ddca894**, on **6ba0ee71/1305**, accepts
@@ -109,79 +111,50 @@ readonly/asymmetric set access and scoped defaults remain open.
 [property contract](docs/semantics/SOURCE-CLASS-STATICS.md) ·
 [default-cache ledger](coverage/semantics/closure-default-cache-review.json).
 
-The independent private lanes currently include:
+Current family status:
 
-- Include/configuration: named Stringable `chdir` is installed at **09907c150**
-  on **1f354b61/1302**, with author source17/four185 and independent source2/two89.
-  Array-unpacked configuration calls are installed at **7423fc162** on
-  **d2764798/1302**: author source23/six208, retained source3/four38 (six
-  Unsupported controls) and named source3/four185. Independent fresh source2/two139
-  passes; earlier private **63cd23b84** evidence and the original active fixture
-  failure retain separate receipts.
-  Stringable SET is installed at tested **13c9c4ddf**, code **3e3608369**, on
-  **d7d59e41/1302**: author source24/four107, shared source3/directory1/81 and
-  six separate Unsupported checks; independent recovered source2 and fresh
-  owner79/finally50. Those earlier old-value witnesses are NUL-free. Current
-  raw/effective INI-prefix acceptance is recorded at the checkpoint above.
-  Restore and INI-option remain reviewed private increments.
-  PIPE source24/returned2, callback210 plus48 Unsupported guards and directory158
-  remain private; real CONFIG `__invoke` wrapper pipes remain Unsupported.
-  Earlier c8/calls-base named and copied-c8 renderer/content bridges keep their
-  separate receipts. Wider OS/INI behavior and lifecycle remain open.
-  [Named ledger](coverage/semantics/include-named-current-review.json)
-  · [unpack ledger](coverage/semantics/include-unpacked-current-review.json)
-  · [SET ledger](coverage/semantics/include-set-current-review.json)
-  · [pipe ledger](.tools/include-config-pipe-string-current/coverage/semantics/include-config-pipe-string-review.json).
-- Calls: public/default-public nonstatic source `__invoke` is installed at
-  **18a1383d7/b3a02ebc/1304**, over final SET **4015f160d**. Author checks
-  accept source21/finite20/537; independent checks accept source37/finite29/997,
-  including FIRST7/331 then SET79/finally50 before source/common finite20.
-  Original stream/exit observations and fresh checked fixtures are independently
-  audited; existing capture, named/unpack and finite CONFIG/SET guards survive.
-  Private **486874ba6** source54/49-1,475 and source70/58-1,935, earlier47ed/9c8
-  and the unexecuted named294 blueprint retain separate identities.
-  [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
-  is validated privately at **f39abebb0/04b4bd31/1307**: author source25/finite11/394
-  and independent source17/finite8/241, including two/one separate Unsupported
-  controls. The current INI composition **c852ab2dc/42be4def/1311** additionally
-  passes source2 and one live-receiver CONFIG fixture/53; no original gates repeat.
-  Shared pure classification changes one ordinary return expectation without new
-  return agreement. Array classification, nonpublic/static publication,
-  transformed weak wrappers, real CONFIG PIPE and correlated retired history remain open.
-  [Public invocation ledger](coverage/semantics/source-invoke-current-review.json)
-  · [capture ledger](coverage/semantics/method-capture-current-review.json)
-  · [selector ledger](coverage/semantics/method-class-selector-review.json).
-- Properties: the bounded private-c8 projection of typed static Stringable
-  assignment197 and default-false reference infrastructure is accepted, with
-  archival tip **55bbaf047**; no186 producer or installation is claimed.
-  Author source2/private41/corrected callback63 and independent source1/68 remain
-  separate from historical21/eight572. Declaration200 is privately accepted
-  and archived at **502654618**. Direct201 accepts author54 native/model source
-  tuples and independent source3/three188; earlier203d2/112,1c4/170 and failures
-  remain distinct. Fresh actual-master projection/installation, delayed receivers,
-  non-CV reference acquisition and full201 remain open.
-- Compiler: publication190–196 remains private/unaccepted. Freeze17 has four
-  bounded runtime passes; receiver-free/null-scope fails before SOURCE_PENDING.
-  The null/null181 producer repair has source-only approval; runtime renewal,
-  native18/file20, current capture compatibility and full publication/syntax remain
-  pending. Earlier freezes and failures retain their identities. Constants183/184
-  depend on publication.
-- Argument introspection198/199 is independently accepted privately: the original
-  fdef evidence is source83 and mixed24 unique states/445, with failed aggregates
-  and the engine disagreement preserved. The SET13c projection at **47040e57**
-  accepts author mixed source157/finite29-712 and independent source2/finite2-79;
-  its separately executed Unsupported control has zero agreement.
-  The CALLS18a union at **1d61537bf** accepts author mixed source3 (retained1,
-  fresh2), fresh finite4/241 and affected retained15/355; independent fresh
-  source2/finite2-147 uses its own ordinary profile. All original invalid native
-  witnesses and failed preparations remain exact.
-  [The union ledger](coverage/semantics/argument-introspection-calls-current-review.json)
-  distinguishes these identities. Composition on accepted INI **7dd8c17af**
-  preserves both source increments and at **f8cc91079** accepts source1/two133
-  live-NUL callback gates. The original legal getter witness remains nativepass/
-  modelUnsupported with zero agreement; getter admission is a separate open
-  include review. Canonical integration, Generator/Fiber/handlers, fresh rebuild
-  and full core remain open.
+- Include/configuration: raw/effective INI and Stringable SET are installed at
+  the checkpoints above. Restore04 is privately accepted at **b33** with
+  34 source tuples (24 normal, ten PHP errors) and thirteen finite fixtures/524
+  checks, including 28 separate Unsupported assertions. Composition on current
+  **b8a6** awaits two fresh source interactions; Restore is not installed.
+  INI05 destination/value conversion and full-byte `get_include_path`/`ini_get`
+  readback are next; broader directives, PIPE and OS/INI behavior remain open.
+  [Restore acceptance](.tools/include-review-13/restore-bounded-private-acceptance.json)
+  · [INI prefix ledger](coverage/semantics/include-ini-prefix-review.json)
+  · [SET ledger](coverage/semantics/include-set-current-review.json).
+- Calls: public source `__invoke` is installed at **18a1383d7**; callable-before-
+  string parameter admission is installed at **b8a6f43f8**. Its distinct private
+  author25/eleven394 and independent17/eight241 gates retain separate Unsupported
+  controls; the current INI interaction adds source2/one53 without replay.
+  Array/broader class-method classification, nonpublic/static publication,
+  transformed wrappers and real CONFIG PIPE remain open. No new return agreement
+  or paused-return dependency is claimed.
+  [Invocation ledger](coverage/semantics/source-invoke-current-review.json)
+  · [callable parameter ledger](coverage/semantics/callable-string-current-review.json).
+- Properties197: the bounded CALLS×SET private **b566** increment is accepted
+  and uninstalled. Current INI composition accepts source2 full-byte/live-old/
+  throw tuples; focused normal266 and throw256 finite checks are independently
+  accepted. Original normal329 timeout has zero state credit; restored file165
+  and original static68 controls still await acceptance. Delayed receivers,
+  non-CV reference acquisition and broader property semantics remain open.
+  [Current private ledger](.tools/property-postini197-current-13/coverage/semantics/typed-static-string-assignment-review.json).
+- Compiler publication190–196 has bounded private copied11 acceptance: source30
+  (eight normal, one exit, nine PHP errors, twelve static rejections), history6/107,
+  modifier26/286, classified syntax30980 and inventory/offline checks on private
+  **4b3c1a85** in the isolated gitless rebuild. Current INI/CALLS production
+  tuples agree; four affected finite checkpoints/200 and integration remain
+  pending after the source-derived fatal-history correction. Earlier SLAL,
+  formatter and history failures stay historical; reporting-mask2,
+  constants183/184 and full core remain open.
+  [Copied private acceptance](.tools/compiler-publication-operational-current/.tools/compiler-publication/reviewer-13-copied-publication-bounded-release-acceptance.json).
+- Argument introspection198/199 is installed with bounded acceptance at the
+  current checkpoint. Its fdef, SET13c, CALLS18a, INI7dd and callable-b8 evidence
+  remains distinct in [the union ledger](coverage/semantics/argument-introspection-calls-current-review.json)
+  and linked historical reviews. The original legal getter witness is nativepass/
+  modelUnsupported with zero agreement; getter admission is an open include
+  obligation. Generator/Fiber/handlers, broader callable interactions, a fresh
+  rebuild and full core remain open.
 
 `returns_verify` is temporarily paused by the user. Preserve its branches and
 evidence; do not retry the blocked engine experiment, substitute a reviewer,

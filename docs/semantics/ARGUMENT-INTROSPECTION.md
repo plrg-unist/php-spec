@@ -47,15 +47,15 @@ during compilation. An earlier optimized call or temporary receiver write error
 prevents that selector from compiling; erased selectors produce no warning.
 Suppression in a known write context rejects before compiling its child.
 
-198/199 are a privately reviewed ordinary-frame increment over accepted
-fdef6285d. [The review ledger](../../coverage/semantics/argument-introspection-review.json)
+198/199 implement ordinary-frame argument views. The original private review over
+fdef6285d in [the review ledger](../../coverage/semantics/argument-introspection-review.json)
 binds author gates, 26 retained compatibility sources, and independent
 83 ordinary sources plus 24 unique state cases/445 assertions. State certificates
 combine exact retained and focused receipts; original failed aggregates remain
 failed. Invalid-fixture diagnostics and future Unsupported controls are separate.
-Installation on current master and a fresh offline network-isolated rebuild remain
-pending. Generator/Fiber, autoload, unfinished handlers and source `__invoke`
-interactions beyond this baseline require later work. The inventory row stays partial.
+Its original evidence is separate from the later installed composition below.
+Generator/Fiber, autoload, unfinished handlers and a fresh offline rebuild remain
+open. The inventory row stays partial.
 
 The projection on tested SET13c9c4dd is accepted privately at 47040e57,
 preserving installed capture, named/unpacked calls and CONFIG certificates.
@@ -65,7 +65,7 @@ binds author mixed source157 (retained3 plus fresh154) and mixed finite29/712
 at zero agreement. Independent fresh ordinary source2 and finite2/79 retain
 separate profiles and mixed compiler provenance. Earlier failed witnesses and
 aggregates remain exact; the engine-defect case and model-only17 were excluded
-from renewed execution. Canonical integration and wider interactions remain open.
+from renewed execution. This earlier private identity is preserved; wider interactions remain open.
 
 The [CALLS union ledger](../../coverage/semantics/argument-introspection-calls-current-review.json)
 accepts private1d615 on source18a with its five-document child: author mixed
@@ -77,10 +77,20 @@ source endpoints exact. Tested f8cc91079 accepts a fresh source tuple and two
 finite checkpoints/133: the inner source `__invoke` keeps authentic argument and
 saved CONFIG/PACKS state after `ini_set` stores live-NUL bytes; its full-byte old
 return differs from the enclosing SET C-prefix return. Genuine one-step commit
-and normal cleanup pass. Executables are reused; canonical installation remains pending.
+and normal cleanup pass. Executables are reused; the accepted source is retained separately from installation.
 The first legal getter witness remains nativepass/modelUnsupported with zero
 agreement: `get_include_path` and `ini_get` bodies are currently unadmitted, and
 their complete-core scope is a separate open include review.
+
+The source-equivalent current composition preserves callable-first reception on
+b8a6. Tested244837 accepts source1/two106: the dual-role object survives weak
+`callable|string` reception, and its named source `__invoke` has genuine receiver,
+current argument and saved caller CVS guards. The stringifier is never selected.
+Installation promotes these exact sources; it adds no fresh execution credit.
+Do not run unfiltered historical protocol/catalogue defaults: engine667,
+model-only17 and the closed996b generator control are excluded from renewal.
+The union ledger records the exact prepared runner command; combined offline
+validation and broader interactions remain open.
 
 The pin has an internal MAKE_REF defect for reference-list assignment directly
 from optimized `func_get_args()`. The model keeps general list language behavior;
