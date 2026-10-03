@@ -205,6 +205,8 @@ CASES['static-reference-allowed-initial-flags'] = b'<?php class A{public private
 EXPECTED['static-reference-allowed-initial-flags'] = b'null|2|2|Cannot assign array to reference held by property A::$p of type ?int|2|Cannot access uninitialized non-nullable property N::$q by reference|unset'
 CASES['static-reference-borrowed-handler'] = b'<?php function h($code,$message,$file,$line){echo "H",func_num_args();A::clear();return true;}set_error_handler("h");class A{public private(set) static ?int $p=1;public static function clear(){self::$p=null;}public static function &ref(){$left=&self::$p;echo $left===$missing?"same":"different";echo "|",__CLASS__,"/",static::class,"/",func_num_args(),"|";return static::$p;}}class B extends A{}$r=&B::ref();$r=2;echo A::$p,"|",B::$p;'
 EXPECTED['static-reference-borrowed-handler'] = b'H4same|A/B/0|2|2'
+CASES['static-reference-config-pipe'] = b'<?php class K{public function __toString(){echo "K",func_num_args();ini_set("include_path","v\\0raw");return "include_path";}}class A{public private(set) static int $p=1;public static function &ref(){$path=(new K) |> ini_get(...);echo __CLASS__,"/",static::class,"/",func_num_args(),"|",$path,"|";return static::$p;}}class B extends A{}ini_set("include_path","seed");$r=&B::ref();$r=2;echo A::$p,"|",B::$p;'
+EXPECTED['static-reference-config-pipe'] = b'K0A/B/0|v\0raw|2|2'
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
