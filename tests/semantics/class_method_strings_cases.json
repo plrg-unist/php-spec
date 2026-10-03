@@ -1,0 +1,229 @@
+[
+  {
+    "id": "computed-qualified-case-inherited-named-args",
+    "source": "<?php\nnamespace N;\nclass Owner { public static function run($v) { echo __CLASS__,\"/\",static::class,\":\",$v,\":\",func_num_args(),\":\",func_get_arg(0); } }\nclass Child extends Owner {}\n$cb=\"\\\\n\\\\cHiLd::rUN\"; $cb(v:'s');\n",
+    "source_sha256": "c42f1ff42dce0301fc105526d906a448e01f8a0385a3873a60696cade3b4f43e",
+    "expected_model": "normal",
+    "purpose": "Computed full qualified bytes, case-insensitive public inherited lookup and named argument view.",
+    "expected_normal_stdout": "N\\Owner/N\\Child:s:1:s"
+  },
+  {
+    "id": "selected-reference-replacement-during-argument",
+    "source": "<?php\nclass Owner { public static function run($v) { echo 'R',$v; } }\nclass Child extends Owner {}\nclass Other { public static function run($v) { echo 'N',$v; } }\nfunction replace(&$cb) { $cb='Other::run'; return 'x'; }\n$cb='Child::run'; $alias=&$cb; $alias(replace($cb)); echo '|'; $cb('y');\n",
+    "source_sha256": "9cd51464d422bed1e6b9ed70bc1c37124a11345690b96b27b9b0b4bc0c6ab087",
+    "expected_model": "normal",
+    "purpose": "Selection is immutable after a referenced callee changes during argument evaluation.",
+    "expected_normal_stdout": "Rx|Ny"
+  },
+  {
+    "id": "fixed-qualified-static-inherited",
+    "source": "<?php\nnamespace N;\nclass Owner { public static function run($v) { echo __CLASS__,\"/\",static::class,\":\",$v; } }\nclass Child extends Owner {}\n('\\\\n\\\\cHiLd::rUN')('x');\n",
+    "source_sha256": "46f0395152e455a224f5e327dc78864634a758aadb7b45b3bd5356a507d2511b",
+    "expected_model": "normal",
+    "purpose": "Initial literal name normalization retains original qualified bytes and called class.",
+    "expected_normal_stdout": "N\\Owner/N\\Child:x"
+  },
+  {
+    "id": "fixed-nonstatic-requested-parent-overridden-child",
+    "source": "<?php\nclass Owner {\n public function run($v) { echo __CLASS__,\"/\",static::class,\":\",$v; }\n public function start() { ('Owner::run')('x'); }\n}\nclass Child extends Owner { public function run($v) { echo 'BAD-OVERRIDE'; } }\n$receiver=new Child; $other=new Child; $receiver->start(); unset($receiver,$other);\n",
+    "source_sha256": "b28b2e45c512de443a42beaef70d4d870be59f759d6036a4bf6776bf078795b4",
+    "expected_model": "normal",
+    "purpose": "A fixed literal selects the requested public parent descriptor with actual Child this, even after override.",
+    "expected_normal_stdout": "Owner/Child:x"
+  },
+  {
+    "id": "fixed-nonstatic-child-from-parent-frame",
+    "source": "<?php\nclass Owner { public function start() { ('Child::run')('x'); } }\nclass Child extends Owner { public function run($v) { echo __CLASS__,\"/\",static::class,\":\",$v; } }\n(new Child)->start();\n",
+    "source_sha256": "c76d000a45a3ca5cbedf6c84c27fa2c8a9a1c8a02e2c8f0cfb1a3e621ade4fa3",
+    "expected_model": "normal",
+    "purpose": "Fixed dispatch uses compatible actual this rather than the narrower callable admission lexical policy.",
+    "expected_normal_stdout": "Child/Child:x"
+  },
+  {
+    "id": "computed-nonstatic-rejects-before-argument",
+    "source": "<?php\nfunction side() { echo 'BAD-ARG'; return 'x'; }\nclass Owner { public function run($v) { echo 'BAD-BODY'; } }\n$cb='Owner::run'; try { $cb(side()); } catch (Error $e) { echo 'E'; }\n",
+    "source_sha256": "c2939977936ede7eaa915845cc0dc67982a06fab0ccbf4f3956701ea51e901d2",
+    "expected_model": "normal",
+    "purpose": "Equal computed bytes remain static-only and reject before argument effects.",
+    "expected_normal_stdout": "E"
+  },
+  {
+    "id": "computed-nonstatic-capture-rejects",
+    "source": "<?php\nclass Owner {\n public function run() { echo 'BAD-BODY'; }\n public function start() { $cb='Owner::run'; try { $copy=$cb(...); echo 'BAD-CAPTURE'; } catch (Error $e) { echo 'E'; } }\n}\n(new Owner)->start();\n",
+    "source_sha256": "e43075b6f6f2a9e8589490ab9ef4b76194b8790753d8771d648dd313128ea19f",
+    "expected_model": "normal",
+    "purpose": "Computed first-class conversion cannot use compatible active this.",
+    "expected_normal_stdout": "E"
+  },
+  {
+    "id": "weak-callable-static-string",
+    "source": "<?php\nclass Owner { public static function run($v) { echo 'S',$v; } }\nfunction receive(callable $f) { $f('x'); }\nreceive('Owner::run');\n",
+    "source_sha256": "cedaa2c3d2d3acbf5839f0546c21eb713dc7da573331d3147d22115683a3ef8b",
+    "expected_model": "normal",
+    "purpose": "Weak callable reception admits a public concrete class-method string without conversion.",
+    "expected_normal_stdout": "Sx"
+  },
+  {
+    "id": "strict-callable-qualified-unpack",
+    "source": "<?php\ndeclare(strict_types=1);\nclass Owner { public static function run($v) { echo __CLASS__,\"/\",static::class,\":\",$v; } }\nclass Child extends Owner {}\nfunction receive(callable $f) { $f(...['v'=>'x']); }\nreceive(f:'\\\\cHiLd::rUN');\n",
+    "source_sha256": "ac3d628261838f57158ba6129f526a9df6bd3798498d31e34940ae947c007a03",
+    "expected_model": "normal",
+    "purpose": "Strict callable admission, qualification and named-unpacked dynamic sends compose.",
+    "expected_normal_stdout": "Owner/Child:x"
+  },
+  {
+    "id": "by-reference-callable-string-writeback",
+    "source": "<?php\nclass Owner { public static function run($v) { echo 'R',$v; } public static function other($v) { echo 'N',$v; } }\nfunction receive(callable &$f) { $f('x'); $f='Owner::other'; }\n$cb='Owner::run'; $alias=&$cb; receive($alias); $cb('y');\n",
+    "source_sha256": "01fe844d088cbe8f040a9f2540b104f3e7b8f85e38b9706183b53f7902a8f6fd",
+    "expected_model": "normal",
+    "purpose": "Callable reception preserves the caller reference cell and subsequent writes.",
+    "expected_normal_stdout": "RxNy"
+  },
+  {
+    "id": "global-callable-nonstatic-php-error",
+    "source": "<?php\nclass Owner { public function run() { echo 'BAD-BODY'; } }\nfunction receive(callable $f) { echo 'BAD-RECEIVE'; }\necho 'before|'; receive('Owner::run');\n",
+    "source_sha256": "5fb9856073b9070433da573fe0b759b3886de9044880bf7dc5bb5b43952753ba",
+    "expected_model": "php_error",
+    "purpose": "Global admission rejects nonstatic class strings with ordinary TypeError."
+  },
+  {
+    "id": "missing-method-callable-php-error",
+    "source": "<?php\nclass Owner { public static function run() {} }\nfunction receive(callable $f) { echo 'BAD-RECEIVE'; }\necho 'before|'; receive('Owner::missing');\n",
+    "source_sha256": "454696e4041f3541a042e78e88c1d7dd5fd3b44bdc026218795ac3dec8d418d3",
+    "expected_model": "php_error",
+    "purpose": "Known public class with a missing method is false for callable admission."
+  },
+  {
+    "id": "full-byte-method-nul-before-argument",
+    "source": "<?php\nclass Owner { public static function run($v) { echo 'BAD-BODY'; } }\nfunction side() { echo 'BAD-ARG'; return 'x'; }\n$cb=\"Owner::run\\0tail\"; try { $cb(side()); } catch (Error $e) { echo 'E'; }\n",
+    "source_sha256": "e76c8ce6e0ffeaa9bea60bf5a9b21cfe18008137005ace3967aff9fac2bcae26",
+    "expected_model": "normal",
+    "purpose": "A NUL suffix remains part of the method lookup key.",
+    "expected_normal_stdout": "E"
+  },
+  {
+    "id": "empty-method-string-before-argument",
+    "source": "<?php\nclass Owner { public static function run($v) { echo 'BAD-BODY'; } }\nfunction side() { echo 'BAD-ARG'; return 'x'; }\n$cb='Owner::'; try { $cb(side()); } catch (Error $e) { echo 'E'; }\n",
+    "source_sha256": "39054c319d03f4039a961937459fdceb849785829da9cbe47949a59bd8089d59",
+    "expected_model": "normal",
+    "purpose": "An empty second component reaches known-class method rejection before arguments.",
+    "expected_normal_stdout": "E"
+  },
+  {
+    "id": "final-colon-function-path",
+    "source": "<?php\nclass Owner { public static function run($v) { echo 'BAD-BODY'; } }\nfunction side() { echo 'BAD-ARG'; return 'x'; }\n$cb='Owner::run:'; try { $cb(side()); } catch (Error $e) { echo 'F'; }\n",
+    "source_sha256": "31cc9a2d89b2af81f9abc765c1d96add56ca6d5622c1c911ced3cd86a1da165e",
+    "expected_model": "normal",
+    "purpose": "The final colon is not paired, so the value stays on the ordinary function-name miss path.",
+    "expected_normal_stdout": "F"
+  },
+  {
+    "id": "abstract-static-method-before-argument",
+    "source": "<?php\nabstract class Owner { abstract public static function run($v); }\nfunction side() { echo 'BAD-ARG'; return 'x'; }\n$cb='Owner::run'; try { $cb(side()); } catch (Error $e) { echo 'E'; }\n",
+    "source_sha256": "caba0bcaad601af3a41fd8375ad4d2aac0e035058d4a44f6c8c84293d873a5eb",
+    "expected_model": "normal",
+    "purpose": "A known abstract public static method throws the ordinary pre-argument Error.",
+    "expected_normal_stdout": "E"
+  },
+  {
+    "id": "class-nul-service-boundary",
+    "source": "<?php\nclass Owner { public static function run() { echo 'BAD-BODY'; } }\n$cb=\"Owner\\0tail::run\"; $cb();\n",
+    "source_sha256": "594be0b1c893a83dc23d2bd6ed6425cf18d5cc52fba8ce3702e561532bf5387d",
+    "expected_model": "unsupported",
+    "purpose": "Unknown full-byte class lookup/autoload service remains a separate Unsupported observation."
+  },
+  {
+    "id": "scope-dependent-string-boundary",
+    "source": "<?php\nclass Owner { public static function run() { echo 'run'; } public static function start() { $cb='self::run'; $cb(); } }\nOwner::start();\n",
+    "source_sha256": "00a135c397988202b1c5cfe89156f62edc90c90000d2d2a9dbd0078779a79ad1",
+    "expected_model": "unsupported",
+    "purpose": "Scoped callable strings stay outside the selected ordinary public class-name resolver."
+  },
+  {
+    "id": "captured-clone-nominal-closure-invoke-missing",
+    "source": "<?php\nclass Owner { public static function run($v) { echo 'R',$v; } }\nclass Child extends Owner {}\nfunction accept(Closure $f) { echo get_class($f),':'; $f->__invoke(v:'x'); }\n$cb='Child::run'; $f=$cb(...); $copy=clone $f; unset($f,$cb); accept($copy);\n$again=$copy->__invoke(...); $again('y'); unset($again);\ntry { $copy->missing(); } catch (Error $e) { echo ':E'; } unset($copy);\n",
+    "source_sha256": "db755cc42362f13fcfe69b05b0097e37325ea65edeb9275ea43055a6c98e08a9",
+    "expected_model": "normal",
+    "purpose": "Computed capture/clone remains nominal Closure, supports invoke and invoke capture, and rejects an undefined method normally.",
+    "expected_normal_stdout": "Closure:RxRy:E"
+  },
+  {
+    "id": "captured-static-method-cell-default",
+    "source": "<?php\nconst V='v';\nclass Owner { public static function run($v=V) { static $n=0; echo __CLASS__,\"/\",static::class,\":\",$v,\":\",++$n,\";\"; } }\nclass Child extends Owner {}\n$f=('Child::run')(...); $copy=clone $f; unset($f); $copy(); $again=('Child::run')(...); $again(); unset($copy,$again);\n",
+    "source_sha256": "32d366cfb32f0a9bc893a4005c604a95b15fcceee46925617abb5e3169c81a37",
+    "expected_model": "normal",
+    "purpose": "Captured clones share the source method static cell and deferred default cache.",
+    "expected_normal_stdout": "Owner/Child:v:1;Owner/Child:v:2;"
+  },
+  {
+    "id": "static-capture-retired-creator",
+    "source": "<?php\nclass Creator {}\nclass Owner { public static function run($v) { echo __CLASS__,\"/\",static::class,\":\",$v; } }\nclass Child extends Owner {}\n$saved=null; $maker=function()use(&$saved){$saved=('Child::run')(...);};\n$creator=new Creator; $maker->call($creator); unset($maker,$creator); $copy=clone $saved; unset($saved); $copy(v:'k'); unset($copy);\n",
+    "source_sha256": "dd346bde2fdfdbb3837cc650e2dcc90ee2300086c4ade2172887c2476d01c8bc",
+    "expected_model": "normal",
+    "purpose": "Static capture needs no creator-binding certificate or retired creator root.",
+    "expected_normal_stdout": "Owner/Child:k"
+  },
+  {
+    "id": "fixed-capture-requested-descriptor-receiver-retirement",
+    "source": "<?php\nclass Owner {\n public function run($v) { echo __CLASS__,\"/\",static::class,\":\",$v; }\n public function create(&$saved) { $saved=('Owner::run')(...); }\n}\nclass Child extends Owner { public function run($v) { echo 'BAD-OVERRIDE'; } }\n$receiver=new Child; $other=new Child; $saved=null; $receiver->create($saved); $copy=clone $saved; unset($receiver,$other,$saved); $copy(...['v'=>'k']); unset($copy);\n",
+    "source_sha256": "d6d738f2d5c474fef8452ba2b56cd16e24d9d6e352654f511ea687a4504a9498",
+    "expected_model": "normal",
+    "purpose": "A fixed capture owns selected Child while retaining the requested parent descriptor across override and ordinary-owner retirement.",
+    "expected_normal_stdout": "Owner/Child:k"
+  },
+  {
+    "id": "captured-static-string-closure-pipe",
+    "source": "<?php\nclass Owner { public static function run($v) { echo __CLASS__,\"/\",static::class,\":\",$v; } }\nclass Child extends Owner {}\n$cb='Child::run'; $f=$cb(...); 'p' |> $f;\n",
+    "source_sha256": "7625189f0f2ec15e3f1d4c929baa1f762fba9aaf215e6ad577808e3e482d2e71",
+    "expected_model": "normal",
+    "purpose": "The selected new Closure tag reaches the existing PIPE closure consumer with owner/called scope.",
+    "expected_normal_stdout": "Owner/Child:p"
+  },
+  {
+    "id": "constant-folded-name-nonstatic-and-function-control",
+    "source": "<?php\nfunction ordinary($v) { echo 'F',$v; }\nclass Owner {\n public function run($v) { echo 'R',$v; }\n public function start() { ('Owner'.'::run')('x'); $f='ordinary'; $f('y'); $copy=('ordinary')(...); $copy('z'); }\n}\n(new Owner)->start();\n",
+    "source_sha256": "90c9a81dcb3ba1c56722c78427073c7df0a315dca39301f1126c3a6037826295",
+    "expected_model": "normal",
+    "purpose": "A compiler-folded constant method name uses the fixed receiver route while registered function strings and captures remain intact.",
+    "expected_normal_stdout": "RxFyFz"
+  },
+  {
+    "id": "static-string-current-ini-option-arguments-trace",
+    "source": "<?php\nclass Rejected { public function __toString(): string { echo 'BAD-V'; return 'bad'; } }\nclass Option {\n public function __toString(): string { echo 'o',func_num_args(),func_get_args()===[]?'z':'BAD'; ini_set('include_path',\"mutated\\0tail\"); return 'include_path'; }\n}\nclass Owner {\n public static function run($v) {\n  echo __CLASS__,'/',static::class,':',func_num_args(),':',func_get_arg(0),'|';\n  try { ini_set(value:new Rejected,option:new Option); } catch(TypeError $e) { echo 'E',$e->getTrace()[1]['type']; }\n  echo '|',func_num_args(),':',func_get_arg(0),'|';\n  echo ini_set('include_path','after')===\"mutated\\0tail\"?'K':'BAD';\n }\n}\nclass Child extends Owner {}\n$cb='Child::run'; $cb(...['v'=>'x']);\n",
+    "source_sha256": "41b9647ab50f3f3cf4ae11b08897f647c6ff29b3a8ba034c6cd6b53a8e1abc27",
+    "expected_model": "normal",
+    "purpose": "New static string target preserves saved arguments, both INI operands, callback ordering/raw mutation and :: trace type before value rejection.",
+    "expected_normal_stdout": "Owner/Child:1:x|o0zE::|1:x|K",
+    "profile": "file"
+  },
+  {
+    "id": "captured-string-known-closure-consumer-boundary",
+    "source": "<?php\nclass Owner { public static function run() {} }\n$f=('Owner::run')(...); $f->bindTo(null);\n",
+    "source_sha256": "5918d352d2d3b877f62d241998414bb08ef562d41ef08eff530adaecf2f7801c",
+    "expected_model": "unsupported",
+    "purpose": "Known Closure transformation consumers remain an explicit Unsupported boundary for the new capture tag."
+  },
+  {
+    "id": "fixed-static-method-reference-argument",
+    "source": "<?php\nclass Owner { public static function run(&$value) { $value='K'; } }\n$v='x'; $alias=&$v; ('Owner::run')($alias); echo $v,$alias;\n",
+    "source_sha256": "f93d8cdb5a2e336690f549814166942bd5f707cdc5490b647420212c940fbf50",
+    "expected_model": "normal",
+    "expected_normal_stdout": "KK",
+    "purpose": "Initial fixed method-string argument modes acquire the actual writable alias for a by-reference method parameter; no reference return is used."
+  },
+  {
+    "id": "constant-array-firstclass-runtime-result",
+    "source": "<?php\nconst V='v';\nclass Owner { public static function run($v=V) { static $n=0; echo __CLASS__,\"/\",static::class,\":\",$v,\":\",++$n,\";\"; } }\nclass Child extends Owner {}\nfunction useClosure(Closure $f) { $f(); }\n$f=['Child','run'](...); $copy=clone $f; unset($f);\nuseClosure($copy); unset($copy);\ntry { (1)(...); echo \"BAD\"; } catch (Error $e) { echo \"E\"; }\n",
+    "source_sha256": "a1c18d9bfb8625c9d3655e38504688c9587c8329caa259e1884e50aaf51d9873",
+    "expected_model": "normal",
+    "expected_normal_stdout": "Owner/Child:v:1;E",
+    "purpose": "First-class conversion returns a runtime Closure rather than propagating its constant array callee. Clone/nominal Closure admission retain method defaults/static cells; a constant scalar callee throws Error."
+  },
+  {
+    "id": "inherited-string-current-handler-saved-arguments-trace",
+    "source": "<?php\nfunction namedHandler210($n,$m,$file,$line) {\n    echo \"h\",func_num_args();\n    throw new Error(\"boom\");\n}\nclass Owner {\n    public static function run($x) {\n        echo __CLASS__,\"/\",static::class,\":\",func_num_args(),\":\",func_get_arg(0),\"|\";\n        try { trigger_error(\"warning\",512); }\n        catch (Error $e) { echo \"|\",$e->getTraceAsString(),\"|\"; }\n        echo func_num_args(),\":\",func_get_arg(0);\n    }\n}\nclass Child extends Owner {}\nset_error_handler(\"namedHandler210\",512);\n$f=\"Child::run\"; $f(x:7);\nrestore_error_handler();\n",
+    "source_sha256": "16207ca9aed45a807225ad057c6c22774c463b1de1d24cd6a86f9e42dae024cb",
+    "expected_model": "normal",
+    "purpose": "Inherited computed class-method string keeps Owner/Child and ARG1/7 through a raw named four-argument handler that throws; original trace-as-string bytes and restoration are compared strictly. The finite companion uses explicit file state."
+  }
+]
