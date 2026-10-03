@@ -2,19 +2,23 @@
 ;; By-reference aliases may change earlier parameters, so no value history is kept.
 def $typed_parameters(eps) = false
 def $typed_parameters(psparam :: psparam_tail*) = (psparam.TYPE =/= eps \/ $typed_parameters(psparam_tail*))
+dec $error_context_direct_trigger(pstate) : bool
 dec $typed_caller_strict(pstate) : bool
+def $typed_caller_strict(S) = false -- if $error_context_direct_trigger(S)
 def $typed_caller_strict(S) = false
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.WRAPPER =/= eps
 def $typed_caller_strict(S) = pfunction.CODE.STRICT
   -- if S.CURRENT = (pcallcontext_current)
   -- if pcallcontext_current.WRAPPER = eps
+  -- if ~$error_context_direct_trigger(S)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.CONTEXT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
 def $typed_caller_strict(S) = pcode.STRICT
   -- if S.CURRENT = (pcallcontext_current)
   -- if pcallcontext_current.WRAPPER = eps
+  -- if ~$error_context_direct_trigger(S)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.CONTEXT = eps
   -- if S.CURRENT = (pcallcontext)

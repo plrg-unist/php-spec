@@ -5,6 +5,11 @@ def $trace_items(eps, parray) = parray
 def $trace_items((pkey, pvalue) :: (pkey_tail, pvalue_tail)*, parray) = $trace_items((pkey_tail, pvalue_tail)*, $array_insert(parray, pkey, DIRECT pvalue))
 
 dec $trace_frame_fields(ptraceframe, nat) : parray
+def $trace_frame_fields(ptraceframe, n_args) = $array_insert($array_empty(), KSTRING $ptascii("function"), DIRECT (PSTRING ptraceframe.FUNCTION))
+  -- if ptraceframe.FILE = eps
+  -- if ptraceframe.LINE = $(-1)
+  -- if ptraceframe.CLASS = eps
+  -- if ptraceframe.TYPE = eps
 def $trace_frame_fields(ptraceframe, n_args) = $array_insert($array_insert($array_empty(), KSTRING $ptascii("function"), DIRECT (PSTRING ptraceframe.FUNCTION)), KSTRING $ptascii("class"), DIRECT (PSTRING preqbytes_class))
   -- if ptraceframe.FILE = eps
   -- if ptraceframe.LINE = $(-1)
@@ -55,8 +60,19 @@ def $trace_frame_array_valid(S, n, n_trace) = true
   -- if $(n < |S.ARRAYS|)
   -- if (HARRAY n) <- S.ALLOCATIONS
   -- if n =/= n_trace
-  -- if S.ARRAYS[n].ITEMS = [ENTRY (KSTRING $ptascii("function")) (DIRECT (PSTRING preqbytes_function)), ENTRY (KSTRING $ptascii("class")) (DIRECT (PSTRING preqbytes_class)), ENTRY (KSTRING $ptascii("type")) (DIRECT (PSTRING $ptascii("->"))), ENTRY (KSTRING $ptascii("args")) (DIRECT (PARRAY n_args))]
-  -- if preqbytes_function = $ptascii("__toString")
+  -- if S.ARRAYS[n].ITEMS = [ENTRY (KSTRING $ptascii("function")) (DIRECT (PSTRING preqbytes_function)), ENTRY (KSTRING $ptascii("args")) (DIRECT (PARRAY n_args))]
+  -- if preqbytes_function =/= eps
+  -- if n_args =/= n
+  -- if n_args =/= n_trace
+  -- if $trace_argument_array_valid(S, n_args)
+def $trace_frame_array_valid(S, n, n_trace) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if n =/= n_trace
+  -- if S.ARRAYS[n].ITEMS = [ENTRY (KSTRING $ptascii("function")) (DIRECT (PSTRING preqbytes_function)), ENTRY (KSTRING $ptascii("class")) (DIRECT (PSTRING preqbytes_class)), ENTRY (KSTRING $ptascii("type")) (DIRECT (PSTRING preqbytes_type)), ENTRY (KSTRING $ptascii("args")) (DIRECT (PARRAY n_args))]
+  -- if preqbytes_function =/= eps
+  -- if preqbytes_class =/= eps
+  -- if preqbytes_type <- [$ptascii("->"), $ptascii("::")]
   -- if n_args =/= n
   -- if n_args =/= n_trace
   -- if $trace_argument_array_valid(S, n_args)

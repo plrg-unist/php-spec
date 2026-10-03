@@ -126,6 +126,7 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
   -- if ~$terminal_string_context(S, pcallcontext)
   -- if ~$closure_call_target($context_target(pcallcontext))
   -- if ~$config_string_trace_context(S, pcallcontext)
+  -- if $error_context_trigger(S, pcallcontext) = eps
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
@@ -169,7 +170,10 @@ def $error_release_iterators(S) = S[.ITERATORS = $error_keep_iterators(S.ITERATO
 
 dec $eval_exception_trace(pstate) : ptraceframe*
 dec $source_trace_prefixed(pstate, ptraceframe*) : ptraceframe*
-def $start_error_unwind(S) = $error_release_iterators($silence_unwind(S))[.CONSTCONTEXT = eps][.TRACE = $eval_exception_trace(S)][.ERRORORIGIN = S.ORIGIN][.TODO = [ERROR_UNWIND S.COMPLETION]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+dec $error_unwind_trace(pstate) : ptraceframe*
+def $error_unwind_trace(S) = S.TRACE -- if S.COMPLETION = USERFATAL n* z b
+def $error_unwind_trace(S) = $eval_exception_trace(S) -- otherwise
+def $start_error_unwind(S) = $error_release_iterators($silence_unwind(S))[.CONSTCONTEXT = eps][.TRACE = $error_unwind_trace(S)][.ERRORORIGIN = S.ORIGIN][.TODO = [ERROR_UNWIND S.COMPLETION]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
 dec $error_unwind(pstate, pcompletion) : pstate
 def $error_unwind(S, pcompletion) = $error_release_iterators($silence_unwind($restore_frame(S)))[.TODO = [ERROR_UNWIND pcompletion]][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
   -- if S.FRAMES =/= eps

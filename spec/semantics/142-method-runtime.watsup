@@ -1313,6 +1313,7 @@ def $wrapper_send_name(S, pcalltarget, porigin?, preqbytes) = preqbytes -- other
 def $wrapper_called_suffix(S, pcallcontext) = eps -- if pcallcontext.WRAPPER =/= eps
 def $wrapper_called_suffix(S, pcallcontext) = $ptascii(", called in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE)
   -- if pcallcontext.WRAPPER = eps
+  -- if $error_context_trigger(S, pcallcontext) = eps
   -- if pcallcontext.CALLSITE = (porigin)
 dec $wrapper_values(pstate, pnamedslot*) : pvalue*
 def $wrapper_values(S, eps) = eps
@@ -1348,6 +1349,7 @@ def $wrapper_arguments(S, pcallcontext) = phpType7*
 def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed") -- if pcallcontext.WRAPPER =/= eps
 def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE)
   -- if pcallcontext.WRAPPER = eps
+  -- if $error_context_trigger(S, pcallcontext) = eps
   -- if pcallcontext.CALLSITE = (porigin)
 
 def $acquire_call_valid(S) = true
