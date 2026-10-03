@@ -112,6 +112,17 @@ def $error_handler_pop(S) = S[.ERRORHANDLER.CALLBACK = eps] -- if S.ERRORHANDLER
 dec $error_handler_invalid(pvalue) : preqbytes
 def $error_handler_invalid(PSTRING n*) = $ptascii("function \"") ++ $c_string(n*) ++ $ptascii("\" not found or invalid function name")
 def $error_handler_invalid(pvalue) = $ptascii("no array or string given") -- otherwise
+;; Zend's callback-parameter errors differ from direct array-call errors.
+dec $error_handler_array_invalid(pstate, nat) : preqbytes?
+def $error_handler_array_invalid(S, n) = ($ptascii("array callback must have exactly two members"))
+  -- if $array_shape_error(S, n) = ($ptascii("Array callback must have exactly two elements"))
+def $error_handler_array_invalid(S, n) = ($ptascii("array callback has to contain indices 0 and 1"))
+  -- if $array_shape_error(S, n) = ($ptascii("Array callback has to contain indices 0 and 1"))
+def $error_handler_array_invalid(S, n) = ($ptascii("first array member is not a valid class name or object"))
+  -- if $array_shape_error(S, n) = ($ptascii("First array member is not a valid class name or object"))
+def $error_handler_array_invalid(S, n) = ($ptascii("second array member is not a valid method"))
+  -- if $array_shape_error(S, n) = ($ptascii("Second array member is not a valid method"))
+def $error_handler_array_invalid(S, n) = eps -- otherwise
 dec $error_handler_registration(pstate, pconfigcall, pvalue) : pstate
 def $error_handler_registration(S, pconfigcall, pvalue) = S_mask[.ERRORHANDLERS = S.ERRORHANDLER :: S.ERRORHANDLERS][.ERRORHANDLER = {CALLBACK (pvalue), LEVELS $error_int32(i)}][.RESULT = KNOWN $error_handler_value(S.ERRORHANDLER)]
   -- if $typed_callable(S, pvalue) = (true)
@@ -127,7 +138,14 @@ def $error_handler_registration(S, pconfigcall, pvalue) = S_mask
   -- if S_mask.COMPLETION =/= NORMAL
 def $error_handler_registration(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_error_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ $error_handler_invalid(pvalue))
   -- if pvalue =/= PNULL
+  -- if ~$is_array_value(pvalue)
   -- if $typed_callable(S, pvalue) = (false)
+def $error_handler_registration(S, pconfigcall, PARRAY n) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_error_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ n_reason*)
+  -- if $typed_callable(S, PARRAY n) = (false)
+  -- if $error_handler_array_invalid(S, n) = (n_reason*)
+def $error_handler_registration(S, pconfigcall, PARRAY n) = S[.COMPLETION = UNSUPPORTED "error-handler array callback resolution"]
+  -- if $typed_callable(S, PARRAY n) = (false)
+  -- if $error_handler_array_invalid(S, n) = eps
 def $error_handler_registration(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "error-handler callable registration form"]
   -- if $typed_callable(S, pvalue) = eps
 

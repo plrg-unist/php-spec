@@ -149,12 +149,13 @@ rule PhpStep/error-handler-pending-callable: S ~> S[.COMPLETION = UNSUPPORTED "e
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_target(S, perrorcall.CALLBACK) = eps
-  -- if $typed_callable(S, perrorcall.CALLBACK) = (true) \/ $typed_callable(S, perrorcall.CALLBACK) = eps
+  -- if $typed_callable(S, perrorcall.CALLBACK) = (true) \/ $typed_callable(S, perrorcall.CALLBACK) = eps \/ $is_array_value(perrorcall.CALLBACK)
 rule PhpStep/error-handler-invalid-callback: S ~> $error_handler_restore($throw_scalar(S, "Error", $ptascii("Invalid callback ") ++ $error_handler_invalid(perrorcall.CALLBACK), perrorcall.LINE), perrorcall.CALLBACK)
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_target(S, perrorcall.CALLBACK) = eps
   -- if $typed_callable(S, perrorcall.CALLBACK) = (false)
+  -- if ~$is_array_value(perrorcall.CALLBACK)
 ;; A fatal default bails out before Zend reaches automatic raw restoration.
 def $error_fallback_finish(S, pvalue) = $error_handler_restore(S, pvalue) -- if S.COMPLETION = NORMAL
 def $error_fallback_finish(S, pvalue) = S -- if S.COMPLETION =/= NORMAL

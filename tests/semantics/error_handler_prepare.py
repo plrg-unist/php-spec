@@ -26,7 +26,9 @@ def main():
                             'expected_stdout_b64': base64.b64encode(expected).decode(),
                             'expected_status': status})
     modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
-    assert len(modules) == 187
+    assert len(set(modules)) == len(modules)
+    assert ROOT / 'spec/semantics/206-error-handlers.watsup' in modules
+    assert ROOT / 'spec/semantics/207-error-handler-runtime.watsup' in modules
     rows = []
     failure = None
     try:
