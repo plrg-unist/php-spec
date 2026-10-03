@@ -14,6 +14,7 @@ CASES = {
     'interior-nul': (b'<?php ini_set(\'include_path\',"__SUB__\\0suffix");echo include \'one.php\';', b'\0suffix'),
     'nul-free': (b"<?php set_include_path('__SUB__');echo include 'one.php';", b''),
     'invoke-interior-nul': (b'<?php class I {function __invoke(){ini_set(\'include_path\',"__SUB__\\0suffix");echo include \'one.php\';}} (new I)();', b'\0suffix'),
+    'ini-option-interior-nul': (b'<?php class O {function __toString():string {return \'include_path\';}} ini_set(new O,"__SUB__\\0suffix");echo include \'one.php\';', b'\0suffix'),
 }
 CHILD = b'<?php return 7;'
 PREFIX = r'''

@@ -180,6 +180,53 @@ CASES = {
     'independent-restore-callable-strict-owned-exact': b'<?php declare(strict_types=1); class IndependentRestoreCallable{function __invoke(){$restore=ini_restore(...);$result=$restore->__invoke(option:$this);echo $result===null?"N":"X";echo ini_set("include_path","after");}function __toString():string{echo "C";ini_set("include_path","inner\\0suffix");return "include_path";}}function independent_restore_accept(string|callable $value){$value();}independent_restore_accept(...["value"=>new IndependentRestoreCallable]);',
     'restore-argument-frame-name-miss': b'<?php class RestoreArgumentMiss{function __invoke($first,$second){$before=func_get_args();echo func_num_args(),":",$before[0],":",$before[1],"|";$result=ini_restore($this);echo $result===null?"N":"X";$after=func_get_args();echo func_num_args(),$after===$before?"S":"X","|";echo ini_set("include_path","after");}function __toString():string{echo "C",func_num_args(),func_get_args()===[]?"Z":"X";ini_set("include_path","inner\\0tail");return "include_path\\0suffix";}}function acceptRestoreArguments(callable|string $sink){$sink(second:"B",first:"A");}acceptRestoreArguments(sink:new RestoreArgumentMiss);',
     'independent-restore-argument-frame-owned-exact': b'<?php declare(strict_types=1); class IndependentRestoreArgumentExact{function __invoke($first,$second){$before=func_get_args();echo func_num_args(),":",$before[0],":",$before[1],"|";$restore=ini_restore(...);$result=$restore->__invoke(option:$this);echo $result===null?"N":"X";$after=func_get_args();echo func_num_args(),$after===$before?"S":"X","|";echo ini_set("include_path","after");}function __toString():string{echo "C",func_num_args(),func_get_args()===[]?"Z":"X";ini_set("include_path","inner\\0tail");return "include_path";}}function independent_restore_arguments(string|callable $sink){$sink(...["second"=>"B","first"=>"A"]);}independent_restore_arguments(...["sink"=>new IndependentRestoreArgumentExact]);',
+    'ini-option-direct': b"<?php class O {function __toString():string {echo 'T';return 'include_path';}} echo ini_set(new O,'__SUB__');echo include 'one.php';",
+    'ini-option-first-class': b"<?php class O {function __toString():string {echo 'T';return 'include_path';}} $f=ini_set(...);echo $f(new O,'__SUB__');echo include 'one.php';",
+    'ini-option-reversed-named': b"<?php class O {function __toString():string {echo 'T';echo set_include_path('inner');return 'include_path';}} function a(){echo 'A';return 'outer';} echo ini_set(value:a(),option:new O),'|',set_include_path('end');",
+    'ini-option-named-invoke': b"<?php class O {function __toString():string {echo 'T';return 'include_path';}} $f=ini_set(...);echo $f->__invoke(value:'__SUB__',option:new O);echo include 'one.php';",
+    'ini-option-selection': b"<?php class O {function __toString():string {echo 'T';return 'include_path';}} function a(){global $f;echo 'A';$f='ini_restore';return new O;} $f='ini_set';echo $f(value:'__SUB__',option:a());echo include 'one.php';echo '|',$f;",
+    'ini-option-captured-value': b"<?php class O {function __toString():string {global $v;$v='changed';echo set_include_path('inner');return 'include_path';}} $v='outer';echo ini_set(value:$v,option:new O),'|',$v,'|',set_include_path('end');",
+    'ini-option-case': b"<?php class O {function __toString():string {set_include_path('inner');echo 'T';return 'INCLUDE_PATH';}} echo ini_set(new O,'outer')?'Y':'F';echo '|',set_include_path('end');",
+    'ini-option-empty': b"<?php class O {function __toString():string {set_include_path('inner');echo 'T';return '';}} echo ini_set(new O,'outer')?'Y':'F';echo '|',set_include_path('end');",
+    'ini-option-nul': b'<?php class O {function __toString():string {set_include_path(\'inner\');echo \'T\';return "include_path\\0suffix";}} echo ini_set(new O,\'outer\')?\'Y\':\'F\';echo \'|\',set_include_path(\'end\');',
+    'ini-option-null-value': b"<?php class O {function __toString():string {set_include_path('inner');echo 'T';return 'include_path';}} echo ini_set(new O,null)?'Y':'F';echo '|',set_include_path('end');",
+    'ini-option-leading-nul-value': b'<?php class O {function __toString():string {set_include_path(\'inner\');echo \'T\';return \'include_path\';}} echo ini_set(new O,"\\0later")?\'Y\':\'F\';echo \'|\',set_include_path(\'end\');',
+    'ini-option-interior-nul-value': b'<?php class O {function __toString():string {echo \'T\';return \'include_path\';}} echo ini_set(new O,"a\\0b"),\'|\',ini_set(\'include_path\',\'end\');',
+    'ini-option-scalar-set-old-prefix': b'<?php class O {function __toString():string {return \'include_path\';}} ini_set(new O,"a\\0b");echo set_include_path(\'end\');',
+    'ini-option-stringable-set-old-prefix': b'<?php class O {function __toString():string {return \'include_path\';}} class P {function __toString():string {echo \'P\';return \'end\';}} ini_set(new O,"a\\0b");echo set_include_path(new P);',
+    'ini-option-interior-nul-include': b'<?php class O {function __toString():string {echo \'T\';return \'include_path\';}} ini_set(new O,"__SUB__\\0ignored");echo include \'one.php\';',
+    'ini-option-interior-nul-missing-require': b'<?php class O {function __toString():string {echo \'T\';return \'include_path\';}} ini_set(new O,"__SUB__\\0ignored");require \'missing-ini.php\';',
+    'ini-option-strict-direct': b"<?php declare(strict_types=1);class O {function __toString():string {echo 'T';return 'include_path';}} ini_set(new O,'outer');",
+    'ini-option-strict-first-class': b"<?php declare(strict_types=1);class O {function __toString():string {echo 'T';return 'include_path';}} $f=ini_set(...);$f(new O,'outer');",
+    'ini-option-strict-invoke': b"<?php declare(strict_types=1);class O {function __toString():string {echo 'T';return 'include_path';}} $f=ini_set(...);echo $f->__invoke(value:'outer',option:new O);",
+    'ini-option-inherited-throw': b"<?php\nclass P {\n function __ToStRiNg():string {\n  throw new Exception('X');\n }\n}\nclass O extends P {}\n$f=ini_set(...);\n$f->__invoke(\n value:'outer',\n option:new O\n);",
+    'ini-option-nonstringable': b"<?php class O {} ini_set(new O,'outer');",
+    'ini-option-object-value-error': b"<?php class O {function __toString():string {echo 'T';return 'include_path';}} class V {function __toString():string {echo 'V';return 'bad';}} ini_set(new O,new V);",
+    'ini-option-array-value-invoke-error': b'<?php class O {function __toString():string {echo \'T\';return "include_path\\0suffix";}} $f=ini_set(...);$f->__invoke(value:[],option:new O);',
+    'ini-option-scalar-array-invoke-error': b"<?php $f=ini_set(...);$f->__invoke(value:[],option:'');",
+    'ini-option-unpack-capture-retired': b"<?php class O {function __toString():string {global $x,$v,$a;echo ($x==='changed' && $v==='changed' && $a===[])?'E':'N';echo 'T';return 'include_path';}} $x=new O;$v='outer';$a=['value'=>&$v,'option'=>&$x];function later(){global $x,$v,$a;echo 'A';$x='changed';$v='changed';$a=[];return [];} $f=ini_set(...);echo $f->__invoke(...$a,...later()),'|',set_include_path('end');",
+    'ini-option-ordinary-after-empty': b"<?php class O {function __toString():string {echo 'T';return 'include_path';}} echo ini_set(...[],value:'outer',option:new O),'|',set_include_path('end');",
+    'ini-option-ordinary-before-empty': b"<?php class O {function __toString():string {echo 'T';return 'include_path';}} echo ini_set(new O,'outer',...[]),'|',set_include_path('end');",
+    'ini-option-unknown-before-callback': b"<?php class O {function __toString():string {echo 'T';return 'include_path';}} function a(){echo 'A';return new O;} ini_set(value:'outer',bad:a());",
+    'ini-option-duplicate-before-callback': b"<?php class O {function __toString():string {echo 'T';return 'include_path';}} ini_set(...['option'=>new O],...['option'=>new O,'value'=>'outer']);",
+    'ini-option-count-before-callback': b"<?php class O {function __toString():string {echo 'T';return 'include_path';}} ini_set(new O,'outer',new O);",
+    'ini-option-invalid-return-caught': b"<?php class O {function __toString():string {set_include_path('inner');return [];} } try{ini_set(new O,'outer');}catch(TypeError $e){echo 'C|',set_include_path('end');}",
+    'ini-option-nested-chdir': b"<?php class P {function __toString():string {echo 'P';return '__SUB__';}} class O {function __toString():string {echo chdir(new P)?'T':'F';return 'include_path';}} echo ini_set(new O,'.:');echo include 'one.php';",
+    'ini-option-inherited-nested-throw': b"<?php\nclass P {\n function __ToStRiNg():string {$this->g();return 'include_path';}\n function g():void {throw new Exception('X');}\n}\nclass O extends P {}\n$f=ini_set(...);\n$f->__invoke(value:'outer',option:new O);\n",
+
+    'ini-option-argument-frame-value-priority': b'<?php class IniArgumentPriority{function __invoke($first,$second){$before=func_get_args();echo func_num_args(),":",$before[0],":",$before[1],"|";try{ini_set(value:[],option:$this);}catch(TypeError $e){echo "E";}$after=func_get_args();echo func_num_args(),$after===$before?"S":"X","|";echo ini_set("include_path","after");}function __toString():string{echo "C",func_num_args(),func_get_args()===[]?"Z":"X";ini_set("include_path","inner\\0tail");return "include_path\\0missing";}}(new IniArgumentPriority)(second:"B",first:"A");',
+
+    'ini-option-scalar-weak-misses': b'<?php ini_set("include_path","before\\0tail");echo ini_set(value:"outer",option:false)===false?"F":"X";echo ini_set(option:true,value:12)===false?"F":"X";echo ini_set(option:12,value:1.5)===false?"F":"X";echo ini_set(option:1.5,value:true)===false?"F":"X";echo "|",ini_set("include_path","after");',
+    'ini-option-null-weak-suppressed': b'<?php ini_set("include_path","before\\0tail");echo @ini_set(option:null,value:12)===false?"F":"X";echo "|",ini_set("include_path","after");',
+    'ini-option-null-owned-weak-suppressed': b'<?php declare(strict_types=1);ini_set("include_path","before\\0tail");$f=ini_set(...);echo @$f->__invoke(option:null,value:12)===false?"F":"X";echo "|",ini_set("include_path","after");',
+    'ini-option-scalar-strict-priority': b'<?php declare(strict_types=1);try{ini_set(value:[],option:false);}catch(TypeError $e){echo $e->getMessage()===\'ini_set(): Argument #1 ($option) must be of type string, false given\'?"1":"X";}try{ini_set(value:[],option:12);}catch(TypeError $e){echo $e->getMessage()===\'ini_set(): Argument #1 ($option) must be of type string, int given\'?"1":"X";}try{ini_set(value:[],option:1.5);}catch(TypeError $e){echo $e->getMessage()===\'ini_set(): Argument #1 ($option) must be of type string, float given\'?"1":"X";}',
+    'ini-option-scalar-weak-value-priority': b'<?php try{ini_set(value:[],option:false);}catch(TypeError $e){echo $e->getMessage()===\'ini_set(): Argument #2 ($value) must be of type string|int|float|bool|null\'?"2":"X";}',
+    'ini-option-array-priority': b'<?php try{ini_set(value:[],option:[]);}catch(TypeError $e){echo $e->getMessage()===\'ini_set(): Argument #1 ($option) must be of type string, array given\'?"1":"X";}',
+    'ini-option-null-strict-priority': b'<?php declare(strict_types=1);try{ini_set(value:[],option:null);}catch(TypeError $e){echo $e->getMessage()===\'ini_set(): Argument #1 ($option) must be of type string, null given\'?"1":"X";}',
+    'ini-option-scalar-owned-value-priority': b'<?php declare(strict_types=1);$f=ini_set(...);try{$f->__invoke(value:[],option:false);}catch(TypeError $e){echo $e->getMessage()===\'ini_set(): Argument #2 ($value) must be of type string|int|float|bool|null\'?"2":"X";}',
+
+    'ini-option-null-weak-diagnostic-priority': b'<?php ini_set("include_path","before\\0tail");try{ini_set(value:[],option:null);}catch(TypeError $e){echo $e->getMessage()===\'ini_set(): Argument #2 ($value) must be of type string|int|float|bool|null\'?"2":"X";}echo "|",ini_set("include_path","after");',
+
 }
 
 
@@ -263,6 +310,10 @@ def main():
         missing_error = os.strerror(errno.ENOENT).encode()
         if name == 'ini-prefix-interior-nul-missing-require':
             entries.append({'caller': b64(main_bytes), 'requested': b64(b'missing-prefix.php'),
+                            'cwd': b64(cwd), 'include_path': b64(sub_bytes),
+                            'status': 'missing', 'stream_error': b64(missing_error)})
+        if name == 'ini-option-interior-nul-missing-require':
+            entries.append({'caller': b64(main_bytes), 'requested': b64(b'missing-ini.php'),
                             'cwd': b64(cwd), 'include_path': b64(sub_bytes),
                             'status': 'missing', 'stream_error': b64(missing_error)})
         chdir_entries = [
