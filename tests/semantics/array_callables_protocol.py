@@ -304,10 +304,138 @@ FILE_CASES.append((
 ))
 
 
+INI_OPTION_PREFIX = '''
+dec $array_ini_result_stage(pstate) : bool
+def $array_ini_result_stage(S) = true
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+def $array_ini_result_stage(S) = false -- otherwise
+dec $array_ini_result_seek(pstate, nat) : pstate
+def $array_ini_result_seek(S, n) = S -- if $array_ini_result_stage(S)
+def $array_ini_result_seek(S, n) = $array_ini_result_seek(S_next, $nabs($(n - 1)))
+  -- if ~$array_ini_result_stage(S)
+  -- if S.COMPLETION = NORMAL
+  -- if $(n > 0)
+  -- PhpStep: S ~> S_next
+dec $array_ini_step(pstate) : pstate
+def $array_ini_step(S) = S_next -- PhpStep: S ~> S_next
+'''
+
+FILE_CASES.append((
+    'array-method-current-ini-option-value-rejection',
+    SOURCES['array-method-current-ini-option-value-rejection'].encode(),
+    'S.CURRENT = (pcallcontext_option)\n'
+    '  -- if S.FRAMES = pframe_owner :: pframe_tail*\n'
+    '  -- if pframe_owner.TODO = (STRINGIFY_RESULT n_option porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall n_option porigin_child z_child z_call) :: ptask_owner*\n'
+    '  -- if S.FILEINCLUDEPATH = ($ptascii("mutated") ++ [0] ++ $ptascii("tail"))',
+    [
+        'S.CURRENT = (pcallcontext_option)',
+        'S.FRAMES = pframe_owner :: pframe_tail*',
+        'pframe_owner.TODO = (STRINGIFY_RESULT n_option porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall n_option porigin_child z_child z_call) :: ptask_owner*',
+        'pframe_owner.CONTEXT = (pcallcontext_owner)',
+        'pframe_owner.LOCALS = (psymboltable_owner)',
+        'pcallcontext_option.TARGET = METHOD_TARGET n_option pcallcontext_option.FUNCTION',
+        'pcallcontext_option.ARGC = 0',
+        'pcallcontext_option.PARAMS = eps',
+        '$arginfo_values(S, pcallcontext_option) = eps',
+        'pcallcontext_owner.TARGET = ARRAY_METHOD_TARGET pcalltarget parrayselection',
+        'pcalltarget = METHOD_TARGET n_receiver pcallcontext_owner.FUNCTION',
+        'pcallcontext_owner.RECEIVER = (n_receiver)',
+        'pcallcontext_owner.LEXICAL_CLASS = (porigin_owner)',
+        'pcallcontext_owner.CALLED_CLASS = (porigin_called)',
+        'porigin_owner =/= porigin_called',
+        'pcallcontext_owner.ARGC = 1',
+        'pcallcontext_owner.PARAMS = [$ptascii("v")]',
+        '$arginfo_values(S[.ENV = psymboltable_owner.ENV], pcallcontext_owner) = [PSTRING $ptascii("x")]',
+        'S.OBJECTS[n_receiver] = INSTANCE porigin_called',
+        'parrayselection.REQUESTED = porigin_called',
+        'parrayselection.NAME = $ptascii("run")',
+        '$array_target_identity(S, pcalltarget, parrayselection)',
+        '$array_site_valid(S, parrayselection, false)',
+        '$target_nodes(pcallcontext_owner.TARGET) = [HOBJECT n_receiver]',
+        'n_array = |S_initial.ARRAYS|',
+        'S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_receiver)), ENTRY (KINT 1) (DIRECT (PSTRING $ptascii("run")))]',
+        '~((HARRAY n_array) <- S.ALLOCATIONS)',
+        '(HOBJECT n_receiver) <- S.ALLOCATIONS',
+        'pconfigcall.KIND = INTRINSIC_INI_SET',
+        'pconfigcall.NAMED',
+        'pconfigcall.OWNER = eps',
+        'pconfigcall.SELECTION = eps',
+        'pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_option)), NAMED_SENT (KNOWN (POBJECT n_rejected))]',
+        'n_option =/= n_rejected',
+        '$intrinsic_argument(S, pconfigcall.SITE, 1) = ((expression_option, false, preqbytes_option?, porigin_child, z_child))',
+        'preqbytes_option? = ($ptascii("option"))',
+        '$intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression_value, false, preqbytes_value?, porigin_value, z_value))',
+        'preqbytes_value? = ($ptascii("value"))',
+        '$config_destination(INTRINSIC_INI_SET, preqbytes_option?, 1) = (0)',
+        '$config_destination(INTRINSIC_INI_SET, preqbytes_value?, 0) = (1)',
+        '$config_string_source(S, pconfigcall) = ((porigin_child, z_child))',
+        '$config_string_site_valid(S, pconfigcall, n_option, porigin_child, z_child, z_call)',
+        '$config_string_trace_context(S, pcallcontext_option)',
+        '(HOBJECT n_option) <- $task_nodes(CONFIG_STRING_RESULT pconfigcall n_option porigin_child z_child z_call)',
+        '(HOBJECT n_rejected) <- $task_nodes(CONFIG_STRING_RESULT pconfigcall n_option porigin_child z_child z_call)',
+        '$trace_context(S, S.ENV, S.CURRENT) = [ptraceframe_option, ptraceframe_ini]',
+        'ptraceframe_option.FUNCTION = $ptascii("__toString")',
+        'ptraceframe_option.ARGS = eps',
+        'ptraceframe_ini.FUNCTION = $ptascii("ini_set")',
+        'ptraceframe_ini.ARGS = [(KINT 0, POBJECT n_option), (KINT 1, POBJECT n_rejected)]',
+        '$outputs(S.EVENTS) = $ptascii("Owner/Child:1:x|o0z")',
+        'S.FILEINCLUDEPATH = ($ptascii("mutated") ++ [0] ++ $ptascii("tail"))',
+        *VALID,
+        '~$config_string_site_valid(S, pconfigcall[.SITE = PORIGIN 999 eps], n_option, porigin_child, z_child, z_call)',
+        '~$config_string_site_valid(S, pconfigcall[.LINE = 999], n_option, porigin_child, z_child, z_call)',
+        '~$config_string_site_valid(S, pconfigcall[.SENT = [NAMED_SENT (KNOWN (POBJECT n_rejected)), NAMED_SENT (KNOWN (POBJECT n_option))]], n_option, porigin_child, z_child, z_call)',
+        '~$call_descriptors_valid(S[.ALLOCATIONS = $call_remove_owner(S.ALLOCATIONS, HOBJECT n_rejected)])',
+        '~$call_saved_context_valid(S, pframe_owner[.CONTEXT = (pcallcontext_owner[.RECEIVER = eps])])',
+        '~$array_target_identity(S, pcalltarget, parrayselection[.NAME = $ptascii("missing")])',
+        'S_result = $array_ini_result_seek(S, 100)',
+        'S_result.COMPLETION = NORMAL',
+        'S_result.TODO = (CONFIG_STRING_RESULT pconfigcall n_option porigin_child z_child z_call) :: ptask_owner*',
+        'S_result.RESULT = KNOWN (PSTRING $ptascii("include_path"))',
+        'S_result.CURRENT = (pcallcontext_owner)',
+        'S_result.ORIGIN = (porigin_child)',
+        'S_result.FILEINCLUDEPATH = S.FILEINCLUDEPATH',
+        'S_result.EVENTS = S.EVENTS',
+        '$call_descriptors_valid(S_result)',
+        '$config_ini_value_conversion(POBJECT n_rejected) = TYPEREJECT',
+        'S_error = $array_ini_step(S_result)',
+        'S_error.COMPLETION = THROWING n_error',
+        'S_error.OBJECTS[n_error] = THROWABLE pthrowable',
+        'pthrowable.KIND = "TypeError"',
+        'pthrowable.ORIGIN = (pconfigcall.SITE)',
+        '$throwable_field(S_error, n_error, "trace") = PARRAY n_trace',
+        'S_error.ARRAYS[n_trace].ITEMS = [ENTRY (KINT 0) (DIRECT (PARRAY n_trace_ini)), ENTRY (KINT 1) (DIRECT (PARRAY n_trace_owner))]',
+        '$trace_array_field(S_error, n_trace_ini, $ptascii("function")) = PSTRING $ptascii("ini_set")',
+        '$trace_array_field(S_error, n_trace_ini, $ptascii("args")) = PARRAY n_ini_args',
+        'S_error.ARRAYS[n_ini_args].ITEMS = [ENTRY (KINT 0) (DIRECT (PSTRING $ptascii("include_path"))), ENTRY (KINT 1) (DIRECT (POBJECT n_rejected))]',
+        '$trace_array_field(S_error, n_trace_owner, $ptascii("function")) = PSTRING $ptascii("run")',
+        '$trace_array_field(S_error, n_trace_owner, $ptascii("class")) = PSTRING $ptascii("Owner")',
+        '$trace_array_field(S_error, n_trace_owner, $ptascii("type")) = PSTRING $ptascii("->")',
+        '$trace_array_field(S_error, n_trace_owner, $ptascii("args")) = PARRAY n_owner_args',
+        'S_error.ARRAYS[n_owner_args].ITEMS = [ENTRY (KINT 0) (DIRECT (PSTRING $ptascii("x")))]',
+        'S_error.FILEINCLUDEPATH = S.FILEINCLUDEPATH',
+        'S_error.EVENTS = S.EVENTS',
+        'S_done = $drive(S_error, 3000)',
+        'S_done.COMPLETION = NORMAL',
+        '$outputs(S_done.EVENTS) = $ptascii("Owner/Child:1:x|o0zE|1:x|K")',
+        'S_done.FILEINCLUDEPATH = ($ptascii("after"))',
+        '~((HOBJECT n_receiver) <- S_done.ALLOCATIONS)',
+        '~((HOBJECT n_option) <- S_done.ALLOCATIONS)',
+        '~((HOBJECT n_rejected) <- S_done.ALLOCATIONS)',
+        '~((HOBJECT n_error) <- S_done.ALLOCATIONS)',
+        '$call_descriptors_valid(S_done)',
+        '$class_state_valid(S_done)',
+        '$closure_state_valid(S_done)',
+        '$heap_valid($heap_graph(S_done))',
+    ],
+))
+
+
 def main():
     protocol.run(CASES, (Path(__file__), CATALOGUE))
     warnings.filterwarnings('ignore', category=SyntaxWarning, message='invalid escape sequence')
     import include_mutable_protocol
+    include_mutable_protocol.PREFIX += INI_OPTION_PREFIX
     include_mutable_protocol.main(FILE_CASES, (Path(__file__), CATALOGUE))
 
 

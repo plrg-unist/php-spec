@@ -232,5 +232,13 @@
     "kind": "file-source",
     "purpose": "Retired maker/creator array capture clone retains argument views through Restore option and nested typed static conversion under current declaration publication.",
     "expected_normal_stdout": "Owner/Child:1:x|o0p0K|value|1:x"
+  },
+  {
+    "id": "array-method-current-ini-option-value-rejection",
+    "source": "<?php\nclass Rejected {\n    public function __toString(): string {\n        echo \"BAD-V\";\n        return \"bad\";\n    }\n}\nclass Option {\n    public function __toString(): string {\n        echo \"o\", func_num_args(), func_get_args() === [] ? \"z\" : \"BAD\";\n        ini_set(\"include_path\", \"mutated\\0tail\");\n        return \"include_path\";\n    }\n}\nclass Owner {\n    public function run($v) {\n        echo __CLASS__, \"/\", static::class, \":\", func_num_args(), \":\", func_get_arg(0), \"|\";\n        try {\n            ini_set(value: new Rejected, option: new Option);\n        } catch (TypeError $e) {\n            echo \"E\";\n        }\n        echo \"|\", func_num_args(), \":\", func_get_arg(0), \"|\";\n        echo ini_set(\"include_path\", \"after\") === \"mutated\\0tail\" ? \"K\" : \"BAD\";\n    }\n}\nclass Child extends Owner {}\n[new Child, \"run\"](...[\"v\" => \"x\"]);\n",
+    "source_sha256": "71f986db71c908814ce5ad5417516ea5b67cd4d5687627e6c0f22f915095b5cf",
+    "expected_model": "normal",
+    "expected_normal_stdout": "Owner/Child:1:x|o0zE|1:x|K",
+    "profile": "file"
   }
 ]
