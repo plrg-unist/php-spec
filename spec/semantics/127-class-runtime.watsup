@@ -16,28 +16,31 @@ def $class_named((preqbytes_other, porigin) :: (preqbytes_tail, porigin_tail)*, 
   -- if preqbytes_other =/= preqbytes
 
 dec $activate_class(pstate, pclassdesc) : pstate
+dec $activate_class_body(pstate, pclassdesc) : pstate
+dec $declaration_class_success(pstate, pstate, pclassdesc) : pstate
+def $activate_class(S, pclassdesc) = $declaration_class_success(S, $activate_class_body(S, pclassdesc), pclassdesc)
 dec $class_static_initial(pstate, ppropertydesc*) : pclassstatic*?
 dec $class_static_commit(pstate, pclassstatic*) : pstate
 dec $class_static_finish(pstate, pclassdesc, pstate) : pstate
 dec $class_statics_valid(pstate) : bool
-def $activate_class(S, pclassdesc) = S -- if S.COMPLETION =/= NORMAL
-def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare ") ++ $ptascii(text_kind) ++ [32] ++ ptbytes_display) pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL eps pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
+def $activate_class_body(S, pclassdesc) = S -- if S.COMPLETION =/= NORMAL
+def $activate_class_body(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare ") ++ $ptascii(text_kind) ++ [32] ++ ptbytes_display) pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL eps pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
   -- if S.COMPLETION = NORMAL
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(pclassdesc.NAME)) = (INTERNAL ptbytes_key ptbytes_display text_kind)
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
-def $activate_class(S, pclassdesc) = S[.COMPLETION = UNSUPPORTED "class static default storage"]
+def $activate_class_body(S, pclassdesc) = S[.COMPLETION = UNSUPPORTED "class static default storage"]
   -- if S.COMPLETION = NORMAL
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if $class_static_initial(S, pclassdesc.PROPERTIES) = eps
-def $activate_class(S, pclassdesc) = $class_static_commit(S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]], pclassstatic*)
+def $activate_class_body(S, pclassdesc) = $class_static_commit(S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]], pclassstatic*)
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "class"
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
   -- if $class_static_initial(S, pclassdesc.PROPERTIES) = (pclassstatic*)
-def $activate_class(S, pclassdesc) = S_published[.ERRORORIGIN = $compiled_error_origin(S_published.ERRORORIGIN, S_published.COMPLETION, n)]
+def $activate_class_body(S, pclassdesc) = S_published[.ERRORORIGIN = $compiled_error_origin(S_published.ERRORORIGIN, S_published.COMPLETION, n)]
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "class"
   -- if ~$class_internal(pclassdesc.NAME)
@@ -48,33 +51,26 @@ def $activate_class(S, pclassdesc) = S_published[.ERRORORIGIN = $compiled_error_
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
   -- if S_parent = $activate_parented_class(S, pclassdesc, ptbytes_parent)
   -- if S_published = $class_static_commit(S_parent, pclassstatic*)
-def $activate_class(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare ") ++ $ptascii(pclassdesc_old.KIND) ++ [32] ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41]) pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL eps pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
+def $activate_class_body(S, pclassdesc) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare ") ++ $ptascii(pclassdesc_old.KIND) ++ [32] ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41]) pclassdesc.LINE][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL eps pclassdesc.LINE, n)][.TRACE = $eval_exception_trace(S)]
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "class"
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc_old)
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
-dec $activate_early_classes(pstate, pclassdesc*) : pstate
-def $activate_early_classes(S, eps) = S
-def $activate_early_classes(S, pclassdesc :: pclassdesc_tail*) = $activate_early_classes($activate_class(S, pclassdesc), pclassdesc_tail*)
-  -- if pclassdesc.EARLY
-def $activate_early_classes(S, pclassdesc :: pclassdesc_tail*) = $activate_early_classes(S, pclassdesc_tail*)
-  -- if ~pclassdesc.EARLY
-def $install_classes(S, pclassdesc*) = $activate_early_classes(S[.CLASSES = S.CLASSES ++ pclassdesc*], pclassdesc*)
 
 rule PhpStep/class-declaration-early: S ~> S[.TODO = ptask_tail*]
   -- if S.TODO = (STMT (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if pclassdesc.EARLY
+  -- if $declaration_early(S.DECLARATIONS, porigin, PPCLASS)
 rule PhpStep/class-declaration-runtime: S ~> $activate_class(S[.TODO = ptask_tail*], pclassdesc)
   -- if S.TODO = (STMT (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if ~pclassdesc.EARLY
+  -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
 
 dec $throwable_constructor_kind(ptbytes) : text?
 dec $new_class(pstate, preqbytes, int) : pstate
@@ -185,21 +181,15 @@ def $class_registry_valid(pclassdesc_registry*, (preqbytes, porigin) :: (preqbyt
   -- if $class_named((preqbytes_tail, porigin_tail)*, preqbytes) = eps
   -- if $class_registry_valid(pclassdesc_registry*, (preqbytes_tail, porigin_tail)*)
 def $class_registry_valid(pclassdesc_registry*, (preqbytes, porigin)*) = false -- otherwise
-dec $class_early_bindings((preqbytes, porigin)*, pclassdesc*) : bool
-def $class_early_bindings((preqbytes, porigin)*, eps) = true
-def $class_early_bindings((preqbytes, porigin)*, pclassdesc :: pclassdesc_tail*) = (~pclassdesc.EARLY \/ $class_named((preqbytes, porigin)*, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)) /\ $class_early_bindings((preqbytes, porigin)*, pclassdesc_tail*)
-
 syntax pclasscheck = CLASSCHECK pclassdesc* | CLASSINVALID
 dec $class_projection(pstate, pcunit*) : pclasscheck
+dec $declaration_history_valid(pstate) : bool
 def $class_projection(S, eps) = CLASSCHECK eps
-def $class_projection(S, pcunit :: pcunit_tail*) = CLASSCHECK (P.CLASSES ++ pclassdesc*)
-  -- if P = $eval_source_ppstate(S, pcunit)
-  -- if P.COMPLETION = PPCNORMAL
+def $class_projection(S, pcunit :: pcunit_tail*) = CLASSCHECK (ppinstalled.CLASSES ++ pclassdesc*)
+  -- if $compilation_projection(S, pcunit) = (ppinstalled)
   -- if $class_projection(S, pcunit_tail*) = CLASSCHECK pclassdesc*
 def $class_projection(S, pcunit*) = CLASSINVALID -- otherwise
-def $class_state_valid(S) = ($class_registry_valid(S.CLASSES, S.CLASSNAMES) /\ $class_early_bindings(S.CLASSNAMES, S.CLASSES) /\ $class_links_valid(S) /\ $pil_links_valid(S) /\ $property_state_valid(S) /\ $class_statics_valid(S))
-  -- if $class_projection(S, S.SOURCES) = CLASSCHECK S.CLASSES
-def $class_state_valid(S) = false -- otherwise
+def $class_state_valid(S) = ($declaration_history_valid(S) /\ $class_registry_valid(S.CLASSES, S.CLASSNAMES) /\ $class_links_valid(S) /\ $pil_links_valid(S) /\ $property_state_valid(S) /\ $class_statics_valid(S))
 
 dec $instanceof_task_valid(pstate, int) : bool
 def $instanceof_task_valid(S, z) = true

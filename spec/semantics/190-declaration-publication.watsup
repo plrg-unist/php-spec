@@ -1,0 +1,110 @@
+;; Source-derived completed unit prefixes are independent of live publication.
+def $ppimage_empty(n) = { CLASSES eps, FUNCTIONS eps, CLOSURETEMPLATES eps, ARRAYS eps, ALLOCATIONS eps, CONSTANTS eps, CODE { STRICT false, GLOBALS eps, UNIT n, EXPRESSIONS eps, NAMES eps, REDIRECTS eps } }
+
+dec $ppimage_unit(ppstate) : bool
+def $ppimage_unit(P) = (P.FOLD.FUNCTION = eps /\ P.CLASSCONTEXT = eps /\ ~P.CLOSURE /\ P.FOLD.CLASSCONTEXT = eps /\ ~P.FOLD.CLOSURE)
+
+dec $ppimage_gotos(ppstate, bool) : pcodeexpr*
+def $ppimage_gotos(P, true) = $compiled_gotos(P.GOTOS, P.LABELS)
+def $ppimage_gotos(P, false) = eps
+
+dec $ppimage(ppstate, bool) : ppinstalled?
+def $ppimage(P, b) = ({ CLASSES P.CLASSES, FUNCTIONS P.FUNCTIONS, CLOSURETEMPLATES P.CLOSURETEMPLATES, ARRAYS P.FOLD.MEMORY.ARRAYS, ALLOCATIONS P.FOLD.MEMORY.ALLOCATIONS, CONSTANTS ($export_constants((pcpath, pvalue)*) ++ $export_classes(P.FOLD.CLASSFACTS)), CODE { STRICT P.ENV.STRICT, GLOBALS P.GLOBALS, UNIT P.FOLD.SOURCE.ID, EXPRESSIONS ($compiled_operands(P, P.EXPRESSIONS) ++ $ppimage_gotos(P, b) ++ $compiled_writes(P.WRITES)), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) } })
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.MEMORY.ENV = eps /\ P.FOLD.MEMORY.STORE = eps /\ P.FOLD.MEMORY.REFCELLS = eps
+  -- if $ppconstants(P) = PPCCONSTANTS (pcpath, pvalue)*
+def $ppimage(P, b) = eps -- otherwise
+
+def $ppimage_save(P, b) = P[.INSTALLED = ppinstalled]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppimage_unit(P)
+  -- if $ppimage(P, b) = (ppinstalled)
+def $ppimage_save(P, b) = $ppunsupported(P, "invalid completed compiler prefix")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppimage_unit(P)
+  -- if $ppimage(P, b) = eps
+def $ppimage_save(P, b) = P
+  -- if P.COMPLETION =/= PPCNORMAL \/ ~$ppimage_unit(P)
+
+dec $ppimage_declared(ppstate, porigin, ppubkind) : bool
+def $ppimage_declared(P, porigin, PPCLASS) = ($class_at(P.CLASSES, porigin) =/= eps)
+def $ppimage_declared(P, porigin, PPFUNCTION) = ($function_at(P.FUNCTIONS, porigin) =/= eps)
+
+def $ppimage_publication(P, porigin, ppubkind, true) = $ppimage_save(P[.PUBLICATIONS = P.PUBLICATIONS ++ [PPCP porigin n_diagnostics ppubkind]], false)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppimage_unit(P)
+  -- if $ppimage_declared(P, porigin, ppubkind)
+  -- if n_diagnostics = |P.DIAGNOSTICS|
+def $ppimage_publication(P, porigin, ppubkind, b) = P
+  -- if ~b \/ P.COMPLETION =/= PPCNORMAL \/ ~$ppimage_unit(P) \/ ~$ppimage_declared(P, porigin, ppubkind)
+
+;; Capture transition facts at real publication sites, never in scratch links.
+def $declaration_enter(S, n, porigin?) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDENTER n porigin? S.REPORTING]]
+def $declaration_exit(S, n, pcompilestop) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDEXIT n pcompilestop]]
+
+syntax pdeclentry = (nat, porigin?, int)
+dec $declaration_open_item(pdeclaration, pdeclentry?) : pdeclentry?
+def $declaration_open_item(PDENTER n porigin? z, pdeclentry?) = ((n, porigin?, z))
+def $declaration_open_item(PDEXIT n pcompilestop, pdeclentry?) = eps
+def $declaration_open_item(pdeclaration, pdeclentry?) = pdeclentry? -- otherwise
+dec $declaration_open_from(pdeclaration*, (nat, porigin?, int)?) : (nat, porigin?, int)?
+dec $declaration_open(pdeclaration*) : (nat, porigin?, int)?
+def $declaration_open_from(eps, pdeclentry?) = pdeclentry?
+def $declaration_open_from(pdeclaration :: pdeclaration_tail*, pdeclentry?) = $declaration_open_from(pdeclaration_tail*, $declaration_open_item(pdeclaration, pdeclentry?))
+def $declaration_open(pdeclaration*) = $declaration_open_from(pdeclaration*, eps)
+
+dec $declaration_eval_unit(pevalcontext*, nat) : nat
+dec $declaration_file_unit(pfilecontext*, nat) : nat
+def $declaration_eval_unit(eps, n_depth) = 0
+def $declaration_eval_unit(pevalcontext :: pevalcontext_tail*, n_depth) = $pmmax(pevalcontext.UNIT, $declaration_eval_unit(pevalcontext_tail*, n_depth))
+  -- if pevalcontext.PHASE = UNIT_RUN /\ $(pevalcontext.OWNER <= n_depth)
+def $declaration_eval_unit(pevalcontext :: pevalcontext_tail*, n_depth) = $declaration_eval_unit(pevalcontext_tail*, n_depth)
+  -- if pevalcontext.PHASE =/= UNIT_RUN \/ $(pevalcontext.OWNER > n_depth)
+def $declaration_file_unit(eps, n_depth) = 0
+def $declaration_file_unit(pfilecontext :: pfilecontext_tail*, n_depth) = $pmmax(n, $declaration_file_unit(pfilecontext_tail*, n_depth))
+  -- if pfilecontext.PHASE = FILE_UNIT_RUN /\ $(pfilecontext.OWNER <= n_depth)
+  -- if pfilecontext.UNIT = (n)
+def $declaration_file_unit(pfilecontext :: pfilecontext_tail*, n_depth) = $declaration_file_unit(pfilecontext_tail*, n_depth)
+  -- if pfilecontext.PHASE =/= FILE_UNIT_RUN \/ $(pfilecontext.OWNER > n_depth) \/ pfilecontext.UNIT = eps
+
+dec $declaration_context(pstate, pcallcontext?) : (porigin, porigin?, porigin?, porigin?)*
+dec $declaration_frames(pstate, pframe*) : (porigin, porigin?, porigin?, porigin?)*
+dec $declaration_cause(pstate) : pdeclcause
+def $declaration_context(S, (pcallcontext)) = [(pcallcontext.FUNCTION, pcallcontext.CALLSITE, pcallcontext.LEXICAL_CLASS, pcallcontext.CALLED_CLASS)]
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) =/= eps
+def $declaration_context(S, pcallcontext?) = eps -- otherwise
+def $declaration_frames(S, eps) = eps
+def $declaration_frames(S, pframe :: pframe_tail*) = $declaration_context(S, pframe.CONTEXT) ++ $declaration_frames(S, pframe_tail*)
+def $declaration_cause(S) = { UNIT $pmmax($declaration_eval_unit(S.EVALCONTEXTS, |S.FRAMES|), $declaration_file_unit(S.FILECONTEXTS, |S.FRAMES|)), CALLS ($declaration_context(S, S.CURRENT) ++ $declaration_frames(S, S.FRAMES)) }
+
+dec $declaration_success(pstate, pstate, porigin, ppubkind) : pstate
+def $declaration_success(S, S_published, PORIGIN n pcpath, PPCLASS) = S_published[.DECLARATIONS = S.DECLARATIONS ++ [PDECLASS n (PORIGIN n pcpath)]]
+  -- if $declaration_open(S.DECLARATIONS) = ((n, porigin_site?, z))
+def $declaration_success(S, S_published, PORIGIN n pcpath, PPFUNCTION) = S_published[.DECLARATIONS = S.DECLARATIONS ++ [PDEFUNCTION n (PORIGIN n pcpath)]]
+  -- if $declaration_open(S.DECLARATIONS) = ((n, porigin_site?, z))
+def $declaration_success(S, S_published, porigin, PPCLASS) = S_published[.DECLARATIONS = S.DECLARATIONS ++ [PDRCLASS porigin $declaration_cause(S)]]
+  -- if $declaration_open(S.DECLARATIONS) = eps
+def $declaration_success(S, S_published, porigin, PPFUNCTION) = S_published[.DECLARATIONS = S.DECLARATIONS ++ [PDRFUNCTION porigin $declaration_cause(S)]]
+  -- if $declaration_open(S.DECLARATIONS) = eps
+def $declaration_success(S, S_published, PORIGIN n pcpath, ppubkind) = S_published[.COMPLETION = UNSUPPORTED "invalid compiler publication origin"]
+  -- if $declaration_open(S.DECLARATIONS) = ((n_unit, porigin_site?, z))
+  -- if n =/= n_unit
+
+def $declaration_class_success(S, S_published, pclassdesc) = $declaration_success(S, S_published, pclassdesc.ORIGIN, PPCLASS)
+  -- if S.COMPLETION = NORMAL /\ S_published.COMPLETION = NORMAL
+  -- if S_published.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]
+def $declaration_class_success(S, S_published, pclassdesc) = S_published -- otherwise
+def $declaration_function_success(S, S_published, pfunction) = $declaration_success(S, S_published, pfunction.ORIGIN, PPFUNCTION)
+  -- if S.COMPLETION = NORMAL /\ S_published.COMPLETION = NORMAL
+  -- if S_published.CALLABLES = S.CALLABLES ++ [($ptlc(pfunction.NAME), pfunction.ORIGIN)]
+def $declaration_function_success(S, S_published, pfunction) = S_published -- otherwise
+
+dec $declaration_early_item(pdeclaration, porigin, ppubkind) : bool
+def $declaration_early_item(PDECLASS n porigin, porigin, PPCLASS) = true
+def $declaration_early_item(PDEFUNCTION n porigin, porigin, PPFUNCTION) = true
+def $declaration_early_item(pdeclaration, porigin, ppubkind) = false -- otherwise
+def $declaration_early(eps, porigin, ppubkind) = false
+def $declaration_early(pdeclaration :: pdeclaration_tail*, porigin, ppubkind) = true
+  -- if $declaration_early_item(pdeclaration, porigin, ppubkind)
+def $declaration_early(pdeclaration :: pdeclaration_tail*, porigin, ppubkind) = $declaration_early(pdeclaration_tail*, porigin, ppubkind)
+  -- if ~$declaration_early_item(pdeclaration, porigin, ppubkind)

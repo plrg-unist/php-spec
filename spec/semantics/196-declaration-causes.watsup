@@ -1,0 +1,370 @@
+;; Historical causes retain executed scopes, never owning receiver objects.
+;; Availability is checked in the successful-binding prefix, not today's names.
+syntax pdeclcalls = (porigin, porigin?, porigin?, porigin?)*
+dec $declaration_callable_available(pstate, pfunction, nat) : bool
+dec $declaration_site_available(pstate, porigin, nat) : bool
+def $declaration_callable_available(S, pfunction, n) = true
+  -- if $(n > 0)
+  -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (pfunction.ORIGIN)
+def $declaration_callable_available(S, pfunction, n) = true
+  -- if $(n > 0)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if ~pmethoddesc.ABSTRACT
+  -- if $declaration_active_class(S, (pmethoddesc.OWNER))
+def $declaration_callable_available(S, pfunction, n) = $declaration_site_available(S, pfunction.ORIGIN, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
+def $declaration_callable_available(S, pfunction, n) = false -- otherwise
+def $declaration_site_available(S, PORIGIN n_unit pcpath, n) = $declaration_callable_available(S, pfunction, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) =/= eps
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
+def $declaration_site_available(S, PORIGIN n_unit pcpath, n) = $declaration_unit_complete(S.DECLARATIONS, n_unit)
+  -- if $(n > 0)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) =/= eps
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = eps
+def $declaration_site_available(S, porigin, n) = false -- otherwise
+
+def $declaration_service_available(S, eps) = (S.DECLARATIONS = eps)
+def $declaration_service_available(S, (porigin)) = $declaration_site_available(S, porigin, n)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprEval expression metadata)
+  -- if n = $(2 * |$all_functions(S)| + 1)
+def $declaration_service_available(S, (porigin)) = $declaration_site_available(S, porigin, n)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprInclude expression (INTEGER z) metadata)
+  -- if $(z >= 1 /\ z <= 4)
+  -- if n = $(2 * |$all_functions(S)| + 1)
+def $declaration_service_available(S, porigin?) = false -- otherwise
+
+;; Fixed source scopes constrain entry bindings. A rebound closure's scope is
+;; still a captured transition fact, without retaining its former object.
+def $declaration_service_scope(S, PORIGIN n_unit pcpath, eps) = true
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
+  -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
+def $declaration_service_scope(S, PORIGIN n_unit pcpath, porigin_scope?) = true
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if porigin_scope? = (pmethoddesc.OWNER)
+def $declaration_service_scope(S, PORIGIN n_unit pcpath, porigin_scope?) = $declaration_active_class(S, porigin_scope?)
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
+def $declaration_service_scope(S, PORIGIN 0 pcpath, eps) = true
+  -- if $goto_source_owner($all_functions(S), 0, pcpath) = eps
+def $declaration_service_scope(S, PORIGIN n_unit pcpath, porigin_scope?) = (pevalbinding.CLASS = porigin_scope?)
+  -- if $(n_unit > 0)
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n_unit) = (pevalbinding)
+def $declaration_service_scope(S, PORIGIN n_unit pcpath, porigin_scope?) = (pfilebinding.CLASS = porigin_scope?)
+  -- if $(n_unit > 0)
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = eps
+  -- if $file_binding_at(S.FILEBINDINGS, n_unit) = (pfilebinding)
+def $declaration_service_scope(S, porigin_site, porigin_scope?) = false -- otherwise
+
+dec $declaration_caller_lexical(pdeclcalls) : porigin?
+dec $declaration_caller_called(pdeclcalls) : porigin?
+def $declaration_caller_lexical((porigin, porigin_site?, porigin_lexical?, porigin_called?) :: pdeclcalls) = porigin_lexical?
+def $declaration_caller_lexical(eps) = eps
+def $declaration_caller_called((porigin, porigin_site?, porigin_lexical?, porigin_called?) :: pdeclcalls) = porigin_called?
+def $declaration_caller_called(eps) = eps
+
+dec $declaration_method_at(pstate, porigin, ptbytes, porigin?) : pmethoddesc?
+def $declaration_method_at(S, porigin_called, ptbytes, (porigin_scope)) = (pmethoddesc)
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc)
+  -- if $method_named(pclassdesc.METHODS, ptbytes) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PRIVATE
+  -- if $class_origin_matches(S, porigin_called, pclassdesc.NAME, |S.CLASSES|)
+def $declaration_method_at(S, porigin_called, ptbytes, porigin_scope?) = $effective_method(S, porigin_called, ptbytes, |S.CLASSES|) -- otherwise
+
+;; Known class operands come from the source image's constant pool. Parser
+;; literals also constrain a source whose compilation stopped before that pool.
+dec $declaration_class_value(pstate, porigin) : pvalue?
+def $declaration_class_value(S, porigin) = (pvalue)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pool_value(S.POOLS, porigin) = (pvalue)
+def $declaration_class_value(S, porigin) = $parser_literal(expression)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pool_value(S.POOLS, porigin) = eps
+def $declaration_class_value(S, porigin) = eps -- otherwise
+
+dec $declaration_requested(pstate, porigin, phpType19, pdeclcalls) : porigin?
+def $declaration_requested(S, porigin, NName (BYTES text) metadata, pdeclcalls) = $declaration_caller_lexical(pdeclcalls)
+  -- if $ptlc($base64(text)) = $ptascii("self")
+def $declaration_requested(S, porigin, NName (BYTES text) metadata, pdeclcalls) = (porigin_parent)
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+  -- if $declaration_caller_lexical(pdeclcalls) = (porigin_scope)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_scope) = (SOURCE_PARENT porigin_parent)
+def $declaration_requested(S, porigin, NName (BYTES text) metadata, pdeclcalls) = $declaration_caller_called(pdeclcalls)
+  -- if $ptlc($base64(text)) = $ptascii("static")
+def $declaration_requested(S, PORIGIN n_unit pcpath, phpType19, pdeclcalls) = $class_named(S.CLASSNAMES, $ptlc(preqbytes))
+  -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+def $declaration_requested(S, PORIGIN n_unit pcpath, expression, pdeclcalls) = $class_named(S.CLASSNAMES, $ptlc(preqbytes))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = (expression)
+  -- if $declaration_class_value(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = (PSTRING preqbytes)
+def $declaration_requested(S, porigin, phpType19, pdeclcalls) = eps -- otherwise
+
+;; Source-static callables cannot carry an implicit receiver. A non-static
+;; bound closure's former receiver remains a non-owning transition fact.
+dec $declaration_caller_receiver(pstate, pdeclcalls) : bool
+def $declaration_caller_receiver(S, (porigin_function, porigin_site?, porigin_lexical?, porigin_called?) :: pdeclcalls) = ~pmethoddesc.STATIC
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+def $declaration_caller_receiver(S, (porigin_function, porigin_site?, porigin_lexical?, porigin_called?) :: pdeclcalls) = ~$closure_static(S, pfunction)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin_function) = (pfunction)
+def $declaration_caller_receiver(S, pdeclcalls) = false -- otherwise
+
+dec $declaration_static_called(pstate, phpType19, pmethoddesc, porigin, porigin, pdeclcalls) : bool
+def $declaration_static_called(S, phpType19, pmethoddesc, porigin_requested, porigin_called, pdeclcalls) = $class_origin_matches(S, porigin_called, pclassdesc.NAME, |S.CLASSES|)
+  -- if ~pmethoddesc.STATIC
+  -- if $declaration_caller_called(pdeclcalls) = (porigin_called)
+  -- if $declaration_caller_receiver(S, pdeclcalls)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+def $declaration_static_called(S, phpType19, pmethoddesc, porigin_requested, porigin_called, pdeclcalls) = (porigin_requested = porigin_called)
+  -- if pmethoddesc.STATIC /\ ~$ppscoped_keyword(phpType19)
+def $declaration_static_called(S, phpType19, pmethoddesc, porigin_requested, porigin_called, pdeclcalls) = ($declaration_caller_called(pdeclcalls) = (porigin_called))
+  -- if pmethoddesc.STATIC /\ $ppscoped_keyword(phpType19)
+def $declaration_static_called(S, phpType19, pmethoddesc, porigin_requested, porigin_called, pdeclcalls) = false -- otherwise
+
+;; Only an optimized function RHS uses the pipe name as a function selector.
+;; Static method compilation stores its class name in the same code table.
+dec $declaration_pipe_function(pstate, porigin) : (preqbytes, preqbytes?)?
+def $declaration_pipe_function(S, porigin) = $pipe_fixed_name(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata_call) metadata)
+  -- if $pppipe_optimized(NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata_call)
+def $declaration_pipe_function(S, porigin) = eps -- otherwise
+dec $declaration_pipe_method(pstate, porigin) : bool
+def $declaration_pipe_method(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left (NExprMethodCall expression_receiver phpType20 (SEQUENCE phpType7*) metadata_call) metadata)
+  -- if $ppfirstclass(phpType7*)
+def $declaration_pipe_method(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left (NExprNullsafeMethodCall expression_receiver phpType20 (SEQUENCE phpType7*) metadata_call) metadata)
+  -- if $ppfirstclass(phpType7*)
+def $declaration_pipe_method(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata_call) metadata)
+  -- if $ppfirstclass(phpType7*)
+def $declaration_pipe_method(S, porigin) = false -- otherwise
+
+dec $declaration_named_selection(pstate, pfunction, porigin) : bool
+def $declaration_named_selection(S, pfunction, PORIGIN n_unit pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall name (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction)
+def $declaration_named_selection(S, pfunction, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $dynamic_fixed_name(S, porigin) = eps
+def $declaration_named_selection(S, pfunction, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $dynamic_fixed_name(S, porigin) = (preqbytes)
+  -- if $call_target(S, preqbytes, eps) = (pfunction)
+def $declaration_named_selection(S, pfunction, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if $declaration_pipe_function(S, porigin) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction)
+def $declaration_named_selection(S, pfunction, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if ~$declaration_pipe_method(S, porigin)
+  -- if $declaration_pipe_function(S, porigin) = eps
+def $declaration_named_selection(S, pfunction, porigin) = false -- otherwise
+
+dec $declaration_method_selection(pstate, pmethoddesc, porigin, porigin, pdeclcalls) : bool
+dec $declaration_new_selection(pstate, porigin, phpType28, porigin) : bool
+dec $declaration_string_site(pstate, porigin) : bool
+dec $declaration_method_call_selection(pstate, pmethoddesc, porigin, porigin, pdeclcalls, bool) : bool
+dec $declaration_receiver_selection(pstate, porigin, expression, porigin, pdeclcalls) : bool
+def $declaration_receiver_selection(S, PORIGIN n_unit pcpath, NExprNew name (SEQUENCE phpType7*) metadata, porigin_called, pdeclcalls) = ($declaration_requested(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), name, pdeclcalls) = (porigin_called))
+def $declaration_receiver_selection(S, porigin_site, expression, porigin_called, pdeclcalls) = true -- otherwise
+def $declaration_method_call_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls, b_firstclass) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*) = b_firstclass
+  -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
+  -- if $declaration_receiver_selection(S, porigin_site, expression, porigin_called, pdeclcalls)
+  -- if $declaration_method_at(S, porigin_called, pmethoddesc.NAME, $declaration_caller_lexical(pdeclcalls)) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, $declaration_caller_lexical(pdeclcalls))
+def $declaration_method_call_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls, b_firstclass) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*) = b_firstclass
+  -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
+  -- if $declaration_receiver_selection(S, porigin_site, expression, porigin_called, pdeclcalls)
+  -- if $declaration_method_at(S, porigin_called, pmethoddesc.NAME, $declaration_caller_lexical(pdeclcalls)) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, $declaration_caller_lexical(pdeclcalls))
+def $declaration_method_call_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls, b_firstclass) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*) = b_firstclass
+  -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
+  -- if $declaration_requested(S, porigin_site, phpType19, pdeclcalls) = (porigin_requested)
+  -- if $effective_method(S, porigin_requested, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+  -- if $declaration_static_called(S, phpType19, pmethoddesc, porigin_requested, porigin_called, pdeclcalls)
+  -- if $method_accessible(S, pmethoddesc, $declaration_caller_lexical(pdeclcalls))
+def $declaration_method_call_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls, b_firstclass) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)
+  -- if porigin_site = PORIGIN n_unit pcpath
+  -- if $declaration_class_value(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = eps
+  -- if $ppfirstclass(phpType7*) = b_firstclass
+  -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
+  -- if $effective_method(S, porigin_called, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+  -- if $declaration_static_called(S, expression_class, pmethoddesc, porigin_called, porigin_called, pdeclcalls)
+  -- if $method_accessible(S, pmethoddesc, $declaration_caller_lexical(pdeclcalls))
+def $declaration_method_call_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls, b_firstclass) = false -- otherwise
+def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = true
+  -- if $declaration_method_call_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls, false)
+def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = true
+  -- if $declaration_pipe_method(S, porigin_site)
+  -- if $declaration_method_call_selection(S, pmethoddesc, porigin_called, $pipe_rhs_origin(porigin_site), pdeclcalls, true)
+def $declaration_method_selection(S, pmethoddesc, porigin_called, PORIGIN n_unit pcpath, pdeclcalls) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__construct")
+  -- if $effective_method(S, porigin_called, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+  -- if $declaration_new_selection(S, PORIGIN n_unit pcpath, phpType28, porigin_called)
+  -- if $method_accessible(S, pmethoddesc, $declaration_caller_lexical(pdeclcalls))
+;; A captured method has already checked access at creation. Its historical
+;; dynamic operand is not a retained object or a fresh caller-scope lookup.
+def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if ~$declaration_pipe_method(S, porigin_site)
+  -- if $declaration_pipe_function(S, porigin_site) = eps
+def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = true
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__tostring")
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $effective_method(S, porigin_called, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+  -- if $declaration_string_site(S, porigin_site)
+def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = false -- otherwise
+
+def $declaration_new_selection(S, PORIGIN n_unit pcpath, name, porigin_called) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_called)
+def $declaration_new_selection(S, PORIGIN n_unit pcpath, expression, porigin_called) = ($class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_called))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew expression (SEQUENCE phpType7*) metadata)
+  -- if $declaration_class_value(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = (PSTRING preqbytes)
+def $declaration_new_selection(S, PORIGIN n_unit pcpath, expression, porigin_called) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew expression (SEQUENCE phpType7*) metadata)
+  -- if $declaration_class_value(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = eps
+def $declaration_new_selection(S, porigin, phpType28, porigin_called) = false -- otherwise
+
+def $declaration_string_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $stringify_local_consumer(expression)
+def $declaration_string_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprEval expression metadata)
+def $declaration_string_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtReturn expression metadata)
+def $declaration_string_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+def $declaration_string_site(S, porigin_child) = true
+  -- if $reference_origin_parent(porigin_child, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprEval expression metadata)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression)
+def $declaration_string_site(S, porigin_child) = true
+  -- if $reference_origin_parent(porigin_child, 3) = ((PORIGIN n_unit pcpath, [PCFIELD 1, PCINDEX 0, PCFIELD 1]))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
+  -- if phpType7* = [(NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg)]
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (INTRINSIC_CHDIR)
+def $declaration_string_site(S, PORIGIN n_unit pcpath) = true
+  -- if $(|pcpath| >= 2)
+  -- if n_parent = $nabs($(|pcpath| - 2))
+  -- if pcpath_parent = pcpath[0:n_parent]
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_parent) = (NStmtEcho phpType25 metadata)
+def $declaration_string_site(S, PORIGIN n_unit pcpath) = true
+  -- if $(|pcpath| >= 1)
+  -- if n_parent = $nabs($(|pcpath| - 1))
+  -- if pcpath_parent = pcpath[0:n_parent]
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_parent) = (NExprBinaryOpConcat expression_left expression_right metadata)
+def $declaration_string_site(S, porigin) = false -- otherwise
+
+;; Literal newThis class selections can be authenticated from source names.
+;; Unknown receiver values remain non-owning historical transition facts.
+dec $declaration_closure_receiver(porigin, phpType7*, nat) : porigin?
+dec $declaration_closure_receiver_item(porigin, phpType7, nat) : porigin?
+def $declaration_closure_receiver_item(PORIGIN n_unit pcpath, NArg phpType3 (NExprNew name (SEQUENCE phpType7_new*) metadata_new) (BOOLEAN false) (BOOLEAN false) metadata_arg, n_index) = (PORIGIN n_unit (pcpath ++ [PCFIELD 2, PCINDEX n_index, PCFIELD 1]))
+  -- if (n_index = 0 /\ phpType3 = ABSENT) \/ $closure_call_newthis_name(phpType3)
+def $declaration_closure_receiver_item(porigin, phpType7, n_index) = eps -- otherwise
+def $declaration_closure_receiver(porigin, eps, n_index) = eps
+def $declaration_closure_receiver(porigin, phpType7 :: phpType7_tail*, n_index) = (porigin_receiver)
+  -- if $declaration_closure_receiver_item(porigin, phpType7, n_index) = (porigin_receiver)
+def $declaration_closure_receiver(porigin, phpType7 :: phpType7_tail*, n_index) = $declaration_closure_receiver(porigin, phpType7_tail*, $(n_index + 1))
+  -- if $declaration_closure_receiver_item(porigin, phpType7, n_index) = eps
+dec $declaration_closure_call_scope(pstate, porigin, porigin, pdeclcalls) : bool
+def $declaration_closure_call_scope(S, porigin_site, porigin_scope, pdeclcalls) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $declaration_closure_receiver(porigin_site, phpType7*, 0) = eps
+def $declaration_closure_call_scope(S, porigin_site, porigin_scope, pdeclcalls) = ($declaration_requested(S, porigin_receiver, name, pdeclcalls) = (porigin_scope))
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $declaration_closure_receiver(porigin_site, phpType7*, 0) = (porigin_receiver)
+  -- if $origin_node(S.SOURCES, porigin_receiver) = (NExprNew name (SEQUENCE phpType7_new*) metadata_new)
+def $declaration_closure_call_scope(S, porigin_site, porigin_scope, pdeclcalls) = false -- otherwise
+
+dec $declaration_invocation(pstate, pfunction, porigin, porigin?, porigin?, pdeclcalls) : bool
+def $declaration_invocation(S, pfunction, porigin_site, eps, eps, pdeclcalls) = $declaration_named_selection(S, pfunction, porigin_site)
+  -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
+def $declaration_invocation(S, pfunction, porigin_site, (porigin_owner), (porigin_called), pdeclcalls) = $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = porigin_owner
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $class_origin_matches(S, porigin_called, pclassdesc.NAME, |S.CLASSES|)
+def $declaration_invocation(S, pfunction, porigin_site, porigin_lexical?, porigin_called?, pdeclcalls) = true
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+def $declaration_invocation(S, pfunction, porigin_site, (porigin_scope), (porigin_scope), pdeclcalls) = true
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
+  -- if ~$closure_static(S, pfunction)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ptlc($base64(text)) = $ptascii("call")
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $declaration_closure_call_scope(S, porigin_site, porigin_scope, pdeclcalls)
+def $declaration_invocation(S, pfunction, porigin_site, porigin_lexical?, porigin_called?, pdeclcalls) = true
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if ~$declaration_pipe_method(S, porigin_site)
+  -- if $declaration_pipe_function(S, porigin_site) = eps
+def $declaration_invocation(S, pfunction, porigin_site, porigin_lexical?, porigin_called?, pdeclcalls) = false -- otherwise
+
+;; An arrow return callback uses the arrow declaration as its saved return
+;; site; creation availability still uses the containing source body above.
+dec $declaration_cause_owner(pstate, porigin) : pfunction?
+def $declaration_cause_owner(S, porigin) = (pfunction)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+def $declaration_cause_owner(S, PORIGIN n pcpath) = $goto_source_owner($all_functions(S), n, pcpath) -- otherwise
+
+;; The first global scope gives the actual executing unit. Dynamic service
+;; boundaries then authenticate outer callers without replacing that unit.
+dec $declaration_cause_walk(pstate, porigin, pdeclcalls, nat, bool, nat) : bool
+def $declaration_cause_walk(S, PORIGIN n_site pcpath, (porigin_function, porigin_callsite?, porigin_lexical?, porigin_called?) :: pdeclcalls, n_unit, b_unit, n) = $declaration_cause_walk(S, porigin_call, pdeclcalls, n_unit, b_unit, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if porigin_callsite? = (porigin_call)
+  -- if $declaration_cause_owner(S, PORIGIN n_site pcpath) = (pfunction)
+  -- if pfunction.ORIGIN = porigin_function
+  -- if $declaration_callable_available(S, pfunction, n)
+  -- if $declaration_active_class(S, porigin_lexical?) /\ $declaration_active_class(S, porigin_called?)
+  -- if $declaration_invocation(S, pfunction, porigin_call, porigin_lexical?, porigin_called?, pdeclcalls)
+def $declaration_cause_walk(S, PORIGIN 0 pcpath, eps, n_unit, b_unit, n) = true
+  -- if $(n > 0)
+  -- if $declaration_cause_owner(S, PORIGIN 0 pcpath) = eps
+  -- if $declaration_unit_complete(S.DECLARATIONS, 0)
+  -- if b_unit \/ n_unit = 0
+def $declaration_cause_walk(S, PORIGIN n_site pcpath, pdeclcalls, n_unit, b_unit, n) = $declaration_cause_walk(S, porigin_entry, pdeclcalls, n_unit, true, $nabs($(n - 1)))
+  -- if $(n > 0 /\ n_site > 0)
+  -- if $declaration_cause_owner(S, PORIGIN n_site pcpath) = eps
+  -- if $declaration_unit_complete(S.DECLARATIONS, n_site)
+  -- if b_unit \/ n_unit = n_site
+  -- if $declaration_entry_site(S.DECLARATIONS, n_site) = (porigin_entry)
+  -- if $declaration_service_available(S, (porigin_entry))
+def $declaration_cause_walk(S, porigin, pdeclcalls, n_unit, b_unit, n) = false -- otherwise
+
+def $declaration_cause_valid(S, porigin, pdeclcause) = $declaration_cause_walk(S, porigin, pdeclcause.CALLS, pdeclcause.UNIT, false, n)
+  -- if $origin_node(S.SOURCES, porigin) =/= eps
+  -- if n = $(|S.DECLARATIONS| + 2 * |$all_functions(S)| + |pdeclcause.CALLS| + 1)
