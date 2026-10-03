@@ -11,6 +11,9 @@ def $intrinsic_named(preqbytes) = (INTRINSIC_SET_INCLUDE_PATH) -- if $ptlc(preqb
 def $intrinsic_named(preqbytes) = (INTRINSIC_INI_SET) -- if $ptlc(preqbytes) = $ptascii("ini_set")
 def $intrinsic_named(preqbytes) = (INTRINSIC_INI_RESTORE) -- if $ptlc(preqbytes) = $ptascii("ini_restore")
 def $intrinsic_named(preqbytes) = (INTRINSIC_CHDIR) -- if $ptlc(preqbytes) = $ptascii("chdir")
+dec $error_dispatch(pstate, int, preqbytes, int, pevent, ptask) : pstate
+dec $error_context_call(pstate, pcallcontext) : perrorcall?
+dec $error_trigger_trace_values(pstate, pconfigcall) : pvalue*
 dec $error_api_kind(pintrinsic) : bool
 dec $config_kind(pintrinsic) : bool
 def $config_kind(INTRINSIC_GET_INCLUDE_PATH) = true
