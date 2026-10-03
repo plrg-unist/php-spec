@@ -56,7 +56,7 @@ def $eval_class_origin(S) = eps -- otherwise
 def $eval_request_start(S, porigin, z, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $eval_site_valid(S, porigin, z)
   -- if S.RESULT = KNOWN (PSTRING eps)
-def $eval_request_start(S, porigin, z, ptask_tail*) = S[.FILES = S.FILES ++ [SOURCEFILE n_unit n_file*]][.EVALCONTEXTS = pevalcontext :: S.EVALCONTEXTS][.TODO = (EVAL_AWAIT n_unit) :: ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
+def $eval_request_start(S, porigin, z, ptask_tail*) = $declaration_enter(S, n_unit, (porigin))[.FILES = S.FILES ++ [SOURCEFILE n_unit n_file*]][.EVALCONTEXTS = pevalcontext :: S.EVALCONTEXTS][.TODO = (EVAL_AWAIT n_unit) :: ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
   -- if $eval_site_valid(S, porigin, z)
   -- if S.RESULT = KNOWN (PSTRING (n_byte :: n_tail*))
   -- if n_unit = $next_eval_unit(S.FILES)
@@ -443,6 +443,7 @@ def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_co
   -- if S_compiled.COMPLETION = UNSUPPORTED text
 
 dec $eval_resume_accepted(pstate, pevalcontext, pevalcontext*, program) : pstate
+dec $eval_resume_rejected(pstate, pevalcontext, pevalcontext*, pfailedkind, nat*, int) : pstate
 dec $eval_compiler_class(pstate) : ptbytes?
 def $eval_compiler_class(S) = (pclassdesc.NAME)
   -- if S.CURRENT = (pcallcontext)
@@ -461,7 +462,7 @@ def $eval_units_bound(S, pcunit :: pcunit_tail*) = (($eval_binding_at(S.EVALBIND
   -- if $(pcunit.ID > 0)
 dec $file_source_ppstate(pstate, pcunit) : ppstate
 dec $eval_source_ppstate_body(pstate, pcunit) : ppstate
-def $eval_source_ppstate(S, pcunit) = $ppwakeup_order_guard(S, $eval_source_ppstate_body(S, pcunit))
+def $eval_source_ppstate(S, pcunit) = $eval_source_ppstate_body(S, pcunit)
 def $eval_source_ppstate_body(S, pcunit) = $file_source_ppstate(S, pcunit)
   -- if $file_binding_at(S.FILEBINDINGS, pcunit.ID) = (pfilebinding)
 def $eval_source_ppstate_body(S, pcunit) = $ppstart_eval_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST), (pclassdesc.NAME))
@@ -476,19 +477,21 @@ def $eval_source_ppstate_body(S, pcunit) = $ppstart_cwd(pcunit.ID, pcunit.AST, $
   -- if $eval_binding_at(S.EVALBINDINGS, pcunit.ID) = eps
 def $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program) = $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P)
   -- if P = $ppstart_eval_cwd(pevalcontext.UNIT, program, pevalcontext.FILE, $call_request_cwd(S.REQUEST), $eval_compiler_class(S))
+  -- if ~$declaration_parser_rejects($declaration_preflight(P.FOLD.SOURCE.OCCURRENCES))
   -- if pevalbinding = {UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS}
   -- if S_compiled = $compile_source_append(S[.COMPLETION = NORMAL][.EVALBINDINGS = S.EVALBINDINGS ++ [pevalbinding]], P)
+def $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program) = $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, FAILED_COMPILE, ptbytes_message, z)
+  -- if $declaration_preflight($pcsource(pevalcontext.UNIT, program).OCCURRENCES) = (COMPILETHROWN ptbytes_message z)
 dec $eval_resume_valid(pstate, psourceresponse) : pstate
 def $eval_resume_valid(S, SOURCE_ACCEPT n n_bytes* program) = $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program)
   -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
-dec $eval_resume_rejected(pstate, pevalcontext, pevalcontext*, pfailedkind, nat*, int) : pstate
 def $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, pfailedkind, n_message*, z) = S_object[.EVALCONTEXTS = pevalcontext_tail*][.TODO = (THROW_SEARCH n_object) :: pevalcontext.TAIL][.ORIGIN = (pevalcontext.SITE)][.SERVICELEFT = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.CONSTCONTEXT = eps]
   -- if pfailedsource = {UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, BYTES pevalcontext.BYTES, FILE pevalcontext.FILE, ISFILE false, KIND pfailedkind, MESSAGE n_message*, LINE z}
-  -- if S_object = $throwable_materialize(S[.FAILEDSOURCES = pfailedsource :: S.FAILEDSOURCES][.ORIGIN = (PORIGIN pevalcontext.UNIT eps)][.COMPLETION = THROWN $failed_source_kind(pfailedkind) n_message* z])
+  -- if S_object = $throwable_materialize($declaration_exit(S, pevalcontext.UNIT, PCSREJECT)[.FAILEDSOURCES = pfailedsource :: S.FAILEDSOURCES][.ORIGIN = (PORIGIN pevalcontext.UNIT eps)][.COMPLETION = THROWN $failed_source_kind(pfailedkind) n_message* z])
   -- if S_object.COMPLETION = THROWING n_object
 def $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, pfailedkind, n_message*, z) = S_object[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps]
   -- if pfailedsource = {UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, BYTES pevalcontext.BYTES, FILE pevalcontext.FILE, ISFILE false, KIND pfailedkind, MESSAGE n_message*, LINE z}
-  -- if S_object = $throwable_materialize(S[.FAILEDSOURCES = pfailedsource :: S.FAILEDSOURCES][.ORIGIN = (PORIGIN pevalcontext.UNIT eps)][.COMPLETION = THROWN $failed_source_kind(pfailedkind) n_message* z])
+  -- if S_object = $throwable_materialize($declaration_exit(S, pevalcontext.UNIT, PCSREJECT)[.FAILEDSOURCES = pfailedsource :: S.FAILEDSOURCES][.ORIGIN = (PORIGIN pevalcontext.UNIT eps)][.COMPLETION = THROWN $failed_source_kind(pfailedkind) n_message* z])
   -- if ~$eval_allocated_throw(S_object.COMPLETION)
 def $eval_resume_valid(S, SOURCE_PARSE_REJECT n n_bytes* n_message* z) = $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, FAILED_PARSE, n_message*, z)
   -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*

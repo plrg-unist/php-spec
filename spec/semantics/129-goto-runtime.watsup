@@ -2,6 +2,7 @@
 ;; continuation is assembled from source statements; saved loop/foreach/switch
 ;; owners are reused only when the target stays inside that exact owner.
 syntax pgototasks = GOTOTASKS ptask* | GOTOMISSING
+dec $declaration_unit_complete(pdeclaration*, nat) : bool
 
 dec $goto_base(pstate, porigin) : pgototasks
 def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $compiled_work(n, P.WORK)
@@ -9,6 +10,7 @@ def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $compiled_work(n, P.WORK)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if P = $eval_source_ppstate(S, pcunit)
   -- if P.COMPLETION = PPCNORMAL
+  -- if $declaration_unit_complete(S.DECLARATIONS, n)
 def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $function_tasks(S, pfunction)
   -- if S.CURRENT = (pcallcontext)
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)

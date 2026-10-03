@@ -34,35 +34,34 @@ def $callable_at((preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*, preqby
 def $callable_at((preqbytes_name, porigin) :: (preqbytes_tail, porigin_tail)*, preqbytes) = $callable_at((preqbytes_tail, porigin_tail)*, preqbytes)
   -- if preqbytes_name =/= preqbytes
 dec $activate_function(pstate, pfunction) : pstate
-def $activate_function(S, pfunction) = S -- if S.COMPLETION =/= NORMAL
-def $activate_function(S, pfunction) = S[.CALLABLES = S.CALLABLES ++ [($ptlc(pfunction.NAME), pfunction.ORIGIN)]]
+dec $activate_function_body(pstate, pfunction) : pstate
+dec $declaration_function_success(pstate, pstate, pfunction) : pstate
+dec $declaration_early(pdeclaration*, porigin, ppubkind) : bool
+def $activate_function(S, pfunction) = $declaration_function_success(S, $activate_function_body(S, pfunction), pfunction)
+def $activate_function_body(S, pfunction) = S -- if S.COMPLETION =/= NORMAL
+def $activate_function_body(S, pfunction) = S[.CALLABLES = S.CALLABLES ++ [($ptlc(pfunction.NAME), pfunction.ORIGIN)]]
   -- if S.COMPLETION = NORMAL
   -- if ~$pfunction_builtin(pfunction.NAME)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = eps
-def $activate_function(S, pfunction) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare function ") ++ pfunction.NAME ++ $ptascii("()")) pfunction.LINE]
+def $activate_function_body(S, pfunction) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare function ") ++ pfunction.NAME ++ $ptascii("()")) pfunction.LINE]
   -- if S.COMPLETION = NORMAL
   -- if $pfunction_builtin(pfunction.NAME)
-def $activate_function(S, pfunction) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare function ") ++ pfunction.NAME ++ $ptascii("() (previously declared in ") ++ $call_sourcefile(S.FILES, pfunction_old.ORIGIN) ++ [58] ++ $ntunsigned(pfunction_old.LINE) ++ [41]) pfunction.LINE]
+def $activate_function_body(S, pfunction) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare function ") ++ pfunction.NAME ++ $ptascii("() (previously declared in ") ++ $call_sourcefile(S.FILES, pfunction_old.ORIGIN) ++ [58] ++ $ntunsigned(pfunction_old.LINE) ++ [41]) pfunction.LINE]
   -- if S.COMPLETION = NORMAL
   -- if ~$pfunction_builtin(pfunction.NAME)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin)
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction_old)
-dec $activate_early(pstate, pfunction*) : pstate
-def $activate_early(S, eps) = S
-def $activate_early(S, pfunction :: pfunction_tail*) = $activate_early($activate_function(S, pfunction), pfunction_tail*) -- if pfunction.EARLY
-def $activate_early(S, pfunction :: pfunction_tail*) = $activate_early(S, pfunction_tail*) -- if ~pfunction.EARLY
-def $install_functions(S, pfunction*) = $activate_early(S[.FUNCTIONS = S.FUNCTIONS ++ pfunction*], pfunction*)
 
 rule PhpStep/function-declaration-early: S ~> S[.TODO = ptask_tail*]
   -- if S.TODO = (STMT (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
-  -- if pfunction.EARLY
+  -- if $declaration_early(S.DECLARATIONS, porigin, PPFUNCTION)
 rule PhpStep/function-declaration-runtime: S ~> $activate_function(S[.TODO = ptask_tail*], pfunction)
   -- if S.TODO = (STMT (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
-  -- if ~pfunction.EARLY
+  -- if ~$declaration_early(S.DECLARATIONS, porigin, PPFUNCTION)
 
 dec $call_target(pstate, preqbytes, preqbytes?) : pfunction?
 def $call_target(S, preqbytes, preqbytes_fallback?) = $function_at(S.FUNCTIONS, porigin)
