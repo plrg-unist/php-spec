@@ -20,6 +20,7 @@ ENV = {'PATH': '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
        'LC_ALL': 'C', 'TZ': 'UTC', 'PYTHONDONTWRITEBYTECODE': '1', 'GIT_OPTIONAL_LOCKS': '0'}
 FATAL_MAIN = b'''<?php
 class O {function __toString():string {
+    echo func_num_args();
     ini_set('include_path',"__SUB__\\0nested");
     include 'bad.php';
     return 'c';
@@ -110,7 +111,7 @@ def prepare_fatal(directory):
         'S_fatal.CLASSES = [pclassdesc_o,pclassdesc_a]',
         'pclassdesc_o.NAME = $ptascii("O")', 'pclassdesc_a.NAME = $ptascii("A")',
         'S_fatal.DECLARATIONS = [PDENTER 0 eps 30719,PDEXIT 0 PCSCOMPLETE,PDRCLASS pclassdesc_o.ORIGIN {UNIT 0,CALLS eps},PDENTER 1 (pfilecontext_parse.SITE) 30719,PDECLASS 1 pclassdesc_a.ORIGIN,PDEXIT 1 PCSCOMPILER]',
-        'S_fatal.EVENTS = [DIAGNOSTIC_SOURCE 1 \"Deprecated\" $ptascii(' + json.dumps('Return type of A::__wakeup() should either be compatible with Exception::__wakeup(): void, or the #[\\ReturnTypeWillChange] attribute should be used to temporarily suppress the notice') + ') 2]',
+        'S_fatal.EVENTS = [OUTPUT $ptascii(\"0\"),DIAGNOSTIC_SOURCE 1 \"Deprecated\" $ptascii(' + json.dumps('Return type of A::__wakeup() should either be compatible with Exception::__wakeup(): void, or the #[\\ReturnTypeWillChange] attribute should be used to temporarily suppress the notice') + ') 2]',
         '$declaration_history_valid(S_fatal)',
         '~$declaration_history_valid(S_fatal[.COMPILESTOP = false])',
         '~$file_open_response_valid(S_fatal,' + opened + ')',
