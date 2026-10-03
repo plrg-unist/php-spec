@@ -73,7 +73,14 @@ source3 and fresh finite4/241 plus retained15/355, independently source2 and
 finite2/147. These reach inherited receiver authority, delayed temporary argument
 errors and Stringable SET borrowing. The invalid earlier native witness and all
 failed preparations remain preserved. Composition on accepted INI7dd keeps those
-source endpoints exact; its new live-NUL callback gates and installation are pending.
+source endpoints exact. Tested f8cc91079 accepts a fresh source tuple and two
+finite checkpoints/133: the inner source `__invoke` keeps authentic argument and
+saved CONFIG/PACKS state after `ini_set` stores live-NUL bytes; its full-byte old
+return differs from the enclosing SET C-prefix return. Genuine one-step commit
+and normal cleanup pass. Executables are reused; canonical installation remains pending.
+The first legal getter witness remains nativepass/modelUnsupported with zero
+agreement: `get_include_path` and `ini_get` bodies are currently unadmitted, and
+their complete-core scope is a separate open include review.
 
 The pin has an internal MAKE_REF defect for reference-list assignment directly
 from optimized `func_get_args()`. The model keeps general list language behavior;
