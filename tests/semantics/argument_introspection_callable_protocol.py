@@ -19,6 +19,7 @@ CASES = [
         'source_id': 'callable-first-live-argument-views',
         'stage': callable_parameters.STAGE,
         'checks': [
+            callable_parameters.STAGE,
             *callable_parameters.RECEIVE,
             '~$typed_caller_strict(S)',
             'pcallcontext.ARGC = 1',
