@@ -188,6 +188,8 @@ def main():
     results = []
     for row in rows:
         directory = Path(row['fixture']).parent
+        assert sha(Path(row['fixture'])) == row['fixture_sha256']
+        assert sha(Path(row['source'])) == row['source_sha256']
         command = [str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), *modules, row['fixture']]
         launch = {'supplied_argv': command, 'cwd': str(ROOT), 'supplied_environment': ENV,
                   'timeout_seconds': 120, 'status': 'launching', 'started': time.time()}
@@ -219,16 +221,20 @@ def main():
                 save()
         try:
             stable = before == types.syntax_validation.implementation_fingerprint()
+            stable = stable and sha(Path(row['fixture'])) == row['fixture_sha256']
+            stable = stable and sha(Path(row['source'])) == row['source_sha256']
         except Exception as caught:
             stable = False
             error = (error or '') + '; input guard: ' + str(caught)
         passed = observed == 0 and not error and stable and (directory / 'stdout').read_bytes() == b'true\n' and not (directory / 'stderr').read_bytes()
         results.append({**row, 'pass': passed, 'exit_status': observed, 'inputs_stable': stable, 'error': error})
-        (out / 'report.json').write_text(json.dumps({'result': 'running' if passed else 'fail',
+        (out / 'report.json').write_text(json.dumps({'result': 'running' if passed else 'fail', 'fingerprint': before,
+            'inputs_stable': all(r['inputs_stable'] for r in results),
             'records': results, 'conditional_unrun': [r['id'] for r in rows[len(results):]]}, indent=2) + '\n')
         if not passed:
             raise SystemExit(1)
-    (out / 'report.json').write_text(json.dumps({'result': 'pass', 'records': results,
+    (out / 'report.json').write_text(json.dumps({'result': 'pass', 'records': results, 'fingerprint': before,
+        'inputs_stable': all(r['inputs_stable'] for r in results),
         'conditional_unrun': [], 'overlapping_predicates': sum(r['conditions'] for r in rows)}, indent=2) + '\n')
 
 
