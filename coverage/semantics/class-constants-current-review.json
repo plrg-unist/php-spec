@@ -1,0 +1,114 @@
+{
+  "target": "PHP8.5.10 CLI NTS64",
+  "status": "partial private183/184; no canonical integration or full-family claim",
+  "base_revision": "d5208161ab3629d70228555b84c2e9d53076ba55",
+  "source_evidence": {
+    "distinct_cases": 25,
+    "normal": 7,
+    "php_error": 17,
+    "static_rejection": 1,
+    "composition": "5+7+2+9+2 across source corrections; no single-revision25 rerun",
+    "runs": [
+      {
+        "report": ".tools/compiler-class-constants-current-13/.tools/class-constants/first-model14/report.json",
+        "report_sha256": "3708e7aa9d75769b688560e6a70e2abd555f2747b4c5c1c313051a94106a8546",
+        "original_aggregate_status": "FAIL",
+        "accepted_prefix_cases": 5,
+        "release": ".tools/compiler-class-constants-current-13/.tools/class-constants/first-model14/RELEASE2.json",
+        "release_sha256": "5f92205076d320689e48c6c2f4d74cae2dc09a8e5f0e5e39f3ab15e1e622aafd"
+      },
+      {
+        "report": ".tools/compiler-class-constants-current-13/.tools/class-constants/model-rest9-ordinary-facts/report.json",
+        "report_sha256": "fdd0f3a688f557893b9843464a42e907d04b1b1bbbe70ef847b34d75efd3a1c4",
+        "original_aggregate_status": "FAIL",
+        "accepted_prefix_cases": 7,
+        "release": ".tools/compiler-class-constants-current-13/.tools/class-constants/model-rest9-ordinary-facts/RELEASE2.json",
+        "release_sha256": "c01fc55ae83bdd4700484f8225c36e662256cd275368634258861f7dfc0a1e39"
+      },
+      {
+        "report": ".tools/compiler-class-constants-current-13/.tools/class-constants/model-cycle-private2/report.json",
+        "report_sha256": "6d22e7ffef313eefa5043f16af967e3a1c13584d49bf8ee94e94c8f60e0839e0",
+        "original_aggregate_status": "PASS",
+        "accepted_prefix_cases": 2,
+        "release": ".tools/compiler-class-constants-current-13/.tools/class-constants/model-cycle-private2/RELEASE2.json",
+        "release_sha256": "52e66c3e79537e028e442eb70fd5bbb0bade963690aac711632dd3070bfdf555"
+      },
+      {
+        "report": ".tools/compiler-class-constants-current-13/.tools/class-constants/model-global-default11-v2/report.json",
+        "report_sha256": "a88907e657fd25a29a6ae7f0f1c9315454372bffc32dc60253be267a4a775598",
+        "original_aggregate_status": "FAIL",
+        "accepted_prefix_cases": 9,
+        "release": ".tools/compiler-class-constants-current-13/.tools/class-constants/model-global-default11-v2/RELEASE2.json",
+        "release_sha256": "f0757ece9243a2db61e1a9a620e73c60903ff466e9edb83102cb41d541ac112e"
+      },
+      {
+        "report": ".tools/compiler-class-constants-current-13/.tools/class-constants/model-cross-file2/report.json",
+        "report_sha256": "882b4bd06e2b68f84e84ff1a85e634b765a25a8e5c22e7adbbdc6fdec4cfdf6d",
+        "original_aggregate_status": "PASS",
+        "accepted_prefix_cases": 2,
+        "release": ".tools/compiler-class-constants-current-13/.tools/class-constants/model-cross-file2/RELEASE2.json",
+        "release_sha256": "66922fbea60706ba80a3e259f1f068c652ff1292a30d13d29476d6b5bfed470a"
+      }
+    ]
+  },
+  "finite_evidence": {
+    "programs": 2,
+    "overlapping_predicates": [
+      16,
+      13
+    ],
+    "run": {
+      "report": ".tools/compiler-class-constants-current-13/.tools/class-constants/finite2-v4/report.json",
+      "report_sha256": "9840c86afb1c67599024ed9550220f330aef5550059fd95f3587587986928997",
+      "original_aggregate_status": "PASS",
+      "accepted_prefix_cases": 2,
+      "release": ".tools/compiler-class-constants-current-13/.tools/class-constants/finite2-v4/RELEASE2.json",
+      "release_sha256": "a69ce7ebc2b87ea9ae54d0e1035d006ce7a7b5613bb858281f73bfc815034025"
+    }
+  },
+  "source_cutoffs": {
+    "compiler183_sha256": "b3a362e0a0de948caa5921f96616269bfb249a7ce6cbbab76f4d8c72926bcd7b",
+    "runtime184_latest_sha256": "a0e55aa324b39c9682930fdbf715cdc40b3155e7649839a686eb99962afeef9c",
+    "last_pure_load": "195 modules once; v29 main=true0 strict true newline/exit0"
+  },
+  "independent_reviews": [
+    {
+      "path": ".tools/compiler-publication-operational-current/.tools/compiler-publication/reviewer-13-constants-cycle-private-original-review.json",
+      "sha256": "bb03387d6d42eb87e6d6b64dd0809debdc8f231061ad670cbaefa51217452abc"
+    },
+    {
+      "path": ".tools/compiler-publication-operational-current/.tools/compiler-publication/reviewer-13-constants-finite29-and-global11-review.json",
+      "sha256": "f519138cd2e182cc66ce79b284820d8780c410f584fcea1fdbff93341e182283"
+    },
+    {
+      "path": ".tools/compiler-publication-operational-current/.tools/compiler-publication/reviewer-13-constants-cross-file2-original-review.json",
+      "sha256": "95a9c7b2ee6903c0e7b53a7aae35616ef02efde99751ee510e68da53104010b3"
+    }
+  ],
+  "preserved_failures": [
+    "first-model14: inconsistent promoted root/missing completed image checkpoint",
+    "model-rest9: invalid publication history masked an earlier ordinary class-provenance installation failure",
+    "model-rest9-ordinary-facts: recursive protection named self::X instead of self::Y",
+    "model-global-default11-v2: simple cross-file error used child filename instead of main",
+    "constants-current13-native-6: original NEW private-parent hypothesis refuted; all originals retained"
+  ],
+  "native_contract": "Project-local8.5.10 binary b9adb7ba; fixed ENV5 and -n display_errors=stderr/log_errors=0/html_errors=0/error_reporting=32767. Model baseline30719 stays distinct. Source tuple templates replace only observed main filename; cross-file child names/source bytes and file snapshots explicit. Native cwd/environment observations remain original, not fresh model facts.",
+  "primary_symbols": [
+    "zend_try_ct_eval_class_const",
+    "zend_compile_class_const_decl",
+    "zend_get_class_constant_ex",
+    "zend_update_class_constant",
+    "zend_update_class_constants",
+    "zend_ast_evaluate_ex",
+    "FETCH_CLASS_CONSTANT"
+  ],
+  "remaining": [
+    "constant inheritance/probe ordering and linking-time update flags",
+    "cross-unit scalar/cache/array folding",
+    "legal static Closure/FCC initializers",
+    "invalid constant modifiers/admission and source metadata",
+    "attributes, traits, enums and internal constants",
+    "broader default/static-property consumers",
+    "current-master composition and fresh copied build"
+  ]
+}

@@ -92,8 +92,14 @@ regressions; the interim rooted wakeup guard is removed. Compile-stop retains
 completed mutations and freezes saved callers while retiring active file replies.
 [Publication review](coverage/semantics/compiler-publication-review.json) separates
 the fresh copied revision from later INI/argument/Restore compositions.
-Constants183/184 is next; two reporting-mask/error_reporting controls
-remain later core obligations.
+Private constants183/184 now preserve declaring-owner lazy values, successful
+caches, array copy-on-write, global/default restoration and AST/VM diagnostics.
+Twenty-five retained-native comparisons agree across successive source revisions
+(7 normal/17 PHP errors/1 static rejection); two finite programs pass16+13 predicates.
+[The constants ledger](coverage/semantics/class-constants-current-review.json)
+preserves failures and cutoffs. Inheritance validation/table-update flags,
+cross-unit folding, Closure/FCC initializers and remaining constant consumers are
+open. Reporting-mask/error_reporting remains a later core obligation.
 
 Installed origin retirement preserves diagnostic origins, traces and saved-frame
 cleanup. Its ledger distinguishes the minimal installed checks from the private

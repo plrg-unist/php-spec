@@ -1479,16 +1479,20 @@
         "spec/semantics/20-machine.watsup",
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/141-method-compiler.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/183-class-constant-compiler.watsup",
+        "spec/semantics/184-class-constants.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/method_compiler.py",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/method_wrapper_protocol.py"
+        "tests/semantics/method_wrapper_protocol.py",
+        "tests/semantics/class_constant_cases.json",
+        "tests/semantics/class_constant_protocol.py"
       ],
-      "review": "Named ::class plus lexical self::class/parent::class and runtime called-scope static::class execute for admitted class and closure contexts (methods-review.json). Earlier constant prepass remains in array-omission-review.json. General class constants, dynamic class names and static-member lookup remain open."
+      "review": "Private183/184 bounded source25 (7normal/17PHPerror/1static) across successive revisions and finite16+13 preserve declaring-owner lazy values, successful caches/COW, global/default restoration and AST/VM diagnostics. Inheritance validation/update flags, cross-unit folding, legal Closure/FCC, attributes and broader consumers remain open; see class-constants-current-review.json. No whole-family closure."
     },
     {
       "node": "Expr_Clone",
@@ -2903,10 +2907,16 @@
       "obligations": [
         "declarations.typed-class-constants"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/183-class-constant-compiler.watsup",
+        "spec/semantics/184-class-constants.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/class_constant_cases.json",
+        "tests/semantics/class_constant_protocol.py"
+      ],
+      "review": "Private183/184 bounded source25 (7normal/17PHPerror/1static) across successive revisions and finite16+13 preserve declaring-owner lazy values, successful caches/COW, global/default restoration and AST/VM diagnostics. Inheritance validation/update flags, cross-unit folding, legal Closure/FCC, attributes and broader consumers remain open; see class-constants-current-review.json. No whole-family closure."
     },
     {
       "node": "Stmt_ClassMethod",
@@ -8876,15 +8886,26 @@
     {
       "id": "declarations.typed-class-constants",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_attributes.c"
+      "implementation": [
+        "spec/semantics/183-class-constant-compiler.watsup",
+        "spec/semantics/184-class-constants.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/class_constant_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/class_constant_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_constants.c",
+        "vendor/php-src/Zend/zend_API.c",
+        "vendor/php-src/Zend/zend_ast.c",
+        "coverage/semantics/class-constants-current-review.json"
+      ],
+      "review": "Private183/184 bounded source25 (7normal/17PHPerror/1static) across successive revisions and finite16+13 preserve declaring-owner lazy values, successful caches/COW, global/default restoration and AST/VM diagnostics. Inheritance validation/update flags, cross-unit folding, legal Closure/FCC, attributes and broader consumers remain open; see class-constants-current-review.json. No whole-family closure."
     },
     {
       "id": "declarations.constant-closures",
