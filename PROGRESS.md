@@ -7,6 +7,10 @@ outside Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Public-source object invocation is installed at **18a1383d7**, on
+**b3a02ebc/1304**. The [CALLS ledger](coverage/semantics/source-invoke-current-review.json)
+records its bounded gates and distinct private history.
+
 Installed Stringable SET evidence binds tested **13c9c4ddf**, with code
 **3e3608369** over **9c8d8cab0**, on **d7d59e41/1302**. Author gates accept
 source27 and five finite stages/188 assertions; six Unsupported checks remain
@@ -109,14 +113,14 @@ The independent private lanes currently include:
   · [unpack ledger](coverage/semantics/include-unpacked-current-review.json)
   · [SET ledger](coverage/semantics/include-set-current-review.json)
   · [pipe ledger](.tools/include-config-pipe-string-current/coverage/semantics/include-config-pipe-string-review.json).
-- Calls: public/default-public nonstatic source `__invoke` is accepted privately
-  at **486874ba6**, on **b3a02ebc/1304** over installed SET **13c9c4ddf**.
-  Author gates accept source54/finite49/1,475; independent gates accept
-  source70/finite58/1,935. The independent FIRST7/331 and SET79/finally50
-  run before the common finite49. Final SET **4015f160d** metadata is composed
-  separately; canonical CALLS installation remains pending. Existing capture,
-  named/unpack and finite CONFIG guards are retained. Historical47ed/9c8
-  acceptance and the unexecuted named294 blueprint keep distinct identities.
+- Calls: public/default-public nonstatic source `__invoke` is installed at
+  **18a1383d7/b3a02ebc/1304**, over final SET **4015f160d**. Author checks
+  accept source21/finite20/537; independent checks accept source37/finite29/997,
+  including FIRST7/331 then SET79/finally50 before source/common finite20.
+  Original stream/exit observations and fresh checked fixtures are independently
+  audited; existing capture, named/unpack and finite CONFIG/SET guards survive.
+  Private **486874ba6** source54/49-1,475 and source70/58-1,935, earlier47ed/9c8
+  and the unexecuted named294 blueprint retain separate identities.
   Array classification, callable/string precedence, nonpublic/static publication,
   transformed weak wrappers, real CONFIG PIPE and correlated retired history remain open.
   [Public invocation ledger](coverage/semantics/source-invoke-current-review.json)

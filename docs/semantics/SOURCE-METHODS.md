@@ -96,7 +96,7 @@ method statics share declaring-origin storage; overrides have distinct storage.
 
 ## Public object invocation
 
-The private [public `__invoke` candidate](../../coverage/semantics/source-invoke-current-review.json)
+The [public `__invoke` union](../../coverage/semantics/source-invoke-current-review.json)
 supports bare object calls and object first-class conversion through the runtime
 class method table. It keeps the real receiver before argument effects, the
 declaring owner for inherited bodies and the receiver class for called scope.
@@ -109,16 +109,19 @@ receiver independently of a changed CV. Unfinished saved conversion tasks use
 structural checks; the operand guard runs at the active conversion boundary.
 Capture certificates add no receiver or issuer roots.
 
-The current private union on installed SET **13c9c4ddf** accepts
-54 author sources and 49 finite stages/1,475 maintained assertions.
-Independent checks accept 70 sources and 58 stages/1,935 assertions,
-including FIRST7/331 then SET owner79/finally50 before the common49.
-These gates bind **486874ba6/b3a02ebc/1304**. Canonical installation remains
-pending; final SET **4015f160d** metadata has a separate source identity bridge.
-Earlier9c8/fec4 source65/finite45/1,368 and zero-state body elaboration,
-private **63879c77d** and the unexecuted named294 blueprint retain their
-original receipts. Captured-clone native `SFT7` and bare `ASFT7`/throw `ASF`
-observations remain distinct original composition evidence.
+The installed union over final SET **4015f160d** is
+**18a1383d7/b3a02ebc/1304**. Fresh author checks accept 21 sources and
+20 finite stages/537 maintained assertions; independent checks accept 37 sources
+and 29 stages/997 assertions. Independent FIRST7/331 then SET owner79/finally50
+run before the source/common20 phases. Both campaigns preserve strict original
+streams, exits and freshly checked fixtures. Their 11/19 fresh native comparisons
+remain distinct from 10/18 saved catalogue oracle comparisons.
+
+Private **486874ba6** retains source54/finite49/1,475 and independent
+source70/finite58/1,935. Earlier9c8/fec4 source65/finite45/1,368 and zero-state
+body elaboration, private **63879c77d** and the unexecuted named294 blueprint
+retain their original receipts. Captured-clone native `SFT7` and bare `ASFT7`/throw
+`ASF` observations remain distinct original composition evidence.
 Nonpublic/static declaration timing, transformed weak wrappers and real CONFIG
 PIPE replay remain separate. Native-only destructor observations are not model credit.
 
