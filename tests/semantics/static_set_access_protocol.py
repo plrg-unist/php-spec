@@ -14,7 +14,8 @@ from typed_static_string_protocol import PREFIX as STRING_PREFIX, initial_checks
 
 STAGES = ['reference-uninitialized-error-chain', 'dimension-null-error-chain',
           'reference-nullable-initialization', 'string-callback-denied',
-          'private-string-callback-allowed', 'protected-string-callback-allowed', 'reference-return-denied']
+          'private-string-callback-allowed', 'protected-string-callback-allowed', 'reference-return-denied',
+          'receiver-rhs-live-alias', 'receiver-uninitialized-unset']
 PREFIX = STRING_PREFIX + r'''
 dec $set_protocol_phase(pstate,nat) : bool
 def $set_protocol_phase(S,0) = true
@@ -27,6 +28,11 @@ def $set_protocol_phase(S,2) = true
   -- if S.RESULT = KNOWN (POBJECT n_object)
 def $set_protocol_phase(S,3) = true
   -- if S.TODO = (PROPERTY_REF_BIND (BASE_CLASS_STATIC_PENDING poperand_class poperand_name) n_cell z) :: ptask_tail*
+def $set_protocol_phase(S,4) = true
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z b) :: ptask_tail*
+def $set_protocol_phase(S,5) = true
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY_PENDING pbase poperand z_receiver
 def $set_protocol_phase(S,n) = false -- otherwise
 dec $set_protocol_seek(pstate,nat,nat) : pstate
 def $set_protocol_seek(S,n_phase,n) = S
@@ -71,6 +77,55 @@ def before(initial, phase):
 
 
 def checks(initial, name):
+    if name.startswith('receiver-'):
+        phase = 4 if name == 'receiver-rhs-live-alias' else 5
+        result = ['S_initial = ' + initial,
+                  'S_found = $set_protocol_seek(S_initial,' + str(phase) + ',4096)',
+                  'S_found.COMPLETION = NORMAL \\/ S_found.COMPLETION = BUDGET',
+                  'S_before = S_found[.COMPLETION = NORMAL]',
+                  'S_before.CURRENT = eps /\\ S_before.FRAMES = eps',
+                  'S_before.CLASSSTATICS = [pclassstatic]',
+                  '$class_static_active_desc(S_before,S_before.CLASSNAMES,pclassstatic.DECL) = (ppropertydesc)',
+                  '~$class_static_set_allowed(S_before,ppropertydesc)',
+                  *valid('S_before')]
+        if phase == 4:
+            result += [
+                'S_before.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING (BASE_CLASS_STATIC_PENDING poperand_class poperand_static) poperand_name z_receiver) z false) :: ptask_tail*',
+                'poperand_class = KNOWN (PSTRING $ptascii("A")) /\\ poperand_static = KNOWN (PSTRING $ptascii("p")) /\\ poperand_name = KNOWN (PSTRING $ptascii("x"))',
+                'S_before.RESULT = KNOWN (PINT 3)',
+                'pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)',
+                'S_before.STORE[n_cell] = DEFINED (POBJECT n_object)',
+                '(HCELL n_cell) <- S_before.ALLOCATIONS /\\ (HOBJECT n_object) <- S_before.ALLOCATIONS',
+                '~$class_static_raw_object(S_before,pclassstatic.DECL)',
+                '$static_protocol_output(S_before.EVENTS) = $ptascii("R")',
+                '~$call_descriptors_valid(S_before[.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING (BASE_CLASS_STATIC_PENDING (KNOWN (PSTRING $ptascii("B"))) poperand_static) poperand_name z_receiver) z false) :: ptask_tail*])',
+                '~$call_descriptors_valid(S_before[.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING (BASE_CLASS_STATIC_PENDING poperand_class (KNOWN (PSTRING $ptascii("q")))) poperand_name z_receiver) z false) :: ptask_tail*])',
+                '~$call_descriptors_valid(S_before[.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING (BASE_CLASS_STATIC_PENDING poperand_class poperand_static) (KNOWN (PSTRING $ptascii("y"))) z_receiver) z false) :: ptask_tail*])',
+                '~$call_descriptors_valid(S_before[.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING (BASE_CLASS_STATIC_PENDING poperand_class poperand_static) poperand_name $(z_receiver + 1)) z false) :: ptask_tail*])',
+                'S_after_found = $drive_steps(S_before,1)',
+                'S_after_found.COMPLETION = BUDGET',
+                'S_after = S_after_found[.COMPLETION = NORMAL]',
+                'S_after.TODO = (THROW_SEARCH n_new) :: ptask_after*',
+                '$throwable_field(S_after,n_new,"message") = PSTRING $ptascii("Cannot indirectly modify private(set) property A::$p from global scope")',
+                'S_after.CLASSSTATICS = S_before.CLASSSTATICS',
+                '$property_read(S_after,POBJECT n_object,$ptascii("x"),z).RESULT = KNOWN (PINT 1)',
+                '(HCELL n_cell) <- S_after.ALLOCATIONS /\\ (HOBJECT n_object) <- S_after.ALLOCATIONS',
+                '$static_protocol_output(S_after.EVENTS) = $ptascii("R")',
+                *valid('S_after')]
+        else:
+            result += [
+                'S_before.BASE = BASE_PROPERTY_PENDING (BASE_CLASS_STATIC_PENDING poperand_class poperand_static) poperand_name z_receiver',
+                'poperand_class = KNOWN (PSTRING $ptascii("A")) /\\ poperand_static = KNOWN (PSTRING $ptascii("p")) /\\ poperand_name = KNOWN (PSTRING $ptascii("x"))',
+                'pclassstatic.STATE = PROP_INITIAL',
+                'S_after_found = $drive_steps(S_before,1)',
+                'S_after_found.COMPLETION = BUDGET',
+                'S_after = S_after_found[.COMPLETION = NORMAL]',
+                'S_after.TODO = ptask_tail*',
+                'S_after.CLASSSTATICS = S_before.CLASSSTATICS',
+                'S_after.OBJECTS = S_before.OBJECTS',
+                '$static_protocol_output(S_after.EVENTS) = eps',
+                *valid('S_after')]
+        return result, 'S_after'
     if name == 'reference-return-denied':
         result = ['S_initial = ' + initial,
                   'S_found = $set_protocol_seek(S_initial,3,4096)',

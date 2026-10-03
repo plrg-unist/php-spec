@@ -157,6 +157,33 @@ EXPECTED = {
     'reference-dimension-allowed-type-source': b'3|Cannot assign array to reference held by property A::$p of type int|3',
 }
 
+RECEIVER_CASES = {
+    'receiver-uninitialized-write': b'<?php class A{public private(set) static object $p;}try{A::$p->x=2;}catch(Error $e){echo $e->getMessage(),"|";}echo isset(A::$p)?"set":"unset";',
+    'receiver-uninitialized-rw': b'<?php class A{public private(set) static object $p;}try{A::$p->x+=2;}catch(Error $e){echo $e->getMessage(),"|";}echo isset(A::$p)?"set":"unset";',
+    'receiver-uninitialized-unset': b'<?php class A{public private(set) static object $p;}unset(A::$p->x);echo "done|",isset(A::$p)?"set":"unset";',
+    'receiver-direct-demands': b'<?php class O{public int $x=1;public array $a=[1];}class A{public private(set) static object $p;public static function init(){self::$p=new O;}}function take(&$x){$x=6;}function &ref(){return A::$p->x;}A::init();A::$p->x=2;A::$p->x+=2;echo A::$p->x++,"|",A::$p->x;take(A::$p->x);$r=&ref();$r=7;foreach(A::$p->a as &$v){$v=3;}echo "|",A::$p->x,"|",A::$p->a[0];unset(A::$p->x);echo "|",isset(A::$p->x)?"set":"unset";',
+    'receiver-alias-demands': b'<?php class O{public int $x=1;public array $a=[1];public ?O $q=null;}class A{public private(set) static object $p;public static function init(){self::$p=new O;self::$p->q=new O;}public static function wrap(){global $r;$r=&self::$p;}}function take(&$x){$x=4;}function &ref(){return A::$p->x;}A::init();A::wrap();try{A::$p->x=2;}catch(Error $e){echo "W|",$e->getMessage(),"|";}try{A::$p->x+=2;}catch(Error $e){echo "RW|",$e->getMessage(),"|";}try{unset(A::$p->x);}catch(Error $e){echo "U|",$e->getMessage(),"|";}try{$x=&A::$p->x;}catch(Error $e){echo "REF|",$e->getMessage(),"|";}try{take(A::$p->x);}catch(Error $e){echo "SEND|",$e->getMessage(),"|";}try{foreach(A::$p->a as &$v){echo "C";}}catch(Error $e){echo "FOREACH|",$e->getMessage(),"|";}try{foreach(A::$p->a as [&$v]){echo "C";}}catch(Error $e){echo "LIST|",$e->getMessage(),"|";}try{$x=&ref();}catch(Error $e){echo "RETURN|",$e->getMessage(),"|";}try{A::$p->q->x=2;}catch(Error $e){echo "NESTED|",$e->getMessage(),"|";}$r->x=4;echo A::$p->x,"|",A::$p->q->x;',
+    'receiver-rhs-live-alias': b'<?php class O{public int $x=1;}class A{public private(set) static object $p;public static function init(){self::$p=new O;}public static function rhs(){echo "R";global $r;$r=&self::$p;return 3;}}A::init();try{A::$p->x=A::rhs();}catch(Error $e){echo "|",$e->getMessage();}echo "|",A::$p->x;',
+    'receiver-deferred-name': b'<?php class O{public int $x=1;public int $y=2;}class A{public private(set) static object $p;public static function init(){self::$p=new O;}}$name="x";function rhs(){echo "R";global $name;$name="y";return 3;}A::init();A::$p->{$name}=rhs();echo "|",A::$p->x,"|",A::$p->y;',
+    'receiver-captured-class': b'<?php class O{public int $x=1;}class A{public private(set) static object $p;public static function init(){self::$p=new O;}public static function wrap(){global $r;$r=&self::$p;}}class B{public static object $p;}function rhs(){echo "R";global $class;$class="B";return 3;}A::init();A::wrap();B::$p=new O;$class="A";try{$class::$p->x=rhs();}catch(Error $e){echo "|",$e->getMessage();}echo "|",A::$p->x,"|",B::$p->x;',
+    'receiver-multiline-line': b'<?php\nclass A{public private(set) static object $p;}\ntry{\n A::$p\n ->x=2;\n}catch(Error $e){echo $e->getLine(),"|",$e->getMessage();}\n',
+    'setter-current-ini-callback': b'<?php class K{function __toString(){echo "I";ini_set("include_path","inner\\0tail");return "include_path";}}class P{function __toString(){echo "T",ini_set(new K,"outer");return "ok";}}class A{public private(set) static string $p="old";public static function put($x){self::$p=$x;echo self::$p;}}ini_set("include_path","seed");A::put(new P);echo "|",A::$p,"|",ini_set("include_path","after");',
+}
+CASES.update(RECEIVER_CASES)
+denial = b'Cannot indirectly modify private(set) property A::$p from global scope'
+EXPECTED.update({
+    'receiver-uninitialized-write': denial + b'|unset',
+    'receiver-uninitialized-rw': b'Typed static property A::$p must not be accessed before initialization|unset',
+    'receiver-uninitialized-unset': b'done|unset',
+    'receiver-direct-demands': b'4|5|7|3|unset',
+    'receiver-alias-demands': b''.join(tag + b'|' + denial + b'|' for tag in [b'W', b'RW', b'U', b'REF', b'SEND', b'FOREACH', b'LIST', b'RETURN', b'NESTED']) + b'4|1',
+    'receiver-rhs-live-alias': b'R|' + denial + b'|1',
+    'receiver-deferred-name': b'R|1|3',
+    'receiver-captured-class': b'R|' + denial + b'|1|1',
+    'receiver-multiline-line': b'4|' + denial,
+    'setter-current-ini-callback': b'TIinner\0tailok|ok|outer',
+})
+
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
