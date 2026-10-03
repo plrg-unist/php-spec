@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 CASES = {
     'interior-nul': (b'<?php ini_set(\'include_path\',"__SUB__\\0suffix");echo include \'one.php\';', b'\0suffix'),
     'nul-free': (b"<?php set_include_path('__SUB__');echo include 'one.php';", b''),
+    'invoke-interior-nul': (b'<?php class I {function __invoke(){ini_set(\'include_path\',"__SUB__\\0suffix");echo include \'one.php\';}} (new I)();', b'\0suffix'),
 }
 CHILD = b'<?php return 7;'
 PREFIX = r'''
@@ -48,7 +49,7 @@ def seq(data):
     return '(' + str(list(data)) + ')'
 
 
-def prepare(name, template, suffix, directory):
+def prepare(name, template, suffix, directory, invoke_frame=False):
     """Record parser/checker closures and write a fixture without executing it."""
     directory.mkdir()
     sub = directory / 'sub'
@@ -123,6 +124,30 @@ def prepare(name, template, suffix, directory):
                            '$file_pending_state_valid(S_parse)',
                            '$file_context_phase_valid(S_parse,pfilecontext_parse)',
                            '$call_descriptors_valid(S_parse)']
+        if invoke_frame:
+            phase = 'resolve' if state == 'S_resolve' else 'parse'
+            current = 'pcallcontext_' + phase
+            receiver = 'n_receiver_' + phase
+            method = 'pmethoddesc_' + phase
+            called = 'porigin_called_' + phase
+            conditions += [state + '.CURRENT = (' + current + ')',
+                           current + '.RECEIVER = (' + receiver + ')',
+                           '$object_invoke_method(' + state + ',' + receiver + ') = (' + method + ')',
+                           current + '.FUNCTION = ' + method + '.FUNCTION.ORIGIN',
+                           current + '.LEXICAL_CLASS = (' + method + '.OWNER)',
+                           current + '.CALLED_CLASS = (' + called + ')',
+                           current + '.INSTANCE = $target_instance($context_target(' + current + '))',
+                           state + '.OBJECTS[' + receiver + '] = INSTANCE ' + called,
+                           context + '.LEXICAL_CLASS = ' + current + '.LEXICAL_CLASS',
+                           context + '.LEXICAL_CLASS =/= eps',
+                           context + '.OWNER = |' + state + '.FRAMES|',
+                           '$(' + context + '.OWNER > 0)',
+                           '~$file_pending_state_valid(' + state + '[.FILECONTEXTS = ' + context + '[.OWNER = 0] :: eps])',
+                           '~$file_context_phase_valid(' + state + '[.FILECONTEXTS = ' + context + '[.OWNER = 0] :: eps],' + context + '[.OWNER = 0])',
+                           '~$file_pending_state_valid(' + state + '[.FILECONTEXTS = ' + context + '[.LEXICAL_CLASS = eps] :: eps])',
+                           '~$call_descriptors_valid(' + state + '[.FILECONTEXTS = ' + context + '[.LEXICAL_CLASS = eps] :: eps])',
+                           '~$call_descriptors_valid(' + state + '[.CURRENT = (' + current + '[.LEXICAL_CLASS = eps])])',
+                           '~$call_descriptors_valid(' + state + '[.CURRENT = (' + current + '[.RECEIVER = eps])])']
         changed = state + '[.FILEINCLUDEPATH = (' + seq(effective + b'\0changed') + ')]'
         forged = state + '[.FILEINCLUDEPATH = (' + seq(b'/forged\0suffix') + ')]'
         conditions += ['$file_pending_state_valid(' + changed + ')',
@@ -172,7 +197,7 @@ def main(cases=None):
     rows = []
     for name, (template, suffix) in cases.items():
         directory = out / name
-        row = prepare(name, template, suffix, directory)
+        row = prepare(name, template, suffix, directory, invoke_frame=name == 'invoke-interior-nul')
         command = [str(runner), *map(str, modules), str(directory / 'protocol.watsup')]
         (directory / 'command.json').write_text(json.dumps(command) + '\n')
         process = subprocess.run(command, capture_output=True, text=True, timeout=300)
