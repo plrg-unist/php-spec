@@ -20,13 +20,12 @@ interactions and independent scope controls. The current PIPE/getter source at
 typed cell. Untyped static-slot admission, discarded typed-slot getters,
 temporary-return Notice timing and typed return verification remain open.
 
-Unary Stringable CONFIG PIPE authenticates the held left child and compiled
-send/call lines; ordinary RHS factories supply their returned callable. Ordinary
-Closure PIPE follows caller strictness and retains the object after its source
-cell is overwritten. The [PIPE ledger](coverage/semantics/include-config-pipe-review.json)
-separates twelve earlier normal sources/165 state assertions from two fresh
-borrowed-warning composition sources at **10c320623**. Normal handler return and
-throw preserve callback/caller frames, raw INI mutation and CONFIG cleanup.
+Stringable CHDIR PIPE uses the working directory after its callback and retains
+its held left object after RHS writes. Six normal source tuples and 124 directory
+provider assertions pass at **6e63009f3**, covering success, OS refusal, NUL
+rejection, throw and forged responses without production changes. The
+[PIPE ledger](coverage/semantics/include-config-pipe-review.json) keeps earlier
+unary and borrowed-warning checkpoints at their distinct revisions.
 
 Borrowed strict-identity reads208 retain the old reference cell across warning
 callbacks without adding an owner; nested saved callers and throw cleanup are
@@ -45,7 +44,7 @@ and distinguishes historical evidence from current interaction checks.
 | Error handlers/reporting206/207 | Ordinary named, closure and public source-object callbacks retain four arguments and genuine saved frames; masks, replacements, restoration, throw and fatal fallback compose with current properties/calls. Broader producers/API/callable forms and reporting readback remain open. [Handler ledger](coverage/semantics/error-handlers-review.json). |
 | Class-method strings210 and FCC119 | Full-byte lookup separates frame-based callable admission, computed static dispatch and fixed compatible-this selection. Captures/clone retain immutable source certificates and defaults/static cells. A named throwing handler preserves the selected static caller and arguments. [String ledger](coverage/semantics/class-method-strings-current-review.json). |
 | Method arrays205 | Public source method arrays retain immutable selected receiver/owner/called-class certificates through dynamic calls and capture. Current two-slot INI checkpoint **f9f47f115/61370c98/1353** accepts source1/finite103; broader resolution remains open. [Array ledger](coverage/semantics/array-callables-current-review.json). |
-| Include/configuration | Unary CONFIG PIPE preserves held operands, source strictness and callback guards through normal/throwing borrowed warnings. [PIPE ledger](coverage/semantics/include-config-pipe-review.json). Raw getters, primitive/null Restore, weak-null handler continuations and two-slot INI ownership retain their separate checkpoints. [Readback](coverage/semantics/include-ini-readback-review.json), [INI](coverage/semantics/include-stringable-ini-option-review.json). |
+| Include/configuration | Stringable CHDIR PIPE captures post-callback CWD and retains held operands; unary CONFIG PIPE also preserves source strictness and callback guards through borrowed warnings. [PIPE ledger](coverage/semantics/include-config-pipe-review.json). Raw getters, primitive/null Restore, weak-null handler continuations and two-slot INI ownership retain their separate checkpoints. [Readback](coverage/semantics/include-ini-readback-review.json), [INI](coverage/semantics/include-stringable-ini-option-review.json). |
 | Stringable SET/Restore and paths | SET separates raw INI bytes from effective C-string paths. Weak Restore uses exact full-name lookup and preserves callback mutations on misses. Current ARG/Restore checks retain caller arguments and zero-argument callbacks. [Restore](coverage/semantics/include-stringable-restore-review.json), [prefix](coverage/semantics/include-ini-prefix-review.json), [SET](coverage/semantics/include-set-current-review.json). |
 | Typed static properties197 | Weak simple Stringable assignment rechecks live aliases and retains paired callback owners. Current Restore/ARG/INI composition preserves full property bytes, caller arguments and normal/throw cleanup. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json). |
 | Static setters200/201 | Backed final/asymmetric declarations normalize equivalent setters and preserve inheritance/error priority; direct and indirect consumers retain lexical access, live raw-slot checks and typed aliases. [Setter ledger](coverage/semantics/static-setter-access-review.json). |
@@ -68,7 +67,7 @@ failures and interrupted evidence.
   compound/scope-dependent array resolution, magic/autoload/internal consumers,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
   array and string Closure PIPE routes are covered; defined ordinary `$GLOBALS[key]` is admitted; missing-global warnings and whole-table snapshots remain partial.
-- Include/configuration: CHDIR provider PIPE, broader warning producers, wider directives
+- Include/configuration: broader warning producers, wider directives
   and reporting readback, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: broader weak parameter/property conversion,

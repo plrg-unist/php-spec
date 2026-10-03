@@ -272,6 +272,12 @@ CASES = {
     'ini-readback-independent-ini-readback-array-capture-owned': b'<?php\ndeclare(strict_types=1);\nini_set(\'include_path\', "before\\0tail");\nclass Option {\n    public function __toString(): string {\n        echo \'C\', func_num_args();\n        echo func_get_args() === [] ? \'Z\' : \'X\';\n        ini_set(\'include_path\', "inner\\0suffix");\n        return \'include_path\';\n    }\n}\nclass Owner {\n    public function run($first, $second): void {\n        echo __CLASS__, \'/\', static::class, \'|\';\n        $saved = func_get_args();\n        echo func_num_args(), \':\', $saved[0], \':\', $saved[1], \'|\';\n        $read = ini_get(...);\n        echo $read->__invoke(option: new Option);\n        echo func_num_args() === 2 && func_get_args() === $saved ? \'S\' : \'X\';\n        $restore = ini_restore(...);\n        echo $restore->__invoke(option: false) === null ? \'|N\' : \'|X\';\n        echo get_include_path();\n    }\n}\nclass Child extends Owner {}\n$cb = [new Child, \'run\'];\n$f = $cb(...);\n$g = clone $f;\n$cb[0] = 0;\nunset($f, $cb);\n$g(...[\'second\' => \'B\', \'first\' => \'A\']);\n',
     'pipe-config-warning-normal-held-left': b'<?php\nerror_reporting(0);\nini_set(\'include_path\', "before\\0tail");\nclass PipeWarningSet {\n    function __toString(): string {\n        global $left;\n        echo \'C\', func_num_args(), func_get_args() === [] ? \'Z\' : \'X\', $left === null ? \'N\' : \'X\';\n        $x = null;\n        $a =& $x;\n        set_error_handler(function($severity, $message, $file, $line) use (&$x) {\n            echo \'H\', func_num_args();\n            $x = 9;\n            ini_set(\'include_path\', "inner\\0tail");\n            return 0;\n        }, 2);\n        $result = $a === $missing;\n        echo $result ? \'1\' : \'0\', func_num_args() === 0 && func_get_args() === [] ? \'S\' : \'X\';\n        restore_error_handler();\n        return \'after\';\n    }\n}\nfunction chooseWarningSetter() {\n    global $left;\n    $left = null;\n    echo \'R\';\n    return set_include_path(...);\n}\n$left = new PipeWarningSet;\n$old = $left |> chooseWarningSetter();\necho \'|\', $old, \'|\', get_include_path();\n',
     'independent-config-pipe-warning-throw-held-left': b'<?php\nerror_reporting(0);\nini_set(\'include_path\', "before\\0tail");\nclass PipeWarningThrow {\n    function __toString(): string {\n        global $left;\n        echo \'C\', func_num_args(), func_get_args() === [] ? \'Z\' : \'X\', $left === null ? \'N\' : \'X\';\n        $x = null;\n        $a =& $x;\n        set_error_handler(function($severity, $message, $file, $line) use (&$x) {\n            echo \'H\', func_num_args();\n            $x = 9;\n            ini_set(\'include_path\', "throw\\0tail");\n            throw new Error(\'warning\');\n        }, 2);\n        $result = $a === $missing;\n        echo \'BAD\';\n        return \'include_path\';\n    }\n}\nfunction chooseWarningRestore() {\n    global $left;\n    $left = null;\n    echo \'R\';\n    return ini_restore(...);\n}\n$left = new PipeWarningThrow;\ntry {\n    $left |> chooseWarningRestore();\n} catch (Error $e) {\n    echo \'T\';\n}\nrestore_error_handler();\necho \'|\', get_include_path();\n',
+    'pipe-config-chdir-dynamic-live-cwd': b'<?php\nini_set(\'include_path\', ".:\\0tail");\nclass PipeDirectoryDynamic {\n    function __toString(): string {\n        global $left;\n        echo \'C\', func_num_args(), func_get_args() === [] ? \'Z\' : \'X\', $left === null ? \'N\' : \'X\';\n        chdir(\'sub\');\n        return \'..\';\n    }\n}\nfunction chooseDirectoryName() {\n    global $left;\n    $left = null;\n    echo \'R\';\n    return \'chdir\';\n}\n$left = new PipeDirectoryDynamic;\n$result =\n    $left\n    |>\n    chooseDirectoryName();\necho $result ? \'T\' : \'F\';\ninclude \'one.php\';\necho \'|\', get_include_path();\n',
+    'pipe-config-chdir-nul-refusal': b'<?php\nini_set(\'include_path\', ".:\\0tail");\nclass PipeDirectoryNul {\n    function __toString(): string {\n        echo \'C\';\n        chdir(\'sub\');\n        ini_set(\'include_path\', ".:\\0changed");\n        return "\\0invalid";\n    }\n}\ntry {\n    new PipeDirectoryNul |> chdir(...);\n} catch (ValueError $e) {\n    echo $e->getMessage() === \'chdir(): Argument #1 ($directory) must not contain any null bytes\' ? \'V\' : \'X\';\n}\ninclude \'one.php\';\necho \'|\', get_include_path();\n',
+    'pipe-config-chdir-provider-false': b'<?php\nini_set(\'include_path\', ".:\\0tail");\nclass PipeDirectoryMissing {\n    function __toString(): string {\n        echo \'C\';\n        chdir(\'sub\');\n        return \'missing\';\n    }\n}\n$result = @(new PipeDirectoryMissing |> chdir(...));\necho $result === false ? \'F\' : \'X\';\ninclude \'one.php\';\necho \'|\', get_include_path();\n',
+    'pipe-config-chdir-strict-refusal': b'<?php\ndeclare(strict_types=1);\nini_set(\'include_path\', ".:\\0tail");\nclass PipeDirectoryStrict {\n    function __toString(): string {\n        echo \'BAD\';\n        chdir(\'sub\');\n        return \'..\';\n    }\n}\ntry {\n    new PipeDirectoryStrict |> chdir(...);\n} catch (TypeError $e) {\n    echo $e->getMessage() === \'chdir(): Argument #1 ($directory) must be of type string, PipeDirectoryStrict given\' ? \'R\' : \'X\';\n}\ninclude \'one.php\';\necho \'|\', get_include_path();\n',
+    'pipe-config-chdir-throw-keeps-cwd': b'<?php\nini_set(\'include_path\', ".:\\0tail");\nclass PipeDirectoryThrow {\n    function __toString(): string {\n        echo \'C\';\n        chdir(\'sub\');\n        ini_set(\'include_path\', ".:\\0throw");\n        throw new Exception(\'directory\');\n    }\n}\ntry {\n    new PipeDirectoryThrow |> chdir(...);\n} catch (Exception $e) {\n    echo $e->getMessage() === \'directory\' ? \'T\' : \'X\';\n}\ninclude \'one.php\';\necho \'|\', get_include_path();\n',
+    'independent-config-pipe-chdir-held-cwd': b'<?php\nini_set(\'include_path\', ".:\\0tail");\nclass PipeDirectoryHeld {\n    function __toString(): string {\n        global $left;\n        echo \'C\', func_num_args(), func_get_args() === [] ? \'Z\' : \'X\', $left === null ? \'N\' : \'X\';\n        chdir(\'sub\');\n        return \'..\';\n    }\n}\nfunction chooseDirectoryTarget() {\n    global $left;\n    $left = null;\n    echo \'R\';\n    return chdir(...);\n}\n$left = new PipeDirectoryHeld;\n$result = $left |> chooseDirectoryTarget();\necho $result ? \'T\' : \'F\';\ninclude \'one.php\';\necho \'|\', get_include_path();\n',
 }
 
 
@@ -316,7 +322,8 @@ def main():
     for name, template in CASES.items():
         directory = out / name
         directory.mkdir()
-        cwd = os.fsencode(directory.resolve()) if name == 'chdir-relative' else default_cwd
+        pipe_chdir = name.startswith('pipe-config-chdir-') or name == 'independent-config-pipe-chdir-held-cwd'
+        cwd = os.fsencode(directory.resolve()) if name == 'chdir-relative' or pipe_chdir else default_cwd
         sub = directory / 'sub'
         sub.mkdir()
         main_path = directory / 'main.php'
@@ -324,6 +331,9 @@ def main():
         alternate = sub / 'one.php'
         local.write_bytes(b'<?php return 8;')
         alternate.write_bytes(b'<?php return 7;')
+        if pipe_chdir:
+            local.write_bytes(b"<?php echo 'M';")
+            alternate.write_bytes(b"<?php echo 'Q';")
         sub_bytes = os.fsencode(sub.resolve())
         source = template.replace(b'__SUB__', sub_bytes)
         main_path.write_bytes(source)
@@ -378,6 +388,13 @@ def main():
             chdir_entries.append({'cwd': b64(sub_bytes), 'requested': b64(b'..'),
                                   'status': 'success',
                                   'next_cwd': b64(os.fsencode(directory.resolve()))})
+        if pipe_chdir:
+            chdir_entries += [
+                {'cwd': b64(cwd), 'requested': b64(b'sub'), 'status': 'success', 'next_cwd': b64(sub_bytes)},
+                {'cwd': b64(sub_bytes), 'requested': b64(b'..'), 'status': 'success', 'next_cwd': b64(cwd)},
+                {'cwd': b64(sub_bytes), 'requested': b64(b'missing'), 'status': 'failure',
+                 'stream_error': b64(missing_error), 'errno': errno.ENOENT},
+            ]
         snapshot = {'version': 2, 'main': b64(main_bytes), 'cwd': b64(cwd),
                     'include_path': b64(b'.:'), 'entries': entries,
                     'chdir_entries': chdir_entries}
@@ -386,7 +403,7 @@ def main():
         model_command = [str(ROOT / 'bin/php-semantics'), str(main_path),
                          '--file-snapshot', str(snapshot_path), '--steps', '100000', '--timeout', '60']
         native_command = [str(ROOT / '.tools/php/bin/php'), '-n', *flags, '-d', 'include_path=.:', str(main_path)]
-        process_cwd = directory if name == 'chdir-relative' else ROOT
+        process_cwd = directory if name == 'chdir-relative' or pipe_chdir else ROOT
         # Two directory pauses plus include replay measured 150s; each request keeps its 60s cap.
         model_producer_timeout = 180 if name == 'chdir-stringable-nested-conversion' else 90
         model = subprocess.run(model_command, cwd=process_cwd, env=environment, capture_output=True, timeout=model_producer_timeout)

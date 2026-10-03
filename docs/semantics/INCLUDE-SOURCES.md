@@ -206,4 +206,11 @@ fixtures/165 assertions. Fresh current borrowed-warning composition adds one
 normal SET and one throwing Restore callback check, without replaying those
 checkpoints. Ordinary named Restore remains a retained control. Forged roots, left children, lines, selections, owners and
 task operands reject; both original model failures remain preserved.
-CHDIR provider PIPE, broader callable consumers, OS/INI and lifecycle remain open.
+Stringable CHDIR PIPE resumes the genuine inner directory response before
+capturing the outer request from the changed CWD. Six normal source tuples and
+one provider fixture with 124 checks at `6e63009f3` distinguish success, OS refusal,
+NUL rejection and throw while retaining callback effects and the held lhs.
+Forged request, nonce, source, conversion, owner and response certificates reject.
+The model retains the original object for authentication; native destructor
+lifetime is not established. Broader callable consumers, warning ingress, OS/INI
+and lifecycle remain open.

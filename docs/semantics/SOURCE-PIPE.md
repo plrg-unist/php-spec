@@ -32,5 +32,11 @@ PIPE follows the source caller's strictness, while explicit `Closure->__invoke`
 uses its weak C wrapper. Twelve earlier normal source tuples and three state
 fixtures/165 assertions cover strict refusal, retired source cells, exact/full-NUL
 misses, empty/NUL SET results and thrown callbacks. Two current borrowed-warning
-checks retain real reference owners and normal/throwing callback frames. Wider
-CONFIG providers, method/array/object consumers and lifecycle remain partial.
+checks retain real reference owners and normal/throwing callback frames.
+
+Stringable CHDIR PIPE uses the CWD after the callback, including an inner `chdir`.
+Six source comparisons and 124 provider assertions distinguish request failure,
+NUL rejection, throw and strict refusal, and reject forged directory replies.
+The held operand survives RHS source-cell retirement; provider certificate
+rooting does not establish native destructor timing. Wider CONFIG providers,
+method/array/object consumers and lifecycle remain partial.
