@@ -27,6 +27,8 @@ class O {function __toString():string {
 }}
 set_include_path(new O);
 '''
+FATAL_RESTORE = FATAL_MAIN.replace(b"return 'c';", b"return 'include_path';").replace(
+    b'set_include_path(new O);', b'ini_restore(new O);')
 FATAL_CHILD = b'''<?php
 class A extends Exception { public function __wakeup() {} }
 class B { public function __WAKEUP(): int {} }
@@ -46,14 +48,14 @@ def fixture(directory, prefix, conditions):
             'fixture_sha256': sha(path)}
 
 
-def prepare_fatal(directory):
+def prepare_fatal(directory, restore=False):
     directory.mkdir()
     sub = directory / 'sub'
     sub.mkdir()
     effective = os.fsencode(sub.resolve())
     raw = effective + b'\0nested'
     main, child = directory / 'main.php', sub / 'bad.php'
-    main.write_bytes(FATAL_MAIN.replace(b'__SUB__', effective))
+    main.write_bytes((FATAL_RESTORE if restore else FATAL_MAIN).replace(b'__SUB__', effective))
     child.write_bytes(FATAL_CHILD)
     frontend, adapter = None, None
     try:
@@ -158,7 +160,8 @@ def prepare_config(directory, case):
 def prepare(out):
     types.ENV = ENV
     files.Worker = GuardWorker
-    rows = [prepare_fatal(out / 'conversion-file-compile-stop')]
+    rows = [prepare_fatal(out / 'conversion-file-compile-stop'),
+            prepare_fatal(out / 'restore-conversion-file-compile-stop', restore=True)]
     name = 'invoke-interior-nul'
     template, suffix = files.CASES[name]
     row = files.prepare(name, template, suffix, out / name, invoke_frame=True)
