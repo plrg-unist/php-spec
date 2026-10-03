@@ -34,9 +34,11 @@ source method; a source ancestor supplies its own signature instead, including
 through empty intermediate classes. Source parent methods are checked before
 inherited built-ins, and `ErrorException::getSeverity` precedes its inherited
 `__wakeup`. Activation and paused-link authentication share these predicates.
-Early-root declarations followed by later compiler diagnostics, and top-level
-owned `__wakeup` through potential rooted parents from earlier source units,
-remain Unsupported pending [compiler publication order](../../coverage/semantics/compiler-declaration-order-review.json).
+Publication190–196 preserves early-root declarations and their notices before
+later compilation diagnostics, including roots captured from earlier source
+units. [Publication review](../../coverage/semantics/compiler-publication-review.json)
+records the replacement of the historical conservative guard and retained
+native comparisons.
 The [renewed review](../../coverage/semantics/interface-internal-renewed-review.json)
 separates source agreements, reporting-mask controls and historical evidence.
 Serialization lifecycle invocation and ReturnTypeWillChange attributes remain

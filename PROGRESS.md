@@ -72,14 +72,15 @@ Stringable-`chdir`, and named/reference `Closure::call`.
 [Milestone history](MILESTONE-HISTORY.md) links the bounded installed evidence
 and preserves distinct historical, projected and installed fingerprints.
 
-The finite 189 increment covers inherited Stringable/Throwable and
-Exception/Error/ErrorException contracts plus source `__wakeup` checks.
-Seven explicit Unsupported controls still bound compiler publication, and two
-reporting-timing originals remain Unsupported. Real early declaration
-publication and diagnostic ordering is the immediate next compiler milestone,
-before constants183/184; it must remove the interim rooted wakeup guard.
-[Renewed interface ledger](coverage/semantics/interface-internal-renewed-review.json)
-· [declaration-order milestone](coverage/semantics/compiler-declaration-order-review.json).
+The publication190–196 rules preserve ordered class/function availability,
+earlier diagnostics, and authenticated declaration history. The seven former
+publication Unsupported controls and typed companion now have maintained
+regressions; the interim rooted wakeup guard is removed. Compile-stop retains
+completed mutations and freezes saved callers while retiring active file replies.
+[Publication review](coverage/semantics/compiler-publication-review.json) separates
+the fresh copied revision from later INI/argument/Restore compositions.
+Constants183/184 is next; two reporting-mask/error_reporting controls
+remain later core obligations.
 
 Installed origin retirement preserves diagnostic origins, traces and saved-frame
 cleanup. Its ledger distinguishes the minimal installed checks from the private
@@ -151,15 +152,15 @@ Current family status:
   and original static68 controls still await acceptance. Delayed receivers,
   non-CV reference acquisition and broader property semantics remain open.
   [Current private ledger](.tools/property-postini197-current-13/coverage/semantics/typed-static-string-assignment-review.json).
-- Compiler publication190–196 has bounded private copied11 acceptance: source30
-  (eight normal, one exit, nine PHP errors, twelve static rejections), history6/107,
-  modifier26/286, classified syntax30980 and inventory/offline checks on private
-  **4b3c1a85** in the isolated gitless rebuild. Current INI/CALLS production
-  tuples agree; four affected finite checkpoints/200 and integration remain
-  pending after the source-derived fatal-history correction. Earlier SLAL,
-  formatter and history failures stay historical; reporting-mask2,
-  constants183/184 and full core remain open.
-  [Copied private acceptance](.tools/compiler-publication-operational-current/.tools/compiler-publication/reviewer-13-copied-publication-bounded-release-acceptance.json).
+- Compiler publication190–196 passes the isolated private `4b3c1a85` rebuild:
+  source30, history6/107, modifier26/286, classified corpus30980 and complete
+  inventories. Later INI composition accepts one paired source and four finite
+  fixtures/200. Its argument callback adds one paired source and one finite
+  fixture/42 predicates, with count0 before mutation and compile-stop.
+  Accepted Restore adds one paired fatal source and one finite fixture/42: the
+  callback sees count0 and its completed raw mutation survives the compiler cut.
+  [Publication ledger](coverage/semantics/compiler-publication-review.json)
+  separates tested revisions and original failures. Full core remains open.
 - Argument introspection198/199 is installed with bounded acceptance at the
   current checkpoint. Its fdef, SET13c, CALLS18a, INI7dd and callable-b8 evidence
   remains distinct in [the union ledger](coverage/semantics/argument-introspection-calls-current-review.json)

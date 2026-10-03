@@ -54,16 +54,12 @@ exact original-source comparisons separately from these controls and
 paused-state negatives. The [renewed review](../../coverage/semantics/interface-internal-renewed-review.json)
 retains the original 66 rows and adds 30 admitted controls. Its two native
 `error_reporting()` timing originals remain explicit Unsupported controls,
-outside agreement counts. The interim compiler guard returns Unsupported when
-a selected early rooted class owns `__wakeup` and later compilation adds
-diagnostics or fails. Top-level owned `__wakeup` through a potential rooted
-parent from an earlier source unit also remains Unsupported, including local
-intermediate parents. Earlier conditional descriptors are conservatively
-included in that ancestry check. Ordinary external or forward parents,
-conditional/function declarations, and local deferred parent chains remain
-admitted. The immediate [compiler declaration-order milestone](../../coverage/semantics/compiler-declaration-order-review.json)
-must model early publication and effects before later compiler diagnostics or
-failure, then remove this guard.
+outside agreement counts. Publication190–196 now preserves earlier class
+availability and notices before later compiler diagnostics, with authenticated
+source-entry snapshots and declaration history. The interim rooted wakeup
+guard is removed; its seven historical Unsupported controls and typed
+companion are maintained source comparisons. [Publication review](../../coverage/semantics/compiler-publication-review.json)
+keeps the original guard evidence and the current copied-build scope distinct.
 The checked frontend retains readonly method syntax
 for the authored no-trace compile fatal; the pinned parser-phase discrepancy is
 listed by source hash in `tests/phase-discrepancies.json`.
