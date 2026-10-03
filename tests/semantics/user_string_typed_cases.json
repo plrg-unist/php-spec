@@ -63,7 +63,10 @@
     "id": "typed-return-callable-union-control",
     "source": "<?php class O{function __invoke(){}function __toString(){echo \"BAD;\";return \"x\";}}function f():callable|string{return new O;}$x=f();echo get_class($x);",
     "source_sha256": "91773869a75c84149fed0eb1c9a41fb92b0f5a8bde66b2ead6701e4b0d77bf01",
-    "expected_model": "unsupported"
+    "expected_model": "normal",
+    "historical_expected_model": "unsupported",
+    "current_expectation_source_only": true,
+    "expectation_note": "Known-callable admission follows shared95 classification; historical Unsupported evidence is retained. This parameter milestone gives no new return agreement."
   },
   {
     "id": "typed-return-reference-control",
