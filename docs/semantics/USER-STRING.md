@@ -127,9 +127,14 @@ and links the original throwable as `previous`; each nested weak return adds
 its own layer. Strict return checks reject the object before a callback, and
 the defining source unit supplies strictness and the return-site line.
 Exact nominal `Stringable|string` matches retain the object without invoking
-`__toString`. A callable/string union remains an explicit source-`__invoke`
-dependency because callable acceptance precedes string coercion. By-reference
-returns require a separate alias write-back continuation, followed by weak
+`__toString`. [Known callable/string parameters](../../coverage/semantics/callable-string-current-review.json)
+also retain the object before weak string coercion, with reviewed source and
+receive-state checks. Shared pure selection changes the ordinary by-value
+`typed-return-callable-union-control` expectation to retain the object; its
+historical Unsupported evidence remains preserved, with no new return agreement.
+Weak noncallable Stringable parameters and broader callable classification remain
+separate dependencies. By-reference
+returns require a separate alias write-back continuation, followed by weak noncallable
 parameters, properties and constrained references. A disjoint shared
 `$throwable_chain` rule now follows live source Throwable subclasses as well
 as internal Throwables; it retains cycle and forged-previous rejection. This

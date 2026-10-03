@@ -102,6 +102,11 @@ class method table. It keeps the real receiver before argument effects, the
 declaring owner for inherited bodies and the receiver class for called scope.
 A dual-role Stringable object uses `__invoke` as its callee without a string cast.
 Ordinary by-value `callable` parameters admit these public invokable objects.
+[Callable/string parameter reception](../../coverage/semantics/callable-string-current-review.json)
+retains known callable members before weak `__toString` conversion, independent
+of union order. Reviewed weak/strict, inherited, value/reference and unpacked
+checks preserve the object and its ownership. Broader array and class/method
+classification remains open.
 
 Conversion authenticates the evaluated source and ordinary CV, direct `$this`
 or owned non-CV operand before resolution. Selected targets then retain their

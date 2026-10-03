@@ -1,0 +1,165 @@
+[
+  {
+    "id": "weak-dual-value-identity",
+    "source": "<?php class Task{public function __invoke(){echo \"I\";}public function __toString():string{echo \"BAD;\";throw new Exception(\"string conversion must not run\");}}function receive(callable|string $value){echo get_class($value);$value();}receive(new Task);",
+    "source_sha256": "db20eb5357e2cb112103ec3592999af2434b3c8b08772da603841473b9068afb",
+    "expected_model": "normal",
+    "purpose": "Known callable retains its original object before weak string conversion.",
+    "expected_normal_stdout": "TaskI"
+  },
+  {
+    "id": "weak-reversed-union",
+    "source": "<?php class Task{public function __invoke(){echo \"I\";}public function __toString():string{echo \"BAD;\";throw new Exception(\"string conversion must not run\");}}function receive(string|callable $value){$value();}receive(new Task);",
+    "source_sha256": "11e456c9bcaedabc34df8cd3b4b433169a3fa1bd3d9a69bad33d9d655b25e050",
+    "expected_model": "normal",
+    "purpose": "Union source order does not select the stringifier.",
+    "expected_normal_stdout": "I"
+  },
+  {
+    "id": "strict-dual-value",
+    "source": "<?php declare(strict_types=1);class Task{public function __invoke(){echo \"I\";}public function __toString():string{echo \"BAD;\";throw new Exception(\"string conversion must not run\");}}function receive(callable|string $value){$value();}receive(new Task);",
+    "source_sha256": "1eb1ee650fe2cd3ab5b8cb0dbed025e4d80f87a80afa3009f447adc007ca1ccb",
+    "expected_model": "normal",
+    "purpose": "Strict caller still admits the exact callable object.",
+    "expected_normal_stdout": "I"
+  },
+  {
+    "id": "strict-reversed-union",
+    "source": "<?php declare(strict_types=1);class Task{public function __invoke(){echo \"I\";}public function __toString():string{echo \"BAD;\";throw new Exception(\"string conversion must not run\");}}function receive(string|callable $value){$value();}receive(new Task);",
+    "source_sha256": "81cdf897582b6373558bc84e4236e88473edf55e5f0967bd04bde59dfc1b18c8",
+    "expected_model": "normal",
+    "purpose": "Strict reception also ignores union source order.",
+    "expected_normal_stdout": "I"
+  },
+  {
+    "id": "inherited-dual-callable",
+    "source": "<?php class Owner{public function __invoke(){echo __CLASS__,\"/\",static::class;}public function __toString():string{echo \"BAD;\";return \"wrong\";}}class Child extends Owner{}function receive(callable|string $value){$value();}receive(new Child);",
+    "source_sha256": "e967c5dcbb0c6418c02e286836ce22064e0095fca718535f1754571635178d58",
+    "expected_model": "normal",
+    "purpose": "Inheritance preserves declaring owner and receiver called scope.",
+    "expected_normal_stdout": "Owner/Child"
+  },
+  {
+    "id": "overridden-public-invoke",
+    "source": "<?php class Owner{public function __invoke(){echo \"BAD;\";}public function __toString():string{echo \"BAD;\";return \"wrong\";}}class Child extends Owner{public function __invoke(){echo \"C\";}}function receive(callable|string $value){$value();}receive(new Child);",
+    "source_sha256": "2e587a484426326d394fa2f14ca156115764a7c8b50332e88696dd6ac30608ff",
+    "expected_model": "normal",
+    "purpose": "The runtime child invocation overrides the parent without a string callback.",
+    "expected_normal_stdout": "C"
+  },
+  {
+    "id": "value-copy-before-alias-replacement",
+    "source": "<?php class Task{public function __invoke(){echo \"I\";}public function __toString():string{echo \"BAD;\";throw new Exception(\"string conversion must not run\");}}function receive(callable|string $value,&$alias){$alias=null;$value();}$object=new Task;$alias=&$object;receive($object,$alias);echo $object===null?\"N\":\"BAD;\";",
+    "source_sha256": "7d36e3b84c0e3a9755a0a7363c63450242b0399e94fd10bbc422b03850f5b6a8",
+    "expected_model": "normal",
+    "purpose": "A copied parameter keeps the object after the caller reference loses it.",
+    "expected_normal_stdout": "IN"
+  },
+  {
+    "id": "typed-reference-alias-preserved",
+    "source": "<?php class Task{public function __invoke(){echo \"I\";}public function __toString():string{echo \"BAD;\";throw new Exception(\"string conversion must not run\");}}function receive(callable|string &$value){$value();$value=null;}$object=new Task;$alias=&$object;receive($alias);echo $object===null?\"N\":\"BAD;\";",
+    "source_sha256": "59a35e7f4fdb0f2630143362a71a871c557db4c89183969ec42e187c0047e1ca",
+    "expected_model": "normal",
+    "purpose": "Exact callable reception does not convert or detach an ordinary reference parameter.",
+    "expected_normal_stdout": "IN"
+  },
+  {
+    "id": "named-owned-dual-value",
+    "source": "<?php class Task{public function __invoke(){echo \"I\";}public function __toString():string{echo \"BAD;\";throw new Exception(\"string conversion must not run\");}}function receive(callable|string $value){$value();}receive(value:new Task);",
+    "source_sha256": "7175ee279c945a054576393d2abad10127792a8d60a2ae303cdcd4af0521ee47",
+    "expected_model": "normal",
+    "purpose": "An owned named operand reaches the same parameter receive decision.",
+    "expected_normal_stdout": "I"
+  },
+  {
+    "id": "unpacked-owned-dual-value",
+    "source": "<?php class Task{public function __invoke(){echo \"I\";}public function __toString():string{echo \"BAD;\";throw new Exception(\"string conversion must not run\");}}function receive(callable|string $value){$value();}$arguments=[new Task];receive(...$arguments);",
+    "source_sha256": "7d21006823465515941d512c55496c06d0b456a0b621174515d4da6f482c2b6d",
+    "expected_model": "normal",
+    "purpose": "Unpacked by-value binding preserves the captured object.",
+    "expected_normal_stdout": "I"
+  },
+  {
+    "id": "exact-nominal-stringable-arm",
+    "source": "<?php class Task{public function __invoke(){echo \"I\";}public function __toString():string{echo \"BAD;\";throw new Exception(\"string conversion must not run\");}}function receive(Stringable|callable|string $value){echo $value instanceof Task?\"O\":\"BAD;\";}receive(new Task);",
+    "source_sha256": "f4e55e8b0fb99bd493fc582bc9bffdcbe84e5d87137f3186176a9eb104b69195",
+    "expected_model": "normal",
+    "purpose": "An exact Stringable arm continues to retain the object.",
+    "expected_normal_stdout": "O"
+  },
+  {
+    "id": "closure-callable-string",
+    "source": "<?php function receive(callable|string $value){$value();}receive(function(){echo \"C\";});",
+    "source_sha256": "902663565e712011f5c64ddbea421993d2f3ab307c095de106924cfbb03a8564",
+    "expected_model": "normal",
+    "purpose": "Existing Closure membership is unchanged.",
+    "expected_normal_stdout": "C"
+  },
+  {
+    "id": "registered-function-string-exact",
+    "source": "<?php function selected(){echo \"BAD;\";}function receive(callable|string $value){echo $value===\"selected\"?\"S\":\"BAD;\";}receive(\"selected\");",
+    "source_sha256": "d576eb7fb7717dec1e4e37299965be19ebe031159a048319ce7853f6e5b112f9",
+    "expected_model": "normal",
+    "purpose": "An exact string remains a string even when it names a function.",
+    "expected_normal_stdout": "S"
+  },
+  {
+    "id": "unresolved-method-string-exact",
+    "source": "<?php function receive(string|callable $value){echo $value===\"Absent::method\"?\"S\":\"BAD;\";}receive(\"Absent::method\");",
+    "source_sha256": "7136bc80dd185abfc00a1070d293fe1ac35e66b1e89ea907c47b12b72e397418",
+    "expected_model": "normal",
+    "purpose": "An exact string arm is accepted without resolving an unknown class method.",
+    "expected_normal_stdout": "S"
+  },
+  {
+    "id": "weak-scalar-string-conversion",
+    "source": "<?php function receive(callable|string $value){echo $value===\"7\"?\"S\":\"BAD;\";}receive(7);",
+    "source_sha256": "9c3c0b66b6ea767c193d1574218a94a606a3b7a969d19374ca0974998fe5ac1f",
+    "expected_model": "normal",
+    "purpose": "Ordinary weak scalar string conversion is retained for a noncallable value.",
+    "expected_normal_stdout": "S"
+  },
+  {
+    "id": "callable-only-dual-control",
+    "source": "<?php class Task{public function __invoke(){echo \"I\";}public function __toString():string{echo \"BAD;\";throw new Exception(\"string conversion must not run\");}}function receive(callable $value){$value();}receive(new Task);",
+    "source_sha256": "db223a881f2f325d599a33097bd608be986a69543e4c72564a12b3e19e610364",
+    "expected_model": "normal",
+    "purpose": "The prior public callable-only admission remains intact.",
+    "expected_normal_stdout": "I"
+  },
+  {
+    "id": "strict-noncallable-stringable",
+    "source": "<?php declare(strict_types=1);class Text{public function __toString():string{echo \"BAD;\";return \"text\";}}function receive(callable|string $value){echo \"BAD;\";}receive(new Text);",
+    "source_sha256": "f906c03e97796d4d2a66618c42865d03529367dc184c0c60837628eea576c3cb",
+    "expected_model": "php_error",
+    "purpose": "Strict typing rejects a noncallable Stringable before the body or callback."
+  },
+  {
+    "id": "plain-object-union-rejection",
+    "source": "<?php class Plain{}function receive(callable|string $value){echo \"BAD;\";}receive(new Plain);",
+    "source_sha256": "59585a1eb36b9c7fb12542fbe45b222d5dc8c76599801cb77126bd6e129c395e",
+    "expected_model": "php_error",
+    "purpose": "A plain instance has neither admitted branch."
+  },
+  {
+    "id": "strict-scalar-string-rejection",
+    "source": "<?php declare(strict_types=1);function receive(string|callable $value){echo \"BAD;\";}receive(7);",
+    "source_sha256": "f360109d900ecb1e149e44caef2ef9aef2ec47bead23ccc318face2e63bc3c8f",
+    "expected_model": "php_error",
+    "purpose": "Strict reception rejects the scalar that weak mode converts."
+  },
+  {
+    "id": "weak-noncallable-stringable-boundary",
+    "source": "<?php class Text{public function __toString():string{echo \"T\";return \"text\";}}function receive(callable|string $value){echo $value;}receive(new Text);",
+    "source_sha256": "776a09430d7deb7372a6dfc4046a28f0cd9bc225c73878e531be097f22cf07c4",
+    "expected_model": "unsupported",
+    "purpose": "Weak noncallable parameter callback continuation remains a separate Unsupported control."
+  },
+  {
+    "id": "weak-string-only-dual-boundary",
+    "source": "<?php class Task{public function __invoke(){echo \"I\";}public function __toString():string{echo \"BAD;\";throw new Exception(\"string conversion must not run\");}}function receive(string $value){echo \"BAD;\";}receive(new Task);",
+    "source_sha256": "6280e94037ea74d6b30b1268ee59a14377fb969917f65f32868383e16c69255d",
+    "expected_model": "unsupported",
+    "purpose": "Without a callable arm the existing weak object-to-string parameter dependency remains explicit."
+  }
+]
