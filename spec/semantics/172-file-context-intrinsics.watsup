@@ -21,7 +21,27 @@ dec $config_string_kind(pintrinsic) : bool
 def $config_string_kind(INTRINSIC_CHDIR) = true
 def $config_string_kind(INTRINSIC_SET_INCLUDE_PATH) = true
 def $config_string_kind(INTRINSIC_INI_RESTORE) = true
+def $config_string_kind(INTRINSIC_INI_SET) = true
 def $config_string_kind(pintrinsic) = false -- otherwise
+dec $config_string_object(pconfigcall) : nat?
+def $config_string_object(pconfigcall) = (n)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN pvalue)]
+def $config_string_object(pconfigcall) = (n)
+  -- if $config_string_kind(pconfigcall.KIND)
+  -- if pconfigcall.KIND =/= INTRINSIC_INI_SET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
+def $config_string_object(pconfigcall) = eps -- otherwise
+def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
+  -- if $(|pcpath_child| >= 3)
+  -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
+  -- if pcpath_child[$nabs($(|pcpath_child| - 2))] = PCINDEX n_index
+  -- if $intrinsic_argument(S, PORIGIN n_unit pcpath_parent, n_index) = ((expression, false, preqbytes?, PORIGIN n_unit pcpath_child, z_child))
+  -- if $config_destination(INTRINSIC_INI_SET, preqbytes?, n_index) = (0)
+  -- if $intrinsic_count(S, PORIGIN n_unit pcpath_parent) = (2)
+  -- if $exit_callable_arguments(S, PORIGIN n_unit pcpath_parent) = PCALLARGUMENTS phpType7* n_field
+  -- if ~$call_unpack_present(phpType7*)
+  -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
 def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
   -- if $(|pcpath_child| >= 3)
   -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
@@ -47,7 +67,7 @@ def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
 def $config_string_child_site(S, porigin_site, z) = false -- otherwise
 def $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = true
   -- if $config_string_kind(pconfigcall.KIND)
-  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $config_string_object(pconfigcall) = (n_object)
   -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
   -- if pconfigcall.LINE = z_call
   -- if $config_string_child_site(S, porigin_child, z_call)
@@ -265,6 +285,7 @@ def $config_conversion(S, pconfigcall, pvalue) = $typed_weak(["string"], pvalue)
   -- if ~$method_string(pvalue)
 def $config_conversion(S, pconfigcall, pvalue) = TYPEREJECT -- otherwise
 dec $config_ini_value_conversion(pvalue) : ptypeconversion
+def $config_ini_value_conversion(PNULL) = TYPEVALUE (PSTRING eps)
 def $config_ini_value_conversion(PSTRING n*) = TYPEVALUE (PSTRING n*)
 def $config_ini_value_conversion(pvalue) = $typed_weak(["string"], pvalue)
   -- if $typed_scalar(pvalue)
@@ -287,6 +308,43 @@ def $config_error(S, pconfigcall, text, preqbytes) = $throwable_allocate(S[.ORIG
 dec $config_plural(nat) : preqbytes
 def $config_plural(1) = eps
 def $config_plural(n) = $ptascii("s") -- otherwise
+dec $config_ini_finish(pstate, pconfigcall, preqbytes, pvalue) : pstate
+def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = $throwable_allocate(S, "TypeError", $ptascii("ini_set(): Argument #2 ($value) must be of type string|int|float|bool|null"), pconfigcall.LINE, $source_trace_prefixed(S, $config_trace_frames(S, pconfigcall, [PSTRING n_option*, pvalue])))
+  -- if $config_ini_value_conversion(pvalue) = TYPEREJECT
+def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S_value[.TODO = ptask_tail*][.FILEINCLUDEPATH = (n_new*)][.RESULT = KNOWN (PSTRING n_old*)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_option* = $ptascii("include_path")
+  -- if S.FILEINCLUDEPATH = (n_old*)
+  -- if $config_ini_value_conversion(pvalue) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_value = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING n_new*)
+  -- if $c_string(n_new*) =/= eps
+  -- if S.TODO = ptask :: ptask_tail*
+def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S_value[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_option* = $ptascii("include_path")
+  -- if $config_ini_value_conversion(pvalue) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_value = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING n_new*)
+  -- if $c_string(n_new*) = eps
+  -- if S.TODO = ptask :: ptask_tail*
+def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_option* =/= $ptascii("include_path")
+  -- if $ptlc(n_option*) = $ptascii("include_path") \/ n_option* = eps \/ 0 <- n_option*
+  -- if $config_ini_value_conversion(pvalue) =/= TYPEREJECT
+  -- if S.TODO = ptask :: ptask_tail*
+;; Primitive option strings cannot name a directive in the pinned profile.
+def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_option* =/= $ptascii("include_path")
+  -- if n_option* =/= eps
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]
+  -- if $typed_scalar(pvalue_option)
+  -- if ~$method_string(pvalue_option)
+  -- if $config_ini_value_conversion(pvalue) =/= TYPEREJECT
+  -- if S.TODO = ptask :: ptask_tail*
+def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S[.COMPLETION = UNSUPPORTED "ini_set option outside finite include_path domain"] -- otherwise
 dec $config_receive(pstate, pconfigcall) : pstate
 def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects exactly ") ++ $decimal_integer($config_required(pconfigcall.KIND)) ++ $ptascii(" argument") ++ $config_plural($config_required(pconfigcall.KIND)) ++ $ptascii(", ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
   -- if |pconfigcall.SENT| =/= $config_required(pconfigcall.KIND)
@@ -345,9 +403,46 @@ def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError",
   -- if ~$config_object(pvalue)
   -- if ~(pvalue = PNULL /\ ~$config_strict(S, pconfigcall))
 ;; Only the include_path directive is modeled. PHP treats its spelling as exact.
-def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("ini_set(): Argument #2 ($value) must be of type string|int|float|bool|null"))
+def $config_receive(S, pconfigcall) = $config_ini_finish(S, pconfigcall, n_option*, pvalue)
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
-  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PSTRING n_option*)), NAMED_SENT (KNOWN (POBJECT n))]
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PSTRING n_option*)), NAMED_SENT (KNOWN pvalue)]
+def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("ini_set(): Argument #1 ($option) must be of type string, ") ++ $typed_given(S, POBJECT n) ++ $ptascii(" given"))
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN pvalue)]
+  -- if $config_strict(S, pconfigcall) \/ ~$stringable_instance(S, n)
+def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "ini_set stringable option argument needs a checked source"]
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN pvalue)]
+  -- if ~$config_strict(S, pconfigcall)
+  -- if $stringable_instance(S, n)
+def $config_receive(S, pconfigcall) = $config_ini_finish(S_option, pconfigcall, n_option*, pvalue)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]
+  -- if $typed_scalar(pvalue_option)
+  -- if ~$method_string(pvalue_option)
+  -- if $config_conversion(S, pconfigcall, pvalue_option) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_option = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
+  -- if S_option.COMPLETION = NORMAL
+  -- if S_option.RESULT = KNOWN (PSTRING n_option*)
+def $config_receive(S, pconfigcall) = $config_ini_finish(S_diagnostic, pconfigcall, eps, pvalue)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
+  -- if ~$config_strict(S, pconfigcall)
+  -- if S_diagnostic = $diagnostic(S, "Deprecated", $ptascii("ini_set(): Passing null to parameter #1 ($option) of type string is deprecated"), pconfigcall.LINE)
+  -- if S_diagnostic.COMPLETION = NORMAL
+def $config_receive(S, pconfigcall) = S_diagnostic
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
+  -- if ~$config_strict(S, pconfigcall)
+  -- if S_diagnostic = $diagnostic(S, "Deprecated", $ptascii("ini_set(): Passing null to parameter #1 ($option) of type string is deprecated"), pconfigcall.LINE)
+  -- if S_diagnostic.COMPLETION =/= NORMAL
+def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("ini_set(): Argument #1 ($option) must be of type string, ") ++ $typed_given(S, pvalue_option) ++ $ptascii(" given"))
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]
+  -- if ~$config_object(pvalue_option)
+  -- if $config_conversion(S, pconfigcall, pvalue_option) = TYPEREJECT
+  -- if ~(pvalue_option = PNULL /\ ~$config_strict(S, pconfigcall))
 def $config_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.FILEINCLUDEPATH = ($ptascii(".:"))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PSTRING n_option*))]
@@ -369,35 +464,6 @@ def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "ini_restore s
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
   -- if ~$config_strict(S, pconfigcall)
   -- if $stringable_instance(S, n)
-def $config_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.FILEINCLUDEPATH = (n_new*)][.RESULT = KNOWN (PSTRING n_old*)][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if pconfigcall.KIND = INTRINSIC_INI_SET
-  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PSTRING n_option*)), NAMED_SENT (KNOWN pvalue)]
-  -- if n_option* = $ptascii("include_path")
-  -- if S.FILEINCLUDEPATH = (n_old*)
-  -- if $config_ini_value_conversion(pvalue) = ptypeconversion
-  -- if ptypeconversion =/= TYPEREJECT
-  -- if S_value = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
-  -- if S_value.COMPLETION = NORMAL
-  -- if S_value.RESULT = KNOWN (PSTRING n_new*)
-  -- if $c_string(n_new*) =/= eps
-  -- if S.TODO = ptask :: ptask_tail*
-def $config_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if pconfigcall.KIND = INTRINSIC_INI_SET
-  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PSTRING n_option*)), NAMED_SENT (KNOWN pvalue)]
-  -- if $ptlc(n_option*) = $ptascii("include_path")
-  -- if n_option* =/= $ptascii("include_path") \/ pvalue = PNULL
-  -- if S.TODO = ptask :: ptask_tail*
-def $config_receive(S, pconfigcall) = S_value[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if pconfigcall.KIND = INTRINSIC_INI_SET
-  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PSTRING n_option*)), NAMED_SENT (KNOWN pvalue)]
-  -- if n_option* = $ptascii("include_path")
-  -- if $config_ini_value_conversion(pvalue) = ptypeconversion
-  -- if ptypeconversion =/= TYPEREJECT
-  -- if S_value = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
-  -- if S_value.COMPLETION = NORMAL
-  -- if S_value.RESULT = KNOWN (PSTRING n_new*)
-  -- if $c_string(n_new*) = eps
-  -- if S.TODO = ptask :: ptask_tail*
 def $config_receive(S, pconfigcall) = $dir_request_start(S_value, pconfigcall, n_requested*)
   -- if pconfigcall.KIND = INTRINSIC_CHDIR
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
@@ -444,7 +510,7 @@ dec $config_string_launch(pstate, pconfigcall) : bool
 def $config_string_launch(S, pconfigcall) = true
   -- if S.FILEINCLUDEPATH =/= eps
   -- if S.FILECWD =/= eps
-  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $config_string_object(pconfigcall) = (n_object)
   -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
 def $config_string_launch(S, pconfigcall) = false -- otherwise
@@ -452,7 +518,7 @@ rule PhpStep/config-stringable-call: S ~> $user_string_begin(S[.ORIGIN = (porigi
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $config_string_launch(S, pconfigcall)
-  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $config_string_object(pconfigcall) = (n_object)
   -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
 rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
@@ -521,6 +587,14 @@ rule PhpStep/config-restore-string-unsupported: S ~> S[.COMPLETION = UNSUPPORTED
   -- if $ptlc(n_option*) =/= $ptascii("include_path")
   -- if n_option* =/= eps
   -- if ~(0 <- n_option*)
+rule PhpStep/config-ini-string-result: S ~> $config_ini_finish(S_call, pconfigcall, n_option*, pvalue)
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
+  -- if S.RESULT = KNOWN (PSTRING n_option*)
+  -- if S_call = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
 rule PhpStep/config-string-nul: S ~> $throwable_allocate(S_call, "ValueError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($") ++ $config_parameter_name(pconfigcall.KIND, 0) ++ $ptascii(") must not contain any null bytes"), pconfigcall.LINE, $source_trace_prefixed(S_call, $config_trace_frames(S_call, pconfigcall, [PSTRING n_requested*])))
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_CHDIR \/ pconfigcall.KIND = INTRINSIC_SET_INCLUDE_PATH
@@ -636,8 +710,9 @@ dec $config_slots_valid(pstate, pnamedslot*) : bool
 def $config_slots_valid(S, eps) = true
 def $config_slots_valid(S, NAMED_HOLE :: pnamedslot*) = $config_slots_valid(S, pnamedslot*)
 def $config_slots_valid(S, (NAMED_SENT (KNOWN (POBJECT n))) :: pnamedslot*) = ($getclass_live_object(S, n) /\ $config_slots_valid(S, pnamedslot*))
+def $config_slots_valid(S, (NAMED_SENT (KNOWN (PARRAY n))) :: pnamedslot*) = ($unpack_container_valid(S, KNOWN (PARRAY n)) /\ $config_slots_valid(S, pnamedslot*))
 def $config_slots_valid(S, (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*) = $config_slots_valid(S, pnamedslot*)
-  -- if ~$getclass_is_object(pvalue)
+  -- if ~$getclass_is_object(pvalue) /\ ~$is_array_value(pvalue)
 def $config_slots_valid(S, pnamedslot*) = false -- otherwise
 dec $config_source_prefix(pintrinsic, phpType7*, pnamedslot*, bool) : (pnamedslot*, bool)?
 def $config_source_prefix(pintrinsic, eps, pnamedslot*, b) = ((pnamedslot*, b))
@@ -689,7 +764,42 @@ def $config_source_sites(S, pconfigcall, n_index, pconfigpack :: pconfigpack_tai
   -- if $config_pack_source_valid(S, pconfigcall, pconfigpack)
   -- if $config_source_sites(S, pconfigcall, $(n_index + 1), pconfigpack_tail*) = ((porigin_tail, z_tail)*)
 def $config_source_sites(S, pconfigcall, n_index, pconfigpack*) = eps -- otherwise
+;; Select the option by normalized destination, including reversed named sends.
+dec $config_option_sites(nat, porigin, int) : (porigin, int)*
+def $config_option_sites(0, porigin, z) = [(porigin, z)]
+def $config_option_sites(n, porigin, z) = eps -- if n =/= 0
+dec $config_option_pack_source(pconfigcall, pentry*, bool, porigin, int) : (pconfigcall, (porigin, int)*)?
+def $config_option_pack_source(pconfigcall, eps, b_order, porigin, z) = ((pconfigcall, eps))
+def $config_option_pack_source(pconfigcall, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*, b_order, porigin, z) = ((pconfigcall_end, $config_option_sites(n, porigin, z) ++ (porigin_tail, z_tail)*))
+  -- if preqbytes? = $exit_key_name(pkey)
+  -- if $config_destination(pconfigcall.KIND, preqbytes?, |pconfigcall.SENT|) = (n)
+  -- if $config_replay_send(pconfigcall, KNOWN pvalue, preqbytes?, b_order) = (pconfigcall_next)
+  -- if $config_option_pack_source(pconfigcall_next, pentry_tail*, (b_order \/ preqbytes? =/= eps), porigin, z) = ((pconfigcall_end, (porigin_tail, z_tail)*))
+def $config_option_pack_source(pconfigcall, pentry*, b_order, porigin, z) = eps -- otherwise
+dec $config_option_source_replay(pstate, pconfigcall, pconfigcall, pconfigpack*) : (pconfigcall, (porigin, int)*)?
+def $config_option_source_replay(S, pconfigcall, pconfigcall_prefix, eps) = ((pconfigcall_prefix, eps))
+  -- if pconfigcall_prefix.INDEX = pconfigcall.INDEX
+def $config_option_source_replay(S, pconfigcall, pconfigcall_prefix, pconfigpack*) = ((pconfigcall_end, $config_option_sites(n, porigin, z) ++ (porigin_tail, z_tail)*))
+  -- if $(pconfigcall_prefix.INDEX < pconfigcall.INDEX)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall_prefix.INDEX) = ((expression, false, preqbytes?, porigin, z))
+  -- if $config_destination(pconfigcall.KIND, preqbytes?, |pconfigcall_prefix.SENT|) = (n)
+  -- if $named_slot_at(pconfigcall.SENT, n) = NAMED_SENT poperand
+  -- if $config_replay_send(pconfigcall_prefix, poperand, preqbytes?, pconfigcall_prefix.NAMED) = (pconfigcall_next)
+  -- if $config_option_source_replay(S, pconfigcall, pconfigcall_next[.INDEX = $(pconfigcall_prefix.INDEX + 1)], pconfigpack*) = ((pconfigcall_end, (porigin_tail, z_tail)*))
+def $config_option_source_replay(S, pconfigcall, pconfigcall_prefix, pconfigpack :: pconfigpack_tail*) = ((pconfigcall_end, (porigin_head, z_head)* ++ (porigin_tail, z_tail)*))
+  -- if $(pconfigcall_prefix.INDEX < pconfigcall.INDEX)
+  -- if pconfigpack.INDEX = pconfigcall_prefix.INDEX
+  -- if $config_pack_source_valid(S, pconfigcall, pconfigpack)
+  -- if $config_option_pack_source(pconfigcall_prefix, pconfigpack.ITEMS, false, pconfigpack.SITE, pconfigpack.LINE) = ((pconfigcall_next, (porigin_head, z_head)*))
+  -- if $config_option_source_replay(S, pconfigcall, pconfigcall_next[.INDEX = $(pconfigcall_prefix.INDEX + 1)], pconfigpack_tail*) = ((pconfigcall_end, (porigin_tail, z_tail)*))
+def $config_option_source_replay(S, pconfigcall, pconfigcall_prefix, pconfigpack*) = eps -- otherwise
 def $config_string_source(S, pconfigcall) = ((porigin, z))
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if $config_option_source_replay(S, pconfigcall, pconfigcall[.INDEX = 0][.SENT = eps][.NAMED = false][.PACKS = eps], pconfigcall.PACKS) = ((pconfigcall_end, [(porigin, z)]))
+  -- if pconfigcall_end.SENT = pconfigcall.SENT
+  -- if pconfigcall_end.NAMED = pconfigcall.NAMED
+def $config_string_source(S, pconfigcall) = ((porigin, z))
+  -- if pconfigcall.KIND =/= INTRINSIC_INI_SET
   -- if $config_source_sites(S, pconfigcall, 0, pconfigcall.PACKS) = ([(porigin, z)])
 def $config_string_source(S, pconfigcall) = eps -- otherwise
 dec $config_sent_shape(pstate, pconfigcall) : bool

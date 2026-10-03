@@ -15,7 +15,6 @@ def $task_nodes(GETCLASS_UNPACK_PREP pgetclasscall) = $getclass_call_nodes(pgetc
 def $task_nodes(GETCLASS_UNPACK_NEXT pgetclasscall poperand n) = $getclass_call_nodes(pgetclasscall) ++ $operand_nodes(poperand)
 def $task_nodes(GETCLASS_INVOKE pgetclasscall) = $getclass_call_nodes(pgetclasscall)
 
-dec $getclass_trace_operands(pnamedslot*) : poperand*
 def $getclass_trace_operands(eps) = eps
 def $getclass_trace_operands(NAMED_HOLE :: pnamedslot*) = (KNOWN PNULL) :: $getclass_trace_operands(pnamedslot*)
 def $getclass_trace_operands((NAMED_SENT poperand) :: pnamedslot*) = poperand :: $getclass_trace_operands(pnamedslot*)
