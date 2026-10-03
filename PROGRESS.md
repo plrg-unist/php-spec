@@ -7,26 +7,13 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Raw `get_include_path`/`ini_get` retain full INI bytes and sample callback
-writes after conversion. Primitive/null Restore distinguishes strict direct
-from weak owned parsing. Getter **45d46719e** passes seventeen normal sources
-and three fixtures/134 assertions. Three fresh handler sources and one
-fixture/61 assertions retain distinct **cf7ebe4e/f406e96f** identities.
-Weak-null getter/Restore warnings suspend for
-normal, false and throwing handlers while preserving caller arguments, raw
-mutation and original trace operands. Current setter composition passes
-198-module compilation with reused tools. The [readback ledger](coverage/semantics/include-ini-readback-review.json)
-records the separate evidence; PIPE and broader INI behavior remain open.
-
-Backed static final/asymmetric setters200/201 preserve declaration priority,
-lexical permissions, called-scope diagnostics and delayed RHS/receiver fetches.
-Raw direct object slots differ from aliased static slots; legally escaped typed
-aliases remain writable. Foreach cell promotion and normal/error unset tails are
-checked. Declaration/source/compiler and receiver/unset originals keep distinct
-tested revisions; the fresh method-array source at **ca2f35018** returns
-`Tx|x|x`, and the current handler source at **e667df72b** returns `TH4x|x|x`
-through genuine saved frames. The [setter ledger](coverage/semantics/static-setter-access-review.json)
-records their bounded scope, original failures and remaining reference routes.
+Public concrete class-method strings distinguish callable reception from fixed
+and computed dispatch/capture. Selected methods retain owner/called class and
+receiver ownership through mutation, clone and retirement. Compiler119 clears
+the callee result fold so literal-array captures produce Closure objects.
+The [string ledger](coverage/semantics/class-method-strings-current-review.json)
+keeps the private gates, preserved compiler failure/affected repair, and current
+throwing-handler source/state observations at their separate tested revisions.
 
 The installed families compose as follows; each linked ledger states its limits
 and distinguishes historical evidence from current interaction checks.
@@ -34,6 +21,7 @@ and distinguishes historical evidence from current interaction checks.
 | Family | Current behavior and evidence |
 | --- | --- |
 | Error handlers/reporting206/207 | Ordinary named, closure and public source-object callbacks retain four arguments and genuine saved frames; masks, replacements, restoration, throw and fatal fallback compose with current properties/calls. Broader producers/API/callable forms and reporting readback remain open. [Handler ledger](coverage/semantics/error-handlers-review.json). |
+| Class-method strings210 and FCC119 | Full-byte lookup separates frame-based callable admission, computed static dispatch and fixed compatible-this selection. Captures/clone retain immutable source certificates and defaults/static cells. A named throwing handler preserves the selected static caller and arguments. [String ledger](coverage/semantics/class-method-strings-current-review.json). |
 | Method arrays205 | Public source method arrays retain immutable selected receiver/owner/called-class certificates through dynamic calls and capture. Current two-slot INI checkpoint **f9f47f115/61370c98/1353** accepts source1/finite103; broader resolution remains open. [Array ledger](coverage/semantics/array-callables-current-review.json). |
 | Include/configuration | Raw getters and primitive/null Restore preserve full-name parsing and live bytes. Weak-null getter/Restore handler continuations retain original operands and caller frames. [Readback ledger](coverage/semantics/include-ini-readback-review.json). Two-slot `ini_set` priority and current SENT-array ownership remain installed. [INI ledger](coverage/semantics/include-stringable-ini-option-review.json). |
 | Stringable SET/Restore and paths | SET separates raw INI bytes from effective C-string paths. Weak Restore uses exact full-name lookup and preserves callback mutations on misses. Current ARG/Restore checks retain caller arguments and zero-argument callbacks. [Restore](coverage/semantics/include-stringable-restore-review.json), [prefix](coverage/semantics/include-ini-prefix-review.json), [SET](coverage/semantics/include-set-current-review.json). |
@@ -53,10 +41,10 @@ failures and interrupted evidence.
 
 ## Remaining core work
 
-- Calls: broader class/method strings, nonpublic/static `__invoke` publication,
+- Calls: broader class/method-string consumers, nonpublic/static `__invoke` publication,
   compound/scope-dependent array resolution, magic/autoload/internal consumers,
   transformed wrappers and real CONFIG PIPE. Only the selected captured-static
-  array Closure PIPE route is covered; ordinary `$GLOBALS` remains partial.
+  array and string Closure PIPE routes are covered; ordinary `$GLOBALS` remains partial.
 - Include/configuration: CONFIG PIPE, broader warning producers, wider directives
   and reporting readback, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.

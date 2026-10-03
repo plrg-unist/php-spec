@@ -329,6 +329,16 @@ static selections retain called class without an object root. The
 the private source/state gates from current publication/Restore/property/ARG
 and two-slot INI interactions. Scope-dependent names, nonpublic/magic/autoload and internal array
 consumers remain open.
+Public concrete class-method strings now distinguish
+computed static dispatch from fixed calls using a compatible active receiver.
+Immutable string captures/clone retain selected descriptors, called scope and
+receiver ownership; callable admission uses the receiving frame independently.
+The [class-method string review](coverage/semantics/class-method-strings-current-review.json)
+records selected source/state evidence and separate Unsupported controls.
+Broader nonpublic/magic/autoload/internal or scope-dependent strings remain open.
+The FCC compiler clears the callee result fold before recording the capture;
+literal-array captures produce Closure objects while preserving child constants.
+Current named-handler checks retain the selected caller and its argument vector.
 Readonly members, hooks and user magic methods remain open.
 Ordinary [`Closure::call`](docs/semantics/CLOSURE-CALL.md) temporarily changes
 receiver/scope, evaluates arguments before binding validation, preserves original

@@ -167,6 +167,45 @@ nonpublic/magic/autoload/internal resolution and full callable closure remain op
 Shared ordinary type classification adds no new return agreement or paused-return
 validation.
 
+## Public class-method strings
+
+Module210 resolves ordinary public concrete source method strings using the
+full byte sequence and the pair preceding the final colon. It preserves one
+leading class slash, case folding and registered function-string handling.
+NUL bytes are never truncated during lookup. Known lookup errors precede
+argument effects; services outside the selected scope remain Unsupported.
+
+Computed strings dispatch and capture only static methods. Fixed names from
+the existing compiler projection may select a compatible active receiver,
+including the requested parent descriptor when the child overrides it. Callable
+parameter admission instead uses the receiving lexical scope and receiver;
+its truth-only result never invents a dispatch target.
+
+Selection authenticates source form, site/lines, full original bytes and exact
+requested descriptor. Direct fixed calls and conversion bind the producer's
+actual receiver. Captures retain that selected receiver independently of later
+callers or retired makers. Clone, nominal Closure typing, invocation, deferred
+defaults and method static cells reuse the existing protocols. Static captures
+also use the selected Closure PIPE route. A selected INI source/state check
+preserves saved arguments, both normalized callback operands and the static
+`::` error trace before value rejection and raw mutation cleanup.
+
+The [string review](../../coverage/semantics/class-method-strings-current-review.json)
+keeps original source/state observations distinct from Unsupported controls.
+Broader nonpublic/magic/autoload/internal and scope-dependent strings, binding
+and transformed Closure consumers remain open. StaticCall by-reference result
+acquisition remains a separate obligation. Shared ordinary type classification
+adds no new return agreement or paused-return validation.
+
+First-class compilation clears only the completed result fold after callee
+selection. Constant-array callees retain their pooled child descriptors while
+the runtime expression produces a Closure. The preserved independent failure
+exposed this compiler bug; its unchanged57 checks pass after the119 repair.
+The current named-handler source and corrected100 state retain Owner/Child,
+saved ARG1/7, normalized handler ARG4 and exact trace materialization. A local
+fixture seek mirrors the evaluator's Throwable transitions; its original
+failure remains separate and receives no finite credit.
+
 ## Closure invocation and ownership
 
 `Closure->__invoke` and its nullsafe/computed forms route real and named closures
