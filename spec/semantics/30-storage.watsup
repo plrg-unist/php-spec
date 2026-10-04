@@ -43,15 +43,16 @@ syntax pparameterbacking = { FUNCTION porigin, INDEX nat, CELL nat, LINE int, VA
 dec $propref_at(ppropref*, nat) : ppropref?
 syntax pclosureevidence
 syntax pdynamicnew
+syntax ptraitcachecause
 syntax pstaticselection = { SITE porigin, ROOT porigin, SCOPE porigin?, CALLED porigin?, CLOSURE pclosureevidence? }
 syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat
   | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
   | CCINSTANCE porigin porigin porigin porigin pstaticselection? nat
   | CCUPDATENEW porigin pdynamicnew nat
+  | CCTRAITCACHE porigin ptraitcachecause
 syntax pclassconstantflags = CCFLAGS (porigin, bool)* porigin* | CCBAD
 syntax pclassconstantdesc = { ORIGIN porigin, OWNER porigin, OWNERNAME ptbytes, NAME ptbytes, VISIBILITY ppropertyvisibility, FINAL bool, TYPE ptbranch*, INITIALIZER porigin, FOLDED bool, LINE nat }
 syntax ptraitcachecause = { CLASS porigin, ROOT porigin, TABLE pclassconstantdesc*, LOOKUPS porigin*, PREFIX nat, USERPREFIX nat }
-syntax pclassconstantevent = ... | CCTRAITCACHE porigin ptraitcachecause
 dec $trait_cache_event_at(pclassconstantevent*, porigin) : ptraitcachecause?
 dec $ppclass_constants(pclassconstantdesc*, porigin) : pclassconstantdesc*
 syntax pclassdesc = { ORIGIN porigin, KIND text, NAME ptbytes, PARENT ptbytes?, INTERFACES ptbytes*, PROPERTIES ppropertydesc*, METHODS pmethoddesc*, CONSTANTS pclassconstantdesc*, ABSTRACT bool, FINAL bool, READONLY bool, EARLY bool, LINE nat }
