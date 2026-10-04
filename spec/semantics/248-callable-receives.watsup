@@ -301,11 +301,15 @@ def $api_fallback_operand_valid(S, ptask, REFERENCE n_cell) = true
   -- if n_cell <- S.REFCELLS
   -- if S.STORE[n_cell] = DEFINED pvalue
 def $api_fallback_operand_valid(S, ptask, poperand) = false -- otherwise
+dec $api_operand_snapshot(poperand, pvalue) : bool
+def $api_operand_snapshot(KNOWN pvalue, pvalue) = true
+def $api_operand_snapshot(REFERENCE n_cell, pvalue) = true
+def $api_operand_snapshot(poperand, pvalue) = false -- otherwise
 dec $api_scalar_result_valid(pstate, ptask, poperand, pvalue, int) : bool
 def $api_scalar_result_valid(S, ptask, poperand, pvalue, i) = true
   -- if $api_fallback_stage(S, ptask)
   -- if $api_fallback_operand_valid(S, ptask, poperand)
-  -- if poperand = REFERENCE n_cell \/ poperand = KNOWN pvalue
+  -- if $api_operand_snapshot(poperand, pvalue)
   -- if psparam = $api_fallback_parameter(S, ptask)
   -- if "callable" <- $ptmasks(psparam.TYPE)
   -- if ~$typed_caller_strict(S)
@@ -348,7 +352,7 @@ def $receive_string_record_valid(S, CALLABLE_STRING_RESULT ptask poperand n n_in
   -- if "callable" <- $ptmasks(psparam.TYPE) /\ "string" <- $ptmasks(psparam.TYPE)
   -- if $stringable_instance(S, n)
   -- if $api_fallback_operand_valid(S, ptask, poperand)
-  -- if poperand = REFERENCE n_cell \/ poperand = KNOWN (POBJECT n)
+  -- if $api_operand_snapshot(poperand, POBJECT n)
   -- if $parameter_string_site_valid(S, $default_parameter_origin(S, $api_receive_function(ptask), $api_receive_index(S, ptask)), $api_source_line(S, ptask))
 def $receive_string_current(S, CALLABLE_STRING_RESULT ptask poperand n n_index z) = true
   -- if $api_fallback_task(ptask)
