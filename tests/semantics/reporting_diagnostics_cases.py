@@ -1,6 +1,13 @@
 """Runtime deprecated constants and lossy reporting ZPP diagnostics."""
 
 CASES = [
+    ('estrict-handler-publishes-namespace-shadow', br'''<?php
+namespace Late;
+set_error_handler(function($level,$message){echo 'H';eval('namespace Late; const E_STRICT="shadow";');return 0;},E_DEPRECATED);
+function selectedDefault($value=E_STRICT){return $value;}
+echo selectedDefault(),':',selectedDefault(),':',E_STRICT;
+restore_error_handler();
+''', b'H2048:2048:shadow', 'normal'),
     ('estrict-runtime-repeat-dead-branch', br'''<?php
 if (false) {echo E_STRICT;}
 set_error_handler(function($level,$message,$file,$line){echo 'H',func_num_args(),$level===E_DEPRECATED&&$message==='Constant E_STRICT is deprecated since 8.4, the error level was removed'?'M':'X';return 0;},E_DEPRECATED);

@@ -1,6 +1,67 @@
 """Source-derived diagnostic continuations retain selection and conversion."""
 
+SHADOW_SOURCE = b'namespace Late; const E_STRICT="shadow";'
+
+def checked_shadow_program(frontend, adapter):
+    import base64
+    parsed = frontend.request({'op': 'parse-eval', 'id': '1', 'mode': 'eval',
+                               'profile': 'cli-raw-85',
+                               'source': base64.b64encode(SHADOW_SOURCE).decode()})
+    assert parsed['accepted'], parsed
+    checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
+    assert checked['ok'], checked
+    return checked['fixture']
+
 CASES = [
+    ('estrict-selected-shadow-protocol', 'estrict-handler-publishes-namespace-shadow', '''true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $deprecated_constant_active_task(ptask)''', [
+        'S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*',
+        'perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant',
+        'S.CONSTCONTEXT = (pconstantcontext)',
+        '$constant_fact_at(pconstantcontext.FACTS, pdeprecatedconstant.SITE) = eps',
+        'pdeprecatedconstant.PREFIX = 0',
+        '$deprecated_constant_valid(S, pdeprecatedconstant)',
+        '$call_descriptors_valid(S)',
+        'S_wait = $drive(S, 1500)',
+        'S_wait.COMPLETION = SOURCE_PENDING',
+        'S_wait.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*',
+        'S_wait.TODO = (EVAL_AWAIT n) :: ptask_wait*',
+        'n = pevalcontext.UNIT',
+        'pevalcontext.BYTES = $ptascii("namespace Late; const E_STRICT=") ++ [34] ++ $ptascii("shadow") ++ [34,59]',
+        '$call_descriptors_valid(S_wait)',
+        'S_resumed = $eval_resume(S_wait, SOURCE_ACCEPT n pevalcontext.BYTES SHADOW_PROGRAM)',
+        'S_resumed.COMPLETION = NORMAL',
+        'S_late_reached = $seek(S_resumed, 1500)',
+        r'S_late_reached.COMPLETION = NORMAL \/ S_late_reached.COMPLETION = BUDGET',
+        'S_late = S_late_reached[.COMPLETION = NORMAL]',
+        'S_late.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*',
+        'S_late.RESULT = KNOWN (PINT 0)',
+        '$user_constant_at(S_late.USERCONSTANTS, $user_constant_key($ptascii("Late") ++ [92] ++ $ptascii("E_STRICT"))) = (puserconstant)',
+        'puserconstant.VALUE = PSTRING $ptascii("shadow")',
+        'puserconstant.CLASS = PVSTRING true',
+        '~$deprecated_constant_selected(S_late, pdeprecatedconstant.SITE)',
+        '$deprecated_constant_valid(S_late, pdeprecatedconstant)',
+        '$call_descriptors_valid(S_late)',
+        '$constant_result_class(S_late, pdeprecatedconstant.SITE) = PVSTRING true',
+        'PhpStep: S_late ~> S_finish',
+        'S_finish.TODO = (DEPRECATED_CONSTANT_RESULT pdeprecatedconstant) :: ptask_tail*',
+        'PhpStep: S_finish ~> S_value',
+        'S_value.RESULT = KNOWN (PINT 2048)',
+        'S_value.CONSTCONTEXT = (pconstantcontext_value)',
+        '$constant_fact_at(pconstantcontext_value.FACTS, pdeprecatedconstant.SITE) = ({ORIGIN pdeprecatedconstant.SITE, VALUE (PINT 2048), CLASS PVSCALAR})',
+        'S_value.TODO = (ORIGIN_RETURN porigin_previous?) :: (CONSTANT_OBSERVE pdeprecatedconstant.SITE) :: ptask_after*',
+        'PhpStep: S_value ~> S_restored',
+        'PhpStep: S_restored ~> S_observed',
+        '$constant_class(S_observed, pdeprecatedconstant.SITE) = PVSCALAR',
+        '$constant_operand(S_observed, pdeprecatedconstant.SITE) = (PINT 2048)',
+        '$call_descriptors_valid(S_observed)',
+        'S_done = $drive(S_observed, 1500)',
+        'S_done.COMPLETION = NORMAL',
+        'S_done.DEFAULTCACHE = [pdefaultcache]',
+        'pdefaultcache.VALUE = PINT 2048',
+        'pdefaultcache.CLASS = PVSCALAR',
+    ]),
     ('estrict-dispatch-protocol', 'estrict-runtime-repeat-dead-branch', '''true
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant''', [
