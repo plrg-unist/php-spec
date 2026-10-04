@@ -140,6 +140,8 @@ def $class_constant_table_task(S, porigin, z, (CLASS_CONST_SELECTED pstaticselec
   -- if porigin <- $class_constant_table_lineage(S, pstaticselection.ROOT, |S.CLASSES|)
 def $class_constant_update_blocks(S, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*, porigin_acc*) = ($class_constant_update_sequence(S, pstaticselection.ROOT, porigin_acc*) /\ $class_constant_update_blocks(S, ptask_tail*, eps))
 def $class_constant_table_blocks(S, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*, porigin_acc*) = ($class_constant_table_sequence(S, pstaticselection.ROOT, porigin_acc*) /\ $class_constant_table_blocks(S, ptask_tail*, eps))
+def $static_default_blocks(S, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*, porigin_acc*) = ($static_default_sequence(S, pstaticselection.ROOT, porigin_acc*) /\ $static_default_blocks(S, ptask_tail*, eps))
+def $static_default_phases((CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*, b_property) = $static_default_phases(ptask_tail*, false)
 
 ;; Every selected identity was published before this event, not merely present
 ;; in a compiler descriptor table. History retains the exact snapshot on retry.
