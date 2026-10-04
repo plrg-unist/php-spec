@@ -595,6 +595,7 @@ def $destruction_state_valid(S) = true
   -- if $destructor_numbers_valid(S.DESTRUCTION.FREE, S.DESTRUCTION.NEXT)
   -- if $destructor_unique(S.DESTRUCTION.CALLED) /\ $destructor_unique(S.DESTRUCTION.FREE)
   -- if ~(0 <- S.DESTRUCTION.FREE)
+  -- if S.DESTRUCTION.PHASE = DESTRUCTION_PENDING \/ $destructor_startup_order($global_table_view(S))
   -- if S.DESTRUCTION.PHASE =/= DESTRUCTION_STORE \/ S.DESTRUCTION.NOREUSE
   -- if S.DESTRUCTION.PHASE =/= DESTRUCTION_GLOBALS \/ $destructor_pass_valid(S)
   -- if S.DESTRUCTION.PHASE =/= DESTRUCTION_DONE \/ (S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps)
