@@ -10,7 +10,7 @@ trait HandlerEditCurrent249 {
             ) +
             0.0
         ] ??= currentRhs249());
-        restore_error_handler();$arg=17;echo "R:",$result===null?1:0,":",$GLOBALS['later249'][1],":",$GLOBALS['kept249'][1]===null?1:0,":",$GLOBALS['later249'][2],":",$GLOBALS['kept249'][2],":",func_get_arg(0),";";
+        restore_error_handler();$arg=17;echo "R:",$result===null?1:0,":",$a[1],":",$GLOBALS['kept249'][1]===null?1:0,":",$GLOBALS['later249'][2],":",$GLOBALS['kept249'][2],":",func_get_arg(0),";";
         unset($GLOBALS['same249'],$GLOBALS['kept249'],$GLOBALS['later249']);
     }
 }
