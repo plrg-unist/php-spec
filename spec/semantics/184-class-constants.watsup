@@ -1,4 +1,5 @@
 dec $class_constant_update_continuation(ptask) : bool
+dec $trait_constant_source_type(pstate, pclassconstantdesc) : ptbranch*
 dec $trait_constructor_start_ready(pstate, ptbytes, phpType7*, int) : pstate
 dec $trait_noctor_start_ready(pstate, ptbytes, phpType7*, int) : pstate
 dec $trait_static_prepare_base_ready(pstate, poperand, ptbytes, int) : pstate
@@ -296,7 +297,7 @@ rule PhpStep/class-constant-bind-uncertified: S ~> $class_constant_restore(S_val
   -- if $class_constant_runtime_type(S_value, pclassconstantdesc.TYPE, pvalue)
   -- if pvalueclass = $constant_class(S_value, pclassconstantdesc.INITIALIZER)
   -- if ~$constant_callable_cache_valid(S_value, pclassconstantdesc, pvalueclass, |S_value.DECLARATIONS|)
-rule PhpStep/class-constant-bind-type: S ~> $throw_scalar($class_constant_restore(S_value[.TODO = ptask_tail*], pclassconstantcontext, pclassconstantcontext_tail*), "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S_value, pvalue) ++ $ptascii(" to class constant ") ++ pclassconstantdesc.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc.NAME ++ $ptascii(" of type ") ++ $pttypename(pclassconstantdesc.TYPE), pconstantcontext.LINE)
+rule PhpStep/class-constant-bind-type: S ~> $throw_scalar($class_constant_restore(S_value[.TODO = ptask_tail*], pclassconstantcontext, pclassconstantcontext_tail*), "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S_value, pvalue) ++ $ptascii(" to class constant ") ++ pclassconstantdesc.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc.NAME ++ $ptascii(" of type ") ++ $pttypename($trait_constant_source_type(S_value, pclassconstantdesc)), pconstantcontext.LINE)
   -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
   -- if pclassconstantcontext.DECL = porigin
