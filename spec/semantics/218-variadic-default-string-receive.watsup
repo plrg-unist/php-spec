@@ -78,6 +78,7 @@ def $ppnew_class_name(P, pcpath, name) = $ppclass_name(P, pcpath, PNRESOLVED {OR
 def $ppnew_class_name(P, pcpath, name) = $ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name))
   -- if $ppparameter_new_resolve(P, pcpath, name) = eps
   -- if ~$pptrait_new_deferred(P, pcpath, name) /\ ~$ppanonymous_new_deferred(P, pcpath, name)
+  -- if ~$ppordinary_new_keyword(P, pcpath, name)
 dec $ppparameter_new_class(ppstate, phpType28, metadata) : ppstate
 def $ppparameter_new_class(P, phpType28, metadata) = $ppconstant_error(P, $ptascii("\"static\" is not allowed in compile-time constants"), $nabs($source_line(metadata)))
   -- if phpType28 = name

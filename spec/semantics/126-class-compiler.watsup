@@ -230,6 +230,8 @@ def $ppstatement(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 ph
   -- if P_line = $pplocate(P, pcpath, z)
 
 dec $ppclass_name(ppstate, pcpath, pnresult) : ppstate
+dec $ppordinary_new_keyword(ppstate, pcpath, name) : bool
+def $ppordinary_new_keyword(P, pcpath, name) = false -- otherwise
 dec $ppnew_class_name(ppstate, pcpath, name) : ppstate
 dec $pptrait_new_deferred(ppstate, pcpath, name) : bool
 dec $ppparameter_new_resolve(ppstate, pcpath, name) : ptbytes?
