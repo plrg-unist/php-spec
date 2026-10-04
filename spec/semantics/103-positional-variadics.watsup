@@ -37,7 +37,6 @@ def $variadic_value(S, pfunction, n_fixed, n_arg, poperand) = $throw_scalar(S, "
   -- if pvalue = $variadic_operand_value(S, poperand)
   -- if $variadic_conversion(S, psparam, poperand) = TYPEREJECT
   -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.CALLSITE = (porigin)
 
 def $variadic_operand_value(S, KNOWN pvalue) = pvalue
 def $variadic_operand_value(S, REFERENCE n) = pvalue -- if S.STORE[n] = DEFINED pvalue

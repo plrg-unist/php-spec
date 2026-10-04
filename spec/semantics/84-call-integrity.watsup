@@ -322,6 +322,7 @@ dec $static_cells_valid(pstate, pstaticcell*) : bool
 dec $finally_state_valid(pstate) : bool
 dec $eval_state_valid(pstate) : bool
 dec $error_handlers_valid(pstate, perrorhandler*) : bool
+dec $exception_handlers_valid(pstate, pvalue?*) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
@@ -359,6 +360,7 @@ def $call_descriptors_valid(S) = true
   -- if $static_result_valid(S)
   -- if $silences_valid(S)
   -- if $error_handlers_valid(S, S.ERRORHANDLER :: S.ERRORHANDLERS)
+  -- if $exception_handlers_valid(S, S.EXCEPTIONHANDLER :: S.EXCEPTIONHANDLERS)
   -- if $user_constants_valid(S, S.USERCONSTANTS)
   -- if $class_constant_state_valid(S)
   -- if $constant_callable_records_valid(S, S.CONSTANTCLOSURES)

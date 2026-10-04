@@ -207,15 +207,19 @@ rule PhpStep/throw-search-frame: S ~> S_restored[.TODO = (THROW_SEARCH n) :: S_r
   -- if ptask_tail* = eps
   -- if S.FRAMES =/= eps
   -- if S_restored = $restore_frame(S)
+dec $exception_terminal_tail(pstate, ptask*) : bool
+dec $exception_dispatch_ready(pstate) : bool
 rule PhpStep/throw-search-uncaught: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = pthrowable.FILEORIGIN]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-  -- if ptask_tail* = eps
+  -- if $exception_terminal_tail(S, ptask_tail*)
+  -- if ~$exception_dispatch_ready(S)
   -- if S.FRAMES = eps
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $throwable_terminal_renderable(S, n, eps)
 rule PhpStep/throw-search-uncaught-source: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-  -- if ptask_tail* = eps
+  -- if $exception_terminal_tail(S, ptask_tail*)
+  -- if ~$exception_dispatch_ready(S)
   -- if S.FRAMES = eps
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $throwable_member(S, n)
@@ -224,7 +228,8 @@ rule PhpStep/throw-search-uncaught-source: S ~> S[.TODO = eps][.COMPLETION = UNC
 def $task_nodes(TERMINAL_STRING n) = [HOBJECT n]
 rule PhpStep/throw-search-uncaught-unrenderable: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Throwable terminal message conversion"][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-  -- if ptask_tail* = eps
+  -- if $exception_terminal_tail(S, ptask_tail*)
+  -- if ~$exception_dispatch_ready(S)
   -- if S.FRAMES = eps
   -- if $throwable_member(S, n)
   -- if ~$stringable_instance(S, n)
