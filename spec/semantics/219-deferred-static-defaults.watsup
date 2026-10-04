@@ -53,7 +53,7 @@ def $static_default_scope(S) = $property_declaring_class(S.CLASSES, pconstantcon
   -- if $static_default_descriptor(ppropertydesc.DEFAULT)
 def $static_default_scope(S) = eps -- otherwise
 def $method_current_scope(S) = (porigin)
-  -- if S.CLASSCONSTANTINIT = eps
+  -- if ~$class_constant_active(S)
   -- if $static_default_scope(S) = (porigin)
 
 def $static_default_origins(eps) = eps
@@ -235,6 +235,16 @@ def $static_default_busy(S, porigin) = true
   -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
   -- if pstaticdefaultcontext.DECL = porigin
 def $static_default_busy(S, porigin) = false -- otherwise
+dec $static_default_binding_present(ptask*, porigin) : bool
+def $static_default_binding_present(eps, porigin) = false
+def $static_default_binding_present((STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*, porigin) = (pstaticdefaultcontext.DECL = porigin \/ $static_default_binding_present(ptask_tail*, porigin))
+def $static_default_binding_present(ptask :: ptask_tail*, porigin) = $static_default_binding_present(ptask_tail*, porigin)
+  -- if ~$static_default_bind_marker(ptask)
+dec $static_default_saved_binding(pframe*, porigin) : bool
+def $static_default_saved_binding(eps, porigin) = false
+def $static_default_saved_binding(pframe :: pframe_tail*, porigin) = ($static_default_binding_present(pframe.TODO, porigin) \/ $static_default_saved_binding(pframe_tail*, porigin))
+dec $static_default_reentering(pstate, porigin) : bool
+def $static_default_reentering(S, porigin) = ($static_default_binding_present(S.TODO, porigin) \/ $static_default_saved_binding(S.FRAMES, porigin))
 dec $static_default_unfilled(pstate, porigin) : bool
 def $static_default_unfilled(S, porigin) = true
   -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
@@ -298,7 +308,7 @@ dec $static_default_binding_head(ptask*, porigin) : bool
 def $static_default_binding_head((STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*, porigin) = (pstaticdefaultcontext.DECL = porigin)
 def $static_default_binding_head(ptask*, porigin) = false -- otherwise
 def $static_default_ast_active(S) = true
-  -- if S.CLASSCONSTANTINIT = eps
+  -- if ~$class_constant_active(S)
   -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL
@@ -324,7 +334,7 @@ def $static_default_trace_context(S) = (pstaticdefaultcontext)
   -- if ~$static_default_binding_head(S.TODO, pstaticdefaultcontext.DECL)
 def $static_default_trace_context(S) = eps -- otherwise
 def $static_default_error_origin(S) = pstaticdefaultcontext.ORIGIN
-  -- if S.CLASSCONSTANTINIT = eps
+  -- if ~$class_constant_active(S)
   -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
   -- if $static_default_active(S, pstaticdefaultcontext.DECL)
   -- if ~$static_default_ast(S, pstaticdefaultcontext)
@@ -348,6 +358,13 @@ rule PhpStep/static-default-update: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin, LIN
   -- if $origin_node(S.SOURCES, porigin_initializer) = (expression)
   -- if $class_constant_update_target(S, ptask_tail*) = (porigin_root)
   -- if $static_default_task_valid(S, porigin, z)
+  -- if ~$static_default_reentering(S, porigin)
+rule PhpStep/static-default-update-reentry: S ~> S[.COMPLETION = UNSUPPORTED "reentrant deferred static default update"]
+  -- if S.TODO = (STATIC_DEFAULT_UPDATE porigin z) :: ptask_tail*
+  -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
+  -- if $static_default_pending(pclassstatic.STATE)
+  -- if $static_default_task_valid(S, porigin, z)
+  -- if $static_default_reentering(S, porigin)
 rule PhpStep/static-default-update-filled: S ~> S[.TODO = ptask_tail*]
   -- if S.TODO = (STATIC_DEFAULT_UPDATE porigin z) :: ptask_tail*
   -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)

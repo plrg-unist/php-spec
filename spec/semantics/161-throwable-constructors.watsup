@@ -18,13 +18,14 @@ def $throwable_constructor_kind(preqbytes) = eps -- otherwise
 
 ;; New allocation captures origin, location and trace before argument sends.
 ;; The generated-error allocator is a separate throwing transition.
-def $new_class(S, preqbytes, z) = S_trace[.OBJECTS = S_trace.OBJECTS ++ [THROWABLE pthrowable]][.OBJECTPROPS = S_trace.OBJECTPROPS ++ [{OBJECT n, SLOTS $throwable_slots(text_kind, eps, $call_sourcefile(S.FILES, porigin), z, n_trace, PNULL), MATERIALIZED false}]][.ALLOCATIONS = S_trace.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $new_class(S, preqbytes, z) = S_trace[.OBJECTS = S_trace.OBJECTS ++ [THROWABLE pthrowable]][.OBJECTPROPS = S_trace.OBJECTPROPS ++ [{OBJECT n, SLOTS $throwable_slots(text_kind, eps, $call_sourcefile(S.FILES, porigin_file), $class_constant_error_line(S, z), n_trace, PNULL), MATERIALIZED false}]][.ALLOCATIONS = S_trace.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $throwable_constructor_kind(preqbytes) = (text_kind)
   -- if S.ORIGIN = (porigin)
+  -- if $class_constant_error_origin(S) = (porigin_file)
   -- if S_trace = $trace_materialize(S, $eval_exception_trace(S))
   -- if S_trace.RESULT = KNOWN (PARRAY n_trace)
   -- if n = |S_trace.OBJECTS|
-  -- if pthrowable = {KIND text_kind, ORIGIN S.ORIGIN}
+  -- if pthrowable = {KIND text_kind, ORIGIN (porigin), FILEORIGIN (porigin_file)}
 
 dec $ctor_start(pstate, nat, pctorcallmode, int) : pstate
 dec $throwable_constructor_owner(text) : text

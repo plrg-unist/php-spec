@@ -1,0 +1,110 @@
+{
+  "scope": "Runtime E_STRICT deprecations and lossy error_reporting conversions, with saved initializer facts and compound diagnostic locations; partial core milestone217.",
+  "status": "reviewed_bounded_checkpoint",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C,TZ=UTC; tests/semantics/profile.json",
+  "engine": {
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "sources": [
+      "vendor/php-src/Zend/zend_constants.c::zend_get_constant_ex",
+      "vendor/php-src/Zend/zend_API.c::zend_update_class_constants",
+      "vendor/php-src/Zend/zend_execute.c::zend_deprecated_constant",
+      "vendor/php-src/Zend/zend_execute_API.c::zval_update_constant_ex",
+      "vendor/php-src/Zend/zend_ast.c::zend_ast_evaluate_ex",
+      "vendor/php-src/Zend/zend_API.c::zend_parse_arg_long_weak",
+      "vendor/php-src/Zend/zend_builtin_functions.c::error_reporting",
+      "vendor/php-src/Zend/zend.c::zend_error / OnUpdateErrorReporting",
+      "vendor/php-src/Zend/zend_exceptions.c::zend_default_exception_new"
+    ]
+  },
+  "contract": [
+    "E_STRICT=2048 is fetched at runtime with a Deprecated 8192 diagnostic. Case-sensitive namespace/fallback lookup and user shadows precede builtin selection; selected values survive handler publication and recurse without another deprecation only while protected.",
+    "Lossy float/numeric-string reporting arguments convert to long before dispatch. Normal completion samples the live old mask after the handler; raw bytes survive when the converted long equals the live signed32 mask before narrowing. Throw prevents the setter and retains handler writes/original trace arguments.",
+    "Ordinary/error callback frames save, clear and restore CONSTCONTEXT. Global class busy history survives callbacks; active lexical evaluation follows current or authenticated saved bindings. Constant provenance carries no heap owner.",
+    "Compound initializer diagnostics retain expression location separately from fetch execution location, including the no-argument [constant expression] trace when needed. Throwable construction origin and diagnostic FILEORIGIN stay distinct.",
+    "Handler/API continuations retain authentic emitting scope, four arguments and source strictness. Ordinary 105/108 receive readiness excludes error-context frames; the three guards in 105/108 remain unchanged in the current scoped-callable composition."
+  ],
+  "accepted_originals": [
+    {
+      "tested_head": "de70c2d58a1a6dea0cd8952a261c60f4cfd6f55f",
+      "author_normal_sources": 1,
+      "case": "estrict-runtime-repeat-dead-branch",
+      "raw": ".tools/include-dev-13-diagnostic-ingress/.tools/reporting-diagnostics-author-6iprg03f",
+      "review": ".tools/include-review-13/reporting-diagnostics-author-partial-review.json"
+    },
+    {
+      "tested_head": "1f1132bc02b9cb120e56449f3c91bc010abcb058",
+      "author_normal_sources": 9,
+      "raw": ".tools/include-dev-13-diagnostic-ingress/.tools/reporting-diagnostics-location-author-7kbdukki",
+      "review": ".tools/include-review-13/reporting-diagnostics-location-author-partial-review.json"
+    },
+    {
+      "tested_head": "5dfe12a67c12a8cb86bb1c587c232fd7e65099d3",
+      "author_normal_sources": 4,
+      "state_conditions": [
+        38,
+        45
+      ],
+      "raw": ".tools/include-dev-13-diagnostic-ingress/.tools/reporting-diagnostics-readiness-author-0y62ycyk",
+      "review": ".tools/include-review-13/reporting-diagnostics-readiness-author-partial-review.json"
+    },
+    {
+      "tested_head": "1a222650b986bb5d4923abaeaf5ad20f6143f200",
+      "state_conditions": [
+        71,
+        57
+      ],
+      "raw": ".tools/include-dev-13-diagnostic-ingress/.tools/reporting-diagnostics-eval-binding-author-5b8i5qpz",
+      "review": ".tools/include-review-13/reporting-diagnostics-eval-binding-author-original-review.json"
+    },
+    {
+      "tested_head": "1a222650b986bb5d4923abaeaf5ad20f6143f200",
+      "independent_normal_sources": 4,
+      "raw": ".tools/include-dev-13-diagnostic-ingress/.tools/reporting-diagnostics-eval-binding-independent-1trfxy8b",
+      "review": ".tools/include-review-13/reporting-diagnostics-independent-original-review.json"
+    }
+  ],
+  "current_composition": {
+    "parent": "3f63e475bf50fe3d094cb7e273f5504584dc212a",
+    "union": "5a6231397d26efa7ee42e10a8c8b5a725e2ff786",
+    "tested_head": "817525157b216676d53cf2e1e81f7e2f87b7c731",
+    "modules": 210,
+    "production_compilation": "parse,elaborate,algorithmic-analysis-and-guards,structure-final,SL runner-init cache=false det=true; application-evaluations=0",
+    "compile_raw": ".tools/include-dev-13-diagnostics-current/.tools/diagnostics-current-lfwfsxza/compile",
+    "normal_sources": 1,
+    "source": "tests/semantics/reporting_diagnostics_current.php",
+    "stdout": "H4:D|S0:2048|P2:converted:converted|DiagnosticOwner:converted|R|2049:2049|DiagnosticOwner",
+    "stderr": "empty",
+    "exit_status": 0,
+    "behavior": "Genuine private static method-array handler suspends compound class evaluation; weak byref Stringable reception adds a typed property source, permits exact backing/second receive, rejects later ordinary write, detaches source, restores lexical self::class default and completes outer 2049 cache.",
+    "raw": ".tools/include-dev-13-diagnostics-current/.tools/diagnostics-current-source-roknjexe",
+    "report_sha256": "456f7c35b9b9cab8a99e6d60394593d80f46f11f7f4fff342b037f2f57dbdc58",
+    "independent_review": ".tools/include-review-14/reporting-diagnostics-current-review.json",
+    "compatibility": "Module217 bodies match 1a. Preserve 213/214/215/216 and named-class rules. Saved-scope validators reconstruct the authentic emitter; the original three error-context exclusions in 105/108 remain unchanged in the scoped-callable composition. Retired constant facts own no arrays/objects. No accepted original source/state replay or renewed agreement is claimed."
+  },
+  "reproduction": {
+    "originals": "Each raw directory retains original command, stdout, stderr, exit and cleanup records; old plans name exact source/finite selections. Earlier partial failures remain in their original reports.",
+    "current_commands": [
+      ".tools/cprefix-compiler/compiler sl $(python3 -c 'import json;print(\" \".join(json.load(open(\"spec/semantics/modules.json\"))))')",
+      ".tools/php/bin/php -n -d opcache.enable_cli=0 -d opcache.jit=disable -d precision=14 -d serialize_precision=-1 -d display_errors=stderr -d display_startup_errors=1 -d html_errors=0 -d log_errors=0 -d error_reporting=30719 -d date.timezone=UTC -d output_buffering=0 -d implicit_flush=1 -d zend.assertions=1 tests/semantics/reporting_diagnostics_current.php",
+      "bin/php-semantics tests/semantics/reporting_diagnostics_current.php --steps 100000 --timeout 60"
+    ],
+    "current_process_caps_seconds": {
+      "compile": 300,
+      "native": 30,
+      "model_total": 90,
+      "request": 60,
+      "single_cleanup": 5
+    },
+    "runtime": "Reused project-local binary SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; actual CLI 8-byte/NTS/extensions are recorded in current raw report. No rebuild or copied-path portability credit.",
+    "maintenance": "The current source is loaded byte-for-byte by reporting_diagnostics_cases.py and watched by error_handler_run.py; registering the accepted fixture adds no semantic rerun."
+  },
+  "preserved_failures": [
+    "Original de70 namespace-shadow initializer context leak; original 1f113 nondeterministic named receives; original 5dfe 71 late eval filename validation refusal. All retain zero agreement and original exits; corrected affected checks remain at their own revisions.",
+    "Current initial recorder stopped after successful compilation/runtime identity because PHP_ZTS=false prints empty while its assertion expected 0. Original runner/output retained in diagnostics-current-lfwfsxza; corrected source-only recorder executed only the unstarted native/model tuple."
+  ],
+  "remaining": [
+    "Eval filename creation inside compound AST initializer callbacks remains required; clearing constant context for later site-line validation does not close this obligation.",
+    "Nondefault startup reporting profiles, wider directives, other diagnostic producers/constant consumers, OS services and lifecycle remain required partial core work.",
+    "Returns verification remains user-paused; no unaccepted return dependencies or substitute verification."
+  ]
+}

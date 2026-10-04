@@ -1,0 +1,122 @@
+;; Deprecated constants are fetched at runtime. Zend protects the constant
+;; only while its diagnostic dispatch is active, including handler reentry.
+dec $deprecated_constant_name(pstate, preqbytes, preqbytes?) : bool
+def $deprecated_constant_name(S, preqbytes, preqbytes_fallback?) = true
+  -- if preqbytes = $ptascii("E_STRICT")
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
+def $deprecated_constant_name(S, preqbytes, (preqbytes_fallback)) = true
+  -- if $source_constant_lookup(S, preqbytes) = eps
+  -- if preqbytes_fallback = $ptascii("E_STRICT")
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes_fallback)) = eps
+def $deprecated_constant_name(S, preqbytes, preqbytes_fallback?) = false -- otherwise
+dec $deprecated_constant_source(pstate, porigin, nat) : int?
+def $deprecated_constant_source(S, PORIGIN n pcpath, n_prefix) = ($class_constant_error_line(S, $constant_runtime_line(S, z)))
+  -- if $(n_prefix <= |S.USERCONSTANTS|)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0)
+  -- if $deprecated_constant_name(S[.USERCONSTANTS = S.USERCONSTANTS[0:n_prefix]], preqbytes, preqbytes_fallback?)
+def $deprecated_constant_source(S, porigin, n_prefix) = eps -- otherwise
+def $deprecated_constant_selected(S, porigin) = ($deprecated_constant_source(S, porigin, |S.USERCONSTANTS|) =/= eps)
+dec $deprecated_constant_message() : preqbytes
+def $deprecated_constant_message() = $ptascii("Constant E_STRICT is deprecated since 8.4, the error level was removed")
+dec $deprecated_constant_active_task(ptask) : bool
+def $deprecated_constant_active_task(DEPRECATED_CONSTANT_RESULT pdeprecatedconstant) = true
+def $deprecated_constant_active_task(ERROR_HANDLER_INVOKE perrorcall) = $deprecated_constant_active_task(perrorcall.RESUME)
+def $deprecated_constant_active_task(ERROR_HANDLER_RESULT perrorcall) = $deprecated_constant_active_task(perrorcall.RESUME)
+def $deprecated_constant_active_task(ptask) = false -- otherwise
+dec $deprecated_constant_active_tasks(ptask*) : bool
+def $deprecated_constant_active_tasks(eps) = false
+def $deprecated_constant_active_tasks(ptask :: ptask_tail*) = ($deprecated_constant_active_task(ptask) \/ $deprecated_constant_active_tasks(ptask_tail*))
+dec $deprecated_constant_active_frames(pframe*) : bool
+def $deprecated_constant_active_frames(eps) = false
+def $deprecated_constant_active_frames(pframe :: pframe_tail*) = ($deprecated_constant_active_tasks(pframe.TODO) \/ $deprecated_constant_active_frames(pframe_tail*))
+dec $deprecated_constant_active(pstate) : bool
+def $deprecated_constant_active(S) = ($deprecated_constant_active_tasks(S.TODO) \/ $deprecated_constant_active_frames(S.FRAMES))
+dec $deprecated_constant_result(pstate, porigin, ptask*) : pstate
+def $deprecated_constant_result(S, porigin, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT 2048)][.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE (PINT 2048), CLASS PVSCALAR})])]
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+def $deprecated_constant_result(S, porigin, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT 2048)]
+  -- if S.CONSTCONTEXT = eps
+def $deprecated_constant_start(S, porigin, ptask_tail*) = $deprecated_constant_result(S, porigin, ptask_tail*)
+  -- if $deprecated_constant_active(S)
+def $deprecated_constant_start(S, porigin, ptask_tail*) = $error_dispatch(S_pending, 8192, $deprecated_constant_message(), z, DIAGNOSTIC "Deprecated" $deprecated_constant_message() z, DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+  -- if ~$deprecated_constant_active(S)
+  -- if n_prefix = |S.USERCONSTANTS|
+  -- if $deprecated_constant_source(S, porigin, n_prefix) = (z)
+  -- if pdeprecatedconstant = {SITE porigin, LINE z, PREFIX n_prefix}
+  -- if S_pending = S[.ORIGIN = (porigin)][.TODO = (DEPRECATED_CONSTANT_RESULT pdeprecatedconstant) :: (ORIGIN_RETURN S.ORIGIN) :: ptask_tail*]
+dec $deprecated_constant_task(ptask, pdeprecatedconstant) : bool
+def $deprecated_constant_task(DEPRECATED_CONSTANT_RESULT pdeprecatedconstant, pdeprecatedconstant) = true
+def $deprecated_constant_task(ERROR_HANDLER_INVOKE perrorcall, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+def $deprecated_constant_task(ERROR_HANDLER_RESULT perrorcall, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+def $deprecated_constant_task(ptask, pdeprecatedconstant) = false -- otherwise
+dec $deprecated_constant_valid(pstate, pdeprecatedconstant) : bool
+def $deprecated_constant_valid(S, pdeprecatedconstant) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $deprecated_constant_task(ptask, pdeprecatedconstant)
+  -- if S.ORIGIN = (pdeprecatedconstant.SITE)
+  -- if $deprecated_constant_source(S, pdeprecatedconstant.SITE, pdeprecatedconstant.PREFIX) = (pdeprecatedconstant.LINE)
+def $deprecated_constant_valid(S, pdeprecatedconstant) = false -- otherwise
+rule PhpStep/deprecated-constant-done: S ~> $deprecated_constant_result(S, pdeprecatedconstant.SITE, ptask_tail*)
+  -- if S.TODO = (DEPRECATED_CONSTANT_RESULT pdeprecatedconstant) :: ptask_tail*
+  -- if $deprecated_constant_valid(S, pdeprecatedconstant)
+def $call_task_valid(S, DEPRECATED_CONSTANT_RESULT pdeprecatedconstant) = $deprecated_constant_valid(S, pdeprecatedconstant)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant
+  -- if $deprecated_constant_valid(S, pdeprecatedconstant)
+  -- if perrorcall.SITE = pdeprecatedconstant.SITE
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.LINE = pdeprecatedconstant.LINE
+  -- if perrorcall.MESSAGE = $deprecated_constant_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+
+;; ZPP computes the integer before warning. error_reporting samples the live
+;; old mask after the handler returns; the original argument remains in traces.
+dec $reporting_lossy_value(pvalue) : (int, preqbytes)?
+def $reporting_lossy_value(PFLOAT n) = ((i, $ptascii("Implicit conversion from float ") ++ preqbytes ++ $ptascii(" to int loses precision")))
+  -- if (i, [PRECISIONLOSS]) = $float_long(n, true)
+  -- if (preqbytes, b) = $number_text(NFLOAT n, $(-1))
+def $reporting_lossy_value(PSTRING preqbytes) = ((i, $ptascii("Implicit conversion from float-string \"") ++ $c_string(preqbytes) ++ $ptascii("\" to int loses precision")))
+  -- if $string_long(preqbytes) = STRINT i strcastnotice*
+  -- if strcastnotice* = [STRINGPRECISIONLOSS]
+def $reporting_lossy_value(pvalue) = eps -- otherwise
+def $reporting_long_warning(S, pconfigcall) = $reporting_lossy_value(pvalue)
+  -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
+  -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
+  -- if $error_long_conversion(pvalue, $config_strict(S, pconfigcall)) = TYPEINTEGER pvalue
+def $reporting_long_warning(S, pconfigcall) = eps -- otherwise
+def $reporting_long_start(S, pconfigcall, i, preqbytes) = $error_dispatch(S, 8192, preqbytes, pconfigcall.LINE, DIAGNOSTIC "Deprecated" preqbytes pconfigcall.LINE, REPORTING_LONG_RESULT pconfigcall i)
+dec $reporting_long_valid(pstate, pconfigcall, int) : bool
+def $reporting_long_valid(S, pconfigcall, i) = true
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if S.ORIGIN = (pconfigcall.SITE)
+  -- if $reporting_long_warning(S, pconfigcall) = ((i, preqbytes))
+def $reporting_long_valid(S, pconfigcall, i) = false -- otherwise
+dec $reporting_long_finish(pstate, int) : pstate
+def $reporting_long_finish(S, i) = S[.REPORTING = $error_int32(i)][.REPORTINGINI = $decimal_integer(i)][.REPORTINGMODIFIED = true][.RESULT = KNOWN (PINT S.REPORTING)]
+  -- if i =/= S.REPORTING
+def $reporting_long_finish(S, i) = S[.RESULT = KNOWN (PINT S.REPORTING)]
+  -- if i = S.REPORTING
+rule PhpStep/reporting-long-done: S ~> $reporting_long_finish(S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)], i)
+  -- if S.TODO = (REPORTING_LONG_RESULT pconfigcall i) :: ptask_tail*
+  -- if $reporting_long_valid(S, pconfigcall, i)
+def $call_task_valid(S, REPORTING_LONG_RESULT pconfigcall i) = $reporting_long_valid(S, pconfigcall, i)
+def $task_nodes(REPORTING_LONG_RESULT pconfigcall i) = $config_nodes(pconfigcall)
+def $selected_task_nonce(REPORTING_LONG_RESULT pconfigcall i) = pconfigcall.SELECTION
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = REPORTING_LONG_RESULT pconfigcall i
+  -- if $reporting_long_valid(S, pconfigcall, i)
+  -- if $reporting_long_warning(S, pconfigcall) = ((i, perrorcall.MESSAGE))
+  -- if perrorcall.SITE = pconfigcall.SITE
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = REPORTING_LONG_RESULT pconfigcall i
+def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = REPORTING_LONG_RESULT pconfigcall i

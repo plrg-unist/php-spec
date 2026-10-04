@@ -9155,12 +9155,14 @@
         "spec/semantics/88-user-constant-compiler.watsup",
         "spec/semantics/89-user-constants.watsup",
         "spec/semantics/89-constant-classes.watsup",
-        "spec/semantics/20-machine.watsup"
+        "spec/semantics/20-machine.watsup",
+        "spec/semantics/217-diagnostic-ingress.watsup"
       ],
       "helper_tests": [
         "tests/semantics/user_constant_compiler.py",
         "tests/semantics/constant_class_compiler.py",
-        "tests/semantics/reporting_protocol.py"
+        "tests/semantics/reporting_protocol.py",
+        "tests/semantics/reporting_diagnostics_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/user_constants.py",
@@ -9168,16 +9170,19 @@
         "tests/semantics/user_constant_protocol.py",
         "tests/semantics/user_constant_context_protocol.py",
         "tests/semantics/user_constant_branch_protocol.py",
-        "tests/semantics/reporting_cases.py"
+        "tests/semantics/reporting_cases.py",
+        "tests/semantics/reporting_diagnostics_cases.py",
+        "tests/semantics/reporting_diagnostics_current.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_constants.c",
         "vendor/php-src/Zend/zend_ast.c",
         "coverage/semantics/user-constant-review.json",
-        "coverage/semantics/reporting-ini-review.json"
+        "coverage/semantics/reporting-ini-review.json",
+        "coverage/semantics/reporting-diagnostics-review.json"
       ],
-      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure. Current reporting checkpoint admits all15 nondeprecated E_* values with exact case/namespace fallback and shadow behavior; two constant source tuples retain76a30 identity. E_STRICT deprecated diagnostic/handler ingress remains a required partial obligation; see reporting-ini-review.json."
+      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure. Current reporting checkpoint admits all15 nondeprecated E_* values with exact case/namespace fallback and shadow behavior; two constant source tuples retain76a30 identity. Runtime E_STRICT diagnostic ingress217 retains selected 2048 through callback declarations and protects recursive reads while its fetch is active. Defaults/class constants cache successful values, and genuine frames save/clear/restore initializer facts. Mixed 14 author+4 independent sources/211 conditions keep their tested revisions; current 210 compilation and scoped-handler/backing/class-name source1 establish added composition separately. Compound callback/eval filename creation and wider constant consumers remain required; see reporting-diagnostics-review.json."
     },
     {
       "id": "declarations.typed-class-constants",
@@ -9187,14 +9192,18 @@
       "implementation": [
         "spec/semantics/183-class-constant-compiler.watsup",
         "spec/semantics/184-class-constants.watsup",
+        "spec/semantics/217-diagnostic-ingress.watsup",
         "spec/semantics/219-deferred-static-defaults.watsup"
       ],
       "helper_tests": [
         "tests/semantics/class_constant_protocol.py",
+        "tests/semantics/reporting_diagnostics_protocol.py",
         "tests/semantics/deferred_static_default_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/class_constant_cases.json",
+        "tests/semantics/reporting_diagnostics_cases.py",
+        "tests/semantics/reporting_diagnostics_current.php",
         "tests/semantics/deferred_static_default_cases.json"
       ],
       "evidence": [
@@ -9203,9 +9212,10 @@
         "vendor/php-src/Zend/zend_API.c",
         "vendor/php-src/Zend/zend_ast.c",
         "coverage/semantics/class-constants-current-review.json",
+        "coverage/semantics/reporting-diagnostics-review.json",
         "coverage/semantics/deferred-static-defaults-review.json"
       ],
-      "review": "Constants183/184/212 preserve owner-scoped lazy values, strict caches, inheritance and compile-entry availability. Selected Closure/FCC identity/scope and named constexpr ::class spelling are reviewed; rebound defaults avoid stale origin-only caches. Maintained 93 source agreements and159 + 44 + 63 callable/class-name guards retain distinct cutoffs. Incomplete-table references, unretained update selectors, wider constructor contexts and uncertified object transfers remain Unsupported; modifiers, attributes and broader consumers stay open. See class-constants-current-review.json; no family/core or fresh copied-build closure. The current214 callback retains rebound B/original A default scope and cached identity (B:A:same) at its own cutoff. Deferred scalar/array static defaults219 preserve declaring scope, strict binding and first-fill prefixes across later failure;11 source agreements and5 programs/149 logical guards (152 sequential premises) retain separate cutoffs. Instance/object-bearing defaults and cold synchronous references stay open; see deferred-static-defaults-review.json. Two current213/215/214/216 callback interactions at8da51d193 separately agree with native originals; publication renews no earlier evidence."
+      "review": "Constants183/184/212 preserve owner-scoped lazy values, strict caches, inheritance and compile-entry availability. Selected Closure/FCC identity/scope and named constexpr ::class spelling are reviewed; rebound defaults avoid stale origin-only caches. Maintained 93 source agreements and159 + 44 + 63 callable/class-name guards retain distinct cutoffs. Incomplete-table references, unretained update selectors, wider constructor contexts and uncertified object transfers remain Unsupported; modifiers, attributes and broader consumers stay open. See class-constants-current-review.json; no family/core or fresh copied-build closure. The current214 callback retains rebound B/original A default scope and cached identity (B:A:same) at its own cutoff. Diagnostic ingress217 separates active evaluator scope from globally busy class initializations across callbacks, preserves selected values/facts and compound expression/fetch exception locations. Mixed 14+4/211 and current 210/source1 remain distinct; compound callback/eval filename creation remains open (reporting-diagnostics-review.json). Deferred scalar/array static defaults219 preserve declaring scope, strict binding and first-fill prefixes across later failure;11 source agreements and5 programs/149 logical guards (152 sequential premises) retain separate cutoffs. Instance/object-bearing defaults and cold synchronous references stay open; see deferred-static-defaults-review.json. Two current213/215/214/216 callback interactions at8da51d193 separately agree with native originals; publication renews no earlier evidence."
     },
     {
       "id": "declarations.constant-closures",
@@ -9804,14 +9814,16 @@
         "spec/semantics/30-storage.watsup",
         "spec/semantics/40-control.watsup",
         "spec/semantics/101-error-suppression.watsup",
-        "spec/semantics/172-file-context-intrinsics.watsup"
+        "spec/semantics/172-file-context-intrinsics.watsup",
+        "spec/semantics/217-diagnostic-ingress.watsup"
       ],
       "helper_tests": [
         "tests/semantics/error_handler_protocol.py",
         "tests/semantics/error_handler_prepare.py",
         "tests/semantics/error_handler_property_protocol.py",
         "tests/semantics/error_handler_callables_protocol.py",
-        "tests/semantics/reporting_protocol.py"
+        "tests/semantics/reporting_protocol.py",
+        "tests/semantics/reporting_diagnostics_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/error_handler_cases.py",
@@ -9819,7 +9831,9 @@
         "tests/semantics/error_handler_array_registration.py",
         "tests/semantics/error_handler_callables.py",
         "tests/semantics/error_handler_callables_cases.json",
-        "tests/semantics/reporting_cases.py"
+        "tests/semantics/reporting_cases.py",
+        "tests/semantics/reporting_diagnostics_cases.py",
+        "tests/semantics/reporting_diagnostics_current.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c",
@@ -9829,9 +9843,10 @@
         "vendor/php-src/Zend/zend_API.c",
         "vendor/php-src/main/main.c",
         "coverage/semantics/handler-callables-current-review.json",
-        "coverage/semantics/reporting-ini-review.json"
+        "coverage/semantics/reporting-ini-review.json",
+        "coverage/semantics/reporting-diagnostics-review.json"
       ],
-      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/nonpublic/magic/autoload/internal/exception/lifecycle callbacks remain open. Reporting INI coupling accepts exact full-byte reads/late old returns, signed64 decimal-prefix saturation then low32 masks, modified-entry Restore, equal-mask raw preservation, strict source refusal and weak explicit __invoke. Constants2 at76a30 and reporting8+independent2/74 at ef46 remain separate. E_STRICT and handled lossy-conversion diagnostics, wider profiles/INI and lifecycle remain open; see reporting-ini-review.json."
+      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/nonpublic/magic/autoload/internal/exception/lifecycle callbacks remain open. Reporting INI coupling accepts exact full-byte reads/late old returns, signed64 decimal-prefix saturation then low32 masks, modified-entry Restore, equal-mask raw preservation, strict source refusal and weak explicit __invoke. Constants2 at76a30 and reporting8+independent2/74 at ef46 remain separate. Diagnostic ingress217 handles runtime E_STRICT and lossy reporting conversions through authentic 206/207 callbacks. Long conversion precedes dispatch; old-mask sampling follows it and original operands remain in traces. Saved initializer facts/busy class scopes and compound exception locations retain normal/throw behavior. Mixed 14 author+4 independent sources/211 conditions remain at their revisions; current 210 compilation and scoped-handler/backing/class-name source1 validate added composition separately. Compound callback/eval filename creation, wider profiles/INI and lifecycle remain required; see reporting-diagnostics-review.json."
     },
     {
       "id": "diagnostics.error-handler-stack",

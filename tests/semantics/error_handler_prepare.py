@@ -47,6 +47,10 @@ def main():
                     assert parsed['accepted'], parsed
                     checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
                     assert checked['ok'], checked
+                    if name == 'estrict-selected-shadow-protocol':
+                        from reporting_diagnostics_protocol import checked_shadow_program
+                        shadow_program = checked_shadow_program(frontend, adapter)
+                        checks = [c.replace('SHADOW_PROGRAM', shadow_program) for c in checks]
                 finally:
                     adapter.close()
             finally:

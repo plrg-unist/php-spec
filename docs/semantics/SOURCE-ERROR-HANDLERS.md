@@ -73,7 +73,11 @@ nonempty function field. Current property and array-caller readback gates valida
 tested private source composition.
 `REPORTINGINI` retains full raw bytes separately from the signed32 effective mask;
 reporting get/set/Restore and modified-entry state are recorded in the
-[reporting ledger](../../coverage/semantics/reporting-ini-review.json). Broader
+[reporting ledger](../../coverage/semantics/reporting-ini-review.json). Runtime
+`E_STRICT` and lossy reporting conversions use authenticated producer tasks in
+[diagnostic ingress217](../../coverage/semantics/reporting-diagnostics-review.json).
+Their callbacks save/clear/restore constant evaluator facts while retaining
+busy class initializations, selected values and genuine emitting frames. Broader
 directives and startup profiles remain separate. Uncaught/fatal reporting outside this slice and
 broader global/reference behavior also remain core obligations.
 

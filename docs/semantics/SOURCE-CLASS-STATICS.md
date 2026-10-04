@@ -26,8 +26,11 @@ initializer preserves earlier values and their first-fill history; a retry skips
 those values. The existing `CLASSSTATICS` row owns the value and later aliases;
 the `CCSTATIC` history entry stores only source/trigger/publication identities.
 Compound AST errors retain the constant-expression trace, while a simple unresolved
-constant keeps the triggering fetch location. Instance and object-bearing defaults
-and synchronous references into an incomplete table remain required open work.
+constant keeps the triggering fetch location. Same-default reevaluation while an
+initializer is suspended in a callback returns explicit Unsupported. Resumed
+updates must eventually retain escaped reference constraints even when the live
+property row is replaced. Instance and object-bearing defaults and synchronous
+references into an incomplete table also remain required open work.
 The [deferred-default review](../../coverage/semantics/deferred-static-defaults-review.json)
 records eleven earlier source agreements separately from five source-derived guard
 programs. Two later213/215 callback comparisons initialize the inherited default

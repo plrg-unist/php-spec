@@ -24,6 +24,15 @@ and an extra constant-expression frame only when the executor location differs.
 Post-evaluation type errors restore the fetch context. Finite controls reject
 swapped, duplicated or skipped update tasks and coherently forged selected slots.
 
+[Diagnostic ingress217](../../coverage/semantics/reporting-diagnostics-review.json)
+saves and restores initializer facts through error-handler and nested ordinary
+calls. The active lexical evaluator is separate from the global busy stack;
+callbacks retain recursion protection without inheriting initializer scope.
+Selected deprecated-constant values survive callback declarations, and failed
+initializations can retry. Compound diagnostics and thrown constructors keep
+expression/fetch locations and synthetic constant-expression traces distinct.
+Compound callback/eval filename creation remains open.
+
 Inheritance checks preserve finality, different-owner ambiguity, visibility and
 type covariance in that order. Same-owner interface diamonds remain unambiguous;
 private parent constants do not constrain a child's replacement. Real linking

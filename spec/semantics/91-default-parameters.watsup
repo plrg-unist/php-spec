@@ -226,6 +226,7 @@ def $default_bind_task_valid(S, porigin, n) = true
 def $default_bind_task_valid(S, porigin, n) = false -- otherwise
 def $constant_binding(S, DEFAULT_BIND porigin n) = [$default_parameter_origin(S, porigin, n)]
 def $call_after_origin(S, DEFAULT_BIND porigin n) = S[.CONSTCONTEXT = eps][.ORIGIN = (porigin)]
+def $return_discard(S, DEFAULT_BIND porigin n) = S[.CONSTCONTEXT = eps][.ORIGIN = (porigin)]
 def $default_context_valid(S, pconstantcontext) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
