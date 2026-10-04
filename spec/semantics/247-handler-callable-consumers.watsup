@@ -2,6 +2,7 @@
 ;; selected FCC. Both execute the shared Zend API deprecation stages.
 dec $consumer_exception_source(ptask) : bool
 dec $consumer_exception_pending(pstate, pexceptioncall) : bool
+dec $consumer_exception_original(pstate, papiquery) : bool
 dec $consumer_exception_object(pcalltarget, nat) : bool
 dec $consumer_query_selected(pstate, papiquery) : papiquery
 dec $consumer_snapshot(pstate, papiquery) : parray?
@@ -50,11 +51,37 @@ def $consumer_exception_pending(S, pexceptioncall) = true
   -- if pexceptioncall.TARGET = eps
   -- if pexceptioncall.SENT = eps /\ pexceptioncall.RECEIVED = eps
 def $consumer_exception_pending(S, pexceptioncall) = false -- otherwise
+def $consumer_exception_original(S, papiquery) = true
+  -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
+  -- if papiquery.VALUE = pexceptioncall.CALLBACK
+  -- if papiquery.VALUE = PARRAY n
+  -- if $(n < |S.ARRAYS|)
+  -- if pexceptioncall.RAW = (parray)
+  -- if |parray.ITEMS| = 2
+  -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(parray.ITEMS, KINT 1) = (pitem_method)
+  -- if $api_item_snapshot(pitem_receiver, papiquery.INPUT)
+  -- if $api_item_snapshot(pitem_method, PSTRING papiquery.ORIGINAL)
+def $consumer_exception_original(S, papiquery) = true
+  -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
+  -- if papiquery.VALUE = pexceptioncall.CALLBACK
+  -- if papiquery.VALUE = PSTRING papiquery.ORIGINAL
+  -- if pexceptioncall.RAW = eps
+def $consumer_exception_original(S, papiquery) = false -- otherwise
 def $api_source_line(S, EXCEPTION_HANDLER_INVOKE pexceptioncall) = 0
 def $api_source_valid(S, papiquery) = true
   -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
   -- if $consumer_exception_pending(S, pexceptioncall)
   -- if papiquery.VALUE = pexceptioncall.CALLBACK
+  -- if $consumer_exception_original(S, papiquery)
+  -- if S.ORIGIN = (papiquery.CLASS.REQUESTED)
+def $api_raw_shape(S, papiquery) = true
+  -- if $consumer_exception_source(papiquery.SOURCE)
+  -- if $consumer_exception_original(S, papiquery)
+  -- if papiquery.VALUE = PARRAY n
+  -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
+  -- if pexceptioncall.RAW = (parray)
+  -- if $entry_lookup(parray.ITEMS, KINT 1) = (papiquery.METHOD)
 def $api_continue(S, papiquery, n, eps) = S[.TODO = (API_CALLABLE_RESULT papiquery n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (papiquery.CLASS.REQUESTED)]
   -- if $consumer_exception_source(papiquery.SOURCE)
   -- if S.TODO = ptask :: ptask_tail*
@@ -136,6 +163,7 @@ def $consumer_exception_target(S, papiquery, porigin, ptbytes) = true
   -- if pexceptioncall.SENT = eps /\ pexceptioncall.RECEIVED = eps
   -- if papiquery.SCOPE = eps /\ papiquery.CALLED = eps /\ papiquery.THIS = eps
   -- if papiquery.LINE = 0
+  -- if $consumer_exception_original(S, papiquery)
   -- if $consumer_method_valid(S, papiquery, porigin, ptbytes)
 def $consumer_exception_target(S, papiquery, porigin, ptbytes) = false -- otherwise
 def $api_target_valid(S, papiquery, porigin, ptbytes) = $consumer_exception_target(S, papiquery, porigin, ptbytes)

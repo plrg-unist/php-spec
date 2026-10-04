@@ -412,6 +412,7 @@ def $api_item_snapshot(DIRECT pvalue, pvalue) = true
 def $api_item_snapshot(ALIAS n, pvalue) = true
 def $api_item_snapshot(pitem, pvalue) = false -- otherwise
 def $api_raw_shape(S, papiquery) = true
+  -- if ~$consumer_exception_source(papiquery.SOURCE)
   -- if papiquery.VALUE = PARRAY n
   -- if $(n < |S.ARRAYS|)
   -- if (HARRAY n) <- S.ALLOCATIONS
