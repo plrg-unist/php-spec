@@ -1,0 +1,38 @@
+[
+  {
+    "id": "variadic-destructor",
+    "source": "<?php class C {function __destruct(...$args){echo \"D:\",func_num_args(),\";\";}} $x=new C; echo \"M;\";",
+    "source_sha256": "77580b3cd3d4f6cb7cc126a93ccf6df90fb8f5cc4355333b464e7b230175f55f",
+    "stdout": "M;D:0;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "forbidden-return",
+    "source": "<?php class C {function __destruct():void{}} echo \"BAD\";",
+    "source_sha256": "96aadd1ae1904a67a77c3f8c9baddf398c5ad22131c066dd97c986b8a204a575",
+    "stdout": "",
+    "stderr": "Fatal error: Method C::__destruct() cannot declare a return type in {file} on line 1\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "static_rejection"
+  },
+  {
+    "id": "argument-static-priority",
+    "source": "<?php class C {static function __destruct($x):void{}} echo \"BAD\";",
+    "source_sha256": "290ed213ff693d4114c82c34b00f4249d49622d243c3e882a428f5f2536884ed",
+    "stdout": "",
+    "stderr": "Fatal error: Method C::__destruct() cannot take arguments in {file} on line 1\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "static_rejection"
+  },
+  {
+    "id": "global-cv-order",
+    "source": "<?php class C {public $n; function __construct($n){$this->n=$n;} function __destruct(){echo $this->n,\";\";}} if(false){$b=null;} $a=new C(\"A\"); $b=new C(\"B\"); echo \"M;\";",
+    "source_sha256": "d668d0f9877e9054c705956b77c5b26834fdea7421d6bcee71070ccd36ae5985",
+    "stdout": "M;A;B;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  }
+]
