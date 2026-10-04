@@ -103,11 +103,14 @@ def $class_constant_busy_unique(eps) = true
 def $class_constant_busy_unique(pclassconstantcontext :: pclassconstantcontext_tail*) = ((~$class_constant_protected(pclassconstantcontext.SELECTION, pclassconstantcontext.PREVIOUS) \/ ~$class_constant_visited(pclassconstantcontext_tail*, pclassconstantcontext.DECL)) /\ $class_constant_busy_unique(pclassconstantcontext_tail*))
 
 dec $class_constant_result(pstate, pvalue, pvalueclass) : pstate
+;; Updating a lazy table does not complete its triggering NEW or property read.
+;; Only the completed constant fetch publishes an expression fact to its caller.
 def $class_constant_result(S, pvalue, pvalueclass) = S[.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)][.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE $pvclass_operand(pvalue), CLASS pvalueclass})])]
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprClassConstFetch phpType19 phpType20 metadata)
 def $class_constant_result(S, pvalue, pvalueclass) = S[.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.CONSTCONTEXT = eps
+  -- otherwise
 dec $class_constant_keyword(pstate) : bool
 def $class_constant_keyword(S) = true
   -- if S.ORIGIN = (porigin)
