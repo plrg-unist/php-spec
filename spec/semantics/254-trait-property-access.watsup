@@ -367,6 +367,7 @@ def $trait_static_property_read_pending((NULLSAFE_DIM_INDEX expression z b) :: p
 ;; zend_std_get_static_property returns the address even when the handler
 ;; throws. The current opcode completes before NEXT_OPCODE propagates it.
 dec $trait_property_opcode_context(pstate, porigin, ptask*) : (porigin, ptask, ptask*)?
+dec $trait_property_origin_return(ptask) : bool
 dec $trait_property_opcode(pstate, ptraitproperty, porigin, ptask) : pstate
 dec $trait_property_pending_store(pstate, ptraitproperty, pvalue) : pstate
 dec $trait_property_pending_type(ptypeconversion) : bool
@@ -375,8 +376,10 @@ dec $trait_property_abrupt_end(pstate, nat, ptask*) : pstate
 dec $trait_property_abrupt_valid(pstate, ptraitproperty, nat) : bool
 
 def $trait_property_opcode_context(S, porigin, (ORIGIN_RETURN (porigin_parent)) :: ptask_tail*) = $trait_property_opcode_context(S, porigin_parent, ptask_tail*)
-def $trait_property_opcode_context(S, porigin, ptask :: ptask_tail*) = ((porigin, ptask, ptask_tail*)) -- otherwise
+def $trait_property_opcode_context(S, porigin, ptask :: ptask_tail*) = ((porigin, ptask, ptask_tail*)) -- if ~$trait_property_origin_return(ptask)
 def $trait_property_opcode_context(S, porigin, eps) = eps
+def $trait_property_origin_return(ORIGIN_RETURN porigin?) = true
+def $trait_property_origin_return(ptask) = false -- otherwise
 
 def $error_read_discard(S, TRAIT_PROPERTY_PHASE ptraitproperty 1) = S[.TODO = (TRAIT_PROPERTY_ABRUPT ptraitproperty n) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
