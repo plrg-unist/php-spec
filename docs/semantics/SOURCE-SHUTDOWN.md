@@ -29,9 +29,11 @@ without granting that class's source method permission.
 
 The queue and selected arguments remain owned through this phase's DONE state,
 as Zend frees shutdown registrations after later destructor/output stages.
-Borrowed CALL/RAW/CAPTURE and current SEND/render certificates add no heap owners.
+Borrowed CALL/RAW/CAPTURE and current SEND/receive/render certificates add no heap owners.
 Current and saved calls authenticate the exact selected entry, arguments,
 wrapping reference cells and empty internal caller context.
+Variadic conversion records the received argument view separately from the
+original registered copies; later local-array writes leave that view intact.
 
 Source comparisons and source-reached state checks are separate gates:
 

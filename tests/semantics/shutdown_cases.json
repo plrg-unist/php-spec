@@ -115,5 +115,14 @@
     "stderr": "",
     "exit": 7,
     "status": "explicit_exit"
+  },
+  {
+    "id": "converted-variadic-view",
+    "source": "<?php declare(strict_types=1);class V{function __toString(){echo \"V;\";return \"v\";}}function h(string ...$v){echo func_num_args(),\":\",func_get_arg(0),\":\",func_get_arg(1),\";\";$v[0]=\"body\";echo func_get_arg(0),\":\",$v[0],\";\";}register_shutdown_function(\"h\",new V,new V);",
+    "source_sha256": "6c21a15f2d2243dbc6d835e42fa176abe7e7970816b4c6749b88e7c6d1c82095",
+    "stdout": "V;V;2:v:v;v:body;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
