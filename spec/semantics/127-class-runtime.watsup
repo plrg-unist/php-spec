@@ -23,6 +23,7 @@ dec $activate_class_base_body(pstate, pclassdesc) : pstate
 dec $declaration_class_success(pstate, pstate, pclassdesc) : pstate
 dec $class_constant_publish(pstate, pstate, pclassdesc) : pstate
 def $activate_class(S, pclassdesc) = $iterator_notice_publication(S, $class_constant_publish(S, $declaration_class_success(S, $activate_class_body(S, pclassdesc), pclassdesc), pclassdesc), pclassdesc)
+  -- if ~$autoload_parent_pending(S, pclassdesc)
 dec $class_static_initial(pstate, ppropertydesc*) : pclassstatic*?
 dec $class_static_commit(pstate, pclassstatic*) : pstate
 dec $class_static_finish(pstate, pclassdesc, pstate) : pstate

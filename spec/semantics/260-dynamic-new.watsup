@@ -261,6 +261,7 @@ rule PhpStep/dynamic-new-unknown: S ~> $throw_scalar(S_read, "Error", $ptascii("
   -- if S_read.RESULT = KNOWN (PSTRING ptbytes_raw)
   -- if $dynamic_new_value_name(S_read, porigin, PSTRING ptbytes_raw) = (ptbytes)
   -- if ~$dynamic_new_known(S_read, ptbytes)
+  -- if ~$autoload_pending(S_read, ptbytes)
 rule PhpStep/dynamic-new-invalid: S ~> $throw_scalar(S_read, "Error", $ptascii("Class name must be a valid object or a string"), z_fetch)
   -- if S.TODO = (DYNAMIC_NEW_CLASS z z_fetch) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z_fetch)
