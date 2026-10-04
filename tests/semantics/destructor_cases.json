@@ -24,7 +24,8 @@
     "stdout": "",
     "stderr": "Fatal error: Method C::__destruct() cannot take arguments in {file} on line 1\nStack trace:\n#0 {main}\n",
     "exit": 255,
-    "status": "static_rejection"
+    "status": "static_rejection",
+    "expected_frontend_rejection": "Destructor __destruct() cannot be static on line 1"
   },
   {
     "id": "global-cv-order",
@@ -34,5 +35,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "argument-return-priority",
+    "source": "<?php class C {function __destruct($x):void{}} echo \"BAD\";",
+    "source_sha256": "6336fa35d3aa0b75569640044106322ff38f1230c8c6172d87f435fb50ea1ad4",
+    "stdout": "",
+    "stderr": "Fatal error: Method C::__destruct() cannot take arguments in {file} on line 1\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "static_rejection"
   }
 ]

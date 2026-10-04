@@ -97,7 +97,15 @@ def run(match, exclude_matches, start_at, native_only, native_reports):
                 actual = {'runner_error': 'model result is not an object'}
             checked_model = (not model['timeout'] and not (directory / 'model.stderr').read_bytes()
                              and actual.get('frontend') == 'accepted' and actual.get('checked') == 'program')
-            if row.get('expected_unsupported'):
+            if row.get('expected_frontend_rejection'):
+                frontend = actual.get('frontend')
+                passed = (not model['timeout'] and not (directory / 'model.stderr').read_bytes()
+                          and model['exit'] == 1 and actual.get('status') == 'frontend_failure'
+                          and isinstance(frontend, dict) and frontend.get('category') == 'parser_rejection'
+                          and base64.b64decode(frontend.get('message', '')) == row['expected_frontend_rejection'].encode())
+                result['accepted_source_agreement'] = False
+                result['scope'] = 'explicit frontend rejection control'
+            elif row.get('expected_unsupported'):
                 passed = (checked_model and model['exit'] == 1 and actual.get('status') == 'unsupported'
                           and actual.get('reason') == row['expected_unsupported'])
                 result['accepted_source_agreement'] = False
