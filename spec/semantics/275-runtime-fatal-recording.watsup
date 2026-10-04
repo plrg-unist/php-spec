@@ -1,0 +1,92 @@
+;; zend_error_zstr_at replays the recorded primary before a later fatal can
+;; report. A deferred runtime class link retains its actual eval/include row.
+dec $runtime_class_rollback(pstate, pstate) : bool
+def $runtime_class_rollback(S, S_result) = (S_result.CLASSES = S.CLASSES /\ S_result.CLASSNAMES = S.CLASSNAMES /\ S_result.LINKEDPARENTS = S.LINKEDPARENTS /\ S_result.LINKEDINTERFACES = S.LINKEDINTERFACES)
+dec $runtime_class_recorded_fatal(pstate, pstate, pclassdesc) : bool
+def $runtime_class_recorded_fatal(S, S_result, pclassdesc) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (pclassdesc.ORIGIN)
+  -- if $declaration_open(S.DECLARATIONS) = eps
+  -- if ~$declaration_early(S.DECLARATIONS, pclassdesc.ORIGIN, PPCLASS)
+  -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $iterator_notice_link_fatal(S_result.COMPLETION)
+  -- if $runtime_class_rollback(S, S_result)
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+def $runtime_class_recorded_fatal(S, S_result, pclassdesc) = false -- otherwise
+def $runtime_class_link_result(S, S_result, pclassdesc) = $eval_compile_unwind($eval_compile_primary_report(S_report[.ERRORORIGIN = pevalcompilefatal.ORIGIN][.TODO = eps][.TRACE = S_trace.TRACE], pevalcompilefatal.COMPLETION, true))
+  -- if $runtime_class_recorded_fatal(S, S_result, pclassdesc)
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+  -- if S_record = S_result[.DECLARATIONS = S_result.DECLARATIONS ++ [PDRCLASSFATAL pclassdesc.ORIGIN $declaration_cause(S)]]
+  -- if S_trace = S_record[.TRACE = $eval_exception_trace(S_result)]
+  -- if S_report = $iterator_notice_default(S_trace, pevalcompilefatal.PREFIX)
+
+;; This producer owns no heap value and stores no trusted completion. Replay
+;; rederives the failed source binding and retains only the earlier hard prefix.
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRCLASSFATAL porigin pdeclcause) :: pdeclaration*, n_next) = $declaration_history_fold(S, $eval_compile_history_carry(S_prefix, S_failed[.COMPLETION = NORMAL][.TODO = eps][.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRCLASSFATAL porigin pdeclcause]]), (n, P)*, pdeclaration*, n_next)
+  -- if $iterator_notice_link_fatal(S_prefix.COMPLETION)
+  -- if $eval_compile_reported(S, S_prefix) \/ $eval_compile_fatal_certificate(S, S_prefix)
+  -- if $declaration_open(S_prefix.DECLARATIONS) = eps
+  -- if $declaration_cause_valid(S_prefix, porigin, pdeclcause)
+  -- if ~$declaration_early(S_prefix.DECLARATIONS, porigin, PPCLASS)
+  -- if $class_at(S_prefix.CLASSES, porigin) = (pclassdesc)
+  -- if $origin_node(S_prefix.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if S_failed = $activate_class_body(S_prefix[.COMPLETION = NORMAL], pclassdesc)
+  -- if $iterator_notice_link_fatal(S_failed.COMPLETION)
+  -- if $runtime_class_rollback(S_prefix, S_failed)
+
+dec $runtime_class_fatal_record(pdeclaration*) : bool
+dec $runtime_class_fatal_item(pdeclaration) : bool
+def $runtime_class_fatal_item(PDRCLASSFATAL porigin pdeclcause) = true
+def $runtime_class_fatal_item(pdeclaration) = false -- otherwise
+def $runtime_class_fatal_record(eps) = false
+def $runtime_class_fatal_record(pdeclaration :: pdeclaration_tail*) = ($runtime_class_fatal_item(pdeclaration) \/ $runtime_class_fatal_record(pdeclaration_tail*))
+
+;; At the actual report origin the failed producer record is mandatory. Its
+;; source/cause is then checked by the same chronological replay as other rows.
+dec $runtime_class_report_origin(pstate) : porigin?
+def $runtime_class_report_origin(S) = (porigin)
+  -- if ~S.COMPILESTOP
+  -- if S.COMPLETION = REQUESTFATAL ptbytes ptbytes_message z
+  -- if $eval_compile_fatal_current(S) =/= eps
+  -- if S.ORIGIN = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+def $runtime_class_report_origin(S) = eps -- otherwise
+dec $runtime_class_record_last(pdeclaration*, porigin) : bool
+def $runtime_class_record_last(pdeclaration*, porigin) = true
+  -- if n = |pdeclaration*|
+  -- if $(n > 0)
+  -- if pdeclaration*[$nabs($(n - 1))] = PDRCLASSFATAL porigin pdeclcause
+def $runtime_class_record_last(pdeclaration*, porigin) = false -- otherwise
+def $runtime_class_report_valid(S) = $runtime_class_record_last(S.DECLARATIONS, porigin)
+  -- if $runtime_class_report_origin(S) = (porigin)
+dec $runtime_class_reporting(pstate) : bool
+def $runtime_class_reporting(S) = $runtime_class_fatal_record(S.DECLARATIONS)
+  -- if ~S.COMPILESTOP
+  -- if S.COMPLETION = REQUESTFATAL ptbytes ptbytes_message z
+def $runtime_class_reporting(S) = $runtime_class_fatal_record(S.DECLARATIONS)
+  -- if ~S.COMPILESTOP
+  -- if S.TODO = (ERROR_UNWIND (REQUESTFATAL ptbytes ptbytes_message z)) :: ptask*
+def $runtime_class_reporting(S) = false -- otherwise
+
+;; Capture the trace first. A discarded task list retires its runtime sources;
+;; source markers in genuine saved callers keep their contexts through unwind.
+dec $runtime_class_eval_contexts(pstate, pevalcontext*) : pevalcontext*
+def $runtime_class_eval_contexts(S, eps) = eps
+def $runtime_class_eval_contexts(S, pevalcontext :: pevalcontext_tail*) = $runtime_class_eval_contexts(S, pevalcontext_tail*)
+  -- if pevalcontext.PHASE = UNIT_RUN
+  -- if $eval_owner_marker_count(S, pevalcontext) = 0
+def $runtime_class_eval_contexts(S, pevalcontext :: pevalcontext_tail*) = pevalcontext :: $runtime_class_eval_contexts(S, pevalcontext_tail*)
+  -- if pevalcontext.PHASE =/= UNIT_RUN \/ $eval_owner_marker_count(S, pevalcontext) =/= 0
+dec $runtime_class_file_contexts(pstate, pfilecontext*) : pfilecontext*
+def $runtime_class_file_contexts(S, eps) = eps
+def $runtime_class_file_contexts(S, pfilecontext :: pfilecontext_tail*) = $runtime_class_file_contexts(S, pfilecontext_tail*)
+  -- if pfilecontext.PHASE = FILE_UNIT_RUN
+  -- if $file_marker_count($file_owner_tasks(S, pfilecontext), pfilecontext) = 0
+def $runtime_class_file_contexts(S, pfilecontext :: pfilecontext_tail*) = pfilecontext :: $runtime_class_file_contexts(S, pfilecontext_tail*)
+  -- if pfilecontext.PHASE =/= FILE_UNIT_RUN \/ $file_marker_count($file_owner_tasks(S, pfilecontext), pfilecontext) =/= 0
+def $runtime_class_unwind(S) = S[.EVALCONTEXTS = $runtime_class_eval_contexts(S, S.EVALCONTEXTS)][.FILECONTEXTS = $runtime_class_file_contexts(S, S.FILECONTEXTS)]
+  -- if $runtime_class_reporting(S)
