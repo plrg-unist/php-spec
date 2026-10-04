@@ -846,7 +846,7 @@ def $autoload_prepend(S, true) = S[.AUTOLOAD.ENTRIES = [(pautoloadentry)] ++ $au
   -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
 def $autoload_capacity_valid(0) = true
 def $autoload_capacity_valid(8) = true
-def $autoload_capacity_valid(n) = $autoload_capacity_valid($(n / 2)) -- if $(n > 8) /\ $(n % 2) = 0
+def $autoload_capacity_valid(n) = $autoload_capacity_valid($(n / 2)) -- if $(n > 8) /\ $(n \ 2) = 0
 def $autoload_capacity_valid(n) = false -- otherwise
 
 def $autoload_entry_metadata(S, pautoloadentry) = true
