@@ -29,12 +29,14 @@ def $closure_call_body_name(S, pfunction) = pfunction.NAME -- otherwise
 
 ;; The continuation owns the already selected Closure/newThis and sent values.
 ;; Handler changes to the source variables cannot reselect the binding reason.
+dec $temporary_call_task_valid(pstate, ptask) : bool
 rule PhpStep/closure-call-binding-warning: S ~> $error_dispatch(S[.ORIGIN = (pclosurecall.SITE)], 2, ptbytes, pclosurecall.LINE, DIAGNOSTIC "Warning" ptbytes pclosurecall.LINE, CLOSURE_CALL_WARNING pclosurecall ptbytes)
   -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = (ptbytes)
 def $task_nodes(CLOSURE_CALL_WARNING pclosurecall ptbytes) = $task_nodes(CLOSURE_CALL_INVOKE pclosurecall)
-def $call_task_valid(S, CLOSURE_CALL_WARNING pclosurecall ptbytes) = true
+def $call_task_valid(S, CLOSURE_CALL_WARNING pclosurecall ptbytes) = $temporary_call_task_valid(S, CLOSURE_CALL_WARNING pclosurecall ptbytes)
+def $temporary_call_task_valid(S, CLOSURE_CALL_WARNING pclosurecall ptbytes) = true
   -- if $closure_call_task_valid(S, pclosurecall)
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
   -- if pclosurecall.INDEX = |phpType7*|
@@ -81,7 +83,8 @@ rule PhpStep/closure-call-getter-arity: S ~> $throwable_allocate(S[.TODO = ptask
   -- if ptraceframe_inner = {FILE eps, LINE $(-1), FUNCTION $getter_name(pgettermethod), CLASS ($ptascii(text_base)), TYPE ($ptascii("->")), ARGS $closure_call_trace_raw(S, pclosurecall.RAW), HASARGS true}
   -- if ptraceframe_outer = {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ((KINT 0, POBJECT n_receiver) :: $closure_call_trace_raw(S, pclosurecall.RAW)), HASARGS true}
 def $task_nodes(CLOSURE_CALL_GETTER_RESULT pclosurecall) = $task_nodes(CLOSURE_CALL_INVOKE pclosurecall)
-def $call_task_valid(S, CLOSURE_CALL_GETTER_RESULT pclosurecall) = true
+def $call_task_valid(S, CLOSURE_CALL_GETTER_RESULT pclosurecall) = $temporary_call_task_valid(S, CLOSURE_CALL_GETTER_RESULT pclosurecall)
+def $temporary_call_task_valid(S, CLOSURE_CALL_GETTER_RESULT pclosurecall) = true
   -- if $closure_call_task_valid(S, pclosurecall)
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
   -- if pclosurecall.INDEX = |phpType7*|
@@ -115,7 +118,8 @@ rule PhpStep/closure-call-reference-warning: S ~> $error_dispatch(S[.ORIGIN = (p
   -- if $named_reference(pfunction, pnamedtarget)
   -- if ptbytes = $closure_call_reference_message(S, pclosurecall, n)
 def $task_nodes(CLOSURE_CALL_REFERENCE pclosurecall n pnamedargs n_base) = $task_nodes(CLOSURE_CALL_FORWARD pclosurecall n pnamedargs n_base)
-def $call_task_valid(S, CLOSURE_CALL_REFERENCE pclosurecall n pnamedargs n_base) = true
+def $call_task_valid(S, CLOSURE_CALL_REFERENCE pclosurecall n pnamedargs n_base) = $temporary_call_task_valid(S, CLOSURE_CALL_REFERENCE pclosurecall n pnamedargs n_base)
+def $temporary_call_task_valid(S, CLOSURE_CALL_REFERENCE pclosurecall n pnamedargs n_base) = true
   -- if $closure_call_forward_valid(S, pclosurecall, n, pnamedargs, n_base)
   -- if $(n < |pclosurecall.RAW|)
   -- if pclosurecall.RAW[n] = (pkey, KNOWN pvalue)
@@ -140,6 +144,8 @@ rule PhpStep/closure-call-reference-resume: S ~> S_reference[.TODO = (CLOSURE_CA
   -- if $target_function(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver) = (pfunction)
   -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, n)
   -- if S_reference = $call_fresh_reference(S, pvalue)
+
+def $temporary_call_task_valid(S, ptask) = false -- otherwise
 
 ;; Saved warning continuations validate in the real emitting caller's table.
 def $api_pending_task(CLOSURE_CALL_WARNING pclosurecall ptbytes) = true
