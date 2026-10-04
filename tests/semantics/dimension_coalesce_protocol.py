@@ -150,7 +150,7 @@ CASES = [
      ]),
     ('aborted-prefix-temporary-retains-computed-array-rhs-once',
      'computed-array-rhs-retains-real-cell-through-prefix-abort',
-     'S.TODO = (KEY_WRITE_RESULT pkeywrite) :: ptask_tail* -- if $outputs(S.EVENTS) = $ptascii("D;D;")', [
+     'S.TODO = (KEY_WRITE_RESULT pkeywrite) :: ptask_tail* -- if pkeywrite.READ.PHASE = KEY_FLOAT PRECISIONLOSS eps -- if pkeywrite.READ.LINE = 6', [
         'S.TODO = (KEY_WRITE_RESULT pkeywrite) :: ptask_tail*',
         'pkeywrite.READ.LINE = 6', 'pkeywrite.READ.MODE = KEY_R', '~pkeywrite.RW',
         'pkeywrite.READ.BASE = PARRAY n_parent',
