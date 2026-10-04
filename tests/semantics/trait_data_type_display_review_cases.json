@@ -1,0 +1,49 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; runtime constant errors retain original self spelling while inheritance diagnostics resolve the importing parent name. Native-only preparation until238 execution.",
+  "cases": [
+    {
+      "id": "constant-runtime-error-retains-self-spelling",
+      "source": "<?php trait T{public const ?self X=self::Y;}class C{use T;const Y=1;}try{echo C::X;}catch(TypeError $e){echo $e->getMessage();}",
+      "source_sha256": "fd6281cdecbbfcb8f6ca7b3ad824ea25a7eec1d56e09bcbc93202e68e926d90a",
+      "status": "normal",
+      "stdout_base64": "Q2Fubm90IGFzc2lnbiBpbnQgdG8gY2xhc3MgY29uc3RhbnQgQzo6WCBvZiB0eXBlID9zZWxm",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-type-display-native238-80ar4uiv/report.json",
+      "native_raw_sha256": "07afac74a8cff87f10700536f7da8726ed53d85141ef3cd04d209b71aa0050c0"
+    },
+    {
+      "id": "nested-constant-runtime-error-retains-self-spelling",
+      "source": "<?php trait T{public const ?self X=self::Y;}trait U{use T;}class C{use U;const Y=1;}try{echo C::X;}catch(TypeError $e){echo $e->getMessage();}",
+      "source_sha256": "da7912b9b5ebc74c78fc0d053cf699b72fdc7302e234c00ea4153b120e6c3953",
+      "status": "normal",
+      "stdout_base64": "Q2Fubm90IGFzc2lnbiBpbnQgdG8gY2xhc3MgY29uc3RhbnQgQzo6WCBvZiB0eXBlID9zZWxm",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-type-display-native238-80ar4uiv/report.json",
+      "native_raw_sha256": "07afac74a8cff87f10700536f7da8726ed53d85141ef3cd04d209b71aa0050c0"
+    },
+    {
+      "id": "inherited-constant-type-error-resolves-using-parent",
+      "source": "<?php echo \"PRE;\";class U{}trait T{public const ?self X=null;}class P{use T;}class C extends P{public const ?U X=null;}echo \"POST;\";",
+      "source_sha256": "4572d04d612b93977e8ab35c019282c3ac717ec89164ce374b64342e31ef3607",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgQzo6WCBtdXN0IGJlIGNvbXBhdGlibGUgd2l0aCBQOjpYIG9mIHR5cGUgP1AgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-type-display-native238-80ar4uiv/report.json",
+      "native_raw_sha256": "07afac74a8cff87f10700536f7da8726ed53d85141ef3cd04d209b71aa0050c0"
+    },
+    {
+      "id": "inherited-property-type-error-resolves-using-parent",
+      "source": "<?php echo \"PRE;\";class U{}trait T{public ?self $x=null;}class P{use T;}class C extends P{public ?U $x=null;}echo \"POST;\";",
+      "source_sha256": "7a48f4139c718c3aa7734219bc7b93f773ee5e473ae567865ba70ab5e08dc62f",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgQzo6JHggbXVzdCBiZSA/UCAoYXMgaW4gY2xhc3MgUCkgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-type-display-native238-80ar4uiv/report.json",
+      "native_raw_sha256": "07afac74a8cff87f10700536f7da8726ed53d85141ef3cd04d209b71aa0050c0"
+    }
+  ]
+}

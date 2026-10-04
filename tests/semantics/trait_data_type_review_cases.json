@@ -1,0 +1,49 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only trait data invariant type, normalized default and child re-use controls; zero model agreement until238 execution.",
+  "cases": [
+    {
+      "id": "property-invariant-equivalent-redundant-union",
+      "source": "<?php class A{}class B extends A{}trait T{public A|B|null $x=null;}class C{use T;public A|null $x=null;}echo (new C)->x===null?\"Y\":\"N\";",
+      "source_sha256": "bc2953e958ef4bde3938668f9b5232886dab38105efa7b2f2acc5fc27e6c0d5f",
+      "status": "normal",
+      "stdout_base64": "WQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-type-native238-h0zgr5fq/report.json",
+      "native_raw_sha256": "d3f24b1ef0b92d2412e39453f2ab90a096a2fbf088c500c95c4b59ae617058f1"
+    },
+    {
+      "id": "constant-invariant-equivalent-redundant-union",
+      "source": "<?php class A{}class B extends A{}trait T{public const A|B|null X=null;}class C{use T;public const A|null X=null;}echo C::X===null?\"Y\":\"N\";",
+      "source_sha256": "d8764dd3cadde7984bd9ab3d4ca9124dcf7aa65074e89bb7d4e67fcd206850df",
+      "status": "normal",
+      "stdout_base64": "WQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-type-native238-h0zgr5fq/report.json",
+      "native_raw_sha256": "d3f24b1ef0b92d2412e39453f2ab90a096a2fbf088c500c95c4b59ae617058f1"
+    },
+    {
+      "id": "property-float-default-normalizes-int",
+      "source": "<?php trait T{public float $x=1;}class C{use T;public float $x=1.0;}echo (new C)->x===1.0?\"Y\":\"N\";",
+      "source_sha256": "1e661a9a32d1face07829f2c0b7f51e41a00c9b11364c984118ee2a816612e2e",
+      "status": "normal",
+      "stdout_base64": "WQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-type-native238-h0zgr5fq/report.json",
+      "native_raw_sha256": "d3f24b1ef0b92d2412e39453f2ab90a096a2fbf088c500c95c4b59ae617058f1"
+    },
+    {
+      "id": "static-child-reuse-resets-original-declaration-default",
+      "source": "<?php trait T{public static int $n=1;}class C{use T;}C::$n=7;class E extends C{use T;}class D extends C{}echo C::$n,\":\",D::$n,\":\",E::$n;",
+      "source_sha256": "9d552030bee1b7e782dd3e9601ea2fb129f9e892de1b3f678258c3f3e209b822",
+      "status": "normal",
+      "stdout_base64": "Nzo3OjE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-type-native238-h0zgr5fq/report.json",
+      "native_raw_sha256": "d3f24b1ef0b92d2412e39453f2ab90a096a2fbf088c500c95c4b59ae617058f1"
+    }
+  ]
+}
