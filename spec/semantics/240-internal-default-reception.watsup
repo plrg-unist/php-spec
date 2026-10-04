@@ -216,7 +216,7 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCT
   -- if $default_internal_string_context_data(S, pcallcontext, S.CURRENT, S.FRAMES) = (pdefaultinternal)
 def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}, $default_internal_ctor_trace(S, pdefaultinternal.CALL)]
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
-  -- if perrorcall.RESUME = DEFAULT_INTERNAL_CTOR_WARNING pdefaultinternal pvalue
+  -- if perrorcall.RESUME = DEFAULT_INTERNAL_CTOR_WARNING pdefaultinternal pvalue_warning
   -- if $error_context_valid(S, pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
