@@ -1,0 +1,30 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only259 preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Queued collision diagnostics flush before later private-final alias warning/fatal without invoking the registered user handler.",
+  "excluded_preparation": [
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-warning-order-native259-qxjllbot/report.json",
+      "reason": "Concrete implementation overrides final abstract alias, preventing handler-mask comparison.",
+      "model_credit": 0
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-warning-order-native259-hi9g15p6/report.json",
+      "reason": "Abstract consuming class cannot leave private abstract requirements unimplemented, preventing handler-mask comparison.",
+      "model_credit": 0
+    }
+  ],
+  "cases": [
+    {
+      "id": "collision-deprecation-flushes-before-later-abstract-alias-warning-and-fatal",
+      "source": "<?php\nerror_reporting(32767);\nset_error_handler(function($n,$m){echo \"H;\";return true;});\ntrait T{abstract private function f();public const X=E_STRICT;}\necho \"PRE;\";\nclass C{use T{f as final g;}public const X=2048;private function f(){}private function g(){}}\necho \"POST;\";",
+      "source_sha256": "dcc78f5951366094477cd61902c99779761f6a6bcd9cb7bba97dac564f6bb431",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSA2Cldhcm5pbmc6IFByaXZhdGUgbWV0aG9kcyBjYW5ub3QgYmUgZmluYWwgYXMgdGhleSBhcmUgbmV2ZXIgb3ZlcnJpZGRlbiBieSBvdGhlciBjbGFzc2VzIGluIHtGSUxFfSBvbiBsaW5lIDYKRmF0YWwgZXJyb3I6IENhbm5vdCBvdmVycmlkZSBmaW5hbCBtZXRob2QgVDo6ZygpIGluIHtGSUxFfSBvbiBsaW5lIDYKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-warning-order-native259-z0d0n8o7/report.json",
+      "native_raw_sha256": "5342ad0e985e132e1c554d50ac24cb5662a6116161784e6f49a52dddb2d7cb16"
+    }
+  ]
+}

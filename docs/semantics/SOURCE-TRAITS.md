@@ -83,8 +83,12 @@ the actual compiled fetch name. Runtime inherited property/constant faults retai
 cutoffs remain static rejections. Deferred typed operands compare before table
 conversion; compiled literal defaults retain their compile-time conversion.
 
-Module259 records direct `E_STRICT` collision diagnostics in the source-owned
-scratch fold. Constants evaluate the incoming operand first; properties evaluate
+Module259 records `E_STRICT` and arithmetic/key collision diagnostics in a
+source-owned scratch fold isolated from the live handler, display and mask.
+Runtime array evaluation demands each key, then its value, then insertion before
+the next entry. Recorded diagnostics retain checked AST lines; a bare constant
+root retains the executing declaration line. Constants evaluate the incoming
+operand first; properties evaluate
 the existing operand first. Temporary values do not fill the compared defaults.
 Successful class publication precedes delivery through the live handler registry.
 A delivery exception preserves that publication; a later link fatal flushes
@@ -136,11 +140,12 @@ cover warning resumption, saved emitters, access modes, abrupt opcode completion
 and RHS ownership. The [property-access ledger](../../coverage/semantics/trait-property-access-review.json)
 records 33 source agreements and 286 reached state premises at their actual cuts.
 The [collision ledger](../../coverage/semantics/trait-collisions-review.json) records
-14 exact source tuples and 97 reached publication/callback assertions. Its other
-native preparations remain uncredited until their required paths are implemented.
+14 original source tuples and97 publication/callback assertions, plus five
+affected operation/array comparisons and47 queue/array-owner assertions at their
+separate cuts. Other native preparations remain uncredited until implemented.
 
-Generic operation warnings, private-final warning ordering, real dependency
-binding/caching and endogenous collision expression errors remain required.
+Private-final warning ordering, real dependency binding/caching and endogenous
+collision expression errors remain required.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
 Historical reached

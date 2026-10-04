@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+REAL binding264 now resolves scope before ordered static, `$this`-unbind and
+internal-scope warnings. Genuine handler continuations retain selected reasons
+through callback mutation and throws. The function's own compiled entries supply
+`USES_THIS`, including dead eager literal-name uses and excluding nested bodies
+and runtime-name folding. Valid null bindings copy REAL statics, retain reference
+captures and reset called scope; explicit null scope removes class permission.
+Twenty normal source agreements retain separate2312606/ed1d5 cuts. Five genuine
+owner/frame cases pass289 conditions (author113, independent176).
+Actual601312 composition at2cb72 passes AL251 and one cached trait-property
+METHOD child source: null bind/clone retains private default permission and exact
+current identity after makers retire, with called scope reset to lexical Owner.
+Original classifier nondeterminism, the combined45-second timeout and fixture
+elaboration stop remain separate in the
+[binding ledger](coverage/semantics/real-closure-binding-review.json).
+Temporary-current and internal API consumers remain required; returns stay paused.
+
 Ordinary dynamic NEW260 evaluates string/object selectors once and captures the
 class before arguments, class-table updates and constructor dispatch. Parser
 literals, later compiled keywords and runtime names keep distinct scope/error
@@ -44,9 +60,10 @@ identity and private fake binding/clone permission, called scope and shared stat
 Original compiler, source and fixture failures,
 the global-constant Unsupported control and native-only controls remain separate
 in the [ledger](coverage/semantics/closure-current-binding-review.json).
-The [contract](docs/semantics/CLOSURE-CURRENT-BINDING.md) keeps complete REAL
-warning/unbinding, temporary-current escape and further API/keyword consumers
-required. Return verification stays paused and complete core remains open.
+The [contract](docs/semantics/CLOSURE-CURRENT-BINDING.md) keeps temporary-current
+escape and further API/keyword consumers required. REAL warning/unbinding is
+covered separately by264 above. Return verification stays paused and complete
+core remains open.
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
@@ -309,10 +326,13 @@ linking fold. Constants demand incoming then existing values; properties reverse
 that order. Successful publication precedes live handler delivery; a handler throw
 keeps the composed class. Later link fatals flush recorded diagnostics without
 calling user handlers. The [collision ledger](coverage/semantics/trait-collisions-review.json)
-retains14 source tuples (11 normal/3 PHP errors),97 reached queue/callback guards
-and bounded AL/structure checks at exact cuts. Generic operation warnings,
-private-final warning ordering, real dependent-constant binding/caching and
-endogenous expression errors remain required next; this is a partial checkpoint.
+retains14 source tuples (11 normal/3 PHP errors) and97 reached queue/callback
+guards at their original cuts. Generic arithmetic/key recording now isolates
+scratch handler/display settings and follows runtime key→value→insertion order
+with checked AST lines. Five affected source comparisons (four new plus one
+existing array neighbor),47 additional queue/array-owner guards and bounded
+AL/structure checks pass. Private-final warning ordering, real dependent-constant
+binding/caching and endogenous expression errors remain required; traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
