@@ -50,8 +50,9 @@ original capped launch commands, profiles and tuples are retained in the ledger.
 Existing local binaries were reused; no fresh build or full-family closure is
 claimed.
 
-Read-write, reference, append/unset and compound/coalesce-assignment warning
-continuations are required next. Object/magic key conversion, earlier missing
+[Writable242](SOURCE-DIMENSION-WRITES.md) adds bounded CV-array W/RW and direct
+GLOBALS reference consumers. Append, unset, coalesce assignment and broader
+GLOBALS RW remain required. Object/magic key conversion, earlier missing
 container producers, other string/scalar diagnostics and broader reference-result
 consumers remain core obligations. Paused returns and request snapshot evidence
 remain separate.

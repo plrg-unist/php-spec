@@ -91,6 +91,7 @@ dec $pil_stringable_nominal(pstate, pclassdesc, bool) : pmethodissue
 dec $pil_stringable_method(pstate, pclassdesc, pmethoddesc?) : pmethodissue
 dec $pil_issue_line(pclassdesc, pmethoddesc) : int
 dec $pil_reline(pclassdesc, pmethoddesc, pmethodissue) : pmethodissue
+dec $pil_method_publish_result(pstate, pstate, pclassdesc) : pstate
 
 def $pil_info_pick(eps, ptbytes) = eps
 def $pil_info_pick((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*, ptbytes) = (PPMINHERITED pmethoddesc pclassdesc)
@@ -253,21 +254,21 @@ def $pil_methods_valid(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)
 def $pil_methods_valid(S, (preqbytes, porigin)*) = false -- otherwise
 
 def $pil_method_fatal(S, PORIGIN n pcpath, ptbytes_message, z) = S[.COMPLETION = STATICBYTES ptbytes_message z][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, STATICBYTES ptbytes_message z, n)][.TRACE = $eval_exception_trace(S)]
-def $pil_method_publish(S, S_candidate, pclassdesc) = $class_constant_link_error(S, pclassdesc.ORIGIN, ptbytes_message, z)
+def $pil_method_publish_result(S, S_candidate, pclassdesc) = $class_constant_link_error(S, pclassdesc.ORIGIN, ptbytes_message, z)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_COMPILEISSUE ptbytes_message z
-def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_method_fatal(S, porigin_selected, ptbytes_message, z)
+def $pil_method_publish_result(S, S_candidate, pclassdesc) = $pil_method_fatal(S, porigin_selected, ptbytes_message, z)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_FILEISSUE ptbytes_message z porigin_selected
-def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_fatal(S, pclassdesc, ptbytes_message)
+def $pil_method_publish_result(S, S_candidate, pclassdesc) = $pil_fatal(S, pclassdesc, ptbytes_message)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_RUNTIMEISSUE ptbytes_message z
-def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, z)
+def $pil_method_publish_result(S, S_candidate, pclassdesc) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, z)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_ISSUE ptbytes_message z
-def $pil_method_publish(S, S_candidate, pclassdesc) = S[.COMPLETION = UNSUPPORTED text]
+def $pil_method_publish_result(S, S_candidate, pclassdesc) = S[.COMPLETION = UNSUPPORTED text]
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_UNSUPPORTED text
-def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_fatal(S, pclassdesc, ptbytes_message)
+def $pil_method_publish_result(S, S_candidate, pclassdesc) = $pil_fatal(S, pclassdesc, ptbytes_message)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_OK
   -- if pclassdesc.KIND = "class"
   -- if $pil_abstract_message(S_candidate, pclassdesc) = (ptbytes_message)
-def $pil_method_publish(S, S_candidate, pclassdesc) = S_candidate
+def $pil_method_publish_result(S, S_candidate, pclassdesc) = S_candidate
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_OK
   -- if pclassdesc.KIND = "interface" \/ $pil_abstract_message(S_candidate, pclassdesc) = eps
 

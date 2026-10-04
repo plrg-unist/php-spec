@@ -66,6 +66,7 @@ rule PhpStep/call-reference-fetch: S ~> S_cell[.TODO = ptask_tail*][.HELD = S.HE
   -- if S.ORIGIN = (porigin_arg)
   -- if $origin_node(S.SOURCES, porigin_arg) = (expression)
   -- if ~$call_temporary_base(expression)
+  -- if ~$key_write_pending(S)
   -- if S_cell = $call_location_reference($call_reference_base($hold_task_inputs(S), S.BASE, $runtime_line(S, eps, expression)))
 
 dec $call_argument_expression(pstate, porigin?, nat) : expression

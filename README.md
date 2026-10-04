@@ -145,9 +145,10 @@ values, reference history and compiler/runtime rejection phases. Its
 sources; Traversable objects remain unfinished. Array call arguments are covered by the later call-unpack checkpoint below.
 [Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
 callbacks with effective method selection, retained current values and abrupt
-cleanup. Explicit compatible return declarations are admitted; tentative-return
-deprecations, IteratorAggregate, ArrayAccess and other Traversable consumers
-remain required.
+cleanup. Tentative-return declarations use real prototype order and runtime/file
+warning delivery after publication. Early eval diagnostic callbacks are the
+immediate follow-on; IteratorAggregate, ArrayAccess and other Traversable
+consumers remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.
@@ -255,7 +256,13 @@ temporary owners, borrowed CV tables and ordered NaN notices preserve mutation,
 COW and throwing cleanup through nested/quiet reads. Author9/246 includes the two
 independent NaN originals; independent14/235 and one current constructor
 interaction keep separate cuts.
-Read-write continuations and wider key/container producers remain required.
+[Writable dimension keys](docs/semantics/SOURCE-DIMENSION-WRITES.md) now stage
+bounded CV-array W/RW and direct GLOBALS reference fetches. Callback copies abort
+acquisition; real cell aliases, moved sole keepers, delayed RHS reads and named
+reference priority retain their native behavior. Author11/340 and independent15
+fresh/266 plus two retained originals keep separate cuts; one current typed-caller
+interaction passes. Append, unset, coalesce assignment and wider producers
+remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument

@@ -9,6 +9,8 @@ dec $error_default(pstate, pevent, int) : pstate
 dec $error_level_name(int) : text
 dec $error_user_deprecation() : preqbytes
 dec $error_handler_file(pstate, perrorcall) : preqbytes
+dec $iterator_notice_resume(ptask) : bool
+dec $error_callback_line(pstate, perrorcall) : int
 dec $exception_warning_resume(ptask) : bool
 dec $error_handler_values(pstate, perrorcall) : pvalue*
 dec $error_handler_operands(pstate, pcalltarget, pvalue*, nat, int) : (pstate, poperand*)
@@ -119,8 +121,10 @@ def $error_handler_target(S, pvalue) = (pcalltarget)
   -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
 def $error_handler_target(S, pvalue) = eps -- otherwise
 def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, porigin)
+  -- if ~$iterator_notice_resume(perrorcall.RESUME)
   -- if $class_constant_error_origin(S) = (porigin)
 def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, perrorcall.SITE) -- otherwise
+def $error_callback_line(S, perrorcall) = perrorcall.LINE -- otherwise
 def $error_handler_values(S, perrorcall) = [PINT perrorcall.LEVEL, PSTRING perrorcall.MESSAGE, PSTRING n_file*, PINT perrorcall.LINE]
   -- if ~$exception_warning_resume(perrorcall.RESUME)
   -- if n_file* = $error_handler_file(S, perrorcall)
@@ -141,11 +145,11 @@ def $error_handler_operands(S, pcalltarget, pvalue :: pvalue_tail*, n, z) = (S_n
   -- if S_cell = $call_fresh_reference($error_default(S[.ERRORFATALTRACE = eps], $error_reference_event(S, pfunction.NAME ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be passed by reference, value given"), z), 2), pvalue)
   -- if S_cell.RESULT = REFERENCE n_cell
   -- if $error_handler_operands(S_cell, pcalltarget, pvalue_tail*, $(n + 1), z) = (S_next, poperand*)
-def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = $call_arity($target_after_enter($call_enter(S_args, pfunction, poperand*, (perrorcall.SITE), perrorcall.LINE), pcalltarget), pfunction, 4, (perrorcall.SITE), perrorcall.LINE)
+def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = $call_arity($target_after_enter($call_enter(S_args, pfunction, poperand*, (perrorcall.SITE), $error_callback_line(S, perrorcall)), pcalltarget), pfunction, 4, (perrorcall.SITE), $error_callback_line(S, perrorcall))
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if perrorcall_entered = perrorcall[.TARGET = (pcalltarget)]
   -- if S_pending = S[.ERRORHANDLER.CALLBACK = eps][.TODO = (ERROR_HANDLER_RESULT perrorcall_entered) :: ptask_tail*]
-  -- if $error_handler_operands(S_pending, pcalltarget, $error_handler_values(S, perrorcall), 0, perrorcall.LINE) = (S_args, poperand*)
+  -- if $error_handler_operands(S_pending, pcalltarget, $error_handler_values(S, perrorcall), 0, $error_callback_line(S, perrorcall)) = (S_args, poperand*)
 rule PhpStep/error-handler-enter: S ~> $error_handler_enter(S, perrorcall, pcalltarget, pfunction)
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if $error_call_valid(S, perrorcall)
@@ -171,7 +175,7 @@ rule PhpStep/error-handler-pending-callable: S ~> S[.COMPLETION = UNSUPPORTED "e
   -- if ~$api_special(S, perrorcall.CALLBACK)
 def $error_invalid_callback(S, perrorcall, ptbytes) = $error_api_error(S, pconfigcall, "Error", ptbytes)
   -- if perrorcall.RESUME = ERROR_TRIGGER_PHASE pconfigcall n
-def $error_invalid_callback(S, perrorcall, ptbytes) = $throw_scalar(S, "Error", ptbytes, perrorcall.LINE) -- otherwise
+def $error_invalid_callback(S, perrorcall, ptbytes) = $throw_scalar(S, "Error", ptbytes, $error_callback_line(S, perrorcall)) -- otherwise
 rule PhpStep/error-handler-invalid-callback: S ~> $error_handler_restore($error_invalid_callback(S, perrorcall, $ptascii("Invalid callback ") ++ $error_callback_name(S, perrorcall.CALLBACK) ++ $ptascii(", ") ++ n_reason*), perrorcall.CALLBACK)
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if ~$exception_warning_resume(perrorcall.RESUME)
@@ -397,7 +401,7 @@ def $error_context_trace_location(S, pcallcontext, (pcallcontext), pframe :: pfr
   -- if perrorcall.TARGET = (pcallcontext.TARGET)
   -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
   -- if $error_entered_call_valid(S_scope, perrorcall)
-  -- if (porigin, z) = $class_constant_execution_point(S_scope, perrorcall.SITE, perrorcall.LINE)
+  -- if (porigin, z) = $class_constant_execution_point(S_scope, perrorcall.SITE, $error_callback_line(S_scope, perrorcall))
 def $error_context_trace_location(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $error_context_trace_location(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
   -- if pcallcontext_other? =/= (pcallcontext)
 def $error_context_trace_location(S, pcallcontext, pcallcontext_other?, pframe*) = eps -- otherwise
@@ -408,7 +412,7 @@ def $error_context_valid(S, pcallcontext) = true
   -- if $error_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)
   -- if perrorcall.TARGET = (pcallcontext.TARGET)
   -- if pcallcontext.CALLSITE = (perrorcall.SITE)
-  -- if pcallcontext.LINE = perrorcall.LINE
+  -- if pcallcontext.LINE = $error_callback_line(S, perrorcall)
   -- if $error_handler_selected(S, perrorcall.CALLBACK, pcallcontext.TARGET)
   -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF
