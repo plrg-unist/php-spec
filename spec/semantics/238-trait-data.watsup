@@ -3,6 +3,7 @@
 syntax ptraitdatacheck = TRAITDATAOK | TRAITDATABAD | TRAITDATAUNKNOWN text
 syntax ptraitdatavalue = TRAITVALUE pstate pvalue | TRAITUNINITIALIZED | TRAITVALUEUNKNOWN text
 
+
 dec $trait_data_import_type(pclassdesc, ptbranch*) : ptbranch*
 dec $trait_data_property(pclassdesc, ppropertydesc) : ppropertydesc
 dec $trait_data_constant(pclassdesc, pclassconstantdesc) : pclassconstantdesc
@@ -47,6 +48,13 @@ dec $trait_fold_class_name(pfstate, pcpath, phpType19, pvalue?) : ptbytes?
 dec $trait_fold_classname(pfstate, pcpath, phpType19, int) : pfstate
 dec $trait_fold_constant_lookup(pfstate, pclassdesc, ptbytes, nat) : pclassconstantdesc?
 dec $trait_member_initializer_scope(pstate, porigin, porigin) : porigin?
+dec $trait_property_fast_equal(ptbranch*, ptbranch*) : bool
+dec $trait_type_names(ptbranch*) : nat
+dec $trait_type_atom_names(ptatom*) : nat
+dec $trait_type_atom_nominal(ptatom) : nat
+dec $trait_data_needs(pvresult) : bool
+dec $trait_instance_default_ready(pstate, ppropertydesc) : bool
+dec $trait_data_fatal(pstate, pclassdesc, ptbytes) : pstate
 
 def $trait_data_import_type(pclassdesc, ptbranch*) = ptbranch* -- if pclassdesc.KIND = "trait"
 def $trait_data_import_type(pclassdesc, ptbranch*) = $trait_type_branches(ptbranch*, pclassdesc.NAME, pclassdesc.PARENT) -- if pclassdesc.KIND =/= "trait"
@@ -100,11 +108,6 @@ def $trait_data_covariance(pvresult_left, pvresult_right, false) = TRAITDATABAD
   -- if $trait_data_needs(pvresult_left) \/ $trait_data_needs(pvresult_right)
   -- if pvresult_left =/= PVINCOMPATIBLE /\ pvresult_right =/= PVINCOMPATIBLE
 def $trait_data_covariance(pvresult_left, pvresult_right, b_constant) = TRAITDATAUNKNOWN "unsupported trait data type compatibility" -- otherwise
-dec $trait_property_fast_equal(ptbranch*, ptbranch*) : bool
-dec $trait_type_names(ptbranch*) : nat
-dec $trait_type_atom_names(ptatom*) : nat
-dec $trait_type_atom_nominal(ptatom) : nat
-dec $trait_data_needs(pvresult) : bool
 def $trait_property_fast_equal(ptbranch_left*, ptbranch_right*) = ($ppproperty_type_equal(ptbranch_left*, ptbranch_right*) /\ $($trait_type_names(ptbranch_left*) <= 1))
 def $trait_type_names(eps) = 0
 def $trait_type_names((PTBRANCH ptatom*) :: ptbranch*) = $($trait_type_atom_names(ptatom*) + $trait_type_names(ptbranch*))
@@ -360,7 +363,6 @@ def $property_default_state(S, ppropertydesc) = eps
   -- if ~ppropertydesc.STATIC
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
   -- if ~$trait_instance_default_ready(S, ppropertydesc)
-dec $trait_instance_default_ready(pstate, ppropertydesc) : bool
 def $trait_instance_default_ready(S, ppropertydesc) = true
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
@@ -374,5 +376,4 @@ def $trait_instance_default_ready(S, ppropertydesc) = false -- otherwise
 def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access trait constant ") ++ pclassdesc.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii(" directly"), z)
   -- if pclassdesc.KIND = "trait"
 
-dec $trait_data_fatal(pstate, pclassdesc, ptbytes) : pstate
 def $trait_data_fatal(S, pclassdesc, ptbytes) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes, pclassdesc.LINE)
