@@ -49,8 +49,11 @@ def $number_string_order(pnumber, n*) = $number_string_precision_order(pnumber, 
 def $number_string_precision_order(pnumber, n*, z_precision) = $num_compare(pnumber, pnumber_string)
   -- if $numeric_string(n*) = FULLNUM pnumber_string
 def $number_string_precision_order(pnumber, n*, z_precision) = $ntbyte_compare(n_number*, n*)
+  -- if $numeric_string(n*) = NOTNUMERIC
   -- if (n_number*, b_warning) = $number_text(pnumber, z_precision)
-  -- otherwise
+def $number_string_precision_order(pnumber, n*, z_precision) = $ntbyte_compare(n_number*, n*)
+  -- if $numeric_string(n*) = LEADNUM pnumber_string
+  -- if (n_number*, b_warning) = $number_text(pnumber, z_precision)
 
 dec $bool_order(bool, bool) : int
 def $bool_order(b, b) = 0
