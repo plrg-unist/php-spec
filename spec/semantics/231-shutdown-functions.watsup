@@ -283,12 +283,14 @@ def $shutdown_terminal(COMPILETHROWN ptbytes z) = true
 def $shutdown_terminal(pcompletion) = $shutdown_frozen(pcompletion) -- otherwise
 
 def $shutdown_ready(S) = true
+  -- if ~$eval_compile_exit_pending(S) \/ ~$exit_completion(S.COMPLETION)
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_PENDING /\ S.SHUTDOWN.ENTRIES =/= eps
   -- if $shutdown_terminal(S.COMPLETION)
   -- if ~$shutdown_render_ready(S)
   -- if S.COMPLETION =/= NORMAL \/ S.TODO = eps
   -- if S.COMPILESTOP \/ S.FRAMES = eps
 def $shutdown_ready(S) = true
+  -- if ~$eval_compile_exit_pending(S) \/ ~$exit_completion(S.COMPLETION)
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
   -- if S.COMPLETION =/= NORMAL /\ $shutdown_terminal(S.COMPLETION)
   -- if ~$shutdown_render_ready(S)

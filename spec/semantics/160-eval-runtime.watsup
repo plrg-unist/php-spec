@@ -185,6 +185,7 @@ def $failed_sources_valid(S, pfailedsource :: pfailedsource_tail*) = ($failed_so
 dec $eval_marker_id(ptask) : nat?
 def $eval_marker_id(EVAL_AWAIT n) = (n)
 def $eval_marker_id(EVAL_END n) = (n)
+def $eval_marker_id(EVAL_COMPILE_END n) = (n)
 def $eval_marker_id(ptask) = eps -- otherwise
 dec $eval_marker_count(ptask*, nat) : nat
 def $eval_marker_count(eps, n) = 0
@@ -224,11 +225,13 @@ def $eval_nested_markers(eps) = false
 def $eval_nested_markers(ptask :: ptask_tail*) = ($eval_wrapped_marker(ptask) \/ $eval_nested_markers(ptask_tail*))
 def $eval_wrapped_marker(EVAL_AWAIT n) = true
 def $eval_wrapped_marker(EVAL_END n) = true
+def $eval_wrapped_marker(EVAL_COMPILE_END n) = true
 def $eval_wrapped_marker(AT porigin ptask) = $eval_wrapped_marker(ptask)
 def $eval_wrapped_marker(CHOOSE ptask_left* ptask_right* z) = ($eval_nested_markers(ptask_left*) \/ $eval_nested_markers(ptask_right*))
 def $eval_wrapped_marker(ptask) = false -- otherwise
 def $eval_marker_valid(S, EVAL_AWAIT n) = ($eval_context_phase(S.EVALCONTEXTS, n) = (PARSER_WAIT))
 def $eval_marker_valid(S, EVAL_END n) = ($eval_context_phase(S.EVALCONTEXTS, n) = (UNIT_RUN))
+def $eval_marker_valid(S, EVAL_COMPILE_END n) = ($eval_context_phase(S.EVALCONTEXTS, n) = (EVAL_COMPILE))
 def $eval_marker_valid(S, AT porigin ptask) = ~$eval_wrapped_marker(ptask)
 def $eval_marker_valid(S, CHOOSE ptask_left* ptask_right* z) = ~($eval_nested_markers(ptask_left*) \/ $eval_nested_markers(ptask_right*))
 def $eval_marker_valid(S, ptask) = true -- otherwise
@@ -258,7 +261,7 @@ def $eval_head_context(pevalcontext_list*, pevalcontext) = false -- otherwise
 dec $eval_await_head(ptask*, nat) : bool
 def $eval_await_head((EVAL_AWAIT n) :: ptask_tail*, n) = true
 def $eval_await_head(ptask*, n) = false -- otherwise
-def $eval_context_phase_valid(S, pevalcontext) = ((pevalcontext.PHASE = PARSER_WAIT /\ $eval_head_context(S.EVALCONTEXTS, pevalcontext) /\ $eval_await_head(S.TODO, pevalcontext.UNIT) /\ pevalcontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pevalcontext.SITE) /\ pevalcontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pevalcontext.LOCATION = $class_constant_location(S) /\ $source_unit(S.SOURCES, pevalcontext.UNIT) = eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = eps /\ $eval_wait_completion(S.COMPLETION)) \/ (pevalcontext.PHASE = UNIT_RUN /\ $source_unit(S.SOURCES, pevalcontext.UNIT) =/= eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = ({UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS, LOCATION pevalcontext.LOCATION}) /\ $code_at(S.CODE, pevalcontext.UNIT) =/= eps))
+def $eval_context_phase_valid(S, pevalcontext) = ((pevalcontext.PHASE = PARSER_WAIT /\ $eval_head_context(S.EVALCONTEXTS, pevalcontext) /\ $eval_await_head(S.TODO, pevalcontext.UNIT) /\ pevalcontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pevalcontext.SITE) /\ pevalcontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pevalcontext.LOCATION = $class_constant_location(S) /\ $source_unit(S.SOURCES, pevalcontext.UNIT) = eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = eps /\ $eval_wait_completion(S.COMPLETION)) \/ ((pevalcontext.PHASE = UNIT_RUN \/ pevalcontext.PHASE = EVAL_COMPILE) /\ $source_unit(S.SOURCES, pevalcontext.UNIT) =/= eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = ({UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS, LOCATION pevalcontext.LOCATION}) /\ $code_at(S.CODE, pevalcontext.UNIT) =/= eps))
 def $eval_site_line(S, porigin) = $runtime_line(S[.ORIGIN = (porigin)][.CONSTCONTEXT = eps], [PCFIELD 0], expression)
   -- if $origin_node(S.SOURCES, porigin) = (NExprEval expression metadata)
 def $eval_site_line(S, porigin) = 0 -- otherwise
@@ -327,6 +330,8 @@ def $eval_pending_response(pevalcontext :: pevalcontext_tail*, psourceresponse) 
 dec $eval_response_valid(pstate, psourceresponse) : bool
 def $eval_response_valid(S, psourceresponse) = (S.COMPLETION = SOURCE_PENDING /\ S.SERVICELEFT =/= eps /\ $call_descriptors_valid(S) /\ $eval_pending_response(S.EVALCONTEXTS, psourceresponse))
 
+dec $eval_compile_context_phase(pevalcontext*, nat, pevalphase) : pevalcontext*
+dec $eval_compile_paused_unit(pstate, nat) : bool
 dec $eval_compile_result(pstate, pevalcontext, pevalcontext*, ppstate) : pstate
 dec $eval_compile_throw_source(pstate, pevalcontext, text, nat*, int) : bool
 def $eval_compile_throw_source(S, pevalcontext, "Error", n_message*, z) = true
@@ -362,9 +367,9 @@ dec $source_trace_at_before(pstate, pevalcontext*, pfilecontext*, nat, preqbytes
 dec $eval_trace_live(pevalcontext*, nat) : pevalcontext*
 def $eval_trace_live(eps, n_owner) = eps
 def $eval_trace_live(pevalcontext :: pevalcontext_tail*, n_owner) = pevalcontext :: $eval_trace_live(pevalcontext_tail*, n_owner)
-  -- if pevalcontext.PHASE = UNIT_RUN /\ pevalcontext.OWNER = n_owner
+  -- if (pevalcontext.PHASE = UNIT_RUN \/ pevalcontext.PHASE = EVAL_COMPILE) /\ pevalcontext.OWNER = n_owner
 def $eval_trace_live(pevalcontext :: pevalcontext_tail*, n_owner) = $eval_trace_live(pevalcontext_tail*, n_owner)
-  -- if pevalcontext.PHASE =/= UNIT_RUN \/ pevalcontext.OWNER =/= n_owner
+  -- if (pevalcontext.PHASE =/= UNIT_RUN /\ pevalcontext.PHASE =/= EVAL_COMPILE) \/ pevalcontext.OWNER =/= n_owner
 dec $file_trace_live(pfilecontext*, nat) : pfilecontext*
 def $file_trace_live(eps, n_owner) = eps
 def $file_trace_live(pfilecontext :: pfilecontext_tail*, n_owner) = pfilecontext :: $file_trace_live(pfilecontext_tail*, n_owner)
@@ -480,6 +485,7 @@ def $eval_redeclare_class(S, pevalcontext, eps, n_message*, z) = false
 def $eval_redeclare_class(S, pevalcontext, pclassdesc :: pclassdesc_tail*, n_message*, z) = ($eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) \/ $eval_redeclare_class(S, pevalcontext, pclassdesc_tail*, n_message*, z))
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext[.PHASE = UNIT_RUN] :: pevalcontext_tail*][.TODO = $compiled_work(pevalcontext.UNIT, P.WORK) ++ [EVAL_END pevalcontext.UNIT] ++ pevalcontext.TAIL][.SERVICELEFT = eps][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_compiled.COMPLETION = NORMAL
+  -- if ~$eval_compile_paused_unit(S_compiled, pevalcontext.UNIT)
   -- if P.COMPLETION = PPCNORMAL
   -- if $code_at(S_compiled.CODE, pevalcontext.UNIT) = (pcode)
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPILESTOP = true][.TRACE = $eval_exception_trace(S_compiled)]
@@ -541,7 +547,7 @@ def $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program) = $eval_
   -- if P = $ppstart_eval_state(S, pevalcontext.UNIT, program, pevalcontext.FILE, $call_request_cwd(S.REQUEST), $eval_compiler_class(S))
   -- if ~$declaration_parser_rejects($declaration_preflight(P.FOLD.SOURCE.OCCURRENCES))
   -- if pevalbinding = {UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS, LOCATION pevalcontext.LOCATION}
-  -- if S_compiled = $compile_source_append(S[.COMPLETION = NORMAL][.EVALBINDINGS = S.EVALBINDINGS ++ [pevalbinding]], P)
+  -- if S_compiled = $compile_source_append(S[.COMPLETION = NORMAL][.EVALBINDINGS = S.EVALBINDINGS ++ [pevalbinding]][.EVALCONTEXTS = pevalcontext[.PHASE = EVAL_COMPILE] :: pevalcontext_tail*], P)
 def $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program) = $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, FAILED_COMPILE, ptbytes_message, z)
   -- if $declaration_preflight($pcsource(pevalcontext.UNIT, program).OCCURRENCES) = (COMPILETHROWN ptbytes_message z)
 dec $eval_resume_valid(pstate, psourceresponse) : pstate

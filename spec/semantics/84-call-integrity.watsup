@@ -337,6 +337,7 @@ dec $finally_state_valid(pstate) : bool
 dec $eval_state_valid(pstate) : bool
 dec $error_handlers_valid(pstate, perrorhandler*) : bool
 dec $exception_handlers_valid(pstate, pvalue?*) : bool
+dec $eval_compile_owners_valid(pstate) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
@@ -357,6 +358,7 @@ def $call_descriptors_valid(S) = true
   -- if $stringify_chain_valid(S, S.CURRENT, S.FRAMES)
   -- if $useriter_chain_valid(S, S.CURRENT, S.FRAMES)
   -- if $iterator_notice_owners_valid(S.TODO, S.FRAMES)
+  -- if $eval_compile_owners_valid(S)
   -- if $finally_state_valid(S)
   -- if $ctor_frames_pairs_valid(S, S.FRAMES)
   -- if $call_current_valid(S)

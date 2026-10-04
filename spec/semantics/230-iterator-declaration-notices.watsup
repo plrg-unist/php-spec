@@ -140,10 +140,6 @@ dec $iterator_notice_seed(pstate, porigin, pdeclnoticeplan) : pstate
 def $iterator_notice_seed(S, porigin, DECLNOTICES eps) = S[.TODO = $iterator_notice_seed_remove(S.TODO, porigin)]
 def $iterator_notice_seed(S, porigin, DECLNOTICES pdeclnotice*) = S[.TODO = $iterator_notice_seed_remove(S.TODO, porigin) ++ [DECL_NOTICE_SEED porigin pdeclnotice*]]
   -- if pdeclnotice* =/= eps
-  -- if ~$iterator_notice_early_eval(S)
-def $iterator_notice_seed(S, porigin, DECLNOTICES pdeclnotice*) = S[.COMPLETION = UNSUPPORTED "early eval Iterator tentative declaration callbacks"]
-  -- if pdeclnotice* =/= eps
-  -- if $iterator_notice_early_eval(S)
 def $iterator_notice_seed(S, porigin, DECLNOTICESUNSUPPORTED text) = S[.COMPLETION = UNSUPPORTED text]
 dec $iterator_notice_link_result(pstate, pstate, pclassdesc) : pstate
 dec $iterator_notice_link_fatal(pcompletion) : bool
@@ -156,12 +152,6 @@ def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = $iterator_
 def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = $iterator_notice_default(S_result[.TODO = $iterator_notice_without_seeds(S_result.TODO)], $iterator_notice_seeds($iterator_notice_seed_remove(S_candidate.TODO, pclassdesc.ORIGIN)) ++ $iterator_notice_items(pdeclnotice*))
   -- if $iterator_notice_link_fatal(S_result.COMPLETION)
   -- if $iterator_notice_plan(S_candidate, pclassdesc) = DECLNOTICES pdeclnotice*
-  -- if ~$iterator_notice_early_eval(S_candidate) \/ pdeclnotice* = eps
-def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = S_result[.COMPLETION = UNSUPPORTED "early eval Iterator tentative declaration callbacks"]
-  -- if $iterator_notice_link_fatal(S_result.COMPLETION)
-  -- if $iterator_notice_plan(S_candidate, pclassdesc) = DECLNOTICES pdeclnotice*
-  -- if $iterator_notice_early_eval(S_candidate)
-  -- if pdeclnotice* =/= eps
 def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = S_result -- otherwise
 def $iterator_notice_compile_stop(S) = $iterator_notice_default(S, $iterator_notice_seeds(S.TODO))
   -- if S.COMPLETION =/= NORMAL
@@ -195,7 +185,7 @@ def $iterator_notice_file_entry(S, pfilecontext :: pfilecontext_tail*, n) = $ite
 dec $iterator_notice_eval_entry(pevalcontext*, nat) : bool
 def $iterator_notice_eval_entry(eps, n) = false
 def $iterator_notice_eval_entry(pevalcontext :: pevalcontext_tail*, n) = (pevalcontext.UNIT = n \/ $iterator_notice_eval_entry(pevalcontext_tail*, n))
-def $iterator_notice_early_eval(S) = $iterator_notice_eval_entry(S.EVALCONTEXTS, n)
+def $iterator_notice_early_eval(S) = $eval_compile_unit(S, n)
   -- if $declaration_open(S.DECLARATIONS) = ((n, porigin?, z))
 def $iterator_notice_early_eval(S) = false -- otherwise
 def $iterator_notice_publication(S, S_result, pclassdesc) = S_result
@@ -266,8 +256,10 @@ def $iterator_notice_file_owner(S, pdeclnoticebatch) = true
   -- if (PDEXIT n PCSCOMPLETE) <- S.DECLARATIONS
 def $iterator_notice_file_owner(S, pdeclnoticebatch) = false -- otherwise
 dec $iterator_notice_batch_items(pstate, pdeclnoticebatch) : bool
+dec $eval_compile_notice_owner(pstate, pdeclnoticebatch) : bool
+dec $eval_compile_notice_pending(pstate, pdeclnoticebatch) : bool
 dec $iterator_notice_batch_valid(pstate, pdeclnoticebatch) : bool
-def $iterator_notice_batch_valid(S, pdeclnoticebatch) = (S.ORIGIN = (pdeclnoticebatch.SITE) /\ pdeclnoticebatch.NOTICES =/= eps /\ $(pdeclnoticebatch.INDEX <= |pdeclnoticebatch.NOTICES|) /\ ($iterator_notice_runtime_owner(S, pdeclnoticebatch) \/ $iterator_notice_file_owner(S, pdeclnoticebatch)) /\ $iterator_notice_batch_items(S, pdeclnoticebatch))
+def $iterator_notice_batch_valid(S, pdeclnoticebatch) = (S.ORIGIN = (pdeclnoticebatch.SITE) /\ pdeclnoticebatch.NOTICES =/= eps /\ $(pdeclnoticebatch.INDEX <= |pdeclnoticebatch.NOTICES|) /\ ($iterator_notice_runtime_owner(S, pdeclnoticebatch) \/ $iterator_notice_file_owner(S, pdeclnoticebatch) \/ $eval_compile_notice_owner(S, pdeclnoticebatch)) /\ $iterator_notice_batch_items(S, pdeclnoticebatch))
 def $call_task_valid(S, DECL_NOTICE_SEED porigin pdeclnotice*) = false
 def $call_task_valid(S, DECL_COMPILER_SEED pldiagnostic) = false
 def $call_task_valid(S, DECL_NOTICES pdeclnoticebatch) = $iterator_notice_batch_valid(S, pdeclnoticebatch)
@@ -281,6 +273,7 @@ rule PhpStep/iterator-notice-dispatch: S ~> $error_dispatch(S, $iterator_notice_
   -- if $iterator_notice_batch_valid(S, pdeclnoticebatch)
   -- if $(pdeclnoticebatch.INDEX < |pdeclnoticebatch.NOTICES|)
   -- if pdeclnoticeitem = pdeclnoticebatch.NOTICES[pdeclnoticebatch.INDEX]
+  -- if ~$eval_compile_notice_pending(S, pdeclnoticebatch)
 rule PhpStep/iterator-notice-resume: S ~> S[.TODO = (DECL_NOTICES pdeclnoticebatch) :: ptask_tail*]
   -- if S.TODO = (DECL_NOTICE_RESUME pdeclnoticebatch) :: ptask_tail*
   -- if $call_task_valid(S, DECL_NOTICE_RESUME pdeclnoticebatch)
@@ -292,7 +285,7 @@ rule PhpStep/iterator-notice-done: S ~> S[.TODO = ptask_tail*]
 ;; One live continuation owns each runtime publication or compiled file unit.
 ;; Error-handler wrappers claim their embedded resume once, rather than adding
 ;; another owner for the same continuation while the callback is entered.
-syntax pdeclnoticeowner = NOTICE_CLASS_OWNER porigin nat | NOTICE_UNIT_OWNER nat
+syntax pdeclnoticeowner = NOTICE_CLASS_OWNER porigin nat | NOTICE_UNIT_OWNER nat | NOTICE_EVAL_OWNER nat nat
 dec $iterator_notice_owner(pdeclnoticebatch) : pdeclnoticeowner*
 def $iterator_notice_owner(pdeclnoticebatch) = [NOTICE_CLASS_OWNER porigin n]
   -- if pdeclnoticebatch.KIND = NOTICE_RUNTIME
@@ -370,12 +363,10 @@ def $iterator_notice_file_compile(S) = false -- otherwise
 ;; The producer fact is independent of delivery mode, so completed-unit
 ;; declaration replay authenticates the same chronology without live callers.
 def $iterator_notice_compile_warning(S, pldiagnostic) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDCOMPILEWARNING pldiagnostic]][.TODO = S.TODO ++ [DECL_COMPILER_SEED pldiagnostic]]
-  -- if $iterator_notice_file_compile(S)
+  -- if $iterator_notice_file_compile(S) \/ $iterator_notice_early_eval(S)
 def $iterator_notice_compile_warning(S, pldiagnostic) = $compiler_diagnostics(S[.DECLARATIONS = S.DECLARATIONS ++ [PDCOMPILEWARNING pldiagnostic]], [pldiagnostic])
   -- if ~$iterator_notice_file_compile(S)
   -- if ~$iterator_notice_early_eval(S)
-def $iterator_notice_compile_warning(S, pldiagnostic) = S[.COMPLETION = UNSUPPORTED "early eval declaration diagnostic callbacks"]
-  -- if $iterator_notice_early_eval(S)
 def $iterator_notice_compile_diagnostics(S, eps) = S
 def $iterator_notice_compile_diagnostics(S, (PLDIAGNOSTIC "warning" text ptbytes* pllocation) :: pldiagnostic*) = $iterator_notice_compile_diagnostics($iterator_notice_compile_warning(S, PLDIAGNOSTIC "warning" text ptbytes* pllocation), pldiagnostic*)
   -- if S.COMPLETION = NORMAL

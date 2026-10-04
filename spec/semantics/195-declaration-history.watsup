@@ -1,6 +1,8 @@
 ;; Source images authenticate once per unit in this pass. The live prefix is
 ;; then reconstructed without calling any full-state/projection validator.
 syntax pdeclimages = DECLIMAGES (nat, ppstate)* | DECLIMAGEINVALID
+dec $eval_compile_unit(pstate, nat) : bool
+dec $eval_compile_plans_valid(pstate, (nat, ppstate)*) : bool
 dec $declaration_images(pstate, pcunit*) : pdeclimages
 def $declaration_images(S, eps) = DECLIMAGES eps
 def $declaration_images(S, pcunit :: pcunit_tail*) = DECLIMAGES ((pcunit.ID, P) :: (n, P_tail)*)
@@ -123,6 +125,7 @@ def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next porigin? z) 
   -- if $declaration_service_available(S_prefix, porigin?)
   -- if $declaration_compiler_at((n, P)*, n_next) = (P_current)
   -- if S_compiled = $declaration_fold($declaration_enter(S_prefix[.REPORTING = z][.COMPLETION = NORMAL][.ERRORORIGIN = eps], n_next, porigin?), P_current, P_current.PUBLICATIONS, 0, 0)
+  -- if ~$eval_compile_unit(S, n_next)
 def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_fold(S, S_compiled[.COMPLETION = NORMAL][.TODO = eps], (n, P)*, pdeclaration_tail*, $(n_next + 1))
   -- if ~$declaration_stop_terminal(S_compiled.COMPLETION) \/ $shutdown_compiler_released(S, S_compiled)
   -- if n_prefix = $nabs($(|S_prefix.DECLARATIONS| + 1))
@@ -182,6 +185,7 @@ def $declaration_history_valid(S) = $declaration_history_fold(S, $declaration_hi
   -- if $declaration_files_entered(S.DECLARATIONS, S.FILES)
   -- if $declaration_images(S, S.SOURCES) = DECLIMAGES (n, P)*
   -- if S.FUNCTIONS = $declaration_image_functions((n, P)*)
+  -- if $eval_compile_plans_valid(S, (n, P)*)
 def $declaration_history_valid(S) = false -- otherwise
 
 
