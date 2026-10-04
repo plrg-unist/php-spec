@@ -2,18 +2,6 @@
   "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
   "cases": [
     {
-      "id": "constant-uppercase-keyword-runtime-label",
-      "source": "<?php trait T{const ?Self X=TYPEVAL;}class C{use T;}define(\"TYPEVAL\",1);try{echo C::X;}catch(TypeError $e){echo $e->getMessage();}",
-      "source_sha256": "7017cadd405cbbf85172fc882c202bae95417ab532915496637054578998b32f",
-      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-composition-238/.tools/trait-data-display-mask-native238-vyybjhar/report.json",
-      "native_profile": "PHP8.5.10 -n display_errors=stderr log_errors=0 html_errors=0 error_reporting=30719; LC_ALL=C TZ=UTC",
-      "status": "normal",
-      "exit_status": 0,
-      "stdout_base64": "Q2Fubm90IGFzc2lnbiBpbnQgdG8gY2xhc3MgY29uc3RhbnQgQzo6WCBvZiB0eXBlID9TZWxm",
-      "stderr_template_base64": "",
-      "native_raw_sha256": "90624c40f9f5bdb8eebdee4582e7baef99bd382cc5d9cb3a4e099b2943944e34"
-    },
-    {
       "id": "imported-property-inheritance-mask-1",
       "source": "<?php class U{}class P{public ?P $p=null;}trait T{public ?U $p=null;}echo \"PRE;\";error_reporting(1);class C extends P{use T;}echo \"POST;\";",
       "source_sha256": "e987ae2fed17f31e8bbd60a56a714ca489757595812ee350e5023d4422a97d4d",
@@ -36,6 +24,39 @@
       "stdout_base64": "UFJFOw==",
       "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgQzo6JHAgbXVzdCBiZSA/UCAoYXMgaW4gY2xhc3MgUCkgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
       "native_raw_sha256": "c8750106ed6a8ccc94f6023a7bb362c8395b8cb3f44b7523b9d83bb0062c7603"
+    },
+    {
+      "id": "uppercase-constant-self-Y-runtime-label",
+      "source": "<?php trait T{public const ?Self X=self::Y;}class C{use T;public const Y=1;}try{echo C::X;}catch(TypeError $e){echo $e->getMessage();}",
+      "source_sha256": "a365a96de3e6af1c58dd8c2e7525f8f20a58836247556c65c6e98648708a1571",
+      "status": "normal",
+      "stdout_base64": "Q2Fubm90IGFzc2lnbiBpbnQgdG8gY2xhc3MgY29uc3RhbnQgQzo6WCBvZiB0eXBlID9TZWxm",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-members-review-238/.tools/trait-type-case-native238-1066mn1h/report.json",
+      "native_raw_sha256": "90624c40f9f5bdb8eebdee4582e7baef99bd382cc5d9cb3a4e099b2943944e34"
+    }
+  ],
+  "dependency_controls": [
+    {
+      "native": {
+        "id": "constant-uppercase-keyword-runtime-label",
+        "source": "<?php trait T{const ?Self X=TYPEVAL;}class C{use T;}define(\"TYPEVAL\",1);try{echo C::X;}catch(TypeError $e){echo $e->getMessage();}",
+        "source_sha256": "7017cadd405cbbf85172fc882c202bae95417ab532915496637054578998b32f",
+        "native_group": "/home/user/workspace/php-spec/.tools/trait-data-composition-238/.tools/trait-data-display-mask-native238-vyybjhar/report.json",
+        "native_profile": "PHP8.5.10 -n display_errors=stderr log_errors=0 html_errors=0 error_reporting=30719; LC_ALL=C TZ=UTC",
+        "status": "normal",
+        "exit_status": 0,
+        "stdout_base64": "Q2Fubm90IGFzc2lnbiBpbnQgdG8gY2xhc3MgY29uc3RhbnQgQzo6WCBvZiB0eXBlID9TZWxm",
+        "stderr_template_base64": "",
+        "native_raw_sha256": "90624c40f9f5bdb8eebdee4582e7baef99bd382cc5d9cb3a4e099b2943944e34"
+      },
+      "model_status": "unsupported",
+      "model_reason": "registered builtin call",
+      "model_raw": "/home/user/workspace/php-spec/.tools/introspection-trait-members-review-238/.tools/method-runtime-r7rkrh8n",
+      "model_revision": "e20da5ca39e30cd9352563e8135445c82f147fd7",
+      "semantic_agreements": 0,
+      "scope": "Exact original define(TYPEVAL) dependency retained; not an admitted constant-label comparison."
     }
   ]
 }
