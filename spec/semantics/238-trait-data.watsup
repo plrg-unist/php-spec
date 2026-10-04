@@ -19,8 +19,6 @@ dec $trait_data_covariance(pvresult, pvresult, bool) : ptraitdatacheck
 dec $trait_member_fold(pstate, pclassdesc, porigin) : pfstate?
 dec $trait_fold_value(pstate, pclassdesc, porigin) : ptraitdatavalue
 dec $trait_property_value(pstate, pclassdesc, ppropertydesc) : ptraitdatavalue
-dec $trait_property_coerced(ptraitdatavalue, ptbranch*) : ptraitdatavalue
-dec $trait_constant_coerced(ptraitdatavalue, ptbranch*) : ptraitdatavalue
 dec $trait_constant_value(pstate, pclassdesc, pclassconstantdesc) : ptraitdatavalue
 dec $trait_data_compare(ptraitdatavalue, ptraitdatavalue) : ptraitdatacheck
 dec $trait_data_compare_left(pstate, pclassdesc, ppropertydesc, ppropertydesc, ptraitdatavalue) : ptraitdatacheck
@@ -301,7 +299,7 @@ def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUE S pvalue --
 def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUE S ($property_default_value(ppropertydesc.TYPE, pvalue))
   -- if ppropertydesc.DEFAULT = PROP_STORED porigin
   -- if $pool_value(S.POOLS, porigin) = (pvalue)
-def $trait_property_value(S, pclassdesc, ppropertydesc) = $trait_property_coerced($trait_fold_value(S, pclassdesc, porigin), ppropertydesc.TYPE) -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin
+def $trait_property_value(S, pclassdesc, ppropertydesc) = $trait_fold_value(S, pclassdesc, porigin) -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin
 def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUEUNKNOWN "trait property default storage" -- otherwise
 def $trait_constant_source_type(S, pclassconstantdesc) = pclassconstantdesc_source.TYPE
   -- if $class_constant_origin(S.CLASSES, $origin_source(pclassconstantdesc.ORIGIN)) = (pclassconstantdesc_source)
@@ -309,12 +307,8 @@ def $trait_constant_source_type(S, pclassconstantdesc) = pclassconstantdesc.TYPE
 def $trait_constant_value(S, pclassdesc, pclassconstantdesc) = TRAITVALUE S pvalue
   -- if pclassconstantdesc.FOLDED
   -- if $pool_value(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalue)
-def $trait_constant_value(S, pclassdesc, pclassconstantdesc) = $trait_constant_coerced($trait_fold_value(S, pclassdesc, pclassconstantdesc.INITIALIZER), pclassconstantdesc.TYPE) -- if ~pclassconstantdesc.FOLDED
+def $trait_constant_value(S, pclassdesc, pclassconstantdesc) = $trait_fold_value(S, pclassdesc, pclassconstantdesc.INITIALIZER) -- if ~pclassconstantdesc.FOLDED
 def $trait_constant_value(S, pclassdesc, pclassconstantdesc) = TRAITVALUEUNKNOWN "trait constant default storage" -- otherwise
-def $trait_property_coerced(TRAITVALUE S pvalue, ptbranch*) = TRAITVALUE S ($property_default_value(ptbranch*, pvalue))
-def $trait_property_coerced(ptraitdatavalue, ptbranch*) = ptraitdatavalue -- otherwise
-def $trait_constant_coerced(TRAITVALUE S pvalue, ptbranch*) = TRAITVALUE S ($class_constant_typed_value(ptbranch*, pvalue))
-def $trait_constant_coerced(ptraitdatavalue, ptbranch*) = ptraitdatavalue -- otherwise
 def $trait_data_compare(TRAITUNINITIALIZED, TRAITUNINITIALIZED) = TRAITDATAOK
 def $trait_data_compare(TRAITUNINITIALIZED, TRAITVALUE S pvalue) = TRAITDATABAD
 def $trait_data_compare(TRAITVALUE S pvalue, TRAITUNINITIALIZED) = TRAITDATABAD
