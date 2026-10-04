@@ -77,10 +77,16 @@ rule PhpStep/class-declaration-runtime: S ~> $activate_class(S[.TODO = ptask_tai
   -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
 
 dec $throwable_constructor_kind(ptbytes) : text?
+dec $new_allocation_line(pstate, int) : int
+def $new_allocation_line(S, z) = z -- otherwise
+dec $internal_new_forbidden(ptbytes) : bool
+def $internal_new_forbidden(ptbytes) = false -- otherwise
 dec $new_class(pstate, preqbytes, int) : pstate
 def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "internal class construction"]
   -- if $class_internal(preqbytes)
+  -- if ~$internal_new_forbidden(preqbytes)
   -- if $ptlc(preqbytes) =/= $ptascii("stdclass")
+  -- if $ptlc(preqbytes) =/= $ptascii("closure")
   -- if $throwable_constructor_kind(preqbytes) = eps
 def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ preqbytes ++ $ptascii("\" not found"), z)
   -- if ~$class_internal(preqbytes)

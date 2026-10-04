@@ -25,11 +25,13 @@ def $closure_callable(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
   -- if pintrinsic =/= INTRINSIC_FROM_CALLABLE
+  -- if pintrinsic =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pintrinsic)
 def $closure_live_object_valid(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
   -- if pintrinsic =/= INTRINSIC_FROM_CALLABLE
+  -- if pintrinsic =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pintrinsic)
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if $ptlc(preqbytes) = $ptascii("closure")
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
@@ -246,11 +248,11 @@ def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 1
 def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
-  -- if $method_source_name(phpType20, $ptascii("__invoke")) \/ $from_method_site(S, porigin)
+  -- if $method_source_name(phpType20, $ptascii("__invoke")) \/ $from_method_site(S, porigin) \/ $closure_current_method_site(S, porigin) \/ $closure_binding_api_site(S, porigin)
 def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
-  -- if $method_source_name(phpType20, $ptascii("__invoke")) \/ $from_method_site(S, porigin)
+  -- if $method_source_name(phpType20, $ptascii("__invoke")) \/ $from_method_site(S, porigin) \/ $closure_current_method_site(S, porigin) \/ $closure_binding_api_site(S, porigin)
 def $exit_callable_arguments(S, porigin) = PCALLNOARGUMENTS -- otherwise
 dec $exit_call_valid(pstate, pexitcall) : bool
 dec $exit_prefix_valid(phpType7*, nat, bool) : bool

@@ -104,6 +104,8 @@ def $closure_callable(S, n) = true
   -- if $closure_capture_tasks(S.TODO, n) ++ $closure_capture_frames(S.FRAMES, n) = eps
   -- if plexical* = $closure_lexicals(pfunction.CODE.EXPRESSIONS)
   -- if $closure_capture_prefix(S, pitem*, plexical*, |plexical*|)
+  -- if ~$internal_closure_object(S, n) \/ $internal_closure_scope_valid(S, n)
+
 def $closure_callable(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin

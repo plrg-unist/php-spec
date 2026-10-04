@@ -445,7 +445,16 @@ the parent's actual state when a child links and filling constants, instance
 defaults and statics in order before allocating an object. Eight new source
 agreements and three programs/172 state premises check private shadows, strict
 failure/retry, reentry, link-time copies and template ownership after collection.
-Object-bearing defaults and wider consumers remain open.
+Deferred static/no-use Closure and function/method callable defaults now retain
+shared template object identities through arrays, constant aliases, retry and
+reentry. Nine new source agreements and six programs/335 premises retain their
+separate cuts. One actual trait-import source and 98 premises distinguish the
+first cached target from each fresh called class/publication prefix, including
+retired source objects and namespace fallback. Other object producers and wider
+property/callable consumers remain open. Children created by cached property
+method callables retain lexical and called scope after wrapped or cloned makers
+retire, including private `new self` defaults. Two sources and 170 state premises
+retain separate accepted cutoffs.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -471,8 +480,10 @@ class/alias static cells. Property/constant composition preserves invariant sour
 types, pure evaluated compatibility, per-import identities and static sharing.
 Imported deferred instance defaults use owning class templates. Raw trait-property
 warnings retain selected cells and operand ownership through handlers and abrupt
-opcode completion. Effectful collisions, strict deferred-value comparison before
-type conversion and readonly storage remain required. A bounded
+opcode completion. Deferred collision operands compare before type conversion;
+direct `E_STRICT` warnings are recorded and delivered after class publication.
+Broader effectful collisions, dependency caching and readonly storage remain
+required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
@@ -531,7 +542,12 @@ static children add no receiver owner and nonstatic children own their receiver.
 preserves named-hole order, live reference operands and borrowed method receipts.
 Failed lookup stages slow scalar warnings and forced Stringable conversion.
 Other internal and user-return keyword warning consumers remain required;
-magic/autoload and transformed binding remain open.
+magic/autoload and complete binding remain open.
+[Current Closure and fake binding](docs/semantics/CLOSURE-CURRENT-BINDING.md)
+returns the exact immediate ordinary Closure and preserves `__invoke` capture
+identity. Transformed fake bindings keep source statics and own only their new
+receiver; returned source Closures retain the genuine internal scope after makers
+retire. Complete REAL warning/unbinding and temporary-current consumers remain required.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.
@@ -599,6 +615,11 @@ and recursive conversion consumers retain their own constructor.
 [Dynamic object `::class`](coverage/semantics/object-class-name-review.json) returns
 the real class name without a cast, preserving child effects, compiled lines and
 captured missing-CV reads through handlers. Broader constrained conversion remains open.
+[Ordinary dynamic NEW](coverage/semantics/dynamic-new-review.json) captures a string or object
+class selector before arguments and releases selector temporaries before class work.
+Compiled keyword scopes survive recursive constructors and retired receiving Closures;
+cached property method callables retain lexical and called class separately.
+Autoload and ordinary named keyword NEW remain required.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

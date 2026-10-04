@@ -145,11 +145,15 @@ def $class_constant_replace_fact((PFFACT pcpath_other pvalue_old z) :: pffact*, 
   -- if pcpath_other =/= pcpath
 
 dec $class_constant_replace_operand(ppexprdone*, pcpath, pvalue) : ppexprdone*
+dec $class_constant_expression_operand(ppexprdone) : bool
+def $class_constant_expression_operand(PPCEXPR pcpath n pvalue?) = true
+def $class_constant_expression_operand(ppexprdone) = false -- otherwise
 def $class_constant_replace_operand(eps, pcpath, pvalue) = eps
 def $class_constant_replace_operand((PPCEXPR pcpath n pvalue_old?) :: ppexprdone_tail*, pcpath, pvalue) = (PPCEXPR pcpath n (pvalue)) :: $class_constant_replace_operand(ppexprdone_tail*, pcpath, pvalue)
 def $class_constant_replace_operand((PPCEXPR pcpath_other n pvalue_old?) :: ppexprdone_tail*, pcpath, pvalue) = (PPCEXPR pcpath_other n pvalue_old?) :: $class_constant_replace_operand(ppexprdone_tail*, pcpath, pvalue)
   -- if pcpath_other =/= pcpath
-def $class_constant_replace_operand((PPCEFFECT pcpath_effect) :: ppexprdone_tail*, pcpath, pvalue) = (PPCEFFECT pcpath_effect) :: $class_constant_replace_operand(ppexprdone_tail*, pcpath, pvalue)
+def $class_constant_replace_operand(ppexprdone :: ppexprdone_tail*, pcpath, pvalue) = ppexprdone :: $class_constant_replace_operand(ppexprdone_tail*, pcpath, pvalue)
+  -- if ~$class_constant_expression_operand(ppexprdone)
 
 def $ppclass_constant_value(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z) = P
   -- if P.COMPLETION =/= PPCNORMAL
