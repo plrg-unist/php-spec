@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "target": "PHP8.5.10 CLI NTS64-bit",
+  "status": "Independent semantic review accepted; current-parent integration pending.",
+  "baseline": "3f63e475bf50fe3d094cb7e273f5504584dc212a",
+  "implementation_commits": [
+    "ca5ac749d97eef3fa8b5af7987723b08cc79dfa0",
+    "9859ef7ad15417b73bd79f9b60d5df7eb0a54cf0",
+    "04a7351824fa2403915d9477f2c25492bf7b10ee"
+  ],
+  "implemented": [
+    "get_called_class uses authenticated CURRENT.CALLED_CLASS; ordinary functions/global Closures stop before saved caller methods. Inherited/forwarded methods, captured/rebound source Closures, eval and actual/saved handler frames retain the existing real class context.",
+    "Unscoped builtin captures observe invocation scope; explicit Closure->__invoke observes its retained Closure receiver. Ordered named/unpack/send effects and zero-arity checking precede scope errors.",
+    "Selected source/dynamic-name certificates and owner roots reuse198/199. Initial direct/literal zeroarg calls use TMP and omit the internal error frame; later cast-folded constants retain the generic result category and trace."
+  ],
+  "source_symbols": [
+    "Zend/zend_builtin_functions.c::ZEND_FUNCTION(get_called_class)",
+    "Zend/zend_execute_API.c::zend_get_called_scope",
+    "Zend/zend_compile.c::zend_compile_func_get_called_class",
+    "Zend/zend_vm_def.h::ZEND_GET_CALLED_CLASS"
+  ],
+  "author": {
+    "root": "/home/user/workspace/php-spec/.tools/introspection-called-class-current-14",
+    "catalogue": "tests/semantics/called_class_cases.json",
+    "initial34": {
+      "revision": "Uncommitted implementation on baseline; before adding the global TMP classifier incorporated in ca5ac749d.",
+      "input_fingerprint": "425303cb797cfbb7585b0eb482a8c9548a57328e9e9eae2e1b74fd3c7d24032a",
+      "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-current-14/.tools/method-runtime-da0j4w3v/report.json",
+      "counts": {
+        "normal": 18,
+        "php_error": 14,
+        "static_rejection": 2
+      },
+      "command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/called_class_cases.json",
+      "result": "pass34; all wrapper exits0; stable inputs; native archives are reused as recorded, without duplicate native credit."
+    },
+    "final_tmp_affected8": {
+      "revision": "ca5ac749d97eef3fa8b5af7987723b08cc79dfa0",
+      "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-current-14/.tools/method-runtime-x8yfvund/report.json",
+      "command": "python3 tests/semantics/method_runtime.py --catalogue .tools/called-class-tmp-selected.json",
+      "counts": {
+        "normal": 3,
+        "php_error": 3,
+        "static_rejection": 2
+      },
+      "result": "pass8; wrapper exits0; stable inputs. These overlap the initial34."
+    },
+    "finite5": {
+      "revision": "ca5ac749d97eef3fa8b5af7987723b08cc79dfa0",
+      "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-current-14/.tools/closure-call-protocol-0ltoi4uc/report.json",
+      "command": "python3 tests/semantics/called_class_protocol.py",
+      "assertions": 157,
+      "result": "pass5; each numeric exit0, true and empty stderr; stable inputs."
+    },
+    "compiler": {
+      "revision": "ca5ac749d97eef3fa8b5af7987723b08cc79dfa0",
+      "raw": "/home/user/workspace/php-spec/.tools/introspection-called-class-current-14/.tools/called-class-current-compile-223",
+      "command": ".tools/spectec/bin/p4spectec {elab,algo,struct} followed by ordered spec/semantics/modules.json paths",
+      "result": "all three exits0, empty stderr; exact command arrays retained in raw JSON."
+    },
+    "native_originals": [
+      "/home/user/workspace/php-spec/.tools/introspection-called-class-current-14/.tools/called-class-native-author223-9jnzhu3f",
+      "/home/user/workspace/php-spec/.tools/introspection-called-class-current-14/.tools/called-class-constant-target-native-n688hcez"
+    ]
+  },
+  "independent": {
+    "root": "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14",
+    "source41": {
+      "catalogue": "tests/semantics/called_class_review_cases.json",
+      "counts": {
+        "normal": 33,
+        "php_error": 4,
+        "static_rejection": 4
+      },
+      "command": "python3 tests/semantics/method_runtime.py --catalogue the recorded selected independent catalogue",
+      "segments": [
+        {
+          "revision": "e4b0bfe9f",
+          "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14/.tools/method-runtime-ktbgwhup/report.json",
+          "admitted_pass": 9,
+          "wrapper_exit": 1,
+          "stop": "Known but unimplemented Closure::fromCallable originally produced a false missing-class PHPerror."
+        },
+        {
+          "revision": "3fefed8b3",
+          "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14/.tools/method-runtime-7jg8azz1/report.json",
+          "admitted_pass": 10,
+          "wrapper_exit": 1,
+          "stop": "Bare @$missing reaches an existing Unsupported warning producer."
+        },
+        {
+          "revision": "bde46a51e",
+          "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14/.tools/method-runtime-1bz5mab4/report.json",
+          "admitted_pass": 22,
+          "wrapper_exit": 1,
+          "stop": "Echo @$missing reaches the same existing Unsupported producer."
+        }
+      ],
+      "result": "All41 maintained admitted cases passed once; stopping dependency controls are excluded from agreement. No admitted case remains unrun."
+    },
+    "finite10": {
+      "command": "python3 tests/semantics/called_class_review_protocol.py",
+      "assertions": 321,
+      "segments": [
+        {
+          "revision": "6a210c930",
+          "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14/.tools/closure-call-protocol-ym7wytxk/report.json",
+          "pass": 9,
+          "assertions": 289,
+          "wrapper_exit": 1,
+          "stop": "Tenth fixture incorrectly required116 to reject an ancestry-compatible receiver-free closure scope row."
+        },
+        {
+          "revision": "c3f06244e",
+          "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14/.tools/closure-call-protocol-0nj8vs6b/report.json",
+          "pass": 1,
+          "assertions": 32,
+          "wrapper_exit": 0,
+          "scope": "Affected singleton now rejects CURRENT-only forgery and malformed missing-class closure origin;116 unchanged."
+        }
+      ],
+      "result": "All10 current finite fixtures passed across the recorded original9 and corrected singleton; row wellformedness is distinct from reachable execution-history authentication."
+    },
+    "initial_vs_later_constant4": {
+      "revision": "c3f06244e",
+      "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14/.tools/method-runtime-ui0j58em/report.json",
+      "command": "python3 tests/semantics/method_runtime.py --catalogue recorded four cast/concat cases",
+      "result": "pass4, wrapper exit0; these complete the author38 catalogue on the04a735182 source correction."
+    },
+    "closure_entry_controls3": {
+      "revision": "c3f06244e",
+      "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14/.tools/called-class-controls-hl9eypxp/report.json",
+      "command": "python3 tests/semantics/called_class_controls.py",
+      "result": "wrapper exit0: exact Closure::fromCallable Unsupported, model process1; Missing::fromCallable PHPerror255, process0; namespaced user N\\Closure::fromCallable normal0, process0. The first control has zero semantic agreement."
+    },
+    "native_originals": "/home/user/workspace/php-spec/.tools/called-class-native-independent223-4gagqp55/report.json",
+    "review": "Independent source-route, evaluation-priority, current/saved frame, owner cleanup and source-certificate review approved223 and both narrow follow-ups."
+  },
+  "failures_retained": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-current-14/.tools/method-runtime-wtui3ejg/report.json",
+      "cause": "Initial literal builtin admission lacked get_called_class; corrected narrowly in198 and rechecked."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14/.tools/method-runtime-ktbgwhup/report.json",
+      "cause": "Closure::fromCallable is a separate unfinished core API, now explicit Unsupported rather than a false missing-class error; native witness preserved."
+    },
+    {
+      "reports": [
+        "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14/.tools/method-runtime-7jg8azz1/report.json",
+        "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14/.tools/method-runtime-1bz5mab4/report.json"
+      ],
+      "cause": "Two undefined-variable suppression producers remain Unsupported, with maintained separate boundary controls and zero source agreement."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14/.tools/closure-call-protocol-ym7wytxk/report.json",
+      "cause": "Only the overstrong116 fixture assertion was corrected; production116 and paused return work are unchanged."
+    }
+  ],
+  "runtime": {
+    "rebuilt": false,
+    "identity": "/home/user/workspace/php-spec/.tools/introspection-called-class-current-14/.tools/called-class-runtime-223/identity.json",
+    "independent_identity": "/home/user/workspace/php-spec/.tools/introspection-called-class-review-14/.tools/called-class-review-validation/identity.json",
+    "environment": "LC_ALL=C, TZ=UTC; recorded profile disables OPcache/JIT and fixes diagnostics/assertions. Original per-case argv, cwd, environment, exits and streams remain authoritative.",
+    "resource_limits": "Existing cap5; serial jobs1 within the assigned slot. No native semantic fallback."
+  },
+  "limits": [
+    "Known Closure::fromCallable body, builtin Closure rebinding, builtin API callback targets, unsupported suspension and broader reference-result consumers remain separate dependencies. returns_verify is paused; no667ec or unaccepted returns dependency was used.",
+    "Bounded source/frame evidence does not establish complete core/family equivalence or a fresh offline rebuild."
+  ],
+  "installation": null,
+  "recovery": "Raw original sources, command arrays, runtime/tool identity, checked inputs, model/native outputs and failures stay outside Git at the linked ignored .tools paths. Metadata edits do not renew semantic credit."
+}
