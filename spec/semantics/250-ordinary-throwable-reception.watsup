@@ -26,15 +26,20 @@ def $ordinary_internal_string_evidence(S, n) = true
   -- if $throwable_nominal(pthrowable.KIND, $ptascii("Stringable"), 4)
 def $ordinary_internal_string_evidence(S, n) = false -- otherwise
 
-dec $ordinary_internal_received_value(pstate, pctorcall, nat, pvalue) : bool
-def $ordinary_internal_received_value(S, pctorcall, n, PSTRING ptbytes) = true
+dec $ordinary_internal_string_input(pstate, pctorcall, nat) : bool
+def $ordinary_internal_string_input(S, pctorcall, n) = true
   -- if ~$exit_strict(S, pctorcall.SITE)
   -- if $default_internal_string(pctorcall.BASE, n)
   -- if $named_slot_at(pctorcall.SENT, n) = NAMED_SENT (KNOWN (POBJECT n_object))
   -- if $ordinary_internal_string_evidence(S, n_object)
+def $ordinary_internal_string_input(S, pctorcall, n) = false -- otherwise
+dec $ordinary_internal_received_value(pstate, pctorcall, nat, pvalue) : bool
+def $ordinary_internal_received_value(S, pctorcall, n, PSTRING ptbytes) = true
+  -- if $ordinary_internal_string_input(S, pctorcall, n)
 def $ordinary_internal_received_value(S, pctorcall, n, pvalue) = true
   -- if $default_internal_warning(S, pctorcall, n) = ((ptbytes, pvalue))
 def $ordinary_internal_received_value(S, pctorcall, n, pvalue) = true
+  -- if ~$ordinary_internal_string_input(S, pctorcall, n)
   -- if $default_internal_warning(S, pctorcall, n) = eps
   -- if S_value = $default_internal_parameter(S, pctorcall, n, $named_slot_at(pctorcall.SENT, n))
   -- if S_value.COMPLETION = NORMAL
