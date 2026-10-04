@@ -120,7 +120,7 @@ def $destructor_waiting(S, eps) = false
 def $destructor_waiting(S, (HOBJECT n) :: pnode*) = true
   -- if ~(n <- S.DESTRUCTION.CALLED)
   -- if $destructor_method(S, n) =/= eps
-def $destructor_waiting(S, pnode :: pnode_tail*) = $destructor_waiting(S, pnode_tail*) -- otherwise
+def $destructor_waiting(S, pnode :: pnode_tail*) = $destructor_waiting(S, pnode_tail*) -- if ~$destructor_uncalled_node(S, pnode)
 def $destructor_reverse(eps) = eps
 def $destructor_reverse(preqbytes :: preqbytes_tail*) = $destructor_reverse(preqbytes_tail*) ++ [preqbytes]
 def $destructor_all(n, n_end) = eps -- if $(n >= n_end)
@@ -451,7 +451,6 @@ def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S[.FRAMES = pframe_
 def $consumer_destructor_target(S, METHOD_TARGET n porigin) = true
   -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__destruct")
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
 def $consumer_destructor_target(S, pcalltarget) = false -- otherwise
 
 def $destructor_numbers_valid(eps, n_end) = true
