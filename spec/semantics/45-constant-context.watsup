@@ -13,6 +13,7 @@ syntax pfitem = PFITEM pvalue? pfkey bool pvalueclass? | PFSPREAD pvalue? pvalue
 syntax pfbuild = PFBUILT pstate pvalueclass? | PFDEFER | PFSTATIC text | PFSTATICBYTES ptbytes
 var F : pfstate
 dec $trait_fold_owner(pfstate) : porigin?
+dec $pfpure_value(pfstate, pcpath, pstate, int) : pfstate?
 
 ;; Append/spread use the successful operation's existing NEXT history. Failure
 ;; diagnostics and values remain the responsibility of that operation.
@@ -192,17 +193,21 @@ def $pfdispatch(F, pcpath, PFOTHER, z) = F[.VALUE = eps]
   -- if F.CONSTANT
 
 ;; Both children are visited even when the first cannot fold.
+def $pfpure_value(F, pcpath, S, z) = ($pfremember(F[.MEMORY = S], pcpath, (pvalue), z))
+  -- if F.RECORD = eps
+  -- if $constant_state(S) = (S)
+  -- if S.RESULT = KNOWN pvalue
+def $pfpure_value(F, pcpath, S, z) = eps -- otherwise
 dec $pfbinary(pfstate, pcpath, pbin, pvalue?, pvalue?, int) : pfstate
 def $pfdispatch(F, pcpath, PFBINARY pbin expression_1 expression_2, z) = $pfbinary(F_right, pcpath, pbin, F_left.VALUE, F_right.VALUE, z)
   -- if F_left = $pffold(F, pcpath ++ [PCFIELD 0], expression_1, z)
   -- if F_right = $pffold(F_left, pcpath ++ [PCFIELD 1], expression_2, z)
 def $pfbinary(F, pcpath, pbin, pvalue_1?, pvalue_2?, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfbinary(F, pcpath, pbin, (pvalue_1), (pvalue_2), z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue), z)
+def $pfbinary(F, pcpath, pbin, (pvalue_1), (pvalue_2), z) = F_result
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if ~$pfwarning_binary(pbin)
-  -- if $constant_state($binary_apply(F.MEMORY, pbin, pvalue_1, pvalue_2, z)) = (S)
-  -- if S.RESULT = KNOWN pvalue
+  -- if $pfpure_value(F, pcpath, $binary_apply(F.MEMORY, pbin, pvalue_1, pvalue_2, z), z) = (F_result)
 def $pfbinary(F, pcpath, pbin, pvalue_1?, pvalue_2?, z) = F[.VALUE = eps]
   -- otherwise
 
@@ -210,11 +215,10 @@ dec $pfunary(pfstate, pcpath, punary, int) : pfstate
 def $pfdispatch(F, pcpath, PFUNARY punary expression, z) = $pfunary($pffold(F, pcpath ++ [PCFIELD 0], expression, z), pcpath, punary, z)
 def $pfunary(F, pcpath, punary, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfunary(F, pcpath, punary, z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue_result), z)
+def $pfunary(F, pcpath, punary, z) = F_result
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if F.VALUE = (pvalue)
-  -- if $constant_state($unary_apply(F.MEMORY, punary, pvalue, z)) = (S)
-  -- if S.RESULT = KNOWN pvalue_result
+  -- if $pfpure_value(F, pcpath, $unary_apply(F.MEMORY, punary, pvalue, z), z) = (F_result)
 def $pfunary(F, pcpath, punary, z) = F[.VALUE = eps]
   -- otherwise
 
@@ -297,6 +301,7 @@ def $pfarray(F, pcpath, pfitem*, z) = F[.VALUE = eps]
   -- if ~$pfready(pfitem*)
 def $pfarray(F, pcpath, pfitem*, z) = $pfbuilt(F, pcpath, $pfconstruct(S, n, pfitem*, z, $pfclass_array_start(F.CONSTANT, pfitem* = eps)), n, z)
   -- if $pfready(pfitem*)
+  -- if F.RECORD = eps
   -- if S = $allocate_array(F.MEMORY, $array_empty())
   -- if S.RESULT = KNOWN (PARRAY n)
 def $pfconstruct(S, n, eps, z, pvalueclass?) = PFBUILT S pvalueclass?
@@ -484,13 +489,12 @@ def $pfcast_kind_allowed(pcast, pvalue) = true -- otherwise
 dec $pfcast(pfstate, pcpath, pcast, int) : pfstate
 def $pfcast(F, pcpath, pcast, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfcast(F, pcpath, pcast, z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue_result), z)
+def $pfcast(F, pcpath, pcast, z) = F_result
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if F.VALUE = (pvalue)
   -- if ~$pfcast_nan(pvalue)
   -- if $pfcast_kind_allowed(pcast, pvalue)
-  -- if $constant_state($cast_apply(F.MEMORY, pcast, pvalue, z)) = (S)
-  -- if S.RESULT = KNOWN pvalue_result
+  -- if $pfpure_value(F, pcpath, $cast_apply(F.MEMORY, pcast, pvalue, z), z) = (F_result)
 def $pfcast(F, pcpath, pcast, z) = F[.VALUE = eps] -- otherwise
 def $pfdispatch(F, pcpath, PFCAST pcast expression, z) = $pfcast($pffold(F, pcpath ++ [PCFIELD 0], expression, z), pcpath, pcast, z)
 def $pfdispatch(F, pcpath, PFCAST_OBJECT expression, z) = $pffold(F, pcpath ++ [PCFIELD 0], expression, z)[.VALUE = eps]
@@ -671,11 +675,10 @@ dec $pfbitnot(pfstate, pcpath, int) : pfstate
 def $pfdispatch(F, pcpath, PFBITNOT expression, z) = $pfbitnot($pffold(F, pcpath ++ [PCFIELD 0], expression, z), pcpath, z)
 def $pfbitnot(F, pcpath, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfbitnot(F, pcpath, z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue_result), z)
+def $pfbitnot(F, pcpath, z) = F_result
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if F.VALUE = (pvalue)
-  -- if $constant_state($bitnot_apply(F.MEMORY, pvalue, z)) = (S)
-  -- if S.RESULT = KNOWN pvalue_result
+  -- if $pfpure_value(F, pcpath, $bitnot_apply(F.MEMORY, pvalue, z), z) = (F_result)
 def $pfbitnot(F, pcpath, z) = F[.VALUE = eps]
   -- otherwise
 

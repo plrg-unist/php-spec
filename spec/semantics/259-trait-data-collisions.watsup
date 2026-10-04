@@ -65,6 +65,41 @@ def $pfwarned(F, pcpath, S) = F[.MEMORY = S[.EVENTS = F.MEMORY.EVENTS]][.RECORDE
   -- if n_events = $nabs($(|S.EVENTS| - |F.MEMORY.EVENTS|))
   -- if $trait_record_events(PORIGIN F.SOURCE.ID pcpath, S.EVENTS[|F.MEMORY.EVENTS|:n_events]) = (pfdiagnostic*)
 
+;; A source-owned scratch operation always records its raw diagnostics. The
+;; real handler, reporting mask and display destination are used at delivery.
+def $pfpure_value(F, pcpath, S, z) = ($pfremember(F_result, pcpath, (pvalue), z))
+  -- if $trait_recording(F, pcpath)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = F.MEMORY.TODO
+  -- if S.RESULT = KNOWN pvalue
+  -- if F_result = $pfwarned(F, pcpath, S)
+dec $trait_record_array(pfstate, pcpath, nat, pfitem*, int, pvalueclass?) : pfstate
+dec $trait_record_array_key(pfstate, pcpath, nat, pvalue, pfkey, pfitem*, int, pvalueclass?, pvalueclass?) : pfstate
+dec $trait_record_array_insert(pfstate, pcpath, nat, pkey?, pvalue, pfitem*, int, pvalueclass?, pvalueclass?) : pfstate
+def $pfarray(F, pcpath, pfitem*, z) = $trait_record_array(F[.MEMORY = S], pcpath, n, pfitem*, z, $pfclass_array_start(F.CONSTANT, pfitem* = eps))
+  -- if $trait_recording(F, pcpath)
+  -- if $pfready(pfitem*)
+  -- if S = $allocate_array(F.MEMORY, $array_empty())
+  -- if S.RESULT = KNOWN (PARRAY n)
+def $trait_record_array(F, pcpath, n, eps, z, pvalueclass?) = $pfclass_record($pfremember(F, pcpath, (PARRAY n), z), pcpath, pvalueclass?)
+def $trait_record_array(F, pcpath, n, (PFITEM (pvalue) pfkey false pvalueclass_item?) :: pfitem*, z, pvalueclass?) = $trait_record_array_key(F, pcpath, n, pvalue, pfkey, pfitem*, z, pvalueclass?, pvalueclass_item?)
+def $trait_record_array_key(F, pcpath, n, pvalue, PFNO_KEY, pfitem*, z, pvalueclass?, pvalueclass_item?) = $trait_record_array_insert(F, pcpath, n, eps, pvalue, pfitem*, z, pvalueclass?, pvalueclass_item?)
+def $trait_record_array_key(F, pcpath, n, pvalue, PFKEY (pvalue_key), pfitem*, z, pvalueclass?, pvalueclass_item?) = $trait_record_array_insert(F_key, pcpath, n, (S_key.KEY), pvalue, pfitem*, z, pvalueclass?, pvalueclass_item?)
+  -- if S_key = $key_value(F.MEMORY, pvalue_key, false, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if F_key = $pfwarned(F, pcpath, S_key)
+def $trait_record_array_key(F, pcpath, n, pvalue, pfkey, pfitem*, z, pvalueclass?, pvalueclass_item?) = F[.VALUE = eps] -- otherwise
+def $trait_record_array_insert(F, pcpath, n, pkey?, pvalue, pfitem*, z, pvalueclass?, pvalueclass_item?) = $trait_record_array(F_insert, pcpath, n, pfitem*, z, $pfclass_insert(pvalueclass?, F.MEMORY.ARRAYS[n].NEXT, pkey?, pvalueclass_item?))
+  -- if S_insert = $literal_insert(F.MEMORY, n, pkey?, pvalue, z)
+  -- if S_insert.COMPLETION = NORMAL
+  -- if F_insert = $pfwarned(F, pcpath, S_insert)
+def $trait_record_array_insert(F, pcpath, n, pkey?, pvalue, pfitem*, z, pvalueclass?, pvalueclass_item?) = F[.VALUE = eps] -- otherwise
+def $trait_record_array(F, pcpath, n, (PFSPREAD (PARRAY n_source) pvalueclass_source?) :: pfitem*, z, pvalueclass?) = $trait_record_array(F_spread, pcpath, n, pfitem*, z, $pfclass_spread(pvalueclass?, F.MEMORY.ARRAYS[n].NEXT, pvalueclass_source?))
+  -- if S_spread = $array_unpack(F.MEMORY, n, PARRAY n_source, z)
+  -- if S_spread.COMPLETION = NORMAL
+  -- if F_spread = $pfwarned(F, pcpath, S_spread)
+def $trait_record_array(F, pcpath, n, pfitem*, z, pvalueclass?) = F[.VALUE = eps] -- otherwise
+
 dec $trait_value_notices(ptraitdatavalue) : pfdiagnostic*
 def $trait_value_notices(TRAITVALUE S pvalue pfdiagnostic*) = pfdiagnostic*
 def $trait_value_notices(TRAITVALUEUNKNOWN text pfdiagnostic*) = pfdiagnostic*
