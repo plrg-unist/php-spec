@@ -166,26 +166,24 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall) = [PSTRING pdircon
   -- if pdircontext.CALL = pconfigcall
 
 dec $dir_resume(pstate, pdirresponse) : pstate
-def $dir_resume(S, DIR_CHANGED n_nonce n_cwd* n_requested* n_next*) = S[.DIRCONTEXT = eps][.FILECWD = (n_next*)][.TODO = pdircontext.TAIL][.COMPLETION = NORMAL][.SERVICELEFT = eps][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pdircontext.CALL.SITE)]
-  -- if $dir_response_valid(S, DIR_CHANGED n_nonce n_cwd* n_requested* n_next*)
+dec $dir_resume_checked(pstate, pdirresponse, bool) : pstate
+def $dir_resume(S, pdirresponse) = $dir_resume_checked(S, pdirresponse, $dir_response_valid(S, pdirresponse))
+def $dir_resume_checked(S, DIR_CHANGED n_nonce n_cwd* n_requested* n_next*, true) = S[.DIRCONTEXT = eps][.FILECWD = (n_next*)][.TODO = pdircontext.TAIL][.COMPLETION = NORMAL][.SERVICELEFT = eps][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pdircontext.CALL.SITE)]
   -- if S.DIRCONTEXT = (pdircontext)
-def $dir_resume(S, DIR_FAILED n_nonce n_cwd* n_requested* n_error* n_errno) = $diagnostic(S_ready, "Warning", $ptascii("chdir(): ") ++ n_error* ++ $ptascii(" (errno ") ++ $decimal_integer(n_errno) ++ $ptascii(")"), pdircontext.CALL.LINE)[.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if $dir_response_valid(S, DIR_FAILED n_nonce n_cwd* n_requested* n_error* n_errno)
+def $dir_resume_checked(S, DIR_FAILED n_nonce n_cwd* n_requested* n_error* n_errno, true) = $diagnostic(S_ready, "Warning", $ptascii("chdir(): ") ++ n_error* ++ $ptascii(" (errno ") ++ $decimal_integer(n_errno) ++ $ptascii(")"), pdircontext.CALL.LINE)[.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.DIRCONTEXT = (pdircontext)
   -- if ~$error_handler_eligible(S, 2)
   -- if S_ready = S[.DIRCONTEXT = eps][.TODO = pdircontext.TAIL][.COMPLETION = NORMAL][.SERVICELEFT = eps][.ORIGIN = (pdircontext.CALL.SITE)]
-def $dir_resume(S, DIR_FAILED n_nonce n_cwd* n_requested* n_error* n_errno) = $error_dispatch(S_ready, 2, $dir_warning_message(n_error*, n_errno), pdircontext.CALL.LINE, DIAGNOSTIC "Warning" $dir_warning_message(n_error*, n_errno) pdircontext.CALL.LINE, CHDIR_WARNING_RESULT pdircontext n_error* n_errno)
-  -- if $dir_response_valid(S, DIR_FAILED n_nonce n_cwd* n_requested* n_error* n_errno)
+def $dir_resume_checked(S, DIR_FAILED n_nonce n_cwd* n_requested* n_error* n_errno, true) = $error_dispatch(S_ready, 2, $dir_warning_message(n_error*, n_errno), pdircontext.CALL.LINE, DIAGNOSTIC "Warning" $dir_warning_message(n_error*, n_errno) pdircontext.CALL.LINE, CHDIR_WARNING_RESULT pdircontext n_error* n_errno)
   -- if S.DIRCONTEXT = (pdircontext)
   -- if $error_handler_eligible(S, 2)
   -- if S_ready = S[.DIRCONTEXT = eps][.COMPLETION = NORMAL][.SERVICELEFT = eps][.ORIGIN = (pdircontext.CALL.SITE)]
-def $dir_resume(S, pdirresponse) = S[.COMPLETION = UNSUPPORTED "invalid chdir provider response"]
-  -- if ~$dir_response_valid(S, pdirresponse)
+def $dir_resume_checked(S, pdirresponse, false) = S[.COMPLETION = UNSUPPORTED "invalid chdir provider response"]
 dec $dir_continue(pstate, pdirresponse) : pstate
-def $dir_continue(S, pdirresponse) = $drive_steps(S_next, n)
+dec $dir_continue_result(pstate, pstate) : pstate
+def $dir_continue(S, pdirresponse) = $dir_continue_result(S, $dir_resume(S, pdirresponse))
+def $dir_continue_result(S, S_next) = $drive_steps(S_next, n)
   -- if S.SERVICELEFT = (n)
-  -- if S_next = $dir_resume(S, pdirresponse)
   -- if S_next.COMPLETION = NORMAL
-def $dir_continue(S, pdirresponse) = S_next
-  -- if S_next = $dir_resume(S, pdirresponse)
+def $dir_continue_result(S, S_next) = S_next
   -- if S_next.COMPLETION =/= NORMAL
