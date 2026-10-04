@@ -345,37 +345,37 @@ def $stdclass_raw_undefined(S, pvalue, ptbytes) = false -- otherwise
 ;; bucket is copied into the value target. The bucket pointer is borrowed.
 ;; The temporary cursor certificate records that selected table without owning
 ;; it; callback COW may replace the object's live table before the copy.
-dec $object_key_mark(piterator*, nat, nat) : piterator*
-def $object_key_mark(eps, n, n_table) = eps
-def $object_key_mark((OBJECTITER n n_object n_position b_ref) :: piterator_tail*, n, n_table) = (OBJECTKEYITER n n_object n_position b_ref n_table) :: piterator_tail*
-def $object_key_mark(piterator :: piterator_tail*, n, n_table) = piterator :: $object_key_mark(piterator_tail*, n, n_table)
+dec $object_key_mark(piterator*, nat, nat, nat) : piterator*
+def $object_key_mark(eps, n, n_table, n_serial) = eps
+def $object_key_mark((OBJECTITER n n_object n_position b_ref) :: piterator_tail*, n, n_table, n_serial) = (OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: piterator_tail*
+def $object_key_mark(piterator :: piterator_tail*, n, n_table, n_serial) = piterator :: $object_key_mark(piterator_tail*, n, n_table, n_serial)
   -- if $useriter_cursor_id(piterator) =/= n
 dec $object_key_restore(piterator*, nat) : piterator*
 def $object_key_restore(eps, n) = eps
-def $object_key_restore((OBJECTKEYITER n n_object n_position b_ref n_table) :: piterator_tail*, n) = (OBJECTITER n n_object n_position b_ref) :: piterator_tail*
+def $object_key_restore((OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: piterator_tail*, n) = (OBJECTITER n n_object n_position b_ref) :: piterator_tail*
 def $object_key_restore(piterator :: piterator_tail*, n) = piterator :: $object_key_restore(piterator_tail*, n)
   -- if $useriter_cursor_id(piterator) =/= n
-def $useriter_cursor_id(OBJECTKEYITER n n_object n_position b_ref n_table) = n
-def $iterator_lookup((OBJECTKEYITER n n_object n_position b_ref n_table) :: piterator_tail*, n) = (OBJECTKEYITER n n_object n_position b_ref n_table)
-def $iterator_lookup((OBJECTKEYITER n_other n_object n_position b_ref n_table) :: piterator_tail*, n) = $iterator_lookup(piterator_tail*, n)
+def $useriter_cursor_id(OBJECTKEYITER n n_object n_position b_ref n_table n_serial) = n
+def $iterator_lookup((OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: piterator_tail*, n) = (OBJECTKEYITER n n_object n_position b_ref n_table n_serial)
+def $iterator_lookup((OBJECTKEYITER n_other n_object n_position b_ref n_table n_serial) :: piterator_tail*, n) = $iterator_lookup(piterator_tail*, n)
   -- if n_other =/= n
-def $iterator_set((OBJECTKEYITER n n_object n_position b_ref n_table) :: piterator_tail*, piterator) = piterator :: piterator_tail*
+def $iterator_set((OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: piterator_tail*, piterator) = piterator :: piterator_tail*
   -- if $useriter_cursor_id(piterator) = n
-def $iterator_set((OBJECTKEYITER n_other n_object n_position b_ref n_table) :: piterator_tail*, piterator) = (OBJECTKEYITER n_other n_object n_position b_ref n_table) :: $iterator_set(piterator_tail*, piterator)
+def $iterator_set((OBJECTKEYITER n_other n_object n_position b_ref n_table n_serial) :: piterator_tail*, piterator) = (OBJECTKEYITER n_other n_object n_position b_ref n_table n_serial) :: $iterator_set(piterator_tail*, piterator)
   -- if $useriter_cursor_id(piterator) =/= n_other
-def $iterator_remove((OBJECTKEYITER n n_object n_position b_ref n_table) :: piterator_tail*, n) = piterator_tail*
-def $iterator_remove((OBJECTKEYITER n_other n_object n_position b_ref n_table) :: piterator_tail*, n) = (OBJECTKEYITER n_other n_object n_position b_ref n_table) :: $iterator_remove(piterator_tail*, n)
+def $iterator_remove((OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: piterator_tail*, n) = piterator_tail*
+def $iterator_remove((OBJECTKEYITER n_other n_object n_position b_ref n_table n_serial) :: piterator_tail*, n) = (OBJECTKEYITER n_other n_object n_position b_ref n_table n_serial) :: $iterator_remove(piterator_tail*, n)
   -- if n_other =/= n
-def $iterators_prune((OBJECTKEYITER n n_object n_position b_ref n_table) :: piterator_tail*, pnode*) = (OBJECTKEYITER n n_object n_position b_ref n_table) :: $iterators_prune(piterator_tail*, pnode*)
+def $iterators_prune((OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: piterator_tail*, pnode*) = (OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: $iterators_prune(piterator_tail*, pnode*)
   -- if $heap_member(HOBJECT n_object, pnode*)
-def $iterators_prune((OBJECTKEYITER n n_object n_position b_ref n_table) :: piterator_tail*, pnode*) = $iterators_prune(piterator_tail*, pnode*)
+def $iterators_prune((OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: piterator_tail*, pnode*) = $iterators_prune(piterator_tail*, pnode*)
   -- if ~$heap_member(HOBJECT n_object, pnode*)
 def $error_task_iterator(OBJECT_FOREACH_KEY pobjectforeach) = [pobjectforeach.ITERATOR]
 def $error_task_iterator(ERROR_HANDLER_INVOKE perrorcall) = $error_task_iterator(perrorcall.RESUME)
 def $error_task_iterator(ERROR_HANDLER_RESULT perrorcall) = $error_task_iterator(perrorcall.RESUME)
-def $error_keep_iterators((OBJECTKEYITER n n_object n_position b_ref n_table) :: piterator_tail*, n_keep*) = (OBJECTKEYITER n n_object n_position b_ref n_table) :: $error_keep_iterators(piterator_tail*, n_keep*)
+def $error_keep_iterators((OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: piterator_tail*, n_keep*) = (OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: $error_keep_iterators(piterator_tail*, n_keep*)
   -- if n <- n_keep*
-def $error_keep_iterators((OBJECTKEYITER n n_object n_position b_ref n_table) :: piterator_tail*, n_keep*) = $error_keep_iterators(piterator_tail*, n_keep*)
+def $error_keep_iterators((OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: piterator_tail*, n_keep*) = $error_keep_iterators(piterator_tail*, n_keep*)
   -- if ~(n <- n_keep*)
 
 dec $object_member_tail(ptbytes, nat) : preqbytes
@@ -428,7 +428,7 @@ dec $object_foreach_deliver(pstate, nat, nat, statement, int, ptbytes, poperand,
 def $object_foreach_deliver(S, n, n_object, statement, z, ptbytes, poperand, b_ref) = $foreach_body(S, n, HOBJECT n_object, statement, z, KSTRING preqbytes, poperand, b_ref)
   -- if $object_foreach_notice(statement, ptbytes) = eps
   -- if (preqbytes_notice?, preqbytes) = $object_member_name(ptbytes)
-def $object_foreach_deliver(S, n, n_object, statement, z, ptbytes, poperand, b_ref) = $error_dispatch(S[.ITERATORS = $object_key_mark(S.ITERATORS, n, n_table)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8, preqbytes_warning, z, DIAGNOSTIC "Notice" preqbytes_warning z, OBJECT_FOREACH_KEY pobjectforeach)
+def $object_foreach_deliver(S, n, n_object, statement, z, ptbytes, poperand, b_ref) = $error_dispatch(S[.ITERATORS = $object_key_mark(S.ITERATORS, n, n_table, n_serial)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8, preqbytes_warning, z, DIAGNOSTIC "Notice" preqbytes_warning z, OBJECT_FOREACH_KEY pobjectforeach)
   -- if S.TODO = ptask :: ptask_tail*
   -- if $object_foreach_notice(statement, ptbytes) = (preqbytes_warning)
   -- if S.ORIGIN = (porigin)
@@ -492,7 +492,7 @@ def $object_foreach_valid(S, pobjectforeach) = true
   -- if $object_foreach_serial_valid(S, pobjectforeach)
   -- if $startup_bytes(pobjectforeach.KEY)
   -- if $object_foreach_notice(statement, pobjectforeach.KEY) = (preqbytes)
-  -- if $iterator_lookup(S.ITERATORS, pobjectforeach.ITERATOR) = (OBJECTKEYITER pobjectforeach.ITERATOR pobjectforeach.OBJECT pobjectforeach.POSITION pobjectforeach.REF pobjectforeach.TABLE)
+  -- if $iterator_lookup(S.ITERATORS, pobjectforeach.ITERATOR) = (OBJECTKEYITER pobjectforeach.ITERATOR pobjectforeach.OBJECT pobjectforeach.POSITION pobjectforeach.REF pobjectforeach.TABLE pobjectforeach.SERIAL)
   -- if $object_foreach_tasks_count(S.TODO, pobjectforeach.ITERATOR) = 1
 def $object_foreach_valid(S, pobjectforeach) = false -- otherwise
 def $task_nodes(OBJECT_FOREACH_KEY pobjectforeach) = [HOBJECT pobjectforeach.OBJECT]
