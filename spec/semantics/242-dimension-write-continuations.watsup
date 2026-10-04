@@ -45,9 +45,11 @@ dec $key_write_insert(pstate, pkeywrite) : pstate
 dec $key_write_dispatch(pstate, pkeywrite) : pstate
 dec $key_write_single(pstate, pkeywrite) : bool
 dec $key_write_resume(pstate, pkeywrite) : pstate
-dec $key_write_global(pstate, poperand, int) : pstate
-dec $key_write_global_value(pstate, poperand, pvalue, int) : pstate
-dec $key_write_global_name(pstate, nat*, int) : pstate
+dec $key_write_global(pstate, poperand, int, bool) : pstate
+dec $key_write_global_value(pstate, poperand, pvalue, int, bool) : pstate
+dec $key_write_global_name(pstate, poperand, nat*, int, bool) : pstate
+dec $global_rw_key_name(pstate, poperand, nat*, int) : pstate
+dec $key_write_missing_selection(pstate, pkeywrite) : bool
 dec $key_write_shape(pkeywrite) : bool
 dec $key_write_site(pstate, porigin, bool, porigin, bool) : bool
 dec $key_write_context(pstate, ptask*, porigin, bool) : bool
@@ -190,7 +192,6 @@ def $key_write_plan(S) = (pkeywriter)
   -- if $key_write_writer(S, porigin, ptask, $key_write_task_base(ptask, S.BASE, S.RESULT), S.RESULT) = (pkeywriter)
   -- if $key_write_root(S, pkeywriter.BASE)
   -- if $key_write_target_base(pkeywriter.BASE)
-  -- if ~$key_write_mode(ptask, ptask_tail*) \/ ~$key_write_global_root(pkeywriter.BASE)
   -- if $key_writer_base_source(S, pkeywriter)
 def $key_write_plan(S) = (pkeywriter)
   -- if S.ORIGIN = (porigin)
@@ -240,7 +241,7 @@ def $key_write_finish_roots(pkeywriter) = $task_nodes(pkeywriter.TASK) ++ $base_
   -- if $key_write_named_task(pkeywriter.TASK)
 def $task_nodes(KEY_WRITE_BASE pbase b) = eps
 def $task_nodes(KEY_WRITE_DIM poperand z b) = eps
-def $task_nodes(KEY_WRITE_GLOBAL poperand z) = eps
+def $task_nodes(KEY_WRITE_GLOBAL poperand z b) = eps
 def $task_nodes(KEY_WRITE_FINISH pkeywriter) = $key_write_finish_roots(pkeywriter)
 def $task_nodes(KEY_WRITE_RESULT pkeywrite) = $value_nodes(pkeywrite.READ.BASE)
   -- if ~pkeywrite.READ.GLOBAL
@@ -267,8 +268,8 @@ def $key_write_add_temporary(ptask :: ptask_tail*, porigin, n) = ptask :: $key_w
 rule PhpStep/key-write-null-temporary: S ~> S[.TODO = $key_write_add_temporary(ptask_tail*, porigin, n)][.STORE = S.STORE ++ [DEFINED PNULL]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.LOCATION = ROOT n][.RESULT = KNOWN PNULL]
   -- if S.TODO = (KEY_WRITE_BASE (BASE_PLACE porigin NOWHERE) b) :: ptask_tail*
   -- if n = |S.STORE|
-rule PhpStep/key-write-global-base: S ~> S[.TODO = (KEY_WRITE_GLOBAL poperand z) :: ptask_tail*]
-  -- if S.TODO = (KEY_WRITE_BASE (BASE_GLOBAL poperand z) false) :: ptask_tail*
+rule PhpStep/key-write-global-base: S ~> S[.TODO = (KEY_WRITE_GLOBAL poperand z b) :: ptask_tail*]
+  -- if S.TODO = (KEY_WRITE_BASE (BASE_GLOBAL poperand z) b) :: ptask_tail*
 
 def $key_write_dimension(S, poperand, z, b_rw) = $key_write_dispatch(S_array[.RESULT = KNOWN PNULL], pkeywrite)
   -- if S.ORIGIN = (porigin)
@@ -349,39 +350,41 @@ def $key_write_resume(S, pkeywrite) = $key_write_lookup(S, pkeywrite)
   -- if $key_write_single(S, pkeywrite)
 def $key_write_resume(S, pkeywrite) = $key_write_insert(S, pkeywrite)
   -- if pkeywrite.READ.PHASE = KEY_MISSING
+  -- if ~pkeywrite.READ.GLOBAL
   -- if $key_write_single(S, pkeywrite)
-def $key_write_resume(S, pkeywrite) = $key_write_global_value(S, pkeywrite.READ.INPUT, pvalue, pkeywrite.READ.LINE)
+def $key_write_resume(S, pkeywrite) = $key_write_global_value(S, pkeywrite.READ.INPUT, pvalue, pkeywrite.READ.LINE, pkeywrite.RW)
   -- if pkeywrite.READ.GLOBAL
   -- if pkeywrite.READ.PHASE = KEY_CV
   -- if S_key = $quiet_operand(S, pkeywrite.READ.INPUT)
   -- if S_key.RESULT = KNOWN pvalue
-def $key_write_resume(S, pkeywrite) = $key_write_global_name(S, pkeywrite.READ.NAME, pkeywrite.READ.LINE)
+def $key_write_resume(S, pkeywrite) = $key_write_global_name(S, pkeywrite.READ.INPUT, pkeywrite.READ.NAME, pkeywrite.READ.LINE, pkeywrite.RW)
   -- if pkeywrite.READ.GLOBAL
   -- if pkeywrite.READ.PHASE = KEY_ARRAY_NAME
 rule PhpStep/key-write-resume: S ~> $key_write_resume(S, pkeywrite)
   -- if S.TODO = (KEY_WRITE_RESULT pkeywrite) :: ptask_tail*
   -- if $key_write_valid(S, pkeywrite)
 
-def $key_write_global(S, poperand, z) = $key_write_dispatch(S, pkeywrite)
+def $key_write_global(S, poperand, z, b) = $key_write_dispatch(S, pkeywrite)
   -- if $error_missing_operand(S, poperand)
   -- if poperand = VARIABLE n_name* z_operand
   -- if S.ORIGIN = (porigin)
-  -- if pkeywrite = {READ {SITE porigin, GLOBAL true, MODE KEY_R, INPUT poperand, VALUE PNULL, BASE PNULL, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_CV, KEY KSTRING eps, NAME n_name*}, PLACE NOWHERE, RW false}
-def $key_write_global(S, poperand, z) = $key_write_global_value(S, poperand, pvalue, z)
+  -- if pkeywrite = {READ {SITE porigin, GLOBAL true, MODE KEY_R, INPUT poperand, VALUE PNULL, BASE PNULL, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_CV, KEY KSTRING eps, NAME n_name*}, PLACE NOWHERE, RW b}
+def $key_write_global(S, poperand, z, b) = $key_write_global_value(S, poperand, pvalue, z, b)
   -- if ~$error_missing_operand(S, poperand)
   -- if S_key = $quiet_operand(S, poperand)
   -- if S_key.RESULT = KNOWN pvalue
-def $key_write_global_value(S, poperand, PARRAY n, z) = $key_write_dispatch(S, pkeywrite)
+def $key_write_global_value(S, poperand, PARRAY n, z, b) = $key_write_dispatch(S, pkeywrite)
   -- if S.ORIGIN = (porigin)
-  -- if pkeywrite = {READ {SITE porigin, GLOBAL true, MODE KEY_R, INPUT poperand, VALUE PARRAY n, BASE PNULL, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_ARRAY_NAME, KEY KSTRING eps, NAME $ptascii("Array")}, PLACE NOWHERE, RW false}
-def $key_write_global_value(S, poperand, pvalue, z) = $key_write_global_name(S, n_name*, z)
+  -- if pkeywrite = {READ {SITE porigin, GLOBAL true, MODE KEY_R, INPUT poperand, VALUE PARRAY n, BASE PNULL, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_ARRAY_NAME, KEY KSTRING eps, NAME $ptascii("Array")}, PLACE NOWHERE, RW b}
+def $key_write_global_value(S, poperand, pvalue, z, b) = $key_write_global_name(S, poperand, n_name*, z, b)
   -- if ~$key_is_array(pvalue)
   -- if S_name = $stringify(S, pvalue, z)
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
-def $key_write_global_name(S, n_name*, z) = $key_write_done(S_place, S_place.LOCATION)
+def $key_write_global_name(S, poperand, n_name*, z, false) = $key_write_done(S_place, S_place.LOCATION)
   -- if S_place = $global_location(S, n_name*, z)
-rule PhpStep/key-write-global: S ~> $key_write_global(S, poperand, z)
-  -- if S.TODO = (KEY_WRITE_GLOBAL poperand z) :: ptask_tail*
+def $key_write_global_name(S, poperand, n_name*, z, true) = $global_rw_key_name(S, poperand, n_name*, z)
+rule PhpStep/key-write-global: S ~> $key_write_global(S, poperand, z, b)
+  -- if S.TODO = (KEY_WRITE_GLOBAL poperand z b) :: ptask_tail*
 
 ;; Source and constant guards authenticate forms, converted keys and notice
 ;; suffixes. Consistent dynamically selected bytes/places remain runtime facts.
@@ -428,7 +431,7 @@ def $key_writer_valid(S, pkeywriter, ptask*) = true
   -- if ~$key_append_task(pkeywriter.TASK)
   -- if $key_write_writer(S, pkeywriter.SITE, pkeywriter.TASK, pkeywriter.BASE, pkeywriter.RHS) = (pkeywriter[.TEMP = eps])
   -- if $key_write_target_base(pkeywriter.BASE)
-  -- if ~$key_write_mode(pkeywriter.TASK, ptask*) \/ ~$key_write_global_root(pkeywriter.BASE)
+  -- if ~$key_write_mode(pkeywriter.TASK, ptask*) \/ ~$key_write_global_root(pkeywriter.BASE) \/ ~$key_write_path_task(pkeywriter.TASK)
   -- if $key_writer_base_source(S, pkeywriter)
   -- if $key_write_rhs_source(S, pkeywriter)
   -- if $key_write_temporary_valid(S, pkeywriter)
@@ -475,7 +478,7 @@ def $key_write_shape(pkeywrite) = true
   -- if $key_selected_key(pkeywrite.READ.VALUE) = (pkeywrite.READ.KEY)
   -- if $key_value_selected(pkeywrite.READ.INPUT, pkeywrite.READ.VALUE)
 def $key_write_shape(pkeywrite) = false -- otherwise
-def $key_write_place_shape(pkeywrite) = (pkeywrite.PLACE = NOWHERE /\ ~pkeywrite.RW /\ pkeywrite.READ.BASE = PNULL)
+def $key_write_place_shape(pkeywrite) = (pkeywrite.PLACE = NOWHERE /\ pkeywrite.READ.BASE = PNULL)
   -- if pkeywrite.READ.GLOBAL
 def $key_write_place_shape(pkeywrite) = true
   -- if ~pkeywrite.READ.GLOBAL
@@ -495,6 +498,7 @@ def $key_write_valid(S, pkeywrite) = true
   -- if $code_expression_at_source(S, pkeywrite.READ.SITE, [PCFIELD 1]) = (pkeywrite.READ.LINE)
   -- if $key_read_input_source(S, pkeywrite.READ)
   -- if $key_write_shape(pkeywrite)
+  -- if $key_write_missing_selection(S, pkeywrite)
   -- if pkeywrite.READ.MODE = KEY_R
   -- if $key_write_place_shape(pkeywrite)
 def $key_write_valid(S, pkeywrite) = false -- otherwise

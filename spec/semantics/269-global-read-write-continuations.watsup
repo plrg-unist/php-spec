@@ -1,0 +1,42 @@
+;; FETCH_GLOBAL_RW converts a name before lookup. A missing lookup initializes
+;; null only after a returning callback; it replaces a callback-created reference
+;; rather than assigning null through that reference's constraints. Throws leave
+;; the callback's binding untouched. The original finish owns operands once.
+dec $global_rw_initialize(pstate, nat*) : pstate
+def $global_rw_initialize(S, n_name*) = $global_table_view(S_view[.ENV = (BIND n_name* n) :: $unbind(S_view.ENV, n_name*)][.STORE = S_view.STORE ++ [DEFINED PNULL]][.SYMBOLS = $symbol_add(S_view.SYMBOLS, n_name*)][.ALLOCATIONS = S_view.ALLOCATIONS ++ [HCELL n]][.CELL = n][.RESULT = KNOWN PNULL])
+  -- if S_view = $global_table_view(S)
+  -- if n = |S_view.STORE|
+
+def $global_rw_key_name(S, poperand, n_name*, z) = S_place
+  -- if S_place = $global_location(S, n_name*, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $global_rw_key_name(S, poperand, n_name*, z) = $key_write_done(S_place, S_place.LOCATION)
+  -- if S_place = $global_location(S, n_name*, z)
+  -- if S_place.COMPLETION = NORMAL
+  -- if $location_slot(S_place, S_place.LOCATION) = DEFINED pvalue
+def $global_rw_key_name(S, poperand, n_name*, z) = $key_write_dispatch(S, pkeywrite)
+  -- if ~$this_name(n_name*)
+  -- if ~$environment_blocked($global_table_view(S), n_name*)
+  -- if $error_missing_operand($global_table_view(S), VARIABLE n_name* z)
+  -- if S.ORIGIN = (porigin)
+  -- if pkeywrite = {READ {SITE porigin, GLOBAL true, MODE KEY_R, INPUT poperand, VALUE PSTRING n_name*, BASE PNULL, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_MISSING, KEY KSTRING eps, NAME n_name*}, PLACE NOWHERE, RW true}
+
+def $key_write_resume(S, pkeywrite) = $key_write_done(S_bound, ROOT S_bound.CELL)
+  -- if pkeywrite.READ.GLOBAL
+  -- if pkeywrite.RW
+  -- if pkeywrite.READ.PHASE = KEY_MISSING
+  -- if S_bound = $global_rw_initialize(S, pkeywrite.READ.NAME)
+
+def $key_write_shape(pkeywrite) = true
+  -- if pkeywrite.READ.GLOBAL
+  -- if pkeywrite.RW
+  -- if pkeywrite.READ.MODE = KEY_R
+  -- if pkeywrite.READ.PHASE = KEY_MISSING
+  -- if pkeywrite.READ.VALUE = PSTRING pkeywrite.READ.NAME
+  -- if pkeywrite.READ.KEY = KSTRING eps
+  -- if pkeywrite.READ.BASE = PNULL
+  -- if pkeywrite.READ.OWNERS = BASE_VALUE (KNOWN PNULL)
+def $key_write_missing_selection(S, pkeywrite) = $key_read_selection(S, pkeywrite.READ)
+  -- if pkeywrite.READ.GLOBAL
+  -- if pkeywrite.READ.PHASE = KEY_MISSING
+def $key_write_missing_selection(S, pkeywrite) = true -- otherwise
