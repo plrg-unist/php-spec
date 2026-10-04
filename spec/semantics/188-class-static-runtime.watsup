@@ -130,7 +130,7 @@ def $class_static_store_ordinary(S, porigin_requested, ptbytes, pvalue, z) = S_c
   -- if ptypeconversion =/= TYPEREJECT
   -- if S_converted = $typed_apply(S, ptypeconversion, z)
   -- if S_converted.COMPLETION =/= NORMAL
-def $class_static_store_ordinary(S, porigin_requested, ptbytes, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), z)
+def $class_static_store_ordinary(S, porigin_requested, ptbytes, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), z)
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
@@ -264,7 +264,7 @@ def $location_write(S, CLASS_STATIC ppropertyid, pvalue) = $class_static_store_v
 def $array_auto_init_check(S, CLASS_STATIC ppropertyid, z) = $array_auto_init_check(S, ROOT n_cell, z)
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
   -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
-def $array_auto_init_check(S, CLASS_STATIC ppropertyid, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot auto-initialize an array inside property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), z)
+def $array_auto_init_check(S, CLASS_STATIC ppropertyid, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot auto-initialize an array inside property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), z)
   -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
   -- if pclassstatic.STATE = PROP_INITIAL \/ pclassstatic.STATE = PROP_VALUE (DIRECT PNULL)

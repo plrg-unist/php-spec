@@ -176,11 +176,14 @@ def $class_constant_fetch(S, KNOWN (PSTRING ptbytes_class), ptbytes, z) = $class
 def $class_constant_fetch(S, KNOWN (PSTRING ptbytes_class), ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ ptbytes_class ++ $ptascii("\" not found"), z)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = eps
 def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Undefined constant ") ++ $class_constant_message_class(S, pclassdesc, ptbytes_class) ++ $ptascii("::") ++ ptbytes, z)
+  -- if pclassdesc.KIND =/= "trait"
   -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = eps
 def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access ") ++ $property_visibility_name(pclassconstantdesc.VISIBILITY) ++ $ptascii(" constant ") ++ $class_constant_message_class(S, pclassdesc, ptbytes_class) ++ $ptascii("::") ++ ptbytes, z)
+  -- if pclassdesc.KIND =/= "trait"
   -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = (pclassconstantdesc)
   -- if ~$class_constant_visible(S, pclassconstantdesc)
 def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $class_constant_value(S, pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING ptbytes_class)) ptbytes, $class_constant_message_class(S, pclassdesc, ptbytes_class), z)
+  -- if pclassdesc.KIND =/= "trait"
   -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = (pclassconstantdesc)
   -- if $class_constant_visible(S, pclassconstantdesc)
 
@@ -369,7 +372,7 @@ def $constant_location_function_scope(S, pfunction, porigin) = true
 def $constant_location_function_scope(S, pfunction, porigin) = false -- otherwise
 def $constant_location_valid(S, pconstantlocation, n) = true
   -- if pconstantlocation.CLASS = PORIGIN n_class pcpath_class
-  -- if pconstantlocation.ROOT = PORIGIN n_root pcpath_root
+  -- if $origin_source(pconstantlocation.ROOT) = PORIGIN n_root pcpath_root
   -- if $(n_class < n) /\ $(n_root < n)
   -- if $constant_location_root_valid(S, pconstantlocation)
   -- if $constant_expression_below(S, pconstantlocation.ROOT, pconstantlocation.CHILD)

@@ -236,14 +236,17 @@ def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = (pclassconst
   -- if $class_constant_enclosing(F.SOURCE, pcpath) = (porigin)
   -- if $class_constant_desc($ppclass_constants(F.CLASSCONSTANTS, porigin), ptbytes) = (pclassconstantdesc)
 def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = (pclassconstantdesc)
+  -- if $trait_fold_owner(F) = eps
   -- if ~$pfclass_constant_current(F, ptbytes_class)
   -- if $ppclass_prior_early(F.CLASSES, ptbytes_class) = (pclassdesc)
   -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) = (pclassconstantdesc)
 def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = $pfclass_constant_parent(F, pclassdesc, ptbytes, n)
+  -- if $trait_fold_owner(F) = eps
   -- if ~$pfclass_constant_current(F, ptbytes_class)
   -- if $ppclass_prior_early(F.CLASSES, ptbytes_class) = (pclassdesc)
   -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) = eps
 def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = $class_constant_lookup(S_external, porigin, ptbytes, n)
+  -- if $trait_fold_owner(F) = eps
   -- if ~$pfclass_constant_current(F, ptbytes_class)
   -- if $ppclass_prior_early(F.CLASSES, ptbytes_class) = eps
   -- if F.EXTERNAL = (S_external)
