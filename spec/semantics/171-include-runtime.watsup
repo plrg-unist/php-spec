@@ -74,6 +74,8 @@ rule PhpStep/file-request-abrupt: S ~> S_value
   -- if S_value.COMPLETION =/= NORMAL
 def $call_task_valid(S, FILE_REQUEST porigin z n_kind) = $file_operand_site_valid(S, porigin, porigin_child, z, n_kind)
   -- if S.ORIGIN = (porigin_child)
+def $eval_request_task(FILE_REQUEST porigin z n_kind) = true
+def $eval_requests_owned((FILE_REQUEST porigin z n_kind) :: (ORIGIN_RETURN (porigin)) :: ptask_tail*) = $eval_requests_owned(ptask_tail*)
 def $stringify_source(S, porigin_site, z, FILE_REQUEST porigin_parent z n_kind) = $file_operand_site_valid(S, porigin_parent, porigin_site, z, n_kind)
 dec $stringify_file_consumer(ptask) : bool
 def $stringify_file_consumer(FILE_REQUEST porigin z n_kind) = true
