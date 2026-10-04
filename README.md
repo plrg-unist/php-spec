@@ -145,9 +145,10 @@ values, reference history and compiler/runtime rejection phases. Its
 sources; Traversable objects remain unfinished. Array call arguments are covered by the later call-unpack checkpoint below.
 [Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
 callbacks with effective method selection, retained current values and abrupt
-cleanup. Explicit compatible return declarations are admitted; tentative-return
-deprecations, IteratorAggregate, ArrayAccess and other Traversable consumers
-remain required.
+cleanup. Tentative-return declarations use real prototype order and runtime/file
+warning delivery after publication. Early eval diagnostic callbacks are the
+immediate follow-on; IteratorAggregate, ArrayAccess and other Traversable
+consumers remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.

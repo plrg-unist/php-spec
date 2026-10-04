@@ -21,9 +21,25 @@ assertions retain those two separately, giving26 unique private agreements. One
 actual3b622 composition source at6ae passes private-handler/called-class and typed
 caller alias/introspection behavior. Accepted231/234 routes are preserved. The
 [contract](docs/semantics/SOURCE-DIMENSION-WRITES.md) and
-[ledger](coverage/semantics/dimension-write-continuations-review.json) retain original failures,
-revisions and the current adapter reuse. Append, unset, coalesce assignment,
+[ledger](coverage/semantics/dimension-write-continuations-review.json) retain
+original failures, revisions and the current adapter reuse. Append, unset, coalesce assignment,
 broader GLOBALS RW and earlier container/string/object producers remain required.
+
+Iterator declaration notices230 follow actual source/internal prototype order,
+including source erasure, direct restoration, duplicate notices and the built-in
+ReturnTypeWillChange suppressor. Runtime classes publish before callbacks;
+early file units publish completely before ordered method/compiler warning
+delivery. Real caller scope/trace stays distinct from physical diagnostic origin.
+Live reporting, throwing-handler tails and method/constant fatal prefixes have
+19 authored agreements; independent source11 and affected trace3 pass at their
+separate cutoffs. Independent pending53/handler35/Iterator25/restored23 state
+checks pass at19dae, including source-ledger authority and actual owners. Four
+early-eval controls assert temporary Unsupported only; per-class eval callbacks
+and publication after handler throws are the immediate required follow-on.
+Actual3b622 composition source3 passes at e1a654: imported physical method
+diagnostics, live argument/display state and effectful internal default traces.
+The original recorder/transport failures and protocol timeouts remain preserved
+without agreement credit. [Contract and tests](docs/semantics/ITERATORS.md).
 
 Shutdown registration231 caches callable selection, private/rebound permission
 and copied arguments after all argument effects. Ordered callbacks run after
@@ -177,9 +193,8 @@ fixture line binding. On accepted2e8, source12 passes control cleanup, arbitrary
 keys, assignment priority, covariance and the remaining throwing callback stages
 at284803284. Independent source1/protocol16 at the same cutoff confirms zero-argument
 Stringable default reception. Earlier results and original failures remain preserved.
-Tentative-return deprecations are the immediate declaration follow-on, followed
-by IteratorAggregate, ArrayAccess and remaining reference/ordinary object
-traversal. [Scope and boundaries](docs/semantics/ITERATORS.md).
+IteratorAggregate, ArrayAccess and remaining reference/ordinary object traversal
+follow the required early-eval diagnostic work. [Scope and boundaries](docs/semantics/ITERATORS.md).
 
 Direct missing `$GLOBALS[key]` R-fetches226 dispatch before their consumers and
 retain the original null through key/global mutation. Handler throws skip later

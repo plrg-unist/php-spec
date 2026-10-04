@@ -29,6 +29,7 @@ def $ppmethod_line(metadata) = $nabs($declaration_method_source_line(metadata))
 dec $ppmethod_context(ppstate, pchheader, ptbytes, int) : ptcontext
 dec $ppmethod_prechecked(int, ptbytes, phpType47, pchheader) : bool
 dec $ppmethod_header_ready(int, phpType47, pchheader) : bool
+dec $iterator_notice_attributes(plenv, phpType14) : bool
 dec $ppmethod_one(ppstate, pcpath, statement, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
 dec $ppmethod_checked(ppstate, pcpath, int, bool, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
 dec $ppmethod_begin(ppstate, pcpath, int, bool, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
@@ -131,9 +132,10 @@ def $ppmethod_public_invoke(flags, ptbytes) = ($ptlc(ptbytes) = $ptascii("__invo
 dec $ppmethod_invoke(int, ptbytes) : bool
 def $ppmethod_invoke(flags, ptbytes) = ($ptlc(ptbytes) = $ptascii("__invoke") /\ flags <- [0,1,2,4,8,9,10,12,16,17,18,24,25,26,32,33,34,36,40,41,42,44])
 
-def $ppmethod_one(P, pcpath, NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppmethod_checked($pplocate(P, pcpath, z_line), pcpath, flags, b, $base64(text), phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader)
+def $ppmethod_one(P, pcpath, NStmtClassMethod phpType14 (INTEGER flags) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppmethod_checked($pplocate(P, pcpath, z_line), pcpath, flags, b, $base64(text), phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader)
   -- if z_line = $declaration_method_keyword_line(metadata, metadata_name)
   -- if $(z_line > 0)
+  -- if $iterator_notice_attributes(P.ENV, phpType14)
   -- if pchheader.KIND = "class" \/ pchheader.KIND = "trait"
 def $ppmethod_one(P, pcpath, statement, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P, "method attributes, name, or line")) ppropertydesc* pmethoddesc* -- otherwise
 
