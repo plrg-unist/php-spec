@@ -144,4 +144,4 @@ def $trait_comparison_complete(S, pclassdesc, ptraitdatacomparison, S_result) = 
   -- if S_throw = $throwable_allocate_at(S_flushed, ptraitdataerror.KIND, ptraitdataerror.MESSAGE, ptraitdataerror.OWNER, ptraitdataerror.LINE, ptraitdataerror.TRACE)
   -- if S_throw.COMPLETION = THROWING n_throw
   -- if $origin_source(ptraitdataerror.OWNER) = PORIGIN n_unit pcpath
-  -- if S_warning = $error_default(S_throw[.ERRORFATALTRACE = eps], DIAGNOSTIC_SOURCE n_unit "Warning" ($ptascii("Uncaught ") ++ $throwable_chain_string(S_throw, n_throw, [n_throw]) ++ $ptascii("\n  thrown")) ptraitdataerror.LINE, 2)
+  -- if S_warning = $error_default(S_throw[.ERRORFATALTRACE = eps], DIAGNOSTIC_SOURCE n_unit "Warning" ($ptascii("Uncaught ") ++ $throwable_chain_string(S_throw, n_throw, [n_throw]) ++ [10] ++ $ptascii("  thrown")) ptraitdataerror.LINE, 2)
