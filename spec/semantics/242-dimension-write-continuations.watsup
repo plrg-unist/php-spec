@@ -11,6 +11,12 @@ dec $key_write_direct_task(ptask) : bool
 dec $key_write_array_slot(pslot) : bool
 dec $key_write_captured_base(pbase) : bool
 dec $key_write_place_shape(pkeywrite) : bool
+dec $key_write_target_base(pbase) : bool
+dec $key_write_temporary_root((porigin, nat)?) : pnode*
+dec $key_write_aborted_base(pbase, porigin) : bool
+dec $key_write_temporary_valid(pstate, pkeywriter) : bool
+dec $key_write_add_temporary(ptask*, porigin, nat) : ptask*
+dec $key_write_array_init(pslot) : bool
 dec $key_write_writer(pstate, porigin, ptask, pbase, poperand) : pkeywriter?
 dec $key_write_plan(pstate) : pkeywriter?
 dec $key_write_task_base(ptask, pbase, poperand) : pbase
@@ -80,6 +86,12 @@ def $key_write_array_slot(pslot) = false -- otherwise
 def $key_write_captured_base(BASE_PLACE porigin plocation) = true
 def $key_write_captured_base(BASE_DIM pbase poperand z) = $key_write_captured_base(pbase)
 def $key_write_captured_base(pbase) = false -- otherwise
+def $key_write_target_base(BASE_DIM pbase poperand z) = true
+def $key_write_target_base(BASE_GLOBAL poperand z) = true
+def $key_write_target_base(pbase) = false -- otherwise
+def $key_write_array_init(UNDEFINED) = true
+def $key_write_array_init(DEFINED PNULL) = true
+def $key_write_array_init(pslot) = false -- otherwise
 
 ;; Only a pending outer dimension makes DIM_PATH an intermediate fetch. Final
 ;; ASSIGN_DIM and DIM_OP keep their conversion after the evaluated RHS.
@@ -94,20 +106,20 @@ def $key_write_path_kind((ACQUIRE_ARRAY z) :: ptask_tail*) = (false)
 def $key_write_path_kind((CALL_REF_FETCH pcalltarget n porigin?) :: ptask_tail*) = (false)
 def $key_write_path_kind(ptask*) = eps -- otherwise
 
-def $key_write_writer(S, porigin, ACQUIRE_ARRAY z, pbase, poperand) = ({SITE porigin, TARGET porigin, TASK ACQUIRE_ARRAY z, BASE pbase, RHS KNOWN PNULL})
+def $key_write_writer(S, porigin, ACQUIRE_ARRAY z, pbase, poperand) = ({SITE porigin, TARGET porigin, TASK ACQUIRE_ARRAY z, BASE pbase, RHS KNOWN PNULL, TEMP eps})
   -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
   -- if $code_expression_at_source(S, porigin, eps) = (z)
-def $key_write_writer(S, porigin, CALL_REF_FETCH pcalltarget n porigin?, pbase, poperand) = ({SITE porigin, TARGET porigin, TASK CALL_REF_FETCH pcalltarget n porigin?, BASE pbase, RHS KNOWN PNULL})
+def $key_write_writer(S, porigin, CALL_REF_FETCH pcalltarget n porigin?, pbase, poperand) = ({SITE porigin, TARGET porigin, TASK CALL_REF_FETCH pcalltarget n porigin?, BASE pbase, RHS KNOWN PNULL, TEMP eps})
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if expression = NExprArrayDimFetch expression_base phpType5 metadata
   -- if ~$call_temporary_base(expression)
   -- if $call_task_valid(S[.ORIGIN = (porigin)], CALL_REF_FETCH pcalltarget n porigin?)
-def $key_write_writer(S, porigin, UPDATE_PREP pupdate b z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK UPDATE_PREP pupdate b z, BASE pbase, RHS KNOWN PNULL})
+def $key_write_writer(S, porigin, UPDATE_PREP pupdate b z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK UPDATE_PREP pupdate b z, BASE pbase, RHS KNOWN PNULL, TEMP eps})
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
   -- if $key_write_update(pcnode) = ((pupdate, b))
   -- if $code_expression_at_source(S, porigin, eps) = (z)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
-def $key_write_writer(S, porigin, COMPOUND_APPLY pbin pbase b z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK COMPOUND_APPLY pbin pbase b z, BASE pbase, RHS poperand})
+def $key_write_writer(S, porigin, COMPOUND_APPLY pbin pbase b z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK COMPOUND_APPLY pbin pbase b z, BASE pbase, RHS poperand, TEMP eps})
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
   -- if $key_write_op(pcnode) = (pbin)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
@@ -117,12 +129,12 @@ def $key_write_writer(S, porigin, COMPOUND_APPLY pbin pbase b z, pbase, poperand
   -- if $origin_node(S.SOURCES, porigin_rhs) = (expression_rhs)
   -- if b = $assignment_self(expression_target, expression_rhs)
   -- if $code_expression_at_source(S, porigin_target, [PCFIELD 1]) = (z)
-def $key_write_writer(S, porigin, ASSIGN_ARRAY pbase z b, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK ASSIGN_ARRAY pbase z b, BASE pbase, RHS poperand})
+def $key_write_writer(S, porigin, ASSIGN_ARRAY pbase z b, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK ASSIGN_ARRAY pbase z b, BASE pbase, RHS poperand, TEMP eps})
   -- if $origin_node(S.SOURCES, porigin) = (NExprAssign expression_target expression_rhs metadata)
   -- if b = $assignment_self(expression_target, expression_rhs)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
   -- if $code_expression_at_source(S, porigin_target, eps) = (z)
-def $key_write_writer(S, porigin, DIM_PATH pbase z, BASE_DIM pbase poperand z, poperand) = ({SITE porigin, TARGET porigin, TASK DIM_PATH pbase z, BASE BASE_DIM pbase poperand z, RHS poperand})
+def $key_write_writer(S, porigin, DIM_PATH pbase z, BASE_DIM pbase poperand z, poperand) = ({SITE porigin, TARGET porigin, TASK DIM_PATH pbase z, BASE BASE_DIM pbase poperand z, RHS poperand, TEMP eps})
   -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
   -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
 def $key_write_writer(S, porigin, ptask, pbase, poperand) = eps -- otherwise
@@ -147,6 +159,7 @@ def $key_write_plan(S) = (pkeywriter)
   -- if ~$key_write_path_task(ptask)
   -- if $key_write_writer(S, porigin, ptask, $key_write_task_base(ptask, S.BASE, S.RESULT), S.RESULT) = (pkeywriter)
   -- if $key_write_root(S, pkeywriter.BASE)
+  -- if $key_write_target_base(pkeywriter.BASE)
   -- if $key_write_base_source(S, pkeywriter.TARGET, pkeywriter.BASE)
 def $key_write_plan(S) = (pkeywriter)
   -- if S.ORIGIN = (porigin)
@@ -185,9 +198,9 @@ rule PhpStep/key-write-start: S ~> $key_write_begin(S)
 ;; and INDIRECT places never add roots, including a retired parent array row.
 def $base_nodes(BASE_PLACE porigin plocation) = eps
 def $base_acquire(S, BASE_PLACE porigin plocation, z) = S[.LOCATION = plocation]
-def $key_write_finish_roots(pkeywriter) = $base_nodes(pkeywriter.BASE)
+def $key_write_finish_roots(pkeywriter) = $base_nodes(pkeywriter.BASE) ++ $key_write_temporary_root(pkeywriter.TEMP)
   -- if pkeywriter.TASK = DIM_PATH pbase z
-def $key_write_finish_roots(pkeywriter) = $base_nodes(pkeywriter.BASE) ++ $operand_nodes(pkeywriter.RHS)
+def $key_write_finish_roots(pkeywriter) = $base_nodes(pkeywriter.BASE) ++ $operand_nodes(pkeywriter.RHS) ++ $key_write_temporary_root(pkeywriter.TEMP)
   -- if ~$key_write_path_task(pkeywriter.TASK)
 def $task_nodes(KEY_WRITE_BASE pbase b) = eps
 def $task_nodes(KEY_WRITE_DIM poperand z b) = eps
@@ -206,6 +219,18 @@ rule PhpStep/key-write-cv-base: S ~> S_place[.TODO = ptask_tail*][.RESULT = KNOW
   -- if S_place = $base_acquire(S, BASE_VALUE (VARIABLE n_name* z), z)
 rule PhpStep/key-write-captured-place: S ~> S[.TODO = ptask_tail*][.LOCATION = plocation][.RESULT = KNOWN PNULL]
   -- if S.TODO = (KEY_WRITE_BASE (BASE_PLACE porigin plocation) b) :: ptask_tail*
+  -- if plocation =/= NOWHERE
+;; An aborted FETCH_W returns a writable VAR containing null. A following
+;; nested fetch owns that unnamed value, while the original row stays borrowed.
+def $key_write_temporary_root(eps) = eps
+def $key_write_temporary_root(((porigin, n))) = [HCELL n]
+def $key_write_add_temporary((KEY_WRITE_FINISH pkeywriter) :: ptask_tail*, porigin, n) = (KEY_WRITE_FINISH pkeywriter[.TEMP = ((porigin, n))]) :: ptask_tail*
+  -- if pkeywriter.TEMP = eps
+def $key_write_add_temporary(ptask :: ptask_tail*, porigin, n) = ptask :: $key_write_add_temporary(ptask_tail*, porigin, n)
+  -- if ~$key_write_finish_task(ptask)
+rule PhpStep/key-write-null-temporary: S ~> S[.TODO = $key_write_add_temporary(ptask_tail*, porigin, n)][.STORE = S.STORE ++ [DEFINED PNULL]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.LOCATION = ROOT n][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (KEY_WRITE_BASE (BASE_PLACE porigin NOWHERE) b) :: ptask_tail*
+  -- if n = |S.STORE|
 rule PhpStep/key-write-global-base: S ~> S[.TODO = (KEY_WRITE_GLOBAL poperand z) :: ptask_tail*]
   -- if S.TODO = (KEY_WRITE_BASE (BASE_GLOBAL poperand z) false) :: ptask_tail*
 
@@ -235,6 +260,11 @@ def $key_write_dimension(S, poperand, z, false) = $key_write_done(S_place, S_pla
   -- if S_place = $dimension_location(S, (poperand), STRINGNESTED, z)
 rule PhpStep/key-write-dimension: S ~> $key_write_dimension(S, poperand, z, b)
   -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
+  -- if ~$key_write_array_init($location_slot(S, S.LOCATION))
+rule PhpStep/key-write-initialize-dimension: S ~> S_array[.RESULT = KNOWN PNULL]
+  -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
+  -- if $key_write_array_init($location_slot(S, S.LOCATION))
+  -- if S_array = $fetch_location_array(S, S.LOCATION, z)
 
 def $key_write_value(S, pkeywrite) = $key_write_dispatch(S, pkeywrite[.READ.PHASE = KEY_NULL][.READ.KEY = KSTRING eps])
   -- if pkeywrite.READ.VALUE = PNULL
@@ -356,11 +386,25 @@ def $key_write_rhs_source(S, pkeywriter) = true
   -- if ~$key_operand_cv_source(S, pkeywriter.SITE, [PCFIELD 1])
 def $key_write_rhs_source(S, pkeywriter) = false -- otherwise
 def $key_writer_valid(S, pkeywriter, ptask*) = true
-  -- if $key_write_writer(S, pkeywriter.SITE, pkeywriter.TASK, pkeywriter.BASE, pkeywriter.RHS) = (pkeywriter)
+  -- if $key_write_writer(S, pkeywriter.SITE, pkeywriter.TASK, pkeywriter.BASE, pkeywriter.RHS) = (pkeywriter[.TEMP = eps])
+  -- if $key_write_target_base(pkeywriter.BASE)
   -- if $key_write_base_source(S, pkeywriter.TARGET, pkeywriter.BASE)
   -- if $key_write_rhs_source(S, pkeywriter)
+  -- if $key_write_temporary_valid(S, pkeywriter)
   -- if ~$key_write_path_task(pkeywriter.TASK) \/ $key_write_path_kind(ptask*) =/= eps
 def $key_writer_valid(S, pkeywriter, ptask*) = false -- otherwise
+def $key_write_aborted_base(BASE_PLACE porigin NOWHERE, porigin) = true
+def $key_write_aborted_base(BASE_DIM pbase poperand z, porigin) = $key_write_aborted_base(pbase, porigin)
+def $key_write_aborted_base(pbase, porigin) = false -- otherwise
+def $key_write_temporary_valid(S, pkeywriter) = true -- if pkeywriter.TEMP = eps
+def $key_write_temporary_valid(S, pkeywriter) = true
+  -- if pkeywriter.TEMP = ((porigin, n))
+  -- if $key_write_aborted_base(pkeywriter.BASE, porigin)
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if ~(n <- S.REFCELLS)
+  -- if $heap_owners($heap_prune($heap_graph(S)), HCELL n) = 1
+  -- if $key_write_array_slot(S.STORE[n]) \/ S.STORE[n] = DEFINED PNULL
+def $key_write_temporary_valid(S, pkeywriter) = false -- otherwise
 def $key_write_site(S, porigin, b, porigin, b) = true
 def $key_write_site(S, porigin_root, b_root, porigin, b) = $key_write_site(S, porigin_child, b_root, porigin, b)
   -- if porigin_root =/= porigin
