@@ -225,6 +225,7 @@ syntax psymboltable = { ENV pbinding*, CVS preqbytes*, SYMBOLS preqbytes* }
 syntax pclassconstantselection = CLASS_CONST_FETCH poperand ptbytes | CLASS_CONST_UPDATE_SELECT porigin
 syntax pclassconstantcontext = { DECL porigin, SELECTION pclassconstantselection, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
 syntax pconstantclosure = { OBJECT nat, SITE porigin, DECL porigin, PREFIX nat }
+syntax ptask = GLOBAL_CONSTANT_METHOD_RESUME porigin porigin porigin nat
 syntax pdefaultcache = { ORIGIN porigin, VALUE pvalue, CLASS pvalueclass }
 syntax puserconstant = { NAME preqbytes, ORIGIN porigin, VALUE pvalue, CLASS pvalueclass }
 syntax pcallcontext = { TARGET pcalltarget, WRAPPER pnamedargs?, INSTANCE nat?, RECEIVER nat?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin?, FUNCTION porigin, NAME preqbytes, CALLSITE porigin?, LINE int, PARAMS preqbytes*, ARGC nat, HOLES nat*, EXTRA poperand*, NAMED (preqbytes, poperand)* }
@@ -278,6 +279,7 @@ dec $stdclass_cast_array(pstate, nat) : pstate
 dec $stdclass_clone(pstate, nat) : pstate
 dec $constant_callable_source_scope(pstate, porigin) : porigin?
 dec $constant_callable_active(pstate, porigin) : bool
+dec $global_constant_callable_active(pstate, porigin) : bool
 dec $constant_closure_create(pstate, pfunction) : pstate
 dec $constant_callable_records_valid(pstate, pconstantclosure*) : bool
 dec $constant_callable_value_valid(pstate, nat, porigin) : bool

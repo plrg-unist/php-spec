@@ -8,6 +8,9 @@ dec $constant_value_class_valid(pstate, pvalue, pvalueclass) : bool
 dec $constant_facts_valid(pstate, porigin, pconstantfact*) : bool
 dec $constant_received_class(pstate, porigin) : pvalueclass
 dec $constant_declaration(pstate, porigin) : (preqbytes, int)?
+dec $constant_initializer_valid(pstate, expression) : bool
+dec $global_constant_transfer_valid(pstate, porigin, pvalueclass, puserconstant*) : bool
+dec $global_constant_user_valid(pstate, puserconstant) : bool
 ;; Ordinary constant declarations activate after their initializer completes.
 dec $user_constant_key(preqbytes) : preqbytes
 def $user_constant_key(n*) = n* -- if ~(92 <- n*)
@@ -49,6 +52,7 @@ rule PhpStep/constant-initializer: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin, LINE
   -- if S.TODO = (CONSTANT_INIT expression) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $constant_declaration(S, porigin) = ((preqbytes, z))
+  -- if $constant_initializer_valid(S, expression)
 def $constant_declaration(S, PORIGIN n pcpath) = ((preqbytes, z))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NConst phpType11 expression metadata)
   -- if $code_at(S.CODE, n) = (pcode)
@@ -67,6 +71,15 @@ rule PhpStep/constant-bind: S ~> $constant_activate(S_value[.CONSTCONTEXT = eps]
   -- if S_value = $resolve_at(S, S.RESULT, z)
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue
+  -- if $constant_value_class_valid(S_value, pvalue, $constant_received_class(S_value, porigin))
+  -- if $global_constant_transfer_valid(S_value, porigin, $constant_received_class(S_value, porigin), S_value.USERCONSTANTS)
+rule PhpStep/constant-bind-transfer: S ~> S_value[.COMPLETION = UNSUPPORTED "global constant object transfer"]
+  -- if S.TODO = (CONSTANT_BIND porigin) :: ptask_tail*
+  -- if $constant_declaration(S, porigin) = ((preqbytes, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~($constant_value_class_valid(S_value, pvalue, $constant_received_class(S_value, porigin)) /\ $global_constant_transfer_valid(S_value, porigin, $constant_received_class(S_value, porigin), S_value.USERCONSTANTS))
 rule PhpStep/constant-bind-abrupt: S ~> S_value
   -- if S.TODO = (CONSTANT_BIND porigin) :: ptask_tail*
   -- if $constant_declaration(S, porigin) = ((preqbytes, z))
@@ -110,15 +123,16 @@ def $user_constants_valid(S, puserconstant :: puserconstant_tail*) = true
   -- if $user_constant_at(puserconstant_tail*, puserconstant.NAME) = eps
   -- if $heap_subset($value_nodes(puserconstant.VALUE), S.ALLOCATIONS)
   -- if $constant_value_class_valid(S, puserconstant.VALUE, puserconstant.CLASS)
+  -- if $global_constant_user_valid(S, puserconstant)
   -- if $user_constants_valid(S, puserconstant_tail*)
 def $user_constants_valid(S, puserconstant*) = false -- otherwise
 
-dec $constant_initializer_valid(pstate, expression) : bool
 def $constant_initializer_valid(S, expression) = true
   -- if S.CONSTCONTEXT = eps
   -- if S.ORIGIN = (porigin)
   -- if $constant_declaration(S, porigin) = ((preqbytes, z))
-  -- if $origin_node(S.SOURCES, porigin) = (NConst phpType11 expression metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NConst phpType11 expression_source metadata)
+  -- if expression = expression_source
 def $constant_initializer_valid(S, expression) = false -- otherwise
 def $call_task_valid(S, CONSTANT_INIT expression) = $constant_initializer_valid(S, expression)
 dec $constant_bind_valid(pstate, porigin) : bool

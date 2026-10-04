@@ -138,7 +138,7 @@ def $constant_callable_context(S, porigin) = ((pclassconstantdesc.ORIGIN, pclass
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
   -- if $constant_callable_form(pcnode)
 def $constant_callable_context(S, porigin) = eps -- otherwise
-def $constant_callable_active(S, porigin) = ($constant_callable_context(S, porigin) =/= eps)
+def $constant_callable_active(S, porigin) = ($constant_callable_context(S, porigin) =/= eps \/ $global_constant_callable_active(S, porigin))
 
 def $constant_callable_record(eps, n) = eps
 def $constant_callable_record(pconstantclosure :: pconstantclosure_tail*, n) = (pconstantclosure)
