@@ -110,7 +110,8 @@ rule PhpStep/default-internal-receiving-commit: S ~> $ctor_commit(S[.TODO = ptas
   -- if S.TODO = (DEFAULT_INTERNAL_CTOR_RECEIVE pdefaultinternal) :: ptask_tail*
   -- if $default_internal_receiving_valid(S, pdefaultinternal)
   -- if pdefaultinternal.CALL.BASE =/= "ErrorException"
-  -- if pdefaultinternal.INDEX = 3 /\ pdefaultinternal.VALUES = [pvalue_message, pvalue_code, pvalue_previous]
+  -- if pdefaultinternal.INDEX = 3
+  -- if pdefaultinternal.VALUES = [pvalue_message, pvalue_code, pvalue_previous]
 rule PhpStep/default-internal-receiving-ee-commit: S ~> $ee_commit(S[.TODO = ptask_tail*], pdefaultinternal.CALL, pdefaultinternal.VALUES)
   -- if S.TODO = (DEFAULT_INTERNAL_CTOR_RECEIVE pdefaultinternal) :: ptask_tail*
   -- if $default_internal_receiving_valid(S, pdefaultinternal)
