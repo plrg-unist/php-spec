@@ -45,7 +45,7 @@ def $deprecated_constant_start(S, porigin, ptask_tail*) = $deprecated_constant_r
 def $deprecated_constant_start(S, porigin, ptask_tail*) = $error_dispatch(S_pending, 8192, $deprecated_constant_message(), z, DIAGNOSTIC "Deprecated" $deprecated_constant_message() z, DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
   -- if ~$deprecated_constant_active(S)
   -- if n_prefix = |S.USERCONSTANTS|
-  -- if $deprecated_constant_source(S, porigin, n_prefix) = (z)
+  -- if $deprecated_constant_source(S[.ORIGIN = (porigin)], porigin, n_prefix) = (z)
   -- if pdeprecatedconstant = {SITE porigin, LINE z, PREFIX n_prefix}
   -- if S_pending = S[.ORIGIN = (porigin)][.TODO = (DEPRECATED_CONSTANT_RESULT pdeprecatedconstant) :: (ORIGIN_RETURN S.ORIGIN) :: ptask_tail*]
 dec $deprecated_constant_task(ptask, pdeprecatedconstant) : bool

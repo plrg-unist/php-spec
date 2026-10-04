@@ -63,8 +63,10 @@ separates full INI bytes, the live signed32 mask and modified-entry Restore,
 including suppression and handler writes. [Diagnostic ingress](coverage/semantics/reporting-diagnostics-review.json)
 adds runtime `E_STRICT` deprecations and lossy reporting conversions, retaining
 captured values, caller frames and initializer locations through callbacks.
-Compound initializer callback/eval filenames, startup profiles, wider PIPE/INI
-consumers and lifecycle remain open.
+[Compound initializer eval locations](coverage/semantics/compound-eval-location-review.json)
+retain authenticated filename owners and child lines through callbacks and later
+eval execution, separately from callback scope and compiler exception locations.
+Startup profiles, wider initializer/PIPE/INI consumers and lifecycle remain open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,

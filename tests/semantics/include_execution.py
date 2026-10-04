@@ -12,10 +12,15 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
 PROFILE = ROOT / 'tests/semantics/profile.json'
+EVAL_LOCATIONS = Path(__file__).with_name('eval_location')
 locale.setlocale(locale.LC_ALL, 'C')
 STREAM_MISSING = os.strerror(errno.ENOENT).encode()
 STREAM_DIRECTORY = os.strerror(errno.ENOTTY).encode()
 CASES = {
+    'compound-constant-callback-eval': ((EVAL_LOCATIONS / 'constant/main.php').read_bytes(),
+                                       {'handler.php': (EVAL_LOCATIONS / 'constant/handler.php').read_bytes()}, ['handler.php']),
+    'compound-static-callback-eval': ((EVAL_LOCATIONS / 'static/main.php').read_bytes(),
+                                     {'owner.php': (EVAL_LOCATIONS / 'static/owner.php').read_bytes()}, ['owner.php']),
     'return7': (b"<?php echo include 'one.php';", {'one.php': b'<?php return 7;'}, ['one.php']),
     'fallthrough': (b"<?php echo include 'one.php';", {'one.php': b'<?php echo "C";'}, ['one.php']),
     'once-main': (b'<?php echo include_once __FILE__;', {}, ['__FILE__']),
@@ -93,6 +98,7 @@ def main():
                ROOT / 'spec/schema.json', ROOT / 'spec/php.watsup', ROOT / 'adapter/main.ml',
                ROOT / 'frontend/wire.py', ROOT / '.tools/php/bin/php',
                ROOT / '.tools/php-file.so', PROFILE, Path(__file__)]
+    watched += sorted(EVAL_LOCATIONS.glob('*/*.php'))
     before = {str(path.relative_to(ROOT)): digest(path) for path in watched}
     vendor_before = vendor_identity()
     profile = json.loads(PROFILE.read_text())
@@ -131,6 +137,8 @@ def main():
                 requested = b'parts'
             elif filename == '__DIRECTORY_ABSOLUTE__':
                 requested = os.fsencode((directory / 'parts').resolve())
+            elif name in {'compound-constant-callback-eval', 'compound-static-callback-eval'}:
+                requested = os.fsencode((directory / filename).resolve())
             else:
                 requested = filename.encode()
             if filename == 'missing.php':
