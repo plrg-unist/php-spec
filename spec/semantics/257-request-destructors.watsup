@@ -100,8 +100,12 @@ dec $destructor_pass_valid(pstate) : bool
 dec $destructor_callsite(pdestructorcall) : porigin?
 dec $destructor_line(pdestructorcall) : int
 dec $destructor_frame_for(pcallcontext?, pdestructionframe*) : pdestructionframe?
-dec $destructor_frame_pending(pdestructionframe?) : nat?
+dec $destructor_frame_pending(pstate, pdestructionframe?) : nat?
 dec $destructor_call_pending_valid(pstate, pdestructorcall) : bool
+dec $destructor_tail_pending(ptask*) : nat?
+dec $destructor_call_tail(ptask*, pdestructorcall) : ptask*?
+dec $destructor_call_frame_tail(pframe*, pdestructorcall) : ptask*?
+dec $destructor_call_pending_tail(pstate, pdestructorcall) : ptask*?
 dec $destructor_leaving_exception(ptask*) : nat?
 dec $destructor_local_cells(pbinding*, preqbytes*) : pnode*
 dec $destructor_frame_nodes(pstate) : pnode*
@@ -363,7 +367,7 @@ def $destructor_free(S, pnode, pdestructionrelease) = $destructor_release_replac
 def $destructor_select(S, n, b_store, pdestructionrelease?) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]][.DESTRUCTION.CALLS = pdestructorcall :: S.DESTRUCTION.CALLS][.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: S.TODO]
   -- if $destructor_method(S, n) = (pmethoddesc)
   -- if pdestructionframe? = $destructor_frame_for(S.CURRENT, S.DESTRUCTION.FRAMES)
-  -- if pdestructorcall = {OBJECT n, TARGET METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, STORE b_store, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, LINE $property_current_line(S), RELEASE pdestructionrelease?, FRAME pdestructionframe?, PENDING $destructor_frame_pending(pdestructionframe?)}
+  -- if pdestructorcall = {OBJECT n, TARGET METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, STORE b_store, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, LINE $property_current_line(S), RELEASE pdestructionrelease?, FRAME pdestructionframe?, PENDING $destructor_frame_pending(S, pdestructionframe?)}
 def $destructor_call_live(S, pdestructorcall) = true
   -- if $destructor_active(S)
   -- if pdestructorcall <- S.DESTRUCTION.CALLS
@@ -588,14 +592,45 @@ def $destructor_frame_for(pcallcontext?, pdestructionframe :: pdestructionframe_
   -- if pdestructionframe.CALLER = pcallcontext?
 def $destructor_frame_for(pcallcontext?, pdestructionframe :: pdestructionframe_tail*) = $destructor_frame_for(pcallcontext?, pdestructionframe_tail*)
   -- if pcallcontext? =/= pdestructionframe.CALLER
-def $destructor_frame_pending(eps) = eps
-def $destructor_frame_pending((pdestructionframe)) = pdestructionframe.PENDING
+def $destructor_frame_pending(S, eps) = $destructor_tail_pending(S.TODO)
+def $destructor_frame_pending(S, (pdestructionframe)) = pdestructionframe.PENDING
+def $destructor_tail_pending((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*) = $destructor_tail_pending(ptask_tail*)
+def $destructor_tail_pending((THROW_SEARCH n) :: ptask_tail*) = (n)
+def $destructor_tail_pending(ptask*) = eps -- otherwise
+;; A released return operand may start another destructor after its frame has
+;; finished. The original THROW_SEARCH remains its genuine pending owner.
+def $destructor_call_tail((DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*, pdestructorcall) = (ptask_tail*)
+def $destructor_call_tail((DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pdestructorcall) = (ptask_tail*)
+def $destructor_call_tail((DESTRUCTOR_WARNING pdestructorcall) :: ptask_tail*, pdestructorcall) = (ptask_tail*)
+def $destructor_call_tail((ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*, pdestructorcall) = (ptask_tail*)
+  -- if perrorcall.RESUME = DESTRUCTOR_WARNING pdestructorcall
+def $destructor_call_tail((ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*, pdestructorcall) = (ptask_tail*)
+  -- if perrorcall.RESUME = DESTRUCTOR_WARNING pdestructorcall
+def $destructor_call_tail((API_CALLABLE_RESULT papiquery n) :: ptask_tail*, pdestructorcall) = (ptask_tail*)
+  -- if papiquery.SOURCE = ERROR_HANDLER_INVOKE perrorcall
+  -- if perrorcall.RESUME = DESTRUCTOR_WARNING pdestructorcall
+def $destructor_call_tail((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructorcall) = $destructor_call_tail(ptask_tail*, pdestructorcall)
+def $destructor_call_tail((DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_tail*, pdestructorcall) = $destructor_call_tail(ptask_tail*, pdestructorcall)
+def $destructor_call_tail((THROW_SEARCH n) :: ptask_tail*, pdestructorcall) = $destructor_call_tail(ptask_tail*, pdestructorcall)
+def $destructor_call_tail(ptask*, pdestructorcall) = eps -- otherwise
+def $destructor_call_frame_tail(eps, pdestructorcall) = eps
+def $destructor_call_frame_tail(pframe :: pframe_tail*, pdestructorcall) = (ptask*)
+  -- if $destructor_call_tail(pframe.TODO, pdestructorcall) = (ptask*)
+def $destructor_call_frame_tail(pframe :: pframe_tail*, pdestructorcall) = $destructor_call_frame_tail(pframe_tail*, pdestructorcall)
+  -- if $destructor_call_tail(pframe.TODO, pdestructorcall) = eps
+def $destructor_call_pending_tail(S, pdestructorcall) = (ptask*)
+  -- if $destructor_call_tail(S.TODO, pdestructorcall) = (ptask*)
+def $destructor_call_pending_tail(S, pdestructorcall) = $destructor_call_frame_tail(S.FRAMES, pdestructorcall)
+  -- if $destructor_call_tail(S.TODO, pdestructorcall) = eps
 ;; A nested normal return may prepend another frame with the same caller. The
 ;; selected destructor retains its original borrowed pending-frame anchor.
-def $destructor_call_pending_valid(S, pdestructorcall) = (pdestructorcall.PENDING = eps)
+def $destructor_call_pending_valid(S, pdestructorcall) = true
   -- if pdestructorcall.FRAME = eps
+  -- if $destructor_call_pending_tail(S, pdestructorcall) = (ptask*)
+  -- if pdestructorcall.PENDING = $destructor_tail_pending(ptask*)
 def $destructor_call_pending_valid(S, pdestructorcall) = (pdestructionframe <- S.DESTRUCTION.FRAMES /\ pdestructionframe.CALLER = pdestructorcall.CALLER /\ pdestructionframe.PENDING = pdestructorcall.PENDING)
   -- if pdestructorcall.FRAME = (pdestructionframe)
+def $destructor_call_pending_valid(S, pdestructorcall) = false -- otherwise
 
 ;; CV zvals are released in compiled order after Zend restores the real caller.
 ;; Remaining slots are pending owners, including aliases to the same wrapper.
