@@ -147,8 +147,8 @@ e7ec retains imported trait Stringable ownership and handler-mutated display
 fallback after the filename global retires.
 [The reception ledger](coverage/semantics/internal-default-reception-review.json)
 records these cuts.
-Ordinary constructor effects remain required; anonymous keyword defaults are
-covered by245 above.
+Ordinary constructor effects are covered by250; anonymous keyword defaults
+are covered by245 above.
 
 Trait method composition228 supports source use, nesting, precedence, aliases,
 visibility/final and abstract requirements in Zend's publication order. Imported
