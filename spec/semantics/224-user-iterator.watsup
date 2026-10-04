@@ -16,18 +16,18 @@ def $useriter_scope() = { NAME $ptascii("Iterator"), PARENT eps, ANCESTORS ([$pt
 dec $useriter_method_issue(pstate, pclassdesc, pmethoddesc) : pmethodissue
 dec $useriter_method_compared(pstate, pclassdesc, pmethoddesc, pmmethod, pmmethod, pmcheck) : pmethodissue
 dec $useriter_return_compared(pmethoddesc, pmcheck) : pmethodissue
-def $useriter_method_issue(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Cannot make non static method Iterator::") ++ $ptlc(pmethoddesc.NAME) ++ $ptascii("() static in class ") ++ pclassdesc.NAME) pmethoddesc.FUNCTION.LINE pmethoddesc.OWNER
+def $useriter_method_issue(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Cannot make non static method Iterator::") ++ $ptlc(pmethoddesc.NAME) ++ $ptascii("() static in class ") ++ pclassdesc.NAME) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
   -- if pmethoddesc.STATIC
-def $useriter_method_issue(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() must be public (as in class Iterator)")) pmethoddesc.FUNCTION.LINE pmethoddesc.OWNER
+def $useriter_method_issue(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() must be public (as in class Iterator)")) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
   -- if ~pmethoddesc.STATIC
   -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
 def $useriter_method_issue(S, pclassdesc, pmethoddesc) = $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, $pmcompare(PMUSER pmmethod_selected, $pil_scope(S, pclassdesc), PMUSER pmmethod_proto[.SIGNATURE = pmmethod_proto.SIGNATURE[.RETURNS = eps]], $useriter_scope(), $method_active_registry(S, S.CLASSNAMES)))
   -- if ~pmethoddesc.STATIC
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-  -- if pmmethod_selected = $pmethod_user(pmethoddesc, pclassdesc, $call_sourcefile(S.FILES, pmethoddesc.OWNER))
-  -- if pmmethod_proto = $pil_signature_method($ptascii("Iterator"), $ptlc(pmethoddesc.NAME), $call_sourcefile(S.FILES, pmethoddesc.OWNER), $useriter_signature(pmethoddesc.NAME))
+  -- if pmmethod_selected = $pmethod_user(pmethoddesc, pclassdesc, $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN))
+  -- if pmmethod_proto = $pil_signature_method($ptascii("Iterator"), $ptlc(pmethoddesc.NAME), $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN), $useriter_signature(pmethoddesc.NAME))
 def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVYES ptbytes*) = $useriter_return_compared(pmethoddesc, $pmcompare(PMUSER pmmethod_selected, $pil_scope(S, pclassdesc), PMUSER pmmethod_proto, $useriter_scope(), $method_active_registry(S, S.CLASSNAMES)))
-def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVNO ptbytes*) = $pil_internal_source_result(pmethoddesc, $pmmismatch(pmmethod_selected, $pil_scope(S, pclassdesc), pmmethod_proto, $useriter_scope(), 14))
+def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVNO ptbytes*) = $pil_internal_source_result(pmethoddesc[.OWNER = pmethoddesc.FUNCTION.ORIGIN], $pmmismatch(pmmethod_selected, $pil_scope(S, pclassdesc), pmmethod_proto, $useriter_scope(), 14))
 def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVUNRESOLVED ptbytes*) = METHOD_UNSUPPORTED "Iterator dependent method declaration"
 def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMUNSUPPORTED text) = METHOD_UNSUPPORTED text
 def $useriter_return_compared(pmethoddesc, PMCHECK PVYES ptbytes*) = METHOD_OK
@@ -89,10 +89,25 @@ def $useriter_has_key(NStmtForeach expression_iterable ABSENT phpType4 expressio
 def $useriter_has_key(NStmtForeach expression_iterable expression_key phpType4 expression_value phpType23 phpType4_else metadata) = true
 def $useriter_has_key(statement) = false -- otherwise
 dec $useriter_result_valid(pstate, nat, nat, statement, porigin, int, text, poperand) : bool
+dec $useriter_cursor_id(piterator) : nat
+def $useriter_cursor_id(ITERATOR n n_array b pcursor*) = n
+def $useriter_cursor_id(OBJECTITER n n_object n_position b) = n
+dec $useriter_cursor_count(piterator*, nat) : nat
+def $useriter_cursor_count(eps, n) = 0
+def $useriter_cursor_count(piterator :: piterator_tail*, n) = $(1 + $useriter_cursor_count(piterator_tail*, n))
+  -- if $useriter_cursor_id(piterator) = n
+def $useriter_cursor_count(piterator :: piterator_tail*, n) = $useriter_cursor_count(piterator_tail*, n)
+  -- if $useriter_cursor_id(piterator) =/= n
+dec $useriter_cursor_valid(pstate, nat, nat) : bool
+def $useriter_cursor_valid(S, n, n_object) = true
+  -- if $(n < S.NEXTITER)
+  -- if $useriter_cursor_count(S.ITERATORS, n) = 1
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object 0 false)
+def $useriter_cursor_valid(S, n, n_object) = false -- otherwise
 def $useriter_result_valid(S, n, n_object, statement, porigin_site, z, text_stage, poperand) = true
   -- if $useriter_instance(S, n_object)
   -- if $useriter_site(S, statement, porigin_site, z)
-  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object 0 false)
+  -- if $useriter_cursor_valid(S, n, n_object)
   -- if text_stage <- ["rewind", "valid", "current", "key", "next"]
   -- if $call_reference_operand_valid(S, poperand)
   -- if text_stage = "key" \/ poperand = KNOWN PNULL
@@ -157,16 +172,32 @@ dec $useriter_marker(pframe) : bool
 def $useriter_marker(pframe) = true
   -- if pframe.TODO = (USERITER_RESULT n n_object statement porigin_site z text_stage poperand) :: ptask_tail*
 def $useriter_marker(pframe) = false -- otherwise
-def $useriter_chain_valid(S, eps, eps) = true
-def $useriter_chain_valid(S, (pcallcontext), eps) = ~$useriter_context_kind(S, pcallcontext)
-def $useriter_chain_valid(S, (pcallcontext), pframe :: pframe_tail*) = ($useriter_frame(S, pcallcontext, pframe) /\ $useriter_chain_valid(S, pframe.CONTEXT, pframe_tail*))
+dec $useriter_task_ids(ptask) : nat*
+def $useriter_task_ids(USERITER_RESULT n n_object statement porigin_site z text_stage poperand) = [n]
+def $useriter_task_ids(USERITER_NEXT n n_object statement porigin_site z poperand) = [n]
+def $useriter_task_ids(AT porigin ptask) = $useriter_task_ids(ptask)
+def $useriter_task_ids(ptask) = eps -- otherwise
+dec $useriter_tasks_ids(ptask*) : nat*
+def $useriter_tasks_ids(eps) = eps
+def $useriter_tasks_ids(ptask :: ptask_tail*) = $useriter_task_ids(ptask) ++ $useriter_tasks_ids(ptask_tail*)
+dec $useriter_frames_ids(pframe*) : nat*
+def $useriter_frames_ids(eps) = eps
+def $useriter_frames_ids(pframe :: pframe_tail*) = $useriter_tasks_ids(pframe.TODO) ++ $useriter_frames_ids(pframe_tail*)
+dec $useriter_ids_unique(nat*) : bool
+def $useriter_ids_unique(eps) = true
+def $useriter_ids_unique(n :: n_tail*) = (~(n <- n_tail*) /\ $useriter_ids_unique(n_tail*))
+dec $useriter_chain_walk(pstate, pcallcontext?, pframe*) : bool
+def $useriter_chain_walk(S, eps, eps) = true
+def $useriter_chain_walk(S, (pcallcontext), eps) = ~$useriter_context_kind(S, pcallcontext)
+def $useriter_chain_walk(S, (pcallcontext), pframe :: pframe_tail*) = ($useriter_frame(S, pcallcontext, pframe) /\ $useriter_chain_walk(S, pframe.CONTEXT, pframe_tail*))
   -- if $useriter_context_kind(S, pcallcontext) \/ $useriter_marker(pframe)
-def $useriter_chain_valid(S, (pcallcontext), pframe :: pframe_tail*) = $useriter_chain_valid(S, pframe.CONTEXT, pframe_tail*)
+def $useriter_chain_walk(S, (pcallcontext), pframe :: pframe_tail*) = $useriter_chain_walk(S, pframe.CONTEXT, pframe_tail*)
   -- if ~$useriter_context_kind(S, pcallcontext)
   -- if ~$useriter_marker(pframe)
-def $useriter_chain_valid(S, eps, pframe :: pframe_tail*) = $useriter_chain_valid(S, pframe.CONTEXT, pframe_tail*)
+def $useriter_chain_walk(S, eps, pframe :: pframe_tail*) = $useriter_chain_walk(S, pframe.CONTEXT, pframe_tail*)
   -- if ~$useriter_marker(pframe)
-def $useriter_chain_valid(S, eps, pframe :: pframe_tail*) = false -- if $useriter_marker(pframe)
+def $useriter_chain_walk(S, eps, pframe :: pframe_tail*) = false -- if $useriter_marker(pframe)
+def $useriter_chain_valid(S, pcallcontext?, pframe*) = ($useriter_ids_unique($useriter_tasks_ids(S.TODO) ++ $useriter_frames_ids(pframe*)) /\ $useriter_chain_walk(S, pcallcontext?, pframe*))
 
 def $call_line_valid(S, (porigin_site), z) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (statement)
@@ -181,7 +212,7 @@ dec $useriter_next_valid(pstate, nat, nat, statement, porigin, int, poperand) : 
 def $useriter_next_valid(S, n, n_object, statement, porigin_site, z, poperand) = true
   -- if $useriter_instance(S, n_object)
   -- if $useriter_site(S, statement, porigin_site, z)
-  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object 0 false)
+  -- if $useriter_cursor_valid(S, n, n_object)
   -- if $call_reference_operand_valid(S, poperand)
 def $useriter_next_valid(S, n, n_object, statement, porigin_site, z, poperand) = false -- otherwise
 def $call_task_valid(S, USERITER_NEXT n n_object statement porigin_site z poperand) = $useriter_next_valid(S, n, n_object, statement, porigin_site, z, poperand)

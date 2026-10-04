@@ -10,7 +10,14 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 Iterator224 is a private milestone under independent review. Compatible explicit
 declarations and inherited internal obligations admit source by-value foreach;
 callbacks use effective runtime methods and retain the iterator/current result
-through key and body. The first keyed source smoke passes at the candidate.
+through key and body. Independent source16 at56cd and affected source10 at267c
+pass separately; the latter confirms inherited virtual signatures, visibility,
+abstract obligations and source-interface priority. Author source5 on the
+inherited-admission correction and the source-reached owner125 at267c pass;
+their raw failures remain preserved.
+Cursor checks now enforce a unique live continuation and metadata record below
+`NEXTITER`. Focused cursor49 and claim85 guards pass at their recorded candidate
+cutoffs; the final reference/reentry protocol review remains pending.
 Tentative-return deprecations are the immediate declaration follow-on, followed
 by IteratorAggregate, ArrayAccess and remaining reference/ordinary object
 traversal. [Scope and boundaries](docs/semantics/ITERATORS.md).
