@@ -379,7 +379,10 @@ static reference targets now complete cold tables while keeping the captured RHS
 cell alive through callbacks. Dynamic and ordinary method keyword selectors keep
 their selected class/name; seven source comparisons and an 84-premise fixture
 cover failure/retry, replacement and ownership. Captured/rebound Closure keyword
-references and deferred instance/object defaults remain open.
+references now retain authentic scope/binding and nested creator evidence after
+collection, including unrelated called classes and handler ingress. Nine new
+sources and 162 state premises pass separately. Deferred instance/object defaults
+and wider consumers remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
