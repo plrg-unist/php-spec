@@ -168,11 +168,21 @@ def $key_global_lookup(S, poperand, n_name*, z, KEY_R) = $key_read_dispatch(S, p
 def $key_global_lookup(S, poperand, n_name*, z, KEY_R) = $key_read_done(S, pvalue)
   -- if ~$error_missing_operand($global_table_view(S), VARIABLE n_name* z)
   -- if S_read = $global_read_name(S, n_name*, z)
+  -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
 def $key_global_lookup(S, poperand, n_name*, z, pkeymode) = $key_read_done(S, pvalue)
   -- if pkeymode =/= KEY_R
   -- if S_read = $global_quiet_name(S, n_name*)
+  -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
+def $key_global_lookup(S, poperand, n_name*, z, KEY_R) = S_read
+  -- if ~$error_missing_operand($global_table_view(S), VARIABLE n_name* z)
+  -- if S_read = $global_read_name(S, n_name*, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $key_global_lookup(S, poperand, n_name*, z, pkeymode) = S_read
+  -- if pkeymode =/= KEY_R
+  -- if S_read = $global_quiet_name(S, n_name*)
+  -- if S_read.COMPLETION =/= NORMAL
 rule PhpStep/key-read-global: S ~> $key_read_global(S, poperand, z, pkeymode)
   -- if S.TODO = (KEY_READ_GLOBAL poperand z pkeymode) :: ptask_tail*
 
@@ -212,6 +222,8 @@ def $key_dimension_value(S, pkeyread) = $key_array_lookup(S_key, pkeyread[.KEY =
   -- if S_key.COMPLETION = NORMAL
 def $key_dimension_value(S, pkeyread) = S_key
   -- if pkeyread.BASE = PARRAY n
+  -- if pkeyread.VALUE =/= PNULL
+  -- if $key_plain_value(pkeyread.VALUE)
   -- if S_key = $key_dimension_convert(S, pkeyread)
   -- if S_key.COMPLETION =/= NORMAL
 def $key_dimension_value(S, pkeyread) = $key_read_done(S_out, pvalue)
