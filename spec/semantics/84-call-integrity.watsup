@@ -284,7 +284,7 @@ def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
   -- if pcallcontext.PARAMS = (psparam.NAME)*
   -- if preqbytes* = pfunction.CVS
-  -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE) \/ $error_context_valid(S, pcallcontext)
+  -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
   -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
   -- if ~$default_ctor_context_kind(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
   -- if $call_arity_valid(S, pcallcontext)

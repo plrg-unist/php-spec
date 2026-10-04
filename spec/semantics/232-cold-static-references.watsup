@@ -9,9 +9,26 @@ def $class_static_selection_keyword(NScalarString (BYTES text) metadata) = (ptby
   -- if ptbytes <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
 def $class_static_selection_keyword(phpType19) = eps -- otherwise
 dec $class_static_selection_method(pstate, porigin) : pmethoddesc?
-def $class_static_selection_method(S, PORIGIN n pcpath) = $class_method_origin(S.CLASSES, pfunction.ORIGIN)
-  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction)
+def $class_static_selection_method(S, PORIGIN n pcpath) = (pmethoddesc)
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $call_current_valid(S)
+  -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if $trait_source_same(pfunction_source, pmethoddesc.FUNCTION)
 def $class_static_selection_method(S, porigin) = eps -- otherwise
+dec $class_static_selection_scope_method(pstate, porigin, porigin) : pmethoddesc?
+dec $class_static_selection_source_method(pmethoddesc*, porigin, pfunction) : pmethoddesc?
+def $class_static_selection_scope_method(S, PORIGIN n pcpath, porigin_scope) = $class_static_selection_source_method(pclassdesc.METHODS, porigin_scope, pfunction_source)
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc)
+def $class_static_selection_scope_method(S, porigin, porigin_scope) = eps -- otherwise
+def $class_static_selection_source_method(eps, porigin_scope, pfunction_source) = eps
+def $class_static_selection_source_method(pmethoddesc :: pmethoddesc_tail*, porigin_scope, pfunction_source) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = porigin_scope
+  -- if $trait_source_same(pfunction_source, pmethoddesc.FUNCTION)
+def $class_static_selection_source_method(pmethoddesc :: pmethoddesc_tail*, porigin_scope, pfunction_source) = $class_static_selection_source_method(pmethoddesc_tail*, porigin_scope, pfunction_source)
+  -- if pmethoddesc.OWNER =/= porigin_scope \/ ~$trait_source_same(pfunction_source, pmethoddesc.FUNCTION)
 dec $class_static_selection_root(pstate, ptbytes, porigin, porigin) : porigin?
 def $class_static_selection_root(S, ptbytes, porigin_scope, porigin_called) = (porigin_scope)
   -- if ptbytes = $ptascii("self")
@@ -42,8 +59,8 @@ def $class_static_selection_valid(S, pstaticselection) = true
   -- if $origin_node(S.SOURCES, pstaticselection.SITE) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
   -- if $class_static_selection_keyword(phpType19) = (ptbytes)
   -- if pstaticselection.CLOSURE = eps
-  -- if $class_static_selection_method(S, pstaticselection.SITE) = (pmethoddesc)
-  -- if pstaticselection.SCOPE = (pmethoddesc.OWNER)
+  -- if pstaticselection.SCOPE = (porigin_scope)
+  -- if $class_static_selection_scope_method(S, pstaticselection.SITE, porigin_scope) = (pmethoddesc)
   -- if pstaticselection.CALLED = (porigin_called)
   -- if $class_constant_parent_chain(S, porigin_called, pmethoddesc.OWNER, |S.CLASSES|)
   -- if $class_static_selection_root(S, ptbytes, pmethoddesc.OWNER, porigin_called) = (pstaticselection.ROOT)
@@ -125,6 +142,22 @@ def $class_static_selected_task(S, pstaticselection, ptbytes, z) = false -- othe
 def $class_static_selected_ready(S, pstaticselection, ptbytes, z) = $class_constant_static_reference_ready(S, pstaticselection.ROOT, ptbytes, z)
   -- if S.TODO = (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*
 def $class_static_selected_ready(S, pstaticselection, ptbytes, z) = true -- otherwise
+
+;; A future reference fetch has no prepared BASE until the selected class
+;; continuation runs. Its exact source marker certifies that pending base.
+dec $class_static_ref_fetch_head(ptask*) : bool
+dec $class_static_ref_fetch_pending(pstate, int, ptask*) : bool
+def $class_static_ref_fetch_head((PROPERTY_REF_FETCH z) :: ptask_tail*) = true
+def $class_static_ref_fetch_head(ptask*) = false -- otherwise
+def $class_static_ref_fetch_pending(S, z, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: (PROPERTY_REF_FETCH z) :: ptask_tail*) = $class_static_ref_fetch_task(S[.BASE = BASE_CLASS_STATIC pstaticselection.ROOT ptbytes][.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*], z)
+  -- if $class_static_selected_task(S, pstaticselection, ptbytes, z)
+def $class_static_ref_fetch_pending(S, z, ptask :: ptask_tail*) = $class_static_ref_fetch_pending(S, z, ptask_tail*)
+  -- if ~$class_constant_update_continuation(ptask)
+def $class_static_ref_fetch_pending(S, z, ptask*) = false -- otherwise
+def $class_static_ref_fetch_task(S, z) = $class_static_ref_fetch_pending(S, z, S.TODO)
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if ~$class_static_ref_fetch_head(S.TODO)
+
 def $call_task_valid(S, CLASS_CONST_SELECTED pstaticselection ptbytes z) = $class_static_selected_task(S, pstaticselection, ptbytes, z)
 def $class_constant_update_continuation(CLASS_CONST_SELECTED pstaticselection ptbytes z) = true
 def $class_constant_update_target(S, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*) = (pstaticselection.ROOT)

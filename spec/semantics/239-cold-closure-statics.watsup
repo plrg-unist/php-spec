@@ -54,7 +54,7 @@ def $closure_creator_valid(S, porigin, pclosurescope, pclosurecreation, pclosure
   -- if pclosurecreation.RECEIVER
 def $closure_creator_valid(S, porigin, pclosurescope, pclosurecreation, pclosurecreator) = false -- otherwise
 def $closure_scope_classes_valid(S, porigin, pclosurescope) = true
-  -- if $closure_source_class(S, porigin) = (pclosurescope.LEXICAL)
+  -- if $trait_closure_source_matches(S, porigin, pclosurescope.LEXICAL)
   -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc)
   -- if $class_origin_matches(S, pclosurescope.CALLED, pclassdesc.NAME, |S.CLASSES|)
 def $closure_scope_classes_valid(S, porigin, pclosurescope) = true

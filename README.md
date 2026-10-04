@@ -419,7 +419,10 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 [review](coverage/semantics/nullsafe-properties-review.json) binds source,
 compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
-bound closures and `Closure->__invoke` trampolines. A bounded
+bound closures and `Closure->__invoke` trampolines.
+[Source trait methods](docs/semantics/SOURCE-TRAITS.md) compose nested uses, conflicts
+and adaptations with using-class scope, original body provenance and distinct
+class/alias static cells. Trait properties and constants remain the next phase. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound

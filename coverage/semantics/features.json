@@ -2849,14 +2849,17 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/77-magic-constants.watsup",
-        "spec/semantics/46-source-compiler.watsup"
+        "spec/semantics/46-source-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup"
       ],
       "source_tests": [
         "tests/semantics/magic_constants.py",
         "tests/semantics/magic_constants_compiler.py",
-        "tests/semantics/request_environment.py"
+        "tests/semantics/request_environment.py",
+        "tests/semantics/trait_method_review_cases.json",
+        "coverage/semantics/trait-methods-review.json"
       ],
-      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
+      "review": "Top-level magic values, source leaf lines, lexical namespace and explicit file/CWD facts are reviewed. Declaration/frame contexts remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Method228 adds original trait spelling through imported/nested methods and Closures, with using-class __CLASS__ kept separate; see trait-methods-review.json."
     },
     {
       "node": "Scalar_String",
@@ -3659,10 +3662,31 @@
       ],
       "status": "partial",
       "implementation": [
-        "spec/semantics/18-class-headers.watsup"
+        "spec/semantics/18-class-headers.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup"
       ],
-      "source_tests": [],
-      "review": "Independent reviewer: named class/interface/trait header helper187b01f2;195 checked header/lint comparisons,9 descriptors,10 Unsupported and57 separate frontend compile restrictions with57 equivalent edited checked-header assertions. Expanded reviewer matrix235 comparisons/13 descriptors passed on unchanged DSL. Body compilation, source activation, class linking and correction of frontend phase gaps remain pending.",
+      "source_tests": [
+        "tests/semantics/trait_method_cases.json",
+        "tests/semantics/trait_method_default_cases.json",
+        "tests/semantics/trait_method_review_cases.json",
+        "tests/semantics/trait_method_warning_review_cases.json",
+        "tests/semantics/trait_method_abstract_review_cases.json",
+        "tests/semantics/trait_method_capture_review_cases.json",
+        "tests/semantics/trait_method_finally_review_cases.json",
+        "tests/semantics/trait_method_direct_default_review_cases.json",
+        "tests/semantics/trait_method_review_protocol.py",
+        "tests/semantics/trait_method_default_review_protocol.py",
+        "tests/semantics/trait_method_cold_review_cases.json",
+        "tests/semantics/trait_method_ctor_review_cases.json",
+        "tests/semantics/trait_method_cold_review_protocol.py",
+        "tests/semantics/trait_method_ctor_review_protocol.py",
+        "tests/semantics/trait_method_interface_file_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_protocol.py",
+        "coverage/semantics/trait-methods-review.json"
+      ],
+      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Trait properties/constants and wider existing dependent consumers remain required; no trait-family closure.",
       "helper_tests": [
         "tests/semantics/class_headers.py",
         "coverage/semantics/class-headers.json"
@@ -3674,10 +3698,33 @@
       "obligations": [
         "classes.traits"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/18-class-headers.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/trait_method_cases.json",
+        "tests/semantics/trait_method_default_cases.json",
+        "tests/semantics/trait_method_review_cases.json",
+        "tests/semantics/trait_method_warning_review_cases.json",
+        "tests/semantics/trait_method_abstract_review_cases.json",
+        "tests/semantics/trait_method_capture_review_cases.json",
+        "tests/semantics/trait_method_finally_review_cases.json",
+        "tests/semantics/trait_method_direct_default_review_cases.json",
+        "tests/semantics/trait_method_review_protocol.py",
+        "tests/semantics/trait_method_default_review_protocol.py",
+        "tests/semantics/trait_method_cold_review_cases.json",
+        "tests/semantics/trait_method_ctor_review_cases.json",
+        "tests/semantics/trait_method_cold_review_protocol.py",
+        "tests/semantics/trait_method_ctor_review_protocol.py",
+        "tests/semantics/trait_method_interface_file_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_protocol.py",
+        "coverage/semantics/trait-methods-review.json"
+      ],
+      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Trait properties/constants and wider existing dependent consumers remain required; no trait-family closure."
     },
     {
       "node": "Stmt_TraitUseAdaptation_Alias",
@@ -3685,10 +3732,33 @@
       "obligations": [
         "classes.trait-alias"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/18-class-headers.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/trait_method_cases.json",
+        "tests/semantics/trait_method_default_cases.json",
+        "tests/semantics/trait_method_review_cases.json",
+        "tests/semantics/trait_method_warning_review_cases.json",
+        "tests/semantics/trait_method_abstract_review_cases.json",
+        "tests/semantics/trait_method_capture_review_cases.json",
+        "tests/semantics/trait_method_finally_review_cases.json",
+        "tests/semantics/trait_method_direct_default_review_cases.json",
+        "tests/semantics/trait_method_review_protocol.py",
+        "tests/semantics/trait_method_default_review_protocol.py",
+        "tests/semantics/trait_method_cold_review_cases.json",
+        "tests/semantics/trait_method_ctor_review_cases.json",
+        "tests/semantics/trait_method_cold_review_protocol.py",
+        "tests/semantics/trait_method_ctor_review_protocol.py",
+        "tests/semantics/trait_method_interface_file_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_protocol.py",
+        "coverage/semantics/trait-methods-review.json"
+      ],
+      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Trait properties/constants and wider existing dependent consumers remain required; no trait-family closure."
     },
     {
       "node": "Stmt_TraitUseAdaptation_Precedence",
@@ -3696,10 +3766,33 @@
       "obligations": [
         "classes.trait-precedence"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/18-class-headers.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/trait_method_cases.json",
+        "tests/semantics/trait_method_default_cases.json",
+        "tests/semantics/trait_method_review_cases.json",
+        "tests/semantics/trait_method_warning_review_cases.json",
+        "tests/semantics/trait_method_abstract_review_cases.json",
+        "tests/semantics/trait_method_capture_review_cases.json",
+        "tests/semantics/trait_method_finally_review_cases.json",
+        "tests/semantics/trait_method_direct_default_review_cases.json",
+        "tests/semantics/trait_method_review_protocol.py",
+        "tests/semantics/trait_method_default_review_protocol.py",
+        "tests/semantics/trait_method_cold_review_cases.json",
+        "tests/semantics/trait_method_ctor_review_cases.json",
+        "tests/semantics/trait_method_cold_review_protocol.py",
+        "tests/semantics/trait_method_ctor_review_protocol.py",
+        "tests/semantics/trait_method_interface_file_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_protocol.py",
+        "coverage/semantics/trait-methods-review.json"
+      ],
+      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Trait properties/constants and wider existing dependent consumers remain required; no trait-family closure."
     },
     {
       "node": "Stmt_TryCatch",
@@ -8428,15 +8521,38 @@
     {
       "id": "classes.traits",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/18-class-headers.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/trait_method_cases.json",
+        "tests/semantics/trait_method_default_cases.json",
+        "tests/semantics/trait_method_review_cases.json",
+        "tests/semantics/trait_method_warning_review_cases.json",
+        "tests/semantics/trait_method_abstract_review_cases.json",
+        "tests/semantics/trait_method_capture_review_cases.json",
+        "tests/semantics/trait_method_finally_review_cases.json",
+        "tests/semantics/trait_method_direct_default_review_cases.json",
+        "tests/semantics/trait_method_review_protocol.py",
+        "tests/semantics/trait_method_default_review_protocol.py",
+        "tests/semantics/trait_method_cold_review_cases.json",
+        "tests/semantics/trait_method_ctor_review_cases.json",
+        "tests/semantics/trait_method_cold_review_protocol.py",
+        "tests/semantics/trait_method_ctor_review_protocol.py",
+        "tests/semantics/trait_method_interface_file_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_protocol.py",
+        "coverage/semantics/trait-methods-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": null,
+      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Trait properties/constants and wider existing dependent consumers remain required; no trait-family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/trait-deferred-self-union.php",
         "tests/semantics/conformance/class-direct-self-union.php",
@@ -8446,28 +8562,74 @@
     {
       "id": "classes.trait-alias",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/18-class-headers.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/trait_method_cases.json",
+        "tests/semantics/trait_method_default_cases.json",
+        "tests/semantics/trait_method_review_cases.json",
+        "tests/semantics/trait_method_warning_review_cases.json",
+        "tests/semantics/trait_method_abstract_review_cases.json",
+        "tests/semantics/trait_method_capture_review_cases.json",
+        "tests/semantics/trait_method_finally_review_cases.json",
+        "tests/semantics/trait_method_direct_default_review_cases.json",
+        "tests/semantics/trait_method_review_protocol.py",
+        "tests/semantics/trait_method_default_review_protocol.py",
+        "tests/semantics/trait_method_cold_review_cases.json",
+        "tests/semantics/trait_method_ctor_review_cases.json",
+        "tests/semantics/trait_method_cold_review_protocol.py",
+        "tests/semantics/trait_method_ctor_review_protocol.py",
+        "tests/semantics/trait_method_interface_file_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_protocol.py",
+        "coverage/semantics/trait-methods-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": null
+      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Trait properties/constants and wider existing dependent consumers remain required; no trait-family closure."
     },
     {
       "id": "classes.trait-precedence",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/18-class-headers.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/trait_method_cases.json",
+        "tests/semantics/trait_method_default_cases.json",
+        "tests/semantics/trait_method_review_cases.json",
+        "tests/semantics/trait_method_warning_review_cases.json",
+        "tests/semantics/trait_method_abstract_review_cases.json",
+        "tests/semantics/trait_method_capture_review_cases.json",
+        "tests/semantics/trait_method_finally_review_cases.json",
+        "tests/semantics/trait_method_direct_default_review_cases.json",
+        "tests/semantics/trait_method_review_protocol.py",
+        "tests/semantics/trait_method_default_review_protocol.py",
+        "tests/semantics/trait_method_cold_review_cases.json",
+        "tests/semantics/trait_method_ctor_review_cases.json",
+        "tests/semantics/trait_method_cold_review_protocol.py",
+        "tests/semantics/trait_method_ctor_review_protocol.py",
+        "tests/semantics/trait_method_interface_file_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_cases.json",
+        "tests/semantics/trait_method_closure_cold_review_protocol.py",
+        "coverage/semantics/trait-methods-review.json"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": null
+      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Trait properties/constants and wider existing dependent consumers remain required; no trait-family closure."
     },
     {
       "id": "classes.visibility",

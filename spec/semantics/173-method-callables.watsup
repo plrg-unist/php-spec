@@ -287,10 +287,10 @@ def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY 
 def $target_function(S, CLOSURE_TARGET n) = (pmethoddesc.FUNCTION)
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
-def $state_static_at(S, porigin) = $static_at(S.STATICS, porigin)
+def $state_static_at(S, porigin) = $static_at(S.STATICS, $trait_static_key(S, porigin))
   -- if $current_instance(S) = (n)
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
-def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new]]
+def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new[.ORIGIN = $trait_static_key(S, pstaticcell_new.ORIGIN)]]]
   -- if $current_instance(S) = (n)
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
 def $closure_callable(S, n) = true

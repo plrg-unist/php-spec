@@ -68,11 +68,11 @@ def $pil_internal_proto_owner(ptbytes) = $ptascii("Throwable") -- otherwise
 
 def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_OK
   -- if $pil_internal_signature(pmethoddesc.NAME) = eps
-def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Cannot make non static method ") ++ ptbytes_owner ++ $ptascii("::") ++ $pil_internal_name(pmethoddesc.NAME) ++ $ptascii("() static in class ") ++ pclassdesc.NAME) pmethoddesc.FUNCTION.LINE pmethoddesc.OWNER
+def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Cannot make non static method ") ++ ptbytes_owner ++ $ptascii("::") ++ $pil_internal_name(pmethoddesc.NAME) ++ $ptascii("() static in class ") ++ pclassdesc.NAME) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
   -- if $pil_internal_signature(pmethoddesc.NAME) = (pssignature)
   -- if pmethoddesc.STATIC
   -- if $pil_internal_proto_owner(pmethoddesc.NAME) = (ptbytes_owner)
-def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() must be public (as in class ") ++ ptbytes_owner ++ [41]) pmethoddesc.FUNCTION.LINE pmethoddesc.OWNER
+def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() must be public (as in class ") ++ ptbytes_owner ++ [41]) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
   -- if $pil_internal_signature(pmethoddesc.NAME) = (pssignature)
   -- if ~pmethoddesc.STATIC
   -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
@@ -82,10 +82,10 @@ def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = $pil_internal_source_
   -- if ~pmethoddesc.STATIC
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
   -- if $pil_internal_proto_owner(pmethoddesc.NAME) = (ptbytes_owner)
-  -- if $call_sourcefile(S.FILES, pclassdesc.ORIGIN) = (ptbytes_file)
+  -- if $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN) = (ptbytes_file)
   -- if $pil_internal_method(ptbytes_owner, pmethoddesc.NAME, ptbytes_file) = (pmmethod_proto)
 def $pil_internal_source_result(pmethoddesc, eps) = METHOD_OK
-def $pil_internal_source_result(pmethoddesc, PMDIAGNOSTIC pmdiagnostic) = METHOD_FILEISSUE pmdiagnostic.MESSAGE pmethoddesc.FUNCTION.LINE pmethoddesc.OWNER
+def $pil_internal_source_result(pmethoddesc, PMDIAGNOSTIC pmdiagnostic) = METHOD_FILEISSUE pmdiagnostic.MESSAGE pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
 def $pil_internal_source_result(pmethoddesc, PMDIAGUNSUPPORTED text) = METHOD_UNSUPPORTED text
 def $pil_internal_source_infos(S, eps) = METHOD_OK
 def $pil_internal_source_infos(S, (PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*) = $pil_internal_source_infos(S, ppmethodinherited_tail*)

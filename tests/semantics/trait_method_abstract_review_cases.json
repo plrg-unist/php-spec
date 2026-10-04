@@ -1,0 +1,42 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; original abstract import identity controls retained outside Git.",
+  "cases": [
+    {
+      "id": "same-abstract-final-import-diamond",
+      "source": "<?php trait T{abstract function f();}trait U{use T{f as final;}}trait V{use T{f as final;}}abstract class C{use U,V;}echo \"OK\";",
+      "source_sha256": "0878ae122fa251c649c9f118daa56c4cd15d6cf18a3fa8bc928588b9c2ad67fb",
+      "status": "normal",
+      "stdout_base64": "T0s=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-abstract-dedup-native228-_h7oy53k/report.json",
+      "native_raw_sha256": "14089ae579aafff07af93b2d0e386cd35919302bc150eec5674199b98c125f75",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; authentic abstract import source and finality dedup"
+    },
+    {
+      "id": "different-abstract-signatures",
+      "source": "<?php trait A{abstract function f(int $x);}trait B{abstract function f(string $x);}abstract class C{use A,B;}echo \"OK\";",
+      "source_sha256": "fe0c263f385de223e98bd833951a24c4ce38882d8d1a7f2af1c39811d8099814",
+      "status": "php_error",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIEE6OmYoaW50ICR4KSBtdXN0IGJlIGNvbXBhdGlibGUgd2l0aCBCOjpmKHN0cmluZyAkeCkgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-abstract-dedup-native228-_h7oy53k/report.json",
+      "native_raw_sha256": "14089ae579aafff07af93b2d0e386cd35919302bc150eec5674199b98c125f75",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; authentic abstract import source and finality dedup"
+    },
+    {
+      "id": "different-abstract-final-signatures",
+      "source": "<?php trait A{abstract function f(int $x);}trait B{abstract function f(int $x);}trait U{use A{f as final;}}trait V{use B{f as final;}}abstract class C{use U,V;}echo \"OK\";",
+      "source_sha256": "c13c91b1cb18507fad5741777e8c5b6b7cac8169b00720901d1556050549c609",
+      "status": "php_error",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBvdmVycmlkZSBmaW5hbCBtZXRob2QgVjo6ZigpIGluIHtGSUxFfSBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-abstract-dedup-native228-_h7oy53k/report.json",
+      "native_raw_sha256": "14089ae579aafff07af93b2d0e386cd35919302bc150eec5674199b98c125f75",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; authentic abstract import source and finality dedup"
+    }
+  ],
+  "status_policy": "Runtime class/trait linking failures are php_error; compile-time rejections are static_rejection. Source bytes and retained native tuples are unchanged."
+}

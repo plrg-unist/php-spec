@@ -559,5 +559,5 @@ def $finally_current_complete(S) = ($finally_regions_complete(S, n, pcpath, $ppf
 def $finally_current_complete(S) = false -- otherwise
 dec $finally_frames_complete(pstate, pframe*) : bool
 def $finally_frames_complete(S, eps) = true
-def $finally_frames_complete(S, pframe :: pframe_tail*) = ($finally_current_complete(S[.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.CURRENT = pframe.CONTEXT]) /\ $finally_frames_complete(S, pframe_tail*))
+def $finally_frames_complete(S, pframe :: pframe_tail*) = ($finally_current_complete($constant_frame_scope(S, pframe, pframe_tail*)) /\ $finally_frames_complete(S, pframe_tail*))
 def $finally_state_valid(S) = ($finally_current_complete(S) /\ $finally_frames_complete(S, S.FRAMES))
