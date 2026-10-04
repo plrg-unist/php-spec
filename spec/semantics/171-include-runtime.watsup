@@ -282,7 +282,7 @@ dec $file_open_continue(pstate, pfileopenresponse) : pstate
 def $file_open_continue(S, pfileopenresponse) = $drive_steps(S_next, n)
   -- if S.SERVICELEFT = (n)
   -- if S_next = $file_open_resume(S, pfileopenresponse)
-  -- if S_next.COMPLETION = NORMAL
+  -- if S_next.COMPLETION = NORMAL \/ $shutdown_ready(S_next)
 def $file_open_continue(S, pfileopenresponse) = $drive_steps(S_next, n)
   -- if S.SERVICELEFT = (n)
   -- if S_next = $file_open_resume(S, pfileopenresponse)
@@ -290,6 +290,7 @@ def $file_open_continue(S, pfileopenresponse) = $drive_steps(S_next, n)
 def $file_open_continue(S, pfileopenresponse) = S_next
   -- if S_next = $file_open_resume(S, pfileopenresponse)
   -- if S_next.COMPLETION =/= NORMAL
+  -- if ~$shutdown_ready(S_next)
 
 dec $file_parse_response_valid(pstate, psourceresponse) : bool
 dec $file_parse_context_response(pfilecontext*, psourceresponse) : bool
@@ -373,10 +374,11 @@ dec $file_parse_continue(pstate, psourceresponse) : pstate
 def $file_parse_continue(S, psourceresponse) = $drive_steps(S_next, n)
   -- if S.SERVICELEFT = (n)
   -- if S_next = $file_parse_resume(S, psourceresponse)
-  -- if S_next.COMPLETION = NORMAL
+  -- if S_next.COMPLETION = NORMAL \/ $shutdown_ready(S_next)
 def $file_parse_continue(S, psourceresponse) = S_next
   -- if S_next = $file_parse_resume(S, psourceresponse)
   -- if S_next.COMPLETION =/= NORMAL
+  -- if ~$shutdown_ready(S_next)
 
 rule PhpStep/file-end: S ~> S[.FILECONTEXTS = pfilecontext_tail*][.TODO = ptask_tail*][.RESULT = KNOWN (PINT 1)][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pfilecontext.SITE)]
   -- if S.TODO = (FILE_END n_unit) :: ptask_tail*
