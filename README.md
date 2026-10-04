@@ -139,10 +139,11 @@ interactions preserve cache ownership and aliases. Static Closure and fixed
 function/static-method callable initializers retain owner/called scope, cached
 identity and clone state. The current handler/truth interaction retains the
 original null and cached static counter across handler mutation. The catalogue of
-73 sources and the new 159 + 44 state
-checks keep distinct tested revisions. Named constexpr `::class`, wider callable
-consumers and references into incomplete class tables remain Unsupported; the
-family stays partial.
+92 sources and the 159 + 44 + 63 state checks keep distinct tested revisions.
+Named constexpr `::class` preserves namespace spelling and declaring self/parent;
+rebound Closure defaults use their current lexical scope without a stale cache.
+Wider callable consumers and references into incomplete class tables remain
+Unsupported; the family stays partial.
 [Foreach syntax and prechecks](docs/semantics/FOREACH-COMPILER.md) preserve reference
 and list keys through checked printing and report exact compiler errors;
 [independent review](coverage/semantics/foreach-publication-review.json) verifies

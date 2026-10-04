@@ -87,9 +87,28 @@ Its GLOBALS write leaves the folded false-left expression's original null intact
 and repeated identity/direct invocation retains the static counter (`1null:same:2`).
 This brings the maintained catalogue to 73; the earlier 72 sources stay unchanged.
 
+Named constexpr `::class` folds namespace/import spelling without class lookup.
+Known self uses the declaring owner; known parent retains its source spelling.
+Closure and eval contexts resolve deferred self/parent from authenticated lexical
+scope, including rebound defaults. Contextual defaults bypass origin-only caches;
+ordinary defaults retain their existing cache ownership. Literal class strings
+and parser-folded literal concatenation follow Zend's separate class-name route.
+Live static/computed forms and nonstring literals retain their PHP errors, while
+folded dead branches disappear before admission.
+
+Seventeen constant-context and two ordinary keyword-form comparisons add nineteen
+agreements (11 normal, one PHP error, seven static rejections), bringing the
+catalogue to 92. Two focused fixtures add 25/38 predicates for coherent folded
+spelling substitution and a forged contextual default cache/rebound scope.
+Original Unsupported and elaboration failures stay preserved; the earlier
+binding-premise draft remains unrun.
+the original concat rejection hypothesis remains refuted by normal `GhostName`.
+These source and finite cutoffs are separate; current parameter composition is
+pending and maintenance adds no execution credit.
+
 Accessible references into an incomplete class table are explicitly Unsupported;
 the separate rejected control is not a native agreement. Unretained
-computed/scoped table-update selectors and named `::class` in constant expressions remain
+computed/scoped table-update selectors remain
 Unsupported. Constructor contexts outside class constants, builtin FCC targets
 and object transfers without an authenticated source/cache relation also remain
 Unsupported. Constant modifier
