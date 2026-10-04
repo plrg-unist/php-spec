@@ -160,5 +160,14 @@
     "exit": 7,
     "status": "explicit_exit",
     "source_sha256": "1efc46ffe944eec747201c9dd2c07120da39cccc25e5d20c7f52bee712104c97"
+  },
+  {
+    "id": "shutdown-trait-internal-effects-composition",
+    "source": "<?php trait T{static function reg(){set_error_handler([self::class,\"w\"]);register_shutdown_function([self::class,\"h\"]);}private static function w($n,$m,$f,$l){global $v;echo \"W:\",$n,\":\",$l,\";\";$v->text=\"after\";unset($GLOBALS[\"v\"]);return true;}private static function h($e=new ErrorException(message:null,filename:new V)){echo \"H:\",$e->getFile(),\":\",get_called_class(),\":\",func_num_args(),\";\";}}class V{public $text=\"before\";function __construct(){$GLOBALS[\"v\"]=$this;}function __toString(){echo \"T;\";return $this->text;}}class C{use T;}C::reg();exit(7);",
+    "source_sha256": "affe9aee21a223ca86489082449aa1907d9fd5d854a2c4c9edeff093a50adf86",
+    "stdout": "W:8192:1;T;H:after:C:0;",
+    "stderr": "",
+    "exit": 7,
+    "status": "explicit_exit"
   }
 ]
