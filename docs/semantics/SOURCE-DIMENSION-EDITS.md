@@ -7,12 +7,13 @@ later write. A key CV remains delayed and is read again after the RHS; a
 computed scalar key is evaluated once. An undefined quiet key becomes null and
 then emits the null-key deprecation even if its callback defines that CV.
 
-A present quiet value skips the RHS. An absent value runs the RHS before the
-memoized W conversion. Read and write use their actual separate CODEEXPR and
+A present quiet value skips the RHS. An absent value evaluates a computed RHS
+before the memoized W conversion; a simple RHS CV remains delayed until
+acquisition succeeds. Read and write use their actual separate CODEEXPR and
 CODEWRITE lines. The W fetch separates first, protects the selected table and
-uses242's exact-one owner gate; a callback-created copy can abort it. Abort
-skips a delayed missing RHS CV. Retired null/undefined CV storage can be
-initialized again, and a moved sole keeper can receive the eventual write.
+uses242's exact-one owner gate; a callback-created copy can abort it. Abort skips
+a delayed missing RHS CV. Retired null/undefined CV storage can be initialized
+again, and a moved sole keeper can receive the eventual write.
 
 Final UNSET_DIM separates before conversion. Undefined key CVs warn once and
 retain the empty key without a null deprecation. Null keys do not deprecate.
