@@ -71,7 +71,12 @@ the initial `error_reporting` and `include_path` bytes before compilation.
 Getters and Restore retain those facts through setters, silence and callbacks;
 null reporting and an explicit empty string have distinct masks. Nine exact
 profile comparisons, 99 state premises and 15 transport controls pass.
-Wider startup directives, initializer/PIPE/INI consumers and lifecycle remain open.
+[Live display errors](coverage/semantics/display-errors-review.json) add nullable
+startup bytes, raw get/set/Restore and ordered stdout/stderr/off diagnostics.
+Emission captures its destination after callback effects; later writes retain
+earlier output. Eleven exact comparisons, 76 state premises and 17 transport
+controls pass. Required shutdown fatal freezing awaits the accepted lifecycle
+composition; wider display/startup directives and diagnostic consumers stay open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,

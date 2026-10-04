@@ -17,6 +17,19 @@ The original count observer remains Unsupported with zero agreement. Weak-null,
 Stringable and lossy integer warnings require real suspended continuations next;
 rebound anonymous keyword NEW follows.
 
+Live `display_errors`237 retains nullable original/live INI entries and raw
+get/set/Restore. Ordinary text diagnostics capture stdout/stderr/off after handler
+effects, keeping their position among source output across later writes and
+include retirement. Current terminal errors preserve status255 when display is
+off. Ten author and one independent exact comparisons, 76 source-derived state
+premises and 17 entry/transport controls pass at b8e8, alongside223-module SL
+stages/init and the changed adapter build. Actual71da/235 preservation retains
+224 modules with unchanged tested display routes and no renewed execution.
+The [display ledger](coverage/semantics/display-errors-review.json) separates
+source-defined nullable controls from native profiles. The held shutdown/fatal
+freeze source remains native-only until required actual231 composition; wider
+display directives, parser/profiles and output/lifecycle consumers remain open.
+
 Registered startup inputs225 provide original `error_reporting` and
 `include_path` bytes before compilation, independently of file/CWD facts.
 Getters and Restore preserve null/empty reporting, signed32 masks and raw bytes

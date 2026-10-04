@@ -200,7 +200,7 @@ and handled lossy conversions.
 
 The [startup increment225](../../coverage/semantics/startup-ini-review.json)
 accepts registered `error_reporting` and `include_path` bytes before compilation.
-`bin/php-semantics FILE --startup-ini INPUT.json` takes exactly those two keys:
+The original `bin/php-semantics FILE --startup-ini INPUT.json` entry takes those two keys:
 canonical base64 strings, with JSON null also permitted for `error_reporting`.
 These are effective registered values: native CLI `-d` expressions have already
 been evaluated. Null reporting starts with mask30719; a present empty string
@@ -216,6 +216,21 @@ Nine exact profile comparisons include callback/silence mutation and a genuine
 finite include after nondefault path Restore; 99 state and 15 transport controls
 authenticate all four ordinary/request/file entry variants. Wider startup
 directives, INI parsing/profiles and request lifecycle remain required.
+
+[Live display237](../../coverage/semantics/display-errors-review.json) also accepts
+`display_errors` alone, or all three keys; its value is canonical base64 or JSON
+null. Absent display input retains the baseline raw `stderr`; explicit null
+selects stdout and a present empty string selects off, though both getters return
+empty bytes. Null is a source-defined control, without a native CLI NULL claim.
+Full case-insensitive names precede decimal-prefix/uint8 decoding. Setters preserve
+full bytes and sample the old value after Stringable option conversion; Restore
+uses the original nullable entry only when modified. Display-only file entries
+seed the baseline `.:` path, while ordinary/request entries keep file facts unknown.
+Ordinary diagnostics capture their live destination after handlers and retain
+output order through later mode changes. Eleven exact comparisons, 76 state
+premises and 17 transport controls cover these routes and eval/include retirement.
+Shutdown fatal freezing remains required after actual231 acceptance; its held
+native source adds no model agreement yet. Wider display/configuration stays open.
 
 [Diagnostic ingress217](../../coverage/semantics/reporting-diagnostics-review.json)
 fetches `E_STRICT` at runtime and dispatches its deprecation through the genuine

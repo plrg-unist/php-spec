@@ -9950,7 +9950,8 @@
         "spec/semantics/101-error-suppression.watsup",
         "spec/semantics/172-file-context-intrinsics.watsup",
         "spec/semantics/217-diagnostic-ingress.watsup",
-        "spec/semantics/225-startup-ini.watsup"
+        "spec/semantics/225-startup-ini.watsup",
+        "spec/semantics/237-display-errors.watsup"
       ],
       "helper_tests": [
         "tests/semantics/error_handler_protocol.py",
@@ -9960,7 +9961,8 @@
         "tests/semantics/reporting_protocol.py",
         "tests/semantics/reporting_diagnostics_protocol.py",
         "tests/semantics/eval_location_protocol.py",
-        "tests/semantics/startup_ini_protocol.py"
+        "tests/semantics/startup_ini_protocol.py",
+        "tests/semantics/display_errors_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/error_handler_cases.py",
@@ -9971,7 +9973,8 @@
         "tests/semantics/reporting_cases.py",
         "tests/semantics/reporting_diagnostics_cases.py",
         "tests/semantics/reporting_diagnostics_current.php",
-        "tests/semantics/startup_ini.py"
+        "tests/semantics/startup_ini.py",
+        "tests/semantics/display_errors.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c",
@@ -9984,9 +9987,10 @@
         "coverage/semantics/reporting-ini-review.json",
         "coverage/semantics/reporting-diagnostics-review.json",
         "coverage/semantics/compound-eval-location-review.json",
-        "coverage/semantics/startup-ini-review.json"
+        "coverage/semantics/startup-ini-review.json",
+        "coverage/semantics/display-errors-review.json"
       ],
-      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/nonpublic/magic/autoload/internal/exception/lifecycle callbacks remain open. Reporting INI coupling accepts exact full-byte reads/late old returns, signed64 decimal-prefix saturation then low32 masks, modified-entry Restore, equal-mask raw preservation, strict source refusal and weak explicit __invoke. Constants2 at76a30 and reporting8+independent2/74 at ef46 remain separate. Diagnostic ingress217 handles runtime E_STRICT and lossy reporting conversions through authentic 206/207 callbacks. Long conversion precedes dispatch; old-mask sampling follows it and original operands remain in traces. Saved initializer facts/busy class scopes and compound exception locations retain normal/throw behavior. Mixed 14 author+4 independent sources/211 conditions remain at their revisions; current 210 compilation and scoped-handler/backing/class-name source1 validate added composition separately. Compound callback/eval filename creation is addressed separately in compound-eval-location-review.json. Wider profiles/INI and lifecycle remain required; original diagnostic cuts remain in reporting-diagnostics-review.json. Registered two-slot startup225 and modified-only Restore are reviewed in startup-ini-review.json:9 exact profile comparisons/99 state/15 transport at36810, with source-equivalent221-module actual0592 preservation. Wider startup directives/parsing/profiles and lifecycle remain required."
+      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/nonpublic/magic/autoload/internal/exception/lifecycle callbacks remain open. Reporting INI coupling accepts exact full-byte reads/late old returns, signed64 decimal-prefix saturation then low32 masks, modified-entry Restore, equal-mask raw preservation, strict source refusal and weak explicit __invoke. Constants2 at76a30 and reporting8+independent2/74 at ef46 remain separate. Diagnostic ingress217 handles runtime E_STRICT and lossy reporting conversions through authentic 206/207 callbacks. Long conversion precedes dispatch; old-mask sampling follows it and original operands remain in traces. Saved initializer facts/busy class scopes and compound exception locations retain normal/throw behavior. Mixed 14 author+4 independent sources/211 conditions remain at their revisions; current 210 compilation and scoped-handler/backing/class-name source1 validate added composition separately. Compound callback/eval filename creation is addressed separately in compound-eval-location-review.json. Wider profiles/INI and lifecycle remain required; original diagnostic cuts remain in reporting-diagnostics-review.json. Registered two-slot startup225 and modified-only Restore are reviewed in startup-ini-review.json:9 exact profile comparisons/99 state/15 transport at36810, with source-equivalent221-module actual0592 preservation. Wider startup directives/parsing/profiles and lifecycle remain required. Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actual71da/235 preservation adds no execution credit. Shutdown fatal-freeze composition with231 and wider display/configuration remain required; display-errors-review.json keeps the native-only freeze original separate."
     },
     {
       "id": "diagnostics.error-handler-stack",
@@ -11224,21 +11228,25 @@
       "implementation": [
         "spec/semantics/75-request-environment.watsup",
         "spec/semantics/76-globals.watsup",
-        "spec/semantics/225-startup-ini.watsup"
+        "spec/semantics/225-startup-ini.watsup",
+        "spec/semantics/237-display-errors.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/startup_ini_protocol.py"
+        "tests/semantics/startup_ini_protocol.py",
+        "tests/semantics/display_errors_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/request_environment.py",
-        "tests/semantics/startup_ini.py"
+        "tests/semantics/startup_ini.py",
+        "tests/semantics/display_errors.py"
       ],
       "evidence": [
         "vendor/php-src/main/main.c",
         "coverage/semantics/request-environment-review.json",
-        "coverage/semantics/startup-ini-review.json"
+        "coverage/semantics/startup-ini-review.json",
+        "coverage/semantics/display-errors-review.json"
       ],
-      "review": "Effective variables_order and auto_globals_jit inputs reviewed; broader configuration remains pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Registered two-slot startup225 and modified-only Restore are reviewed in startup-ini-review.json:9 exact profile comparisons/99 state/15 transport at36810, with source-equivalent221-module actual0592 preservation. Wider startup directives/parsing/profiles and lifecycle remain required."
+      "review": "Effective variables_order and auto_globals_jit inputs reviewed; broader configuration remains pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Registered two-slot startup225 and modified-only Restore are reviewed in startup-ini-review.json:9 exact profile comparisons/99 state/15 transport at36810, with source-equivalent221-module actual0592 preservation. Wider startup directives/parsing/profiles and lifecycle remain required. Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actual71da/235 preservation adds no execution credit. Shutdown fatal-freeze composition with231 and wider display/configuration remain required; display-errors-review.json keeps the native-only freeze original separate."
     },
     {
       "id": "environment.initialization",
@@ -11268,15 +11276,26 @@
     {
       "id": "environment.output-destination",
       "milestone": "5a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/main/main.c"
+      "implementation": [
+        "spec/semantics/237-display-errors.watsup",
+        "spec/semantics/101-error-suppression.watsup",
+        "spec/semantics/207-error-handler-runtime.watsup",
+        "bin/php-semantics",
+        "adapter/main.ml"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/display_errors_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/display_errors.py"
+      ],
+      "evidence": [
+        "vendor/php-src/main/main.c",
+        "coverage/semantics/display-errors-review.json"
+      ],
+      "review": "Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actual71da/235 preservation adds no execution credit. Shutdown fatal-freeze composition with231 and wider display/configuration remain required; display-errors-review.json keeps the native-only freeze original separate."
     },
     {
       "id": "environment.finite-fixtures",
