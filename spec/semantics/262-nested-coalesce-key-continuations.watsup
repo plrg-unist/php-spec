@@ -1,0 +1,44 @@
+;; Nested ??= keeps its quiet operand owners, then refetches real writable
+;; places. Every memoized prefix has its own CODEWRITE occurrence.
+dec $key_coalesce_array_base(pbase) : bool
+dec $key_coalesce_base_read_view(pstate, porigin, pbase) : pbase?
+dec $key_coalesce_write_base_source(pstate, porigin, pbase) : bool
+dec $key_coalesce_walk(ptask*) : bool
+dec $key_coalesce_temporary(ptask*, pstate, porigin, nat) : ptask*
+def $key_coalesce_array_base(BASE_DIM pbase poperand z) = $key_tail_chain(pbase)
+def $key_coalesce_array_base(pbase) = false -- otherwise
+def $key_coalesce_root(S, BASE_DIM (BASE_DIM pbase poperand z) poperand_outer z_outer) = $key_coalesce_root(S, BASE_DIM pbase poperand z)
+def $key_coalesce_write_root(S, BASE_DIM (BASE_DIM pbase poperand z) poperand_outer z_outer) = $key_coalesce_write_root(S, BASE_DIM pbase poperand z)
+def $key_coalesce_base_read_view(S, porigin, BASE_VALUE poperand) = (BASE_VALUE poperand)
+def $key_coalesce_base_read_view(S, porigin, BASE_PLACE porigin plocation) = (BASE_PLACE porigin plocation)
+def $key_coalesce_base_read_view(S, porigin, BASE_DIM pbase poperand z_write) = (BASE_DIM pbase_read poperand z_read)
+  -- if porigin = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_write_lines(pcode.EXPRESSIONS, pcpath) = [z_write]
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $key_coalesce_base_read_view(S, porigin_base, pbase) = (pbase_read)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z_read)
+def $key_coalesce_base_read_view(S, porigin, pbase) = eps -- otherwise
+def $key_coalesce_write_base_source(S, porigin, pbase) = true
+  -- if $key_coalesce_base_read_view(S, porigin, pbase) = (pbase_read)
+  -- if $key_write_base_source(S, porigin, pbase_read)
+def $key_coalesce_write_base_source(S, porigin, pbase) = false -- otherwise
+
+;; An aborted prefix still supplies a writable null VAR to the next fetch.
+;; The cut authenticates that source occurrence; borrowed rows add no root.
+def $key_coalesce_walk((KEY_WRITE_FINISH pkeywriter) :: ptask_tail*) = true
+  -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE pbase b z
+def $key_coalesce_walk(ptask :: ptask_tail*) = $key_coalesce_walk(ptask_tail*)
+  -- if ~$key_write_finish_task(ptask)
+def $key_coalesce_walk(ptask*) = false -- otherwise
+def $key_coalesce_temporary((KEY_WRITE_FINISH pkeywriter) :: ptask_tail*, S, porigin, n) = (KEY_WRITE_FINISH pkeywriter[.BASE = $key_append_cut(S, pkeywriter.TARGET, pkeywriter.BASE, porigin)][.TEMP = ((porigin, n))]) :: ptask_tail*
+  -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE pbase b z
+  -- if pkeywriter.TEMP = eps
+def $key_coalesce_temporary(ptask :: ptask_tail*, S, porigin, n) = ptask :: $key_coalesce_temporary(ptask_tail*, S, porigin, n)
+  -- if ~$key_write_finish_task(ptask)
+rule PhpStep/key-coalesce-intermediate-null: S ~> S[.TODO = $key_coalesce_temporary(S.TODO, S, porigin, n)][.STORE = S.STORE ++ [DEFINED PNULL]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.LOCATION = ROOT n][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
+  -- if S.LOCATION = NOWHERE
+  -- if $key_coalesce_walk(S.TODO)
+  -- if $origin_child(S.ORIGIN, [PCFIELD 0]) = (porigin)
+  -- if n = |S.STORE|

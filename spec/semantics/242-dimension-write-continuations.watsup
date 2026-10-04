@@ -298,7 +298,7 @@ rule PhpStep/key-write-dimension: S ~> $key_write_dimension(S, poperand, z, b)
 rule PhpStep/key-write-initialize-dimension: S ~> S_array[.RESULT = KNOWN PNULL]
   -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
   -- if $key_write_array_init($location_slot(S, S.LOCATION))
-  -- if S.LOCATION =/= NOWHERE \/ ~$key_append_context(S, S.TODO)
+  -- if S.LOCATION =/= NOWHERE \/ (~$key_append_context(S, S.TODO) /\ ~$key_coalesce_walk(S.TODO))
   -- if S_array = $fetch_location_array(S, S.LOCATION, z)
 
 def $key_write_value(S, pkeywrite) = $key_write_dispatch(S, pkeywrite[.READ.PHASE = KEY_NULL][.READ.KEY = KSTRING eps])
