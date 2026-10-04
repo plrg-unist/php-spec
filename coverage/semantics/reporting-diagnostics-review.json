@@ -5,8 +5,9 @@
   "engine": {
     "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
     "sources": [
-      "vendor/php-src/Zend/zend_constants.c::zend_get_constant_ex / zend_deprecated_constant",
-      "vendor/php-src/Zend/zend_execute.c::zend_update_class_constants",
+      "vendor/php-src/Zend/zend_constants.c::zend_get_constant_ex",
+      "vendor/php-src/Zend/zend_API.c::zend_update_class_constants",
+      "vendor/php-src/Zend/zend_execute.c::zend_deprecated_constant",
       "vendor/php-src/Zend/zend_execute_API.c::zval_update_constant_ex",
       "vendor/php-src/Zend/zend_ast.c::zend_ast_evaluate_ex",
       "vendor/php-src/Zend/zend_API.c::zend_parse_arg_long_weak",
@@ -20,7 +21,7 @@
     "Lossy float/numeric-string reporting arguments convert to long before dispatch. Normal completion samples the live old mask after the handler; raw bytes survive when the converted long equals the live signed32 mask before narrowing. Throw prevents the setter and retains handler writes/original trace arguments.",
     "Ordinary/error callback frames save, clear and restore CONSTCONTEXT. Global class busy history survives callbacks; active lexical evaluation follows current or authenticated saved bindings. Constant provenance carries no heap owner.",
     "Compound initializer diagnostics retain expression location separately from fetch execution location, including the no-argument [constant expression] trace when needed. Throwable construction origin and diagnostic FILEORIGIN stay distinct.",
-    "Handler/API continuations retain authentic emitting scope, four arguments and source strictness. Ordinary 105/108 receive readiness excludes error-context frames; existing 215 guards provide the same exclusion in the current composition."
+    "Handler/API continuations retain authentic emitting scope, four arguments and source strictness. Ordinary 105/108 receive readiness excludes error-context frames; the three guards in 105/108 remain unchanged in the current scoped-callable composition."
   ],
   "accepted_originals": [
     {
@@ -78,7 +79,7 @@
     "raw": ".tools/include-dev-13-diagnostics-current/.tools/diagnostics-current-source-roknjexe",
     "report_sha256": "456f7c35b9b9cab8a99e6d60394593d80f46f11f7f4fff342b037f2f57dbdc58",
     "independent_review": ".tools/include-review-14/reporting-diagnostics-current-review.json",
-    "compatibility": "Module217 bodies match 1a. Preserve 213/214/215/216 and named-class rules. Saved-scope validators reconstruct the authentic emitter; the three 215 error-context guards are equivalent to original 105/108 readiness exclusions. Retired constant facts own no arrays/objects. No accepted original source/state replay or renewed agreement is claimed."
+    "compatibility": "Module217 bodies match 1a. Preserve 213/214/215/216 and named-class rules. Saved-scope validators reconstruct the authentic emitter; the original three error-context exclusions in 105/108 remain unchanged in the scoped-callable composition. Retired constant facts own no arrays/objects. No accepted original source/state replay or renewed agreement is claimed."
   },
   "reproduction": {
     "originals": "Each raw directory retains original command, stdout, stderr, exit and cleanup records; old plans name exact source/finite selections. Earlier partial failures remain in their original reports.",
