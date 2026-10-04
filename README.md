@@ -243,7 +243,13 @@ separate source and ownership checks; ordinary missing reference sends stay quie
 capture null before callbacks and skip later writes when a handler throws. Genuine
 request snapshots preserve numeric keys, shared reference cells and array COW.
 Author8/207, independent8/221 and two current scoped-handler sources retain
-separate cutoffs; earlier key warnings and broader consumers remain open.
+separate cutoffs. [Dynamic read keys](docs/semantics/SOURCE-DIMENSION-KEYS.md)
+now stage missing key-CV, null/float and global-array-name conversions. Genuine
+temporary owners, borrowed CV tables and ordered NaN notices preserve mutation,
+COW and throwing cleanup through nested/quiet reads. Author9/246 includes the two
+independent NaN originals; independent14/235 and one current constructor
+interaction keep separate cuts.
+Read-write continuations and wider key/container producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -499,8 +505,11 @@ defaults, retaining declaring method scope and captured cells.
 [Source constructor defaults](coverage/semantics/default-constructors-review.json)
 finish class tables before allocation and evaluate all argument values before
 constructor access and name mapping. Declaration strictness, API reference warnings
-and fresh default objects retain their real owners. Internal constructor defaults,
-rebound anonymous keyword defaults and broader constrained conversion remain open.
+and fresh default objects retain their real owners.
+[Internal default constructors](coverage/semantics/internal-default-constructors-review.json)
+map prepared values with declaration strictness, named-hole filling and exact
+string-mutated traces. Suspended internal warning/Stringable reception, rebound
+anonymous keyword defaults and broader constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

@@ -7,6 +7,31 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
+null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
+caller environment; ordinary arrays retain their fixed converted key. Real
+temporary owners and conversion protection distinguish COW, live references and
+sole-table retirement; NaN keeps protection across both ordered notices. Quiet
+isset/coalesce and nested temporaries keep their distinct demand/ownership paths.
+Author9/246 includes the two independent NaN originals; independent14/235 passes
+at its separate cut. One
+actual71da constructor in a parameter default passes with private captured
+handler selection, called class and authentic key line/name through root mutation.
+[Contract](docs/semantics/SOURCE-DIMENSION-KEYS.md),
+[ledger](coverage/semantics/dimension-key-review.json). Read-write/reference,
+append/unset/compound/coalesce-assignment warning continuations are required next;
+wider object/key/container producers remain core work.
+
+Prepared internal Throwable default constructors235 now map the completed227
+value table before arity and sequential reception. Default declaration strictness,
+finite named-hole filling, inherited owners and nested previous objects preserve
+trace argc and ErrorException fields. Source8+7/reached67 at9fa and affected
+string-slot trace2 at7fb keep separate cuts in the
+[internal ledger](coverage/semantics/internal-default-constructors-review.json).
+The original count observer remains Unsupported with zero agreement. Weak-null,
+Stringable and lossy integer warnings require real suspended continuations next;
+rebound anonymous keyword NEW follows.
+
 Registered startup inputs225 provide original `error_reporting` and
 `include_path` bytes before compilation, independently of file/CWD facts.
 Getters and Restore preserve null/empty reporting, signed32 masks and raw bytes
@@ -31,8 +56,8 @@ Actual221 callable source1/owner39 at2a380 authenticates the suspended construct
 through deprecation callbacks and rejects a removed retained owner.
 The [constructor ledger](coverage/semantics/default-constructors-review.json)
 keeps original failures, the fixture line correction and fresh uncached NEW facts
-precise. Internal Throwable default dispatch and rebound anonymous self/parent
-NEW are the immediate required follow-ons; complete core remains open.
+precise. Broader internal reception and rebound anonymous self/parent NEW remain
+required; complete core remains open.
 
 Deprecated callable keyword/compound admission221 now stages supplied fixed
 parameters, error registration and delayed dispatch. Warnings hold class choice
@@ -251,13 +276,15 @@ failures and interrupted evidence.
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
   array and string Closure PIPE routes are covered. Direct defined/missing
   `$GLOBALS[key]` reads and explicit-request full-table snapshots are admitted;
-  earlier key-expression warnings, nested/read-write warning continuations and
-  ordinary snapshots without request facts remain open.
+  233 additionally stages earlier missing key-CV and null/float/global-array-name
+  conversions through nested/quiet reads. Read-write continuations, wider
+  key/object/container producers and ordinary snapshots without request facts
+  remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
   wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
-- Values, references and coercion: internal default constructor dispatch,
+- Values, references and coercion: suspended internal default constructor reception,
   rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred instance/object defaults and

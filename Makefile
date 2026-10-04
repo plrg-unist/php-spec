@@ -258,6 +258,8 @@ test-semantics: build
 	python3 tests/semantics/default_constructor_sources.py
 	python3 tests/semantics/default_constructor_protocol.py
 	python3 tests/semantics/default_constructor_api_protocol.py
+	python3 tests/semantics/internal_default_constructor_sources.py
+	python3 tests/semantics/internal_default_constructor_protocol.py
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
