@@ -87,7 +87,7 @@ def $autoload_source_target(pautoloadtarget) = false -- otherwise
 def $autoload_is_bool(PBOOL b) = true
 def $autoload_is_bool(pvalue) = false -- otherwise
 def $autoload_remove(pautoloadentry? :: pautoloadentry_tail?*, 0) = eps :: pautoloadentry_tail?*
-def $autoload_remove(pautoloadentry? :: pautoloadentry_tail?*, n) = pautoloadentry? :: $autoload_remove(pautoloadentry_tail?*, $(n - 1)) -- if $(n > 0)
+def $autoload_remove(pautoloadentry? :: pautoloadentry_tail?*, n) = pautoloadentry? :: $autoload_remove(pautoloadentry_tail?*, $nabs($(n - 1))) -- if $(n > 0)
 def $autoload_array_items(parray, eps) = parray
 def $autoload_array_items(parray, (ENTRY pkey pitem) :: pentry_tail*) = $autoload_array_items($array_insert(parray, pkey, pitem), pentry_tail*)
 def $autoload_closure_receiver(pautoloadentry) = pclosurescope.RECEIVER -- if pautoloadentry.SCOPE = (pclosurescope)
@@ -246,8 +246,8 @@ def $autoload_compact(eps) = eps
 def $autoload_compact(eps :: pautoloadentry_tail?*) = $autoload_compact(pautoloadentry_tail?*)
 def $autoload_compact((pautoloadentry) :: pautoloadentry_tail?*) = (pautoloadentry) :: $autoload_compact(pautoloadentry_tail?*)
 def $autoload_trim(pautoloadentry?*) = pautoloadentry?* -- if pautoloadentry?* = eps
-def $autoload_trim(pautoloadentry?*) = $autoload_trim(pautoloadentry?*[0:n]) -- if $(|pautoloadentry?*| > 0) -- if n = $(|pautoloadentry?*| - 1) -- if pautoloadentry?*[n] = eps
-def $autoload_trim(pautoloadentry?*) = pautoloadentry?* -- if $(|pautoloadentry?*| > 0) -- if n = $(|pautoloadentry?*| - 1) -- if pautoloadentry?*[n] =/= eps
+def $autoload_trim(pautoloadentry?*) = $autoload_trim(pautoloadentry?*[0:n]) -- if $(|pautoloadentry?*| > 0) -- if n = $nabs($(|pautoloadentry?*| - 1)) -- if pautoloadentry?*[n] = eps
+def $autoload_trim(pautoloadentry?*) = pautoloadentry?* -- if $(|pautoloadentry?*| > 0) -- if n = $nabs($(|pautoloadentry?*| - 1)) -- if pautoloadentry?*[n] =/= eps
 def $autoload_seek(pautoloadentry?*, n) = eps -- if $(n >= |pautoloadentry?*|)
 def $autoload_seek(pautoloadentry?*, n) = (n) -- if $(n < |pautoloadentry?*|) -- if pautoloadentry?*[n] =/= eps
 def $autoload_seek(pautoloadentry?*, n) = $autoload_seek(pautoloadentry?*, $(n + 1)) -- if $(n < |pautoloadentry?*|) -- if pautoloadentry?*[n] = eps
@@ -842,7 +842,7 @@ def $autoload_prepend(S, b) = S -- if n_count = $autoload_count(S.AUTOLOAD.ENTRI
 def $autoload_prepend(S, true) = S[.AUTOLOAD.ENTRIES = [(pautoloadentry)] ++ $autoload_compact(S.AUTOLOAD.ENTRIES[0:n])]
   -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
   -- if $(n_count > 1)
-  -- if n = $(|S.AUTOLOAD.ENTRIES| - 1)
+  -- if n = $nabs($(|S.AUTOLOAD.ENTRIES| - 1))
   -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
 def $autoload_capacity_valid(0) = true
 def $autoload_capacity_valid(8) = true
