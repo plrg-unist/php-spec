@@ -109,6 +109,7 @@ syntax pclosurescope, pclosurebinding
 syntax pshutdownproducer = { TARGET pcalltarget, SITE porigin?, SCOPE pclosurescope?, BINDING pclosurebinding?, INTERNAL bool }
 syntax pshutdownentry = { CALL pconfigcall, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer?, RAW parray?, TARGET pcalltarget, ARGS pvalue* }
 ;; Autoload registry buckets retain only the selected callable cache.
+syntax preqbytes
 syntax pautoloadtarget = AUTO_DEFAULT | AUTO_ALL | AUTO_TARGET pcalltarget
 syntax pautoloadentry = { CALL pconfigcall, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer?, RAW parray?, TARGET pautoloadtarget, SCOPE pclosurescope?, BINDING pclosurebinding? }
 syntax pautoloadregistry = { ENTRIES pautoloadentry?*, CAPACITY nat }
