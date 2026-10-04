@@ -74,6 +74,13 @@ ASTs retain the first authenticated callable target; subsequent properties use a
 fresh declaration prefix and called class, without rechecking the cached private
 target under an unrelated class. Ordinary method ancestry stays exact. Other
 object/default producers and wider reference/creation consumers remain required.
+Module263 lets a cached property method callable create a source Closure with
+the original method's lexical scope and its fresh called class. Children copy
+the authentic full method, receipt and invocation evidence; wrapped and plain
+clone makers may retire without becoming historical roots. Static and
+receiver-free nonstatic children retain private `new self` default scope, and
+real child clones copy the same authority. Ordinary creation/ancestry checks
+stay exact; wider transformed callable creation contexts remain required.
 The [deferred-default review](../../coverage/semantics/deferred-static-defaults-review.json)
 records eleven earlier source agreements separately from five source-derived guard
 programs. Four217 callback comparisons preserve saved initializer contexts,
@@ -97,6 +104,10 @@ identity, constant/array transfers, full declaring authority, partial retry,
 reentry, late copies, strict rejection, nested-class defaults and source pruning.
 One actual trait-import comparison and98 premises separately check the cached
 target, fresh called class/publication, namespace fallback and dead cache sources.
+Two later property-method child comparisons and105+65 premises check wrapped
+and plain makers, child clones, private defaults, full import/scope/site
+transplants and historical evidence after actual source collection. Source and
+state cutoffs stay separate; original fixture stops receive no agreement credit.
 Two later213/215 comparisons
 initialize the inherited default
 inside a captured private handler and a raw private handler during a Stringable
