@@ -417,7 +417,11 @@ def $from_child_valid(S, porigin, pclosurescope) = false -- otherwise
 def $closure_scope_creation_valid(S, porigin, pclosurescope) = $from_child_valid(S, porigin, pclosurescope)
   -- if $constant_callable_source_scope(S, porigin) = eps
   -- if ~$closure_nested_creation(S, porigin)
-  -- if pclosurescope.CREATION =/= eps
+  -- if pclosurescope.CREATION = (pclosurecreation)
+  -- if pclosurecreation.EVIDENCE = (pclosurecreator)
+  -- if pclosurecreator.SCOPE = CLOSURE_SCOPE pclosurescope_creator
+  -- if $(pclosurescope_creator.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pclosurescope_creator.OBJECT] = FROMCALLABLECLOSURE pfrommethod
 def $closure_scope_classes_valid(S, porigin, pclosurescope) = true
   -- if ~$closure_scope_original_classes(S, porigin, pclosurescope)
   -- if $from_child_valid(S, porigin, pclosurescope)
