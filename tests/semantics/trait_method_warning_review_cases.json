@@ -1,0 +1,54 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64, selected E_WARNING/E_COMPILE_WARNING masks; originals outside Git.",
+  "cases": [
+    {
+      "id": "private-final-alias-compile-warning-mask-2",
+      "source": "<?php error_reporting(2);trait T{private function f(){echo \"F\";}}class C{use T{f as final g;}function run(){$this->g();}}echo \"P\";(new C)->run();",
+      "source_sha256": "db23c1677fcba0c897797af0a19e6f77489f15e6af55f731f226d763967677b0",
+      "status": "normal",
+      "stdout_base64": "UEY=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-methods-native-warning-mask228-ypm1p6p3/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; error_reporting selected before runtime trait binding",
+      "native_raw_sha256": "f786b5894950d87f9791d7b8e09be5982aabb24cdc82eb9367a056bf0c03da2e"
+    },
+    {
+      "id": "private-final-alias-compile-warning-mask-128",
+      "source": "<?php error_reporting(128);trait T{private function f(){echo \"F\";}}class C{use T{f as final g;}function run(){$this->g();}}echo \"P\";(new C)->run();",
+      "source_sha256": "0311ffe198b8ec437f026c3de1f50532362020f4c7da571b48b98b2f35098b9e",
+      "status": "normal",
+      "stdout_base64": "UEY=",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgMQo=",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-methods-native-warning-mask228-ypm1p6p3/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; error_reporting selected before runtime trait binding",
+      "native_raw_sha256": "f786b5894950d87f9791d7b8e09be5982aabb24cdc82eb9367a056bf0c03da2e"
+    },
+    {
+      "id": "abstract-alias-final-warning-follows-final-parent-error",
+      "source": "<?php echo \"PRE;\";final class P{}trait T{abstract private function f();}class C extends P{use T{f as final g;}private function f(){}private function g(){}}",
+      "source_sha256": "476ac66854bd15b5b3fb659733cc6d17782dec4e640925c3673355243b570201",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIEMgY2Fubm90IGV4dGVuZCBmaW5hbCBjbGFzcyBQIGluIHtGSUxFfSBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-methods-native-abstract-warning228-dkqwjz4k/report.json",
+      "native_raw_sha256": "0cad6bc5b5167e876d5e3598154a5732265a097097d8d1cee59aebe64bfe145f",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; abstract alias final warning/collision versus parent-link priority"
+    },
+    {
+      "id": "abstract-alias-final-warning-after-parent-link",
+      "source": "<?php echo \"PRE;\";class P{}trait T{abstract private function f();}class C extends P{use T{f as final g;}private function f(){}private function g(){}}echo \"POST;\";",
+      "source_sha256": "f5425a6e1365aed87736c98783b4f461a3c9e08f3718be4b0ebf0b8cfddac0e3",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgMQpGYXRhbCBlcnJvcjogQ2Fubm90IG92ZXJyaWRlIGZpbmFsIG1ldGhvZCBUOjpnKCkgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-methods-native-abstract-warning228-dkqwjz4k/report.json",
+      "native_raw_sha256": "0cad6bc5b5167e876d5e3598154a5732265a097097d8d1cee59aebe64bfe145f",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; abstract alias final warning/collision versus parent-link priority"
+    }
+  ],
+  "status_policy": "Runtime class/trait linking failures are php_error; compile-time rejections are static_rejection. Source bytes and retained native tuples are unchanged."
+}

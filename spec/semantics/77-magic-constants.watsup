@@ -63,11 +63,13 @@ def $pmagic_value(pmagic, ptbytes_file?, ptbytes_cwd?, plenv, z) = ABRUPT (UNSUP
 def $pfmagic(F, pcpath, VALUE pvalue, z) = $pfremember(F, pcpath, (pvalue), z)
 def $pfmagic(F, pcpath, ABRUPT pcompletion, z) = F[.MEMORY = F.MEMORY[.COMPLETION = pcompletion]][.VALUE = eps]
 def $pfdispatch(F, pcpath, PFMAGIC pmagic z_leaf, z) = $pfmagic(F, pcpath, $pmagic_scoped(pmagic, F.CLASSCONTEXT, F.CLOSURE, F.FILE, F.CWD, F.ENV, F.FUNCTION, z_leaf), z_leaf)
+  -- if pmagic =/= MAGICCLASS \/ ~$ptrait_context(F.CLASSCONTEXT)
 
 def $ppmagic(P, VALUE pvalue) = P[.FOLD = P.FOLD[.VALUE = (pvalue)]]
 def $ppmagic(P, ABRUPT pcompletion) = $ppcheck(P, REJECT pcompletion)
 def $ppdispatch(P, pcpath, expression, PPR) = $ppmagic(P, $pmagic_scoped(pmagic, P.CLASSCONTEXT, P.CLOSURE, P.FOLD.FILE, P.FOLD.CWD, P.ENV, P.FOLD.FUNCTION, z))
   -- if $pfshape(expression) = PFMAGIC pmagic z
+  -- if pmagic =/= MAGICCLASS \/ ~$ptrait_context(P.CLASSCONTEXT)
 
 def $expression_line(NScalarMagicConstFile metadata) = $source_line(metadata)
 def $pfshape(NScalarMagicConstFile metadata) = PFMAGIC MAGICFILE ($source_line(metadata))

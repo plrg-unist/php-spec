@@ -1,3 +1,5 @@
+dec $trait_static_key(pstate, porigin) : porigin
+dec $trait_imported_origin(porigin) : bool
 ;; A completed static binding owns its cell independently of every local frame.
 ;; Missing entries have not initialized; a reference to null is initialized.
 dec $static_at(pstaticcell*, porigin) : nat?
@@ -122,7 +124,7 @@ def $static_unit_code_valid(P, pcode) = true
 def $static_unit_code_valid(P, pcode) = false -- otherwise
 
 dec $static_function_entry(pfunction, porigin) : bool
-def $static_function_entry(pfunction, PORIGIN n pcpath) = (pfunction.CODE.UNIT = n /\ $static_code(pfunction.CODE.EXPRESSIONS, pcpath) =/= eps)
+def $static_function_entry(pfunction, PORIGIN n pcpath) = (~$trait_imported_origin(pfunction.ORIGIN) /\ pfunction.CODE.UNIT = n /\ $static_code(pfunction.CODE.EXPRESSIONS, pcpath) =/= eps)
 dec $static_function_at(pfunction*, porigin) : pfunction?
 def $static_function_at(eps, porigin) = eps
 def $static_function_at(pfunction :: pfunction_tail*, porigin) = (pfunction)
@@ -162,7 +164,7 @@ dec $static_task_valid(pstate, porigin, bool) : bool
 def $static_task_valid(S, porigin, b_bind) = true
   -- if S.ORIGIN = (porigin)
   -- if S.CURRENT = (pcallcontext)
-  -- if $static_function_at($all_functions(S), porigin) = (pfunction)
+  -- if $static_function_at($all_functions(S), $trait_static_key(S, porigin)) = (pfunction)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
   -- if $static_descriptor(S, porigin) = ((ptbytes, z_begin, z_bind, b_stored))
   -- if ~b_bind \/ ~b_stored

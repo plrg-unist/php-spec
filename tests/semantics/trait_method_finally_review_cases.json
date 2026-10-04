@@ -1,0 +1,29 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; separate normal and goto finalizer controls; native preparation only.",
+  "cases": [
+    {
+      "id": "normal-finalizer-keeps-alias-import-scope",
+      "source": "<?php trait T{function f(){try{echo __CLASS__,\":T;\";}finally{echo get_called_class(),\":F;\";}}}class C{use T{f as g;}}class D extends C{}class E{use T;}(new D)->g();(new E)->f();",
+      "source_sha256": "d7abc192791f8ff50009fadcd8133e26f8c48b48438809421f1325d39c26bc17",
+      "status": "normal",
+      "stdout_base64": "QzpUO0Q6RjtFOlQ7RTpGOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-finally-native228-k02nhdz0/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; normal finalizer or goto across finalizer retains authentic alias scope",
+      "native_raw_sha256": "796764bd4e2b8290c6bc1d6007c3a84f7fcddf807e83019f229e26c535d4b8a5"
+    },
+    {
+      "id": "goto-finalizer-keeps-alias-import-scope",
+      "source": "<?php trait T{function f(){try{goto L;}finally{echo __CLASS__,\":F;\";}L:echo get_called_class(),\":L;\";}}class C{use T{f as g;}}class D extends C{}class E{use T;}(new D)->g();(new E)->f();",
+      "source_sha256": "9d696107617aebe0ed39f77f93d4d6ca0f7549d0d79ae6c1d82222eea67de6b6",
+      "status": "normal",
+      "stdout_base64": "QzpGO0Q6TDtFOkY7RTpMOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-finally-native228-k02nhdz0/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; normal finalizer or goto across finalizer retains authentic alias scope",
+      "native_raw_sha256": "796764bd4e2b8290c6bc1d6007c3a84f7fcddf807e83019f229e26c535d4b8a5"
+    }
+  ]
+}

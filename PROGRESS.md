@@ -7,6 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Internal default reception240 now suspends weak-null and lossy integer warnings
+through real error dispatch and invokes genuine Stringable callbacks in formal
+order. Raw integer slots and rewritten string slots preserve internal constructor
+traces, with the nearest saved owner through reentrant handlers. Exact source14
+atd9 and builtin/fallback2 at7c pass; all185 reached premises at7c pass in unchanged
+133+24+28 source groups under120-second caps. The original full185 timeout and
+first-source interpreter overlap remain preserved. One composition source at
+e7ec retains imported trait Stringable ownership and handler-mutated display
+fallback after the filename global retires.
+[The reception ledger](coverage/semantics/internal-default-reception-review.json)
+records these cuts.
+Ordinary constructor effects and rebound anonymous keyword NEW remain required.
+
+Trait method composition228 supports source use, nesting, precedence, aliases,
+visibility/final and abstract requirements in Zend's publication order. Imported
+class/alias identities retain physical body provenance, using/called scope,
+defaults, static cells, captures, Closures, goto/eval and finalizer ownership.
+Failed declarations restore unpublished tables; compile warnings and direct
+trait-call deprecations retain their phases and callback ownership. The
+[trait ledger](coverage/semantics/trait-methods-review.json) keeps the63 source
+union, separate controls and252 conditions at their actual revisions, including
+original failures. Actual227/232/239 composition adds nine source comparisons and
+127 state premises at separate cutoffs: saved default constructors, cold selected
+references, physical interface diagnostic files and imported-maker Closure scope.
+Accepted233/237 routes remain preserved. Trait properties/constants and enums
+remain required; the method checkpoint does not close the trait family.
+
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
 caller environment; ordinary arrays retain their fixed converted key. Real
@@ -22,15 +49,12 @@ handler selection, called class and authentic key line/name through root mutatio
 append/unset/compound/coalesce-assignment warning continuations are required next;
 wider object/key/container producers remain core work.
 
-Prepared internal Throwable default constructors235 now map the completed227
-value table before arity and sequential reception. Default declaration strictness,
-finite named-hole filling, inherited owners and nested previous objects preserve
-trace argc and ErrorException fields. Source8+7/reached67 at9fa and affected
-string-slot trace2 at7fb keep separate cuts in the
-[internal ledger](coverage/semantics/internal-default-constructors-review.json).
-The original count observer remains Unsupported with zero agreement. Weak-null,
-Stringable and lossy integer warnings require real suspended continuations next;
-rebound anonymous keyword NEW follows.
+Prepared internal Throwable default constructors235 map completed227 values
+before names, arity and sequential reception. Default declaration strictness,
+finite holes and nested previous owners retain exact trace argc and ErrorException
+fields. Earlier8+7/reached67 at9fa and string-slot trace2 at7fb keep their own cuts
+in the [scalar ledger](coverage/semantics/internal-default-constructors-review.json);
+the original count observer remains Unsupported with zero agreement.
 
 Live `display_errors`237 retains nullable original/live INI entries and raw
 get/set/Restore. Ordinary text diagnostics capture stdout/stderr/off after handler
@@ -69,8 +93,8 @@ Actual221 callable source1/owner39 at2a380 authenticates the suspended construct
 through deprecation callbacks and rejects a removed retained owner.
 The [constructor ledger](coverage/semantics/default-constructors-review.json)
 keeps original failures, the fixture line correction and fresh uncached NEW facts
-precise. Broader internal reception and rebound anonymous self/parent NEW remain
-required; complete core remains open.
+precise. Ordinary internal constructor effects and rebound anonymous self/parent NEW
+remain required; complete core remains open.
 
 Deprecated callable keyword/compound admission221 now stages supplied fixed
 parameters, error registration and delayed dispatch. Warnings hold class choice
@@ -297,7 +321,7 @@ failures and interrupted evidence.
   wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
-- Values, references and coercion: suspended internal default constructor reception,
+- Values, references and coercion: ordinary internal constructor effects,
   rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred instance/object defaults and
@@ -309,9 +333,10 @@ failures and interrupted evidence.
   by-reference string conversion186 remain open; accepted ordinary by-value
   classification does not close them. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
-- Objects and lifetime: remaining static members, traits, hooks, readonly/instance asymmetric
+- Objects and lifetime: remaining static members, trait property/constant composition,
+  enums, hooks, readonly/instance asymmetric
   access, traversal, output handlers and lifecycle callbacks. Static cells remain
-  partial across trait/inheritance sharing, bind/clone, include/eval reactivation
+  partial across property trait/inheritance sharing, bind/clone, include/eval reactivation
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,

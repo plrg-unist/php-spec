@@ -260,6 +260,10 @@ test-semantics: build
 	python3 tests/semantics/default_constructor_api_protocol.py
 	python3 tests/semantics/internal_default_constructor_sources.py
 	python3 tests/semantics/internal_default_constructor_protocol.py
+	python3 tests/semantics/internal_default_reception_sources.py
+	python3 tests/semantics/internal_default_reception_protocol.py --group owner
+	python3 tests/semantics/internal_default_reception_protocol.py --group pure
+	python3 tests/semantics/internal_default_reception_protocol.py --group builtin
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
@@ -314,6 +318,23 @@ test-semantics: build
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/called_class_review_cases.json
 	python3 tests/semantics/called_class_review_protocol.py
 	python3 tests/semantics/called_class_review_boundaries.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_default_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_review_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_warning_review_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_abstract_review_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_capture_review_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_finally_review_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_direct_default_review_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_cold_review_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_ctor_review_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_interface_file_review_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_closure_cold_review_cases.json
+	python3 tests/semantics/trait_method_review_protocol.py
+	python3 tests/semantics/trait_method_default_review_protocol.py
+	python3 tests/semantics/trait_method_ctor_review_protocol.py
+	python3 tests/semantics/trait_method_cold_review_protocol.py
+	python3 tests/semantics/trait_method_closure_cold_review_protocol.py
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
 	python3 tests/semantics/eval_class_scope_protocol.py

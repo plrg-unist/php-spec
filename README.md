@@ -412,7 +412,10 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 [review](coverage/semantics/nullsafe-properties-review.json) binds source,
 compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
-bound closures and `Closure->__invoke` trampolines. A bounded
+bound closures and `Closure->__invoke` trampolines.
+[Source trait methods](docs/semantics/SOURCE-TRAITS.md) compose nested uses, conflicts
+and adaptations with using-class scope, original body provenance and distinct
+class/alias static cells. Trait properties and constants remain the next phase. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
@@ -513,8 +516,11 @@ constructor access and name mapping. Declaration strictness, API reference warni
 and fresh default objects retain their real owners.
 [Internal default constructors](coverage/semantics/internal-default-constructors-review.json)
 map prepared values with declaration strictness, named-hole filling and exact
-string-mutated traces. Suspended internal warning/Stringable reception, rebound
-anonymous keyword defaults and broader constrained conversion remain open.
+string-mutated traces. [Suspended reception240](coverage/semantics/internal-default-reception-review.json)
+retains real warning and Stringable callbacks, raw integer trace slots and each
+reentrant constructor owner. Current trait/display fallback preserves a filename
+argument after its global root retires. Rebound anonymous keyword defaults and broader
+ordinary/constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

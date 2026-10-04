@@ -137,8 +137,11 @@ rule PhpStep/default-internal-constructor-arity: S ~> $ctor_receive(S[.TODO = pt
   -- if $default_internal_valid(S, pdefaultnew, pctorcall)
   -- if pctorcall.INDEX = pdefaultnew.INDEX
   -- if $(|pctorcall.SENT| > $default_internal_arity(pctorcall.BASE))
+dec $default_internal_effects(pstate, pctorcall, nat) : bool
+def $default_internal_effects(S, pctorcall, n) = false -- otherwise
 rule PhpStep/default-internal-constructor-receive: S ~> $default_internal_receive(S[.TODO = ptask_tail*], pctorcall[.SENT = $default_internal_fill(pctorcall.BASE, pctorcall.SENT, 0)], 0, eps)
   -- if S.TODO = (DEFAULT_INTERNAL_CTOR_ARGS pdefaultnew pctorcall) :: ptask_tail*
   -- if $default_internal_valid(S, pdefaultnew, pctorcall)
   -- if pctorcall.INDEX = pdefaultnew.INDEX
   -- if $(|pctorcall.SENT| <= $default_internal_arity(pctorcall.BASE))
+  -- if ~$default_internal_effects(S, pctorcall, 0)

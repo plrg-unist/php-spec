@@ -1,0 +1,17 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; introduced accepted227/228 interaction only; native preparation, zero private method gate credit.",
+  "cases": [
+    {
+      "id": "imported-new-self-default-keeps-constructor-and-caller-scopes",
+      "source": "<?php trait T{static function f($x=new self){echo get_class($x),\":\",get_called_class(),\";\";}}class C{use T{f as g;}function __construct(){echo get_called_class(),\":C;\";}}class D extends C{}D::g();",
+      "source_sha256": "126c3341d53b829f836bfe2c93a6b262d36555706e187738b807d87a2f737e34",
+      "status": "normal",
+      "stdout_base64": "QzpDO0M6RDs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-default-ctor-native-composition228-vo4jnubs/report.json",
+      "native_raw_sha256": "c0f80a79d0985692ef40eab0dfe7984211013450f3c7752de92a5a85e7fd44f6",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; constructor C scope and retired default maker C/alias called D scope"
+    }
+  ]
+}

@@ -24,6 +24,7 @@ def $call_sourcefile(eps, porigin) = eps
 def $call_sourcefile((SOURCEFILE n preqbytes) :: psourcefile*, PORIGIN n pcpath) = preqbytes
 def $call_sourcefile((SOURCEFILE n_other preqbytes) :: psourcefile*, PORIGIN n pcpath) = $call_sourcefile(psourcefile*, PORIGIN n pcpath)
   -- if n_other =/= n
+def $call_sourcefile((SOURCEFILE n_other preqbytes) :: psourcefile*, TRAIT_ORIGIN porigin_owner porigin_source ptbytes) = $call_sourcefile((SOURCEFILE n_other preqbytes) :: psourcefile*, $origin_source(porigin_source))
 dec $function_at(pfunction*, porigin) : pfunction?
 def $function_at(eps, porigin) = eps
 def $function_at(pfunction :: pfunction_tail*, porigin) = (pfunction) -- if pfunction.ORIGIN = porigin
@@ -115,6 +116,10 @@ def $function_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfun
 def $function_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$typed_fallthrough(pfunction)]
   -- if pfunction.ORIGIN = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
+def $function_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$typed_fallthrough(pfunction)]
+  -- if pfunction.ORIGIN = TRAIT_ORIGIN porigin_owner porigin_source ptbytes
+  -- if $origin_source(porigin_source) = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, porigin_source) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
 dec $call_received(nat, nat) : nat
 def $call_received(n_args, n_params) = n_args -- if $(n_args < n_params)
 def $call_received(n_args, n_params) = n_params -- if $(n_args >= n_params)

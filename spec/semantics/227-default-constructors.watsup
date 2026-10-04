@@ -38,7 +38,7 @@ def $default_new_valid(S, pdefaultnew) = true
   -- if phpType7* = pdefaultnew.ARGUMENTS
   -- if $parameter_new_prefix(phpType7*)
   -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((pdefaultnew.CLASS, eps))
+  -- if $new_source_name(S, pdefaultnew.SITE) = (pdefaultnew.CLASS)
   -- if $(pdefaultnew.INDEX <= |phpType7*|)
   -- if |pdefaultnew.VALUES| = pdefaultnew.INDEX
   -- if $default_new_unique(phpType7*[0:pdefaultnew.INDEX])
@@ -57,7 +57,7 @@ def $parameter_default_new_ready(S, ptbytes, phpType7*, z) = true
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if z = pconstantcontext.LINE
   -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $new_source_name(S, PORIGIN n_unit pcpath) = (ptbytes)
 def $parameter_default_new_ready(S, ptbytes, phpType7*, z) = false -- otherwise
 dec $default_new_start_ready(pstate, ptbytes, phpType7*, int) : pstate
 def $constructor_after_class_update(S, ptbytes, phpType7*, z) = $default_new_start_ready(S, ptbytes, phpType7*, z)
@@ -84,7 +84,7 @@ rule PhpStep/default-new-constructor: S ~> $default_new_start(S[.TODO = ptask_ta
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if S.ORIGIN = (PORIGIN n_unit pcpath)
   -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $new_source_name(S, PORIGIN n_unit pcpath) = (ptbytes)
   -- if $new_has_ctor(S, ptbytes)
 
 dec $default_new_arg_origin(pdefaultnew) : porigin

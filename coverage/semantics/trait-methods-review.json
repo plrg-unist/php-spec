@@ -1,0 +1,453 @@
+{
+  "version": 1,
+  "target": "PHP8.5.10 CLI NTS64",
+  "status": "Independently accepted method228 and actual accepted233/237/239 composition; trait properties/constants remain required.",
+  "baseline": "f838f5a59c7cee0ae8016b44f7c47546dbc53a18",
+  "implementation": [
+    "da01e0a79",
+    "1a875bdb1",
+    "8534f08c1",
+    "119bc712e",
+    "d60a5715b",
+    "191afb648",
+    "b9fbc174c",
+    "73728b35b",
+    "8a2a6a9c0",
+    "325e2f1fe",
+    "218de6161",
+    "7883249d8"
+  ],
+  "scope": [
+    "Method-only traits, nested use, class/trait/parent precedence, conflict/alias/visibility/final adaptations and abstract requirements in native link order.",
+    "Distinct class/alias import identity retains physical source provenance, correct lexical/called scope, defaults, static cells, FCC/real-Closure captures, goto/eval source owners and rollback.",
+    "TraitUse defers early publication; concrete/parent/abstract/interface phases and compile warning/deprecation continuations preserve prior output and callback ownership."
+  ],
+  "author": {
+    "root": "/home/user/workspace/php-spec/.tools/trait-composition-current-14",
+    "catalogue": "tests/semantics/trait_method_cases.json",
+    "source17": {
+      "counts": {
+        "normal": 10,
+        "php_error": 6,
+        "static_rejection": 1
+      },
+      "command": "python3 tests/semantics/method_runtime.py --catalogue CATALOGUE [--match ID]",
+      "runs": [
+        {
+          "revision": "119bc712e",
+          "report": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/method-runtime-dokrgomg/report.json",
+          "pass": 1,
+          "exit": 0,
+          "catalogue": "tests/semantics/trait_method_cases.json --match plain-import-and-parameters"
+        },
+        {
+          "revision": "119bc712e",
+          "report": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/method-runtime-pfam7lc7/report.json",
+          "pass": 3,
+          "exit": 0,
+          "catalogue": ".tools/trait-228-prep/source-smoke.json"
+        },
+        {
+          "revision": "b9fbc174c",
+          "report": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/method-runtime-j_8fhgzp/report.json",
+          "pass": 10,
+          "exit": 0,
+          "catalogue": ".tools/trait-228-prep/author-remaining.json"
+        },
+        {
+          "revision": "b9fbc174c",
+          "report": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/method-runtime-3qisyt1a/report.json",
+          "pass": 3,
+          "exit": 0,
+          "catalogue": ".tools/trait-228-prep/capture-smoke.json"
+        }
+      ]
+    },
+    "compiler": {
+      "revision": "b9fbc174c",
+      "record": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-228-prep/struct-probe-27.json",
+      "mode": "struct",
+      "exit": 0,
+      "pass": true
+    },
+    "native_original": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-native-author228-3td4u82x/report.json",
+    "affected_default5": {
+      "revision": "325e2f1fe",
+      "counts": {
+        "normal": 5
+      },
+      "runs": [
+        {
+          "report": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/method-runtime-_hs_u3ad/report.json",
+          "pass": 1,
+          "exit": 0,
+          "catalogue": ".tools/trait-228-prep/new-self-affected.json"
+        },
+        {
+          "report": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/method-runtime-5rc95x5o/report.json",
+          "pass": 3,
+          "exit": 0,
+          "catalogue": "tests/semantics/trait_method_default_cases.json"
+        },
+        {
+          "report": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/method-runtime-1z3yvlrc/report.json",
+          "pass": 1,
+          "exit": 0,
+          "catalogue": ".tools/trait-228-prep/direct-default.json"
+        }
+      ]
+    },
+    "compiler_affected": {
+      "revision": "325e2f1fe",
+      "record": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-228-prep/struct-default-finally-28.json",
+      "mode": "struct",
+      "ordered_modules": 214,
+      "exit": 0,
+      "pass": true
+    },
+    "native_defaults3": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-defaults-native-author228-d41qefjq/report.json"
+  },
+  "independent": {
+    "root": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14",
+    "reviewed_semantic_revision": "7883249d8",
+    "review_revision": "e9aab9cd83d225db562025396ce93b83d1c35a93",
+    "acceptance": "Source truth, composition priority, import/static/source identities, scoped callback ownership and finite boundaries accepted.",
+    "maintained_files": [
+      "tests/semantics/trait_method_review_cases.json",
+      "tests/semantics/trait_method_warning_review_cases.json",
+      "tests/semantics/trait_method_abstract_review_cases.json",
+      "tests/semantics/trait_method_capture_review_cases.json",
+      "tests/semantics/trait_method_finally_review_cases.json",
+      "tests/semantics/trait_method_direct_default_review_cases.json",
+      "tests/semantics/trait_method_review_protocol.py",
+      "tests/semantics/trait_method_default_review_protocol.py"
+    ],
+    "source63": {
+      "counts": {
+        "normal": 36,
+        "php_error": 25,
+        "static_rejection": 2
+      },
+      "membership": "Exact union completed; row41 uses author affected CLI agreement, all other62 use independent CLI reports. Separate NEW finite1 independently executes the exact row41 source.",
+      "command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_review_cases.json (affected/unrun selections kept beside each raw report)",
+      "runs": [
+        {
+          "semantic_revision": "b9fbc174c",
+          "review_revision": "97c41d553",
+          "pass": 39,
+          "driver_exit": 1,
+          "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/method-runtime-9z2kjmz7/report.json"
+        },
+        {
+          "semantic_revision": "73728b35b",
+          "review_revision": "358d1f4c4",
+          "pass": 1,
+          "driver_exit": 1,
+          "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/method-runtime-6y62dppg/report.json"
+        },
+        {
+          "semantic_revision": "325e2f1fe",
+          "pass": 1,
+          "driver_exit": 0,
+          "report": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/method-runtime-_hs_u3ad/report.json",
+          "producer": "author, failed41 only"
+        },
+        {
+          "semantic_revision": "325e2f1fe",
+          "review_revision": "2c266cf9a",
+          "pass": 17,
+          "driver_exit": 1,
+          "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/method-runtime-ivo8m253/report.json"
+        },
+        {
+          "semantic_revision": "7883249d8",
+          "review_revision": "e9aab9cd8",
+          "pass": 5,
+          "driver_exit": 0,
+          "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/method-runtime-iym7f3a1/report.json"
+        }
+      ]
+    },
+    "separate_source_controls": [
+      {
+        "selection": "warning4",
+        "semantic_revision": "b9fbc174c",
+        "counts": {
+          "normal": 2,
+          "php_error": 2
+        },
+        "driver_exit": 0,
+        "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/method-runtime-an4mmyj_/report.json"
+      },
+      {
+        "selection": "abstract3",
+        "semantic_revision": "b9fbc174c",
+        "counts": {
+          "normal": 1,
+          "php_error": 2
+        },
+        "driver_exit": 0,
+        "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/method-runtime-37qley31/report.json"
+      },
+      {
+        "selection": "capture3",
+        "semantic_revision": "b9fbc174c",
+        "counts": {
+          "normal": 3
+        },
+        "driver_exit": 0,
+        "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/method-runtime-lsncn2b4/report.json"
+      },
+      {
+        "selection": "finally2",
+        "semantic_revision": "325e2f1fe",
+        "counts": {
+          "normal": 2
+        },
+        "driver_exit": 0,
+        "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/method-runtime-bbnso2lu/report.json"
+      }
+    ],
+    "finite8": {
+      "conditions": 218,
+      "command": "python3 tests/semantics/trait_method_review_protocol.py (only failed fixture selection replayed)",
+      "runs": [
+        {
+          "semantic_revision": "73728b35b",
+          "pass": 4,
+          "driver_exit": 1,
+          "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/closure-call-protocol-bvf_pkqv/report.json"
+        },
+        {
+          "semantic_revision": "325e2f1fe",
+          "pass": 3,
+          "driver_exit": 1,
+          "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/closure-call-protocol-m8eii0lz/report.json"
+        },
+        {
+          "semantic_revision": "7883249d8",
+          "pass": 1,
+          "conditions": 25,
+          "driver_exit": 0,
+          "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/closure-call-protocol-3goh1li7/report.json"
+        }
+      ]
+    },
+    "new_default_finite1": {
+      "semantic_revision": "325e2f1fe",
+      "conditions": 34,
+      "driver_exit": 0,
+      "command": "python3 tests/semantics/trait_method_default_review_protocol.py",
+      "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/closure-call-protocol-a1ql1_5x/report.json"
+    },
+    "compiler": {
+      "semantic_revision": "7883249d8",
+      "review_revision": "e9aab9cd83d225db562025396ce93b83d1c35a93",
+      "mode": "algo",
+      "ordered_modules": 214,
+      "exit": 0,
+      "stdout_bytes": 6096638,
+      "stderr_bytes": 0,
+      "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/trait-review-final-algo228-9nbkn3xu/report.json"
+    }
+  },
+  "failures_retained": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/method-runtime-4i1tcs10/report.json",
+      "revision": "191afb648",
+      "cause": "Qualified alias failure linked before PRE because early probe ignored TraitUse; runtime FATAL fixture category was mislabeled static_rejection. Corrected b9fbc and replayed affected failed1 plus9 previously unrun; original bytes retained."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/method-runtime-9z2kjmz7/report.json",
+      "revision": "b9fbc174c (review97c41d553)",
+      "cause": "First39 passed; self::class default folded to physical T instead of importing C/E.73728 defers lexical trait scope; failed40 passed independently before NEW-self41 reached its separate boundary."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/method-runtime-6y62dppg/report.json",
+      "revision": "73728b35b",
+      "cause": "NEW-self41 was Unsupported because raw trait parameter compilation did not defer the keyword;8a2a/325 adds source-bound using/direct-trait receive. Author affected41/default3/direct1 pass."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/closure-call-protocol-bvf_pkqv/report.json",
+      "revision": "73728b35b",
+      "cause": "Four of eight authentic selected entry fixtures failed finally_state_valid before mutations; physical body/static/goto/Closure four passed.8a2a authenticates full logical import entry and restores real saved scope."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/method-runtime-ivo8m253/report.json",
+      "revision": "325e2f1fe",
+      "cause": "Seventeen previously unrun sources passed; row59 had compiler nondeterminism between trait method and existing Closure ::class dispatch.218de excludes P.CLOSURE; Failed59 plus four unrun pass at788."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/closure-call-protocol-m8eii0lz/report.json",
+      "revision": "325e2f1fe",
+      "cause": "Three affected entry fixtures passed; __CLASS__ default ingress passed but FINISH lacked runtime PFMAGIC MAGICCLASS allocation classification.788 adds source/current-authenticated PVSTRING; Affected singleton passes at788."
+    },
+    {
+      "archive": "/home/user/workspace/php-spec/.tools/introspection-trait-methods-review-14/.tools/trait-review-algo228-3mk_dpm2",
+      "cause": "Duplicate-spec argv preparation failure; corrected before clean algo run, zero semantic credit."
+    }
+  ],
+  "runtime": {
+    "rebuilt": false,
+    "identity": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-validation228/identity.json",
+    "environment": "LC_ALL=C,TZ=UTC; exact supplied commands, original profiles, observed exits and streams are retained per run.",
+    "limits": "Existing cap5; one serial producer in assigned slot, jobs1; no native fallback."
+  },
+  "limits": [
+    "Trait properties and constants are explicitly Unsupported until the next required trait phase; they are never silently discarded.",
+    "Parentless trait parent type is a valid declaration; existing unresolved dependent receive remains Unsupported.",
+    "Method-body and Closure keyword NEW and wider internal constructor reception retain separate existing boundaries; trait data238 is not credited here.",
+    "Closure scope and retired capture certificates establish source-compatible wellformedness, not full arbitrary execution-history reachability. No paused returns or unaccepted219/221 dependency.",
+    "These finite agreements do not establish whole core equivalence."
+  ],
+  "recovery": "Raw sources, native/model outputs, command arrays and original failures remain in ignored .tools roots above; no metadata-only semantic reruns.",
+  "composition": {
+    "parent": "8af27216fc5dbeff04ea4f30eaa8aa9ea9ad8213",
+    "candidate_semantics": "ded49a91a0aa38b381a45bc0168b07be2d51601d",
+    "scope": [
+      "Preserve accepted30 constant/default context fields and227 constructor behavior; deferred trait NEW consumers use authentic selected source scope.",
+      "232 creation selects exact validated imported CURRENT; historical selection resolves a genuine SCOPE-owned method with the same physical source/CODE/body.",
+      "84 constructor entry may use its exact completed default phase restored from the saved importing maker; ordinary selected/error routes remain.",
+      "179/189 interface diagnostics retain physical FUNCTION filename/line while using-class OWNER controls scope and display.",
+      "Future class-property reference fetches require the exact selected class/member marker before BASE preparation; the actual fetch head still requires its prepared BASE.",
+      "239 method/dynamic certificates preserve CLOSURE eps; Closure source validation accepts genuine closest-maker trait imports while copied nested-creator evidence remains intact."
+    ],
+    "author_source": [
+      {
+        "revision": "47d7d82bf",
+        "selection": "cold-self/parent/static3",
+        "command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_cold_review_cases.json",
+        "report": "/home/user/workspace/php-spec/.tools/trait-composition-accepted-parent-14/.tools/method-runtime-xyygzksa/report.json",
+        "driver_exit": 0,
+        "pass": 3,
+        "status": "normal"
+      },
+      {
+        "revision": "99916752b",
+        "selection": "imported-default-constructor1",
+        "command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_ctor_review_cases.json",
+        "report": "/home/user/workspace/php-spec/.tools/trait-composition-accepted-parent-14/.tools/method-runtime-n4f31soa/report.json",
+        "driver_exit": 0,
+        "pass": 1,
+        "status": "normal"
+      }
+    ],
+    "compiler": [
+      {
+        "revision": "47d7d82bf",
+        "mode": "algo",
+        "record": "/home/user/workspace/php-spec/.tools/trait-composition-accepted-parent-14/.tools/trait-228-prep/algo-current-29.json",
+        "exit": 0,
+        "stdout_bytes": 6456053,
+        "stderr_bytes": 0
+      },
+      {
+        "revision": "47d7d82bf",
+        "mode": "struct",
+        "record": "/home/user/workspace/php-spec/.tools/trait-composition-accepted-parent-14/.tools/trait-228-prep/struct-current-30.json",
+        "exit": 0,
+        "stdout_bytes": 6067936,
+        "stderr_bytes": 0
+      }
+    ],
+    "failures_retained": [
+      {
+        "revision": "47d7d82bf",
+        "report": "/home/user/workspace/php-spec/.tools/trait-composition-accepted-parent-14/.tools/method-runtime-n1qcyprk/report.json",
+        "cause": "Deferred trait keyword constructor selected through maker default context; generic constructor source lookup under its own CURRENT rejected the authentic entry. Fixed999 and affected constructor1 passed."
+      },
+      {
+        "revision": "47d7d82bf",
+        "report": "/home/user/workspace/php-spec/.tools/trait-composition-accepted-parent-14/.tools/closure-call-protocol-yr88geho/report.json",
+        "cause": "Authentic constructor CURRENT failed before mutation assertions. Exact227 saved completed default phase now supplies entry proof in84; no guard weakened."
+      },
+      {
+        "revision": "30d60afab/semantic99916752b",
+        "report": "/home/user/workspace/php-spec/.tools/introspection-trait-composition-review-14/.tools/closure-call-protocol-5kc6hndb/report.json",
+        "cause": "Authentic selection/CURRENT passed but future PROPERTY_REF_FETCH lacked its not-yet-prepared BASE. Component/tail diagnosis preserved; source-selected pending carrier fixedda75, strengthened46 passes."
+      },
+      {
+        "revision": "reviewf278/semantic99916752b",
+        "report": "/home/user/workspace/php-spec/.tools/introspection-trait-composition-review-14/.tools/method-runtime-jt3yhp6g/report.json",
+        "cause": "Imported interface static fatal had correct message/line/priority/PRE but consuming source.php rather than physical trait.php. Source projection179/189 fixede4f; affected4 pass."
+      }
+    ],
+    "maintained_files": [
+      "tests/semantics/trait_method_cold_review_cases.json",
+      "tests/semantics/trait_method_ctor_review_cases.json",
+      "tests/semantics/trait_method_cold_review_protocol.py",
+      "tests/semantics/trait_method_ctor_review_protocol.py",
+      "tests/semantics/trait_method_interface_file_review_cases.json",
+      "tests/semantics/trait_method_closure_cold_review_cases.json",
+      "tests/semantics/trait_method_closure_cold_review_protocol.py"
+    ],
+    "independent": [
+      {
+        "revision": "30d60afab/semantic99916752b",
+        "selection": "imported-default-constructor finite1",
+        "command": "python3 tests/semantics/trait_method_ctor_review_protocol.py",
+        "report": "/home/user/workspace/php-spec/.tools/introspection-trait-composition-review-14/.tools/closure-call-protocol-mqkhx790/report.json",
+        "driver_exit": 0,
+        "pass": 1,
+        "conditions": 37,
+        "inputs_stable": true
+      },
+      {
+        "revision": "c4a1f98550848321eef149d07f86fb2a773f5143/semanticda75d89b2",
+        "selection": "cold-self selected continuation finite1",
+        "command": "python3 tests/semantics/trait_method_cold_review_protocol.py",
+        "report": "/home/user/workspace/php-spec/.tools/introspection-trait-composition-review-14/.tools/closure-call-protocol-yznl0ct3/report.json",
+        "driver_exit": 0,
+        "pass": 1,
+        "conditions": 46,
+        "inputs_stable": true
+      },
+      {
+        "revision": "c4a1f98550848321eef149d07f86fb2a773f5143/semanticda75d89b2",
+        "selection": "cross-file interface diagnostics4",
+        "command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_interface_file_review_cases.json",
+        "report": "/home/user/workspace/php-spec/.tools/introspection-trait-composition-review-14/.tools/method-runtime-boslmvk2/report.json",
+        "driver_exit": 0,
+        "pass": 4,
+        "status": "php_error",
+        "inputs_stable": true
+      },
+      {
+        "revision": "ee13f52a87beef2a9064f8f5871c7073cf36e933/semanticded49a91a",
+        "selection": "imported-maker source Closure cold1",
+        "command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_closure_cold_review_cases.json",
+        "report": "/home/user/workspace/php-spec/.tools/introspection-trait-composition-review-14/.tools/method-runtime-d96fil3g/report.json",
+        "driver_exit": 0,
+        "pass": 1,
+        "status": "normal",
+        "inputs_stable": true
+      },
+      {
+        "revision": "ee13f52a87beef2a9064f8f5871c7073cf36e933/semanticded49a91a",
+        "selection": "imported-maker Closure history finite1",
+        "command": "python3 tests/semantics/trait_method_closure_cold_review_protocol.py",
+        "report": "/home/user/workspace/php-spec/.tools/introspection-trait-composition-review-14/.tools/closure-call-protocol-60n1ifjo/report.json",
+        "driver_exit": 0,
+        "pass": 1,
+        "conditions": 44,
+        "inputs_stable": true,
+        "boundary": "CREATION eps is explicit for ordinary method-created source Closure; own-import/ancestry and historical SCOPE checks establish wellformedness, not full arbitrary creation history."
+      }
+    ],
+    "adapter_build": {
+      "revision": "ded49a91a",
+      "record": "/home/user/workspace/php-spec/.tools/trait-composition-accepted-parent-14/.tools/trait-228-prep/adapter-current239.json",
+      "exit": 0,
+      "jobs": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "purpose": "Installed237 output API; no PHP model execution credit."
+    },
+    "acceptance": {
+      "review_revision": "ee13f52a87beef2a9064f8f5871c7073cf36e933",
+      "semantic_revision": "ded49a91a0aa38b381a45bc0168b07be2d51601d",
+      "scope": "Introduced227/232 entry/history, pending reference fetches, physical interface diagnostics and239 imported-maker Closure scope accepted; parent233/237 routes preserved. No historical campaign renewal."
+    },
+    "provenance": "Reviewer finite groups include supplementary review-provenance.json for the actual revision, numeric compiler/runtime/adapter identities, environment, command and exits; source groups retain report.json and runner.command/status records. Source1 uses the rebuilt237 adapter at its recorded cutoff."
+  }
+}
