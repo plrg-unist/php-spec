@@ -207,15 +207,16 @@ required; this checkpoint does not close the trait family.
 
 Raw trait static-property warnings254 follow lookup, access, table fill and typed
 read priority. Retained source/root/member/mode resumes the live cell through
-handler rebinding. Computed RHS values keep one store owner alongside their real
-literal pool owner; late CV values remain delayed. Handler throws still finish
+handler rebinding. Computed RHS values keep one store owner; compiled literals
+also retain their pool owner. Late CV values remain delayed. Handler throws still finish
 the actual write/update/reference opcode, while fetch-only reference promotion
 aborts later assignment or call. Typed/Stringable conversion preserves pending
 exceptions. Independent source33 (author6 subset) and six reached state groups286
 pass at unchanged15155; preparation and incorrect owner assertions are retained
 without extra credit in the [access ledger](coverage/semantics/trait-property-access-review.json).
-Actual accepted core routes are preserved separately. Effectful collisions259,
-readonly storage and enum semantics remain required; the trait family stays open.
+Actual accepted core routes are preserved separately. Effectful collisions and
+deferred-value comparison before type conversion259, readonly storage and enum
+semantics remain required; the trait family stays open.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the

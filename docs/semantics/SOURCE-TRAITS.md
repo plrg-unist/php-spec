@@ -80,7 +80,8 @@ Pure collision evaluation uses the checked expression folder in a scratch arena;
 temporary arrays do not become live descriptor values. Source class aliases use
 the actual compiled fetch name. Runtime inherited property/constant faults retain
 `E_COMPILE_ERROR` and their completed-declaration phase, while early compiler
-cutoffs remain static rejections.
+cutoffs remain static rejections. Strict comparison of deferred typed operands
+before table type conversion remains a required correction in259.
 
 Raw trait static-property access emits `E_DEPRECATED` after lookup, access,
 table initialization and a required typed read. Quiet probes can therefore warn
@@ -94,7 +95,8 @@ the warning, while a computed RHS is retained before address lookup. Direct
 assignment, compound update, increment and reference binding finish their opcode
 before a handler exception propagates. A reference fetch can promote a nullable
 slot but abort the following assignment or call. Pending exceptions suppress
-ordinary typed/Stringable conversion; a new nonnullable reference error chains
+secondary typed rejection and user Stringable entry; valid scalar conversions
+can still finish. A new nonnullable reference error chains
 the handler exception. The address receipt owns no value. Its store task owns
 one additional RHS reference; a compiled literal's pool owner remains intact.
 Default initialization uses the raw declaring trait scope independently of the
@@ -102,7 +104,9 @@ live caller, with physical `__TRAIT__` preserved through nested imports.
 
 The source truth is `Zend/zend_compile.c::zend_compile_class_decl`,
 `Zend/zend_inheritance.c::zend_do_link_class` and its trait binding helpers,
-`Zend/zend_object_handlers.c::zend_std_get_static_method`, and the trait branch
+`Zend/zend_object_handlers.c::zend_std_get_static_method`,
+`zend_std_get_static_property_with_info`,
+`Zend/zend_execute.c::zend_fetch_static_property_address_ex`, and the trait branch
 of `Zend/zend_ast.c::zend_ast_evaluate_ex`.
 
 Run author source controls with
