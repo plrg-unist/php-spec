@@ -81,7 +81,7 @@ def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
   -- if pconfigcall.SELECTION = eps
   -- if pconfigcall.OWNER = (n)
-  -- if $closure_callable(S, n)
+  -- if $closure_static_api_owner_valid(S, n)
   -- if $from_method_site(S, pconfigcall.SITE)
 
 def $from_start(S, porigin, n_owner?, z) = S[.TODO = [CONFIG_ARGS {SITE porigin, KIND INTRINSIC_FROM_CALLABLE, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, SELECTION eps, LINE z, PACKS eps}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -496,7 +496,10 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if S_read.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
   -- if $closure_known_other_method(ptbytes)
+  -- if $ptlc(ptbytes) =/= $ptascii("bindto")
   -- if $ptlc(ptbytes) =/= $ptascii("fromcallable")
+  -- if $ptlc(ptbytes) =/= $ptascii("getcurrent")
+  -- if $ptlc(ptbytes) =/= $ptascii("bind")
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method Closure::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -549,8 +552,10 @@ def $from_compare(S, n_left, n_right) = true
 def $from_compare(S, n_left, n_right) = false -- otherwise
 def $named_closure_same(S, n_left, n_right) = $from_compare(S, n_left, n_right)
   -- if S.OBJECTS[n_left] = FROMCALLABLECLOSURE pfrommethod
+  -- if ~$bound_fake_object(S, n_right)
 def $named_closure_same(S, n_left, n_right) = $from_compare(S, n_left, n_right)
   -- if ~$from_object(S.OBJECTS[n_left])
+  -- if ~$bound_fake_object(S, n_left)
   -- if S.OBJECTS[n_right] = FROMCALLABLECLOSURE pfrommethod
 
 def $from_object(FROMCALLABLECLOSURE pfrommethod) = true
@@ -564,13 +569,13 @@ def $named_closure_same(S, n_left, n_right) = true
 
 ;; Before C API entry, ordinary argument reads preserve captured null. These
 ;; warnings are source SENDs, so throwing handlers are not capture failures.
-def $error_simple_read(CONFIG_SEND pconfigcall) = (pconfigcall.KIND = INTRINSIC_FROM_CALLABLE)
-def $error_simple_read(CONFIG_UNPACK_PREP pconfigcall) = (pconfigcall.KIND = INTRINSIC_FROM_CALLABLE)
+def $error_simple_read(CONFIG_SEND pconfigcall) = (pconfigcall.KIND = INTRINSIC_FROM_CALLABLE \/ pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT \/ $closure_bind_kind(pconfigcall.KIND))
+def $error_simple_read(CONFIG_UNPACK_PREP pconfigcall) = (pconfigcall.KIND = INTRINSIC_FROM_CALLABLE \/ pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT \/ $closure_bind_kind(pconfigcall.KIND))
 def $error_read_line(CONFIG_SEND pconfigcall, z) = z
 def $error_read_line(CONFIG_UNPACK_PREP pconfigcall, z) = z
 def $error_read_source(S, perrorread) = true
   -- if perrorread.ORIGINAL = CONFIG_SEND pconfigcall
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE \/ pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT \/ $closure_bind_kind(pconfigcall.KIND)
   -- if $config_pending_valid(S, pconfigcall, false)
   -- if S.ORIGIN = (pconfigcall.SITE)
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, false, ptbytes?, porigin_argument, z))
@@ -579,7 +584,7 @@ def $error_read_source(S, perrorread) = true
   -- if perrorread.LINE = z
 def $error_read_source(S, perrorread) = true
   -- if perrorread.ORIGINAL = CONFIG_UNPACK_PREP pconfigcall
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE \/ pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT \/ $closure_bind_kind(pconfigcall.KIND)
   -- if $config_pending_valid(S, pconfigcall, true)
   -- if S.ORIGIN = (pconfigcall.SITE)
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, ptbytes?, porigin_argument, z))
