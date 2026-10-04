@@ -372,8 +372,8 @@ def $file_trace_live(pfilecontext :: pfilecontext_tail*, n_owner) = pfilecontext
 def $file_trace_live(pfilecontext :: pfilecontext_tail*, n_owner) = $file_trace_live(pfilecontext_tail*, n_owner)
   -- if pfilecontext.PHASE =/= FILE_UNIT_RUN \/ pfilecontext.OWNER =/= n_owner
 dec $source_trace_merge(pstate, pevalcontext*, pfilecontext*) : ptraceframe*
-def $source_trace_merge(S, pevalcontext*, pfilecontext*) = $source_trace_merge_before(S, pevalcontext*, pfilecontext*, eps)
 dec $source_trace_merge_before(pstate, pevalcontext*, pfilecontext*, preqbytes?) : ptraceframe*
+def $source_trace_merge(S, pevalcontext*, pfilecontext*) = $source_trace_merge_before(S, pevalcontext*, pfilecontext*, eps)
 def $source_trace_merge_before(S, eps, eps, preqbytes?) = eps
 def $source_trace_merge_before(S, pevalcontext :: pevalcontext_tail*, eps, preqbytes?) = [ptraceframe] ++ $source_trace_merge_before(S, pevalcontext_tail*, eps, $source_trace_file([ptraceframe], preqbytes?))
   -- if ptraceframe = $eval_trace_frame(S, pevalcontext)
@@ -395,8 +395,8 @@ def $source_trace_first(ptraceframe :: ptraceframe_tail*) = ptraceframe[.ARGS = 
   -- if ptraceframe.FUNCTION = $ptascii("include") \/ ptraceframe.FUNCTION = $ptascii("include_once") \/ ptraceframe.FUNCTION = $ptascii("require") \/ ptraceframe.FUNCTION = $ptascii("require_once")
 def $source_trace_first(ptraceframe*) = ptraceframe* -- otherwise
 dec $eval_trace_saved(pstate, pcallcontext?, pframe*, nat) : ptraceframe*
-def $eval_trace_saved(S, pcallcontext?, pframe*, n_owner) = $eval_trace_saved_before(S, pcallcontext?, pframe*, n_owner, eps)
 dec $eval_trace_saved_before(pstate, pcallcontext?, pframe*, nat, preqbytes?) : ptraceframe*
+def $eval_trace_saved(S, pcallcontext?, pframe*, n_owner) = $eval_trace_saved_before(S, pcallcontext?, pframe*, n_owner, eps)
 dec $eval_trace_preparser(pstate, pcallcontext?, pframe) : ptraceframe*
 dec $stringify_context_frame_valid(pstate, pcallcontext, pframe) : bool
 dec $eval_frame_context(pstate, pframe, pframe*) : ptraceframe*
