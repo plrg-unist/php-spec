@@ -52,4 +52,10 @@ function abortConstant242($level,$message,$file,$line) {$GLOBALS['held242']=$GLO
 set_error_handler('abortConstant242',8194);$result242=($a242[null]+=$missingRhs242);
 echo "R:",$result242===null?1:0,":",$a242[''],":",$held242[''],":",isset($missingRhs242)?1:0,";";restore_error_handler();
 ''', b'D;R:1:5:5:0;', 'normal'),
+    ('dormant-handler-preserves-defined-global-rw-route', b'''<?php
+error_reporting(0);$counter242=5;
+function dormantGlobal242($level,$message,$file,$line) {echo "H;";return true;}
+set_error_handler('dormantGlobal242',8194);$first242=++$GLOBALS['counter242'];$second242=($GLOBALS['counter242']+=7);
+echo "G:",$first242,":",$second242,":",$counter242,";";restore_error_handler();
+''', b'G:6:13:13;', 'normal'),
 ]

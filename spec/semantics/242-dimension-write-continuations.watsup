@@ -10,6 +10,7 @@ dec $key_write_no_rhs(ptask) : bool
 dec $key_write_direct_task(ptask) : bool
 dec $key_write_array_slot(pslot) : bool
 dec $key_write_captured_base(pbase) : bool
+dec $key_write_global_root(pbase) : bool
 dec $key_write_place_shape(pkeywrite) : bool
 dec $key_write_target_base(pbase) : bool
 dec $key_write_temporary_root((porigin, nat)?) : pnode*
@@ -87,6 +88,9 @@ def $key_write_array_slot(pslot) = false -- otherwise
 def $key_write_captured_base(BASE_PLACE porigin plocation) = true
 def $key_write_captured_base(BASE_DIM pbase poperand z) = $key_write_captured_base(pbase)
 def $key_write_captured_base(pbase) = false -- otherwise
+def $key_write_global_root(BASE_GLOBAL poperand z) = true
+def $key_write_global_root(BASE_DIM pbase poperand z) = $key_write_global_root(pbase)
+def $key_write_global_root(pbase) = false -- otherwise
 def $key_write_target_base(BASE_DIM pbase poperand z) = true
 def $key_write_target_base(BASE_GLOBAL poperand z) = true
 def $key_write_target_base(pbase) = false -- otherwise
@@ -161,6 +165,7 @@ def $key_write_plan(S) = (pkeywriter)
   -- if $key_write_writer(S, porigin, ptask, $key_write_task_base(ptask, S.BASE, S.RESULT), S.RESULT) = (pkeywriter)
   -- if $key_write_root(S, pkeywriter.BASE)
   -- if $key_write_target_base(pkeywriter.BASE)
+  -- if ~$key_write_mode(ptask, ptask_tail*) \/ ~$key_write_global_root(pkeywriter.BASE)
   -- if $key_write_base_source(S, pkeywriter.TARGET, pkeywriter.BASE)
 def $key_write_plan(S) = (pkeywriter)
   -- if S.ORIGIN = (porigin)
@@ -169,6 +174,7 @@ def $key_write_plan(S) = (pkeywriter)
   -- if $key_write_path_kind(ptask_tail*) =/= eps
   -- if $key_write_writer(S, porigin, DIM_PATH pbase z, BASE_DIM pbase S.RESULT z, S.RESULT) = (pkeywriter)
   -- if $key_write_root(S, pbase)
+  -- if $key_write_path_kind(ptask_tail*) = (false) \/ ~$key_write_global_root(pbase)
   -- if $key_write_base_source(S, porigin, pkeywriter.BASE)
 def $key_write_plan(S) = eps -- otherwise
 def $key_write_pending(S) = true
