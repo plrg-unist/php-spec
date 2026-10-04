@@ -542,7 +542,11 @@ magic/autoload and complete binding remain open.
 returns the exact immediate ordinary Closure and preserves `__invoke` capture
 identity. Transformed fake bindings keep source statics and own only their new
 receiver; returned source Closures retain the genuine internal scope after makers
-retire. Complete REAL warning/unbinding and temporary-current consumers remain required.
+retire. [REAL binding](docs/semantics/CLOSURE-BINDING.md) now stages ordered
+static/internal warnings and uses the function's compiled `$this` flag when
+removing a receiver. Valid unbinding copies REAL statics, preserves reference
+captures and resets called scope; explicit null scope removes class permission.
+Temporary-current and internal API capture consumers remain required.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.

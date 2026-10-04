@@ -39,12 +39,12 @@ binding site and identical source template. User-class permission still follows
 its real lexical origin. `self`/`static` names, parent errors and anonymous
 `new self` defaults preserve the internal scope.
 
-Capturing the internal current/binding APIs, temporary REAL `Closure::call`
-current-object escape, further internally scoped keyword consumers, and complete
-REAL warning/unbinding behavior remain required. In particular, newly reachable
-internal REAL warning and unbinding routes stay precise `Unsupported`; they need
-static/internal warning staging and the original `USES_THIS` decision. This
-increment does not close general REAL rebinding or temporary-call behavior.
+Module264 adds the admitted REAL static/internal warnings and `$this`-sensitive
+unbinding through the same genuine handler continuation; the
+[ordinary binding contract](CLOSURE-BINDING.md) records validation order, compiled
+flag authority and copied storage. Capturing the internal current/binding APIs,
+temporary REAL `Closure::call` current-object escape and further internally scoped
+keyword consumers remain required. Temporary-call behavior stays separate.
 
 The temporary-current issue is independent of paused return verification. At the
 8.5.10 pin, non-generator `Closure::call` zeroes a temporary object's standard

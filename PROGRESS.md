@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+REAL binding264 now resolves scope before ordered static, `$this`-unbind and
+internal-scope warnings. Genuine handler continuations retain selected reasons
+through callback mutation and throws. The function's own compiled entries supply
+`USES_THIS`, including dead eager literal-name uses and excluding nested bodies
+and runtime-name folding. Valid null bindings copy REAL statics, retain reference
+captures and reset called scope; explicit null scope removes class permission.
+Twenty normal source agreements retain separate2312606/ed1d5 cuts. Five genuine
+owner/frame cases pass289 conditions (author113, independent176).
+Original classifier nondeterminism, the combined45-second timeout and fixture
+elaboration stop remain separate in the
+[binding ledger](coverage/semantics/real-closure-binding-review.json).
+Temporary-current and internal API consumers remain required; returns stay paused.
+
 Current Closure/binding253 returns the exact immediate ordinary Closure and
 preserves existing-object `__invoke` capture identity. Transformed fake bindings
 keep frozen permission and source statics while owning only their new receiver;
@@ -20,9 +33,10 @@ identity and private fake binding/clone permission, called scope and shared stat
 Original compiler, source and fixture failures,
 the global-constant Unsupported control and native-only controls remain separate
 in the [ledger](coverage/semantics/closure-current-binding-review.json).
-The [contract](docs/semantics/CLOSURE-CURRENT-BINDING.md) keeps complete REAL
-warning/unbinding, temporary-current escape and further API/keyword consumers
-required. Return verification stays paused and complete core remains open.
+The [contract](docs/semantics/CLOSURE-CURRENT-BINDING.md) keeps temporary-current
+escape and further API/keyword consumers required. REAL warning/unbinding is
+covered separately by264 above. Return verification stays paused and complete
+core remains open.
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
