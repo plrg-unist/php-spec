@@ -115,6 +115,11 @@ dec $destructor_chain_pending(pstate, pdestructorcall) : pstate
 dec $destructor_resume_pending(pstate, pdestructorcall) : pstate
 dec $destructor_release_frame(ptask*, pdestructionframe) : bool
 dec $destructor_frame_tasks(ptask*, pdestructionframe, pdestructionframe) : ptask*
+dec $destructor_call_suffix(pdestructorcall*, pdestructorcall) : pdestructorcall*
+dec $destructor_release_suffix(pdestructionrelease*, pdestructionrelease) : pdestructionrelease*
+dec $destructor_frame_suffix(pdestructionframe*, pdestructionframe) : pdestructionframe*
+dec $destructor_saved_frames(pstate, pdestructorcall*) : pdestructionframe*
+dec $destructor_saved_scope(pstate, pdestructorcall) : pstate
 
 def $destructor_method(S, n) = $effective_method(S, porigin, $ptascii("__destruct"), |S.CLASSES|)
   -- if $(n < |S.OBJECTS|)
@@ -501,6 +506,39 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
 def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S[.FRAMES = pframe_tail*]
   -- if pframe.CONTEXT = eps /\ pframe.LOCALS = eps
   -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask*
+;; A saved caller resumes only after all descendant C calls and release loops
+;; finish. Project their borrowed certificates without changing live owners.
+def $destructor_call_suffix(eps, pdestructorcall) = eps
+def $destructor_call_suffix(pdestructorcall :: pdestructorcall_tail*, pdestructorcall) = pdestructorcall :: pdestructorcall_tail*
+def $destructor_call_suffix(pdestructorcall_other :: pdestructorcall_tail*, pdestructorcall) = $destructor_call_suffix(pdestructorcall_tail*, pdestructorcall)
+  -- if pdestructorcall_other =/= pdestructorcall
+def $destructor_release_suffix(eps, pdestructionrelease) = eps
+def $destructor_release_suffix(pdestructionrelease :: pdestructionrelease_tail*, pdestructionrelease) = pdestructionrelease :: pdestructionrelease_tail*
+def $destructor_release_suffix(pdestructionrelease_other :: pdestructionrelease_tail*, pdestructionrelease) = $destructor_release_suffix(pdestructionrelease_tail*, pdestructionrelease)
+  -- if pdestructionrelease_other =/= pdestructionrelease
+def $destructor_frame_suffix(eps, pdestructionframe) = eps
+def $destructor_frame_suffix(pdestructionframe :: pdestructionframe_tail*, pdestructionframe) = pdestructionframe :: pdestructionframe_tail*
+def $destructor_frame_suffix(pdestructionframe_other :: pdestructionframe_tail*, pdestructionframe) = $destructor_frame_suffix(pdestructionframe_tail*, pdestructionframe)
+  -- if pdestructionframe_other =/= pdestructionframe
+def $destructor_saved_frames(S, eps) = eps
+def $destructor_saved_frames(S, pdestructorcall :: pdestructorcall_tail*) = $destructor_saved_frames(S, pdestructorcall_tail*)
+  -- if pdestructorcall.FRAME = eps
+def $destructor_saved_frames(S, pdestructorcall :: pdestructorcall_tail*) = $destructor_frame_suffix(S.DESTRUCTION.FRAMES, pdestructionframe)
+  -- if pdestructorcall.FRAME = (pdestructionframe)
+def $destructor_saved_scope(S, pdestructorcall) = S[.DESTRUCTION.CALLS = pdestructorcall_live*][.DESTRUCTION.RELEASES = $destructor_release_suffix(S.DESTRUCTION.RELEASES, pdestructionrelease[.JOBS = pdestructionjob*])][.DESTRUCTION.FRAMES = $destructor_saved_frames(S, pdestructorcall_live*)]
+  -- if pdestructorcall.RELEASE = (pdestructionrelease)
+  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)) :: pdestructionjob*
+  -- if pdestructorcall_live* = $destructor_call_suffix(S.DESTRUCTION.CALLS, pdestructorcall)
+def $destructor_saved_scope(S, pdestructorcall) = S[.DESTRUCTION.CALLS = pdestructorcall_live*][.DESTRUCTION.RELEASES = eps][.DESTRUCTION.FRAMES = $destructor_saved_frames(S, pdestructorcall_live*)]
+  -- if pdestructorcall.STORE
+  -- if pdestructorcall_live* = $destructor_call_suffix(S.DESTRUCTION.CALLS, pdestructorcall)
+def $destructor_saved_frame_scope(S, pframe) = $destructor_saved_scope(S, pdestructorcall)
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask*
+  -- if $destructor_result_valid(S, pdestructorcall)
+def $destructor_saved_frame_scope(S, pframe) = $destructor_saved_scope(S, pdestructorcall)
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask*
+  -- if perrorcall.RESUME = DESTRUCTOR_WARNING pdestructorcall
+  -- if $error_call_valid(S, perrorcall)
 def $consumer_destructor_target(S, METHOD_TARGET n porigin) = true
   -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__destruct")
