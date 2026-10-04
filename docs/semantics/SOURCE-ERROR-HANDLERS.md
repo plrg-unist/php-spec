@@ -30,7 +30,11 @@ array method then determines the inner class and split before the compound warni
 Referenced method bytes are read afterward. Dispatch disables the current handler
 before these selection warnings. The new API target authenticates compound
 `self`/`parent` selection with a foreign `$this`, while ordinary scoped carriers
-retain their existing rules. [The callable contract](SOURCE-METHODS.md#deprecated-api-keyword-and-compound-callables)
+retain their existing rules. Requested methods take priority over declared
+actual-receiver fallback. Inaccessible fallback methods expose the getter's `Error`
+at registration; delayed dispatch replaces it with an `Invalid callback` error
+whose previous exception retains the getter error, and restores the raw handler.
+[The callable contract](SOURCE-METHODS.md#deprecated-api-keyword-and-compound-callables)
 and [221 ledger](../../coverage/semantics/keyword-compound-callables-current-review.json)
 describe these stages and their remaining consumers.
 

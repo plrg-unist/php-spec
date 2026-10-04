@@ -374,6 +374,12 @@ before selection deprecations and reselects using the genuine emitter. A narrow
 API method target authenticates the selected method, declaring owner, static bit,
 actual emitter and called class. It admits Zend's compound `self`/`parent` case
 with a foreign `$this` without weakening ordinary scoped target eligibility.
+The requested class table has priority. When it has no method and the array's
+inner class is still its original outer class, lookup can select a declared
+method on the actual receiver. Its getter checks access before strict-class
+rejection. Registration and typed reception expose the getter's `Error` for
+inaccessible methods. Delayed dispatch replaces it with an `Invalid callback`
+`Error` whose previous exception is the getter error, then restores the raw handler.
 Static selection retains no object owner. Warning throws abort admission and
 restore raw handlers through the existing unwind route. Failed callable admission
 uses only constrained scalar union fallback; it does not run another callable lookup.

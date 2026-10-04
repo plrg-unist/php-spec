@@ -142,5 +142,59 @@
     "source": "<?php\nfunction warn($n,$s,$f,$l) { echo 'D|'; return true; }\nclass Base {\n public static function run($n,$s,$f,$l) { echo func_num_args(),':',self::class,':',static::class,'|'; return true; }\n}\nclass Middle extends Base {\n public function test() {\n  error_reporting(0);\n  foreach ([['parent','run'],['static','run'],'parent::run','static::run'] as $cb) {\n   set_error_handler('warn'); set_error_handler($cb); echo $missing;\n   restore_error_handler(); restore_error_handler();\n  }\n }\n}\nclass Child extends Middle {}\n(new Child)->test();\n",
     "source_sha256": "f5ce44888028dff45743ab1752a093e3700c43557d829dabb7b921a41af63d37",
     "expected_model": "normal"
+  },
+  {
+    "id": "default-string-before-supplied-keyword",
+    "source": "<?php\nclass StringBox { public function __toString(): string { echo 'S|'; return 'str'; } }\nclass Owner {\n const CB=['self','run'];\n public static function run() {}\n public function take(string $text=new StringBox, callable $cb=self::CB, int $last=0) { echo $text,':',get_called_class(); }\n public function test() { set_error_handler(function($n,$s){echo 'D|';return true;}); $this->take(cb:['self','run']); restore_error_handler(); }\n}\nclass Child extends Owner {}\n(new Child)->test();\n",
+    "source_sha256": "f7b99cb08f96d8ee148bf45ef534cae142354437a9ef0cc9f415e628cc39d9a8",
+    "expected_model": "normal"
+  },
+  {
+    "id": "default-callable-hole-control",
+    "source": "<?php\nclass StringBox { public function __toString(): string { echo 'S|'; return 'str'; } }\nclass Owner {\n const CB=['self','run'];\n public static function run() {}\n public function take(string $text=new StringBox, callable $cb=self::CB, int $last=0) { echo 'body'; }\n public function test() { set_error_handler(function($n,$s){echo 'D|';return true;}); $this->take(last:1); restore_error_handler(); }\n}\nclass Child extends Owner {}\n(new Child)->test();\n",
+    "source_sha256": "92c961cd16a86a27b6e77a13a9eb6a7523c35d00f7513e3221d522d0951cf831",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "foreign-this-called-class",
+    "source": "<?php\nclass Child { public function run($n,$s,$f,$l) { echo ($this instanceof Foreign)?'Foreign':'wrong',':',self::class,':',get_called_class(); return true; } }\nclass Foreign { public function test() { error_reporting(0); set_error_handler(function($n,$s) { echo 'D|'; return true; }); set_error_handler(['Child','self::run']); echo 'R|'; echo $missing; restore_error_handler(); restore_error_handler(); } }\n(new Foreign)->test();\n",
+    "source_sha256": "913520fca792dc4388cebadb87f05cec02eb5fe8af4784afca9c9b1804052156",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fromcallable-keyword-capture-control",
+    "source": "<?php\nfunction warn($n, $s, $f, $l) { echo $s, \"|\"; return true; }\nclass Child {\n    public function run() {\n        echo ($this instanceof Foreign ? 'Foreign' : 'wrong'), \":\", self::class, \":\", static::class, \"|\";\n    }\n}\nclass Foreign {\n    public function make() { return Closure::fromCallable(['Child', 'self::run']); }\n}\nset_error_handler('warn');\n$cb = (new Foreign)->make();\n$copy = clone $cb;\nrestore_error_handler();\n$copy();\n$cb();\n",
+    "source_sha256": "edaafb42fb75f6f2bb2dd5f06157c55961a1ad136a7246d2a47fb78fdb38d176",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "foreign-declared-method-fallback",
+    "source": "<?php\nfunction warn($n,$s,$f,$l) { echo 'D|'; return true; }\nclass Child {}\nclass Foreign {\n public function handle($n,$s,$f,$l) { echo 'body:',self::class,':',get_called_class(); return true; }\n public function test() { error_reporting(0); set_error_handler('warn'); set_error_handler(['Child','self::handle']); echo $missing; restore_error_handler(); restore_error_handler(); }\n}\n(new Foreign)->test();\n",
+    "source_sha256": "0fa2f6660d9354117634a50acd56aa2b0169ac419b8126d42ab7804951a89a51",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-declared-method-denied",
+    "source": "<?php\nfunction warn($n,$s,$f,$l) { echo 'D|'; return true; }\nclass Child {\n public function run($n,$s,$f,$l) {\n  set_error_handler('warn');\n  try { set_error_handler(['Child','self::only']); }\n  catch (Error $e) { echo $e->getMessage(); }\n  restore_error_handler(); return true;\n }\n}\nclass Foreign {\n private function only($n,$s,$f,$l) { echo 'wrong'; return true; }\n public function test() {\n  error_reporting(0); set_error_handler('warn');\n  set_error_handler(['Child','self::run']); echo $missing;\n  restore_error_handler(); restore_error_handler();\n }\n}\n(new Foreign)->test();\n",
+    "source_sha256": "80c27ca0640d16668d7d49eb3893b15db13665b3a953c22ead2f7cf34e55af35",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-method-priority-private-parent",
+    "source": "<?php\nfunction warn($n,$s,$f,$l) { echo 'D|'; return true; }\nclass Base {}\nclass Child extends Base {\n public function existing($n,$s,$f,$l) { echo 'Child:',get_called_class(),'|'; return true; }\n}\nclass Foreign {\n public function existing($n,$s,$f,$l) { echo 'wrong-existing|'; return true; }\n private function only($n,$s,$f,$l) { echo 'Foreign:',get_called_class(),'|'; return true; }\n public function test() {\n  error_reporting(0); set_error_handler('warn');\n  set_error_handler(['Child','self::existing']); echo $a; restore_error_handler();\n  set_error_handler(['Child','self::only']); echo $b; restore_error_handler();\n  try { set_error_handler(['Child','parent::only']); } catch (TypeError $e) { echo 'parent-rejected|'; }\n  restore_error_handler();\n }\n}\n(new Foreign)->test();\n",
+    "source_sha256": "ef5cba5ac1125b9eea080507885a7047ff8a0eaaf17a665131375b66131b6837",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-dispatch-getter-error-restores-raw",
+    "source": "<?php\nfunction warn($n,$s,$f,$l) { echo 'D|'; return true; }\nclass Child {\n public function run($n,$s,$f,$l) {\n  set_error_handler('warn'); $method='self::run'; $raw=['Child',&$method];\n  set_error_handler($raw); $method='self::only';\n  try { echo $inner; } catch (Error $e) { echo $e->getMessage(),'|',$e->getPrevious()->getMessage(),'|'; }\n  echo get_error_handler()[1]; restore_error_handler(); restore_error_handler();\n  return true;\n }\n}\nclass Foreign {\n private function only($n,$s,$f,$l) { echo 'wrong'; return true; }\n public function test() {\n  error_reporting(0); set_error_handler('warn');\n  set_error_handler(['Child','self::run']); echo $outer;\n  restore_error_handler(); restore_error_handler();\n }\n}\n(new Foreign)->test();\n",
+    "source_sha256": "a9b8daf1bd98f71bdce4cfddc2932376e1946621076181ad7a01c7371d2ee2a0",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-dispatch-previous-live-alias",
+    "source": "<?php\nfunction warn($n,$s,$f,$l) { echo 'D|'; return true; }\nclass Child {\n public function run($n,$s,$f,$l) {\n  set_error_handler('warn'); $method='self::run'; $raw=['Child',&$method];\n  set_error_handler($raw); $method='self::only';\n  try { echo $inner; } catch (Error $e) {\n   $previous=$e->getPrevious();\n   echo get_class($e),':',$e->getMessage(),'|',get_class($previous),':',$previous->getMessage(),'|';\n   echo $previous->getPrevious()===null?'chain-end|':'wrong-chain|';\n  }\n  $actual=get_error_handler(); echo $actual[1],'|';\n  $method='self::run'; echo $actual[1],'|';\n  restore_error_handler(); restore_error_handler(); return true;\n }\n}\nclass Foreign {\n private function only($n,$s,$f,$l) { echo 'wrong'; return true; }\n public function test() {\n  error_reporting(0); set_error_handler('warn');\n  set_error_handler(['Child','self::run']); echo $outer;\n  restore_error_handler(); restore_error_handler();\n }\n}\n(new Foreign)->test();\necho get_error_handler()===null?'done':'wrong-handler';\n",
+    "source_sha256": "3553304e1dfb127e3c1e13729c6c255668fd3d38b8597f612bba724f61657c55",
+    "expected_model": "normal"
   }
 ]

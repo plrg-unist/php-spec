@@ -11,8 +11,9 @@ Deprecated callable keyword/compound admission221 now stages supplied fixed
 parameters, error registration and delayed dispatch. Warnings hold class choice
 and string boundaries while rereading referenced methods; whole byref formal
 replacement preserves its live value. Genuine receiving/emitting frames and a
-narrow API carrier admit compound foreign-`$this` selection without relaxing
-ordinary scoped eligibility. Exact union branches bypass warnings; direct/FCC
+narrow API carrier admit compound foreign-`$this` selection and declared receiver
+fallback without relaxing ordinary scoped eligibility. Supplied guards exclude
+authentic named default holes. Exact union branches bypass warnings; direct/FCC
 raw keyword/compound calls preserve ordinary PHP lookup errors. The
 [221 ledger](coverage/semantics/keyword-compound-callables-current-review.json)
 records independent pins, affected checks and preserved failures. Default/variadic,

@@ -331,5 +331,216 @@ CASES['compound-warning-throw-restores-and-retires'] = {
     ],
 }
 
+CASES['named-default-hole-cannot-enter-supplied-api-stage'] = {
+    'source': SOURCES['default-callable-hole-control'],
+    'stage': 'S.TODO = [TYPE_RECEIVE porigin_receive 1]',
+    'checks': [
+        'S.CURRENT = (pcallcontext)',
+        'pcallcontext.FUNCTION = porigin_receive',
+        'pcallcontext.ARGC = 3 /\\ pcallcontext.HOLES = [0, 1]',
+        '$call_holes_valid(S, pcallcontext)',
+        '$fixed_parameter_defaulted(S, 1)',
+        '~$fixed_parameter_supplied(S, 1)',
+        '$fixed_parameter_supplied(S, 2)',
+        '~$call_holes_valid(S, pcallcontext[.HOLES = eps])',
+        '~$fixed_parameter_supplied(S[.CURRENT = (pcallcontext[.HOLES = eps])], 1)',
+        '~$api_receive_candidate(S)',
+        '$lookup(S.ENV, $ptascii("text")) = (n_text)',
+        'S.STORE[n_text] = DEFINED (PSTRING $ptascii("str"))',
+        '$lookup(S.ENV, $ptascii("cb")) = (n_cb)',
+        'S.STORE[n_cb] = DEFINED (PARRAY n_array)',
+        '$api_initial_class(S, PARRAY n_array) = API_CLASS papiclass',
+        'papiquery = $api_query(S, TYPE_RECEIVE porigin_receive 1, PARRAY n_array, PSTRING $ptascii("self"), DIRECT (PSTRING $ptascii("run")), papiclass, $ptascii("run"), 0, 0)',
+        '$api_query_shape(S, papiquery, 0)',
+        '~$api_source_valid(S, papiquery)',
+        '~$api_query_valid(S, papiquery, 0)',
+        '~$call_task_valid(S, API_CALLABLE_RESULT papiquery 0)',
+        'S.EVENTS = [OUTPUT $ptascii("S|")]',
+        *VALID,
+        'S_done = $drive(S, 3000)',
+        'S_done.COMPLETION = UNSUPPORTED "deprecated callable admission continuation"',
+        'S_done.EVENTS = [OUTPUT $ptascii("S|")]',
+        *AFTER,
+    ],
+}
+
+CASES['foreign-declared-fallback-entered-authentication'] = {
+    'source': SOURCES['foreign-declared-method-fallback'],
+    'stage': ('S.TODO = (ARGINFO_INVOKE pargcall) :: ptask_tail* '
+              '-- if pargcall.KIND = INTRINSIC_GET_CALLED_CLASS '
+              '-- if S.CURRENT = (pcallcontext) '
+              '-- if pcallcontext.TARGET = API_METHOD_TARGET papiquery porigin_handle ptbytes_method false'),
+    'checks': [
+        'ptbytes_method = $ptascii("handle")',
+        'papiquery.METHOD = DIRECT (PSTRING $ptascii("self::handle"))',
+        'papiquery.PREFIX = 6 /\\ papiquery.WIDTH = 6',
+        'papiquery.OUTER = (papiclass_outer)',
+        'papiclass_outer.REQUESTED = papiquery.CLASS.REQUESTED',
+        'papiquery.CLASS.REQUESTED = porigin_child',
+        'papiquery.CLASS.RECEIVER = (n_foreign)',
+        'papiquery.CLASS.CALLED = porigin_foreign',
+        '~papiquery.CLASS.STRICT',
+        'papiquery.SCOPE = (porigin_foreign)',
+        'S.OBJECTS[n_foreign] = INSTANCE porigin_foreign',
+        '$scope_method(S, porigin_child, ptbytes_method, true, papiquery.SCOPE) = eps',
+        '$api_object_class(S, papiquery) = (porigin_foreign)',
+        '$api_selected_method(S, papiquery, ptbytes_method) = (pmethoddesc)',
+        'pmethoddesc.OWNER = porigin_foreign',
+        'pmethoddesc.FUNCTION.ORIGIN = porigin_handle',
+        'pcallcontext.LEXICAL_CLASS = (porigin_foreign)',
+        'pcallcontext.CALLED_CLASS = (porigin_foreign)',
+        'pcallcontext.RECEIVER = (n_foreign)',
+        '$calledclass_name(S, pargcall) = ($ptascii("Foreign"))',
+        '$api_carrier_valid(S, papiquery, porigin_handle, ptbytes_method, false)',
+        '$target_nodes(pcallcontext.TARGET) = [HOBJECT n_foreign]',
+        '$target_function(S, SCOPED_TARGET porigin_child porigin_handle porigin_foreign (n_foreign) (KNOWN (PSTRING $ptascii("Child")))) = eps',
+        '~$api_target_valid(S, papiquery, porigin_handle, $ptascii("test"))',
+        '~$api_carrier_valid(S, papiquery, porigin_handle, ptbytes_method, true)',
+        'S.FRAMES = pframe_emitter :: pframe_tail*',
+        'pframe_emitter.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_emitter*',
+        'S_emitter = $constant_frame_scope(S, pframe_emitter, pframe_tail*)',
+        '$handler_emitter_valid(S_emitter, pcallcontext.TARGET)',
+        '~$handler_emitter_valid(S_emitter, API_METHOD_TARGET papiquery[.SCOPE = (porigin_child)] porigin_handle ptbytes_method false)',
+        '~$error_context_valid(S, pcallcontext[.LEXICAL_CLASS = (porigin_child)])',
+        *VALID,
+        'S_budget = $drive_steps(S, 0)',
+        'S_budget.COMPLETION = BUDGET',
+        'S_done = $drive(S_budget[.COMPLETION = NORMAL], 3000)',
+        'S_done.COMPLETION = NORMAL',
+        'S_done.EVENTS = [OUTPUT $ptascii("D|"), OUTPUT $ptascii("body:"), OUTPUT $ptascii("Foreign"), OUTPUT $ptascii(":"), OUTPUT $ptascii("Foreign"), OUTPUT eps]',
+        'S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+        'S_done.ERRORHANDLER.CALLBACK = eps /\\ S_done.ERRORHANDLERS = eps',
+        '~((HOBJECT n_foreign) <- S_done.ALLOCATIONS)',
+        *AFTER,
+    ],
+}
+
+CASES['foreign-private-fallback-entered-emitter-and-priority'] = {'source': '<?php\n'
+           "function warn($n,$s,$f,$l) { echo 'D|'; return true; }\n"
+           'class Base {}\n'
+           'class Child extends Base {\n'
+           " public function existing($n,$s,$f,$l) { echo 'Child:',get_called_class(),'|'; return true; }\n"
+           '}\n'
+           'class Foreign {\n'
+           " public function existing($n,$s,$f,$l) { echo 'wrong-existing|'; return true; }\n"
+           " private function only($n,$s,$f,$l) { echo 'Foreign:',get_called_class(),'|'; return true; }\n"
+           ' public function test() {\n'
+           "  error_reporting(0); set_error_handler('warn');\n"
+           "  set_error_handler(['Child','self::existing']); echo $a; restore_error_handler();\n"
+           "  set_error_handler(['Child','self::only']); echo $b; restore_error_handler();\n"
+           "  try { set_error_handler(['Child','parent::only']); } catch (TypeError $e) { echo 'parent-rejected|'; }\n"
+           '  restore_error_handler();\n'
+           ' }\n'
+           '}\n'
+           '(new Foreign)->test();\n',
+ 'stage': 'S.TODO = (ARGINFO_INVOKE pargcall) :: ptask_tail* -- if pargcall.KIND = INTRINSIC_GET_CALLED_CLASS -- if '
+          'S.CURRENT = (pcallcontext) -- if pcallcontext.TARGET = API_METHOD_TARGET papiquery porigin_only '
+          'ptbytes_method false -- if ptbytes_method = $ptascii("only")',
+ 'checks': ['papiquery.METHOD = DIRECT (PSTRING $ptascii("self::only"))',
+            'papiquery.PREFIX = 6 /\\ papiquery.WIDTH = 4',
+            'papiquery.OUTER = (papiclass_outer)',
+            'papiquery.CLASS.REQUESTED = porigin_child',
+            'papiclass_outer.REQUESTED = porigin_child',
+            'papiclass_outer.RECEIVER = eps',
+            'papiquery.CLASS.RECEIVER = (n_foreign)',
+            'papiquery.CLASS.CALLED = porigin_foreign',
+            '~papiquery.CLASS.STRICT',
+            'papiquery.SCOPE = (porigin_foreign)',
+            'S.OBJECTS[n_foreign] = INSTANCE porigin_foreign',
+            '$scope_method(S, porigin_child, ptbytes_method, true, papiquery.SCOPE) = eps',
+            '$api_object_class(S, papiquery) = (porigin_foreign)',
+            '$api_selected_method(S, papiquery, ptbytes_method) = (pmethoddesc)',
+            'pmethoddesc.OWNER = porigin_foreign /\\ pmethoddesc.VISIBILITY = PROPERTY_PRIVATE',
+            'pmethoddesc.FUNCTION.ORIGIN = porigin_only',
+            '$api_getter_error(S, papiquery, ptbytes_method) = eps',
+            '$api_getter_error(S, papiquery[.SCOPE = (porigin_child)], ptbytes_method) = ($ptascii("Call to private '
+            'method Foreign::only() from scope Child"))',
+            'pcallcontext.LEXICAL_CLASS = (porigin_foreign)',
+            'pcallcontext.CALLED_CLASS = (porigin_foreign)',
+            'pcallcontext.RECEIVER = (n_foreign)',
+            '$calledclass_name(S, pargcall) = ($ptascii("Foreign"))',
+            '$api_carrier_valid(S, papiquery, porigin_only, ptbytes_method, false)',
+            '$target_nodes(pcallcontext.TARGET) = [HOBJECT n_foreign]',
+            '$target_function(S, SCOPED_TARGET porigin_child porigin_only porigin_foreign (n_foreign) (KNOWN (PSTRING '
+            '$ptascii("Child")))) = eps',
+            '~$api_target_valid(S, papiquery, porigin_only, $ptascii("existing"))',
+            '~$api_carrier_valid(S, papiquery, porigin_only, ptbytes_method, true)',
+            '~$api_carrier_valid(S, papiquery[.SCOPE = (porigin_child)], porigin_only, ptbytes_method, false)',
+            '$class_link_at(S.LINKEDPARENTS, porigin_child) = (SOURCE_PARENT porigin_base)',
+            '$api_object_class(S, papiquery[.OUTER = (papiclass_outer[.REQUESTED = porigin_base])]) = eps',
+            '$api_selected_method(S, papiquery, $ptascii("existing")) = (pmethoddesc_existing)',
+            'pmethoddesc_existing.OWNER = porigin_child',
+            'S.FRAMES = pframe_emitter :: pframe_tail*',
+            'pframe_emitter.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_emitter*',
+            'S_emitter = $constant_frame_scope(S, pframe_emitter, pframe_tail*)',
+            '$handler_emitter_valid(S_emitter, pcallcontext.TARGET)',
+            '~$handler_emitter_valid(S_emitter, API_METHOD_TARGET papiquery[.SCOPE = (porigin_child)] porigin_only '
+            'ptbytes_method false)',
+            '~$error_context_valid(S, pcallcontext[.LEXICAL_CLASS = (porigin_child)])',
+            '$call_descriptors_valid(S)',
+            '$class_state_valid(S)',
+            '$closure_state_valid(S)',
+            '$heap_valid($heap_graph(S))',
+            'S_budget = $drive_steps(S, 0)',
+            'S_budget.COMPLETION = BUDGET',
+            'S_done = $drive(S_budget[.COMPLETION = NORMAL], 3000)',
+            'S_done.COMPLETION = NORMAL',
+            'S_done.EVENTS = [OUTPUT $ptascii("D|"), OUTPUT $ptascii("Child:"), OUTPUT $ptascii("Foreign"), OUTPUT '
+            '$ptascii("|"), OUTPUT eps, OUTPUT $ptascii("D|"), OUTPUT $ptascii("Foreign:"), OUTPUT '
+            '$ptascii("Foreign"), OUTPUT $ptascii("|"), OUTPUT eps, OUTPUT $ptascii("D|"), OUTPUT '
+            '$ptascii("parent-rejected|")]',
+            'S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+            'S_done.ERRORHANDLER.CALLBACK = eps /\\ S_done.ERRORHANDLERS = eps',
+            '~((HOBJECT n_foreign) <- S_done.ALLOCATIONS)',
+            '$call_descriptors_valid(S_done)',
+            '$class_state_valid(S_done)',
+            '$closure_state_valid(S_done)',
+            '$heap_valid($heap_graph(S_done))']}
+
+CASES['foreign-dispatch-getter-error-chain-and-restoration'] = {
+    'source': SOURCES['foreign-dispatch-getter-error-restores-raw'],
+    'stage': ('S.TODO = (THROW_SEARCH n_new) :: ptask_tail* '
+              '-- if $throwable_previous_id(S, n_new) = (n_old) '
+              '-- if S.CURRENT = (pcallcontext)'),
+    'checks': [
+        '$lookup(S.ENV, $ptascii("raw")) = (n_raw)',
+        'S.STORE[n_raw] = DEFINED (PARRAY n_array)',
+        '$entry_lookup(S.ARRAYS[n_array].ITEMS, KINT 1) = (ALIAS n_method)',
+        'S.STORE[n_method] = DEFINED (PSTRING $ptascii("self::only"))',
+        'pcallcontext.LEXICAL_CLASS = (porigin_child)',
+        '$class_at(S.CLASSES, porigin_child) = (pclassdesc_child)',
+        'pclassdesc_child.NAME = $ptascii("Child")',
+        'pcallcontext.CALLED_CLASS = (porigin_foreign)',
+        'pcallcontext.RECEIVER = (n_foreign)',
+        'S.OBJECTS[n_foreign] = INSTANCE porigin_foreign',
+        'S.ERRORHANDLER.CALLBACK = (PARRAY n_array)',
+        '~$api_pending_tasks(ptask_tail*)',
+        'pcallcontext.TARGET = API_METHOD_TARGET papiquery_outer porigin_run ptbytes_run false',
+        '$api_carrier_valid(S, papiquery_outer, porigin_run, ptbytes_run, false)',
+        '$throwable_previous_id(S, n_new) = (n_old)',
+        'ptbytes_outer = $ptascii("Invalid callback Child::self::only, class Child does not have a method ") ++ [34] ++ $ptascii("only") ++ [34]',
+        '$throwable_field(S, n_new, "message") = PSTRING ptbytes_outer',
+        '$throwable_field(S, n_old, "message") = PSTRING $ptascii("Call to private method Foreign::only() from scope Child")',
+        '$throwable_field(S, n_old, "previous") = PNULL',
+        '$throwable_chain_valid(S, n_new)',
+        '$heap_owners($heap_graph(S), HOBJECT n_old) = 1',
+        'S.EVENTS = [OUTPUT $ptascii("D|"), OUTPUT $ptascii("D|")]',
+        *VALID,
+        'S_budget = $drive_steps(S, 0)',
+        'S_budget.COMPLETION = BUDGET',
+        'S_done = $drive(S_budget[.COMPLETION = NORMAL], 3000)',
+        'S_done.COMPLETION = NORMAL',
+        'S_done.EVENTS = [OUTPUT $ptascii("D|"), OUTPUT $ptascii("D|"), OUTPUT ptbytes_outer, OUTPUT $ptascii("|"), OUTPUT $ptascii("Call to private method Foreign::only() from scope Child"), OUTPUT $ptascii("|"), OUTPUT $ptascii("self::only"), OUTPUT eps]',
+        'S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+        'S_done.ERRORHANDLER.CALLBACK = eps /\\ S_done.ERRORHANDLERS = eps',
+        '~((HOBJECT n_foreign) <- S_done.ALLOCATIONS)',
+        '~((HOBJECT n_old) <- S_done.ALLOCATIONS)',
+        '~((HOBJECT n_new) <- S_done.ALLOCATIONS)',
+        '~((HARRAY n_array) <- S_done.ALLOCATIONS)',
+        '~((HCELL n_method) <- S_done.ALLOCATIONS)',
+        *AFTER,
+    ],
+}
+
 if __name__ == '__main__':
     protocol.run(CASES, extra_inputs=[Path(__file__), CATALOGUE])
