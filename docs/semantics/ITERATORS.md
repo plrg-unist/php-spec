@@ -50,8 +50,11 @@ source image; pause/resume chronology proves the actual publication prefix.
 Compiler continuations have one real task owner and cannot hide in source wrappers
 or branches. Concrete Traversable-only classes still await the native core-fatal
 location (`Unknown`, line0).
-Deferred runtime declaration failures inside a fatal formatter require their own
-targeted checks; the compiler-stop results do not establish that path.
+Module275 preserves that recorded primary when a deferred runtime class link
+fails inside the formatter. It retains the genuine inner eval/include trace row,
+replays the recorded notice prefix and retires only discarded source owners.
+Chronological replay rederives the failed source binding and rollback; the actual
+report requires its failure record and genuine caller cause.
 
 `IteratorAggregate`, `ArrayAccess`, Traversable argument/array unpacking and wider
 ordinary object/reference traversal remain required. Broader object destruction
@@ -78,5 +81,11 @@ Actual23c composition source2 at5cf39c0dd covers dollar-curly compiler callbacks
 changing live reporting and pending compiler exit before request destruction.
 One actual261 source at0ef99 confirms NaN-to-object warning suppression and the
 retained scalar during a source fatal formatter.
+Seven new sources at4293f196 confirm deferred runtime eval/constant/include
+failures and give the four remaining258 eval originals their first agreements.
+Independent strict-SL eval81/constant83/include84 pass at the same semantic cut;
+their raw record is `.tools/traversal-review-14/eval-protocol-independent-rb9xcsp6/report.json`.
+`python3 tests/semantics/runtime_formatter_protocol.py` checks genuine runtime
+links, reported primary/history authority and saved-owner retirement in strict SL.
 Raw native/model commands, outputs, revisions and runtime profiles stay in ignored
 `.tools` directories; the harness records each selected run separately.

@@ -161,7 +161,8 @@ cleanup. Tentative-return declarations use real prototype order and runtime/file
 warning delivery after publication. Early eval warnings suspend genuine
 compilation at each publication; handler throws or exit preserve later class
 publication, while user fatals stop it. Compiler fatal formatting retains the
-primary diagnostic through source effects and nested eval/include compilation failures.
+primary diagnostic through source effects, nested eval/include compilation and
+deferred runtime class-link failures.
 IteratorAggregate, ArrayAccess and other Traversable consumers remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
