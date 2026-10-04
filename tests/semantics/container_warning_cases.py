@@ -48,4 +48,17 @@ set_error_handler(function($n,$m){echo "D;";unset($GLOBALS['source276']);$GLOBAL
 $a276[$key276]=&$source276;
 restore_error_handler();echo "R:",$source276,":",$alias276,":",$a276[1],":",$key276,";";$source276=19;echo "V:",$a276[1],":",$alias276,":",isset($a276[7])?1:0,";";
 """, b'D;R:17:9:17:7.5;V:19:9:0;'),
+('false-throw-plain-fetch-precreates-null', b"""<?php
+error_reporting(0);$a276=false;$older276=new Error('older');$error276=new Error('handler',0,$older276);$original276=$error276;
+set_error_handler(function($n,$m){echo "D;";$e=$GLOBALS['error276'];unset($GLOBALS['error276'],$GLOBALS['older276']);throw $e;},8192);
+try{$ref276=&$a276[1];}catch(Error $e){echo "C:",($e===$original276)?1:0,":",($a276===[1=>null])?1:0,":",isset($ref276)?1:0,":",$e->getMessage(),":",$e->getPrevious()->getMessage(),";";}
+restore_error_handler();
+""", b'D;C:1:1:0:handler:older;'),
+('false-throw-plain-assign-writes-before-unwind', b"""<?php
+error_reporting(0);class FalseAssignThrow276{public static int $dest=9;}$a276=false;$rhs276=7;$older276=new Error('older');$error276=new Error('handler',0,$older276);$original276=$error276;
+set_error_handler(function($n,$m){echo "D;";$GLOBALS['rhs276']=17;$e=$GLOBALS['error276'];unset($GLOBALS['error276'],$GLOBALS['older276']);throw $e;},8192);
+try{FalseAssignThrow276::$dest=($a276[1]=$rhs276);}catch(Error $e){echo "C:",($e===$original276)?1:0,":",FalseAssignThrow276::$dest,":",$a276[1],":",$rhs276,":",$e->getMessage(),":",$e->getPrevious()->getMessage(),";";}
+restore_error_handler();
+""", b'D;C:1:9:17:17:handler:older;'),
+
 ]
