@@ -52,6 +52,8 @@ dec $trait_property_source_fast_equal(pstate, ppropertydesc, ppropertydesc) : bo
 dec $trait_property_keyword_spelling(pstate, ppropertydesc) : ptbytes?
 dec $trait_type_keyword_spelling(ptinput) : ptbytes?
 dec $trait_type_keyword_spellings(ptinput*) : ptbytes?
+dec $trait_type_contextual(ptbranch*) : bool
+dec $trait_type_contextual_atoms(ptatom*) : bool
 dec $trait_type_names(ptbranch*) : nat
 dec $trait_type_atom_names(ptatom*) : nat
 dec $trait_type_atom_nominal(ptatom) : nat
@@ -124,7 +126,11 @@ def $trait_data_covariance(pvresult_left, pvresult_right, false) = TRAITDATABAD
   -- if pvresult_left =/= PVINCOMPATIBLE /\ pvresult_right =/= PVINCOMPATIBLE
 def $trait_data_covariance(pvresult_left, pvresult_right, b_constant) = TRAITDATAUNKNOWN "unsupported trait data type compatibility" -- otherwise
 def $trait_property_fast_equal(ptbranch_left*, ptbranch_right*) = ($ppproperty_type_equal(ptbranch_left*, ptbranch_right*) /\ $($trait_type_names(ptbranch_left*) <= 1))
-def $trait_property_source_fast_equal(S, ppropertydesc_left, ppropertydesc_right) = ($trait_property_fast_equal($trait_property_source_type(S, ppropertydesc_left), $trait_property_source_type(S, ppropertydesc_right)) /\ $trait_property_keyword_spelling(S, ppropertydesc_left) = $trait_property_keyword_spelling(S, ppropertydesc_right))
+def $trait_property_source_fast_equal(S, ppropertydesc_left, ppropertydesc_right) = ($trait_property_fast_equal($trait_property_source_type(S, ppropertydesc_left), $trait_property_source_type(S, ppropertydesc_right)) /\ (~$trait_type_contextual($trait_property_source_type(S, ppropertydesc_left)) \/ ($trait_property_keyword_spelling(S, ppropertydesc_left) =/= eps /\ $trait_property_keyword_spelling(S, ppropertydesc_left) = $trait_property_keyword_spelling(S, ppropertydesc_right))))
+def $trait_type_contextual(eps) = false
+def $trait_type_contextual((PTBRANCH ptatom*) :: ptbranch*) = ($trait_type_contextual_atoms(ptatom*) \/ $trait_type_contextual(ptbranch*))
+def $trait_type_contextual_atoms(eps) = false
+def $trait_type_contextual_atoms(ptatom :: ptatom_tail*) = (ptatom <- [PTSELF, PTPARENT, PTSTATIC] \/ $trait_type_contextual_atoms(ptatom_tail*))
 def $trait_property_keyword_spelling(S, ppropertydesc) = $trait_type_keyword_spelling($ptast(phpType18))
   -- if ppropertydesc.ORIGIN = porigin
   -- if $origin_source(porigin) = PORIGIN n pcpath
