@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary Throwable reception250 now suspends weak-null/lossy warnings and
+Stringable parsing for NEW and explicit inherited/scoped constructor calls.
+Ordinary named-send priority stays intact; strict null/objects reject without
+conversion. Successful string casts rewrite sent slots and retire old temporary
+objects; integer trace arguments stay raw and fields commit only after all
+formals pass. Private handlers, method retirement and recursive same-site calls
+retain their own owners and traces. Source17 passes as2 at5e828 plus14+1 atb6cac;
+141 ownership premises pass in71+70 partitions, and recursive29 passes at e6f71.
+Thirteen repeated dependency bindings add no behaviors. Original overlap,
+consumer-forgery and fixture failures plus the whole141 timeout stay preserved in
+the [reception ledger](coverage/semantics/ordinary-throwable-reception-review.json).
+Actual246 template/generic-EMIT composition1 at98c passes on ab5d; latest238 is
+preserved separately without renewing private gates. Complete core remains open.
+
 Callable default/variadic reception248 now suspends keyword/compound lookup in
 actual receiving frames. Deferred class-constant defaults, named-hole preparation
 and supplied/variadic operands keep their distinct order and ownership. Referenced
@@ -48,8 +62,8 @@ retain the default behavior. Original descriptor and fixture failures stay in
 the [scope ledger](coverage/semantics/anonymous-default-new-review.json).
 Actual239 child composition1 at1b593 passes after temporary maker/receiver
 variables retire; the child retains its receiver. Latest231/234/230/242 routes
-are preserved without renewed private gates. Ordinary Throwable effects and
-dynamic object `::class` remain required next.
+are preserved without renewed private gates. Ordinary Throwable effects are
+covered by250 above; dynamic object `::class` remains required.
 
 Writable dimension keys242 stage defined mutable CV-array W/RW fetches through
 undefined/null/float/NaN callbacks, nested acquisition, updates and direct
@@ -206,8 +220,8 @@ Actual221 callable source1/owner39 at2a380 authenticates the suspended construct
 through deprecation callbacks and rejects a removed retained owner.
 The [constructor ledger](coverage/semantics/default-constructors-review.json)
 keeps original failures, the fixture line correction and fresh uncached NEW facts
-precise. Anonymous keyword defaults are covered by245; ordinary internal
-constructor effects remain required and complete core remains open.
+precise. Anonymous keyword defaults are covered by245 and ordinary internal
+constructor effects by250; complete core remains open.
 
 Deprecated callable keyword/compound admission221 now stages supplied fixed
 parameters, error registration and delayed dispatch. Warnings hold class choice
@@ -460,8 +474,7 @@ failures and interrupted evidence.
   wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
-- Values, references and coercion: ordinary internal constructor effects,
-  dynamic object `::class`, dynamic hole provenance and broader weak
+- Values, references and coercion: dynamic object `::class`, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred object-bearing defaults and
   wider Closure creation contexts remain Unsupported.

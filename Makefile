@@ -277,6 +277,10 @@ test-semantics: build
 	python3 tests/semantics/anonymous_default_new_sources.py
 	python3 tests/semantics/anonymous_default_new_protocol.py --group owner
 	python3 tests/semantics/anonymous_default_new_protocol.py --group recursive
+	python3 tests/semantics/ordinary_constructor_sources.py
+	python3 tests/semantics/ordinary_constructor_protocol.py --group string
+	python3 tests/semantics/ordinary_constructor_protocol.py --group warning
+	python3 tests/semantics/ordinary_constructor_protocol.py --group recursive
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
