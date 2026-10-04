@@ -521,8 +521,11 @@ constructor access and name mapping. Declaration strictness, API reference warni
 and fresh default objects retain their real owners.
 [Internal default constructors](coverage/semantics/internal-default-constructors-review.json)
 map prepared values with declaration strictness, named-hole filling and exact
-string-mutated traces. Suspended internal warning/Stringable reception, rebound
-anonymous keyword defaults and broader constrained conversion remain open.
+string-mutated traces. [Suspended reception240](coverage/semantics/internal-default-reception-review.json)
+retains real warning and Stringable callbacks, raw integer trace slots and each
+reentrant constructor owner. Current trait/display fallback preserves a filename
+argument after its global root retires. Rebound anonymous keyword defaults and broader
+ordinary/constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
