@@ -1,0 +1,51 @@
+;; Registered startup bytes are explicit environment facts, after INI parsing.
+;; A null reporting entry differs from a present empty value despite readback.
+dec $startup_bytes(preqbytes) : bool
+def $startup_bytes(eps) = true
+def $startup_bytes(n :: preqbytes) = ($(n < 256) /\ $startup_bytes(preqbytes))
+dec $startup_reporting_valid(preqbytes?) : bool
+def $startup_reporting_valid(eps) = true
+def $startup_reporting_valid((preqbytes)) = $startup_bytes(preqbytes)
+dec $startup_valid(pstartup) : bool
+def $startup_valid(pstartup) = ($startup_reporting_valid(pstartup.REPORTING) /\ $startup_bytes(pstartup.INCLUDEPATH) /\ $c_string(pstartup.INCLUDEPATH) =/= eps)
+def $startup_state_valid(S) = true -- if S.STARTUP = eps
+def $startup_state_valid(S) = ($startup_valid(pstartup) /\ S.FILEINCLUDEPATH =/= eps)
+  -- if S.STARTUP = (pstartup)
+def $startup_reporting_mask(eps) = 30719
+def $startup_reporting_mask((pstartup)) = 30719 -- if pstartup.REPORTING = eps
+def $startup_reporting_mask((pstartup)) = $reporting_ini_mask(preqbytes)
+  -- if pstartup.REPORTING = (preqbytes)
+def $startup_reporting_ini(eps) = $ptascii("30719")
+def $startup_reporting_ini((pstartup)) = eps -- if pstartup.REPORTING = eps
+def $startup_reporting_ini((pstartup)) = preqbytes -- if pstartup.REPORTING = (preqbytes)
+def $startup_include_path(eps) = $ptascii(".:")
+def $startup_include_path((pstartup)) = pstartup.INCLUDEPATH
+dec $startup_state(pcompletion, pstartup) : pstate
+def $startup_state(pcompletion, pstartup) = $initial_state(pcompletion)[.STARTUP = (pstartup)][.REPORTING = $startup_reporting_mask((pstartup))][.REPORTINGINI = $startup_reporting_ini((pstartup))][.FILEINCLUDEPATH = (pstartup.INCLUDEPATH)]
+dec $php_startup_run(program, nat, text, pstartup) : pstate
+def $php_startup_run(program, n, text_file, pstartup) = $drive($compile_source($startup_state(NORMAL, pstartup)[.FILES = [SOURCEFILE 0 n_file*]], $ppstart(0, program, n_file*)), n)
+  -- if n_file* = $base64(text_file)
+  -- if $source_filename(n_file*)
+  -- if $startup_valid(pstartup)
+def $php_startup_run(program, n, text_file, pstartup) = $initial_state(UNSUPPORTED "invalid startup INI or source filename") -- otherwise
+dec $php_request_startup_run(program, nat, text, prequest, pstartup) : pstate
+def $php_request_startup_run(program, n, text_file, Q, pstartup) = $drive($compile_source($request_bootstrap($startup_state(NORMAL, pstartup)[.FILES = [SOURCEFILE 0 n_file*]], Q), $ppstart_cwd(0, program, n_file*, Q.CWD)), n)
+  -- if n_file* = $base64(text_file)
+  -- if $source_filename(n_file*)
+  -- if $request_valid(Q)
+  -- if $startup_valid(pstartup)
+def $php_request_startup_run(program, n, text_file, Q, pstartup) = $initial_state(UNSUPPORTED "invalid startup INI, request or source filename") -- otherwise
+dec $php_file_startup_run(program, nat, preqbytes, preqbytes, pstartup) : pstate
+def $php_file_startup_run(program, n, n_file*, n_cwd*, pstartup) = $drive($compile_source($startup_state(NORMAL, pstartup)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.INCLUDEDOPENED = [n_file*]], $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
+  -- if $source_filename(n_file*)
+  -- if $source_filename(n_cwd*)
+  -- if $startup_valid(pstartup)
+def $php_file_startup_run(program, n, n_file*, n_cwd*, pstartup) = $initial_state(UNSUPPORTED "invalid startup INI or file context") -- otherwise
+dec $php_request_file_startup_run(program, nat, preqbytes, prequest, preqbytes, pstartup) : pstate
+def $php_request_file_startup_run(program, n, n_file*, Q, n_cwd*, pstartup) = $drive($compile_source($request_bootstrap($startup_state(NORMAL, pstartup)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.INCLUDEDOPENED = [n_file*]], Q), $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
+  -- if Q.CWD = (n_cwd*)
+  -- if $source_filename(n_file*)
+  -- if $source_filename(n_cwd*)
+  -- if $request_valid(Q)
+  -- if $startup_valid(pstartup)
+def $php_request_file_startup_run(program, n, n_file*, Q, n_cwd*, pstartup) = $initial_state(UNSUPPORTED "invalid startup INI, request or file context") -- otherwise
