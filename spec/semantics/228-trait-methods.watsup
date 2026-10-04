@@ -185,7 +185,7 @@ def $constant_shape_class(S, porigin, PFMAGIC MAGICCLASS z_leaf) = PVSTRING true
   -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $call_current_valid(S)
-  -- if $trait_initializer_scope(S) = eps
+  -- if $trait_initializer_scope(S[.ORIGIN = (porigin)]) = eps
 
 def $default_parameter_origin(S, TRAIT_ORIGIN porigin_owner porigin_source ptbytes, n) = PORIGIN n_unit (pcpath ++ [PCFIELD 4, PCINDEX n])
   -- if $origin_source(porigin_source) = PORIGIN n_unit pcpath
