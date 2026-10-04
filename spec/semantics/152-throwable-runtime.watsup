@@ -209,11 +209,14 @@ rule PhpStep/throw-search-discard: S ~> $return_discard(S[.TODO = (THROW_SEARCH 
   -- if ~$eval_end_marker(ptask)
   -- if ~$typed_return_throw_pending(S)
   -- if ~$shutdown_render_throw_pending(S)
+dec $constructor_failed(pstate) : pstate
+dec $destructor_frame_release_ready(pstate) : bool
 rule PhpStep/throw-search-frame: S ~> S_restored[.TODO = (THROW_SEARCH n) :: S_restored.TODO][.RESULT = KNOWN PNULL][.HELD = eps]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.FRAMES =/= eps
-  -- if S_restored = $restore_frame(S)
+  -- if ~$destructor_frame_release_ready(S)
+  -- if S_restored = $restore_frame($constructor_failed(S))
 dec $exception_terminal_tail(pstate, ptask*) : bool
 dec $exception_dispatch_ready(pstate) : bool
 rule PhpStep/throw-search-uncaught: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = pthrowable.FILEORIGIN]

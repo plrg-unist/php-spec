@@ -573,11 +573,11 @@ dec $eval_continue(pstate, psourceresponse) : pstate
 def $eval_continue(S, psourceresponse) = $drive_steps(S_next, n)
   -- if S.SERVICELEFT = (n)
   -- if S_next = $eval_resume(S, psourceresponse)
-  -- if S_next.COMPLETION = NORMAL \/ $shutdown_ready(S_next)
+  -- if S_next.COMPLETION = NORMAL \/ $shutdown_ready(S_next) \/ $destructor_ready(S_next)
 def $eval_continue(S, psourceresponse) = S_next
   -- if S_next = $eval_resume(S, psourceresponse)
   -- if S_next.COMPLETION =/= NORMAL
-  -- if ~$shutdown_ready(S_next)
+  -- if ~$shutdown_ready(S_next) /\ ~$destructor_ready(S_next)
 
 rule PhpStep/eval-end: S ~> S[.EVALCONTEXTS = pevalcontext_tail*][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pevalcontext.SITE)]
   -- if S.TODO = (EVAL_END n) :: ptask_tail*
