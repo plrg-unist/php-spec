@@ -14,6 +14,7 @@ dec $key_write_place_shape(pkeywrite) : bool
 dec $key_write_target_base(pbase) : bool
 dec $key_write_temporary_root((porigin, nat)?) : pnode*
 dec $key_write_aborted_base(pbase, porigin) : bool
+dec $key_write_has_aborted_base(pbase) : bool
 dec $key_write_temporary_valid(pstate, pkeywriter) : bool
 dec $key_write_add_temporary(ptask*, porigin, nat) : ptask*
 dec $key_write_array_init(pslot) : bool
@@ -142,10 +143,10 @@ def $key_write_task_base(ASSIGN_ARRAY pbase z b, pbase_current, poperand) = pbas
 def $key_write_task_base(COMPOUND_APPLY pbin pbase b z, pbase_current, poperand) = pbase
 def $key_write_task_base(DIM_PATH pbase z, pbase_current, poperand) = BASE_DIM pbase poperand z
 def $key_write_task_base(ptask, pbase, poperand) = pbase -- otherwise
-def $key_write_mode(UPDATE_PREP pupdate b z, ptask*) = true
-def $key_write_mode(COMPOUND_APPLY pbin pbase b z, ptask*) = true
-def $key_write_mode(DIM_PATH pbase z, ptask*) = b -- if $key_write_path_kind(ptask*) = (b)
-def $key_write_mode(ptask, ptask*) = false -- otherwise
+def $key_write_mode(UPDATE_PREP pupdate b z, ptask_context*) = true
+def $key_write_mode(COMPOUND_APPLY pbin pbase b z, ptask_context*) = true
+def $key_write_mode(DIM_PATH pbase z, ptask_context*) = b -- if $key_write_path_kind(ptask_context*) = (b)
+def $key_write_mode(ptask, ptask_context*) = false -- otherwise
 def $key_write_root(S, BASE_VALUE (VARIABLE n_name* z)) = true
   -- if S_read = $quiet_operand(S, VARIABLE n_name* z)
   -- if S_read.RESULT = KNOWN (PARRAY n)
@@ -396,7 +397,12 @@ def $key_writer_valid(S, pkeywriter, ptask*) = false -- otherwise
 def $key_write_aborted_base(BASE_PLACE porigin NOWHERE, porigin) = true
 def $key_write_aborted_base(BASE_DIM pbase poperand z, porigin) = $key_write_aborted_base(pbase, porigin)
 def $key_write_aborted_base(pbase, porigin) = false -- otherwise
-def $key_write_temporary_valid(S, pkeywriter) = true -- if pkeywriter.TEMP = eps
+def $key_write_has_aborted_base(BASE_PLACE porigin NOWHERE) = true
+def $key_write_has_aborted_base(BASE_DIM pbase poperand z) = $key_write_has_aborted_base(pbase)
+def $key_write_has_aborted_base(pbase) = false -- otherwise
+def $key_write_temporary_valid(S, pkeywriter) = true
+  -- if pkeywriter.TEMP = eps
+  -- if ~$key_write_has_aborted_base(pkeywriter.BASE)
 def $key_write_temporary_valid(S, pkeywriter) = true
   -- if pkeywriter.TEMP = ((porigin, n))
   -- if $key_write_aborted_base(pkeywriter.BASE, porigin)
