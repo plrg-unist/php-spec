@@ -7,17 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Class constants 183/184 preserve declaring-owner lazy scalar/array values,
-strict types, inheritance priority and earlier-value compilation across units.
-Cached arrays survive warning-handler resumption; completed tables support
-static getter aliases. The catalogue of 50 sources keeps separate tested
-revisions: earlier 25 + 12 + 5, six runtime interactions, borrowed-read `7ne7` and
-static-getter `32`. Finite checks 16 + 13, 93 and 31 retain their original cutoffs.
-[The constants ledger](coverage/semantics/class-constants-current-review.json)
-binds the current composition and original failures. Closure/FCC initializers,
-named `::class` in constant expressions, unretained update selectors and references
-into incomplete class tables remain Unsupported. Modifier admission, attributes
-and broader consumers stay open; reporting-mask/error_reporting is a later obligation.
+Class constants 183/184/212 now create static anonymous Closures and fixed
+function/static-method callables lazily in the initializer owner's context.
+Cached identity survives inherited aliases, arrays and repeated reads; real
+Closure clones copy their current static cells, while fixed function selections
+stay frozen across failed initialization and later namespace declarations.
+Strict typing, inheritance priority and compile-entry scalar/array availability
+remain in place. The maintained catalogue contains 72 agreements across separate
+source cutoffs, including 22 new constructor/admission cases. Four finite fixtures
+check 159 object/cache predicates; a later literal-class fixture checks 44. These
+cover source-authorized object birth, alias/array positions, selection prefixes,
+cache-only roots and clone/scope inverses. [The constants ledger](coverage/semantics/class-constants-current-review.json)
+retains original failures and distinguishes these checks from earlier 50 sources
+and scalar/array guards. Current handler/truth composition remains pending.
+Named `::class` in constant expressions, wider callable initializer contexts,
+builtin FCC targets, uncertified object transfers, unretained update selectors and
+references into incomplete tables remain Unsupported. Modifier admission,
+attributes and broader consumers stay open; the runtime is reused.
 
 StaticCall reference assignment with untyped return signatures now uses the
 accepted returned-cell protocol for selected typed static slots. Named,

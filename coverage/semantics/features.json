@@ -9049,20 +9049,31 @@
         "vendor/php-src/Zend/zend_ast.c",
         "coverage/semantics/class-constants-current-review.json"
       ],
-      "review": "Constants 183/184 preserve declaring-owner lazy values, strict caches/COW, global/default restoration, AST/VM diagnostics and ordered inheritance. Source counts 25/12/5 and finite checks 16 + 13/93/31 retain separate cutoffs. Eight current-runtime agreements cover static access priority, runtime FCC owner/called scope, handler/cache roots, reference aliases and unset. The catalogue of 50 sources includes the actual208 array-cache resumption and used StaticCall getter composition. References into incomplete tables, unretained update selectors, named ::class in constant expressions and legal Closure/FCC initializers remain Unsupported; modifier admission, attributes and broader consumers stay open. See class-constants-current-review.json; no whole-family or fresh copied-build closure."
+      "review": "Constants 183/184 preserve declaring-owner lazy values, strict caches/COW, global/default restoration, AST/VM diagnostics and ordered inheritance. Earlier 50 sources and scalar/array finite checks retain separate cutoffs. Selected Closure/FCC initializers212 add 22 source agreements and159+44 object/cache guards; catalogue of 72 is a mixed-cutoff promotion. Incomplete-table references, unretained update selectors and named constexpr ::class remain Unsupported; modifiers, attributes and broader consumers stay open. See class-constants-current-review.json; no whole-family or fresh copied-build closure."
     },
     {
       "id": "declarations.constant-closures",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_attributes.c"
+      "implementation": [
+        "spec/semantics/212-constant-callables.watsup",
+        "spec/semantics/116-closures.watsup",
+        "spec/semantics/184-class-constants.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/constant_callable_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/class_constant_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_ast.c",
+        "vendor/php-src/Zend/zend_closures.c",
+        "coverage/semantics/class-constants-current-review.json"
+      ],
+      "review": "Class-constant static no-use anonymous Closures and fixed function/static-method FCC retain initializer lexical/called scope, cached identity, frozen first target, recursive alias/array certificates and cache/static roots. Clone state and coherent object-erasure/birth/scope/prefix inverses are reviewed. New 22 source agreements and159+44 finite guards retain separate cutoffs. Literal class strings use global spelling; invalid quoted keywords/nonstring names retain compile errors. Wider constant contexts, builtin targets and uncertified object transfers remain Unsupported; current handler/truth composition pending, no family closure."
     },
     {
       "id": "declarations.enums",

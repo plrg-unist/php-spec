@@ -1,8 +1,8 @@
 # Source class constants
 
 The 183/184 increment extends the existing user-constant compiler and
-expression machine for PHP8.5.10 CLI. The implemented scalar/array subset remains
-partial; legal Closure/FCC initializers are explicitly Unsupported.
+expression machine for PHP8.5.10 CLI. Scalar/array constants and selected static
+Closure/fixed first-class callable initializers execute; the family remains partial.
 
 Class descriptors retain each constant's declaring owner, visibility, type,
 initializer origin and folding status; folded values remain in initializer unit pools. Earlier available scalar constants can fold;
@@ -61,12 +61,34 @@ borrowed strict-identity callback fills a deferred array cache and reads it afte
 handler retirement (`7ne7`). On the current StaticCall-reference composition,
 NewC completes its table before a getter exports the property cell; alias mutation
 changes the property while the cached constant stays unchanged (`32`). The
-maintained catalogue contains 50 agreements across these preserved revisions.
+earlier catalogue contains 50 agreements across these preserved revisions.
+
+Static anonymous Closure initializers require no explicit use-list and create
+with the declaring owner as both lexical and called scope, without a receiver.
+Fixed function callables preserve the first successful namespace/fallback target
+even when a later initializer error discards the object. Static-method callables
+retain the method owner and selected called class separately, including private
+access from the initializer owner. Literal string class selectors use global
+spelling, while named selectors keep their namespace/scope rules. Invalid
+nonstatic/use/dynamic forms and literal nonstring names retain PHP compile errors.
+
+Object caches retain genuine constructor identity and recursive array/alias
+certificates; objects never become cross-unit folded pool values. Nonowning
+creation records preserve retired selection history. The cache owns the object
+and its scope and static cells. Clones copy the current body/scope/static state
+without acquiring the original constructor marker. Four finite fixtures reject
+coherent scalar erasure, wrong array sites, substituted clones with invented
+records, invalid selection prefixes/scopes and missing roots (159 predicates).
+A later literal-class fixture adds 44 predicates. Twenty-two new full native
+comparisons bring the maintained catalogue to 72 (32 normal, 22 PHP errors, 18 static
+rejections). Source and finite cutoffs remain separate; promotion adds no rerun.
 
 Accessible references into an incomplete class table are explicitly Unsupported;
 the separate rejected control is not a native agreement. Unretained
 computed/scoped table-update selectors and named `::class` in constant expressions remain
-Unsupported, as do legal static Closure/FCC initializers. Constant modifier
+Unsupported. Constructor contexts outside class constants, builtin FCC targets
+and object transfers without an authenticated source/cache relation also remain
+Unsupported. Current handler/truth composition is pending. Constant modifier
 admission, attributes, traits/enums/internal constants and broader default/property
 consumers stay open. These checks reused the recorded runtime; they add no fresh
 copied rebuild, reporting-mask, paused return or full-core closure.
