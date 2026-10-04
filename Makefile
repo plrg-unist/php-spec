@@ -253,6 +253,8 @@ test-semantics: build
 	python3 tests/semantics/user_string_parameters_protocol.py
 	python3 tests/semantics/variadic_string_parameters.py
 	python3 tests/semantics/variadic_string_parameters_protocol.py
+	python3 tests/semantics/default_constructor_sources.py
+	python3 tests/semantics/default_constructor_protocol.py
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
