@@ -94,48 +94,15 @@ outer-array prepass redirect and cached target/handler retention. Source-equival
 publication preserves subsequent reporting, parameter backing and named-class
 changes. [Consumer ledger](coverage/semantics/warning-consumers-review.json).
 
-Weak Stringable string parameters214/216 convert supplied fixed values in receive
-order, preserving caller strictness and nominal/callable precedence. Free
-by-reference parameters write through their captured formal cell; existing
-property constraints reject before the callback. Same-site reentry and throws
-retain authentic receive frames and release converter owners. When a callback
-attaches property sources, parameter authority permits the resulting backing
-string without relaxing later writes or binds. Legal source rebinding, exact
-string receives and cell retirement preserve or remove that authority as needed;
-throws mint none.
-The [parameter ledger](coverage/semantics/weak-string-parameters-review.json)
-separates the earlier 214 checks from source6/state299 and independent2 at
-73d6 on accepted6395. The current reporting composition preserves those tested
-routes and adds no execution credit.
-
-Stringable variadic/default receives218 preserve positional then named order,
-captured reference cells and fresh constructor-free default objects. Method
-`new self`/`new parent` uses declaring scope; named NEW arguments and object truth
-follow the constant AST evaluator. Genuine defaults cannot mint supplied backing
-authority. The [ledger](coverage/semantics/variadic-default-string-review.json)
-keeps source6+6, focused4, independent3 and meaningful336 at separate cutoffs,
-including original NEW-self and fixture-budget failures. Three new source witnesses
-on actual scoped/diagnostic composition preserve retired private capture, rebound
-lexical defaults and active NEW argument facts through handler return. Direct holes derive from
-source; unpack/wrapper holes remain structurally checked. Default constructors,
-rebound anonymous keyword NEW and broader constrained conversions remain open.
-
-Named constexpr `::class` preserves namespace/alias spelling without requiring
-class lookup, declaring self/parent and source-spelled known parents. Deferred
-Closure/eval contexts use their authenticated lexical scope; rebound defaults
-avoid origin-only cache reuse. Seventeen constant-context and two ordinary-form
-source comparisons plus 25/38 focused guards retain separate tested cutoffs.
-The maintained catalogue contains 93 agreements; the callable helper retains its
-earlier 159 + 44 predicates and adds these 63. [The constants ledger](coverage/semantics/class-constants-current-review.json)
-preserves original failures and the refuted native concat prediction. Static
-Closure/FCC identity, owner/called scope, clone cells and compile-entry caches
-remain covered by their earlier checks. On actual reporting/214 composition, a
-Stringable receive callback invokes the rebound B default before original A and
-retains cached identity (`B:A:same`). Released216 backing authorization composes
-without changing the named-class/default-cache paths. Wider callable initializer contexts,
-builtin FCC targets, uncertified object transfers, unretained update selectors and
-references into incomplete tables remain Unsupported. Modifier admission,
-attributes and broader consumers stay open; the runtime is reused.
+Fixed and variadic Stringable receives preserve receive order, captured cells,
+caller strictness and backing authority; constructor-free defaults retain declaring
+scope and fresh objects. Named constexpr `::class` retains source spelling and
+authentic deferred/rebound lexical scope. Counts and original failures remain in
+[parameter](coverage/semantics/weak-string-parameters-review.json),
+[variadic/default](coverage/semantics/variadic-default-string-review.json) and
+[constant](coverage/semantics/class-constants-current-review.json) ledgers and the
+family table below. Broader constructor, attribute/modifier and callable initializer
+consumers remain required.
 
 Nonstatic private/protected `__invoke` supports bare calls, callable admission,
 object capture/clone and bare-object error handlers through the effective runtime
@@ -161,7 +128,14 @@ and four independent sources plus 211 conditions keep their actual revisions.
 Current 210 compilation and one scoped private-handler/Stringable-backing/lexical
 class-name source comparison establish added composition separately. The
 [diagnostic ledger](coverage/semantics/reporting-diagnostics-review.json) retains
-original failures and the open compound callback/eval filename obligation.
+original failures and cutoffs. The separate
+[eval-location increment](coverage/semantics/compound-eval-location-review.json)
+retains genuine filename owner/root/child through compound class, method/Closure
+and static-property callbacks, with real eval call sites and lexical scopes.
+Compiler exceptions use their failed unit; ordinary runtime exceptions keep the
+execution override. Five original agreements/81 controls retain their distinct
+cuts. One current inherited static-default/private-handler source plus214 compiler
+stages at2c0c validate that composition and the static-fill compiler-prefix bridge.
 
 The installed families compose as follows; each ledger records its scope and limits.
 
@@ -202,7 +176,7 @@ failures and interrupted evidence.
   `$GLOBALS[key]` reads and explicit-request full-table snapshots are admitted;
   earlier key-expression warnings, nested/read-write warning continuations and
   ordinary snapshots without request facts remain open.
-- Include/configuration: compound initializer callback/eval filename creation,
+- Include/configuration: wider initializer/callback/compile-warning consumers,
   nondefault startup profiles, wider directives,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
@@ -212,6 +186,8 @@ failures and interrupted evidence.
   broader reference-result consumers. Deferred instance/object defaults, same-default
   reentry replacement/retained alias constraints and cold
   synchronous references into incomplete constant tables remain Unsupported.
+  Uncertified object transfers, unretained update selectors, builtin FCC targets and
+  wider callable initializers remain Unsupported; modifiers/attributes stay open.
   Wider deprecated constant consumers remain open. Generic156 return replay, temporary-return
   Notice timing and typed
   by-reference string conversion186 remain open; accepted ordinary by-value

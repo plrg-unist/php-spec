@@ -1665,13 +1665,25 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/160-eval-runtime.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/184-class-constants.watsup",
+        "spec/semantics/195-declaration-history.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/eval_execution.py",
+        "tests/semantics/include_execution.py",
+        "tests/semantics/eval_location_protocol.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This older constant-prepass evidence remains separate from reviewed dynamic-source execution. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json. Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json.",
+      "evidence": [
+        "coverage/semantics/dynamic-eval-author.json",
+        "coverage/semantics/eval-scope-followup-author.json",
+        "coverage/semantics/compound-eval-location-review.json"
+      ]
     },
     {
       "node": "Expr_Exit",
@@ -9210,7 +9222,8 @@
         "tests/semantics/user_constant_compiler.py",
         "tests/semantics/constant_class_compiler.py",
         "tests/semantics/reporting_protocol.py",
-        "tests/semantics/reporting_diagnostics_protocol.py"
+        "tests/semantics/reporting_diagnostics_protocol.py",
+        "tests/semantics/eval_location_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/user_constants.py",
@@ -9228,9 +9241,10 @@
         "vendor/php-src/Zend/zend_ast.c",
         "coverage/semantics/user-constant-review.json",
         "coverage/semantics/reporting-ini-review.json",
-        "coverage/semantics/reporting-diagnostics-review.json"
+        "coverage/semantics/reporting-diagnostics-review.json",
+        "coverage/semantics/compound-eval-location-review.json"
       ],
-      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure. Current reporting checkpoint admits all15 nondeprecated E_* values with exact case/namespace fallback and shadow behavior; two constant source tuples retain76a30 identity. Runtime E_STRICT diagnostic ingress217 retains selected 2048 through callback declarations and protects recursive reads while its fetch is active. Defaults/class constants cache successful values, and genuine frames save/clear/restore initializer facts. Mixed 14 author+4 independent sources/211 conditions keep their tested revisions; current 210 compilation and scoped-handler/backing/class-name source1 establish added composition separately. Compound callback/eval filename creation and wider constant consumers remain required; see reporting-diagnostics-review.json."
+      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure. Current reporting checkpoint admits all15 nondeprecated E_* values with exact case/namespace fallback and shadow behavior; two constant source tuples retain76a30 identity. Runtime E_STRICT diagnostic ingress217 retains selected 2048 through callback declarations and protects recursive reads while its fetch is active. Defaults/class constants cache successful values, and genuine frames save/clear/restore initializer facts. Mixed 14 author+4 independent sources/211 conditions keep their tested revisions; current 210 compilation and scoped-handler/backing/class-name source1 establish added composition separately. Compound callback/eval filename creation is addressed by the bounded compound-eval-location-review.json increment; wider constant consumers remain required. Earlier diagnostics retain reporting-diagnostics-review.json."
     },
     {
       "id": "declarations.typed-class-constants",
@@ -9246,7 +9260,8 @@
       "helper_tests": [
         "tests/semantics/class_constant_protocol.py",
         "tests/semantics/reporting_diagnostics_protocol.py",
-        "tests/semantics/deferred_static_default_protocol.py"
+        "tests/semantics/deferred_static_default_protocol.py",
+        "tests/semantics/eval_location_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/class_constant_cases.json",
@@ -9261,9 +9276,10 @@
         "vendor/php-src/Zend/zend_ast.c",
         "coverage/semantics/class-constants-current-review.json",
         "coverage/semantics/reporting-diagnostics-review.json",
-        "coverage/semantics/deferred-static-defaults-review.json"
+        "coverage/semantics/deferred-static-defaults-review.json",
+        "coverage/semantics/compound-eval-location-review.json"
       ],
-      "review": "Constants183/184/212 preserve owner-scoped lazy values, strict caches, inheritance and compile-entry availability. Selected Closure/FCC identity/scope and named constexpr ::class spelling are reviewed; rebound defaults avoid stale origin-only caches. Maintained 93 source agreements and159 + 44 + 63 callable/class-name guards retain distinct cutoffs. Incomplete-table references, unretained update selectors, wider constructor contexts and uncertified object transfers remain Unsupported; modifiers, attributes and broader consumers stay open. See class-constants-current-review.json; no family/core or fresh copied-build closure. The current214 callback retains rebound B/original A default scope and cached identity (B:A:same) at its own cutoff. Diagnostic ingress217 separates active evaluator scope from globally busy class initializations across callbacks, preserves selected values/facts and compound expression/fetch exception locations. Mixed 14+4/211 and current 210/source1 remain distinct; compound callback/eval filename creation remains open (reporting-diagnostics-review.json). Deferred scalar/array static defaults219 preserve declaring scope, strict binding and first-fill prefixes across later failure;11 source agreements and5 programs/149 logical guards (152 sequential premises) retain separate cutoffs. Instance/object-bearing defaults and cold synchronous references stay open; see deferred-static-defaults-review.json. Two current213/215/214/216 callback interactions at8da51d193 separately agree with native originals; publication renews no earlier evidence. Actual217 composition adds4 source agreements at5c0887541 and one cross-file diagnostic at663811e8c; exact Unsupported reentry2 and owner41 remain distinct. Same-default outer replacement with retained alias constraints is required next; see deferred-static-defaults-review.json."
+      "review": "Constants183/184/212 preserve owner-scoped lazy values, strict caches, inheritance and compile-entry availability. Selected Closure/FCC identity/scope and named constexpr ::class spelling are reviewed; rebound defaults avoid stale origin-only caches. Maintained 93 source agreements and159 + 44 + 63 callable/class-name guards retain distinct cutoffs. Incomplete-table references, unretained update selectors, wider constructor contexts and uncertified object transfers remain Unsupported; modifiers, attributes and broader consumers stay open. See class-constants-current-review.json; no family/core or fresh copied-build closure. The current214 callback retains rebound B/original A default scope and cached identity (B:A:same) at its own cutoff. Diagnostic ingress217 separates active evaluator scope from globally busy class initializations across callbacks, preserves selected values/facts and compound expression/fetch exception locations. Mixed 14+4/211 and current 210/source1 remain distinct; compound callback/eval filename creation is addressed separately in compound-eval-location-review.json, retaining earlier diagnostic cuts. Deferred scalar/array static defaults219 preserve declaring scope, strict binding and first-fill prefixes across later failure;11 source agreements and5 programs/149 logical guards (152 sequential premises) retain separate cutoffs. Instance/object-bearing defaults and cold synchronous references stay open; see deferred-static-defaults-review.json. Two current213/215/214/216 callback interactions at8da51d193 separately agree with native originals; publication renews no earlier evidence. Actual217 composition adds4 source agreements at5c0887541 and one cross-file diagnostic at663811e8c; exact Unsupported reentry2 and owner41 remain distinct. Same-default outer replacement with retained alias constraints is required next; see deferred-static-defaults-review.json."
     },
     {
       "id": "declarations.constant-closures",
@@ -9871,7 +9887,8 @@
         "tests/semantics/error_handler_property_protocol.py",
         "tests/semantics/error_handler_callables_protocol.py",
         "tests/semantics/reporting_protocol.py",
-        "tests/semantics/reporting_diagnostics_protocol.py"
+        "tests/semantics/reporting_diagnostics_protocol.py",
+        "tests/semantics/eval_location_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/error_handler_cases.py",
@@ -9892,9 +9909,10 @@
         "vendor/php-src/main/main.c",
         "coverage/semantics/handler-callables-current-review.json",
         "coverage/semantics/reporting-ini-review.json",
-        "coverage/semantics/reporting-diagnostics-review.json"
+        "coverage/semantics/reporting-diagnostics-review.json",
+        "coverage/semantics/compound-eval-location-review.json"
       ],
-      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/nonpublic/magic/autoload/internal/exception/lifecycle callbacks remain open. Reporting INI coupling accepts exact full-byte reads/late old returns, signed64 decimal-prefix saturation then low32 masks, modified-entry Restore, equal-mask raw preservation, strict source refusal and weak explicit __invoke. Constants2 at76a30 and reporting8+independent2/74 at ef46 remain separate. Diagnostic ingress217 handles runtime E_STRICT and lossy reporting conversions through authentic 206/207 callbacks. Long conversion precedes dispatch; old-mask sampling follows it and original operands remain in traces. Saved initializer facts/busy class scopes and compound exception locations retain normal/throw behavior. Mixed 14 author+4 independent sources/211 conditions remain at their revisions; current 210 compilation and scoped-handler/backing/class-name source1 validate added composition separately. Compound callback/eval filename creation, wider profiles/INI and lifecycle remain required; see reporting-diagnostics-review.json."
+      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/nonpublic/magic/autoload/internal/exception/lifecycle callbacks remain open. Reporting INI coupling accepts exact full-byte reads/late old returns, signed64 decimal-prefix saturation then low32 masks, modified-entry Restore, equal-mask raw preservation, strict source refusal and weak explicit __invoke. Constants2 at76a30 and reporting8+independent2/74 at ef46 remain separate. Diagnostic ingress217 handles runtime E_STRICT and lossy reporting conversions through authentic 206/207 callbacks. Long conversion precedes dispatch; old-mask sampling follows it and original operands remain in traces. Saved initializer facts/busy class scopes and compound exception locations retain normal/throw behavior. Mixed 14 author+4 independent sources/211 conditions remain at their revisions; current 210 compilation and scoped-handler/backing/class-name source1 validate added composition separately. Compound callback/eval filename creation is addressed separately in compound-eval-location-review.json. Wider profiles/INI and lifecycle remain required; original diagnostic cuts remain in reporting-diagnostics-review.json."
     },
     {
       "id": "diagnostics.error-handler-stack",
@@ -10124,41 +10142,83 @@
     {
       "id": "dynamic.eval-mode",
       "milestone": "5a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute.c"
+      "implementation": [
+        "spec/semantics/160-eval-runtime.watsup",
+        "spec/semantics/152-throwable-runtime.watsup",
+        "spec/semantics/184-class-constants.watsup",
+        "spec/semantics/195-declaration-history.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/eval_protocol.py",
+        "tests/semantics/eval_location_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/eval_execution.py",
+        "tests/semantics/include_execution.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c",
+        "coverage/semantics/dynamic-eval-author.json",
+        "coverage/semantics/eval-scope-followup-author.json",
+        "coverage/semantics/compound-eval-location-review.json"
+      ],
+      "review": "Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json."
     },
     {
       "id": "dynamic.eval-scope",
       "milestone": "5a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute.c"
+      "implementation": [
+        "spec/semantics/160-eval-runtime.watsup",
+        "spec/semantics/152-throwable-runtime.watsup",
+        "spec/semantics/184-class-constants.watsup",
+        "spec/semantics/195-declaration-history.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/eval_protocol.py",
+        "tests/semantics/eval_location_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/eval_execution.py",
+        "tests/semantics/include_execution.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c",
+        "coverage/semantics/dynamic-eval-author.json",
+        "coverage/semantics/eval-scope-followup-author.json",
+        "coverage/semantics/compound-eval-location-review.json"
+      ],
+      "review": "Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json."
     },
     {
       "id": "dynamic.eval-compile-error",
       "milestone": "5a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute.c"
+      "implementation": [
+        "spec/semantics/160-eval-runtime.watsup",
+        "spec/semantics/152-throwable-runtime.watsup",
+        "spec/semantics/184-class-constants.watsup",
+        "spec/semantics/195-declaration-history.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/eval_protocol.py",
+        "tests/semantics/eval_location_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/eval_execution.py",
+        "tests/semantics/include_execution.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c",
+        "coverage/semantics/dynamic-eval-author.json",
+        "coverage/semantics/eval-scope-followup-author.json",
+        "coverage/semantics/compound-eval-location-review.json"
+      ],
+      "review": "Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json."
     },
     {
       "id": "dynamic.include",
