@@ -9,6 +9,9 @@ and [nonpublic-method review](../../coverage/semantics/method-visibility-review.
 bind separate native sources, compiler projections and paused ownership checks;
 these are bounded observations, not complete class semantics.
 
+[Source trait composition](SOURCE-TRAITS.md) imports method bodies into distinct
+using-class and alias identities, preserving source provenance and inherited cells.
+
 ## Descriptors and dispatch
 
 Class-owned method descriptors retain their declaring origin, signature, body,
@@ -296,11 +299,11 @@ nullsafe first-class method expression emits PHP's compile-time rejection.
 Ordinary real-Closure `bindTo` and static `bind` are in private review under
 the separate [binding contract](CLOSURE-BINDING.md); that evidence does not
 establish `Closure::call` or captured-callable rebinding.
-Interface methods and traits,
-static/readonly properties, hooks, user magic methods, destructors,
-remaining closure services and internal protocols are still open.
-Deferred `new` parameter defaults remain outside the admitted initializer
-language and require a separate cache/scope provenance increment.
+Trait property/constant composition, remaining static/readonly properties,
+hooks, user magic methods, destructors, remaining closure services and internal
+protocols are still open. Deferred `new` parameter defaults use the
+[source constructor-default rules](../../coverage/semantics/default-constructors-review.json); remaining
+keyword NEW and initializer consumers retain explicit boundaries.
 Unsupported declarations/consumers remain explicit; no native evaluation fallback
 is used. Generated Throwable errors and ordered catches use owned objects;
 finally transfers have a separate contract. Dynamic lifecycle

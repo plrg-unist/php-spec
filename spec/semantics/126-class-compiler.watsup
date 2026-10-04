@@ -1,3 +1,4 @@
+dec $pptrait_body_uses(phpType23) : bool
 ;; Named source classes retain compiler identity; publication is a runtime event.
 ;; Occupied internal class/interface/trait names in the pinned PHP -n profile.
 ;; Literal bytes avoid repeating printable-ASCII conversion during lookup.
@@ -230,6 +231,7 @@ def $ppstatement(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 ph
 
 dec $ppclass_name(ppstate, pcpath, pnresult) : ppstate
 dec $ppnew_class_name(ppstate, pcpath, name) : ppstate
+dec $pptrait_new_deferred(ppstate, pcpath, name) : bool
 dec $ppparameter_new_resolve(ppstate, pcpath, name) : ptbytes?
 dec $pnclassresolve(plenv, name) : pnresult
 dec $pnclassclear(pnresult) : pnresult

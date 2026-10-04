@@ -1,0 +1,16 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; introduced239/228 imported-maker source Closure selection only, outside prior63/239 gates.",
+  "cases": [
+    {
+      "id": "retired-imported-maker-closure-cold-self",
+      "source": "<?php trait T{static function maker(){return function(){$r=&self::$p;$r=9;};}}class C{use T{maker as g;}public static $p=LATE;}class D extends C{}class E{}const LATE=2;$f=D::g();$f();echo C::$p,\";\";",
+      "source_sha256": "6a0b58c8c98f996f85466510c0a452bca4d60d1aa9c01bef94d38ba94287f510",
+      "status": "normal",
+      "stdout_base64": "OTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-closure-cold-native-union228-uczziuln/report.json",
+      "native_raw_sha256": "d0fcccdb5e9b9cb9ce9ce84aac9006f72804487ca5de408d82bb9985e1f46de1"
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+dec $trait_class_link_pending(pstate, pclassdesc) : bool
 ;; Instance targets retain receivers; static targets retain class identities.
 dec $scoped_ctor_arm_at(pstate, porigin) : bool
 dec $scoped_ctor_private_denied(pstate, pmethoddesc, nat?) : bool
@@ -360,7 +361,7 @@ def $method_call_selected(S, METHOD_TARGET n porigin_method, (PORIGIN n_unit pcp
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__construct")
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $new_source_name(S, PORIGIN n_unit pcpath) = (preqbytes)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
@@ -854,15 +855,16 @@ def $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_
   -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
   -- if ~$scoped_ctor_private_denied(S, pmethoddesc, n_receiver?)
 dec $scoped_select_found(pstate, phpType19, porigin, pmethoddesc, poperand, ptbytes, phpType7*, int) : pstate
-def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_called, eps, poperand_selector, ptbytes, phpType7*, z)
+dec $scoped_select_found_base(pstate, phpType19, porigin, pmethoddesc, poperand, ptbytes, phpType7*, int) : pstate
+def $scoped_select_found_base(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_called, eps, poperand_selector, ptbytes, phpType7*, z)
   -- if pmethoddesc.STATIC
   -- if $scoped_called_class(S, phpType19, porigin_requested) = (porigin_called)
-def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_called, (n_receiver), poperand_selector, ptbytes, phpType7*, z)
+def $scoped_select_found_base(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_called, (n_receiver), poperand_selector, ptbytes, phpType7*, z)
   -- if ~pmethoddesc.STATIC
   -- if $scoped_current_receiver(S) = (n_receiver)
   -- if $scoped_receiver_valid(S, porigin_requested, pmethoddesc, (n_receiver))
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
-def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Non-static method ") ++ pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() cannot be called statically"), z)[.TODO = eps]
+def $scoped_select_found_base(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Non-static method ") ++ pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() cannot be called statically"), z)[.TODO = eps]
   -- if ~pmethoddesc.STATIC
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
   -- if ~$scoped_receiver_valid(S, porigin_requested, pmethoddesc, $scoped_current_receiver(S))
@@ -973,7 +975,7 @@ rule PhpStep/new-with-constructor: S ~> $constructor_start(S[.TODO = ptask_tail*
   -- if S.ORIGIN = (PORIGIN n_unit pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $new_source_name(S, PORIGIN n_unit pcpath) = (preqbytes)
   -- if $new_has_ctor(S, preqbytes)
   -- if ~$parameter_default_constructor(S, name, phpType7*, metadata)
 rule PhpStep/constructor-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -1126,7 +1128,7 @@ def $ctor_result_valid(S, n) = true
   -- if S.ORIGIN = (PORIGIN n_unit pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $new_source_name(S, PORIGIN n_unit pcpath) = (preqbytes)
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INSTANCE porigin_class
@@ -1245,26 +1247,27 @@ def $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_p
 def $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = METHOD_UNSUPPORTED "method signature comparison" -- otherwise
 
 dec $method_override_one(pstate, pclassdesc, ppmethodinherited) : pmethodissue
-def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_OK
+dec $method_override_base_one(pstate, pclassdesc, ppmethodinherited) : pmethodissue
+def $method_override_base_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_OK
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = eps
-def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_OK
+def $method_override_base_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_OK
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if $pmethod_independent_private(pmethoddesc_parent)
-def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ($ptascii("Cannot override final method ") ++ pclassdesc_parent.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("()")) pmethoddesc_child.FUNCTION.LINE
+def $method_override_base_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ($ptascii("Cannot override final method ") ++ pclassdesc_parent.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("()")) pmethoddesc_child.FUNCTION.LINE
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if pmethoddesc_parent.FINAL
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
-def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ptbytes_message pmethoddesc_child.FUNCTION.LINE
+def $method_override_base_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ptbytes_message pmethoddesc_child.FUNCTION.LINE
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL
   -- if $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = (ptbytes_message)
-def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ($ptascii("Cannot make non abstract method ") ++ pclassdesc_parent.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("() abstract in class ") ++ pclassdesc_child.NAME) pmethoddesc_child.FUNCTION.LINE
+def $method_override_base_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ($ptascii("Cannot make non abstract method ") ++ pclassdesc_parent.NAME ++ $ptascii("::") ++ pmethoddesc_child.NAME ++ $ptascii("() abstract in class ") ++ pclassdesc_child.NAME) pmethoddesc_child.FUNCTION.LINE
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~pmethoddesc_parent.FINAL /\ pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
-def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_OK
+def $method_override_base_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_OK
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
@@ -1272,14 +1275,14 @@ def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pc
   -- if $ptlc(pmethoddesc_parent.NAME) = $ptascii("__construct")
   -- if $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) = eps
   -- if ~pmethoddesc_parent.ABSTRACT
-def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ptbytes_message pmethoddesc_child.FUNCTION.LINE
+def $method_override_base_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = METHOD_ISSUE ptbytes_message pmethoddesc_child.FUNCTION.LINE
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
   -- if $pmethod_static_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) =/= $ptascii("__construct") \/ $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) =/= eps \/ pmethoddesc_parent.ABSTRACT
   -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = (ptbytes_message)
-def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto)
+def $method_override_base_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto)
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
@@ -1288,7 +1291,7 @@ def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pc
   -- if $pmethod_visibility_issue(pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent) = eps
   -- if $ptlc(pmethoddesc_parent.NAME) = $ptascii("__construct")
   -- if $method_ctor_parent_proto(S, pclassdesc_child.ORIGIN, |S.CLASSES|) = (PPMINHERITED pmethoddesc_proto pclassdesc_proto)
-def $method_override_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent)
+def $method_override_base_one(S, pclassdesc_child, PPMINHERITED pmethoddesc_parent pclassdesc_parent) = $method_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_parent, pmethoddesc_parent)
   -- if $method_named(pclassdesc_child.METHODS, pmethoddesc_parent.NAME) = (pmethoddesc_child)
   -- if ~$pmethod_independent_private(pmethoddesc_parent)
   -- if ~pmethoddesc_parent.FINAL /\ ~(pmethoddesc_child.ABSTRACT /\ ~pmethoddesc_parent.ABSTRACT)
@@ -1309,11 +1312,11 @@ def $method_link_issue(S, pclassdesc_child, porigin_parent) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
 def $method_link_issue(S, pclassdesc_child, porigin_parent) = METHOD_ISSUE ptbytes_message pclassdesc_child.LINE
   -- if $method_override_items(S, pclassdesc_child, $method_info_layout(S, porigin_parent, |S.CLASSES|)) = METHOD_OK
-  -- if pclassdesc_child.INTERFACES = eps
+  -- if pclassdesc_child.INTERFACES = eps /\ ~$trait_class_link_pending(S, pclassdesc_child)
   -- if $pil_abstract_message(S, pclassdesc_child) = (ptbytes_message)
 def $method_link_issue(S, pclassdesc_child, porigin_parent) = METHOD_OK
   -- if $method_override_items(S, pclassdesc_child, $method_info_layout(S, porigin_parent, |S.CLASSES|)) = METHOD_OK
-  -- if pclassdesc_child.INTERFACES =/= eps \/ $pil_abstract_message(S, pclassdesc_child) = eps
+  -- if pclassdesc_child.INTERFACES =/= eps \/ $trait_class_link_pending(S, pclassdesc_child) \/ $pil_abstract_message(S, pclassdesc_child) = eps
 
 ;; Closure::__invoke is an internal trampoline. Its original sent operands
 ;; remain owned separately from the weakly received callee parameters.

@@ -14,13 +14,18 @@ def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $compiled_work(n, P.WORK)
 def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $function_tasks(S, pfunction)
   -- if S.CURRENT = (pcallcontext)
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
-  -- if pfunction.ORIGIN = PORIGIN n pcpath_function
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_function
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata)
 def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $closure_body(S, pfunction)
   -- if S.CURRENT = (pcallcontext)
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
-  -- if pfunction.ORIGIN = PORIGIN n pcpath_function
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_function
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata)
+def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $function_tasks(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_function
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata)
 def $goto_base(S, porigin) = GOTOMISSING -- otherwise
 
 dec $goto_task_site(ptask, porigin) : bool
@@ -181,7 +186,7 @@ def $goto_active_code(S, n) = $code_at(S.CODE, n)
 def $goto_active_code(S, n) = (pfunction.CODE)
   -- if S.CURRENT = (pcallcontext)
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
-  -- if pfunction.ORIGIN = PORIGIN n pcpath_function
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_function
 def $goto_active_code(S, n) = eps -- otherwise
 def $goto_site(S, PORIGIN n pcpath_source, pcpath_target) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_source) = (NStmtGoto (NIdentifier (BYTES text) metadata_name) metadata)
@@ -210,7 +215,7 @@ dec $goto_choose_owner(pfunction?, pfunction?) : pfunction?
 dec $goto_owner_scope(pcallcontext?, pfunction?) : bool
 def $goto_owner_if(true, pfunction) = (pfunction)
 def $goto_owner_if(false, pfunction) = eps
-def $goto_owner_at(pfunction, n, pcpath) = $goto_owner_if(pfunction.CODE.UNIT = n /\ $effect_below(pfunction.BODY, pcpath), pfunction)
+def $goto_owner_at(pfunction, n, pcpath) = $goto_owner_if(pfunction.CODE.UNIT = n /\ $effect_below(pfunction.BODY, pcpath) /\ ~$trait_imported_origin(pfunction.ORIGIN), pfunction)
 def $goto_choose_owner(eps, pfunction?) = pfunction?
 def $goto_choose_owner((pfunction), eps) = (pfunction)
 def $goto_choose_owner((pfunction_left), (pfunction_right)) = (pfunction_left)
@@ -220,11 +225,13 @@ def $goto_choose_owner((pfunction_left), (pfunction_right)) = (pfunction_right)
 def $goto_source_owner(eps, n, pcpath) = eps
 def $goto_source_owner(pfunction :: pfunction_tail*, n, pcpath) = $goto_choose_owner($goto_owner_at(pfunction, n, pcpath), $goto_source_owner(pfunction_tail*, n, pcpath))
 def $goto_owner_scope(eps, eps) = true
-def $goto_owner_scope((pcallcontext), (pfunction)) = (pcallcontext.FUNCTION = pfunction.ORIGIN)
+def $goto_owner_scope((pcallcontext), (pfunction)) = ($origin_source(pcallcontext.FUNCTION) = $origin_source(pfunction.ORIGIN))
 def $goto_owner_scope(eps, (pfunction)) = false
 def $goto_owner_scope((pcallcontext), eps) = false
+dec $trait_active_source_owner(pstate, nat, pcpath) : pfunction?
+dec $trait_source_same(pfunction, pfunction) : bool
 dec $goto_scope_valid(pstate, porigin) : bool
-def $goto_scope_valid(S, PORIGIN n pcpath) = $goto_owner_scope(S.CURRENT, $goto_source_owner($all_functions(S), n, pcpath))
+def $goto_scope_valid(S, PORIGIN n pcpath) = ($goto_owner_scope(S.CURRENT, $trait_active_source_owner(S, n, pcpath)) /\ $call_current_valid(S))
 def $goto_task_valid(S, statement, (porigin)) = ($goto_source_match(S, statement, (porigin)) /\ $goto_scope_valid(S, porigin) /\ $goto_resolved_site(S, porigin, $goto_target(S, porigin)))
 def $goto_task_valid(S, statement, eps) = false
 dec $goto_label_valid(pstate, statement, porigin?) : bool
