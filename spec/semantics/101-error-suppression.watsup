@@ -35,7 +35,10 @@ def $silence_unwind(S) = $silence_unwind($silence_restore(S[.SILENCES = psilence
   -- if S.SILENCES = (SILENCE porigin i_saved) :: psilence*
 
 dec $silence_begin(pstate, porigin) : pstate
-def $silence_begin(S, porigin) = S[.REPORTING = $long_and(S.REPORTING, 4437)][.SILENCES = (SILENCE porigin S.REPORTING) :: S.SILENCES]
+def $silence_begin(S, porigin) = S[.REPORTING = $long_and(S.REPORTING, 4437)][.REPORTINGMODIFIED = true][.SILENCES = (SILENCE porigin S.REPORTING) :: S.SILENCES]
+  -- if $long_and(S.REPORTING, 4437) =/= S.REPORTING
+def $silence_begin(S, porigin) = S[.SILENCES = (SILENCE porigin S.REPORTING) :: S.SILENCES]
+  -- if $long_and(S.REPORTING, 4437) = S.REPORTING
 
 dec $silence_read(pstate, porigin) : pstate
 def $silence_read(S, porigin) = $resolve_at(S, S.RESULT, $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], expression))

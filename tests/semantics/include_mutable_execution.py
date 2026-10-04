@@ -288,6 +288,9 @@ CASES = {
 }
 
 
+from reporting_cases import CASES as REPORTING_CASES
+CASES.update({name: source for name, source, expected, status in REPORTING_CASES})
+
 def b64(data):
     return base64.b64encode(data).decode()
 
