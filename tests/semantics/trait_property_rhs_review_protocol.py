@@ -5,6 +5,8 @@ import json
 
 import closure_call_protocol as protocol
 
+protocol.MODULES = [*protocol.MODULES, Path(__file__).with_name('trait_property_review_output.watsup')]
+
 CATALOGUE = Path(__file__).with_name('trait_property_rhs_review_cases.json')
 SOURCE = next(row['source'] for row in json.loads(CATALOGUE.read_text())['cases']
               if row['id'] == 'precomputed-array-rhs-installed-before-handler-exception-propagates')
@@ -53,7 +55,7 @@ CASES = {
             'S_done.TODO = eps',
             'S_done.CURRENT = eps',
             'S_done.FRAMES = eps',
-            '$outputs(S_done.EVENTS) = $ptascii("PRE;H;CAUGHT;1")',
+            '$trait_property_test_output(S_done.EVENTS) = $ptascii("PRE;H;CAUGHT;1")',
             '$class_static_at(S_done.CLASSSTATICS, ptraitproperty.DECL) = (pclassstatic_done)',
             'pclassstatic_done.STATE = PROP_VALUE (DIRECT (PARRAY n_rhs))',
             '$heap_owners($heap_graph(S_done), HARRAY n_rhs) = 1',
