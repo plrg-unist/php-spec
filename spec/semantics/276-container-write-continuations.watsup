@@ -134,7 +134,10 @@ rule PhpStep/container-write-initialize: S ~> $container_initialize(S, pcontaine
 def $container_undefined_rw(S, porigin, b) = (b /\ $location_slot(S, S.LOCATION) = UNDEFINED /\ $container_binding(S, porigin, S.LOCATION) =/= eps)
 def $task_nodes(CONTAINER_WRITE_RESULT pcontainerwrite) = [HARRAY n]
   -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
-def $task_nodes(CONTAINER_WRITE_RESULT pcontainerwrite) = eps -- otherwise
+def $task_nodes(CONTAINER_WRITE_RESULT pcontainerwrite) = eps
+  -- if pcontainerwrite.PHASE = CONTAINER_CV n_name*
+def $task_nodes(CONTAINER_WRITE_RESULT pcontainerwrite) = eps
+  -- if pcontainerwrite.PHASE = CONTAINER_KEY_CV n_name*
 def $container_level(pcontainerwrite) = 8192 -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
 def $container_level(pcontainerwrite) = 2 -- otherwise
 def $container_message(pcontainerwrite) = $ptascii("Automatic conversion of false to array is deprecated")
