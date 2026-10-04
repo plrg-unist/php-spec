@@ -1,0 +1,67 @@
+;; Anonymous keyword NEW defaults follow the lexical scope of the real receive.
+;; Source methods keep their compiled declaring target; rebinding adds no cache.
+def $ppanonymous_new_deferred(P, pcpath, NName (BYTES text) metadata) = (P.CLOSURE /\ $ppparameter_new_site(P, pcpath) /\ $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent")])
+def $ppnew_class_name(P, pcpath, name) = P -- if $ppanonymous_new_deferred(P, pcpath, name)
+
+;; Authenticate the live Closure row, including a rebound source whose previous
+;; object has retired. Closure::call still derives its temporary scope from its
+;; validated target rather than this original object's lexical row.
+dec $anonymous_default_new_object_valid(pstate, nat) : bool
+def $anonymous_default_new_object_valid(S, n) = $closure_scope_row_valid(S, pclosurescope)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+def $anonymous_default_new_object_valid(S, n) = $closure_binding_source_valid(S, pclosurebinding)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = (pclosurebinding)
+def $anonymous_default_new_object_valid(S, n) = true
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_source_class(S, porigin) = eps
+def $anonymous_default_new_object_valid(S, n) = false -- otherwise
+
+def $anonymous_default_new_site(S, porigin) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent")]
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.INSTANCE = (n)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n \/ $closure_call_target(pcallcontext.TARGET)
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE pcallcontext.FUNCTION pitem* pstaticcell*
+  -- if $function_at(S.CLOSURETEMPLATES, pcallcontext.FUNCTION) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (pcnode)
+  -- if $default_closure_node(pcnode)
+  -- if $anonymous_default_new_object_valid(S, n)
+  -- if $parameter_default_constructor(S, NName (BYTES text) metadata_name, phpType7*, metadata)
+  -- if $call_current_valid(S)
+def $anonymous_default_new_name(S, porigin) = (pclassdesc.NAME)
+  -- if $anonymous_default_new_site(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+  -- if $ptlc($base64(text)) = $ptascii("self")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+def $anonymous_default_new_name(S, porigin) = pclassdesc.PARENT
+  -- if $anonymous_default_new_site(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+
+rule PhpStep/anonymous-default-new-no-scope: S ~> $throw_scalar(S, "Error", $ptascii("Cannot access \"") ++ $ptlc($base64(text)) ++ $ptascii("\" when no class scope is active"), $runtime_line(S, eps, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $anonymous_default_new_site(S, porigin)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = eps
+rule PhpStep/anonymous-default-new-parent-missing: S ~> $throw_scalar(S, "Error", $ptascii("Cannot access \"parent\" when current class scope has no parent"), $runtime_line(S, eps, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $anonymous_default_new_site(S, porigin)
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.PARENT = eps
