@@ -12,6 +12,7 @@ dec $autoload_snapshot(pstate, pconfigcall, pcalltarget) : parray?
 dec $autoload_entry_history(pstate, pautoloadentry) : pstate
 dec $autoload_entry_valid(pstate, pautoloadentry) : bool
 dec $autoload_entry_live(pstate, pautoloadentry) : bool
+dec $autoload_bucket(pautoloadentry) : pautoloadentry?
 dec $autoload_entry_nodes(pautoloadentry) : pnode*
 dec $autoload_target_nodes(pautoloadtarget) : pnode*
 dec $autoload_raw(pautoloadentry) : pvalue
@@ -83,6 +84,7 @@ dec $autoload_is_bool(pvalue) : bool
 dec $autoload_remove(pautoloadentry?*, nat) : pautoloadentry?*
 dec $autoload_array_items(parray, pentry*) : parray
 dec $autoload_closure_receiver(pautoloadentry) : nat?
+def $autoload_bucket(pautoloadentry) = (pautoloadentry)
 def $autoload_source_target(AUTO_TARGET pcalltarget) = true
 def $autoload_source_target(pautoloadtarget) = false -- otherwise
 def $autoload_is_bool(PBOOL b) = true
@@ -247,7 +249,7 @@ def $autoload_count(eps :: pautoloadentry_tail?*) = $autoload_count(pautoloadent
 def $autoload_count((pautoloadentry) :: pautoloadentry_tail?*) = $(1 + $autoload_count(pautoloadentry_tail?*))
 def $autoload_compact(eps) = eps
 def $autoload_compact(eps :: pautoloadentry_tail?*) = $autoload_compact(pautoloadentry_tail?*)
-def $autoload_compact((pautoloadentry) :: pautoloadentry_tail?*) = (pautoloadentry) :: $autoload_compact(pautoloadentry_tail?*)
+def $autoload_compact((pautoloadentry) :: pautoloadentry_tail?*) = $autoload_bucket(pautoloadentry) :: $autoload_compact(pautoloadentry_tail?*)
 def $autoload_trim(pautoloadentry?*) = pautoloadentry?* -- if pautoloadentry?* = eps
 def $autoload_trim(pautoloadentry?*) = $autoload_trim(pautoloadentry?*[0:n]) -- if $(|pautoloadentry?*| > 0) -- if n = $nabs($(|pautoloadentry?*| - 1)) -- if pautoloadentry?*[n] = eps
 def $autoload_trim(pautoloadentry?*) = pautoloadentry?* -- if $(|pautoloadentry?*| > 0) -- if n = $nabs($(|pautoloadentry?*| - 1)) -- if pautoloadentry?*[n] =/= eps
@@ -845,9 +847,9 @@ def $autoload_resize(S) = S[.AUTOLOAD.CAPACITY = $(2 * S.AUTOLOAD.CAPACITY)]
   -- if $(|S.AUTOLOAD.ENTRIES| >= S.AUTOLOAD.CAPACITY)
   -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
   -- if $(|S.AUTOLOAD.ENTRIES| <= n_count + (n_count / 32))
-def $autoload_append(S, pautoloadentry) = S[.AUTOLOAD.ENTRIES = S.AUTOLOAD.ENTRIES ++ [(pautoloadentry)]]
+def $autoload_append(S, pautoloadentry) = S[.AUTOLOAD.ENTRIES = S.AUTOLOAD.ENTRIES ++ [$autoload_bucket(pautoloadentry)]]
 def $autoload_prepend(S, b) = S -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES) -- if ~b \/ $(n_count <= 1)
-def $autoload_prepend(S, true) = S[.AUTOLOAD.ENTRIES = [(pautoloadentry)] ++ $autoload_compact(S.AUTOLOAD.ENTRIES[0:n])]
+def $autoload_prepend(S, true) = S[.AUTOLOAD.ENTRIES = [$autoload_bucket(pautoloadentry)] ++ $autoload_compact(S.AUTOLOAD.ENTRIES[0:n])]
   -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
   -- if $(n_count > 1)
   -- if n = $nabs($(|S.AUTOLOAD.ENTRIES| - 1))
