@@ -71,7 +71,12 @@ the initial `error_reporting` and `include_path` bytes before compilation.
 Getters and Restore retain those facts through setters, silence and callbacks;
 null reporting and an explicit empty string have distinct masks. Nine exact
 profile comparisons, 99 state premises and 15 transport controls pass.
-Wider startup directives, initializer/PIPE/INI consumers and lifecycle remain open.
+[Live display errors](coverage/semantics/display-errors-review.json) add nullable
+startup bytes, raw get/set/Restore and ordered stdout/stderr/off diagnostics.
+Emission captures its destination after callback effects; later writes retain
+earlier output. Eleven exact comparisons, 76 state premises and 17 transport
+controls pass. Required shutdown fatal freezing awaits the accepted lifecycle
+composition; wider display/startup directives and diagnostic consumers stay open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
@@ -243,7 +248,13 @@ separate source and ownership checks; ordinary missing reference sends stay quie
 capture null before callbacks and skip later writes when a handler throws. Genuine
 request snapshots preserve numeric keys, shared reference cells and array COW.
 Author8/207, independent8/221 and two current scoped-handler sources retain
-separate cutoffs; earlier key warnings and broader consumers remain open.
+separate cutoffs. [Dynamic read keys](docs/semantics/SOURCE-DIMENSION-KEYS.md)
+now stage missing key-CV, null/float and global-array-name conversions. Genuine
+temporary owners, borrowed CV tables and ordered NaN notices preserve mutation,
+COW and throwing cleanup through nested/quiet reads. Author9/246 includes the two
+independent NaN originals; independent14/235 and one current constructor
+interaction keep separate cuts.
+Read-write continuations and wider key/container producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -379,7 +390,10 @@ static reference targets now complete cold tables while keeping the captured RHS
 cell alive through callbacks. Dynamic and ordinary method keyword selectors keep
 their selected class/name; seven source comparisons and an 84-premise fixture
 cover failure/retry, replacement and ownership. Captured/rebound Closure keyword
-references and deferred instance/object defaults remain open.
+references now retain authentic scope/binding and nested creator evidence after
+collection, including unrelated called classes and handler ingress. Nine new
+sources and 162 state premises pass separately. Deferred instance/object defaults
+and wider consumers remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

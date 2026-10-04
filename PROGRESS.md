@@ -18,6 +18,21 @@ union, separate controls and252 conditions at their actual revisions, including
 original failures. Trait properties/constants and enum semantics remain required;
 the method checkpoint does not close the trait family.
 
+Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
+null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
+caller environment; ordinary arrays retain their fixed converted key. Real
+temporary owners and conversion protection distinguish COW, live references and
+sole-table retirement; NaN keeps protection across both ordered notices. Quiet
+isset/coalesce and nested temporaries keep their distinct demand/ownership paths.
+Author9/246 includes the two independent NaN originals; independent14/235 passes
+at its separate cut. One
+actual71da constructor in a parameter default passes with private captured
+handler selection, called class and authentic key line/name through root mutation.
+[Contract](docs/semantics/SOURCE-DIMENSION-KEYS.md),
+[ledger](coverage/semantics/dimension-key-review.json). Read-write/reference,
+append/unset/compound/coalesce-assignment warning continuations are required next;
+wider object/key/container producers remain core work.
+
 Prepared internal Throwable default constructors235 now map the completed227
 value table before arity and sequential reception. Default declaration strictness,
 finite named-hole filling, inherited owners and nested previous objects preserve
@@ -27,6 +42,19 @@ string-slot trace2 at7fb keep separate cuts in the
 The original count observer remains Unsupported with zero agreement. Weak-null,
 Stringable and lossy integer warnings require real suspended continuations next;
 rebound anonymous keyword NEW follows.
+
+Live `display_errors`237 retains nullable original/live INI entries and raw
+get/set/Restore. Ordinary text diagnostics capture stdout/stderr/off after handler
+effects, keeping their position among source output across later writes and
+include retirement. Current terminal errors preserve status255 when display is
+off. Ten author and one independent exact comparisons, 76 source-derived state
+premises and 17 entry/transport controls pass at b8e8, alongside223-module SL
+stages/init and the changed adapter build. Actualddb6/233 preservation retains
+225 modules with the reviewed display and dimension-warning routes, without renewed execution.
+The [display ledger](coverage/semantics/display-errors-review.json) separates
+source-defined nullable controls from native profiles. The held shutdown/fatal
+freeze source remains native-only until required actual231 composition; wider
+display directives, parser/profiles and output/lifecycle consumers remain open.
 
 Registered startup inputs225 provide original `error_reporting` and
 `include_path` bytes before compilation, independently of file/CWD facts.
@@ -145,8 +173,13 @@ survive callbacks and selected first-fill/retirement/table history. Seven exact
 normal source agreements pass at69cc4546c;84 ownership/history premises pass at
 0288de513 after narrow fixture syntax and selected work-block validator repairs.
 Original failures remain separate; prior31/149/67 checks were not renewed.
-Captured/rebound Closure keyword references and instance/object defaults remain
-required next work.
+Captured/rebound Closure keyword references239 now retain authentic nonowning
+scope/binding evidence after pruning. Nested creation copies its immediate
+creator's body, scope, receiver and nullable callsite, including error and
+terminal callbacks; ordinary method ancestry stays exact. Nine new source
+agreements and bound69 premises pass atd6bc09789; handler58/terminal35 pass at
+860a8a19a after one fixture ordinal-binding repair. Instance/object defaults and
+wider reference/creation consumers remain required next work.
 
 
 Private and protected method arrays and class-method strings support callable
@@ -267,8 +300,10 @@ failures and interrupted evidence.
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
   array and string Closure PIPE routes are covered. Direct defined/missing
   `$GLOBALS[key]` reads and explicit-request full-table snapshots are admitted;
-  earlier key-expression warnings, nested/read-write warning continuations and
-  ordinary snapshots without request facts remain open.
+  233 additionally stages earlier missing key-CV and null/float/global-array-name
+  conversions through nested/quiet reads. Read-write continuations, wider
+  key/object/container producers and ordinary snapshots without request facts
+  remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
   wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
@@ -276,8 +311,8 @@ failures and interrupted evidence.
 - Values, references and coercion: suspended internal default constructor reception,
   rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred instance/object defaults and cold
-  keyword references in captured/rebound Closures remain Unsupported.
+  broader reference-result consumers. Deferred instance/object defaults and
+  wider Closure creation contexts remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.
   Wider deprecated constant consumers remain open. Generic156 return replay, temporary-return

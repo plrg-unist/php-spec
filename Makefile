@@ -108,6 +108,7 @@ test-semantics: build
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/deferred_static_default_cases.json
 	python3 tests/semantics/deferred_static_default_protocol.py
 	python3 tests/semantics/cold_static_reference_protocol.py
+	python3 tests/semantics/cold_closure_static_protocol.py
 	python3 tests/semantics/default_parameter_compiler.py
 	python3 tests/semantics/default_parameters.py
 	python3 tests/semantics/default_parameter_protocol.py
@@ -339,6 +340,8 @@ test-semantics: build
 	python3 tests/semantics/include_execution.py
 	python3 tests/semantics/startup_ini.py
 	python3 tests/semantics/startup_ini_protocol.py
+	python3 tests/semantics/display_errors.py
+	python3 tests/semantics/display_errors_protocol.py
 	python3 tests/semantics/include_protocol.py
 	python3 tests/semantics/include_mutable_execution.py
 	python3 tests/semantics/include_mutable_protocol.py
