@@ -524,6 +524,66 @@
         "native.stderr": "13a0c060126c4ac348ff2a25c960ea49f65edde87c49b25e527d33420cfda9e6",
         "native.json": "0838e46aaa75e9c5c0cab0c76a62bea393d0d15bc1bc06a1d451dcbadd0cad9f"
       }
+    },
+    {
+      "id": "global-parser-concat",
+      "source": "<?php (\"get_\" . \"called_class\")();",
+      "source_sha256": "0e96e9f415e7ea867c1735a700d6489b2a019962d90b940ab0a4988ef35a371b",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBnZXRfY2FsbGVkX2NsYXNzKCkgbXVzdCBiZSBjYWxsZWQgZnJvbSB3aXRoaW4gYSBjbGFzcyBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+      "native_group": ".tools/called-class-constant-target-native-n688hcez/global-parser-concat",
+      "native_raw_sha256": {
+        "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native.stderr": "523a14eaeb31cb78b6faf3034ee6a12a41083713160f0eac3c523ec389d13e06",
+        "native.json": "dd0c204f8099ef624007e9521a5110fd633f50b0d93869f50d621184a4649319"
+      }
+    },
+    {
+      "id": "global-compiled-cast",
+      "source": "<?php ((string)\"get_called_class\")();",
+      "source_sha256": "12364e5be575e4b5e8b0a1273328241b32e02e999856a256422f9852b8c0b86b",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBnZXRfY2FsbGVkX2NsYXNzKCkgbXVzdCBiZSBjYWxsZWQgZnJvbSB3aXRoaW4gYSBjbGFzcyBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDEpOiBnZXRfY2FsbGVkX2NsYXNzKCkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEK",
+      "native_group": ".tools/called-class-constant-target-native-n688hcez/global-compiled-cast",
+      "native_raw_sha256": {
+        "native.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native.stderr": "07e95b4a1be9b12fa7240fed62ef350294e0032c0eb3d3acb9503c17fa4fe4cc",
+        "native.json": "44f2f0579a753cf18ea9c224a35672d03d6f37cf110cf51b70173d6950fe8279"
+      }
+    },
+    {
+      "id": "method-compiled-cast-reference-receive",
+      "source": "<?php function take(&$v){echo $v;}class A{static function name(){take(((string)\"get_called_class\")());echo get_called_class();}}class B extends A{}B::name();",
+      "source_sha256": "ea4a84c7f1f02e595765c1759c4bebfb4613acd0ca109bb2e74d3b3036124edd",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "QkI=",
+      "stderr_template_base64": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlcyBzaG91bGQgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZSBpbiB7RklMRX0gb24gbGluZSAxCg==",
+      "native_group": ".tools/called-class-constant-target-native-n688hcez/method-compiled-cast-reference-receive",
+      "native_raw_sha256": {
+        "native.stdout": "fc686c314491e1f68bf1899fc54b2327353c44dd1ab4ed56538ef623edd1e866",
+        "native.stderr": "ed02bdce0df92985bd170d6e39674e5c33868fcdd0eaa16bad8fa06b04cf3f93",
+        "native.json": "282853f744de651fe601dcaa39fe11d7588db183ac9d3b986df72aaa2c5c185c"
+      }
+    },
+    {
+      "id": "method-initial-concat-reference-error",
+      "source": "<?php function take(&$v){echo \"X\";}class A{static function name(){try{take((\"get_\" . \"called_class\")());}catch(Error $e){echo \"E\";}echo get_called_class();}}class B extends A{}B::name();",
+      "source_sha256": "7640f45a3576e2038ff470ce9a91b8ef3675005dcc3c2be6c5ad2b955c69f525",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "RUI=",
+      "stderr_template_base64": "",
+      "native_group": ".tools/called-class-constant-target-native-n688hcez/method-initial-concat-reference-error",
+      "native_raw_sha256": {
+        "native.stdout": "cfba9de3e226afcf414addeb854657a1f45b4573763a5899701e2c13fa3bc791",
+        "native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native.json": "3da1ff95b1eb7c0862b19a149ef4118079f754a06740b4b0be0d3d8ea130e170"
+      }
     }
   ]
 }
