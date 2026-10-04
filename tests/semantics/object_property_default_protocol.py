@@ -564,6 +564,77 @@ protocol.CHECKS['nested-class-property-closures'] = ['S = $drive_steps(S_initial
  '$constant_callable_records_valid(S_dead, S_dead.CONSTANTCLOSURES)',
  '$property_state_valid(S_dead)']
 
+protocol.SOURCES['private-named-fcc'] = (
+ '<?php\n'
+ 'function named() { static $n = 0; return ++$n; }\n'
+ 'class P {\n'
+ '    private const X = 5;\n'
+ "    private static function secret() { return self::X . '/' . get_called_class(); }\n"
+ '    public Closure $f = self::secret(...);\n'
+ '    public static Closure $s = self::secret(...);\n'
+ '    public Closure $n = named(...);\n'
+ '}\n'
+ 'class Q extends P {}\n'
+ '$p = new P;\n'
+ '$q = new Q;\n'
+ "echo ($p->f)(), ':', ($q->f)(), ':', (P::$s)(), ':', (int) ($p->f === $q->f), ':', ($p->n)(), ':', ($q->n)();\n"
+)
+protocol.CHECKS['private-named-fcc'] = [
+ 'S = $drive_steps(S_initial[.COMPLETION = NORMAL], 3500)',
+ 'S.COMPLETION = NORMAL',
+ 'S.TODO = eps',
+ '$object_default_test_output(S.EVENTS) = $ptascii("5/P:5/P:5/P:0:1:2")',
+ '$class_named(S.CLASSNAMES, $ptascii("p")) = (porigin_p)',
+ '$class_named(S.CLASSNAMES, $ptascii("q")) = (porigin_q)',
+ '$class_at(S.CLASSES, porigin_p) = (pclassdesc_p)',
+ 'pclassdesc_p.PROPERTIES = [ppropertydesc_f, ppropertydesc_s, ppropertydesc_n]',
+ 'ppropertydesc_f.ORIGIN = porigin_f',
+ 'ppropertydesc_s.ORIGIN = porigin_s',
+ 'ppropertydesc_n.ORIGIN = porigin_n',
+ 'ppropertydesc_f.DEFAULT = PROP_DEFERRED porigin_site_f',
+ 'ppropertydesc_n.DEFAULT = PROP_DEFERRED porigin_site_n',
+ '$instance_default_at(S.INSTANCEDEFAULTS, porigin_p, porigin_f) = (pinstancetemplate_f)',
+ 'pinstancetemplate_f.STATE = INSTANCE_OBJECT_VALUE (POBJECT n_f) (PVCLOSURE n_f porigin_site_f) pinstanceobjectcertificate_f',
+ '$constant_callable_record(S.CONSTANTCLOSURES, n_f) = (pconstantclosure_f)',
+ '$property_callable_receipt_owner(S, pconstantclosure_f) = (porigin_p)',
+ '$constant_callable_method(S, porigin_site_f, porigin_p, pconstantclosure_f.PREFIX) = ((pmethoddesc, porigin_p))',
+ 'S.OBJECTS[n_f] = CONSTANTCLOSURE porigin_site_f (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site_f porigin_p eps)',
+ '$closure_scope_at(S.CLOSURESCOPES, n_f) = (pclosurescope_f)',
+ '$property_callable_method_owner(S, pmethoddesc, porigin_site_f, porigin_p, pclosurescope_f) = (porigin_p)',
+ '$closure_scope_row_valid(S, pclosurescope_f)',
+ '$constant_callable_record_valid(S, pconstantclosure_f)',
+ '$property_callable_method_receipt_owner(S, pconstantclosure_f[.DECL = porigin_s], pmethoddesc, porigin_site_f, porigin_p) = eps',
+ '$property_callable_method_receipt_owner(S, pconstantclosure_f[.DECL = porigin_n], pmethoddesc, porigin_site_f, porigin_p) = eps',
+ '$property_callable_method_receipt_owner(S, pconstantclosure_f[.SITE = porigin_site_n], pmethoddesc, porigin_site_f, porigin_p) = eps',
+ '$property_callable_method_receipt_owner(S, pconstantclosure_f[.PREFIX = 0], pmethoddesc, porigin_site_f, porigin_p) = eps',
+ '~$closure_scope_row_valid(S[.CONSTANTCLOSURES = eps], pclosurescope_f)',
+ '~$closure_scope_row_valid(S[.ALLOCATIONS = eps], pclosurescope_f)',
+ '~$closure_scope_row_valid(S[.OBJECTS = $object_set(S.OBJECTS, n_f, METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site_f porigin_p eps)], pclosurescope_f)',
+ '~$closure_scope_row_valid(S, pclosurescope_f[.CALLED = porigin_q])',
+ '~$closure_scope_row_valid(S, pclosurescope_f[.LEXICAL = porigin_q])',
+ 'S_requested = S[.OBJECTS = $object_set(S.OBJECTS, n_f, CONSTANTCLOSURE porigin_site_f (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site_f porigin_q eps))]',
+ '~$closure_scope_row_valid(S_requested, pclosurescope_f[.CALLED = porigin_q])',
+ 'S_clone = $clone_object(S, n_f)',
+ 'S_clone.RESULT = KNOWN (POBJECT n_clone)',
+ '$(n_f < n_clone)',
+ 'S_clone.OBJECTS[n_clone] = METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site_f porigin_p eps',
+ '$constant_callable_record(S_clone.CONSTANTCLOSURES, n_clone) = eps',
+ '$closure_scope_at(S_clone.CLOSURESCOPES, n_clone) = (pclosurescope_clone)',
+ '$closure_scope_row_valid(S_clone, pclosurescope_clone)',
+ '$property_callable_method_owner(S_clone, pmethoddesc, porigin_site_f, porigin_p, pclosurescope_clone) = (porigin_p)',
+ '$property_callable_clone_receipt_owner(S_clone, [pconstantclosure_f], pmethoddesc, porigin_site_f, porigin_p, n_f) = eps',
+ '~$closure_scope_row_valid(S_clone[.CONSTANTCLOSURES = eps], pclosurescope_clone)',
+ 'S_dead = $prune_allocations(S_clone[.INSTANCEDEFAULTS = eps][.CLASSSTATICS = eps][.ENV = eps][.GLOBALTABLE = eps][.BASE = BASE_VALUE (KNOWN PNULL)])',
+ '~((HOBJECT n_f) <- S_dead.ALLOCATIONS)',
+ '$closure_scope_at(S_dead.CLOSURESCOPES, n_f) = eps',
+ '(HOBJECT n_clone) <- S_dead.ALLOCATIONS',
+ '$constant_callable_record(S_dead.CONSTANTCLOSURES, n_f) = (pconstantclosure_f)',
+ '$property_callable_method_receipt_owner(S_dead, pconstantclosure_f, pmethoddesc, porigin_site_f, porigin_p) = (porigin_p)',
+ '$closure_scope_row_valid(S_dead, pclosurescope_clone)',
+ '$heap_owners($heap_graph(S_dead), HOBJECT n_f) = 0',
+ '$heap_owners($heap_graph(S_dead), HOBJECT n_clone) = 1'
+]
+
 if __name__ == '__main__':
  parser=argparse.ArgumentParser();parser.add_argument('--prepare');args=parser.parse_args()
  if args.prepare:protocol.prepare(Path(args.prepare));print(args.prepare)
