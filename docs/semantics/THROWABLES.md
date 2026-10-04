@@ -89,7 +89,8 @@ argc. Source15, reached67 and affected trace2 retain separate cutoffs.
 retains real warning/Stringable callbacks, raw integer versus rewritten string
 trace arguments and the immediately owning constructor across nested handlers.
 Source14 plus builtin/fallback2 and source-derived185 premises pass at separate
-cuts; the original one-process timeout remains preserved. Broader ordinary
+cuts; current trait/display fallback adds one exact source comparison at e7ec.
+The original one-process timeout remains preserved. Broader ordinary
 constructor effects and anonymous keyword defaults remain required.
 
 Compiler rules preserve throw effects even where its result folds to true,

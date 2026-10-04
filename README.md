@@ -518,7 +518,8 @@ and fresh default objects retain their real owners.
 map prepared values with declaration strictness, named-hole filling and exact
 string-mutated traces. [Suspended reception240](coverage/semantics/internal-default-reception-review.json)
 retains real warning and Stringable callbacks, raw integer trace slots and each
-reentrant constructor owner. Rebound anonymous keyword defaults and broader
+reentrant constructor owner. Current trait/display fallback preserves a filename
+argument after its global root retires. Rebound anonymous keyword defaults and broader
 ordinary/constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning

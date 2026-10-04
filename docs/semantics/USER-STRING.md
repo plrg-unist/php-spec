@@ -84,7 +84,9 @@ now admit lossless scalars with declaration strictness and supplied string-slot
 mutation in later error traces. [Internal default reception240](../../coverage/semantics/internal-default-reception-review.json)
 now suspends weak null, Stringable and lossy integer parsing in formal order.
 Each callback retains its own internal constructor trace and original argument
-owners through reentry, throws and global retirement. Rebound anonymous keyword
+owners through reentry, throws and global retirement. The current trait/display
+fallback retains the filename after handler mutation and global retirement.
+Rebound anonymous keyword
 NEW and broader ordinary/constrained consumers remain required.
 
 The required consumer inventory includes echo, print, `(string)` casts,

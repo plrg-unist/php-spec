@@ -26,6 +26,7 @@ CASES = {
     'internal-private-handler-scope': b'<?php\nclass A{\n    private static function h($level,$message,$file,$line){echo "H|";return true;}\n    static function install(){set_error_handler([A::class,"h"]);}\n    static function take($e=new Exception(code:null)){echo "F";}\n}\nA::install();\ntry{A::take();}catch(Error $e){echo "E|",$e->getMessage();}\n',
     'internal-builtin-throwable-stringable': b'<?php\nfunction take($e=new Exception(message:new Exception("inner"))){$m=$e->getMessage();echo $m[0],$m[1],$m[2],$m[3],$m[4],$m[5],$m[6],$m[7],$m[8],$m[9],$m[10],$m[11],$m[12],$m[13],$m[14],$m[15];}\ntake();\n',
     'internal-null-handler-false': b'<?php\nfunction h($level,$message,$file,$line){echo "D",func_num_args(),"|";return false;}\nset_error_handler("h");\nerror_reporting(0);\nfunction take($e=new Exception(message:null)){echo "F|",$e->getMessage()===""?"empty":"other";}\ntake();\n',
+    'internal-trait-display-fallback-owner-composition': b'<?php\ntrait ConvertText{function __toString(){echo "T",$this->text,"|";return $this->text;}}\nclass V{use ConvertText;public $text="before";function __construct(){$GLOBALS["v"]=$this;}}\nfunction h($level,$message,$file,$line){global $v;echo "D",func_num_args(),"|";$v->text="after";unset($GLOBALS["v"]);ini_set("display_errors","0");return false;}\nset_error_handler("h");\nfunction take($e=new ErrorException(message:null,filename:new V)){echo "F|",$e->getFile();}\ntake();\n',
 }
 EXPECTED = {
     'internal-constructor-weak-stringable': b'T|F|message',
@@ -44,6 +45,7 @@ EXPECTED = {
     'internal-private-handler-scope': b'H|F',
     'internal-builtin-throwable-stringable': b'Exception: inner',
     'internal-null-handler-false': b'D4|F|empty',
+    'internal-trait-display-fallback-owner-composition': b'D4|Tafter|F|after',
 }
 
 

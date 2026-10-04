@@ -13,8 +13,11 @@ order. Raw integer slots and rewritten string slots preserve internal constructo
 traces, with the nearest saved owner through reentrant handlers. Exact source14
 atd9 and builtin/fallback2 at7c pass; all185 reached premises at7c pass in unchanged
 133+24+28 source groups under120-second caps. The original full185 timeout and
-first-source interpreter overlap remain preserved in the
-[reception ledger](coverage/semantics/internal-default-reception-review.json).
+first-source interpreter overlap remain preserved. One composition source at
+e7ec retains imported trait Stringable ownership and handler-mutated display
+fallback after the filename global retires.
+[The reception ledger](coverage/semantics/internal-default-reception-review.json)
+records these cuts.
 Ordinary constructor effects and rebound anonymous keyword NEW remain required.
 
 Trait method composition228 supports source use, nesting, precedence, aliases,
@@ -90,8 +93,8 @@ Actual221 callable source1/owner39 at2a380 authenticates the suspended construct
 through deprecation callbacks and rejects a removed retained owner.
 The [constructor ledger](coverage/semantics/default-constructors-review.json)
 keeps original failures, the fixture line correction and fresh uncached NEW facts
-precise. Broader internal reception and rebound anonymous self/parent NEW remain
-required; complete core remains open.
+precise. Ordinary internal constructor effects and rebound anonymous self/parent NEW
+remain required; complete core remains open.
 
 Deprecated callable keyword/compound admission221 now stages supplied fixed
 parameters, error registration and delayed dispatch. Warnings hold class choice
@@ -318,7 +321,7 @@ failures and interrupted evidence.
   wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
-- Values, references and coercion: suspended internal default constructor reception,
+- Values, references and coercion: ordinary internal constructor effects,
   rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred instance/object defaults and
