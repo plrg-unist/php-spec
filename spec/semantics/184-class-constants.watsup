@@ -32,6 +32,8 @@ dec $class_static_selected_needed(pstate, porigin) : bool
 dec $class_static_selection(pstate, poperand) : pstaticselection?
 dec $class_static_selection_at(ptask*) : pstaticselection?
 dec $class_constant_table_event(pstate, porigin, porigin, porigin, nat) : pclassconstantevent
+dec $dynamic_new_table_selected(pstate, porigin) : bool
+def $dynamic_new_table_selected(S, porigin) = false -- otherwise
 dec $class_static_ref_continuation_valid(pstate, porigin, ptbytes, int, ptask*) : bool
 ;; Lookup resolves the requested class, but initialization and its cache belong
 ;; to the declaration's owner. Visibility is checked before deferred evaluation.
