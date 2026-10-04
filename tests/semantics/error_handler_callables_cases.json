@@ -1,0 +1,128 @@
+[
+  {
+    "id": "object-array-inherited-named-registration-and-saved-args",
+    "source": "<?php\nclass Owner { public function run($n,$m,$f,$l) { echo __METHOD__,'/',static::class,':',func_num_args(),':',$m,';'; } }\nclass Child extends Owner {}\nfunction cause($v) {set_error_handler(error_levels:512,callback:[new Child,'rUn']); trigger_error('w',512); echo func_num_args(),':',func_get_arg(0); restore_error_handler();}\ncause(...['v'=>'x']);\n",
+    "source_sha256": "ea70fd1ef2fbebfec2c71a1d779f00bc9030c9bb17b96ff799243d13627c1219",
+    "expected_model": "normal",
+    "purpose": "Owned object selector, inherited descriptor, named API registration, unpacked emitter arguments and ARG4.",
+    "expected_normal_stdout": "Owner::run/Child:4:w;1:x"
+  },
+  {
+    "id": "raw-array-copy-on-write-keeps-original-members",
+    "source": "<?php\nclass Owner {\n public function first($n,$m,$f,$l) {echo 'F:',func_num_args(),':',$m,';';}\n public function second($n,$m,$f,$l) {echo 'BAD-COW';}\n}\n$receiver=new Owner; $raw=[$receiver,'first']; set_error_handler($raw,512);\n$raw[1]='second'; unset($raw,$receiver); trigger_error('copy',512); restore_error_handler();\n",
+    "source_sha256": "25e374ef5637e096f7f839eb7a267199b2bb442209480192c970aa136fe856fd",
+    "expected_model": "normal",
+    "purpose": "Registered array value is copied; ordinary COW replacement must not alter the callback.",
+    "expected_normal_stdout": "F:4:copy;"
+  },
+  {
+    "id": "qualified-static-string-unpacked-registration",
+    "source": "<?php\nnamespace N;\nclass Owner {public static function run($n,$m,$f,$l) {echo __CLASS__,'/',static::class,':',func_num_args(),':',$m;}}\nclass Child extends Owner {}\n$raw='\\n\\cHiLd::rUN'; set_error_handler(...['callback'=>$raw,'error_levels'=>512]); unset($raw);\ntrigger_error('s',512); restore_error_handler();\n",
+    "source_sha256": "0394639c6c38d33d285c8c894b8d9c988bdbe861df1c6559bb4c285317d288d2",
+    "expected_model": "normal",
+    "purpose": "Public qualified/case-insensitive class-method string, inherited owner, called class and raw copied bytes.",
+    "expected_normal_stdout": "N\\Owner/N\\Child:4:s"
+  },
+  {
+    "id": "api-static-parent-descriptor-forwards-active-child",
+    "source": "<?php\nclass Owner {\n public static function stat($n,$m,$f,$l) {echo __METHOD__,'/',static::class,':',func_num_args(),':',$m,';';}\n public function start($v) {set_error_handler(['Owner','sTaT'],512);trigger_error('forward',512);echo func_num_args(),':',func_get_arg(0);restore_error_handler();}\n}\nclass Child extends Owner {public static function stat($n,$m,$f,$l) {echo 'BAD-OVERRIDE';}}\n$receiver=new Child; $receiver->start(v:'x'); unset($receiver);\n",
+    "source_sha256": "e16c700b41d26e5d39b790324c6959a6d3c0c985696c57b901cdba25a08be44f",
+    "expected_model": "normal",
+    "purpose": "API receiving frame forwards called Child to requested Owner static method even after override; no selected receiver.",
+    "expected_normal_stdout": "Owner::stat/Child:4:forward;1:x"
+  },
+  {
+    "id": "related-frame-rejects-requested-child-nonstatic",
+    "source": "<?php\nclass Owner {\n public function start() {try {set_error_handler('Child::run',512);} catch (TypeError $e) {echo $e->getMessage();}}\n}\nclass Child extends Owner {public function run($n,$m,$f,$l) {echo 'BAD-BODY';}}\n(new Child)->start();\n",
+    "source_sha256": "9f3b72cf07fd98ffa47bd91677cbf538591e62757931d9592ce90e63006db937",
+    "expected_model": "normal",
+    "purpose": "API lexical Owner is not a Child despite active Child this; differs from compiler-fixed direct selection.",
+    "expected_normal_stdout": "set_error_handler(): Argument #1 ($callback) must be a valid callback or null, non-static method Child::run() cannot be called statically"
+  },
+  {
+    "id": "public-registration-errors-and-unchanged-registry",
+    "source": "<?php\nclass Owner {public function run($n,$m,$f,$l) {} public static function good($n,$m,$f,$l) {}}\nabstract class AbstractOwner {abstract public static function run($n,$m,$f,$l);}\nfunction reject($raw) {try {set_error_handler($raw,512);}catch(TypeError $e) {echo $e->getMessage(),'|';}}\nset_error_handler('Owner::good',512);\nreject(['Owner','missing']); reject('Owner::run'); reject(['AbstractOwner','run']); reject([new stdClass,'missing']);\nreject([new Owner,'run','extra']); reject([1=>new Owner,2=>'run']); reject([17,'run']); reject([new Owner,17]);\necho get_error_handler()==='Owner::good'; restore_error_handler();\n",
+    "source_sha256": "fb6fe3596899d0cdaaf02ce26c0fea72b2f772cbb0c87dcf7ab1bb302cd39fe8",
+    "expected_model": "normal",
+    "purpose": "All four malformed-array API reasons and public missing/nonstatic/abstract/stdClass rejection preserve existing registration.",
+    "expected_normal_stdout": "set_error_handler(): Argument #1 ($callback) must be a valid callback or null, class Owner does not have a method \"missing\"|set_error_handler(): Argument #1 ($callback) must be a valid callback or null, non-static method Owner::run() cannot be called statically|set_error_handler(): Argument #1 ($callback) must be a valid callback or null, cannot call abstract method AbstractOwner::run()|set_error_handler(): Argument #1 ($callback) must be a valid callback or null, class stdClass does not have a method \"missing\"|set_error_handler(): Argument #1 ($callback) must be a valid callback or null, array callback must have exactly two members|set_error_handler(): Argument #1 ($callback) must be a valid callback or null, array callback has to contain indices 0 and 1|set_error_handler(): Argument #1 ($callback) must be a valid callback or null, first array member is not a valid class name or object|set_error_handler(): Argument #1 ($callback) must be a valid callback or null, second array member is not a valid method|1"
+  },
+  {
+    "id": "raw-reference-invalid-shape-restores-and-recovers",
+    "source": "<?php\nclass Owner {public function run($n,$m,$f,$l) {echo 'R:',$m,';';}}\n$receiver=new Owner; $method='run'; $raw=[&$receiver,&$method];set_error_handler($raw,512);unset($raw);\n$method=17;\ntry {trigger_error('method',512);}catch(Error $e) {$trace=$e->getTrace();echo $e->getMessage(),'|',$trace[0]['function'],':',$trace[0]['args'][0],':',$trace[0]['args'][1],'|';}\n$method='run'; $receiver=18;\ntry {trigger_error('receiver',512);}catch(Error $e) {echo $e->getMessage(),'|';}\n$receiver=new Owner;trigger_error('recovered',512);restore_error_handler();unset($receiver,$method);\n",
+    "source_sha256": "d22fd9dcd160e88fbfd4a58f7bb51c37ced51fb73ca57d75a02105066a1e8092",
+    "expected_model": "normal",
+    "purpose": "Referenced member kinds may invalidate delayed selection; Error restores the raw callback and later repaired members resolve normally.",
+    "expected_normal_stdout": "Invalid callback Array, second array member is not a valid method|trigger_error:method:512|Invalid callback Array, first array member is not a valid class name or object|R:recovered;"
+  },
+  {
+    "id": "full-byte-method-nul-rejection-at-dispatch",
+    "source": "<?php\nclass Owner {public function run($n,$m,$f,$l) {echo 'BAD-TRUNCATED';}}\n$receiver=new Owner;$method='run';$raw=[$receiver,&$method];set_error_handler($raw,512);unset($raw,$receiver);\n$method=\"run\\0tail\";try {trigger_error('nul',512);}catch(Error $e) {echo $e->getMessage();}\nrestore_error_handler();unset($method);\n",
+    "source_sha256": "61be17b035792970ddc4f7be2c329b6331300befcd5aa9e836ec163ea55e119d",
+    "expected_model": "normal",
+    "purpose": "Lookup retains full method bytes; C-string rendering does not imply truncated method resolution.",
+    "expected_normal_stdout": "Invalid callback Owner::run, class Owner does not have a method \"run\""
+  },
+  {
+    "id": "static-string-throw-trace-and-replacement",
+    "source": "<?php\nclass Replacement {public static function run($n,$m,$f,$l) {echo 'R:',$m,';';}}\nclass Owner {\n public static function run($n,$m,$f,$l) {set_error_handler(['Replacement','run'],512);echo func_num_args(),':',func_get_arg(1),'|';throw new Error('boom');}\n}\nclass Child extends Owner {}\nclass Emitter {public static function cause($v) {trigger_error('outer',512);}}\nset_error_handler('Child::rUn',512);\ntry {Emitter::cause(v:7);}catch(Error $e) {$trace=$e->getTrace();echo $trace[0]['class'],$trace[0]['type'],$trace[0]['function'],':',$trace[0]['args'][0],':',$trace[0]['args'][1],'|',$trace[1]['function'],'|',$trace[2]['class'],$trace[2]['type'],$trace[2]['function'],':',$trace[2]['args'][0],'|';}\ntrigger_error('after',512);restore_error_handler();restore_error_handler();\n",
+    "source_sha256": "7a64d32435329896611487a477541a159ed4d12fe41460a58c1a1effc1ba2193",
+    "expected_model": "normal",
+    "purpose": "Entered static target and ARG4 produce genuine internal/method/emitter trace; replacement survives original callback throw.",
+    "expected_normal_stdout": "4:outer|Owner::run:512:outer|trigger_error|Emitter::cause:7|R:after;"
+  },
+  {
+    "id": "method-array-false-fallback-keeps-live-replacement-mask",
+    "source": "<?php\nclass Replacement {public static function run($n,$m,$f,$l) {echo 'N:',$n,':',$m,';';}}\nclass Owner {public function run($n,$m,$f,$l) {set_error_handler('Replacement::run',1024);echo 'F;';return false;}}\nerror_reporting(0);set_error_handler([new Owner,'run'],512);\ntrigger_error('first',512);trigger_error('masked',512);trigger_error('next',1024);restore_error_handler();restore_error_handler();\n",
+    "source_sha256": "0845ae1192d0cb4972a4173056cacb85ff29fda3ea9231f4cff640e9ce99ed38",
+    "expected_model": "normal",
+    "purpose": "False fallback observes current reporting/mask and does not overwrite an explicit replacement; unsupported lifecycle features are not used.",
+    "expected_normal_stdout": "F;N:1024:next;"
+  },
+  {
+    "id": "method-handler-reference-parameter-temporary",
+    "source": "<?php\nclass Owner {public static function run(&$n,$m,$f,$l) {$n=999;echo func_num_args(),':',func_get_arg(0),':',$m;}}\nset_error_handler(['Owner','run'],512);trigger_error('ref',512);restore_error_handler();\n",
+    "source_sha256": "08b657b12c02336f608db56436e968c7a322626b06e5d0ec4605055a5b8a2497",
+    "expected_model": "normal",
+    "purpose": "Selected method reference parameter receives an API temporary, warns once, and ARG4 reflects the live modified parameter.",
+    "expected_normal_stdout": "4:999:ref"
+  },
+  {
+    "id": "known-invalid-class-method-registration-uncaught",
+    "source": "<?php\nclass Owner {public function run($n,$m,$f,$l) {echo 'BAD';}}\nset_error_handler('Owner::run',512);\n",
+    "source_sha256": "6d6671381d01f737801dbc9adf30d557bbef1985e9c803aedf3711222530532c",
+    "expected_model": "php_error",
+    "purpose": "Uncaught callback TypeError remains a PHP-error tuple rather than Unsupported."
+  },
+  {
+    "id": "known-missing-array-registration-uncaught",
+    "source": "<?php\nclass Owner {}\nset_error_handler([new Owner,'missing'],512);\n",
+    "source_sha256": "c1389f1387dd09d2c75f493afd71b34701ca40920086a15502130cadf383addc",
+    "expected_model": "php_error",
+    "purpose": "Uncaught known public missing-method registration error."
+  },
+  {
+    "id": "nonpublic-handler-method-control",
+    "source": "<?php\nclass Owner {private static function run($n,$m,$f,$l) {}}\ntry {set_error_handler('Owner::run',512);}catch(TypeError $e) {echo 'E';}\n",
+    "source_sha256": "b72e56090a162688e29c00c03181890334d65f84e92a0a8afcfcbc8d54ae3e9d",
+    "expected_model": "unsupported",
+    "purpose": "Nonpublic source callback resolution remains explicitly Unsupported, separate from agreements.",
+    "expected_normal_stdout": "E"
+  },
+  {
+    "id": "compound-handler-method-control",
+    "source": "<?php\nclass Owner {public static function run($n,$m,$f,$l) {echo 'R';}}\nclass Child extends Owner {}\nset_error_handler(['Child','Owner::run'],512);trigger_error('x',512);restore_error_handler();\n",
+    "source_sha256": "e27a318c520c64f38de437b196ca013f882211f587d6a9495c5fc43974417a59",
+    "expected_model": "unsupported",
+    "purpose": "Compound method callback syntax/deprecation remains outside the selected ordinary public resolver."
+  },
+  {
+    "id": "current-owned-restore-pipe-null-static-handler",
+    "source": "<?php\nerror_reporting(0);\nclass Owner {\n    public static function handler(string $severity, $message, $file, $line) {\n        echo 'H', func_num_args(), ':', $severity, ':', __CLASS__, '/', static::class;\n        echo get_error_handler() === null ? 'Z' : 'BAD';\n        throw new Error('pipe-handler');\n    }\n    public function emit($x) {\n        echo __CLASS__, '/', static::class, ':', func_num_args(), ':', func_get_arg(0), '|';\n        set_error_handler(['Owner', 'handler'], 8192);\n        $restore = ini_restore(...);\n        try {\n            null |> $restore;\n            echo 'BAD';\n        } catch (Error $error) {\n            echo $error->getMessage() === 'pipe-handler' ? 'T' : 'BAD';\n        }\n        restore_error_handler();\n        echo '|', func_num_args(), ':', func_get_arg(0);\n    }\n}\nclass Child extends Owner {}\n(new Child)->emit(x: 'x');\n",
+    "source_sha256": "6a57fdc9be937d21010e09957d9816615073e5c1c2668dec0dac935fac6815a4",
+    "expected_model": "normal",
+    "expected_normal_stdout": "Owner/Child:1:x|H4:8192:Owner/ChildZT|1:x",
+    "profile": "file",
+    "coverage": "Current owned CONFIG PIPE null continuation with static public API handler and forwarded called class; genuine weak ARG4, saved emitter arguments and throw cleanup."
+  }
+]
