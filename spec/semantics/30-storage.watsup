@@ -176,6 +176,8 @@ syntax ptask = CLOSURE_CALL_WARNING pclosurecall ptbytes | CLOSURE_CALL_GETTER_R
   | KEY_UNSET_BASE pbase bool | KEY_UNSET_DIM poperand int bool | KEY_UNSET_FETCH_RESULT pkeyread | KEY_UNSET_NULL_RESULT pkeyread | KEY_APPEND_RESULT pappendread
   | KEY_COALESCE_RHS_RESULT pcoalesceread
   | DEPRECATED_CONSTANT_RESULT pdeprecatedconstant | REPORTING_LONG_RESULT pconfigcall int
+  | GLOBAL_CONSTANT_METHOD_RESUME porigin porigin porigin nat
+  | GLOBAL_CONSTANT_DUPLICATE porigin pvalue pvalueclass nat int
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
   | TRAIT_DATA_SEED pdeclnoticeitem* | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
@@ -283,6 +285,7 @@ dec $stdclass_cast_array(pstate, nat) : pstate
 dec $stdclass_clone(pstate, nat) : pstate
 dec $constant_callable_source_scope(pstate, porigin) : porigin?
 dec $constant_callable_active(pstate, porigin) : bool
+dec $global_constant_callable_active(pstate, porigin) : bool
 dec $constant_closure_create(pstate, pfunction) : pstate
 dec $constant_callable_records_valid(pstate, pconstantclosure*) : bool
 dec $constant_callable_value_valid(pstate, nat, porigin) : bool
