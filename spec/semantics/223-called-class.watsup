@@ -1,0 +1,57 @@
+;; get_called_class shares the ordered, source-certified zero-argument protocol.
+;; Zend's direct GET_CALLED_CLASS opcode omits the internal error trace frame.
+def $intrinsic_name(INTRINSIC_GET_CALLED_CLASS) = $ptascii("get_called_class")
+def $intrinsic_named(preqbytes) = (INTRINSIC_GET_CALLED_CLASS)
+  -- if $ptlc(preqbytes) = $ptascii("get_called_class")
+def $arginfo_kind(INTRINSIC_GET_CALLED_CLASS) = true
+
+;; GET_CALLED_CLASS produces TMP without requiring an ordinary function body.
+def $pparginfo_tmp(pcode, pcunit, pcpath) = true
+  -- if pcode.UNIT = pcunit.ID
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (NExprFuncCall phpType19 (SEQUENCE eps) metadata)
+  -- if $pparginfo_initial(phpType19)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) = $ptascii("get_called_class")
+
+def $calledclass_special(S, pargcall) = true
+  -- if pargcall.KIND = INTRINSIC_GET_CALLED_CLASS
+  -- if pargcall.OWNER = eps
+  -- if pargcall.SELECTION = eps
+  -- if $origin_node(S.SOURCES, pargcall.SITE) = (NExprFuncCall phpType19 (SEQUENCE eps) metadata)
+  -- if $exit_fixed(S, pargcall.SITE) = ((preqbytes, eps))
+  -- if $ptlc($dynamic_lookup_name(preqbytes)) = $ptascii("get_called_class")
+  -- if $call_target(S, preqbytes, eps) = eps
+def $calledclass_special(S, pargcall) = false -- otherwise
+def $arginfo_error(S, pargcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pargcall.SITE)], text, preqbytes, pargcall.LINE, $eval_exception_trace(S))
+  -- if $calledclass_special(S, pargcall)
+
+;; Unscoped internal calls are transparent. A source function/Closure is a
+;; stopping frame even when a suspended method has a nonempty called class.
+;; Closure->__invoke is itself a scoped internal frame with a Closure receiver.
+dec $calledclass_name(pstate, pargcall) : ptbytes?
+def $calledclass_name(S, pargcall) = ($ptascii("Closure"))
+  -- if $arginfo_method_receiver(S, pargcall)
+  -- if $call_current_valid(S)
+def $calledclass_name(S, pargcall) = (pclassdesc.NAME)
+  -- if ~$arginfo_method_receiver(S, pargcall)
+  -- if $call_current_valid(S)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLED_CLASS = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $calledclass_name(S, pargcall) = eps
+  -- if ~$arginfo_method_receiver(S, pargcall)
+  -- if $call_current_valid(S)
+  -- if S.CURRENT = eps
+def $calledclass_name(S, pargcall) = eps
+  -- if ~$arginfo_method_receiver(S, pargcall)
+  -- if $call_current_valid(S)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLED_CLASS = eps
+
+def $arginfo_context(S, pargcall, z) = $arginfo_finish(S, PSTRING ptbytes)
+  -- if pargcall.KIND = INTRINSIC_GET_CALLED_CLASS
+  -- if $calledclass_name(S, pargcall) = (ptbytes)
+def $arginfo_context(S, pargcall, z) = $arginfo_error(S, pargcall, "Error", $ptascii("get_called_class() must be called from within a class"))
+  -- if pargcall.KIND = INTRINSIC_GET_CALLED_CLASS
+  -- if $calledclass_name(S, pargcall) = eps
