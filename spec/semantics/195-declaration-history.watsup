@@ -51,7 +51,6 @@ dec $declaration_failures_entered(pdeclaration*, pfailedsource*) : bool
 def $declaration_failures_entered(pdeclaration*, eps) = true
 def $declaration_failures_entered(pdeclaration*, pfailedsource :: pfailedsource_tail*) = ($declaration_entered(pdeclaration*, pfailedsource.UNIT) /\ $declaration_failures_entered(pdeclaration*, pfailedsource_tail*))
 
-dec $declaration_active_class(pstate, porigin?) : bool
 def $declaration_active_class(S, eps) = true
 def $declaration_active_class(S, (porigin)) = true
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)

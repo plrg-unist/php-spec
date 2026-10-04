@@ -308,7 +308,6 @@ def $task_nodes(CLASS_CONST_CAPTURE porigin poperand z) = $operand_nodes(poperan
 
 ;; Zend's compound-AST diagnostic override survives a user callback. The
 ;; callback's lexical evaluator is separate from that displayed location.
-dec $class_constant_source_location(pstate, porigin?) : (porigin, int)?
 def $class_constant_source_location(S, (PORIGIN n pcpath)) = ((PORIGIN n pcpath, z))
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
@@ -323,6 +322,7 @@ def $class_constant_default_binding_head(ptask*) = false -- otherwise
 
 ;; Creation retains source identities; the displayed child line is never an
 ;; arbitrary saved integer. A bound Closure may supply a different file owner.
+dec $constant_location_function_scope(pstate, pfunction, porigin) : bool
 dec $constant_location_root_valid(pstate, pconstantlocation) : bool
 def $constant_location_root_valid(S, pconstantlocation) = true
   -- if $class_constant_origin(S.CLASSES, pconstantlocation.ROOT) = (pclassconstantdesc)
@@ -339,7 +339,6 @@ def $constant_location_root_valid(S, pconstantlocation) = true
   -- if pconstantlocation.ROOT = $default_parameter_origin(S, pfunction.ORIGIN, pdefault.INDEX)
   -- if $constant_location_function_scope(S, pfunction, pconstantlocation.CLASS)
 def $constant_location_root_valid(S, pconstantlocation) = false -- otherwise
-dec $constant_location_function_scope(pstate, pfunction, porigin) : bool
 def $constant_location_function_scope(S, pfunction, porigin) = (pmethoddesc.OWNER = porigin)
   -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
 def $constant_location_function_scope(S, pfunction, porigin) = true
@@ -348,7 +347,6 @@ def $constant_location_function_scope(S, pfunction, porigin) = true
   -- if $default_closure_node(pcnode)
   -- if $class_at(S.CLASSES, porigin) =/= eps
 def $constant_location_function_scope(S, pfunction, porigin) = false -- otherwise
-dec $constant_location_valid(pstate, pconstantlocation, nat) : bool
 def $constant_location_valid(S, pconstantlocation, n) = true
   -- if pconstantlocation.CLASS = PORIGIN n_class pcpath_class
   -- if pconstantlocation.ROOT = PORIGIN n_root pcpath_root
@@ -394,7 +392,6 @@ def $class_constant_location_frames(S, pframe :: pframe_tail*) = (pconstantlocat
   -- if $class_constant_location_scope($constant_frame_scope(S, pframe, pframe_tail*)) = (pconstantlocation)
 def $class_constant_location_frames(S, pframe :: pframe_tail*) = $class_constant_location_frames(S, pframe_tail*)
   -- if $class_constant_location_scope($constant_frame_scope(S, pframe, pframe_tail*)) = eps
-dec $class_constant_location(pstate) : pconstantlocation?
 def $class_constant_location(S) = (pconstantlocation)
   -- if $class_constant_location_scope(S) = (pconstantlocation)
 def $class_constant_location(S) = $class_constant_location_frames(S, S.FRAMES)
