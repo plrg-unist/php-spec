@@ -378,6 +378,12 @@ def $closure_callable(S, n) = true
 
 ;; A child source Closure copies its genuine captured-method creator. The
 ;; historical method and receiver are lookup evidence, never extra heap owners.
+def $from_current(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
+def $from_current(S) = false -- otherwise
 def $closure_evidence_body(S, n) = (pfrommethod.FUNCTION)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
@@ -394,8 +400,7 @@ def $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope) = true
 def $closure_creation_stamp(S, pfunction) = ({FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, RECEIVER $closure_receiver_present($closure_bound_receiver(S, pfunction)), EVIDENCE (pclosurecreator)})
   -- if ~$closure_nested_creation(S, pfunction.ORIGIN)
   -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.TARGET = CLOSURE_TARGET n
-  -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
+  -- if $from_current(S)
   -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), pfunction.ORIGIN), eps) = ($origin_source(pcallcontext.FUNCTION))
   -- if $call_current_valid(S)
   -- if $closure_creation_scope(S, pfunction.ORIGIN)
