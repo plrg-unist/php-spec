@@ -32,6 +32,8 @@ def $closure_binding_source_valid(S, pclosurebinding) = true
   -- if n_source = pclosurebinding.SOURCE
   -- if $(n_source < n)
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem_source* pstaticcell_source*
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if ~$closure_static(S, pfunction) \/ pclosurebinding.RECEIVER = eps
   -- if $closure_binding_api_site(S, pclosurebinding.SITE)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $binding_scope_valid(S, pclosurebinding)
