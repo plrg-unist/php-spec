@@ -26,12 +26,13 @@ class lookup, declaring self/parent and source-spelled known parents. Deferred
 Closure/eval contexts use their authenticated lexical scope; rebound defaults
 avoid origin-only cache reuse. Seventeen constant-context and two ordinary-form
 source comparisons plus 25/38 focused guards retain separate tested cutoffs.
-The maintained catalogue contains 92 agreements; the callable helper retains its
+The maintained catalogue contains 93 agreements; the callable helper retains its
 earlier 159 + 44 predicates and adds these 63. [The constants ledger](coverage/semantics/class-constants-current-review.json)
 preserves original failures and the refuted native concat prediction. Static
 Closure/FCC identity, owner/called scope, clone cells and compile-entry caches
-remain covered by their earlier checks. Actual-current parameter composition is
-the next affected gate. Wider callable initializer contexts,
+remain covered by their earlier checks. On actual reporting/214 composition, a
+Stringable receive callback invokes the rebound B default before original A and
+retains cached identity (`B:A:same`). Wider callable initializer contexts,
 builtin FCC targets, uncertified object transfers, unretained update selectors and
 references into incomplete tables remain Unsupported. Modifier admission,
 attributes and broader consumers stay open; the runtime is reused.
@@ -55,7 +56,7 @@ The installed families compose as follows; each ledger records its scope and lim
 
 | Family | Current behavior and evidence |
 | --- | --- |
-| Class constants183/184/212 | Lazy scalar/array and selected Closure/FCC caches preserve strict types, inheritance priority and compile-entry availability. Named constexpr `::class` and rebound lexical defaults preserve source spelling/scope. Catalogue of 92 and 159 + 44 + 63 callable/class-name guards retain separate cutoffs; broader consumers remain open. [Constants ledger](coverage/semantics/class-constants-current-review.json). |
+| Class constants183/184/212 | Lazy scalar/array and selected Closure/FCC caches preserve strict types, inheritance priority and compile-entry availability. Named constexpr `::class` and rebound lexical defaults preserve source spelling/scope. Catalogue of 93 and 159 + 44 + 63 callable/class-name guards retain separate cutoffs; broader consumers remain open. [Constants ledger](coverage/semantics/class-constants-current-review.json). |
 | Warning-truth decisions209 | Branch/loop/short-circuit/NOT/ternary-condition choices consume the captured null even after handlers define the CV. Saved consumers and thrown-handler cleanup retain authenticated source/line. Casts/copy/SEND remain open. [Truth ledger](coverage/semantics/warning-truth-review.json). |
 | Borrowed warning reads208 | Strict identity retains the old reference cell across callbacks without adding an owner; saved callers and throw cleanup preserve it. Defined ordinary `$GLOBALS[key]` uses the real table. Getter/setter and method-string interactions keep separate revisions. [Warning-read ledger](coverage/semantics/warning-reads-review.json). |
 | Error handlers/reporting206/207/211 | Raw registrations and selected targets retain four arguments and genuine emitting frames through mutation, replacement, nested reentry, throw and false fallback. Reporting get/set/Restore separates full raw bytes, signed32 masks and modified-entry state across suppression and handler writes; twelve normal sources across two revisions and 74 conditions are accepted. Fifteen nondeprecated error constants resolve exactly. Broader handler forms, deprecated constants and lossy-conversion warning ingress remain open. [Reporting](coverage/semantics/reporting-ini-review.json), [method handlers](coverage/semantics/handler-callables-current-review.json), [earlier handlers](coverage/semantics/error-handlers-review.json). |

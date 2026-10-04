@@ -102,9 +102,11 @@ catalogue to 92. Two focused fixtures add 25/38 predicates for coherent folded
 spelling substitution and a forged contextual default cache/rebound scope.
 Original Unsupported and elaboration failures stay preserved; the earlier
 binding-premise draft remains unrun.
-the original concat rejection hypothesis remains refuted by normal `GhostName`.
-These source and finite cutoffs are separate; current parameter composition is
-pending and maintenance adds no execution credit.
+The original concat rejection hypothesis remains refuted by normal `GhostName`.
+These source and finite cutoffs are separate. One later current reporting/214
+comparison invokes a rebound B default before original A inside a Stringable
+receive callback, retaining cached identity (`B:A:same`), bringing the catalogue
+to 93. Maintenance adds no execution credit.
 
 Accessible references into an incomplete class table are explicitly Unsupported;
 the separate rejected control is not a native agreement. Unretained
