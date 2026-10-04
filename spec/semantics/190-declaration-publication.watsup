@@ -15,14 +15,13 @@ def $ppimage(P, b) = ({ CLASSES P.CLASSES, FUNCTIONS P.FUNCTIONS, CLOSURETEMPLAT
   -- if $ppconstants(P) = PPCCONSTANTS (pcpath, pvalue)*
 def $ppimage(P, b) = eps -- otherwise
 
-def $ppimage_save(P, b) = P[.INSTALLED = ppinstalled]
+dec $ppimage_save_result(ppstate, ppinstalled?) : ppstate
+def $ppimage_save_result(P, (ppinstalled)) = P[.INSTALLED = ppinstalled]
+def $ppimage_save_result(P, eps) = $ppunsupported(P, "invalid completed compiler prefix")
+
+def $ppimage_save(P, b) = $ppimage_save_result(P, $ppimage(P, b))
   -- if P.COMPLETION = PPCNORMAL
   -- if $ppimage_unit(P)
-  -- if $ppimage(P, b) = (ppinstalled)
-def $ppimage_save(P, b) = $ppunsupported(P, "invalid completed compiler prefix")
-  -- if P.COMPLETION = PPCNORMAL
-  -- if $ppimage_unit(P)
-  -- if $ppimage(P, b) = eps
 def $ppimage_save(P, b) = P
   -- if P.COMPLETION =/= PPCNORMAL \/ ~$ppimage_unit(P)
 
