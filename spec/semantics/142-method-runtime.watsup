@@ -380,10 +380,10 @@ dec $scoped_source_method(phpType20, ptbytes) : bool
 dec $scoped_source_method_at(phpType20, ptbytes, int) : bool
 dec $scoped_source_method_origin(pstate, porigin, phpType20, ptbytes) : bool
 def $scoped_source_method(phpType20, ptbytes) = $scoped_source_method_at(phpType20, ptbytes, 14)
-def $scoped_source_method_at(NIdentifier (BYTES text) metadata, ptbytes) = ($ptlc($base64(text), z_precision) = $ptlc(ptbytes))
-def $scoped_source_method_at(NScalarString (BYTES text) metadata, ptbytes) = ($ptlc($base64(text), z_precision) = $ptlc(ptbytes))
-def $scoped_source_method_at(NExprBinaryOpConcat expression_1 expression_2 metadata, ptbytes) = ($ptlc(n*, z_precision) = $ptlc(ptbytes))
-  -- if $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = (PSTRING n*)
+def $scoped_source_method_at(NIdentifier (BYTES text) metadata, ptbytes, z_precision) = ($ptlc($base64(text)) = $ptlc(ptbytes))
+def $scoped_source_method_at(NScalarString (BYTES text) metadata, ptbytes, z_precision) = ($ptlc($base64(text)) = $ptlc(ptbytes))
+def $scoped_source_method_at(NExprBinaryOpConcat expression_1 expression_2 metadata, ptbytes, z_precision) = ($ptlc(n*) = $ptlc(ptbytes))
+  -- if $parser_literal_at(NExprBinaryOpConcat expression_1 expression_2 metadata, z_precision) = (PSTRING n*)
 def $scoped_source_method_at(expression_name, ptbytes, z_precision) = true
   -- if $property_computed_name(expression_name)
   -- if ~$scoped_method_literal(expression_name)
