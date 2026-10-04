@@ -24,8 +24,10 @@ cells, no warning and named-slot priority. Module220 rejects captured-null
 ASSIGN through live typed aliases, retaining their value and replacing a handler
 throw with a caller TypeError whose previous chain owns the original error.
 At484d, author9/211 and independent5/249 pass; the latter corrects two fixture
-phase assumptions without replaying passing models. Actual215/217 composition
-is prepared separately; its focused scoped-handler check is pending. The
+phase assumptions without replaying passing models. The actual3919 composition
+accepts one reduced scoped-handler source at5bce: TypeError context, typed caller
+alias and the handler chain survive private selection and retired global owners.
+The original observer-heavy source retains its inconclusive CLI60 timeout. The
 [consumer ledger](coverage/semantics/warning-consumers-review.json) preserves
 original failures and distinct revisions.
 

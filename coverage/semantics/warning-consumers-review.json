@@ -128,7 +128,7 @@
       "current_finite_phase": 330
     }
   },
-  "remaining": "Constrained rejection chains, other producers, broader byref/reference-result consumers, paused returns and full-core/offline remain separate",
+  "remaining": "other producers, broader byref/reference-result consumers, paused returns and full-core/offline remain separate",
   "publication": {
     "base": "6771d3df8be4c13dfe25fa6bb4569e66aa344815",
     "source": "5ae04fc52ac13df60cbafcd4e1f493c684943712",
@@ -157,7 +157,7 @@
     }
   },
   "reference_write_extension": {
-    "status": "Private220 independently accepted: author9 sources/211 checks and independent5 sources/249 checks at frozen484d; actual215/217 composition validation pending",
+    "status": "Independently accepted private220 and current215/217/220 scoped interaction; broader consumers remain open",
     "base": "1bc27033d0382cd2009e824ba73ea41ee222569b",
     "implementation": [
       "spec/semantics/213-warning-read-consumers.watsup",
@@ -223,9 +223,29 @@
     },
     "reproduction": {
       "author": "python3 -B tests/semantics/warning_reference_run.py .tools/warning-consumers/prepared-chain-r2-2h1zyqpl/report.json",
-      "independent": "External run-own.py and continue-states.py retain exact argv/exits and compiler/runtime identities in raw reports",
+      "independent": "External run-own.py, continue-states.py and final continue-second-state.py retain exact argv/exits and compiler/runtime identities in raw reports",
       "environment": "ordinary13 profile; LC_ALL=C, TZ=UTC, PHP_SPEC_SCRIPT_ENCODING unset; serial jobs=1; actual resource limits recorded at launch",
       "runtime": "Reused pinned PHP8.5.10 CLI NTS64 and existing adapter/numeric runner/compiler; no rebuild or full-family claim"
+    },
+    "current_composition": {
+      "accepted_cutoff": "3919ae4c97846f25c9c267b9b05388a856e3e4f2",
+      "tested_revision": "5bce22c8ee78d294ba0d92c042bd42b646e197ac",
+      "sources": 1,
+      "agreement": 1,
+      "source": "tests/semantics/warning_reference_scoped_reduced.php",
+      "report": "/home/user/workspace/php-spec/.tools/argument-warning-reference-composed-14/.tools/warning-reference-scoped/run-2k_ukomz/report.json",
+      "report_sha256": "6713c6b336dde51e90756d63ecb50c78d2c09f3ae69fc20c8fe18e6c4ee5b406",
+      "release": "/home/user/workspace/php-spec/.tools/argument-warning-reference-composed-14/.tools/warning-reference-scoped/run-2k_ukomz/RELEASE.json",
+      "scope": "Active parent emitter selects its private handler over Child public handle; live typed caller alias remains9, caller introspection remains9 and TypeError line19/file/new-emitter trace are authentic. Both previous identities are checked before retiring global owners; chain messages are checked afterward",
+      "original_inconclusive": {
+        "source": "tests/semantics/warning_reference_scoped.php",
+        "report": "/home/user/workspace/php-spec/.tools/argument-warning-reference-composed-14/.tools/warning-reference-scoped/run-493_py31/report.json",
+        "outcome": "Native exact tuple passed; model CLI60 timeout, zero agreement. Original bytes, launcher and raw records preserved",
+        "reduction": "Remove both foreach frame counts and older-handler trace access; preserve all other bytes and assignment line19"
+      },
+      "command": "python3 -B .tools/warning-reference-scoped/run.py",
+      "validation": "Native/model exit0, no timeout or stderr, normal exact stdout, stable inputs/revision and all groups empty; saved45/90/CLI60/steps100000 caps and reused binaries",
+      "publication": "Acceptance documentation changes add no execution or rebuild credit"
     }
   }
 }

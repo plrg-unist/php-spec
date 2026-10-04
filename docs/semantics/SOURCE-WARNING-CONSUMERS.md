@@ -25,6 +25,15 @@ reference operand uses the value a prior callback defined, while the selected
 callee remains fixed. Five independent native probes confirm these timings. The separate source/state
 gates above preserve that already implemented86/105 behavior.
 
+The actual3919 composition preserves accepted215 and217. One derived source at5bce
+selects the parent's private handler over a Child public method, retains the typed
+caller alias/introspection, and observes the new TypeError's line19/file/emitter
+trace. Both previous identities are checked before global owners retire;
+the chain messages are checked afterward.
+The original source's native tuple passes but its model times out at CLI60;
+the accepted reduction removes frame counting and older-handler trace access.
+The original remains inconclusive; no broader trace or full-core credit is added.
+
 Ordinary ternary copies authenticate a fixed compiled condition without rereading
 its live variable. Prepass copies retain the actual redirect, expression origin and
 copy boundary. A forged alternative arm cannot match either fixed selection. Callback-created destination aliases are used by the later write;
