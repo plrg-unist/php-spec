@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Warning-read consumers213 retain original null for six casts, selected copies and
+ordinary by-value sends across handler mutation. Selected callees and prior arrays
+keep their real owners; named-slot errors precede warnings. Direct ASSIGN writes
+null even after a handler throws, before the same exception continues; rejected
+constrained writes remain Unsupported. Mixed author21 normal tuples/control0 and
+58/60/65/53=236, plus independent10/197, retain their actual revisions and original
+failures. Fresh actual6395 composition at181f separately accepts source1/94 and
+independent cached-callee source1/96, covering static-reference sends, the real
+outer-array prepass redirect and cached target/handler retention. Source-equivalent
+publication preserves subsequent reporting, parameter backing and named-class
+changes. [Consumer ledger](coverage/semantics/warning-consumers-review.json).
+
 Weak Stringable string parameters214/216 convert supplied fixed values in receive
 order, preserving caller strictness and nominal/callable precedence. Free
 by-reference parameters write through their captured formal cell; existing
@@ -58,7 +70,8 @@ The installed families compose as follows; each ledger records its scope and lim
 | Family | Current behavior and evidence |
 | --- | --- |
 | Class constants183/184/212 | Lazy scalar/array and selected Closure/FCC caches preserve strict types, inheritance priority and compile-entry availability. Named constexpr `::class` and rebound lexical defaults preserve source spelling/scope. Catalogue of 93 and 159 + 44 + 63 callable/class-name guards retain separate cutoffs; broader consumers remain open. [Constants ledger](coverage/semantics/class-constants-current-review.json). |
-| Warning-truth decisions209 | Branch/loop/short-circuit/NOT/ternary-condition choices consume the captured null even after handlers define the CV. Saved consumers and thrown-handler cleanup retain authenticated source/line. Casts/copy/SEND remain open. [Truth ledger](coverage/semantics/warning-truth-review.json). |
+| Warning-truth decisions209 | Branch/loop/short-circuit/NOT/ternary-condition choices consume the captured null even after handlers define the CV. Saved consumers and thrown-handler cleanup retain authenticated source/line. Later cast/copy/SEND checks are recorded separately below. [Truth ledger](coverage/semantics/warning-truth-review.json). |
+| Warning-read consumers213 | Six casts, selected ternary/coalesce copies and ordinary by-value sends preserve captured null, aliases and selected targets through callbacks. Direct ASSIGN retains its null write through throw. Mixed21/control0+236 and independent10/197 remain separate from fresh static-reference/outer-array source1/94 and cached-callee source1/96 at181f. [Consumer ledger](coverage/semantics/warning-consumers-review.json). |
 | Borrowed warning reads208 | Strict identity retains the old reference cell across callbacks without adding an owner; saved callers and throw cleanup preserve it. Defined ordinary `$GLOBALS[key]` uses the real table. Getter/setter and method-string interactions keep separate revisions. [Warning-read ledger](coverage/semantics/warning-reads-review.json). |
 | Error handlers/reporting206/207/211 | Raw registrations and selected targets retain four arguments and genuine emitting frames through mutation, replacement, nested reentry, throw and false fallback. Reporting get/set/Restore separates full raw bytes, signed32 masks and modified-entry state across suppression and handler writes; twelve normal sources across two revisions and 74 conditions are accepted. Fifteen nondeprecated error constants resolve exactly. Broader handler forms, deprecated constants and lossy-conversion warning ingress remain open. [Reporting](coverage/semantics/reporting-ini-review.json), [method handlers](coverage/semantics/handler-callables-current-review.json), [earlier handlers](coverage/semantics/error-handlers-review.json). |
 | Class-method strings210 and FCC119 | Full-byte lookup separates frame-based callable admission, computed static dispatch and fixed compatible-this selection. Captures/clone retain immutable source certificates and defaults/static cells. A named throwing handler preserves the selected static caller and arguments. [String ledger](coverage/semantics/class-method-strings-current-review.json). |
