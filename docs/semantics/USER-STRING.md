@@ -26,6 +26,24 @@ left and right. Weak string parameter, return and property conversions invoke
 the callback; strict ones reject the object before the callback. The strictness
 of an implicit `__toString` return belongs to the method's own source unit.
 
+Supplied fixed string parameters now use the same resumable callback in receive
+order. Nominal or callable membership retains the original object before string
+coercion; caller strictness rejects before conversion. By-value formals retain a
+copy. Free by-reference formals retain their entered cell across callback
+mutation and write the string there only while unconstrained. Existing property
+type sources reject conversion before the callback. A callback that attaches a
+new property source instead ends in explicit Unsupported before writeback;
+modeling that live backing-value exception remains required core work and must
+use parameter authority, not the paused typed-reference-return witness.
+
+The continuation binds the actual NParam occurrence, supplied index, formal cell
+and original receiver. Same-site recursion authenticates each marker against its
+nearest owning receive frame. Conversion throws propagate the original exception
+without a receive TypeError wrapper. The [parameter ledger](../../coverage/semantics/weak-string-parameters-review.json)
+keeps author11 plus one Unsupported control, state178, independent2 and current
+cached-Closure/nonpublic-callable source2/state46 at their distinct revisions.
+Variadic/default callback reception and broader constrained consumers remain open.
+
 The required consumer inventory includes echo, print, `(string)` casts,
 concat, interpolation, eval operands, weak typed conversions, dynamic variable
 names, string-offset assigned values, `exit`, and object-versus-string loose
@@ -132,10 +150,10 @@ also retain the object before weak string coercion, with reviewed source and
 receive-state checks. Shared pure selection changes the ordinary by-value
 `typed-return-callable-union-control` expectation to retain the object; its
 historical Unsupported evidence remains preserved, with no new return agreement.
-Weak noncallable Stringable parameters and broader callable classification remain
-separate dependencies. By-reference
-returns require a separate alias write-back continuation, followed by weak noncallable
-parameters, properties and constrained references. A disjoint shared
+Supplied weak noncallable parameters now have the bounded continuation described
+above; broader callable classification and constrained consumers remain open.
+By-reference returns require their separately paused alias write-back validation.
+A disjoint shared
 `$throwable_chain` rule now follows live source Throwable subclasses as well
 as internal Throwables; it retains cycle and forged-previous rejection. This
 allows both return-error chaining and ordinary finally replacement when a

@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Weak Stringable string parameters214 convert supplied fixed values in receive
+order, preserving caller strictness and nominal/callable precedence. Free
+by-reference parameters write through their captured formal cell; existing
+property constraints reject before the callback. Same-site reentry and throws
+retain authentic receive frames and release converter owners. A newly attached
+property source remains Unsupported before writeback, with no native agreement.
+The [parameter ledger](coverage/semantics/weak-string-parameters-review.json)
+separates author11 plus this control, state178, independent2 and current source2/state46.
+
 Class constants183/184/212 lazily create owner-scoped scalar/array values and
 selected static Closures or fixed function/static-method callables. Cached
 identity, clone state and selection prefixes survive inherited aliases and the
@@ -42,6 +51,7 @@ The installed families compose as follows; each ledger records its scope and lim
 | Include/configuration | Failed CHDIR warnings retain provider certificates and caller frames through handler CWD/raw writes, false fallback and throw. One current throwing source/136 conditions, earlier three sources and compiler25 checks keep separate revisions. Stringable CHDIR PIPE retains post-callback CWD/held operands; unary CONFIG PIPE preserves source strictness through borrowed warnings. [PIPE ledger](coverage/semantics/include-config-pipe-review.json). Raw getters, primitive/null Restore, weak-null handler continuations and two-slot INI ownership retain their separate checkpoints. [Readback](coverage/semantics/include-ini-readback-review.json), [INI](coverage/semantics/include-stringable-ini-option-review.json). |
 | Stringable SET/Restore and paths | SET separates raw INI bytes from effective C-string paths. Weak Restore uses exact full-name lookup and preserves callback mutations on misses. Current ARG/Restore checks retain caller arguments and zero-argument callbacks. [Restore](coverage/semantics/include-stringable-restore-review.json), [prefix](coverage/semantics/include-ini-prefix-review.json), [SET](coverage/semantics/include-set-current-review.json). |
 | Typed static properties197 | Weak simple Stringable assignment rechecks live aliases and retains paired callback owners. Current Restore/ARG/INI composition preserves full property bytes, caller arguments and normal/throw cleanup. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json). |
+| Weak string parameters214 | Supplied value/free-reference conversion preserves receive order, caller strictness, nominal/callable precedence and captured formal-cell ownership. Existing constraints reject before callbacks; callback-attached constraints remain Unsupported. Cached Closure and nonpublic invocation checks retain separate current evidence. [Parameter ledger](coverage/semantics/weak-string-parameters-review.json). |
 | Static setters200/201 | Backed final/asymmetric declarations normalize equivalent setters and preserve inheritance/error priority; direct and indirect consumers retain lexical access, live raw-slot checks and typed aliases. [Setter ledger](coverage/semantics/static-setter-access-review.json). |
 | StaticCall reference acquisition141/142 | Getters with untyped return signatures retain scoped selection, typed and legal untyped static aliases and returned-cell cleanup. Typed REF flags preserve initialization/error priority even when discarded. Direct reference sends retain the real cell; ignored untyped getters leave raw values unchanged. Ownership/type-source and getter/borrowed-read checks keep their distinct revisions. [Reference ledger](coverage/semantics/static-method-reference-review.json). |
 | Argument introspection198/199 | Ordinary current and saved frames retain genuine named/unpacked argument views through invocation and callbacks. [Argument ledger](coverage/semantics/argument-introspection-calls-current-review.json). |
@@ -65,8 +75,10 @@ failures and interrupted evidence.
 - Include/configuration: broader warning producers, wider directives
   and reporting readback, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
-- Values, references and coercion: broader weak parameter/property conversion,
-  constrained-reference object conversion, wider nonstatic delayed receivers and
+- Values, references and coercion: callback-attached property sources during free
+  string-by-reference reception require a parameter-authorized backing-value exception;
+  that source remains Unsupported with zero agreement. Variadic and broader weak
+  parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred property defaults and references into incomplete constant tables remain Unsupported.
   Named error constants such as E_USER_NOTICE remain unsupported by initial lookup;
   the handled-notice check uses literal1024. Generic156 return replay, temporary-return

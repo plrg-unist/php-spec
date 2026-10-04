@@ -415,8 +415,17 @@ include bridge checks also agree.
 is installed. It resumes checked `__toString` callbacks for
 by-value returns, including nested weak returns and throwable `previous`
 chains. An installed 90-second interface-method bridge and paused marker check
-pass; the generic 45-second runner times out on that source. By-reference and
-other typed consumers remain open.
+pass; the generic 45-second runner times out on that source. By-reference returns
+and wider typed consumers remain open.
+[Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
+now convert supplied fixed parameters in receive order, preserving caller
+strictness, nominal/callable precedence and the entered formal cell. Existing
+property constraints reject a by-reference conversion before its callback;
+ordinary free references write back only while unconstrained. Reentrant receives
+retain distinct formal cells, and callback throws keep the original exception.
+Cached constant Closures and nonpublic invokable objects preserve these rules.
+A property source attached during conversion remains explicit Unsupported before
+writeback; variadic reception and broader constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

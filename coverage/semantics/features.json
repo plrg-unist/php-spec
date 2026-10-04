@@ -2491,7 +2491,9 @@
         "spec/semantics/95-typed-calls.watsup",
         "spec/semantics/84-call-integrity.watsup",
         "spec/semantics/102-variadic-compiler.watsup",
-        "spec/semantics/103-positional-variadics.watsup"
+        "spec/semantics/103-positional-variadics.watsup",
+        "spec/semantics/214-string-parameters.watsup",
+        "spec/semantics/168-user-string-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/default_parameters.py",
@@ -2516,12 +2518,17 @@
         "tests/semantics/variadic_compiler_cases.json",
         "tests/semantics/variadic_protocol.py",
         "tests/semantics/variadic_state.py",
-        "coverage/semantics/variadic-review.json"
+        "coverage/semantics/variadic-review.json",
+        "tests/semantics/user_string_parameters.py",
+        "tests/semantics/user_string_parameters_protocol.py"
       ],
-      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named binding, argument unpacking and complete callable/type/object protocols remain pending; no family closure.",
+      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named binding, argument unpacking and complete callable/type/object protocols remain pending; no family closure. Supplied weak Stringable string parameters214 now preserve caller strictness, nominal/callable priority, captured free-BYREF cells and original conversion throws; existing property constraints reject before callbacks. Author11 plus one explicit callback-attached-source Unsupported, state178, independent2 and current cached-Closure/nonpublic-callable source2/state46 retain distinct revisions in weak-string-parameters-review.json. Callback-attached constraints, variadic/default and broader consumers remain required; paused typed-return verification is untouched.",
       "helper_tests": [
         "tests/semantics/signatures.py",
         "coverage/semantics/signatures.json"
+      ],
+      "evidence": [
+        "coverage/semantics/weak-string-parameters-review.json"
       ]
     },
     {
@@ -4806,7 +4813,9 @@
         "spec/semantics/197-property-string-runtime.watsup",
         "spec/semantics/205-array-callables.watsup",
         "spec/semantics/210-class-method-strings.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/214-string-parameters.watsup",
+        "spec/semantics/168-user-string-runtime.watsup"
       ],
       "helper_tests": [
         "tests/semantics/callable_string_protocol.py",
@@ -4835,7 +4844,9 @@
         "tests/semantics/class_method_strings.py",
         "tests/semantics/class_method_strings_cases.json",
         "tests/semantics/invoke_publication.py",
-        "tests/semantics/invoke_publication_cases.json"
+        "tests/semantics/invoke_publication_cases.json",
+        "tests/semantics/user_string_parameters.py",
+        "tests/semantics/user_string_parameters_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
@@ -4846,9 +4857,10 @@
         "coverage/semantics/typed-static-string-assignment-review.json",
         "coverage/semantics/array-callables-current-review.json",
         "coverage/semantics/class-method-strings-current-review.json",
-        "coverage/semantics/invoke-publication-current-review.json"
+        "coverage/semantics/invoke-publication-current-review.json",
+        "coverage/semantics/weak-string-parameters-review.json"
       ],
-      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Weak noncallable Stringable callbacks, broader callable typing/reference constraints and full family closure remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json). Public source method-array admission has separate parameter/selection evidence in array-callables-current-review.json; shared ordinary return classification receives no new return agreement. Public concrete class-method-string callable admission uses the receiving lexical scope/receiver independently of dispatch (class-method-strings-current-review.json). Ordinary by-value classification receives no fresh return agreement. Nonpublic nonstatic __invoke admission is separately checked with callable|string and typed by-reference parameter controls. Current209 strict USER-warning reception rejects integer level before a private handler body, while the direct API control receives weakly. Modules95/return bodies remain unchanged and shared by-value return classification has no new return agreement. See invoke-publication-current-review.json.",
+      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Broader callable typing/reference constraints and full family closure remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json). Public source method-array admission has separate parameter/selection evidence in array-callables-current-review.json; shared ordinary return classification receives no new return agreement. Public concrete class-method-string callable admission uses the receiving lexical scope/receiver independently of dispatch (class-method-strings-current-review.json). Ordinary by-value classification receives no fresh return agreement. Nonpublic nonstatic __invoke admission is separately checked with callable|string and typed by-reference parameter controls. Current209 strict USER-warning reception rejects integer level before a private handler body, while the direct API control receives weakly. Modules95/return bodies remain unchanged and shared by-value return classification has no new return agreement. See invoke-publication-current-review.json. Supplied weak Stringable string parameters214 now preserve caller strictness, nominal/callable priority, captured free-BYREF cells and original conversion throws; existing property constraints reject before callbacks. Author11 plus one explicit callback-attached-source Unsupported, state178, independent2 and current cached-Closure/nonpublic-callable source2/state46 retain distinct revisions in weak-string-parameters-review.json. Callback-attached constraints, variadic/default and broader consumers remain required; paused typed-return verification is untouched.",
       "planned_source_tests": [
         "tests/semantics/conformance/weak-type.php"
       ]
@@ -4866,7 +4878,9 @@
         "spec/semantics/197-property-string-runtime.watsup",
         "spec/semantics/205-array-callables.watsup",
         "spec/semantics/210-class-method-strings.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/214-string-parameters.watsup",
+        "spec/semantics/168-user-string-runtime.watsup"
       ],
       "helper_tests": [
         "tests/semantics/callable_string_protocol.py",
@@ -4894,7 +4908,9 @@
         "tests/semantics/class_method_strings.py",
         "tests/semantics/class_method_strings_cases.json",
         "tests/semantics/invoke_publication.py",
-        "tests/semantics/invoke_publication_cases.json"
+        "tests/semantics/invoke_publication_cases.json",
+        "tests/semantics/user_string_parameters.py",
+        "tests/semantics/user_string_parameters_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
@@ -4905,9 +4921,10 @@
         "coverage/semantics/typed-static-string-assignment-review.json",
         "coverage/semantics/array-callables-current-review.json",
         "coverage/semantics/class-method-strings-current-review.json",
-        "coverage/semantics/invoke-publication-current-review.json"
+        "coverage/semantics/invoke-publication-current-review.json",
+        "coverage/semantics/weak-string-parameters-review.json"
       ],
-      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Weak noncallable Stringable callbacks, broader callable typing/reference constraints and full family closure remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json). Public source method-array admission has separate parameter/selection evidence in array-callables-current-review.json; shared ordinary return classification receives no new return agreement. Public concrete class-method-string callable admission uses the receiving lexical scope/receiver independently of dispatch (class-method-strings-current-review.json). Ordinary by-value classification receives no fresh return agreement. Nonpublic nonstatic __invoke admission is separately checked with callable|string and typed by-reference parameter controls. Current209 strict USER-warning reception rejects integer level before a private handler body, while the direct API control receives weakly. Modules95/return bodies remain unchanged and shared by-value return classification has no new return agreement. See invoke-publication-current-review.json.",
+      "review": "Builtin scalar/container parameter and value-return checks retain typed-function-review.json evidence. Known public invokable+Stringable callable|string parameters admit the original object before weak conversion in either union order; private f39 source/receive checks and current INI composition c852 are accepted in callable-string-current-review.json. One ordinary return expectation changes source-only without new return agreement. Broader callable typing/reference constraints and full family closure remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json). Public source method-array admission has separate parameter/selection evidence in array-callables-current-review.json; shared ordinary return classification receives no new return agreement. Public concrete class-method-string callable admission uses the receiving lexical scope/receiver independently of dispatch (class-method-strings-current-review.json). Ordinary by-value classification receives no fresh return agreement. Nonpublic nonstatic __invoke admission is separately checked with callable|string and typed by-reference parameter controls. Current209 strict USER-warning reception rejects integer level before a private handler body, while the direct API control receives weakly. Modules95/return bodies remain unchanged and shared by-value return classification has no new return agreement. See invoke-publication-current-review.json. Supplied weak Stringable string parameters214 now preserve caller strictness, nominal/callable priority, captured free-BYREF cells and original conversion throws; existing property constraints reject before callbacks. Author11 plus one explicit callback-attached-source Unsupported, state178, independent2 and current cached-Closure/nonpublic-callable source2/state46 retain distinct revisions in weak-string-parameters-review.json. Callback-attached constraints, variadic/default and broader consumers remain required; paused typed-return verification is untouched.",
       "planned_source_tests": [
         "tests/semantics/conformance/strict-type.php"
       ]
@@ -9017,7 +9034,9 @@
         "spec/semantics/154-property-visibility-runtime.watsup",
         "spec/semantics/187-class-static-storage.watsup",
         "spec/semantics/188-class-static-runtime.watsup",
-        "spec/semantics/197-property-string-runtime.watsup"
+        "spec/semantics/197-property-string-runtime.watsup",
+        "spec/semantics/214-string-parameters.watsup",
+        "spec/semantics/168-user-string-runtime.watsup"
       ],
       "helper_tests": [
         "tests/semantics/property_reference_compiler.py",
@@ -9039,7 +9058,9 @@
         "tests/semantics/class_static_properties.py",
         "tests/semantics/class_static_references.py",
         "tests/semantics/typed_static_string_assignment.py",
-        "tests/semantics/typed_static_callable.py"
+        "tests/semantics/typed_static_callable.py",
+        "tests/semantics/user_string_parameters.py",
+        "tests/semantics/user_string_parameters_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
@@ -9049,9 +9070,10 @@
         "coverage/semantics/property-private-review.json",
         "docs/semantics/SOURCE-CLASS-STATICS.md",
         "coverage/semantics/class-static-properties.json",
-        "coverage/semantics/typed-static-string-assignment-review.json"
+        "coverage/semantics/typed-static-string-assignment-review.json",
+        "coverage/semantics/weak-string-parameters-review.json"
       ],
-      "review": "Public/protected/private reference cells carry ordered non-owning typed sources keyed by object and physical slot. Unconstrained binding coerces before detaching the old source; constrained binding is atomic, reports FIRST-source conflicts and preserves conversion effects. Self-rebinding removes/adds the source. By-reference parameter/return no-coercion rules remain separate. Nullsafe sends, overflow and clone aliases retain their reviewed bounds; readonly/hooks/magic remain open. Historical property-references-review.json and current property-visibility-review.json record separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json)."
+      "review": "Public/protected/private reference cells carry ordered non-owning typed sources keyed by object and physical slot. Unconstrained binding coerces before detaching the old source; constrained binding is atomic, reports FIRST-source conflicts and preserves conversion effects. Self-rebinding removes/adds the source. By-reference parameter/return no-coercion rules remain separate. Nullsafe sends, overflow and clone aliases retain their reviewed bounds; readonly/hooks/magic remain open. Historical property-references-review.json and current property-visibility-review.json record separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json). Supplied weak Stringable string parameters214 now preserve caller strictness, nominal/callable priority, captured free-BYREF cells and original conversion throws; existing property constraints reject before callbacks. Author11 plus one explicit callback-attached-source Unsupported, state178, independent2 and current cached-Closure/nonpublic-callable source2/state46 retain distinct revisions in weak-string-parameters-review.json. Callback-attached constraints, variadic/default and broader consumers remain required; paused typed-return verification is untouched."
     },
     {
       "id": "declarations.constants",

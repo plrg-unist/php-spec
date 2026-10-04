@@ -23,6 +23,7 @@ projected and installed observations.
 
 | Modules | Behavior and evidence |
 | --- | --- |
+| 214 supplied weak Stringable parameters | Ordered value/free-reference conversion preserves caller strictness, nominal/callable precedence, captured formal cells and original thrown exceptions. Author11 plus one explicit callback-attached-source Unsupported, state178, independent2 and current cached-Closure/nonpublic-callable source2/state46 keep distinct revisions. Broader constrained and variadic consumers remain open. [Review](coverage/semantics/weak-string-parameters-review.json) |
 | 119/120 | First-class named-function callables: 17 source outcomes, reference-context pairs and paused guards. [Review](coverage/semantics/first-class-review.json) |
 | 121–123 | Pipe arrow syntax and execution: separately reviewed 30,980-entry classified syntax gate, 12 runtime source outcomes and five paused stages/89 assertions. [Syntax](coverage/semantics/pipe-syntax-review.json) · [runtime](coverage/semantics/pipe-review.json) |
 | 124/125 | Switch ordering, fallthrough and saved subject ownership: 18 source outcomes, six paused stages/85 assertions and separately reviewed classified syntax gate. Constant-boolean branching uses an authenticated compiler fact. [Review](coverage/semantics/switch-review.json) |

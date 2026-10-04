@@ -1,0 +1,146 @@
+{
+  "target": "PHP8.5.10 CLI NTS64",
+  "scope": "Supplied fixed weak Stringable string parameters; ordinary168 callback, captured formal-cell writeback and source-authenticated nearest receive frames. Family remains partial.",
+  "implementation": [
+    "spec/semantics/214-string-parameters.watsup",
+    "spec/semantics/95-typed-calls.watsup",
+    "spec/semantics/168-user-string-runtime.watsup",
+    "spec/semantics/84-call-integrity.watsup",
+    "spec/semantics/30-storage.watsup"
+  ],
+  "semantics": [
+    "Value reception converts its entered copy; ordinary free BYREF reception writes only its captured cell while PROPREFS remains empty.",
+    "Caller strictness and nominal/callable membership precede conversion. Existing property sources reject a BYREF conversion before invoking user code.",
+    "Source/line/supplied index/formal cell and original receiver remain authenticated through recursive receives; an older formal cannot authorize a newer marker.",
+    "Conversion throws keep the original exception without a receive TypeError wrapper. Normal/throw cleanup retires owned formal/converter allocations for selected sources."
+  ],
+  "checks": {
+    "author_sources": {
+      "tested_revision": "719eab9475c2487d32f9f1eac1b02d9ba800b0d6",
+      "agreements": 11,
+      "unsupported_controls": 1,
+      "qualification": {
+        "path": "/home/user/workspace/php-spec/.tools/property-weak-parameter-review13/parameter-source-twelve-original-raw-qualified.json",
+        "sha256": "de449a07e890dadef9eb6cac3eca62db83957910318157c28df2d4178949271a"
+      }
+    },
+    "author_states": {
+      "tested_revision": "823f6fa280e08cef212d59f38b648db443919953",
+      "fixtures": [
+        78,
+        34,
+        66
+      ],
+      "qualification": {
+        "path": "/home/user/workspace/php-spec/.tools/property-weak-parameter-review13/parameter-frame-finite-original-raw-accepted.json",
+        "sha256": "fb20f6a09b8407c73ef9b4e5b9d025dac4fe4caa3c3f05b5783665cb127f5d88"
+      },
+      "scope": "Formal-cell writeback, two same-receiver recursive markers and original throw/ownership cleanup. Genuine source cases retain the corrected NParam certificate; no source12 replay."
+    },
+    "independent_sources": {
+      "tested_revision": "823f6fa280e08cef212d59f38b648db443919953",
+      "agreements": 2,
+      "qualification": {
+        "path": "/home/user/workspace/php-spec/.tools/property-weak-parameter-dev13/parameter-independent-two-original-raw-accepted.json",
+        "sha256": "513e565b26cef0017c493a82329c216452eb63b21d938385672156094e917659"
+      },
+      "scope": "By-value copy of a constrained reference followed by BYREF rejection; weak caller converts despite strict-defined callee."
+    },
+    "current_composition": {
+      "tested_revision": "d94c7efbea8e72f98c9adff30465c05fde2a0068",
+      "agreements": 2,
+      "state_assertions": 46,
+      "qualification": {
+        "path": "/home/user/workspace/php-spec/.tools/property-weak-parameter-review13/parameter-current-original-raw-accepted.json",
+        "sha256": "ef95a403285b94de05cef93a9f22f382071ec9305d63921d606d8f672ea2862f"
+      },
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/property-static-set-dev13/author-ujfn9bkl/report.json",
+        "sha256": "7318f53761d6e32b5454d30e130f2a615809e118949a7c58769269fe730b58cd"
+      },
+      "release": {
+        "path": "/home/user/workspace/php-spec/.tools/property-static-set-dev13/author-ujfn9bkl/RELEASE.json",
+        "sha256": "8bef29fd065c4706ff289e99b386f9162fbe05095163bbbe29ac940ab80c55b5"
+      },
+      "scope": "Owner-scoped cached constant Closure converts full NUL bytes, then retains its sole cache owner. Protected invokable remains an object for callable|string and converts for string; exact declaration Warning preserved."
+    }
+  },
+  "unsupported_required_core": {
+    "case": "new-property-source-stop",
+    "native": "NormalT0|F1|s|s",
+    "model": "Unsupported parameter string conversion gained property type source; stdoutT0|, before writeback",
+    "agreements": 0,
+    "remaining": "Implement the callback-attached property-source backing-value exception with ordinary parameter authority; do not mint the paused138/186 return-bound witness."
+  },
+  "source_equivalent_composition": {
+    "composition_base": "84156611480d74150a04c4a7f3e933a06ffe60de",
+    "source_port": "a060bc840439b385fac602f08ec6889694982725",
+    "scope": "Nine operational/test paths preserve actual212, invocation and CHDIR warning endpoints.214/95/168/84/helpers equal tested currentd94;30 retains additive CHDIR declaration/task forms. CHDIR paths are not exercised here;190 image-once is pure. Publication adds no execution credit."
+  },
+  "reproduction": {
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    },
+    "profile": {
+      "path": "/home/user/workspace/php-spec/.tools/property-user-string-parameters-current-13/tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "freeze": {
+      "path": "/home/user/workspace/php-spec/.tools/property-weak-parameter-dev13/parameter-current-freeze.json",
+      "sha256": "2cdf7f17558b4b20208d0476b32055d5865860c254957460ef2c8f7fb94ffbcf"
+    },
+    "current_command": [
+      "python3",
+      "/home/user/workspace/php-spec/.tools/property-static-set-dev13/run-author.py",
+      "/home/user/workspace/php-spec/.tools/property-weak-parameter-dev13/parameter-current-plan.json"
+    ],
+    "cwd": "/home/user/workspace/php-spec/.tools/property-user-string-parameters-current-13",
+    "limits_seconds": {
+      "native": 30,
+      "model": 90,
+      "application": 60,
+      "numeric": 120,
+      "phase_outer": 300
+    },
+    "steps": 100000,
+    "rebuild_credit": false,
+    "executables": {
+      ".tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "bytes": 49551712,
+        "mode": "0o755"
+      },
+      ".tools/php-file.so": {
+        "sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+        "bytes": 26944,
+        "mode": "0o775"
+      },
+      "_build/default/adapter/main.exe": {
+        "sha256": "9fa8a62125cc34baf80965a829fb4aa946875aa40b1b3a8d6e90cd732b2bcaf2",
+        "bytes": 29100784,
+        "mode": "0o555"
+      },
+      "tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "bytes": 28628992,
+        "mode": "0o555"
+      }
+    }
+  },
+  "preserved_failures": [
+    {
+      "path": "/home/user/workspace/php-spec/.tools/property-static-set-dev13/author-7ipcay59/report.json",
+      "sha256": "ab2ab5a8e7e08ca6499eb599720c01b80d11dd4b4acdfef9c2b67f49cc25cf1a"
+    },
+    {
+      "path": "/home/user/workspace/php-spec/.tools/property-static-set-dev13/author-pzd5s2cf/report.json",
+      "sha256": "57e9d0e9e0642b9d816083272cb0758aa38e4c4bb126021a9982b348c802f080"
+    }
+  ],
+  "remaining": [
+    "Callback-attached property-source writeback; variadic/default and broader weak/constrained consumers.",
+    "Typed-reference-return verification remains paused;97/99/138/185/186 unchanged. Temporary-return Notice timing and wider reference consumers remain separate.",
+    "Allocation retirement does not claim destructor/GC callback completeness; full-core and fresh offline rebuild remain required."
+  ]
+}
