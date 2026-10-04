@@ -175,6 +175,7 @@ def $call_selected_valid(S, STATIC_METHOD_TARGET porigin_class porigin_method, (
 def $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_call)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_call)
 def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
 dec $call_line_valid(pstate, porigin?, int) : bool
+dec $eval_compile_string_site(pstate, porigin, int) : bool
 dec $static_string_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
 dec $static_string_context_line_valid(pstate, pcallcontext) : bool
 dec $default_internal_string_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
@@ -184,7 +185,9 @@ def $default_internal_string_context_line_valid(S, pcallcontext) = false -- othe
 def $call_line_valid(S, (PORIGIN n pcpath), z) = true
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
-def $call_line_valid(S, (porigin_site), z) = true -- if $terminal_string_site(S, porigin_site, z)
+def $call_line_valid(S, (porigin_site), z) = true
+  -- if $terminal_string_site(S, porigin_site, z)
+  -- if ~$eval_compile_string_site(S, porigin_site, z)
 def $call_line_valid(S, porigin?, z) = false -- otherwise
 dec $call_arguments_valid(pstate, porigin?, nat, phpType7*, poperand*, nat) : bool
 dec $stringify_pending_site(pstate, porigin) : bool
