@@ -97,6 +97,15 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_parent_wakeup
   -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
   -- if $class_constant_parent_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent) = METHOD_OK
   -- if METHOD_ISSUE ptbytes_message z = $class_method_link_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent)
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ptbytes_message z]
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class"
+  -- if ~pclassdesc_parent.FINAL
+  -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
+  -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
+  -- if $class_constant_parent_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent) = METHOD_OK
+  -- if METHOD_RUNTIMEISSUE ptbytes_message z = $class_method_link_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent)
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_method_fatal($pil_parent_wakeup_notice(S, pclassdesc, porigin_parent), porigin_selected, ptbytes_message, z)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
