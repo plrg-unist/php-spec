@@ -1,0 +1,53 @@
+;; Direct GLOBAL FETCH_R captures the uninitialized value before ASSIGN/SEND.
+;; A callback may bind that name, but the fetch still yields null. A throw skips
+;; the later consumer; it must not reuse the missing-CV ASSIGN write on discard.
+dec $global_read_source(pstate, pglobalread) : bool
+def $global_read_source(S, pglobalread) = true
+  -- if $origin_node(S.SOURCES, pglobalread.SITE) = (NExprArrayDimFetch expression_base expression_key metadata)
+  -- if $ppglobals_base(expression_base)
+  -- if $code_expression_at_source(S, pglobalread.SITE, [PCFIELD 1]) = (pglobalread.LINE)
+  -- if $origin_child((pglobalread.SITE), [PCFIELD 1]) = (porigin_key)
+  -- if $compiled_read(S, porigin_key) = (pvalue)
+  -- if pglobalread.NAME = $compiled_name_bytes(pvalue)
+;; Dynamic bytes are captured runtime facts, like supplied KNOWN arguments.
+;; Source authentication does not reconstruct their historical value after a
+;; callback changes the key variable or the global table.
+def $global_read_source(S, pglobalread) = true
+  -- if $origin_node(S.SOURCES, pglobalread.SITE) = (NExprArrayDimFetch expression_base expression_key metadata)
+  -- if $ppglobals_base(expression_base)
+  -- if $code_expression_at_source(S, pglobalread.SITE, [PCFIELD 1]) = (pglobalread.LINE)
+  -- if $origin_child((pglobalread.SITE), [PCFIELD 1]) = (porigin_key)
+  -- if $compiled_read(S, porigin_key) = eps
+def $global_read_source(S, pglobalread) = false -- otherwise
+
+def $global_read_plan(S) = (pglobalread)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (DIM_FETCH z) :: ptask_tail*
+  -- if S.BASE = BASE_GLOBAL poperand z
+  -- if S_name = $resolve_name(S, poperand, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+  -- if $error_missing_operand($global_table_view(S_name), VARIABLE n_name* z)
+  -- if pglobalread = {SITE porigin, NAME n_name*, LINE z}
+  -- if $global_read_source(S, pglobalread)
+def $global_read_plan(S) = eps -- otherwise
+
+def $global_read_begin(S, pglobalread) = $error_dispatch(S, 2, $ptascii("Undefined global variable $") ++ pglobalread.NAME, pglobalread.LINE, DIAGNOSTIC "Warning" ($ptascii("Undefined global variable $") ++ pglobalread.NAME) pglobalread.LINE, GLOBAL_READ_RESULT pglobalread)
+  -- if $global_read_plan(S) = (pglobalread)
+dec $global_read_valid(pstate, pglobalread) : bool
+def $global_read_valid(S, pglobalread) = (S.ORIGIN = (pglobalread.SITE) /\ $global_read_source(S, pglobalread))
+def $call_task_valid(S, GLOBAL_READ_RESULT pglobalread) = $global_read_valid(S, pglobalread)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = GLOBAL_READ_RESULT pglobalread
+  -- if $global_read_valid(S, pglobalread)
+  -- if perrorcall.SITE = pglobalread.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pglobalread.LINE
+  -- if perrorcall.MESSAGE = $ptascii("Undefined global variable $") ++ pglobalread.NAME
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+rule PhpStep/global-warning-read-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GLOBAL_READ_RESULT pglobalread) :: ptask_tail*
+  -- if $global_read_valid(S, pglobalread)
+;; The captured name is bytes; selected callbacks and saved consumers already
+;; retain their genuine owners through the ordinary handler/frame roots.
+def $task_nodes(GLOBAL_READ_RESULT pglobalread) = eps

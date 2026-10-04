@@ -20,6 +20,18 @@ records independent pins, affected checks and preserved failures. Default/variad
 `Closure::fromCallable`, other internal and user-return warning consumers remain
 required; unstaged special callable conversion stays Unsupported.
 
+Direct missing `$GLOBALS[key]` R-fetches226 dispatch before their consumers and
+retain the original null through key/global mutation. Handler throws skip later
+ASSIGN/SEND, preserving typed destinations and the original exception chain.
+Quiet/reference acquisitions keep their existing real cells. Genuine76 whole-table
+snapshots under explicit request facts preserve numeric keys, singleton unwrap,
+shared reference owners and COW after global retirement. Author8/207 and
+independent8/221 pass at distinct private cutoffs. Two current derived sources
+on accepted ed6 pass at bb90, retaining private first-class handlers, called class,
+eager identity reads and a cold typed static alias. The combined observer retains
+its inconclusive CLI60 timeout. [Contract](docs/semantics/SOURCE-GLOBAL-WARNINGS.md),
+[ledger](coverage/semantics/global-warning-reads-review.json).
+
 Exception handlers222 retain nullable raw stacks and dispatch an uncaught
 Throwable after `finally` through the ordinary weak call receiver. Genuine null
 caller and saved-frame certificates preserve one argument, selected targets and
@@ -178,7 +190,10 @@ failures and interrupted evidence.
   keyword/compound warning consumers,
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
-  array and string Closure PIPE routes are covered; defined ordinary `$GLOBALS[key]` is admitted; missing-global warnings and whole-table snapshots remain partial.
+  array and string Closure PIPE routes are covered. Direct defined/missing
+  `$GLOBALS[key]` reads and explicit-request full-table snapshots are admitted;
+  earlier key-expression warnings, nested/read-write warning continuations and
+  ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
   nondefault startup profiles, wider directives,
   other warning producers, OS services and lifecycle. The

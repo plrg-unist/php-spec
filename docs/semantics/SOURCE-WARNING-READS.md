@@ -14,8 +14,10 @@ borrowed lifetime is Unsupported. Native tests keep the cell alive; owner-remova
 negatives are constructed helper controls only.
 
 Defined ordinary `$GLOBALS[key]` uses the real global table independently of
-request mode. Callback locals remain separate. Missing-global warnings, whole
-table snapshots and request auto-globals retain their separate bounds. Plain CVs
+request mode. Callback locals remain separate. Direct missing global reads and
+explicit-request genuine full-table snapshots are now checked separately in
+[SOURCE-GLOBAL-WARNINGS](SOURCE-GLOBAL-WARNINGS.md); earlier key warnings and
+broader global consumers remain open. Plain CVs
 that become reference wrappers during the callback, arithmetic left pointers,
 truth/cast/copy/SEND and other producers remain open. Paused return validation
 is not part of this slice.
