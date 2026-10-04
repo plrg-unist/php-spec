@@ -114,7 +114,7 @@ CASES = {
             'S_done = $drive(S_one, 5000)',
             'S_done.COMPLETION = NORMAL',
             'S_done.EVENTS = [OUTPUT $ptascii("Owner"), OUTPUT $ptascii("/"), OUTPUT $ptascii("Child"), OUTPUT $ptascii(":"), OUTPUT $ptascii("d"), OUTPUT $ptascii(":"), OUTPUT $ptascii("1"), OUTPUT $ptascii(":"), OUTPUT $ptascii("xK"), OUTPUT $ptascii("|"), OUTPUT $ptascii("Owner"), OUTPUT $ptascii("/"), OUTPUT $ptascii("Child"), OUTPUT $ptascii(":"), OUTPUT $ptascii("y"), OUTPUT $ptascii(":"), OUTPUT $ptascii("2"), OUTPUT $ptascii(":"), OUTPUT $ptascii("xKK")]',
-            'S_done.GLOBALTABLE = (psymboltable)',
+            'psymboltable = $active_table(S_done)',
             '$lookup(psymboltable.ENV, $ptascii("v")) = (n_v)',
             'S_done.STORE[n_v] = DEFINED (PSTRING $ptascii("xKK"))',
             '~((HOBJECT n_capture) <- S_done.ALLOCATIONS)',
