@@ -123,6 +123,8 @@ test-semantics: build
 	python3 tests/semantics/array_callables_protocol.py
 	python3 tests/semantics/class_method_strings.py
 	python3 tests/semantics/class_method_strings_protocol.py
+	python3 tests/semantics/error_handler_callables.py
+	python3 tests/semantics/error_handler_callables_protocol.py
 	python3 tests/semantics/callable_string_ini.py
 	python3 tests/semantics/callable_string_ini_protocol.py
 	python3 tests/semantics/call_reference_compiler.py
