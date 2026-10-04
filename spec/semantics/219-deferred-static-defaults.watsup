@@ -37,7 +37,6 @@ def $static_default_values_done(ppropertydesc*, porigin_filled*) = $static_defau
 def $static_default_descriptor(PROP_DEFERRED porigin) = true
 def $static_default_descriptor(ppropdefault) = false -- otherwise
 
-dec $static_default_context_at(ptask*) : pstaticdefaultcontext?
 def $static_default_context_at(eps) = eps
 def $static_default_context_at((STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*) = (pstaticdefaultcontext)
 def $static_default_context_at(ptask :: ptask_tail*) = $static_default_context_at(ptask_tail*)
