@@ -8,12 +8,16 @@ dec $closure_evidence_body(pstate, nat) : porigin?
 dec $closure_evidence_valid(pstate, pclosureevidence) : bool
 def $closure_evidence_object(CLOSURE_SCOPE pclosurescope) = pclosurescope.OBJECT
 def $closure_evidence_object(CLOSURE_BINDING pclosurebinding) = pclosurebinding.OBJECT
+def $closure_evidence_object(CLOSURE_CALL porigin_site n_source n_receiver porigin_class) = n_source
 def $closure_evidence_lexical(CLOSURE_SCOPE pclosurescope) = (pclosurescope.LEXICAL)
 def $closure_evidence_lexical(CLOSURE_BINDING pclosurebinding) = pclosurebinding.LEXICAL
+def $closure_evidence_lexical(CLOSURE_CALL porigin_site n_source n_receiver porigin_class) = (porigin_class)
 def $closure_evidence_called(CLOSURE_SCOPE pclosurescope) = (pclosurescope.CALLED)
 def $closure_evidence_called(CLOSURE_BINDING pclosurebinding) = pclosurebinding.CALLED
+def $closure_evidence_called(CLOSURE_CALL porigin_site n_source n_receiver porigin_class) = (porigin_class)
 def $closure_evidence_receiver(CLOSURE_SCOPE pclosurescope) = pclosurescope.RECEIVER
 def $closure_evidence_receiver(CLOSURE_BINDING pclosurebinding) = pclosurebinding.RECEIVER
+def $closure_evidence_receiver(CLOSURE_CALL porigin_site n_source n_receiver porigin_class) = (n_receiver)
 def $closure_evidence_body(S, n) = (porigin)
   -- if $(n < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
@@ -27,6 +31,10 @@ def $closure_creator_site(S, eps) = true
 def $closure_creator_site(S, (porigin)) = true
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
 def $closure_creator_site(S, porigin?) = false -- otherwise
+dec $closure_creator_callsite(pclosureevidence, porigin?) : bool
+def $closure_creator_callsite(CLOSURE_CALL porigin_site n_source n_receiver porigin_class, porigin?) = (porigin? = (porigin_site))
+def $closure_creator_callsite(CLOSURE_SCOPE pclosurescope, porigin?) = true
+def $closure_creator_callsite(CLOSURE_BINDING pclosurebinding, porigin?) = true
 dec $closure_creator_header(pstate, porigin, pclosurescope, pclosurecreation, pclosurecreator) : bool
 def $closure_creator_header(S, porigin, pclosurescope, pclosurecreation, pclosurecreator) = true
   -- if pclosureevidence = pclosurecreator.SCOPE
@@ -36,6 +44,7 @@ def $closure_creator_header(S, porigin, pclosurescope, pclosurecreation, pclosur
   -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = ($origin_source(pclosurecreation.FUNCTION))
   -- if pclosurecreation.CALLSITE = pclosurecreator.CALLSITE
   -- if $closure_creator_site(S, pclosurecreator.CALLSITE)
+  -- if $closure_creator_callsite(pclosureevidence, pclosurecreator.CALLSITE)
   -- if $closure_evidence_lexical(pclosureevidence) = (pclosurescope.LEXICAL)
   -- if $closure_evidence_called(pclosureevidence) = (pclosurescope.CALLED)
 def $closure_creator_header(S, porigin, pclosurescope, pclosurecreation, pclosurecreator) = false -- otherwise
@@ -181,6 +190,16 @@ def $closure_evidence_valid(S, CLOSURE_BINDING pclosurebinding) = true
   -- if $binding_lexical_valid(S, pclosurebinding.LEXICAL)
   -- if $binding_lexical_valid(S, pclosurebinding.CALLED)
   -- if $closure_evidence_bind_receiver(S, porigin, pclosurebinding)
+def $closure_evidence_valid(S, CLOSURE_CALL porigin_site n_source n_receiver porigin_class) = true
+  -- if $closure_evidence_body(S, n_source) = (porigin_function)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin_function) = (pfunction)
+  -- if ~$closure_static(S, pfunction)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ptlc($base64(text_name)) = $ptascii("call")
+  -- if $(|phpType7*| > 0)
+  -- if $(n_receiver < |S.OBJECTS|)
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_class
+  -- if $binding_lexical_valid(S, (porigin_class))
 def $closure_evidence_valid(S, pclosureevidence) = false -- otherwise
 
 ;; Only the authentic live invocation can mint copied evidence. Its callsite
@@ -197,6 +216,13 @@ def $closure_evidence_current(S) = (CLOSURE_BINDING pclosurebinding)
   -- if $call_current_valid(S)
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = (pclosurebinding)
   -- if $closure_binding_source_valid(S, pclosurebinding)
+def $closure_evidence_current(S) = (CLOSURE_CALL porigin_site n_source n_receiver porigin_class)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $context_target(pcallcontext) = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if $call_current_valid(S)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_class
+  -- if $closure_evidence_valid(S, CLOSURE_CALL porigin_site n_source n_receiver porigin_class)
 def $closure_evidence_current(S) = eps -- otherwise
 
 def $closure_creator_current(S) = ({SCOPE pclosureevidence, CALLSITE pcallcontext.CALLSITE})

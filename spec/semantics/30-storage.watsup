@@ -185,7 +185,7 @@ syntax pclosurecreator = { SCOPE pclosureevidence, CALLSITE porigin? }
 syntax pclosurecreation = { FUNCTION porigin, CALLSITE porigin?, RECEIVER bool, EVIDENCE pclosurecreator? }
 syntax pclosurescope = { OBJECT nat, LEXICAL porigin, CALLED porigin, RECEIVER nat?, CREATION pclosurecreation? }
 syntax pclosurebinding = { OBJECT nat, SITE porigin, SOURCE nat, LEXICAL porigin?, CALLED porigin?, RECEIVER nat? }
-syntax pclosureevidence = CLOSURE_SCOPE pclosurescope | CLOSURE_BINDING pclosurebinding
+syntax pclosureevidence = CLOSURE_SCOPE pclosurescope | CLOSURE_BINDING pclosurebinding | CLOSURE_CALL porigin nat nat porigin
 ;; A durable fake closure keeps selection certificates, never the raw callback container.
 syntax pfrommethod = { SITE porigin, INPUT pvalue, METHOD ptbytes, SCOPE porigin?, CALLED porigin?, THIS nat?, CLASS papiclass, OUTER papiclass?, ORIGINAL ptbytes, PREFIX nat, WIDTH nat, FUNCTION porigin, NAME ptbytes, STATIC bool, CREATION pmethodcapture?, ARRAY bool, INVOKE bool }
 syntax pobject = CONSTANTCLOSURE porigin pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | INSTANCE porigin | STDINSTANCE
