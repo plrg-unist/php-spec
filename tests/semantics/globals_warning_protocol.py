@@ -117,7 +117,7 @@ CASES = [
         '$lookup(S_done.ENV, [49,50]) = eps', '$lookup(S_done.ENV, $ptascii("r226")) = eps',
         '$lookup(S_done.ENV, $ptascii("snapshot226")) = eps',
         'S_done.STORE[n_shared] = DEFINED (PINT 17)',
-        '$heap_owners($heap_graph(S_done), HCELL n_shared) = 1',
+        '$heap_owners($heap_graph(S_done), HCELL n_shared) = 2',
         '$lookup(S_done.ENV, $ptascii("copy226")) = (n_copy_cell)',
         'S_done.STORE[n_copy_cell] = DEFINED (PARRAY n_copy)',
         '$entry_lookup(S_done.ARRAYS[n_copy].ITEMS, KINT 12) = (ALIAS n_shared)',

@@ -50,7 +50,7 @@ function false226($level,$message,$file,$line) {
 set_error_handler('false226',2);
 $quiet226=$GLOBALS['quiet226']??23;
 $read226=(array)$GLOBALS['missing226'];
-echo "F:",$quiet226,":",count($read226),":",$missing226,":",$hits226,";";
+echo "F:",$quiet226,":",$read226===[]?0:'BAD',":",$missing226,":",$hits226,";";
 restore_error_handler();
 ''', b'H;F:23:0:19:1;', 'normal', False),
     ('global-reference-bind-survives-snapshot-free-call', b'''<?php
