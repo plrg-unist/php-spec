@@ -9,6 +9,8 @@ def $ppkeyword_new_error(P, NName (BYTES text) metadata) = ($ptascii("Cannot use
   -- if P.FOLD.FUNCTION =/= eps
 def $ppkeyword_new_error(P, NName (BYTES text) metadata) = ($ptascii("Cannot use \"parent\" when current class scope has no parent"))
   -- if ~P.CLOSURE
+  -- if P.FOLD.FUNCTION =/= eps
+  -- if ~$ptrait_context(P.CLASSCONTEXT)
   -- if P.CLASSCONTEXT = (ptcontext)
   -- if ptcontext.SCOPE = PTKNOWN ptbytes eps
   -- if $ptlc($base64(text)) = $ptascii("parent")
@@ -31,6 +33,7 @@ def $ordinary_keyword_new_site(S, PORIGIN n pcpath) = true
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = (($ptlc($base64(text)), eps))
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if z = $source_line(metadata_name)
   -- if $(z > 0)
   -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z)
 def $dynamic_new_site(S, PORIGIN n pcpath, z, z) = $ordinary_keyword_new_site(S, PORIGIN n pcpath)
@@ -40,6 +43,31 @@ def $dynamic_new_site(S, PORIGIN n pcpath, z, z) = $ordinary_keyword_new_site(S,
 def $dynamic_new_keyword(S, porigin) = (name)
   -- if $ordinary_keyword_new_site(S, porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew name phpType6 metadata)
+def $dynamic_new_source_valid(S, pdynamicnew) = (pdynamicnew.SOURCE = PSTRING $ptlc($base64(text)))
+  -- if $ordinary_keyword_new_site(S, pdynamicnew.SITE)
+  -- if $origin_node(S.SOURCES, pdynamicnew.SITE) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+
+;; Service-unit main code keeps the caller's scope. Persistent entry bindings
+;; lead back to its physical source without retaining a caller or searching frames.
+dec $keyword_new_entry_source(pstate, porigin, porigin?) : porigin
+def $keyword_new_entry_source(S, PORIGIN n pcpath, porigin_scope?) = $keyword_new_entry_source(S, pevalbinding.SITE, porigin_scope?)
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = (pevalbinding)
+  -- if pevalbinding.CLASS = porigin_scope?
+  -- if pevalbinding.SITE = PORIGIN n_entry pcpath_entry
+  -- if $(n_entry < n)
+  -- if $eval_site_valid(S, pevalbinding.SITE, z)
+def $keyword_new_entry_source(S, PORIGIN n pcpath, porigin_scope?) = $keyword_new_entry_source(S, pfilebinding.SITE, porigin_scope?)
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = eps
+  -- if $file_binding_at(S.FILEBINDINGS, n) = (pfilebinding)
+  -- if pfilebinding.CLASS = porigin_scope?
+  -- if pfilebinding.SITE = PORIGIN n_entry pcpath_entry
+  -- if $(n_entry < n)
+  -- if $file_site_valid(S, pfilebinding.SITE, z, pfilebinding.KIND)
+def $keyword_new_entry_source(S, porigin, porigin_scope?) = porigin -- otherwise
+def $dynamic_new_scope_source(S, pdynamicnew) = $keyword_new_entry_source(S, pdynamicnew.SITE, pdynamicnew.SCOPE)
+  -- if $ordinary_keyword_new_site(S, pdynamicnew.SITE)
 
 rule PhpStep/named-keyword-new-selected: S ~> $dynamic_new_start(S[.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pdynamicnew, phpType7*)
   -- if S.TODO = (EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
