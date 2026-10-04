@@ -1,6 +1,13 @@
 """Actual cached handler and static reference prior through array-copy redirect."""
 from pathlib import Path
-from warning_consumer_protocol import GUARDS, FINISH, PREFIX
+from warning_consumer_protocol import GUARDS, FINISH, PREFIX as BASE_PREFIX
+
+PREFIX = BASE_PREFIX + '''
+dec $current_send(ptask*) : ptask?
+def $current_send((CALL_SEND pcalltarget phpType7* n poperand* porigin? z) :: ptask_tail*) = (CALL_SEND pcalltarget phpType7* n poperand* porigin? z)
+def $current_send(ptask :: ptask_tail*) = $current_send(ptask_tail*) -- otherwise
+def $current_send(eps) = eps
+'''
 
 SOURCE = (Path(__file__).with_name('warning_consumer_current.php')).read_bytes()
 EXPECTED = b'H4;S2:9:N;5:7:1'
@@ -23,7 +30,7 @@ CHECKS = [
     '$compiled_copy_redirect(S, porigin_copy) = (z)',
     '$error_copy_selected(S, porigin_copy, [PCFIELD 1])',
     '~$error_copy_selected(S, porigin_copy, [PCFIELD 2])',
-    '(CALL_SEND pcalltarget eps 1 ([REFERENCE n_cell]) (porigin_call) z_call) <- ptask_tail*',
+    '$current_send(ptask_tail*) = (CALL_SEND pcalltarget eps 1 ([REFERENCE n_cell]) (porigin_call) z_call)',
     '$target_function(S, pcalltarget) = (pfunction_sink)',
     'pfunction_sink.NAME = $ptascii("sink213")',
     '$call_task_valid(S, CALL_SEND pcalltarget eps 1 ([REFERENCE n_cell]) (porigin_call) z_call)',
