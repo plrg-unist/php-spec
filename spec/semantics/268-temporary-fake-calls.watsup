@@ -1,0 +1,219 @@
+;; zend_valid_closure_binding is applied to the selected function's scope,
+;; including a FROM callable's actual-object fallback, before inner arguments.
+def $closure_call_real(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
+def $closure_call_real(S, n) = false -- otherwise
+dec $closure_call_static(pstate, nat) : bool
+def $closure_call_static(S, n) = $closure_static(S, pfunction)
+  -- if $closure_call_real(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+def $closure_call_static(S, n) = $fake_bind_static(S, n)
+  -- if $fake_bind_object(S, n)
+def $closure_call_source(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $closure_call_real(S, n) \/ $fake_bind_object(S, n)
+  -- if $closure_callable(S, n)
+def $closure_call_source(S, n) = false -- otherwise
+def $closure_call_parameters(S, n) = pfunction.SIGNATURE.PARAMETERS
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+def $closure_call_parameters(S, n) = eps -- otherwise
+def $closure_call_warning(S, n_source, n_receiver) = $real_bind_warning_message(S, n_source, (n_receiver), $bind_object_scope(S, n_receiver))
+  -- if $closure_call_real(S, n_source)
+def $closure_call_warning(S, n_source, n_receiver) = $fake_bind_warning_message(S, n_source, (n_receiver), $bind_object_scope(S, n_receiver))
+  -- if $fake_bind_object(S, n_source)
+def $closure_call_body_name(S, pfunction) = pmethoddesc.NAME
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+def $closure_call_body_name(S, pfunction) = pfunction.NAME -- otherwise
+
+;; The continuation owns the already selected Closure/newThis and sent values.
+;; Handler changes to the source variables cannot reselect the binding reason.
+rule PhpStep/closure-call-binding-warning: S ~> $error_dispatch(S[.ORIGIN = (pclosurecall.SITE)], 2, ptbytes, pclosurecall.LINE, DIAGNOSTIC "Warning" ptbytes pclosurecall.LINE, CLOSURE_CALL_WARNING pclosurecall ptbytes)
+  -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = (ptbytes)
+def $task_nodes(CLOSURE_CALL_WARNING pclosurecall ptbytes) = $task_nodes(CLOSURE_CALL_INVOKE pclosurecall)
+def $call_task_valid(S, CLOSURE_CALL_WARNING pclosurecall ptbytes) = true
+  -- if $closure_call_task_valid(S, pclosurecall)
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if pclosurecall.INDEX = |phpType7*|
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = (ptbytes)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CLOSURE_CALL_WARNING pclosurecall ptbytes
+  -- if $call_task_valid(S, perrorcall.RESUME)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.SITE = pclosurecall.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pclosurecall.LINE
+  -- if perrorcall.MESSAGE = ptbytes
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ptbytes pclosurecall.LINE
+rule PhpStep/closure-call-binding-warning-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLOSURE_CALL_WARNING pclosurecall ptbytes) :: ptask_tail*
+  -- if $call_task_valid(S, CLOSURE_CALL_WARNING pclosurecall ptbytes)
+
+;; Finite internal getters have no compiled user function. They consume the
+;; same captured values only after exact-scope binding and outer evaluation.
+dec $closure_call_getter(pclosurecall, nat, pgettermethod, text) : pgettercall
+def $closure_call_getter(pclosurecall, n_receiver, pgettermethod, text_base) = {SITE pclosurecall.SITE, RECEIVER n_receiver, BASE text_base, METHOD pgettermethod, CAPTURE (pclosurecall.SOURCE), INDEX pclosurecall.INDEX, SENT $named_operands(pclosurecall.SENT.SLOTS), LINE pclosurecall.LINE}
+rule PhpStep/closure-call-getter-named-error: S ~> $throwable_allocate(S[.TODO = ptask_tail*][.ORIGIN = (pclosurecall.SITE)], "Error", ptbytes, pclosurecall.LINE, [ptraceframe] ++ $eval_exception_trace_raw(S))
+  -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $fake_bind_getter(S, pclosurecall.SOURCE) = ((n_old, pgettermethod, text_base))
+  -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
+  -- if pclosurecall.ERROR = (ptbytes)
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ((KINT 0, POBJECT n_receiver) :: $closure_call_trace_raw(S, pclosurecall.RAW)), HASARGS true}
+rule PhpStep/closure-call-getter: S ~> $getter_body(S[.TODO = (CLOSURE_CALL_GETTER_RESULT pclosurecall) :: ptask_tail*][.ORIGIN = (pclosurecall.SITE)], $closure_call_getter(pclosurecall, n_receiver, pgettermethod, text_base))
+  -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $fake_bind_getter(S, pclosurecall.SOURCE) = ((n_old, pgettermethod, text_base))
+  -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
+  -- if pclosurecall.ERROR = eps
+  -- if pclosurecall.RAW = eps
+rule PhpStep/closure-call-getter-arity: S ~> $throwable_allocate(S[.TODO = ptask_tail*][.ORIGIN = (pclosurecall.SITE)], "ArgumentCountError", $ptascii(text_base) ++ $ptascii("::") ++ $getter_name(pgettermethod) ++ $ptascii("() expects exactly 0 arguments, ") ++ $ntunsigned(|pclosurecall.RAW|) ++ $ptascii(" given"), pclosurecall.LINE, [ptraceframe_inner, ptraceframe_outer] ++ $eval_exception_trace_raw(S))
+  -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $fake_bind_getter(S, pclosurecall.SOURCE) = ((n_old, pgettermethod, text_base))
+  -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
+  -- if pclosurecall.ERROR = eps
+  -- if pclosurecall.RAW =/= eps
+  -- if ptraceframe_inner = {FILE eps, LINE $(-1), FUNCTION $getter_name(pgettermethod), CLASS ($ptascii(text_base)), TYPE ($ptascii("->")), ARGS $closure_call_trace_raw(S, pclosurecall.RAW), HASARGS true}
+  -- if ptraceframe_outer = {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ((KINT 0, POBJECT n_receiver) :: $closure_call_trace_raw(S, pclosurecall.RAW)), HASARGS true}
+def $task_nodes(CLOSURE_CALL_GETTER_RESULT pclosurecall) = $task_nodes(CLOSURE_CALL_INVOKE pclosurecall)
+def $call_task_valid(S, CLOSURE_CALL_GETTER_RESULT pclosurecall) = true
+  -- if $closure_call_task_valid(S, pclosurecall)
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if pclosurecall.INDEX = |phpType7*|
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $fake_bind_getter(S, pclosurecall.SOURCE) =/= eps
+  -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
+  -- if pclosurecall.ERROR = eps
+  -- if pclosurecall.RAW = eps
+rule PhpStep/closure-call-getter-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE S.RESULT]
+  -- if S.TODO = (CLOSURE_CALL_GETTER_RESULT pclosurecall) :: ptask_tail*
+  -- if $call_task_valid(S, CLOSURE_CALL_GETTER_RESULT pclosurecall)
+
+;; zend_call_function warns before wrapping the frozen argument in a fresh
+;; reference. The handler can allocate cells or throw; no argument cell exists
+;; until the warning continuation returns normally.
+dec $closure_call_reference_message(pstate, pclosurecall, nat) : ptbytes
+def $closure_call_reference_message(S, pclosurecall, n) = $closure_call_function_name(S, pfunction, n_receiver) ++ $ptascii("(): Argument #") ++ $ntunsigned($(n_index + 1)) ++ $closure_call_reference_name(pfunction.SIGNATURE.PARAMETERS, n_index) ++ $ptascii(" must be passed by reference, value given")
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $target_function(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver) = (pfunction)
+  -- if pclosurecall.RAW[n] = (pkey, KNOWN pvalue)
+  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, n)
+  -- if n_index = $named_index(pfunction.SIGNATURE.PARAMETERS, pnamedtarget)
+rule PhpStep/closure-call-reference-warning: S ~> $error_dispatch(S[.ORIGIN = (pclosurecall.SITE)], 2, ptbytes, pclosurecall.LINE, DIAGNOSTIC "Warning" ptbytes pclosurecall.LINE, CLOSURE_CALL_REFERENCE pclosurecall n pnamedargs n_base)
+  -- if S.TODO = (CLOSURE_CALL_FORWARD pclosurecall n pnamedargs n_base) :: ptask_tail*
+  -- if $(n < |pclosurecall.RAW|)
+  -- if pclosurecall.RAW[n] = (pkey, KNOWN pvalue)
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $target_function(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver) = (pfunction)
+  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, n)
+  -- if $named_can_store(pnamedargs, pnamedtarget)
+  -- if $named_reference(pfunction, pnamedtarget)
+  -- if ptbytes = $closure_call_reference_message(S, pclosurecall, n)
+def $task_nodes(CLOSURE_CALL_REFERENCE pclosurecall n pnamedargs n_base) = $task_nodes(CLOSURE_CALL_FORWARD pclosurecall n pnamedargs n_base)
+def $call_task_valid(S, CLOSURE_CALL_REFERENCE pclosurecall n pnamedargs n_base) = true
+  -- if $closure_call_forward_valid(S, pclosurecall, n, pnamedargs, n_base)
+  -- if $(n < |pclosurecall.RAW|)
+  -- if pclosurecall.RAW[n] = (pkey, KNOWN pvalue)
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $target_function(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver) = (pfunction)
+  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, n)
+  -- if $named_can_store(pnamedargs, pnamedtarget)
+  -- if $named_reference(pfunction, pnamedtarget)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CLOSURE_CALL_REFERENCE pclosurecall n pnamedargs n_base
+  -- if $call_task_valid(S, perrorcall.RESUME)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.SITE = pclosurecall.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pclosurecall.LINE
+  -- if perrorcall.MESSAGE = $closure_call_reference_message(S, pclosurecall, n)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pclosurecall.LINE
+rule PhpStep/closure-call-reference-resume: S ~> S_reference[.TODO = (CLOSURE_CALL_FORWARD pclosurecall $(n + 1) $named_store(pnamedargs, pnamedtarget, S_reference.RESULT) n_base) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLOSURE_CALL_REFERENCE pclosurecall n pnamedargs n_base) :: ptask_tail*
+  -- if pclosurecall.RAW[n] = (pkey, KNOWN pvalue)
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $target_function(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver) = (pfunction)
+  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, n)
+  -- if S_reference = $call_fresh_reference(S, pvalue)
+
+;; Saved warning continuations validate in the real emitting caller's table.
+def $api_pending_task(CLOSURE_CALL_WARNING pclosurecall ptbytes) = true
+def $api_pending_task(CLOSURE_CALL_REFERENCE pclosurecall n pnamedargs n_base) = true
+
+;; An exact internal dummy scope is observable but grants no user-class access.
+dec $closure_call_internal_current(pstate) : nat?
+def $closure_call_internal_current(S) = (n_source)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if $bind_object_scope(S, n_receiver) = BIND_INTERNAL ($ptascii("Closure"))
+  -- if $call_current_valid(S)
+  -- if $internal_creator_body(S, n_source) = (pcallcontext.FUNCTION)
+def $closure_call_internal_current(S) = eps -- otherwise
+def $internal_closure_current(S) = (n_source)
+  -- if $closure_call_internal_current(S) = (n_source)
+def $internal_closure_current_scopes(S) = $internal_closure_scopes(S, n_source)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n_source
+def $internal_closure_current_scopes(S) = ((BIND_INTERNAL ($ptascii("Closure")), BIND_INTERNAL ($ptascii("Closure")), (n_receiver)))
+  -- if $closure_call_internal_current(S) = (n_source)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+def $internal_closure_current_scopes(S) = eps -- otherwise
+def $bound_fake_internal_scope(S) = ($ptascii("Closure"))
+  -- if $closure_call_internal_current(S) = (n_source)
+def $bound_fake_internal_called(S) = ($ptascii("Closure"))
+  -- if $closure_call_internal_current(S) = (n_source)
+
+;; A child copies its actual temporary scope/receiver and full selected body.
+;; Its parent and the parent's original receiver are historical, non-owning.
+def $internal_call_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INTERNALCALLCLOSURE pinternalclosurescope pobject
+def $internal_call_object(S, n) = false -- otherwise
+def $internal_closure_object(S, n) = true -- if $internal_call_object(S, n)
+def $object_body(INTERNALCALLCLOSURE pinternalclosurescope pobject) = pobject
+def $object_changed(INTERNALCALLCLOSURE pinternalclosurescope (REALCLOSURE porigin pitem_old* pstaticcell_old*), REALCLOSURE porigin pitem* pstaticcell*) = INTERNALCALLCLOSURE pinternalclosurescope (REALCLOSURE porigin pitem* pstaticcell*)
+def $internal_closure_row(S, n) = (pinternalclosurescope)
+  -- if S.OBJECTS[n] = INTERNALCALLCLOSURE pinternalclosurescope pobject
+def $closure_scope_append(S, pfunction, n) = S[.OBJECTS = $object_set(S.OBJECTS, n, INTERNALCALLCLOSURE pinternalclosurescope pobject)]
+  -- if $closure_call_internal_current(S) = (n_source)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $internal_closure_current_scopes(S) = ((pbindscope_lexical, pbindscope_called, n_receiver?))
+  -- if S.OBJECTS[n] = pobject
+  -- if pinternalclosurescope = {SOURCE n_source, FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, LEXICAL pbindscope_lexical, CALLED pbindscope_called, RECEIVER $closure_bound_receiver(S, pfunction), BOUND false}
+def $internal_creator_body(S, n) = (porigin)
+  -- if S.OBJECTS[n] = INTERNALCALLCLOSURE pinternalclosurescope (REALCLOSURE porigin pitem* pstaticcell*)
+  -- if $internal_closure_history_valid(S, n)
+def $internal_closure_history_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INTERNALCALLCLOSURE pinternalclosurescope (REALCLOSURE porigin pitem* pstaticcell*)
+  -- if ~pinternalclosurescope.BOUND
+  -- if $(pinternalclosurescope.SOURCE < n)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if $internal_creator_body(S, pinternalclosurescope.SOURCE) = (pinternalclosurescope.FUNCTION)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = ($origin_source(pinternalclosurescope.FUNCTION))
+  -- if pinternalclosurescope.CALLSITE = (porigin_site)
+  -- if $closure_call_args_at(S, porigin_site) = phpType7*
+  -- if S_history = $internal_creator_history(S, pinternalclosurescope.SOURCE)
+  -- if $fake_bind_scope(S_history, pinternalclosurescope.SOURCE) = BIND_INTERNAL ($ptascii("Closure"))
+  -- if ~$closure_call_static(S_history, pinternalclosurescope.SOURCE)
+  -- if pinternalclosurescope.LEXICAL = BIND_INTERNAL ($ptascii("Closure"))
+  -- if pinternalclosurescope.CALLED = pinternalclosurescope.LEXICAL
+  -- if $internal_call_child_receiver(S, pfunction, pinternalclosurescope.RECEIVER)
+dec $internal_call_child_receiver(pstate, pfunction, nat?) : bool
+def $internal_call_child_receiver(S, pfunction, eps) = $closure_static(S, pfunction)
+def $internal_call_child_receiver(S, pfunction, (n_receiver)) = true
+  -- if $(n_receiver < |S.OBJECTS|)
+  -- if ~$closure_static(S, pfunction)
+  -- if $bind_object_scope(S, n_receiver) = BIND_INTERNAL ($ptascii("Closure"))
+def $internal_call_child_receiver(S, pfunction, n_receiver?) = false -- otherwise
+def $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*) ++ $static_roots(pstaticcell*) ++ $scoped_receiver_nodes(pinternalclosurescope.RECEIVER)
+  -- if S.OBJECTS[n] = INTERNALCALLCLOSURE pinternalclosurescope (REALCLOSURE porigin pitem* pstaticcell*)
+def $clone_scope(S, n_source, n_new) = S[.OBJECTS = $object_set(S.OBJECTS, n_new, INTERNALCALLCLOSURE pinternalclosurescope pobject)]
+  -- if S.OBJECTS[n_source] = INTERNALCALLCLOSURE pinternalclosurescope pobject_source
+  -- if S.OBJECTS[n_new] = pobject

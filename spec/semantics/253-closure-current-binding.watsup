@@ -61,6 +61,8 @@ dec $fake_compare_receiver(pstate, nat) : nat?
 dec $fake_compare_internal(pstate, nat) : bool
 dec $bound_fake_compare(pstate, nat, nat) : bool
 dec $internal_closure_row(pstate, nat) : pinternalclosurescope?
+dec $internal_call_object(pstate, nat) : bool
+dec $internal_closure_current_scopes(pstate) : (pbindscope, pbindscope, nat?)?
 dec $internal_closure_scopes(pstate, nat) : (pbindscope, pbindscope, nat?)?
 dec $internal_creator_history(pstate, nat) : pstate
 dec $internal_creator_body(pstate, nat) : porigin?
@@ -159,7 +161,8 @@ def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "Closure::getC
   -- if pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT
   -- if pconfigcall.SENT = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $closure_call_target(pcallcontext.TARGET)
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if $closure_call_real(S, n_source)
 def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "Error", $ptascii("Current function is not a closure"))
   -- if pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT
   -- if pconfigcall.SENT = eps
@@ -703,18 +706,22 @@ def $trace_context_function(S, pcallcontext) = $fake_bind_name(S, n)
   -- if pcallcontext.INSTANCE = (n)
   -- if $bound_fake_object(S, n)
 def $trace_context_class(S, pcallcontext) = ($bind_scope_name(S, pboundfake.SCOPE))
+  -- if ~$closure_call_target($context_target(pcallcontext))
   -- if pcallcontext.INSTANCE = (n)
   -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
   -- if pboundfake.SCOPE =/= BIND_UNSCOPED
 def $trace_context_class(S, pcallcontext) = eps
+  -- if ~$closure_call_target($context_target(pcallcontext))
   -- if pcallcontext.INSTANCE = (n)
   -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
   -- if pboundfake.SCOPE = BIND_UNSCOPED
 def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
+  -- if ~$closure_call_target($context_target(pcallcontext))
   -- if pcallcontext.INSTANCE = (n)
   -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
   -- if pboundfake.RECEIVER =/= eps
 def $trace_context_type(S, pcallcontext) = ($ptascii("::"))
+  -- if ~$closure_call_target($context_target(pcallcontext))
   -- if pcallcontext.INSTANCE = (n)
   -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
   -- if pboundfake.RECEIVER = eps
@@ -765,7 +772,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UN
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $bound_fake_object(S_read, n)
   -- if $closure_known_other_method(ptbytes)
-  -- if ~($ptlc(ptbytes) <- [$ptascii("getcurrent"), $ptascii("fromcallable"), $ptascii("bindto"), $ptascii("bind")])
+  -- if ~($ptlc(ptbytes) <- [$ptascii("getcurrent"), $ptascii("fromcallable"), $ptascii("bindto"), $ptascii("bind"), $ptascii("call")])
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method Closure::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -974,7 +981,8 @@ def $internal_closure_current(S) = eps -- otherwise
 def $closure_scope_append(S, pfunction, n) = S[.OBJECTS = $object_set(S.OBJECTS, n, INTERNALSCOPECLOSURE pinternalclosurescope pobject)]
   -- if $internal_closure_current(S) = (n_source)
   -- if S.CURRENT = (pcallcontext)
-  -- if $internal_closure_scopes(S, n_source) = ((pbindscope_lexical, pbindscope_called, n_receiver?))
+  -- if ~$closure_call_target($context_target(pcallcontext))
+  -- if $internal_closure_current_scopes(S) = ((pbindscope_lexical, pbindscope_called, n_receiver?))
   -- if S.OBJECTS[n] = pobject
   -- if pinternalclosurescope = {SOURCE n_source, FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, LEXICAL pbindscope_lexical, CALLED pbindscope_called, RECEIVER $closure_bound_receiver(S, pfunction), BOUND false}
 def $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*) ++ $static_roots(pstaticcell*) ++ $scoped_receiver_nodes(pinternalclosurescope.RECEIVER)
@@ -990,6 +998,7 @@ def $target_called_class(S, CLOSURE_TARGET n) = $bind_scope_origin(pinternalclos
   -- if $internal_closure_row(S, n) = (pinternalclosurescope)
 def $clone_scope(S, n_source, n_new) = S[.OBJECTS = $object_set(S.OBJECTS, n_new, INTERNALSCOPECLOSURE pinternalclosurescope pobject)]
   -- if $internal_closure_row(S, n_source) = (pinternalclosurescope)
+  -- if ~$internal_call_object(S, n_source)
   -- if S.OBJECTS[n_new] = pobject
 
 def $real_bind_scope((n), BIND_UNSCOPED) = BIND_INTERNAL ($ptascii("Closure"))
@@ -1034,7 +1043,7 @@ def $internal_closure_capture_scope(S, pfunction, n) = true
   -- if pinternalclosurescope.SOURCE = n_source
   -- if pinternalclosurescope.FUNCTION = pcallcontext.FUNCTION
   -- if pinternalclosurescope.CALLSITE = pcallcontext.CALLSITE
-  -- if $internal_closure_scopes(S, n_source) = ((pinternalclosurescope.LEXICAL, pinternalclosurescope.CALLED, n_receiver?))
+  -- if $internal_closure_current_scopes(S) = ((pinternalclosurescope.LEXICAL, pinternalclosurescope.CALLED, n_receiver?))
   -- if pinternalclosurescope.RECEIVER = $closure_bound_receiver(S, pfunction)
 def $internal_closure_capture_scope(S, pfunction, n) = false -- otherwise
 def $closure_capture_scope_valid(S, pfunction, n) = true
@@ -1048,7 +1057,8 @@ def $bind_receiver_live(S, (n)) = $getclass_live_object(S, n)
 
 def $closure_current_temporary(S) = true
   -- if S.CURRENT = (pcallcontext)
-  -- if $closure_call_target(pcallcontext.TARGET)
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if $closure_call_real(S, n_source)
 def $closure_current_temporary(S) = false -- otherwise
 
 def $closure_binding_method_site(S, porigin) = true
