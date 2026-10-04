@@ -187,8 +187,8 @@ def $scope_identity(S, pcalltarget, porigin_requested, ptbytes, pcallableaccess)
 
 ;; An immutable literal constrains selector kind; deferred variable and reference
 ;; members keep their selected snapshot after the original value changes.
-def $scope_array_literal_kind(NExprArray (SEQUENCE ((NArrayItem ABSENT (NScalarString phpType33 metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_item) :: phpType13*)) metadata) = (false)
-def $scope_array_literal_kind(NExprArray (SEQUENCE ((NArrayItem ABSENT (NExprNew phpType28 phpType6 metadata_new) (BOOLEAN false) (BOOLEAN false) metadata_item) :: phpType13*)) metadata) = (true)
+def $scope_array_literal_kind(NExprArray (SEQUENCE ((NArrayItem ABSENT (NScalarString phpType33 metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_item) :: (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_second) :: eps)) metadata) = (false)
+def $scope_array_literal_kind(NExprArray (SEQUENCE ((NArrayItem ABSENT (NExprNew phpType28 phpType6 metadata_new) (BOOLEAN false) (BOOLEAN false) metadata_item) :: (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_second) :: eps)) metadata) = (true)
 def $scope_array_literal_kind(expression) = eps -- otherwise
 def $scope_array_kind_valid(S, porigin_site, b_object) = (b_object = b_literal)
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
