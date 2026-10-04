@@ -18,6 +18,62 @@ retain the default behavior. Original descriptor and fixture failures stay in
 the [scope ledger](coverage/semantics/anonymous-default-new-review.json).
 Ordinary Throwable effects and dynamic object `::class` remain required next.
 
+Writable dimension keys242 stage defined mutable CV-array W/RW fetches through
+undefined/null/float/NaN callbacks, nested acquisition, updates and direct
+assignment/compound consumers. Separation precedes conversion; callback-created
+copies abort acquisition while real cell aliases and moved sole keepers preserve
+it. Borrowed inner rows retire with their parent; aborted intermediate fetches
+retain one genuine unnamed null cell. Delayed RHS CV demand follows successful
+conversion. Direct GLOBALS W and named reference sends preserve selected names,
+fetch/mapping priority and callable/earlier-argument owners. Throws retain the
+old typed destination and previous chain. Author11 source agreements/340 reached
+assertions include two independent originals; independent15 fresh agreements/266
+assertions retain those two separately, giving26 unique private agreements. One
+actual3b622 composition source at6ae passes private-handler/called-class and typed
+caller alias/introspection behavior. Accepted231/234 routes are preserved. The
+[contract](docs/semantics/SOURCE-DIMENSION-WRITES.md) and
+[ledger](coverage/semantics/dimension-write-continuations-review.json) retain
+original failures, revisions and the current adapter reuse. Append, unset,
+coalesce assignment, broader GLOBALS RW and earlier container/string/object
+producers remain required.
+
+Iterator declaration notices230 follow actual source/internal prototype order,
+including source erasure, direct restoration, duplicate notices and the built-in
+ReturnTypeWillChange suppressor. Runtime classes publish before callbacks;
+early file units publish completely before ordered method/compiler warning
+delivery. Real caller scope/trace stays distinct from physical diagnostic origin.
+Live reporting, throwing-handler tails and method/constant fatal prefixes have
+19 authored agreements; independent source11 and affected trace3 pass at their
+separate cutoffs. Independent pending53/handler35/Iterator25/restored23 state
+checks pass at19dae, including source-ledger authority and actual owners. Four
+early-eval controls assert temporary Unsupported only; per-class eval callbacks
+and publication after handler throws are the immediate required follow-on.
+Actual3b622 composition source3 passes at e1a654: imported physical method
+diagnostics, live argument/display state and effectful internal default traces.
+The original recorder/transport failures and protocol timeouts remain preserved
+without agreement credit. [Contract and tests](docs/semantics/ITERATORS.md).
+
+Shutdown registration231 caches callable selection, private/rebound permission
+and copied arguments after all argument effects. Ordered callbacks run after
+normal, exit and fatal/uncaught paths, including serviced compiler failures.
+Append, handled throw, exit override, weak/default/variadic reception and internal
+send-warning continuations preserve selected targets and native owners. Frozen
+fatal diagnostics precede the queue; effectful default message warnings finish
+the builtin cache before pending exception dispatch. Exact registered and
+converted argument views remain separate. Existing176 user formatters retain their
+C return-warning continuation after handled throws; actual237 freezes the live
+display destination after formatting. Imported trait makers preserve using scope
+and physical provenance after retirement. Fatal snapshots retain runtime/compile
+severity before callback mask writes; actual240 default reception retains its
+warning and Stringable owners. Author checks cover 29 source tuples and 149 state
+assertions; independent checks cover 77 tuples and 559 assertions. Each keeps its
+recorded revision, and production stages pass on the accepted fe51 parent.
+[Contract](docs/semantics/SOURCE-SHUTDOWN.md),
+[author/composition record](coverage/semantics/shutdown-functions-review.json),
+[independent ledger](coverage/semantics/shutdown-function-review.json).
+Keyword/compound ingress needs the accepted221 consumers; destructors, GC,
+output buffers and queue release are required next request phases.
+
 Internal default reception240 now suspends weak-null and lossy integer warnings
 through real error dispatch and invokes genuine Stringable callbacks in formal
 order. Raw integer slots and rewritten string slots preserve internal constructor
@@ -57,9 +113,9 @@ at its separate cut. One
 actual71da constructor in a parameter default passes with private captured
 handler selection, called class and authentic key line/name through root mutation.
 [Contract](docs/semantics/SOURCE-DIMENSION-KEYS.md),
-[ledger](coverage/semantics/dimension-key-review.json). Read-write/reference,
-append/unset/compound/coalesce-assignment warning continuations are required next;
-wider object/key/container producers remain core work.
+[ledger](coverage/semantics/dimension-key-review.json). Writable242 covers the
+bounded CV-array consumers above; append/unset/coalesce-assignment and wider
+object/key/container producers remain core work.
 
 Prepared internal Throwable default constructors235 map completed227 values
 before names, arity and sequential reception. Default declaration strictness,
@@ -78,8 +134,9 @@ stages/init and the changed adapter build. Actualddb6/233 preservation retains
 225 modules with the reviewed display and dimension-warning routes, without renewed execution.
 The [display ledger](coverage/semantics/display-errors-review.json) separates
 source-defined nullable controls from native profiles. The held shutdown/fatal
-freeze source remains native-only until required actual231 composition; wider
-display directives, parser/profiles and output/lifecycle consumers remain open.
+source matches its independent original at actual231/237 cutccd900: rendering
+selects the fatal destination before queue OFF/Restore writes. This composition
+has its own record; wider display, parser/profiles and request phases remain open.
 
 Registered startup inputs225 provide original `error_reporting` and
 `include_path` bytes before compilation, independently of file/CWD facts.
@@ -120,9 +177,21 @@ raw keyword/compound calls preserve ordinary PHP lookup errors. The
 records independent pins, affected checks and preserved failures. Actual include,
 cold-static and GLOBALS interactions preserve real USER permission, constrained
 references and captured null; initializer locations retain their declaration owner.
-Default/variadic,
-`Closure::fromCallable`, other internal and user-return warning consumers remain
+Default/variadic, other internal and user-return warning consumers remain
 required; unstaged special callable conversion stays Unsupported.
+
+`Closure::fromCallable`234 selects and creates durable captures over existing core
+callable forms. Existing Closure inputs preserve identity; method captures freeze
+live method bytes and selecting permission before raw values/makers retire.
+USER admission and internal Closure getter scope remain distinct, including
+foreign receiver/called-class cases. Invocation/clone retain real defaults,
+source method statics and receiver ownership. Created source Closures retain
+authenticated method/import scope after the parent capture retires; static
+children add no receiver owner, while nonstatic children retain their bound
+receiver. Imported private cold references and per-host source statics are covered.
+Factory lookup-warning throws wrap only after handler/finally unwinding; argument-read throws before entry remain
+unwrapped. [Contract](docs/semantics/FROM-CALLABLE.md),
+[review ledger](coverage/semantics/from-callable-review.json).
 
 Iterator224 adds compatible explicit declarations and inherited internal
 obligations for source by-value foreach; callbacks use
@@ -137,9 +206,8 @@ fixture line binding. On accepted2e8, source12 passes control cleanup, arbitrary
 keys, assignment priority, covariance and the remaining throwing callback stages
 at284803284. Independent source1/protocol16 at the same cutoff confirms zero-argument
 Stringable default reception. Earlier results and original failures remain preserved.
-Tentative-return deprecations are the immediate declaration follow-on, followed
-by IteratorAggregate, ArrayAccess and remaining reference/ordinary object
-traversal. [Scope and boundaries](docs/semantics/ITERATORS.md).
+IteratorAggregate, ArrayAccess and remaining reference/ordinary object traversal
+follow the required early-eval diagnostic work. [Scope and boundaries](docs/semantics/ITERATORS.md).
 
 Direct missing `$GLOBALS[key]` R-fetches226 dispatch before their consumers and
 retain the original null through key/global mutation. Handler throws skip later
@@ -163,7 +231,7 @@ cross-file diagnostic origins during static defaults, and production algorithm
 and structure checks pass. [Contract](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md),
 [author/composition record](coverage/semantics/exception-handlers-review.json),
 [independent review](coverage/semantics/exception-handler-review.json).
-Keyword/compound callback ingress and later request lifecycle remain required.
+Keyword/compound callback ingress and the remaining request phases stay open.
 
 Called-class introspection223 implements `get_called_class()` using the active
 authenticated called class. Plain functions and global Closures stop lookup;
@@ -203,8 +271,14 @@ scope/binding evidence after pruning. Nested creation copies its immediate
 creator's body, scope, receiver and nullable callsite, including error and
 terminal callbacks; ordinary method ancestry stays exact. Nine new source
 agreements and bound69 premises pass atd6bc09789; handler58/terminal35 pass at
-860a8a19a after one fixture ordinal-binding repair. Instance/object defaults and
-wider reference/creation consumers remain required next work.
+860a8a19a after one fixture ordinal-binding repair. Temporary Closure::call child
+creation now retains authentic source/receiver scope after maker collection;
+nonstatic children keep the receiver and static children keep only nonowning
+evidence. Five source agreements/global77 pass at e32dcc64a, affected callback81
+at49d0b9579 after making ordinary/copied scope rules disjoint, and a fresh
+same-class source/35 atadbfde09e: six sources/193 premises total. The original
+validator failure is retained. Instance/object defaults and wider consumers
+remain required next work.
 
 
 Private and protected method arrays and class-method strings support callable
@@ -320,16 +394,17 @@ failures and interrupted evidence.
 
 ## Remaining core work
 
-- Calls: default/variadic, `Closure::fromCallable`, other internal and user-return
+- Calls: default/variadic, other internal and user-return
   keyword/compound warning consumers,
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
   array and string Closure PIPE routes are covered. Direct defined/missing
   `$GLOBALS[key]` reads and explicit-request full-table snapshots are admitted;
   233 additionally stages earlier missing key-CV and null/float/global-array-name
-  conversions through nested/quiet reads. Read-write continuations, wider
-  key/object/container producers and ordinary snapshots without request facts
-  remain open.
+  conversions through nested/quiet reads. Writable242 adds bounded CV-array W/RW
+  and direct GLOBALS reference fetches. Append/unset/coalesce-assignment, broader
+  GLOBALS RW, wider key/object/container producers and ordinary snapshots
+  without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
   wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
@@ -353,7 +428,7 @@ failures and interrupted evidence.
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,
-  later exception-handler lifecycle entry and broader API/callable argument consumers.
+  broader API/callable argument consumers and remaining request phases.
   Broader constant consumers and compiler reporting interactions remain open.
   Called-class introspection223 leaves builtin Closure rebinding, builtin API
   callback targets, suspension and wider reference-result consumers open.

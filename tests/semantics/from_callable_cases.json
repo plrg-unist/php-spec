@@ -1,0 +1,189 @@
+[
+  {
+    "id": "identity-static",
+    "source": "<?php\nfunction shared_counter() { static $n = 0; echo ++$n, \"|\"; }\n$first = Closure::fromCallable('shared_counter');\n$same = Closure::fromCallable($first);\n$pair = Closure::fromCallable([$first, '__INVOKE']);\n$other = Closure::fromCallable('shared_counter');\n$copy = clone $first;\necho (int)($same === $first), (int)($pair === $first), (int)($other === $first), (int)($copy === $first), \"|\";\nshared_counter(); $first(); $copy(); $other();\n$anon = function () { static $n = 0; echo ++$n, \"|\"; };\n$held = Closure::fromCallable($anon);\n$pair = Closure::fromCallable([$anon, '__invoke']);\n$clone = clone $pair;\necho (int)($held === $anon), (int)($pair === $anon), \"|\";\n$held(); $anon(); $clone();\n",
+    "source_sha256": "07b761b266c504181e9cb0527d4ba9814d29bb15f7feb6fe4b1c344f0eb5c675",
+    "expected_model": "normal"
+  },
+  {
+    "id": "scoped-default-static",
+    "source": "<?php\nclass TextDefault { public function __toString() { echo \"S|\"; return \"text\"; } }\nclass OwnerCapture {\n  private static function target(string $value = new TextDefault) { static $n = 0; echo self::class, \":\", static::class, \":\", get_called_class(), \":\", $value, \":\", ++$n, \"|\"; }\n  public static function make() { return Closure::fromCallable([static::class, 'target']); }\n}\nclass ChildCapture extends OwnerCapture {}\n$first = ChildCapture::make(); $copy = clone $first; $other = ChildCapture::make();\n$first(); $copy(); $other();\n",
+    "source_sha256": "036430d69869d6296105fce6fb0f73bd81192e24036fb6988a7057fa167feefc",
+    "expected_model": "normal"
+  },
+  {
+    "id": "compound-held-cache",
+    "source": "<?php\nclass BaseHeld { public static function ok() { echo self::class, \":\", static::class, \"|\"; } }\nclass OwnerHeld extends BaseHeld {\n public static function make(&$method) {\n  $array = ['self', &$method]; $count = 0;\n  set_error_handler(function($n, $s) use (&$method, &$count) { echo \"D\", ++$count, \"|\"; $method = $count === 1 ? 'parent::ok' : 'YYYYYY::ok'; return true; }, E_DEPRECATED);\n  $result = Closure::fromCallable($array);\n  restore_error_handler(); $method = 'parent::xx'; $array[0] = 'MissingHeld'; return $result;\n }\n}\n$method = 'parent::xx'; $first = OwnerHeld::make($method); $copy = clone $first; unset($method);\n$first(); $copy();\n",
+    "source_sha256": "ca193f8e83235c2465a1fede0292b063079846385eb06e66b6792870a2604b67",
+    "expected_model": "normal"
+  },
+  {
+    "id": "scalar-snapshot-cache",
+    "source": "<?php\nclass ScalarCapture {\n public static function xx() { echo \"old|\"; }\n public static function ok() { echo \"new|\"; }\n public static function make() {\n  global $method; $method = 'self::xx';\n  set_error_handler(function($n, $s) { global $method; echo \"D|\"; $method = 'self::ok'; return true; }, E_DEPRECATED);\n  $result = Closure::fromCallable($method); restore_error_handler(); $method = 'missing'; return $result;\n }\n}\n$first = ScalarCapture::make(); $copy = clone $first; $first(); $copy(); echo $method, \"|\";\n",
+    "source_sha256": "1b5b807063203098071aec6b8a264ee19c3c9980cc1fb17cd266a033bc416087",
+    "expected_model": "normal"
+  },
+  {
+    "id": "argument-error-order-v2",
+    "source": "<?php\nfunction effect($value) { echo \"E|\"; return $value; }\nfunction show($e) { echo get_class($e), \":\", $e->getMessage(), \"|\", (int)($e->getPrevious() === null), \"|\"; }\nclass NoCast { public function __toString() { echo \"BAD|\"; return 'strlen'; } }\ntry { Closure::fromCallable(); } catch (Throwable $e) { show($e); }\ntry { Closure::fromCallable(effect('self::missing'), effect(1)); } catch (Throwable $e) { show($e); }\ntry { Closure::fromCallable(callable: effect('self::missing')); } catch (Throwable $e) { show($e); }\ntry { Closure::fromCallable(callback: effect(new NoCast)); } catch (Throwable $e) { show($e); }\ntry { Closure::fromCallable(callback: []); } catch (Throwable $e) { show($e); }\n$class = Closure::fromCallable(callback: 'get_class'); echo $class(new NoCast), \"|\";\n",
+    "source_sha256": "bd7582f0362d5ea59f96da4f721e238eba6e951b9383a0634153e1af79e9ad21",
+    "expected_model": "normal"
+  },
+  {
+    "id": "receiving-scope",
+    "source": "<?php\nclass ScopeCaptureA {\n private static function only() { echo \"A|\"; }\n public static function ask() { return ScopeCaptureB::receive('self::only'); }\n}\nclass ScopeCaptureB {\n public static function receive($value) { return Closure::fromCallable($value); }\n}\nset_error_handler(function($n, $s) { echo \"D|\"; return true; }, E_DEPRECATED);\ntry { ScopeCaptureA::ask(); } catch (Throwable $e) { echo get_class($e), \":\", $e->getMessage(), \"|\"; }\nfunction receive_global($value) { return Closure::fromCallable($value); }\ntry { receive_global('self::only'); } catch (Throwable $e) { echo get_class($e), \":\", $e->getMessage(), \"|\"; }\nrestore_error_handler();\n",
+    "source_sha256": "ba134b97a0ef9bddcd73d53710cf5c9c7efcc7bb5c6479b3d8d43e3c872ba511",
+    "expected_model": "normal"
+  },
+  {
+    "id": "warning-throw-creation-v2",
+    "source": "<?php\nclass AbortCapture {\n public static function ok() { echo \"BAD|\"; }\n public static function make(&$method) {\n  set_error_handler(function($n, $s) use (&$method) { echo \"D|\"; $method = 'self::ok'; throw new Exception('stop'); }, E_DEPRECATED);\n  try { $made = Closure::fromCallable(['self', &$method]); }\n  catch (Throwable $e) { echo get_class($e), \":\", $e->getMessage(), \"|\"; $p = $e->getPrevious(); echo get_class($p), \":\", $p->getMessage(), \"|\", (int)($p->getPrevious() === null), \"|\", (int)isset($made), \":\", $method, \"|\"; }\n  restore_error_handler();\n }\n}\n$method = 'self::ok'; AbortCapture::make($method); echo $method, \"|\";\n",
+    "source_sha256": "8a6a0d5b5b754c52516d133ee9dd49c70338a0f25c9c2bac34a68da6afe28c20",
+    "expected_model": "normal"
+  },
+  {
+    "id": "entry-forms",
+    "source": "<?php\nnamespace EntryCapture;\nuse Closure as ImportedClosure;\nfunction body() { echo \"F|\"; }\nfunction bad_effect() { echo \"BAD|\"; return []; }\n$anon = function () { echo \"A|\"; };\n$literal = ImportedClosure::fromCallable(__NAMESPACE__ . '\\\\body');\n$slash = \\Closure::FROMCALLABLE(__NAMESPACE__ . '\\\\body');\n$class = '\\\\Closure'; $method = 'FROMCALLABLE';\n$computed = $class::$method(__NAMESPACE__ . '\\\\body');\n$object = $anon->$method(__NAMESPACE__ . '\\\\body');\n$same = $anon?->fromCallable($anon); $none = null;\n$skipped = $none?->fromCallable(bad_effect());\necho (int)($same === $anon), \":\", (int)($skipped === null), \"|\";\n$literal(); $slash(); $computed(); $object(); $same();\n",
+    "source_sha256": "279493584f07a8335c02abf23ad108c09cd818ece5f3ec1a371504b0aea082cf",
+    "expected_model": "normal"
+  },
+  {
+    "id": "static-foreign-called",
+    "source": "<?php\nclass StaticRequested {\n public static function run() { static $n = 0; echo (int)isset($this), \":\", self::class, \":\", static::class, \":\", get_called_class(), \":\", ++$n, \"|\"; }\n}\nclass StaticForeign {\n public function make() {\n  set_error_handler(function($n, $s) { echo \"D|\"; return true; }, E_DEPRECATED);\n  $result = Closure::fromCallable(['StaticRequested', 'self::run']);\n  restore_error_handler(); return $result;\n }\n}\n$maker = new StaticForeign; $first = $maker->make(); unset($maker); $copy = clone $first;\n$first(); $copy();\n",
+    "source_sha256": "5895b547716796f65340ad9e430793da9dacefa7bd62b9e93cf35c4016f76e93",
+    "expected_model": "normal"
+  },
+  {
+    "id": "warning-null-send",
+    "source": "<?php\nfunction capture_body() { echo \"BAD|\"; }\nset_error_handler(function($n, $s) { global $callback; echo \"W|\"; $callback = 'capture_body'; return true; }, E_WARNING);\ntry { $made = Closure::fromCallable($callback); }\ncatch (TypeError $e) { echo $e->getMessage(), \"|\", (int)isset($made), \":\", $callback, \"|\"; }\nrestore_error_handler();\n",
+    "source_sha256": "50d7329f76b6403e3b4b94ab79feca637e7c3fb2f19d24ac680a7fcb8341967f",
+    "expected_model": "normal"
+  },
+  {
+    "id": "object-private-selector-v2",
+    "source": "<?php\nclass SelectorOwner {\n private function target() { echo \"Owner:\", self::class, \":\", static::class, \"|\"; }\n public function make() { return [Closure::fromCallable([$this, 'target']), Closure::fromCallable([get_class($this), 'target'])]; }\n}\nclass SelectorChild extends SelectorOwner { public static function target() { echo \"Child:\", self::class, \":\", static::class, \"|\"; } }\n$maker = new SelectorChild; [$object, $class] = $maker->make(); unset($maker);\n$copy = clone $object; $object(); $copy(); $class();\n",
+    "source_sha256": "4da6e69b1a2929300ec32c4057e3c61f1fa9b5c3f999a2010398319085bd23f9",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-getter-parent-private",
+    "source": "<?php\nclass MissingForeignRequested {}\nclass ForeignParentSelector {\n private function selected() { echo \"BAD-parent|\"; }\n public function make() {\n  set_error_handler(function($n, $s) { echo \"D|\"; return true; }, E_DEPRECATED);\n  $result = Closure::fromCallable(['MissingForeignRequested', 'self::selected']);\n  restore_error_handler(); return $result;\n }\n}\nclass ForeignChildSelector extends ForeignParentSelector {\n public function selected() { echo \"child:\", self::class, \":\", static::class, \"|\"; }\n}\n$maker = new ForeignChildSelector; $result = $maker->make(); unset($maker); $copy = clone $result;\n$result(); $copy();\n",
+    "source_sha256": "0845e8c06512746b42c665a7d4b47d1b33c1b36822c40f2fbba2c6b84b29deef",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fake-equality-nominal",
+    "source": "<?php\nclass EqualityOwner {\n public static function run() { echo \"run|\"; }\n public function instance() { echo \"instance|\"; }\n}\nclass EqualityChild extends EqualityOwner {}\n$first = Closure::fromCallable([EqualityChild::class, 'run']);\n$other = Closure::fromCallable('EqualityChild::run');\n$copy = clone $first; $fcc = EqualityChild::run(...);\n$base = Closure::fromCallable([EqualityOwner::class, 'run']);\necho (int)($first instanceof Closure), \":\", (int)($first == $other), \":\", (int)($first == $copy), \":\", (int)($first == $fcc), \":\", (int)($first == $base), \":\", (int)($first === $other), \"|\";\n$a = new EqualityChild; $b = new EqualityChild;\n$left = Closure::fromCallable([$a, 'instance']);\n$same = Closure::fromCallable([$a, 'instance']);\n$right = Closure::fromCallable([$b, 'instance']);\necho (int)($left instanceof Closure), \":\", (int)($left == $same), \":\", (int)($left == $right), \":\", (int)($left === $same), \"|\";\n$first(); $left();\n",
+    "source_sha256": "de03abcb8412b9143beca05be286caaabd04e9bbfc3290c2a9578488b822df81",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-run-cache",
+    "source": "<?php\nclass RequestedRun {\n public function run() { echo get_class($this), \":\", self::class, \":\", static::class, \"|\"; }\n}\nclass ForeignRun {\n public function make() { return Closure::fromCallable(['RequestedRun', 'self::run']); }\n}\nset_error_handler(function($n, $s) { echo \"D|\"; return true; }, E_DEPRECATED);\n$maker = new ForeignRun; $run = $maker->make(); unset($maker); restore_error_handler();\n$copy = clone $run; $run(); $copy(); unset($run, $copy);\n",
+    "source_sha256": "6215d7a509a476ab601533914eedd4b07c76f4f911a670a06b9ec5d01dfcc8a2",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-public-fallback",
+    "source": "<?php\nclass RequestedFallback {}\nclass ForeignFallback {\n public function handle() { echo get_class($this), \":\", self::class, \":\", static::class, \"|\"; }\n public function make() { return Closure::fromCallable(['RequestedFallback', 'self::handle']); }\n}\nset_error_handler(function($n, $s) { echo \"D|\"; return true; }, E_DEPRECATED);\n$maker = new ForeignFallback; $handler = $maker->make(); unset($maker); restore_error_handler();\n$handler(); unset($handler);\n",
+    "source_sha256": "3df9da987c6189d8ad584a2a26a78d8dd7c8367ac55941f8175580eb580bec43",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-private-factory",
+    "source": "<?php\nclass RequestedPrivate {}\nclass ForeignPrivate {\n private function only() { echo \"BAD|\"; }\n public function make() { return Closure::fromCallable(['RequestedPrivate', 'self::only']); }\n}\nset_error_handler(function($n, $s) { echo \"D|\"; return true; }, E_DEPRECATED);\ntry { (new ForeignPrivate)->make(); } catch (Throwable $e) {\n echo get_class($e), \":\", $e->getMessage(), \"|\";\n $p = $e->getPrevious(); echo get_class($p), \":\", $p->getMessage(), \"|\";\n}\nrestore_error_handler();\n",
+    "source_sha256": "fd5763ffc8e39f5b07bf68673accf68a9c482656269d8f0eb7741c7817041099",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-entered-getter-denial",
+    "source": "<?php\nclass RequestedEntered {\n public function deny() { return Closure::fromCallable(['RequestedEntered', 'self::only']); }\n}\nclass ForeignEntered {\n private function only() { echo \"BAD|\"; }\n public function make() { return Closure::fromCallable(['RequestedEntered', 'self::deny']); }\n}\nset_error_handler(function($n, $s) { echo \"D|\"; return true; }, E_DEPRECATED);\n$maker = new ForeignEntered; $deny = $maker->make(); unset($maker);\ntry { $deny(); } catch (Throwable $e) {\n echo get_class($e), \":\", $e->getMessage(), \"|\";\n $p = $e->getPrevious(); echo get_class($p), \":\", $p->getMessage(), \"|\";\n}\nrestore_error_handler(); unset($deny);\n",
+    "source_sha256": "4b158e1239cb132e9f288157be38eac25c74cfdca4bf48ab1cb339b5051cce87",
+    "expected_model": "normal"
+  },
+  {
+    "id": "warning-finally-replacement",
+    "source": "<?php\nclass FinallyCapture {\n public static function ok() { echo \"BAD|\"; }\n public function make(&$method) { return Closure::fromCallable(['self', &$method]); }\n}\n$method = 'bad';\nset_error_handler(function($n, $s) use (&$method) {\n echo \"D|\";\n try { throw new Exception('old'); }\n finally {\n  $method = 'ok';\n  set_error_handler(function($n, $s) { echo \"N|\"; return true; });\n  throw new Exception('new');\n }\n}, E_DEPRECATED);\ntry { $made = (new FinallyCapture)->make($method); } catch (Throwable $e) {\n echo get_class($e), \":\", $e->getMessage(), \"|\";\n $p = $e->getPrevious(); echo $p->getMessage(), \":\", $p->getPrevious()->getMessage(), \"|\";\n}\necho (int)isset($made), \":\", $method, \"|\";\ntrigger_error('later', E_USER_WARNING); restore_error_handler(); restore_error_handler();\n",
+    "source_sha256": "1074d0b4d4bb838a7f7b627d1e0d77ae7c5f93ef8439d129608d6ec0e4ac4ed4",
+    "expected_model": "normal"
+  },
+  {
+    "id": "rebound-maker-permission",
+    "source": "<?php\nclass ReboundOwner {\n private function only() { echo self::class, \":\", static::class, \":\", get_class($this), \"|\"; }\n}\nclass ReboundChild extends ReboundOwner {}\n$template = function() { return Closure::fromCallable(['self', 'only']); };\n$receiver = new ReboundChild;\n$maker = $template->bindTo($receiver, ReboundOwner::class);\nset_error_handler(function($n, $s) { echo \"D|\"; return true; }, E_DEPRECATED);\n$created = $maker(); restore_error_handler(); $copy = clone $created;\nunset($maker, $template, $receiver); $created(); $copy(); unset($created, $copy);\n",
+    "source_sha256": "78d521ea71c61e84b07e019b328bea0e01397c07a873d83253fe619071cb923a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "argument-read-throw-before-api",
+    "source": "<?php\nset_error_handler(function($n, $s) { echo \"W|\"; throw new Exception('read'); }, E_WARNING);\ntry { $made = Closure::fromCallable($missing); } catch (Throwable $e) {\n echo get_class($e), \":\", $e->getMessage(), \":\", (int)($e->getPrevious() === null), \"|\";\n}\nrestore_error_handler(); echo (int)isset($made), \"|\";\n",
+    "source_sha256": "f08570697cf82eceaa90e27e55a41dcfd8bc6c1291a0780fecf046b91dc36850",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-getter-denial-case",
+    "source": "<?php\nclass RequestedCase {}\nclass ForeignCase {\n private function oNlY() { echo \"BAD|\"; }\n public function make() { return Closure::fromCallable(['RequestedCase', 'self::ONLY']); }\n}\nset_error_handler(function($n, $s) { echo \"D|\"; return true; }, E_DEPRECATED);\ntry { (new ForeignCase)->make(); } catch (Throwable $e) {\n echo $e->getMessage(), \"|\", $e->getPrevious()->getMessage(), \"|\";\n}\nrestore_error_handler();\n",
+    "source_sha256": "0ba474834d23fcc6434744dd66496addc53d68d00625548c42b52407f76755e4",
+    "expected_model": "normal"
+  },
+  {
+    "id": "getter-invoke-v2",
+    "source": "<?php\nclass CaptureFault extends Exception {}\nerror_reporting(0);\neval('class PrivateInvoker { private function __invoke() { echo self::class, \":\", static::class, \"|\"; } }');\n$error = new CaptureFault('held');\n$message = Closure::fromCallable([$error, 'GETMESSAGE']);\n$copy = clone $message;\n$old = $error->getMessage(...);\necho (int)($message instanceof Closure), ':', (int)($message == $copy), ':', (int)($message == $old), '|';\nunset($error, $old); echo $message(), '|', $copy(), '|';\n$object = new PrivateInvoker;\n$invoke = Closure::fromCallable($object);\n$clone = clone $invoke;\necho (int)($invoke instanceof Closure), ':', (int)($invoke == $clone), '|';\nunset($object); $invoke(); $clone();\ntry { Closure::fromCallable([new PrivateInvoker, '__invoke']); } catch (TypeError $e) { echo 'denied|'; }\n",
+    "source_sha256": "6961c80d68986c6e4549aaff7ba89ffe22c4d8bf5368c073d4ab9741c78a106a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "cached-static-default",
+    "source": "<?php\nclass FromDefaultValue implements Stringable { public function __toString(): string { echo 'V|'; return 'value'; } }\nclass FromDefaultOwner {\n private static function probe(string $value = new FromDefaultValue) { static $count = 0; echo ++$count, ':', self::class, ':', static::class, ':', get_called_class(), ':', $value, '|'; }\n public function make() {\n  $class = 'self'; $method = 'gone'; $callback = [&$class, &$method];\n  set_error_handler(function($n,$s) use (&$class,&$method) { echo 'D|'; $class = 'Other'; $method = 'probe'; return true; }, E_DEPRECATED);\n  $closure = Closure::fromCallable($callback); restore_error_handler();\n  $method = 'later'; unset($callback); return $closure;\n }\n}\nclass FromDefaultChild extends FromDefaultOwner {}\n$maker = new FromDefaultChild; $closure = $maker->make(); unset($maker); $copy = clone $closure; $closure(); $copy(); unset($closure, $copy);\n",
+    "source_sha256": "fa287d82561f210391b54ae75f5a2d045465a47605058886499ff74029494bc6",
+    "expected_model": "normal"
+  },
+  {
+    "id": "late-chain",
+    "source": "<?php\nclass FromThrowOwner {\n public static function run() {}\n public function make() {\n  $method = 'run'; $callback = ['self', &$method];\n  set_error_handler(function($n,$s) { try { throw new Exception('old'); } finally { throw new Exception('new'); } }, E_DEPRECATED);\n  try { Closure::fromCallable($callback); } catch (TypeError $e) {\n   echo $e->getMessage(), '|', $e->getPrevious()->getMessage(), ':', $e->getPrevious()->getPrevious()->getMessage(), '|';\n  }\n  restore_error_handler();\n }\n}\n$maker = new FromThrowOwner; $maker->make(); unset($maker);\n",
+    "source_sha256": "72763983d421b4eb1f6c8a2adee4c51588d3cfe3e1a13f2636f632d4065f0232",
+    "expected_model": "normal"
+  },
+  {
+    "id": "argument-error-order",
+    "source": "<?php\nfunction effect($value) { echo \"E|\"; return $value; }\nfunction show($e) { echo get_class($e), \":\", $e->getMessage(), \"|\", (int)($e->getPrevious() === null), \"|\"; }\nclass NoCast { public function __toString() { echo \"BAD|\"; return 'strlen'; } }\ntry { Closure::fromCallable(); } catch (Throwable $e) { show($e); }\ntry { Closure::fromCallable(effect('self::missing'), effect(1)); } catch (Throwable $e) { show($e); }\ntry { Closure::fromCallable(callable: effect('self::missing')); } catch (Throwable $e) { show($e); }\ntry { Closure::fromCallable(callback: effect(new NoCast)); } catch (Throwable $e) { show($e); }\ntry { Closure::fromCallable(callback: []); } catch (Throwable $e) { show($e); }\n$size = Closure::fromCallable(callback: 'strlen'); echo $size('abc'), \"|\";\n",
+    "source_sha256": "054c69b7ae6007d6be181afeb021a4d599b0b2a0b0c34025a8ae380aa3ee2b19",
+    "expected_model": "unsupported",
+    "boundary": "The final strlen capture is outside existing120 intrinsic bodies; zero agreement credit."
+  },
+  {
+    "id": "current-default",
+    "source": "<?php\nclass FromCurrentValue implements Stringable {\n public string $value;\n public function __construct(string $value) { echo 'C|'; $this->value = $value; }\n public function __toString(): string { echo 'V|'; return $this->value; }\n}\nclass FromCurrentOwner {\n private static function run(string $value = new FromCurrentValue('value'), Exception $error = new Exception('held')) {\n  static $count = 0;\n  echo ++$count, ':', self::class, ':', static::class, ':', get_called_class(), ':', $value, ':', $error->getMessage(), '|';\n }\n public function make() { return Closure::fromCallable(['self', 'run']); }\n}\nclass FromCurrentChild extends FromCurrentOwner {}\nset_error_handler(function($n,$s) { echo 'D|'; return true; }, E_DEPRECATED);\n$maker = new FromCurrentChild; $closure = $maker->make(); restore_error_handler();\nunset($maker); $copy = clone $closure; $closure(); $copy(); unset($closure, $copy);\n",
+    "source_sha256": "8883543011be317adda737d3a9fe4f8e103c19528447fa7a184b3d291435fe17",
+    "expected_model": "normal"
+  },
+  {
+    "id": "current-cold-key",
+    "source": "<?php\nclass FromColdOwner {\n public const PREFIX = 'self::';\n public static string $target = self::PREFIX . 'run';\n private static function run() { echo self::class, ':', static::class, ':', get_called_class(), '|'; }\n public function make() {\n  $callback =& self::$target;\n  set_error_handler(function($n,$s) use (&$callback) { echo 'D|'; $callback = 'self::missing'; return true; }, E_DEPRECATED);\n  $closure = Closure::fromCallable($callback); restore_error_handler(); return $closure;\n }\n}\nclass FromColdChild extends FromColdOwner {}\n$maker = new FromColdChild; $closure = $maker->make(); unset($maker);\necho FromColdOwner::$target, '|'; $closure(); unset($closure);\nset_error_handler(function($n,$s) { echo 'W|'; throw new Exception('key'); });\n$classes = ['' => 'FromColdOwner'];\ntry { Closure::fromCallable([$classes[$missing], 'run']); }\ncatch (Throwable $e) { echo get_class($e), ':', $e->getMessage(), ':', ($e->getPrevious() === null ? '1' : '0'), '|'; }\nrestore_error_handler();\n",
+    "source_sha256": "7a917a37dcdf433f97fdcecd729c0f8e52d04f59f659fe63bead94f366686523",
+    "expected_model": "normal"
+  },
+  {
+    "id": "current-creator",
+    "source": "<?php\nclass FromNestedRequested {\n public function make() { return static function() { echo self::class, ':', static::class, ':', get_called_class(), '|'; }; }\n}\nclass FromNestedForeign {\n public function make() {\n  set_error_handler(function($n,$s) { echo 'D|'; return true; }, E_DEPRECATED);\n  $parent = Closure::fromCallable(['FromNestedRequested', 'self::make']);\n  restore_error_handler(); return $parent();\n }\n}\n$maker = new FromNestedForeign; $child = $maker->make(); unset($maker); $child(); unset($child);\n",
+    "source_sha256": "7caa9ef0387ed9c076241071b7572386d2237116b0db3b535e7975dcd8463f26",
+    "expected_model": "normal"
+  },
+  {
+    "id": "current-trait-cold-v4",
+    "source": "<?php\ntrait FromCaptureTrait {\n private static function run() {\n  set_error_handler(static function() { echo 'W|'; });\n  $slot =& self::$value; restore_error_handler();\n  static $n = 0; echo $slot, ':', self::class, ':', static::class, ':', ++$n, '|'; }\n public static function capture() {\n  set_error_handler(static function() { echo 'D|'; });\n  $value = Closure::fromCallable(['self', 'run']);\n  restore_error_handler(); return $value;\n }\n}\nclass FromTraitA { use FromCaptureTrait; private static string $value = 'a' . E_STRICT; }\nclass FromTraitB { use FromCaptureTrait; private static string $value = 'b' . E_STRICT; }\n$first = FromTraitA::capture(); $copy = clone $first;\n$other = FromTraitB::capture();\n$first(); $copy(); $other(); unset($first, $copy, $other);\n",
+    "source_sha256": "9af3e19f850975322148b70e625083448af59300af5c46c6923a6faddab41e1e",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-nested-instance-child",
+    "source": "<?php\nclass NestedRequested234 {\n    public function make() {\n        return function () {\n            echo get_class($this), ':', self::class, ':', static::class,\n                 ':', get_called_class(), '|';\n        };\n    }\n}\nclass NestedForeign234 {\n    public function capture() {\n        return Closure::fromCallable([NestedRequested234::class, 'self::make']);\n    }\n}\nset_error_handler(static function () { echo 'D|'; });\n$maker = new NestedForeign234();\n$parent = $maker->capture();\n$child = $parent();\n$copy = clone $child;\nunset($maker, $parent);\n$child();\n$copy();\nunset($child, $copy);\n",
+    "source_sha256": "e1a1824e40868f53f228503a5d8f8d1faf90c1605506ff563a315586e5d83214",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-nested-static-parent-child",
+    "source": "<?php\nclass NestedStaticRequested234 {\n    public static function make() {\n        return function () {\n            echo isset($this) ? '1' : '0';\n            echo ':', self::class, ':', static::class,\n                 ':', get_called_class(), '|';\n        };\n    }\n}\nclass NestedStaticForeign234 {\n    public function capture() {\n        return Closure::fromCallable([NestedStaticRequested234::class, 'self::make']);\n    }\n}\nset_error_handler(static function () { echo 'D|'; });\n$maker = new NestedStaticForeign234();\n$parent = $maker->capture();\nunset($maker);\n$child = $parent();\n$copy = clone $child;\nunset($parent);\n$child();\n$copy();\nunset($child, $copy);\n",
+    "source_sha256": "3c204fc3c8f7f24edb9127ffee9458a4b6246ad2d2b3c2277a469ec1a29366b4",
+    "expected_model": "normal"
+  }
+]

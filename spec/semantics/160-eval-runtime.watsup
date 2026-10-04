@@ -342,8 +342,23 @@ def $eval_compile_throw_source(S, pevalcontext, text, n_message*, z) = false -- 
 dec $eval_trace_frame(pstate, pevalcontext) : ptraceframe
 def $eval_trace_frame(S, pevalcontext) = {FILE $call_sourcefile(S.FILES, pevalcontext.SITE), LINE $eval_site_line(S, pevalcontext.SITE), FUNCTION $ptascii("eval"), CLASS eps, TYPE eps, ARGS eps, HASARGS false}
 dec $file_trace_frame(pstate, pfilecontext) : ptraceframe
+dec $file_trace_frame_before(pstate, pfilecontext, preqbytes?) : ptraceframe
+def $file_trace_frame_before(S, pfilecontext, preqbytes?) = $file_trace_frame(S, pfilecontext)
+  -- if ~$iterator_notice_file_flushing(S, pfilecontext)
+dec $source_trace_file(ptraceframe*, preqbytes?) : preqbytes?
+def $source_trace_file(eps, preqbytes?) = preqbytes?
+def $source_trace_file(ptraceframe :: ptraceframe_tail*, preqbytes?) = $source_trace_file(ptraceframe_tail*, (ptraceframe.FILE))
+  -- if ptraceframe.FILE =/= eps
+def $source_trace_file(ptraceframe :: ptraceframe_tail*, preqbytes?) = $source_trace_file(ptraceframe_tail*, eps)
+  -- if ptraceframe.FILE = eps
+dec $source_trace_context_file(pstate, pcallcontext?, ptraceframe*, preqbytes?) : preqbytes?
+def $source_trace_context_file(S, pcallcontext?, ptraceframe*, preqbytes?) = preqbytes?
+  -- if $iterator_notice_file_handler(S, pcallcontext?)
+def $source_trace_context_file(S, pcallcontext?, ptraceframe*, preqbytes?) = $source_trace_file(ptraceframe*, preqbytes?)
+  -- if ~$iterator_notice_file_handler(S, pcallcontext?)
 ;; Fresh source IDs order interleaved eval/file units within one call frame.
 dec $source_trace_at(pstate, pevalcontext*, pfilecontext*, nat) : ptraceframe*
+dec $source_trace_at_before(pstate, pevalcontext*, pfilecontext*, nat, preqbytes?) : ptraceframe*
 dec $eval_trace_live(pevalcontext*, nat) : pevalcontext*
 def $eval_trace_live(eps, n_owner) = eps
 def $eval_trace_live(pevalcontext :: pevalcontext_tail*, n_owner) = pevalcontext :: $eval_trace_live(pevalcontext_tail*, n_owner)
@@ -357,26 +372,36 @@ def $file_trace_live(pfilecontext :: pfilecontext_tail*, n_owner) = pfilecontext
 def $file_trace_live(pfilecontext :: pfilecontext_tail*, n_owner) = $file_trace_live(pfilecontext_tail*, n_owner)
   -- if pfilecontext.PHASE =/= FILE_UNIT_RUN \/ pfilecontext.OWNER =/= n_owner
 dec $source_trace_merge(pstate, pevalcontext*, pfilecontext*) : ptraceframe*
-def $source_trace_merge(S, eps, eps) = eps
-def $source_trace_merge(S, pevalcontext :: pevalcontext_tail*, eps) = [$eval_trace_frame(S, pevalcontext)] ++ $source_trace_merge(S, pevalcontext_tail*, eps)
-def $source_trace_merge(S, eps, pfilecontext :: pfilecontext_tail*) = [$file_trace_frame(S, pfilecontext)] ++ $source_trace_merge(S, eps, pfilecontext_tail*)
-def $source_trace_merge(S, pevalcontext :: pevalcontext_tail*, pfilecontext :: pfilecontext_tail*) = [$eval_trace_frame(S, pevalcontext)] ++ $source_trace_merge(S, pevalcontext_tail*, pfilecontext :: pfilecontext_tail*)
+dec $source_trace_merge_before(pstate, pevalcontext*, pfilecontext*, preqbytes?) : ptraceframe*
+def $source_trace_merge(S, pevalcontext*, pfilecontext*) = $source_trace_merge_before(S, pevalcontext*, pfilecontext*, eps)
+def $source_trace_merge_before(S, eps, eps, preqbytes?) = eps
+def $source_trace_merge_before(S, pevalcontext :: pevalcontext_tail*, eps, preqbytes?) = [ptraceframe] ++ $source_trace_merge_before(S, pevalcontext_tail*, eps, $source_trace_file([ptraceframe], preqbytes?))
+  -- if ptraceframe = $eval_trace_frame(S, pevalcontext)
+def $source_trace_merge_before(S, eps, pfilecontext :: pfilecontext_tail*, preqbytes?) = [ptraceframe] ++ $source_trace_merge_before(S, eps, pfilecontext_tail*, $source_trace_file([ptraceframe], preqbytes?))
+  -- if ptraceframe = $file_trace_frame_before(S, pfilecontext, preqbytes?)
+def $source_trace_merge_before(S, pevalcontext :: pevalcontext_tail*, pfilecontext :: pfilecontext_tail*, preqbytes?) = [ptraceframe] ++ $source_trace_merge_before(S, pevalcontext_tail*, pfilecontext :: pfilecontext_tail*, $source_trace_file([ptraceframe], preqbytes?))
   -- if pfilecontext.UNIT = (n_file)
   -- if $(pevalcontext.UNIT > n_file)
-def $source_trace_merge(S, pevalcontext :: pevalcontext_tail*, pfilecontext :: pfilecontext_tail*) = [$file_trace_frame(S, pfilecontext)] ++ $source_trace_merge(S, pevalcontext :: pevalcontext_tail*, pfilecontext_tail*)
+  -- if ptraceframe = $eval_trace_frame(S, pevalcontext)
+def $source_trace_merge_before(S, pevalcontext :: pevalcontext_tail*, pfilecontext :: pfilecontext_tail*, preqbytes?) = [ptraceframe] ++ $source_trace_merge_before(S, pevalcontext :: pevalcontext_tail*, pfilecontext_tail*, $source_trace_file([ptraceframe], preqbytes?))
   -- if pfilecontext.UNIT = (n_file)
   -- if $(pevalcontext.UNIT < n_file)
-def $source_trace_at(S, pevalcontext*, pfilecontext*, n_owner) = $source_trace_merge(S, $eval_trace_live(pevalcontext*, n_owner), $file_trace_live(pfilecontext*, n_owner))
+  -- if ptraceframe = $file_trace_frame_before(S, pfilecontext, preqbytes?)
+def $source_trace_at(S, pevalcontext*, pfilecontext*, n_owner) = $source_trace_at_before(S, pevalcontext*, pfilecontext*, n_owner, eps)
+def $source_trace_at_before(S, pevalcontext*, pfilecontext*, n_owner, preqbytes?) = $source_trace_merge_before(S, $eval_trace_live(pevalcontext*, n_owner), $file_trace_live(pfilecontext*, n_owner), preqbytes?)
 dec $source_trace_first(ptraceframe*) : ptraceframe*
 ;; Zend omits the include operand when its wrapper is the first trace frame.
 def $source_trace_first(ptraceframe :: ptraceframe_tail*) = ptraceframe[.ARGS = eps][.HASARGS = false] :: ptraceframe_tail*
   -- if ptraceframe.FUNCTION = $ptascii("include") \/ ptraceframe.FUNCTION = $ptascii("include_once") \/ ptraceframe.FUNCTION = $ptascii("require") \/ ptraceframe.FUNCTION = $ptascii("require_once")
 def $source_trace_first(ptraceframe*) = ptraceframe* -- otherwise
 dec $eval_trace_saved(pstate, pcallcontext?, pframe*, nat) : ptraceframe*
+dec $eval_trace_saved_before(pstate, pcallcontext?, pframe*, nat, preqbytes?) : ptraceframe*
+def $eval_trace_saved(S, pcallcontext?, pframe*, n_owner) = $eval_trace_saved_before(S, pcallcontext?, pframe*, n_owner, eps)
 dec $eval_trace_preparser(pstate, pcallcontext?, pframe) : ptraceframe*
 dec $stringify_context_frame_valid(pstate, pcallcontext, pframe) : bool
 dec $eval_frame_context(pstate, pframe, pframe*) : ptraceframe*
-def $eval_frame_context(S, pframe, pframe_tail*) = eps
+dec $shutdown_render_trace_frame(pstate, pframe, pframe*) : ptraceframe*
+def $eval_frame_context(S, pframe, pframe_tail*) = $shutdown_render_trace_frame(S, pframe, pframe_tail*)
   -- if pframe.CONTEXT = eps
 def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S_context, psymboltable.ENV, pframe.CONTEXT)
   -- if pframe.CONTEXT = (pcallcontext)
@@ -404,11 +429,23 @@ def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z) :: (EVAL_REQUEST porigin_parent z) :: (ORIGIN_RETURN (porigin_parent)) :: ptask_tail*
   -- if $eval_operand_site_valid(S, porigin_parent, porigin_child, z)
 def $eval_trace_preparser(S, pcallcontext?, pframe) = eps -- otherwise
-def $eval_trace_saved(S, pcallcontext?, eps, n_owner) = eps
-def $eval_trace_saved(S, pcallcontext?, pframe :: pframe_tail*, n_owner) = $eval_trace_preparser(S, pcallcontext?, pframe) ++ $source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, n_owner) ++ $eval_frame_context(S, pframe, pframe_tail*) ++ $eval_trace_saved(S, pframe.CONTEXT, pframe_tail*, $nabs($(n_owner - 1)))
+def $eval_trace_saved_before(S, pcallcontext?, eps, n_owner, preqbytes?) = eps
+def $eval_trace_saved_before(S, pcallcontext?, pframe :: pframe_tail*, n_owner, preqbytes?) = ptraceframe_before* ++ ptraceframe_source* ++ ptraceframe_context* ++ $eval_trace_saved_before(S, pframe.CONTEXT, pframe_tail*, $nabs($(n_owner - 1)), preqbytes_next?)
+  -- if ptraceframe_before* = $eval_trace_preparser(S, pcallcontext?, pframe)
+  -- if preqbytes_before? = $source_trace_file(ptraceframe_before*, preqbytes?)
+  -- if ptraceframe_source* = $source_trace_at_before(S, S.EVALCONTEXTS, S.FILECONTEXTS, n_owner, preqbytes_before?)
+  -- if ptraceframe_context* = $eval_frame_context(S, pframe, pframe_tail*)
+  -- if preqbytes_next? = $source_trace_context_file(S, pframe.CONTEXT, ptraceframe_context*, $source_trace_file(ptraceframe_source*, preqbytes_before?))
+dec $eval_exception_trace_from(pstate, ptraceframe*) : ptraceframe*
+def $eval_exception_trace_from(S, ptraceframe_prefix*) = ptraceframe_before* ++ ptraceframe_source* ++ ptraceframe_context* ++ $eval_trace_saved_before(S, S.CURRENT, S.FRAMES, $nabs($(|S.FRAMES| - 1)), preqbytes_next?)
+  -- if ptraceframe_before* = ptraceframe_prefix* ++ $class_constant_trace(S)
+  -- if preqbytes_before? = $source_trace_file(ptraceframe_prefix*, eps)
+  -- if ptraceframe_source* = $source_trace_at_before(S, S.EVALCONTEXTS, S.FILECONTEXTS, |S.FRAMES|, preqbytes_before?)
+  -- if ptraceframe_context* = $trace_context(S, S.ENV, S.CURRENT)
+  -- if preqbytes_next? = $source_trace_context_file(S, S.CURRENT, ptraceframe_context*, $source_trace_file(ptraceframe_source*, preqbytes_before?))
 dec $eval_exception_trace_raw(pstate) : ptraceframe*
-def $eval_exception_trace_raw(S) = $class_constant_trace(S) ++ $source_trace_at(S, S.EVALCONTEXTS, S.FILECONTEXTS, |S.FRAMES|) ++ $trace_context(S, S.ENV, S.CURRENT) ++ $eval_trace_saved(S, S.CURRENT, S.FRAMES, $nabs($(|S.FRAMES| - 1)))
-def $source_trace_prefixed(S, ptraceframe*) = $source_trace_first(ptraceframe* ++ $eval_exception_trace_raw(S))
+def $eval_exception_trace_raw(S) = $eval_exception_trace_from(S, eps)
+def $source_trace_prefixed(S, ptraceframe*) = $source_trace_first($eval_exception_trace_from(S, ptraceframe*))
 def $eval_exception_trace(S) = $source_trace_first($eval_exception_trace_raw(S))
 dec $eval_compile_throw(pstate, pevalcontext, pevalcontext*, text, nat*, int) : pstate
 dec $eval_allocated_throw(pcompletion) : bool
@@ -533,10 +570,11 @@ dec $eval_continue(pstate, psourceresponse) : pstate
 def $eval_continue(S, psourceresponse) = $drive_steps(S_next, n)
   -- if S.SERVICELEFT = (n)
   -- if S_next = $eval_resume(S, psourceresponse)
-  -- if S_next.COMPLETION = NORMAL
+  -- if S_next.COMPLETION = NORMAL \/ $shutdown_ready(S_next)
 def $eval_continue(S, psourceresponse) = S_next
   -- if S_next = $eval_resume(S, psourceresponse)
   -- if S_next.COMPLETION =/= NORMAL
+  -- if ~$shutdown_ready(S_next)
 
 rule PhpStep/eval-end: S ~> S[.EVALCONTEXTS = pevalcontext_tail*][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pevalcontext.SITE)]
   -- if S.TODO = (EVAL_END n) :: ptask_tail*
