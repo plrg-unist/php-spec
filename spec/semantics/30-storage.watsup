@@ -96,6 +96,9 @@ syntax perrorread = { ORIGINAL ptask, INPUT poperand, BASE pbase, NAME nat*, LIN
 syntax pidentityread = { SITE porigin, OP pbin, LEFT nat*, LEFTLINE int, RIGHT nat*, LINE int, CELL nat, BASE pbase }
 syntax pexceptioncall = { OBJECT nat, CALLBACK pvalue, TARGET pcalltarget?, ORIGIN porigin?, RAW parray?, SENT poperand? }
 syntax pglobalread = { SITE porigin, NAME nat*, LINE int }
+syntax pkeymode = KEY_R | KEY_IS | KEY_TEST bool
+syntax pkeyphase = KEY_CV | KEY_NULL | KEY_FLOAT castnotice castnotice* | KEY_ARRAY_NAME | KEY_MISSING
+syntax pkeyread = { SITE porigin, GLOBAL bool, MODE pkeymode, INPUT poperand, VALUE pvalue, BASE pvalue, OWNERS pbase, LINE int, PHASE pkeyphase, KEY pkey, NAME nat* }
 syntax perrorcall = { SITE porigin, LEVEL int, MESSAGE nat*, LINE int, EVENT pevent, CALLBACK pvalue, TARGET pcalltarget?, RESUME ptask }
 syntax pdeprecatedconstant = { SITE porigin, LINE int, PREFIX nat }
 syntax pselectedcall = { NONCE nat, SITE porigin, KIND pintrinsic, ORIGINAL nat*, LOOKUP nat*, DEPTH nat, LINE int }
@@ -115,6 +118,7 @@ syntax ptask = ARGINFO_REF_PREP pargref | ARGINFO_REF_VALUES pargref nat poperan
   | EXCEPTION_HANDLER_INVOKE pexceptioncall | EXCEPTION_HANDLER_ENTER pexceptioncall | EXCEPTION_HANDLER_RESULT pexceptioncall
   | ERROR_HANDLER_INVOKE perrorcall | ERROR_HANDLER_RESULT perrorcall | ERROR_READ_RESULT perrorread | ERROR_TRIGGER_PHASE pconfigcall nat | CONFIG_INI_NULL_RESULT pconfigcall | CHDIR_WARNING_RESULT pdircontext nat* nat | ERROR_IDENTITY_RESULT pidentityread
   | GLOBAL_READ_RESULT pglobalread
+  | KEY_READ_BASE pbase pkeymode | KEY_READ_DIM poperand int pkeymode | KEY_READ_GLOBAL poperand int pkeymode | KEY_READ_RESULT pkeyread | KEY_READ_FINISH porigin ptask
   | DEPRECATED_CONSTANT_RESULT pdeprecatedconstant | REPORTING_LONG_RESULT pconfigcall int
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | TYPE_RETURN_THROW nat porigin int
