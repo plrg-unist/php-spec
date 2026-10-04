@@ -28,6 +28,7 @@ dec $consumer_string_target(pstate, pcalltarget) : bool
 dec $consumer_producer_receiver(pclosurescope?) : nat?
 dec $consumer_producer_bound_receiver(pclosurebinding?) : nat?
 dec $consumer_producer_function(pmethodcapture?, porigin) : bool
+dec $consumer_producer_site(pmethodcapture?, porigin?) : bool
 dec $consumer_producer_named(pcalltarget) : bool
 dec $consumer_producer_snapshot(pshutdownproducer) : bool
 dec $consumer_producer_object(pclosurescope?, pclosurebinding?, nat) : bool
@@ -243,7 +244,7 @@ def $consumer_capture_valid(S, porigin, (pmethodcapture)) = true
 ;; A C-selected maker may retire its old registry and Closure before the new
 ;; queue entry runs. Keep only its immutable target and scope/binding records.
 ;; Reconstruction below is for pure lookups and creates no heap owners.
-def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext) \/ $stringify_context_kind(S, pcallcontext))})
+def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SITE pcallcontext.CALLSITE, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext) \/ $stringify_context_kind(S, pcallcontext))})
   -- if S.CURRENT = (pcallcontext)
 def $consumer_producer_current(S) = eps -- if S.CURRENT = eps
 def $consumer_producer_scope(S, pcalltarget) = $closure_scope_at(S.CLOSURESCOPES, n)
@@ -267,6 +268,7 @@ def $consumer_producer_capture(S, pshutdownentry) = $consumer_capture_valid(S, p
 def $consumer_producer_capture(S, pshutdownentry) = true
   -- if pshutdownentry.PRODUCER = (pshutdownproducer)
   -- if $consumer_producer_snapshot(pshutdownproducer)
+  -- if $consumer_producer_site(pshutdownentry.CAPTURE, pshutdownproducer.SITE)
   -- if S_history = $consumer_producer_history(S, pshutdownproducer)
   -- if $target_function(S_history, pshutdownproducer.TARGET) = (pfunction)
   -- if pshutdownentry.CALL.SITE = PORIGIN n pcpath
@@ -281,6 +283,8 @@ def $consumer_producer_capture(S, pshutdownentry) = true
 def $consumer_producer_capture(S, pshutdownentry) = false -- otherwise
 def $consumer_producer_function((pmethodcapture), porigin) = (pmethodcapture.FUNCTION = porigin)
 def $consumer_producer_function(eps, porigin) = false
+def $consumer_producer_site((pmethodcapture), porigin?) = (pmethodcapture.CALLSITE = porigin?)
+def $consumer_producer_site(eps, porigin?) = true
 def $consumer_producer_internal(S, pcalltarget) = ($handler_method_tag(pcalltarget) \/ $consumer_producer_named(pcalltarget) \/ $consumer_string_target(S, pcalltarget))
   -- if $target_instance(pcalltarget) = eps
 def $consumer_producer_internal(S, pcalltarget) = true -- if $target_instance(pcalltarget) =/= eps
