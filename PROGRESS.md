@@ -15,8 +15,11 @@ Failed declarations restore unpublished tables; compile warnings and direct
 trait-call deprecations retain their phases and callback ownership. The
 [trait ledger](coverage/semantics/trait-methods-review.json) keeps the63 source
 union, separate controls and252 conditions at their actual revisions, including
-original failures. Trait properties/constants and enum semantics remain required;
-the method checkpoint does not close the trait family.
+original failures. Actual227/232/239 composition adds nine source comparisons and
+127 state premises at separate cutoffs: saved default constructors, cold selected
+references, physical interface diagnostic files and imported-maker Closure scope.
+Accepted233/237 routes remain preserved. Trait properties/constants and enums
+remain required; the method checkpoint does not close the trait family.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the

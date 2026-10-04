@@ -12,9 +12,15 @@ the using class; the body, filename, line and `__TRAIT__`, `__METHOD__` and
 `__FUNCTION__` remain those of the original trait method. Aliases have their own
 class/name identity and declared spelling in traces. `__CLASS__` and contextual
 class-name defaults use the selected import or authenticated rebound Closure
-scope. Constructor-free `new self` and `new parent` in trait method parameter
-defaults use the selected method's lexical scope. An inherited method keeps its
-original import identity. Goto and include/eval entry retain the physical checked body
+scope. `new self` and `new parent` in trait method parameter defaults use the
+selected method's lexical scope, including the source-owned constructor protocol.
+Its callback retains the saved import, default AST and locals. Cold static-property
+reference selection likewise retains the using and called classes after deferred
+initialization. A pending reference fetch requires its selected source/class/member
+marker; the actual fetch still requires its prepared base. Imported Closure cold
+selectors retain copied scope evidence without owning the retired creator.
+An inherited method keeps its original import identity.
+Goto and include/eval entry retain the physical checked body
 while authenticating the selected importing scope.
 
 Method static cells are separate for every using class and alias. Inherited
@@ -62,7 +68,7 @@ Trait properties and constants are explicitly Unsupported at this method
 checkpoint. Their composition, static property sharing, readonly constraints and
 constant compatibility are the next required phase. A parentless trait `parent`
 parameter remains a valid declaration; receiving that unresolved dependent type
-retains the existing Unsupported boundary. Constructor defaults, Closure keyword
-NEW defaults and body keyword NEW retain their existing boundaries. Broader
+retains the existing Unsupported boundary. Closure keyword NEW defaults and body
+keyword NEW retain their existing boundaries. Broader
 attributes, autoload, hooks, lifecycle services and paused return work remain
 separate obligations.

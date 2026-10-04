@@ -44,6 +44,17 @@ CASES = {
             'pstaticselection[.SCOPE = (porigin_called)])',
             '~$class_static_selection_valid(S, '
             'pstaticselection[.SITE = PORIGIN 999 eps])',
+            '~$call_task_valid(S, CLASS_CONST_SELECTED '
+            'pstaticselection[.ROOT = porigin_called] ptbytes_member z)',
+            '~$call_task_valid(S, CLASS_CONST_SELECTED '
+            'pstaticselection $ptascii("foreign") z)',
+            'S_fetch = $drive_steps(S, 1)',
+            'S_fetch.TODO = (PROPERTY_REF_FETCH z) :: ptask_fetch_tail*',
+            'S_fetch.ORIGIN = (pstaticselection.SITE)',
+            'S_fetch.BASE = BASE_CLASS_STATIC porigin_owner ptbytes_member',
+            '$call_task_valid(S_fetch, PROPERTY_REF_FETCH z)',
+            '~$call_task_valid(S_fetch[.BASE = BASE_VALUE (KNOWN PNULL)], '
+            'PROPERTY_REF_FETCH z)',
             *traits.FINISH,
         ],
     },
