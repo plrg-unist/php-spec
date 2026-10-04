@@ -7,15 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Prepared internal Throwable default constructors235 now map the completed227
-value table before arity and sequential reception. Default declaration strictness,
-finite named-hole filling, inherited owners and nested previous objects preserve
-trace argc and ErrorException fields. Source8+7/reached67 at9fa and affected
-string-slot trace2 at7fb keep separate cuts in the
-[internal ledger](coverage/semantics/internal-default-constructors-review.json).
-The original count observer remains Unsupported with zero agreement. Weak-null,
-Stringable and lossy integer warnings require real suspended continuations next;
-rebound anonymous keyword NEW follows.
+Internal default reception240 now suspends weak-null and lossy integer warnings
+through real error dispatch and invokes genuine Stringable callbacks in formal
+order. Raw integer slots and rewritten string slots preserve internal constructor
+traces, with the nearest saved owner through reentrant handlers. Exact source14
+atd9 and builtin/fallback2 at7c pass; all185 reached premises at7c pass in unchanged
+133+24+28 source groups under120-second caps. The original full185 timeout and
+first-source interpreter overlap remain preserved in the
+[reception ledger](coverage/semantics/internal-default-reception-review.json).
+Ordinary constructor effects and rebound anonymous keyword NEW remain required.
+
+Prepared internal Throwable default constructors235 map completed227 values
+before names, arity and sequential reception. Default declaration strictness,
+finite holes and nested previous owners retain exact trace argc and ErrorException
+fields. Earlier8+7/reached67 at9fa and string-slot trace2 at7fb keep their own cuts
+in the [scalar ledger](coverage/semantics/internal-default-constructors-review.json);
+the original count observer remains Unsupported with zero agreement.
 
 Registered startup inputs225 provide original `error_reporting` and
 `include_path` bytes before compilation, independently of file/CWD facts.

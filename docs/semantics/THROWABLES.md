@@ -84,8 +84,13 @@ keeps its transition-local generated-chain guard.
 evaluate all AST values before internal name mapping, fill only existing named
 holes, and parse lossless scalars with default-declaration strictness. Successful
 string parsing updates supplied trace slots; trailing defaults do not increase
-argc. Source15, reached67 and affected trace2 retain separate cutoffs. Weak null,
-Stringable and lossy integer reception still require suspended continuations.
+argc. Source15, reached67 and affected trace2 retain separate cutoffs.
+[Effectful default reception240](../../coverage/semantics/internal-default-reception-review.json)
+retains real warning/Stringable callbacks, raw integer versus rewritten string
+trace arguments and the immediately owning constructor across nested handlers.
+Source14 plus builtin/fallback2 and source-derived185 premises pass at separate
+cuts; the original one-process timeout remains preserved. Broader ordinary
+constructor effects and anonymous keyword defaults remain required.
 
 Compiler rules preserve throw effects even where its result folds to true,
 compile try body before ordered catch headers/bodies, and retain first-type
