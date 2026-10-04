@@ -118,5 +118,11 @@
     "source": "<?php\nclass RealRemovedPermission264 {\n    private static function hidden() { return 7; }\n    public function make() { return function () { echo 'B|'; return RealRemovedPermission264::hidden(); }; }\n}\n$host = new RealRemovedPermission264;\n$source = $host->make();\n$unbound = $source->bindTo(null, null);\nunset($host, $source);\ntry { echo $unbound(); }\ncatch (Error $e) { echo 'E:', $e->getMessage(), '|'; }\nunset($unbound, $e);\n",
     "source_sha256": "1dc5b160497209016905bfeb4ceb5e1d9557d1a501fbe891aa4b727f7d973329",
     "expected_model": "normal"
+  },
+  {
+    "id": "actual-property-child-unbind-current",
+    "source": "<?php\ntrait RealActualFactory264 {\n    private static function maker() {\n        return function ($value = new self) {\n            static $n = 0;\n            echo self::class, '/', static::class, '/', $value::class, ':', ++$n, '|';\n            return Closure::getCurrent();\n        };\n    }\n    public static \\Closure $factory = self::maker(...);\n}\nclass RealActualOwner264 {\n    use RealActualFactory264;\n    private function __construct() { echo 'N:'; }\n}\n$first = RealActualOwner264::$factory;\nif (true) { class RealActualForeign264 { use RealActualFactory264; } }\n$maker = RealActualForeign264::$factory;\n$child = $maker();\n$unbound = $child->bindTo(null);\n$copy = clone $unbound;\nRealActualOwner264::$factory = static function () {};\nRealActualForeign264::$factory = static function () {};\nunset($first, $maker, $child, $unbound);\necho (int)($copy() === $copy), '|';\nunset($copy);\n",
+    "source_sha256": "09b017d5d84442cb17676ad50851010293105ea4abde527e6f06a4ba8a27a00b",
+    "expected_model": "normal"
   }
 ]

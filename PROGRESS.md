@@ -15,6 +15,9 @@ and runtime-name folding. Valid null bindings copy REAL statics, retain referenc
 captures and reset called scope; explicit null scope removes class permission.
 Twenty normal source agreements retain separate2312606/ed1d5 cuts. Five genuine
 owner/frame cases pass289 conditions (author113, independent176).
+Actual601312 composition at2cb72 passes AL251 and one cached trait-property
+METHOD child source: null bind/clone retains private default permission and exact
+current identity after makers retire, with called scope reset to lexical Owner.
 Original classifier nondeterminism, the combined45-second timeout and fixture
 elaboration stop remain separate in the
 [binding ledger](coverage/semantics/real-closure-binding-review.json).
