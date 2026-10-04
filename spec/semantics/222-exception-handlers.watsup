@@ -268,6 +268,13 @@ def $error_reference_event(S, ptbytes, 0) = DIAGNOSTIC_INTERNAL "Warning" ptbyte
 def $error_handler_values(S, perrorcall) = [PINT 2, PSTRING perrorcall.MESSAGE, PSTRING $ptascii("Unknown"), PINT 0]
   -- if $exception_warning_resume(perrorcall.RESUME)
 
+def $api_warning_event(S, papiquery, ptbytes) = DIAGNOSTIC_INTERNAL "Deprecated" ptbytes 0
+  -- if papiquery.SOURCE = ERROR_HANDLER_INVOKE perrorcall
+  -- if papiquery.LINE = 0
+  -- if $exception_task_scope(S)
+  -- if $exception_warning_resume(perrorcall.RESUME)
+  -- if $error_call_valid(S, perrorcall)
+
 ;; Current and nested saved calls authenticate against the real global C anchor.
 def $exception_context_current(S, pcallcontext) = (pexceptioncall)
   -- if S.CURRENT = (pcallcontext)
