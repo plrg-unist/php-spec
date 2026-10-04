@@ -37,12 +37,15 @@ def $noctor_direct_count((NArg phpType3 expression phpType4_ref phpType4_unpack 
   -- if phpType3 =/= ABSENT
 
 dec $noctor_sent_shape(pstate, pnoctorcall, nat) : bool
+dec $parameter_default_noctor(pstate, pnoctorcall) : bool
+dec $parameter_new_prefix(phpType7*) : bool
+dec $noctor_direct_count_at(pstate, pnoctorcall, phpType7*) : nat
 def $noctor_sent_shape(S, pnoctorcall, n_current) = true
   -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $(pnoctorcall.INDEX <= |phpType7*|)
   -- if phpType7_prefix* = phpType7*[0:pnoctorcall.INDEX]
   -- if ~$call_unpack_present(phpType7_prefix*)
-  -- if |pnoctorcall.SENT| = $($noctor_direct_count(phpType7_prefix*) + n_current)
+  -- if |pnoctorcall.SENT| = $($noctor_direct_count_at(S, pnoctorcall, phpType7_prefix*) + n_current)
 def $noctor_sent_shape(S, pnoctorcall, n_current) = true
   -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $(pnoctorcall.INDEX <= |phpType7*|)
@@ -63,7 +66,7 @@ def $noctor_task_valid(S, pnoctorcall, n_pending) = true
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((pnoctorcall.LINE, b))
   -- if n_offset = $(pnoctorcall.INDEX + n_pending)
   -- if $(n_offset <= |phpType7*|)
-  -- if $noctor_prefix_unnamed(phpType7*[0:pnoctorcall.INDEX])
+  -- if $noctor_prefix_unnamed(phpType7*[0:pnoctorcall.INDEX]) \/ ($parameter_default_noctor(S, pnoctorcall) /\ $parameter_new_prefix(phpType7*[0:pnoctorcall.INDEX]))
   -- if n_remaining = $(|phpType7*| - n_offset)
   -- if pnoctorcall.ARGUMENTS = phpType7*[n_offset:n_remaining]
   -- if $noctor_object_valid(S, pnoctorcall)
@@ -145,6 +148,7 @@ rule PhpStep/noctor-send-positional: S ~> S_value[.TODO = (NOCTOR_ARGS $noctor_a
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/noctor-send-named: S ~> $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $base64(text), $noctor_arg_line(S, pnoctorcall))
   -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
+  -- if ~$parameter_default_noctor(S, pnoctorcall)
   -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if phpType7*[pnoctorcall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
 rule PhpStep/noctor-send-abrupt: S ~> S_value

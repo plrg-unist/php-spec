@@ -65,8 +65,8 @@ def $method_selected_scope(S, n, ptbytes, porigin?) = $effective_method(S, porig
   -- if S.OBJECTS[n] = INSTANCE porigin_class
 def $method_selected_scope(S, n, ptbytes, porigin?) = eps -- otherwise
 dec $method_current_scope(pstate) : porigin?
-def $method_current_scope(S) = pcallcontext.LEXICAL_CLASS -- if S.CURRENT = (pcallcontext) -- if S.CLASSCONSTANTINIT = eps
-def $method_current_scope(S) = eps -- if S.CURRENT = eps /\ S.CLASSCONSTANTINIT = eps
+def $method_current_scope(S) = pcallcontext.LEXICAL_CLASS -- if S.CURRENT = (pcallcontext) -- if ~$class_constant_active(S) -- if $static_default_scope(S) = eps
+def $method_current_scope(S) = eps -- if S.CURRENT = eps /\ ~$class_constant_active(S) -- if $static_default_scope(S) = eps
 dec $method_called_scope(pstate) : porigin?
 def $method_called_scope(S) = pcallcontext.CALLED_CLASS -- if S.CURRENT = (pcallcontext)
 def $method_called_scope(S) = eps -- otherwise
@@ -899,6 +899,7 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpTy
   -- if ($ptlc(ptbytes_method) =/= $ptascii("__construct") \/ $scoped_internal_ctor_kind(S, phpType19, n_class*) = eps)
   -- if ($ptlc(ptbytes_method) =/= $ptascii("__tostring") \/ $scoped_internal_method_kind(S, phpType19, n_class*, ptbytes_method) = eps)
   -- if $ptlc(n_class*) =/= $ptascii("closure") \/ $ptlc(ptbytes_method) =/= $ptascii("bind")
+  -- if $ptlc(n_class*) =/= $ptascii("closure") \/ $ptlc(ptbytes_method) =/= $ptascii("fromcallable")
 def $scoped_select(S, phpType19, poperand_selector, ptbytes_method, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "scoped method selection"] -- otherwise
 dec $scoped_name_prepare(pstate, phpType19, poperand, phpType20, phpType7*, int) : pstate
 def $scoped_name_prepare(S, phpType19, poperand_selector, NIdentifier (BYTES text) metadata_name, phpType7*, z) = $scoped_select(S, phpType19, poperand_selector, $base64(text), phpType7*, z)
@@ -943,6 +944,7 @@ rule PhpStep/scoped-name-type: S ~> $throw_scalar(S_name, "Error", $ptascii("Met
 
 dec $constructor_start(pstate, preqbytes, phpType7*, int) : pstate
 dec $constructor_start_ready(pstate, preqbytes, phpType7*, int) : pstate
+dec $parameter_default_constructor(pstate, phpType28, phpType7*, metadata) : bool
 def $constructor_start_ready(S, preqbytes, phpType7*, z) = S_new[.TODO = [$method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), CTOR_RESULT n] ++ S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_new = $new_class(S, preqbytes, z)
   -- if S_new.COMPLETION = NORMAL
@@ -969,6 +971,7 @@ rule PhpStep/new-with-constructor: S ~> $constructor_start(S[.TODO = ptask_tail*
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
   -- if $new_has_ctor(S, preqbytes)
+  -- if ~$parameter_default_constructor(S, name, phpType7*, metadata)
 rule PhpStep/constructor-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CTOR_RESULT n) :: ptask_tail*
 

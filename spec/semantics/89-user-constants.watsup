@@ -76,9 +76,9 @@ rule PhpStep/constant-bind-abrupt: S ~> S_value
 
 def $constant_runtime_line(S, z) = pconstantcontext.LINE
   -- if S.CONSTCONTEXT = (pconstantcontext)
-  -- if ~$class_constant_ast_active(S)
+  -- if ~$class_constant_ast_active(S) /\ ~$static_default_ast_active(S)
 def $constant_runtime_line(S, z) = z
-  -- if S.CONSTCONTEXT = eps \/ $class_constant_ast_active(S)
+  -- if S.CONSTCONTEXT = eps \/ $class_constant_ast_active(S) \/ $static_default_ast_active(S)
 
 ;; Compiler designations and active constant roots are checked without replaying
 ;; their values or reconstructing declaration history.
@@ -139,18 +139,24 @@ def $constant_context_valid(S) = ($constant_bindings(S, S.TODO) = eps)
   -- if S.CONSTCONTEXT = eps
 def $constant_context_valid(S) = true
   -- if S.CONSTCONTEXT = (pconstantcontext)
-  -- if S.CLASSCONSTANTINIT = eps
   -- if $constant_declaration(S, pconstantcontext.ORIGIN) = ((preqbytes, pconstantcontext.LINE))
+  -- if $class_constant_origin(S.CLASSES, pconstantcontext.ORIGIN) = eps
   -- if $constant_bindings(S, S.TODO) = [pconstantcontext.ORIGIN]
   -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
   -- if $constant_branches_valid(S)
 def $constant_context_valid(S) = $class_constant_context_valid(S, pconstantcontext)
   -- if S.CONSTCONTEXT = (pconstantcontext)
-  -- if S.CLASSCONSTANTINIT =/= eps
+  -- if $class_constant_origin(S.CLASSES, pconstantcontext.ORIGIN) =/= eps
 def $constant_context_valid(S) = $default_context_valid(S, pconstantcontext)
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if $constant_declaration(S, pconstantcontext.ORIGIN) = eps
-  -- if S.CLASSCONSTANTINIT = eps
+  -- if $class_constant_origin(S.CLASSES, pconstantcontext.ORIGIN) = eps
+  -- if ~$static_default_property_context(S, pconstantcontext)
+def $constant_context_valid(S) = $static_default_context_valid(S, pconstantcontext)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_declaration(S, pconstantcontext.ORIGIN) = eps
+  -- if $class_constant_origin(S.CLASSES, pconstantcontext.ORIGIN) = eps
+  -- if $static_default_property_context(S, pconstantcontext)
 def $constant_context_valid(S) = false -- otherwise
 
 dec $static_below(pcoccurrence*, pcpath) : bool
@@ -159,3 +165,4 @@ def $constant_class_origin_allowed(pcunit, pcpath) = ($constant_below(pcunit.OCC
 
 ;; Validation scans the remaining continuation in the same declaration order.
 def $call_after_origin(S, CONSTANT_BIND porigin) = S[.CONSTCONTEXT = eps]
+def $return_discard(S, CONSTANT_BIND porigin) = S[.CONSTCONTEXT = eps]

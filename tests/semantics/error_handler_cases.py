@@ -146,3 +146,5 @@ trigger_error('outer',512);
 
 from reporting_cases import CASES as REPORTING_CASES, FILE_MODE as REPORTING_FILE_MODE
 CASES.extend(case for case in REPORTING_CASES if case[0] not in REPORTING_FILE_MODE)
+from reporting_diagnostics_cases import CASES as REPORTING_DIAGNOSTICS_CASES
+CASES.extend(REPORTING_DIAGNOSTICS_CASES)

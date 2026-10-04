@@ -8,6 +8,7 @@ dec $error_selected_roots(pcalltarget?) : pnode*
 dec $error_default(pstate, pevent, int) : pstate
 dec $error_level_name(int) : text
 dec $error_user_deprecation() : preqbytes
+dec $error_handler_file(pstate, perrorcall) : preqbytes
 dec $error_handler_values(pstate, perrorcall) : pvalue*
 dec $error_handler_operands(pstate, pcalltarget, pvalue*, nat, int) : (pstate, poperand*)
 dec $error_handler_enter(pstate, perrorcall, pcalltarget, pfunction) : pstate
@@ -112,11 +113,14 @@ def $call_task_valid(S, ERROR_TRIGGER_PHASE pconfigcall n) = ($error_trigger_kin
 def $error_handler_target(S, pvalue) = (pcalltarget)
   -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
 def $error_handler_target(S, pvalue) = eps -- otherwise
+def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, porigin)
+  -- if $class_constant_error_origin(S) = (porigin)
+def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, perrorcall.SITE) -- otherwise
 def $error_handler_values(S, perrorcall) = [PINT perrorcall.LEVEL, PSTRING perrorcall.MESSAGE, PSTRING n_file*, PINT perrorcall.LINE]
-  -- if n_file* = $call_sourcefile(S.FILES, perrorcall.SITE)
+  -- if n_file* = $error_handler_file(S, perrorcall)
   -- if n_file* =/= eps
 def $error_handler_values(S, perrorcall) = [PINT perrorcall.LEVEL, PSTRING perrorcall.MESSAGE, PNULL, PINT perrorcall.LINE]
-  -- if $call_sourcefile(S.FILES, perrorcall.SITE) = eps
+  -- if $error_handler_file(S, perrorcall) = eps
 def $error_handler_operands(S, pcalltarget, eps, n, z) = (S, eps)
 def $error_handler_operands(S, pcalltarget, pvalue :: pvalue_tail*, n, z) = (S_next, (KNOWN pvalue) :: poperand*)
   -- if ~$call_parameter_reference(S, pcalltarget, n)
@@ -365,10 +369,23 @@ def $error_context_anchor(S, pcallcontext, (pcallcontext), pframe :: pframe_tail
   -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if pframe.ORIGIN = (perrorcall.SITE)
   -- if perrorcall.TARGET = (pcallcontext.TARGET)
-  -- if $error_entered_call_valid($api_saved_frame_scope(S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD], pframe, pframe_tail*), perrorcall)
+  -- if $error_entered_call_valid($api_saved_frame_scope($constant_frame_scope(S, pframe, pframe_tail*), pframe, pframe_tail*), perrorcall)
 def $error_context_anchor(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $error_context_anchor(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
   -- if pcallcontext_other? =/= (pcallcontext)
 def $error_context_anchor(S, pcallcontext, pcallcontext_other?, pframe*) = false -- otherwise
+dec $error_context_trace_location(pstate, pcallcontext, pcallcontext?, pframe*) : (porigin, int)?
+def $error_context_trace_location(S, pcallcontext, (pcallcontext), pframe :: pframe_tail*) = ((porigin, z))
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if pframe.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.TARGET = (pcallcontext.TARGET)
+  -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $error_entered_call_valid(S_scope, perrorcall)
+  -- if (porigin, z) = $class_constant_execution_point(S_scope, perrorcall.SITE, perrorcall.LINE)
+def $error_context_trace_location(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $error_context_trace_location(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
+  -- if pcallcontext_other? =/= (pcallcontext)
+def $error_context_trace_location(S, pcallcontext, pcallcontext_other?, pframe*) = eps -- otherwise
+def $trace_context_location(S, pcallcontext, porigin) = (porigin_trace, z)
+  -- if $error_context_trace_location(S, pcallcontext, S.CURRENT, S.FRAMES) = ((porigin_trace, z))
 def $error_context_valid(S, pcallcontext) = true
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if $error_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)

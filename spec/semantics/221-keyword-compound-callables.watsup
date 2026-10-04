@@ -114,7 +114,7 @@ def $api_special(S, pvalue) = false -- otherwise
 def $api_receive_candidate(S) = true
   -- if S.TODO = [TYPE_RECEIVE porigin n]
   -- if S.CURRENT = (pcallcontext)
-  -- if $(n < pcallcontext.ARGC)
+  -- if $fixed_parameter_supplied(S, n)
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
@@ -383,7 +383,7 @@ def $api_source_valid(S, papiquery) = true
   -- if papiquery.SOURCE = TYPE_RECEIVE porigin n
   -- if $typed_receive_valid(S[.TODO = [papiquery.SOURCE]], porigin, n)
   -- if S.CURRENT = (pcallcontext)
-  -- if $(n < pcallcontext.ARGC)
+  -- if $fixed_parameter_supplied(S, n)
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
   -- if "callable" <- $ptmasks(psparam.TYPE)

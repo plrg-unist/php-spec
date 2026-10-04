@@ -265,6 +265,7 @@ dec $call_tasks_valid(pstate, ptask*) : bool
 def $call_tasks_valid(S, eps) = true
 def $call_tasks_valid(S, ptask :: ptask_tail*) = ($call_task_valid(S, ptask) /\ $call_tasks_valid($call_after_origin(S, ptask), ptask_tail*))
 dec $call_context_valid(pstate, pcallcontext, preqbytes*) : bool
+dec $call_holes_valid(pstate, pcallcontext) : bool
 def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
@@ -280,6 +281,7 @@ def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext)
   -- if $call_arity_valid(S, pcallcontext)
   -- if $wrapper_context_valid(S, pcallcontext)
+  -- if $call_holes_valid(S, pcallcontext)
 def $call_context_valid(S, pcallcontext, preqbytes*) = false -- otherwise
 dec $call_current_valid(pstate) : bool
 def $call_current_valid(S) = true -- if S.CURRENT = eps /\ S.FRAMES = eps
@@ -296,14 +298,16 @@ def $call_saved_context_valid(S, pframe) = false -- otherwise
 dec $borrowed_read_scope_valid(pstate) : bool
 dec $call_frames_valid(pstate, pframe*) : bool
 dec $parameter_string_frame_scope(pstate, pframe, pframe*) : pstate
+dec $constant_context_valid(pstate) : bool
+dec $class_constant_scope_valid(pstate, pclassconstantcontext*) : bool
 def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S -- otherwise
 dec $api_saved_frame_scope(pstate, pframe, pframe*) : pstate
 def $api_saved_frame_scope(S, pframe, pframe_tail*) = S -- otherwise
 def $call_frames_valid(S, eps) = true
-def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($api_saved_frame_scope($parameter_string_frame_scope(S[.ORIGIN = pframe.ORIGIN][.CURRENT = pframe.CONTEXT][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD], pframe, pframe_tail*), pframe, pframe_tail*), pframe.TODO) /\ $borrowed_read_scope_valid(S[.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD]) /\ $call_saved_context_valid(S, pframe) /\ $call_frames_valid(S, pframe_tail*))
+def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($api_saved_frame_scope($parameter_string_frame_scope(S_scope, pframe, pframe_tail*), pframe, pframe_tail*), pframe.TODO) /\ $borrowed_read_scope_valid(S_scope) /\ $call_saved_context_valid(S_scope, pframe) /\ $constant_context_valid(S_scope) /\ $call_frames_valid(S, pframe_tail*))
+  -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
 dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $class_constant_state_valid(pstate) : bool
-dec $constant_context_valid(pstate) : bool
 dec $default_caches_valid(pstate, pdefaultcache*) : bool
 dec $static_result_valid(pstate) : bool
 dec $clone_result_valid(pstate) : bool
