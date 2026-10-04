@@ -97,7 +97,10 @@ def $property_visible_name(S, n, ptbytes) = ppropertydesc.NAME
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
 def $property_visible_name(S, n, ptbytes) = ptbytes -- otherwise
+def $property_visible_key(S, n, ptbytes) = true
+  -- if S.OBJECTS[n] = STDINSTANCE
 def $property_visible_key(S, n, ptbytes) = ($property_resolve(S, n, $property_visible_name(S, n, ptbytes)) = PROPERTY_ACCESS ptbytes)
+  -- if S.OBJECTS[n] =/= STDINSTANCE
 
 dec $property_visibility_name(ppropertyvisibility) : ptbytes
 def $property_visibility_name(PROPERTY_PUBLIC) = $ptascii("public")

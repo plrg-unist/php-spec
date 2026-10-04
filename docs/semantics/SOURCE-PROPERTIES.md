@@ -32,5 +32,7 @@ and by-reference object traversal are documented separately in
 [SOURCE-PROPERTY-REFERENCES.md](SOURCE-PROPERTY-REFERENCES.md). Protected/private access and
 mangled storage keys are described in [SOURCE-PROPERTY-VISIBILITY.md](SOURCE-PROPERTY-VISIBILITY.md).
 [Class static members](SOURCE-CLASS-STATICS.md) have a separate bounded storage
-and access contract. Readonly members, hooks, magic access and scalar-to-object
-property population remain open obligations. Public constructors are implemented separately.
+and access contract. Non-object casts and stdClass table sharing are described in
+[OBJECT-CASTS.md](OBJECT-CASTS.md), including numeric/NUL storage keys, raw undefined
+buckets and callback-sensitive iteration. Readonly members, hooks, magic access
+and wider property consumers remain open. Public constructors are implemented separately.

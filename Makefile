@@ -235,6 +235,8 @@ test-semantics: build
 	python3 tests/semantics/goto_protocol.py
 	python3 tests/semantics/stdclass.py
 	python3 tests/semantics/stdclass_protocol.py
+	python3 tests/semantics/object_cast_sources.py
+	python3 tests/semantics/object_cast_protocol.py
 	python3 tests/semantics/noctor_compiler.py
 	python3 tests/semantics/noctor_args.py
 	python3 tests/semantics/noctor_args_protocol.py
