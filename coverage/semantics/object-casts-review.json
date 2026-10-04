@@ -1,0 +1,281 @@
+{
+  "scope": "Partial non-object stdClass casts, genuine shared table/COW/clone/array round trips, NaN operand-location callbacks, raw undefined and NUL-key foreach continuations. No full-core closure.",
+  "target": "PHP8.5.10 CLI NTS64; vendored engine34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_routes": [
+    "Zend/zend_execute.h:zend_cast_zval_to_object225; zend_cast_zval_to_array",
+    "Zend/zend_hash.c:zend_symtable_to_proptable3350; zend_proptable_to_symtable3403; zend_hash_compare_impl3104",
+    "Zend/zend_object_handlers.c:zend_std_write_property1066/get_property_ptr_ptr/unset_property; Zend/zend_objects.c:zend_objects_clone_members",
+    "Zend/zend_vm_def.h:CAST6495; FE_RESET_R6882; zend_fe_fetch_object_helper7058; FE_FETCH_RW",
+    "Zend/zend_compile.c:zend_unmangle_property_name_ex1575"
+  ],
+  "source_gate": {
+    "agreements": 13,
+    "cases": [
+      {
+        "id": "scalars",
+        "source": "tests/semantics/object_casts/scalars.php",
+        "source_sha256": "9f67b5ca77ca72e0150978ebd226e30cb223be4cc8db52ed382319a1536aecd4",
+        "revision": "3a21cec2b7697e7bf2ca84b349157e0437652b5b",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-models-paor4at5/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-native/native-ru3dhsg6/report.json"
+      },
+      {
+        "id": "keys",
+        "source": "tests/semantics/object_casts/keys.php",
+        "source_sha256": "23506dc3a7b1a9a08ef31d3ef6804b750fe0d9560123aa6a64a285aaa83e2824",
+        "revision": "82cbe41deb2ef92277384668dd60705b208adc29",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-models-_12f7jpx/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-native/native-ru3dhsg6/report.json"
+      },
+      {
+        "id": "singletons",
+        "source": "tests/semantics/object_casts/singletons.php",
+        "source_sha256": "6c4cd2098497108b520b51a74b11cf8e69abb20ca2e37b3c64372748491b8f4d",
+        "revision": "82cbe41deb2ef92277384668dd60705b208adc29",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-models-_12f7jpx/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-native/native-ru3dhsg6/report.json"
+      },
+      {
+        "id": "shared-clone",
+        "source": "tests/semantics/object_casts/shared-clone.php",
+        "source_sha256": "5b23b9c1365d108d31ce46e1a0c2837f5877f4d040ef59d5073e38911823f06b",
+        "revision": "82cbe41deb2ef92277384668dd60705b208adc29",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-models-_12f7jpx/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-native/native-ru3dhsg6/report.json"
+      },
+      {
+        "id": "nan-throw",
+        "source": "tests/semantics/object_casts/nan-throw.php",
+        "source_sha256": "f955d15118c438a04a17a28d0362178a8c0dab0945e8e44fb9b39891c14ee211",
+        "revision": "82cbe41deb2ef92277384668dd60705b208adc29",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-models-pa_f27_1/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-native/native-ru3dhsg6/report.json"
+      },
+      {
+        "id": "nan-locations",
+        "source": "tests/semantics/object_casts/nan-locations.php",
+        "source_sha256": "fc2d67d11b0095e49e37e65e228740877a73e9e5e4ecc4188a78d0e8b61a64a6",
+        "revision": "82cbe41deb2ef92277384668dd60705b208adc29",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-models-pa_f27_1/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-native/native-locations-oghdolxe/report.json"
+      },
+      {
+        "id": "typed-alias",
+        "source": "tests/semantics/object_casts/typed-alias.php",
+        "source_sha256": "ba68e604357d51bb4ee0e469ecefac919524f6e8c80f5f91af1dd4e94769eaf3",
+        "revision": "82cbe41deb2ef92277384668dd60705b208adc29",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/model-typed-j1iuyute/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/native-typed-alias-fuey3ga8/report.json"
+      },
+      {
+        "id": "nul-callback",
+        "source": "tests/semantics/object_casts/nul-callback.php",
+        "source_sha256": "3aa4f9e2057b684f344522bee4bd9c7f53c4c54bcb904cb17af332009b2452bf",
+        "revision": "82cbe41deb2ef92277384668dd60705b208adc29",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/model-nul-pnpkuewt/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/native-nul-callback-csjcs9kg/report.json"
+      },
+      {
+        "id": "undefined-array",
+        "source": "tests/semantics/object_casts/undefined-array.php",
+        "source_sha256": "40048a74a1a0bf064f6bef12ec6a2c9e54cd8ea101c315a1782f88d6e71d8f83",
+        "revision": "82cbe41deb2ef92277384668dd60705b208adc29",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/model-undefined-kmcmwzfk/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/native-undefined-array-x43nv6_0/report.json"
+      },
+      {
+        "id": "iterator-reference",
+        "source": "tests/semantics/object_casts/iterator-reference.php",
+        "source_sha256": "352bb947cb8203f0ad1d1be202b544c983eb55fa6249b0ca3d12b036ce9fcd4b",
+        "revision": "82cbe41deb2ef92277384668dd60705b208adc29",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/model-reference-7nkow2p8/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/native-iterator-reference-4yujwr6b/report.json"
+      },
+      {
+        "id": "iterator-retained-table",
+        "source": "tests/semantics/object_casts/iterator-retained-table.php",
+        "source_sha256": "836397bd504f4b6163af438bc306a1ac90df2fd0034d63cbaca5a64317c38b61",
+        "revision": "82cbe41deb2ef92277384668dd60705b208adc29",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/model-retained_table-s9g3k8k7/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/native-iterator-retained-table-cmred0bb/report.json"
+      },
+      {
+        "id": "nan-live-short",
+        "source": "tests/semantics/object_casts/nan-live-short.php",
+        "source_sha256": "cf8eed5dc31a5cb26b29ba29f05c0ac725a0a0179d6568cf822515d43a50e0b6",
+        "revision": "b0d535966a2c7c9986dd0d6160ee43d72d4e3956",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-short-model-vhp5i0pf/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-short-native-tamkadv3/report.json"
+      },
+      {
+        "id": "two-line-cast",
+        "source": "tests/semantics/object_casts/two-line-cast.php",
+        "source_sha256": "413bfe27f9afe32e7181888e00b5bb7569bd2d890ea5fd955124c3413c7e68ab",
+        "revision": "8ada7dec53a96bf9bacae603ff3cdbf5bb6a3f48",
+        "model_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-interpolation-model-0ixlraht/report.json",
+        "native_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-native/run-2xampol1/report.json"
+      }
+    ],
+    "result": "normal0, accepted frontend/checked program/reason null, exact whole native stdout/stderr; stable inputs/head, launchers reaped/groups empty",
+    "profile": "tests/semantics/profile.json, no startup/file facts supplied",
+    "distinctions": "Twelve new source/companion comparisons retain3a/82c/b0 cuts. The thirteenth is the first model agreement for the exact old251 multiline nonempty-cast original at8ada; prior251 nine/111 cutoffs remain unchanged."
+  },
+  "compiler_gates": {
+    "stages": "parse/elaborate/algorithmic/structure/SL initialize; application-evaluations0, exact stdout/empty stderr/exit0",
+    "rows": [
+      {
+        "revision": "3a21cec2b7697e7bf2ca84b349157e0437652b5b",
+        "modules": 250,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-compile-t0o92jel/report.json"
+      },
+      {
+        "revision": "82cbe41deb2ef92277384668dd60705b208adc29",
+        "modules": 250,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-compile-8_qluvry/report.json"
+      },
+      {
+        "revision": "b0d535966a2c7c9986dd0d6160ee43d72d4e3956",
+        "modules": 250,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-compile-zqdpcr13/report.json"
+      }
+    ],
+    "binary_reused": true
+  },
+  "state_gate": {
+    "revision": "b0d535966a2c7c9986dd0d6160ee43d72d4e3956",
+    "premises": 208,
+    "groups": [
+      {
+        "group": "table",
+        "premises": 41,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-controls-t7s8dxjr/report.json",
+        "elapsed_seconds": 9.430833015590906
+      },
+      {
+        "group": "nan",
+        "premises": 64,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-controls-8hywj930/report.json",
+        "elapsed_seconds": 11.483918033540249
+      },
+      {
+        "group": "nul",
+        "premises": 68,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-controls-5rgos97u/report.json",
+        "elapsed_seconds": 23.952039362862706
+      },
+      {
+        "group": "throw",
+        "premises": 35,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-controls-pkfmskuc/report.json",
+        "elapsed_seconds": 12.178721121512353
+      }
+    ],
+    "result": "true newline/empty stderr/exit0 within90; stable inputs/head, reaped/groups empty",
+    "scope": "Mapped table/clone/COW owners and pruning; NaN pending/entered/restored slot and raw-undefined pure/effect comparisons; key TABLE/SERIAL/current/saved/result certificate and delayed shared RW promotion; actual Exception callback restore/discard/final iterator cleanup."
+  },
+  "actual_parent_preservation": [
+    {
+      "parent": "a4fc3c68638a96cdfaa9501eb0fbf1b29710a634",
+      "merge": "8ada7dec53a96bf9bacae603ff3cdbf5bb6a3f48",
+      "modules": 253,
+      "review": "Exact252 ordered rows plus261; dynamic NEW260, REAL binding264, coalesce262 and alias-warning259 routes retained. Sole old251 original comparison above constrains changed cast/interpolation composition."
+    },
+    {
+      "parent": "23c196ddf8b68dc822c8123ce8d40e395a19c0a2",
+      "merge": "bbaacedab9e232c0e013569ba79cd6b8904f43ac",
+      "modules": 254,
+      "review": "Exact253 parent rows plus261; destruction_prune entry and frame_release(raw) retained, OBJECTTABLES retires inside prune_live, OBJECTCAST retained in raw restores and both saved auth hooks.257 generic release traversal follows real table edges, with no duplicate projected owner. Source bridge accepted; no fresh execution claim."
+    }
+  ],
+  "commands": {
+    "tested_compiler": "python3 .tools/check-object-cast-gates.py REVISION compile",
+    "tested_author": "python3 .tools/check-object-cast-gates.py REVISION models CASE...",
+    "tested_independent": "python3 .tools/include-review-14/object-cast/check-model.py REVISION typed|nul|undefined|iterator|reference (canonical cwd; exact argv in raw)",
+    "tested_companions": "python3 .tools/check-object-cast-short.py REVISION native; ... model NATIVE_RAW; independent check-model-retained-table.py REVISION",
+    "tested_controls": "python3 .tools/check-object-cast-controls.py REVISION PREPARED GROUP",
+    "tested_interpolation": "python3 .tools/check-object-cast-interpolation.py 8ada7dec53a96bf9bacae603ff3cdbf5bb6a3f48",
+    "maintained_sources": "python3 tests/semantics/object_cast_sources.py [--case CASE]",
+    "maintained_controls": "python3 tests/semantics/object_cast_protocol.py [--group table|nan|nul|throw] [--prepare-only]"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "native_cap_seconds": 30,
+    "model_caps_seconds": [
+      90,
+      60
+    ],
+    "compiler_cap_seconds": 300,
+    "numeric_cap_seconds": 90,
+    "jobs": 1
+  },
+  "runtime_sha256": {
+    "_build/default/adapter/main.exe": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    ".tools/cprefix-compiler/compiler": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d"
+  },
+  "preserved_boundaries": [
+    {
+      "source": "tests/semantics/object_casts/nan-borrowed.php",
+      "native": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-native/native-ru3dhsg6/report.json",
+      "model": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-models-_12f7jpx/report.json",
+      "agreements": 0,
+      "reason": "Fifth cast originally references a CV whose handler global binding/unset then return frees its last reference owner; the cast expr pointer is borrowed. Model explicitly stops at expired reference instead of reading retired STORE.",
+      "source_routes": [
+        "Zend/zend_vm_execute.h42047:CV CAST pointer then ZVAL_DEREF, no ADDREF/COPY",
+        "Zend/zend_execute.c348:CV lookup; Zend/zend_vm_def.h8679:BIND_GLOBAL",
+        "Zend/zend_hash.c1593:zend_hash_del_ind; Zend/zend_execute.c4271:local alias retirement; Zend/zend_variables.c71:reference destruction"
+      ]
+    },
+    {
+      "source": "tests/semantics/object_casts/iterator-table.php",
+      "native": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/native-iterator-table-fvwaal2m/report.json",
+      "model": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/model-iterator-6ojjq0yf/report.json",
+      "agreements": 0,
+      "reason": "Key-notice callback local clone retains old table only until callback return, after a tail write COWs the object; selected bucket pointer has no HT owner. Model explicitly stops at expired bucket.",
+      "source_routes": [
+        "Zend/zend_vm_def.h:zend_fe_fetch_object_helper7058 selects value pointer; FE_RESET retains object, not borrowed old HT"
+      ]
+    },
+    {
+      "source": "tests/semantics/object_casts/nan-borrowed-live.php",
+      "native": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-live-native-l6_2_6fh/report.json",
+      "model": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-live-model-ko2po64v/report.json",
+      "agreements": 0,
+      "reason": "Full distinct external-reference companion hit inner60 timeout; unchanged/reaped/empty. Separately calibrated short companion is its own source above, no substitution."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast/native-nul-callback-csjcs9kg/report.json",
+      "reason": "Original Illegal-vs-Corrupt message forecast failed; native itself normal0/stable. Model comparison uses immutable authoritative Corrupt bytes, not the forecast."
+    }
+  ],
+  "preserved_failures": {
+    "compiler_syntax_zero_runtime_credit": [
+      "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-compile-jyavd5u6/report.json",
+      "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-compile-6u3tsgc5/report.json",
+      "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-compile-5rq6lnks/report.json",
+      "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-compile-gp5ptuns/report.json",
+      "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-compile-8tu_ctxv/report.json",
+      "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-compile-r85sfzyz/report.json"
+    ],
+    "first_key_notice_runtime": "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-models-paor4at5/report.json",
+    "fixture_elaboration": [
+      "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-controls-hljye7mr/report.json",
+      "/home/user/workspace/php-spec/.tools/include-dev-14-object-casts/.tools/object-cast-controls-l_bqwe2a/report.json"
+    ],
+    "fixture_fixes": "Typed entry_read_value inequality and final ERRORHANDLER.CALLBACK observer only; affected groups rerun, no source/compiler renewal."
+  },
+  "promotion": {
+    "sources": "20 PHP copies exact:13 accepted,3 retained zero-credit originals/long companion,4 state-only inputs.",
+    "protocol": "Four full208-premise renders byte-exact to accepted fixtures after only initial source filename normalization. Prepare-only .tools/object-cast-protocol-zjnfq4ii, no semantic execution credit."
+  },
+  "independent_review": "/home/user/workspace/php-spec/.tools/include-review-14/object-cast-independent-review.json",
+  "remaining": [
+    "Expired-reference/bucket pointer paths remain explicit Unsupported and require further engine-lifetime investigation; no synthetic owner or portable retired-memory value is assigned.",
+    "Other raw-undefined consumers, wider producer/initializer/callback contexts, cyclic GC/lifecycle and full core remain required.",
+    "Legacy early-eval interpolation notices still await genuine accepted236 composition; original dollar-curly5 native-only cutoffs remain unchanged.",
+    "Return verification remains paused; no awaiting return implementation or substitute imported."
+  ]
+}

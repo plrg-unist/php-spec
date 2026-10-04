@@ -1376,16 +1376,19 @@
         "spec/semantics/56-casts.watsup",
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/58-ordinary-expressions.watsup",
-        "spec/semantics/136-property-runtime.watsup"
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/ordinary.py",
         "tests/semantics/properties.py",
-        "tests/semantics/properties_task_protocol.py"
+        "tests/semantics/properties_task_protocol.py",
+        "tests/semantics/object_cast_sources.py",
+        "tests/semantics/object_cast_protocol.py"
       ],
-      "review": "Populated public instance properties cast to array in source execution; typed-uninitialized slots are omitted. Scalar/array cast history remains in ordinary-review.json; object behavior is partial (properties-review.json)."
+      "review": "Populated public instance properties cast to array in source execution; typed-uninitialized slots are omitted. Scalar/array cast history remains in ordinary-review.json; object behavior is partial (properties-review.json). Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required."
     },
     {
       "node": "Expr_Cast_Bool",
@@ -1465,7 +1468,8 @@
         "spec/semantics/115-closure-compiler.watsup",
         "spec/semantics/116-closures.watsup",
         "spec/semantics/56-casts.watsup",
-        "spec/semantics/130-stdclass-runtime.watsup"
+        "spec/semantics/130-stdclass-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -1475,9 +1479,11 @@
         "tests/semantics/closures_state.py",
         "tests/semantics/closure_compiler.py",
         "tests/semantics/stdclass.py",
-        "tests/semantics/stdclass_protocol.py"
+        "tests/semantics/stdclass_protocol.py",
+        "tests/semantics/object_cast_sources.py",
+        "tests/semantics/object_cast_protocol.py"
       ],
-      "review": "The closure and arrow cast prerequisites remain covered by closures-review.json and arrows-review.json. Internal stdClass130 now preserves an existing object's identity and allocates distinct owned empty stdClass objects for null and empty-array casts; stdclass-review.json binds exact source and ownership checks. Nonempty array/scalar casts require properties, and broader object behavior remains open."
+      "review": "The closure and arrow cast prerequisites remain covered by closures-review.json and arrows-review.json. Internal stdClass130 now preserves an existing object's identity and allocates distinct owned empty stdClass objects for null and empty-array casts; stdclass-review.json binds exact source and ownership checks. Broader object behavior remains partial. Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required."
     },
     {
       "node": "Expr_Cast_String",
@@ -1578,7 +1584,8 @@
         "spec/semantics/149-clone-compiler.watsup",
         "spec/semantics/150-clone-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup"
       ],
       "source_tests": [
         "tests/semantics/clone_expressions.py",
@@ -1591,9 +1598,11 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/object_cast_sources.py",
+        "tests/semantics/object_cast_protocol.py"
       ],
-      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, property hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities.",
+      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, property hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required.",
       "helper_tests": [
         "tests/semantics/clone_compiler.py",
         "tests/semantics/clone_protocol.py",
@@ -3425,7 +3434,8 @@
         "spec/semantics/69-foreach-control.watsup",
         "spec/semantics/136-property-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup"
       ],
       "source_tests": [
         "tests/semantics/foreach_compiler.py",
@@ -3442,9 +3452,11 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/object_cast_sources.py",
+        "tests/semantics/object_cast_protocol.py"
       ],
-      "review": "Array traversal history is in foreach-runtime-review.json. Public-object by-value traversal uses live property slots (properties-review.json); by-reference traversal preserves slot/cell aliases and typed sources (property-references-review.json). Traversable callbacks and remaining contexts remain open. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities."
+      "review": "Array traversal history is in foreach-runtime-review.json. Public-object by-value traversal uses live property slots (properties-review.json); by-reference traversal preserves slot/cell aliases and typed sources (property-references-review.json). Traversable callbacks and remaining contexts remain open. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required."
     },
     {
       "node": "Stmt_Function",
@@ -8920,7 +8932,7 @@
         "coverage/semantics/class-link-phase-review.json",
         "coverage/semantics/compiler-publication-review.json"
       ],
-      "review": "Installed177–180 at5c423b245: ordered source links, nominal relations, variance and abstract obligations. Installed finite 189 at cbd5236d2 adds inherited internal contracts and source wakeup checks, with historical evidence kept at its original identities and reviewed property/default-cache/catalogue bridges plus installed source/rollback smoke in interface-internal-renewed-review.json. Publication190–196 preserves ordered early declarations/notices and authenticated history; its maintained catalogue covers the seven former publication Unsupported controls, typed companion and priority/preflight sources. The interim rooted wakeup guard is removed. compiler-publication-review.json binds the fresh private copied source30/history107/modifier286, full30,980 syntax and complete inventories separately from current-master composition. Two reporting-timing/error_reporting originals remain Unsupported intrinsic controls. Other internal tables, hooks, traits, selectors and serialization lifecycle remain required; no family closure."
+      "review": "Installed177\u2013180 at5c423b245: ordered source links, nominal relations, variance and abstract obligations. Installed finite 189 at cbd5236d2 adds inherited internal contracts and source wakeup checks, with historical evidence kept at its original identities and reviewed property/default-cache/catalogue bridges plus installed source/rollback smoke in interface-internal-renewed-review.json. Publication190\u2013196 preserves ordered early declarations/notices and authenticated history; its maintained catalogue covers the seven former publication Unsupported controls, typed companion and priority/preflight sources. The interim rooted wakeup guard is removed. compiler-publication-review.json binds the fresh private copied source30/history107/modifier286, full30,980 syntax and complete inventories separately from current-master composition. Two reporting-timing/error_reporting originals remain Unsupported intrinsic controls. Other internal tables, hooks, traits, selectors and serialization lifecycle remain required; no family closure."
     },
     {
       "id": "classes.traits",
@@ -10276,18 +10288,22 @@
       "implementation": [
         "spec/semantics/30-storage.watsup",
         "spec/semantics/127-class-runtime.watsup",
-        "spec/semantics/130-stdclass-runtime.watsup"
+        "spec/semantics/130-stdclass-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/stdclass.py",
-        "tests/semantics/stdclass_protocol.py"
+        "tests/semantics/stdclass_protocol.py",
+        "tests/semantics/object_cast_sources.py",
+        "tests/semantics/object_cast_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_interfaces.c",
-        "coverage/semantics/stdclass-review.json"
+        "coverage/semantics/stdclass-review.json",
+        "coverage/semantics/object-casts-review.json"
       ],
-      "review": "Owned empty stdClass identity and known consumers execute in130; zero-argument new and empty null/array object casts have source and paused checks. Constructor arguments, members and nonempty casts remain open."
+      "review": "Owned empty stdClass identity and known consumers execute in130; zero-argument new and empty null/array object casts have source and paused checks. No-constructor arguments have their own132 contract; other members/internal protocols remain required. Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required."
     },
     {
       "id": "protocols.Closure",
