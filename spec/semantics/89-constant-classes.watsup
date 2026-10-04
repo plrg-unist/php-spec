@@ -156,6 +156,7 @@ def $constant_value_class_valid(S, PARRAY n, PVARRAY b (pkey, pvalueclass)*) = $
   -- if ~b \/ (pkey, pvalueclass)* = eps
   -- if HARRAY n <- S.ALLOCATIONS
   -- if $(n < |S.ARRAYS|)
+def $constant_value_class_valid(S, POBJECT n, PVCLOSURE n_original porigin) = (n = n_original /\ $constant_callable_value_valid(S, n, porigin))
 def $constant_value_class_valid(S, pvalue, pvalueclass) = false -- otherwise
 
 def $constant_entries_class_valid(S, eps, eps) = true
@@ -171,8 +172,12 @@ def $constant_fact_value_valid(pconstantfact) = true
 def $constant_fact_value_valid(pconstantfact) = $constant_class_tree_valid(PVARRAY b (pkey, pvalueclass)*)
   -- if pconstantfact.VALUE = eps
   -- if pconstantfact.CLASS = PVARRAY b (pkey, pvalueclass)*
+def $constant_fact_value_valid(pconstantfact) = true
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVCLOSURE n porigin
 def $constant_fact_value_valid(pconstantfact) = false -- otherwise
 
+def $constant_class_tree_valid(PVCLOSURE n porigin) = true
 def $constant_class_tree_valid(PVSCALAR) = true
 def $constant_class_tree_valid(PVSTRING b) = true
 def $constant_class_tree_valid(PVARRAY b (pkey, pvalueclass)*) = ((~b \/ (pkey, pvalueclass)* = eps) /\ $constant_class_entries_valid((pkey, pvalueclass)*))
@@ -241,6 +246,9 @@ def $constant_fact_truth(pconstantfact) = ($truth($initial_state(NORMAL), pvalue
 def $constant_fact_truth(pconstantfact) = ((pkey, pvalueclass)* =/= eps)
   -- if pconstantfact.VALUE = eps
   -- if pconstantfact.CLASS = PVARRAY b (pkey, pvalueclass)*
+def $constant_fact_truth(pconstantfact) = (true)
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVCLOSURE n porigin
 def $constant_fact_truth(pconstantfact) = eps -- otherwise
 
 def $constant_recorded_truth(S, porigin) = $constant_fact_truth(pconstantfact)

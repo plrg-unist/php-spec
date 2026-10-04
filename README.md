@@ -129,9 +129,12 @@ broader class-constant contexts remain unfinished.
 values, strict types, rooted array caches, inheritance priority and global/default
 diagnostics. Included units fold only values available at compilation entry;
 later fills cannot rewrite earlier images. Current warning-read and static-getter
-interactions preserve cache ownership and aliases. The catalogue of 50 sources keeps distinct tested revisions. Closure/FCC initializers, named
-constexpr `::class` and references into incomplete class tables remain Unsupported;
-the family stays partial.
+interactions preserve cache ownership and aliases. Static Closure and fixed
+function/static-method callable initializers retain owner/called scope, cached
+identity and clone state. The catalogue of 72 sources and the new 159 + 44 state
+checks keep distinct tested revisions. Named constexpr `::class`, wider callable
+consumers and references into incomplete class tables remain Unsupported; the
+family stays partial.
 [Foreach syntax and prechecks](docs/semantics/FOREACH-COMPILER.md) preserve reference
 and list keys through checked printing and report exact compiler errors;
 [independent review](coverage/semantics/foreach-publication-review.json) verifies

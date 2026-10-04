@@ -1,6 +1,6 @@
 {
   "target": "PHP8.5.10 CLI NTS64",
-  "status": "partial183/184; bounded actual-current composition reviewed; no whole-family/core or fresh-build claim",
+  "status": "partial183/184/212; bounded class-constant Closure/FCC source and cache guards reviewed; current handler/truth composition pending; no whole-family/core or fresh-build claim",
   "base_revision": "d5208161ab3629d70228555b84c2e9d53076ba55",
   "source_evidence": {
     "distinct_cases": 25,
@@ -124,7 +124,9 @@
     "model-global-default11-v2: simple cross-file error used child filename instead of main",
     "constants-current13-native-6: original NEW private-parent hypothesis refuted; all originals retained",
     "finite-crossunit-temporal1: incorrect negative eval transport expectation; image rejection passed and original FAIL retained",
-    "current-paired7: ordinary nested named ::class pre-fold stopped the valid runtime FCC; original FAIL retained and only remaining affected rows executed"
+    "current-paired7: ordinary nested named ::class pre-fold stopped the valid runtime FCC; original FAIL retained and only remaining affected rows executed",
+    "constant-callables first-model14: callable observer had no PFSTOP case; original interpreter failure retained",
+    "literal-names-paired7: quoted static-class initializer overlapped ordinary dynamic scoped-call entry; original nondeterminism/native completion retained"
   ],
   "native_contract": "Project-local8.5.10 binary b9adb7ba; fixed ENV5 and -n display_errors=stderr/log_errors=0/html_errors=0/error_reporting=32767. Model baseline30719 stays distinct. Source tuple templates replace only exact observed main and child filenames; cross-file source bytes and file snapshots retain their explicit path bridge. Native cwd/environment observations remain original, not fresh model facts.",
   "primary_symbols": [
@@ -134,10 +136,16 @@
     "zend_update_class_constant",
     "zend_update_class_constants",
     "zend_ast_evaluate_ex",
-    "FETCH_CLASS_CONSTANT"
+    "FETCH_CLASS_CONSTANT",
+    "zend_compile_const_expr_closure",
+    "zend_compile_const_expr_fcc",
+    "zend_create_closure",
+    "zend_create_fake_closure",
+    "zend_closure_clone"
   ],
   "remaining": [
-    "legal static Closure/FCC initializers and named constexpr ::class remain Unsupported",
+    "named constexpr ::class, constructor contexts outside class constants and builtin FCC targets remain Unsupported",
+    "uncertified object-bearing initializer transfers remain Unsupported",
     "unretained computed/scoped table-update selectors remain Unsupported",
     "incomplete-table synchronous/delayed reference acquisition remains Unsupported",
     "invalid constant modifiers/admission and source metadata",
@@ -208,12 +216,12 @@
     }
   },
   "maintained_source_cases": {
-    "total": 50,
-    "normal": 21,
-    "php_error": 21,
-    "static_rejection": 8,
-    "composition": "25+12+5+6+1+1 across preserved tested revisions; no one-revision50 rerun",
-    "first42_unchanged": true
+    "total": 72,
+    "normal": 32,
+    "php_error": 22,
+    "static_rejection": 18,
+    "composition": "earlier 50 + 22 constructor/admission sources across preserved tested cutoffs; no one-revision72 rerun",
+    "first50_unchanged": true
   },
   "current_master_evidence": {
     "scope": "Six earlier current-runtime agreements +separate expected-Unsupported boundary, then one actual208/cache and one actual used-StaticCall/cache comparison. Reused runtime5; no old42/finite/copy renewal.",
@@ -278,5 +286,85 @@
       "run": ".tools/compiler-class-constants-master-13/.tools/class-constants/current-paired7-rest9/report.json",
       "scope": "Accessible incomplete-table delayed LEFT reference cannot suspend class update; cell acquisition stops explicitly. This source is excluded from the50 agreement rows."
     }
-  ]
+  ],
+  "constant_callable_evidence": {
+    "base_revision": "09b057e906bd788284ca0edfd6b9349d567b3715",
+    "source_cases": 22,
+    "normal": 11,
+    "php_error": 1,
+    "static_rejection": 10,
+    "scope": "Class-only static anonymous Closure and fixed function/static-method FCC; cached identity, owner/called scope, frozen fallback/retry selection, static-cell clone/COW and literal-class admission. Original typed namespace negative is a separate PHP error.",
+    "source_runs": [
+      {
+        "cases": 14,
+        "scope": "Nine normal, one namespace TypeError, four compile errors at the earlier constructor cut.",
+        "report": ".tools/compiler-class-constant-callables-13/.tools/constant-callables/first-model14-rest14/report.json",
+        "report_sha256": "a0d3d40a1e196cf0e0c3f34d7cf67f9b620b71afa8e595328a0dcf0ea1a00ca9",
+        "release": ".tools/compiler-class-constant-callables-13/.tools/constant-callables/first-model14-rest14/RELEASE2.json",
+        "release_sha256": "439ed2b6cbf8c93033d63c5a2e61d8d965a6d79e70155aac777a8821a97321c7",
+        "independent_review": ".tools/compiler-publication-operational-current/.tools/compiler-publication/reviewer-13-constant-callables-rest14-original-raw-release-review.json",
+        "independent_review_sha256": "caf9320131e16655d42ee1e4f883ec7babefa8f68ae6b90e7ba0330a3a83bc4a"
+      },
+      {
+        "cases": 11,
+        "new_cases": 1,
+        "scope": "Affected ten prior source observations plus new alias/two-site/COW case after birth/source-flow repair; four earlier compile errors unchanged.",
+        "report": ".tools/compiler-class-constant-callables-13/.tools/constant-callables/cache-object-model11/report.json",
+        "report_sha256": "f19ecb51bfde07fad331535325c0820356f0c236386a364651a62be4d66cefc4",
+        "release": ".tools/compiler-class-constant-callables-13/.tools/constant-callables/cache-object-model11/RELEASE2.json",
+        "release_sha256": "a1670a35529d4c3d41ea7865294969232e9e8c42d863cecd1525f924a511cdb8",
+        "independent_review": ".tools/compiler-publication-operational-current/.tools/compiler-publication/reviewer-13-constant-callables-cache-object-affected11-original-raw-release-review.json",
+        "independent_review_sha256": "63d1c3c6e767f492b51cdb53403fc39d9d1aae2e0421a70e745f99b513ce2969"
+      },
+      {
+        "cases": 7,
+        "scope": "One literal-class normal +six compile-error tuples; original successful positive native reused, failed model and six unrun pairs executed only.",
+        "report": ".tools/compiler-class-constant-callables-13/.tools/constant-callables/literal-names-rest13/report.json",
+        "report_sha256": "5f3a4e9856802cef26dfb6eb6541e9d763a26b3a86899310c966d10464ffe3ff",
+        "release": ".tools/compiler-class-constant-callables-13/.tools/constant-callables/literal-names-rest13/RELEASE2.json",
+        "release_sha256": "6d11442a51f0e1a38acf36f67aa3423261fc24b56a01f0ed74df5c079c00f317",
+        "independent_review": ".tools/compiler-publication-operational-current/.tools/compiler-publication/reviewer-13-constant-callables-literal-rest13-original-raw-release-review.json",
+        "independent_review_sha256": "e69f6d977b84d079b8fe85e836f0995ef5980ae4cfcc185b6fda189d7f95a611"
+      }
+    ],
+    "finite_runs": [
+      {
+        "programs": 4,
+        "predicates": [
+          54,
+          48,
+          31,
+          26
+        ],
+        "runtime212_sha256": "36500f4c12fb50d4cd7d1e28206c74bb127a4d761d458227be71dd3d4119cc98",
+        "report": ".tools/compiler-class-constant-callables-13/.tools/constant-callables/finite4/report.json",
+        "report_sha256": "1496c175a6dac0380d018ec3bc3e0ac75c94257f7156594945a23db72f5247fa",
+        "release": ".tools/compiler-class-constant-callables-13/.tools/constant-callables/finite4/RELEASE2.json",
+        "release_sha256": "3004e9f5264eed3890a64162e9a04c9b0af0ec52fedd7fb16b837c292d2952e8",
+        "independent_review": ".tools/compiler-publication-operational-current/.tools/compiler-publication/reviewer-13-constant-callables-finite4-original-raw-release-review.json",
+        "independent_review_sha256": "7955ce78b768ce9b4eda581e2cb193927c5874bf3399e4d290858fc6455bfd4f"
+      },
+      {
+        "programs": 1,
+        "predicates": [
+          44
+        ],
+        "runtime212_sha256": "091fc15c1a10eeafbd57ca76b5b3879c4493343ec9a08fe75cc83853fb1248c7",
+        "report": ".tools/compiler-class-constant-callables-13/.tools/constant-callables/literal-finite1/report.json",
+        "report_sha256": "c1b7a03df2f9d5559185404528705c7d4fff0ebd122cce7c295735aeedd502aa",
+        "release": ".tools/compiler-class-constant-callables-13/.tools/constant-callables/literal-finite1/RELEASE2.json",
+        "release_sha256": "4e7f4aebb662cb59d2c6f2a1551e0938df6e3553b9a0cf31fe2730313a1f1d5e",
+        "independent_review": ".tools/compiler-publication-operational-current/.tools/compiler-publication/reviewer-13-constant-callables-literal44-original-raw-release-review.json",
+        "independent_review_sha256": "9124477ed5d142aa79bd10c2eaa469abad09bcbc2f9bfbe8b81f62a953f00022"
+      }
+    ],
+    "maintained_protocol_predicates": [
+      54,
+      48,
+      31,
+      26,
+      44
+    ],
+    "current_composition": "Pending actual660391 preservation and one cached Closure handler x211 x209/33 interaction; no Q acceptance transfer."
+  }
 }

@@ -145,11 +145,11 @@ def $getclass_live_object(S, n) = true
 def $getclass_live_object(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
 def $getclass_live_object(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin
 def $getclass_live_object(S, n) = false -- otherwise
 
 dec $getclass_receive(pstate, pgetclasscall) : pstate

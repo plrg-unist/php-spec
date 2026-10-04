@@ -97,8 +97,8 @@ def $scalar_order(S, pvalue, PARRAY n) = $(-1)
 
 dec $named_closure_same(pstate, nat, nat) : bool
 def $named_closure_same(S, n_left, n_right) = true
-  -- if S.OBJECTS[n_left] = NAMEDCLOSURE porigin
-  -- if S.OBJECTS[n_right] = NAMEDCLOSURE porigin
+  -- if $object_body(S.OBJECTS[n_left]) = NAMEDCLOSURE porigin
+  -- if $object_body(S.OBJECTS[n_right]) = NAMEDCLOSURE porigin
 def $named_closure_same(S, n_left, n_right) = false -- otherwise
 dec $empty_instance_same(pstate, nat, nat) : bool
 def $empty_instance_same(S, n_left, n_right) = true

@@ -123,10 +123,10 @@ def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if $class_origin_matches(S, porigin, preqbytes, |S.CLASSES|)
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if $ptlc(preqbytes) = $ptascii("closure")
-  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if $ptlc(preqbytes) = $ptascii("closure")
-  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin
 def $class_instanceof(S, pvalue, preqbytes) = false -- otherwise
 rule PhpStep/instanceof-class: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), INSTANCEOF_RESULT $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.ORIGIN = (PORIGIN n pcpath)

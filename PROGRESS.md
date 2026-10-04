@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Class constants 183/184/212 now create static anonymous Closures and fixed
+function/static-method callables lazily in the initializer owner's context.
+Cached identity survives inherited aliases, arrays and repeated reads; real
+Closure clones copy their current static cells, while fixed function selections
+stay frozen across failed initialization and later namespace declarations.
+Strict typing, inheritance priority and compile-entry scalar/array availability
+remain in place. The maintained catalogue contains 72 agreements across separate
+source cutoffs, including 22 new constructor/admission cases. Four finite fixtures
+check 159 object/cache predicates; a later literal-class fixture checks 44. These
+cover source-authorized object birth, alias/array positions, selection prefixes,
+cache-only roots and clone/scope inverses. [The constants ledger](coverage/semantics/class-constants-current-review.json)
+retains original failures and distinguishes these checks from earlier 50 sources
+and scalar/array guards. Current handler/truth composition remains pending.
+Named `::class` in constant expressions, wider callable initializer contexts,
+builtin FCC targets, uncertified object transfers, unretained update selectors and
+references into incomplete tables remain Unsupported. Modifier admission,
+attributes and broader consumers stay open; the runtime is reused.
+
 Legal untyped static-slot reference getters preserve ignored raw values, shared
 used aliases, visibility and typed-source attachment/removal. Ordinary StaticCall
 results now retain their reference kind when sent to by-reference parameters;
@@ -35,7 +53,7 @@ The installed families compose as follows; each ledger records its scope and lim
 
 | Family | Current behavior and evidence |
 | --- | --- |
-| Class constants183/184 | Owner-scoped lazy scalar/array caches preserve strict typing, inheritance priority and compile-entry availability. Warning-read and completed static-getter interactions retain cache roots/aliases;50 source observations keep their separate revisions. Closure/FCC initializers and broader consumers remain open. [Constants ledger](coverage/semantics/class-constants-current-review.json). |
+| Class constants183/184/212 | Owner-scoped lazy scalar/array and selected Closure/FCC caches preserve strict types, inheritance priority, compile-entry availability and original callable identity/scope. Catalogue72 and new159+44 object/cache checks retain separate cutoffs; broader consumers remain open. [Constants ledger](coverage/semantics/class-constants-current-review.json). |
 | Warning-truth decisions209 | Branch/loop/short-circuit/NOT/ternary-condition choices consume the captured null even after handlers define the CV. Saved consumers and thrown-handler cleanup retain authenticated source/line. Casts/copy/SEND remain open. [Truth ledger](coverage/semantics/warning-truth-review.json). |
 | Borrowed warning reads208 | Strict identity retains the old reference cell across callbacks without adding an owner; saved callers and throw cleanup preserve it. Defined ordinary `$GLOBALS[key]` uses the real table. Getter/setter and method-string interactions keep separate revisions. [Warning-read ledger](coverage/semantics/warning-reads-review.json). |
 | Error handlers/reporting206/207/211 | Named, closure, public source-object, ordinary method-array and class-method-string callbacks retain raw registration values and select afresh at dispatch. Entered targets, four arguments and genuine emitting frames survive member mutation, replacement, nested reentry, throw and false fallback; current CONFIG PIPE preserves weak receive and original-null trace. Broader scope/magic/internal/exception/lifecycle forms and reporting readback remain open. [Method-handler ledger](coverage/semantics/handler-callables-current-review.json), [earlier handler ledger](coverage/semantics/error-handlers-review.json). |

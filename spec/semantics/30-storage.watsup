@@ -8,7 +8,7 @@ syntax pbase = BASE_VALUE poperand | BASE_GLOBAL poperand int | BASE_NAME popera
 syntax pnode = HCELL nat | HARRAY nat | HOBJECT nat
 syntax plocation = ROOT nat | ELEMENT nat pkey | PROPERTY nat ptbytes | CLASS_STATIC ppropertyid | NOWHERE
 syntax pvstage = PVFOLD | PVEXEC
-syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)*
+syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)* | PVCLOSURE nat porigin
 syntax parrayselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, NAME ptbytes }
 syntax pstringselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, ORIGINAL ptbytes }
 syntax pcalltarget = porigin | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget
@@ -132,6 +132,7 @@ syntax pconstantfact = { ORIGIN porigin, VALUE pvalue?, CLASS pvalueclass }
 syntax pconstantcontext = { ORIGIN porigin, LINE int, FACTS pconstantfact* }
 syntax pclassconstantselection = CLASS_CONST_FETCH poperand ptbytes | CLASS_CONST_UPDATE_SELECT porigin
 syntax pclassconstantcontext = { DECL porigin, SELECTION pclassconstantselection, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
+syntax pconstantclosure = { OBJECT nat, SITE porigin, DECL porigin, PREFIX nat }
 syntax pdefaultcache = { ORIGIN porigin, VALUE pvalue, CLASS pvalueclass }
 syntax puserconstant = { NAME preqbytes, ORIGIN porigin, VALUE pvalue, CLASS pvalueclass }
 syntax pcallcontext = { TARGET pcalltarget, WRAPPER pnamedargs?, INSTANCE nat?, RECEIVER nat?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin?, FUNCTION porigin, NAME preqbytes, CALLSITE porigin?, LINE int, PARAMS preqbytes*, ARGC nat, EXTRA poperand*, NAMED (preqbytes, poperand)* }
@@ -144,12 +145,23 @@ syntax pclosurecreation = { FUNCTION porigin, CALLSITE porigin, RECEIVER bool }
 syntax pclosurescope = { OBJECT nat, LEXICAL porigin, CALLED porigin, RECEIVER nat?, CREATION pclosurecreation? }
 syntax pclosurebinding = { OBJECT nat, SITE porigin, SOURCE nat, LEXICAL porigin?, CALLED porigin?, RECEIVER nat? }
 syntax pmethodcapture = { FUNCTION porigin, CALLSITE porigin?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin? }
-syntax pobject = THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | INSTANCE porigin | STDINSTANCE
+syntax pobject = CONSTANTCLOSURE porigin pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | INSTANCE porigin | STDINSTANCE
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
 syntax pdeclaration = PDENTER nat porigin? int | PDECLASS nat porigin | PDEFUNCTION nat porigin | PDRCLASS porigin pdeclcause | PDRFUNCTION porigin pdeclcause | PDEXIT nat pcompilestop
-syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, CLOSUREBINDINGS pclosurebinding*, OBJECTPROPS pobjectprops*, PROPREFS ppropref*, REFCOERCIONS prefcoercion*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, DECLARATIONS pdeclaration*, LINKEDPARENTS pclasslink*, LINKEDINTERFACES pinterfacelink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, CLASSSTATICS pclassstatic*, CLASSCONSTANTCACHE pdefaultcache*, CLASSCONSTANTHISTORY pclassconstantevent*, CLASSCONSTANTINIT pclassconstantcontext*, REPORTING int, REPORTINGINI preqbytes, SILENCES psilence*, ERRORHANDLER perrorhandler, ERRORHANDLERS perrorhandler*, BORROWEDREAD pidentityread?, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORFATALTRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, FILECWD preqbytes?, FILEINCLUDEPATH preqbytes?, FILESEQ nat, DIRSEQ nat, DIRCONVSEQ nat, DIRCONVERSIONS pdirconversion*, DIRCONTEXT pdircontext?, SELECTSEQ nat, SELECTEDCALLS pselectedcall*, FILECONTEXTS pfilecontext*, FILEBINDINGS pfilebinding*, INCLUDEDOPENED preqbytes*, EVALCONTEXTS pevalcontext*, EVALBINDINGS pevalbinding*, FAILEDSOURCES pfailedsource*, SERVICELEFT nat?, COMPILESTOP bool, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
+dec $object_body(pobject) : pobject
+
+syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, CLOSUREBINDINGS pclosurebinding*, OBJECTPROPS pobjectprops*, PROPREFS ppropref*, REFCOERCIONS prefcoercion*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, DECLARATIONS pdeclaration*, LINKEDPARENTS pclasslink*, LINKEDINTERFACES pinterfacelink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, CLASSSTATICS pclassstatic*, CLASSCONSTANTCACHE pdefaultcache*, CLASSCONSTANTHISTORY pclassconstantevent*, CLASSCONSTANTINIT pclassconstantcontext*, CONSTANTCLOSURES pconstantclosure*, REPORTING int, REPORTINGINI preqbytes, SILENCES psilence*, ERRORHANDLER perrorhandler, ERRORHANDLERS perrorhandler*, BORROWEDREAD pidentityread?, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORFATALTRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, FILECWD preqbytes?, FILEINCLUDEPATH preqbytes?, FILESEQ nat, DIRSEQ nat, DIRCONVSEQ nat, DIRCONVERSIONS pdirconversion*, DIRCONTEXT pdircontext?, SELECTSEQ nat, SELECTEDCALLS pselectedcall*, FILECONTEXTS pfilecontext*, FILEBINDINGS pfilebinding*, INCLUDEDOPENED preqbytes*, EVALCONTEXTS pevalcontext*, EVALBINDINGS pevalbinding*, FAILEDSOURCES pfailedsource*, SERVICELEFT nat?, COMPILESTOP bool, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
+dec $constant_callable_source_scope(pstate, porigin) : porigin?
+dec $constant_callable_active(pstate, porigin) : bool
+dec $constant_closure_create(pstate, pfunction) : pstate
+dec $constant_callable_records_valid(pstate, pconstantclosure*) : bool
+dec $constant_callable_value_valid(pstate, nat, porigin) : bool
+dec $constant_callable_class(pstate, porigin) : pvalueclass
+dec $constant_callable_foldable(pvalueclass) : bool
+dec $constant_callable_cache_prefix(pclassconstantevent*, porigin) : nat?
+dec $constant_callable_cache_valid(pstate, pclassconstantdesc, pvalueclass, nat) : bool
 dec $method_capture_invocation_valid(pstate, pmethodcapture, porigin) : bool
 dec $invoke_capture(pstate, nat, porigin?) : pstate
 dec $method_link_issue(pstate, pclassdesc, porigin) : pmethodissue

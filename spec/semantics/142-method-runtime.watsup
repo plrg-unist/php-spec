@@ -293,7 +293,7 @@ def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
   -- if $method_source_name(phpType20, $ptascii("__invoke"))
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* pstaticcell*
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin_template pitem* pstaticcell*
   -- if $closure_callable(S, n)
   -- if $function_at(S.CLOSURETEMPLATES, porigin_template) = (pfunction)
 def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
@@ -301,7 +301,7 @@ def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
   -- if $method_source_name(phpType20, $ptascii("__invoke"))
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin_function
+  -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin_function
   -- if $closure_callable(S, n)
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
 def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
@@ -309,7 +309,7 @@ def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
   -- if $method_source_name(phpType20, $ptascii("__invoke"))
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* pstaticcell*
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin_template pitem* pstaticcell*
   -- if $closure_callable(S, n)
   -- if $function_at(S.CLOSURETEMPLATES, porigin_template) = (pfunction)
 def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
@@ -317,7 +317,7 @@ def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
   -- if $method_source_name(phpType20, $ptascii("__invoke"))
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin_function
+  -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin_function
   -- if $closure_callable(S, n)
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
 
@@ -533,7 +533,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $(n < |S_read.OBJECTS|)
-  -- if S_read.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $object_body(S_read.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
   -- if ~$ppfirstclass(phpType7*)
   -- if $closure_callable(S_read, n)
@@ -544,7 +544,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $(n < |S_read.OBJECTS|)
-  -- if S_read.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $object_body(S_read.OBJECTS[n]) = NAMEDCLOSURE porigin
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
   -- if ~$ppfirstclass(phpType7*)
   -- if $closure_callable(S_read, n)
@@ -564,7 +564,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $(n < |S_read.OBJECTS|)
-  -- if S_read.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $object_body(S_read.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $closure_known_other_method(ptbytes)
   -- if $ptlc(ptbytes) =/= $ptascii("bindto") /\ $ptlc(ptbytes) =/= $ptascii("call")
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure method consumer"]
@@ -572,7 +572,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $(n < |S_read.OBJECTS|)
-  -- if S_read.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $object_body(S_read.OBJECTS[n]) = NAMEDCLOSURE porigin
   -- if $closure_known_other_method(ptbytes)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure method consumer"]
   -- if S_read = $resolve_at(S, poperand, z)
@@ -586,7 +586,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $(n < |S_read.OBJECTS|)
-  -- if S_read.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $object_body(S_read.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $ptlc(ptbytes) =/= $ptascii("__invoke")
   -- if ~$closure_known_other_method(ptbytes)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
@@ -594,7 +594,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $(n < |S_read.OBJECTS|)
-  -- if S_read.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $object_body(S_read.OBJECTS[n]) = NAMEDCLOSURE porigin
   -- if $ptlc(ptbytes) =/= $ptascii("__invoke")
   -- if ~$closure_known_other_method(ptbytes)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
@@ -905,9 +905,13 @@ def $scoped_name_prepare(S, phpType19, poperand_selector, expression_name, phpTy
 rule PhpStep/scoped-call-named: S ~> S[.TODO = (SCOPED_CLASS phpType19 phpType20 phpType7* $runtime_line(S, eps, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*]
   -- if S.TODO = (EVAL (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if $ppscoped_named(phpType19)
+  -- if S.ORIGIN = (porigin)
+  -- if ~$constant_callable_active(S, porigin)
 rule PhpStep/scoped-call-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_class), SCOPED_CLASS expression_class phpType20 phpType7* $runtime_line(S, eps, NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if ~$ppscoped_named(expression_class)
+  -- if S.ORIGIN = (porigin)
+  -- if ~$constant_callable_active(S, porigin)
 rule PhpStep/scoped-class: S ~> $scoped_name_prepare(S_class, phpType19, poperand_selector, phpType20, phpType7*, z)
   -- if S.TODO = (SCOPED_CLASS phpType19 phpType20 phpType7* z) :: ptask_tail*
   -- if S_class = $scoped_class_prepare(S, phpType19, z)

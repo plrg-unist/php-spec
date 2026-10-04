@@ -45,10 +45,12 @@ def $class_constant_compile_value(S, pclassconstantdesc) = ((pvalue, pvalueclass
   -- if $pool_value(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalue)
   -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalueclass)
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if $constant_callable_foldable(pvalueclass)
 def $class_constant_compile_value(S, pclassconstantdesc) = ((pdefaultcache.VALUE, pdefaultcache.CLASS))
   -- if ~pclassconstantdesc.FOLDED
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
   -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
+  -- if $constant_callable_foldable(pdefaultcache.CLASS)
 def $class_constant_compile_value(S, pclassconstantdesc) = eps -- otherwise
 
 ;; Import constant arrays into this unit's allocation space. Objects and
