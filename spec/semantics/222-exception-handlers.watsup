@@ -5,6 +5,7 @@ dec $exception_handler_value(pvalue?) : pvalue
 dec $exception_handler_pop(pstate) : pstate
 dec $exception_handler_restore(pstate) : pstate
 dec $exception_handler_register(pstate, pconfigcall, pvalue) : pstate
+dec $exception_deprecated_raw(pstate, pvalue) : bool
 dec $exception_handler_registered(pstate, pvalue?) : bool
 dec $exception_nonobject_receiver(pitem) : bool
 dec $exception_raw_receiver(pstate, pitem, bool, porigin, pcalltarget) : bool
@@ -55,16 +56,41 @@ def $exception_handler_pop(S) = S[.EXCEPTIONHANDLER = pvalue?][.EXCEPTIONHANDLER
 def $exception_handler_pop(S) = S[.EXCEPTIONHANDLER = eps] -- if S.EXCEPTIONHANDLERS = eps
 def $exception_handler_restore(S) = $exception_handler_pop(S) -- if S.EXCEPTIONHANDLER = eps
 def $exception_handler_restore(S) = S -- if S.EXCEPTIONHANDLER =/= eps
+;; These require the effectful API resolution stages, not suppressed admission.
+;; Keep that boundary explicit when module221 changes the shared pure facts.
+def $exception_deprecated_raw(S, PARRAY n) = true
+  -- if $typed_callback_array(S, n)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if $entry_value(S, pitem_receiver) = PSTRING ptbytes_class
+  -- if $ptlc($typed_callable_name(ptbytes_class)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+  -- if $entry_value(S, pitem_method) = PSTRING ptbytes_method
+  -- if $method_string_parts(ptbytes_method) = eps
+def $exception_deprecated_raw(S, PARRAY n) = true
+  -- if $typed_callback_array(S, n)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if $entry_value(S, pitem_method) = PSTRING ptbytes_method
+  -- if $method_string_parts(ptbytes_method) =/= eps
+def $exception_deprecated_raw(S, PSTRING ptbytes) = true
+  -- if ~$typed_registered(S, ptbytes)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if $ptlc($typed_callable_name(ptbytes_class)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $exception_deprecated_raw(S, pvalue) = false -- otherwise
 def $exception_handler_register(S, pconfigcall, pvalue) = S[.EXCEPTIONHANDLER = (pvalue)][.EXCEPTIONHANDLERS = S.EXCEPTIONHANDLER :: S.EXCEPTIONHANDLERS][.RESULT = KNOWN $exception_handler_value(S.EXCEPTIONHANDLER)]
   -- if pvalue =/= PNULL
+  -- if ~$exception_deprecated_raw(S, pvalue)
   -- if $error_handler_callable(S, pvalue) = (true)
 def $exception_handler_register(S, pconfigcall, PNULL) = S[.EXCEPTIONHANDLER = eps][.EXCEPTIONHANDLERS = S.EXCEPTIONHANDLER :: S.EXCEPTIONHANDLERS][.RESULT = KNOWN $exception_handler_value(S.EXCEPTIONHANDLER)]
 def $exception_handler_register(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_exception_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ n_reason*)
   -- if pvalue =/= PNULL
+  -- if ~$exception_deprecated_raw(S, pvalue)
   -- if $error_handler_resolution(S, pvalue) = HANDLERINVALID n_reason*
 def $exception_handler_register(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "exception-handler callable registration form"]
   -- if pvalue =/= PNULL
+  -- if ~$exception_deprecated_raw(S, pvalue)
   -- if $error_handler_callable(S, pvalue) = eps
+def $exception_handler_register(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "exception-handler keyword/compound callable ingress requires effectful API resolution"]
+  -- if $exception_deprecated_raw(S, pvalue)
 def $error_api_body(S, pconfigcall) = $exception_handler_register(S, pconfigcall, $error_api_value(pconfigcall, 0, PNULL)) -- if pconfigcall.KIND = INTRINSIC_SET_EXCEPTION_HANDLER
 def $error_api_body(S, pconfigcall) = $exception_handler_pop(S)[.RESULT = KNOWN (PBOOL true)] -- if pconfigcall.KIND = INTRINSIC_RESTORE_EXCEPTION_HANDLER
 def $error_api_body(S, pconfigcall) = S[.RESULT = KNOWN $exception_handler_value(S.EXCEPTIONHANDLER)] -- if pconfigcall.KIND = INTRINSIC_GET_EXCEPTION_HANDLER
@@ -166,17 +192,24 @@ def $exception_handler_enter(S, pexceptioncall, poperand) = $call_arity($target_
 rule PhpStep/exception-handler-enter-value: S ~> $exception_handler_enter(S, pexceptioncall[.TARGET = (pcalltarget)], KNOWN (POBJECT pexceptioncall.OBJECT))
   -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
   -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
+  -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)
   -- if $error_handler_target(S, pexceptioncall.CALLBACK) = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if ~$call_parameter_reference(S, pcalltarget, 0)
 rule PhpStep/exception-handler-unknown: S ~> S[.COMPLETION = UNSUPPORTED "exception-handler callback outside admitted source callable forms"]
   -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
   -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
+  -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)
   -- if $error_handler_resolution(S, pexceptioncall.CALLBACK) = HANDLERUNKNOWN text
 rule PhpStep/exception-handler-invalid: S ~> S[.TODO = eps][.COMPLETION = INTERNALFATAL ($ptascii("Invalid callback ") ++ $error_callback_name(S, pexceptioncall.CALLBACK) ++ $ptascii(", ") ++ n_reason*) ($long_and(S.REPORTING, 1) =/= 0)][.TRACE = eps][.ORIGIN = eps][.ERRORORIGIN = eps]
   -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
   -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
+  -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)
   -- if $error_handler_resolution(S, pexceptioncall.CALLBACK) = HANDLERINVALID n_reason*
+rule PhpStep/exception-handler-special: S ~> S[.COMPLETION = UNSUPPORTED "exception-handler keyword/compound callable ingress requires effectful API resolution"]
+  -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
+  -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
+  -- if $exception_deprecated_raw(S, pexceptioncall.CALLBACK)
 rule PhpStep/exception-handler-finish: S ~> $exception_handler_restore(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = pexceptioncall.ORIGIN][.TRACE = eps][.ERRORORIGIN = eps])
   -- if S.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask_tail*
   -- if $exception_result_valid(S, pexceptioncall)
@@ -196,6 +229,7 @@ def $exception_reference_warning(S, pexceptioncall) = pfunction.NAME ++ $ptascii
 rule PhpStep/exception-handler-reference-warning: S ~> $error_dispatch(S[.ORIGIN = (pfunction.ORIGIN)], 2, $exception_reference_warning(S, pexceptioncall_entered), 0, DIAGNOSTIC_INTERNAL "Warning" ($exception_reference_warning(S, pexceptioncall_entered)) 0, EXCEPTION_HANDLER_ENTER pexceptioncall_entered)
   -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
   -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
+  -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)
   -- if $error_handler_target(S, pexceptioncall.CALLBACK) = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $call_parameter_reference(S, pcalltarget, 0)
