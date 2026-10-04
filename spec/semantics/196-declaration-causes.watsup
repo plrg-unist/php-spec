@@ -171,7 +171,8 @@ def $declaration_named_selection(S, pfunction, porigin) = true
 def $declaration_named_selection(S, pfunction, porigin) = false -- otherwise
 
 dec $declaration_method_selection(pstate, pmethoddesc, porigin, porigin, pdeclcalls) : bool
-dec $declaration_new_selection(pstate, porigin, phpType28, porigin) : bool
+dec $dynamic_new_keyword(pstate, porigin) : name?
+dec $declaration_new_selection(pstate, porigin, phpType28, porigin, pdeclcalls) : bool
 dec $declaration_string_site(pstate, porigin) : bool
 dec $declaration_method_call_selection(pstate, pmethoddesc, porigin, porigin, pdeclcalls, bool) : bool
 dec $declaration_receiver_selection(pstate, porigin, expression, porigin, pdeclcalls) : bool
@@ -218,7 +219,7 @@ def $declaration_method_selection(S, pmethoddesc, porigin_called, PORIGIN n_unit
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__construct")
   -- if $effective_method(S, porigin_called, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
-  -- if $declaration_new_selection(S, PORIGIN n_unit pcpath, phpType28, porigin_called)
+  -- if $declaration_new_selection(S, PORIGIN n_unit pcpath, phpType28, porigin_called, pdeclcalls)
   -- if $method_accessible(S, pmethoddesc, $declaration_caller_lexical(pdeclcalls))
 ;; A captured method has already checked access at creation. Its historical
 ;; dynamic operand is not a retained object or a fresh caller-scope lookup.
@@ -237,18 +238,22 @@ def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, 
   -- if $declaration_string_site(S, porigin_site)
 def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = false -- otherwise
 
-def $declaration_new_selection(S, PORIGIN n_unit pcpath, name, porigin_called) = true
+def $declaration_new_selection(S, PORIGIN n_unit pcpath, name, porigin_called, pdeclcalls) = true
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_called)
-def $declaration_new_selection(S, PORIGIN n_unit pcpath, expression, porigin_called) = ($class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_called))
+def $declaration_new_selection(S, PORIGIN n_unit pcpath, expression, porigin_called, pdeclcalls) = ($class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(preqbytes))) = (porigin_called))
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew expression (SEQUENCE phpType7*) metadata)
   -- if $declaration_class_value(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = (PSTRING preqbytes)
-def $declaration_new_selection(S, PORIGIN n_unit pcpath, expression, porigin_called) = true
+  -- if $dynamic_new_keyword(S, PORIGIN n_unit pcpath) = eps
+def $declaration_new_selection(S, PORIGIN n_unit pcpath, expression, porigin_called, pdeclcalls) = ($declaration_requested(S, PORIGIN n_unit pcpath, name, pdeclcalls) = (porigin_called))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew expression (SEQUENCE phpType7*) metadata)
+  -- if $dynamic_new_keyword(S, PORIGIN n_unit pcpath) = (name)
+def $declaration_new_selection(S, PORIGIN n_unit pcpath, expression, porigin_called, pdeclcalls) = true
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew expression (SEQUENCE phpType7*) metadata)
   -- if $declaration_class_value(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = eps
-def $declaration_new_selection(S, porigin, phpType28, porigin_called) = false -- otherwise
+def $declaration_new_selection(S, porigin, phpType28, porigin_called, pdeclcalls) = false -- otherwise
 
 def $declaration_string_site(S, porigin) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)

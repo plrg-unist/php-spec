@@ -97,6 +97,9 @@ integer trace slots remain raw. Receiver fields commit after every formal passes
 and a current conversion consumer cannot borrow permission from an older frame
 at the same site. [Dynamic object `::class`256](../../coverage/semantics/object-class-name-review.json)
 returns a class name without Stringable conversion; broader constrained consumers remain required.
+[Dynamic NEW260](../../coverage/semantics/dynamic-new-review.json) also selects an
+object's class without a cast and retires a selector temporary before argument effects.
+Its selected scope/history certificates own no selector or Closure objects.
 
 The required consumer inventory includes echo, print, `(string)` casts,
 concat, interpolation, eval/include/require operands, weak typed conversions, dynamic variable
