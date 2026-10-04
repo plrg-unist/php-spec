@@ -461,8 +461,9 @@ bound closures and `Closure->__invoke` trampolines.
 and adaptations with using-class scope, original body provenance and distinct
 class/alias static cells. Property/constant composition preserves invariant source
 types, strict evaluated compatibility, per-import identities and static sharing.
-Imported deferred instance defaults use owning class templates. Effectful
-collisions and direct trait-property warning continuations remain required. A bounded
+Imported deferred instance defaults use owning class templates. Raw trait-property
+warnings retain selected cells and operand ownership through handlers and abrupt
+opcode completion. Effectful collisions and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
