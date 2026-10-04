@@ -94,13 +94,15 @@ def $property_default_transfer_valid(S, ppropertydesc, pvalueclass) = false -- o
 def $instance_default_value(INSTANCE_VALUE pvalue pvalueclass) = ((pvalue, pvalueclass))
 def $instance_default_value(INSTANCE_OBJECT_VALUE pvalue pvalueclass pinstanceobjectcertificate) = ((pvalue, pvalueclass))
 def $instance_default_value(pinstancetemplatestate) = eps -- otherwise
-def $instance_default_copy_state(S, porigin_class, INSTANCE_OBJECT_VALUE pvalue pvalueclass pinstanceobjectcertificate) = INSTANCE_OBJECT_VALUE pvalue pvalueclass (INSTANCE_OBJECT_COPY porigin_class |S.DECLARATIONS| pinstanceobjectcertificate)
+def $instance_default_copy_state(S, porigin_class, INSTANCE_OBJECT_VALUE pvalue pvalueclass pinstanceobjectcertificate) = INSTANCE_OBJECT_VALUE pvalue pvalueclass (INSTANCE_OBJECT_COPY porigin_class n_prefix pinstanceobjectcertificate)
+  -- if n_prefix = |S.DECLARATIONS|
 def $instance_default_copy_state(S, porigin_class, pinstancetemplatestate) = pinstancetemplatestate -- otherwise
 def $instance_default_bound_state(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) = INSTANCE_VALUE $property_default_value(ppropertydesc.TYPE, pvalue) pvalueclass
   -- if $constant_callable_foldable(pvalueclass)
-def $instance_default_bound_state(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) = INSTANCE_OBJECT_VALUE $property_default_value(ppropertydesc.TYPE, pvalue) pvalueclass (INSTANCE_OBJECT_BIND porigin_class pstaticdefaultcontext.DECL pstaticdefaultcontext.ROOT porigin_trigger $class_static_selection_at(S.TODO) pvalueclass |S.DECLARATIONS| n_history)
+def $instance_default_bound_state(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) = INSTANCE_OBJECT_VALUE $property_default_value(ppropertydesc.TYPE, pvalue) pvalueclass (INSTANCE_OBJECT_BIND porigin_class pstaticdefaultcontext.DECL pstaticdefaultcontext.ROOT porigin_trigger $class_static_selection_at(S.TODO) pvalueclass n_prefix n_history)
   -- if ~$constant_callable_foldable(pvalueclass)
   -- if pstaticdefaultcontext.ORIGIN = (porigin_trigger)
+  -- if n_prefix = |S.DECLARATIONS|
   -- if n_history = |S.CLASSCONSTANTHISTORY ++ $instance_default_record(S, porigin_class, pstaticdefaultcontext)|
 
 dec $instance_object_published(pstate, porigin?, nat) : bool
