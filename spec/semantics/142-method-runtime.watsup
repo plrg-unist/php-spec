@@ -361,7 +361,7 @@ def $method_call_selected(S, METHOD_TARGET n porigin_method, (PORIGIN n_unit pcp
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__construct")
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $new_source_name(S, PORIGIN n_unit pcpath) = (preqbytes)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
@@ -971,7 +971,7 @@ rule PhpStep/new-with-constructor: S ~> $constructor_start(S[.TODO = ptask_tail*
   -- if S.ORIGIN = (PORIGIN n_unit pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $new_source_name(S, PORIGIN n_unit pcpath) = (preqbytes)
   -- if $new_has_ctor(S, preqbytes)
   -- if ~$parameter_default_constructor(S, name, phpType7*, metadata)
 rule PhpStep/constructor-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -1124,7 +1124,7 @@ def $ctor_result_valid(S, n) = true
   -- if S.ORIGIN = (PORIGIN n_unit pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $new_source_name(S, PORIGIN n_unit pcpath) = (preqbytes)
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INSTANCE porigin_class

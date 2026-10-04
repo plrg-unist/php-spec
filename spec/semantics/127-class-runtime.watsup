@@ -105,12 +105,22 @@ def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "invalid compiled 
   -- if ~pclassdesc.ABSTRACT
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
   -- if $property_initial_slots(S, $property_layout(S, porigin, |S.CLASSES|)) = eps
+dec $new_source_name(pstate, porigin) : preqbytes?
+dec $trait_default_new_site(pstate, porigin) : bool
+dec $trait_default_new_name(pstate, porigin) : preqbytes?
+def $new_source_name(S, porigin) = $trait_default_new_name(S, porigin) -- if $trait_default_new_site(S, porigin)
+def $new_source_name(S, PORIGIN n pcpath) = (preqbytes)
+  -- if ~$trait_default_new_site(S, PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+def $new_source_name(S, porigin) = eps -- otherwise
+
 rule PhpStep/new-class: S ~> $noctor_start(S[.TODO = ptask_tail*], preqbytes, eps, $runtime_line(S, eps, NExprNew name (SEQUENCE eps) metadata))
   -- if S.TODO = (EVAL (NExprNew name (SEQUENCE eps) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew name (SEQUENCE eps) metadata)
   -- if $code_at(S.CODE, n) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $new_source_name(S, PORIGIN n pcpath) = (preqbytes)
   -- if ~$new_has_ctor(S, preqbytes)
 
 dec $class_instanceof(pstate, pvalue, preqbytes) : bool
@@ -217,7 +227,7 @@ def $class_expr_task_valid(S, NExprNew name (SEQUENCE eps) metadata) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew name (SEQUENCE eps) metadata)
   -- if $code_at(S.CODE, n) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $new_source_name(S, PORIGIN n pcpath) =/= eps \/ $trait_default_new_site(S, PORIGIN n pcpath)
 def $class_expr_task_valid(S, NExprInstanceof expression name metadata) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInstanceof expression name metadata)

@@ -178,6 +178,56 @@ def $default_parameter_origin(S, TRAIT_ORIGIN porigin_owner porigin_source ptbyt
   -- if $origin_source(porigin_source) = PORIGIN n_unit pcpath
 def $default_scope_node(NScalarMagicConstClass metadata) = true
 
+;; Logical entry origins retain the selected import while protected regions
+;; and finalizer ancestry are recovered from its physical source method.
+dec $trait_finally_entry_valid(pstate, porigin) : bool
+def $trait_finally_entry_valid(S, TRAIT_ORIGIN porigin_owner porigin_source ptbytes) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = TRAIT_ORIGIN porigin_owner porigin_source ptbytes
+  -- if $call_current_valid(S)
+def $trait_finally_entry_valid(S, porigin) = false -- otherwise
+def $finally_current_complete(S) = ($finally_regions_complete(S, n_unit, pcpath, $ppfinally_protected(pcunit.OCCURRENCES, pcpath)) /\ $finally_continuations_valid(S, S.TODO))
+  -- if S.ORIGIN = (TRAIT_ORIGIN porigin_owner porigin_source ptbytes)
+  -- if $trait_finally_entry_valid(S, TRAIT_ORIGIN porigin_owner porigin_source ptbytes)
+  -- if $origin_source(porigin_source) = PORIGIN n_unit pcpath
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+def $finally_outer_origin_valid(S, porigin, (TRAIT_ORIGIN porigin_owner porigin_source ptbytes)) = $finally_outer_origin_valid(S, porigin, ($origin_source(porigin_source)))
+  -- if $trait_finally_entry_valid(S, TRAIT_ORIGIN porigin_owner porigin_source ptbytes)
+
+;; A trait NEW default keeps its keyword until the real importing receive.
+def $pptrait_new_deferred(P, pcpath, NName (BYTES text) metadata) = ($ppparameter_new_site(P, pcpath) /\ ~P.CLOSURE /\ $ptrait_context(P.CLASSCONTEXT) /\ $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent")])
+def $pptrait_new_deferred(P, pcpath, name) = false -- otherwise
+def $ppnew_class_name(P, pcpath, name) = P -- if $pptrait_new_deferred(P, pcpath, name)
+def $trait_default_new_site(S, porigin) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent")]
+  -- if S.CURRENT = (pcallcontext)
+  -- if $trait_imported_origin(pcallcontext.FUNCTION)
+  -- if $parameter_default_constructor(S, NName (BYTES text) metadata_name, phpType7*, metadata)
+  -- if $call_current_valid(S)
+def $trait_default_new_site(S, porigin) = false -- otherwise
+def $trait_default_new_name(S, porigin) = (pclassdesc.NAME)
+  -- if $trait_default_new_site(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+  -- if $ptlc($base64(text)) = $ptascii("self")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+def $trait_default_new_name(S, porigin) = pclassdesc.PARENT
+  -- if $trait_default_new_site(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+def $trait_default_new_name(S, porigin) = eps -- otherwise
+rule PhpStep/trait-default-new-parent-missing: S ~> $throw_scalar(S, "Error", $ptascii("Cannot access \"parent\" when current class scope has no parent"), $runtime_line(S, eps, NExprNew name (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $trait_default_new_site(S, porigin)
+  -- if $trait_default_new_name(S, porigin) = eps
+
 ;; Adaptations are recovered from authenticated source and its resolved names.
 def $trait_name(pcode, pcpath) = ptbytes -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
 def $trait_names(pcode, pcpath, n, eps) = eps
