@@ -487,10 +487,20 @@ def main():
                                ''.join('  -- if ' + item + '\n' for item in checks) +
                                '\ndec $main() : bool\ndef $main() = ' + ('true' if args.mode == 'prepare' else '$body()') + '\n')
             (directory / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
-            row = {'id': name, 'assertions': len(checks), 'evaluated': args.mode == 'check'}
+            runtime_mode = 'SL' if name in ['file-public', 'file-history-retirement'] else 'AL'
+            row = {'id': name, 'assertions': len(checks), 'evaluated': args.mode == 'check',
+                   'runtime_mode': runtime_mode}
             report['records'].append(row)
             if args.mode != 'fixtures':
-                source.driver.numeric(fixture, directory)
+                if runtime_mode == 'AL':
+                    source.driver.numeric(fixture, directory)
+                else:
+                    modules = json.loads((ROOT / 'spec/semantics/modules.json').read_text())
+                    result = source.driver.process(
+                        [str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
+                         *[str(ROOT / module) for module in modules], str(fixture)],
+                        directory / 'numeric', 300, ROOT)
+                    assert result.returncode == 0 and result.stdout == b'true\n' and not result.stderr
             report['assertions'] += len(checks) if args.mode == 'check' else 0
             row['passed'] = True
             print(name, args.mode, 'pass', flush=True)
