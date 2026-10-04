@@ -144,5 +144,6 @@ def $file_trace_phase(FILE_WARNING_STREAM n_path* n_stream*) = true
 def $file_trace_phase(FILE_WARNING_OPEN n_path*) = true
 def $file_trace_frame(S, pfilecontext) = {FILE pfilecontext.CALLER, LINE $file_site_line(S, pfilecontext.SITE), FUNCTION $file_keyword(pfilecontext.KIND), CLASS eps, TYPE eps, ARGS eps, HASARGS false}
   -- if $file_warning_phase(pfilecontext.PHASE)
-def $source_trace_merge(S, pevalcontext :: pevalcontext_tail*, pfilecontext :: pfilecontext_tail*) = [$file_trace_frame(S, pfilecontext)] ++ $source_trace_merge(S, pevalcontext :: pevalcontext_tail*, pfilecontext_tail*)
+def $source_trace_merge_before(S, pevalcontext :: pevalcontext_tail*, pfilecontext :: pfilecontext_tail*, preqbytes?) = [ptraceframe] ++ $source_trace_merge_before(S, pevalcontext :: pevalcontext_tail*, pfilecontext_tail*, $source_trace_file([ptraceframe], preqbytes?))
   -- if $file_warning_phase(pfilecontext.PHASE)
+  -- if ptraceframe = $file_trace_frame_before(S, pfilecontext, preqbytes?)
