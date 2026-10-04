@@ -33,6 +33,20 @@ def $trait_recording(F, pcpath) = true
   -- if $trait_fold_scope(F, pcpath)
 def $trait_recording(F, pcpath) = false -- otherwise
 
+;; AST evaluation restores its parent's line after each child. Bare constant
+;; roots retain the executing declaration line used by zval constant lookup.
+dec $trait_record_root_line(pfshape, int, int) : int
+def $trait_record_root_line(PFNAME name, z_source, z) = z
+def $trait_record_root_line(pfshape, z_source, z) = z_source -- otherwise
+def $pffold_line(F, pcpath, expression, z) = $trait_record_root_line($pfshape(expression), $expression_line(expression), z)
+  -- if $trait_recording(F, pcpath)
+  -- if F.RECORD = (pfrecorder)
+  -- if pfrecorder.ROOT = PORIGIN F.SOURCE.ID pcpath
+def $pffold_line(F, pcpath, expression, z) = $expression_line(expression)
+  -- if $trait_recording(F, pcpath)
+  -- if F.RECORD = (pfrecorder)
+  -- if pfrecorder.ROOT =/= PORIGIN F.SOURCE.ID pcpath
+
 dec $trait_record_name(pfstate, pcpath, ptbytes, ptbytes?, int) : pfstate
 def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = $pfremember(F[.RECORDED = F.RECORDED ++ [{SITE PORIGIN F.SOURCE.ID pcpath, LEVEL 8192, MESSAGE $deprecated_constant_message(), LINE z}]], pcpath, (PINT 2048), z)
   -- if F.EXTERNAL = (S_external)

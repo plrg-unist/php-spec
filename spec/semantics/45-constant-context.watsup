@@ -152,7 +152,9 @@ def $pfshape(expression) = PFOTHER
 
 dec $pfprepare(pfstate, pcpath, expression, plenv, int) : pfstate
 dec $pffold(pfstate, pcpath, expression, int) : pfstate
+dec $pffold_line(pfstate, pcpath, expression, int) : int
 dec $pfdispatch(pfstate, pcpath, pfshape, int) : pfstate
+def $pffold_line(F, pcpath, expression, z) = z -- otherwise
 def $pfprepare(F, pcpath, expression, plenv, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
 def $pfprepare(F, pcpath, expression, plenv, z) = $pffold(F[.ENV = plenv], pcpath, expression, z)
@@ -164,7 +166,7 @@ def $pfprepare(F, pcpath, expression, plenv, z) = $pfunsupported(F, "invalid con
   -- otherwise
 def $pffold(F, pcpath, expression, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pffold(F, pcpath, expression, z) = $pfclass_finish($pftracked($pfcontextualize(F, pcpath), pcpath, expression, z), pcpath, expression)
+def $pffold(F, pcpath, expression, z) = $pfclass_finish($pftracked($pfcontextualize(F, pcpath), pcpath, expression, $pffold_line(F, pcpath, expression, z)), pcpath, expression)
   -- if F.MEMORY.COMPLETION = NORMAL
 
 def $pftracked(F, pcpath, expression, z) = F
