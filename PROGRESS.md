@@ -32,7 +32,8 @@ preserves original failures and the refuted native concat prediction. Static
 Closure/FCC identity, owner/called scope, clone cells and compile-entry caches
 remain covered by their earlier checks. On actual reporting/214 composition, a
 Stringable receive callback invokes the rebound B default before original A and
-retains cached identity (`B:A:same`). Wider callable initializer contexts,
+retains cached identity (`B:A:same`). Released216 backing authorization composes
+without changing the named-class/default-cache paths. Wider callable initializer contexts,
 builtin FCC targets, uncertified object transfers, unretained update selectors and
 references into incomplete tables remain Unsupported. Modifier admission,
 attributes and broader consumers stay open; the runtime is reused.
