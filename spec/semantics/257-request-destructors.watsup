@@ -1,6 +1,15 @@
 ;; Request stage2 follows the shutdown queue. Zend store handles are separate
 ;; from semantic object identities and reuse the most recently freed hole.
 
+dec $destructor_global_direct(pstate, preqbytes) : bool
+dec $destructor_uncalled_node(pstate, pnode) : bool
+dec $destructor_leaf_valid(pstate, pdestructorcall) : bool
+dec $destructor_releases_valid(pstate, pdestructionrelease*) : bool
+dec $destructor_calls_valid(pstate, pdestructorcall*) : bool
+dec $destructor_frames_valid(pstate, pdestructionframe*) : bool
+dec $destructor_frame_staged(pstate) : bool
+dec $destructor_pending_valid(pstate, nat?) : bool
+dec $destructor_return_operand_valid(pstate, poperand) : bool
 dec $destruction_store_new(pstate) : pstate
 dec $destruction_store_drop(pstate, pnode*) : pstate
 dec $destruction_node_delete(pnode*, pnode) : pnode*
@@ -199,7 +208,6 @@ rule PhpStep/destructor-global-skip: S ~> S[.DESTRUCTION.NAMES = preqbytes*][.DE
   -- if $call_task_valid(S, DESTRUCTOR_GLOBALS)
   -- if S.DESTRUCTION.NAMES = preqbytes :: preqbytes*
   -- if ~$destructor_global_direct(S, preqbytes)
-dec $destructor_global_direct(pstate, preqbytes) : bool
 def $destructor_global_direct(S, preqbytes) = true
   -- if $lookup(S.ENV, preqbytes) = (n)
   -- if ~(n <- S.REFCELLS)
@@ -302,7 +310,6 @@ rule PhpStep/destructor-release-free: S ~> $destructor_free(S_next, pnode, pdest
   -- if S_next = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if $heap_owners($heap_graph(S_next), pnode) = 0
   -- if ~$destructor_uncalled_node(S_next, pnode)
-dec $destructor_uncalled_node(pstate, pnode) : bool
 def $destructor_uncalled_node(S, HOBJECT n) = (~(n <- S.DESTRUCTION.CALLED) /\ $destructor_method(S, n) =/= eps)
 def $destructor_uncalled_node(S, pnode) = false -- otherwise
 def $destructor_free(S, pnode, pdestructionrelease) = $destructor_release_replace(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, pnode)], pdestructionrelease[.JOBS = $destruction_values($node_children(S, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionrelease.JOBS])
@@ -322,7 +329,6 @@ def $destructor_call_live(S, pdestructorcall) = true
   -- if ~pdestructorcall.STORE \/ (S.DESTRUCTION.PHASE = DESTRUCTION_STORE /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps /\ pdestructorcall.RELEASE = eps /\ S.DESTRUCTION.INDEX = $(S.DESTRUCTION.HANDLES[pdestructorcall.OBJECT] + 1))
   -- if pdestructorcall.STORE \/ $destructor_leaf_valid(S, pdestructorcall)
 def $destructor_call_live(S, pdestructorcall) = false -- otherwise
-dec $destructor_leaf_valid(pstate, pdestructorcall) : bool
 def $destructor_leaf_valid(S, pdestructorcall) = true
   -- if pdestructorcall.RELEASE = (pdestructionrelease)
   -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)) :: pdestructionjob*
@@ -483,8 +489,6 @@ def $destruction_state_valid(S) = true
   -- if $destructor_calls_valid(S, S.DESTRUCTION.CALLS)
   -- if $destructor_frames_valid(S, S.DESTRUCTION.FRAMES)
 def $destruction_state_valid(S) = false -- otherwise
-dec $destructor_releases_valid(pstate, pdestructionrelease*) : bool
-dec $destructor_calls_valid(pstate, pdestructorcall*) : bool
 def $destructor_releases_valid(S, eps) = true
 def $destructor_releases_valid(S, pdestructionrelease :: pdestructionrelease*) = ($destructor_release_live(S, pdestructionrelease) /\ $destructor_releases_valid(S, pdestructionrelease*))
 def $destructor_calls_valid(S, eps) = true
@@ -528,7 +532,6 @@ def $frame_release(S, S_restored) = $destruction_store_new($destructor_frame_cle
   -- if S_new = $destruction_store_new($destructor_frame_cleanup(S_restored[.DESTRUCTION.CALLED = $destructor_frame_cleanup(S).DESTRUCTION.CALLED]))
   -- if pnode_live* = $heap_prune($heap_graph(S_new)).NODES
   -- if $destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
-dec $destructor_frame_staged(pstate) : bool
 def $destructor_frame_staged(S) = ($destructor_active(S) /\ S.COMPLETION = NORMAL /\ (S.TODO = eps \/ $destructor_leaving_exception(S.TODO) =/= eps) /\ S.CURRENT =/= eps /\ $destructor_frame_nodes(S) =/= eps)
 ;; The explicit slots cover CVs/context; unrelated completed temporaries are
 ;; pruned separately. Exclude handles already freed through those slots.
@@ -545,10 +548,8 @@ def $throw_frame_resume(S, n) = S
 def $throw_frame_resume(S, n) = S[.TODO = (THROW_SEARCH n) :: S.TODO][.RESULT = KNOWN PNULL][.HELD = eps] -- otherwise
 
 def $destructor_frame_valid(S, pdestructionframe) = ($destructor_active(S) /\ pdestructionframe <- S.DESTRUCTION.FRAMES /\ $destructor_pending_valid(S, pdestructionframe.PENDING) /\ S.CURRENT = pdestructionframe.CALLER /\ S.ORIGIN = pdestructionframe.ORIGIN /\ S.CONSTCONTEXT = pdestructionframe.CONSTCONTEXT /\ $destructor_return_operand_valid(S, pdestructionframe.VALUE))
-dec $destructor_pending_valid(pstate, nat?) : bool
 def $destructor_pending_valid(S, eps) = true
 def $destructor_pending_valid(S, (n)) = $throwable_member(S, n)
-dec $destructor_return_operand_valid(pstate, poperand) : bool
 def $destructor_return_operand_valid(S, poperand) = ($finally_return_operand_valid(S, poperand) /\ $heap_subset($operand_nodes(poperand), S.ALLOCATIONS))
 def $call_task_valid(S, DESTRUCTOR_FRAME_EXIT pdestructionframe) = $destructor_frame_valid(S, pdestructionframe)
 def $task_nodes(DESTRUCTOR_FRAME_EXIT pdestructionframe) = $instance_roots(pdestructionframe.PENDING) ++ $operand_nodes(pdestructionframe.VALUE)
@@ -568,7 +569,6 @@ def $destructor_chain_pending(S, pdestructorcall) = $throwable_previous(S, n, n_
   -- if pdestructorcall.PENDING = (n_old)
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
 def $destructor_chain_pending(S, pdestructorcall) = S -- otherwise
-dec $destructor_frames_valid(pstate, pdestructionframe*) : bool
 def $destructor_frames_valid(S, eps) = true
 def $destructor_frames_valid(S, pdestructionframe :: pdestructionframe*) = ($destructor_pending_valid(S, pdestructionframe.PENDING) /\ $destructor_return_operand_valid(S, pdestructionframe.VALUE) /\ $function_at($all_functions(S), pdestructionframe.FUNCTION) =/= eps /\ $destructor_frames_valid(S, pdestructionframe*))
 
