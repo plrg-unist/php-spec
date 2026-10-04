@@ -1,5 +1,5 @@
 {
-  "status": "independently accepted bounded private slice; current composition pending",
+  "status": "independently accepted bounded reception and actual scoped/diagnostic composition; constructor and anonymous keyword defaults remain required",
   "implementation": "ff7c2bad40f06cb201d58ff5c638289c6894b957",
   "fixture_budget_fix": "bd535ba859ce7fe6120fcd43ba7bbcd2c15b3c7b",
   "maintained_source_publication": "747a6f8d9",
@@ -64,6 +64,41 @@
     "independent_review": {
       "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-review14/semantic-review.json",
       "sha256": "fe7affaaf26ae77c602d76365f1186b5e4f6262df6509734896f430b9536a74b"
+    },
+    "current_composition3": {
+      "revision": "83c80347735ccc86fe376b19107f7cd101f33f75",
+      "accepted_base": "3919ae4c97846f25c9c267b9b05388a856e3e4f2",
+      "agreements": 3,
+      "selected": [
+        "captured-private-variadic",
+        "rebound-default-diagnostic",
+        "default-active-diagnostic"
+      ],
+      "behavior": "Retired private capture receives positional/named variadics; genuine NEW-self scratch reenters rebound lexical defaults after named preflight diagnostic; active NEW argument default retains diagnostic facts through authentic handler return.",
+      "raw": {
+        "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-current-dev14/variadic-default-composition14-sources-8shids91/report.json",
+        "sha256": "4ae695c91b569c36906ed8a58226bed59c9cb2fc3dd5221e50758dcb9982f151"
+      },
+      "outer": {
+        "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-current-dev14/composition3/source-result.json",
+        "sha256": "0aaa88da1029dd6b48a97866048ad6ba1b92acd02ef42180da5a8c6d602ee604"
+      },
+      "release": {
+        "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-current-dev14/composition3/slot5-release.json",
+        "sha256": "9097b968aa98d30d067d786be2e709df753a5d3b77ec76f473c05ec4f4754d65"
+      },
+      "take": {
+        "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-current-dev14/composition3/take.json",
+        "sha256": "8d8f2972f3511aeae1d34cb95b7df1ef1e2d3466529533baa7889e644d300595"
+      },
+      "command": [
+        "python3",
+        "/home/user/workspace/php-spec/.tools/property-variadic-default-current-dev14/run-independent-variadic-default-sources.py",
+        "--take",
+        "/home/user/workspace/php-spec/.tools/property-variadic-default-current-dev14/composition3/take.json"
+      ],
+      "result": "PASS; normal0, exact complete stdout, empty native/model/semantic stderr, null reason/diagnostic, stable inputs, no workers; independent full-tuple review accepted.",
+      "limits": "Existing source30/90, application60, steps100000, outer420, jobs1; profile/runtime/environment above unchanged. No old accepted source/state gates repeated."
     }
   },
   "reproduction": {
@@ -158,7 +193,7 @@
     "budget_projection": "/home/user/workspace/php-spec/.tools/property-variadic-default-dev14/phase0-original-projection",
     "disposition": "Generic method default NEW-self resolution repaired; first real state fixture skipped every BUDGET receive checkpoint and was corrected only in the phase0 probe. Both outer failures remain FAIL."
   },
-  "publication": "Four maintained counterexample sources and expected bytes exactly match independently executed originals. Helper/runtime unchanged; fixture publication adds no execution credit. Metadata changes require no semantic rerun.",
+  "publication": "Four focused regressions and three actual-composition sources/expected bytes exactly match executed originals. Helper/runtime unchanged; publication adds no execution credit. Metadata changes require no semantic rerun.",
   "remaining": [
     "Direct named-hole lists are checked against authentic source shape. Dynamic unpack/wrapper holes are checked structurally (sorted/range/genuine NParam) and do not yet have equivalent source provenance checks.",
     "Both direct and inherited constructor-default dispatch remain explicit Unsupported and required next core work.",

@@ -32,6 +32,9 @@ CASES['default-named-new'] = b'<?php class S{function __toString(){echo "T|";ret
 CASES['default-object-truth'] = b'<?php class S{function __toString(){echo "T",func_num_args(),"|";return "s";}}class U{function __construct(){echo "BAD";}}function f(string $s=(new S)?:new U){echo "F",func_num_args(),"|",$s,";";}function g(string $s=(new S)??new U){echo "G",func_num_args(),"|",$s;}f();g();'
 CASES['inherited-parent-default'] = b'<?php class A{function __toString(){return static::class;}}class B extends A{static function f(string $s=new parent){echo $s;}}class C extends B{}C::f();\n'
 CASES['named-trigger-handler-holes'] = b'<?php function handler($a,$b,$c,$d){echo "H",func_num_args(),"|",$b,"|",$a===E_USER_NOTICE?"N":"BAD";return true;}set_error_handler("handler");trigger_error(message:"x");echo "|after";\n'
+CASES['captured-private-variadic'] = b'<?php class S{function __toString(){echo "T",func_num_args(),"|";return "s";}}class C{private static function take(string ...$xs){echo "F",func_num_args(),"|",$xs[0],"|",$xs["z"];}public static function make(){return[C::class,"take"](...);}}$f=C::make();$f(new S,z:new S);\n'
+CASES['rebound-default-diagnostic'] = b'<?php function handler($a,$b,$c,$d){echo $a===E_DEPRECATED?"D":"BAD",func_num_args(),"|";return true;}set_error_handler("handler");class A{private static function take(string &$s=new self,int $n=E_STRICT,string $label="L"){echo "F",func_num_args(),"|",$s,"|",$n,"|",$label;}public static function maker(){return[A::class,"take"](...);}function __toString(){$f=static function($n=self::class){return $n;};$g=$f->bindTo(null,B::class);echo $g(),"|",$f(),"|",func_num_args(),"|";return "s";}}class B extends A{}$f=A::maker();$f(label:"x");\n'
+CASES['default-active-diagnostic'] = b'<?php\nclass DiagnosticDefault {\n    function __toString() { echo "S|"; return "s"; }\n    static function receive(string $value = new self(E_STRICT)) { echo $value; }\n}\nfunction defaultDiagnosticHandler($level, $message, $file, $line) {\n    echo $level === E_DEPRECATED ? "D" : "BAD", func_num_args(), "|";\n    return true;\n}\nset_error_handler("defaultDiagnosticHandler");\nDiagnosticDefault::receive();\n'
 EXPECTED = {
     'positional-order': b'a0|b0|F2|a|b|a|b',
     'mixed-named-order': b'p0|z0|a0|F2|f|p|z|a|p',
@@ -50,6 +53,10 @@ EXPECTED['default-named-new'] = b'T|F|s'
 EXPECTED['default-object-truth'] = b'T0|F0|s;T0|G0|s'
 EXPECTED['inherited-parent-default'] = b'A'
 EXPECTED['named-trigger-handler-holes'] = b'H4|x|N|after'
+
+EXPECTED['captured-private-variadic'] = b'T0|T0|F1|s|s'
+EXPECTED['rebound-default-diagnostic'] = b'D4|B|A|0|F3|s|2048|x'
+EXPECTED['default-active-diagnostic'] = b'D4|S|s'
 
 
 def expected_stdout(name, path):

@@ -65,7 +65,9 @@ Default objects remain fresh and uncached; object truth selects constant branche
 The [variadic/default ledger](../../coverage/semantics/variadic-default-string-review.json)
 keeps the earlier six and repaired six source agreements, four counterexamples,
 three independent sources and 336 source-reached state conditions at their actual
-cutoffs. Direct named-hole metadata derives from source; unpacked/wrapped holes
+cutoffs. Three separately tested current-composition sources cover retired private
+captures and default/lexical/diagnostic callback nesting. Direct named-hole metadata
+derives from source; unpacked/wrapped holes
 retain structural checks and their existing dynamic provenance limitation.
 Direct/inherited constructor-default dispatch, rebound anonymous keyword NEW
 defaults and broader constrained consumers remain required core work.

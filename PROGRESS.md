@@ -51,7 +51,9 @@ captured reference cells and fresh constructor-free default objects. Method
 follow the constant AST evaluator. Genuine defaults cannot mint supplied backing
 authority. The [ledger](coverage/semantics/variadic-default-string-review.json)
 keeps source6+6, focused4, independent3 and meaningful336 at separate cutoffs,
-including original NEW-self and fixture-budget failures. Direct holes derive from
+including original NEW-self and fixture-budget failures. Three new source witnesses
+on actual scoped/diagnostic composition preserve retired private capture, rebound
+lexical defaults and active NEW argument facts through handler return. Direct holes derive from
 source; unpack/wrapper holes remain structurally checked. Default constructors,
 rebound anonymous keyword NEW and broader constrained conversions remain open.
 
