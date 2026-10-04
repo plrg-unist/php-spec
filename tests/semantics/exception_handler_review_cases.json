@@ -169,5 +169,32 @@
     "stderr": "Fatal error: Uncaught Exception: inner in {file}:2\nStack trace:\n#0 [internal function]: {closure:{file}:2}(Object(Exception))\n#1 {main}\n  thrown in {file} on line 2\n",
     "exit": 255,
     "status": "php_error"
+  },
+  {
+    "id": "raw-getter-cow",
+    "source": "<?php\nclass C{static function a($e){echo \"A:\";}static function b($e){echo \"BAD\";}}set_exception_handler([\"C\",\"a\"]);$got=get_exception_handler();$got[1]=\"b\";echo get_exception_handler()[1],\";\";throw new Exception(\"outer\");\n",
+    "source_sha256": "56b0e25b137ecd63b8a9c1108b33a2f5e7bf3f398a1ea0c41e8675728c413485",
+    "stdout": "a;A:",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "saved-caller-scope",
+    "source": "<?php\nfunction outside(){try{set_exception_handler(\"C::h\");echo \"BAD\";}catch(TypeError $e){echo \"T;\";}}class C{static function reg(){set_exception_handler(self::h(...));}private static function h($e){outside();echo set_exception_handler(\"C::h\")===null?\"scope;\":\"BAD;\";echo $e->getMessage();}}C::reg();throw new Exception(\"outer\");\n",
+    "source_sha256": "8b69e58f37e1b4f793f30ef9c5fced0411afa0675cb9af76fd1d8eafb1f75bb0",
+    "stdout": "T;scope;outer",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "error-object-single",
+    "source": "<?php\n$original=new Error(\"error\");function h(Throwable $e){global $original;echo $e===$original?\"same;\":\"BAD;\";echo $e->getMessage(),\":\",func_num_args();}set_exception_handler(\"h\");throw $original;\n",
+    "source_sha256": "df46dbd8649b19cde3f6e9bc410fea25ddc86e37d76787a80664d7e053ddca6f",
+    "stdout": "same;error:1",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
