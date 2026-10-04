@@ -15,6 +15,9 @@ errors remain deferred. Source18 normal/4 compiler and reached cold57/recursive4
 plus corrected eval53 pass at91dc. Actual23c/264/257 composition at9b8 passes
 private self/static and current identity after null-binding resets called scope.
 Original preparation/eval-fixture failures remain in the [ledger](coverage/semantics/named-keyword-new-review.json).
+Cached constant METHODs now admit compiled/named keyword NEW through exact265
+receipt authority. One new source and38 reached premises pass at0da3, including
+unrelated lexical/called scope and history after plain-clone retirement.
 Autoload and complete core remain open; returns stay paused.
 
 Trait-constant callables265 retain the first shared AST method/function target,
@@ -27,8 +30,8 @@ maker retirement. Successful constant caches own their values; history owns none
 Three source agreements and58+54 AL premises pass at4e2d; the unchanged122-premise
 constructor guard passes SL at733 in27s under the same120s cap. AL timeouts remain
 zero-credit in the [default ledger](coverage/semantics/deferred-static-defaults-review.json).
-Compiled keyword NEW under the cached constant METHOD is the immediate remaining
-consumer; wider callable/default behavior and complete core stay open.
+Compiled/named keyword NEW uses that exact cached METHOD authority through267
+above; wider callable/default behavior and complete core stay open.
 
 Non-object casts261 now populate stdClass scalars/arrays, share all-string tables
 through genuine COW and fast clone, and preserve numeric round trips, alias type

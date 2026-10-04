@@ -477,7 +477,9 @@ Shared trait-constant callable targets retain their first lookup while later
 method imports use fresh called classes and named/method receipts use current
 publication prefixes. Three new source
 agreements and112 AL/122 SL premises check partial failure, copied children and
-actual constant-cache ownership; compiled keyword NEW remains a required consumer.
+actual constant-cache ownership. Compiled/named keyword NEW now retains exact
+constant METHOD receipt authority through plain-clone retirement; one source and
+38 reached premises retain their separate [cut](coverage/semantics/named-keyword-new-review.json).
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
