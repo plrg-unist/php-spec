@@ -412,6 +412,7 @@ def $constant_callable_flow_at(S, porigin, porigin_owner, pvalueclass, n_prefix,
 def $constant_callable_array_source(NExprArray (SEQUENCE phpType13*) metadata) = true
 def $constant_callable_array_source(pcnode) = false -- otherwise
 def $constant_callable_alias_source(NExprClassConstFetch phpType19 phpType20 metadata) = true
+  -- if ~$pfclassname_member(phpType20)
 def $constant_callable_alias_source(pcnode) = false -- otherwise
 def $constant_callable_alias_class(S, pclassconstantdesc) = $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER)
   -- if pclassconstantdesc.FOLDED
@@ -455,6 +456,7 @@ def $constant_callable_scalar_node(S, porigin, porigin_owner, n_prefix, porigin_
 
 def $constant_callable_alias(S, PORIGIN n pcpath, porigin_owner, n_prefix) = (pclassconstantdesc)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprClassConstFetch phpType19 phpType20 metadata)
+  -- if ~$pfclassname_member(phpType20)
   -- if $constant_callable_class_name(S, PORIGIN n pcpath, porigin_owner, phpType19) = (ptbytes_class)
   -- if $constant_callable_method_name(phpType20) = (ptbytes_name)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_class)

@@ -52,6 +52,7 @@ dec $ppproperty_items(ppstate, pcpath, nat, int, phpType18, phpType57*, ppropert
 dec $ppproperty_one(ppstate, pcpath, int, phpType18, phpType57, ppropertydesc*, pchheader, int) : ppropertywork
 dec $ppproperty_typed(ppstate, pcpath, int, phpType5, ptbytes, ptresult, ppropertydesc*, pchheader, int) : ppropertywork
 dec $ppproperty_default(ppstate, pcpath, int, phpType5, ptbytes, ptbranch*, ppropertydesc*, pchheader, int) : ppropertywork
+dec $ppproperty_default_prepare(ppstate, pcpath, expression, pchheader, ptbytes, int) : ppstate
 dec $ppproperty_finish(ppstate, pcpath, int, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, int) : ppropertywork
 dec $ppproperty_at(ppropertydesc*, ptbytes) : bool
 dec $ppproperty_diagnostics(ppstate, ptdiagnostic*) : ppstate
@@ -122,29 +123,33 @@ def $ppproperty_at(ppropertydesc :: ppropertydesc_tail*, ptbytes) = $ppproperty_
 def $ppproperty_default(P, pcpath, flags, ABSENT, ptbytes, eps, ppropertydesc*, pchheader, z) = $ppproperty_finish(P, pcpath, flags, ptbytes, eps, PROP_NULL, ppropertydesc*, pchheader, z)
 def $ppproperty_default(P, pcpath, flags, ABSENT, ptbytes, ptbranch :: ptbranch_tail*, ppropertydesc*, pchheader, z) = $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch :: ptbranch_tail*, PROP_UNINITIALIZED, ppropertydesc*, pchheader, z)
 def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = PPROPERTIES P_default ppropertydesc*
-  -- if P_default = $ppdefault_prepare(P[.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath ++ [PCFIELD 1], expression)
+  -- if P_default = $ppproperty_default_prepare(P, pcpath ++ [PCFIELD 1], expression, pchheader, ptbytes, z)
   -- if P_default.COMPLETION =/= PPCNORMAL
 def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = $ppproperty_finish(P_default[.FOLD = P_default.FOLD[.DEFAULT = false][.CONSTANT = false]], pcpath, flags, ptbytes, ptbranch*, PROP_STORED (PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 1])), ppropertydesc*, pchheader, z)
-  -- if P_default = $ppdefault_prepare(P[.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath ++ [PCFIELD 1], expression)
+  -- if P_default = $ppproperty_default_prepare(P, pcpath ++ [PCFIELD 1], expression, pchheader, ptbytes, z)
   -- if P_default.COMPLETION = PPCNORMAL
   -- if P_default.FOLD.VALUE = (pvalue)
   -- if $ppproperty_value_valid(ptbranch*, pvalue)
   -- if $ppdefault_descriptor(P_default, pcpath ++ [PCFIELD 1]) = PDSTORED
 def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P_default, $ppproperty_default_error(pchheader, ptbytes, ptbranch*, pvalue), $nabs(z))) ppropertydesc*
-  -- if P_default = $ppdefault_prepare(P[.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath ++ [PCFIELD 1], expression)
+  -- if P_default = $ppproperty_default_prepare(P, pcpath ++ [PCFIELD 1], expression, pchheader, ptbytes, z)
   -- if P_default.COMPLETION = PPCNORMAL
   -- if P_default.FOLD.VALUE = (pvalue)
   -- if ~$ppproperty_value_valid(ptbranch*, pvalue)
 def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P_default, "deferred property default")) ppropertydesc*
-  -- if P_default = $ppdefault_prepare(P[.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath ++ [PCFIELD 1], expression)
+  -- if P_default = $ppproperty_default_prepare(P, pcpath ++ [PCFIELD 1], expression, pchheader, ptbytes, z)
   -- if P_default.COMPLETION = PPCNORMAL
   -- if P_default.FOLD.VALUE = eps
 def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P_default, "deferred property default")) ppropertydesc*
-  -- if P_default = $ppdefault_prepare(P[.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath ++ [PCFIELD 1], expression)
+  -- if P_default = $ppproperty_default_prepare(P, pcpath ++ [PCFIELD 1], expression, pchheader, ptbytes, z)
   -- if P_default.COMPLETION = PPCNORMAL
   -- if P_default.FOLD.VALUE = (pvalue)
   -- if $ppproperty_value_valid(ptbranch*, pvalue)
   -- if $ppdefault_descriptor(P_default, pcpath ++ [PCFIELD 1]) = PDDEFERRED
+
+def $ppproperty_default_prepare(P, pcpath, expression, pchheader, ptbytes, z) = P_next[.CLASSCONTEXT = P.CLASSCONTEXT][.FOLD = P_next.FOLD[.CLASSCONTEXT = P.FOLD.CLASSCONTEXT]]
+  -- if ptcontext = $ppproperty_context(P, pchheader, ptbytes, z)
+  -- if P_next = $ppdefault_prepare(P[.CLASSCONTEXT = (ptcontext)][.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true][.CLASSCONTEXT = (ptcontext)]], pcpath, expression)
 
 def $ppproperty_value_valid(eps, pvalue) = true
 def $ppproperty_value_valid(ptbranch*, pvalue) = true -- if ptbranch* =/= eps /\ $typed_exact(ptbranch*, pvalue)

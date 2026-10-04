@@ -3,6 +3,7 @@ dec $ppconstant_closure(ppstate, bool, phpType21, metadata) : ppstate
 dec $ppconstant_function_callable(ppstate, phpType19, metadata) : ppstate
 dec $ppconstant_method_callable(ppstate, phpType19, phpType20, metadata) : ppstate
 dec $ppconstant_member_validate(ppstate, pcpath, phpType20) : ppstate
+dec $ppconstant_classname(ppstate, phpType19, metadata) : ppstate
 ;; User constants compile their initializer before declaration-name checks.
 ;; Constant AST validation follows existing45 folding and its original redirects.
 dec $ppconstant_validate(ppstate, pcpath, pcnode) : ppstate
@@ -82,6 +83,9 @@ def $ppconstant_node(P, pcpath, NExprPropertyFetch expression phpType20 metadata
 def $ppconstant_node(P, pcpath, NExprNullsafePropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
 def $ppconstant_node(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppconstant_method_callable(P, phpType19, phpType20, metadata)
 def $ppconstant_node(P, pcpath, NExprClassConstFetch phpType19 phpType20 metadata) = $ppconstant_member_validate($ppconstant_class(P, pcpath ++ [PCFIELD 0], phpType19), pcpath ++ [PCFIELD 1], phpType20)
+  -- if ~$pfclassname_member(phpType20)
+def $ppconstant_node(P, pcpath, NExprClassConstFetch phpType19 phpType20 metadata) = $ppconstant_classname(P, phpType19, metadata)
+  -- if $pfclassname_member(phpType20)
 def $ppconstant_node(P, pcpath, pcnode) = $ppcheck(P, $context_error("Constant expression contains invalid operations", P.LOCATION.LINE))
   -- otherwise
 
@@ -134,3 +138,12 @@ def $ppclass_constant_initializer(P) = (ptcontext.POSITION = PTCONSTANT) -- if P
 def $ppclass_constant_initializer(P) = false -- otherwise
 def $ppconstant_member_validate(P, pcpath, NIdentifier phpType33 metadata) = P
 def $ppconstant_member_validate(P, pcpath, expression) = $ppconstant_validate(P, pcpath, expression)
+
+;; CLASS_NAME has its own admission messages, after constant branch pruning.
+def $ppconstant_classname(P, phpType19, metadata) = $ppconstant_error(P, $ptascii("(expression)::class cannot be used in constant expressions"), $nabs($source_line(metadata)))
+  -- if ~$pfclassname_fixed(phpType19)
+def $ppconstant_classname(P, phpType19, metadata) = $ppconstant_error(P, $ptascii("static::class cannot be used for compile-time class name resolution"), $nabs($source_line(metadata)))
+  -- if $pfclassname_keyword(phpType19) = $ptascii("static")
+def $ppconstant_classname(P, phpType19, metadata) = P
+  -- if $pfclassname_fixed(phpType19)
+  -- if $pfclassname_keyword(phpType19) =/= $ptascii("static")

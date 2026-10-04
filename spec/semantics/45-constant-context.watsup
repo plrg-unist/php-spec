@@ -587,10 +587,70 @@ def $pfclassdynamic(phpType19) = true
   -- if phpType19 = expression
   -- if $parser_literal(expression) = eps
 def $pfclassdynamic(phpType19) = false -- otherwise
+;; Zend CLASS_NAME does not evaluate its class operand. Fixed spelling resolves
+;; without loading a class; unknown self/parent scope remains an AST read.
+dec $pfclassname_strip(ptbytes) : ptbytes
+def $pfclassname_strip(92 :: ptbytes) = ptbytes
+def $pfclassname_strip(ptbytes) = ptbytes -- otherwise
+dec $pfclassname_keyword(phpType19) : ptbytes
+dec $pfclassname_fixed(phpType19) : bool
+dec $pfclassname_scope_known(pfstate) : bool
+dec $pfclassname_issue(pfstate, phpType19) : ptbytes?
+dec $pfclassname_value(pfstate, phpType19) : pvalue?
+dec $pfclassname_fold(pfstate, pcpath, phpType19, int) : pfstate
+def $pfclassname_keyword(name) = $ptlc(ptbytes)
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $pfclassname_keyword(expression) = $ptlc(ptbytes)
+  -- if $parser_literal(expression) = (PSTRING ptbytes)
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $pfclassname_keyword(phpType19) = eps -- otherwise
+def $pfclassname_fixed(phpType19) = true -- if phpType19 = name
+def $pfclassname_fixed(expression) = ($parser_literal(expression) =/= eps)
+def $pfclassname_fixed(phpType19) = false -- otherwise
+def $pfclassname_scope_known(F) = (~F.CLOSURE /\ (F.CLASSCONTEXT =/= eps \/ F.FUNCTION =/= eps))
+def $pfclassname_issue(F, expression) = ($ptascii("Illegal class name"))
+  -- if $parser_literal(expression) = (pvalue)
+  -- if $pfclass_scalar(pvalue)
+def $pfclassname_issue(F, expression) = ($ptascii("'\\") ++ ptbytes ++ $ptascii("' is an invalid class name"))
+  -- if $parser_literal(expression) = (PSTRING (92 :: ptbytes))
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $pfclassname_issue(F, phpType19) = ($ptascii("Cannot use \"") ++ ptbytes ++ $ptascii("\" when no class scope is active"))
+  -- if ptbytes = $pfclassname_keyword(phpType19)
+  -- if ptbytes =/= eps
+  -- if $pfclassname_scope_known(F) /\ F.CLASSCONTEXT = eps
+def $pfclassname_issue(F, phpType19) = ($ptascii("Cannot use \"parent\" when current class scope has no parent"))
+  -- if $pfclassname_keyword(phpType19) = $ptascii("parent")
+  -- if $pfclassname_scope_known(F)
+  -- if F.CLASSCONTEXT = (ptcontext)
+  -- if ptcontext.SCOPE = PTKNOWN ptbytes eps
+def $pfclassname_issue(F, phpType19) = eps -- otherwise
+def $pfclassname_value(F, phpType19) = (PSTRING ptcontext.OWNER)
+  -- if $pfclassname_keyword(phpType19) = $ptascii("self")
+  -- if $pfclassname_scope_known(F)
+  -- if F.CLASSCONTEXT = (ptcontext)
+def $pfclassname_value(F, phpType19) = (PSTRING ptbytes_parent)
+  -- if $pfclassname_keyword(phpType19) = $ptascii("parent")
+  -- if $pfclassname_scope_known(F)
+  -- if F.CLASSCONTEXT = (ptcontext)
+  -- if ptcontext.SCOPE = PTKNOWN ptbytes_owner (ptbytes_parent)
+def $pfclassname_value(F, name) = (PSTRING pnreference.RESOLVED)
+  -- if $pfclassname_keyword(name) = eps
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if $ptvalidname(ptbytes, true)
+  -- if $pnqualify(F.ENV, PLCLASS, name, ptqual, ptbytes) = PNRESOLVED pnreference
+def $pfclassname_value(F, expression) = (PSTRING $pfclassname_strip(ptbytes))
+  -- if $parser_literal(expression) = (PSTRING ptbytes)
+  -- if $pfclassname_keyword(expression) = eps
+def $pfclassname_value(F, phpType19) = eps -- otherwise
 def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = F[.VALUE = eps]
-  -- if $pfclassdynamic(phpType19) \/ ~F.CONSTANT
-def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = $pfunsupported(F, "constant class-name resolution")
-  -- if ~$pfclassdynamic(phpType19) /\ F.CONSTANT
+  -- if ~F.CONSTANT
+def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = $pfclassname_fold(F, pcpath, phpType19, z)
+  -- if F.CONSTANT
+def $pfclassname_fold(F, pcpath, phpType19, z) = F[.MEMORY = F.MEMORY[.COMPLETION = STATICBYTES ptbytes z]][.VALUE = eps]
+  -- if $pfclassname_issue(F, phpType19) = (ptbytes)
+def $pfclassname_fold(F, pcpath, phpType19, z) = $pfremember(F, pcpath, $pfclassname_value(F, phpType19), z)
+  -- if $pfclassname_issue(F, phpType19) = eps
 def $pfshape(NExprBinaryOpMod expression_1 expression_2 metadata) = PFBINARY MODULO expression_1 expression_2
 def $pfshape(NExprBinaryOpShiftLeft expression_1 expression_2 metadata) = PFBINARY SHIFTLEFT expression_1 expression_2
 def $pfshape(NExprBinaryOpShiftRight expression_1 expression_2 metadata) = PFBINARY SHIFTRIGHT expression_1 expression_2
@@ -751,3 +811,6 @@ def $pfclass_literal(NScalarString (BYTES text) metadata) = (PVSTRING b)
   -- if $source_token_start(metadata) = (z_start)
   -- if $source_token_end(metadata) = (z_end)
   -- if b = (z_end = $(z_start + 1))
+
+;; Resolved class-name strings are source-derived string results.
+def $pfclass_shape(F, pcpath, PFCLASSNAME phpType19) = (PVSTRING true)

@@ -228,6 +228,7 @@ rule PhpStep/named-preflight-cached: S ~> $named_hole_store(S, pfunction, n, pde
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = (pdefaultcache)
+  -- if ~$default_scope_dependent(S, pdefault.ORIGIN)
 rule PhpStep/named-preflight-evaluate: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin_param, LINE $default_parameter_line(S, porigin, n), FACTS eps})][.ORIGIN = (porigin_param)][.TODO = [AT pdefault.ORIGIN (EVAL expression), NAMED_DEFAULT_BIND porigin n]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
