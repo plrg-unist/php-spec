@@ -58,6 +58,9 @@ def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERINVALID ptbytes) = 
   -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
 def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERRESOLVED (API_METHOD_TARGET papiquery porigin ptbytes b_static)) = $consumer_shutdown_register(S, pconfigcall, papiquery, porigin, ptbytes, b_static)
   -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $config_error(S, pconfigcall, "Error", ptbytes)
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pconfigcall.KIND <- [INTRINSIC_SET_EXCEPTION_HANDLER, INTRINSIC_REGISTER_SHUTDOWN_FUNCTION]
 
 ;; The pending C selector no longer relies on the mutable handler stack. A
 ;; warning callback may restore or replace it before resolution completes.
