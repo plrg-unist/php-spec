@@ -1,9 +1,7 @@
 ;; Exception registration keeps the raw zval; shutdown registration retains the
 ;; selected FCC. Both execute the shared Zend API deprecation stages.
-dec $consumer_exception_source(ptask) : bool
 dec $consumer_exception_pending(pstate, pexceptioncall) : bool
 dec $consumer_exception_original(pstate, papiquery) : bool
-dec $consumer_exception_object(pcalltarget, nat) : bool
 dec $consumer_query_selected(pstate, papiquery) : papiquery
 dec $consumer_snapshot(pstate, papiquery) : parray?
 dec $consumer_snapshot_valid(papiquery, parray?) : bool

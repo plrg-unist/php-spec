@@ -1,6 +1,7 @@
 ;; Raw request registrations share Zend's callback admission and ordinary calls.
 ;; The terminal C boundary has no user caller and supplies one owned Throwable.
 dec $exception_invoke_valid(pstate, pexceptioncall) : bool
+dec $consumer_exception_object(pcalltarget, nat) : bool
 dec $exception_handler_value(pvalue?) : pvalue
 dec $exception_handler_pop(pstate) : pstate
 dec $exception_handler_restore(pstate) : pstate
