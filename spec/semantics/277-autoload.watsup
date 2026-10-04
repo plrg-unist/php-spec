@@ -283,7 +283,7 @@ def $autoload_registration_notice_valid(S, pautoloadregistration) = ($autoload_r
 def $autoload_notice() = $ptascii("spl_autoload_register(): Argument #2 ($do_throw) has been ignored, spl_autoload_register() will always throw")
 def $autoload_clear_notice() = $ptascii("spl_autoload_unregister(): Using spl_autoload_call() as a callback for spl_autoload_unregister() is deprecated, to remove all registered autoloaders, call spl_autoload_unregister() for all values returned from spl_autoload_functions()")
 def $autoload_null_message(pconfigcall, n, preqbytes_type) = $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Passing null to parameter #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(pconfigcall.KIND, n) ++ $ptascii(") of type ") ++ preqbytes_type ++ $ptascii(" is deprecated")
-rule PhpStep/autoload-register-bool: S ~> S[.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration[.INDEX = $(n + 1)][.THROW = b_throw][.PREPEND = b_prepend]) :: ptask_tail*]
+rule PhpStep/autoload-register-flag: S ~> S[.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration[.INDEX = $(n + 1)][.THROW = b_throw][.PREPEND = b_prepend]) :: ptask_tail*]
   -- if S.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration) :: ptask_tail*
   -- if $autoload_registration_receive_valid(S, pautoloadregistration)
   -- if n = pautoloadregistration.INDEX /\ $(n < 3)
@@ -291,7 +291,7 @@ rule PhpStep/autoload-register-bool: S ~> S[.TODO = (AUTO_REGISTER_RECEIVE pauto
   -- if ~$autoload_registration_null_valid(S, pautoloadregistration)
   -- if b_throw = (n = 1 /\ b) \/ (n = 2 /\ pautoloadregistration.THROW)
   -- if b_prepend = (n = 2 /\ b)
-rule PhpStep/autoload-register-bool-error: S ~> $config_error(S, pautoloadregistration.ENTRY.CALL, "TypeError", $ptascii("spl_autoload_register(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(INTRINSIC_AUTO_REGISTER, n) ++ $ptascii(") must be of type bool, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+rule PhpStep/autoload-register-flag-error: S ~> $config_error(S, pautoloadregistration.ENTRY.CALL, "TypeError", $ptascii("spl_autoload_register(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(INTRINSIC_AUTO_REGISTER, n) ++ $ptascii(") must be of type bool, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
   -- if S.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration) :: ptask_tail*
   -- if $autoload_registration_receive_valid(S, pautoloadregistration)
   -- if n = pautoloadregistration.INDEX /\ $(n < 3)
