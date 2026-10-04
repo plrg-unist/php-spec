@@ -430,8 +430,8 @@ def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_con
   -- if $global_constant_declaration_source(S.SOURCES, porigin_decl)
   -- if $declaration_entered(S.DECLARATIONS, n_unit)
   -- if $constant_declaration(S, porigin_decl) = ((preqbytes, z))
-  -- if $source_constant_lookup(S, preqbytes) =/= eps
   -- if $(n_constants <= |S.USERCONSTANTS|)
+  -- if $source_constant_lookup(S[.USERCONSTANTS = S.USERCONSTANTS[0:n_constants]], preqbytes) =/= eps
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)
   -- if $global_constant_transfer_valid(S, porigin_decl, pvalueclass, S.USERCONSTANTS[0:n_constants])
 def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, z) = false -- otherwise
