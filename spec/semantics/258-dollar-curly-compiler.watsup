@@ -1,0 +1,30 @@
+;; Legacy interpolation flags belong to the genuine encaps_var reduction.
+;; Zend emits their warning before compiling that part, at the previous line.
+dec $interpolation_legacy_kind(metadata) : int?
+def $interpolation_legacy_kind(eps) = eps
+def $interpolation_legacy_kind((MencapsVarKind int) :: metadataEntry*) = (int)
+def $interpolation_legacy_kind(metadataEntry :: metadataEntry_tail*) = $interpolation_legacy_kind(metadataEntry_tail*) -- otherwise
+
+dec $interpolation_legacy_shape(phpType30, int) : bool
+def $interpolation_legacy_shape(NExprVariable (BYTES text) metadata, 1) = true
+def $interpolation_legacy_shape(NExprArrayDimFetch (NExprVariable (BYTES text) metadata_base) expression metadata, 1) = true
+def $interpolation_legacy_shape(NExprVariable expression metadata, 2) = true
+def $interpolation_legacy_shape(phpType30, int) = false -- otherwise
+
+def $ppinterpolation_notice(P, pcpath, phpType30) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppinterpolation_notice(P, pcpath, phpType30) = P
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $interpolation_legacy_kind($pcmetadata(phpType30)) = eps
+def $ppinterpolation_notice(P, pcpath, phpType30) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC "deprecated" "dollar-curly-variable" eps P.LOCATION[.PATH = pcpath]]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $interpolation_legacy_kind($pcmetadata(phpType30)) = (1)
+  -- if $interpolation_legacy_shape(phpType30, 1)
+def $ppinterpolation_notice(P, pcpath, phpType30) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC "deprecated" "dollar-curly-expression" eps P.LOCATION[.PATH = pcpath]]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $interpolation_legacy_kind($pcmetadata(phpType30)) = (2)
+  -- if $interpolation_legacy_shape(phpType30, 2)
+def $ppinterpolation_notice(P, pcpath, phpType30) = $ppunsupported(P, "invalid dollar-curly interpolation metadata") -- otherwise
+
+def $plmessage(PLDIAGNOSTIC "deprecated" "dollar-curly-variable" eps pllocation) = $ptascii("Using ${var} in strings is deprecated, use {$var} instead")
+def $plmessage(PLDIAGNOSTIC "deprecated" "dollar-curly-expression" eps pllocation) = $ptascii("Using ${expr} (variable variables) in strings is deprecated, use {${expr}} instead")
