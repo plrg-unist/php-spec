@@ -15,6 +15,13 @@ dec $container_record(pstate, poperand, int, bool, pcontainerphase) : pcontainer
 dec $container_false(pslot) : bool
 dec $container_initialize(pstate, pcontainerwrite, bool) : pstate
 dec $container_array_new(pstate, pcontainerwrite) : pstate
+dec $container_note(pstate, pcontainerwrite, nat) : pstate
+dec $container_cell(pstate, plocation) : nat?
+dec $container_init_at(pcontainerinit*, nat) : pcontainerinit?
+dec $container_init_remove(pcontainerinit*, nat) : pcontainerinit*
+dec $container_init_row_valid(pstate, pcontainerinit) : bool
+dec $container_init_rows_valid(pstate, pcontainerinit*) : bool
+dec $container_init_transport(pstate, nat, nat) : pstate
 dec $container_store(pstate, plocation, pvalue) : pstate
 dec $container_direct_key(pvalue) : bool
 dec $container_illegal_key(pvalue) : bool
@@ -94,10 +101,10 @@ def $container_store(S, ELEMENT n pkey, pvalue) = $reference_coercion_store(S, n
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
 def $container_store(S, ELEMENT n pkey, pvalue) = S[.ARRAYS = $array_replace(S.ARRAYS, n, $array_insert(S.ARRAYS[n], pkey, DIRECT pvalue))][.RESULT = KNOWN pvalue]
   -- if ~$alias_item($entry_lookup(S.ARRAYS[n].ITEMS, pkey))
-def $container_array_new(S, pcontainerwrite) = $container_store(S_array, pcontainerwrite.PLACE, pvalue)
+def $container_array_new(S, pcontainerwrite) = $container_note($container_store(S_array, pcontainerwrite.PLACE, PARRAY n), pcontainerwrite, n)
   -- if pcontainerwrite.KIND = CONTAINER_COMPOUND
   -- if S_array = $allocate_array(S, $array_empty())
-  -- if S_array.RESULT = KNOWN pvalue
+  -- if S_array.RESULT = KNOWN (PARRAY n)
 def $container_array_new(S, pcontainerwrite) = $location_array_new(S, pcontainerwrite.PLACE, pcontainerwrite.LINE)
   -- if pcontainerwrite.KIND =/= CONTAINER_COMPOUND
 def $container_initialize(S, pcontainerwrite, b_false) = S_array
@@ -154,6 +161,11 @@ def $container_selected(S, pcontainerwrite) = $key_write_selected(S_current, pco
   -- if S_place = $container_current(S, pcontainerwrite)
   -- if S_current = $location_array(S_place, S_place.LOCATION, pcontainerwrite.LINE)
   -- if S_current.COMPLETION = NORMAL
+def $container_selected(S, pcontainerwrite) = S_current
+  -- if pcontainerwrite.KIND = CONTAINER_ASSIGN
+  -- if S_place = $container_current(S, pcontainerwrite)
+  -- if S_current = $location_array(S_place, S_place.LOCATION, pcontainerwrite.LINE)
+  -- if S_current.COMPLETION =/= NORMAL
 def $container_selected(S, pcontainerwrite) = $key_write_selected(S[.LOCATION = pcontainerwrite.PLACE][.RESULT = KNOWN (PARRAY n)], pcontainerwrite.INPUT, pcontainerwrite.LINE, pcontainerwrite.RW)
   -- if pcontainerwrite.KIND = CONTAINER_COMPOUND
   -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
@@ -252,10 +264,13 @@ def $container_throw_effect(S, pcontainerwrite, false) = S
   -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
 def $container_throw_effect(S, pcontainerwrite, true) = S_place
   -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
-  -- if pcontainerwrite.KIND =/= CONTAINER_ASSIGN
+  -- if pcontainerwrite.KIND = CONTAINER_FETCH
   -- if S_current = $container_current(S, pcontainerwrite)
   -- if $location_slot(S_current, S_current.LOCATION) = DEFINED (PARRAY n_current)
   -- if S_place = $container_throw_lookup(S_current[.RESULT = KNOWN (PARRAY n_current)], pcontainerwrite)
+def $container_throw_effect(S, pcontainerwrite, true) = $container_throw_lookup(S[.LOCATION = pcontainerwrite.PLACE][.RESULT = KNOWN (PARRAY n)], pcontainerwrite)
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+  -- if pcontainerwrite.KIND = CONTAINER_COMPOUND
 def $container_throw_effect(S, pcontainerwrite, true) = S_written
   -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
   -- if pcontainerwrite.KIND = CONTAINER_ASSIGN
@@ -322,3 +337,59 @@ def $reference_write_finish(S, pkeywriter) = $throw_scalar(S_source, "Error", $p
   -- if S_source.COMPLETION = NORMAL
 def $key_write_finish(S, pkeywriter) = $reference_write_finish(S, pkeywriter)
   -- if $reference_write_task(pkeywriter.TASK)
+
+;; DIM_OP raw initialization can bypass a reference's property type. Remember
+;; only that actual array value and source opcode. Pointer separation transports
+;; it; ordinary whole-cell stores clear it and still perform their type checks.
+def $container_cell(S, ROOT n) = (n)
+def $container_cell(S, ELEMENT n pkey) = (n_cell)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
+def $container_cell(S, plocation) = eps -- otherwise
+def $container_note(S, pcontainerwrite, n_array) = S[.CONTAINERINITS = {CELL n_cell, ARRAY n_array, SITE pcontainerwrite.WRITER.SITE, LINE pcontainerwrite.LINE} :: $container_init_remove(S.CONTAINERINITS, n_cell)]
+  -- if $container_cell(S, pcontainerwrite.PLACE) = (n_cell)
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if $propref_nonarray_source(S, ppropref.SOURCES) =/= eps
+def $container_note(S, pcontainerwrite, n_array) = S -- otherwise
+def $container_init_at(eps, n) = eps
+def $container_init_at(pcontainerinit :: pcontainerinit_tail*, n) = (pcontainerinit) -- if pcontainerinit.CELL = n
+def $container_init_at(pcontainerinit :: pcontainerinit_tail*, n) = $container_init_at(pcontainerinit_tail*, n) -- if pcontainerinit.CELL =/= n
+def $container_init_remove(eps, n) = eps
+def $container_init_remove(pcontainerinit :: pcontainerinit_tail*, n) = $container_init_remove(pcontainerinit_tail*, n) -- if pcontainerinit.CELL = n
+def $container_init_remove(pcontainerinit :: pcontainerinit_tail*, n) = pcontainerinit :: $container_init_remove(pcontainerinit_tail*, n) -- if pcontainerinit.CELL =/= n
+def $container_init_clear(S, n) = S[.CONTAINERINITS = $container_init_remove(S.CONTAINERINITS, n)]
+def $container_inits_prune(eps, pnode*) = eps
+def $container_inits_prune(pcontainerinit :: pcontainerinit_tail*, pnode*) = pcontainerinit :: $container_inits_prune(pcontainerinit_tail*, pnode*)
+  -- if (HCELL pcontainerinit.CELL) <- pnode*
+def $container_inits_prune(pcontainerinit :: pcontainerinit_tail*, pnode*) = $container_inits_prune(pcontainerinit_tail*, pnode*)
+  -- if ~((HCELL pcontainerinit.CELL) <- pnode*)
+def $container_init_row_valid(S, pcontainerinit) = true
+  -- if (HCELL pcontainerinit.CELL) <- S.ALLOCATIONS
+  -- if (HARRAY pcontainerinit.ARRAY) <- S.ALLOCATIONS
+  -- if pcontainerinit.CELL <- S.REFCELLS
+  -- if $(pcontainerinit.CELL < |S.STORE|)
+  -- if S.STORE[pcontainerinit.CELL] = DEFINED (PARRAY pcontainerinit.ARRAY)
+  -- if $origin_node(S.SOURCES, pcontainerinit.SITE) = (pcnode)
+  -- if $key_write_op(pcnode) =/= eps
+  -- if $origin_child((pcontainerinit.SITE), [PCFIELD 0]) = (porigin_target)
+  -- if $origin_node(S.SOURCES, porigin_target) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if ~$ppglobals_base(expression)
+  -- if $code_expression_at_source(S, porigin_target, [PCFIELD 1]) = (pcontainerinit.LINE)
+def $container_init_row_valid(S, pcontainerinit) = false -- otherwise
+def $container_init_rows_valid(S, eps) = true
+def $container_init_rows_valid(S, pcontainerinit :: pcontainerinit_tail*) = ($container_init_row_valid(S, pcontainerinit) /\ $container_init_at(pcontainerinit_tail*, pcontainerinit.CELL) = eps /\ $container_init_rows_valid(S, pcontainerinit_tail*))
+def $container_inits_valid(S) = $container_init_rows_valid(S, S.CONTAINERINITS)
+def $container_init_value(S, n_cell, PARRAY n_array) = true
+  -- if $container_init_at(S.CONTAINERINITS, n_cell) = (pcontainerinit)
+  -- if pcontainerinit.ARRAY = n_array
+  -- if $container_init_row_valid(S, pcontainerinit)
+def $container_init_value(S, n_cell, pvalue) = false -- otherwise
+def $container_init_transport(S, n_cell, n_array) = S_written[.CONTAINERINITS = pcontainerinit[.ARRAY = n_array] :: $container_init_remove(S_written.CONTAINERINITS, n_cell)]
+  -- if $container_init_at(S.CONTAINERINITS, n_cell) = (pcontainerinit)
+  -- if S_written = $reference_coercion_store(S, n_cell, DEFINED (PARRAY n_array))
+def $location_array_store(S, ROOT n_cell, PARRAY n_array) = $container_init_transport(S, n_cell, n_array)[.RESULT = KNOWN (PARRAY n_array)]
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $container_init_value(S, n_cell, pvalue)
+def $location_array_store(S, ELEMENT n_parent pkey, PARRAY n_array) = $container_init_transport(S, n_cell, n_array)[.RESULT = KNOWN (PARRAY n_array)]
+  -- if $entry_lookup(S.ARRAYS[n_parent].ITEMS, pkey) = (ALIAS n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $container_init_value(S, n_cell, pvalue)

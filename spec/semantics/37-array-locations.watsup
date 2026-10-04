@@ -47,6 +47,8 @@ def $location_name(S, n_name*) = S_cell[.LOCATION = ROOT S_cell.CELL]
 ;; A location borrows RESULT. The mutation caller holds live inputs explicitly
 ;; before separation counts surviving owners; container graphs stay shallow.
 dec $location_array(pstate, plocation, int) : pstate
+dec $location_array_store(pstate, plocation, pvalue) : pstate
+def $location_array_store(S, plocation, pvalue) = $location_write(S, plocation, pvalue) -- otherwise
 dec $array_auto_init_check(pstate, plocation, int) : pstate
 dec $location_array_new(pstate, plocation, int) : pstate
 def $location_array_new(S, plocation, z) = S_checked
@@ -57,7 +59,7 @@ def $location_array_new(S, plocation, z) = $location_write(S_new, plocation, pva
   -- if S_checked.COMPLETION = NORMAL
   -- if S_new = $allocate_array(S_checked, $array_empty())
   -- if S_new.RESULT = KNOWN pvalue
-def $location_array(S, plocation, z) = $location_write(S_new, plocation, pvalue)
+def $location_array(S, plocation, z) = $location_array_store(S_new, plocation, pvalue)
   -- if $location_slot(S, plocation) = DEFINED (PARRAY n)
   -- if S_new = $separate_location_array(S, n)
   -- if S_new.RESULT = KNOWN pvalue
