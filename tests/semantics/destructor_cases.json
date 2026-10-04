@@ -98,5 +98,24 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "preexisting-argc-global-order",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo $this->id,\";\";}}$p=new C(\"P\");$GLOBALS[\"argc\"]=new C(\"G\");echo \"M;\";",
+    "source_sha256": "be927d73654b176fda0ef5237cdfdda01ca77a85a6994e1e33ba65c7b3bbd7b7",
+    "stdout": "M;P;G;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "request destructor startup symbol order"
+  },
+  {
+    "id": "fresh-dynamic-global-order",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo $this->id,\";\";}}$p=new C(\"P\");$GLOBALS[\"fresh\"]=new C(\"G\");echo \"M;\";",
+    "source_sha256": "abd85ca828a742a1cc2e14ec5cdd7fb8ff07505c6d0c8495a77840b9846c4895",
+    "stdout": "M;G;P;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
