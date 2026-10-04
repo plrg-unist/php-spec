@@ -1,0 +1,122 @@
+[
+  {
+    "id": "protected-named-reference-inherited",
+    "source": "<?php class Owner{protected function __invoke(&$x,$y=2){echo __CLASS__,\"/\",static::class,\":\",func_num_args(),\":\",$y;$x=\"K\";}}class Child extends Owner{}$o=new Child;$v=\"x\";$o(y:7,x:$v);echo \"|\",$v;",
+    "source_sha256": "c8265d07ca552ad0d2cb248b38559c717ccafd84f5dcd9f98924f8fa333ceb96",
+    "expected_model": "normal",
+    "expected_stdout": "Owner/Child:2:7|K"
+  },
+  {
+    "id": "private-selected-receiver-before-argument-replacement",
+    "source": "<?php class Hidden{public int $tag=1;private function __invoke($x){echo $this->tag,$x;}}function arg(){global $o;$o=new Hidden;$o->tag=2;echo \"W\";return 3;}$o=new Hidden;$o(arg());echo \"|\",$o->tag;",
+    "source_sha256": "26250a5f747a457b6f890904238f1bc7c4e894305ffc9a488885a44760b0d8e6",
+    "expected_model": "normal",
+    "expected_stdout": "W13|2"
+  },
+  {
+    "id": "weak-nonpublic-callable-string-skips-throwing-conversion",
+    "source": "<?php class Hidden{private function __invoke($x){echo \"I\",$x;}public function __toString():string{echo \"BAD\";throw new Error(\"never\");}}function accept(callable|string $f){$f(x:7);}accept(new Hidden);",
+    "source_sha256": "4c0b35691577949b992c6d17f66f688ca869c0f767edf962bde930536c607f13",
+    "expected_model": "normal",
+    "expected_stdout": "I7"
+  },
+  {
+    "id": "strict-private-invoke-parameter-rejection",
+    "source": "<?php declare(strict_types=1);class Hidden{private function __invoke(int $x){echo \"BAD\";}}$o=new Hidden;try{$o(\"7\");}catch(TypeError $e){echo \"T\";}",
+    "source_sha256": "a4c63b7e76d6acaecfa604979957f191d278e0667ea1f6cb5325536d4880fc0d",
+    "expected_model": "normal",
+    "expected_stdout": "T"
+  },
+  {
+    "id": "private-capture-clone-shared-default-static-cells",
+    "source": "<?php class Hidden{private function __invoke($x=__CLASS__){static $n=0;echo $x,++$n;}}$o=new Hidden;$f=$o(...);$g=clone $f;$o=null;$f=null;$g();$g();$g=null;",
+    "source_sha256": "92d359bac99655ff4bd17790a89735766df30b4ed8c8aead74052461e29c4b1b",
+    "expected_model": "normal",
+    "expected_stdout": "Hidden1Hidden2"
+  },
+  {
+    "id": "explicit-protected-denied-before-argument-side-effect",
+    "source": "<?php class Hidden{protected function __invoke($x){echo \"I\",$x;}}function arg(){echo \"BAD\";return 2;}$o=new Hidden;$o(1);try{$o->__invoke(arg());}catch(Error $e){echo \"E\";}",
+    "source_sha256": "6d67d52f497c8cc78c8ed883998aa746e1de5aab83e56e4cbb5b3e088c16e038",
+    "expected_model": "normal",
+    "expected_stdout": "I1E"
+  },
+  {
+    "id": "unreached-private-class-still-publishes-warning",
+    "source": "<?php echo \"B\";if(false){class Hidden{private function __invoke(){echo \"BAD\";}}}echo \"A\";",
+    "source_sha256": "1353d70b6c447ac4b6c04b8031de838dbbd441354b671899139d5211ff446c85",
+    "expected_model": "normal",
+    "expected_stdout": "BA"
+  },
+  {
+    "id": "private-final-warning-order-before-runtime",
+    "source": "<?php class Hidden{final private function __invoke(){echo \"K\";}}$o=new Hidden;$o();",
+    "source_sha256": "fda6fbb4a3f9a6e0a8de4f18de185266131cfc46743a8dd94d0e40a935b0d38d",
+    "expected_model": "normal",
+    "expected_stdout": "K"
+  },
+  {
+    "id": "protected-abstract-invoke-child-public-implementation",
+    "source": "<?php abstract class Owner{abstract protected function __invoke($x);}class Child extends Owner{public function __invoke($x){echo __CLASS__,$x;}}$o=new Child;$o(\"K\");",
+    "source_sha256": "aa9ddd0bbe7c3d034df1873b640253f000da12b72661e8dd65efb8bd7b7cbea2",
+    "expected_model": "normal",
+    "expected_stdout": "ChildK"
+  },
+  {
+    "id": "private-object-handler-throw-keeps-replacement-and-trace",
+    "source": "<?php function replacement($a,$b,$c,$d){echo \"R\";}class Hidden{private function __invoke($a,$b,$c,$d){echo \"H\",func_num_args();set_error_handler(\"replacement\");throw new Error(\"X\");}}$o=new Hidden;set_error_handler($o);$o=null;try{trigger_error(\"w\",512);}catch(Error $e){echo $e->getTraceAsString();}trigger_error(\"again\",512);restore_error_handler();",
+    "source_sha256": "5e5233ab3c895026f44159abee34743c3a50290e189976ade265b6f22fb3b1aa",
+    "expected_model": "normal"
+  },
+  {
+    "id": "public-invoke-policy-control",
+    "source": "<?php class A{public function __invoke($x){echo \"F\",$x;return $x+1;}}$o=new A;echo \"|\",$o(2);",
+    "source_sha256": "98c23071f89341466c4ea33ebab6d9269f8e8c008959c27b4fbeb413e2c78b52",
+    "expected_model": "normal",
+    "expected_stdout": "|F23"
+  },
+  {
+    "id": "public-static-invoke-rejected",
+    "source": "<?php echo \"never\";class Invalid{public static function __invoke(){}}",
+    "source_sha256": "fa36afd0f9c97dde0ee014a99fd521f70448e6707c562e8b3a2ec3d67ee081ce",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "private-static-invoke-rejected-before-public-warning",
+    "source": "<?php echo \"never\";class Invalid{private static function __invoke(){}}",
+    "source_sha256": "53933effad9afa39d2d730aab720babc0ccddf38e2bbaca2e2148a4b09241743",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "private-final-static-invoke-keeps-earlier-final-warning",
+    "source": "<?php echo \"never\";class Invalid{final private static function __invoke(){}}",
+    "source_sha256": "82a6136baad196d910568b6764f64539d75f30f23347ea64e146e3bb646658ec",
+    "expected_model": "static_rejection"
+  },
+  {
+    "id": "nonpublic-array-method-remains-separate",
+    "source": "<?php class Hidden{private function __invoke(){echo \"K\";}public function go(){$f=[$this,\"__invoke\"];$f();}}$o=new Hidden;$o->go();",
+    "source_sha256": "21a62e8f1754a0a150c1eef723f45634f7f5dc525b6940e9b8759f549e951d3f",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "nonpublic-class-string-remains-separate",
+    "source": "<?php class Hidden{protected function __invoke(){}}$f=\"Hidden::__invoke\";$f();",
+    "source_sha256": "09b0a8b6caff75a08eeb14cb97a7a59d0d6d2d83b16c03d235594daf3d073400",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "inherited-protected-invoke-cannot-narrow-private",
+    "source": "<?php class Owner{protected function __invoke($v){}}class Child extends Owner{private function __invoke($v){}}echo \"never\";",
+    "source_sha256": "a7d97a5e713c7c101c3e0dea1fdacb2a94abdb4786039824fd2e7b78dd6a9f44",
+    "expected_model": "php_error",
+    "expected_native_stdout": ""
+  },
+  {
+    "id": "strict-user-truth-warning-private-object-receive",
+    "source": "<?php\ndeclare(strict_types=1);\nclass Owner {\n    private function __invoke(string $level, $message, $file, $line) {\n        echo \"BAD\";\n    }\n}\nclass Child extends Owner {}\n$receiver = new Child;\nset_error_handler($receiver);\n$receiver = null;\ntry {\n    if ($missing) {\n        echo \"BAD\";\n    }\n} catch (TypeError $error) {\n    echo \"R\";\n}\nrestore_error_handler();\n",
+    "source_sha256": "b9ea3ffd8f540f6d2a983c07d72bfe08cdc98f68e8acb99e9f2c895b47815b70",
+    "expected_model": "normal",
+    "expected_native_stdout": "R"
+  }
+]
