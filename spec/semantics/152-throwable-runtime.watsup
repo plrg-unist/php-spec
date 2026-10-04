@@ -115,9 +115,11 @@ dec $error_call_valid(pstate, perrorcall) : bool
 dec $error_handler_target(pstate, pvalue) : pcalltarget?
 dec $throwable_continuation(pstate, pstate) : pstate
 dec $static_string_result_task(ptask) : bool
+dec $destructor_enter_task(ptask) : bool
 def $throwable_continuation(S, S_next) = S_next[.TODO = ptask_tail*]
   -- if S.TODO = ptask :: ptask_tail*
   -- if ~$static_string_result_task(ptask)
+  -- if ~$destructor_enter_task(ptask)
   -- if S_next.FRAMES = S.FRAMES
   -- if S_next.CURRENT = S.CURRENT
 def $throwable_continuation(S, S_next) = S_next
@@ -128,6 +130,7 @@ def $throwable_continuation(S, S_next) = S_next
   -- if pframe.ORIGIN = S.ORIGIN
   -- if pframe.SILENCES = S.SILENCES
   -- if pframe.BORROWEDREAD = S.BORROWEDREAD
+  -- if pframe.OBJECTCAST = S.OBJECTCAST
   -- if pframe.CONSTCONTEXT = S.CONSTCONTEXT
 def $throwable_continuation(S, S_next) = S_next
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
@@ -140,6 +143,7 @@ def $throwable_continuation(S, S_next) = S_next
   -- if pframe.ORIGIN = S.ORIGIN
   -- if pframe.SILENCES = S.SILENCES
   -- if pframe.BORROWEDREAD = S.BORROWEDREAD
+  -- if pframe.OBJECTCAST = S.OBJECTCAST
   -- if pframe.CONSTCONTEXT = S.CONSTCONTEXT
 def $throwable_continuation(S, S_next) = S_next[.TODO = eps][.COMPLETION = UNSUPPORTED "unaudited Throwable frame transition"] -- otherwise
 def $throwable_transition(S, S_next) = $throwable_materialize($throwable_continuation(S, S_next))
@@ -199,6 +203,7 @@ rule PhpStep/throw-search-miss: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin) :: ptask_tail*
   -- if $throwable_handler(S, n, porigin) = eps
   -- if ~$finally_present(S, porigin)
+dec $eval_compile_formatter_throw_pending(pstate) : bool
 dec $shutdown_render_throw_pending(pstate) : bool
 dec $throwable_marker(ptask) : bool
 def $throwable_marker(TRY_END porigin) = true
@@ -209,11 +214,14 @@ rule PhpStep/throw-search-discard: S ~> $return_discard(S[.TODO = (THROW_SEARCH 
   -- if ~$eval_end_marker(ptask)
   -- if ~$typed_return_throw_pending(S)
   -- if ~$shutdown_render_throw_pending(S)
-rule PhpStep/throw-search-frame: S ~> S_restored[.TODO = (THROW_SEARCH n) :: S_restored.TODO][.RESULT = KNOWN PNULL][.HELD = eps]
+  -- if ~$eval_compile_formatter_throw_pending(S)
+dec $constructor_failed(pstate) : pstate
+dec $throw_frame_resume(pstate, nat) : pstate
+rule PhpStep/throw-search-frame: S ~> $throw_frame_resume(S_restored, n)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.FRAMES =/= eps
-  -- if S_restored = $restore_frame(S)
+  -- if S_restored = $restore_frame($constructor_failed(S))
 dec $exception_terminal_tail(pstate, ptask*) : bool
 dec $exception_dispatch_ready(pstate) : bool
 rule PhpStep/throw-search-uncaught: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = pthrowable.FILEORIGIN]
@@ -221,6 +229,7 @@ rule PhpStep/throw-search-uncaught: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n
   -- if $exception_terminal_tail(S, ptask_tail*)
   -- if ~$exception_dispatch_ready(S)
   -- if ~$shutdown_render_throw_pending(S)
+  -- if ~$eval_compile_formatter_throw_pending(S)
   -- if S.FRAMES = eps
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $throwable_terminal_renderable(S, n, eps)
@@ -229,6 +238,7 @@ rule PhpStep/throw-search-uncaught-source: S ~> S[.TODO = eps][.COMPLETION = UNC
   -- if $exception_terminal_tail(S, ptask_tail*)
   -- if ~$exception_dispatch_ready(S)
   -- if ~$shutdown_render_throw_pending(S)
+  -- if ~$eval_compile_formatter_throw_pending(S)
   -- if S.FRAMES = eps
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $throwable_member(S, n)
@@ -240,6 +250,7 @@ rule PhpStep/throw-search-uncaught-unrenderable: S ~> S[.TODO = eps][.COMPLETION
   -- if $exception_terminal_tail(S, ptask_tail*)
   -- if ~$exception_dispatch_ready(S)
   -- if ~$shutdown_render_throw_pending(S)
+  -- if ~$eval_compile_formatter_throw_pending(S)
   -- if S.FRAMES = eps
   -- if $throwable_member(S, n)
   -- if ~$stringable_instance(S, n)

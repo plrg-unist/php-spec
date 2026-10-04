@@ -239,6 +239,7 @@ def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, 
 def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = false -- otherwise
 
 def $declaration_new_selection(S, PORIGIN n_unit pcpath, name, porigin_called, pdeclcalls) = true
+  -- if ~$ordinary_keyword_new_site(S, PORIGIN n_unit pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))

@@ -61,6 +61,7 @@ class after ordinary, handler, Stringable or Closure makers retire. Its borrowed
 producer record pins the original target, callsite and captured scope/binding;
 selected targets and copied arguments remain the only queue owners.
 Magic/autoload/internal callback targets and existing shared error-handler
-reference-return boundaries remain visible. Destructors, GC, output buffering,
-queue release and the remaining request stages are required next work; this
+reference-return boundaries remain visible. Module257 supplies
+[request-stage destructors](SOURCE-DESTRUCTORS.md). Eager destruction, GC, output
+buffering, queue release and the remaining request stages are required next work; this
 ordered callback phase does not claim complete request cleanup or complete core.

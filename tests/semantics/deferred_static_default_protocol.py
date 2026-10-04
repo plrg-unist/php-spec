@@ -8,6 +8,7 @@ import static_types as types
 from recorded_worker import Worker
 from method_runtime import owned_members
 ENV={'PATH':'/usr/bin:/bin','LC_ALL':'C','TZ':'UTC','PYTHONDONTWRITEBYTECODE':'1','GIT_OPTIONAL_LOCKS':'0'}
+RUNNER_FLAGS={}
 SOURCES = {'partial-retry': '<?php\n'
                   'class A { const X=N; public static int $p=self::X; public static int $q=LATE; '
                   '}\n'
@@ -410,7 +411,8 @@ def run(out):
   records=prepare(out)
   for row in records:
    raw=out/row['id'];raw.mkdir()
-   command=[str(ROOT/'tests/semantics/_build/default/numeric_runner.exe'),*map(str,modules),row['fixture']]
+   flags=RUNNER_FLAGS.get(row['id'],[])
+   command=[str(ROOT/'tests/semantics/_build/default/numeric_runner.exe'),*flags,*map(str,modules),row['fixture']]
    status={'supplied_argv':command,'supplied_cwd':str(ROOT),'supplied_environment':ENV,'host_timeout_seconds':120,'observed_exit':None}
    try:
     with (raw/'stdout').open('xb') as stdout,(raw/'stderr').open('xb') as stderr:
@@ -429,7 +431,7 @@ def run(out):
     (raw/'command.json').write_text(json.dumps(status,indent=2)+'\n')
     process=None;cleaning=False
    passed=status.get('observed_exit')==0 and status.get('cleanup_exit')==0 and status.get('owned_group_after')==[] and interrupted is None and 'error' not in status and (raw/'stdout').read_bytes()==b'true\n' and (raw/'stderr').read_bytes()==b''
-   report['phases'].append({'id':row['id'],'pass':passed,'main_predicates':row['main_predicates'],'command_record':str(raw/'command.json'),'stdout_sha256':sha(raw/'stdout'),'stderr_sha256':sha(raw/'stderr')})
+   report['phases'].append({'id':row['id'],'mode':'SL' if '--sl' in flags else 'AL','pass':passed,'main_predicates':row['main_predicates'],'command_record':str(raw/'command.json'),'stdout_sha256':sha(raw/'stdout'),'stderr_sha256':sha(raw/'stderr')})
    assert passed,raw
   assert before=={str(p.relative_to(ROOT)):sha(p) for p in watched},'inputs changed'
   report['result']='pass'

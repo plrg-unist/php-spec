@@ -47,6 +47,7 @@ native/model tuples, request facts, limits and revision. Existing tools are reus
 this establishes no fresh offline rebuild or full-family closure. Whole-table
 snapshots without explicit request facts remain Unsupported. Module233 separately
 accepts missing key-CV, array-name and ordinary null/float conversion callbacks,
-including nested/quiet reads. Read-write continuations, wider object/key/container
-producers and broader reference-result consumers remain required; paused returns
-are separate.
+including nested/quiet reads. [Global W/RW continuations269](SOURCE-GLOBAL-WRITES.md)
+add captured-name/missing-entry updates and compound/nested array ingress.
+Wider object/key/container producers, GLOBALS quiet/memoized/unset continuations
+and broader reference-result consumers remain required; paused returns are separate.
