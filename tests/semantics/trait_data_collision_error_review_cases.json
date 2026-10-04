@@ -10,7 +10,33 @@
       "stderr_template_base64": "V2FybmluZzogVW5jYXVnaHQgVHlwZUVycm9yOiBDYW5ub3QgYXNzaWduIHN0cmluZyB0byBjbGFzcyBjb25zdGFudCBDOjpZIG9mIHR5cGUgZmxvYXQgaW4ge0ZJTEV9OjMKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSg1KTogW2NvbnN0YW50IGV4cHJlc3Npb25dKCkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDMKRmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNQo=",
       "exit_status": 255,
       "native_lint_exit": 0,
-      "native_group": "/home/user/workspace/php-spec/.tools/trait-collision-errors-270/.tools/trait-collision-type-error-native270-jhbj52mb/report.json"
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-collision-errors-270/.tools/trait-collision-type-error-native270-jhbj52mb/report.json",
+      "native_raw_sha256": "6bb6f62e44f8aa6516c18dfd4d272aebc490d2269b990454c1b1ad35ca5cc256"
+    },
+    {
+      "id": "collision-arithmetic-error-default-flush-before-composition-fatal",
+      "source": "<?php\nset_error_handler(function($n,$m){echo \"H;\";return true;});\ntrait T{public static $x=E_STRICT+\"bad\";}\necho \"PRE;\";\nclass C{use T;public static $x=0;}\necho \"POST;\";\n",
+      "source_sha256": "c9af7153f0722c7ddf80527c641f2610994807eee9c69619632bc0b528a8d9f9",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCldhcm5pbmc6IFVuY2F1Z2h0IFR5cGVFcnJvcjogVW5zdXBwb3J0ZWQgb3BlcmFuZCB0eXBlczogaW50ICsgc3RyaW5nIGluIHtGSUxFfTozClN0YWNrIHRyYWNlOgojMCB7RklMRX0oNSk6IFtjb25zdGFudCBleHByZXNzaW9uXSgpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAzCkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDUK",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-collision-errors-270/.tools/trait-collision-operation-error-native274-5szfvw50/report.json",
+      "native_raw_sha256": "03bb4b61ed0303c6fce45769625f470afade555c89b041c9f0313346ed3833ea"
+    },
+    {
+      "id": "collision-array-key-error-retains-earlier-value-warning",
+      "source": "<?php\nset_error_handler(function($n,$m){echo \"H;\";return true;});\ntrait T{public static $x=[[]=>E_STRICT];}\necho \"PRE;\";\nclass C{use T;public static $x=[];}\necho \"POST;\";\n",
+      "source_sha256": "2cb36e95698ba346586a59f57f7687e2e9c7fb8e8fcf2cdf9653279e583740bf",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCldhcm5pbmc6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFjY2VzcyBvZmZzZXQgb2YgdHlwZSBhcnJheSBvbiBhcnJheSBpbiB7RklMRX06MwpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDUpOiBbY29uc3RhbnQgZXhwcmVzc2lvbl0oKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMwpGYXRhbCBlcnJvcjogQyBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-collision-errors-270/.tools/trait-collision-operation-error-native274-5szfvw50/report.json",
+      "native_raw_sha256": "ac391a41944a6e72ebed6046cfa950f669bc91d69b4cb76054f00e6a2e2dbe40"
     }
-  ]
+  ],
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr"
 }
