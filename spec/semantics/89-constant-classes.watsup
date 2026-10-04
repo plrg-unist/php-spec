@@ -54,7 +54,7 @@ def $enter_constant_task(S, porigin, EVAL expression, ptask*) = $enter_compiled_
 def $enter_constant_task(S, porigin, ptask, ptask_tail*) = $enter_compiled_task(S, porigin, ptask, ptask_tail*)
   -- otherwise
 
-rule PhpStep/constant-observe: S ~> S[.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE $pvclass_operand(pvalue), CLASS $constant_result_class(S, porigin)})])][.TODO = ptask_tail*]
+rule PhpStep/constant-observe: S ~> S[.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE $pvclass_operand(pvalue), CLASS $constant_class(S, porigin)})])][.TODO = ptask_tail*]
   -- if S.TODO = (CONSTANT_OBSERVE porigin) :: ptask_tail*
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if S.RESULT = KNOWN pvalue

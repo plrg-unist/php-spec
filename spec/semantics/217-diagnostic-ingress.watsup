@@ -35,7 +35,12 @@ def $deprecated_constant_active_frames(eps) = false
 def $deprecated_constant_active_frames(pframe :: pframe_tail*) = ($deprecated_constant_active_tasks(pframe.TODO) \/ $deprecated_constant_active_frames(pframe_tail*))
 dec $deprecated_constant_active(pstate) : bool
 def $deprecated_constant_active(S) = ($deprecated_constant_active_tasks(S.TODO) \/ $deprecated_constant_active_frames(S.FRAMES))
-def $deprecated_constant_start(S, porigin, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT 2048)]
+dec $deprecated_constant_result(pstate, porigin, ptask*) : pstate
+def $deprecated_constant_result(S, porigin, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT 2048)][.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE (PINT 2048), CLASS PVSCALAR})])]
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+def $deprecated_constant_result(S, porigin, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT 2048)]
+  -- if S.CONSTCONTEXT = eps
+def $deprecated_constant_start(S, porigin, ptask_tail*) = $deprecated_constant_result(S, porigin, ptask_tail*)
   -- if $deprecated_constant_active(S)
 def $deprecated_constant_start(S, porigin, ptask_tail*) = $error_dispatch(S_pending, 8192, $deprecated_constant_message(), z, DIAGNOSTIC "Deprecated" $deprecated_constant_message() z, DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
   -- if ~$deprecated_constant_active(S)
@@ -55,7 +60,7 @@ def $deprecated_constant_valid(S, pdeprecatedconstant) = true
   -- if S.ORIGIN = (pdeprecatedconstant.SITE)
   -- if $deprecated_constant_source(S, pdeprecatedconstant.SITE, pdeprecatedconstant.PREFIX) = (pdeprecatedconstant.LINE)
 def $deprecated_constant_valid(S, pdeprecatedconstant) = false -- otherwise
-rule PhpStep/deprecated-constant-done: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT 2048)]
+rule PhpStep/deprecated-constant-done: S ~> $deprecated_constant_result(S, pdeprecatedconstant.SITE, ptask_tail*)
   -- if S.TODO = (DEPRECATED_CONSTANT_RESULT pdeprecatedconstant) :: ptask_tail*
   -- if $deprecated_constant_valid(S, pdeprecatedconstant)
 def $call_task_valid(S, DEPRECATED_CONSTANT_RESULT pdeprecatedconstant) = $deprecated_constant_valid(S, pdeprecatedconstant)
