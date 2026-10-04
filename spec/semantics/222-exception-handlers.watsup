@@ -145,12 +145,13 @@ def $exception_send_valid(S, pexceptioncall) = true
 def $exception_send_valid(S, pexceptioncall) = false -- otherwise
 def $exception_result_valid(S, pexceptioncall) = ($exception_selected_valid(S, pexceptioncall) /\ $exception_send_valid(S, pexceptioncall))
 def $exception_enter_valid(S, pexceptioncall) = ($exception_selected_valid(S, pexceptioncall) /\ pexceptioncall.SENT = eps)
-def $exception_task_scope(S) = (S.CURRENT = eps /\ S.FRAMES = eps)
+def $exception_task_scope(S) = (S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps)
 def $call_task_valid(S, EXCEPTION_HANDLER_RESULT pexceptioncall) = ($exception_task_scope(S) /\ $exception_result_valid(S, pexceptioncall))
 def $call_task_valid(S, EXCEPTION_HANDLER_ENTER pexceptioncall) = ($exception_task_scope(S) /\ $exception_enter_valid(S, pexceptioncall))
 def $exception_invoke_valid(S, pexceptioncall) = true
   -- if S.CURRENT = eps
   -- if S.FRAMES = eps
+  -- if S.CONSTCONTEXT = eps
   -- if S.EXCEPTIONHANDLER = eps
   -- if S.EXCEPTIONHANDLERS = (pexceptioncall.CALLBACK) :: (pvalue?)*
   -- if $throwable_member(S, pexceptioncall.OBJECT)
@@ -180,7 +181,7 @@ def $exception_dispatch_ready(S) = true
   -- if S.EXCEPTIONHANDLER = (pvalue)
   -- if $throwable_member(S, n)
 def $exception_dispatch_ready(S) = false -- otherwise
-rule PhpStep/exception-handler-dispatch: S ~> S[.TODO = (EXCEPTION_HANDLER_INVOKE {OBJECT n, CALLBACK pvalue, TARGET eps, ORIGIN S.ORIGIN, RAW $exception_snapshot(S, pvalue), SENT eps}) :: ptask_tail*][.EXCEPTIONHANDLERS = (pvalue) :: S.EXCEPTIONHANDLERS][.EXCEPTIONHANDLER = eps][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/exception-handler-dispatch: S ~> S[.TODO = (EXCEPTION_HANDLER_INVOKE {OBJECT n, CALLBACK pvalue, TARGET eps, ORIGIN S.ORIGIN, RAW $exception_snapshot(S, pvalue), SENT eps}) :: ptask_tail*][.EXCEPTIONHANDLERS = (pvalue) :: S.EXCEPTIONHANDLERS][.EXCEPTIONHANDLER = eps][.ORIGIN = eps][.CONSTCONTEXT = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $exception_dispatch_ready(S)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if S.EXCEPTIONHANDLER = (pvalue)
@@ -277,6 +278,7 @@ def $exception_context_anchor(S, pcallcontext, (pcallcontext), [pframe]) = true
   -- if pframe.CONTEXT = eps
   -- if pframe.LOCALS = eps
   -- if pframe.ORIGIN = eps
+  -- if pframe.CONSTCONTEXT = eps
   -- if pexceptioncall.TARGET = (pcallcontext.TARGET)
   -- if $exception_result_valid(S, pexceptioncall)
 def $exception_context_anchor(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $exception_context_anchor(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
@@ -297,6 +299,7 @@ def $exception_context_valid(S, pcallcontext) = true
   -- if pcallcontext.ARGC = 1
   -- if pcallcontext.WRAPPER = eps
   -- if pcallcontext.NAMED = eps
+  -- if pcallcontext.HOLES = eps
   -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
   -- if n_received = $call_received(1, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if |pcallcontext.EXTRA| = $(1 - n_received)
@@ -332,6 +335,7 @@ def $throwable_continuation(S, S_next) = S_next
   -- if pexceptioncall_entered = pexceptioncall[.TARGET = (pcalltarget)][.SENT = (KNOWN (POBJECT pexceptioncall.OBJECT))]
   -- if pframe.CONTEXT = eps
   -- if pframe.ORIGIN = eps
+  -- if pframe.CONSTCONTEXT = eps
 def $throwable_continuation(S, S_next) = S_next
   -- if S.TODO = (EXCEPTION_HANDLER_ENTER pexceptioncall) :: ptask_tail*
   -- if S_next.FRAMES = pframe :: S.FRAMES
@@ -344,6 +348,7 @@ def $throwable_continuation(S, S_next) = S_next
   -- if $exception_send_valid(S_next, pexceptioncall_entered)
   -- if pframe.CONTEXT = eps
   -- if pframe.ORIGIN = eps
+  -- if pframe.CONSTCONTEXT = eps
 
 ;; Saved global callback tasks use their immediate caller frame, never USER scope.
 def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S[.FRAMES = pframe_tail*]
