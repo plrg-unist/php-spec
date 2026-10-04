@@ -24,6 +24,7 @@ CASES = {
             '$heap_valid($heap_graph(S))',
             'S.CLASSES = [pclassdesc_t, pclassdesc_c, pclassdesc_e]',
             'pclassdesc_t.PROPERTIES = [ppropertydesc_t]',
+            'ppropertydesc_t.ORIGIN = porigin_t',
             'pclassdesc_c.PROPERTIES = [ppropertydesc_c]',
             'pclassdesc_e.PROPERTIES = [ppropertydesc_e]',
             'ppropertydesc_c.ORIGIN = porigin_c',
@@ -41,7 +42,7 @@ CASES = {
             '~$propref_source_valid(S, ppropref.CELL, '
             'CLASS_PROP_SOURCE ppropertydesc_t.ORIGIN)',
             '~$propref_source_valid(S, ppropref.CELL, CLASS_PROP_SOURCE '
-            '(TRAIT_MEMBER_ORIGIN (PORIGIN 999 eps) ppropertydesc_t.ORIGIN))',
+            '(TRAIT_MEMBER_ORIGIN (PORIGIN 999 eps) porigin_t))',
             '~$class_statics_valid(S[.PROPREFS = '
             '[ppropref[.SOURCES = [CLASS_PROP_SOURCE porigin_c]]]])',
             '~$class_statics_valid(S[.PROPREFS = '
