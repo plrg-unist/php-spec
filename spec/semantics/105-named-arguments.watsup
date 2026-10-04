@@ -408,12 +408,14 @@ def $call_task_valid(S, NAMED_PREFLIGHT porigin n) = $named_preflight_valid(S, p
 def $named_receives_ready(S, pfunction) = true
   -- if ~$call_unpack_site(S, $unpack_current_site(S))
   -- if S.CURRENT = (pcallcontext)
+  -- if ~$error_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if ~$named_present(phpType7*)
 def $named_receives_ready(S, pfunction) = true
   -- if ~$call_unpack_site(S, $unpack_current_site(S))
   -- if S.CURRENT = (pcallcontext)
+  -- if ~$error_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if $named_present(phpType7*)
