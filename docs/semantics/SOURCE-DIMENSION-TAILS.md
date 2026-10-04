@@ -42,7 +42,9 @@ selected reached fixtures; actual AL_mode runner commands are retained in the
 ledger. Production source execution uses SL_mode. Existing local binaries were
 reused; no fresh build or portability claim is made.
 
+[Nested coalesce262](SOURCE-NESTED-COALESCE.md) adds defined CV-array memoized
+walks with genuine quiet row owners and distinct late keyed-RHS behavior.
 Broader initial container/string/object diagnostics, GLOBALS RW, wider memoized
-coalesce targets and remaining write/reference consumers are required core work.
+containers and remaining write/reference consumers are required core work.
 Read233, writable242, direct edits249 and paused returns retain separate scope.
 Selected agreement does not establish complete core semantics.

@@ -1,0 +1,56 @@
+;; zend_valid_closure_binding checks immutable op-array flags after scope
+;; lookup. USES_THIS belongs only to the compiled function's own body, including
+;; unreachable expressions; nested functions and Closures have separate code.
+dec $real_closure_this_name(phpType32) : bool
+dec $real_closure_this_entry(pstate, nat, pcodeexpr) : bool
+dec $real_closure_this_code(pstate, nat, pcodeexpr*) : bool
+dec $real_closure_uses_this(pstate, pfunction) : bool
+dec $real_bind_receiver_warning(pstate, nat, nat?) : bool
+
+def $real_closure_this_name(BYTES text) = ($base64(text) = $ptascii("this"))
+def $real_closure_this_name(expression) = ($parser_literal(expression) = (PSTRING ($ptascii("this"))))
+def $real_closure_this_name(phpType32) = false -- otherwise
+def $real_closure_this_entry(S, n, CODEEXPR pcpath z b) = $real_closure_this_name(phpType32)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable phpType32 metadata)
+def $real_closure_this_entry(S, n, pcodeexpr) = false -- otherwise
+def $real_closure_this_code(S, n, eps) = false
+def $real_closure_this_code(S, n, pcodeexpr :: pcodeexpr_tail*) = ($real_closure_this_entry(S, n, pcodeexpr) \/ $real_closure_this_code(S, n, pcodeexpr_tail*))
+def $real_closure_uses_this(S, pfunction) = $real_closure_this_code(S, pfunction.CODE.UNIT, pfunction.CODE.EXPRESSIONS)
+
+;; Scope lookup/missing-class warnings already precede these tests. A static
+;; receiver warning wins over internal scope, and unbinding USES_THIS matters
+;; only when the source actually has a bound receiver.
+def $real_bind_receiver_warning(S, n_source, (n_receiver)) = $closure_static(S, pfunction)
+  -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+def $real_bind_receiver_warning(S, n_source, eps) = ($target_receiver(S, CLOSURE_TARGET n_source) =/= eps /\ $real_closure_uses_this(S, pfunction))
+  -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+def $real_bind_warning_message(S, n_source, (n_receiver), pbindscope) = ($ptascii("Cannot bind an instance to a static closure, this will be an error in PHP 9"))
+  -- if $real_bind_receiver_warning(S, n_source, (n_receiver))
+def $real_bind_warning_message(S, n_source, eps, pbindscope) = ($ptascii("Cannot unbind $this of closure using $this, this will be an error in PHP 9"))
+  -- if $real_bind_receiver_warning(S, n_source, eps)
+def $real_bind_warning_message(S, n_source, n_receiver?, BIND_INTERNAL ptbytes) = ($ptascii("Cannot bind closure to scope of internal class ") ++ ptbytes ++ $ptascii(", this will be an error in PHP 9"))
+  -- if ~$real_bind_receiver_warning(S, n_source, n_receiver?)
+  -- if $fake_bind_scope(S, n_source) =/= BIND_INTERNAL ptbytes
+def $real_bind_warning_message(S, n_source, n_receiver?, pbindscope) = eps -- otherwise
+
+def $real_bind_result(S, pconfigcall, n_source, n_receiver?, pbindscope) = $fake_bind_warning(S, pconfigcall, BIND_SCOPE pbindscope, ptbytes)
+  -- if $real_bind_warning_message(S, n_source, n_receiver?, pbindscope) = (ptbytes)
+def $real_bind_result(S, pconfigcall, n_source, n_receiver?, pbindscope) = $bind_make(S[.TODO = (BIND_INVOKE pbindcall) :: ptask_tail*], pbindcall, n_receiver?, $bind_scope_origin(pbindscope), $bind_scope_origin($fake_bind_new_called(S, n_receiver?, pbindscope)))
+  -- if $real_bind_warning_message(S, n_source, n_receiver?, pbindscope) = eps
+  -- if ~$real_bind_internal(S, n_source, n_receiver?, pbindscope)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pbindcall = {SITE pconfigcall.SITE, SOURCE (n_source), KIND INSTANCE_BIND, INDEX pconfigcall.INDEX, SENT $fake_bind_slots(pconfigcall.SENT), LINE pconfigcall.LINE}
+def $real_bind_result(S, pconfigcall, n_source, n_receiver?, pbindscope) = $real_bind_allocate(S, pconfigcall, n_source, n_receiver?, $real_bind_scope(n_receiver?, pbindscope))
+  -- if $real_bind_warning_message(S, n_source, n_receiver?, pbindscope) = eps
+  -- if $real_bind_internal(S, n_source, n_receiver?, pbindscope)
+
+;; The same authentic error-handler continuation returns null after a selected
+;; REAL warning. Callback changes cannot repeat scope lookup or allocate a copy.
+def $fake_bind_warning_valid(S, pbindwarning) = true
+  -- if $fake_bind_source(pbindwarning.CALL) = (n_source)
+  -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if pbindwarning.SCOPE = BIND_SCOPE pbindscope
+  -- if $fake_bind_scope_argument(S, n_source, $fake_bind_scope_value(S, pbindwarning.CALL), pbindscope)
+  -- if $real_bind_warning_message(S, n_source, $fake_bind_this(pbindwarning.CALL), pbindscope) = (pbindwarning.MESSAGE)

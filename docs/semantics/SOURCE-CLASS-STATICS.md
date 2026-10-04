@@ -82,8 +82,8 @@ receiver-free nonstatic children retain private `new self` default scope, and
 real child clones copy the same authority. Ordinary creation/ancestry checks
 stay exact; wider transformed callable creation contexts remain required.
 Module265 applies the shared AST target cache to imported class constants.
-Current full declarations keep fresh publication prefixes/called classes, and
-the first exact receipt authenticates the cached private method or namespace
+Named/method receipts keep current full declaration prefixes; METHOD captures
+select fresh called classes. The first exact receipt authenticates the cached private method or namespace
 fallback target even after a failed initializer's object retires. REAL constant
 Closures retain each declaring owner. Wrapped/plain cached METHOD makers create
 children with copied importing identity and private-default scope; successful

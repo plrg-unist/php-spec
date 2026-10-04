@@ -1,0 +1,128 @@
+[
+  {
+    "id": "internal-real-unbind-scopes-current",
+    "source": "<?php\nclass InternalRealUnbindHost264 {}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$source = function () {\n    static $n = 0;\n    echo self::class, ':', static::class, ':', ++$n, '|';\n    return Closure::getCurrent();\n};\n$host = new InternalRealUnbindHost264;\n$bound = $source->bindTo($host);\necho (int)($bound() === $bound), '|';\n$unbound = $bound->bindTo(null);\n$same = $bound->bindTo(null, Closure::class);\n$bad = $unbound->bindTo(null, Exception::class);\nunset($source, $bound, $host);\necho (int)($unbound() === $unbound), '|';\necho (int)($same() === $same), '|';\necho (int)($bad === null), '|';\nrestore_error_handler();\nunset($unbound, $same, $bad);\n",
+    "source_sha256": "c094eba76753eebe356eace78a0bd6f4dcfcffaa3f825f0ddff8daa78f6c8e74",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-this-compiled-modes",
+    "source": "<?php\nclass RealModeHost264 {\n    public int $id = 4;\n    public function touch() { return 5; }\n    public function make() {\n        return [\n            function () { return $this->id; },\n            function () { return $this->touch(); },\n            function () { return real_mode_arg264($this); },\n            function () { return empty($this); },\n            fn () => $this->id\n        ];\n    }\n}\nfunction real_mode_arg264($value) { return 6; }\n$warnings = 0;\nset_error_handler(function ($n, $message) use (&$warnings) {\n    ++$warnings;\n    echo 'W:', $message, '|';\n    return true;\n});\n$host = new RealModeHost264;\n$closures = $host->make();\n$a = $closures[0]->bindTo(null);\n$b = $closures[1]->bindTo(null);\n$c = $closures[2]->bindTo(null);\n$d = $closures[3]->bindTo(null);\n$e = $closures[4]->bindTo(null);\necho $warnings, ':', (int)($a === null), (int)($b === null),\n    (int)($c === null), (int)($d === null), (int)($e === null), '|';\nrestore_error_handler();\nunset($host, $closures, $a, $b, $c, $d, $e);\n",
+    "source_sha256": "c19879fd152cb9f961c4f3be94d66846358f52a1656d4711c3e389fd643c56bf",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-unbind-alias-private-statics",
+    "source": "<?php\nclass RealAliasOwner264 {\n    private static function secret($value) { echo 'P:', $value, '|'; }\n    public function make(&$value) {\n        return function () use (&$value) {\n            static $n = 0;\n            self::secret($value);\n            echo self::class, ':', static::class, ':', ++$n, '|';\n            return Closure::getCurrent();\n        };\n    }\n}\nclass RealAliasChild264 extends RealAliasOwner264 {}\n$value = 1;\n$host = new RealAliasChild264;\n$source = $host->make($value);\necho (int)($source() === $source), '|';\n$unbound = Closure::bind($source, null);\n$copy = clone $unbound;\nunset($host, $source);\n$value = 6;\necho (int)($unbound() === $unbound), '|';\necho (int)($copy() === $copy), '|';\necho (int)($unbound() === $unbound), '|';\nunset($unbound, $copy, $value);\n",
+    "source_sha256": "06c936732b7d79d5219dec8acb6ef2a55fa45970dbef6694676e9278802cde09",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-warning-default-display",
+    "source": "<?php\n$source = static function () { return 1; };\n$receiver = new stdClass;\n$result = $source->bindTo($receiver, Closure::class);\necho (int)($result === null), '|';\nunset($source, $receiver, $result);\n",
+    "source_sha256": "1ad18c0fbed03127f8b0c79ebc660a29fa4cc12792f3893adfb98525a89486fb",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-unbind-no-this-current-statics",
+    "source": "<?php\nclass RealUnbindHost264 {\n    public function make() {\n        return function () {\n            static $n = 0;\n            echo self::class, ':', static::class, ':', ++$n, '|';\n            return Closure::getCurrent();\n        };\n    }\n}\n$host = new RealUnbindHost264;\n$source = $host->make();\necho (int)($source() === $source), '|';\n$unbound = $source->bindTo(null);\n$copy = clone $unbound;\nunset($host, $source);\necho (int)($unbound() === $unbound), '|';\necho (int)($copy() === $copy), '|';\necho (int)($unbound() === $unbound), '|';\nunset($unbound, $copy);\n",
+    "source_sha256": "5b41e267de24a1869f04cbbbfc9908c9217853c7061148f180d070fd7cb0e18d",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-uses-this-dead-isset",
+    "source": "<?php\nclass RealUsesHost264 {\n    public function dead() {\n        return function () { if (false) { echo $this; } return 7; };\n    }\n    public function probe() {\n        return function () { return isset($this); };\n    }\n}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$host = new RealUsesHost264;\n$dead = $host->dead();\n$probe = $host->probe();\n$a = $dead->bindTo(null);\n$b = $probe->bindTo(null);\necho (int)($a === null), ':', (int)($b === null), ':', $dead(), ':', (int)$probe(), '|';\nrestore_error_handler();\nunset($host, $dead, $probe, $a, $b);\n",
+    "source_sha256": "4523932f4d86b2281249c22120b8f1ca01cb0e2eff60b354cadeaaef604d766a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-unbind-nested-body",
+    "source": "<?php\nclass RealNestedHost264 {\n    public function normal() {\n        return function () { return function () { return isset($this); }; };\n    }\n    public function arrow() {\n        return fn() => fn() => isset($this);\n    }\n}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$host = new RealNestedHost264;\n$normal = $host->normal();\n$arrow = $host->arrow();\n$unbound = $normal->bindTo(null);\n$unboundArrow = $arrow->bindTo(null);\n$child = $unbound();\n$childArrow = $unboundArrow();\nunset($host, $normal, $arrow, $unbound, $unboundArrow);\necho (int)$child(), ':', (int)$childArrow(), '|';\nrestore_error_handler();\nunset($child, $childArrow);\n",
+    "source_sha256": "a267b867e35ab79ac68c76aaab84e7fafb166519c1f8f963a3b8152fbd951d23",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-unbind-no-old-receiver",
+    "source": "<?php\nclass RealInitialHost264 {}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$source = function () { return isset($this); };\n$empty = $source->bindTo(null, null);\necho (int)$empty(), '|';\n$host = new RealInitialHost264;\n$bound = $source->bindTo($host, null);\necho (int)$bound(), '|';\n$failed = $bound->bindTo(null);\necho (int)($failed === null), '|';\nrestore_error_handler();\nunset($source, $empty, $host, $bound, $failed);\n",
+    "source_sha256": "c96fce60230d5557344953547bc2b33fb540eff03701c500f978c430b47b945c",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-binding-warning-order",
+    "source": "<?php\nclass RealWarningHost264 {\n    public function make() { return function () { return isset($this); }; }\n    public function plain() { return function () { return 8; }; }\n}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$host = new RealWarningHost264;\n$static = static function () { return 1; };\n$uses = $host->make();\n$plain = $host->plain();\necho 'A|'; $a = $static->bindTo($host, 'MissingRealBinding264');\necho 'B|'; $b = $static->bindTo($host, Exception::class);\necho 'C|'; $c = $static->bindTo(null, Exception::class);\necho 'D|'; $d = $uses->bindTo(null, Exception::class);\necho 'E|'; $e = $plain->bindTo(null, Exception::class);\necho 'N:', (int)($a === null), (int)($b === null), (int)($c === null), (int)($d === null), (int)($e === null), '|';\nrestore_error_handler();\nunset($host, $static, $uses, $plain, $a, $b, $c, $d, $e);\n",
+    "source_sha256": "dc32cb549d9b489dab781bd12e88a4406a0942d230346ecc9c4d2b5d3f6ea083",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-warning-frozen-mutation",
+    "source": "<?php\nclass RealMutationHost264 {}\n$source = static function () { return 1; };\n$receiver = new RealMutationHost264;\n$scope = RealMutationHost264::class;\nset_error_handler(function ($n, $message) use (&$source, &$receiver, &$scope) {\n    echo 'W:', $message, '|';\n    $source = function () { return 7; };\n    $receiver = null;\n    $scope = null;\n    return true;\n});\n$result = $source->bindTo($receiver, $scope);\necho (int)($result === null), ':', $source(), ':', (int)($receiver === null), ':', (int)($scope === null), '|';\nrestore_error_handler();\nunset($source, $receiver, $scope, $result);\n",
+    "source_sha256": "4c8058ca2f301c8d85fe06f691ec3a1e64dd9b743db0ac75ee3f5eca8dd33744",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-warning-throw-finally",
+    "source": "<?php\nclass RealThrowHost264 {}\n$source = static function () { return 1; };\n$receiver = new RealThrowHost264;\n$value = 0;\nset_error_handler(function ($n, $message) use (&$source, &$value) {\n    echo 'W:', $message, '|';\n    try { throw new Exception('real-stop'); }\n    finally { $source = function () { return 9; }; $value = 7; echo 'F|'; }\n});\ntry { $source->bindTo($receiver); }\ncatch (Exception $e) { echo 'E:', $e->getMessage(), '|'; }\nrestore_error_handler();\necho 'R:', $source(), ':', $value, '|';\nunset($source, $receiver, $value, $e);\n",
+    "source_sha256": "14453600727c3b189e16c175c647e1333ffaaf4cfe386557e95ced442bc5293d",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-static-computed-bind-named",
+    "source": "<?php\nuse Closure as RealBindingApi264;\nclass RealComputedHost264 {}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$class = RealBindingApi264::class;\n$method = 'BiNd';\n$source = static function () { return 8; };\n$receiver = new RealComputedHost264;\n$result = $class::$method(newScope: RealComputedHost264::class, newThis: $receiver, closure: $source);\necho (int)($result === null), '|';\nrestore_error_handler();\nunset($class, $method, $source, $receiver, $result);\n",
+    "source_sha256": "2c293fc481dee7e86c2bdaeea334e45b56cacaec2e457cdf4e40ea26e518665f",
+    "expected_model": "normal"
+  },
+  {
+    "id": "uses-this-eager-name-split",
+    "source": "<?php\nclass RealEagerNameHost264 {\n    public function make() { return function () { return isset(${'th' . 'is'}); }; }\n}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$host = new RealEagerNameHost264;\n$source = $host->make();\n$result = $source->bindTo(null);\necho (int)($result === null), '|';\nrestore_error_handler();\nunset($host, $source, $result);\n",
+    "source_sha256": "3b90d0108875c5194ae55d4bf5faa9153b1baf3c1f8b2dff2dc80a5eb98fb3a9",
+    "expected_model": "normal"
+  },
+  {
+    "id": "uses-this-dead-eager-name-split",
+    "source": "<?php\nclass RealDeadEagerNameHost264 {\n    public function make() { return function () { if (false) { echo ${'th' . 'is'}; } return 7; }; }\n}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$host = new RealDeadEagerNameHost264;\n$source = $host->make();\n$result = $source->bindTo(null);\necho (int)($result === null), '|';\nrestore_error_handler();\nunset($host, $source, $result);\n",
+    "source_sha256": "faa51ff70f97fd5f186f10abdfb6e502f79065c9a9697d049cf68a1769961543",
+    "expected_model": "normal"
+  },
+  {
+    "id": "uses-this-runtime-name-split",
+    "source": "<?php\nclass RealRuntimeNameHost264 {\n    public function make() { return function () { $part = 'th'; return isset(${$part . 'is'}); }; }\n}\n$host = new RealRuntimeNameHost264;\n$source = $host->make();\n$unbound = $source->bindTo(null);\nunset($host, $source);\necho (int)$unbound(), '|';\nunset($unbound);\n",
+    "source_sha256": "1b02c1bd5fb90dcbd2794e24330d02c88596e0691d2593b766b7063c551d3d27",
+    "expected_model": "normal"
+  },
+  {
+    "id": "uses-this-constant-name-split",
+    "source": "<?php\nconst ThisNameSplit264 = 'this';\nclass RealConstantNameHost264 {\n    public function make() { return function () { return isset(${ThisNameSplit264}); }; }\n}\n$host = new RealConstantNameHost264;\n$source = $host->make();\n$unbound = $source->bindTo(null);\nunset($host, $source);\necho (int)$unbound(), '|';\nunset($unbound);\n",
+    "source_sha256": "ad86ac6b0576ad781b7d0924ef56acbd618bd67088f51ab3fff2fe4e1119f120",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-static-warning-entered-snapshot",
+    "source": "<?php\nclass RealSnapshotHost264 {}\n$source = static function () { return 1; };\n$receiver = new RealSnapshotHost264;\n$scope = RealSnapshotHost264::class;\n$class = Closure::class;\n$method = 'BiNd';\nset_error_handler(function ($n, $message) use (&$source, &$receiver, &$scope) {\n    echo 'W:', $message, '|';\n    $source = function () { return 7; };\n    $receiver = null;\n    $scope = null;\n    $current = Closure::getCurrent();\n    echo (int)($current instanceof Closure), '|';\n    return true;\n});\n$result = $class::$method(newScope: $scope, newThis: $receiver, closure: $source);\necho (int)($result === null), ':', $source(), ':', (int)($receiver === null), ':', (int)($scope === null), '|';\nrestore_error_handler();\nunset($source, $receiver, $scope, $class, $method, $result);\n",
+    "source_sha256": "38a2f996d7c9f4484cdde5effccbe85d4c0c318d020f7c43b63a2498996bcb56",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-unbound-uses-this-retired-source",
+    "source": "<?php\nclass RealRetiredUsesHost264 {}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$source = function () { return isset($this); };\n$empty = $source->bindTo(null, null);\nunset($source);\necho (int)$empty(), '|';\n$host = new RealRetiredUsesHost264;\n$bound = $empty->bindTo($host, null);\necho (int)$bound(), '|';\n$failed = $bound->bindTo(null);\necho (int)($failed === null), '|';\nrestore_error_handler();\nunset($empty, $host, $bound, $failed);\n",
+    "source_sha256": "a6dfac217d1db719fe290e6984f128c190587905af2a2823abad876a219268de",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-unbind-explicit-null-loses-self-scope",
+    "source": "<?php\nclass RealRemovedSelfScope264 {\n    public function make() { return function () { echo 'B|'; echo self::class; }; }\n}\n$host = new RealRemovedSelfScope264;\n$source = $host->make();\n$unbound = $source->bindTo(null, null);\nunset($host, $source);\ntry { $unbound(); }\ncatch (Error $e) { echo 'E:', $e->getMessage(), '|'; }\nunset($unbound, $e);\n",
+    "source_sha256": "48c3a63e1538b21a39d574d85a6626e5d17d8eb449e073086b8f20050919bab1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-unbind-explicit-null-loses-private-permission",
+    "source": "<?php\nclass RealRemovedPermission264 {\n    private static function hidden() { return 7; }\n    public function make() { return function () { echo 'B|'; return RealRemovedPermission264::hidden(); }; }\n}\n$host = new RealRemovedPermission264;\n$source = $host->make();\n$unbound = $source->bindTo(null, null);\nunset($host, $source);\ntry { echo $unbound(); }\ncatch (Error $e) { echo 'E:', $e->getMessage(), '|'; }\nunset($unbound, $e);\n",
+    "source_sha256": "1dc5b160497209016905bfeb4ceb5e1d9557d1a501fbe891aa4b727f7d973329",
+    "expected_model": "normal"
+  },
+  {
+    "id": "actual-property-child-unbind-current",
+    "source": "<?php\ntrait RealActualFactory264 {\n    private static function maker() {\n        return function ($value = new self) {\n            static $n = 0;\n            echo self::class, '/', static::class, '/', $value::class, ':', ++$n, '|';\n            return Closure::getCurrent();\n        };\n    }\n    public static \\Closure $factory = self::maker(...);\n}\nclass RealActualOwner264 {\n    use RealActualFactory264;\n    private function __construct() { echo 'N:'; }\n}\n$first = RealActualOwner264::$factory;\nif (true) { class RealActualForeign264 { use RealActualFactory264; } }\n$maker = RealActualForeign264::$factory;\n$child = $maker();\n$unbound = $child->bindTo(null);\n$copy = clone $unbound;\nRealActualOwner264::$factory = static function () {};\nRealActualForeign264::$factory = static function () {};\nunset($first, $maker, $child, $unbound);\necho (int)($copy() === $copy), '|';\nunset($copy);\n",
+    "source_sha256": "09b017d5d84442cb17676ad50851010293105ea4abde527e6f06a4ba8a27a00b",
+    "expected_model": "normal"
+  }
+]

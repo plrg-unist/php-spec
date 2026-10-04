@@ -282,6 +282,11 @@ agreements; two reduced current trait-handler sources pass.
 intermediate conversion protection, abort temporaries and late RHS/null-insertion
 timing. Author6/247 and independent18/356 share one original, giving23 unique
 private agreements; one current private-handler/typed-cell source passes.
+[Nested coalesce assignment](docs/semantics/SOURCE-NESTED-COALESCE.md) now owns
+quiet row values, walks current write storage and preserves memoized keys,
+abort temporaries and late keyed-RHS null/type-error timing. Author9/233 and
+independent11/277 share two originals, giving18 unique private agreements;
+one current private-handler/typed-cell source passes.
 Wider memoized containers and earlier container/string/object producers remain
 required.
 
@@ -456,7 +461,8 @@ method callables retain lexical and called scope after wrapped or cloned makers
 retire, including private `new self` defaults. Two sources and 170 state premises
 retain separate accepted cutoffs.
 Shared trait-constant callable targets retain their first lookup while later
-imports use fresh called classes and publication prefixes. Three new source
+method imports use fresh called classes and named/method receipts use current
+publication prefixes. Three new source
 agreements and112 AL/122 SL premises check partial failure, copied children and
 actual constant-cache ownership; compiled keyword NEW remains a required consumer.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
@@ -485,9 +491,10 @@ types, pure evaluated compatibility, per-import identities and static sharing.
 Imported deferred instance defaults use owning class templates. Raw trait-property
 warnings retain selected cells and operand ownership through handlers and abrupt
 opcode completion. Deferred collision operands compare before type conversion;
-direct `E_STRICT` warnings are recorded and delivered after class publication.
-Broader effectful collisions, dependency caching and readonly storage remain
-required. A bounded
+operation diagnostics are recorded with runtime operand order and AST lines,
+then delivered after class publication. Private-final compile warnings retain
+their phase order and handler-ineligible severity. Dependency caching, collision
+expression errors and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
@@ -551,7 +558,11 @@ magic/autoload and complete binding remain open.
 returns the exact immediate ordinary Closure and preserves `__invoke` capture
 identity. Transformed fake bindings keep source statics and own only their new
 receiver; returned source Closures retain the genuine internal scope after makers
-retire. Complete REAL warning/unbinding and temporary-current consumers remain required.
+retire. [REAL binding](docs/semantics/CLOSURE-BINDING.md) now stages ordered
+static/internal warnings and uses the function's compiled `$this` flag when
+removing a receiver. Valid unbinding copies REAL statics, preserves reference
+captures and resets called scope; explicit null scope removes class permission.
+Temporary-current and internal API capture consumers remain required.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.
