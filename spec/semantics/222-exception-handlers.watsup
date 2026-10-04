@@ -130,6 +130,7 @@ def $exception_selected_valid(S, pexceptioncall) = true
   -- if $throwable_member(S, pexceptioncall.OBJECT)
   -- if (HOBJECT pexceptioncall.OBJECT) <- S.ALLOCATIONS
   -- if pexceptioncall.TARGET = (pcalltarget)
+  -- if $consumer_exception_object(pcalltarget, pexceptioncall.OBJECT)
   -- if $exception_raw_selected(S, pexceptioncall.CALLBACK, pexceptioncall.RAW, pcalltarget)
   -- if $handler_emitter_valid(S[.CURRENT = eps][.FRAMES = eps][.CONSTCONTEXT = eps], pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
@@ -221,7 +222,7 @@ rule PhpStep/exception-handler-invalid: S ~> S[.TODO = eps][.COMPLETION = INTERN
   -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
   -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)
   -- if $error_handler_resolution(S, pexceptioncall.CALLBACK) = HANDLERINVALID n_reason*
-rule PhpStep/exception-handler-special: S ~> S[.COMPLETION = UNSUPPORTED "exception-handler keyword/compound callable ingress requires effectful API resolution"]
+rule PhpStep/exception-handler-special: S ~> $api_begin(S, EXCEPTION_HANDLER_INVOKE pexceptioncall, pexceptioncall.CALLBACK)
   -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
   -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
   -- if $exception_deprecated_raw(S, pexceptioncall.CALLBACK)
@@ -278,7 +279,7 @@ def $error_reference_event(S, ptbytes, 0) = DIAGNOSTIC_INTERNAL "Warning" ptbyte
   -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if $exception_warning_resume(perrorcall.RESUME)
   -- if $error_entered_call_valid(S, perrorcall)
-def $error_handler_values(S, perrorcall) = [PINT 2, PSTRING perrorcall.MESSAGE, PSTRING $ptascii("Unknown"), PINT 0]
+def $error_handler_values(S, perrorcall) = [PINT perrorcall.LEVEL, PSTRING perrorcall.MESSAGE, PSTRING $ptascii("Unknown"), PINT 0]
   -- if $exception_warning_resume(perrorcall.RESUME)
 
 def $api_warning_event(S, papiquery, ptbytes) = DIAGNOSTIC_INTERNAL "Deprecated" ptbytes 0
