@@ -247,3 +247,4 @@ rule PhpStep/error-api-invoke: S ~> $error_api_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $error_api_kind(pconfigcall.KIND)
   -- if $config_invoke_valid(S, pconfigcall)
+  -- if ~$api_registration_candidate(S, pconfigcall)

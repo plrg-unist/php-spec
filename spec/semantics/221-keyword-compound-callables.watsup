@@ -1,0 +1,521 @@
+dec $api_frame_scope(pstate) : porigin?
+dec $api_keyword(ptbytes) : bool
+dec $api_frame_called(pstate) : porigin?
+dec $api_frame_this(pstate) : nat?
+dec $api_subclass(pstate, porigin, porigin) : bool
+dec $api_this(nat?, nat?) : nat?
+dec $api_called(pstate, porigin, porigin?, nat?) : porigin
+dec $api_named_this(pstate, porigin, porigin?, nat?, nat?) : nat?
+dec $api_class(pstate, pvalue, porigin?, porigin?, porigin?, nat?, nat?) : papiclassresult
+dec $api_source_line(pstate, ptask) : int
+dec $api_string_item(pstate, ptask, ptbytes) : pitem
+dec $api_query(pstate, ptask, pvalue, pvalue, pitem, papiclass, ptbytes, nat, nat) : papiquery
+dec $api_keyword_message(pvalue) : ptbytes
+dec $api_compound_message(pstate, papiquery) : ptbytes
+dec $api_continue(pstate, papiquery, nat, ptbytes?) : pstate
+dec $api_class_warning(pvalue) : ptbytes?
+dec $api_begin(pstate, ptask, pvalue) : pstate
+dec $api_initial_class(pstate, pvalue) : papiclassresult
+dec $api_after_class(pstate, papiquery) : pstate
+dec $api_after_method(pstate, papiquery) : pstate
+dec $api_method_result(pstate, papiquery, ptbytes) : phandlerresolution
+dec $api_finish(pstate, ptask, pvalue, phandlerresolution) : pstate
+dec $api_register(pstate, pconfigcall, pvalue) : pstate
+dec $api_receive_reject(pstate, porigin, nat) : pstate
+dec $api_pure_array_method(pstate, papiquery, ptbytes) : phandlerresolution
+dec $api_item_snapshot(pitem, pvalue) : bool
+dec $api_raw_shape(pstate, papiquery) : bool
+dec $api_query_shape(pstate, papiquery, nat) : bool
+dec $api_source_valid(pstate, papiquery) : bool
+dec $api_query_valid(pstate, papiquery, nat) : bool
+dec $api_warning_message(pstate, papiquery, nat) : ptbytes?
+dec $api_target_valid(pstate, papiquery, porigin, ptbytes) : bool
+dec $api_leaf_snapshot(papiquery, ptbytes) : bool
+dec $api_carrier_valid(pstate, papiquery, porigin, ptbytes, bool) : bool
+dec $api_scalar_conversion(pstate, psparam, pvalue) : ptypeconversion
+
+;; Zend API resolution differs from INIT_DYNAMIC_CALL: raw lexical keywords and
+;; qualified array methods are deprecated, effectful admission operations.
+def $api_keyword(ptbytes) = ($ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
+def $api_frame_called(S) = pcallcontext.CALLED_CLASS -- if S.CURRENT = (pcallcontext)
+def $api_frame_called(S) = eps -- if S.CURRENT = eps
+def $api_frame_this(S) = pcallcontext.RECEIVER -- if S.CURRENT = (pcallcontext)
+def $api_frame_this(S) = eps -- if S.CURRENT = eps
+
+def $api_subclass(S, porigin_child, porigin_parent) = $class_origin_matches(S, porigin_child, pclassdesc.NAME, |S.CLASSES|)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc)
+def $api_this((n), n_frame?) = (n)
+def $api_this(eps, n_frame?) = n_frame?
+def $api_called(S, porigin_requested, porigin_frame?, (n)) = porigin_object
+  -- if S.OBJECTS[n] = INSTANCE porigin_object
+def $api_called(S, porigin_requested, (porigin_frame), eps) = porigin_frame
+  -- if $api_subclass(S, porigin_frame, porigin_requested)
+def $api_called(S, porigin_requested, porigin_frame?, n_receiver?) = porigin_requested -- otherwise
+
+def $api_named_this(S, porigin_requested, porigin_scope?, n_frame?, (n)) = (n)
+def $api_named_this(S, porigin_requested, (porigin_scope), (n), eps) = (n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_object
+  -- if $api_subclass(S, porigin_object, porigin_scope)
+  -- if $api_subclass(S, porigin_scope, porigin_requested)
+def $api_named_this(S, porigin_requested, porigin_scope?, n_frame?, n_held?) = eps -- otherwise
+
+;; The inner class of an array method uses its outer class as keyword scope;
+;; concrete names still use the real USER frame for implicit-this eligibility.
+def $api_class(S, POBJECT n, porigin_scope?, porigin_frame?, porigin_called?, n_this?, n_held?) = API_CLASS {REQUESTED porigin, CALLED porigin, RECEIVER (n), STRICT false}
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $api_class(S, PSTRING ptbytes, eps, porigin_frame?, porigin_called?, n_this?, n_held?) = API_CLASS_INVALID ($ptascii("cannot access \"") ++ $ptlc(ptbytes) ++ $ptascii("\" when no class scope is active"))
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent")]
+def $api_class(S, PSTRING ptbytes, (porigin_scope), porigin_frame?, porigin_called?, n_this?, n_held?) = API_CLASS {REQUESTED porigin_scope, CALLED $api_called(S, porigin_scope, porigin_called?, n_receiver?), RECEIVER n_receiver?, STRICT false}
+  -- if $ptlc(ptbytes) = $ptascii("self")
+  -- if n_receiver? = $api_this(n_held?, n_this?)
+def $api_class(S, PSTRING ptbytes, (porigin_scope), porigin_frame?, porigin_called?, n_this?, n_held?) = API_CLASS {REQUESTED porigin_parent, CALLED $api_called(S, porigin_parent, porigin_called?, n_receiver?), RECEIVER n_receiver?, STRICT true}
+  -- if $ptlc(ptbytes) = $ptascii("parent")
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_scope) = (SOURCE_PARENT porigin_parent)
+  -- if n_receiver? = $api_this(n_held?, n_this?)
+def $api_class(S, PSTRING ptbytes, (porigin_scope), porigin_frame?, porigin_called?, n_this?, n_held?) = API_CLASS_INVALID ($ptascii("cannot access \"parent\" when current class scope has no parent"))
+  -- if $ptlc(ptbytes) = $ptascii("parent")
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_scope) = eps
+def $api_class(S, PSTRING ptbytes, porigin_scope?, porigin_frame?, eps, n_this?, n_held?) = API_CLASS_INVALID ($ptascii("cannot access \"static\" when no class scope is active"))
+  -- if $ptlc(ptbytes) = $ptascii("static")
+def $api_class(S, PSTRING ptbytes, porigin_scope?, porigin_frame?, (porigin_called), n_this?, n_held?) = API_CLASS {REQUESTED porigin_called, CALLED $api_called(S, porigin_called, (porigin_called), n_receiver?), RECEIVER n_receiver?, STRICT true}
+  -- if $ptlc(ptbytes) = $ptascii("static")
+  -- if n_receiver? = $api_this(n_held?, n_this?)
+def $api_class(S, PSTRING ptbytes, porigin_scope?, porigin_frame?, porigin_called?, n_this?, n_held?) = API_CLASS {REQUESTED porigin_requested, CALLED $api_called(S, porigin_requested, eps, n_receiver?), RECEIVER n_receiver?, STRICT true}
+  -- if ~$api_keyword(ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes))) = (porigin_requested)
+  -- if n_receiver? = $api_named_this(S, porigin_requested, porigin_frame?, n_this?, n_held?)
+def $api_class(S, PSTRING ptbytes, porigin_scope?, porigin_frame?, porigin_called?, n_this?, n_held?) = API_CLASS_INVALID ($ptascii("class \"") ++ $c_string(ptbytes) ++ $ptascii("\" not found"))
+  -- if ~$api_keyword(ptbytes)
+  -- if $api_keyword($typed_callable_name(ptbytes)) \/ (0 <- ptbytes)
+def $api_class(S, pvalue, porigin_scope?, porigin_frame?, porigin_called?, n_this?, n_held?) = API_CLASS_UNKNOWN "callable class, autoload or internal lookup" -- otherwise
+
+def $api_special(S, PARRAY n) = true
+  -- if $typed_callback_array(S, n)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if $entry_value(S, pitem_receiver) = PSTRING ptbytes_class
+  -- if $api_keyword($typed_callable_name(ptbytes_class))
+  -- if $entry_value(S, pitem_method) = PSTRING ptbytes_method
+  -- if $method_string_parts(ptbytes_method) = eps
+def $api_special(S, PARRAY n) = true
+  -- if $typed_callback_array(S, n)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if $entry_value(S, pitem_method) = PSTRING ptbytes_method
+  -- if $method_string_parts(ptbytes_method) =/= eps
+def $api_special(S, PSTRING ptbytes) = true
+  -- if ~$typed_registered(S, ptbytes)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if $api_keyword($typed_callable_name(ptbytes_class))
+def $api_special(S, pvalue) = false -- otherwise
+
+def $api_receive_candidate(S) = true
+  -- if S.TODO = [TYPE_RECEIVE porigin n]
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n < pcallcontext.ARGC)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+  -- if $lookup(S.ENV, psparam.NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if "callable" <- $ptmasks(psparam.TYPE)
+  -- if ~$typed_exact(psparam.TYPE, pvalue)
+  -- if ~$typed_object_exact(S, psparam.TYPE, pvalue)
+  -- if $api_special(S, pvalue)
+def $api_receive_candidate(S) = false -- otherwise
+def $api_registration_candidate(S, pconfigcall) = (pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER /\ $error_api_arity(S, pconfigcall).COMPLETION = NORMAL /\ $api_special(S, $error_api_value(pconfigcall, 0, PNULL)))
+
+def $api_source_line(S, TYPE_RECEIVE porigin n) = $default_parameter_line(S, porigin, n)
+def $api_source_line(S, CONFIG_INVOKE pconfigcall) = pconfigcall.LINE
+def $api_source_line(S, ERROR_HANDLER_INVOKE perrorcall) = perrorcall.LINE
+def $api_string_item(S, TYPE_RECEIVE porigin n, ptbytes) = ALIAS n_cell
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if pfunction.SIGNATURE.PARAMETERS[n].BYREF
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+def $api_string_item(S, ptask, ptbytes) = DIRECT (PSTRING ptbytes) -- otherwise
+def $api_query(S, ptask, pvalue, pvalue_input, pitem, papiclass, ptbytes, n_prefix, n_width) = {SOURCE ptask, VALUE pvalue, INPUT pvalue_input, METHOD pitem, SCOPE $api_frame_scope(S), CALLED $api_frame_called(S), THIS $api_frame_this(S), CLASS papiclass, OUTER eps, ORIGINAL ptbytes, PREFIX n_prefix, WIDTH n_width, LINE $api_source_line(S, ptask)}
+def $api_keyword_message(PSTRING ptbytes) = $ptascii("Use of \"") ++ $ptlc(ptbytes) ++ $ptascii("\" in callables is deprecated")
+def $api_compound_message(S, papiquery) = $ptascii("Callables of the form [\"") ++ pclassdesc.NAME ++ $ptascii("\", \"") ++ $c_string(papiquery.ORIGINAL) ++ $ptascii("\"] are deprecated")
+  -- if papiquery.OUTER = (papiclass)
+  -- if $class_at(S.CLASSES, papiclass.REQUESTED) = (pclassdesc)
+def $api_continue(S, papiquery, n, eps) = S[.TODO = (API_CALLABLE_RESULT papiquery n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+def $api_continue(S, papiquery, n, (ptbytes)) = $error_dispatch(S_pending, 8192, ptbytes, papiquery.LINE, DIAGNOSTIC "Deprecated" ptbytes papiquery.LINE, API_CALLABLE_RESULT papiquery n)
+  -- if S_pending = $api_continue(S, papiquery, n, eps)
+def $api_class_warning(PSTRING ptbytes) = ($api_keyword_message(PSTRING ptbytes)) -- if $api_keyword(ptbytes)
+def $api_class_warning(pvalue) = eps -- otherwise
+
+def $api_begin(S, ptask, PARRAY n) = $api_continue(S, papiquery, 0, $api_class_warning(pvalue_input))
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if pvalue_input = $entry_value(S, pitem_receiver)
+  -- if $entry_value(S, pitem_method) = PSTRING ptbytes_method
+  -- if $api_class(S, pvalue_input, $api_frame_scope(S), $api_frame_scope(S), $api_frame_called(S), $api_frame_this(S), eps) = API_CLASS papiclass
+  -- if papiquery = $api_query(S, ptask, PARRAY n, pvalue_input, pitem_method, papiclass, ptbytes_method, 0, 0)
+def $api_begin(S, ptask, PSTRING ptbytes) = $api_continue(S, papiquery, 1, $api_class_warning(PSTRING ptbytes_class))
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if $api_class(S, PSTRING ptbytes_class, $api_frame_scope(S), $api_frame_scope(S), $api_frame_called(S), $api_frame_this(S), eps) = API_CLASS papiclass
+  -- if papiquery = $api_query(S, ptask, PSTRING ptbytes, PSTRING ptbytes_class, $api_string_item(S, ptask, ptbytes), papiclass, ptbytes, $(|ptbytes_class| + 2), |ptbytes_method|)
+def $api_begin(S, ptask, pvalue) = $api_finish(S, ptask, pvalue, HANDLERINVALID ptbytes)
+  -- if $api_initial_class(S, pvalue) = API_CLASS_INVALID ptbytes
+def $api_begin(S, ptask, pvalue) = $api_finish(S, ptask, pvalue, HANDLERUNKNOWN text)
+  -- if $api_initial_class(S, pvalue) = API_CLASS_UNKNOWN text
+
+def $api_initial_class(S, PARRAY n) = $api_class(S, $entry_value(S, pitem), $api_frame_scope(S), $api_frame_scope(S), $api_frame_called(S), $api_frame_this(S), eps)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem)
+def $api_initial_class(S, PSTRING ptbytes) = $api_class(S, PSTRING ptbytes_class, $api_frame_scope(S), $api_frame_scope(S), $api_frame_called(S), $api_frame_this(S), eps)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+
+def $api_after_class(S, papiquery) = $api_finish(S, papiquery.SOURCE, papiquery.VALUE, $api_method_result(S, papiquery, ptbytes))
+  -- if $entry_value(S, papiquery.METHOD) = PSTRING ptbytes
+  -- if $method_string_parts(ptbytes) = eps
+def $api_after_class(S, papiquery) = $api_continue(S, papiquery_inner, 1, ($api_compound_message(S, papiquery_inner)))
+  -- if $entry_value(S, papiquery.METHOD) = PSTRING ptbytes
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if ptbytes_class =/= eps
+  -- if $api_class(S, PSTRING ptbytes_class, (papiquery.CLASS.REQUESTED), papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, papiquery.CLASS.RECEIVER) = API_CLASS papiclass
+  -- if $api_subclass(S, papiquery.CLASS.REQUESTED, papiclass.REQUESTED)
+  -- if papiquery_inner = papiquery[.CLASS = papiclass][.OUTER = (papiquery.CLASS)][.ORIGINAL = ptbytes][.PREFIX = $(|ptbytes_class| + 2)][.WIDTH = |ptbytes_method|]
+def $api_after_class(S, papiquery) = $api_finish(S, papiquery.SOURCE, papiquery.VALUE, HANDLERINVALID ($ptascii("invalid function name")))
+  -- if $entry_value(S, papiquery.METHOD) = PSTRING ptbytes
+  -- if $method_string_parts(ptbytes) = ((eps, ptbytes_method))
+def $api_after_class(S, papiquery) = $api_finish(S, papiquery.SOURCE, papiquery.VALUE, HANDLERINVALID ptbytes_error)
+  -- if $entry_value(S, papiquery.METHOD) = PSTRING ptbytes
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if ptbytes_class =/= eps
+  -- if $api_class(S, PSTRING ptbytes_class, (papiquery.CLASS.REQUESTED), papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, papiquery.CLASS.RECEIVER) = API_CLASS_INVALID ptbytes_error
+def $api_after_class(S, papiquery) = $api_finish(S, papiquery.SOURCE, papiquery.VALUE, HANDLERINVALID ($ptascii("class ") ++ pclassdesc_outer.NAME ++ $ptascii(" is not a subclass of ") ++ pclassdesc_inner.NAME))
+  -- if $entry_value(S, papiquery.METHOD) = PSTRING ptbytes
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if ptbytes_class =/= eps
+  -- if $api_class(S, PSTRING ptbytes_class, (papiquery.CLASS.REQUESTED), papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, papiquery.CLASS.RECEIVER) = API_CLASS papiclass
+  -- if ~$api_subclass(S, papiquery.CLASS.REQUESTED, papiclass.REQUESTED)
+  -- if $class_at(S.CLASSES, papiquery.CLASS.REQUESTED) = (pclassdesc_outer)
+  -- if $class_at(S.CLASSES, papiclass.REQUESTED) = (pclassdesc_inner)
+def $api_after_class(S, papiquery) = $api_finish(S, papiquery.SOURCE, papiquery.VALUE, HANDLERUNKNOWN "callable method mutation or autoload") -- otherwise
+
+def $api_after_method(S, papiquery) = $api_finish(S, papiquery.SOURCE, papiquery.VALUE, $api_method_result(S, papiquery, ptbytes[papiquery.PREFIX:papiquery.WIDTH]))
+  -- if $entry_value(S, papiquery.METHOD) = PSTRING ptbytes
+  -- if $(papiquery.PREFIX + papiquery.WIDTH <= |ptbytes|)
+def $api_after_method(S, papiquery) = $api_finish(S, papiquery.SOURCE, papiquery.VALUE, HANDLERUNKNOWN "callable method mutation outside retained string bounds") -- otherwise
+
+;; API checks abstract/nonstatic before access. self and object selectors retain
+;; parent-private redirection; parent/static/concrete selectors are strict.
+def $api_method_result(S, papiquery, ptbytes) = HANDLERRESOLVED (API_METHOD_TARGET papiquery pmethoddesc.FUNCTION.ORIGIN ptbytes pmethoddesc.STATIC)
+  -- if $scope_method(S, papiquery.CLASS.REQUESTED, ptbytes, ~papiquery.CLASS.STRICT, papiquery.SCOPE) = (pmethoddesc)
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.STATIC \/ papiquery.CLASS.RECEIVER =/= eps
+  -- if $method_accessible(S, pmethoddesc, papiquery.SCOPE)
+def $api_method_result(S, papiquery, ptbytes) = HANDLERINVALID ($ptascii("cannot call abstract method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("()"))
+  -- if $scope_method(S, papiquery.CLASS.REQUESTED, ptbytes, ~papiquery.CLASS.STRICT, papiquery.SCOPE) = (pmethoddesc)
+  -- if pmethoddesc.ABSTRACT
+  -- if $class_at(S.CLASSES, papiquery.CLASS.REQUESTED) = (pclassdesc)
+def $api_method_result(S, papiquery, ptbytes) = HANDLERINVALID ($ptascii("non-static method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() cannot be called statically"))
+  -- if $scope_method(S, papiquery.CLASS.REQUESTED, ptbytes, ~papiquery.CLASS.STRICT, papiquery.SCOPE) = (pmethoddesc)
+  -- if ~pmethoddesc.ABSTRACT /\ ~pmethoddesc.STATIC
+  -- if papiquery.CLASS.RECEIVER = eps
+  -- if $class_at(S.CLASSES, papiquery.CLASS.REQUESTED) = (pclassdesc)
+def $api_method_result(S, papiquery, ptbytes) = HANDLERINVALID ($ptascii("cannot access ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ $ptascii(" method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("()"))
+  -- if $scope_method(S, papiquery.CLASS.REQUESTED, ptbytes, ~papiquery.CLASS.STRICT, papiquery.SCOPE) = (pmethoddesc)
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.STATIC \/ papiquery.CLASS.RECEIVER =/= eps
+  -- if ~$method_accessible(S, pmethoddesc, papiquery.SCOPE)
+  -- if ~$array_magic(S, papiquery.CLASS.REQUESTED)
+  -- if $class_at(S.CLASSES, papiquery.CLASS.REQUESTED) = (pclassdesc)
+def $api_method_result(S, papiquery, ptbytes) = HANDLERINVALID ($ptascii("class ") ++ pclassdesc.NAME ++ $ptascii(" does not have a method \"") ++ $c_string(ptbytes) ++ [34])
+  -- if $scope_method(S, papiquery.CLASS.REQUESTED, ptbytes, ~papiquery.CLASS.STRICT, papiquery.SCOPE) = eps
+  -- if ~$array_magic(S, papiquery.CLASS.REQUESTED)
+  -- if $class_at(S.CLASSES, papiquery.CLASS.REQUESTED) = (pclassdesc)
+def $api_method_result(S, papiquery, ptbytes) = HANDLERUNKNOWN "magic API callable method" -- otherwise
+
+def $api_finish(S, TYPE_RECEIVE porigin n, pvalue, HANDLERRESOLVED pcalltarget) = $default_store(S, pfunction, n, pvalue_live)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue_live
+def $api_finish(S, TYPE_RECEIVE porigin n, pvalue, HANDLERINVALID ptbytes) = $api_receive_reject(S, porigin, n)
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERRESOLVED pcalltarget) = $api_register(S, pconfigcall, pvalue)[.TODO = ptask_tail*]
+  -- if S.TODO = ptask :: ptask_tail*
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERINVALID ptbytes) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_error_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ ptbytes)
+def $api_finish(S, ERROR_HANDLER_INVOKE perrorcall, pvalue, HANDLERRESOLVED pcalltarget) = $error_handler_enter(S[.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*], perrorcall, pcalltarget, pfunction)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+def $api_finish(S, ERROR_HANDLER_INVOKE perrorcall, pvalue, HANDLERRESOLVED pcalltarget) = S[.COMPLETION = UNSUPPORTED "error-handler reference-return body"]
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF
+def $api_finish(S, ERROR_HANDLER_INVOKE perrorcall, pvalue, HANDLERINVALID ptbytes) = $error_handler_restore($error_invalid_callback(S, perrorcall, $ptascii("Invalid callback ") ++ $error_callback_name(S, pvalue) ++ $ptascii(", ") ++ ptbytes), pvalue)
+def $api_finish(S, ptask, pvalue, HANDLERUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
+
+def $api_register(S, pconfigcall, pvalue) = S_mask[.ERRORHANDLERS = S.ERRORHANDLER :: S.ERRORHANDLERS][.ERRORHANDLER = {CALLBACK (pvalue), LEVELS $error_int32(i)}][.RESULT = KNOWN $error_handler_value(S.ERRORHANDLER)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_mask = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 30719))
+  -- if S_mask.COMPLETION = NORMAL
+  -- if S_mask.RESULT = KNOWN (PINT i)
+def $api_register(S, pconfigcall, pvalue) = S_mask
+  -- if S_mask = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 30719))
+  -- if S_mask.COMPLETION =/= NORMAL
+
+def $api_receive_reject(S, porigin, n) = $default_store($typed_apply(S, ptypeconversion, z), pfunction, n, pvalue_new)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+  -- if $lookup(S.ENV, psparam.NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if z = $default_parameter_line(S, porigin, n)
+  -- if ptypeconversion = $api_scalar_conversion(S, psparam, pvalue)
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if $typed_apply(S, ptypeconversion, z).RESULT = KNOWN pvalue_new
+def $api_receive_reject(S, porigin, n) = $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ psparam.NAME ++ $ptascii(") must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given") ++ $wrapper_called_suffix(S, pcallcontext), $default_parameter_line(S, porigin, n))
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+  -- if $lookup(S.ENV, psparam.NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $api_scalar_conversion(S, psparam, pvalue) = TYPEREJECT
+  -- if S.CURRENT = (pcallcontext)
+
+rule PhpStep/api-callable-receive: S ~> $api_begin(S, TYPE_RECEIVE porigin n, pvalue)
+  -- if $api_receive_candidate(S)
+  -- if S.TODO = [TYPE_RECEIVE porigin n]
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+rule PhpStep/api-callable-register: S ~> $api_begin(S, CONFIG_INVOKE pconfigcall, $error_api_value(pconfigcall, 0, PNULL))
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $api_registration_candidate(S, pconfigcall)
+rule PhpStep/api-callable-dispatch: S ~> $api_begin(S[.ERRORHANDLER.CALLBACK = eps], ERROR_HANDLER_INVOKE perrorcall, perrorcall.CALLBACK)
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if $call_task_valid(S, ERROR_HANDLER_INVOKE perrorcall)
+  -- if $api_special(S, perrorcall.CALLBACK)
+rule PhpStep/api-callable-class-result: S ~> $api_after_class(S, papiquery)
+  -- if S.TODO = (API_CALLABLE_RESULT papiquery 0) :: ptask_tail*
+rule PhpStep/api-callable-method-result: S ~> $api_after_method(S, papiquery)
+  -- if S.TODO = (API_CALLABLE_RESULT papiquery 1) :: ptask_tail*
+
+;; Pure facts suppress deprecations; executing consumers must use the stages
+;; above. These facts do not certify an entered API invocation.
+def $api_source_line(S, DISCARD) = 0
+def $api_pure(S, PARRAY n) = $api_pure_array_method(S, papiquery, ptbytes)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if pvalue_input = $entry_value(S, pitem_receiver)
+  -- if $entry_value(S, pitem_method) = PSTRING ptbytes
+  -- if $api_initial_class(S, PARRAY n) = API_CLASS papiclass
+  -- if papiquery = $api_query(S, DISCARD, PARRAY n, pvalue_input, pitem_method, papiclass, ptbytes, 0, 0)
+def $api_pure(S, PSTRING ptbytes) = $api_method_result(S, papiquery, ptbytes_method)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if $api_initial_class(S, PSTRING ptbytes) = API_CLASS papiclass
+  -- if papiquery = $api_query(S, DISCARD, PSTRING ptbytes, PSTRING ptbytes_class, DIRECT (PSTRING ptbytes), papiclass, ptbytes, $(|ptbytes_class| + 2), |ptbytes_method|)
+def $api_pure(S, pvalue) = HANDLERINVALID ptbytes -- if $api_initial_class(S, pvalue) = API_CLASS_INVALID ptbytes
+def $api_pure(S, pvalue) = HANDLERUNKNOWN text -- if $api_initial_class(S, pvalue) = API_CLASS_UNKNOWN text
+def $api_pure_array_method(S, papiquery, ptbytes) = $api_method_result(S, papiquery, ptbytes)
+  -- if $method_string_parts(ptbytes) = eps
+def $api_pure_array_method(S, papiquery, ptbytes) = $api_method_result(S, papiquery[.CLASS = papiclass][.OUTER = (papiquery.CLASS)][.PREFIX = $(|ptbytes_class| + 2)][.WIDTH = |ptbytes_method|], ptbytes_method)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if ptbytes_class =/= eps
+  -- if $api_class(S, PSTRING ptbytes_class, (papiquery.CLASS.REQUESTED), papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, papiquery.CLASS.RECEIVER) = API_CLASS papiclass
+  -- if $api_subclass(S, papiquery.CLASS.REQUESTED, papiclass.REQUESTED)
+def $api_pure_array_method(S, papiquery, ptbytes) = HANDLERINVALID ($ptascii("invalid function name"))
+  -- if $method_string_parts(ptbytes) = ((eps, ptbytes_method))
+def $api_pure_array_method(S, papiquery, ptbytes) = HANDLERINVALID ptbytes_error
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if ptbytes_class =/= eps
+  -- if $api_class(S, PSTRING ptbytes_class, (papiquery.CLASS.REQUESTED), papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, papiquery.CLASS.RECEIVER) = API_CLASS_INVALID ptbytes_error
+def $api_pure_array_method(S, papiquery, ptbytes) = HANDLERINVALID ($ptascii("class ") ++ pclassdesc_outer.NAME ++ $ptascii(" is not a subclass of ") ++ pclassdesc_inner.NAME)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if ptbytes_class =/= eps
+  -- if $api_class(S, PSTRING ptbytes_class, (papiquery.CLASS.REQUESTED), papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, papiquery.CLASS.RECEIVER) = API_CLASS papiclass
+  -- if ~$api_subclass(S, papiquery.CLASS.REQUESTED, papiclass.REQUESTED)
+  -- if $class_at(S.CLASSES, papiquery.CLASS.REQUESTED) = (pclassdesc_outer)
+  -- if $class_at(S.CLASSES, papiclass.REQUESTED) = (pclassdesc_inner)
+def $api_pure_array_method(S, papiquery, ptbytes) = HANDLERUNKNOWN "compound callable class, autoload or internal lookup" -- otherwise
+def $api_admission(HANDLERRESOLVED pcalltarget) = (true)
+def $api_admission(HANDLERINVALID ptbytes) = (false)
+def $api_admission(HANDLERUNKNOWN text) = eps
+
+;; Immutable members constrain their snapshots. A shared member's current zval
+;; is not an authentication certificate for its earlier class/method selection.
+def $api_item_snapshot(DIRECT pvalue, pvalue) = true
+def $api_item_snapshot(ALIAS n, pvalue) = true
+def $api_item_snapshot(pitem, pvalue) = false -- otherwise
+def $api_raw_shape(S, papiquery) = true
+  -- if papiquery.VALUE = PARRAY n
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if |S.ARRAYS[n].ITEMS| = 2
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (papiquery.METHOD)
+  -- if $api_item_snapshot(pitem_receiver, papiquery.INPUT)
+  -- if $api_item_snapshot(papiquery.METHOD, PSTRING papiquery.ORIGINAL)
+def $api_raw_shape(S, papiquery) = true
+  -- if papiquery.VALUE = PSTRING ptbytes
+  -- if papiquery.ORIGINAL = ptbytes
+  -- if papiquery.METHOD = $api_string_item(S, papiquery.SOURCE, ptbytes)
+def $api_raw_shape(S, papiquery) = false -- otherwise
+
+def $api_query_shape(S, papiquery, 0) = true
+  -- if $is_array_value(papiquery.VALUE)
+  -- if papiquery.OUTER = eps
+  -- if papiquery.PREFIX = 0 /\ papiquery.WIDTH = 0
+  -- if $api_raw_shape(S, papiquery)
+  -- if $api_class(S, papiquery.INPUT, papiquery.SCOPE, papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, eps) = API_CLASS papiquery.CLASS
+def $api_query_shape(S, papiquery, 1) = true
+  -- if papiquery.VALUE = PSTRING ptbytes
+  -- if papiquery.OUTER = eps
+  -- if $api_raw_shape(S, papiquery)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if papiquery.INPUT = PSTRING ptbytes_class
+  -- if papiquery.PREFIX = $(|ptbytes_class| + 2) /\ papiquery.WIDTH = |ptbytes_method|
+  -- if $api_class(S, papiquery.INPUT, papiquery.SCOPE, papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, eps) = API_CLASS papiquery.CLASS
+def $api_query_shape(S, papiquery, 1) = true
+  -- if $is_array_value(papiquery.VALUE)
+  -- if papiquery.OUTER = (papiclass_outer)
+  -- if $api_raw_shape(S, papiquery)
+  -- if $api_class(S, papiquery.INPUT, papiquery.SCOPE, papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, eps) = API_CLASS papiclass_outer
+  -- if $method_string_parts(papiquery.ORIGINAL) = ((ptbytes_class, ptbytes_method))
+  -- if ptbytes_class =/= eps
+  -- if papiquery.PREFIX = $(|ptbytes_class| + 2) /\ papiquery.WIDTH = |ptbytes_method|
+  -- if $api_class(S, PSTRING ptbytes_class, (papiclass_outer.REQUESTED), papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, papiclass_outer.RECEIVER) = API_CLASS papiquery.CLASS
+  -- if $api_subclass(S, papiclass_outer.REQUESTED, papiquery.CLASS.REQUESTED)
+def $api_query_shape(S, papiquery, n) = false -- otherwise
+
+def $api_source_valid(S, papiquery) = true
+  -- if papiquery.SOURCE = TYPE_RECEIVE porigin n
+  -- if $typed_receive_valid(S[.TODO = [papiquery.SOURCE]], porigin, n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n < pcallcontext.ARGC)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+  -- if "callable" <- $ptmasks(psparam.TYPE)
+  -- if ~$typed_exact(psparam.TYPE, papiquery.VALUE)
+  -- if $lookup(S.ENV, psparam.NAME) = (n_cell)
+  -- if $(n_cell < |S.STORE|)
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED pvalue_live
+  -- if ~psparam.BYREF \/ n_cell <- S.REFCELLS
+  -- if pvalue_live = papiquery.VALUE \/ (psparam.BYREF /\ ($is_array_value(papiquery.VALUE) \/ (papiquery.METHOD = ALIAS n_cell /\ $typed_string_value(papiquery.VALUE))))
+def $api_source_valid(S, papiquery) = true
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $error_api_arity(S, pconfigcall).COMPLETION = NORMAL
+  -- if papiquery.VALUE = $error_api_value(pconfigcall, 0, PNULL)
+def $api_source_valid(S, papiquery) = true
+  -- if papiquery.SOURCE = ERROR_HANDLER_INVOKE perrorcall
+  -- if perrorcall.TARGET = eps
+  -- if $error_call_valid(S, perrorcall)
+  -- if papiquery.VALUE = perrorcall.CALLBACK
+def $api_source_valid(S, papiquery) = false -- otherwise
+
+def $api_query_valid(S, papiquery, n) = true
+  -- if $api_source_valid(S, papiquery)
+  -- if $api_query_shape(S, papiquery, n)
+  -- if papiquery.SCOPE = $api_frame_scope(S)
+  -- if papiquery.CALLED = $api_frame_called(S)
+  -- if papiquery.THIS = $api_frame_this(S)
+  -- if papiquery.LINE = $api_source_line(S, papiquery.SOURCE)
+def $api_query_valid(S, papiquery, n) = false -- otherwise
+def $call_task_valid(S, API_CALLABLE_RESULT papiquery n) = $api_query_valid(S, papiquery, n)
+def $task_nodes(API_CALLABLE_RESULT papiquery n) = $task_nodes(papiquery.SOURCE)
+def $selected_task_nonce(API_CALLABLE_RESULT papiquery n) = $selected_task_nonce(papiquery.SOURCE)
+def $return_discard(S, API_CALLABLE_RESULT papiquery n) = $return_discard(S, papiquery.SOURCE)
+
+def $api_warning_message(S, papiquery, 0) = $api_class_warning(papiquery.INPUT)
+def $api_warning_message(S, papiquery, 1) = $api_class_warning(papiquery.INPUT)
+  -- if $typed_string_value(papiquery.VALUE)
+def $api_warning_message(S, papiquery, 1) = ($api_compound_message(S, papiquery))
+  -- if $is_array_value(papiquery.VALUE)
+  -- if papiquery.OUTER =/= eps
+def $api_warning_message(S, papiquery, n) = eps -- otherwise
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = API_CALLABLE_RESULT papiquery n
+  -- if $api_query_valid(S, papiquery, n)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.LINE = papiquery.LINE
+  -- if $api_warning_message(S, papiquery, n) = (perrorcall.MESSAGE)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+
+;; This API carrier admits Zend's real foreign-this compound-keyword case. It
+;; cannot be used as an ordinary dynamic-call or capture permission.
+def $api_target_valid(S, papiquery, porigin_method, ptbytes) = true
+  -- if papiquery.SOURCE = ERROR_HANDLER_INVOKE perrorcall
+  -- if perrorcall.CALLBACK = papiquery.VALUE /\ perrorcall.TARGET = eps
+  -- if $api_query_shape(S, papiquery, 0) \/ $api_query_shape(S, papiquery, 1)
+  -- if $api_leaf_snapshot(papiquery, ptbytes)
+  -- if $scope_method(S, papiquery.CLASS.REQUESTED, ptbytes, ~papiquery.CLASS.STRICT, papiquery.SCOPE) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.STATIC \/ papiquery.CLASS.RECEIVER =/= eps
+  -- if $method_accessible(S, pmethoddesc, papiquery.SCOPE)
+def $api_target_valid(S, papiquery, porigin_method, ptbytes) = false -- otherwise
+def $target_function(S, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = (pmethoddesc.FUNCTION)
+  -- if $api_carrier_valid(S, papiquery, porigin_method, ptbytes, b_static)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if b_static = pmethoddesc.STATIC
+def $target_nodes(API_METHOD_TARGET papiquery porigin_method ptbytes true) = eps
+def $target_nodes(API_METHOD_TARGET papiquery porigin_method ptbytes false) = $scoped_receiver_nodes(papiquery.CLASS.RECEIVER)
+def $target_instance(API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = eps
+def $target_receiver(S, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = $handler_method_receiver(pmethoddesc, n)
+  -- if papiquery.CLASS.RECEIVER = (n)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+def $target_receiver(S, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = eps -- if papiquery.CLASS.RECEIVER = eps
+def $target_lexical_class(S, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = (pmethoddesc.OWNER)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+def $target_called_class(S, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = (papiquery.CLASS.CALLED)
+def $handler_method_tag(API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = true
+def $error_handler_selected(S, pvalue, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = (pvalue = papiquery.VALUE /\ $error_handler_retained(S, pvalue) /\ $api_carrier_valid(S, papiquery, porigin_method, ptbytes, b_static))
+def $handler_emitter_valid(S, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = true
+  -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if papiquery.SOURCE = ERROR_HANDLER_INVOKE perrorcall[.TARGET = eps]
+  -- if $api_carrier_valid(S, papiquery, porigin_method, ptbytes, b_static)
+  -- if $api_source_valid(S, papiquery)
+  -- if papiquery.SCOPE = $api_frame_scope(S)
+  -- if papiquery.CALLED = $api_frame_called(S)
+  -- if papiquery.THIS = $api_frame_this(S)
+  -- if papiquery.LINE = $api_source_line(S, papiquery.SOURCE)
+
+def $api_scalar_conversion(S, psparam, pvalue) = ptypeconversion
+  -- if ptypeconversion = $typed_conversion(psparam.TYPE, pvalue, $typed_caller_strict(S))
+  -- if ~$typed_parameter_source(S, psparam) \/ $typed_reference_allowed(ptypeconversion, pvalue)
+def $api_scalar_conversion(S, psparam, pvalue) = TYPEREJECT -- otherwise
+
+def $api_leaf_snapshot(papiquery, ptbytes) = true -- if papiquery.METHOD = ALIAS n
+def $api_leaf_snapshot(papiquery, ptbytes) = true
+  -- if papiquery.METHOD = DIRECT (PSTRING ptbytes)
+  -- if $is_array_value(papiquery.VALUE)
+  -- if papiquery.OUTER = eps
+  -- if papiquery.PREFIX = 0 /\ papiquery.WIDTH = 0
+def $api_leaf_snapshot(papiquery, ptbytes) = true
+  -- if papiquery.METHOD = DIRECT (PSTRING ptbytes_full)
+  -- if papiquery.PREFIX =/= 0
+  -- if $(papiquery.PREFIX + papiquery.WIDTH <= |ptbytes_full|)
+  -- if ptbytes = ptbytes_full[papiquery.PREFIX:papiquery.WIDTH]
+def $api_leaf_snapshot(papiquery, ptbytes) = false -- otherwise
+def $api_carrier_valid(S, papiquery, porigin_method, ptbytes, b_static) = true
+  -- if $api_target_valid(S, papiquery, porigin_method, ptbytes)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if b_static = pmethoddesc.STATIC
+def $api_carrier_valid(S, papiquery, porigin_method, ptbytes, b_static) = false -- otherwise
+
+def $api_frame_scope(S) = pcallcontext.LEXICAL_CLASS -- if S.CURRENT = (pcallcontext)
+def $api_frame_scope(S) = eps -- if S.CURRENT = eps
+
+;; The suspended USER receiver owns the formal cell. Rebuild its actual table
+;; and older frame tail when a deprecation callback is the active frame.
+dec $api_pending_task(ptask) : bool
+def $api_pending_task(API_CALLABLE_RESULT papiquery n) = true
+def $api_pending_task(ERROR_HANDLER_INVOKE perrorcall) = $api_pending_task(perrorcall.RESUME)
+def $api_pending_task(ERROR_HANDLER_RESULT perrorcall) = $api_pending_task(perrorcall.RESUME)
+def $api_pending_task(AT porigin ptask) = $api_pending_task(ptask)
+def $api_pending_task(ptask) = false -- otherwise
+dec $api_pending_tasks(ptask*) : bool
+def $api_pending_tasks(eps) = false
+def $api_pending_tasks(ptask :: ptask_tail*) = ($api_pending_task(ptask) \/ $api_pending_tasks(ptask_tail*))
+def $api_saved_frame_scope(S, pframe, pframe_tail*) = $set_active_table(S[.CURRENT = pframe.CONTEXT][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.FRAMES = pframe_tail*][.BORROWEDREAD = pframe.BORROWEDREAD], psymboltable)
+  -- if $api_pending_tasks(pframe.TODO)
+  -- if pframe.LOCALS = (psymboltable)
+def $api_saved_frame_scope(S, pframe, pframe_tail*) = $set_active_table(S[.CURRENT = pframe.CONTEXT][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.FRAMES = pframe_tail*][.BORROWEDREAD = pframe.BORROWEDREAD], psymboltable)
+  -- if $api_pending_tasks(pframe.TODO)
+  -- if pframe.LOCALS = eps /\ pframe.CONTEXT = eps
+  -- if S.GLOBALTABLE = (psymboltable)
