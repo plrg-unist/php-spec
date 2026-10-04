@@ -14,7 +14,7 @@ fixture.CASES = {
     'renderer-is-sole-original-owner': {
         'source': SOURCES['render-captured-message-owner'],
         'stage': ('S.CURRENT = (pcallcontext) -- if pcallcontext.NAME = $ptascii("w") '
-                  '-- if $binding_at(S.ENV, $ptascii("e")) = (n_cell) '
+                  '-- if $lookup(S.ENV, $ptascii("e")) = (n_cell) '
                   '-- if S.STORE[n_cell] = DEFINED PNULL'),
         'checks': [
             'S.SHUTDOWN.RENDER = (pshutdownrender)',
