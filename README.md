@@ -473,6 +473,11 @@ property/callable consumers remain open. Children created by cached property
 method callables retain lexical and called scope after wrapped or cloned makers
 retire, including private `new self` defaults. Two sources and 170 state premises
 retain separate accepted cutoffs.
+Shared trait-constant callable targets retain their first lookup while later
+method imports use fresh called classes and named/method receipts use current
+publication prefixes. Three new source
+agreements and112 AL/122 SL premises check partial failure, copied children and
+actual constant-cache ownership; compiled keyword NEW remains a required consumer.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

@@ -17,6 +17,19 @@ private self/static and current identity after null-binding resets called scope.
 Original preparation/eval-fixture failures remain in the [ledger](coverage/semantics/named-keyword-new-review.json).
 Autoload and complete core remain open; returns stay paused.
 
+Trait-constant callables265 retain the first shared AST method/function target,
+while named/method captures record each current publication prefix and METHOD
+captures select fresh called classes. REAL Closures use their own declaring scope.
+Exact receipts authenticate
+cached private targets after a real partial initializer failure; wrapped/plain
+makers can create children with lexical/called scope and private defaults after
+maker retirement. Successful constant caches own their values; history owns none.
+Three source agreements and58+54 AL premises pass at4e2d; the unchanged122-premise
+constructor guard passes SL at733 in27s under the same120s cap. AL timeouts remain
+zero-credit in the [default ledger](coverage/semantics/deferred-static-defaults-review.json).
+Compiled keyword NEW under the cached constant METHOD is the immediate remaining
+consumer; wider callable/default behavior and complete core stay open.
+
 Non-object casts261 now populate stdClass scalars/arrays, share all-string tables
 through genuine COW and fast clone, and preserve numeric round trips, alias type
 owners and active foreach cursor history. NaN warnings retain the allocated object
