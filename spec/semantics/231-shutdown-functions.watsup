@@ -657,6 +657,12 @@ def $shutdown_render_throw_pending(S) = true
   -- if perrorcall.RESUME = SHUTDOWN_RENDER pshutdownrender
   -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_TRACE
   -- if pshutdownrender.PENDING = eps
+def $shutdown_render_throw_pending(S) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (STRINGIFY_RESULT n_root porigin_method 0) :: (TERMINAL_STRING n_root) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $shutdown_task_scope(S)
+  -- if $throwable_member(S, n) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $stringify_result_valid(S[.TODO = [STRINGIFY_RESULT n_root porigin_method 0, TERMINAL_STRING n_root]], n_root, porigin_method, 0)
 def $shutdown_render_throw_pending(S) = false -- otherwise
 rule PhpStep/shutdown-render-warning-throw: S ~> S_restored[.SHUTDOWN.RENDER = (pshutdownrender_next)][.TODO = [SHUTDOWN_RENDER pshutdownrender_next]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $shutdown_render_throw_pending(S)
@@ -664,6 +670,13 @@ rule PhpStep/shutdown-render-warning-throw: S ~> S_restored[.SHUTDOWN.RENDER = (
   -- if perrorcall.RESUME = SHUTDOWN_RENDER pshutdownrender
   -- if S_restored = $error_handler_restore(S, perrorcall.CALLBACK)
   -- if pshutdownrender_next = pshutdownrender[.PENDING = (n)]
+
+rule PhpStep/shutdown-render-user-throw: S ~> S[.SHUTDOWN.RENDER = (pshutdownrender)][.TODO = [THROW_SEARCH n, SHUTDOWN_RENDER pshutdownrender]][.ORIGIN = ($shutdown_render_origin(S, n_root))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $shutdown_render_throw_pending(S)
+  -- if S.TODO = (THROW_SEARCH n) :: (STRINGIFY_RESULT n_root porigin_method 0) :: (TERMINAL_STRING n_root) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $throwable_field(S, n_root, "string") = PSTRING ptbytes
+  -- if pshutdownrender = {ROOT n_root, CURRENT n_root, SEEN eps, TEXT ptbytes, MESSAGE eps, ROOTMESSAGE ptbytes, PENDING (n), PHASE SHUTDOWN_RENDER_RETURN}
 
 def $shutdown_render_message(S, n, ptbytes) = $trace_display_message(pthrowable.KIND, ptbytes) -- if S.OBJECTS[n] = THROWABLE pthrowable
 def $shutdown_render_message(S, n, ptbytes) = ptbytes -- otherwise
