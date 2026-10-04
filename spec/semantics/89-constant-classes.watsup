@@ -332,7 +332,7 @@ def $constant_branches_at(S, n, eps) = true
 def $constant_branches_at(S, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($constant_node_branches_valid(S, PORIGIN n pcpath, pcnode) /\ $constant_branches_at(S, n, pcoccurrence*))
 def $constant_branches_valid(S) = $constant_branches_at(S, n, pcunit.OCCURRENCES)
   -- if S.CONSTCONTEXT = (pconstantcontext)
-  -- if pconstantcontext.ORIGIN = PORIGIN n pcpath
+  -- if $origin_source(pconstantcontext.ORIGIN) = PORIGIN n pcpath
   -- if $source_unit(S.SOURCES, n) = (pcunit)
 
 def $constant_fact_pool_valid(S, pconstantfact) = true
