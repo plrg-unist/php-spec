@@ -1,0 +1,14 @@
+;; TypeError rendering scans for Zend's argument-call suffix without slicing
+;; beyond a short remaining message or scanning past an embedded NUL.
+dec $main() : bool
+def $main() = true
+  -- if ~$trace_called_in(eps)
+  -- if ~$trace_called_in($ptascii("short"))
+  -- if ~$trace_called_in($ptascii("12345678901"))
+  -- if ~$trace_called_in($ptascii("123456789012"))
+  -- if $trace_called_in($ptascii(", called in "))
+  -- if $trace_called_in($ptascii("prefix, called in file"))
+  -- if ~$trace_called_in([0] ++ $ptascii(", called in file"))
+  -- if ~$trace_called_in($ptascii("prefix") ++ [0] ++ $ptascii(", called in file"))
+  -- if $trace_display_message("TypeError", $ptascii("short")) = $ptascii("short")
+  -- if $trace_display_message("TypeError", $ptascii("prefix, called in file")) = $ptascii("prefix, called in file and defined")

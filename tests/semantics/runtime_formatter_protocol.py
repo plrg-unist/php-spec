@@ -14,10 +14,12 @@ import iterator_declaration_notices as catalogue
 import user_iterator as source
 
 ROOT = Path(__file__).resolve().parents[2]
+TRAIT_ERROR = ROOT / 'tests/semantics/trait_data_collision_held_primary_review_cases.json'
 CASES = {
     'runtime-eval': 'runtime-fatal-formatter-eval',
     'runtime-constant': 'runtime-fatal-formatter-constant',
     'runtime-include': 'runtime-fatal-formatter-include',
+    'runtime-trait-error': 'held-eval-primary-precedes-new-trait-collision-error',
 }
 PREFIX = r'''dec $await(pstate,nat) : pstate
 def $await(S,n) = S -- if S.COMPLETION = SOURCE_PENDING
@@ -65,6 +67,8 @@ def main():
     inputs = [*modules, root / 'spec/semantics/modules.json', Path(__file__),
               root / 'tests/semantics/iterator_declaration_notices.py', root / 'tests/semantics/profile.json',
               root / '_build/default/adapter/main.exe', root / 'tests/semantics/_build/default/numeric_runner.exe', source.driver.types.PHP]
+    if 'runtime-trait-error' in names:
+        inputs.append(TRAIT_ERROR)
     before = {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in inputs}
     report = {'result': 'fail', 'mode': args.mode, 'inputs': before, 'root': str(root), 'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip(),
               'generator': str(Path(__file__)), 'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING': None},
@@ -90,7 +94,12 @@ def main():
         for name in names:
             directory = out / name
             directory.mkdir()
-            case = catalogue.CASES[CASES[name]]
+            if name == 'runtime-trait-error':
+                row = next(row for row in json.loads(TRAIT_ERROR.read_text())['cases'] if row['id'] == CASES[name])
+                case = {'source': row['source'].encode()}
+                assert hashlib.sha256(case['source']).hexdigest() == row['source_sha256']
+            else:
+                case = catalogue.CASES[CASES[name]]
             path = directory / 'source.php'
             path.write_bytes(case['source'])
             text = path.read_text()
@@ -166,6 +175,40 @@ def main():
                 '$class_named(S_report.CLASSNAMES,$ptascii("b")) = eps',
                 '$class_named(S_report.CLASSNAMES,$ptascii("innerbad")) = eps',
             ]
+            if name == 'runtime-trait-error':
+                conditions += [
+                    'pclassdesc.NAME = $ptascii("InnerBad")',
+                    '$class_named(S.CLASSNAMES,$ptascii("t")) = (porigin_trait)',
+                    '$class_at(S.CLASSES,porigin_trait) = (pclassdesc_trait)',
+                    'pclassdesc_trait.KIND = "trait"',
+                    'porigin_trait = PORIGIN 2 pcpath_trait',
+                    '$ppproperty_desc_at(pclassdesc_trait.PROPERTIES,$ptascii("x")) = (ppropertydesc_trait)',
+                    'ppropertydesc_trait.DEFAULT = PROP_DEFERRED porigin_default',
+                    '$trait_member_fold(S,pclassdesc,porigin_default) = (F_error)',
+                    '$trait_fold_error(F_error) = (ptraitdataerror)',
+                    'ptraitdataerror.KIND = "Error"',
+                    'ptraitdataerror.MESSAGE = $ptascii("Undefined constant self::MISSING")',
+                    '$trait_collision_held(S)',
+                    'S_failed = $activate_class_body(S,pclassdesc)',
+                    'S_failed.COMPLETION = STATICBYTES ptbytes_inner z_inner',
+                    'S_failed.ERRORORIGIN = (PORIGIN 2 eps)',
+                    'S_failed.EVENTS = S.EVENTS',
+                    'S_failed.OBJECTS = S.OBJECTS',
+                    'S_failed.ALLOCATIONS = S.ALLOCATIONS',
+                    'S_failed.RESULT = S.RESULT',
+                    '$runtime_class_rollback(S,S_failed)',
+                    '$runtime_class_recorded_fatal(S,S_failed,pclassdesc)',
+                    '~$runtime_class_recorded_fatal(S,S_failed[.COMPLETION = REQUESTFATAL $ptascii("CompileError") ptbytes_inner z_inner],pclassdesc)',
+                    '~$runtime_class_recorded_fatal(S[.ORIGIN = (porigin_trait)],S_failed,pclassdesc)',
+                    '~$runtime_class_recorded_fatal(S,S_failed[.CLASSNAMES = S.CLASSNAMES ++ [($ptascii("innerbad"),porigin_class)]],pclassdesc)',
+                    '~$runtime_class_recorded_fatal(S[.TODO = eps][.FRAMES = eps],S_failed,pclassdesc)',
+                    'S_report.OBJECTS = S.OBJECTS',
+                    'S_report.OBJECTPROPS = S.OBJECTPROPS',
+                    'S_report.CLASSCONSTANTCACHE = S.CLASSCONSTANTCACHE',
+                    '$declaration_history_valid(S_report)',
+                    '$declaration_entry_check(S_report) = S_report',
+                    '$class_named(S_report.CLASSNAMES,$ptascii("t")) = (porigin_trait)',
+                ]
             if name == 'runtime-constant':
                 conditions += ['$class_named(S_report.CLASSNAMES,$ptascii("inneri")) = (porigin_interface)',
                                '$declaration_entry_check(S_report[.DECLARATIONS = $replace_failure(S_report.DECLARATIONS,porigin_class,[PDRCLASSFATAL porigin_interface pdeclcause])]).COMPLETION = UNSUPPORTED "invalid declaration publication history"']

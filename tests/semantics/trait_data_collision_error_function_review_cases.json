@@ -1,0 +1,43 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; project profile; native-only Error274 preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Default-only first-property Error retains real function trace, adding the constant-expression frame only for a distinct checked AST line. Cyclic full imported lookup is an independent required Error boundary. Native-only zero model credit.",
+  "cases": [
+    {
+      "id": "bare-property-error-keeps-real-function-trace-without-fake-expression-frame",
+      "source": "<?php\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\ntrait T{public static $x=E_STRICT;}\nfunction build(){\n echo \"PRE;\";\n class C{use T;public static $x=DOES_NOT_EXIST;}\n echo \"POST;\";\n}\nbuild();\necho \"AFTER;\";\n",
+      "source_sha256": "6fd62834d2ab5fce284c9dc2ec56ed7e29e6e7371cc3a270a4e5b96ef0438222",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "V2FybmluZzogVW5jYXVnaHQgRXJyb3I6IFVuZGVmaW5lZCBjb25zdGFudCAiRE9FU19OT1RfRVhJU1QiIGluIHtGSUxFfTo2ClN0YWNrIHRyYWNlOgojMCB7RklMRX0oOSk6IGJ1aWxkKCkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDYKRmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNgo=",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-cache-review-266/.tools/trait-error-function-native-274-05vmr7kv/report.json",
+      "native_raw_sha256": "8b7190edec37f50e78e67c6746368ad3caa3a58231e35b98982680f32f8f3d1c"
+    },
+    {
+      "id": "multiline-property-error-keeps-constant-expression-and-function-traces",
+      "source": "<?php\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\ntrait T{public static $x=E_STRICT;}\nfunction build(){\n echo \"PRE;\";\n class C{\n  use T;\n  public static $x=\n   DOES_NOT_EXIST+1;\n }\n echo \"POST;\";\n}\nbuild();\necho \"AFTER;\";\n",
+      "source_sha256": "d329a8461cd652e7d963172d1456f2e0b8290d6a7eee368d757ceba71fc7abbf",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "V2FybmluZzogVW5jYXVnaHQgRXJyb3I6IFVuZGVmaW5lZCBjb25zdGFudCAiRE9FU19OT1RfRVhJU1QiIGluIHtGSUxFfTo5ClN0YWNrIHRyYWNlOgojMCB7RklMRX0oNik6IFtjb25zdGFudCBleHByZXNzaW9uXSgpCiMxIHtGSUxFfSgxMyk6IGJ1aWxkKCkKIzIge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDkKRmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNgo=",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-cache-review-266/.tools/trait-error-trace-cycle-native-274-3n9h6v2p/report.json",
+      "native_raw_sha256": "3f2149d023ad4f30f1513075c741f9880dfdd2dcf68ac1005a038aa455f3a6f6"
+    },
+    {
+      "id": "recursive-imported-constant-stops-with-default-only-error",
+      "source": "<?php\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\ntrait T{public const int Y=self::Y;public static $x=self::Y;}\necho \"PRE;\";\nclass C{use T;public static $x=1;}\necho \"POST;\";\n",
+      "source_sha256": "a757826866a4424659c519b3f78435abd8f1a8f089950c881f290507057a1d65",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "V2FybmluZzogVW5jYXVnaHQgRXJyb3I6IENhbm5vdCBkZWNsYXJlIHNlbGYtcmVmZXJlbmNpbmcgY29uc3RhbnQgc2VsZjo6WSBpbiB7RklMRX06MwpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDUpOiBbY29uc3RhbnQgZXhwcmVzc2lvbl0oKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMwpGYXRhbCBlcnJvcjogQyBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-cache-review-266/.tools/trait-error-trace-cycle-native-274-3n9h6v2p/report.json",
+      "native_raw_sha256": "a592ea92f1486542657c6e36377637817c4872dee6c6f3ef7f1cbd6a1c7bdf12"
+    }
+  ]
+}

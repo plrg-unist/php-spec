@@ -228,6 +228,7 @@ def $trait_cache_bind(F, pcpath, pclassconstantdesc, z, F_value) = $pfclass_cons
 def $trait_cache_bind(F, pcpath, pclassconstantdesc, z, F_value) = F[.RECORDED = F.RECORDED ++ F_value.RECORDED][.VALUE = eps] -- otherwise
 
 def $trait_comparison_memory(ptraitdatavalue_left, TRAITVALUE S pvalue pfdiagnostic*) = (S)
+  -- if ~$trait_value_error(ptraitdatavalue_left)
 def $trait_comparison_memory(TRAITVALUE S pvalue pfdiagnostic*, TRAITUNINITIALIZED) = (S)
 def $trait_comparison_memory(ptraitdatavalue_left, ptraitdatavalue_right) = eps -- otherwise
 def $trait_cache_transfer(S, (S_memory)) = $prune_allocations(S[.ARRAYS = S_memory.ARRAYS][.ALLOCATIONS = S_memory.ALLOCATIONS][.CLASSCONSTANTCACHE = S_memory.CLASSCONSTANTCACHE][.CLASSCONSTANTHISTORY = S_memory.CLASSCONSTANTHISTORY])

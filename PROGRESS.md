@@ -256,7 +256,7 @@ with320 checks and37 compiler/certificate premises pass atfa084. Actual256 paren
 preservation keeps243 modules without renewing those cuts. Original compiler and
 fixture parse stops stay zero-credit in the
 [ledger](coverage/semantics/dollar-curly-review.json). The early-eval effects pin
-passes with236 at5cf39c0dd; four other native-only originals remain required. Wider
+passes with236 at5cf39c0dd; the other four originals first pass with275 at4293f196. Wider
 interpolation and original non-object-cast/file-observer gaps remain open.
 
 Dynamic object `::class`256 evaluates one child and returns its real class name
@@ -473,8 +473,13 @@ alias/queue guards pass at their separate cuts. Module266 binds referenced
 deferred constants in their real declaring scopes before strict comparison,
 retaining typed caches between operands and distinct full import identities.
 Ten normal source comparisons and201 unique cache/owner/lookup-chain guards pass;20 repeated setup checks add no coverage.
-Failed-link cache disposition, object-bearing dependency values and endogenous
-expression errors remain required; traits stay partial.
+Module274 stops copied expressions at their first Error, default-flushes prior
+diagnostics and renders the pending exception before a no-trace composition fatal.
+Ten PHP-error sources and156 reached failure/cleanup checks pass, with ten separate
+formatter checks. Held-primary reporting uses the genuine failed-class route275;
+one actual source and112 reached replay checks pass at separate cuts. Failed-link
+cache disposition, cyclic and object-bearing dependencies remain required; traits
+stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
