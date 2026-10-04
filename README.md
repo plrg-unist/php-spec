@@ -392,8 +392,11 @@ their selected class/name; seven source comparisons and an 84-premise fixture
 cover failure/retry, replacement and ownership. Captured/rebound Closure keyword
 references now retain authentic scope/binding and nested creator evidence after
 collection, including unrelated called classes and handler ingress. Nine new
-sources and 162 state premises pass separately. Deferred instance/object defaults
-and wider consumers remain open.
+sources and 162 state premises pass separately. Temporary `Closure::call` children
+retain the authentic receiver scope after their maker retires, with genuine
+receiver ownership for nonstatic children and nonowning evidence for static
+children. Six new sources and 193 state premises pass at separate cutoffs.
+Deferred instance/object defaults and wider consumers remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

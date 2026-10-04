@@ -40,14 +40,17 @@ default prefixes for retry. Selected dynamic classes and ordinary method
 self/parent/static scopes survive callback mutation in source-bound snapshots;
 selected fill/retirement/table events retain these identities without owning heap
 values. Module239 extends keyword snapshots to captured/rebound source Closures.
-Minting requires the authentic live call and its exact scope or binding row;
+Minting requires the authentic live call and its exact scope, binding row or
+temporary `Closure::call` source/receiver context;
 historical validation uses source/template and arena identities after pruning.
 Bound called class follows the actual receiver, including a class unrelated to
 lexical scope. Nested creation copies the immediate creator's scope, receiver and
 nullable invocation site, retaining error and terminal handler ingress. These
 certificates own no Closure, receiver or captured cell. Ordinary method ancestry
-checks remain exact. Instance/object defaults and wider reference/creation
-consumers remain required open work.
+checks remain exact. Temporary-call children retain the effective receiver class
+after their maker retires; nonstatic children own their receiver, while static
+children retain only nonowning receiver evidence. Instance/object defaults and
+wider reference/creation consumers remain required open work.
 The [deferred-default review](../../coverage/semantics/deferred-static-defaults-review.json)
 records eleven earlier source agreements separately from five source-derived guard
 programs. Four217 callback comparisons preserve saved initializer contexts,
@@ -60,6 +63,10 @@ check delayed target ordering, visibility, ordinary method keywords, immutable
 dynamic selection, sole captured-cell ownership, failure/retry and retirement.
 Nine additional Closure sources and three programs/162 premises check immutable
 scope/creator identity, unrelated called class, alias retirement and collection.
+Six later temporary-call sources and three programs/193 premises check escaping
+children, clone/rebinding, callback resume/throw, deterministic ordinary/copied
+scope admission and collection. Their separate cutoffs and original validator
+failure remain in the review.
 Two later213/215 comparisons
 initialize the inherited default
 inside a captured private handler and a raw private handler during a Stringable
