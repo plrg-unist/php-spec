@@ -14,7 +14,10 @@ internal REAL copies and returned children retain genuine scope after makers
 retire. Static API receivers add no argument-evaluation owner. Selected warnings
 preserve scope/error order and unwind callback writes. Source24 normal at distinct
 cuts, nine owner/frame fixtures444 conditions (author214/independent230), affected
-older identity3/37 and AL237 pass. Original compiler, source and fixture failures,
+older identity3/37 and private AL237 pass. Actualc139 preserves246 modules and
+passes AL247 plus one inherited property-default source: REAL current/`__invoke`
+identity and private fake binding/clone permission, called scope and shared statics.
+Original compiler, source and fixture failures,
 the global-constant Unsupported control and native-only controls remain separate
 in the [ledger](coverage/semantics/closure-current-binding-review.json).
 The [contract](docs/semantics/CLOSURE-CURRENT-BINDING.md) keeps complete REAL

@@ -148,5 +148,11 @@
     "source": "<?php\nclass InternalReboundHost253 {}\nfunction internalReboundMaker253() {\n    return function () {\n        return function () {\n            echo self::class, ':', static::class, ':', get_class($this), '|';\n            return Closure::getCurrent();\n        };\n    };\n}\n$host = new InternalReboundHost253();\n$fake = internalReboundMaker253(...);\n$maker = $fake->bindTo($host);\n$real = $maker();\n$rebound = $real->bindTo($host, InternalReboundHost253::class);\n$child = $rebound();\nunset($host, $fake, $maker, $real, $rebound);\necho $child() === $child ? 'OK' : 'BAD';\nunset($child);\n",
     "source_sha256": "9a8d96307e58a548709c5c718f60e03ed46db32a8691d145bb30ff112e696c89",
     "expected_model": "normal"
+  },
+  {
+    "id": "actual-property-default-current-binding",
+    "source": "<?php\nclass PropertyCurrentOwner253 {\n    private static function run() {\n        static $n = 0;\n        return self::class . ':' . static::class . ':' . ++$n;\n    }\n    public Closure $real = static function () { return Closure::getCurrent(); };\n    public Closure $fake = self::run(...);\n}\nclass PropertyCurrentChild253 extends PropertyCurrentOwner253 {}\n$holder = new PropertyCurrentChild253;\n$real = $holder->real;\n$invoke = $real->__invoke(...);\n$fake = $holder->fake;\n$bound = $fake->bindTo(null);\n$copy = clone $bound;\nunset($holder, $fake);\necho (int)($real() === $real), ':', (int)($invoke === $real), '|';\necho $bound(), '|', $copy(), '|';\nunset($real, $invoke, $bound, $copy);\n",
+    "source_sha256": "3c0c4bf87c7b72933d1879ad2618a17acd4c82552854ecea3284c2b83889162a",
+    "expected_model": "normal"
   }
 ]
