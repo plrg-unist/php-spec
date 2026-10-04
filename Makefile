@@ -351,6 +351,8 @@ test-semantics: build
 	python3 tests/semantics/eval_trace_protocol.py
 	python3 tests/semantics/eval_adapter_protocol.py
 	python3 tests/semantics/include_execution.py
+	python3 tests/semantics/file_operand_sources.py
+	python3 tests/semantics/file_operand_protocol.py
 	python3 tests/semantics/startup_ini.py
 	python3 tests/semantics/startup_ini_protocol.py
 	python3 tests/semantics/display_errors.py
