@@ -1,6 +1,9 @@
 ;; Quiet ??= retains the evaluated operands for the later memoized write.
 ;; CVs remain delayed; an evaluated scalar key is not evaluated again.
 dec $key_edit_direct_base(pbase) : bool
+dec $key_coalesce_array_base(pbase) : bool
+dec $key_coalesce_base_read_view(pstate, porigin, pbase) : pbase?
+dec $key_coalesce_write_base_source(pstate, porigin, pbase) : bool
 dec $key_coalesce_source(pstate, porigin, pbase, bool, int) : porigin?
 dec $key_coalesce_write_source(pstate, porigin, pbase, bool, int) : porigin?
 dec $key_coalesce_read_view(pstate, pkeyread) : pkeyread
@@ -33,7 +36,7 @@ def $key_coalesce_source(S, porigin, pbase, b, z) = (porigin_target)
   -- if b = $assignment_self(expression_target, expression_rhs)
   -- if $code_expression_at_source(S, porigin, eps) = (z)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
-  -- if $key_edit_direct_base(pbase)
+  -- if $key_coalesce_array_base(pbase)
   -- if $key_write_base_source(S, porigin_target, pbase)
   -- if S_source = S[.ORIGIN = (porigin)]
   -- if $memoized_write_ready(S_source, pbase, [PCFIELD 0])
@@ -71,8 +74,9 @@ def $key_write_task_base(COALESCE_ASSIGN_WRITE pbase b z, pbase_current, poperan
 def $key_write_self(COALESCE_ASSIGN_WRITE pbase b z) = b
 def $key_write_line(COALESCE_ASSIGN_WRITE pbase b z) = z
 def $key_write_direct_task(COALESCE_ASSIGN_WRITE pbase b z) = true
-def $key_write_writer(S, porigin, COALESCE_ASSIGN_WRITE pbase b z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK COALESCE_ASSIGN_WRITE pbase b z, BASE pbase, RHS poperand, TEMP eps})
-  -- if $key_coalesce_write_source(S, porigin, pbase, b, z) = (porigin_target)
+def $key_write_writer(S, porigin, COALESCE_ASSIGN_WRITE pbase_original b z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK COALESCE_ASSIGN_WRITE pbase_original b z, BASE pbase, RHS poperand, TEMP eps})
+  -- if $key_coalesce_write_source(S, porigin, pbase_original, b, z) = (porigin_target)
+  -- if $key_coalesce_write_base_source(S, porigin_target, pbase)
 ;; A memoized arithmetic/call key can have distinct quiet and write lines.
 ;; The operand retains its read occurrence; only the second fetch uses CODEWRITE.
 def $key_coalesce_write_source(S, porigin, pbase, b, z) = (porigin_target)
@@ -80,13 +84,8 @@ def $key_coalesce_write_source(S, porigin, pbase, b, z) = (porigin_target)
   -- if b = $assignment_self(expression_target, expression_rhs)
   -- if $code_expression_at_source(S, porigin, eps) = (z)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
-  -- if $key_edit_direct_base(pbase)
-  -- if pbase = BASE_DIM pbase_root poperand z_write
-  -- if porigin_target = PORIGIN n pcpath
-  -- if $code_at(S.CODE, n) = (pcode)
-  -- if $code_write_lines(pcode.EXPRESSIONS, pcpath) = [z_write]
-  -- if $code_expression_at_source(S, porigin_target, [PCFIELD 1]) = (z_read)
-  -- if $key_write_base_source(S, porigin_target, BASE_DIM pbase_root poperand z_read)
+  -- if $key_coalesce_array_base(pbase)
+  -- if $key_coalesce_write_base_source(S, porigin_target, pbase)
   -- if S_source = S[.ORIGIN = (porigin)]
   -- if $memoized_write_ready(S_source, pbase, [PCFIELD 0])
 def $key_coalesce_write_source(S, porigin, pbase, b, z) = eps -- otherwise
@@ -94,7 +93,7 @@ def $key_writer_base_source(S, pkeywriter) = ($key_coalesce_write_source(S, pkey
   -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE pbase b z
 def $key_coalesce_write_context(S, (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*, porigin) = true
   -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE pbase b z
-  -- if pkeywriter.TARGET = porigin
+  -- if $key_write_site(S, pkeywriter.TARGET, false, porigin, false)
 def $key_coalesce_write_context(S, ptask :: ptask_tail*, porigin) = $key_coalesce_write_context(S, ptask_tail*, porigin)
   -- if ~$key_write_finish_task(ptask)
 def $key_coalesce_read_view(S, pkeyread) = pkeyread[.LINE = z_read]
@@ -116,6 +115,7 @@ def $key_write_valid(S, pkeywrite) = true
 def $key_write_finish(S, pkeywriter) = $write_operand(S, pkeywriter.RHS, z)
   -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE pbase b z
   -- if S.LOCATION =/= NOWHERE
+  -- if ~$error_missing_operand(S, pkeywriter.RHS)
 ;; A quiet callback may retire the original CV. Its later W walk can still
 ;; initialize null/undefined storage through the ordinary native W helper.
 def $key_coalesce_write_root(S, BASE_DIM (BASE_VALUE (VARIABLE n_name* z_base)) poperand z) = true
