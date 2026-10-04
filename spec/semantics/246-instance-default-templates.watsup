@@ -204,7 +204,7 @@ def $instance_default_site_valid(S, porigin_class, pstaticdefaultcontext, ptask*
   -- if $origin_node(S.SOURCES, porigin_trigger) = (expression)
   -- if pstaticdefaultcontext.LINE = $runtime_line(S_site, eps, expression)
 def $instance_default_site_valid(S, porigin_class, pstaticdefaultcontext, ptask*) = false -- otherwise
-def $property_default_update_suffix(eps, ptask) = eps
+def $property_default_update_suffix(eps, ptask_target) = eps
 def $property_default_update_suffix(ptask :: ptask_tail*, ptask_target) = (ptask :: ptask_tail*)
   -- if ptask = ptask_target
 def $property_default_update_suffix(ptask :: ptask_tail*, ptask_target) = $property_default_update_suffix(ptask_tail*, ptask_target)
