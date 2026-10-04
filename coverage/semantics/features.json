@@ -10427,20 +10427,26 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/222-exception-handlers.watsup"
+        "spec/semantics/222-exception-handlers.watsup",
+        "spec/semantics/247-handler-callable-consumers.watsup"
       ],
       "helper_tests": [
         "tests/semantics/exception_handler_protocol.py",
         "tests/semantics/exception_handler_state.py",
         "tests/semantics/exception_handler_state_review.py",
-        "tests/semantics/exception_handler_boundaries.py"
+        "tests/semantics/exception_handler_boundaries.py",
+        "tests/semantics/callback_api_scope_check.py",
+        "tests/semantics/callback_api_state_review.py"
       ],
       "source_tests": [
         "tests/semantics/exception_handlers.py",
         "tests/semantics/exception_handler_cases.json",
         "tests/semantics/exception_handler_review.py",
         "tests/semantics/exception_handler_review_cases.json",
-        "tests/semantics/exception_handler_static_default.py"
+        "tests/semantics/exception_handler_static_default.py",
+        "tests/semantics/callback_api_review.py",
+        "tests/semantics/callback_api_review_cases.json",
+        "tests/semantics/callback_api_composition_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c",
@@ -10449,9 +10455,11 @@
         "vendor/php-src/Zend/zend_exceptions.c",
         "docs/semantics/SOURCE-EXCEPTION-HANDLERS.md",
         "coverage/semantics/exception-handlers-review.json",
-        "coverage/semantics/exception-handler-review.json"
+        "coverage/semantics/exception-handler-review.json",
+        "coverage/semantics/callback-api-consumers-review.json",
+        "coverage/semantics/callback-api-consumer-review.json"
       ],
-      "review": "Raw nullable set/get/restore stacks and null-caller terminal dispatch222 reuse ordinary weak calls with one authentic Throwable. Borrowed immutable selection snapshots survive registry removal and static selector retirement. Author29/216 and independent33/331 pass at distinct recorded cutoffs, including weak Stringable variadic/default reception and authenticated internal send-warning continuations; actual219 cross-file static-default source1 and production algorithm/structure gates pass. Two explicit Unsupported controls earn zero agreement. Effectful keyword/compound ingress, magic/autoload/internal callbacks, later lifecycle entry, shared207 reference-return bodies and temporary-value reference returns remain open. No complete-core claim."
+      "review": "Raw nullable set/get/restore stacks and null-caller terminal dispatch222 reuse ordinary weak calls with one authentic Throwable. Borrowed immutable selection snapshots survive registry removal and static selector retirement. Author29/216 and independent33/331 pass at distinct recorded cutoffs, including weak Stringable variadic/default reception and authenticated internal send-warning continuations; actual219 cross-file static-default source1 and production algorithm/structure gates pass. Earlier Unsupported controls retain zero agreement at their original cut. Module247 stages raw keyword/compound registration and null-C terminal re-selection, preserving Unknown0 deprecations, original snapshots, referenced-method effects, handler replacement/restore/throw/exit and selected continuations. Magic/autoload/internal callbacks, destructor/GC/output/free phases, shared207 reference-return bodies and temporary-value reference returns remain open. No complete-core claim."
     },
     {
       "id": "diagnostics.handler-throws",
@@ -11381,11 +11389,14 @@
         "spec/semantics/134-inheritance-runtime.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/178-interface-runtime.watsup",
-        "spec/semantics/179-interface-methods.watsup"
+        "spec/semantics/179-interface-methods.watsup",
+        "spec/semantics/247-handler-callable-consumers.watsup"
       ],
       "helper_tests": [
         "tests/semantics/shutdown_state_review.py",
-        "tests/semantics/shutdown_render_state.py"
+        "tests/semantics/shutdown_render_state.py",
+        "tests/semantics/callback_api_scope_check.py",
+        "tests/semantics/callback_api_state_review.py"
       ],
       "source_tests": [
         "tests/semantics/shutdown_functions.py",
@@ -11393,7 +11404,10 @@
         "tests/semantics/shutdown_review.py",
         "tests/semantics/shutdown_review_cases.json",
         "tests/semantics/display_errors.py",
-        "tests/semantics/display_errors/freeze.php"
+        "tests/semantics/display_errors/freeze.php",
+        "tests/semantics/callback_api_review.py",
+        "tests/semantics/callback_api_review_cases.json",
+        "tests/semantics/callback_api_composition_cases.json"
       ],
       "evidence": [
         "vendor/php-src/ext/standard/basic_functions.c",
@@ -11401,9 +11415,11 @@
         "vendor/php-src/Zend/zend_exceptions.c",
         "docs/semantics/SOURCE-SHUTDOWN.md",
         "coverage/semantics/shutdown-functions-review.json",
-        "coverage/semantics/shutdown-function-review.json"
+        "coverage/semantics/shutdown-function-review.json",
+        "coverage/semantics/callback-api-consumers-review.json",
+        "coverage/semantics/callback-api-consumer-review.json"
       ],
-      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Keyword/compound callback API consumers, wider callable dependencies and later destructor/GC/output/free phases remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls."
+      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Module247 caches keyword/compound selections after the real API warnings and pins the retired maker target/callsite/scope without new roots. Wider callable dependencies and later destructor/GC/output/free phases remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls."
     },
     {
       "id": "lifecycle.shutdown-order",

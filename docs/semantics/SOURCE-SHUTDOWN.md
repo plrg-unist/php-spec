@@ -36,7 +36,7 @@ continues with its return warning and current private string cache.
 
 The queue and selected arguments remain owned through this phase's DONE state,
 as Zend frees shutdown registrations after later destructor/output stages.
-Borrowed CALL/RAW/CAPTURE and current SEND/receive/render certificates add no heap owners.
+Borrowed CALL/RAW/CAPTURE/PRODUCER and current SEND/receive/render certificates add no heap owners.
 Current and saved calls authenticate the exact selected entry, arguments,
 wrapping reference cells and empty internal caller context.
 Variadic conversion records the received argument view separately from the
@@ -50,9 +50,16 @@ python3 tests/semantics/shutdown_render_state.py
 python3 tests/semantics/shutdown_review.py
 python3 tests/semantics/shutdown_state_review.py
 python3 tests/semantics/display_errors.py --case shutdown-freeze
+python3 tests/semantics/callback_api_review.py --match shutdown-
+python3 tests/semantics/callback_api_scope_check.py
 ```
 
-Keyword/compound callback ingress needs the accepted221 effectful API consumer.
+Module247 stages keyword/compound registration through the shared221 API. Class
+selection and string boundaries survive warnings while referenced method bytes
+are reread. The cached target retains lexical/private permission and called
+class after ordinary, handler, Stringable or Closure makers retire. Its borrowed
+producer record pins the original target, callsite and captured scope/binding;
+selected targets and copied arguments remain the only queue owners.
 Magic/autoload/internal callback targets and existing shared error-handler
 reference-return boundaries remain visible. Destructors, GC, output buffering,
 queue release and the remaining request stages are required next work; this

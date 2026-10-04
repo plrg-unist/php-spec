@@ -264,7 +264,12 @@ cross-file diagnostic origins during static defaults, and production algorithm
 and structure checks pass. [Contract](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md),
 [author/composition record](coverage/semantics/exception-handlers-review.json),
 [independent review](coverage/semantics/exception-handler-review.json).
-Keyword/compound callback ingress and the remaining request phases stay open.
+Module247 supplies the effectful keyword/compound registration and terminal
+selector through shared221 stages. Exception stacks retain raw values; shutdown
+entries freeze the selected target after referenced-method warning effects.
+Borrowed producer target/callsite/scope certificates preserve genuine ordinary,
+C-handler, Stringable and Closure maker permissions after retirement. The
+remaining destructor/GC/output/free request phases stay open.
 
 Called-class introspection223 implements `get_called_class()` using the active
 authenticated called class. Plain functions and global Closures stop lookup;

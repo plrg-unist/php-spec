@@ -270,12 +270,16 @@ remain required.
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
 after `finally`. Nested restore/replacement, callback throws, internal by-reference
-warnings and termination preserve selected targets and owners. Keyword/compound
-callback ingress remains open.
+warnings and termination preserve selected targets and owners. Module247 stages
+keyword/compound registration and terminal re-selection through the shared221 API;
+internal deprecations preserve `Unknown:0`, handler stack effects and original
+continuations.
 
 [Shutdown callbacks](docs/semantics/SOURCE-SHUTDOWN.md) cache selected callables
 and copied arguments, then run in order after normal, exit and fatal outcomes.
-Callbacks can append entries; handled throws continue and callback exit stops
+Keyword/compound selections preserve called/private scope after maker retirement
+using a borrowed target and callsite certificate. Callbacks can append entries;
+handled throws continue and callback exit stops
 the queue. Fatal-render warnings complete before diagnostics freeze and the
 queue begins. Destructors, GC, output buffers and later request cleanup remain
 required.
