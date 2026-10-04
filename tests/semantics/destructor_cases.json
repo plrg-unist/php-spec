@@ -117,5 +117,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "actual-dynamic-constructor-return-is-unused",
+    "source": "<?php class L{function __destruct(){echo \"L;\";}}class R{function __destruct(){echo \"R;\";}}class C{function __construct(){$l=new L;return new R;}}class P{function __destruct(){echo \"P;\";$class=\"C\";new $class;echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "c1f59a6af60dd18d6333ae21699772097d6845c8f7b93b2b99f12ad606287ad6",
+    "stdout": "P;R;L;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
