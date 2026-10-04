@@ -275,6 +275,12 @@ def observe(state, filename, display_mode=2):
     diagnostic = None
     status = {'NORMAL': 'normal', 'EXITED': 'explicit_exit', 'FATAL': 'php_error', 'USERFATAL': 'php_error', 'INTERNALFATAL': 'php_error', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection', 'COMPILETHROWN': 'static_rejection',
               'UNSUPPORTED': 'unsupported', 'BUDGET': 'budget_exhausted'}[tag]
+    if tag == 'STATICBYTES':
+        for declaration in reversed(state['DECLARATIONS']):
+            if declaration['tag'] == 'PDEXIT':
+                if declaration['args'][1]['tag'] == 'PCSCOMPLETE':
+                    status = 'php_error'
+                break
     exit_status = 0 if tag == 'NORMAL' else None
     event_stderr = stderr
     stderr = b''
