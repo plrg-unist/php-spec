@@ -204,7 +204,7 @@ def $object_invoke_method(S, n) = (pmethoddesc)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, $ptascii("__invoke"), |S.CLASSES|) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if $target_function(S, METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc.FUNCTION)
 def $object_invoke_method(S, n) = eps -- otherwise
 

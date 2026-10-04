@@ -234,7 +234,7 @@ def $method_capture_site(S, porigin_site, pmethoddesc) = true
   -- if $firstclass_evaluated(S, porigin_site)
   -- if $dynamic_fixed_name(S, porigin_site) = eps
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
 def $method_capture_site(S, porigin_site, pmethoddesc) = false -- otherwise
 
 dec $method_convert_valid(pstate, pcalltarget, porigin, int) : bool
