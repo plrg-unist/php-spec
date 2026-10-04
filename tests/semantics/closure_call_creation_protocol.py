@@ -167,6 +167,59 @@ protocol.CHECKS = {'global-escaping-child': [
  '$closure_call_test_output(S_done.EVENTS) = $ptascii("H:E:7:B:9")'
 ]}
 
+protocol.SOURCES['own-class-static-child'] = '''<?php
+class A {
+    public static function make(){
+        return function(){
+            return static function(){
+                echo get_called_class(),':',self::class;
+            };
+        };
+    }
+}
+$maker=A::make();
+$child=$maker->call(new A);
+unset($maker);
+$child();
+unset($child);
+'''
+protocol.CHECKS['own-class-static-child'] = [
+ 'S = $closure_call_test_seek(S_initial[.COMPLETION = NORMAL], true, 900)',
+ 'S.CURRENT = (pcallcontext)',
+ '$context_target(pcallcontext) = CLOSURE_CALL_TARGET n_source n_receiver',
+ '$call_current_valid(S)',
+ 'pcallcontext.CALLSITE = (porigin_site)',
+ 'S.TODO = (CLOSURE_CAPTURE n_child 0) :: ptask_tail*',
+ '$object_body(S.OBJECTS[n_child]) = REALCLOSURE porigin_child pitem* pstaticcell*',
+ '$closure_scope_at(S.CLOSURESCOPES, n_child) = (pclosurescope)',
+ 'pclosurescope.CREATION = (pclosurecreation)',
+ 'pclosurecreation.EVIDENCE = (pclosurecreator)',
+ 'pclosurecreator.SCOPE = CLOSURE_CALL porigin_site n_source n_receiver porigin_class',
+ '$class_named(S.CLASSNAMES, $ptascii("a")) = (porigin_class)',
+ '$closure_source_class(S, porigin_child) = (porigin_class)',
+ 'pclosurescope.LEXICAL = porigin_class',
+ 'pclosurescope.CALLED = porigin_class',
+ 'pclosurescope.RECEIVER = eps',
+ '~pclosurecreation.RECEIVER',
+ '$closure_scope_original_classes(S, porigin_child, pclosurescope)',
+ '$closure_creator_valid(S, porigin_child, pclosurescope, pclosurecreation, pclosurecreator)',
+ '$closure_scope_classes_valid(S, porigin_child, pclosurescope)',
+ '$closure_receiver_forbidden(S, porigin_child)',
+ '$closure_scope_receiver_free(S, porigin_child, pclosurescope)',
+ '$closure_scope_row_valid(S, pclosurescope)',
+ '$closure_capture_valid(S, n_child, 0)',
+ '$closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope)',
+ 'S_done = $drive_steps(S, 700)',
+ r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps',
+ '$closure_call_test_output(S_done.EVENTS) = $ptascii("A:A")',
+ '~((HOBJECT n_source) <- S_done.ALLOCATIONS)',
+ '~((HOBJECT n_receiver) <- S_done.ALLOCATIONS)',
+ '~((HOBJECT n_child) <- S_done.ALLOCATIONS)',
+ '$closure_evidence_valid(S_done, pclosurecreator.SCOPE)',
+ '$closure_evidence_valid(S_done, CLOSURE_SCOPE pclosurescope)',
+ '$closure_state_valid(S_done)'
+]
+
 if __name__ == '__main__':
  parser=argparse.ArgumentParser();parser.add_argument('--prepare');args=parser.parse_args()
  if args.prepare:protocol.prepare(Path(args.prepare));print(args.prepare)
