@@ -12,5 +12,19 @@
     "native_stdout_base64": "QjtDOw==",
     "native_stderr_template_base64": "",
     "native_exit_status": 0
+  },
+  {
+    "id": "suppressed-echo-handler-frame",
+    "source": "<?php class A{static function h($a,$b,$c,$d){echo get_called_class(),';';return true;}static function run(){echo @$missing;echo get_called_class(),';';}}class B extends A{}class C extends A{}set_error_handler(['B','h']);C::run();restore_error_handler();",
+    "source_sha256": "31950cae7b36e6e82850c539f34b9dbc31114d91cf1558f43fe85250b458268a",
+    "stdout_base64": "",
+    "stderr_template_base64": "",
+    "native_group": "called-class-echo-suppression-native223-yutq4qab/report.json",
+    "native_raw_sha256": "f8535565b9efae47a3632f024a4964dd6335bef8c27bb90afa48c3c9a34e40f5",
+    "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC",
+    "reason": "error-handler ingress requires a producer continuation",
+    "native_stdout_base64": "QjtDOw==",
+    "native_stderr_template_base64": "",
+    "native_exit_status": 0
   }
 ]
