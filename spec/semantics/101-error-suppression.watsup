@@ -15,9 +15,10 @@ def $event_source(S, DIAGNOSTIC_STACK text n_message* z n_trace*) = DIAGNOSTIC_S
   -- if $(n > 0)
 def $event_source(S, pevent) = pevent -- otherwise
 dec $error_handler_eligible(pstate, int) : bool
+dec $display_events(pstate, pevent) : pevent*
 def $report_event(S, pevent, i_level) = S[.ERRORFATALTRACE = eps][.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"]
   -- if $error_handler_eligible(S, i_level)
-def $report_event(S, pevent, i_level) = S[.ERRORFATALTRACE = eps][.EVENTS = S.EVENTS ++ [$event_source(S, pevent)]]
+def $report_event(S, pevent, i_level) = S[.ERRORFATALTRACE = eps][.EVENTS = S.EVENTS ++ $display_events(S, $event_source(S, pevent))]
   -- if ~$error_handler_eligible(S, i_level)
   -- if $long_and(S.REPORTING, i_level) =/= 0
 def $report_event(S, pevent, i_level) = S[.ERRORFATALTRACE = eps]

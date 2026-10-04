@@ -52,7 +52,7 @@ def $error_trace_capture(S, 256, ERROR_TRIGGER_PHASE pconfigcall n) = S[.ERRORFA
 def $error_trace_capture(S, i, ptask) = S[.ERRORFATALTRACE = eps] -- if i =/= 256
 def $error_default(S, pevent, 256) = S[.TODO = eps][.TRACE = S.ERRORFATALTRACE][.ERRORFATALTRACE = eps][.COMPLETION = USERFATAL n_message* z ($long_and(S.REPORTING, 256) =/= 0)]
   -- if pevent = DIAGNOSTIC "Fatal error" n_message* z
-def $error_default(S, pevent, i) = S[.EVENTS = S.EVENTS ++ [$error_default_event(S, pevent)]]
+def $error_default(S, pevent, i) = S[.EVENTS = S.EVENTS ++ $display_events(S, $error_default_event(S, pevent))]
   -- if i =/= 256
   -- if $long_and(S.REPORTING, i) =/= 0
 def $error_default(S, pevent, i) = S -- if i =/= 256 -- if $long_and(S.REPORTING, i) = 0

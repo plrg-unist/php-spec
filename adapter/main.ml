@@ -222,6 +222,11 @@ let rec semantic_json (value : V.t) =
   | StructV fields -> `Assoc (List.map (fun (key,v) -> Domain.Atom.string_of_atom key.it, semantic_json v) fields)
   | CaseV _ -> let tag,args = split value in `Assoc ["tag", `String tag; "args", `List (List.map semantic_json args)]
   | _ -> fail "unexpected semantic result shape"
+let state_fields (module Runner : Run.RUNNER) state =
+  let mode = match Runner.Interp.eval_func "display_state_mode" [] [state] with
+    | Run.Pass value -> check (T.num `IntT) value; value
+    | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg) in
+  ["ok", `Bool true; "state", semantic_json state; "display_mode", semantic_json mode]
 let base64_octets bytes =
   let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" in
   let result = Buffer.create ((List.length bytes + 2) / 3 * 4) in
@@ -464,8 +469,15 @@ let execute value request =
     | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg) in
   let startup_json = match List.filter (fun (key,_) -> key = "startup_ini") (assoc request) with
     | [] -> None | [(_,json)] -> Some json | _ -> fail "duplicate startup INI field" in
-  let startup = startup_json |> Option.map (fun json ->
-    exact ["error_reporting"; "include_path"] json;
+  Option.iter (fun json ->
+    let reporting = List.mem_assoc "error_reporting" (assoc json)
+    and path = List.mem_assoc "include_path" (assoc json)
+    and display = List.mem_assoc "display_errors" (assoc json) in
+    if reporting && path then
+      exact (["error_reporting"; "include_path"] @ if display then ["display_errors"] else []) json
+    else exact ["display_errors"] json) startup_json;
+  let startup = Option.bind startup_json (fun json ->
+    if not (List.mem_assoc "error_reporting" (assoc json)) then None else
     let reporting = match field "error_reporting" json with
       | `Null -> None | value -> Some (decode_bytes value) in
     let fields = [
@@ -478,11 +490,18 @@ let execute value request =
      | Run.Pass valid when V.Get.bool valid -> ()
      | Run.Pass _ -> fail "invalid startup INI facts"
      | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg));
-    value) in
+    Some value) in
+  let display = Option.bind startup_json (fun json ->
+    Option.map (fun json ->
+      let entry = match json with `Null -> None | value -> Some (decode_bytes value) in
+      let value = V.Make.opt (T.opt (typ "preqbytes")) entry in
+      check (T.opt (typ "preqbytes")) value;
+      value) (List.assoc_opt "display_errors" (assoc json))) in
   Option.iter (fun facts ->
-    let include_path = match startup_json with
+    let include_path = match startup with
       | None -> `String "Ljo="
-      | Some json ->
+      | Some _ ->
+          let json = Option.get startup_json in
           (match Runner.Interp.eval_func "c_string" [] [decode_bytes (field "include_path" json)] with
            | Run.Pass value -> `String (list (semantic_json value)
                 |> List.map (fun n -> int_of_string (string n)) |> base64_octets)
@@ -500,9 +519,16 @@ let execute value request =
         | Some facts -> "php_request_file_run",
             file_arguments @ [import_request (module Runner) json; decode_bytes (field "cwd" facts)])
     | _ -> fail "duplicate request field" in
-  let name, arguments = match startup with
-    | None -> name, arguments
-    | Some value ->
+  let name, arguments = match display, startup with
+    | Some entry, startup ->
+        (match name with
+         | "php_run" -> "php_display_run"
+         | "php_request_run" -> "php_request_display_run"
+         | "php_file_run" -> "php_file_display_run"
+         | "php_request_file_run" -> "php_request_file_display_run"
+         | _ -> assert false), arguments @ [V.Make.opt (T.opt (typ "pstartup")) startup; entry]
+    | None, None -> name, arguments
+    | None, Some value ->
         (match name with
          | "php_run" -> "php_startup_run"
          | "php_request_run" -> "php_request_startup_run"
@@ -514,7 +540,7 @@ let execute value request =
       let pending = pending_from_state state in
       (match pending with Some request -> active_eval := Some (state, request) | None -> ());
       active_snapshot := snapshot;
-      `Assoc (["ok", `Bool true; "state", semantic_json state] @
+      `Assoc (state_fields (module Runner) state @
               match pending with Some request -> ["pending", request] | None -> [])
   | Run.Fail (at,msg) ->
       `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
@@ -628,7 +654,7 @@ let resume_file_resolve request =
   | Run.Pass next -> check (typ "pstate") next;
       let following = pending_from_state next in
       active_eval := Option.map (fun request -> (next, request)) following;
-      `Assoc (["ok", `Bool true; "state", semantic_json next] @
+      `Assoc (state_fields (module Runner) next @
               match following with Some request -> ["pending", request] | None -> [])
   | Run.Fail (at,msg) ->
       `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
@@ -666,7 +692,7 @@ let resume_chdir request =
   | Run.Pass next -> check (typ "pstate") next;
       let following = pending_from_state next in
       active_eval := Option.map (fun request -> (next, request)) following;
-      `Assoc (["ok", `Bool true; "state", semantic_json next] @
+      `Assoc (state_fields (module Runner) next @
               match following with Some request -> ["pending", request] | None -> [])
   | Run.Fail (at,msg) ->
       `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
@@ -704,7 +730,7 @@ let resume_file_parse request =
   | Run.Pass next -> check (typ "pstate") next;
       let following = pending_from_state next in
       active_eval := Option.map (fun request -> (next, request)) following;
-      `Assoc (["ok", `Bool true; "state", semantic_json next] @
+      `Assoc (state_fields (module Runner) next @
               match following with Some request -> ["pending", request] | None -> [])
   | Run.Fail (at,msg) ->
       `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
@@ -738,7 +764,7 @@ let resume_eval request =
   | Run.Pass next -> check (typ "pstate") next;
       let following = pending_from_state next in
       active_eval := Option.map (fun request -> (next, request)) following;
-      `Assoc (["ok", `Bool true; "state", semantic_json next] @
+      `Assoc (state_fields (module Runner) next @
               match following with Some request -> ["pending", request] | None -> [])
   | Run.Fail (at,msg) ->
       `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
