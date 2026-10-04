@@ -198,12 +198,20 @@ def $finally_outer_origin_valid(S, porigin, (TRAIT_ORIGIN porigin_owner porigin_
 def $pptrait_new_deferred(P, pcpath, NName (BYTES text) metadata) = ($ppparameter_new_site(P, pcpath) /\ ~P.CLOSURE /\ $ptrait_context(P.CLASSCONTEXT) /\ $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent")])
 def $pptrait_new_deferred(P, pcpath, name) = false -- otherwise
 def $ppnew_class_name(P, pcpath, name) = P -- if $pptrait_new_deferred(P, pcpath, name)
+dec $trait_default_new_function(pstate, porigin) : bool
+def $trait_default_new_function(S, porigin) = true -- if $trait_imported_origin(porigin)
+def $trait_default_new_function(S, porigin) = true
+  -- if ~$trait_imported_origin(porigin)
+  -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "trait"
+def $trait_default_new_function(S, porigin) = false -- otherwise
 def $trait_default_new_site(S, porigin) = true
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent")]
   -- if S.CURRENT = (pcallcontext)
-  -- if $trait_imported_origin(pcallcontext.FUNCTION)
+  -- if $trait_default_new_function(S, pcallcontext.FUNCTION)
   -- if $parameter_default_constructor(S, NName (BYTES text) metadata_name, phpType7*, metadata)
   -- if $call_current_valid(S)
 def $trait_default_new_site(S, porigin) = false -- otherwise
