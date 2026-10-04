@@ -88,6 +88,7 @@ rule PhpStep/dimension-index: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [
   -- if S.TODO = (DIM_INDEX expression z) :: ptask_tail*
 rule PhpStep/dimension-path: S ~> S[.TODO = ptask_tail*][.BASE = BASE_DIM pbase S.RESULT z][.RESULT = KNOWN PNULL]
   -- if S.TODO = (DIM_PATH pbase z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
 rule PhpStep/dimension-prepare-value: S ~> S[.TODO = [$at_task(S.ORIGIN, EVAL expression), DIM_CAPTURE] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP expression) :: ptask_tail*
   -- if ~$delayed_base(expression)

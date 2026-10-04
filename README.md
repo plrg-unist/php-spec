@@ -27,7 +27,10 @@ records the separate parse-only bridge; the [exception-kind extension](coverage/
 records the later CompileError classification. [Reached eval execution](docs/semantics/DYNAMIC-EVAL.md)
 and [finite-provider include/require](docs/semantics/INCLUDE-SOURCES.md) use checked
 machine pauses. A finite version-2 provider supports checked CWD and
-`include_path` changes. [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
+`include_path` changes. [Stringable include/require operands](coverage/semantics/file-operand-review.json)
+convert before path lookup and once checks. Failed-open warnings resume handlers
+with live path sampling, saved owners and zero-argument file traces; fatal cleanup
+preserves frozen output before shutdown callbacks. [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
 preserves captured array arguments and has separate source and paused-state checks.
@@ -145,9 +148,10 @@ values, reference history and compiler/runtime rejection phases. Its
 sources; Traversable objects remain unfinished. Array call arguments are covered by the later call-unpack checkpoint below.
 [Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
 callbacks with effective method selection, retained current values and abrupt
-cleanup. Explicit compatible return declarations are admitted; tentative-return
-deprecations, IteratorAggregate, ArrayAccess and other Traversable consumers
-remain required.
+cleanup. Tentative-return declarations use real prototype order and runtime/file
+warning delivery after publication. Early eval diagnostic callbacks are the
+immediate follow-on; IteratorAggregate, ArrayAccess and other Traversable
+consumers remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.
@@ -255,7 +259,13 @@ temporary owners, borrowed CV tables and ordered NaN notices preserve mutation,
 COW and throwing cleanup through nested/quiet reads. Author9/246 includes the two
 independent NaN originals; independent14/235 and one current constructor
 interaction keep separate cuts.
-Read-write continuations and wider key/container producers remain required.
+[Writable dimension keys](docs/semantics/SOURCE-DIMENSION-WRITES.md) now stage
+bounded CV-array W/RW and direct GLOBALS reference fetches. Callback copies abort
+acquisition; real cell aliases, moved sole keepers, delayed RHS reads and named
+reference priority retain their native behavior. Author11/340 and independent15
+fresh/266 plus two retained originals keep separate cuts; one current typed-caller
+interaction passes. Append, unset, coalesce assignment and wider producers
+remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -405,7 +415,12 @@ sources and 162 state premises pass separately. Temporary `Closure::call` childr
 retain the authentic receiver scope after their maker retires, with genuine
 receiver ownership for nonstatic children and nonowning evidence for static
 children. Six new sources and 193 state premises pass at separate cutoffs.
-Deferred instance/object defaults and wider consumers remain open.
+Deferred scalar/array instance defaults now use class-owned templates, copying
+the parent's actual state when a child links and filling constants, instance
+defaults and statics in order before allocating an object. Eight new source
+agreements and three programs/172 state premises check private shadows, strict
+failure/retry, reentry, link-time copies and template ownership after collection.
+Object-bearing defaults and wider consumers remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -541,8 +556,12 @@ map prepared values with declaration strictness, named-hole filling and exact
 string-mutated traces. [Suspended reception240](coverage/semantics/internal-default-reception-review.json)
 retains real warning and Stringable callbacks, raw integer trace slots and each
 reentrant constructor owner. Current trait/display fallback preserves a filename
-argument after its global root retires. Rebound anonymous keyword defaults and broader
-ordinary/constrained conversion remain open.
+argument after its global root retires.
+[Anonymous keyword defaults](coverage/semantics/anonymous-default-new-review.json)
+resolve self/parent from the live receiving Closure lexical scope, including
+rebinding, arrows and temporary calls. Private constructors and saved recursive
+defaults retain that scope independently of called class and receiver. Ordinary
+Throwable effects, dynamic object `::class` and broader constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

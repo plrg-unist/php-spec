@@ -140,11 +140,13 @@ def $named_send_value(S, pcalltarget_function, pnamedargs, porigin?, n) = S_prom
   -- if S_promoted.COMPLETION =/= NORMAL
 rule PhpStep/named-send: S ~> S_value[.TODO = (NAMED_ARGS pcalltarget_function phpType7* $(n + 1) $named_store(pnamedargs, $named_arg_target(pfunction, $named_source(S, porigin?, n), n), S_value.RESULT) porigin? z) :: ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (NAMED_SEND pcalltarget_function phpType7* n pnamedargs porigin? z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
   -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if S_value = $named_send_value(S, pcalltarget_function, pnamedargs, porigin?, n)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/named-send-abrupt: S ~> S_value[.HELD = S.HELD]
   -- if S.TODO = (NAMED_SEND pcalltarget_function phpType7* n pnamedargs porigin? z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
   -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if S_value = $named_send_value(S, pcalltarget_function, pnamedargs, porigin?, n)
   -- if S_value.COMPLETION =/= NORMAL

@@ -17,11 +17,12 @@ def $class_named((preqbytes_other, porigin) :: (preqbytes_tail, porigin_tail)*, 
   -- if preqbytes_other =/= preqbytes
 
 dec $activate_class(pstate, pclassdesc) : pstate
+dec $iterator_notice_publication(pstate, pstate, pclassdesc) : pstate
 dec $activate_class_body(pstate, pclassdesc) : pstate
 dec $activate_class_base_body(pstate, pclassdesc) : pstate
 dec $declaration_class_success(pstate, pstate, pclassdesc) : pstate
 dec $class_constant_publish(pstate, pstate, pclassdesc) : pstate
-def $activate_class(S, pclassdesc) = $class_constant_publish(S, $declaration_class_success(S, $activate_class_body(S, pclassdesc), pclassdesc), pclassdesc)
+def $activate_class(S, pclassdesc) = $iterator_notice_publication(S, $class_constant_publish(S, $declaration_class_success(S, $activate_class_body(S, pclassdesc), pclassdesc), pclassdesc), pclassdesc)
 dec $class_static_initial(pstate, ppropertydesc*) : pclassstatic*?
 dec $class_static_commit(pstate, pclassstatic*) : pstate
 dec $class_static_finish(pstate, pclassdesc, pstate) : pstate
@@ -97,20 +98,26 @@ def $new_class(S, preqbytes, z) = S[.OBJECTS = S.OBJECTS ++ [INSTANCE porigin]][
   -- if ~pclassdesc.ABSTRACT
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
   -- if n = |S.OBJECTS|
-  -- if $property_initial_slots(S, $property_layout(S, porigin, |S.CLASSES|)) = (ppropertyslot*)
+  -- if $property_initial_slots(S, porigin, $property_layout(S, porigin, |S.CLASSES|)) = (ppropertyslot*)
 def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "invalid compiled property default"]
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin)
   -- if ~$class_internal(preqbytes)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.ABSTRACT
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
-  -- if $property_initial_slots(S, $property_layout(S, porigin, |S.CLASSES|)) = eps
+  -- if $property_initial_slots(S, porigin, $property_layout(S, porigin, |S.CLASSES|)) = eps
 dec $new_source_name(pstate, porigin) : preqbytes?
 dec $trait_default_new_site(pstate, porigin) : bool
 dec $trait_default_new_name(pstate, porigin) : preqbytes?
-def $new_source_name(S, porigin) = $trait_default_new_name(S, porigin) -- if $trait_default_new_site(S, porigin)
+dec $anonymous_default_new_site(pstate, porigin) : bool
+def $anonymous_default_new_site(S, porigin) = false -- otherwise
+dec $anonymous_default_new_name(pstate, porigin) : preqbytes?
+def $anonymous_default_new_name(S, porigin) = eps -- otherwise
+def $new_source_name(S, porigin) = $anonymous_default_new_name(S, porigin) -- if $anonymous_default_new_site(S, porigin)
+def $new_source_name(S, porigin) = $trait_default_new_name(S, porigin)
+  -- if ~$anonymous_default_new_site(S, porigin) /\ $trait_default_new_site(S, porigin)
 def $new_source_name(S, PORIGIN n pcpath) = (preqbytes)
-  -- if ~$trait_default_new_site(S, PORIGIN n pcpath)
+  -- if ~$anonymous_default_new_site(S, PORIGIN n pcpath) /\ ~$trait_default_new_site(S, PORIGIN n pcpath)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
 def $new_source_name(S, porigin) = eps -- otherwise
@@ -227,7 +234,7 @@ def $class_expr_task_valid(S, NExprNew name (SEQUENCE eps) metadata) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew name (SEQUENCE eps) metadata)
   -- if $code_at(S.CODE, n) = (pcode)
-  -- if $new_source_name(S, PORIGIN n pcpath) =/= eps \/ $trait_default_new_site(S, PORIGIN n pcpath)
+  -- if $new_source_name(S, PORIGIN n pcpath) =/= eps \/ $trait_default_new_site(S, PORIGIN n pcpath) \/ $anonymous_default_new_site(S, PORIGIN n pcpath)
 def $class_expr_task_valid(S, NExprInstanceof expression name metadata) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInstanceof expression name metadata)

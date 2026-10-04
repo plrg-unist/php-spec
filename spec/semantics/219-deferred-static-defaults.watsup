@@ -47,7 +47,7 @@ def $static_default_scope(S) = $property_declaring_class(S.CLASSES, pconstantcon
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
   -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL
-  -- if $class_static_active_desc(S, S.CLASSNAMES, pconstantcontext.ORIGIN) = (ppropertydesc)
+  -- if $property_default_active_desc(S, pconstantcontext.ORIGIN) = (ppropertydesc)
   -- if $static_default_descriptor(ppropertydesc.DEFAULT)
 def $static_default_scope(S) = eps -- otherwise
 def $method_current_scope(S) = (porigin)
@@ -186,8 +186,9 @@ def $static_default_site_valid(S, porigin, porigin_root, (porigin_trigger), pcon
 def $static_default_site_valid(S, porigin, porigin_root, porigin_trigger?, pconstantcontext_previous?, z, ptask*) = false -- otherwise
 dec $static_default_task_valid(pstate, porigin, int) : bool
 def $static_default_task_valid(S, porigin, z) = true
-  -- if $class_constant_update_target(S, S.TODO) = (porigin_root)
-  -- if $static_default_site_valid(S, porigin, porigin_root, S.ORIGIN, S.CONSTCONTEXT, z, S.TODO)
+  -- if $property_default_update_suffix(S.TODO, STATIC_DEFAULT_UPDATE porigin z) = (ptask*)
+  -- if $class_constant_update_target(S, ptask*) = (porigin_root)
+  -- if $static_default_site_valid(S, porigin, porigin_root, S.ORIGIN, S.CONSTCONTEXT, z, ptask*)
 def $static_default_task_valid(S, porigin, z) = false -- otherwise
 def $call_task_valid(S, STATIC_DEFAULT_UPDATE porigin z) = $static_default_task_valid(S, porigin, z)
 dec $static_default_bind_valid(pstate, pstaticdefaultcontext) : bool
@@ -206,7 +207,7 @@ def $static_default_bind_valid(S, pstaticdefaultcontext) = true
 def $static_default_bind_valid(S, pstaticdefaultcontext) = false -- otherwise
 def $call_task_valid(S, STATIC_DEFAULT_BIND pstaticdefaultcontext) = $static_default_bind_valid(S, pstaticdefaultcontext)
 def $static_default_property_context(S, pconstantcontext) = true
-  -- if $class_static_active_desc(S, S.CLASSNAMES, pconstantcontext.ORIGIN) = (ppropertydesc)
+  -- if $property_default_active_desc(S, pconstantcontext.ORIGIN) = (ppropertydesc)
   -- if $static_default_descriptor(ppropertydesc.DEFAULT)
 def $static_default_property_context(S, pconstantcontext) = false -- otherwise
 def $static_default_context_valid(S, pconstantcontext) = true
@@ -267,6 +268,7 @@ def $static_default_blocks(S, (CLASS_CONST_STATIC poperand ptbytes z) :: ptask_t
 def $static_default_blocks(S, ptask :: ptask_tail*, eps) = $static_default_blocks(S, ptask_tail*, eps)
   -- if ~$class_constant_update_marker(ptask)
   -- if ~$static_default_update_marker(ptask)
+  -- if ~$instance_default_update_marker(ptask)
 def $static_default_blocks(S, ptask*, porigin_acc*) = false -- otherwise
 def $static_default_update_marker(STATIC_DEFAULT_UPDATE porigin z) = true
 def $static_default_update_marker(ptask) = false -- otherwise
@@ -289,7 +291,7 @@ def $static_default_phases(ptask*, b_property) = false -- otherwise
 ;; ASTs retain their declaration node and override until the strict bind begins.
 dec $static_default_ast(pstate, pstaticdefaultcontext) : bool
 def $static_default_ast(S, pstaticdefaultcontext) = false
-  -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if $property_default_active_desc(S, pstaticdefaultcontext.DECL) = (ppropertydesc)
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
   -- if $origin_node(S.SOURCES, porigin_initializer) = (NExprConstFetch name metadata)
 def $static_default_ast(S, pstaticdefaultcontext) = true -- otherwise
