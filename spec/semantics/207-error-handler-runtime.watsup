@@ -20,6 +20,8 @@ dec $error_read_line(ptask, int) : int
 dec $error_read_operand(perrorread) : poperand
 dec $error_read_plan(pstate) : perrorread?
 dec $identity_read_plan(pstate) : pidentityread?
+dec $global_read_plan(pstate) : pglobalread?
+dec $global_read_begin(pstate, pglobalread) : pstate
 dec $identity_read_begin(pstate, pidentityread) : pstate
 dec $identity_read_discard(pstate, ptask) : pstate
 dec $error_variable_source(pstate, porigin?, pcpath, preqbytes) : bool
@@ -151,17 +153,20 @@ rule PhpStep/error-handler-enter: S ~> $error_handler_enter(S, perrorcall, pcall
   -- if $error_handler_target(S, perrorcall.CALLBACK) = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF
+  -- if ~$api_special(S, perrorcall.CALLBACK)
 rule PhpStep/error-handler-reference-return: S ~> S[.COMPLETION = UNSUPPORTED "error-handler reference-return body"]
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_target(S, perrorcall.CALLBACK) = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if pfunction.SIGNATURE.BYREF
+  -- if ~$api_special(S, perrorcall.CALLBACK)
 rule PhpStep/error-handler-pending-callable: S ~> S[.COMPLETION = UNSUPPORTED "error-handler callback body outside admitted source callable forms"]
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_target(S, perrorcall.CALLBACK) = eps
   -- if $error_handler_resolution(S, perrorcall.CALLBACK) = HANDLERUNKNOWN text
+  -- if ~$api_special(S, perrorcall.CALLBACK)
 def $error_invalid_callback(S, perrorcall, ptbytes) = $error_api_error(S, pconfigcall, "Error", ptbytes)
   -- if perrorcall.RESUME = ERROR_TRIGGER_PHASE pconfigcall n
 def $error_invalid_callback(S, perrorcall, ptbytes) = $throw_scalar(S, "Error", ptbytes, perrorcall.LINE) -- otherwise
@@ -171,6 +176,7 @@ rule PhpStep/error-handler-invalid-callback: S ~> $error_handler_restore($error_
   -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_target(S, perrorcall.CALLBACK) = eps
   -- if $error_handler_resolution(S, perrorcall.CALLBACK) = HANDLERINVALID n_reason*
+  -- if ~$api_special(S, perrorcall.CALLBACK)
 ;; A fatal default bails out before Zend reaches automatic raw restoration.
 def $error_fallback_finish(S, pvalue) = $error_handler_restore(S, pvalue) -- if S.COMPLETION = NORMAL
 def $error_fallback_finish(S, pvalue) = S -- if S.COMPLETION =/= NORMAL
@@ -223,7 +229,9 @@ def $error_read_plan(S) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
 def $error_read_plan(S) = eps -- otherwise
-def $error_read_pending(S) = ($error_handler_eligible(S, 2) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps))
+def $error_read_pending(S) = ($error_handler_eligible(S, 2) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps \/ $global_read_plan(S) =/= eps))
+def $error_read_begin(S) = $global_read_begin(S, pglobalread)
+  -- if $global_read_plan(S) = (pglobalread)
 def $error_read_begin(S) = $identity_read_begin(S, pidentityread)
   -- if $identity_read_plan(S) = (pidentityread)
 def $error_read_begin(S) = $error_dispatch(S, 2, $ptascii("Undefined variable $") ++ perrorread.NAME, perrorread.LINE, WARNING perrorread.NAME perrorread.LINE, ERROR_READ_RESULT perrorread)
@@ -371,7 +379,7 @@ def $error_context_anchor(S, pcallcontext, (pcallcontext), pframe :: pframe_tail
   -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if pframe.ORIGIN = (perrorcall.SITE)
   -- if perrorcall.TARGET = (pcallcontext.TARGET)
-  -- if $error_entered_call_valid($constant_frame_scope(S, pframe, pframe_tail*), perrorcall)
+  -- if $error_entered_call_valid($api_saved_frame_scope($constant_frame_scope(S, pframe, pframe_tail*), pframe, pframe_tail*), perrorcall)
 def $error_context_anchor(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $error_context_anchor(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
   -- if pcallcontext_other? =/= (pcallcontext)
 def $error_context_anchor(S, pcallcontext, pcallcontext_other?, pframe*) = false -- otherwise

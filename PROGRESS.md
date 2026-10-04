@@ -7,6 +7,51 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Deprecated callable keyword/compound admission221 now stages supplied fixed
+parameters, error registration and delayed dispatch. Warnings hold class choice
+and string boundaries while rereading referenced methods; whole byref formal
+replacement preserves its live value. Genuine receiving/emitting frames and a
+narrow API carrier admit compound foreign-`$this` selection and declared receiver
+fallback without relaxing ordinary scoped eligibility. Supplied guards exclude
+authentic named default holes. Exact union branches bypass warnings; direct/FCC
+raw keyword/compound calls preserve ordinary PHP lookup errors. The
+[221 ledger](coverage/semantics/keyword-compound-callables-current-review.json)
+records independent pins, affected checks and preserved failures. Actual include,
+cold-static and GLOBALS interactions preserve real USER permission, constrained
+references and captured null; initializer locations retain their declaration owner.
+Default/variadic,
+`Closure::fromCallable`, other internal and user-return warning consumers remain
+required; unstaged special callable conversion stays Unsupported.
+
+Iterator224 adds compatible explicit declarations and inherited internal
+obligations for source by-value foreach; callbacks use
+effective runtime methods and retain the iterator/current result through key and
+body. Independent source26 confirms callback order, reference results, ownership,
+lexical/called scope, inherited signatures and source-interface priority at its
+two recorded cutoffs. Author source5 and owner125 retain their original results.
+Cursor checks enforce unique live continuation and metadata IDs below `NEXTITER`;
+cursor49 and claim85 pass separately. Independent source1/reference63 and affected
+fatal teardown38 pass with unchanged87d semantics; the latter corrects only a
+fixture line binding. On accepted2e8, source12 passes control cleanup, arbitrary
+keys, assignment priority, covariance and the remaining throwing callback stages
+at284803284. Independent source1/protocol16 at the same cutoff confirms zero-argument
+Stringable default reception. Earlier results and original failures remain preserved.
+Tentative-return deprecations are the immediate declaration follow-on, followed
+by IteratorAggregate, ArrayAccess and remaining reference/ordinary object
+traversal. [Scope and boundaries](docs/semantics/ITERATORS.md).
+
+Direct missing `$GLOBALS[key]` R-fetches226 dispatch before their consumers and
+retain the original null through key/global mutation. Handler throws skip later
+ASSIGN/SEND, preserving typed destinations and the original exception chain.
+Quiet/reference acquisitions keep their existing real cells. Genuine76 whole-table
+snapshots under explicit request facts preserve numeric keys, singleton unwrap,
+shared reference owners and COW after global retirement. Author8/207 and
+independent8/221 pass at distinct private cutoffs. Two current derived sources
+on accepted ed6 pass at bb90, retaining private first-class handlers, called class,
+eager identity reads and a cold typed static alias. The combined observer retains
+its inconclusive CLI60 timeout. [Contract](docs/semantics/SOURCE-GLOBAL-WARNINGS.md),
+[ledger](coverage/semantics/global-warning-reads-review.json).
+
 Exception handlers222 retain nullable raw stacks and dispatch an uncaught
 Throwable after `finally` through the ordinary weak call receiver. Genuine null
 caller and saved-frame certificates preserve one argument, selected targets and
@@ -38,11 +83,15 @@ interactions at 8da51d193 retain inherited defaults through captured/private raw
 handlers, captured-null cast/throwing assignment and a 214/216 Stringable receive.
 Actual217 composition adds four normal agreements at 5c0887541, including saved
 initializer contexts and compound callback traces, plus one cross-file fast-path
-diagnostic agreement at 663811e8c. The unchanged owner41 guard passes. Two reentry
-controls reach checked Unsupported with exact reasons; they add no native agreement.
-Instance/object defaults, cold synchronous references and resumed same-default
-updates with retained alias constraints are the next required obligations.
-Reevaluating a pending default suspended in a callback is explicitly Unsupported.
+diagnostic agreement at 663811e8c. The unchanged owner41 guard passes. Module229
+now supports same-default callback reentry: successful outer binding replaces
+the live row, while escaped typed aliases retain ordered nonowning constraints.
+Throw/type failure preserves the reentrant row; first-fill and table completion
+remain once-only. Thirteen exact normal native/model comparisons and an inherited
+67-premise ownership/history fixture pass at bf0954840. The earlier Unsupported
+controls and declaration-order failure remain historical evidence; prior18/149
+checks were not renewed. Cold synchronous references and instance/object defaults
+are the next required obligations.
 
 
 Private and protected method arrays and class-method strings support callable
@@ -157,10 +206,14 @@ failures and interrupted evidence.
 
 ## Remaining core work
 
-- Calls: keyword/compound array and class-method-string resolution,
+- Calls: default/variadic, `Closure::fromCallable`, other internal and user-return
+  keyword/compound warning consumers,
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
-  array and string Closure PIPE routes are covered; defined ordinary `$GLOBALS[key]` is admitted; missing-global warnings and whole-table snapshots remain partial.
+  array and string Closure PIPE routes are covered. Direct defined/missing
+  `$GLOBALS[key]` reads and explicit-request full-table snapshots are admitted;
+  earlier key-expression warnings, nested/read-write warning continuations and
+  ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
   nondefault startup profiles, wider directives,
   other warning producers, OS services and lifecycle. The
@@ -168,8 +221,7 @@ failures and interrupted evidence.
 - Values, references and coercion: direct/inherited default constructor dispatch,
   rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred instance/object defaults, same-default
-  reentry replacement/retained alias constraints and cold
+  broader reference-result consumers. Deferred instance/object defaults and cold
   synchronous references into incomplete constant tables remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.

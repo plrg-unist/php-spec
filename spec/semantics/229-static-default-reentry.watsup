@@ -1,0 +1,84 @@
+;; Replacing a reentrantly filled typed default releases the live row but Zend
+;; retains its property-info source on escaped references. The history witness
+;; authenticates that nonowning constraint after the row has moved elsewhere.
+def $class_constant_event_ordinal(CCSTATICRETIRE porigin porigin_trigger n n_cell) = n
+def $class_constant_compile_events(S, (CCSTATICRETIRE porigin porigin_trigger n n_cell) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+dec $static_default_retire(pstate, pstaticdefaultcontext) : pstate
+dec $static_default_firstfill(pstate, pstaticdefaultcontext, ppropertydesc) : pstate
+dec $proprefs_retire(ppropref*, nat, porigin, nat) : ppropref*
+def $proprefs_retire(eps, n_cell, porigin, n_event) = eps
+def $proprefs_retire(ppropref :: ppropref_tail*, n_cell, porigin, n_event) = ppropref[.SOURCES = $propref_replace(ppropref.SOURCES, CLASS_PROP_SOURCE porigin, RETIRED_CLASS_PROP_SOURCE porigin n_event)] :: ppropref_tail*
+  -- if ppropref.CELL = n_cell
+def $proprefs_retire(ppropref :: ppropref_tail*, n_cell, porigin, n_event) = ppropref :: $proprefs_retire(ppropref_tail*, n_cell, porigin, n_event)
+  -- if ppropref.CELL =/= n_cell
+def $static_default_retire(S, pstaticdefaultcontext) = S[.PROPREFS = $proprefs_retire(S.PROPREFS, n_cell, pstaticdefaultcontext.DECL, |S.CLASSCONSTANTHISTORY|)][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCSTATICRETIRE pstaticdefaultcontext.DECL porigin_trigger n_prefix n_cell]]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
+  -- if $static_default_bind_valid(S, pstaticdefaultcontext)
+  -- if pstaticdefaultcontext.ORIGIN = (porigin_trigger)
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $static_default_filled(S, ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, pstaticdefaultcontext.DECL) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
+  -- if $propref_source_present(S.PROPREFS, n_cell, CLASS_PROP_SOURCE pstaticdefaultcontext.DECL)
+  -- if $propref_source_valid(S, n_cell, CLASS_PROP_SOURCE pstaticdefaultcontext.DECL)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $class_constant_runtime_type(S, ppropertydesc.TYPE, pvalue)
+  -- if pvalueclass = $constant_class(S, porigin_initializer)
+  -- if $static_default_class_supported(pvalueclass)
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if n_prefix = |S.DECLARATIONS|
+def $static_default_retire(S, pstaticdefaultcontext) = S -- otherwise
+def $static_default_firstfill(S, pstaticdefaultcontext, ppropertydesc) = S[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCSTATIC pstaticdefaultcontext.DECL porigin_trigger n_prefix]]
+  -- if ~$static_default_filled(S, ppropertydesc)
+  -- if pstaticdefaultcontext.ORIGIN = (porigin_trigger)
+  -- if n_prefix = |S.DECLARATIONS|
+def $static_default_firstfill(S, pstaticdefaultcontext, ppropertydesc) = S
+  -- if $static_default_filled(S, ppropertydesc)
+def $static_default_bound(S, pstaticdefaultcontext, ppropertydesc, pvalue) = $static_default_firstfill(S_retired[.CLASSSTATICS = $class_static_set(S_retired.CLASSSTATICS, pstaticdefaultcontext.DECL, PROP_VALUE (DIRECT $property_default_value(ppropertydesc.TYPE, pvalue)))], pstaticdefaultcontext, ppropertydesc)
+  -- if S_retired = $static_default_retire(S, pstaticdefaultcontext)
+
+def $class_constant_history_fills(S, (CCSTATICRETIRE porigin porigin_trigger n n_cell) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n)
+  -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
+  -- if $(n_cell < |S.STORE|)
+  -- if porigin <- porigin_filled*
+  -- if $class_static_active_desc(S, S.CLASSNAMES, porigin) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if $static_default_source_valid(S, ppropertydesc)
+  -- if $property_declaring_class(S.CLASSES, porigin) = (porigin_owner)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_owner) = (b_owner)
+  -- if $static_default_trigger_root(S, porigin_trigger) = (porigin_root)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_root) = (b_root)
+  -- if $class_constant_parent_chain(S, porigin_root, porigin_owner, |S.CLASSES|)
+  -- if $class_constant_history_trigger(S, porigin_trigger, n)
+
+def $propref_source_valid(S, n_cell, RETIRED_CLASS_PROP_SOURCE porigin n_event) = true
+  -- if $(n_event < |S.CLASSCONSTANTHISTORY|)
+  -- if S.CLASSCONSTANTHISTORY[n_event] = CCSTATICRETIRE porigin porigin_trigger n_prefix n_cell
+  -- if $class_constant_history_valid(S)
+  -- if $(n_cell < |S.STORE|)
+  -- if n_cell <- S.REFCELLS
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if $class_static_active_desc(S, S.CLASSNAMES, porigin) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue) \/ $parameter_backing_value(S, n_cell, pvalue)
+def $propref_descriptor(S, RETIRED_CLASS_PROP_SOURCE porigin n_event) = $class_static_active_desc(S, S.CLASSNAMES, porigin)
+
+;; Live and retained sources have one Zend property-info identity. Removal
+;; selects its first occurrence; any surviving live tag inherits the witness.
+def $propref_source_same(CLASS_PROP_SOURCE ppropertyid, CLASS_PROP_SOURCE ppropertyid_target) = (ppropertyid = ppropertyid_target)
+def $propref_source_same(RETIRED_CLASS_PROP_SOURCE porigin n_event, CLASS_PROP_SOURCE ppropertyid_target) = (porigin = ppropertyid_target)
+def $propref_source_same(pproptypesource, pproptypesource_target) = (pproptypesource = pproptypesource_target) -- otherwise
+def $propref_removal_finish(pproptypesource*, CLASS_PROP_SOURCE porigin, RETIRED_CLASS_PROP_SOURCE porigin n_event) = $propref_replace(pproptypesource*, CLASS_PROP_SOURCE porigin, RETIRED_CLASS_PROP_SOURCE porigin n_event)
+def $propref_removal_finish(pproptypesource*, pproptypesource_target, pproptypesource_removed) = pproptypesource* -- otherwise
+
+;; Historical retirement never owns the old cell. Drop its type metadata once
+;; the last actual alias or owning temporary releases that cell.
+def $proprefs_live(eps, pnode*) = eps
+def $proprefs_live(ppropref :: ppropref_tail*, pnode*) = ppropref :: $proprefs_live(ppropref_tail*, pnode*)
+  -- if (HCELL ppropref.CELL) <- pnode*
+def $proprefs_live(ppropref :: ppropref_tail*, pnode*) = $proprefs_live(ppropref_tail*, pnode*)
+  -- if ~((HCELL ppropref.CELL) <- pnode*)

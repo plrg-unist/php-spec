@@ -194,7 +194,8 @@ dec $static_default_bind_valid(pstate, pstaticdefaultcontext) : bool
 def $static_default_bind_valid(S, pstaticdefaultcontext) = true
   -- if $static_default_site_valid(S, pstaticdefaultcontext.DECL, pstaticdefaultcontext.ROOT, pstaticdefaultcontext.ORIGIN, pstaticdefaultcontext.PREVIOUS, pstaticdefaultcontext.LINE, S.TODO)
   -- if $class_static_at(S.CLASSSTATICS, pstaticdefaultcontext.DECL) = (pclassstatic)
-  -- if $static_default_pending(pclassstatic.STATE)
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if $static_default_pending(pclassstatic.STATE) \/ $static_default_filled(S, ppropertydesc)
   -- if S.ORIGIN = (pstaticdefaultcontext.DECL)
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL
@@ -233,16 +234,6 @@ def $static_default_busy(S, porigin) = true
   -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
   -- if pstaticdefaultcontext.DECL = porigin
 def $static_default_busy(S, porigin) = false -- otherwise
-dec $static_default_binding_present(ptask*, porigin) : bool
-def $static_default_binding_present(eps, porigin) = false
-def $static_default_binding_present((STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*, porigin) = (pstaticdefaultcontext.DECL = porigin \/ $static_default_binding_present(ptask_tail*, porigin))
-def $static_default_binding_present(ptask :: ptask_tail*, porigin) = $static_default_binding_present(ptask_tail*, porigin)
-  -- if ~$static_default_bind_marker(ptask)
-dec $static_default_saved_binding(pframe*, porigin) : bool
-def $static_default_saved_binding(eps, porigin) = false
-def $static_default_saved_binding(pframe :: pframe_tail*, porigin) = ($static_default_binding_present(pframe.TODO, porigin) \/ $static_default_saved_binding(pframe_tail*, porigin))
-dec $static_default_reentering(pstate, porigin) : bool
-def $static_default_reentering(S, porigin) = ($static_default_binding_present(S.TODO, porigin) \/ $static_default_saved_binding(S.FRAMES, porigin))
 dec $static_default_unfilled(pstate, porigin) : bool
 def $static_default_unfilled(S, porigin) = true
   -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
@@ -356,13 +347,6 @@ rule PhpStep/static-default-update: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin, LIN
   -- if $origin_node(S.SOURCES, porigin_initializer) = (expression)
   -- if $class_constant_update_target(S, ptask_tail*) = (porigin_root)
   -- if $static_default_task_valid(S, porigin, z)
-  -- if ~$static_default_reentering(S, porigin)
-rule PhpStep/static-default-update-reentry: S ~> S[.COMPLETION = UNSUPPORTED "reentrant deferred static default update"]
-  -- if S.TODO = (STATIC_DEFAULT_UPDATE porigin z) :: ptask_tail*
-  -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
-  -- if $static_default_pending(pclassstatic.STATE)
-  -- if $static_default_task_valid(S, porigin, z)
-  -- if $static_default_reentering(S, porigin)
 rule PhpStep/static-default-update-filled: S ~> S[.TODO = ptask_tail*]
   -- if S.TODO = (STATIC_DEFAULT_UPDATE porigin z) :: ptask_tail*
   -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
@@ -378,7 +362,8 @@ def $static_default_class_supported(pvalueclass) = false -- otherwise
 def $static_default_array_supported(eps) = true
 def $static_default_array_supported((pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*) = ($static_default_class_supported(pvalueclass) /\ $static_default_array_supported((pkey_tail, pvalueclass_tail)*))
 
-rule PhpStep/static-default-bind: S ~> $static_default_restore(S_value[.TODO = ptask_tail*][.CLASSSTATICS = $class_static_set(S_value.CLASSSTATICS, pstaticdefaultcontext.DECL, PROP_VALUE (DIRECT $property_default_value(ppropertydesc.TYPE, pvalue)))][.CLASSCONSTANTHISTORY = S_value.CLASSCONSTANTHISTORY ++ [CCSTATIC pstaticdefaultcontext.DECL porigin_trigger n_prefix]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pstaticdefaultcontext)
+dec $static_default_bound(pstate, pstaticdefaultcontext, ppropertydesc, pvalue) : pstate
+rule PhpStep/static-default-bind: S ~> $static_default_restore($static_default_bound(S_value, pstaticdefaultcontext, ppropertydesc, pvalue)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pstaticdefaultcontext)
   -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
   -- if $static_default_bind_valid(S, pstaticdefaultcontext)
   -- if pstaticdefaultcontext.ORIGIN = (porigin_trigger)
@@ -391,7 +376,6 @@ rule PhpStep/static-default-bind: S ~> $static_default_restore(S_value[.TODO = p
   -- if pvalueclass = $constant_class(S_value, porigin_initializer)
   -- if $static_default_class_supported(pvalueclass)
   -- if $constant_value_class_valid(S_value, pvalue, pvalueclass)
-  -- if n_prefix = |S_value.DECLARATIONS|
 rule PhpStep/static-default-bind-object: S ~> $static_default_restore(S_value[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "object-bearing deferred static default"], pstaticdefaultcontext)
   -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
   -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)

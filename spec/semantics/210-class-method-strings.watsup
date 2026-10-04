@@ -36,7 +36,8 @@ def $string_resolve(S, ptbytes, parraymode, b_fixed) = $array_receiver(S, PSTRIN
   -- if parraymode = ARRAY_ADMISSION \/ ~b_fixed
   -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
 def $string_resolve(S, ptbytes, parraymode, b_fixed) = ARRAYINVALID ($ptascii("Invalid class-method string")) -- otherwise
-def $string_callable(S, ptbytes) = $array_admission($string_resolve(S, ptbytes, ARRAY_ADMISSION, false))
+def $string_callable(S, ptbytes) = $api_admission($api_pure(S, PSTRING ptbytes)) -- if $api_special(S, PSTRING ptbytes)
+def $string_callable(S, ptbytes) = $array_admission($string_resolve(S, ptbytes, ARRAY_ADMISSION, false)) -- if ~$api_special(S, PSTRING ptbytes)
 
 ;; Initial literal code names remove one leading slash. Keep its original
 ;; source bytes; later constant names and computed values already retain theirs.

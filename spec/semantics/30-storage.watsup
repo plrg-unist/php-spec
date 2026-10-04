@@ -13,7 +13,8 @@ syntax parrayselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, 
 syntax pstringselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, ORIGINAL ptbytes }
 syntax pmethodcapture = { FUNCTION porigin, CALLSITE porigin?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin? }
 syntax pcallableaccess = { SITE porigin?, SCOPE porigin?, OBJECT bool, CREATION pmethodcapture? }
-syntax pcalltarget = porigin | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess
+syntax papiquery
+syntax pcalltarget = porigin | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess | API_METHOD_TARGET papiquery porigin ptbytes bool
 syntax parraymode = ARRAY_ADMISSION | ARRAY_DISPATCH
 syntax parrayresolution = ARRAYRESOLVED pcalltarget porigin ptbytes | ARRAYADMITTED | ARRAYINVALID ptbytes | ARRAYUNKNOWN text
 syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass
@@ -32,7 +33,7 @@ syntax ppropertydesc = { ORIGIN ppropertyid, NAME ptbytes, KEY ptbytes, VISIBILI
 syntax ppropstate = PROP_INITIAL | PROP_UNSET | PROP_VALUE pitem | PROP_DEFERRED porigin
 syntax ppropertyslot = { DECL ppropertyid?, NAME ptbytes, STATE ppropstate }
 syntax pobjectprops = { OBJECT nat, SLOTS ppropertyslot*, MATERIALIZED bool }
-syntax pproptypesource = OBJECT_PROP_SOURCE nat ptbytes ppropertyid | CLASS_PROP_SOURCE ppropertyid
+syntax pproptypesource = OBJECT_PROP_SOURCE nat ptbytes ppropertyid | CLASS_PROP_SOURCE ppropertyid | RETIRED_CLASS_PROP_SOURCE porigin nat
 syntax ppropref = { CELL nat, SOURCES pproptypesource* }
 syntax prefcoercion = { CELL nat, SITE porigin, LINE int, VALUE ptbytes }
 syntax pstaticstring = { SITE porigin, CLASS porigin, DECL ppropertyid, NAME ptbytes, OBJECT nat, RHS poperand, LINE int }
@@ -40,7 +41,7 @@ syntax pparameterstring = { FUNCTION porigin, INDEX nat, CELL nat, OBJECT nat, L
 syntax pvariadicstring = { FUNCTION porigin, INDEX nat, ELEMENT nat, NAMED bool, OPERAND poperand, OBJECT nat, LINE int }
 syntax pparameterbacking = { FUNCTION porigin, INDEX nat, CELL nat, LINE int, VALUE ptbytes }
 dec $propref_at(ppropref*, nat) : ppropref?
-syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat
+syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat
 syntax pclassconstantflags = CCFLAGS (porigin, bool)* porigin* | CCBAD
 syntax pclassconstantdesc = { ORIGIN porigin, OWNER porigin, OWNERNAME ptbytes, NAME ptbytes, VISIBILITY ppropertyvisibility, FINAL bool, TYPE ptbranch*, INITIALIZER porigin, FOLDED bool, LINE nat }
 dec $ppclass_constants(pclassconstantdesc*, porigin) : pclassconstantdesc*
@@ -81,10 +82,16 @@ syntax pconfigcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot
 syntax perrorhandler = { CALLBACK pvalue?, LEVELS int }
 syntax phandlerresolution = HANDLERRESOLVED pcalltarget | HANDLERINVALID ptbytes | HANDLERUNKNOWN text
 syntax ptask, pdircontext, perrorread, perrorcall
+syntax papiclass = { REQUESTED porigin, CALLED porigin, RECEIVER nat?, STRICT bool }
+syntax papiclassresult = API_CLASS papiclass | API_CLASS_INVALID ptbytes | API_CLASS_UNKNOWN text
+;; SOURCE owns its existing operands; the selecting-frame snapshot and live
+;; member pointer are borrowed metadata, not extra reference-cell owners.
+syntax papiquery = { SOURCE ptask, VALUE pvalue, INPUT pvalue, METHOD pitem, SCOPE porigin?, CALLED porigin?, THIS nat?, CLASS papiclass, OUTER papiclass?, ORIGINAL ptbytes, PREFIX nat, WIDTH nat, LINE int }
 syntax perrorread = { ORIGINAL ptask, INPUT poperand, BASE pbase, NAME nat*, LINE int, TASK ptask, RESULT poperand }
 ;; A dereferenced CV pointer is borrowed across an error callback, not a zval owner.
 syntax pidentityread = { SITE porigin, OP pbin, LEFT nat*, LEFTLINE int, RIGHT nat*, LINE int, CELL nat, BASE pbase }
 syntax pexceptioncall = { OBJECT nat, CALLBACK pvalue, TARGET pcalltarget?, ORIGIN porigin?, RAW parray?, SENT poperand? }
+syntax pglobalread = { SITE porigin, NAME nat*, LINE int }
 syntax perrorcall = { SITE porigin, LEVEL int, MESSAGE nat*, LINE int, EVENT pevent, CALLBACK pvalue, TARGET pcalltarget?, RESUME ptask }
 syntax pdeprecatedconstant = { SITE porigin, LINE int, PREFIX nat }
 syntax pselectedcall = { NONCE nat, SITE porigin, KIND pintrinsic, ORIGINAL nat*, LOOKUP nat*, DEPTH nat, LINE int }
@@ -102,10 +109,13 @@ syntax pstaticdefaultcontext = { DECL porigin, ROOT porigin, PREVIOUS pconstantc
 syntax ptask = ARGINFO_REF_PREP pargref | ARGINFO_REF_VALUES pargref nat poperand* | ARGINFO_REF_CAPTURE pargref nat poperand* | ARGINFO_REF_ERROR pargref poperand* | ARGINFO_ARGS pargcall | ARGINFO_SEND pargcall | ARGINFO_UNPACK_PREP pargcall | ARGINFO_UNPACK_NEXT pargcall poperand nat | ARGINFO_INVOKE pargcall | FILE_REQUEST porigin int int | FILE_RESOLVE_AWAIT nat | FILE_PARSE_AWAIT nat | FILE_END nat | EVAL_REQUEST porigin int | EVAL_AWAIT nat | EVAL_END nat | GETCLASS_ARGS pgetclasscall | GETCLASS_SEND pgetclasscall | GETCLASS_UNPACK_PREP pgetclasscall | GETCLASS_UNPACK_NEXT pgetclasscall poperand nat | GETCLASS_INVOKE pgetclasscall | CONFIG_ARGS pconfigcall | CONFIG_SEND pconfigcall | CONFIG_UNPACK_PREP pconfigcall | CONFIG_UNPACK_NEXT pconfigcall poperand nat | CONFIG_INVOKE pconfigcall | CONFIG_STRING_RESULT pconfigcall nat porigin int int | CHDIR_AWAIT pconfigcall nat | GETTER_ARGS pgettercall | GETTER_SEND pgettercall | GETTER_UNPACK_PREP pgettercall | GETTER_UNPACK_NEXT pgettercall poperand nat | GETTER_INVOKE pgettercall | GETTER_CAPTURE_RESULT nat porigin | BIND_ARGS pbindcall | BIND_SEND pbindcall | BIND_INVOKE pbindcall | CLOSURE_CALL_ARGS pclosurecall | CLOSURE_CALL_SEND pclosurecall | CLOSURE_CALL_INVOKE pclosurecall | FINALLY_ONLY porigin | FINALLY_RESUME porigin nat? | FINALLY_RETURN porigin porigin poperand | FINALLY_REF_RETURN porigin porigin poperand int | FINALLY_JUMP porigin porigin nat nat bool | FINALLY_GOTO porigin porigin pcpath pcpath | FINALLY_PHASE porigin nat | GOTO_UNWIND porigin pcpath pcpath | TRY_END porigin | THROW_VALUE porigin int | THROW_SEARCH nat | CATCH_BIND porigin nat nat | CLONE_ARGS pclonecall | CLONE_SEND pclonecall | CLONE_UNPACK_PREP pclonecall | CLONE_UNPACK_NEXT pclonecall poperand nat | CLONE_INVOKE pclonecall | CLONE_UPDATE pclonecall nat nat nat | EXIT_ARGS pexitcall | EXIT_SEND pexitcall | EXIT_UNPACK_PREP pexitcall | EXIT_UNPACK_NEXT pexitcall poperand nat | EXIT_INVOKE pexitcall | EXIT_UNWIND int | MATCH_START porigin | MATCH_SCAN porigin poperand nat nat | MATCH_COMPARE porigin poperand nat nat | MATCH_RESULT porigin poperand nat | CLOSURE_CAPTURE nat nat | CLOSURE_RECEIVE porigin nat | STATIC_INIT porigin | STATIC_BIND porigin | UNPACK_ARGS punpackcall | UNPACK_SEND punpackcall | UNPACK_PREP punpackcall | UNPACK_NEXT punpackcall poperand nat bool | NAMED_ARGS pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_SEND pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_PREFLIGHT porigin nat | NAMED_DEFAULT_BIND porigin nat | NAMED_VARIADIC_RECEIVE porigin nat | VARIADIC_BEGIN porigin | VARIADIC_RECEIVE porigin nat | SILENCE_END porigin | TYPE_RECEIVE porigin nat | TYPE_FALLTHROUGH porigin | DEFAULT_RECEIVE porigin nat | DEFAULT_BIND porigin nat | CONSTANT_OBSERVE porigin | CONSTANT_INIT expression | CONSTANT_BIND porigin
   | EXCEPTION_HANDLER_INVOKE pexceptioncall | EXCEPTION_HANDLER_ENTER pexceptioncall | EXCEPTION_HANDLER_RESULT pexceptioncall
   | ERROR_HANDLER_INVOKE perrorcall | ERROR_HANDLER_RESULT perrorcall | ERROR_READ_RESULT perrorread | ERROR_TRIGGER_PHASE pconfigcall nat | CONFIG_INI_NULL_RESULT pconfigcall | CHDIR_WARNING_RESULT pdircontext nat* nat | ERROR_IDENTITY_RESULT pidentityread
+  | GLOBAL_READ_RESULT pglobalread
   | DEPRECATED_CONSTANT_RESULT pdeprecatedconstant | REPORTING_LONG_RESULT pconfigcall int
+  | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | TYPE_RETURN_THROW nat porigin int
   | STATIC_STRING_RESULT pstaticstring | STATIC_STRING_CAPTURE pstaticstring
   | PARAMETER_STRING_RESULT pparameterstring
+  | API_CALLABLE_RESULT papiquery nat
   | DEFAULT_STRING_RESULT pparameterstring | VARIADIC_STRING_RESULT pvariadicstring
   | CLOSURE_CALL_RESULT porigin int | CLOSURE_CALL_FORWARD pclosurecall nat pnamedargs nat
   | METHOD_CONVERT pcalltarget porigin int | ARRAY_CONVERT pcalltarget parrayselection | STRING_CONVERT pcalltarget pstringselection
@@ -601,3 +611,21 @@ dec $scope_target_site(pstate, pcalltarget, porigin, bool) : pcalltarget
 dec $scope_convert_current(pstate, pcalltarget, porigin) : bool
 dec $scope_capture_matches(pcalltarget, pmethodcapture?) : bool
 dec $scope_handler_method(pstate, porigin, nat?, ptbytes, bool) : phandlerresolution
+
+dec $api_special(pstate, pvalue) : bool
+dec $api_registration_candidate(pstate, pconfigcall) : bool
+dec $api_pure(pstate, pvalue) : phandlerresolution
+dec $api_admission(phandlerresolution) : bool?
+
+dec $useriter_instance(pstate, nat) : bool
+dec $useriter_selected(pstate, pcalltarget, porigin) : bool
+dec $useriter_pending_site(pstate, porigin) : bool
+dec $useriter_context(pstate, pcallcontext) : bool
+dec $useriter_context_kind(pstate, pcallcontext) : bool
+dec $useriter_chain_valid(pstate, pcallcontext?, pframe*) : bool
+dec $useriter_contract(pstate, pclassdesc) : pmethodissue
+dec $useriter_after_issue(pstate, pclassdesc, pmethodissue) : pmethodissue
+dec $useriter_builtin(ptbytes) : bool
+dec $useriter_source_contract(pstate, pclassdesc, porigin) : pmethodissue
+dec $useriter_source_after(pstate, pclassdesc, porigin, pmethodissue) : pmethodissue
+dec $useriter_parent_publish(pstate, pstate, pclassdesc) : pstate
