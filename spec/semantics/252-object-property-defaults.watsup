@@ -39,7 +39,9 @@ def $constant_callable_context(S, porigin) = ((pstaticdefaultcontext.DECL, porig
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
   -- if $constant_callable_form(pcnode)
 
-def $constant_callable_record_valid(S, pconstantclosure) = true
+;; Permission checking must not recurse through birth and live scope validation.
+dec $property_callable_receipt_owner(pstate, pconstantclosure) : porigin?
+def $property_callable_receipt_owner(S, pconstantclosure) = (porigin_owner)
   -- if $(pconstantclosure.OBJECT < |S.OBJECTS|) /\ $(pconstantclosure.PREFIX <= |S.DECLARATIONS|)
   -- if $class_constant_origin(S.CLASSES, pconstantclosure.DECL) = eps
   -- if $property_default_active_desc(S, pconstantclosure.DECL) = (ppropertydesc)
@@ -50,8 +52,45 @@ def $constant_callable_record_valid(S, pconstantclosure) = true
   -- if $constant_callable_path(S, pconstantclosure.SITE, porigin_initializer)
   -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (pcnode)
   -- if $constant_callable_form(pcnode)
-  -- if $constant_callable_birth_valid(S, pconstantclosure, porigin_owner)
   -- if $constant_callable_record_prefix(S, pconstantclosure)
+def $property_callable_receipt_owner(S, pconstantclosure) = eps -- otherwise
+def $constant_callable_record_valid(S, pconstantclosure) = true
+  -- if $property_callable_receipt_owner(S, pconstantclosure) = (porigin_owner)
+  -- if $constant_callable_birth_valid(S, pconstantclosure, porigin_owner)
+
+dec $property_callable_method_receipt_owner(pstate, pconstantclosure, pmethoddesc, porigin, porigin) : porigin?
+def $property_callable_method_receipt_owner(S, pconstantclosure, pmethoddesc, porigin_site, porigin_requested) = (porigin_owner)
+  -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE porigin_site (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_requested eps)
+  -- if pconstantclosure.SITE = porigin_site
+  -- if $property_callable_receipt_owner(S, pconstantclosure) = (porigin_owner)
+  -- if $constant_callable_method(S, porigin_site, porigin_owner, pconstantclosure.PREFIX) = ((pmethoddesc, porigin_requested))
+  -- if pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $method_accessible(S, pmethoddesc, (porigin_owner))
+def $property_callable_method_receipt_owner(S, pconstantclosure, pmethoddesc, porigin_site, porigin_requested) = eps -- otherwise
+dec $property_callable_clone_receipt_owner(pstate, pconstantclosure*, pmethoddesc, porigin, porigin, nat) : porigin?
+def $property_callable_clone_receipt_owner(S, eps, pmethoddesc, porigin_site, porigin_requested, n) = eps
+def $property_callable_clone_receipt_owner(S, pconstantclosure :: pconstantclosure_tail*, pmethoddesc, porigin_site, porigin_requested, n) = (porigin_owner)
+  -- if $(pconstantclosure.OBJECT < n)
+  -- if $property_callable_method_receipt_owner(S, pconstantclosure, pmethoddesc, porigin_site, porigin_requested) = (porigin_owner)
+def $property_callable_clone_receipt_owner(S, pconstantclosure :: pconstantclosure_tail*, pmethoddesc, porigin_site, porigin_requested, n) = $property_callable_clone_receipt_owner(S, pconstantclosure_tail*, pmethoddesc, porigin_site, porigin_requested, n)
+  -- if $(pconstantclosure.OBJECT >= n) \/ $property_callable_method_receipt_owner(S, pconstantclosure, pmethoddesc, porigin_site, porigin_requested) = eps
+def $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
+  -- if n = pclosurescope.OBJECT
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n <- S.ALLOCATIONS)
+  -- if S.OBJECTS[n] = CONSTANTCLOSURE porigin_site (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_requested eps)
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n) = (pconstantclosure)
+  -- if $property_callable_method_receipt_owner(S, pconstantclosure, pmethoddesc, porigin_site, porigin_requested) = (porigin_owner)
+  -- if pclosurescope.LEXICAL = pmethoddesc.OWNER /\ pclosurescope.CALLED = porigin_requested
+  -- if pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps
+def $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
+  -- if n = pclosurescope.OBJECT
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n <- S.ALLOCATIONS)
+  -- if S.OBJECTS[n] = METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_requested eps
+  -- if $property_callable_clone_receipt_owner(S, S.CONSTANTCLOSURES, pmethoddesc, porigin_site, porigin_requested, n) = (porigin_owner)
+  -- if pclosurescope.LEXICAL = pmethoddesc.OWNER /\ pclosurescope.CALLED = porigin_requested
+  -- if pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps
+def $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps -- otherwise
 
 ;; A plain clone keeps its copied lexical row without becoming a constant object.
 ;; Search only the lexical class's own declarations, never inherited layout rows.
