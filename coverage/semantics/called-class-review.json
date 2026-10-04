@@ -72,7 +72,7 @@
         "php_error": 4,
         "static_rejection": 4
       },
-      "command": "python3 tests/semantics/method_runtime.py --catalogue the recorded selected independent catalogue",
+      "command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/called_class_review_cases.json (original segmented selections and exact per-case commands remain in raw records)",
       "segments": [
         {
           "revision": "e4b0bfe9f",
@@ -134,7 +134,12 @@
       "result": "wrapper exit0: exact Closure::fromCallable Unsupported, model process1; Missing::fromCallable PHPerror255, process0; namespaced user N\\Closure::fromCallable normal0, process0. The first control has zero semantic agreement."
     },
     "native_originals": "/home/user/workspace/php-spec/.tools/called-class-native-independent223-4gagqp55/report.json",
-    "review": "Independent source-route, evaluation-priority, current/saved frame, owner cleanup and source-certificate review approved223 and both narrow follow-ups."
+    "review": "Independent source-route, evaluation-priority, current/saved frame, owner cleanup and source-certificate review approved223 and both narrow follow-ups.",
+    "suppression_controls2": {
+      "catalogue": "tests/semantics/called_class_review_boundaries.json",
+      "helper": "tests/semantics/called_class_review_boundaries.py",
+      "evidence": "Original sourceB/C runs above record native B;C; and existing Unsupported producer ingress. Moving these rows into the separate boundary catalogue changed only classification metadata; the helper was not rerun. Zero source agreement."
+    }
   },
   "failures_retained": [
     {
@@ -169,5 +174,17 @@
     "Bounded source/frame evidence does not establish complete core/family equivalence or a fresh offline rebuild."
   ],
   "installation": null,
-  "recovery": "Raw original sources, command arrays, runtime/tool identity, checked inputs, model/native outputs and failures stay outside Git at the linked ignored .tools paths. Metadata edits do not renew semantic credit."
+  "recovery": "Raw original sources, command arrays, runtime/tool identity, checked inputs, model/native outputs and failures stay outside Git at the linked ignored .tools paths. Metadata edits do not renew semantic credit.",
+  "composition": {
+    "root": "/home/user/workspace/php-spec/.tools/introspection-called-class-compose-14",
+    "parent": "e465f0e489359411d8656c99d067d358187fc282",
+    "candidate": "efa2d0d32",
+    "scope": "Preserves accepted217/218/220; modules.json was the only semantic merge conflict and retains all three before223. Storage30 and method142 merged cleanly. Peer inspects actual intrinsic/frame/type intersections; no unrelated source or321-condition replay.",
+    "compiler_elab": {
+      "record": "/home/user/workspace/php-spec/.tools/introspection-called-class-compose-14/.tools/called-class-compose-223/elab.json",
+      "exit": 0,
+      "stderr": "empty"
+    },
+    "metadata_checks": "git diff --check and scripts/check-semantic-inventory.py pass;169 constructors/306 obligations. No semantic credit for metadata-only updates."
+  }
 }
