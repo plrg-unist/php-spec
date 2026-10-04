@@ -109,29 +109,29 @@ def $closure_evidence_scope_fixed(NExprClassConstFetch name (NIdentifier (BYTES 
   -- if $ptlc($base64(text)) = $ptascii("class")
 def $closure_evidence_scope_fixed(expression) = false -- otherwise
 dec $closure_evidence_scope_input(pstate, porigin, porigin?) : bool
-def $closure_evidence_scope_input(S, PORIGIN n pcpath, porigin?) = true
+def $closure_evidence_scope_input(S, PORIGIN n pcpath, porigin_lexical?) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if $closure_evidence_scope_fixed(expression)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes, eps))
-  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = porigin?
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = porigin_lexical?
 def $closure_evidence_scope_input(S, porigin, eps) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $parser_literal(expression) = (PNULL)
-def $closure_evidence_scope_input(S, porigin, porigin?) = true
+def $closure_evidence_scope_input(S, porigin, porigin_lexical?) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $parser_literal(expression) = (PSTRING ptbytes)
   -- if $ptlc(ptbytes) =/= $ptascii("static")
-  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = porigin?
-def $closure_evidence_scope_input(S, porigin, porigin?) = true
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = porigin_lexical?
+def $closure_evidence_scope_input(S, porigin, porigin_lexical?) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if ~$closure_evidence_scope_fixed(expression)
   -- if $parser_literal(expression) = eps
-def $closure_evidence_scope_input(S, porigin, porigin?) = true
+def $closure_evidence_scope_input(S, porigin, porigin_lexical?) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $parser_literal(expression) = (PSTRING ptbytes)
   -- if $ptlc(ptbytes) = $ptascii("static")
-def $closure_evidence_scope_input(S, porigin, porigin?) = false -- otherwise
+def $closure_evidence_scope_input(S, porigin, porigin_lexical?) = false -- otherwise
 dec $closure_evidence_bind_input(pstate, pclosurebinding) : bool
 def $closure_evidence_bind_input(S, pclosurebinding) = $closure_evidence_scope_input(S, porigin_scope, pclosurebinding.LEXICAL)
   -- if $origin_node(S.SOURCES, pclosurebinding.SITE) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
