@@ -18,6 +18,23 @@ the [default ledger](coverage/semantics/deferred-static-defaults-review.json).
 Wider transformed callable creation contexts remain required; complete core and
 paused return verification remain open.
 
+Current Closure/binding253 returns the exact immediate ordinary Closure and
+preserves existing-object `__invoke` capture identity. Transformed fake bindings
+keep frozen permission and source statics while owning only their new receiver;
+internal REAL copies and returned children retain genuine scope after makers
+retire. Static API receivers add no argument-evaluation owner. Selected warnings
+preserve scope/error order and unwind callback writes. Source24 normal at distinct
+cuts, nine owner/frame fixtures444 conditions (author214/independent230), affected
+older identity3/37 and private AL237 pass. Actualc139 preserves246 modules and
+passes AL247 plus one inherited property-default source: REAL current/`__invoke`
+identity and private fake binding/clone permission, called scope and shared statics.
+Original compiler, source and fixture failures,
+the global-constant Unsupported control and native-only controls remain separate
+in the [ledger](coverage/semantics/closure-current-binding-review.json).
+The [contract](docs/semantics/CLOSURE-CURRENT-BINDING.md) keeps complete REAL
+warning/unbinding, temporary-current escape and further API/keyword consumers
+required. Return verification stays paused and complete core remains open.
+
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
 share their object values with instances and preserve exact successful bindings
