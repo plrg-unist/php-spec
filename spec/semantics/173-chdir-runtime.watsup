@@ -111,6 +111,15 @@ def $dir_warning_task_valid(CHDIR_WARNING_RESULT pdircontext n_error* n_errno, p
 def $dir_warning_task_valid(ERROR_HANDLER_INVOKE perrorcall, pdircontext, n_error*, n_errno) = (perrorcall.RESUME = CHDIR_WARNING_RESULT pdircontext n_error* n_errno)
 def $dir_warning_task_valid(ERROR_HANDLER_RESULT perrorcall, pdircontext, n_error*, n_errno) = (perrorcall.RESUME = CHDIR_WARNING_RESULT pdircontext n_error* n_errno)
 def $dir_warning_task_valid(ptask, pdircontext, n_error*, n_errno) = false -- otherwise
+;; Saved-task validation projects the caller but retains the full frame list.
+dec $dir_warning_owner(pstate, pframe*) : nat
+def $dir_warning_owner(S, pframe :: pframe_tail*) = |pframe_tail*|
+  -- if pframe.CONTEXT = S.CURRENT
+  -- if pframe.ORIGIN = S.ORIGIN
+  -- if pframe.TODO = S.TODO
+def $dir_warning_owner(S, pframe :: pframe_tail*) = $dir_warning_owner(S, pframe_tail*)
+  -- if pframe.CONTEXT =/= S.CURRENT \/ pframe.ORIGIN =/= S.ORIGIN \/ pframe.TODO =/= S.TODO
+def $dir_warning_owner(S, eps) = |S.FRAMES|
 dec $dir_warning_valid(pstate, pdircontext, preqbytes, nat) : bool
 def $dir_warning_valid(S, pdircontext, n_error*, n_errno) = true
   -- if S.TODO = ptask :: pdircontext.TAIL
@@ -118,7 +127,7 @@ def $dir_warning_valid(S, pdircontext, n_error*, n_errno) = true
   -- if $config_invoke_valid(S, pdircontext.CALL)
   -- if pdircontext.CALL.KIND = INTRINSIC_CHDIR
   -- if S.ORIGIN = (pdircontext.CALL.SITE)
-  -- if pdircontext.FRAMEOWNER = |S.FRAMES|
+  -- if pdircontext.FRAMEOWNER = $dir_warning_owner(S, S.FRAMES)
   -- if $(pdircontext.NONCE < S.DIRSEQ)
   -- if $dir_canonical(pdircontext.CWD)
   -- if ~(0 <- pdircontext.REQUESTED)
