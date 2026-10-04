@@ -1,0 +1,104 @@
+;; Supplied weak parameters convert their scratch value in receive order.
+;; The parameter cell and original receiver remain owned until writeback.
+dec $parameter_string_record_valid(pstate, pparameterstring) : bool
+def $parameter_string_record_valid(S, pparameterstring) = true
+  -- if $function_at($all_functions(S), pparameterstring.FUNCTION) = (pfunction)
+  -- if $(pparameterstring.INDEX < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[pparameterstring.INDEX]
+  -- if $user_string_coercion(S, psparam.TYPE, POBJECT pparameterstring.OBJECT, false)
+  -- if pparameterstring.LINE = $default_parameter_line(S, pparameterstring.FUNCTION, pparameterstring.INDEX)
+  -- if (HCELL pparameterstring.CELL) <- S.ALLOCATIONS
+  -- if $(pparameterstring.CELL < |S.STORE|)
+def $parameter_string_record_valid(S, pparameterstring) = false -- otherwise
+
+dec $parameter_string_current(pstate, pparameterstring) : bool
+def $parameter_string_current(S, pparameterstring) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pparameterstring.FUNCTION
+  -- if $(pparameterstring.INDEX < pcallcontext.ARGC)
+  -- if $function_at($all_functions(S), pparameterstring.FUNCTION) = (pfunction)
+  -- if $(pparameterstring.INDEX < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[pparameterstring.INDEX].NAME) = (pparameterstring.CELL)
+  -- if S.ORIGIN = ($default_parameter_origin(S, pparameterstring.FUNCTION, pparameterstring.INDEX))
+  -- if ~$typed_caller_strict(S)
+def $parameter_string_current(S, pparameterstring) = false -- otherwise
+
+dec $parameter_string_shape(ptask*, pparameterstring) : bool
+def $parameter_string_shape([CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z, STRINGIFY_RESULT n porigin_site z, PARAMETER_STRING_RESULT pparameterstring], pparameterstring) = (n = pparameterstring.OBJECT /\ z = pparameterstring.LINE)
+def $parameter_string_shape([STRINGIFY_RESULT n porigin_site z, PARAMETER_STRING_RESULT pparameterstring], pparameterstring) = (n = pparameterstring.OBJECT /\ z = pparameterstring.LINE)
+def $parameter_string_shape([PARAMETER_STRING_RESULT pparameterstring], pparameterstring) = true
+def $parameter_string_shape((THROW_SEARCH n) :: ptask*, pparameterstring) = $parameter_string_shape(ptask*, pparameterstring)
+def $parameter_string_shape(ptask*, pparameterstring) = false -- otherwise
+
+;; A saved receive is checked with its own ENV/CURRENT and following caller,
+;; rather than the nested converter's frame or a newer recursive call.
+dec $parameter_string_saved(pstate, pparameterstring, pframe*) : bool
+dec $parameter_string_saved_frame(pstate, pparameterstring, pframe, pframe*) : bool
+def $parameter_string_saved_frame(S, pparameterstring, pframe, pframe_tail*) = true
+  -- if $parameter_string_shape(pframe.TODO, pparameterstring)
+  -- if pframe.LOCALS = (psymboltable)
+  -- if $parameter_string_current(S[.CURRENT = pframe.CONTEXT][.ENV = psymboltable.ENV][.ORIGIN = pframe.ORIGIN][.FRAMES = pframe_tail*], pparameterstring)
+def $parameter_string_saved_frame(S, pparameterstring, pframe, pframe_tail*) = false -- otherwise
+def $parameter_string_saved(S, pparameterstring, eps) = false
+def $parameter_string_saved(S, pparameterstring, pframe :: pframe_tail*) = true
+  -- if $parameter_string_saved_frame(S, pparameterstring, pframe, pframe_tail*)
+def $parameter_string_saved(S, pparameterstring, pframe :: pframe_tail*) = $parameter_string_saved(S, pparameterstring, pframe_tail*)
+  -- if ~$parameter_string_saved_frame(S, pparameterstring, pframe, pframe_tail*)
+dec $parameter_string_scope_valid(pstate, pparameterstring) : bool
+def $parameter_string_scope_valid(S, pparameterstring) = ($parameter_string_record_valid(S, pparameterstring) /\ (($parameter_string_shape(S.TODO, pparameterstring) /\ $parameter_string_current(S, pparameterstring)) \/ $parameter_string_saved(S, pparameterstring, S.FRAMES)))
+
+def $parameter_string_candidate(S) = true
+  -- if S.TODO = [TYPE_RECEIVE porigin n]
+  -- if $typed_receive_valid(S, porigin, n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n < pcallcontext.ARGC)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if $typed_parameter_conversion(S, pfunction.SIGNATURE.PARAMETERS[n], POBJECT n_object) = TYPEDEPENDENT "user object string conversion"
+def $parameter_string_candidate(S) = false -- otherwise
+
+def $parameter_string_site_valid(S, porigin_site, z) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata)
+  -- if porigin_site = PORIGIN n_unit pcpath
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
+def $parameter_string_site_valid(S, porigin_site, z) = false -- otherwise
+def $stringify_source(S, porigin_site, z, PARAMETER_STRING_RESULT pparameterstring) = true
+  -- if $parameter_string_scope_valid(S, pparameterstring)
+  -- if porigin_site = $default_parameter_origin(S, pparameterstring.FUNCTION, pparameterstring.INDEX)
+  -- if z = pparameterstring.LINE
+dec $parameter_string_result_marker(pstate, ptask*, nat, porigin, int) : bool
+def $parameter_string_result_marker(S, [STRINGIFY_RESULT n porigin_site z, PARAMETER_STRING_RESULT pparameterstring], n, porigin_site, z) = true
+  -- if n = pparameterstring.OBJECT
+  -- if $stringify_source(S, porigin_site, z, PARAMETER_STRING_RESULT pparameterstring)
+def $parameter_string_result_marker(S, (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: ptask*, n, porigin_site, z) = $parameter_string_result_marker(S, ptask*, n, porigin_site, z)
+def $parameter_string_result_marker(S, (THROW_SEARCH n_throw) :: ptask*, n, porigin_site, z) = $parameter_string_result_marker(S, ptask*, n, porigin_site, z)
+def $parameter_string_result_marker(S, ptask*, n, porigin_site, z) = false -- otherwise
+def $stringify_result_valid(S, n, porigin_site, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $parameter_string_result_marker(S, S.TODO, n, porigin_site, z)
+def $task_nodes(PARAMETER_STRING_RESULT pparameterstring) = [HCELL pparameterstring.CELL, HOBJECT pparameterstring.OBJECT]
+def $call_task_valid(S, PARAMETER_STRING_RESULT pparameterstring) = $parameter_string_scope_valid(S, pparameterstring)
+
+rule PhpStep/parameter-string-begin: S ~> $user_string_begin(S[.ORIGIN = (porigin_site)], n_object, porigin_site, z, PARAMETER_STRING_RESULT pparameterstring, eps)
+  -- if $parameter_string_candidate(S)
+  -- if S.TODO = [TYPE_RECEIVE porigin n]
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if porigin_site = $default_parameter_origin(S, porigin, n)
+  -- if z = $default_parameter_line(S, porigin, n)
+  -- if pparameterstring = {FUNCTION porigin, INDEX n, CELL n_cell, OBJECT n_object, LINE z}
+
+rule PhpStep/parameter-string-store: S ~> $write_cell_checked(S, pparameterstring.CELL, PSTRING n_text*, pparameterstring.LINE)[.TODO = $default_next(S, pfunction, $(pparameterstring.INDEX + 1))][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = [PARAMETER_STRING_RESULT pparameterstring]
+  -- if $parameter_string_scope_valid(S, pparameterstring)
+  -- if S.RESULT = KNOWN (PSTRING n_text*)
+  -- if $propref_at(S.PROPREFS, pparameterstring.CELL) = eps
+  -- if $function_at($all_functions(S), pparameterstring.FUNCTION) = (pfunction)
+rule PhpStep/parameter-string-new-source: S ~> S[.COMPLETION = UNSUPPORTED "parameter string conversion gained property type source"]
+  -- if S.TODO = [PARAMETER_STRING_RESULT pparameterstring]
+  -- if $parameter_string_scope_valid(S, pparameterstring)
+  -- if S.RESULT = KNOWN (PSTRING n_text*)
+  -- if $propref_at(S.PROPREFS, pparameterstring.CELL) = (ppropref)

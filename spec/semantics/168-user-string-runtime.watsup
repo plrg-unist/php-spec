@@ -36,6 +36,7 @@ dec $concat_line_valid(pstate, porigin, int) : bool
 dec $concat_child_site_valid(pstate, porigin, int, nat) : bool
 dec $typed_return_source(pstate, porigin, int) : bool
 dec $static_string_site_valid(pstate, porigin, int) : bool
+dec $parameter_string_site_valid(pstate, porigin, int) : bool
 def $concat_line_valid(S, porigin_site, z) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpConcat expression_left expression_right metadata)
   -- if $runtime_line(S[.ORIGIN = (porigin_site)], [PCFIELD 1], expression_right) = z
@@ -100,7 +101,7 @@ def $stringify_source(S, porigin_site, z, RETURN_VALUE z) = $typed_return_source
 def $stringify_source(S, porigin_site, z, ptask) = false -- otherwise
 
 dec $stringify_site_valid(pstate, porigin, int) : bool
-def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $config_string_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1) \/ $terminal_string_site(S, porigin_site, z) \/ $typed_return_source(S, porigin_site, z) \/ $static_string_site_valid(S, porigin_site, z))
+def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $config_string_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1) \/ $terminal_string_site(S, porigin_site, z) \/ $typed_return_source(S, porigin_site, z) \/ $static_string_site_valid(S, porigin_site, z) \/ $parameter_string_site_valid(S, porigin_site, z))
 
 dec $stringify_consumer_tail_valid(pstate, porigin, int, ptask, ptask*) : bool
 dec $stringify_eval_consumer(ptask) : bool
