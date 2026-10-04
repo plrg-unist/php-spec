@@ -124,5 +124,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "private-internal-default-composition",
+    "source": "<?php declare(strict_types=1);class C{private const N=\"kept\";private static function h(Exception $e=new Exception(self::N)){echo $e->getMessage(),\";\",func_num_args();}static function reg(){register_shutdown_function([self::class,\"h\"]);}}C::reg();exit(7);",
+    "source_sha256": "379728af063f7bd8c3b17f45830da20ab2579423cb15f6162b9329ba753b2c69",
+    "stdout": "kept;0",
+    "stderr": "",
+    "exit": 7,
+    "status": "explicit_exit"
   }
 ]
