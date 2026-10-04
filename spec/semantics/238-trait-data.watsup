@@ -142,10 +142,12 @@ def $trait_member_fold(S, pclassdesc, porigin) = eps -- otherwise
 def $trait_pool_facts(S, n, eps) = eps
 def $trait_pool_facts(S, n, (PCONSTANT pcpath pvalue) :: pconstant*) = (PFFACT pcpath pvalue $expression_line(expression)) :: $trait_pool_facts(S, n, pconstant*)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
-def $trait_pool_facts(S, n, pconstant :: pconstant_tail*) = $trait_pool_facts(S, n, pconstant_tail*) -- otherwise
+def $trait_pool_facts(S, n, (PCONSTANT pcpath pvalue) :: pconstant*) = $trait_pool_facts(S, n, pconstant*)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = eps
+def $trait_pool_facts(S, n, (PCCLASS pcpath pvalueclass) :: pconstant*) = $trait_pool_facts(S, n, pconstant*)
 def $trait_pool_classes(eps) = eps
 def $trait_pool_classes((PCCLASS pcpath pvalueclass) :: pconstant*) = (pcpath, pvalueclass) :: $trait_pool_classes(pconstant*)
-def $trait_pool_classes(pconstant :: pconstant_tail*) = $trait_pool_classes(pconstant_tail*) -- otherwise
+def $trait_pool_classes((PCONSTANT pcpath pvalue) :: pconstant*) = $trait_pool_classes(pconstant*)
 
 def $trait_fold_owner(F) = (porigin_owner)
   -- if F.MEMORY.CONSTCONTEXT = (pconstantcontext)
