@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Private and protected method arrays and class-method strings support callable
+admission, selection, capture/clone and delayed error-handler dispatch. Object
+selectors can redirect to the selecting parent's private method; concrete class
+selectors use the requested class table. Protected access follows the root
+prototype. Captures retain genuine selecting permission after makers retire,
+while direct calls and API callbacks authenticate the real saved caller/emitter.
+The current missing-CV assignment writes captured null through the referenced
+caller argument after its private handler throws. Source1/94 stays separate from
+the original author19/261 and independent16/345 checks.
+The [scoped-callable ledger](coverage/semantics/scoped-callables-current-review.json)
+keeps original failures and the three ordinary named-receive exclusions distinct.
+
 Warning-read consumers213 retain original null for six casts, selected copies and
 ordinary by-value sends across handler mutation. Selected callees and prior arrays
 keep their real owners; named-slot errors precede warnings. Direct ASSIGN writes
@@ -58,7 +70,7 @@ errors retain preceding warnings. The [publication ledger](coverage/semantics/in
 separates the original source/compiler/runtime checks from the current strict USER
 truth-warning interaction, failures and unchanged return-classification boundary.
 
-Public method-array and class-method-string error handlers register raw values and
+Method-array and class-method-string error handlers register raw values and
 select afresh at dispatch. Entered targets retain genuine emitter scope, arguments
 and owners through member mutation, nested replacement, throw and false fallback.
 The [method-handler ledger](coverage/semantics/handler-callables-current-review.json)
@@ -96,7 +108,7 @@ failures and interrupted evidence.
 
 ## Remaining core work
 
-- Calls: broader nonpublic/scope-dependent array and class/method-string resolution,
+- Calls: keyword/compound array and class-method-string resolution,
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
   array and string Closure PIPE routes are covered; defined ordinary `$GLOBALS[key]` is admitted; missing-global warnings and whole-table snapshots remain partial.

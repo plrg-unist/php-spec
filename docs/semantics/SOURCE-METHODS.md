@@ -101,8 +101,8 @@ runtime-table `__invoke` without a visibility check. Private/protected methods
 retain their declaring owner, runtime called class and real receiver. An Owner
 method's bare call selects a Child override even when explicit `->__invoke`
 from that lexical frame selects Owner's private declaration. Ordinary explicit
-method calls and captures retain their existing visibility checks; this does
-not broaden nonpublic method-array or class-method-string resolution.
+method calls and captures retain ordinary visibility checks. Named array/string
+selectors use the separate lexical access rules below.
 
 A dual-role Stringable object uses the selected `__invoke` without a string cast.
 [Callable/string parameter reception](../../coverage/semantics/callable-string-current-review.json)
@@ -163,8 +163,8 @@ finite witness/100. A separate current INI option/value witness checks the selec
 Owner/Child argument frame, two original callback operands and converted-option
 value rejection, with full raw mutation and cleanup. Unsupported controls and
 original failures stay separate; ordinary
-`$GLOBALS` behavior remains partial. Compound or scope-dependent names,
-nonpublic/magic/autoload/internal resolution and full callable closure remain open.
+`$GLOBALS` behavior remains partial. Keyword/compound names, magic/autoload/internal
+resolution and full callable closure remain open; lexical access is described below.
 Shared ordinary type classification adds no new return agreement or paused-return
 validation.
 
@@ -193,8 +193,8 @@ preserves saved arguments, both normalized callback operands and the static
 
 The [string review](../../coverage/semantics/class-method-strings-current-review.json)
 keeps original source/state observations distinct from Unsupported controls.
-Broader nonpublic/magic/autoload/internal and scope-dependent strings, binding
-and transformed Closure consumers remain open. StaticCall reference RHS acquisition
+Keyword/compound names, magic/autoload/internal resolution, binding and transformed
+Closure consumers remain open; lexical access is described below. StaticCall reference RHS acquisition
 with untyped return signatures now preserves selected lexical/called scope and
 typed static cells through97/99. Nullsafe class chains reject before ordinary or FCC
 lowering; first-class call results reject in reference context. The
@@ -312,3 +312,41 @@ Primary engine routes: `Zend/zend_compile.c` method and call compilation;
 `Zend/zend_vm_def.h` method initialization/SEND/RECEIVE; `Zend/zend_closures.c`
 closure creation and `Closure::__invoke`; `Zend/zend_execute.c` parameter errors;
 `Zend/zend_exceptions.c` trace construction. All are from the vendored target.
+
+## Lexical method arrays and class-method strings
+
+Module 215 extends ordinary concrete selectors with private/protected access.
+Object arrays may redirect to a selecting parent's private descriptor when a
+child replaces it; concrete class arrays and strings use the requested effective
+table. Protected checks use the root nonprivate prototype in either ancestor
+direction. Full-byte lookup and public target certificates retain their contracts.
+Direct access errors precede abstract/nonstatic dispatch errors; API callable
+checks retain their distinct abstract/nonstatic-before-access ordering.
+
+A nonpublic target carries its actual selecting scope, object/class selector kind
+and source site. Direct saved calls authenticate that scope against the genuine
+caller. Fixed strings retain the producer's compatible receiver; computed class
+selectors remain static-only. Callable admission uses the receiving frame and
+does not manufacture a dispatch target. Literal array kind proofs apply only to
+exactly two ordinary unkeyed items; keyed/unpacked or variable history stays opaque.
+
+Capture/clone retains permission from the source class or genuine rebound creator
+origin after the maker and creator retire. That proof adds no heap owner. Array
+captures require the outer creator certificate to equal the inner access proof;
+later arbitrary dynamic binding history remains unproved. Selected receivers,
+method defaults and static cells retain ordinary ownership and cleanup.
+
+API registration stores raw callbacks. Dispatch resolves them in the emitting
+USER frame, then entered callbacks freeze the selected target, ARG4 and saved
+emitter. DIRECT members authenticate the snapshot; referenced members stay opaque
+after mutation. The ordinary named/unpack receive predicates exclude genuine
+handler contexts so the dedicated four-value receive arm remains disjoint.
+Current213 assignment-warning checks preserve this selected private handler while
+its throw retires the saved read and writes captured null through the caller
+reference. ARG4, caller argument views and receiver cleanup remain authentic.
+
+The [scoped ledger](../../coverage/semantics/scoped-callables-current-review.json)
+separates original source outcomes, reached witnesses, failures and repaired checks.
+Keyword/compound, magic/autoload/internal consumers, dynamic compilation-warning
+handlers and reference-return callbacks remain open. Shared ordinary callable
+classification adds no fresh return agreement or paused-return dependency.
