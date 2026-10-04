@@ -13,19 +13,18 @@ provenance, the lexical scope used for private access, the called class, and
 the optional receiver. A receiver supplies the called class; without one, the
 called class is the lexical scope. The scope argument may be an admitted user
 class name, a user object of that class, `"static"` for the source lexical
-scope, or explicit `null` to remove lexical class scope while retaining an
-object receiver and its called class. The bound row roots its receiver while it
-is live. During operand
+scope, or explicit `null`. With an object receiver and no lexical scope, Zend
+supplies its dummy internal `Closure` scope; module253 carries that scope and
+called class. The bound row roots its receiver while it is live. During operand
 evaluation, the task roots the source closure and all sent operands. Immediate
 simple-variable source selectors are checked against the live variable before
 argument effects; later states retain the selected historical value.
 
-The finite controls also cover the native warnings for binding an object to a
-static closure and choosing internal `stdClass` as scope. Other source closure
-kinds, internal-class receiver/scope objects, source closures with an active
-receiver being unbound, named/unpacked binding operands, and computed binding
-method names remain explicit boundaries of this increment. `Closure::call`,
-rebinding captured method/getter/invoke wrappers, array callables and source
-`__invoke` are subsequent callable work; they are not considered complete by
-the 181 evidence. The [review ledger](../../coverage/semantics/closure-binding-review.json)
+The historical181 finite controls also cover the native warnings for binding an
+object to a static closure and choosing internal `stdClass` as scope. That
+evidence retains its original bounded scope.
+[Current Closure and fake binding253](CLOSURE-CURRENT-BINDING.md) adds genuine
+CONFIG argument transport, computed/imported API sites, fake method/function/
+getter/intrinsic binding, shared source statics and the internal REAL scope carrier.
+Complete REAL warning/unbinding and temporary-call consumers remain required. The [review ledger](../../coverage/semantics/closure-binding-review.json)
 separates the original-base differential from current-base and installed checks.

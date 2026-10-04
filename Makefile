@@ -112,6 +112,7 @@ test-semantics: build
 	python3 tests/semantics/cold_closure_static_protocol.py
 	python3 tests/semantics/closure_call_creation_protocol.py
 	python3 tests/semantics/instance_default_template_protocol.py
+	python3 tests/semantics/object_property_default_protocol.py
 	python3 tests/semantics/default_parameter_compiler.py
 	python3 tests/semantics/default_parameters.py
 	python3 tests/semantics/default_parameter_protocol.py
@@ -151,6 +152,8 @@ test-semantics: build
 	python3 tests/semantics/callable_receive_protocol.py
 	python3 tests/semantics/from_callable.py
 	python3 tests/semantics/from_callable_protocol.py
+	python3 tests/semantics/closure_current_binding.py
+	python3 tests/semantics/closure_current_binding_protocol.py
 	python3 tests/semantics/invoke_publication.py
 	python3 tests/semantics/invoke_publication_protocol.py
 	python3 tests/semantics/callable_string_ini.py

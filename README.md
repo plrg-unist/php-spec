@@ -277,8 +277,13 @@ interaction passes. [Coalesce assignment and unset keys](docs/semantics/SOURCE-D
 now stage direct CV-array consumers: memoized keys and separate read/write lines,
 write-copy abort, unset liveness and shared typed cells survive callbacks.
 Author6/255 and independent10/216 share one original, giving15 unique private
-agreements; two reduced current trait-handler sources pass. Nested unset,
-wider memoized containers, append and wider producers remain required.
+agreements; two reduced current trait-handler sources pass.
+[Nested unset and append](docs/semantics/SOURCE-DIMENSION-TAILS.md) now preserve
+intermediate conversion protection, abort temporaries and late RHS/null-insertion
+timing. Author6/247 and independent18/356 share one original, giving23 unique
+private agreements; one current private-handler/typed-cell source passes.
+Wider memoized containers and earlier container/string/object producers remain
+required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -440,7 +445,13 @@ the parent's actual state when a child links and filling constants, instance
 defaults and statics in order before allocating an object. Eight new source
 agreements and three programs/172 state premises check private shadows, strict
 failure/retry, reentry, link-time copies and template ownership after collection.
-Object-bearing defaults and wider consumers remain open.
+Deferred static/no-use Closure and function/method callable defaults now retain
+shared template object identities through arrays, constant aliases, retry and
+reentry. Nine new source agreements and six programs/335 premises retain their
+separate cuts. One actual trait-import source and 98 premises distinguish the
+first cached target from each fresh called class/publication prefix, including
+retired source objects and namespace fallback. Other object producers and wider
+property/callable consumers remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -526,7 +537,12 @@ static children add no receiver owner and nonstatic children own their receiver.
 preserves named-hole order, live reference operands and borrowed method receipts.
 Failed lookup stages slow scalar warnings and forced Stringable conversion.
 Other internal and user-return keyword warning consumers remain required;
-magic/autoload and transformed binding remain open.
+magic/autoload and complete binding remain open.
+[Current Closure and fake binding](docs/semantics/CLOSURE-CURRENT-BINDING.md)
+returns the exact immediate ordinary Closure and preserves `__invoke` capture
+identity. Transformed fake bindings keep source statics and own only their new
+receiver; returned source Closures retain the genuine internal scope after makers
+retire. Complete REAL warning/unbinding and temporary-current consumers remain required.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.

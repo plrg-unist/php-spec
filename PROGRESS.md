@@ -7,6 +7,55 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Current Closure/binding253 returns the exact immediate ordinary Closure and
+preserves existing-object `__invoke` capture identity. Transformed fake bindings
+keep frozen permission and source statics while owning only their new receiver;
+internal REAL copies and returned children retain genuine scope after makers
+retire. Static API receivers add no argument-evaluation owner. Selected warnings
+preserve scope/error order and unwind callback writes. Source24 normal at distinct
+cuts, nine owner/frame fixtures444 conditions (author214/independent230), affected
+older identity3/37 and private AL237 pass. Actualc139 preserves246 modules and
+passes AL247 plus one inherited property-default source: REAL current/`__invoke`
+identity and private fake binding/clone permission, called scope and shared statics.
+Original compiler, source and fixture failures,
+the global-constant Unsupported control and native-only controls remain separate
+in the [ledger](coverage/semantics/closure-current-binding-review.json).
+The [contract](docs/semantics/CLOSURE-CURRENT-BINDING.md) keeps complete REAL
+warning/unbinding, temporary-current escape and further API/keyword consumers
+required. Return verification stays paused and complete core remains open.
+
+Object defaults (module252) now create static/no-use source Closures and
+function/method callables in genuine declaring scope. Requested-class templates
+share their object values with instances and preserve exact successful bindings
+across late inheritance, retry and reentry; arrays copy containers and share
+embedded objects. Nonowning receipts/copy certificates reject foreign transfers
+and survive source retirement, including plain clones. Nine normal source
+agreements retain 0d0d (first2)/0e472 (other7); six programs/335 premises retain
+0e472/72d5.
+One actual238 trait-import source and98 premises pass at a502: cached private
+method/function targets keep their first authentic lookup, while each property
+uses its own publication prefix and fresh called class. All original compiler,
+permission and fixture-seek failures remain separate in the
+[default ledger](coverage/semantics/deferred-static-defaults-review.json).
+Other object/default producers and consumers remain required; complete core and
+paused return verification remain open.
+
+Nested unset and append255 now suspend defined CV-rooted array walks after key
+and computed RHS evaluation. Intermediate unset separates before conversion,
+latches missing keys as null and skips the next deprecation if the table dies;
+ordered float notices share one protection. Final unset keeps its distinct rules.
+Append copy-abort retains a genuine null temporary and the computed RHS. A late
+missing RHS captures null, checks the old table's liveness, and can insert into a
+rebound real child even before propagating its handler's exception. Key-handler
+throws still stop the append and preserve typed destinations. Author6/247 and
+independent18/356 share the retained expiry original, giving23 unique private
+agreements at7ee/d281/643/75c8. One actual0b private-FCC/called-class source passes
+at223 with abort/TEMP and live typed caller/RHS cells. Original overlap and
+corrected native/source predictions remain in the
+[tail ledger](coverage/semantics/dimension-tail-review.json).
+Wider memoized containers, GLOBALS RW and earlier container/string/object
+producers remain required; complete core remains open.
+
 Legacy dollar-curly compiler notices258 retain the direct/computed grammar flag
 through checked fresh printing and emit before child compilation with its real
 path and the preceding compiler line. Main/include delivery reuses230 whole-unit
@@ -138,8 +187,8 @@ class, read11/write8, copied-table abort/deletion and shared typed caller cells.
 Combined and first reduced coalesce CLI60 timeouts retain zero agreement. The
 [contract](docs/semantics/SOURCE-DIMENSION-EDITS.md) and
 [ledger](coverage/semantics/dimension-edit-review.json) keep original cuts and
-native prediction corrections. Nested unset, wider memoized containers and append
-are immediate required follow-ons; complete core remains open.
+native prediction corrections. Nested unset and append are covered by255 above;
+wider memoized containers and other producers remain required.
 
 Iterator declaration notices230 follow actual source/internal prototype order,
 including source erasure, direct restoration, duplicate notices and the built-in
@@ -426,8 +475,9 @@ allocation. Strict failure/retry and reentry retain once-only fill history;
 objects copy template values and arrays remain owned after object collection.
 Eight exact source agreements pass at80900fa4b; three programs/172 phase, copy
 and ownership premises pass at449b45763 after a fixture source-origin binding
-repair. Original compilation failures remain separate. Object-bearing defaults
-and wider consumers remain required next work.
+repair. Original compilation failures remain separate. Module252 extends these
+templates to certified Closure/FCC values; other object/default producers and
+wider consumers remain required.
 
 
 Private and protected method arrays and class-method strings support callable
@@ -552,16 +602,16 @@ failures and interrupted evidence.
   233 additionally stages earlier missing key-CV and null/float/global-array-name
   conversions through nested/quiet reads. Writable242 adds bounded CV-array W/RW
   and direct GLOBALS reference fetches;249 adds direct CV-array coalesce-assignment
-  and final unset. Nested unset, wider memoized containers, append, broader GLOBALS
-  RW, wider key/object/container producers and ordinary snapshots without request
-  facts remain open.
+  and final unset;255 adds nested unset and append on defined CV-rooted arrays.
+  Wider memoized containers, broader GLOBALS RW, wider key/object/container
+  producers and ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
   wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: dynamic object `::class`, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred object-bearing defaults and
+  broader reference-result consumers. Other object-bearing default producers and
   wider Closure creation contexts remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.
