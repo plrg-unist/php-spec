@@ -17,6 +17,7 @@ dec $class_constant_table_order(pstate, porigin, nat) : porigin*
 dec $class_constant_table_lineage(pstate, porigin, nat) : porigin*
 dec $class_constant_table_unfinished(pstate, porigin*) : porigin*
 dec $class_constant_table_sequence(pstate, porigin, porigin*) : bool
+dec $class_constant_update_ordered(porigin*, porigin*) : bool
 dec $class_constant_table_blocks(pstate, ptask*, porigin*) : bool
 dec $class_constant_update_origins(pclassconstantdesc*, porigin*) : porigin*
 dec $class_constant_update_site(pstate, porigin, porigin) : bool
@@ -857,7 +858,6 @@ def $class_constant_update_unfinished(S, porigin :: porigin_tail*) = $class_cons
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) =/= eps \/ $class_constant_initializing(S.CLASSCONSTANTINIT, porigin)
 def $class_constant_update_unfinished(S, porigin :: porigin_tail*) = porigin :: $class_constant_update_unfinished(S, porigin_tail*)
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = eps /\ ~$class_constant_initializing(S.CLASSCONSTANTINIT, porigin)
-dec $class_constant_update_ordered(porigin*, porigin*) : bool
 def $class_constant_update_ordered(porigin_order*, eps) = true
 def $class_constant_update_ordered(eps, porigin :: porigin_tail*) = false
 def $class_constant_update_ordered(porigin :: porigin_order*, porigin :: porigin_tail*) = $class_constant_update_ordered(porigin_order*, porigin_tail*)
