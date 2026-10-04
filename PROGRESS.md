@@ -12,7 +12,7 @@ reusable live store handles. Once marks, bailout/failed-constructor suppression,
 private visibility, nested USER calls and ordered outgoing slots retain exact
 owners. Caller restoration precedes compiled CV cleanup; extras precede receiver
 release. Pending throws replace and chain through remaining slots. Ignored
-ordinary and automatic-constructor returns release in the live callee before
+by-value ordinary and automatic-constructor returns release in the live callee before
 locals; C destructor helper returns remain retained. Eval/include continuations
 keep source history. Explicit request facts preserve startup argc order; absent
 facts keep the original environment Unsupported, and dead CVs remain admissible.

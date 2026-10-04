@@ -29,7 +29,7 @@ suspend another release loop. Real call frames restore the caller before releasi
 locals in compiled CV order, then extras before the receiver/Closure. The assigned
 return operand and pending Throwable keep their owners through that cleanup;
 replacement throws chain and become the pending object for each remaining slot.
-An ignored ordinary return releases its temporary before restoring that callee,
+An ignored by-value ordinary return releases its temporary before restoring that callee,
 so private destructor permission remains in the live callee scope. An ordinary
 automatic constructor has the same unused return destination. The C destructor
 helper instead retains its returned value until after local cleanup.

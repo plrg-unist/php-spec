@@ -312,7 +312,7 @@ queue begins.
 [Request-stage destructors](docs/semantics/SOURCE-DESTRUCTORS.md) repeat the
 reverse direct-global pass, then scan reusable live object-store handles. Once
 marks, nested USER permission, ordered slot/CV cleanup and pending exceptions
-preserve native callbacks and owners. Ignored ordinary/constructor returns release
+preserve native callbacks and owners. Ignored by-value ordinary/constructor returns release
 before callee restoration; C callback returns retain their separate destination.
 [Author checks](coverage/semantics/destructors-review.json) retain78 source
 agreements and303 reached assertions at their actual cuts;

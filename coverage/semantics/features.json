@@ -11797,7 +11797,7 @@
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/40-control.watsup",
         "spec/semantics/79-call-frames.watsup",
-        "spec/semantics/83-error-unwinding.watsup",
+        "spec/semantics/83-call-traces.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/161-throwable-constructors.watsup",
         "spec/semantics/247-handler-callable-consumers.watsup"
@@ -11836,7 +11836,7 @@
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/40-control.watsup",
         "spec/semantics/79-call-frames.watsup",
-        "spec/semantics/83-error-unwinding.watsup",
+        "spec/semantics/83-call-traces.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/161-throwable-constructors.watsup",
         "spec/semantics/247-handler-callable-consumers.watsup"
@@ -12043,7 +12043,7 @@
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/40-control.watsup",
         "spec/semantics/79-call-frames.watsup",
-        "spec/semantics/83-error-unwinding.watsup",
+        "spec/semantics/83-call-traces.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/161-throwable-constructors.watsup",
         "spec/semantics/247-handler-callable-consumers.watsup"
@@ -12082,7 +12082,7 @@
         "spec/semantics/39-ownership.watsup",
         "spec/semantics/40-control.watsup",
         "spec/semantics/79-call-frames.watsup",
-        "spec/semantics/83-error-unwinding.watsup",
+        "spec/semantics/83-call-traces.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/161-throwable-constructors.watsup",
         "spec/semantics/247-handler-callable-consumers.watsup"
@@ -12108,7 +12108,7 @@
         "coverage/semantics/destructors-review.json",
         "coverage/semantics/destructor-review.json"
       ],
-      "review": "Within request stage2, ordinary frame leaves restore the authentic caller before ordered compiled-CV cleanup, then extras before receiver/Closure. Pending and assigned-return values remain owned; replacement destructor throws chain and become pending for remaining slots. Ignored ordinary/automatic-constructor return temporaries instead release before callee restoration; C helper returns stay retained. Source-service histories and exact current/saved continuations are checked. General cleanup before stage2 and original uncaught Throwable release before stage1 remain explicit required dependencies; paused return verification is not resumed."
+      "review": "Within request stage2, ordinary frame leaves restore the authentic caller before ordered compiled-CV cleanup, then extras before receiver/Closure. Pending and assigned-return values remain owned; replacement destructor throws chain and become pending for remaining slots. Ignored by-value ordinary/automatic-constructor return temporaries instead release before callee restoration; C helper returns stay retained. Source-service histories and exact current/saved continuations are checked. General cleanup before stage2 and original uncaught Throwable release before stage1 remain explicit required dependencies; paused return verification is not resumed."
     },
     {
       "id": "lifecycle.ticks",
