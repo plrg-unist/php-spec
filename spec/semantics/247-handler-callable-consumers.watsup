@@ -175,6 +175,8 @@ def $handler_emitter_valid(S, API_METHOD_TARGET papiquery porigin ptbytes b_stat
 def $consumer_exception_object(API_METHOD_TARGET papiquery porigin ptbytes b_static, n) = (pexceptioncall.OBJECT = n)
   -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
 def $consumer_exception_object(pcalltarget, n) = true -- otherwise
+def $consumer_api_target(API_METHOD_TARGET papiquery porigin ptbytes b_static) = true
+def $consumer_api_target(pcalltarget) = false -- otherwise
 
 def $consumer_shutdown_scope(S, papiquery, pshutdownentry) = true
   -- if papiquery.SOURCE = CONFIG_INVOKE pshutdownentry.CALL

@@ -2,6 +2,7 @@
 ;; The terminal C boundary has no user caller and supplies one owned Throwable.
 dec $exception_invoke_valid(pstate, pexceptioncall) : bool
 dec $consumer_exception_object(pcalltarget, nat) : bool
+dec $consumer_api_target(pcalltarget) : bool
 dec $exception_handler_value(pvalue?) : pvalue
 dec $exception_handler_pop(pstate) : pstate
 dec $exception_handler_restore(pstate) : pstate
@@ -123,6 +124,7 @@ def $exception_raw_selected(S, PARRAY n, (parray), HANDLER_METHOD_TARGET b_class
   -- if $handler_kind_valid(b_class, pcalltarget)
 def $exception_raw_selected(S, pvalue, eps, pcalltarget) = $error_handler_selected(S, pvalue, pcalltarget)
   -- if ~$is_array_value(pvalue)
+  -- if ~$consumer_api_target(pcalltarget)
 def $exception_raw_selected(S, pvalue, parray?, pcalltarget) = false -- otherwise
 def $exception_snapshot(S, PARRAY n) = (S.ARRAYS[n])
   -- if $(n < |S.ARRAYS|)
