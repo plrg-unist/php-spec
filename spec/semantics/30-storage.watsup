@@ -37,24 +37,6 @@ syntax pobjecttable = { OBJECT nat, TABLE nat }
 syntax pobjectcast = { SITE porigin, LINE int, OBJECT nat, INPUT poperand, CELL nat?, REFERENCED bool }
 syntax pobjectforeach = { SITE porigin, LINE int, OBJECT nat, ITERATOR nat, POSITION nat, TABLE nat, SERIAL nat, KEY ptbytes, REF bool }
 syntax ptask = OBJECT_CAST_RESULT pobjectcast | OBJECT_FOREACH_KEY pobjectforeach
-dec $object_foreach_reset(pstate, nat) : pstate
-dec $object_foreach_fetch(pstate, nat, nat, statement, porigin?, int, ptbytes, pitem, nat, bool) : pstate
-dec $object_cast_warning(pstate, pcast, pvalue) : bool
-dec $object_cast_scope_valid(pstate) : bool
-dec $entry_read_value(pstate, pitem) : pvalue
-dec $stdclass_raw_undefined(pstate, pvalue, ptbytes) : bool
-dec $defined_positions(pposition*, pentry*) : pposition*
-dec $object_table_at(pobjecttable*, nat) : nat?
-dec $object_tables_prune(pobjecttable*, pnode*) : pobjecttable*
-dec $object_table_write(pstate, nat) : pstate
-dec $object_table_write_value(pstate, pvalue) : pstate
-dec $object_table_sync(pstate, nat) : pstate
-dec $object_table_sync_value(pstate, pvalue) : pstate
-dec $object_table_materialize(pstate, nat) : pstate
-dec $object_tables_valid(pstate) : bool
-dec $stdclass_slots_valid(pstate, ppropertyslot*) : bool
-dec $stdclass_cast_array(pstate, nat) : pstate
-dec $stdclass_clone(pstate, nat) : pstate
 syntax pproptypesource = OBJECT_PROP_SOURCE nat ptbytes ppropertyid | CLASS_PROP_SOURCE ppropertyid | RETIRED_CLASS_PROP_SOURCE porigin nat
 syntax ppropref = { CELL nat, SOURCES pproptypesource* }
 syntax prefcoercion = { CELL nat, SITE porigin, LINE int, VALUE ptbytes }
@@ -261,6 +243,25 @@ dec $object_body(pobject) : pobject
 
 syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, CLOSUREBINDINGS pclosurebinding*, OBJECTPROPS pobjectprops*, OBJECTTABLES pobjecttable*, PROPREFS ppropref*, REFCOERCIONS prefcoercion*, PARAMETERBACKINGS pparameterbacking*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, DECLARATIONS pdeclaration*, LINKEDPARENTS pclasslink*, LINKEDINTERFACES pinterfacelink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, CLASSSTATICS pclassstatic*, INSTANCEDEFAULTS pinstancetemplate*, CLASSCONSTANTCACHE pdefaultcache*, CLASSCONSTANTHISTORY pclassconstantevent*, CLASSCONSTANTINIT pclassconstantcontext*, CONSTANTCLOSURES pconstantclosure*, STARTUP pstartup?, REPORTING int, REPORTINGINI preqbytes, REPORTINGMODIFIED bool, DISPLAYINIT preqbytes?, DISPLAYINI preqbytes?, DISPLAYMODIFIED bool, SILENCES psilence*, ERRORHANDLER perrorhandler, ERRORHANDLERS perrorhandler*, EXCEPTIONHANDLER pvalue?, EXCEPTIONHANDLERS pvalue?*, SHUTDOWN pshutdown, BORROWEDREAD pidentityread?, OBJECTCAST pobjectcast?, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORFATALTRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, FILECWD preqbytes?, FILEINCLUDEPATH preqbytes?, FILESEQ nat, DIRSEQ nat, DIRCONVSEQ nat, DIRCONVERSIONS pdirconversion*, DIRCONTEXT pdircontext?, SELECTSEQ nat, SELECTEDCALLS pselectedcall*, FILECONTEXTS pfilecontext*, FILEBINDINGS pfilebinding*, INCLUDEDOPENED preqbytes*, EVALCONTEXTS pevalcontext*, EVALBINDINGS pevalbinding*, FAILEDSOURCES pfailedsource*, SERVICELEFT nat?, COMPILESTOP bool, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
+
+dec $object_foreach_reset(pstate, nat) : pstate
+dec $object_foreach_fetch(pstate, nat, nat, statement, porigin?, int, ptbytes, pitem, nat, bool) : pstate
+dec $object_cast_warning(pstate, pcast, pvalue) : bool
+dec $object_cast_scope_valid(pstate) : bool
+dec $entry_read_value(pstate, pitem) : pvalue
+dec $stdclass_raw_undefined(pstate, pvalue, ptbytes) : bool
+dec $defined_positions(pposition*, pentry*) : pposition*
+dec $object_table_at(pobjecttable*, nat) : nat?
+dec $object_tables_prune(pobjecttable*, pnode*) : pobjecttable*
+dec $object_table_write(pstate, nat) : pstate
+dec $object_table_write_value(pstate, pvalue) : pstate
+dec $object_table_sync(pstate, nat) : pstate
+dec $object_table_sync_value(pstate, pvalue) : pstate
+dec $object_table_materialize(pstate, nat) : pstate
+dec $object_tables_valid(pstate) : bool
+dec $stdclass_slots_valid(pstate, ppropertyslot*) : bool
+dec $stdclass_cast_array(pstate, nat) : pstate
+dec $stdclass_clone(pstate, nat) : pstate
 dec $constant_callable_source_scope(pstate, porigin) : porigin?
 dec $constant_callable_active(pstate, porigin) : bool
 dec $constant_closure_create(pstate, pfunction) : pstate
