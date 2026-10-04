@@ -1,0 +1,23 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; future effectful/default-template phase: physical trait __FILE__ differs from using-class compound initializer diagnostics. Native-only, zero model agreement.",
+  "cases": [
+    {
+      "id": "imported-initializer-diagnostic-owner-and-literal-source-file",
+      "source": "<?php set_error_handler(function($n,$m,$f,$l){echo $n,\":\",($f===__FILE__?\"C\":\"T\"),\":\",$l,\";\";});require __DIR__.\"/traits.php\";class C{use T;}echo (new C)->x,\";\",C::X,\";\",(C::F===__DIR__.\"/traits.php\"?\"F\":\"BAD\");",
+      "source_sha256": "06ea99fda8c4580ca84a0dbbf4347c8a141badca8d840670f64fe61d4a163496",
+      "files": [
+        {
+          "name": "traits.php",
+          "source": "<?php\ntrait T {\n    public $x = E_STRICT + 0;\n    public const X = E_STRICT + 0;\n    public const F = __FILE__;\n}\n",
+          "source_sha256": "25f1beebf2eab2add9541dfd552c68b8f24720a78446430cd54c9b3959a9977b"
+        }
+      ],
+      "status": "normal",
+      "stdout_base64": "ODE5MjpDOjQ7ODE5MjpDOjM7MjA0ODsyMDQ4O0Y=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-files-native238-tk0hysmm/report.json",
+      "native_raw_sha256": "2e39a1670343e27d91bf11c25952f098add6f2d8b39f3721db058b7b47c8d0a7"
+    }
+  ]
+}

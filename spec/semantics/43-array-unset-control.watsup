@@ -2,4 +2,5 @@ rule PhpStep/array-unset: S ~> S[.TODO = [DIM_PREP (NExprArrayDimFetch expressio
   -- if S.TODO = (UNSET (NExprArrayDimFetch expression phpType5 metadata)) :: ptask_tail*
 rule PhpStep/array-unset-location: S ~> S_unset[.HELD = S.HELD][.RESULT = KNOWN PNULL]
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if ~$key_unset_pending(S)
   -- if S_unset = $unset_array($hold_task_inputs(S), S.BASE)

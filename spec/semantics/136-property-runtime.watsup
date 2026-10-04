@@ -392,7 +392,7 @@ def $property_store_key(S, n, ptbytes, pvalue, z) = S_converted
   -- if ptypeconversion =/= TYPEREJECT
   -- if S_converted = $typed_apply(S, ptypeconversion, z)
   -- if S_converted.COMPLETION =/= NORMAL
-def $property_store_key(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), z)
+def $property_store_key(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), z)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)

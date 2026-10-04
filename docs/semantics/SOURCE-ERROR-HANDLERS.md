@@ -106,8 +106,10 @@ operand forms are checked without reconstructing captured dynamic-value history.
 [Writable dimensions242](SOURCE-DIMENSION-WRITES.md) add bounded CV-array W/RW
 and direct GLOBALS reference fetches. Native separation/protection, exact-one
 table acquisition and delayed RHS demand survive callbacks; named fetch precedes
-mapping and promotion. Append/unset/coalesce-assignment and wider producers
-remain required.
+mapping and promotion. [Coalesce/unset249](SOURCE-DIMENSION-EDITS.md) preserves
+direct CV-array quiet memoization/write demand and final unset liveness, including
+typed-cell/throwing cleanup and authentic read/write lines. Nested unset, wider
+memoized containers, append and wider producers remain required.
 
 Primary contracts are `zend_error_zstr_at` in `vendor/php-src/Zend/zend.c`, the
 six API bodies in `Zend/zend_builtin_functions.c`, the undefined-CV read helpers

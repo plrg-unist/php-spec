@@ -264,18 +264,29 @@ bounded CV-array W/RW and direct GLOBALS reference fetches. Callback copies abor
 acquisition; real cell aliases, moved sole keepers, delayed RHS reads and named
 reference priority retain their native behavior. Author11/340 and independent15
 fresh/266 plus two retained originals keep separate cuts; one current typed-caller
-interaction passes. Append, unset, coalesce assignment and wider producers
-remain required.
+interaction passes. [Coalesce assignment and unset keys](docs/semantics/SOURCE-DIMENSION-EDITS.md)
+now stage direct CV-array consumers: memoized keys and separate read/write lines,
+write-copy abort, unset liveness and shared typed cells survive callbacks.
+Author6/255 and independent10/216 share one original, giving15 unique private
+agreements; two reduced current trait-handler sources pass. Nested unset,
+wider memoized containers, append and wider producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
 after `finally`. Nested restore/replacement, callback throws, internal by-reference
-warnings and termination preserve selected targets and owners. Keyword/compound
-callback ingress remains open.
+warnings and termination preserve selected targets and owners. Module247 stages
+keyword/compound registration and terminal re-selection through the shared221 API;
+internal deprecations preserve `Unknown:0`, handler stack effects and original
+continuations. [Author/composition checks](coverage/semantics/callback-api-consumers-review.json)
+cover40 source tuples and140 reached assertions; the
+[independent review](coverage/semantics/callback-api-consumer-review.json)
+keeps its separate34-source/474-assertion cut.
 
 [Shutdown callbacks](docs/semantics/SOURCE-SHUTDOWN.md) cache selected callables
 and copied arguments, then run in order after normal, exit and fatal outcomes.
-Callbacks can append entries; handled throws continue and callback exit stops
+Keyword/compound selections preserve called/private scope after maker retirement
+using a borrowed target and callsite certificate. Callbacks can append entries;
+handled throws continue and callback exit stops
 the queue. Fatal-render warnings complete before diagnostics freeze and the
 queue begins. Destructors, GC, output buffers and later request cleanup remain
 required.
@@ -440,9 +451,12 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
-[Source trait methods](docs/semantics/SOURCE-TRAITS.md) compose nested uses, conflicts
+[Source traits](docs/semantics/SOURCE-TRAITS.md) compose nested uses, conflicts
 and adaptations with using-class scope, original body provenance and distinct
-class/alias static cells. Trait properties and constants remain the next phase. A bounded
+class/alias static cells. Property/constant composition preserves invariant source
+types, strict evaluated compatibility, per-import identities and static sharing.
+Imported deferred instance defaults use owning class templates. Effectful
+collisions and direct trait-property warning continuations remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
@@ -560,8 +574,13 @@ argument after its global root retires.
 [Anonymous keyword defaults](coverage/semantics/anonymous-default-new-review.json)
 resolve self/parent from the live receiving Closure lexical scope, including
 rebinding, arrows and temporary calls. Private constructors and saved recursive
-defaults retain that scope independently of called class and receiver. Ordinary
-Throwable effects, dynamic object `::class` and broader constrained conversion remain open.
+defaults retain that scope independently of called class and receiver.
+[Ordinary Throwable constructors](coverage/semantics/ordinary-throwable-reception-review.json)
+suspend null/lossy warnings and Stringable parsing for NEW and explicit inherited
+or scoped calls. Fields commit only after all parameters pass; successful string
+casts replace sent slots and retire their old temporary owners. Callback traces
+and recursive conversion consumers retain their own constructor. Dynamic object
+`::class` and broader constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

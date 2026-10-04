@@ -26,6 +26,8 @@ dec $key_write_task_base(ptask, pbase, poperand) : pbase
 dec $key_write_mode(ptask, ptask*) : bool
 dec $key_write_root(pstate, pbase) : bool
 dec $key_write_base_source(pstate, porigin, pbase) : bool
+dec $key_writer_base_source(pstate, pkeywriter) : bool
+dec $key_coalesce_write_context(pstate, ptask*, porigin) : bool
 dec $key_write_input_source(pstate, porigin, poperand, int, bool) : bool
 dec $key_write_rhs_source(pstate, pkeywriter) : bool
 dec $key_write_self(ptask) : bool
@@ -183,7 +185,7 @@ def $key_write_plan(S) = (pkeywriter)
   -- if $key_write_root(S, pkeywriter.BASE)
   -- if $key_write_target_base(pkeywriter.BASE)
   -- if ~$key_write_mode(ptask, ptask_tail*) \/ ~$key_write_global_root(pkeywriter.BASE)
-  -- if $key_write_base_source(S, pkeywriter.TARGET, pkeywriter.BASE)
+  -- if $key_writer_base_source(S, pkeywriter)
 def $key_write_plan(S) = (pkeywriter)
   -- if S.ORIGIN = (porigin)
   -- if S.TODO = (DIM_PATH pbase z) :: ptask_tail*
@@ -393,6 +395,8 @@ def $key_write_base_source(S, porigin, BASE_GLOBAL poperand z) = true
 def $key_write_base_source(S, porigin, BASE_PLACE porigin plocation) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
 def $key_write_base_source(S, porigin, pbase) = false -- otherwise
+def $key_writer_base_source(S, pkeywriter) = $key_write_base_source(S, pkeywriter.TARGET, pkeywriter.BASE) -- otherwise
+def $key_coalesce_write_context(S, ptask*, porigin) = false -- otherwise
 def $key_write_rhs_source(S, pkeywriter) = true
   -- if $key_write_no_rhs(pkeywriter.TASK)
 def $key_write_rhs_source(S, pkeywriter) = true
@@ -417,7 +421,7 @@ def $key_writer_valid(S, pkeywriter, ptask*) = true
   -- if $key_write_writer(S, pkeywriter.SITE, pkeywriter.TASK, pkeywriter.BASE, pkeywriter.RHS) = (pkeywriter[.TEMP = eps])
   -- if $key_write_target_base(pkeywriter.BASE)
   -- if ~$key_write_mode(pkeywriter.TASK, ptask*) \/ ~$key_write_global_root(pkeywriter.BASE)
-  -- if $key_write_base_source(S, pkeywriter.TARGET, pkeywriter.BASE)
+  -- if $key_writer_base_source(S, pkeywriter)
   -- if $key_write_rhs_source(S, pkeywriter)
   -- if $key_write_temporary_valid(S, pkeywriter)
   -- if ~$key_write_path_task(pkeywriter.TASK) \/ $key_write_path_kind(ptask*) =/= eps
@@ -476,6 +480,7 @@ def $key_write_place_shape(pkeywrite) = true
 def $key_write_place_shape(pkeywrite) = false -- otherwise
 def $key_write_valid(S, pkeywrite) = true
   -- if S.ORIGIN = (pkeywrite.READ.SITE)
+  -- if ~$key_coalesce_write_context(S, S.TODO, pkeywrite.READ.SITE)
   -- if $key_write_context(S, S.TODO, pkeywrite.READ.SITE, pkeywrite.RW)
   -- if $origin_node(S.SOURCES, pkeywrite.READ.SITE) = (NExprArrayDimFetch expression phpType5 metadata)
   -- if pkeywrite.READ.GLOBAL = $ppglobals_base(expression)

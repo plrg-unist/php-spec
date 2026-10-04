@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary Throwable reception250 now suspends weak-null/lossy warnings and
+Stringable parsing for NEW and explicit inherited/scoped constructor calls.
+Ordinary named-send priority stays intact; strict null/objects reject without
+conversion. Successful string casts rewrite sent slots and retire old temporary
+objects; integer trace arguments stay raw and fields commit only after all
+formals pass. Private handlers, method retirement and recursive same-site calls
+retain their own owners and traces. Source17 passes as2 at5e828 plus14+1 atb6cac;
+141 ownership premises pass in71+70 partitions, and recursive29 passes at e6f71.
+Thirteen repeated dependency bindings add no behaviors. Original overlap,
+consumer-forgery and fixture failures plus the whole141 timeout stay preserved in
+the [reception ledger](coverage/semantics/ordinary-throwable-reception-review.json).
+Actual246 template/generic-EMIT composition1 at98c passes on ab5d; latest238/249
+are preserved on e2e6 separately without renewing private gates. Complete core
+remains open.
+
 Callable default/variadic reception248 now suspends keyword/compound lookup in
 actual receiving frames. Deferred class-constant defaults, named-hole preparation
 and supplied/variadic operands keep their distinct order and ownership. Referenced
@@ -48,8 +63,8 @@ retain the default behavior. Original descriptor and fixture failures stay in
 the [scope ledger](coverage/semantics/anonymous-default-new-review.json).
 Actual239 child composition1 at1b593 passes after temporary maker/receiver
 variables retire; the child retains its receiver. Latest231/234/230/242 routes
-are preserved without renewed private gates. Ordinary Throwable effects and
-dynamic object `::class` remain required next.
+are preserved without renewed private gates. Ordinary Throwable effects are
+covered by250 above; dynamic object `::class` remains required.
 
 Writable dimension keys242 stage defined mutable CV-array W/RW fetches through
 undefined/null/float/NaN callbacks, nested acquisition, updates and direct
@@ -66,9 +81,23 @@ actual3b622 composition source at6ae passes private-handler/called-class and typ
 caller alias/introspection behavior. Accepted231/234 routes are preserved. The
 [contract](docs/semantics/SOURCE-DIMENSION-WRITES.md) and
 [ledger](coverage/semantics/dimension-write-continuations-review.json) retain
-original failures, revisions and the current adapter reuse. Append, unset,
-coalesce assignment, broader GLOBALS RW and earlier container/string/object
-producers remain required.
+original failures, revisions and the current adapter reuse. Broader GLOBALS RW
+and earlier container/string/object producers remain required.
+
+Coalesce-assignment and final unset keys249 now stage defined direct CV-array
+consumers. Quiet reads retain captured values and genuine memo operands; live CV
+and computed keys keep distinct later demand. Actual read/write lines, copy-induced
+write abort, delayed RHS suppression and retired-storage reinitialization are
+preserved. Unset keeps ordered float protection and deletes callback-shared tables
+by liveness while real cells survive. Author6/255 and independent10/216 share one
+multiline original, giving15 unique private agreements at cfb/ab7. Two reduced
+actualab5 trait-handler sources pass at f5/ea: private selection, Child called
+class, read11/write8, copied-table abort/deletion and shared typed caller cells.
+Combined and first reduced coalesce CLI60 timeouts retain zero agreement. The
+[contract](docs/semantics/SOURCE-DIMENSION-EDITS.md) and
+[ledger](coverage/semantics/dimension-edit-review.json) keep original cuts and
+native prediction corrections. Nested unset, wider memoized containers and append
+are immediate required follow-ons; complete core remains open.
 
 Iterator declaration notices230 follow actual source/internal prototype order,
 including source erasure, direct restoration, duplicate notices and the built-in
@@ -104,8 +133,8 @@ recorded revision, and production stages pass on the accepted fe51 parent.
 [Contract](docs/semantics/SOURCE-SHUTDOWN.md),
 [author/composition record](coverage/semantics/shutdown-functions-review.json),
 [independent ledger](coverage/semantics/shutdown-function-review.json).
-Keyword/compound ingress needs the accepted221 consumers; destructors, GC,
-output buffers and queue release are required next request phases.
+Keyword/compound ingress now uses the staged247 consumers below. Destructors,
+GC, output buffers and queue release are required next request phases.
 
 Internal default reception240 now suspends weak-null and lossy integer warnings
 through real error dispatch and invokes genuine Stringable callbacks in formal
@@ -118,8 +147,8 @@ e7ec retains imported trait Stringable ownership and handler-mutated display
 fallback after the filename global retires.
 [The reception ledger](coverage/semantics/internal-default-reception-review.json)
 records these cuts.
-Ordinary constructor effects remain required; anonymous keyword defaults are
-covered by245 above.
+Ordinary constructor effects are covered by250; anonymous keyword defaults
+are covered by245 above.
 
 Trait method composition228 supports source use, nesting, precedence, aliases,
 visibility/final and abstract requirements in Zend's publication order. Imported
@@ -132,8 +161,19 @@ union, separate controls and252 conditions at their actual revisions, including
 original failures. Actual227/232/239 composition adds nine source comparisons and
 127 state premises at separate cutoffs: saved default constructors, cold selected
 references, physical interface diagnostic files and imported-maker Closure scope.
-Accepted233/237 routes remain preserved. Trait properties/constants and enums
-remain required; the method checkpoint does not close the trait family.
+Accepted233/237 routes remain preserved; the method checkpoint remains partial.
+
+Trait data238 composes constants and properties before parent inheritance, with
+scoped invariant types, evaluated pure compatibility, source keyword diagnostics
+and full using-class member identities. Inherited statics share cells; explicit
+child reuse resets the original default. Owning instance templates246 preserve
+importing scope independently of the live caller and retain array copy-on-write.
+The [data ledger](coverage/semantics/trait-data-review.json) records72 source tuples
+and265 genuine state assertions at preserved cuts; four historical dependency
+controls retain92 assertions and zero old-cut agreement. Runtime link fatals keep
+native severity, reporting masks and declaration phase. Effectful collision
+evaluation, direct trait-property deprecations, readonly storage and enums remain
+required; this checkpoint does not close the trait family.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
@@ -147,8 +187,9 @@ actual71da constructor in a parameter default passes with private captured
 handler selection, called class and authentic key line/name through root mutation.
 [Contract](docs/semantics/SOURCE-DIMENSION-KEYS.md),
 [ledger](coverage/semantics/dimension-key-review.json). Writable242 covers the
-bounded CV-array consumers above; append/unset/coalesce-assignment and wider
-object/key/container producers remain core work.
+bounded CV-array consumers above;249 adds direct coalesce-assignment/final unset.
+Nested unset, wider memoized containers, append and wider object/key/container
+producers remain core work.
 
 Prepared internal Throwable default constructors235 map completed227 values
 before names, arity and sequential reception. Default declaration strictness,
@@ -195,8 +236,8 @@ Actual221 callable source1/owner39 at2a380 authenticates the suspended construct
 through deprecation callbacks and rejects a removed retained owner.
 The [constructor ledger](coverage/semantics/default-constructors-review.json)
 keeps original failures, the fixture line correction and fresh uncached NEW facts
-precise. Anonymous keyword defaults are covered by245; ordinary internal
-constructor effects remain required and complete core remains open.
+precise. Anonymous keyword defaults are covered by245 and ordinary internal
+constructor effects by250; complete core remains open.
 
 Deprecated callable keyword/compound admission221 now stages supplied fixed
 parameters, error registration and delayed dispatch. Warnings hold class choice
@@ -259,12 +300,24 @@ Throwable after `finally` through the ordinary weak call receiver. Genuine null
 caller and saved-frame certificates preserve one argument, selected targets and
 owners through restoration, replacement, nested warning handling, throws and exit.
 Author29/216 and independent33/331 retain their distinct source cutoffs; two
-explicit Unsupported controls add no agreement. Actual219 composition preserves
+explicit Unsupported controls add no agreement at their original cut. Actual219
+composition preserves
 cross-file diagnostic origins during static defaults, and production algorithm
 and structure checks pass. [Contract](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md),
 [author/composition record](coverage/semantics/exception-handlers-review.json),
 [independent review](coverage/semantics/exception-handler-review.json).
-Keyword/compound callback ingress and the remaining request phases stay open.
+Module247 supplies the effectful keyword/compound registration and terminal
+selector through shared221 stages. Exception stacks retain raw values; shutdown
+entries freeze the selected target after referenced-method warning effects.
+Borrowed producer target/callsite/scope certificates preserve genuine ordinary,
+C-handler, Stringable and Closure maker permissions after retirement.
+[Author/composition checks](coverage/semantics/callback-api-consumers-review.json)
+cover40 source tuples and140 reached assertions; the
+[independent review](coverage/semantics/callback-api-consumer-review.json)
+covers34 tuples and474 assertions at its own cut. Actual-parent getter Error,
+trait/default and retired capture interactions pass; production algorithm and
+structure checks retain the237-module cut. Accepted238/249/250 source preservation
+adds no execution credit. Destructor/GC/output/free request phases stay open.
 
 Called-class introspection223 implements `get_called_class()` using the active
 authenticated called class. Plain functions and global Closures stop lookup;
@@ -434,7 +487,7 @@ failures and interrupted evidence.
 
 ## Remaining core work
 
-- Calls: default/variadic, other internal and user-return
+- Calls: other internal and user-return
   keyword/compound warning consumers,
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
@@ -442,15 +495,15 @@ failures and interrupted evidence.
   `$GLOBALS[key]` reads and explicit-request full-table snapshots are admitted;
   233 additionally stages earlier missing key-CV and null/float/global-array-name
   conversions through nested/quiet reads. Writable242 adds bounded CV-array W/RW
-  and direct GLOBALS reference fetches. Append/unset/coalesce-assignment, broader
-  GLOBALS RW, wider key/object/container producers and ordinary snapshots
-  without request facts remain open.
+  and direct GLOBALS reference fetches;249 adds direct CV-array coalesce-assignment
+  and final unset. Nested unset, wider memoized containers, append, broader GLOBALS
+  RW, wider key/object/container producers and ordinary snapshots without request
+  facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
   wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
-- Values, references and coercion: ordinary internal constructor effects,
-  dynamic object `::class`, dynamic hole provenance and broader weak
+- Values, references and coercion: dynamic object `::class`, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred object-bearing defaults and
   wider Closure creation contexts remain Unsupported.
@@ -461,10 +514,10 @@ failures and interrupted evidence.
   by-reference string conversion186 remain open; accepted ordinary by-value
   classification does not close them. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
-- Objects and lifetime: remaining static members, trait property/constant composition,
+- Objects and lifetime: remaining static members, effectful trait data composition,
   enums, hooks, readonly/instance asymmetric
   access, traversal, output handlers and lifecycle callbacks. Static cells remain
-  partial across property trait/inheritance sharing, bind/clone, include/eval reactivation
+  partial across direct trait-property diagnostics, bind/clone, include/eval reactivation
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,
