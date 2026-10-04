@@ -1,0 +1,374 @@
+;; Exception registration keeps the raw zval; shutdown registration retains the
+;; selected FCC. Both execute the shared Zend API deprecation stages.
+dec $consumer_exception_pending(pstate, pexceptioncall) : bool
+dec $consumer_exception_original(pstate, papiquery) : bool
+dec $consumer_query_selected(pstate, papiquery) : papiquery
+dec $consumer_snapshot(pstate, papiquery) : parray?
+dec $consumer_snapshot_valid(papiquery, parray?) : bool
+dec $consumer_history(pstate, papiquery) : pstate
+dec $consumer_history_nodes(papiquery) : pnode*
+dec $consumer_class_valid(pstate, papiquery) : bool
+dec $consumer_method_valid(pstate, papiquery, porigin, ptbytes) : bool
+dec $consumer_receiver_live(pstate, nat?) : bool
+dec $consumer_exception_target(pstate, papiquery, porigin, ptbytes) : bool
+dec $consumer_shutdown_target(pstate, papiquery, porigin, ptbytes, pshutdownentry*) : bool
+dec $consumer_shutdown_scope(pstate, papiquery, pshutdownentry) : bool
+dec $consumer_capture_current(pstate, porigin) : pmethodcapture?
+dec $consumer_capture_valid(pstate, porigin, pmethodcapture?) : bool
+dec $consumer_capture_function(pstate, porigin, pmethodcapture?) : porigin?
+dec $consumer_producer_current(pstate) : pshutdownproducer?
+dec $consumer_producer_scope(pstate, pcalltarget) : pclosurescope?
+dec $consumer_producer_binding(pstate, pcalltarget) : pclosurebinding?
+dec $consumer_producer_history(pstate, pshutdownproducer) : pstate
+dec $consumer_producer_tables(pstate, pshutdownproducer) : pstate
+dec $consumer_producer_nodes(pshutdownproducer) : pnode*
+dec $consumer_producer_capture(pstate, pshutdownentry) : bool
+dec $consumer_producer_internal(pstate, pcalltarget) : bool
+dec $consumer_string_target(pstate, pcalltarget) : bool
+dec $consumer_producer_receiver(pclosurescope?) : nat?
+dec $consumer_producer_bound_receiver(pclosurebinding?) : nat?
+dec $consumer_producer_function(pmethodcapture?, porigin) : bool
+dec $consumer_producer_site(pmethodcapture?, porigin?) : bool
+dec $consumer_producer_named(pcalltarget) : bool
+dec $consumer_producer_snapshot(pshutdownproducer) : bool
+dec $consumer_producer_object(pclosurescope?, pclosurebinding?, nat) : bool
+dec $consumer_producer_scopes(pclosurescope?) : pclosurescope*
+dec $consumer_producer_bindings(pclosurebinding?) : pclosurebinding*
+dec $consumer_capture_called(pstate, porigin, pmethodcapture?) : porigin?
+dec $consumer_capture_this(pstate, porigin, pmethodcapture?, nat?) : bool
+dec $consumer_target_same(pcalltarget, papiquery, porigin, ptbytes) : bool
+dec $consumer_shutdown_register(pstate, pconfigcall, papiquery, porigin, ptbytes, bool) : pstate
+dec $consumer_exception_enter(pstate, pexceptioncall, pcalltarget) : pstate
+dec $consumer_exception_invalid(pstate, pexceptioncall, ptbytes) : pstate
+
+def $api_registration_candidate(S, pconfigcall) = ($error_api_arity(S, pconfigcall).COMPLETION = NORMAL /\ $api_special(S, $error_api_value(pconfigcall, 0, PNULL)))
+  -- if pconfigcall.KIND <- [INTRINSIC_SET_EXCEPTION_HANDLER, INTRINSIC_REGISTER_SHUTDOWN_FUNCTION]
+def $api_source_valid(S, papiquery) = true
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pconfigcall.KIND <- [INTRINSIC_SET_EXCEPTION_HANDLER, INTRINSIC_REGISTER_SHUTDOWN_FUNCTION]
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $error_api_arity(S, pconfigcall).COMPLETION = NORMAL
+  -- if papiquery.VALUE = $error_api_value(pconfigcall, 0, PNULL)
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERRESOLVED pcalltarget) = S[.TODO = ptask_tail*][.EXCEPTIONHANDLER = (pvalue)][.EXCEPTIONHANDLERS = S.EXCEPTIONHANDLER :: S.EXCEPTIONHANDLERS][.RESULT = KNOWN $exception_handler_value(S.EXCEPTIONHANDLER)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.KIND = INTRINSIC_SET_EXCEPTION_HANDLER
+  -- if S.TODO = ptask :: ptask_tail*
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERINVALID ptbytes) = $config_error(S, pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($callback) must be a valid callback or null, ") ++ ptbytes)
+  -- if pconfigcall.KIND = INTRINSIC_SET_EXCEPTION_HANDLER
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERINVALID ptbytes) = $config_error(S, pconfigcall, "TypeError", $ptascii("register_shutdown_function(): Argument #1 ($callback) must be a valid callback, ") ++ ptbytes)
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERRESOLVED (API_METHOD_TARGET papiquery porigin ptbytes b_static)) = $consumer_shutdown_register(S, pconfigcall, papiquery, porigin, ptbytes, b_static)
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+
+;; The pending C selector no longer relies on the mutable handler stack. A
+;; warning callback may restore or replace it before resolution completes.
+def $consumer_exception_source(EXCEPTION_HANDLER_INVOKE pexceptioncall) = true
+def $consumer_exception_source(ptask) = false -- otherwise
+def $consumer_exception_pending(S, pexceptioncall) = true
+  -- if $exception_task_scope(S)
+  -- if $throwable_member(S, pexceptioncall.OBJECT)
+  -- if (HOBJECT pexceptioncall.OBJECT) <- S.ALLOCATIONS
+  -- if pexceptioncall.TARGET = eps
+  -- if pexceptioncall.SENT = eps /\ pexceptioncall.RECEIVED = eps
+def $consumer_exception_pending(S, pexceptioncall) = false -- otherwise
+def $consumer_exception_original(S, papiquery) = true
+  -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
+  -- if papiquery.VALUE = pexceptioncall.CALLBACK
+  -- if papiquery.VALUE = PARRAY n
+  -- if $(n < |S.ARRAYS|)
+  -- if pexceptioncall.RAW = (parray)
+  -- if |parray.ITEMS| = 2
+  -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(parray.ITEMS, KINT 1) = (pitem_method)
+  -- if $api_item_snapshot(pitem_receiver, papiquery.INPUT)
+  -- if $api_item_snapshot(pitem_method, PSTRING papiquery.ORIGINAL)
+def $consumer_exception_original(S, papiquery) = true
+  -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
+  -- if papiquery.VALUE = pexceptioncall.CALLBACK
+  -- if papiquery.VALUE = PSTRING papiquery.ORIGINAL
+  -- if pexceptioncall.RAW = eps
+def $consumer_exception_original(S, papiquery) = false -- otherwise
+def $api_source_line(S, EXCEPTION_HANDLER_INVOKE pexceptioncall) = 0
+def $api_source_valid(S, papiquery) = true
+  -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
+  -- if $consumer_exception_pending(S, pexceptioncall)
+  -- if papiquery.VALUE = pexceptioncall.CALLBACK
+  -- if $consumer_exception_original(S, papiquery)
+  -- if S.ORIGIN = (papiquery.CLASS.REQUESTED)
+def $api_raw_shape(S, papiquery) = true
+  -- if $consumer_exception_source(papiquery.SOURCE)
+  -- if $consumer_exception_original(S, papiquery)
+  -- if papiquery.VALUE = PARRAY n
+  -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
+  -- if pexceptioncall.RAW = (parray)
+  -- if $entry_lookup(parray.ITEMS, KINT 1) = (papiquery.METHOD)
+def $api_continue(S, papiquery, n, eps) = S[.TODO = (API_CALLABLE_RESULT papiquery n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (papiquery.CLASS.REQUESTED)]
+  -- if $consumer_exception_source(papiquery.SOURCE)
+  -- if S.TODO = ptask :: ptask_tail*
+def $api_warning_event(S, papiquery, ptbytes) = DIAGNOSTIC_INTERNAL "Deprecated" ptbytes 0
+  -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
+  -- if $consumer_exception_pending(S, pexceptioncall)
+def $exception_warning_resume(API_CALLABLE_RESULT papiquery n) = $consumer_exception_source(papiquery.SOURCE)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = API_CALLABLE_RESULT papiquery n
+  -- if $consumer_exception_source(papiquery.SOURCE)
+  -- if $api_query_valid(S, papiquery, n)
+  -- if perrorcall.SITE = papiquery.CLASS.REQUESTED
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = 0
+  -- if $api_warning_message(S, papiquery, n) = (perrorcall.MESSAGE)
+  -- if perrorcall.EVENT = DIAGNOSTIC_INTERNAL "Deprecated" perrorcall.MESSAGE 0
+
+;; METHOD becomes a direct immutable value only after the live reference was
+;; reread. These snapshots are certificates and contribute no heap roots.
+def $consumer_query_selected(S, papiquery) = papiquery[.METHOD = DIRECT ($entry_value(S, papiquery.METHOD))]
+def $consumer_snapshot(S, papiquery) = (S.ARRAYS[n][.ITEMS = [ENTRY (KINT 0) (DIRECT papiquery.INPUT), ENTRY (KINT 1) papiquery.METHOD]])
+  -- if papiquery.VALUE = PARRAY n
+  -- if $(n < |S.ARRAYS|)
+def $consumer_snapshot(S, papiquery) = eps -- otherwise
+def $consumer_snapshot_valid(papiquery, (parray)) = true
+  -- if papiquery.VALUE = PARRAY n
+  -- if papiquery.METHOD = DIRECT (PSTRING ptbytes)
+  -- if parray.ITEMS = [ENTRY (KINT 0) (DIRECT papiquery.INPUT), ENTRY (KINT 1) papiquery.METHOD]
+def $consumer_snapshot_valid(papiquery, eps) = true
+  -- if papiquery.VALUE = PSTRING ptbytes
+  -- if papiquery.METHOD = DIRECT (PSTRING ptbytes)
+  -- if papiquery.ORIGINAL = ptbytes
+def $consumer_snapshot_valid(papiquery, parray?) = false -- otherwise
+
+;; Retired selector records authenticate class identities without retaining an
+;; object. A nonstatic selected target owns its actual receiver independently.
+def $consumer_history_nodes(papiquery) = $value_nodes(papiquery.INPUT) ++ $scoped_receiver_nodes(papiquery.THIS) ++ $scoped_receiver_nodes(papiquery.CLASS.RECEIVER)
+def $consumer_history(S, papiquery) = S[.ALLOCATIONS = S.ALLOCATIONS ++ $consumer_history_nodes(papiquery)]
+def $consumer_class_valid(S, papiquery) = true
+  -- if papiquery.OUTER = eps
+  -- if $api_class($consumer_history(S, papiquery), papiquery.INPUT, papiquery.SCOPE, papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, eps) = API_CLASS papiquery.CLASS
+  -- if papiquery.VALUE = PARRAY n
+  -- if $method_string_parts(papiquery.ORIGINAL) = eps
+  -- if papiquery.PREFIX = 0 /\ papiquery.WIDTH = 0
+def $consumer_class_valid(S, papiquery) = true
+  -- if papiquery.OUTER = eps
+  -- if papiquery.VALUE = PSTRING ptbytes
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if papiquery.INPUT = PSTRING ptbytes_class
+  -- if papiquery.PREFIX = $(|ptbytes_class| + 2) /\ papiquery.WIDTH = |ptbytes_method|
+  -- if $api_class($consumer_history(S, papiquery), papiquery.INPUT, papiquery.SCOPE, papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, eps) = API_CLASS papiquery.CLASS
+def $consumer_class_valid(S, papiquery) = true
+  -- if papiquery.VALUE = PARRAY n
+  -- if papiquery.OUTER = (papiclass)
+  -- if $api_class($consumer_history(S, papiquery), papiquery.INPUT, papiquery.SCOPE, papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, eps) = API_CLASS papiclass
+  -- if $method_string_parts(papiquery.ORIGINAL) = ((ptbytes_class, ptbytes_method))
+  -- if ptbytes_class =/= eps
+  -- if papiquery.PREFIX = $(|ptbytes_class| + 2) /\ papiquery.WIDTH = |ptbytes_method|
+  -- if $api_class($consumer_history(S, papiquery), PSTRING ptbytes_class, (papiclass.REQUESTED), papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, papiclass.RECEIVER) = API_CLASS papiquery.CLASS
+  -- if $api_subclass(S, papiclass.REQUESTED, papiquery.CLASS.REQUESTED)
+def $consumer_class_valid(S, papiquery) = false -- otherwise
+def $consumer_receiver_live(S, (n)) = ((HOBJECT n) <- S.ALLOCATIONS)
+def $consumer_receiver_live(S, eps) = false
+def $consumer_method_valid(S, papiquery, porigin, ptbytes) = true
+  -- if $consumer_class_valid(S, papiquery)
+  -- if papiquery.METHOD = DIRECT (PSTRING ptbytes_full)
+  -- if $api_leaf_snapshot(papiquery, ptbytes)
+  -- if $api_selected_method($consumer_history(S, papiquery), papiquery, ptbytes) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.STATIC \/ $consumer_receiver_live(S, papiquery.CLASS.RECEIVER)
+  -- if $method_accessible(S, pmethoddesc, papiquery.SCOPE)
+def $consumer_method_valid(S, papiquery, porigin, ptbytes) = false -- otherwise
+
+def $consumer_exception_target(S, papiquery, porigin, ptbytes) = true
+  -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
+  -- if pexceptioncall.CALLBACK = papiquery.VALUE
+  -- if pexceptioncall.TARGET = eps
+  -- if pexceptioncall.SENT = eps /\ pexceptioncall.RECEIVED = eps
+  -- if papiquery.SCOPE = eps /\ papiquery.CALLED = eps /\ papiquery.THIS = eps
+  -- if papiquery.LINE = 0
+  -- if $consumer_exception_original(S, papiquery)
+  -- if $consumer_method_valid(S, papiquery, porigin, ptbytes)
+def $consumer_exception_target(S, papiquery, porigin, ptbytes) = false -- otherwise
+def $api_target_valid(S, papiquery, porigin, ptbytes) = $consumer_exception_target(S, papiquery, porigin, ptbytes)
+  -- if $consumer_exception_source(papiquery.SOURCE)
+def $exception_raw_selected(S, pvalue, parray?, API_METHOD_TARGET papiquery porigin ptbytes b_static) = (pvalue = papiquery.VALUE /\ $consumer_snapshot_valid(papiquery, parray?) /\ $api_carrier_valid(S, papiquery, porigin, ptbytes, b_static))
+def $handler_emitter_valid(S, API_METHOD_TARGET papiquery porigin ptbytes b_static) = $api_carrier_valid(S, papiquery, porigin, ptbytes, b_static)
+  -- if $consumer_exception_source(papiquery.SOURCE)
+def $consumer_exception_object(API_METHOD_TARGET papiquery porigin ptbytes b_static, n) = (pexceptioncall.OBJECT = n)
+  -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
+def $consumer_exception_object(pcalltarget, n) = true -- otherwise
+def $consumer_api_target(API_METHOD_TARGET papiquery porigin ptbytes b_static) = true
+def $consumer_api_target(pcalltarget) = false -- otherwise
+
+def $consumer_shutdown_scope(S, papiquery, pshutdownentry) = true
+  -- if papiquery.SOURCE = CONFIG_INVOKE pshutdownentry.CALL
+  -- if $shutdown_registration_valid(S, pshutdownentry.CALL)
+  -- if $consumer_producer_capture(S, pshutdownentry)
+  -- if papiquery.SCOPE = $shutdown_capture_scope(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
+  -- if papiquery.CALLED = $consumer_capture_called(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
+  -- if $consumer_capture_this(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE, papiquery.THIS)
+  -- if papiquery.LINE = pshutdownentry.CALL.LINE
+  -- if pshutdownentry.CALL.SENT = (NAMED_SENT (KNOWN papiquery.VALUE)) :: pnamedslot*
+  -- if $consumer_snapshot_valid(papiquery, pshutdownentry.RAW)
+def $consumer_shutdown_scope(S, papiquery, pshutdownentry) = false -- otherwise
+;; API registration runs in the ordinary method maker, unlike FCC production.
+;; Its called class must survive even when it equals the lexical source scope.
+def $consumer_capture_current(S, porigin) = ({FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, LEXICAL_CLASS pcallcontext.LEXICAL_CLASS, CALLED_CLASS pcallcontext.CALLED_CLASS})
+  -- if S.CURRENT = (pcallcontext)
+  -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) =/= eps \/ $method_capture_template(S, pcallcontext.FUNCTION)
+def $consumer_capture_current(S, porigin) = $method_capture_current(S, porigin) -- otherwise
+def $consumer_capture_valid(S, PORIGIN n pcpath, (pmethodcapture)) = true
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
+  -- if $function_at($all_functions(S), pmethodcapture.FUNCTION) = (pfunction)
+  -- if $trait_source_same(pfunction_source, pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if pmethodcapture.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if $method_capture_class_valid(S, pmethodcapture.LEXICAL_CLASS)
+  -- if pmethodcapture.CALLED_CLASS = (porigin_called)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+  -- if $class_origin_matches(S, porigin_called, pclassdesc.NAME, |S.CLASSES|)
+  -- if pmethodcapture.CALLSITE = (porigin_call)
+  -- if $trait_capture_invocation(S, pfunction, pmethodcapture, porigin_call)
+def $consumer_capture_valid(S, porigin, eps) = true
+  -- if $consumer_capture_function(S, porigin, eps) = (porigin_function)
+  -- if $class_method_origin(S.CLASSES, porigin_function) = eps
+def $consumer_capture_valid(S, porigin, eps) = true
+  -- if $consumer_capture_function(S, porigin, eps) = eps
+def $consumer_capture_valid(S, porigin, pmethodcapture?) = false -- otherwise
+def $consumer_capture_function(S, porigin, (pmethodcapture)) = (pmethodcapture.FUNCTION)
+def $consumer_capture_function(S, porigin, eps) = $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps)
+def $consumer_capture_valid(S, porigin, (pmethodcapture)) = true
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (pmethodcapture.FUNCTION)
+  -- if $method_capture_template(S, pmethodcapture.FUNCTION)
+  -- if $method_capture_class_valid(S, pmethodcapture.LEXICAL_CLASS)
+  -- if $method_capture_class_valid(S, pmethodcapture.CALLED_CLASS)
+  -- if pmethodcapture.CALLSITE = (porigin_call)
+  -- if $method_capture_invocation_valid(S, pmethodcapture, porigin_call)
+
+;; A C-selected maker may retire its old registry and Closure before the new
+;; queue entry runs. Keep only its immutable target and scope/binding records.
+;; Reconstruction below is for pure lookups and creates no heap owners.
+def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SITE pcallcontext.CALLSITE, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext) \/ $stringify_context_kind(S, pcallcontext))})
+  -- if S.CURRENT = (pcallcontext)
+def $consumer_producer_current(S) = eps -- if S.CURRENT = eps
+def $consumer_producer_scope(S, pcalltarget) = $closure_scope_at(S.CLOSURESCOPES, n)
+  -- if $target_instance(pcalltarget) = (n)
+def $consumer_producer_scope(S, pcalltarget) = eps -- if $target_instance(pcalltarget) = eps
+def $consumer_producer_binding(S, pcalltarget) = $closure_binding_at(S.CLOSUREBINDINGS, n)
+  -- if $target_instance(pcalltarget) = (n)
+def $consumer_producer_binding(S, pcalltarget) = eps -- if $target_instance(pcalltarget) = eps
+def $consumer_producer_nodes(pshutdownproducer) = $target_nodes(pshutdownproducer.TARGET) ++ $scoped_receiver_nodes($consumer_producer_receiver(pshutdownproducer.SCOPE)) ++ $scoped_receiver_nodes($consumer_producer_bound_receiver(pshutdownproducer.BINDING))
+def $consumer_producer_receiver(eps) = eps
+def $consumer_producer_receiver((pclosurescope)) = pclosurescope.RECEIVER
+def $consumer_producer_bound_receiver(eps) = eps
+def $consumer_producer_bound_receiver((pclosurebinding)) = pclosurebinding.RECEIVER
+def $consumer_producer_tables(S, pshutdownproducer) = S[.CLOSURESCOPES =  $consumer_producer_scopes(pshutdownproducer.SCOPE) ++ S.CLOSURESCOPES][.CLOSUREBINDINGS = $consumer_producer_bindings(pshutdownproducer.BINDING) ++ S.CLOSUREBINDINGS]
+def $consumer_producer_history(S, pshutdownproducer) = S_tables[.ALLOCATIONS = S_tables.ALLOCATIONS ++ $consumer_producer_nodes(pshutdownproducer)]
+  -- if S_tables = $consumer_producer_tables(S, pshutdownproducer)
+def $consumer_producer_capture(S, pshutdownentry) = $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
+  -- if pshutdownentry.PRODUCER = eps
+  -- if pshutdownentry.CAPTURE = eps
+  -- if $consumer_capture_function(S, pshutdownentry.CALL.SITE, eps) = eps
+def $consumer_producer_capture(S, pshutdownentry) = true
+  -- if pshutdownentry.PRODUCER = (pshutdownproducer)
+  -- if $consumer_producer_snapshot(pshutdownproducer)
+  -- if $consumer_producer_site(pshutdownentry.CAPTURE, pshutdownproducer.SITE)
+  -- if S_history = $consumer_producer_history(S, pshutdownproducer)
+  -- if $target_function(S_history, pshutdownproducer.TARGET) = (pfunction)
+  -- if pshutdownentry.CALL.SITE = PORIGIN n pcpath
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
+  -- if $trait_source_same(pfunction_source, pfunction)
+  -- if $shutdown_capture_scope(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) = $target_lexical_class(S_history, pshutdownproducer.TARGET)
+  -- if $consumer_capture_called(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) = $target_called_class(S_history, pshutdownproducer.TARGET)
+  -- if (~pshutdownproducer.INTERNAL /\ $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal(S_history, pshutdownproducer.TARGET))
+  -- if pshutdownentry.TARGET = API_METHOD_TARGET papiquery porigin ptbytes b_static
+  -- if papiquery.THIS = $target_receiver(S_history, pshutdownproducer.TARGET)
+  -- if pshutdownentry.CAPTURE = eps \/ $consumer_producer_function(pshutdownentry.CAPTURE, pfunction.ORIGIN)
+def $consumer_producer_capture(S, pshutdownentry) = false -- otherwise
+def $consumer_producer_function((pmethodcapture), porigin) = (pmethodcapture.FUNCTION = porigin)
+def $consumer_producer_function(eps, porigin) = false
+def $consumer_producer_site((pmethodcapture), porigin?) = (pmethodcapture.CALLSITE = porigin?)
+def $consumer_producer_site(eps, porigin?) = true
+def $consumer_producer_internal(S, pcalltarget) = ($handler_method_tag(pcalltarget) \/ $consumer_producer_named(pcalltarget) \/ $consumer_string_target(S, pcalltarget))
+  -- if $target_instance(pcalltarget) = eps
+def $consumer_producer_internal(S, pcalltarget) = true -- if $target_instance(pcalltarget) =/= eps
+def $consumer_string_target(S, METHOD_TARGET n porigin) = true
+  -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__tostring")
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+def $consumer_string_target(S, pcalltarget) = false -- otherwise
+def $consumer_producer_named(PORIGIN n pcpath) = true
+def $consumer_producer_named(pcalltarget) = false -- otherwise
+def $consumer_producer_object((pclosurescope), eps, n) = (pclosurescope.OBJECT = n)
+def $consumer_producer_object(eps, (pclosurebinding), n) = (pclosurebinding.OBJECT = n)
+def $consumer_producer_object(pclosurescope?, pclosurebinding?, n) = false -- otherwise
+def $consumer_producer_scopes((pclosurescope)) = [pclosurescope]
+def $consumer_producer_scopes(eps) = eps
+def $consumer_producer_bindings((pclosurebinding)) = [pclosurebinding]
+def $consumer_producer_bindings(eps) = eps
+def $consumer_producer_snapshot(pshutdownproducer) = true
+  -- if $target_instance(pshutdownproducer.TARGET) = eps
+  -- if pshutdownproducer.SCOPE = eps /\ pshutdownproducer.BINDING = eps
+def $consumer_producer_snapshot(pshutdownproducer) = true
+  -- if $target_instance(pshutdownproducer.TARGET) = (n)
+  -- if (pshutdownproducer.SCOPE = eps /\ pshutdownproducer.BINDING = eps) \/ $consumer_producer_object(pshutdownproducer.SCOPE, pshutdownproducer.BINDING, n)
+def $consumer_producer_snapshot(pshutdownproducer) = false -- otherwise
+
+
+def $consumer_capture_called(S, porigin, eps) = $closure_source_class(S, porigin)
+def $consumer_capture_called(S, porigin, (pmethodcapture)) = pmethodcapture.CALLED_CLASS
+def $consumer_capture_this(S, porigin, pmethodcapture?, eps) = true
+  -- if $consumer_capture_function(S, porigin, pmethodcapture?) = eps
+def $consumer_capture_this(S, porigin, pmethodcapture?, eps) = true
+  -- if $consumer_capture_function(S, porigin, pmethodcapture?) = (porigin_function)
+  -- if $class_method_origin(S.CLASSES, porigin_function) = eps
+def $consumer_capture_this(S, porigin, pmethodcapture?, eps) = true
+  -- if $consumer_capture_function(S, porigin, pmethodcapture?) = (porigin_function)
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
+def $consumer_capture_this(S, porigin_site, pmethodcapture?, (n)) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_called
+  -- if $consumer_capture_called(S, porigin_site, pmethodcapture?) = (porigin_called)
+  -- if $consumer_capture_function(S, porigin_site, pmethodcapture?) = (porigin_function)
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
+def $consumer_capture_this(S, porigin_site, pmethodcapture?, (n)) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_called
+  -- if $consumer_capture_called(S, porigin_site, pmethodcapture?) = (porigin_called)
+  -- if $consumer_capture_function(S, porigin_site, pmethodcapture?) = (porigin_function)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin_function) = (pfunction)
+  -- if ~$closure_static(S, pfunction)
+def $consumer_capture_this(S, porigin, pmethodcapture?, n?) = false -- otherwise
+def $consumer_target_same(API_METHOD_TARGET papiquery porigin ptbytes b_static, papiquery, porigin, ptbytes) = true
+def $consumer_target_same(pcalltarget, papiquery, porigin, ptbytes) = false -- otherwise
+def $consumer_shutdown_target(S, papiquery, porigin, ptbytes, pshutdownentry :: pshutdownentry_tail*) = true
+  -- if pshutdownentry.TARGET = API_METHOD_TARGET papiquery porigin ptbytes b_static
+  -- if $consumer_shutdown_scope(S, papiquery, pshutdownentry)
+  -- if $consumer_method_valid(S, papiquery, porigin, ptbytes)
+def $consumer_shutdown_target(S, papiquery, porigin, ptbytes, pshutdownentry :: pshutdownentry_tail*) = $consumer_shutdown_target(S, papiquery, porigin, ptbytes, pshutdownentry_tail*)
+  -- if ~$consumer_target_same(pshutdownentry.TARGET, papiquery, porigin, ptbytes)
+def $consumer_shutdown_target(S, papiquery, porigin, ptbytes, eps) = false
+def $api_target_valid(S, papiquery, porigin, ptbytes) = $consumer_shutdown_target(S, papiquery, porigin, ptbytes, S.SHUTDOWN.ENTRIES)
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+def $shutdown_selection_scope(S, pshutdownentry) = $consumer_shutdown_scope(S, papiquery, pshutdownentry)
+  -- if pshutdownentry.TARGET = API_METHOD_TARGET papiquery porigin ptbytes b_static
+def $shutdown_scoped_target(API_METHOD_TARGET papiquery porigin ptbytes b_static) = true
+def $consumer_shutdown_register(S, pconfigcall, papiquery, porigin, ptbytes, b_static) = S[.TODO = ptask_tail*][.SHUTDOWN.ENTRIES = S.SHUTDOWN.ENTRIES ++ [pshutdownentry]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN papiquery.VALUE)) :: pnamedslot*
+  -- if papiquery_selected = $consumer_query_selected(S, papiquery)
+  -- if pshutdownentry = {CALL pconfigcall, CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S), RAW $consumer_snapshot(S, papiquery_selected), TARGET API_METHOD_TARGET papiquery_selected porigin ptbytes b_static, ARGS $shutdown_values(pnamedslot*)}
+
+def $consumer_exception_invalid(S, pexceptioncall, ptbytes) = S[.TODO = eps][.COMPLETION = INTERNALFATAL ($ptascii("Invalid callback ") ++ $error_callback_name(S, pexceptioncall.CALLBACK) ++ $ptascii(", ") ++ ptbytes) ($long_and(S.REPORTING, 1) =/= 0)][.TRACE = eps][.ORIGIN = eps][.ERRORORIGIN = eps]
+def $api_finish(S, EXCEPTION_HANDLER_INVOKE pexceptioncall, pvalue, HANDLERINVALID ptbytes) = $consumer_exception_invalid(S, pexceptioncall, ptbytes)
+def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $consumer_exception_invalid(S, pexceptioncall, ptbytes)
+  -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
+def $api_finish(S, EXCEPTION_HANDLER_INVOKE pexceptioncall, pvalue, HANDLERRESOLVED (API_METHOD_TARGET papiquery porigin ptbytes b_static)) = $consumer_exception_enter(S[.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall_selected) :: ptask_tail*], pexceptioncall_selected, API_METHOD_TARGET papiquery_selected porigin ptbytes b_static)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if papiquery_selected = $consumer_query_selected(S, papiquery)
+  -- if pexceptioncall_selected = pexceptioncall[.RAW = $consumer_snapshot(S, papiquery_selected)]
+def $consumer_exception_enter(S, pexceptioncall, pcalltarget) = $exception_handler_enter(S, pexceptioncall[.TARGET = (pcalltarget)], KNOWN (POBJECT pexceptioncall.OBJECT))
+  -- if ~$call_parameter_reference(S, pcalltarget, 0)
+def $consumer_exception_enter(S, pexceptioncall, pcalltarget) = $error_dispatch(S[.ORIGIN = (pfunction.ORIGIN)], 2, $exception_reference_warning(S, pexceptioncall_entered), 0, DIAGNOSTIC_INTERNAL "Warning" ($exception_reference_warning(S, pexceptioncall_entered)) 0, EXCEPTION_HANDLER_ENTER pexceptioncall_entered)
+  -- if $call_parameter_reference(S, pcalltarget, 0)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if pexceptioncall_entered = pexceptioncall[.TARGET = (pcalltarget)]
