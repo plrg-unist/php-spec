@@ -6,24 +6,29 @@ def $file_kind_valid(2) = true
 def $file_kind_valid(3) = true
 def $file_kind_valid(4) = true
 def $file_kind_valid(int) = false -- otherwise
-dec $file_node_line(pcnode?) : int
-def $file_node_line((NExprInclude expression phpType24 metadata)) = $source_line(metadata)
-def $file_node_line(pcnode?) = 0 -- otherwise
 dec $file_node_kind(pcnode?) : int?
 def $file_node_kind((NExprInclude expression (INTEGER n_kind) metadata)) = (n_kind)
 def $file_node_kind(pcnode?) = eps -- otherwise
 dec $file_site_line(pstate, porigin) : int
-def $file_site_line(S, porigin) = $file_node_line($origin_node(S.SOURCES, porigin))
+def $file_site_line(S, porigin) = $runtime_line(S[.ORIGIN = (porigin)][.CONSTCONTEXT = eps], [PCFIELD 0], expression)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprInclude expression phpType24 metadata)
+def $file_site_line(S, porigin) = 0 -- otherwise
 dec $file_site_valid(pstate, porigin, int, int) : bool
 def $file_site_valid(S, porigin, z, n_kind) = ($file_node_kind($origin_node(S.SOURCES, porigin)) = (n_kind) /\ $file_site_line(S, porigin) = z /\ $(z > 0) /\ $file_kind_valid(n_kind) /\ $source_filename($call_sourcefile(S.FILES, porigin)))
 
 def $ppdispatch(P, pcpath, NExprInclude expression (INTEGER n_kind) metadata, PPR) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
   -- if $file_kind_valid(n_kind)
 
-rule PhpStep/file-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), FILE_REQUEST porigin z n_kind] ++ ptask_tail*]
+dec $file_operand_site_valid(pstate, porigin, porigin, int, int) : bool
+def $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind) = ($file_site_valid(S, porigin_parent, z, n_kind) /\ $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_child))
+def $file_operand_child_site(S, porigin_child, z) = ($file_operand_site_valid(S, porigin_parent, porigin_child, z, 1) \/ $file_operand_site_valid(S, porigin_parent, porigin_child, z, 2) \/ $file_operand_site_valid(S, porigin_parent, porigin_child, z, 3) \/ $file_operand_site_valid(S, porigin_parent, porigin_child, z, 4))
+  -- if $reference_origin_parent(porigin_child, 1) = ((porigin_parent, [PCFIELD 0]))
+def $file_operand_child_site(S, porigin_child, z) = false -- otherwise
+
+rule PhpStep/file-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), $at_task($origin_child(S.ORIGIN, [PCFIELD 0]), FILE_REQUEST porigin z n_kind)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprInclude expression (INTEGER n_kind) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
-  -- if z = $source_line(metadata)
+  -- if z = $file_site_line(S, porigin)
   -- if $file_kind_valid(n_kind)
 
 ;; INI storage retains full bytes; Zend file resolution reads its C-string view.
@@ -31,7 +36,7 @@ dec $file_include_path(preqbytes?) : preqbytes?
 def $file_include_path(eps) = eps
 def $file_include_path((preqbytes)) = ($c_string(preqbytes))
 dec $file_request_start(pstate, porigin, int, int, ptask*) : pstate
-def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.FILESEQ = $(n_nonce + 1)][.FILECONTEXTS = pfilecontext :: S.FILECONTEXTS][.TODO = (FILE_RESOLVE_AWAIT n_nonce) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
+def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.FILESEQ = $(n_nonce + 1)][.FILECONTEXTS = pfilecontext :: S.FILECONTEXTS][.TODO = (FILE_RESOLVE_AWAIT n_nonce) :: ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
   -- if $file_site_valid(S, porigin, z, n_kind)
   -- if S.FILECWD = (preqbytes_cwd)
   -- if $file_include_path(S.FILEINCLUDEPATH) = (preqbytes_include_path)
@@ -42,15 +47,32 @@ def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.FILESEQ = $(n_n
   -- if pfilecontext = {NONCE n_nonce, SITE porigin, CALLER n_caller*, REQUESTED n_requested*, CWD preqbytes_cwd, INCLUDEPATH preqbytes_include_path, KIND n_kind, LEXICAL_CLASS $eval_class_origin(S), OWNER n_owner, PHASE FILE_RESOLVE_WAIT, TAIL ptask_tail*, UNIT eps, RESOLVED eps, OPENED eps, BYTES eps}
 def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "file provider requires fixed cwd"]
   -- if S.FILECWD = eps \/ S.FILEINCLUDEPATH = eps
+rule PhpStep/file-request-object: S ~> $user_string_begin(S_read, n, porigin_child, z, FILE_REQUEST porigin_parent z n_kind, ptask_tail*)
+  -- if S.TODO = (FILE_REQUEST porigin_parent z n_kind) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_child)
+  -- if $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_read, n)
 rule PhpStep/file-request: S ~> $file_request_start(S_value, porigin, z, n_kind, ptask_tail*)
   -- if S.TODO = (FILE_REQUEST porigin z n_kind) :: ptask_tail*
+  -- if ~$eval_callback_ready(S, z)
   -- if S_value = $eval_operand(S, z)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/file-request-abrupt: S ~> S_value
   -- if S.TODO = (FILE_REQUEST porigin z n_kind) :: ptask_tail*
+  -- if ~$eval_callback_ready(S, z)
   -- if S_value = $eval_operand(S, z)
   -- if S_value.COMPLETION =/= NORMAL
-def $call_task_valid(S, FILE_REQUEST porigin z n_kind) = (S.ORIGIN = (porigin) /\ $file_site_valid(S, porigin, z, n_kind))
+def $call_task_valid(S, FILE_REQUEST porigin z n_kind) = $file_operand_site_valid(S, porigin, porigin_child, z, n_kind)
+  -- if S.ORIGIN = (porigin_child)
+def $eval_request_task(FILE_REQUEST porigin z n_kind) = true
+def $eval_requests_owned((FILE_REQUEST porigin z n_kind) :: (ORIGIN_RETURN (porigin)) :: ptask_tail*) = $eval_requests_owned(ptask_tail*)
+def $stringify_source(S, porigin_site, z, FILE_REQUEST porigin_parent z n_kind) = $file_operand_site_valid(S, porigin_parent, porigin_site, z, n_kind)
+def $stringify_file_consumer(FILE_REQUEST porigin z n_kind) = true
+def $stringify_file_consumer(ptask) = false -- otherwise
+def $stringify_consumer_tail_valid(S, porigin_site, z, FILE_REQUEST porigin_parent z n_kind, (ORIGIN_RETURN (porigin_parent)) :: ptask_tail*) = $file_operand_site_valid(S, porigin_parent, porigin_site, z, n_kind)
 
 def $file_pending_state_valid(S) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.FILESEQ = $(pfilecontext.NONCE + 1) /\ S.FILECWD = (pfilecontext.CWD) /\ $file_include_path(S.FILEINCLUDEPATH) = (pfilecontext.INCLUDEPATH) /\ $file_site_valid(S, pfilecontext.SITE, z, pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = ptask_tail*)
   -- if S.COMPLETION = SOURCE_PENDING
@@ -226,23 +248,18 @@ def $file_keyword(1) = $ptascii("include")
 def $file_keyword(2) = $ptascii("include_once")
 def $file_keyword(3) = $ptascii("require")
 def $file_keyword(4) = $ptascii("require_once")
+def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S.FILES, porigin_parent), LINE z, FUNCTION $file_keyword(n_kind), CLASS eps, TYPE eps, ARGS eps, HASARGS false}]
+  -- if $stringify_context_kind(S, pcallcontext)
+  -- if $stringify_context_frame_valid(S, pcallcontext, pframe)
+  -- if pcallcontext.CALLSITE = (porigin_child)
+  -- if pcallcontext.LINE = z
+  -- if pframe.ORIGIN = (porigin_child)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z) :: (FILE_REQUEST porigin_parent z n_kind) :: (ORIGIN_RETURN (porigin_parent)) :: ptask_tail*
+  -- if $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind)
 def $file_trace_frame(S, pfilecontext) = {FILE $call_sourcefile(S.FILES, pfilecontext.SITE), LINE $file_site_line(S, pfilecontext.SITE), FUNCTION $file_keyword(pfilecontext.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args([PSTRING n_opened*], 0), HASARGS true}
   -- if pfilecontext.OPENED = (n_opened*)
-def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_stream*) = S_second[.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if (pfilecontext.KIND = 1 \/ pfilecontext.KIND = 2)
-  -- if z = $file_site_line(S, pfilecontext.SITE)
-  -- if n_keyword* = $file_keyword(pfilecontext.KIND)
-  -- if S_ready = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = NORMAL][.ORIGIN = (pfilecontext.SITE)]
-  -- if S_first = $diagnostic(S_ready, "Warning", n_keyword* ++ $ptascii("(") ++ n_warning_path* ++ $ptascii("): Failed to open stream: ") ++ n_stream*, z)
-  -- if S_second = $diagnostic(S_first, "Warning", n_keyword* ++ $ptascii("(): Failed opening '") ++ pfilecontext.REQUESTED ++ $ptascii("' for inclusion (include_path='") ++ pfilecontext.INCLUDEPATH ++ $ptascii("')"), z)
-def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_stream*) = S_object[.TODO = (THROW_SEARCH n_object) :: pfilecontext.TAIL][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if (pfilecontext.KIND = 3 \/ pfilecontext.KIND = 4)
-  -- if z = $file_site_line(S, pfilecontext.SITE)
-  -- if n_keyword* = $file_keyword(pfilecontext.KIND)
-  -- if S_ready = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = NORMAL][.ORIGIN = (pfilecontext.SITE)]
-  -- if S_first = $diagnostic(S_ready, "Warning", n_keyword* ++ $ptascii("(") ++ n_warning_path* ++ $ptascii("): Failed to open stream: ") ++ n_stream*, z)
-  -- if S_object = $throwable_materialize($throw_scalar(S_first, "Error", $ptascii("Failed opening required '") ++ pfilecontext.REQUESTED ++ $ptascii("' (include_path='") ++ pfilecontext.INCLUDEPATH ++ $ptascii("')"), z))
-  -- if S_object.COMPLETION = THROWING n_object
+dec $file_warning_start(pstate, pfilecontext, pfilecontext*, preqbytes, preqbytes) : pstate
+def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_stream*) = $file_warning_start(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_stream*)
 dec $file_include_after_compile(preqbytes*, preqbytes) : preqbytes*
 dec $file_once_record_open(pstate, int, preqbytes) : pstate
 def $file_once_kind(2) = true

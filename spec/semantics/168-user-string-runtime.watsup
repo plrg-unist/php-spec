@@ -37,6 +37,7 @@ dec $concat_child_site_valid(pstate, porigin, int, nat) : bool
 dec $typed_return_source(pstate, porigin, int) : bool
 dec $static_string_site_valid(pstate, porigin, int) : bool
 dec $parameter_string_site_valid(pstate, porigin, int) : bool
+dec $file_operand_child_site(pstate, porigin, int) : bool
 def $concat_line_valid(S, porigin_site, z) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpConcat expression_left expression_right metadata)
   -- if $runtime_line(S[.ORIGIN = (porigin_site)], [PCFIELD 1], expression_right) = z
@@ -103,10 +104,11 @@ def $stringify_source(S, porigin_site, z, ptask) = false -- otherwise
 dec $stringify_site_valid(pstate, porigin, int) : bool
 dec $default_internal_string_site_valid(pstate, porigin, int) : bool
 def $default_internal_string_site_valid(S, porigin_site, z) = false -- otherwise
-def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $config_string_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1) \/ $terminal_string_site(S, porigin_site, z) \/ $typed_return_source(S, porigin_site, z) \/ $static_string_site_valid(S, porigin_site, z) \/ $parameter_string_site_valid(S, porigin_site, z) \/ $default_internal_string_site_valid(S, porigin_site, z))
+def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $file_operand_child_site(S, porigin_site, z) \/ $config_string_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1) \/ $terminal_string_site(S, porigin_site, z) \/ $typed_return_source(S, porigin_site, z) \/ $static_string_site_valid(S, porigin_site, z) \/ $parameter_string_site_valid(S, porigin_site, z) \/ $default_internal_string_site_valid(S, porigin_site, z))
 
 dec $stringify_consumer_tail_valid(pstate, porigin, int, ptask, ptask*) : bool
 dec $stringify_eval_consumer(ptask) : bool
+dec $stringify_file_consumer(ptask) : bool
 dec $stringify_typed_return_consumer(ptask) : bool
 def $stringify_eval_consumer(EVAL_REQUEST porigin z) = true
 def $stringify_eval_consumer(ptask) = false -- otherwise
@@ -116,6 +118,7 @@ def $stringify_consumer_tail_valid(S, porigin_site, z, EVAL_REQUEST porigin_pare
 def $stringify_consumer_tail_valid(S, porigin_site, z, RETURN_VALUE z, (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*) = $typed_return_source(S, porigin_site, z)
 def $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*) = true
   -- if ~$stringify_eval_consumer(ptask_consumer)
+  -- if ~$stringify_file_consumer(ptask_consumer)
   -- if ~$stringify_typed_return_consumer(ptask_consumer)
   -- if ~$static_string_result_task(ptask_consumer)
 def $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*) = false -- otherwise

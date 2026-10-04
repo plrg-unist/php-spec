@@ -272,6 +272,9 @@ test-semantics: build
 	python3 tests/semantics/internal_default_reception_protocol.py --group owner
 	python3 tests/semantics/internal_default_reception_protocol.py --group pure
 	python3 tests/semantics/internal_default_reception_protocol.py --group builtin
+	python3 tests/semantics/anonymous_default_new_sources.py
+	python3 tests/semantics/anonymous_default_new_protocol.py --group owner
+	python3 tests/semantics/anonymous_default_new_protocol.py --group recursive
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
@@ -352,6 +355,8 @@ test-semantics: build
 	python3 tests/semantics/eval_trace_protocol.py
 	python3 tests/semantics/eval_adapter_protocol.py
 	python3 tests/semantics/include_execution.py
+	python3 tests/semantics/file_operand_sources.py
+	python3 tests/semantics/file_operand_protocol.py
 	python3 tests/semantics/startup_ini.py
 	python3 tests/semantics/startup_ini_protocol.py
 	python3 tests/semantics/display_errors.py

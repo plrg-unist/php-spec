@@ -205,6 +205,7 @@ def $update_acquired(S, pupdate, bool, z) = $update_location(S, pupdate, bool, z
 
 rule PhpStep/update-apply: S ~> S_updated[.HELD = S.HELD]
   -- if S.TODO = (UPDATE_PREP pupdate bool z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
   -- if S_updated = $update_acquired($rw_base($hold_task_inputs(S), S.BASE, STRINGINCDEC, z), pupdate, bool, z)
 rule PhpStep/update-PreInc: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), UPDATE_PREP INCREMENT false $runtime_line(S, eps, NExprPreInc expression metadata)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprPreInc expression metadata)) :: ptask_tail*
