@@ -135,14 +135,37 @@ def $trait_data_property_value_result(S, pclassdesc, pclassdesc_trait, pproperty
 dec $trait_comparison_error(ptraitdatacheck) : bool
 def $trait_comparison_error(TRAITDATAERROR ptraitdataerror) = true
 def $trait_comparison_error(ptraitdatacheck) = false -- otherwise
+dec $trait_collision_held(pstate) : bool
+def $trait_collision_held(S) = true
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+def $trait_collision_held(S) = false -- otherwise
 def $trait_comparison_complete(S, pclassdesc, ptraitdatacomparison, S_result) = $trait_comparison_seed(S, pclassdesc, S_result, ptraitdatacomparison.NOTICES)
   -- if ~$trait_comparison_error(ptraitdatacomparison.CHECK)
+;; A held primary reports before this new Error can emit any diagnostic. The
+;; ordinary runtime link wrapper authenticates rollback and records the failure.
+def $trait_comparison_complete(S, pclassdesc, ptraitdatacomparison, S_result) = S_result
+  -- if ptraitdatacomparison.CHECK = TRAITDATAERROR ptraitdataerror
+  -- if S_result.COMPLETION = STATICBYTES preqbytes_fatal z_fatal
+  -- if $trait_collision_held(S)
 def $trait_comparison_complete(S, pclassdesc, ptraitdatacomparison, S_result) = $prune_allocations(S_report[.RESULT = S_result.RESULT][.ERRORORIGIN = S_result.ERRORORIGIN][.TRACE = eps][.ERRORFATALTRACE = eps][.TODO = $iterator_notice_without_seeds(S_result.TODO)])
   -- if ptraitdatacomparison.CHECK = TRAITDATAERROR ptraitdataerror
   -- if S_result.COMPLETION = STATICBYTES preqbytes_fatal z_fatal
+  -- if ~$trait_collision_held(S)
   -- if S_flushed = $iterator_notice_default(S_result, $iterator_notice_seeds(S.TODO) ++ $trait_notice_records(pclassdesc.ORIGIN, |S.DECLARATIONS|, |S.USERCONSTANTS|, ptraitdatacomparison.NOTICES))
   -- if S_throw = $throwable_allocate_at(S_flushed, ptraitdataerror.KIND, ptraitdataerror.MESSAGE, ptraitdataerror.OWNER, ptraitdataerror.LINE, ptraitdataerror.TRACE)
   -- if S_throw.COMPLETION = THROWING n_throw
   -- if $origin_source(ptraitdataerror.OWNER) = PORIGIN n_unit pcpath
   -- if S_warning = $error_default(S_throw[.ERRORFATALTRACE = eps], DIAGNOSTIC_SOURCE n_unit "Warning" ($ptascii("Uncaught ") ++ $throwable_chain_string(S_throw, n_throw, [n_throw]) ++ [10] ++ $ptascii("  thrown")) ptraitdataerror.LINE, 2)
   -- if S_report = $shutdown_reported(S_warning, $ptascii("CompileError"), preqbytes_fatal, z_fatal, $ptascii("Fatal error: ") ++ preqbytes_fatal ++ $ptascii(" in ") ++ $shutdown_file(S_result) ++ $ptascii(" on line ") ++ $decimal_integer(z_fatal) ++ [10], $long_and(S_result.REPORTING, 64) =/= 0)
+
+;; The failure is rederived by275 from a real class/cause and exact rollback.
+;; Its pure replay has no held formatter and therefore produces this snapshot.
+def $runtime_class_replay_fatal(S) = true
+  -- if S.COMPLETION = REQUESTFATAL ptbytes_class ptbytes_message z
+  -- if ptbytes_class = $ptascii("CompileError")
+  -- if S.TRACE = eps /\ S.ERRORFATALTRACE = eps
+  -- if S.ERRORORIGIN = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $trait_plan(S, pclassdesc).TRAITS =/= eps
