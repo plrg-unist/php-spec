@@ -274,8 +274,13 @@ interaction passes. [Coalesce assignment and unset keys](docs/semantics/SOURCE-D
 now stage direct CV-array consumers: memoized keys and separate read/write lines,
 write-copy abort, unset liveness and shared typed cells survive callbacks.
 Author6/255 and independent10/216 share one original, giving15 unique private
-agreements; two reduced current trait-handler sources pass. Nested unset,
-wider memoized containers, append and wider producers remain required.
+agreements; two reduced current trait-handler sources pass.
+[Nested unset and append](docs/semantics/SOURCE-DIMENSION-TAILS.md) now preserve
+intermediate conversion protection, abort temporaries and late RHS/null-insertion
+timing. Author6/247 and independent18/356 share one original, giving23 unique
+private agreements; one current private-handler/typed-cell source passes.
+Wider memoized containers and earlier container/string/object producers remain
+required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
