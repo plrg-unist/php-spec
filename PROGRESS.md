@@ -7,68 +7,27 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Class constants 183/184 preserve declaring-owner lazy scalar/array values,
-strict types, inheritance priority and earlier-value compilation across units.
-Cached arrays survive warning-handler resumption; completed tables support
-static getter aliases. The catalogue of 50 sources keeps separate tested
-revisions: earlier 25 + 12 + 5, six runtime interactions, borrowed-read `7ne7` and
-static-getter `32`. Finite checks 16 + 13, 93 and 31 retain their original cutoffs.
-[The constants ledger](coverage/semantics/class-constants-current-review.json)
-binds the current composition and original failures. Closure/FCC initializers,
-named `::class` in constant expressions, unretained update selectors and references
-into incomplete class tables remain Unsupported. Modifier admission, attributes
-and broader consumers stay open; reporting-mask/error_reporting is a later obligation.
+Public method-array and class-method-string error handlers register raw values and
+select afresh at dispatch. Entered targets retain genuine emitter scope, arguments
+and owners through member mutation, nested replacement, throw and false fallback.
+The [method-handler ledger](coverage/semantics/handler-callables-current-review.json)
+keeps mixed author/independent checks, current CONFIG PIPE and original failures
+at their actual revisions.
 
-StaticCall reference assignment with untyped return signatures now uses the
-accepted returned-cell protocol for selected typed static slots. Named,
-parent, self and late-static calls retain lexical/called scope and typed aliases;
-denied binding releases both temporary owners. Typed fetch flags preserve
-nullable initialization and nonnullable error priority. Nullsafe class chains
-reject before ordinary or first-class call lowering. The
-[reference ledger](coverage/semantics/static-method-reference-review.json)
-separates original source/compiler/state checks, current getter/handler
-interactions and independent scope controls. Discarded genuine reference getters
-now wrap initialized typed slots before returning. Two source comparisons and
-42 post-return assertions pass at **b93ec622a**, checking later asymmetric denial,
-retained type sources and the sole static-storage owner. An independent inherited
-by-value versus suppressed-reference getter also passes at that revision. The PIPE/getter source at
-**b41a2ef26** preserves raw INI bytes, callback/getter argument views and the shared
-typed cell. A separate source and 46 state assertions at **ff9b7ca78** check
-forward class-constant table completion before a discarded getter, its sole
-static cell owner, and the later live global alias/type rejection. Deferred
-property defaults and references into incomplete tables remain Unsupported.
-Untyped static-slot admission,
-temporary-return Notice timing and typed return verification remain open.
-
-Stringable CHDIR PIPE uses the working directory after its callback and retains
-its held left object after RHS writes. Six normal source tuples and 124 directory
-provider assertions pass at **6e63009f3**, covering success, OS refusal, NUL
-rejection, throw and forged responses without production changes. The
-[PIPE ledger](coverage/semantics/include-config-pipe-review.json) keeps earlier
-unary and borrowed-warning checkpoints at their distinct revisions.
-
-Borrowed strict-identity reads208 retain the old reference cell across warning
-callbacks without adding an owner; nested saved callers and throw cleanup are
-checked. Defined ordinary `$GLOBALS[key]` uses the real global table. Private
-**f15d1f056** passes six normal tuples plus a zero-agreement control and author3/162;
-independent three model comparisons reuse native originals and two/130 pass.
-Fresh getter/setter **f9592b6ca** accepts author source1/74 and independent source1/111;
-current method-string **c67e3511f** accepts source1/77. Their [ledger](coverage/semantics/warning-reads-review.json)
-keeps profiles/revisions separate; publication adds no execution or rebuild credit.
-
-The installed families compose as follows; each linked ledger states its limits
-and distinguishes historical evidence from current interaction checks.
+The installed families compose as follows; each ledger records its scope and limits.
 
 | Family | Current behavior and evidence |
 | --- | --- |
-| Error handlers/reporting206/207 | Ordinary named, closure and public source-object callbacks retain four arguments and genuine saved frames; masks, replacements, restoration, throw and fatal fallback compose with current properties/calls. Broader producers/API/callable forms and reporting readback remain open. [Handler ledger](coverage/semantics/error-handlers-review.json). |
+| Class constants183/184 | Owner-scoped lazy scalar/array caches preserve strict typing, inheritance priority and compile-entry availability. Warning-read and completed static-getter interactions retain cache roots/aliases;50 source observations keep their separate revisions. Closure/FCC initializers and broader consumers remain open. [Constants ledger](coverage/semantics/class-constants-current-review.json). |
+| Borrowed warning reads208 | Strict identity retains the old reference cell across callbacks without adding an owner; saved callers and throw cleanup preserve it. Defined ordinary `$GLOBALS[key]` uses the real table. Getter/setter and method-string interactions keep separate revisions. [Warning-read ledger](coverage/semantics/warning-reads-review.json). |
+| Error handlers/reporting206/207/211 | Named, closure, public source-object, ordinary method-array and class-method-string callbacks retain raw registration values and select afresh at dispatch. Entered targets, four arguments and genuine emitting frames survive member mutation, replacement, nested reentry, throw and false fallback; current CONFIG PIPE preserves weak receive and original-null trace. Broader scope/magic/internal/exception/lifecycle forms and reporting readback remain open. [Method-handler ledger](coverage/semantics/handler-callables-current-review.json), [earlier handler ledger](coverage/semantics/error-handlers-review.json). |
 | Class-method strings210 and FCC119 | Full-byte lookup separates frame-based callable admission, computed static dispatch and fixed compatible-this selection. Captures/clone retain immutable source certificates and defaults/static cells. A named throwing handler preserves the selected static caller and arguments. [String ledger](coverage/semantics/class-method-strings-current-review.json). |
 | Method arrays205 | Public source method arrays retain immutable selected receiver/owner/called-class certificates through dynamic calls and capture. Current two-slot INI checkpoint **f9f47f115/61370c98/1353** accepts source1/finite103; broader resolution remains open. [Array ledger](coverage/semantics/array-callables-current-review.json). |
 | Include/configuration | Stringable CHDIR PIPE captures post-callback CWD and retains held operands; unary CONFIG PIPE also preserves source strictness and callback guards through borrowed warnings. [PIPE ledger](coverage/semantics/include-config-pipe-review.json). Raw getters, primitive/null Restore, weak-null handler continuations and two-slot INI ownership retain their separate checkpoints. [Readback](coverage/semantics/include-ini-readback-review.json), [INI](coverage/semantics/include-stringable-ini-option-review.json). |
 | Stringable SET/Restore and paths | SET separates raw INI bytes from effective C-string paths. Weak Restore uses exact full-name lookup and preserves callback mutations on misses. Current ARG/Restore checks retain caller arguments and zero-argument callbacks. [Restore](coverage/semantics/include-stringable-restore-review.json), [prefix](coverage/semantics/include-ini-prefix-review.json), [SET](coverage/semantics/include-set-current-review.json). |
 | Typed static properties197 | Weak simple Stringable assignment rechecks live aliases and retains paired callback owners. Current Restore/ARG/INI composition preserves full property bytes, caller arguments and normal/throw cleanup. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json). |
 | Static setters200/201 | Backed final/asymmetric declarations normalize equivalent setters and preserve inheritance/error priority; direct and indirect consumers retain lexical access, live raw-slot checks and typed aliases. [Setter ledger](coverage/semantics/static-setter-access-review.json). |
-| StaticCall reference acquisition141/142 | Selected getters with untyped return signatures retain scoped selection, typed static aliases and returned-cell cleanup. Typed REF flags preserve initialization/error priority and alias creation even when discarded; post-return ownership/type-source checks pass. [Reference ledger](coverage/semantics/static-method-reference-review.json). |
+| StaticCall reference acquisition141/142 | Selected getters with untyped return signatures retain scoped selection, typed static aliases and returned-cell cleanup. Typed REF flags preserve initialization/error priority and alias creation even when discarded; post-return ownership/type-source checks and completed constant tables retain the typed alias; getter/borrowed-read reentry keeps its frame. [Reference ledger](coverage/semantics/static-method-reference-review.json). |
 | Argument introspection198/199 | Ordinary current and saved frames retain genuine named/unpacked argument views through invocation and callbacks. [Argument ledger](coverage/semantics/argument-introspection-calls-current-review.json). |
 | Public invocation and callable typing | Public source `__invoke` is installed at **18a1383d7**; callable-before-string parameter admission at **b8a6f43f8** preserves dual-role objects across weak/strict, union order, inheritance and ownership. [Invocation](coverage/semantics/source-invoke-current-review.json), [parameter reception](coverage/semantics/callable-string-current-review.json). |
 | Selection and capture | Source method selection preserves owner/called class; capture/clone retains selected targets and scoped defaults/static cells without retaining retired origin-only creators. [Capture](coverage/semantics/method-capture-current-review.json), [default caches](coverage/semantics/closure-default-cache-review.json). |
@@ -92,7 +51,7 @@ failures and interrupted evidence.
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: broader weak parameter/property conversion,
   constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers.
+  broader reference-result consumers. Deferred property defaults and references into incomplete constant tables remain Unsupported.
   Untyped static-slot raw-object/scalar reference-return admission remains open.
   Named error constants such as E_USER_NOTICE remain unsupported by initial lookup;
   the handled-notice check uses literal1024. Generic156 return replay, temporary-return
@@ -107,7 +66,9 @@ failures and interrupted evidence.
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,
   exception/lifecycle handlers and broader API/callable argument consumers.
-  Constants183/184 and compiler reporting/handler interactions remain open.
+  Broader constant consumers and compiler reporting interactions remain open.
+  get_called_class() remains an unimplemented introspection body; static::class
+  observations do not close it.
 
 `returns_verify` is temporarily paused by the user. Preserve its branches and
 evidence; do not retry the blocked engine experiment, substitute a reviewer,

@@ -198,9 +198,12 @@ binds942 source/state/protocol gates and the one-state-test bridge.
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
 now use authenticated callback frames, registration stacks and bounded missing-CV
-continuations. Current property, array-call and trace checks compose with the
-private source/frame gates; the [review](coverage/semantics/error-handlers-review.json)
-records their distinct revisions and remaining diagnostic/callable obligations.
+continuations. Public method arrays and class-method strings keep raw registration
+values, resolve them at dispatch, and freeze the entered target through reference
+mutation, replacement and throw. The [method-handler ledger](coverage/semantics/handler-callables-current-review.json)
+separates original source/state checks from current PIPE warning composition;
+the [earlier handler review](coverage/semantics/error-handlers-review.json) retains
+its distinct revisions and remaining diagnostic/callable obligations.
 Full core and a fresh combined offline rebuild remain required.
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)

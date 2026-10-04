@@ -1,6 +1,6 @@
 # Source error handlers
 
-This slice targets PHP 8.5.10 CLI NTS 64-bit. Modules206/207 implement
+This slice targets PHP 8.5.10 CLI NTS 64-bit. Modules206/207/211 implement
 `error_reporting`, `set_error_handler`, `restore_error_handler`,
 `get_error_handler`, `trigger_error` and `user_error` through the checked source
 call machinery. Its bounded private source/frame gates and fresh current-master property,
@@ -9,10 +9,20 @@ array-caller and trace interactions are independently accepted.
 Registration stores the raw callback and signed32 mask, and pushes the previous
 pair even when clearing the callback. Dispatch resolves the raw callback again
 and supplies severity, message, filename-or-null and line. Named functions,
-closures and public concrete source `__invoke` methods are admitted. Malformed
-callback arrays preserve Zend's ordered shape errors; method-resolution errors
-and array callback dispatch remain explicit pending boundaries. Pending
-callbacks and the registration stack retain their real heap owners.
+closures, public concrete source `__invoke`, ordinary public method arrays and
+class-method strings are admitted. Referenced array members are read at dispatch;
+later mutation preserves the entered selected target. Copied direct members
+still authenticate its method bytes and selector. Malformed arrays and known
+public lookup failures preserve ordered PHP diagnostics. Pending callbacks,
+the registration stack and entered targets retain their real heap owners.
+
+Class-name API callbacks use the genuine emitting USER frame for compatible
+implicit `$this` and called-class forwarding; requested Parent descriptors stay
+distinct from an overriding Child. This differs from computed direct method
+dispatch. The selected target authenticates against that saved emitter, while
+mutable referenced members remain opaque after entry. Static selections retain
+no receiver; a raw object-array callback still owns its selector until dropped.
+The registry retains raw values, rather than caching an entered target.
 
 Eligibility depends on the handler mask, independently of `error_reporting` or
 `@`. The active raw handler is cleared during the callback, allowing an installed
@@ -48,9 +58,12 @@ authenticated unary continuation resumes once after normal handling or false
 fallback; a thrown handler aborts lookup. Weak handler argument conversion,
 original-null trace operands, caller arguments and raw INI writes are checked
 in the [readback ledger](../../coverage/semantics/include-ini-readback-review.json).
-Other CONFIG warning producers remain open.
+Owned unary CONFIG PIPE also composes with public static method handlers: weak
+severity reception, saved caller arguments, original-null traces and throw cleanup
+remain distinct from USER strict warnings. Other CONFIG warning producers remain open.
 
-Remaining null/Stringable API conversions, broader internal/array/visibility callback forms,
+Remaining null/Stringable API conversions, compound/scope-keyword, nonpublic,
+magic/autoload/internal callback forms,
 reference-return callbacks, exception handlers and lifecycle dispatch remain open.
 Frameless named/method trace formatting in164 now accepts the authenticated
 nonempty function field. Current property and array-caller readback gates validate these shapes on the
@@ -72,7 +85,12 @@ Original allocation, fatal-stack, pooled-array, checkpoint and receive-validator
 failures remain preserved. Fresh current-master author source2/75 and independent
 source1/87 are separate, with no inherited execution credit. The [review ledger](../../coverage/semantics/error-handlers-review.json)
 locates the exact revisions, raw commands, exits and mixed evidence. Local tools
-are reused; a fresh combined offline rebuild and complete core remain open.
+are reused; a fresh combined offline rebuild and complete core remain open. The
+[method-handler ledger](../../coverage/semantics/handler-callables-current-review.json)
+keeps source15/five258 and independent source9/three185 separate from current
+PIPE source1/state93, including the preserved failed attempts. Its early
+get_called_class() Unsupported source has zero agreement; corrected static::class
+observations do not implement that introspection body.
 
 In a private project root with the built local SpecTec algorithmic tool at
 `.tools/spectec/bin/p4spectec`, prepare and run the exact report separately:
