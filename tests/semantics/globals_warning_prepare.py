@@ -13,8 +13,8 @@ from globals_warning_run import ROOT, describe, facts, inputs, recorded, revisio
 def request_literal(q):
     def bs(value):
         return '[' + ','.join(map(str, base64.b64decode(value))) + ']'
-    return ('{ ENV [' + ','.join('(' + bs(k) + ',' + bs(v) + ')' for k, v in q['env'])
-            + '], ARGV [' + ','.join(bs(x) for x in q['argv']) + '], FILE ' + bs(q['file'])
+    return ('{ ENV ([' + ','.join('(' + bs(k) + ',' + bs(v) + ')' for k, v in q['env'])
+            + ']), ARGV ([' + ','.join(bs(x) for x in q['argv']) + ']), FILE ' + bs(q['file'])
             + ', SECONDS (' + q['seconds'] + '), MICROSECONDS ' + str(q['microseconds'])
             + ', VARIABLES ' + bs(q['variables']) + ', JIT true, CWD (' + bs(q['cwd']) + ') }')
 
