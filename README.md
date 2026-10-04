@@ -492,3 +492,8 @@ reads live fixed parameters and retained positional extras, with fresh result
 arrays and native receive/context priorities. Bounded private checks cover
 inherited source object invocation and Stringable SET ownership; broader
 Generator/Fiber and unfinished callback interactions remain open.
+
+[Called-class introspection](docs/semantics/CALLED-CLASS.md) now implements
+`get_called_class()` through inherited/forwarded methods, source Closure binding,
+captures and handlers. Real stopping frames and explicit builtin Closure wrappers
+preserve their distinct scope, argument priorities and error traces.

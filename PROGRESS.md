@@ -7,6 +7,13 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Called-class introspection223 implements `get_called_class()` using the active
+authenticated called class. Plain functions and global Closures stop lookup;
+captured/rebound source Closures retain their own class, while explicit builtin
+Closure wrappers return `Closure`. Argument/count priority, optimized/generic
+trace paths and real handler/emitter restoration are checked separately in the
+[called-class ledger](coverage/semantics/called-class-review.json).
+
 Deferred scalar/array static defaults219 retain the declaring scope, strict
 property types, parent/constants/default order and first successful fills across
 later failure/retry. Existing static rows own live values, arrays and typed aliases;
@@ -24,6 +31,7 @@ controls reach checked Unsupported with exact reasons; they add no native agreem
 Instance/object defaults, cold synchronous references and resumed same-default
 updates with retained alias constraints are the next required obligations.
 Reevaluating a pending default suspended in a callback is explicitly Unsupported.
+
 
 Private and protected method arrays and class-method strings support callable
 admission, selection, capture/clone and delayed error-handler dispatch. Object
@@ -189,8 +197,8 @@ failures and interrupted evidence.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,
   exception/lifecycle handlers and broader API/callable argument consumers.
   Broader constant consumers and compiler reporting interactions remain open.
-  get_called_class() remains an unimplemented introspection body; static::class
-  observations do not close it.
+  Called-class introspection223 leaves builtin Closure rebinding, builtin API
+  callback targets, suspension and wider reference-result consumers open.
 
 `returns_verify` is temporarily paused by the user. Preserve its branches and
 evidence; do not retry the blocked engine experiment, substitute a reviewer,
