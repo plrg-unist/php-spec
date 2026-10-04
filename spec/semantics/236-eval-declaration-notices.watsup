@@ -1,0 +1,667 @@
+syntax pevalcompileplan = { UNIT nat, PUBLICATIONS pppublication*, DIAGNOSTICS pldiagnostic*, WORK ppwork*, COMPLETION ppcompletion }
+syntax pevalcompile = { PLAN pevalcompileplan, CHECKPOINT nat, DIAGNOSTIC nat, PENDING pcompletion }
+syntax pevalcompileclaim = (nat, nat, nat, nat, pdeclnoticeitem*)
+syntax pevalcompilefatal = { CURSOR pevalcompile, COMPLETION pcompletion, ORIGIN porigin?, PREFIX pdeclnoticeitem* }
+dec $eval_compile_plan(ppstate) : pevalcompileplan
+dec $eval_compile_limit(pevalcompile) : nat
+dec $eval_compile_checkpoint(pstate, pppublication) : pstate
+dec $eval_compile_loop(pstate, pevalcompile) : pstate
+dec $eval_compile_after(pstate, pevalcompile) : pstate
+dec $eval_compile_pause(pstate, pevalcompile, pdeclnoticeitem*) : pstate
+dec $eval_compile_finish(pstate, pevalcompile) : pstate
+dec $eval_compile_stop(pstate, pevalcompile, pcompilestop) : pstate
+dec $eval_compile_finish_completion(pstate, pevalcompile) : pstate
+dec $eval_compile_fatal_pending(pstate, pevalcompile) : pstate
+dec $eval_compile_claim_remove(pevalcompileclaim*, nat) : pevalcompileclaim*
+dec $eval_compile_waiting_from(pdeclaration*, pevalcompileclaim*, nat) : pevalcompileclaim*
+dec $eval_compile_waiting(pdeclaration*) : pevalcompileclaim*
+dec $eval_compile_claim_at(pevalcompileclaim*, nat) : pevalcompileclaim?
+dec $eval_compile_cursor_valid(pstate, pevalcompile) : bool
+dec $eval_compile_pending_object(pstate, pcompletion) : bool
+dec $eval_compile_task_cursors(ptask) : pevalcompile*
+dec $eval_compile_tasks_cursors(ptask*) : pevalcompile*
+dec $eval_compile_frames_cursors(pframe*) : pevalcompile*
+dec $eval_compile_cursors(pstate) : pevalcompile*
+dec $eval_compile_cursor_at(pevalcompile*, nat) : pevalcompile?
+dec $eval_compile_unique(pevalcompile*) : bool
+dec $eval_compile_cursor_owners(pstate, pevalcompile*) : bool
+dec $eval_compile_claims_owned(pstate, pevalcompileclaim*, pevalcompile*) : bool
+dec $eval_compile_released(pstate) : bool
+dec $eval_compile_terminal(pcompletion) : bool
+dec $eval_compile_notice_classes(pstate, pdeclnoticeitem*) : (porigin, nat)*
+dec $declaration_history_eval_segment(pstate, pstate, (nat, ppstate)*, pdeclaration*, nat, pstate) : bool
+dec $eval_compile_plan_list_valid(pevalcompile*, (nat, ppstate)*) : bool
+dec $eval_compile_resume_task(ptask) : bool
+dec $eval_compile_fatal_valid(pstate, pevalcompilefatal) : bool
+dec $eval_compile_stop_context(pstate, nat) : pstate
+dec $eval_compile_fatal_finish(pstate, pevalcompilefatal, preqbytes) : pstate
+dec $eval_compile_primary_report(pstate, pcompletion, bool) : pstate
+dec $eval_compile_primary_info(pcompletion) : (preqbytes, preqbytes, int, int)
+dec $eval_compile_reported(pstate, pstate) : bool
+dec $eval_compile_exception_warning(pstate, nat, preqbytes) : pstate
+dec $eval_compile_render_message(pstate, pevalcompilefatal, pshutdownrender) : pstate
+dec $eval_compile_string_active(pstate, pcallcontext?, pframe*, porigin, int) : bool
+dec $eval_compile_task_fatal(ptask) : pevalcompilefatal?
+dec $eval_compile_fatal_find(ptask*) : pevalcompilefatal?
+dec $eval_compile_fatal_frames(pframe*) : pevalcompilefatal?
+dec $eval_compile_fatal_certificate(pstate, pstate) : bool
+dec $eval_compile_marker_tail(pstate, nat) : ptask*
+dec $eval_compile_string_marker(ptask*) : (nat, porigin, int, pevalcompilefatal)?
+dec $eval_compile_fatal_current(pstate) : pevalcompilefatal?
+dec $eval_compile_history_marker(pdeclaration) : bool
+dec $eval_compile_string_frame(pstate, pcallcontext?, pframe, porigin, int) : bool
+dec $eval_compile_formatter_warning(pstate, nat, nat) : pstate
+dec $eval_compile_unwind_contexts(pstate, pevalcontext*) : pevalcontext*
+dec $eval_compile_unwind_task(ptask*) : bool
+dec $eval_compile_formatter_exit_pending(pstate) : bool
+dec $eval_compile_formatter_exit_task(ptask) : bool
+dec $eval_compile_formatter_failure(pstate, preqbytes, nat, preqbytes, int) : pstate
+dec $eval_compile_fatal_notices(pdeclaration*, nat) : pdeclnoticeitem*
+dec $eval_compile_fatal_notice(pdeclaration, nat) : pdeclnoticeitem*
+dec $eval_compile_trace_context_unit(pevalcontext*, nat) : pevalcontext*
+dec $eval_compile_formatter_userfatal(pstate, pevalcompilefatal, ptask) : pstate
+dec $eval_compile_stop_result(pstate, pevalcompile) : pstate
+dec $eval_compile_formatter_hard(pstate, pevalcompilefatal, nat) : pstate
+dec $eval_compile_formatter_file_hard(pstate, pevalcompilefatal, pfilecontext, pfilecontext*) : pstate
+
+
+
+
+;; compile_string has no outer diagnostic buffer. Each early class is linked
+;; before its notices run, while a generic compiler warning precedes its class.
+;; The cursor stores source metadata, never a saved machine/heap state.
+def $eval_compile_plan(P) = {UNIT P.FOLD.SOURCE.ID, PUBLICATIONS P.PUBLICATIONS, DIAGNOSTICS P.DIAGNOSTICS, WORK P.WORK, COMPLETION P.COMPLETION}
+def $eval_compile_unit(S, n) = ($eval_binding_at(S.EVALBINDINGS, n) =/= eps)
+def $declaration_compile(S, P) = $eval_compile_loop(S_installed[.TODO = [EVAL_COMPILE_END P.FOLD.SOURCE.ID] ++ pevalcontext.TAIL], {PLAN $eval_compile_plan(P), CHECKPOINT 0, DIAGNOSTIC 0, PENDING NORMAL})
+  -- if $eval_compile_unit(S, P.FOLD.SOURCE.ID)
+  -- if $eval_context_at(S.EVALCONTEXTS, P.FOLD.SOURCE.ID) = (pevalcontext)
+  -- if S_installed = $declaration_install(S, P.FOLD.SOURCE, P.INSTALLED)
+  -- if S_installed.COMPLETION = NORMAL
+def $declaration_compile(S, P) = $declaration_compile_result(S, P)
+  -- if ~$eval_compile_unit(S, P.FOLD.SOURCE.ID)
+def $declaration_compile(S, P) = $declaration_stop(S_installed, P, PCSUNSUPPORTED 0)
+  -- if $eval_compile_unit(S, P.FOLD.SOURCE.ID)
+  -- if S_installed = $declaration_install(S, P.FOLD.SOURCE, P.INSTALLED)
+  -- if S_installed.COMPLETION =/= NORMAL
+
+def $eval_compile_limit(pevalcompile) = n
+  -- if $(pevalcompile.CHECKPOINT < |pevalcompile.PLAN.PUBLICATIONS|)
+  -- if pevalcompile.PLAN.PUBLICATIONS[pevalcompile.CHECKPOINT] = PPCP porigin n ppubkind
+def $eval_compile_limit(pevalcompile) = |pevalcompile.PLAN.DIAGNOSTICS|
+  -- if pevalcompile.CHECKPOINT = |pevalcompile.PLAN.PUBLICATIONS|
+def $eval_compile_checkpoint(S, PPCP porigin n PPFUNCTION) = $activate_function(S, pfunction)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+def $eval_compile_checkpoint(S, PPCP porigin n PPCLASS) = $declaration_class_checkpoint(S, pclassdesc, $declaration_class_probe(S, pclassdesc))
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $eval_compile_checkpoint(S, pppublication) = S[.COMPLETION = UNSUPPORTED "missing eval declaration checkpoint"] -- otherwise
+
+def $eval_compile_loop(S, pevalcompile) = $eval_compile_after($declaration_unit_diagnostics(S, [pevalcompile.PLAN.DIAGNOSTICS[pevalcompile.DIAGNOSTIC]]), pevalcompile[.DIAGNOSTIC = $(pevalcompile.DIAGNOSTIC + 1)])
+  -- if $(pevalcompile.CHECKPOINT <= |pevalcompile.PLAN.PUBLICATIONS| /\ pevalcompile.DIAGNOSTIC < $eval_compile_limit(pevalcompile) /\ $eval_compile_limit(pevalcompile) <= |pevalcompile.PLAN.DIAGNOSTICS|)
+def $eval_compile_loop(S, pevalcompile) = $eval_compile_after($eval_compile_checkpoint(S, pevalcompile.PLAN.PUBLICATIONS[pevalcompile.CHECKPOINT]), pevalcompile[.CHECKPOINT = $(pevalcompile.CHECKPOINT + 1)])
+  -- if $(pevalcompile.CHECKPOINT < |pevalcompile.PLAN.PUBLICATIONS|)
+  -- if pevalcompile.DIAGNOSTIC = $eval_compile_limit(pevalcompile)
+def $eval_compile_loop(S, pevalcompile) = $eval_compile_finish(S, pevalcompile)
+  -- if pevalcompile.CHECKPOINT = |pevalcompile.PLAN.PUBLICATIONS|
+  -- if pevalcompile.DIAGNOSTIC = |pevalcompile.PLAN.DIAGNOSTICS|
+def $eval_compile_loop(S, pevalcompile) = $eval_compile_stop(S[.COMPLETION = UNSUPPORTED "invalid eval compilation cursor"], pevalcompile, PCSUNSUPPORTED pevalcompile.CHECKPOINT) -- otherwise
+def $eval_compile_after(S, pevalcompile) = $eval_compile_loop(S, pevalcompile)
+  -- if S.COMPLETION = NORMAL
+  -- if $iterator_notice_seeds(S.TODO) = eps
+def $eval_compile_after(S, pevalcompile) = $eval_compile_pause(S, pevalcompile, $iterator_notice_seeds(S.TODO))
+  -- if S.COMPLETION = NORMAL
+  -- if $iterator_notice_seeds(S.TODO) =/= eps
+def $eval_compile_after(S, pevalcompile) = $eval_compile_stop(S, pevalcompile, PCSUNSUPPORTED pevalcompile.CHECKPOINT)
+  -- if $declaration_unsupported(S.COMPLETION)
+def $eval_compile_after(S, pevalcompile) = $eval_compile_stop(S, pevalcompile, PCSLINK pevalcompile.CHECKPOINT)
+  -- if S.COMPLETION =/= NORMAL /\ ~$declaration_unsupported(S.COMPLETION)
+def $eval_compile_pause(S, pevalcompile, pdeclnoticeitem*) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDEVALPAUSE pevalcompile.PLAN.UNIT pevalcompile.CHECKPOINT pevalcompile.DIAGNOSTIC pdeclnoticeitem*]][.TODO = [DECL_NOTICES pdeclnoticebatch, EVAL_COMPILE_RESUME pevalcompile] ++ $iterator_notice_without_seeds(S.TODO)][.ORIGIN = (pevalbinding.SITE)]
+  -- if $eval_binding_at(S.EVALBINDINGS, pevalcompile.PLAN.UNIT) = (pevalbinding)
+  -- if n = |S.DECLARATIONS|
+  -- if pdeclnoticebatch = {KIND (NOTICE_EVAL pevalcompile.PLAN.UNIT n), SITE pevalbinding.SITE, LINE $eval_site_line(S, pevalbinding.SITE), CLASSES $iterator_notice_seed_classes(S, S.TODO), NOTICES pdeclnoticeitem*, INDEX 0}
+
+;; A completed image is available during the pause; source chronology is still
+;; incomplete. Only the body's original EVAL_END certifies execution entry.
+def $eval_compile_context_phase(eps, n, pevalphase) = eps
+def $eval_compile_context_phase(pevalcontext :: pevalcontext_tail*, n, pevalphase) = pevalcontext[.PHASE = pevalphase] :: pevalcontext_tail*
+  -- if pevalcontext.UNIT = n
+def $eval_compile_context_phase(pevalcontext :: pevalcontext_tail*, n, pevalphase) = pevalcontext :: $eval_compile_context_phase(pevalcontext_tail*, n, pevalphase)
+  -- if pevalcontext.UNIT =/= n
+def $eval_compile_finish(S, pevalcompile) = $eval_compile_finish_completion($declaration_exit(S, pevalcompile.PLAN.UNIT, PCSCOMPLETE), pevalcompile)
+  -- if pevalcompile.PLAN.COMPLETION = PPCNORMAL
+def $eval_compile_finish(S, pevalcompile) = $eval_compile_stop(S[.COMPLETION = pcompletion], pevalcompile, PCSCOMPILER)
+  -- if pevalcompile.PLAN.COMPLETION = PPCABRUPT pcompletion
+  -- if ~$declaration_unsupported(pcompletion)
+def $eval_compile_finish(S, pevalcompile) = $eval_compile_stop(S[.COMPLETION = UNSUPPORTED text], pevalcompile, PCSUNSUPPORTED pevalcompile.CHECKPOINT)
+  -- if pevalcompile.PLAN.COMPLETION = PPCABRUPT (UNSUPPORTED text)
+def $eval_compile_finish(S, pevalcompile) = $eval_compile_stop(S[.COMPLETION = UNSUPPORTED "namespace eval compilation without diagnostic"], pevalcompile, PCSUNSUPPORTED pevalcompile.CHECKPOINT)
+  -- if pevalcompile.PLAN.COMPLETION = PPCNAMESPACE
+def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = $compiled_work(pevalcompile.PLAN.UNIT, pevalcompile.PLAN.WORK) ++ [EVAL_END pevalcompile.PLAN.UNIT] ++ pevalcontext.TAIL][.EVALCONTEXTS = $eval_compile_context_phase(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT, UNIT_RUN)][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pevalcompile.PENDING = NORMAL
+  -- if $eval_context_at(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT) = (pevalcontext)
+def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = (THROW_SEARCH n) :: pevalcontext.TAIL][.EVALCONTEXTS = pevalcontext_tail*][.ORIGIN = (pevalcontext.SITE)]
+  -- if pevalcompile.PENDING = THROWING n
+  -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
+  -- if pevalcontext.UNIT = pevalcompile.PLAN.UNIT
+def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = pevalcontext.TAIL][.EVALCONTEXTS = pevalcontext_tail*][.ORIGIN = (pevalcontext.SITE)][.COMPLETION = EXITED z]
+  -- if pevalcompile.PENDING = EXITED z
+  -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
+  -- if pevalcontext.UNIT = pevalcompile.PLAN.UNIT
+def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = $compiled_work(pevalcompile.PLAN.UNIT, pevalcompile.PLAN.WORK)]
+  -- if $eval_context_at(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT) = eps
+
+;; The existing compiler fatal keeps its origin and reporting priority. A
+;; pending handler Throwable is formatted first by a separate continuation.
+def $eval_compile_stop(S, pevalcompile, pcompilestop) = $eval_compile_stop_result($declaration_exit($iterator_notice_compile_stop(S)[.TODO = eps][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, S.COMPLETION, pevalcompile.PLAN.UNIT)], pevalcompile.PLAN.UNIT, pcompilestop), pevalcompile)
+def $eval_compile_stop_result(S, pevalcompile) = $eval_compile_formatter_hard(S, pevalcompilefatal, pevalcompile.PLAN.UNIT)
+  -- if $iterator_notice_link_fatal(S.COMPLETION)
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+  -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= pevalcompile.PLAN.UNIT
+def $eval_compile_stop_result(S, pevalcompile) = $eval_compile_fatal_pending(S, pevalcompile) -- otherwise
+;; A hard file compilation inside the source formatter also bails out to the
+;; already recorded primary fatal. Its source segment records its own hard
+;; cutoff in the ledger; only its compiling include frame is removed.
+def $eval_compile_declaration_stop(S, n) = $eval_compile_formatter_file_hard(S, pevalcompilefatal, pfilecontext, pfilecontext_tail*)
+  -- if $iterator_notice_link_fatal(S.COMPLETION)
+  -- if $file_binding_at(S.FILEBINDINGS, n) =/= eps
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.UNIT = (n)
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+  -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= n
+def $eval_compile_declaration_stop(S, n) = S -- otherwise
+def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.SERVICELEFT = eps]
+  -- if S_compiled.COMPLETION = REQUESTFATAL ptbytes_class ptbytes_message z
+  -- if ~S_compiled.COMPILESTOP
+  -- if $eval_compile_fatal_current(S_compiled) = (pevalcompilefatal)
+  -- if $eval_compile_fatal_valid(S_compiled, pevalcompilefatal)
+  -- if $shutdown_compiler_snapshot(pevalcompilefatal.COMPLETION) = (S_compiled.COMPLETION)
+  -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= pevalcontext.UNIT
+  -- if $eval_context_at(S_compiled.EVALCONTEXTS, pevalcontext.UNIT) = eps
+def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.SERVICELEFT = eps]
+  -- if S_compiled.COMPLETION = REQUESTFATAL ptbytes_class ptbytes_message z
+  -- if ~S_compiled.COMPILESTOP
+  -- if $eval_compile_fatal_current(S_compiled) = (pevalcompilefatal)
+  -- if $eval_compile_fatal_valid(S_compiled, pevalcompilefatal)
+  -- if $shutdown_compiler_snapshot(pevalcompilefatal.COMPLETION) = (S_compiled.COMPLETION)
+  -- if pfilecontext.UNIT = (n)
+  -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= n
+  -- if ~$file_context_unit_present(S_compiled.FILECONTEXTS, n)
+
+;; A nested hard compiler has already selected and reported the outer primary.
+;; Its retired parser marker cannot become live work again at source append.
+def $compile_source_work(S, n, ptask*) = S.TODO
+  -- if S.COMPLETION = REQUESTFATAL ptbytes_class ptbytes_message z
+  -- if ~S.COMPILESTOP
+  -- if S.TODO = eps
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+  -- if $shutdown_compiler_snapshot(pevalcompilefatal.COMPLETION) = (S.COMPLETION)
+  -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= n
+  -- if $eval_context_at(S.EVALCONTEXTS, n) = eps
+  -- if ~$file_context_unit_present(S.FILECONTEXTS, n)
+
+;; The marker suffix retains the actual eval caller while callbacks run.
+def $eval_compile_work((DECL_NOTICES pdeclnoticebatch) :: (EVAL_COMPILE_RESUME pevalcompile) :: ptask*, ptask_tail*) = [DECL_NOTICES pdeclnoticebatch, EVAL_COMPILE_RESUME pevalcompile] ++ ptask*
+def $eval_compile_work(ptask*, ptask_tail*) = $iterator_notice_work(ptask*, ptask_tail*) -- otherwise
+
+;; Pause positions are chronological producer facts. They do not grant unit
+;; completion, source execution, heap ownership or a new callback permission.
+def $eval_compile_claim_remove(eps, n) = eps
+def $eval_compile_claim_remove((n, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*, n) = $eval_compile_claim_remove(pevalcompileclaim*, n)
+def $eval_compile_claim_remove((n_other, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*, n) = (n_other, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: $eval_compile_claim_remove(pevalcompileclaim*, n)
+  -- if n_other =/= n
+def $eval_compile_waiting_from(eps, pevalcompileclaim*, n) = pevalcompileclaim*
+def $eval_compile_waiting_from((PDEVALPAUSE n_unit n_checkpoint n_diagnostic pdeclnoticeitem*) :: pdeclaration*, pevalcompileclaim*, n) = $eval_compile_waiting_from(pdeclaration*, (n_unit, n_checkpoint, n_diagnostic, n, pdeclnoticeitem*) :: pevalcompileclaim*, $(n + 1))
+def $eval_compile_waiting_from((PDEVALRESUME n_unit z) :: pdeclaration*, pevalcompileclaim*, n) = $eval_compile_waiting_from(pdeclaration*, $eval_compile_claim_remove(pevalcompileclaim*, n_unit), $(n + 1))
+def $eval_compile_waiting_from(pdeclaration :: pdeclaration_tail*, pevalcompileclaim*, n) = $eval_compile_waiting_from(pdeclaration_tail*, pevalcompileclaim*, $(n + 1))
+  -- if ~$eval_compile_history_marker(pdeclaration)
+def $eval_compile_waiting(pdeclaration*) = $eval_compile_waiting_from(pdeclaration*, eps, 0)
+def $eval_compile_claim_at(eps, n) = eps
+def $eval_compile_claim_at((n, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*, n) = ((n, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*))
+def $eval_compile_claim_at((n_other, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*, n) = $eval_compile_claim_at(pevalcompileclaim*, n)
+  -- if n_other =/= n
+
+def $eval_compile_cursor_valid(S, pevalcompile) = true
+  -- if $eval_context_at(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT) = (pevalcontext)
+  -- if pevalcontext.PHASE = EVAL_COMPILE
+  -- if $eval_compile_claim_at($eval_compile_waiting(S.DECLARATIONS), pevalcompile.PLAN.UNIT) = ((pevalcompile.PLAN.UNIT, pevalcompile.CHECKPOINT, pevalcompile.DIAGNOSTIC, n_ordinal, pdeclnoticeitem*))
+  -- if $(pevalcompile.CHECKPOINT <= |pevalcompile.PLAN.PUBLICATIONS| /\ pevalcompile.DIAGNOSTIC <= |pevalcompile.PLAN.DIAGNOSTICS|)
+  -- if pevalcompile.PENDING = NORMAL \/ $exit_completion(pevalcompile.PENDING) \/ $eval_compile_pending_object(S, pevalcompile.PENDING)
+def $eval_compile_cursor_valid(S, pevalcompile) = false -- otherwise
+def $eval_compile_pending_object(S, THROWING n) = ($throwable_member(S, n) /\ (HOBJECT n) <- S.ALLOCATIONS)
+def $eval_compile_pending_object(S, pcompletion) = false -- otherwise
+def $call_task_valid(S, EVAL_COMPILE_RESUME pevalcompile) = $eval_compile_cursor_valid(S, pevalcompile)
+def $call_task_valid(S, EVAL_COMPILE_END n) = $eval_marker_valid(S, EVAL_COMPILE_END n)
+def $task_nodes(EVAL_COMPILE_RESUME pevalcompile) = $completion_roots(pevalcompile.PENDING)
+def $task_nodes(EVAL_COMPILE_END n) = eps
+
+def $eval_compile_task_cursors(EVAL_COMPILE_RESUME pevalcompile) = [pevalcompile]
+def $eval_compile_task_cursors(AT porigin ptask) = $eval_compile_task_cursors(ptask)
+def $eval_compile_task_cursors(ptask) = eps -- otherwise
+;; Compiler continuations are installed as plain tasks in their owning list.
+;; A branch or source wrapper cannot create, move or replay that continuation.
+def $eval_wrapped_marker(EVAL_COMPILE_RESUME pevalcompile) = true
+def $eval_wrapped_marker(EVAL_COMPILE_FATAL pevalcompilefatal) = true
+def $eval_wrapped_marker(EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender) = true
+def $eval_wrapped_marker(EVAL_COMPILE_EXIT z) = true
+def $eval_wrapped_marker(EVAL_COMPILE_FORMAT_EXIT z) = true
+def $eval_wrapped_marker(DECL_NOTICES pdeclnoticebatch) = true
+  -- if pdeclnoticebatch.KIND = NOTICE_EVAL n n_ordinal
+def $eval_wrapped_marker(DECL_NOTICE_RESUME pdeclnoticebatch) = true
+  -- if pdeclnoticebatch.KIND = NOTICE_EVAL n n_ordinal
+def $eval_wrapped_marker(ERROR_HANDLER_INVOKE perrorcall) = $eval_wrapped_marker(perrorcall.RESUME)
+def $eval_wrapped_marker(ERROR_HANDLER_RESULT perrorcall) = $eval_wrapped_marker(perrorcall.RESUME)
+def $eval_compile_tasks_cursors(eps) = eps
+def $eval_compile_tasks_cursors(ptask :: ptask_tail*) = $eval_compile_task_cursors(ptask) ++ $eval_compile_tasks_cursors(ptask_tail*)
+def $eval_compile_frames_cursors(eps) = eps
+def $eval_compile_frames_cursors(pframe :: pframe_tail*) = $eval_compile_tasks_cursors(pframe.TODO) ++ $eval_compile_frames_cursors(pframe_tail*)
+def $eval_compile_cursors(S) = $eval_compile_tasks_cursors(S.TODO) ++ $eval_compile_frames_cursors(S.FRAMES)
+def $eval_compile_cursor_at(eps, n) = eps
+def $eval_compile_cursor_at(pevalcompile :: pevalcompile_tail*, n) = (pevalcompile) -- if pevalcompile.PLAN.UNIT = n
+def $eval_compile_cursor_at(pevalcompile :: pevalcompile_tail*, n) = $eval_compile_cursor_at(pevalcompile_tail*, n) -- if pevalcompile.PLAN.UNIT =/= n
+def $eval_compile_unique(eps) = true
+def $eval_compile_unique(pevalcompile :: pevalcompile_tail*) = ($eval_compile_cursor_at(pevalcompile_tail*, pevalcompile.PLAN.UNIT) = eps /\ $eval_compile_unique(pevalcompile_tail*))
+def $eval_compile_cursor_owners(S, eps) = true
+def $eval_compile_cursor_owners(S, pevalcompile :: pevalcompile_tail*) = ($eval_compile_cursor_at($eval_compile_tasks_cursors($eval_owner_tasks(S, pevalcontext)), pevalcompile.PLAN.UNIT) = (pevalcompile) /\ $eval_compile_cursor_owners(S, pevalcompile_tail*))
+  -- if $eval_context_at(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT) = (pevalcontext)
+def $eval_compile_cursor_owners(S, pevalcompile*) = false -- otherwise
+def $eval_compile_claims_owned(S, eps, pevalcompile*) = true
+def $eval_compile_claims_owned(S, (n, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*, pevalcompile_cursor*) = ($eval_compile_cursor_at(pevalcompile_cursor*, n) =/= eps /\ $eval_compile_claims_owned(S, pevalcompileclaim*, pevalcompile_cursor*))
+def $eval_compile_owners_valid(S) = ($eval_compile_unique($eval_compile_cursors(S)) /\ $eval_compile_cursor_owners(S, $eval_compile_cursors(S)) /\ ($eval_compile_claims_owned(S, $eval_compile_waiting(S.DECLARATIONS), $eval_compile_cursors(S)) \/ $eval_compile_released(S)))
+def $eval_compile_released(S) = (S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING \/ S.SHUTDOWN.PHASE = SHUTDOWN_DONE \/ $eval_compile_terminal(S.COMPLETION) \/ $eval_compile_unwind_task(S.TODO))
+def $eval_compile_unwind_task((ERROR_UNWIND pcompletion) :: ptask*) = $eval_compile_terminal(pcompletion)
+def $eval_compile_unwind_task(ptask*) = false -- otherwise
+def $eval_compile_terminal(USERFATAL ptbytes z b) = true
+def $eval_compile_terminal(REQUESTFATAL ptbytes ptbytes_message z) = true
+def $eval_compile_terminal(FATAL ptbytes z) = true
+def $eval_compile_terminal(STATICBYTES ptbytes z) = true
+def $eval_compile_terminal(STATICERROR text z) = true
+def $eval_compile_terminal(pcompletion) = false -- otherwise
+
+;; Fatal frame teardown retires a compiler only after its actual task owner is
+;; discarded. An older saved compiler remains owned until its frame restores.
+dec $runtime_class_unwind(pstate) : pstate
+def $runtime_class_unwind(S) = S -- otherwise
+def $eval_compile_unwind(S) = $runtime_class_unwind(S[.EVALCONTEXTS = $eval_compile_unwind_contexts(S, S.EVALCONTEXTS)])
+def $eval_compile_unwind_contexts(S, eps) = eps
+def $eval_compile_unwind_contexts(S, pevalcontext :: pevalcontext_tail*) = pevalcontext :: $eval_compile_unwind_contexts(S, pevalcontext_tail*)
+  -- if pevalcontext.PHASE =/= EVAL_COMPILE \/ $eval_owner_marker_count(S, pevalcontext) =/= 0
+def $eval_compile_unwind_contexts(S, pevalcontext :: pevalcontext_tail*) = $eval_compile_unwind_contexts(S, pevalcontext_tail*)
+  -- if pevalcontext.PHASE = EVAL_COMPILE /\ $eval_owner_marker_count(S, pevalcontext) = 0
+
+def $eval_compile_notice_classes(S, eps) = eps
+def $eval_compile_notice_classes(S, (METHOD_NOTICE pdeclnotice) :: pdeclnoticeitem*) = [(pdeclnotice.CLASS, n)]
+  -- if $iterator_notice_publication_index(S.DECLARATIONS, pdeclnotice.CLASS, 0) = (n)
+def $eval_compile_notice_classes(S, (COMPILER_NOTICE pldiagnostic) :: pdeclnoticeitem*) = $eval_compile_notice_classes(S, pdeclnoticeitem*)
+def $eval_compile_notice_owner(S, pdeclnoticebatch) = true
+  -- if pdeclnoticebatch.KIND = NOTICE_EVAL n_unit n_ordinal
+  -- if $eval_compile_claim_at($eval_compile_waiting(S.DECLARATIONS), n_unit) = ((n_unit, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticebatch.NOTICES))
+  -- if $eval_binding_at(S.EVALBINDINGS, n_unit) = (pevalbinding)
+  -- if pdeclnoticebatch.SITE = pevalbinding.SITE /\ pdeclnoticebatch.LINE = $eval_site_line(S, pevalbinding.SITE)
+  -- if pdeclnoticebatch.CLASSES = $eval_compile_notice_classes(S, pdeclnoticebatch.NOTICES)
+def $eval_compile_notice_owner(S, pdeclnoticebatch) = false -- otherwise
+def $iterator_notice_batch_items(S, pdeclnoticebatch) = $eval_compile_notice_owner(S, pdeclnoticebatch)
+  -- if pdeclnoticebatch.KIND = NOTICE_EVAL n_unit n_ordinal
+def $iterator_notice_owner(pdeclnoticebatch) = [NOTICE_EVAL_OWNER n_unit n_ordinal]
+  -- if pdeclnoticebatch.KIND = NOTICE_EVAL n_unit n_ordinal
+def $eval_compile_notice_pending(S, pdeclnoticebatch) = true
+  -- if pdeclnoticebatch.KIND = NOTICE_EVAL n_unit n_ordinal
+  -- if $eval_compile_cursor_at($eval_compile_cursors(S), n_unit) = (pevalcompile)
+  -- if pevalcompile.PENDING =/= NORMAL
+def $eval_compile_notice_pending(S, pdeclnoticebatch) = false -- otherwise
+rule PhpStep/eval-compile-notices-pending: S ~> $iterator_notice_throw_tail(S[.TODO = ptask_tail*], pdeclnoticebatch.NOTICES)
+  -- if S.TODO = (DECL_NOTICES pdeclnoticebatch) :: ptask_tail*
+  -- if $iterator_notice_batch_valid(S, pdeclnoticebatch)
+  -- if pdeclnoticebatch.INDEX = 0
+  -- if $eval_compile_notice_pending(S, pdeclnoticebatch)
+
+def $eval_compile_paused_unit(S, n) = ($eval_compile_claim_at($eval_compile_waiting(S.DECLARATIONS), n) =/= eps \/ $eval_compile_cursor_at($eval_compile_cursors(S), n) =/= eps)
+def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext[.PHASE = EVAL_COMPILE] :: pevalcontext_tail*][.SERVICELEFT = eps]
+  -- if S_compiled.COMPLETION = NORMAL
+  -- if $eval_compile_paused_unit(S_compiled, pevalcontext.UNIT)
+rule PhpStep/eval-compile-resume: S ~> $eval_compile_loop(S[.DECLARATIONS = S.DECLARATIONS ++ [PDEVALRESUME pevalcompile.PLAN.UNIT S.REPORTING]][.TODO = ptask_tail*], pevalcompile)
+  -- if S.TODO = (EVAL_COMPILE_RESUME pevalcompile) :: ptask_tail*
+  -- if $eval_compile_cursor_valid(S, pevalcompile)
+  -- if $eval_compile_waiting(S.DECLARATIONS) = (pevalcompile.PLAN.UNIT, pevalcompile.CHECKPOINT, pevalcompile.DIAGNOSTIC, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*
+def $throwable_marker(EVAL_COMPILE_RESUME pevalcompile) = true
+def $throwable_marker(EVAL_COMPILE_END n) = true
+rule PhpStep/eval-compile-throw-pending: S ~> S[.TODO = (EVAL_COMPILE_RESUME pevalcompile[.PENDING = THROWING n]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n) :: (EVAL_COMPILE_RESUME pevalcompile) :: ptask_tail*
+  -- if $eval_compile_cursor_valid(S, pevalcompile)
+
+;; Replay the source-produced segment up to its next genuine pause. Runtime
+;; declarations and nested unit entries use the existing chronological replay;
+;; a resume reopens exactly the most recently suspended compiler.
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next porigin? z) :: pdeclaration*, n_next) = $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, $(n_next + 1), S_compiled)
+  -- if $eval_compile_unit(S, n_next)
+  -- if $declaration_entry_binding(S, S_prefix, n_next, porigin?)
+  -- if $declaration_service_available(S_prefix, porigin?)
+  -- if $declaration_compiler_at((n, P)*, n_next) = (P_current)
+  -- if S_compiled = $eval_compile_loop($declaration_enter(S_prefix[.REPORTING = z][.COMPLETION = NORMAL][.ERRORORIGIN = eps], n_next, porigin?), {PLAN $eval_compile_plan(P_current), CHECKPOINT 0, DIAGNOSTIC 0, PENDING NORMAL})
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDEVALRESUME n_unit z) :: pdeclaration*, n_next) = $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled)
+  -- if $eval_compile_waiting(S_prefix.DECLARATIONS) = (n_unit, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*
+  -- if $declaration_compiler_at((n, P)*, n_unit) = (P_current)
+  -- if S_compiled = $eval_compile_loop(S_prefix[.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDEVALRESUME n_unit z]][.REPORTING = z][.COMPLETION = NORMAL][.TODO = eps][.ERRORORIGIN = eps], {PLAN $eval_compile_plan(P_current), CHECKPOINT n_checkpoint, DIAGNOSTIC n_diagnostic, PENDING NORMAL})
+def $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_fold(S, $eval_compile_history_carry(S_prefix, S_compiled[.COMPLETION = NORMAL][.TODO = eps]), (n, P)*, pdeclaration_tail*, n_next)
+  -- if S_compiled.COMPLETION = NORMAL
+  -- if n_prefix = $(|S_prefix.DECLARATIONS| + 1)
+  -- if $(n_prefix <= |S_compiled.DECLARATIONS|)
+  -- if n_count = $nabs($(|S_compiled.DECLARATIONS| - n_prefix))
+  -- if $(n_count <= |pdeclaration*|)
+  -- if S_compiled.DECLARATIONS[n_prefix:n_count] = pdeclaration*[0:n_count]
+  -- if n_remaining = $nabs($(|pdeclaration*| - n_count))
+  -- if pdeclaration_tail* = pdeclaration*[n_count:n_remaining]
+def $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_fold(S, $eval_compile_history_carry(S_prefix, S_compiled[.TODO = eps]), (n, P)*, pdeclaration_tail*, n_next)
+  -- if S_compiled.COMPLETION =/= NORMAL
+  -- if n_prefix = $(|S_prefix.DECLARATIONS| + 1)
+  -- if $(n_prefix <= |S_compiled.DECLARATIONS|)
+  -- if n_count = $nabs($(|S_compiled.DECLARATIONS| - n_prefix))
+  -- if $(n_count <= |pdeclaration*|)
+  -- if S_compiled.DECLARATIONS[n_prefix:n_count] = pdeclaration*[0:n_count]
+  -- if n_remaining = $nabs($(|pdeclaration*| - n_count))
+  -- if pdeclaration_tail* = pdeclaration*[n_count:n_remaining]
+  -- if (S.COMPLETION = S_compiled.COMPLETION /\ S.ERRORORIGIN = S_compiled.ERRORORIGIN) \/ $shutdown_compiler_released(S, S_compiled) \/ $eval_compile_fatal_certificate(S, S_compiled) \/ $eval_compile_reported(S, S_compiled) \/ $eval_compile_fatal_certificate(S, S_prefix) \/ $eval_compile_reported(S, S_prefix)
+def $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = false -- otherwise
+def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_fold(S, $eval_compile_history_carry(S_prefix, S_compiled[.TODO = eps]), (n, P)*, pdeclaration_tail*, $(n_next + 1))
+  -- if $declaration_stop_terminal(S_compiled.COMPLETION)
+  -- if ~$shutdown_compiler_released(S, S_compiled)
+  -- if $iterator_notice_link_fatal(S_prefix.COMPLETION)
+  -- if $eval_compile_reported(S, S_prefix) \/ $shutdown_compiler_released(S, S_prefix)
+  -- if n_prefix = $nabs($(|S_prefix.DECLARATIONS| + 1))
+  -- if $(n_prefix <= |S_compiled.DECLARATIONS|)
+  -- if n_count = $nabs($(|S_compiled.DECLARATIONS| - n_prefix))
+  -- if $(n_count <= |pdeclaration*|)
+  -- if S_compiled.DECLARATIONS[n_prefix:n_count] = pdeclaration*[0:n_count]
+  -- if n_remaining = $nabs($(|pdeclaration*| - n_count))
+  -- if pdeclaration_tail* = pdeclaration*[n_count:n_remaining]
+;; Only an earlier reconstructed hard prefix can remain primary when a real
+;; formatter publishes declarations or compiles a later, independently checked
+;; unit. Ordinary replay steps still enter their producers with NORMAL.
+def $eval_compile_history_carry(S_prefix, S_next) = S_next[.COMPLETION = S_prefix.COMPLETION][.ERRORORIGIN = S_prefix.ERRORORIGIN]
+  -- if $iterator_notice_link_fatal(S_prefix.COMPLETION)
+def $eval_compile_history_carry(S_prefix, S_next) = S_next -- otherwise
+
+def $eval_compile_plan_list_valid(eps, (n, P)*) = true
+def $eval_compile_plan_list_valid(pevalcompile :: pevalcompile_tail*, (n, P)*) = (pevalcompile.PLAN = $eval_compile_plan(P_current) /\ $eval_compile_plan_list_valid(pevalcompile_tail*, (n, P)*))
+  -- if $declaration_compiler_at((n, P)*, pevalcompile.PLAN.UNIT) = (P_current)
+def $eval_compile_plan_list_valid(pevalcompile*, (n, P)*) = false -- otherwise
+def $eval_compile_plans_valid(S, (n, P)*) = $eval_compile_plan_list_valid($eval_compile_cursors(S), (n, P)*)
+
+;; Exit bypasses finally but is still a compiler exception. Unwind callback
+;; frames only as far as the saved compiler cursor, then finish later links.
+def $eval_compile_exit_pending(S) = ($eval_compile_cursors(S) =/= eps)
+def $drive_steps(S, n) = $drive_steps(S[.TODO = (EVAL_COMPILE_EXIT z) :: S.TODO][.COMPLETION = NORMAL], n)
+  -- if S.COMPLETION = EXITED z
+  -- if $eval_compile_exit_pending(S)
+  -- if ~$eval_compile_formatter_exit_pending(S)
+def $task_nodes(EVAL_COMPILE_EXIT z) = eps
+def $call_task_valid(S, EVAL_COMPILE_EXIT z) = ($eval_compile_exit_pending(S) /\ z = $ntprecision32(z))
+rule PhpStep/eval-compile-exit-discard: S ~> $return_discard(S[.TODO = (EVAL_COMPILE_EXIT z) :: ptask_tail*], ptask)
+  -- if S.TODO = (EVAL_COMPILE_EXIT z) :: ptask :: ptask_tail*
+  -- if ~$eval_compile_resume_task(ptask)
+dec $eval_compile_exit_frame_task(pstate) : ptask?
+def $eval_compile_exit_frame_task(S) = (EVAL_COMPILE_EXIT z)
+  -- if S.TODO = [EVAL_COMPILE_EXIT z]
+  -- if S.FRAMES =/= eps
+def $eval_compile_exit_frame_task(S) = (EVAL_COMPILE_FORMAT_EXIT z)
+  -- if S.TODO = [EVAL_COMPILE_FORMAT_EXIT z]
+  -- if S.FRAMES =/= eps
+def $eval_compile_exit_frame_task(S) = eps -- otherwise
+dec $eval_compile_exit_frame_restore(pstate) : pstate
+def $eval_compile_exit_frame_restore(S) = S_restored[.TODO = ptask :: S_restored.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+  -- if $eval_compile_exit_frame_task(S) = (ptask)
+  -- if S_restored = $restore_frame(S)
+rule PhpStep/eval-compile-exit-frame: S ~> $eval_compile_exit_frame_restore(S)
+  -- if $eval_compile_exit_frame_task(S) =/= eps
+rule PhpStep/eval-compile-exit-pending: S ~> S[.TODO = (EVAL_COMPILE_RESUME pevalcompile[.PENDING = EXITED z]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EVAL_COMPILE_EXIT z) :: (EVAL_COMPILE_RESUME pevalcompile) :: ptask_tail*
+  -- if $eval_compile_cursor_valid(S, pevalcompile)
+def $eval_compile_resume_task(EVAL_COMPILE_RESUME pevalcompile) = true
+def $eval_compile_resume_task(ptask) = false -- otherwise
+
+;; Formatting a pending handler exception retains the genuine compiler caller.
+;; Its continuation stores the already authenticated hard completion; the
+;; source formatter uses the existing selected-method/string return machinery.
+def $eval_compile_fatal_valid(S, pevalcompilefatal) = true
+  -- if $iterator_notice_link_fatal(pevalcompilefatal.COMPLETION)
+  -- if $eval_compile_pending_object(S, pevalcompilefatal.CURSOR.PENDING)
+  -- if (PDEXIT pevalcompilefatal.CURSOR.PLAN.UNIT (PCSLINK pevalcompilefatal.CURSOR.CHECKPOINT)) <- S.DECLARATIONS \/ (PDEXIT pevalcompilefatal.CURSOR.PLAN.UNIT PCSCOMPILER) <- S.DECLARATIONS
+  -- if $eval_context_at(S.EVALCONTEXTS, pevalcompilefatal.CURSOR.PLAN.UNIT) = (pevalcontext)
+  -- if pevalcontext.PHASE = EVAL_COMPILE
+  -- if pevalcompilefatal.PREFIX = $eval_compile_fatal_notices(S.DECLARATIONS, pevalcompilefatal.CURSOR.PLAN.UNIT)
+def $eval_compile_fatal_valid(S, pevalcompilefatal) = false -- otherwise
+def $eval_compile_fatal_pending(S, pevalcompile) = S[.COMPLETION = NORMAL][.TODO = [EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender] ++ $eval_compile_marker_tail(S, pevalcompile.PLAN.UNIT)][.TRACE = eps][.ERRORFATALTRACE = eps]
+  -- if pevalcompile.PENDING = THROWING n
+  -- if $iterator_notice_link_fatal(S.COMPLETION)
+  -- if ~$stringable_instance(S, n)
+  -- if pevalcompilefatal = {CURSOR pevalcompile, COMPLETION S.COMPLETION, ORIGIN S.ERRORORIGIN, PREFIX $eval_compile_fatal_notices(S.DECLARATIONS, pevalcompile.PLAN.UNIT)}
+  -- if pshutdownrender = {ROOT n, CURRENT n, SEEN eps, TEXT eps, MESSAGE eps, ROOTMESSAGE eps, PENDING eps, PHASE SHUTDOWN_RENDER_MESSAGE}
+def $eval_compile_fatal_pending(S, pevalcompile) = $user_string_begin(S[.COMPLETION = NORMAL][.TODO = eps][.ORIGIN = (pevalbinding.SITE)][.TRACE = eps][.ERRORFATALTRACE = eps], n, pevalbinding.SITE, $eval_site_line(S, pevalbinding.SITE), EVAL_COMPILE_FATAL pevalcompilefatal, $eval_compile_marker_tail(S, pevalcompile.PLAN.UNIT))
+  -- if pevalcompile.PENDING = THROWING n
+  -- if $iterator_notice_link_fatal(S.COMPLETION)
+  -- if $stringable_instance(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if $eval_binding_at(S.EVALBINDINGS, pevalcompile.PLAN.UNIT) = (pevalbinding)
+  -- if pevalcompilefatal = {CURSOR pevalcompile, COMPLETION S.COMPLETION, ORIGIN S.ERRORORIGIN, PREFIX $eval_compile_fatal_notices(S.DECLARATIONS, pevalcompile.PLAN.UNIT)}
+def $eval_compile_fatal_pending(S, pevalcompile) = $eval_compile_stop_context(S, pevalcompile.PLAN.UNIT)
+  -- if pevalcompile.PENDING = NORMAL \/ $exit_completion(pevalcompile.PENDING) \/ ~$iterator_notice_link_fatal(S.COMPLETION)
+def $eval_compile_stop_context(S, n) = S[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPILESTOP = $eval_static_completion(S.COMPLETION)][.TRACE = $eval_exception_trace(S[.EVALCONTEXTS = pevalcontext_tail*][.ORIGIN = (pevalcontext.SITE)])]
+  -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
+  -- if pevalcontext.UNIT = n
+def $eval_compile_stop_context(S, n) = S -- otherwise
+
+def $eval_compile_task_cursors(EVAL_COMPILE_FATAL pevalcompilefatal) = [pevalcompilefatal.CURSOR]
+def $eval_compile_task_cursors(EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender) = [pevalcompilefatal.CURSOR]
+def $eval_compile_task_cursors(ERROR_HANDLER_INVOKE perrorcall) = $eval_compile_task_cursors(perrorcall.RESUME)
+def $eval_compile_task_cursors(ERROR_HANDLER_RESULT perrorcall) = $eval_compile_task_cursors(perrorcall.RESUME)
+def $task_nodes(EVAL_COMPILE_FATAL pevalcompilefatal) = $completion_roots(pevalcompilefatal.CURSOR.PENDING)
+def $task_nodes(EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender) = $completion_roots(pevalcompilefatal.CURSOR.PENDING)
+def $call_task_valid(S, EVAL_COMPILE_FATAL pevalcompilefatal) = $eval_compile_fatal_valid(S, pevalcompilefatal)
+def $call_task_valid(S, EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender) = ($eval_compile_fatal_valid(S, pevalcompilefatal) /\ pevalcompilefatal.CURSOR.PENDING = THROWING pshutdownrender.ROOT /\ $shutdown_render_path(S, pshutdownrender.ROOT, pshutdownrender.CURRENT, pshutdownrender.SEEN) /\ pshutdownrender.PENDING = eps /\ pshutdownrender.PHASE <- [SHUTDOWN_RENDER_MESSAGE, SHUTDOWN_RENDER_TRACE])
+
+def $eval_compile_exception_warning(S, n, preqbytes) = S[.EVENTS = S.EVENTS ++ $display_events(S, STDERR ($ptascii("Warning: Uncaught ") ++ preqbytes ++ $shutdown_exception_suffix(S, n)))]
+  -- if $long_and(S.REPORTING, 2) =/= 0
+def $eval_compile_exception_warning(S, n, preqbytes) = S -- if $long_and(S.REPORTING, 2) = 0
+def $eval_compile_fatal_finish(S, pevalcompilefatal, preqbytes) = $eval_compile_primary_report($eval_compile_stop_context(S_report[.COMPLETION = pevalcompilefatal.COMPLETION][.ERRORORIGIN = pevalcompilefatal.ORIGIN][.TRACE = eps][.ERRORFATALTRACE = eps][.TODO = eps], pevalcompilefatal.CURSOR.PLAN.UNIT), pevalcompilefatal.COMPLETION, false)
+  -- if pevalcompilefatal.CURSOR.PENDING = THROWING n
+  -- if S_report = $eval_compile_exception_warning(S, n, preqbytes)
+;; zend_exception_error clears the captured fatal backtrace. The primary report
+;; therefore has no suffix, even where an ordinary empty capture prints main.
+def $eval_compile_primary_info(FATAL ptbytes z) = ($ptascii("Error"), ptbytes, z, 1)
+def $eval_compile_primary_info(STATICBYTES ptbytes z) = ($ptascii("CompileError"), ptbytes, z, 64)
+def $eval_compile_primary_report(S, pcompletion, b_trace) = $shutdown_reported(S[.COMPILESTOP = false][.ERRORFATALTRACE = eps], ptbytes_class, ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, b_trace), $long_and(S.REPORTING, i) =/= 0)
+  -- if (ptbytes_class, ptbytes, z, i) = $eval_compile_primary_info(pcompletion)
+def $eval_compile_reported(S, S_compiled) = true
+  -- if ~S.COMPILESTOP
+  -- if $shutdown_compiler_snapshot(S_compiled.COMPLETION) = (pcompletion)
+  -- if S.COMPLETION = pcompletion
+def $eval_compile_reported(S, S_compiled) = true
+  -- if ~S.COMPILESTOP
+  -- if $shutdown_compiler_snapshot(S_compiled.COMPLETION) = (pcompletion)
+  -- if S.TODO = (ERROR_UNWIND pcompletion) :: ptask*
+def $eval_compile_reported(S, S_compiled) = false -- otherwise
+rule PhpStep/eval-compile-fatal-string: S ~> $eval_compile_fatal_finish(S, pevalcompilefatal, preqbytes)
+  -- if S.TODO = (EVAL_COMPILE_FATAL pevalcompilefatal) :: ptask_tail*
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+  -- if S.RESULT = KNOWN (PSTRING preqbytes)
+
+rule PhpStep/eval-compile-render-message: S ~> $eval_compile_render_message(S, pevalcompilefatal, pshutdownrender)
+  -- if S.TODO = (EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender) :: ptask_tail*
+  -- if $call_task_valid(S, EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender)
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_MESSAGE
+def $eval_compile_render_message(S, pevalcompilefatal, pshutdownrender) = S[.TODO = (EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender_next) :: ptask_tail*]
+  -- if S.TODO = (EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender) :: ptask_tail*
+  -- if ptbytes = $shutdown_render_value($throwable_field(S, pshutdownrender.CURRENT, "message"))
+  -- if pshutdownrender_next = pshutdownrender[.PHASE = SHUTDOWN_RENDER_TRACE][.MESSAGE = ptbytes][.ROOTMESSAGE = $shutdown_render_root_message(pshutdownrender, ptbytes)]
+rule PhpStep/eval-compile-render-next: S ~> S[.TODO = (EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender_next) :: ptask_tail*]
+  -- if S.TODO = (EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender) :: ptask_tail*
+  -- if $call_task_valid(S, EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender)
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_TRACE
+  -- if $shutdown_render_next(S, pshutdownrender) = (n)
+  -- if pshutdownrender_next = pshutdownrender[.CURRENT = n][.SEEN = pshutdownrender.CURRENT :: pshutdownrender.SEEN][.TEXT = $shutdown_render_join(S, pshutdownrender)][.MESSAGE = eps][.PHASE = SHUTDOWN_RENDER_MESSAGE]
+rule PhpStep/eval-compile-render-done: S ~> $eval_compile_fatal_finish($throwable_string_cache(S, pshutdownrender.ROOT, ptbytes), pevalcompilefatal, ptbytes)
+  -- if S.TODO = (EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender) :: ptask_tail*
+  -- if $call_task_valid(S, EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender)
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_TRACE
+  -- if $shutdown_render_next(S, pshutdownrender) = eps
+  -- if ptbytes = $shutdown_render_join(S, pshutdownrender)
+
+;; Selected source formatter authentication composes with176 without replacing
+;; its terminal/null-caller path. The compiler continuation owns the receiver.
+def $eval_compile_string_result_kind((CALL_ARGS pcalltarget eps 0 eps porigin? z) :: (STRINGIFY_RESULT n porigin_site z) :: (EVAL_COMPILE_FATAL pevalcompilefatal) :: ptask*) = true
+def $eval_compile_string_result_kind((STRINGIFY_RESULT n porigin_site z) :: (EVAL_COMPILE_FATAL pevalcompilefatal) :: ptask*) = true
+def $eval_compile_string_result_kind(ptask*) = false -- otherwise
+def $eval_compile_string_site(S, porigin_site, z) = true
+  -- if $eval_compile_string_marker(S.TODO) = ((n, porigin_site, z, pevalcompilefatal))
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+  -- if pevalcompilefatal.CURSOR.PENDING = THROWING n
+  -- if $eval_binding_at(S.EVALBINDINGS, pevalcompilefatal.CURSOR.PLAN.UNIT) = (pevalbinding)
+  -- if porigin_site = pevalbinding.SITE /\ z = $eval_site_line(S, pevalbinding.SITE)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+def $eval_compile_string_site(S, porigin_site, z) = $eval_compile_string_active(S, S.CURRENT, S.FRAMES, porigin_site, z) -- otherwise
+def $eval_compile_string_active(S, pcallcontext?, pframe :: pframe_tail*, porigin_site, z) = true
+  -- if $eval_compile_string_frame(S, pcallcontext?, pframe, porigin_site, z)
+def $eval_compile_string_active(S, pcallcontext?, pframe :: pframe_tail*, porigin_site, z) = $eval_compile_string_active(S, pframe.CONTEXT, pframe_tail*, porigin_site, z)
+  -- if ~$eval_compile_string_frame(S, pcallcontext?, pframe, porigin_site, z)
+def $eval_compile_string_active(S, pcallcontext?, eps, porigin_site, z) = false
+def $terminal_string_site(S, porigin_site, z) = true -- if $eval_compile_string_site(S, porigin_site, z)
+def $stringify_result_valid(S, n, porigin_site, z) = true
+  -- if $eval_compile_string_site(S, porigin_site, z)
+  -- if $eval_compile_string_marker(S.TODO) = ((n, porigin_site, z, pevalcompilefatal))
+def $stringify_source(S, porigin_site, z, EVAL_COMPILE_FATAL pevalcompilefatal) = ($eval_compile_fatal_valid(S, pevalcompilefatal) /\ $eval_compile_string_site(S, porigin_site, z))
+
+def $eval_compile_task_fatal(EVAL_COMPILE_FATAL pevalcompilefatal) = (pevalcompilefatal)
+def $eval_compile_task_fatal(EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender) = (pevalcompilefatal)
+def $eval_compile_task_fatal(ptask) = eps -- otherwise
+def $eval_compile_fatal_find(eps) = eps
+def $eval_compile_fatal_find(ptask :: ptask_tail*) = (pevalcompilefatal) -- if $eval_compile_task_fatal(ptask) = (pevalcompilefatal)
+def $eval_compile_fatal_find(ptask :: ptask_tail*) = $eval_compile_fatal_find(ptask_tail*) -- if $eval_compile_task_fatal(ptask) = eps
+def $eval_compile_fatal_frames(eps) = eps
+def $eval_compile_fatal_frames(pframe :: pframe_tail*) = (pevalcompilefatal) -- if $eval_compile_fatal_find(pframe.TODO) = (pevalcompilefatal)
+def $eval_compile_fatal_frames(pframe :: pframe_tail*) = $eval_compile_fatal_frames(pframe_tail*) -- if $eval_compile_fatal_find(pframe.TODO) = eps
+def $eval_compile_fatal_certificate(S, S_compiled) = true
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+  -- if pevalcompilefatal.COMPLETION = S_compiled.COMPLETION /\ pevalcompilefatal.ORIGIN = S_compiled.ERRORORIGIN
+def $eval_compile_fatal_certificate(S, S_compiled) = false -- otherwise
+
+
+def $eval_compile_marker_tail(S, n) = (EVAL_COMPILE_END n) :: pevalcontext.TAIL
+  -- if $eval_context_at(S.EVALCONTEXTS, n) = (pevalcontext)
+def $eval_compile_marker_tail(S, n) = eps -- otherwise
+
+
+def $eval_compile_string_marker((CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: (STRINGIFY_RESULT n porigin_site z) :: (EVAL_COMPILE_FATAL pevalcompilefatal) :: ptask_tail*) = ((n, porigin_site, z, pevalcompilefatal))
+def $eval_compile_string_marker((STRINGIFY_RESULT n porigin_site z) :: (EVAL_COMPILE_FATAL pevalcompilefatal) :: ptask_tail*) = ((n, porigin_site, z, pevalcompilefatal))
+def $eval_compile_string_marker(ptask*) = eps -- otherwise
+
+def $eval_compile_fatal_current(S) = (pevalcompilefatal) -- if $eval_compile_fatal_find(S.TODO) = (pevalcompilefatal)
+def $eval_compile_fatal_current(S) = $eval_compile_fatal_frames(S.FRAMES) -- if $eval_compile_fatal_find(S.TODO) = eps
+
+
+def $eval_compile_history_marker(PDEVALPAUSE n n_checkpoint n_diagnostic pdeclnoticeitem*) = true
+def $eval_compile_history_marker(PDEVALRESUME n z) = true
+def $eval_compile_history_marker(pdeclaration) = false -- otherwise
+
+
+def $eval_compile_string_frame(S, (pcallcontext), pframe, porigin_site, z) = true
+  -- if pcallcontext.CALLSITE = (porigin_site) /\ pcallcontext.LINE = z
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if pframe.ORIGIN = (porigin_site)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: (EVAL_COMPILE_FATAL pevalcompilefatal) :: ptask_tail*
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+  -- if pevalcompilefatal.CURSOR.PENDING = THROWING n
+  -- if $eval_binding_at(S.EVALBINDINGS, pevalcompilefatal.CURSOR.PLAN.UNIT) = (pevalbinding)
+  -- if porigin_site = pevalbinding.SITE /\ z = $eval_site_line(S, pevalbinding.SITE)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+def $eval_compile_string_frame(S, pcallcontext?, pframe, porigin_site, z) = false -- otherwise
+
+def $eval_compile_formatter_throw_pending(S) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (STRINGIFY_RESULT n_root porigin_site z) :: (EVAL_COMPILE_FATAL pevalcompilefatal) :: ptask_tail*
+  -- if $stringify_result_valid(S[.TODO = (STRINGIFY_RESULT n_root porigin_site z) :: (EVAL_COMPILE_FATAL pevalcompilefatal) :: ptask_tail*], n_root, porigin_site, z)
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+  -- if pevalcompilefatal.CURSOR.PENDING = THROWING n_root
+def $eval_compile_formatter_throw_pending(S) = false -- otherwise
+rule PhpStep/eval-compile-formatter-throw: S ~> $eval_compile_fatal_finish(S_warning, pevalcompilefatal, ptbytes)
+  -- if $eval_compile_formatter_throw_pending(S)
+  -- if S.TODO = (THROW_SEARCH n) :: (STRINGIFY_RESULT n_root porigin_site z) :: (EVAL_COMPILE_FATAL pevalcompilefatal) :: ptask_tail*
+  -- if S_warning = $eval_compile_formatter_warning(S, n, n_root)
+  -- if $throwable_field(S, n_root, "string") = PSTRING ptbytes
+
+def $eval_compile_formatter_warning(S, n, n_root) = $eval_compile_formatter_failure(S, $object_name(S, n), n_root, ptbytes_file, z)
+  -- if $throwable_field(S, n, "file") = PSTRING ptbytes_file
+  -- if $throwable_field(S, n, "line") = PINT z
+def $eval_compile_formatter_failure(S, ptbytes_name, n_root, ptbytes_file, z) = S[.ERRORFATALTRACE = eps][.EVENTS = S.EVENTS ++ $display_events(S, STDERR ($ptascii("Warning: Uncaught ") ++ ptbytes_name ++ $ptascii(" in exception handling during call to ") ++ $object_name(S, n_root) ++ $ptascii("::__toString() in ") ++ ptbytes_file ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ [10]))]
+  -- if $long_and(S.REPORTING, 2) =/= 0
+def $eval_compile_formatter_failure(S, ptbytes_name, n_root, ptbytes_file, z) = S[.ERRORFATALTRACE = eps]
+  -- if $long_and(S.REPORTING, 2) = 0
+
+;; Fatal linking keeps Zend's diagnostic recording active during formatting.
+;; Ordinary nonfatal errors resume their operation; the terminal bailout drops
+;; that recorded tail. The two explicit uncaught reports call the C reporter.
+def $eval_compile_recorded_error(S, i) = ($eval_compile_fatal_current(S) =/= eps)
+def $report_event(S, pevent, i_level) = S
+  -- if $eval_compile_recorded_error(S, i_level)
+def $error_dispatch(S, i, n_message*, z, pevent, ptask_resume) = S[.TODO = ptask_resume :: ptask_tail*]
+  -- if $eval_compile_recorded_error(S, i)
+  -- if i =/= 256
+  -- if S.TODO = ptask :: ptask_tail*
+def $error_dispatch(S, 256, n_message*, z, pevent, ptask_resume) = $eval_compile_formatter_userfatal(S, pevalcompilefatal, ptask_resume)
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+
+;; The failing binding records its genuine prefix before publication rollback.
+;; A second fatal inside its formatter replays that buffer and immediately
+;; reports the already pending compiler fatal, using the live formatter trace.
+def $eval_compile_record_prefix(S, pdeclnoticeitem*) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDEVALFATALNOTICES n pdeclnoticeitem*]]
+  -- if pdeclnoticeitem* =/= eps
+  -- if $iterator_notice_link_fatal(S.COMPLETION)
+  -- if $declaration_open(S.DECLARATIONS) = ((n, porigin?, z))
+  -- if $eval_compile_unit(S, n)
+def $eval_compile_record_prefix(S, pdeclnoticeitem*) = S -- otherwise
+def $eval_compile_fatal_notices(eps, n) = eps
+def $eval_compile_fatal_notices(pdeclaration :: pdeclaration_tail*, n) = $eval_compile_fatal_notice(pdeclaration, n) ++ $eval_compile_fatal_notices(pdeclaration_tail*, n)
+def $eval_compile_fatal_notice(PDEVALFATALNOTICES n pdeclnoticeitem*, n) = pdeclnoticeitem*
+def $eval_compile_fatal_notice(pdeclaration, n) = eps -- otherwise
+def $eval_compile_formatter_userfatal(S, pevalcompilefatal, ptask_resume) = $eval_compile_primary_report(S_report[.ERRORORIGIN = pevalcompilefatal.ORIGIN][.TODO = eps][.TRACE = S_trace.ERRORFATALTRACE], pevalcompilefatal.COMPLETION, true)
+  -- if S_trace = $error_trace_capture(S, 256, ptask_resume)
+  -- if S_report = $iterator_notice_default(S_trace, pevalcompilefatal.PREFIX)
+def $eval_compile_formatter_hard(S, pevalcompilefatal, n_unit) = $eval_compile_primary_report(S_report[.ERRORORIGIN = pevalcompilefatal.ORIGIN][.TODO = eps][.TRACE = S_trace.TRACE], pevalcompilefatal.COMPLETION, true)
+  -- if S_trace = $eval_compile_stop_context(S, n_unit)
+  -- if S_report = $iterator_notice_default(S_trace, pevalcompilefatal.PREFIX)
+def $eval_compile_formatter_file_hard(S, pevalcompilefatal, pfilecontext, pfilecontext_tail*) = $eval_compile_primary_report(S_report[.ERRORORIGIN = pevalcompilefatal.ORIGIN][.TODO = eps][.TRACE = S_trace.TRACE], pevalcompilefatal.COMPLETION, true)
+  -- if S_trace = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = eps][.SERVICELEFT = eps][.ORIGIN = (pfilecontext.SITE)][.TRACE = $eval_exception_trace(S[.FILECONTEXTS = pfilecontext_tail*][.ORIGIN = (pfilecontext.SITE)])]
+  -- if S_report = $iterator_notice_default(S_trace, pevalcompilefatal.PREFIX)
+
+;; The formatter is called from the actual eval ingress. Its completed compiler
+;; context still owns the continuation, but is absent from runtime backtraces.
+def $eval_compile_trace_contexts(S, pevalcontext*) = $eval_compile_trace_context_unit(pevalcontext*, pevalcompilefatal.CURSOR.PLAN.UNIT)
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+def $eval_compile_trace_contexts(S, pevalcontext*) = pevalcontext*
+  -- if $eval_compile_fatal_current(S) = eps
+def $eval_compile_trace_context_unit(eps, n) = eps
+def $eval_compile_trace_context_unit(pevalcontext :: pevalcontext_tail*, n) = $eval_compile_trace_context_unit(pevalcontext_tail*, n)
+  -- if pevalcontext.UNIT = n
+def $eval_compile_trace_context_unit(pevalcontext :: pevalcontext_tail*, n) = pevalcontext :: $eval_compile_trace_context_unit(pevalcontext_tail*, n)
+  -- if pevalcontext.UNIT =/= n
+
+;; An exit raised by the source formatter is reported as UnwindExit; the
+;; original compiler fatal remains primary and determines request completion.
+def $eval_compile_formatter_exit_pending(S) = ($eval_compile_fatal_current(S) =/= eps)
+def $drive_steps(S, n) = $drive_steps(S[.TODO = (EVAL_COMPILE_FORMAT_EXIT z) :: S.TODO][.COMPLETION = NORMAL], n)
+  -- if S.COMPLETION = EXITED z
+  -- if $eval_compile_formatter_exit_pending(S)
+def $task_nodes(EVAL_COMPILE_FORMAT_EXIT z) = eps
+def $call_task_valid(S, EVAL_COMPILE_FORMAT_EXIT z) = ($eval_compile_formatter_exit_pending(S) /\ z = $ntprecision32(z))
+def $eval_compile_formatter_exit_task(EVAL_COMPILE_FATAL pevalcompilefatal) = true
+def $eval_compile_formatter_exit_task(ptask) = false -- otherwise
+rule PhpStep/eval-compile-format-exit-discard: S ~> $return_discard(S[.TODO = (EVAL_COMPILE_FORMAT_EXIT z) :: ptask_tail*], ptask)
+  -- if S.TODO = (EVAL_COMPILE_FORMAT_EXIT z) :: ptask :: ptask_tail*
+  -- if ~$eval_compile_formatter_exit_task(ptask)
+rule PhpStep/eval-compile-format-exit-finish: S ~> $eval_compile_fatal_finish($eval_compile_formatter_failure(S, $ptascii("UnwindExit"), n_root, $ptascii("Unknown"), 0), pevalcompilefatal, ptbytes)
+  -- if S.TODO = (EVAL_COMPILE_FORMAT_EXIT z) :: (EVAL_COMPILE_FATAL pevalcompilefatal) :: ptask_tail*
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+  -- if pevalcompilefatal.CURSOR.PENDING = THROWING n_root
+  -- if $throwable_field(S, n_root, "string") = PSTRING ptbytes

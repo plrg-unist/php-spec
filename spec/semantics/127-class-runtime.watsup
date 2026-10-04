@@ -22,7 +22,9 @@ dec $activate_class_body(pstate, pclassdesc) : pstate
 dec $activate_class_base_body(pstate, pclassdesc) : pstate
 dec $declaration_class_success(pstate, pstate, pclassdesc) : pstate
 dec $class_constant_publish(pstate, pstate, pclassdesc) : pstate
-def $activate_class(S, pclassdesc) = $iterator_notice_publication(S, $class_constant_publish(S, $declaration_class_success(S, $activate_class_body(S, pclassdesc), pclassdesc), pclassdesc), pclassdesc)
+dec $runtime_class_link_result(pstate, pstate, pclassdesc) : pstate
+def $runtime_class_link_result(S, S_result, pclassdesc) = S_result -- otherwise
+def $activate_class(S, pclassdesc) = $runtime_class_link_result(S, $iterator_notice_publication(S, $class_constant_publish(S, $declaration_class_success(S, $activate_class_body(S, pclassdesc), pclassdesc), pclassdesc), pclassdesc), pclassdesc)
 dec $class_static_initial(pstate, ppropertydesc*) : pclassstatic*?
 dec $class_static_commit(pstate, pclassstatic*) : pstate
 dec $class_static_finish(pstate, pclassdesc, pstate) : pstate
@@ -112,6 +114,10 @@ def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "invalid compiled 
   -- if ~pclassdesc.ABSTRACT
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
   -- if $property_initial_slots(S, porigin, $property_layout(S, porigin, |S.CLASSES|)) = eps
+dec $ordinary_keyword_new_site(pstate, porigin) : bool
+def $ordinary_keyword_new_site(S, porigin) = false -- otherwise
+dec $ordinary_keyword_new_task_valid(pstate, expression) : bool
+def $ordinary_keyword_new_task_valid(S, expression) = true -- otherwise
 dec $new_source_name(pstate, porigin) : preqbytes?
 dec $trait_default_new_site(pstate, porigin) : bool
 dec $trait_default_new_name(pstate, porigin) : preqbytes?
@@ -124,6 +130,7 @@ def $new_source_name(S, porigin) = $trait_default_new_name(S, porigin)
   -- if ~$anonymous_default_new_site(S, porigin) /\ $trait_default_new_site(S, porigin)
 def $new_source_name(S, PORIGIN n pcpath) = (preqbytes)
   -- if ~$anonymous_default_new_site(S, PORIGIN n pcpath) /\ ~$trait_default_new_site(S, PORIGIN n pcpath)
+  -- if ~$ordinary_keyword_new_site(S, PORIGIN n pcpath)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
 def $new_source_name(S, porigin) = eps -- otherwise
@@ -240,7 +247,7 @@ def $class_expr_task_valid(S, NExprNew name (SEQUENCE eps) metadata) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew name (SEQUENCE eps) metadata)
   -- if $code_at(S.CODE, n) = (pcode)
-  -- if $new_source_name(S, PORIGIN n pcpath) =/= eps \/ $trait_default_new_site(S, PORIGIN n pcpath) \/ $anonymous_default_new_site(S, PORIGIN n pcpath)
+  -- if $new_source_name(S, PORIGIN n pcpath) =/= eps \/ $trait_default_new_site(S, PORIGIN n pcpath) \/ $anonymous_default_new_site(S, PORIGIN n pcpath) \/ $ordinary_keyword_new_site(S, PORIGIN n pcpath)
 def $class_expr_task_valid(S, NExprInstanceof expression name metadata) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInstanceof expression name metadata)

@@ -163,6 +163,8 @@ test-semantics: build
 	python3 tests/semantics/closure_current_binding_protocol.py
 	python3 tests/semantics/closure_real_binding.py
 	python3 tests/semantics/closure_real_binding_protocol.py
+	python3 tests/semantics/closure_temporary_fake_call.py
+	python3 tests/semantics/closure_temporary_fake_call_protocol.py
 	python3 tests/semantics/invoke_publication.py
 	python3 tests/semantics/invoke_publication_protocol.py
 	python3 tests/semantics/callable_string_ini.py
@@ -306,6 +308,11 @@ test-semantics: build
 	python3 tests/semantics/dynamic_new_protocol.py --group contexts
 	python3 tests/semantics/dynamic_new_protocol.py --group rebound
 	python3 tests/semantics/dynamic_new_protocol.py --group cached
+	python3 tests/semantics/named_keyword_new_sources.py
+	python3 tests/semantics/named_keyword_new_protocol.py --group cold
+	python3 tests/semantics/named_keyword_new_protocol.py --group recursive
+	python3 tests/semantics/named_keyword_new_protocol.py --group eval
+	python3 tests/semantics/named_keyword_new_protocol.py --group constant
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
@@ -421,5 +428,10 @@ test-semantics: build
 	python3 tests/semantics/foreach.py
 	python3 tests/semantics/foreach_compiler.py
 	python3 tests/semantics/foreach_source_compiler.py
+	python3 tests/semantics/user_iterator.py
+	python3 tests/semantics/user_iterator_protocol.py
+	python3 tests/semantics/iterator_declaration_notices.py
+	python3 tests/semantics/eval_declaration_notices_protocol.py
+	python3 tests/semantics/runtime_formatter_protocol.py
 	python3 tests/semantics/destructuring_mechanism.py
 	python3 tests/semantics/validate.py

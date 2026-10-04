@@ -1,0 +1,137 @@
+;; Ordinary named keyword NEW retains its selector until the actual call.
+;; The selected class, scope and immediate-caller protocol is shared with260;
+;; constant/default NEW keeps its existing declaring or receiving path.
+def $ppordinary_new_keyword(P, pcpath, NName (BYTES text) metadata) = (~P.FOLD.CONSTANT /\ ~$ppparameter_new_site(P, pcpath) /\ $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
+dec $ppkeyword_new_error(ppstate, name) : ptbytes?
+def $ppkeyword_new_error(P, NName (BYTES text) metadata) = ($ptascii("Cannot use \"") ++ $ptlc($base64(text)) ++ $ptascii("\" when no class scope is active"))
+  -- if ~P.CLOSURE
+  -- if P.CLASSCONTEXT = eps
+  -- if P.FOLD.FUNCTION =/= eps
+def $ppkeyword_new_error(P, NName (BYTES text) metadata) = ($ptascii("Cannot use \"parent\" when current class scope has no parent"))
+  -- if ~P.CLOSURE
+  -- if P.FOLD.FUNCTION =/= eps
+  -- if ~$ptrait_context(P.CLASSCONTEXT)
+  -- if P.CLASSCONTEXT = (ptcontext)
+  -- if ptcontext.SCOPE = PTKNOWN ptbytes eps
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+def $ppkeyword_new_error(P, name) = eps -- otherwise
+def $ppnew_class_name(P, pcpath, name) = $ppconstant_error(P, ptbytes_message, P.LOCATION.LINE)
+  -- if $ppordinary_new_keyword(P, pcpath, name)
+  -- if $ppkeyword_new_error(P, name) = (ptbytes_message)
+def $ppnew_class_name(P, pcpath, NName (BYTES text) metadata) = $ppclass_name(P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCCALL_INIT pcpath P.LOCATION.LINE]], pcpath, PNRESOLVED {ORIGINAL NName (BYTES text) metadata, KIND PLCLASS, RESOLVED $ptlc($base64(text)), FULL true, FALLBACK eps})
+  -- if $ppordinary_new_keyword(P, pcpath, NName (BYTES text) metadata)
+  -- if $ppkeyword_new_error(P, NName (BYTES text) metadata) = eps
+def $ppnew_instruction_line(NName (BYTES text) metadata_name, metadata) = $source_line(metadata_name)
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+
+;; Name metadata and the compiled initialization distinguish this ordinary
+;; producer from constant-AST parameter defaults at the same source spelling.
+def $ordinary_keyword_new_site(S, PORIGIN n pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = (($ptlc($base64(text)), eps))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if z = $source_line(metadata_name)
+  -- if $(z > 0)
+  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z)
+def $dynamic_new_site(S, PORIGIN n pcpath, z, z) = $ordinary_keyword_new_site(S, PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew name phpType6 metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+def $dynamic_new_keyword(S, porigin) = (name)
+  -- if $ordinary_keyword_new_site(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew name phpType6 metadata)
+def $dynamic_new_source_valid(S, pdynamicnew) = (pdynamicnew.SOURCE = PSTRING $ptlc($base64(text)))
+  -- if $ordinary_keyword_new_site(S, pdynamicnew.SITE)
+  -- if $origin_node(S.SOURCES, pdynamicnew.SITE) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+
+;; Service-unit main code keeps the caller's scope. Persistent entry bindings
+;; lead back to its physical source without retaining a caller or searching frames.
+dec $keyword_new_entry_source(pstate, porigin, porigin?) : porigin
+def $keyword_new_entry_source(S, PORIGIN n pcpath, porigin_scope?) = $keyword_new_entry_source(S, pevalbinding.SITE, porigin_scope?)
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = (pevalbinding)
+  -- if pevalbinding.CLASS = porigin_scope?
+  -- if pevalbinding.SITE = PORIGIN n_entry pcpath_entry
+  -- if $(n_entry < n)
+  -- if z = $eval_site_line(S, pevalbinding.SITE)
+  -- if $eval_site_valid(S, pevalbinding.SITE, z)
+def $keyword_new_entry_source(S, PORIGIN n pcpath, porigin_scope?) = $keyword_new_entry_source(S, pfilebinding.SITE, porigin_scope?)
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = eps
+  -- if $file_binding_at(S.FILEBINDINGS, n) = (pfilebinding)
+  -- if pfilebinding.CLASS = porigin_scope?
+  -- if pfilebinding.SITE = PORIGIN n_entry pcpath_entry
+  -- if $(n_entry < n)
+  -- if z = $file_site_line(S, pfilebinding.SITE)
+  -- if $file_site_valid(S, pfilebinding.SITE, z, pfilebinding.KIND)
+def $keyword_new_entry_source(S, porigin, porigin_scope?) = porigin -- otherwise
+def $dynamic_new_scope_source(S, pdynamicnew) = $keyword_new_entry_source(S, pdynamicnew.SITE, pdynamicnew.SCOPE)
+  -- if $ordinary_keyword_new_site(S, pdynamicnew.SITE)
+
+rule PhpStep/named-keyword-new-selected: S ~> $dynamic_new_start(S[.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pdynamicnew, phpType7*)
+  -- if S.TODO = (EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $ordinary_keyword_new_site(S, PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $scoped_source_name(S, NName (BYTES text) metadata_name) = (ptbytes)
+  -- if ~$internal_new_forbidden(ptbytes)
+  -- if pdynamicnew = $dynamic_new_record(S, PORIGIN n pcpath, PSTRING $ptlc($base64(text)), ptbytes, z, z)
+rule PhpStep/named-keyword-new-forbidden: S ~> $new_class(S[.TODO = ptask_tail*], ptbytes, z)
+  -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $ordinary_keyword_new_site(S, PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $scoped_source_name(S, name) = (ptbytes)
+  -- if $internal_new_forbidden(ptbytes)
+dec $ordinary_keyword_new_error(pstate, ptbytes) : ptbytes
+def $ordinary_keyword_new_error(S, ptbytes) = $ptascii("Cannot access \"parent\" when current class scope has no parent")
+  -- if ptbytes = $ptascii("parent")
+  -- if $bound_fake_internal_scope(S) =/= eps
+def $ordinary_keyword_new_error(S, ptbytes) = $dynamic_new_keyword_error(S, ptbytes)
+  -- otherwise
+rule PhpStep/named-keyword-new-scope-error: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", $ordinary_keyword_new_error(S, $ptlc($base64(text))), z)
+  -- if S.TODO = (EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $ordinary_keyword_new_site(S, PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $scoped_source_name(S, NName (BYTES text) metadata_name) = eps
+
+;; A named keyword constructor has already changed CURRENT to its callee.
+;; Resolve its target only in the immediate saved owning caller, just as260.
+def $dynamic_new_entered(S, pcalltarget, porigin) = true
+  -- if $ordinary_keyword_new_site(S, porigin)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $context_target(pcallcontext) = pcalltarget
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if pcalltarget = METHOD_TARGET n porigin_method
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.ORIGIN = (porigin)
+  -- if pframe.TODO = (CTOR_RESULT n) :: ptask_tail*
+def $declaration_new_selection(S, porigin, name, porigin_called, pdeclcalls) = ($declaration_requested(S, porigin, name, pdeclcalls) = (porigin_called))
+  -- if $ordinary_keyword_new_site(S, porigin)
+
+def $ordinary_keyword_new_task_valid(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata) = true
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+  -- if $parameter_default_constructor(S, NName (BYTES text) metadata_name, phpType7*, metadata)
+def $ordinary_keyword_new_task_valid(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata) = ($method_source_task(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata) /\ $ordinary_keyword_new_site(S, porigin))
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+  -- if ~$parameter_default_constructor(S, NName (BYTES text) metadata_name, phpType7*, metadata)
+  -- if S.ORIGIN = (porigin)
+def $ordinary_keyword_new_task_valid(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata) = false
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+  -- if ~$parameter_default_constructor(S, NName (BYTES text) metadata_name, phpType7*, metadata)
+  -- if S.ORIGIN = eps
+def $call_task_valid(S, EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) = $ordinary_keyword_new_task_valid(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if phpType7* =/= eps
+  -- if $ptlc($base64(text)) = $ptascii("static")
+;; Cached constant METHODs carry the same selected-NEW scope obligation as
+;; property METHODs. Keep their receipt permissions disjoint.
+def $dynamic_new_property_method_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = true
+  -- if $property_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps
+  -- if $class_constant_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps

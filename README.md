@@ -158,9 +158,12 @@ sources; Traversable objects remain unfinished. Array call arguments are covered
 [Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
 callbacks with effective method selection, retained current values and abrupt
 cleanup. Tentative-return declarations use real prototype order and runtime/file
-warning delivery after publication. Early eval diagnostic callbacks are the
-immediate follow-on; IteratorAggregate, ArrayAccess and other Traversable
-consumers remain required.
+warning delivery after publication. Early eval warnings suspend genuine
+compilation at each publication; handler throws or exit preserve later class
+publication, while user fatals stop it. Compiler fatal formatting retains the
+primary diagnostic through source effects, nested eval/include compilation and
+deferred runtime class-link failures.
+IteratorAggregate, ArrayAccess and other Traversable consumers remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.
@@ -287,6 +290,12 @@ quiet row values, walks current write storage and preserves memoized keys,
 abort temporaries and late keyed-RHS null/type-error timing. Author9/233 and
 independent11/277 share two originals, giving18 unique private agreements;
 one current private-handler/typed-cell source passes.
+[Global W/RW warnings](docs/semantics/SOURCE-GLOBAL-WRITES.md) now retain selected
+names and detach callback-created aliases on returning missing-entry fetches.
+Throws preserve callback writes; compound RHS timing and nested real-cell ingress
+remain native-grounded. Author9/224 and independent12/273 share four originals,
+giving17 unique private agreements; one current private-handler/caller-cell source
+passes.
 Wider memoized containers and earlier container/string/object producers remain
 required.
 
@@ -477,7 +486,9 @@ Shared trait-constant callable targets retain their first lookup while later
 method imports use fresh called classes and named/method receipts use current
 publication prefixes. Three new source
 agreements and112 AL/122 SL premises check partial failure, copied children and
-actual constant-cache ownership; compiled keyword NEW remains a required consumer.
+actual constant-cache ownership. Compiled/named keyword NEW now retains exact
+constant METHOD receipt authority through plain-clone retirement; one source and
+38 reached premises retain their separate [cut](coverage/semantics/named-keyword-new-review.json).
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -506,8 +517,9 @@ warnings retain selected cells and operand ownership through handlers and abrupt
 opcode completion. Deferred collision operands compare before type conversion;
 operation diagnostics are recorded with runtime operand order and AST lines,
 then delivered after class publication. Private-final compile warnings retain
-their phase order and handler-ineligible severity. Dependency caching, collision
-expression errors and readonly storage remain required. A bounded
+their phase order and handler-ineligible severity. Successful collision dependency
+fills retain real typed caches and distinct import scopes; failed-link cache
+disposition, collision expression errors and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
@@ -580,13 +592,13 @@ The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.
 Readonly members, hooks and user magic methods remain open.
-Ordinary [`Closure::call`](docs/semantics/CLOSURE-CALL.md) temporarily changes
-receiver/scope, evaluates arguments before binding validation, preserves original
-wrapper arguments and returns values from reference-returning closures. Its
-[bounded review](coverage/semantics/closure-call-review.json) includes a current
-canonical projection and focused installed checks. Named receivers and isolated
-reference formals are installed with bounded source/state checks; unpacking
-remains open ([argument review](coverage/semantics/closure-call-arguments-review.json)).
+[`Closure::call`](docs/semantics/CLOSURE-CALL.md) invokes ordinary and fake method
+captures with temporary receiver/scope, shared source statics and original wrapper
+values. Binding warnings precede inner-name errors; forwarding reference warnings
+precede fresh cell allocation and preserve the captured value through callbacks.
+Finite getters and created children retain their selected scope and owners.
+The [new review](coverage/semantics/temporary-fake-call-review.json) preserves
+source/state cuts; unpacking and REAL temporary-current lifetime remain required.
 [Print expressions](docs/semantics/SOURCE-PRINT.md) preserve output effects while
 returning constant integer 1, including folded expressions and reference demand.
 Source, compiler and paused ownership checks cover admitted conversions;
@@ -647,7 +659,10 @@ captured missing-CV reads through handlers. Broader constrained conversion remai
 class selector before arguments and releases selector temporaries before class work.
 Compiled keyword scopes survive recursive constructors and retired receiving Closures;
 cached property method callables retain lexical and called class separately.
-Autoload and ordinary named keyword NEW remain required.
+[Ordinary named keyword NEW](coverage/semantics/named-keyword-new-review.json)
+uses lexical self/parent and called static scope through inherited constructors,
+rebound Closures and eval. Known invalid function scopes reject at compilation;
+deferred scopes fail before arguments. Autoload remains required.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

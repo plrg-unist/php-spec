@@ -217,6 +217,7 @@ def $task_nodes(STRINGIFY_RESULT n porigin_site z) = [HOBJECT n]
 dec $stringify_result_valid(pstate, nat, porigin, int) : bool
 dec $default_internal_string_result_kind(ptask*) : bool
 def $default_internal_string_result_kind(ptask*) = false -- otherwise
+dec $eval_compile_string_result_kind(ptask*) : bool
 dec $ordinary_internal_string_result_kind(ptask*) : bool
 def $ordinary_internal_string_result_kind(ptask*) = false -- otherwise
 dec $ordinary_internal_generic_result_valid(pstate, nat, porigin, int) : bool
@@ -224,6 +225,7 @@ def $ordinary_internal_generic_result_valid(S, n, porigin_site, z) = true -- oth
 def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if S.ORIGIN = (porigin_site)
   -- if ~$default_internal_string_result_kind(S.TODO) /\ ~$ordinary_internal_string_result_kind(S.TODO)
+  -- if ~$eval_compile_string_result_kind(S.TODO)
   -- if $ordinary_internal_generic_result_valid(S, n, porigin_site, z)
   -- if $stringable_instance(S, n)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
@@ -232,6 +234,7 @@ def $stringify_result_valid(S, n, porigin_site, z) = true
 def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if S.ORIGIN = (porigin_site)
   -- if ~$default_internal_string_result_kind(S.TODO) /\ ~$ordinary_internal_string_result_kind(S.TODO)
+  -- if ~$eval_compile_string_result_kind(S.TODO)
   -- if $ordinary_internal_generic_result_valid(S, n, porigin_site, z)
   -- if $stringable_instance(S, n)
   -- if $typed_return_source(S, porigin_site, z)

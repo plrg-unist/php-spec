@@ -203,6 +203,7 @@ rule PhpStep/throw-search-miss: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin) :: ptask_tail*
   -- if $throwable_handler(S, n, porigin) = eps
   -- if ~$finally_present(S, porigin)
+dec $eval_compile_formatter_throw_pending(pstate) : bool
 dec $shutdown_render_throw_pending(pstate) : bool
 dec $throwable_marker(ptask) : bool
 def $throwable_marker(TRY_END porigin) = true
@@ -213,6 +214,7 @@ rule PhpStep/throw-search-discard: S ~> $return_discard(S[.TODO = (THROW_SEARCH 
   -- if ~$eval_end_marker(ptask)
   -- if ~$typed_return_throw_pending(S)
   -- if ~$shutdown_render_throw_pending(S)
+  -- if ~$eval_compile_formatter_throw_pending(S)
 dec $constructor_failed(pstate) : pstate
 dec $throw_frame_resume(pstate, nat) : pstate
 rule PhpStep/throw-search-frame: S ~> $throw_frame_resume(S_restored, n)
@@ -227,6 +229,7 @@ rule PhpStep/throw-search-uncaught: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n
   -- if $exception_terminal_tail(S, ptask_tail*)
   -- if ~$exception_dispatch_ready(S)
   -- if ~$shutdown_render_throw_pending(S)
+  -- if ~$eval_compile_formatter_throw_pending(S)
   -- if S.FRAMES = eps
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $throwable_terminal_renderable(S, n, eps)
@@ -235,6 +238,7 @@ rule PhpStep/throw-search-uncaught-source: S ~> S[.TODO = eps][.COMPLETION = UNC
   -- if $exception_terminal_tail(S, ptask_tail*)
   -- if ~$exception_dispatch_ready(S)
   -- if ~$shutdown_render_throw_pending(S)
+  -- if ~$eval_compile_formatter_throw_pending(S)
   -- if S.FRAMES = eps
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $throwable_member(S, n)
@@ -246,6 +250,7 @@ rule PhpStep/throw-search-uncaught-unrenderable: S ~> S[.TODO = eps][.COMPLETION
   -- if $exception_terminal_tail(S, ptask_tail*)
   -- if ~$exception_dispatch_ready(S)
   -- if ~$shutdown_render_throw_pending(S)
+  -- if ~$eval_compile_formatter_throw_pending(S)
   -- if S.FRAMES = eps
   -- if $throwable_member(S, n)
   -- if ~$stringable_instance(S, n)

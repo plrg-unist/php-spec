@@ -169,9 +169,11 @@ rule PhpStep/exit-invoke: S ~> $exit_receive(S[.TODO = ptask_tail*], pexitcall)
 def $exit_completion(EXITED z) = true
 def $exit_completion(pcompletion) = false -- otherwise
 def $exit_start_unwind(S, z) = $file_warning_drop_scope($error_release_iterators($silence_unwind(S)))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = [EXIT_UNWIND z]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+dec $eval_compile_exit_pending(pstate) : bool
 def $drive_steps(S, n) = $drive_steps($exit_start_unwind(S, z), n)
   -- if S.COMPLETION = EXITED z
   -- if S.FRAMES =/= eps
+  -- if ~$eval_compile_exit_pending(S)
 rule PhpStep/exit-unwind-frame: S ~> $exit_start_unwind($restore_frame(S), z)
   -- if S.TODO = (EXIT_UNWIND z) :: ptask_tail*
   -- if S.FRAMES =/= eps

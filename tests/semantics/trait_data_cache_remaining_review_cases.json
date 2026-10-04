@@ -1,0 +1,61 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only next259 preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Exact remaining successful import, ordered operand cache and included-source scope originals for 266. Failed-link and endogenous Error originals remain separate and uncredited.",
+  "cases": [
+    {
+      "id": "earlier-imported-dependency-caches-distinct-using-class-values",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo \"H\",$l,\";\";return true;});\ntrait T{public const string Y=E_STRICT.__CLASS__;public const string X=self::Y;}\necho \"PRE;\";\nclass C{use T;public const string X=\"2048C\";}\necho \"C:\",C::Y,\";\";\nclass E{use T;public const string X=\"2048E\";}\necho \"E:\",E::Y,\";C:\",C::Y;\n",
+      "source_sha256": "e79d12aba84e3cd4183edc4c7a973eea9d6c6ad1e8a895bfb9544dd5c76bc528",
+      "status": "normal",
+      "stdout_base64": "UFJFO0gzO0M6MjA0OEM7SDM7RToyMDQ4RTtDOjIwNDhD",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-import-order-native259-tvmld3c_/report.json",
+      "native_raw_sha256": "50ade586eef2e9a37dbfe623caca7ef24e5278a2d3ea2d2fcc4bebfeb970ab82"
+    },
+    {
+      "id": "property-operands-share-real-dependency-fill-prior-first",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo \"H\",$l,\";\";return true;});\ntrait T{public static $x=self::Y;}\necho \"PRE;\";\nclass C{use T;public const int Y=E_STRICT;public static $x=self::Y;}\necho \"POST;Y:\",C::Y,\":X:\",C::$x;\n",
+      "source_sha256": "dd3dc725c8c18baa6e0417da1cf08f78d0f0c082d0111d9bc6b04ac09b865a3d",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g1O1BPU1Q7WToyMDQ4Olg6MjA0OA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-operand-cache-native259-1yyd38as/report.json",
+      "native_raw_sha256": "2a432e46d52d78867a4e664c03c9fa60a93fd903f6a99083a51359f812ee8473"
+    },
+    {
+      "id": "constant-operands-share-real-dependency-fill-incoming-first",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo \"H\",$l,\";\";return true;});\ntrait T{public const X=self::Y;}\necho \"PRE;\";\nclass C{use T;public const X=self::Y;public const int Y=E_STRICT;}\necho \"POST;Y:\",C::Y,\":X:\",C::X;\n",
+      "source_sha256": "fc66ac7ea3e9866dd19de3df64d8a721b7d33f653a37f7e978b2c27bdc6f8667",
+      "status": "normal",
+      "stdout_base64": "UFJFO0gzO1BPU1Q7WToyMDQ4Olg6MjA0OA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-operand-cache-native259-1yyd38as/report.json",
+      "native_raw_sha256": "6f4846ec13af352ac986437aa34e8df8ea1eea7c9f9a35031cc3c847e1b2ad44"
+    },
+    {
+      "id": "dependent-constant-warning-uses-composing-file-and-physical-trait-fetch-line",
+      "source": "<?php\ninclude __DIR__.\"/trait.php\";\nset_error_handler(function($n,$m,$f,$l){echo ($f===__FILE__?\"CFILE\":\"BAD\"),\":\",$l,\";\";return true;});\necho \"PRE;\";\nclass C{use T;public const X=2048;public const Y=E_STRICT;}\necho \"POST;\",C::Y,\":\",C::X;",
+      "source_sha256": "d3ba8d5feca45ca32cd98407900328fdc016051aa3c7eb21f9d4d238dc46ae44",
+      "files": [
+        {
+          "name": "trait.php",
+          "source": "<?php\ntrait T{\n public const X=self::Y;\n}",
+          "source_sha256": "1c574397dab211466db082c710736c524bab1f650289205faccc3771b81487f7"
+        }
+      ],
+      "status": "normal",
+      "stdout_base64": "UFJFO0NGSUxFOjM7UE9TVDsyMDQ4OjIwNDg=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-file-native259-qhh0v9bd/report.json",
+      "native_raw_sha256": "eac70b5270285b36880e7c47a2ac2f2a6251a810c398e3f18513f47ec5d53ee8"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only259 preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Deferred typed constant dependency is converted by real binding before outer strict collision comparison; no conversion on the outer raw deferred operand.",
+  "cases": [
+    {
+      "id": "property-collision-referenced-deferred-float-constant-converts-during-real-binding",
+      "source": "<?php trait T{public static float $x=self::Y;}echo \"PRE;\";class C{use T;public const Z=1;public const float Y=self::Z;public static float $x=1.0;}echo \"POST;\",(C::Y===1.0?\"Y\":\"BAD\"),\":\",(C::$x===1.0?\"X\":\"BAD\");",
+      "source_sha256": "c7a6c27597aeb6b319cb6fd6789bb8b9f75da9e3e71cca7f7cb308c45480d133",
+      "status": "normal",
+      "stdout_base64": "UFJFO1BPU1Q7WTpY",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-typed-dependency-native259-w9un8b6h/report.json",
+      "native_raw_sha256": "054d8d3a1400d216786800bae2ce2bcb15d55fbeacf552b05e1d6a87b4ac83ca"
+    },
+    {
+      "id": "constant-collision-referenced-deferred-float-constant-converts-during-real-binding",
+      "source": "<?php trait T{public const float X=self::Y;}echo \"PRE;\";class C{use T;public const Z=1;public const float Y=self::Z;public const float X=1.0;}echo \"POST;\",(C::Y===1.0?\"Y\":\"BAD\"),\":\",(C::X===1.0?\"X\":\"BAD\");",
+      "source_sha256": "de30d65e33da5d4fd0a3185ec37d035921bebb46a9bd9b4cb5cf44e3aa8ec44e",
+      "status": "normal",
+      "stdout_base64": "UFJFO1BPU1Q7WTpY",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-typed-dependency-native259-w9un8b6h/report.json",
+      "native_raw_sha256": "054d8d3a1400d216786800bae2ce2bcb15d55fbeacf552b05e1d6a87b4ac83ca"
+    }
+  ]
+}
