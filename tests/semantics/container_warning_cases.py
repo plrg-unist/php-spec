@@ -61,4 +61,12 @@ try{FalseAssignThrow276::$dest=($a276[1]=$rhs276);}catch(Error $e){echo "C:",($e
 restore_error_handler();
 """, b'D;C:1:9:17:17:handler:older;'),
 
+    # Original independent COW witness, retained for the reached-state fixture.
+    ('typed-bool-compound-array-cow-survives-until-whole-cell-write', b"""<?php
+error_reporting(0);class CompoundCowBool276{public static bool $value=false;}$a276=&CompoundCowBool276::$value;
+set_error_handler(function($n,$m){echo $n===8192?"D;":"M;";return false;},8194);
+$r276=($a276[1]+=3);$copy276=$a276;$a276[2]=5;restore_error_handler();
+echo "R:",$r276,":",$a276[1],":",$a276[2],":",CompoundCowBool276::$value[2],":",isset($copy276[2])?1:0,";";
+$a276=false;echo "V:",CompoundCowBool276::$value===false?1:0,":",$copy276[1],";";
+""", b'D;M;R:3:3:5:5:0;V:1:3;'),
 ]
