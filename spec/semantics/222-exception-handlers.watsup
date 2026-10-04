@@ -1,0 +1,375 @@
+;; Raw request registrations share Zend's callback admission and ordinary calls.
+;; The terminal C boundary has no user caller and supplies one owned Throwable.
+dec $exception_invoke_valid(pstate, pexceptioncall) : bool
+dec $exception_handler_value(pvalue?) : pvalue
+dec $exception_handler_pop(pstate) : pstate
+dec $exception_handler_restore(pstate) : pstate
+dec $exception_handler_register(pstate, pconfigcall, pvalue) : pstate
+dec $exception_deprecated_raw(pstate, pvalue) : bool
+dec $exception_handler_registered(pstate, pvalue?) : bool
+dec $exception_nonobject_receiver(pitem) : bool
+dec $exception_raw_receiver(pstate, pitem, bool, porigin, pcalltarget) : bool
+dec $exception_raw_selected(pstate, pvalue, parray?, pcalltarget) : bool
+dec $exception_snapshot(pstate, pvalue) : parray?
+dec $exception_selected_valid(pstate, pexceptioncall) : bool
+dec $exception_enter_valid(pstate, pexceptioncall) : bool
+dec $exception_send_valid(pstate, pexceptioncall) : bool
+dec $exception_task_scope(pstate) : bool
+dec $exception_return_operand(poperand) : bool
+dec $exception_result_valid(pstate, pexceptioncall) : bool
+dec $exception_handler_enter(pstate, pexceptioncall, poperand) : pstate
+dec $exception_reference_warning(pstate, pexceptioncall) : ptbytes
+dec $exception_context_current(pstate, pcallcontext) : pexceptioncall?
+dec $exception_context_saved_head(pcallcontext, pframe*) : pexceptioncall?
+dec $exception_context_saved(pcallcontext, pframe*) : pexceptioncall?
+dec $exception_context_call(pstate, pcallcontext) : pexceptioncall?
+dec $exception_context_anchor(pstate, pcallcontext, pcallcontext?, pframe*) : bool
+dec $exception_context_kind(pstate, pcallcontext) : bool
+dec $exception_extra_valid(pcallcontext, pexceptioncall, nat) : bool
+dec $exception_context_valid(pstate, pcallcontext) : bool
+
+def $intrinsic_name(INTRINSIC_SET_EXCEPTION_HANDLER) = $ptascii("set_exception_handler")
+def $intrinsic_name(INTRINSIC_RESTORE_EXCEPTION_HANDLER) = $ptascii("restore_exception_handler")
+def $intrinsic_name(INTRINSIC_GET_EXCEPTION_HANDLER) = $ptascii("get_exception_handler")
+def $intrinsic_named(preqbytes) = (INTRINSIC_SET_EXCEPTION_HANDLER) -- if $ptlc(preqbytes) = $ptascii("set_exception_handler")
+def $intrinsic_named(preqbytes) = (INTRINSIC_RESTORE_EXCEPTION_HANDLER) -- if $ptlc(preqbytes) = $ptascii("restore_exception_handler")
+def $intrinsic_named(preqbytes) = (INTRINSIC_GET_EXCEPTION_HANDLER) -- if $ptlc(preqbytes) = $ptascii("get_exception_handler")
+def $error_api_kind(INTRINSIC_SET_EXCEPTION_HANDLER) = true
+def $error_api_kind(INTRINSIC_RESTORE_EXCEPTION_HANDLER) = true
+def $error_api_kind(INTRINSIC_GET_EXCEPTION_HANDLER) = true
+def $config_parameter(INTRINSIC_SET_EXCEPTION_HANDLER, preqbytes) = (0) -- if preqbytes = $ptascii("callback")
+def $config_parameter_name(INTRINSIC_SET_EXCEPTION_HANDLER, 0) = $ptascii("callback")
+def $error_api_min(INTRINSIC_SET_EXCEPTION_HANDLER) = 1
+def $error_api_max(INTRINSIC_SET_EXCEPTION_HANDLER) = 1
+def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $ptascii("set_exception_handler() expects exactly 1 argument, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
+  -- if pconfigcall.KIND = INTRINSIC_SET_EXCEPTION_HANDLER
+  -- if |pconfigcall.SENT| =/= 1
+
+def $exception_handler_value(eps) = PNULL
+def $exception_handler_value((pvalue)) = pvalue
+def $exception_handler_roots(eps) = eps
+def $exception_handler_roots((pvalue)) = $value_nodes(pvalue)
+def $exception_handler_stack_roots(eps) = eps
+def $exception_handler_stack_roots(pvalue? :: (pvalue_tail?)*) = $exception_handler_roots(pvalue?) ++ $exception_handler_stack_roots((pvalue_tail?)*)
+def $exception_handler_pop(S) = S[.EXCEPTIONHANDLER = pvalue?][.EXCEPTIONHANDLERS = (pvalue_tail?)*]
+  -- if S.EXCEPTIONHANDLERS = pvalue? :: (pvalue_tail?)*
+def $exception_handler_pop(S) = S[.EXCEPTIONHANDLER = eps] -- if S.EXCEPTIONHANDLERS = eps
+def $exception_handler_restore(S) = $exception_handler_pop(S) -- if S.EXCEPTIONHANDLER = eps
+def $exception_handler_restore(S) = S -- if S.EXCEPTIONHANDLER =/= eps
+;; These require the effectful API resolution stages, not suppressed admission.
+;; Keep that boundary explicit when module221 changes the shared pure facts.
+def $exception_deprecated_raw(S, PARRAY n) = true
+  -- if $typed_callback_array(S, n)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if $entry_value(S, pitem_receiver) = PSTRING ptbytes_class
+  -- if $ptlc($typed_callable_name(ptbytes_class)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+  -- if $entry_value(S, pitem_method) = PSTRING ptbytes_method
+  -- if $method_string_parts(ptbytes_method) = eps
+def $exception_deprecated_raw(S, PARRAY n) = true
+  -- if $typed_callback_array(S, n)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if $entry_value(S, pitem_method) = PSTRING ptbytes_method
+  -- if $method_string_parts(ptbytes_method) =/= eps
+def $exception_deprecated_raw(S, PSTRING ptbytes) = true
+  -- if ~$typed_registered(S, ptbytes)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if $ptlc($typed_callable_name(ptbytes_class)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $exception_deprecated_raw(S, pvalue) = false -- otherwise
+def $exception_handler_register(S, pconfigcall, pvalue) = S[.EXCEPTIONHANDLER = (pvalue)][.EXCEPTIONHANDLERS = S.EXCEPTIONHANDLER :: S.EXCEPTIONHANDLERS][.RESULT = KNOWN $exception_handler_value(S.EXCEPTIONHANDLER)]
+  -- if pvalue =/= PNULL
+  -- if ~$exception_deprecated_raw(S, pvalue)
+  -- if $error_handler_callable(S, pvalue) = (true)
+def $exception_handler_register(S, pconfigcall, PNULL) = S[.EXCEPTIONHANDLER = eps][.EXCEPTIONHANDLERS = S.EXCEPTIONHANDLER :: S.EXCEPTIONHANDLERS][.RESULT = KNOWN $exception_handler_value(S.EXCEPTIONHANDLER)]
+def $exception_handler_register(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_exception_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ n_reason*)
+  -- if pvalue =/= PNULL
+  -- if ~$exception_deprecated_raw(S, pvalue)
+  -- if $error_handler_resolution(S, pvalue) = HANDLERINVALID n_reason*
+def $exception_handler_register(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "exception-handler callable registration form"]
+  -- if pvalue =/= PNULL
+  -- if ~$exception_deprecated_raw(S, pvalue)
+  -- if $error_handler_callable(S, pvalue) = eps
+def $exception_handler_register(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "exception-handler keyword/compound callable ingress requires effectful API resolution"]
+  -- if $exception_deprecated_raw(S, pvalue)
+def $error_api_body(S, pconfigcall) = $exception_handler_register(S, pconfigcall, $error_api_value(pconfigcall, 0, PNULL)) -- if pconfigcall.KIND = INTRINSIC_SET_EXCEPTION_HANDLER
+def $error_api_body(S, pconfigcall) = $exception_handler_pop(S)[.RESULT = KNOWN (PBOOL true)] -- if pconfigcall.KIND = INTRINSIC_RESTORE_EXCEPTION_HANDLER
+def $error_api_body(S, pconfigcall) = S[.RESULT = KNOWN $exception_handler_value(S.EXCEPTIONHANDLER)] -- if pconfigcall.KIND = INTRINSIC_GET_EXCEPTION_HANDLER
+def $exception_handlers_valid(S, eps) = true
+def $exception_handlers_valid(S, pvalue? :: (pvalue_tail?)*) = ($exception_handler_registered(S, pvalue?) /\ $exception_handlers_valid(S, (pvalue_tail?)*))
+def $exception_handler_registered(S, eps) = true
+def $exception_handler_registered(S, (pvalue)) = $error_handler_retained(S, pvalue)
+
+;; CALLBACK is a borrowed certificate: its owner moved into the registry stack.
+;; In particular, restoring/popping that stack must not invent another array root.
+def $exception_nonobject_receiver(DIRECT (POBJECT n)) = false
+def $exception_nonobject_receiver(pitem) = true -- otherwise
+def $exception_raw_receiver(S, DIRECT (POBJECT n), false, porigin, pcalltarget) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $target_receiver(S, pcalltarget) = eps
+def $exception_raw_receiver(S, pitem, b_class, porigin, pcalltarget) = $handler_raw_receiver(S, pitem, b_class, porigin, pcalltarget)
+  -- if ~($target_receiver(S, pcalltarget) = eps /\ b_class = false) \/ $exception_nonobject_receiver(pitem)
+def $exception_raw_receiver(S, pitem, b_class, porigin, pcalltarget) = false -- otherwise
+def $exception_raw_selected(S, PARRAY n, (parray), HANDLER_METHOD_TARGET b_class porigin ptbytes pcalltarget) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if |parray.ITEMS| = 2
+  -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(parray.ITEMS, KINT 1) = (pitem_method)
+  -- if $handler_raw_method(pitem_method, ptbytes)
+  -- if $exception_raw_receiver(S, pitem_receiver, b_class, porigin, pcalltarget)
+  -- if $handler_target_valid(S, porigin, ptbytes, pcalltarget)
+  -- if $handler_kind_valid(b_class, pcalltarget)
+def $exception_raw_selected(S, pvalue, eps, pcalltarget) = $error_handler_selected(S, pvalue, pcalltarget)
+  -- if ~$is_array_value(pvalue)
+def $exception_raw_selected(S, pvalue, parray?, pcalltarget) = false -- otherwise
+def $exception_snapshot(S, PARRAY n) = (S.ARRAYS[n])
+  -- if $(n < |S.ARRAYS|)
+def $exception_snapshot(S, pvalue) = eps -- otherwise
+def $exception_selected_valid(S, pexceptioncall) = true
+  -- if $throwable_member(S, pexceptioncall.OBJECT)
+  -- if (HOBJECT pexceptioncall.OBJECT) <- S.ALLOCATIONS
+  -- if pexceptioncall.TARGET = (pcalltarget)
+  -- if $exception_raw_selected(S, pexceptioncall.CALLBACK, pexceptioncall.RAW, pcalltarget)
+  -- if $handler_emitter_valid(S[.CURRENT = eps][.FRAMES = eps][.CONSTCONTEXT = eps], pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+def $exception_selected_valid(S, pexceptioncall) = false -- otherwise
+def $exception_send_valid(S, pexceptioncall) = true
+  -- if pexceptioncall.TARGET = (pcalltarget)
+  -- if ~$call_parameter_reference(S, pcalltarget, 0)
+  -- if pexceptioncall.SENT = (KNOWN (POBJECT pexceptioncall.OBJECT))
+def $exception_send_valid(S, pexceptioncall) = true
+  -- if pexceptioncall.TARGET = (pcalltarget)
+  -- if $call_parameter_reference(S, pcalltarget, 0)
+  -- if pexceptioncall.SENT = (REFERENCE n)
+  -- if $(n < |S.STORE|)
+def $exception_send_valid(S, pexceptioncall) = false -- otherwise
+def $exception_result_valid(S, pexceptioncall) = ($exception_selected_valid(S, pexceptioncall) /\ $exception_send_valid(S, pexceptioncall))
+def $exception_enter_valid(S, pexceptioncall) = ($exception_selected_valid(S, pexceptioncall) /\ pexceptioncall.SENT = eps)
+def $exception_task_scope(S) = (S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps)
+def $call_task_valid(S, EXCEPTION_HANDLER_RESULT pexceptioncall) = ($exception_task_scope(S) /\ $exception_result_valid(S, pexceptioncall))
+def $call_task_valid(S, EXCEPTION_HANDLER_ENTER pexceptioncall) = ($exception_task_scope(S) /\ $exception_enter_valid(S, pexceptioncall))
+def $exception_invoke_valid(S, pexceptioncall) = true
+  -- if S.CURRENT = eps
+  -- if S.FRAMES = eps
+  -- if S.CONSTCONTEXT = eps
+  -- if S.EXCEPTIONHANDLER = eps
+  -- if S.EXCEPTIONHANDLERS = (pexceptioncall.CALLBACK) :: (pvalue?)*
+  -- if $throwable_member(S, pexceptioncall.OBJECT)
+  -- if (HOBJECT pexceptioncall.OBJECT) <- S.ALLOCATIONS
+  -- if pexceptioncall.TARGET = eps
+  -- if pexceptioncall.SENT = eps
+  -- if pexceptioncall.RAW = $exception_snapshot(S, pexceptioncall.CALLBACK)
+def $exception_invoke_valid(S, pexceptioncall) = false -- otherwise
+def $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall) = $exception_invoke_valid(S, pexceptioncall)
+def $task_nodes(EXCEPTION_HANDLER_INVOKE pexceptioncall) = [HOBJECT pexceptioncall.OBJECT]
+def $task_nodes(EXCEPTION_HANDLER_ENTER pexceptioncall) = [HOBJECT pexceptioncall.OBJECT] ++ $error_selected_roots(pexceptioncall.TARGET)
+def $task_nodes(EXCEPTION_HANDLER_RESULT pexceptioncall) = [HOBJECT pexceptioncall.OBJECT] ++ $error_selected_roots(pexceptioncall.TARGET)
+def $throwable_marker(EXCEPTION_HANDLER_RESULT pexceptioncall) = true
+def $throwable_marker(EXCEPTION_HANDLER_ENTER pexceptioncall) = true
+def $throwable_marker(ERROR_HANDLER_RESULT perrorcall) = true -- if $exception_warning_resume(perrorcall.RESUME)
+def $exception_warning_resume(EXCEPTION_HANDLER_ENTER pexceptioncall) = true
+def $exception_warning_resume(ptask) = false -- otherwise
+def $exception_terminal_tail(S, eps) = true
+def $exception_terminal_tail(S, (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask*) = $exception_result_valid(S, pexceptioncall)
+def $exception_terminal_tail(S, (ERROR_HANDLER_RESULT perrorcall) :: ptask*) = ($exception_warning_resume(perrorcall.RESUME) /\ $error_entered_call_valid(S, perrorcall))
+def $exception_terminal_tail(S, ptask*) = false -- otherwise
+def $exception_dispatch_ready(S) = true
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S.CURRENT = eps
+  -- if S.FRAMES = eps
+  -- if $exception_terminal_tail(S, ptask_tail*)
+  -- if S.EXCEPTIONHANDLER = (pvalue)
+  -- if $throwable_member(S, n)
+def $exception_dispatch_ready(S) = false -- otherwise
+rule PhpStep/exception-handler-dispatch: S ~> S[.TODO = (EXCEPTION_HANDLER_INVOKE {OBJECT n, CALLBACK pvalue, TARGET eps, ORIGIN S.ORIGIN, RAW $exception_snapshot(S, pvalue), SENT eps}) :: ptask_tail*][.EXCEPTIONHANDLERS = (pvalue) :: S.EXCEPTIONHANDLERS][.EXCEPTIONHANDLER = eps][.ORIGIN = eps][.CONSTCONTEXT = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $exception_dispatch_ready(S)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S.EXCEPTIONHANDLER = (pvalue)
+
+def $exception_handler_enter(S, pexceptioncall, poperand) = $call_arity($target_after_enter($call_enter(S[.TODO = (EXCEPTION_HANDLER_RESULT (pexceptioncall[.SENT = (poperand)])) :: ptask_tail*][.ORIGIN = eps], pfunction, [poperand], eps, $(-1)), pcalltarget), pfunction, 1, eps, $(-1))
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pexceptioncall.TARGET = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+rule PhpStep/exception-handler-enter-value: S ~> $exception_handler_enter(S, pexceptioncall[.TARGET = (pcalltarget)], KNOWN (POBJECT pexceptioncall.OBJECT))
+  -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
+  -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
+  -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)
+  -- if $error_handler_target(S, pexceptioncall.CALLBACK) = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if ~$call_parameter_reference(S, pcalltarget, 0)
+rule PhpStep/exception-handler-unknown: S ~> S[.COMPLETION = UNSUPPORTED "exception-handler callback outside admitted source callable forms"]
+  -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
+  -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
+  -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)
+  -- if $error_handler_resolution(S, pexceptioncall.CALLBACK) = HANDLERUNKNOWN text
+rule PhpStep/exception-handler-invalid: S ~> S[.TODO = eps][.COMPLETION = INTERNALFATAL ($ptascii("Invalid callback ") ++ $error_callback_name(S, pexceptioncall.CALLBACK) ++ $ptascii(", ") ++ n_reason*) ($long_and(S.REPORTING, 1) =/= 0)][.TRACE = eps][.ORIGIN = eps][.ERRORORIGIN = eps]
+  -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
+  -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
+  -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)
+  -- if $error_handler_resolution(S, pexceptioncall.CALLBACK) = HANDLERINVALID n_reason*
+rule PhpStep/exception-handler-special: S ~> S[.COMPLETION = UNSUPPORTED "exception-handler keyword/compound callable ingress requires effectful API resolution"]
+  -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
+  -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
+  -- if $exception_deprecated_raw(S, pexceptioncall.CALLBACK)
+rule PhpStep/exception-handler-finish: S ~> $exception_handler_restore(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = pexceptioncall.ORIGIN][.TRACE = eps][.ERRORORIGIN = eps])
+  -- if S.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask_tail*
+  -- if $exception_result_valid(S, pexceptioncall)
+  -- if S.CURRENT = eps
+  -- if S.FRAMES = eps
+  -- if $exception_return_operand(S.RESULT)
+def $exception_return_operand(KNOWN pvalue) = true
+def $exception_return_operand(REFERENCE n) = true
+def $exception_return_operand(poperand) = false -- otherwise
+
+;; The sole by-reference argument warning occurs before the user frame exists.
+;; An error handler can replace the exception handler, throw, and then resume it.
+def $exception_reference_warning(S, pexceptioncall) = pfunction.NAME ++ $ptascii("(): Argument #1") ++ $call_parameter_name(psparam) ++ $ptascii(" must be passed by reference, value given")
+  -- if pexceptioncall.TARGET = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, 0) = (psparam)
+rule PhpStep/exception-handler-reference-warning: S ~> $error_dispatch(S[.ORIGIN = (pfunction.ORIGIN)], 2, $exception_reference_warning(S, pexceptioncall_entered), 0, DIAGNOSTIC_INTERNAL "Warning" ($exception_reference_warning(S, pexceptioncall_entered)) 0, EXCEPTION_HANDLER_ENTER pexceptioncall_entered)
+  -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
+  -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
+  -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)
+  -- if $error_handler_target(S, pexceptioncall.CALLBACK) = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $call_parameter_reference(S, pcalltarget, 0)
+  -- if pexceptioncall_entered = pexceptioncall[.TARGET = (pcalltarget)]
+rule PhpStep/exception-handler-enter-reference: S ~> $exception_handler_enter(S_cell, pexceptioncall, S_cell.RESULT)
+  -- if S.TODO = (EXCEPTION_HANDLER_ENTER pexceptioncall) :: ptask_tail*
+  -- if $exception_enter_valid(S, pexceptioncall)
+  -- if pexceptioncall.TARGET = (pcalltarget)
+  -- if $call_parameter_reference(S, pcalltarget, 0)
+  -- if S_cell = $call_fresh_reference(S, POBJECT pexceptioncall.OBJECT)
+rule PhpStep/exception-warning-invalid-callback: S ~> S[.TODO = eps][.COMPLETION = INTERNALFATAL ($ptascii("Invalid callback ") ++ $error_callback_name(S, perrorcall.CALLBACK) ++ $ptascii(", ") ++ n_reason*) ($long_and(S.REPORTING, 1) =/= 0)][.TRACE = eps][.ORIGIN = eps][.ERRORORIGIN = eps]
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if $exception_warning_resume(perrorcall.RESUME)
+  -- if $call_task_valid(S, ERROR_HANDLER_INVOKE perrorcall)
+  -- if $exception_task_scope(S)
+  -- if $error_handler_resolution(S, perrorcall.CALLBACK) = HANDLERINVALID n_reason*
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = EXCEPTION_HANDLER_ENTER pexceptioncall
+  -- if $exception_task_scope(S)
+  -- if $exception_enter_valid(S, pexceptioncall)
+  -- if pexceptioncall.TARGET = (pcalltarget)
+  -- if $call_parameter_reference(S, pcalltarget, 0)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if S.ORIGIN = (pfunction.ORIGIN)
+  -- if perrorcall.SITE = pfunction.ORIGIN
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = 0
+  -- if perrorcall.MESSAGE = $exception_reference_warning(S, pexceptioncall)
+  -- if perrorcall.EVENT = DIAGNOSTIC_INTERNAL "Warning" perrorcall.MESSAGE 0
+def $error_reference_event(S, ptbytes, 0) = DIAGNOSTIC_INTERNAL "Warning" ptbytes 0
+  -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if $exception_warning_resume(perrorcall.RESUME)
+  -- if $error_entered_call_valid(S, perrorcall)
+def $error_handler_values(S, perrorcall) = [PINT 2, PSTRING perrorcall.MESSAGE, PSTRING $ptascii("Unknown"), PINT 0]
+  -- if $exception_warning_resume(perrorcall.RESUME)
+
+;; Current and nested saved calls authenticate against the real global C anchor.
+def $exception_context_current(S, pcallcontext) = (pexceptioncall)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask_tail*
+def $exception_context_current(S, pcallcontext) = eps -- otherwise
+def $exception_context_saved_head(pcallcontext, pframe :: pframe_caller :: pframe_tail*) = (pexceptioncall)
+  -- if pframe.CONTEXT = (pcallcontext)
+  -- if pframe_caller.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask_tail*
+def $exception_context_saved_head(pcallcontext, pframe*) = eps -- otherwise
+def $exception_context_saved(pcallcontext, pframe*) = (pexceptioncall)
+  -- if $exception_context_saved_head(pcallcontext, pframe*) = (pexceptioncall)
+def $exception_context_saved(pcallcontext, pframe :: pframe_tail*) = $exception_context_saved(pcallcontext, pframe_tail*)
+  -- if $exception_context_saved_head(pcallcontext, pframe :: pframe_tail*) = eps
+def $exception_context_saved(pcallcontext, eps) = eps
+def $exception_context_call(S, pcallcontext) = (pexceptioncall) -- if $exception_context_current(S, pcallcontext) = (pexceptioncall)
+def $exception_context_call(S, pcallcontext) = $exception_context_saved(pcallcontext, S.FRAMES) -- if $exception_context_current(S, pcallcontext) = eps
+def $exception_context_anchor(S, pcallcontext, (pcallcontext), [pframe]) = true
+  -- if pframe.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask_tail*
+  -- if pframe.CONTEXT = eps
+  -- if pframe.LOCALS = eps
+  -- if pframe.ORIGIN = eps
+  -- if pframe.CONSTCONTEXT = eps
+  -- if pexceptioncall.TARGET = (pcallcontext.TARGET)
+  -- if $exception_result_valid(S, pexceptioncall)
+def $exception_context_anchor(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $exception_context_anchor(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
+  -- if pcallcontext_other? =/= (pcallcontext)
+def $exception_context_anchor(S, pcallcontext, pcallcontext_other?, pframe*) = false -- otherwise
+def $exception_context_kind(S, pcallcontext) = ($exception_context_call(S, pcallcontext) =/= eps)
+def $exception_extra_valid(pcallcontext, pexceptioncall, 0) = true
+  -- if pcallcontext.EXTRA = [poperand]
+  -- if pexceptioncall.SENT = (poperand)
+def $exception_extra_valid(pcallcontext, pexceptioncall, n) = true -- if $(n > 0)
+def $exception_extra_valid(pcallcontext, pexceptioncall, n) = false -- otherwise
+def $exception_context_valid(S, pcallcontext) = true
+  -- if $exception_context_call(S, pcallcontext) = (pexceptioncall)
+  -- if $exception_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)
+  -- if pexceptioncall.TARGET = (pcallcontext.TARGET)
+  -- if pcallcontext.CALLSITE = eps
+  -- if pcallcontext.LINE = $(-1)
+  -- if pcallcontext.ARGC = 1
+  -- if pcallcontext.WRAPPER = eps
+  -- if pcallcontext.NAMED = eps
+  -- if pcallcontext.HOLES = eps
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if n_received = $call_received(1, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if |pcallcontext.EXTRA| = $(1 - n_received)
+  -- if $exception_extra_valid(pcallcontext, pexceptioncall, n_received)
+  -- if $call_sent_operands_valid(S, pcallcontext.TARGET, n_received, pcallcontext.EXTRA)
+def $exception_context_valid(S, pcallcontext) = false -- otherwise
+def $error_context_kind(S, pcallcontext) = true -- if $exception_context_kind(S, pcallcontext)
+def $error_context_valid(S, pcallcontext) = true -- if $exception_context_valid(S, pcallcontext)
+def $typed_caller_strict(S) = false
+  -- if S.CURRENT = (pcallcontext)
+  -- if $exception_context_valid(S, pcallcontext)
+def $exception_warning_context(S, pcallcontext) = true
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if $exception_warning_resume(perrorcall.RESUME)
+def $exception_warning_context(S, pcallcontext) = false -- otherwise
+def $error_context_direct_trigger(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $exception_warning_context(S, pcallcontext)
+def $wrapper_called_suffix(S, pcallcontext) = eps -- if $exception_context_kind(S, pcallcontext) \/ $exception_warning_context(S, pcallcontext)
+def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed") -- if $exception_context_kind(S, pcallcontext) \/ $exception_warning_context(S, pcallcontext)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if $exception_context_kind(S, pcallcontext) \/ $exception_warning_context(S, pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
+
+;; Receive errors can save the new callback marker instead of the source task.
+def $throwable_continuation(S, S_next) = S_next
+  -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
+  -- if S_next.FRAMES = pframe :: S.FRAMES
+  -- if $error_handler_target(S, pexceptioncall.CALLBACK) = (pcalltarget)
+  -- if pframe.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall_entered) :: ptask_tail*
+  -- if pexceptioncall_entered = pexceptioncall[.TARGET = (pcalltarget)][.SENT = (KNOWN (POBJECT pexceptioncall.OBJECT))]
+  -- if pframe.CONTEXT = eps
+  -- if pframe.ORIGIN = eps
+  -- if pframe.CONSTCONTEXT = eps
+def $throwable_continuation(S, S_next) = S_next
+  -- if S.TODO = (EXCEPTION_HANDLER_ENTER pexceptioncall) :: ptask_tail*
+  -- if S_next.FRAMES = pframe :: S.FRAMES
+  -- if pframe.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall_entered) :: ptask_tail*
+  -- if pexceptioncall_entered.TARGET = pexceptioncall.TARGET
+  -- if pexceptioncall_entered.OBJECT = pexceptioncall.OBJECT
+  -- if pexceptioncall_entered.CALLBACK = pexceptioncall.CALLBACK
+  -- if pexceptioncall_entered.RAW = pexceptioncall.RAW
+  -- if pexceptioncall_entered.ORIGIN = pexceptioncall.ORIGIN
+  -- if $exception_send_valid(S_next, pexceptioncall_entered)
+  -- if pframe.CONTEXT = eps
+  -- if pframe.ORIGIN = eps
+  -- if pframe.CONSTCONTEXT = eps
+
+;; Saved global callback tasks use their immediate caller frame, never USER scope.
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S[.FRAMES = pframe_tail*]
+  -- if pframe.CONTEXT = eps
+  -- if pframe.LOCALS = eps
+  -- if pframe.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask*
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S[.FRAMES = pframe_tail*]
+  -- if pframe.CONTEXT = eps
+  -- if pframe.LOCALS = eps
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask*
+  -- if $exception_warning_resume(perrorcall.RESUME)
+def $call_after_origin(S, EXCEPTION_HANDLER_INVOKE pexceptioncall) = S[.ORIGIN = pexceptioncall.ORIGIN]
+def $call_after_origin(S, EXCEPTION_HANDLER_RESULT pexceptioncall) = S[.ORIGIN = pexceptioncall.ORIGIN]

@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Exception handlers222 retain nullable raw stacks and dispatch an uncaught
+Throwable after `finally` through the ordinary weak call receiver. Genuine null
+caller and saved-frame certificates preserve one argument, selected targets and
+owners through restoration, replacement, nested warning handling, throws and exit.
+Author29/216 and independent33/331 retain their distinct source cutoffs; two
+explicit Unsupported controls add no agreement. Actual219 composition preserves
+cross-file diagnostic origins during static defaults, and production algorithm
+and structure checks pass. [Contract](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md),
+[author/composition record](coverage/semantics/exception-handlers-review.json),
+[independent review](coverage/semantics/exception-handler-review.json).
+Keyword/compound callback ingress and later request lifecycle remain required.
+
 Called-class introspection223 implements `get_called_class()` using the active
 authenticated called class. Plain functions and global Closures stop lookup;
 captured/rebound source Closures retain their own class, while explicit builtin
@@ -148,6 +160,7 @@ The installed families compose as follows; each ledger records its scope and lim
 | Warning-read consumers213 | Six casts, selected ternary/coalesce copies and ordinary by-value sends preserve captured null, aliases and selected targets through callbacks. Direct ASSIGN retains its null write through throw. Mixed21/control0+236 and independent10/197 remain separate from fresh static-reference/outer-array source1/94 and cached-callee source1/96 at181f. [Consumer ledger](coverage/semantics/warning-consumers-review.json). |
 | Borrowed warning reads208 | Strict identity retains the old reference cell across callbacks without adding an owner; saved callers and throw cleanup preserve it. Defined ordinary `$GLOBALS[key]` uses the real table. Getter/setter and method-string interactions keep separate revisions. [Warning-read ledger](coverage/semantics/warning-reads-review.json). |
 | Error handlers/reporting206/207/211 | Raw registrations and selected targets retain four arguments and genuine emitting frames through mutation, replacement, nested reentry, throw and false fallback. Reporting get/set/Restore separates full raw bytes, signed32 masks and modified-entry state across suppression and handler writes; twelve normal sources across two revisions and 74 conditions are accepted. Fifteen nondeprecated error constants resolve exactly. Diagnostic ingress217 adds runtime `E_STRICT` and handled lossy reporting conversions with distinct 14+4/211 evidence and current source1. Broader handler forms and producer coverage remain open. [Diagnostics](coverage/semantics/reporting-diagnostics-review.json). [Reporting](coverage/semantics/reporting-ini-review.json), [method handlers](coverage/semantics/handler-callables-current-review.json), [earlier handlers](coverage/semantics/error-handlers-review.json). |
+| Exception handlers222 | Raw nullable set/get/restore stacks and null-caller uncaught dispatch reuse ordinary calls with one authentic Throwable. Selected snapshots survive registry removal; weak receive, by-reference warning resume, nested restoration/replacement, throws, exit and fatal masks preserve ownership and termination. Author29/216 and independent33/331 pass at recorded cutoffs; actual219 source1 and production algorithm/structure gates pass. [Exception contract](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md). |
 | Class-method strings210 and FCC119 | Full-byte lookup separates frame-based callable admission, computed static dispatch and fixed compatible-this selection. Captures/clone retain immutable source certificates and defaults/static cells. A named throwing handler preserves the selected static caller and arguments. [String ledger](coverage/semantics/class-method-strings-current-review.json). |
 | Method arrays205 | Public source method arrays retain immutable selected receiver/owner/called-class certificates through dynamic calls and capture. Current two-slot INI checkpoint **f9f47f115/61370c98/1353** accepts source1/finite103; broader resolution remains open. [Array ledger](coverage/semantics/array-callables-current-review.json). |
 | Include/configuration | Failed CHDIR warnings retain provider certificates and caller frames through handler CWD/raw writes, false fallback and throw. One current throwing source/136 conditions, earlier three sources and compiler25 checks keep separate revisions. Stringable CHDIR PIPE retains post-callback CWD/held operands; unary CONFIG PIPE preserves source strictness through borrowed warnings. [PIPE ledger](coverage/semantics/include-config-pipe-review.json). Raw getters, primitive/null Restore, weak-null handler continuations and two-slot INI ownership retain their separate checkpoints. [Readback](coverage/semantics/include-ini-readback-review.json), [INI](coverage/semantics/include-stringable-ini-option-review.json). |
@@ -195,7 +208,7 @@ failures and interrupted evidence.
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,
-  exception/lifecycle handlers and broader API/callable argument consumers.
+  later exception-handler lifecycle entry and broader API/callable argument consumers.
   Broader constant consumers and compiler reporting interactions remain open.
   Called-class introspection223 leaves builtin Closure rebinding, builtin API
   callback targets, suspension and wider reference-result consumers open.
