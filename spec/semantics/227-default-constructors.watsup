@@ -17,6 +17,15 @@ def $default_new_unique((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) 
 def $default_new_unique((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = (~$parameter_new_name_present(phpType7*, $base64(text)) /\ $default_new_unique(phpType7*))
 def $default_new_unique(phpType7*) = false -- otherwise
 dec $default_new_valid(pstate, pdefaultnew) : bool
+dec $default_new_object_valid(pstate, pdefaultnew) : bool
+def $default_new_object_valid(S, pdefaultnew) = true
+  -- if S.OBJECTS[pdefaultnew.OBJECT] = INSTANCE porigin_class
+  -- if $class_named(S.CLASSNAMES, $ptlc(pdefaultnew.CLASS)) = (porigin_class)
+def $default_new_object_valid(S, pdefaultnew) = true
+  -- if S.OBJECTS[pdefaultnew.OBJECT] = THROWABLE pthrowable
+  -- if $throwable_constructor_kind(pdefaultnew.CLASS) = (pthrowable.KIND)
+  -- if pthrowable.ORIGIN = (pdefaultnew.SITE)
+def $default_new_object_valid(S, pdefaultnew) = false -- otherwise
 def $default_new_valid(S, pdefaultnew) = true
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if $parameter_string_site_valid(S, pconstantcontext.ORIGIN, pconstantcontext.LINE)
@@ -34,8 +43,7 @@ def $default_new_valid(S, pdefaultnew) = true
   -- if |pdefaultnew.VALUES| = pdefaultnew.INDEX
   -- if $default_new_unique(phpType7*[0:pdefaultnew.INDEX])
   -- if $(pdefaultnew.OBJECT < |S.OBJECTS|)
-  -- if S.OBJECTS[pdefaultnew.OBJECT] = INSTANCE porigin_class
-  -- if $class_named(S.CLASSNAMES, $ptlc(pdefaultnew.CLASS)) = (porigin_class)
+  -- if $default_new_object_valid(S, pdefaultnew)
   -- if $class_constant_new_work(S, pdefaultnew.CLASS, pdefaultnew.LINE) = eps
   -- if $heap_subset($default_new_nodes(pdefaultnew), S.ALLOCATIONS)
 def $default_new_valid(S, pdefaultnew) = false -- otherwise
@@ -56,11 +64,6 @@ def $constructor_after_class_update(S, ptbytes, phpType7*, z) = $default_new_sta
   -- if $parameter_default_new_ready(S, ptbytes, phpType7*, z)
 def $constructor_after_class_update(S, ptbytes, phpType7*, z) = $constructor_start_ready(S, ptbytes, phpType7*, z)
   -- if ~$parameter_default_new_ready(S, ptbytes, phpType7*, z)
-dec $default_new_source_constructor(pstate, ptbytes) : bool
-def $default_new_source_constructor(S, ptbytes) = true
-  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_class)
-  -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
-def $default_new_source_constructor(S, ptbytes) = false -- otherwise
 dec $default_new_start(pstate, ptbytes, phpType7*, int) : pstate
 def $default_new_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* true z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ptask_work* = $class_constant_new_work(S, ptbytes, z)
@@ -68,17 +71,13 @@ def $default_new_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLA
 def $default_new_start(S, ptbytes, phpType7*, z) = $default_new_start_ready(S, ptbytes, phpType7*, z)
   -- if $class_constant_new_work(S, ptbytes, z) = eps
 def $default_new_start_ready(S, ptbytes, phpType7*, z) = S_new[.TODO = (DEFAULT_NEW_ARGS {SITE porigin, CLASS ptbytes, OBJECT n, ARGUMENTS phpType7*, INDEX 0, VALUES eps, LINE z}) :: S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if $default_new_source_constructor(S, ptbytes)
   -- if S_new = $new_class(S, ptbytes, z)
   -- if S_new.COMPLETION = NORMAL
   -- if S_new.RESULT = KNOWN (POBJECT n)
   -- if S.ORIGIN = (porigin)
 def $default_new_start_ready(S, ptbytes, phpType7*, z) = S_new
-  -- if $default_new_source_constructor(S, ptbytes)
   -- if S_new = $new_class(S, ptbytes, z)
   -- if S_new.COMPLETION =/= NORMAL
-def $default_new_start_ready(S, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "internal parameter default constructor dispatch"]
-  -- if ~$default_new_source_constructor(S, ptbytes)
 rule PhpStep/default-new-constructor: S ~> $default_new_start(S[.TODO = ptask_tail*], ptbytes, phpType7*, pconstantcontext.LINE)
   -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if $parameter_default_constructor(S, name, phpType7*, metadata)
