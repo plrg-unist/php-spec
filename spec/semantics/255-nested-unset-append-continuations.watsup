@@ -11,6 +11,8 @@ dec $key_unset_fetch_dispatch(pstate, pkeyread) : pstate
 dec $key_unset_fetch_lookup(pstate, pkeyread) : pstate
 dec $key_unset_fetch_resume(pstate, pkeyread) : pstate
 dec $key_unset_fetch_valid(pstate, pkeyread) : bool
+dec $key_unset_null_mode(bool) : pkeymode
+dec $key_unset_null_valid(pstate, pkeyread) : bool
 def $key_tail_slot(DEFINED pvalue) = pvalue
 def $key_tail_slot(UNDEFINED) = PNULL
 def $key_tail_chain(BASE_VALUE (VARIABLE n_name* z)) = (~$this_name(n_name*) /\ n_name* =/= $ptascii("GLOBALS"))
@@ -83,13 +85,25 @@ def $key_unset_dimension(S, poperand, z, false) = $key_unset_fetch_value(S_array
   -- if S_key.RESULT = KNOWN pvalue
   -- if S.ORIGIN = (porigin)
   -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_IS, INPUT poperand, VALUE pvalue, BASE pvalue_base, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
+;; A dead/missing prefix returns its independent null operand. Its next key
+;; CV still warns, but neither creates a table nor converts null as an array key.
+def $key_unset_null_mode(true) = KEY_R
+def $key_unset_null_mode(false) = KEY_IS
+def $key_unset_dimension(S, poperand, z, b) = $error_dispatch(S[.RESULT = KNOWN PNULL], 2, $key_read_message(pkeyread), z, $key_read_event(pkeyread), KEY_UNSET_NULL_RESULT pkeyread)
+  -- if $key_tail_slot($location_slot(S, S.LOCATION)) = PNULL
+  -- if $error_missing_operand(S, poperand)
+  -- if poperand = VARIABLE n_name* z_operand
+  -- if S.ORIGIN = (porigin)
+  -- if pkeyread = {SITE porigin, GLOBAL false, MODE $key_unset_null_mode(b), INPUT poperand, VALUE PNULL, BASE PNULL, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_CV, KEY KSTRING eps, NAME n_name*}
 def $key_unset_dimension(S, poperand, z, b) = S_out[.HELD = S.HELD][.RESULT = KNOWN PNULL]
   -- if ~$key_write_array_slot($location_slot(S, S.LOCATION))
+  -- if $key_tail_slot($location_slot(S, S.LOCATION)) =/= PNULL \/ ~$error_missing_operand(S, poperand)
   -- if pvalue = $key_tail_slot($location_slot(S, S.LOCATION))
   -- if b
   -- if S_out = $unset_final($hold_task_inputs(S), pvalue, S.LOCATION, poperand, z)
 def $key_unset_dimension(S, poperand, z, false) = S_out[.HELD = S.HELD][.RESULT = KNOWN PNULL]
   -- if ~$key_write_array_slot($location_slot(S, S.LOCATION))
+  -- if $key_tail_slot($location_slot(S, S.LOCATION)) =/= PNULL \/ ~$error_missing_operand(S, poperand)
   -- if pvalue = $key_tail_slot($location_slot(S, S.LOCATION))
   -- if S_out = $unset_intermediate($hold_task_inputs(S), pvalue, S.LOCATION, poperand, z)
 rule PhpStep/key-unset-dimension: S ~> $key_unset_dimension(S, poperand, z, b)
@@ -149,6 +163,33 @@ def $error_call_valid(S, perrorcall) = true
   -- if $key_unset_fetch_valid(S, pkeyread)
   -- if perrorcall.SITE = pkeyread.SITE
   -- if perrorcall.LEVEL = $key_read_level(pkeyread)
+  -- if perrorcall.LINE = pkeyread.LINE
+  -- if perrorcall.MESSAGE = $key_read_message(pkeyread)
+  -- if perrorcall.EVENT = $key_read_event(pkeyread)
+
+def $task_nodes(KEY_UNSET_NULL_RESULT pkeyread) = eps
+def $key_unset_null_valid(S, pkeyread) = true
+  -- if S.ORIGIN = (pkeyread.SITE)
+  -- if ~pkeyread.GLOBAL
+  -- if pkeyread.MODE = KEY_R \/ pkeyread.MODE = KEY_IS
+  -- if pkeyread.BASE = PNULL
+  -- if pkeyread.OWNERS = BASE_VALUE (KNOWN PNULL)
+  -- if pkeyread.PHASE = KEY_CV
+  -- if $code_expression_at_source(S, pkeyread.SITE, [PCFIELD 1]) = (pkeyread.LINE)
+  -- if (pkeyread.MODE = KEY_R /\ $key_unset_context(S, S.TODO, pkeyread.SITE)) \/ (pkeyread.MODE = KEY_IS /\ $key_unset_fetch_context(S, S.TODO, pkeyread.SITE))
+  -- if $key_read_input_source(S, pkeyread)
+  -- if $key_read_shape(pkeyread)
+  -- if $key_read_selection(S, pkeyread)
+def $key_unset_null_valid(S, pkeyread) = false -- otherwise
+rule PhpStep/key-unset-null-resume: S ~> $key_unset_fetch_done(S, NOWHERE)
+  -- if S.TODO = (KEY_UNSET_NULL_RESULT pkeyread) :: ptask_tail*
+  -- if $key_unset_null_valid(S, pkeyread)
+def $call_task_valid(S, KEY_UNSET_NULL_RESULT pkeyread) = $key_unset_null_valid(S, pkeyread)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = KEY_UNSET_NULL_RESULT pkeyread
+  -- if $key_unset_null_valid(S, pkeyread)
+  -- if perrorcall.SITE = pkeyread.SITE
+  -- if perrorcall.LEVEL = 2
   -- if perrorcall.LINE = pkeyread.LINE
   -- if perrorcall.MESSAGE = $key_read_message(pkeyread)
   -- if perrorcall.EVENT = $key_read_event(pkeyread)
