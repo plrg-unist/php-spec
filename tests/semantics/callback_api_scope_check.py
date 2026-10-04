@@ -70,7 +70,8 @@ trait['checks'] = list(trait['checks']) + [
     '$effective_method(S, porigin_other, $ptascii("reg"), |S.CLASSES|) = (pmethoddesc_import)',
     '~$consumer_capture_valid(S, pshutdownentry.CALL.SITE, (pmethodcapture[.FUNCTION = pmethoddesc_import.FUNCTION.ORIGIN]))',
     '~$consumer_capture_valid(S, pshutdownentry.CALL.SITE, (pmethodcapture[.FUNCTION = pmethoddesc_import.FUNCTION.ORIGIN][.LEXICAL_CLASS = (porigin_other)]))',
-    '~$shutdown_entry_valid(S, pshutdownentry[.PRODUCER = (pshutdownproducer[.TARGET = SCOPED_TARGET pmethoddesc_import.FUNCTION.ORIGIN porigin_called])])',
+    'pshutdownproducer.TARGET = SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector',
+    '~$shutdown_entry_valid(S, pshutdownentry[.PRODUCER = (pshutdownproducer[.TARGET = SCOPED_TARGET porigin_requested pmethoddesc_import.FUNCTION.ORIGIN porigin_called n_receiver? poperand_selector])])',
 ]
 runner.CASES['retired-imported-trait-api-maker'] = trait
 
