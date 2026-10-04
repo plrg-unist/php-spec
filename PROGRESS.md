@@ -7,6 +7,42 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Early-eval declaration diagnostics236 now suspend authentic compilation at each
+publication, including generic warnings before class publication. Handler throws
+and exit retain later publications while skipping the unit body; user fatals stop
+compilation and retire its owners before shutdown. Pending-exception formatting
+preserves the primary compiler fatal through source writes, conditional class
+publication, throws, exit and nested hard eval/include compilation. Diagnostic
+arguments retain physical source provenance and callbacks retain actual caller
+scope/trace. Compact source plans, chronological prefixes and one real task owner
+authenticate the continuation; hidden wrapper/branch claims are rejected.
+Twenty-one distinct source agreements keep their separate966 through9b2 cuts;
+the affected nested/file source2 also passes at3bd68993a. Authored USERfatal48
+and independent pending65/handler36/Iterator28/nested42/Throwable30/formatter45
+pass at ea077. The corrected nested-fatal57 passes at3bd68993a. File-public43
+and history-retirement49 pass in strict production SL mode on semantic c9e6
+(private43b); their union retains all59 original file predicates.
+Equivalent call-admission deduplication at c9e6 retains the mandatory source
+history/function-table proof; a new coherent descriptor-forgery24 check passes.
+The maintained runner's optional `--sl` flag selects that mode only for the two
+file phases. Actual23c composition source2 at5cf39c0dd confirms live dollar-curly
+warning effects and later class publication before request destructors after exit.
+The final1d4f union preserves261 object-cast frame cleanup,265 callable receipts
+and267 keyword NEW source guards; these source2 results retain their5cf cutoff.
+One actual261 source at0ef99 confirms a fatal formatter's NaN object cast keeps
+its value while the recorded conversion warning stays suppressed.
+Original failures, AL timeouts and fixture corrections remain
+outside Git with no failed-run credit.
+[Contract and maintained tests](docs/semantics/ITERATORS.md).
+
+Accepted230 retains runtime/file prototype order, source erasure, direct
+restoration, duplicate notices and ReturnTypeWillChange. Runtime classes publish
+before callbacks; early file units publish fully before ordered delivery. Its
+source19/independent11/affected trace3 and four state phases53/35/25/23 retain
+their recorded cutoffs. Actual3b622 composition source3 at e1a654 retains physical
+trait diagnostics, live argument/display state and effectful internal defaults.
+The former four early-eval Unsupported controls had zero agreement credit.
+
 Ordinary named keyword NEW267 now resolves self/parent/static in the actual
 caller before class work and arguments. Inherited constructor entry uses its
 immediate owning caller; service-unit main code follows persistent scope entry
@@ -180,8 +216,8 @@ cleanup. Five exact source/profile comparisons, SL242, 24 syntax/encoding profil
 with320 checks and37 compiler/certificate premises pass atfa084. Actual256 parent
 preservation keeps243 modules without renewing those cuts. Original compiler and
 fixture parse stops stay zero-credit in the
-[ledger](coverage/semantics/dollar-curly-review.json). Five early-eval native pins
-remain required for the genuine partial-compilation continuation after236; wider
+[ledger](coverage/semantics/dollar-curly-review.json). The early-eval effects pin
+passes with236 at5cf39c0dd; four other native-only originals remain required. Wider
 interpolation and original non-object-cast/file-observer gaps remain open.
 
 Dynamic object `::class`256 evaluates one child and returns its real class name
@@ -305,22 +341,6 @@ Combined and first reduced coalesce CLI60 timeouts retain zero agreement. The
 [ledger](coverage/semantics/dimension-edit-review.json) keep original cuts and
 native prediction corrections. Nested unset and append are covered by255 above;
 wider memoized containers and other producers remain required.
-
-Iterator declaration notices230 follow actual source/internal prototype order,
-including source erasure, direct restoration, duplicate notices and the built-in
-ReturnTypeWillChange suppressor. Runtime classes publish before callbacks;
-early file units publish completely before ordered method/compiler warning
-delivery. Real caller scope/trace stays distinct from physical diagnostic origin.
-Live reporting, throwing-handler tails and method/constant fatal prefixes have
-19 authored agreements; independent source11 and affected trace3 pass at their
-separate cutoffs. Independent pending53/handler35/Iterator25/restored23 state
-checks pass at19dae, including source-ledger authority and actual owners. Four
-early-eval controls assert temporary Unsupported only; per-class eval callbacks
-and publication after handler throws are the immediate required follow-on.
-Actual3b622 composition source3 passes at e1a654: imported physical method
-diagnostics, live argument/display state and effectful internal default traces.
-The original recorder/transport failures and protocol timeouts remain preserved
-without agreement credit. [Contract and tests](docs/semantics/ITERATORS.md).
 
 Shutdown registration231 caches callable selection, private/rebound permission
 and copied arguments after all argument effects. Ordered callbacks run after
@@ -519,7 +539,7 @@ keys, assignment priority, covariance and the remaining throwing callback stages
 at284803284. Independent source1/protocol16 at the same cutoff confirms zero-argument
 Stringable default reception. Earlier results and original failures remain preserved.
 IteratorAggregate, ArrayAccess and remaining reference/ordinary object traversal
-follow the required early-eval diagnostic work. [Scope and boundaries](docs/semantics/ITERATORS.md).
+remain required after the early-eval diagnostic work. [Scope and boundaries](docs/semantics/ITERATORS.md).
 
 Direct missing `$GLOBALS[key]` R-fetches226 dispatch before their consumers and
 retain the original null through key/global mutation. Handler throws skip later
