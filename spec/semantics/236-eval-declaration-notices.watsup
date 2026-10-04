@@ -337,10 +337,20 @@ def $call_task_valid(S, EVAL_COMPILE_EXIT z) = ($eval_compile_exit_pending(S) /\
 rule PhpStep/eval-compile-exit-discard: S ~> $return_discard(S[.TODO = (EVAL_COMPILE_EXIT z) :: ptask_tail*], ptask)
   -- if S.TODO = (EVAL_COMPILE_EXIT z) :: ptask :: ptask_tail*
   -- if ~$eval_compile_resume_task(ptask)
-rule PhpStep/eval-compile-exit-frame: S ~> S_restored[.TODO = (EVAL_COMPILE_EXIT z) :: S_restored.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+dec $eval_compile_exit_frame_task(pstate) : ptask?
+def $eval_compile_exit_frame_task(S) = (EVAL_COMPILE_EXIT z)
   -- if S.TODO = [EVAL_COMPILE_EXIT z]
   -- if S.FRAMES =/= eps
+def $eval_compile_exit_frame_task(S) = (EVAL_COMPILE_FORMAT_EXIT z)
+  -- if S.TODO = [EVAL_COMPILE_FORMAT_EXIT z]
+  -- if S.FRAMES =/= eps
+def $eval_compile_exit_frame_task(S) = eps -- otherwise
+dec $eval_compile_exit_frame_restore(pstate) : pstate
+def $eval_compile_exit_frame_restore(S) = S_restored[.TODO = ptask :: S_restored.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+  -- if $eval_compile_exit_frame_task(S) = (ptask)
   -- if S_restored = $restore_frame(S)
+rule PhpStep/eval-compile-exit-frame: S ~> $eval_compile_exit_frame_restore(S)
+  -- if $eval_compile_exit_frame_task(S) =/= eps
 rule PhpStep/eval-compile-exit-pending: S ~> S[.TODO = (EVAL_COMPILE_RESUME pevalcompile[.PENDING = EXITED z]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (EVAL_COMPILE_EXIT z) :: (EVAL_COMPILE_RESUME pevalcompile) :: ptask_tail*
   -- if $eval_compile_cursor_valid(S, pevalcompile)
@@ -585,10 +595,6 @@ def $eval_compile_formatter_exit_task(ptask) = false -- otherwise
 rule PhpStep/eval-compile-format-exit-discard: S ~> $return_discard(S[.TODO = (EVAL_COMPILE_FORMAT_EXIT z) :: ptask_tail*], ptask)
   -- if S.TODO = (EVAL_COMPILE_FORMAT_EXIT z) :: ptask :: ptask_tail*
   -- if ~$eval_compile_formatter_exit_task(ptask)
-rule PhpStep/eval-compile-format-exit-frame: S ~> S_restored[.TODO = (EVAL_COMPILE_FORMAT_EXIT z) :: S_restored.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
-  -- if S.TODO = [EVAL_COMPILE_FORMAT_EXIT z]
-  -- if S.FRAMES =/= eps
-  -- if S_restored = $restore_frame(S)
 rule PhpStep/eval-compile-format-exit-finish: S ~> $eval_compile_fatal_finish($eval_compile_formatter_failure(S, $ptascii("UnwindExit"), n_root, $ptascii("Unknown"), 0), pevalcompilefatal, ptbytes)
   -- if S.TODO = (EVAL_COMPILE_FORMAT_EXIT z) :: (EVAL_COMPILE_FATAL pevalcompilefatal) :: ptask_tail*
   -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
