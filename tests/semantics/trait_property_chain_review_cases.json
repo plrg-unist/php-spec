@@ -1,5 +1,5 @@
 {
-  "native_profile": "Pinned PHP8.5.10 CLI NTS64; two actual254 source/consumer boundaries: quiet nullsafe chain and Stringable conversion under a pending handler exception. Native-only preparation; zero model credit.",
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; three actual254 source/consumer boundaries: quiet nullsafe chain, normal Stringable conversion, and conversion suppressed by a pending handler exception. Native-only preparation; zero model credit.",
   "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
   "cases": [
     {
@@ -23,6 +23,17 @@
       "exit_status": 0,
       "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-btra7v2h/report.json",
       "native_raw_sha256": "5bbf3dd92baa7d10d22e26b6a701254caa7b36cfd2eeda06e0e7181b4f422aa7"
+    },
+    {
+      "id": "normal-handler-resume-enters-stringable-property-conversion-body",
+      "source": "<?php class V implements Stringable{public function __toString():string{echo \"S;\";return \"new\";}}trait T{public static string $x=\"old\";}set_error_handler(function($n,$m){echo \"H;\";return true;});T::$x=new V;restore_error_handler();error_reporting(0);echo T::$x;",
+      "source_sha256": "a2c9f0f2397848e37f2454ef55ff5179815aca73ad138204a2c61d7b83c07c69",
+      "status": "normal",
+      "stdout_base64": "SDtTO25ldw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-ntfpda7g/report.json",
+      "native_raw_sha256": "44d7e9da2d65a6f90c10a3ce9da61cf042dd792e833b04eea702dc1083227330"
     }
   ]
 }
