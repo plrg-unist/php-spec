@@ -690,8 +690,7 @@ def $autoload_context_valid(S, pcallcontext) = true
   -- if pcallcontext.ARGC = 1 /\ pcallcontext.WRAPPER = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps
   -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
   -- if n_received = $call_received(1, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
-  -- if n_extra = $(1 - n_received)
-  -- if pcallcontext.EXTRA = [poperand][n_received:n_extra]
+  -- if (n_received = 0 /\ pcallcontext.EXTRA = [poperand]) \/ (n_received = 1 /\ pcallcontext.EXTRA = eps)
   -- if $call_sent_operands_valid(S, pcallcontext.TARGET, n_received, pcallcontext.EXTRA)
 def $error_context_kind(S, pcallcontext) = true -- if $autoload_context_kind(S, pcallcontext)
 def $error_context_valid(S, pcallcontext) = true -- if $autoload_context_valid(S, pcallcontext)
