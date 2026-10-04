@@ -288,7 +288,8 @@ def $consumer_producer_function((pmethodcapture), porigin) = (pmethodcapture.FUN
 def $consumer_producer_function(eps, porigin) = false
 def $consumer_producer_site((pmethodcapture), porigin?) = (pmethodcapture.CALLSITE = porigin?)
 def $consumer_producer_site(eps, porigin?) = true
-def $consumer_producer_internal(S, pcalltarget) = ($handler_method_tag(pcalltarget) \/ $consumer_producer_named(pcalltarget) \/ $consumer_string_target(S, pcalltarget))
+dec $consumer_destructor_target(pstate, pcalltarget) : bool
+def $consumer_producer_internal(S, pcalltarget) = ($handler_method_tag(pcalltarget) \/ $consumer_producer_named(pcalltarget) \/ $consumer_string_target(S, pcalltarget) \/ $consumer_destructor_target(S, pcalltarget))
   -- if $target_instance(pcalltarget) = eps
 def $consumer_producer_internal(S, pcalltarget) = true -- if $target_instance(pcalltarget) =/= eps
 def $consumer_string_target(S, METHOD_TARGET n porigin) = true

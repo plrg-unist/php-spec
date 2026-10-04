@@ -87,7 +87,16 @@ def run(match, exclude_matches, start_at, native_only, native_reports):
                   and nerr == row['stderr'].replace('{file}', str(source)).encode())
         result = {'id': row['id'], 'native': native, 'passed': passed}
         if passed and not native_only:
-            model = recorded([ROOT / 'bin/php-semantics', source, '--steps', '100000', '--timeout', '60'],
+            model_command = [ROOT / 'bin/php-semantics', source, '--steps', '100000', '--timeout', '60']
+            if 'request' in row:
+                request = dict(row['request'])
+                filename = base64.b64encode(os.fsencode(source)).decode()
+                request.update(file=filename, argv=[filename, *request.pop('args')])
+                context = directory / 'request.json'
+                context.write_text(json.dumps(request) + '\n')
+                model_command.extend(['--request-context', context])
+                result.update(request=request, request_scope=row['request_scope'])
+            model = recorded(model_command,
                              directory, 'model', environment, 75)
             try:
                 actual = json.loads((directory / 'model.stdout').read_bytes())
@@ -97,7 +106,15 @@ def run(match, exclude_matches, start_at, native_only, native_reports):
                 actual = {'runner_error': 'model result is not an object'}
             checked_model = (not model['timeout'] and not (directory / 'model.stderr').read_bytes()
                              and actual.get('frontend') == 'accepted' and actual.get('checked') == 'program')
-            if row.get('expected_unsupported'):
+            if row.get('expected_frontend_rejection'):
+                frontend = actual.get('frontend')
+                passed = (not model['timeout'] and not (directory / 'model.stderr').read_bytes()
+                          and model['exit'] == 1 and actual.get('status') == 'frontend_failure'
+                          and isinstance(frontend, dict) and frontend.get('category') == 'parser_rejection'
+                          and base64.b64decode(frontend.get('message', '')) == row['expected_frontend_rejection'].encode())
+                result['accepted_source_agreement'] = False
+                result['scope'] = 'explicit frontend rejection control'
+            elif row.get('expected_unsupported'):
                 passed = (checked_model and model['exit'] == 1 and actual.get('status') == 'unsupported'
                           and actual.get('reason') == row['expected_unsupported'])
                 result['accepted_source_agreement'] = False

@@ -115,6 +115,7 @@ dec $getclass_trace_operands(pnamedslot*) : poperand*
 dec $trace_context_location(pstate, pcallcontext, porigin) : (porigin, int)
 def $trace_context_location(S, pcallcontext, porigin) = (porigin, pcallcontext.LINE) -- otherwise
 dec $exception_warning_context(pstate, pcallcontext) : bool
+dec $destructor_context_kind(pstate, pcallcontext) : bool
 dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
 dec $default_internal_callback_context(pstate, pcallcontext) : bool
 def $default_internal_callback_context(S, pcallcontext) = false -- otherwise
@@ -136,6 +137,7 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
   -- if ~$default_internal_callback_context(S, pcallcontext) /\ ~$ordinary_internal_callback_context(S, pcallcontext)
   -- if $error_context_trigger(S, pcallcontext) = eps
   -- if ~$exception_warning_context(S, pcallcontext)
+  -- if ~$destructor_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
   -- if (porigin_trace, z_trace) = $trace_context_location(S, pcallcontext, porigin)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
