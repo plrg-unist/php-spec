@@ -133,5 +133,23 @@
     "stderr": "",
     "exit": 7,
     "status": "explicit_exit"
+  },
+  {
+    "id": "compound-error-handler-render-composition",
+    "source": "<?php class A{static function w($n,$m,$f,$l){echo \"W:\",$n,\":\",$f,\":\",$l,\";\";return true;}}class B extends A{}class E extends Exception{function __construct(){$this->message=[];}}function s(){echo \"S;\";}set_error_handler([\"B\",\"A::w\"]);register_shutdown_function(\"s\");throw new E;",
+    "source_sha256": "2132d6da51e07b9f6a7a2fa0c50f88d3bc96acc068b38f404589f7d34c0feb14",
+    "status": "php_error",
+    "exit": 255,
+    "stdout": "W:2:Unknown:0;S;",
+    "stderr": "Deprecated: Callables of the form [\"B\", \"A::w\"] are deprecated in {file} on line 1\nDeprecated: Callables of the form [\"B\", \"A::w\"] are deprecated in Unknown on line 0\nFatal error: Uncaught E: Array in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\n"
+  },
+  {
+    "id": "exception-variadic-view-during-shutdown",
+    "source": "<?php declare(strict_types=1);class E extends Exception{function __toString(){echo \"V;\";return \"text\";}}function a(){throw new E;}function h(string ...$v){echo func_num_args(),\":\",func_get_arg(0),\";\";}function s(){echo \"S;\";}set_exception_handler(\"h\");register_shutdown_function(\"a\");register_shutdown_function(\"s\");",
+    "source_sha256": "5737f78065e499c837b85420af535ddec6873cc48bd58d6c713c6b0d01600990",
+    "status": "ok",
+    "exit": 0,
+    "stdout": "V;1:text;S;",
+    "stderr": ""
   }
 ]
