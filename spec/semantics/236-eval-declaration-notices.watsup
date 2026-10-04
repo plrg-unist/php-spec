@@ -158,8 +158,8 @@ def $eval_compile_stop_result(S, pevalcompile) = $eval_compile_formatter_hard(S,
   -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= pevalcompile.PLAN.UNIT
 def $eval_compile_stop_result(S, pevalcompile) = $eval_compile_fatal_pending(S, pevalcompile) -- otherwise
 ;; A hard file compilation inside the source formatter also bails out to the
-;; already recorded primary fatal. Its own source segment still ends normally
-;; in the declaration ledger; only its compiling include frame is removed.
+;; already recorded primary fatal. Its source segment records its own hard
+;; cutoff in the ledger; only its compiling include frame is removed.
 def $eval_compile_declaration_stop(S, n) = $eval_compile_formatter_file_hard(S, pevalcompilefatal, pfilecontext, pfilecontext_tail*)
   -- if $iterator_notice_link_fatal(S.COMPLETION)
   -- if $file_binding_at(S.FILEBINDINGS, n) =/= eps
@@ -225,6 +225,19 @@ def $task_nodes(EVAL_COMPILE_END n) = eps
 def $eval_compile_task_cursors(EVAL_COMPILE_RESUME pevalcompile) = [pevalcompile]
 def $eval_compile_task_cursors(AT porigin ptask) = $eval_compile_task_cursors(ptask)
 def $eval_compile_task_cursors(ptask) = eps -- otherwise
+;; Compiler continuations are installed as plain tasks in their owning list.
+;; A branch or source wrapper cannot create, move or replay that continuation.
+def $eval_wrapped_marker(EVAL_COMPILE_RESUME pevalcompile) = true
+def $eval_wrapped_marker(EVAL_COMPILE_FATAL pevalcompilefatal) = true
+def $eval_wrapped_marker(EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender) = true
+def $eval_wrapped_marker(EVAL_COMPILE_EXIT z) = true
+def $eval_wrapped_marker(EVAL_COMPILE_FORMAT_EXIT z) = true
+def $eval_wrapped_marker(DECL_NOTICES pdeclnoticebatch) = true
+  -- if pdeclnoticebatch.KIND = NOTICE_EVAL n n_ordinal
+def $eval_wrapped_marker(DECL_NOTICE_RESUME pdeclnoticebatch) = true
+  -- if pdeclnoticebatch.KIND = NOTICE_EVAL n n_ordinal
+def $eval_wrapped_marker(ERROR_HANDLER_INVOKE perrorcall) = $eval_wrapped_marker(perrorcall.RESUME)
+def $eval_wrapped_marker(ERROR_HANDLER_RESULT perrorcall) = $eval_wrapped_marker(perrorcall.RESUME)
 def $eval_compile_tasks_cursors(eps) = eps
 def $eval_compile_tasks_cursors(ptask :: ptask_tail*) = $eval_compile_task_cursors(ptask) ++ $eval_compile_tasks_cursors(ptask_tail*)
 def $eval_compile_frames_cursors(eps) = eps
