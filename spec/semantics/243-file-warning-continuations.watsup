@@ -129,6 +129,15 @@ def $file_warning_remove(pfilecontext :: pfilecontext_tail*, n_nonce) = pfilecon
   -- if pfilecontext.NONCE =/= n_nonce
 def $return_discard(S, FILE_WARNING_PHASE n_nonce n_phase) = S[.FILECONTEXTS = $file_warning_remove(S.FILECONTEXTS, n_nonce)]
 def $error_read_discard(S, FILE_WARNING_PHASE n_nonce n_phase) = $return_discard(S, FILE_WARNING_PHASE n_nonce n_phase)
+;; exit drops one frame's TODO at a time; saved emitter markers remain live.
+dec $file_warning_exit_contexts(pfilecontext*, nat) : pfilecontext*
+def $file_warning_exit_contexts(eps, n_owner) = eps
+def $file_warning_exit_contexts(pfilecontext :: pfilecontext_tail*, n_owner) = $file_warning_exit_contexts(pfilecontext_tail*, n_owner)
+  -- if pfilecontext.OWNER = n_owner
+  -- if $file_warning_phase(pfilecontext.PHASE)
+def $file_warning_exit_contexts(pfilecontext :: pfilecontext_tail*, n_owner) = pfilecontext :: $file_warning_exit_contexts(pfilecontext_tail*, n_owner)
+  -- if pfilecontext.OWNER =/= n_owner \/ ~$file_warning_phase(pfilecontext.PHASE)
+def $file_exit_drop(S) = S[.FILECONTEXTS = $file_warning_exit_contexts(S.FILECONTEXTS, |S.FRAMES|)]
 
 ;; The pre-parser include/require frame has no operand argument in backtraces.
 def $file_trace_phase(FILE_WARNING_STREAM n_path* n_stream*) = true
