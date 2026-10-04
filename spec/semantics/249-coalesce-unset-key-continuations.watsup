@@ -155,6 +155,7 @@ def $key_unset_pending(S) = false -- otherwise
 def $key_unset_begin(S) = $key_unset_dispatch(S_array, pkeyread)
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
   -- if S.ORIGIN = (porigin)
+  -- if $key_edit_direct_base(S.BASE)
   -- if S.BASE = BASE_DIM pbase poperand z
   -- if S_saved = S[.TODO = UNSET_ARRAY :: (KEY_UNSET_FINISH porigin S.BASE) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S_found = $base_find(S_saved, pbase, z)
@@ -166,6 +167,7 @@ def $key_unset_begin(S) = $key_unset_dispatch(S_array, pkeyread)
 def $key_unset_begin(S) = $key_unset_value(S_array, pkeyread)
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
   -- if S.ORIGIN = (porigin)
+  -- if $key_edit_direct_base(S.BASE)
   -- if S.BASE = BASE_DIM pbase poperand z
   -- if S_saved = S[.TODO = UNSET_ARRAY :: (KEY_UNSET_FINISH porigin S.BASE) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S_found = $base_find(S_saved, pbase, z)

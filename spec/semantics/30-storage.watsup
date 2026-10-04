@@ -111,6 +111,7 @@ syntax pkeyphase = KEY_CV | KEY_NULL | KEY_FLOAT castnotice castnotice* | KEY_AR
 syntax pkeyread = { SITE porigin, GLOBAL bool, MODE pkeymode, INPUT poperand, VALUE pvalue, BASE pvalue, OWNERS pbase, LINE int, PHASE pkeyphase, KEY pkey, NAME nat* }
 syntax pkeywriter = { SITE porigin, TARGET porigin, TASK ptask, BASE pbase, RHS poperand, TEMP (porigin, nat)? }
 syntax pkeywrite = { READ pkeyread, PLACE plocation, RW bool }
+syntax pappendread = { WRITER pkeywriter, PLACE plocation, ARRAY nat, NAME ptbytes, LINE int }
 syntax perrorcall = { SITE porigin, LEVEL int, MESSAGE nat*, LINE int, EVENT pevent, CALLBACK pvalue, TARGET pcalltarget?, RESUME ptask }
 syntax pdeclnotice = { CLASS porigin, METHOD porigin, LINE int, MESSAGE nat* }
 syntax pdeclnoticeitem = METHOD_NOTICE pdeclnotice | COMPILER_NOTICE pldiagnostic
@@ -151,6 +152,7 @@ syntax ptask = TRAIT_PROPERTY_ABRUPT ptraitproperty nat | TRAIT_PROPERTY_WRITE p
   | KEY_READ_BASE pbase pkeymode | KEY_READ_DIM poperand int pkeymode | KEY_READ_GLOBAL poperand int pkeymode | KEY_READ_RESULT pkeyread | KEY_READ_FINISH porigin ptask
   | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_GLOBAL poperand int | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
   | KEY_COALESCE_RESULT pbase bool int | KEY_UNSET_RESULT pkeyread | KEY_UNSET_FINISH porigin pbase
+  | KEY_UNSET_BASE pbase bool | KEY_UNSET_DIM poperand int bool | KEY_UNSET_FETCH_RESULT pkeyread | KEY_UNSET_NULL_RESULT pkeyread | KEY_APPEND_RESULT pappendread
   | DEPRECATED_CONSTANT_RESULT pdeprecatedconstant | REPORTING_LONG_RESULT pconfigcall int
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
