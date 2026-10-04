@@ -681,7 +681,8 @@ def $destructor_constructor_marker(ptask*, n) = false -- otherwise
 def $destructor_constructor_return(S) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = METHOD_TARGET n porigin
-  -- if $ptlc(pcallcontext.NAME) = $ptascii("__construct")
+  -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__construct")
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if $destructor_constructor_marker(pframe.TODO, n)
   -- if $ctor_result_valid($restore_frame_raw(S), n)
