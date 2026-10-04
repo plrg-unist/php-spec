@@ -9,7 +9,10 @@ dec $source_registration_valid(pstate, ppstate) : bool
 def $source_registration_valid(S, P) = ($(P.FOLD.SOURCE.ID > 0) /\ $source_unit(S.SOURCES, P.FOLD.SOURCE.ID) = eps /\ $sourcefile_count(S.FILES, P.FOLD.SOURCE.ID) = 1 /\ $source_filename($call_sourcefile(S.FILES, PORIGIN P.FOLD.SOURCE.ID eps)) /\ P.FOLD.FILE = ($call_sourcefile(S.FILES, PORIGIN P.FOLD.SOURCE.ID eps)) /\ P.LOCATION.FILE = $call_sourcefile(S.FILES, PORIGIN P.FOLD.SOURCE.ID eps) /\ P.LOCATION.UNIT = P.FOLD.SOURCE.ID)
 dec $compile_source_append(pstate, ppstate) : pstate
 dec $iterator_notice_work(ptask*, ptask*) : ptask*
-def $compile_source_append(S, P) = S_compiled[.TODO = $iterator_notice_work(S_compiled.TODO, S.TODO)][.ERRORORIGIN = $compiled_error_origin(S_compiled.ERRORORIGIN, S_compiled.COMPLETION, P.FOLD.SOURCE.ID)]
+dec $eval_compile_work(ptask*, ptask*) : ptask*
+dec $compile_source_work(pstate, nat, ptask*) : ptask*
+def $compile_source_work(S, n, ptask*) = $eval_compile_work(S.TODO, ptask*) -- otherwise
+def $compile_source_append(S, P) = S_compiled[.TODO = $compile_source_work(S_compiled, P.FOLD.SOURCE.ID, S.TODO)][.ERRORORIGIN = $compiled_error_origin(S_compiled.ERRORORIGIN, S_compiled.COMPLETION, P.FOLD.SOURCE.ID)]
   -- if S.COMPLETION = NORMAL
   -- if $source_registration_valid(S, P)
   -- if S_compiled = $scope_check($compile_source_ready(S, P))

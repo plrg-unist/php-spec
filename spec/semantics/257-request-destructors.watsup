@@ -219,6 +219,7 @@ def $destruction_prune(S, pnode_live*) = $prune_live($destruction_store_drop(S_n
   -- if ~$destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
 
 def $destructor_ready(S) = true
+  -- if ~$eval_compile_exit_pending(S) \/ ~$exit_completion(S.COMPLETION)
   -- if S.DESTRUCTION.PHASE = DESTRUCTION_PENDING
   -- if $destructor_classes(S.CLASSES)
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE \/ (S.SHUTDOWN.PHASE = SHUTDOWN_PENDING /\ S.SHUTDOWN.ENTRIES = eps)
@@ -227,6 +228,7 @@ def $destructor_ready(S) = true
   -- if S.COMPILESTOP \/ S.FRAMES = eps
   -- if ~$shutdown_render_ready(S)
 def $destructor_ready(S) = true
+  -- if ~$eval_compile_exit_pending(S) \/ ~$exit_completion(S.COMPLETION)
   -- if $destructor_active(S)
   -- if S.COMPLETION =/= NORMAL /\ $shutdown_terminal(S.COMPLETION)
   -- if S.COMPILESTOP \/ S.FRAMES = eps
