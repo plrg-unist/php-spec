@@ -1,0 +1,86 @@
+;; A weak BYREF receive writes the captured backing value after __toString,
+;; without rechecking property sources added by the callback. This certificate
+;; validates that exact value only; ordinary writes and binds still check types.
+;; It is nonowning and independent of reference-return conversion authority.
+dec $parameter_backing_at(pparameterbacking*, nat) : pparameterbacking?
+def $parameter_backing_at(eps, n_cell) = eps
+def $parameter_backing_at(pparameterbacking :: pparameterbacking_tail*, n_cell) = (pparameterbacking)
+  -- if pparameterbacking.CELL = n_cell
+def $parameter_backing_at(pparameterbacking :: pparameterbacking_tail*, n_cell) = $parameter_backing_at(pparameterbacking_tail*, n_cell)
+  -- if pparameterbacking.CELL =/= n_cell
+dec $parameter_backing_remove(pparameterbacking*, nat) : pparameterbacking*
+def $parameter_backing_remove(eps, n_cell) = eps
+def $parameter_backing_remove(pparameterbacking :: pparameterbacking_tail*, n_cell) = $parameter_backing_remove(pparameterbacking_tail*, n_cell)
+  -- if pparameterbacking.CELL = n_cell
+def $parameter_backing_remove(pparameterbacking :: pparameterbacking_tail*, n_cell) = pparameterbacking :: $parameter_backing_remove(pparameterbacking_tail*, n_cell)
+  -- if pparameterbacking.CELL =/= n_cell
+dec $parameter_backing_source(pstate, pparameterbacking) : bool
+def $parameter_backing_source(S, pparameterbacking) = true
+  -- if $function_at($all_functions(S), pparameterbacking.FUNCTION) = (pfunction)
+  -- if $(pparameterbacking.INDEX < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[pparameterbacking.INDEX]
+  -- if psparam.BYREF
+  -- if "string" <- $ptmasks(psparam.TYPE)
+  -- if porigin_site = $default_parameter_origin(S, pparameterbacking.FUNCTION, pparameterbacking.INDEX)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NParam phpType14 phpType24 phpType18 (BOOLEAN true) (BOOLEAN false) phpType10 phpType5 phpType37 metadata)
+  -- if $parameter_string_site_valid(S, porigin_site, pparameterbacking.LINE)
+  -- if pparameterbacking.LINE = $default_parameter_line(S, pparameterbacking.FUNCTION, pparameterbacking.INDEX)
+def $parameter_backing_source(S, pparameterbacking) = false -- otherwise
+dec $parameter_backing_row_valid(pstate, pparameterbacking) : bool
+def $parameter_backing_row_valid(S, pparameterbacking) = true
+  -- if (HCELL pparameterbacking.CELL) <- S.ALLOCATIONS
+  -- if pparameterbacking.CELL <- S.REFCELLS
+  -- if $(pparameterbacking.CELL < |S.STORE|)
+  -- if S.STORE[pparameterbacking.CELL] = DEFINED (PSTRING pparameterbacking.VALUE)
+  -- if $parameter_backing_source(S, pparameterbacking)
+def $parameter_backing_row_valid(S, pparameterbacking) = false -- otherwise
+dec $parameter_backing_rows_valid(pstate, pparameterbacking*) : bool
+def $parameter_backing_rows_valid(S, eps) = true
+def $parameter_backing_rows_valid(S, pparameterbacking :: pparameterbacking_tail*) = ($parameter_backing_row_valid(S, pparameterbacking) /\ $parameter_backing_at(pparameterbacking_tail*, pparameterbacking.CELL) = eps /\ $parameter_backing_rows_valid(S, pparameterbacking_tail*))
+def $parameter_backings_valid(S) = $parameter_backing_rows_valid(S, S.PARAMETERBACKINGS)
+def $parameter_backing_value(S, n_cell, PSTRING n_text*) = true
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = (pparameterbacking)
+  -- if pparameterbacking.VALUE = n_text*
+  -- if $parameter_backing_row_valid(S, pparameterbacking)
+def $parameter_backing_value(S, n_cell, pvalue) = false -- otherwise
+def $parameter_backing_clear(S, n_cell) = S[.PARAMETERBACKINGS = $parameter_backing_remove(S.PARAMETERBACKINGS, n_cell)]
+def $parameter_backings_prune(eps, pnode*) = eps
+def $parameter_backings_prune(pparameterbacking :: pparameterbacking_tail*, pnode*) = pparameterbacking :: $parameter_backings_prune(pparameterbacking_tail*, pnode*)
+  -- if (HCELL pparameterbacking.CELL) <- pnode*
+def $parameter_backings_prune(pparameterbacking :: pparameterbacking_tail*, pnode*) = $parameter_backings_prune(pparameterbacking_tail*, pnode*)
+  -- if ~((HCELL pparameterbacking.CELL) <- pnode*)
+def $parameter_backing_admission(S, pparameterstring, n_text*) = true
+  -- if S.TODO = [PARAMETER_STRING_RESULT pparameterstring]
+  -- if S.COMPLETION = NORMAL
+  -- if $parameter_string_scope_valid(S, pparameterstring)
+  -- if S.RESULT = KNOWN (PSTRING n_text*)
+  -- if pparameterstring.CELL <- S.REFCELLS
+  -- if $propref_at(S.PROPREFS, pparameterstring.CELL) = (ppropref)
+  -- if $parameter_backing_source(S, {FUNCTION pparameterstring.FUNCTION, INDEX pparameterstring.INDEX, CELL pparameterstring.CELL, LINE pparameterstring.LINE, VALUE n_text*})
+def $parameter_backing_admission(S, pparameterstring, n_text*) = false -- otherwise
+def $parameter_backing_write(S, pparameterstring, n_text*) = S[.STORE = $set_cell(S.STORE, pparameterstring.CELL, DEFINED (PSTRING n_text*))][.PARAMETERBACKINGS = {FUNCTION pparameterstring.FUNCTION, INDEX pparameterstring.INDEX, CELL pparameterstring.CELL, LINE pparameterstring.LINE, VALUE n_text*} :: $parameter_backing_remove(S.PARAMETERBACKINGS, pparameterstring.CELL)]
+  -- if $parameter_backing_admission(S, pparameterstring, n_text*)
+def $parameter_backing_write(S, pparameterstring, n_text*) = S[.COMPLETION = UNSUPPORTED "invalid parameter backing conversion"]
+  -- if ~$parameter_backing_admission(S, pparameterstring, n_text*)
+
+;; A later exact receive checks the value but does not assign it again. A
+;; redundant ordinary write would incorrectly recheck callback-added sources.
+def $parameter_backing_receive_exact(S) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [TYPE_RECEIVE porigin n]
+  -- if $typed_receive_valid(S, porigin, n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n < pcallcontext.ARGC)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+  -- if psparam.BYREF
+  -- if $parameter_string_site_valid(S, $default_parameter_origin(S, porigin, n), $default_parameter_line(S, porigin, n))
+  -- if $lookup(S.ENV, psparam.NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $parameter_backing_value(S, n_cell, pvalue)
+  -- if $typed_parameter_conversion(S, psparam, pvalue) = TYPEVALUE pvalue
+def $parameter_backing_receive_exact(S) = false -- otherwise
+rule PhpStep/parameter-backing-receive-exact: S ~> S[.TODO = $default_next(S, pfunction, $(n + 1))][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $parameter_backing_receive_exact(S)
+  -- if S.TODO = [TYPE_RECEIVE porigin n]
+  -- if $function_at($all_functions(S), porigin) = (pfunction)

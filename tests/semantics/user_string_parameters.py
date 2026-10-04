@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Weak Stringable parameter reception; new property sources stay explicit."""
+"""Weak Stringable reception and captured reference backing-value conversion."""
 import argparse
 import base64
 import hashlib
@@ -25,6 +25,11 @@ CASES = {
     'inherited-named-default': b'<?php class A{function __toString(){echo __CLASS__,"/",static::class,"/",func_num_args(),"|";return "x";}}class B extends A{}class C{public static function take(string $s,int $n=5){echo __CLASS__,"/",static::class,"/",func_num_args(),"|",$s,"|",$n;}}class D extends C{}D::take(s:new B);',
     'same-site-reentry': b'<?php class S{public static int $n=0;function __toString(){echo "S",func_num_args(),"|";if(self::$n===0){self::$n=1;take($this);}return "s";}}function take(string $s){echo "O",func_num_args(),"|",$s,"|";}take(new S);',
     'new-property-source-stop': b'<?php class C{public static object $o;}class S{function __toString(){echo "T",func_num_args(),"|";global $v;C::$o=&$v;return "s";}}function take(string &$s){echo "F",func_num_args(),"|",$s;} $v=new S;take($v);echo "|",$v;',
+    'backing-static-lifecycle': b'<?php class C{public static object $o;}class S{function __toString(){echo "T",func_num_args(),"|";global $v;C::$o=&$v;return "v\\0raw";}}function take(string &$a,string &$b){echo "F",func_num_args(),"|",$a,"|",$b,"|",func_get_arg(0),"|",func_get_arg(1),"|";try{$b="body";}catch(TypeError $e){echo "D|";}}function later(string &$s){echo "L",func_num_args(),"|",$s,"|";try{$s="body";}catch(TypeError $e){echo "D|";}}function value(string $s){}$v=new S;take($v,$v);later($v);echo "P|";$v=new stdClass;echo "O|";$other=new stdClass;C::$o=&$other;$v=[];echo "A|";unset($v);echo "Z";',
+    'backing-source-detached': b'<?php class C{public static object $o;}class S{function __toString(){echo "T",func_num_args(),"|";global $v;C::$o=&$v;$other=new stdClass;C::$o=&$other;return "detached";}}function take(string &$s){echo "F",func_num_args(),"|",$s;} $v=new S;take($v);echo "|",C::$o instanceof stdClass?"object":"other"; $v=[];echo "|array";',
+    'backing-global-rebound': b'<?php class C{public static object $o;}class S{function __toString(){echo "T",func_num_args(),"|";global $v;C::$o=&$v;$other=new stdClass;$GLOBALS["v"]=&$other;return "rebound";}}function take(string &$s){echo "F",func_num_args(),"|",$s,"|";} $v=new S;take($v);echo "R|",$v instanceof stdClass?"object":"other","|",C::$o,"|";$other=new stdClass;C::$o=&$other;echo "Z";',
+    'backing-same-receiver-reentry': b'<?php class C{public static object $a;public static object $b;}class S{public static int $n=0;function __toString(){echo "T",func_num_args(),"|";global $x,$y;if(self::$n===0){self::$n=1;C::$a=&$x;take($y);}else{C::$b=&$y;}return "s";}}function take(string &$s){echo "F",func_num_args(),"|",$s,"|";} $holder=new S;$x=$holder;$y=$holder;take($x);echo $x,"|",$y;',
+    'backing-attach-throw': b'<?php class C{public static object $o;}class S{function __toString(){echo "T",func_num_args(),"|";global $v;C::$o=&$v;$v=new stdClass;throw new Exception("stop");}}function take(string &$s){echo "BAD";} $v=new S;try{take($v);}catch(Exception $e){echo "E:",$e->getMessage(),"|",$e->getPrevious()===null?"none":"previous","|";}echo $v instanceof stdClass?"object":"other","|",C::$o instanceof stdClass?"object":"other","|";try{$v=[];}catch(TypeError $e){echo "D|";}$other=new stdClass;C::$o=&$other;$v=[];echo "array";',
     'constant-closure-parameter': b'<?php class A{const F=static function(string $s){echo __CLASS__,"/",static::class,"/",func_num_args(),"|",$s,"|",func_get_arg(0);};}class B extends A{}class S{function __toString(){echo "T",func_num_args(),"|";return "v\\0raw";}}$f=B::F;$f(new S);unset($f);',
     'nonpublic-callable-priority': b'<?php class H{protected function __invoke(){echo "I",func_num_args(),"|";}public function __toString():string{echo "T",func_num_args(),"|";return "v";}}function pick(callable|string $f){$f();}function text(string $s){echo "S",func_num_args(),"|",$s;}$h=new H;pick($h);text($h);',
 }
@@ -41,6 +46,11 @@ EXPECTED = {
     'inherited-named-default': b'A/B/0|C/D/1|x|5',
     'same-site-reentry': b'S0|S0|O1|s|O1|s|',
     'new-property-source-stop': b'T0|F1|s|s',
+    'backing-static-lifecycle': b'T0|F2|v\0raw|v\0raw|v\0raw|v\0raw|D|L1|v\0raw|D|P|O|A|Z',
+    'backing-source-detached': b'T0|F1|detached|object|array',
+    'backing-global-rebound': b'T0|F1|rebound|R|object|rebound|Z',
+    'backing-same-receiver-reentry': b'T0|T0|F1|s|F1|s|s|s',
+    'backing-attach-throw': b'T0|E:stop|none|object|object|D|array',
     'constant-closure-parameter': b'T0|A/A/1|v\0raw|v\0raw',
     'nonpublic-callable-priority': b'I0|T0|S1|v',
 }
@@ -52,29 +62,6 @@ def sha(path):
 
 def inputs(freeze=None):
     return cross.snapshot(freeze)
-
-
-def unsupported_source(directory, path):
-    native = driver.process([str(ROOT / '.tools/php/bin/php'), '-n', *driver.types.FLAGS,
-                             str(path)], directory / 'native', 30, directory)
-    assert native.returncode == 0 and not native.stderr
-    assert native.stdout == EXPECTED['new-property-source-stop']
-    facts = {'version': 2, 'main': driver.b64(os.fsencode(path)),
-             'cwd': driver.b64(os.fsencode(directory)), 'include_path': driver.b64(b'.:'),
-             'entries': [], 'chdir_entries': []}
-    facts_path = directory / 'snapshot.json'
-    facts_path.write_text(json.dumps(facts, sort_keys=True) + '\n')
-    model = driver.process([str(ROOT / 'bin/php-semantics'), str(path), '--file-snapshot',
-        str(facts_path), '--steps', '100000', '--timeout', '60'], directory / 'model', 90, directory)
-    assert model.returncode == 1 and not model.stderr
-    outcome = json.loads(model.stdout)
-    assert outcome['frontend'] == 'accepted' and outcome['checked'] == 'program'
-    assert outcome['status'] == 'unsupported'
-    assert outcome['reason'] == 'parameter string conversion gained property type source'
-    assert outcome['diagnostic'] is None
-    assert base64.b64decode(outcome['stdout'], validate=True) == b'T0|'
-    assert not base64.b64decode(outcome['stderr'], validate=True)
-    return {'status': outcome['status'], 'reason': outcome['reason'], 'semantic_agreement': False}
 
 
 def nonpublic_source(directory, path):
@@ -121,10 +108,7 @@ def main():
             path = directory / 'source.php'; path.write_bytes(CASES[name])
             row = {'id': name, 'source_sha256': sha(path), 'completed': False, 'passed': False}
             report['records'].append(row)
-            if name == 'new-property-source-stop':
-                row['observation'] = unsupported_source(directory, path)
-                report['unsupported_controls'] += 1
-            elif name == 'nonpublic-callable-priority':
+            if name == 'nonpublic-callable-priority':
                 row['observation'] = nonpublic_source(directory, path)
                 report['semantic_agreements'] += 1
             else:

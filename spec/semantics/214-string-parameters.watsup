@@ -124,8 +124,16 @@ rule PhpStep/parameter-string-store: S ~> $write_cell_checked(S, pparameterstrin
   -- if S.RESULT = KNOWN (PSTRING n_text*)
   -- if $propref_at(S.PROPREFS, pparameterstring.CELL) = eps
   -- if $function_at($all_functions(S), pparameterstring.FUNCTION) = (pfunction)
-rule PhpStep/parameter-string-new-source: S ~> S[.COMPLETION = UNSUPPORTED "parameter string conversion gained property type source"]
+rule PhpStep/parameter-string-new-source: S ~> $parameter_backing_write(S, pparameterstring, n_text*)[.TODO = $default_next(S, pfunction, $(pparameterstring.INDEX + 1))][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = [PARAMETER_STRING_RESULT pparameterstring]
   -- if $parameter_string_scope_valid(S, pparameterstring)
   -- if S.RESULT = KNOWN (PSTRING n_text*)
   -- if $propref_at(S.PROPREFS, pparameterstring.CELL) = (ppropref)
+  -- if $parameter_backing_admission(S, pparameterstring, n_text*)
+  -- if $function_at($all_functions(S), pparameterstring.FUNCTION) = (pfunction)
+rule PhpStep/parameter-string-new-source-invalid: S ~> S[.COMPLETION = UNSUPPORTED "invalid parameter backing conversion"]
+  -- if S.TODO = [PARAMETER_STRING_RESULT pparameterstring]
+  -- if $parameter_string_scope_valid(S, pparameterstring)
+  -- if S.RESULT = KNOWN (PSTRING n_text*)
+  -- if $propref_at(S.PROPREFS, pparameterstring.CELL) = (ppropref)
+  -- if ~$parameter_backing_admission(S, pparameterstring, n_text*)

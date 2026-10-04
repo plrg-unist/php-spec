@@ -11,7 +11,9 @@ from recorded_worker import Worker
 from user_string_parameters import CASES, EXPECTED, ROOT, inputs, sha
 import typed_static_invoke_set_protocol as driver
 
-STAGES = ['free-reference-mutation', 'same-site-reentry', 'conversion-throw', 'constant-closure-parameter']
+STAGES = ['free-reference-mutation', 'same-site-reentry', 'conversion-throw', 'constant-closure-parameter',
+          'backing-static-lifecycle', 'backing-global-rebound', 'backing-same-receiver-reentry',
+          'backing-attach-throw']
 PREFIX = r'''
 dec $parameter_protocol_output(pevent*) : ptbytes
 dec $parameter_protocol_is_output(pevent) : bool
@@ -37,6 +39,22 @@ def $parameter_protocol_phase(S,4) = true
   -- if $parameter_protocol_phase(S,1)
   -- if S.FRAMES = pframe_new :: pframe_converter :: pframe_old :: pframe_tail*
   -- if pframe_old.TODO = [STRINGIFY_RESULT n_old porigin_site z, PARAMETER_STRING_RESULT pparameterstring_old]
+def $parameter_protocol_phase(S,5) = true
+  -- if S.TODO = [TYPE_RECEIVE porigin 0]
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.NAME = $ptascii("later")
+def $parameter_protocol_phase(S,6) = true
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $parameter_protocol_output(S.EVENTS) = $base64("VDB8RjJ8dgByYXd8dgByYXd8dgByYXd8dgByYXd8RHxMMXx2AHJhd3xEfFB8")
+def $parameter_protocol_phase(S,7) = true
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $parameter_protocol_output(S.EVENTS) = $base64("VDB8RjJ8dgByYXd8dgByYXd8dgByYXd8dgByYXd8RHxMMXx2AHJhd3xEfFB8T3w=")
+def $parameter_protocol_phase(S,8) = true
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $parameter_protocol_output(S.EVENTS) = $ptascii("T0|F1|rebound|")
 def $parameter_protocol_phase(S,n) = false -- otherwise
 dec $parameter_protocol_seek(pstate,nat,nat) : pstate
 def $parameter_protocol_seek(S,n_phase,n) = S
@@ -75,7 +93,153 @@ def terminal(parent, expected):
             *valid('S_done')]
 
 
+def step(parent, state):
+    return [state + '_found = $drive_steps(' + parent + ',1)',
+            state + '_found.COMPLETION = BUDGET',
+            state + ' = ' + state + '_found[.COMPLETION = NORMAL]']
+
+
+def backing_checks(initial, name):
+    text = ('$base64("dgByYXc=")' if name == 'backing-static-lifecycle' else
+            '$ptascii("rebound")' if name == 'backing-global-rebound' else '$ptascii("s")')
+    clauses = ['S_initial = ' + initial]
+    if name == 'backing-same-receiver-reentry':
+        return clauses + [*seek('S_initial', 'S_nested', 4),
+            'S_nested.FRAMES = pframe_new :: pframe_converter :: pframe_old :: pframe_tail*',
+            'pframe_new.TODO = [STRINGIFY_RESULT n_object porigin_site z,PARAMETER_STRING_RESULT pparameterstring_new]',
+            'pframe_old.TODO = [STRINGIFY_RESULT n_object porigin_site z,PARAMETER_STRING_RESULT pparameterstring_old]',
+            'pparameterstring_new.FUNCTION = pparameterstring_old.FUNCTION /\\ pparameterstring_new.INDEX = pparameterstring_old.INDEX',
+            'pparameterstring_new.CELL =/= pparameterstring_old.CELL /\\ pparameterstring_new.OBJECT = pparameterstring_old.OBJECT',
+            'S_nested.PARAMETERBACKINGS = eps /\\ S_nested.REFCOERCIONS = eps',
+            '$parameter_string_scope_valid(S_nested,pparameterstring_new)',
+            '$parameter_string_scope_valid($parameter_string_frame_scope(S_nested,pframe_old,pframe_tail*),pparameterstring_old)',
+            *valid('S_nested'), *seek('S_nested', 'S_result', 2),
+            'S_result.TODO = [PARAMETER_STRING_RESULT pparameterstring_new]',
+            'S_result.RESULT = KNOWN (PSTRING $ptascii("s"))',
+            '$parameter_backing_admission(S_result,pparameterstring_new,$ptascii("s"))',
+            '~$parameter_backing_admission(S_result,pparameterstring_old,$ptascii("s"))',
+            'S_mixed = S_result[.TODO = [PARAMETER_STRING_RESULT pparameterstring_new[.CELL = pparameterstring_old.CELL]]]',
+            '~$parameter_backing_admission(S_mixed,pparameterstring_new[.CELL = pparameterstring_old.CELL],$ptascii("s"))',
+            '~$call_descriptors_valid(S_mixed)',
+            *valid('S_result'), *step('S_result', 'S_inner'),
+            '$parameter_backing_at(S_inner.PARAMETERBACKINGS,pparameterstring_new.CELL) = (pparameterbacking_new)',
+            '$parameter_backing_at(S_inner.PARAMETERBACKINGS,pparameterstring_old.CELL) = eps',
+            'pparameterbacking_new.FUNCTION = pparameterstring_new.FUNCTION /\\ pparameterbacking_new.VALUE = $ptascii("s")',
+            *valid('S_inner'), *terminal('S_inner', EXPECTED[name]),
+            '$parameter_backing_at(S_done.PARAMETERBACKINGS,pparameterstring_new.CELL) = (pparameterbacking_new)',
+            '$parameter_backing_at(S_done.PARAMETERBACKINGS,pparameterstring_old.CELL) = (pparameterbacking_old)',
+            'pparameterbacking_old.FUNCTION = pparameterstring_old.FUNCTION /\\ pparameterbacking_old.VALUE = $ptascii("s")',
+            '|S_done.PARAMETERBACKINGS| = 2 /\\ S_done.REFCOERCIONS = eps',
+            'S_done.STORE[pparameterstring_new.CELL] = DEFINED (PSTRING $ptascii("s"))',
+            'S_done.STORE[pparameterstring_old.CELL] = DEFINED (PSTRING $ptascii("s"))',
+            '$heap_count(HCELL pparameterstring_new.CELL,$heap_graph(S_done).ROOTS) = 2 /\\ $heap_owners($heap_graph(S_done),HCELL pparameterstring_new.CELL) = 2',
+            '$heap_count(HCELL pparameterstring_old.CELL,$heap_graph(S_done).ROOTS) = 2 /\\ $heap_owners($heap_graph(S_done),HCELL pparameterstring_old.CELL) = 2',
+            '$heap_count(HOBJECT n_object,$heap_graph(S_done).ROOTS) = 0 /\\ $heap_owners($heap_graph(S_done),HOBJECT n_object) = 1']
+    clauses += [*seek('S_initial', 'S_begin', 0), *seek('S_begin', 'S_entered', 1),
+        'S_entered.CURRENT = (pcallcontext_converter)',
+        'S_entered.FRAMES = pframe_receive :: pframe_tail*',
+        'pframe_receive.TODO = [STRINGIFY_RESULT n_object porigin_site z,PARAMETER_STRING_RESULT pparameterstring]',
+        'pcallcontext_converter.ARGC = 0 /\\ pcallcontext_converter.RECEIVER = (n_object)',
+        '$parameter_string_scope_valid(S_entered,pparameterstring)', *valid('S_entered')]
+    if name == 'backing-attach-throw':
+        return clauses + [*seek('S_entered', 'S_throw', 3),
+            'S_throw.TODO = [THROW_SEARCH n_throw,STRINGIFY_RESULT n_object porigin_site z,PARAMETER_STRING_RESULT pparameterstring]',
+            'S_throw.OBJECTS[n_throw] = THROWABLE pthrowable',
+            'pthrowable.KIND = "Exception" /\\ $throwable_previous_id(S_throw,n_throw) = eps',
+            'S_throw.STORE[pparameterstring.CELL] = DEFINED (POBJECT n_replacement)',
+            'n_object =/= n_replacement',
+            '$propref_at(S_throw.PROPREFS,pparameterstring.CELL) = (ppropref)',
+            'S_throw.CLASSSTATICS = [pclassstatic]',
+            'pclassstatic.STATE = PROP_VALUE (ALIAS pparameterstring.CELL)',
+            'ppropref.SOURCES = [CLASS_PROP_SOURCE pclassstatic.DECL]',
+            'S_throw.PARAMETERBACKINGS = eps /\\ S_throw.REFCOERCIONS = eps',
+            '~$parameter_backing_admission(S_throw,pparameterstring,$ptascii("s"))',
+            '~$parameter_backing_receive_exact(S_throw)',
+            *valid('S_throw'), *terminal('S_throw', EXPECTED[name]),
+            'S_done.PARAMETERBACKINGS = eps /\\ S_done.REFCOERCIONS = eps',
+            '~((HOBJECT n_object) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_replacement) <- S_done.ALLOCATIONS)',
+            '$lookup(S_done.ENV,$ptascii("v")) = (pparameterstring.CELL)',
+            'S_done.STORE[pparameterstring.CELL] = DEFINED (PARRAY n_array)',
+            '$propref_at(S_done.PROPREFS,pparameterstring.CELL) = eps',
+            '$heap_count(HCELL pparameterstring.CELL,$heap_graph(S_done).ROOTS) = 1 /\\ $heap_owners($heap_graph(S_done),HCELL pparameterstring.CELL) = 1']
+    clauses += [*seek('S_entered', 'S_result', 2),
+        'S_result.TODO = [PARAMETER_STRING_RESULT pparameterstring]',
+        'S_result.RESULT = KNOWN (PSTRING ' + text + ')',
+        'S_result.PARAMETERBACKINGS = eps /\\ S_result.REFCOERCIONS = eps',
+        '$parameter_backing_admission(S_result,pparameterstring,' + text + ')',
+        '~$parameter_backing_admission(S_result[.COMPLETION = THROWN "Exception" $ptascii("stop") 1],pparameterstring,' + text + ')',
+        '~$parameter_backing_admission(S_result,pparameterstring,$ptascii("forged"))',
+        '$propref_at(S_result.PROPREFS,pparameterstring.CELL) = (ppropref)',
+        'S_result.CLASSSTATICS = [pclassstatic]',
+        'pclassstatic.STATE = PROP_VALUE (ALIAS pparameterstring.CELL)',
+        'ppropref.SOURCES = [CLASS_PROP_SOURCE pclassstatic.DECL]',
+        *valid('S_result'), *step('S_result', 'S_stored'),
+        'pparameterbacking = {FUNCTION pparameterstring.FUNCTION, INDEX pparameterstring.INDEX, CELL pparameterstring.CELL, LINE pparameterstring.LINE, VALUE ' + text + '}',
+        'S_stored.PARAMETERBACKINGS = [pparameterbacking] /\\ S_stored.REFCOERCIONS = eps',
+        'S_stored.STORE[pparameterstring.CELL] = DEFINED (PSTRING ' + text + ')',
+        '$parameter_backing_row_valid(S_stored,pparameterbacking)',
+        '$parameter_backing_value(S_stored,pparameterstring.CELL,PSTRING ' + text + ')',
+        '~$parameter_backing_value(S_stored,pparameterstring.CELL,PSTRING $ptascii("forged"))',
+        '~$parameter_backing_row_valid(S_stored,pparameterbacking[.LINE = $(pparameterbacking.LINE + 1)])',
+        '~$parameter_backing_row_valid(S_stored,pparameterbacking[.CELL = $(|S_stored.STORE| + 1)])',
+        '~$parameter_backings_valid(S_stored[.PARAMETERBACKINGS = [pparameterbacking,pparameterbacking]])',
+        '~$class_state_valid(S_stored[.PARAMETERBACKINGS = eps])',
+        '~$parameter_backings_valid(S_stored[.SOURCES = eps])',
+        '~((HOBJECT n_object) <- S_stored.ALLOCATIONS)', *valid('S_stored')]
+    if name == 'backing-global-rebound':
+        return clauses + [*seek('S_stored', 'S_post', 8),
+            'S_post.CURRENT = eps /\\ S_post.FRAMES = eps /\\ S_post.HELD = eps',
+            '$lookup(S_post.ENV,$ptascii("v")) = (n_global)',
+            'n_global =/= pparameterstring.CELL',
+            'S_post.STORE[n_global] = DEFINED (POBJECT n_other)',
+            'S_post.PARAMETERBACKINGS = [pparameterbacking]',
+            'S_post.STORE[pparameterstring.CELL] = DEFINED (PSTRING ' + text + ')',
+            '$heap_count(HCELL pparameterstring.CELL,$heap_graph(S_post).ROOTS) = 1 /\\ $heap_owners($heap_graph(S_post),HCELL pparameterstring.CELL) = 1',
+            '$base_nodes(S_post.BASE) = eps', *valid('S_post'),
+            *terminal('S_post',EXPECTED[name]),
+            'S_done.PARAMETERBACKINGS = eps /\\ S_done.REFCOERCIONS = eps',
+            '~((HCELL pparameterstring.CELL) <- S_done.ALLOCATIONS)',
+            '$lookup(S_done.ENV,$ptascii("v")) = (n_global)',
+            'S_done.STORE[n_global] = DEFINED (POBJECT n_other)']
+    return clauses + ['S_wrong_index = S_result[.TODO = [PARAMETER_STRING_RESULT pparameterstring[.INDEX = 1]]]',
+        '~$parameter_backing_admission(S_wrong_index,pparameterstring[.INDEX = 1],' + text + ')',
+        'S_stored.TODO = [TYPE_RECEIVE pparameterstring.FUNCTION 1]',
+        '$lookup(S_stored.ENV,$ptascii("a")) = (pparameterstring.CELL)',
+        '$lookup(S_stored.ENV,$ptascii("b")) = (pparameterstring.CELL)',
+        '$parameter_backing_receive_exact(S_stored)',
+        '~$parameter_backing_receive_exact(S_stored[.COMPLETION = THROWN "Exception" $ptascii("stop") 1])',
+        '$callable_at(S_stored.CALLABLES,$ptascii("value")) = (porigin_value)',
+        '~$parameter_backing_source(S_stored,pparameterbacking[.FUNCTION = porigin_value])',
+        *step('S_stored','S_received'),
+        'S_received.STORE = S_stored.STORE /\\ S_received.PARAMETERBACKINGS = S_stored.PARAMETERBACKINGS',
+        *valid('S_received'), *seek('S_received','S_later',5),
+        'S_later.TODO = [TYPE_RECEIVE porigin_later 0]',
+        'porigin_later =/= pparameterbacking.FUNCTION',
+        '$lookup(S_later.ENV,$ptascii("s")) = (pparameterstring.CELL)',
+        'S_later.PARAMETERBACKINGS = [pparameterbacking]',
+        '$parameter_backing_receive_exact(S_later)',
+        *valid('S_later'), *step('S_later','S_later_received'),
+        'S_later_received.STORE = S_later.STORE /\\ S_later_received.PARAMETERBACKINGS = S_later.PARAMETERBACKINGS',
+        *seek('S_later_received','S_post',6),
+        'S_post.CURRENT = eps /\\ S_post.FRAMES = eps /\\ S_post.HELD = eps',
+        'S_post.PARAMETERBACKINGS = [pparameterbacking]',
+        'S_post.STORE[pparameterstring.CELL] = DEFINED (PSTRING ' + text + ')',
+        '$heap_count(HCELL pparameterstring.CELL,$heap_graph(S_post).ROOTS) = 2 /\\ $heap_owners($heap_graph(S_post),HCELL pparameterstring.CELL) = 2',
+        *valid('S_post'), *seek('S_post','S_cleared',7),
+        'S_cleared.PARAMETERBACKINGS = eps',
+        'S_cleared.STORE[pparameterstring.CELL] = DEFINED (POBJECT n_replacement)',
+        '$propref_at(S_cleared.PROPREFS,pparameterstring.CELL) = (ppropref)',
+        'ppropref.SOURCES = [CLASS_PROP_SOURCE pclassstatic.DECL]',
+        *valid('S_cleared'), *terminal('S_cleared', EXPECTED[name]),
+        'S_done.PARAMETERBACKINGS = eps /\\ S_done.REFCOERCIONS = eps',
+        '~((HCELL pparameterstring.CELL) <- S_done.ALLOCATIONS)',
+        '~((HOBJECT n_replacement) <- S_done.ALLOCATIONS)']
+
+
 def checks(initial, name):
+    if name.startswith('backing-'):
+        return backing_checks(initial, name)
     clauses = ['S_initial = ' + initial]
     if name == 'constant-closure-parameter':
         return clauses + [*seek('S_initial', 'S_entered', 1),
