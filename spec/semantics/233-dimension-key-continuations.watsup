@@ -36,6 +36,7 @@ dec $key_read_selection(pstate, pkeyread) : bool
 dec $key_value_selected(poperand, pvalue) : bool
 dec $key_global_selected(pstate, poperand, nat*) : bool
 dec $key_base_cv_source(pstate, porigin) : bool
+dec $key_operand_cv_source(pstate, porigin, pcpath) : bool
 dec $key_read_owners_source(pstate, pkeyread) : bool
 dec $key_read_valid(pstate, pkeyread) : bool
 
@@ -328,6 +329,7 @@ def $key_read_input_source(S, pkeyread) = true
   -- if pkeyread.INPUT = KNOWN pvalue \/ pkeyread.INPUT = REFERENCE n
   -- if $origin_child((pkeyread.SITE), [PCFIELD 1]) = (porigin_key)
   -- if $compiled_read(S, porigin_key) = eps
+  -- if ~$key_operand_cv_source(S, pkeyread.SITE, [PCFIELD 1])
 def $key_read_input_source(S, pkeyread) = false -- otherwise
 def $key_read_shape(pkeyread) = (pkeyread.INPUT = VARIABLE pkeyread.NAME pkeyread.LINE /\ pkeyread.VALUE = PNULL /\ pkeyread.KEY = KSTRING eps)
   -- if pkeyread.PHASE = KEY_CV
@@ -369,12 +371,14 @@ def $key_global_selected(S, KNOWN pvalue, n_name*) = true
 def $key_global_selected(S, VARIABLE n_name* z, n_selected*) = true
 def $key_global_selected(S, REFERENCE n, n_selected*) = true
 def $key_global_selected(S, poperand, n_selected*) = false -- otherwise
-def $key_base_cv_source(S, porigin) = true
-  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
-  -- if $origin_node(S.SOURCES, porigin_base) = (NExprVariable phpType32 metadata)
+def $key_operand_cv_source(S, porigin, pcpath) = true
+  -- if $origin_child((porigin), pcpath) = (porigin_operand)
+  -- if $origin_node(S.SOURCES, porigin_operand) = (NExprVariable phpType32 metadata)
   -- if $cv_name(phpType32) = (n_name*)
   -- if ~$ppglobals_base(NExprVariable phpType32 metadata)
-def $key_base_cv_source(S, porigin) = false -- otherwise
+  -- if ~$isset_this(NExprVariable phpType32 metadata)
+def $key_operand_cv_source(S, porigin, pcpath) = false -- otherwise
+def $key_base_cv_source(S, porigin) = $key_operand_cv_source(S, porigin, [PCFIELD 0])
 def $key_read_owners_source(S, pkeyread) = (pkeyread.BASE = PNULL /\ pkeyread.OWNERS = BASE_VALUE (KNOWN PNULL))
   -- if pkeyread.GLOBAL
 def $key_read_owners_source(S, pkeyread) = true
