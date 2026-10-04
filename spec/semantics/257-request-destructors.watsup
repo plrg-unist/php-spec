@@ -423,6 +423,13 @@ def $throwable_continuation(S, S_next) = S_next
   -- if S_next.FRAMES = pframe :: S.FRAMES
   -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if pframe.CONTEXT = S.CURRENT /\ pframe.ORIGIN = S.ORIGIN /\ pframe.CONSTCONTEXT = S.CONSTCONTEXT
+def $destructor_enter_task(DESTRUCTOR_ENTER pdestructorcall) = true
+def $destructor_enter_task(ptask) = false -- otherwise
+def $throwable_continuation(S, S_next) = S_next
+  -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*
+  -- if $destructor_enter_valid(S, pdestructorcall)
+  -- if S_next.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
 
 ;; Saved caller tables still own their values. The destructor's C marker owns
 ;; one receiver while its entered USER method owns the other temporary receiver.

@@ -115,9 +115,11 @@ dec $error_call_valid(pstate, perrorcall) : bool
 dec $error_handler_target(pstate, pvalue) : pcalltarget?
 dec $throwable_continuation(pstate, pstate) : pstate
 dec $static_string_result_task(ptask) : bool
+dec $destructor_enter_task(ptask) : bool
 def $throwable_continuation(S, S_next) = S_next[.TODO = ptask_tail*]
   -- if S.TODO = ptask :: ptask_tail*
   -- if ~$static_string_result_task(ptask)
+  -- if ~$destructor_enter_task(ptask)
   -- if S_next.FRAMES = S.FRAMES
   -- if S_next.CURRENT = S.CURRENT
 def $throwable_continuation(S, S_next) = S_next
