@@ -128,6 +128,12 @@ test-semantics: build
 	python3 tests/semantics/class_method_strings_protocol.py
 	python3 tests/semantics/error_handler_callables.py
 	python3 tests/semantics/error_handler_callables_protocol.py
+	python3 tests/semantics/exception_handlers.py
+	python3 tests/semantics/exception_handler_state.py
+	python3 tests/semantics/exception_handler_review.py
+	python3 tests/semantics/exception_handler_state_review.py
+	python3 tests/semantics/exception_handler_boundaries.py
+	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
 	python3 tests/semantics/scoped_callables_protocol.py
 	python3 tests/semantics/keyword_compound_callables.py

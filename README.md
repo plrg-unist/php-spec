@@ -226,6 +226,12 @@ Captured-null ASSIGN through a typed alias preserves its value on rejection and
 raises a caller TypeError retaining the handler's previous chain. The
 [consumer review](coverage/semantics/warning-consumers-review.json) records the
 separate source and ownership checks; ordinary missing reference sends stay quiet.
+
+[Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
+nullable stacks and dispatch an uncaught Throwable with one authentic argument
+after `finally`. Nested restore/replacement, callback throws, internal by-reference
+warnings and termination preserve selected targets and owners. Keyword/compound
+callback ingress and later request lifecycle remain open.
 Full core and a fresh combined offline rebuild remain required.
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)

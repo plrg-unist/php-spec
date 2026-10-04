@@ -9987,15 +9987,34 @@
     {
       "id": "diagnostics.exception-handler-stack",
       "milestone": "3a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend.c"
+      "implementation": [
+        "spec/semantics/222-exception-handlers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/exception_handler_protocol.py",
+        "tests/semantics/exception_handler_state.py",
+        "tests/semantics/exception_handler_state_review.py",
+        "tests/semantics/exception_handler_boundaries.py"
+      ],
+      "source_tests": [
+        "tests/semantics/exception_handlers.py",
+        "tests/semantics/exception_handler_cases.json",
+        "tests/semantics/exception_handler_review.py",
+        "tests/semantics/exception_handler_review_cases.json",
+        "tests/semantics/exception_handler_static_default.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend.c",
+        "vendor/php-src/Zend/zend_builtin_functions.c",
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_exceptions.c",
+        "docs/semantics/SOURCE-EXCEPTION-HANDLERS.md",
+        "coverage/semantics/exception-handlers-review.json",
+        "coverage/semantics/exception-handler-review.json"
+      ],
+      "review": "Raw nullable set/get/restore stacks and null-caller terminal dispatch222 reuse ordinary weak calls with one authentic Throwable. Borrowed immutable selection snapshots survive registry removal and static selector retirement. Author29/216 and independent33/331 pass at distinct recorded cutoffs, including weak Stringable variadic/default reception and authenticated internal send-warning continuations; actual219 cross-file static-default source1 and production algorithm/structure gates pass. Two explicit Unsupported controls earn zero agreement. Effectful keyword/compound ingress, magic/autoload/internal callbacks, later lifecycle entry, shared207 reference-return bodies and temporary-value reference returns remain open. No complete-core claim."
     },
     {
       "id": "diagnostics.handler-throws",

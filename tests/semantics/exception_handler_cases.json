@@ -1,0 +1,263 @@
+[
+  {
+    "id": "returnfalse",
+    "source": "<?php function h(Throwable $e){echo \"H:\",func_num_args(),\":\",$e->getMessage(),\":\",(get_exception_handler()===null?\"clear\":\"set\");return false;} set_exception_handler(\"h\"); throw new Exception(\"old\"); echo \"tail\";\n",
+    "source_sha256": "7905d22ada26fefc8143d49ca94f4bc4c84506a299f9f0ee5270a536ffc57b52",
+    "stdout": "H:1:old:clear",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "restoreactive",
+    "source": "<?php function h($e){echo (get_exception_handler()===null?\"clear\":\"set\");restore_exception_handler();echo \":\",(get_exception_handler()===\"h\"?\"restored\":\"other\");} set_exception_handler(\"h\");throw new Exception;\n",
+    "source_sha256": "51e3f21361ed3fe69c7b029e9d9119a6ef1a1d70e7aa5857cd075cc8a05a38be",
+    "stdout": "clear:restored",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "nestedreplace",
+    "source": "<?php function h($e){echo (set_exception_handler(\"k\")===null?\"clear\":\"set\"),\":\"; restore_exception_handler();echo get_exception_handler()===null?\"clear\":\"set\";}function k($e){}set_exception_handler(\"h\");throw new Exception;\n",
+    "source_sha256": "bc548c793cf7ef79ca5f2e0e0e5acb95deb4bbd9364e7afbacc9bcee78e85952",
+    "stdout": "clear:clear",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "thrownew",
+    "source": "<?php function h($e){echo \"H:\";throw new Exception(\"new\");}set_exception_handler(\"h\");throw new Exception(\"old\");\n",
+    "source_sha256": "3e977a1faf03f421983990c510e1d7cafc5e0c54cd7b740c627bee49fb4f0188",
+    "stdout": "H:",
+    "stderr": "Fatal error: Uncaught Exception: new in {file}:1\nStack trace:\n#0 [internal function]: h(Object(Exception))\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "badsignature",
+    "source": "<?php function h(int $e){echo \"tail\";}set_exception_handler(\"h\");throw new Exception(\"old\");\n",
+    "source_sha256": "85c08d6fb796710acb86e6036bda57cf8d5ea5ef1fcf96ca2196321fa87b37e6",
+    "stdout": "",
+    "stderr": "Fatal error: Uncaught TypeError: h(): Argument #1 ($e) must be of type int, Exception given in {file}:1\nStack trace:\n#0 [internal function]: h(Object(Exception))\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "byref",
+    "source": "<?php function h(&$e){echo $e->getMessage();$e=new Exception(\"new\");}set_exception_handler(\"h\");throw new Exception(\"old\");\n",
+    "source_sha256": "6d29e52c2fdc180c5980d62f737e9be45bcfcedfa36ab965d75670db1333202a",
+    "stdout": "old",
+    "stderr": "Warning: h(): Argument #1 ($e) must be passed by reference, value given in Unknown on line 0\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "private",
+    "source": "<?php class C {private static function h($e){echo \"H\";}static function go(){set_exception_handler([self::class,\"h\"]);throw new Exception(\"old\");}}C::go();\n",
+    "source_sha256": "ac7bd0da8e9b70f00e73bad271d69e01382d6dce227b4b00b85f34656eea8a6a",
+    "stdout": "",
+    "stderr": "Fatal error: Invalid callback C::h, cannot access private method C::h() in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "capturedprivate",
+    "source": "<?php class C {private static function h($e){echo \"H\";}static function go(){set_exception_handler(self::h(...));throw new Exception(\"old\");}}C::go();\n",
+    "source_sha256": "c0f977bc4017c1f03174977e806265fe91e45409ec91eba4a4b085a5b787bc9d",
+    "stdout": "H",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "invalidraw",
+    "source": "<?php function h($e){echo \"H\";}$v=\"h\";$a=[\"C\",&$v];class C{static function h($e){echo \"C\";}}set_exception_handler($a);$v=\"bad\";throw new Exception(\"old\");\n",
+    "source_sha256": "d65d3ba5000602314415b132b1f8f981e1f9dd3708d4d82dc8d753a575eb5373",
+    "stdout": "",
+    "stderr": "Fatal error: Invalid callback C::bad, class C does not have a method \"bad\" in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "exit",
+    "source": "<?php function h($e){echo \"H:\";exit(7);}set_exception_handler(\"h\");throw new Exception(\"old\");\n",
+    "source_sha256": "5d90119e34be4165376a1ff61f777190cf02dc1c29da1e26805716f2765174c3",
+    "stdout": "H:",
+    "stderr": "",
+    "exit": 7,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "nullstack",
+    "source": "<?php function h($e){}function k($e){}echo set_exception_handler(\"h\")===null?\"N\":\"X\";echo set_exception_handler(null)===\"h\"?\"H\":\"X\";echo get_exception_handler()===null?\"N\":\"X\";echo restore_exception_handler()?\"T\":\"X\";echo get_exception_handler()===\"h\"?\"H\":\"X\";restore_exception_handler();echo get_exception_handler()===null?\"N\":\"X\";\n",
+    "source_sha256": "c2f0ae185f9ce5efbe7b361a8854e6ecfe8dc7bfb60705d66e1e191e0c050afd",
+    "stdout": "NHNTHN",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "falsebad",
+    "source": "<?php try{set_exception_handler(false);}catch(Throwable $e){echo $e->getMessage();}echo get_exception_handler()===null?\":N\":\":X\";\n",
+    "source_sha256": "61db892360295047b2808d7349287585b146d30b55fccde2b36e9f47cd7680c7",
+    "stdout": "set_exception_handler(): Argument #1 ($callback) must be a valid callback or null, no array or string given:N",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "trace",
+    "source": "<?php function h($e){throw new Exception(\"new\");}set_exception_handler(\"h\");function f(){throw new Exception(\"old\");}f();\n",
+    "source_sha256": "650c82d86d110ab9ccc840a75c573114a444fb7c41ef6b5af3f3bfa761a0566e",
+    "stdout": "",
+    "stderr": "Fatal error: Uncaught Exception: new in {file}:1\nStack trace:\n#0 [internal function]: h(Object(Exception))\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "byrefhandled",
+    "source": "<?php function w($a,$b,$c,$d){echo $a,\":\",($c===null?\"null\":$c),\":\",$d,\":\",func_num_args(),\":\";return true;}set_error_handler(\"w\");function h(&$e){echo $e->getMessage();}set_exception_handler(\"h\");throw new Exception(\"old\");\n",
+    "source_sha256": "648f7eab11e7f47d5322761a8f822ea408c921820ce4a9cdcb366cba22a5526a",
+    "stdout": "2:Unknown:0:4:old",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "byrefthrow",
+    "source": "<?php function w($a,$b,$c,$d){echo \"W:\";throw new Exception(\"warn\");}set_error_handler(\"w\");function h(&$e){echo \"H:\";}set_exception_handler(\"h\");throw new Exception(\"old\");\n",
+    "source_sha256": "c5fed8b93ec7f9e2e2ffc028d0f38f6e5ded877a15d54ac598523809a04498a8",
+    "stdout": "W:",
+    "stderr": "Fatal error: Uncaught Exception: warn in {file}:1\nStack trace:\n#0 [internal function]: w(2, 'h(): Argument #...', 'Unknown', 0)\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "replace_throw",
+    "source": "<?php function k($e){echo \"K:\",$e->getMessage();}function h($e){echo \"H:\";set_exception_handler(\"k\");throw new Exception(\"new\");}set_exception_handler(\"h\");throw new Exception(\"old\");\n",
+    "source_sha256": "604e2d64670b777c081a26f88e05df59fe7350045f1f463afd66902064e03380",
+    "stdout": "H:K:new",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "byrefreplacewarning",
+    "source": "<?php function w($a,$b,$c,$d){set_exception_handler(\"k\");throw new Exception(\"warn\");}set_error_handler(\"w\");function k($e){echo \"K:\",$e->getMessage();}function h(&$e){echo \"H:\";}set_exception_handler(\"h\");throw new Exception(\"old\");\n",
+    "source_sha256": "150b2f00d3eb7595671a92e790648f4b12b6456d46fdf0e58aaa34f0d75cece9",
+    "stdout": "K:warnH:",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "error0invalid",
+    "source": "<?php function h($e){}class C{private static function h($e){}static function go(){set_exception_handler([self::class,\"h\"]);error_reporting(0);throw new Exception;}}C::go();\n",
+    "source_sha256": "def6913f346687d9fca78c5bac709621d1e53109bd5c94fb312b776839fe2372",
+    "stdout": "",
+    "stderr": "",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "validation-arity",
+    "source": "<?php function h($e){}set_exception_handler(\"h\");try{set_exception_handler(false,2);}catch(Throwable $e){echo $e->getMessage(),\":\";}echo get_exception_handler()===\"h\"?\"preserved\":\"bad\";try{set_exception_handler();}catch(Throwable $e){echo \":\",$e->getMessage();}\n",
+    "source_sha256": "4edfe6a5b4b3c67e2fbad88e4d49987fe56294ebae23ac05ee00a80d44e82eb9",
+    "stdout": "set_exception_handler() expects exactly 1 argument, 2 given:preserved:set_exception_handler() expects exactly 1 argument, 0 given",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "named-unpack-fcc",
+    "source": "<?php function h($e){echo $e->getMessage();}$set=set_exception_handler(...);$get=get_exception_handler(...);$restore=restore_exception_handler(...);echo $set(...[\"callback\"=>\"h\"])===null?\"N\":\"X\";echo $get()===\"h\"?\"H\":\"X\";$restore();echo $get()===null?\"N\":\"X\";$set(callback:\"h\");throw new Exception(\"done\");\n",
+    "source_sha256": "c15d3bec06e4cc8454dd1c9a8efb6cde8f2f8577018674c9f8a68d8c1c2e448d",
+    "stdout": "NHNdone",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "typed-variadic",
+    "source": "<?php function h(Throwable ...$es){echo func_num_args(),\":\";foreach($es as $e){echo $e->getMessage();}}set_exception_handler(\"h\");throw new Exception(\"v\");\n",
+    "source_sha256": "081db43e09dfd15e3c46db26465f59261824a239cf7fe6fda2e3a6bc2e88aaab",
+    "stdout": "1:v",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "reference-variadic",
+    "source": "<?php function h(&...$es){echo func_num_args(),\":\";$es[0]=new Exception(\"changed\");echo $es[0]->getMessage();}set_exception_handler(\"h\");throw new Exception(\"v\");\n",
+    "source_sha256": "f43ea1285c3a2a7f4663c55b003cfbf84d1e4868f347fa35f8de9383ce7dc4a2",
+    "stdout": "1:changed",
+    "stderr": "Warning: h(): Argument #1 must be passed by reference, value given in Unknown on line 0\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "reference-return",
+    "source": "<?php function &h($e){global $r;echo \"R\";return $r;}$r=false;set_exception_handler(\"h\");throw new Exception;\n",
+    "source_sha256": "2d06344e07e18d0614200ac188ee175f76ae0c8fb50e4d09a9a0f2de5908c575",
+    "stdout": "R",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "missing-formal",
+    "source": "<?php function h($e,$need){echo \"bad\";}set_exception_handler(\"h\");throw new Exception;\n",
+    "source_sha256": "0709bfc55f03a6fa5a538584f175df742884ef04eed9e0e53fbb05572af22697",
+    "stdout": "",
+    "stderr": "Fatal error: Uncaught ArgumentCountError: Too few arguments to function h(), 1 passed and exactly 2 expected in {file}:1\nStack trace:\n#0 [internal function]: h(Object(Exception))\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "throw-masked",
+    "source": "<?php function h($e){error_reporting(0);throw new Exception(\"new\");}set_exception_handler(\"h\");throw new Exception(\"old\");\n",
+    "source_sha256": "0ba23ffdfb8a58a431a4ded9289e2e9c3741e63c2f931967b91247c575855fe2",
+    "stdout": "",
+    "stderr": "",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "raw-detached",
+    "source": "<?php class C{static function h($e){global $raw;echo \"H\";restore_exception_handler();restore_exception_handler();$raw[1]=\"other\";}static function other($e){echo \"bad\";}}$raw=[\"C\",\"h\"];set_exception_handler($raw);throw new Exception;\n",
+    "source_sha256": "e958a737cf7fae3650e71cebe536e04e385075e0a497455c02cd0bb9bd2d7654",
+    "stdout": "H",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "static-object-detached",
+    "source": "<?php class C{static function h($e){global $raw;restore_exception_handler();restore_exception_handler();$raw[0]=\"C\";echo \"H\";}}$raw=[new C,\"h\"];set_exception_handler($raw);throw new Exception;\n",
+    "source_sha256": "f794687b33736522bfc7e88962000b8284d73bea17122b51cf20d84b15d31a13",
+    "stdout": "H",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "warning-raw-detached",
+    "source": "<?php class C{static function h(&$e){echo \"H\";}static function other(&$e){echo \"bad\";}}function w($n,$m,$f,$l){global $raw;echo \"W\";restore_exception_handler();restore_exception_handler();$raw[1]=\"other\";return true;}$raw=[\"C\",\"h\"];set_error_handler(\"w\");set_exception_handler($raw);throw new Exception;\n",
+    "source_sha256": "1aa83c6b8bbd70d9d8d6cb060593585a5f5c67c8c94ee282ca810f0e182e017b",
+    "stdout": "WH",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "warning-false",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W\";return false;}function h(&$e){echo \"H\";}set_error_handler(\"w\");set_exception_handler(\"h\");throw new Exception;\n",
+    "source_sha256": "4e29bb66df7bff1773e1176856b28126984444af27e9c7b3ef2a494c3e97fdb1",
+    "stdout": "WH",
+    "stderr": "Warning: h(): Argument #1 ($e) must be passed by reference, value given in Unknown on line 0\n",
+    "exit": 0,
+    "status": "normal"
+  }
+]
