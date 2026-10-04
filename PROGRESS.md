@@ -104,8 +104,8 @@ recorded revision, and production stages pass on the accepted fe51 parent.
 [Contract](docs/semantics/SOURCE-SHUTDOWN.md),
 [author/composition record](coverage/semantics/shutdown-functions-review.json),
 [independent ledger](coverage/semantics/shutdown-function-review.json).
-Keyword/compound ingress needs the accepted221 consumers; destructors, GC,
-output buffers and queue release are required next request phases.
+Keyword/compound ingress now uses the staged247 consumers below. Destructors,
+GC, output buffers and queue release are required next request phases.
 
 Internal default reception240 now suspends weak-null and lossy integer warnings
 through real error dispatch and invokes genuine Stringable callbacks in formal
@@ -259,7 +259,8 @@ Throwable after `finally` through the ordinary weak call receiver. Genuine null
 caller and saved-frame certificates preserve one argument, selected targets and
 owners through restoration, replacement, nested warning handling, throws and exit.
 Author29/216 and independent33/331 retain their distinct source cutoffs; two
-explicit Unsupported controls add no agreement. Actual219 composition preserves
+explicit Unsupported controls add no agreement at their original cut. Actual219
+composition preserves
 cross-file diagnostic origins during static defaults, and production algorithm
 and structure checks pass. [Contract](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md),
 [author/composition record](coverage/semantics/exception-handlers-review.json),
