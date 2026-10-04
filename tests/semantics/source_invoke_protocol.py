@@ -125,7 +125,7 @@ CASES = {
             '$object_invoke_method(S[.ALLOCATIONS = eps], n_receiver) = eps',
             '$object_invoke_method(S[.CLASSES = [pclassdesc[.METHODS = [pmethoddesc[.STATIC = true]]]]], n_receiver) = eps',
             '$object_invoke_method(S[.CLASSES = [pclassdesc[.METHODS = [pmethoddesc[.ABSTRACT = true]]]]], n_receiver) = eps',
-            '$object_invoke_method(S[.CLASSES = [pclassdesc[.METHODS = [pmethoddesc[.VISIBILITY = PROPERTY_PRIVATE]]]]], n_receiver) = eps',
+            '$object_invoke_method(S[.CLASSES = [pclassdesc[.METHODS = [pmethoddesc[.VISIBILITY = PROPERTY_PRIVATE]]]]], n_receiver) = (pmethoddesc[.VISIBILITY = PROPERTY_PRIVATE])',
             '$typed_callable(S[.CLASSNAMES = eps], POBJECT n_receiver) = (false)',
         ],
     },
