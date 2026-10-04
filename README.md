@@ -227,7 +227,7 @@ raises a caller TypeError retaining the handler's previous chain. The
 [consumer review](coverage/semantics/warning-consumers-review.json) records the
 separate source and ownership checks; ordinary missing reference sends stay quiet.
 
-[Missing global reads and full-table snapshots](docs/semantics/SOURCE-GLOBAL-WARNINGS.md)
+[Missing global reads](docs/semantics/SOURCE-GLOBAL-WARNINGS.md)
 capture null before callbacks and skip later writes when a handler throws. Genuine
 request snapshots preserve numeric keys, shared reference cells and array COW.
 Author8/207, independent8/221 and two current scoped-handler sources retain
