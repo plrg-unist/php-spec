@@ -365,12 +365,15 @@ def $eval_trace_live(pevalcontext :: pevalcontext_tail*, n_owner) = pevalcontext
   -- if pevalcontext.PHASE = UNIT_RUN /\ pevalcontext.OWNER = n_owner
 def $eval_trace_live(pevalcontext :: pevalcontext_tail*, n_owner) = $eval_trace_live(pevalcontext_tail*, n_owner)
   -- if pevalcontext.PHASE =/= UNIT_RUN \/ pevalcontext.OWNER =/= n_owner
+dec $file_trace_phase(pfilephase) : bool
+def $file_trace_phase(FILE_UNIT_RUN) = true
+def $file_trace_phase(pfilephase) = false -- otherwise
 dec $file_trace_live(pfilecontext*, nat) : pfilecontext*
 def $file_trace_live(eps, n_owner) = eps
 def $file_trace_live(pfilecontext :: pfilecontext_tail*, n_owner) = pfilecontext :: $file_trace_live(pfilecontext_tail*, n_owner)
-  -- if pfilecontext.PHASE = FILE_UNIT_RUN /\ pfilecontext.OWNER = n_owner
+  -- if $file_trace_phase(pfilecontext.PHASE) /\ pfilecontext.OWNER = n_owner
 def $file_trace_live(pfilecontext :: pfilecontext_tail*, n_owner) = $file_trace_live(pfilecontext_tail*, n_owner)
-  -- if pfilecontext.PHASE =/= FILE_UNIT_RUN \/ pfilecontext.OWNER =/= n_owner
+  -- if ~$file_trace_phase(pfilecontext.PHASE) \/ pfilecontext.OWNER =/= n_owner
 dec $source_trace_merge(pstate, pevalcontext*, pfilecontext*) : ptraceframe*
 dec $source_trace_merge_before(pstate, pevalcontext*, pfilecontext*, preqbytes?) : ptraceframe*
 def $source_trace_merge(S, pevalcontext*, pfilecontext*) = $source_trace_merge_before(S, pevalcontext*, pfilecontext*, eps)

@@ -19,8 +19,8 @@ default pools yield explicit Unsupported rather than invented initial values.
 
 Module219 evaluates deferred scalar/array static defaults at the first permitted
 fetch or construction. The class updater completes the parent, then class
-constants, then declaration-ordered static defaults, before marking the table
-complete. Each initializer runs in its declaring lexical scope and binds with
+constants, instance defaults and declaration-ordered static defaults, before
+marking the table complete. Each initializer runs in its declaring lexical scope and binds with
 strict property types, including int-to-float promotion. A failed later
 initializer preserves earlier values and their first-fill history; a retry skips
 those values. The existing `CLASSSTATICS` row owns the value and later aliases;
@@ -49,8 +49,17 @@ nullable invocation site, retaining error and terminal handler ingress. These
 certificates own no Closure, receiver or captured cell. Ordinary method ancestry
 checks remain exact. Temporary-call children retain the effective receiver class
 after their maker retires; nonstatic children own their receiver, while static
-children retain only nonowning receiver evidence. Instance/object defaults and
-wider reference/creation consumers remain required open work.
+children retain only nonowning receiver evidence. Module246 owns deferred
+scalar/array instance templates by requested class and full declaring property
+identity. Linking copies the parent's actual template state once: a cold-linked
+child evaluates inherited pending defaults separately, while a later-linked
+child copies completed values. Initializers use declaring scope, strict types
+and the full instance layout, including shadowed private slots, before statics
+and allocation. A resumed outer initializer may replace its reentrant template
+without duplicating first-fill history; objects and previously linked children
+keep their copied values. Template rows own values and arrays; history owns no
+heap values. Object-bearing defaults and wider reference/creation consumers
+remain required open work.
 The [deferred-default review](../../coverage/semantics/deferred-static-defaults-review.json)
 records eleven earlier source agreements separately from five source-derived guard
 programs. Four217 callback comparisons preserve saved initializer contexts,
@@ -67,6 +76,8 @@ Six later temporary-call sources and three programs/193 premises check escaping
 children, clone/rebinding, callback resume/throw, deterministic ordinary/copied
 scope admission and collection. Their separate cutoffs and original validator
 failure remain in the review.
+Eight later instance-template sources and three programs/172 premises check
+phase ordering, strict failure/retry, reentry, parent snapshots and owning roots.
 Two later213/215 comparisons
 initialize the inherited default
 inside a captured private handler and a raw private handler during a Stringable
@@ -155,8 +166,7 @@ and the declaration type source remains attached. A current-constants control
 uses a literal property default and completes a deferred child constant table
 through ordinary access before the getter. It checks the sole static owner after
 discard, then static storage plus the live global alias after binding. Deferred
-instance/object-bearing defaults and cold captured/rebound Closure keyword
-references remain Unsupported. The
+object-bearing defaults and wider consumers remain open. The
 [reference review](../../coverage/semantics/static-method-reference-review.json)
 keeps the original instance-spelled control and its preserved StaticCall failure
 distinct from fresh static-getter acceptance. Legal untyped object/scalar/null

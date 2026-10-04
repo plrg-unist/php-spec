@@ -7,6 +7,50 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Callable default/variadic reception248 now suspends keyword/compound lookup in
+actual receiving frames. Deferred class-constant defaults, named-hole preparation
+and supplied/variadic operands keep their distinct order and ownership. Referenced
+methods/current operands remain live, including borrowed retired arrays. Failed
+lookup checks constrained sources before slow scalar fallback; lossy warnings
+freeze their result and dual-role objects still invoke Stringable. Source23 normal
+and one literal compiler rejection retain758/018/060 cuts; two affected221 sources
+stay separate. Author116, independent180 and affected old hole35 conditions pass
+on018. Actual99a composition keeps created-child default scope after a foreign
+capture retires and passes AL236. Original compiler/fixture failures stay preserved;
+RuntimeException Unsupported controls have zero agreement. The
+[contract](docs/semantics/CALLABLE-RECEIVES.md) and
+[ledger](coverage/semantics/callable-receives-review.json) retain these cutoffs.
+Other internal and user-return consumers remain required; return verification
+stays paused and complete core remains open.
+
+Stringable include/require operands now convert before resolution and once
+checks, retaining the receiver through rebinding and nested eval. Callback writes
+determine subsequent CWD/path lookup; throw completes without file facts or a
+provider nonce. Failed-open handlers resume ordered warning phases, sampling the
+second message after callback1 and preserving saved owners and zero-argument
+file traces. Exit, fatal and compiler-stop drops retire only their actual warning
+owner; frozen output precedes shutdown callbacks. Fifteen exact source agreements
+retain dcb/49/b371/dc9/4639 cuts; 81 conversion, 148 grouped warning and 45 shutdown
+premises pass at their recorded revisions. SL229/231/233 stages/init also pass.
+Actual f410/245 preservation retains 234 modules without renewing those gates.
+[The file operand ledger](coverage/semantics/file-operand-review.json) keeps
+original observer, fixture, model and timeout failures. Interpolation, wider
+providers/source contexts and request lifecycle remain required.
+
+Anonymous Closure/arrow default NEW245 resolves self/parent using the genuine
+receiving lexical scope, independently of called class and receiver. Rebinding,
+temporary Closure::call, imported trait makers and missing-scope errors preserve
+argument order and private constructor access. Source11 passes as3+6+2 at89fe;
+owner172/recursive97 pass at2d7fd, including callback retirement, same-template
+saved scopes and public task/source rejection. The original object `::class`
+observer remains Unsupported with zero agreement; reduced instanceof observers
+retain the default behavior. Original descriptor and fixture failures stay in
+the [scope ledger](coverage/semantics/anonymous-default-new-review.json).
+Actual239 child composition1 at1b593 passes after temporary maker/receiver
+variables retire; the child retains its receiver. Latest231/234/230/242 routes
+are preserved without renewed private gates. Ordinary Throwable effects and
+dynamic object `::class` remain required next.
+
 Writable dimension keys242 stage defined mutable CV-array W/RW fetches through
 undefined/null/float/NaN callbacks, nested acquisition, updates and direct
 assignment/compound consumers. Separation precedes conversion; callback-created
@@ -74,7 +118,8 @@ e7ec retains imported trait Stringable ownership and handler-mutated display
 fallback after the filename global retires.
 [The reception ledger](coverage/semantics/internal-default-reception-review.json)
 records these cuts.
-Ordinary constructor effects and rebound anonymous keyword NEW remain required.
+Ordinary constructor effects remain required; anonymous keyword defaults are
+covered by245 above.
 
 Trait method composition228 supports source use, nesting, precedence, aliases,
 visibility/final and abstract requirements in Zend's publication order. Imported
@@ -150,8 +195,8 @@ Actual221 callable source1/owner39 at2a380 authenticates the suspended construct
 through deprecation callbacks and rejects a removed retained owner.
 The [constructor ledger](coverage/semantics/default-constructors-review.json)
 keeps original failures, the fixture line correction and fresh uncached NEW facts
-precise. Ordinary internal constructor effects and rebound anonymous self/parent NEW
-remain required; complete core remains open.
+precise. Anonymous keyword defaults are covered by245; ordinary internal
+constructor effects remain required and complete core remains open.
 
 Deprecated callable keyword/compound admission221 now stages supplied fixed
 parameters, error registration and delayed dispatch. Warnings hold class choice
@@ -165,8 +210,8 @@ raw keyword/compound calls preserve ordinary PHP lookup errors. The
 records independent pins, affected checks and preserved failures. Actual include,
 cold-static and GLOBALS interactions preserve real USER permission, constrained
 references and captured null; initializer locations retain their declaration owner.
-Default/variadic, other internal and user-return warning consumers remain
-required; unstaged special callable conversion stays Unsupported.
+Default/variadic reception is covered by248 above; other internal and user-return
+warning consumers remain required. Unstaged special conversion stays Unsupported.
 
 `Closure::fromCallable`234 selects and creates durable captures over existing core
 callable forms. Existing Closure inputs preserve identity; method captures freeze
@@ -265,8 +310,15 @@ nonstatic children keep the receiver and static children keep only nonowning
 evidence. Five source agreements/global77 pass at e32dcc64a, affected callback81
 at49d0b9579 after making ordinary/copied scope rules disjoint, and a fresh
 same-class source/35 atadbfde09e: six sources/193 premises total. The original
-validator failure is retained. Instance/object defaults and wider consumers
-remain required next work.
+validator failure is retained. Module246 now owns deferred scalar/array instance
+templates by requested class and declaration, copies actual parent state at link
+time, and fills constants, private-shadow instance layouts and statics before
+allocation. Strict failure/retry and reentry retain once-only fill history;
+objects copy template values and arrays remain owned after object collection.
+Eight exact source agreements pass at80900fa4b; three programs/172 phase, copy
+and ownership premises pass at449b45763 after a fixture source-origin binding
+repair. Original compilation failures remain separate. Object-bearing defaults
+and wider consumers remain required next work.
 
 
 Private and protected method arrays and class-method strings support callable
@@ -313,8 +365,9 @@ authentic deferred/rebound lexical scope. Counts and original failures remain in
 [parameter](coverage/semantics/weak-string-parameters-review.json),
 [variadic/default](coverage/semantics/variadic-default-string-review.json) and
 [constant](coverage/semantics/class-constants-current-review.json) ledgers and the
-family table below. Internal constructor defaults, rebound anonymous keyword NEW,
-attribute/modifier and callable initializer consumers remain required.
+family table below. Internal and anonymous keyword constructor defaults retain
+their235/240/245 cuts; broader attribute/modifier and callable initializer consumers
+remain required.
 
 Nonstatic private/protected `__invoke` supports bare calls, callable admission,
 object capture/clone and bare-object error handlers through the effective runtime
@@ -397,9 +450,9 @@ failures and interrupted evidence.
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: ordinary internal constructor effects,
-  rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
+  dynamic object `::class`, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred instance/object defaults and
+  broader reference-result consumers. Deferred object-bearing defaults and
   wider Closure creation contexts remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.

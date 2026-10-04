@@ -2,7 +2,7 @@
 ;; inherited internal slots in one property row. The trace is allocated first.
 dec $throwable_instance_initial_slots(pstate, porigin, text, preqbytes, int, nat) : ppropertyslot*?
 def $throwable_instance_initial_slots(S, porigin, text_kind, preqbytes_file, z, n_trace) = (ppropertyslot_final*)
-  -- if $property_initial_slots(S, $property_layout(S, porigin, |S.CLASSES|)) = (ppropertyslot_initial*)
+  -- if $property_initial_slots(S, porigin, $property_layout(S, porigin, |S.CLASSES|)) = (ppropertyslot_initial*)
   -- if ppropertyslot_trace* = $property_slot_set(ppropertyslot_initial*, $throwable_key($throwable_base(text_kind), "trace"), PROP_VALUE (DIRECT (PARRAY n_trace)))
   -- if ppropertyslot_file* = $property_slot_set(ppropertyslot_trace*, $throwable_key($throwable_base(text_kind), "file"), PROP_VALUE (DIRECT (PSTRING preqbytes_file)))
   -- if ppropertyslot_final* = $property_slot_set(ppropertyslot_file*, $throwable_key($throwable_base(text_kind), "line"), PROP_VALUE (DIRECT (PINT z)))
@@ -28,7 +28,7 @@ def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "invalid compiled 
   -- if ~pclassdesc.ABSTRACT
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = (text_kind)
   -- if $class_links_valid(S)
-  -- if $property_initial_slots(S, $property_layout(S, porigin, |S.CLASSES|)) = eps
+  -- if $property_initial_slots(S, porigin, $property_layout(S, porigin, |S.CLASSES|)) = eps
 
 def $throwable_member(S, n) = true
   -- if S.OBJECTS[n] = THROWABLE pthrowable

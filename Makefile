@@ -110,6 +110,7 @@ test-semantics: build
 	python3 tests/semantics/cold_static_reference_protocol.py
 	python3 tests/semantics/cold_closure_static_protocol.py
 	python3 tests/semantics/closure_call_creation_protocol.py
+	python3 tests/semantics/instance_default_template_protocol.py
 	python3 tests/semantics/default_parameter_compiler.py
 	python3 tests/semantics/default_parameters.py
 	python3 tests/semantics/default_parameter_protocol.py
@@ -145,6 +146,8 @@ test-semantics: build
 	python3 tests/semantics/scoped_callables_protocol.py
 	python3 tests/semantics/keyword_compound_callables.py
 	python3 tests/semantics/keyword_compound_callables_protocol.py
+	python3 tests/semantics/callable_receives.py
+	python3 tests/semantics/callable_receive_protocol.py
 	python3 tests/semantics/from_callable.py
 	python3 tests/semantics/from_callable_protocol.py
 	python3 tests/semantics/invoke_publication.py
@@ -271,6 +274,9 @@ test-semantics: build
 	python3 tests/semantics/internal_default_reception_protocol.py --group owner
 	python3 tests/semantics/internal_default_reception_protocol.py --group pure
 	python3 tests/semantics/internal_default_reception_protocol.py --group builtin
+	python3 tests/semantics/anonymous_default_new_sources.py
+	python3 tests/semantics/anonymous_default_new_protocol.py --group owner
+	python3 tests/semantics/anonymous_default_new_protocol.py --group recursive
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
@@ -351,6 +357,8 @@ test-semantics: build
 	python3 tests/semantics/eval_trace_protocol.py
 	python3 tests/semantics/eval_adapter_protocol.py
 	python3 tests/semantics/include_execution.py
+	python3 tests/semantics/file_operand_sources.py
+	python3 tests/semantics/file_operand_protocol.py
 	python3 tests/semantics/startup_ini.py
 	python3 tests/semantics/startup_ini_protocol.py
 	python3 tests/semantics/display_errors.py

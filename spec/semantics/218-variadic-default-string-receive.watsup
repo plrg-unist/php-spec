@@ -54,8 +54,8 @@ def $fixed_parameter_defaulted(S, n) = false -- otherwise
 ;; DEFAULT also labels property initializers. Only a genuine NParam subtree
 ;; admits NEW here; class-constant and property NEW rules remain separate.
 def $ppparameter_new_site(P, pcpath) = (P.FOLD.DEFAULT /\ $default_below(P.FOLD.SOURCE.OCCURRENCES, pcpath))
-;; Method defaults use the declaring scope. Rebound anonymous Closure defaults
-;; retain their separate live-scope boundary; ordinary NEW resolution is exact.
+;; Method defaults use the declaring scope. Anonymous Closure keyword defaults
+;; retain their selector for the authentic live receive; ordinary NEW is exact.
 dec $ppparameter_new_selector(ptscope, name) : ptbytes?
 def $ppparameter_new_selector(PTKNOWN ptbytes_owner ptbytes_parent?, NName (BYTES text) metadata) = (ptbytes_owner)
   -- if $ptlc($base64(text)) = $ptascii("self")
@@ -70,12 +70,14 @@ def $ppparameter_new_resolve(P, pcpath, name) = eps
   -- if ~$ppparameter_new_site(P, pcpath) \/ P.CLOSURE
 def $ppparameter_new_resolve(P, pcpath, name) = eps
   -- if P.CLASSCONTEXT = eps
+dec $ppanonymous_new_deferred(ppstate, pcpath, name) : bool
+def $ppanonymous_new_deferred(P, pcpath, name) = false -- otherwise
 def $ppnew_class_name(P, pcpath, name) = $ppclass_name(P, pcpath, PNRESOLVED {ORIGINAL name, KIND PLCLASS, RESOLVED ptbytes, FULL true, FALLBACK eps})
   -- if $ppparameter_new_resolve(P, pcpath, name) = (ptbytes)
-  -- if ~$pptrait_new_deferred(P, pcpath, name)
+  -- if ~$pptrait_new_deferred(P, pcpath, name) /\ ~$ppanonymous_new_deferred(P, pcpath, name)
 def $ppnew_class_name(P, pcpath, name) = $ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name))
   -- if $ppparameter_new_resolve(P, pcpath, name) = eps
-  -- if ~$pptrait_new_deferred(P, pcpath, name)
+  -- if ~$pptrait_new_deferred(P, pcpath, name) /\ ~$ppanonymous_new_deferred(P, pcpath, name)
 dec $ppparameter_new_class(ppstate, phpType28, metadata) : ppstate
 def $ppparameter_new_class(P, phpType28, metadata) = $ppconstant_error(P, $ptascii("\"static\" is not allowed in compile-time constants"), $nabs($source_line(metadata)))
   -- if phpType28 = name

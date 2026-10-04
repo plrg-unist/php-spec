@@ -88,15 +88,18 @@ def $typed_parameter_value(S, pfunction, n, pvalue) = $throw_scalar(S, "TypeErro
 
 dec $default_string_candidate(pstate, pfunction, nat, pvalue) : bool
 dec $default_string_begin(pstate, pfunction, nat, nat) : pstate
+dec $api_default_candidate(pstate, pfunction, nat, pvalue) : bool
 def $typed_default_store(S, pfunction, n, POBJECT n_object) = $default_string_begin(S, pfunction, n, n_object)
   -- if $default_string_candidate(S, pfunction, n, POBJECT n_object)
 def $typed_default_store(S, pfunction, n, pvalue) = $default_store(S_value, pfunction, n, pvalue_new)
   -- if ~$default_string_candidate(S, pfunction, n, pvalue)
+  -- if ~$api_default_candidate(S, pfunction, n, pvalue)
   -- if S_value = $typed_parameter_value(S, pfunction, n, pvalue)
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue_new
 def $typed_default_store(S, pfunction, n, pvalue) = S_value
   -- if ~$default_string_candidate(S, pfunction, n, pvalue)
+  -- if ~$api_default_candidate(S, pfunction, n, pvalue)
   -- if S_value = $typed_parameter_value(S, pfunction, n, pvalue)
   -- if S_value.COMPLETION =/= NORMAL
 def $typed_stored_default(PSDEFAULT phpType5 "float", PINT i) = PFLOAT $float_of_int(i)
