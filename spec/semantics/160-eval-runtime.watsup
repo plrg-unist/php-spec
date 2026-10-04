@@ -250,7 +250,7 @@ dec $eval_await_head(ptask*, nat) : bool
 def $eval_await_head((EVAL_AWAIT n) :: ptask_tail*, n) = true
 def $eval_await_head(ptask*, n) = false -- otherwise
 def $eval_context_phase_valid(S, pevalcontext) = ((pevalcontext.PHASE = PARSER_WAIT /\ $eval_head_context(S.EVALCONTEXTS, pevalcontext) /\ $eval_await_head(S.TODO, pevalcontext.UNIT) /\ pevalcontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pevalcontext.SITE) /\ pevalcontext.LEXICAL_CLASS = $eval_class_origin(S) /\ $source_unit(S.SOURCES, pevalcontext.UNIT) = eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = eps /\ $eval_wait_completion(S.COMPLETION)) \/ (pevalcontext.PHASE = UNIT_RUN /\ $source_unit(S.SOURCES, pevalcontext.UNIT) =/= eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = ({UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS}) /\ $code_at(S.CODE, pevalcontext.UNIT) =/= eps))
-def $eval_site_line(S, porigin) = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], expression)
+def $eval_site_line(S, porigin) = $runtime_line(S[.ORIGIN = (porigin)][.CONSTCONTEXT = eps], [PCFIELD 0], expression)
   -- if $origin_node(S.SOURCES, porigin) = (NExprEval expression metadata)
 def $eval_site_line(S, porigin) = 0 -- otherwise
 dec $eval_context_valid(pstate, pevalcontext) : bool
