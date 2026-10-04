@@ -68,7 +68,7 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FA
   -- if pclassdesc_parent.KIND = "class"
   -- if ~pclassdesc_parent.FINAL
   -- if ~pclassdesc.READONLY /\ pclassdesc_parent.READONLY
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ptbytes_message pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, pclassdesc.LINE)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "class"
