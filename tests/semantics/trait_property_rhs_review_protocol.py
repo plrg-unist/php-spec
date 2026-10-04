@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A reached callback keeps the sole precomputed RHS until its opcode finishes."""
+"""A reached callback keeps its RHS alongside the compiled literal pool."""
 from pathlib import Path
 import json
 
@@ -12,7 +12,7 @@ SOURCE = next(row['source'] for row in json.loads(CATALOGUE.read_text())['cases'
               if row['id'] == 'precomputed-array-rhs-installed-before-handler-exception-propagates')
 
 CASES = {
-    'abrupt-handler-completes-write-from-sole-owning-rhs': {
+    'abrupt-handler-completes-write-with-owning-rhs-and-literal-pool': {
         'source': SOURCE,
         'stage': ('S.CURRENT = (pcallcontext) -- if S.FRAMES = pframe :: pframe_tail* '
                   '-- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: '
@@ -43,8 +43,9 @@ CASES = {
             '~$call_current_valid(S[.FRAMES = pframe[.TODO = ptask_saved*] :: pframe_tail*])',
             '$task_nodes(TRAIT_PROPERTY_PHASE ptraitproperty 1) = eps',
             '$task_nodes(TRAIT_PROPERTY_STORE porigin_site eps (KNOWN (PARRAY n_rhs)) z) = [HARRAY n_rhs]',
-            '$heap_owners($heap_graph(S), HARRAY n_rhs) = 1',
-            '$heap_owners($heap_graph(S[.FRAMES = pframe[.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_saved*] :: pframe_tail*]), HARRAY n_rhs) = 0',
+            '$heap_owners($heap_graph(S), HARRAY n_rhs) = 2',
+            '$heap_owners($heap_graph(S[.FRAMES = pframe[.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_saved*] :: pframe_tail*]), HARRAY n_rhs) = 1',
+            '$heap_count(HARRAY n_rhs, $pools_nodes(S.POOLS)) = 1',
             'S.ARRAYS[n_rhs].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 1))]',
             '$class_static_at(S.CLASSSTATICS, ptraitproperty.DECL) = (pclassstatic)',
             'pclassstatic.STATE = PROP_VALUE (DIRECT (PARRAY n_old))',
@@ -58,7 +59,7 @@ CASES = {
             '$trait_property_test_output(S_done.EVENTS) = $ptascii("PRE;H;CAUGHT;1")',
             '$class_static_at(S_done.CLASSSTATICS, ptraitproperty.DECL) = (pclassstatic_done)',
             'pclassstatic_done.STATE = PROP_VALUE (DIRECT (PARRAY n_rhs))',
-            '$heap_owners($heap_graph(S_done), HARRAY n_rhs) = 1',
+            '$heap_owners($heap_graph(S_done), HARRAY n_rhs) = 2',
             '$lookup(S_done.ENV, $ptascii("e")) = (n_exception_cell)',
             'S_done.STORE[n_exception_cell] = DEFINED (POBJECT n_exception)',
             '$throwable_field(S_done, n_exception, "message") = PSTRING $ptascii("STOP")',
