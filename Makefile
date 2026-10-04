@@ -145,6 +145,11 @@ test-semantics: build
 	python3 tests/semantics/shutdown_render_state.py
 	python3 tests/semantics/shutdown_review.py
 	python3 tests/semantics/shutdown_state_review.py
+	python3 tests/semantics/destructors.py
+	python3 tests/semantics/destructor_request.py
+	python3 tests/semantics/destructor_review.py
+	python3 tests/semantics/destructor_state.py
+	python3 tests/semantics/destructor_state_review.py
 	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
 	python3 tests/semantics/scoped_callables_protocol.py

@@ -19,6 +19,26 @@ zero-credit in the [default ledger](coverage/semantics/deferred-static-defaults-
 Compiled keyword NEW under the cached constant METHOD is the immediate remaining
 consumer; wider callable/default behavior and complete core stay open.
 
+Request-stage destructors257 now repeat reverse direct globals and then scan
+reusable live store handles. Once marks, bailout/failed-constructor suppression,
+private visibility, nested USER calls and ordered outgoing slots retain exact
+owners. Caller restoration precedes compiled CV cleanup; extras precede receiver
+release. Pending throws replace and chain through remaining slots. Ignored
+by-value ordinary and automatic-constructor returns release in the live callee before
+locals; C destructor helper returns remain retained. Eval/include continuations
+keep source history. Explicit request facts preserve startup argc order; absent
+facts keep the original environment Unsupported, and dead CVs remain admissible.
+Author78 source agreements and seven/303 reached assertions retain distinct
+cuts; independent64 agreements, two Unsupported controls and12/548 assertions
+retain theirs. Actual253/259/260 routes and final SL/AL253 pass on the preserved
+a4fc parent;264/262/266 preservation is source-reviewed without old-cut renewal.
+[Contract](docs/semantics/SOURCE-DESTRUCTORS.md),
+[author record](coverage/semantics/destructors-review.json),
+[independent ledger](coverage/semantics/destructor-review.json).
+Ordinary eager destruction and original Throwable release before stage1 are
+explicit Unsupported dependencies for the next phase. GC, output buffering,
+queue freeing and final cleanup remain required; complete core stays open.
+
 REAL binding264 now resolves scope before ordered static, `$this`-unbind and
 internal-scope warnings. Genuine handler continuations retain selected reasons
 through callback mutation and throws. The function's own compiled entries supply
@@ -293,8 +313,9 @@ recorded revision, and production stages pass on the accepted fe51 parent.
 [Contract](docs/semantics/SOURCE-SHUTDOWN.md),
 [author/composition record](coverage/semantics/shutdown-functions-review.json),
 [independent ledger](coverage/semantics/shutdown-function-review.json).
-Keyword/compound ingress now uses the staged247 consumers below. Destructors,
-GC, output buffers and queue release are required next request phases.
+Keyword/compound ingress now uses the staged247 consumers below. Request-stage
+destructors are covered separately above; eager destruction, GC, output buffers
+and queue release remain required.
 
 Internal default reception240 now suspends weak-null and lossy integer warnings
 through real error dispatch and invokes genuine Stringable callbacks in formal
