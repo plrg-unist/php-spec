@@ -212,6 +212,7 @@ def $call_extent_valid(S, pcallcontext) = true
   -- if pcallcontext.ARGC = 0
 def $call_extent_valid(S, pcallcontext) = (pcallcontext.ARGC = $named_call_extent(S, $context_target(pcallcontext), pcallcontext.CALLSITE))
   -- if ~$stringify_context_kind(S, pcallcontext)
+  -- if ~$useriter_context_kind(S, pcallcontext)
   -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
 dec $unpack_names_valid(pstate, pcalltarget, (preqbytes, poperand)*) : bool
 def $unpack_names_valid(S, pcalltarget_function, eps) = true

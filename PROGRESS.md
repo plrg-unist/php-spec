@@ -23,6 +23,23 @@ Default/variadic,
 `Closure::fromCallable`, other internal and user-return warning consumers remain
 required; unstaged special callable conversion stays Unsupported.
 
+Iterator224 adds compatible explicit declarations and inherited internal
+obligations for source by-value foreach; callbacks use
+effective runtime methods and retain the iterator/current result through key and
+body. Independent source26 confirms callback order, reference results, ownership,
+lexical/called scope, inherited signatures and source-interface priority at its
+two recorded cutoffs. Author source5 and owner125 retain their original results.
+Cursor checks enforce unique live continuation and metadata IDs below `NEXTITER`;
+cursor49 and claim85 pass separately. Independent source1/reference63 and affected
+fatal teardown38 pass with unchanged87d semantics; the latter corrects only a
+fixture line binding. On accepted2e8, source12 passes control cleanup, arbitrary
+keys, assignment priority, covariance and the remaining throwing callback stages
+at284803284. Independent source1/protocol16 at the same cutoff confirms zero-argument
+Stringable default reception. Earlier results and original failures remain preserved.
+Tentative-return deprecations are the immediate declaration follow-on, followed
+by IteratorAggregate, ArrayAccess and remaining reference/ordinary object
+traversal. [Scope and boundaries](docs/semantics/ITERATORS.md).
+
 Direct missing `$GLOBALS[key]` R-fetches226 dispatch before their consumers and
 retain the original null through key/global mutation. Handler throws skip later
 ASSIGN/SEND, preserving typed destinations and the original exception chain.
