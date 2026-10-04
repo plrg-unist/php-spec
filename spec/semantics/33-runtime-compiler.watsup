@@ -133,6 +133,8 @@ def $code_name((CODENAME pcpath_other n_name* n_fallback*?) :: pcodename*, pcpat
   -- if pcpath_other =/= pcpath
 
 dec $source_constant_fetch(pstate, nat*, (nat*)?, int) : peval
+dec $deprecated_constant_selected(pstate, porigin) : bool
+dec $deprecated_constant_start(pstate, porigin, ptask*) : pstate
 dec $compiled_name(pstate, porigin) : peval?
 def $compiled_name(S, PORIGIN n pcpath) = ($source_constant_fetch(S, n_name*, n_fallback*?, $constant_runtime_line(S, z)))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
@@ -187,7 +189,11 @@ def $enter_compiled_task(S, porigin, EVAL (NExprConstFetch name metadata), ptask
   -- if $compiled_name(S, porigin) = (VALUE pvalue)
 def $enter_compiled_task(S, porigin, EVAL (NExprConstFetch name metadata), ptask*) = S[.TODO = eps][.COMPLETION = pcompletion]
   -- if $compiled_read(S, porigin) = eps
+  -- if ~$deprecated_constant_selected(S, porigin)
   -- if $compiled_name(S, porigin) = (ABRUPT pcompletion)
+def $enter_compiled_task(S, porigin, EVAL (NExprConstFetch name metadata), ptask*) = $deprecated_constant_start(S, porigin, ptask*)
+  -- if $compiled_read(S, porigin) = eps
+  -- if $deprecated_constant_selected(S, porigin)
 def $enter_compiled_task(S, PORIGIN n pcpath, EVAL expression, ptask*) = S[.TODO = $effect_tasks(S, n, pcodeexpr*) ++ [AT (PORIGIN n pcpath) (COMPILED_RESULT false)] ++ ptask*]
   -- if $compiled_read(S, PORIGIN n pcpath) = (pvalue)
   -- if pcodeexpr* = $compiled_effects(S, PORIGIN n pcpath)

@@ -203,6 +203,10 @@ def $error_trigger_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "error 
   -- if $error_api_value(pconfigcall, 0, PNULL) = PNULL \/ $config_object($error_api_value(pconfigcall, 0, PNULL))
 
 dec $error_api_body(pstate, pconfigcall) : pstate
+dec $reporting_long_warning(pstate, pconfigcall) : (int, preqbytes)?
+dec $reporting_long_start(pstate, pconfigcall, int, preqbytes) : pstate
+def $error_api_body(S, pconfigcall) = $reporting_long_start(S, pconfigcall, i, preqbytes)
+  -- if $reporting_long_warning(S, pconfigcall) = ((i, preqbytes))
 def $error_api_body(S, pconfigcall) = S[.RESULT = KNOWN (PINT S.REPORTING)]
   -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
   -- if $error_api_value(pconfigcall, 0, PNULL) = PNULL
@@ -210,6 +214,7 @@ def $error_api_body(S, pconfigcall) = S_level[.REPORTING = $error_int32(i)][.REP
   -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
   -- if $error_api_value(pconfigcall, 0, PNULL) = pvalue
   -- if pvalue =/= PNULL
+  -- if $reporting_long_warning(S, pconfigcall) = eps
   -- if S_level = $error_api_long(S, pconfigcall, 0, pvalue)
   -- if S_level.COMPLETION = NORMAL
   -- if S_level.RESULT = KNOWN (PINT i)
@@ -218,6 +223,7 @@ def $error_api_body(S, pconfigcall) = S_level[.RESULT = KNOWN (PINT S_level.REPO
   -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
   -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
   -- if pvalue =/= PNULL
+  -- if $reporting_long_warning(S, pconfigcall) = eps
   -- if S_level = $error_api_long(S, pconfigcall, 0, pvalue)
   -- if S_level.COMPLETION = NORMAL
   -- if S_level.RESULT = KNOWN (PINT S_level.REPORTING)
@@ -225,6 +231,7 @@ def $error_api_body(S, pconfigcall) = S_level
   -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
   -- if $error_api_value(pconfigcall, 0, PNULL) = pvalue
   -- if pvalue =/= PNULL
+  -- if $reporting_long_warning(S, pconfigcall) = eps
   -- if S_level = $error_api_long(S, pconfigcall, 0, pvalue)
   -- if S_level.COMPLETION =/= NORMAL
 def $error_api_body(S, pconfigcall) = $error_handler_registration(S, pconfigcall, $error_api_value(pconfigcall, 0, PNULL)) -- if pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER
@@ -237,12 +244,17 @@ def $error_api_receive(S, pconfigcall) = S_body[.TODO = ptask_tail*][.BASE = BAS
   -- if S_arity = $error_api_arity(S, pconfigcall)
   -- if S_arity.COMPLETION = NORMAL
   -- if ~$error_trigger_kind(pconfigcall.KIND)
+  -- if $reporting_long_warning(S_arity, pconfigcall) = eps
   -- if S_body = $error_api_body(S_arity, pconfigcall)
   -- if S.TODO = ptask :: ptask_tail*
 def $error_api_receive(S, pconfigcall) = $error_api_body(S_arity, pconfigcall)
   -- if S_arity = $error_api_arity(S, pconfigcall)
   -- if S_arity.COMPLETION = NORMAL
   -- if $error_trigger_kind(pconfigcall.KIND)
+def $error_api_receive(S, pconfigcall) = $error_api_body(S_arity, pconfigcall)
+  -- if S_arity = $error_api_arity(S, pconfigcall)
+  -- if S_arity.COMPLETION = NORMAL
+  -- if $reporting_long_warning(S_arity, pconfigcall) =/= eps
 rule PhpStep/error-api-invoke: S ~> $error_api_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $error_api_kind(pconfigcall.KIND)
