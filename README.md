@@ -222,6 +222,10 @@ records selecting-scope and retired-creator checks. The [method-handler ledger](
 separates original source/state checks from current PIPE warning composition;
 the [earlier handler review](coverage/semantics/error-handlers-review.json) retains
 its distinct revisions and remaining diagnostic/callable obligations.
+Captured-null ASSIGN through a typed alias preserves its value on rejection and
+raises a caller TypeError retaining the handler's previous chain. The
+[consumer review](coverage/semantics/warning-consumers-review.json) records the
+separate source and ownership checks; ordinary missing reference sends stay quiet.
 Full core and a fresh combined offline rebuild remain required.
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
