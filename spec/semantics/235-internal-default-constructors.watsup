@@ -107,8 +107,15 @@ def $default_internal_parameter_plain(S, pctorcall, 2, pnamedslot) = $ee_severit
 def $default_internal_parameter_plain(S, pctorcall, 3, pnamedslot) = $ee_filename_value(S, pctorcall, pnamedslot)
 def $default_internal_parameter_plain(S, pctorcall, 4, pnamedslot) = $ee_line_value(S, pctorcall, pnamedslot)
 def $default_internal_parameter_plain(S, pctorcall, 5, pnamedslot) = $ee_previous_value(S, pctorcall, pnamedslot)
+;; Internal string parsing rewrites a supplied argument; integer parsing does
+;; not. Later errors observe the rewritten string without adding trailing args.
+dec $default_internal_string_slot(pctorcall, nat, pvalue) : pctorcall
+def $default_internal_string_slot(pctorcall, n, PSTRING ptbytes) = pctorcall[.SENT = $named_slot_set(pctorcall.SENT, n, KNOWN (PSTRING ptbytes))]
+  -- if n = 0 \/ (pctorcall.BASE = "ErrorException" /\ n = 3)
+  -- if $(n < |pctorcall.SENT|)
+def $default_internal_string_slot(pctorcall, n, pvalue) = pctorcall -- otherwise
 dec $default_internal_receive(pstate, pctorcall, nat, pvalue*) : pstate
-def $default_internal_receive(S, pctorcall, n, pvalue*) = $default_internal_receive(S_next, pctorcall, $(n + 1), pvalue* ++ [pvalue_step])
+def $default_internal_receive(S, pctorcall, n, pvalue*) = $default_internal_receive(S_next, $default_internal_string_slot(pctorcall, n, pvalue_step), $(n + 1), pvalue* ++ [pvalue_step])
   -- if $(n < $default_internal_arity(pctorcall.BASE))
   -- if S_next = $default_internal_parameter(S, pctorcall, n, $named_slot_at(pctorcall.SENT, n))
   -- if S_next.COMPLETION = NORMAL
