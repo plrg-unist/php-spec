@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Iterator declaration notices230 follow actual source/internal prototype order,
+including source erasure, direct restoration, duplicate notices and the built-in
+ReturnTypeWillChange suppressor. Runtime classes publish before callbacks;
+early file units publish completely before ordered method/compiler warning
+delivery. Real caller scope/trace stays distinct from physical diagnostic origin.
+Live reporting, throwing-handler tails and method/constant fatal prefixes have
+19 authored agreements; independent source11 and affected trace3 pass at their
+separate cutoffs. Independent pending53/handler35/Iterator25/restored23 state
+checks pass at19dae, including source-ledger authority and actual owners. Four
+early-eval controls assert temporary Unsupported only; per-class eval callbacks
+and publication after handler throws are the immediate required follow-on.
+Actual-parent composition is in progress. [Contract and tests](docs/semantics/ITERATORS.md).
+
 Shutdown registration231 caches callable selection, private/rebound permission
 and copied arguments after all argument effects. Ordered callbacks run after
 normal, exit and fatal/uncaught paths, including serviced compiler failures.
@@ -147,9 +160,8 @@ fixture line binding. On accepted2e8, source12 passes control cleanup, arbitrary
 keys, assignment priority, covariance and the remaining throwing callback stages
 at284803284. Independent source1/protocol16 at the same cutoff confirms zero-argument
 Stringable default reception. Earlier results and original failures remain preserved.
-Tentative-return deprecations are the immediate declaration follow-on, followed
-by IteratorAggregate, ArrayAccess and remaining reference/ordinary object
-traversal. [Scope and boundaries](docs/semantics/ITERATORS.md).
+IteratorAggregate, ArrayAccess and remaining reference/ordinary object traversal
+follow the required early-eval diagnostic work. [Scope and boundaries](docs/semantics/ITERATORS.md).
 
 Direct missing `$GLOBALS[key]` R-fetches226 dispatch before their consumers and
 retain the original null through key/global mutation. Handler throws skip later

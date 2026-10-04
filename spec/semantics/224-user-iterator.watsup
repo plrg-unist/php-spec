@@ -31,7 +31,7 @@ def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmm
 def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVUNRESOLVED ptbytes*) = METHOD_UNSUPPORTED "Iterator dependent method declaration"
 def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMUNSUPPORTED text) = METHOD_UNSUPPORTED text
 def $useriter_return_compared(pmethoddesc, PMCHECK PVYES ptbytes*) = METHOD_OK
-def $useriter_return_compared(pmethoddesc, PMCHECK PVNO ptbytes*) = METHOD_UNSUPPORTED "Iterator tentative return declaration"
+def $useriter_return_compared(pmethoddesc, PMCHECK PVNO ptbytes*) = METHOD_OK
 def $useriter_return_compared(pmethoddesc, PMCHECK PVUNRESOLVED ptbytes*) = METHOD_UNSUPPORTED "Iterator tentative dependent return declaration"
 def $useriter_return_compared(pmethoddesc, PMUNSUPPORTED text) = METHOD_UNSUPPORTED text
 

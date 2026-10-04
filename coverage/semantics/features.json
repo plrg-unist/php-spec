@@ -9943,13 +9943,22 @@
       "milestone": "4b",
       "status": "pending",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_interfaces.c"
+      "implementation": [
+        "spec/semantics/224-user-iterator.watsup",
+        "spec/semantics/230-iterator-declaration-notices.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/user_iterator_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/user_iterator.py",
+        "tests/semantics/iterator_declaration_notices.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c",
+        "docs/semantics/ITERATORS.md"
+      ],
+      "review": "224 implements reviewed source by-value foreach with authentic effective callbacks, current/cursor ownership and inherited interface obligations. 230 adds runtime/file tentative-return notice delivery, prototype order, publication and fatal-prefix behavior; authored source19, independent source11, affected trace3 and independent state136 pass at their separate cutoffs; actual-parent composition is in progress. Early eval diagnostics, remaining Traversable consumers and lifecycle remain required; full family status stays pending."
     },
     {
       "id": "protocols.IteratorAggregate",
