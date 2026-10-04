@@ -559,5 +559,32 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "denied-automatic-constructor-skips-user-destructor",
+    "source": "<?php class C{private function __construct(){}function __destruct(){echo \"D;\";}}try{new C;}catch(Throwable $e){echo \"C;\";}",
+    "source_sha256": "8626bf3d92dfd37d76e0414f9818da8eebf0a1b1a895a868ba6b9ec55b8c2959",
+    "stdout": "C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "throwing-new-argument-skips-user-destructor",
+    "source": "<?php function fail(){throw new Exception(\"arg\");}class C{function __construct($x){}function __destruct(){echo \"D;\";}}try{new C(fail());}catch(Throwable $e){echo \"C;\";}",
+    "source_sha256": "407804731f27f1282757aae73a02a370a99cb49aa7ccdad11dff86b1fad4b34f",
+    "stdout": "C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "throwing-manual-constructor-argument-keeps-user-destructor",
+    "source": "<?php function fail(){throw new Exception(\"arg\");}class C{function __construct($x){}function __destruct(){echo \"D;\";}}$c=new C(0);try{$c->__construct(fail());}catch(Throwable $e){echo \"C;\";}",
+    "source_sha256": "5db4a2368604a9edd465e99652ec6bbe3eb082d85e4f285041dba4273a3385e4",
+    "stdout": "C;D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
