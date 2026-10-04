@@ -358,7 +358,7 @@ def $error_context_anchor(S, pcallcontext, (pcallcontext), pframe :: pframe_tail
   -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if pframe.ORIGIN = (perrorcall.SITE)
   -- if perrorcall.TARGET = (pcallcontext.TARGET)
-  -- if $error_entered_call_valid(S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD], perrorcall)
+  -- if $error_entered_call_valid($constant_frame_scope(S, pframe, pframe_tail*), perrorcall)
 def $error_context_anchor(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $error_context_anchor(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
   -- if pcallcontext_other? =/= (pcallcontext)
 def $error_context_anchor(S, pcallcontext, pcallcontext_other?, pframe*) = false -- otherwise

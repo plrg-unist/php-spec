@@ -140,7 +140,7 @@ syntax pconstantclosure = { OBJECT nat, SITE porigin, DECL porigin, PREFIX nat }
 syntax pdefaultcache = { ORIGIN porigin, VALUE pvalue, CLASS pvalueclass }
 syntax puserconstant = { NAME preqbytes, ORIGIN porigin, VALUE pvalue, CLASS pvalueclass }
 syntax pcallcontext = { TARGET pcalltarget, WRAPPER pnamedargs?, INSTANCE nat?, RECEIVER nat?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin?, FUNCTION porigin, NAME preqbytes, CALLSITE porigin?, LINE int, PARAMS preqbytes*, ARGC nat, EXTRA poperand*, NAMED (preqbytes, poperand)* }
-syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN porigin?, HELD pnode*, CONTEXT pcallcontext?, BORROWEDREAD pidentityread? }
+syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN porigin?, HELD pnode*, CONTEXT pcallcontext?, BORROWEDREAD pidentityread?, CONSTCONTEXT pconstantcontext? }
 syntax ptraceframe = { FILE preqbytes, LINE int, FUNCTION preqbytes, CLASS preqbytes?, TYPE preqbytes?, ARGS (pkey, pvalue)*, HASARGS bool }
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
 syntax pclassstatic = { DECL ppropertyid, STATE ppropstate }
@@ -540,6 +540,9 @@ dec $throwable_previous_id(pstate, nat) : nat?
 dec $throwable_set_previous_id(pstate, nat, nat?) : pstate
 
 dec $class_constant_ast_active(pstate) : bool
+dec $class_constant_active(pstate) : bool
+dec $class_constant_frame_stack(pstate, pframe, pframe*) : pclassconstantcontext*
+dec $class_constant_origin(pclassdesc*, porigin) : pclassconstantdesc?
 dec $class_constant_trace(pstate) : ptraceframe*
 dec $class_constant_error_origin(pstate) : porigin?
 dec $class_static_prepare_base(pstate, poperand, ptbytes, int) : pstate

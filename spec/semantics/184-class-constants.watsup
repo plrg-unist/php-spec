@@ -19,10 +19,10 @@ dec $class_constant_update_site(pstate, porigin, porigin) : bool
 dec $class_constant_parent_chain(pstate, porigin, porigin, nat) : bool
 dec $class_constant_values_done(pclassconstantdesc*, porigin*) : bool
 dec $class_constant_cache_origins(pdefaultcache*) : porigin*
+dec $class_constant_scope_stack(pstate) : pclassconstantcontext*
 dec $class_constant_table_task(pstate, porigin, int, ptask*) : bool
 ;; Lookup resolves the requested class, but initialization and its cache belong
 ;; to the declaration's owner. Visibility is checked before deferred evaluation.
-dec $class_constant_origin(pclassdesc*, porigin) : pclassconstantdesc?
 dec $class_constant_origin_in(pclassconstantdesc*, porigin) : pclassconstantdesc?
 def $class_constant_origin_in(eps, porigin) = eps
 def $class_constant_origin_in(pclassconstantdesc :: pclassconstantdesc_tail*, porigin) = (pclassconstantdesc)
@@ -80,6 +80,7 @@ def $class_constant_visible(S, pclassconstantdesc) = true
 def $class_constant_visible(S, pclassconstantdesc) = false -- otherwise
 
 def $method_current_scope(S) = (pclassconstantdesc.OWNER)
+  -- if $class_constant_active(S)
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
   -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
 
@@ -126,6 +127,7 @@ def $class_constant_ast(S, pclassconstantdesc) = false
   -- if $origin_node(S.SOURCES, pclassconstantdesc.INITIALIZER) = (NExprConstFetch name metadata)
 def $class_constant_ast(S, pclassconstantdesc) = true -- otherwise
 def $class_constant_ast_active(S) = $class_constant_ast(S, pclassconstantdesc)
+  -- if $class_constant_active(S)
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
   -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
   -- if ~$class_constant_binding_head(S.TODO, pclassconstantcontext.DECL)
@@ -323,13 +325,15 @@ def $class_constant_trace_changed(S, pclassconstantcontext) = true
   -- if $call_sourcefile(S.FILES, porigin_error) =/= $call_sourcefile(S.FILES, porigin) \/ $constant_runtime_line(S, z) =/= pclassconstantcontext.LINE
 def $class_constant_trace_changed(S, pclassconstantcontext) = false -- otherwise
 def $class_constant_trace(S) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pclassconstantcontext.LINE, FUNCTION $ptascii("[constant expression]"), CLASS eps, TYPE eps, ARGS eps, HASARGS true}]
-  -- if $class_constant_trace_context(S, S.CLASSCONSTANTINIT) = (pclassconstantcontext)
+  -- if $class_constant_active(S)
+  -- if $class_constant_trace_context(S, $class_constant_scope_stack(S)) = (pclassconstantcontext)
   -- if pclassconstantcontext.ORIGIN = (porigin)
   -- if $class_constant_trace_changed(S, pclassconstantcontext)
 def $class_constant_trace(S) = eps -- otherwise
 
 ;; The unresolved-name fast path retains the fetch file as well as its line.
 def $class_constant_error_origin(S) = pclassconstantcontext.ORIGIN
+  -- if $class_constant_active(S)
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
   -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
   -- if ~$class_constant_ast(S, pclassconstantdesc)
@@ -361,6 +365,28 @@ def $class_constant_bindings(ptask :: ptask_tail*) = $class_constant_binding(pta
 dec $class_constant_contexts(pclassconstantcontext*) : porigin*
 def $class_constant_contexts(eps) = eps
 def $class_constant_contexts(pclassconstantcontext :: pclassconstantcontext_tail*) = pclassconstantcontext.DECL :: $class_constant_contexts(pclassconstantcontext_tail*)
+
+;; Class initialization is busy across callbacks. Its lexical evaluator is
+;; active only in the scope which owns the matching pending binding.
+def $class_constant_active(S) = true
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if pconstantcontext.ORIGIN = pclassconstantcontext.DECL
+  -- if pconstantcontext.LINE = pclassconstantcontext.LINE
+  -- if pclassconstantcontext.DECL <- $class_constant_bindings(S.TODO)
+def $class_constant_active(S) = false -- otherwise
+dec $class_constant_frames_bindings(pframe*) : porigin*
+def $class_constant_frames_bindings(eps) = eps
+def $class_constant_frames_bindings(pframe :: pframe_tail*) = $class_constant_bindings(pframe.TODO) ++ $class_constant_frames_bindings(pframe_tail*)
+def $class_constant_frame_stack(S, pframe, pframe_tail*) = S.CLASSCONSTANTINIT[n_start:n_remaining]
+  -- if n_remaining = |$class_constant_bindings(pframe.TODO) ++ $class_constant_frames_bindings(pframe_tail*)|
+  -- if $(n_remaining <= |S.CLASSCONSTANTINIT|)
+  -- if n_start = $nabs($(|S.CLASSCONSTANTINIT| - n_remaining))
+def $class_constant_frame_stack(S, pframe, pframe_tail*) = eps -- otherwise
+def $class_constant_scope_stack(S) = S.CLASSCONSTANTINIT[0:n]
+  -- if n = |$class_constant_bindings(S.TODO)|
+  -- if $(n <= |S.CLASSCONSTANTINIT|)
+def $class_constant_scope_stack(S) = eps -- otherwise
 dec $class_constant_context_site(pstate, pclassconstantcontext) : bool
 def $class_constant_context_site(S, pclassconstantcontext) = true
   -- if pclassconstantcontext.ORIGIN = (porigin)
@@ -413,12 +439,17 @@ def $class_constant_context_valid(S, pconstantcontext) = true
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
   -- if pconstantcontext.ORIGIN = pclassconstantcontext.DECL
   -- if pconstantcontext.LINE = pclassconstantcontext.LINE
-  -- if $class_constant_bindings(S.TODO) = $class_constant_contexts(S.CLASSCONSTANTINIT)
+  -- if $class_constant_bindings(S.TODO) = $class_constant_contexts($class_constant_scope_stack(S))
   -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
   -- if $constant_branches_valid(S)
 def $class_constant_context_valid(S, pconstantcontext) = false -- otherwise
 
-def $class_constant_state_valid(S) = ($class_constant_history_valid(S) /\ $class_constant_table_blocks(S, S.TODO, eps) /\ $class_constant_caches_valid(S, S.CLASSCONSTANTCACHE) /\ $class_constant_stack_valid(S, S.CLASSCONSTANTINIT) /\ $class_constant_previous_valid(S) /\ $class_constant_bindings(S.TODO) = $class_constant_contexts(S.CLASSCONSTANTINIT) /\ $class_constant_pairs_valid(S.TODO) /\ $class_constant_update_blocks(S, S.TODO, eps))
+def $class_constant_scope_valid(S, pclassconstantcontext_busy*) = ($class_constant_table_blocks(S, S.TODO, eps) /\ $class_constant_stack_valid(S_scope, S_scope.CLASSCONSTANTINIT) /\ $class_constant_previous_valid(S_scope) /\ $class_constant_bindings(S_scope.TODO) = $class_constant_contexts(S_scope.CLASSCONSTANTINIT) /\ $class_constant_pairs_valid(S.TODO) /\ $class_constant_update_blocks(S[.CLASSCONSTANTINIT = pclassconstantcontext_busy*], S.TODO, eps))
+  -- if S_scope = S[.CLASSCONSTANTINIT = $class_constant_scope_stack(S)]
+dec $class_constant_saved_scopes_valid(pstate, pframe*) : bool
+def $class_constant_saved_scopes_valid(S, eps) = true
+def $class_constant_saved_scopes_valid(S, pframe :: pframe_tail*) = ($class_constant_scope_valid($constant_frame_scope(S, pframe, pframe_tail*), S.CLASSCONSTANTINIT) /\ $class_constant_saved_scopes_valid(S, pframe_tail*))
+def $class_constant_state_valid(S) = ($class_constant_history_valid(S) /\ $class_constant_caches_valid(S, S.CLASSCONSTANTCACHE) /\ $class_constant_scope_valid(S, S.CLASSCONSTANTINIT) /\ $class_constant_saved_scopes_valid(S, S.FRAMES) /\ $class_constant_bindings(S.TODO) ++ $class_constant_frames_bindings(S.FRAMES) = $class_constant_contexts(S.CLASSCONSTANTINIT))
 
 dec $class_constant_source_task(pstate, phpType19, phpType20) : bool
 def $class_constant_source_task(S, phpType19, phpType20) = true

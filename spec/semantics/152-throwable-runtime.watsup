@@ -123,6 +123,7 @@ def $throwable_continuation(S, S_next) = S_next
   -- if pframe.ORIGIN = S.ORIGIN
   -- if pframe.SILENCES = S.SILENCES
   -- if pframe.BORROWEDREAD = S.BORROWEDREAD
+  -- if pframe.CONSTCONTEXT = S.CONSTCONTEXT
 def $throwable_continuation(S, S_next) = S_next
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if $error_call_valid(S, perrorcall)
@@ -134,6 +135,7 @@ def $throwable_continuation(S, S_next) = S_next
   -- if pframe.ORIGIN = S.ORIGIN
   -- if pframe.SILENCES = S.SILENCES
   -- if pframe.BORROWEDREAD = S.BORROWEDREAD
+  -- if pframe.CONSTCONTEXT = S.CONSTCONTEXT
 def $throwable_continuation(S, S_next) = S_next[.TODO = eps][.COMPLETION = UNSUPPORTED "unaudited Throwable frame transition"] -- otherwise
 def $throwable_transition(S, S_next) = $throwable_materialize($throwable_continuation(S, S_next))
   -- if $throwable_pending(S_next.COMPLETION)

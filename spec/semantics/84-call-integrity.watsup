@@ -296,12 +296,14 @@ def $call_saved_context_valid(S, pframe) = false -- otherwise
 dec $borrowed_read_scope_valid(pstate) : bool
 dec $call_frames_valid(pstate, pframe*) : bool
 dec $parameter_string_frame_scope(pstate, pframe, pframe*) : pstate
+dec $constant_context_valid(pstate) : bool
+dec $class_constant_scope_valid(pstate, pclassconstantcontext*) : bool
 def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S -- otherwise
 def $call_frames_valid(S, eps) = true
-def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($parameter_string_frame_scope(S[.ORIGIN = pframe.ORIGIN][.CURRENT = pframe.CONTEXT][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD], pframe, pframe_tail*), pframe.TODO) /\ $borrowed_read_scope_valid(S[.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD]) /\ $call_saved_context_valid(S, pframe) /\ $call_frames_valid(S, pframe_tail*))
+def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($parameter_string_frame_scope(S_scope, pframe, pframe_tail*), pframe.TODO) /\ $borrowed_read_scope_valid(S_scope) /\ $call_saved_context_valid(S_scope, pframe) /\ $constant_context_valid(S_scope) /\ $call_frames_valid(S, pframe_tail*))
+  -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
 dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $class_constant_state_valid(pstate) : bool
-dec $constant_context_valid(pstate) : bool
 dec $default_caches_valid(pstate, pdefaultcache*) : bool
 dec $static_result_valid(pstate) : bool
 dec $clone_result_valid(pstate) : bool
