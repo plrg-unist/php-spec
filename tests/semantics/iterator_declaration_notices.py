@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Source/native declaration notices, publication and compile_file ordering."""
+"""Source/native declaration notices and file/eval publication ordering."""
 import argparse
 import base64
 import hashlib
@@ -33,6 +33,14 @@ def php(text):
     return ('<?php\n' + text).encode()
 
 
+def fatal_formatter(body):
+    code = (cls('A', parent='ParentIt', interfaces='') + '\n' +
+            cls('B', CURRENT.replace('next():void', 'next($x):void'), parent='ParentIt', interfaces='') + 'echo "BAD";')
+    return php(PARENT + '\nclass NoticeException extends Exception {function __toString():string {' + body + '}}\n' +
+               'function notice(){echo "H";throw new NoticeException("handler");}set_error_handler("notice");\n' +
+               'try{eval(' + literal(code) + ');}catch(Exception $e){echo "caught";}echo "BAD";')
+
+
 CASES = {
     'runtime-order': {'source': php(HANDLER + '\nif(true){' + cls(methods=BARE) + '}echo "D";')},
     'runtime-readiness': {'source': php('function notice($l,$m,$f,$n){echo "H";foreach(new It as $k=>$v){echo $k,":",$v;break;}return true;}set_error_handler("notice");\nif(true){' + cls() + '}echo "D";')},
@@ -51,10 +59,32 @@ CASES = {
     'early-file-throw-published': {'source': php('function notice(){echo "H";throw new Exception("x");}set_error_handler("notice");\n' + PARENT + '\ntry{include __DIR__."/unit.php";}catch(Exception $e){echo "C";}echo (new A) instanceof Iterator?"1":"0";echo (new B) instanceof Iterator?"1":"0";'), 'unit': php(cls('A', parent='ParentIt', interfaces='') + '\n' + cls('B', parent='ParentIt', interfaces='') + 'echo "BAD";')},
     'early-file-mixed-warnings': {'source': php(HANDLER + '\n' + PARENT + '\ninclude __DIR__."/unit.php";echo "D";'), 'unit': php(cls('A', parent='ParentIt', interfaces='') + '\nclass W {protected function __invoke(){}}\n' + cls('B', parent='ParentIt', interfaces='') + 'echo "U";')},
     'early-file-mixed-fatal-prefix': {'source': php(HANDLER + '\n' + PARENT + '\ninclude __DIR__."/unit.php";echo "BAD";'), 'unit': php(cls('A', parent='ParentIt', interfaces='') + '\nclass W {protected function __invoke(){}}\n' + cls('B', CURRENT.replace('next():void', 'next($x):void'), parent='ParentIt', interfaces='') + 'echo "BAD";')},
-    'early-eval-required-followup': {'source': php(HANDLER + '\n' + PARENT + '\neval(' + literal(cls('A', parent='ParentIt', interfaces='') + cls('B', parent='ParentIt', interfaces='')) + ');echo "D";'), 'unsupported': True},
-    'early-eval-fatal-required-followup': {'source': php(HANDLER + '\n' + PARENT + '\neval(' + literal(cls('B', CURRENT.replace('next():void', 'next($x):void'), parent='ParentIt', interfaces='')) + ');'), 'unsupported': True},
-    'early-eval-prefix-required-followup': {'source': php(HANDLER + '\n' + PARENT + '\neval(' + literal(cls('A', parent='ParentIt', interfaces='') + cls('B', CURRENT.replace('next():void', 'next($x):void'), parent='ParentIt', interfaces='')) + ');'), 'unsupported': True},
-    'early-eval-compiler-warning-required-followup': {'source': php(HANDLER + '\neval(' + literal('class W {protected function __invoke(){}}') + ');echo "D";'), 'unsupported': True},
+    'early-eval-per-class': {'source': php(HANDLER + '\n' + PARENT + '\neval(' + literal(cls('A', parent='ParentIt', interfaces='') + cls('B', parent='ParentIt', interfaces='')) + ');echo "D";')},
+    'early-eval-fatal-prefix': {'source': php(HANDLER + '\n' + PARENT + '\neval(' + literal(cls('B', CURRENT.replace('next():void', 'next($x):void'), parent='ParentIt', interfaces='')) + ');')},
+    'early-eval-success-before-fatal': {'source': php(HANDLER + '\n' + PARENT + '\neval(' + literal(cls('A', parent='ParentIt', interfaces='') + cls('B', CURRENT.replace('next():void', 'next($x):void'), parent='ParentIt', interfaces='')) + ');')},
+    'early-eval-compiler-warning': {'source': php(HANDLER + '\neval(' + literal('class W {protected function __invoke(){}}') + ');echo "D";')},
+    'early-eval-throw-publications': {'source': php('function notice(){echo "H";throw new Exception("held");}set_error_handler("notice");\n' + PARENT + '\ntry{eval(' + literal(cls('A', parent='ParentIt', interfaces='') + cls('B', parent='ParentIt', interfaces='') + 'echo "BAD";') + ');}catch(Exception $e){echo "C:",$e->getMessage(),";";}echo (new A) instanceof Iterator?"A":"a";echo (new B) instanceof Iterator?"B":"b";')},
+    'early-eval-exit-publications': {'source': php('function notice(){echo "H";exit(7);}function finish(){echo "S";try{new A;echo "A";}catch(Throwable $e){echo "a";}try{new B;echo "B";}catch(Throwable $e){echo "b";}}register_shutdown_function("finish");set_error_handler("notice");\n' + PARENT + '\neval(' + literal(cls('A', parent='ParentIt', interfaces='') + cls('B', parent='ParentIt', interfaces='') + 'echo "BAD";') + ');echo "BAD";')},
+    'early-eval-user-fatal-stops': {'source': php('function notice(){echo "H";trigger_error("stop",256);}function finish(){echo "S";try{new A;echo "A";}catch(Throwable $e){echo "a";}try{new B;echo "B";}catch(Throwable $e){echo "b";}}register_shutdown_function("finish");set_error_handler("notice");\n' + PARENT + '\neval(' + literal(cls('A', parent='ParentIt', interfaces='') + cls('B', parent='ParentIt', interfaces='') + 'echo "BAD";') + ');echo "BAD";')},
+    'early-eval-formatter-exit': {'source': fatal_formatter('echo "F";exit(7);')},
+    'early-eval-formatter-throw': {'source': fatal_formatter('echo "F";throw new Exception("secondary");')},
+    'early-eval-formatter-recorded-read': {'source': fatal_formatter('echo "F";echo $missing;return "formatted";')},
+    'early-eval-formatter-user-fatal': {'source': fatal_formatter('echo "F";trigger_error("nested",256);return "formatted";')},
+    'early-eval-formatter-nested-hard': {'source': fatal_formatter('echo "F";eval(' + literal(cls('InnerBad', CURRENT.replace('next():void', 'next($x):void'), parent='ParentIt', interfaces='')) + ');return "formatted";')},
+    'early-eval-formatter-file-hard': {'source': fatal_formatter('echo "F";include __DIR__."/unit.php";return "formatted";'),
+                                       'unit': php(cls('InnerBad', CURRENT.replace('next():void', 'next($x):void'), parent='ParentIt', interfaces=''))},
+    'current-dollar-curly-effects': {'source': b'<?php\nset_error_handler(function($n,$m,$f,$l){echo \'H:\'.$l.\':\'.error_reporting().\'|\';ini_set(\'display_errors\',\'stdout\');error_reporting(0);return false;});\necho eval(\'$x="V";$name="x";return "${x}${$name}";\');echo \'|END\';\n'},
+    'current-request-destructor-exit': {'source': b'<?php\nabstract class ParentIt implements Iterator {}\nclass Kept {function __destruct(){echo "D";try{new B;echo "B";}catch(Error $e){echo "b";}}}\n$kept=new Kept;\nfunction notice($level,$message,$file,$line){echo "H";exit(7);}\nset_error_handler("notice");\neval(\'class A extends ParentIt {public function current(){return 7;}public function next():void{}public function key():mixed{return 10;}public function valid():bool{return true;}public function rewind():void{}}\nclass B extends ParentIt {public function current(){return 7;}public function next():void{}public function key():mixed{return 10;}public function valid():bool{return true;}public function rewind():void{}}echo "BAD";\');\necho "BAD";\n'},
+    'current-object-cast-fatal-formatter': {'source': b'''<?php
+abstract class ParentIt implements Iterator {}
+class NoticeException extends Exception {function __toString():string {echo "F";$v=NAN;$o=(object)$v;echo ($o->scalar!==$o->scalar ? "N" : "X");return "formatted";}}
+function notice($level,$message,$file,$line){echo "H";throw new NoticeException("handler");}
+set_error_handler("notice");
+try{eval('class A extends ParentIt {public function current(){return 7;}public function next():void{}public function key():mixed{return 10;}public function valid():bool{return true;}public function rewind():void{}}
+class B extends ParentIt {public function current(){return 7;}public function next($x):void{}public function key():mixed{return 10;}public function valid():bool{return true;}public function rewind():void{}}
+echo "BAD";');}catch(Exception $e){echo "caught";}
+echo "BAD";
+'''},
 }
 
 
@@ -105,16 +135,13 @@ def main():
                    'native_command': native_command, 'model_command': command, 'cwd': str(directory),
                    'native_exit': native.returncode, 'model_exit': model.returncode}
             report['records'].append(row)
-            assert model.returncode == (1 if case.get('unsupported') else 0) and not model.stderr, (name, model.stderr)
+            assert model.returncode == 0 and not model.stderr, (name, model.stderr)
             observation = json.loads(model.stdout)
             row['status'] = observation['status']
-            if case.get('unsupported'):
-                assert observation['status'] == 'unsupported' and 'early eval' in observation['reason'], observation
-            else:
-                assert observation['status'] in ['normal', 'php_error', 'static_rejection'], observation
-                assert observation['exit_status'] == native.returncode, (name, observation, native.stderr)
-                assert base64.b64decode(observation['stdout'], validate=True) == native.stdout, (name, observation, native.stdout)
-                assert base64.b64decode(observation['stderr'], validate=True) == native.stderr, (name, observation, native.stderr)
+            assert observation['status'] in ['normal', 'php_error', 'static_rejection', 'explicit_exit'], observation
+            assert observation['exit_status'] == native.returncode, (name, observation, native.stderr)
+            assert base64.b64decode(observation['stdout'], validate=True) == native.stdout, (name, observation, native.stdout)
+            assert base64.b64decode(observation['stderr'], validate=True) == native.stderr, (name, observation, native.stderr)
             row['passed'] = True
             print(name, 'pass', flush=True)
         report['result'] = 'pass'

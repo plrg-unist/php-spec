@@ -157,7 +157,7 @@ def main():
                 assert native.stderr.startswith(stderr_prefix) if stderr_prefix else not native.stderr
             if args.mode == 'full':
                 model = process([str(ROOT / 'bin/php-semantics'), str(path), '--steps', '100000', '--timeout', '60'], directory / 'model', 90, directory)
-                assert model.returncode == 0 and not model.stderr, (name, model.stderr)
+                assert model.returncode == (1 if name in UNSUPPORTED else 0) and not model.stderr, (name, model.stderr)
                 observation = json.loads(model.stdout)
                 assert observation['frontend'] == 'accepted' and observation['checked'] == 'program', observation
                 if name in UNSUPPORTED:

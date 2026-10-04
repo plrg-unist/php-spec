@@ -178,6 +178,7 @@ def $call_selected_valid(S, STATIC_METHOD_TARGET porigin_class porigin_method, (
 def $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_call)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_call)
 def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
 dec $call_line_valid(pstate, porigin?, int) : bool
+dec $eval_compile_string_site(pstate, porigin, int) : bool
 dec $static_string_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
 dec $static_string_context_line_valid(pstate, pcallcontext) : bool
 dec $interpolation_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
@@ -189,7 +190,9 @@ def $default_internal_string_context_line_valid(S, pcallcontext) = false -- othe
 def $call_line_valid(S, (PORIGIN n pcpath), z) = true
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
-def $call_line_valid(S, (porigin_site), z) = true -- if $terminal_string_site(S, porigin_site, z)
+def $call_line_valid(S, (porigin_site), z) = true
+  -- if $terminal_string_site(S, porigin_site, z)
+  -- if ~$eval_compile_string_site(S, porigin_site, z)
 def $call_line_valid(S, porigin?, z) = false -- otherwise
 dec $call_arguments_valid(pstate, porigin?, nat, phpType7*, poperand*, nat) : bool
 dec $stringify_pending_site(pstate, porigin) : bool
@@ -345,15 +348,16 @@ dec $finally_state_valid(pstate) : bool
 dec $eval_state_valid(pstate) : bool
 dec $error_handlers_valid(pstate, perrorhandler*) : bool
 dec $exception_handlers_valid(pstate, pvalue?*) : bool
+dec $eval_compile_owners_valid(pstate) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
+;; Class history authenticates these source images and the exact function table.
 def $call_descriptors_valid(S) = true
   -- if $startup_state_valid(S)
   -- if $display_state_valid(S)
   -- if $precision_state_valid(S)
   -- if $object_tables_valid(S)
   -- if $eval_state_valid(S)
-  -- if $call_projection(S, S.SOURCES) = FUNCTIONCHECK S.FUNCTIONS
   -- if $class_state_valid(S)
   -- if $call_registry_valid(S.FUNCTIONS, S.CALLABLES)
   -- if $call_tasks_valid(S, S.TODO)
@@ -368,6 +372,7 @@ def $call_descriptors_valid(S) = true
   -- if $stringify_chain_valid(S, S.CURRENT, S.FRAMES)
   -- if $useriter_chain_valid(S, S.CURRENT, S.FRAMES)
   -- if $iterator_notice_owners_valid(S.TODO, S.FRAMES)
+  -- if $eval_compile_owners_valid(S)
   -- if $finally_state_valid(S)
   -- if $ctor_frames_pairs_valid(S, S.FRAMES)
   -- if $call_current_valid(S)

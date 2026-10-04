@@ -158,9 +158,11 @@ sources; Traversable objects remain unfinished. Array call arguments are covered
 [Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
 callbacks with effective method selection, retained current values and abrupt
 cleanup. Tentative-return declarations use real prototype order and runtime/file
-warning delivery after publication. Early eval diagnostic callbacks are the
-immediate follow-on; IteratorAggregate, ArrayAccess and other Traversable
-consumers remain required.
+warning delivery after publication. Early eval warnings suspend genuine
+compilation at each publication; handler throws or exit preserve later class
+publication, while user fatals stop it. Compiler fatal formatting retains the
+primary diagnostic through source effects and nested eval/include compilation failures.
+IteratorAggregate, ArrayAccess and other Traversable consumers remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.
@@ -473,6 +475,11 @@ property/callable consumers remain open. Children created by cached property
 method callables retain lexical and called scope after wrapped or cloned makers
 retire, including private `new self` defaults. Two sources and 170 state premises
 retain separate accepted cutoffs.
+Shared trait-constant callable targets retain their first lookup while later
+method imports use fresh called classes and named/method receipts use current
+publication prefixes. Three new source
+agreements and112 AL/122 SL premises check partial failure, copied children and
+actual constant-cache ownership; compiled keyword NEW remains a required consumer.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -642,7 +649,10 @@ captured missing-CV reads through handlers. Broader constrained conversion remai
 class selector before arguments and releases selector temporaries before class work.
 Compiled keyword scopes survive recursive constructors and retired receiving Closures;
 cached property method callables retain lexical and called class separately.
-Autoload and ordinary named keyword NEW remain required.
+[Ordinary named keyword NEW](coverage/semantics/named-keyword-new-review.json)
+uses lexical self/parent and called static scope through inherited constructors,
+rebound Closures and eval. Known invalid function scopes reject at compilation;
+deferred scopes fail before arguments. Autoload remains required.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

@@ -6,6 +6,8 @@ def $ppdispatch(P, pcpath, NExprNew name (SEQUENCE phpType7*) metadata, PPR) = $
   -- if phpType7* =/= eps
   -- if ~$ppfirstclass(phpType7*)
 
-def $ppexpr(P, pcpath, NExprNew name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprNew name (SEQUENCE phpType7*) metadata, PPR)), pcpath, NExprNew name (SEQUENCE phpType7*) metadata, PPR), pcpath, $source_line(metadata))
+dec $ppnew_instruction_line(name, metadata) : int
+def $ppnew_instruction_line(name, metadata) = $source_line(metadata) -- otherwise
+def $ppexpr(P, pcpath, NExprNew name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprNew name (SEQUENCE phpType7*) metadata, PPR)), pcpath, NExprNew name (SEQUENCE phpType7*) metadata, PPR), pcpath, $ppnew_instruction_line(name, metadata))
   -- if P.COMPLETION = PPCNORMAL
   -- if phpType7* =/= eps
