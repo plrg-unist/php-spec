@@ -12,7 +12,9 @@ runner.CASES = {
                  '(DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_tail* '
                  '-- if pdestructionframe.PENDING = (n_replacement) '
                  '-- if $throwable_field(S, n_replacement, "message") = '
-                 'PSTRING $ptascii("b")',
+                 'PSTRING $ptascii("b") '
+                 '-- if $function_at($all_functions(S), pdestructionframe.FUNCTION) = (pfunction) '
+                 '-- if pfunction.NAME = $ptascii("drop")',
         'checks': [
             'S.DESTRUCTION.FRAMES = [pdestructionframe]',
             'pdestructionrelease.CALLER = S.CURRENT',
