@@ -72,7 +72,8 @@ def $trait_data_constant(pclassdesc, pclassconstantdesc) = pclassconstantdesc[.O
 def $trait_data_prior(eps, ptbytes, b_constant, ptbytes_owner) = ptbytes_owner
 def $trait_data_prior(pclassdesc :: pclassdesc_tail*, ptbytes, true, ptbytes_owner) = pclassdesc.NAME -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) =/= eps
 def $trait_data_prior(pclassdesc :: pclassdesc_tail*, ptbytes, false, ptbytes_owner) = pclassdesc.NAME -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ptbytes) =/= eps
-def $trait_data_prior(pclassdesc :: pclassdesc_tail*, ptbytes, b_constant, ptbytes_owner) = $trait_data_prior(pclassdesc_tail*, ptbytes, b_constant, ptbytes_owner) -- otherwise
+def $trait_data_prior(pclassdesc :: pclassdesc_tail*, ptbytes, true, ptbytes_owner) = $trait_data_prior(pclassdesc_tail*, ptbytes, true, ptbytes_owner) -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) = eps
+def $trait_data_prior(pclassdesc :: pclassdesc_tail*, ptbytes, false, ptbytes_owner) = $trait_data_prior(pclassdesc_tail*, ptbytes, false, ptbytes_owner) -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ptbytes) = eps
 
 def $trait_data_ancestors(S, pclassdesc) = [pclassdesc_parent.NAME] ++ $method_all_ancestor_names(S, pclassdesc_parent.ORIGIN, |S.CLASSES|)
   -- if pclassdesc.PARENT = (ptbytes)
