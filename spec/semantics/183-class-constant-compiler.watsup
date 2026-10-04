@@ -18,6 +18,7 @@ dec $class_constant_event_ordinal(pclassconstantevent) : nat
 def $class_constant_event_ordinal(CCLINK porigin n) = n
 def $class_constant_event_ordinal(CCCACHE porigin porigin_trigger n) = n
 def $class_constant_event_ordinal(CCUPDATE porigin porigin_root porigin_trigger n) = n
+def $class_constant_event_ordinal(CCSTATIC porigin porigin_trigger n) = n
 dec $class_constant_compile_history(pclassconstantevent*, nat) : pclassconstantevent*
 def $class_constant_compile_history(eps, n) = eps
 def $class_constant_compile_history(pclassconstantevent :: pclassconstantevent_tail*, n) = pclassconstantevent :: $class_constant_compile_history(pclassconstantevent_tail*, n)
@@ -31,6 +32,7 @@ def $class_constant_compile_events(S, (CCLINK porigin n) :: pclassconstantevent*
 def $class_constant_compile_events(S, (CCCACHE porigin porigin_trigger n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSCONSTANTCACHE = S_entry.CLASSCONSTANTCACHE ++ [pdefaultcache]])
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
 def $class_constant_compile_events(S, (CCUPDATE porigin porigin_root porigin_trigger n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $class_constant_compile_events(S, (CCSTATIC porigin porigin_trigger n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
 def $class_constant_compile_events(S, pclassconstantevent*, S_entry) = eps -- otherwise
 def $class_constant_compile_entry(S, n) = $class_constant_compile_events(S, pclassconstantevent*, S[.CLASSES = eps][.CLASSNAMES = eps][.CLASSCONSTANTCACHE = eps][.CLASSCONSTANTHISTORY = pclassconstantevent*][.DECLARATIONS = S.DECLARATIONS[0:n_prefix]])
   -- if $(n > 0)

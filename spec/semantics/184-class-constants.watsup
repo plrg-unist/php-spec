@@ -14,6 +14,9 @@ dec $class_constant_binding_head(ptask*, porigin) : bool
 dec $class_constant_table_done(pstate, porigin) : bool
 dec $class_constant_table_tasks(pstate, porigin, int, nat) : ptask*
 dec $class_constant_table_order(pstate, porigin, nat) : porigin*
+dec $class_constant_table_lineage(pstate, porigin, nat) : porigin*
+dec $class_constant_table_unfinished(pstate, porigin*) : porigin*
+dec $class_constant_table_sequence(pstate, porigin, porigin*) : bool
 dec $class_constant_table_blocks(pstate, ptask*, porigin*) : bool
 dec $class_constant_update_origins(pclassconstantdesc*, porigin*) : porigin*
 dec $class_constant_update_site(pstate, porigin, porigin) : bool
@@ -660,6 +663,22 @@ def $class_constant_table_order(S, porigin, n) = $class_constant_table_order(S, 
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
 def $class_constant_table_order(S, porigin, n) = [porigin] -- otherwise
 
+def $class_constant_table_lineage(S, porigin, 0) = eps
+def $class_constant_table_lineage(S, porigin, n) = $class_constant_table_lineage(S, porigin_parent, $nabs($(n - 1))) ++ [porigin]
+  -- if $(n > 0)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $class_constant_table_lineage(S, porigin, n) = [porigin] -- otherwise
+def $class_constant_table_unfinished(S, eps) = eps
+def $class_constant_table_unfinished(S, porigin :: porigin_tail*) = porigin :: $class_constant_table_unfinished(S, porigin_tail*)
+  -- if ~$class_constant_table_done(S, porigin)
+def $class_constant_table_unfinished(S, porigin :: porigin_tail*) = $class_constant_table_unfinished(S, porigin_tail*)
+  -- if $class_constant_table_done(S, porigin)
+def $class_constant_table_sequence(S, porigin_root, porigin_remaining*) = true
+  -- if porigin_order* = $class_constant_table_lineage(S, porigin_root, |S.CLASSES|)
+  -- if $class_constant_update_ordered(porigin_order*, porigin_remaining*)
+  -- if $class_constant_table_unfinished(S, porigin_order*) = $class_constant_table_unfinished(S, porigin_remaining*)
+def $class_constant_table_sequence(S, porigin_root, porigin_remaining*) = false -- otherwise
+
 def $class_constant_table_tasks(S, porigin, z, 0) = eps
 def $class_constant_table_tasks(S, porigin, z, n) = eps
   -- if $(n > 0) /\ $class_constant_table_done(S, porigin)
@@ -1068,13 +1087,13 @@ def $class_constant_table_task(S, porigin, z, eps) = false
 def $class_constant_table_task(S, porigin, z, (CLASS_CONST_CONSTRUCT ptbytes phpType7* b_ctor z) :: ptask_tail*) = true
   -- if $class_constant_constructor_task(S, ptbytes, phpType7*, b_ctor, z)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_root)
-  -- if porigin <- $class_constant_table_order(S, porigin_root, |S.CLASSES|)
+  -- if porigin <- $class_constant_table_lineage(S, porigin_root, |S.CLASSES|)
   -- if S.ORIGIN = (porigin_trigger)
   -- if $class_constant_update_site(S, porigin_trigger, porigin_root)
 def $class_constant_table_task(S, porigin, z, (CLASS_CONST_STATIC poperand ptbytes z) :: ptask_tail*) = true
   -- if $class_constant_static_task(S, poperand, ptbytes, z)
   -- if $scoped_selector_class(S, poperand) = (porigin_root)
-  -- if porigin <- $class_constant_table_order(S, porigin_root, |S.CLASSES|)
+  -- if porigin <- $class_constant_table_lineage(S, porigin_root, |S.CLASSES|)
   -- if S.ORIGIN = (porigin_trigger)
   -- if $class_constant_update_site(S, porigin_trigger, porigin_root)
 def $class_constant_table_task(S, porigin, z, ptask :: ptask_tail*) = $class_constant_table_task(S, porigin, z, ptask_tail*)
@@ -1084,6 +1103,7 @@ def $call_task_valid(S, CLASS_CONST_TABLE_UPDATE porigin z) = $class_constant_ta
 
 rule PhpStep/class-constant-table-complete: S ~> S[.TODO = ptask_tail*][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCUPDATE porigin porigin_root porigin_trigger n_prefix]]
   -- if S.TODO = (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*
+  -- if ~$class_constant_table_done(S, porigin)
   -- if S.ORIGIN = (porigin_trigger)
   -- if $class_constant_update_target(S, ptask_tail*) = (porigin_root)
   -- if $class_constant_update_site(S, porigin_trigger, porigin_root)
@@ -1092,6 +1112,10 @@ rule PhpStep/class-constant-table-complete: S ~> S[.TODO = ptask_tail*][.CLASSCO
   -- if $static_default_values_done($property_info_layout(S, porigin, |S.CLASSES|), $static_default_fills(S.CLASSCONSTANTHISTORY))
   -- if $class_constant_table_parent_tasks(S, porigin, z, |S.CLASSES|) = eps
   -- if n_prefix = |S.DECLARATIONS|
+rule PhpStep/class-constant-table-complete-again: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*
+  -- if $class_constant_table_done(S, porigin)
+  -- if $class_constant_table_task(S, porigin, z, S.TODO)
 
 def $class_constant_table_blocks(S, eps, porigin_acc*) = (porigin_acc* = eps)
 def $class_constant_table_blocks(S, (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*, porigin_acc*) = $class_constant_table_blocks(S, ptask_tail*, porigin_acc* ++ [porigin])
@@ -1099,11 +1123,11 @@ def $class_constant_table_blocks(S, (STATIC_DEFAULT_UPDATE porigin z) :: ptask_t
 def $class_constant_table_blocks(S, (CLASS_CONST_UPDATE porigin z) :: ptask_tail*, porigin_acc*) = $class_constant_table_blocks(S, ptask_tail*, porigin_acc*)
 def $class_constant_table_blocks(S, (CLASS_CONST_CONSTRUCT ptbytes phpType7* b_ctor z) :: ptask_tail*, porigin_acc*) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_root)
-  -- if porigin_acc* = $class_constant_table_order(S, porigin_root, |S.CLASSES|)
+  -- if $class_constant_table_sequence(S, porigin_root, porigin_acc*)
   -- if $class_constant_table_blocks(S, ptask_tail*, eps)
 def $class_constant_table_blocks(S, (CLASS_CONST_STATIC poperand ptbytes z) :: ptask_tail*, porigin_acc*) = true
   -- if $scoped_selector_class(S, poperand) = (porigin_root)
-  -- if porigin_acc* = $class_constant_table_order(S, porigin_root, |S.CLASSES|)
+  -- if $class_constant_table_sequence(S, porigin_root, porigin_acc*)
   -- if $class_constant_table_blocks(S, ptask_tail*, eps)
 def $class_constant_table_blocks(S, ptask :: ptask_tail*, eps) = $class_constant_table_blocks(S, ptask_tail*, eps)
   -- if ~$class_constant_update_marker(ptask)
