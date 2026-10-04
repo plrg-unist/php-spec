@@ -44,12 +44,14 @@ compilation and retires the compiler owner before request shutdown.
 Later hard declaration failures retain their diagnostic prefix and primary fatal
 while a pending exception's source formatter runs. Recorded nonfatal diagnostics
 stay suppressed during formatting. Formatter throws, exit, conditional class
-publication and nested hard eval/include failures preserve the original fatal
+publication and nested hard eval/include compilation failures preserve the original fatal
 and genuine user trace. The compact compiler plan is checked against the accepted
 source image; pause/resume chronology proves the actual publication prefix.
 Compiler continuations have one real task owner and cannot hide in source wrappers
 or branches. Concrete Traversable-only classes still await the native core-fatal
 location (`Unknown`, line0).
+Deferred runtime declaration failures inside a fatal formatter require their own
+targeted checks; the compiler-stop results do not establish that path.
 
 `IteratorAggregate`, `ArrayAccess`, Traversable argument/array unpacking and wider
 ordinary object/reference traversal remain required. Broader object destruction
