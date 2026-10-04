@@ -18,6 +18,8 @@ def digest(path):
 
 
 def run(selected, native_records):
+    if native_records:
+        native_records = native_records.resolve()
     rows = json.loads(CASES.read_text())
     assert not selected or set(selected) <= {row['id'] for row in rows}, 'unknown case'
     rows = [row for row in rows if not selected or row['id'] in selected]
