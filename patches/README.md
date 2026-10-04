@@ -21,6 +21,7 @@ BSD-3-Clause license.
 | Preserve the first omitted list slot's comma line before removing its placeholder | `list_line_metadata.py`: otherwise identical checked trees need different compiler diagnostic lines; empty `list()` is a closing-token control |
 | Preserve nested destructuring spread flags when converting array nodes into lists | `destructuring_metadata.py`: nested spreads otherwise became ordinary list entries before checked transport |
 | Retain final omitted destructuring slots | `optional` fixture: `[,]` otherwise printed `[]` |
+| Retain direct/computed dollar-curly interpolation flags and print their deprecated openers | `dollar_curly_metadata.py`: modern braces remain distinct; computed label expressions keep their required parentheses |
 | Preserve signed integer offsets in simple interpolation | `interpolation.php`, Zend `bug72918.phpt`: braced interpolation otherwise becomes UnaryMinus |
 | Preserve comments on every node, including grouping, attributes and nonfinal empty statements | `comments-attachments.php`, generated operand combinations and minimized corpus regressions |
 | Attach otherwise unassigned token comments deterministically without losing declaration doc comments | `comments-parentheses.php`; independent token-comment retention assertion |
