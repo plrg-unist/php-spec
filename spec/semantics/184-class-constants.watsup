@@ -313,16 +313,6 @@ def $class_constant_source_location(S, (PORIGIN n pcpath)) = ((PORIGIN n pcpath,
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
 def $class_constant_source_location(S, porigin?) = eps -- otherwise
-dec $class_constant_override_at(pstate, pclassconstantcontext*, int) : (porigin, int)?
-def $class_constant_override_at(S, eps, z) = eps
-def $class_constant_override_at(S, pclassconstantcontext :: pclassconstantcontext_tail*, z) = ((pclassconstantdesc.INITIALIZER, z))
-  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
-  -- if $class_constant_ast(S, pclassconstantdesc)
-  -- if ~$class_constant_binding_head(S.TODO, pclassconstantcontext.DECL)
-def $class_constant_override_at(S, pclassconstantcontext :: pclassconstantcontext_tail*, z) = $class_constant_override_at(S, pclassconstantcontext_tail*, pclassconstantcontext.LINE)
-  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
-  -- if ~$class_constant_ast(S, pclassconstantdesc) \/ $class_constant_binding_head(S.TODO, pclassconstantcontext.DECL)
-def $class_constant_override_at(S, pclassconstantcontext*, z) = eps -- otherwise
 dec $class_constant_plain_fetch(expression) : bool
 def $class_constant_plain_fetch(NExprConstFetch name metadata) = true
 def $class_constant_plain_fetch(expression) = false -- otherwise
@@ -330,11 +320,62 @@ dec $class_constant_default_binding_head(ptask*) : bool
 def $class_constant_default_binding_head((DEFAULT_BIND porigin n) :: ptask_tail*) = true
 def $class_constant_default_binding_head((NAMED_DEFAULT_BIND porigin n) :: ptask_tail*) = true
 def $class_constant_default_binding_head(ptask*) = false -- otherwise
-dec $class_constant_override_scope(pstate) : (porigin, int)?
-def $class_constant_override_scope(S) = $class_constant_override_at(S, $class_constant_scope_stack(S), z)
+
+;; Creation retains source identities; the displayed child line is never an
+;; arbitrary saved integer. A bound Closure may supply a different file owner.
+dec $constant_location_root_valid(pstate, pconstantlocation) : bool
+def $constant_location_root_valid(S, pconstantlocation) = true
+  -- if $class_constant_origin(S.CLASSES, pconstantlocation.ROOT) = (pclassconstantdesc)
+  -- if pconstantlocation.CLASS = pclassconstantdesc.OWNER
+  -- if ~pclassconstantdesc.FOLDED /\ $class_constant_ast(S, pclassconstantdesc)
+  -- if $constant_expression_root(S, pconstantlocation.ROOT) = (pclassconstantdesc.INITIALIZER)
+def $constant_location_root_valid(S, pconstantlocation) = true
+  -- if $constant_expression_root(S, pconstantlocation.ROOT) = (porigin_default)
+  -- if $origin_node(S.SOURCES, porigin_default) = (expression)
+  -- if ~$class_constant_plain_fetch(expression)
+  -- if $default_function_at($all_functions(S), porigin_default) = (pfunction)
+  -- if $default_origin_at(pfunction.DEFAULTS, porigin_default) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if pconstantlocation.ROOT = $default_parameter_origin(S, pfunction.ORIGIN, pdefault.INDEX)
+  -- if $constant_location_function_scope(S, pfunction, pconstantlocation.CLASS)
+def $constant_location_root_valid(S, pconstantlocation) = false -- otherwise
+dec $constant_location_function_scope(pstate, pfunction, porigin) : bool
+def $constant_location_function_scope(S, pfunction, porigin) = (pmethoddesc.OWNER = porigin)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+def $constant_location_function_scope(S, pfunction, porigin) = true
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (pcnode)
+  -- if $default_closure_node(pcnode)
+  -- if $class_at(S.CLASSES, porigin) =/= eps
+def $constant_location_function_scope(S, pfunction, porigin) = false -- otherwise
+dec $constant_location_valid(pstate, pconstantlocation, nat) : bool
+def $constant_location_valid(S, pconstantlocation, n) = true
+  -- if pconstantlocation.CLASS = PORIGIN n_class pcpath_class
+  -- if pconstantlocation.ROOT = PORIGIN n_root pcpath_root
+  -- if $(n_class < n) /\ $(n_root < n)
+  -- if $constant_location_root_valid(S, pconstantlocation)
+  -- if $constant_expression_below(S, pconstantlocation.ROOT, pconstantlocation.CHILD)
+  -- if $class_constant_source_location(S, (pconstantlocation.CHILD)) = ((pconstantlocation.CHILD, z))
+  -- if $(z > 0)
+  -- if $source_filename($call_sourcefile(S.FILES, pconstantlocation.CLASS))
+def $constant_location_valid(S, pconstantlocation, n) = false -- otherwise
+dec $class_constant_location_at(pstate, pclassconstantcontext*, porigin) : pconstantlocation?
+def $class_constant_location_at(S, eps, porigin_child) = eps
+def $class_constant_location_at(S, pclassconstantcontext :: pclassconstantcontext_tail*, porigin_child) = ({CLASS pclassconstantdesc.OWNER, ROOT pclassconstantdesc.ORIGIN, CHILD porigin_child})
+  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
+  -- if $class_constant_ast(S, pclassconstantdesc)
+  -- if ~$class_constant_binding_head(S.TODO, pclassconstantcontext.DECL)
+  -- if $constant_expression_below(S, pclassconstantdesc.ORIGIN, porigin_child)
+def $class_constant_location_at(S, pclassconstantcontext :: pclassconstantcontext_tail*, porigin_child) = $class_constant_location_at(S, pclassconstantcontext_tail*, porigin_trigger)
+  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
+  -- if ~$class_constant_ast(S, pclassconstantdesc) \/ $class_constant_binding_head(S.TODO, pclassconstantcontext.DECL)
+  -- if pclassconstantcontext.ORIGIN = (porigin_trigger)
+def $class_constant_location_at(S, pclassconstantcontext*, porigin_child) = eps -- otherwise
+dec $class_constant_location_scope(pstate) : pconstantlocation?
+def $class_constant_location_scope(S) = $class_constant_location_at(S, $class_constant_scope_stack(S), porigin)
   -- if $class_constant_active(S)
   -- if $class_constant_source_location(S, S.ORIGIN) = ((porigin, z))
-def $class_constant_override_scope(S) = ((porigin_class, z))
+def $class_constant_location_scope(S) = ({CLASS porigin_class, ROOT pconstantcontext.ORIGIN, CHILD porigin})
   -- if ~$class_constant_active(S)
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if $default_context_valid(S, pconstantcontext)
@@ -345,18 +386,24 @@ def $class_constant_override_scope(S) = ((porigin_class, z))
   -- if ~$class_constant_plain_fetch(expression)
   -- if ~$class_constant_default_binding_head(S.TODO)
   -- if $class_constant_source_location(S, S.ORIGIN) = ((porigin, z))
-def $class_constant_override_scope(S) = eps -- otherwise
-dec $class_constant_override_frames(pstate, pframe*) : (porigin, int)?
-def $class_constant_override_frames(S, eps) = eps
-def $class_constant_override_frames(S, pframe :: pframe_tail*) = ((porigin, z))
-  -- if $class_constant_override_scope($constant_frame_scope(S, pframe, pframe_tail*)) = ((porigin, z))
-def $class_constant_override_frames(S, pframe :: pframe_tail*) = $class_constant_override_frames(S, pframe_tail*)
-  -- if $class_constant_override_scope($constant_frame_scope(S, pframe, pframe_tail*)) = eps
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+def $class_constant_location_scope(S) = eps -- otherwise
+dec $class_constant_location_frames(pstate, pframe*) : pconstantlocation?
+def $class_constant_location_frames(S, eps) = eps
+def $class_constant_location_frames(S, pframe :: pframe_tail*) = (pconstantlocation)
+  -- if $class_constant_location_scope($constant_frame_scope(S, pframe, pframe_tail*)) = (pconstantlocation)
+def $class_constant_location_frames(S, pframe :: pframe_tail*) = $class_constant_location_frames(S, pframe_tail*)
+  -- if $class_constant_location_scope($constant_frame_scope(S, pframe, pframe_tail*)) = eps
+dec $class_constant_location(pstate) : pconstantlocation?
+def $class_constant_location(S) = (pconstantlocation)
+  -- if $class_constant_location_scope(S) = (pconstantlocation)
+def $class_constant_location(S) = $class_constant_location_frames(S, S.FRAMES)
+  -- if $class_constant_location_scope(S) = eps
 dec $class_constant_override(pstate) : (porigin, int)?
-def $class_constant_override(S) = ((porigin, z))
-  -- if $class_constant_override_scope(S) = ((porigin, z))
-def $class_constant_override(S) = $class_constant_override_frames(S, S.FRAMES)
-  -- if $class_constant_override_scope(S) = eps
+def $class_constant_override(S) = ((pconstantlocation.CLASS, z))
+  -- if $class_constant_location(S) = (pconstantlocation)
+  -- if $class_constant_source_location(S, (pconstantlocation.CHILD)) = ((porigin_child, z))
+def $class_constant_override(S) = eps -- otherwise
 dec $class_constant_fetch_location(pclassconstantcontext*) : (porigin, int)?
 def $class_constant_fetch_location(eps) = eps
 def $class_constant_fetch_location(pclassconstantcontext :: pclassconstantcontext_tail*) = ((porigin, z))

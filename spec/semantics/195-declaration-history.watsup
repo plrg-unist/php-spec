@@ -62,7 +62,7 @@ dec $declaration_service_scope(pstate, porigin, porigin?) : bool
 dec $declaration_file_wait(pfilecontext*, nat, porigin, pstate) : bool
 dec $declaration_file_wait_item(pfilecontext, nat, porigin, pstate) : bool
 def $declaration_entry_binding(S, S_prefix, 0, eps) = (S_prefix.DECLARATIONS = eps)
-def $declaration_entry_binding(S, S_prefix, n, (porigin)) = $declaration_active_class(S_prefix, pevalbinding.CLASS)
+def $declaration_entry_binding(S, S_prefix, n, (porigin)) = ($declaration_active_class(S_prefix, pevalbinding.CLASS) /\ $eval_location_available(S_prefix, pevalbinding.LOCATION))
   -- if $(n > 0)
   -- if $eval_binding_at(S.EVALBINDINGS, n) = (pevalbinding)
   -- if pevalbinding.SITE = porigin
@@ -78,6 +78,7 @@ def $declaration_entry_binding(S, S_prefix, n, (porigin)) = true
   -- if $(n > 0)
   -- if $failed_source_at(S.FAILEDSOURCES, n) = (pfailedsource)
   -- if pfailedsource.SITE = porigin
+  -- if $eval_location_available(S_prefix, pfailedsource.LOCATION)
   -- if $eval_binding_at(S.EVALBINDINGS, n) = eps /\ $file_binding_at(S.FILEBINDINGS, n) = eps
 def $declaration_entry_binding(S, S_prefix, n, (porigin)) = true
   -- if $(n > 0)
@@ -86,7 +87,7 @@ def $declaration_entry_binding(S, S_prefix, n, (porigin)) = true
   -- if $source_unit(S.SOURCES, n) = eps /\ $failed_source_at(S.FAILEDSOURCES, n) = eps
   -- if $eval_binding_at(S.EVALBINDINGS, n) = eps /\ $file_binding_at(S.FILEBINDINGS, n) = eps
   -- if $declaration_service_scope(S_prefix, porigin, pevalcontext.LEXICAL_CLASS)
-  -- if $declaration_active_class(S_prefix, pevalcontext.LEXICAL_CLASS)
+  -- if $declaration_active_class(S_prefix, pevalcontext.LEXICAL_CLASS) /\ $eval_location_available(S_prefix, pevalcontext.LOCATION)
 def $declaration_entry_binding(S, S_prefix, n, (porigin)) = true
   -- if $(n > 0)
   -- if $source_unit(S.SOURCES, n) = eps /\ $failed_source_at(S.FAILEDSOURCES, n) = eps
