@@ -1,6 +1,10 @@
 ;; Required autoload controls. Registry buckets and cursors are live across calls;
 ;; the raw callable and copied selection certificates are not registry owners.
 dec $autoload_callback_kind(pintrinsic) : bool
+dec $autoload_class_char(nat) : bool
+dec $autoload_class_chars(preqbytes) : bool
+dec $autoload_explicit_nodes(pautoloadmode) : pnode*
+dec $autoload_explicit_nonce(pautoloadmode) : nat?
 dec $autoload_special(pstate, pvalue) : pautoloadtarget?
 dec $autoload_registration_valid(pstate, pconfigcall) : bool
 dec $autoload_entry(pstate, pconfigcall, pautoloadtarget) : pautoloadentry
@@ -367,7 +371,8 @@ def $api_source_valid(S, papiquery) = true
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $error_api_arity(S, pconfigcall).COMPLETION = NORMAL
   -- if papiquery.VALUE = $error_api_value(pconfigcall, 0, PNULL)
-def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, phandlerresolution) = $autoload_api_finish(S, pconfigcall, phandlerresolution) -- if $autoload_callback_kind(pconfigcall.KIND) -- if phandlerresolution =/= HANDLERUNKNOWN text
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERRESOLVED pcalltarget) = $autoload_api_finish(S, pconfigcall, HANDLERRESOLVED pcalltarget) -- if $autoload_callback_kind(pconfigcall.KIND)
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERINVALID ptbytes) = $autoload_api_finish(S, pconfigcall, HANDLERINVALID ptbytes) -- if $autoload_callback_kind(pconfigcall.KIND)
 def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $config_error(S, pconfigcall, "Error", ptbytes) -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall -- if $autoload_callback_kind(pconfigcall.KIND)
 
 def $autoload_unregister(S, pautoloadentry) = S[.AUTOLOAD.ENTRIES = $autoload_trim($autoload_remove(S.AUTOLOAD.ENTRIES, n))][.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -478,8 +483,6 @@ def $autoload_class_name(eps) = false
 def $autoload_class_name(ptbytes) = true
   -- if ptbytes = n :: n_tail*
   -- if ($autoload_class_char(n) /\ $autoload_class_chars(n_tail*))
-dec $autoload_class_char(nat) : bool
-dec $autoload_class_chars(preqbytes) : bool
 def $autoload_class_char(n) = ($(48 <= n) /\ $(n <= 57)) \/ ($(65 <= n) /\ $(n <= 90)) \/ ($(97 <= n) /\ $(n <= 122)) \/ n = 95 \/ n = 92 \/ ($(128 <= n) /\ $(n <= 255))
 def $autoload_class_chars(eps) = true
 def $autoload_class_chars(n :: n_tail*) = ($autoload_class_char(n) /\ $autoload_class_chars(n_tail*))
@@ -734,7 +737,6 @@ def $task_nodes(AUTO_RESULT pautoloadcall pautoloadentry poperand) = $autoload_e
 def $task_nodes(AUTO_NEW ptbytes phpType7* z z_fetch) = eps
 def $task_nodes(AUTO_PUBLISH porigin) = eps
 def $task_nodes(AUTO_EXPLICIT_DONE pconfigcall) = $config_nodes(pconfigcall)
-dec $autoload_explicit_nodes(pautoloadmode) : pnode*
 def $autoload_explicit_nodes(AUTO_LOOKUP) = eps
 def $autoload_explicit_nodes(AUTO_EXPLICIT pconfigcall) = $config_nodes(pconfigcall)
 def $selected_task_nonce(AUTO_REGISTER_RECEIVE pautoloadregistration) = pautoloadregistration.ENTRY.CALL.SELECTION
@@ -748,7 +750,6 @@ def $selected_task_nonce(AUTO_REFERENCE pautoloadcall pautoloadentry) = $autoloa
 def $selected_task_nonce(AUTO_ENTER pautoloadcall pautoloadentry poperand) = $autoload_explicit_nonce(pautoloadcall.MODE)
 def $selected_task_nonce(AUTO_RESULT pautoloadcall pautoloadentry poperand) = $autoload_explicit_nonce(pautoloadcall.MODE)
 def $selected_task_nonce(AUTO_EXPLICIT_DONE pconfigcall) = pconfigcall.SELECTION
-dec $autoload_explicit_nonce(pautoloadmode) : nat?
 def $autoload_explicit_nonce(AUTO_LOOKUP) = eps
 def $autoload_explicit_nonce(AUTO_EXPLICIT pconfigcall) = pconfigcall.SELECTION
 
