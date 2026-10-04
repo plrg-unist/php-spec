@@ -156,9 +156,10 @@ def prepare(program, main, cwd):
         '$outputs(S_file.EVENTS) = $ptascii("2:A:B|RC0ZNH4WFS")',
         '$call_descriptors_valid(S_file)',
     ]
-    for completion in ['PHPERROR $ptascii("stop") 1', 'EXITED 7', 'SOURCE_PENDING']:
-        checks += ['S_stopped = S_result[.TODO = eps][.COMPLETION = ' + completion + ']',
-                   '$dir_warning_seek_result(S_stopped,3) = S_stopped']
+    for state, completion in [('S_stop_error', 'PHPERROR $ptascii("stop") 1'),
+                              ('S_stop_exit', 'EXITED 7'), ('S_stop_pending', 'SOURCE_PENDING')]:
+        checks += [state + ' = S_result[.TODO = eps][.COMPLETION = ' + completion + ']',
+                   '$dir_warning_seek_result(' + state + ',3) = ' + state]
     return (PREFIX + SEEK + 'dec $main() : bool\ndef $main() = true\n'
             + ''.join('  -- if ' + check + '\n' for check in checks), len(checks))
 
