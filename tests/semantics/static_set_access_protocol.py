@@ -17,7 +17,7 @@ STAGES = ['reference-uninitialized-error-chain', 'dimension-null-error-chain',
           'private-string-callback-allowed', 'protected-string-callback-allowed', 'reference-return-denied',
           'receiver-rhs-live-alias', 'receiver-uninitialized-unset', 'receiver-direct-demands',
           'unset-continuation-property', 'unset-continuation-static', 'static-reference-return-denied',
-          'static-reference-discarded-typed-slot']
+          'static-reference-discarded-typed-slot', 'static-reference-constant-table-discarded']
 PREFIX = STRING_PREFIX + r'''
 dec $set_protocol_phase(pstate,nat) : bool
 def $set_protocol_phase(S,0) = true
@@ -47,6 +47,10 @@ def $set_protocol_phase(S,9) = true
   -- if S.TODO = (STMT (NStmtTryCatch phpType23 phpType65 phpType67 metadata)) :: ptask_tail*
   -- if S.CURRENT = eps /\ S.FRAMES = eps
   -- if $static_protocol_output(S.EVENTS) = $ptascii("2|")
+def $set_protocol_phase(S,10) = true
+  -- if S.TODO = (STMT (NStmtTryCatch phpType23 phpType65 phpType67 metadata)) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $static_protocol_output(S.EVENTS) = $ptascii("2|A/B/0|")
 def $set_protocol_phase(S,n) = false -- otherwise
 dec $set_protocol_seek(pstate,nat,nat) : pstate
 def $set_protocol_seek(S,n_phase,n) = S
@@ -91,6 +95,50 @@ def before(initial, phase):
 
 
 def checks(initial, name):
+    if name == 'static-reference-constant-table-discarded':
+        result = ['S_initial = ' + initial,
+                  'S_found = $set_protocol_seek(S_initial,10,4096)',
+                  'S_found.COMPLETION = NORMAL \\/ S_found.COMPLETION = BUDGET',
+                  'S_before = S_found[.COMPLETION = NORMAL]',
+                  '$set_protocol_phase(S_before,10)',
+                  'S_before.RESULT = KNOWN PNULL /\\ S_before.BASE = BASE_VALUE (KNOWN PNULL) /\\ S_before.HELD = eps',
+                  '$class_named(S_before.CLASSNAMES,$ptascii("a")) = (porigin_a)',
+                  '$class_named(S_before.CLASSNAMES,$ptascii("b")) = (porigin_b)',
+                  'S_before.CLASSSTATICS = [pclassstatic]',
+                  'pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)',
+                  'S_before.STORE[n_cell] = DEFINED (PINT 2)',
+                  'n_cell <- S_before.REFCELLS /\\ (HCELL n_cell) <- S_before.ALLOCATIONS',
+                  '$class_static_select(S_before,porigin_a,$ptascii("p")) = (ppropertydesc)',
+                  '$class_static_select(S_before,porigin_b,$ptascii("p")) = (ppropertydesc)',
+                  'ppropertydesc.ORIGIN = pclassstatic.DECL /\\ ppropertydesc.TYPE = [PTBRANCH [PTBUILTIN "int"]]',
+                  'ppropertydesc.DEFAULT = PROP_STORED porigin_default',
+                  '$compiled_read(S_before,porigin_default) = (PINT 2)',
+                  'S_before.PROPREFS = [ppropref]',
+                  'ppropref.CELL = n_cell /\\ ppropref.SOURCES = [CLASS_PROP_SOURCE pclassstatic.DECL]',
+                  '$class_static_source_covered(S_before,pclassstatic,ppropertydesc)',
+                  '~$class_statics_valid(S_before[.PROPREFS = eps])',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_before).ROOTS) = 1',
+                  '$heap_owners($heap_graph(S_before),HCELL n_cell) = 1',
+                  '$class_constant_lookup(S_before,porigin_b,$ptascii("U"),|S_before.CLASSES|) = (pclassconstantdesc_u)',
+                  '~pclassconstantdesc_u.FOLDED /\\ pclassconstantdesc_u.OWNER = porigin_b',
+                  '$default_cache_at(S_before.CLASSCONSTANTCACHE,pclassconstantdesc_u.ORIGIN) = (pdefaultcache)',
+                  'pdefaultcache.VALUE = PINT 4',
+                  '$class_constant_lookup(S_before,porigin_b,$ptascii("X"),|S_before.CLASSES|) = (pclassconstantdesc_x)',
+                  'pclassconstantdesc_x.FOLDED /\\ $compiled_read(S_before,pclassconstantdesc_x.INITIALIZER) = (PINT 9)',
+                  '$class_constant_table_done(S_before,porigin_a) /\\ $class_constant_table_done(S_before,porigin_b)',
+                  'S_before.CLASSCONSTANTINIT = eps /\\ S_before.CONSTCONTEXT = eps /\\ S_before.REFCOERCIONS = eps',
+                  '$class_constant_state_valid(S_before)',
+                  '~$class_constant_state_valid(S_before[.CLASSCONSTANTCACHE = eps])',
+                  *valid('S_before'),
+                  'S_done = $drive_steps(S_before,4096)',
+                  'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+                  'S_done.CLASSSTATICS = S_before.CLASSSTATICS /\\ S_done.STORE[n_cell] = DEFINED (PINT 2)',
+                  '$propref_at(S_done.PROPREFS,n_cell) = (ppropref)',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_done).ROOTS) = 2 /\\ $heap_owners($heap_graph(S_done),HCELL n_cell) = 2',
+                  '$class_constant_state_valid(S_done)',
+                  '$static_protocol_output(S_done.EVENTS) = $ptascii("2|A/B/0|A/B/0|Cannot assign array to reference held by property A::$p of type int|2|2")',
+                  *valid('S_done')]
+        return result, 'S_done'
     if name == 'static-reference-discarded-typed-slot':
         result = ['S_initial = ' + initial,
                   'S_found = $set_protocol_seek(S_initial,9,4096)',

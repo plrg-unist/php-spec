@@ -209,6 +209,8 @@ CASES['static-reference-config-pipe'] = b'<?php class K{public function __toStri
 EXPECTED['static-reference-config-pipe'] = b'K0A/B/0|v\0raw|2|2'
 CASES['static-reference-discarded-typed-slot'] = b'<?php class O{public int $x=1;}class A{public private(set) static object $p;public static function init(){self::$p=new O;}public static function &ref(){return self::$p;}}A::init();A::$p->x=2;echo A::$p->x,"|";A::ref();try{A::$p->x=3;}catch(Error $e){echo $e->getMessage(),"|";}echo A::$p->x;'
 EXPECTED['static-reference-discarded-typed-slot'] = b'2|Cannot indirectly modify private(set) property A::$p from global scope|2'
+CASES['static-reference-constant-table-discarded'] = b'<?php class A{const int X=2;public private(set) static int $p=self::X;public static function &ref(){echo __CLASS__,"/",static::class,"/",func_num_args();return static::$p;}}class B extends A{const int X=9;const int U=self::V;const int V=4;}echo B::$p,"|";B::ref();echo "|";try{$r=&B::ref();$r=[];}catch(TypeError $e){echo "|",$e->getMessage();}echo "|",A::$p,"|",B::$p;'
+EXPECTED['static-reference-constant-table-discarded'] = b'2|A/B/0|A/B/0|Cannot assign array to reference held by property A::$p of type int|2|2'
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
