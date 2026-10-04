@@ -86,8 +86,11 @@ now suspends weak null, Stringable and lossy integer parsing in formal order.
 Each callback retains its own internal constructor trace and original argument
 owners through reentry, throws and global retirement. The current trait/display
 fallback retains the filename after handler mutation and global retirement.
-Rebound anonymous keyword
-NEW and broader ordinary/constrained consumers remain required.
+[Anonymous keyword defaults245](../../coverage/semantics/anonymous-default-new-review.json)
+now resolve self/parent from the authentic live receiving Closure, separately
+from called class and receiver. Saved defaults retain lexical scope through
+callback retirement and recursive calls sharing a template. Ordinary Throwable
+effects, dynamic object `::class` and broader constrained consumers remain required.
 
 The required consumer inventory includes echo, print, `(string)` casts,
 concat, interpolation, eval operands, weak typed conversions, dynamic variable
