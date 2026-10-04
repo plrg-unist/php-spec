@@ -13,6 +13,9 @@ dec $consumer_receiver_live(pstate, nat?) : bool
 dec $consumer_exception_target(pstate, papiquery, porigin, ptbytes) : bool
 dec $consumer_shutdown_target(pstate, papiquery, porigin, ptbytes, pshutdownentry*) : bool
 dec $consumer_shutdown_scope(pstate, papiquery, pshutdownentry) : bool
+dec $consumer_capture_current(pstate, porigin) : pmethodcapture?
+dec $consumer_capture_valid(pstate, porigin, pmethodcapture?) : bool
+dec $consumer_capture_function(pstate, porigin, pmethodcapture?) : porigin?
 dec $consumer_capture_called(pstate, porigin, pmethodcapture?) : porigin?
 dec $consumer_capture_this(pstate, porigin, pmethodcapture?, nat?) : bool
 dec $consumer_target_same(pcalltarget, papiquery, porigin, ptbytes) : bool
@@ -176,7 +179,7 @@ def $consumer_exception_object(pcalltarget, n) = true -- otherwise
 def $consumer_shutdown_scope(S, papiquery, pshutdownentry) = true
   -- if papiquery.SOURCE = CONFIG_INVOKE pshutdownentry.CALL
   -- if $shutdown_registration_valid(S, pshutdownentry.CALL)
-  -- if $shutdown_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
+  -- if $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
   -- if papiquery.SCOPE = $shutdown_capture_scope(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
   -- if papiquery.CALLED = $consumer_capture_called(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
   -- if $consumer_capture_this(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE, papiquery.THIS)
@@ -184,21 +187,55 @@ def $consumer_shutdown_scope(S, papiquery, pshutdownentry) = true
   -- if pshutdownentry.CALL.SENT = (NAMED_SENT (KNOWN papiquery.VALUE)) :: pnamedslot*
   -- if $consumer_snapshot_valid(papiquery, pshutdownentry.RAW)
 def $consumer_shutdown_scope(S, papiquery, pshutdownentry) = false -- otherwise
+;; API registration runs in the ordinary method maker, unlike FCC production.
+;; Its called class must survive even when it equals the lexical source scope.
+def $consumer_capture_current(S, porigin) = ({FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, LEXICAL_CLASS pcallcontext.LEXICAL_CLASS, CALLED_CLASS pcallcontext.CALLED_CLASS})
+  -- if S.CURRENT = (pcallcontext)
+  -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) =/= eps
+def $consumer_capture_current(S, porigin) = $method_capture_current(S, porigin) -- otherwise
+def $consumer_capture_valid(S, PORIGIN n pcpath, (pmethodcapture)) = true
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
+  -- if $function_at($all_functions(S), pmethodcapture.FUNCTION) = (pfunction)
+  -- if $trait_source_same(pfunction_source, pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if pmethodcapture.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if $method_capture_class_valid(S, pmethodcapture.LEXICAL_CLASS)
+  -- if pmethodcapture.CALLED_CLASS = (porigin_called)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+  -- if $class_origin_matches(S, porigin_called, pclassdesc.NAME, |S.CLASSES|)
+  -- if pmethodcapture.CALLSITE = (porigin_call)
+  -- if $trait_capture_invocation(S, pfunction, pmethodcapture, porigin_call)
+def $consumer_capture_valid(S, porigin, pmethodcapture?) = $shutdown_capture_valid(S, porigin, pmethodcapture?)
+  -- if $consumer_capture_function(S, porigin, pmethodcapture?) = (porigin_function)
+  -- if $class_method_origin(S.CLASSES, porigin_function) = eps
+def $consumer_capture_valid(S, porigin, eps) = true
+  -- if $consumer_capture_function(S, porigin, eps) = eps
+def $consumer_capture_valid(S, porigin, pmethodcapture?) = false -- otherwise
+def $consumer_capture_function(S, porigin, (pmethodcapture)) = (pmethodcapture.FUNCTION)
+def $consumer_capture_function(S, porigin, eps) = $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps)
 def $consumer_capture_called(S, porigin, eps) = $closure_source_class(S, porigin)
 def $consumer_capture_called(S, porigin, (pmethodcapture)) = pmethodcapture.CALLED_CLASS
 def $consumer_capture_this(S, porigin, pmethodcapture?, eps) = true
+  -- if $consumer_capture_function(S, porigin, pmethodcapture?) = eps
+def $consumer_capture_this(S, porigin, pmethodcapture?, eps) = true
+  -- if $consumer_capture_function(S, porigin, pmethodcapture?) = (porigin_function)
+  -- if $class_method_origin(S.CLASSES, porigin_function) = eps
+def $consumer_capture_this(S, porigin, pmethodcapture?, eps) = true
+  -- if $consumer_capture_function(S, porigin, pmethodcapture?) = (porigin_function)
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
 def $consumer_capture_this(S, porigin_site, pmethodcapture?, (n)) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin_called
   -- if $consumer_capture_called(S, porigin_site, pmethodcapture?) = (porigin_called)
-  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin_site), eps) = (porigin_function)
+  -- if $consumer_capture_function(S, porigin_site, pmethodcapture?) = (porigin_function)
   -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
   -- if ~pmethoddesc.STATIC
 def $consumer_capture_this(S, porigin_site, pmethodcapture?, (n)) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin_called
   -- if $consumer_capture_called(S, porigin_site, pmethodcapture?) = (porigin_called)
-  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin_site), eps) = (porigin_function)
+  -- if $consumer_capture_function(S, porigin_site, pmethodcapture?) = (porigin_function)
   -- if $function_at(S.CLOSURETEMPLATES, porigin_function) = (pfunction)
   -- if ~$closure_static(S, pfunction)
 def $consumer_capture_this(S, porigin, pmethodcapture?, n?) = false -- otherwise
@@ -221,7 +258,7 @@ def $consumer_shutdown_register(S, pconfigcall, papiquery, porigin, ptbytes, b_s
   -- if S.TODO = ptask :: ptask_tail*
   -- if pconfigcall.SENT = (NAMED_SENT (KNOWN papiquery.VALUE)) :: pnamedslot*
   -- if papiquery_selected = $consumer_query_selected(S, papiquery)
-  -- if pshutdownentry = {CALL pconfigcall, CAPTURE $method_capture_current(S, pconfigcall.SITE), RAW $consumer_snapshot(S, papiquery_selected), TARGET API_METHOD_TARGET papiquery_selected porigin ptbytes b_static, ARGS $shutdown_values(pnamedslot*)}
+  -- if pshutdownentry = {CALL pconfigcall, CAPTURE $consumer_capture_current(S, pconfigcall.SITE), RAW $consumer_snapshot(S, papiquery_selected), TARGET API_METHOD_TARGET papiquery_selected porigin ptbytes b_static, ARGS $shutdown_values(pnamedslot*)}
 
 def $consumer_exception_invalid(S, pexceptioncall, ptbytes) = S[.TODO = eps][.COMPLETION = INTERNALFATAL ($ptascii("Invalid callback ") ++ $error_callback_name(S, pexceptioncall.CALLBACK) ++ $ptascii(", ") ++ ptbytes) ($long_and(S.REPORTING, 1) =/= 0)][.TRACE = eps][.ORIGIN = eps][.ERRORORIGIN = eps]
 def $api_finish(S, EXCEPTION_HANDLER_INVOKE pexceptioncall, pvalue, HANDLERINVALID ptbytes) = $consumer_exception_invalid(S, pexceptioncall, ptbytes)
