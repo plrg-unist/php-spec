@@ -695,5 +695,32 @@
     "stderr": "Fatal error: Uncaught Pinned\n  thrown in {file} on line 1\n",
     "exit": 255,
     "status": "php_error"
+  },
+  {
+    "id": "exception-variadic-saved-local-write",
+    "source": "<?php declare(strict_types=1);class E extends Exception{function __toString():string{echo \"V;\";return \"text\";}}function t(){error_reporting(3);echo \"T;\";}function h(string ...$v){$v[0]=\"body\";t();echo func_num_args(),\":\",func_get_arg(0),\":\",$v[0],\";\";}function s(){throw new E(\"shutdown\");}register_shutdown_function(\"s\");set_exception_handler(\"h\");",
+    "source_sha256": "6f4d43024d15dcc524a24f6da6aa250a7077aa8d0441a9de7ddc49604c2291c8",
+    "stdout": "V;T;1:text:body;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "compile-fatal-mask-before-callback",
+    "source": "<?php function s(){error_reporting(E_ALL);echo \"S;\";trigger_error(\"later\",E_USER_WARNING);}register_shutdown_function(\"s\");error_reporting(0);eval('class B{public function __wakeup():int{}}');echo \"BAD;\";",
+    "source_sha256": "5242163e860bfe7d5d56b10366181f481bbb52fb97fc97b1c0bfd52b741caef5",
+    "stdout": "S;",
+    "stderr": "Warning: later in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "compile-link-mask-before-callback",
+    "source": "<?php function s(){error_reporting(E_ALL);echo \"S;\";trigger_error(\"later\",E_USER_WARNING);}register_shutdown_function(\"s\");error_reporting(0);class A extends Exception{}eval('class B extends A{protected function __wakeup():void{}}');echo \"BAD;\";",
+    "source_sha256": "4ce8c64b7130ff2cb7120b20c2f5e13dafa3899a6b05a4d0634e5d1a2a5ff0d6",
+    "stdout": "S;",
+    "stderr": "Warning: later in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
   }
 ]

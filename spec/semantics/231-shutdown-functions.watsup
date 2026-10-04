@@ -207,6 +207,9 @@ def $shutdown_capture_valid(S, porigin_site, (pmethodcapture)) = true
   -- if $method_capture_class_valid(S, pmethodcapture.CALLED_CLASS)
   -- if pmethodcapture.CALLSITE = (porigin_call)
   -- if $method_capture_invocation_valid(S, pmethodcapture, porigin_call)
+def $shutdown_capture_valid(S, porigin_site, (pmethodcapture)) = true
+  -- if $trait_imported_origin(pmethodcapture.FUNCTION)
+  -- if $method_capture_certificate_valid(S, porigin_site, (pmethodcapture))
 def $shutdown_capture_valid(S, porigin_site, pmethodcapture?) = false -- otherwise
 def $shutdown_selection_scope(S, pshutdownentry) = false -- otherwise
 def $shutdown_entry_valid(S, pshutdownentry) = true
