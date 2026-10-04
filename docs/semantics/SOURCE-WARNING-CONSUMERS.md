@@ -16,9 +16,9 @@ continues. This includes unconstrained and null-admitting typed aliases. A typed
 destination rejecting null remains explicit `Unsupported` until replacement
 TypeError/previous-exception priority is implemented.
 
-Folded selected-arm copies preserve the actual redirect, expression origin and
-copy boundary. A forged alternative variable arm cannot authenticate against a
-fixed redirect. Callback-created destination aliases are used by the later write;
+Ordinary ternary copies authenticate a fixed compiled condition without rereading
+its live variable. Prepass copies retain the actual redirect, expression origin and
+copy boundary. A forged alternative arm cannot match either fixed selection. Callback-created destination aliases are used by the later write;
 the warning continuation never rereads the newly defined source CV.
 
 Primary contracts are `CAST`, `QM_ASSIGN`, `SEND_VAR`, `SEND_VAR_EX` and `ASSIGN`
@@ -28,13 +28,14 @@ helpers in `Zend/zend_execute.c`, and assignment/ternary lowering in
 These are the pinned PHP8.5.10 ordinary CLI profile, without OPcache/JIT claims.
 Discarded `(void)$cv` has no corresponding read and is not admitted by this rule.
 
-Six ordinary author one-cast tuples passed at241dd0. The original grouped cast
-and copy sources passed natively but reached the model CLI60 limit, earning no
-agreement. The fixed22 sources (21 ordinary plus one Unsupported control) retain
-those six observations; only changed/unrun16 and all state checks remain pending.
-Four reached fixtures58/60/65/53=236 are typed, with alias, folded-arm, selected
-Closure/prior-array owner and pending-throw controls. Only the bounded copy60
-is newly prepared; the other176 retain their original fixtures and compiler output.
+The author observations retain six one-cast tuples at241dd0 and fifteen further
+normal tuples plus one exact Unsupported control at5728. Cast58 passed; copy60
+failed an incorrect fixture premise that assumed an absent compiler redirect.
+The corrected60 uses the real compiled condition and is separately typed;
+copy60 and the unrun65/53 remain pending. The other176 fixtures retain their
+original compiler output. Grouped cast/copy CLI60 timeouts and the original
+copy premise failure remain preserved with zero failed-check credit. The new
+outer-array prepass route still needs one reached source check before integration.
 Independent fixtures60/77/60=197 retain the SEND/ASSIGN137 and separately typed
 bounded array60 successor. Their ten model sources and state checks remain
 pending; seven changed cast sources need fresh native tuples, while the other
