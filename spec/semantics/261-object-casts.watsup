@@ -344,15 +344,17 @@ def $stdclass_raw_undefined(S, pvalue, ptbytes) = false -- otherwise
 ;; Key unmangling happens after the iterator advances, but before the selected
 ;; bucket is copied into the value target. The bucket pointer is borrowed.
 dec $object_member_tail(ptbytes, nat) : preqbytes
+dec $object_member_warning(text) : preqbytes?
+def $object_member_warning(text) = ($ptascii(text))
 dec $object_member_name(ptbytes) : (preqbytes?, preqbytes)
 def $object_member_name(ptbytes) = (eps, ptbytes)
   -- if ~$property_bad_name(ptbytes)
-def $object_member_name(0 :: ptbytes_tail) = (($ptascii("Illegal member variable name")), 0 :: ptbytes_tail)
+def $object_member_name(0 :: ptbytes_tail) = ($object_member_warning("Illegal member variable name"), 0 :: ptbytes_tail)
   -- if $(|ptbytes_tail| < 2)
-def $object_member_name(0 :: ptbytes_tail) = (($ptascii("Illegal member variable name")), 0 :: ptbytes_tail)
+def $object_member_name(0 :: ptbytes_tail) = ($object_member_warning("Illegal member variable name"), 0 :: ptbytes_tail)
   -- if $(|ptbytes_tail| >= 2)
   -- if ptbytes_tail[0] = 0
-def $object_member_name(0 :: ptbytes_tail) = (($ptascii("Corrupt member variable name")), 0 :: ptbytes_tail)
+def $object_member_name(0 :: ptbytes_tail) = ($object_member_warning("Corrupt member variable name"), 0 :: ptbytes_tail)
   -- if $(|ptbytes_tail| >= 2)
   -- if ptbytes_tail[0] =/= 0
   -- if $(|$c_string(ptbytes_tail)| >= |ptbytes_tail| - 1)
