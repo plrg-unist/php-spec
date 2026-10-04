@@ -126,5 +126,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "dead-startup-cv-does-not-require-request",
+    "source": "<?php class C{function __destruct(){echo \"D;\";}}if(false){$argc=null;}$c=new C;echo \"M;\";",
+    "source_sha256": "2ffa4b553da916e620448958268bd0ae96520f93bcf07292094797a3e4422dac",
+    "stdout": "M;D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
