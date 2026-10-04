@@ -1,7 +1,9 @@
 dec $concat_constant(pstate, porigin?) : bool
+dec $concat_runtime_constant(pstate, porigin) : bool
 dec $concat_operand(pstate, poperand, bool, int) : (pstate, poperand)
 def $concat_constant(S, porigin) = true
   -- if $compiled_read(S, porigin) = (pvalue)
+  -- if ~$concat_runtime_constant(S, porigin)
 def $concat_constant(S, porigin?) = false
   -- otherwise
 def $concat_operand(S, KNOWN (PARRAY n), true, z) = (S_out, S_out.RESULT)

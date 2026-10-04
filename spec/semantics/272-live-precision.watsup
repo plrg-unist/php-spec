@@ -33,6 +33,11 @@ def $source_precision(S, (PORIGIN n pcpath)) = $declaration_precision(S.DECLARAT
 def $source_precision(S, porigin?) = (14)
   -- if S.SOURCES = eps /\ S.CODE = eps /\ S.DECLARATIONS = eps
 def $source_precision(S, porigin?) = eps -- otherwise
+;; Deferred AST operands convert when evaluated; ordinary compiled literals keep
+;; their source precision, including ordinary code called by an initializer.
+def $concat_runtime_constant(S, porigin) = $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+def $concat_runtime_constant(S, porigin) = false -- otherwise
 def $parser_literal_origin(S, porigin?, expression) = $parser_literal_at(expression, z_precision)
   -- if $source_precision(S, porigin?) = (z_precision)
 def $parser_literal_origin(S, porigin?, expression) = eps -- otherwise
