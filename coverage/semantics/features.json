@@ -2458,13 +2458,17 @@
         "spec/semantics/251-string-interpolation.watsup",
         "spec/semantics/30-storage.watsup",
         "spec/semantics/84-call-integrity.watsup",
-        "spec/semantics/168-user-string-runtime.watsup"
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/258-dollar-curly-compiler.watsup"
       ],
       "source_tests": [
         "tests/semantics/interpolation_sources.py",
-        "tests/semantics/interpolation_protocol.py"
+        "tests/semantics/interpolation_protocol.py",
+        "tests/semantics/dollar_curly_sources.py",
+        "tests/dollar_curly_metadata.py",
+        "tests/semantics/dollar_curly_protocol.py"
       ],
-      "review": "Partial ordinary parsed strings/heredocs: effective CAST/FAST_CONCAT/ROPE order, scalar/Stringable/array/undefined callbacks, captured temporary versus borrowed CV ownership and compiled callback lines. Nine exact sources and SL237 pass at88f457d1c;111 distinct owner/authentication premises pass ata7c117b6 in six groups with25 repeated setup. Actualcde/247 preservation keeps241 modules without renewing those cuts. Wider producers/source contexts and legacy compiler deprecations remain required; original cast and dynamic-file observer gaps keep their old zero credit. See interpolation-review.json."
+      "review": "Partial ordinary parsed strings/heredocs: effective CAST/FAST_CONCAT/ROPE order, scalar/Stringable/array/undefined callbacks, captured temporary versus borrowed CV ownership and compiled callback lines. Nine exact sources and SL237 pass at88f457d1c;111 distinct owner/authentication premises pass ata7c117b6 in six groups with25 repeated setup. Actualcde/247 preservation keeps241 modules without renewing those cuts. Wider producers/source contexts and early eval compiler notices remain required; original cast and dynamic-file observer gaps keep their old zero credit. See interpolation-review.json. Legacy direct/computed compiler notices258 add five main/include profiles, SL242,24 syntax/encoding profiles with320 checks and37 compiler/certificate premises atfa084; actual256/243 preservation adds no renewal. Early eval delivery and shell-exec compilation remain required. See dollar-curly-review.json."
     },
     {
       "node": "IntersectionType",
@@ -2742,15 +2746,19 @@
         "spec/semantics/251-string-interpolation.watsup",
         "spec/semantics/30-storage.watsup",
         "spec/semantics/84-call-integrity.watsup",
-        "spec/semantics/168-user-string-runtime.watsup"
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/258-dollar-curly-compiler.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/interpolation_sources.py",
-        "tests/semantics/interpolation_protocol.py"
+        "tests/semantics/interpolation_protocol.py",
+        "tests/semantics/dollar_curly_sources.py",
+        "tests/dollar_curly_metadata.py",
+        "tests/semantics/dollar_curly_protocol.py"
       ],
-      "review": "Partial ordinary parsed strings/heredocs: effective CAST/FAST_CONCAT/ROPE order, scalar/Stringable/array/undefined callbacks, captured temporary versus borrowed CV ownership and compiled callback lines. Nine exact sources and SL237 pass at88f457d1c;111 distinct owner/authentication premises pass ata7c117b6 in six groups with25 repeated setup. Actualcde/247 preservation keeps241 modules without renewing those cuts. Wider producers/source contexts and legacy compiler deprecations remain required; original cast and dynamic-file observer gaps keep their old zero credit. See interpolation-review.json. Earlier constant prepass/array omission barriers retain262 source/lint cases at9b82507a/reports22b36687, array-omission-review.json; no historical renewal or constant-context interpolation admission."
+      "review": "Partial ordinary parsed strings/heredocs: effective CAST/FAST_CONCAT/ROPE order, scalar/Stringable/array/undefined callbacks, captured temporary versus borrowed CV ownership and compiled callback lines. Nine exact sources and SL237 pass at88f457d1c;111 distinct owner/authentication premises pass ata7c117b6 in six groups with25 repeated setup. Actualcde/247 preservation keeps241 modules without renewing those cuts. Wider producers/source contexts and early eval compiler notices remain required; original cast and dynamic-file observer gaps keep their old zero credit. See interpolation-review.json. Earlier constant prepass/array omission barriers retain262 source/lint cases at9b82507a/reports22b36687, array-omission-review.json; no historical renewal or constant-context interpolation admission. Legacy direct/computed compiler notices258 add five main/include profiles, SL242,24 syntax/encoding profiles with320 checks and37 compiler/certificate premises atfa084; actual256/243 preservation adds no renewal. Early eval delivery and shell-exec compilation remain required. See dollar-curly-review.json."
     },
     {
       "node": "Scalar_MagicConst_Class",
@@ -3742,7 +3750,8 @@
         "spec/semantics/18-class-headers.watsup",
         "spec/semantics/141-method-compiler.watsup",
         "spec/semantics/228-trait-methods.watsup",
-        "spec/semantics/238-trait-data.watsup"
+        "spec/semantics/238-trait-data.watsup",
+        "spec/semantics/254-trait-property-access.watsup"
       ],
       "source_tests": [
         "tests/semantics/trait_method_cases.json",
@@ -3786,9 +3795,19 @@
         "tests/semantics/trait_data_reference_review_protocol.py",
         "tests/semantics/trait_data_warning_boundary_review_protocol.py",
         "tests/semantics/trait_member_review_cases.json",
-        "coverage/semantics/trait-data-review.json"
+        "coverage/semantics/trait-data-review.json",
+        "tests/semantics/trait_data_static_default_review_cases.json",
+        "tests/semantics/trait_property_deprecation_review_cases.json",
+        "tests/semantics/trait_property_rhs_review_cases.json",
+        "tests/semantics/trait_property_abrupt_review_cases.json",
+        "tests/semantics/trait_property_chain_review_cases.json",
+        "tests/semantics/trait_property_default_review_cases.json",
+        "tests/semantics/trait_property_deprecation_review_protocol.py",
+        "tests/semantics/trait_property_rhs_review_protocol.py",
+        "tests/semantics/trait_property_review_output.watsup",
+        "coverage/semantics/trait-property-access-review.json"
       ],
-      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Data238 adds scoped property/constant compatibility, full using-class identities, source diagnostics, static sharing and requested-class instance templates. Its data ledger retains72 source agreements and265 semantic state assertions at exact cuts, with92 historical dependency assertions carrying zero old-cut agreement. Effectful collision evaluation, direct trait-property deprecations, readonly storage and wider dependent consumers remain required; no trait-family closure.",
+      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Data238 adds scoped property/constant compatibility, full using-class identities, source diagnostics, static sharing and requested-class instance templates. Its data ledger retains72 source agreements and265 semantic state assertions at exact cuts, with92 historical dependency assertions carrying zero old-cut agreement. Effectful collision evaluation, strict deferred-value comparison before typed conversion, readonly storage and wider dependent consumers remain required; no trait-family closure. Module254 adds raw trait-property warning continuations with retained selected cells/access modes, live callback resumption, late versus computed RHS demand and consumer-specific abrupt opcode completion. Independent33 source agreements (author6 subset) and six reached state groups/286 premises pass at unchanged15155; the literal pool owner is retained alongside one store owner. Exact cuts and original fixture/compiler failures are in trait-property-access-review.json; wider producers and full trait semantics remain partial.",
       "helper_tests": [
         "tests/semantics/class_headers.py",
         "coverage/semantics/class-headers.json"
@@ -3805,7 +3824,8 @@
         "spec/semantics/18-class-headers.watsup",
         "spec/semantics/141-method-compiler.watsup",
         "spec/semantics/228-trait-methods.watsup",
-        "spec/semantics/238-trait-data.watsup"
+        "spec/semantics/238-trait-data.watsup",
+        "spec/semantics/254-trait-property-access.watsup"
       ],
       "source_tests": [
         "tests/semantics/trait_method_cases.json",
@@ -3849,9 +3869,19 @@
         "tests/semantics/trait_data_reference_review_protocol.py",
         "tests/semantics/trait_data_warning_boundary_review_protocol.py",
         "tests/semantics/trait_member_review_cases.json",
-        "coverage/semantics/trait-data-review.json"
+        "coverage/semantics/trait-data-review.json",
+        "tests/semantics/trait_data_static_default_review_cases.json",
+        "tests/semantics/trait_property_deprecation_review_cases.json",
+        "tests/semantics/trait_property_rhs_review_cases.json",
+        "tests/semantics/trait_property_abrupt_review_cases.json",
+        "tests/semantics/trait_property_chain_review_cases.json",
+        "tests/semantics/trait_property_default_review_cases.json",
+        "tests/semantics/trait_property_deprecation_review_protocol.py",
+        "tests/semantics/trait_property_rhs_review_protocol.py",
+        "tests/semantics/trait_property_review_output.watsup",
+        "coverage/semantics/trait-property-access-review.json"
       ],
-      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Data238 adds scoped property/constant compatibility, full using-class identities, source diagnostics, static sharing and requested-class instance templates. Its data ledger retains72 source agreements and265 semantic state assertions at exact cuts, with92 historical dependency assertions carrying zero old-cut agreement. Effectful collision evaluation, direct trait-property deprecations, readonly storage and wider dependent consumers remain required; no trait-family closure."
+      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Data238 adds scoped property/constant compatibility, full using-class identities, source diagnostics, static sharing and requested-class instance templates. Its data ledger retains72 source agreements and265 semantic state assertions at exact cuts, with92 historical dependency assertions carrying zero old-cut agreement. Effectful collision evaluation, strict deferred-value comparison before typed conversion, readonly storage and wider dependent consumers remain required; no trait-family closure. Module254 adds raw trait-property warning continuations with retained selected cells/access modes, live callback resumption, late versus computed RHS demand and consumer-specific abrupt opcode completion. Independent33 source agreements (author6 subset) and six reached state groups/286 premises pass at unchanged15155; the literal pool owner is retained alongside one store owner. Exact cuts and original fixture/compiler failures are in trait-property-access-review.json; wider producers and full trait semantics remain partial."
     },
     {
       "node": "Stmt_TraitUseAdaptation_Alias",
@@ -4854,20 +4884,24 @@
         "spec/semantics/251-string-interpolation.watsup",
         "spec/semantics/30-storage.watsup",
         "spec/semantics/84-call-integrity.watsup",
-        "spec/semantics/168-user-string-runtime.watsup"
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/258-dollar-curly-compiler.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/interpolation_protocol.py"
+        "tests/semantics/interpolation_protocol.py",
+        "tests/dollar_curly_metadata.py",
+        "tests/semantics/dollar_curly_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/interpolation_sources.py"
+        "tests/semantics/interpolation_sources.py",
+        "tests/semantics/dollar_curly_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h"
       ],
-      "review": "Partial ordinary parsed strings/heredocs: effective CAST/FAST_CONCAT/ROPE order, scalar/Stringable/array/undefined callbacks, captured temporary versus borrowed CV ownership and compiled callback lines. Nine exact sources and SL237 pass at88f457d1c;111 distinct owner/authentication premises pass ata7c117b6 in six groups with25 repeated setup. Actualcde/247 preservation keeps241 modules without renewing those cuts. Wider producers/source contexts and legacy compiler deprecations remain required; original cast and dynamic-file observer gaps keep their old zero credit. See interpolation-review.json."
+      "review": "Partial ordinary parsed strings/heredocs: effective CAST/FAST_CONCAT/ROPE order, scalar/Stringable/array/undefined callbacks, captured temporary versus borrowed CV ownership and compiled callback lines. Nine exact sources and SL237 pass at88f457d1c;111 distinct owner/authentication premises pass ata7c117b6 in six groups with25 repeated setup. Actualcde/247 preservation keeps241 modules without renewing those cuts. Wider producers/source contexts and early eval compiler notices remain required; original cast and dynamic-file observer gaps keep their old zero credit. See interpolation-review.json. Legacy direct/computed compiler notices258 add five main/include profiles, SL242,24 syntax/encoding profiles with320 checks and37 compiler/certificate premises atfa084; actual256/243 preservation adds no renewal. Early eval delivery and shell-exec compilation remain required. See dollar-curly-review.json."
     },
     {
       "id": "bytes.output-conversion",
@@ -8771,7 +8805,8 @@
         "spec/semantics/18-class-headers.watsup",
         "spec/semantics/141-method-compiler.watsup",
         "spec/semantics/228-trait-methods.watsup",
-        "spec/semantics/238-trait-data.watsup"
+        "spec/semantics/238-trait-data.watsup",
+        "spec/semantics/254-trait-property-access.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -8816,12 +8851,22 @@
         "tests/semantics/trait_data_reference_review_protocol.py",
         "tests/semantics/trait_data_warning_boundary_review_protocol.py",
         "tests/semantics/trait_member_review_cases.json",
-        "coverage/semantics/trait-data-review.json"
+        "coverage/semantics/trait-data-review.json",
+        "tests/semantics/trait_data_static_default_review_cases.json",
+        "tests/semantics/trait_property_deprecation_review_cases.json",
+        "tests/semantics/trait_property_rhs_review_cases.json",
+        "tests/semantics/trait_property_abrupt_review_cases.json",
+        "tests/semantics/trait_property_chain_review_cases.json",
+        "tests/semantics/trait_property_default_review_cases.json",
+        "tests/semantics/trait_property_deprecation_review_protocol.py",
+        "tests/semantics/trait_property_rhs_review_protocol.py",
+        "tests/semantics/trait_property_review_output.watsup",
+        "coverage/semantics/trait-property-access-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Data238 adds scoped property/constant compatibility, full using-class identities, source diagnostics, static sharing and requested-class instance templates. Its data ledger retains72 source agreements and265 semantic state assertions at exact cuts, with92 historical dependency assertions carrying zero old-cut agreement. Effectful collision evaluation, direct trait-property deprecations, readonly storage and wider dependent consumers remain required; no trait-family closure.",
+      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Data238 adds scoped property/constant compatibility, full using-class identities, source diagnostics, static sharing and requested-class instance templates. Its data ledger retains72 source agreements and265 semantic state assertions at exact cuts, with92 historical dependency assertions carrying zero old-cut agreement. Effectful collision evaluation, strict deferred-value comparison before typed conversion, readonly storage and wider dependent consumers remain required; no trait-family closure. Module254 adds raw trait-property warning continuations with retained selected cells/access modes, live callback resumption, late versus computed RHS demand and consumer-specific abrupt opcode completion. Independent33 source agreements (author6 subset) and six reached state groups/286 premises pass at unchanged15155; the literal pool owner is retained alongside one store owner. Exact cuts and original fixture/compiler failures are in trait-property-access-review.json; wider producers and full trait semantics remain partial.",
       "planned_source_tests": [
         "tests/semantics/conformance/trait-deferred-self-union.php",
         "tests/semantics/conformance/class-direct-self-union.php",

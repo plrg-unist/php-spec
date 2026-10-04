@@ -86,7 +86,10 @@ Wider display/startup directives and diagnostic consumers stay open.
 effective CAST/FAST_CONCAT/ROPE order, retaining fetched temporaries separately
 from live variables through Stringable and warning callbacks. Nine exact source
 comparisons and 111 distinct owner/state premises pass at their recorded cuts;
-broader interpolation producers and source contexts remain required.
+[Legacy dollar-curly compiler notices](coverage/semantics/dollar-curly-review.json)
+now preserve syntax/printing, physical pre-child warning locations and main/include
+handler delivery. Five profiles and 37 compiler premises pass; early eval delivery
+and broader interpolation producers/source contexts remain required.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
@@ -466,9 +469,11 @@ bound closures and `Closure->__invoke` trampolines.
 [Source traits](docs/semantics/SOURCE-TRAITS.md) compose nested uses, conflicts
 and adaptations with using-class scope, original body provenance and distinct
 class/alias static cells. Property/constant composition preserves invariant source
-types, strict evaluated compatibility, per-import identities and static sharing.
-Imported deferred instance defaults use owning class templates. Effectful
-collisions and direct trait-property warning continuations remain required. A bounded
+types, pure evaluated compatibility, per-import identities and static sharing.
+Imported deferred instance defaults use owning class templates. Raw trait-property
+warnings retain selected cells and operand ownership through handlers and abrupt
+opcode completion. Effectful collisions, strict deferred-value comparison before
+type conversion and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound

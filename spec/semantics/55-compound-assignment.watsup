@@ -79,6 +79,7 @@ def $compound_opcode_line(pbase, z) = z -- otherwise
 
 rule PhpStep/compound-prepare: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), COMPOUND_APPLY pbin S.BASE $assignment_self(expression_target, expression) $compound_opcode_line(S.BASE, z)] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (COMPOUND_PREP pbin expression_target expression z) :: ptask_tail*
+  -- if ~$trait_property_write_task(S)
 rule PhpStep/compound-apply: S ~> S_updated[.HELD = S.HELD]
   -- if S.TODO = (COMPOUND_APPLY pbin pbase false z) :: ptask_tail*
   -- if ~$key_write_pending(S)

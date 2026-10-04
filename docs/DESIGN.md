@@ -35,6 +35,11 @@ infinity and avoiding JSON number conversion. Literal spellings remain metadata.
 Comments retain their bytes, doc-comment distinction and six source positions.
 A deterministic attachment pass retains comments that upstream leaves unattached.
 The schema declares every accepted metadata key and its payload type.
+Legacy interpolation parts retain integer `encapsVarKind` at their grammar
+reduction: 1 for direct `${name}`/`${name[expr]}`, 2 for computed `${expr}`.
+The flag stays on the part root and survives checked conversion. Fresh printing
+retains its deprecated opener and parentheses needed to keep computed labels
+from being reclassified as direct names. Modern braces carry no flag.
 Methods retain integer `methodKeywordLine`, the effective `function` token line.
 Parser modifier diagnostics consume it when modifiers and the method name span
 different lines. Checked conversion preserves it; fresh printing ignores it.
