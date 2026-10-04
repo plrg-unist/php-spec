@@ -135,8 +135,8 @@ def $trait_property_consumer(S, porigin_site, porigin, (PROPERTY_REF_BIND pbase 
   -- if $call_task_valid(S[.ORIGIN = (porigin)][.TODO = (PROPERTY_REF_BIND pbase n_cell z) :: ptask_tail*][.BASE = pbase], PROPERTY_REF_BIND pbase n_cell z)
 def $trait_property_consumer(S, porigin_site, porigin, (PROPERTY_REF_FETCH z) :: ptask_tail*) = (PPW)
   -- if porigin_site = porigin
-  -- if $class_static_ref_fetch_task(S[.ORIGIN = (porigin)][.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*][.BASE = BASE_CLASS_STATIC porigin_root ptbytes], z)
   -- if S.BASE = BASE_CLASS_STATIC porigin_root ptbytes
+  -- if $class_static_ref_fetch_task(S[.ORIGIN = (porigin)][.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*], z)
 ;; A property read as a source call argument uses the selected signature.
 def $trait_property_consumer(S, porigin_site, porigin, (CALL_REF_FETCH pcalltarget n porigin_call?) :: ptask_tail*) = (PPW)
   -- if $trait_property_below(porigin, porigin_site)
