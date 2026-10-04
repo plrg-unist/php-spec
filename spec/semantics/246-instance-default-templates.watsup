@@ -385,7 +385,7 @@ def $instance_default_unfinished(S, (porigin_class, porigin_decl) :: (porigin_ta
   -- if ~$instance_default_pending(S, porigin_class, porigin_decl) \/ $instance_default_busy(S, porigin_class, porigin_decl)
 dec $instance_default_ordered((porigin, porigin)*, (porigin, porigin)*) : bool
 def $instance_default_ordered((porigin_order_class, porigin_order_decl)*, eps) = true
-def $instance_default_ordered(eps, (porigin_class, porigin_decl) :: (porigin_tail_class, porigin_tail_decl)*) = false
+def $instance_default_ordered(eps, (porigin_target_class, porigin_target_decl) :: (porigin_tail_class, porigin_tail_decl)*) = false
 def $instance_default_ordered((porigin_class, porigin_decl) :: (porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl) :: (porigin_tail_class, porigin_tail_decl)*) = $instance_default_ordered((porigin_order_class, porigin_order_decl)*, (porigin_tail_class, porigin_tail_decl)*)
   -- if porigin_class = porigin_target_class /\ porigin_decl = porigin_target_decl
 def $instance_default_ordered((porigin_class, porigin_decl) :: (porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl) :: (porigin_tail_class, porigin_tail_decl)*) = $instance_default_ordered((porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl) :: (porigin_tail_class, porigin_tail_decl)*)
@@ -397,12 +397,12 @@ def $instance_default_sequence(S, porigin_root, (porigin_class, porigin_decl)*) 
   -- if $instance_default_unfinished(S, (porigin_order_class, porigin_order_decl)*) = $instance_default_unfinished(S, (porigin_class, porigin_decl)*)
 def $instance_default_sequence(S, porigin_root, (porigin_class, porigin_decl)*) = false -- otherwise
 dec $instance_default_blocks(pstate, ptask*, (porigin, porigin)*) : bool
-def $instance_default_blocks(S, eps, (porigin_class, porigin_decl)*) = ((porigin_class, porigin_decl)* = eps)
+def $instance_default_blocks(S, eps, (porigin_acc_class, porigin_acc_decl)*) = ((porigin_acc_class, porigin_acc_decl)* = eps)
 def $instance_default_blocks(S, (INSTANCE_DEFAULT_UPDATE porigin_class porigin_decl z) :: ptask_tail*, (porigin_acc_class, porigin_acc_decl)*) = $instance_default_blocks(S, ptask_tail*, (porigin_acc_class, porigin_acc_decl)* ++ [(porigin_class, porigin_decl)])
-def $instance_default_blocks(S, (CLASS_CONST_UPDATE porigin z) :: ptask_tail*, (porigin_class, porigin_decl)*) = $instance_default_blocks(S, ptask_tail*, (porigin_class, porigin_decl)*)
-def $instance_default_blocks(S, (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*, (porigin_class, porigin_decl)*) = $instance_default_blocks(S, ptask_tail*, (porigin_class, porigin_decl)*)
-def $instance_default_blocks(S, (STATIC_DEFAULT_UPDATE porigin z) :: ptask_tail*, (porigin_class, porigin_decl)*) = $instance_default_blocks(S, ptask_tail*, (porigin_class, porigin_decl)*)
-def $instance_default_blocks(S, ptask :: ptask_tail*, (porigin_class, porigin_decl)*) = ($instance_default_sequence(S, porigin_root, (porigin_class, porigin_decl)*) /\ $instance_default_blocks(S, ptask_tail*, eps))
+def $instance_default_blocks(S, (CLASS_CONST_UPDATE porigin z) :: ptask_tail*, (porigin_acc_class, porigin_acc_decl)*) = $instance_default_blocks(S, ptask_tail*, (porigin_acc_class, porigin_acc_decl)*)
+def $instance_default_blocks(S, (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*, (porigin_acc_class, porigin_acc_decl)*) = $instance_default_blocks(S, ptask_tail*, (porigin_acc_class, porigin_acc_decl)*)
+def $instance_default_blocks(S, (STATIC_DEFAULT_UPDATE porigin z) :: ptask_tail*, (porigin_acc_class, porigin_acc_decl)*) = $instance_default_blocks(S, ptask_tail*, (porigin_acc_class, porigin_acc_decl)*)
+def $instance_default_blocks(S, ptask :: ptask_tail*, (porigin_acc_class, porigin_acc_decl)*) = ($instance_default_sequence(S, porigin_root, (porigin_acc_class, porigin_acc_decl)*) /\ $instance_default_blocks(S, ptask_tail*, eps))
   -- if $class_constant_update_continuation(ptask)
   -- if $class_constant_update_target(S, [ptask]) = (porigin_root)
 def $instance_default_blocks(S, ptask :: ptask_tail*, eps) = $instance_default_blocks(S, ptask_tail*, eps)
@@ -410,14 +410,14 @@ def $instance_default_blocks(S, ptask :: ptask_tail*, eps) = $instance_default_b
   -- if ~$instance_default_update_marker(ptask)
   -- if ~$class_constant_update_marker(ptask)
   -- if ~$static_default_update_marker(ptask)
-def $instance_default_blocks(S, ptask*, (porigin_class, porigin_decl)*) = false -- otherwise
+def $instance_default_blocks(S, ptask*, (porigin_acc_class, porigin_acc_decl)*) = false -- otherwise
 def $instance_default_update_marker(INSTANCE_DEFAULT_UPDATE porigin_class porigin_decl z) = true
 def $instance_default_update_marker(ptask) = false -- otherwise
 dec $instance_default_bind_marker(ptask) : bool
 dec $instance_default_binders_unique(ptask*, (porigin, porigin)*) : bool
-def $instance_default_binders_unique(eps, (porigin_class, porigin_decl)*) = true
+def $instance_default_binders_unique(eps, (porigin_seen_class, porigin_seen_decl)*) = true
 def $instance_default_binders_unique((INSTANCE_DEFAULT_BIND porigin_class pstaticdefaultcontext) :: ptask_tail*, (porigin_seen_class, porigin_seen_decl)*) = (~((porigin_class, pstaticdefaultcontext.DECL) <- (porigin_seen_class, porigin_seen_decl)*) /\ $instance_default_binders_unique(ptask_tail*, (porigin_seen_class, porigin_seen_decl)* ++ [(porigin_class, pstaticdefaultcontext.DECL)]))
-def $instance_default_binders_unique(ptask :: ptask_tail*, (porigin_class, porigin_decl)*) = $instance_default_binders_unique(ptask_tail*, (porigin_class, porigin_decl)*)
+def $instance_default_binders_unique(ptask :: ptask_tail*, (porigin_seen_class, porigin_seen_decl)*) = $instance_default_binders_unique(ptask_tail*, (porigin_seen_class, porigin_seen_decl)*)
   -- if ~$instance_default_bind_marker(ptask)
 def $instance_default_bind_marker(INSTANCE_DEFAULT_BIND porigin_class pstaticdefaultcontext) = true
 def $instance_default_bind_marker(ptask) = false -- otherwise
