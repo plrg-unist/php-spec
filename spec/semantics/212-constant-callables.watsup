@@ -35,6 +35,10 @@ dec $property_callable_initializer(pstate, porigin) : bool
 dec $property_callable_record(pstate, pconstantclosure) : bool
 dec $property_callable_cached_method(pstate, porigin) : pmethoddesc?
 dec $property_callable_cached_function(pstate, porigin) : pfunction?
+dec $constant_callable_imported_context(pstate, porigin) : bool
+dec $constant_callable_imported_record(pstate, pconstantclosure) : bool
+dec $constant_callable_cached_method(pstate, porigin) : pmethoddesc?
+dec $constant_callable_cached_function(pstate, porigin) : pfunction?
 dec $constant_callable_record_owner(pstate, pconstantclosure) : porigin?
 dec $constant_callable_class_name(pstate, porigin, porigin, phpType19) : ptbytes?
 dec $constant_callable_method_class(pstate, porigin, porigin, nat) : porigin?
@@ -151,9 +155,9 @@ def $constant_callable_prefix(S, porigin) = pconstantclosure.PREFIX
 def $constant_callable_prefix(S, porigin) = |S.DECLARATIONS|
   -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin) = eps
 def $constant_callable_creation_prefix(S, porigin) = |S.DECLARATIONS|
-  -- if $property_callable_initializer(S, porigin)
+  -- if $property_callable_initializer(S, porigin) \/ $constant_callable_imported_context(S, porigin)
 def $constant_callable_creation_prefix(S, porigin) = $constant_callable_prefix(S, porigin)
-  -- if ~$property_callable_initializer(S, porigin)
+  -- if ~$property_callable_initializer(S, porigin) /\ ~$constant_callable_imported_context(S, porigin)
 def $constant_callable_stamp(S, n, porigin, n_prefix) = S[.OBJECTS = $object_set(S.OBJECTS, n, CONSTANTCLOSURE porigin S.OBJECTS[n])][.CONSTANTCLOSURES = S.CONSTANTCLOSURES ++ [{OBJECT n, SITE porigin, DECL porigin_decl, PREFIX n_prefix}]]
   -- if $constant_callable_context(S, porigin) = ((porigin_decl, porigin_owner))
 
@@ -180,10 +184,10 @@ def $constant_callable_function_fresh(S, PORIGIN n pcpath, n_prefix) = $call_tar
   -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, ptbytes_fallback?))
 def $constant_callable_function_fresh(S, porigin, n) = eps -- otherwise
 def $constant_callable_function(S, porigin, n_prefix) = $constant_callable_function_fresh(S, porigin, n_prefix)
-  -- if $property_callable_cached_function(S, porigin) = eps
+  -- if $constant_callable_cached_function(S, porigin) = eps
 def $constant_callable_function(S, porigin, n_prefix) = (pfunction)
   -- if $(n_prefix <= |S.DECLARATIONS|)
-  -- if $property_callable_cached_function(S, porigin) = (pfunction)
+  -- if $constant_callable_cached_function(S, porigin) = (pfunction)
   -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin) = (pconstantclosure_first)
   -- if $(pconstantclosure_first.PREFIX <= n_prefix)
 def $constant_callable_function(S, porigin, n_prefix) = eps -- otherwise
@@ -243,17 +247,17 @@ def $constant_callable_method_fresh(S, porigin, porigin_owner, n_prefix) = ((pme
   -- if $effective_method(S, porigin_called, $ptlc(ptbytes_method), |S.CLASSES|) = (pmethoddesc)
 def $constant_callable_method_fresh(S, porigin, porigin_owner, n_prefix) = eps -- otherwise
 def $constant_callable_method(S, porigin, porigin_owner, n_prefix) = $constant_callable_method_fresh(S, porigin, porigin_owner, n_prefix)
-  -- if $property_callable_cached_method(S, porigin) = eps
+  -- if $constant_callable_cached_method(S, porigin) = eps
 def $constant_callable_method(S, porigin, porigin_owner, n_prefix) = ((pmethoddesc, porigin_called))
-  -- if $property_callable_cached_method(S, porigin) = (pmethoddesc)
+  -- if $constant_callable_cached_method(S, porigin) = (pmethoddesc)
   -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin) = (pconstantclosure_first)
   -- if $(pconstantclosure_first.PREFIX <= n_prefix)
   -- if $constant_callable_method_class(S, porigin, porigin_owner, n_prefix) = (porigin_called)
 def $constant_callable_method(S, porigin, porigin_owner, n_prefix) = eps -- otherwise
 def $constant_callable_method_access(S, porigin, porigin_owner, pmethoddesc) = $method_accessible(S, pmethoddesc, (porigin_owner))
-  -- if $property_callable_cached_method(S, porigin) = eps
+  -- if $constant_callable_cached_method(S, porigin) = eps
 def $constant_callable_method_access(S, porigin, porigin_owner, pmethoddesc) = true
-  -- if $property_callable_cached_method(S, porigin) = (pmethoddesc)
+  -- if $constant_callable_cached_method(S, porigin) = (pmethoddesc)
 def $constant_callable_method_access(S, porigin, porigin_owner, pmethoddesc) = false -- otherwise
 
 def $constant_callable_method_allocate(S, porigin, pmethoddesc, porigin_called, n_prefix) = $constant_callable_stamp(S_scoped, n, porigin, n_prefix)
@@ -289,7 +293,7 @@ def $constant_callable_method_create(S, porigin) = $throw_scalar(S, "Error", $pt
   -- if expression = NExprStaticCall phpType19 phpType20 phpType6 metadata
 def $constant_callable_method_create(S, porigin) = $throw_scalar(S, "Error", $ptascii("Call to undefined method ") ++ ptbytes_class ++ $ptascii("::") ++ ptbytes_method ++ $ptascii("()"), $runtime_line(S, eps, expression))
   -- if $constant_callable_context(S, porigin) = ((porigin_decl, porigin_owner))
-  -- if $property_callable_cached_method(S, porigin) = eps
+  -- if $constant_callable_cached_method(S, porigin) = eps
   -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
   -- if $constant_callable_class_name(S, porigin, porigin_owner, phpType19) = (ptbytes_class)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_called)
@@ -352,6 +356,7 @@ def $constant_callable_record_prefix(S, pconstantclosure) = true
   -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata)
 def $constant_callable_record_prefix(S, pconstantclosure) = (pconstantclosure.PREFIX = pconstantclosure_first.PREFIX)
   -- if ~$property_callable_record(S, pconstantclosure)
+  -- if ~$constant_callable_imported_record(S, pconstantclosure)
   -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (expression)
   -- if $firstclass_site(S, pconstantclosure.SITE) \/ $constant_callable_method_site(S, pconstantclosure.SITE)
   -- if $constant_callable_first(S.CONSTANTCLOSURES, pconstantclosure.SITE) = (pconstantclosure_first)
