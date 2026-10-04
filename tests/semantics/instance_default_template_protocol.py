@@ -97,8 +97,9 @@ def $instance_template_test_stage(S, 2) = true
   -- if $class_named(S.CLASSNAMES, $ptascii("b")) = (porigin_b)
   -- if $class_at(S.CLASSES, porigin_a) = (pclassdesc)
   -- if pclassdesc.PROPERTIES = [ppropertydesc_a, ppropertydesc_b, ppropertydesc_c]
-  -- if $instance_default_pending(S, porigin_a, ppropertydesc_b.ORIGIN)
-  -- if $instance_default_pending(S, porigin_b, ppropertydesc_b.ORIGIN)
+  -- if ppropertydesc_b.ORIGIN = porigin_decl
+  -- if $instance_default_pending(S, porigin_a, porigin_decl)
+  -- if $instance_default_pending(S, porigin_b, porigin_decl)
 def $instance_template_test_stage(S, 3) = true
   -- if S.TODO = (INSTANCE_DEFAULT_BIND porigin_a pstaticdefaultcontext) :: ptask_tail*
   -- if $class_named(S.CLASSNAMES, $ptascii("a")) = (porigin_a)
