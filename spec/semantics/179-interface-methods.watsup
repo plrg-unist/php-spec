@@ -42,7 +42,7 @@ def $pil_ref_names(S, (PILSOURCE ptbytes porigin) :: pilref_tail*, n) = [ptbytes
 def $pil_ref_names(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = [ptbytes, $ptascii("Stringable")] ++ $pil_ref_names(S, pilref_tail*, n)
   -- if $ptlc(ptbytes) = $ptascii("throwable")
 def $pil_ref_names(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = [ptbytes] ++ $pil_ref_names(S, pilref_tail*, n)
-  -- if $ptlc(ptbytes) =/= $ptascii("throwable")
+  -- if $ptlc(ptbytes) =/= $ptascii("throwable") /\ $ptlc(ptbytes) =/= $ptascii("iterator")
 def $pil_ancestor_names(S, porigin, 0) = eps
 def $pil_ancestor_names(S, porigin, n) = $pil_ref_names(S, pilref*, $nabs($(n - 1))) ++ $pil_ancestor_names(S, porigin_parent, $nabs($(n - 1)))
   -- if $(n > 0)
@@ -166,10 +166,10 @@ def $pil_order_source(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, pp
 def $pil_order_source_after(S, pclassdesc, porigin, pilref_seen*, ppmethodinherited_all*, METHOD_OK) = $pil_order_source_nominal(S, pclassdesc, porigin, pilref_seen*, ppmethodinherited_all*, $pil_nominal(S, porigin, $ptascii("Throwable"), |S.CLASSES|))
 def $pil_order_source_after(S, pclassdesc, porigin, pilref_seen*, ppmethodinherited_all*, pmethodissue) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
-def $pil_order_source_nominal(S, pclassdesc, porigin, pilref_seen*, ppmethodinherited_all*, true) = $pil_order_rooted(S, pclassdesc, $pil_order_throwable_seen(S, pclassdesc, pilref_seen*))
+def $pil_order_source_nominal(S, pclassdesc, porigin, pilref_seen*, ppmethodinherited_all*, true) = $useriter_source_after(S, pclassdesc, porigin, $pil_order_rooted(S, pclassdesc, $pil_order_throwable_seen(S, pclassdesc, pilref_seen*)))
 def $pil_order_source_nominal(S, pclassdesc, porigin, pilref_seen*, ppmethodinherited_all*, false) = $pil_order_source_stringable(S, pclassdesc, porigin, $pil_nominal(S, porigin, $ptascii("Stringable"), |S.CLASSES|))
-def $pil_order_source_stringable(S, pclassdesc, porigin, true) = $pil_stringable_issue(S, pclassdesc)
-def $pil_order_source_stringable(S, pclassdesc, porigin, false) = METHOD_OK
+def $pil_order_source_stringable(S, pclassdesc, porigin, true) = $useriter_source_after(S, pclassdesc, porigin, $pil_stringable_issue(S, pclassdesc))
+def $pil_order_source_stringable(S, pclassdesc, porigin, false) = $useriter_source_contract(S, pclassdesc, porigin)
 def $pil_parent_source_infos(S, pclassdesc) = $method_info_layout(S, porigin_parent, |S.CLASSES|)
   -- if pclassdesc.KIND = "class"
   -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
@@ -193,6 +193,7 @@ def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinhe
   -- if $ptlc(ptbytes) = $ptascii("throwable")
 def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited_all*) = METHOD_UNSUPPORTED "internal interface method contract"
   -- if $ptlc(ptbytes) =/= $ptascii("stringable") /\ $ptlc(ptbytes) =/= $ptascii("throwable")
+  -- if ~$useriter_builtin(ptbytes)
 def $pil_seen_throwable(S, eps) = false
 def $pil_seen_throwable(S, (PILBUILTIN ptbytes) :: pilref_tail*) = true
   -- if $ptlc(ptbytes) = $ptascii("throwable")
@@ -237,7 +238,7 @@ def $pil_stringable_method(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptas
 def $pil_contract_issue(S, pclassdesc) = pmethodissue
   -- if $pil_method_issue(S, pclassdesc) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
-def $pil_contract_issue(S, pclassdesc) = $pil_stringable_issue(S, pclassdesc)
+def $pil_contract_issue(S, pclassdesc) = $useriter_after_issue(S, pclassdesc, $pil_stringable_issue(S, pclassdesc))
   -- if $pil_method_issue(S, pclassdesc) = METHOD_OK
 
 def $pil_methods_valid(S, eps) = true

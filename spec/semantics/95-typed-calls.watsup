@@ -103,6 +103,7 @@ def $typed_stored_default(PSDEFAULT phpType5 "float", PINT i) = PFLOAT $float_of
 def $typed_stored_default(psdefault, pvalue) = pvalue -- otherwise
 
 dec $parameter_string_candidate(pstate) : bool
+dec $api_receive_candidate(pstate) : bool
 rule PhpStep/type-receive-supplied: S ~> $typed_default_store(S, pfunction, n, pvalue)
   -- if S.TODO = (TYPE_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
@@ -114,6 +115,7 @@ rule PhpStep/type-receive-supplied: S ~> $typed_default_store(S, pfunction, n, p
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if ~$parameter_string_candidate(S)
   -- if ~$parameter_backing_receive_exact(S)
+  -- if ~$api_receive_candidate(S)
 rule PhpStep/type-receive-missing: S ~> $default_begin(S, pfunction, n)
   -- if S.TODO = (TYPE_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps

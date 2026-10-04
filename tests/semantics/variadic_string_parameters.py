@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Stringable variadic elements and genuine deferred parameter defaults."""
 import argparse
-import base64
 import hashlib
 import json
 import os
@@ -74,28 +73,6 @@ def inputs(freeze=None):
     return cross.snapshot(freeze)
 
 
-def constructor_stop(directory, path):
-    native = driver.process([str(ROOT / '.tools/php/bin/php'), '-n', *driver.types.FLAGS,
-                             str(path)], directory / 'native', 30, directory)
-    assert native.returncode == 0 and not native.stderr
-    assert native.stdout == EXPECTED['default-constructor-stop']
-    facts = {'version': 2, 'main': driver.b64(os.fsencode(path)),
-             'cwd': driver.b64(os.fsencode(directory)), 'include_path': driver.b64(b'.:'),
-             'entries': [], 'chdir_entries': []}
-    facts_path = directory / 'snapshot.json'
-    facts_path.write_text(json.dumps(facts, sort_keys=True) + '\n')
-    model = driver.process([str(ROOT / 'bin/php-semantics'), str(path), '--file-snapshot',
-        str(facts_path), '--steps', '100000', '--timeout', '60'], directory / 'model', 90, directory)
-    assert model.returncode == 1 and not model.stderr
-    outcome = json.loads(model.stdout)
-    assert outcome['frontend'] == 'accepted' and outcome['checked'] == 'program'
-    assert outcome['status'] == 'unsupported' and outcome['reason'] == 'parameter default constructor'
-    assert outcome['diagnostic'] is None
-    assert not base64.b64decode(outcome['stdout'], validate=True)
-    assert not base64.b64decode(outcome['stderr'], validate=True)
-    return {'status': outcome['status'], 'reason': outcome['reason'], 'semantic_agreement': False}
-
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--select', help='Comma-separated exact case IDs')
@@ -116,14 +93,10 @@ def main():
             path = directory / 'source.php'; path.write_bytes(CASES[name])
             row = {'id': name, 'source_sha256': sha(path), 'completed': False, 'passed': False}
             report['records'].append(row)
-            if name == 'default-constructor-stop':
-                row['observation'] = constructor_stop(directory, path)
-                report['unsupported_controls'] += 1
-            else:
-                expected = expected_stdout(name, path)
-                row['observation'] = cross.source({'expected_exit_status': 0,
-                    'expected_stdout': expected.decode(), 'abrupt': False}, directory, path)
-                report['semantic_agreements'] += 1
+            expected = expected_stdout(name, path)
+            row['observation'] = cross.source({'expected_exit_status': 0,
+                'expected_stdout': expected.decode(), 'abrupt': False}, directory, path)
+            report['semantic_agreements'] += 1
             row.update(completed=True, passed=True)
             print(name, row['observation']['status'], flush=True)
         report['result'] = 'pass'

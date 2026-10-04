@@ -113,11 +113,14 @@ def $class_constant_busy_unique(eps) = true
 def $class_constant_busy_unique(pclassconstantcontext :: pclassconstantcontext_tail*) = ((~$class_constant_protected(pclassconstantcontext.SELECTION, pclassconstantcontext.PREVIOUS) \/ ~$class_constant_visited(pclassconstantcontext_tail*, pclassconstantcontext.DECL)) /\ $class_constant_busy_unique(pclassconstantcontext_tail*))
 
 dec $class_constant_result(pstate, pvalue, pvalueclass) : pstate
+;; Updating a lazy table does not complete its triggering NEW or property read.
+;; Only the completed constant fetch publishes an expression fact to its caller.
 def $class_constant_result(S, pvalue, pvalueclass) = S[.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)][.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE $pvclass_operand(pvalue), CLASS pvalueclass})])]
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprClassConstFetch phpType19 phpType20 metadata)
 def $class_constant_result(S, pvalue, pvalueclass) = S[.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.CONSTCONTEXT = eps
+  -- otherwise
 dec $class_constant_keyword(pstate) : bool
 def $class_constant_keyword(S) = true
   -- if S.ORIGIN = (porigin)
@@ -767,7 +770,9 @@ rule PhpStep/class-constant-update: S ~> $class_constant_value(S[.TODO = DISCARD
   -- if S.TODO = (CLASS_CONST_UPDATE porigin z) :: ptask_tail*
   -- if $class_constant_update_target(S, ptask_tail*) = (porigin_class)
   -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
-rule PhpStep/class-constant-construct: S ~> $constructor_start_ready(S[.TODO = ptask_tail*], ptbytes, phpType7*, z)
+dec $parameter_default_new_ready(pstate, ptbytes, phpType7*, int) : bool
+dec $constructor_after_class_update(pstate, ptbytes, phpType7*, int) : pstate
+rule PhpStep/class-constant-construct: S ~> $constructor_after_class_update(S[.TODO = ptask_tail*], ptbytes, phpType7*, z)
   -- if S.TODO = (CLASS_CONST_CONSTRUCT ptbytes phpType7* true z) :: ptask_tail*
 rule PhpStep/class-constant-construct-noctor: S ~> $noctor_start_ready(S[.TODO = ptask_tail*], ptbytes, phpType7*, z)
   -- if S.TODO = (CLASS_CONST_CONSTRUCT ptbytes phpType7* false z) :: ptask_tail*
@@ -817,7 +822,7 @@ def $class_constant_constructor_task(S, ptbytes, phpType7*, b_ctor, z) = true
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
   -- if b_ctor = $new_has_ctor(S, ptbytes)
-  -- if z = $runtime_line(S, eps, NExprNew phpType28 (SEQUENCE phpType7*) metadata)
+  -- if (z = $runtime_line(S, eps, NExprNew phpType28 (SEQUENCE phpType7*) metadata) /\ (~b_ctor \/ ~$parameter_default_constructor(S, phpType28, phpType7*, metadata))) \/ (b_ctor /\ $parameter_default_new_ready(S, ptbytes, phpType7*, z))
   -- if $class_constant_constructor_ready(S, ptbytes, phpType7*, b_ctor, z)
 def $class_constant_constructor_task(S, ptbytes, phpType7*, b_ctor, z) = false -- otherwise
 def $class_constant_constructor_ready(S, ptbytes, phpType7*, b_ctor, z) = ($class_constant_new_work(S, ptbytes, z) = eps)

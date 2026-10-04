@@ -1,0 +1,253 @@
+;; The constant AST evaluator allocates first, evaluates every value, and only
+;; then obtains the constructor. These phases own values across user callbacks.
+dec $default_new_nodes(pdefaultnew) : pnode*
+def $default_new_nodes(pdefaultnew) = [HOBJECT pdefaultnew.OBJECT] ++ $operands_roots((KNOWN pvalue)*)
+  -- if pvalue* = pdefaultnew.VALUES
+dec $default_ctor_nodes(pdefaultctor) : pnode*
+def $default_ctor_nodes(pdefaultctor) = $default_new_nodes(pdefaultctor.NEW) ++ $named_slots_roots(pdefaultctor.PREPARED.SLOTS) ++ $named_roots(pdefaultctor.PREPARED.NAMED)
+def $task_nodes(DEFAULT_NEW_ARGS pdefaultnew) = $default_new_nodes(pdefaultnew)
+def $task_nodes(DEFAULT_NEW_SEND pdefaultnew) = $default_new_nodes(pdefaultnew)
+def $task_nodes(DEFAULT_CTOR_ARGS pdefaultctor) = $default_ctor_nodes(pdefaultctor)
+def $task_nodes(DEFAULT_CTOR_REF_RESULT pdefaultctor) = $default_ctor_nodes(pdefaultctor)
+def $task_nodes(DEFAULT_CTOR_RESULT pdefaultctor) = $default_ctor_nodes(pdefaultctor)
+
+dec $default_new_unique(phpType7*) : bool
+def $default_new_unique(eps) = true
+def $default_new_unique((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $default_new_unique(phpType7*)
+def $default_new_unique((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = (~$parameter_new_name_present(phpType7*, $base64(text)) /\ $default_new_unique(phpType7*))
+def $default_new_unique(phpType7*) = false -- otherwise
+dec $default_new_valid(pstate, pdefaultnew) : bool
+def $default_new_valid(S, pdefaultnew) = true
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $parameter_string_site_valid(S, pconstantcontext.ORIGIN, pconstantcontext.LINE)
+  -- if $default_context_valid(S, pconstantcontext)
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, pdefaultnew.SITE)
+  -- if S.ORIGIN = (pdefaultnew.SITE)
+  -- if pdefaultnew.LINE = pconstantcontext.LINE
+  -- if pdefaultnew.SITE = PORIGIN n_unit pcpath
+  -- if $origin_node(S.SOURCES, pdefaultnew.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if phpType7* = pdefaultnew.ARGUMENTS
+  -- if $parameter_new_prefix(phpType7*)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((pdefaultnew.CLASS, eps))
+  -- if $(pdefaultnew.INDEX <= |phpType7*|)
+  -- if |pdefaultnew.VALUES| = pdefaultnew.INDEX
+  -- if $default_new_unique(phpType7*[0:pdefaultnew.INDEX])
+  -- if $(pdefaultnew.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pdefaultnew.OBJECT] = INSTANCE porigin_class
+  -- if $class_named(S.CLASSNAMES, $ptlc(pdefaultnew.CLASS)) = (porigin_class)
+  -- if $class_constant_new_work(S, pdefaultnew.CLASS, pdefaultnew.LINE) = eps
+  -- if $heap_subset($default_new_nodes(pdefaultnew), S.ALLOCATIONS)
+def $default_new_valid(S, pdefaultnew) = false -- otherwise
+
+;; The class table finishes before allocation, under the genuine parameter's
+;; displayed call line. Its continuation retains the same default AST context.
+def $parameter_default_new_ready(S, ptbytes, phpType7*, z) = true
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $parameter_default_constructor(S, name, phpType7*, metadata)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if z = pconstantcontext.LINE
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+def $parameter_default_new_ready(S, ptbytes, phpType7*, z) = false -- otherwise
+dec $default_new_start_ready(pstate, ptbytes, phpType7*, int) : pstate
+def $constructor_after_class_update(S, ptbytes, phpType7*, z) = $default_new_start_ready(S, ptbytes, phpType7*, z)
+  -- if $parameter_default_new_ready(S, ptbytes, phpType7*, z)
+def $constructor_after_class_update(S, ptbytes, phpType7*, z) = $constructor_start_ready(S, ptbytes, phpType7*, z)
+  -- if ~$parameter_default_new_ready(S, ptbytes, phpType7*, z)
+dec $default_new_source_constructor(pstate, ptbytes) : bool
+def $default_new_source_constructor(S, ptbytes) = true
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_class)
+  -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
+def $default_new_source_constructor(S, ptbytes) = false -- otherwise
+dec $default_new_start(pstate, ptbytes, phpType7*, int) : pstate
+def $default_new_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* true z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ptask_work* = $class_constant_new_work(S, ptbytes, z)
+  -- if ptask_work* =/= eps
+def $default_new_start(S, ptbytes, phpType7*, z) = $default_new_start_ready(S, ptbytes, phpType7*, z)
+  -- if $class_constant_new_work(S, ptbytes, z) = eps
+def $default_new_start_ready(S, ptbytes, phpType7*, z) = S_new[.TODO = (DEFAULT_NEW_ARGS {SITE porigin, CLASS ptbytes, OBJECT n, ARGUMENTS phpType7*, INDEX 0, VALUES eps, LINE z}) :: S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $default_new_source_constructor(S, ptbytes)
+  -- if S_new = $new_class(S, ptbytes, z)
+  -- if S_new.COMPLETION = NORMAL
+  -- if S_new.RESULT = KNOWN (POBJECT n)
+  -- if S.ORIGIN = (porigin)
+def $default_new_start_ready(S, ptbytes, phpType7*, z) = S_new
+  -- if $default_new_source_constructor(S, ptbytes)
+  -- if S_new = $new_class(S, ptbytes, z)
+  -- if S_new.COMPLETION =/= NORMAL
+def $default_new_start_ready(S, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "internal parameter default constructor dispatch"]
+  -- if ~$default_new_source_constructor(S, ptbytes)
+rule PhpStep/default-new-constructor: S ~> $default_new_start(S[.TODO = ptask_tail*], ptbytes, phpType7*, pconstantcontext.LINE)
+  -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if $parameter_default_constructor(S, name, phpType7*, metadata)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $new_has_ctor(S, ptbytes)
+
+dec $default_new_arg_origin(pdefaultnew) : porigin
+def $default_new_arg_origin(pdefaultnew) = PORIGIN n_unit (pcpath ++ [PCFIELD 1, PCINDEX pdefaultnew.INDEX, PCFIELD 1])
+  -- if pdefaultnew.SITE = PORIGIN n_unit pcpath
+rule PhpStep/default-new-argument: S ~> S[.TODO = [AT $default_new_arg_origin(pdefaultnew) (EVAL expression), DEFAULT_NEW_SEND pdefaultnew] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DEFAULT_NEW_ARGS pdefaultnew) :: ptask_tail*
+  -- if $default_new_valid(S, pdefaultnew)
+  -- if $(pdefaultnew.INDEX < |pdefaultnew.ARGUMENTS|)
+  -- if pdefaultnew.ARGUMENTS[pdefaultnew.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata
+rule PhpStep/default-new-value: S ~> S_value[.TODO = (DEFAULT_NEW_ARGS pdefaultnew[.INDEX = $(pdefaultnew.INDEX + 1)][.VALUES = pdefaultnew.VALUES ++ [pvalue]]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DEFAULT_NEW_SEND pdefaultnew) :: ptask_tail*
+  -- if S_value = $resolve_at(S, S.RESULT, pdefaultnew.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if n_next = $(pdefaultnew.INDEX + 1)
+  -- if $default_new_unique(pdefaultnew.ARGUMENTS[0:n_next])
+rule PhpStep/default-new-value-duplicate: S ~> $throw_scalar(S_value, "Error", $ptascii("Named parameter $") ++ $base64(text) ++ $ptascii(" overwrites previous argument"), pdefaultnew.LINE)
+  -- if S.TODO = (DEFAULT_NEW_SEND pdefaultnew) :: ptask_tail*
+  -- if S_value = $resolve_at(S, S.RESULT, pdefaultnew.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if pdefaultnew.ARGUMENTS[pdefaultnew.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata
+  -- if $parameter_new_name_present(pdefaultnew.ARGUMENTS[0:pdefaultnew.INDEX], $base64(text))
+rule PhpStep/default-new-value-abrupt: S ~> S_value
+  -- if S.TODO = (DEFAULT_NEW_SEND pdefaultnew) :: ptask_tail*
+  -- if S_value = $resolve_at(S, S.RESULT, pdefaultnew.LINE)
+  -- if S_value.COMPLETION =/= NORMAL
+
+;; Constructor access and formal-name mapping occur after the completed value
+;; table. Ordinary reception then determines strictness from the saved caller.
+rule PhpStep/default-new-selected: S ~> S[.TODO = (DEFAULT_CTOR_ARGS {NEW pdefaultnew, FUNCTION pmethoddesc.FUNCTION.ORIGIN, INDEX 0, PREPARED {SLOTS eps, NAMED eps}}) :: ptask_tail*]
+  -- if S.TODO = (DEFAULT_NEW_ARGS pdefaultnew) :: ptask_tail*
+  -- if $default_new_valid(S, pdefaultnew)
+  -- if pdefaultnew.INDEX = |pdefaultnew.ARGUMENTS|
+  -- if S.OBJECTS[pdefaultnew.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
+rule PhpStep/default-new-denied: S ~> $method_denied(S, pmethoddesc, $ptascii("__construct"), $method_current_scope(S), true, pdefaultnew.LINE)[.TODO = eps]
+  -- if S.TODO = (DEFAULT_NEW_ARGS pdefaultnew) :: ptask_tail*
+  -- if $default_new_valid(S, pdefaultnew)
+  -- if pdefaultnew.INDEX = |pdefaultnew.ARGUMENTS|
+  -- if S.OBJECTS[pdefaultnew.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
+  -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
+
+dec $default_ctor_valid(pstate, pdefaultctor) : bool
+def $default_ctor_valid(S, pdefaultctor) = true
+  -- if $default_new_valid(S, pdefaultctor.NEW)
+  -- if pdefaultctor.NEW.INDEX = |pdefaultctor.NEW.ARGUMENTS|
+  -- if $(pdefaultctor.INDEX <= pdefaultctor.NEW.INDEX)
+  -- if S.OBJECTS[pdefaultctor.NEW.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = pdefaultctor.FUNCTION
+  -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if phpType7_prefix* = pdefaultctor.NEW.ARGUMENTS[0:pdefaultctor.INDEX]
+  -- if $named_source_valid(pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS, phpType7_prefix*, 0, false, {SLOTS eps, NAMED eps})
+  -- if pnamedargs = $named_shape(pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS, phpType7_prefix*, 0, {SLOTS eps, NAMED eps})
+  -- if pcalltarget = METHOD_TARGET pdefaultctor.NEW.OBJECT pdefaultctor.FUNCTION
+  -- if $named_slots_valid(S, pcalltarget, 0, pdefaultctor.PREPARED.SLOTS, pnamedargs.SLOTS)
+  -- if $named_entries_valid(S, pcalltarget, |$call_fixed_parameters(pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS)|, pdefaultctor.PREPARED.NAMED, pnamedargs.NAMED)
+  -- if $heap_subset($default_ctor_nodes(pdefaultctor), S.ALLOCATIONS)
+def $default_ctor_valid(S, pdefaultctor) = false -- otherwise
+dec $default_ctor_target(pfunction, pdefaultctor) : pnamedtarget
+def $default_ctor_target(pfunction, pdefaultctor) = $named_arg_target(pfunction, pdefaultctor.NEW.ARGUMENTS[pdefaultctor.INDEX], |pdefaultctor.PREPARED.SLOTS|)
+dec $default_ctor_advance(pstate, pdefaultctor, poperand, ptask*) : pstate
+def $default_ctor_advance(S, pdefaultctor, poperand, ptask_tail*) = S[.TODO = (DEFAULT_CTOR_ARGS pdefaultctor[.INDEX = $(pdefaultctor.INDEX + 1)][.PREPARED = $named_store(pdefaultctor.PREPARED, $default_ctor_target(pfunction, pdefaultctor), poperand)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $function_at($all_functions(S), pdefaultctor.FUNCTION) = (pfunction)
+rule PhpStep/default-constructor-value: S ~> $default_ctor_advance(S, pdefaultctor, KNOWN pdefaultctor.NEW.VALUES[pdefaultctor.INDEX], ptask_tail*)
+  -- if S.TODO = (DEFAULT_CTOR_ARGS pdefaultctor) :: ptask_tail*
+  -- if $default_ctor_valid(S, pdefaultctor)
+  -- if $(pdefaultctor.INDEX < pdefaultctor.NEW.INDEX)
+  -- if $function_at($all_functions(S), pdefaultctor.FUNCTION) = (pfunction)
+  -- if S_checked = $named_check(S, pdefaultctor.PREPARED, $default_ctor_target(pfunction, pdefaultctor), pdefaultctor.NEW.ARGUMENTS[pdefaultctor.INDEX], pdefaultctor.NEW.LINE)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if ~$named_reference(pfunction, $default_ctor_target(pfunction, pdefaultctor))
+rule PhpStep/default-constructor-name-error: S ~> S_checked
+  -- if S.TODO = (DEFAULT_CTOR_ARGS pdefaultctor) :: ptask_tail*
+  -- if $default_ctor_valid(S, pdefaultctor)
+  -- if $(pdefaultctor.INDEX < pdefaultctor.NEW.INDEX)
+  -- if $function_at($all_functions(S), pdefaultctor.FUNCTION) = (pfunction)
+  -- if S_checked = $named_check(S, pdefaultctor.PREPARED, $default_ctor_target(pfunction, pdefaultctor), pdefaultctor.NEW.ARGUMENTS[pdefaultctor.INDEX], pdefaultctor.NEW.LINE)
+  -- if S_checked.COMPLETION =/= NORMAL
+
+;; The API warns for a required reference before wrapping the prepared value.
+;; A handler throw aborts dispatch and leaves no temporary reference behind.
+dec $default_ctor_reference_message(pstate, pdefaultctor) : preqbytes
+def $default_ctor_reference_message(S, pdefaultctor) = pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be passed by reference, value given")
+  -- if $function_at($all_functions(S), pdefaultctor.FUNCTION) = (pfunction)
+  -- if n = $named_index(pfunction.SIGNATURE.PARAMETERS, $default_ctor_target(pfunction, pdefaultctor))
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
+rule PhpStep/default-constructor-reference-warning: S ~> $error_dispatch(S, 2, $default_ctor_reference_message(S, pdefaultctor), pdefaultctor.NEW.LINE, DIAGNOSTIC "Warning" $default_ctor_reference_message(S, pdefaultctor) pdefaultctor.NEW.LINE, DEFAULT_CTOR_REF_RESULT pdefaultctor)
+  -- if S.TODO = (DEFAULT_CTOR_ARGS pdefaultctor) :: ptask_tail*
+  -- if $default_ctor_valid(S, pdefaultctor)
+  -- if $(pdefaultctor.INDEX < pdefaultctor.NEW.INDEX)
+  -- if $function_at($all_functions(S), pdefaultctor.FUNCTION) = (pfunction)
+  -- if S_checked = $named_check(S, pdefaultctor.PREPARED, $default_ctor_target(pfunction, pdefaultctor), pdefaultctor.NEW.ARGUMENTS[pdefaultctor.INDEX], pdefaultctor.NEW.LINE)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if $named_reference(pfunction, $default_ctor_target(pfunction, pdefaultctor))
+rule PhpStep/default-constructor-reference: S ~> $default_ctor_advance(S_cell, pdefaultctor, S_cell.RESULT, ptask_tail*)
+  -- if S.TODO = (DEFAULT_CTOR_REF_RESULT pdefaultctor) :: ptask_tail*
+  -- if S_cell = $call_fresh_reference(S, pdefaultctor.NEW.VALUES[pdefaultctor.INDEX])
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DEFAULT_CTOR_REF_RESULT pdefaultctor
+  -- if $default_ctor_valid(S, pdefaultctor)
+  -- if $(pdefaultctor.INDEX < pdefaultctor.NEW.INDEX)
+  -- if $function_at($all_functions(S), pdefaultctor.FUNCTION) = (pfunction)
+  -- if $named_reference(pfunction, $default_ctor_target(pfunction, pdefaultctor))
+  -- if S_checked = $named_check(S, pdefaultctor.PREPARED, $default_ctor_target(pfunction, pdefaultctor), pdefaultctor.NEW.ARGUMENTS[pdefaultctor.INDEX], pdefaultctor.NEW.LINE)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if perrorcall.SITE = pdefaultctor.NEW.SITE
+  -- if perrorcall.LINE = pdefaultctor.NEW.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $default_ctor_reference_message(S, pdefaultctor)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+
+rule PhpStep/default-constructor-enter: S ~> $target_after_enter($named_enter(S[.TODO = (DEFAULT_CTOR_RESULT pdefaultctor) :: ptask_tail*], pfunction, pdefaultctor.PREPARED, (pdefaultctor.NEW.SITE), pdefaultctor.NEW.LINE), METHOD_TARGET pdefaultctor.NEW.OBJECT pdefaultctor.FUNCTION)
+  -- if S.TODO = (DEFAULT_CTOR_ARGS pdefaultctor) :: ptask_tail*
+  -- if $default_ctor_valid(S, pdefaultctor)
+  -- if pdefaultctor.INDEX = pdefaultctor.NEW.INDEX
+  -- if $function_at($all_functions(S), pdefaultctor.FUNCTION) = (pfunction)
+rule PhpStep/default-constructor-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT pdefaultctor.NEW.OBJECT)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DEFAULT_CTOR_RESULT pdefaultctor) :: ptask_tail*
+
+def $call_task_valid(S, DEFAULT_NEW_ARGS pdefaultnew) = $default_new_valid(S, pdefaultnew)
+def $call_task_valid(S, DEFAULT_NEW_SEND pdefaultnew) = ($default_new_valid(S, pdefaultnew) /\ $(pdefaultnew.INDEX < |pdefaultnew.ARGUMENTS|))
+def $call_task_valid(S, DEFAULT_CTOR_ARGS pdefaultctor) = $default_ctor_valid(S, pdefaultctor)
+def $call_task_valid(S, DEFAULT_CTOR_REF_RESULT pdefaultctor) = ($default_ctor_valid(S, pdefaultctor) /\ $(pdefaultctor.INDEX < pdefaultctor.NEW.INDEX) /\ $named_reference(pfunction, $default_ctor_target(pfunction, pdefaultctor)) /\ S_checked.COMPLETION = NORMAL)
+  -- if $function_at($all_functions(S), pdefaultctor.FUNCTION) = (pfunction)
+  -- if S_checked = $named_check(S, pdefaultctor.PREPARED, $default_ctor_target(pfunction, pdefaultctor), pdefaultctor.NEW.ARGUMENTS[pdefaultctor.INDEX], pdefaultctor.NEW.LINE)
+def $call_task_valid(S, DEFAULT_CTOR_RESULT pdefaultctor) = ($default_ctor_valid(S, pdefaultctor) /\ pdefaultctor.INDEX = pdefaultctor.NEW.INDEX)
+
+;; A NEW below a genuine parameter is never admitted as an ordinary source
+;; constructor frame. Its retained completed phase proves target and call line.
+def $default_ctor_context_kind(S, pcallcontext) = true
+  -- if ~$error_context_kind(S, pcallcontext) /\ ~$stringify_context_kind(S, pcallcontext)
+  -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if $default_below(pcunit.OCCURRENCES, pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name phpType6 metadata)
+def $default_ctor_context_kind(S, pcallcontext) = false -- otherwise
+def $default_ctor_context_valid(S, pcallcontext) = true
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (DEFAULT_CTOR_RESULT pdefaultctor) :: ptask_tail*
+  -- if S_owner = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $default_ctor_valid(S_owner, pdefaultctor)
+  -- if pdefaultctor.INDEX = pdefaultctor.NEW.INDEX
+  -- if pcallcontext.TARGET = METHOD_TARGET pdefaultctor.NEW.OBJECT pdefaultctor.FUNCTION
+  -- if pcallcontext.FUNCTION = pdefaultctor.FUNCTION
+  -- if pcallcontext.CALLSITE = (pdefaultctor.NEW.SITE)
+  -- if pcallcontext.LINE = pdefaultctor.NEW.LINE
+  -- if pcallcontext.WRAPPER = eps
+def $default_ctor_context_valid(S, pcallcontext) = false -- otherwise
+
+;; Prepared API arguments use the same preflight for positional and named slots.
+;; The retained default-constructor phase authenticates this additional entry.
+def $named_preflight_stage(S, porigin, n) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $default_ctor_context_valid(S, pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (DEFAULT_CTOR_RESULT pdefaultctor) :: ptask_tail*
+  -- if pdefaultctor.FUNCTION = porigin
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if n_limit = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $(n <= n_limit)
+  -- if $named_preflight_slots(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), pdefaultctor.PREPARED.SLOTS, n)

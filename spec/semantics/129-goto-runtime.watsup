@@ -131,7 +131,7 @@ def $goto_foreach_task(ptask) = false -- otherwise
 def $goto_marker_valid(S, LOOP_NEXT statement (porigin)) = ($origin_node(S.SOURCES, porigin) = (statement) /\ $goto_loop_statement(statement))
 def $goto_foreach_owner_valid(S, (ITERATOR n n_array b pcursor*), HARRAY n_owner) = (~b /\ n_array = n_owner)
 def $goto_foreach_owner_valid(S, (ITERATOR n n_array b pcursor*), HCELL n_cell) = (b /\ (HCELL n_cell <- S.ALLOCATIONS))
-def $goto_foreach_owner_valid(S, (OBJECTITER n n_object n_position b_ref), HOBJECT n_object) = ((HOBJECT n_object) <- S.ALLOCATIONS)
+def $goto_foreach_owner_valid(S, (OBJECTITER n n_object n_position b_ref), HOBJECT n_object) = ((HOBJECT n_object) <- S.ALLOCATIONS /\ ~$useriter_instance(S, n_object))
 def $goto_foreach_owner_valid(S, (OBJECTITER n n_object n_position b_ref), HOBJECT n_owner) = false
   -- if n_object =/= n_owner
 def $goto_foreach_owner_valid(S, (OBJECTITER n n_object n_position b_ref), HARRAY n_owner) = false

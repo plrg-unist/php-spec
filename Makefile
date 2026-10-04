@@ -137,6 +137,8 @@ test-semantics: build
 	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
 	python3 tests/semantics/scoped_callables_protocol.py
+	python3 tests/semantics/keyword_compound_callables.py
+	python3 tests/semantics/keyword_compound_callables_protocol.py
 	python3 tests/semantics/invoke_publication.py
 	python3 tests/semantics/invoke_publication_protocol.py
 	python3 tests/semantics/callable_string_ini.py
@@ -252,6 +254,9 @@ test-semantics: build
 	python3 tests/semantics/user_string_parameters_protocol.py
 	python3 tests/semantics/variadic_string_parameters.py
 	python3 tests/semantics/variadic_string_parameters_protocol.py
+	python3 tests/semantics/default_constructor_sources.py
+	python3 tests/semantics/default_constructor_protocol.py
+	python3 tests/semantics/default_constructor_api_protocol.py
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py

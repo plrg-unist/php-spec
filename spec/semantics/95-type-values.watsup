@@ -151,7 +151,8 @@ def $typed_callable(S, PSTRING ptbytes) = $string_callable(S, ptbytes)
 def $typed_callable(S, PSTRING ptbytes) = (false)
   -- if ~$typed_registered(S, ptbytes)
   -- if ~$typed_callable_method(ptbytes, false, false)
-def $typed_callable(S, PARRAY n) = $array_admission($array_resolve(S, n, ARRAY_ADMISSION))
+def $typed_callable(S, PARRAY n) = $api_admission($api_pure(S, PARRAY n)) -- if $api_special(S, PARRAY n)
+def $typed_callable(S, PARRAY n) = $array_admission($array_resolve(S, n, ARRAY_ADMISSION)) -- if ~$api_special(S, PARRAY n)
 def $typed_callable(S, pvalue) = (false) -- otherwise
 
 dec $typed_object_exact(pstate, ptbranch*, pvalue) : bool
@@ -179,16 +180,23 @@ def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEVALUE pvalue
   -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
   -- if ~$user_string_coercion(S, ptbranch*, pvalue, b)
   -- if "callable" <- $ptmasks(ptbranch*)
+  -- if ~$api_special(S, pvalue)
   -- if $typed_callable(S, pvalue) = (true)
+def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEDEPENDENT "deprecated callable admission continuation"
+  -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
+  -- if "callable" <- $ptmasks(ptbranch*)
+  -- if $api_special(S, pvalue)
 def $typed_conversion_at(S, ptbranch*, pvalue, b) = TYPEDEPENDENT "class or method callable type checking"
   -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
   -- if ~$user_string_coercion(S, ptbranch*, pvalue, b)
   -- if "callable" <- $ptmasks(ptbranch*)
+  -- if ~$api_special(S, pvalue)
   -- if $typed_callable(S, pvalue) = eps
 def $typed_conversion_at(S, ptbranch*, pvalue, b) = $typed_conversion(ptbranch*, pvalue, b)
   -- if ~($typed_exact(ptbranch*, pvalue) \/ $typed_object_exact(S, ptbranch*, pvalue))
   -- if ~$user_string_coercion(S, ptbranch*, pvalue, b)
   -- if ~("callable" <- $ptmasks(ptbranch*)) \/ $typed_callable(S, pvalue) = (false)
+  -- if ~("callable" <- $ptmasks(ptbranch*)) \/ ~$api_special(S, pvalue)
   -- if ~$throwable_string_coercion(S, ptbranch*, pvalue, b)
 
 dec $typed_given(pstate, pvalue) : ptbytes

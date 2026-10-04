@@ -163,8 +163,8 @@ finite witness/100. A separate current INI option/value witness checks the selec
 Owner/Child argument frame, two original callback operands and converted-option
 value rejection, with full raw mutation and cleanup. Unsupported controls and
 original failures stay separate; ordinary
-`$GLOBALS` behavior remains partial. Keyword/compound names, magic/autoload/internal
-resolution and full callable closure remain open; lexical access is described below.
+`$GLOBALS` behavior remains partial. Deprecated keyword/compound API admission is
+described below; magic/autoload/internal resolution and full callable closure remain open.
 Shared ordinary type classification adds no new return agreement or paused-return
 validation.
 
@@ -347,6 +347,51 @@ reference. ARG4, caller argument views and receiver cleanup remain authentic.
 
 The [scoped ledger](../../coverage/semantics/scoped-callables-current-review.json)
 separates original source outcomes, reached witnesses, failures and repaired checks.
-Keyword/compound, magic/autoload/internal consumers, dynamic compilation-warning
-handlers and reference-return callbacks remain open. Shared ordinary callable
+Magic/autoload/internal consumers, dynamic compilation-warning handlers and
+reference-return callbacks remain open. Shared ordinary callable
 classification adds no fresh return agreement or paused-return dependency.
+
+## Deprecated API keyword and compound callables
+
+Module221 stages `self`, `parent` and `static` class selectors and qualified array
+methods for supplied fixed callable parameters, error-handler registration and
+delayed error dispatch. Exact scalar/array or nominal union branches keep their
+earlier priority and emit no callable warning. The selecting scope is the actual
+USER frame's lexical class; parameter checking uses the receiving frame, including
+an empty scope in a free function. A compound constant's declaration location
+does not replace that real USER permission.
+
+Keyword deprecation runs after choosing the class and before method lookup. An
+array's qualified method chooses its inner class after that callback, then emits
+the compound deprecation without an inner keyword warning. The selected class and
+string split stay fixed while a referenced method is reread after the callback.
+Byref class-method strings likewise retain their old offset and method length;
+by-value strings retain their original value. A retained old array can still admit
+after a callback replaces the whole byref formal; the body and caller observe its
+live replacement. These borrowed snapshots add no heap owner.
+
+Error registration retains the raw callback. Dispatch clears the active registry
+before selection deprecations and reselects using the genuine emitter. A narrow
+API method target authenticates the selected method, declaring owner, static bit,
+actual emitter and called class. It admits Zend's compound `self`/`parent` case
+with a foreign `$this` without weakening ordinary scoped target eligibility.
+The requested class table has priority. When it has no method and the array's
+inner class is still its original outer class, lookup can select a declared
+method on the actual receiver. Its getter checks access before strict-class
+rejection. Registration and typed reception expose the getter's `Error` for
+inaccessible methods. Delayed dispatch replaces it with an `Invalid callback`
+`Error` whose previous exception is the getter error, then restores the raw handler.
+Static selection retains no object owner. Warning throws abort admission and
+restore raw handlers through the existing unwind route. Failed callable admission
+uses only constrained scalar union fallback; it does not run another callable lookup.
+
+Direct calls and first-class conversion retain ordinary lookup: raw keyword class
+names reject as missing classes, and qualified array methods reject as literal
+undefined method names. The [221 ledger](../../coverage/semantics/keyword-compound-callables-current-review.json)
+records source comparisons, independent counterexamples, paused states and failures.
+Default/variadic reception, `Closure::fromCallable`, other internal consumers and
+user-return warning ingress remain required. Unstaged special callable checks stay
+Unsupported; kind-changing or shorter retained method buffers, magic/autoload and
+reference-return handlers remain open. Primary rules follow `zend_is_callable_at_frame`,
+`zend_is_callable_check_class` and `zend_is_callable_check_func` in vendored
+`Zend/zend_API.c`, with `zend_check_type_slow` in `Zend/zend_execute.c`.

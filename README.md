@@ -132,6 +132,11 @@ Object/frame-dependent targets remain unfinished.
 values, reference history and compiler/runtime rejection phases. Its
 [independent review](coverage/semantics/array-unpack-review.json) audits 155 exact
 sources; Traversable objects remain unfinished. Array call arguments are covered by the later call-unpack checkpoint below.
+[Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
+callbacks with effective method selection, retained current values and abrupt
+cleanup. Explicit compatible return declarations are admitted; tentative-return
+deprecations, IteratorAggregate, ArrayAccess and other Traversable consumers
+remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.
@@ -228,6 +233,12 @@ Captured-null ASSIGN through a typed alias preserves its value on rejection and
 raises a caller TypeError retaining the handler's previous chain. The
 [consumer review](coverage/semantics/warning-consumers-review.json) records the
 separate source and ownership checks; ordinary missing reference sends stay quiet.
+
+[Missing global reads](docs/semantics/SOURCE-GLOBAL-WARNINGS.md)
+capture null before callbacks and skip later writes when a handler throws. Genuine
+request snapshots preserve numeric keys, shared reference cells and array COW.
+Author8/207, independent8/221 and two current scoped-handler sources retain
+separate cutoffs; earlier key warnings and broader consumers remain open.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -412,8 +423,13 @@ static selections retain called class without an object root. The
 the private source/state gates from current publication/Restore/property/ARG
 and two-slot INI interactions. Ordinary lexical private/protected array selectors
 now retain genuine access through selection and capture; object parent-private
-redirection stays distinct from concrete-class lookup. Keyword/compound, magic,
-autoload and internal array consumers remain open.
+redirection stays distinct from concrete-class lookup. Module221 stages deprecated
+keyword class selectors and qualified array methods in fixed callable reception
+and error-handler registration/dispatch. Warnings preserve the chosen class and
+string split while rereading referenced method bytes; actual receiving/emitting
+frames authenticate selection, including compound foreign-`$this` API calls.
+The [keyword/compound review](coverage/semantics/keyword-compound-callables-current-review.json)
+keeps failures and later consumers visible. Magic/autoload/internal consumers remain open.
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and
@@ -425,7 +441,8 @@ capture and saved calls. Protected checks use the root prototype; API handlers
 resolve raw values using the emitting frame. The
 [scoped-callable review](coverage/semantics/scoped-callables-current-review.json)
 keeps these observations separate from earlier public-route evidence.
-Keyword/compound, magic/autoload/internal and transformed binding consumers remain open.
+Default/variadic, `Closure::fromCallable`, other internal and user-return keyword
+warning consumers remain required; magic/autoload and transformed binding remain open.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.
@@ -470,9 +487,12 @@ Six focused sources, 299 state checks and two independent instance-property
 controls cover the new backing behavior.
 [Variadic and default reception](coverage/semantics/variadic-default-string-review.json)
 converts positional then named Stringable elements and fresh constructor-free
-defaults, retaining declaring method scope and captured cells. Constructor-default
-execution, rebound anonymous keyword defaults and broader constrained conversion
-remain open.
+defaults, retaining declaring method scope and captured cells.
+[Source constructor defaults](coverage/semantics/default-constructors-review.json)
+finish class tables before allocation and evaluate all argument values before
+constructor access and name mapping. Declaration strictness, API reference warnings
+and fresh default objects retain their real owners. Internal constructor defaults,
+rebound anonymous keyword defaults and broader constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
