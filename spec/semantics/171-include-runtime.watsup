@@ -20,12 +20,7 @@ def $ppdispatch(P, pcpath, NExprInclude expression (INTEGER n_kind) metadata, PP
   -- if $file_kind_valid(n_kind)
 
 dec $file_operand_site_valid(pstate, porigin, porigin, int, int) : bool
-def $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind) = true
-  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprInclude expression (INTEGER n_kind) metadata)
-  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_child)
-  -- if $origin_node(S.SOURCES, porigin_child) = (expression)
-  -- if $file_site_valid(S, porigin_parent, z, n_kind)
-def $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind) = false -- otherwise
+def $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind) = ($file_site_valid(S, porigin_parent, z, n_kind) /\ $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_child))
 def $file_operand_child_site(S, porigin_child, z) = ($file_operand_site_valid(S, porigin_parent, porigin_child, z, 1) \/ $file_operand_site_valid(S, porigin_parent, porigin_child, z, 2) \/ $file_operand_site_valid(S, porigin_parent, porigin_child, z, 3) \/ $file_operand_site_valid(S, porigin_parent, porigin_child, z, 4))
   -- if $reference_origin_parent(porigin_child, 1) = ((porigin_parent, [PCFIELD 0]))
 def $file_operand_child_site(S, porigin_child, z) = false -- otherwise
