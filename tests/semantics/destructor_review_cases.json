@@ -450,5 +450,51 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "pending-local-private-release-uses-restored-caller",
+    "source": "<?php class C{private function __destruct(){echo \"C;\";}}function drop(){$x=$GLOBALS[\"c\"];unset($GLOBALS[\"c\"]);throw new Exception(\"parent\");}class D{function __destruct(){try{drop();}catch(Throwable $e){echo $e->getMessage(),\":\",$e->getPrevious()->getMessage(),\";\";}}}$c=new C;$d=new D;",
+    "source_sha256": "2640bfaa01d6a9378382843b4c98c1c0dde98acc82ab4f5f17b4fea204accbde",
+    "stdout": "Call to private C::__destruct() from scope D:parent;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "pending-local-release-trace-uses-restored-caller",
+    "source": "<?php\nclass C{function __destruct(){throw new Exception(\"child\");}}\nfunction drop(){\n $x=$GLOBALS[\"c\"];\n unset($GLOBALS[\"c\"]);\n throw new Exception(\"parent\");\n}\nclass D{\n function __destruct(){\n  try{drop();}\n  catch(Throwable $e){$trace=$e->getTrace();echo $trace[0][\"class\"],\":\",$trace[0][\"function\"],\":\",$trace[0][\"line\"],\":\",$trace[1][\"class\"],\":\",$e->getPrevious()->getMessage(),\";\";}\n }\n}\n$c=new C;$d=new D;",
+    "source_sha256": "2c12356ece253b7b3247a4d2e70afda4c06a8b2aa33f7fad2041dffb48ad07b9",
+    "stdout": "C:__destruct:10:D:parent;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "normal-frame-local-cv-release-order",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";}}function drop(){if(false){$b=null;}$a=new C(\"a\");$b=new C(\"b\");}class P{function __destruct(){echo \"P;\";try{drop();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\";\";}echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "25264c36226c24c9bce7d7e690843745393dfafd5c0a12b9d8b67daad6c68a9a",
+    "stdout": "P;C:b;C:a;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "pending-frame-local-cv-release-order",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";}}function drop(){if(false){$b=null;}$a=new C(\"a\");$b=new C(\"b\");throw new Exception(\"parent\");}class P{function __destruct(){echo \"P;\";try{drop();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\";\";}echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "3d51d873e6fe9650d80c5ff03593ae3e56070bdba3f65d15f46026288c3d23dd",
+    "stdout": "P;C:b;C:a;caught:parent;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "uncaught-throwable-prequeue-release-dependency",
+    "source": "<?php function s(){echo \"S;\";}class E extends Exception{function __destruct(){echo \"D;\";register_shutdown_function(\"s\");}}throw new E(\"main\");",
+    "source_sha256": "840c1d4b396e5259574af49c3b9d77af1b44687ea8e0a4190357ccd5de7a8766",
+    "stdout": "D;S;",
+    "stderr": "Fatal error: Uncaught E: main in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error",
+    "expected_unsupported": "ordinary destructor release before request stage"
   }
 ]

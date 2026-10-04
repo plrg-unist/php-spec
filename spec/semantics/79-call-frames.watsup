@@ -41,11 +41,14 @@ def $save_frame(S) = $set_active_table(S[.FRAMES = {SILENCES S.SILENCES, LOCALS 
 
 ;; RESULT already owns the returned operand when the callee table is released.
 dec $restore_frame(pstate) : pstate
-def $restore_frame(S) = $set_active_table(S[.GLOBALTABLE = eps][.FRAMES = eps][.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.BORROWEDREAD = pframe.BORROWEDREAD][.CONSTCONTEXT = pframe.CONSTCONTEXT][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
+dec $restore_frame_raw(pstate) : pstate
+dec $frame_release(pstate, pstate) : pstate
+def $restore_frame(S) = $frame_release(S, $restore_frame_raw(S))
+def $restore_frame_raw(S) = $set_active_table(S[.GLOBALTABLE = eps][.FRAMES = eps][.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.BORROWEDREAD = pframe.BORROWEDREAD][.CONSTCONTEXT = pframe.CONSTCONTEXT][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
   -- if S.FRAMES = [pframe]
   -- if pframe.LOCALS = eps
   -- if S.GLOBALTABLE = (psymboltable)
-def $restore_frame(S) = $set_active_table(S[.FRAMES = pframe_tail*][.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.BORROWEDREAD = pframe.BORROWEDREAD][.CONSTCONTEXT = pframe.CONSTCONTEXT][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
+def $restore_frame_raw(S) = $set_active_table(S[.FRAMES = pframe_tail*][.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.BORROWEDREAD = pframe.BORROWEDREAD][.CONSTCONTEXT = pframe.CONSTCONTEXT][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.LOCALS = (psymboltable)
 
