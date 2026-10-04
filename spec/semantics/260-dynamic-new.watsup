@@ -293,6 +293,7 @@ def $class_constant_table_event(S, porigin, porigin_root, porigin_trigger, n) = 
   -- if $dynamic_new_find(S, S.TODO, porigin_trigger) = (pdynamicnew)
   -- if $class_named(S.CLASSNAMES, $ptlc(pdynamicnew.CLASS)) = (porigin_root)
 def $class_constant_compile_events(S, (CCUPDATENEW porigin pdynamicnew n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $class_constant_event_ordinal(CCUPDATENEW porigin pdynamicnew n) = n
 def $class_constant_history_fills(S, (CCUPDATENEW porigin pdynamicnew n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, $class_constant_flag_done((porigin_flag, b_flag)*, porigin), porigin_cached*, porigin_filled*, n)
   -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
   -- if $dynamic_new_record_valid(S, pdynamicnew)
