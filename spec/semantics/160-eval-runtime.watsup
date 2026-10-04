@@ -364,6 +364,7 @@ def $source_trace_context_file(S, pcallcontext?, ptraceframe*, preqbytes?) = $so
 ;; Fresh source IDs order interleaved eval/file units within one call frame.
 dec $source_trace_at(pstate, pevalcontext*, pfilecontext*, nat) : ptraceframe*
 dec $source_trace_at_before(pstate, pevalcontext*, pfilecontext*, nat, preqbytes?) : ptraceframe*
+dec $eval_compile_trace_contexts(pstate, pevalcontext*) : pevalcontext*
 dec $eval_trace_live(pevalcontext*, nat) : pevalcontext*
 def $eval_trace_live(eps, n_owner) = eps
 def $eval_trace_live(pevalcontext :: pevalcontext_tail*, n_owner) = pevalcontext :: $eval_trace_live(pevalcontext_tail*, n_owner)
@@ -393,7 +394,7 @@ def $source_trace_merge_before(S, pevalcontext :: pevalcontext_tail*, pfileconte
   -- if $(pevalcontext.UNIT < n_file)
   -- if ptraceframe = $file_trace_frame_before(S, pfilecontext, preqbytes?)
 def $source_trace_at(S, pevalcontext*, pfilecontext*, n_owner) = $source_trace_at_before(S, pevalcontext*, pfilecontext*, n_owner, eps)
-def $source_trace_at_before(S, pevalcontext*, pfilecontext*, n_owner, preqbytes?) = $source_trace_merge_before(S, $eval_trace_live(pevalcontext*, n_owner), $file_trace_live(pfilecontext*, n_owner), preqbytes?)
+def $source_trace_at_before(S, pevalcontext*, pfilecontext*, n_owner, preqbytes?) = $source_trace_merge_before(S, $eval_trace_live($eval_compile_trace_contexts(S, pevalcontext*), n_owner), $file_trace_live(pfilecontext*, n_owner), preqbytes?)
 dec $source_trace_first(ptraceframe*) : ptraceframe*
 ;; Zend omits the include operand when its wrapper is the first trace frame.
 def $source_trace_first(ptraceframe :: ptraceframe_tail*) = ptraceframe[.ARGS = eps][.HASARGS = false] :: ptraceframe_tail*

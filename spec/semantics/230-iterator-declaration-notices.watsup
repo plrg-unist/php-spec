@@ -143,17 +143,18 @@ def $iterator_notice_seed(S, porigin, DECLNOTICES pdeclnotice*) = S[.TODO = $ite
 def $iterator_notice_seed(S, porigin, DECLNOTICESUNSUPPORTED text) = S[.COMPLETION = UNSUPPORTED text]
 dec $iterator_notice_link_result(pstate, pstate, pclassdesc) : pstate
 dec $iterator_notice_link_fatal(pcompletion) : bool
+dec $eval_compile_record_prefix(pstate, pdeclnoticeitem*) : pstate
 def $iterator_notice_link_fatal(FATAL n_message* z) = true
 def $iterator_notice_link_fatal(STATICBYTES n_message* z) = true
 def $iterator_notice_link_fatal(pcompletion) = false -- otherwise
 def $pil_method_publish(S, S_candidate, pclassdesc) = $iterator_notice_link_result(S_candidate, $pil_method_publish_result(S, S_candidate, pclassdesc), pclassdesc)
 def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = $iterator_notice_seed(S_result, pclassdesc.ORIGIN, $iterator_notice_plan(S_candidate, pclassdesc))
   -- if S_result.COMPLETION = NORMAL
-def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = $iterator_notice_default(S_result[.TODO = $iterator_notice_without_seeds(S_result.TODO)], $iterator_notice_seeds($iterator_notice_seed_remove(S_candidate.TODO, pclassdesc.ORIGIN)) ++ $iterator_notice_items(pdeclnotice*))
+def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = $eval_compile_record_prefix($iterator_notice_default(S_result[.TODO = $iterator_notice_without_seeds(S_result.TODO)], $iterator_notice_seeds($iterator_notice_seed_remove(S_candidate.TODO, pclassdesc.ORIGIN)) ++ $iterator_notice_items(pdeclnotice*)), $iterator_notice_seeds($iterator_notice_seed_remove(S_candidate.TODO, pclassdesc.ORIGIN)) ++ $iterator_notice_items(pdeclnotice*))
   -- if $iterator_notice_link_fatal(S_result.COMPLETION)
   -- if $iterator_notice_plan(S_candidate, pclassdesc) = DECLNOTICES pdeclnotice*
 def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = S_result -- otherwise
-def $iterator_notice_compile_stop(S) = $iterator_notice_default(S, $iterator_notice_seeds(S.TODO))
+def $iterator_notice_compile_stop(S) = $eval_compile_record_prefix($iterator_notice_default(S, $iterator_notice_seeds(S.TODO)), $iterator_notice_seeds(S.TODO))
   -- if S.COMPLETION =/= NORMAL
   -- if ~$declaration_unsupported(S.COMPLETION)
 def $iterator_notice_compile_stop(S) = S -- otherwise
@@ -208,13 +209,9 @@ def $iterator_notice_compile_finish(S, ptask_seed*, n) = S
 def $iterator_notice_compile_finish(S, ptask_seed*, n) = S[.TODO = (DECL_NOTICES {KIND (NOTICE_FILE n), SITE porigin, LINE z, CLASSES $iterator_notice_seed_classes(S, ptask_seed*), NOTICES $iterator_notice_seeds(ptask_seed*), INDEX 0}) :: S.TODO]
   -- if $iterator_notice_seeds(ptask_seed*) =/= eps
   -- if $iterator_notice_file_entry(S, S.FILECONTEXTS, n) = ((porigin, z))
-def $iterator_notice_compile_finish(S, ptask_seed*, n) = S[.COMPLETION = UNSUPPORTED "early eval Iterator tentative declaration callbacks"]
-  -- if $iterator_notice_seeds(ptask_seed*) =/= eps
-  -- if $iterator_notice_eval_entry(S.EVALCONTEXTS, n)
 def $iterator_notice_compile_finish(S, ptask_seed*, n) = $iterator_notice_default(S, $iterator_notice_seeds(ptask_seed*))
   -- if $iterator_notice_seeds(ptask_seed*) =/= eps
   -- if $iterator_notice_file_entry(S, S.FILECONTEXTS, n) = eps
-  -- if ~$iterator_notice_eval_entry(S.EVALCONTEXTS, n)
 dec $iterator_notice_prefix_task(ptask) : ptask*
 def $iterator_notice_prefix_task(DECL_NOTICES pdeclnoticebatch) = [DECL_NOTICES pdeclnoticebatch]
 def $iterator_notice_prefix_task(ptask) = eps -- otherwise
@@ -365,8 +362,7 @@ def $iterator_notice_file_compile(S) = false -- otherwise
 def $iterator_notice_compile_warning(S, pldiagnostic) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDCOMPILEWARNING pldiagnostic]][.TODO = S.TODO ++ [DECL_COMPILER_SEED pldiagnostic]]
   -- if $iterator_notice_file_compile(S) \/ $iterator_notice_early_eval(S)
 def $iterator_notice_compile_warning(S, pldiagnostic) = $compiler_diagnostics(S[.DECLARATIONS = S.DECLARATIONS ++ [PDCOMPILEWARNING pldiagnostic]], [pldiagnostic])
-  -- if ~$iterator_notice_file_compile(S)
-  -- if ~$iterator_notice_early_eval(S)
+  -- if ~$iterator_notice_file_compile(S) /\ ~$iterator_notice_early_eval(S)
 def $iterator_notice_compile_diagnostics(S, eps) = S
 def $iterator_notice_compile_diagnostics(S, (PLDIAGNOSTIC "warning" text ptbytes* pllocation) :: pldiagnostic*) = $iterator_notice_compile_diagnostics($iterator_notice_compile_warning(S, PLDIAGNOSTIC "warning" text ptbytes* pllocation), pldiagnostic*)
   -- if S.COMPLETION = NORMAL
