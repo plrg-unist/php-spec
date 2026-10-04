@@ -243,7 +243,13 @@ separate source and ownership checks; ordinary missing reference sends stay quie
 capture null before callbacks and skip later writes when a handler throws. Genuine
 request snapshots preserve numeric keys, shared reference cells and array COW.
 Author8/207, independent8/221 and two current scoped-handler sources retain
-separate cutoffs; earlier key warnings and broader consumers remain open.
+separate cutoffs. [Dynamic read keys](docs/semantics/SOURCE-DIMENSION-KEYS.md)
+now stage missing key-CV, null/float and global-array-name conversions. Genuine
+temporary owners, borrowed CV tables and ordered NaN notices preserve mutation,
+COW and throwing cleanup through nested/quiet reads. Author9/246 includes the two
+independent NaN originals; independent14/235 and one current constructor
+interaction keep separate cuts.
+Read-write continuations and wider key/container producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument

@@ -98,6 +98,13 @@ busy class initializations, selected values and genuine emitting frames. Broader
 directives and startup profiles remain separate. Uncaught/fatal reporting outside this slice and
 broader global/reference behavior also remain core obligations.
 
+[Dimension keys233](SOURCE-DIMENSION-KEYS.md) stage earlier key-CV and conversion
+warnings through read/quiet/nested consumers. Native protection and genuine
+temporary owners preserve table COW/retirement, live cells and ordered NaN
+notices; throws skip the later write. Source, line, mode, constants and owning
+operand forms are checked without reconstructing captured dynamic-value history.
+Read-write and wider key/container producers remain required.
+
 Primary contracts are `zend_error_zstr_at` in `vendor/php-src/Zend/zend.c`, the
 six API bodies in `Zend/zend_builtin_functions.c`, the undefined-CV read helpers
 and `zend_verify_arg_error` in `Zend/zend_execute.c`, legacy ZPP conversions in

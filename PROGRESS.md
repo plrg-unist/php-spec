@@ -18,6 +18,21 @@ converted argument views remain separate. [Contract](docs/semantics/SOURCE-SHUTD
 Keyword/compound ingress needs the accepted221 consumers; destructors, GC,
 output buffers and queue release are required next request phases.
 
+Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
+null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
+caller environment; ordinary arrays retain their fixed converted key. Real
+temporary owners and conversion protection distinguish COW, live references and
+sole-table retirement; NaN keeps protection across both ordered notices. Quiet
+isset/coalesce and nested temporaries keep their distinct demand/ownership paths.
+Author9/246 includes the two independent NaN originals; independent14/235 passes
+at its separate cut. One
+actual71da constructor in a parameter default passes with private captured
+handler selection, called class and authentic key line/name through root mutation.
+[Contract](docs/semantics/SOURCE-DIMENSION-KEYS.md),
+[ledger](coverage/semantics/dimension-key-review.json). Read-write/reference,
+append/unset/compound/coalesce-assignment warning continuations are required next;
+wider object/key/container producers remain core work.
+
 Prepared internal Throwable default constructors235 now map the completed227
 value table before arity and sequential reception. Default declaration strictness,
 finite named-hole filling, inherited owners and nested previous objects preserve
@@ -267,8 +282,10 @@ failures and interrupted evidence.
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
   array and string Closure PIPE routes are covered. Direct defined/missing
   `$GLOBALS[key]` reads and explicit-request full-table snapshots are admitted;
-  earlier key-expression warnings, nested/read-write warning continuations and
-  ordinary snapshots without request facts remain open.
+  233 additionally stages earlier missing key-CV and null/float/global-array-name
+  conversions through nested/quiet reads. Read-write continuations, wider
+  key/object/container producers and ordinary snapshots without request facts
+  remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
   wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
