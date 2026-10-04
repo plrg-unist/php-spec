@@ -11,7 +11,7 @@ dec $trait_data_private_key(ppropertydesc, ptbytes) : ptbytes
 dec $trait_data_prior(pclassdesc*, ptbytes, bool, ptbytes) : ptbytes
 dec $trait_data_scope(pstate, pclassdesc) : pvclass
 dec $trait_data_ancestors(pstate, pclassdesc) : ptbytes*
-dec $trait_data_types(pstate, pclassdesc, ptbranch*, pclassdesc, ptbranch*, bool) : ptraitdatacheck
+dec $trait_data_types(pstate, pclassdesc, ptbranch*, pclassdesc, ptbranch*, bool, bool) : ptraitdatacheck
 dec $trait_property_source_type(pstate, ppropertydesc) : ptbranch*
 dec $trait_property_source_at(pclassdesc*, porigin) : ppropertydesc?
 dec $trait_property_source_items(ppropertydesc*, porigin) : ppropertydesc?
@@ -48,6 +48,10 @@ dec $trait_fold_classname(pfstate, pcpath, phpType19, int) : pfstate
 dec $trait_fold_constant_lookup(pfstate, pclassdesc, ptbytes, nat) : pclassconstantdesc?
 dec $trait_member_initializer_scope(pstate, porigin, porigin) : porigin?
 dec $trait_property_fast_equal(ptbranch*, ptbranch*) : bool
+dec $trait_property_source_fast_equal(pstate, ppropertydesc, ppropertydesc) : bool
+dec $trait_property_keyword_spelling(pstate, ppropertydesc) : ptbytes?
+dec $trait_type_keyword_spelling(ptinput) : ptbytes?
+dec $trait_type_keyword_spellings(ptinput*) : ptbytes?
 dec $trait_type_names(ptbranch*) : nat
 dec $trait_type_atom_names(ptatom*) : nat
 dec $trait_type_atom_nominal(ptatom) : nat
@@ -96,18 +100,17 @@ def $trait_property_source_type(S, ppropertydesc) = ppropertydesc.TYPE -- otherw
 ;; Zend's identical raw mask/name shortcut precedes scoped type comparison.
 ;; This comparison-only view keeps the published bound types and every flag.
 def $trait_property_inherit_message(S, ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = $ppproperty_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child[.TYPE = ppropertydesc_parent.TYPE])
-  -- if $trait_property_fast_equal($trait_property_source_type(S, ppropertydesc_parent), $trait_property_source_type(S, ppropertydesc_child))
+  -- if $trait_property_source_fast_equal(S, ppropertydesc_parent, ppropertydesc_child)
 def $trait_property_inherit_message(S, ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = $ppproperty_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child)
-  -- if ~$trait_property_fast_equal($trait_property_source_type(S, ppropertydesc_parent), $trait_property_source_type(S, ppropertydesc_child))
-def $trait_data_types(S, pclassdesc_left, eps, pclassdesc_right, eps, b_constant) = TRAITDATAOK
-def $trait_data_types(S, pclassdesc_left, ptbranch_left*, pclassdesc_right, ptbranch_right*, b_constant) = TRAITDATABAD
+  -- if ~$trait_property_source_fast_equal(S, ppropertydesc_parent, ppropertydesc_child)
+def $trait_data_types(S, pclassdesc_left, eps, pclassdesc_right, eps, b_constant, b_fast) = TRAITDATAOK
+def $trait_data_types(S, pclassdesc_left, ptbranch_left*, pclassdesc_right, ptbranch_right*, b_constant, b_fast) = TRAITDATABAD
   -- if (ptbranch_left* = eps /\ ptbranch_right* =/= eps) \/ (ptbranch_left* =/= eps /\ ptbranch_right* = eps)
-def $trait_data_types(S, pclassdesc_left, ptbranch_left*, pclassdesc_right, ptbranch_right*, false) = TRAITDATAOK
+def $trait_data_types(S, pclassdesc_left, ptbranch_left*, pclassdesc_right, ptbranch_right*, false, true) = TRAITDATAOK
   -- if ptbranch_left* =/= eps /\ ptbranch_right* =/= eps
-  -- if $trait_property_fast_equal(ptbranch_left*, ptbranch_right*)
-def $trait_data_types(S, pclassdesc_left, ptbranch_left*, pclassdesc_right, ptbranch_right*, b_constant) = $trait_data_covariance($pvcovariant(ptbranch_left*, pvclass_left, ptbranch_right*, pvclass_right, pvclasses), $pvcovariant(ptbranch_right*, pvclass_right, ptbranch_left*, pvclass_left, pvclasses), b_constant)
+def $trait_data_types(S, pclassdesc_left, ptbranch_left*, pclassdesc_right, ptbranch_right*, b_constant, b_fast) = $trait_data_covariance($pvcovariant(ptbranch_left*, pvclass_left, ptbranch_right*, pvclass_right, pvclasses), $pvcovariant(ptbranch_right*, pvclass_right, ptbranch_left*, pvclass_left, pvclasses), b_constant)
   -- if ptbranch_left* =/= eps /\ ptbranch_right* =/= eps
-  -- if b_constant \/ ~$trait_property_fast_equal(ptbranch_left*, ptbranch_right*)
+  -- if b_constant \/ ~b_fast
   -- if pvclass_left = $trait_data_scope(S, pclassdesc_left)
   -- if pvclass_right = $trait_data_scope(S, pclassdesc_right)
   -- if pvclasses = $method_active_registry(S, S.CLASSNAMES)
@@ -121,6 +124,22 @@ def $trait_data_covariance(pvresult_left, pvresult_right, false) = TRAITDATABAD
   -- if pvresult_left =/= PVINCOMPATIBLE /\ pvresult_right =/= PVINCOMPATIBLE
 def $trait_data_covariance(pvresult_left, pvresult_right, b_constant) = TRAITDATAUNKNOWN "unsupported trait data type compatibility" -- otherwise
 def $trait_property_fast_equal(ptbranch_left*, ptbranch_right*) = ($ppproperty_type_equal(ptbranch_left*, ptbranch_right*) /\ $($trait_type_names(ptbranch_left*) <= 1))
+def $trait_property_source_fast_equal(S, ppropertydesc_left, ppropertydesc_right) = ($trait_property_fast_equal($trait_property_source_type(S, ppropertydesc_left), $trait_property_source_type(S, ppropertydesc_right)) /\ $trait_property_keyword_spelling(S, ppropertydesc_left) = $trait_property_keyword_spelling(S, ppropertydesc_right))
+def $trait_property_keyword_spelling(S, ppropertydesc) = $trait_type_keyword_spelling($ptast(phpType18))
+  -- if ppropertydesc.ORIGIN = porigin
+  -- if $origin_source(porigin) = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NPropertyItem phpType40 expression metadata)
+  -- if $(|pcpath| >= 2)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath[0:$nabs($(|pcpath| - 2))]) = (NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata_group)
+def $trait_property_keyword_spelling(S, ppropertydesc) = eps -- otherwise
+def $trait_type_keyword_spelling(PTNAME PTPLAIN ptbytes) = (ptbytes) -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $trait_type_keyword_spelling(PTNULLABLE ptinput) = $trait_type_keyword_spelling(ptinput)
+def $trait_type_keyword_spelling(PTUNION ptinput*) = $trait_type_keyword_spellings(ptinput*)
+def $trait_type_keyword_spelling(PTINTER ptinput*) = $trait_type_keyword_spellings(ptinput*)
+def $trait_type_keyword_spelling(ptinput) = eps -- otherwise
+def $trait_type_keyword_spellings(eps) = eps
+def $trait_type_keyword_spellings(ptinput :: ptinput_tail*) = (ptbytes) -- if $trait_type_keyword_spelling(ptinput) = (ptbytes)
+def $trait_type_keyword_spellings(ptinput :: ptinput_tail*) = $trait_type_keyword_spellings(ptinput_tail*) -- if $trait_type_keyword_spelling(ptinput) = eps
 def $trait_type_names(eps) = 0
 def $trait_type_names((PTBRANCH ptatom*) :: ptbranch*) = $($trait_type_atom_names(ptatom*) + $trait_type_names(ptbranch*))
 def $trait_type_atom_names(eps) = 0
@@ -293,7 +312,7 @@ def $trait_data_constant_one(S, pclassdesc, pclassdesc_trait, pclassconstantdesc
 def $trait_data_constant_one(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*) = $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*)
   -- if $class_constant_desc(pclassdesc.CONSTANTS, pclassconstantdesc.NAME) = (pclassconstantdesc_prior)
   -- if pclassconstantdesc_prior.VISIBILITY =/= pclassconstantdesc.VISIBILITY \/ pclassconstantdesc_prior.FINAL =/= pclassconstantdesc.FINAL
-def $trait_data_constant_one(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*) = $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, $trait_data_types(S, pclassdesc, $trait_constant_source_type(S, pclassconstantdesc_prior), pclassdesc_trait, pclassconstantdesc.TYPE, true))
+def $trait_data_constant_one(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*) = $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, $trait_data_types(S, pclassdesc, $trait_constant_source_type(S, pclassconstantdesc_prior), pclassdesc_trait, pclassconstantdesc.TYPE, true, false))
   -- if $class_constant_desc(pclassdesc.CONSTANTS, pclassconstantdesc.NAME) = (pclassconstantdesc_prior)
   -- if pclassconstantdesc_prior.VISIBILITY = pclassconstantdesc.VISIBILITY /\ pclassconstantdesc_prior.FINAL = pclassconstantdesc.FINAL
 def $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*)
@@ -321,7 +340,7 @@ def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pcl
 def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc_prior)
   -- if ppropertydesc_prior.VISIBILITY =/= ppropertydesc.VISIBILITY \/ ppropertydesc_prior.STATIC =/= ppropertydesc.STATIC
-def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, $trait_data_types(S, pclassdesc, $trait_property_source_type(S, ppropertydesc_prior), pclassdesc_trait, ppropertydesc.TYPE, false))
+def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, $trait_data_types(S, pclassdesc, $trait_property_source_type(S, ppropertydesc_prior), pclassdesc_trait, ppropertydesc.TYPE, false, $trait_property_source_fast_equal(S, ppropertydesc_prior, ppropertydesc)))
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc_prior)
   -- if ppropertydesc_prior.VISIBILITY = ppropertydesc.VISIBILITY /\ ppropertydesc_prior.STATIC = ppropertydesc.STATIC
 def $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
