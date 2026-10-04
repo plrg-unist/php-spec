@@ -40,7 +40,9 @@ syntax pparameterstring = { FUNCTION porigin, INDEX nat, CELL nat, OBJECT nat, L
 syntax pvariadicstring = { FUNCTION porigin, INDEX nat, ELEMENT nat, NAMED bool, OPERAND poperand, OBJECT nat, LINE int }
 syntax pparameterbacking = { FUNCTION porigin, INDEX nat, CELL nat, LINE int, VALUE ptbytes }
 dec $propref_at(ppropref*, nat) : ppropref?
+syntax pstaticselection = { SITE porigin, ROOT porigin, SCOPE porigin?, CALLED porigin? }
 syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat
+  | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
 syntax pclassconstantflags = CCFLAGS (porigin, bool)* porigin* | CCBAD
 syntax pclassconstantdesc = { ORIGIN porigin, OWNER porigin, OWNERNAME ptbytes, NAME ptbytes, VISIBILITY ppropertyvisibility, FINAL bool, TYPE ptbranch*, INITIALIZER porigin, FOLDED bool, LINE nat }
 dec $ppclass_constants(pclassconstantdesc*, porigin) : pclassconstantdesc*
@@ -129,6 +131,7 @@ syntax ptask = ARGINFO_REF_PREP pargref | ARGINFO_REF_VALUES pargref nat poperan
   | CLASS_CONST_CLASS phpType19 phpType20 int | CLASS_CONST_MEMBER phpType19 poperand int | CLASS_CONST_CAPTURE porigin poperand int | CLASS_CONST_BIND porigin
   | STATIC_DEFAULT_UPDATE porigin int | STATIC_DEFAULT_BIND pstaticdefaultcontext
   | CLASS_CONST_TABLE_UPDATE porigin int | CLASS_CONST_UPDATE porigin int | CLASS_CONST_CONSTRUCT ptbytes phpType7* bool int | CLASS_CONST_STATIC poperand ptbytes int
+  | CLASS_CONST_SELECTED pstaticselection ptbytes int
   | METHOD_PREP phpType20 phpType7* bool bool int | METHOD_NAME poperand phpType7* int | METHOD_RESULT | CTOR_RESULT nat
   | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | STRINGIFY_RESULT nat porigin int | TERMINAL_STRING nat | PRINT_EMIT porigin int | CLONE_RESULT porigin int | NAME_READ int
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int

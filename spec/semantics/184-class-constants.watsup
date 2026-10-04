@@ -26,6 +26,11 @@ dec $class_constant_values_done(pclassconstantdesc*, porigin*) : bool
 dec $class_constant_cache_origins(pdefaultcache*) : porigin*
 dec $class_constant_scope_stack(pstate) : pclassconstantcontext*
 dec $class_constant_table_task(pstate, porigin, int, ptask*) : bool
+dec $class_static_selected_needed(pstate, porigin) : bool
+dec $class_static_selection(pstate, poperand) : pstaticselection?
+dec $class_static_selection_at(ptask*) : pstaticselection?
+dec $class_constant_table_event(pstate, porigin, porigin, porigin, nat) : pclassconstantevent
+dec $class_static_ref_continuation_valid(pstate, porigin, ptbytes, int, ptask*) : bool
 ;; Lookup resolves the requested class, but initialization and its cache belong
 ;; to the declaration's owner. Visibility is checked before deferred evaluation.
 dec $class_constant_origin_in(pclassconstantdesc*, porigin) : pclassconstantdesc?
@@ -779,8 +784,8 @@ def $class_constant_static_work(S, poperand, ptbytes, z) = $class_constant_table
   -- if $class_static_select(S, porigin, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
 def $class_constant_static_work(S, poperand, ptbytes, z) = eps -- otherwise
-;; Synchronous indirect/reference acquisition cannot suspend for a table update.
-;; Retain a precise boundary until that selected operation has a continuation.
+;; Direct helpers acquire only completed tables; delayed source consumers queue
+;; the class updater before entering these synchronous helpers.
 dec $class_constant_static_reference_ready(pstate, porigin, ptbytes, int) : bool
 def $class_constant_static_reference_ready(S, porigin, ptbytes, z) = ($class_constant_static_work(S, KNOWN (PSTRING pclassdesc.NAME), ptbytes, z) = eps)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
@@ -791,11 +796,12 @@ def $class_static_prepare_base(S, poperand, ptbytes, z) = S[.TODO = ptask_work* 
   -- if S.ORIGIN = (porigin_trigger)
   -- if $scoped_selector_class(S, poperand) = (porigin_class)
   -- if $class_constant_update_site(S, porigin_trigger, porigin_class)
+  -- if ~$class_static_selected_needed(S, porigin_trigger)
 def $class_static_prepare_base(S, poperand, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "unretained class table selector"]
   -- if $class_constant_static_work(S, poperand, ptbytes, z) =/= eps
   -- if S.ORIGIN = (porigin_trigger)
-  -- if $scoped_selector_class(S, poperand) = (porigin_class)
-  -- if ~$class_constant_update_site(S, porigin_trigger, porigin_class)
+  -- if $class_static_selected_needed(S, porigin_trigger)
+  -- if $class_static_selection(S, poperand) = eps
 def $class_static_prepare_base(S, poperand, ptbytes, z) = $class_static_prepare_base_ready(S, poperand, ptbytes, z)
   -- if $class_constant_static_work(S, poperand, ptbytes, z) = eps
 rule PhpStep/class-constant-static: S ~> $class_static_prepare_base_ready(S[.TODO = ptask_tail*], poperand, ptbytes, z)
@@ -826,6 +832,8 @@ def $class_constant_static_task(S, poperand, ptbytes, z) = true
   -- if $class_constant_selected_valid(S, phpType19, poperand)
   -- if $class_static_ref_name_matches(phpType31, ptbytes)
   -- if z = $runtime_line(S, eps, NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $scoped_selector_class(S, poperand) = (porigin_root)
+  -- if $class_static_ref_continuation_valid(S, porigin_root, ptbytes, z, S.TODO)
   -- if $class_constant_static_ready(S, poperand, ptbytes, z)
 def $class_constant_static_task(S, poperand, ptbytes, z) = false -- otherwise
 def $class_constant_static_ready(S, poperand, ptbytes, z) = ($class_constant_static_work(S, poperand, ptbytes, z) = eps)
@@ -1156,7 +1164,7 @@ def $class_constant_table_task(S, porigin, z, ptask :: ptask_tail*) = $class_con
 def $class_constant_table_task(S, porigin, z, ptask*) = false -- otherwise
 def $call_task_valid(S, CLASS_CONST_TABLE_UPDATE porigin z) = $class_constant_table_task(S, porigin, z, S.TODO)
 
-rule PhpStep/class-constant-table-complete: S ~> S[.TODO = ptask_tail*][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCUPDATE porigin porigin_root porigin_trigger n_prefix]]
+rule PhpStep/class-constant-table-complete: S ~> S[.TODO = ptask_tail*][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [$class_constant_table_event(S, porigin, porigin_root, porigin_trigger, n_prefix)]]
   -- if S.TODO = (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*
   -- if ~$class_constant_table_done(S, porigin)
   -- if S.ORIGIN = (porigin_trigger)
