@@ -9,8 +9,10 @@ def $startup_reporting_valid((preqbytes)) = $startup_bytes(preqbytes)
 dec $startup_valid(pstartup) : bool
 def $startup_valid(pstartup) = ($startup_reporting_valid(pstartup.REPORTING) /\ $startup_bytes(pstartup.INCLUDEPATH) /\ $c_string(pstartup.INCLUDEPATH) =/= eps)
 def $startup_state_valid(S) = true -- if S.STARTUP = eps
-def $startup_state_valid(S) = ($startup_valid(pstartup) /\ S.FILEINCLUDEPATH =/= eps)
+def $startup_state_valid(S) = ($startup_valid(pstartup) /\ $startup_bytes(preqbytes) /\ $c_string(preqbytes) =/= eps)
   -- if S.STARTUP = (pstartup)
+  -- if S.FILEINCLUDEPATH = (preqbytes)
+def $startup_state_valid(S) = false -- otherwise
 def $startup_reporting_mask(eps) = 30719
 def $startup_reporting_mask((pstartup)) = 30719 -- if pstartup.REPORTING = eps
 def $startup_reporting_mask((pstartup)) = $reporting_ini_mask(preqbytes)
