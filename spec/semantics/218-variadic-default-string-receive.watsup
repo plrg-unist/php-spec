@@ -15,14 +15,13 @@ def $call_hole_rows_valid(S, pcallcontext, pfunction, n*, n_min) = false -- othe
 dec $call_holes_source_valid(pstate, pcallcontext, pfunction) : bool
 def $call_holes_source_valid(S, pcallcontext, pfunction) = true
   -- if $call_unpack_site(S, pcallcontext.CALLSITE) \/ pcallcontext.WRAPPER =/= eps
+  -- if ~$stringify_context_kind(S, pcallcontext) /\ ~$error_context_kind(S, pcallcontext)
 def $call_holes_source_valid(S, pcallcontext, pfunction) = (pcallcontext.HOLES = eps)
-  -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
-  -- if pcallcontext.WRAPPER = eps
-  -- if $stringify_context_kind(S, pcallcontext)
+  -- if $stringify_context_kind(S, pcallcontext) \/ $error_context_kind(S, pcallcontext)
 def $call_holes_source_valid(S, pcallcontext, pfunction) = (pcallcontext.HOLES = $named_holes(pnamedargs.SLOTS[0:n_fixed], 0))
   -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
   -- if pcallcontext.WRAPPER = eps
-  -- if ~$stringify_context_kind(S, pcallcontext)
+  -- if ~$stringify_context_kind(S, pcallcontext) /\ ~$error_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if $call_argument_source(S, porigin_site) = PCALLARGUMENTS phpType7* n_field
   -- if pnamedargs = $named_call_shape(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
@@ -30,7 +29,7 @@ def $call_holes_source_valid(S, pcallcontext, pfunction) = (pcallcontext.HOLES =
 def $call_holes_source_valid(S, pcallcontext, pfunction) = (pcallcontext.HOLES = eps)
   -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
   -- if pcallcontext.WRAPPER = eps
-  -- if ~$stringify_context_kind(S, pcallcontext)
+  -- if ~$stringify_context_kind(S, pcallcontext) /\ ~$error_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if $call_argument_source(S, porigin_site) = PCALLNOARGUMENTS
 def $call_holes_source_valid(S, pcallcontext, pfunction) = false -- otherwise
@@ -55,6 +54,26 @@ def $fixed_parameter_defaulted(S, n) = false -- otherwise
 ;; DEFAULT also labels property initializers. Only a genuine NParam subtree
 ;; admits NEW here; class-constant and property NEW rules remain separate.
 def $ppparameter_new_site(P, pcpath) = (P.FOLD.DEFAULT /\ $default_below(P.FOLD.SOURCE.OCCURRENCES, pcpath))
+;; Method defaults use the declaring scope. Rebound anonymous Closure defaults
+;; retain their separate live-scope boundary; ordinary NEW resolution is exact.
+dec $ppparameter_new_selector(ptscope, name) : ptbytes?
+def $ppparameter_new_selector(PTKNOWN ptbytes_owner ptbytes_parent?, NName (BYTES text) metadata) = (ptbytes_owner)
+  -- if $ptlc($base64(text)) = $ptascii("self")
+def $ppparameter_new_selector(PTKNOWN ptbytes_owner (ptbytes_parent), NName (BYTES text) metadata) = (ptbytes_parent)
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+def $ppparameter_new_selector(ptscope, name) = eps -- otherwise
+def $ppparameter_new_resolve(P, pcpath, name) = $ppparameter_new_selector(ptcontext.SCOPE, name)
+  -- if P.CLASSCONTEXT = (ptcontext)
+  -- if $ppparameter_new_site(P, pcpath) /\ ~P.CLOSURE
+def $ppparameter_new_resolve(P, pcpath, name) = eps
+  -- if P.CLASSCONTEXT = (ptcontext)
+  -- if ~$ppparameter_new_site(P, pcpath) \/ P.CLOSURE
+def $ppparameter_new_resolve(P, pcpath, name) = eps
+  -- if P.CLASSCONTEXT = eps
+def $ppnew_class_name(P, pcpath, name) = $ppclass_name(P, pcpath, PNRESOLVED {ORIGINAL name, KIND PLCLASS, RESOLVED ptbytes, FULL true, FALLBACK eps})
+  -- if $ppparameter_new_resolve(P, pcpath, name) = (ptbytes)
+def $ppnew_class_name(P, pcpath, name) = $ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name))
+  -- if $ppparameter_new_resolve(P, pcpath, name) = eps
 dec $ppparameter_new_class(ppstate, phpType28, metadata) : ppstate
 def $ppparameter_new_class(P, phpType28, metadata) = $ppconstant_error(P, $ptascii("\"static\" is not allowed in compile-time constants"), $nabs($source_line(metadata)))
   -- if phpType28 = name
@@ -105,6 +124,58 @@ rule PhpStep/parameter-default-constructor-unsupported: S ~> S[.TODO = eps][.COM
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
   -- if $new_has_ctor(S, preqbytes)
 
+;; The AST default evaluator keeps a named argument table even without a
+;; constructor. Its values run in source order and are discarded after NEW.
+dec $parameter_default_noctor_at(pstate, pnoctorcall, pconstantcontext, pcnode?) : bool
+def $parameter_default_noctor_at(S, pnoctorcall, pconstantcontext, (NExprNew name (SEQUENCE phpType7*) metadata)) = ($parameter_string_site_valid(S, pconstantcontext.ORIGIN, pconstantcontext.LINE) /\ $default_context_valid(S, pconstantcontext) /\ $constant_expression_below(S, pconstantcontext.ORIGIN, pnoctorcall.SITE))
+def $parameter_default_noctor_at(S, pnoctorcall, pconstantcontext, pcnode?) = false -- otherwise
+def $parameter_default_noctor(S, pnoctorcall) = $parameter_default_noctor_at(S, pnoctorcall, pconstantcontext, $origin_node(S.SOURCES, pnoctorcall.SITE))
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+def $parameter_default_noctor(S, pnoctorcall) = false
+  -- if S.CONSTCONTEXT = eps
+def $parameter_new_prefix(eps) = true
+def $parameter_new_prefix((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $parameter_new_prefix(phpType7*)
+def $parameter_new_prefix((NArg (NIdentifier phpType33 metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $parameter_new_prefix(phpType7*)
+def $parameter_new_prefix(phpType7*) = false -- otherwise
+def $noctor_direct_count_at(S, pnoctorcall, phpType7*) = |phpType7*|
+  -- if $parameter_default_noctor(S, pnoctorcall)
+def $noctor_direct_count_at(S, pnoctorcall, phpType7*) = $noctor_direct_count(phpType7*)
+  -- if ~$parameter_default_noctor(S, pnoctorcall)
+dec $parameter_new_name_present(phpType7*, ptbytes) : bool
+def $parameter_new_name_present(eps, ptbytes) = false
+def $parameter_new_name_present((NArg ABSENT expression phpType4_ref phpType4_unpack metadata) :: phpType7*, ptbytes) = $parameter_new_name_present(phpType7*, ptbytes)
+def $parameter_new_name_present((NArg (NIdentifier (BYTES text) metadata_name) expression phpType4_ref phpType4_unpack metadata) :: phpType7*, ptbytes) = true
+  -- if $base64(text) = ptbytes
+def $parameter_new_name_present((NArg (NIdentifier (BYTES text) metadata_name) expression phpType4_ref phpType4_unpack metadata) :: phpType7*, ptbytes) = $parameter_new_name_present(phpType7*, ptbytes)
+  -- if $base64(text) =/= ptbytes
+def $parameter_new_name_present(phpType7*, ptbytes) = false -- otherwise
+rule PhpStep/parameter-default-new-named: S ~> S_value[.TODO = (NOCTOR_ARGS $noctor_advance(pnoctorcall, pnoctorcall.SENT ++ [S_value.RESULT])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
+  -- if $parameter_default_noctor(S, pnoctorcall)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[pnoctorcall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
+  -- if S_value.COMPLETION = NORMAL
+  -- if ~$parameter_new_name_present(phpType7*[0:pnoctorcall.INDEX], $base64(text))
+rule PhpStep/parameter-default-new-named-duplicate: S ~> $throw_scalar(S_value, "Error", $ptascii("Named parameter $") ++ $base64(text) ++ $ptascii(" overwrites previous argument"), $noctor_arg_line(S, pnoctorcall))
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
+  -- if $parameter_default_noctor(S, pnoctorcall)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[pnoctorcall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
+  -- if S_value.COMPLETION = NORMAL
+  -- if $parameter_new_name_present(phpType7*[0:pnoctorcall.INDEX], $base64(text))
+rule PhpStep/parameter-default-new-named-abrupt: S ~> S_value
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
+  -- if $parameter_default_noctor(S, pnoctorcall)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[pnoctorcall.INDEX] = NArg (NIdentifier phpType33 metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
+  -- if S_value.COMPLETION =/= NORMAL
+
 ;; Default objects are never cached. This nonowning tag records allocation
 ;; class only; the ordinary NEW evaluator supplies the actual object and effects.
 def $constant_shape_class(S, porigin, PFNEW phpType28 phpType6) = PVOBJECT
@@ -116,6 +187,9 @@ def $constant_fact_value_valid(pconstantfact) = true
   -- if pconstantfact.VALUE = eps
   -- if pconstantfact.CLASS = PVOBJECT
 def $constant_class_tree_valid(PVOBJECT) = true
+def $constant_fact_truth(pconstantfact) = (true)
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVOBJECT
 
 ;; Element verification has the same constrained-reference priority as a fixed
 ;; receive. Generic reference-return classification is unchanged.
