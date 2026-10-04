@@ -1,0 +1,403 @@
+;; Defaults are checked after deferred resolution, or after named-hole preflight.
+;; The actual formal owns their value while callable warnings suspend selection.
+dec $api_receive_needed(pstate, psparam, pvalue) : bool
+def $api_receive_needed(S, psparam, pvalue) = true
+  -- if "callable" <- $ptmasks(psparam.TYPE)
+  -- if ~$typed_exact(psparam.TYPE, pvalue)
+  -- if ~$typed_object_exact(S, psparam.TYPE, pvalue)
+  -- if $api_special(S, pvalue)
+def $api_receive_needed(S, psparam, pvalue) = false -- otherwise
+
+dec $api_default_producer(pstate, pfunction, nat, pvalue) : bool
+def $api_default_producer(S, pfunction, n, pvalue) = true
+  -- if S.TODO = [TYPE_RECEIVE pfunction.ORIGIN n]
+  -- if $typed_receive_valid(S, pfunction.ORIGIN, n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if n <- pcallcontext.HOLES
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $api_default_producer(S, pfunction, n, pvalue) = true
+  -- if S.TODO = [DEFAULT_RECEIVE pfunction.ORIGIN n]
+  -- if $default_task_valid(S, pfunction.ORIGIN, n)
+  -- if S.ORIGIN = (pfunction.ORIGIN)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = (pdefaultcache)
+  -- if pdefaultcache.VALUE = pvalue
+  -- if ~$default_scope_dependent(S, pdefault.ORIGIN)
+def $api_default_producer(S, pfunction, n, pvalue) = true
+  -- if S.TODO = [DEFAULT_BIND pfunction.ORIGIN n]
+  -- if $default_task_valid(S, pfunction.ORIGIN, n)
+  -- if S.ORIGIN = ($default_parameter_origin(S, pfunction.ORIGIN, n))
+  -- if S.RESULT = KNOWN pvalue
+def $api_default_producer(S, pfunction, n, pvalue) = false -- otherwise
+def $api_default_candidate(S, pfunction, n, pvalue) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.CONSTCONTEXT = eps
+  -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $fixed_parameter_defaulted(S, n)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pdefault.KIND = PDDEFERRED \/ n <- pcallcontext.HOLES
+  -- if $api_default_producer(S, pfunction, n, pvalue)
+  -- if $api_receive_needed(S, pfunction.SIGNATURE.PARAMETERS[n], pvalue)
+def $api_default_candidate(S, pfunction, n, pvalue) = false -- otherwise
+dec $api_default_begin(pstate, pfunction, nat, pvalue) : pstate
+def $api_default_begin(S, pfunction, n, pvalue) = $api_begin(S_initial[.TODO = [ptask]][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], ptask, pvalue)
+  -- if S_initial = $write_name(S, pfunction.SIGNATURE.PARAMETERS[n].NAME, pvalue)
+  -- if S_initial.COMPLETION = NORMAL
+  -- if ptask = CALLABLE_DEFAULT_RECEIVE pfunction.ORIGIN n
+def $api_default_begin(S, pfunction, n, pvalue) = S_initial
+  -- if S_initial = $write_name(S, pfunction.SIGNATURE.PARAMETERS[n].NAME, pvalue)
+  -- if S_initial.COMPLETION =/= NORMAL
+def $typed_default_store(S, pfunction, n, pvalue) = $api_default_begin(S, pfunction, n, pvalue)
+  -- if $api_default_candidate(S, pfunction, n, pvalue)
+
+;; Positional and named operands remain in the real receiving frame. In
+;; particular a referenced scalar or entire array may change during a warning.
+dec $api_variadic_task(ptask) : bool
+def $api_variadic_task(VARIADIC_RECEIVE porigin n) = true
+def $api_variadic_task(NAMED_VARIADIC_RECEIVE porigin n) = true
+def $api_variadic_task(ptask) = false -- otherwise
+dec $api_receive_function(ptask) : porigin
+def $api_receive_function(TYPE_RECEIVE porigin n) = porigin
+def $api_receive_function(CALLABLE_DEFAULT_RECEIVE porigin n) = porigin
+def $api_receive_function(VARIADIC_RECEIVE porigin n) = porigin
+def $api_receive_function(NAMED_VARIADIC_RECEIVE porigin n) = porigin
+dec $api_receive_index(pstate, ptask) : nat
+def $api_receive_index(S, TYPE_RECEIVE porigin n) = n
+def $api_receive_index(S, CALLABLE_DEFAULT_RECEIVE porigin n) = n
+def $api_receive_index(S, ptask) = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if $api_variadic_task(ptask)
+  -- if $function_at($all_functions(S), $api_receive_function(ptask)) = (pfunction)
+dec $api_receive_operand(pstate, ptask) : poperand
+def $api_receive_operand(S, TYPE_RECEIVE porigin n) = REFERENCE n_cell
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if pfunction.SIGNATURE.PARAMETERS[n].BYREF
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if n_cell <- S.REFCELLS
+def $api_receive_operand(S, TYPE_RECEIVE porigin n) = KNOWN pvalue
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if ~pfunction.SIGNATURE.PARAMETERS[n].BYREF \/ ~(n_cell <- S.REFCELLS)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $api_receive_operand(S, CALLABLE_DEFAULT_RECEIVE porigin n) = KNOWN pvalue
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $api_receive_operand(S, VARIADIC_RECEIVE porigin n_arg) = pcallcontext.EXTRA[n_element]
+  -- if S.CURRENT = (pcallcontext)
+  -- if n_fixed = $api_receive_index(S, VARIADIC_RECEIVE porigin n_arg)
+  -- if n_element = $(n_arg - n_fixed)
+def $api_receive_operand(S, NAMED_VARIADIC_RECEIVE porigin n) = poperand
+  -- if S.CURRENT = (pcallcontext)
+  -- if (ptbytes, poperand) = pcallcontext.NAMED[n]
+dec $api_receive_stage(pstate, ptask) : bool
+def $api_receive_stage(S, CALLABLE_DEFAULT_RECEIVE porigin n) = true
+  -- if S.CONSTCONTEXT = eps
+  -- if $typed_receive_valid(S[.TODO = [TYPE_RECEIVE porigin n]], porigin, n)
+  -- if $fixed_parameter_defaulted(S, n)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pdefault.KIND = PDDEFERRED \/ n <- pcallcontext.HOLES
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if $(n_cell < |S.STORE|)
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $api_receive_stage(S, VARIADIC_RECEIVE porigin n_arg) = true
+  -- if $variadic_receive_valid(S[.TODO = [VARIADIC_RECEIVE porigin n_arg]], porigin, n_arg)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n_arg < pcallcontext.ARGC)
+def $api_receive_stage(S, NAMED_VARIADIC_RECEIVE porigin n) = true
+  -- if $named_tail_valid(S[.TODO = [NAMED_VARIADIC_RECEIVE porigin n]], porigin, n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n < |pcallcontext.NAMED|)
+def $api_receive_stage(S, ptask) = false -- otherwise
+def $api_variadic_candidate(S) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [ptask]
+  -- if $api_variadic_task(ptask)
+  -- if $api_receive_stage(S, ptask)
+  -- if $function_at($all_functions(S), $api_receive_function(ptask)) = (pfunction)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[$api_receive_index(S, ptask)]
+  -- if $receive_string_operand_mode(psparam, $api_receive_operand(S, ptask))
+  -- if $api_receive_needed(S, psparam, $variadic_operand_value(S, $api_receive_operand(S, ptask)))
+def $api_variadic_candidate(S) = false -- otherwise
+rule PhpStep/api-variadic-receive: S ~> $api_begin(S, ptask, $variadic_operand_value(S, $api_receive_operand(S, ptask)))
+  -- if $api_variadic_candidate(S)
+  -- if S.TODO = [ptask]
+
+def $api_source_line(S, CALLABLE_DEFAULT_RECEIVE porigin n) = $default_parameter_line(S, porigin, n)
+def $api_source_line(S, ptask) = $default_parameter_line(S, $api_receive_function(ptask), $api_receive_index(S, ptask))
+  -- if $api_variadic_task(ptask)
+def $api_string_item(S, ptask, ptbytes) = ALIAS n_cell
+  -- if $api_variadic_task(ptask)
+  -- if $api_receive_operand(S, ptask) = REFERENCE n_cell
+dec $api_receive_operand_valid(pstate, papiquery) : bool
+def $api_receive_operand_valid(S, papiquery) = (pvalue = papiquery.VALUE)
+  -- if $api_receive_operand(S, papiquery.SOURCE) = KNOWN pvalue
+def $api_receive_operand_valid(S, papiquery) = true
+  -- if $api_receive_operand(S, papiquery.SOURCE) = REFERENCE n_cell
+  -- if $(n_cell < |S.STORE|)
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if n_cell <- S.REFCELLS
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if pvalue = papiquery.VALUE \/ $is_array_value(papiquery.VALUE) \/ (papiquery.METHOD = ALIAS n_cell /\ $typed_string_value(papiquery.VALUE))
+def $api_receive_operand_valid(S, papiquery) = false -- otherwise
+def $api_source_valid(S, papiquery) = true
+  -- if $api_receive_stage(S, papiquery.SOURCE)
+  -- if $function_at($all_functions(S), $api_receive_function(papiquery.SOURCE)) = (pfunction)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[$api_receive_index(S, papiquery.SOURCE)]
+  -- if "callable" <- $ptmasks(psparam.TYPE)
+  -- if ~$typed_exact(psparam.TYPE, papiquery.VALUE)
+  -- if ~psparam.VARIADIC \/ $receive_string_operand_mode(psparam, $api_receive_operand(S, papiquery.SOURCE))
+  -- if $api_receive_operand_valid(S, papiquery)
+def $call_task_valid(S, CALLABLE_DEFAULT_RECEIVE porigin n) = $api_receive_stage(S, CALLABLE_DEFAULT_RECEIVE porigin n)
+
+dec $api_receive_finish(pstate, ptask, pvalue) : pstate
+def $api_receive_finish(S, TYPE_RECEIVE porigin n, pvalue) = $default_store(S, pfunction, n, pvalue)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+def $api_receive_finish(S, CALLABLE_DEFAULT_RECEIVE porigin n, pvalue) = $default_store(S, pfunction, n, pvalue)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+def $api_receive_finish(S, VARIADIC_RECEIVE porigin n_arg, pvalue) = $variadic_insert(S, pfunction, n_arg, $api_receive_operand(S, VARIADIC_RECEIVE porigin n_arg), pvalue)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+def $api_receive_finish(S, NAMED_VARIADIC_RECEIVE porigin n, pvalue) = $named_variadic_insert(S, pfunction, n, $api_receive_operand(S, NAMED_VARIADIC_RECEIVE porigin n), pvalue)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+def $api_finish(S, CALLABLE_DEFAULT_RECEIVE porigin n, pvalue, HANDLERRESOLVED pcalltarget) = $api_receive_finish(S, CALLABLE_DEFAULT_RECEIVE porigin n, $variadic_operand_value(S, $api_receive_operand(S, CALLABLE_DEFAULT_RECEIVE porigin n)))
+def $api_finish(S, ptask, pvalue, HANDLERRESOLVED pcalltarget) = $api_receive_finish(S, ptask, $variadic_operand_value(S, $api_receive_operand(S, ptask)))
+  -- if $api_variadic_task(ptask)
+def $api_finish(S, CALLABLE_DEFAULT_RECEIVE porigin n, pvalue, HANDLERINVALID ptbytes) = $api_fallback_reject(S, CALLABLE_DEFAULT_RECEIVE porigin n)
+def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $throw_scalar(S, "Error", ptbytes, $api_source_line(S, papiquery.SOURCE))
+  -- if $api_receive_stage(S, papiquery.SOURCE)
+
+;; A failed held lookup goes straight to scalar fallback. Ref-source gating is
+;; based on this element's real operand, never the collected variadic array.
+dec $api_variadic_scalar(pstate, psparam, poperand) : ptypeconversion
+def $api_variadic_scalar(S, psparam, poperand) = ptypeconversion
+  -- if pvalue = $variadic_operand_value(S, poperand)
+  -- if ~psparam.BYREF \/ ~$typed_reference_operand_source(S, poperand)
+  -- if ptypeconversion = $api_slow_conversion(S, psparam.TYPE, pvalue, $typed_caller_strict(S))
+def $api_variadic_scalar(S, psparam, poperand) = TYPEREJECT -- otherwise
+dec $api_variadic_number(pstate, ptask) : nat
+def $api_variadic_number(S, VARIADIC_RECEIVE porigin n) = n
+def $api_variadic_number(S, NAMED_VARIADIC_RECEIVE porigin n) = $named_tail_index($api_receive_index(S, NAMED_VARIADIC_RECEIVE porigin n), pcallcontext.ARGC)
+  -- if S.CURRENT = (pcallcontext)
+def $api_finish(S, ptask, pvalue, HANDLERINVALID ptbytes) = $api_fallback_reject(S, ptask)
+  -- if $api_variadic_task(ptask)
+
+;; Zend dereferences the method cell before the outer class warning. Only that
+;; live alias can support a borrowed retired container after byref replacement.
+dec $api_receive_reference(pstate, ptask) : nat?
+def $api_receive_reference(S, TYPE_RECEIVE porigin n) = (n_cell)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if pfunction.SIGNATURE.PARAMETERS[n].BYREF
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+def $api_receive_reference(S, ptask) = (n_cell)
+  -- if $api_variadic_task(ptask)
+  -- if $api_receive_operand(S, ptask) = REFERENCE n_cell
+def $api_receive_reference(S, ptask) = eps -- otherwise
+def $api_borrowed_array(S, papiquery) = true
+  -- if $api_source_valid(S, papiquery)
+  -- if $api_receive_reference(S, papiquery.SOURCE) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if pvalue =/= papiquery.VALUE
+  -- if papiquery.METHOD = ALIAS n_method
+  -- if $(n_method < |S.STORE|)
+  -- if (HCELL n_method) <- S.ALLOCATIONS
+  -- if n_method <- S.REFCELLS
+  -- if S.STORE[n_method] = DEFINED pvalue_method
+def $api_borrowed_array(S, papiquery) = false -- otherwise
+
+;; Exact/nominal/callable acceptance preceded the failed lookup. Zend's weak
+;; parsers do not accept an already-int, already-float or already-string input.
+dec $api_slow_skip(text, pvalue) : bool
+def $api_slow_skip(text, PINT i) = (text = "int")
+def $api_slow_skip(text, PFLOAT n) = (text = "float")
+def $api_slow_skip(text, PSTRING ptbytes) = (text = "string")
+def $api_slow_skip(text, pvalue) = false -- otherwise
+dec $api_slow_masks(text*, pvalue) : text*
+def $api_slow_masks(eps, pvalue) = eps
+def $api_slow_masks(text :: text_tail*, pvalue) = $api_slow_masks(text_tail*, pvalue)
+  -- if $api_slow_skip(text, pvalue)
+def $api_slow_masks(text :: text_tail*, pvalue) = text :: $api_slow_masks(text_tail*, pvalue)
+  -- if ~$api_slow_skip(text, pvalue)
+def $api_slow_conversion(S, ptbranch*, POBJECT n, false) = TYPEDEPENDENT "user object string conversion"
+  -- if "string" <- $ptmasks(ptbranch*)
+  -- if $stringable_instance(S, n)
+def $api_slow_conversion(S, ptbranch*, pvalue, false) = $typed_weak($api_slow_masks($ptmasks(ptbranch*), pvalue), pvalue)
+  -- if ~("string" <- $ptmasks(ptbranch*) /\ $user_string_value(S, pvalue))
+def $api_slow_conversion(S, ptbranch*, PINT i, true) = $typed_weak($api_slow_masks($ptmasks(ptbranch*), PINT i), PINT i)
+  -- if "float" <- $ptmasks(ptbranch*)
+def $api_slow_conversion(S, ptbranch*, pvalue, b) = TYPEREJECT -- otherwise
+
+dec $api_fixed_receive(ptask) : bool
+def $api_fixed_receive(TYPE_RECEIVE porigin n) = true
+def $api_fixed_receive(CALLABLE_DEFAULT_RECEIVE porigin n) = true
+def $api_fixed_receive(ptask) = false -- otherwise
+dec $api_fallback_stage(pstate, ptask) : bool
+def $api_fallback_stage(S, TYPE_RECEIVE porigin n) = true
+  -- if $typed_receive_valid(S[.TODO = [TYPE_RECEIVE porigin n]], porigin, n)
+  -- if $fixed_parameter_supplied(S, n)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $api_fallback_stage(S, ptask) = $api_receive_stage(S, ptask)
+  -- if ~$api_fixed_receive(ptask) \/ $api_receive_stage(S, ptask)
+def $api_fallback_stage(S, ptask) = false -- otherwise
+dec $api_fallback_task(ptask) : bool
+def $api_fallback_task(ptask) = ($api_fixed_receive(ptask) \/ $api_variadic_task(ptask))
+dec $api_fallback_parameter(pstate, ptask) : psparam
+def $api_fallback_parameter(S, ptask) = pfunction.SIGNATURE.PARAMETERS[$api_receive_index(S, ptask)]
+  -- if $function_at($all_functions(S), $api_receive_function(ptask)) = (pfunction)
+dec $api_fallback_conversion(pstate, ptask) : ptypeconversion
+def $api_fallback_conversion(S, ptask) = $api_scalar_conversion(S, $api_fallback_parameter(S, ptask), $variadic_operand_value(S, $api_receive_operand(S, ptask)))
+  -- if $api_fixed_receive(ptask)
+def $api_fallback_conversion(S, ptask) = $api_variadic_scalar(S, $api_fallback_parameter(S, ptask), $api_receive_operand(S, ptask))
+  -- if $api_variadic_task(ptask)
+def $api_variadic_number(S, ptask) = $api_receive_index(S, ptask)
+  -- if $api_fixed_receive(ptask)
+dec $api_fallback_lossy(pstate, ptask) : (int, ptbytes)?
+def $api_fallback_lossy(S, ptask) = $reporting_lossy_value(pvalue)
+  -- if $api_fallback_conversion(S, ptask) = TYPEINTEGER pvalue
+def $api_fallback_lossy(S, ptask) = eps -- otherwise
+def $api_fallback_reject(S, ptask) = $error_dispatch(S_pending, 8192, ptbytes, $api_source_line(S, ptask), DIAGNOSTIC "Deprecated" ptbytes $api_source_line(S, ptask), ptask_resume)
+  -- if $api_fallback_lossy(S, ptask) = ((i, ptbytes))
+  -- if poperand = $api_receive_operand(S, ptask)
+  -- if ptask_resume = CALLABLE_SCALAR_RESULT ptask poperand ($variadic_operand_value(S, poperand)) i
+  -- if S_pending = S[.TODO = [ptask_resume]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $api_fallback_reject(S, ptask) = $user_string_begin(S[.ORIGIN = (porigin_site)], n_object, porigin_site, $api_source_line(S, ptask), CALLABLE_STRING_RESULT ptask poperand n_object ($api_receive_index(S, ptask)) ($api_source_line(S, ptask)), eps)
+  -- if $api_fallback_conversion(S, ptask) = TYPEDEPENDENT "user object string conversion"
+  -- if poperand = $api_receive_operand(S, ptask)
+  -- if $variadic_operand_value(S, poperand) = POBJECT n_object
+  -- if porigin_site = $default_parameter_origin(S, $api_receive_function(ptask), $api_receive_index(S, ptask))
+def $api_fallback_reject(S, ptask) = $api_receive_finish(S_value, ptask, pvalue)
+  -- if ptypeconversion = $api_fallback_conversion(S, ptask)
+  -- if ptypeconversion =/= TYPEREJECT /\ ptypeconversion =/= TYPEDEPENDENT "user object string conversion"
+  -- if $api_fallback_lossy(S, ptask) = eps
+  -- if S_value = $typed_apply(S, ptypeconversion, $api_source_line(S, ptask))
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+def $api_fallback_reject(S, ptask) = S_value
+  -- if ptypeconversion = $api_fallback_conversion(S, ptask)
+  -- if ptypeconversion =/= TYPEREJECT /\ ptypeconversion =/= TYPEDEPENDENT "user object string conversion"
+  -- if $api_fallback_lossy(S, ptask) = eps
+  -- if S_value = $typed_apply(S, ptypeconversion, $api_source_line(S, ptask))
+  -- if S_value.COMPLETION =/= NORMAL
+def $api_fallback_reject(S, ptask) = $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): Argument #") ++ $ntunsigned($($api_variadic_number(S, ptask) + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given") ++ $wrapper_called_suffix(S, pcallcontext), $api_source_line(S, ptask))
+  -- if $api_fallback_conversion(S, ptask) = TYPEREJECT
+  -- if $function_at($all_functions(S), $api_receive_function(ptask)) = (pfunction)
+  -- if psparam = $api_fallback_parameter(S, ptask)
+  -- if pvalue = $variadic_operand_value(S, $api_receive_operand(S, ptask))
+  -- if S.CURRENT = (pcallcontext)
+
+;; The integer is computed before the lossy warning, then committed after it.
+;; Only a real referenced operand can change its current zval during suspension.
+dec $api_fallback_operand_valid(pstate, ptask, poperand) : bool
+def $api_fallback_operand_valid(S, ptask, KNOWN pvalue) = ($api_receive_operand(S, ptask) = KNOWN pvalue)
+def $api_fallback_operand_valid(S, ptask, REFERENCE n_cell) = true
+  -- if $api_receive_operand(S, ptask) = REFERENCE n_cell
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if n_cell <- S.REFCELLS
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $api_fallback_operand_valid(S, ptask, poperand) = false -- otherwise
+dec $api_scalar_result_valid(pstate, ptask, poperand, pvalue, int) : bool
+def $api_scalar_result_valid(S, ptask, poperand, pvalue, i) = true
+  -- if $api_fallback_stage(S, ptask)
+  -- if $api_fallback_operand_valid(S, ptask, poperand)
+  -- if poperand = REFERENCE n_cell \/ poperand = KNOWN pvalue
+  -- if psparam = $api_fallback_parameter(S, ptask)
+  -- if "callable" <- $ptmasks(psparam.TYPE)
+  -- if ~$typed_caller_strict(S)
+  -- if $api_slow_conversion(S, psparam.TYPE, pvalue, false) = TYPEINTEGER pvalue
+  -- if $reporting_lossy_value(pvalue) = ((i, ptbytes))
+def $api_scalar_result_valid(S, ptask, poperand, pvalue, i) = false -- otherwise
+def $call_task_valid(S, CALLABLE_SCALAR_RESULT ptask poperand pvalue i) = $api_scalar_result_valid(S, ptask, poperand, pvalue, i)
+def $task_nodes(CALLABLE_SCALAR_RESULT ptask poperand pvalue i) = $operand_nodes(poperand)
+def $api_pending_task(CALLABLE_SCALAR_RESULT ptask poperand pvalue i) = true
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CALLABLE_SCALAR_RESULT ptask poperand pvalue i
+  -- if $api_scalar_result_valid(S, ptask, poperand, pvalue, i)
+  -- if $reporting_lossy_value(pvalue) = ((i, perrorcall.MESSAGE))
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.LINE = $api_source_line(S, ptask)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+rule PhpStep/callable-scalar-result: S ~> $api_receive_finish(S, ptask, PINT i)
+  -- if S.TODO = [CALLABLE_SCALAR_RESULT ptask poperand pvalue i]
+  -- if $api_scalar_result_valid(S, ptask, poperand, pvalue, i)
+
+;; A failed lookup can replace its argument with a dual callable/Stringable.
+;; String conversion is now forced; the ordinary callable precedence is not
+;; reconsidered. Reuse the real receiving-frame and STRINGIFY protocol.
+def $receive_string_function(CALLABLE_STRING_RESULT ptask poperand n n_index z) = $api_receive_function(ptask)
+def $receive_string_index(CALLABLE_STRING_RESULT ptask poperand n n_index z) = n_index
+def $receive_string_object(CALLABLE_STRING_RESULT ptask poperand n n_index z) = n
+def $receive_string_line(CALLABLE_STRING_RESULT ptask poperand n n_index z) = z
+def $receive_string_frame_task([STRINGIFY_RESULT n porigin z, CALLABLE_STRING_RESULT ptask poperand n_object n_index z]) = (CALLABLE_STRING_RESULT ptask poperand n_object n_index z)
+def $receive_string_frame_task([CALLABLE_STRING_RESULT ptask poperand n_object n_index z]) = (CALLABLE_STRING_RESULT ptask poperand n_object n_index z)
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $set_active_table(S[.CURRENT = pframe.CONTEXT][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.FRAMES = pframe_tail*], psymboltable)
+  -- if $receive_string_frame_task(pframe.TODO) = (CALLABLE_STRING_RESULT ptask poperand n n_index z)
+  -- if pframe.LOCALS = (psymboltable)
+def $receive_string_record_valid(S, CALLABLE_STRING_RESULT ptask poperand n n_index z) = true
+  -- if $api_fallback_task(ptask)
+  -- if $api_fallback_stage(S[.ORIGIN = ($api_receive_function(ptask))], ptask)
+  -- if n_index = $api_receive_index(S, ptask)
+  -- if z = $api_source_line(S, ptask)
+  -- if psparam = $api_fallback_parameter(S, ptask)
+  -- if "callable" <- $ptmasks(psparam.TYPE) /\ "string" <- $ptmasks(psparam.TYPE)
+  -- if $stringable_instance(S, n)
+  -- if $api_fallback_operand_valid(S, ptask, poperand)
+  -- if poperand = REFERENCE n_cell \/ poperand = KNOWN (POBJECT n)
+  -- if $parameter_string_site_valid(S, $default_parameter_origin(S, $api_receive_function(ptask), $api_receive_index(S, ptask)), $api_source_line(S, ptask))
+def $receive_string_current(S, CALLABLE_STRING_RESULT ptask poperand n n_index z) = true
+  -- if $api_fallback_task(ptask)
+  -- if $api_fallback_stage(S[.ORIGIN = ($api_receive_function(ptask))], ptask)
+  -- if ~$typed_caller_strict(S)
+  -- if S.ORIGIN = ($default_parameter_origin(S, $api_receive_function(ptask), $api_receive_index(S, ptask)))
+def $receive_string_same_owner(CALLABLE_STRING_RESULT ptask poperand n n_index z, CALLABLE_STRING_RESULT ptask_other poperand_other n_other n_index_other z_other) = (ptask = ptask_other /\ poperand = poperand_other /\ n = n_other /\ n_index = n_index_other /\ z = z_other)
+def $stringify_source(S, porigin_site, z, CALLABLE_STRING_RESULT ptask poperand n n_index z) = true
+  -- if $api_fallback_task(ptask)
+  -- if porigin_site = $default_parameter_origin(S, $api_receive_function(ptask), $api_receive_index(S, ptask))
+  -- if z = $api_source_line(S, ptask)
+  -- if $receive_string_scope_valid(S, CALLABLE_STRING_RESULT ptask poperand n n_index z)
+def $receive_string_extended(CALLABLE_STRING_RESULT ptask poperand n n_index z) = true
+def $task_nodes(CALLABLE_STRING_RESULT ptask poperand n n_index z) = $operand_nodes(poperand) ++ [HOBJECT n]
+def $call_task_valid(S, CALLABLE_STRING_RESULT ptask poperand n n_index z) = $receive_string_scope_valid(S, CALLABLE_STRING_RESULT ptask poperand n n_index z)
+  -- if $api_fallback_task(ptask)
+def $call_task_valid(S, CALLABLE_STRING_RESULT ptask poperand n n_index z) = false
+  -- if ~$api_fallback_task(ptask)
+def $receive_string_cell(CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z) = (n_cell)
+def $receive_string_cell(CALLABLE_STRING_RESULT ptask (KNOWN pvalue) n n_index z) = eps
+def $receive_backing_admission(S, CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z, n_cell, ptbytes) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z]
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if $receive_string_scope_valid(S, CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z)
+  -- if $parameter_backing_source(S, {FUNCTION $api_receive_function(ptask), INDEX $api_receive_index(S, ptask), CELL n_cell, LINE $api_source_line(S, ptask), VALUE ptbytes})
+def $receive_string_store(S, CALLABLE_STRING_RESULT ptask poperand n n_index z, n_cell, ptbytes) = $write_cell_checked(S, n_cell, PSTRING ptbytes, $api_source_line(S, ptask))
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+def $receive_string_store(S, CALLABLE_STRING_RESULT ptask poperand n n_index z, n_cell, ptbytes) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED (PSTRING ptbytes))][.PARAMETERBACKINGS = pparameterbacking :: $parameter_backing_remove(S.PARAMETERBACKINGS, n_cell)]
+  -- if ptask_consumer = CALLABLE_STRING_RESULT ptask poperand n n_index z
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if $receive_backing_admission(S, ptask_consumer, n_cell, ptbytes)
+  -- if pparameterbacking = {FUNCTION $api_receive_function(ptask), INDEX $api_receive_index(S, ptask), CELL n_cell, LINE $api_source_line(S, ptask), VALUE ptbytes}
+def $receive_string_store(S, CALLABLE_STRING_RESULT ptask poperand n n_index z, n_cell, ptbytes) = S[.COMPLETION = UNSUPPORTED "invalid parameter backing conversion"]
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if ~$receive_backing_admission(S, CALLABLE_STRING_RESULT ptask poperand n n_index z, n_cell, ptbytes)
+rule PhpStep/callable-string-value: S ~> $api_receive_finish(S, ptask, PSTRING ptbytes)
+  -- if S.TODO = [CALLABLE_STRING_RESULT ptask (KNOWN pvalue) n n_index z]
+  -- if $receive_string_scope_valid(S, CALLABLE_STRING_RESULT ptask (KNOWN pvalue) n n_index z)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+rule PhpStep/callable-string-reference: S ~> $api_receive_finish(S_store, ptask, PSTRING ptbytes)
+  -- if S.TODO = [CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z]
+  -- if $receive_string_scope_valid(S, CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_store = $receive_string_store(S, CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z, n_cell, ptbytes)
+  -- if S_store.COMPLETION = NORMAL
+rule PhpStep/callable-string-reference-abrupt: S ~> S_store
+  -- if S.TODO = [CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z]
+  -- if $receive_string_scope_valid(S, CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_store = $receive_string_store(S, CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z, n_cell, ptbytes)
+  -- if S_store.COMPLETION =/= NORMAL

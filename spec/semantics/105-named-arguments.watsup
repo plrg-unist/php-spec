@@ -319,6 +319,7 @@ rule PhpStep/named-tail-receive: S ~> $named_receive(S, pfunction, n)
   -- if $(n < |pcallcontext.NAMED|)
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if ~$variadic_string_candidate(S)
+  -- if ~$api_variadic_candidate(S)
 rule PhpStep/named-tail-done: S ~> S[.TODO = $function_tasks(S, pfunction)]
   -- if S.TODO = (NAMED_VARIADIC_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
