@@ -365,8 +365,9 @@ def observe(state, filename, display_mode=2):
         message = fields[0].encode() if tag == 'STATICERROR' else bytes(map(int, fields[0]))
         line = int(fields[1])
         diagnostic = {'class': 'Error' if tag == 'FATAL' else 'CompileError', 'message': b64(message), 'line': line}
-        stderr += (b'Fatal error: ' + message + b' in ' + location
-                  + b' on line ' + str(line).encode() + b'\nStack trace:\n' + stack)
+        if int(state['REPORTING']) & (1 if tag == 'FATAL' else 64):
+            stderr += (b'Fatal error: ' + message + b' in ' + location
+                       + b' on line ' + str(line).encode() + b'\nStack trace:\n' + stack)
         exit_status = 255
     if int(display_mode) == 1 and stderr:
         stdout += b'\n' + stderr
