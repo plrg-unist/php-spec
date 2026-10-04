@@ -1,0 +1,1098 @@
+dec $closure_binding_method_site(pstate, porigin) : bool
+dec $closure_current_temporary(pstate) : bool
+dec $bind_receiver_live(pstate, nat?) : bool
+dec $closure_current_start(pstate, porigin, nat?, int) : pstate
+dec $closure_current_object(pstate) : nat?
+dec $fake_bind_object(pstate, nat) : bool
+dec $fake_bind_scope(pstate, nat) : pbindscope
+dec $bind_scope_name(pstate, pbindscope) : ptbytes
+dec $bind_scope_origin(pbindscope) : porigin?
+dec $bind_object_scope(pstate, nat) : pbindscope
+dec $fake_bind_static(pstate, nat) : bool
+dec $fake_bind_history(pstate, pboundfake) : pstate
+dec $fake_bind_history_source(pstate, nat) : pstate
+dec $fake_bind_history_nodes(pstate, nat, pclosurescope?) : pnode*
+dec $fake_bind_source_valid(pstate, pboundfake) : bool
+dec $fake_bind_compatible(pstate, nat, pbindscope) : bool
+dec $bound_fake_valid(pstate, nat) : bool
+dec $bound_fake_receiver_valid(pstate, pboundfake) : bool
+dec $bind_is_instance(pstate, nat) : bool
+dec $fake_bind_getter(pstate, nat) : (nat, pgettermethod, text)?
+dec $fake_bind_direct_getter(pstate, nat) : (nat, pgettermethod, text)?
+dec $fake_bind_intrinsic(pstate, nat) : pintrinsic?
+dec $object_body_real(pobject) : bool
+dec $closure_scopes_except(pclosurescope*, nat) : pclosurescope*
+dec $bind_scope_valid(pstate, pbindscope) : bool
+dec $bound_fake_scope_valid(pstate, pboundfake) : bool
+dec $bind_is_named(pstate, nat) : bool
+dec $bind_is_intrinsic(pstate, nat) : bool
+dec $closure_binding_site(pstate, porigin, pintrinsic) : bool
+dec $closure_binding_start(pstate, porigin, pintrinsic, nat?, int) : pstate
+dec $fake_bind_source(pconfigcall) : nat?
+dec $fake_bind_offset(pconfigcall) : nat
+dec $fake_bind_arity(pstate, pconfigcall) : pstate
+dec $fake_bind_receive(pstate, pconfigcall) : pstate
+dec $fake_bind_scope_result(pstate, nat, pvalue) : pbindscoperesult
+dec $fake_bind_select_scope(pstate, pconfigcall, nat, pvalue) : pstate
+dec $fake_bind_warning(pstate, pconfigcall, pbindscoperesult, ptbytes) : pstate
+dec $fake_bind_warning_message(pstate, nat, nat?, pbindscope) : ptbytes?
+dec $fake_bind_finish(pstate, pconfigcall, nat, nat?, pbindscope) : pstate
+dec $real_bind_result(pstate, pconfigcall, nat, nat?, pbindscope) : pstate
+dec $real_bind_warning_message(pstate, nat, nat?, pbindscope) : ptbytes?
+dec $fake_bind_allocate(pstate, pconfigcall, nat, nat?, pbindscope) : pstate
+dec $fake_bind_name(pstate, nat) : ptbytes
+dec $fake_bind_slots(pnamedslot*) : poperand*
+dec $fake_bind_trace_name(pintrinsic) : ptbytes
+dec $fake_bind_trace_type(pintrinsic) : ptbytes
+dec $bind_value_closure(pstate, pvalue) : bool
+dec $fake_bind_this(pconfigcall) : nat?
+dec $fake_bind_scope_value(pstate, pconfigcall) : pvalue
+dec $fake_bind_scope_argument(pstate, nat, pvalue, pbindscope) : bool
+dec $fake_bind_receiver_warning(pstate, nat, nat?) : bool
+dec $fake_bind_internal_warning(pstate, nat, pbindscope) : bool
+dec $fake_bind_new_scope(pstate, nat, nat?, pbindscope) : pbindscope
+dec $fake_bind_new_called(pstate, nat?, pbindscope) : pbindscope
+dec $fake_bind_new_receiver(pstate, nat, nat?) : nat?
+dec $fake_bind_warning_valid(pstate, pbindwarning) : bool
+dec $bound_fake_getter(pstate, nat) : (nat, pgettermethod, text)?
+dec $bound_intrinsic_selected(pstate, nat, pintrinsic, porigin) : bool
+dec $fake_compare_called(pstate, nat) : pbindscope
+dec $fake_compare_receiver(pstate, nat) : nat?
+dec $fake_compare_internal(pstate, nat) : bool
+dec $bound_fake_compare(pstate, nat, nat) : bool
+dec $internal_closure_row(pstate, nat) : pinternalclosurescope?
+dec $internal_closure_scopes(pstate, nat) : (pbindscope, pbindscope, nat?)?
+dec $internal_creator_history(pstate, nat) : pstate
+dec $internal_creator_body(pstate, nat) : porigin?
+dec $internal_closure_history_valid(pstate, nat) : bool
+dec $real_bind_internal(pstate, nat, nat?, pbindscope) : bool
+dec $real_bind_internal_receiver(pstate, nat?, pbindscope) : bool
+dec $real_bind_scope(nat?, pbindscope) : pbindscope
+dec $real_bind_allocate(pstate, pconfigcall, nat, nat?, pbindscope) : pstate
+dec $bind_scope_internal(pbindscope) : bool
+dec $internal_bound_receiver_valid(pstate, pinternalclosurescope, pfunction) : bool
+
+
+;; getCurrent observes the immediate executing user function. It returns the
+;; same ordinary Closure object; fake captures do not become ordinary Closures.
+
+def $intrinsic_name(INTRINSIC_CLOSURE_CURRENT) = $ptascii("Closure::getCurrent")
+def $config_kind(INTRINSIC_CLOSURE_CURRENT) = true
+def $config_required(INTRINSIC_CLOSURE_CURRENT) = 0
+def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("getCurrent"), CLASS ($ptascii("Closure")), TYPE ($ptascii("::")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT
+
+def $closure_current_method_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("getcurrent"))
+  -- if ~$ppfirstclass(phpType7*)
+def $closure_current_method_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("getcurrent"))
+  -- if ~$ppfirstclass(phpType7*)
+def $closure_current_method_site(S, porigin) = false -- otherwise
+def $closure_current_site(S, porigin) = true -- if $closure_current_method_site(S, porigin)
+def $closure_current_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $from_static_class(S, porigin, phpType19)
+  -- if $method_source_name(phpType20, $ptascii("getcurrent"))
+  -- if ~$ppfirstclass(phpType7*)
+def $closure_current_site(S, porigin) = false -- otherwise
+
+def $config_selected_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT
+  -- if pconfigcall.SELECTION = eps
+  -- if pconfigcall.OWNER = eps
+  -- if $closure_current_site(S, pconfigcall.SITE)
+  -- if ~$closure_current_method_site(S, pconfigcall.SITE)
+def $config_selected_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT
+  -- if pconfigcall.SELECTION = eps
+  -- if pconfigcall.OWNER = (n)
+  -- if $closure_static_api_owner_valid(S, n)
+  -- if $closure_current_method_site(S, pconfigcall.SITE)
+
+def $closure_current_start(S, porigin, n_owner?, z) = S[.TODO = [CONFIG_ARGS {SITE porigin, KIND INTRINSIC_CLOSURE_CURRENT, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, SELECTION eps, LINE z, PACKS eps}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, phpType7*, z) = $closure_current_start(S, porigin, eps, z)
+  -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("closure")
+  -- if $ptlc(ptbytes_method) = $ptascii("getcurrent")
+  -- if ~$ppfirstclass(phpType7*)
+  -- if S.ORIGIN = (porigin)
+  -- if $closure_current_site(S, porigin)
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "capture of internal Closure::getCurrent target"]
+  -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("closure")
+  -- if $ptlc(ptbytes_method) = $ptascii("getcurrent")
+  -- if $ppfirstclass(phpType7*)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $closure_current_start(S_read, porigin, (n), z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $closure_callable(S_read, n)
+  -- if $ptlc(ptbytes) = $ptascii("getcurrent")
+  -- if ~$ppfirstclass(phpType7*)
+  -- if S.ORIGIN = (porigin)
+  -- if $closure_current_method_site(S, porigin)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UNSUPPORTED "capture of internal Closure::getCurrent target"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $closure_callable(S_read, n)
+  -- if $ptlc(ptbytes) = $ptascii("getcurrent")
+  -- if $ppfirstclass(phpType7*)
+
+def $closure_current_object(S) = (n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.INSTANCE = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_callable(S, n)
+  -- if $call_current_valid(S)
+def $closure_current_object(S) = eps -- otherwise
+def $config_receive(S, pconfigcall) = $from_done(S, n)
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT
+  -- if pconfigcall.SENT = eps
+  -- if $closure_current_object(S) = (n)
+def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "Closure::getCurrent in a temporary Closure::call frame"]
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT
+  -- if pconfigcall.SENT = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $closure_call_target(pcallcontext.TARGET)
+def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "Error", $ptascii("Current function is not a closure"))
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT
+  -- if pconfigcall.SENT = eps
+  -- if $closure_current_object(S) = eps
+  -- if ~$closure_current_temporary(S)
+
+rule PhpStep/closure-current-invoke: S ~> $config_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT
+  -- if $config_invoke_valid(S, pconfigcall)
+
+;; Binding a fake Closure changes its receiver/called scope, but keeps the
+;; immutable source selection and its shared function static storage.
+
+def $bind_is_instance(S, n) = true -- if S.OBJECTS[n] = INSTANCE porigin
+def $bind_is_instance(S, n) = false -- otherwise
+def $fake_bind_direct_getter(S, n) = ((n_receiver, pgettermethod, text_base))
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+def $fake_bind_direct_getter(S, n) = eps -- otherwise
+def $fake_bind_intrinsic(S, n) = (pintrinsic)
+  -- if $object_body(S.OBJECTS[n]) = INTRINSICCLOSURE pintrinsic
+def $fake_bind_intrinsic(S, n) = $fake_bind_intrinsic($fake_bind_history(S, pboundfake), pboundfake.SOURCE)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $fake_bind_intrinsic(S, n) = eps -- otherwise
+def $fake_bind_getter(S, n) = ((n_receiver, pgettermethod, text_base))
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+def $fake_bind_getter(S, n) = $fake_bind_getter($fake_bind_history(S, pboundfake), pboundfake.SOURCE)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $fake_bind_getter(S, n) = eps -- otherwise
+
+def $bound_fake_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $bound_fake_object(S, n) = false -- otherwise
+def $fake_bind_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $closure_callable(S, n)
+  -- if ~$object_body_real(S.OBJECTS[n])
+def $fake_bind_object(S, n) = false -- otherwise
+def $object_body_real(pobject) = true -- if $object_body(pobject) = REALCLOSURE porigin pitem* pstaticcell*
+def $object_body_real(pobject) = false -- otherwise
+
+def $bind_scope_origin(BIND_CLASS porigin) = (porigin)
+def $bind_scope_origin(pbindscope) = eps -- otherwise
+def $bind_scope_name(S, BIND_UNSCOPED) = eps
+def $bind_scope_name(S, BIND_CLASS porigin) = pclassdesc.NAME -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $bind_scope_name(S, BIND_INTERNAL ptbytes) = ptbytes
+def $bind_object_scope(S, n) = BIND_CLASS porigin -- if S.OBJECTS[n] = INSTANCE porigin
+def $bind_object_scope(S, n) = BIND_INTERNAL ($object_name(S, n))
+  -- if ~$bind_is_instance(S, n)
+def $fake_bind_scope(S, n) = pboundfake.SCOPE -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $fake_bind_scope(S, n) = BIND_INTERNAL ($ptascii(text_base))
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+def $fake_bind_scope(S, n) = BIND_CLASS pclosurescope.LEXICAL
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+def $fake_bind_scope(S, n) = BIND_CLASS porigin
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = (pclosurebinding)
+  -- if pclosurebinding.LEXICAL = (porigin)
+def $fake_bind_scope(S, n) = BIND_UNSCOPED
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $bind_source_lexical(S, n) = eps
+  -- if ~$bound_fake_object(S, n)
+  -- if $fake_bind_direct_getter(S, n) = eps
+  -- if ~$internal_closure_object(S, n)
+def $fake_bind_scope(S, n) = pinternalclosurescope.LEXICAL
+  -- if $internal_closure_row(S, n) = (pinternalclosurescope)
+def $fake_bind_static(S, n) = $fake_bind_static($fake_bind_history(S, pboundfake), pboundfake.SOURCE)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $fake_bind_static(S, n) = pmethoddesc.STATIC
+  -- if ~$bound_fake_object(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+def $fake_bind_static(S, n) = false
+  -- if ~$bound_fake_object(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = eps
+def $fake_bind_static(S, n) = false
+  -- if ~$bound_fake_object(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = eps
+
+;; Reconstitute only a lookup view of the old source's permission certificate.
+;; No real allocation or ownership edge is introduced by this helper.
+def $fake_bind_history_nodes(S, n, (pclosurescope)) = [HOBJECT n] ++ $scoped_receiver_nodes(pclosurescope.RECEIVER)
+def $fake_bind_history_nodes(S, n, eps) = [HOBJECT n, HOBJECT n_receiver]
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+def $fake_bind_history_nodes(S, n, eps) = [HOBJECT n] ++ $scoped_receiver_nodes(pboundfake.RECEIVER)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $fake_bind_history_nodes(S, n, eps) = [HOBJECT n]
+  -- if $fake_bind_direct_getter(S, n) = eps
+  -- if ~$bound_fake_object(S, n)
+def $fake_bind_history_source(S, n) = $from_history(S, pfrommethod)
+  -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
+def $fake_bind_history_source(S, n) = S
+  -- if ~$from_object(S.OBJECTS[n])
+def $fake_bind_history(S, pboundfake) = $fake_bind_history_source(S_history, pboundfake.SOURCE)
+  -- if pboundfake.ORIGINAL = (pclosurescope)
+  -- if S_history = S[.ALLOCATIONS = S.ALLOCATIONS ++ $fake_bind_history_nodes(S, pboundfake.SOURCE, pboundfake.ORIGINAL)][.CLOSURESCOPES = pclosurescope :: $closure_scopes_except(S.CLOSURESCOPES, pboundfake.SOURCE)]
+def $fake_bind_history(S, pboundfake) = $fake_bind_history_source(S[.ALLOCATIONS = S.ALLOCATIONS ++ $fake_bind_history_nodes(S, pboundfake.SOURCE, eps)], pboundfake.SOURCE)
+  -- if pboundfake.ORIGINAL = eps
+def $closure_scopes_except(eps, n) = eps
+def $closure_scopes_except(pclosurescope :: pclosurescope_tail*, n) = $closure_scopes_except(pclosurescope_tail*, n)
+  -- if pclosurescope.OBJECT = n
+def $closure_scopes_except(pclosurescope :: pclosurescope_tail*, n) = pclosurescope :: $closure_scopes_except(pclosurescope_tail*, n)
+  -- if pclosurescope.OBJECT =/= n
+def $fake_bind_source_valid(S, pboundfake) = true
+  -- if $(pboundfake.SOURCE < |S.OBJECTS|)
+  -- if pboundfake.ORIGINAL = (pclosurescope)
+  -- if pclosurescope.OBJECT = pboundfake.SOURCE
+  -- if $closure_scope_at(S.CLOSURESCOPES, pboundfake.SOURCE) = eps \/ $closure_scope_at(S.CLOSURESCOPES, pboundfake.SOURCE) = (pclosurescope)
+  -- if S_history = $fake_bind_history(S, pboundfake)
+  -- if $fake_bind_object(S_history, pboundfake.SOURCE)
+  -- if $closure_scope_row_valid(S_history, pclosurescope)
+def $fake_bind_source_valid(S, pboundfake) = true
+  -- if $(pboundfake.SOURCE < |S.OBJECTS|)
+  -- if pboundfake.ORIGINAL = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, pboundfake.SOURCE) = eps
+  -- if $fake_bind_object($fake_bind_history(S, pboundfake), pboundfake.SOURCE)
+def $fake_bind_source_valid(S, pboundfake) = false -- otherwise
+
+def $fake_bind_compatible(S, n, BIND_CLASS porigin) = $class_instanceof(S, POBJECT n, pclassdesc.NAME)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $fake_bind_compatible(S, n, BIND_INTERNAL ptbytes) = $class_instanceof(S, POBJECT n, ptbytes)
+def $fake_bind_compatible(S, n, BIND_UNSCOPED) = true
+def $bound_fake_receiver_valid(S, pboundfake) = true
+  -- if pboundfake.RECEIVER = (n_receiver)
+  -- if $getclass_live_object(S, n_receiver)
+  -- if pboundfake.CALLED = $bind_object_scope(S, n_receiver)
+  -- if S_history = $fake_bind_history(S, pboundfake)
+  -- if ~$fake_bind_static(S_history, pboundfake.SOURCE)
+  -- if $fake_bind_intrinsic(S_history, pboundfake.SOURCE) = eps
+  -- if $fake_bind_compatible(S, n_receiver, $fake_bind_scope(S_history, pboundfake.SOURCE))
+def $bound_fake_receiver_valid(S, pboundfake) = true
+  -- if pboundfake.RECEIVER = eps
+  -- if pboundfake.CALLED = pboundfake.SCOPE
+  -- if S_history = $fake_bind_history(S, pboundfake)
+  -- if $fake_bind_static(S_history, pboundfake.SOURCE) \/ $fake_bind_scope(S_history, pboundfake.SOURCE) = BIND_UNSCOPED
+def $bound_fake_receiver_valid(S, pboundfake) = true
+  -- if pboundfake.RECEIVER = eps
+  -- if pboundfake.SCOPE = BIND_UNSCOPED
+  -- if S_history = $fake_bind_history(S, pboundfake)
+  -- if $fake_bind_intrinsic(S_history, pboundfake.SOURCE) = (pintrinsic)
+  -- if pboundfake.CALLED =/= BIND_UNSCOPED
+  -- if $bind_scope_valid(S, pboundfake.CALLED)
+def $bound_fake_receiver_valid(S, pboundfake) = false -- otherwise
+def $bind_scope_valid(S, BIND_UNSCOPED) = true
+def $bind_scope_valid(S, BIND_CLASS porigin) = $method_capture_class_valid(S, (porigin))
+def $bind_scope_valid(S, BIND_INTERNAL ptbytes) = $class_internal(ptbytes)
+def $bound_fake_scope_valid(S, pboundfake) = true
+  -- if S_history = $fake_bind_history(S, pboundfake)
+  -- if pboundfake.SCOPE = $fake_bind_scope(S_history, pboundfake.SOURCE)
+  -- if ~($bind_is_named(S_history, pboundfake.SOURCE) /\ pboundfake.SCOPE = BIND_UNSCOPED /\ pboundfake.RECEIVER =/= eps)
+def $bound_fake_scope_valid(S, pboundfake) = true
+  -- if S_history = $fake_bind_history(S, pboundfake)
+  -- if $object_body(S_history.OBJECTS[pboundfake.SOURCE]) = NAMEDCLOSURE porigin
+  -- if $fake_bind_scope(S_history, pboundfake.SOURCE) = BIND_UNSCOPED
+  -- if pboundfake.SCOPE = BIND_INTERNAL ($ptascii("Closure"))
+  -- if pboundfake.RECEIVER =/= eps
+def $bound_fake_scope_valid(S, pboundfake) = false -- otherwise
+def $bound_fake_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if $(pboundfake.SOURCE < n)
+  -- if $fake_bind_source_valid(S, pboundfake)
+  -- if $closure_binding_api_site(S, pboundfake.SITE)
+  -- if $bound_fake_scope_valid(S, pboundfake)
+  -- if $bound_fake_receiver_valid(S, pboundfake)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+def $bound_fake_valid(S, n) = false -- otherwise
+
+def $closure_static_api_kind(pintrinsic) = (pintrinsic = INTRINSIC_FROM_CALLABLE \/ pintrinsic = INTRINSIC_CLOSURE_CURRENT \/ pintrinsic = INTRINSIC_CLOSURE_BIND)
+;; Static method selection authenticates the historical Closure type only.
+;; Its discarded receiver's captures, statics and bound object may have retired.
+def $closure_static_api_owner_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+def $closure_static_api_owner_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+def $closure_static_api_owner_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
+  -- if pintrinsic =/= INTRINSIC_FROM_CALLABLE /\ pintrinsic =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pintrinsic)
+def $closure_static_api_owner_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if ~$object_body_real(S.OBJECTS[n])
+  -- if ~$bind_is_named(S, n)
+  -- if ~$bind_is_intrinsic(S, n)
+  -- if $class_instanceof(S, POBJECT n, $ptascii("Closure"))
+  -- if ~$bound_fake_object(S, n)
+def $closure_static_api_owner_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if $bound_fake_valid(S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n] ++ $scoped_receiver_nodes(pboundfake.RECEIVER)], n)
+def $closure_static_api_owner_valid(S, n) = false -- otherwise
+def $bind_is_named(S, n) = true -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin
+def $bind_is_named(S, n) = false -- otherwise
+def $bind_is_intrinsic(S, n) = true -- if $object_body(S.OBJECTS[n]) = INTRINSICCLOSURE pintrinsic
+def $bind_is_intrinsic(S, n) = false -- otherwise
+
+
+def $closure_bind_kind(INTRINSIC_CLOSURE_BIND) = true
+def $closure_bind_kind(INTRINSIC_CLOSURE_BINDTO) = true
+def $closure_bind_kind(pintrinsic) = false -- otherwise
+def $intrinsic_name(INTRINSIC_CLOSURE_BIND) = $ptascii("Closure::bind")
+def $intrinsic_name(INTRINSIC_CLOSURE_BINDTO) = $ptascii("Closure::bindTo")
+def $config_kind(pintrinsic) = true -- if $closure_bind_kind(pintrinsic)
+def $config_parameter(INTRINSIC_CLOSURE_BIND, ptbytes) = (0) -- if ptbytes = $ptascii("closure")
+def $config_parameter(INTRINSIC_CLOSURE_BIND, ptbytes) = (1) -- if ptbytes = $ptascii("newThis")
+def $config_parameter(INTRINSIC_CLOSURE_BIND, ptbytes) = (2) -- if ptbytes = $ptascii("newScope")
+def $config_parameter(INTRINSIC_CLOSURE_BINDTO, ptbytes) = (0) -- if ptbytes = $ptascii("newThis")
+def $config_parameter(INTRINSIC_CLOSURE_BINDTO, ptbytes) = (1) -- if ptbytes = $ptascii("newScope")
+def $config_parameter_name(INTRINSIC_CLOSURE_BIND, 0) = $ptascii("closure")
+def $config_parameter_name(INTRINSIC_CLOSURE_BIND, 1) = $ptascii("newThis")
+def $config_parameter_name(INTRINSIC_CLOSURE_BIND, 2) = $ptascii("newScope")
+def $config_parameter_name(INTRINSIC_CLOSURE_BINDTO, 0) = $ptascii("newThis")
+def $config_parameter_name(INTRINSIC_CLOSURE_BINDTO, 1) = $ptascii("newScope")
+def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION ptbytes_name, CLASS ($ptascii("Closure")), TYPE (ptbytes_type), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if $closure_bind_kind(pconfigcall.KIND)
+  -- if ptbytes_name = $fake_bind_trace_name(pconfigcall.KIND)
+  -- if ptbytes_type = $fake_bind_trace_type(pconfigcall.KIND)
+def $fake_bind_trace_name(INTRINSIC_CLOSURE_BIND) = $ptascii("bind")
+def $fake_bind_trace_name(INTRINSIC_CLOSURE_BINDTO) = $ptascii("bindTo")
+def $fake_bind_trace_type(INTRINSIC_CLOSURE_BIND) = $ptascii("::")
+def $fake_bind_trace_type(INTRINSIC_CLOSURE_BINDTO) = $ptascii("->")
+def $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BINDTO) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("bindto"))
+  -- if ~$ppfirstclass(phpType7*)
+def $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BINDTO) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("bindto"))
+  -- if ~$ppfirstclass(phpType7*)
+def $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BIND) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("bind"))
+  -- if ~$ppfirstclass(phpType7*)
+def $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BIND) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("bind"))
+  -- if ~$ppfirstclass(phpType7*)
+def $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BIND) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $from_static_class(S, porigin, phpType19)
+  -- if $method_source_name(phpType20, $ptascii("bind"))
+  -- if ~$ppfirstclass(phpType7*)
+def $closure_binding_site(S, porigin, pintrinsic) = false -- otherwise
+def $closure_binding_api_site(S, porigin) = ($closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BINDTO) \/ $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BIND))
+def $config_selected_valid(S, pconfigcall) = true
+  -- if $closure_bind_kind(pconfigcall.KIND)
+  -- if $closure_binding_site(S, pconfigcall.SITE, pconfigcall.KIND)
+  -- if pconfigcall.SELECTION = eps
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BINDTO
+  -- if pconfigcall.OWNER = (n)
+  -- if $closure_callable(S, n)
+def $config_selected_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BIND
+  -- if $closure_binding_site(S, pconfigcall.SITE, INTRINSIC_CLOSURE_BIND)
+  -- if pconfigcall.SELECTION = eps
+  -- if pconfigcall.OWNER = eps
+  -- if $origin_node(S.SOURCES, pconfigcall.SITE) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+def $closure_binding_start(S, porigin, pintrinsic, n_owner?, z) = S[.TODO = [CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, SELECTION eps, LINE z, PACKS eps}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $closure_binding_start(S_read, porigin, INTRINSIC_CLOSURE_BINDTO, (n), z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $closure_callable(S_read, n)
+  -- if $ptlc(ptbytes) = $ptascii("bindto")
+  -- if S.ORIGIN = (porigin)
+  -- if $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BINDTO)
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, phpType7*, z) = $closure_binding_start(S, porigin, INTRINSIC_CLOSURE_BIND, eps, z)
+  -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("closure")
+  -- if $ptlc(ptbytes_method) = $ptascii("bind")
+  -- if S.ORIGIN = (porigin)
+  -- if $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BIND)
+
+def $fake_bind_source(pconfigcall) = pconfigcall.OWNER -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BINDTO
+def $fake_bind_source(pconfigcall) = (n)
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BIND
+  -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN (POBJECT n))
+def $fake_bind_source(pconfigcall) = eps -- otherwise
+def $fake_bind_offset(pconfigcall) = 0 -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BINDTO
+def $fake_bind_offset(pconfigcall) = 1 -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BIND
+def $fake_bind_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects at least ") ++ $decimal_integer(n_min) ++ $ptascii(" argument") ++ $config_plural(n_min) ++ $ptascii(", ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
+  -- if n_min = $($fake_bind_offset(pconfigcall) + 1)
+  -- if $(|pconfigcall.SENT| < n_min)
+def $fake_bind_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects at most ") ++ $decimal_integer(n_max) ++ $ptascii(" arguments, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
+  -- if n_max = $($fake_bind_offset(pconfigcall) + 2)
+  -- if $(|pconfigcall.SENT| > n_max)
+def $fake_bind_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(pconfigcall.KIND, n) ++ $ptascii(") not passed"))
+  -- if n_min = $($fake_bind_offset(pconfigcall) + 1)
+  -- if $(n_min <= |pconfigcall.SENT| /\ |pconfigcall.SENT| <= n_min + 1)
+  -- if $config_missing(pconfigcall.SENT, 0) = (n)
+  -- if $(n < n_min)
+def $fake_bind_arity(S, pconfigcall) = S -- otherwise
+def $fake_bind_receive(S, pconfigcall) = S_arity
+  -- if S_arity = $fake_bind_arity(S, pconfigcall)
+  -- if S_arity.COMPLETION =/= NORMAL
+def $fake_bind_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("Closure::bind(): Argument #1 ($closure) must be of type Closure, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if $fake_bind_arity(S, pconfigcall).COMPLETION = NORMAL
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BIND
+  -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
+  -- if ~$bind_value_closure(S, pvalue)
+def $bind_value_closure(S, POBJECT n) = $closure_callable(S, n)
+def $bind_value_closure(S, pvalue) = false -- otherwise
+def $fake_bind_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #") ++ $decimal_integer($(n_offset + 1)) ++ $ptascii(" ($newThis) must be of type ?object, ") ++ $typed_given(S, pvalue_receiver) ++ $ptascii(" given"))
+  -- if $fake_bind_arity(S, pconfigcall).COMPLETION = NORMAL
+  -- if $fake_bind_source(pconfigcall) = (n_source)
+  -- if $closure_callable(S, n_source)
+  -- if n_offset = $fake_bind_offset(pconfigcall)
+  -- if pvalue_receiver = $error_api_value(pconfigcall, n_offset, PNULL)
+  -- if pvalue_receiver =/= PNULL
+  -- if ~$config_object(pvalue_receiver)
+def $fake_bind_receive(S, pconfigcall) = $fake_bind_select_scope(S, pconfigcall, n_source, $error_api_value(pconfigcall, $(n_offset + 1), PSTRING ($ptascii("static"))))
+  -- if $fake_bind_arity(S, pconfigcall).COMPLETION = NORMAL
+  -- if $fake_bind_source(pconfigcall) = (n_source)
+  -- if $closure_callable(S, n_source)
+  -- if n_offset = $fake_bind_offset(pconfigcall)
+  -- if pvalue_receiver = $error_api_value(pconfigcall, n_offset, PNULL)
+  -- if pvalue_receiver = PNULL \/ $config_object(pvalue_receiver)
+
+def $fake_bind_scope_result(S, n_source, PNULL) = BIND_SCOPE BIND_UNSCOPED
+def $fake_bind_scope_result(S, n_source, POBJECT n) = BIND_SCOPE ($bind_object_scope(S, n))
+def $fake_bind_scope_result(S, n_source, PSTRING ptbytes) = BIND_SCOPE ($fake_bind_scope(S, n_source))
+  -- if ptbytes = $ptascii("static")
+def $fake_bind_scope_result(S, n_source, PSTRING ptbytes) = BIND_SCOPE (BIND_CLASS porigin)
+  -- if ptbytes =/= $ptascii("static")
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes))) = (porigin)
+def $fake_bind_scope_result(S, n_source, PSTRING ptbytes) = BIND_SCOPE (BIND_INTERNAL ptbytes_display)
+  -- if ptbytes =/= $ptascii("static")
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes))) = eps
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc($typed_callable_name(ptbytes))) = (INTERNAL ptbytes_lower ptbytes_display text_kind)
+def $fake_bind_scope_result(S, n_source, PSTRING ptbytes) = BIND_SCOPE_MISSING ptbytes
+  -- if ptbytes =/= $ptascii("static")
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes))) = eps
+  -- if ~$class_internal($typed_callable_name(ptbytes))
+def $fake_bind_scope_result(S, n_source, pvalue) = BIND_SCOPE_UNKNOWN "Closure binding scope operand" -- otherwise
+
+def $fake_bind_select_scope(S, pconfigcall, n_source, pvalue) = $fake_bind_finish(S, pconfigcall, n_source, $fake_bind_this(pconfigcall), pbindscope)
+  -- if $fake_bind_scope_result(S, n_source, pvalue) = BIND_SCOPE pbindscope
+def $fake_bind_select_scope(S, pconfigcall, n_source, pvalue) = $fake_bind_warning(S, pconfigcall, BIND_SCOPE_MISSING ptbytes, $ptascii("Class \"") ++ ptbytes ++ $ptascii("\" not found"))
+  -- if $fake_bind_scope_result(S, n_source, pvalue) = BIND_SCOPE_MISSING ptbytes
+def $fake_bind_select_scope(S, pconfigcall, n_source, pvalue) = $fake_bind_select_scope(S, pconfigcall, n_source, PSTRING ptbytes)
+  -- if ~$config_object(pvalue)
+  -- if pvalue =/= PNULL
+  -- if ~$method_string(pvalue)
+  -- if $typed_conversion_at(S, ([(PTBRANCH ([PTBUILTIN "string"]))]), pvalue, $exit_strict(S, pconfigcall.SITE)) = TYPEVALUE (PSTRING ptbytes)
+def $fake_bind_select_scope(S, pconfigcall, n_source, pvalue) = $fake_bind_select_scope(S_value, pconfigcall, n_source, PSTRING ptbytes)
+  -- if $typed_scalar(pvalue) /\ ~$method_string(pvalue)
+  -- if $typed_conversion_at(S, ([(PTBRANCH ([PTBUILTIN "string"]))]), pvalue, $exit_strict(S, pconfigcall.SITE)) = TYPESTRING pvalue
+  -- if S_value = $typed_apply(S, TYPESTRING pvalue, pconfigcall.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING ptbytes)
+def $fake_bind_select_scope(S, pconfigcall, n_source, pvalue) = $config_error(S, pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #") ++ $decimal_integer($($fake_bind_offset(pconfigcall) + 2)) ++ $ptascii(" ($newScope) must be of type object|string|null, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if ~$config_object(pvalue)
+  -- if pvalue =/= PNULL
+  -- if ~$method_string(pvalue)
+  -- if $typed_conversion_at(S, ([(PTBRANCH ([PTBUILTIN "string"]))]), pvalue, $exit_strict(S, pconfigcall.SITE)) = TYPEREJECT
+def $fake_bind_this(pconfigcall) = (n)
+  -- if $error_api_value(pconfigcall, $fake_bind_offset(pconfigcall), PNULL) = POBJECT n
+def $fake_bind_this(pconfigcall) = eps -- otherwise
+def $fake_bind_scope_value(S, pconfigcall) = PSTRING ptbytes
+  -- if pvalue = $error_api_value(pconfigcall, $($fake_bind_offset(pconfigcall) + 1), PSTRING ($ptascii("static")))
+  -- if ~$config_object(pvalue) /\ pvalue =/= PNULL /\ ~$method_string(pvalue)
+  -- if $typed_conversion_at(S, ([(PTBRANCH ([PTBUILTIN "string"]))]), pvalue, $exit_strict(S, pconfigcall.SITE)) = TYPEVALUE (PSTRING ptbytes)
+def $fake_bind_scope_value(S, pconfigcall) = PSTRING ptbytes
+  -- if pvalue = $error_api_value(pconfigcall, $($fake_bind_offset(pconfigcall) + 1), PSTRING ($ptascii("static")))
+  -- if $typed_scalar(pvalue) /\ ~$method_string(pvalue)
+  -- if $typed_conversion_at(S, ([(PTBRANCH ([PTBUILTIN "string"]))]), pvalue, $exit_strict(S, pconfigcall.SITE)) = TYPESTRING pvalue
+  -- if $typed_apply(S, TYPESTRING pvalue, pconfigcall.LINE).RESULT = KNOWN (PSTRING ptbytes)
+def $fake_bind_scope_value(S, pconfigcall) = pvalue
+  -- if pvalue = $error_api_value(pconfigcall, $($fake_bind_offset(pconfigcall) + 1), PSTRING ($ptascii("static")))
+  -- if $config_object(pvalue) \/ pvalue = PNULL \/ $method_string(pvalue)
+def $fake_bind_scope_value(S, pconfigcall) = pvalue
+  -- if pvalue = $error_api_value(pconfigcall, $($fake_bind_offset(pconfigcall) + 1), PSTRING ($ptascii("static")))
+  -- if ~$config_object(pvalue) /\ pvalue =/= PNULL /\ ~$method_string(pvalue)
+  -- if $typed_conversion_at(S, ([(PTBRANCH ([PTBUILTIN "string"]))]), pvalue, $exit_strict(S, pconfigcall.SITE)) = TYPEREJECT
+def $fake_bind_scope_argument(S, n_source, PNULL, BIND_UNSCOPED) = true
+def $fake_bind_scope_argument(S, n_source, POBJECT n, pbindscope) = (pbindscope = $bind_object_scope(S, n))
+def $fake_bind_scope_argument(S, n_source, PSTRING ptbytes, pbindscope) = (pbindscope = $fake_bind_scope(S, n_source))
+  -- if ptbytes = $ptascii("static")
+def $fake_bind_scope_argument(S, n_source, PSTRING ptbytes, BIND_CLASS porigin) = true
+  -- if ptbytes =/= $ptascii("static")
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $ptlc($typed_callable_name(ptbytes)) = $ptlc(pclassdesc.NAME)
+def $fake_bind_scope_argument(S, n_source, PSTRING ptbytes, BIND_INTERNAL ptbytes_scope) = true
+  -- if ptbytes =/= $ptascii("static")
+  -- if $ptlc($typed_callable_name(ptbytes)) = $ptlc(ptbytes_scope)
+  -- if $class_internal(ptbytes_scope)
+def $fake_bind_scope_argument(S, n_source, pvalue, pbindscope) = false -- otherwise
+
+rule PhpStep/fake-bind-invoke: S ~> $fake_bind_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $closure_bind_kind(pconfigcall.KIND)
+  -- if $config_invoke_valid(S, pconfigcall)
+
+def $fake_bind_name(S, n) = $fake_bind_name($fake_bind_history(S, pboundfake), pboundfake.SOURCE)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $fake_bind_name(S, n) = $getter_name(pgettermethod)
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+def $fake_bind_name(S, n) = $intrinsic_name(pintrinsic)
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
+def $fake_bind_name(S, n) = pmethoddesc.NAME
+  -- if ~$bound_fake_object(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+def $fake_bind_name(S, n) = pfunction.NAME
+  -- if ~$bound_fake_object(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = eps
+def $fake_bind_warning_message(S, n_source, (n_receiver), pbindscope) = ($ptascii("Cannot bind an instance to a static closure, this will be an error in PHP 9"))
+  -- if $fake_bind_static(S, n_source)
+def $fake_bind_warning_message(S, n_source, (n_receiver), pbindscope) = ($ptascii("Cannot bind method ") ++ $bind_scope_name(S, pbindscope_source) ++ $ptascii("::") ++ $fake_bind_name(S, n_source) ++ $ptascii("() to object of class ") ++ $object_name(S, n_receiver) ++ $ptascii(", this will be an error in PHP 9"))
+  -- if ~$fake_bind_static(S, n_source)
+  -- if pbindscope_source = $fake_bind_scope(S, n_source)
+  -- if pbindscope_source =/= BIND_UNSCOPED
+  -- if ~$fake_bind_compatible(S, n_receiver, pbindscope_source)
+def $fake_bind_warning_message(S, n_source, eps, pbindscope) = ($ptascii("Cannot unbind $this of method, this will be an error in PHP 9"))
+  -- if ~$fake_bind_static(S, n_source)
+  -- if $fake_bind_scope(S, n_source) =/= BIND_UNSCOPED
+def $fake_bind_warning_message(S, n_source, n_receiver?, BIND_INTERNAL ptbytes) = ($ptascii("Cannot bind closure to scope of internal class ") ++ ptbytes ++ $ptascii(", this will be an error in PHP 9"))
+  -- if ~$fake_bind_receiver_warning(S, n_source, n_receiver?)
+  -- if $fake_bind_scope(S, n_source) =/= BIND_INTERNAL ptbytes
+def $fake_bind_warning_message(S, n_source, n_receiver?, pbindscope) = ($ptascii("Cannot rebind scope of closure created from function, this will be an error in PHP 9"))
+  -- if ~$fake_bind_receiver_warning(S, n_source, n_receiver?)
+  -- if ~$fake_bind_internal_warning(S, n_source, pbindscope)
+  -- if $fake_bind_scope(S, n_source) = BIND_UNSCOPED
+  -- if pbindscope =/= BIND_UNSCOPED
+def $fake_bind_warning_message(S, n_source, n_receiver?, pbindscope) = ($ptascii("Cannot rebind scope of closure created from method, this will be an error in PHP 9"))
+  -- if ~$fake_bind_receiver_warning(S, n_source, n_receiver?)
+  -- if ~$fake_bind_internal_warning(S, n_source, pbindscope)
+  -- if $fake_bind_scope(S, n_source) =/= BIND_UNSCOPED
+  -- if pbindscope =/= $fake_bind_scope(S, n_source)
+def $fake_bind_warning_message(S, n_source, n_receiver?, pbindscope) = eps -- otherwise
+def $fake_bind_receiver_warning(S, n_source, (n_receiver)) = ($fake_bind_static(S, n_source) \/ ~$fake_bind_compatible(S, n_receiver, $fake_bind_scope(S, n_source)))
+def $fake_bind_receiver_warning(S, n_source, eps) = (~$fake_bind_static(S, n_source) /\ $fake_bind_scope(S, n_source) =/= BIND_UNSCOPED)
+def $fake_bind_internal_warning(S, n_source, BIND_INTERNAL ptbytes) = ($fake_bind_scope(S, n_source) =/= BIND_INTERNAL ptbytes)
+def $fake_bind_internal_warning(S, n_source, pbindscope) = false -- otherwise
+def $fake_bind_finish(S, pconfigcall, n_source, n_receiver?, pbindscope) = $fake_bind_warning(S, pconfigcall, BIND_SCOPE pbindscope, ptbytes)
+  -- if $fake_bind_object(S, n_source)
+  -- if $fake_bind_warning_message(S, n_source, n_receiver?, pbindscope) = (ptbytes)
+def $fake_bind_finish(S, pconfigcall, n_source, n_receiver?, pbindscope) = $fake_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope)
+  -- if $fake_bind_object(S, n_source)
+  -- if $fake_bind_warning_message(S, n_source, n_receiver?, pbindscope) = eps
+;; Ordinary binding validates its compile flags before cloning its own statics.
+def $fake_bind_finish(S, pconfigcall, n_source, n_receiver?, pbindscope) = $real_bind_result(S, pconfigcall, n_source, n_receiver?, pbindscope)
+  -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
+
+def $fake_bind_slots(eps) = eps
+def $fake_bind_slots((NAMED_SENT poperand) :: pnamedslot*) = poperand :: $fake_bind_slots(pnamedslot*)
+def $fake_bind_slots(NAMED_HOLE :: pnamedslot*) = (KNOWN PNULL) :: $fake_bind_slots(pnamedslot*)
+
+def $fake_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope) = $from_done(S[.OBJECTS = S.OBJECTS ++ [BOUNDFAKECLOSURE pboundfake]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+  -- if n = |S.OBJECTS|
+  -- if pboundfake = {SITE pconfigcall.SITE, SOURCE n_source, ORIGINAL $closure_scope_at(S.CLOSURESCOPES, n_source), SCOPE $fake_bind_new_scope(S, n_source, n_receiver?, pbindscope), CALLED $fake_bind_new_called(S, n_receiver?, pbindscope), RECEIVER $fake_bind_new_receiver(S, n_source, n_receiver?)}
+def $fake_bind_new_scope(S, n_source, (n_receiver), BIND_UNSCOPED) = BIND_INTERNAL ($ptascii("Closure"))
+  -- if $bind_is_named(S, n_source)
+def $fake_bind_new_scope(S, n_source, n_receiver?, pbindscope) = pbindscope -- otherwise
+def $fake_bind_new_called(S, (n_receiver), pbindscope) = $bind_object_scope(S, n_receiver)
+def $fake_bind_new_called(S, eps, pbindscope) = pbindscope
+def $fake_bind_new_receiver(S, n_source, n_receiver?) = eps
+  -- if $bind_is_intrinsic(S, n_source)
+def $fake_bind_new_receiver(S, n_source, n_receiver?) = $fake_bind_new_receiver($fake_bind_history(S, pboundfake), pboundfake.SOURCE, n_receiver?)
+  -- if S.OBJECTS[n_source] = BOUNDFAKECLOSURE pboundfake
+def $fake_bind_new_receiver(S, n_source, n_receiver?) = n_receiver?
+  -- if ~$bind_is_intrinsic(S, n_source)
+  -- if ~$bound_fake_object(S, n_source)
+
+def $fake_bind_warning(S, pconfigcall, pbindscoperesult, ptbytes) = $error_dispatch(S, 2, ptbytes, pconfigcall.LINE, DIAGNOSTIC "Warning" ptbytes pconfigcall.LINE, FAKE_BIND_WARNING {CALL pconfigcall, SCOPE pbindscoperesult, MESSAGE ptbytes})
+def $task_nodes(FAKE_BIND_WARNING pbindwarning) = $config_nodes(pbindwarning.CALL)
+def $call_task_valid(S, FAKE_BIND_WARNING pbindwarning) = ($config_invoke_valid(S, pbindwarning.CALL) /\ $closure_bind_kind(pbindwarning.CALL.KIND) /\ $fake_bind_warning_valid(S, pbindwarning))
+def $fake_bind_warning_valid(S, pbindwarning) = true
+  -- if $fake_bind_source(pbindwarning.CALL) = (n_source)
+  -- if $fake_bind_object(S, n_source)
+  -- if pbindwarning.SCOPE = BIND_SCOPE pbindscope
+  -- if $fake_bind_scope_argument(S, n_source, $fake_bind_scope_value(S, pbindwarning.CALL), pbindscope)
+  -- if $fake_bind_warning_message(S, n_source, $fake_bind_this(pbindwarning.CALL), pbindscope) = (pbindwarning.MESSAGE)
+;; A missing class may be published by the handler; its selected warning is
+;; historical, while the captured argument bytes still authenticate its name.
+def $fake_bind_warning_valid(S, pbindwarning) = true
+  -- if $fake_bind_source(pbindwarning.CALL) = (n_source)
+  -- if pbindwarning.SCOPE = BIND_SCOPE_MISSING ptbytes_class
+  -- if $fake_bind_scope_value(S, pbindwarning.CALL) = PSTRING ptbytes_class
+  -- if ptbytes_class =/= $ptascii("static")
+  -- if pbindwarning.MESSAGE = $ptascii("Class \"") ++ ptbytes_class ++ $ptascii("\" not found")
+def $fake_bind_warning_valid(S, pbindwarning) = false -- otherwise
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = FAKE_BIND_WARNING pbindwarning
+  -- if $call_task_valid(S, FAKE_BIND_WARNING pbindwarning)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if pbindwarning.CALL.SITE = perrorcall.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pbindwarning.CALL.LINE
+  -- if perrorcall.MESSAGE = pbindwarning.MESSAGE
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+rule PhpStep/fake-bind-warning-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FAKE_BIND_WARNING pbindwarning) :: ptask_tail*
+  -- if $call_task_valid(S, FAKE_BIND_WARNING pbindwarning)
+
+def $node_children(S, HOBJECT n) = $scoped_receiver_nodes(pboundfake.RECEIVER)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $closure_callable(S, n) = $bound_fake_valid(S, n) -- if $bound_fake_object(S, n)
+def $closure_live_object_valid(S, n) = $bound_fake_valid(S, n) -- if $bound_fake_object(S, n)
+def $getclass_live_object(S, n) = $bound_fake_valid(S, n) -- if $bound_fake_object(S, n)
+def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if $bound_fake_valid(S, n)
+def $class_instanceof(S, POBJECT n, ptbytes) = true
+  -- if $ptlc(ptbytes) = $ptascii("closure")
+  -- if $bound_fake_object(S, n)
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
+  -- if $bound_fake_object(S, n)
+def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [BOUNDFAKECLOSURE pboundfake]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if S.OBJECTS[n_source] = BOUNDFAKECLOSURE pboundfake
+  -- if n = |S.OBJECTS|
+def $clone_same_kind(BOUNDFAKECLOSURE pboundfake, BOUNDFAKECLOSURE pboundfake) = true
+def $target_function(S, CLOSURE_TARGET n) = $target_function($fake_bind_history(S, pboundfake), CLOSURE_TARGET pboundfake.SOURCE)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if $bound_fake_valid(S, n)
+def $target_receiver(S, CLOSURE_TARGET n) = pboundfake.RECEIVER
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $target_lexical_class(S, CLOSURE_TARGET n) = $bind_scope_origin(pboundfake.SCOPE)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $target_called_class(S, CLOSURE_TARGET n) = $bind_scope_origin(pboundfake.CALLED)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $state_static_at(S, porigin) = $static_at(S.STATICS, $trait_static_key(S, porigin))
+  -- if $current_instance(S) = (n)
+  -- if $bound_fake_object(S, n)
+def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new[.ORIGIN = $trait_static_key(S, pstaticcell_new.ORIGIN)]]]
+  -- if $current_instance(S) = (n)
+  -- if $bound_fake_object(S, n)
+def $trace_context_function(S, pcallcontext) = $fake_bind_name(S, n)
+  -- if pcallcontext.INSTANCE = (n)
+  -- if $bound_fake_object(S, n)
+def $trace_context_class(S, pcallcontext) = ($bind_scope_name(S, pboundfake.SCOPE))
+  -- if pcallcontext.INSTANCE = (n)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pboundfake.SCOPE =/= BIND_UNSCOPED
+def $trace_context_class(S, pcallcontext) = eps
+  -- if pcallcontext.INSTANCE = (n)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pboundfake.SCOPE = BIND_UNSCOPED
+def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
+  -- if pcallcontext.INSTANCE = (n)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pboundfake.RECEIVER =/= eps
+def $trace_context_type(S, pcallcontext) = ($ptascii("::"))
+  -- if pcallcontext.INSTANCE = (n)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pboundfake.RECEIVER = eps
+  -- if pboundfake.CALLED =/= BIND_UNSCOPED
+
+def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = $closure_target_start(pfunction, $dynamic_arguments(S, porigin), (porigin), z_call, n) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $bound_fake_object(S, n)
+  -- if $closure_callable(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+def $call_selected_valid(S, CLOSURE_TARGET n, (porigin)) = true
+  -- if $bound_fake_object(S, n)
+  -- if $closure_callable(S, n)
+  -- if $dynamic_site(S, (porigin))
+  -- if $dynamic_fixed_name(S, porigin) = eps
+def $call_selected_valid(S, CLOSURE_TARGET n, (porigin)) = true
+  -- if $bound_fake_object(S, n)
+  -- if $closure_callable(S, n)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+def $call_selected_valid(S, CLOSURE_TARGET n, (porigin)) = true
+  -- if $bound_fake_object(S, n)
+  -- if $closure_callable(S, n)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method_args_task(CLOSURE_TARGET n, phpType7*, S.ORIGIN, z), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $bound_fake_object(S_read, n)
+  -- if $closure_callable(S_read, n)
+  -- if $target_function(S_read, CLOSURE_TARGET n) = (pfunction)
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $invoke_capture(S_read, n, S.ORIGIN)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $bound_fake_object(S_read, n)
+  -- if $closure_callable(S_read, n)
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $ppfirstclass(phpType7*)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UNSUPPORTED "bound fake Closure method consumer"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $bound_fake_object(S_read, n)
+  -- if $closure_known_other_method(ptbytes)
+  -- if ~($ptlc(ptbytes) <- [$ptascii("getcurrent"), $ptascii("fromcallable"), $ptascii("bindto"), $ptascii("bind")])
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method Closure::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $bound_fake_object(S_read, n)
+  -- if $ptlc(ptbytes) =/= $ptascii("__invoke")
+  -- if ~$closure_known_other_method(ptbytes)
+
+;; Internal lexical/called names have no user-class origin and grant no user
+;; private permission. Their observable class names remain available.
+def $bound_fake_internal_scope(S) = (ptbytes)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $internal_closure_scopes(S, n) = ((BIND_INTERNAL ptbytes, pbindscope_called, n_receiver?))
+def $bound_fake_internal_scope(S) = eps -- otherwise
+def $bound_fake_internal_called(S) = (ptbytes)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $internal_closure_scopes(S, n) = ((pbindscope_lexical, BIND_INTERNAL ptbytes, n_receiver?))
+def $bound_fake_internal_called(S) = eps -- otherwise
+def $calledclass_name(S, pargcall) = (ptbytes)
+  -- if ~$arginfo_method_receiver(S, pargcall)
+  -- if $call_current_valid(S)
+  -- if $bound_fake_internal_called(S) = (ptbytes)
+rule PhpStep/bound-fake-internal-self-class: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING ptbytes)]
+  -- if S.CONSTCONTEXT = eps
+  -- if S.TODO = (EVAL (NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)) :: ptask_tail*
+  -- if $pfclassname_keyword(phpType19) = $ptascii("self")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if $bound_fake_internal_scope(S) = (ptbytes)
+  -- if $call_current_valid(S)
+rule PhpStep/bound-fake-internal-static-class: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING ptbytes)]
+  -- if S.TODO = (EVAL (NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)) :: ptask_tail*
+  -- if $pfclassname_keyword(phpType19) = $ptascii("static")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if $bound_fake_internal_called(S) = (ptbytes)
+  -- if $call_current_valid(S)
+
+;; Finite internal captures retain their selected descriptor across binding.
+;; The getter receives the new object; free intrinsics discard a new receiver.
+def $bound_fake_getter(S, n) = ((n_receiver, pgettermethod, text_base))
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pboundfake.RECEIVER = (n_receiver)
+  -- if $fake_bind_getter(S, n) = ((n_old, pgettermethod, text_base))
+def $bound_fake_getter(S, n) = eps -- otherwise
+def $getter_capture_live(S, n) = $bound_fake_valid(S, n)
+  -- if $bound_fake_object(S, n)
+  -- if $bound_fake_getter(S, n) =/= eps
+def $getter_selected(S, pgettercall) = true
+  -- if pgettercall.CAPTURE = (n)
+  -- if $bound_fake_valid(S, n)
+  -- if $bound_fake_getter(S, n) = ((pgettercall.RECEIVER, pgettercall.METHOD, pgettercall.BASE))
+  -- if $exit_dynamic_site(S, pgettercall.SITE) \/ $exit_method_site(S, pgettercall.SITE)
+def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = (GETTER_ARGS {SITE porigin, RECEIVER n_receiver, BASE text_base, METHOD pgettermethod, CAPTURE (n), INDEX 0, SENT eps, LINE z_call}) :: (GETTER_CAPTURE_RESULT n porigin) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $bound_fake_valid(S, n)
+  -- if $bound_fake_getter(S, n) = ((n_receiver, pgettermethod, text_base))
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [GETTER_ARGS {SITE porigin, RECEIVER n_receiver, BASE text_base, METHOD pgettermethod, CAPTURE (n), INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $bound_fake_valid(S_read, n)
+  -- if $bound_fake_getter(S_read, n) = ((n_receiver, pgettermethod, text_base))
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)
+def $dynamic_value(S, porigin, z_init, z_call) = $intrinsic_prepare(S, pintrinsic, z_call, (n))
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $bound_fake_valid(S, n)
+  -- if $fake_bind_intrinsic(S, n) = (pintrinsic)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $intrinsic_prepare(S_read[.TODO = ptask_tail*], pintrinsic, z, (n))
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $bound_fake_valid(S_read, n)
+  -- if $fake_bind_intrinsic(S_read, n) = (pintrinsic)
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)
+def $bound_intrinsic_selected(S, n, pintrinsic, porigin) = true
+  -- if $bound_fake_valid(S, n)
+  -- if $fake_bind_intrinsic(S, n) = (pintrinsic)
+  -- if ($exit_fixed(S, porigin) = eps /\ $exit_dynamic_site(S, porigin)) \/ $exit_method_site(S, porigin)
+def $bound_intrinsic_selected(S, n, pintrinsic, porigin) = false -- otherwise
+def $exit_selected_valid(S, pexitcall) = true
+  -- if pexitcall.OWNER = (n)
+  -- if $bound_intrinsic_selected(S, n, pexitcall.KIND, pexitcall.SITE)
+def $clone_selected_valid(S, pclonecall) = true
+  -- if pclonecall.OWNER = (n)
+  -- if $bound_intrinsic_selected(S, n, INTRINSIC_CLONE, pclonecall.SITE)
+def $getclass_selected_valid(S, pgetclasscall) = true
+  -- if pgetclasscall.OWNER = (n)
+  -- if $bound_intrinsic_selected(S, n, INTRINSIC_GET_CLASS, pgetclasscall.SITE)
+def $config_selected_valid(S, pconfigcall) = true
+  -- if pconfigcall.OWNER = (n)
+  -- if pconfigcall.SELECTION = eps
+  -- if $bound_intrinsic_selected(S, n, pconfigcall.KIND, pconfigcall.SITE)
+def $arginfo_selected_valid(S, pargcall) = true
+  -- if pargcall.OWNER = (n)
+  -- if pargcall.SELECTION = eps
+  -- if $bound_intrinsic_selected(S, n, pargcall.KIND, pargcall.SITE)
+
+def $fake_compare_called(S, n) = pboundfake.CALLED
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $fake_compare_called(S, n) = BIND_CLASS pclosurescope.CALLED
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+def $fake_compare_called(S, n) = $fake_bind_scope(S, n)
+  -- if ~$bound_fake_object(S, n)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+def $fake_compare_receiver(S, n) = (n_receiver)
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base porigin
+def $fake_compare_receiver(S, n) = $target_receiver(S, CLOSURE_TARGET n)
+  -- if $fake_bind_direct_getter(S, n) = eps
+def $fake_compare_internal(S, n) = ($fake_bind_intrinsic(S, n) =/= eps \/ $fake_bind_getter(S, n) =/= eps)
+def $bound_fake_compare(S, n_left, n_right) = true
+  -- if $fake_bind_object(S, n_left) /\ $fake_bind_object(S, n_right)
+  -- if $fake_bind_name(S, n_left) = $fake_bind_name(S, n_right)
+  -- if $fake_compare_internal(S, n_left) = $fake_compare_internal(S, n_right)
+  -- if $fake_bind_scope(S, n_left) = $fake_bind_scope(S, n_right)
+  -- if $fake_compare_called(S, n_left) = $fake_compare_called(S, n_right)
+  -- if $fake_compare_receiver(S, n_left) = $fake_compare_receiver(S, n_right)
+def $bound_fake_compare(S, n_left, n_right) = false -- otherwise
+def $named_closure_same(S, n_left, n_right) = $bound_fake_compare(S, n_left, n_right)
+  -- if $bound_fake_object(S, n_left)
+def $named_closure_same(S, n_left, n_right) = $bound_fake_compare(S, n_left, n_right)
+  -- if ~$bound_fake_object(S, n_left)
+  -- if $bound_fake_object(S, n_right)
+
+;; A source Closure created under the dummy internal Closure scope is still
+;; REAL. Its copied certificate owns only its own nonstatic receiver. The
+;; parent object/body is historical lookup data, not a heap edge.
+def $internal_closure_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INTERNALSCOPECLOSURE pinternalclosurescope pobject
+def $internal_closure_object(S, n) = false -- otherwise
+def $object_body(INTERNALSCOPECLOSURE pinternalclosurescope pobject) = pobject
+def $object_changed(INTERNALSCOPECLOSURE pinternalclosurescope (REALCLOSURE porigin pitem_old* pstaticcell_old*), REALCLOSURE porigin pitem* pstaticcell*) = INTERNALSCOPECLOSURE pinternalclosurescope (REALCLOSURE porigin pitem* pstaticcell*)
+def $internal_closure_row(S, n) = (pinternalclosurescope)
+  -- if S.OBJECTS[n] = INTERNALSCOPECLOSURE pinternalclosurescope pobject
+def $internal_closure_row(S, n) = eps -- otherwise
+def $internal_closure_scopes(S, n) = ((pboundfake.SCOPE, pboundfake.CALLED, pboundfake.RECEIVER))
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pboundfake.SCOPE = BIND_INTERNAL ($ptascii("Closure"))
+def $internal_closure_scopes(S, n) = ((pinternalclosurescope.LEXICAL, pinternalclosurescope.CALLED, pinternalclosurescope.RECEIVER))
+  -- if $internal_closure_row(S, n) = (pinternalclosurescope)
+def $internal_closure_scopes(S, n) = eps -- otherwise
+def $internal_creator_history(S, n) = $fake_bind_history(S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n] ++ $scoped_receiver_nodes(pboundfake.RECEIVER)], pboundfake)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+def $internal_creator_history(S, n) = S -- otherwise
+def $internal_creator_body(S, n) = (pfunction.ORIGIN)
+  -- if S_history = $internal_creator_history(S, n)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if $bound_fake_valid(S_history, n)
+  -- if $target_function(S_history, CLOSURE_TARGET n) = (pfunction)
+def $internal_creator_body(S, n) = (porigin)
+  -- if S.OBJECTS[n] = INTERNALSCOPECLOSURE pinternalclosurescope (REALCLOSURE porigin pitem* pstaticcell*)
+  -- if $internal_closure_history_valid(S, n)
+def $internal_creator_body(S, n) = eps -- otherwise
+def $internal_closure_history_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INTERNALSCOPECLOSURE pinternalclosurescope (REALCLOSURE porigin pitem* pstaticcell*)
+  -- if ~pinternalclosurescope.BOUND
+  -- if $(pinternalclosurescope.SOURCE < n)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if $internal_creator_body(S, pinternalclosurescope.SOURCE) = (pinternalclosurescope.FUNCTION)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = ($origin_source(pinternalclosurescope.FUNCTION))
+  -- if $closure_creator_site(S, pinternalclosurescope.CALLSITE)
+  -- if $internal_closure_scopes(S, pinternalclosurescope.SOURCE) = ((pinternalclosurescope.LEXICAL, pinternalclosurescope.CALLED, n_receiver?))
+  -- if pinternalclosurescope.RECEIVER = eps /\ ($closure_static(S, pfunction) \/ n_receiver? = eps) \/ (~$closure_static(S, pfunction) /\ pinternalclosurescope.RECEIVER = n_receiver?)
+def $internal_closure_history_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INTERNALSCOPECLOSURE pinternalclosurescope (REALCLOSURE porigin pitem* pstaticcell*)
+  -- if pinternalclosurescope.BOUND
+  -- if $(pinternalclosurescope.SOURCE < n)
+  -- if $object_body(S.OBJECTS[pinternalclosurescope.SOURCE]) = REALCLOSURE porigin pitem_source* pstaticcell_source*
+  -- if pinternalclosurescope.FUNCTION = porigin
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if pinternalclosurescope.CALLSITE = (porigin_site)
+  -- if $closure_binding_api_site(S, porigin_site)
+  -- if $bind_scope_valid(S, pinternalclosurescope.LEXICAL)
+  -- if ~$bind_scope_internal(pinternalclosurescope.LEXICAL) \/ pinternalclosurescope.LEXICAL = BIND_INTERNAL ($ptascii("Closure"))
+  -- if pinternalclosurescope.LEXICAL =/= BIND_UNSCOPED \/ pinternalclosurescope.RECEIVER = eps
+  -- if $internal_bound_receiver_valid(S, pinternalclosurescope, pfunction)
+def $internal_bound_receiver_valid(S, pinternalclosurescope, pfunction) = (pinternalclosurescope.CALLED = pinternalclosurescope.LEXICAL)
+  -- if pinternalclosurescope.RECEIVER = eps
+def $internal_bound_receiver_valid(S, pinternalclosurescope, pfunction) = (pinternalclosurescope.CALLED = $bind_object_scope(S, n_receiver) /\ ~$closure_static(S, pfunction))
+  -- if pinternalclosurescope.RECEIVER = (n_receiver)
+def $internal_closure_history_valid(S, n) = false -- otherwise
+def $internal_closure_scope_valid(S, n) = true
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $internal_closure_history_valid(S, n)
+  -- if $internal_closure_row(S, n) = (pinternalclosurescope)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if $bind_receiver_live(S, pinternalclosurescope.RECEIVER)
+def $internal_closure_scope_valid(S, n) = false -- otherwise
+def $internal_closure_current(S) = (n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $internal_closure_scopes(S, n) =/= eps
+  -- if $call_current_valid(S)
+def $internal_closure_current(S) = eps -- otherwise
+def $closure_scope_append(S, pfunction, n) = S[.OBJECTS = $object_set(S.OBJECTS, n, INTERNALSCOPECLOSURE pinternalclosurescope pobject)]
+  -- if $internal_closure_current(S) = (n_source)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $internal_closure_scopes(S, n_source) = ((pbindscope_lexical, pbindscope_called, n_receiver?))
+  -- if S.OBJECTS[n] = pobject
+  -- if pinternalclosurescope = {SOURCE n_source, FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, LEXICAL pbindscope_lexical, CALLED pbindscope_called, RECEIVER $closure_bound_receiver(S, pfunction), BOUND false}
+def $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*) ++ $static_roots(pstaticcell*) ++ $scoped_receiver_nodes(pinternalclosurescope.RECEIVER)
+  -- if S.OBJECTS[n] = INTERNALSCOPECLOSURE pinternalclosurescope (REALCLOSURE porigin pitem* pstaticcell*)
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $internal_closure_object(S, n)
+  -- if $internal_closure_scope_valid(S, n)
+def $target_receiver(S, CLOSURE_TARGET n) = pinternalclosurescope.RECEIVER
+  -- if $internal_closure_row(S, n) = (pinternalclosurescope)
+def $target_lexical_class(S, CLOSURE_TARGET n) = $bind_scope_origin(pinternalclosurescope.LEXICAL)
+  -- if $internal_closure_row(S, n) = (pinternalclosurescope)
+def $target_called_class(S, CLOSURE_TARGET n) = $bind_scope_origin(pinternalclosurescope.CALLED)
+  -- if $internal_closure_row(S, n) = (pinternalclosurescope)
+def $clone_scope(S, n_source, n_new) = S[.OBJECTS = $object_set(S.OBJECTS, n_new, INTERNALSCOPECLOSURE pinternalclosurescope pobject)]
+  -- if $internal_closure_row(S, n_source) = (pinternalclosurescope)
+  -- if S.OBJECTS[n_new] = pobject
+
+def $real_bind_scope((n), BIND_UNSCOPED) = BIND_INTERNAL ($ptascii("Closure"))
+def $real_bind_scope(n?, pbindscope) = pbindscope -- otherwise
+def $real_bind_internal(S, n_source, n_receiver?, pbindscope) = ($internal_closure_object(S, n_source) \/ $bind_scope_internal(pbindscope) \/ $real_bind_internal_receiver(S, n_receiver?, pbindscope))
+def $real_bind_internal_receiver(S, (n_receiver), pbindscope) = (pbindscope = BIND_UNSCOPED \/ ~$bind_is_instance(S, n_receiver))
+def $real_bind_internal_receiver(S, eps, pbindscope) = false
+def $real_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope) = S_copy[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n_new)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if ~$closure_static(S, pfunction) \/ n_receiver? = eps
+  -- if ~$bind_scope_internal(pbindscope) \/ pbindscope = $fake_bind_scope(S, n_source) \/ pbindscope = BIND_INTERNAL ($ptascii("Closure")) /\ n_receiver? =/= eps
+  -- if n_new = |S.OBJECTS|
+  -- if pinternalclosurescope = {SOURCE n_source, FUNCTION porigin, CALLSITE (pconfigcall.SITE), LEXICAL pbindscope, CALLED $fake_bind_new_called(S, n_receiver?, pbindscope), RECEIVER n_receiver?, BOUND true}
+  -- if S_new = S[.OBJECTS = S.OBJECTS ++ [INTERNALSCOPECLOSURE pinternalclosurescope (REALCLOSURE porigin eps eps)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_new]]
+  -- if S_copy = $clone_statics($clone_captures(S_new, n_new, pitem*), n_new, pstaticcell*)
+def $real_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope) = S[.COMPLETION = UNSUPPORTED "invalid internally scoped ordinary Closure binding"] -- otherwise
+def $bind_scope_internal(BIND_INTERNAL ptbytes) = true
+def $bind_scope_internal(pbindscope) = false -- otherwise
+
+def $config_selected_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BIND
+  -- if $closure_binding_site(S, pconfigcall.SITE, INTRINSIC_CLOSURE_BIND)
+  -- if pconfigcall.OWNER = (n)
+  -- if pconfigcall.SELECTION = eps
+  -- if $closure_static_api_owner_valid(S, n)
+  -- if $closure_binding_method_site(S, pconfigcall.SITE)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $closure_binding_start(S_read, porigin, INTRINSIC_CLOSURE_BIND, (n), z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $closure_callable(S_read, n)
+  -- if $ptlc(ptbytes) = $ptascii("bind")
+  -- if S.ORIGIN = (porigin)
+  -- if $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BIND)
+def $internal_closure_capture_scope(S, pfunction, n) = true
+  -- if $internal_closure_current(S) = (n_source)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $internal_closure_row(S, n) = (pinternalclosurescope)
+  -- if ~pinternalclosurescope.BOUND
+  -- if pinternalclosurescope.SOURCE = n_source
+  -- if pinternalclosurescope.FUNCTION = pcallcontext.FUNCTION
+  -- if pinternalclosurescope.CALLSITE = pcallcontext.CALLSITE
+  -- if $internal_closure_scopes(S, n_source) = ((pinternalclosurescope.LEXICAL, pinternalclosurescope.CALLED, n_receiver?))
+  -- if pinternalclosurescope.RECEIVER = $closure_bound_receiver(S, pfunction)
+def $internal_closure_capture_scope(S, pfunction, n) = false -- otherwise
+def $closure_capture_scope_valid(S, pfunction, n) = true
+  -- if $internal_closure_object(S, n)
+  -- if $call_current_valid(S)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $internal_closure_capture_scope(S, pfunction, n)
+
+def $bind_receiver_live(S, eps) = true
+def $bind_receiver_live(S, (n)) = $getclass_live_object(S, n)
+
+def $closure_current_temporary(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $closure_call_target(pcallcontext.TARGET)
+def $closure_current_temporary(S) = false -- otherwise
+
+def $closure_binding_method_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+def $closure_binding_method_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+def $closure_binding_method_site(S, porigin) = false -- otherwise
+
+;; Internal lexical scope has no user-class origin. Keyword observers and
+;; static API entry nevertheless use its real class name, never global scope.
+def $scoped_source_name(S, NName (BYTES text) metadata) = (ptbytes)
+  -- if $ptlc($base64(text)) = $ptascii("self")
+  -- if $bound_fake_internal_scope(S) = (ptbytes)
+def $scoped_source_name(S, NName (BYTES text) metadata) = (ptbytes)
+  -- if $ptlc($base64(text)) = $ptascii("static")
+  -- if $bound_fake_internal_called(S) = (ptbytes)
+def $from_static_class(S, porigin, phpType19) = true
+  -- if $ppscoped_keyword(phpType19)
+  -- if $scoped_source_name(S, phpType19) = ($ptascii("Closure"))
+rule PhpStep/bound-fake-internal-parent-class: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", $ptascii("Cannot use \"parent\" when current class scope has no parent"), $source_line(metadata))
+  -- if S.CONSTCONTEXT = eps
+  -- if S.TODO = (EVAL (NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)) :: ptask_tail*
+  -- if $pfclassname_keyword(phpType19) = $ptascii("parent")
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+  -- if $bound_fake_internal_scope(S) = ($ptascii("Closure"))
+  -- if $method_source_task(S, NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)
+
+;; Internal scope on an ordinary bound/source Closure is a real scope for
+;; anonymous NEW defaults and parent diagnostics, with no user origin grant.
+def $anonymous_default_new_object_valid(S, n) = $internal_closure_scope_valid(S, n)
+  -- if $internal_closure_object(S, n)
+def $anonymous_default_new_name(S, porigin) = ($ptascii("Closure"))
+  -- if $anonymous_default_new_site(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+  -- if $ptlc($base64(text)) = $ptascii("self")
+  -- if $bound_fake_internal_scope(S) = ($ptascii("Closure"))
+def $new_class(S, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Instantiation of class Closure is not allowed"), z)
+  -- if $ptlc(ptbytes) = $ptascii("closure")
+def $scoped_class_prepare(S, phpType19, z) = $throw_scalar(S, "Error", $ptascii("Cannot access \"parent\" when current class scope has no parent"), z)
+  -- if $pfclassname_keyword(phpType19) = $ptascii("parent")
+  -- if $bound_fake_internal_scope(S) = ($ptascii("Closure"))
+rule PhpStep/internal-default-new-parent-missing: S ~> $throw_scalar(S, "Error", $ptascii("Cannot access \"parent\" when current class scope has no parent"), $runtime_line(S, eps, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $anonymous_default_new_site(S, porigin)
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+  -- if $bound_fake_internal_scope(S) = ($ptascii("Closure"))

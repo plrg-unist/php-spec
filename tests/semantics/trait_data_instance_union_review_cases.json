@@ -1,0 +1,68 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; introduced trait238 and accepted246 instance templates, importing scope/source file, and terminal FATAL mask paths. Native originals retained; model results recorded separately.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "imported-array-using-scope-inherited-and-cow",
+      "source": "<?php trait T{public array $x=[__CLASS__,__TRAIT__,1];}trait U{use T;}class C{use U;}class D extends C{}class E{use U;}$c=new C;$d=new D;$e=new E;$c->x[2]=9;echo $c->x[0],\":\",$d->x[0],\":\",$e->x[0],\":\",$c->x[1],\":\",$d->x[2],\":\",$e->x[2];",
+      "source_sha256": "daf5a20733a3291879798abdd1246d08f5f539ad9832c8766b3f520a3d50f874",
+      "status": "normal",
+      "stdout_base64": "QzpDOkU6VDoxOjE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-members-review-238/.tools/trait-type-case-native238-vldl0esj/report.json",
+      "native_raw_sha256": "cd4f612ccc241eb5b49bfdac695abe27d473a979e5489e8335fc4b5e571a293b"
+    },
+    {
+      "id": "imported-array-initializer-overrides-live-caller-scope",
+      "source": "<?php trait T{public array $x=[__CLASS__,__TRAIT__];}class C{use T;}class Q{static function make(){$c=new C;echo $c->x[0],\":\",$c->x[1];}}Q::make();",
+      "source_sha256": "184807b202a236c33d2e312266dc482550ae5d883499742b160746e845889ea0",
+      "status": "normal",
+      "stdout_base64": "QzpU",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-members-review-238/.tools/trait-type-case-native238-vldl0esj/report.json",
+      "native_raw_sha256": "63a4accdf72295b5bde3b532657981fd10e010b0a927cadf58b333118cdce2b2"
+    },
+    {
+      "id": "abstract-trait-fatal-mask-64",
+      "source": "<?php trait T{abstract public function f();}echo \"PRE;\";error_reporting(64);class C{use T;}echo \"POST;\";",
+      "source_sha256": "a5279c745ad5a685f057662f65b1b27d86dd4f0452a2968266aa1acecf3fceba",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-members-review-238/.tools/trait-type-case-native238-vldl0esj/report.json",
+      "native_raw_sha256": "450358c53fb3b6d4417735888f57a4fef1aa82ebed78fe2b878701174fe7729f"
+    },
+    {
+      "id": "abstract-trait-fatal-mask-1",
+      "source": "<?php trait T{abstract public function f();}echo \"PRE;\";error_reporting(1);class C{use T;}echo \"POST;\";",
+      "source_sha256": "c213cbc0f401ed0e9a1c0728e66194ed2f9ae5be986c75204ef5a72a14ada08f",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIEMgY29udGFpbnMgMSBhYnN0cmFjdCBtZXRob2QgYW5kIG11c3QgdGhlcmVmb3JlIGJlIGRlY2xhcmVkIGFic3RyYWN0IG9yIGltcGxlbWVudCB0aGUgcmVtYWluaW5nIG1ldGhvZCAoQzo6ZikgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-members-review-238/.tools/trait-type-case-native238-vldl0esj/report.json",
+      "native_raw_sha256": "56d1a4a1a813ef5ad68e16cb59e5016c524becfa6793192d88ecd4814177154f"
+    },
+    {
+      "id": "imported-initializer-diagnostic-owner-and-literal-source-file",
+      "source": "<?php set_error_handler(function($n,$m,$f,$l){echo $n,\":\",($f===__FILE__?\"C\":\"T\"),\":\",$l,\";\";});require __DIR__.\"/traits.php\";class C{use T;}echo (new C)->x,\";\",C::X,\";\",(C::F===__DIR__.\"/traits.php\"?\"F\":\"BAD\");",
+      "source_sha256": "06ea99fda8c4580ca84a0dbbf4347c8a141badca8d840670f64fe61d4a163496",
+      "files": [
+        {
+          "name": "traits.php",
+          "source": "<?php\ntrait T {\n    public $x = E_STRICT + 0;\n    public const X = E_STRICT + 0;\n    public const F = __FILE__;\n}\n",
+          "source_sha256": "25f1beebf2eab2add9541dfd552c68b8f24720a78446430cd54c9b3959a9977b"
+        }
+      ],
+      "status": "normal",
+      "stdout_base64": "ODE5MjpDOjQ7ODE5MjpDOjM7MjA0ODsyMDQ4O0Y=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-files-native238-tk0hysmm/report.json",
+      "native_raw_sha256": "2e39a1670343e27d91bf11c25952f098add6f2d8b39f3721db058b7b47c8d0a7"
+    }
+  ]
+}

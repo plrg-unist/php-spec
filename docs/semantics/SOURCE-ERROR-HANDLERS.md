@@ -103,7 +103,19 @@ warnings through read/quiet/nested consumers. Native protection and genuine
 temporary owners preserve table COW/retirement, live cells and ordered NaN
 notices; throws skip the later write. Source, line, mode, constants and owning
 operand forms are checked without reconstructing captured dynamic-value history.
-Read-write and wider key/container producers remain required.
+[Writable dimensions242](SOURCE-DIMENSION-WRITES.md) add bounded CV-array W/RW
+and direct GLOBALS reference fetches. Native separation/protection, exact-one
+table acquisition and delayed RHS demand survive callbacks; named fetch precedes
+mapping and promotion. [Coalesce/unset249](SOURCE-DIMENSION-EDITS.md) preserves
+direct CV-array quiet memoization/write demand and final unset liveness, including
+typed-cell/throwing cleanup and authentic read/write lines.
+[Nested unset and append255](SOURCE-DIMENSION-TAILS.md) keeps intermediate table
+protection, genuine abort temporaries and the distinct late RHS throw boundary.
+[Nested coalesce262](SOURCE-NESTED-COALESCE.md) retains genuine quiet rows,
+memoized operands and every late-RHS continuation task; typed-entry rejection
+restores the emitter and retains the handler's older exception chain.
+Wider memoized containers and earlier container/string/object producers remain
+required.
 
 Primary contracts are `zend_error_zstr_at` in `vendor/php-src/Zend/zend.c`, the
 six API bodies in `Zend/zend_builtin_functions.c`, the undefined-CV read helpers

@@ -1,0 +1,3 @@
+dec $real_binding_outputs(pevent*) : ptbytes
+def $real_binding_outputs(eps) = eps
+def $real_binding_outputs((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $real_binding_outputs(pevent*)

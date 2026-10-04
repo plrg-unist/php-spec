@@ -1,0 +1,599 @@
+[
+  {
+    "id": "normal-direct-global-reverse",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");$b=new D(\"b\");register_shutdown_function(function(){echo \"S;\";});echo \"M;\";",
+    "source_sha256": "4619a8d7452b12342ef153e99ec2dbd79a49e368a2d8ea06e685a20541380a83",
+    "stdout": "M;S;D:b;D:a;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "normal-array-store-order",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}$box=[new D(\"a\"),new D(\"b\")];register_shutdown_function(function(){echo \"S;\";});echo \"M;\";",
+    "source_sha256": "6d651f7e6848629fcfcba6cdcfff6d5dea3b6e98062906496f7d00255c84747e",
+    "stdout": "M;S;D:a;D:b;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "store-reused-handle",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}$dead=new stdClass;$box=[new D(\"old\")];unset($dead);$box[]=new D(\"new\");echo \"M;\";",
+    "source_sha256": "44190c51d95935d51b221c0190722c3dd7d2cea43ddf1c6ffbf1188e450f86cf",
+    "stdout": "M;D:new;D:old;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "reference-held-global-skips-reverse",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");$b=new D(\"b\");$r=&$b;echo \"M;\";",
+    "source_sha256": "d0ea2271e4d5e25a636400fb6a31f8740ebe176d68fc727e287be572141ee6b9",
+    "stdout": "M;D:a;D:b;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "value-aliases-retain-store-order",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");$x=$a;$b=new D(\"b\");$y=$b;echo \"M;\";",
+    "source_sha256": "6699b87fd8bbac8ceb0dd5f3ff98f8a09253f81e2e828c9df52e310788456720",
+    "stdout": "M;D:a;D:b;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "global-removal-repeats-after-child-release",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");$b=new D(\"b\");$a->hold=$b;echo \"M;\";",
+    "source_sha256": "36448385a3aa6957828493946f68d61ce44e0088bae16529a7ac765495cfae40",
+    "stdout": "M;D:a;D:b;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-argument-owner-delays-global-release",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");$b=new D(\"b\");register_shutdown_function(function($x){echo \"S:\",$x->id,\";\";},$b);echo \"M;\";",
+    "source_sha256": "6b4a13b2521949b39b4596c25e4074a25211b068feab5ad542d72ad071e3e053",
+    "stdout": "M;S:b;D:a;D:b;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-target-owner-delays-global-release",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");$b=new D(\"b\");register_shutdown_function([$a,\"run\"]);echo \"M;\";",
+    "source_sha256": "451611726663169d09caba7ce8871432bdfb0f87f12f34af2a5a74064792d155",
+    "stdout": "M;S:a;D:b;D:a;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-exit-runs-stage2",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");$b=new D(\"b\");register_shutdown_function(function(){echo \"S;\";exit(7);});register_shutdown_function(function(){echo \"T;\";});",
+    "source_sha256": "2a3b5259d373468977f8ba07117e687f0af77a18e524098b8bb6e00a3f97bddc",
+    "stdout": "S;D:b;D:a;",
+    "stderr": "",
+    "exit": 7,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "shutdown-unhandled-throw-then-destruct",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");$b=new D(\"b\");register_shutdown_function(function(){echo \"S;\";throw new Exception(\"queue\");});",
+    "source_sha256": "262eb724829d9d7c31967923d0098413fcabad1cecbce7617e924afde41582f0",
+    "stdout": "S;D:b;D:a;",
+    "stderr": "Fatal error: Uncaught Exception: queue in {file}:1\nStack trace:\n#0 [internal function]: {closure:{file}:1}()\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "main-exit-runs-stage2",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");$b=new D(\"b\");echo \"M;\";exit(9);",
+    "source_sha256": "12d29a9f5afd325792f4d170a7a124920af58c4147980774d647c53959c2e8dc",
+    "stdout": "M;D:b;D:a;",
+    "stderr": "",
+    "exit": 9,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "main-fatal-frozen-before-destructor-mask",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";error_reporting(0);}}$a=new D(\"a\");register_shutdown_function(function(){echo \"S;\";});throw new Exception(\"main\");",
+    "source_sha256": "f97e160a964c003bddd15d5936adf9c9df8ce24e7bb950c7b8e3c49c921ccb67",
+    "stdout": "S;D:a;",
+    "stderr": "Fatal error: Uncaught Exception: main in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "main-uncaught-handler-before-stage2",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});$a=new D(\"a\");$b=new D(\"b\");register_shutdown_function(function(){echo \"S;\";});throw new Exception(\"main\");",
+    "source_sha256": "94e7a2a6e2fe1938c2b1085b1a3f78c2415636edfde228f253e1c7ad7d63ce55",
+    "stdout": "H:main;S;D:b;D:a;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "destructor-throw-handled-continues",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";if($this->id===\"b\"){throw new Exception(\"dt\");}}}set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});$a=new D(\"a\");$b=new D(\"b\");",
+    "source_sha256": "cefa5a33fcef5219f05f5812896591f7439870fee0c1b12c2b49537e0e5bc12d",
+    "stdout": "D:b;H:dt;D:a;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "destructor-unhandled-throw-stops-tail",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";if($this->id===\"b\"){throw new Exception(\"dt\");}}}$a=new D(\"a\");$b=new D(\"b\");",
+    "source_sha256": "157dcbf598a425267932a6baa9e7d05425ef4b3dd73777e3a507f76c780a0ed6",
+    "stdout": "D:b;",
+    "stderr": "Fatal error: Uncaught Exception: dt in {file}:1\nStack trace:\n#0 [internal function]: D->__destruct()\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "destructor-exit-stops-tail",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";if($this->id===\"b\"){exit(8);}}}$a=new D(\"a\");$b=new D(\"b\");",
+    "source_sha256": "c9e6ad1445fb9e5316b86fe617dfb8d63712c3a59068bcdf2206cf796beac758",
+    "stdout": "D:b;",
+    "stderr": "",
+    "exit": 8,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "private-shutdown-warning",
+    "source": "<?php class C{private function __destruct(){echo \"P;\";}}set_error_handler(function($n,$m,$f,$l){echo \"W:\",$n,\":\",$f,\":\",$l,\";\";});$c=new C;",
+    "source_sha256": "af1e85cf2294592268b08a2fda679ede7cd444482f2487fda325828af0ceb0d6",
+    "stdout": "W:2:Unknown:0;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "inherited-called-private-scope",
+    "source": "<?php class A{private function k(){return \"A\";}function __destruct(){echo \"D:\",get_called_class(),\":\",$this->k(),\":\",func_num_args(),\";\";}}class B extends A{}$b=new B;",
+    "source_sha256": "5cf9852715663e339ee6076d4c8dae5a20de0dcaaaf9e52a690ec6630e4ccfae",
+    "stdout": "D:B:A:0;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "create-object-in-global-destructor",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";if($this->id===\"b\"){$GLOBALS[\"c\"]=new D(\"c\");}}}$a=new D(\"a\");$b=new D(\"b\");",
+    "source_sha256": "5e1ab142593d7fc9f829312b5dc89e811c4a51373fe4e8ab4c643b5d511dbbbb",
+    "stdout": "D:b;D:a;D:c;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "create-object-in-store-sweep",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";if($this->id===\"a\"){$GLOBALS[\"c\"]=new D(\"c\");}}}$box=[new D(\"a\"),new D(\"b\")];",
+    "source_sha256": "e27a8d0e3198fb7d2b7122a06e1e1e16de34c338daaedc8fe19f76cb0f1565de",
+    "stdout": "D:a;D:b;D:c;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "resurrection-once",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";$GLOBALS[\"save\"]=$this;}}$a=new D(\"a\");",
+    "source_sha256": "28361d4ad5c115f67a74b3ce038a3eb53f675b1aa565536c7f3a786845eca051",
+    "stdout": "D:a;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "late-shutdown-registration-never-dispatched",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";register_shutdown_function(function(){echo \"LATE;\";});}}$a=new D(\"a\");register_shutdown_function(function(){echo \"S;\";});",
+    "source_sha256": "f44d21d358773b705deed2d058a1052429e9885d79aade44309a78359783feee",
+    "stdout": "S;D:a;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "destructor-warning-throw-outer-handler",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";if($this->id===\"b\"){echo $missing;echo \"TAIL;\";}}}set_error_handler(function($n,$m,$f,$l){echo \"W;\";throw new Exception(\"warn\");});set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});$a=new D(\"a\");$b=new D(\"b\");",
+    "source_sha256": "ca07163f9730aa70449d1e904e3253164bd4f644b749e00833cd0d80967079b8",
+    "stdout": "D:b;W;H:warn;D:a;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "compiler-stop-runs-stage2",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function run(){echo \"S:\",$this->id,\";\";}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");register_shutdown_function(function(){echo \"S;\";});eval(\"function f(){} function f(){}\");",
+    "source_sha256": "53a691e419c03fdfcf92c5cbe961fba02305bbb22e22dc9241412a70d7b47c1a",
+    "stdout": "S;",
+    "stderr": "Fatal error: Cannot redeclare function f() (previously declared in {file}(1) : eval()'d code:1) in {file}(1) : eval()'d code on line 1\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "user-fatal-marks-existing-objects",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");register_shutdown_function(function(){echo \"S;\";});trigger_error(\"boom\",E_USER_ERROR);",
+    "source_sha256": "eef9f322cb82dc269a115394f985a170c7ee7441dd2950e8bbe6a5849986fcc3",
+    "stdout": "S;",
+    "stderr": "Deprecated: Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead in {file} on line 1\nFatal error: boom in {file} on line 1\nStack trace:\n#0 {file}(1): trigger_error('boom', 256)\n#1 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "compiler-fatal-allows-new-shutdown-object",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"old\");register_shutdown_function(function(){echo \"S;\";$GLOBALS[\"new\"]=new D(\"new\");});eval(\"function f(){} function f(){}\");",
+    "source_sha256": "9e20ff9f580da5b38ebd6e55a2e10fa5f0445e36276565b943320e8fbde10bf0",
+    "stdout": "S;D:new;",
+    "stderr": "Fatal error: Cannot redeclare function f() (previously declared in {file}(1) : eval()'d code:1) in {file}(1) : eval()'d code on line 1\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "uncaught-parse-error-runs-stage2",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");register_shutdown_function(function(){echo \"S;\";});eval(\"function broken( {\");",
+    "source_sha256": "e6cdcb3c10147d9696df004afe7a2bd90e9204ff3bb0aae833c2c9324489a454",
+    "stdout": "S;D:a;",
+    "stderr": "Parse error: syntax error, unexpected token \"{\", expecting variable in {file}(1) : eval()'d code on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "extends-final-bailout-marks-existing",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");register_shutdown_function(function(){echo \"S;\";});eval(\"final class F{} class X extends F{}\");",
+    "source_sha256": "0290c7935657461c45dc8064c1bd319339e83e4cbfd063a8e56e8a518e45810e",
+    "stdout": "S;",
+    "stderr": "Fatal error: Class X cannot extend final class F in {file}(1) : eval()'d code on line 1\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "global-parent-property-release-order",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}class P{public $first;public $second;function __destruct(){echo \"P;\";}}$two=new D(\"two\");$one=new D(\"one\");$p=new P;$p->first=$one;$p->second=$two;unset($one,$two);",
+    "source_sha256": "8aa090e5fd28579778ec2f58d65c243a7b59ea576784d3bd5c845d9b13d6ce96",
+    "stdout": "P;D:one;D:two;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "global-parent-array-release-order",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}class P{public $box;function __destruct(){echo \"P;\";}}$two=new D(\"two\");$one=new D(\"one\");$p=new P;$p->box=[$one,$two];unset($one,$two);",
+    "source_sha256": "bc18c9e190f10cc90238cc689598b7b41fef3be7772c4545e405170663d321a6",
+    "stdout": "P;D:one;D:two;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "private-warning-throw-handled-then-next",
+    "source": "<?php class C{private function __destruct(){echo \"PRIVATE;\";}}class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}set_error_handler(function($n,$m,$f,$l){echo \"W:\",$f,\":\",$l,\";\";throw new Exception(\"vis\");});set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});$d=new D(\"d\");$c=new C;",
+    "source_sha256": "b6ec92f53fc1a76903ca8cb4aab581f90a7440d1798bdf2648adc65e44d36e3d",
+    "stdout": "W:Unknown:0;H:vis;D:d;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "ordinary-eager-release-dependency-control",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"a\");echo \"M;\";unset($a);echo \"TAIL;\";",
+    "source_sha256": "8a1f8aba287e884edab3e84f493beab902ce6b1fb4c92d9132c3431c899c3e44",
+    "stdout": "M;D:a;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "ordinary destructor release before request stage",
+    "scope": "Required immediate follow-on dependency; native behavior retained, no source agreement credit at request-stage cutoff."
+  },
+  {
+    "id": "ordinary-constructor-throw-no-destructor",
+    "source": "<?php class C{function __construct(){throw new Exception(\"ctor\");}function __destruct(){echo \"D;\";}}try{new C;}catch(Throwable $e){echo \"C;\";}",
+    "source_sha256": "f9cb398b314ecc3e5f71b57fe093ae9eb4bf6f0c06292392fd86e29f82200054",
+    "stdout": "C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "late-private-method-registration",
+    "source": "<?php class A{function __destruct(){register_shutdown_function([\"self\",\"h\"]);echo \"D:\",get_called_class(),\";\";}private static function h(){echo \"LATE;\";}}class B extends A{}set_error_handler(function(){echo \"W;\";});$a=new B;",
+    "source_sha256": "92171a71d7871598e5e125706b7ce8add135427c031405ceddc6e0b8ec327fe6",
+    "stdout": "W;D:B;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "explicit-destructor-does-not-mark-implicit",
+    "source": "<?php class C{function __destruct(){echo \"D;\";}}$c=new C;$c->__destruct();echo \"M;\";",
+    "source_sha256": "bc2413539251c0fc16d97480819e21e713b7fd4ffdf9cba7b49622572448f221",
+    "stdout": "D;M;D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "failed-constructor-resurrected-object-skips-destructor",
+    "source": "<?php class C{function __construct(){$GLOBALS[\"saved\"]=$this;throw new Exception(\"ctor\");}function __destruct(){echo \"D;\";}}try{new C;}catch(Throwable $e){echo \"C;\";}",
+    "source_sha256": "d7b916b18734df36288cd295c8fab7a34ee410c7d2af4d26ea8d05d6f189bf2e",
+    "stdout": "C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "inherited-private-warning-uses-object-class",
+    "source": "<?php class A{private function __destruct(){echo \"PRIVATE;\";}}class B extends A{}set_error_handler(function($n,$m,$f,$l){echo \"W:\",$m,\":\",$f,\":\",$l,\";\";});$b=new B;",
+    "source_sha256": "f5bb7a5c20cd95ef3a53962f9706caaae702392f735255251c4feb5e95373d53",
+    "stdout": "W:Call to private B::__destruct() from global scope during shutdown ignored:Unknown:0;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "inherited-destructor-throw-trace",
+    "source": "<?php class A{function __destruct(){echo \"D:\",get_called_class(),\";\";throw new Exception(\"dt\");}}class B extends A{}set_exception_handler(function($e){echo $e->getTraceAsString();});$b=new B;",
+    "source_sha256": "b6afa1061bc034fd037d0caa2b56968b7c8ec4b925ffdb03ba2b72cc752429cd",
+    "stdout": "D:B;#0 [internal function]: A->__destruct()\n#1 {main}",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "global-direct-object-with-singleton-reference",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo $this->id,\";\";}}$a=new C(\"a\");$b=new C(\"b\");$r=&$b;unset($r);",
+    "source_sha256": "75e2976b20d4c8c6596a1a6df8755e1cf435efe099782d7797d1545794b50429",
+    "stdout": "a;b;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "parent-handle-recycled-after-children",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo $this->id,\";\";}}$p=new stdClass;$p->child=new stdClass;$box=[new D(\"kept\")];unset($p);$box[]=new D(\"new1\");$box[]=new D(\"new2\");",
+    "source_sha256": "7d414e4152c8fdc8260768db8424f037f53ebed3683f7037fb65d495c447a323",
+    "stdout": "new1;new2;kept;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "destructor-eval-publication-and-new-global",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";if($this->id===\"b\"){eval('class E{function __destruct(){echo \"E;\";}}$GLOBALS[\"late\"]=new E;');}}}$a=new D(\"a\");$b=new D(\"b\");",
+    "source_sha256": "90c64238e95a9eb530fff193b7268a38e4374af7281146022d954d2f39a7b890",
+    "stdout": "D:b;D:a;E;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "destructor-eval-compiler-fatal-stops-stage",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";if($this->id===\"b\"){eval('class E{public function __wakeup():int{}}');}}}$a=new D(\"a\");$b=new D(\"b\");",
+    "source_sha256": "486ff53aa2404b645bc01a6114254e9f52126e8139c7fe5105ea465218c33dc8",
+    "stdout": "D:b;",
+    "stderr": "Fatal error: E::__wakeup(): Return type must be void when declared in {file}(1) : eval()'d code on line 1\nStack trace:\n#0 [internal function]: D->__destruct()\n#1 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "nested-private-release-authentic-user-scope",
+    "source": "<?php class C{private function __destruct(){echo \"C;\";}static function drop(){unset($GLOBALS[\"c\"]);}}class D{function __destruct(){echo \"D;\";C::drop();echo \"TAIL;\";}}$c=new C;$d=new D;",
+    "source_sha256": "cc396c22415c5d504ee7c1c31d86746758e45126dd35e8140aa3f169913b2148",
+    "stdout": "D;C;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "nested-private-release-foreign-scope-error",
+    "source": "<?php class C{private function __destruct(){echo \"C;\";}}class D{function __destruct(){echo \"D;\";try{unset($GLOBALS[\"c\"]);}catch(Error $e){echo $e->getMessage(),\";\";}echo \"TAIL;\";}}$c=new C;$d=new D;",
+    "source_sha256": "458611bdc723d0c35501f47c7752d4395f9c76e7fd8ae52d29e77ab1fe5511cd",
+    "stdout": "D;Call to private C::__destruct() from scope D;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "nested-private-release-error-outer-handler",
+    "source": "<?php class C{private function __destruct(){echo \"C;\";}}class A{function __destruct(){echo \"A;\";}}class D{function __destruct(){echo \"D;\";unset($GLOBALS[\"c\"]);echo \"TAIL;\";}}set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});$a=new A;$c=new C;$d=new D;",
+    "source_sha256": "a1a4cbb8c8f1c4cd7b229827be970c94e15cfd90dd223360abf6b02e9f3f9212",
+    "stdout": "D;H:Call to private C::__destruct() from scope D;A;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "container-repeated-child-handle-release-order",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo $this->id,\";\";}}$p=new stdClass;$u=new stdClass;$v=new stdClass;$p->children=[$u,$v,$u];unset($u,$v);$box=[new D(\"kept\")];unset($p);$box[]=new D(\"new1\");$box[]=new D(\"new2\");$box[]=new D(\"new3\");",
+    "source_sha256": "d8c360f2872254200472a6389c170e4234f126513cd9a3cf55ee962e495dc448",
+    "stdout": "new1;new2;new3;kept;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "global-parent-repeated-child-slot-release-order",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}class P{public $children;function __construct($children){$this->children=$children;}function __destruct(){echo \"P;\";}}$u=new D(\"shared\");$v=new D(\"middle\");$p=new P([$u,$v,$u]);unset($u,$v);",
+    "source_sha256": "f8be40222adad86c6f30917936bdad4eed531a5256ef96e5ecc59d8d39612b70",
+    "stdout": "P;D:middle;D:shared;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "nested-destructor-trace-user-release-line",
+    "source": "<?php\nclass C{\n function __destruct(){throw new Exception(\"nested\");}\n}\nclass D{\n function __destruct(){\n  try{unset($GLOBALS[\"c\"]);}\n  catch(Throwable $e){$trace=$e->getTrace();echo $trace[0][\"class\"],\":\",$trace[0][\"function\"],\":\",$trace[0][\"line\"],\";\";}\n }\n}\n$c=new C;$d=new D;",
+    "source_sha256": "13bee64dab280694f07b5240a1b35a50cdf98e6ae1749ed4bef22b5351658794",
+    "stdout": "C:__destruct:7;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "pending-throw-normal-nested-destructor-restores",
+    "source": "<?php class C{function __destruct(){echo \"C;\";}}function drop(){$x=new C;throw new Exception(\"parent\");}class D{function __destruct(){echo \"D;\";try{drop();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\":\",$e->getPrevious()===null?\"none\":$e->getPrevious()->getMessage(),\";\";}echo \"TAIL;\";}}$d=new D;",
+    "source_sha256": "c48ca0f967866ffd31c1acb6a906d09004e4f251331bf2fb8135a85a865da905",
+    "stdout": "D;C;caught:parent:none;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "pending-throw-nested-destructor-chains",
+    "source": "<?php class C{function __destruct(){echo \"C;\";throw new Exception(\"child\");}}function drop(){$x=new C;throw new Exception(\"parent\");}class D{function __destruct(){echo \"D;\";try{drop();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\":\",$e->getPrevious()===null?\"none\":$e->getPrevious()->getMessage(),\";\";}echo \"TAIL;\";}}$d=new D;",
+    "source_sha256": "b3b42e13ce0fc0eb3b2ca08571e12f9a100bfda399dc34a6c42964a3d2b01f92",
+    "stdout": "D;C;caught:child:parent;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "pending-local-private-release-uses-restored-caller",
+    "source": "<?php class C{private function __destruct(){echo \"C;\";}}function drop(){$x=$GLOBALS[\"c\"];unset($GLOBALS[\"c\"]);throw new Exception(\"parent\");}class D{function __destruct(){try{drop();}catch(Throwable $e){echo $e->getMessage(),\":\",$e->getPrevious()->getMessage(),\";\";}}}$c=new C;$d=new D;",
+    "source_sha256": "2640bfaa01d6a9378382843b4c98c1c0dde98acc82ab4f5f17b4fea204accbde",
+    "stdout": "Call to private C::__destruct() from scope D:parent;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "pending-local-release-trace-uses-restored-caller",
+    "source": "<?php\nclass C{function __destruct(){throw new Exception(\"child\");}}\nfunction drop(){\n $x=$GLOBALS[\"c\"];\n unset($GLOBALS[\"c\"]);\n throw new Exception(\"parent\");\n}\nclass D{\n function __destruct(){\n  try{drop();}\n  catch(Throwable $e){$trace=$e->getTrace();echo $trace[0][\"class\"],\":\",$trace[0][\"function\"],\":\",$trace[0][\"line\"],\":\",$trace[1][\"class\"],\":\",$e->getPrevious()->getMessage(),\";\";}\n }\n}\n$c=new C;$d=new D;",
+    "source_sha256": "2c12356ece253b7b3247a4d2e70afda4c06a8b2aa33f7fad2041dffb48ad07b9",
+    "stdout": "C:__destruct:10:D:parent;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "normal-frame-local-cv-release-order",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";}}function drop(){if(false){$b=null;}$a=new C(\"a\");$b=new C(\"b\");}class P{function __destruct(){echo \"P;\";try{drop();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\";\";}echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "25264c36226c24c9bce7d7e690843745393dfafd5c0a12b9d8b67daad6c68a9a",
+    "stdout": "P;C:b;C:a;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "pending-frame-local-cv-release-order",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";}}function drop(){if(false){$b=null;}$a=new C(\"a\");$b=new C(\"b\");throw new Exception(\"parent\");}class P{function __destruct(){echo \"P;\";try{drop();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\";\";}echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "3d51d873e6fe9650d80c5ff03593ae3e56070bdba3f65d15f46026288c3d23dd",
+    "stdout": "P;C:b;C:a;caught:parent;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "uncaught-throwable-prequeue-release-dependency",
+    "source": "<?php function s(){echo \"S;\";}class E extends Exception{function __destruct(){echo \"D;\";register_shutdown_function(\"s\");}}throw new E(\"main\");",
+    "source_sha256": "840c1d4b396e5259574af49c3b9d77af1b44687ea8e0a4190357ccd5de7a8766",
+    "stdout": "D;S;",
+    "stderr": "Fatal error: Uncaught E: main in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error",
+    "expected_unsupported": "ordinary destructor release before request stage"
+  },
+  {
+    "id": "nested-private-destructor-registers-private-keyword-callback",
+    "source": "<?php class C{private function __destruct(){echo \"C;\";register_shutdown_function([\"self\",\"s\"]);}private static function s(){echo \"S;\";}static function drop(){unset($GLOBALS[\"c\"]);}}class D{function __destruct(){echo \"D;\";C::drop();echo \"TAIL;\";}}set_error_handler(function($n,$m,$f,$l){echo \"W:\",$l,\";\";});$c=new C;$d=new D;",
+    "source_sha256": "5802d095a6c59520c7c8cbcb28e8f8a2027e6aa222e3cc608393c2217035a2e6",
+    "stdout": "D;C;W:1;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "method-frame-extra-arguments-release-before-receiver",
+    "source": "<?php class A{function __destruct(){echo \"A;\";}}class C{function f(){unset($GLOBALS[\"c\"]);}function __destruct(){echo \"C;\";}}class P{function __destruct(){echo \"P;\";$GLOBALS[\"c\"]->f(new A);echo \"TAIL;\";}}$c=new C;$p=new P;",
+    "source_sha256": "04fb0ed0bebcbedd17eea207273f04b75ffcefb4049c2d99498024e9740f30d3",
+    "stdout": "P;A;C;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "normal-frame-return-owner-survives-local-destructor",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";}}function get(){$a=new C(\"local\");$x=new C(\"result\");return $x;}class P{function __destruct(){echo \"P;\";$r=get();echo \"got;\";unset($r);echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "500b2be97071ba8bbb0ef661ab4384ed91e0d7f63678513452efc24a6a55a92f",
+    "stdout": "P;C:local;got;C:result;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "failed-internal-constructor-skips-user-destructor",
+    "source": "<?php class E extends Exception{function __destruct(){echo \"D;\";}}try{new E([]);}catch(Throwable $e){echo \"C;\";}",
+    "source_sha256": "a8a67718b4443472f1558851bd9b3eca6f206e0137d3850e856d31f5d7902afb",
+    "stdout": "C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "failed-manual-internal-constructor-keeps-user-destructor",
+    "source": "<?php class E extends Exception{function __destruct(){echo \"D;\";}}$e=new E;try{$e->__construct([]);}catch(Throwable $t){echo \"C;\";}",
+    "source_sha256": "3ee425ffbcfeaa4865ed4082dc0f3e7a3b0c44adf5e8c8864733bd0fdf89baaf",
+    "stdout": "C;D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "remaining-locals-chain-replacement-throwables",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";throw new Exception($this->id);}}function drop(){if(false){$b=null;}$a=new C(\"a\");$b=new C(\"b\");throw new Exception(\"parent\");}class P{function __destruct(){echo \"P;\";try{drop();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\":\",$e->getPrevious()->getMessage(),\":\",$e->getPrevious()->getPrevious()->getMessage(),\";\";}echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "0f41ef29d7402b3bd4f9b29a1aa7ff69b64e09ac576d1f54bc9621e63367d9bc",
+    "stdout": "P;C:b;C:a;caught:a:b:parent;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "normal-locals-chain-replacement-throwables",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";throw new Exception($this->id);}}function drop(){if(false){$b=null;}$a=new C(\"a\");$b=new C(\"b\");}class P{function __destruct(){echo \"P;\";try{drop();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\":\",$e->getPrevious()->getMessage(),\":\",$e->getPrevious()->getPrevious()===null?\"none\":\"other\",\";\";}echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "1a4eb3abcc719cac5328e0cc8cf51cfe4f697ed8891a29fbee4127344ce8628b",
+    "stdout": "P;C:b;C:a;caught:a:b:none;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "denied-automatic-constructor-skips-user-destructor",
+    "source": "<?php class C{private function __construct(){}function __destruct(){echo \"D;\";}}try{new C;}catch(Throwable $e){echo \"C;\";}",
+    "source_sha256": "8626bf3d92dfd37d76e0414f9818da8eebf0a1b1a895a868ba6b9ec55b8c2959",
+    "stdout": "C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "throwing-new-argument-skips-user-destructor",
+    "source": "<?php function fail(){throw new Exception(\"arg\");}class C{function __construct($x){}function __destruct(){echo \"D;\";}}try{new C(fail());}catch(Throwable $e){echo \"C;\";}",
+    "source_sha256": "407804731f27f1282757aae73a02a370a99cb49aa7ccdad11dff86b1fad4b34f",
+    "stdout": "C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "throwing-manual-constructor-argument-keeps-user-destructor",
+    "source": "<?php function fail(){throw new Exception(\"arg\");}class C{function __construct($x){}function __destruct(){echo \"D;\";}}$c=new C(0);try{$c->__construct(fail());}catch(Throwable $e){echo \"C;\";}",
+    "source_sha256": "5db4a2368604a9edd465e99652ec6bbe3eb082d85e4f285041dba4273a3385e4",
+    "stdout": "C;D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "assigned-return-value-chains-local-cleanup-exception",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";throw new Exception($this->id);}}class R{function __destruct(){echo \"R;\";throw new Exception(\"returned\");}}function get(){if(false){$b=null;}$a=new C(\"a\");$b=new C(\"b\");return new R;}class P{function __destruct(){echo \"P;\";try{$r=get();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\":\",$e->getPrevious()->getMessage(),\":\",$e->getPrevious()->getPrevious()->getMessage(),\";\";}echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "8e75c2e325add3758d7bd2157afb21d494ea9ea86b73af2340832d0ac1f2a848",
+    "stdout": "P;C:b;C:a;R;caught:returned:a:b;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  }
+]

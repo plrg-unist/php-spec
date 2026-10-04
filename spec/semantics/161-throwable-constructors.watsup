@@ -38,7 +38,7 @@ def $ctor_method_start(S, n, z) = $ctor_start(S[.TODO = ptask_tail*], n, CTOR_ME
   -- if S.TODO = ptask :: ptask_tail*
 def $constructor_start_ready(S, preqbytes, phpType7*, z) = $ctor_start(S_new, n, CTOR_NEW, z)
   -- if $throwable_constructor_kind(preqbytes) = (text_kind)
-  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new = $new_class(S, preqbytes, $new_allocation_line(S, z))
   -- if S_new.COMPLETION = NORMAL
   -- if S_new.RESULT = KNOWN (POBJECT n)
   -- if S_new.OBJECTS[n] = THROWABLE pthrowable
@@ -46,7 +46,7 @@ def $constructor_start_ready(S, preqbytes, phpType7*, z) = $ctor_start(S_new, n,
 
 dec $ctor_arguments(pstate, porigin) : pcallarguments
 def $ctor_arguments(S, porigin) = PCALLARGUMENTS phpType7* 1
-  -- if $origin_node(S.SOURCES, porigin) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
 def $ctor_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
@@ -182,7 +182,10 @@ rule PhpStep/ctor-unpack-done: S ~> S[.TODO = (CTOR_ARGS pctorcall[.INDEX = $(pc
 ;; Validation completes before any field changes. Error frames retain sent
 ;; values, including holes introduced by named arguments.
 dec $ctor_error(pstate, pctorcall, text, ptbytes) : pstate
-def $ctor_error(S, pctorcall, text_kind, preqbytes) = $throwable_allocate(S[.ORIGIN = (pctorcall.SITE)], text_kind, preqbytes, pctorcall.LINE, $source_trace_prefixed(S, [ptraceframe]))
+dec $ctor_failed(pstate, pctorcall) : pstate
+def $ctor_failed(S, pctorcall) = $constructor_failed_object(S, pctorcall.RECEIVER) -- if pctorcall.MODE = CTOR_NEW
+def $ctor_failed(S, pctorcall) = S -- if pctorcall.MODE = CTOR_METHOD
+def $ctor_error(S, pctorcall, text_kind, preqbytes) = $throwable_allocate($ctor_failed(S, pctorcall)[.ORIGIN = (pctorcall.SITE)], text_kind, preqbytes, pctorcall.LINE, $source_trace_prefixed(S, [ptraceframe]))
   -- if pvalue* = $trace_extra(S, $clone_trace_operands(pctorcall.SENT))
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pctorcall.SITE), LINE pctorcall.LINE, FUNCTION $ptascii("__construct"), CLASS ($ptascii(pctorcall.BASE)), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 dec $ctor_type_error(pstate, pctorcall, nat, ptbytes, ptbytes, pvalue) : pstate
@@ -277,5 +280,8 @@ def $ctor_receive(S, pctorcall) = S_previous
   -- if S_code.COMPLETION = NORMAL
   -- if S_previous = $ctor_previous_value(S_code, pctorcall, $named_slot_at(pctorcall.SENT, 2))
   -- if S_previous.COMPLETION =/= NORMAL
+dec $ordinary_internal_ready(pstate, pctorcall) : bool
+def $ordinary_internal_ready(S, pctorcall) = false -- otherwise
 rule PhpStep/ctor-invoke: S ~> $ctor_receive(S[.TODO = ptask_tail*], pctorcall)
   -- if S.TODO = (CTOR_INVOKE pctorcall) :: ptask_tail*
+  -- if ~$ordinary_internal_ready(S, pctorcall)

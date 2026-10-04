@@ -35,6 +35,9 @@ dec $shutdown_abort_frames(pstate) : pstate
 dec $shutdown_clean(pstate) : pstate
 dec $shutdown_begin(pstate) : pstate
 dec $shutdown_stop(pstate) : pstate
+dec $request_fatal_state(pstate) : pstate
+def $request_fatal_state(S) = S -- otherwise
+dec $shutdown_freeze_marked(pstate) : pstate
 dec $shutdown_task_scope(pstate) : bool
 dec $shutdown_sent_valid(pstate, pshutdownentry, poperand*, nat) : bool
 dec $shutdown_current_sent_valid(pstate) : bool
@@ -131,7 +134,7 @@ def $shutdown_register(S, pconfigcall, pvalue) = S[.SHUTDOWN.ENTRIES = S.SHUTDOW
   -- if ~$exception_deprecated_raw(S, pvalue)
   -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
   -- if pconfigcall.SENT = (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
-  -- if pshutdownentry = {CALL pconfigcall, CAPTURE $method_capture_current(S, pconfigcall.SITE), RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, ARGS $shutdown_values(pnamedslot*)}
+  -- if pshutdownentry = {CALL pconfigcall, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, ARGS $shutdown_values(pnamedslot*)}
 def $shutdown_register(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("register_shutdown_function(): Argument #1 ($callback) must be a valid callback, ") ++ ptbytes)
   -- if ~$exception_deprecated_raw(S, pvalue)
   -- if $error_handler_resolution(S, pvalue) = HANDLERINVALID ptbytes
@@ -241,31 +244,31 @@ def $shutdown_fatal_suffix(S, false) = [10]
 def $shutdown_exception_suffix(S, n) = [10] ++ $ptascii("  thrown in ") ++ preqbytes_file ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ [10]
   -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
   -- if $throwable_field(S, n, "line") = PINT z
-def $shutdown_freeze(S) = S -- if S.COMPLETION = NORMAL \/ $exit_completion(S.COMPLETION) \/ $shutdown_frozen(S.COMPLETION)
-def $shutdown_freeze(S) = $shutdown_reported(S, $object_name(S, n), $echo_value($throwable_field(S, n, "message")), z, $ptascii("Fatal error: Uncaught ") ++ $throwable_chain_string(S, n, eps) ++ $shutdown_exception_suffix(S, n), $long_and(S.REPORTING, 1) =/= 0)
+def $shutdown_freeze_marked(S) = S -- if S.COMPLETION = NORMAL \/ $exit_completion(S.COMPLETION) \/ $shutdown_frozen(S.COMPLETION)
+def $shutdown_freeze_marked(S) = $shutdown_reported(S, $object_name(S, n), $echo_value($throwable_field(S, n, "message")), z, $ptascii("Fatal error: Uncaught ") ++ $throwable_chain_string(S, n, eps) ++ $shutdown_exception_suffix(S, n), $long_and(S.REPORTING, 1) =/= 0)
   -- if S.COMPLETION = UNCAUGHT n
   -- if $object_name(S, n) =/= $ptascii("ParseError") /\ $object_name(S, n) =/= $ptascii("CompileError")
   -- if $throwable_field(S, n, "line") = PINT z
-def $shutdown_freeze(S) = $shutdown_reported(S, $object_name(S, n), ptbytes_message, z, ptbytes_prefix ++ ptbytes_message ++ $ptascii(" in ") ++ ptbytes_file ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ [10], $long_and(S.REPORTING, i) =/= 0)
+def $shutdown_freeze_marked(S) = $shutdown_reported(S, $object_name(S, n), ptbytes_message, z, ptbytes_prefix ++ ptbytes_message ++ $ptascii(" in ") ++ ptbytes_file ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ [10], $long_and(S.REPORTING, i) =/= 0)
   -- if S.COMPLETION = UNCAUGHT n
   -- if (i, ptbytes_prefix) = $shutdown_parse_kind($object_name(S, n))
   -- if ptbytes_message = $echo_value($throwable_field(S, n, "message"))
   -- if $throwable_field(S, n, "line") = PINT z
   -- if $throwable_field(S, n, "file") = PSTRING ptbytes_file
-def $shutdown_freeze(S) = $shutdown_reported(S, $object_name(S, n), ptbytes, z, $ptascii("Fatal error: Uncaught ") ++ ptbytes ++ $shutdown_exception_suffix(S, n), $long_and(S.REPORTING, 1) =/= 0)
+def $shutdown_freeze_marked(S) = $shutdown_reported(S, $object_name(S, n), ptbytes, z, $ptascii("Fatal error: Uncaught ") ++ ptbytes ++ $shutdown_exception_suffix(S, n), $long_and(S.REPORTING, 1) =/= 0)
   -- if S.COMPLETION = UNCAUGHT_RENDERED n ptbytes
   -- if $throwable_field(S, n, "line") = PINT z
-def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, S.TRACE =/= eps), b)
+def $shutdown_freeze_marked(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, S.TRACE =/= eps), b)
   -- if S.COMPLETION = USERFATAL ptbytes z b
-def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, 0, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in Unknown on line 0") ++ $shutdown_fatal_suffix(S, true), b)
+def $shutdown_freeze_marked(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, 0, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in Unknown on line 0") ++ $shutdown_fatal_suffix(S, true), b)
   -- if S.COMPLETION = INTERNALFATAL ptbytes b
-def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), $long_and(S.REPORTING, 1) =/= 0)
+def $shutdown_freeze_marked(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), $long_and(S.REPORTING, 1) =/= 0)
   -- if S.COMPLETION = FATAL ptbytes z
-def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("CompileError"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), $long_and(S.REPORTING, 64) =/= 0)
+def $shutdown_freeze_marked(S) = $shutdown_reported(S, $ptascii("CompileError"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), $long_and(S.REPORTING, 64) =/= 0)
   -- if S.COMPLETION = STATICBYTES ptbytes z
-def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("CompileError"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, false), $long_and(S.REPORTING, 64) =/= 0)
+def $shutdown_freeze_marked(S) = $shutdown_reported(S, $ptascii("CompileError"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, false), $long_and(S.REPORTING, 64) =/= 0)
   -- if S.COMPLETION = COMPILETHROWN ptbytes z
-def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("CompileError"), $ptascii(text), z, $ptascii("Fatal error: ") ++ $ptascii(text) ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), $long_and(S.REPORTING, 64) =/= 0)
+def $shutdown_freeze_marked(S) = $shutdown_reported(S, $ptascii("CompileError"), $ptascii(text), z, $ptascii("Fatal error: ") ++ $ptascii(text) ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), $long_and(S.REPORTING, 64) =/= 0)
   -- if S.COMPLETION = STATICERROR text z
 
 def $shutdown_frozen(REQUESTFATAL ptbytes_class ptbytes_message z) = true
@@ -296,8 +299,8 @@ def $shutdown_ready(S) = true
   -- if ~$shutdown_render_ready(S)
   -- if S.COMPILESTOP \/ S.FRAMES = eps
 def $shutdown_ready(S) = false -- otherwise
-def $shutdown_abort_frames(S) = $shutdown_abort_frames($restore_frame(S)) -- if S.FRAMES =/= eps
-def $shutdown_abort_frames(S) = S -- if S.FRAMES = eps
+def $shutdown_abort_frames(S) = $shutdown_abort_frames($restore_frame($file_warning_drop_scope(S))) -- if S.FRAMES =/= eps
+def $shutdown_abort_frames(S) = $file_warning_drop_scope(S) -- if S.FRAMES = eps
 def $shutdown_clean(S) = $eval_compile_unwind($shutdown_render_release($error_release_iterators($release_temporaries($silence_unwind($shutdown_abort_frames(S))))[.CURRENT = eps][.TODO = eps][.CONSTCONTEXT = eps][.HELD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.COMPILESTOP = false][.TRACE = eps][.ERRORFATALTRACE = eps][.ERRORORIGIN = eps]))
 def $shutdown_begin(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_RUNNING][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps][.SHUTDOWN.COMPLETION = S_report.COMPLETION][.COMPLETION = NORMAL][.TODO = [SHUTDOWN_SEND 0 0 eps]]
   -- if S_report = $shutdown_freeze(S)
@@ -307,7 +310,7 @@ def $shutdown_stop(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT 
 def $drive_steps(S, n) = $drive_steps($prune_allocations($shutdown_begin(S)), n)
   -- if $shutdown_ready(S)
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_PENDING
-def $drive_steps(S, n) = $prune_allocations($shutdown_stop(S))
+def $drive_steps(S, n) = $drive_steps($prune_allocations($shutdown_stop(S)), n)
   -- if $shutdown_ready(S)
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
 
@@ -772,3 +775,5 @@ def $shutdown_compiler_released(S, S_compiled) = true
   -- if $shutdown_compiler_snapshot(S_compiled.COMPLETION) = (pcompletion)
   -- if S.SHUTDOWN.COMPLETION = pcompletion \/ (S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.COMPLETION = pcompletion)
 def $shutdown_compiler_released(S, S_compiled) = false -- otherwise
+
+def $shutdown_freeze(S) = $shutdown_freeze_marked($request_fatal_state(S))

@@ -1,0 +1,71 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only direct static trait-property continuation controls, separate from238 compatibility selection.",
+  "cases": [
+    {
+      "id": "direct-trait-static-read-deprecated",
+      "source": "<?php trait T{public static int $x=1;}set_error_handler(function($s,$m){echo \"H\",$s,\";\";return true;});echo T::$x,\";\";",
+      "source_sha256": "9a2a122d561e76634262b59a5cf718051b35ad423cfd12d8ad3688259706ea83",
+      "status": "normal",
+      "stdout_base64": "SDgxOTI7MTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-static-property-native238-yt2mqzkw/report.json",
+      "native_raw_sha256": "c1f83b32a2b134fa601ebb0389df54ae052d3c3963a9750c93bc9e3e430a9cad"
+    },
+    {
+      "id": "direct-trait-typed-uninitialized-before-deprecation",
+      "source": "<?php trait T{public static int $x;}set_error_handler(function($s,$m){echo \"H;\";return true;});try{echo T::$x;}catch(Error $e){echo $e->getMessage();}",
+      "source_sha256": "4f829cac60ffda6128317757488f88454fecb5efb59810d2274a1e209360ae5a",
+      "status": "normal",
+      "stdout_base64": "VHlwZWQgc3RhdGljIHByb3BlcnR5IFQ6OiR4IG11c3Qgbm90IGJlIGFjY2Vzc2VkIGJlZm9yZSBpbml0aWFsaXphdGlvbg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-static-property-native238-yt2mqzkw/report.json",
+      "native_raw_sha256": "c1f83b32a2b134fa601ebb0389df54ae052d3c3963a9750c93bc9e3e430a9cad"
+    },
+    {
+      "id": "direct-trait-missing-before-deprecation",
+      "source": "<?php trait T{public static int $x=1;}set_error_handler(function($s,$m){echo \"H;\";return true;});try{echo T::$missing;}catch(Error $e){echo $e->getMessage();}",
+      "source_sha256": "e35d3da53ac122efff49000a79f7a66bd0f15b05dce0c9a52ed553aac350cd97",
+      "status": "normal",
+      "stdout_base64": "QWNjZXNzIHRvIHVuZGVjbGFyZWQgc3RhdGljIHByb3BlcnR5IFQ6OiRtaXNzaW5n",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-static-property-native238-yt2mqzkw/report.json",
+      "native_raw_sha256": "c1f83b32a2b134fa601ebb0389df54ae052d3c3963a9750c93bc9e3e430a9cad"
+    },
+    {
+      "id": "direct-trait-quiet-uninitialized-still-deprecated",
+      "source": "<?php trait T{public static int $x;}set_error_handler(function($s,$m){echo \"H\",$s,\";\";return true;});echo isset(T::$x)?\"Y\":\"N\";",
+      "source_sha256": "79518a8e1941b3c674679548c9f45b6bad289000f4dfc2e792acc3f3f7fa27cb",
+      "status": "normal",
+      "stdout_base64": "SDgxOTI7Tg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-static-property-native238-yt2mqzkw/report.json",
+      "native_raw_sha256": "c1f83b32a2b134fa601ebb0389df54ae052d3c3963a9750c93bc9e3e430a9cad"
+    },
+    {
+      "id": "direct-trait-handler-throw-aborts-read",
+      "source": "<?php trait T{public static int $x=1;}set_error_handler(function($s,$m){throw new Exception(\"H\");});echo \"PRE;\";try{echo T::$x;}catch(Exception $e){echo \"CAUGHT;\";}",
+      "source_sha256": "5e028eccfda1d153f01dffd4a2afb448780f3550c3eb621f8e60ba995c966d0e",
+      "status": "normal",
+      "stdout_base64": "UFJFO0NBVUdIVDs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-static-property-native238-yt2mqzkw/report.json",
+      "native_raw_sha256": "c1f83b32a2b134fa601ebb0389df54ae052d3c3963a9750c93bc9e3e430a9cad"
+    },
+    {
+      "id": "direct-trait-read-rereads-handler-write",
+      "source": "<?php trait T{public static int $x=1;}set_error_handler(function($s,$m){$old=error_reporting(0);T::$x=9;error_reporting($old);return true;});echo T::$x;",
+      "source_sha256": "fdd47c6ed1ac3175b698a1da065bd17fddc7366bea273a65183f231bf6099512",
+      "status": "normal",
+      "stdout_base64": "OQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-static-property-native238-yt2mqzkw/report.json",
+      "native_raw_sha256": "c1f83b32a2b134fa601ebb0389df54ae052d3c3963a9750c93bc9e3e430a9cad"
+    }
+  ]
+}

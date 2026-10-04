@@ -1,0 +1,344 @@
+[
+  {
+    "id": "exception-self-late-null-scope",
+    "source": "<?php function s(){echo \"S;\";}class C{static function reg(){set_exception_handler([\"self\",\"h\"]);}static function h($e){echo \"BAD;\";}}register_shutdown_function(\"s\");C::reg();throw new Exception(\"main\");",
+    "source_sha256": "cd598fd22a05a80a5138cc4734208c872ed63445b9661aea8727738d15633fa0",
+    "stdout": "S;",
+    "stderr": "Deprecated: Use of \"self\" in callables is deprecated in {file} on line 1\nFatal error: Invalid callback self::h, cannot access \"self\" when no class scope is active in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "shutdown-self-cached-private",
+    "source": "<?php class C{static function reg(){register_shutdown_function([\"self\",\"h\"],\"x\");echo \"R;\";}private static function h($x){echo \"H:\",$x,\":\",get_called_class(),\":\",func_num_args(),\";\";}}C::reg();exit(7);",
+    "source_sha256": "d5aa871ef57191771b761d13323b6ac68eaad63e3942cddcfe68f44be8a20aab",
+    "stdout": "R;H:x:C:1;",
+    "stderr": "Deprecated: Use of \"self\" in callables is deprecated in {file} on line 1\n",
+    "exit": 7,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "exception-compound-register-and-late",
+    "source": "<?php function s(){echo \"S;\";}class A{static function h($e){echo \"H:\",$e->getMessage(),\":\",get_called_class(),\":\",func_num_args(),\";\";}}class B extends A{}register_shutdown_function(\"s\");set_exception_handler([\"B\",\"A::h\"]);throw new Exception(\"main\");",
+    "source_sha256": "ae5c3b2666313ac2635ad8416238af888c3e668bb7356ed13c1ef81a9bf6a5c7",
+    "stdout": "H:main:A:1;S;",
+    "stderr": "Deprecated: Callables of the form [\"B\", \"A::h\"] are deprecated in {file} on line 1\nDeprecated: Callables of the form [\"B\", \"A::h\"] are deprecated in Unknown on line 0\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-compound-live-method-warning",
+    "source": "<?php $m=\"A::h\";function w($n,$msg,$f,$l){global $m;echo \"W:\",$l,\";\";$m=\"Q::k\";return true;}class A{static function h($x){echo \"BAD;\";}static function k($x){echo \"K:\",$x,\":\",get_called_class(),\":\",func_num_args(),\";\";}}class B extends A{}set_error_handler(\"w\");register_shutdown_function([\"B\",&$m],\"x\");$m=\"A::h\";echo \"R;\";",
+    "source_sha256": "5aea0943bfd84b76dadee165ffaaedc50f934a968e2ee4bb7fc09b4290792b1c",
+    "stdout": "W:1;R;K:x:A:1;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exception-compound-terminal-warning-replacement",
+    "source": "<?php function r($e){echo \"R:\",$e->getMessage(),\";\";}function s(){echo \"S:\",get_exception_handler(),\";\";}function w($n,$msg,$f,$l){echo \"W:\",$l,\";\";if($l===0){set_exception_handler(\"r\");throw new Exception(\"warning\");}return true;}class A{static function h($e){echo \"H:\",$e->getMessage(),\";\";}}class B extends A{}set_error_handler(\"w\");register_shutdown_function(\"s\");set_exception_handler([\"B\",\"A::h\"]);throw new Exception(\"main\");",
+    "source_sha256": "cac5a4c223eb3e88dce1afedd3a061456e884f2f63cf5f383d37495bd26696b0",
+    "stdout": "W:1;W:0;R:warning;H:main;S:r;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-warning-append",
+    "source": "<?php function i(){echo \"I;\";}function w($n,$msg,$f,$l){echo \"W;\";register_shutdown_function(\"i\");return true;}class C{static function reg(){register_shutdown_function([\"self\",\"h\"]);echo \"R;\";}static function h(){echo \"H;\";}}set_error_handler(\"w\");C::reg();",
+    "source_sha256": "adcedfac790cd3f92db0acf14b997923e99aed1a6824fa885f332f5b492c097a",
+    "stdout": "W;R;I;H;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-compound-receiver-alias-retirement",
+    "source": "<?php $o=new C;function w($n,$msg,$f,$l){global $o;echo \"W;\";$o=null;return true;}class C{public $v=\"kept\";function reg(){global $o;register_shutdown_function([&$o,\"self::h\"]);echo \"R;\";}private function h(){echo \"H:\",$this->v,\":\",get_called_class(),\":\",func_num_args(),\";\";}}set_error_handler(\"w\");$o->reg();",
+    "source_sha256": "3f862f8639512ed083741fb62d7207e8e4f0e85b11f31a24d4d557e74a23af3b",
+    "stdout": "W;R;H:kept:C:0;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exception-compound-receiver-alias-retirement",
+    "source": "<?php $o=new C;function s(){echo \"S;\";}function w($n,$msg,$f,$l){global $o;echo \"W;\";$o=null;return true;}class C{function reg(){global $o;set_exception_handler([&$o,\"self::h\"]);echo \"R;\";}private function h($e){echo \"BAD;\";}}set_error_handler(\"w\");register_shutdown_function(\"s\");$o->reg();throw new Exception(\"main\");",
+    "source_sha256": "6746d9b17ed269197dc67ca621ff961e62e2bd260734f6c35a08aeb3e4cc019b",
+    "stdout": "W;R;S;",
+    "stderr": "Fatal error: Invalid callback Array, first array member is not a valid class name or object in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "exception-compound-terminal-pop-original",
+    "source": "<?php function r($e){echo \"R:\",$e->getMessage(),\";\";}function s(){echo \"S;\";}function w($n,$msg,$f,$l){echo \"W:\",$l,\";\";if($l===0){restore_exception_handler();}return true;}class A{static function h($e){echo \"H:\",$e->getMessage(),\";\";}}class B extends A{}set_error_handler(\"w\");register_shutdown_function(\"s\");set_exception_handler(\"r\");set_exception_handler([\"B\",\"A::h\"]);throw new Exception(\"main\");",
+    "source_sha256": "1ce62c5435734d7e0a60aa9906c90aa140e9139b238b1c0ea06462731514037b",
+    "stdout": "W:1;W:0;H:main;S;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exception-compound-late-private-getter",
+    "source": "<?php function s(){echo \"S;\";}class A{private static function h($e){echo \"BAD;\";}static function reg(){set_exception_handler([\"B\",\"A::h\"]);}}class B extends A{}register_shutdown_function(\"s\");A::reg();throw new Exception(\"main\");",
+    "source_sha256": "13047b7eb235877ee1926a4e3bc334413bc78c11c7d9d53cedb91bb1077bab5d",
+    "stdout": "S;",
+    "stderr": "Deprecated: Callables of the form [\"B\", \"A::h\"] are deprecated in {file} on line 1\nDeprecated: Callables of the form [\"B\", \"A::h\"] are deprecated in Unknown on line 0\nFatal error: Invalid callback B::A::h, cannot access private method A::h() in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "shutdown-keyword-parent-self-static-called",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W;\";return true;}class A{static function h(){echo \"A:\",get_called_class(),\";\";}}class C extends A{static function reg(){register_shutdown_function([\"parent\",\"h\"]);register_shutdown_function([\"self\",\"h\"]);register_shutdown_function(\"static::h\");}static function h(){echo \"C:\",get_called_class(),\";\";}}class D extends C{static function h(){echo \"D:\",get_called_class(),\";\";}}set_error_handler(\"w\");D::reg();",
+    "source_sha256": "84db3488744d3557c8fcd7dc86825d274595e2b814b6a3b82c1a5e6833d3ed67",
+    "stdout": "W;W;W;A:D;C:D;D:D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-compound-raw-container-cow-retirement",
+    "source": "<?php $o=new C;$cb=[$o,\"self::h\"];function w($n,$m,$f,$l){global $o,$cb;echo \"W;\";$o=null;$cb=[];return true;}class C{public $v=\"kept\";static function reg(){global $cb;register_shutdown_function($cb);echo \"R;\";}private function h(){echo \"H:\",$this->v,\":\",get_called_class(),\";\";}}set_error_handler(\"w\");C::reg();",
+    "source_sha256": "69a96e0e33a69789f30bdb251190d00d27fabbb1d7a251e3121868f5d839a4d7",
+    "stdout": "W;R;H:kept:C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-compound-foreign-private-fallback",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W;\";return true;}class Child{}class Foreign{private function h(){echo \"H:\",self::class,\":\",get_called_class(),\";\";}function reg(){register_shutdown_function([\"Child\",\"self::h\"]);echo \"R;\";}}set_error_handler(\"w\");(new Foreign)->reg();",
+    "source_sha256": "32b121cd6527a00cd7d7bf0fc9b1d148741af42ac2386aa96cef43bd7f8ccf5f",
+    "stdout": "W;R;H:Foreign:Foreign;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exception-compound-terminal-abstract",
+    "source": "<?php $m=\"h\";function s(){echo \"S;\";}abstract class A{abstract static function h($e);}class B extends A{static function h($e){echo \"BAD;\";}}register_shutdown_function(\"s\");set_exception_handler([\"B\",&$m]);$m=\"A::h\";throw new Exception(\"main\");",
+    "source_sha256": "0f3d0f2572d061bc352d6af7a2c197c3b19d905b1e2bb26800fda1fc334633fc",
+    "stdout": "S;",
+    "stderr": "Deprecated: Callables of the form [\"B\", \"A::h\"] are deprecated in Unknown on line 0\nFatal error: Invalid callback B::A::h, cannot call abstract method A::h() in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "exception-compound-terminal-inherited-private-object",
+    "source": "<?php $m=\"ok\";function s(){echo \"S;\";}class A{private function h($e){echo \"BAD;\";}}class B extends A{function ok($e){echo \"BAD;\";}}$o=new B;register_shutdown_function(\"s\");set_exception_handler([$o,&$m]);$m=\"B::h\";throw new Exception(\"main\");",
+    "source_sha256": "1cb588f525058057213ce30933e9bb9642e17f005f47e22cf1a5bb4dc1c71ef3",
+    "stdout": "S;",
+    "stderr": "Deprecated: Callables of the form [\"B\", \"B::h\"] are deprecated in Unknown on line 0\nFatal error: Invalid callback B::B::h, cannot access private method B::h() in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "exception-compound-terminal-inherited-private-static",
+    "source": "<?php $m=\"ok\";function s(){echo \"S;\";}class A{private static function h($e){echo \"BAD;\";}}class B extends A{static function ok($e){echo \"BAD;\";}}register_shutdown_function(\"s\");set_exception_handler([\"B\",&$m]);$m=\"B::h\";throw new Exception(\"main\");",
+    "source_sha256": "723763a3b028497353863bc30afa34f3c3cb915962ffb9825ca8f20edb724247",
+    "stdout": "S;",
+    "stderr": "Deprecated: Callables of the form [\"B\", \"B::h\"] are deprecated in Unknown on line 0\nFatal error: Invalid callback B::B::h, cannot access private method B::h() in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "exception-keyword-registration-warning-throw-preserves-stack",
+    "source": "<?php function r($e){echo \"R:\",$e->getMessage(),\";\";}function w($n,$m,$f,$l){echo \"W;\";throw new Exception(\"warning\");}class C{static function reg(){set_exception_handler([\"self\",\"h\"]);}static function h($e){echo \"BAD;\";}}set_exception_handler(\"r\");set_error_handler(\"w\");try{C::reg();}catch(Exception $e){echo \"C:\",$e->getMessage(),\":\",get_exception_handler(),\";\";}throw new Exception(\"main\");",
+    "source_sha256": "1b27ebd01cf121f0a5024683c89ed50dbb5d323c9f927af818ac87e89a22c595",
+    "stdout": "W;C:warning:r;R:main;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-registration-warning-throw-keeps-inner-append",
+    "source": "<?php function i(){echo \"I;\";}function w($n,$m,$f,$l){echo \"W;\";register_shutdown_function(\"i\");throw new Exception(\"warning\");}class C{static function reg(){register_shutdown_function([\"self\",\"h\"]);}static function h(){echo \"BAD;\";}}set_error_handler(\"w\");try{C::reg();}catch(Exception $e){echo \"C:\",$e->getMessage(),\";\";}",
+    "source_sha256": "46d20d77bf23582671e35c75359537a021ec71bba4f91988dcd42d19b69f592b",
+    "stdout": "W;C:warning;I;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-argument-effects-before-warning",
+    "source": "<?php function a(){echo \"A;\";return \"x\";}function w($n,$m,$f,$l){echo \"W;\";throw new Exception(\"warning\");}class C{static function reg(){register_shutdown_function([\"self\",\"h\"],a());}static function h($x){echo \"BAD;\";}}set_error_handler(\"w\");try{C::reg();}catch(Exception $e){echo \"C:\",$e->getMessage(),\";\";}",
+    "source_sha256": "1fd507996b5d63201986e7bd368242ad0194db41f8e7771d20ea658c17307304",
+    "stdout": "A;W;C:warning;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exception-keyword-arity-before-warning",
+    "source": "<?php function a(){echo \"A;\";return 1;}function w($n,$m,$f,$l){echo \"BAD;\";return true;}class C{static function reg(){set_exception_handler([\"self\",\"h\"],a());}static function h($e){echo \"BAD;\";}}set_error_handler(\"w\");try{C::reg();}catch(ArgumentCountError $e){echo \"C:\",$e->getMessage(),\";\";}",
+    "source_sha256": "fec7c7c3f2a8001d7e47c35c7337cb6a1eb3d0a9e586d3ed75d68c6ab85e1b72",
+    "stdout": "A;C:set_exception_handler() expects exactly 1 argument, 2 given;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exception-compound-terminal-warning-throw-without-replacement",
+    "source": "<?php function s(){echo \"S;\";}function w($n,$m,$f,$l){echo \"W:\",$l,\";\";if($l===0){throw new Exception(\"warning\");}return true;}class A{static function h($e){echo \"BAD;\";}}class B extends A{}set_error_handler(\"w\");register_shutdown_function(\"s\");set_exception_handler([\"B\",\"A::h\"]);throw new Exception(\"main\");",
+    "source_sha256": "f37c544735062b6fd43960087d26a3f6f520f2151e6234b29a83618619788f89",
+    "stdout": "W:1;W:0;S;",
+    "stderr": "Fatal error: Uncaught Exception: warning in {file}:1\nStack trace:\n#0 [internal function]: w(8192, 'Callables of th...', 'Unknown', 0)\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "exception-compound-terminal-warning-exit",
+    "source": "<?php function s(){echo \"S;\";}function w($n,$m,$f,$l){echo \"W:\",$l,\";\";if($l===0){exit(9);}return true;}class A{static function h($e){echo \"BAD;\";}}class B extends A{}set_error_handler(\"w\");register_shutdown_function(\"s\");set_exception_handler([\"B\",\"A::h\"]);throw new Exception(\"main\");",
+    "source_sha256": "21c1a5bd6cc83717e5bbd95aba525be9e260889b6be8123815d6329e90176692",
+    "stdout": "W:1;W:0;S;",
+    "stderr": "",
+    "exit": 9,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "exception-compound-terminal-warning-restore-and-throw",
+    "source": "<?php $once=true;function s(){echo \"S;\";}function w($n,$m,$f,$l){global $once;echo \"W:\",$l,\";\";if($l===0&&$once){$once=false;restore_exception_handler();throw new Exception(\"warning\");}return true;}class A{static function h($e){echo \"H:\",$e->getMessage(),\";\";}}class B extends A{}set_error_handler(\"w\");register_shutdown_function(\"s\");set_exception_handler([\"B\",\"A::h\"]);throw new Exception(\"main\");",
+    "source_sha256": "b1aef7d559591d0bf4b2c39c917822e24f8e28d14f07b372039d42f62308fb6c",
+    "stdout": "W:1;W:0;H:warning;H:main;S;",
+    "stderr": "Deprecated: Callables of the form [\"B\", \"A::h\"] are deprecated in Unknown on line 0\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-append-from-cached-called-scope",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class C{static function reg(){register_shutdown_function([\"self\",\"h\"]);}private static function h(){echo \"H:\",get_called_class(),\";\";register_shutdown_function([\"static\",\"j\"]);}static function j(){echo \"C:\",get_called_class(),\";\";}}class D extends C{static function j(){echo \"J:\",get_called_class(),\";\";}}set_error_handler(\"w\");D::reg();",
+    "source_sha256": "f2a569382b3c1ddfaec412072d2a1075df1480f5f761eeec94b5dd0baa6f964a",
+    "stdout": "W:1;H:D;W:1;J:D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "handler-keyword-referenced-class-selection-timing",
+    "source": "<?php $k=\"self\";function w($n,$m,$f,$l){global $k;echo \"W;\";$k=\"D\";return true;}class C{static function reg(){global $k;set_exception_handler([&$k,\"h\"]);$k=\"self\";register_shutdown_function([&$k,\"h\"]);echo \"R;\";}static function h($e=null){echo \"C:\",$e===null?\"null\":$e->getMessage(),\";\";}}class D{static function h($e=null){echo \"D:\",$e===null?\"null\":$e->getMessage(),\";\";}}set_error_handler(\"w\");C::reg();throw new Exception(\"main\");",
+    "source_sha256": "882ab7842fdf22629363c0c58e4296746b80635a93102445fe50919b6bd10fb3",
+    "stdout": "W;W;R;D:main;C:null;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-compound-retired-intrinsic-api-and-static-selector",
+    "source": "<?php class C{function reg(){$r=register_shutdown_function(...);$r([$this,\"self::h\"],new stdClass);}private static function h($v){echo \"H:\",get_class($v),\":\",get_called_class(),\":\",func_num_args(),\";\";}}(new C)->reg();",
+    "source_sha256": "ccbb350d0abcbe7359c1ff21a046c71c1b9ec925f74ff269ec488e0e8cc11b4f",
+    "stdout": "H:stdClass:C:1;",
+    "stderr": "Deprecated: Callables of the form [\"C\", \"self::h\"] are deprecated in {file} on line 1\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exception-compound-retired-api-and-static-selector",
+    "source": "<?php class C{static function h($e){restore_exception_handler();restore_exception_handler();echo \"H:\",func_num_args(),\";\";}}function make(){$r=set_exception_handler(...);$r([new C,\"C::h\"]);}make();throw new Exception(\"main\");",
+    "source_sha256": "49e5f6bcf55b8156e28028b293936bc2991685c2b18f4c206801c33e88d3d225",
+    "stdout": "H:1;",
+    "stderr": "Deprecated: Callables of the form [\"C\", \"C::h\"] are deprecated in {file} on line 1\nDeprecated: Callables of the form [\"C\", \"C::h\"] are deprecated in Unknown on line 0\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exception-compound-byref-warning-keeps-selected-leaf",
+    "source": "<?php $m=\"A::h\";function w($n,$s,$f,$l){global $m;if($n===8192){echo \"D:\",$l,\";\";$m=\"A::h\";}else{echo \"W:\",$l,\";\";$m=\"A::k\";}return true;}class A{static function h(&$e){echo \"H:\",$e->getMessage(),\":\",func_num_args(),\";\";}static function k(&$e){echo \"BAD;\";}}class B extends A{}set_error_handler(\"w\");set_exception_handler([\"B\",&$m]);throw new Exception(\"main\");",
+    "source_sha256": "a3928f8e89e2efa5851650befd2511aac385dfbeca4253df81f9befd719eec03",
+    "stdout": "D:1;D:0;W:0;H:main:1;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-from-retired-method-exception-handler",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class C{static function h($e){echo \"E:\",get_called_class(),\";\";restore_exception_handler();restore_exception_handler();register_shutdown_function([\"self\",\"s\"]);echo \"R;\";}private static function s(){echo \"S:\",get_called_class(),\";\";}}class D extends C{}set_error_handler(\"w\");set_exception_handler([\"D\",\"h\"]);throw new Exception(\"main\");",
+    "source_sha256": "2e428573d2ec0e2202f525a84e7b4473998b69a1b6cc0c6876326fbc713317a1",
+    "stdout": "E:D;W:1;R;S:D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-from-method-error-handler",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class C{static function h($n,$m,$f,$l){echo \"E:\",get_called_class(),\";\";restore_error_handler();restore_error_handler();set_error_handler(\"w\");register_shutdown_function([\"self\",\"s\"]);echo \"R;\";return true;}private static function s(){echo \"S:\",get_called_class(),\";\";}}class D extends C{}set_error_handler([\"D\",\"h\"]);echo $missing;",
+    "source_sha256": "576ca108fd7fc9d1ac6b638f857cbcb80690a59c9240f7e58538c5bff74dd81b",
+    "stdout": "E:D;W:1;R;S:D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-from-implicit-stringify-method",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class E{function __toString():string{register_shutdown_function([\"self\",\"s\"]);return \"V;\";}private static function s(){echo \"S:\",get_called_class(),\";\";}}set_error_handler(\"w\");echo new E;",
+    "source_sha256": "22a5ef26b99c5f4717254f399f8642705c434945ac47b25c7cef78d7b48cbb18",
+    "stdout": "W:1;V;S:E;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-from-terminal-stringify-method",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class E extends Exception{function __toString():string{register_shutdown_function([\"self\",\"s\"]);return \"V;\";}private static function s(){echo \"S:\",get_called_class(),\";\";}}class D extends E{}set_error_handler(\"w\");throw new D(\"main\");",
+    "source_sha256": "1ceb6ceda431c281bbb84bc7653e61cc9d900364867029f9b1db30a37fca80bb",
+    "stdout": "W:1;S:D;",
+    "stderr": "Fatal error: Uncaught V;\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "shutdown-compound-original-receiver-after-genuine-swap",
+    "source": "<?php class C{public $v;function __construct($v){$this->v=$v;}function reg(){global $o;register_shutdown_function([&$o,\"self::h\"]);echo \"R;\";}private function h(){echo \"H:\",$this->v,\":\",get_called_class(),\";\";}}$a=new C(\"a\");$b=new C(\"b\");$o=$a;function w($n,$m,$f,$l){global $o,$b;echo \"W;\";$o=$b;return true;}set_error_handler(\"w\");$o->reg();unset($a);",
+    "source_sha256": "b59f87fbbdd9fb0fb0f4f99529446fc4d71f9d58eb6035793c6d4ee47b8c55b9",
+    "stdout": "W;R;H:a:C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-from-retired-selected-closure-maker",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class C{static function maker(){return function($e){echo \"E:\",get_called_class(),\";\";restore_exception_handler();restore_exception_handler();register_shutdown_function([\"self\",\"s\"]);echo \"R;\";};}private static function s(){echo \"S:\",get_called_class(),\";\";}}set_error_handler(\"w\");set_exception_handler(C::maker());throw new Exception(\"main\");",
+    "source_sha256": "40907be760712443e3ea8b905eef53158f1be636df51f8df70622a3cc79dcd25",
+    "stdout": "E:C;W:1;R;S:C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exception-registration-private-getter-error",
+    "source": "<?php class A{private function h(){}}class B extends A{}function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}set_error_handler(\"w\");function r($e){echo \"R:\",$e->getMessage(),\";\";}set_exception_handler(\"r\");try{set_exception_handler([new B,\"B::h\"]);}catch(Throwable $e){echo \"C:\",get_class($e),\":\",$e->getMessage(),\";\";}throw new Exception(\"after\");",
+    "source_sha256": "431c437d63f8ee5b9871f1dd4faace232da7465bf1a26ad09316cd265febaf1c",
+    "stdout": "W:1;C:TypeError:set_exception_handler(): Argument #1 ($callback) must be a valid callback or null, cannot access private method B::h();R:after;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-registration-private-getter-error",
+    "source": "<?php class A{private function h(){}}class B extends A{}function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}set_error_handler(\"w\");function s(){echo \"S;\";}register_shutdown_function(\"s\");try{register_shutdown_function([new B,\"B::h\"]);}catch(Throwable $e){echo \"C:\",get_class($e),\":\",$e->getMessage(),\";\";}",
+    "source_sha256": "f9a7ab10a26be21358e53585a2a433be5138e4707e6f3343b7c4b893d7792bde",
+    "stdout": "W:1;C:TypeError:register_shutdown_function(): Argument #1 ($callback) must be a valid callback, cannot access private method B::h();S;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exception-registration-foreign-getter-error",
+    "source": "<?php class Requested{}class Maker{function reg(){try{set_exception_handler([\"Requested\",\"self::h\"]);}catch(Throwable $e){echo \"C:\",get_class($e),\":\",$e->getMessage(),\";\";}}}class Foreign extends Maker{private function h(){}}function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}set_error_handler(\"w\");function r($e){echo \"R:\",$e->getMessage(),\";\";}set_exception_handler(\"r\");(new Foreign)->reg();throw new Exception(\"after\");",
+    "source_sha256": "08373f72455e8eb4dfce79db298b8a522fe3f7fa17ba0511751908b01fc4051d",
+    "stdout": "W:1;C:Error:Call to private method Foreign::h() from scope Maker;R:after;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-registration-foreign-getter-error",
+    "source": "<?php class Requested{}class Maker{function reg(){try{register_shutdown_function([\"Requested\",\"self::h\"]);}catch(Throwable $e){echo \"C:\",get_class($e),\":\",$e->getMessage(),\";\";}}}class Foreign extends Maker{private function h(){}}function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}set_error_handler(\"w\");function s(){echo \"S;\";}register_shutdown_function(\"s\");(new Foreign)->reg();",
+    "source_sha256": "83ccba3deed3e4cf18801689bf65d6de1dc17e59182826d28fc1176312f7dba9",
+    "stdout": "W:1;C:Error:Call to private method Foreign::h() from scope Maker;S;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  }
+]

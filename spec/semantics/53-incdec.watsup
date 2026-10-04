@@ -1,3 +1,4 @@
+dec $property_type_name(pstate, ppropertydesc) : ptbytes
 ;; Captured scalar updates; source location acquisition follows separately.
 ;; Pinned zend_operators.c increment_function/decrement_function.
 
@@ -64,19 +65,19 @@ dec $update_limit_word(pupdate) : ptbytes
 def $update_limit_word(INCREMENT) = $ptascii("maximal")
 def $update_limit_word(DECREMENT) = $ptascii("minimal")
 dec $update_overflow_message(pstate, pupdate, plocation) : ptbytes?
-def $update_overflow_message(S, pupdate, plocation) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" a reference held by property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
+def $update_overflow_message(S, pupdate, plocation) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" a reference held by property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
   -- if $update_alias_cell(S, plocation) = (n_cell)
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if $update_first_nodouble(S, ppropref.SOURCES) = (pproptypesource)
   -- if $propref_descriptor(S, pproptypesource) = (ppropertydesc)
-def $update_overflow_message(S, pupdate, PROPERTY n_object ptbytes) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
+def $update_overflow_message(S, pupdate, PROPERTY n_object ptbytes) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
   -- if S.OBJECTS[n_object] = INSTANCE porigin_class
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ~$update_accepts_double(ppropertydesc.TYPE)
-def $update_overflow_message(S, pupdate, CLASS_STATIC ppropertyid) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
+def $update_overflow_message(S, pupdate, CLASS_STATIC ppropertyid) = ($ptascii("Cannot ") ++ $ptlc($update_verb(pupdate)) ++ $ptascii(" property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc) ++ $ptascii(" past its ") ++ $update_limit_word(pupdate) ++ $ptascii(" value"))
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
   -- if pclassstatic.STATE = PROP_VALUE (DIRECT pvalue)
   -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
@@ -205,6 +206,7 @@ def $update_acquired(S, pupdate, bool, z) = $update_location(S, pupdate, bool, z
 
 rule PhpStep/update-apply: S ~> S_updated[.HELD = S.HELD]
   -- if S.TODO = (UPDATE_PREP pupdate bool z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
   -- if S_updated = $update_acquired($rw_base($hold_task_inputs(S), S.BASE, STRINGINCDEC, z), pupdate, bool, z)
 rule PhpStep/update-PreInc: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), UPDATE_PREP INCREMENT false $runtime_line(S, eps, NExprPreInc expression metadata)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprPreInc expression metadata)) :: ptask_tail*

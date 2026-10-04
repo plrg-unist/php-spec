@@ -67,7 +67,7 @@ Its other phases cover callback/traversal frames, nested compilers, retained
 exceptions and fatal formatter/file retirement. The `file-public` and
 `file-history-retirement` phases use the maintained runner's `--sl` option with
 the same strict checks, disabled cache and300-second cap; other phases retain
-AL mode. Their43/49 predicates pass at semantic c9e6/helper43b, after the original
+AL mode. Their43/49 predicates pass at semantic c9e6 (private43b), after the original
 AL attempts timed out without a verdict. The ordinary independent phases retain
 their separate65/36/28/42/30/45 cut at ea077, nested-fatal57 at3bd and the coherent
 function-descriptor forgery24 at c9e6. Authored USERfatal48 and21 distinct source

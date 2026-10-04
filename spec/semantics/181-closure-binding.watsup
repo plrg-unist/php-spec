@@ -32,21 +32,9 @@ def $closure_binding_source_valid(S, pclosurebinding) = true
   -- if n_source = pclosurebinding.SOURCE
   -- if $(n_source < n)
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem_source* pstaticcell_source*
-  -- if $origin_node(S.SOURCES, pclosurebinding.SITE) = (NExprMethodCall expression (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
-  -- if $ptlc($base64(text_name)) = $ptascii("bindto")
-  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
-  -- if $binding_scope_valid(S, pclosurebinding)
-def $closure_binding_source_valid(S, pclosurebinding) = true
-  -- if n = pclosurebinding.OBJECT
-  -- if $(n < |S.OBJECTS|)
-  -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
-  -- if n_source = pclosurebinding.SOURCE
-  -- if $(n_source < n)
-  -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem_source* pstaticcell_source*
-  -- if $origin_node(S.SOURCES, pclosurebinding.SITE) = (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
-  -- if $ptlc($base64(text_class)) = $ptascii("closure")
-  -- if $ptlc($base64(text_name)) = $ptascii("bind")
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if ~$closure_static(S, pfunction) \/ pclosurebinding.RECEIVER = eps
+  -- if $closure_binding_api_site(S, pclosurebinding.SITE)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $binding_scope_valid(S, pclosurebinding)
 def $closure_binding_source_valid(S, pclosurebinding) = false -- otherwise
@@ -165,14 +153,14 @@ def $bind_result(S, pbindcall) = $bind_make(S[.TODO = (BIND_INVOKE pbindcall_inn
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if ~$closure_static(S, pfunction)
-  -- if $ptlc(n_scope*) =/= $ptascii("static")
+  -- if n_scope* =/= $ptascii("static")
   -- if $class_named(S.CLASSNAMES, $ptlc(n_scope*)) = (porigin_scope)
   -- if pbindcall_inner = pbindcall[.KIND = INSTANCE_BIND][.SOURCE = (n_source)][.SENT = [KNOWN (POBJECT n_receiver), KNOWN (PSTRING n_scope*)]]
 def $bind_result(S, pbindcall) = $bind_make(S[.TODO = (BIND_INVOKE pbindcall_inner) :: ptask_tail*], pbindcall_inner, (n_receiver), $bind_source_lexical(S, n_source), (porigin_called))
   -- if pbindcall.KIND = STATIC_BIND
   -- if S.TODO = (BIND_INVOKE pbindcall) :: ptask_tail*
   -- if pbindcall.SENT = [KNOWN (POBJECT n_source), KNOWN (POBJECT n_receiver), KNOWN (PSTRING n_scope*)]
-  -- if $ptlc(n_scope*) = $ptascii("static")
+  -- if n_scope* = $ptascii("static")
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
@@ -241,7 +229,7 @@ def $bind_result(S, pbindcall) = $bind_make(S[.TODO = (BIND_INVOKE pbindcall_inn
   -- if pbindcall.KIND = STATIC_BIND
   -- if S.TODO = (BIND_INVOKE pbindcall) :: ptask_tail*
   -- if pbindcall.SENT = [KNOWN (POBJECT n_source), KNOWN PNULL, KNOWN (PSTRING n_scope*)]
-  -- if $ptlc(n_scope*) = $ptascii("static")
+  -- if n_scope* = $ptascii("static")
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $target_receiver(S, CLOSURE_TARGET n_source) = eps
   -- if pbindcall_inner = pbindcall[.KIND = INSTANCE_BIND][.SOURCE = (n_source)][.SENT = [KNOWN PNULL, KNOWN (PSTRING n_scope*)]]
@@ -292,7 +280,7 @@ def $bind_result(S, pbindcall) = $bind_make(S, pbindcall, eps, $bind_source_lexi
 def $bind_result(S, pbindcall) = $bind_make(S, pbindcall, eps, $bind_source_lexical(S, n_source), $bind_source_lexical(S, n_source))
   -- if pbindcall.KIND = INSTANCE_BIND
   -- if pbindcall.SENT = [KNOWN PNULL, KNOWN (PSTRING n_scope*)]
-  -- if $ptlc(n_scope*) = $ptascii("static")
+  -- if n_scope* = $ptascii("static")
   -- if pbindcall.SOURCE = (n_source)
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $target_receiver(S, CLOSURE_TARGET n_source) = eps
@@ -302,7 +290,7 @@ def $bind_result(S, pbindcall) = $bind_make(S, pbindcall, eps, (porigin_scope), 
   -- if pbindcall.SOURCE = (n_source)
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $target_receiver(S, CLOSURE_TARGET n_source) = eps
-  -- if $ptlc(n_scope*) =/= $ptascii("static")
+  -- if n_scope* =/= $ptascii("static")
   -- if $class_named(S.CLASSNAMES, $ptlc(n_scope*)) = (porigin_scope)
 def $bind_result(S, pbindcall) = $bind_make(S, pbindcall, eps, (porigin_scope), (porigin_scope))
   -- if pbindcall.KIND = INSTANCE_BIND
@@ -319,7 +307,7 @@ def $bind_result(S, pbindcall) = $bind_make(S, pbindcall, (n_receiver), (porigin
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if ~$closure_static(S, pfunction)
-  -- if $ptlc(n_scope*) =/= $ptascii("static")
+  -- if n_scope* =/= $ptascii("static")
   -- if $class_named(S.CLASSNAMES, $ptlc(n_scope*)) = (porigin_scope)
 def $bind_result(S, pbindcall) = $bind_make(S, pbindcall, (n_receiver), (porigin_scope), (porigin_called))
   -- if pbindcall.KIND = INSTANCE_BIND
@@ -338,7 +326,7 @@ def $bind_result(S, pbindcall) = $bind_make(S, pbindcall, (n_receiver), $bind_so
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if ~$closure_static(S, pfunction)
-  -- if $ptlc(n_scope*) = $ptascii("static")
+  -- if n_scope* = $ptascii("static")
 def $bind_result(S, pbindcall) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure::bindTo operand form"] -- otherwise
 
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [BIND_ARGS {SITE porigin_site, SOURCE (n), KIND INSTANCE_BIND, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -351,6 +339,9 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [BIND_AR
   -- if $ptlc(ptbytes) = $ptascii("bindto")
   -- if ~$ppfirstclass(phpType7*)
   -- if $bind_args_at(S_read, porigin_site) = phpType7*
+  -- if ~$internal_closure_object(S_read, n)
+  -- if ~$closure_binding_api_site(S, porigin_site)
+
 def $scoped_select(S, NName (BYTES text_class) metadata_class, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = S[.TODO = [BIND_ARGS {SITE porigin_site, SOURCE eps, KIND STATIC_BIND, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin_site)
@@ -359,6 +350,7 @@ def $scoped_select(S, NName (BYTES text_class) metadata_class, KNOWN (PSTRING n_
   -- if $ptlc(ptbytes_method) = $ptascii("bind")
   -- if ~$ppfirstclass(phpType7*)
   -- if $bind_args_at(S, porigin_site) = phpType7*
+  -- if ~$closure_binding_api_site(S, porigin_site)
 
 def $task_nodes(BIND_ARGS pbindcall) = $instance_roots(pbindcall.SOURCE) ++ $operands_roots(pbindcall.SENT)
 def $task_nodes(BIND_SEND pbindcall) = $instance_roots(pbindcall.SOURCE) ++ $operands_roots(pbindcall.SENT)

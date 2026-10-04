@@ -5,7 +5,6 @@ dec $ppmethod_supported_signature(pssignature, text) : bool
 syntax ppmembers = PPMEMBERS ppstate ppropertydesc* pmethoddesc*
 dec $ppmethod_members(statement*, bool) : bool
 dec $ppmember_groups(ppstate, pcpath, nat, statement*, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
-dec $ppmember_path(pcpath, pchheader, nat) : pcpath
 def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 3, PCINDEX n]
   -- if pchheader.KIND = "interface"
 def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 2, PCINDEX n]
@@ -82,9 +81,9 @@ def $ppmember_groups(P, pcpath, n, eps, ppropertydesc*, pmethoddesc*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
 def $ppmember_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc_next*, pmethoddesc*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
-  -- if pchheader.KIND = "class"
+  -- if pchheader.KIND = "class" \/ pchheader.KIND = "trait"
   -- if $ppproperty_group_line_valid(P, metadata)
-  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath ++ [PCFIELD 5, PCINDEX n], $source_line(metadata)), pcpath ++ [PCFIELD 5, PCINDEX n], flags, phpType18, phpType57*, ppropertydesc*, pchheader, $source_line(metadata))
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, $ppmember_path(pcpath, pchheader, n), $source_line(metadata)), $ppmember_path(pcpath, pchheader, n), flags, phpType18, phpType57*, ppropertydesc*, pchheader, $source_line(metadata))
 def $ppmember_groups(P, pcpath, n, (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc*, pmethoddesc_next*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
   -- if PPMEMBERS P_next ppropertydesc* pmethoddesc_next* = $ppmethod_one(P, $ppmember_path(pcpath, pchheader, n), NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader)
@@ -158,9 +157,9 @@ def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpTyp
   -- if $ppmethod_at(pmethoddesc*, ptbytes)
 def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P, "method visibility, static, or magic consumer")) ppropertydesc* pmethoddesc*
   -- if $ppmethod_prechecked(flags, ptbytes, phpType47, pchheader) /\ ~$ppmethod_at(pmethoddesc*, ptbytes)
-  -- if flags <- [0,1,2,4,8,9,10,12,16,17,18,24,25,26,32,33,34,36,40,41,42,44] /\ $ppmethod_magic(ptbytes) /\ ~$ppmethod_tostring(ptbytes) /\ $ptlc(ptbytes) =/= $ptascii("__wakeup") /\ ~$ppmethod_invoke(flags, ptbytes)
+  -- if flags <- [0,1,2,4,8,9,10,12,16,17,18,24,25,26,32,33,34,36,40,41,42,44] /\ $ppmethod_magic(ptbytes) /\ ~$ppmethod_tostring(ptbytes) /\ ~($ptlc(ptbytes) <- [$ptascii("__wakeup"), $ptascii("__destruct")]) /\ ~$ppmethod_invoke(flags, ptbytes)
 def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppmethod_begin(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader)
-  -- if $ppmethod_prechecked(flags, ptbytes, phpType47, pchheader) /\ ($ppmethod_tostring(ptbytes) \/ $ptlc(ptbytes) = $ptascii("__wakeup") \/ $ppmethod_invoke(flags, ptbytes)) /\ ~$ppmethod_at(pmethoddesc*, ptbytes)
+  -- if $ppmethod_prechecked(flags, ptbytes, phpType47, pchheader) /\ ($ppmethod_tostring(ptbytes) \/ $ptlc(ptbytes) <- [$ptascii("__wakeup"), $ptascii("__destruct")] \/ $ppmethod_invoke(flags, ptbytes)) /\ ~$ppmethod_at(pmethoddesc*, ptbytes)
 def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppmethod_begin(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader)
   -- if $ppmethod_prechecked(flags, ptbytes, phpType47, pchheader) /\ $ppmethod_flags(flags, pchheader.KIND) /\ ~$ppmethod_magic(ptbytes) /\ ~$ppmethod_at(pmethoddesc*, ptbytes)
 def $ppmethod_checked(P, pcpath, flags, b, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P, "method visibility, static, or modifiers")) ppropertydesc* pmethoddesc* -- otherwise
@@ -221,10 +220,10 @@ def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metad
   -- if $ptlc(ptbytes) = $ptascii("__invoke") /\ $ppproperty_flag(flags, 8)
 def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_body, $ptascii("Method ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() cannot take arguments"), $ppmethod_line(metadata))) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
-  -- if $ptlc(ptbytes) = $ptascii("__wakeup") /\ ~$ppmethod_wakeup_args_valid(pssignature.PARAMETERS)
+  -- if $ptlc(ptbytes) <- [$ptascii("__wakeup"), $ptascii("__destruct")] /\ ~$ppmethod_wakeup_args_valid(pssignature.PARAMETERS)
 def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_body, $ptascii("Method ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() cannot be static"), $ppmethod_line(metadata))) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
-  -- if $ptlc(ptbytes) = $ptascii("__wakeup") /\ $ppmethod_wakeup_args_valid(pssignature.PARAMETERS) /\ $ppproperty_flag(flags, 8)
+  -- if $ptlc(ptbytes) <- [$ptascii("__wakeup"), $ptascii("__destruct")] /\ $ppmethod_wakeup_args_valid(pssignature.PARAMETERS) /\ $ppproperty_flag(flags, 8)
 def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_checked, pchheader.NAME ++ $ptascii("::__toString(): Return type must be string when declared"), $ppmethod_line(metadata))) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
   -- if $ppmethod_tostring(ptbytes) /\ pssignature.PARAMETERS = eps /\ ~$ppproperty_flag(flags, 8)
@@ -237,7 +236,7 @@ def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metad
   -- if $ppmethod_return_valid(pssignature.RETURNS) /\ $ppmethod_visibility(flags) =/= PROPERTY_PUBLIC
 def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_body, $ptascii("Method ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() cannot declare a return type"), $ppmethod_line(metadata))) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
-  -- if $ptlc(ptbytes) = $ptascii("__construct") /\ pssignature.RETURNS =/= eps
+  -- if ($ptlc(ptbytes) = $ptascii("__construct") \/ ($ptlc(ptbytes) = $ptascii("__destruct") /\ $ppmethod_wakeup_args_valid(pssignature.PARAMETERS) /\ ~$ppproperty_flag(flags, 8))) /\ pssignature.RETURNS =/= eps
 def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_checked, pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("(): Return type must be void when declared"), $ppmethod_line(metadata))) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
   -- if $ptlc(ptbytes) = $ptascii("__wakeup") /\ $ppmethod_wakeup_args_valid(pssignature.PARAMETERS) /\ ~$ppproperty_flag(flags, 8)
@@ -247,6 +246,7 @@ def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metad
   -- if P_body.COMPLETION = PPCNORMAL
   -- if ~($ptlc(ptbytes) = $ptascii("__invoke") /\ $ppproperty_flag(flags, 8))
   -- if ~($ptlc(ptbytes) = $ptascii("__construct") /\ pssignature.RETURNS =/= eps) /\ ($ptlc(ptbytes) =/= $ptascii("__wakeup") \/ ($ppmethod_wakeup_args_valid(pssignature.PARAMETERS) /\ ~$ppproperty_flag(flags, 8) /\ $ppmethod_wakeup_return_valid(pssignature.RETURNS)))
+  -- if $ptlc(ptbytes) =/= $ptascii("__destruct") \/ ($ppmethod_wakeup_args_valid(pssignature.PARAMETERS) /\ ~$ppproperty_flag(flags, 8) /\ pssignature.RETURNS = eps)
   -- if ~$ppmethod_tostring(ptbytes) \/ (pssignature.PARAMETERS = eps /\ ~$ppproperty_flag(flags, 8) /\ $ppmethod_visibility(flags) = PROPERTY_PUBLIC /\ $ppmethod_return_valid(pssignature.RETURNS))
   -- if pssignature_effective = $ppmethod_returns(ptbytes, pssignature)
   -- if P_checked = $ppmethod_visibility_warning(P_body, flags, ptbytes, pchheader.NAME, $ppmethod_line(metadata))

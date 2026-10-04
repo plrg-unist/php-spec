@@ -26,56 +26,52 @@ CASES = {
             '~$getter_capture_live(S[.OBJECTS = $object_set(S.OBJECTS, n, GETTERCLOSURE 9999 GET_MESSAGE text_base porigin_site)], n)',
         ],
     },
-    'invoke-capture-edge': {
-        'source': '<?php $f=fn()=>"X"; $c=$f->__invoke(...); unset($f); echo $c();',
-        'stage': ('S.RESULT = KNOWN (POBJECT n) '
-                  '-- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site'),
-        'checks': [
-            '$closure_callable(S, n)',
-            '$closure_live_object_valid(S, n)',
-            '$node_children(S, HOBJECT n) = [HOBJECT n_source]',
-            '~$closure_scope_complete(S[.CLOSURESCOPES = [{OBJECT n, LEXICAL PORIGIN 0 eps, CALLED PORIGIN 0 eps, RECEIVER eps, CREATION eps}]], S.ALLOCATIONS)',
-            '~$closure_callable(S[.OBJECTS = $object_set(S.OBJECTS, n, INVOKECLOSURE n porigin_site)], n)',
-            '~$closure_callable(S[.OBJECTS = $object_set(S.OBJECTS, n, INVOKECLOSURE 9999 porigin_site)], n)',
-        ],
-    },
-    'getter-invoke-wrapper': {
-        'source': '<?php $e=new Exception("X"); $c=$e->getMessage(...); $w=$c->__invoke(...); $e=null; unset($c); echo $w();',
-        'stage': ('S.RESULT = KNOWN (POBJECT n) '
-                  '-- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site '
-                  '-- if S.OBJECTS[n_source] = GETTERCLOSURE n_receiver GET_MESSAGE text_base porigin_getter'),
-        'checks': [
-            '$closure_callable(S, n)',
-            '$closure_live_object_valid(S, n)',
-            '$getter_capture_live(S, n_source)',
-            '$node_children(S, HOBJECT n) = [HOBJECT n_source]',
-            '$node_children(S, HOBJECT n_source) = [HOBJECT n_receiver]',
-            '~$closure_live_object_valid(S[.OBJECTS = $object_set(S.OBJECTS, n, INVOKECLOSURE 9999 porigin_site)], n)',
-        ],
-    },
-    'getter-wrapper-after-release': {
-        'source': '<?php $e=new Exception("X"); $c=$e->getMessage(...); $w=$c->__invoke(...); $e=null; unset($c); echo $w();',
-        'stage': ('S.TODO = (GETTER_ARGS pgettercall) :: ptask_tail* '
-                  '-- if pgettercall.CAPTURE = (n_source) '
-                  '-- if S.OBJECTS[n_source] = GETTERCLOSURE n_receiver GET_MESSAGE text_base porigin_getter '
-                  '-- if S_global = $global_table_view(S) '
-                  '-- if $lookup(S_global.ENV, $ptascii("w")) = (n_cell) '
-                  '-- if S.STORE[n_cell] = DEFINED (POBJECT n) '
-                  '-- if S.OBJECTS[n] = INVOKECLOSURE n_source porigin_site '
-                  '-- if $lookup(S_global.ENV, $ptascii("c")) = eps '
-                  '-- if $lookup(S_global.ENV, $ptascii("e")) = (n_ecell) '
-                  '-- if S.STORE[n_ecell] = DEFINED PNULL'),
-        'checks': [
-            '$call_task_valid(S, GETTER_ARGS pgettercall)',
-            '$closure_callable(S, n)',
-            '$getter_capture_live(S, n_source)',
-            '(HOBJECT n) <- S.ALLOCATIONS',
-            '(HOBJECT n_source) <- S.ALLOCATIONS',
-            '(HOBJECT n_receiver) <- S.ALLOCATIONS',
-            '$node_children(S, HOBJECT n) = [HOBJECT n_source]',
-            '$node_children(S, HOBJECT n_source) = [HOBJECT n_receiver]',
-        ],
-    },
+    'invoke-capture-edge': {'source': '<?php $f=fn()=>"X"; $c=$f->__invoke(...); unset($f); echo $c();',
+                            'stage': 'S.RESULT = KNOWN (POBJECT n) -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* '
+                                     'pstaticcell* -- if S.ORIGIN = (porigin_site) -- if $invoke_capture_source(S, '
+                                     'porigin_site)',
+                            'checks': ['$closure_callable(S, n)',
+                                       '$closure_live_object_valid(S, n)',
+                                       '$node_children(S, HOBJECT n) = eps',
+                                       '~$closure_scope_complete(S[.CLOSURESCOPES = [{OBJECT n, LEXICAL PORIGIN 0 eps, '
+                                       'CALLED PORIGIN 0 eps, RECEIVER eps, CREATION eps}]], S.ALLOCATIONS)',
+                                       '~$closure_callable(S[.OBJECTS = $object_set(S.OBJECTS, n, INVOKECLOSURE n '
+                                       'porigin_site)], n)',
+                                       '~$closure_callable(S[.OBJECTS = $object_set(S.OBJECTS, n, INVOKECLOSURE 9999 '
+                                       'porigin_site)], n)',
+                                       'S_global = $global_table_view(S)',
+                                       '$lookup(S_global.ENV, $ptascii("f")) = (n_f)',
+                                       'S.STORE[n_f] = DEFINED (POBJECT n)']},
+    'getter-invoke-wrapper': {'source': '<?php $e=new Exception("X"); $c=$e->getMessage(...); $w=$c->__invoke(...); $e=null; '
+                                        'unset($c); echo $w();',
+                              'stage': 'S.RESULT = KNOWN (POBJECT n) -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver '
+                                       'GET_MESSAGE text_base porigin_getter -- if S.ORIGIN = (porigin_site) -- if '
+                                       '$invoke_capture_source(S, porigin_site)',
+                              'checks': ['$closure_callable(S, n)',
+                                         '$closure_live_object_valid(S, n)',
+                                         '$getter_capture_live(S, n)',
+                                         '$node_children(S, HOBJECT n) = [HOBJECT n_receiver]',
+                                         'S_global = $global_table_view(S)',
+                                         '$lookup(S_global.ENV, $ptascii("c")) = (n_c)',
+                                         'S.STORE[n_c] = DEFINED (POBJECT n)',
+                                         '~$closure_live_object_valid(S[.OBJECTS = $object_set(S.OBJECTS, n, INVOKECLOSURE '
+                                         '9999 porigin_site)], n)']},
+    'getter-wrapper-after-release': {'source': '<?php $e=new Exception("X"); $c=$e->getMessage(...); $w=$c->__invoke(...); $e=null; '
+                                               'unset($c); echo $w();',
+                                     'stage': 'S.TODO = (GETTER_ARGS pgettercall) :: ptask_tail* -- if pgettercall.CAPTURE = '
+                                              '(n_source) -- if S.OBJECTS[n_source] = GETTERCLOSURE n_receiver GET_MESSAGE text_base '
+                                              'porigin_getter -- if S_global = $global_table_view(S) -- if $lookup(S_global.ENV, '
+                                              '$ptascii("w")) = (n_cell) -- if S.STORE[n_cell] = DEFINED (POBJECT n) -- if n = '
+                                              'n_source -- if $lookup(S_global.ENV, $ptascii("c")) = eps -- if $lookup(S_global.ENV, '
+                                              '$ptascii("e")) = (n_ecell) -- if S.STORE[n_ecell] = DEFINED PNULL',
+                                     'checks': ['$call_task_valid(S, GETTER_ARGS pgettercall)',
+                                                '$closure_callable(S, n)',
+                                                '$getter_capture_live(S, n_source)',
+                                                '(HOBJECT n) <- S.ALLOCATIONS',
+                                                '(HOBJECT n_source) <- S.ALLOCATIONS',
+                                                '(HOBJECT n_receiver) <- S.ALLOCATIONS',
+                                                '$node_children(S, HOBJECT n) = [HOBJECT n_receiver]',
+                                                '$node_children(S, HOBJECT n_source) = [HOBJECT n_receiver]']},
     'invoke-after-unset': {
         'source': '<?php $f=fn()=>"X"; $c=$f->__invoke(...); unset($f); echo $c();',
         'stage': ('S.TODO = (CALL_ARGS (CLOSURE_TARGET n_source) phpType7* n_arg '

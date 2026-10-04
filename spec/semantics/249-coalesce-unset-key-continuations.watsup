@@ -1,0 +1,256 @@
+;; Quiet ??= retains the evaluated operands for the later memoized write.
+;; CVs remain delayed; an evaluated scalar key is not evaluated again.
+dec $key_edit_direct_base(pbase) : bool
+dec $key_coalesce_array_base(pbase) : bool
+dec $key_coalesce_base_read_view(pstate, porigin, pbase) : pbase?
+dec $key_coalesce_write_base_source(pstate, porigin, pbase) : bool
+dec $key_coalesce_source(pstate, porigin, pbase, bool, int) : porigin?
+dec $key_coalesce_write_source(pstate, porigin, pbase, bool, int) : porigin?
+dec $key_coalesce_read_view(pstate, pkeyread) : pkeyread
+dec $key_coalesce_root(pstate, pbase) : bool
+dec $key_coalesce_begin(pstate) : pstate
+dec $key_coalesce_write_root(pstate, pbase) : bool
+dec $key_unset_parent(pcpath) : pcpath?
+dec $key_unset_source(pstate, porigin, pbase) : bool
+dec $key_unset_finish_task(ptask) : bool
+dec $key_unset_context(pstate, ptask*, porigin) : bool
+dec $key_unset_begin(pstate) : pstate
+dec $key_unset_value(pstate, pkeyread) : pstate
+dec $key_unset_dispatch(pstate, pkeyread) : pstate
+dec $key_unset_done(pstate) : pstate
+dec $key_unset_delete(pstate, pkeyread) : pstate
+dec $key_unset_live(pstate, pkeyread) : bool
+dec $key_unset_resume(pstate, pkeyread) : pstate
+dec $key_unset_valid(pstate, pkeyread) : bool
+
+def $key_edit_direct_base(BASE_DIM (BASE_VALUE (VARIABLE n_name* z_base)) poperand z) = true
+  -- if ~$this_name(n_name*)
+  -- if n_name* =/= $ptascii("GLOBALS")
+def $key_edit_direct_base(pbase) = false -- otherwise
+def $key_coalesce_root(S, BASE_DIM (BASE_VALUE poperand_base) poperand z) = true
+  -- if S_base = $quiet_operand(S, poperand_base)
+  -- if S_base.RESULT = KNOWN (PARRAY n)
+def $key_coalesce_root(S, pbase) = false -- otherwise
+def $key_coalesce_source(S, porigin, pbase, b, z) = (porigin_target)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if b = $assignment_self(expression_target, expression_rhs)
+  -- if $code_expression_at_source(S, porigin, eps) = (z)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $key_coalesce_array_base(pbase)
+  -- if $key_write_base_source(S, porigin_target, pbase)
+  -- if S_source = S[.ORIGIN = (porigin)]
+  -- if $memoized_write_ready(S_source, pbase, [PCFIELD 0])
+def $key_coalesce_source(S, porigin, pbase, b, z) = eps -- otherwise
+def $key_coalesce_pending(S) = true
+  -- if $error_handler_eligible(S, 2) \/ $error_handler_eligible(S, 8192)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression_rhs z) :: ptask_tail*
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if $key_coalesce_root(S, S.BASE)
+  -- if $key_coalesce_source(S, porigin, S.BASE, $assignment_self(expression_target, expression_rhs), z) =/= eps
+def $key_coalesce_pending(S) = false -- otherwise
+def $key_coalesce_begin(S) = $key_read_begin(S[.TODO = (KEY_COALESCE_RESULT S.BASE $assignment_self(expression_target, expression_rhs) z) :: ptask_tail*])
+  -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression_rhs z) :: ptask_tail*
+rule PhpStep/key-coalesce-start: S ~> $key_coalesce_begin(S)
+  -- if $key_coalesce_pending(S)
+def $key_reader(S, porigin, KEY_COALESCE_RESULT pbase b z) = ((porigin_target, KEY_IS))
+  -- if $key_coalesce_source(S, porigin, pbase, b, z) = (porigin_target)
+def $task_nodes(KEY_COALESCE_RESULT pbase b z) = $base_nodes(pbase)
+rule PhpStep/key-coalesce-present: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (KEY_READ_FINISH porigin (KEY_COALESCE_RESULT pbase b z)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $key_coalesce_source(S, porigin, pbase, b, z) =/= eps
+  -- if S.RESULT = KNOWN pvalue
+  -- if pvalue =/= PNULL
+rule PhpStep/key-coalesce-absent: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 1]), EVAL expression_rhs), COALESCE_ASSIGN_WRITE $memoized_write_base(S, pbase, [PCFIELD 0]) b z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (KEY_READ_FINISH porigin (KEY_COALESCE_RESULT pbase b z)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $key_coalesce_source(S, porigin, pbase, b, z) =/= eps
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if S.RESULT = KNOWN PNULL
+
+;; The write is a real ASSIGN_DIM after the RHS, with its own occurrence.
+def $key_write_task_base(COALESCE_ASSIGN_WRITE pbase b z, pbase_current, poperand) = pbase
+def $key_write_self(COALESCE_ASSIGN_WRITE pbase b z) = b
+def $key_write_line(COALESCE_ASSIGN_WRITE pbase b z) = z
+def $key_write_direct_task(COALESCE_ASSIGN_WRITE pbase b z) = true
+def $key_write_writer(S, porigin, COALESCE_ASSIGN_WRITE pbase_original b z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK COALESCE_ASSIGN_WRITE pbase_original b z, BASE pbase, RHS poperand, TEMP eps})
+  -- if $key_coalesce_write_source(S, porigin, pbase_original, b, z) = (porigin_target)
+  -- if $key_coalesce_write_base_source(S, porigin_target, pbase)
+;; A memoized arithmetic/call key can have distinct quiet and write lines.
+;; The operand retains its read occurrence; only the second fetch uses CODEWRITE.
+def $key_coalesce_write_source(S, porigin, pbase, b, z) = (porigin_target)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if b = $assignment_self(expression_target, expression_rhs)
+  -- if $code_expression_at_source(S, porigin, eps) = (z)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $key_coalesce_array_base(pbase)
+  -- if $key_coalesce_write_base_source(S, porigin_target, pbase)
+  -- if S_source = S[.ORIGIN = (porigin)]
+  -- if $memoized_write_ready(S_source, pbase, [PCFIELD 0])
+def $key_coalesce_write_source(S, porigin, pbase, b, z) = eps -- otherwise
+def $key_writer_base_source(S, pkeywriter) = ($key_coalesce_write_source(S, pkeywriter.SITE, pbase, b, z) = (pkeywriter.TARGET))
+  -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE pbase b z
+def $key_coalesce_write_context(S, (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*, porigin) = true
+  -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE pbase b z
+  -- if $key_write_site(S, pkeywriter.TARGET, false, porigin, false)
+def $key_coalesce_write_context(S, ptask :: ptask_tail*, porigin) = $key_coalesce_write_context(S, ptask_tail*, porigin)
+  -- if ~$key_write_finish_task(ptask)
+def $key_coalesce_read_view(S, pkeyread) = pkeyread[.LINE = z_read]
+  -- if $code_expression_at_source(S, pkeyread.SITE, [PCFIELD 1]) = (z_read)
+def $key_write_valid(S, pkeywrite) = true
+  -- if S.ORIGIN = (pkeywrite.READ.SITE)
+  -- if $key_coalesce_write_context(S, S.TODO, pkeywrite.READ.SITE)
+  -- if $key_write_context(S, S.TODO, pkeywrite.READ.SITE, pkeywrite.RW)
+  -- if pkeywrite.READ.SITE = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_write_lines(pcode.EXPRESSIONS, pcpath) = [pkeywrite.READ.LINE]
+  -- if pkeywrite.READ.MODE = KEY_R
+  -- if ~pkeywrite.READ.GLOBAL
+  -- if ~pkeywrite.RW
+  -- if pkeyread_view = $key_coalesce_read_view(S, pkeywrite.READ)
+  -- if $key_read_input_source(S, pkeyread_view)
+  -- if $key_write_shape(pkeywrite[.READ = pkeyread_view])
+  -- if $key_write_place_shape(pkeywrite)
+def $key_write_finish(S, pkeywriter) = $write_operand(S, pkeywriter.RHS, z)
+  -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE pbase b z
+  -- if S.LOCATION =/= NOWHERE
+  -- if ~$error_missing_operand(S, pkeywriter.RHS)
+;; A quiet callback may retire the original CV. Its later W walk can still
+;; initialize null/undefined storage through the ordinary native W helper.
+def $key_coalesce_write_root(S, BASE_DIM (BASE_VALUE (VARIABLE n_name* z_base)) poperand z) = true
+  -- if plocation = $find_location(S, n_name*)
+  -- if $key_write_array_init($location_slot(S, plocation))
+def $key_coalesce_write_root(S, pbase) = false -- otherwise
+def $key_write_plan(S) = (pkeywriter)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (COALESCE_ASSIGN_WRITE pbase b z) :: ptask_tail*
+  -- if ~$key_write_root(S, pbase)
+  -- if $key_coalesce_write_root(S, pbase)
+  -- if $key_write_writer(S, porigin, COALESCE_ASSIGN_WRITE pbase b z, pbase, S.RESULT) = (pkeywriter)
+
+;; Final UNSET_DIM separates before key conversion. It has no null-key notice
+;; and no W exact-one acquisition gate; float conversion protects only liveness.
+def $key_unset_parent([PCFIELD 0, PCINDEX n]) = (eps)
+def $key_unset_parent(pcstep :: pcstep_tail*) = (pcstep :: pcpath_parent)
+  -- if $(|pcstep_tail*| >= 2)
+  -- if $key_unset_parent(pcstep_tail*) = (pcpath_parent)
+def $key_unset_parent(pcpath) = eps -- otherwise
+def $key_unset_source(S, porigin, pbase) = true
+  -- if porigin = PORIGIN n pcpath
+  -- if $key_unset_parent(pcpath) = (pcpath_parent)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NStmtUnset phpType25 metadata)
+  -- if $key_edit_direct_base(pbase)
+  -- if $key_write_base_source(S, porigin, pbase)
+def $key_unset_source(S, porigin, pbase) = false -- otherwise
+def $key_unset_finish_task(KEY_UNSET_FINISH porigin pbase) = true
+def $key_unset_finish_task(ptask) = false -- otherwise
+def $key_unset_pending(S) = true
+  -- if $error_handler_eligible(S, 2) \/ $error_handler_eligible(S, 8192)
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $key_unset_source(S, porigin, S.BASE)
+  -- if $key_coalesce_root(S, S.BASE)
+def $key_unset_pending(S) = false -- otherwise
+def $key_unset_begin(S) = $key_unset_dispatch(S_array, pkeyread)
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $key_edit_direct_base(S.BASE)
+  -- if S.BASE = BASE_DIM pbase poperand z
+  -- if S_saved = S[.TODO = UNSET_ARRAY :: (KEY_UNSET_FINISH porigin S.BASE) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S_found = $base_find(S_saved, pbase, z)
+  -- if S_array = $location_array(S_found, S_found.LOCATION, z)
+  -- if S_array.RESULT = KNOWN (PARRAY n)
+  -- if $error_missing_operand(S_array, poperand)
+  -- if poperand = VARIABLE n_name* z_operand
+  -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE PNULL, BASE PARRAY n, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_CV, KEY KSTRING eps, NAME n_name*}
+def $key_unset_begin(S) = $key_unset_value(S_array, pkeyread)
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $key_edit_direct_base(S.BASE)
+  -- if S.BASE = BASE_DIM pbase poperand z
+  -- if S_saved = S[.TODO = UNSET_ARRAY :: (KEY_UNSET_FINISH porigin S.BASE) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S_found = $base_find(S_saved, pbase, z)
+  -- if S_array = $location_array(S_found, S_found.LOCATION, z)
+  -- if S_array.RESULT = KNOWN (PARRAY n)
+  -- if ~$error_missing_operand(S_array, poperand)
+  -- if S_key = $quiet_operand(S_array, poperand)
+  -- if S_key.RESULT = KNOWN pvalue
+  -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue, BASE PARRAY n, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
+rule PhpStep/key-unset-start: S ~> $key_unset_begin(S)
+  -- if $key_unset_pending(S)
+def $key_unset_value(S, pkeyread) = $key_unset_dispatch(S, pkeyread[.PHASE = KEY_FLOAT castnotice castnotice_tail*][.KEY = KINT i])
+  -- if pkeyread.VALUE = PFLOAT n_bits
+  -- if $float_long(n_bits, true) = (i, castnotice :: castnotice_tail*)
+def $key_unset_value(S, pkeyread) = $key_unset_delete(S, pkeyread[.KEY = pkey])
+  -- if $key_plain_value(pkeyread.VALUE)
+  -- if $key_selected_key(pkeyread.VALUE) = (pkey)
+def $key_unset_value(S, pkeyread) = $unset_key_value(S, pkeyread.VALUE, pkeyread.LINE)
+  -- if $key_selected_key(pkeyread.VALUE) = eps
+def $key_unset_done(S) = S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL][.LOCATION = NOWHERE]
+  -- if S.TODO = ptask :: ptask_tail*
+def $key_unset_delete(S, pkeyread) = $key_unset_done(S[.ARRAYS = $array_replace(S.ARRAYS, n, parray[.ITEMS = $entry_delete(parray.ITEMS, pkeyread.KEY)][.POSITIONS = $position_delete(parray.POSITIONS, pkeyread.KEY)])])
+  -- if pkeyread.BASE = PARRAY n
+  -- if parray = S.ARRAYS[n]
+  -- if (HARRAY n) <- S.ALLOCATIONS
+def $key_unset_delete(S, pkeyread) = $key_unset_done(S)
+  -- if pkeyread.BASE = PARRAY n
+  -- if ~((HARRAY n) <- S.ALLOCATIONS)
+def $key_unset_dispatch(S, pkeyread) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $key_read_level(pkeyread), $key_read_message(pkeyread), pkeyread.LINE, $key_read_event(pkeyread), KEY_UNSET_RESULT pkeyread)
+def $task_nodes(KEY_UNSET_FINISH porigin pbase) = $base_nodes(pbase)
+def $task_nodes(KEY_UNSET_RESULT pkeyread) = $value_nodes(pkeyread.BASE)
+  -- if $key_float_phase(pkeyread.PHASE)
+def $task_nodes(KEY_UNSET_RESULT pkeyread) = eps
+  -- if ~$key_float_phase(pkeyread.PHASE)
+def $key_unset_live(S, pkeyread) = $($heap_owners($heap_prune($heap_graph(S)), HARRAY n) > 1)
+  -- if pkeyread.BASE = PARRAY n
+  -- if $key_float_phase(pkeyread.PHASE)
+def $key_unset_live(S, pkeyread) = ((HARRAY n) <- S.ALLOCATIONS)
+  -- if pkeyread.BASE = PARRAY n
+  -- if ~$key_float_phase(pkeyread.PHASE)
+def $key_unset_resume(S, pkeyread) = $key_unset_dispatch(S, pkeyread[.PHASE = KEY_FLOAT castnotice_next castnotice_tail*])
+  -- if pkeyread.PHASE = KEY_FLOAT castnotice (castnotice_next :: castnotice_tail*)
+def $key_unset_resume(S, pkeyread) = $key_unset_done(S)
+  -- if ~$key_float_more(pkeyread.PHASE)
+  -- if ~$key_unset_live(S, pkeyread)
+def $key_unset_resume(S, pkeyread) = $key_unset_delete(S, pkeyread)
+  -- if ~$key_float_more(pkeyread.PHASE)
+  -- if $key_unset_live(S, pkeyread)
+rule PhpStep/key-unset-resume: S ~> $key_unset_resume(S, pkeyread)
+  -- if S.TODO = (KEY_UNSET_RESULT pkeyread) :: ptask_tail*
+  -- if $key_unset_valid(S, pkeyread)
+rule PhpStep/key-unset-finish: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (KEY_UNSET_FINISH porigin pbase) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $key_unset_source(S, porigin, pbase)
+
+;; Constant operands/converted suffixes are checked. Captured dynamic table
+;; identities remain runtime facts and neither BASE nor PLACE adds a root.
+def $key_unset_context(S, (KEY_UNSET_FINISH porigin pbase) :: ptask_tail*, porigin) = $key_unset_source(S, porigin, pbase)
+def $key_unset_context(S, ptask :: ptask_tail*, porigin) = $key_unset_context(S, ptask_tail*, porigin)
+  -- if ~$key_unset_finish_task(ptask)
+def $key_unset_context(S, (KEY_UNSET_FINISH porigin_root pbase) :: ptask_tail*, porigin) = false
+  -- if porigin_root =/= porigin
+def $key_unset_context(S, eps, porigin) = false
+def $key_unset_valid(S, pkeyread) = true
+  -- if S.ORIGIN = (pkeyread.SITE)
+  -- if ~pkeyread.GLOBAL
+  -- if pkeyread.MODE = KEY_R
+  -- if pkeyread.OWNERS = BASE_VALUE (KNOWN PNULL)
+  -- if pkeyread.PHASE = KEY_CV \/ $key_float_phase(pkeyread.PHASE)
+  -- if $key_is_array(pkeyread.BASE)
+  -- if $code_expression_at_source(S, pkeyread.SITE, [PCFIELD 1]) = (pkeyread.LINE)
+  -- if $key_unset_context(S, S.TODO, pkeyread.SITE)
+  -- if $key_read_input_source(S, pkeyread)
+  -- if $key_read_shape(pkeyread)
+  -- if $key_read_selection(S, pkeyread)
+def $key_unset_valid(S, pkeyread) = false -- otherwise
+def $call_task_valid(S, KEY_UNSET_RESULT pkeyread) = $key_unset_valid(S, pkeyread)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = KEY_UNSET_RESULT pkeyread
+  -- if $key_unset_valid(S, pkeyread)
+  -- if perrorcall.SITE = pkeyread.SITE
+  -- if perrorcall.LEVEL = $key_read_level(pkeyread)
+  -- if perrorcall.LINE = pkeyread.LINE
+  -- if perrorcall.MESSAGE = $key_read_message(pkeyread)
+  -- if perrorcall.EVENT = $key_read_event(pkeyread)

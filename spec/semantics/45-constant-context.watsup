@@ -2,7 +2,8 @@
 ;; A compiled source instance owns this store; it is not recreated on execution.
 syntax pffact = PFFACT pcpath pvalue int
 syntax pfcontext = PFCONTEXT pcpath plenv
-syntax pfstate = { CLASSES pclassdesc*, CLASSCONSTANTS pclassconstantdesc*, EXTERNAL pstate?, DEFAULT bool, CLASSFACTS (pcpath, pvalueclass)*, CONSTANT bool, FUNCTION ptbytes, CLASSCONTEXT ptcontext?, CLOSURE bool, SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
+syntax pfrecorder = { CLASS porigin, ROOT porigin }
+syntax pfstate = { RECORD pfrecorder?, RECORDED pfdiagnostic*, CLASSES pclassdesc*, CLASSCONSTANTS pclassconstantdesc*, EXTERNAL pstate?, DEFAULT bool, CLASSFACTS (pcpath, pvalueclass)*, CONSTANT bool, FUNCTION ptbytes, CLASSCONTEXT ptcontext?, CLOSURE bool, SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
 syntax pfshape = PFMAGIC pmagic int | PFSCALAR pvalue int | PFNAME name | PFBINARY pbin expression expression
   | PFUNARY punary expression | PFDIM expression phpType5
   | PFARRAY phpType13* | PFNOT expression | PFSHORT bool expression expression
@@ -11,6 +12,8 @@ syntax pfkey = PFNO_KEY | PFKEY pvalue?
 syntax pfitem = PFITEM pvalue? pfkey bool pvalueclass? | PFSPREAD pvalue? pvalueclass?
 syntax pfbuild = PFBUILT pstate pvalueclass? | PFDEFER | PFSTATIC text | PFSTATICBYTES ptbytes
 var F : pfstate
+dec $trait_fold_owner(pfstate) : porigin?
+dec $pfpure_value(pfstate, pcpath, pstate, int) : pfstate?
 
 ;; Append/spread use the successful operation's existing NEXT history. Failure
 ;; diagnostics and values remain the responsibility of that operation.
@@ -68,7 +71,7 @@ dec $pfcontext_at(pfcontext*, pcpath) : plenv?
 dec $pfcontextualize(pfstate, pcpath) : pfstate
 
 dec $pfbegin(nat, program) : pfstate
-def $pfbegin(n, program) = { CLASSES eps, CLASSCONSTANTS eps, EXTERNAL eps, DEFAULT false, CLASSFACTS eps, CONSTANT false, FUNCTION eps, CLASSCONTEXT eps, CLOSURE false, SOURCE $pcsource(n, program), FILE eps, CWD eps, MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
+def $pfbegin(n, program) = { RECORD eps, RECORDED eps, CLASSES eps, CLASSCONSTANTS eps, EXTERNAL eps, DEFAULT false, CLASSFACTS eps, CONSTANT false, FUNCTION eps, CLASSCONTEXT eps, CLOSURE false, SOURCE $pcsource(n, program), FILE eps, CWD eps, MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
 dec $pfnode(expression) : pcnode
 def $pfnode(expression) = expression
 dec $pfoccurrence(pcoccurrence*, pcpath, expression) : bool
@@ -149,7 +152,9 @@ def $pfshape(expression) = PFOTHER
 
 dec $pfprepare(pfstate, pcpath, expression, plenv, int) : pfstate
 dec $pffold(pfstate, pcpath, expression, int) : pfstate
+dec $pffold_line(pfstate, pcpath, expression, int) : int
 dec $pfdispatch(pfstate, pcpath, pfshape, int) : pfstate
+def $pffold_line(F, pcpath, expression, z) = z -- otherwise
 def $pfprepare(F, pcpath, expression, plenv, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
 def $pfprepare(F, pcpath, expression, plenv, z) = $pffold(F[.ENV = plenv], pcpath, expression, z)
@@ -161,7 +166,7 @@ def $pfprepare(F, pcpath, expression, plenv, z) = $pfunsupported(F, "invalid con
   -- otherwise
 def $pffold(F, pcpath, expression, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pffold(F, pcpath, expression, z) = $pfclass_finish($pftracked($pfcontextualize(F, pcpath), pcpath, expression, z), pcpath, expression)
+def $pffold(F, pcpath, expression, z) = $pfclass_finish($pftracked($pfcontextualize(F, pcpath), pcpath, expression, $pffold_line(F, pcpath, expression, z)), pcpath, expression)
   -- if F.MEMORY.COMPLETION = NORMAL
 
 def $pftracked(F, pcpath, expression, z) = F
@@ -176,6 +181,7 @@ def $pftracked(F, pcpath, expression, z) = $pfdispatch(F, pcpath, $pfshape(expre
 
 def $pfdispatch(F, pcpath, PFSCALAR pvalue z_leaf, z) = $pfremember(F, pcpath, (pvalue), z_leaf)
 def $pfdispatch(F, pcpath, PFNAME name, z) = $pfnamed(F, pcpath, $pnresolve(F.ENV, PLCONSTANT, name), z)
+  -- if $trait_fold_owner(F) = eps
 def $pfnamed(F, pcpath, PNRESOLVED pnreference, z) = $pfremember(F, pcpath, $pffoldname(F, pnreference), z)
 def $pffoldname(F, pnreference) = $pnfold(pnreference)
   -- if ~F.DEFAULT
@@ -189,17 +195,21 @@ def $pfdispatch(F, pcpath, PFOTHER, z) = F[.VALUE = eps]
   -- if F.CONSTANT
 
 ;; Both children are visited even when the first cannot fold.
+def $pfpure_value(F, pcpath, S, z) = ($pfremember(F[.MEMORY = S], pcpath, (pvalue), z))
+  -- if F.RECORD = eps
+  -- if $constant_state(S) = (S)
+  -- if S.RESULT = KNOWN pvalue
+def $pfpure_value(F, pcpath, S, z) = eps -- otherwise
 dec $pfbinary(pfstate, pcpath, pbin, pvalue?, pvalue?, int) : pfstate
 def $pfdispatch(F, pcpath, PFBINARY pbin expression_1 expression_2, z) = $pfbinary(F_right, pcpath, pbin, F_left.VALUE, F_right.VALUE, z)
   -- if F_left = $pffold(F, pcpath ++ [PCFIELD 0], expression_1, z)
   -- if F_right = $pffold(F_left, pcpath ++ [PCFIELD 1], expression_2, z)
 def $pfbinary(F, pcpath, pbin, pvalue_1?, pvalue_2?, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfbinary(F, pcpath, pbin, (pvalue_1), (pvalue_2), z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue), z)
+def $pfbinary(F, pcpath, pbin, (pvalue_1), (pvalue_2), z) = F_result
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if ~$pfwarning_binary(pbin)
-  -- if $constant_state($binary_apply(F.MEMORY, pbin, pvalue_1, pvalue_2, z)) = (S)
-  -- if S.RESULT = KNOWN pvalue
+  -- if $pfpure_value(F, pcpath, $binary_apply(F.MEMORY, pbin, pvalue_1, pvalue_2, z), z) = (F_result)
 def $pfbinary(F, pcpath, pbin, pvalue_1?, pvalue_2?, z) = F[.VALUE = eps]
   -- otherwise
 
@@ -207,11 +217,10 @@ dec $pfunary(pfstate, pcpath, punary, int) : pfstate
 def $pfdispatch(F, pcpath, PFUNARY punary expression, z) = $pfunary($pffold(F, pcpath ++ [PCFIELD 0], expression, z), pcpath, punary, z)
 def $pfunary(F, pcpath, punary, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfunary(F, pcpath, punary, z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue_result), z)
+def $pfunary(F, pcpath, punary, z) = F_result
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if F.VALUE = (pvalue)
-  -- if $constant_state($unary_apply(F.MEMORY, punary, pvalue, z)) = (S)
-  -- if S.RESULT = KNOWN pvalue_result
+  -- if $pfpure_value(F, pcpath, $unary_apply(F.MEMORY, punary, pvalue, z), z) = (F_result)
 def $pfunary(F, pcpath, punary, z) = F[.VALUE = eps]
   -- otherwise
 
@@ -258,6 +267,7 @@ dec $pfinserted(pstate, nat, pfitem*, int, pvalueclass?) : pfbuild
 dec $pfbuilt(pfstate, pcpath, pfbuild, nat, int) : pfstate
 
 def $pfdispatch(F, pcpath, PFARRAY phpType13*, z) = $pfitems(F, pcpath, 0, phpType13*, eps, z, 0)
+  -- if F.RECORD = eps
 def $pfitems(F, pcpath, n, phpType13*, pfitem*, z, z_previous) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
 def $pfitems(F, pcpath, n, eps, pfitem*, z, z_previous) = $pfarray(F, pcpath, pfitem*, z)
@@ -294,6 +304,7 @@ def $pfarray(F, pcpath, pfitem*, z) = F[.VALUE = eps]
   -- if ~$pfready(pfitem*)
 def $pfarray(F, pcpath, pfitem*, z) = $pfbuilt(F, pcpath, $pfconstruct(S, n, pfitem*, z, $pfclass_array_start(F.CONSTANT, pfitem* = eps)), n, z)
   -- if $pfready(pfitem*)
+  -- if F.RECORD = eps
   -- if S = $allocate_array(F.MEMORY, $array_empty())
   -- if S.RESULT = KNOWN (PARRAY n)
 def $pfconstruct(S, n, eps, z, pvalueclass?) = PFBUILT S pvalueclass?
@@ -341,6 +352,7 @@ def $pfwarning_events(eps, pcpath) = eps
 def $pfwarning_events((DIAGNOSTIC "Warning" ptbytes z) :: pevent*, pcpath) = (pcpath, ptbytes, z) :: $pfwarning_events(pevent*, pcpath)
 def $pfwarned(F, pcpath, S) = F[.MEMORY = S[.EVENTS = eps]][.WARNINGS = F.WARNINGS ++ $pfwarning_events(S.EVENTS, pcpath)][.VALUE = (pvalue)]
   -- if S.RESULT = KNOWN pvalue
+  -- if F.RECORD = eps
 def $pftruth(F, pcpath, pvalue, z) = $pfwarned(F, pcpath, $truth_value(F.MEMORY, pvalue, z))
 
 ;; Constant Boolean/comparison operations permit their coercion warnings;
@@ -480,13 +492,12 @@ def $pfcast_kind_allowed(pcast, pvalue) = true -- otherwise
 dec $pfcast(pfstate, pcpath, pcast, int) : pfstate
 def $pfcast(F, pcpath, pcast, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfcast(F, pcpath, pcast, z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue_result), z)
+def $pfcast(F, pcpath, pcast, z) = F_result
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if F.VALUE = (pvalue)
   -- if ~$pfcast_nan(pvalue)
   -- if $pfcast_kind_allowed(pcast, pvalue)
-  -- if $constant_state($cast_apply(F.MEMORY, pcast, pvalue, z)) = (S)
-  -- if S.RESULT = KNOWN pvalue_result
+  -- if $pfpure_value(F, pcpath, $cast_apply(F.MEMORY, pcast, pvalue, z), z) = (F_result)
 def $pfcast(F, pcpath, pcast, z) = F[.VALUE = eps] -- otherwise
 def $pfdispatch(F, pcpath, PFCAST pcast expression, z) = $pfcast($pffold(F, pcpath ++ [PCFIELD 0], expression, z), pcpath, pcast, z)
 def $pfdispatch(F, pcpath, PFCAST_OBJECT expression, z) = $pffold(F, pcpath ++ [PCFIELD 0], expression, z)[.VALUE = eps]
@@ -646,6 +657,7 @@ def $pfclassname_value(F, phpType19) = eps -- otherwise
 def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = F[.VALUE = eps]
   -- if ~F.CONSTANT
 def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = $pfclassname_fold(F, pcpath, phpType19, z)
+  -- if $trait_fold_owner(F) = eps
   -- if F.CONSTANT
 def $pfclassname_fold(F, pcpath, phpType19, z) = F[.MEMORY = F.MEMORY[.COMPLETION = STATICBYTES ptbytes z]][.VALUE = eps]
   -- if $pfclassname_issue(F, phpType19) = (ptbytes)
@@ -666,11 +678,10 @@ dec $pfbitnot(pfstate, pcpath, int) : pfstate
 def $pfdispatch(F, pcpath, PFBITNOT expression, z) = $pfbitnot($pffold(F, pcpath ++ [PCFIELD 0], expression, z), pcpath, z)
 def $pfbitnot(F, pcpath, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
-def $pfbitnot(F, pcpath, z) = $pfremember(F[.MEMORY = S], pcpath, (pvalue_result), z)
+def $pfbitnot(F, pcpath, z) = F_result
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if F.VALUE = (pvalue)
-  -- if $constant_state($bitnot_apply(F.MEMORY, pvalue, z)) = (S)
-  -- if S.RESULT = KNOWN pvalue_result
+  -- if $pfpure_value(F, pcpath, $bitnot_apply(F.MEMORY, pvalue, z), z) = (F_result)
 def $pfbitnot(F, pcpath, z) = F[.VALUE = eps]
   -- otherwise
 
@@ -794,12 +805,13 @@ def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING false)
 def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING $(|ptbytes| <= 1))
   -- if $pffact(F.FACTS, pcpath) = (PSTRING ptbytes)
   -- if pmagic <- [MAGICNAMESPACE, MAGICFUNCTION, MAGICMETHOD]
-def $pfclass_shape(F, pcpath, PFMAGIC MAGICCLASS z) = (PVSTRING true)
+def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING true)
   -- if $pffact(F.FACTS, pcpath) = (PSTRING ptbytes)
+  -- if pmagic <- [MAGICCLASS, MAGICTRAIT]
 def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING true)
   -- if $pffact(F.FACTS, pcpath) = (PSTRING ptbytes)
   -- if ptbytes = eps
-  -- if pmagic <- [MAGICTRAIT, MAGICPROPERTY]
+  -- if pmagic = MAGICPROPERTY
 
 def $pfclass_literal(NScalarString (BYTES text) metadata) = (PVSTRING $(|ptbytes| <= 1))
   -- if $string_kind(metadata) = (z)

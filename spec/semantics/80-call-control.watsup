@@ -25,6 +25,7 @@ def $call_sourcefile((SOURCEFILE n preqbytes) :: psourcefile*, PORIGIN n pcpath)
 def $call_sourcefile((SOURCEFILE n_other preqbytes) :: psourcefile*, PORIGIN n pcpath) = $call_sourcefile(psourcefile*, PORIGIN n pcpath)
   -- if n_other =/= n
 def $call_sourcefile((SOURCEFILE n_other preqbytes) :: psourcefile*, TRAIT_ORIGIN porigin_owner porigin_source ptbytes) = $call_sourcefile((SOURCEFILE n_other preqbytes) :: psourcefile*, $origin_source(porigin_source))
+def $call_sourcefile((SOURCEFILE n_other preqbytes) :: psourcefile*, TRAIT_MEMBER_ORIGIN porigin_owner porigin_source) = $call_sourcefile((SOURCEFILE n_other preqbytes) :: psourcefile*, $origin_source(porigin_source))
 dec $function_at(pfunction*, porigin) : pfunction?
 def $function_at(eps, porigin) = eps
 def $function_at(pfunction :: pfunction_tail*, porigin) = (pfunction) -- if pfunction.ORIGIN = porigin

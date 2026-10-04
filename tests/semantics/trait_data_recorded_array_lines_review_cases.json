@@ -1,0 +1,16 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64 profile.json; runtime source AST diagnostic lines. Native only before comparisons.",
+  "cases": [
+    {
+      "id": "recorded-array-child-and-container-lines-follow-real-ast",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){if($n===2){echo \"W\";}elseif($m===\"Constant E_STRICT is deprecated since 8.4, the error level was removed\"){echo \"D\";}else{echo \"K\";}echo \":\",$l,\";\";return true;});\ntrait T{\npublic static $x=[\n(E_STRICT+0.5)=>\n(E_STRICT+\"2tail\"),\n(E_STRICT+1)=>\"Y\"\n];\n}\necho \"PRE;\";\nclass C{use T;public static $x=[2048=>2050,2049=>\"Y\"];}\necho \"POST;\",C::$x[2048],\":\",C::$x[2049];",
+      "source_sha256": "889135492a9764899d6061b9bd59719e6bf9c1efcab39314556fdbe23d910a4e",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "UFJFO0Q6NTtEOjY7Vzo2O0s6NjtEOjc7UE9TVDsyMDUwOlk=",
+      "stderr_template_base64": "",
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-collision-cont-review-259/.tools/trait-collision-array-lines-native259-tmxctdec/report.json",
+      "native_raw_sha256": "eee455451aebd1491deb4df49fcdc1fff9f745385bd3ae3b28b322bcd98fdebe"
+    }
+  ]
+}

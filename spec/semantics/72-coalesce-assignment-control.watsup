@@ -52,6 +52,7 @@ rule PhpStep/coalesce-assignment: S ~> S[.TODO = [$at_task($origin_child(S.ORIGI
   -- if S.TODO = (EVAL (NExprAssignOpCoalesce expression_target expression metadata)) :: ptask_tail*
 rule PhpStep/coalesce-assignment-present: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*
+  -- if ~$key_coalesce_pending(S)
   -- if $memoized_write_ready(S, S.BASE, [PCFIELD 0])
   -- if S_read = $quiet_base(S, S.BASE, z)
   -- if S_read.COMPLETION = NORMAL
@@ -59,25 +60,30 @@ rule PhpStep/coalesce-assignment-present: S ~> S_read[.TODO = ptask_tail*][.BASE
   -- if pvalue =/= PNULL
 rule PhpStep/coalesce-assignment-absent: S ~> S_read[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), COALESCE_ASSIGN_WRITE $memoized_write_base(S, S.BASE, [PCFIELD 0]) $assignment_self(expression_target, expression) z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*
+  -- if ~$key_coalesce_pending(S)
   -- if $memoized_write_ready(S, S.BASE, [PCFIELD 0])
   -- if S_read = $quiet_base(S, S.BASE, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN PNULL
 rule PhpStep/coalesce-assignment-quiet-abrupt: S ~> S_read[.TODO = eps][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*
+  -- if ~$key_coalesce_pending(S)
   -- if $memoized_write_ready(S, S.BASE, [PCFIELD 0])
   -- if S_read = $quiet_base(S, S.BASE, z)
   -- if S_read.COMPLETION =/= NORMAL
 rule PhpStep/coalesce-assignment-write: S ~> S_written[.HELD = S.HELD]
   -- if S.TODO = (COALESCE_ASSIGN_WRITE pbase false z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
   -- if S_written = $coalesce_assign($hold_task_inputs(S), pbase, S.RESULT, z)
 rule PhpStep/coalesce-assignment-self: S ~> S_written[.HELD = S.HELD]
   -- if S.TODO = (COALESCE_ASSIGN_WRITE pbase true z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_written = $coalesce_assign($hold_task_inputs(S_read), pbase, S_read.RESULT, z)
 rule PhpStep/coalesce-assignment-self-abrupt: S ~> S_read[.TODO = eps]
   -- if S.TODO = (COALESCE_ASSIGN_WRITE pbase true z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION =/= NORMAL
 

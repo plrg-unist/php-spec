@@ -1,4 +1,6 @@
 dec $shutdown_state_valid(pstate) : bool
+dec $destruction_state_valid(pstate) : bool
+dec $destructor_context_valid(pstate, pcallcontext) : bool
 dec $closure_unit_code_valid(pstate, ppstate, pcode) : bool
 dec $startup_state_valid(pstate) : bool
 dec $display_state_valid(pstate) : bool
@@ -178,6 +180,8 @@ dec $call_line_valid(pstate, porigin?, int) : bool
 dec $eval_compile_string_site(pstate, porigin, int) : bool
 dec $static_string_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
 dec $static_string_context_line_valid(pstate, pcallcontext) : bool
+dec $interpolation_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
+dec $interpolation_context_line_valid(pstate, pcallcontext) : bool
 dec $default_internal_string_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
 def $default_internal_string_pending_line_valid(S, pcalltarget, porigin?, z) = false -- otherwise
 dec $default_internal_string_context_line_valid(pstate, pcallcontext) : bool
@@ -267,7 +271,7 @@ def $call_task_valid(S, ERROR_UNWIND pcompletion) = (S.TODO = [ERROR_UNWIND pcom
 def $call_task_valid(S, AT porigin ptask) = $call_task_valid(S[.ORIGIN = (porigin)], ptask)
 def $call_task_valid(S, CALL_REF_PREP pcalltarget_function n porigin?) = $call_reference_task_valid(S, pcalltarget_function, n, porigin?)
 def $call_task_valid(S, CALL_REF_FETCH pcalltarget_function n porigin?) = $call_reference_task_valid(S, pcalltarget_function, n, porigin?)
-def $call_task_valid(S, CALL_ARGS pcalltarget_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, pcalltarget_function, porigin?) /\ ($call_line_valid(S, porigin?, z) \/ $concat_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $typed_return_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $config_string_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $static_string_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $default_internal_string_pending_line_valid(S, pcalltarget_function, porigin?, z)) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 0) /\ $call_sent_operands_valid(S, pcalltarget_function, 0, poperand*))
+def $call_task_valid(S, CALL_ARGS pcalltarget_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, pcalltarget_function, porigin?) /\ ($call_line_valid(S, porigin?, z) \/ $concat_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $interpolation_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $typed_return_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $config_string_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $static_string_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $default_internal_string_pending_line_valid(S, pcalltarget_function, porigin?, z)) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 0) /\ $call_sent_operands_valid(S, pcalltarget_function, 0, poperand*))
 def $call_task_valid(S, CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, pcalltarget_function, porigin?) /\ $call_line_valid(S, porigin?, z) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 1) /\ $call_sent_operands_valid(S, pcalltarget_function, 0, poperand*))
 def $call_task_valid(S, ptask) = true -- otherwise
 dec $call_after_origin(pstate, ptask) : pstate
@@ -292,8 +296,9 @@ def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if pcallcontext.PARAMS = (psparam.NAME)*
   -- if preqbytes* = pfunction.CVS
   -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
-  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $default_internal_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
+  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $interpolation_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $default_internal_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
   -- if ~$default_ctor_context_kind(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
+  -- if ~$destructor_context_kind(S, pcallcontext) \/ $destructor_context_valid(S, pcallcontext)
   -- if $call_arity_valid(S, pcallcontext)
   -- if $wrapper_context_valid(S, pcallcontext)
   -- if $call_holes_valid(S, pcallcontext)
@@ -318,8 +323,10 @@ dec $class_constant_scope_valid(pstate, pclassconstantcontext*) : bool
 def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S -- otherwise
 dec $api_saved_frame_scope(pstate, pframe, pframe*) : pstate
 def $api_saved_frame_scope(S, pframe, pframe_tail*) = S -- otherwise
+dec $destructor_saved_frame_scope(pstate, pframe) : pstate
+def $destructor_saved_frame_scope(S, pframe) = S -- otherwise
 def $call_frames_valid(S, eps) = true
-def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($api_saved_frame_scope($parameter_string_frame_scope(S_scope, pframe, pframe_tail*), pframe, pframe_tail*), pframe.TODO) /\ $borrowed_read_scope_valid(S_scope) /\ $call_saved_context_valid(S_scope, pframe) /\ $constant_context_valid(S_scope) /\ $call_frames_valid(S, pframe_tail*))
+def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($destructor_saved_frame_scope($api_saved_frame_scope($parameter_string_frame_scope(S_scope, pframe, pframe_tail*), pframe, pframe_tail*), pframe), pframe.TODO) /\ $borrowed_read_scope_valid(S_scope) /\ $call_saved_context_valid(S_scope, pframe) /\ $constant_context_valid(S_scope) /\ $call_frames_valid(S, pframe_tail*))
   -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
 dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $class_constant_state_valid(pstate) : bool
@@ -385,6 +392,7 @@ def $call_descriptors_valid(S) = true
   -- if $error_handlers_valid(S, S.ERRORHANDLER :: S.ERRORHANDLERS)
   -- if $exception_handlers_valid(S, S.EXCEPTIONHANDLER :: S.EXCEPTIONHANDLERS)
   -- if $shutdown_state_valid(S)
+  -- if $destruction_state_valid(S)
   -- if $user_constants_valid(S, S.USERCONSTANTS)
   -- if $class_constant_state_valid(S)
   -- if $constant_callable_records_valid(S, S.CONSTANTCLOSURES)

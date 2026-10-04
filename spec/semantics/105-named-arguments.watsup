@@ -140,11 +140,13 @@ def $named_send_value(S, pcalltarget_function, pnamedargs, porigin?, n) = S_prom
   -- if S_promoted.COMPLETION =/= NORMAL
 rule PhpStep/named-send: S ~> S_value[.TODO = (NAMED_ARGS pcalltarget_function phpType7* $(n + 1) $named_store(pnamedargs, $named_arg_target(pfunction, $named_source(S, porigin?, n), n), S_value.RESULT) porigin? z) :: ptask_tail*][.HELD = S.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (NAMED_SEND pcalltarget_function phpType7* n pnamedargs porigin? z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
   -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if S_value = $named_send_value(S, pcalltarget_function, pnamedargs, porigin?, n)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/named-send-abrupt: S ~> S_value[.HELD = S.HELD]
   -- if S.TODO = (NAMED_SEND pcalltarget_function phpType7* n pnamedargs porigin? z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
   -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if S_value = $named_send_value(S, pcalltarget_function, pnamedargs, porigin?, n)
   -- if S_value.COMPLETION =/= NORMAL
@@ -319,6 +321,7 @@ rule PhpStep/named-tail-receive: S ~> $named_receive(S, pfunction, n)
   -- if $(n < |pcallcontext.NAMED|)
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if ~$variadic_string_candidate(S)
+  -- if ~$api_variadic_candidate(S)
 rule PhpStep/named-tail-done: S ~> S[.TODO = $function_tasks(S, pfunction)]
   -- if S.TODO = (NAMED_VARIADIC_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps

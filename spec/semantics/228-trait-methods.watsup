@@ -10,6 +10,7 @@ syntax ptraitcomposition = TRAITCOMPOSE pstate ptraitmethod* ptraitmethod*
 
 dec $trait_issue_has_source(pmethodissue) : bool
 dec $trait_static_entry(pfunction, porigin, porigin) : bool
+dec $trait_initializer_scope(pstate) : porigin?
 dec $trait_capture_this(pstate, porigin) : bool
 dec $trait_capture_invocation(pstate, pfunction, pmethodcapture, porigin) : bool
 dec $trait_capture_entry_scope(pstate, nat) : porigin?
@@ -57,6 +58,7 @@ dec $trait_composed_named(ptraitmethod*, ptbytes) : ptraitmethod?
 dec $trait_copy(pclassdesc, pclassdesc, pmethoddesc, pmethoddesc, ptraitcomposition) : ptraitcomposition
 dec $trait_alias_warning(pstate, pclassdesc, pmethoddesc, pmethoddesc) : pstate
 dec $trait_compile_warning(pstate, pclassdesc, pmethoddesc, pmethoddesc) : pstate
+dec $trait_compile_warning_seed(pstate, pclassdesc) : pstate
 dec $trait_requirements_walk(pstate, pclassdesc, ptraitmethod*, ptraitmethod*) : pstate
 dec $trait_requirement_bound(pstate, pclassdesc, ptraitmethod, ptraitmethod*, ptraitmethod*) : pstate
 dec $trait_requirement_duplicate(pclassdesc, pmethoddesc, pmethoddesc) : bool
@@ -74,14 +76,15 @@ dec $trait_fetched(pstate, pclassdesc, ptraitplan, ptraitfetch) : pstate
 dec $trait_excluded(pstate, pclassdesc, pclassdesc*, ptraitplan, ptraitexclusions) : pstate
 dec $trait_aliased(pstate, pclassdesc, pclassdesc*, (ptbytes, ptbytes)*, ptraitaliases) : pstate
 dec $trait_composed(pclassdesc, ptraitcomposition) : pstate
+dec $trait_data_link(pstate, pclassdesc, ptraitmethod*) : pstate
 dec $trait_import_interfaces(pclassdesc, pmethoddesc*) : ptbytes*
 dec $trait_requirements(pstate, pclassdesc, ptraitmethod*) : pstate
 dec $trait_requirement_one(pstate, pclassdesc, pmethoddesc, pclassdesc, pmethoddesc) : pstate
 dec $trait_parent_link(pstate, pclassdesc) : pstate
 dec $trait_linked(pstate, pclassdesc, ptraitmethod*, pstate) : pstate
 dec $trait_final_interfaces(pstate, pclassdesc, pstate) : pstate
-dec $pptrait_add(ppstate, pcpath, pchheader, pmethoddesc*) : ppstate
-dec $pptrait_method_members(statement*) : bool
+dec $pptrait_add(ppstate, pcpath, pchheader, ppropertydesc*, pmethoddesc*) : ppstate
+dec $pptrait_members_supported(statement*) : bool
 dec $trait_override_imported(pstate, pclassdesc, ppmethodinherited) : bool
 
 
@@ -136,12 +139,12 @@ def $pptrait_adaptations(P, pcpath, n, phpType63*) = P -- if P.COMPLETION =/= PP
 def $pptrait_qualified(P, pcpath, ABSENT) = P
 def $pptrait_qualified(P, pcpath, name) = $ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name))
 
-def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $pptrait_add(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pcpath, pchheader, pmethoddesc*)
+def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $pptrait_add(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, pmethoddesc*)
   -- if pchheader.KIND = "trait"
   -- if pchheader.BODY = SEQUENCE statement*
-  -- if $pptrait_method_members(statement*)
+  -- if $pptrait_members_supported(statement*)
   -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
-  -- if PPMEMBERS P_next eps pmethoddesc* = $ppmember_groups(P_header, pcpath, 0, statement*, eps, eps, pchheader)
+  -- if PPMEMBERS P_next ppropertydesc* pmethoddesc* = $ppmember_groups(P_header, pcpath, 0, statement*, eps, eps, pchheader)
 def $ppstatement(P, pcpath, NStmtTrait phpType14 phpType3 phpType23 metadata) = $ppclass_result(P_line, pcpath, $pchcompile(NStmtTrait phpType14 phpType3 phpType23 metadata, P.CLASSCONTEXT =/= eps, $ppclass_context(P_line)))
   -- if P.COMPLETION = PPCNORMAL
   -- if $($source_line(metadata) > 0)
@@ -174,6 +177,7 @@ rule PhpStep/trait-class-magic: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PST
   -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $call_current_valid(S)
+  -- if $trait_initializer_scope(S) = eps
 def $constant_shape_class(S, porigin, PFMAGIC MAGICCLASS z_leaf) = PVSTRING true
   -- if $origin_node(S.SOURCES, porigin) = (NScalarMagicConstClass metadata)
   -- if z_leaf = $source_line(metadata)
@@ -182,6 +186,7 @@ def $constant_shape_class(S, porigin, PFMAGIC MAGICCLASS z_leaf) = PVSTRING true
   -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $call_current_valid(S)
+  -- if $trait_initializer_scope(S[.ORIGIN = (porigin)]) = eps
 
 def $default_parameter_origin(S, TRAIT_ORIGIN porigin_owner porigin_source ptbytes, n) = PORIGIN n_unit (pcpath ++ [PCFIELD 4, PCINDEX n])
   -- if $origin_source(porigin_source) = PORIGIN n_unit pcpath
@@ -417,13 +422,12 @@ def $trait_copy(pclassdesc_owner, pclassdesc_trait, pmethoddesc, pmethoddesc_ori
   -- if $trait_composed_named(ptraitmethod*, pmethoddesc.NAME) = (TRAITMETHOD pclassdesc_prior pmethoddesc_prior)
   -- if $origin_source(pmethoddesc_prior.FUNCTION.ORIGIN) =/= $origin_source(pmethoddesc.FUNCTION.ORIGIN) \/ pmethoddesc_prior.VISIBILITY =/= pmethoddesc.VISIBILITY
 
-def $trait_compile_warning(S, pclassdesc, pmethoddesc_original, pmethoddesc) = S[.EVENTS = S.EVENTS ++ [DIAGNOSTIC_SOURCE n "Warning" ($ptascii("Private methods cannot be final as they are never overridden by other classes")) pclassdesc.LINE]]
+def $trait_compile_warning(S, pclassdesc, pmethoddesc_original, pmethoddesc) = $trait_compile_warning_seed(S, pclassdesc)
   -- if ~pmethoddesc_original.FINAL
   -- if pmethoddesc.FINAL
   -- if pmethoddesc.VISIBILITY = PROPERTY_PRIVATE
   -- if $ptlc(pmethoddesc.NAME) =/= $ptascii("__construct")
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
-  -- if $long_and(S.REPORTING, 128) =/= 0
 def $trait_compile_warning(S, pclassdesc, pmethoddesc_original, pmethoddesc) = S -- otherwise
 
 def $trait_alias_warning(S, pclassdesc, pmethoddesc_original, pmethoddesc) = S -- if pmethoddesc_original.ABSTRACT
@@ -486,7 +490,7 @@ def $trait_aliased(S, pclassdesc, pclassdesc_traits*, (ptbytes_trait, ptbytes_me
 def $trait_aliased(S, pclassdesc, pclassdesc_traits*, (ptbytes_trait, ptbytes_method)*, TRAITALIASMISSING ptbytes) = $pil_method_fatal(S, pclassdesc.ORIGIN, $ptascii("Could not find trait ") ++ ptbytes, pclassdesc.LINE)
 def $trait_aliased(S, pclassdesc, pclassdesc_traits*, (ptbytes_trait, ptbytes_method)*, TRAITALIASES ptraitalias*) = $trait_composed(pclassdesc, $trait_copy_traits(pclassdesc, pclassdesc_traits*, ptraitalias*, (ptbytes_trait, ptbytes_method)*, TRAITCOMPOSE S eps eps))
 def $trait_composed(pclassdesc, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = S -- if S.COMPLETION =/= NORMAL
-def $trait_composed(pclassdesc, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = $trait_linked(S, pclassdesc_composed, ptraitmethod_required*, $trait_parent_link(S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_composed)], pclassdesc_composed))
+def $trait_composed(pclassdesc, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = $trait_data_link(S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_composed)], pclassdesc_composed, ptraitmethod_required*)
   -- if S.COMPLETION = NORMAL
   -- if pmethoddesc* = pclassdesc.METHODS ++ $trait_composed_methods(ptraitmethod*)
   -- if pclassdesc_composed = pclassdesc[.METHODS = pmethoddesc*][.INTERFACES = $trait_import_interfaces(pclassdesc, pmethoddesc*)]
@@ -531,7 +535,7 @@ def $trait_requirement_one(S, pclassdesc, pmethoddesc, pclassdesc_trait, pmethod
   -- if $method_signature_issue(S, pclassdesc, pmethoddesc, pclassdesc_trait, pmethoddesc_required) = METHOD_UNSUPPORTED text
 
 ;; Plain traits publish source methods without creating an instance layout.
-def $activate_class_base_body(S, pclassdesc) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]]
+def $activate_class_base_body(S, pclassdesc) = $class_static_finish(S, pclassdesc, S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]])
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "trait"
   -- if ~$class_internal(pclassdesc.NAME)
@@ -569,7 +573,9 @@ def $trait_class_link_pending(S, pclassdesc) = ($trait_plan(S, pclassdesc).TRAIT
 def $trait_linked(S, pclassdesc, ptraitmethod_required*, S_parent) = S_parent -- if S_parent.COMPLETION =/= NORMAL
 def $trait_linked(S, pclassdesc, ptraitmethod_required*, S_parent) = $trait_final_interfaces(S, pclassdesc, $trait_requirements(S_parent, pclassdesc, ptraitmethod_required*)) -- if S_parent.COMPLETION = NORMAL
 def $trait_final_interfaces(S, pclassdesc, S_required) = S_required -- if S_required.COMPLETION =/= NORMAL
-def $trait_final_interfaces(S, pclassdesc, S_required) = S_required -- if S_required.COMPLETION = NORMAL /\ pclassdesc.KIND = "trait"
+def $trait_final_interfaces(S, pclassdesc, S_required) = $class_static_finish(S, pclassdesc_current, S_required)
+  -- if S_required.COMPLETION = NORMAL /\ pclassdesc.KIND = "trait"
+  -- if $class_at(S_required.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_current)
 def $trait_final_interfaces(S, pclassdesc, S_required) = $class_static_finish(S, pclassdesc_current, $pil_method_publish(S, S_required, pclassdesc_current))
   -- if S_required.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "class"
@@ -587,16 +593,18 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_method_fatal(
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "trait"
 
-def $pptrait_add(P, pcpath, pchheader, pmethoddesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND "trait", NAME pchheader.NAME, PARENT eps, INTERFACES eps, PROPERTIES eps, METHODS pmethoddesc*, CONSTANTS eps, ABSTRACT false, FINAL false, READONLY false, EARLY (P.EARLY = (pcpath) /\ ~$pptrait_body_uses(pchheader.BODY) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]] -- if P.COMPLETION = PPCNORMAL
-def $pptrait_add(P, pcpath, pchheader, pmethoddesc*) = P -- if P.COMPLETION =/= PPCNORMAL
-def $pptrait_method_members(eps) = true
-def $pptrait_method_members((NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) :: statement*) = $pptrait_method_members(statement*)
-def $pptrait_method_members((NStmtTraitUse phpType42 phpType62 metadata) :: statement*) = $pptrait_method_members(statement*)
-def $pptrait_method_members(statement*) = false -- otherwise
-def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppunsupported($ppclass_diagnostics(P, pchdiagnostic*), "trait properties or constants")
+def $pptrait_add(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND "trait", NAME pchheader.NAME, PARENT eps, INTERFACES eps, PROPERTIES ppropertydesc*, METHODS pmethoddesc*, CONSTANTS $ppclass_constants(P.CLASSCONSTANTS, PORIGIN P.FOLD.SOURCE.ID pcpath), ABSTRACT false, FINAL false, READONLY false, EARLY (P.EARLY = (pcpath) /\ ~$pptrait_body_uses(pchheader.BODY) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]] -- if P.COMPLETION = PPCNORMAL
+def $pptrait_add(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = P -- if P.COMPLETION =/= PPCNORMAL
+def $pptrait_members_supported(eps) = true
+def $pptrait_members_supported((NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) :: statement*) = $pptrait_members_supported(statement*)
+def $pptrait_members_supported((NStmtTraitUse phpType42 phpType62 metadata) :: statement*) = $pptrait_members_supported(statement*)
+def $pptrait_members_supported((NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata) :: statement*) = $pptrait_members_supported(statement*)
+def $pptrait_members_supported((NStmtClassConst phpType14 phpType24 phpType18 phpType45 metadata) :: statement*) = $pptrait_members_supported(statement*)
+def $pptrait_members_supported(statement*) = false -- otherwise
+def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppunsupported($ppclass_diagnostics(P, pchdiagnostic*), "trait members")
   -- if pchheader.KIND = "trait"
   -- if pchheader.BODY = SEQUENCE statement*
-  -- if ~$pptrait_method_members(statement*)
+  -- if ~$pptrait_members_supported(statement*)
 
 def $ppmember_groups(P, pcpath, n, (NStmtTraitUse (SEQUENCE (name :: name_tail*)) phpType62 metadata) :: statement*, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error($pplocate(P, $ppmember_path(pcpath, pchheader, n), $source_line(metadata)), $ptascii("Cannot use traits inside of interfaces. ") ++ pnreference.RESOLVED ++ $ptascii(" is used in ") ++ pchheader.NAME, $nabs($source_line(metadata)))) ppropertydesc* pmethoddesc*
   -- if P.COMPLETION = PPCNORMAL
