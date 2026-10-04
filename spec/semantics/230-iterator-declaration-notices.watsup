@@ -151,6 +151,11 @@ def $pil_method_publish(S, S_candidate, pclassdesc) = $iterator_notice_link_resu
 def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = $iterator_notice_seed(S_result, pclassdesc.ORIGIN, $iterator_notice_plan(S_candidate, pclassdesc))
   -- if S_result.COMPLETION = NORMAL
 def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = $eval_compile_record_prefix($iterator_notice_default(S_result[.TODO = $iterator_notice_without_seeds(S_result.TODO)], $iterator_notice_seeds($iterator_notice_seed_remove(S_candidate.TODO, pclassdesc.ORIGIN)) ++ $iterator_notice_items(pdeclnotice*)), $iterator_notice_seeds($iterator_notice_seed_remove(S_candidate.TODO, pclassdesc.ORIGIN)) ++ $iterator_notice_items(pdeclnotice*))
+  -- if ~$eval_compile_recorded_error(S_result, 64)
+  -- if $iterator_notice_link_fatal(S_result.COMPLETION)
+  -- if $iterator_notice_plan(S_candidate, pclassdesc) = DECLNOTICES pdeclnotice*
+def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = $eval_compile_record_prefix(S_result[.TODO = $iterator_notice_without_seeds(S_result.TODO)], $iterator_notice_seeds($iterator_notice_seed_remove(S_candidate.TODO, pclassdesc.ORIGIN)) ++ $iterator_notice_items(pdeclnotice*))
+  -- if $eval_compile_recorded_error(S_result, 64)
   -- if $iterator_notice_link_fatal(S_result.COMPLETION)
   -- if $iterator_notice_plan(S_candidate, pclassdesc) = DECLNOTICES pdeclnotice*
 def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = S_result -- otherwise

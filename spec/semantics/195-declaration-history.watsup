@@ -117,6 +117,7 @@ def $declaration_stop_terminal(NORMAL) = false
 def $declaration_stop_terminal(pcompletion) = true -- otherwise
 
 dec $declaration_history_fold(pstate, pstate, (nat, ppstate)*, pdeclaration*, nat) : bool
+dec $eval_compile_history_carry(pstate, pstate) : pstate
 dec $declaration_history_compiled(pstate, pstate, (nat, ppstate)*, pdeclaration*, nat, pstate) : bool
 dec $shutdown_compiler_released(pstate, pstate) : bool
 def $declaration_history_fold(S, S_prefix, (n, P)*, eps, n_next) = $declaration_history_final(S, S_prefix)
@@ -126,7 +127,7 @@ def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next porigin? z) 
   -- if $declaration_compiler_at((n, P)*, n_next) = (P_current)
   -- if S_compiled = $declaration_fold($declaration_enter(S_prefix[.REPORTING = z][.COMPLETION = NORMAL][.ERRORORIGIN = eps], n_next, porigin?), P_current, P_current.PUBLICATIONS, 0, 0)
   -- if ~$eval_compile_unit(S, n_next)
-def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_fold(S, S_compiled[.COMPLETION = NORMAL][.TODO = eps], (n, P)*, pdeclaration_tail*, $(n_next + 1))
+def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_fold(S, $eval_compile_history_carry(S_prefix, S_compiled[.COMPLETION = NORMAL][.TODO = eps]), (n, P)*, pdeclaration_tail*, $(n_next + 1))
   -- if ~$declaration_stop_terminal(S_compiled.COMPLETION) \/ $shutdown_compiler_released(S, S_compiled)
   -- if n_prefix = $nabs($(|S_prefix.DECLARATIONS| + 1))
   -- if $(n_prefix <= |S_compiled.DECLARATIONS|)
@@ -167,13 +168,13 @@ def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER 0 eps z) :: (PDEXIT
   -- if $declaration_preflight($pcsource(0, program).OCCURRENCES) = (pcompletion)
   -- if S.COMPLETION = pcompletion /\ S.REPORTING = z /\ ~S.COMPILESTOP /\ S.ERRORORIGIN = eps
 
-def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRCLASS porigin pdeclcause) :: pdeclaration*, n_next) = $declaration_history_fold(S, S_published[.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRCLASS porigin pdeclcause]], (n, P)*, pdeclaration*, n_next)
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRCLASS porigin pdeclcause) :: pdeclaration*, n_next) = $declaration_history_fold(S, $eval_compile_history_carry(S_prefix, S_published[.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRCLASS porigin pdeclcause]]), (n, P)*, pdeclaration*, n_next)
   -- if $declaration_cause_valid(S_prefix, porigin, pdeclcause)
   -- if $class_at(S_prefix.CLASSES, porigin) = (pclassdesc)
   -- if S_published = $activate_class_body(S_prefix[.COMPLETION = NORMAL], pclassdesc)
   -- if S_published.COMPLETION = NORMAL
   -- if S_published.CLASSNAMES = S_prefix.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), porigin)]
-def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRFUNCTION porigin pdeclcause) :: pdeclaration*, n_next) = $declaration_history_fold(S, S_published[.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRFUNCTION porigin pdeclcause]], (n, P)*, pdeclaration*, n_next)
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRFUNCTION porigin pdeclcause) :: pdeclaration*, n_next) = $declaration_history_fold(S, $eval_compile_history_carry(S_prefix, S_published[.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRFUNCTION porigin pdeclcause]]), (n, P)*, pdeclaration*, n_next)
   -- if $declaration_cause_valid(S_prefix, porigin, pdeclcause)
   -- if $function_at(S_prefix.FUNCTIONS, porigin) = (pfunction)
   -- if S_published = $activate_function_body(S_prefix[.COMPLETION = NORMAL], pfunction)
