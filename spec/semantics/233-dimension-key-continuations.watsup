@@ -1,6 +1,9 @@
 ;; Source reads evaluate derived bases before key warnings. CV table pointers are
 ;; borrowed; only real temporary operands and Zend's callback ADDREF are owners.
 dec $key_test_mode(pkeymode) : bool
+dec $key_float_phase(pkeyphase) : bool
+dec $key_held_operand(poperand) : bool
+dec $key_runtime_operand(poperand) : bool
 dec $key_is_array(pvalue) : bool
 dec $key_plain_value(pvalue) : bool
 dec $key_base_line(pstate) : int
@@ -40,6 +43,14 @@ dec $key_operand_cv_source(pstate, porigin, pcpath) : bool
 dec $key_read_owners_source(pstate, pkeyread) : bool
 dec $key_read_valid(pstate, pkeyread) : bool
 
+def $key_float_phase(KEY_FLOAT castnotice) = true
+def $key_float_phase(pkeyphase) = false -- otherwise
+def $key_held_operand(KNOWN pvalue) = true
+def $key_held_operand(REFERENCE n) = true
+def $key_held_operand(poperand) = false -- otherwise
+def $key_runtime_operand(VARIABLE n_name* z) = true
+def $key_runtime_operand(REFERENCE n) = true
+def $key_runtime_operand(poperand) = false -- otherwise
 def $key_test_mode(KEY_TEST b) = true
 def $key_test_mode(pkeymode) = false -- otherwise
 def $key_is_array(PARRAY n) = true
@@ -251,7 +262,7 @@ rule PhpStep/key-read-dimension: S ~> $key_read_dimension(S, poperand, z, pkeymo
 def $key_read_protect(pkeyread) = true
   -- if ~pkeyread.GLOBAL
   -- if pkeyread.BASE = PARRAY n
-  -- if pkeyread.PHASE = KEY_NULL \/ pkeyread.PHASE = KEY_FLOAT castnotice \/ (pkeyread.PHASE = KEY_CV /\ ~$key_test_mode(pkeyread.MODE))
+  -- if pkeyread.PHASE = KEY_NULL \/ $key_float_phase(pkeyread.PHASE) \/ (pkeyread.PHASE = KEY_CV /\ ~$key_test_mode(pkeyread.MODE))
 def $key_read_protect(pkeyread) = false -- otherwise
 def $key_read_roots(pkeyread) = $base_nodes(pkeyread.OWNERS) ++ $operand_nodes(pkeyread.INPUT) ++ $value_nodes(pkeyread.BASE)
   -- if $key_read_protect(pkeyread)
@@ -304,7 +315,7 @@ def $key_read_resume(S, pkeyread) = $key_dimension_value(S, pkeyread[.PHASE = KE
   -- if pkeyread.PHASE = KEY_CV
   -- if $key_read_live(S, pkeyread)
 def $key_read_resume(S, pkeyread) = $key_array_lookup(S, pkeyread)
-  -- if pkeyread.PHASE = KEY_NULL \/ pkeyread.PHASE = KEY_FLOAT castnotice
+  -- if pkeyread.PHASE = KEY_NULL \/ $key_float_phase(pkeyread.PHASE)
   -- if $key_read_live(S, pkeyread)
 rule PhpStep/key-read-resume: S ~> $key_read_resume(S, pkeyread)
   -- if S.TODO = (KEY_READ_RESULT pkeyread) :: ptask_tail*
@@ -326,7 +337,7 @@ def $key_read_input_source(S, pkeyread) = true
   -- if n_name* = $compiled_name_bytes(pvalue)
   -- if pkeyread.GLOBAL
 def $key_read_input_source(S, pkeyread) = true
-  -- if pkeyread.INPUT = KNOWN pvalue \/ pkeyread.INPUT = REFERENCE n
+  -- if $key_held_operand(pkeyread.INPUT)
   -- if $origin_child((pkeyread.SITE), [PCFIELD 1]) = (porigin_key)
   -- if $compiled_read(S, porigin_key) = eps
   -- if ~$key_operand_cv_source(S, pkeyread.SITE, [PCFIELD 1])
@@ -345,7 +356,7 @@ def $key_read_shape(pkeyread) = (pkeyread.MODE = KEY_R /\ (pkeyread.GLOBAL \/ $k
   -- if pkeyread.PHASE = KEY_MISSING
 def $key_read_selection(S, pkeyread) = true
   -- if pkeyread.PHASE =/= KEY_MISSING
-  -- if pkeyread.INPUT = VARIABLE n_name* z \/ pkeyread.INPUT = REFERENCE n
+  -- if $key_runtime_operand(pkeyread.INPUT)
 def $key_read_selection(S, pkeyread) = (pkeyread.VALUE = pvalue)
   -- if pkeyread.PHASE =/= KEY_MISSING
   -- if pkeyread.INPUT = KNOWN pvalue
