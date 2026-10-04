@@ -18,7 +18,10 @@ separate cutoffs. Independent pending53/handler35/Iterator25/restored23 state
 checks pass at19dae, including source-ledger authority and actual owners. Four
 early-eval controls assert temporary Unsupported only; per-class eval callbacks
 and publication after handler throws are the immediate required follow-on.
-Actual-parent composition is in progress. [Contract and tests](docs/semantics/ITERATORS.md).
+Actual3b622 composition source3 passes at e1a654: imported physical method
+diagnostics, live argument/display state and effectful internal default traces.
+The original recorder/transport failures and protocol timeouts remain preserved
+without agreement credit. [Contract and tests](docs/semantics/ITERATORS.md).
 
 Shutdown registration231 caches callable selection, private/rebound permission
 and copied arguments after all argument effects. Ordered callbacks run after
