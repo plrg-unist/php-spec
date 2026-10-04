@@ -10,7 +10,7 @@ from include_chdir_pipe_protocol import ROOT, PREFIX, b64, seq
 from include_mutable_execution import CASES
 from recorded_worker import Worker
 
-CASE = 'chdir-warning-normal-held-cwd'
+CASE = 'chdir-warning-normal-minimal'
 SEEK = '''dec $dir_warning_result_ready(pstate) : bool
 def $dir_warning_result_ready(S) = true
   -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
@@ -48,7 +48,7 @@ def prepare(program, main, cwd):
         'pcallcontext_string.ARGC = 0',
         'pcallcontext_string.PARAMS = eps',
         '$config_string_trace_context(S_inner,pcallcontext_string)',
-        '$outputs(S_inner.EVENTS) = $ptascii("2:A:B|RC0ZN")',
+        '$outputs(S_inner.EVENTS) = $ptascii("R")',
         '$call_descriptors_valid(S_inner)',
         'S = $dir_continue(S_inner,DIR_CHANGED 0 ' + initial + ' ' + seq(b'sub') + ' ' + sub + ')',
         'S.COMPLETION = SOURCE_PENDING',
@@ -131,7 +131,7 @@ def prepare(program, main, cwd):
         '~$dir_warning_valid(S_bad_owner,pdircontext[.FRAMEOWNER = 2],$ptascii("No such file or directory"),2)',
         '~$call_descriptors_valid(S_handler[.FRAMES = pframe_caller[.TODO = S_bad_owner.TODO] :: pframe_tail*])',
         '$call_descriptors_valid(S_handler)',
-        '$outputs(S_handler.EVENTS) = $ptascii("2:A:B|RC0ZNH4W")',
+        '$outputs(S_handler.EVENTS) = $ptascii("RH")',
         'S_back = $dir_resume(S_handler,DIR_CHANGED 2 ' + sub + ' ' + seq(b'..') + ' ' + initial + ')',
         'S_result = $dir_warning_seek_result(S_back,1000)',
         '$dir_warning_result_ready(S_result)',
@@ -164,7 +164,7 @@ def prepare(program, main, cwd):
         'S_file.FILECONTEXTS = pfilecontext :: pfilecontext_tail*',
         'pfilecontext.PHASE = FILE_RESOLVE_WAIT',
         'pfilecontext.CWD = ' + initial,
-        '$outputs(S_file.EVENTS) = $ptascii("2:A:B|RC0ZNH4WFS")',
+        '$outputs(S_file.EVENTS) = $ptascii("RHFS")',
         '$call_descriptors_valid(S_file)',
     ]
     for state, completion in [('S_stop_error', 'PHPERROR $ptascii("stop") 1'),
