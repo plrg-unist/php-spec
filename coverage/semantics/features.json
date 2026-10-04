@@ -147,16 +147,19 @@
       "implementation": [
         "spec/semantics/88-user-constant-compiler.watsup",
         "spec/semantics/89-user-constants.watsup",
-        "spec/semantics/89-constant-classes.watsup"
+        "spec/semantics/89-constant-classes.watsup",
+        "spec/semantics/271-global-constant-callables.watsup"
       ],
       "source_tests": [
         "tests/semantics/user_constants.py",
         "tests/semantics/user_constant_state.py",
         "tests/semantics/user_constant_protocol.py",
         "tests/semantics/user_constant_context_protocol.py",
-        "tests/semantics/user_constant_branch_protocol.py"
+        "tests/semantics/user_constant_branch_protocol.py",
+        "tests/semantics/deferred_static_default_cases.json",
+        "tests/semantics/global_constant_callable_protocol.py"
       ],
-      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure."
+      "review": "User constants execute in declaration order with namespace/import/fallback lookup, allocation-class provenance and retained table ownership. Global static/no-use Closure and NAMED/METHOD FCC values now use exact source-entry scope and full declaration/value flow; raw-trait notices precede allocation, duplicate warnings retain candidates and captured lookup prefixes. Nine new native/publicCLI agreements and seven341 AL premises retain their separate cuts in deferred-static-defaults-review.json. Pre-bind callback alias shadows, global NEW/wider object producers, remaining builtin values and define/defined remain required; status stays partial."
     },
     {
       "node": "DeclareItem",

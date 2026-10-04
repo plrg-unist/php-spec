@@ -1,6 +1,6 @@
 {
   "target": "PHP8.5.10 CLI NTS64, sole project-local oracle; baseline profile30719",
-  "scope": "Deferred scalar/array and certified Closure/FCC static defaults and class-owned instance templates; partial core milestone, other object/default producers and wider consumers remain required.",
+  "scope": "Deferred scalar/array and certified Closure/FCC static defaults, class-owned instance templates and global const values; partial core milestone, wider object/default/constant producers and consumers remain required.",
   "implementation_commit": "293a764404cd83cc91569828bf6a56c081464e74",
   "implementation": [
     "spec/semantics/219-deferred-static-defaults.watsup",
@@ -15,7 +15,8 @@
     "spec/semantics/173-method-callables.watsup",
     "spec/semantics/252-object-property-defaults.watsup",
     "spec/semantics/263-property-callable-creation.watsup",
-    "spec/semantics/265-trait-constant-callables.watsup"
+    "spec/semantics/265-trait-constant-callables.watsup",
+    "spec/semantics/271-global-constant-callables.watsup"
   ],
   "contracts": [
     "Declaring scope; strict types with int-to-float promotion.",
@@ -36,7 +37,10 @@
     "Direct/alias/array and immutable literal-key projection flow is source-authenticated; strict/type/throw paths mint no object value binding. Plain clones retain copied scope and earlier permission authority without new constant receipts.",
     "Shared trait-property ASTs cache their first authentic private method/global function target. Each later receipt carries its own full DECL/publication prefix and fresh called class; retired first-source objects remain lookup-only authority, and ordinary method ancestry is unchanged.",
     "Cached property METHOD children copy authentic full importing method/receipt/scope and invocation evidence. Wrapped/plain maker retirement leaves historical authority valid without heap ownership; lexical and unrelated called classes remain distinct, including private NEW self defaults and real child clones.",
-    "Shared trait-constant FCC ASTs retain the first authenticated private method/global function target after partial failure. Named/method receipts keep current full declaration prefixes; METHOD captures select fresh called classes, while REAL constant Closures use their own declaring owner. Copied METHOD child evidence remains nonowning and ordinary ancestry stays exact."
+    "Shared trait-constant FCC ASTs retain the first authenticated private method/global function target after partial failure. Named/method receipts keep current full declaration prefixes; METHOD captures select fresh called classes, while REAL constant Closures use their own declaring owner. Copied METHOD child evidence remains nonowning and ordinary ancestry stays exact.",
+    "Global const static/no-use REAL Closure and NAMED/METHOD FCC values evaluate before registration. REAL lexical/called scope uses the immutable main/file/eval entry class, never the caller receiver or forwarded called class; NAMED functions remain unscoped.",
+    "Global callable receipts authenticate full NConst/initializer/source-entry/publication and actual value/class flow. USERCONSTANTS own successful values; receipts and discarded-candidate metadata add no owners.",
+    "Duplicate registration retains its actual candidate until the warning finishes or unwinds. The continuation uses the captured USERCONSTANTS prefix, preserves the original binding and discards only the candidate. Raw-trait METHOD notices precede allocation and capture exact resume source/target/prefix."
   ],
   "engine_symbols": [
     "zend_compile_prop_decl",
@@ -50,7 +54,10 @@
     "zend_ast_evaluate_ex: ZEND_AST_CALL, ZEND_AST_STATIC_CALL, ZEND_AST_OP_ARRAY",
     "zend_create_fake_closure",
     "zend_create_closure",
-    "zend_do_traits_constant_binding"
+    "zend_do_traits_constant_binding",
+    "zend_compile_const_decl",
+    "ZEND_DECLARE_CONST",
+    "zend_register_constant"
   ],
   "artifacts": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults",
   "runtime": {
@@ -142,9 +149,12 @@
     "instance_templates": "compiler_review_14 independently accepted the requested-class ownership/link-copy/order/strict/reentry source and fixtures, exact eight raw source tuples at80900fa4b and three172-premise AL guards at449b45763; original compile/fixture failures retained, earlier evidence not replayed.",
     "object_defaults": "compiler_review_14 independently accepted object/source/copy/ownership/clone authority, original nine full tuples and six335 guards at retained cuts, then nonrecursive cached-target/fresh-called/publication split, exact actual238 source and98 raw guards ata502. Inputs stable and original failures retained; no prior renewal.",
     "property_method_children": "compiler_review_14 independently accepted the historical/live authority split, exact source/fixture/recorder and two publicCLI tuples ataa899, static105 premises at9ae61 and default65 atb8d10. Original fixture stops remain zero-credit; earlier evidence retained without replay.",
-    "trait_constant_callables": "compiler_review_14 independently accepted exact nonrecursive first/current receipt authority, source/fixture/runner and three raw publicCLI tuples plus58+54 AL premises at4e2d. Byte-identical122 premises passed production SL at733826c23 with det:true/cache:false and unchanged120s cap. AL timeouts/localizers retain zero-credit; earlier evidence was not replayed."
+    "trait_constant_callables": "compiler_review_14 independently accepted exact nonrecursive first/current receipt authority, source/fixture/runner and three raw publicCLI tuples plus58+54 AL premises at4e2d. Byte-identical122 premises passed production SL at733826c23 with det:true/cache:false and unchanged120s cap. AL timeouts/localizers retain zero-credit; earlier evidence was not replayed.",
+    "global_constant_callables": "compiler_review_14 independently accepted exact source/receipt/entry/flow/warning design, nine raw publicCLI tuples at their separate 414cb8d/5d0b8b777/92ff193f9 cuts and seven341 AL guards at21b5bc39b. Actual c01c parent/source preservation accepted; introduced274 preservation reviewed separately, without earlier evidence renewal."
   },
   "required_next": [
+    "Immediate global initializer alias-shadow continuation: retain a child alias evaluated before an E_STRICT callback that publishes a namespace shadow, rather than rechecking that child against the later table at first registration.",
+    "Global NEW, other object-producing constant forms and wider callable/transfer consumers; remaining builtin constant values and define/defined protocols.",
     "Compiled/named keyword NEW now uses exact cached trait-constant METHOD receipt authority in267; the separate source1/38 cut is recorded in named-keyword-new-review.json. Wider default/callable consumers remain required.",
     "Other object-bearing default expression producers, remaining constructor/default consumers and arbitrary object transfers.",
     "Wider retained reference/update and transformed callable creation consumers; ordinary method, captured/rebound, temporary-call and cached property METHOD child scope evidence is supported.",
@@ -499,5 +509,56 @@
       "Simpler native-only METHOD controls remain v1/v3; the closed three-original model set uses stronger partial-METHODv4."
     ],
     "credit": "Three new publicCLI SL agreements plus58+54 AL and122 SL premises. Earlier252/263 evidence retained without renewal; complete core and broader callable/default consumers remain open."
+  },
+  "global_constant_callable_validation": {
+    "result": "PASS9 exact native/publicCLI normal tuples and seven341 source-derived AL premises; distinct source and state cutoffs.",
+    "tested_revisions": {
+      "timing_source1": "414cb8d0cdb37050d487d2418d1d8f9abc0f4fea",
+      "remaining_source7": "5d0b8b777d32fcb0da4ee6fcf884f9331e0bcce1",
+      "duplicate_alias_source1": "92ff193f9ba11df3a30989e7c9907b6ac1f13795",
+      "AL_state7_341": "21b5bc39b183a9fb02ec6f7126429332bbcf62c5"
+    },
+    "scope": "Declaration timing, namespace fallback and array identity; inherited include/eval entry scope; partial retry/duplicate identity; E_STRICT reentry/throw; global METHOD permission/static errors; raw-trait warning before allocation and throwing/handled retry; captured duplicate alias prefix, value/class transplant rejection and actual constant/candidate roots.",
+    "reports": [
+      "reviewer14-global-constant-callables-native-v1/report.json",
+      "reviewer14-global-constant-callables-native-v2/report.json",
+      "reviewer14-global-constant-callables-native-v3/report.json",
+      "reviewer14-global-constant-callables-native-v4/report.json",
+      "reviewer14-global-constant-callables-native-v5/report.json",
+      "reviewer14-global-constant-callables-native-v6/report.json",
+      "global-constant-model-v1/report.json",
+      "global-constant-model-v2/report.json",
+      "global-constant-model-v3/report.json",
+      "global-constant-model-v4/report.json",
+      "global-constant-model-v5/report.json",
+      "global-constant-state-model-v1/report.json"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/global-constant-model-v3/run.py",
+      "python3 .tools/deferred-static-defaults/global-constant-model-v4/run.py",
+      "python3 .tools/deferred-static-defaults/global-constant-model-v5/run.py",
+      "python3 .tools/deferred-static-defaults/global-constant-state-model-v1/run.py"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "profile": "Full baseline30719; pinned project-local PHP8.5.10 CLI NTS64 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398. Existing237-capable adapter and AL runner reused; no rebuild claim.",
+    "runtime": {
+      "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "limits": "Serial publicCLI100000 steps/45s, host55s; AL guards120s, jobs1; det:true/cache:false.",
+    "completion": "Credited publicCLI tuples are accepted/checked program/normal, null reason/diagnostic and exact full native exits/streams. Guards return exactly true newline with empty stderr, process+cleanup0, groups empty and watched inputs unchanged.",
+    "published_fixture": "tests/semantics/global_constant_callable_protocol.py; exact prepared-v1 seven sources/file/eval services, 54+67+41+42+29+59+49=341. Source services supply parsing only.",
+    "preserved_failures": [
+      "Source model-v1 compile-only duplicate ptask definition at30:228; model-v2 compile-only nonpure otherwise at271:114. No source execution credit.",
+      "Source model-v3 retains include interpreter failure from the nullable scope tuple cast; its timing agreement remains credited separately. Narrow cast repair reran affected/unrun seven only.",
+      "Native-v2 reentry second-callback prediction was false; actual single protected E_STRICT callback and outer duplicate warning retained unchanged."
+    ],
+    "credit": "Nine new publicCLI SL agreements plus341 AL premises. Pre-bind alias-shadow and global NEW/wider producers remain required; no complete core claim or historical evidence renewal."
   }
 }

@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Global constant callables271 now evaluate static/no-use Closures and function or
+static-method FCCs before registration. REAL lexical/called scope comes from the
+immutable source entry, including inherited include/eval scope; NAMED functions
+remain unscoped. Exact full declaration/value flow authenticates installed values,
+while USERCONSTANTS own them. Duplicate-warning continuations retain candidates
+and their pre-callback lookup prefix, preserving the original binding on return
+or throw. Raw-trait METHOD notices precede allocation and resume the captured
+target. Nine exact source agreements retain414/5d0/92ff cuts; seven source-derived
+AL programs/341 premises pass at21b5, checking scopes, transfer forgeries, retry,
+reentry and genuine collection. Original compile/interpreter failures remain
+zero-credit in the [ledger](coverage/semantics/deferred-static-defaults-review.json).
+Immediate next: retain an alias evaluated before an initializer callback publishes
+a namespace shadow. Global NEW, wider object/constant producers and full core
+remain open; return verification stays paused.
+
 Deferred runtime class-link failures275 now replay the held notice prefix and
 primary compiler fatal, retaining the genuine inner eval/include trace row.
 Source history rederives the failed binding and exact rollback; the immediate
