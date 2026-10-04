@@ -6,6 +6,7 @@ dec $closure_call_source(pstate, nat) : bool
 dec $closure_call_real(pstate, nat) : bool
 dec $closure_call_parameters(pstate, nat) : psparam*
 dec $closure_call_warning(pstate, nat, nat) : ptbytes?
+dec $closure_call_pending_object(pstate, nat) : bool
 dec $closure_call_function_name(pstate, pfunction, nat) : preqbytes
 dec $closure_call_body_name(pstate, pfunction) : ptbytes
 dec $closure_call_wrapper_names_valid((preqbytes, poperand)*, (preqbytes, poperand)*) : bool
@@ -229,7 +230,6 @@ def $closure_call_invalid_sent_valid(S, psparam*, pclosurecall, phpType7_tail*) 
   -- if pclosurecall.SENT = {SLOTS eps, NAMED eps}
   -- if $closure_call_source_error(psparam*, phpType7_tail*, 0, {SLOTS eps, NAMED eps}) = (preqbytes)
 def $closure_call_invalid_sent_valid(S, psparam*, pclosurecall, phpType7_tail*) = false -- otherwise
-dec $closure_call_pending_object(pstate, nat) : bool
 def $closure_call_pending_object(S, n_receiver) = $getclass_live_object(S, n_receiver)
 
 dec $closure_call_named_receiver_valid(pstate, pclosurecall, phpType7*) : bool
