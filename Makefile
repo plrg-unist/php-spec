@@ -150,6 +150,8 @@ test-semantics: build
 	python3 tests/semantics/callable_receive_protocol.py
 	python3 tests/semantics/from_callable.py
 	python3 tests/semantics/from_callable_protocol.py
+	python3 tests/semantics/closure_current_binding.py
+	python3 tests/semantics/closure_current_binding_protocol.py
 	python3 tests/semantics/invoke_publication.py
 	python3 tests/semantics/invoke_publication_protocol.py
 	python3 tests/semantics/callable_string_ini.py

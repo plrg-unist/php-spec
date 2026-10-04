@@ -1,0 +1,152 @@
+[
+  {
+    "id": "current-real-identity",
+    "source": "<?php\n$value = 0;\n$fn = function (int $n) use (&$value) {\n    $value++;\n    $current = Closure::getCurrent();\n    if ($n > 0) return $current($n - 1);\n    return $current;\n};\n$got = $fn(2);\necho ($got === $fn ? 1 : 0), ':', $value, '|';\n$arrow = fn () => Closure::getCurrent();\necho ($arrow() === $arrow ? 1 : 0), '|';\nclass CurrentScope253 { public int $id = 7; }\n$real = function () { return Closure::getCurrent(); };\n$bound = $real->bindTo(new CurrentScope253(), CurrentScope253::class);\n$copy = clone $bound;\necho ($real() === $real ? 1 : 0), ':', ($bound() === $bound ? 1 : 0), ':', ($copy() === $copy ? 1 : 0), ':', ($copy === $bound ? 1 : 0), '|';\n",
+    "source_sha256": "e71d3f9832bec252f831507877ddf893b19de233577f3161e409b1eeaf8cb24d",
+    "expected_model": "normal"
+  },
+  {
+    "id": "current-invalid-argument-priority",
+    "source": "<?php\nfunction currentHelper253() { return Closure::getCurrent(); }\nclass CurrentMethod253 { public static function read() { return Closure::getCurrent(); } }\ntry { Closure::getCurrent(); } catch (Throwable $e) { echo get_class($e), ':', $e->getMessage(), '|'; }\n$real = function () {\n    try { currentHelper253(); } catch (Throwable $e) { echo get_class($e), ':', $e->getMessage(), '|'; }\n};\n$real();\n$named = currentHelper253(...);\ntry { $named(); } catch (Throwable $e) { echo get_class($e), ':', $e->getMessage(), '|'; }\n$from = Closure::fromCallable('currentHelper253');\ntry { $from(); } catch (Throwable $e) { echo get_class($e), ':', $e->getMessage(), '|'; }\n$method = CurrentMethod253::read(...);\ntry { $method(); } catch (Throwable $e) { echo get_class($e), ':', $e->getMessage(), '|'; }\ntry { Closure::getCurrent(12); } catch (Throwable $e) { echo get_class($e), ':', $e->getMessage(), '|'; }\ntry { Closure::getCurrent(unused: 12); } catch (Throwable $e) { echo get_class($e), ':', $e->getMessage(), '|'; }\n",
+    "source_sha256": "72020352fb27edf16c2f3e0f069b66881b5542be0c4146e95309ab9dd08a74ba",
+    "expected_model": "normal"
+  },
+  {
+    "id": "current-entry-forms",
+    "source": "<?php\nuse Closure as ActiveCurrent253;\n$other = function () {};\n$fn = function () use ($other) {\n    $class = 'Closure';\n    $method = 'GETCURRENT';\n    $a = ActiveCurrent253::getCurrent();\n    $b = \\Closure::getCurrent();\n    $c = $class::$method();\n    $d = $other->getCurrent();\n    $e = $other?->getCurrent();\n    echo ($a === $b ? 1 : 0), ':', ($a === $c ? 1 : 0), ':', ($a === $d ? 1 : 0), ':', ($a === $e ? 1 : 0), '|';\n    return $a;\n};\necho ($fn() === $fn ? 1 : 0), '|';\ntry { $other->getCurrent(); } catch (Error $e) { echo $e->getMessage(), '|'; }\n",
+    "source_sha256": "aac411b911ba1bd6b45ef551fe6112b381342cc694d9f0bcefc9e94c4be39135",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fake-method-binding-statics",
+    "source": "<?php\nclass FakeOwner253 {\n    public int $id;\n    public function __construct(int $id) { $this->id = $id; }\n    private function tick() {\n        static $n = 0;\n        echo self::class, ':', get_called_class(), ':', $this->id, ':', ++$n, '|';\n    }\n    public function capture() { return Closure::fromCallable([$this, 'tick']); }\n}\nclass FakeChild253 extends FakeOwner253 {}\n$original = new FakeOwner253(1);\n$cap = $original->capture();\n$new = new FakeChild253(2);\n$bound = $cap->bindTo($new);\n$same = Closure::bind($cap, $new, FakeOwner253::class);\n$copy = clone $bound;\necho ($same == $bound ? 1 : 0), ':', ($same === $bound ? 1 : 0), ':', ($copy == $bound ? 1 : 0), '|';\n$cap();\nunset($original, $cap, $new);\n$bound();\n$same();\n$copy();\n",
+    "source_sha256": "f0f912912a9ab6ec6ca4f80cfa27ede2419177a31398004423de71f4b30da8ce",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fake-static-binding-called-scope",
+    "source": "<?php\nclass StaticOwner253 {\n    public static function run() {\n        static $n = 0;\n        echo self::class, ':', get_called_class(), ':', ++$n, '|';\n    }\n}\nclass StaticChild253 extends StaticOwner253 {}\n$first = StaticChild253::run(...);\n$from = Closure::fromCallable(['StaticChild253', 'run']);\n$bound = $first->bindTo(null);\n$explicit = Closure::bind($from, null, StaticOwner253::class);\n$copy = clone $bound;\n$first();\n$from();\n$bound();\n$explicit();\n$copy();\n",
+    "source_sha256": "fd45ce473a9c1080bd085881641218bb23c04d0586cb64586af3a8631f3d7deb",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fake-function-dummy-scope",
+    "source": "<?php\nfunction dummyFunction253() {\n    static $n = 0;\n    echo get_class($this), ':', get_called_class(), ':', $this->id, ':', ++$n, '|';\n}\nclass DummyHost253 { public int $id = 8; }\n$source = dummyFunction253(...);\n$host = new DummyHost253();\n$bound = $source->bindTo($host);\n$copy = clone $bound;\nunset($source, $host);\n$bound();\n$copy();\nset_error_handler(function ($errno, $message) { echo 'W:', $message, '|'; return true; });\n$bad = $bound->bindTo(new DummyHost253());\necho ($bad === null ? 1 : 0), '|';\n$bad = $bound->bindTo(null);\necho ($bad === null ? 1 : 0), '|';\nrestore_error_handler();\n",
+    "source_sha256": "9715277f5baa2996ec9fb2d11410938a0ae8d0325465da775b8a2922c02c9d87",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fake-bind-warning-order",
+    "source": "<?php\nclass WarningOwner253 {\n    public static function run() {}\n    public function method() {}\n    public function __toString(): string { echo 'WRONG-STRING|'; return 'WarningOther253'; }\n}\nclass WarningOther253 {}\nfunction warningFunction253() {}\n$static = WarningOwner253::run(...);\n$owner = new WarningOwner253();\n$method = $owner->method(...);\n$named = warningFunction253(...);\nset_error_handler(function ($errno, $message) { echo 'W:', $message, '|'; return true; });\necho ($static->bindTo(new WarningOther253(), 'MissingScope253') === null ? 1 : 0), '|';\necho ($static->bindTo(new WarningOther253(), WarningOther253::class) === null ? 1 : 0), '|';\necho ($method->bindTo(new WarningOther253(), 'stdClass') === null ? 1 : 0), '|';\necho ($method->bindTo(new WarningOwner253(), 'stdClass') === null ? 1 : 0), '|';\necho ($method->bindTo(null, WarningOther253::class) === null ? 1 : 0), '|';\necho ($method->bindTo(new WarningOwner253(), WarningOther253::class) === null ? 1 : 0), '|';\necho ($named->bindTo(null, WarningOwner253::class) === null ? 1 : 0), '|';\necho ($method->bindTo(new WarningOwner253(), new WarningOwner253()) instanceof Closure ? 1 : 0), '|';\nrestore_error_handler();\n",
+    "source_sha256": "44a04b8c8dc7c12fbc6d545d189b790f2f97b8cc7ba199c9d891fedfc3c6ede7",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fake-bind-warning-throw-retirement",
+    "source": "<?php\nclass ThrowOwner253 { public function method() {} }\nclass ThrowOther253 {}\n$original = new ThrowOwner253();\n$cap = $original->method(...);\nunset($original);\nset_error_handler(function ($errno, $message) use (&$cap) {\n    try {\n        echo 'W:', $message, '|';\n        $cap = 99;\n        throw new Exception('bind stop');\n    } finally {\n        echo 'F:', $cap, '|';\n    }\n});\ntry { $cap->bindTo(new ThrowOther253()); } catch (Exception $e) { echo 'E:', $e->getMessage(), ':', $cap, '|'; }\nrestore_error_handler();\n",
+    "source_sha256": "2500ee560868b604aebaf11f3224c132a03140e2fc644018c47986a16c033789",
+    "expected_model": "normal"
+  },
+  {
+    "id": "invoke-fcc-current-identity",
+    "source": "<?php\n$real = function () { echo 'R|'; return Closure::getCurrent(); };\n$wrapper = $real->__invoke(...);\n$api = Closure::fromCallable([$real, '__invoke']);\necho ($wrapper === $real ? 1 : 0), ':', ($api === $real ? 1 : 0), '|';\n$returned = $wrapper();\necho ($returned === $real ? 1 : 0), ':', ($returned === $wrapper ? 1 : 0), '|';\n",
+    "source_sha256": "5bfb95b2d597ce97a3254e2481e440a717e762f6909e5954e71c3f27daa243bc",
+    "expected_model": "normal"
+  },
+  {
+    "id": "invoke-fcc-bound-dispatch",
+    "source": "<?php\n$real = function () { echo 'R|'; return Closure::getCurrent(); };\n$other = function () { echo 'B|'; return Closure::getCurrent(); };\n$wrapper = $real->__invoke(...);\n$bound = $wrapper->bindTo($other);\n$copy = clone $bound;\nunset($real, $wrapper);\n$returned = $bound();\necho ($returned === $other ? 1 : 0), ':', ($returned === $bound ? 1 : 0), '|';\n$returned = $copy();\necho ($returned === $other ? 1 : 0), ':', ($returned === $copy ? 1 : 0), '|';\n",
+    "source_sha256": "96b8b5675d23fc79fb3ca25b1c12d33d087e9e16a69643b11d01a04880117913",
+    "expected_model": "normal"
+  },
+  {
+    "id": "getter-fake-bound-receiver",
+    "source": "<?php\n$old = new Exception('old');\n$source = $old->getMessage(...);\n$new = new Exception('new');\n$bound = $source->bindTo($new);\n$copy = clone $bound;\nunset($old, $source, $new);\necho $bound(), ':', $copy(), '|';\nset_error_handler(function ($errno, $message) { echo 'W:', $message, '|'; return true; });\necho ($bound->bindTo(null) === null ? 1 : 0), '|';\necho ($bound->bindTo(new Error('wrong')) === null ? 1 : 0), '|';\nrestore_error_handler();\n",
+    "source_sha256": "7139d908119252a4a4f5e6fd225721d7420a848ffb27f93f2b13e06ff03c8960",
+    "expected_model": "normal"
+  },
+  {
+    "id": "intrinsic-free-fake-bound-receiver",
+    "source": "<?php\nclass IntrinsicHost253 {}\n$host = new IntrinsicHost253();\n$source = get_class(...);\n$bound = $source->bindTo($host);\n$copy = clone $bound;\necho ($source == $bound ? 1 : 0), ':', ($bound == $copy ? 1 : 0), '|';\nunset($host, $source);\necho $bound(new IntrinsicHost253()), '|';\n$second = $bound->bindTo(new stdClass());\necho $second(new IntrinsicHost253()), '|';\n",
+    "source_sha256": "26d666b8385e2e48f19c9fbff6999348724ec1870deadc197e8c2e2e52a50682",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fake-function-dummy-closure-receiver",
+    "source": "<?php\nfunction dummyClosureReceiver253() {\n    static $n = 0;\n    echo get_class($this), ':', get_called_class(), ':', ++$n, '|';\n    try { Closure::getCurrent(); } catch (Error $e) { echo 'C:', $e->getMessage(), '|'; }\n}\nclass DummyFirstHost253 {}\n$source = dummyClosureReceiver253(...);\n$bound = $source->bindTo(new DummyFirstHost253());\n$other = function () {};\n$again = $bound->bindTo($other);\n$copy = clone $again;\nunset($source, $bound, $other);\n$again();\n$copy();\n",
+    "source_sha256": "29c63ed8028d8c82080e8ac0922b8b9b68eec6deb56cce4a379512ef0ab5ce67",
+    "expected_model": "normal"
+  },
+  {
+    "id": "bind-static-scope-case",
+    "source": "<?php\nclass ScopeCase253 { public static function run() {} }\n$fake = ScopeCase253::run(...);\n$real = function () { return Closure::getCurrent(); };\nset_error_handler(function ($errno, $message) { echo 'W:', $message, '|'; return true; });\necho ($fake->bindTo(new ScopeCase253(), 'STATIC') === null ? 1 : 0), '|';\necho ($real->bindTo(new ScopeCase253(), 'STATIC') === null ? 1 : 0), '|';\n$valid = $real->bindTo(new ScopeCase253(), 'static');\necho ($valid() === $valid ? 1 : 0), '|';\nrestore_error_handler();\n",
+    "source_sha256": "b7f5fda66070c65fbfbf131cb78a63b59230231ffb755adf6d81ae1dcb8b304f",
+    "expected_model": "normal"
+  },
+  {
+    "id": "current-static-api-receiver-retirement",
+    "source": "<?php\n$payload = new stdClass();\n$other = function () use ($payload) {};\nunset($payload);\nset_error_handler(function ($level, $message) use (&$other) {\n    $other = null;\n    $current = Closure::getCurrent();\n    echo $current instanceof Closure ? 'H|' : 'BAD|';\n    return true;\n});\ntry { $other->getCurrent($missing); } catch (ArgumentCountError $e) { echo 'A|'; }\nrestore_error_handler();\nunset($e, $other);\n",
+    "source_sha256": "933a54717d80c9cf05c28fb039747451fccad9347298fcbad288306bf315181e",
+    "expected_model": "normal"
+  },
+  {
+    "id": "from-static-api-receiver-retirement",
+    "source": "<?php\n$payload = new stdClass();\n$other = function () use ($payload) {};\nunset($payload);\nset_error_handler(function ($level, $message) use (&$other) {\n    $other = null;\n    echo 'H|';\n    return true;\n});\ntry { $other->fromCallable($missing); } catch (TypeError $e) { echo 'E:', $e->getMessage(), '|'; }\nrestore_error_handler();\nunset($e, $other);\n",
+    "source_sha256": "c27da8331d509a2aba3ae8a6e1eb9921460b4dd48e6451e44d7745b9d856c689",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fake-function-dummy-child-scope",
+    "source": "<?php\nfunction dummyChildMaker253() {\n    return function () {\n        static $n = 0;\n        return self::class . ':' . get_called_class() . ':' . get_class($this) . ':' . ++$n;\n    };\n}\nclass DummyChildHost253 {}\n$fake = dummyChildMaker253(...);\n$bound = $fake->bindTo(new DummyChildHost253());\n$child = $bound();\n$child();\n$copy = clone $child;\nunset($fake, $bound);\necho $child(), '|', $copy(), '|';\n",
+    "source_sha256": "b689af9b8ce44ccb233de1cacfc58db3ba6e090d1700a9a49c20202eded75a3c",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fake-binding-weak-scope-scalar",
+    "source": "<?php\nfunction weakScopeFunction253() {}\n$fake = weakScopeFunction253(...);\nset_error_handler(function ($level, $message) { echo 'W:', $message, '|'; return true; });\necho $fake->bindTo(null, 123) === null ? 'N|' : 'BAD|';\nrestore_error_handler();\n",
+    "source_sha256": "0a02809819601bb2df697ebe2893665376d7b27eb72887bb7e6deb0958daa5b6",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fake-binding-missing-scope-declared-by-handler",
+    "source": "<?php\nclass BeforeLate253 { public static function run() {} }\n$fake = BeforeLate253::run(...);\nset_error_handler(function ($level, $message) {\n    class LateScope253 {}\n    echo 'W:', $message, '|';\n    return true;\n});\necho $fake->bindTo(new BeforeLate253(), 'LateScope253') === null ? 'N|' : 'BAD|';\nrestore_error_handler();\n",
+    "source_sha256": "053ee451f6df84bda9a2c795cb258ba7243063c60077cd3a750a6b5912dd04d2",
+    "expected_model": "normal"
+  },
+  {
+    "id": "constant-named-fake-dummy-binding",
+    "source": "<?php\nfunction constantDummyFunction253() { echo get_class($this), ':', get_called_class(), '|'; }\nconst BIND_FN253 = constantDummyFunction253(...);\nclass ConstantDummyHost253 {}\n$bound = BIND_FN253->bindTo(new ConstantDummyHost253());\n$bound();\n",
+    "source_sha256": "2caee1b6b4a8fb9bb008a465c2d26228ae5ea86f5c45f3c9535067a3d7f70360",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "real-computed-binding-created-child-current",
+    "source": "<?php\nclass RealComputedHost253 {}\n$maker = function () {\n    return function () {\n        echo self::class, ':', static::class, ':', get_class($this), '|';\n        return Closure::getCurrent();\n    };\n};\n$method = 'BiNdTo';\n$bound = $maker->$method(new RealComputedHost253(), RealComputedHost253::class);\n$child = $bound();\nunset($maker, $bound, $method);\n$current = $child();\necho $current === $child ? 'OK' : 'BAD';\nunset($child, $current);\n",
+    "source_sha256": "fe97df4b0ff4919a137ae2a24bb1af842ee5b4b3f0636d232b89e79c0f05f602",
+    "expected_model": "normal"
+  },
+  {
+    "id": "dummy-internal-child-self-default",
+    "source": "<?php\nfunction dummySelfDefaultMaker253() {\n    return function ($value = new self()) {\n        echo 'BAD';\n    };\n}\nclass DummySelfDefaultHost253 {}\n$fake = dummySelfDefaultMaker253(...);\n$bound = $fake->bindTo(new DummySelfDefaultHost253());\n$child = $bound();\nunset($fake, $bound);\ntry {\n    $child();\n} catch (Error $e) {\n    echo 'S:', $e->getMessage(), '|';\n}\n",
+    "source_sha256": "2e3e609605185ef59d14bfe126906bb4c57815892b981ca93a489a9f974bd3ec",
+    "expected_model": "normal"
+  },
+  {
+    "id": "class-constant-named-fake-dummy-binding",
+    "source": "<?php\nfunction constantDummyFunction253() { echo get_class($this), ':', get_called_class(), '|'; }\nclass ConstantDummyHolder253 {\n    public const FN = constantDummyFunction253(...);\n}\nclass ConstantDummyHost253 {}\n$bound = ConstantDummyHolder253::FN->bindTo(new ConstantDummyHost253());\n$bound();\n",
+    "source_sha256": "65a91792b5c4b3dc4ffb7b657b8125355297e77666857c7b3bc96d7f4a536e8d",
+    "expected_model": "normal"
+  },
+  {
+    "id": "real-internal-binding-parent-current",
+    "source": "<?php\nclass RealKeywordParent253 {}\nclass RealKeywordMaker253 extends RealKeywordParent253 {\n    function make() {\n        return function () {\n            try {\n                echo 'P:', parent::class, '|';\n            } catch (Error $e) {\n                echo 'E:', $e->getMessage(), '|';\n            }\n            try {\n                parent::getCurrent();\n            } catch (Error $e) {\n                echo 'M:', $e->getMessage(), '|';\n            }\n            return self::getCurrent();\n        };\n    }\n}\n$source = (new RealKeywordMaker253())->make();\n$receiver = function () {};\n$bound = $source->bindTo($receiver, null);\nunset($source, $receiver);\n$current = $bound();\necho $current === $bound ? 'C|' : 'BAD|';\n",
+    "source_sha256": "949b47901e62750476a386d16dfd2082963278febcc463f40abece65dd400de5",
+    "expected_model": "normal"
+  },
+  {
+    "id": "internal-real-rebound-user-scope-child",
+    "source": "<?php\nclass InternalReboundHost253 {}\nfunction internalReboundMaker253() {\n    return function () {\n        return function () {\n            echo self::class, ':', static::class, ':', get_class($this), '|';\n            return Closure::getCurrent();\n        };\n    };\n}\n$host = new InternalReboundHost253();\n$fake = internalReboundMaker253(...);\n$maker = $fake->bindTo($host);\n$real = $maker();\n$rebound = $real->bindTo($host, InternalReboundHost253::class);\n$child = $rebound();\nunset($host, $fake, $maker, $real, $rebound);\necho $child() === $child ? 'OK' : 'BAD';\nunset($child);\n",
+    "source_sha256": "9a8d96307e58a548709c5c718f60e03ed46db32a8691d145bb30ff112e696c89",
+    "expected_model": "normal"
+  }
+]
