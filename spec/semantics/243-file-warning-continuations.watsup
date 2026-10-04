@@ -41,7 +41,7 @@ def $file_marker_match(pfilecontext, FILE_WARNING_PHASE n_nonce n_phase) = (pfil
 def $file_marker_match(pfilecontext, ERROR_HANDLER_INVOKE perrorcall) = $file_marker_match(pfilecontext, perrorcall.RESUME)
 def $file_marker_match(pfilecontext, ERROR_HANDLER_RESULT perrorcall) = $file_marker_match(pfilecontext, perrorcall.RESUME)
 dec $file_warning_task_valid(pstate, nat, nat) : bool
-def $file_warning_task_valid(S, n_nonce, n_phase) = ($file_warning_marker(pfilecontext.PHASE, n_phase) /\ $file_warning_payload_valid(pfilecontext) /\ $file_warning_scope_valid(S, pfilecontext))
+def $file_warning_task_valid(S, n_nonce, n_phase) = ($(pfilecontext.NONCE < S.FILESEQ) /\ $file_site_valid(S, pfilecontext.SITE, $file_site_line(S, pfilecontext.SITE), pfilecontext.KIND) /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE) /\ pfilecontext.UNIT = eps /\ pfilecontext.RESOLVED = eps /\ pfilecontext.OPENED = eps /\ pfilecontext.BYTES = eps /\ $file_warning_marker(pfilecontext.PHASE, n_phase) /\ $file_warning_payload_valid(pfilecontext) /\ $file_warning_scope_valid(S, pfilecontext))
   -- if $file_context_at(S.FILECONTEXTS, n_nonce) = (pfilecontext)
 def $file_warning_task_valid(S, n_nonce, n_phase) = false
   -- if $file_context_at(S.FILECONTEXTS, n_nonce) = eps
