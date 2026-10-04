@@ -1,0 +1,34 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only259 preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Real dependency constant caching versus temporary operand values, and collision default scope before parent inheritance.",
+  "cases": [
+    {
+      "id": "compatible-comparison-caches-dependent-class-constant-not-operand",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo \"H\",$l,\";\";return true;});\ntrait T{public const X=self::Y;}\necho \"PRE;\";\nclass C{use T;public const X=2048;public const Y=E_STRICT;}\necho \"POST;\",C::Y,\":\",C::X;",
+      "source_sha256": "de9865269385a85573ad1836f4d5e3879a9a58c12459202efac15706d9015647",
+      "status": "normal",
+      "stdout_base64": "UFJFO0gzO1BPU1Q7MjA0ODoyMDQ4",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-dependent-native259-u_0iagor/report.json",
+      "native_raw_sha256": "0adb5d48fce5239f496a59fd7f7d18b52ae35736c4cf3b889cbf30c1035a64a9"
+    }
+  ],
+  "excluded_controls": [
+    {
+      "id": "colliding-parent-default-evaluates-before-parent-inheritance",
+      "source": "<?php\nclass P{public const Y=2048;}\ntrait T{public const X=parent::Y;}\necho \"PRE;\";\nclass C extends P{use T;public const X=2048;}\necho \"POST;\",C::X;",
+      "source_sha256": "f6260a4af07d7abbeee777da219590d8a9f214e62a8fbee7581c5ad6dd31651d",
+      "status": "native_engine_failure",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "",
+      "exit_status": -11,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-dependent-native259-u_0iagor/report.json",
+      "native_raw_sha256": "450358c53fb3b6d4417735888f57a4fef1aa82ebed78fe2b878701174fe7729f",
+      "native_lint_exit": 0,
+      "native_runtime_signal": 11,
+      "exclusion": "Native PHP process terminated by SIGSEGV before a language-level result; preserved only as an engine-failure control, zero semantic agreement. No rerun or engine investigation."
+    }
+  ]
+}

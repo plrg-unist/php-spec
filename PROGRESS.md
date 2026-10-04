@@ -273,7 +273,7 @@ importing scope independently of the live caller and retain array copy-on-write.
 The [data ledger](coverage/semantics/trait-data-review.json) records72 source tuples
 and265 genuine state assertions at preserved cuts; four historical dependency
 controls retain92 assertions and zero old-cut agreement. Runtime link fatals keep
-native severity, reporting masks and declaration phase. Effectful collision
+native severity, reporting masks and declaration phase. Further effectful collision
 evaluation, readonly storage and enums remain
 required; this checkpoint does not close the trait family.
 
@@ -287,9 +287,19 @@ exceptions. Independent source33 (author6 subset) and six reached state groups28
 pass at unchanged15155; preparation and incorrect owner assertions are retained
 without extra credit in the [access ledger](coverage/semantics/trait-property-access-review.json).
 Actual accepted core routes, including258, are preserved in244 modules without
-renewing those cuts. Effectful collisions and
-deferred-value comparison before type conversion259, readonly storage and enum
+renewing those cuts. Wider effectful collisions, readonly storage and enum
 semantics remain required; the trait family stays open.
+
+Trait collision recording259 compares deferred operands before typed table
+conversion and records direct `E_STRICT` diagnostics during the source-owned
+linking fold. Constants demand incoming then existing values; properties reverse
+that order. Successful publication precedes live handler delivery; a handler throw
+keeps the composed class. Later link fatals flush recorded diagnostics without
+calling user handlers. The [collision ledger](coverage/semantics/trait-collisions-review.json)
+retains14 source tuples (11 normal/3 PHP errors),97 reached queue/callback guards
+and bounded AL/structure checks at exact cuts. Generic operation warnings,
+private-final warning ordering, real dependent-constant binding/caching and
+endogenous expression errors remain required next; this is a partial checkpoint.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
