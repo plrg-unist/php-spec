@@ -481,9 +481,9 @@ types, pure evaluated compatibility, per-import identities and static sharing.
 Imported deferred instance defaults use owning class templates. Raw trait-property
 warnings retain selected cells and operand ownership through handlers and abrupt
 opcode completion. Deferred collision operands compare before type conversion;
-direct `E_STRICT` warnings are recorded and delivered after class publication.
-Broader effectful collisions, dependency caching and readonly storage remain
-required. A bounded
+operation diagnostics are recorded with runtime operand order and AST lines,
+then delivered after class publication. Dependency caching, collision expression
+errors, private-final warning ordering and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
@@ -547,7 +547,11 @@ magic/autoload and complete binding remain open.
 returns the exact immediate ordinary Closure and preserves `__invoke` capture
 identity. Transformed fake bindings keep source statics and own only their new
 receiver; returned source Closures retain the genuine internal scope after makers
-retire. Complete REAL warning/unbinding and temporary-current consumers remain required.
+retire. [REAL binding](docs/semantics/CLOSURE-BINDING.md) now stages ordered
+static/internal warnings and uses the function's compiled `$this` flag when
+removing a receiver. Valid unbinding copies REAL statics, preserves reference
+captures and resets called scope; explicit null scope removes class permission.
+Temporary-current and internal API capture consumers remain required.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.
@@ -615,6 +619,11 @@ and recursive conversion consumers retain their own constructor.
 [Dynamic object `::class`](coverage/semantics/object-class-name-review.json) returns
 the real class name without a cast, preserving child effects, compiled lines and
 captured missing-CV reads through handlers. Broader constrained conversion remains open.
+[Ordinary dynamic NEW](coverage/semantics/dynamic-new-review.json) captures a string or object
+class selector before arguments and releases selector temporaries before class work.
+Compiled keyword scopes survive recursive constructors and retired receiving Closures;
+cached property method callables retain lexical and called class separately.
+Autoload and ordinary named keyword NEW remain required.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
