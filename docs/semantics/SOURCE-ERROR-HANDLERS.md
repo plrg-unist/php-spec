@@ -114,6 +114,10 @@ protection, genuine abort temporaries and the distinct late RHS throw boundary.
 [Nested coalesce262](SOURCE-NESTED-COALESCE.md) retains genuine quiet rows,
 memoized operands and every late-RHS continuation task; typed-entry rejection
 restores the emitter and retains the handler's older exception chain.
+[Global W/RW269](SOURCE-GLOBAL-WRITES.md) detaches callback-created constrained
+aliases on a returning missing fetch; throws preserve callback writes and skip
+initialization and delayed RHS demand. Name conversion remains distinct from
+ordinary array-key conversion.
 Wider memoized containers and earlier container/string/object producers remain
 required.
 

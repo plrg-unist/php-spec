@@ -289,6 +289,12 @@ quiet row values, walks current write storage and preserves memoized keys,
 abort temporaries and late keyed-RHS null/type-error timing. Author9/233 and
 independent11/277 share two originals, giving18 unique private agreements;
 one current private-handler/typed-cell source passes.
+[Global W/RW warnings](docs/semantics/SOURCE-GLOBAL-WRITES.md) now retain selected
+names and detach callback-created aliases on returning missing-entry fetches.
+Throws preserve callback writes; compound RHS timing and nested real-cell ingress
+remain native-grounded. Author9/224 and independent12/273 share four originals,
+giving17 unique private agreements; one current private-handler/caller-cell source
+passes.
 Wider memoized containers and earlier container/string/object producers remain
 required.
 
@@ -479,7 +485,9 @@ Shared trait-constant callable targets retain their first lookup while later
 method imports use fresh called classes and named/method receipts use current
 publication prefixes. Three new source
 agreements and112 AL/122 SL premises check partial failure, copied children and
-actual constant-cache ownership; compiled keyword NEW remains a required consumer.
+actual constant-cache ownership. Compiled/named keyword NEW now retains exact
+constant METHOD receipt authority through plain-clone retirement; one source and
+38 reached premises retain their separate [cut](coverage/semantics/named-keyword-new-review.json).
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

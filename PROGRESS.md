@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Global W/RW warning continuations269 now preserve caller-CV name rereads and
+captured Array names through updates, compound assignment and nested array ingress.
+Returning missing fetches detach callback-created constrained/reentry aliases into
+a fresh null binding; throws preserve callback writes and skip later RHS demand.
+Compound walks follow eager RHS computation while simple RHS CVs stay delayed.
+Author9/224 and independent12/273 share four originals, giving17 unique private
+programs/497 assertions ated6/baba/6e8. One actualc906 source at604958 retains private
+Owner/Child selection, fresh-global detachment and live caller/static17. The
+[contract](docs/semantics/SOURCE-GLOBAL-WRITES.md) and
+[ledger](coverage/semantics/globals-write-review.json) preserve the original
+multiline Unsupported and corrected native predictions. Earlier container warnings
+and wider GLOBALS/memoized consumers remain required; complete core stays open.
+
 Early-eval declaration diagnostics236 now suspend authentic compilation at each
 publication, including generic warnings before class publication. Handler throws
 and exit retain later publications while skipping the unit body; user fatals stop
@@ -51,6 +64,9 @@ errors remain deferred. Source18 normal/4 compiler and reached cold57/recursive4
 plus corrected eval53 pass at91dc. Actual23c/264/257 composition at9b8 passes
 private self/static and current identity after null-binding resets called scope.
 Original preparation/eval-fixture failures remain in the [ledger](coverage/semantics/named-keyword-new-review.json).
+Cached constant METHODs now admit compiled/named keyword NEW through exact265
+receipt authority. One new source and38 reached premises pass at0da3, including
+unrelated lexical/called scope and history after plain-clone retirement.
 Autoload and complete core remain open; returns stay paused.
 
 Trait-constant callables265 retain the first shared AST method/function target,
@@ -63,8 +79,8 @@ maker retirement. Successful constant caches own their values; history owns none
 Three source agreements and58+54 AL premises pass at4e2d; the unchanged122-premise
 constructor guard passes SL at733 in27s under the same120s cap. AL timeouts remain
 zero-credit in the [default ledger](coverage/semantics/deferred-static-defaults-review.json).
-Compiled keyword NEW under the cached constant METHOD is the immediate remaining
-consumer; wider callable/default behavior and complete core stay open.
+Compiled/named keyword NEW uses that exact cached METHOD authority through267
+above; wider callable/default behavior and complete core stay open.
 
 Non-object casts261 now populate stdClass scalars/arrays, share all-string tables
 through genuine COW and fast clone, and preserve numeric round trips, alias type
@@ -186,8 +202,9 @@ at9ac retains private Owner/Child selection, quiet row17 versus new parent13 and
 live caller/static17. Original fixture/loader failures and native prediction
 corrections remain in the
 [nested coalesce ledger](coverage/semantics/nested-coalesce-review.json).
-Wider memoized containers, GLOBALS RW and earlier container/string/object
-producers remain required; complete core and paused returns remain open.
+Wider memoized containers, wider GLOBALS consumers and earlier
+container/string/object producers remain required; complete core and paused
+returns remain open.
 
 Nested unset and append255 now suspend defined CV-rooted array walks after key
 and computed RHS evaluation. Intermediate unset separates before conversion,
@@ -202,8 +219,8 @@ agreements at7ee/d281/643/75c8. One actual0b private-FCC/called-class source pas
 at223 with abort/TEMP and live typed caller/RHS cells. Original overlap and
 corrected native/source predictions remain in the
 [tail ledger](coverage/semantics/dimension-tail-review.json).
-Wider memoized containers, GLOBALS RW and earlier container/string/object
-producers remain required; complete core remains open.
+Wider memoized containers, wider GLOBALS consumers and earlier
+container/string/object producers remain required; complete core remains open.
 
 Legacy dollar-curly compiler notices258 retain the direct/computed grammar flag
 through checked fresh printing and emit before child compilation with its real
@@ -321,8 +338,8 @@ actual3b622 composition source at6ae passes private-handler/called-class and typ
 caller alias/introspection behavior. Accepted231/234 routes are preserved. The
 [contract](docs/semantics/SOURCE-DIMENSION-WRITES.md) and
 [ledger](coverage/semantics/dimension-write-continuations-review.json) retain
-original failures, revisions and the current adapter reuse. Broader GLOBALS RW
-and earlier container/string/object producers remain required.
+original failures, revisions and the current adapter reuse. Bounded GLOBALS RW
+is covered by269 above; earlier container/string/object producers remain required.
 
 Coalesce-assignment and final unset keys249 now stage defined direct CV-array
 consumers. Quiet reads retain captured values and genuine memo operands; live CV
@@ -753,8 +770,9 @@ failures and interrupted evidence.
   conversions through nested/quiet reads. Writable242 adds bounded CV-array W/RW
   and direct GLOBALS reference fetches;249 adds direct CV-array coalesce-assignment
   and final unset;255 adds nested unset and append, and262 adds nested coalesce
-  assignment on defined CV-rooted arrays.
-  Wider memoized containers, broader GLOBALS RW, wider key/object/container
+  assignment on defined CV-rooted arrays;269 adds GLOBALS W/RW name/missing-entry
+  continuations with direct updates/compounds and nested array ingress.
+  Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container
   producers and ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
   wider startup directives/parsing/profiles,
