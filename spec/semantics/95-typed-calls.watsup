@@ -73,7 +73,11 @@ def $typed_parameter_source(S, psparam) = $typed_reference_name_source(S, pspara
   -- if psparam.BYREF
 def $typed_parameter_source(S, psparam) = false -- otherwise
 dec $typed_parameter_conversion(pstate, psparam, pvalue) : ptypeconversion
+def $typed_parameter_conversion(S, psparam, pvalue) = TYPEREJECT
+  -- if $typed_parameter_source(S, psparam)
+  -- if $typed_conversion_at(S, psparam.TYPE, pvalue, $typed_caller_strict(S)) = TYPEDEPENDENT "user object string conversion"
 def $typed_parameter_conversion(S, psparam, pvalue) = $typed_reference_conversion(S, psparam.TYPE, pvalue, $typed_caller_strict(S), $typed_parameter_source(S, psparam))
+  -- if ~$typed_parameter_source(S, psparam) \/ $typed_conversion_at(S, psparam.TYPE, pvalue, $typed_caller_strict(S)) =/= TYPEDEPENDENT "user object string conversion"
 def $typed_parameter_value(S, pfunction, n, pvalue) = $typed_apply(S, ptypeconversion, $default_parameter_line(S, pfunction.ORIGIN, n))
   -- if ptypeconversion = $typed_parameter_conversion(S, pfunction.SIGNATURE.PARAMETERS[n], pvalue)
   -- if ptypeconversion =/= TYPEREJECT
@@ -93,6 +97,7 @@ def $typed_default_store(S, pfunction, n, pvalue) = S_value
 def $typed_stored_default(PSDEFAULT phpType5 "float", PINT i) = PFLOAT $float_of_int(i)
 def $typed_stored_default(psdefault, pvalue) = pvalue -- otherwise
 
+dec $parameter_string_candidate(pstate) : bool
 rule PhpStep/type-receive-supplied: S ~> $typed_default_store(S, pfunction, n, pvalue)
   -- if S.TODO = (TYPE_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
@@ -102,6 +107,7 @@ rule PhpStep/type-receive-supplied: S ~> $typed_default_store(S, pfunction, n, p
   -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if ~$parameter_string_candidate(S)
 rule PhpStep/type-receive-missing: S ~> $default_begin(S, pfunction, n)
   -- if S.TODO = (TYPE_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
