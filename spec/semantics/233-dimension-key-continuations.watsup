@@ -1,6 +1,7 @@
 ;; Source reads evaluate derived bases before key warnings. CV table pointers are
 ;; borrowed; only real temporary operands and Zend's callback ADDREF are owners.
 dec $key_test_mode(pkeymode) : bool
+dec $key_selected_key(pvalue) : pkey?
 dec $key_float_phase(pkeyphase) : bool
 dec $key_held_operand(poperand) : bool
 dec $key_runtime_operand(poperand) : bool
@@ -43,6 +44,14 @@ dec $key_operand_cv_source(pstate, porigin, pcpath) : bool
 dec $key_read_owners_source(pstate, pkeyread) : bool
 dec $key_read_valid(pstate, pkeyread) : bool
 
+def $key_selected_key(PNULL) = (KSTRING eps)
+def $key_selected_key(PBOOL false) = (KINT 0)
+def $key_selected_key(PBOOL true) = (KINT 1)
+def $key_selected_key(PINT i) = (KINT i)
+def $key_selected_key(PFLOAT n_bits) = (KINT i) -- if (i, castnotice*) = $float_long(n_bits, true)
+def $key_selected_key(PSTRING n_name*) = (KINT i) -- if $string_key(n_name*) = INTEGERKEY i
+def $key_selected_key(PSTRING n_name*) = (KSTRING n_name*) -- if $string_key(n_name*) = STRINGKEY
+def $key_selected_key(pvalue) = eps -- otherwise
 def $key_float_phase(KEY_FLOAT castnotice) = true
 def $key_float_phase(pkeyphase) = false -- otherwise
 def $key_held_operand(KNOWN pvalue) = true
@@ -381,8 +390,7 @@ def $key_read_selection(S, pkeyread) = true
 def $key_read_selection(S, pkeyread) = true
   -- if pkeyread.PHASE = KEY_MISSING
   -- if ~pkeyread.GLOBAL
-  -- if $key_dimension_convert(S, pkeyread).COMPLETION = NORMAL
-  -- if $key_dimension_convert(S, pkeyread).KEY = pkeyread.KEY
+  -- if $key_selected_key(pkeyread.VALUE) = (pkeyread.KEY)
   -- if $key_value_selected(pkeyread.INPUT, pkeyread.VALUE)
 def $key_read_selection(S, pkeyread) = false -- otherwise
 def $key_value_selected(KNOWN pvalue, pvalue) = true
@@ -390,7 +398,7 @@ def $key_value_selected(VARIABLE n_name* z, pvalue) = true
 def $key_value_selected(REFERENCE n, pvalue) = true
 def $key_value_selected(poperand, pvalue) = false -- otherwise
 def $key_global_selected(S, KNOWN pvalue, n_name*) = true
-  -- if $stringify(S, pvalue, 1).RESULT = KNOWN (PSTRING n_name*)
+  -- if n_name* = $compiled_name_bytes(pvalue)
 def $key_global_selected(S, VARIABLE n_name* z, n_selected*) = true
 def $key_global_selected(S, REFERENCE n, n_selected*) = true
 def $key_global_selected(S, poperand, n_selected*) = false -- otherwise
