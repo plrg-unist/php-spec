@@ -282,6 +282,10 @@ test-semantics: build
 	python3 tests/semantics/ordinary_constructor_protocol.py --group string
 	python3 tests/semantics/ordinary_constructor_protocol.py --group warning
 	python3 tests/semantics/ordinary_constructor_protocol.py --group recursive
+	python3 tests/semantics/object_class_name_sources.py
+	python3 tests/semantics/object_class_name_protocol.py --group temporary
+	python3 tests/semantics/object_class_name_protocol.py --group returned
+	python3 tests/semantics/object_class_name_protocol.py --group thrown
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
