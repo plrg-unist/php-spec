@@ -159,6 +159,7 @@ dec $shutdown_render_root_message(pshutdownrender, preqbytes) : preqbytes
 dec $shutdown_render_message_prefix(preqbytes) : preqbytes
 dec $shutdown_render_value(pvalue) : preqbytes
 dec $shutdown_render_path(pstate, nat, nat, nat*) : bool
+dec $shutdown_compiler_snapshot(pcompletion) : pcompletion?
 
 ;; Registration facts stay valid after subsequent selections or maker retirement.
 def $shutdown_registration_valid(S, pconfigcall) = true
@@ -689,3 +690,18 @@ def $shutdown_render_frame_call(S, pframe, pframe_tail*) = eps -- otherwise
 def $shutdown_render_trace_frame(S, pframe, pframe_tail*) = [{FILE eps, LINE $(-1), FUNCTION $ptascii("__toString"), CLASS ($shutdown_render_base(S, pshutdownrender.ROOT)), TYPE ($ptascii("->")), ARGS eps, HASARGS true}]
   -- if $shutdown_render_frame_call(S, pframe, pframe_tail*) = (pshutdownrender)
 def $shutdown_render_trace_frame(S, pframe, pframe_tail*) = eps -- otherwise
+
+;; A fatal compiler cutoff remains authenticated after request shutdown clears
+;; its ordinary execute state. Replay still checks the exact failed publications;
+;; only this frozen request snapshot permits subsequent callback declarations.
+def $shutdown_compiler_snapshot(FATAL ptbytes z) = (REQUESTFATAL $ptascii("Error") ptbytes z)
+def $shutdown_compiler_snapshot(STATICBYTES ptbytes z) = (REQUESTFATAL $ptascii("CompileError") ptbytes z)
+def $shutdown_compiler_snapshot(STATICERROR text z) = (REQUESTFATAL $ptascii("CompileError") $ptascii(text) z)
+def $shutdown_compiler_snapshot(pcompletion) = eps -- otherwise
+def $shutdown_compiler_released(S, S_compiled) = true
+  -- if ~S.COMPILESTOP
+  -- if S.SHUTDOWN.PHASE <- [SHUTDOWN_RUNNING, SHUTDOWN_DONE]
+  -- if S.SHUTDOWN.ENTRIES =/= eps
+  -- if $shutdown_compiler_snapshot(S_compiled.COMPLETION) = (pcompletion)
+  -- if S.SHUTDOWN.COMPLETION = pcompletion \/ (S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.COMPLETION = pcompletion)
+def $shutdown_compiler_released(S, S_compiled) = false -- otherwise
