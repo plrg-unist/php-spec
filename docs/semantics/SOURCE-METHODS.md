@@ -201,8 +201,12 @@ lowering; first-class call results reject in reference context. The
 also checks discarded genuine reference getters: typed slots acquire an alias
 before return, while ordinary by-value getters leave them raw. It does not close
 deferred property defaults or references into incomplete class-constant tables,
-untyped static-slot raw-object/scalar admission, temporary-return Notice timing
-or typed return verification.
+broader temporary-return Notice timing or typed return verification. Legal untyped
+static-slot getters preserve ignored raw values and used shared aliases across
+public/protected/private lexical reads. Ordinary non-FCC StaticCall results retain
+their result kind for direct by-reference sends: genuine references share the
+static cell, value results use the existing Notice/fresh-cell route, and first-class
+callable results reject. Wider dimensions/list/wrapper consumers remain open.
 Shared ordinary type classification adds no paused-return validation.
 
 First-class compilation clears only the completed result fold after callee

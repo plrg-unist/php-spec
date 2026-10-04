@@ -7,6 +7,13 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Legal untyped static-slot reference getters preserve ignored raw values, shared
+used aliases, visibility and typed-source attachment/removal. Ordinary StaticCall
+results now retain their reference kind when sent to by-reference parameters;
+value results use the existing Notice/temporary-cell route and first-class
+callables remain rejected. The [reference ledger](coverage/semantics/static-method-reference-review.json)
+separates source/ownership checks and the affected independent send counterexample.
+
 Source-certified warning-truth decisions209 preserve the original null across
 handler mutation and suppress pending consumers on throw. Private ordinary
 8normal/225 and independent native-reused model3/160 remain separate from current
@@ -38,7 +45,7 @@ The installed families compose as follows; each ledger records its scope and lim
 | Stringable SET/Restore and paths | SET separates raw INI bytes from effective C-string paths. Weak Restore uses exact full-name lookup and preserves callback mutations on misses. Current ARG/Restore checks retain caller arguments and zero-argument callbacks. [Restore](coverage/semantics/include-stringable-restore-review.json), [prefix](coverage/semantics/include-ini-prefix-review.json), [SET](coverage/semantics/include-set-current-review.json). |
 | Typed static properties197 | Weak simple Stringable assignment rechecks live aliases and retains paired callback owners. Current Restore/ARG/INI composition preserves full property bytes, caller arguments and normal/throw cleanup. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json). |
 | Static setters200/201 | Backed final/asymmetric declarations normalize equivalent setters and preserve inheritance/error priority; direct and indirect consumers retain lexical access, live raw-slot checks and typed aliases. [Setter ledger](coverage/semantics/static-setter-access-review.json). |
-| StaticCall reference acquisition141/142 | Selected getters with untyped return signatures retain scoped selection, typed static aliases and returned-cell cleanup. Typed REF flags preserve initialization/error priority and alias creation even when discarded; post-return ownership/type-source checks and completed constant tables retain the typed alias; getter/borrowed-read reentry keeps its frame. [Reference ledger](coverage/semantics/static-method-reference-review.json). |
+| StaticCall reference acquisition141/142 | Getters with untyped return signatures retain scoped selection, typed and legal untyped static aliases and returned-cell cleanup. Typed REF flags preserve initialization/error priority even when discarded. Direct reference sends retain the real cell; ignored untyped getters leave raw values unchanged. Ownership/type-source and getter/borrowed-read checks keep their distinct revisions. [Reference ledger](coverage/semantics/static-method-reference-review.json). |
 | Argument introspection198/199 | Ordinary current and saved frames retain genuine named/unpacked argument views through invocation and callbacks. [Argument ledger](coverage/semantics/argument-introspection-calls-current-review.json). |
 | Public invocation and callable typing | Public source `__invoke` is installed at **18a1383d7**; callable-before-string parameter admission at **b8a6f43f8** preserves dual-role objects across weak/strict, union order, inheritance and ownership. [Invocation](coverage/semantics/source-invoke-current-review.json), [parameter reception](coverage/semantics/callable-string-current-review.json). |
 | Selection and capture | Source method selection preserves owner/called class; capture/clone retains selected targets and scoped defaults/static cells without retaining retired origin-only creators. [Capture](coverage/semantics/method-capture-current-review.json), [default caches](coverage/semantics/closure-default-cache-review.json). |
@@ -63,7 +70,6 @@ failures and interrupted evidence.
 - Values, references and coercion: broader weak parameter/property conversion,
   constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred property defaults and references into incomplete constant tables remain Unsupported.
-  Untyped static-slot raw-object/scalar reference-return admission remains open.
   Named error constants such as E_USER_NOTICE remain unsupported by initial lookup;
   the handled-notice check uses literal1024. Generic156 return replay, temporary-return
   Notice timing and typed

@@ -1,15 +1,15 @@
 {
-  "status": "partial; selected used and discarded typed-slot StaticCall reference getters accepted",
+  "status": "partial; selected typed and legal untyped StaticCall reference getters and direct reference sends accepted",
   "target": "PHP 8.5.10 CLI NTS 64-bit",
-  "tested_current_revision": "b93ec622a4d7f17f7b4cbe32b110bb2fd4c8310a",
-  "scope": "Ordinary untyped return signatures, selected genuine reference getters of typed static slots, named/parent/self/late-static selection, lexical/called scope, used and discarded aliases and returned-cell cleanup. Existing 97/99 return machinery is unchanged.",
+  "tested_current_revision": "3bbc45899de323c63115f4320f8949dfe45065e0",
+  "scope": "Ordinary untyped return signatures, selected genuine getters of typed and legal untyped static slots, inherited lexical/called scope, ignored/used aliases, typed-source attachment/removal and direct by-reference sends. Existing97/99 return machinery is unchanged.",
   "implementation": [
     "spec/semantics/141-method-compiler.watsup",
     "spec/semantics/142-method-runtime.watsup",
     "spec/semantics/201-static-set-runtime.watsup"
   ],
-  "engine_routes": "Zend/zend_compile.c:zend_compile_assign_ref, zend_compile_return, zend_assert_not_short_circuited; Zend/zend_execute.c:zend_fetch_static_property_address_ex, zend_handle_fetch_obj_flags; authored Zend/zend_vm_def.h static reference fetch/return handlers at the vendored 8.5.10 pin.",
-  "behavior": "StaticCall AssignRef RHS shares the scoped method selector and authentic returned-cell protocol. Nullsafe chains reject before ordinary/FCC lowering; FCC results reject in reference context. Typed REF flags always run before return, preserving nullable initialization, nonnullable error priority and alias creation even for discarded initialized-slot results. Ordinary by-value getters leave the raw slot unchanged.",
+  "engine_routes": "Zend/zend_compile.c:zend_compile_assign_ref, zend_compile_return, zend_assert_not_short_circuited; Zend/zend_execute.c:zend_fetch_static_property_address_ex, zend_handle_fetch_obj_flags; authored Zend/zend_vm_def.h static reference fetch/return handlers at the vendored 8.5.10 pin. Ordinary StaticCall sends follow zend_compile_args/zend_is_call and SEND_VAR_NO_REF_EX result-kind handling.",
+  "behavior": "StaticCall AssignRef RHS shares the scoped method selector and authentic returned-cell protocol. Nullsafe chains reject before ordinary/FCC lowering; FCC results reject in reference context. Typed REF flags always run before return, preserving nullable initialization, nonnullable error priority and alias creation even for discarded initialized-slot results. Ordinary by-value getters leave the raw slot unchanged. Legal untyped ignored getters keep raw object/null values; used getters and direct reference sends share the actual static cell. Rebinding a typed target removes only its source from the old untyped cell. The141 ordinary non-FCC result-kind classifier admits genuine reference sends and preserves the existing value Notice/fresh-cell and FCC rejection paths.",
   "discarded_getter_checks": {
     "revision": "b93ec622a4d7f17f7b4cbe32b110bb2fd4c8310a",
     "scope": "Preserved291-byte discarded-call counterexample plus affected305-byte used getter; both strict native/model normal tuples pass. One source-reached checkpoint passes42 clauses for exact alias/type source, sole static cell root/owner1, object root0/owner1 and absent temporary owners before and after the denied write.",
@@ -191,16 +191,17 @@
       "static-reference-discarded-typed-slot"
     ]
   },
-  "preservation": "Original missing StaticCall route, wrong FCC completion constructor, owner-count fixture, indirect-diagnostic mismatch and duplicate-otherwise elaboration and constructor-parentheses unused-fixture failures remain at their original ignored roots. Only affected checks were repeated; literal-maintrue elaborations have zero state credit. Current09b057 constants endpoints, CHDIR tests/docs and PIPE/208/getter/callable endpoints are retained; metadata-only publication adds no execution credit.",
+  "preservation": "Original missing StaticCall route, wrong FCC completion constructor, owner-count fixture, indirect-diagnostic mismatch and duplicate-otherwise elaboration and constructor-parentheses unused-fixture failures remain at their original ignored roots. Only affected checks were repeated; literal-maintrue elaborations have zero state credit. Current09b057 constants endpoints, CHDIR tests/docs and PIPE/208/getter/callable endpoints are retained; metadata-only publication adds no execution credit. Legal untyped and direct-send originals retain their distinct tested revisions. Original317 reference-send Error and de6 terminal scalar-BASE fixture failure remain preserved; only affected checks were repeated. Current baa470 handler211 endpoints are retained. Current f7bd209 truth source/helpers/docs are preserved; its source results retain their own identities.",
   "remaining": [
-    "Untyped static-slot raw-object/scalar reference-return admission, non-reference temporary-return Notice timing, broader callable/magic/static resolution and result consumers.",
+    "Broader reference-result dimensions/list/wrapper consumers, non-reference temporary-return Notice timing and callable/magic/static resolution; focused direct-send controls do not close all temporary-result behavior.",
     "Deferred property defaults and synchronous reference acquisition into an incomplete class-constant table remain Unsupported; the focused composition uses a folded property default and completes the table through ordinary access.",
     "Typed-return verification/typed by-reference conversion186; returns_verify remains paused with no dependency/import.",
+    "Modeled allocation retirement does not establish destructor/GC callback completeness.",
     "Final combined current-source validation and fresh copied-path network-isolated offline rebuild."
   ],
-  "source_equivalence": "Production201 remains exact testedb93. The current composition preserves released09b057 constants compiler/runtime endpoints, including188 ready-table reference acquisition and its explicit incomplete-table Unsupported result. The retained old source/checkpoint definitions remain unchanged; the added constants interaction has separate source/state evidence and does not replay earlier checks.",
-  "tested_base": "d5f3e2009189d4ce30cca49e62c7642cddbcdf07",
-  "composition_base": "09b057e906bd788284ca0edfd6b9349d567b3715",
+  "source_equivalence": "Production201 remains exact testedb93. The current composition preserves released09b057 constants compiler/runtime endpoints, including188 ready-table reference acquisition and its explicit incomplete-table Unsupported result. The retained old source/checkpoint definitions remain unchanged; the added constants interaction has separate source/state evidence and does not replay earlier checks. Current untyped successor retains installed201 exactly and adds only141 ordinary non-FCC ppsend_var plus selected source/state tests. Current handler211 source is preserved; metadata publication adds no target/rebuild credit. The current publication composes releasedf7bd209 without replay: only its true folded-BOOL origin transport and missing-CV truth guards are new, neither reached by the selected getter/send/array sources. All three property operational blobs remain exact3bbc; frame/ownership/reference endpoints and all204 modules/current209 helpers are preserved. This is source compatibility, not execution of the new combined tree.",
+  "tested_base": "baa470b9b850781b539547b7765c14dfeadbe5d7",
+  "composition_base": "f7bd70aea792141547f4d7861242331e2c8a3955",
   "constants_composition_checks": {
     "revision": "ff9b7ca78f833ba640555bcdcafd16b6a5d35756",
     "base": "09b057e906bd788284ca0edfd6b9349d567b3715",
@@ -254,5 +255,107 @@
       "path": ".tools/property-static-reference-review13/discarded-getter-constants-literal-original-raw-accepted.json",
       "sha256": "2efac6438a76ea5b73c94f97c379df3d836dc79ae5056a603010bbdf2ac4c8ba"
     }
+  },
+  "previous_typed_tested_identity": {
+    "revision": "b93ec622a4d7f17f7b4cbe32b110bb2fd4c8310a",
+    "base": "d5f3e2009189d4ce30cca49e62c7642cddbcdf07",
+    "note": "Retained discarded typed-getter evidence keeps this original identity; later untyped checks do not replay it."
+  },
+  "untyped_slot_checks": {
+    "tested_revision": "f0054d35886a1ab6ef70fa95ee905c7dff8dbe64",
+    "tested_base": "e759759d6cbf5f80e2a7ab767d07d78343a5f296",
+    "production_change": "None; existing legal TYPEeps route validated. Explicit asymmetric setters without types are illegal and excluded.",
+    "source_cases": [
+      "static-reference-untyped-object",
+      "static-reference-untyped-scalar",
+      "static-reference-untyped-visibility"
+    ],
+    "source_comparisons": 3,
+    "ownership_fixtures": 2,
+    "ownership_clauses": [
+      47,
+      66
+    ],
+    "raw_peer": {
+      "path": ".tools/property-static-reference-untyped-review13/author-untyped-original-raw-accepted.json",
+      "sha256": "7e9cd7d0361bb5cc1903314fa648d40cdb3e5836c326a1816f444e5209041ced"
+    },
+    "compatibility": "These three sources and113 clauses have no StaticCall call-as-send/list consumer of ppsend_var. Production and their source/check definitions are unchanged on the current successor; no replay.",
+    "ownership": "Ignored getters keep DIRECT entries/no PROPREFS; used aliases share cells. Typed target attachment/rebinding removes only its constraint. Replacement retires the old modeled allocation; client unset leaves sole static cell owners. No destructor/GC callback claim."
+  },
+  "static_call_send_checks": {
+    "source_revision": "de6ebd6000fd4a369717784f389a931498ef6522",
+    "checkpoint_revision": "3bbc45899de323c63115f4320f8949dfe45065e0",
+    "production_change": "Only141 ppsend_var recognizes ordinary non-FCC StaticCall, parallel to MethodCall. Writable-expression classification,97/99/188/201 and temporary-origin guards remain unchanged.",
+    "source_cases": [
+      "static-reference-named-send",
+      "static-reference-value-send",
+      "static-reference-firstclass-send"
+    ],
+    "source_comparisons": 3,
+    "source_peer": {
+      "path": ".tools/property-static-reference-untyped-review13/author-untyped-send-source-original-raw-accepted.json",
+      "sha256": "dd57e0a8344376eaa77ad0742cf28e7d291bc15e05c5460ee30910b80e234c60"
+    },
+    "checkpoint_clauses": 32,
+    "checkpoint_peer": {
+      "path": ".tools/property-static-reference-untyped-review13/author-untyped-send-finite-original-raw-accepted.json",
+      "sha256": "ecbd41688ad5e951c83a52687e0547bed50b958b26f340a6f9f786911a22ca47"
+    },
+    "observations": "Named genuine-reference send shares static+parameter owners2, then sole static1 after return. Value send preserves exact Notice file/line/full stderr and writes only its fresh cell; FCC result raises the expected reference-argument Error without entering either body.",
+    "fixture_correction": "Original terminal null-BASE assertion failed after source3 passed. The one-line successor requires scalar BASE7 left by METHOD_RESULT/echo; this scalar owns no cell. All32 clauses including RESULTnull, HELDeps, noframes, roots2\u21921 and validity pass; source3 is carried atde6, without replay.",
+    "original_send_failure": {
+      "path": ".tools/property-static-reference-untyped-review13/independent-untyped-send-stop-classification.json",
+      "sha256": "907aa5d52cdf24101093ca0ad7ca4a29ef0725a32ca1286c7c5ac76ef34e4dc5"
+    },
+    "independent_source": {
+      "source_bytes": 320,
+      "source_sha256": "275bfbcd321c4dbddbaf7a6862df3d264936d40c991f274f9620d51f490dd710",
+      "tested_revision": "3bbc45899de323c63115f4320f8949dfe45065e0",
+      "scope": "Inherited protected untyped getter sent directly to byref put, then escaped alias changes to array and shared append0 is read through A::read()[0]. Exact full native/model stdout A/B/0|7|A/B/0|0, normal0/null reason+diagnostic/emptystderr.",
+      "raw_peer": {
+        "path": ".tools/property-static-set-dev13/independent-untyped-array-observer-original-raw-accepted.json",
+        "sha256": "09fb7cf5aed1b84d59401898bb0c5a3734e63327070a63fdc41a7726729e4c9b"
+      },
+      "release": {
+        "path": ".tools/property-static-reference-untyped-review13/independent-untyped-observer-run-d5yajn_y/slot3-release.json",
+        "sha256": "82156976ec6d461e43fb69bf35ff699eef67bf04df47f69f632918c90b4b7080"
+      },
+      "preserved_originals": "Original317 first exposed missing static send classification. After that repair, it reached an excluded count-library observer and produced Unsupported; this final source replaces only that observer with array append/offset read. Both failed originals retain their raw/status/release; neither is counted as semantic agreement.",
+      "count_observer_stop": {
+        "path": ".tools/property-static-reference-untyped-review13/independent-untyped-count-observer-stop-classification.json",
+        "sha256": "a93b27984206762c20d434054a53e757ae23f4af6b25211c60aa9aee13f452a9"
+      }
+    }
+  },
+  "untyped_reproduction": {
+    "cwd": ".tools/property-static-reference-untyped-13",
+    "source_select": "static-reference-untyped-object,static-reference-untyped-scalar,static-reference-untyped-visibility",
+    "source_helper": "python3 tests/semantics/static_set_access.py --select <one selected case>",
+    "state_helper": "python3 tests/semantics/static_set_access_protocol.py --select <object or scalar selected case>",
+    "send_source_cwd": ".tools/property-static-reference-untyped-send-13",
+    "send_source_select": [
+      "static-reference-named-send",
+      "static-reference-value-send",
+      "static-reference-firstclass-send"
+    ],
+    "send_state_cwd": ".tools/property-static-reference-untyped-send-fixture-13",
+    "send_state_command": [
+      "python3",
+      "tests/semantics/static_set_access_protocol.py",
+      "--select",
+      "static-reference-named-send"
+    ],
+    "limits": "Original profile9552, LC_ALL=C/TZ=UTC, native30/model90/application60/100000steps; state120, author single-phase300, independent420. Original peer records bind exact commands/exits/raw and explicit owned cleanup.",
+    "independent_source": ".tools/property-static-reference-untyped-review13/independent-untyped-reference-array-observer.php"
+  },
+  "warning_truth_composition": {
+    "accepted_revision": "f7bd70aea792141547f4d7861242331e2c8a3955",
+    "handoff": {
+      "path": ".tools/argument-warning-truth-handlers-prep-13/publication/INSTALLED-HANDOFF.json",
+      "sha256": "a12b00aa8aa33ecab0be0171d5aad027d21b18b9692e00fd5d0da101e56357b3"
+    },
+    "scope": "Actual33/209 only: true folded-BOOL/DIM origin transport and source-authenticated missing-CV truth consumers. Selected property sources do not enter these paths; false/read routes and all frame/ownership/reference fields stay unchanged. Exact current204 module order and all13 truth helpers retained.",
+    "additional_execution_credit": 0
   }
 }

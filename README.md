@@ -324,9 +324,15 @@ cell owner and its property type source. A focused current-constants check
 completes a forward constant table before fetching the reference and preserves
 the typed alias; deferred property defaults and incomplete-table references
 remain Unsupported.
-Untyped static-slot raw-object/scalar admission, readonly/hooks, instance asymmetric
-setters, temporary-return Notice timing and broader
-callable/typed-reference consumers remain open.
+Legal untyped static-slot getters leave ignored object/scalar/null values raw;
+used references share the real static cell across inherited scopes. Escaped aliases
+can attach to a typed target, then lose only that target's constraint when it is
+rebound. Ordinary StaticCall results also retain their reference kind in direct
+by-reference sends; value results emit the existing Notice and use a fresh cell,
+while first-class callable results reject. Focused ownership checks cover parameter
+retirement and allocation release, without claiming destructor/GC callbacks.
+Readonly/hooks, instance asymmetric setters, broader temporary-return Notice
+timing and callable/typed-reference consumers remain open.
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
 route. Typed object conversion remains a separate consumer.

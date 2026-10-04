@@ -103,9 +103,15 @@ property defaults and synchronous references into incomplete tables remain
 Unsupported. The
 [reference review](../../coverage/semantics/static-method-reference-review.json)
 keeps the original instance-spelled control and its preserved StaticCall failure
-distinct from fresh static-getter acceptance. Untyped static-slot raw-object/scalar
-admission, temporary non-reference returns, broader callable resolution and typed
-return consumers remain open. A fresh CONFIG PIPE/getter interaction retains raw
+distinct from fresh static-getter acceptance. Legal untyped object/scalar/null
+getters leave ignored values direct and share the real cell when used. Public,
+protected and private lexical reads retain inherited scopes. Rebinding a typed
+target removes its source from the old untyped cell without dropping other owners;
+the old alias can then hold an array. Direct by-reference StaticCall sends retain
+the static cell through parameter entry and retirement. These ownership checks
+do not establish destructor/GC callback behavior. Broader temporary non-reference
+returns, callable resolution and typed return consumers remain open.
+A fresh CONFIG PIPE/getter interaction retains raw
 INI bytes and restores the inherited static frame before escaping its typed cell.
 
 CV constrained-reference object assignment has separate timing: conversion can
