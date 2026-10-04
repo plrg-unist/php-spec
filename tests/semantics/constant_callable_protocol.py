@@ -356,6 +356,104 @@ CHECKS = {'birth-clone-statics': ['S = $drive_steps(S_initial[.COMPLETION = NORM
  '$constant_callable_record(S.CONSTANTCLOSURES, n_g) = (pconstantclosure_g)',
  '$constant_callable_record_valid(S, pconstantclosure_g)']}
 
+SOURCES.update({'folded-spelling': '<?php\n'
+                    'namespace N;\n'
+                    'use Vendor\\MiXeD as Alias;\n'
+                    'use Vendor\\Pkg as Pkg;\n'
+                    'class CaseClass {}\n'
+                    'const X = [Alias::class, aLiAs::CLASS, pkg\\Thing::class, '
+                    'namespace\\Local::class, \\Root\\Missing::class, missing::class, '
+                    'cAsEcLaSs::class];\n'
+                    'echo X[0], "|", X[1], "|", X[2], "|", X[3], "|", X[4], "|", X[5], '
+                    '"|", X[6];\n',
+ 'contextual-default': '<?php\n'
+                       'class A { const Closure F = static function($x = self::class) { '
+                       'echo $x; }; }\n'
+                       'class B extends A {}\n'
+                       '$f = A::F;\n'
+                       '$f();\n'
+                       '$g = $f->bindTo(null, B::class);\n'
+                       '$g();\n'
+                       '$f();\n'
+                       'echo (A::F === $f) ? ":same" : ":bad";\n'})
+
+PREFIX += '\ndec $classname_test_constant_replace(pconstant*, pcpath, pvalue) : pconstant*\ndef $classname_test_constant_replace(eps, pcpath, pvalue) = eps\ndef $classname_test_constant_replace((PCONSTANT pcpath pvalue_old) :: pconstant*, pcpath, pvalue) = (PCONSTANT pcpath pvalue) :: pconstant*\ndef $classname_test_constant_replace((PCONSTANT pcpath_old pvalue_old) :: pconstant_tail*, pcpath, pvalue) = (PCONSTANT pcpath_old pvalue_old) :: $classname_test_constant_replace(pconstant_tail*, pcpath, pvalue)\n  -- if pcpath_old =/= pcpath\n'
+
+CHECKS.update({'folded-spelling': ['S = $drive_steps(S_initial[.COMPLETION = NORMAL], 1200)',
+                     'S.COMPLETION = NORMAL /\\ S.TODO = eps',
+                     '$declaration_history_valid(S)',
+                     '$source_unit(S.SOURCES, 0) = (pcunit)',
+                     'P = $declaration_compiler_state($eval_source_ppstate(S, pcunit))',
+                     'P.COMPLETION = PPCNORMAL',
+                     '$compilation_image_valid(S, pcunit, P)',
+                     '$user_constant_at(S.USERCONSTANTS, $ptascii("n") ++ [92] ++ $ptascii("X")) = '
+                     '(puserconstant)',
+                     '$constant_expression_root(S, puserconstant.ORIGIN) = (PORIGIN 0 pcpath_root)',
+                     '$pool_value(S.POOLS, PORIGIN 0 pcpath_root) = (PARRAY n_array)',
+                     'pcpath_leaf = pcpath_root ++ [PCFIELD 0, PCINDEX 0, PCFIELD 1]',
+                     '$origin_node(S.SOURCES, PORIGIN 0 pcpath_leaf) = (NExprClassConstFetch phpType19 '
+                     'phpType20 metadata)',
+                     '$pfclassname_member(phpType20)',
+                     '$pool_value(S.POOLS, PORIGIN 0 pcpath_leaf) = (PSTRING ($ptascii("Vendor") ++ [92] '
+                     '++ $ptascii("MiXeD")))',
+                     '$pool_class(S.POOLS, PORIGIN 0 pcpath_leaf) = (PVSTRING true)',
+                     'S.POOLS = [ppool]',
+                     'ppool_bad = ppool[.CONSTANTS = $classname_test_constant_replace(ppool.CONSTANTS, '
+                     'pcpath_leaf, PSTRING ($ptascii("vendor") ++ [92] ++ $ptascii("mixed")))]',
+                     'S_bad = S[.POOLS = [ppool_bad]][.ARRAYS = $array_replace(S.ARRAYS, n_array, '
+                     '$array_insert(S.ARRAYS[n_array], KINT 0, DIRECT (PSTRING ($ptascii("vendor") ++ [92] '
+                     '++ $ptascii("mixed")))))]',
+                     'S_bad.SOURCES = S.SOURCES /\\ S_bad.CODE = S.CODE /\\ S_bad.CLASSES = S.CLASSES',
+                     '$pool_value(S_bad.POOLS, PORIGIN 0 pcpath_leaf) = (PSTRING ($ptascii("vendor") ++ '
+                     '[92] ++ $ptascii("mixed")))',
+                     '$pool_class(S_bad.POOLS, PORIGIN 0 pcpath_leaf) = (PVSTRING true)',
+                     '$constant_pool_values_valid(S_bad, ppool_bad.CONSTANTS, ppool_bad.CONSTANTS)',
+                     '~$compilation_image_valid(S_bad, pcunit, P)',
+                     '~$declaration_history_valid(S_bad)'],
+ 'contextual-default': ['S = $drive_steps(S_initial[.COMPLETION = NORMAL], 1200)',
+                        'S.COMPLETION = NORMAL /\\ S.TODO = eps',
+                        'S.EVENTS = [OUTPUT $ptascii("A"), OUTPUT $ptascii("B"), OUTPUT $ptascii("A"), '
+                        'OUTPUT $ptascii(":same")]',
+                        '$class_constant_state_valid(S)',
+                        '$closure_state_valid(S)',
+                        '$call_descriptors_valid(S)',
+                        'S.CLOSURETEMPLATES = [pfunction]',
+                        'pfunction.DEFAULTS = [pdefault]',
+                        'pdefault.KIND = PDDEFERRED',
+                        '$compiled_read(S, pdefault.ORIGIN) = eps',
+                        '$default_scope_dependent(S, pdefault.ORIGIN)',
+                        'S.DEFAULTCACHE = eps',
+                        '$default_cache_value(S, pdefault.ORIGIN, PSTRING $ptascii("A"), PVSTRING true) = '
+                        'S',
+                        '$class_named(S.CLASSNAMES, $ptascii("a")) = (porigin_a)',
+                        '$class_named(S.CLASSNAMES, $ptascii("b")) = (porigin_b)',
+                        'S_global = $global_table_view(S)',
+                        '$lookup(S_global.ENV, $ptascii("f")) = (n_f_cell)',
+                        '$lookup(S_global.ENV, $ptascii("g")) = (n_g_cell)',
+                        'S.STORE[n_f_cell] = DEFINED (POBJECT n_f)',
+                        'S.STORE[n_g_cell] = DEFINED (POBJECT n_g)',
+                        'n_f =/= n_g',
+                        '$closure_scope_at(S.CLOSURESCOPES, n_f) = (pclosurescope_f)',
+                        '$closure_binding_at(S.CLOSUREBINDINGS, n_g) = (pclosurebinding_g)',
+                        'pclosurescope_f.LEXICAL = porigin_a /\\ pclosurebinding_g.LEXICAL = (porigin_b)',
+                        '$class_constant_lookup(S, porigin_a, $ptascii("F"), |S.CLASSES|) = '
+                        '(pclassconstantdesc)',
+                        '$default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = '
+                        '(pdefaultcache_constant)',
+                        'pdefaultcache_constant.VALUE = POBJECT n_f',
+                        'pdefaultcache_bad = {ORIGIN pdefault.ORIGIN, VALUE PSTRING $ptascii("A"), CLASS '
+                        'PVSTRING true}',
+                        '$default_cacheable(pdefaultcache_bad.CLASS)',
+                        '$constant_value_class_valid(S, pdefaultcache_bad.VALUE, pdefaultcache_bad.CLASS)',
+                        'S_bad = S[.DEFAULTCACHE = [pdefaultcache_bad]]',
+                        'S_bad.CLOSURETEMPLATES = S.CLOSURETEMPLATES /\\ S_bad.CLOSURESCOPES = '
+                        'S.CLOSURESCOPES',
+                        '~$default_caches_valid(S_bad, S_bad.DEFAULTCACHE)',
+                        '~$call_descriptors_valid(S_bad)',
+                        'S.CLOSURESCOPES = [pclosurescope_f] /\\ S.CLOSUREBINDINGS = [pclosurebinding_g]',
+                        'S_wrong_scope = S[.CLOSUREBINDINGS = [pclosurebinding_g[.LEXICAL = (porigin_a)]]]',
+                        '~$closure_state_valid(S_wrong_scope)']})
+
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 def prepare(out):

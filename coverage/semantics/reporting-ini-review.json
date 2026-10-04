@@ -1,0 +1,114 @@
+{
+  "scope": "Reporting INI raw bytes, live masks, modified-entry Restore and nondeprecated core error constants under the pinned CLI profile",
+  "status": "reviewed_bounded_checkpoint",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; C-locale, error_reporting=30719",
+  "contract": [
+    "ini_get(error_reporting) returns the complete stored bytes. ini_set converts scalar/null values, stores all bytes including NULs, parses the C-prefix and returns the old raw bytes after option callbacks.",
+    "The pinned OnUpdateErrorReporting calls signed64 strtol base10 then stores low32; whitespace/decimal suffix and signed64 saturation precede signed32 conversion. This is a pinned platform boundary, not portable atoi overflow behavior.",
+    "error_reporting returns the live signed32 mask; changed long setters store full64 decimal bytes. Setting the existing mask preserves raw bytes. Strict source calls reject strings with ?int; explicit Closure->__invoke parses weakly.",
+    "Nonfatal @ suppression marks the INI entry modified without changing raw bytes. Restore invokes the initial updater only for a modified entry. END_SILENCE may restore a mask while retaining handler-written raw bytes.",
+    "Exact scalar reporting options work without FILEINCLUDEPATH. Stringable options use the authenticated finite source/callback route; normalized argument order, late sampling and caller ARG restoration are preserved.",
+    "All15 nondeprecated E_* constants have exact case-sensitive values and existing namespace fallback/shadow behavior. E_STRICT remains an explicit required deprecated-constant producer obligation."
+  ],
+  "primary_engine": {
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "sources": [
+      "vendor/php-src/Zend/zend_builtin_functions.c::error_reporting",
+      "vendor/php-src/Zend/zend.c::OnUpdateErrorReporting",
+      "vendor/php-src/Zend/zend_vm_def.h::ZEND_BEGIN_SILENCE/ZEND_END_SILENCE",
+      "vendor/php-src/Zend/zend_constants.c",
+      "vendor/php-src/Zend/zend_ini.c"
+    ]
+  },
+  "checks": {
+    "earlier_constants": {
+      "tested_head": "76a30d45146576085b57f72615542293f72a92db",
+      "normal_source_tuples": 2,
+      "receipt": {
+        "path": ".tools/include-dev-13-reporting-ini/.tools/reporting-author-9f8slypb/receipt.json",
+        "sha256": "8d5e3819ca45f223635ccac1bd2a1bbef9394d8b95c2df63d76f297a1d055381"
+      },
+      "partial_peer": {
+        "path": ".tools/include-review-13/reporting-author-partial-review.json",
+        "sha256": "9bf96c862b07b8a02b35832f1ebeac32d35e15ad0f4af6bfae5becdc69ac6948"
+      }
+    },
+    "current_reporting": {
+      "tested_head": "ef46d4a69c60879c7ce82681962b486a15525908",
+      "author_normal_source_tuples": 8,
+      "independent_normal_source_tuples": 2,
+      "finite_fixtures": 1,
+      "conditions": 74,
+      "body_conditions": 69,
+      "startup_and_output_conditions": 5,
+      "author_receipt": {
+        "path": ".tools/include-dev-13-reporting-ini/.tools/reporting-continuation-author-a09h6szn/receipt.json",
+        "sha256": "76bef973dd270e27fc7928e11236a3e7a4acc0e129133f3c9edeae60463a5e24"
+      },
+      "author_release": {
+        "path": ".tools/include-dev-13-reporting-ini/.tools/reporting-continuation-author-a09h6szn/RELEASE.json",
+        "sha256": "658821778270e8cabcb729d42693b978b0eba1b79f38f30ae558e4d98d214cf6"
+      },
+      "independent_receipt": {
+        "path": ".tools/include-dev-13-reporting-ini/.tools/reporting-continuation-independent-u5ui9x58/receipt.json",
+        "sha256": "7df5e9006fa5edc3fe03e134800af9e3a047b3a30f6533676204af3eee02f365"
+      },
+      "independent_release": {
+        "path": ".tools/include-dev-13-reporting-ini/.tools/reporting-continuation-independent-u5ui9x58/RELEASE.json",
+        "sha256": "657aac8ae77cc1c5423d5d1aafc48695b164c355523cbbf6deeb28ea3a0fa01e"
+      },
+      "author_peer": {
+        "path": ".tools/include-review-13/reporting-author-original-review.json",
+        "sha256": "92be242598937352aec147f1dc733da73bfc8ea85b2010cf85c3b91ce68d4aae"
+      },
+      "developer_independent_review": {
+        "path": ".tools/include-dev-13-reporting-ini/.tools/reporting-independent-developer-review.json",
+        "sha256": "fc92812a9b5dab2fdcced28adf09e96eb479d84769e5edc3b3b5b1cd9c5a83bc"
+      },
+      "bounded_acceptance": {
+        "path": ".tools/include-review-13/reporting-bounded-acceptance.json",
+        "sha256": "aa5f3dceaabd3b6debb1d27bc79df178ce1e49a01b6f44dcc50d183b425efc3e"
+      }
+    },
+    "original_failure": "source3 interpreter nondeterminism/nativeUNRUN from the legacy no-file refusal overlap; zero agreement. One exact-reporting exclusion fixes it. The earlier receipt and exit1 remain unchanged."
+  },
+  "current_composition": {
+    "accepted_parent": "6395c2c7a15b9a8c6a4731c95c4ef7761f26c42c",
+    "operational_head": "2f4f01944",
+    "pure206_module_SL": {
+      "path": ".tools/include-dev-13-reporting-current/.tools/reporting-current-sl-ssvx4yy_/receipt.json",
+      "sha256": "c76b28865ab756b3fb2dee2a6ab7d0b79e12fe2ee8a4890eccd16c98547b5c5f"
+    },
+    "bridge": "Accepted214 parameter-marker projection cannot be entered by these untyped handlers/zero-argument callbacks; all property fields/rules are preserved. Reporting bodies equal tested ef46; no old source/state replay.",
+    "helper_binding": "The maintained Include watcher additionally binds the imported reporting_cases.py; every case byte is unchanged."
+  },
+  "reproduction": {
+    "artifact_root": ".tools/include-dev-13-reporting-ini",
+    "preparation": {
+      "path": ".tools/include-dev-13-reporting-ini/.tools/reporting-prepared-ntj00d8j/preparation.json",
+      "sha256": "f0dfd5146b7a9eb6081d65f8f416596c3a5b866ba04ab49c6f213c972dd7ade7"
+    },
+    "source_workers": "Each prepared source directory contains frontend/ and adapter/ original request/response/stderr/trailing.stdout/close.json;12 genuine pairs,24 clean closes.",
+    "operative_plan": {
+      "path": ".tools/include-dev-13-reporting-ini/.tools/reporting-continuation-plan.json",
+      "sha256": "7caff40536ef3752a5f660469ac6535b39a4b310861014162ad2275e4116164d"
+    },
+    "runner": {
+      "path": ".tools/include-dev-13-reporting-ini/.tools/run-reporting-continuation.py",
+      "sha256": "8467f8a9105c6ab02bc92e84cd609cf0a422795a8417a863c84547c43f02f605"
+    },
+    "caps": {
+      "model_total": 90,
+      "request": 60,
+      "native": 30,
+      "numeric": 300,
+      "single_cleanup": 5
+    },
+    "runtime": "Five reused binaries and five operational sources; no rebuild or offline portability renewal."
+  },
+  "remaining": [
+    "E_STRICT value2048 and its actual Deprecated constant diagnostic/handler continuation; required core work, not excluded.",
+    "Handled lossy float/numeric-string long-conversion deprecations, including post-callback old-mask sampling; required producer ingress remains Unsupported.",
+    "Nondefault reporting startup profiles, wider INI registry/directives and producer/lifecycle/OS coverage; full core remains partial."
+  ]
+}

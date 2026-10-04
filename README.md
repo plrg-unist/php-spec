@@ -58,7 +58,11 @@ Stringable CHDIR PIPE uses post-callback CWD; six source comparisons and 124
 directory-provider assertions cover held operands, refusal and throw. Failed CHDIR
 warnings now resume eligible handlers: normal return yields false after their
 CWD/raw writes, while throw preserves caller arguments and both internal and
-wrapper trace operands. Wider PIPE consumers, OS/INI behavior and lifecycle remain open.
+wrapper trace operands. [Reporting configuration](coverage/semantics/reporting-ini-review.json)
+separates full INI bytes, the live signed32 mask and modified-entry Restore,
+including suppression and handler writes. Fifteen nondeprecated error constants
+have exact values; deprecated `E_STRICT`, lossy-conversion warning ingress,
+wider PIPE/INI consumers and lifecycle remain open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
@@ -101,7 +105,7 @@ entry availability, repeated execution and failure. Compile-stop freezes caller
 snapshots and preserves completed effects; it retires the active source request
 without ordinary unwinding. [Publication evidence](coverage/semantics/compiler-publication-review.json)
 links source30, history107, modifier286 and later interaction checks.
-Two reporting-mask/error_reporting controls and broader core obligations remain open.
+Reporting startup profiles and remaining diagnostic producers stay open.
 
 [Loose and ordered comparisons](docs/semantics/COMPARISONS.md) now cover scalar
 and array values, with [independent evidence](coverage/semantics/comparison-review.json).
@@ -135,10 +139,12 @@ interactions preserve cache ownership and aliases. Static Closure and fixed
 function/static-method callable initializers retain owner/called scope, cached
 identity and clone state. The current handler/truth interaction retains the
 original null and cached static counter across handler mutation. The catalogue of
-73 sources and the new 159 + 44 state
-checks keep distinct tested revisions. Named constexpr `::class`, wider callable
-consumers and references into incomplete class tables remain Unsupported; the
-family stays partial.
+93 sources and the 159 + 44 + 63 state checks keep distinct tested revisions.
+Named constexpr `::class` preserves namespace spelling and declaring self/parent;
+rebound Closure defaults use their current lexical scope without a stale cache,
+including inside weak Stringable parameter callbacks.
+Wider callable consumers and references into incomplete class tables remain
+Unsupported; the family stays partial.
 [Foreach syntax and prechecks](docs/semantics/FOREACH-COMPILER.md) preserve reference
 and list keys through checked printing and report exact compiler errors;
 [independent review](coverage/semantics/foreach-publication-review.json) verifies
@@ -421,11 +427,14 @@ and wider typed consumers remain open.
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing
 property constraints reject a by-reference conversion before its callback;
-ordinary free references write back only while unconstrained. Reentrant receives
-retain distinct formal cells, and callback throws keep the original exception.
+free references write back through their captured cell even when the callback
+attaches property constraints. Later writes and binds still enforce the live
+sources. Reentrant receives retain distinct formal cells, and callback throws
+keep the original exception without authorizing a backing-value exception.
 Cached constant Closures and nonpublic invokable objects preserve these rules.
-A property source attached during conversion remains explicit Unsupported before
-writeback; variadic reception and broader constrained conversion remain open.
+Six focused sources, 299 state checks and two independent instance-property
+controls cover the new backing behavior; variadic reception and broader
+constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

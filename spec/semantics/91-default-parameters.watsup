@@ -45,11 +45,31 @@ dec $default_cacheable(pvalueclass) : bool
 def $default_cacheable(PVSCALAR) = true
 def $default_cacheable(PVSTRING b) = b
 def $default_cacheable(PVARRAY b (pkey, pvalueclass)*) = b
+;; A rebound Closure re-evaluates deferred scope-dependent defaults. Follow the
+;; compiled selection, so folded values and pruned branches remain cacheable.
+dec $default_scope_dependent(pstate, porigin) : bool
+dec $default_scope_children(pstate, nat, pcoccurrence*) : bool
+dec $default_scope_node(pcnode) : bool
+def $default_scope_node(NExprClassConstFetch phpType19 phpType20 metadata) = ($pfclassname_keyword(phpType19) = $ptascii("self") \/ $pfclassname_keyword(phpType19) = $ptascii("parent"))
+def $default_scope_node(pcnode) = false -- otherwise
+def $default_scope_dependent(S, porigin) = false
+  -- if $compiled_read(S, porigin) = (pvalue)
+def $default_scope_dependent(S, porigin) = $default_scope_dependent(S, porigin_target)
+  -- if $compiled_read(S, porigin) = eps
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression, b, z))
+def $default_scope_dependent(S, PORIGIN n pcpath) = ($default_scope_node(pcnode) \/ $default_scope_children(S, n, $pcchildren(pcnode, pcpath)))
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (pcnode)
+def $default_scope_dependent(S, porigin) = false -- otherwise
+def $default_scope_children(S, n, eps) = false
+def $default_scope_children(S, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($default_scope_dependent(S, PORIGIN n pcpath) \/ $default_scope_children(S, n, pcoccurrence*))
 dec $default_cache_value(pstate, porigin, pvalue, pvalueclass) : pstate
 def $default_cache_value(S, porigin, pvalue, pvalueclass) = S[.DEFAULTCACHE = S.DEFAULTCACHE ++ [{ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]]
   -- if $default_cacheable(pvalueclass)
+  -- if ~$default_scope_dependent(S, porigin)
 def $default_cache_value(S, porigin, pvalue, pvalueclass) = S
-  -- if ~$default_cacheable(pvalueclass)
+  -- if ~$default_cacheable(pvalueclass) \/ $default_scope_dependent(S, porigin)
 
 dec $default_next(pstate, pfunction, nat) : ptask*
 def $default_next(S, pfunction, n) = [DEFAULT_RECEIVE pfunction.ORIGIN n]
@@ -77,6 +97,7 @@ rule PhpStep/default-cached: S ~> $typed_default_store(S, pfunction, n, pdefault
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = (pdefaultcache)
+  -- if ~$default_scope_dependent(S, pdefault.ORIGIN)
 rule PhpStep/default-evaluate: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin_param, LINE $default_parameter_line(S, porigin, n), FACTS eps})][.ORIGIN = (porigin_param)][.TODO = [AT pdefault.ORIGIN (EVAL expression), DEFAULT_BIND porigin n]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (DEFAULT_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
@@ -128,6 +149,7 @@ def $default_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (pfunction.ORIGIN)
   -- if $default_cache_at(pdefaultcache_tail*, pdefaultcache.ORIGIN) = eps
   -- if $default_cacheable(pdefaultcache.CLASS)
+  -- if ~$default_scope_dependent(S, pdefaultcache.ORIGIN)
   -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S.ALLOCATIONS)
   -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
   -- if $default_caches_valid(S, pdefaultcache_tail*)
@@ -140,6 +162,7 @@ def $default_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
   -- if pdefault.KIND = PDDEFERRED
   -- if $default_cache_at(pdefaultcache_tail*, pdefaultcache.ORIGIN) = eps
   -- if $default_cacheable(pdefaultcache.CLASS)
+  -- if ~$default_scope_dependent(S, pdefaultcache.ORIGIN)
   -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S.ALLOCATIONS)
   -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
   -- if $default_caches_valid(S, pdefaultcache_tail*)
@@ -155,6 +178,7 @@ def $default_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
   -- if $compiled_read(S, pdefault.ORIGIN) = eps
   -- if $default_cache_at(pdefaultcache_tail*, pdefaultcache.ORIGIN) = eps
   -- if $default_cacheable(pdefaultcache.CLASS)
+  -- if ~$default_scope_dependent(S, pdefaultcache.ORIGIN)
   -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S.ALLOCATIONS)
   -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
   -- if $default_caches_valid(S, pdefaultcache_tail*)

@@ -198,7 +198,7 @@ def $property_slot_valid(S, ppropertydesc, ppropertyslot) = true
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if n_cell <- S.REFCELLS
   -- if (HCELL n_cell) <- S.ALLOCATIONS
-  -- if ppropertydesc.TYPE = eps \/ $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue)
+  -- if ppropertydesc.TYPE = eps \/ $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue) \/ $parameter_backing_value(S, n_cell, pvalue)
 def $property_slot_valid(S, ppropertydesc, ppropertyslot) = false -- otherwise
 dec $property_bad_name(ptbytes) : bool
 def $property_bad_name(0 :: nat_tail*) = true
@@ -293,7 +293,7 @@ def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_comp
 def $property_live_complete(S, (HCELL n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
 def $property_live_complete(S, (HARRAY n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
 def $property_live_complete(S, pnode*) = false -- otherwise
-def $property_state_valid(S) = ($reference_coercions_valid(S) /\ $objectprops_valid(S, S.OBJECTPROPS) /\ $property_live_complete(S, S.ALLOCATIONS) /\ $proprefs_valid(S) /\ $propref_slots_covered(S, S.OBJECTPROPS))
+def $property_state_valid(S) = ($reference_coercions_valid(S) /\ $parameter_backings_valid(S) /\ $objectprops_valid(S, S.OBJECTPROPS) /\ $property_live_complete(S, S.ALLOCATIONS) /\ $proprefs_valid(S) /\ $propref_slots_covered(S, S.OBJECTPROPS))
 
 dec $internal_property_write(pstate) : bool
 dec $property_strict(pstate) : bool

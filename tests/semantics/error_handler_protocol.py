@@ -194,3 +194,6 @@ CASES = [
          '$heap_valid($heap_graph(S_one))', 'S_done = S_one',
      ]),
 ]
+
+from reporting_protocol import CASE as REPORTING_CASE
+CASES.append(REPORTING_CASE)

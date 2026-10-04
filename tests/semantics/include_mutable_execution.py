@@ -288,6 +288,9 @@ CASES = {
 }
 
 
+from reporting_cases import CASES as REPORTING_CASES
+CASES.update({name: source for name, source, expected, status in REPORTING_CASES})
+
 def b64(data):
     return base64.b64encode(data).decode()
 
@@ -318,7 +321,8 @@ def main():
                ROOT / 'frontend/encoding.php', ROOT / 'frontend/wire.php',
                ROOT / 'spec/schema.json', ROOT / 'spec/php.watsup', ROOT / 'adapter/main.ml',
                ROOT / 'frontend/wire.py', ROOT / '.tools/php/bin/php',
-               ROOT / '.tools/php-file.so', PROFILE, Path(__file__)]
+               ROOT / '.tools/php-file.so', PROFILE,
+               ROOT / 'tests/semantics/reporting_cases.py', Path(__file__)]
     before = {str(path.relative_to(ROOT)): digest(path) for path in watched}
     vendor_before = vendor_identity()
     profile = json.loads(PROFILE.read_text())

@@ -158,7 +158,8 @@ explicit `Closure->__invoke` calls parse weakly. Weak null options deprecate bef
 returns the full raw old value sampled after the callback. Null, empty and
 leading-NUL values return false without mutation; valid interior-NUL values retain
 all bytes. Option-name matching remains full-byte, independent of the effective
-file-path prefix. Other real INI directives remain explicitly Unsupported.
+file-path prefix. The reporting increment below adds a second directive;
+other real INI directives remain explicitly Unsupported.
 Current SENT object/array values remain live roots; retired completed PACKS are
 historical certificates. Current compiler/property composition `8cc6d7da5`
 accepts three normal sources and one full83 state fixture. Earlier `35fb2e410`
@@ -170,8 +171,9 @@ returns full raw bytes from `get_include_path()` and exact-name
 `ini_get('include_path')`; SET returns and file requests keep their effective
 C-string views. Weak Stringable getter options run ordinary callbacks before
 reading the live raw value. Empty, case, NUL-name and converted primitive
-misses use full-name lookup and return false; other directives remain
-Unsupported. Missing raw environment also remains Unsupported.
+misses use full-name lookup and return false. The reporting increment below
+adds a second directive; other names and missing include-path environment
+remain Unsupported.
 The same option parser now handles primitive/null Restore calls: strict direct
 calls reject non-string options, explicit `Closure->__invoke` calls parse weakly, and weak null
 deprecates before lookup. Argument binding/arity errors preserve evaluated side
@@ -180,6 +182,20 @@ calls and captured clones preserve caller arguments through zero-argument
 callbacks. The ledger separates the original ten source passes and rule-overlap
 failure from the corrected current composition; runtime/compiler binaries are
 reused, without a fresh rebuild claim.
+
+The [reporting increment](../../coverage/semantics/reporting-ini-review.json)
+returns complete `error_reporting` INI bytes and parses its C-prefix using the
+pinned signed64 `strtol`/low32 boundary. Scalar/null `ini_set` values preserve
+empty and NUL bytes, while `error_reporting()` reads the live signed32 mask;
+setting the existing mask leaves the raw bytes unchanged. When `@` removes
+nonfatal bits, it marks the entry modified without changing its bytes; Restore
+resets only a modified entry.
+Handler writes can leave raw bytes distinct from the mask restored at silence
+exit. Exact scalar options work without file facts; Stringable options retain
+authenticated callbacks and late old-value sampling. Twelve normal sources
+across two revisions and 74 conditions are accepted. Fifteen nondeprecated
+error constants are admitted; deprecated `E_STRICT` diagnostics, handled lossy
+conversions and nondefault startup profiles remain required follow-up work.
 
 Eligible weak-null `ini_get`/`ini_restore` deprecations now suspend through
 `CONFIG_INI_NULL_RESULT`. Handlers receive four values weakly; normal handling,

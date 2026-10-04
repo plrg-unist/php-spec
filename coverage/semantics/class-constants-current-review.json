@@ -1,6 +1,6 @@
 {
   "target": "PHP8.5.10 CLI NTS64",
-  "status": "partial183/184/212; bounded class-constant Closure/FCC source/cache guards and actual-current handler/truth interaction reviewed; no whole-family/core or fresh-build claim",
+  "status": "partial183/184/212; named constexpr class strings, rebound lexical defaults and actual-current weak-parameter interaction reviewed; no whole-family/core or fresh-build claim",
   "base_revision": "d5208161ab3629d70228555b84c2e9d53076ba55",
   "source_evidence": {
     "distinct_cases": 25,
@@ -126,7 +126,12 @@
     "finite-crossunit-temporal1: incorrect negative eval transport expectation; image rejection passed and original FAIL retained",
     "current-paired7: ordinary nested named ::class pre-fold stopped the valid runtime FCC; original FAIL retained and only remaining affected rows executed",
     "constant-callables first-model14: callable observer had no PFSTOP case; original interpreter failure retained",
-    "literal-names-paired7: quoted static-class initializer overlapped ordinary dynamic scoped-call entry; original nondeterminism/native completion retained"
+    "literal-names-paired7: quoted static-class initializer overlapped ordinary dynamic scoped-call entry; original nondeterminism/native completion retained",
+    "named first17: PLCLASS used the function/constant-only lexical resolver; original Unsupported retained",
+    "named rest17: property default folder lacked owner/parent context; original Unsupported retained",
+    "named rest16: CLASS_NAME string was mistaken for a Closure-bearing constant alias; original Unsupported retained",
+    "named state2-v2: local fixture recursive otherwise mixed with a non-pure premise; original elaboration failure retained",
+    "native class-name forms: concat rejection hypothesis refuted by normal GhostName; original reportFAIL retained"
   ],
   "native_contract": "Project-local8.5.10 binary b9adb7ba; fixed ENV5 and -n display_errors=stderr/log_errors=0/html_errors=0/error_reporting=32767. Model baseline30719 stays distinct. Source tuple templates replace only exact observed main and child filenames; cross-file source bytes and file snapshots retain their explicit path bridge. Native cwd/environment observations remain original, not fresh model facts.",
   "primary_symbols": [
@@ -141,17 +146,23 @@
     "zend_compile_const_expr_fcc",
     "zend_create_closure",
     "zend_create_fake_closure",
-    "zend_closure_clone"
+    "zend_closure_clone",
+    "zend_try_compile_const_expr_resolve_class_name",
+    "zend_compile_const_expr_class_name",
+    "zend_compile_class_name",
+    "zend_ast_create_concat_op",
+    "ZEND_RECV_INIT",
+    "zend_closure_bind"
   ],
   "remaining": [
-    "named constexpr ::class, constructor contexts outside class constants and builtin FCC targets remain Unsupported",
+    "constructor contexts outside class constants and builtin FCC targets remain Unsupported",
     "uncertified object-bearing initializer transfers remain Unsupported",
     "unretained computed/scoped table-update selectors remain Unsupported",
     "incomplete-table synchronous/delayed reference acquisition remains Unsupported",
     "invalid constant modifiers/admission and source metadata",
     "attributes, traits, enums and internal constants",
     "broader default/static-property consumers",
-    "remaining predefined initial names (including E_USER_NOTICE)",
+    "deprecated predefined producer ingress and broader internal constants",
     "fresh copied constants build and whole-family/core validation"
   ],
   "inheritance_evidence": {
@@ -216,13 +227,15 @@
     }
   },
   "maintained_source_cases": {
-    "total": 73,
-    "normal": 33,
-    "php_error": 22,
-    "static_rejection": 18,
-    "composition": "earlier 50 +22 constructor/admission sources +one current handler/truth comparison across preserved tested cutoffs; no one-revision73 rerun",
+    "total": 93,
+    "normal": 45,
+    "php_error": 23,
+    "static_rejection": 25,
+    "composition": "earlier73 +17 constant-context +2 ordinary keyword forms +one current214 callback source across preserved cutoffs; no one-revision93 rerun",
     "first50_unchanged": true,
-    "first72_unchanged": true
+    "first72_unchanged": true,
+    "first73_unchanged": true,
+    "first92_unchanged": true
   },
   "current_master_evidence": {
     "scope": "Six earlier current-runtime agreements +separate expected-Unsupported boundary, then one actual208/cache and one actual used-StaticCall/cache comparison. Reused runtime5; no old42/finite/copy renewal.",
@@ -386,6 +399,79 @@
     "source_maintenance_doc_review": {
       "path": ".tools/compiler-publication-operational-current/.tools/compiler-publication/reviewer-13-constant-callables-source-maintenance-docs-review.json",
       "sha256": "e6bc7e1ce6bdeb24faf9fa0edea2c75b61c59c5a5b2cd850aab3e31fbfd539d6"
+    }
+  },
+  "named_class_evidence": {
+    "base_revision": "8a7bef6894d9c97e015d7038f9785a62be9123de",
+    "private_source_commits": [
+      "7b0e5e3b1",
+      "6f7d8a356"
+    ],
+    "source_cases": 19,
+    "normal": 11,
+    "php_error": 1,
+    "static_rejection": 7,
+    "scope": "Namespace/import spelling without lookup; known owner/source-parent folding versus deferred lexical Closure/eval resolution; typed/dead-branch/literal forms, foreign COW and contextual default cache exclusion. Ordinary FQ/relative/quoted keywords retain the same source/called guards.",
+    "source_runs": [
+      {
+        "cases": 17,
+        "composition": "naming1 earlier +remaining16 at source-v6;9normal/1PHPerror/7static",
+        "reports": [
+          ".tools/compiler-constant-classname-13/.tools/constant-classname/first-model17-rest17/report.json",
+          ".tools/compiler-constant-classname-13/.tools/constant-classname/first-model17-classname-flow-rest16/report.json"
+        ],
+        "last_report_sha256": "fa91aa120bf8dfdeb229646c4212f79e627dd76a1c2add9d11f9317792d7f353",
+        "last_release_sha256": "98a6acce6cb0d3aebee31ae121916d320133abe794a3f9589b555a4e0d1711da",
+        "independent_review_sha256": "3cf31413776916bb0f875064a04a03130b467a3f5a69f143ffef20abac35793b"
+      },
+      {
+        "cases": 2,
+        "composition": "only NEW ordinary known-owner/rebound forms at source-v7",
+        "report": ".tools/compiler-constant-classname-13/.tools/constant-classname/ordinary-keywords-model2/report.json",
+        "report_sha256": "9d031db0f4b443df90305ad96fe09d093f824d5f498466a3a21f2450ccbcf4ee",
+        "release_sha256": "1de71b89f35ca0d8fb39087e9011a02fde78cd036b733c6612ee41cbfcd16be1",
+        "independent_review_sha256": "e2e8772c9ecbeb546a344d29e08a25e907b83380d823bcc611fd9cb1f0daa9c1"
+      }
+    ],
+    "finite_run": {
+      "programs": 2,
+      "predicates": [
+        25,
+        38
+      ],
+      "report": ".tools/compiler-constant-classname-13/.tools/constant-classname/state2-v3/report.json",
+      "report_sha256": "9d999e88bd78dced1881733375c1169185e4fb2de553279a08647cbc62a3a6d9",
+      "release_sha256": "e359fac63dcde326e4316942be469dca810f80b8a245bd1906c83a93ab0f72fc",
+      "source_patch_sha256": "c5119ce92ee00dd7736d9d6e5aff179bf709ee0ec1a32691b88786b617951abb",
+      "relevant_inputs": 253,
+      "independent_review_sha256": "e4c24479335008e34092ad8d8593351b6d127eed036cb0c46d3f7b2f01396aaf"
+    },
+    "native_hypothesis_refutation": "NR15 third original predicted computed rejection, observed native0/GhostName from parser-created literal concat; original FAIL unchanged. Numeric/static remaining2 observed once after release.",
+    "fixture_corrections": "Original bound-g v1 plan remains UNRUN; binding premises corrected to CLOSUREBINDINGS. Original elaboration failure v2 retained; only the disjoint local recursion prefix changed for v3. All25/38 predicates retained.",
+    "maintenance": "first73 catalogue records unchanged;19 originals appended. Existing helper203 source/checks/PREFIX/functions unchanged; source-equivalent additions63 give266, with no prior203 replay.",
+    "runtime": "five physical executables reused exactly; no rebuild/copy/core closure",
+    "current_composition": {
+      "source_base": "4302490598c106e9f448db5e718df0c561fc2201",
+      "tested_revision": "87cce612e9519b667ecb0d4fef5c653c8f251b30",
+      "cases": 1,
+      "normal": 1,
+      "observation": "B:A:same: active214 Stringable callback invokes rebound B lexical default first, original A second, and retains cached constructor identity",
+      "report": ".tools/compiler-constant-classname-current-13/.tools/classname-current/weak-param-paired1/report.json",
+      "report_sha256": "d879c8edaf46a4a4581eaac83a0187cb7d77391bd10dbf26bb74f8bc050f0ee0",
+      "release_sha256": "96b84bc554dc8d21fd2b2f5a9d66879ede8165405bfcc4177e8ca49f746f24a1",
+      "plan_sha256": "4dfe18883df9d5cf478524e0d6f3f9c8326c2147c442b740a3ef2e2a9540a2a8",
+      "relevant_inputs": 240,
+      "scoped_input_digest_sha256": "57b74e9a2cdde4bd6b0625f7ac2433ce34808996c573bcbc844faa713a44dab0",
+      "pure": "Actual206 unique manifest paths, strict true0 and210 equal before/after entries. Original descriptive module_count205 remains qualified; no load rerun.",
+      "independent_review": ".tools/compiler-publication-operational-current/.tools/compiler-publication/reviewer-13-named-constexpr-current-weak-parameter-original-review.json",
+      "independent_review_sha256": "660e5e9ad565321c0a360cefde6b77e6bda25feea3c64b6f405742cd91e0bae3"
+    },
+    "post_test_source_composition": {
+      "base_revision": "3347ea087344890f5fa4be3f5709136a98abfa97",
+      "handoff": ".tools/property-parameter-backing-dev13/INSTALLED-HANDOFF.json",
+      "handoff_sha256": "455405e70eab8812e0ab24169c9b000ba8982008f57d8c995eeaf4baa9741c3f",
+      "scope": "Released216 parameter-backing certificate/state/store/exact receive guards preserved. All nine named-class production paths and two maintained helper/data paths remain byte-exact accepted18e877;91/105 are untouched by216.",
+      "review": "Independent actual source assessment found no new named branch requiring replay. Current207 manifest preserves216 once; historical named pure/current callback retain their206 cutoffs, with no new load/execution claim."
     }
   }
 }

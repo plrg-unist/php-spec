@@ -1,18 +1,25 @@
 {
   "target": "PHP8.5.10 CLI NTS64",
-  "scope": "Supplied fixed weak Stringable string parameters; ordinary168 callback, captured formal-cell writeback and source-authenticated nearest receive frames. Family remains partial.",
+  "scope": "Supplied fixed weak Stringable string parameters, captured formal-cell writeback and parameter-authorized backing strings after callback property-source mutation. Family remains partial.",
   "implementation": [
     "spec/semantics/214-string-parameters.watsup",
     "spec/semantics/95-typed-calls.watsup",
     "spec/semantics/168-user-string-runtime.watsup",
     "spec/semantics/84-call-integrity.watsup",
-    "spec/semantics/30-storage.watsup"
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/216-parameter-backing-authority.watsup",
+    "spec/semantics/136-property-runtime.watsup",
+    "spec/semantics/138-property-references.watsup",
+    "spec/semantics/39-ownership.watsup",
+    "spec/semantics/40-control.watsup"
   ],
   "semantics": [
-    "Value reception converts its entered copy; ordinary free BYREF reception writes only its captured cell while PROPREFS remains empty.",
+    "Value reception converts its entered copy. Free BYREF reception writes the captured formal cell after callback attachment, removal or rebinding of property sources; replacing a global alias does not redirect writeback.",
     "Caller strictness and nominal/callable membership precede conversion. Existing property sources reject a BYREF conversion before invoking user code.",
     "Source/line/supplied index/formal cell and original receiver remain authenticated through recursive receives; an older formal cannot authorize a newer marker.",
-    "Conversion throws keep the original exception without a receive TypeError wrapper. Normal/throw cleanup retires owned formal/converter allocations for selected sources."
+    "Conversion throws keep the original exception without a receive TypeError wrapper. Normal/throw cleanup retires owned formal/converter allocations for selected sources.",
+    "A nonowning genuine-NParam certificate permits only the exact resulting string backing value. Ordinary writes and new binds still enforce live property types; successful value writes clear authority and cell retirement prunes it.",
+    "An exact-string supplied BYREF receive advances without rewriting the certified cell. Same-cell argument indices and reentrant formal cells retain their separate source authority; throws mint no certificate."
   ],
   "checks": {
     "author_sources": {
@@ -64,13 +71,6 @@
       },
       "scope": "Owner-scoped cached constant Closure converts full NUL bytes, then retains its sole cache owner. Protected invokable remains an object for callable|string and converts for string; exact declaration Warning preserved."
     }
-  },
-  "unsupported_required_core": {
-    "case": "new-property-source-stop",
-    "native": "NormalT0|F1|s|s",
-    "model": "Unsupported parameter string conversion gained property type source; stdoutT0|, before writeback",
-    "agreements": 0,
-    "remaining": "Implement the callback-attached property-source backing-value exception with ordinary parameter authority; do not mint the paused138/186 return-bound witness."
   },
   "source_equivalent_composition": {
     "composition_base": "84156611480d74150a04c4a7f3e933a06ffe60de",
@@ -126,7 +126,8 @@
         "bytes": 28628992,
         "mode": "0o555"
       }
-    }
+    },
+    "scope": "Earlier214 current composition d94; the216 plan above records the new selection, root and caps, reusing these executable/profile identities."
   },
   "preserved_failures": [
     {
@@ -139,8 +140,90 @@
     }
   ],
   "remaining": [
-    "Callback-attached property-source writeback; variadic/default and broader weak/constrained consumers.",
-    "Typed-reference-return verification remains paused;97/99/138/185/186 unchanged. Temporary-return Notice timing and wider reference consumers remain separate.",
+    "Variadic/default callback reception, broader weak parameter/property coercion and already constrained-reference object conversion remain required.",
+    "Typed-reference-return verification remains paused;97/99/185/186 and138 return producer/source/admission logic are unchanged. Ordinary138 backing validation/store inverses now also maintain separate parameter authority. Temporary-return Notice timing and wider reference consumers remain separate.",
     "Allocation retirement does not claim destructor/GC callback completeness; full-core and fresh offline rebuild remain required."
-  ]
+  ],
+  "historical_unsupported_control": {
+    "case": "new-property-source-stop",
+    "native": "NormalT0|F1|s|s",
+    "model": "Unsupported parameter string conversion gained property type source; stdoutT0|, before writeback",
+    "agreements": 0,
+    "resolution": "The unchanged new-property-source-stop bytes now agree in the fresh216 source6 at73d6. The original719 observation retains zero agreement and its original qualification."
+  },
+  "parameter_backing_checks": {
+    "tested_base": "6395c2c7a15b9a8c6a4731c95c4ef7761f26c42c",
+    "tested_revision": "73d6b46385c822d17ffd6400481cfdfb6dfe0314",
+    "author_sources": 6,
+    "state_fixtures": [
+      116,
+      78,
+      55,
+      50
+    ],
+    "state_assertions": 299,
+    "independent_sources": 2,
+    "author_qualification": {
+      "path": "/home/user/workspace/php-spec/.tools/property-parameter-backing-review13/parameter-backing-author-original-raw-accepted.json",
+      "sha256": "72132bbf0d869fbe0d1a35965c0af30ac2d5052b9eb6b9406826cbc3f2b2e1de"
+    },
+    "author_report": {
+      "path": "/home/user/workspace/php-spec/.tools/property-static-set-dev13/author-fxtzdzwb/report.json",
+      "sha256": "844b2ff6cd7e75dcc236778dabbe38d119311014b2ab683f1d766de6e8bac51a"
+    },
+    "author_release": {
+      "path": "/home/user/workspace/php-spec/.tools/property-static-set-dev13/author-fxtzdzwb/RELEASE.json",
+      "sha256": "a010f1122ea39c8f3c515cfefd11a077a7fd192a7b23a62f35ae587191ae25eb"
+    },
+    "independent_qualification": {
+      "path": "/home/user/workspace/php-spec/.tools/property-parameter-backing-dev13/parameter-backing-independent-original-raw-accepted.json",
+      "sha256": "b30a7bab9cf652ebc1a06640ff17d7dc7d276f74fc00a9bbc577365a7102286d"
+    },
+    "independent_report": {
+      "path": "/home/user/workspace/php-spec/.tools/property-parameter-backing-review13/run-observers/source-result.json",
+      "sha256": "9d5a4e4eff887a41b8693a3ecd53990768ef48bb821ea4476342ae61eda5a5b9"
+    },
+    "independent_release": {
+      "path": "/home/user/workspace/php-spec/.tools/property-parameter-backing-review13/run-observers/slot3-release.json",
+      "sha256": "e640b0e8fee0b5ec32bde913c485f08ab618864b8ccadef2cb513a8d7b95de48"
+    },
+    "scope": "Static and instance source attachment/rebind/detachment, same-cell exact receives, global alias replacement, nearest recursive formal authority, original throw and nonowning certificate cleanup. Independent controls reject both an ordinary array write and a fresh mismatched property bind.",
+    "freeze": {
+      "path": "/home/user/workspace/php-spec/.tools/property-parameter-backing-dev13/parameter-backing-elaboration-freeze.json",
+      "sha256": "cc7faf24eb3f104178174b0b287bcbd24879cd9588daa89ae6679bf812fa3e60"
+    },
+    "plan": {
+      "path": "/home/user/workspace/php-spec/.tools/property-parameter-backing-dev13/parameter-backing-author-plan.json",
+      "sha256": "b8d56c41bbd822332218cea1b60026592e96f02a0a9db107585480b8084460b4"
+    },
+    "command": [
+      "python3",
+      "/home/user/workspace/php-spec/.tools/property-static-set-dev13/run-author.py",
+      "/home/user/workspace/php-spec/.tools/property-parameter-backing-dev13/parameter-backing-author-plan.json"
+    ],
+    "limits_seconds": {
+      "native": 30,
+      "model": 90,
+      "application": 60,
+      "numeric": 120,
+      "source_outer": 900,
+      "state_phase_outer": 300,
+      "independent_outer": 420
+    },
+    "steps": 100000,
+    "runtime_identity": "Same reused executables and ordered profile as reproduction; no rebuild credit.",
+    "preserved_preparation_failure": {
+      "path": "/home/user/workspace/php-spec/.tools/property-parameter-backing-13/.tools/string-parameters-protocol-wvyvyx2j/report.json",
+      "scope": "Unused DSL fixture referenced n_object before binding it from saved TODO; fixture-only order correction, no source or semantic failure."
+    }
+  },
+  "parameter_backing_composition": {
+    "composition_base": "4302490598c106e9f448db5e718df0c561fc2201",
+    "source_port": "31923eb048add92f00ec0fe3b1916acc3f81e133",
+    "scope": "Eight nonshared endpoints exactly equal tested73d6; removing parameter declarations/storage/default and216 restores actual reporting30/40 and206-row order. Reporting suppression/INI/error-constant branches are not reached by these sources. Source-equivalent promotion adds no execution credit.",
+    "reporting_handoff": {
+      "path": "/home/user/workspace/php-spec/.tools/include-dev-13-reporting-current/.tools/INSTALLED-HANDOFF.json",
+      "sha256": "88d3de2a7620846aaf915ba4c0dd3239063ff08a54300b400f2bafa42624d5c2"
+    }
+  }
 }

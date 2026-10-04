@@ -70,6 +70,21 @@ def $error_api_arity(S, pconfigcall) = S -- otherwise
 dec $error_int32(int) : int
 def $error_int32(i) = $(i_mod - 4294967296) -- if i_mod = $long_and(i, 4294967295) -- if $(i_mod >= 2147483648)
 def $error_int32(i) = i_mod -- if i_mod = $long_and(i, 4294967295) -- if $(i_mod < 2147483648)
+;; OnUpdateErrorReporting uses the pinned C atoi decimal prefix, not PHP's
+;; numeric-string classifier. The raw INI bytes are retained separately.
+dec $reporting_ini_long(nat, nat) : int
+def $reporting_ini_long(n_sign, n_digits) = $nsigned(n_sign, n_digits)
+  -- if $long_range($nsigned(n_sign, n_digits))
+def $reporting_ini_long(0, n_digits) = 9223372036854775807
+  -- if $(n_digits > 9223372036854775807)
+def $reporting_ini_long(1, n_digits) = $(-9223372036854775808)
+  -- if $(n_digits > 9223372036854775808)
+def $reporting_ini_mask(n_raw*) = $error_int32($reporting_ini_long(n_sign, n_digits))
+  -- if (n_sign, n_value*) = $ntsign($nttrim($c_string(n_raw*)))
+  -- if DIGITS n_digits n_count n_tail* = $ntdigits(n_value*, 0, 0)
+dec $error_api_long_type(pintrinsic) : preqbytes
+def $error_api_long_type(INTRINSIC_ERROR_REPORTING) = $ptascii("?int")
+def $error_api_long_type(pintrinsic) = $ptascii("int") -- otherwise
 dec $error_long_conversion(pvalue, bool) : ptypeconversion
 def $error_long_conversion(PINT i, b) = TYPEVALUE (PINT i)
 def $error_long_conversion(pvalue, false) = $typed_weak(["int"], pvalue) -- if $typed_scalar(pvalue) -- if $typed_tag(pvalue) =/= "int"
@@ -86,7 +101,7 @@ def $error_api_error(S, pconfigcall, text, preqbytes) = $config_error(S, pconfig
 def $error_api_long(S, pconfigcall, n, pvalue) = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
   -- if ptypeconversion = $error_long_conversion(pvalue, $config_strict(S, pconfigcall))
   -- if ptypeconversion =/= TYPEREJECT
-def $error_api_long(S, pconfigcall, n, pvalue) = $error_api_error(S, pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(pconfigcall.KIND, n) ++ $ptascii(") must be of type int, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+def $error_api_long(S, pconfigcall, n, pvalue) = $error_api_error(S, pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(pconfigcall.KIND, n) ++ $ptascii(") must be of type ") ++ $error_api_long_type(pconfigcall.KIND) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
   -- if $error_long_conversion(pvalue, $config_strict(S, pconfigcall)) = TYPEREJECT
   -- if pvalue =/= PNULL
 def $error_api_long(S, pconfigcall, n, PNULL) = S[.COMPLETION = UNSUPPORTED "error API nullable scalar conversion diagnostic"]
@@ -191,21 +206,21 @@ dec $error_api_body(pstate, pconfigcall) : pstate
 def $error_api_body(S, pconfigcall) = S[.RESULT = KNOWN (PINT S.REPORTING)]
   -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
   -- if $error_api_value(pconfigcall, 0, PNULL) = PNULL
-def $error_api_body(S, pconfigcall) = S_level[.REPORTING = $error_int32(i)][.REPORTINGINI = $decimal_integer(i)][.RESULT = KNOWN (PINT S.REPORTING)]
+def $error_api_body(S, pconfigcall) = S_level[.REPORTING = $error_int32(i)][.REPORTINGINI = $decimal_integer(i)][.REPORTINGMODIFIED = true][.RESULT = KNOWN (PINT S_level.REPORTING)]
   -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
   -- if $error_api_value(pconfigcall, 0, PNULL) = pvalue
   -- if pvalue =/= PNULL
   -- if S_level = $error_api_long(S, pconfigcall, 0, pvalue)
   -- if S_level.COMPLETION = NORMAL
   -- if S_level.RESULT = KNOWN (PINT i)
-  -- if i =/= S.REPORTING
-def $error_api_body(S, pconfigcall) = S_level[.RESULT = KNOWN (PINT S.REPORTING)]
+  -- if i =/= S_level.REPORTING
+def $error_api_body(S, pconfigcall) = S_level[.RESULT = KNOWN (PINT S_level.REPORTING)]
   -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
   -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
   -- if pvalue =/= PNULL
   -- if S_level = $error_api_long(S, pconfigcall, 0, pvalue)
   -- if S_level.COMPLETION = NORMAL
-  -- if S_level.RESULT = KNOWN (PINT S.REPORTING)
+  -- if S_level.RESULT = KNOWN (PINT S_level.REPORTING)
 def $error_api_body(S, pconfigcall) = S_level
   -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
   -- if $error_api_value(pconfigcall, 0, PNULL) = pvalue
