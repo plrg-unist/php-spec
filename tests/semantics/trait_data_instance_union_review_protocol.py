@@ -29,6 +29,10 @@ SCOPE_CHECKS = [
     '$origin_source(pconstantcontext.ORIGIN) = porigin_source',
     '$constant_expression_root(S, pconstantcontext.ORIGIN) '
     '= (porigin_initializer)',
+    'porigin_trait = $constant_child(porigin_initializer, '
+    '[PCFIELD 0, PCINDEX 1, PCFIELD 1])',
+    '$compiled_read(S, porigin_trait) = (PSTRING $ptascii("T"))',
+    '$pool_class(S.POOLS, porigin_trait) = (PVSTRING true)',
     '$property_default_active_desc(S, pconstantcontext.ORIGIN) '
     '= (ppropertydesc_c)',
     '$static_default_context_at(S.TODO) = (pstaticdefaultcontext)',
@@ -52,6 +56,7 @@ SCOPE_CHECKS = [
     '$trait_initializer_scope(S[.TODO = eps]) = eps',
     '$trait_initializer_scope(S[.ORIGIN = (PORIGIN 999 eps)]) = eps',
     '$trait_initializer_scope(S[.INSTANCEDEFAULTS = eps]) = eps',
+    '$trait_initializer_scope(S[.SOURCES = eps]) = eps',
     '~$instance_default_site_valid(S, porigin_requested, '
     'pstaticdefaultcontext[.DECL = porigin_source], S.TODO)',
     '~$instance_default_site_valid(S, porigin_requested, '
