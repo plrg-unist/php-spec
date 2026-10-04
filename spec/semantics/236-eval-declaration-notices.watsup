@@ -187,6 +187,19 @@ def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_co
   -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= n
   -- if ~$file_context_unit_present(S_compiled.FILECONTEXTS, n)
 
+;; A nested hard compiler has already selected and reported the outer primary.
+;; Its retired parser marker cannot become live work again at source append.
+def $compile_source_work(S, n, ptask*) = S.TODO
+  -- if S.COMPLETION = REQUESTFATAL ptbytes_class ptbytes_message z
+  -- if ~S.COMPILESTOP
+  -- if S.TODO = eps
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+  -- if $shutdown_compiler_snapshot(pevalcompilefatal.COMPLETION) = (S.COMPLETION)
+  -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= n
+  -- if $eval_context_at(S.EVALCONTEXTS, n) = eps
+  -- if ~$file_context_unit_present(S.FILECONTEXTS, n)
+
 ;; The marker suffix retains the actual eval caller while callbacks run.
 def $eval_compile_work((DECL_NOTICES pdeclnoticebatch) :: (EVAL_COMPILE_RESUME pevalcompile) :: ptask*, ptask_tail*) = [DECL_NOTICES pdeclnoticebatch, EVAL_COMPILE_RESUME pevalcompile] ++ ptask*
 def $eval_compile_work(ptask*, ptask_tail*) = $iterator_notice_work(ptask*, ptask_tail*) -- otherwise
