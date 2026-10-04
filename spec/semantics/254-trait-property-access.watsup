@@ -43,8 +43,8 @@ def $trait_property_source_kind(S, porigin) = $trait_property_source_kind(S, por
   -- if $origin_node(S.SOURCES, porigin_parent) = (NExprNullsafePropertyFetch expression phpType20 metadata)
 def $trait_property_source_kind(S, porigin) = (ppmode)
   -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
-  -- if $origin_node(S.SOURCES, porigin_parent) = (pcnode)
-  -- if $trait_property_target_kind(pcnode) = (ppmode)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (expression_parent)
+  -- if $trait_property_target_kind(expression_parent) = (ppmode)
 def $trait_property_source_kind(S, porigin) = (PPIS)
   -- if $reference_origin_parent(porigin, 2) = ((porigin_parent, [PCFIELD 0, PCINDEX n]))
   -- if $origin_node(S.SOURCES, porigin_parent) = (NExprIsset (SEQUENCE expression*) metadata)
@@ -93,20 +93,20 @@ def $trait_property_consumer(S, porigin_site, porigin, (ASSIGN_PREP expression_t
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
   -- if $trait_property_below(porigin_target, porigin_site)
 def $trait_property_consumer(S, porigin_site, porigin, (COMPOUND_PREP pbin expression_target expression_rhs z) :: ptask_tail*) = (PPRW)
-  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
-  -- if $key_write_op(pcnode) = (pbin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_parent)
+  -- if $key_write_op(expression_parent) = (pbin)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
   -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_rhs)
   -- if $origin_node(S.SOURCES, porigin_target) = (expression_target)
   -- if $origin_node(S.SOURCES, porigin_rhs) = (expression_rhs)
   -- if $trait_property_below(porigin_target, porigin_site)
-  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, pcnode)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, expression_parent)
 def $trait_property_consumer(S, porigin_site, porigin, (UPDATE_PREP pupdate b z) :: ptask_tail*) = (PPRW)
-  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
-  -- if $key_write_update(pcnode) = ((pupdate, b))
+  -- if $origin_node(S.SOURCES, porigin) = (expression_parent)
+  -- if $key_write_update(expression_parent) = ((pupdate, b))
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
   -- if $trait_property_below(porigin_target, porigin_site)
-  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, pcnode)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, expression_parent)
 def $trait_property_consumer(S, porigin_site, porigin, (ISSET_RESULT b z) :: ptask_tail*) = (PPIS)
   -- if $trait_property_below(porigin, porigin_site)
   -- if $origin_node(S.SOURCES, porigin) = (expression)
@@ -141,10 +141,10 @@ def $trait_property_consumer(S, porigin_site, porigin, (PROPERTY_REF_FETCH z) ::
 def $trait_property_consumer(S, porigin_site, porigin, (CALL_REF_FETCH pcalltarget n porigin_call?) :: ptask_tail*) = (PPW)
   -- if $trait_property_below(porigin, porigin_site)
   -- if $call_task_valid(S[.ORIGIN = (porigin)], CALL_REF_FETCH pcalltarget n porigin_call?)
-def $trait_property_consumer(S, porigin_site, porigin, (TRAIT_PROPERTY_STORE porigin_site pbin? poperand z) :: ptask_tail*) = $trait_property_target_kind(pcnode)
+def $trait_property_consumer(S, porigin_site, porigin, (TRAIT_PROPERTY_STORE porigin_site pbin? poperand z) :: ptask_tail*) = $trait_property_target_kind(expression_parent)
   -- if $trait_property_store_valid(S, porigin_site, pbin?, poperand, z)
   -- if $reference_origin_parent(porigin_site, 1) = ((porigin_parent, [PCFIELD 0]))
-  -- if $origin_node(S.SOURCES, porigin_parent) = (pcnode)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (expression_parent)
 def $trait_property_consumer(S, porigin_site, porigin, ptask*) = eps -- otherwise
 
 def $trait_property_source(S, porigin_site, porigin_root, ptbytes, z) = true
@@ -253,14 +253,14 @@ def $trait_property_write_pending(S, poperand, (ASSIGN_PREP expression_target ex
 def $trait_property_write_pending(S, poperand, (COMPOUND_PREP pbin expression_target expression_rhs z) :: ptask_tail*) = true
   -- if $reference_cv(expression_rhs) = eps
   -- if S.ORIGIN = (porigin)
-  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
-  -- if $key_write_op(pcnode) = (pbin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_parent)
+  -- if $key_write_op(expression_parent) = (pbin)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
   -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_rhs)
   -- if $origin_node(S.SOURCES, porigin_target) = (expression_target)
   -- if expression_target = NExprStaticPropertyFetch phpType19 phpType31 metadata
   -- if $origin_node(S.SOURCES, porigin_rhs) = (expression_rhs)
-  -- if z = $runtime_line(S, eps, pcnode)
+  -- if z = $runtime_line(S, eps, expression_parent)
   -- if $scoped_selector_class(S, poperand) = (porigin_root)
   -- if $class_at(S.CLASSES, porigin_root) = (pclassdesc)
   -- if pclassdesc.KIND = "trait"
@@ -285,11 +285,11 @@ def $trait_property_write_valid(S, ptraitpropertywrite) = true
   -- if $property_pending_source_base(S[.ORIGIN = (ptraitpropertywrite.SITE)], BASE_CLASS_STATIC_PENDING ptraitpropertywrite.CLASS ptraitpropertywrite.NAME, expression_target)
   -- if ptraitpropertywrite.LINE = $runtime_line(S[.ORIGIN = (ptraitpropertywrite.SITE)], eps, expression_target)
   -- if $reference_origin_parent(ptraitpropertywrite.SITE, 1) = ((porigin_parent, [PCFIELD 0]))
-  -- if $origin_node(S.SOURCES, porigin_parent) = (pcnode)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (expression_parent)
   -- if $origin_child((porigin_parent), [PCFIELD 1]) = (porigin_rhs)
   -- if $origin_node(S.SOURCES, porigin_rhs) = (ptraitpropertywrite.RHS)
   -- if $reference_cv(ptraitpropertywrite.RHS) = eps
-  -- if pcnode = NExprAssign expression_target ptraitpropertywrite.RHS metadata_assign /\ ptraitpropertywrite.OP = eps \/ $key_write_op(pcnode) = ptraitpropertywrite.OP /\ ptraitpropertywrite.OP =/= eps
+  -- if expression_parent = NExprAssign expression_target ptraitpropertywrite.RHS metadata_assign /\ ptraitpropertywrite.OP = eps \/ $key_write_op(expression_parent) = ptraitpropertywrite.OP /\ ptraitpropertywrite.OP =/= eps
   -- if $scoped_selector_class(S, ptraitpropertywrite.CLASS) = (porigin_root)
   -- if $class_at(S.CLASSES, porigin_root) = (pclassdesc)
   -- if pclassdesc.KIND = "trait"
@@ -305,10 +305,10 @@ def $trait_property_write_ready(S, ptraitpropertywrite, ptask_tail*) = $class_st
   -- if S_name.RESULT = KNOWN (PSTRING ptbytes)
 def $trait_property_store_valid(S, porigin_site, pbin?, poperand, z) = true
   -- if $reference_origin_parent(porigin_site, 1) = ((porigin_parent, [PCFIELD 0]))
-  -- if $origin_node(S.SOURCES, porigin_parent) = (pcnode)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (expression_parent)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression_target)
   -- if expression_target = NExprStaticPropertyFetch phpType19 phpType31 metadata_property
-  -- if pcnode = NExprAssign expression_target expression_rhs metadata /\ pbin? = eps \/ $key_write_op(pcnode) = pbin? /\ pbin? =/= eps
+  -- if expression_parent = NExprAssign expression_target expression_rhs metadata /\ pbin? = eps \/ $key_write_op(expression_parent) = pbin? /\ pbin? =/= eps
   -- if z = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
   -- if $class_static_source_task(S[.ORIGIN = (porigin_site)], expression_target)
   -- if $trait_property_operand_valid(S, poperand)
