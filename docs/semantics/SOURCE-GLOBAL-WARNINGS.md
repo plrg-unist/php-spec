@@ -13,7 +13,10 @@ previous chain. This differs from the missing-CV ASSIGN continuation213/220,
 which writes null and can replace the handler exception at a rejecting typed
 alias. Unknown or duplicate named slots follow the eager global fetch; ordinary
 missing-CV sends retain their existing opposite warning priority. Quiet accesses
-and reference acquisition keep the existing real-cell paths without a warning.
+and reference acquisition of selected names keep the existing real-cell paths.
+Earlier key evaluation can still warn; [module233](SOURCE-DIMENSION-KEYS.md) stages
+undefined key CVs and global-array-name conversion before this lookup. GLOBALS
+rereads a missing key in the caller environment after that earlier warning.
 
 Whole `$GLOBALS` values use the existing76 genuine table snapshot under explicit
 request facts. The snapshot omits undefined entries and callback locals, converts
@@ -42,6 +45,8 @@ python3 -B tests/semantics/globals_warning_run.py .tools/globals-warning/PREPARE
 Use the preparation path printed by the first command. Records retain original
 native/model tuples, request facts, limits and revision. Existing tools are reused;
 this establishes no fresh offline rebuild or full-family closure. Whole-table
-snapshots without explicit request facts remain Unsupported. Earlier missing
-key-CV warnings, effectful key conversion, nested/read-write warning continuations
-and broader reference-result consumers remain open; paused returns are separate.
+snapshots without explicit request facts remain Unsupported. Module233 separately
+accepts missing key-CV, array-name and ordinary null/float conversion callbacks,
+including nested/quiet reads. Read-write continuations, wider object/key/container
+producers and broader reference-result consumers remain required; paused returns
+are separate.
