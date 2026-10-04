@@ -1,0 +1,218 @@
+;; Ordinary expression class references compile the selector before unknown
+;; constructor sends. Eager parser literals are FQ names; later constants can
+;; produce keyword fetches. Runtime strings do not acquire namespace aliases.
+dec $ppdynamic_new_class(ppstate, pcpath, expression) : ppstate
+dec $ppdynamic_new_checked(ppstate, expression) : ppstate
+dec $ppdynamic_new_arguments(ppstate, pcpath, phpType7*) : ppstate
+dec $dynamic_new_absolute(ptbytes) : bool
+def $dynamic_new_absolute(92 :: ptbytes) = true
+def $dynamic_new_absolute(ptbytes) = false -- otherwise
+def $ppcall_read(NExprNew expression (SEQUENCE phpType7*) metadata, PPR) = true
+def $ppexpr(P, pcpath, NExprNew expression (SEQUENCE phpType7*) metadata, PPR) = $ppcall_expression($ppexprbody($pplocate(P, pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, NExprNew expression (SEQUENCE phpType7*) metadata, PPR)), pcpath, NExprNew expression (SEQUENCE phpType7*) metadata, PPR), pcpath, $new_class_line(expression))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppdispatch(P, pcpath, NExprNew expression (SEQUENCE phpType7*) metadata, PPR) = $ppdynamic_new_arguments($ppdynamic_new_class(P, pcpath, expression), pcpath, phpType7*)
+  -- if ~P.FOLD.CONSTANT
+def $ppdynamic_new_class(P, pcpath, expression) = P_child[.EXPRESSIONS = P_child.EXPRESSIONS ++ [PPCCALL_INIT pcpath P_child.LOCATION.LINE]][.FOLD = P_child.FOLD[.VALUE = eps]]
+  -- if P_child = $ppdynamic_new_checked($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), expression)
+  -- if P_child.COMPLETION = PPCNORMAL
+def $ppdynamic_new_class(P, pcpath, expression) = P_child
+  -- if P_child = $ppdynamic_new_checked($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), expression)
+  -- if P_child.COMPLETION =/= PPCNORMAL
+def $ppdynamic_new_checked(P, expression) = P -- if P.COMPLETION =/= PPCNORMAL
+def $ppdynamic_new_checked(P, expression) = $ppconstant_error(P, $ptascii("Illegal class name"), P.LOCATION.LINE)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (pvalue)
+  -- if ~$method_string(pvalue)
+def $ppdynamic_new_checked(P, expression) = $ppconstant_error(P, $ptascii("'\\") ++ ptbytes ++ $ptascii("' is an invalid class name"), P.LOCATION.LINE)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (PSTRING n*)
+  -- if $parser_literal(expression) =/= eps \/ $dynamic_new_absolute(n*)
+  -- if ptbytes = $ppcall_literal_name(n*)
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $ppdynamic_new_checked(P, expression) = P -- otherwise
+def $ppdynamic_new_arguments(P, pcpath, phpType7*) = $ppcheck(P, $context_error("Cannot create Closure for new expression", P.LOCATION.LINE))
+  -- if $ppfirstclass(phpType7*)
+def $ppdynamic_new_arguments(P, pcpath, phpType7*) = $ppclearvalue($ppcall_args(P, pcpath ++ [PCFIELD 1], 0, phpType7*, PNUNSUPPORTED "constructor has deferred argument modes"))
+  -- if ~$ppfirstclass(phpType7*)
+;; The existing selected-call projection also authenticates the selector's
+;; initialization line and root/child compilation for this call producer.
+def $dynamic_root(pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprNew expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+
+dec $dynamic_new_site(pstate, porigin, int, int) : bool
+def $dynamic_new_site(S, PORIGIN n pcpath, z, z_fetch) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = eps
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_fetch)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_child, b))
+def $dynamic_new_site(S, porigin, z, z_fetch) = false -- otherwise
+dec $dynamic_new_keyword(pstate, porigin) : name?
+def $dynamic_new_keyword(S, porigin) = (NName (BYTES "c2VsZg==") metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew expression phpType6 metadata)
+  -- if $parser_literal(expression) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $compiled_read(S, porigin_child) = (PSTRING ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("self")
+def $dynamic_new_keyword(S, porigin) = (NName (BYTES "cGFyZW50") metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew expression phpType6 metadata)
+  -- if $parser_literal(expression) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $compiled_read(S, porigin_child) = (PSTRING ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("parent")
+def $dynamic_new_keyword(S, porigin) = (NName (BYTES "c3RhdGlj") metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew expression phpType6 metadata)
+  -- if $parser_literal(expression) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $compiled_read(S, porigin_child) = (PSTRING ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("static")
+def $dynamic_new_keyword(S, porigin) = eps -- otherwise
+
+dec $dynamic_new_value_name(pstate, porigin, pvalue) : ptbytes?
+def $dynamic_new_value_name(S, porigin, PSTRING ptbytes) = ($ppcall_literal_name(ptbytes))
+  -- if $dynamic_new_keyword(S, porigin) = eps
+def $dynamic_new_value_name(S, porigin, PSTRING ptbytes) = $scoped_source_name(S[.ORIGIN = (porigin)], name)
+  -- if $dynamic_new_keyword(S, porigin) = (name)
+def $dynamic_new_value_name(S, porigin, POBJECT n) = ($object_name(S, n))
+  -- if $(n < |S.OBJECTS|)
+def $dynamic_new_value_name(S, porigin, pvalue) = eps -- otherwise
+
+;; SOURCE is an immutable selected-value certificate, not a root. FETCH_CLASS
+;; releases its temporary before class table work, allocation and sends.
+dec $dynamic_new_valid(pstate, pdynamicnew) : bool
+def $dynamic_new_valid(S, pdynamicnew) = true
+  -- if $dynamic_new_site(S, pdynamicnew.SITE, pdynamicnew.LINE, pdynamicnew.FETCHLINE)
+  -- if $origin_child((pdynamicnew.SITE), [PCFIELD 0]) = (porigin_child)
+  -- if $compiled_read(S, porigin_child) = eps \/ $compiled_read(S, porigin_child) = (pdynamicnew.SOURCE)
+  -- if $dynamic_new_value_name(S, pdynamicnew.SITE, pdynamicnew.SOURCE) = (pdynamicnew.CLASS)
+def $dynamic_new_valid(S, pdynamicnew) = false -- otherwise
+dec $dynamic_new_find(pstate, ptask*, porigin) : pdynamicnew?
+def $dynamic_new_find(S, (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*, porigin) = (pdynamicnew)
+  -- if pdynamicnew.SITE = porigin
+  -- if $dynamic_new_valid(S, pdynamicnew)
+def $dynamic_new_find(S, (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*, porigin) = eps
+  -- if pdynamicnew.SITE = porigin
+  -- if ~$dynamic_new_valid(S, pdynamicnew)
+def $dynamic_new_find(S, (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*, porigin) = $dynamic_new_find(S, ptask_tail*, porigin)
+  -- if pdynamicnew.SITE =/= porigin
+dec $dynamic_new_marker(ptask) : bool
+def $dynamic_new_marker(DYNAMIC_NEW_FINISH pdynamicnew) = true
+def $dynamic_new_marker(ptask) = false -- otherwise
+def $dynamic_new_find(S, ptask :: ptask_tail*, porigin) = $dynamic_new_find(S, ptask_tail*, porigin)
+  -- if ~$dynamic_new_marker(ptask)
+def $dynamic_new_find(S, eps, porigin) = eps
+def $new_source_name(S, porigin) = (pdynamicnew.CLASS)
+  -- if $dynamic_new_find(S, S.TODO, porigin) = (pdynamicnew)
+def $new_allocation_line(S, z) = pdynamicnew.FETCHLINE
+  -- if S.ORIGIN = (porigin)
+  -- if $dynamic_new_find(S, S.TODO, porigin) = (pdynamicnew)
+  -- if pdynamicnew.LINE = z
+
+;; CURRENT may itself construct recursively at the same physical site. Its
+;; selected target uses its own immediate caller, never the nested operation.
+def $dynamic_new_entered(S, pcalltarget, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew expression phpType6 metadata)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $context_target(pcallcontext) = pcalltarget
+  -- if pcallcontext.CALLSITE = (porigin)
+def $constructor_source_name(S, pcalltarget, porigin) = $new_source_name($constant_frame_scope(S, pframe, pframe_tail*), porigin)
+  -- if $dynamic_new_entered(S, pcalltarget, porigin)
+  -- if S.FRAMES = pframe :: pframe_tail*
+def $constructor_source_name(S, pcalltarget, porigin) = eps
+  -- if $dynamic_new_entered(S, pcalltarget, porigin)
+  -- if S.FRAMES = eps
+
+rule PhpStep/dynamic-new-selector: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), DYNAMIC_NEW_CLASS z z_fetch] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EVAL (NExprNew expression (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_fetch)
+  -- if $dynamic_new_site(S, PORIGIN n pcpath, z, z_fetch)
+dec $dynamic_new_live_value(pstate, pvalue) : bool
+def $dynamic_new_live_value(S, POBJECT n) = $getclass_live_object(S, n)
+def $dynamic_new_live_value(S, PSTRING ptbytes) = true
+def $dynamic_new_live_value(S, pvalue) = false -- otherwise
+dec $dynamic_new_known(pstate, ptbytes) : bool
+def $dynamic_new_known(S, ptbytes) = ($class_internal(ptbytes) \/ $class_named(S.CLASSNAMES, $ptlc(ptbytes)) =/= eps)
+dec $dynamic_new_keyword_error(pstate, ptbytes) : ptbytes
+dec $dynamic_new_start(pstate, pdynamicnew, phpType7*) : pstate
+def $dynamic_new_start(S, pdynamicnew, phpType7*) = $constructor_start(S, pdynamicnew.CLASS, phpType7*, pdynamicnew.LINE)
+  -- if $new_has_ctor(S, pdynamicnew.CLASS)
+def $dynamic_new_start(S, pdynamicnew, phpType7*) = $noctor_start(S, pdynamicnew.CLASS, phpType7*, pdynamicnew.LINE)
+  -- if ~$new_has_ctor(S, pdynamicnew.CLASS)
+rule PhpStep/dynamic-new-selected: S ~> $dynamic_new_start(S_read[.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pdynamicnew, phpType7*)
+  -- if S.TODO = (DYNAMIC_NEW_CLASS z z_fetch) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew expression (SEQUENCE phpType7*) metadata)
+  -- if S_read = $resolve_at(S, S.RESULT, z_fetch)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $dynamic_new_live_value(S_read, pvalue)
+  -- if $dynamic_new_value_name(S_read, porigin, pvalue) = (ptbytes)
+  -- if $dynamic_new_known(S_read, ptbytes)
+  -- if pdynamicnew = {SITE porigin, SOURCE pvalue, CLASS ptbytes, LINE z, FETCHLINE z_fetch}
+rule PhpStep/dynamic-new-unknown: S ~> $throw_scalar(S_read, "Error", $ptascii("Class \"") ++ $c_string(ptbytes_raw) ++ $ptascii("\" not found"), z_fetch)
+  -- if S.TODO = (DYNAMIC_NEW_CLASS z z_fetch) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S_read = $resolve_at(S, S.RESULT, z_fetch)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PSTRING ptbytes_raw)
+  -- if $dynamic_new_value_name(S_read, porigin, PSTRING ptbytes_raw) = (ptbytes)
+  -- if ~$dynamic_new_known(S_read, ptbytes)
+rule PhpStep/dynamic-new-invalid: S ~> $throw_scalar(S_read, "Error", $ptascii("Class name must be a valid object or a string"), z_fetch)
+  -- if S.TODO = (DYNAMIC_NEW_CLASS z z_fetch) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z_fetch)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$method_string(pvalue) /\ ~$getclass_is_object(pvalue)
+rule PhpStep/dynamic-new-keyword-error: S ~> $throw_scalar(S_read, "Error", ptbytes_message, z_fetch)
+  -- if S.TODO = (DYNAMIC_NEW_CLASS z z_fetch) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S_read = $resolve_at(S, S.RESULT, z_fetch)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PSTRING ptbytes)
+  -- if $dynamic_new_keyword(S_read, porigin) = (NName (BYTES text) metadata)
+  -- if $dynamic_new_value_name(S_read, porigin, PSTRING ptbytes) = eps
+  -- if ptbytes_message = $dynamic_new_keyword_error(S_read, $ptlc(ptbytes))
+def $dynamic_new_keyword_error(S, ptbytes) = $ptascii("Cannot access \"") ++ ptbytes ++ $ptascii("\" when no class scope is active")
+  -- if $method_current_scope(S) = eps
+def $dynamic_new_keyword_error(S, ptbytes) = $ptascii("Cannot access \"parent\" when current class scope has no parent")
+  -- if $method_current_scope(S) =/= eps
+rule PhpStep/dynamic-new-abrupt: S ~> S_read
+  -- if S.TODO = (DYNAMIC_NEW_CLASS z z_fetch) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z_fetch)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/dynamic-new-finish: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*
+
+def $call_task_valid(S, EVAL (NExprNew expression (SEQUENCE phpType7*) metadata)) = $method_source_task(S, NExprNew expression (SEQUENCE phpType7*) metadata)
+def $call_task_valid(S, DYNAMIC_NEW_CLASS z z_fetch) = $dynamic_new_site(S, porigin, z, z_fetch)
+  -- if S.ORIGIN = (porigin)
+def $call_task_valid(S, DYNAMIC_NEW_CLASS z z_fetch) = false -- otherwise
+def $call_task_valid(S, DYNAMIC_NEW_FINISH pdynamicnew) = $dynamic_new_valid(S, pdynamicnew)
+def $task_nodes(DYNAMIC_NEW_FINISH pdynamicnew) = eps
+
+;; Undefined direct CVs are captured null across the real warning handler.
+;; Its throwing continuation keeps the original exception and aborts NEW.
+def $error_simple_read(DYNAMIC_NEW_CLASS z z_fetch) = true
+def $error_read_line(DYNAMIC_NEW_CLASS z z_fetch, z_origin) = z_fetch
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = DYNAMIC_NEW_CLASS z z_fetch
+  -- if S.ORIGIN = (porigin)
+  -- if $dynamic_new_site(S, porigin, z, z_fetch)
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], perrorread.NAME)
+  -- if perrorread.LINE = z_fetch
+
+;; Known intrinsic interfaces and Closure fail during allocation, before sends.
+def $internal_new_forbidden(ptbytes) = true
+  -- if $ptlc(ptbytes) = $ptascii("closure")
+def $internal_new_forbidden(ptbytes) = true
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes)) = (INTERNAL ptbytes_key ptbytes_display "interface")
+def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Instantiation of class Closure is not allowed"), z)
+  -- if $ptlc(preqbytes) = $ptascii("closure")
+def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot instantiate interface ") ++ ptbytes_display, z)
+  -- if $class_internal_at($class_internal_catalogue(), $ptlc(preqbytes)) = (INTERNAL ptbytes_key ptbytes_display "interface")

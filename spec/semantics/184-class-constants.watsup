@@ -825,7 +825,7 @@ def $class_constant_constructor_task(S, ptbytes, phpType7*, b_ctor, z) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $new_source_name(S, PORIGIN n pcpath) = (ptbytes)
   -- if b_ctor = $new_has_ctor(S, ptbytes)
   -- if (z = $runtime_line(S, eps, NExprNew phpType28 (SEQUENCE phpType7*) metadata) /\ (~b_ctor \/ ~$parameter_default_constructor(S, phpType28, phpType7*, metadata))) \/ (b_ctor /\ $parameter_default_new_ready(S, ptbytes, phpType7*, z))
   -- if $class_constant_constructor_ready(S, ptbytes, phpType7*, b_ctor, z)
@@ -1144,7 +1144,7 @@ def $class_constant_parent_chain(S, porigin_root, porigin, n) = false -- otherwi
 def $class_constant_update_site(S, PORIGIN n pcpath, porigin_root) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew phpType28 phpType6 metadata)
   -- if $code_at(S.CODE, n) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $new_source_name(S, PORIGIN n pcpath) = (ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_root)
 def $class_constant_update_site(S, PORIGIN n pcpath, porigin_root) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)

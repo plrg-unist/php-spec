@@ -41,13 +41,13 @@ dec $parameter_default_noctor(pstate, pnoctorcall) : bool
 dec $parameter_new_prefix(phpType7*) : bool
 dec $noctor_direct_count_at(pstate, pnoctorcall, phpType7*) : nat
 def $noctor_sent_shape(S, pnoctorcall, n_current) = true
-  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if $(pnoctorcall.INDEX <= |phpType7*|)
   -- if phpType7_prefix* = phpType7*[0:pnoctorcall.INDEX]
   -- if ~$call_unpack_present(phpType7_prefix*)
   -- if |pnoctorcall.SENT| = $($noctor_direct_count_at(S, pnoctorcall, phpType7_prefix*) + n_current)
 def $noctor_sent_shape(S, pnoctorcall, n_current) = true
-  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if $(pnoctorcall.INDEX <= |phpType7*|)
   -- if phpType7_prefix* = phpType7*[0:pnoctorcall.INDEX]
   -- if $call_unpack_present(phpType7_prefix*)
@@ -59,7 +59,7 @@ dec $noctor_task_valid(pstate, pnoctorcall, nat) : bool
 def $noctor_task_valid(S, pnoctorcall, n_pending) = true
   -- if S.ORIGIN = (pnoctorcall.SITE)
   -- if pnoctorcall.SITE = PORIGIN n_unit pcpath
-  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $new_source_name(S, pnoctorcall.SITE) = (pnoctorcall.CLASS)
@@ -76,7 +76,7 @@ def $noctor_task_valid(S, pnoctorcall, n_pending) = false -- otherwise
 dec $noctor_argument_valid(pstate, pnoctorcall, bool) : bool
 def $noctor_argument_valid(S, pnoctorcall, b_unpack) = true
   -- if pnoctorcall.SITE = PORIGIN n_unit pcpath
-  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if $(pnoctorcall.INDEX < |phpType7*|)
   -- if phpType7*[pnoctorcall.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN b_unpack) metadata_arg
   -- if $code_at(S.CODE, n_unit) = (pcode)
@@ -111,17 +111,17 @@ dec $noctor_arg_origin(pnoctorcall) : porigin?
 def $noctor_arg_origin(pnoctorcall) = $origin_child((pnoctorcall.SITE), [PCFIELD 1, PCINDEX pnoctorcall.INDEX, PCFIELD 1])
 dec $noctor_arg_line(pstate, pnoctorcall) : int
 def $noctor_arg_line(S, pnoctorcall) = $runtime_line(S, [PCFIELD 1, PCINDEX pnoctorcall.INDEX, PCFIELD 1], expression)
-  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if phpType7*[pnoctorcall.INDEX] = NArg phpType3 expression phpType4_ref phpType4_unpack metadata_arg
 
 dec $noctor_start_ready(pstate, preqbytes, phpType7*, int) : pstate
 def $noctor_start_ready(S, preqbytes, phpType7*, z) = S_new[.TODO = (NOCTOR_ARGS {SITE porigin, CLASS preqbytes, OBJECT n, ARGUMENTS phpType7*, INDEX 0, SENT eps, LINE z}) :: S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.ORIGIN = (porigin)
-  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new = $new_class(S, preqbytes, $new_allocation_line(S, z))
   -- if S_new.COMPLETION = NORMAL
   -- if S_new.RESULT = KNOWN (POBJECT n)
 def $noctor_start_ready(S, preqbytes, phpType7*, z) = S_new
-  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new = $new_class(S, preqbytes, $new_allocation_line(S, z))
   -- if S_new.COMPLETION =/= NORMAL
 
 rule PhpStep/new-class-arguments: S ~> $noctor_start(S[.TODO = ptask_tail*], preqbytes, phpType7*, $runtime_line(S, eps, NExprNew name (SEQUENCE phpType7*) metadata))
