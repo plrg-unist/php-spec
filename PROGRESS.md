@@ -13,7 +13,7 @@ path and the preceding compiler line. Main/include delivery reuses230 whole-unit
 publication, genuine private emitter scope, live mask/display fallback and throw
 cleanup. Five exact source/profile comparisons, SL242, 24 syntax/encoding profiles
 with320 checks and37 compiler/certificate premises pass atfa084. Actual256 parent
-preservation keeps244 modules, including accepted258, without renewing those cuts. Original compiler and
+preservation keeps243 modules without renewing those cuts. Original compiler and
 fixture parse stops stay zero-credit in the
 [ledger](coverage/semantics/dollar-curly-review.json). Five early-eval native pins
 remain required for the genuine partial-compilation continuation after236; wider
@@ -226,7 +226,8 @@ aborts later assignment or call. Typed/Stringable conversion preserves pending
 exceptions. Independent source33 (author6 subset) and six reached state groups286
 pass at unchanged15155; preparation and incorrect owner assertions are retained
 without extra credit in the [access ledger](coverage/semantics/trait-property-access-review.json).
-Actual accepted core routes are preserved separately. Effectful collisions and
+Actual accepted core routes, including258, are preserved in244 modules without
+renewing those cuts. Effectful collisions and
 deferred-value comparison before type conversion259, readonly storage and enum
 semantics remain required; the trait family stays open.
 
