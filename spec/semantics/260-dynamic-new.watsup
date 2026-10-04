@@ -120,10 +120,11 @@ def $dynamic_new_entered(S, pcalltarget, porigin) = true
   -- if pcallcontext.CALLSITE = (porigin)
 def $constructor_source_name(S, pcalltarget, porigin) = $new_source_name($constant_frame_scope(S, pframe, pframe_tail*), porigin)
   -- if $dynamic_new_entered(S, pcalltarget, porigin)
+  -- if pcalltarget = METHOD_TARGET n porigin_method
   -- if S.FRAMES = pframe :: pframe_tail*
-def $constructor_source_name(S, pcalltarget, porigin) = eps
-  -- if $dynamic_new_entered(S, pcalltarget, porigin)
-  -- if S.FRAMES = eps
+  -- if pframe.ORIGIN = (porigin)
+  -- if pframe.TODO = (CTOR_RESULT n) :: ptask_tail*
+def $constructor_source_name(S, pcalltarget, porigin) = eps -- otherwise
 
 rule PhpStep/dynamic-new-selector: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), DYNAMIC_NEW_CLASS z z_fetch] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (EVAL (NExprNew expression (SEQUENCE phpType7*) metadata)) :: ptask_tail*
