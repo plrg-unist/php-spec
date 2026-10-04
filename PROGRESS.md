@@ -208,8 +208,14 @@ scope/binding evidence after pruning. Nested creation copies its immediate
 creator's body, scope, receiver and nullable callsite, including error and
 terminal callbacks; ordinary method ancestry stays exact. Nine new source
 agreements and bound69 premises pass atd6bc09789; handler58/terminal35 pass at
-860a8a19a after one fixture ordinal-binding repair. Instance/object defaults and
-wider reference/creation consumers remain required next work.
+860a8a19a after one fixture ordinal-binding repair. Temporary Closure::call child
+creation now retains authentic source/receiver scope after maker collection;
+nonstatic children keep the receiver and static children keep only nonowning
+evidence. Five source agreements/global77 pass at e32dcc64a, affected callback81
+at49d0b9579 after making ordinary/copied scope rules disjoint, and a fresh
+same-class source/35 atadbfde09e: six sources/193 premises total. The original
+validator failure is retained. Instance/object defaults and wider consumers
+remain required next work.
 
 
 Private and protected method arrays and class-method strings support callable
