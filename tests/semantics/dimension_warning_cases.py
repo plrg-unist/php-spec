@@ -72,4 +72,29 @@ function missingAfterCast233($level,$message,$file,$line) {
 set_error_handler('missingAfterCast233',8194);$result233=$a233[null];
 echo "R:",$result233===null?1:0,":",$a233[''],":",$keep233[''],";";restore_error_handler();
 ''', b'D;U:1;R:1:17:31;', 'normal'),
+    # Exact independent native originals; only their new model checks are run.
+    ('nan-conversion-keeps-protection-across-both-notices', b'''<?php
+error_reporting(0);$seed233=5;$a233=[0=>$seed233];$key233=NAN;
+function nanKey233($level,$message,$file,$line) {
+    if($level===2) {$GLOBALS['a233'][0]=17;$GLOBALS['key233']=7.5;echo "W:",$message==='The float NAN is not representable as an int, cast occurred'?1:0,":",$line===7?1:0,";";return false;}
+    $GLOBALS['a233'][0]=23;echo "D:",$message==='Implicit conversion from float NAN to int loses precision'?1:0,":",$line===7?1:0,";";return true;
+}
+set_error_handler('nanKey233',8194);$read233=$a233[$key233];
+echo "R:",$read233===null?1:0,":",$a233[0],":",$key233,";";restore_error_handler();
+''', b'W:1:1;D:1:1;R:1:23:7.5;', 'normal'),
+    ('nan-first-notice-throw-preserves-priority-and-destination', b'''<?php
+error_reporting(0);$seed233=5;$a233=[0=>$seed233];$key233=NAN;
+class NanDestination233 {public static int $value=9;}$destination233=&NanDestination233::$value;
+$older233=new Error('older');$pending233=new Error('handler',0,$older233);
+function throwNan233($level,$message,$file,$line) {
+    if($level===2) {echo "W;";unset($GLOBALS['a233'],$GLOBALS['key233'],$GLOBALS['older233']);throw $GLOBALS['pending233'];}
+    echo "D;";return true;
+}
+set_error_handler('throwNan233',8194);
+try {$destination233=$a233[$key233];} catch(Error $e) {
+    echo "C:",$destination233,":",$e===$pending233?1:0,":";unset($pending233);
+    echo $e->getMessage(),":",$e->getPrevious()->getMessage(),";";
+}
+restore_error_handler();
+''', b'W;C:9:1:handler:older;', 'normal'),
 ]

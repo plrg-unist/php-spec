@@ -3,6 +3,8 @@
 dec $key_test_mode(pkeymode) : bool
 dec $key_selected_key(pvalue) : pkey?
 dec $key_float_phase(pkeyphase) : bool
+dec $key_float_more(pkeyphase) : bool
+dec $key_notice_suffix(castnotice*, castnotice*) : bool
 dec $key_held_operand(poperand) : bool
 dec $key_runtime_operand(poperand) : bool
 dec $key_is_array(pvalue) : bool
@@ -52,8 +54,14 @@ def $key_selected_key(PFLOAT n_bits) = (KINT i) -- if (i, castnotice*) = $float_
 def $key_selected_key(PSTRING n_name*) = (KINT i) -- if $string_key(n_name*) = INTEGERKEY i
 def $key_selected_key(PSTRING n_name*) = (KSTRING n_name*) -- if $string_key(n_name*) = STRINGKEY
 def $key_selected_key(pvalue) = eps -- otherwise
-def $key_float_phase(KEY_FLOAT castnotice) = true
+def $key_float_phase(KEY_FLOAT castnotice castnotice_tail*) = true
 def $key_float_phase(pkeyphase) = false -- otherwise
+def $key_float_more(KEY_FLOAT castnotice castnotice_tail*) = (castnotice_tail* =/= eps)
+def $key_float_more(pkeyphase) = false -- otherwise
+def $key_notice_suffix(castnotice*, castnotice*) = true
+def $key_notice_suffix(castnotice :: castnotice_tail*, castnotice_selected*) = $key_notice_suffix(castnotice_tail*, castnotice_selected*)
+  -- if castnotice :: castnotice_tail* =/= castnotice_selected*
+def $key_notice_suffix(eps, castnotice_selected*) = false -- if castnotice_selected* =/= eps
 def $key_held_operand(KNOWN pvalue) = true
 def $key_held_operand(REFERENCE n) = true
 def $key_held_operand(poperand) = false -- otherwise
@@ -219,10 +227,10 @@ def $key_read_dimension(S, poperand, z, pkeymode) = S_key
 def $key_dimension_value(S, pkeyread) = $key_read_dispatch(S, pkeyread[.PHASE = KEY_NULL][.KEY = KSTRING eps])
   -- if pkeyread.BASE = PARRAY n
   -- if pkeyread.VALUE = PNULL
-def $key_dimension_value(S, pkeyread) = $key_read_dispatch(S, pkeyread[.PHASE = KEY_FLOAT castnotice][.KEY = KINT i])
+def $key_dimension_value(S, pkeyread) = $key_read_dispatch(S, pkeyread[.PHASE = KEY_FLOAT castnotice castnotice_tail*][.KEY = KINT i])
   -- if pkeyread.BASE = PARRAY n
   -- if pkeyread.VALUE = PFLOAT n_bits
-  -- if (i, [castnotice]) = $float_long(n_bits, true)
+  -- if (i, castnotice :: castnotice_tail*) = $float_long(n_bits, true)
 def $key_dimension_value(S, pkeyread) = $key_array_lookup(S_key, pkeyread[.KEY = S_key.KEY])
   -- if pkeyread.BASE = PARRAY n
   -- if pkeyread.VALUE =/= PNULL
@@ -297,17 +305,18 @@ def $key_read_live(S, pkeyread) = ((HARRAY n) <- S.ALLOCATIONS)
   -- if ~$key_read_protect(pkeyread)
 def $key_read_live(S, pkeyread) = true -- if ~$key_is_array(pkeyread.BASE)
 
-def $key_read_level(pkeyread) = 8192 -- if pkeyread.PHASE = KEY_NULL \/ pkeyread.PHASE = KEY_FLOAT PRECISIONLOSS
+def $key_read_level(pkeyread) = 8192 -- if pkeyread.PHASE = KEY_NULL
+def $key_read_level(pkeyread) = 8192 -- if pkeyread.PHASE = KEY_FLOAT PRECISIONLOSS castnotice_tail*
 def $key_read_level(pkeyread) = 2 -- otherwise
 def $key_read_message(pkeyread) = $ptascii("Undefined variable $") ++ pkeyread.NAME -- if pkeyread.PHASE = KEY_CV
 def $key_read_message(pkeyread) = $ptascii("Using null as an array offset is deprecated, use an empty string instead") -- if pkeyread.PHASE = KEY_NULL
 def $key_read_message(pkeyread) = $ptascii("Array to string conversion") -- if pkeyread.PHASE = KEY_ARRAY_NAME
 def $key_read_message(pkeyread) = $ptascii("Implicit conversion from float ") ++ n_text* ++ $ptascii(" to int loses precision")
-  -- if pkeyread.PHASE = KEY_FLOAT PRECISIONLOSS
+  -- if pkeyread.PHASE = KEY_FLOAT PRECISIONLOSS castnotice_tail*
   -- if pkeyread.VALUE = PFLOAT n_bits
   -- if (n_text*, b) = $number_text(NFLOAT n_bits, $(-1))
 def $key_read_message(pkeyread) = $ptascii("The float ") ++ n_text* ++ $ptascii(" is not representable as an int, cast occurred")
-  -- if pkeyread.PHASE = KEY_FLOAT RANGEWARNING
+  -- if pkeyread.PHASE = KEY_FLOAT RANGEWARNING castnotice_tail*
   -- if pkeyread.VALUE = PFLOAT n_bits
   -- if (n_text*, b) = $number_text(NFLOAT n_bits, $(-1))
 def $key_read_message(pkeyread) = $ptascii("Undefined global variable $") ++ pkeyread.NAME -- if pkeyread.PHASE = KEY_MISSING -- if pkeyread.GLOBAL
@@ -317,9 +326,12 @@ def $key_read_event(pkeyread) = DIAGNOSTIC "Deprecated" $key_read_message(pkeyre
 def $key_read_event(pkeyread) = DIAGNOSTIC "Warning" $key_read_message(pkeyread) pkeyread.LINE -- if $key_read_level(pkeyread) = 2 -- if pkeyread.PHASE =/= KEY_CV
 def $key_read_dispatch(S, pkeyread) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $key_read_level(pkeyread), $key_read_message(pkeyread), pkeyread.LINE, $key_read_event(pkeyread), KEY_READ_RESULT pkeyread)
 
-;; Resume releases the protection before the next conversion/lookup. The old
-;; table can disappear even though a callback-created copy remains live.
+;; Float conversion holds the same protection through all of its notices.
+;; After conversion, the old table can disappear despite a callback-created copy.
+def $key_read_resume(S, pkeyread) = $key_read_dispatch(S, pkeyread[.PHASE = KEY_FLOAT castnotice_next castnotice_tail*])
+  -- if pkeyread.PHASE = KEY_FLOAT castnotice (castnotice_next :: castnotice_tail*)
 def $key_read_resume(S, pkeyread) = $key_read_done(S, PNULL)
+  -- if ~$key_float_more(pkeyread.PHASE)
   -- if ~$key_read_live(S, pkeyread)
 def $key_read_resume(S, pkeyread) = $key_global_value(S, pkeyread.INPUT, pvalue, pkeyread.LINE, pkeyread.MODE)
   -- if pkeyread.GLOBAL
@@ -331,12 +343,13 @@ def $key_read_resume(S, pkeyread) = $key_global_lookup(S, pkeyread.INPUT, pkeyre
   -- if pkeyread.PHASE = KEY_ARRAY_NAME
 def $key_read_resume(S, pkeyread) = $key_read_done(S, PNULL)
   -- if pkeyread.PHASE = KEY_MISSING
+  -- if $key_read_live(S, pkeyread)
 def $key_read_resume(S, pkeyread) = $key_dimension_value(S, pkeyread[.PHASE = KEY_NULL][.VALUE = PNULL][.NAME = eps])
   -- if ~pkeyread.GLOBAL
   -- if pkeyread.PHASE = KEY_CV
   -- if $key_read_live(S, pkeyread)
 def $key_read_resume(S, pkeyread) = $key_array_lookup(S, pkeyread)
-  -- if pkeyread.PHASE = KEY_NULL \/ $key_float_phase(pkeyread.PHASE)
+  -- if pkeyread.PHASE = KEY_NULL \/ ($key_float_phase(pkeyread.PHASE) /\ ~$key_float_more(pkeyread.PHASE))
   -- if $key_read_live(S, pkeyread)
 rule PhpStep/key-read-resume: S ~> $key_read_resume(S, pkeyread)
   -- if S.TODO = (KEY_READ_RESULT pkeyread) :: ptask_tail*
@@ -368,9 +381,10 @@ def $key_read_shape(pkeyread) = (pkeyread.INPUT = VARIABLE pkeyread.NAME pkeyrea
 def $key_read_shape(pkeyread) = (~pkeyread.GLOBAL /\ $key_is_array(pkeyread.BASE) /\ pkeyread.VALUE = PNULL /\ pkeyread.KEY = KSTRING eps)
   -- if pkeyread.PHASE = KEY_NULL
 def $key_read_shape(pkeyread) = (~pkeyread.GLOBAL /\ $key_is_array(pkeyread.BASE) /\ pkeyread.KEY = KINT i)
-  -- if pkeyread.PHASE = KEY_FLOAT castnotice
+  -- if pkeyread.PHASE = KEY_FLOAT castnotice castnotice_tail*
   -- if pkeyread.VALUE = PFLOAT n_bits
-  -- if $float_long(n_bits, true) = (i, [castnotice])
+  -- if $float_long(n_bits, true) = (i, castnotice_all*)
+  -- if $key_notice_suffix(castnotice_all*, castnotice :: castnotice_tail*)
 def $key_read_shape(pkeyread) = (pkeyread.GLOBAL /\ $key_is_array(pkeyread.VALUE) /\ pkeyread.NAME = $ptascii("Array"))
   -- if pkeyread.PHASE = KEY_ARRAY_NAME
 def $key_read_shape(pkeyread) = (pkeyread.MODE = KEY_R /\ (pkeyread.GLOBAL \/ $key_is_array(pkeyread.BASE)))

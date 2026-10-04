@@ -1,7 +1,8 @@
-"""Compile three reached key-warning ownership and cleanup witnesses."""
+"""Compile selected reached key-warning ownership and cleanup witnesses."""
 from pathlib import Path
 import base64
 import json
+import sys
 import tempfile
 from recorded_worker import Worker
 from dimension_warning_cases import CASES as SOURCES
@@ -26,8 +27,11 @@ def main():
         '.tools/php/bin/php', '.tools/php-file.so')}
     modules = [str(ROOT / p) for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     rows, failure = [], None
+    selected = set(sys.argv[1:]) or {c[0] for c in CASES}
     try:
         for name, source_id, stage, checks in CASES:
+            if name not in selected:
+                continue
             directory = out / name
             directory.mkdir()
             _, source, expected, _ = next(c for c in SOURCES if c[0] == source_id)
@@ -67,7 +71,7 @@ def main():
         failure = {'type': type(error).__name__, 'message': str(error)}
     stable = watched == {p: describe(p) for p in watched}
     current = revision()
-    passed = failure is None and len(rows) == len(CASES) and all(r['passed'] for r in rows) and stable and head == current
+    passed = failure is None and len(rows) == len(selected) and all(r['passed'] for r in rows) and stable and head == current
     (out / 'report.json').write_text(json.dumps({'passed': passed, 'scope': 'compiler only; no target/model/state',
         'revision': head, 'inputs': watched, 'records': rows, 'failure': failure,
         'revision_after': current, 'inputs_stable': stable}, indent=2) + '\n')
