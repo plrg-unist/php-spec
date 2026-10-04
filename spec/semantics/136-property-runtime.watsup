@@ -52,11 +52,11 @@ def $property_default_state(S, ppropertydesc) = (PROP_VALUE (DIRECT $property_de
 def $property_default_state(S, ppropertydesc) = eps
   -- if ppropertydesc.DEFAULT = PROP_STORED porigin
   -- if $pool_value(S.POOLS, porigin) = eps
-def $property_initial_slots(S, eps) = (eps)
-def $property_initial_slots(S, ppropertydesc :: ppropertydesc_tail*) = ({ DECL (ppropertydesc.ORIGIN), NAME ppropertydesc.KEY, STATE ppropstate } :: ppropertyslot_tail*)
-  -- if $property_default_state(S, ppropertydesc) = (ppropstate)
-  -- if $property_initial_slots(S, ppropertydesc_tail*) = (ppropertyslot_tail*)
-def $property_initial_slots(S, ppropertydesc*) = eps -- otherwise
+def $property_initial_slots(S, porigin_class, eps) = (eps)
+def $property_initial_slots(S, porigin_class, ppropertydesc :: ppropertydesc_tail*) = ({ DECL (ppropertydesc.ORIGIN), NAME ppropertydesc.KEY, STATE ppropstate } :: ppropertyslot_tail*)
+  -- if $property_template_state(S, porigin_class, ppropertydesc) = (ppropstate)
+  -- if $property_initial_slots(S, porigin_class, ppropertydesc_tail*) = (ppropertyslot_tail*)
+def $property_initial_slots(S, porigin_class, ppropertydesc*) = eps -- otherwise
 
 def $objectprops_at(eps, n) = eps
 def $objectprops_at(pobjectprops :: pobjectprops_tail*, n) = (pobjectprops.SLOTS)
@@ -293,7 +293,7 @@ def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_comp
 def $property_live_complete(S, (HCELL n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
 def $property_live_complete(S, (HARRAY n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
 def $property_live_complete(S, pnode*) = false -- otherwise
-def $property_state_valid(S) = ($reference_coercions_valid(S) /\ $parameter_backings_valid(S) /\ $objectprops_valid(S, S.OBJECTPROPS) /\ $property_live_complete(S, S.ALLOCATIONS) /\ $proprefs_valid(S) /\ $propref_slots_covered(S, S.OBJECTPROPS))
+def $property_state_valid(S) = ($instance_default_state_valid(S) /\ $reference_coercions_valid(S) /\ $parameter_backings_valid(S) /\ $objectprops_valid(S, S.OBJECTPROPS) /\ $property_live_complete(S, S.ALLOCATIONS) /\ $proprefs_valid(S) /\ $propref_slots_covered(S, S.OBJECTPROPS))
 
 dec $internal_property_write(pstate) : bool
 dec $property_strict(pstate) : bool

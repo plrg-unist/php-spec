@@ -394,8 +394,9 @@ undefined method names. The [221 ledger](../../coverage/semantics/keyword-compou
 records source comparisons, independent counterexamples, paused states and failures.
 Module234 adds actual [`Closure::fromCallable`](FROM-CALLABLE.md) selection and
 invocation with durable capture permission, cached methods and genuine receivers.
-Default/variadic reception, other internal consumers and user-return warning
-ingress remain required. Unstaged special callable checks stay
+Module248 adds [default and variadic reception](CALLABLE-RECEIVES.md), including
+source-first scalar fallback and real warning/Stringable continuations. Other
+internal consumers and user-return warning ingress remain required. Unstaged special callable checks stay
 Unsupported; kind-changing or shorter retained method buffers, magic/autoload and
 reference-return handlers remain open. Primary rules follow `zend_is_callable_at_frame`,
 `zend_is_callable_check_class` and `zend_is_callable_check_func` in vendored

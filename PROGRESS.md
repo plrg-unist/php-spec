@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Callable default/variadic reception248 now suspends keyword/compound lookup in
+actual receiving frames. Deferred class-constant defaults, named-hole preparation
+and supplied/variadic operands keep their distinct order and ownership. Referenced
+methods/current operands remain live, including borrowed retired arrays. Failed
+lookup checks constrained sources before slow scalar fallback; lossy warnings
+freeze their result and dual-role objects still invoke Stringable. Source23 normal
+and one literal compiler rejection retain758/018/060 cuts; two affected221 sources
+stay separate. Author116, independent180 and affected old hole35 conditions pass
+on018. Actual99a composition keeps created-child default scope after a foreign
+capture retires and passes AL236. Original compiler/fixture failures stay preserved;
+RuntimeException Unsupported controls have zero agreement. The
+[contract](docs/semantics/CALLABLE-RECEIVES.md) and
+[ledger](coverage/semantics/callable-receives-review.json) retain these cutoffs.
+Other internal and user-return consumers remain required; return verification
+stays paused and complete core remains open.
+
 Stringable include/require operands now convert before resolution and once
 checks, retaining the receiver through rebinding and nested eval. Callback writes
 determine subsequent CWD/path lookup; throw completes without file facts or a
@@ -194,8 +210,8 @@ raw keyword/compound calls preserve ordinary PHP lookup errors. The
 records independent pins, affected checks and preserved failures. Actual include,
 cold-static and GLOBALS interactions preserve real USER permission, constrained
 references and captured null; initializer locations retain their declaration owner.
-Default/variadic, other internal and user-return warning consumers remain
-required; unstaged special callable conversion stays Unsupported.
+Default/variadic reception is covered by248 above; other internal and user-return
+warning consumers remain required. Unstaged special conversion stays Unsupported.
 
 `Closure::fromCallable`234 selects and creates durable captures over existing core
 callable forms. Existing Closure inputs preserve identity; method captures freeze
@@ -294,8 +310,15 @@ nonstatic children keep the receiver and static children keep only nonowning
 evidence. Five source agreements/global77 pass at e32dcc64a, affected callback81
 at49d0b9579 after making ordinary/copied scope rules disjoint, and a fresh
 same-class source/35 atadbfde09e: six sources/193 premises total. The original
-validator failure is retained. Instance/object defaults and wider consumers
-remain required next work.
+validator failure is retained. Module246 now owns deferred scalar/array instance
+templates by requested class and declaration, copies actual parent state at link
+time, and fills constants, private-shadow instance layouts and statics before
+allocation. Strict failure/retry and reentry retain once-only fill history;
+objects copy template values and arrays remain owned after object collection.
+Eight exact source agreements pass at80900fa4b; three programs/172 phase, copy
+and ownership premises pass at449b45763 after a fixture source-origin binding
+repair. Original compilation failures remain separate. Object-bearing defaults
+and wider consumers remain required next work.
 
 
 Private and protected method arrays and class-method strings support callable
@@ -429,7 +452,7 @@ failures and interrupted evidence.
 - Values, references and coercion: ordinary internal constructor effects,
   dynamic object `::class`, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred instance/object defaults and
+  broader reference-result consumers. Deferred object-bearing defaults and
   wider Closure creation contexts remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.
