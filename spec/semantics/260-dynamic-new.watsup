@@ -92,6 +92,21 @@ def $dynamic_new_record(S, porigin, pvalue, ptbytes, z, z_fetch) = {SITE porigin
 def $dynamic_new_record(S, porigin, pvalue, ptbytes, z, z_fetch) = {SITE porigin, SOURCE pvalue, CLASS ptbytes, LINE z, FETCHLINE z_fetch, SCOPE $method_context_scope(S.CURRENT), CALLED $dynamic_new_called(S.CURRENT), CLOSURE $closure_evidence_current(S)}
   -- if $dynamic_new_keyword(S, porigin) =/= eps
 dec $dynamic_new_record_scope(pstate, pdynamicnew) : bool
+dec $dynamic_new_property_method_scope(pstate, pmethoddesc, porigin, porigin, pclosurescope) : bool
+def $dynamic_new_property_method_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = false -- otherwise
+dec $dynamic_new_method_receiver(pstate, pmethoddesc, pclosurescope) : bool
+def $dynamic_new_method_receiver(S, pmethoddesc, pclosurescope) = true
+  -- if pmethoddesc.STATIC /\ pclosurescope.RECEIVER = eps
+def $dynamic_new_method_receiver(S, pmethoddesc, pclosurescope) = true
+  -- if ~pmethoddesc.STATIC
+  -- if pclosurescope.RECEIVER = (n_receiver)
+  -- if $(n_receiver < |S.OBJECTS|)
+  -- if S.OBJECTS[n_receiver] = INSTANCE pclosurescope.CALLED
+def $dynamic_new_method_receiver(S, pmethoddesc, pclosurescope) = false -- otherwise
+dec $dynamic_new_method_scope_authorized(pstate, pmethoddesc, porigin, porigin, pclosurescope, pmethodcapture?) : bool
+def $dynamic_new_method_scope_authorized(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope, pmethodcapture?) = true
+  -- if ($method_capture_authorized(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope, pmethodcapture?) /\ $class_constant_parent_chain(S, pclosurescope.CALLED, pmethoddesc.OWNER, |S.CLASSES|) /\ $dynamic_new_method_receiver(S, pmethoddesc, pclosurescope)) \/ $dynamic_new_property_method_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope)
+def $dynamic_new_method_scope_authorized(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope, pmethodcapture?) = false -- otherwise
 def $dynamic_new_record_scope(S, pdynamicnew) = true
   -- if $dynamic_new_keyword(S, pdynamicnew.SITE) = eps
   -- if pdynamicnew.SCOPE = eps /\ pdynamicnew.CALLED = eps /\ pdynamicnew.CLOSURE = eps
@@ -102,6 +117,16 @@ def $dynamic_new_record_scope(S, pdynamicnew) = true
   -- if $class_static_selection_scope_method(S, pdynamicnew.SITE, porigin_scope) = (pmethoddesc)
   -- if pdynamicnew.CALLED = (porigin_called)
   -- if $class_constant_parent_chain(S, porigin_called, pmethoddesc.OWNER, |S.CLASSES|)
+def $dynamic_new_record_scope(S, pdynamicnew) = true
+  -- if $dynamic_new_keyword(S, pdynamicnew.SITE) =/= eps
+  -- if pdynamicnew.CLOSURE = (CLOSURE_SCOPE pclosurescope)
+  -- if pdynamicnew.SCOPE = (pclosurescope.LEXICAL) /\ pdynamicnew.CALLED = (pclosurescope.CALLED)
+  -- if pclosurescope.CREATION = eps
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
+  -- if $class_static_selection_scope_method(S, pdynamicnew.SITE, pclosurescope.LEXICAL) = (pmethoddesc)
+  -- if porigin_method = pmethoddesc.FUNCTION.ORIGIN
+  -- if $dynamic_new_method_scope_authorized(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope, pmethodcapture?)
 def $dynamic_new_record_scope(S, pdynamicnew) = true
   -- if $dynamic_new_keyword(S, pdynamicnew.SITE) =/= eps
   -- if pdynamicnew.CLOSURE = (pclosureevidence)
