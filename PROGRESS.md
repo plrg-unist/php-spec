@@ -16,8 +16,12 @@ fatal diagnostics precede the queue; effectful default message warnings finish
 the builtin cache before pending exception dispatch. Exact registered and
 converted argument views remain separate. Existing176 user formatters retain their
 C return-warning continuation after handled throws; actual237 freezes the live
-display destination after formatting. Author23 source tuples and two/88 state checks retain
-their separate cutoffs, and production stages pass on actual8af.
+display destination after formatting. Imported trait makers preserve using scope
+and physical provenance after retirement. Fatal snapshots retain runtime/compile
+severity before callback mask writes; actual240 default reception retains its
+warning and Stringable owners. Author checks cover 29 source tuples and 149 state
+assertions; independent checks cover 77 tuples and 559 assertions. Each keeps its
+recorded revision, and production stages pass on the accepted fe51 parent.
 [Contract](docs/semantics/SOURCE-SHUTDOWN.md),
 [author/composition record](coverage/semantics/shutdown-functions-review.json),
 [independent ledger](coverage/semantics/shutdown-function-review.json).
@@ -83,8 +87,9 @@ stages/init and the changed adapter build. Actualddb6/233 preservation retains
 225 modules with the reviewed display and dimension-warning routes, without renewed execution.
 The [display ledger](coverage/semantics/display-errors-review.json) separates
 source-defined nullable controls from native profiles. The held shutdown/fatal
-freeze source remains native-only until required actual231 composition; wider
-display directives, parser/profiles and output/lifecycle consumers remain open.
+source matches its independent original at actual231/237 cutccd900: rendering
+selects the fatal destination before queue OFF/Restore writes. This composition
+has its own record; wider display, parser/profiles and request phases remain open.
 
 Registered startup inputs225 provide original `error_reporting` and
 `include_path` bytes before compilation, independently of file/CWD facts.

@@ -147,8 +147,9 @@ remain distinct from live INI values, the reporting mask and CWD.
 [Live display inputs](../../coverage/semantics/display-errors-review.json) retain
 nullable original/live bytes and capture each ordinary diagnostic destination
 after callbacks. The text CLI preserves stdout order and earlier stderr across
-later display writes. Required shutdown fatal freezing remains a separate actual
-lifecycle interaction; wider display directives and INI parsing/profiles stay open.
+later display writes. [Shutdown callbacks](SOURCE-SHUTDOWN.md) freeze the fatal
+destination after rendering and before the queue. Wider display directives,
+INI parsing/profiles and later request stages stay open.
 
 Backticks remain core syntax. Their command construction/dispatch is specified;
 a finite shell service supplies explicit response bytes/failure/effects. Missing

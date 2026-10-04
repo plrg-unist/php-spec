@@ -6,7 +6,8 @@ receiver/Closure and copies the argument values. Scalar references are
 dereferenced; embedded array references stay shared and outer arrays retain
 normal copy-on-write behavior. Private and rebound registration permissions are
 cached; subsequent raw callback mutation or maker retirement does not reselect
-the method. Unknown named arguments are rejected after SEND duplicate checks.
+the method. Imported trait makers retain the using class and physical body proof.
+Unknown named arguments are rejected after SEND duplicate checks.
 
 Registered callbacks run in order after normal completion, exit, uncaught
 exception handling and fatal outcomes, including serviced dynamic compilation
@@ -17,9 +18,10 @@ request's earlier status. Internal by-reference warnings use `Unknown:0` and
 retain the selected callback when a replacement exception handler handles a
 warning handler's throw.
 
-Terminal diagnostics are emitted and frozen before queue entry. Display routing
-is sampled after formatter callbacks; later mode changes cannot reroute a fatal. Later reporting
-or Throwable changes cannot erase them. Admitted scalar/array default Throwable
+Terminal diagnostics capture their severity mask and display destination before
+queue entry, after formatter callbacks. Later reporting, display or Throwable
+writes cannot alter those bytes. Runtime and compiler fatal producers retain
+their distinct error levels. Admitted scalar/array default Throwable
 messages preserve conversion effects; an array message calls the existing error
 handler before freezing. If that warning throws, the
 builtin formatter finishes and caches its string while the exception is pending;

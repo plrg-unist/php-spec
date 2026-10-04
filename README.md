@@ -75,8 +75,9 @@ profile comparisons, 99 state premises and 15 transport controls pass.
 startup bytes, raw get/set/Restore and ordered stdout/stderr/off diagnostics.
 Emission captures its destination after callback effects; later writes retain
 earlier output. Eleven exact comparisons, 76 state premises and 17 transport
-controls pass. Required shutdown fatal freezing awaits the accepted lifecycle
-composition; wider display/startup directives and diagnostic consumers stay open.
+controls pass. The held fatal/shutdown source also matches at the actual231
+composition, freezing its destination after rendering and before the queue.
+Wider display/startup directives and diagnostic consumers stay open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
@@ -332,8 +333,9 @@ separates full source, paused-state and later concat checks. Other internal
 property access and lifecycle integration remain pending.
 [Exit and die](docs/semantics/EXIT.md) support literal, computed, first-class and
 pipe invocation, ordered argument binding, internal error traces and a distinct
-explicit-exit completion. Shutdown/destructor callbacks remain pending; native
-checks compare observable bytes and process status without inferring an exit category.
+explicit-exit completion. Ordered shutdown callbacks follow that completion;
+destructor and later request phases remain required. Native checks compare
+observable bytes and process status without inferring an exit category.
 [Named empty classes](docs/semantics/SOURCE-CLASSES.md) now support early and
 conditional activation, allocate owned objects, and support identity, exact class
 types and literal `instanceof`; their [review](coverage/semantics/object-classes-review.json)
