@@ -15,8 +15,8 @@ AFTER = ['$call_descriptors_valid(S_done)', '$class_state_valid(S_done)',
 CASES = {
     'protected-prototype-direct-caller-scope': {
         'source': SOURCES['protected-prototype-ancestor-direct-selection'],
-        'stage': ('S.TODO = (CALL_ARGS (ARRAY_METHOD_TARGET pcalltarget parrayselection) '
-                  'phpType7* 0 poperand* (porigin_site) z_call) :: ptask_tail*'),
+        'stage': ('S.TODO = (NAMED_ARGS (ARRAY_METHOD_TARGET pcalltarget parrayselection) '
+                  'phpType7* 0 {SLOTS eps, NAMED eps} (porigin_site) z_call) :: ptask_tail*'),
         'checks': [
             'pcalltarget = SCOPE_METHOD_TARGET (METHOD_TARGET n_receiver porigin_run) pcallableaccess',
             'pcallableaccess.SITE = (porigin_site)',
@@ -50,7 +50,7 @@ CASES = {
             '~$scope_target_valid(S, METHOD_TARGET n_receiver porigin_run, pcallableaccess[.SCOPE = (porigin_right)])',
             '~$array_target_identity(S, SCOPE_METHOD_TARGET (METHOD_TARGET n_receiver porigin_run) pcallableaccess[.OBJECT = false], parrayselection)',
             '~$array_target_identity(S, pcalltarget, parrayselection[.NAME = $ptascii("start")])',
-            '~$call_task_valid(S, CALL_ARGS (ARRAY_METHOD_TARGET pcalltarget parrayselection) phpType7* 0 poperand* (porigin_site) $(z_call + 100))',
+            '~$call_task_valid(S, NAMED_ARGS (ARRAY_METHOD_TARGET pcalltarget parrayselection) phpType7* 0 {SLOTS eps, NAMED eps} (porigin_site) $(z_call + 100))',
             'S_done = $drive(S, 3000)',
             'S_done.COMPLETION = NORMAL',
             'S_done.EVENTS = [OUTPUT $ptascii("Right"), OUTPUT $ptascii("/"), OUTPUT $ptascii("Right"), OUTPUT $ptascii(":"), OUTPUT $ptascii("x")]',
