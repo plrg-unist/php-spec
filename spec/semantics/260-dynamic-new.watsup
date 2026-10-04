@@ -190,9 +190,11 @@ rule PhpStep/dynamic-new-finish: S ~> S[.TODO = ptask_tail*]
   -- if S.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*
 
 def $call_task_valid(S, EVAL (NExprNew expression (SEQUENCE phpType7*) metadata)) = $method_source_task(S, NExprNew expression (SEQUENCE phpType7*) metadata)
-def $call_task_valid(S, DYNAMIC_NEW_CLASS z z_fetch) = $dynamic_new_site(S, porigin, z, z_fetch)
+dec $dynamic_new_class_valid(pstate, int, int) : bool
+def $dynamic_new_class_valid(S, z, z_fetch) = $dynamic_new_site(S, porigin, z, z_fetch)
   -- if S.ORIGIN = (porigin)
-def $call_task_valid(S, DYNAMIC_NEW_CLASS z z_fetch) = false -- otherwise
+def $dynamic_new_class_valid(S, z, z_fetch) = false -- otherwise
+def $call_task_valid(S, DYNAMIC_NEW_CLASS z z_fetch) = $dynamic_new_class_valid(S, z, z_fetch)
 dec $dynamic_new_finish_head(pstate, pdynamicnew) : bool
 def $dynamic_new_finish_head(S, pdynamicnew) = true
   -- if S.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*
