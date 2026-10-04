@@ -12,7 +12,8 @@ def $declaration_install(S, pcunit, ppinstalled) = S_installed
 dec $declaration_stop(pstate, ppstate, pcompilestop) : pstate
 dec $iterator_notice_compile_stop(pstate) : pstate
 dec $iterator_notice_compile_finish(pstate, ptask*, nat) : pstate
-def $declaration_stop(S, P, pcompilestop) = $declaration_exit($iterator_notice_compile_stop(S)[.TODO = eps][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, S.COMPLETION, P.FOLD.SOURCE.ID)], P.FOLD.SOURCE.ID, pcompilestop)
+dec $eval_compile_declaration_stop(pstate, nat) : pstate
+def $declaration_stop(S, P, pcompilestop) = $eval_compile_declaration_stop($declaration_exit($iterator_notice_compile_stop(S)[.TODO = eps][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, S.COMPLETION, P.FOLD.SOURCE.ID)], P.FOLD.SOURCE.ID, pcompilestop), P.FOLD.SOURCE.ID)
 
 dec $declaration_class_checkpoint(pstate, pclassdesc, pdeclprobe) : pstate
 def $declaration_class_checkpoint(S, pclassdesc, DECLREADY) = $activate_class(S, pclassdesc)

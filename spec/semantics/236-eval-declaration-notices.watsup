@@ -62,6 +62,7 @@ dec $eval_compile_trace_context_unit(pevalcontext*, nat) : pevalcontext*
 dec $eval_compile_formatter_userfatal(pstate, pevalcompilefatal, ptask) : pstate
 dec $eval_compile_stop_result(pstate, pevalcompile) : pstate
 dec $eval_compile_formatter_hard(pstate, pevalcompilefatal, nat) : pstate
+dec $eval_compile_formatter_file_hard(pstate, pevalcompilefatal, pfilecontext, pfilecontext*) : pstate
 
 
 
@@ -156,6 +157,18 @@ def $eval_compile_stop_result(S, pevalcompile) = $eval_compile_formatter_hard(S,
   -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
   -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= pevalcompile.PLAN.UNIT
 def $eval_compile_stop_result(S, pevalcompile) = $eval_compile_fatal_pending(S, pevalcompile) -- otherwise
+;; A hard file compilation inside the source formatter also bails out to the
+;; already recorded primary fatal. Its own source segment still ends normally
+;; in the declaration ledger; only its compiling include frame is removed.
+def $eval_compile_declaration_stop(S, n) = $eval_compile_formatter_file_hard(S, pevalcompilefatal, pfilecontext, pfilecontext_tail*)
+  -- if $iterator_notice_link_fatal(S.COMPLETION)
+  -- if $file_binding_at(S.FILEBINDINGS, n) =/= eps
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.UNIT = (n)
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+  -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= n
+def $eval_compile_declaration_stop(S, n) = S -- otherwise
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.SERVICELEFT = eps]
   -- if S_compiled.COMPLETION = REQUESTFATAL ptbytes_class ptbytes_message z
   -- if ~S_compiled.COMPILESTOP
@@ -164,6 +177,15 @@ def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_co
   -- if $shutdown_compiler_snapshot(pevalcompilefatal.COMPLETION) = (S_compiled.COMPLETION)
   -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= pevalcontext.UNIT
   -- if $eval_context_at(S_compiled.EVALCONTEXTS, pevalcontext.UNIT) = eps
+def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.SERVICELEFT = eps]
+  -- if S_compiled.COMPLETION = REQUESTFATAL ptbytes_class ptbytes_message z
+  -- if ~S_compiled.COMPILESTOP
+  -- if $eval_compile_fatal_current(S_compiled) = (pevalcompilefatal)
+  -- if $eval_compile_fatal_valid(S_compiled, pevalcompilefatal)
+  -- if $shutdown_compiler_snapshot(pevalcompilefatal.COMPLETION) = (S_compiled.COMPLETION)
+  -- if pfilecontext.UNIT = (n)
+  -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= n
+  -- if ~$file_context_unit_present(S_compiled.FILECONTEXTS, n)
 
 ;; The marker suffix retains the actual eval caller while callbacks run.
 def $eval_compile_work((DECL_NOTICES pdeclnoticebatch) :: (EVAL_COMPILE_RESUME pevalcompile) :: ptask*, ptask_tail*) = [DECL_NOTICES pdeclnoticebatch, EVAL_COMPILE_RESUME pevalcompile] ++ ptask*
@@ -312,6 +334,18 @@ def $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, n_nex
   -- if pdeclaration_tail* = pdeclaration*[n_count:n_remaining]
   -- if (S.COMPLETION = S_compiled.COMPLETION /\ S.ERRORORIGIN = S_compiled.ERRORORIGIN) \/ $shutdown_compiler_released(S, S_compiled) \/ $eval_compile_fatal_certificate(S, S_compiled) \/ $eval_compile_reported(S, S_compiled) \/ $eval_compile_fatal_certificate(S, S_prefix) \/ $eval_compile_reported(S, S_prefix)
 def $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = false -- otherwise
+def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_fold(S, $eval_compile_history_carry(S_prefix, S_compiled[.TODO = eps]), (n, P)*, pdeclaration_tail*, $(n_next + 1))
+  -- if $declaration_stop_terminal(S_compiled.COMPLETION)
+  -- if ~$shutdown_compiler_released(S, S_compiled)
+  -- if $iterator_notice_link_fatal(S_prefix.COMPLETION)
+  -- if $eval_compile_reported(S, S_prefix) \/ $shutdown_compiler_released(S, S_prefix)
+  -- if n_prefix = $nabs($(|S_prefix.DECLARATIONS| + 1))
+  -- if $(n_prefix <= |S_compiled.DECLARATIONS|)
+  -- if n_count = $nabs($(|S_compiled.DECLARATIONS| - n_prefix))
+  -- if $(n_count <= |pdeclaration*|)
+  -- if S_compiled.DECLARATIONS[n_prefix:n_count] = pdeclaration*[0:n_count]
+  -- if n_remaining = $nabs($(|pdeclaration*| - n_count))
+  -- if pdeclaration_tail* = pdeclaration*[n_count:n_remaining]
 ;; Only an earlier reconstructed hard prefix can remain primary when a real
 ;; formatter publishes declarations or compiles a later, independently checked
 ;; unit. Ordinary replay steps still enter their producers with NORMAL.
@@ -568,6 +602,9 @@ def $eval_compile_formatter_userfatal(S, pevalcompilefatal, ptask_resume) = $eva
   -- if S_report = $iterator_notice_default(S_trace, pevalcompilefatal.PREFIX)
 def $eval_compile_formatter_hard(S, pevalcompilefatal, n_unit) = $eval_compile_primary_report(S_report[.ERRORORIGIN = pevalcompilefatal.ORIGIN][.TODO = eps][.TRACE = S_trace.TRACE], pevalcompilefatal.COMPLETION, true)
   -- if S_trace = $eval_compile_stop_context(S, n_unit)
+  -- if S_report = $iterator_notice_default(S_trace, pevalcompilefatal.PREFIX)
+def $eval_compile_formatter_file_hard(S, pevalcompilefatal, pfilecontext, pfilecontext_tail*) = $eval_compile_primary_report(S_report[.ERRORORIGIN = pevalcompilefatal.ORIGIN][.TODO = eps][.TRACE = S_trace.TRACE], pevalcompilefatal.COMPLETION, true)
+  -- if S_trace = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = eps][.SERVICELEFT = eps][.ORIGIN = (pfilecontext.SITE)][.TRACE = $eval_exception_trace(S[.FILECONTEXTS = pfilecontext_tail*][.ORIGIN = (pfilecontext.SITE)])]
   -- if S_report = $iterator_notice_default(S_trace, pevalcompilefatal.PREFIX)
 
 ;; The formatter is called from the actual eval ingress. Its completed compiler
