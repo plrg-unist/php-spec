@@ -205,6 +205,7 @@ def $trait_notice_cache_item(S, CCCACHE porigin porigin_trigger n, n_prefix) = [
 def $trait_notice_cache_item(S, pclassconstantevent, n_prefix) = eps -- otherwise
 dec $trait_notice_cache_prefix(pstate, pclassconstantevent*, nat) : pdefaultcache*
 dec $trait_cache_notice_prefix(pstate, pclassconstantevent*, porigin, nat) : pdefaultcache*
+dec $trait_cache_preinherit(pstate, porigin) : pstate
 def $trait_notice_cache_prefix(S, eps, n_prefix) = eps
 def $trait_notice_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix) = $trait_notice_cache_item(S, pclassconstantevent, n_prefix) ++ $trait_notice_cache_prefix(S, pclassconstantevent_tail*, n_prefix)
 dec $trait_notice_plan(pstate, porigin, nat, nat) : pdeclnoticeitem*?
@@ -213,7 +214,7 @@ def $trait_notice_plan(S, porigin, n_prefix, n_user) = ($iterator_notice_seeds(S
   -- if $iterator_notice_publication_index(S.DECLARATIONS, porigin, 0) = (n_prefix)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc_raw = pclassdesc[.PROPERTIES = $trait_notice_own_properties(pclassdesc.PROPERTIES)][.CONSTANTS = $trait_notice_own_constants(pclassdesc.CONSTANTS)][.METHODS = $trait_notice_own_methods(pclassdesc.METHODS, porigin)]
-  -- if S_before = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_raw)][.CLASSNAMES = $trait_notice_names(S, S.DECLARATIONS[0:n_prefix])][.CLASSCONSTANTCACHE = $trait_cache_notice_prefix(S, S.CLASSCONSTANTHISTORY, porigin, n_prefix)][.USERCONSTANTS = S.USERCONSTANTS[0:n_user]][.DECLARATIONS = S.DECLARATIONS[0:n_prefix]][.TODO = eps][.COMPLETION = NORMAL]
+  -- if S_before = $trait_cache_preinherit(S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_raw)][.CLASSNAMES = $trait_notice_names(S, S.DECLARATIONS[0:n_prefix])][.CLASSCONSTANTCACHE = $trait_cache_notice_prefix(S, S.CLASSCONSTANTHISTORY, porigin, n_prefix)][.USERCONSTANTS = S.USERCONSTANTS[0:n_user]][.DECLARATIONS = S.DECLARATIONS[0:n_prefix]][.TODO = eps][.COMPLETION = NORMAL], porigin)
   -- if $trait_fetch(S_before, $trait_plan(S_before, pclassdesc_raw).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
   -- if ptraitplan = $trait_plan(S_before, pclassdesc_raw)
   -- if $trait_exclusions(S_before, pclassdesc_raw, pclassdesc_traits*, ptraitplan.PRECEDENCES, eps) = TRAITEXCLUSIONS (ptbytes_trait, ptbytes_method)*
