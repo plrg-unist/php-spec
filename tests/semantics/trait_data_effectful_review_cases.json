@@ -59,7 +59,7 @@
       "native_raw_sha256": "4b1415b9fe9b9589aafa6edbc1ad54e63aafb995ca4052b31284dd450aabb1e8"
     },
     {
-      "id": "effectful-constant-handler-cannot-call-unpublished-consuming-class",
+      "id": "effectful-constant-handler-can-call-consuming-class-method",
       "source": "<?php set_error_handler(function($n,$m){echo \"H;\";try{C::marker();}catch(Error $e){echo \"UNLINKED;\";}return true;});trait T{public const X=E_STRICT;}echo \"PRE;\";class C{use T;public const X=2048;public static function marker(){echo \"M;\";}}echo \"POST;\";C::marker();echo C::X;",
       "source_sha256": "0a1daf8a1e03a6cacd52c8cd4ddbd21e2a7eb411a510b757df2051422ae98574",
       "status": "normal",
@@ -112,6 +112,50 @@
       "exit_status": 255,
       "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-effectful-native-next-hxou4vt7/report.json",
       "native_raw_sha256": "8999d205128085b0c43ecd78b3f5fec1fd96fbeaa574023eaa191a9f0c8bf5ce"
+    },
+    {
+      "id": "property-callback-throw-keeps-successfully-composed-class",
+      "source": "<?php set_error_handler(function($n,$m){echo \"H;\";throw new Exception(\"STOP\");});trait T{public static $x=E_STRICT;}echo \"PRE;\";try{class C{use T;public static $x=2048;public static function marker(){echo \"M;\";}}}catch(Exception $e){echo \"CAUGHT;\";}restore_error_handler();C::marker();echo C::$x;",
+      "source_sha256": "ebd983ac55bc8123bb78201c4e7102e1fdd63ac0766b7f9274bd0e9b15e95e6d",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7Q0FVR0hUO007MjA0OA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-effectful-data-259/.tools/trait-collision-native259-1le7lrm1/report.json",
+      "native_raw_sha256": "67e0b096459c8f644efaacf2ec90faae881c9db8c1561c6588a827a516e62373"
+    },
+    {
+      "id": "property-pending-exception-skips-second-handler-but-completes-comparison",
+      "source": "<?php set_error_handler(function($n,$m){echo \"H;\";throw new Exception(\"STOP\");});trait T{public static $x=E_STRICT;}echo \"PRE;\";try{class C{use T;public static $x=E_STRICT;public static function marker(){echo \"M;\";}}}catch(Exception $e){echo \"CAUGHT;\";}restore_error_handler();C::marker();echo C::$x;",
+      "source_sha256": "433ba53e089177363394bf8b1da26b4de0f1ba89166a5bbea138c4cc987ee1ba",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7Q0FVR0hUO007MjA0OA==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAxCg==",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-effectful-data-259/.tools/trait-collision-native259-1le7lrm1/report.json",
+      "native_raw_sha256": "085aa4f19e89dd96fdcb4e3000200739163ff542289365c374826a197fe70bfa"
+    },
+    {
+      "id": "property-deferred-int-versus-float-is-strict-before-type-update",
+      "source": "<?php trait T{public static float $x=self::Y;}echo \"PRE;\";class C{use T;public const Y=1;public static float $x=1.0;}echo \"POST;\";",
+      "source_sha256": "4a8c4707bbecccbb6b773eb35b96bd2cdc3ce685e4db742c035b646ae1759449",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-effectful-data-259/.tools/trait-collision-type-native259-mybsnohx/report.json",
+      "native_raw_sha256": "5da638a5bd6293c46b3c697f31e73a53d05dc6a71449792e14d51acd829cd8ce"
+    },
+    {
+      "id": "constant-deferred-int-versus-float-is-strict-before-type-update",
+      "source": "<?php trait T{public const float X=self::Y;}echo \"PRE;\";class C{use T;public const Y=1;public const float X=1.0;}echo \"POST;\";",
+      "source_sha256": "5650956ab32b059a580d03dd9710563bb82b9a1a2a6702011a5c007b30e5d9bb",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIGNvbnN0YW50IChYKSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-effectful-data-259/.tools/trait-collision-type-native259-mybsnohx/report.json",
+      "native_raw_sha256": "170914cf2c26ce759d0877346813e13f09206a9750cbf82c55b8e06dc56da8ba"
     }
   ]
 }
