@@ -1,0 +1,29 @@
+{
+  "cases": [
+    {
+      "id": "public-prefix-own-static-default",
+      "source": "<?php trait T{static function run(){echo self::$value;}}class C{use T;public const PREFIX=\"a\";private static string $value=self::PREFIX.E_STRICT;}set_error_handler(function($s){echo \"H\";return true;});C::run();",
+      "source_sha256": "dd4242b33b5d5a4749317afd52272bb0170372cd91eec189e18928e57618cde5",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "SGEyMDQ4",
+      "stderr_template_base64": "",
+      "native_raw_sha256": "0aadfb7f2541c59c54a7b4d5862413b6c080918a3172b124b9319066d0f8039c",
+      "native_profile": "PHP8.5.10 -n display_errors=stderr log_errors=0 html_errors=0 error_reporting=30719; LC_ALL=C TZ=UTC",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-composition-238/.tools/trait-prefix-native238-ia252bkf/report.json"
+    },
+    {
+      "id": "private-prefix-own-static-default",
+      "source": "<?php trait T{static function run(){echo self::$value;}}class C{use T;private const PREFIX=\"a\";private static string $value=self::PREFIX.E_STRICT;}set_error_handler(function($s){echo \"H\";return true;});C::run();",
+      "source_sha256": "bd410870fa61668d7c811a3021f585b4d5eb5b55eb03b00f08c291b344013782",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "SGEyMDQ4",
+      "stderr_template_base64": "",
+      "native_raw_sha256": "0aadfb7f2541c59c54a7b4d5862413b6c080918a3172b124b9319066d0f8039c",
+      "native_profile": "PHP8.5.10 -n display_errors=stderr log_errors=0 html_errors=0 error_reporting=30719; LC_ALL=C TZ=UTC",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-composition-238/.tools/trait-prefix-native238-ia252bkf/report.json"
+    }
+  ],
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr"
+}

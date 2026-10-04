@@ -1,0 +1,49 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; missing/access/unset/abstract errors remain ahead of whole-table instance-default evaluation. Native-only preparation until238 source execution.",
+  "cases": [
+    {
+      "id": "missing-static-error-precedes-instance-default-update",
+      "source": "<?php trait T{public int $x=self::X;}class C{use T;const X=\"s\";}try{echo C::$missing;}catch(Error $e){echo $e->getMessage();}",
+      "source_sha256": "e4e958f4503ca6f2f4b0220220993ba6440b1b3233e5dcfa50ad70cd284bd1c9",
+      "status": "normal",
+      "stdout_base64": "QWNjZXNzIHRvIHVuZGVjbGFyZWQgc3RhdGljIHByb3BlcnR5IEM6OiRtaXNzaW5n",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-entry-priority-native238-4_3q83i4/report.json",
+      "native_raw_sha256": "6a1a9e0675f94437956559f1ee1c3e10719d23f3aa2a71f23c54f253cdfc51f0"
+    },
+    {
+      "id": "private-static-error-precedes-instance-default-update",
+      "source": "<?php trait T{public int $x=self::X;private static $y=1;}class C{use T;const X=\"s\";}try{echo C::$y;}catch(Error $e){echo $e->getMessage();}",
+      "source_sha256": "828db08698ec51b99672f5e7b1e6bd4b5fd997f14d9a8e7479c3303bd6789a44",
+      "status": "normal",
+      "stdout_base64": "Q2Fubm90IGFjY2VzcyBwcml2YXRlIHByb3BlcnR5IEM6OiR5",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-entry-priority-native238-4_3q83i4/report.json",
+      "native_raw_sha256": "6a1a9e0675f94437956559f1ee1c3e10719d23f3aa2a71f23c54f253cdfc51f0"
+    },
+    {
+      "id": "unset-static-error-precedes-instance-default-update",
+      "source": "<?php trait T{public int $x=self::X;public static $y=1;}class C{use T;const X=\"s\";}try{unset(C::$y);}catch(Error $e){echo $e->getMessage();}",
+      "source_sha256": "57a4f00bfc5725a659da7725604fb2e3b6fe7d9042aacbfbec3640c6fc011581",
+      "status": "normal",
+      "stdout_base64": "QXR0ZW1wdCB0byB1bnNldCBzdGF0aWMgcHJvcGVydHkgQzo6JHk=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-entry-priority-native238-4_3q83i4/report.json",
+      "native_raw_sha256": "6a1a9e0675f94437956559f1ee1c3e10719d23f3aa2a71f23c54f253cdfc51f0"
+    },
+    {
+      "id": "abstract-instantiation-error-precedes-instance-default-update",
+      "source": "<?php trait T{public int $x=self::X;}abstract class C{use T;const X=\"s\";}try{$c=new C;}catch(Error $e){echo $e->getMessage();}",
+      "source_sha256": "29fda86d5dcf12c4e9d04317aa059eef94128e7b1986d64a614a85d8acf2474d",
+      "status": "normal",
+      "stdout_base64": "Q2Fubm90IGluc3RhbnRpYXRlIGFic3RyYWN0IGNsYXNzIEM=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-entry-priority-native238-4_3q83i4/report.json",
+      "native_raw_sha256": "6a1a9e0675f94437956559f1ee1c3e10719d23f3aa2a71f23c54f253cdfc51f0"
+    }
+  ]
+}

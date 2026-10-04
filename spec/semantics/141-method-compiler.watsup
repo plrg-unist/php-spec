@@ -5,7 +5,6 @@ dec $ppmethod_supported_signature(pssignature, text) : bool
 syntax ppmembers = PPMEMBERS ppstate ppropertydesc* pmethoddesc*
 dec $ppmethod_members(statement*, bool) : bool
 dec $ppmember_groups(ppstate, pcpath, nat, statement*, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
-dec $ppmember_path(pcpath, pchheader, nat) : pcpath
 def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 3, PCINDEX n]
   -- if pchheader.KIND = "interface"
 def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 2, PCINDEX n]
@@ -82,9 +81,9 @@ def $ppmember_groups(P, pcpath, n, eps, ppropertydesc*, pmethoddesc*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
 def $ppmember_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc_next*, pmethoddesc*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
-  -- if pchheader.KIND = "class"
+  -- if pchheader.KIND = "class" \/ pchheader.KIND = "trait"
   -- if $ppproperty_group_line_valid(P, metadata)
-  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath ++ [PCFIELD 5, PCINDEX n], $source_line(metadata)), pcpath ++ [PCFIELD 5, PCINDEX n], flags, phpType18, phpType57*, ppropertydesc*, pchheader, $source_line(metadata))
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, $ppmember_path(pcpath, pchheader, n), $source_line(metadata)), $ppmember_path(pcpath, pchheader, n), flags, phpType18, phpType57*, ppropertydesc*, pchheader, $source_line(metadata))
 def $ppmember_groups(P, pcpath, n, (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc*, pmethoddesc_next*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
   -- if PPMEMBERS P_next ppropertydesc* pmethoddesc_next* = $ppmethod_one(P, $ppmember_path(pcpath, pchheader, n), NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader)

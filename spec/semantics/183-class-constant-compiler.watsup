@@ -116,7 +116,7 @@ def $ppclass_constant_items(P, pcpath, porigin, n, flags, phpType18, (NConst (NI
   -- if P_next = $ppclass_constant_typed(P, pcpath_item, porigin, flags, ptbytes, expression, $ptype_normalize(phpType18, $ppclass_constant_context(P, pchheader, ptbytes, z)), pchheader, z)
 def $ppclass_constant_items(P, pcpath, porigin, n, flags, phpType18, phpType46*, pchheader, z) = $ppunsupported(P, "invalid class constant declaration") -- otherwise
 
-def $ppclass_constant_context(P, pchheader, ptbytes, z) = { NAMESPACE P.ENV.NAMESPACE, IMPORTS P.ENV.CLASSES, SCOPE PTKNOWN pchheader.NAME pchheader.PARENT, POSITION PTCONSTANT, OWNER pchheader.NAME, MEMBER ptbytes, FILE P.LOCATION.FILE, LINE $nabs(z) }
+def $ppclass_constant_context(P, pchheader, ptbytes, z) = { NAMESPACE P.ENV.NAMESPACE, IMPORTS P.ENV.CLASSES, SCOPE $ppproperty_scope(pchheader), POSITION PTCONSTANT, OWNER pchheader.NAME, MEMBER ptbytes, FILE P.LOCATION.FILE, LINE $nabs(z) }
 def $ppclass_constant_typed(P, pcpath, porigin, flags, ptbytes, expression, PTUNSUPPORTED text, pchheader, z) = $ppunsupported(P, text)
 def $ppclass_constant_typed(P, pcpath, porigin, flags, ptbytes, expression, PTERROR ptdiagnostic*, pchheader, z) = $ppproperty_diagnostics(P, ptdiagnostic*)
 def $ppclass_constant_typed(P, pcpath, porigin, flags, ptbytes, expression, PTOK ptbranch* ptdiagnostic*, pchheader, z) = $ppclass_constant_flags($ppproperty_diagnostics(P, ptdiagnostic*), pcpath, porigin, flags, ptbytes, expression, ptbranch*, pchheader, z)
@@ -182,6 +182,7 @@ dec $class_constant_enclosing(pcunit, pcpath) : porigin?
 dec $class_constant_class_node(pcnode) : bool
 def $class_constant_class_node(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = true
 def $class_constant_class_node(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = true
+def $class_constant_class_node(NStmtTrait phpType14 phpType3 phpType23 metadata) = true
 def $class_constant_class_node(pcnode) = false -- otherwise
 def $class_constant_enclosing(pcunit, pcpath) = (PORIGIN pcunit.ID pcpath)
   -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (pcnode)
@@ -194,7 +195,7 @@ def $class_constant_enclosing(pcunit, pcpath) = eps -- otherwise
 
 dec $pfclass_constant_name(pfstate, phpType19, pvalue?) : ptbytes?
 def $pfclass_constant_name(F, NName (BYTES text) metadata, pvalue?) = (ptcontext.OWNER)
-  -- if $ptlc($base64(text)) = $ptascii("self") /\ ~F.CLOSURE
+  -- if $ptlc($base64(text)) = $ptascii("self") /\ ~F.CLOSURE /\ ~$ptrait_context(F.CLASSCONTEXT)
   -- if F.CLASSCONTEXT = (ptcontext)
 def $pfclass_constant_name(F, name, pvalue?) = (pnreference.RESOLVED)
   -- if $ppscoped_named(name) /\ ~$ppscoped_keyword(name)
@@ -228,19 +229,23 @@ def $pfclass_constant_prior(F, ptbytes) = $class_at(S_external.CLASSES, porigin)
   -- if $class_named(S_external.CLASSNAMES, $ptlc(ptbytes)) = (porigin)
 def $pfclass_constant_prior(F, ptbytes) = eps -- otherwise
 def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = (pclassconstantdesc)
+  -- if $trait_fold_owner(F) = eps
   -- if F.CLASSCONTEXT = (ptcontext)
   -- if $ptlc(ptcontext.OWNER) = $ptlc(ptbytes_class)
   -- if $class_constant_enclosing(F.SOURCE, pcpath) = (porigin)
   -- if $class_constant_desc($ppclass_constants(F.CLASSCONSTANTS, porigin), ptbytes) = (pclassconstantdesc)
 def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = (pclassconstantdesc)
+  -- if $trait_fold_owner(F) = eps
   -- if ~$pfclass_constant_current(F, ptbytes_class)
   -- if $ppclass_prior_early(F.CLASSES, ptbytes_class) = (pclassdesc)
   -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) = (pclassconstantdesc)
 def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = $pfclass_constant_parent(F, pclassdesc, ptbytes, n)
+  -- if $trait_fold_owner(F) = eps
   -- if ~$pfclass_constant_current(F, ptbytes_class)
   -- if $ppclass_prior_early(F.CLASSES, ptbytes_class) = (pclassdesc)
   -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) = eps
 def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = $class_constant_lookup(S_external, porigin, ptbytes, n)
+  -- if $trait_fold_owner(F) = eps
   -- if ~$pfclass_constant_current(F, ptbytes_class)
   -- if $ppclass_prior_early(F.CLASSES, ptbytes_class) = eps
   -- if F.EXTERNAL = (S_external)
@@ -283,6 +288,7 @@ def $pfclass_constant_value(F, pcpath, pvalue, pvalueclass?, z) = $pfremember(F,
   -- if ~F.CONSTANT
 
 def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $pfclass_constant_value(F, pcpath, pvalue, $pfclass_at(F.CLASSFACTS, pcpath_initializer), z)
+  -- if $trait_fold_owner(F) = eps
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if $pfclass_constant_name(F, phpType19, pvalue_class?) = (ptbytes_class)
   -- if $pfclass_constant_member(phpType20, pvalue_member?) = (ptbytes)
@@ -291,6 +297,7 @@ def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_mem
   -- if pclassconstantdesc.INITIALIZER = PORIGIN F.SOURCE.ID pcpath_initializer
   -- if $pffact(F.FACTS, pcpath_initializer) = (pvalue)
 def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $pfclass_constant_value(F[.MEMORY = S_imported], pcpath, pvalue_imported, (pvalueclass), z)
+  -- if $trait_fold_owner(F) = eps
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if F.EXTERNAL = (S_external)
   -- if $pfclass_constant_name(F, phpType19, pvalue_class?) = (ptbytes_class)

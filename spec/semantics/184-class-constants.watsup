@@ -1,4 +1,9 @@
 dec $class_constant_update_continuation(ptask) : bool
+dec $trait_constant_source_type(pstate, pclassconstantdesc) : ptbranch*
+dec $trait_constant_type_name(pstate, pclassconstantdesc) : ptbytes
+dec $trait_constructor_start_ready(pstate, ptbytes, phpType7*, int) : pstate
+dec $trait_noctor_start_ready(pstate, ptbytes, phpType7*, int) : pstate
+dec $trait_static_prepare_base_ready(pstate, poperand, ptbytes, int) : pstate
 dec $class_constant_static_ready(pstate, poperand, ptbytes, int) : bool
 dec $class_constant_constructor_ready(pstate, ptbytes, phpType7*, bool, int) : bool
 dec $class_constant_pairs_valid(ptask*) : bool
@@ -176,11 +181,14 @@ def $class_constant_fetch(S, KNOWN (PSTRING ptbytes_class), ptbytes, z) = $class
 def $class_constant_fetch(S, KNOWN (PSTRING ptbytes_class), ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ ptbytes_class ++ $ptascii("\" not found"), z)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = eps
 def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Undefined constant ") ++ $class_constant_message_class(S, pclassdesc, ptbytes_class) ++ $ptascii("::") ++ ptbytes, z)
+  -- if pclassdesc.KIND =/= "trait"
   -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = eps
 def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access ") ++ $property_visibility_name(pclassconstantdesc.VISIBILITY) ++ $ptascii(" constant ") ++ $class_constant_message_class(S, pclassdesc, ptbytes_class) ++ $ptascii("::") ++ ptbytes, z)
+  -- if pclassdesc.KIND =/= "trait"
   -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = (pclassconstantdesc)
   -- if ~$class_constant_visible(S, pclassconstantdesc)
 def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $class_constant_value(S, pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING ptbytes_class)) ptbytes, $class_constant_message_class(S, pclassdesc, ptbytes_class), z)
+  -- if pclassdesc.KIND =/= "trait"
   -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = (pclassconstantdesc)
   -- if $class_constant_visible(S, pclassconstantdesc)
 
@@ -290,7 +298,7 @@ rule PhpStep/class-constant-bind-uncertified: S ~> $class_constant_restore(S_val
   -- if $class_constant_runtime_type(S_value, pclassconstantdesc.TYPE, pvalue)
   -- if pvalueclass = $constant_class(S_value, pclassconstantdesc.INITIALIZER)
   -- if ~$constant_callable_cache_valid(S_value, pclassconstantdesc, pvalueclass, |S_value.DECLARATIONS|)
-rule PhpStep/class-constant-bind-type: S ~> $throw_scalar($class_constant_restore(S_value[.TODO = ptask_tail*], pclassconstantcontext, pclassconstantcontext_tail*), "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S_value, pvalue) ++ $ptascii(" to class constant ") ++ pclassconstantdesc.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc.NAME ++ $ptascii(" of type ") ++ $pttypename(pclassconstantdesc.TYPE), pconstantcontext.LINE)
+rule PhpStep/class-constant-bind-type: S ~> $throw_scalar($class_constant_restore(S_value[.TODO = ptask_tail*], pclassconstantcontext, pclassconstantcontext_tail*), "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S_value, pvalue) ++ $ptascii(" to class constant ") ++ pclassconstantdesc.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc.NAME ++ $ptascii(" of type ") ++ $trait_constant_type_name(S_value, pclassconstantdesc), pconstantcontext.LINE)
   -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
   -- if pclassconstantcontext.DECL = porigin
@@ -369,7 +377,7 @@ def $constant_location_function_scope(S, pfunction, porigin) = true
 def $constant_location_function_scope(S, pfunction, porigin) = false -- otherwise
 def $constant_location_valid(S, pconstantlocation, n) = true
   -- if pconstantlocation.CLASS = PORIGIN n_class pcpath_class
-  -- if pconstantlocation.ROOT = PORIGIN n_root pcpath_root
+  -- if $origin_source(pconstantlocation.ROOT) = PORIGIN n_root pcpath_root
   -- if $(n_class < n) /\ $(n_root < n)
   -- if $constant_location_root_valid(S, pconstantlocation)
   -- if $constant_expression_below(S, pconstantlocation.ROOT, pconstantlocation.CHILD)
@@ -756,15 +764,15 @@ def $class_constant_new_work(S, ptbytes, z) = $class_constant_table_tasks(S, por
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ ~pclassdesc.ABSTRACT
 def $class_constant_new_work(S, ptbytes, z) = eps -- otherwise
-def $constructor_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* true z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $trait_constructor_start_ready(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* true z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ptask_work* = $class_constant_new_work(S, ptbytes, z)
   -- if ptask_work* =/= eps
-def $constructor_start(S, ptbytes, phpType7*, z) = $constructor_start_ready(S, ptbytes, phpType7*, z)
+def $trait_constructor_start_ready(S, ptbytes, phpType7*, z) = $constructor_start_ready(S, ptbytes, phpType7*, z)
   -- if $class_constant_new_work(S, ptbytes, z) = eps
-def $noctor_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* false z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $trait_noctor_start_ready(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* false z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ptask_work* = $class_constant_new_work(S, ptbytes, z)
   -- if ptask_work* =/= eps
-def $noctor_start(S, ptbytes, phpType7*, z) = $noctor_start_ready(S, ptbytes, phpType7*, z)
+def $trait_noctor_start_ready(S, ptbytes, phpType7*, z) = $noctor_start_ready(S, ptbytes, phpType7*, z)
   -- if $class_constant_new_work(S, ptbytes, z) = eps
 rule PhpStep/class-constant-update: S ~> $class_constant_value(S[.TODO = DISCARD :: ptask_tail*], pclassconstantdesc, CLASS_CONST_UPDATE_SELECT porigin_class, pclassconstantdesc.OWNERNAME, z)
   -- if S.TODO = (CLASS_CONST_UPDATE porigin z) :: ptask_tail*
@@ -795,19 +803,19 @@ dec $class_constant_static_reference_ready(pstate, porigin, ptbytes, int) : bool
 def $class_constant_static_reference_ready(S, porigin, ptbytes, z) = ($class_constant_static_work(S, KNOWN (PSTRING pclassdesc.NAME), ptbytes, z) = eps)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
 def $class_constant_static_reference_ready(S, porigin, ptbytes, z) = true -- otherwise
-def $class_static_prepare_base(S, poperand, ptbytes, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_STATIC poperand ptbytes z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $trait_static_prepare_base_ready(S, poperand, ptbytes, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_STATIC poperand ptbytes z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ptask_work* = $class_constant_static_work(S, poperand, ptbytes, z)
   -- if ptask_work* =/= eps
   -- if S.ORIGIN = (porigin_trigger)
   -- if $scoped_selector_class(S, poperand) = (porigin_class)
   -- if $class_constant_update_site(S, porigin_trigger, porigin_class)
   -- if ~$class_static_selected_needed(S, porigin_trigger)
-def $class_static_prepare_base(S, poperand, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "unretained class table selector"]
+def $trait_static_prepare_base_ready(S, poperand, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "unretained class table selector"]
   -- if $class_constant_static_work(S, poperand, ptbytes, z) =/= eps
   -- if S.ORIGIN = (porigin_trigger)
   -- if $class_static_selected_needed(S, porigin_trigger)
   -- if $class_static_selection(S, poperand) = eps
-def $class_static_prepare_base(S, poperand, ptbytes, z) = $class_static_prepare_base_ready(S, poperand, ptbytes, z)
+def $trait_static_prepare_base_ready(S, poperand, ptbytes, z) = $class_static_prepare_base_ready(S, poperand, ptbytes, z)
   -- if $class_constant_static_work(S, poperand, ptbytes, z) = eps
 rule PhpStep/class-constant-static: S ~> $class_static_prepare_base_ready(S[.TODO = ptask_tail*], poperand, ptbytes, z)
   -- if S.TODO = (CLASS_CONST_STATIC poperand ptbytes z) :: ptask_tail*

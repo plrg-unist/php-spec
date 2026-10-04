@@ -46,6 +46,7 @@ def $ppproperty_statements(eps) = true
 def $ppproperty_statements((NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata) :: statement_tail*) = $ppproperty_statements(statement_tail*)
 def $ppproperty_statements(statement*) = false -- otherwise
 
+dec $ppmember_path(pcpath, pchheader, nat) : pcpath
 dec $ppproperty_groups(ppstate, pcpath, nat, statement*, ppropertydesc*, pchheader) : ppropertywork
 dec $ppproperty_group(ppstate, pcpath, int, phpType18, phpType57*, ppropertydesc*, pchheader, int) : ppropertywork
 dec $ppproperty_items(ppstate, pcpath, nat, int, phpType18, phpType57*, ppropertydesc*, pchheader, int) : ppropertywork
@@ -58,6 +59,7 @@ dec $ppproperty_at(ppropertydesc*, ptbytes) : bool
 dec $ppproperty_diagnostics(ppstate, ptdiagnostic*) : ppstate
 dec $ppproperty_diagnostic(ppstate, ptdiagnostic) : ppstate
 dec $ppproperty_context(ppstate, pchheader, ptbytes, int) : ptcontext
+dec $ppproperty_scope(pchheader) : ptscope
 dec $ppproperty_value_valid(ptbranch*, pvalue) : bool
 dec $ppproperty_default_error(pchheader, ptbytes, ptbranch*, pvalue) : ptbytes
 dec $ppproperty_plain_intersection(ptbranch*) : bool
@@ -82,7 +84,7 @@ def $ppproperty_groups(P, pcpath, n, statement*, ppropertydesc*, pchheader) = PP
 def $ppproperty_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) :: statement_tail*, ppropertydesc*, pchheader) = $ppproperty_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc_next*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
   -- if $ppproperty_group_line_valid(P, metadata)
-  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath ++ [PCFIELD 5, PCINDEX n], $source_line(metadata)), pcpath ++ [PCFIELD 5, PCINDEX n], flags, phpType18, phpType57*, ppropertydesc*, pchheader, $source_line(metadata))
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, $ppmember_path(pcpath, pchheader, n), $source_line(metadata)), $ppmember_path(pcpath, pchheader, n), flags, phpType18, phpType57*, ppropertydesc*, pchheader, $source_line(metadata))
 def $ppproperty_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) :: statement_tail*, ppropertydesc*, pchheader) = PPROPERTIES ($ppunsupported(P, "missing property compiler line")) ppropertydesc*
   -- if P.COMPLETION = PPCNORMAL
   -- if ~$ppproperty_group_line_valid(P, metadata)
@@ -103,7 +105,9 @@ def $ppproperty_one(P, pcpath, flags, phpType18, NPropertyItem (NVarLikeIdentifi
   -- if ptbytes = $base64(text)
 def $ppproperty_one(P, pcpath, flags, phpType18, phpType57, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P, "edited property name")) ppropertydesc* -- otherwise
 
-def $ppproperty_context(P, pchheader, ptbytes, z) = { NAMESPACE P.ENV.NAMESPACE, IMPORTS P.ENV.CLASSES, SCOPE PTKNOWN pchheader.NAME pchheader.PARENT, POSITION PTPROPERTY, OWNER pchheader.NAME, MEMBER ptbytes, FILE P.LOCATION.FILE, LINE $nabs(z) }
+def $ppproperty_context(P, pchheader, ptbytes, z) = { NAMESPACE P.ENV.NAMESPACE, IMPORTS P.ENV.CLASSES, SCOPE $ppproperty_scope(pchheader), POSITION PTPROPERTY, OWNER pchheader.NAME, MEMBER ptbytes, FILE P.LOCATION.FILE, LINE $nabs(z) }
+def $ppproperty_scope(pchheader) = PTTRAIT pchheader.NAME -- if pchheader.KIND = "trait"
+def $ppproperty_scope(pchheader) = PTKNOWN pchheader.NAME pchheader.PARENT -- if pchheader.KIND =/= "trait"
 def $ppproperty_diagnostics(P, eps) = P
 def $ppproperty_diagnostics(P, ptdiagnostic :: ptdiagnostic_tail*) = $ppproperty_diagnostics($ppproperty_diagnostic(P, ptdiagnostic), ptdiagnostic_tail*)
 def $ppproperty_diagnostic(P, PTDIAGNOSTIC "fatal" text ptbranch* ptcontext) = $ppconstant_error(P, $ptmessage(PTDIAGNOSTIC "fatal" text ptbranch* ptcontext), ptcontext.LINE)
