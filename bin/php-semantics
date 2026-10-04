@@ -298,7 +298,11 @@ def observe(state, filename, display_mode=2):
             for chain_id in uncaught_chain:
                 messages[chain_id], array_warning = exception_message(field(chain_id, 'message'))
                 if array_warning and int(state['REPORTING']) & 2:
-                    stderr += b'Warning: Array to string conversion in Unknown on line 0\n'
+                    warning = b'Warning: Array to string conversion in Unknown on line 0\n'
+                    if int(display_mode) == 1:
+                        stdout += b'\n' + warning
+                    elif int(display_mode) == 2:
+                        event_stderr += warning
         if int(state['REPORTING']) & (4 if classname == 'ParseError' else 64 if classname == 'CompileError' else 1):
             if classname in {'ParseError', 'CompileError'}:
                 prefix = b'Parse error: ' if classname == 'ParseError' else b'Fatal error: '

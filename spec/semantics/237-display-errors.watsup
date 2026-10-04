@@ -43,14 +43,14 @@ def $php_request_display_run(program, n, text_file, Q, pstartup?, preqbytes?) = 
   -- if $startup_reporting_valid(preqbytes?)
 def $php_request_display_run(program, n, text_file, Q, pstartup?, preqbytes?) = $initial_state(UNSUPPORTED "invalid startup display INI, request or source filename") -- otherwise
 dec $php_file_display_run(program, nat, preqbytes, preqbytes, pstartup?, preqbytes?) : pstate
-def $php_file_display_run(program, n, n_file*, n_cwd*, pstartup?, preqbytes?) = $drive($compile_source($display_initial(pstartup?, preqbytes?)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.INCLUDEDOPENED = [n_file*]], $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
+def $php_file_display_run(program, n, n_file*, n_cwd*, pstartup?, preqbytes?) = $drive($compile_source($display_initial(pstartup?, preqbytes?)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.FILEINCLUDEPATH = ($startup_include_path(pstartup?))][.INCLUDEDOPENED = [n_file*]], $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
   -- if $source_filename(n_file*)
   -- if $source_filename(n_cwd*)
   -- if $display_startup_valid(pstartup?)
   -- if $startup_reporting_valid(preqbytes?)
 def $php_file_display_run(program, n, n_file*, n_cwd*, pstartup?, preqbytes?) = $initial_state(UNSUPPORTED "invalid startup display INI or file context") -- otherwise
 dec $php_request_file_display_run(program, nat, preqbytes, prequest, preqbytes, pstartup?, preqbytes?) : pstate
-def $php_request_file_display_run(program, n, n_file*, Q, n_cwd*, pstartup?, preqbytes?) = $drive($compile_source($request_bootstrap($display_initial(pstartup?, preqbytes?)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.INCLUDEDOPENED = [n_file*]], Q), $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
+def $php_request_file_display_run(program, n, n_file*, Q, n_cwd*, pstartup?, preqbytes?) = $drive($compile_source($request_bootstrap($display_initial(pstartup?, preqbytes?)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.FILEINCLUDEPATH = ($startup_include_path(pstartup?))][.INCLUDEDOPENED = [n_file*]], Q), $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
   -- if Q.CWD = (n_cwd*)
   -- if $source_filename(n_file*)
   -- if $source_filename(n_cwd*)
