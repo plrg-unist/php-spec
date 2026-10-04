@@ -77,6 +77,17 @@ The [method-handler ledger](coverage/semantics/handler-callables-current-review.
 keeps mixed author/independent checks, current CONFIG PIPE and original failures
 at their actual revisions.
 
+Diagnostic ingress217 dispatches runtime `E_STRICT` and lossy reporting
+conversions through authentic handler continuations. Selected values survive
+callback declarations; integer conversion precedes dispatch and the setter reads
+the old mask afterward. Saved initializer facts and busy class scopes retain
+normal/throw cleanup and expression/fetch exception locations. Fourteen author
+and four independent sources plus 211 conditions keep their actual revisions.
+Current 210 compilation and one scoped private-handler/Stringable-backing/lexical
+class-name source comparison establish added composition separately. The
+[diagnostic ledger](coverage/semantics/reporting-diagnostics-review.json) retains
+original failures and the open compound callback/eval filename obligation.
+
 The installed families compose as follows; each ledger records its scope and limits.
 
 | Family | Current behavior and evidence |
@@ -85,7 +96,7 @@ The installed families compose as follows; each ledger records its scope and lim
 | Warning-truth decisions209 | Branch/loop/short-circuit/NOT/ternary-condition choices consume the captured null even after handlers define the CV. Saved consumers and thrown-handler cleanup retain authenticated source/line. Later cast/copy/SEND checks are recorded separately below. [Truth ledger](coverage/semantics/warning-truth-review.json). |
 | Warning-read consumers213 | Six casts, selected ternary/coalesce copies and ordinary by-value sends preserve captured null, aliases and selected targets through callbacks. Direct ASSIGN retains its null write through throw. Mixed21/control0+236 and independent10/197 remain separate from fresh static-reference/outer-array source1/94 and cached-callee source1/96 at181f. [Consumer ledger](coverage/semantics/warning-consumers-review.json). |
 | Borrowed warning reads208 | Strict identity retains the old reference cell across callbacks without adding an owner; saved callers and throw cleanup preserve it. Defined ordinary `$GLOBALS[key]` uses the real table. Getter/setter and method-string interactions keep separate revisions. [Warning-read ledger](coverage/semantics/warning-reads-review.json). |
-| Error handlers/reporting206/207/211 | Raw registrations and selected targets retain four arguments and genuine emitting frames through mutation, replacement, nested reentry, throw and false fallback. Reporting get/set/Restore separates full raw bytes, signed32 masks and modified-entry state across suppression and handler writes; twelve normal sources across two revisions and 74 conditions are accepted. Fifteen nondeprecated error constants resolve exactly. Broader handler forms, deprecated constants and lossy-conversion warning ingress remain open. [Reporting](coverage/semantics/reporting-ini-review.json), [method handlers](coverage/semantics/handler-callables-current-review.json), [earlier handlers](coverage/semantics/error-handlers-review.json). |
+| Error handlers/reporting206/207/211 | Raw registrations and selected targets retain four arguments and genuine emitting frames through mutation, replacement, nested reentry, throw and false fallback. Reporting get/set/Restore separates full raw bytes, signed32 masks and modified-entry state across suppression and handler writes; twelve normal sources across two revisions and 74 conditions are accepted. Fifteen nondeprecated error constants resolve exactly. Diagnostic ingress217 adds runtime `E_STRICT` and handled lossy reporting conversions with distinct 14+4/211 evidence and current source1. Broader handler forms and producer coverage remain open. [Diagnostics](coverage/semantics/reporting-diagnostics-review.json). [Reporting](coverage/semantics/reporting-ini-review.json), [method handlers](coverage/semantics/handler-callables-current-review.json), [earlier handlers](coverage/semantics/error-handlers-review.json). |
 | Class-method strings210 and FCC119 | Full-byte lookup separates frame-based callable admission, computed static dispatch and fixed compatible-this selection. Captures/clone retain immutable source certificates and defaults/static cells. A named throwing handler preserves the selected static caller and arguments. [String ledger](coverage/semantics/class-method-strings-current-review.json). |
 | Method arrays205 | Public source method arrays retain immutable selected receiver/owner/called-class certificates through dynamic calls and capture. Current two-slot INI checkpoint **f9f47f115/61370c98/1353** accepts source1/finite103; broader resolution remains open. [Array ledger](coverage/semantics/array-callables-current-review.json). |
 | Include/configuration | Failed CHDIR warnings retain provider certificates and caller frames through handler CWD/raw writes, false fallback and throw. One current throwing source/136 conditions, earlier three sources and compiler25 checks keep separate revisions. Stringable CHDIR PIPE retains post-callback CWD/held operands; unary CONFIG PIPE preserves source strictness through borrowed warnings. [PIPE ledger](coverage/semantics/include-config-pipe-review.json). Raw getters, primitive/null Restore, weak-null handler continuations and two-slot INI ownership retain their separate checkpoints. [Readback](coverage/semantics/include-ini-readback-review.json), [INI](coverage/semantics/include-stringable-ini-option-review.json). |
@@ -112,14 +123,14 @@ failures and interrupted evidence.
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
   array and string Closure PIPE routes are covered; defined ordinary `$GLOBALS[key]` is admitted; missing-global warnings and whole-table snapshots remain partial.
-- Include/configuration: deprecated `E_STRICT` constant diagnostics and handled
-  lossy reporting conversions, nondefault startup profiles, wider directives,
+- Include/configuration: compound initializer callback/eval filename creation,
+  nondefault startup profiles, wider directives,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: variadic/default callback reception and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred property defaults and references into incomplete constant tables remain Unsupported.
-  Deprecated constant producer ingress remains open. Generic156 return replay, temporary-return
+  Wider deprecated constant consumers remain open. Generic156 return replay, temporary-return
   Notice timing and typed
   by-reference string conversion186 remain open; accepted ordinary by-value
   classification does not close them. [String contract](docs/semantics/USER-STRING.md),
@@ -161,7 +172,8 @@ their counts are not interchangeable.
 
 ## Validation and integration limits
 
-The authorized cap is five numerical/model campaigns with coordinated slot
+Configuration permits eight pairs/16 agents; the numerical/model concurrency
+cap remains five until explicit resource coordination, with coordinated slot
 handoffs. Record the tested revision, compiler/runtime identity, relevant inputs,
 environment, exact commands/exits and raw originals. Independent review focuses
 on semantic counterexamples and reliable completion; investigate failures

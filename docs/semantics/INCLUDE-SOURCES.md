@@ -194,8 +194,35 @@ Handler writes can leave raw bytes distinct from the mask restored at silence
 exit. Exact scalar options work without file facts; Stringable options retain
 authenticated callbacks and late old-value sampling. Twelve normal sources
 across two revisions and 74 conditions are accepted. Fifteen nondeprecated
-error constants are admitted; deprecated `E_STRICT` diagnostics, handled lossy
-conversions and nondefault startup profiles remain required follow-up work.
+error constants are admitted; the diagnostic increment below adds `E_STRICT`
+and handled lossy conversions. Nondefault startup profiles remain required.
+
+[Diagnostic ingress217](../../coverage/semantics/reporting-diagnostics-review.json)
+fetches `E_STRICT` at runtime and dispatches its deprecation through the genuine
+206/207 handler continuation. Namespace shadows retain ordinary lookup priority;
+the selected 2048 survives handler declarations. Recursive reads of the protected
+constant avoid another diagnostic until the pending fetch retires. Defaults and
+class constants cache only successful evaluation. Saved frames retain and restore
+their constant facts while callback execution uses its own lexical evaluator;
+the global class-initialization stack still protects active work.
+
+Lossy float/numeric-string `error_reporting` arguments convert to long before
+dispatch. A returned handler leaves the converted integer unchanged; the setter
+then samples the live old mask and preserves raw bytes when the converted long
+equals that live signed32 mask before narrowing.
+A thrown handler prevents that update, retains its own writes and preserves
+original arguments in internal/wrapper traces. Compound initializer diagnostics
+and thrown constructors retain their separate expression and fetch locations,
+including the synthetic constant-expression frame when needed.
+
+Fourteen author and four independent normal-source agreements plus 211 state
+conditions retain their distinct tested revisions and original failures. Current
+210-module compilation and one scoped private-handler/backing-receive/class-name
+source comparison establish the added branch composition separately. Executables
+are reused. Eval filename creation inside compound-initializer callbacks remains
+required follow-on work; clearing evaluator context for late filename validation
+does not close it. Wider INI/startup, warning producers, OS services and lifecycle
+remain partial.
 
 Eligible weak-null `ini_get`/`ini_restore` deprecations now suspend through
 `CONFIG_INI_NULL_RESULT`. Handlers receive four values weakly; normal handling,

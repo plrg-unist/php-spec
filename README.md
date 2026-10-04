@@ -60,9 +60,11 @@ warnings now resume eligible handlers: normal return yields false after their
 CWD/raw writes, while throw preserves caller arguments and both internal and
 wrapper trace operands. [Reporting configuration](coverage/semantics/reporting-ini-review.json)
 separates full INI bytes, the live signed32 mask and modified-entry Restore,
-including suppression and handler writes. Fifteen nondeprecated error constants
-have exact values; deprecated `E_STRICT`, lossy-conversion warning ingress,
-wider PIPE/INI consumers and lifecycle remain open.
+including suppression and handler writes. [Diagnostic ingress](coverage/semantics/reporting-diagnostics-review.json)
+adds runtime `E_STRICT` deprecations and lossy reporting conversions, retaining
+captured values, caller frames and initializer locations through callbacks.
+Compound initializer callback/eval filenames, startup profiles, wider PIPE/INI
+consumers and lifecycle remain open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,

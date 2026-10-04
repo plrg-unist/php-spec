@@ -91,6 +91,7 @@ def inputs():
         'tests/semantics/error_handler_protocol.py', 'tests/semantics/error_handler_prepare.py',
         'tests/semantics/reporting_cases.py', 'tests/semantics/reporting_protocol.py',
         'tests/semantics/reporting_diagnostics_cases.py', 'tests/semantics/reporting_diagnostics_protocol.py',
+        'tests/semantics/reporting_diagnostics_current.php',
         'tests/semantics/error_handler_run.py', 'bin/php-semantics', '.tools/php/bin/php',
         '.tools/php-file.so', '_build/default/adapter/main.exe',
         'tests/semantics/_build/default/numeric_runner.exe', '.tools/spectec/bin/p4spectec']]

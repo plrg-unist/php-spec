@@ -1,6 +1,11 @@
 """Runtime deprecated constants and lossy reporting ZPP diagnostics."""
+from pathlib import Path
 
 CASES = [
+    ('estrict-scoped-handler-backing-class-default',
+     Path(__file__).with_name('reporting_diagnostics_current.php').read_bytes(),
+     b'H4:D|S0:2048|P2:converted:converted|DiagnosticOwner:converted|R|2049:2049|DiagnosticOwner',
+     'normal'),
     ('independent-estrict-class-default-handler-throw-context', br'''<?php
 function innerDefault($value=E_STRICT){echo 'I';return $value;}
 class DiagnosticBox{const VALUE=E_STRICT;}
