@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """The retired selecting method retains its genuine inherited called scope."""
 
+import argparse
+
 import shutdown_state_review as runner
 
 source = '<?php class C{static function reg(){register_shutdown_function(["self","h"]);}private static function h(){}}class D extends C{static function other(){}}error_reporting(0);D::reg();'
@@ -57,5 +59,23 @@ runner.CASES = {
     },
 }
 
+trait = dict(runner.CASES['retired-inherited-method-called-scope'])
+trait['source'] = '<?php trait T{static function reg(){register_shutdown_function(["self","h"]);}private static function h(){}}class C{use T;}class D extends C{static function other(){}}class O{use T;}error_reporting(0);D::reg();'
+trait['checks'] = list(trait['checks']) + [
+    '$trait_imported_origin(pmethodcapture.FUNCTION)',
+    'pshutdownentry.CALL.SITE = PORIGIN n_unit pcpath',
+    '$goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_physical)',
+    '$trait_source_same(pfunction_physical, pmethoddesc.FUNCTION)',
+    '$class_named(S.CLASSNAMES, $ptascii("o")) = (porigin_other)',
+    '$effective_method(S, porigin_other, $ptascii("reg"), |S.CLASSES|) = (pmethoddesc_import)',
+    '~$consumer_capture_valid(S, pshutdownentry.CALL.SITE, (pmethodcapture[.FUNCTION = pmethoddesc_import.FUNCTION.ORIGIN]))',
+    '~$consumer_capture_valid(S, pshutdownentry.CALL.SITE, (pmethodcapture[.FUNCTION = pmethoddesc_import.FUNCTION.ORIGIN][.LEXICAL_CLASS = (porigin_other)]))',
+    '~$shutdown_entry_valid(S, pshutdownentry[.PRODUCER = (pshutdownproducer[.TARGET = SCOPED_TARGET pmethoddesc_import.FUNCTION.ORIGIN porigin_called])])',
+]
+runner.CASES['retired-imported-trait-api-maker'] = trait
+
 if __name__ == '__main__':
-    raise SystemExit(0 if runner.run([]) else 1)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--case', action='append')
+    args = parser.parse_args()
+    raise SystemExit(0 if runner.run(args.case) else 1)
