@@ -11,7 +11,7 @@ from recorded_worker import Worker
 from user_string_parameters import CASES, EXPECTED, ROOT, inputs, sha
 import typed_static_invoke_set_protocol as driver
 
-STAGES = ['free-reference-mutation', 'same-site-reentry', 'conversion-throw']
+STAGES = ['free-reference-mutation', 'same-site-reentry', 'conversion-throw', 'constant-closure-parameter']
 PREFIX = r'''
 dec $parameter_protocol_output(pevent*) : ptbytes
 dec $parameter_protocol_is_output(pevent) : bool
@@ -67,14 +67,49 @@ def seek(parent, state, phase):
 
 
 def terminal(parent, expected):
+    output = ('$base64(' + json.dumps(base64.b64encode(expected).decode()) + ')' if b'\0' in expected
+              else '$ptascii(' + json.dumps(expected.decode()) + ')')
     return ['S_done = $drive_steps(' + parent + ',4096)',
             'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
-            'S_done.HELD = eps', '$parameter_protocol_output(S_done.EVENTS) = $ptascii(' + json.dumps(expected.decode()) + ')',
+            'S_done.HELD = eps', '$parameter_protocol_output(S_done.EVENTS) = ' + output,
             *valid('S_done')]
 
 
 def checks(initial, name):
     clauses = ['S_initial = ' + initial]
+    if name == 'constant-closure-parameter':
+        return clauses + [*seek('S_initial', 'S_entered', 1),
+            'S_entered.CURRENT = (pcallcontext_converter)',
+            'S_entered.FRAMES = pframe_receive :: pframe_tail*',
+            'pframe_receive.CONTEXT = (pcallcontext_receive)',
+            'pframe_receive.TODO = [STRINGIFY_RESULT n_object porigin_site z,PARAMETER_STRING_RESULT pparameterstring]',
+            '$context_target(pcallcontext_receive) = CLOSURE_TARGET n_closure',
+            'pcallcontext_receive.FUNCTION = pparameterstring.FUNCTION /\\ pcallcontext_receive.ARGC = 1',
+            'pcallcontext_converter.ARGC = 0 /\\ pcallcontext_converter.RECEIVER = (n_object)',
+            'pframe_receive.LOCALS = (psymboltable_receive)',
+            '$lookup(psymboltable_receive.ENV,$ptascii("s")) = (pparameterstring.CELL)',
+            'S_entered.STORE[pparameterstring.CELL] = DEFINED (POBJECT n_object)',
+            '$parameter_string_scope_valid(S_entered,pparameterstring)',
+            '$constant_callable_record(S_entered.CONSTANTCLOSURES,n_closure) = (pconstantclosure)',
+            'pconstantclosure.SITE = pparameterstring.FUNCTION',
+            'S_entered.OBJECTS[n_closure] = CONSTANTCLOSURE pconstantclosure.SITE (REALCLOSURE pconstantclosure.SITE eps pstaticcell*)',
+            '$class_constant_origin(S_entered.CLASSES,pconstantclosure.DECL) = (pclassconstantdesc)',
+            'pclassconstantdesc.NAME = $ptascii("F") /\\ pclassconstantdesc.OWNERNAME = $ptascii("A")',
+            '$default_cache_at(S_entered.CLASSCONSTANTCACHE,pconstantclosure.DECL) = (pdefaultcache)',
+            'pdefaultcache.VALUE = POBJECT n_closure /\\ pdefaultcache.CLASS = PVCLOSURE n_closure pconstantclosure.SITE',
+            '$closure_scope_at(S_entered.CLOSURESCOPES,n_closure) = (pclosurescope)',
+            'pclosurescope.LEXICAL = pclassconstantdesc.OWNER /\\ pclosurescope.CALLED = pclassconstantdesc.OWNER',
+            'pcallcontext_receive.LEXICAL_CLASS = (pclassconstantdesc.OWNER) /\\ pcallcontext_receive.CALLED_CLASS = (pclassconstantdesc.OWNER)',
+            '$constant_callable_record_valid(S_entered,pconstantclosure)',
+            '$stringify_context_frame_valid(S_entered,pcallcontext_converter,pframe_receive)',
+            '~$parameter_string_scope_valid(S_entered,pparameterstring[.CELL = $(|S_entered.STORE| + 1)])',
+            '~$call_descriptors_valid(S_entered[.CONSTANTCLOSURES = eps])',
+            *valid('S_entered'), *terminal('S_entered',EXPECTED[name]),
+            '~((HCELL pparameterstring.CELL) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_object) <- S_done.ALLOCATIONS)',
+            '(HOBJECT n_closure) <- S_done.ALLOCATIONS',
+            '$default_cache_at(S_done.CLASSCONSTANTCACHE,pconstantclosure.DECL) = (pdefaultcache)',
+            '$constant_callable_record_valid(S_done,pconstantclosure)']
     if name == 'same-site-reentry':
         return clauses + [*seek('S_initial', 'S_nested', 4),
             'S_nested.FRAMES = pframe_new :: pframe_converter :: pframe_old :: pframe_tail*',

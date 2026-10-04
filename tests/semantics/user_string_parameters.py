@@ -25,6 +25,8 @@ CASES = {
     'inherited-named-default': b'<?php class A{function __toString(){echo __CLASS__,"/",static::class,"/",func_num_args(),"|";return "x";}}class B extends A{}class C{public static function take(string $s,int $n=5){echo __CLASS__,"/",static::class,"/",func_num_args(),"|",$s,"|",$n;}}class D extends C{}D::take(s:new B);',
     'same-site-reentry': b'<?php class S{public static int $n=0;function __toString(){echo "S",func_num_args(),"|";if(self::$n===0){self::$n=1;take($this);}return "s";}}function take(string $s){echo "O",func_num_args(),"|",$s,"|";}take(new S);',
     'new-property-source-stop': b'<?php class C{public static object $o;}class S{function __toString(){echo "T",func_num_args(),"|";global $v;C::$o=&$v;return "s";}}function take(string &$s){echo "F",func_num_args(),"|",$s;} $v=new S;take($v);echo "|",$v;',
+    'constant-closure-parameter': b'<?php class A{const F=static function(string $s){echo __CLASS__,"/",static::class,"/",func_num_args(),"|",$s,"|",func_get_arg(0);};}class B extends A{}class S{function __toString(){echo "T",func_num_args(),"|";return "v\\0raw";}}$f=B::F;$f(new S);',
+    'nonpublic-callable-priority': b'<?php class H{protected function __invoke(){echo "I",func_num_args(),"|";}public function __toString():string{echo "T",func_num_args(),"|";return "v";}}function pick(callable|string $f){$f();}function text(string $s){echo "S",func_num_args(),"|",$s;}$h=new H;pick($h);text($h);',
 }
 EXPECTED = {
     'value-copy': b'T0|V1|v\0raw|v\0raw|object',
@@ -39,6 +41,8 @@ EXPECTED = {
     'inherited-named-default': b'A/B/0|C/D/1|x|5',
     'same-site-reentry': b'S0|S0|O1|s|O1|s|',
     'new-property-source-stop': b'T0|F1|s|s',
+    'constant-closure-parameter': b'T0|A/A/1|v\0raw|v\0raw',
+    'nonpublic-callable-priority': b'I0|T0|S1|v',
 }
 
 
@@ -73,6 +77,30 @@ def unsupported_source(directory, path):
     return {'status': outcome['status'], 'reason': outcome['reason'], 'semantic_agreement': False}
 
 
+def nonpublic_source(directory, path):
+    native = driver.process([str(ROOT / '.tools/php/bin/php'), '-n', *driver.types.FLAGS,
+                             str(path)], directory / 'native', 30, directory)
+    warning = (b'Warning: The magic method H::__invoke() must have public visibility in ' +
+               os.fsencode(path) + b' on line 1\n')
+    assert native.returncode == 0 and native.stdout == EXPECTED['nonpublic-callable-priority']
+    assert native.stderr == warning
+    facts = {'version': 2, 'main': driver.b64(os.fsencode(path)),
+             'cwd': driver.b64(os.fsencode(directory)), 'include_path': driver.b64(b'.:'),
+             'entries': [], 'chdir_entries': []}
+    facts_path = directory / 'snapshot.json'
+    facts_path.write_text(json.dumps(facts, sort_keys=True) + '\n')
+    model = driver.process([str(ROOT / 'bin/php-semantics'), str(path), '--file-snapshot',
+        str(facts_path), '--steps', '100000', '--timeout', '60'], directory / 'model', 90, directory)
+    assert model.returncode == 0 and not model.stderr
+    outcome = json.loads(model.stdout)
+    assert outcome['frontend'] == 'accepted' and outcome['checked'] == 'program'
+    assert outcome['status'] == 'normal' and outcome['exit_status'] == 0
+    assert outcome['diagnostic'] is None and outcome['reason'] is None
+    assert base64.b64decode(outcome['stdout'], validate=True) == native.stdout
+    assert base64.b64decode(outcome['stderr'], validate=True) == warning
+    return {'status': outcome['status'], 'exit_status': outcome['exit_status']}
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--select', help='Comma-separated exact case IDs')
@@ -96,6 +124,9 @@ def main():
             if name == 'new-property-source-stop':
                 row['observation'] = unsupported_source(directory, path)
                 report['unsupported_controls'] += 1
+            elif name == 'nonpublic-callable-priority':
+                row['observation'] = nonpublic_source(directory, path)
+                report['semantic_agreements'] += 1
             else:
                 row['observation'] = cross.source({'expected_exit_status': 0,
                     'expected_stdout': EXPECTED[name].decode(), 'abrupt': False}, directory, path)
