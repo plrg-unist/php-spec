@@ -110,7 +110,7 @@ def checks(initial, name):
                   'n_cell <- S_before.REFCELLS /\\ (HCELL n_cell) <- S_before.ALLOCATIONS',
                   '$class_static_select(S_before,porigin_a,$ptascii("p")) = (ppropertydesc)',
                   '$class_static_select(S_before,porigin_b,$ptascii("p")) = (ppropertydesc)',
-                  'ppropertydesc.ORIGIN = pclassstatic.DECL /\\ ppropertydesc.TYPE = [PTBRANCH [PTBUILTIN "int"]]',
+                  'ppropertydesc.ORIGIN = pclassstatic.DECL /\\ ppropertydesc.TYPE = [(PTBRANCH ([(PTBUILTIN "int")]))]',
                   'ppropertydesc.DEFAULT = PROP_STORED porigin_default',
                   '$compiled_read(S_before,porigin_default) = (PINT 2)',
                   'S_before.PROPREFS = [ppropref]',
