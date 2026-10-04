@@ -9,7 +9,9 @@ def $declaration_install(S, pcunit, ppinstalled) = S_installed
   -- if S_installed.COMPLETION =/= NORMAL
 
 dec $declaration_stop(pstate, ppstate, pcompilestop) : pstate
-def $declaration_stop(S, P, pcompilestop) = $declaration_exit(S[.TODO = eps][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, S.COMPLETION, P.FOLD.SOURCE.ID)], P.FOLD.SOURCE.ID, pcompilestop)
+dec $iterator_notice_compile_stop(pstate) : pstate
+dec $iterator_notice_compile_finish(pstate, ptask*, nat) : pstate
+def $declaration_stop(S, P, pcompilestop) = $declaration_exit($iterator_notice_compile_stop(S)[.TODO = eps][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, S.COMPLETION, P.FOLD.SOURCE.ID)], P.FOLD.SOURCE.ID, pcompilestop)
 
 dec $declaration_class_checkpoint(pstate, pclassdesc, pdeclprobe) : pstate
 def $declaration_class_checkpoint(S, pclassdesc, DECLREADY) = $activate_class(S, pclassdesc)
@@ -27,7 +29,7 @@ dec $declaration_finish(pstate, ppstate) : pstate
 dec $declaration_unsupported(pcompletion) : bool
 def $declaration_finish(S, P) = $declaration_stop(S, P, PCSCOMPILER)
   -- if S.COMPLETION =/= NORMAL
-def $declaration_finish(S, P) = $declaration_exit(S[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)], P.FOLD.SOURCE.ID, PCSCOMPLETE)
+def $declaration_finish(S, P) = $iterator_notice_compile_finish($declaration_exit(S[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)], P.FOLD.SOURCE.ID, PCSCOMPLETE), S.TODO, P.FOLD.SOURCE.ID)
   -- if S.COMPLETION = NORMAL /\ P.COMPLETION = PPCNORMAL
 def $declaration_finish(S, P) = $declaration_stop(S[.COMPLETION = pcompletion], P, PCSCOMPILER)
   -- if S.COMPLETION = NORMAL
@@ -43,13 +45,14 @@ def $declaration_finish(S, P) = $declaration_stop(S[.COMPLETION = UNSUPPORTED "n
 def $declaration_unsupported(UNSUPPORTED text) = true
 def $declaration_unsupported(pcompletion) = false -- otherwise
 
+dec $declaration_unit_diagnostics(pstate, pldiagnostic*) : pstate
 dec $declaration_fold(pstate, ppstate, pppublication*, nat, nat) : pstate
 dec $declaration_fold_diagnostics(pstate, ppstate, pppublication, pppublication*, nat) : pstate
 dec $declaration_fold_result(pstate, ppstate, pppublication*, nat, nat) : pstate
-def $declaration_fold(S, P, eps, n_diagnostics, n_checkpoint) = $declaration_finish($compiler_diagnostics(S, P.DIAGNOSTICS[n_diagnostics:n_remaining]), P)
+def $declaration_fold(S, P, eps, n_diagnostics, n_checkpoint) = $declaration_finish($declaration_unit_diagnostics(S, P.DIAGNOSTICS[n_diagnostics:n_remaining]), P)
   -- if $(n_diagnostics <= |P.DIAGNOSTICS|)
   -- if n_remaining = $nabs($(|P.DIAGNOSTICS| - n_diagnostics))
-def $declaration_fold(S, P, (PPCP porigin n_count ppubkind) :: pppublication*, n_diagnostics, n_checkpoint) = $declaration_fold_diagnostics($compiler_diagnostics(S, P.DIAGNOSTICS[n_diagnostics:n_remaining]), P, PPCP porigin n_count ppubkind, pppublication*, n_checkpoint)
+def $declaration_fold(S, P, (PPCP porigin n_count ppubkind) :: pppublication*, n_diagnostics, n_checkpoint) = $declaration_fold_diagnostics($declaration_unit_diagnostics(S, P.DIAGNOSTICS[n_diagnostics:n_remaining]), P, PPCP porigin n_count ppubkind, pppublication*, n_checkpoint)
   -- if $(n_diagnostics <= n_count /\ n_count <= |P.DIAGNOSTICS|)
   -- if n_remaining = $nabs($(n_count - n_diagnostics))
 def $declaration_fold(S, P, pppublication*, n_diagnostics, n_checkpoint) = $declaration_stop(S[.COMPLETION = UNSUPPORTED "invalid declaration diagnostic checkpoint"], P, PCSUNSUPPORTED n_checkpoint) -- otherwise

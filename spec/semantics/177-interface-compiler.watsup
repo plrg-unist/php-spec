@@ -56,7 +56,8 @@ def $ppinterface_property(P, flags, SEQUENCE eps) = $ppconstant_error(P, $ptasci
 def $ppinterface_property(P, flags, phpType37) = $ppunsupported(P, "interface hooked properties") -- otherwise
 
 dec $ppinterface_method(ppstate, pcpath, int, bool, ptbytes, phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
-def $ppmethod_one(P, pcpath, NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppinterface_method($pplocate(P, pcpath, z_line), pcpath, flags, b, $base64(text), phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader)
+def $ppmethod_one(P, pcpath, NStmtClassMethod phpType14 (INTEGER flags) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader) = $ppinterface_method($pplocate(P, pcpath, z_line), pcpath, flags, b, $base64(text), phpType16, phpType18, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if $iterator_notice_attributes(P.ENV, phpType14)
   -- if pchheader.KIND = "interface"
   -- if z_line = $declaration_method_keyword_line(metadata, metadata_name)
   -- if $(z_line > 0)

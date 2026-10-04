@@ -1,0 +1,405 @@
+;; Zend 8.5.10 checks the actual inherited/interface entry. A source method
+;; replaces its tentative prototype; a fresh direct Iterator link restores it.
+syntax pdeclnoticeplan = DECLNOTICES pdeclnotice* | DECLNOTICESUNSUPPORTED text
+dec $iterator_notice_join(pdeclnoticeplan, pdeclnoticeplan) : pdeclnoticeplan
+def $iterator_notice_join(DECLNOTICES pdeclnotice*, DECLNOTICES pdeclnotice_tail*) = DECLNOTICES (pdeclnotice* ++ pdeclnotice_tail*)
+def $iterator_notice_join(DECLNOTICESUNSUPPORTED text, pdeclnoticeplan) = DECLNOTICESUNSUPPORTED text
+def $iterator_notice_join(DECLNOTICES pdeclnotice*, DECLNOTICESUNSUPPORTED text) = DECLNOTICESUNSUPPORTED text
+
+dec $iterator_notice_return(pstate, pclassdesc, pmethoddesc) : pmcheck
+def $iterator_notice_return(S, pclassdesc, pmethoddesc) = $pmcompare(PMUSER pmmethod_selected, $pil_scope(S, pclassdesc), PMUSER pmmethod_proto, $useriter_scope(), $method_active_registry(S, S.CLASSNAMES))
+  -- if pmmethod_selected = $pmethod_user(pmethoddesc, pclassdesc, $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN))
+  -- if pmmethod_proto = $pil_signature_method($ptascii("Iterator"), $ptlc(pmethoddesc.NAME), $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN), $useriter_signature(pmethoddesc.NAME))
+dec $iterator_notice_suppressed(pstate, pmethoddesc) : bool
+dec $iterator_notice_method(pstate, pclassdesc, pclassdesc, pmethoddesc, pmcheck) : pdeclnoticeplan
+def $iterator_notice_method(S, pclassdesc, pclassdesc_selected, pmethoddesc, PMCHECK PVYES ptbytes*) = DECLNOTICES eps
+def $iterator_notice_method(S, pclassdesc, pclassdesc_selected, pmethoddesc, PMCHECK PVNO ptbytes*) = DECLNOTICES eps
+  -- if $iterator_notice_suppressed(S, pmethoddesc)
+def $iterator_notice_method(S, pclassdesc, pclassdesc_selected, pmethoddesc, PMCHECK PVNO ptbytes*) = DECLNOTICES ([{CLASS pclassdesc.ORIGIN, METHOD pmethoddesc.FUNCTION.ORIGIN, LINE pmethoddesc.FUNCTION.LINE, MESSAGE ($ptascii("Return type of ") ++ ptbytes_child ++ $ptascii(" should either be compatible with ") ++ ptbytes_parent ++ $ptascii(", or the #[\\ReturnTypeWillChange] attribute should be used to temporarily suppress the notice"))}])
+  -- if ~$iterator_notice_suppressed(S, pmethoddesc)
+  -- if $pmcdisplay($pmdeclaration($pmethod_user(pmethoddesc, pclassdesc_selected, $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN)), $pil_scope(S, pclassdesc_selected), 14)) = PMTEXT ptbytes_child
+  -- if $pmcdisplay($pmdeclaration($pil_signature_method($ptascii("Iterator"), $ptlc(pmethoddesc.NAME), $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN), $useriter_signature(pmethoddesc.NAME)), $useriter_scope(), 14)) = PMTEXT ptbytes_parent
+def $iterator_notice_method(S, pclassdesc, pclassdesc_selected, pmethoddesc, PMCHECK PVUNRESOLVED ptbytes*) = DECLNOTICESUNSUPPORTED "Iterator tentative return availability"
+def $iterator_notice_method(S, pclassdesc, pclassdesc_selected, pmethoddesc, PMUNSUPPORTED text) = DECLNOTICESUNSUPPORTED text
+def $iterator_notice_method(S, pclassdesc, pclassdesc_selected, pmethoddesc, pmcheck) = DECLNOTICESUNSUPPORTED "Iterator tentative declaration display" -- otherwise
+
+dec $iterator_notice_members(pstate, pclassdesc, ptbytes*, ppmethodinherited*, ppmethodinherited*) : pdeclnoticeplan
+def $iterator_notice_members(S, pclassdesc, eps, ppmethodinherited_mask*, ppmethodinherited*) = DECLNOTICES eps
+def $iterator_notice_members(S, pclassdesc, ptbytes :: ptbytes_tail*, ppmethodinherited_mask*, ppmethodinherited*) = $iterator_notice_members(S, pclassdesc, ptbytes_tail*, ppmethodinherited_mask*, ppmethodinherited*)
+  -- if $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = eps
+def $iterator_notice_members(S, pclassdesc, ptbytes :: ptbytes_tail*, ppmethodinherited_mask*, ppmethodinherited*) = DECLNOTICES eps
+  -- if $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = (PPMINHERITED pmethoddesc pclassdesc_selected)
+  -- if $useriter_method_issue(S, pclassdesc_selected, pmethoddesc) =/= METHOD_OK
+def $iterator_notice_members(S, pclassdesc, ptbytes :: ptbytes_tail*, ppmethodinherited_mask*, ppmethodinherited*) = $iterator_notice_members(S, pclassdesc, ptbytes_tail*, ppmethodinherited_mask*, ppmethodinherited*)
+  -- if $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = (PPMINHERITED pmethoddesc pclassdesc_selected)
+  -- if $useriter_method_issue(S, pclassdesc_selected, pmethoddesc) = METHOD_OK
+  -- if $pil_info_named(ppmethodinherited_mask*, ptbytes)
+def $iterator_notice_members(S, pclassdesc, ptbytes :: ptbytes_tail*, ppmethodinherited_mask*, ppmethodinherited*) = $iterator_notice_join($iterator_notice_method(S, pclassdesc, pclassdesc_selected, pmethoddesc, $iterator_notice_return(S, pclassdesc_selected, pmethoddesc)), $iterator_notice_members(S, pclassdesc, ptbytes_tail*, ppmethodinherited_mask*, ppmethodinherited*))
+  -- if $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = (PPMINHERITED pmethoddesc pclassdesc_selected)
+  -- if $useriter_method_issue(S, pclassdesc_selected, pmethoddesc) = METHOD_OK
+  -- if ~$pil_info_named(ppmethodinherited_mask*, ptbytes)
+
+dec $iterator_notice_parent(pstate, pclassdesc, ppmethodinherited*) : pdeclnoticeplan
+def $iterator_notice_parent(S, pclassdesc, ppmethodinherited*) = $iterator_notice_members(S, pclassdesc, $useriter_members(), $method_info_layout(S, porigin_parent, |S.CLASSES|), ppmethodinherited*)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+  -- if $class_origin_matches(S, porigin_parent, $ptascii("Iterator"), |S.CLASSES|)
+def $iterator_notice_parent(S, pclassdesc, ppmethodinherited*) = DECLNOTICES eps -- otherwise
+dec $iterator_notice_parent_has(pstate, pclassdesc, pilref) : bool
+def $iterator_notice_parent_has(S, pclassdesc, pilref) = $class_origin_matches(S, porigin_parent, $pil_name(pilref), |S.CLASSES|)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+def $iterator_notice_parent_has(S, pclassdesc, pilref) = false -- otherwise
+
+dec $iterator_notice_ref(pstate, pclassdesc, pilref, pilref*, ppmethodinherited*) : pdeclnoticeplan
+def $iterator_notice_ref(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) = DECLNOTICES eps
+  -- if $iterator_notice_parent_has(S, pclassdesc, pilref)
+def $iterator_notice_ref(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) = DECLNOTICES eps
+  -- if ~$iterator_notice_parent_has(S, pclassdesc, pilref)
+  -- if $class_constant_interface_issue(S, pclassdesc, pilref, pilref_seen*) =/= METHOD_OK
+def $iterator_notice_ref(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited*) = $iterator_notice_members(S, pclassdesc, $useriter_members(), eps, ppmethodinherited*)
+  -- if ~$iterator_notice_parent_has(S, pclassdesc, PILBUILTIN ptbytes)
+  -- if $class_constant_interface_issue(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*) = METHOD_OK
+  -- if $ptlc(ptbytes) = $ptascii("iterator")
+def $iterator_notice_ref(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, ppmethodinherited*) = $iterator_notice_members(S, pclassdesc, $useriter_members(), $pil_proto_source(S, porigin, |S.CLASSES|), ppmethodinherited*)
+  -- if ~$iterator_notice_parent_has(S, pclassdesc, PILSOURCE ptbytes porigin)
+  -- if $class_constant_interface_issue(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*) = METHOD_OK
+  -- if $pil_method_items(S, pclassdesc, $pil_proto_source(S, porigin, |S.CLASSES|), ppmethodinherited*) = METHOD_OK
+  -- if $pil_nominal(S, porigin, $ptascii("Iterator"), |S.CLASSES|)
+def $iterator_notice_ref(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) = DECLNOTICES eps -- otherwise
+dec $iterator_notice_refs(pstate, pclassdesc, pilref*, pilref*, ppmethodinherited*) : pdeclnoticeplan
+def $iterator_notice_refs(S, pclassdesc, pilref_seen*, eps, ppmethodinherited*) = DECLNOTICES eps
+def $iterator_notice_refs(S, pclassdesc, pilref_seen*, pilref :: pilref_tail*, ppmethodinherited*) = $iterator_notice_join($iterator_notice_ref(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*), $iterator_notice_refs(S, pclassdesc, pilref_seen* ++ [pilref], pilref_tail*, ppmethodinherited*))
+  -- if $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) = METHOD_OK
+def $iterator_notice_refs(S, pclassdesc, pilref_seen*, pilref :: pilref_tail*, ppmethodinherited*) = $iterator_notice_ref(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*)
+  -- if $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) =/= METHOD_OK
+
+dec $iterator_notice_plan(pstate, pclassdesc) : pdeclnoticeplan
+def $iterator_notice_plan(S, pclassdesc) = $iterator_notice_join($iterator_notice_parent(S, pclassdesc, ppmethodinherited*), $iterator_notice_refs(S, pclassdesc, eps, pilref*, ppmethodinherited*))
+  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = (PILTARGETS pilref*)
+  -- if ppmethodinherited* = $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_proto_refs(S, pilref*, |S.CLASSES|)
+def $iterator_notice_plan(S, pclassdesc) = $iterator_notice_parent(S, pclassdesc, $ppmethod_own(pclassdesc, pclassdesc.METHODS)) 
+  -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = eps
+
+dec $iterator_notice_items(pdeclnotice*) : pdeclnoticeitem*
+def $iterator_notice_items(pdeclnotice*) = (METHOD_NOTICE pdeclnotice)*
+dec $iterator_notice_level(pdeclnoticeitem) : int
+def $iterator_notice_level(METHOD_NOTICE pdeclnotice) = 8192
+def $iterator_notice_level(COMPILER_NOTICE (PLDIAGNOSTIC "warning" text ptbytes* pllocation)) = 2
+def $iterator_notice_level(COMPILER_NOTICE (PLDIAGNOSTIC "deprecated" text ptbytes* pllocation)) = 8192
+dec $iterator_notice_line(pdeclnoticeitem) : int
+def $iterator_notice_line(METHOD_NOTICE pdeclnotice) = pdeclnotice.LINE
+def $iterator_notice_line(COMPILER_NOTICE (PLDIAGNOSTIC text_level text ptbytes* pllocation)) = pllocation.LINE
+dec $iterator_notice_origin(pdeclnoticeitem) : porigin
+def $iterator_notice_origin(METHOD_NOTICE pdeclnotice) = pdeclnotice.METHOD
+def $iterator_notice_origin(COMPILER_NOTICE (PLDIAGNOSTIC text_level text ptbytes* pllocation)) = PORIGIN pllocation.UNIT pllocation.PATH
+dec $iterator_notice_message(pdeclnoticeitem) : nat*
+def $iterator_notice_message(METHOD_NOTICE pdeclnotice) = pdeclnotice.MESSAGE
+def $iterator_notice_message(COMPILER_NOTICE pldiagnostic) = $plmessage(pldiagnostic)
+dec $iterator_notice_event(pdeclnoticeitem) : pevent
+def $iterator_notice_event(METHOD_NOTICE pdeclnotice) = DIAGNOSTIC_SOURCE n "Deprecated" pdeclnotice.MESSAGE pdeclnotice.LINE
+  -- if pdeclnotice.METHOD = PORIGIN n pcpath
+def $iterator_notice_event(COMPILER_NOTICE (PLDIAGNOSTIC "warning" text ptbytes* pllocation)) = $compiler_event("Warning", $plmessage(PLDIAGNOSTIC "warning" text ptbytes* pllocation), pllocation)
+def $iterator_notice_event(COMPILER_NOTICE (PLDIAGNOSTIC "deprecated" text ptbytes* pllocation)) = $compiler_event("Deprecated", $plmessage(PLDIAGNOSTIC "deprecated" text ptbytes* pllocation), pllocation)
+dec $iterator_notice_throw_tail(pstate, pdeclnoticeitem*) : pstate
+def $iterator_notice_throw_tail(S, eps) = S
+def $iterator_notice_throw_tail(S, pdeclnoticeitem :: pdeclnoticeitem_tail*) = $iterator_notice_throw_tail(S[.ERRORFATALTRACE = eps], pdeclnoticeitem_tail*)
+  -- if $error_handler_eligible(S, $iterator_notice_level(pdeclnoticeitem))
+def $iterator_notice_throw_tail(S, pdeclnoticeitem :: pdeclnoticeitem_tail*) = $iterator_notice_throw_tail($error_default(S[.ERRORFATALTRACE = eps], $iterator_notice_event(pdeclnoticeitem), $iterator_notice_level(pdeclnoticeitem)), pdeclnoticeitem_tail*)
+  -- if ~$error_handler_eligible(S, $iterator_notice_level(pdeclnoticeitem))
+
+;; Seeds exist only during the pure linking fold. No callback runs until the
+;; successful class or whole compile_file unit has been fully published.
+dec $iterator_notice_seed_key(ptask) : porigin?
+def $iterator_notice_seed_key(DECL_NOTICE_SEED porigin pdeclnotice*) = (porigin)
+def $iterator_notice_seed_key(ptask) = eps -- otherwise
+dec $iterator_notice_seed_task(ptask) : bool
+def $iterator_notice_seed_task(DECL_NOTICE_SEED porigin pdeclnotice*) = true
+def $iterator_notice_seed_task(DECL_COMPILER_SEED pldiagnostic) = true
+def $iterator_notice_seed_task(ptask) = false -- otherwise
+dec $iterator_notice_seed_items(ptask) : pdeclnoticeitem*
+def $iterator_notice_seed_items(DECL_NOTICE_SEED porigin pdeclnotice*) = $iterator_notice_items(pdeclnotice*)
+def $iterator_notice_seed_items(DECL_COMPILER_SEED pldiagnostic) = [COMPILER_NOTICE pldiagnostic]
+def $iterator_notice_seed_items(ptask) = eps -- otherwise
+dec $iterator_notice_seed_remove(ptask*, porigin) : ptask*
+def $iterator_notice_seed_remove(eps, porigin) = eps
+def $iterator_notice_seed_remove(ptask :: ptask_tail*, porigin) = $iterator_notice_seed_remove(ptask_tail*, porigin)
+  -- if $iterator_notice_seed_key(ptask) = (porigin)
+def $iterator_notice_seed_remove(ptask :: ptask_tail*, porigin) = ptask :: $iterator_notice_seed_remove(ptask_tail*, porigin)
+  -- if $iterator_notice_seed_key(ptask) =/= (porigin)
+dec $iterator_notice_seeds(ptask*) : pdeclnoticeitem*
+def $iterator_notice_seeds(eps) = eps
+def $iterator_notice_seeds(ptask :: ptask_tail*) = $iterator_notice_seed_items(ptask) ++ $iterator_notice_seeds(ptask_tail*)
+dec $iterator_notice_without_seeds(ptask*) : ptask*
+def $iterator_notice_without_seeds(eps) = eps
+def $iterator_notice_without_seeds(ptask :: ptask_tail*) = $iterator_notice_without_seeds(ptask_tail*) -- if $iterator_notice_seed_task(ptask)
+def $iterator_notice_without_seeds(ptask :: ptask_tail*) = ptask :: $iterator_notice_without_seeds(ptask_tail*) -- if ~$iterator_notice_seed_task(ptask)
+dec $iterator_notice_default(pstate, pdeclnoticeitem*) : pstate
+def $iterator_notice_default(S, eps) = S
+def $iterator_notice_default(S, pdeclnoticeitem :: pdeclnoticeitem_tail*) = $iterator_notice_default($error_default(S[.ERRORFATALTRACE = eps], $iterator_notice_event(pdeclnoticeitem), $iterator_notice_level(pdeclnoticeitem)), pdeclnoticeitem_tail*)
+dec $iterator_notice_early_eval(pstate) : bool
+dec $iterator_notice_seed(pstate, porigin, pdeclnoticeplan) : pstate
+def $iterator_notice_seed(S, porigin, DECLNOTICES eps) = S[.TODO = $iterator_notice_seed_remove(S.TODO, porigin)]
+def $iterator_notice_seed(S, porigin, DECLNOTICES pdeclnotice*) = S[.TODO = $iterator_notice_seed_remove(S.TODO, porigin) ++ [DECL_NOTICE_SEED porigin pdeclnotice*]]
+  -- if pdeclnotice* =/= eps
+  -- if ~$iterator_notice_early_eval(S)
+def $iterator_notice_seed(S, porigin, DECLNOTICES pdeclnotice*) = S[.COMPLETION = UNSUPPORTED "early eval Iterator tentative declaration callbacks"]
+  -- if pdeclnotice* =/= eps
+  -- if $iterator_notice_early_eval(S)
+def $iterator_notice_seed(S, porigin, DECLNOTICESUNSUPPORTED text) = S[.COMPLETION = UNSUPPORTED text]
+dec $iterator_notice_link_result(pstate, pstate, pclassdesc) : pstate
+dec $iterator_notice_link_fatal(pcompletion) : bool
+def $iterator_notice_link_fatal(FATAL n_message* z) = true
+def $iterator_notice_link_fatal(STATICBYTES n_message* z) = true
+def $iterator_notice_link_fatal(pcompletion) = false -- otherwise
+def $pil_method_publish(S, S_candidate, pclassdesc) = $iterator_notice_link_result(S_candidate, $pil_method_publish_result(S, S_candidate, pclassdesc), pclassdesc)
+def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = $iterator_notice_seed(S_result, pclassdesc.ORIGIN, $iterator_notice_plan(S_candidate, pclassdesc))
+  -- if S_result.COMPLETION = NORMAL
+def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = $iterator_notice_default(S_result[.TODO = $iterator_notice_without_seeds(S_result.TODO)], $iterator_notice_seeds($iterator_notice_seed_remove(S_candidate.TODO, pclassdesc.ORIGIN)) ++ $iterator_notice_items(pdeclnotice*))
+  -- if $iterator_notice_link_fatal(S_result.COMPLETION)
+  -- if $iterator_notice_plan(S_candidate, pclassdesc) = DECLNOTICES pdeclnotice*
+  -- if ~$iterator_notice_early_eval(S_candidate) \/ pdeclnotice* = eps
+def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = S_result[.COMPLETION = UNSUPPORTED "early eval Iterator tentative declaration callbacks"]
+  -- if $iterator_notice_link_fatal(S_result.COMPLETION)
+  -- if $iterator_notice_plan(S_candidate, pclassdesc) = DECLNOTICES pdeclnotice*
+  -- if $iterator_notice_early_eval(S_candidate)
+  -- if pdeclnotice* =/= eps
+def $iterator_notice_link_result(S_candidate, S_result, pclassdesc) = S_result -- otherwise
+def $iterator_notice_compile_stop(S) = $iterator_notice_default(S, $iterator_notice_seeds(S.TODO))
+  -- if S.COMPLETION =/= NORMAL
+  -- if ~$declaration_unsupported(S.COMPLETION)
+def $iterator_notice_compile_stop(S) = S -- otherwise
+
+dec $iterator_notice_publication_match(pdeclaration, porigin) : bool
+def $iterator_notice_publication_match(PDECLASS n porigin, porigin) = true
+def $iterator_notice_publication_match(PDRCLASS porigin pdeclcause, porigin) = true
+def $iterator_notice_publication_match(pdeclaration, porigin) = false -- otherwise
+dec $iterator_notice_publication_index(pdeclaration*, porigin, nat) : nat?
+def $iterator_notice_publication_index(eps, porigin, n) = eps
+def $iterator_notice_publication_index(pdeclaration :: pdeclaration_tail*, porigin, n) = (n)
+  -- if $iterator_notice_publication_match(pdeclaration, porigin)
+def $iterator_notice_publication_index(pdeclaration :: pdeclaration_tail*, porigin, n) = $iterator_notice_publication_index(pdeclaration_tail*, porigin, $(n + 1))
+  -- if ~$iterator_notice_publication_match(pdeclaration, porigin)
+dec $iterator_notice_seed_claim(pstate, ptask) : (porigin, nat)*
+def $iterator_notice_seed_claim(S, ptask) = [(porigin, n)]
+  -- if $iterator_notice_seed_key(ptask) = (porigin)
+  -- if $iterator_notice_publication_index(S.DECLARATIONS, porigin, 0) = (n)
+def $iterator_notice_seed_claim(S, ptask) = eps -- otherwise
+dec $iterator_notice_seed_classes(pstate, ptask*) : (porigin, nat)*
+def $iterator_notice_seed_classes(S, eps) = eps
+def $iterator_notice_seed_classes(S, ptask :: ptask_tail*) = $iterator_notice_seed_claim(S, ptask) ++ $iterator_notice_seed_classes(S, ptask_tail*)
+dec $iterator_notice_file_entry(pstate, pfilecontext*, nat) : (porigin, int)?
+def $iterator_notice_file_entry(S, eps, n) = eps
+def $iterator_notice_file_entry(S, pfilecontext :: pfilecontext_tail*, n) = ((pfilecontext.SITE, $file_site_line(S, pfilecontext.SITE)))
+  -- if pfilecontext.UNIT = (n)
+def $iterator_notice_file_entry(S, pfilecontext :: pfilecontext_tail*, n) = $iterator_notice_file_entry(S, pfilecontext_tail*, n)
+  -- if pfilecontext.UNIT =/= (n)
+dec $iterator_notice_eval_entry(pevalcontext*, nat) : bool
+def $iterator_notice_eval_entry(eps, n) = false
+def $iterator_notice_eval_entry(pevalcontext :: pevalcontext_tail*, n) = (pevalcontext.UNIT = n \/ $iterator_notice_eval_entry(pevalcontext_tail*, n))
+def $iterator_notice_early_eval(S) = $iterator_notice_eval_entry(S.EVALCONTEXTS, n)
+  -- if $declaration_open(S.DECLARATIONS) = ((n, porigin?, z))
+def $iterator_notice_early_eval(S) = false -- otherwise
+def $iterator_notice_publication(S, S_result, pclassdesc) = S_result
+  -- if S_result.COMPLETION = NORMAL
+  -- if $declaration_open(S.DECLARATIONS) =/= eps
+def $iterator_notice_publication(S, S_result, pclassdesc) = S_result[.TODO = (DECL_NOTICES {KIND NOTICE_RUNTIME, SITE pclassdesc.ORIGIN, LINE pclassdesc.LINE, CLASSES ([(pclassdesc.ORIGIN, n)]), NOTICES pdeclnoticeitem*, INDEX 0}) :: $iterator_notice_without_seeds(S_result.TODO)]
+  -- if S_result.COMPLETION = NORMAL
+  -- if $declaration_open(S.DECLARATIONS) = eps
+  -- if pdeclnoticeitem* = $iterator_notice_seeds(S_result.TODO)
+  -- if pdeclnoticeitem* =/= eps
+  -- if $iterator_notice_publication_index(S_result.DECLARATIONS, pclassdesc.ORIGIN, 0) = (n)
+def $iterator_notice_publication(S, S_result, pclassdesc) = S_result[.TODO = $iterator_notice_without_seeds(S_result.TODO)]
+  -- if S_result.COMPLETION = NORMAL
+  -- if $declaration_open(S.DECLARATIONS) = eps
+  -- if $iterator_notice_seeds(S_result.TODO) = eps
+def $iterator_notice_publication(S, S_result, pclassdesc) = $iterator_notice_compile_stop(S_result)[.TODO = $iterator_notice_without_seeds(S_result.TODO)]
+  -- if S_result.COMPLETION =/= NORMAL
+def $iterator_notice_compile_finish(S, ptask_seed*, n) = S
+  -- if $iterator_notice_seeds(ptask_seed*) = eps
+def $iterator_notice_compile_finish(S, ptask_seed*, n) = S[.TODO = (DECL_NOTICES {KIND (NOTICE_FILE n), SITE porigin, LINE z, CLASSES $iterator_notice_seed_classes(S, ptask_seed*), NOTICES $iterator_notice_seeds(ptask_seed*), INDEX 0}) :: S.TODO]
+  -- if $iterator_notice_seeds(ptask_seed*) =/= eps
+  -- if $iterator_notice_file_entry(S, S.FILECONTEXTS, n) = ((porigin, z))
+def $iterator_notice_compile_finish(S, ptask_seed*, n) = S[.COMPLETION = UNSUPPORTED "early eval Iterator tentative declaration callbacks"]
+  -- if $iterator_notice_seeds(ptask_seed*) =/= eps
+  -- if $iterator_notice_eval_entry(S.EVALCONTEXTS, n)
+def $iterator_notice_compile_finish(S, ptask_seed*, n) = $iterator_notice_default(S, $iterator_notice_seeds(ptask_seed*))
+  -- if $iterator_notice_seeds(ptask_seed*) =/= eps
+  -- if $iterator_notice_file_entry(S, S.FILECONTEXTS, n) = eps
+  -- if ~$iterator_notice_eval_entry(S.EVALCONTEXTS, n)
+dec $iterator_notice_prefix_task(ptask) : ptask*
+def $iterator_notice_prefix_task(DECL_NOTICES pdeclnoticebatch) = [DECL_NOTICES pdeclnoticebatch]
+def $iterator_notice_prefix_task(ptask) = eps -- otherwise
+def $iterator_notice_work(eps, ptask_work*) = ptask_work*
+def $iterator_notice_work(ptask :: ptask_tail*, ptask_work*) = $iterator_notice_prefix_task(ptask) ++ ptask_work*
+
+dec $iterator_notice_classes_plan(pstate, (porigin, nat)*) : pdeclnoticeplan
+def $iterator_notice_classes_plan(S, eps) = DECLNOTICES eps
+def $iterator_notice_classes_plan(S, (porigin, n) :: (porigin_tail, n_tail)*) = $iterator_notice_join($iterator_notice_plan(S, pclassdesc), $iterator_notice_classes_plan(S, (porigin_tail, n_tail)*))
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+dec $iterator_notice_runtime_owner(pstate, pdeclnoticebatch) : bool
+def $iterator_notice_runtime_owner(S, pdeclnoticebatch) = true
+  -- if pdeclnoticebatch.KIND = NOTICE_RUNTIME
+  -- if pdeclnoticebatch.CLASSES = [(pdeclnoticebatch.SITE, n)]
+  -- if $(n < |S.DECLARATIONS|)
+  -- if S.DECLARATIONS[n] = PDRCLASS pdeclnoticebatch.SITE pdeclcause
+  -- if $declaration_cause(S) = pdeclcause
+  -- if $class_at(S.CLASSES, pdeclnoticebatch.SITE) = (pclassdesc)
+  -- if pdeclnoticebatch.LINE = pclassdesc.LINE
+def $iterator_notice_runtime_owner(S, pdeclnoticebatch) = false -- otherwise
+dec $iterator_notice_unit_class(pstate, pdeclaration, nat) : porigin?
+def $iterator_notice_unit_class(S, PDECLASS n_unit porigin, n_unit) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $iterator_notice_plan(S, pclassdesc) = DECLNOTICES pdeclnotice*
+  -- if pdeclnotice* =/= eps
+def $iterator_notice_unit_class(S, pdeclaration, n_unit) = eps -- otherwise
+dec $iterator_notice_unit_classes(pstate, pdeclaration*, nat, nat) : (porigin, nat)*
+def $iterator_notice_unit_classes(S, eps, n_unit, n) = eps
+def $iterator_notice_unit_classes(S, pdeclaration :: pdeclaration_tail*, n_unit, n) = (porigin, n) :: $iterator_notice_unit_classes(S, pdeclaration_tail*, n_unit, $(n + 1))
+  -- if $iterator_notice_unit_class(S, pdeclaration, n_unit) = (porigin)
+def $iterator_notice_unit_classes(S, pdeclaration :: pdeclaration_tail*, n_unit, n) = $iterator_notice_unit_classes(S, pdeclaration_tail*, n_unit, $(n + 1))
+  -- if $iterator_notice_unit_class(S, pdeclaration, n_unit) = eps
+dec $iterator_notice_file_owner(pstate, pdeclnoticebatch) : bool
+def $iterator_notice_file_owner(S, pdeclnoticebatch) = true
+  -- if pdeclnoticebatch.KIND = NOTICE_FILE n
+  -- if $iterator_notice_file_entry(S, S.FILECONTEXTS, n) = ((pdeclnoticebatch.SITE, pdeclnoticebatch.LINE))
+  -- if pdeclnoticebatch.CLASSES = $iterator_notice_unit_classes(S, S.DECLARATIONS, n, 0)
+  -- if ~( $iterator_notice_eval_entry(S.EVALCONTEXTS, n) )
+  -- if (PDEXIT n PCSCOMPLETE) <- S.DECLARATIONS
+def $iterator_notice_file_owner(S, pdeclnoticebatch) = false -- otherwise
+dec $iterator_notice_batch_items(pstate, pdeclnoticebatch) : bool
+dec $iterator_notice_batch_valid(pstate, pdeclnoticebatch) : bool
+def $iterator_notice_batch_valid(S, pdeclnoticebatch) = (S.ORIGIN = (pdeclnoticebatch.SITE) /\ pdeclnoticebatch.NOTICES =/= eps /\ $(pdeclnoticebatch.INDEX <= |pdeclnoticebatch.NOTICES|) /\ ($iterator_notice_runtime_owner(S, pdeclnoticebatch) \/ $iterator_notice_file_owner(S, pdeclnoticebatch)) /\ $iterator_notice_batch_items(S, pdeclnoticebatch))
+def $call_task_valid(S, DECL_NOTICE_SEED porigin pdeclnotice*) = false
+def $call_task_valid(S, DECL_COMPILER_SEED pldiagnostic) = false
+def $call_task_valid(S, DECL_NOTICES pdeclnoticebatch) = $iterator_notice_batch_valid(S, pdeclnoticebatch)
+def $call_task_valid(S, DECL_NOTICE_RESUME pdeclnoticebatch) = ($iterator_notice_batch_valid(S, pdeclnoticebatch) /\ $(pdeclnoticebatch.INDEX > 0))
+def $task_nodes(DECL_NOTICE_SEED porigin pdeclnotice*) = eps
+def $task_nodes(DECL_COMPILER_SEED pldiagnostic) = eps
+def $task_nodes(DECL_NOTICES pdeclnoticebatch) = eps
+def $task_nodes(DECL_NOTICE_RESUME pdeclnoticebatch) = eps
+rule PhpStep/iterator-notice-dispatch: S ~> $error_dispatch(S, $iterator_notice_level(pdeclnoticeitem), $iterator_notice_message(pdeclnoticeitem), $iterator_notice_line(pdeclnoticeitem), $iterator_notice_event(pdeclnoticeitem), DECL_NOTICE_RESUME pdeclnoticebatch[.INDEX = $(pdeclnoticebatch.INDEX + 1)])
+  -- if S.TODO = (DECL_NOTICES pdeclnoticebatch) :: ptask_tail*
+  -- if $iterator_notice_batch_valid(S, pdeclnoticebatch)
+  -- if $(pdeclnoticebatch.INDEX < |pdeclnoticebatch.NOTICES|)
+  -- if pdeclnoticeitem = pdeclnoticebatch.NOTICES[pdeclnoticebatch.INDEX]
+rule PhpStep/iterator-notice-resume: S ~> S[.TODO = (DECL_NOTICES pdeclnoticebatch) :: ptask_tail*]
+  -- if S.TODO = (DECL_NOTICE_RESUME pdeclnoticebatch) :: ptask_tail*
+  -- if $call_task_valid(S, DECL_NOTICE_RESUME pdeclnoticebatch)
+rule PhpStep/iterator-notice-done: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (DECL_NOTICES pdeclnoticebatch) :: ptask_tail*
+  -- if $iterator_notice_batch_valid(S, pdeclnoticebatch)
+  -- if pdeclnoticebatch.INDEX = |pdeclnoticebatch.NOTICES|
+
+;; One live continuation owns each runtime publication or compiled file unit.
+;; Error-handler wrappers claim their embedded resume once, rather than adding
+;; another owner for the same continuation while the callback is entered.
+syntax pdeclnoticeowner = NOTICE_CLASS_OWNER porigin nat | NOTICE_UNIT_OWNER nat
+dec $iterator_notice_owner(pdeclnoticebatch) : pdeclnoticeowner*
+def $iterator_notice_owner(pdeclnoticebatch) = [NOTICE_CLASS_OWNER porigin n]
+  -- if pdeclnoticebatch.KIND = NOTICE_RUNTIME
+  -- if pdeclnoticebatch.CLASSES = [(porigin, n)]
+def $iterator_notice_owner(pdeclnoticebatch) = [NOTICE_UNIT_OWNER n]
+  -- if pdeclnoticebatch.KIND = NOTICE_FILE n
+def $iterator_notice_owner(pdeclnoticebatch) = eps -- otherwise
+dec $iterator_notice_task_owners(ptask) : pdeclnoticeowner*
+def $iterator_notice_task_owners(DECL_NOTICES pdeclnoticebatch) = $iterator_notice_owner(pdeclnoticebatch)
+def $iterator_notice_task_owners(DECL_NOTICE_RESUME pdeclnoticebatch) = $iterator_notice_owner(pdeclnoticebatch)
+def $iterator_notice_task_owners(ERROR_HANDLER_INVOKE perrorcall) = $iterator_notice_task_owners(perrorcall.RESUME)
+def $iterator_notice_task_owners(ERROR_HANDLER_RESULT perrorcall) = $iterator_notice_task_owners(perrorcall.RESUME)
+def $iterator_notice_task_owners(AT porigin ptask) = $iterator_notice_task_owners(ptask)
+def $iterator_notice_task_owners(ptask) = eps -- otherwise
+dec $iterator_notice_tasks_owners(ptask*) : pdeclnoticeowner*
+def $iterator_notice_tasks_owners(eps) = eps
+def $iterator_notice_tasks_owners(ptask :: ptask_tail*) = $iterator_notice_task_owners(ptask) ++ $iterator_notice_tasks_owners(ptask_tail*)
+dec $iterator_notice_frames_owners(pframe*) : pdeclnoticeowner*
+def $iterator_notice_frames_owners(eps) = eps
+def $iterator_notice_frames_owners(pframe :: pframe_tail*) = $iterator_notice_tasks_owners(pframe.TODO) ++ $iterator_notice_frames_owners(pframe_tail*)
+dec $iterator_notice_owners_unique(pdeclnoticeowner*) : bool
+def $iterator_notice_owners_unique(eps) = true
+def $iterator_notice_owners_unique(pdeclnoticeowner :: pdeclnoticeowner_tail*) = (~(pdeclnoticeowner <- pdeclnoticeowner_tail*) /\ $iterator_notice_owners_unique(pdeclnoticeowner_tail*))
+def $iterator_notice_owners_valid(ptask*, pframe*) = $iterator_notice_owners_unique($iterator_notice_tasks_owners(ptask*) ++ $iterator_notice_frames_owners(pframe*))
+
+;; A pending exception suppresses remaining eligible callbacks. Ineligible
+;; notices still use the live reporting mask before the exception continues.
+def $error_read_discard(S, DECL_NOTICE_RESUME pdeclnoticebatch) = $iterator_notice_throw_tail(S, pdeclnoticebatch.NOTICES[pdeclnoticebatch.INDEX:n_remaining])
+  -- if $(pdeclnoticebatch.INDEX <= |pdeclnoticebatch.NOTICES|)
+  -- if n_remaining = $nabs($(|pdeclnoticebatch.NOTICES| - pdeclnoticebatch.INDEX))
+
+def $iterator_notice_resume(DECL_NOTICE_RESUME pdeclnoticebatch) = true
+def $iterator_notice_resume(ptask) = false -- otherwise
+def $error_callback_line(S, perrorcall) = pdeclnoticebatch.LINE
+  -- if perrorcall.RESUME = DECL_NOTICE_RESUME pdeclnoticebatch
+def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, $iterator_notice_origin(pdeclnoticeitem))
+  -- if perrorcall.RESUME = DECL_NOTICE_RESUME pdeclnoticebatch
+  -- if $(pdeclnoticebatch.INDEX > 0 /\ pdeclnoticebatch.INDEX <= |pdeclnoticebatch.NOTICES|)
+  -- if n = $nabs($(pdeclnoticebatch.INDEX - 1))
+  -- if pdeclnoticeitem = pdeclnoticebatch.NOTICES[n]
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DECL_NOTICE_RESUME pdeclnoticebatch
+  -- if $call_task_valid(S, DECL_NOTICE_RESUME pdeclnoticebatch)
+  -- if n = $nabs($(pdeclnoticebatch.INDEX - 1))
+  -- if pdeclnoticeitem = pdeclnoticebatch.NOTICES[n]
+  -- if perrorcall.SITE = pdeclnoticebatch.SITE
+  -- if perrorcall.LEVEL = $iterator_notice_level(pdeclnoticeitem)
+  -- if perrorcall.LINE = $iterator_notice_line(pdeclnoticeitem)
+  -- if perrorcall.MESSAGE = $iterator_notice_message(pdeclnoticeitem)
+  -- if perrorcall.EVENT = $iterator_notice_event(pdeclnoticeitem)
+
+;; Existing compiler diagnostics share compile_file's queue, preserving their
+;; position among early binding notices. Their producers remain the compiler.
+dec $iterator_notice_compile_diagnostics(pstate, pldiagnostic*) : pstate
+dec $iterator_notice_compile_warning(pstate, pldiagnostic) : pstate
+dec $iterator_notice_file_compile(pstate) : bool
+def $iterator_notice_file_compile(S) = true
+  -- if $declaration_open(S.DECLARATIONS) = ((n, porigin?, z))
+  -- if $iterator_notice_file_entry(S, S.FILECONTEXTS, n) =/= eps
+def $iterator_notice_file_compile(S) = false -- otherwise
+;; The producer fact is independent of delivery mode, so completed-unit
+;; declaration replay authenticates the same chronology without live callers.
+def $iterator_notice_compile_warning(S, pldiagnostic) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDCOMPILEWARNING pldiagnostic]][.TODO = S.TODO ++ [DECL_COMPILER_SEED pldiagnostic]]
+  -- if $iterator_notice_file_compile(S)
+def $iterator_notice_compile_warning(S, pldiagnostic) = $compiler_diagnostics(S[.DECLARATIONS = S.DECLARATIONS ++ [PDCOMPILEWARNING pldiagnostic]], [pldiagnostic])
+  -- if ~$iterator_notice_file_compile(S)
+  -- if ~$iterator_notice_early_eval(S)
+def $iterator_notice_compile_warning(S, pldiagnostic) = S[.COMPLETION = UNSUPPORTED "early eval declaration diagnostic callbacks"]
+  -- if $iterator_notice_early_eval(S)
+def $iterator_notice_compile_diagnostics(S, eps) = S
+def $iterator_notice_compile_diagnostics(S, (PLDIAGNOSTIC "warning" text ptbytes* pllocation) :: pldiagnostic*) = $iterator_notice_compile_diagnostics($iterator_notice_compile_warning(S, PLDIAGNOSTIC "warning" text ptbytes* pllocation), pldiagnostic*)
+  -- if S.COMPLETION = NORMAL
+def $iterator_notice_compile_diagnostics(S, (PLDIAGNOSTIC "deprecated" text ptbytes* pllocation) :: pldiagnostic*) = $iterator_notice_compile_diagnostics($iterator_notice_compile_warning(S, PLDIAGNOSTIC "deprecated" text ptbytes* pllocation), pldiagnostic*)
+  -- if S.COMPLETION = NORMAL
+def $iterator_notice_compile_diagnostics(S, pldiagnostic*) = $compiler_diagnostics(S, pldiagnostic*) -- otherwise
+def $declaration_unit_diagnostics(S, pldiagnostic*) = $iterator_notice_compile_diagnostics(S, pldiagnostic*)
+
+dec $iterator_notice_unit_item(pstate, pdeclaration, nat) : pdeclnoticeitem*
+def $iterator_notice_unit_item(S, PDECLASS n porigin, n) = $iterator_notice_items(pdeclnotice*)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $iterator_notice_plan(S, pclassdesc) = DECLNOTICES pdeclnotice*
+def $iterator_notice_unit_item(S, PDCOMPILEWARNING pldiagnostic, n) = [COMPILER_NOTICE pldiagnostic]
+  -- if pldiagnostic = PLDIAGNOSTIC text_level text ptbytes* pllocation
+  -- if pllocation.UNIT = n
+def $iterator_notice_unit_item(S, pdeclaration, n) = eps -- otherwise
+dec $iterator_notice_unit_items(pstate, pdeclaration*, nat) : pdeclnoticeitem*
+def $iterator_notice_unit_items(S, eps, n) = eps
+def $iterator_notice_unit_items(S, pdeclaration :: pdeclaration_tail*, n) = $iterator_notice_unit_item(S, pdeclaration, n) ++ $iterator_notice_unit_items(S, pdeclaration_tail*, n)
+def $iterator_notice_batch_items(S, pdeclnoticebatch) = true
+  -- if pdeclnoticebatch.KIND = NOTICE_RUNTIME
+  -- if $iterator_notice_classes_plan(S, pdeclnoticebatch.CLASSES) = DECLNOTICES pdeclnotice*
+  -- if $iterator_notice_items(pdeclnotice*) = pdeclnoticebatch.NOTICES
+def $iterator_notice_batch_items(S, pdeclnoticebatch) = true
+  -- if pdeclnoticebatch.KIND = NOTICE_FILE n
+  -- if $iterator_notice_unit_items(S, S.DECLARATIONS, n) = pdeclnoticebatch.NOTICES
+def $iterator_notice_batch_items(S, pdeclnoticebatch) = false -- otherwise
+
+;; Admit only the built-in suppressor with no arguments. Its lexical class
+;; name resolution is the same namespace/import resolution as other class names.
+dec $iterator_notice_attribute_name(plenv, name) : bool
+def $iterator_notice_attribute_name(plenv, name) = ($ptlc($ptresolve(ptcontext, ptqual, ptbytes)) = $ptascii("returntypewillchange"))
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if ptcontext = {NAMESPACE plenv.NAMESPACE, IMPORTS plenv.CLASSES, SCOPE PTGLOBAL, POSITION PTRETURN, OWNER eps, MEMBER eps, FILE eps, LINE 0}
+def $iterator_notice_attribute_name(plenv, name) = false -- otherwise
+def $iterator_notice_attributes(plenv, SEQUENCE eps) = true
+def $iterator_notice_attributes(plenv, SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) = $iterator_notice_attribute_name(plenv, name)
+def $iterator_notice_attributes(plenv, phpType14) = false -- otherwise
+def $iterator_notice_suppressed(S, pmethoddesc) = $iterator_notice_attribute_name(pmethoddesc.FUNCTION.ENV, name)
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod (SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata)
+def $iterator_notice_suppressed(S, pmethoddesc) = false -- otherwise

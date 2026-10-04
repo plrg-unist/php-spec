@@ -75,6 +75,7 @@ UNSUPPORTED = {
     'aggregate-required-followup': source('').replace(b'class It ', b'class Inner ') + b'\nclass It implements IteratorAggregate {function getIterator():Traversable{echo "G";return new Inner;}} foreach(new It as $v){echo $v;break;}',
     'arrayaccess-required-followup': b'<?php class It implements ArrayAccess {function offsetExists(mixed $o):bool{return false;} function offsetGet(mixed $o):mixed{return 1;} function offsetSet(mixed $o,mixed $v):void{} function offsetUnset(mixed $o):void{}} echo (new It)[0];',
 }
+NOTICES = {name: UNSUPPORTED.pop(name) for name in ['tentative-omitted', 'tentative-incompatible']}
 CONTROL_NATIVE = {
     'tentative-omitted': (0, b'RVK[20:1]NVK[21:1]NV', b'Deprecated: Return type of It::current() should either be compatible with Iterator::current(): mixed,'),
     'tentative-incompatible': (0, b'R', b'Deprecated: Return type of It::valid(): int should either be compatible with Iterator::valid(): bool,'),
@@ -124,8 +125,8 @@ def main():
     parser.add_argument('--mode', choices=['native', 'full'], default='full')
     parser.add_argument('--select', help='Comma-separated exact case IDs')
     args = parser.parse_args()
-    names = args.select.split(',') if args.select else list(CASES) + list(DECLARATIONS) + list(UNSUPPORTED)
-    assert names and len(names) == len(set(names)) and all(n in CASES or n in DECLARATIONS or n in UNSUPPORTED for n in names)
+    names = args.select.split(',') if args.select else list(CASES) + list(DECLARATIONS) + list(NOTICES) + list(UNSUPPORTED)
+    assert names and len(names) == len(set(names)) and all(n in CASES or n in DECLARATIONS or n in NOTICES or n in UNSUPPORTED for n in names)
     os.environ.update(LC_ALL='C', TZ='UTC', GIT_OPTIONAL_LOCKS='0')
     out = Path(tempfile.mkdtemp(prefix='user-iterator-', dir=ROOT / '.tools'))
     report = {'result': 'fail', 'mode': args.mode, 'records': [], 'profile': driver.types.PROFILE,
@@ -139,7 +140,7 @@ def main():
             directory = out / name
             directory.mkdir()
             path = directory / 'source.php'
-            path.write_bytes(CASES[name][0] if name in CASES else DECLARATIONS[name][0] if name in DECLARATIONS else UNSUPPORTED[name])
+            path.write_bytes(CASES[name][0] if name in CASES else DECLARATIONS[name][0] if name in DECLARATIONS else (NOTICES | UNSUPPORTED)[name])
             row = {'id': name, 'source_sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
             report['records'].append(row)
             native = process([str(driver.types.PHP), '-n', *driver.types.FLAGS, str(path)], directory / 'native', 10, directory)
