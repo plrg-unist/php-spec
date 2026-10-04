@@ -24,7 +24,7 @@ def $closure_capture_read(S, IMPLICIT ptbytes z) = S[.RESULT = KNOWN PNULL]
 def $closure_capture(S, n_object, n_slot, IMPLICIT ptbytes z) = S[.OBJECTS = $object_set(S.OBJECTS, n_object, REALCLOSURE porigin $closure_item_set(pitem*, n_slot, $implicit_item(S, ptbytes)) pstaticcell*)][.RESULT = KNOWN PNULL][.TODO = (CLOSURE_CAPTURE n_object $(n_slot + 1)) :: ptask_tail*]
   -- if S.TODO = (CLOSURE_CAPTURE n_object n_slot) :: ptask_tail*
   -- if ~$environment_blocked(S, ptbytes)
-  -- if S.OBJECTS[n_object] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $object_body(S.OBJECTS[n_object]) = REALCLOSURE porigin pitem* pstaticcell*
 
 def $closure_local(S, ptbytes, UNINITIALIZED) = S_local[.STORE = $set_cell(S_local.STORE, S_local.CELL, UNDEFINED)]
   -- if S_local = $ensure(S, ptbytes)
@@ -32,7 +32,7 @@ rule PhpStep/arrow-receive-next: S ~> $closure_local(S, ptbytes, pitem*[n_slot])
   -- if S.TODO = (CLOSURE_RECEIVE porigin n_slot) :: ptask_tail*
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.INSTANCE = (n_object)
-  -- if S.OBJECTS[n_object] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $object_body(S.OBJECTS[n_object]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if plexical* = $closure_lexicals(pfunction.CODE.EXPRESSIONS)
   -- if $(n_slot < |plexical*|)
@@ -99,14 +99,14 @@ def $reference_return_notice(S, REFERENCE n) = false
 ;; This predicate also excludes a capture task at its end cursor before transfer.
 def $closure_callable(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if $closure_capture_tasks(S.TODO, n) ++ $closure_capture_frames(S.FRAMES, n) = eps
   -- if plexical* = $closure_lexicals(pfunction.CODE.EXPRESSIONS)
   -- if $closure_capture_prefix(S, pitem*, plexical*, |plexical*|)
 def $closure_callable(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin)
 def $closure_callable(S, n) = false -- otherwise

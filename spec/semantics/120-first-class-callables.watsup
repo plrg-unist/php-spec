@@ -24,6 +24,7 @@ rule PhpStep/firstclass-fixed: S ~> S[.TODO = (FIRSTCLASS_CONVERT porigin $dynam
   -- if S.TODO = (EVAL (NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if ~$firstclass_evaluated(S, porigin)
+  -- if ~$constant_callable_active(S, porigin)
 rule PhpStep/firstclass-evaluate: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 0]), EVAL expression), FIRSTCLASS_CONVERT porigin $dynamic_init_line(S, porigin) $runtime_line(S, eps, NExprFuncCall expression (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprFuncCall expression (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)

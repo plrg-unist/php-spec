@@ -259,7 +259,20 @@ rule PhpStep/class-constant-bind: S ~> $class_constant_result($class_constant_re
   -- if pvalue = $class_constant_typed_value(pclassconstantdesc.TYPE, pvalue_raw)
   -- if pvalueclass = $constant_class(S_value, pclassconstantdesc.INITIALIZER)
   -- if n_prefix = |S_value.DECLARATIONS|
-rule PhpStep/class-constant-bind-type: S ~> $throw_scalar($class_constant_restore(S_value[.TODO = ptask_tail*], pclassconstantcontext, pclassconstantcontext_tail*), "TypeError", $ptascii("Cannot assign ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" to class constant ") ++ pclassconstantdesc.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc.NAME ++ $ptascii(" of type ") ++ $pttypename(pclassconstantdesc.TYPE), pconstantcontext.LINE)
+  -- if $constant_callable_cache_valid(S_value, pclassconstantdesc, pvalueclass, n_prefix)
+rule PhpStep/class-constant-bind-uncertified: S ~> $class_constant_restore(S_value[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "uncertified class constant Closure transfer"], pclassconstantcontext, pclassconstantcontext_tail*)
+  -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if pclassconstantcontext.DECL = porigin
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if S_value = $resolve_at(S, S.RESULT, pconstantcontext.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if $class_constant_runtime_type(S_value, pclassconstantdesc.TYPE, pvalue)
+  -- if pvalueclass = $constant_class(S_value, pclassconstantdesc.INITIALIZER)
+  -- if ~$constant_callable_cache_valid(S_value, pclassconstantdesc, pvalueclass, |S_value.DECLARATIONS|)
+rule PhpStep/class-constant-bind-type: S ~> $throw_scalar($class_constant_restore(S_value[.TODO = ptask_tail*], pclassconstantcontext, pclassconstantcontext_tail*), "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S_value, pvalue) ++ $ptascii(" to class constant ") ++ pclassconstantdesc.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc.NAME ++ $ptascii(" of type ") ++ $pttypename(pclassconstantdesc.TYPE), pconstantcontext.LINE)
   -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
   -- if pclassconstantcontext.DECL = porigin
@@ -333,6 +346,8 @@ def $class_constant_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
   -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S.ALLOCATIONS)
   -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
   -- if $class_constant_runtime_type(S, pclassconstantdesc.TYPE, pdefaultcache.VALUE)
+  -- if $constant_callable_cache_prefix(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = (n_prefix)
+  -- if $constant_callable_cache_valid(S, pclassconstantdesc, pdefaultcache.CLASS, n_prefix)
   -- if $class_constant_caches_valid(S, pdefaultcache_tail*)
 def $class_constant_caches_valid(S, pdefaultcache*) = false -- otherwise
 

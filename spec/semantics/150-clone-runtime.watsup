@@ -37,10 +37,10 @@ def $clone_cell(S, n_cell) = $reference_cell(S[.STORE = S.STORE ++ [S.STORE[n_ce
   -- if n = |S.STORE|
 dec $clone_capture(pstate, nat, pitem) : pstate
 def $clone_capture(S, n, DIRECT pvalue) = S[.OBJECTS = $object_set(S.OBJECTS, n, REALCLOSURE porigin (pitem* ++ [DIRECT pvalue]) pstaticcell*)]
-  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
 def $clone_capture(S, n, ALIAS n_cell) = S_copy[.OBJECTS = $object_set(S_copy.OBJECTS, n, REALCLOSURE porigin (pitem* ++ [ALIAS S_copy.CELL]) pstaticcell*)]
   -- if S_copy = $clone_cell(S, n_cell)
-  -- if S_copy.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $object_body(S_copy.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
 dec $clone_captures(pstate, nat, pitem*) : pstate
 def $clone_captures(S, n, eps) = S
 def $clone_captures(S, n, pitem :: pitem_tail*) = $clone_captures($clone_capture(S, n, pitem), n, pitem_tail*)
@@ -48,7 +48,7 @@ dec $clone_statics(pstate, nat, pstaticcell*) : pstate
 def $clone_statics(S, n, eps) = S
 def $clone_statics(S, n, pstaticcell :: pstaticcell_tail*) = $clone_statics(S_copy[.OBJECTS = $object_set(S_copy.OBJECTS, n, REALCLOSURE porigin pitem* (pstaticcell_done* ++ [pstaticcell[.CELL = S_copy.CELL]]))], n, pstaticcell_tail*)
   -- if S_copy = $clone_cell(S, pstaticcell.CELL)
-  -- if S_copy.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell_done*
+  -- if $object_body(S_copy.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell_done*
 
 dec $clone_scope(pstate, nat, nat) : pstate
 def $clone_scope(S, n_source, n_new) = S[.CLOSURESCOPES = S.CLOSURESCOPES ++ [pclosurescope[.OBJECT = n_new]]]
@@ -61,10 +61,10 @@ dec $clone_object(pstate, nat) : pstate
 def $clone_object(S, n_source) = $clone_plain(S, n_source)
   -- if $class_plain_instance(S, n_source)
 def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE porigin]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
-  -- if S.OBJECTS[n_source] = NAMEDCLOSURE porigin
+  -- if $object_body(S.OBJECTS[n_source]) = NAMEDCLOSURE porigin
   -- if n = |S.OBJECTS|
 def $clone_object(S, n_source) = $clone_statics($clone_captures($clone_scope(S_new, n_source, n), n, pitem*), n, pstaticcell*)
-  -- if S.OBJECTS[n_source] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if n = |S.OBJECTS|
   -- if S_new = S[.OBJECTS = S.OBJECTS ++ [REALCLOSURE porigin eps eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
 
@@ -108,7 +108,7 @@ def $call_task_valid(S, EVAL (NExprClone expression metadata)) = $property_sourc
 def $clone_static_sources(S, eps) = eps
 dec $clone_object_statics(pstate, pnode) : pstaticcell*
 def $clone_object_statics(S, HOBJECT n) = pstaticcell*
-  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
 def $clone_object_statics(S, pnode) = eps -- otherwise
 def $clone_static_sources(S, pnode :: pnode_tail*) = $clone_object_statics(S, pnode) ++ $clone_static_sources(S, pnode_tail*)
 dec $clone_static_peer(pstaticcell, pstaticcell*) : bool
@@ -443,7 +443,7 @@ def $clone_update_base_valid(S, pclonecall, n_object, n_array, n_cursor) = true
   -- if (HOBJECT n_object) <- S.ALLOCATIONS
   -- if $(n_object > n_source)
   -- if (HOBJECT n_source) <- S.ALLOCATIONS
-  -- if $clone_same_kind(S.OBJECTS[n_source], S.OBJECTS[n_object])
+  -- if $clone_same_kind($object_body(S.OBJECTS[n_source]), $object_body(S.OBJECTS[n_object]))
   -- if $(n_array < |S.ARRAYS|)
   -- if (HARRAY n_array) <- S.ALLOCATIONS
   -- if $(n_cursor <= |S.ARRAYS[n_array].ITEMS|)

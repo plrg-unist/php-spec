@@ -1,4 +1,7 @@
 dec $ppclass_constant_initializer(ppstate) : bool
+dec $ppconstant_closure(ppstate, bool, phpType21, metadata) : ppstate
+dec $ppconstant_function_callable(ppstate, phpType19, metadata) : ppstate
+dec $ppconstant_method_callable(ppstate, phpType19, phpType20, metadata) : ppstate
 dec $ppconstant_member_validate(ppstate, pcpath, phpType20) : ppstate
 ;; User constants compile their initializer before declaration-name checks.
 ;; Constant AST validation follows existing45 folding and its original redirects.
@@ -69,15 +72,15 @@ def $ppconstant_validate(P, pcpath, pcnode) = $ppconstant_node(P, pcpath, pcnode
 
 def $ppconstant_node(P, pcpath, pcnode) = $ppconstant_children($ppconstant_location(P, pcnode), $pcchildren(pcnode, pcpath))
   -- if $ppconstant_allowed(pcnode)
-def $ppconstant_node(P, pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppunsupported(P, "first-class callable constant initializer")
-def $ppconstant_node(P, pcpath, NExprClosure phpType14 phpType4 phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata) = $ppunsupported(P, "closure constant initializer")
+def $ppconstant_node(P, pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppconstant_function_callable(P, phpType19, metadata)
+def $ppconstant_node(P, pcpath, NExprClosure phpType14 (BOOLEAN b) phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata) = $ppconstant_closure(P, b, phpType21, metadata)
 def $ppconstant_node(P, pcpath, NExprNew phpType28 phpType6 metadata) = $ppconstant_error(P, $ptascii("New expressions are not supported in this context"), $nabs($source_line(metadata)))
   -- if $ppclass_constant_initializer(P)
 def $ppconstant_node(P, pcpath, NExprNew phpType28 phpType6 metadata) = $ppunsupported(P, "object constant initializer")
   -- if ~$ppclass_constant_initializer(P)
 def $ppconstant_node(P, pcpath, NExprPropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
 def $ppconstant_node(P, pcpath, NExprNullsafePropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
-def $ppconstant_node(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppunsupported(P, "first-class callable constant initializer")
+def $ppconstant_node(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppconstant_method_callable(P, phpType19, phpType20, metadata)
 def $ppconstant_node(P, pcpath, NExprClassConstFetch phpType19 phpType20 metadata) = $ppconstant_member_validate($ppconstant_class(P, pcpath ++ [PCFIELD 0], phpType19), pcpath ++ [PCFIELD 1], phpType20)
 def $ppconstant_node(P, pcpath, pcnode) = $ppcheck(P, $context_error("Constant expression contains invalid operations", P.LOCATION.LINE))
   -- otherwise
