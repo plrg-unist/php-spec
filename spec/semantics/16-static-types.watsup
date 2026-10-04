@@ -11,6 +11,8 @@ syntax ptdiagnostic = PTDIAGNOSTIC text text ptbranch* ptcontext
 syntax ptresult = PTOK ptbranch* ptdiagnostic* | PTERROR ptdiagnostic* | PTUNSUPPORTED text
 syntax ptinput = PTNAME ptqual ptbytes | PTNULLABLE ptinput | PTUNION ptinput* | PTINTER ptinput* | PTABSENT | PTINVALID
 var ptbyte : nat
+dec $ptrait_scope(ptscope) : bool
+dec $ptrait_context(ptcontext?) : bool
 
 dec $ptfirst(ptbytes) : ptbytes
 def $ptfirst(eps) = eps

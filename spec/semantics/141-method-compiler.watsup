@@ -1,10 +1,15 @@
+dec $ppmethod_scope_context(pchheader) : ptscope
+dec $ppmethod_flags(int, text) : bool
+dec $ppmethod_supported_signature(pssignature, text) : bool
 ;; Class-owned method descriptors never enter the global function registry.
 syntax ppmembers = PPMEMBERS ppstate ppropertydesc* pmethoddesc*
 dec $ppmethod_members(statement*, bool) : bool
 dec $ppmember_groups(ppstate, pcpath, nat, statement*, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
 dec $ppmember_path(pcpath, pchheader, nat) : pcpath
 def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 3, PCINDEX n]
-  -- if pchheader.KIND = "interface" \/ pchheader.KIND = "trait"
+  -- if pchheader.KIND = "interface"
+def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 2, PCINDEX n]
+  -- if pchheader.KIND = "trait"
 def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 5, PCINDEX n]
   -- if pchheader.KIND = "class"
 dec $ppmethod_at(pmethoddesc*, ptbytes) : bool

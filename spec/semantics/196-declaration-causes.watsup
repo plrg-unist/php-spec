@@ -347,10 +347,11 @@ def $declaration_cause_walk(S, PORIGIN n_site pcpath, (porigin_function, porigin
   -- if $(n > 0)
   -- if porigin_callsite? = (porigin_call)
   -- if $declaration_cause_owner(S, PORIGIN n_site pcpath) = (pfunction)
-  -- if pfunction.ORIGIN = porigin_function
-  -- if $declaration_callable_available(S, pfunction, n)
+  -- if $function_at($all_functions(S), porigin_function) = (pfunction_selected)
+  -- if $trait_source_same(pfunction, pfunction_selected)
+  -- if $declaration_callable_available(S, pfunction_selected, n)
   -- if $declaration_active_class(S, porigin_lexical?) /\ $declaration_active_class(S, porigin_called?)
-  -- if $declaration_invocation(S, pfunction, porigin_call, porigin_lexical?, porigin_called?, pdeclcalls)
+  -- if $declaration_invocation(S, pfunction_selected, porigin_call, porigin_lexical?, porigin_called?, pdeclcalls)
 def $declaration_cause_walk(S, PORIGIN 0 pcpath, eps, n_unit, b_unit, n) = true
   -- if $(n > 0)
   -- if $declaration_cause_owner(S, PORIGIN 0 pcpath) = eps

@@ -91,7 +91,6 @@ dec $pil_stringable_nominal(pstate, pclassdesc, bool) : pmethodissue
 dec $pil_stringable_method(pstate, pclassdesc, pmethoddesc?) : pmethodissue
 dec $pil_issue_line(pclassdesc, pmethoddesc) : int
 dec $pil_reline(pclassdesc, pmethoddesc, pmethodissue) : pmethodissue
-dec $pil_method_fatal(pstate, porigin, ptbytes, int) : pstate
 
 def $pil_info_pick(eps, ptbytes) = eps
 def $pil_info_pick((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*, ptbytes) = (PPMINHERITED pmethoddesc pclassdesc)
@@ -121,7 +120,7 @@ def $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_pro
   -- if $pmunavailable($pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pil_scope(S, pclassdesc_child), $pmethod_user(pmethoddesc_proto, pclassdesc_proto, $call_sourcefile(S.FILES, pclassdesc_proto.ORIGIN)), $pil_scope(S, pclassdesc_proto), ptbytes_missing*, 14) = PMDIAGNOSTIC pmdiagnostic
 def $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto, PMUNSUPPORTED text) = METHOD_UNSUPPORTED text
 def $pil_issue_line(pclassdesc, pmethoddesc) = pmethoddesc.FUNCTION.LINE
-def $pil_reline(pclassdesc, pmethoddesc, METHOD_ISSUE ptbytes_message z) = METHOD_FILEISSUE ptbytes_message $pil_issue_line(pclassdesc, pmethoddesc) pmethoddesc.OWNER
+def $pil_reline(pclassdesc, pmethoddesc, METHOD_ISSUE ptbytes_message z) = METHOD_FILEISSUE ptbytes_message $pil_issue_line(pclassdesc, pmethoddesc) pmethoddesc.FUNCTION.ORIGIN
 def $pil_reline(pclassdesc, pmethoddesc, METHOD_OK) = METHOD_OK
 def $pil_reline(pclassdesc, pmethoddesc, METHOD_UNSUPPORTED text) = METHOD_UNSUPPORTED text
 

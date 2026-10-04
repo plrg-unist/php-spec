@@ -216,10 +216,10 @@ def $clone_object(S, n_source) = $clone_scope(S[.OBJECTS = S.OBJECTS ++ [STRINGM
   -- if S.OBJECTS[n_source] = STRINGMETHODCLOSURE pcalltarget pstringselection
   -- if n = |S.OBJECTS|
 def $clone_same_kind(STRINGMETHODCLOSURE pcalltarget pstringselection, STRINGMETHODCLOSURE pcalltarget pstringselection) = true
-def $state_static_at(S, porigin) = $static_at(S.STATICS, porigin)
+def $state_static_at(S, porigin) = $static_at(S.STATICS, $trait_static_key(S, porigin))
   -- if $current_instance(S) = (n)
   -- if S.OBJECTS[n] = STRINGMETHODCLOSURE pcalltarget pstringselection
-def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new]]
+def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new[.ORIGIN = $trait_static_key(S, pstaticcell_new.ORIGIN)]]]
   -- if $current_instance(S) = (n)
   -- if S.OBJECTS[n] = STRINGMETHODCLOSURE pcalltarget pstringselection
 def $trace_context_function(S, pcallcontext) = pmethoddesc.NAME
