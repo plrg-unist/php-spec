@@ -258,7 +258,7 @@ try {$destination213=$missing213;} catch(TypeError $e) {
     echo "C:",Slot213::$value,":",$e->getPrevious() instanceof Error?1:0,":",get_error_handler()===$throw213?1:0,";";
 }
 restore_error_handler();
-''', b'T4;C:7:1:1;', 'unsupported'),
+''', b'T4;C:7:1:1;', 'normal'),
     ('earlier-cast-control-now-admitted', b'''<?php
 error_reporting(0);
 set_error_handler(function() { echo 'H'; }, 2);

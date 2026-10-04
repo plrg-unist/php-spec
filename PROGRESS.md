@@ -19,11 +19,24 @@ the original author19/261 and independent16/345 checks.
 The [scoped-callable ledger](coverage/semantics/scoped-callables-current-review.json)
 keeps original failures and the three ordinary named-receive exclusions distinct.
 
+Missing-CV reference sends retain the existing86/105 behavior: genuine null
+cells, no warning and named-slot priority. Module220 rejects captured-null
+ASSIGN through live typed aliases, retaining their value and replacing a handler
+throw with a caller TypeError whose previous chain owns the original error.
+At484d, author9/211 and independent5/249 pass; the latter corrects two fixture
+phase assumptions without replaying passing models. The actual3919 composition
+accepts one reduced scoped-handler source at5bce: TypeError context, typed caller
+alias and the handler chain survive private selection and retired global owners.
+The original observer-heavy source retains its inconclusive CLI60 timeout. The
+[consumer ledger](coverage/semantics/warning-consumers-review.json) preserves
+original failures and distinct revisions.
+
 Warning-read consumers213 retain original null for six casts, selected copies and
 ordinary by-value sends across handler mutation. Selected callees and prior arrays
 keep their real owners; named-slot errors precede warnings. Direct ASSIGN writes
-null even after a handler throws, before the same exception continues; rejected
-constrained writes remain Unsupported. Mixed author21 normal tuples/control0 and
+null even after a handler throws, before the same exception continues. Its
+original rejected constrained-write control is addressed by private220 above.
+Mixed author21 normal tuples/control0 and
 58/60/65/53=236, plus independent10/197, retain their actual revisions and original
 failures. Fresh actual6395 composition at181f separately accepts source1/94 and
 independent cached-callee source1/96, covering static-reference sends, the real

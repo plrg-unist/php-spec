@@ -95,12 +95,13 @@ def $error_read_source(S, perrorread) = $error_named_send_source(S, perrorread, 
 
 ;; ASSIGN writes through its destination before checking the pending exception.
 ;; CAST/QM_ASSIGN/SEND only write their null temporary/argument; later consumers
-;; are retired. Rejected constrained writes need native exception chaining.
+;; are retired. Rejected constrained writes replace and chain the pending error.
 dec $error_assign_throw(pstate, preqbytes) : pstate
+dec $error_assign_rejected(pstate, pstate) : pstate
 def $error_assign_throw(S, n*) = S_written
   -- if S_written = $scope_write_name(S, [PCFIELD 0], n*, PNULL)
   -- if S_written.COMPLETION = NORMAL
-def $error_assign_throw(S, n*) = S[.COMPLETION = UNSUPPORTED "error-handler throw with rejected constrained assignment"]
+def $error_assign_throw(S, n*) = $error_assign_rejected(S, S_written)
   -- if S_written = $scope_write_name(S, [PCFIELD 0], n*, PNULL)
   -- if S_written.COMPLETION =/= NORMAL
 def $error_read_discard(S, ERROR_READ_RESULT perrorread) = $error_assign_throw(S, n*)
