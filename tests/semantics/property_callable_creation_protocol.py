@@ -180,7 +180,7 @@ $property_callable_method_receipt_owner(S, pconstantclosure_maker, pmethoddesc_a
 ~$closure_creator_valid(S, porigin_child, pclosurescope_child[.LEXICAL = porigin_b], pclosurecreation, pclosurecreator)
 ~$closure_creator_valid(S, porigin_child, pclosurescope_child[.CALLED = porigin_a], pclosurecreation, pclosurecreator)
 n_sources = |S.SOURCES|
-porigin_missing = PORIGIN n_sources [PCFIELD 0]
+porigin_missing = PORIGIN n_sources eps
 ~$closure_creator_valid(S, porigin_child, pclosurescope_child, pclosurecreation[.CALLSITE = (porigin_missing)], pclosurecreator[.CALLSITE = (porigin_missing)])
 ~$property_method_scope_valid(S[.CONSTANTCLOSURES = eps], pclosurescope_maker)
 $effective_method(S, porigin_b, $ptascii("maker"), |S.CLASSES|) = (pmethoddesc_b)
