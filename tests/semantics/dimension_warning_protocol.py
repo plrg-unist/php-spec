@@ -70,7 +70,7 @@ CASES=[
     '$entry_lookup(S.ARRAYS[n_current].ITEMS, KINT 0) = (DIRECT (PINT 17))',
     '~$key_read_valid(S, pkeyread[.PHASE = KEY_FLOAT RANGEWARNING eps])',
     '~$key_read_valid(S, pkeyread[.PHASE = KEY_FLOAT PRECISIONLOSS [RANGEWARNING]])',
-    '~$key_read_valid(S, pkeyread[.PHASE = (KEY_FLOAT RANGEWARNING [RANGEWARNING, PRECISIONLOSS])])',
+    '~$key_read_valid(S, pkeyread[.PHASE = KEY_FLOAT RANGEWARNING (RANGEWARNING :: [PRECISIONLOSS])])',
     '~$key_read_valid(S, pkeyread[.KEY = KINT 1])','~$key_read_valid(S, pkeyread[.LINE = 999])',
     '~$key_read_valid(S, pkeyread[.OWNERS = BASE_VALUE (KNOWN pkeyread.BASE)])',
     *GUARDS,'PhpStep: S ~> S_next','S_next.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*',
