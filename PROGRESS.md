@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Temporary fake/METHOD `Closure::call`268 now checks the actual selected scope,
+executes user bodies and finite getters, preserves source statics and creates
+durable children with only the genuine new receiver owner. Binding warnings
+precede inner-name errors; reference warnings precede fresh-cell allocation and
+retain frozen values through callback writes, allocations and throws. Private18
+normal source agreements retain e2ce; totalized task guards at9342 pass AL252 and
+two author owner/throw fixtures100 conditions. Independent frame/child/reference
+checks and actual267 factory/default composition are being closed in the
+[ledger](coverage/semantics/temporary-fake-call-review.json). The original
+nondefault `new self` setup Unsupported retains zero agreement atfa90. Unpacking,
+further internal consumers and REAL temporary-current lifetime remain required;
+return verification stays paused.
+
 REAL binding264 now resolves scope before ordered static, `$this`-unbind and
 internal-scope warnings. Genuine handler continuations retain selected reasons
 through callback mutation and throws. The function's own compiled entries supply

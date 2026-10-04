@@ -1,0 +1,116 @@
+[
+  {
+    "id": "getter-call-held-owners",
+    "source": "<?php\n$old = new Exception('one');\n$source = $old->getMessage(...);\nunset($old);\n$new = new Exception('two');\necho $source->call((function () use (&$source, &$new) {\n    $held = $new;\n    $source = null;\n    $new = null;\n    return $held;\n})()), '|', (int)($source === null), ':', (int)($new === null), '|';\n",
+    "source_sha256": "b4b814e963a68643a64d091aa7c0baf27650384e6251015f9fd687a64d29ab3a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "method-call-warning-handler-finally-throw",
+    "source": "<?php\nerror_reporting(0);\nclass CallWarnOwner268 {\n    public function run() { echo 'BODY|'; }\n    public function capture() { return $this->run(...); }\n}\nfunction stopCall268() {\n    global $source, $receiver;\n    $source = null;\n    $receiver = null;\n    echo 'W|';\n    try { throw new Exception('stop'); }\n    finally { echo 'F|'; }\n}\n$source = (new CallWarnOwner268)->capture();\n$receiver = new stdClass;\nset_error_handler('stopCall268');\ntry { $source->call($receiver); }\ncatch (Exception $e) { echo get_class($e), ':', $e->getMessage(), '|'; }\nrestore_error_handler();\nunset($e);\necho (int)($source === null), ':', (int)($receiver === null), '|';\n",
+    "source_sha256": "37b39046aaa99ea2a98af8333c5bccec2be07e44e6812215132cee2163260086",
+    "expected_model": "normal"
+  },
+  {
+    "id": "method-private-call-scope-statics-current",
+    "source": "<?php\ndeclare(strict_types=1);\nclass FakePrivateCallHost268 {\n    public int $id;\n    public function __construct($id) { $this->id = $id; }\n    private function run(int $value = 3) {\n        static $n = 0;\n        echo self::class, '/', static::class, ':', $this->id, ':', ++$n, ':', $value, '|';\n        if ($n === 1) {\n            try { Closure::getCurrent(); }\n            catch (Error $e) { echo 'E:', $e->getMessage(), '|'; }\n        }\n        return $value;\n    }\n    public function capture() { return $this->run(...); }\n}\n$original = new FakePrivateCallHost268(1);\n$receiver = new FakePrivateCallHost268(2);\n$source = $original->capture();\n$copy = clone $source;\necho $source->call($receiver, '4'), '|';\necho $copy->call($receiver), '|';\necho $source(), '|';\nunset($original, $receiver, $source, $copy);\n",
+    "source_sha256": "f81aee6898fa72cd7b5f2d3c22a52b57c23563e019253ee648349127a7143e6a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "method-call-subclass-and-incompatible",
+    "source": "<?php\nclass FakeCallBase268 {\n    private function run() { echo self::class, '/', static::class, '|'; return 7; }\n    public function capture() { return $this->run(...); }\n}\nclass FakeCallChild268 extends FakeCallBase268 {}\nclass FakeCallOther268 {}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$original = new FakeCallChild268;\n$source = $original->capture();\n$a = $source->call(new FakeCallChild268);\n$b = $source->call(new FakeCallOther268);\necho (int)($a === null), (int)($b === null), '|';\necho $source->call(new FakeCallBase268), '|';\necho $source(), '|';\nrestore_error_handler();\nunset($original, $source, $a, $b);\n",
+    "source_sha256": "609bcde9afb33564bf8e75bea64a61c69041d78952d6f749e1a2fb3cd5beb85e",
+    "expected_model": "normal"
+  },
+  {
+    "id": "getter-call-exact-internal-receiver",
+    "source": "<?php\nclass FakeGetterChild268 extends Exception {}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$original = new Exception('one');\n$receiver = new Exception('two');\n$source = $original->getMessage(...);\necho $source->call($receiver), '|', $source(), '|';\n$bad = $source->call(new FakeGetterChild268('child'));\necho (int)($bad === null), '|';\nrestore_error_handler();\nunset($original, $receiver, $source, $bad);\n",
+    "source_sha256": "2cdb7f9f3616cea22c5f1197baa3d3cf5be3c11d0c6fbd0fb69688fb1d87b8fe",
+    "expected_model": "normal"
+  },
+  {
+    "id": "named-call-scope-warning-before-inner-name",
+    "source": "<?php\nclass FakeNamedReceiver268 {}\nfunction fake_named_source268(int $value) { echo 'BODY|'; }\nfunction fake_named_mark268() { echo 'A|'; return 1; }\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$source = fake_named_source268(...);\n$result = $source->call(new FakeNamedReceiver268, bogus: fake_named_mark268());\necho (int)($result === null), '|';\nrestore_error_handler();\nunset($source, $result);\n",
+    "source_sha256": "845e6da44c79d6cecef2ae62c626fa5899a14ff2177101808cbee4318b2a08eb",
+    "expected_model": "normal"
+  },
+  {
+    "id": "method-call-warning-before-forwarded-name-error",
+    "source": "<?php\nclass FakeNamedMethodBase268 {\n    private function run(int $value) { echo 'BODY|'; }\n    public function capture() { return $this->run(...); }\n}\nclass FakeNamedMethodChild268 extends FakeNamedMethodBase268 {}\nfunction fake_method_mark268($label) { echo $label, '|'; return 1; }\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$source = (new FakeNamedMethodChild268)->capture();\n$a = $source->call(new FakeNamedMethodChild268, bogus: fake_method_mark268('A'));\necho (int)($a === null), '|';\ntry { $source->call(new FakeNamedMethodBase268, bogus: fake_method_mark268('B')); }\ncatch (Error $e) { echo 'E:', $e->getMessage(), '|'; }\nrestore_error_handler();\nunset($source, $a, $e);\n",
+    "source_sha256": "aa2fcc39c79f2ce52ffeea85b9758a1f3e73319c8625b2f6da04466e60c660ca",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fake-call-warning-frozen-input-replacement",
+    "source": "<?php\nclass FakeFrozenBase268 {\n    private function run() { echo 'BODY|'; }\n    public function capture() { return $this->run(...); }\n}\nclass FakeFrozenChild268 extends FakeFrozenBase268 {}\n$source = (new FakeFrozenBase268)->capture();\n$receiver = new FakeFrozenChild268;\nset_error_handler(function ($n, $message) use (&$source, &$receiver) {\n    echo 'W:', $message, '|';\n    $source = static function () { return 9; };\n    $receiver = null;\n    return true;\n});\n$result = $source->call($receiver);\necho (int)($result === null), ':', $source(), ':', (int)($receiver === null), '|';\nrestore_error_handler();\nunset($source, $receiver, $result);\n",
+    "source_sha256": "b0b87abc8b12ad7b57819384bd8cc00092469cd9d9a05a9fd2acc519dfbe2d91",
+    "expected_model": "normal"
+  },
+  {
+    "id": "method-call-created-children-retired-makers",
+    "source": "<?php\nclass FakeMethodChildOwner268 {\n    public int $id;\n    private function __construct($id = 0) { $this->id = $id; }\n    public static function create($id) { return new self($id); }\n    private function maker() {\n        static $n = 0;\n        echo 'P:', ++$n, '|';\n        return [\n            static function () { echo self::class, '/', static::class, '|'; },\n            function ($value = new self) {\n                static $m = 0;\n                echo self::class, '/', static::class, ':', $this->id, ':', $value::class, ':', ++$m, '|';\n                return Closure::getCurrent();\n            }\n        ];\n    }\n    public function capture() { return $this->maker(...); }\n}\n$original = FakeMethodChildOwner268::create(1);\n$source = $original->capture();\n$receiver = FakeMethodChildOwner268::create(2);\n$children = $source->call($receiver);\n$static = $children[0];\n$child = $children[1];\n$copy = clone $child;\nunset($original, $source, $receiver, $children, $child);\n$static();\necho (int)($copy() === $copy), '|';\nunset($static, $copy);\n",
+    "source_sha256": "2f3911cd4cac21c80583337930d7dd99a15b1ef85844b0c24aaebd6c96123d75",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "from-foreign-call-created-static-child",
+    "source": "<?php\nclass FakeRequested268 {\n    public function maker() {\n        return static function () { echo self::class, '/', static::class, '|'; };\n    }\n}\nclass FakeForeign268 {\n    public function capture() { return Closure::fromCallable([FakeRequested268::class, 'self::maker']); }\n}\nset_error_handler(function ($n, $message) { echo 'D|'; return true; });\n$foreign = new FakeForeign268;\n$source = $foreign->capture();\n$receiver = new FakeRequested268;\n$child = $source->call($receiver);\nunset($foreign, $source, $receiver);\n$child();\nrestore_error_handler();\nunset($child);\n",
+    "source_sha256": "a5c67655891cf071c282ef70150fe38a6e4998d002540d0105a0a6e73332a047",
+    "expected_model": "normal"
+  },
+  {
+    "id": "bound-named-dummy-call-internal-child",
+    "source": "<?php\nfunction fake_dummy_maker268() {\n    echo 'P:', get_class($this), '|';\n    return function () {\n        echo self::class, '/', static::class, '/', get_class($this), '|';\n        return Closure::getCurrent();\n    };\n}\n$originalReceiver = function () { return 1; };\n$nextReceiver = static function () { return 2; };\n$source = fake_dummy_maker268(...);\n$bound = $source->bindTo($originalReceiver, null);\n$child = $bound->call($nextReceiver);\nunset($source, $bound, $originalReceiver, $nextReceiver);\necho (int)($child() === $child), '|';\nunset($child);\n",
+    "source_sha256": "8d95db3c1f36f21e3641a29f42dc1991f1268a0351cd353c9afc1524eda8f13d",
+    "expected_model": "normal"
+  },
+  {
+    "id": "getter-call-forwarded-positional-and-name-errors",
+    "source": "<?php\n$original = new Exception('one');\n$receiver = new Exception('two');\n$source = $original->getMessage(...);\ntry { $source->call($receiver, 1); }\ncatch (ArgumentCountError $e) { echo 'P:', $e->getMessage(), '|'; }\ntry { $source->call(newThis: $receiver, bogus: 1); }\ncatch (Error $e) { echo 'N:', $e->getMessage(), '|'; }\necho $source->call($receiver), '|', $source(), '|';\nunset($original, $receiver, $source, $e);\n",
+    "source_sha256": "bd07d2740f9284b5d8be210ae68049879915f3927ecaf7eb4a57eb5be310f011",
+    "expected_model": "normal"
+  },
+  {
+    "id": "from-declared-fallback-call-selected-owner-child",
+    "source": "<?php\nclass FakeFallbackRequested268 {}\nclass FakeFallbackForeign268 {\n    public function capture() { return Closure::fromCallable([FakeFallbackRequested268::class, 'self::maker']); }\n    public function maker() {\n        echo self::class, '/', static::class, '/', get_class($this), '|';\n        return static function () { echo self::class, '/', static::class, '|'; };\n    }\n}\nset_error_handler(function ($n, $message) {\n    if ($n === E_DEPRECATED) { echo 'D|'; }\n    else { echo 'W:', $message, '|'; }\n    return true;\n});\n$foreign = new FakeFallbackForeign268;\n$source = $foreign->capture();\n$bad = $source->call(new FakeFallbackRequested268);\necho (int)($bad === null), '|';\n$receiver = new FakeFallbackForeign268;\n$child = $source->call($receiver);\nunset($foreign, $source, $receiver, $bad);\n$child();\nrestore_error_handler();\nunset($child);\n",
+    "source_sha256": "cc3b649ea238369896e349905f22b4945ee33ec90dbfec1a36ad7ed0bce4d9d4",
+    "expected_model": "normal"
+  },
+  {
+    "id": "method-call-reference-warning-frozen-forwarded-value",
+    "source": "<?php\nclass FakeReferenceHost268 {\n    public function run(&$value) { echo 'B:', ++$value, '|'; return $value; }\n}\n$original = new FakeReferenceHost268;\n$receiver = new FakeReferenceHost268;\n$source = $original->run(...);\n$value = 5;\nset_error_handler(function ($n, $message) use (&$value) {\n    echo 'W:', $message, '|';\n    $value = 9;\n    return true;\n});\n$result = $source->call($receiver, $value);\necho 'R:', $value, ':', $result, '|';\nrestore_error_handler();\nunset($original, $receiver, $source, $value, $result);\n",
+    "source_sha256": "1b3a97b82c7efe0eba5484c6c192709a8f5ca8d7dc8869c888f7b188836f89f7",
+    "expected_model": "normal"
+  },
+  {
+    "id": "method-call-reference-warning-throw-finally",
+    "source": "<?php\nclass FakeReferenceThrow268 {\n    public function run(&$value) { echo 'BAD|'; ++$value; }\n}\n$original = new FakeReferenceThrow268;\n$receiver = new FakeReferenceThrow268;\n$source = $original->run(...);\n$value = 5;\nset_error_handler(function ($n, $message) use (&$value) {\n    echo 'W:', $message, '|';\n    try { $value = 9; throw new Exception('stop'); }\n    finally { echo 'F|'; }\n});\ntry { $source->call($receiver, $value); }\ncatch (Exception $e) { echo 'C:', $e->getMessage(), '|'; }\necho 'R:', $value, ':', (int)restore_error_handler(), '|';\nunset($original, $receiver, $source, $value, $e);\n",
+    "source_sha256": "1b98ab828b6d69f0e77d40faa448789be66b11e1a98788f6c48813f4459e579f",
+    "expected_model": "normal"
+  },
+  {
+    "id": "method-call-computed-nullsafe-held-selector",
+    "source": "<?php\nclass FakeEntryHost268 {\n    public function run($value = 1) { echo 'B:', $value, '|'; return $value; }\n}\nfunction fake_entry_mark268() { echo 'BAD|'; return new FakeEntryHost268; }\n$original = new FakeEntryHost268;\n$receiver = new FakeEntryHost268;\n$source = $original->run(...);\n$method = 'CaLl';\necho $source->{$method}($receiver, 2), '|';\necho $source?->{$method}($receiver, 3), '|';\n$missing = null;\necho (int)($missing?->{$method}(fake_entry_mark268()) === null), '|';\n$method = 'call';\necho $source->{$method}((function () use (&$method, $receiver) {\n    $method = '__invoke'; return $receiver;\n})(), 4), '|';\nunset($original, $receiver, $source, $method, $missing);\n",
+    "source_sha256": "8ab6da5be3a085ef491cf6cd79618e8f3141f117745966277dde50bc22244f80",
+    "expected_model": "normal"
+  },
+  {
+    "id": "static-method-call-warning-precedes-reference-and-name",
+    "source": "<?php\nclass FakeStaticCall268 {\n    public static function run(&$value) { echo 'BAD|'; ++$value; }\n}\nclass FakeStaticOther268 {}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$source = FakeStaticCall268::run(...);\n$value = 5;\necho (int)($source->call(new FakeStaticOther268, $value, bogus: 1) === null), ':', $value, '|';\nrestore_error_handler();\nunset($source, $value);\n",
+    "source_sha256": "feaf2d1a852772d56e01adfb168c007734af135595b1fcc1ccf93c914d202e5d",
+    "expected_model": "normal"
+  },
+  {
+    "id": "intrinsic-and-invoke-closure-call-selection",
+    "source": "<?php\nclass FakeInvokeCall268 {\n    public int $id;\n    public function __construct($id) { $this->id = $id; }\n    public function __invoke($value = 3) {\n        echo self::class, '/', static::class, ':', $this->id, ':', $value, '|';\n        return $value;\n    }\n}\nset_error_handler(function ($n, $message) { echo 'W:', $message, '|'; return true; });\n$intrinsic = get_class(...);\necho (int)($intrinsic->call(new FakeInvokeCall268(0)) === null), '|';\necho (int)($intrinsic->call(new Exception) === null), '|';\nrestore_error_handler();\n$original = new FakeInvokeCall268(1);\n$receiver = new FakeInvokeCall268(2);\n$source = $original(...);\necho $source->call($receiver, 2), '|';\necho $source(), '|';\nunset($intrinsic, $original, $receiver, $source);\n",
+    "source_sha256": "61196fecf6be27b1f9f8e5a06179df0fd8f3fd69a5d2a3da5362143234aa13d9",
+    "expected_model": "normal"
+  },
+  {
+    "id": "method-call-created-children-retired-makers-concrete-factory",
+    "source": "<?php\nclass FakeMethodChildOwner268 {\n    public int $id;\n    private function __construct($id = 0) { $this->id = $id; }\n    public static function create($id) { return new FakeMethodChildOwner268($id); }\n    private function maker() {\n        static $n = 0;\n        echo 'P:', ++$n, '|';\n        return [\n            static function () { echo self::class, '/', static::class, '|'; },\n            function ($value = new self) {\n                static $m = 0;\n                echo self::class, '/', static::class, ':', $this->id, ':', $value::class, ':', ++$m, '|';\n                return Closure::getCurrent();\n            }\n        ];\n    }\n    public function capture() { return $this->maker(...); }\n}\n$original = FakeMethodChildOwner268::create(1);\n$source = $original->capture();\n$receiver = FakeMethodChildOwner268::create(2);\n$children = $source->call($receiver);\n$static = $children[0];\n$child = $children[1];\n$copy = clone $child;\nunset($original, $source, $receiver, $children, $child);\n$static();\necho (int)($copy() === $copy), '|';\nunset($static, $copy);\n",
+    "source_sha256": "13a334d8ab9cc0e19a2ccc8ee484a5f1dd85dc6063ee989894b65026f2a3d160",
+    "expected_model": "normal"
+  }
+]

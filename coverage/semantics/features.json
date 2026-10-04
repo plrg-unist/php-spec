@@ -7919,14 +7919,16 @@
         "spec/semantics/210-class-method-strings.watsup",
         "spec/semantics/173-method-callables.watsup",
         "spec/semantics/234-from-callable.watsup",
-        "spec/semantics/263-property-callable-creation.watsup"
+        "spec/semantics/263-property-callable-creation.watsup",
+        "spec/semantics/268-temporary-fake-calls.watsup"
       ],
       "helper_tests": [
         "tests/semantics/array_callables_protocol.py",
         "tests/semantics/class_method_strings_protocol.py",
         "tests/semantics/invoke_publication_protocol.py",
         "tests/semantics/from_callable_protocol.py",
-        "tests/semantics/property_callable_creation_protocol.py"
+        "tests/semantics/property_callable_creation_protocol.py",
+        "tests/semantics/closure_temporary_fake_call_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/closures.py",
@@ -7944,7 +7946,9 @@
         "tests/semantics/invoke_publication_cases.json",
         "tests/semantics/from_callable.py",
         "tests/semantics/from_callable_cases.json",
-        "tests/semantics/deferred_static_default_cases.json"
+        "tests/semantics/deferred_static_default_cases.json",
+        "tests/semantics/closure_temporary_fake_call.py",
+        "tests/semantics/closure_temporary_fake_call_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -7955,9 +7959,11 @@
         "coverage/semantics/class-method-strings-current-review.json",
         "coverage/semantics/invoke-publication-current-review.json",
         "coverage/semantics/from-callable-review.json",
-        "coverage/semantics/deferred-static-defaults-review.json"
+        "coverage/semantics/deferred-static-defaults-review.json",
+        "docs/semantics/CLOSURE-CALL.md",
+        "coverage/semantics/temporary-fake-call-review.json"
       ],
-      "review": "Explicit and arrow closures retain captures, reference/static cells, source origins and owned callable identities (closures-review.json, arrows-review.json). Class-bound lexical/called scope, applicable receivers and ordinary/nullsafe Closure->__invoke now execute; the wrapper receives weakly and traces original arguments (methods-review.json). Selected public array-origin method closures retain receiver/scopes/static cells through capture and clone, including origin-only maker retirement (array-callables-current-review.json). Broader rebinding, clone/lifecycle and collection remain open. Public concrete class-method strings distinguish computed static dispatch from fixed compatible-this selection; immutable string captures/clone preserve requested descriptors, owner/called scope and receiver retirement (class-method-strings-current-review.json). Broader scope-dependent/nonpublic/magic/autoload/internal and transformed binding consumers remain open. Bare-object first-class capture/clone admits effective private/protected nonstatic __invoke and retains inherited owner/called class, receiver, source certificate and method cells; explicit nonpublic method capture stays access-checked. Wider binding/lifecycle consumers remain open. See invoke-publication-current-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload remain required. Module253 adds exact immediate REAL getCurrent and __invoke capture identity, transformed fake bindings with shared source statics and new-receiver-only ownership, and durable internal REAL/created-child scope evidence. Module264 adds ordered REAL static/internal warnings and compiled USES_THIS-sensitive null unbinding, with genuine handler continuation, copied REAL statics, captured aliases and explicit scope removal. Evidence cuts remain separate in real-closure-binding-review.json. Temporary-current escape, internal API capture and further internal keyword consumers remain required. Module263 creates source Closure children from authentic cached property METHOD callables, preserving full imported method authority, lexical/unrelated called scope, private NEW self defaults and child clones after wrapped/plain makers retire. Two exact new source tuples and105+65 source-derived AL premises retain separate accepted cutoffs. Ordinary ancestry remains exact; wider transformed callable creation contexts stay required.",
+      "review": "Explicit and arrow closures retain captures, reference/static cells, source origins and owned callable identities (closures-review.json, arrows-review.json). Class-bound lexical/called scope, applicable receivers and ordinary/nullsafe Closure->__invoke now execute; the wrapper receives weakly and traces original arguments (methods-review.json). Selected public array-origin method closures retain receiver/scopes/static cells through capture and clone, including origin-only maker retirement (array-callables-current-review.json). Broader rebinding, clone/lifecycle and collection remain open. Public concrete class-method strings distinguish computed static dispatch from fixed compatible-this selection; immutable string captures/clone preserve requested descriptors, owner/called scope and receiver retirement (class-method-strings-current-review.json). Broader scope-dependent/nonpublic/magic/autoload/internal and transformed binding consumers remain open. Bare-object first-class capture/clone admits effective private/protected nonstatic __invoke and retains inherited owner/called class, receiver, source certificate and method cells; explicit nonpublic method capture stays access-checked. Wider binding/lifecycle consumers remain open. See invoke-publication-current-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload remain required. Module253 adds exact immediate REAL getCurrent and __invoke capture identity, transformed fake bindings with shared source statics and new-receiver-only ownership, and durable internal REAL/created-child scope evidence. Module264 adds ordered REAL static/internal warnings and compiled USES_THIS-sensitive null unbinding, with genuine handler continuation, copied REAL statics, captured aliases and explicit scope removal. Evidence cuts remain separate in real-closure-binding-review.json. Temporary-current escape, internal API capture and further internal keyword consumers remain required. Module263 creates source Closure children from authentic cached property METHOD callables, preserving full imported method authority, lexical/unrelated called scope, private NEW self defaults and child clones after wrapped/plain makers retire. Two exact new source tuples and105+65 source-derived AL premises retain separate accepted cutoffs. Ordinary ancestry remains exact; wider transformed callable creation contexts stay required. Module268 runs temporary fake/METHOD calls and finite getters with exact selected scope, shared source statics, frozen binding warnings, late isolated-reference allocation and durable internal child scope. New source/state cuts remain separate in temporary-fake-call-review.json; unpacking, further internal consumers and the REAL temporary-current lifetime decision remain required.",
       "planned_source_tests": [
         "tests/semantics/conformance/closure-capture.php"
       ]
@@ -8202,13 +8208,15 @@
         "spec/semantics/211-error-handler-callables.watsup",
         "spec/semantics/221-keyword-compound-callables.watsup",
         "spec/semantics/234-from-callable.watsup",
-        "spec/semantics/248-callable-receives.watsup"
+        "spec/semantics/248-callable-receives.watsup",
+        "spec/semantics/268-temporary-fake-calls.watsup"
       ],
       "helper_tests": [
         "tests/semantics/scoped_callables_protocol.py",
         "tests/semantics/keyword_compound_callables_protocol.py",
         "tests/semantics/from_callable_protocol.py",
-        "tests/semantics/callable_receive_protocol.py"
+        "tests/semantics/callable_receive_protocol.py",
+        "tests/semantics/closure_temporary_fake_call_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/scoped_callables.py",
@@ -8218,7 +8226,9 @@
         "tests/semantics/from_callable.py",
         "tests/semantics/from_callable_cases.json",
         "tests/semantics/callable_receives.py",
-        "tests/semantics/callable_receive_cases.json"
+        "tests/semantics/callable_receive_cases.json",
+        "tests/semantics/closure_temporary_fake_call.py",
+        "tests/semantics/closure_temporary_fake_call_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -8228,9 +8238,11 @@
         "coverage/semantics/keyword-compound-callables-current-review.json",
         "coverage/semantics/from-callable-review.json",
         "coverage/semantics/callable-receives-review.json",
-        "docs/semantics/CALLABLE-RECEIVES.md"
+        "docs/semantics/CALLABLE-RECEIVES.md",
+        "docs/semantics/CLOSURE-CALL.md",
+        "coverage/semantics/temporary-fake-call-review.json"
       ],
-      "review": "Ordinary public/private/protected method-array and class-method-string admission uses the genuine receiving scope. Object selectors may redirect to lexical parent-private methods; concrete selectors use the requested table, and protected access follows the root prototype. Direct/captured/API selections retain distinct scope and error ordering. Module221 stages fixed supplied callable receives and error registration/dispatch for deprecated keyword/compound forms, retaining chosen classes and string bounds across live reference mutation. A narrow API target authenticates foreign-this compound selection without weakening ordinary scoped eligibility. Direct/FCC raw forms retain PHP lookup errors. Default/variadic, other internal and user-return warning consumers, magic/autoload and full callable closure remain required. See scoped-callables-current-review.json and keyword-compound-callables-current-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload remain required. Module253 adds exact immediate REAL getCurrent and __invoke capture identity, transformed fake bindings with shared source statics and new-receiver-only ownership, and durable internal REAL/created-child scope evidence. Module264 adds ordered REAL static/internal warnings and compiled USES_THIS-sensitive null unbinding, with genuine handler continuation, copied REAL statics, captured aliases and explicit scope removal. Evidence cuts remain separate in real-closure-binding-review.json. Temporary-current escape, internal API capture and further internal keyword consumers remain required. Module248 stages deprecated callable default and positional/named variadic reception in the authentic receiving frame, preserving named-hole preparation, live references, borrowed method receipts, slow scalar warnings and forced Stringable conversion. Literal defaults and exact unions retain their earlier priority; internal/return consumers remain required. Evidence cuts stay separate in callable-receives-review.json."
+      "review": "Ordinary public/private/protected method-array and class-method-string admission uses the genuine receiving scope. Object selectors may redirect to lexical parent-private methods; concrete selectors use the requested table, and protected access follows the root prototype. Direct/captured/API selections retain distinct scope and error ordering. Module221 stages fixed supplied callable receives and error registration/dispatch for deprecated keyword/compound forms, retaining chosen classes and string bounds across live reference mutation. A narrow API target authenticates foreign-this compound selection without weakening ordinary scoped eligibility. Direct/FCC raw forms retain PHP lookup errors. Default/variadic, other internal and user-return warning consumers, magic/autoload and full callable closure remain required. See scoped-callables-current-review.json and keyword-compound-callables-current-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload remain required. Module253 adds exact immediate REAL getCurrent and __invoke capture identity, transformed fake bindings with shared source statics and new-receiver-only ownership, and durable internal REAL/created-child scope evidence. Module264 adds ordered REAL static/internal warnings and compiled USES_THIS-sensitive null unbinding, with genuine handler continuation, copied REAL statics, captured aliases and explicit scope removal. Evidence cuts remain separate in real-closure-binding-review.json. Temporary-current escape, internal API capture and further internal keyword consumers remain required. Module248 stages deprecated callable default and positional/named variadic reception in the authentic receiving frame, preserving named-hole preparation, live references, borrowed method receipts, slow scalar warnings and forced Stringable conversion. Literal defaults and exact unions retain their earlier priority; internal/return consumers remain required. Evidence cuts stay separate in callable-receives-review.json. Module268 runs temporary fake/METHOD calls and finite getters with exact selected scope, shared source statics, frozen binding warnings, late isolated-reference allocation and durable internal child scope. New source/state cuts remain separate in temporary-fake-call-review.json; unpacking, further internal consumers and the REAL temporary-current lifetime decision remain required."
     },
     {
       "id": "calls.closure-binding",
@@ -8240,20 +8252,24 @@
       "implementation": [
         "spec/semantics/181-closure-binding.watsup",
         "spec/semantics/253-closure-current-binding.watsup",
-        "spec/semantics/264-real-closure-binding.watsup"
+        "spec/semantics/264-real-closure-binding.watsup",
+        "spec/semantics/268-temporary-fake-calls.watsup"
       ],
       "helper_tests": [
         "tests/semantics/closure_binding_protocol.py",
         "tests/semantics/closure_current_binding_protocol.py",
         "tests/semantics/first_class_internal_protocol.py",
-        "tests/semantics/closure_real_binding_protocol.py"
+        "tests/semantics/closure_real_binding_protocol.py",
+        "tests/semantics/closure_temporary_fake_call_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/closure_binding_cases.json",
         "tests/semantics/closure_current_binding.py",
         "tests/semantics/closure_current_binding_cases.json",
         "tests/semantics/closure_real_binding.py",
-        "tests/semantics/closure_real_binding_cases.json"
+        "tests/semantics/closure_real_binding_cases.json",
+        "tests/semantics/closure_temporary_fake_call.py",
+        "tests/semantics/closure_temporary_fake_call_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_closures.c",
@@ -8261,9 +8277,11 @@
         "docs/semantics/CLOSURE-BINDING.md",
         "docs/semantics/CLOSURE-CURRENT-BINDING.md",
         "coverage/semantics/closure-current-binding-review.json",
-        "coverage/semantics/real-closure-binding-review.json"
+        "coverage/semantics/real-closure-binding-review.json",
+        "docs/semantics/CLOSURE-CALL.md",
+        "coverage/semantics/temporary-fake-call-review.json"
       ],
-      "review": "Historical181 covers bounded ordinary REAL bindings at its retained cutoff. Module253 adds authentic CONFIG entry/argument transport, exact immediate REAL getCurrent identity, existing-object __invoke capture identity and transformed fake binding over existing named/method/getter/intrinsic forms. Fake statics share their frozen source; new receivers are the only durable owners. Internal REAL bindings and created children copy genuine template/scope/called/receiver evidence after prior makers retire, with ordinary REAL clone statics. Selected warnings preserve scope/error order and unwind callback writes. Current source/state cuts remain separate in closure-current-binding-review.json. Module264 stages ordered REAL static/internal warnings and USES_THIS-sensitive unbinding through genuine handlers; the flag follows own compiled entries and eager parser literal names, excluding nested bodies and runtime-name folding. Valid copies preserve captures, copy statics and reset called scope; explicit null removes class permission. Source/owner checks remain separate in real-closure-binding-review.json. Temporary current-object escape, internal API capture and further keyword consumers remain required; no full binding closure or paused-return dependency."
+      "review": "Historical181 covers bounded ordinary REAL bindings at its retained cutoff. Module253 adds authentic CONFIG entry/argument transport, exact immediate REAL getCurrent identity, existing-object __invoke capture identity and transformed fake binding over existing named/method/getter/intrinsic forms. Fake statics share their frozen source; new receivers are the only durable owners. Internal REAL bindings and created children copy genuine template/scope/called/receiver evidence after prior makers retire, with ordinary REAL clone statics. Selected warnings preserve scope/error order and unwind callback writes. Current source/state cuts remain separate in closure-current-binding-review.json. Module264 stages ordered REAL static/internal warnings and USES_THIS-sensitive unbinding through genuine handlers; the flag follows own compiled entries and eager parser literal names, excluding nested bodies and runtime-name folding. Valid copies preserve captures, copy statics and reset called scope; explicit null removes class permission. Source/owner checks remain separate in real-closure-binding-review.json. Temporary current-object escape, internal API capture and further keyword consumers remain required; no full binding closure or paused-return dependency. Module268 runs temporary fake/METHOD calls and finite getters with exact selected scope, shared source statics, frozen binding warnings, late isolated-reference allocation and durable internal child scope. New source/state cuts remain separate in temporary-fake-call-review.json; unpacking, further internal consumers and the REAL temporary-current lifetime decision remain required."
     },
     {
       "id": "calls.argument-introspection",
@@ -10252,13 +10270,15 @@
         "spec/semantics/116-closures.watsup",
         "spec/semantics/234-from-callable.watsup",
         "spec/semantics/253-closure-current-binding.watsup",
-        "spec/semantics/264-real-closure-binding.watsup"
+        "spec/semantics/264-real-closure-binding.watsup",
+        "spec/semantics/268-temporary-fake-calls.watsup"
       ],
       "helper_tests": [
         "tests/semantics/from_callable_protocol.py",
         "tests/semantics/closure_current_binding_protocol.py",
         "tests/semantics/first_class_internal_protocol.py",
-        "tests/semantics/closure_real_binding_protocol.py"
+        "tests/semantics/closure_real_binding_protocol.py",
+        "tests/semantics/closure_temporary_fake_call_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/closures.py",
@@ -10270,7 +10290,9 @@
         "tests/semantics/closure_current_binding.py",
         "tests/semantics/closure_current_binding_cases.json",
         "tests/semantics/closure_real_binding.py",
-        "tests/semantics/closure_real_binding_cases.json"
+        "tests/semantics/closure_real_binding_cases.json",
+        "tests/semantics/closure_temporary_fake_call.py",
+        "tests/semantics/closure_temporary_fake_call_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_interfaces.c",
@@ -10279,9 +10301,11 @@
         "coverage/semantics/arrows-review.json",
         "coverage/semantics/from-callable-review.json",
         "coverage/semantics/closure-current-binding-review.json",
-        "coverage/semantics/real-closure-binding-review.json"
+        "coverage/semantics/real-closure-binding-review.json",
+        "docs/semantics/CLOSURE-CALL.md",
+        "coverage/semantics/temporary-fake-call-review.json"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload remain required. Module253 adds exact immediate REAL getCurrent and __invoke capture identity, transformed fake bindings with shared source statics and new-receiver-only ownership, and durable internal REAL/created-child scope evidence. Module264 adds ordered REAL static/internal warnings and compiled USES_THIS-sensitive null unbinding, with genuine handler continuation, copied REAL statics, captured aliases and explicit scope removal. Evidence cuts remain separate in real-closure-binding-review.json. Temporary-current escape, internal API capture and further internal keyword consumers remain required."
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload remain required. Module253 adds exact immediate REAL getCurrent and __invoke capture identity, transformed fake bindings with shared source statics and new-receiver-only ownership, and durable internal REAL/created-child scope evidence. Module264 adds ordered REAL static/internal warnings and compiled USES_THIS-sensitive null unbinding, with genuine handler continuation, copied REAL statics, captured aliases and explicit scope removal. Evidence cuts remain separate in real-closure-binding-review.json. Temporary-current escape, internal API capture and further internal keyword consumers remain required. Module268 runs temporary fake/METHOD calls and finite getters with exact selected scope, shared source statics, frozen binding warnings, late isolated-reference allocation and durable internal child scope. New source/state cuts remain separate in temporary-fake-call-review.json; unpacking, further internal consumers and the REAL temporary-current lifetime decision remain required."
     },
     {
       "id": "protocols.Throwable",

@@ -1,0 +1,9 @@
+dec $temporary_call_outputs(pevent*) : ptbytes
+def $temporary_call_outputs(eps) = eps
+def $temporary_call_outputs((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $temporary_call_outputs(pevent*)
+
+dec $temporary_call_without(pnode*, pnode) : pnode*
+def $temporary_call_without(eps, pnode) = eps
+def $temporary_call_without(pnode :: pnode_tail*, pnode) = $temporary_call_without(pnode_tail*, pnode)
+def $temporary_call_without(pnode_head :: pnode_tail*, pnode) = pnode_head :: $temporary_call_without(pnode_tail*, pnode)
+  -- if pnode_head =/= pnode
