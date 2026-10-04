@@ -797,12 +797,13 @@ def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING false)
 def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING $(|ptbytes| <= 1))
   -- if $pffact(F.FACTS, pcpath) = (PSTRING ptbytes)
   -- if pmagic <- [MAGICNAMESPACE, MAGICFUNCTION, MAGICMETHOD]
-def $pfclass_shape(F, pcpath, PFMAGIC MAGICCLASS z) = (PVSTRING true)
+def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING true)
   -- if $pffact(F.FACTS, pcpath) = (PSTRING ptbytes)
+  -- if pmagic <- [MAGICCLASS, MAGICTRAIT]
 def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING true)
   -- if $pffact(F.FACTS, pcpath) = (PSTRING ptbytes)
   -- if ptbytes = eps
-  -- if pmagic <- [MAGICTRAIT, MAGICPROPERTY]
+  -- if pmagic = MAGICPROPERTY
 
 def $pfclass_literal(NScalarString (BYTES text) metadata) = (PVSTRING $(|ptbytes| <= 1))
   -- if $string_kind(metadata) = (z)
