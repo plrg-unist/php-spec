@@ -93,35 +93,45 @@ def $iterator_notice_event(TRAIT_DATA_NOTICE (PORIGIN n pcpath) n_prefix n_user 
 ;; writes cannot change the name environment sampled by the earlier comparison.
 def $trait_notice_items(eps) = false
 def $trait_notice_items((TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) :: pdeclnoticeitem*) = true
-def $trait_notice_items(pdeclnoticeitem :: pdeclnoticeitem_tail*) = $trait_notice_items(pdeclnoticeitem_tail*) -- otherwise
+def $trait_notice_items((METHOD_NOTICE pdeclnotice) :: pdeclnoticeitem*) = $trait_notice_items(pdeclnoticeitem*)
+def $trait_notice_items((COMPILER_NOTICE pldiagnostic) :: pdeclnoticeitem*) = $trait_notice_items(pdeclnoticeitem*)
 dec $trait_notice_first(pdeclnoticeitem*) : (porigin, nat, nat)?
 def $trait_notice_first((TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) :: pdeclnoticeitem*) = ((porigin, n_prefix, n_user))
-def $trait_notice_first(pdeclnoticeitem :: pdeclnoticeitem_tail*) = $trait_notice_first(pdeclnoticeitem_tail*) -- otherwise
+def $trait_notice_first((METHOD_NOTICE pdeclnotice) :: pdeclnoticeitem*) = $trait_notice_first(pdeclnoticeitem*)
+def $trait_notice_first((COMPILER_NOTICE pldiagnostic) :: pdeclnoticeitem*) = $trait_notice_first(pdeclnoticeitem*)
 def $trait_notice_first(eps) = eps
+dec $trait_notice_own_property(ppropertyid) : bool
+def $trait_notice_own_property(PORIGIN n pcpath) = true
+def $trait_notice_own_property(ppropertyid) = false -- otherwise
 dec $trait_notice_own_properties(ppropertydesc*) : ppropertydesc*
 def $trait_notice_own_properties(eps) = eps
 def $trait_notice_own_properties(ppropertydesc :: ppropertydesc_tail*) = ppropertydesc :: $trait_notice_own_properties(ppropertydesc_tail*)
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
-def $trait_notice_own_properties(ppropertydesc :: ppropertydesc_tail*) = $trait_notice_own_properties(ppropertydesc_tail*) -- otherwise
+def $trait_notice_own_properties(ppropertydesc :: ppropertydesc_tail*) = $trait_notice_own_properties(ppropertydesc_tail*)
+  -- if ~$trait_notice_own_property(ppropertydesc.ORIGIN)
 dec $trait_notice_own_constants(pclassconstantdesc*) : pclassconstantdesc*
 def $trait_notice_own_constants(eps) = eps
 def $trait_notice_own_constants(pclassconstantdesc :: pclassconstantdesc_tail*) = pclassconstantdesc :: $trait_notice_own_constants(pclassconstantdesc_tail*)
   -- if pclassconstantdesc.ORIGIN = $origin_source(pclassconstantdesc.ORIGIN)
 def $trait_notice_own_constants(pclassconstantdesc :: pclassconstantdesc_tail*) = $trait_notice_own_constants(pclassconstantdesc_tail*)
   -- if pclassconstantdesc.ORIGIN =/= $origin_source(pclassconstantdesc.ORIGIN)
+dec $trait_notice_name(pstate, pdeclaration) : (preqbytes, porigin)*
+def $trait_notice_name(S, PDRCLASS porigin pdeclcause) = [($ptlc(pclassdesc.NAME), porigin)]
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $trait_notice_name(S, PDECLASS n porigin) = [($ptlc(pclassdesc.NAME), porigin)]
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $trait_notice_name(S, pdeclaration) = eps -- otherwise
 dec $trait_notice_names(pstate, pdeclaration*) : (preqbytes, porigin)*
 def $trait_notice_names(S, eps) = eps
-def $trait_notice_names(S, (PDRCLASS porigin pdeclcause) :: pdeclaration*) = ($ptlc(pclassdesc.NAME), porigin) :: $trait_notice_names(S, pdeclaration*)
-  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-def $trait_notice_names(S, (PDECLASS n porigin) :: pdeclaration*) = ($ptlc(pclassdesc.NAME), porigin) :: $trait_notice_names(S, pdeclaration*)
-  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-def $trait_notice_names(S, pdeclaration :: pdeclaration_tail*) = $trait_notice_names(S, pdeclaration_tail*) -- otherwise
-dec $trait_notice_cache_prefix(pstate, pclassconstantevent*, nat) : pdefaultcache*
-def $trait_notice_cache_prefix(S, eps, n_prefix) = eps
-def $trait_notice_cache_prefix(S, (CCCACHE porigin porigin_trigger n) :: pclassconstantevent*, n_prefix) = pdefaultcache :: $trait_notice_cache_prefix(S, pclassconstantevent*, n_prefix)
+def $trait_notice_names(S, pdeclaration :: pdeclaration_tail*) = $trait_notice_name(S, pdeclaration) ++ $trait_notice_names(S, pdeclaration_tail*)
+dec $trait_notice_cache_item(pstate, pclassconstantevent, nat) : pdefaultcache*
+def $trait_notice_cache_item(S, CCCACHE porigin porigin_trigger n, n_prefix) = [pdefaultcache]
   -- if $(n <= n_prefix)
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
-def $trait_notice_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix) = $trait_notice_cache_prefix(S, pclassconstantevent_tail*, n_prefix) -- otherwise
+def $trait_notice_cache_item(S, pclassconstantevent, n_prefix) = eps -- otherwise
+dec $trait_notice_cache_prefix(pstate, pclassconstantevent*, nat) : pdefaultcache*
+def $trait_notice_cache_prefix(S, eps, n_prefix) = eps
+def $trait_notice_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix) = $trait_notice_cache_item(S, pclassconstantevent, n_prefix) ++ $trait_notice_cache_prefix(S, pclassconstantevent_tail*, n_prefix)
 dec $trait_notice_plan(pstate, porigin, nat, nat) : pdeclnoticeitem*?
 def $trait_notice_plan(S, porigin, n_prefix, n_user) = ($iterator_notice_seeds(S_data.TODO))
   -- if $(n_prefix < |S.DECLARATIONS| /\ n_user <= |S.USERCONSTANTS|)
