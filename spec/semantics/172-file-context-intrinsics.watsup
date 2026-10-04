@@ -173,6 +173,7 @@ def $config_parameter(INTRINSIC_CHDIR, preqbytes) = (0) -- if preqbytes = $ptasc
 def $config_parameter(pintrinsic, preqbytes) = eps -- otherwise
 def $config_destination(pintrinsic, eps, n) = (n)
 def $config_destination(pintrinsic, (preqbytes), n) = $config_parameter(pintrinsic, preqbytes)
+  -- if pintrinsic =/= INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
 dec $config_send_check(pstate, pconfigcall, preqbytes?, int) : pstate
 def $config_send_check(S, pconfigcall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $c_string(preqbytes), z)
   -- if $config_destination(pconfigcall.KIND, (preqbytes), |pconfigcall.SENT|) = eps

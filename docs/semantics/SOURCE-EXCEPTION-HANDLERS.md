@@ -14,14 +14,16 @@ parameter reception. Captured private permission remains usable; raw private
 methods cannot inherit the registration frame. False return still handles the
 exception; selection precedes terminal Throwable stringification. A handler may
 restore or replace handlers before throwing: the new exception uses the current
-handler, or terminates with an uncaught fatal when none is installed. Exit keeps
-its status and terminates the request.
+handler, or terminates with an uncaught fatal when none is installed. Exit enters the ordered [shutdown queue](SOURCE-SHUTDOWN.md); its status
+survives unless a shutdown callback replaces it.
 
 Selected callbacks keep an immutable borrowed raw-array snapshot, without adding
 a registry owner. A static selector can retire after the handler pops its
 registration and mutates the original array. Nonstatic receivers and the
 Throwable keep their actual owners. Current and saved callback frames certify the
-null caller, internal trace, one argument and original extra operand. By-reference
+null caller, internal trace, one argument and original extra operand. Typed
+variadic reception keeps its converted view in a separate borrowed certificate;
+later local-array writes preserve that view for argument introspection. By-reference
 reception warns at `Unknown:0`; an error handler can install a replacement
 exception handler and throw. After the nested callback returns, the originally
 selected exception callback resumes.
@@ -48,8 +50,8 @@ and [independent review](../../coverage/semantics/exception-handler-review.json)
 separate original source tuples, ownership/context checks and affected corrections.
 The two explicit Unsupported controls receive no PHP agreement credit.
 Scope-keyword/compound callback ingress needs the effectful API adapter. Wider
-magic/autoload/internal callbacks and shutdown/destructor lifecycle entry remain
-open. Shared207 error-handler reference-return bodies and temporary-value
+magic/autoload/internal callbacks and the destructor/GC/output request phases
+remain open. Ordered shutdown callback entry is implemented by module231. Shared207 error-handler reference-return bodies and temporary-value
 reference returns retain their existing Unsupported boundaries; accepted local
 variable reference returns are ignored correctly by this exception callback.
 This milestone does not close complete core.

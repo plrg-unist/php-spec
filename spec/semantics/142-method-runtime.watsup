@@ -1310,7 +1310,7 @@ def $method_override_items(S, pclassdesc, ppmethodinherited :: ppmethodinherited
 def $method_link_issue(S, pclassdesc_child, porigin_parent) = pmethodissue
   -- if $method_override_items(S, pclassdesc_child, $method_info_layout(S, porigin_parent, |S.CLASSES|)) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
-def $method_link_issue(S, pclassdesc_child, porigin_parent) = METHOD_ISSUE ptbytes_message pclassdesc_child.LINE
+def $method_link_issue(S, pclassdesc_child, porigin_parent) = METHOD_RUNTIMEISSUE ptbytes_message pclassdesc_child.LINE
   -- if $method_override_items(S, pclassdesc_child, $method_info_layout(S, porigin_parent, |S.CLASSES|)) = METHOD_OK
   -- if pclassdesc_child.INTERFACES = eps /\ ~$trait_class_link_pending(S, pclassdesc_child)
   -- if $pil_abstract_message(S, pclassdesc_child) = (ptbytes_message)

@@ -136,6 +136,10 @@ test-semantics: build
 	python3 tests/semantics/exception_handler_review.py
 	python3 tests/semantics/exception_handler_state_review.py
 	python3 tests/semantics/exception_handler_boundaries.py
+	python3 tests/semantics/shutdown_functions.py
+	python3 tests/semantics/shutdown_render_state.py
+	python3 tests/semantics/shutdown_review.py
+	python3 tests/semantics/shutdown_state_review.py
 	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
 	python3 tests/semantics/scoped_callables_protocol.py

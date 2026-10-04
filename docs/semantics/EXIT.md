@@ -41,9 +41,9 @@ The installed bridge at **b54f984b4** preserves six original native tuples and
 passes two public paused stages (64 assertions), including saved caller
 iterators and inherited suppression before terminal reporting restoration.
 
-Shutdown functions, destructors, output callbacks, user error handlers and
-Stringable conversion callbacks remain open dependencies. This increment does
-not claim full request shutdown or general Throwable/catch/finally semantics.
+The historical exit increment above does not claim full request shutdown.
+[Ordered shutdown callbacks](SOURCE-SHUTDOWN.md) now follow its completion;
+destructors, GC, output buffering and registration release remain required.
 Ordinary libraries and unimplemented Traversable dispatch remain explicit
 Unsupported results.
 

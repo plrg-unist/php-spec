@@ -13,6 +13,7 @@ dec $api_query(pstate, ptask, pvalue, pvalue, pitem, papiclass, ptbytes, nat, na
 dec $api_keyword_message(pvalue) : ptbytes
 dec $api_compound_message(pstate, papiquery) : ptbytes
 dec $api_continue(pstate, papiquery, nat, ptbytes?) : pstate
+dec $api_warning_event(pstate, papiquery, ptbytes) : pevent
 dec $api_class_warning(pvalue) : ptbytes?
 dec $api_begin(pstate, ptask, pvalue) : pstate
 dec $api_initial_class(pstate, pvalue) : papiclassresult
@@ -152,8 +153,9 @@ def $api_compound_message(S, papiquery) = $ptascii("Callables of the form [\"") 
   -- if $class_at(S.CLASSES, papiclass.REQUESTED) = (pclassdesc)
 def $api_continue(S, papiquery, n, eps) = S[.TODO = (API_CALLABLE_RESULT papiquery n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
-def $api_continue(S, papiquery, n, (ptbytes)) = $error_dispatch(S_pending, 8192, ptbytes, papiquery.LINE, DIAGNOSTIC "Deprecated" ptbytes papiquery.LINE, API_CALLABLE_RESULT papiquery n)
+def $api_continue(S, papiquery, n, (ptbytes)) = $error_dispatch(S_pending, 8192, ptbytes, papiquery.LINE, $api_warning_event(S_pending, papiquery, ptbytes), API_CALLABLE_RESULT papiquery n)
   -- if S_pending = $api_continue(S, papiquery, n, eps)
+def $api_warning_event(S, papiquery, ptbytes) = DIAGNOSTIC "Deprecated" ptbytes papiquery.LINE -- otherwise
 def $api_class_warning(PSTRING ptbytes) = ($api_keyword_message(PSTRING ptbytes)) -- if $api_keyword(ptbytes)
 def $api_class_warning(pvalue) = eps -- otherwise
 
@@ -505,7 +507,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192
   -- if perrorcall.LINE = papiquery.LINE
   -- if $api_warning_message(S, papiquery, n) = (perrorcall.MESSAGE)
-  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+  -- if perrorcall.EVENT = $api_warning_event(S, papiquery, perrorcall.MESSAGE)
 
 ;; This API carrier admits Zend's real foreign-this compound-keyword case. It
 ;; cannot be used as an ordinary dynamic-call or capture permission.
