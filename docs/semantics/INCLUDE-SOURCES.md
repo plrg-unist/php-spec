@@ -187,8 +187,9 @@ The [reporting increment](../../coverage/semantics/reporting-ini-review.json)
 returns complete `error_reporting` INI bytes and parses its C-prefix using the
 pinned signed64 `strtol`/low32 boundary. Scalar/null `ini_set` values preserve
 empty and NUL bytes, while `error_reporting()` reads the live signed32 mask;
-setting the existing mask leaves the raw bytes unchanged. `@` marks the entry
-modified without changing its bytes, and Restore resets only a modified entry.
+setting the existing mask leaves the raw bytes unchanged. When `@` removes
+nonfatal bits, it marks the entry modified without changing its bytes; Restore
+resets only a modified entry.
 Handler writes can leave raw bytes distinct from the mask restored at silence
 exit. Exact scalar options work without file facts; Stringable options retain
 authenticated callbacks and late old-value sampling. Twelve normal sources
