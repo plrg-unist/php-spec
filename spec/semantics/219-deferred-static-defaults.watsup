@@ -378,6 +378,7 @@ rule PhpStep/static-default-bind: S ~> $static_default_restore($static_default_b
   -- if pvalueclass = $constant_class(S_value, porigin_initializer)
   -- if $static_default_class_supported(pvalueclass)
   -- if $constant_value_class_valid(S_value, pvalue, pvalueclass)
+  -- if $property_default_transfer_valid(S_value, ppropertydesc, pvalueclass)
 rule PhpStep/static-default-bind-object: S ~> $static_default_restore(S_value[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "object-bearing deferred static default"], pstaticdefaultcontext)
   -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
   -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)

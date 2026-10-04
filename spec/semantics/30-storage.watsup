@@ -196,7 +196,8 @@ syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN 
 syntax ptraceframe = { FILE preqbytes, LINE int, FUNCTION preqbytes, CLASS preqbytes?, TYPE preqbytes?, ARGS (pkey, pvalue)*, HASARGS bool }
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
 syntax pclassstatic = { DECL ppropertyid, STATE ppropstate }
-syntax pinstancetemplatestate = INSTANCE_PENDING porigin | INSTANCE_VALUE pvalue pvalueclass
+syntax pinstanceobjectcertificate = INSTANCE_OBJECT_BIND porigin porigin porigin porigin pstaticselection? pvalueclass nat nat | INSTANCE_OBJECT_COPY porigin nat pinstanceobjectcertificate
+syntax pinstancetemplatestate = INSTANCE_PENDING porigin | INSTANCE_VALUE pvalue pvalueclass | INSTANCE_OBJECT_VALUE pvalue pvalueclass pinstanceobjectcertificate
 syntax pinstancetemplate = { CLASS porigin, DECL porigin, STATE pinstancetemplatestate }
 syntax pthrowable = { KIND text, ORIGIN porigin?, FILEORIGIN porigin? }
 syntax pclosurecreator = { SCOPE pclosureevidence, CALLSITE porigin? }
@@ -223,6 +224,11 @@ dec $constant_callable_class(pstate, porigin) : pvalueclass
 dec $constant_callable_foldable(pvalueclass) : bool
 dec $constant_callable_cache_prefix(pclassconstantevent*, porigin) : nat?
 dec $constant_callable_cache_valid(pstate, pclassconstantdesc, pvalueclass, nat) : bool
+dec $property_default_transfer_valid(pstate, ppropertydesc, pvalueclass) : bool
+dec $instance_default_value(pinstancetemplatestate) : (pvalue, pvalueclass)?
+dec $instance_default_copy_state(pstate, porigin, pinstancetemplatestate) : pinstancetemplatestate
+dec $instance_default_bound_state(pstate, porigin, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) : pinstancetemplatestate
+dec $instance_object_state_valid(pstate, pinstancetemplate, ppropertydesc) : bool
 dec $method_capture_invocation_valid(pstate, pmethodcapture, porigin) : bool
 dec $invoke_capture(pstate, nat, porigin?) : pstate
 dec $method_link_issue(pstate, pclassdesc, porigin) : pmethodissue

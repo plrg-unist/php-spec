@@ -1,0 +1,211 @@
+;; Constant callable objects are created in the declaring property's scope.
+;; Templates own their values; creation records borrow source/object identities.
+def $ppconstant_callable_initializer(P) = true
+  -- if $ppclass_constant_initializer(P)
+def $ppconstant_callable_initializer(P) = true
+  -- if ~$ppclass_constant_initializer(P)
+  -- if P.CLASSCONTEXT = (ptcontext)
+  -- if ptcontext.POSITION = PTPROPERTY
+  -- if P.FOLD.DEFAULT /\ P.FOLD.CONSTANT
+  -- if P.FOLD.CLASSCONTEXT = (ptcontext)
+def $ppconstant_callable_initializer(P) = false -- otherwise
+
+dec $property_callable_source_valid(pstate, ppropertydesc) : bool
+def $property_callable_source_valid(S, ppropertydesc) = $static_default_source_valid(S, ppropertydesc)
+  -- if ppropertydesc.STATIC
+def $property_callable_source_valid(S, ppropertydesc) = $instance_default_source_valid(S, ppropertydesc)
+  -- if ~ppropertydesc.STATIC
+dec $property_callable_context_valid(pstate, ppropertydesc, pstaticdefaultcontext) : bool
+def $property_callable_context_valid(S, ppropertydesc, pstaticdefaultcontext) = true
+  -- if ppropertydesc.STATIC
+  -- if $instance_default_context_at(S.TODO) = eps
+  -- if $static_default_site_valid(S, pstaticdefaultcontext.DECL, pstaticdefaultcontext.ROOT, pstaticdefaultcontext.ORIGIN, pstaticdefaultcontext.PREVIOUS, pstaticdefaultcontext.LINE, S.TODO)
+def $property_callable_context_valid(S, ppropertydesc, pstaticdefaultcontext) = true
+  -- if ~ppropertydesc.STATIC
+  -- if $instance_default_context_at(S.TODO) = (porigin_class)
+  -- if $instance_default_site_valid(S, porigin_class, pstaticdefaultcontext, S.TODO)
+def $property_callable_context_valid(S, ppropertydesc, pstaticdefaultcontext) = false -- otherwise
+def $constant_callable_context(S, porigin) = ((pstaticdefaultcontext.DECL, porigin_owner))
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
+  -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL
+  -- if pconstantcontext.LINE = pstaticdefaultcontext.LINE
+  -- if $property_default_active_desc(S, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if $property_callable_source_valid(S, ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $property_declaring_class(S.CLASSES, pstaticdefaultcontext.DECL) = (porigin_owner)
+  -- if $property_callable_context_valid(S, ppropertydesc, pstaticdefaultcontext)
+  -- if $constant_callable_path(S, porigin, porigin_initializer)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $constant_callable_form(pcnode)
+
+def $constant_callable_record_valid(S, pconstantclosure) = true
+  -- if $(pconstantclosure.OBJECT < |S.OBJECTS|) /\ $(pconstantclosure.PREFIX <= |S.DECLARATIONS|)
+  -- if $class_constant_origin(S.CLASSES, pconstantclosure.DECL) = eps
+  -- if $property_default_active_desc(S, pconstantclosure.DECL) = (ppropertydesc)
+  -- if $property_callable_source_valid(S, ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $property_declaring_class(S.CLASSES, pconstantclosure.DECL) = (porigin_owner)
+  -- if $constant_callable_published(S.DECLARATIONS[0:pconstantclosure.PREFIX], porigin_owner)
+  -- if $constant_callable_path(S, pconstantclosure.SITE, porigin_initializer)
+  -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (pcnode)
+  -- if $constant_callable_form(pcnode)
+  -- if $constant_callable_birth_valid(S, pconstantclosure, porigin_owner)
+  -- if $constant_callable_record_prefix(S, pconstantclosure)
+
+;; A plain clone keeps its copied lexical row without becoming a constant object.
+;; Search only the lexical class's own declarations, never inherited layout rows.
+dec $property_callable_source_matches(pstate, ppropertydesc, porigin) : bool
+def $property_callable_source_matches(S, ppropertydesc, porigin) = true
+  -- if $property_callable_source_valid(S, ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $constant_callable_path(S, porigin, porigin_initializer)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $constant_callable_form(pcnode)
+def $property_callable_source_matches(S, ppropertydesc, porigin) = false -- otherwise
+dec $property_callable_owned_source(pstate, ppropertydesc*, porigin) : bool
+def $property_callable_owned_source(S, eps, porigin) = false
+def $property_callable_owned_source(S, ppropertydesc :: ppropertydesc_tail*, porigin) = true
+  -- if $property_callable_source_matches(S, ppropertydesc, porigin)
+def $property_callable_owned_source(S, ppropertydesc :: ppropertydesc_tail*, porigin) = $property_callable_owned_source(S, ppropertydesc_tail*, porigin)
+  -- if ~$property_callable_source_matches(S, ppropertydesc, porigin)
+def $closure_scope_classes_valid(S, porigin, pclosurescope) = true
+  -- if ~$closure_scope_original_classes(S, porigin, pclosurescope)
+  -- if ~$closure_nested_creation(S, porigin)
+  -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclosurescope.LEXICAL)
+  -- if $property_callable_owned_source(S, pclassdesc.PROPERTIES, porigin)
+  -- if pclosurescope.CALLED = pclosurescope.LEXICAL
+  -- if pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps
+
+def $static_default_class_supported(PVCLOSURE n porigin) = true
+def $property_default_transfer_valid(S, ppropertydesc, pvalueclass) = true
+  -- if $constant_callable_foldable(pvalueclass)
+def $property_default_transfer_valid(S, ppropertydesc, pvalueclass) = $constant_callable_flow(S, porigin_initializer, porigin_owner, pvalueclass, |S.DECLARATIONS|, eps)
+  -- if ~$constant_callable_foldable(pvalueclass)
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $property_declaring_class(S.CLASSES, porigin_decl) = (porigin_owner)
+  -- if $property_callable_source_valid(S, ppropertydesc)
+def $property_default_transfer_valid(S, ppropertydesc, pvalueclass) = false -- otherwise
+
+;; Binding certificates contain only value-class/object identities. A copied
+;; certificate freezes the successful parent binding seen at the child's link.
+def $instance_default_value(INSTANCE_VALUE pvalue pvalueclass) = ((pvalue, pvalueclass))
+def $instance_default_value(INSTANCE_OBJECT_VALUE pvalue pvalueclass pinstanceobjectcertificate) = ((pvalue, pvalueclass))
+def $instance_default_value(pinstancetemplatestate) = eps -- otherwise
+def $instance_default_copy_state(S, porigin_class, INSTANCE_OBJECT_VALUE pvalue pvalueclass pinstanceobjectcertificate) = INSTANCE_OBJECT_VALUE pvalue pvalueclass (INSTANCE_OBJECT_COPY porigin_class |S.DECLARATIONS| pinstanceobjectcertificate)
+def $instance_default_copy_state(S, porigin_class, pinstancetemplatestate) = pinstancetemplatestate -- otherwise
+def $instance_default_bound_state(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) = INSTANCE_VALUE $property_default_value(ppropertydesc.TYPE, pvalue) pvalueclass
+  -- if $constant_callable_foldable(pvalueclass)
+def $instance_default_bound_state(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) = INSTANCE_OBJECT_VALUE $property_default_value(ppropertydesc.TYPE, pvalue) pvalueclass (INSTANCE_OBJECT_BIND porigin_class pstaticdefaultcontext.DECL pstaticdefaultcontext.ROOT porigin_trigger $class_static_selection_at(S.TODO) pvalueclass |S.DECLARATIONS| n_history)
+  -- if ~$constant_callable_foldable(pvalueclass)
+  -- if pstaticdefaultcontext.ORIGIN = (porigin_trigger)
+  -- if n_history = |S.CLASSCONSTANTHISTORY ++ $instance_default_record(S, porigin_class, pstaticdefaultcontext)|
+
+dec $instance_object_published(pstate, porigin?, nat) : bool
+def $instance_object_published(S, eps, n) = true
+def $instance_object_published(S, (porigin), n) = $constant_callable_published(S.DECLARATIONS[0:n], porigin)
+dec $instance_object_selection_valid(pstate, porigin, porigin, pstaticselection?, nat) : bool
+def $instance_object_selection_valid(S, porigin_root, porigin_trigger, eps, n) = $class_constant_update_site(S, porigin_trigger, porigin_root)
+def $instance_object_selection_valid(S, porigin_root, porigin_trigger, (pstaticselection), n) = true
+  -- if pstaticselection.ROOT = porigin_root /\ pstaticselection.SITE = porigin_trigger
+  -- if $class_static_selection_valid(S, pstaticselection)
+  -- if $instance_object_published(S, (pstaticselection.ROOT), n)
+  -- if $instance_object_published(S, pstaticselection.SCOPE, n)
+  -- if $instance_object_published(S, pstaticselection.CALLED, n)
+def $instance_object_selection_valid(S, porigin_root, porigin_trigger, pstaticselection?, n) = false -- otherwise
+dec $instance_object_certificate_prefix(pstate, pinstanceobjectcertificate) : nat?
+def $instance_object_certificate_prefix(S, INSTANCE_OBJECT_BIND porigin_class porigin_decl porigin_root porigin_trigger pstaticselection? pvalueclass n n_history) = (n_history)
+def $instance_object_certificate_prefix(S, INSTANCE_OBJECT_COPY porigin_class n pinstanceobjectcertificate) = ($( |pclassconstantevent_before*| + 1))
+  -- if $instance_default_link_prefix(S.CLASSCONSTANTHISTORY, porigin_class, eps) = (pclassconstantevent_before*)
+  -- if S.CLASSCONSTANTHISTORY[|pclassconstantevent_before*|] = CCLINK porigin_class n
+def $instance_object_certificate_prefix(S, pinstanceobjectcertificate) = eps -- otherwise
+dec $instance_object_certificate_valid(pstate, pinstanceobjectcertificate, porigin, porigin, pvalueclass) : bool
+def $instance_object_certificate_valid(S, pinstanceobjectcertificate, porigin_class, porigin_decl, pvalueclass) = true
+  -- if pinstanceobjectcertificate = INSTANCE_OBJECT_BIND porigin_bound_class porigin_bound_decl porigin_root porigin_trigger pstaticselection? pvalueclass_bound n n_history
+  -- if porigin_bound_class = porigin_class /\ porigin_bound_decl = porigin_decl
+  -- if pvalueclass_bound = pvalueclass /\ ~$constant_callable_foldable(pvalueclass)
+  -- if $(n <= |S.DECLARATIONS| /\ n_history <= |S.CLASSCONSTANTHISTORY|)
+  -- if $instance_default_desc($property_layout(S, porigin_class, |S.CLASSES|), porigin_decl) = (ppropertydesc)
+  -- if $instance_default_source_valid(S, ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $property_declaring_class(S.CLASSES, porigin_decl) = (porigin_owner)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n], porigin_class)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n], porigin_owner)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n], porigin_root)
+  -- if $class_constant_history_trigger(S, porigin_trigger, n)
+  -- if $class_constant_parent_chain(S, porigin_root, porigin_class, |S.CLASSES|)
+  -- if $instance_object_selection_valid(S, porigin_root, porigin_trigger, pstaticselection?, n)
+  -- if $instance_default_filled_at(S, porigin_class, porigin_decl, S.CLASSCONSTANTHISTORY[0:n_history], |S.CLASSES|)
+  -- if $constant_callable_flow(S, porigin_initializer, porigin_owner, pvalueclass, n, eps)
+def $instance_object_certificate_valid(S, pinstanceobjectcertificate, porigin_class, porigin_decl, pvalueclass) = true
+  -- if pinstanceobjectcertificate = INSTANCE_OBJECT_COPY porigin_copy_class n pinstanceobjectcertificate_parent
+  -- if porigin_copy_class = porigin_class
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_parent)
+  -- if $instance_default_link_prefix(S.CLASSCONSTANTHISTORY, porigin_class, eps) = (pclassconstantevent_before*)
+  -- if S.CLASSCONSTANTHISTORY[|pclassconstantevent_before*|] = CCLINK porigin_class n
+  -- if $instance_default_filled_at(S, porigin_parent, porigin_decl, pclassconstantevent_before*, |S.CLASSES|)
+  -- if $instance_object_certificate_prefix(S, pinstanceobjectcertificate_parent) = (n_parent)
+  -- if $(n_parent <= |pclassconstantevent_before*|)
+  -- if $instance_object_certificate_valid(S, pinstanceobjectcertificate_parent, porigin_parent, porigin_decl, pvalueclass)
+def $instance_object_certificate_valid(S, pinstanceobjectcertificate, porigin_class, porigin_decl, pvalueclass) = false -- otherwise
+def $instance_object_state_valid(S, pinstancetemplate, ppropertydesc) = $constant_callable_foldable(pvalueclass)
+  -- if pinstancetemplate.STATE = INSTANCE_VALUE pvalue pvalueclass
+def $instance_object_state_valid(S, pinstancetemplate, ppropertydesc) = $instance_object_certificate_valid(S, pinstanceobjectcertificate, pinstancetemplate.CLASS, pinstancetemplate.DECL, pvalueclass)
+  -- if pinstancetemplate.STATE = INSTANCE_OBJECT_VALUE pvalue pvalueclass pinstanceobjectcertificate
+  -- if ppropertydesc.ORIGIN = pinstancetemplate.DECL
+def $instance_object_state_valid(S, pinstancetemplate, ppropertydesc) = false -- otherwise
+
+;; Literal array projection follows immutable source keys after its temporary
+;; array and initializer facts have retired. Duplicate keys select the last item.
+dec $property_callable_projection(pstate, porigin) : porigin?
+dec $property_callable_projection_items(pstate, porigin, nat, phpType13*, pkey, int, porigin?) : porigin?
+dec $property_callable_projection_select(porigin?, porigin, pkey, pkey) : porigin?
+def $property_callable_projection_select(porigin_selected?, porigin_value, pkey_item, pkey_target) = (porigin_value)
+  -- if pkey_item = pkey_target
+def $property_callable_projection_select(porigin_selected?, porigin_value, pkey_item, pkey_target) = porigin_selected?
+  -- if pkey_item =/= pkey_target
+def $property_callable_projection_items(S, porigin_array, n, eps, pkey, i, porigin_selected?) = porigin_selected?
+def $property_callable_projection_items(S, porigin_array, n, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, pkey, i, porigin_selected?) = $property_callable_projection_items(S, porigin_array, $(n + 1), phpType13*, pkey, $next_history(i, pkey_item), $property_callable_projection_select(porigin_selected?, porigin_value, pkey_item, pkey))
+  -- if porigin_item = $constant_child(porigin_array, [PCFIELD 0, PCINDEX n])
+  -- if $constant_callable_flow_key(S, porigin_item, phpType5, i) = (pkey_item)
+  -- if porigin_value = $constant_child(porigin_item, [PCFIELD 1])
+def $property_callable_projection_items(S, porigin_array, n, phpType13*, pkey, i, porigin_selected?) = eps -- otherwise
+def $property_callable_projection(S, porigin) = $property_callable_projection_items(S, $constant_child(porigin, [PCFIELD 0]), 0, phpType13*, S_key.KEY, $(-9223372036854775808), eps)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch (NExprArray (SEQUENCE phpType13*) metadata_array) expression_key metadata)
+  -- if $compiled_read(S, $constant_child(porigin, [PCFIELD 1])) = (pvalue_key)
+  -- if S_key = $key_value($initial_state(NORMAL), pvalue_key, true, 1)
+  -- if S_key.COMPLETION = NORMAL
+def $property_callable_projection(S, porigin) = eps -- otherwise
+def $constant_callable_flow_at(S, porigin, porigin_owner, pvalueclass, n_prefix, porigin_seen*) = $constant_callable_flow(S, porigin_target, porigin_owner, pvalueclass, n_prefix, porigin_seen*)
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if ~$constant_callable_foldable(pvalueclass)
+  -- if $property_callable_projection(S, porigin) = (porigin_target)
+
+rule PhpStep/static-default-bind-transfer: S ~> $static_default_restore(S_value[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "uncertified deferred static object transfer"], pstaticdefaultcontext)
+  -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
+  -- if $static_default_bind_valid(S, pstaticdefaultcontext)
+  -- if $property_default_active_desc(S, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if S_value = $resolve_at(S, S.RESULT, pstaticdefaultcontext.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if $class_constant_runtime_type(S_value, ppropertydesc.TYPE, pvalue)
+  -- if pvalueclass = $constant_class(S_value, porigin_initializer)
+  -- if $static_default_class_supported(pvalueclass)
+  -- if $constant_value_class_valid(S_value, pvalue, pvalueclass)
+  -- if ~$property_default_transfer_valid(S_value, ppropertydesc, pvalueclass)
+rule PhpStep/instance-default-bind-transfer: S ~> $static_default_restore(S_value[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "uncertified deferred instance object transfer"], pstaticdefaultcontext)
+  -- if S.TODO = (INSTANCE_DEFAULT_BIND porigin_class pstaticdefaultcontext) :: ptask_tail*
+  -- if $instance_default_bind_valid(S, porigin_class, pstaticdefaultcontext)
+  -- if $property_default_active_desc(S, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if S_value = $resolve_at(S, S.RESULT, pstaticdefaultcontext.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if $class_constant_runtime_type(S_value, ppropertydesc.TYPE, pvalue)
+  -- if pvalueclass = $constant_class(S_value, porigin_initializer)
+  -- if $static_default_class_supported(pvalueclass)
+  -- if $constant_value_class_valid(S_value, pvalue, pvalueclass)
+  -- if ~$property_default_transfer_valid(S_value, ppropertydesc, pvalueclass)
