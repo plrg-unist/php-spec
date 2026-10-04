@@ -23,7 +23,8 @@ dec $consumer_producer_history(pstate, pshutdownproducer) : pstate
 dec $consumer_producer_tables(pstate, pshutdownproducer) : pstate
 dec $consumer_producer_nodes(pshutdownproducer) : pnode*
 dec $consumer_producer_capture(pstate, pshutdownentry) : bool
-dec $consumer_producer_internal(pcalltarget) : bool
+dec $consumer_producer_internal(pstate, pcalltarget) : bool
+dec $consumer_string_target(pstate, pcalltarget) : bool
 dec $consumer_producer_receiver(pclosurescope?) : nat?
 dec $consumer_producer_bound_receiver(pclosurebinding?) : nat?
 dec $consumer_producer_function(pmethodcapture?, porigin) : bool
@@ -242,7 +243,7 @@ def $consumer_capture_valid(S, porigin, (pmethodcapture)) = true
 ;; A C-selected maker may retire its old registry and Closure before the new
 ;; queue entry runs. Keep only its immutable target and scope/binding records.
 ;; Reconstruction below is for pure lookups and creates no heap owners.
-def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext))})
+def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext) \/ $stringify_context_kind(S, pcallcontext))})
   -- if S.CURRENT = (pcallcontext)
 def $consumer_producer_current(S) = eps -- if S.CURRENT = eps
 def $consumer_producer_scope(S, pcalltarget) = $closure_scope_at(S.CLOSURESCOPES, n)
@@ -273,16 +274,21 @@ def $consumer_producer_capture(S, pshutdownentry) = true
   -- if $trait_source_same(pfunction_source, pfunction)
   -- if $shutdown_capture_scope(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) = $target_lexical_class(S_history, pshutdownproducer.TARGET)
   -- if $consumer_capture_called(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) = $target_called_class(S_history, pshutdownproducer.TARGET)
-  -- if (~pshutdownproducer.INTERNAL /\ $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal(pshutdownproducer.TARGET))
+  -- if (~pshutdownproducer.INTERNAL /\ $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal(S_history, pshutdownproducer.TARGET))
   -- if pshutdownentry.TARGET = API_METHOD_TARGET papiquery porigin ptbytes b_static
   -- if papiquery.THIS = $target_receiver(S_history, pshutdownproducer.TARGET)
   -- if pshutdownentry.CAPTURE = eps \/ $consumer_producer_function(pshutdownentry.CAPTURE, pfunction.ORIGIN)
 def $consumer_producer_capture(S, pshutdownentry) = false -- otherwise
 def $consumer_producer_function((pmethodcapture), porigin) = (pmethodcapture.FUNCTION = porigin)
 def $consumer_producer_function(eps, porigin) = false
-def $consumer_producer_internal(pcalltarget) = ($handler_method_tag(pcalltarget) \/ $consumer_producer_named(pcalltarget))
+def $consumer_producer_internal(S, pcalltarget) = ($handler_method_tag(pcalltarget) \/ $consumer_producer_named(pcalltarget) \/ $consumer_string_target(S, pcalltarget))
   -- if $target_instance(pcalltarget) = eps
-def $consumer_producer_internal(pcalltarget) = true -- if $target_instance(pcalltarget) =/= eps
+def $consumer_producer_internal(S, pcalltarget) = true -- if $target_instance(pcalltarget) =/= eps
+def $consumer_string_target(S, METHOD_TARGET n porigin) = true
+  -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__tostring")
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+def $consumer_string_target(S, pcalltarget) = false -- otherwise
 def $consumer_producer_named(PORIGIN n pcpath) = true
 def $consumer_producer_named(pcalltarget) = false -- otherwise
 def $consumer_producer_object((pclosurescope), eps, n) = (pclosurescope.OBJECT = n)
