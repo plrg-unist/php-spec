@@ -296,7 +296,9 @@ dec $declaration_parser_rejects(pcompletion?) : bool
 dec $declaration_compile_preflight(pstate, ppstate, pcompletion?) : pstate
 dec $compile_source(pstate, ppstate) : pstate
 dec $compile_source_begin(pstate, ppstate) : pstate
-def $compile_source(S, P) = $scope_check($compile_source_begin($request_compile(S, P), P))
+dec $compile_source_precision(pstate, ppstate) : ppstate
+def $compile_source(S, P) = $scope_check($compile_source_begin($request_compile(S, P_source), P_source))
+  -- if P_source = $compile_source_precision(S, P)
 def $compile_source_begin(S, P) = $compile_source_ready($declaration_enter(S, P.FOLD.SOURCE.ID, eps), P)
   -- if S.COMPLETION = NORMAL
 def $compile_source_begin(S, P) = S -- if S.COMPLETION =/= NORMAL

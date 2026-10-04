@@ -6,8 +6,12 @@ def $concat_constant(S, porigin?) = false
   -- otherwise
 def $concat_operand(S, KNOWN (PARRAY n), true, z) = (S_out, S_out.RESULT)
   -- if S_out = $stringify(S, PARRAY n, z)
+def $concat_operand(S, KNOWN (PFLOAT n), true, z) = (S, KNOWN (PSTRING n_text*))
+  -- if $source_precision(S, S.ORIGIN) = (z_precision)
+  -- if (n_text*, b_warning) = $number_text(NFLOAT n, z_precision)
 def $concat_operand(S, KNOWN pvalue, true, z) = (S, KNOWN (PSTRING $echo_value(pvalue)))
   -- if ~$is_array_value(pvalue)
+  -- if $type_bytes(pvalue) =/= $ptascii("float")
 def $concat_operand(S, poperand, b, z) = (S, poperand)
   -- otherwise
 
