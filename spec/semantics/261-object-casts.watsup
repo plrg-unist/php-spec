@@ -32,18 +32,18 @@ def $object_table_item_valid(S, pitem) = false -- otherwise
 dec $object_table_entries_valid(pstate, pentry*) : bool
 def $object_table_entries_valid(S, eps) = true
 def $object_table_entries_valid(S, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*) = ($object_table_item_valid(S, pitem) /\ $object_table_entries_valid(S, pentry_tail*))
-  -- if $(n < 256) -- for n in ptbytes
+  -- if $startup_bytes(ptbytes)
   -- if $entry_lookup(pentry_tail*, KSTRING ptbytes) = eps
 def $object_table_entries_valid(S, pentry*) = false -- otherwise
 def $stdclass_slots_valid(S, eps) = true
 def $stdclass_slots_valid(S, ppropertyslot :: ppropertyslot_tail*) = ($object_table_item_valid(S, pitem) /\ $stdclass_slots_valid(S, ppropertyslot_tail*))
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE pitem
-  -- if $(n < 256) -- for n in ppropertyslot.NAME
+  -- if $startup_bytes(ppropertyslot.NAME)
 def $stdclass_slots_valid(S, ppropertyslot :: ppropertyslot_tail*) = $stdclass_slots_valid(S, ppropertyslot_tail*)
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_UNSET
-  -- if $(n < 256) -- for n in ppropertyslot.NAME
+  -- if $startup_bytes(ppropertyslot.NAME)
 def $stdclass_slots_valid(S, ppropertyslot*) = false -- otherwise
 dec $object_tables_list_valid(pstate, pobjecttable*) : bool
 def $object_tables_list_valid(S, eps) = true
@@ -453,7 +453,7 @@ def $object_foreach_valid(S, pobjectforeach) = true
   -- if $(pobjectforeach.TABLE < |S.ARRAYS|)
   -- if $(pobjectforeach.SERIAL < S.ARRAYS[pobjectforeach.TABLE].SERIAL)
   -- if $object_foreach_serial_valid(S, pobjectforeach)
-  -- if $(n < 256) -- for n in pobjectforeach.KEY
+  -- if $startup_bytes(pobjectforeach.KEY)
   -- if $object_foreach_notice(statement, pobjectforeach.KEY) = (preqbytes)
   -- if $iterator_lookup(S.ITERATORS, pobjectforeach.ITERATOR) = (OBJECTITER pobjectforeach.ITERATOR pobjectforeach.OBJECT pobjectforeach.POSITION pobjectforeach.REF)
   -- if $object_foreach_tasks_count(S.TODO, pobjectforeach.ITERATOR) = 1
