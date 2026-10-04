@@ -43,8 +43,16 @@ def $propref_replace(pproptypesource_head :: pproptypesource_tail*, pproptypesou
 def $propref_replace(pproptypesource_head :: pproptypesource_tail*, pproptypesource, pproptypesource_new) = pproptypesource_head :: $propref_replace(pproptypesource_tail*, pproptypesource, pproptypesource_new)
   -- if pproptypesource_head =/= pproptypesource
 dec $propref_remove_sources(pproptypesource*, pproptypesource) : pproptypesource*
-def $propref_remove_sources(pproptypesource_list*, pproptypesource_target) = $propref_replace(pproptypesource_headless*, pproptypesource_target, pproptypesource_last)
-  -- if $propref_has(pproptypesource_list*, pproptypesource_target)
+dec $propref_source_same(pproptypesource, pproptypesource) : bool
+dec $propref_removal_target(pproptypesource*, pproptypesource) : pproptypesource?
+dec $propref_removal_finish(pproptypesource*, pproptypesource, pproptypesource) : pproptypesource*
+def $propref_removal_target(eps, pproptypesource) = eps
+def $propref_removal_target(pproptypesource_head :: pproptypesource_tail*, pproptypesource) = (pproptypesource_head)
+  -- if $propref_source_same(pproptypesource_head, pproptypesource)
+def $propref_removal_target(pproptypesource_head :: pproptypesource_tail*, pproptypesource) = $propref_removal_target(pproptypesource_tail*, pproptypesource)
+  -- if ~$propref_source_same(pproptypesource_head, pproptypesource)
+def $propref_remove_sources(pproptypesource_list*, pproptypesource_target) = $propref_removal_finish($propref_replace(pproptypesource_headless*, pproptypesource_removed, pproptypesource_last), pproptypesource_target, pproptypesource_removed)
+  -- if $propref_removal_target(pproptypesource_list*, pproptypesource_target) = (pproptypesource_removed)
   -- if pproptypesource_headless* = $propref_drop_last(pproptypesource_list*)
   -- if pproptypesource_last = $propref_last(pproptypesource_list*)
 def $propref_remove_sources(pproptypesource_list*, pproptypesource_target) = pproptypesource_list* -- otherwise
@@ -85,7 +93,8 @@ def $proprefs_prune_slots(ppropref_list*, n_object, ppropertyslot :: ppropertysl
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
 def $proprefs_prune_slots(ppropref_list*, n_object, ppropertyslot :: ppropertyslot_tail*) = $proprefs_prune_slots(ppropref_list*, n_object, ppropertyslot_tail*)
   -- if ~$propref_detachable_slot(ppropertyslot)
-def $proprefs_prune(ppropref_list*, eps, pnode*) = ppropref_list*
+dec $proprefs_live(ppropref*, pnode*) : ppropref*
+def $proprefs_prune(ppropref_list*, eps, pnode*) = $proprefs_live(ppropref_list*, pnode*)
 def $proprefs_prune(ppropref_list*, pobjectprops :: pobjectprops_tail*, pnode*) = $proprefs_prune(ppropref_list*, pobjectprops_tail*, pnode*)
   -- if (HOBJECT pobjectprops.OBJECT) <- pnode*
 def $proprefs_prune(ppropref_list*, pobjectprops :: pobjectprops_tail*, pnode*) = $proprefs_prune($proprefs_prune_slots(ppropref_list*, pobjectprops.OBJECT, pobjectprops.SLOTS), pobjectprops_tail*, pnode*)
