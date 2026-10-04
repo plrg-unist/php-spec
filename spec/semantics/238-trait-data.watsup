@@ -54,6 +54,7 @@ dec $trait_type_atom_names(ptatom*) : nat
 dec $trait_type_atom_nominal(ptatom) : nat
 dec $trait_data_needs(pvresult) : bool
 dec $trait_instance_default_ready(pstate, ppropertydesc) : bool
+dec $trait_instance_default_deferred(ppropertydesc) : bool
 dec $trait_instance_layout_ready(pstate, ppropertydesc*) : bool
 dec $trait_instance_class_ready(pstate, porigin) : bool
 dec $trait_instance_named_ready(pstate, ptbytes) : bool
@@ -386,10 +387,14 @@ def $trait_instance_default_ready(S, ppropertydesc) = false -- otherwise
 ;; Individual constant fetches do not initialize the property table.
 def $trait_instance_layout_ready(S, eps) = true
 def $trait_instance_layout_ready(S, ppropertydesc :: ppropertydesc_tail*) = ($trait_instance_default_ready(S, ppropertydesc) /\ $trait_instance_layout_ready(S, ppropertydesc_tail*))
+  -- if $trait_instance_default_deferred(ppropertydesc)
+def $trait_instance_layout_ready(S, ppropertydesc :: ppropertydesc_tail*) = $trait_instance_layout_ready(S, ppropertydesc_tail*)
+  -- if ~$trait_instance_default_deferred(ppropertydesc)
+def $trait_instance_default_deferred(ppropertydesc) = true
   -- if ~ppropertydesc.STATIC
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
-def $trait_instance_layout_ready(S, ppropertydesc :: ppropertydesc_tail*) = $trait_instance_layout_ready(S, ppropertydesc_tail*) -- otherwise
+def $trait_instance_default_deferred(ppropertydesc) = false -- otherwise
 def $trait_instance_class_ready(S, porigin) = $trait_instance_layout_ready(S, $property_info_layout(S, porigin, |S.CLASSES|))
 def $trait_instance_named_ready(S, ptbytes) = $trait_instance_class_ready(S, porigin)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin)
