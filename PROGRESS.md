@@ -316,7 +316,7 @@ cover40 source tuples and140 reached assertions; the
 [independent review](coverage/semantics/callback-api-consumer-review.json)
 covers34 tuples and474 assertions at its own cut. Actual-parent getter Error,
 trait/default and retired capture interactions pass; production algorithm and
-structure checks retain the237-module cut. Accepted238/249 source preservation
+structure checks retain the237-module cut. Accepted238/249/250 source preservation
 adds no execution credit. Destructor/GC/output/free request phases stay open.
 
 Called-class introspection223 implements `get_called_class()` using the active
