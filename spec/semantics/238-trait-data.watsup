@@ -57,7 +57,7 @@ dec $trait_instance_default_ready(pstate, ppropertydesc) : bool
 dec $trait_instance_layout_ready(pstate, ppropertydesc*) : bool
 dec $trait_instance_class_ready(pstate, porigin) : bool
 dec $trait_instance_named_ready(pstate, ptbytes) : bool
-dec $trait_instance_selected_ready(pstate, poperand) : bool
+dec $trait_instance_selected_ready(pstate, poperand, ptbytes) : bool
 dec $trait_data_fatal(pstate, pclassdesc, ptbytes) : pstate
 
 def $trait_data_import_type(pclassdesc, ptbranch*) = ptbranch* -- if pclassdesc.KIND = "trait"
@@ -360,7 +360,7 @@ def $property_default_state(S, ppropertydesc) = (PROP_VALUE (DIRECT $property_de
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc)
-  -- if $constant_expression_root(S, ppropertydesc.ORIGIN) = (porigin_initializer)
+  -- if $constant_expression_root(S, TRAIT_MEMBER_ORIGIN porigin_owner porigin_source) = (porigin_initializer)
   -- if $trait_fold_value(S, pclassdesc, porigin_initializer) = TRAITVALUE S_value pvalue
   -- if $constant_nonstring_scalar(pvalue) \/ $typed_tag(pvalue) = "string"
   -- if $ppproperty_value_valid(ppropertydesc.TYPE, pvalue)
@@ -373,7 +373,7 @@ def $trait_instance_default_ready(S, ppropertydesc) = true
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc)
-  -- if $constant_expression_root(S, ppropertydesc.ORIGIN) = (porigin_initializer)
+  -- if $constant_expression_root(S, TRAIT_MEMBER_ORIGIN porigin_owner porigin_source) = (porigin_initializer)
   -- if $trait_fold_value(S, pclassdesc, porigin_initializer) = TRAITVALUE S_value pvalue
   -- if $constant_nonstring_scalar(pvalue) \/ $typed_tag(pvalue) = "string"
   -- if $ppproperty_value_valid(ppropertydesc.TYPE, pvalue)
@@ -390,10 +390,15 @@ def $trait_instance_layout_ready(S, ppropertydesc :: ppropertydesc_tail*) = $tra
 def $trait_instance_class_ready(S, porigin) = $trait_instance_layout_ready(S, $property_info_layout(S, porigin, |S.CLASSES|))
 def $trait_instance_named_ready(S, ptbytes) = $trait_instance_class_ready(S, porigin)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.ABSTRACT
 def $trait_instance_named_ready(S, ptbytes) = true -- otherwise
-def $trait_instance_selected_ready(S, poperand) = $trait_instance_class_ready(S, porigin)
+def $trait_instance_selected_ready(S, poperand, ptbytes) = $trait_instance_class_ready(S, porigin)
+  -- if ~$class_constant_static_unset_tail(S.TODO)
   -- if $scoped_selector_class(S, poperand) = (porigin)
-def $trait_instance_selected_ready(S, poperand) = true -- otherwise
+  -- if $class_static_select(S, porigin, ptbytes) = (ppropertydesc)
+  -- if $class_static_accessible(S, ppropertydesc)
+def $trait_instance_selected_ready(S, poperand, ptbytes) = true -- otherwise
 def $constructor_start(S, ptbytes, phpType7*, z) = $trait_constructor_start_ready(S, ptbytes, phpType7*, z)
   -- if $trait_instance_named_ready(S, ptbytes)
 def $constructor_start(S, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "deferred trait instance-default templates"]
@@ -403,9 +408,9 @@ def $noctor_start(S, ptbytes, phpType7*, z) = $trait_noctor_start_ready(S, ptbyt
 def $noctor_start(S, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "deferred trait instance-default templates"]
   -- if ~$trait_instance_named_ready(S, ptbytes)
 def $class_static_prepare_base(S, poperand, ptbytes, z) = $trait_static_prepare_base_ready(S, poperand, ptbytes, z)
-  -- if $trait_instance_selected_ready(S, poperand)
+  -- if $trait_instance_selected_ready(S, poperand, ptbytes)
 def $class_static_prepare_base(S, poperand, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "deferred trait instance-default templates"]
-  -- if ~$trait_instance_selected_ready(S, poperand)
+  -- if ~$trait_instance_selected_ready(S, poperand, ptbytes)
 
 def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access trait constant ") ++ pclassdesc.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii(" directly"), z)
   -- if pclassdesc.KIND = "trait"
