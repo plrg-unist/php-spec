@@ -264,7 +264,7 @@ def $propref_descriptor(S, OBJECT_PROP_SOURCE n_object ptbytes porigin_decl) = (
 def $propref_descriptor(S, CLASS_PROP_SOURCE ppropertyid) = $class_static_active_desc(S, S.CLASSNAMES, ppropertyid)
 def $propref_descriptor(S, pproptypesource) = eps -- otherwise
 dec $propref_label(pstate, pproptypesource) : ptbytes
-def $propref_label(S, pproptypesource) = $ptascii("property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE)
+def $propref_label(S, pproptypesource) = $ptascii("property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc)
   -- if $propref_descriptor(S, pproptypesource) = (ppropertydesc)
 dec $propref_nonarray_source(pstate, pproptypesource*) : pproptypesource?
 def $propref_nonarray_source(S, eps) = eps
@@ -285,7 +285,7 @@ def $array_auto_init_check(S, PROPERTY n_object ptbytes, z) = $array_auto_init_c
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
-def $array_auto_init_check(S, PROPERTY n_object ptbytes, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot auto-initialize an array inside property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), z)
+def $array_auto_init_check(S, PROPERTY n_object ptbytes, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot auto-initialize an array inside property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), z)
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = (porigin_decl)
@@ -361,7 +361,7 @@ def $propref_attach_slot(S, n_object, ppropertyslot, n_cell) = S -- otherwise
 ;; zend_verify_prop_assignable_by_ref_ex verifies an already constrained source
 ;; without coercion; an unconstrained source is converted before target detachment.
 dec $property_bind_error(pstate, ppropertydesc, pvalue, int) : pstate
-def $property_bind_error(S, ppropertydesc, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), z)
+def $property_bind_error(S, ppropertydesc, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), z)
 
 dec $property_bind_type(pstate, ppropertydesc, nat, pvalue, int) : pstate
 def $property_bind_type(S, ppropertydesc, n_cell, pvalue, z) = S
@@ -369,7 +369,7 @@ def $property_bind_type(S, ppropertydesc, n_cell, pvalue, z) = S
 def $property_bind_type(S, ppropertydesc, n_cell, pvalue, z) = $property_bind_error(S, ppropertydesc, pvalue, z)
   -- if ~($typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue))
   -- if $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S)) = TYPEREJECT
-def $property_bind_type(S, ppropertydesc, n_cell, pvalue, z) = $throw_scalar(S_checked, "TypeError", $ptascii("Reference with value of type ") ++ $typed_given(S, pvalue) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), z)
+def $property_bind_type(S, ppropertydesc, n_cell, pvalue, z) = $throw_scalar(S_checked, "TypeError", $ptascii("Reference with value of type ") ++ $typed_given(S, pvalue) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), z)
   -- if ~($typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue))
   -- if ptypeconversion = $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S))
   -- if ptypeconversion =/= TYPEREJECT

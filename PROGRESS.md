@@ -146,8 +146,19 @@ union, separate controls and252 conditions at their actual revisions, including
 original failures. Actual227/232/239 composition adds nine source comparisons and
 127 state premises at separate cutoffs: saved default constructors, cold selected
 references, physical interface diagnostic files and imported-maker Closure scope.
-Accepted233/237 routes remain preserved. Trait properties/constants and enums
-remain required; the method checkpoint does not close the trait family.
+Accepted233/237 routes remain preserved; the method checkpoint remains partial.
+
+Trait data238 composes constants and properties before parent inheritance, with
+scoped invariant types, evaluated pure compatibility, source keyword diagnostics
+and full using-class member identities. Inherited statics share cells; explicit
+child reuse resets the original default. Owning instance templates246 preserve
+importing scope independently of the live caller and retain array copy-on-write.
+The [data ledger](coverage/semantics/trait-data-review.json) records72 source tuples
+and265 genuine state assertions at preserved cuts; four historical dependency
+controls retain92 assertions and zero old-cut agreement. Runtime link fatals keep
+native severity, reporting masks and declaration phase. Effectful collision
+evaluation, direct trait-property deprecations, readonly storage and enums remain
+required; this checkpoint does not close the trait family.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
@@ -477,10 +488,10 @@ failures and interrupted evidence.
   by-reference string conversion186 remain open; accepted ordinary by-value
   classification does not close them. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
-- Objects and lifetime: remaining static members, trait property/constant composition,
+- Objects and lifetime: remaining static members, effectful trait data composition,
   enums, hooks, readonly/instance asymmetric
   access, traversal, output handlers and lifecycle callbacks. Static cells remain
-  partial across property trait/inheritance sharing, bind/clone, include/eval reactivation
+  partial across direct trait-property diagnostics, bind/clone, include/eval reactivation
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,

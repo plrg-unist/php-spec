@@ -1,0 +1,102 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only preparation for subsequent trait members milestone, not part of228 method agreement.",
+  "cases": [
+    {
+      "id": "trait-static-property-reuse-separates-child-cell",
+      "source": "<?php trait T{public static int $n=0;}class C{use T;}class D extends C{}class E extends C{use T;}C::$n=2;echo C::$n,\":\",D::$n,\":\",E::$n,\";\";D::$n=3;E::$n=7;echo C::$n,\":\",D::$n,\":\",E::$n,\";\";",
+      "source_sha256": "76f28fbf045f05b218df7cc708ab31fdaa7b38735b831d3d1429f5a48020e09f",
+      "status": "normal",
+      "stdout_base64": "MjoyOjA7MzozOjc7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-members-native-next228-jemebk58/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; required subsequent trait property/constant milestone",
+      "native_raw_sha256": "a5aa402e703129474000c81bd8c0710adfcfeb0e917eaa58cf9ab4cb8dc6740d"
+    },
+    {
+      "id": "trait-private-property-separates-parent-slot",
+      "source": "<?php trait T{private int $x=1;function t(){echo $this->x,\";\";}}class P{private int $x=2;function p(){echo $this->x,\";\";}}class C extends P{use T;}$c=new C;$c->t();$c->p();",
+      "source_sha256": "624199488b57f0f18c85283a0df349078c06d520e2db418c14908a3f11bc7099",
+      "status": "normal",
+      "stdout_base64": "MTsyOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-members-native-next228-jemebk58/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; required subsequent trait property/constant milestone",
+      "native_raw_sha256": "a5aa402e703129474000c81bd8c0710adfcfeb0e917eaa58cf9ab4cb8dc6740d"
+    },
+    {
+      "id": "trait-property-compatible-evaluated-values",
+      "source": "<?php trait T{public $x=1+1;}class C{use T;public $x=2;}echo (new C)->x;",
+      "source_sha256": "4b3e65b094f285a0fd94ebda185f554e7ef5af7a19094abc67b71ece9ce14eea",
+      "status": "normal",
+      "stdout_base64": "Mg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-members-native-next228-jemebk58/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; required subsequent trait property/constant milestone",
+      "native_raw_sha256": "a5aa402e703129474000c81bd8c0710adfcfeb0e917eaa58cf9ab4cb8dc6740d"
+    },
+    {
+      "id": "trait-property-incompatible-value-types",
+      "source": "<?php echo \"PRE;\";trait T{public $x=2.0;}class C{use T;public $x=2;}",
+      "source_sha256": "3a723d6f42a390f13d65313168d1f7df729736bfdb79eb413182e477dd94f384",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-members-native-next228-jemebk58/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; required subsequent trait property/constant milestone",
+      "native_raw_sha256": "a5aa402e703129474000c81bd8c0710adfcfeb0e917eaa58cf9ab4cb8dc6740d"
+    },
+    {
+      "id": "readonly-class-rejects-ordinary-trait-property",
+      "source": "<?php echo \"PRE;\";trait T{public int $x;}readonly class C{use T;}",
+      "source_sha256": "493ce8b8d8427e209a60f310300776ce64a252ae5c7348a56db74669eec54e7a",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFJlYWRvbmx5IGNsYXNzIEMgY2Fubm90IHVzZSB0cmFpdCB3aXRoIGEgbm9uLXJlYWRvbmx5IHByb3BlcnR5IFQ6OiR4IGluIHtGSUxFfSBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-members-native-next228-jemebk58/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; required subsequent trait property/constant milestone",
+      "native_raw_sha256": "a5aa402e703129474000c81bd8c0710adfcfeb0e917eaa58cf9ab4cb8dc6740d"
+    },
+    {
+      "id": "trait-constant-invariant-type",
+      "source": "<?php echo \"PRE;\";trait T{public const int X=1;}class C{use T;public const int|string X=1;}",
+      "source_sha256": "a19a6f2fc06690e193e91b49f6f263f3574ab51cd08ba4a744ba89353691f5e9",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIGNvbnN0YW50IChYKSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-members-native-next228-jemebk58/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; required subsequent trait property/constant milestone",
+      "native_raw_sha256": "a5aa402e703129474000c81bd8c0710adfcfeb0e917eaa58cf9ab4cb8dc6740d"
+    },
+    {
+      "id": "trait-constant-before-property-and-final-parent",
+      "source": "<?php echo \"PRE;\";final class P{}trait T{public const X=1;public $x=1;}class C extends P{use T;public const X=2;public $x=2;}",
+      "source_sha256": "eb6637cd7a85c68d649cf03ed8a57ab7d5cc13506cc78efe639bf55aa3063319",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIGNvbnN0YW50IChYKSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-members-native-next228-jemebk58/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; required subsequent trait property/constant milestone",
+      "native_raw_sha256": "a5aa402e703129474000c81bd8c0710adfcfeb0e917eaa58cf9ab4cb8dc6740d"
+    },
+    {
+      "id": "trait-property-and-constant-class-magic-per-import",
+      "source": "<?php trait T{public $x=__CLASS__;public const X=__CLASS__;}class C{use T;}class E{use T;}echo (new C)->x,\":\",C::X,\";\",(new E)->x,\":\",E::X,\";\";",
+      "source_sha256": "fd2d008195ae83310b31db5cb91c06ca0b303b212bad6e030f843321b567f389",
+      "status": "normal",
+      "stdout_base64": "QzpDO0U6RTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-members-native-next228-jemebk58/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; required subsequent trait property/constant milestone",
+      "native_raw_sha256": "a5aa402e703129474000c81bd8c0710adfcfeb0e917eaa58cf9ab4cb8dc6740d"
+    }
+  ],
+  "status_policy": "Runtime class/trait linking failures are php_error; compile-time rejections are static_rejection. Source bytes and retained native tuples are unchanged."
+}

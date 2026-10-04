@@ -1,0 +1,53 @@
+{
+  "scope": "Four exact selected native controls for raw keyword identity and nominal case covariance; individual model agreements retain their original selection/cutoffs.",
+  "cases": [
+    {
+      "id": "unknown-nominal-case-compares-covariantly",
+      "source": "<?php echo \"PRE;\";trait T{public ?Foo $p=null;}trait U{public ?foo $p=null;}class C{use T,U;}echo \"POST;\";",
+      "source_sha256": "19ac8e898485577cdbc9ece18aa4d48a5850cd2e1bca9bcbbde938742bca9908",
+      "status": "normal",
+      "stdout_base64": "UFJFO1BPU1Q7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-members-review-238/.tools/trait-type-case-native238-t11xxp97/report.json",
+      "native_raw_sha256": "df3021a22ddda7742f317cf6f28ad8156a62428e4f8dc7a2a6ca0a0a97ffafaa",
+      "native_profile": "Pinned PHP8.5.10 source/type spelling counterexamples; zero model credit until comparison."
+    },
+    {
+      "id": "self-keyword-raw-case-prevents-pointer-shortcut",
+      "source": "<?php trait T{public ?Self $p=null;}trait U{public ?SELF $p=null;}class C{use T,U;}echo \"Y\";",
+      "source_sha256": "a55499cf5cc63e99b8ebb68d8ea47264ae00ae530f18805d4ed646a103e39929",
+      "status": "php_error",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFQgYW5kIFUgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkcCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-members-review-238/.tools/trait-type-case-native238-t11xxp97/report.json",
+      "native_raw_sha256": "1cf02d0fc9c9718c7ab0fb96e8bac098a4396a58cf79dac875c940419942a7d5",
+      "native_profile": "Pinned PHP8.5.10 source/type spelling counterexamples; zero model credit until comparison."
+    },
+    {
+      "id": "same-raw-uppercase-self-retains-pointer-shortcut",
+      "source": "<?php trait T{public ?Self $p=null;}trait U{public ?Self $p=null;}class C{use T,U;}$c=new C;$c->p=$c;echo $c->p===$c?\"Y\":\"N\";",
+      "source_sha256": "df20564464c163e54b1a6fd484de76a852a0942fd6ed55b260028685269c9888",
+      "status": "normal",
+      "stdout_base64": "WQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-members-review-238/.tools/trait-type-case-native238-skjsetdi/report.json",
+      "native_raw_sha256": "18f5384d58bcb1bba0bcd9e6a6781d1a6ac2cc280c330ecbab6cb7931b721552",
+      "native_profile": "PHP8.5.10 exact raw keyword spelling controls; zero model credit until comparison."
+    },
+    {
+      "id": "parent-keyword-raw-case-prevents-pointer-shortcut",
+      "source": "<?php class P{}trait T{public ?Parent $p=null;}trait U{public ?parent $p=null;}class C extends P{use T,U;}echo \"Y\";",
+      "source_sha256": "16961634f08fb9bc125a15f41325ab8e89fb965410e0835f79faf8faedb9d5e4",
+      "status": "php_error",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFQgYW5kIFUgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkcCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-members-review-238/.tools/trait-type-case-native238-skjsetdi/report.json",
+      "native_raw_sha256": "14c73c3fc14db52c8b134fd92161d2ac12798eec98e00ff9939ac8953402a9c5",
+      "native_profile": "PHP8.5.10 exact raw keyword spelling controls; zero model credit until comparison."
+    }
+  ]
+}
