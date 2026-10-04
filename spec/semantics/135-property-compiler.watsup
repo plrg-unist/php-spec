@@ -58,6 +58,7 @@ dec $ppproperty_at(ppropertydesc*, ptbytes) : bool
 dec $ppproperty_diagnostics(ppstate, ptdiagnostic*) : ppstate
 dec $ppproperty_diagnostic(ppstate, ptdiagnostic) : ppstate
 dec $ppproperty_context(ppstate, pchheader, ptbytes, int) : ptcontext
+dec $ppproperty_scope(pchheader) : ptscope
 dec $ppproperty_value_valid(ptbranch*, pvalue) : bool
 dec $ppproperty_default_error(pchheader, ptbytes, ptbranch*, pvalue) : ptbytes
 dec $ppproperty_plain_intersection(ptbranch*) : bool
@@ -82,7 +83,7 @@ def $ppproperty_groups(P, pcpath, n, statement*, ppropertydesc*, pchheader) = PP
 def $ppproperty_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) :: statement_tail*, ppropertydesc*, pchheader) = $ppproperty_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc_next*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
   -- if $ppproperty_group_line_valid(P, metadata)
-  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath ++ [PCFIELD 5, PCINDEX n], $source_line(metadata)), pcpath ++ [PCFIELD 5, PCINDEX n], flags, phpType18, phpType57*, ppropertydesc*, pchheader, $source_line(metadata))
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, $ppmember_path(pcpath, pchheader, n), $source_line(metadata)), $ppmember_path(pcpath, pchheader, n), flags, phpType18, phpType57*, ppropertydesc*, pchheader, $source_line(metadata))
 def $ppproperty_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) :: statement_tail*, ppropertydesc*, pchheader) = PPROPERTIES ($ppunsupported(P, "missing property compiler line")) ppropertydesc*
   -- if P.COMPLETION = PPCNORMAL
   -- if ~$ppproperty_group_line_valid(P, metadata)
@@ -103,7 +104,9 @@ def $ppproperty_one(P, pcpath, flags, phpType18, NPropertyItem (NVarLikeIdentifi
   -- if ptbytes = $base64(text)
 def $ppproperty_one(P, pcpath, flags, phpType18, phpType57, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P, "edited property name")) ppropertydesc* -- otherwise
 
-def $ppproperty_context(P, pchheader, ptbytes, z) = { NAMESPACE P.ENV.NAMESPACE, IMPORTS P.ENV.CLASSES, SCOPE PTKNOWN pchheader.NAME pchheader.PARENT, POSITION PTPROPERTY, OWNER pchheader.NAME, MEMBER ptbytes, FILE P.LOCATION.FILE, LINE $nabs(z) }
+def $ppproperty_context(P, pchheader, ptbytes, z) = { NAMESPACE P.ENV.NAMESPACE, IMPORTS P.ENV.CLASSES, SCOPE $ppproperty_scope(pchheader), POSITION PTPROPERTY, OWNER pchheader.NAME, MEMBER ptbytes, FILE P.LOCATION.FILE, LINE $nabs(z) }
+def $ppproperty_scope(pchheader) = PTTRAIT pchheader.NAME -- if pchheader.KIND = "trait"
+def $ppproperty_scope(pchheader) = PTKNOWN pchheader.NAME pchheader.PARENT -- if pchheader.KIND =/= "trait"
 def $ppproperty_diagnostics(P, eps) = P
 def $ppproperty_diagnostics(P, ptdiagnostic :: ptdiagnostic_tail*) = $ppproperty_diagnostics($ppproperty_diagnostic(P, ptdiagnostic), ptdiagnostic_tail*)
 def $ppproperty_diagnostic(P, PTDIAGNOSTIC "fatal" text ptbranch* ptcontext) = $ppconstant_error(P, $ptmessage(PTDIAGNOSTIC "fatal" text ptbranch* ptcontext), ptcontext.LINE)
@@ -139,7 +142,7 @@ def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, pprope
   -- if ~$ppproperty_value_valid(ptbranch*, pvalue)
   -- if $ppdefault_descriptor(P_default, pcpath ++ [PCFIELD 1]) = PDSTORED
 def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = $ppproperty_finish(P_default[.FOLD = P_default.FOLD[.DEFAULT = false][.CONSTANT = false]], pcpath, flags, ptbytes, ptbranch*, PROP_DEFERRED (PORIGIN P.FOLD.SOURCE.ID (pcpath ++ [PCFIELD 1])), ppropertydesc*, pchheader, z)
-  -- if $ppproperty_flag(flags, 8)
+  -- if $ppproperty_flag(flags, 8) \/ pchheader.KIND = "trait"
   -- if P_default = $ppproperty_default_prepare(P, pcpath ++ [PCFIELD 1], expression, pchheader, ptbytes, z)
   -- if P_default.COMPLETION = PPCNORMAL
   -- if $ppdefault_descriptor(P_default, pcpath ++ [PCFIELD 1]) = PDDEFERRED
@@ -148,14 +151,14 @@ def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, pprope
   -- if P_default = $ppproperty_default_prepare(P, pcpath ++ [PCFIELD 1], expression, pchheader, ptbytes, z)
   -- if P_default.COMPLETION = PPCNORMAL
   -- if P_default.FOLD.VALUE = eps
-  -- if ~$ppproperty_flag(flags, 8)
+  -- if ~$ppproperty_flag(flags, 8) /\ pchheader.KIND =/= "trait"
 def $ppproperty_default(P, pcpath, flags, expression, ptbytes, ptbranch*, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P_default, "deferred property default")) ppropertydesc*
   -- if P_default = $ppproperty_default_prepare(P, pcpath ++ [PCFIELD 1], expression, pchheader, ptbytes, z)
   -- if P_default.COMPLETION = PPCNORMAL
   -- if P_default.FOLD.VALUE = (pvalue)
   -- if $ppproperty_value_valid(ptbranch*, pvalue)
   -- if $ppdefault_descriptor(P_default, pcpath ++ [PCFIELD 1]) = PDDEFERRED
-  -- if ~$ppproperty_flag(flags, 8)
+  -- if ~$ppproperty_flag(flags, 8) /\ pchheader.KIND =/= "trait"
 
 def $ppproperty_default_prepare(P, pcpath, expression, pchheader, ptbytes, z) = P_next[.CLASSCONTEXT = P.CLASSCONTEXT][.FOLD = P_next.FOLD[.CLASSCONTEXT = P.FOLD.CLASSCONTEXT]]
   -- if ptcontext = $ppproperty_context(P, pchheader, ptbytes, z)
