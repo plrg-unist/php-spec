@@ -451,7 +451,10 @@ reentry. Nine new source agreements and six programs/335 premises retain their
 separate cuts. One actual trait-import source and 98 premises distinguish the
 first cached target from each fresh called class/publication prefix, including
 retired source objects and namespace fallback. Other object producers and wider
-property/callable consumers remain open.
+property/callable consumers remain open. Children created by cached property
+method callables retain lexical and called scope after wrapped or cloned makers
+retire, including private `new self` defaults. Two sources and 170 state premises
+retain separate accepted cutoffs.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Cached property method callables (module263) now create source Closure children
+with authentic lexical scope and a separate, potentially unrelated called class.
+Copied full method/receipt authority survives wrapped or plain-clone maker
+retirement without owning those makers. Static and receiver-free nonstatic
+children, child clones and private `new self` defaults preserve these scopes.
+Two normal source agreements pass at aa899; static105 premises pass at9ae61 and
+default65 atb8d10. Original fixture parse/elaboration stops remain zero-credit in
+the [default ledger](coverage/semantics/deferred-static-defaults-review.json).
+Wider transformed callable creation contexts remain required; complete core and
+paused return verification remain open.
+
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
 share their object values with instances and preserve exact successful bindings

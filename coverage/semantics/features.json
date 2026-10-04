@@ -7914,13 +7914,15 @@
         "spec/semantics/205-array-callables.watsup",
         "spec/semantics/210-class-method-strings.watsup",
         "spec/semantics/173-method-callables.watsup",
-        "spec/semantics/234-from-callable.watsup"
+        "spec/semantics/234-from-callable.watsup",
+        "spec/semantics/263-property-callable-creation.watsup"
       ],
       "helper_tests": [
         "tests/semantics/array_callables_protocol.py",
         "tests/semantics/class_method_strings_protocol.py",
         "tests/semantics/invoke_publication_protocol.py",
-        "tests/semantics/from_callable_protocol.py"
+        "tests/semantics/from_callable_protocol.py",
+        "tests/semantics/property_callable_creation_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/closures.py",
@@ -7937,7 +7939,8 @@
         "tests/semantics/invoke_publication.py",
         "tests/semantics/invoke_publication_cases.json",
         "tests/semantics/from_callable.py",
-        "tests/semantics/from_callable_cases.json"
+        "tests/semantics/from_callable_cases.json",
+        "tests/semantics/deferred_static_default_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -7947,9 +7950,10 @@
         "coverage/semantics/array-callables-current-review.json",
         "coverage/semantics/class-method-strings-current-review.json",
         "coverage/semantics/invoke-publication-current-review.json",
-        "coverage/semantics/from-callable-review.json"
+        "coverage/semantics/from-callable-review.json",
+        "coverage/semantics/deferred-static-defaults-review.json"
       ],
-      "review": "Explicit and arrow closures retain captures, reference/static cells, source origins and owned callable identities (closures-review.json, arrows-review.json). Class-bound lexical/called scope, applicable receivers and ordinary/nullsafe Closure->__invoke now execute; the wrapper receives weakly and traces original arguments (methods-review.json). Selected public array-origin method closures retain receiver/scopes/static cells through capture and clone, including origin-only maker retirement (array-callables-current-review.json). Broader rebinding, clone/lifecycle and collection remain open. Public concrete class-method strings distinguish computed static dispatch from fixed compatible-this selection; immutable string captures/clone preserve requested descriptors, owner/called scope and receiver retirement (class-method-strings-current-review.json). Broader scope-dependent/nonpublic/magic/autoload/internal and transformed binding consumers remain open. Bare-object first-class capture/clone admits effective private/protected nonstatic __invoke and retains inherited owner/called class, receiver, source certificate and method cells; explicit nonpublic method capture stays access-checked. Wider binding/lifecycle consumers remain open. See invoke-publication-current-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload and transformed fake-Closure binding remain required.",
+      "review": "Explicit and arrow closures retain captures, reference/static cells, source origins and owned callable identities (closures-review.json, arrows-review.json). Class-bound lexical/called scope, applicable receivers and ordinary/nullsafe Closure->__invoke now execute; the wrapper receives weakly and traces original arguments (methods-review.json). Selected public array-origin method closures retain receiver/scopes/static cells through capture and clone, including origin-only maker retirement (array-callables-current-review.json). Broader rebinding, clone/lifecycle and collection remain open. Public concrete class-method strings distinguish computed static dispatch from fixed compatible-this selection; immutable string captures/clone preserve requested descriptors, owner/called scope and receiver retirement (class-method-strings-current-review.json). Broader scope-dependent/nonpublic/magic/autoload/internal and transformed binding consumers remain open. Bare-object first-class capture/clone admits effective private/protected nonstatic __invoke and retains inherited owner/called class, receiver, source certificate and method cells; explicit nonpublic method capture stays access-checked. Wider binding/lifecycle consumers remain open. See invoke-publication-current-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload and transformed fake-Closure binding remain required. Module263 creates source Closure children from authentic cached property METHOD callables, preserving full imported method authority, lexical/unrelated called scope, private NEW self defaults and child clones after wrapped/plain makers retire. Two exact new source tuples and105+65 source-derived AL premises retain separate accepted cutoffs. Ordinary ancestry remains exact; wider transformed callable creation contexts stay required.",
       "planned_source_tests": [
         "tests/semantics/conformance/closure-capture.php"
       ]
@@ -9948,21 +9952,25 @@
       "implementation": [
         "spec/semantics/212-constant-callables.watsup",
         "spec/semantics/116-closures.watsup",
-        "spec/semantics/184-class-constants.watsup"
+        "spec/semantics/184-class-constants.watsup",
+        "spec/semantics/263-property-callable-creation.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/constant_callable_protocol.py"
+        "tests/semantics/constant_callable_protocol.py",
+        "tests/semantics/property_callable_creation_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/class_constant_cases.json"
+        "tests/semantics/class_constant_cases.json",
+        "tests/semantics/deferred_static_default_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_ast.c",
         "vendor/php-src/Zend/zend_closures.c",
-        "coverage/semantics/class-constants-current-review.json"
+        "coverage/semantics/class-constants-current-review.json",
+        "coverage/semantics/deferred-static-defaults-review.json"
       ],
-      "review": "Class-constant static no-use anonymous Closures and fixed function/static-method FCC retain initializer lexical/called scope, cached identity, frozen first target, recursive alias/array certificates and cache/static roots. Clone state and coherent object-erasure/birth/scope/prefix inverses are reviewed. New 22 source agreements and 159 + 44 finite guards retain separate cutoffs. Literal class strings use global spelling; invalid quoted keywords/nonstring names retain compile errors. Wider constant contexts, builtin targets and uncertified object transfers remain Unsupported; one later current handler/truth source retains the original null and wrapped static counter; no family closure. Contextual self/parent defaults now re-evaluate against authenticated rebound lexical scope; new 25/38 guards reject a stale cache and wrong binding, retaining earlier 159 + 44 cutoffs. A later current214 Stringable callback observes B:A:same from rebound/original defaults and original cache identity."
+      "review": "Class-constant static no-use anonymous Closures and fixed function/static-method FCC retain initializer lexical/called scope, cached identity, frozen first target, recursive alias/array certificates and cache/static roots. Clone state and coherent object-erasure/birth/scope/prefix inverses are reviewed. New 22 source agreements and 159 + 44 finite guards retain separate cutoffs. Literal class strings use global spelling; invalid quoted keywords/nonstring names retain compile errors. Wider constant contexts, builtin targets and uncertified object transfers remain Unsupported; one later current handler/truth source retains the original null and wrapped static counter; no family closure. Contextual self/parent defaults now re-evaluate against authenticated rebound lexical scope; new 25/38 guards reject a stale cache and wrong binding, retaining earlier 159 + 44 cutoffs. A later current214 Stringable callback observes B:A:same from rebound/original defaults and original cache identity. Module263 creates source Closure children from authentic cached property METHOD callables, preserving full imported method authority, lexical/unrelated called scope, private NEW self defaults and child clones after wrapped/plain makers retire. Two exact new source tuples and105+65 source-derived AL premises retain separate accepted cutoffs. Ordinary ancestry remains exact; wider transformed callable creation contexts stay required."
     },
     {
       "id": "declarations.enums",
