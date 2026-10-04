@@ -104,9 +104,11 @@ syntax pshutdownproducer = { TARGET pcalltarget, SITE porigin?, SCOPE pclosuresc
 syntax pshutdownentry = { CALL pconfigcall, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer?, RAW parray?, TARGET pcalltarget, ARGS pvalue* }
 syntax pshutdownphase = SHUTDOWN_PENDING | SHUTDOWN_RUNNING | SHUTDOWN_DONE
 syntax pdestructionphase = DESTRUCTION_PENDING | DESTRUCTION_GLOBALS | DESTRUCTION_STORE | DESTRUCTION_DONE
+syntax pcallcontext
+syntax pconstantcontext
 syntax pdestructionjob = DESTRUCTION_VALUE pnode | DESTRUCTION_HANDLE nat
 syntax pdestructionrelease = {JOBS pdestructionjob*, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
-syntax pdestructionframe = {EXCEPTION nat, CALLER pcallcontext, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
+syntax pdestructionframe = {EXCEPTION nat, CALLER pcallcontext?, FUNCTION porigin, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
 syntax pdestructorcall = {OBJECT nat, TARGET pcalltarget, STORE bool, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, LINE int, RELEASE pdestructionrelease?, PENDING nat?}
 syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED nat*, PHASE pdestructionphase, NAMES preqbytes*, PASS preqbytes*, COUNT nat, INDEX nat, COMPLETION pcompletion, RELEASES pdestructionrelease*, CALLS pdestructorcall*, FRAMES pdestructionframe*}
 syntax pshutdownrenderphase = SHUTDOWN_RENDER_MESSAGE | SHUTDOWN_RENDER_TRACE | SHUTDOWN_RENDER_RETURN | SHUTDOWN_RENDER_DONE

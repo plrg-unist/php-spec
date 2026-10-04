@@ -480,18 +480,18 @@ def $destructor_releases_valid(S, pdestructionrelease :: pdestructionrelease*) =
 def $destructor_calls_valid(S, eps) = true
 def $destructor_calls_valid(S, pdestructorcall :: pdestructorcall*) = ($destructor_call_live(S, pdestructorcall) /\ $destructor_calls_valid(S, pdestructorcall*))
 
-;; Throwing frame locals are released while that real USER frame still supplies
-;; scope. The suspended Throwable owns its normal native slot; the callback's
-;; pending certificate is borrowed. A new throw chains it through the shared
-;; previous-link operation before the original frame is retired.
+;; Zend restores the caller before releasing the callee's CV slots. Keep the
+;; suspended Throwable in its native pending slot while those releases run
+;; under that restored caller. A new throw uses the shared previous-link path.
 def $destructor_pending_for(pcallcontext?, eps) = eps
-def $destructor_pending_for((pcallcontext), pdestructionframe :: pdestructionframe*) = (pdestructionframe.EXCEPTION)
-  -- if pdestructionframe.CALLER = pcallcontext
+def $destructor_pending_for(pcallcontext?, pdestructionframe :: pdestructionframe*) = (pdestructionframe.EXCEPTION)
+  -- if pdestructionframe.CALLER = pcallcontext?
 def $destructor_pending_for(pcallcontext?, pdestructionframe :: pdestructionframe*) = $destructor_pending_for(pcallcontext?, pdestructionframe*)
-  -- if pcallcontext? =/= (pdestructionframe.CALLER)
-def $destructor_frame_clear(S, n) = S[.ENV = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.DESTRUCTION.FRAMES = pdestructionframe :: S.DESTRUCTION.FRAMES][.TODO = [DESTRUCTOR_FRAME_EXIT pdestructionframe]]
+  -- if pcallcontext? =/= pdestructionframe.CALLER
+def $destructor_frame_clear(S, n) = S_restored[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.DESTRUCTION.FRAMES = pdestructionframe :: S.DESTRUCTION.FRAMES][.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: S_restored.TODO]
   -- if S.CURRENT = (pcallcontext)
-  -- if pdestructionframe = {EXCEPTION n, CALLER pcallcontext, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT}
+  -- if S_restored = $restore_frame(S)
+  -- if pdestructionframe = {EXCEPTION n, CALLER S_restored.CURRENT, FUNCTION pcallcontext.FUNCTION, ORIGIN S_restored.ORIGIN, CONSTCONTEXT S_restored.CONSTCONTEXT}
 def $destructor_frame_release_ready(S) = true
   -- if $destructor_active(S)
   -- if S.TODO = [THROW_SEARCH n]
@@ -503,14 +503,13 @@ def $destructor_frame_release_ready(S) = false -- otherwise
 rule PhpStep/destructor-frame-local-release: S ~> $destructor_frame_clear($constructor_failed(S), n)
   -- if S.TODO = [THROW_SEARCH n]
   -- if $destructor_frame_release_ready(S)
-def $destructor_frame_valid(S, pdestructionframe) = ($destructor_active(S) /\ pdestructionframe <- S.DESTRUCTION.FRAMES /\ $throwable_member(S, pdestructionframe.EXCEPTION) /\ S.CURRENT = (pdestructionframe.CALLER) /\ S.ORIGIN = pdestructionframe.ORIGIN /\ S.CONSTCONTEXT = pdestructionframe.CONSTCONTEXT /\ S.ENV = eps /\ S.FRAMES =/= eps)
+def $destructor_frame_valid(S, pdestructionframe) = ($destructor_active(S) /\ pdestructionframe <- S.DESTRUCTION.FRAMES /\ $throwable_member(S, pdestructionframe.EXCEPTION) /\ S.CURRENT = pdestructionframe.CALLER /\ S.ORIGIN = pdestructionframe.ORIGIN /\ S.CONSTCONTEXT = pdestructionframe.CONSTCONTEXT)
 def $call_task_valid(S, DESTRUCTOR_FRAME_EXIT pdestructionframe) = $destructor_frame_valid(S, pdestructionframe)
 def $task_nodes(DESTRUCTOR_FRAME_EXIT pdestructionframe) = [HOBJECT pdestructionframe.EXCEPTION]
-rule PhpStep/destructor-frame-exit: S ~> S_restored[.TODO = (THROW_SEARCH pdestructionframe.EXCEPTION) :: S_restored.TODO][.RESULT = KNOWN PNULL][.HELD = eps]
-  -- if S.TODO = [DESTRUCTOR_FRAME_EXIT pdestructionframe]
+rule PhpStep/destructor-frame-exit: S ~> S[.TODO = (THROW_SEARCH pdestructionframe.EXCEPTION) :: ptask_tail*][.DESTRUCTION.FRAMES = pdestructionframe_tail*][.RESULT = KNOWN PNULL][.HELD = eps]
+  -- if S.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_tail*
   -- if $destructor_frame_valid(S, pdestructionframe)
   -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
-  -- if S_restored = $restore_frame(S[.DESTRUCTION.FRAMES = pdestructionframe_tail*])
 def $return_discard(S, DESTRUCTOR_FRAME_EXIT pdestructionframe) = S[.DESTRUCTION.FRAMES = pdestructionframe_tail*]
   -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
 def $destructor_chain_pending(S, pdestructorcall) = $throwable_previous(S, n, n_old)
@@ -519,7 +518,7 @@ def $destructor_chain_pending(S, pdestructorcall) = $throwable_previous(S, n, n_
 def $destructor_chain_pending(S, pdestructorcall) = S -- otherwise
 dec $destructor_frames_valid(pstate, pdestructionframe*) : bool
 def $destructor_frames_valid(S, eps) = true
-def $destructor_frames_valid(S, pdestructionframe :: pdestructionframe*) = ($throwable_member(S, pdestructionframe.EXCEPTION) /\ $function_at($all_functions(S), pdestructionframe.CALLER.FUNCTION) =/= eps /\ $destructor_frames_valid(S, pdestructionframe*))
+def $destructor_frames_valid(S, pdestructionframe :: pdestructionframe*) = ($throwable_member(S, pdestructionframe.EXCEPTION) /\ $function_at($all_functions(S), pdestructionframe.FUNCTION) =/= eps /\ $destructor_frames_valid(S, pdestructionframe*))
 
 ;; The original compiler prefix is frozen before stage2 just as it is before
 ;; the shutdown queue. Later destructor eval declarations still replay that
