@@ -124,6 +124,7 @@ dec $closure_call_target(pcalltarget) : bool
 syntax pctorcallmode = CTOR_NEW | CTOR_METHOD
 syntax pctorcall = {SITE porigin, RECEIVER nat, BASE text, MODE pctorcallmode, INDEX nat, SENT pnamedslot*, NAMED bool, LINE int}
 syntax ptraitcall = {SITE porigin, CLASS phpType19, REQUESTED porigin, FUNCTION porigin, SELECTOR poperand, METHOD nat*, ARGUMENTS phpType7*, LINE int}
+syntax ppmode = PPF | PPR | PPW | PPRW | PPUNSET | PPIS
 syntax ptraitproperty = {SITE porigin, ROOT porigin, DECL ppropertyid, NAME nat*, MODE ppmode, LINE int}
 syntax ptraitpropertywrite = {SITE porigin, OP pbin?, CLASS poperand, NAME poperand, RHS expression, LINE int}
 syntax pdefaultinternal = {NEW pdefaultnew, CALL pctorcall, INDEX nat, VALUES pvalue*}
