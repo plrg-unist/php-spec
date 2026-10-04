@@ -326,7 +326,7 @@ def $api_saved_frame_scope(S, pframe, pframe_tail*) = S -- otherwise
 dec $destructor_saved_frame_scope(pstate, pframe) : pstate
 def $destructor_saved_frame_scope(S, pframe) = S -- otherwise
 def $call_frames_valid(S, eps) = true
-def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($destructor_saved_frame_scope($api_saved_frame_scope($parameter_string_frame_scope(S_scope, pframe, pframe_tail*), pframe, pframe_tail*), pframe), pframe.TODO) /\ $borrowed_read_scope_valid(S_scope) /\ $call_saved_context_valid(S_scope, pframe) /\ $constant_context_valid(S_scope) /\ $call_frames_valid(S, pframe_tail*))
+def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($destructor_saved_frame_scope($api_saved_frame_scope($parameter_string_frame_scope(S_scope, pframe, pframe_tail*), pframe, pframe_tail*), pframe), pframe.TODO) /\ $borrowed_read_scope_valid(S_scope) /\ $object_cast_scope_valid(S_scope) /\ $call_saved_context_valid(S_scope, pframe) /\ $constant_context_valid(S_scope) /\ $call_frames_valid(S, pframe_tail*))
   -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
 dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $class_constant_state_valid(pstate) : bool
@@ -354,11 +354,13 @@ dec $class_state_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
   -- if $startup_state_valid(S)
   -- if $display_state_valid(S)
+  -- if $object_tables_valid(S)
   -- if $eval_state_valid(S)
   -- if $class_state_valid(S)
   -- if $call_registry_valid(S.FUNCTIONS, S.CALLABLES)
   -- if $call_tasks_valid(S, S.TODO)
   -- if $borrowed_read_scope_valid(S)
+  -- if $object_cast_scope_valid(S)
   -- if $selected_log_valid(S, S.SELECTEDCALLS, 0)
   -- if $stringify_pairs_valid(S, S.TODO)
   -- if $ctor_pairs_valid(S, S.TODO)

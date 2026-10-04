@@ -233,7 +233,7 @@ def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = $closu
   -- if ~((HOBJECT pclosurescope.OBJECT) <- pnode*)
 def $prune_allocations(S) = $destruction_prune(S, pnode_live*)
   -- if pnode_live* = $heap_prune($heap_graph(S)).NODES
-def $prune_live(S, pnode_live*) = S[.ALLOCATIONS = pnode_live*][.CLOSURESCOPES = $closure_scopes_prune(S.CLOSURESCOPES, pnode_live*)][.CLOSUREBINDINGS = $closure_bindings_prune(S.CLOSUREBINDINGS, pnode_live*)][.OBJECTPROPS = $objectprops_prune(S.OBJECTPROPS, pnode_live*)][.PROPREFS = $proprefs_prune(S.PROPREFS, S.OBJECTPROPS, pnode_live*)][.REFCOERCIONS = $reference_coercions_prune(S.REFCOERCIONS, pnode_live*)][.PARAMETERBACKINGS = $parameter_backings_prune(S.PARAMETERBACKINGS, pnode_live*)][.ITERATORS = $iterators_prune(S.ITERATORS, pnode_live*)]
+def $prune_live(S, pnode_live*) = S[.ALLOCATIONS = pnode_live*][.CLOSURESCOPES = $closure_scopes_prune(S.CLOSURESCOPES, pnode_live*)][.CLOSUREBINDINGS = $closure_bindings_prune(S.CLOSUREBINDINGS, pnode_live*)][.OBJECTPROPS = $objectprops_prune(S.OBJECTPROPS, pnode_live*)][.OBJECTTABLES = $object_tables_prune(S.OBJECTTABLES, pnode_live*)][.PROPREFS = $proprefs_prune(S.PROPREFS, S.OBJECTPROPS, pnode_live*)][.REFCOERCIONS = $reference_coercions_prune(S.REFCOERCIONS, pnode_live*)][.PARAMETERBACKINGS = $parameter_backings_prune(S.PARAMETERBACKINGS, pnode_live*)][.ITERATORS = $iterators_prune(S.ITERATORS, pnode_live*)]
 
 ;; zend_array_dup_value unwraps singleton references, except a reference back to
 ;; the source array. Count surviving incoming edges, including uncollected cycles
@@ -251,7 +251,9 @@ def $duplicate_item(S, n_source, pitem) = pitem
 ;; isolated constant evaluation also calls this helper with local builder IDs.
 ;; It must not release unrelated builder allocations in that caller's state.
 def $duplicate_entries(S, n_source, eps) = eps
+def $duplicate_entries(S, n_source, (ENTRY pkey UNINITIALIZED) :: pentry_tail*) = $duplicate_entries(S, n_source, pentry_tail*)
 def $duplicate_entries(S, n_source, (ENTRY pkey pitem) :: pentry_tail*) = (ENTRY pkey $duplicate_item(S, n_source, pitem)) :: $duplicate_entries(S, n_source, pentry_tail*)
+  -- if pitem =/= UNINITIALIZED
 
 ;; zend_hash_merge calls zval_add_ref only for inserted entries. This copy
 ;; constructor unwraps every singleton reference, without the source-self
@@ -275,7 +277,7 @@ def $separate_location_array(S, n) = $duplicate_array(S_live, n)
 ;; machine temporaries, not ENV or uncollected cycles. Budget exhaustion is a
 ;; tool observation and must retain the interrupted machine state.
 dec $release_temporaries(pstate) : pstate
-def $release_temporaries(S) = S[.BORROWEDREAD = eps][.CLASSCONSTANTINIT = eps][.CONSTCONTEXT = eps][.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps][.ITERATORS = eps]
+def $release_temporaries(S) = S[.BORROWEDREAD = eps][.OBJECTCAST = eps][.CLASSCONSTANTINIT = eps][.CONSTCONTEXT = eps][.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps][.ITERATORS = eps]
 
 def $task_nodes(LIST_PATTERN expression poperand z) = $operand_nodes(poperand)
 def $task_nodes(LIST_NEXT poperand n phpType13* z) = $operand_nodes(poperand)

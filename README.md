@@ -394,7 +394,10 @@ types and literal `instanceof`; their [review](coverage/semantics/object-classes
 binds source and paused-state checks. [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
 now allocates an owned empty object with exact nominal typing and ordinary
 empty-object behavior; its [review](coverage/semantics/stdclass-review.json)
-binds source and ownership checks. [No-constructor allocation arguments](docs/semantics/SOURCE-NOCTOR-ARGS.md)
+binds source and ownership checks. [Non-object casts](docs/semantics/OBJECT-CASTS.md)
+add populated stdClass storage, shared-table COW, clone/array round trips and
+genuine NaN/key-notice callbacks, with explicit retired-pointer boundaries.
+[No-constructor allocation arguments](docs/semantics/SOURCE-NOCTOR-ARGS.md)
 evaluate positional, named and unpacked values after class lookup while retaining
 sent values through the dummy call; their [review](coverage/semantics/noctor-args-review.json)
 binds source, compiler and paused-state checks. [Empty-class inheritance](docs/semantics/SOURCE-INHERITANCE.md)
@@ -472,6 +475,11 @@ property/callable consumers remain open. Children created by cached property
 method callables retain lexical and called scope after wrapped or cloned makers
 retire, including private `new self` defaults. Two sources and 170 state premises
 retain separate accepted cutoffs.
+Shared trait-constant callable targets retain their first lookup while later
+method imports use fresh called classes and named/method receipts use current
+publication prefixes. Three new source
+agreements and112 AL/122 SL premises check partial failure, copied children and
+actual constant-cache ownership; compiled keyword NEW remains a required consumer.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -641,7 +649,10 @@ captured missing-CV reads through handlers. Broader constrained conversion remai
 class selector before arguments and releases selector temporaries before class work.
 Compiled keyword scopes survive recursive constructors and retired receiving Closures;
 cached property method callables retain lexical and called class separately.
-Autoload and ordinary named keyword NEW remain required.
+[Ordinary named keyword NEW](coverage/semantics/named-keyword-new-review.json)
+uses lexical self/parent and called static scope through inherited constructors,
+rebound Closures and eval. Known invalid function scopes reject at compilation;
+deferred scopes fail before arguments. Autoload remains required.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

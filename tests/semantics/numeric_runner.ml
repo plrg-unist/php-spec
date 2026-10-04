@@ -5,12 +5,10 @@ let fail at msg =
   exit 1
 
 let () =
-  let paths = Array.to_list Sys.argv |> List.tl in
-  let mode, paths =
-    match paths with
+  let args = Array.to_list Sys.argv |> List.tl in
+  let mode, paths = match args with
     | "--sl" :: paths -> Run.SL_mode, paths
-    | paths -> Run.AL_mode, paths
-  in
+    | paths -> Run.AL_mode, paths in
   match Backend_boot.Build.spec_of_mode mode paths with
   | Error error ->
       let at, msg = Pass.to_region_msg error in

@@ -27,6 +27,8 @@ history/function-table proof; a new coherent descriptor-forgery24 check passes.
 The maintained runner's optional `--sl` flag selects that mode only for the two
 file phases. Actual23c composition source2 at5cf39c0dd confirms live dollar-curly
 warning effects and later class publication before request destructors after exit.
+The final1d4f union preserves261 object-cast frame cleanup,265 callable receipts
+and267 keyword NEW source guards; these source2 results retain their5cf cutoff.
 Original failures, AL timeouts and fixture corrections remain
 outside Git with no failed-run credit.
 [Contract and maintained tests](docs/semantics/ITERATORS.md).
@@ -38,6 +40,43 @@ source19/independent11/affected trace3 and four state phases53/35/25/23 retain
 their recorded cutoffs. Actual3b622 composition source3 at e1a654 retains physical
 trait diagnostics, live argument/display state and effectful internal defaults.
 The former four early-eval Unsupported controls had zero agreement credit.
+
+Ordinary named keyword NEW267 now resolves self/parent/static in the actual
+caller before class work and arguments. Inherited constructor entry uses its
+immediate owning caller; service-unit main code follows persistent scope entry
+bindings. Known function scope errors compile; main, eval, trait and Closure
+errors remain deferred. Source18 normal/4 compiler and reached cold57/recursive44
+plus corrected eval53 pass at91dc. Actual23c/264/257 composition at9b8 passes
+private self/static and current identity after null-binding resets called scope.
+Original preparation/eval-fixture failures remain in the [ledger](coverage/semantics/named-keyword-new-review.json).
+Autoload and complete core remain open; returns stay paused.
+
+Trait-constant callables265 retain the first shared AST method/function target,
+while named/method captures record each current publication prefix and METHOD
+captures select fresh called classes. REAL Closures use their own declaring scope.
+Exact receipts authenticate
+cached private targets after a real partial initializer failure; wrapped/plain
+makers can create children with lexical/called scope and private defaults after
+maker retirement. Successful constant caches own their values; history owns none.
+Three source agreements and58+54 AL premises pass at4e2d; the unchanged122-premise
+constructor guard passes SL at733 in27s under the same120s cap. AL timeouts remain
+zero-credit in the [default ledger](coverage/semantics/deferred-static-defaults-review.json).
+Compiled keyword NEW under the cached constant METHOD is the immediate remaining
+consumer; wider callable/default behavior and complete core stay open.
+
+Non-object casts261 now populate stdClass scalars/arrays, share all-string tables
+through genuine COW and fast clone, and preserve numeric round trips, alias type
+owners and active foreach cursor history. NaN warnings retain the allocated object
+and original operand location; NUL-key notices retain a nonowning TABLE/SERIAL
+marker through callbacks and delayed reference promotion. Raw undefined buckets
+keep distinct read/isset/copy/comparison behavior. Twelve full source comparisons
+retain 3a/82c/b0 cuts; one actual 8ada/a4fc composition gives the first agreement for
+the former251 native-only multiline cast holder. Four source-derived groups pass
+208 premises at b0, with original fixture stops preserved. The
+[cast ledger](coverage/semantics/object-casts-review.json) separates these cuts,
+two retired-pointer originals and a longer companion timeout (zero agreement).
+Actual257 destruction/frame/pruning hooks are preserved separately. Wider
+raw-undefined consumers, lifecycle/GC and callback contexts remain required.
 
 Request-stage destructors257 now repeat reverse direct globals and then scan
 reusable live store handles. Once marks, bailout/failed-constructor suppression,
@@ -85,8 +124,7 @@ retired83/recursive46 pass at0091; affected source3 at a65 and new2 plus
 contexts51/rebound45 at3f817 retain separate cuts. Actual6af8/252/263 composition
 at26fba passes cached trait METHOD/clone source1 and34 scope premises with lexical
 HostA and unrelated called HostB. The [ledger](coverage/semantics/dynamic-new-review.json)
-preserves original failures and preparation-only checks. Autoload and ordinary
-named self/parent/static NEW remain required; complete core stays open.
+preserves original failures and preparation-only checks. Ordinary named keywords are covered by267; autoload and complete core stay open.
 
 Cached property method callables (module263) now create source Closure children
 with authentic lexical scope and a separate, potentially unrelated called class.

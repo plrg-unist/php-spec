@@ -8,7 +8,10 @@ def $quiet_base(S, BASE_SHORT, z) = S[.RESULT = KNOWN PNULL]
 def $isset_base(S, BASE_SHORT, b, z) = S[.RESULT = KNOWN (PBOOL b)]
 def $base_read(S, BASE_CHAIN_PROPERTY pvalue ptbytes z_access, z) = $property_read(S, pvalue, ptbytes, z_access)
 def $quiet_base(S, BASE_CHAIN_PROPERTY pvalue ptbytes z_access, z) = $property_quiet(S, pvalue, ptbytes, z_access)
+def $isset_base(S, BASE_CHAIN_PROPERTY pvalue ptbytes z_access, b, z) = S[.RESULT = KNOWN (PBOOL true)]
+  -- if $stdclass_raw_undefined(S, pvalue, ptbytes)
 def $isset_base(S, BASE_CHAIN_PROPERTY pvalue ptbytes z_access, b, z) = $isset_simple(S, BASE_CHAIN_PROPERTY pvalue ptbytes z_access, b, z)
+  -- if ~$stdclass_raw_undefined(S, pvalue, ptbytes)
 
 dec $nullsafe_propdim_node(expression) : bool
 def $nullsafe_propdim_node(NExprArrayDimFetch expression phpType5 metadata) = true
