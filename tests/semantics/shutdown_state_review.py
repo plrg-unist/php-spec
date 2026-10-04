@@ -299,7 +299,7 @@ CASES = {
             *VALID, 'S_paused = $drive(S, 0)', 'S_paused.COMPLETION = BUDGET',
             'S_paused.EVENTS = eps', 'S_paused.SHUTDOWN = S.SHUTDOWN',
             'S_done = $drive(S, 1500)',
-            'S_done.REPORTING = 32767',
+            'S_done.REPORTING = 30719',
             'S_done.COMPLETION = S.SHUTDOWN.COMPLETION', *DONE,
             'S_done.EVENTS = [OUTPUT $ptascii("S;"), DIAGNOSTIC "Warning" $ptascii("later") 1]',
             '$declaration_history_valid(S_done)',
