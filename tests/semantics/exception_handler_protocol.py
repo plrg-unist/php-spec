@@ -95,11 +95,12 @@ CASES = [
     ('byref-warning-internal-frame', 'byrefhandled',
      'S.TODO = (ARGINFO_INVOKE pargcall) :: ptask_tail*', '2:Unknown:0:4:old', [
          'S.CURRENT = (pcallcontext)', 'pcallcontext.NAME = $ptascii("w")',
-         'pcallcontext.ARGC = 4', 'pcallcontext.CALLSITE = eps',
+         'pcallcontext.ARGC = 4', 'pcallcontext.LINE = 0',
          '$exception_warning_context(S, pcallcontext)',
          '$error_context_valid(S, pcallcontext)', '$error_context_direct_trigger(S)',
          'S.FRAMES = [pframe]',
          'pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_saved*',
+         'pcallcontext.CALLSITE = (perrorcall.SITE)',
          'perrorcall.RESUME = EXCEPTION_HANDLER_ENTER pexceptioncall',
          'pexceptioncall.SENT = eps', 'S.EXCEPTIONHANDLER = eps',
          '$error_handler_values(S, perrorcall) = [PINT 2,PSTRING perrorcall.MESSAGE,PSTRING $ptascii("Unknown"),PINT 0]',
