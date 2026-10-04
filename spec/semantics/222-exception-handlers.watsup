@@ -241,6 +241,12 @@ rule PhpStep/exception-handler-enter-reference: S ~> $exception_handler_enter(S_
   -- if pexceptioncall.TARGET = (pcalltarget)
   -- if $call_parameter_reference(S, pcalltarget, 0)
   -- if S_cell = $call_fresh_reference(S, POBJECT pexceptioncall.OBJECT)
+rule PhpStep/exception-warning-invalid-callback: S ~> S[.TODO = eps][.COMPLETION = INTERNALFATAL ($ptascii("Invalid callback ") ++ $error_callback_name(S, perrorcall.CALLBACK) ++ $ptascii(", ") ++ n_reason*) ($long_and(S.REPORTING, 1) =/= 0)][.TRACE = eps][.ORIGIN = eps][.ERRORORIGIN = eps]
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if $exception_warning_resume(perrorcall.RESUME)
+  -- if $call_task_valid(S, ERROR_HANDLER_INVOKE perrorcall)
+  -- if $exception_task_scope(S)
+  -- if $error_handler_resolution(S, perrorcall.CALLBACK) = HANDLERINVALID n_reason*
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = EXCEPTION_HANDLER_ENTER pexceptioncall
   -- if $exception_enter_valid(S, pexceptioncall)

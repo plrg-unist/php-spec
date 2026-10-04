@@ -165,6 +165,7 @@ def $error_invalid_callback(S, perrorcall, ptbytes) = $error_api_error(S, pconfi
 def $error_invalid_callback(S, perrorcall, ptbytes) = $throw_scalar(S, "Error", ptbytes, perrorcall.LINE) -- otherwise
 rule PhpStep/error-handler-invalid-callback: S ~> $error_handler_restore($error_invalid_callback(S, perrorcall, $ptascii("Invalid callback ") ++ $error_callback_name(S, perrorcall.CALLBACK) ++ $ptascii(", ") ++ n_reason*), perrorcall.CALLBACK)
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if ~$exception_warning_resume(perrorcall.RESUME)
   -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_target(S, perrorcall.CALLBACK) = eps
   -- if $error_handler_resolution(S, perrorcall.CALLBACK) = HANDLERINVALID n_reason*
