@@ -11,7 +11,6 @@ def $trait_record_members(pclassdesc, porigin) = ($trait_record_properties(pclas
 dec $trait_record_exports(pclassdesc*, porigin) : bool
 def $trait_record_exports(eps, porigin) = false
 def $trait_record_exports(pclassdesc :: pclassdesc_tail*, porigin) = ($trait_record_members(pclassdesc, porigin) \/ $trait_record_exports(pclassdesc_tail*, porigin))
-dec $trait_record_root(pstate, pclassdesc, porigin) : bool
 def $trait_record_root(S, pclassdesc, PORIGIN n pcpath) = true
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
   -- if $trait_needs_binding(S, pclassdesc)
@@ -70,12 +69,10 @@ dec $trait_value_notices(ptraitdatavalue) : pfdiagnostic*
 def $trait_value_notices(TRAITVALUE S pvalue pfdiagnostic*) = pfdiagnostic*
 def $trait_value_notices(TRAITVALUEUNKNOWN text pfdiagnostic*) = pfdiagnostic*
 def $trait_value_notices(TRAITUNINITIALIZED) = eps
-dec $trait_comparison(ptraitdatavalue, ptraitdatavalue) : ptraitdatacomparison
 def $trait_comparison(ptraitdatavalue_left, ptraitdatavalue_right) = { CHECK $trait_data_compare(ptraitdatavalue_left, ptraitdatavalue_right), NOTICES ($trait_value_notices(ptraitdatavalue_left) ++ $trait_value_notices(ptraitdatavalue_right)) }
 dec $trait_notice_records(porigin, nat, nat, pfdiagnostic*) : pdeclnoticeitem*
 def $trait_notice_records(porigin, n_prefix, n_user, eps) = eps
 def $trait_notice_records(porigin, n_prefix, n_user, pfdiagnostic :: pfdiagnostic_tail*) = (TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) :: $trait_notice_records(porigin, n_prefix, n_user, pfdiagnostic_tail*)
-dec $trait_comparison_seed(pstate, pclassdesc, pstate, pfdiagnostic*) : pstate
 def $trait_comparison_seed(S, pclassdesc, S_result, eps) = S_result
 def $trait_comparison_seed(S, pclassdesc, S_result, pfdiagnostic*) = S_result[.TODO = S_result.TODO ++ [TRAIT_DATA_SEED $trait_notice_records(pclassdesc.ORIGIN, |S.DECLARATIONS|, |S.USERCONSTANTS|, pfdiagnostic*)]]
   -- if pfdiagnostic* =/= eps
@@ -94,7 +91,6 @@ def $iterator_notice_event(TRAIT_DATA_NOTICE (PORIGIN n pcpath) n_prefix n_user 
 
 ;; Replay only source data composition at its real publication prefix. Handler
 ;; writes cannot change the name environment sampled by the earlier comparison.
-dec $trait_notice_items(pdeclnoticeitem*) : bool
 def $trait_notice_items(eps) = false
 def $trait_notice_items((TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) :: pdeclnoticeitem*) = true
 def $trait_notice_items(pdeclnoticeitem :: pdeclnoticeitem_tail*) = $trait_notice_items(pdeclnoticeitem_tail*) -- otherwise
