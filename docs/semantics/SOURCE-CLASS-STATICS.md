@@ -26,17 +26,22 @@ initializer preserves earlier values and their first-fill history; a retry skips
 those values. The existing `CLASSSTATICS` row owns the value and later aliases;
 the `CCSTATIC` history entry stores only source/trigger/publication identities.
 Compound AST errors retain the constant-expression trace, while a simple unresolved
-constant keeps the triggering fetch location. Same-default reevaluation while an
-initializer is suspended in a callback returns explicit Unsupported. Resumed
-updates must eventually retain escaped reference constraints even when the live
-property row is replaced. Instance and object-bearing defaults and synchronous
+constant keeps the triggering fetch location. Module229 permits same-default
+reevaluation during a callback. Successful outer binding replaces the reentrant
+value without duplicating first-fill or table-completion history. Escaped typed
+aliases keep nonowning type constraints authenticated by retirement events;
+reattachment and rebinding preserve Zend's ordered source removal. Throwing or
+strictly rejected outer evaluation leaves the live row and alias intact. Instance
+and object-bearing defaults and synchronous
 references into an incomplete table also remain required open work.
 The [deferred-default review](../../coverage/semantics/deferred-static-defaults-review.json)
 records eleven earlier source agreements separately from five source-derived guard
 programs. Four217 callback comparisons preserve saved initializer contexts,
 private declaring scope and compound traces; one cross-file comparison checks
-the caller file for a simple constant default. Exact reentry controls remain
-Unsupported and do not count as native agreements. Two later213/215 comparisons
+the caller file for a simple constant default. Thirteen new reentry comparisons
+and an inherited67-premise fixture cover replacement, failure/retry, array COW,
+source order and release of escaped cells; earlier Unsupported controls remain
+historical evidence. Two later213/215 comparisons
 initialize the inherited default
 inside a captured private handler and a raw private handler during a Stringable
 parameter receive. Captured null survives the first handler's variable write and

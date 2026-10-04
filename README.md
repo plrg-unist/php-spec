@@ -347,10 +347,11 @@ completes a forward constant table before fetching the reference and preserves
 the typed alias. Deferred scalar/array static defaults now evaluate in declaring
 scope with strict binding, preserving successful prefixes across later failure.
 The [deferred-default review](coverage/semantics/deferred-static-defaults-review.json)
-separates eighteen source agreements at their recorded cutoffs from five state
-programs/152 sequential guards and two explicit Unsupported reentry controls.
-Deferred instance/object defaults, incomplete-table references and reentrant
-same-default updates with retained alias constraints remain open.
+separates eighteen earlier source agreements and five state programs/152 premises
+from thirteen new reentry comparisons and one inherited67 ownership/history fixture.
+Same-default reentry replaces the live row while escaped typed aliases retain
+their ordered constraints; failure preserves the reentrant value. Deferred
+instance/object defaults and incomplete-table references remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
