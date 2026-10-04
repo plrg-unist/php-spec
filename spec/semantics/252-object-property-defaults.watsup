@@ -69,14 +69,23 @@ def $property_callable_owned_source(S, ppropertydesc :: ppropertydesc_tail*, por
   -- if $property_callable_source_matches(S, ppropertydesc, porigin)
 def $property_callable_owned_source(S, ppropertydesc :: ppropertydesc_tail*, porigin) = $property_callable_owned_source(S, ppropertydesc_tail*, porigin)
   -- if ~$property_callable_source_matches(S, ppropertydesc, porigin)
-def $closure_scope_classes_valid(S, porigin, pclosurescope) = true
-  -- if ~$closure_scope_original_classes(S, porigin, pclosurescope)
-  -- if ~$closure_nested_creation(S, porigin)
+dec $property_callable_scope_valid(pstate, porigin, pclosurescope) : bool
+def $property_callable_scope_valid(S, porigin, pclosurescope) = true
   -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclosurescope.LEXICAL)
   -- if $property_callable_owned_source(S, pclassdesc.PROPERTIES, porigin)
   -- if pclosurescope.CALLED = pclosurescope.LEXICAL
   -- if pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps
+def $property_callable_scope_valid(S, porigin, pclosurescope) = false -- otherwise
+def $closure_scope_classes_valid(S, porigin, pclosurescope) = true
+  -- if ~$closure_scope_original_classes(S, porigin, pclosurescope)
+  -- if $property_callable_scope_valid(S, porigin, pclosurescope)
+;; A class declaration inside a Closure body still creates property constants
+;; from the property's class, without a runtime enclosing-Closure creator.
+def $closure_scope_creation_valid(S, porigin, pclosurescope) = true
+  -- if $constant_callable_source_scope(S, porigin) = eps
+  -- if $closure_nested_creation(S, porigin)
+  -- if $property_callable_scope_valid(S, porigin, pclosurescope)
 
 def $static_default_class_supported(PVCLOSURE n porigin) = true
 def $property_default_transfer_valid(S, ppropertydesc, pvalueclass) = true

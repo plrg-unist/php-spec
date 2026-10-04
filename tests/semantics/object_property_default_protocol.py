@@ -501,6 +501,69 @@ protocol.CHECKS = {'instance-closure-cold-late': ['S = $object_default_test_seek
                                '$class_constant_history_valid(S_done)',
                                '$property_state_valid(S_done)']}
 
+protocol.SOURCES['nested-class-property-closures'] = (
+ '<?php\n'
+ '$make = static function () {\n'
+ '    class C {\n'
+ '        private const X = 3;\n'
+ "        public Closure $f = static function () { return self::X . ':' . get_called_class(); };\n"
+ '        public static Closure $g = static function () { return self::X + 1; };\n'
+ '    }\n'
+ '};\n'
+ '$make();\n'
+ 'unset($make);\n'
+ '$c = new C;\n'
+ '$copy = clone ($c->f);\n'
+ "echo ($c->f)(), ':', (C::$g)(), ':', $copy();\n"
+)
+
+protocol.CHECKS['nested-class-property-closures'] = ['S = $drive_steps(S_initial[.COMPLETION = NORMAL], 3500)',
+ 'S.COMPLETION = NORMAL',
+ 'S.TODO = eps',
+ '$object_default_test_output(S.EVENTS) = $ptascii("3:C:4:3:C")',
+ '$class_named(S.CLASSNAMES, $ptascii("c")) = (porigin_c)',
+ '$class_at(S.CLASSES, porigin_c) = (pclassdesc_c)',
+ 'pclassdesc_c.PROPERTIES = [ppropertydesc_f, ppropertydesc_g]',
+ 'ppropertydesc_f.ORIGIN = porigin_f',
+ 'ppropertydesc_g.ORIGIN = porigin_g',
+ '$instance_default_at(S.INSTANCEDEFAULTS, porigin_c, porigin_f) = (pinstancetemplate_f)',
+ 'pinstancetemplate_f.STATE = INSTANCE_OBJECT_VALUE (POBJECT n_f) (PVCLOSURE n_f '
+ 'porigin_site_f) pinstanceobjectcertificate_f',
+ '$class_static_at(S.CLASSSTATICS, porigin_g) = (pclassstatic_g)',
+ 'pclassstatic_g.STATE = PROP_VALUE (DIRECT (POBJECT n_g))',
+ '$constant_callable_record(S.CONSTANTCLOSURES, n_g) = (pconstantclosure_g)',
+ 'pconstantclosure_g.SITE = porigin_site_g',
+ '$closure_scope_at(S.CLOSURESCOPES, n_f) = (pclosurescope_f)',
+ '$closure_scope_at(S.CLOSURESCOPES, n_g) = (pclosurescope_g)',
+ '$closure_nested_creation(S, porigin_site_f)',
+ '$closure_nested_creation(S, porigin_site_g)',
+ 'pclosurescope_f.CREATION = eps /\\ pclosurescope_g.CREATION = eps',
+ '$property_callable_scope_valid(S, porigin_site_f, pclosurescope_f)',
+ '$property_callable_scope_valid(S, porigin_site_g, pclosurescope_g)',
+ '$closure_scope_creation_valid(S, porigin_site_f, pclosurescope_f)',
+ '$closure_scope_creation_valid(S, porigin_site_g, pclosurescope_g)',
+ '$closure_scope_row_valid(S, pclosurescope_f)',
+ '$closure_scope_row_valid(S, pclosurescope_g)',
+ 'S.OBJECTS[0] = REALCLOSURE porigin_maker pitem_maker* pstaticcell_maker*',
+ '~((HOBJECT 0) <- S.ALLOCATIONS)',
+ '~$property_callable_scope_valid(S, porigin_maker, pclosurescope_f)',
+ '~$closure_scope_creation_valid(S, porigin_site_f, pclosurescope_f[.CREATION = ({FUNCTION '
+ 'porigin_maker, CALLSITE eps, RECEIVER false, EVIDENCE eps})])',
+ 'S_clone = $clone_object(S, n_f)',
+ 'S_clone.RESULT = KNOWN (POBJECT n_clone)',
+ '$constant_callable_record(S_clone.CONSTANTCLOSURES, n_clone) = eps',
+ '$closure_scope_at(S_clone.CLOSURESCOPES, n_clone) = (pclosurescope_clone)',
+ 'pclosurescope_clone.CREATION = eps',
+ '$closure_scope_row_valid(S_clone, pclosurescope_clone)',
+ 'S_dead = $prune_allocations(S_clone[.ENV = eps][.GLOBALTABLE = eps][.RESULT = KNOWN '
+ 'PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])',
+ '~((HOBJECT n_clone) <- S_dead.ALLOCATIONS)',
+ '$heap_owners($heap_graph(S_dead), HOBJECT n_f) = 1',
+ '$heap_owners($heap_graph(S_dead), HOBJECT n_g) = 1',
+ '$instance_default_state_valid(S_dead)',
+ '$constant_callable_records_valid(S_dead, S_dead.CONSTANTCLOSURES)',
+ '$property_state_valid(S_dead)']
+
 if __name__ == '__main__':
  parser=argparse.ArgumentParser();parser.add_argument('--prepare');args=parser.parse_args()
  if args.prepare:protocol.prepare(Path(args.prepare));print(args.prepare)
