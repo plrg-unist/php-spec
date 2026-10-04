@@ -950,6 +950,7 @@ rule PhpStep/scoped-name-type: S ~> $throw_scalar(S_name, "Error", $ptascii("Met
 
 dec $constructor_start(pstate, preqbytes, phpType7*, int) : pstate
 dec $constructor_start_ready(pstate, preqbytes, phpType7*, int) : pstate
+dec $constructor_failed_object(pstate, nat) : pstate
 dec $parameter_default_constructor(pstate, phpType28, phpType7*, metadata) : bool
 def $constructor_start_ready(S, preqbytes, phpType7*, z) = S_new[.TODO = [$method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), CTOR_RESULT n] ++ S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_new = $new_class(S, preqbytes, z)
@@ -958,7 +959,7 @@ def $constructor_start_ready(S, preqbytes, phpType7*, z) = S_new[.TODO = [$metho
   -- if S_new.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S_new, porigin_class, $ptascii("__construct"), |S_new.CLASSES|) = (pmethoddesc)
   -- if $method_accessible(S_new, pmethoddesc, $method_current_scope(S_new))
-def $constructor_start_ready(S, preqbytes, phpType7*, z) = $method_denied(S_new, pmethoddesc, $ptascii("__construct"), $method_current_scope(S_new), true, z)[.TODO = eps]
+def $constructor_start_ready(S, preqbytes, phpType7*, z) = $method_denied($constructor_failed_object(S_new, n), pmethoddesc, $ptascii("__construct"), $method_current_scope(S_new), true, z)[.TODO = eps]
   -- if S_new = $new_class(S, preqbytes, z)
   -- if S_new.COMPLETION = NORMAL
   -- if S_new.RESULT = KNOWN (POBJECT n)

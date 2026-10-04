@@ -139,15 +139,42 @@ def $request_fatal_state(S) = S[.DESTRUCTION.CALLED = $destructor_all(0, |S.OBJE
 
 ;; A failed automatic constructor is permanently ineligible, including escaped
 ;; $this. Explicit method calls do not set the automatic destructor flag.
-def $constructor_failed(S) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]]
+def $constructor_failed_object(S, n) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]]
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if ~(n <- S.DESTRUCTION.CALLED)
+def $constructor_failed_object(S, n) = S -- otherwise
+def $constructor_failed(S) = $constructor_failed_object(S, n)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = METHOD_TARGET n porigin
   -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__construct")
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
-  -- if ~(n <- S.DESTRUCTION.CALLED)
 def $constructor_failed(S) = S -- otherwise
+;; Aborting argument evaluation also marks an unfinished automatic NEW. The
+;; internal call mode keeps a failed explicit __construct call eligible.
+def $return_discard(S, CTOR_RESULT n) = $constructor_failed_object(S, n)
+  -- if $ctor_result_valid(S, n)
+def $return_discard(S, CTOR_ARGS pctorcall) = $ctor_failed(S, pctorcall)
+def $return_discard(S, CTOR_SEND pctorcall) = $ctor_failed(S, pctorcall)
+def $return_discard(S, CTOR_UNPACK_PREP pctorcall) = $ctor_failed(S, pctorcall)
+def $return_discard(S, CTOR_UNPACK_NEXT pctorcall poperand n) = $ctor_failed(S, pctorcall)
+def $return_discard(S, CTOR_INVOKE pctorcall) = $ctor_failed(S, pctorcall)
+def $return_discard(S, DEFAULT_NEW_ARGS pdefaultnew) = $constructor_failed_object(S, pdefaultnew.OBJECT)
+def $return_discard(S, DEFAULT_NEW_SEND pdefaultnew) = $constructor_failed_object(S, pdefaultnew.OBJECT)
+def $return_discard(S, DEFAULT_CTOR_ARGS pdefaultctor) = $constructor_failed_object(S, pdefaultctor.NEW.OBJECT)
+def $return_discard(S, DEFAULT_CTOR_REF_RESULT pdefaultctor) = $constructor_failed_object(S, pdefaultctor.NEW.OBJECT)
+def $return_discard(S, DEFAULT_CTOR_RESULT pdefaultctor) = $constructor_failed_object(S, pdefaultctor.NEW.OBJECT)
+def $return_discard(S, DEFAULT_INTERNAL_CTOR_ARGS pdefaultnew pctorcall) = $ctor_failed(S, pctorcall)
+def $return_discard(S, DEFAULT_INTERNAL_CTOR_RECEIVE pdefaultinternal) = $ctor_failed(S, pdefaultinternal.CALL)
+def $return_discard(S, DEFAULT_INTERNAL_CTOR_WARNING pdefaultinternal pvalue) = $ctor_failed(S, pdefaultinternal.CALL)
+def $return_discard(S, DEFAULT_INTERNAL_CTOR_STRING pdefaultinternal) = $ctor_failed(S, pdefaultinternal.CALL)
+def $return_discard(S, ORDINARY_CTOR_RECEIVE pordinaryinternal) = $ctor_failed(S, pordinaryinternal.CALL)
+def $return_discard(S, ORDINARY_CTOR_WARNING pordinaryinternal pvalue) = $ctor_failed(S, pordinaryinternal.CALL)
+def $return_discard(S, ORDINARY_CTOR_STRING pordinaryinternal) = $ctor_failed(S, pordinaryinternal.CALL)
+def $error_read_discard(S, DEFAULT_CTOR_REF_RESULT pdefaultctor) = $constructor_failed_object(S, pdefaultctor.NEW.OBJECT)
+def $error_read_discard(S, DEFAULT_INTERNAL_CTOR_WARNING pdefaultinternal pvalue) = $ctor_failed(S, pdefaultinternal.CALL)
+def $error_read_discard(S, ORDINARY_CTOR_WARNING pordinaryinternal pvalue) = $ctor_failed(S, pordinaryinternal.CALL)
 
 ;; Ordinary eager release is the immediately following lifecycle phase. During
 ;; stage2, zero-ref releases are effectful and retain their exact source caller.
