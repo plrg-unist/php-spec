@@ -33,7 +33,11 @@ property row is replaced. Instance and object-bearing defaults and synchronous
 references into an incomplete table also remain required open work.
 The [deferred-default review](../../coverage/semantics/deferred-static-defaults-review.json)
 records eleven earlier source agreements separately from five source-derived guard
-programs. Two later213/215 callback comparisons initialize the inherited default
+programs. Four217 callback comparisons preserve saved initializer contexts,
+private declaring scope and compound traces; one cross-file comparison checks
+the caller file for a simple constant default. Exact reentry controls remain
+Unsupported and do not count as native agreements. Two later213/215 comparisons
+initialize the inherited default
 inside a captured private handler and a raw private handler during a Stringable
 parameter receive. Captured null survives the first handler's variable write and
 the second handler's throw; the warmed typed alias remains the shared static cell.

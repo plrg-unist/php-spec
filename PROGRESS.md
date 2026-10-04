@@ -17,6 +17,10 @@ binding repairs. The [deferred-default ledger](coverage/semantics/deferred-stati
 keeps original failures and unrun broader work visible. Two actual213/215
 interactions at 8da51d193 retain inherited defaults through captured/private raw
 handlers, captured-null cast/throwing assignment and a 214/216 Stringable receive.
+Actual217 composition adds four normal agreements at 5c0887541, including saved
+initializer contexts and compound callback traces, plus one cross-file fast-path
+diagnostic agreement at 663811e8c. The unchanged owner41 guard passes. Two reentry
+controls reach checked Unsupported with exact reasons; they add no native agreement.
 Instance/object defaults, cold synchronous references and resumed same-default
 updates with retained alias constraints are the next required obligations.
 Reevaluating a pending default suspended in a callback is explicitly Unsupported.
@@ -143,7 +147,8 @@ failures and interrupted evidence.
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: variadic/default callback reception and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred instance/object defaults and cold
+  broader reference-result consumers. Deferred instance/object defaults, same-default
+  reentry replacement/retained alias constraints and cold
   synchronous references into incomplete constant tables remain Unsupported.
   Wider deprecated constant consumers remain open. Generic156 return replay, temporary-return
   Notice timing and typed

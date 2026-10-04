@@ -1,5 +1,5 @@
 {
-  "scope": "Deferred-static-default source catalogue:11 earlier agreements (7normal,4PHP errors), plus2 current213/215 interactions at8da51d193. Distinct validation cutoffs, not full property/default closure.",
+  "scope": "18 deferred-static-default agreements at distinct cutoffs:11 earlier (7normal,4PHP errors),213/215two at8da51d193,217four at5c0887541 and one cross-file diagnostic at663811e8c. Unsupported reentry2 are separate ledger controls; not full property/default closure.",
   "cases": [
     {
       "id": "lexical_inherited_default_shared_cell",
@@ -259,6 +259,148 @@
         "zend.assertions": "1"
       },
       "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "current217_handled",
+      "source": "<?php\nclass A { public static int $p = E_STRICT; }\nfunction h($l, $m, $f, $n) { echo \"H:\"; return true; }\nset_error_handler(\"h\");\necho A::$p, \":\", A::$p;\nrestore_error_handler();\n",
+      "source_sha256": "8c665288a04e0a8f3e6dbb81b488c4909fefe75c5399d990cb6eca2e6bc76537",
+      "stdout_base64": "SDoyMDQ4OjIwNDg=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-217219-native-v1/report.json",
+      "native_raw_sha256": "373319a7d704897fe7143afae341d8ba5dae9f3d5b5f0a3045bc1f98a96b0869",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "current217_compound-trace",
+      "source": "<?php\nfunction staticDefaultHandler($level,$message,$file,$line) {\n    echo $file===__FILE__&&$line===8?'H':'X';\n    throw new Exception('handler');\n}\nset_error_handler('staticDefaultHandler',E_DEPRECATED);\nclass StaticDefault {\n    public static int $p=E_STRICT+1;\n}\n$value=7;\ntry {$value=StaticDefault::$p;}catch(Exception $e){\n    $trace=$e->getTrace();$synthetic=$trace[0];$handler=$trace[1];\n    echo $e->getFile()===__FILE__&&$e->getLine()===8?'L':'X';\n    echo $synthetic===['file'=>__FILE__,'line'=>4,'function'=>'[constant expression]']?'T':'X';\n    echo $handler['function']==='staticDefaultHandler'&&$handler['line']===11&&$handler['args'][3]===8?'V':'X';\n}\nrestore_error_handler();\necho $value,':',error_reporting();\n",
+      "source_sha256": "cd39b2feb4e493f9b4e13e83e78a0579766724b77d5d24d6eef8bd49118fa1f7",
+      "stdout_base64": "SExUVjc6MzA3MTk=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-217219-native-v2/report.json",
+      "native_raw_sha256": "e7bd86e7552b0140a49101f6084b0abe27ca4623417f2f762c33c1f4a4c649f7",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "current217_nested-private-default",
+      "source": "<?php\nclass A { public static int $p=E_STRICT+1; }\nclass B { private const Q=N; public static int $q=self::Q; }\nconst N=4;\nfunction h($level,$message,$file,$line) { echo 'H',B::$q,':'; return true; }\nset_error_handler('h');\necho A::$p,':',A::$p;\nrestore_error_handler();\n",
+      "source_sha256": "fdb015ae3677c79796f029bb72308527a1e5a8aaefa63b994cff7121247563bd",
+      "stdout_base64": "SDQ6MjA0OToyMDQ5",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-217219-native-v2/report.json",
+      "native_raw_sha256": "1661fc47049e30cd8991db192acc1d230e063c312cdc511790688984fb13ffe9",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "current217_busy-constant-nested-private",
+      "source": "<?php\nclass A { const array P=[E_STRICT]; }\nclass B { private const Q=N; public static int $q=self::Q; }\nconst N=4;\nfunction h($level,$message,$file,$line) { echo 'H',B::$q,':'; return true; }\nset_error_handler('h');\n$a=A::P; echo $a[0],':',$a[0];\nrestore_error_handler();\n",
+      "source_sha256": "a85e7a6385d83b3ec82ca9c075a5baee48e7ab571d0acdd9cacabbb8f9933648",
+      "stdout_base64": "SDQ6MjA0ODoyMDQ4",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-217219-native-v3/report.json",
+      "native_raw_sha256": "0f790f13f94a31fd19b7e2430c37f568f8d12235d90bf2517999fe28c2ecc694",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "current217_plain-fetch-file",
+      "source": "<?php\nfunction h($level,$message,$file,$line) {\n    echo $file===__FILE__?'F':'X',':',$line,':';\n    throw new Exception('handler');\n}\nrequire __DIR__.'/declaration.php';\nset_error_handler('h',E_DEPRECATED);\ntry {echo A::$p;}catch(Exception $e){\n    $trace=$e->getTrace();$handler=$trace[0];\n    echo $e->getFile()===__FILE__?'E':'X',':',$e->getLine(),':',$handler['file']===__FILE__?'T':'X',':',$handler['line'];\n}\nrestore_error_handler();\n",
+      "source_sha256": "6ad09be79c73fca834d530ecb2b36f5dbe999c90e59436bc2286e04bdca76d3a",
+      "stdout_base64": "Rjo4OkU6NDpUOjg=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-217219-native-v4/report.json",
+      "native_raw_sha256": "3bb26c955bedae9b8845e71c17e064bdbd82f349e2f95dc83aec30402e32652e",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "files": [
+        {
+          "name": "declaration.php",
+          "source": "<?php\nclass A { public static int $p=E_STRICT; }\n",
+          "source_sha256": "96f8b5cd108735ea123231ee25d771336ba4076724377885e3dd7f7402085de5"
+        }
+      ]
     }
   ]
 }
