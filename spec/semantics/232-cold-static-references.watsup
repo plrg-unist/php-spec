@@ -121,7 +121,7 @@ def $class_static_ref_continuation_valid(S, porigin_root, ptbytes, z, ptask :: p
   -- if ~$class_constant_update_continuation(ptask)
 def $class_static_ref_continuation_valid(S, porigin_root, ptbytes, z, ptask*) = false -- otherwise
 
-def $trait_static_prepare_base_ready(S, poperand, ptbytes, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_SELECTED pstaticselection ptbytes z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $class_static_prepare_base(S, poperand, ptbytes, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_SELECTED pstaticselection ptbytes z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ptask_work* = $class_constant_static_work(S, poperand, ptbytes, z)
   -- if ptask_work* =/= eps
   -- if S.ORIGIN = (porigin)
