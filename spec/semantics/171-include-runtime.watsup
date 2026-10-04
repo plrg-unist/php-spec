@@ -180,7 +180,7 @@ def $file_main_included(S) = (S.INCLUDEDOPENED = eps)
   -- if S.FILECWD = eps
 def $file_main_included(S) = ($call_sourcefile(S.FILES, PORIGIN 0 eps) <- S.INCLUDEDOPENED)
   -- if S.FILECWD = (n_cwd*)
-def $file_state_valid(S) = (((S.FILECWD = eps /\ S.FILEINCLUDEPATH = eps) \/ (S.FILECWD =/= eps /\ S.FILEINCLUDEPATH =/= eps)) /\ $file_contexts_valid(S, S.FILECONTEXTS) /\ $file_contexts_ordered(S.FILECONTEXTS) /\ $file_main_included(S) /\ $file_included_paths_valid(S, S.INCLUDEDOPENED))
+def $file_state_valid(S) = (((S.FILECWD = eps /\ (S.FILEINCLUDEPATH = eps \/ S.STARTUP =/= eps)) \/ (S.FILECWD =/= eps /\ S.FILEINCLUDEPATH =/= eps)) /\ $file_contexts_valid(S, S.FILECONTEXTS) /\ $file_contexts_ordered(S.FILECONTEXTS) /\ $file_main_included(S) /\ $file_included_paths_valid(S, S.INCLUDEDOPENED))
 def $call_task_valid(S, FILE_END n_unit) = $file_context_unit_running(S.FILECONTEXTS, n_unit)
 dec $file_active_nonce(pfilecontext*) : nat?
 def $file_active_nonce(pfilecontext :: pfilecontext_tail*) = (pfilecontext.NONCE)

@@ -16,6 +16,9 @@ dec $error_context_call(pstate, pcallcontext) : perrorcall?
 dec $error_trigger_trace_values(pstate, pconfigcall) : pvalue*
 dec $error_api_kind(pintrinsic) : bool
 dec $reporting_ini_mask(preqbytes) : int
+dec $startup_reporting_mask(pstartup?) : int
+dec $startup_reporting_ini(pstartup?) : preqbytes
+dec $startup_include_path(pstartup?) : preqbytes
 dec $config_kind(pintrinsic) : bool
 def $config_kind(INTRINSIC_GET_INCLUDE_PATH) = true
 def $config_kind(INTRINSIC_INI_GET) = true
@@ -423,7 +426,7 @@ def $config_ini_get_finish(S, pconfigcall, n_option*) = S[.TODO = ptask_tail*][.
   -- if S.TODO = ptask :: ptask_tail*
 def $config_ini_get_finish(S, pconfigcall, n_option*) = S[.COMPLETION = UNSUPPORTED "ini_get option outside finite include_path domain"] -- otherwise
 dec $config_reporting_restore(pstate) : pstate
-def $config_reporting_restore(S) = S[.REPORTING = 30719][.REPORTINGINI = $ptascii("30719")][.REPORTINGMODIFIED = false]
+def $config_reporting_restore(S) = S[.REPORTING = $startup_reporting_mask(S.STARTUP)][.REPORTINGINI = $startup_reporting_ini(S.STARTUP)][.REPORTINGMODIFIED = false]
   -- if S.REPORTINGMODIFIED
 def $config_reporting_restore(S) = S -- otherwise
 dec $config_ini_unary_finish(pstate, pconfigcall, preqbytes) : pstate
@@ -433,7 +436,7 @@ def $config_ini_unary_finish(S, pconfigcall, n_option*) = $config_reporting_rest
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
   -- if n_option* = $ptascii("error_reporting")
   -- if S.TODO = ptask :: ptask_tail*
-def $config_ini_unary_finish(S, pconfigcall, n_option*) = S[.TODO = ptask_tail*][.FILEINCLUDEPATH = ($ptascii(".:"))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $config_ini_unary_finish(S, pconfigcall, n_option*) = S[.TODO = ptask_tail*][.FILEINCLUDEPATH = ($startup_include_path(S.STARTUP))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
   -- if n_option* = $ptascii("include_path")
   -- if S.FILEINCLUDEPATH = (n_old*)
@@ -661,7 +664,7 @@ def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "include_path 
 dec $config_string_launch(pstate, pconfigcall) : bool
 def $config_string_launch(S, pconfigcall) = true
   -- if S.FILEINCLUDEPATH =/= eps
-  -- if S.FILECWD =/= eps
+  -- if pconfigcall.KIND =/= INTRINSIC_CHDIR \/ S.FILECWD =/= eps
   -- if $config_string_object(pconfigcall) = (n_object)
   -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
@@ -734,7 +737,7 @@ rule PhpStep/config-set-string-empty: S ~> S[.ORIGIN = (pconfigcall.SITE)][.TODO
   -- if S.FILEINCLUDEPATH = (n_old*)
   -- if S.RESULT = KNOWN (PSTRING eps)
 ;; Option names use Z_PARAM_STR, so empty/NUL lookup misses are not path errors.
-rule PhpStep/config-restore-string-result: S ~> S[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*][.FILEINCLUDEPATH = ($ptascii(".:"))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/config-restore-string-result: S ~> S[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*][.FILEINCLUDEPATH = ($startup_include_path(S.STARTUP))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
   -- if S.ORIGIN = (porigin_child)

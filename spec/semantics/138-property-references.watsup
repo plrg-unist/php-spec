@@ -454,6 +454,8 @@ def $assign_array_reference_cv(S, BASE_PROPERTY pvalue ptbytes, n_name*, z) = $a
   -- if S_cell.COMPLETION = NORMAL
 
 dec $property_ref_property_base(pbase) : bool
+dec $class_static_ref_pending_base(pbase) : bool
+dec $class_static_ref_bind_base_valid(pstate, pbase) : bool
 rule PhpStep/property-reference-assignment: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP (NExprPropertyFetch expression_receiver phpType20 metadata_property)), PROPERTY_REF_PREP expression $runtime_line(S, [PCFIELD 0], NExprPropertyFetch expression_receiver phpType20 metadata_property)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprAssignRef (NExprPropertyFetch expression_receiver phpType20 metadata_property) expression metadata)) :: ptask_tail*
 rule PhpStep/property-reference-source: S ~> S_target[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), ACQUIRE expression), PROPERTY_REF_CAPTURE S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
@@ -477,6 +479,8 @@ rule PhpStep/property-reference-capture: S ~> S[.TODO = (PROPERTY_REF_BIND pbase
   -- if ~$reference_value_call(S)
 rule PhpStep/property-reference-bind: S ~> S_bound[.HELD = S.HELD]
   -- if S.TODO = (PROPERTY_REF_BIND pbase n_cell z) :: ptask_tail*
+  -- if ~$class_static_ref_pending_base(pbase)
+  -- if $class_static_ref_bind_base_valid(S, pbase)
   -- if S_bound = $assign_array_reference($hold_task_inputs(S), pbase, n_cell, z)
 rule PhpStep/property-reference-bind-cv: S ~> S_bound[.HELD = S.HELD]
   -- if S.TODO = (PROPERTY_REF_BIND_CV pbase n_name* z) :: ptask_tail*
@@ -583,7 +587,7 @@ def $call_task_valid(S, EVAL (NExprAssignRef (NExprPropertyFetch expression_rece
 def $call_task_valid(S, ACQUIRE (NExprPropertyFetch expression_receiver phpType20 metadata_property)) = ($property_source_task(S, NExprPropertyFetch expression_receiver phpType20 metadata_property) /\ $property_ref_demand(S))
 def $call_task_valid(S, PROPERTY_REF_PREP expression_rhs z) = $property_ref_assignment_task(S, expression_rhs, z)
 def $call_task_valid(S, PROPERTY_REF_CAPTURE pbase z) = ($property_ref_base_task(S, pbase, z) /\ $property_ref_rhs_noncv(S))
-def $call_task_valid(S, PROPERTY_REF_BIND pbase n_cell z) = ($property_ref_base_task(S, pbase, z) /\ $property_ref_rhs_noncv(S) /\ (HCELL n_cell) <- S.ALLOCATIONS /\ n_cell <- S.REFCELLS)
+def $call_task_valid(S, PROPERTY_REF_BIND pbase n_cell z) = ($property_ref_base_task(S, pbase, z) /\ $property_ref_rhs_noncv(S) /\ (HCELL n_cell) <- S.ALLOCATIONS /\ n_cell <- S.REFCELLS /\ $class_static_ref_bind_base_valid(S, pbase))
 def $call_task_valid(S, PROPERTY_REF_BIND_CV pbase n_name* z) = ($property_ref_base_task(S, pbase, z) /\ $property_ref_rhs_cv(S, n_name*))
 def $call_task_valid(S, PROPERTY_REF_FETCH z) = $property_ref_fetch_task(S, z)
 

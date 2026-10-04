@@ -69,8 +69,21 @@ cutoffs. Three separately tested current-composition sources cover retired priva
 captures and default/lexical/diagnostic callback nesting. Direct named-hole metadata
 derives from source; unpacked/wrapped holes
 retain structural checks and their existing dynamic provenance limitation.
-Direct/inherited constructor-default dispatch, rebound anonymous keyword NEW
-defaults and broader constrained consumers remain required core work.
+Source-owned direct and inherited default constructors now finish lazy class
+tables before allocation, evaluate all argument values before access/name mapping,
+and receive with the default declaration's strictness. Required references warn
+before wrapping temporary cells; nested conversions and throws retain real owners.
+Completed default NEW facts remain PVOBJECT and uncached; class-table update
+values do not classify their triggering expression. The
+[constructor ledger](../../coverage/semantics/default-constructors-review.json)
+separates source cutoffs, 183 reached premises, two actual219/222 interactions
+and actual221 callable reception/owner39. Constructor traces use the compiled
+parameter receive line; callable warnings keep the constructor formal line.
+[Internal default constructors](../../coverage/semantics/internal-default-constructors-review.json)
+now admit lossless scalars with declaration strictness and supplied string-slot
+mutation in later error traces. Weak null, Stringable and lossy integer reception
+remain required suspended consumers, alongside rebound anonymous keyword NEW
+and broader constrained conversions.
 
 The required consumer inventory includes echo, print, `(string)` casts,
 concat, interpolation, eval operands, weak typed conversions, dynamic variable

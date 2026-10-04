@@ -352,6 +352,7 @@ def main():
     parser.add_argument('--timeout', type=float, default=30)
     parser.add_argument('--request-context', type=Path, help='JSON file containing explicit primitive request facts')
     parser.add_argument('--file-snapshot', type=Path, help='finite include/require resolution and file-byte facts')
+    parser.add_argument('--startup-ini', type=Path, help='JSON registered startup error_reporting (base64 or null) and include_path (base64) facts')
     args = parser.parse_args()
     if args.steps < 0 or args.timeout <= 0:
         parser.error('steps must be nonnegative and timeout positive')
@@ -366,6 +367,8 @@ def main():
         return {'status': 'frontend_failure', 'frontend': parsed}
     execution = {'op': 'execute', 'ast': parsed['ast'], 'steps': args.steps,
                  'filename': b64(os.fsencode(filename))}
+    if args.startup_ini is not None:
+        execution['startup_ini'] = json.loads(args.startup_ini.read_text())
     if args.request_context is not None:
         execution['request'] = json.loads(args.request_context.read_text())
     file_snapshot = None

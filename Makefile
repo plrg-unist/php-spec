@@ -107,6 +107,7 @@ test-semantics: build
 	python3 tests/semantics/constant_callable_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/deferred_static_default_cases.json
 	python3 tests/semantics/deferred_static_default_protocol.py
+	python3 tests/semantics/cold_static_reference_protocol.py
 	python3 tests/semantics/default_parameter_compiler.py
 	python3 tests/semantics/default_parameters.py
 	python3 tests/semantics/default_parameter_protocol.py
@@ -136,6 +137,8 @@ test-semantics: build
 	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
 	python3 tests/semantics/scoped_callables_protocol.py
+	python3 tests/semantics/keyword_compound_callables.py
+	python3 tests/semantics/keyword_compound_callables_protocol.py
 	python3 tests/semantics/invoke_publication.py
 	python3 tests/semantics/invoke_publication_protocol.py
 	python3 tests/semantics/callable_string_ini.py
@@ -251,6 +254,11 @@ test-semantics: build
 	python3 tests/semantics/user_string_parameters_protocol.py
 	python3 tests/semantics/variadic_string_parameters.py
 	python3 tests/semantics/variadic_string_parameters_protocol.py
+	python3 tests/semantics/default_constructor_sources.py
+	python3 tests/semantics/default_constructor_protocol.py
+	python3 tests/semantics/default_constructor_api_protocol.py
+	python3 tests/semantics/internal_default_constructor_sources.py
+	python3 tests/semantics/internal_default_constructor_protocol.py
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
@@ -314,6 +322,8 @@ test-semantics: build
 	python3 tests/semantics/eval_trace_protocol.py
 	python3 tests/semantics/eval_adapter_protocol.py
 	python3 tests/semantics/include_execution.py
+	python3 tests/semantics/startup_ini.py
+	python3 tests/semantics/startup_ini_protocol.py
 	python3 tests/semantics/include_protocol.py
 	python3 tests/semantics/include_mutable_execution.py
 	python3 tests/semantics/include_mutable_protocol.py

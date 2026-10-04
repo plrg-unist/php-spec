@@ -1,0 +1,147 @@
+{
+  "status": "independently accepted source-owned default constructors and actual219/222/229/221 composition; internal scalar continuation235 linked separately",
+  "implementation": "d4412fbc7584371d9a0d5e8c271fb819aa5cd77a",
+  "scope": [
+    "Genuine parameter defaults allocate fresh source-class objects after lazy class-table completion, then evaluate all AST arguments in source order before constructor access and formal-name mapping.",
+    "Direct and inherited constructors retain declaring permission, called class and the compiled parameter receive line. Definition strictness governs scalar reception, including eval/caller crossings.",
+    "API required-by-reference arguments warn before temporary reference wrapping; handler throws abort dispatch. Nested Stringable reception retains completed value/object/cell owners.",
+    "Owned DEFAULT_NEW/DEFAULT_CTOR phases and authentic saved constructor contexts validate source, target, index, call line and prepared slots. Ordinary positional calls cannot forge their named preflight.",
+    "Class-table update values do not publish facts for their triggering NEW or property fetch. Actual constexpr class-constant fetches retain allocation-class facts; default NEW remains PVOBJECT and uncached."
+  ],
+  "validation": {
+    "original_direct_inherited2": {
+      "revision": "a223d777318ab63e402f91fda34ef82daa7a8a62",
+      "result": "PASS normal0 exact C0|T0|F0|s for both",
+      "report": "/home/user/workspace/php-spec/.tools/property-default-constructors-evidence14/original2-domain-callback/source-result.json"
+    },
+    "independent16": {
+      "revision": "a223d777318ab63e402f91fda34ef82daa7a8a62",
+      "result": "PASS normal0 exact full bytes; access/name/duplicate/API reference priority, strictness, declaration scope, freshness and multiline traces",
+      "report": "/home/user/workspace/php-spec/.tools/property-variadic-default-review14/constructor-model/source16/source-result.json"
+    },
+    "cold_affected5": {
+      "revision": "954460715879166a0facbd30c07db662ed82223d",
+      "selection": "affected original2, cold positive/abort and exact independent nested Stringable source",
+      "result": "PASS normal0 exact full bytes",
+      "report": "/home/user/workspace/php-spec/.tools/property-default-constructors-evidence14/cold-init/source-result.json"
+    },
+    "owner183": {
+      "revision": "d4412fbc7584371d9a0d5e8c271fb819aa5cd77a",
+      "result": "PASS all183 source-reached sequential premises, numeric0 true newline/empty stderr; full owner/ordinary native bytes and clean retirement",
+      "report": "/home/user/workspace/php-spec/.tools/property-default-constructors-evidence14/owner-attempt8/report.json",
+      "sha256": "7672f8b7a2971e1e3fddf4a28721cc59363df1b10f08ba7bde3ede048a570235",
+      "unused_preparation": "183 premises elaborated in unused body; zero state premises executed in that preparation"
+    },
+    "affected_fact_source2": {
+      "revision": "d4412fbc7584371d9a0d5e8c271fb819aa5cd77a",
+      "selection": "literal owned source and direct deferred array class-constant fetch",
+      "result": "PASS native/model normal0 full D|W|T|C1|S|F|v and D|2048, null reason/diagnostic, empty stderr, stable inputs, clean release",
+      "report": "/home/user/workspace/php-spec/.tools/property-default-constructors-evidence14/result-fact-source2/source-result.json",
+      "sha256": "f33849dc16c6268edc9a4d291cfb609248513c8028f1def0fed3db92bf310371"
+    },
+    "current_composition2": {
+      "revision": "2b1532ede8438e274d31df2c0ed442b968c6bec0",
+      "accepted_parent": "cf18f583ff64a061ded688a1b392b73803340fca",
+      "selection": [
+        "static-default-constructor-composition",
+        "static-constructor-terminal-composition"
+      ],
+      "result": "PASS native/model normal0 full D4|D4|C2048/2048|T0|F0|s and D4|D4|C2048/2048|U1|ctor|7; null reason/diagnostic, empty stderr, stable inputs and clean release",
+      "report": "/home/user/workspace/php-spec/.tools/property-default-constructors-evidence14/current-composition/source-result.json",
+      "sha256": "9f8c81d37c5c8fdf01ec326315563bced9f0c361320fefe6b5514d0795c74744"
+    },
+    "current_callable_source1": {
+      "revision": "2a380762ccbd257b1ce777adb162458ef17b3ec8",
+      "accepted_parent": "85eed2534ce34bd8dc233b3b6f54fabba6290836",
+      "selection": "deprecated-callable-constructor-composition",
+      "result": "PASS native/model normal0 exact D4|C1|T0|F0|s; callable deprecation through retained constructor/default owner, null reason/diagnostic, empty stderr, stable inputs, clean release",
+      "report": "/home/user/workspace/php-spec/.tools/property-default-constructors-evidence14/current-callable/source-result.json",
+      "sha256": "448e9a8def25f3afb99ad6ce420f8d5a5a6e59280bde52e7d23c03d4c6e936f2"
+    },
+    "current_callable_owner39": {
+      "revision": "2a380762ccbd257b1ce777adb162458ef17b3ec8",
+      "result": "PASS all39 source-reached sequential premises, numeric0 true newline/empty stderr; genuine API callback and saved constructor/query certificates, heap-valid missing-owner public rejection, final bytes/object retirement",
+      "report": "/home/user/workspace/php-spec/.tools/property-default-constructors-evidence14/current-callable/api-owner-attempt2/report.json",
+      "sha256": "e7507effe4e89c4e6f91132aae11864a06a04604d33f1ddb8c1d8633cc83d157",
+      "unused_preparation": "39 premises elaborated in unused body; zero state premises executed in preparation"
+    }
+  },
+  "engine": {
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": {
+      "Zend/zend_ast.c": [
+        "zend_ast_evaluate_ex / ZEND_AST_NEW"
+      ],
+      "Zend/zend_execute_API.c": [
+        "zend_call_known_function",
+        "zend_param_must_be_ref",
+        "ZEND_ARG_USES_STRICT_TYPES"
+      ],
+      "Zend/zend_compile.c": [
+        "zend_compile_params",
+        "zend_compile_const_expr_const",
+        "zend_compile_const_expr_new"
+      ]
+    },
+    "line_observation": "The compiled receive line is not universally NParam.startLine: compiling E_STRICT inside a default moves Zend compiler line state before RECV_INIT emission. Original owner13 and literal owner12 native probes are preserved; no90/115/117 change or intentional engine divergence."
+  },
+  "reproduction": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "other": "inherited"
+    },
+    "artifacts_reused": {
+      ".tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": "0o755"
+      },
+      ".tools/php-file.so": {
+        "sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+        "mode": "0o775"
+      },
+      "_build/default/adapter/main.exe": {
+        "sha256": "9fa8a62125cc34baf80965a829fb4aa946875aa40b1b3a8d6e90cd732b2bcaf2",
+        "mode": "0o555"
+      },
+      "tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": "0o555"
+      }
+    },
+    "limits": {
+      "native_seconds": 30,
+      "model_seconds": 90,
+      "application_seconds": 60,
+      "steps": 100000,
+      "numeric_seconds": 120,
+      "outer_seconds": 420,
+      "jobs": 1
+    },
+    "commands": [
+      "python3 tests/semantics/default_constructor_sources.py --select CASE_ID[,CASE_ID]",
+      "python3 tests/semantics/default_constructor_protocol.py --elaborate-only",
+      "python3 tests/semantics/default_constructor_protocol.py",
+      "python3 tests/semantics/default_constructor_api_protocol.py"
+    ],
+    "private_root": "/home/user/workspace/php-spec/.tools/property-default-constructors-dev14",
+    "raw_root": "/home/user/workspace/php-spec/.tools/property-default-constructors-evidence14",
+    "raw_policy": "Raw source/native/model/checked packets, argv/cwd/environment/exits and before/after inputs remain outside Git. Historical reports retain their own tested revisions; publication is no rebuild or fresh source/state run.",
+    "current_root": "/home/user/workspace/php-spec/.tools/property-default-constructors-current14"
+  },
+  "preserved_failures": [
+    "Original source2 preexecution computed-bound and domain failures remain in original2 and original2-prefix-length.",
+    "Owner attempts1..4 are unused-body preparation failures; attempt5 disproved the universal startLine12 fixture assumption; attempt6 exposed positional preflight public rejection; attempt7 exposed stale PVSCALAR NEW facts. Every original FAIL remains outside Git.",
+    "Removed allocation task is checked by owner count, distinct from forged public descriptor rejections.",
+    "API owner attempt1 refuted equating the constructor formal warning line with outer default NEW receive line; fixture-only correction uses authentic query.LINE. Original FAIL is preserved; no semantics or prior gates rerun."
+  ],
+  "publication": "26 source literals match executed originals. Ordinary g has native/numeric owner evidence, distinct from SL source comparisons; inherited original source remains in variadic_string_parameters.py. Maintained183 and API39 protocols have identical assertions with only path/import adaptation. Current-parent2 and callable1 exactly match their independently reviewed originals; copies add no execution credit.",
+  "remaining": [
+    "Internal Throwable prepared-value scalar dispatch is accepted separately in internal-default-constructors-review.json; weak-null/Stringable/lossy suspended reception remains required next.",
+    "Rebound anonymous Closure NEW self/parent defaults remain required next, including unbound and Closure::call paths.",
+    "Dynamic unpack/wrapper hole provenance and broader default/attribute/modifier consumers remain open. Complete core is not established; paused returns are unchanged."
+  ]
+}

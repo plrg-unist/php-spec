@@ -1,4 +1,5 @@
 dec $closure_unit_code_valid(pstate, ppstate, pcode) : bool
+dec $startup_state_valid(pstate) : bool
 dec $closure_state_valid(pstate) : bool
 dec $dynamic_unit_code_valid(ppstate, pcode) : bool
 dec $dynamic_result_valid(pstate) : bool
@@ -167,7 +168,7 @@ def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
   -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
-def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
+def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $useriter_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
 def $call_selected_valid(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call)) = $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call))
 def $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_call)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_call)
 def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
@@ -183,6 +184,7 @@ dec $call_arguments_valid(pstate, porigin?, nat, phpType7*, poperand*, nat) : bo
 dec $stringify_pending_site(pstate, porigin) : bool
 def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remaining*, poperand*, n_sent) = true
   -- if ~$stringify_pending_site(S, PORIGIN n_unit pcpath)
+  -- if ~$useriter_pending_site(S, PORIGIN n_unit pcpath)
   -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if ~$named_present(phpType7*)
   -- if n_index = |poperand*|
@@ -202,6 +204,7 @@ dec $stringify_context_kind(pstate, pcallcontext) : bool
 def $call_arity_valid(S, pcallcontext) = true
   -- if ~$stringify_context_kind(S, pcallcontext)
   -- if ~$error_context_kind(S, pcallcontext)
+  -- if ~$useriter_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
   -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if $named_call_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
@@ -266,6 +269,8 @@ def $call_tasks_valid(S, eps) = true
 def $call_tasks_valid(S, ptask :: ptask_tail*) = ($call_task_valid(S, ptask) /\ $call_tasks_valid($call_after_origin(S, ptask), ptask_tail*))
 dec $call_context_valid(pstate, pcallcontext, preqbytes*) : bool
 dec $call_holes_valid(pstate, pcallcontext) : bool
+dec $default_ctor_context_kind(pstate, pcallcontext) : bool
+dec $default_ctor_context_valid(pstate, pcallcontext) : bool
 def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
@@ -278,7 +283,8 @@ def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if pcallcontext.PARAMS = (psparam.NAME)*
   -- if preqbytes* = pfunction.CVS
   -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE) \/ $error_context_valid(S, pcallcontext)
-  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext)
+  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
+  -- if ~$default_ctor_context_kind(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
   -- if $call_arity_valid(S, pcallcontext)
   -- if $wrapper_context_valid(S, pcallcontext)
   -- if $call_holes_valid(S, pcallcontext)
@@ -301,8 +307,10 @@ dec $parameter_string_frame_scope(pstate, pframe, pframe*) : pstate
 dec $constant_context_valid(pstate) : bool
 dec $class_constant_scope_valid(pstate, pclassconstantcontext*) : bool
 def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S -- otherwise
+dec $api_saved_frame_scope(pstate, pframe, pframe*) : pstate
+def $api_saved_frame_scope(S, pframe, pframe_tail*) = S -- otherwise
 def $call_frames_valid(S, eps) = true
-def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($parameter_string_frame_scope(S_scope, pframe, pframe_tail*), pframe.TODO) /\ $borrowed_read_scope_valid(S_scope) /\ $call_saved_context_valid(S_scope, pframe) /\ $constant_context_valid(S_scope) /\ $call_frames_valid(S, pframe_tail*))
+def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($api_saved_frame_scope($parameter_string_frame_scope(S_scope, pframe, pframe_tail*), pframe, pframe_tail*), pframe.TODO) /\ $borrowed_read_scope_valid(S_scope) /\ $call_saved_context_valid(S_scope, pframe) /\ $constant_context_valid(S_scope) /\ $call_frames_valid(S, pframe_tail*))
   -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
 dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $class_constant_state_valid(pstate) : bool
@@ -326,6 +334,7 @@ dec $exception_handlers_valid(pstate, pvalue?*) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
+  -- if $startup_state_valid(S)
   -- if $eval_state_valid(S)
   -- if $call_projection(S, S.SOURCES) = FUNCTIONCHECK S.FUNCTIONS
   -- if $class_state_valid(S)
@@ -339,6 +348,7 @@ def $call_descriptors_valid(S) = true
   -- if $call_frames_valid(S, S.FRAMES)
   -- if $stringify_frames_pairs_valid(S, S.FRAMES)
   -- if $stringify_chain_valid(S, S.CURRENT, S.FRAMES)
+  -- if $useriter_chain_valid(S, S.CURRENT, S.FRAMES)
   -- if $finally_state_valid(S)
   -- if $ctor_frames_pairs_valid(S, S.FRAMES)
   -- if $call_current_valid(S)

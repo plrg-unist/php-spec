@@ -106,8 +106,8 @@ def $ppparameter_new_ready(P, pcpath, phpType7*, metadata) = $ppparameter_new_ar
   -- if ~$ppfirstclass(phpType7*)
 def $ppparameter_new(P, pcpath, phpType28, SEQUENCE phpType7*, metadata) = $ppparameter_new_ready($ppparameter_new_class(P, phpType28, metadata), pcpath, phpType7*, metadata)
 
-;; Constructor calls need their own suspended default-evaluation context. Keep
-;; this boundary source-bound; ordinary constructors retain their existing path.
+;; Genuine parameter NEW has a separate suspended AST evaluation context.
+;; Ordinary constructors retain their existing dispatch path.
 def $parameter_default_constructor(S, name, phpType7*, metadata) = (S.COMPLETION = NORMAL /\ ~$ppfirstclass(phpType7*) /\ $parameter_string_site_valid(S, pconstantcontext.ORIGIN, pconstantcontext.LINE) /\ $default_context_valid(S, pconstantcontext) /\ $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata) /\ $constant_expression_below(S, pconstantcontext.ORIGIN, PORIGIN n_unit pcpath))
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if S.ORIGIN = (PORIGIN n_unit pcpath)
@@ -116,13 +116,6 @@ def $parameter_default_constructor(S, name, phpType7*, metadata) = false
 def $parameter_default_constructor(S, name, phpType7*, metadata) = false
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if S.ORIGIN = eps
-rule PhpStep/parameter-default-constructor-unsupported: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "parameter default constructor"]
-  -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
-  -- if $parameter_default_constructor(S, name, phpType7*, metadata)
-  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
-  -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
-  -- if $new_has_ctor(S, preqbytes)
 
 ;; The AST default evaluator keeps a named argument table even without a
 ;; constructor. Its values run in source order and are discarded after NEW.

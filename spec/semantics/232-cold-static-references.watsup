@@ -1,0 +1,222 @@
+;; A dynamic or keyword fetch retains its selected class independently of CVs
+;; and retired caller frames. These certificates and history entries own no heap.
+dec $class_static_selection_keyword(phpType19) : ptbytes?
+def $class_static_selection_keyword(NName (BYTES text) metadata) = (ptbytes)
+  -- if ptbytes = $ptlc($base64(text))
+  -- if ptbytes <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $class_static_selection_keyword(NScalarString (BYTES text) metadata) = (ptbytes)
+  -- if ptbytes = $ptlc($base64(text))
+  -- if ptbytes <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $class_static_selection_keyword(phpType19) = eps -- otherwise
+dec $class_static_selection_method(pstate, porigin) : pmethoddesc?
+def $class_static_selection_method(S, PORIGIN n pcpath) = $class_method_origin(S.CLASSES, pfunction.ORIGIN)
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction)
+def $class_static_selection_method(S, porigin) = eps -- otherwise
+dec $class_static_selection_root(pstate, ptbytes, porigin, porigin) : porigin?
+def $class_static_selection_root(S, ptbytes, porigin_scope, porigin_called) = (porigin_scope)
+  -- if ptbytes = $ptascii("self")
+def $class_static_selection_root(S, ptbytes, porigin_scope, porigin_called) = $static_default_parent(S, porigin_scope)
+  -- if ptbytes = $ptascii("parent")
+def $class_static_selection_root(S, ptbytes, porigin_scope, porigin_called) = (porigin_called)
+  -- if ptbytes = $ptascii("static")
+def $class_static_selection_root(S, ptbytes, porigin_scope, porigin_called) = eps -- otherwise
+dec $class_static_selection_header(pstate, pstaticselection) : bool
+def $class_static_selection_header(S, pstaticselection) = true
+  -- if $class_at(S.CLASSES, pstaticselection.ROOT) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pstaticselection.ROOT)
+  -- if pstaticselection.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pstaticselection.SITE) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
+def $class_static_selection_header(S, pstaticselection) = false -- otherwise
+dec $class_static_selection_valid(pstate, pstaticselection) : bool
+def $class_static_selection_valid(S, pstaticselection) = true
+  -- if $class_static_selection_header(S, pstaticselection)
+  -- if $origin_node(S.SOURCES, pstaticselection.SITE) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if ~$ppscoped_named(phpType19) /\ ~$class_static_literal_class(phpType19)
+  -- if $class_static_selection_keyword(phpType19) = eps
+  -- if pstaticselection.SCOPE = eps /\ pstaticselection.CALLED = eps
+def $class_static_selection_valid(S, pstaticselection) = true
+  -- if $class_static_selection_header(S, pstaticselection)
+  -- if $origin_node(S.SOURCES, pstaticselection.SITE) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $class_static_selection_keyword(phpType19) = (ptbytes)
+  -- if $class_static_selection_method(S, pstaticselection.SITE) = (pmethoddesc)
+  -- if pstaticselection.SCOPE = (pmethoddesc.OWNER)
+  -- if pstaticselection.CALLED = (porigin_called)
+  -- if $class_constant_parent_chain(S, porigin_called, pmethoddesc.OWNER, |S.CLASSES|)
+  -- if $class_static_selection_root(S, ptbytes, pmethoddesc.OWNER, porigin_called) = (pstaticselection.ROOT)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_scope)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_scope.NAME)) = (pmethoddesc.OWNER)
+  -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc_called)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_called.NAME)) = (porigin_called)
+def $class_static_selection_valid(S, pstaticselection) = false -- otherwise
+def $class_static_selection(S, poperand) = (pstaticselection)
+  -- if S.ORIGIN = (porigin)
+  -- if $scoped_selector_class(S, poperand) = (porigin_root)
+  -- if pstaticselection = {SITE porigin, ROOT porigin_root, SCOPE eps, CALLED eps}
+  -- if $class_static_selection_valid(S, pstaticselection)
+def $class_static_selection(S, poperand) = (pstaticselection)
+  -- if S.ORIGIN = (porigin)
+  -- if $scoped_selector_class(S, poperand) = (porigin_root)
+  -- if $class_static_selection_method(S, porigin) = (pmethoddesc)
+  -- if $call_current_valid(S)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if pstaticselection = {SITE porigin, ROOT porigin_root, SCOPE pcallcontext.LEXICAL_CLASS, CALLED pcallcontext.CALLED_CLASS}
+  -- if $class_static_selection_valid(S, pstaticselection)
+def $class_static_selection(S, poperand) = eps -- otherwise
+def $class_static_selected_needed(S, porigin) = ($static_default_trigger_root(S, porigin) = eps)
+def $class_static_selection_at((CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*) = (pstaticselection)
+def $class_static_selection_at(ptask :: ptask_tail*) = $class_static_selection_at(ptask_tail*)
+  -- if ~$class_constant_update_continuation(ptask)
+def $class_static_selection_at(ptask*) = eps -- otherwise
+
+;; A delayed assignment resumes the same requested class/name certified by its
+;; update marker. The restored occurrence is exactly the AssignRef parent.
+dec $class_static_ref_resume_site(pstate) : porigin?
+def $class_static_ref_resume_site(S) = (porigin)
+  -- if S.ORIGIN = (porigin_target)
+  -- if $reference_origin_parent(porigin_target, 1) = ((porigin, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignRef (NExprStaticPropertyFetch phpType19 phpType31 metadata_target) expression_rhs metadata)
+  -- if $reference_cv(expression_rhs) = eps
+def $class_static_ref_resume_site(S) = eps -- otherwise
+def $class_static_ref_bind_base_valid(S, BASE_CLASS_STATIC porigin ptbytes) = (S.BASE = BASE_CLASS_STATIC porigin ptbytes)
+  -- if S.TODO = (PROPERTY_REF_BIND pbase_target n_cell z) :: ptask_tail*
+def $class_static_ref_bind_base_valid(S, pbase) = true -- otherwise
+dec $class_static_ref_resume_tail(pstate, porigin, ptbytes, int, ptask*) : bool
+def $class_static_ref_resume_tail(S, porigin_root, ptbytes, z, (ORIGIN_RETURN (porigin)) :: (PROPERTY_REF_BIND (BASE_CLASS_STATIC porigin_root ptbytes) n_cell z) :: ptask_tail*) = ($class_static_ref_resume_site(S) = (porigin))
+def $class_static_ref_resume_tail(S, porigin_root, ptbytes, z, ptask*) = false -- otherwise
+def $class_static_ref_continuation_valid(S, porigin_root, ptbytes, z, ptask*) = true
+  -- if $class_static_ref_resume_site(S) = eps
+def $class_static_ref_continuation_valid(S, porigin_root, ptbytes, z, (CLASS_CONST_STATIC poperand ptbytes z) :: ptask_tail*) = $class_static_ref_resume_tail(S, porigin_root, ptbytes, z, ptask_tail*)
+  -- if $class_static_ref_resume_site(S) =/= eps
+  -- if $scoped_selector_class(S, poperand) = (porigin_root)
+def $class_static_ref_continuation_valid(S, porigin_root, ptbytes, z, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*) = $class_static_ref_resume_tail(S, porigin_root, ptbytes, z, ptask_tail*)
+  -- if $class_static_ref_resume_site(S) =/= eps
+  -- if pstaticselection.ROOT = porigin_root
+def $class_static_ref_continuation_valid(S, porigin_root, ptbytes, z, ptask :: ptask_tail*) = $class_static_ref_continuation_valid(S, porigin_root, ptbytes, z, ptask_tail*)
+  -- if $class_static_ref_resume_site(S) =/= eps
+  -- if ~$class_constant_update_continuation(ptask)
+def $class_static_ref_continuation_valid(S, porigin_root, ptbytes, z, ptask*) = false -- otherwise
+
+def $class_static_prepare_base(S, poperand, ptbytes, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_SELECTED pstaticselection ptbytes z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ptask_work* = $class_constant_static_work(S, poperand, ptbytes, z)
+  -- if ptask_work* =/= eps
+  -- if S.ORIGIN = (porigin)
+  -- if $class_static_selected_needed(S, porigin)
+  -- if $class_static_selection(S, poperand) = (pstaticselection)
+rule PhpStep/class-constant-selected: S ~> $class_static_prepare_base_ready(S[.TODO = ptask_tail*], KNOWN (PSTRING pclassdesc.NAME), ptbytes, z)
+  -- if S.TODO = (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*
+  -- if $class_at(S.CLASSES, pstaticselection.ROOT) = (pclassdesc)
+dec $class_static_selected_task(pstate, pstaticselection, ptbytes, int) : bool
+dec $class_static_selected_ready(pstate, pstaticselection, ptbytes, int) : bool
+def $class_static_selected_task(S, pstaticselection, ptbytes, z) = true
+  -- if $class_static_selection_valid(S, pstaticselection)
+  -- if S.ORIGIN = (pstaticselection.SITE)
+  -- if $origin_node(S.SOURCES, pstaticselection.SITE) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $class_static_ref_name_matches(phpType31, ptbytes)
+  -- if z = $runtime_line(S, eps, NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $class_static_ref_continuation_valid(S, pstaticselection.ROOT, ptbytes, z, S.TODO)
+  -- if $class_static_selected_ready(S, pstaticselection, ptbytes, z)
+def $class_static_selected_task(S, pstaticselection, ptbytes, z) = false -- otherwise
+def $class_static_selected_ready(S, pstaticselection, ptbytes, z) = $class_constant_static_reference_ready(S, pstaticselection.ROOT, ptbytes, z)
+  -- if S.TODO = (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*
+def $class_static_selected_ready(S, pstaticselection, ptbytes, z) = true -- otherwise
+def $call_task_valid(S, CLASS_CONST_SELECTED pstaticselection ptbytes z) = $class_static_selected_task(S, pstaticselection, ptbytes, z)
+def $class_constant_update_continuation(CLASS_CONST_SELECTED pstaticselection ptbytes z) = true
+def $class_constant_update_target(S, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*) = (pstaticselection.ROOT)
+def $class_constant_update_site(S, porigin, porigin_root) = true
+  -- if $class_static_selection_at(S.TODO) = (pstaticselection)
+  -- if pstaticselection.SITE = porigin /\ pstaticselection.ROOT = porigin_root
+  -- if $class_static_selection_valid(S, pstaticselection)
+def $class_constant_update_task(S, porigin, z, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*) = true
+  -- if $class_static_selected_task(S, pstaticselection, ptbytes, z)
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if pclassconstantdesc <- $class_constant_update_order(S, pstaticselection.ROOT, |S.CLASSES|)
+  -- if ~pclassconstantdesc.FOLDED
+def $class_constant_table_task(S, porigin, z, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*) = true
+  -- if $class_static_selected_task(S, pstaticselection, ptbytes, z)
+  -- if porigin <- $class_constant_table_lineage(S, pstaticselection.ROOT, |S.CLASSES|)
+def $class_constant_update_blocks(S, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*, porigin_acc*) = ($class_constant_update_sequence(S, pstaticselection.ROOT, porigin_acc*) /\ $class_constant_update_blocks(S, ptask_tail*, eps))
+def $class_constant_table_blocks(S, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*, porigin_acc*) = ($class_constant_table_sequence(S, pstaticselection.ROOT, porigin_acc*) /\ $class_constant_table_blocks(S, ptask_tail*, eps))
+def $static_default_blocks(S, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*, porigin_acc*) = ($static_default_sequence(S, pstaticselection.ROOT, porigin_acc*) /\ $static_default_blocks(S, ptask_tail*, eps))
+def $static_default_phases((CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*, b_property) = $static_default_phases(ptask_tail*, false)
+
+;; Every selected identity was published before this event, not merely present
+;; in a compiler descriptor table. History retains the exact snapshot on retry.
+dec $class_static_selection_flag((porigin, bool)*, porigin?) : bool
+def $class_static_selection_flag((porigin_flag, b_flag)*, eps) = true
+def $class_static_selection_flag((porigin_flag, b_flag)*, (porigin)) = ($class_constant_flag((porigin_flag, b_flag)*, porigin) =/= eps)
+dec $class_static_selection_published((porigin, bool)*, pstaticselection) : bool
+def $class_static_selection_published((porigin_flag, b_flag)*, pstaticselection) = ($class_static_selection_flag((porigin_flag, b_flag)*, (pstaticselection.ROOT)) /\ $class_static_selection_flag((porigin_flag, b_flag)*, pstaticselection.SCOPE) /\ $class_static_selection_flag((porigin_flag, b_flag)*, pstaticselection.CALLED))
+def $class_constant_event_ordinal(CCSTATICSELECT porigin pstaticselection n) = n
+def $class_constant_event_ordinal(CCSTATICRETIRESELECT porigin pstaticselection n n_cell) = n
+def $class_constant_event_ordinal(CCUPDATESELECT porigin pstaticselection n) = n
+def $class_constant_compile_events(S, (CCSTATICSELECT porigin pstaticselection n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $class_constant_compile_events(S, (CCSTATICRETIRESELECT porigin pstaticselection n n_cell) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $class_constant_compile_events(S, (CCUPDATESELECT porigin pstaticselection n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $static_default_fill_event(CCSTATICSELECT porigin pstaticselection n) = true
+def $static_default_fills((CCSTATICSELECT porigin pstaticselection n) :: pclassconstantevent*) = porigin :: $static_default_fills(pclassconstantevent*)
+def $static_default_fill_event_for(S, pstaticdefaultcontext, n) = CCSTATICSELECT pstaticdefaultcontext.DECL pstaticselection n
+  -- if $class_static_selection_at(S.TODO) = (pstaticselection)
+  -- if pstaticdefaultcontext.ORIGIN = (pstaticselection.SITE)
+  -- if pstaticdefaultcontext.ROOT = pstaticselection.ROOT
+def $static_default_fill_event_for(S, pstaticdefaultcontext, n) = CCSTATIC pstaticdefaultcontext.DECL porigin n
+  -- if $class_static_selection_at(S.TODO) = eps
+  -- if pstaticdefaultcontext.ORIGIN = (porigin)
+def $static_default_retire_event_for(S, pstaticdefaultcontext, n, n_cell) = CCSTATICRETIRESELECT pstaticdefaultcontext.DECL pstaticselection n n_cell
+  -- if $class_static_selection_at(S.TODO) = (pstaticselection)
+  -- if pstaticdefaultcontext.ORIGIN = (pstaticselection.SITE)
+  -- if pstaticdefaultcontext.ROOT = pstaticselection.ROOT
+def $static_default_retire_event_for(S, pstaticdefaultcontext, n, n_cell) = CCSTATICRETIRE pstaticdefaultcontext.DECL porigin n n_cell
+  -- if $class_static_selection_at(S.TODO) = eps
+  -- if pstaticdefaultcontext.ORIGIN = (porigin)
+def $class_constant_table_event(S, porigin, porigin_root, porigin_trigger, n) = CCUPDATESELECT porigin pstaticselection n
+  -- if $class_static_selection_at(S.TODO) = (pstaticselection)
+  -- if pstaticselection.ROOT = porigin_root /\ pstaticselection.SITE = porigin_trigger
+def $class_constant_table_event(S, porigin, porigin_root, porigin_trigger, n) = CCUPDATE porigin porigin_root porigin_trigger n
+  -- if $class_static_selection_at(S.TODO) = eps
+def $static_default_retirement_event(CCSTATICRETIRESELECT porigin pstaticselection n n_cell, porigin, n_cell) = true
+
+def $class_constant_history_fills(S, (CCSTATICSELECT porigin pstaticselection n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled* ++ [porigin], n)
+  -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
+  -- if $class_static_selection_valid(S, pstaticselection)
+  -- if $class_static_selection_published((porigin_flag, b_flag)*, pstaticselection)
+  -- if ~(porigin <- porigin_filled*)
+  -- if $class_static_active_desc(S, S.CLASSNAMES, porigin) = (ppropertydesc)
+  -- if $static_default_source_valid(S, ppropertydesc)
+  -- if $property_declaring_class(S.CLASSES, porigin) = (porigin_owner)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_owner) = (false)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, pstaticselection.ROOT) = (false)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $static_default_first($static_default_origins(pclassdesc.PROPERTIES), porigin_filled*) = (porigin)
+  -- if $class_constant_values_done($class_constant_layout(S, porigin_owner, |S.CLASSES|), porigin_cached*)
+  -- if $class_constant_parent_done(S, porigin_owner, (porigin_flag, b_flag)*)
+  -- if $class_constant_parent_chain(S, pstaticselection.ROOT, porigin_owner, |S.CLASSES|)
+  -- if $class_constant_history_trigger(S, pstaticselection.SITE, n)
+  -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
+  -- if ~$static_default_pending(pclassstatic.STATE)
+def $class_constant_history_fills(S, (CCSTATICRETIRESELECT porigin pstaticselection n n_cell) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n)
+  -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
+  -- if $(n_cell < |S.STORE|)
+  -- if $class_static_selection_valid(S, pstaticselection)
+  -- if $class_static_selection_published((porigin_flag, b_flag)*, pstaticselection)
+  -- if porigin <- porigin_filled*
+  -- if $class_static_active_desc(S, S.CLASSNAMES, porigin) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if $static_default_source_valid(S, ppropertydesc)
+  -- if $property_declaring_class(S.CLASSES, porigin) = (porigin_owner)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_owner) = (b_owner)
+  -- if $class_constant_parent_chain(S, pstaticselection.ROOT, porigin_owner, |S.CLASSES|)
+  -- if $class_constant_history_trigger(S, pstaticselection.SITE, n)
+def $class_constant_history_fills(S, (CCUPDATESELECT porigin pstaticselection n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, $class_constant_flag_done((porigin_flag, b_flag)*, porigin), porigin_cached*, porigin_filled*, n)
+  -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
+  -- if $class_static_selection_valid(S, pstaticselection)
+  -- if $class_static_selection_published((porigin_flag, b_flag)*, pstaticselection)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin) = (false)
+  -- if $class_constant_values_done($class_constant_layout(S, porigin, |S.CLASSES|), porigin_cached*)
+  -- if $static_default_values_done($property_info_layout(S, porigin, |S.CLASSES|), porigin_filled*)
+  -- if $class_constant_parent_done(S, porigin, (porigin_flag, b_flag)*)
+  -- if $class_constant_parent_chain(S, pstaticselection.ROOT, porigin, |S.CLASSES|)
+  -- if $class_constant_history_trigger(S, pstaticselection.SITE, n)

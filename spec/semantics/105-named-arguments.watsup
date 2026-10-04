@@ -340,6 +340,7 @@ def $named_call_extent(S, pcalltarget_function, porigin?) = |pnamedargs.SLOTS|
 dec $named_entries_valid(pstate, pcalltarget, nat, (preqbytes, poperand)*, (preqbytes, poperand)*) : bool
 def $named_context_valid(S, pcallcontext) = true
   -- if ~$stringify_context_kind(S, pcallcontext)
+  -- if ~$useriter_context_kind(S, pcallcontext)
   -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
   -- if pnamedargs = $named_call_shape(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)

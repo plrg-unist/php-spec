@@ -345,7 +345,7 @@ let file_snapshot json =
          if version = 2 then ["chdir_entries"] else []) json;
   ignore (nonempty_bytes (field "main" json));
   ignore (nonempty_bytes (field "cwd" json));
-  if source_bytes (field "include_path" json) <> "Ljo=" then fail "file snapshot include_path mismatch";
+  ignore (nonempty_bytes (field "include_path" json));
   let entries = list (field "entries" json) in
   let keys = ref [] and opened = ref [] in
   List.iter (fun entry ->
@@ -462,6 +462,33 @@ let execute value request =
     match Runner.Interp.eval_func "base64" [] [bytes_value json] with
     | Run.Pass value -> check (typ "preqbytes") value; value
     | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg) in
+  let startup_json = match List.filter (fun (key,_) -> key = "startup_ini") (assoc request) with
+    | [] -> None | [(_,json)] -> Some json | _ -> fail "duplicate startup INI field" in
+  let startup = startup_json |> Option.map (fun json ->
+    exact ["error_reporting"; "include_path"] json;
+    let reporting = match field "error_reporting" json with
+      | `Null -> None | value -> Some (decode_bytes value) in
+    let fields = [
+      "REPORTING", V.Make.opt (T.opt (typ "preqbytes")) reporting;
+      "INCLUDEPATH", decode_bytes (field "include_path" json)] in
+    let value = V.Make.str (typ "pstartup")
+        (List.map (fun (name,value) -> Domain.Atom.Keyword name $ no_region, value) fields) in
+    check (typ "pstartup") value;
+    (match Runner.Interp.eval_func "startup_valid" [] [value] with
+     | Run.Pass valid when V.Get.bool valid -> ()
+     | Run.Pass _ -> fail "invalid startup INI facts"
+     | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg));
+    value) in
+  Option.iter (fun facts ->
+    let include_path = match startup_json with
+      | None -> `String "Ljo="
+      | Some json ->
+          (match Runner.Interp.eval_func "c_string" [] [decode_bytes (field "include_path" json)] with
+           | Run.Pass value -> `String (list (semantic_json value)
+                |> List.map (fun n -> int_of_string (string n)) |> base64_octets)
+           | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg)) in
+    if field "include_path" facts <> include_path then
+      fail "file snapshot include_path differs from startup INI") snapshot;
   let arguments = [value; V.Make.nat (Bigint.of_int budget); filename] in
   let file_arguments = [value; V.Make.nat (Bigint.of_int budget); decode_bytes filename_json] in
   let name, arguments = match List.filter (fun (key,_) -> key = "request") (assoc request) with
@@ -473,6 +500,15 @@ let execute value request =
         | Some facts -> "php_request_file_run",
             file_arguments @ [import_request (module Runner) json; decode_bytes (field "cwd" facts)])
     | _ -> fail "duplicate request field" in
+  let name, arguments = match startup with
+    | None -> name, arguments
+    | Some value ->
+        (match name with
+         | "php_run" -> "php_startup_run"
+         | "php_request_run" -> "php_request_startup_run"
+         | "php_file_run" -> "php_file_startup_run"
+         | "php_request_file_run" -> "php_request_file_startup_run"
+         | _ -> assert false), arguments @ [value] in
   match Runner.Interp.eval_func name [] arguments with
   | Run.Pass state -> check (typ "pstate") state;
       let pending = pending_from_state state in
