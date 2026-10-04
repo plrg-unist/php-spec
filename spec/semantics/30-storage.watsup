@@ -52,7 +52,6 @@ syntax pinterfacelink = { OWNER porigin, TARGETS pilref* }
 syntax pmethodissue = METHOD_OK | METHOD_COMPILEISSUE ptbytes int | METHOD_ISSUE ptbytes int | METHOD_FILEISSUE ptbytes int porigin | METHOD_UNSUPPORTED text
 syntax pnoctorcall = { SITE porigin, CLASS ptbytes, OBJECT nat, ARGUMENTS phpType7*, INDEX nat, SENT poperand*, LINE int }
 syntax pdefaultnew = { SITE porigin, CLASS ptbytes, OBJECT nat, ARGUMENTS phpType7*, INDEX nat, VALUES pvalue*, LINE int }
-syntax pdefaultctor = { NEW pdefaultnew, FUNCTION porigin, INDEX nat, PREPARED pnamedargs }
 syntax psourcefile = SOURCEFILE nat nat*
 syntax pevalphase = PARSER_WAIT | UNIT_RUN
 syntax pfailedkind = FAILED_PARSE | FAILED_COMPILE
@@ -66,6 +65,7 @@ syntax pupdate = INCREMENT | DECREMENT
 syntax psilence = SILENCE porigin int
 syntax pnamedslot = NAMED_HOLE | NAMED_SENT poperand
 syntax pnamedargs = { SLOTS pnamedslot*, NAMED (nat*, poperand)* }
+syntax pdefaultctor = { NEW pdefaultnew, FUNCTION porigin, INDEX nat, PREPARED pnamedargs }
 syntax punpackcall = { FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX nat, SENT pnamedargs, CALLSITE porigin?, LINE int }
 syntax pintrinsic = INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC_GET_CLASS | INTRINSIC_FUNC_NUM_ARGS | INTRINSIC_FUNC_GET_ARG | INTRINSIC_FUNC_GET_ARGS | INTRINSIC_GET_INCLUDE_PATH | INTRINSIC_SET_INCLUDE_PATH | INTRINSIC_INI_GET | INTRINSIC_INI_SET | INTRINSIC_INI_RESTORE | INTRINSIC_CHDIR
   | INTRINSIC_ERROR_REPORTING | INTRINSIC_SET_ERROR_HANDLER | INTRINSIC_RESTORE_ERROR_HANDLER | INTRINSIC_GET_ERROR_HANDLER | INTRINSIC_TRIGGER_ERROR | INTRINSIC_USER_ERROR

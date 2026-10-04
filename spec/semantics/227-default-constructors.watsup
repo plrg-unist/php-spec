@@ -189,6 +189,7 @@ def $call_task_valid(S, DEFAULT_CTOR_RESULT pdefaultctor) = ($default_ctor_valid
 ;; A NEW below a genuine parameter is never admitted as an ordinary source
 ;; constructor frame. Its retained completed phase proves target and call line.
 def $default_ctor_context_kind(S, pcallcontext) = true
+  -- if ~$error_context_kind(S, pcallcontext) /\ ~$stringify_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
   -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
   -- if $default_below(pcunit.OCCURRENCES, pcpath)
