@@ -9083,26 +9083,30 @@
       "implementation": [
         "spec/semantics/88-user-constant-compiler.watsup",
         "spec/semantics/89-user-constants.watsup",
-        "spec/semantics/89-constant-classes.watsup"
+        "spec/semantics/89-constant-classes.watsup",
+        "spec/semantics/20-machine.watsup"
       ],
       "helper_tests": [
         "tests/semantics/user_constant_compiler.py",
-        "tests/semantics/constant_class_compiler.py"
+        "tests/semantics/constant_class_compiler.py",
+        "tests/semantics/reporting_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/user_constants.py",
         "tests/semantics/user_constant_state.py",
         "tests/semantics/user_constant_protocol.py",
         "tests/semantics/user_constant_context_protocol.py",
-        "tests/semantics/user_constant_branch_protocol.py"
+        "tests/semantics/user_constant_branch_protocol.py",
+        "tests/semantics/reporting_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_constants.c",
         "vendor/php-src/Zend/zend_ast.c",
-        "coverage/semantics/user-constant-review.json"
+        "coverage/semantics/user-constant-review.json",
+        "coverage/semantics/reporting-ini-review.json"
       ],
-      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure."
+      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure. Current reporting checkpoint admits all15 nondeprecated E_* values with exact case/namespace fallback and shadow behavior; two constant source tuples retain76a30 identity. E_STRICT deprecated diagnostic/handler ingress remains a required partial obligation; see reporting-ini-review.json."
     },
     {
       "id": "declarations.typed-class-constants",
@@ -9685,24 +9689,31 @@
         "spec/semantics/101-error-suppression.watsup",
         "spec/semantics/79-call-frames.watsup",
         "spec/semantics/83-call-traces.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/172-file-context-intrinsics.watsup",
+        "spec/semantics/206-error-handlers.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/suppression_reporting.py"
+        "tests/semantics/suppression_reporting.py",
+        "tests/semantics/reporting_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/suppression.py",
         "tests/semantics/suppression_compiler.py",
         "tests/semantics/suppression_state.py",
-        "tests/semantics/error_suppression_protocol.py"
+        "tests/semantics/error_suppression_protocol.py",
+        "tests/semantics/reporting_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_vm_def.h",
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/Zend/zend_globals.h",
-        "vendor/php-src/Zend/zend_errors.h"
+        "vendor/php-src/Zend/zend_errors.h",
+        "coverage/semantics/reporting-ini-review.json"
       ],
-      "review": "Accepted bounded source suppression100/101 at29baca42, exact951/c650 with semanticff8d print-only bridge; see error-suppression-review.json. Known compiler results retain once-only effects, deferred CV reads occur before conditional END restoration, frame-owned scopes survive calls and unwind, and runtime nonfatal events respect signed32 masks. Independent4 source/23 protocol/4 dense/2 old-field bridges and author source/reporter/compiler/ownership/CLI gates pass. Reporting configuration, handlers, configurable fatal display and dependent core protocols remain required; no family closure."
+      "review": "Accepted bounded source suppression100/101 at29baca42, exact951/c650 with semanticff8d print-only bridge; see error-suppression-review.json. Known compiler results retain once-only effects, deferred CV reads occur before conditional END restoration, frame-owned scopes survive calls and unwind, and runtime nonfatal events respect signed32 masks. Independent4 source/23 protocol/4 dense/2 old-field bridges and author source/reporter/compiler/ownership/CLI gates pass. Reporting configuration, handlers, configurable fatal display and dependent core protocols remain required; no family closure. Reporting checkpoint now marks the INI entry modified on nonfatal BEGIN_SILENCE without changing raw bytes; handler mutations and conditional END restoration preserve distinct live mask/raw values. Exact source and74 state conditions remain bounded; nondefault profiles and other producers are open."
     },
     {
       "id": "diagnostics.error-reporting",
@@ -9714,20 +9725,26 @@
         "spec/semantics/207-error-handler-runtime.watsup",
         "spec/semantics/163-throwable-trace-storage.watsup",
         "spec/semantics/164-throwable-trace-methods.watsup",
-        "spec/semantics/211-error-handler-callables.watsup"
+        "spec/semantics/211-error-handler-callables.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/101-error-suppression.watsup",
+        "spec/semantics/172-file-context-intrinsics.watsup"
       ],
       "helper_tests": [
         "tests/semantics/error_handler_protocol.py",
         "tests/semantics/error_handler_prepare.py",
         "tests/semantics/error_handler_property_protocol.py",
-        "tests/semantics/error_handler_callables_protocol.py"
+        "tests/semantics/error_handler_callables_protocol.py",
+        "tests/semantics/reporting_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/error_handler_cases.py",
         "tests/semantics/error_handler_run.py",
         "tests/semantics/error_handler_array_registration.py",
         "tests/semantics/error_handler_callables.py",
-        "tests/semantics/error_handler_callables_cases.json"
+        "tests/semantics/error_handler_callables_cases.json",
+        "tests/semantics/reporting_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c",
@@ -9736,9 +9753,10 @@
         "vendor/php-src/Zend/zend_execute_API.c",
         "vendor/php-src/Zend/zend_API.c",
         "vendor/php-src/main/main.c",
-        "coverage/semantics/handler-callables-current-review.json"
+        "coverage/semantics/handler-callables-current-review.json",
+        "coverage/semantics/reporting-ini-review.json"
       ],
-      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/nonpublic/magic/autoload/internal/exception/lifecycle callbacks remain open."
+      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/nonpublic/magic/autoload/internal/exception/lifecycle callbacks remain open. Reporting INI coupling accepts exact full-byte reads/late old returns, signed64 decimal-prefix saturation then low32 masks, modified-entry Restore, equal-mask raw preservation, strict source refusal and weak explicit __invoke. Constants2 at76a30 and reporting8+independent2/74 at ef46 remain separate. E_STRICT and handled lossy-conversion diagnostics, wider profiles/INI and lifecycle remain open; see reporting-ini-review.json."
     },
     {
       "id": "diagnostics.error-handler-stack",

@@ -58,7 +58,11 @@ Stringable CHDIR PIPE uses post-callback CWD; six source comparisons and 124
 directory-provider assertions cover held operands, refusal and throw. Failed CHDIR
 warnings now resume eligible handlers: normal return yields false after their
 CWD/raw writes, while throw preserves caller arguments and both internal and
-wrapper trace operands. Wider PIPE consumers, OS/INI behavior and lifecycle remain open.
+wrapper trace operands. [Reporting configuration](coverage/semantics/reporting-ini-review.json)
+separates full INI bytes, the live signed32 mask and modified-entry Restore,
+including suppression and handler writes. Fifteen nondeprecated error constants
+have exact values; deprecated `E_STRICT`, lossy-conversion warning ingress,
+wider PIPE/INI consumers and lifecycle remain open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
@@ -101,7 +105,7 @@ entry availability, repeated execution and failure. Compile-stop freezes caller
 snapshots and preserves completed effects; it retires the active source request
 without ordinary unwinding. [Publication evidence](coverage/semantics/compiler-publication-review.json)
 links source30, history107, modifier286 and later interaction checks.
-Two reporting-mask/error_reporting controls and broader core obligations remain open.
+Reporting startup profiles and remaining diagnostic producers stay open.
 
 [Loose and ordered comparisons](docs/semantics/COMPARISONS.md) now cover scalar
 and array values, with [independent evidence](coverage/semantics/comparison-review.json).

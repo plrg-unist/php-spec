@@ -45,7 +45,7 @@ The installed families compose as follows; each ledger records its scope and lim
 | Class constants183/184/212 | Owner-scoped lazy scalar/array and selected Closure/FCC caches preserve strict types, inheritance priority, compile-entry availability and original callable identity/scope. Catalogue of 73 and new 159 + 44 object/cache checks retain separate cutoffs; broader consumers remain open. [Constants ledger](coverage/semantics/class-constants-current-review.json). |
 | Warning-truth decisions209 | Branch/loop/short-circuit/NOT/ternary-condition choices consume the captured null even after handlers define the CV. Saved consumers and thrown-handler cleanup retain authenticated source/line. Casts/copy/SEND remain open. [Truth ledger](coverage/semantics/warning-truth-review.json). |
 | Borrowed warning reads208 | Strict identity retains the old reference cell across callbacks without adding an owner; saved callers and throw cleanup preserve it. Defined ordinary `$GLOBALS[key]` uses the real table. Getter/setter and method-string interactions keep separate revisions. [Warning-read ledger](coverage/semantics/warning-reads-review.json). |
-| Error handlers/reporting206/207/211 | Named, closure, nonstatic source-object, public method-array and class-method-string callbacks retain raw registration values and select afresh at dispatch. Entered targets, four arguments and genuine emitting frames survive member mutation, replacement, nested reentry, throw and false fallback; current CONFIG PIPE preserves weak receive and original-null trace. Broader scope/magic/internal/exception/lifecycle forms and reporting readback remain open. [Method-handler ledger](coverage/semantics/handler-callables-current-review.json), [earlier handler ledger](coverage/semantics/error-handlers-review.json). |
+| Error handlers/reporting206/207/211 | Raw registrations and selected targets retain four arguments and genuine emitting frames through mutation, replacement, nested reentry, throw and false fallback. Reporting get/set/Restore separates full raw bytes, signed32 masks and modified-entry state across suppression and handler writes; twelve normal sources across two revisions and 74 conditions are accepted. Fifteen nondeprecated error constants resolve exactly. Broader handler forms, deprecated constants and lossy-conversion warning ingress remain open. [Reporting](coverage/semantics/reporting-ini-review.json), [method handlers](coverage/semantics/handler-callables-current-review.json), [earlier handlers](coverage/semantics/error-handlers-review.json). |
 | Class-method strings210 and FCC119 | Full-byte lookup separates frame-based callable admission, computed static dispatch and fixed compatible-this selection. Captures/clone retain immutable source certificates and defaults/static cells. A named throwing handler preserves the selected static caller and arguments. [String ledger](coverage/semantics/class-method-strings-current-review.json). |
 | Method arrays205 | Public source method arrays retain immutable selected receiver/owner/called-class certificates through dynamic calls and capture. Current two-slot INI checkpoint **f9f47f115/61370c98/1353** accepts source1/finite103; broader resolution remains open. [Array ledger](coverage/semantics/array-callables-current-review.json). |
 | Include/configuration | Failed CHDIR warnings retain provider certificates and caller frames through handler CWD/raw writes, false fallback and throw. One current throwing source/136 conditions, earlier three sources and compiler25 checks keep separate revisions. Stringable CHDIR PIPE retains post-callback CWD/held operands; unary CONFIG PIPE preserves source strictness through borrowed warnings. [PIPE ledger](coverage/semantics/include-config-pipe-review.json). Raw getters, primitive/null Restore, weak-null handler continuations and two-slot INI ownership retain their separate checkpoints. [Readback](coverage/semantics/include-ini-readback-review.json), [INI](coverage/semantics/include-stringable-ini-option-review.json). |
@@ -72,16 +72,16 @@ failures and interrupted evidence.
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
   array and string Closure PIPE routes are covered; defined ordinary `$GLOBALS[key]` is admitted; missing-global warnings and whole-table snapshots remain partial.
-- Include/configuration: broader warning producers, wider directives
-  and reporting readback, OS services and lifecycle. The
+- Include/configuration: deprecated `E_STRICT` constant diagnostics and handled
+  lossy reporting conversions, nondefault startup profiles, wider directives,
+  other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: callback-attached property sources during free
   string-by-reference reception require a parameter-authorized backing-value exception;
   that source remains Unsupported with zero agreement. Variadic and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred property defaults and references into incomplete constant tables remain Unsupported.
-  Named error constants such as E_USER_NOTICE remain unsupported by initial lookup;
-  the handled-notice check uses literal1024. Generic156 return replay, temporary-return
+  Deprecated constant producer ingress remains open. Generic156 return replay, temporary-return
   Notice timing and typed
   by-reference string conversion186 remain open; accepted ordinary by-value
   classification does not close them. [String contract](docs/semantics/USER-STRING.md),
