@@ -33,6 +33,7 @@ CASES = {
     'named-keyword-free-parent-rejection': b"<?php\necho 'unreachable|';\nfunction factory() { return new parent(argument()); }\nfunction argument() { echo 'V|'; return 1; }\n",
     'named-keyword-free-static-rejection': b"<?php\necho 'unreachable|';\nfunction factory() { return new static(argument()); }\nfunction argument() { echo 'V|'; return 1; }\n",
     'named-keyword-known-parent-rejection': b"<?php\necho 'unreachable|';\nclass A {\n    public static function run() {\n        return new parent(argument());\n    }\n}\nfunction argument() { echo 'V|'; return 1; }\n",
+    'named-keyword-null-bound-current-composition': b"<?php\nclass A {\n    private function __construct($mark) { echo 'CA', $mark, '|'; }\n    public static function maker() { return function () {\n        $self = new self(1);\n        $static = new static(2);\n        echo $self::class, '/', $static::class, '|';\n        return Closure::getCurrent();\n    }; }\n}\nclass B { public function __construct() {} }\n$maker = A::maker(); $receiver = new B;\n$bound = $maker->bindTo($receiver, A::class);\n$null = $bound->bindTo(null);\nunset($maker, $receiver, $bound);\n$returned = $null();\necho $returned === $null ? 'same' : 'foreign';\nunset($returned, $null);\n",
 }
 EXPECTED = {
     'dynamic-new-stdclass-parent': b'stdClass/stdClass',
@@ -53,6 +54,7 @@ EXPECTED = {
     'named-keyword-eval-inherited-scope': b'CA|CP|CB|A/P/B',
     'named-keyword-eval-no-parent': b'Cannot access "parent" when current class scope has no parent',
     'named-keyword-recursive-factory': b'CA|CB|FB|RB|FA|',
+    'named-keyword-null-bound-current-composition': b'CA1|CA2|A/A|same',
 }
 COMPILED = {
     'named-keyword-free-self-rejection': (b'Cannot use "self" when no class scope is active', 3),

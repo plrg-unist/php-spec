@@ -12,8 +12,9 @@ caller before class work and arguments. Inherited constructor entry uses its
 immediate owning caller; service-unit main code follows persistent scope entry
 bindings. Known function scope errors compile; main, eval, trait and Closure
 errors remain deferred. Source18 normal/4 compiler and reached cold57/recursive44
-plus corrected eval53 pass at91dc. Original preparation/eval-fixture failures
-remain in the [ledger](coverage/semantics/named-keyword-new-review.json).
+plus corrected eval53 pass at91dc. Actual23c/264/257 composition at9b8 passes
+private self/static and current identity after null-binding resets called scope.
+Original preparation/eval-fixture failures remain in the [ledger](coverage/semantics/named-keyword-new-review.json).
 Autoload and complete core remain open; returns stay paused.
 
 Request-stage destructors257 now repeat reverse direct globals and then scan
