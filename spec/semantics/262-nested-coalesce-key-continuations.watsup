@@ -51,10 +51,16 @@ def $key_coalesce_rhs_begin(S, pkeywriter) = $error_dispatch(S[.RESULT = KNOWN P
   -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE (BASE_DIM pbase poperand z_write) b z
   -- if pkeywriter.RHS = VARIABLE n_name* z_rhs
   -- if pcoalesceread = {WRITER pkeywriter, PLACE S.LOCATION, NAME n_name*, LINE z_write}
-def $key_write_finish(S, pkeywriter) = $key_coalesce_rhs_begin(S, pkeywriter)
+def $key_coalesce_rhs_pending(S, pkeywriter) = true
   -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE pbase b z
   -- if S.LOCATION =/= NOWHERE
   -- if $error_missing_operand(S, pkeywriter.RHS)
+def $key_coalesce_rhs_pending(S, pkeywriter) = false -- otherwise
+rule PhpStep/key-coalesce-rhs-dispatch: S ~> $key_coalesce_rhs_begin(S, pkeywriter)
+  -- if S.TODO = (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*
+  -- if S.ORIGIN = (pkeywriter.SITE)
+  -- if $key_writer_valid(S, pkeywriter, ptask_tail*)
+  -- if $key_coalesce_rhs_pending(S, pkeywriter)
 def $task_nodes(KEY_COALESCE_RHS_RESULT pcoalesceread) = $key_write_finish_roots(pcoalesceread.WRITER)
 def $key_coalesce_rhs_place(S, pcoalesceread) = true
   -- if pcoalesceread.PLACE = ELEMENT n pkey

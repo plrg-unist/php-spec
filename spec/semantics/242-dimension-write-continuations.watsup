@@ -23,6 +23,7 @@ dec $key_write_has_aborted_base(pbase) : bool
 dec $key_write_temporary_valid(pstate, pkeywriter) : bool
 dec $key_write_add_temporary(ptask*, porigin, nat) : ptask*
 dec $key_coalesce_walk(ptask*) : bool
+dec $key_coalesce_rhs_pending(pstate, pkeywriter) : bool
 dec $key_write_array_init(pslot) : bool
 dec $key_write_writer(pstate, porigin, ptask, pbase, poperand) : pkeywriter?
 dec $key_write_plan(pstate) : pkeywriter?
@@ -563,6 +564,7 @@ def $key_write_named_finish(S, NAMED_SEND pcalltarget phpType7* n pnamedargs por
 rule PhpStep/key-write-finish: S ~> S_out[.HELD = S.HELD]
   -- if S.TODO = (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*
   -- if ~$key_append_task(pkeywriter.TASK)
+  -- if ~$key_coalesce_rhs_pending(S, pkeywriter)
   -- if S.ORIGIN = (pkeywriter.SITE)
   -- if $key_writer_valid(S, pkeywriter, ptask_tail*)
   -- if S_out = $key_write_finish($hold_task_inputs(S), pkeywriter)
