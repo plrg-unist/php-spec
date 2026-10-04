@@ -1,0 +1,327 @@
+;; zend_compile_encaps_list groups nonempty constants; finalize chooses
+;; CAST for one effective part, FAST_CONCAT for two, otherwise ROPE.
+dec $interpolation_parts(pstate, porigin) : (phpType30*)?
+def $interpolation_parts(S, porigin) = (phpType30*)
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarInterpolatedString (SEQUENCE phpType30*) metadata)
+def $interpolation_parts(S, porigin) = eps -- otherwise
+
+dec $interpolation_groups(phpType30*, bool) : nat
+def $interpolation_groups(eps, b) = 0
+def $interpolation_groups((NInterpolatedStringPart (BYTES text) metadata) :: phpType30*, b) = $interpolation_groups(phpType30*, b)
+  -- if $base64(text) = eps
+def $interpolation_groups((NInterpolatedStringPart (BYTES text) metadata) :: phpType30*, true) = $interpolation_groups(phpType30*, true)
+  -- if $base64(text) =/= eps
+def $interpolation_groups((NInterpolatedStringPart (BYTES text) metadata) :: phpType30*, false) = $(1 + $interpolation_groups(phpType30*, true))
+  -- if $base64(text) =/= eps
+def $interpolation_groups(expression :: phpType30*, b) = $(1 + $interpolation_groups(phpType30*, false))
+
+dec $ppinterpolation(ppstate, pcpath, nat, phpType30*) : ppstate
+def $ppinterpolation(P, pcpath, n, eps) = $ppclearvalue(P)
+def $ppinterpolation(P, pcpath, n, (NInterpolatedStringPart (BYTES text) metadata) :: phpType30*) = $ppinterpolation($pplocate(P, pcpath ++ [PCINDEX n], $source_line(metadata)), pcpath, $(n + 1), phpType30*)
+def $ppinterpolation(P, pcpath, n, expression :: phpType30*) = $ppinterpolation($ppexpr(P, pcpath ++ [PCINDEX n], expression, PPR), pcpath, $(n + 1), phpType30*)
+def $pptemporary(NScalarInterpolatedString phpType29 metadata) = true
+def $ppdispatch(P, pcpath, NScalarInterpolatedString (SEQUENCE phpType30*) metadata, PPR) = $ppinterpolation(P, pcpath ++ [PCFIELD 0], 0, phpType30*)
+
+dec $interpolation_child(porigin, nat) : porigin
+def $interpolation_child(porigin, n) = porigin_child
+  -- if $origin_child((porigin), [PCFIELD 0, PCINDEX n]) = (porigin_child)
+dec $interpolation_line(pstate, porigin, nat, nat) : int
+def $interpolation_line(S, porigin, 2, n) = $runtime_line(S[.ORIGIN = (porigin)], eps, NScalarInterpolatedString (SEQUENCE phpType30*) metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarInterpolatedString (SEQUENCE phpType30*) metadata)
+def $interpolation_line(S, porigin, n_mode, n) = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0, PCINDEX n], expression)
+  -- if n_mode =/= 2
+  -- if $interpolation_parts(S, porigin) = (phpType30*)
+  -- if phpType30*[n] = expression
+
+dec $interpolation_base_valid(pstate, pinterpolation) : bool
+def $interpolation_base_valid(S, pinterpolation) = true
+  -- if $interpolation_parts(S, pinterpolation.SITE) = (phpType30*)
+  -- if $(pinterpolation.INDEX <= |phpType30*|)
+  -- if pinterpolation.MODE = $interpolation_groups(phpType30*, false)
+  -- if $startup_bytes(pinterpolation.TEXT)
+def $interpolation_base_valid(S, pinterpolation) = false -- otherwise
+
+dec $interpolation_values_valid(pstate, pinterpolation, nat) : bool
+def $interpolation_values_valid(S, pinterpolation, n_offset) = true
+  -- if $interpolation_parts(S, pinterpolation.SITE) = (phpType30*)
+  -- if pinterpolation.MODE = 2
+  -- if $(pinterpolation.INDEX + n_offset <= |phpType30*|)
+  -- if $(|pinterpolation.VALUES| = |phpType30*| - pinterpolation.INDEX - n_offset)
+def $interpolation_values_valid(S, pinterpolation, n_offset) = true
+  -- if pinterpolation.MODE =/= 2
+  -- if pinterpolation.VALUES = eps
+def $interpolation_values_valid(S, pinterpolation, n_offset) = false -- otherwise
+
+dec $interpolation_convert_valid(pstate, pinterpolation) : bool
+def $interpolation_convert_valid(S, pinterpolation) = true
+  -- if S.ORIGIN = (pinterpolation.SITE)
+  -- if $interpolation_base_valid(S, pinterpolation)
+  -- if $interpolation_values_valid(S, pinterpolation, 1)
+  -- if $interpolation_parts(S, pinterpolation.SITE) = (phpType30*)
+  -- if $(pinterpolation.INDEX < |phpType30*|)
+  -- if phpType30*[pinterpolation.INDEX] = expression
+  -- if pinterpolation.LINE = $interpolation_line(S, pinterpolation.SITE, pinterpolation.MODE, pinterpolation.INDEX)
+def $interpolation_convert_valid(S, pinterpolation) = false -- otherwise
+
+dec $interpolation_after_valid(pstate, pinterpolation) : bool
+def $interpolation_after_valid(S, pinterpolation) = $interpolation_convert_valid(S[.ORIGIN = (pinterpolation.SITE)], pinterpolation)
+  -- if S.ORIGIN = ($interpolation_child(pinterpolation.SITE, pinterpolation.INDEX))
+def $interpolation_after_valid(S, pinterpolation) = false -- otherwise
+
+dec $interpolation_cv(pstate, pinterpolation, preqbytes) : bool
+def $interpolation_cv(S, pinterpolation, n_name*) = true
+  -- if $origin_node(S.SOURCES, $interpolation_child(pinterpolation.SITE, pinterpolation.INDEX)) = (NExprVariable (BYTES text) metadata)
+  -- if n_name* = $base64(text)
+  -- if ~$this_name(n_name*) /\ ~$psautoglobal(n_name*)
+def $interpolation_cv(S, pinterpolation, n_name*) = false -- otherwise
+
+;; Captured literal bytes and deferred CV names remain tied to their own part.
+dec $interpolation_operand_valid(pstate, porigin, nat, poperand) : bool
+def $interpolation_operand_valid(S, porigin, n, KNOWN (PSTRING n_text*)) = true
+  -- if $origin_node(S.SOURCES, $interpolation_child(porigin, n)) = (NInterpolatedStringPart (BYTES text) metadata)
+  -- if n_text* = $base64(text)
+def $interpolation_operand_valid(S, porigin, n, VARIABLE n_name* z) = true
+  -- if $origin_node(S.SOURCES, $interpolation_child(porigin, n)) = (NExprVariable (BYTES text) metadata)
+  -- if n_name* = $base64(text)
+  -- if z = $variable_line(BYTES text, metadata)
+def $interpolation_operand_valid(S, porigin, n, KNOWN pvalue) = true
+  -- if $origin_node(S.SOURCES, $interpolation_child(porigin, n)) = (expression)
+def $interpolation_operand_valid(S, porigin, n, REFERENCE n_cell) = true
+  -- if $origin_node(S.SOURCES, $interpolation_child(porigin, n)) = (expression)
+def $interpolation_operand_valid(S, porigin, n, poperand) = false -- otherwise
+
+dec $interpolation_operands_valid(pstate, porigin, nat, poperand*) : bool
+def $interpolation_operands_valid(S, porigin, n, eps) = true
+def $interpolation_operands_valid(S, porigin, n, poperand :: poperand_tail*) = ($interpolation_operand_valid(S, porigin, n, poperand) /\ $interpolation_operands_valid(S, porigin, $(n + 1), poperand_tail*))
+dec $interpolation_operand_nodes(poperand*) : pnode*
+def $interpolation_operand_nodes(eps) = eps
+def $interpolation_operand_nodes(poperand :: poperand_tail*) = $operand_nodes(poperand) ++ $interpolation_operand_nodes(poperand_tail*)
+
+dec $interpolation_next_valid(pstate, pinterpolation) : bool
+def $interpolation_next_valid(S, pinterpolation) = (S.ORIGIN = (pinterpolation.SITE) /\ $interpolation_base_valid(S, pinterpolation) /\ $interpolation_values_valid(S, pinterpolation, 0) /\ $interpolation_operands_valid(S, pinterpolation.SITE, pinterpolation.INDEX, pinterpolation.VALUES))
+dec $interpolation_expression_part(pstate, porigin, nat) : bool
+def $interpolation_expression_part(S, porigin, n) = true
+  -- if $origin_node(S.SOURCES, $interpolation_child(porigin, n)) = (expression)
+def $interpolation_expression_part(S, porigin, n) = false -- otherwise
+dec $interpolation_collect_valid(pstate, porigin, nat, poperand*, bool) : bool
+def $interpolation_collect_valid(S, porigin, n, poperand*, b_capture) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $interpolation_parts(S, porigin) = (phpType30*)
+  -- if $interpolation_groups(phpType30*, false) = 2
+  -- if $(n <= |phpType30*| /\ |poperand*| = n)
+  -- if $interpolation_operands_valid(S, porigin, 0, poperand*)
+  -- if ~b_capture \/ ($(n < |phpType30*|) /\ $interpolation_expression_part(S, porigin, n))
+def $interpolation_collect_valid(S, porigin, n, poperand*, b_capture) = false -- otherwise
+
+dec $interpolation_finish_tail(ptask*, porigin) : bool
+def $interpolation_finish_tail((INTERPOLATE_FINISH porigin_finish) :: ptask_tail*, porigin) = (porigin_finish = porigin)
+def $interpolation_finish_tail(ptask*, porigin) = false -- otherwise
+dec $interpolation_after_tail(ptask*, pinterpolation) : bool
+def $interpolation_after_tail(eps, pinterpolation) = false
+def $interpolation_after_tail(ptask :: ptask_tail*, pinterpolation) = $interpolation_finish_tail(ptask_tail*, pinterpolation.SITE)
+  -- if ptask = INTERPOLATE_AFTER pinterpolation
+def $interpolation_after_tail(ptask :: ptask_tail*, pinterpolation) = $interpolation_after_tail(ptask_tail*, pinterpolation)
+  -- if ptask =/= INTERPOLATE_AFTER pinterpolation
+
+def $call_task_valid(S, INTERPOLATE_COLLECT porigin n poperand*) = $interpolation_collect_valid(S, porigin, n, poperand*, false)
+def $call_task_valid(S, INTERPOLATE_CAPTURE porigin n poperand*) = $interpolation_collect_valid(S, porigin, n, poperand*, true)
+def $call_task_valid(S, INTERPOLATE_NEXT pinterpolation) = $interpolation_next_valid(S, pinterpolation)
+def $call_task_valid(S, INTERPOLATE_CONVERT pinterpolation) = ($interpolation_convert_valid(S, pinterpolation) /\ $interpolation_operands_valid(S, pinterpolation.SITE, $(pinterpolation.INDEX + 1), pinterpolation.VALUES))
+def $call_task_valid(S, INTERPOLATE_RESOLVE pinterpolation n_name*) = ($interpolation_convert_valid(S, pinterpolation) /\ $(pinterpolation.MODE >= 2) /\ $interpolation_cv(S, pinterpolation, n_name*) /\ $interpolation_operands_valid(S, pinterpolation.SITE, $(pinterpolation.INDEX + 1), pinterpolation.VALUES))
+def $call_task_valid(S, INTERPOLATE_AFTER pinterpolation) = ($interpolation_after_valid(S, pinterpolation) /\ $interpolation_operands_valid(S, pinterpolation.SITE, $(pinterpolation.INDEX + 1), pinterpolation.VALUES) /\ $interpolation_after_tail(S.TODO, pinterpolation))
+def $call_task_valid(S, INTERPOLATE_FINISH porigin) = (S.ORIGIN = (porigin) /\ $interpolation_parts(S, porigin) =/= eps)
+
+def $task_nodes(INTERPOLATE_COLLECT porigin n poperand*) = $interpolation_operand_nodes(poperand*)
+def $task_nodes(INTERPOLATE_CAPTURE porigin n poperand*) = $interpolation_operand_nodes(poperand*)
+def $task_nodes(INTERPOLATE_NEXT pinterpolation) = $interpolation_operand_nodes(pinterpolation.VALUES)
+def $task_nodes(INTERPOLATE_CONVERT pinterpolation) = $interpolation_operand_nodes(pinterpolation.VALUES)
+def $task_nodes(INTERPOLATE_RESOLVE pinterpolation n_name*) = $interpolation_operand_nodes(pinterpolation.VALUES)
+def $task_nodes(INTERPOLATE_AFTER pinterpolation) = $interpolation_operand_nodes(pinterpolation.VALUES)
+
+dec $interpolation_start(porigin, nat) : ptask
+rule PhpStep/interpolation-start: S ~> S[.TODO = ptask_start :: (INTERPOLATE_FINISH porigin) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EVAL (NScalarInterpolatedString (SEQUENCE phpType30*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if n_mode = $interpolation_groups(phpType30*, false)
+  -- if ptask_start = $interpolation_start(porigin, n_mode)
+def $interpolation_start(porigin, 2) = INTERPOLATE_COLLECT porigin 0 eps
+def $interpolation_start(porigin, n_mode) = INTERPOLATE_NEXT {SITE porigin, INDEX 0, MODE n_mode, LINE 0, TEXT eps, VALUES eps}
+  -- if n_mode =/= 2
+
+rule PhpStep/interpolation-collect-literal: S ~> S[.TODO = (INTERPOLATE_COLLECT porigin $(n + 1) (poperand* ++ [KNOWN (PSTRING $base64(text))])) :: ptask_tail*]
+  -- if S.TODO = (INTERPOLATE_COLLECT porigin n poperand*) :: ptask_tail*
+  -- if $interpolation_collect_valid(S, porigin, n, poperand*, false)
+  -- if $interpolation_parts(S, porigin) = (phpType30*)
+  -- if $(n < |phpType30*|)
+  -- if phpType30*[n] = NInterpolatedStringPart (BYTES text) metadata
+rule PhpStep/interpolation-collect-expression: S ~> S[.TODO = [$at_task(($interpolation_child(porigin, n)), EVAL expression), INTERPOLATE_CAPTURE porigin n poperand*] ++ ptask_tail*]
+  -- if S.TODO = (INTERPOLATE_COLLECT porigin n poperand*) :: ptask_tail*
+  -- if $interpolation_collect_valid(S, porigin, n, poperand*, false)
+  -- if $interpolation_parts(S, porigin) = (phpType30*)
+  -- if $(n < |phpType30*|)
+  -- if phpType30*[n] = expression
+rule PhpStep/interpolation-capture: S ~> S[.TODO = (INTERPOLATE_COLLECT porigin $(n + 1) (poperand* ++ [S.RESULT])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (INTERPOLATE_CAPTURE porigin n poperand*) :: ptask_tail*
+  -- if $interpolation_collect_valid(S, porigin, n, poperand*, true)
+  -- if $interpolation_operand_valid(S, porigin, n, S.RESULT)
+rule PhpStep/interpolation-collected: S ~> S[.TODO = (INTERPOLATE_NEXT {SITE porigin, INDEX 0, MODE 2, LINE 0, TEXT eps, VALUES poperand*}) :: ptask_tail*]
+  -- if S.TODO = (INTERPOLATE_COLLECT porigin n poperand*) :: ptask_tail*
+  -- if $interpolation_collect_valid(S, porigin, n, poperand*, false)
+  -- if $interpolation_parts(S, porigin) = (phpType30*)
+  -- if $(n = |phpType30*|)
+
+dec $interpolation_remaining(nat, poperand*) : poperand*
+rule PhpStep/interpolation-literal: S ~> S[.TODO = (INTERPOLATE_NEXT pinterpolation[.INDEX = $(pinterpolation.INDEX + 1)][.TEXT = pinterpolation.TEXT ++ $base64(text)][.VALUES = poperand_tail*]) :: ptask_tail*]
+  -- if S.TODO = (INTERPOLATE_NEXT pinterpolation) :: ptask_tail*
+  -- if $interpolation_next_valid(S, pinterpolation)
+  -- if $interpolation_parts(S, pinterpolation.SITE) = (phpType30*)
+  -- if $(pinterpolation.INDEX < |phpType30*|)
+  -- if phpType30*[pinterpolation.INDEX] = NInterpolatedStringPart (BYTES text) metadata
+  -- if poperand_tail* = $interpolation_remaining(pinterpolation.MODE, pinterpolation.VALUES)
+def $interpolation_remaining(2, poperand :: poperand_tail*) = poperand_tail*
+def $interpolation_remaining(n_mode, eps) = eps -- if n_mode =/= 2
+rule PhpStep/interpolation-expression: S ~> S[.TODO = [$at_task(($interpolation_child(pinterpolation.SITE, pinterpolation.INDEX)), EVAL expression), INTERPOLATE_CONVERT pinterpolation[.LINE = $interpolation_line(S, pinterpolation.SITE, pinterpolation.MODE, pinterpolation.INDEX)]] ++ ptask_tail*]
+  -- if S.TODO = (INTERPOLATE_NEXT pinterpolation) :: ptask_tail*
+  -- if $interpolation_next_valid(S, pinterpolation)
+  -- if pinterpolation.MODE =/= 2
+  -- if $interpolation_parts(S, pinterpolation.SITE) = (phpType30*)
+  -- if $(pinterpolation.INDEX < |phpType30*|)
+  -- if phpType30*[pinterpolation.INDEX] = expression
+rule PhpStep/interpolation-captured-expression: S ~> S[.TODO = (INTERPOLATE_CONVERT pinterpolation[.LINE = $interpolation_line(S, pinterpolation.SITE, 2, pinterpolation.INDEX)][.VALUES = poperand_tail*]) :: ptask_tail*][.RESULT = poperand][.BASE = BASE_VALUE poperand]
+  -- if S.TODO = (INTERPOLATE_NEXT pinterpolation) :: ptask_tail*
+  -- if $interpolation_next_valid(S, pinterpolation)
+  -- if pinterpolation.MODE = 2
+  -- if pinterpolation.VALUES = poperand :: poperand_tail*
+  -- if $interpolation_parts(S, pinterpolation.SITE) = (phpType30*)
+  -- if $(pinterpolation.INDEX < |phpType30*|)
+  -- if phpType30*[pinterpolation.INDEX] = expression
+rule PhpStep/interpolation-done: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING pinterpolation.TEXT)][.BASE = BASE_VALUE (KNOWN (PSTRING pinterpolation.TEXT))]
+  -- if S.TODO = (INTERPOLATE_NEXT pinterpolation) :: ptask_tail*
+  -- if $interpolation_next_valid(S, pinterpolation)
+  -- if $interpolation_parts(S, pinterpolation.SITE) = (phpType30*)
+  -- if $(pinterpolation.INDEX = |phpType30*|)
+rule PhpStep/interpolation-finish: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (INTERPOLATE_FINISH porigin) :: ptask_tail*
+  -- if $call_task_valid(S, INTERPOLATE_FINISH porigin)
+
+;; FAST_CONCAT/ROPE read a direct CV again after its undefined-read callback;
+;; the singleton CAST keeps the null fetched before the callback.
+def $error_read_shape(INTERPOLATE_CONVERT pinterpolation, VARIABLE n_name* z_origin, pbase) = ({ORIGINAL INTERPOLATE_CONVERT pinterpolation, INPUT VARIABLE n_name* z_origin, BASE pbase, NAME n_name*, LINE pinterpolation.LINE, TASK INTERPOLATE_CONVERT pinterpolation, RESULT KNOWN PNULL})
+  -- if pinterpolation.MODE = 1
+def $error_read_shape(INTERPOLATE_CONVERT pinterpolation, VARIABLE n_name* z_origin, pbase) = ({ORIGINAL INTERPOLATE_CONVERT pinterpolation, INPUT VARIABLE n_name* z_origin, BASE pbase, NAME n_name*, LINE pinterpolation.LINE, TASK INTERPOLATE_RESOLVE pinterpolation n_name*, RESULT KNOWN PNULL})
+  -- if $(pinterpolation.MODE >= 2)
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = INTERPOLATE_CONVERT pinterpolation
+  -- if $call_task_valid(S, perrorread.ORIGINAL)
+  -- if $interpolation_cv(S, pinterpolation, perrorread.NAME)
+  -- if $interpolation_operand_valid(S, pinterpolation.SITE, pinterpolation.INDEX, perrorread.INPUT)
+  -- if perrorread.LINE = pinterpolation.LINE
+dec $interpolation_reread(pstate, pinterpolation, preqbytes) : poperand
+def $interpolation_reread(S, pinterpolation, n_name*) = VARIABLE n_name* $variable_line(BYTES text, metadata)
+  -- if $origin_node(S.SOURCES, $interpolation_child(pinterpolation.SITE, pinterpolation.INDEX)) = (NExprVariable (BYTES text) metadata)
+  -- if n_name* = $base64(text)
+  -- if ~$error_missing_operand(S, VARIABLE n_name* pinterpolation.LINE)
+def $interpolation_reread(S, pinterpolation, n_name*) = KNOWN PNULL
+  -- if $error_missing_operand(S, VARIABLE n_name* pinterpolation.LINE)
+rule PhpStep/interpolation-resolve: S ~> S[.TODO = (INTERPOLATE_CONVERT pinterpolation) :: ptask_tail*][.RESULT = poperand][.BASE = BASE_VALUE poperand]
+  -- if S.TODO = (INTERPOLATE_RESOLVE pinterpolation n_name*) :: ptask_tail*
+  -- if $call_task_valid(S, INTERPOLATE_RESOLVE pinterpolation n_name*)
+  -- if poperand = $interpolation_reread(S, pinterpolation, n_name*)
+
+;; The child, effective cardinality and conversion line authenticate implicit
+;; Stringable calls without authorizing the enclosing echo/interpolation node.
+def $interpolation_child_site_valid(S, PORIGIN n_unit pcpath_child, z) = true
+  -- if $(|pcpath_child| >= 2)
+  -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 2))]
+  -- if pcpath_child[$nabs($(|pcpath_child| - 2))] = PCFIELD 0
+  -- if pcpath_child[$nabs($(|pcpath_child| - 1))] = PCINDEX n
+  -- if porigin = PORIGIN n_unit pcpath_parent
+  -- if $interpolation_parts(S, porigin) = (phpType30*)
+  -- if $(n < |phpType30*|)
+  -- if phpType30*[n] = expression
+  -- if z = $interpolation_line(S, porigin, $interpolation_groups(phpType30*, false), n)
+def $interpolation_child_site_valid(S, porigin, z) = false -- otherwise
+def $interpolation_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigin_site), z) = ($interpolation_child_site_valid(S, porigin_site, z) /\ $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_site))
+def $interpolation_pending_line_valid(S, pcalltarget, porigin?, z) = false -- otherwise
+def $interpolation_context_line_valid(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $interpolation_child_site_valid(S, porigin_site, pcallcontext.LINE)
+  -- if $stringify_context_kind(S, pcallcontext)
+def $interpolation_context_line_valid(S, pcallcontext) = false -- otherwise
+def $stringify_source(S, porigin_site, z, INTERPOLATE_AFTER pinterpolation) = true
+  -- if porigin_site = $interpolation_child(pinterpolation.SITE, pinterpolation.INDEX)
+  -- if z = pinterpolation.LINE
+  -- if $interpolation_after_valid(S[.ORIGIN = (porigin_site)], pinterpolation)
+  -- if $interpolation_operands_valid(S, pinterpolation.SITE, $(pinterpolation.INDEX + 1), pinterpolation.VALUES)
+def $stringify_interpolation_consumer(INTERPOLATE_AFTER pinterpolation) = true
+def $stringify_interpolation_consumer(ptask) = false -- otherwise
+def $stringify_consumer_tail_valid(S, porigin_site, z, INTERPOLATE_AFTER pinterpolation, (INTERPOLATE_FINISH porigin) :: ptask_tail*) = (porigin = pinterpolation.SITE /\ $stringify_source(S, porigin_site, z, INTERPOLATE_AFTER pinterpolation))
+def $call_after_origin(S, INTERPOLATE_AFTER pinterpolation) = S[.ORIGIN = (pinterpolation.SITE)]
+
+rule PhpStep/interpolation-user-string: S ~> $user_string_begin(S_read[.ORIGIN = (porigin_child)], n, porigin_child, pinterpolation.LINE, INTERPOLATE_AFTER pinterpolation, ptask_tail*)
+  -- if S.TODO = (INTERPOLATE_CONVERT pinterpolation) :: ptask_tail*
+  -- if $call_task_valid(S, INTERPOLATE_CONVERT pinterpolation)
+  -- if S_read = $resolve_at(S, S.RESULT, pinterpolation.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_read, n)
+  -- if porigin_child = $interpolation_child(pinterpolation.SITE, pinterpolation.INDEX)
+
+;; Array conversion freezes "Array" before the callback can replace the CV.
+;; Only the genuine captured operand owns a temporary array/reference here.
+dec $interpolation_array_result_valid(pstate, pinterpolation, poperand) : bool
+def $interpolation_array_result_valid(S, pinterpolation, poperand) = ($call_task_valid(S, INTERPOLATE_CONVERT pinterpolation) /\ $interpolation_operand_valid(S, pinterpolation.SITE, pinterpolation.INDEX, poperand))
+def $call_task_valid(S, INTERPOLATE_ARRAY_RESULT pinterpolation poperand) = $interpolation_array_result_valid(S, pinterpolation, poperand)
+def $task_nodes(INTERPOLATE_ARRAY_RESULT pinterpolation poperand) = $interpolation_operand_nodes(pinterpolation.VALUES) ++ $operand_nodes(poperand)
+def $error_call_valid(S, perrorcall) = true
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.RESUME = INTERPOLATE_ARRAY_RESULT pinterpolation poperand
+  -- if $interpolation_array_result_valid(S, pinterpolation, poperand)
+  -- if perrorcall.SITE = pinterpolation.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pinterpolation.LINE
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+rule PhpStep/interpolation-array-warning: S ~> $error_dispatch(S_read, 2, $ptascii("Array to string conversion"), pinterpolation.LINE, DIAGNOSTIC "Warning" $ptascii("Array to string conversion") pinterpolation.LINE, INTERPOLATE_ARRAY_RESULT pinterpolation S.RESULT)
+  -- if S.TODO = (INTERPOLATE_CONVERT pinterpolation) :: ptask_tail*
+  -- if $call_task_valid(S, INTERPOLATE_CONVERT pinterpolation)
+  -- if S_read = $resolve_at(S, S.RESULT, pinterpolation.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PARRAY n)
+  -- if $error_handler_eligible(S_read, 2)
+rule PhpStep/interpolation-array-result: S ~> S[.ORIGIN = ($interpolation_child(pinterpolation.SITE, pinterpolation.INDEX))][.TODO = (INTERPOLATE_AFTER pinterpolation) :: ptask_tail*][.RESULT = KNOWN (PSTRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING $ptascii("Array")))]
+  -- if S.TODO = (INTERPOLATE_ARRAY_RESULT pinterpolation poperand) :: ptask_tail*
+  -- if $interpolation_array_result_valid(S, pinterpolation, poperand)
+
+dec $interpolation_array_handler(pstate, pvalue) : bool
+def $interpolation_array_handler(S, PARRAY n) = $error_handler_eligible(S, 2)
+def $interpolation_array_handler(S, pvalue) = false -- otherwise
+rule PhpStep/interpolation-scalar: S ~> S_string[.ORIGIN = ($interpolation_child(pinterpolation.SITE, pinterpolation.INDEX))][.TODO = (INTERPOLATE_AFTER pinterpolation) :: ptask_tail*][.BASE = BASE_VALUE S_string.RESULT]
+  -- if S.TODO = (INTERPOLATE_CONVERT pinterpolation) :: ptask_tail*
+  -- if $call_task_valid(S, INTERPOLATE_CONVERT pinterpolation)
+  -- if S_read = $resolve_at(S, S.RESULT, pinterpolation.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$user_string_value(S_read, pvalue)
+  -- if ~$interpolation_array_handler(S_read, pvalue)
+  -- if S_string = $stringify(S_read, pvalue, pinterpolation.LINE)
+  -- if S_string.COMPLETION = NORMAL
+rule PhpStep/interpolation-read-abrupt: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (INTERPOLATE_CONVERT pinterpolation) :: ptask_tail*
+  -- if $call_task_valid(S, INTERPOLATE_CONVERT pinterpolation)
+  -- if S_read = $resolve_at(S, S.RESULT, pinterpolation.LINE)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/interpolation-string-abrupt: S ~> S_string[.TODO = eps]
+  -- if S.TODO = (INTERPOLATE_CONVERT pinterpolation) :: ptask_tail*
+  -- if $call_task_valid(S, INTERPOLATE_CONVERT pinterpolation)
+  -- if S_read = $resolve_at(S, S.RESULT, pinterpolation.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$user_string_value(S_read, pvalue)
+  -- if ~$interpolation_array_handler(S_read, pvalue)
+  -- if S_string = $stringify(S_read, pvalue, pinterpolation.LINE)
+  -- if S_string.COMPLETION =/= NORMAL
+rule PhpStep/interpolation-after: S ~> S[.ORIGIN = (pinterpolation.SITE)][.TODO = (INTERPOLATE_NEXT pinterpolation[.INDEX = $(pinterpolation.INDEX + 1)][.TEXT = pinterpolation.TEXT ++ n_text*]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (INTERPOLATE_AFTER pinterpolation) :: ptask_tail*
+  -- if $call_task_valid(S, INTERPOLATE_AFTER pinterpolation)
+  -- if S.RESULT = KNOWN (PSTRING n_text*)

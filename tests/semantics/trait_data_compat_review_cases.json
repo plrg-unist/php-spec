@@ -1,0 +1,148 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only238 compatibility/priority selection; no model agreements claimed.",
+  "cases": [
+    {
+      "id": "property-signed-zero-compatible",
+      "source": "<?php trait T{public $x=-0.0;}class C{use T;public $x=0.0;}echo (new C)->x===0.0?\"Y\":\"N\";",
+      "source_sha256": "3726107765d4a03c9a47d002aacbe18168793b41cd712d57852596d240e586f9",
+      "status": "normal",
+      "stdout_base64": "WQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    },
+    {
+      "id": "property-nan-not-identical-to-itself",
+      "source": "<?php echo \"PRE;\";trait T{public $x=(-1.0)**0.5;}class C{use T;public $x=(-1.0)**0.5;}",
+      "source_sha256": "ae1c11772063d0bf469232974aea6b2d2a721ac0e7e39fd9887c60cd77191551",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    },
+    {
+      "id": "property-array-order-is-significant",
+      "source": "<?php echo \"PRE;\";trait T{public $x=[1=>1,0=>2];}class C{use T;public $x=[0=>2,1=>1];}",
+      "source_sha256": "bae99aec75db1fbe5f35fb95c4de7532ed18d96ff8a5d5046cac11c7194eb346",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    },
+    {
+      "id": "property-nested-array-evaluated-compatible",
+      "source": "<?php trait T{public $x=[1=>[\"x\"=>1+1]];}class C{use T;public $x=[1=>[\"x\"=>2]];}echo (new C)->x[1][\"x\"];",
+      "source_sha256": "19c9bfcdc86dc60fe16f5a1e8a142fc3e4b23921bf99537277cc430137086c5f",
+      "status": "normal",
+      "stdout_base64": "Mg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    },
+    {
+      "id": "property-self-constant-uses-composing-class",
+      "source": "<?php trait T{public $x=self::X;}class C{use T;public const X=3;public $x=3;}echo (new C)->x;",
+      "source_sha256": "969e3de9fa2e9dcbc592ad9ca518f52264ec2adbbf9502baffaf5a68805e1b33",
+      "status": "normal",
+      "stdout_base64": "Mw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    },
+    {
+      "id": "constant-final-flag-mismatch",
+      "source": "<?php echo \"PRE;\";trait T{public final const X=1;}class C{use T;public const X=1;}",
+      "source_sha256": "02cdcc29a4427360da835416c8d533130774e2733f80bcb961c493d12e826444",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIGNvbnN0YW50IChYKSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    },
+    {
+      "id": "constant-visibility-mismatch",
+      "source": "<?php echo \"PRE;\";trait T{protected const X=1;}class C{use T;public const X=1;}",
+      "source_sha256": "0ee7f2ce29c5db138c532ced6d0bf143b8334aa72b960dc89d5e59c15b45dbf5",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIGNvbnN0YW50IChYKSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    },
+    {
+      "id": "nested-property-conflict-names-immediate-exporter",
+      "source": "<?php echo \"PRE;\";trait A{public $x=1;}trait U{use A;}trait V{public $x=2;}class C{use U,V;}",
+      "source_sha256": "61283d1279b4392ddd17d391da0699f3693228f0f2d390d60293af5445c4f98f",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFUgYW5kIFYgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    },
+    {
+      "id": "compatible-earlier-trait-owns-conflict-label",
+      "source": "<?php echo \"PRE;\";trait A{public $x=1;}trait B{public $x=2;}class C{use A,B;public $x=1;}",
+      "source_sha256": "6d87f96cb171f3dc06b25088cdf9a24f1468d540195aad49e577c009ec87dd2d",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEEgYW5kIEIgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    },
+    {
+      "id": "property-conflict-before-final-parent",
+      "source": "<?php echo \"PRE;\";final class P{}trait T{public const X=1;public $x=1;}class C extends P{use T;public const X=1;public $x=2;}",
+      "source_sha256": "a679a642814497807da9ade11b4dd616aa74ece74c3db43d4760c0321eac5e53",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    },
+    {
+      "id": "concrete-method-conflict-before-data",
+      "source": "<?php echo \"PRE;\";trait T{function f(){}public const X=1;public $x=1;}trait U{function f(){}}class C{use T,U;public const X=2;public $x=2;}",
+      "source_sha256": "8ee1f03a2a34e96c0509bea93777e39e08f9a1498b7fd41a6109fdbde34f1e0b",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFRyYWl0IG1ldGhvZCBVOjpmIGhhcyBub3QgYmVlbiBhcHBsaWVkIGFzIEM6OmYsIGJlY2F1c2Ugb2YgY29sbGlzaW9uIHdpdGggVDo6ZiBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    },
+    {
+      "id": "static-private-set-trait-compatible-with-own-public-set",
+      "source": "<?php trait T{public private(set) static int $x=0;}class C{use T;public static int $x=0;}C::$x=4;echo C::$x;",
+      "source_sha256": "1b4fa9a48fc08b0e268d2ff4aa806b58fe88fefaa036ffa5ce58de6278549ed5",
+      "status": "normal",
+      "stdout_base64": "NA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    },
+    {
+      "id": "own-static-private-set-keeps-permission",
+      "source": "<?php trait T{public static int $x=0;}class C{use T;public private(set) static int $x=0;}try{C::$x=4;}catch(Error $e){echo $e->getMessage();}",
+      "source_sha256": "54984d959ccb3e2ac308caffddf3cf901759185a8864016ab1ea64a0f22cf27b",
+      "status": "normal",
+      "stdout_base64": "Q2Fubm90IG1vZGlmeSBwcml2YXRlKHNldCkgcHJvcGVydHkgQzo6JHggZnJvbSBnbG9iYWwgc2NvcGU=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-compat-native238-prh1jhz2/report.json",
+      "native_raw_sha256": "54ffe414142c00534019e79ed18c1a76c30de6259ed0cca65d5163282b490016"
+    }
+  ]
+}

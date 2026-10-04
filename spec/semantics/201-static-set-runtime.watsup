@@ -61,7 +61,7 @@ def $class_static_promotes_array(S, ppropertyid) = true
   -- if $entry_value(S, pitem) = PNULL \/ $entry_value(S, pitem) = PBOOL false
 def $class_static_promotes_array(S, ppropertyid) = false -- otherwise
 dec $class_static_dimension_flags(pstate, ppropertydesc, int) : pstate
-def $class_static_dimension_flags(S, ppropertydesc, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot auto-initialize an array inside property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), z)
+def $class_static_dimension_flags(S, ppropertydesc, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot auto-initialize an array inside property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), z)
   -- if ppropertydesc.TYPE =/= eps
   -- if $class_static_promotes_array(S, ppropertydesc.ORIGIN)
   -- if ~$typed_exact(ppropertydesc.TYPE, PARRAY 0)

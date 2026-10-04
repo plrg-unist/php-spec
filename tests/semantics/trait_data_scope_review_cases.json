@@ -1,0 +1,60 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only original compatibility scope versus imported runtime scope and nested contextual defaults; zero model agreement until238 execution.",
+  "cases": [
+    {
+      "id": "property-self-type-versus-explicit-using-class",
+      "source": "<?php echo \"PRE;\";trait T{public ?self $x=null;}class C{use T;public ?C $x=null;}echo \"POST\";",
+      "source_sha256": "d6dfc99f569159181e73b922556bb0b530e9cc64c79020b1d57f81114e54adbd",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-scope-native238-djcs_y8g/report.json",
+      "native_raw_sha256": "11a53f341953cc7954856d2a2fd7a4ed143f0e63f1c481540026ba080f559ca9"
+    },
+    {
+      "id": "nested-property-self-runtime-uses-final-import",
+      "source": "<?php trait T{public ?self $x=null;}trait U{use T;}class C{use U;}class E{use U;}$c=new C;$c->x=$c;echo $c->x===$c?\"C;\":\"N;\";try{$c->x=new E;}catch(TypeError $e){echo $e->getMessage();}",
+      "source_sha256": "ca6e7e0d092e2c6dd33e4c4256487e01ff3718f746cb61fb8866f6326e570fc1",
+      "status": "normal",
+      "stdout_base64": "QztDYW5ub3QgYXNzaWduIEUgdG8gcHJvcGVydHkgQzo6JHggb2YgdHlwZSA/c2VsZg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-scope-native238-djcs_y8g/report.json",
+      "native_raw_sha256": "11a53f341953cc7954856d2a2fd7a4ed143f0e63f1c481540026ba080f559ca9"
+    },
+    {
+      "id": "nested-property-class-magic-per-final-import",
+      "source": "<?php trait T{public $x=__CLASS__;public const X=__CLASS__;}trait U{use T;}class C{use U;}class E{use U;}echo (new C)->x,\":\",C::X,\";\",(new E)->x,\":\",E::X;",
+      "source_sha256": "e747d5ee7349b2afc804f887b0022cf5a8ec9084c008608585d1986a93635a3e",
+      "status": "normal",
+      "stdout_base64": "QzpDO0U6RQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-scope-native238-djcs_y8g/report.json",
+      "native_raw_sha256": "11a53f341953cc7954856d2a2fd7a4ed143f0e63f1c481540026ba080f559ca9"
+    },
+    {
+      "id": "nested-property-self-constant-per-final-import",
+      "source": "<?php trait T{public $x=self::X;}trait U{use T;}class C{use U;const X=2;}class E{use U;const X=3;}echo (new C)->x,\":\",(new E)->x;",
+      "source_sha256": "d39cca9ac3b6d826f07c691e086e60f6b0c9b7d7269ed3c1ba67443985cce647",
+      "status": "normal",
+      "stdout_base64": "Mjoz",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-scope-native238-djcs_y8g/report.json",
+      "native_raw_sha256": "11a53f341953cc7954856d2a2fd7a4ed143f0e63f1c481540026ba080f559ca9"
+    },
+    {
+      "id": "constant-self-type-versus-explicit-using-class",
+      "source": "<?php echo \"PRE;\";trait T{public const ?self X=null;}class C{use T;public const ?C X=null;}echo \"POST\";",
+      "source_sha256": "9d73821a2a69f0820e7f473aa1a0edd76fe59e1ade8bf314a0a0e99bf1f202df",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIGNvbnN0YW50IChYKSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-constant-type-native238-7me7rytz/report.json",
+      "native_raw_sha256": "065431bc1b4aec8d98e96a98073ed75341749d61bdde70df540494dbd6bb30ff"
+    }
+  ]
+}

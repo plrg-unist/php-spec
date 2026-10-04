@@ -1,0 +1,237 @@
+{
+  "scope": "Partial ordinary parsed string/heredoc interpolation; effective CAST/FAST_CONCAT/ROPE order, genuine Stringable/undefined/array callbacks and temporary-versus-CV ownership. No full-family closure.",
+  "target": "PHP8.5.10 CLI NTS64",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_encaps_list(11221),zend_compile_rope_finalize(11168)",
+    "vendor/php-src/Zend/zend_vm_def.h:FAST_CONCAT(3285),ROPE_INIT/ADD/END(3410/3445/3480),CAST(6495)"
+  ],
+  "source_gate": {
+    "revision": "88f457d1c13830dfc552142ca92318c45b3db204",
+    "modules": 237,
+    "agreements": 9,
+    "status": "normal0, frontend accepted, checked program, whole stdout/stderr equal native originals; launchers reaped/groups empty",
+    "author7_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-model-9144sr8a/report.json",
+    "independent2_raw": [
+      "/home/user/workspace/php-spec/.tools/include-review-14/interpolation/model-owner-cardinality-_9b1r9kl/report.json",
+      "/home/user/workspace/php-spec/.tools/include-review-14/interpolation/model-undefined-array-owner-2w95t7mc/report.json"
+    ],
+    "cases": [
+      {
+        "id": "scalars",
+        "source": "tests/semantics/interpolation/scalars.php",
+        "source_sha256": "b712e59ca2972eb6d22ecd18c33c11e4a5042ef2e68b068dea741eba0b0d0162",
+        "native_report": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-native/run-hr53ivmx/report.json",
+        "profile": "legacy tests/semantics/profile.json; no invented startup header"
+      },
+      {
+        "id": "cv-mutation",
+        "source": "tests/semantics/interpolation/cv-mutation.php",
+        "source_sha256": "18e317663a0a554e8cb4679c2d4d96f46cc6fa62983d543a80dad1f12cf4503c",
+        "native_report": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-native/run-hr53ivmx/report.json",
+        "profile": "legacy tests/semantics/profile.json; no invented startup header"
+      },
+      {
+        "id": "warning",
+        "source": "tests/semantics/interpolation/warning.php",
+        "source_sha256": "a5303fd023fcb02b6dadf2b78777f77a23f9d98fe2569a506d3d025181e53ae6",
+        "native_report": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-native/run-hr53ivmx/report.json",
+        "profile": "legacy tests/semantics/profile.json; no invented startup header"
+      },
+      {
+        "id": "fast-throw",
+        "source": "tests/semantics/interpolation/fast-throw.php",
+        "source_sha256": "b21d99db1887f1ae4d6e80f182caa48248b92455396b23a7f8fac2da78bf8858",
+        "native_report": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-native/run-hr53ivmx/report.json",
+        "profile": "legacy tests/semantics/profile.json; no invented startup header"
+      },
+      {
+        "id": "multiline",
+        "source": "tests/semantics/interpolation/multiline.php",
+        "source_sha256": "cf6aea5a51899bfa93c162c05b0a92b35d355d78d1dd36183034c1d5f1c7c098",
+        "native_report": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-native/run-hr53ivmx/report.json",
+        "profile": "legacy tests/semantics/profile.json; no invented startup header"
+      },
+      {
+        "id": "undefined-cardinality",
+        "source": "tests/semantics/interpolation/undefined-cardinality.php",
+        "source_sha256": "4c454f984a689ffc5d3d38fa04296c48a025b8e4792435bd8880215cd61327c4",
+        "native_report": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-native/run-qlnc_l57/report.json",
+        "profile": "legacy tests/semantics/profile.json; no invented startup header"
+      },
+      {
+        "id": "two-line-core",
+        "source": "tests/semantics/interpolation/two-line-core.php",
+        "source_sha256": "60cd2186a7353d2da08dff08f763f9ba846c85303dc7ca4de05402b4dd6e4cfd",
+        "native_report": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-native/run-yu5g4lmu/report.json",
+        "profile": "legacy tests/semantics/profile.json; no invented startup header"
+      },
+      {
+        "id": "owner-cardinality",
+        "source": "tests/semantics/interpolation/owner-cardinality.php",
+        "source_sha256": "cfc5c09a249ef8bbf1d46704667e8fb3baa0b549b82046f9742a8ffd34588f58",
+        "native_report": "/home/user/workspace/php-spec/.tools/include-review-14/interpolation/native-owner-cardinality-z0wu4f31/report.json",
+        "profile": "explicit reporting30719/include_path.:/displaystderr; no CWD input"
+      },
+      {
+        "id": "undefined-array-owner",
+        "source": "tests/semantics/interpolation/undefined-array-owner.php",
+        "source_sha256": "ae16152b6be82a5cd0b22af0c5ceb845895bc9f99697d252397f3448d2161991",
+        "native_report": "/home/user/workspace/php-spec/.tools/include-review-14/interpolation/native-undefined-array-owner-nuwpatkh/report.json",
+        "profile": "explicit reporting30719/include_path.:/displaystderr; no CWD input"
+      }
+    ]
+  },
+  "compiler_gates": {
+    "stages": "parse/elaborate/algorithmic/structure/initialize, application evaluations0",
+    "original237": {
+      "revision": "88f457d1c13830dfc552142ca92318c45b3db204",
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-model-9144sr8a/report.json"
+    },
+    "affected_AFTER_guard237": {
+      "revision": "a7c117b6bb3f214d351e9a2ee122360af09b1932",
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-auth-ash6t61e/report.json"
+    },
+    "no_rebuild_claim": true
+  },
+  "state_gate": {
+    "revision": "a7c117b6bb3f214d351e9a2ee122360af09b1932",
+    "unique_premises": 111,
+    "repeated_setup": 25,
+    "physical_premises": 136,
+    "groups": [
+      {
+        "group": "pending",
+        "premises": 20,
+        "elapsed_seconds": 78.69011285994202,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-auth-sq75m3iy/report.json"
+      },
+      {
+        "group": "entered",
+        "premises": 20,
+        "elapsed_seconds": 66.77151108067483,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-auth-y1fasikf/report.json"
+      },
+      {
+        "group": "result",
+        "premises": 29,
+        "elapsed_seconds": 75.08695588260889,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-auth-tfog291k/report.json"
+      },
+      {
+        "group": "rope",
+        "premises": 17,
+        "elapsed_seconds": 57.42700793221593,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-auth-nf63b016/report.json"
+      },
+      {
+        "group": "borrow",
+        "premises": 27,
+        "elapsed_seconds": 17.083887417800725,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-auth-9qt20qd3/report.json"
+      },
+      {
+        "group": "absent",
+        "premises": 23,
+        "elapsed_seconds": 4.52022550906986,
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-auth-suej6w66/report.json"
+      }
+    ],
+    "result": "Each exact true newline, empty stderr, exit0 within90, stable inputs/head/status, reaped/groups empty; same original109 logical conditions plus2 explicit finish-origin binding equalities."
+  },
+  "actual_parent_preservation": {
+    "parent": "cde31ae42683ffb0eaa141ec1d8681ec936d0e0a",
+    "merge": "2323a081a7b72b27027bd33d64707602efced317",
+    "modules": 241,
+    "review": "Exact240 parent rows plus251; actual trait-data/coalesce/ordinary-Throwable/callback-consumer routes and disjoint tags retained.168 ordinary result guards and interpolation child/tail authentication compose. No introduced concern or gate renewal."
+  },
+  "commands": {
+    "tested_author": "python3 .tools/check-interpolation-models.py",
+    "tested_independent": "python3 .tools/include-review-14/interpolation/check-model.py REVISION CASE (from independent root; exact commands retained in raw)",
+    "tested_controls": "python3 .tools/check-interpolation-controls.py PREPARED_GROUP --no-compile",
+    "maintained_sources": "python3 tests/semantics/interpolation_sources.py",
+    "maintained_controls": "python3 tests/semantics/interpolation_protocol.py [--group pending|entered|result|rope|borrow|absent]",
+    "maintained_prep": "python3 tests/semantics/interpolation_protocol.py --prepare-only"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "model_request_caps_seconds": [
+      90,
+      60
+    ],
+    "numeric_cap_seconds": 90,
+    "native_cap_seconds": 30,
+    "compiler_cap_seconds": 300,
+    "jobs": 1
+  },
+  "runtime_sha256": {
+    ".tools/cprefix-compiler/compiler": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/recorded-process.py": "7813bae32063a59cff2c0292878cc3f5ebbf27d3e6123907c9bea49e5858fe8a",
+    ".tools/request-clock.so": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+    "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+    "_build/default/adapter/main.exe": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d"
+  },
+  "preserved_failures": [
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-native/run-ckegihub",
+      "boundary": "Native producer parent directory missing before launch; no credit."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-model-p7scwk6r",
+      "boundary": "Unused include_path header KeyError before compiler/model."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-model-lw4b_nvv",
+      "boundary": "Compiler invalid inequality spelling."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-model-bt5gtjlr",
+      "boundary": "Early byte alias unavailable."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-model-ig8uflcu",
+      "boundary": "Recursive operand tail shared head base name."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-model-u0ykbbs2",
+      "boundary": "Noninvertible concatenated path binding."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-auth-ash6t61e",
+      "boundary": "109 fixture parser list grouping; affected compiler accepted separately."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-auth-5pcpaq5x",
+      "boundary": "Observer VALUE instead of actual array DIRECT, elaboration stop."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-auth-atyrpbuh",
+      "boundary": "Helper bound record through field projection, algorithmic stop."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-auth-ztwgz0ka",
+      "boundary": "Full111 numeric90 timeout, empty streams, reaped/group empty; zero credit."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-auth-882zt53z",
+      "boundary": "Fast49 numeric90 timeout, empty streams, reaped/group empty; zero credit."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-interpolation/.tools/interpolation-native/run-2xampol1/report.json",
+      "boundary": "MODE2 multiline native line pin uses non-object cast to object, explicitly Unsupported by56. Native-only, zero model agreement; distinct declared-holder companion is its own source7."
+    }
+  ],
+  "promotion": {
+    "sources": "Nine PHP files byte-exact; absent.php is state-only.111 main premises/helpers/group selection preserved after generated source-path substitution; prepare-only .tools/interpolation-protocol-1qufazni, no new semantic execution claim."
+  },
+  "independent_review": "/home/user/workspace/php-spec/.tools/include-review-14/interpolation-independent-review.json",
+  "remaining": [
+    "Broader interpolation producers/source contexts and legacy syntax compiler deprecations remain required; the parsed ordinary literal grouping does not claim invented checked-AST constant folding.",
+    "Original243 interpolated observer failures stay preserved at their old cut until an affected original check; this is no retroactive file-operand credit.",
+    "Non-object cast to object and other unfinished core behavior remain required; library count/get_included_files original remains outside this interpolation agreement.",
+    "Complete core coverage, request lifecycle/portability and broader campaigns remain open; return verification stays paused."
+  ]
+}
