@@ -21,6 +21,7 @@ CASES = {
     'anonymous-default-trait-maker-rebound-instanceof': b"<?php\ntrait Maker {\n    public static function make() {\n        return function($a = new self, $b = new parent) {\n            echo ($a instanceof B ? 'B' : 'A'), '/', ($b instanceof ParentTwo ? 'ParentTwo' : 'ParentOne'), ';';\n        };\n    }\n}\nclass ParentOne {}\nclass A extends ParentOne { use Maker; }\nclass ParentTwo {}\nclass B extends ParentTwo {}\n$f = A::make();\n$g = $f->bindTo(null, B::class);\nunset($f);\n$g();\n$r = $g->bindTo(null, A::class);\nunset($g);\n$r();\n",
     'anonymous-default-callback-owner-retirement': b"<?php\nfunction h($level, $message, $file, $line) {\n    echo 'H|';\n    unset($GLOBALS['bound']);\n    return true;\n}\nclass A {\n    private function __construct($flag) { echo 'C', $flag, '|'; }\n    public function __toString() { echo 'T|'; return 'a'; }\n    public static function make() {\n        return function(string $s = new self(E_STRICT)) {\n            echo get_called_class(), '/', $s;\n        };\n    }\n}\nclass B {}\nset_error_handler('h');\n$maker = A::make();\n$bound = $maker->bindTo(new B, A::class);\nunset($maker);\n$bound();\n",
     'anonymous-default-recursive-template-scopes': b"<?php\nclass A {\n    private function __construct() {\n        global $inner;\n        $inner();\n        echo 'A|';\n    }\n    public function __toString() { echo 'TA|'; return 'a'; }\n    public static function make() {\n        return function(string $s = new self) { echo 'F', $s, '|'; };\n    }\n}\nclass B {\n    public function __construct() { echo 'B|'; }\n    public function __toString() { echo 'TB|'; return 'b'; }\n}\n$maker = A::make();\n$inner = $maker->bindTo(null, B::class);\n$outer = $maker->bindTo(null, A::class);\nunset($maker);\n$outer();\n",
+    'anonymous-default-temporary-call-child': b"<?php\nclass ParentOne {}\nclass A extends ParentOne {\n    public static function make() {\n        return function() {\n            return function($a = new self, $p = new parent) {\n                echo ($a instanceof B ? 'B' : 'A'), '/', ($p instanceof ParentTwo ? 'ParentTwo' : 'ParentOne');\n            };\n        };\n    }\n}\nclass ParentTwo {}\nclass B extends ParentTwo {}\n$maker = A::make();\n$receiver = new B;\n$child = $maker->call($receiver);\nunset($maker, $receiver);\n$child();\n",
 }
 EXPECTED = {
     'rebound-self-parent': b'B/ParentTwo;A/ParentOne;B/ParentTwo;',
@@ -34,6 +35,7 @@ EXPECTED = {
     'anonymous-default-trait-maker-rebound-instanceof': b'B/ParentTwo;A/ParentOne;',
     'anonymous-default-callback-owner-retirement': b'H|C2048|T|B/a',
     'anonymous-default-recursive-template-scopes': b'B|TB|Fb|A|TA|Fa|',
+    'anonymous-default-temporary-call-child': b'B/ParentTwo',
 }
 
 

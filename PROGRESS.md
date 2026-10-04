@@ -16,7 +16,10 @@ saved scopes and public task/source rejection. The original object `::class`
 observer remains Unsupported with zero agreement; reduced instanceof observers
 retain the default behavior. Original descriptor and fixture failures stay in
 the [scope ledger](coverage/semantics/anonymous-default-new-review.json).
-Ordinary Throwable effects and dynamic object `::class` remain required next.
+Actual239 child composition1 at1b593 passes after temporary maker/receiver
+variables retire; the child retains its receiver. Latest231/234/230/242 routes
+are preserved without renewed private gates. Ordinary Throwable effects and
+dynamic object `::class` remain required next.
 
 Writable dimension keys242 stage defined mutable CV-array W/RW fetches through
 undefined/null/float/NaN callbacks, nested acquisition, updates and direct
