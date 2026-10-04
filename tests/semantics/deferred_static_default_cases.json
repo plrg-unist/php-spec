@@ -1832,6 +1832,60 @@
         "zend.assertions": "1"
       },
       "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "creators263_cached-method-static-child",
+      "source": "<?php\ntrait Factory {\n    private const TOKEN = 'secret';\n    private static function maker() {\n        return static function () {\n            return self::class . '/' . get_called_class() . '/' . static::class . ':' . self::TOKEN;\n        };\n    }\n    public static \\Closure $f = self::maker(...);\n}\nclass ScopeA { use Factory; }\n$first = ScopeA::$f;\n$firstChild = $first();\necho $firstChild(), ';';\nunset($firstChild);\nif (true) { class ScopeB { use Factory; } }\n$maker = ScopeB::$f;\n$child = $maker();\n$clone = clone $maker;\n$cloneChild = $clone();\nScopeA::$f = static function () {};\nScopeB::$f = static function () {};\nunset($first, $maker, $clone);\necho $child(), ':', $cloneChild();\n",
+      "source_sha256": "4854888e58b82b4fd36347e464783d7f35ddea0869052e878ed365b4b793ac67",
+      "stdout_base64": "U2NvcGVBL1Njb3BlQS9TY29wZUE6c2VjcmV0O1Njb3BlQS9TY29wZUIvU2NvcGVCOnNlY3JldDpTY29wZUEvU2NvcGVCL1Njb3BlQjpzZWNyZXQ=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-property-method-child-native-v1/report.json",
+      "native_raw_sha256": "79bad7d42f535fa7075e945dffa8ebad00868ee74d6e48c3fcef5083480ab6d9",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "creators263_cached-method-default-child",
+      "source": "<?php\ntrait Factory {\n    private static function maker() {\n        return function ($value = new self) {\n            return self::class . '/' . get_called_class() . '/' . $value::class;\n        };\n    }\n    public static \\Closure $f = self::maker(...);\n}\nclass ScopeA {\n    use Factory;\n    private function __construct() { echo 'A:'; }\n}\n$first = ScopeA::$f;\nif (true) {\n    class ScopeB {\n        use Factory;\n        private function __construct() { echo 'B:'; }\n    }\n}\n$maker = ScopeB::$f;\n$clone = clone $maker;\n$child = $clone();\n$childClone = clone $child;\nScopeA::$f = static function () {};\nScopeB::$f = static function () {};\nunset($first, $maker, $clone, $child);\necho $childClone();\n",
+      "source_sha256": "0d7b96717b80b4dc3e42beaff49726c159ff0e4ac7ef7e4cf30ffdccfc96e233",
+      "stdout_base64": "QTpTY29wZUEvU2NvcGVCL1Njb3BlQQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-property-method-child-native-v1/report.json",
+      "native_raw_sha256": "79bad7d42f535fa7075e945dffa8ebad00868ee74d6e48c3fcef5083480ab6d9",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
     }
   ]
 }

@@ -1,0 +1,43 @@
+;; A property method callable may keep a cached lexical method while selecting
+;; an unrelated called class. Its copied creator borrows the exact receipt.
+dec $property_method_scope_valid(pstate, pclosurescope) : bool
+def $property_method_scope_valid(S, pclosurescope) = true
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $property_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
+def $property_method_scope_valid(S, pclosurescope) = false -- otherwise
+
+def $closure_evidence_body(S, n) = (pmethoddesc.FUNCTION.ORIGIN)
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+def $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope) = true
+  -- if $property_method_scope_valid(S, pclosurescope)
+
+;; Issuance still requires the authentic live CURRENT and its creation body.
+def $closure_creation_stamp(S, pfunction) = ({FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, RECEIVER $closure_receiver_present($closure_bound_receiver(S, pfunction)), EVIDENCE (pclosurecreator)})
+  -- if ~$closure_nested_creation(S, pfunction.ORIGIN)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $closure_creator_current(S) = (pclosurecreator)
+  -- if pclosurecreator.SCOPE = CLOSURE_SCOPE pclosurescope_creator
+  -- if $property_method_scope_valid(S, pclosurescope_creator)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), pfunction.ORIGIN), eps) = ($origin_source(pcallcontext.FUNCTION))
+  -- if $call_current_valid(S)
+  -- if $closure_creation_scope(S, pfunction.ORIGIN)
+
+dec $property_method_child_valid(pstate, porigin, pclosurescope) : bool
+def $property_method_child_valid(S, porigin, pclosurescope) = true
+  -- if ~$closure_nested_creation(S, porigin)
+  -- if pclosurescope.CREATION = (pclosurecreation)
+  -- if pclosurecreation.EVIDENCE = (pclosurecreator)
+  -- if pclosurecreator.SCOPE = CLOSURE_SCOPE pclosurescope_creator
+  -- if $property_method_scope_valid(S, pclosurescope_creator)
+  -- if $closure_creator_valid(S, porigin, pclosurescope, pclosurecreation, pclosurecreator)
+def $property_method_child_valid(S, porigin, pclosurescope) = false -- otherwise
+def $closure_scope_creation_valid(S, porigin, pclosurescope) = true
+  -- if $constant_callable_source_scope(S, porigin) = eps
+  -- if $property_method_child_valid(S, porigin, pclosurescope)
+def $closure_scope_classes_valid(S, porigin, pclosurescope) = true
+  -- if ~$closure_scope_original_classes(S, porigin, pclosurescope)
+  -- if $property_method_child_valid(S, porigin, pclosurescope)
