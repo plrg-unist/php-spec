@@ -61,7 +61,7 @@ CAPTURE_CHECKS = [
     '$call_descriptors_valid(S_after)', '$closure_state_valid(S_after)',
     '$heap_valid($heap_graph(S_after))',
     '~$closure_scope_row_valid(S_after, pclosurescope[.RECEIVER = eps])',
-    '~$closure_scope_row_valid(S_after, pclosurescope[.CREATION = ({FUNCTION porigin_method, CALLSITE porigin_site, RECEIVER true})])',
+    '~$closure_scope_row_valid(S_after, pclosurescope[.CREATION = ({FUNCTION porigin_method, CALLSITE (porigin_site), RECEIVER true, EVIDENCE eps})])',
 ]
 
 CASES = {

@@ -73,7 +73,7 @@ protocol.CHECKS = {'selected-cold-reference': [
  '~$class_constant_table_done(S, porigin_a)',
  'S_queue = $static_default_test_resume($drive_steps(S, 1))',
  'S_queue.TODO = (STATIC_DEFAULT_UPDATE porigin_p z) :: (CLASS_CONST_TABLE_UPDATE porigin_a z) :: (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: (ORIGIN_RETURN (porigin_assignment)) :: (PROPERTY_REF_BIND (BASE_CLASS_STATIC porigin_a ptbytes) n_rhs z) :: ptask_tail*',
- 'pstaticselection = {SITE porigin_target, ROOT porigin_a, SCOPE eps, CALLED eps}',
+ 'pstaticselection = {SITE porigin_target, ROOT porigin_a, SCOPE eps, CALLED eps, CLOSURE eps}',
  'S_queue.ORIGIN = (porigin_target)',
  '$origin_child((porigin_assignment), [PCFIELD 0]) = (porigin_target)',
  'ptbytes = $ptascii("p")',

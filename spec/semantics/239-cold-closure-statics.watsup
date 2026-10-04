@@ -1,0 +1,215 @@
+;; Scope certificates borrow arena/source identities. They never retain the
+;; Closure, its receiver, captures or static cells in the heap graph.
+dec $closure_evidence_object(pclosureevidence) : nat
+dec $closure_evidence_lexical(pclosureevidence) : porigin?
+dec $closure_evidence_called(pclosureevidence) : porigin?
+dec $closure_evidence_receiver(pclosureevidence) : nat?
+dec $closure_evidence_body(pstate, nat) : porigin?
+dec $closure_evidence_valid(pstate, pclosureevidence) : bool
+def $closure_evidence_object(CLOSURE_SCOPE pclosurescope) = pclosurescope.OBJECT
+def $closure_evidence_object(CLOSURE_BINDING pclosurebinding) = pclosurebinding.OBJECT
+def $closure_evidence_lexical(CLOSURE_SCOPE pclosurescope) = (pclosurescope.LEXICAL)
+def $closure_evidence_lexical(CLOSURE_BINDING pclosurebinding) = pclosurebinding.LEXICAL
+def $closure_evidence_called(CLOSURE_SCOPE pclosurescope) = (pclosurescope.CALLED)
+def $closure_evidence_called(CLOSURE_BINDING pclosurebinding) = pclosurebinding.CALLED
+def $closure_evidence_receiver(CLOSURE_SCOPE pclosurescope) = pclosurescope.RECEIVER
+def $closure_evidence_receiver(CLOSURE_BINDING pclosurebinding) = pclosurebinding.RECEIVER
+def $closure_evidence_body(S, n) = (porigin)
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $method_capture_template(S, porigin)
+def $closure_evidence_body(S, n) = eps -- otherwise
+
+;; A nested source Closure may inherit a rebound creator's effective scope.
+;; The copied creator must precede it and own the immediate enclosing body.
+dec $closure_creator_site(pstate, porigin?) : bool
+def $closure_creator_site(S, eps) = true
+def $closure_creator_site(S, (porigin)) = true
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+def $closure_creator_site(S, porigin?) = false -- otherwise
+dec $closure_creator_header(pstate, porigin, pclosurescope, pclosurecreation, pclosurecreator) : bool
+def $closure_creator_header(S, porigin, pclosurescope, pclosurecreation, pclosurecreator) = true
+  -- if pclosureevidence = pclosurecreator.SCOPE
+  -- if $closure_evidence_valid(S, pclosureevidence)
+  -- if $($closure_evidence_object(pclosureevidence) < pclosurescope.OBJECT)
+  -- if $closure_evidence_body(S, $closure_evidence_object(pclosureevidence)) = (pclosurecreation.FUNCTION)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (pclosurecreation.FUNCTION)
+  -- if pclosurecreation.CALLSITE = pclosurecreator.CALLSITE
+  -- if $closure_creator_site(S, pclosurecreator.CALLSITE)
+  -- if $closure_evidence_lexical(pclosureevidence) = (pclosurescope.LEXICAL)
+  -- if $closure_evidence_called(pclosureevidence) = (pclosurescope.CALLED)
+def $closure_creator_header(S, porigin, pclosurescope, pclosurecreation, pclosurecreator) = false -- otherwise
+def $closure_creator_valid(S, porigin, pclosurescope, pclosurecreation, pclosurecreator) = true
+  -- if $closure_creator_header(S, porigin, pclosurescope, pclosurecreation, pclosurecreator)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if pclosurescope.RECEIVER = eps
+  -- if $closure_static(S, pfunction) \/ $closure_evidence_receiver(pclosurecreator.SCOPE) = eps
+  -- if ~pclosurecreation.RECEIVER
+def $closure_creator_valid(S, porigin, pclosurescope, pclosurecreation, pclosurecreator) = true
+  -- if $closure_creator_header(S, porigin, pclosurescope, pclosurecreation, pclosurecreator)
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if ~$closure_static(S, pfunction)
+  -- if pclosurescope.RECEIVER = (n_receiver)
+  -- if $closure_evidence_receiver(pclosurecreator.SCOPE) = (n_receiver)
+  -- if pclosurecreation.RECEIVER
+def $closure_creator_valid(S, porigin, pclosurescope, pclosurecreation, pclosurecreator) = false -- otherwise
+def $closure_scope_classes_valid(S, porigin, pclosurescope) = true
+  -- if $closure_source_class(S, porigin) = (pclosurescope.LEXICAL)
+  -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc)
+  -- if $class_origin_matches(S, pclosurescope.CALLED, pclassdesc.NAME, |S.CLASSES|)
+def $closure_scope_classes_valid(S, porigin, pclosurescope) = true
+  -- if $closure_nested_creation(S, porigin)
+  -- if pclosurescope.CREATION = (pclosurecreation)
+  -- if pclosurecreation.EVIDENCE = (pclosurecreator)
+  -- if $closure_creator_valid(S, porigin, pclosurescope, pclosurecreation, pclosurecreator)
+def $closure_scope_classes_valid(S, porigin, pclosurescope) = false -- otherwise
+def $closure_scope_receiver_free(S, porigin, pclosurescope) = true
+  -- if $closure_receiver_forbidden(S, porigin) \/ $closure_receiver_free_ancestry(S, porigin)
+def $closure_scope_receiver_free(S, porigin, pclosurescope) = true
+  -- if $closure_nested_creation(S, porigin)
+  -- if pclosurescope.CREATION = (pclosurecreation)
+  -- if pclosurecreation.EVIDENCE = (pclosurecreator)
+  -- if $closure_creator_valid(S, porigin, pclosurescope, pclosurecreation, pclosurecreator)
+  -- if pclosurescope.RECEIVER = eps
+def $closure_scope_receiver_free(S, porigin, pclosurescope) = false -- otherwise
+
+dec $closure_evidence_scope_receiver(pstate, porigin, pclosurescope) : bool
+def $closure_evidence_scope_receiver(S, porigin, pclosurescope) = $closure_scope_receiver_free(S, porigin, pclosurescope)
+  -- if pclosurescope.RECEIVER = eps
+def $closure_evidence_scope_receiver(S, porigin, pclosurescope) = true
+  -- if ~$closure_receiver_forbidden(S, porigin)
+  -- if ~$closure_static_method_owner(S, porigin)
+  -- if pclosurescope.RECEIVER = (n_receiver)
+  -- if $(n_receiver < |S.OBJECTS|)
+  -- if S.OBJECTS[n_receiver] = INSTANCE pclosurescope.CALLED
+def $closure_evidence_scope_receiver(S, porigin, pclosurescope) = false -- otherwise
+def $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope) = true
+  -- if $closure_evidence_body(S, pclosurescope.OBJECT) = (porigin)
+  -- if $closure_scope_classes_valid(S, porigin, pclosurescope)
+  -- if $closure_scope_creation_valid(S, porigin, pclosurescope)
+  -- if $binding_lexical_valid(S, (pclosurescope.LEXICAL))
+  -- if $binding_lexical_valid(S, (pclosurescope.CALLED))
+  -- if $closure_evidence_scope_receiver(S, porigin, pclosurescope)
+
+dec $closure_evidence_bind_site(pstate, porigin) : bool
+def $closure_evidence_bind_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ptlc($base64(text)) = $ptascii("bindto")
+def $closure_evidence_bind_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ptlc($base64(text_class)) = $ptascii("closure")
+  -- if $ptlc($base64(text)) = $ptascii("bind")
+def $closure_evidence_bind_site(S, porigin) = false -- otherwise
+;; Literal scope operands keep their compiled identity. Dynamic operands are
+;; the authentic bound row's frozen value, never a later CV lookup.
+dec $closure_evidence_scope_fixed(expression) : bool
+def $closure_evidence_scope_fixed(NExprClassConstFetch name (NIdentifier (BYTES text) metadata_name) metadata) = true
+  -- if $ppscoped_named(name)
+  -- if $pfclassname_keyword(name) = eps
+  -- if $ptlc($base64(text)) = $ptascii("class")
+def $closure_evidence_scope_fixed(expression) = false -- otherwise
+dec $closure_evidence_scope_input(pstate, porigin, porigin?) : bool
+def $closure_evidence_scope_input(S, PORIGIN n pcpath, porigin?) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $closure_evidence_scope_fixed(expression)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes, eps))
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = porigin?
+def $closure_evidence_scope_input(S, porigin, eps) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $parser_literal(expression) = (PNULL)
+def $closure_evidence_scope_input(S, porigin, porigin?) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $parser_literal(expression) = (PSTRING ptbytes)
+  -- if $ptlc(ptbytes) =/= $ptascii("static")
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = porigin?
+def $closure_evidence_scope_input(S, porigin, porigin?) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if ~$closure_evidence_scope_fixed(expression)
+  -- if $parser_literal(expression) = eps
+def $closure_evidence_scope_input(S, porigin, porigin?) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $parser_literal(expression) = (PSTRING ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("static")
+def $closure_evidence_scope_input(S, porigin, porigin?) = false -- otherwise
+dec $closure_evidence_bind_input(pstate, pclosurebinding) : bool
+def $closure_evidence_bind_input(S, pclosurebinding) = $closure_evidence_scope_input(S, porigin_scope, pclosurebinding.LEXICAL)
+  -- if $origin_node(S.SOURCES, pclosurebinding.SITE) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if |phpType7*| = 2
+  -- if $origin_child((pclosurebinding.SITE), [PCFIELD 2, PCINDEX 1, PCFIELD 1]) = (porigin_scope)
+def $closure_evidence_bind_input(S, pclosurebinding) = $closure_evidence_scope_input(S, porigin_scope, pclosurebinding.LEXICAL)
+  -- if $origin_node(S.SOURCES, pclosurebinding.SITE) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if |phpType7*| = 3
+  -- if $origin_child((pclosurebinding.SITE), [PCFIELD 2, PCINDEX 2, PCFIELD 1]) = (porigin_scope)
+def $closure_evidence_bind_input(S, pclosurebinding) = true
+  -- if $origin_node(S.SOURCES, pclosurebinding.SITE) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if |phpType7*| = 1
+def $closure_evidence_bind_input(S, pclosurebinding) = true
+  -- if $origin_node(S.SOURCES, pclosurebinding.SITE) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if |phpType7*| = 2
+def $closure_evidence_bind_input(S, pclosurebinding) = false -- otherwise
+dec $closure_evidence_bind_receiver(pstate, porigin, pclosurebinding) : bool
+def $closure_evidence_bind_receiver(S, porigin, pclosurebinding) = true
+  -- if pclosurebinding.RECEIVER = eps
+  -- if pclosurebinding.CALLED = pclosurebinding.LEXICAL
+def $closure_evidence_bind_receiver(S, porigin, pclosurebinding) = true
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if ~$closure_static(S, pfunction)
+  -- if pclosurebinding.RECEIVER = (n_receiver)
+  -- if $(n_receiver < |S.OBJECTS|)
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
+  -- if pclosurebinding.CALLED = (porigin_called)
+def $closure_evidence_bind_receiver(S, porigin, pclosurebinding) = false -- otherwise
+def $closure_evidence_valid(S, CLOSURE_BINDING pclosurebinding) = true
+  -- if $closure_evidence_body(S, pclosurebinding.OBJECT) = (porigin)
+  -- if $(pclosurebinding.SOURCE < pclosurebinding.OBJECT)
+  -- if $closure_evidence_body(S, pclosurebinding.SOURCE) = (porigin)
+  -- if $closure_evidence_bind_site(S, pclosurebinding.SITE)
+  -- if $closure_evidence_bind_input(S, pclosurebinding)
+  -- if $binding_lexical_valid(S, pclosurebinding.LEXICAL)
+  -- if $binding_lexical_valid(S, pclosurebinding.CALLED)
+  -- if $closure_evidence_bind_receiver(S, porigin, pclosurebinding)
+def $closure_evidence_valid(S, pclosureevidence) = false -- otherwise
+
+;; Only the authentic live invocation can mint copied evidence. Its callsite
+;; may be an error emission; source-call enumeration is unnecessary here.
+def $closure_evidence_current(S) = (CLOSURE_SCOPE pclosurescope)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $context_target(pcallcontext) = CLOSURE_TARGET n
+  -- if $call_current_valid(S)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+  -- if $closure_scope_row_valid(S, pclosurescope)
+def $closure_evidence_current(S) = (CLOSURE_BINDING pclosurebinding)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $context_target(pcallcontext) = CLOSURE_TARGET n
+  -- if $call_current_valid(S)
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = (pclosurebinding)
+  -- if $closure_binding_source_valid(S, pclosurebinding)
+def $closure_evidence_current(S) = eps -- otherwise
+
+def $closure_creator_current(S) = ({SCOPE pclosureevidence, CALLSITE pcallcontext.CALLSITE})
+  -- if S.CURRENT = (pcallcontext)
+  -- if $closure_evidence_current(S) = (pclosureevidence)
+def $closure_creator_current(S) = eps -- otherwise
+
+def $class_static_selection_valid(S, pstaticselection) = true
+  -- if $class_static_selection_header(S, pstaticselection)
+  -- if $origin_node(S.SOURCES, pstaticselection.SITE) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $class_static_selection_keyword(phpType19) = (ptbytes)
+  -- if pstaticselection.CLOSURE = (pclosureevidence)
+  -- if $closure_evidence_valid(S, pclosureevidence)
+  -- if $closure_evidence_body(S, $closure_evidence_object(pclosureevidence)) = (porigin_function)
+  -- if pstaticselection.SITE = PORIGIN n pcpath
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction)
+  -- if pfunction.ORIGIN = porigin_function
+  -- if pstaticselection.SCOPE = (porigin_scope)
+  -- if pstaticselection.CALLED = (porigin_called)
+  -- if $closure_evidence_lexical(pclosureevidence) = (porigin_scope)
+  -- if $closure_evidence_called(pclosureevidence) = (porigin_called)
+  -- if $class_static_selection_root(S, ptbytes, porigin_scope, porigin_called) = (pstaticselection.ROOT)
+def $class_static_selection(S, poperand) = (pstaticselection)
+  -- if S.ORIGIN = (porigin)
+  -- if $scoped_selector_class(S, poperand) = (porigin_root)
+  -- if $closure_evidence_current(S) = (pclosureevidence)
+  -- if pstaticselection = {SITE porigin, ROOT porigin_root, SCOPE $closure_evidence_lexical(pclosureevidence), CALLED $closure_evidence_called(pclosureevidence), CLOSURE (pclosureevidence)}
+  -- if $class_static_selection_valid(S, pstaticselection)
