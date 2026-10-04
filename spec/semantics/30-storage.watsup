@@ -33,7 +33,7 @@ syntax ppropertydesc = { ORIGIN ppropertyid, NAME ptbytes, KEY ptbytes, VISIBILI
 syntax ppropstate = PROP_INITIAL | PROP_UNSET | PROP_VALUE pitem | PROP_DEFERRED porigin
 syntax ppropertyslot = { DECL ppropertyid?, NAME ptbytes, STATE ppropstate }
 syntax pobjectprops = { OBJECT nat, SLOTS ppropertyslot*, MATERIALIZED bool }
-syntax pproptypesource = OBJECT_PROP_SOURCE nat ptbytes ppropertyid | CLASS_PROP_SOURCE ppropertyid
+syntax pproptypesource = OBJECT_PROP_SOURCE nat ptbytes ppropertyid | CLASS_PROP_SOURCE ppropertyid | RETIRED_CLASS_PROP_SOURCE porigin nat
 syntax ppropref = { CELL nat, SOURCES pproptypesource* }
 syntax prefcoercion = { CELL nat, SITE porigin, LINE int, VALUE ptbytes }
 syntax pstaticstring = { SITE porigin, CLASS porigin, DECL ppropertyid, NAME ptbytes, OBJECT nat, RHS poperand, LINE int }
@@ -41,7 +41,7 @@ syntax pparameterstring = { FUNCTION porigin, INDEX nat, CELL nat, OBJECT nat, L
 syntax pvariadicstring = { FUNCTION porigin, INDEX nat, ELEMENT nat, NAMED bool, OPERAND poperand, OBJECT nat, LINE int }
 syntax pparameterbacking = { FUNCTION porigin, INDEX nat, CELL nat, LINE int, VALUE ptbytes }
 dec $propref_at(ppropref*, nat) : ppropref?
-syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat
+syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat
 syntax pclassconstantflags = CCFLAGS (porigin, bool)* porigin* | CCBAD
 syntax pclassconstantdesc = { ORIGIN porigin, OWNER porigin, OWNERNAME ptbytes, NAME ptbytes, VISIBILITY ppropertyvisibility, FINAL bool, TYPE ptbranch*, INITIALIZER porigin, FOLDED bool, LINE nat }
 dec $ppclass_constants(pclassconstantdesc*, porigin) : pclassconstantdesc*

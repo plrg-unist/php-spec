@@ -248,6 +248,123 @@ CHECKS = {'partial-retry': ['S_queue = $static_default_test_seek(S_initial[.COMP
                       '$static_default_fills(S_done.CLASSCONSTANTHISTORY) = [porigin_p]',
                       '$class_constant_state_valid(S_done) /\\ $class_statics_valid(S_done)']}
 
+SOURCES['reentrant-alias'] = '''<?php
+class A { public static int $p = E_STRICT; }
+class B extends A {}
+function h($l, $m, $f, $n) {
+    echo "H:", B::$p, ":";
+    $GLOBALS["r"] =& B::$p;
+    $GLOBALS["r"] = 9;
+    return true;
+}
+set_error_handler("h");
+echo B::$p, ":";
+restore_error_handler();
+try { $r = "bad"; echo "free:"; } catch (TypeError $e) { echo "typed:"; }
+echo A::$p, ":", $r;
+'''
+PREFIX += '''
+dec $static_reentry_test_queue(pstate) : bool
+def $static_reentry_test_queue(S) = true
+  -- if S.TODO = (STATIC_DEFAULT_UPDATE porigin_p z) :: (CLASS_CONST_TABLE_UPDATE porigin_a z) :: (CLASS_CONST_TABLE_UPDATE porigin_b z) :: ptask_tail*
+def $static_reentry_test_queue(S) = false -- otherwise
+dec $static_reentry_test_seek_queue(pstate, nat) : pstate
+def $static_reentry_test_seek_queue(S, n_limit) = S
+  -- if $static_reentry_test_queue(S)
+def $static_reentry_test_seek_queue(S, n_limit) = $static_reentry_test_seek_queue($static_default_test_resume(S_next), n_rest)
+  -- if ~$static_reentry_test_queue(S)
+  -- if $(n_limit > 0)
+  -- if S.COMPLETION = NORMAL
+  -- if ~S.COMPILESTOP
+  -- if n_rest = $(n_limit - 1)
+  -- if S_next = $drive_steps(S, 1)
+dec $static_reentry_test_stage(pstate) : bool
+def $static_reentry_test_stage(S) = true
+  -- if S.FRAMES = eps
+  -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
+  -- if $class_static_at(S.CLASSSTATICS, pstaticdefaultcontext.DECL) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
+def $static_reentry_test_stage(S) = false -- otherwise
+dec $static_reentry_test_seek(pstate, nat) : pstate
+def $static_reentry_test_seek(S, n_limit) = S
+  -- if $static_reentry_test_stage(S)
+def $static_reentry_test_seek(S, n_limit) = $static_reentry_test_seek($static_default_test_resume(S_next), n_rest)
+  -- if ~$static_reentry_test_stage(S)
+  -- if $(n_limit > 0)
+  -- if S.COMPLETION = NORMAL
+  -- if ~S.COMPILESTOP
+  -- if n_rest = $(n_limit - 1)
+  -- if S_next = $drive_steps(S, 1)
+'''
+CHECKS['reentrant-alias'] = [
+ 'S_queue = $static_reentry_test_seek_queue(S_initial[.COMPLETION = NORMAL], 500)',
+ 'S_queue.TODO = (STATIC_DEFAULT_UPDATE porigin_p z) :: (CLASS_CONST_TABLE_UPDATE porigin_a z) :: (CLASS_CONST_TABLE_UPDATE porigin_b z) :: ptask_queue_tail*',
+ '$class_named(S_queue.CLASSNAMES, $ptascii("a")) = (porigin_a)',
+ '$class_named(S_queue.CLASSNAMES, $ptascii("b")) = (porigin_b)',
+ r'$class_constant_state_valid(S_queue) /\ $class_statics_valid(S_queue)',
+ '~$class_constant_state_valid(S_queue[.TODO = (STATIC_DEFAULT_UPDATE porigin_p z) :: (CLASS_CONST_TABLE_UPDATE porigin_b z) :: (CLASS_CONST_TABLE_UPDATE porigin_a z) :: ptask_queue_tail*])',
+ '~$class_constant_state_valid(S_queue[.TODO = (STATIC_DEFAULT_UPDATE porigin_p z) :: (CLASS_CONST_TABLE_UPDATE porigin_b z) :: ptask_queue_tail*])',
+ '~$class_constant_state_valid(S_queue[.TODO = (STATIC_DEFAULT_UPDATE porigin_p z) :: (CLASS_CONST_TABLE_UPDATE porigin_a z) :: ptask_queue_tail*])',
+ '~$class_constant_state_valid(S_queue[.TODO = (STATIC_DEFAULT_UPDATE porigin_p z) :: (CLASS_CONST_TABLE_UPDATE porigin_a z) :: (CLASS_CONST_TABLE_UPDATE porigin_a z) :: (CLASS_CONST_TABLE_UPDATE porigin_b z) :: ptask_queue_tail*])',
+ 'S = $static_reentry_test_seek(S_queue, 1500)',
+ 'S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*',
+ '$class_named(S.CLASSNAMES, $ptascii("a")) = (porigin_a)',
+ '$class_at(S.CLASSES, porigin_a) = (pclassdesc)',
+ 'pclassdesc.PROPERTIES = [ppropertydesc]',
+ 'ppropertydesc.ORIGIN = porigin_p',
+ 'pstaticdefaultcontext.DECL = porigin_p',
+ 'pstaticdefaultcontext.ORIGIN = (porigin_outer)',
+ 'ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer',
+ '$class_static_at(S.CLASSSTATICS, porigin_p) = (pclassstatic)',
+ 'pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)',
+ 'S.STORE[n_cell] = DEFINED (PINT 9)',
+ '$propref_source_present(S.PROPREFS, n_cell, CLASS_PROP_SOURCE porigin_p)',
+ 'pstaticdefaultcontext.ROOT = porigin_b',
+ 'S.CLASSCONSTANTHISTORY = [CCLINK porigin_a n_link_a, CCLINK porigin_b n_link_b, CCSTATIC porigin_p porigin_inner n_fill, CCUPDATE porigin_a porigin_b porigin_inner n_done_a, CCUPDATE porigin_b porigin_b porigin_inner n_done_b]',
+ r'$class_constant_table_done(S, porigin_a) /\ $class_constant_table_done(S, porigin_b)',
+ '$static_default_bind_valid(S, pstaticdefaultcontext)',
+ r'$class_constant_state_valid(S) /\ $class_statics_valid(S) /\ $proprefs_valid(S)',
+ '~$static_default_bind_valid(S, pstaticdefaultcontext[.DECL = porigin_a])',
+ '~$static_default_bind_valid(S, pstaticdefaultcontext[.ROOT = porigin_a])',
+ '~$static_default_bind_valid(S, pstaticdefaultcontext[.LINE = $(pstaticdefaultcontext.LINE + 1)])',
+ 'n_event = |S.CLASSCONSTANTHISTORY|',
+ 'S_retired = $static_default_test_resume($drive_steps(S, 1))',
+ '$class_static_at(S_retired.CLASSSTATICS, porigin_p) = ({DECL porigin_p, STATE PROP_VALUE (DIRECT (PINT 2048))})',
+ 'n_prefix = |S_retired.DECLARATIONS|',
+ 'S_retired.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCSTATICRETIRE porigin_p porigin_outer n_prefix n_cell]',
+ '$static_default_fills(S_retired.CLASSCONSTANTHISTORY) = [porigin_p]',
+ '$propref_at(S_retired.PROPREFS, n_cell) = ({CELL n_cell, SOURCES ([RETIRED_CLASS_PROP_SOURCE porigin_p n_event])})',
+ '$propref_source_valid(S_retired, n_cell, RETIRED_CLASS_PROP_SOURCE porigin_p n_event)',
+ '~$propref_source_valid(S_retired, n_cell, CLASS_PROP_SOURCE porigin_p)',
+ '~$propref_source_valid(S_retired, n_cell, RETIRED_CLASS_PROP_SOURCE porigin_a n_event)',
+ '~$propref_source_valid(S_retired, n_cell, RETIRED_CLASS_PROP_SOURCE porigin_p $(n_event + 1))',
+ '~$propref_source_valid(S_retired[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY], n_cell, RETIRED_CLASS_PROP_SOURCE porigin_p n_event)',
+ '~$class_constant_history_valid(S_retired[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCSTATICRETIRE porigin_p porigin_initializer n_prefix n_cell]])',
+ '~$class_constant_history_valid(S_retired[.CLASSCONSTANTHISTORY = [CCLINK porigin_a n_link_a, CCLINK porigin_b n_link_b, CCSTATICRETIRE porigin_p porigin_outer n_prefix n_cell, CCSTATIC porigin_p porigin_inner n_fill, CCUPDATE porigin_a porigin_b porigin_inner n_done_a, CCUPDATE porigin_b porigin_b porigin_inner n_done_b]])',
+ '~$class_constant_history_valid(S_retired[.CLASSCONSTANTHISTORY = S_retired.CLASSCONSTANTHISTORY ++ [CCSTATIC porigin_p porigin_outer n_prefix]])',
+ '~$class_constant_history_valid(S_retired[.CLASSCONSTANTHISTORY = S_retired.CLASSCONSTANTHISTORY ++ [CCUPDATE porigin_a porigin_a porigin_outer n_prefix]])',
+ '~$proprefs_valid(S_retired[.PROPREFS = [{CELL n_cell, SOURCES ([CLASS_PROP_SOURCE porigin_p])}]])',
+ '~$proprefs_valid(S_retired[.STORE = $set_cell(S_retired.STORE, n_cell, DEFINED (PSTRING $ptascii("bad")))])',
+ r'$class_constant_state_valid(S_retired) /\ $class_statics_valid(S_retired) /\ $proprefs_valid(S_retired)',
+ 'S_retired.TODO = (CLASS_CONST_TABLE_UPDATE porigin_a z) :: (CLASS_CONST_TABLE_UPDATE porigin_b z) :: ptask_after*',
+ '$class_constant_table_sequence(S_retired, porigin_b, [porigin_a, porigin_b])',
+ '$class_constant_table_sequence(S_retired, porigin_b, eps)',
+ '~$class_constant_table_sequence(S_retired, porigin_b, [porigin_b, porigin_a])',
+ '~$class_constant_table_sequence(S_retired, porigin_b, [porigin_a, porigin_a, porigin_b])',
+ '~$class_constant_state_valid(S_retired[.TODO = (CLASS_CONST_TABLE_UPDATE porigin_b z) :: (CLASS_CONST_TABLE_UPDATE porigin_a z) :: ptask_after*])',
+ '~$class_constant_state_valid(S_retired[.TODO = (CLASS_CONST_TABLE_UPDATE porigin_a z) :: (CLASS_CONST_TABLE_UPDATE porigin_p z) :: (CLASS_CONST_TABLE_UPDATE porigin_b z) :: ptask_after*])',
+ 'S_done = $drive_steps(S_retired, 600)',
+ r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps',
+ 'S_done.CLASSCONSTANTHISTORY = S_retired.CLASSCONSTANTHISTORY',
+ 'S_done.STORE[n_cell] = DEFINED (PINT 9)',
+ r'$class_constant_state_valid(S_done) /\ $class_statics_valid(S_done) /\ $proprefs_valid(S_done)',
+ 'S_dead = $prune_allocations(S_done[.ENV = eps][.GLOBALTABLE = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])',
+ '~((HCELL n_cell) <- S_dead.ALLOCATIONS)',
+ '$propref_at(S_dead.PROPREFS, n_cell) = eps',
+ 'S_dead.CLASSCONSTANTHISTORY = S_done.CLASSCONSTANTHISTORY',
+ r'$class_constant_history_valid(S_dead) /\ $class_statics_valid(S_dead) /\ $proprefs_valid(S_dead)'
+]
+
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 def prepare(out):

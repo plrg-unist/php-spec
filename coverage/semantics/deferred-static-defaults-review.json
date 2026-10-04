@@ -6,15 +6,18 @@
     "spec/semantics/219-deferred-static-defaults.watsup",
     "spec/semantics/135-property-compiler.watsup",
     "spec/semantics/184-class-constants.watsup",
-    "spec/semantics/187-class-static-storage.watsup"
+    "spec/semantics/187-class-static-storage.watsup",
+    "spec/semantics/229-static-default-reentry.watsup"
   ],
   "contracts": [
     "Declaring scope; strict types with int-to-float promotion.",
     "Parent, class constants, static defaults, then table completion.",
-    "Each declaration has one live static row; history records source identities only.",
+    "Each declaration has one live static row; first-fill history stores source identities, retirement metadata stores a nonowning cell index.",
     "Failed initialization retains earlier fills; retries skip completed values.",
     "Inherited prototypes keep their initializer AST even after a parent cell fills.",
-    "Source/line, publication-prefix, table-order and binder validation; existing array/alias roots."
+    "Source/line, publication-prefix, table-order and binder validation; existing array/alias roots.",
+    "Resumed successful update replaces a reentrant live row; firstfill and table completion remain once-only.",
+    "Escaped typed aliases retain ordered nonowning property constraints authenticated by retirement history; abrupt/type failures retain the live row."
   ],
   "engine_symbols": [
     "zend_compile_prop_decl",
@@ -106,10 +109,10 @@
     "peer": "compiler_review_14 (prior compiler_review_13 semantic review retained)",
     "state_acceptance": "Independent exact fixture/raw review accepts narrow repairs and5/149 logical checks at293a76440.",
     "composition": "Independent native baselines and exact model/raw/additive merge review accepted by compiler_review_14 at 8da51d193; final catalogue/docs publication contains no semantic change.",
-    "diagnostic_composition": "compiler_review_14 independently accepts actual217 merge, four new raw agreements, exact Unsupported2/owner41 and cross-file source/finite-snapshot/sharedorigin repair at their recorded cutoffs."
+    "diagnostic_composition": "compiler_review_14 independently accepts actual217 merge, four new raw agreements, exact Unsupported2/owner41 and cross-file source/finite-snapshot/sharedorigin repair at their recorded cutoffs.",
+    "reentry": "compiler_review_14 independently accepted representation, failure/retry/rebind/source-order/GC transitions, exact inherited67 fixture and recorder, all13 complete raw native/model tuples atbf0954840. No previous18/149 renewal."
   },
   "required_next": [
-    "Immediate same-default reentry: authenticate resumed outer update, retain firstfill history once, and preserve escaped alias type constraints after live-row replacement.",
     "Deferred instance defaults before static defaults, including shadowed private templates.",
     "Object-bearing defaults with authenticated creation/cache transfer and live roots.",
     "Cold synchronous reference/update continuations into an incomplete table.",
@@ -138,7 +141,7 @@
       "nested-private-default:H4:2049:2049",
       "busy-constant-nested-private:H4:2048:2048"
     ],
-    "controls": "Native reentry write/alias sources are normal PHP. Model accepted/checked Unsupported with exact reentrant deferred static default update reason, H: prefix, no diagnostic/stderr, publicCLI process+cleanup1; no native-agreement credit. Owner41 uses unchanged source-derived fixture, AL true newline/empty stderr0.",
+    "controls": "Historical5c cut: native reentry2 were normal PHP; model Unsupported/checked/H:/no diagnostic or stderr/process+cleanup1, with no agreement credit. New229 reentry_validation supersedes that boundary on the exact original sources. Owner41 remains unchanged AL true newline/empty stderr0.",
     "preserved_failure": "v1 recorder expected exit0 for Unsupported; original checked boundary/exit1 raw retained. v2 corrects only exit expectation and runs affected/unrun controls plus owner41; no supported-source repeat.",
     "cross_file": {
       "result": "PASS1 exact new native/model normal tuple:F:8:E:4:T:8",
@@ -153,7 +156,7 @@
     },
     "credit": "SL source checks and AL owner41 retain distinct credit; no earlier11/2 or unrelated93/266 renewal."
   },
-  "reentry_controls": [
+  "historical_reentry_controls": [
     {
       "id": "reenter-write",
       "source": "reviewer14-217219-native-v1/reenter-write.php",
@@ -176,5 +179,28 @@
       "model_stdout_base64": "SDo=",
       "model_process_exit": 1
     }
-  ]
+  ],
+  "reentry_validation": {
+    "result": "PASS13 exact native/model normal tuples and one inherited67-premise AL ownership/history fixture",
+    "tested_revision": "bf09548401a35e94769819dd717b0726b2ce0cd9",
+    "accepted_base": "ce2ffb1899ddbdb6830f29699bab562accd66f90",
+    "scope": "Typed/untyped outer replacement, escaped constraint/reattach/rebind, swap-last source order, array COW, handler throw, strict outer bind failure, callback eval partial retry and inherited complete/partial tables.",
+    "reports": [
+      "reentry-model-v2/report.json",
+      "reviewer14-217219-native-v1/report.json",
+      "reviewer14-reentry-native-v1/report.json",
+      "reviewer14-reentry-native-v2/report.json",
+      "reviewer14-reentry-native-v3/report.json",
+      "reviewer14-reentry-native-v4/report.json",
+      "reviewer14-reentry-native-v5/report.json",
+      "reviewer14-reentry-native-v6/report.json",
+      "reviewer14-reentry-native-v7/report.json"
+    ],
+    "command": "python3 .tools/deferred-static-defaults/reentry-model-v2/run.py",
+    "completion": "All native/model streams and exits exact; checked normal/null reason+diagnostic, publicCLI process+cleanup0, empty external stderr, no remaining owned groups, inputs unchanged. Numeric fixture stdout true newline/empty stderr0.",
+    "state_fixture": "reentry-state-prepared-v2/reentrant-alias.watsup; exact inherited native-v6 source. 67 sequential premises authenticate resumed binder, parent/child queue order/completeness, firstfill/table once, retirement declaration/index/cell/trigger/prefix, backing type and nonowning GC release.",
+    "historical_compile": "183 traverses CCSTATIC and CCSTATICRETIRE publication ordinals without substituting static values into compiler class constants.",
+    "preserved_failure": "reentry-model-v1 first source failed before execution:184 class_constant_update_ordered declared after new use. Narrow declaration move only; all affected/unrun sources and fixture then passed in v2. A-only50 preparation v1 remains unrun.",
+    "credit": "13 new source agreements only; original18 and original149/152 state evidence are unchanged. PublicCLI SL compilation credit and numeric AL state credit remain distinct."
+  }
 }
