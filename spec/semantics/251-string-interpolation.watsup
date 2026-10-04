@@ -223,7 +223,8 @@ rule PhpStep/interpolation-resolve: S ~> S[.TODO = (INTERPOLATE_CONVERT pinterpo
 def $interpolation_child_site_valid(S, PORIGIN n_unit pcpath_child, z) = true
   -- if $(|pcpath_child| >= 2)
   -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 2))]
-  -- if pcpath_child = pcpath_parent ++ [PCFIELD 0, PCINDEX n]
+  -- if pcpath_child[$nabs($(|pcpath_child| - 2))] = PCFIELD 0
+  -- if pcpath_child[$nabs($(|pcpath_child| - 1))] = PCINDEX n
   -- if porigin = PORIGIN n_unit pcpath_parent
   -- if $interpolation_parts(S, porigin) = (phpType30*)
   -- if $(n < |phpType30*|)
