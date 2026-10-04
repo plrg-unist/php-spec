@@ -16,10 +16,22 @@ dec $consumer_shutdown_scope(pstate, papiquery, pshutdownentry) : bool
 dec $consumer_capture_current(pstate, porigin) : pmethodcapture?
 dec $consumer_capture_valid(pstate, porigin, pmethodcapture?) : bool
 dec $consumer_capture_function(pstate, porigin, pmethodcapture?) : porigin?
-dec $consumer_queue_capture(pstate, pshutdownentry) : bool
-dec $consumer_queue_prefix(pshutdownentry*, pshutdownentry) : pshutdownentry*?
-dec $consumer_queue_maker(pstate, pmethodcapture, pshutdownentry*) : bool
-dec $consumer_queue_maker_entry(pstate, pmethodcapture, pshutdownentry) : bool
+dec $consumer_producer_current(pstate) : pshutdownproducer?
+dec $consumer_producer_scope(pstate, pcalltarget) : pclosurescope?
+dec $consumer_producer_binding(pstate, pcalltarget) : pclosurebinding?
+dec $consumer_producer_history(pstate, pshutdownproducer) : pstate
+dec $consumer_producer_tables(pstate, pshutdownproducer) : pstate
+dec $consumer_producer_nodes(pshutdownproducer) : pnode*
+dec $consumer_producer_capture(pstate, pshutdownentry) : bool
+dec $consumer_producer_internal(pcalltarget) : bool
+dec $consumer_producer_receiver(pclosurescope?) : nat?
+dec $consumer_producer_bound_receiver(pclosurebinding?) : nat?
+dec $consumer_producer_function(pmethodcapture?, porigin) : bool
+dec $consumer_producer_named(pcalltarget) : bool
+dec $consumer_producer_snapshot(pshutdownproducer) : bool
+dec $consumer_producer_object(pclosurescope?, pclosurebinding?, nat) : bool
+dec $consumer_producer_scopes(pclosurescope?) : pclosurescope*
+dec $consumer_producer_bindings(pclosurebinding?) : pclosurebinding*
 dec $consumer_capture_called(pstate, porigin, pmethodcapture?) : porigin?
 dec $consumer_capture_this(pstate, porigin, pmethodcapture?, nat?) : bool
 dec $consumer_target_same(pcalltarget, papiquery, porigin, ptbytes) : bool
@@ -185,7 +197,7 @@ def $consumer_api_target(pcalltarget) = false -- otherwise
 def $consumer_shutdown_scope(S, papiquery, pshutdownentry) = true
   -- if papiquery.SOURCE = CONFIG_INVOKE pshutdownentry.CALL
   -- if $shutdown_registration_valid(S, pshutdownentry.CALL)
-  -- if $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) \/ $consumer_queue_capture(S, pshutdownentry)
+  -- if $consumer_producer_capture(S, pshutdownentry)
   -- if papiquery.SCOPE = $shutdown_capture_scope(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
   -- if papiquery.CALLED = $consumer_capture_called(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
   -- if $consumer_capture_this(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE, papiquery.THIS)
@@ -197,7 +209,7 @@ def $consumer_shutdown_scope(S, papiquery, pshutdownentry) = false -- otherwise
 ;; Its called class must survive even when it equals the lexical source scope.
 def $consumer_capture_current(S, porigin) = ({FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, LEXICAL_CLASS pcallcontext.LEXICAL_CLASS, CALLED_CLASS pcallcontext.CALLED_CLASS})
   -- if S.CURRENT = (pcallcontext)
-  -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) =/= eps
+  -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) =/= eps \/ $method_capture_template(S, pcallcontext.FUNCTION)
 def $consumer_capture_current(S, porigin) = $method_capture_current(S, porigin) -- otherwise
 def $consumer_capture_valid(S, PORIGIN n pcpath, (pmethodcapture)) = true
   -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
@@ -211,43 +223,84 @@ def $consumer_capture_valid(S, PORIGIN n pcpath, (pmethodcapture)) = true
   -- if $class_origin_matches(S, porigin_called, pclassdesc.NAME, |S.CLASSES|)
   -- if pmethodcapture.CALLSITE = (porigin_call)
   -- if $trait_capture_invocation(S, pfunction, pmethodcapture, porigin_call)
-def $consumer_capture_valid(S, porigin, pmethodcapture?) = $shutdown_capture_valid(S, porigin, pmethodcapture?)
-  -- if $consumer_capture_function(S, porigin, pmethodcapture?) = (porigin_function)
+def $consumer_capture_valid(S, porigin, eps) = true
+  -- if $consumer_capture_function(S, porigin, eps) = (porigin_function)
   -- if $class_method_origin(S.CLASSES, porigin_function) = eps
 def $consumer_capture_valid(S, porigin, eps) = true
   -- if $consumer_capture_function(S, porigin, eps) = eps
 def $consumer_capture_valid(S, porigin, pmethodcapture?) = false -- otherwise
 def $consumer_capture_function(S, porigin, (pmethodcapture)) = (pmethodcapture.FUNCTION)
 def $consumer_capture_function(S, porigin, eps) = $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps)
-;; A maker entered from the queue has a genuine null C call site. Authenticate
-;; it from an earlier selected entry, so appending cannot certify itself.
-def $consumer_queue_capture(S, pshutdownentry) = true
-  -- if pshutdownentry.CAPTURE = (pmethodcapture)
-  -- if pmethodcapture.CALLSITE = eps
+def $consumer_capture_valid(S, porigin, (pmethodcapture)) = true
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (pmethodcapture.FUNCTION)
+  -- if $method_capture_template(S, pmethodcapture.FUNCTION)
+  -- if $method_capture_class_valid(S, pmethodcapture.LEXICAL_CLASS)
+  -- if $method_capture_class_valid(S, pmethodcapture.CALLED_CLASS)
+  -- if pmethodcapture.CALLSITE = (porigin_call)
+  -- if $method_capture_invocation_valid(S, pmethodcapture, porigin_call)
+
+;; A C-selected maker may retire its old registry and Closure before the new
+;; queue entry runs. Keep only its immutable target and scope/binding records.
+;; Reconstruction below is for pure lookups and creates no heap owners.
+def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext))})
+  -- if S.CURRENT = (pcallcontext)
+def $consumer_producer_current(S) = eps -- if S.CURRENT = eps
+def $consumer_producer_scope(S, pcalltarget) = $closure_scope_at(S.CLOSURESCOPES, n)
+  -- if $target_instance(pcalltarget) = (n)
+def $consumer_producer_scope(S, pcalltarget) = eps -- if $target_instance(pcalltarget) = eps
+def $consumer_producer_binding(S, pcalltarget) = $closure_binding_at(S.CLOSUREBINDINGS, n)
+  -- if $target_instance(pcalltarget) = (n)
+def $consumer_producer_binding(S, pcalltarget) = eps -- if $target_instance(pcalltarget) = eps
+def $consumer_producer_nodes(pshutdownproducer) = $target_nodes(pshutdownproducer.TARGET) ++ $scoped_receiver_nodes($consumer_producer_receiver(pshutdownproducer.SCOPE)) ++ $scoped_receiver_nodes($consumer_producer_bound_receiver(pshutdownproducer.BINDING))
+def $consumer_producer_receiver(eps) = eps
+def $consumer_producer_receiver((pclosurescope)) = pclosurescope.RECEIVER
+def $consumer_producer_bound_receiver(eps) = eps
+def $consumer_producer_bound_receiver((pclosurebinding)) = pclosurebinding.RECEIVER
+def $consumer_producer_tables(S, pshutdownproducer) = S[.CLOSURESCOPES =  $consumer_producer_scopes(pshutdownproducer.SCOPE) ++ S.CLOSURESCOPES][.CLOSUREBINDINGS = $consumer_producer_bindings(pshutdownproducer.BINDING) ++ S.CLOSUREBINDINGS]
+def $consumer_producer_history(S, pshutdownproducer) = S_tables[.ALLOCATIONS = S_tables.ALLOCATIONS ++ $consumer_producer_nodes(pshutdownproducer)]
+  -- if S_tables = $consumer_producer_tables(S, pshutdownproducer)
+def $consumer_producer_capture(S, pshutdownentry) = $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
+  -- if pshutdownentry.PRODUCER = eps
+  -- if pshutdownentry.CAPTURE = eps
+  -- if $consumer_capture_function(S, pshutdownentry.CALL.SITE, eps) = eps
+def $consumer_producer_capture(S, pshutdownentry) = true
+  -- if pshutdownentry.PRODUCER = (pshutdownproducer)
+  -- if $consumer_producer_snapshot(pshutdownproducer)
+  -- if S_history = $consumer_producer_history(S, pshutdownproducer)
+  -- if $target_function(S_history, pshutdownproducer.TARGET) = (pfunction)
   -- if pshutdownentry.CALL.SITE = PORIGIN n pcpath
   -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
-  -- if $function_at($all_functions(S), pmethodcapture.FUNCTION) = (pfunction)
   -- if $trait_source_same(pfunction_source, pfunction)
-  -- if $consumer_queue_prefix(S.SHUTDOWN.ENTRIES, pshutdownentry) = (pshutdownentry_prefix*)
-  -- if $consumer_queue_maker(S, pmethodcapture, pshutdownentry_prefix*)
-def $consumer_queue_capture(S, pshutdownentry) = false -- otherwise
-def $consumer_queue_prefix(pshutdownentry :: pshutdownentry_tail*, pshutdownentry) = (eps)
-def $consumer_queue_prefix(pshutdownentry_head :: pshutdownentry_tail*, pshutdownentry) = (pshutdownentry_head :: pshutdownentry_prefix*)
-  -- if pshutdownentry_head =/= pshutdownentry
-  -- if $consumer_queue_prefix(pshutdownentry_tail*, pshutdownentry) = (pshutdownentry_prefix*)
-def $consumer_queue_prefix(pshutdownentry_head :: pshutdownentry_tail*, pshutdownentry) = eps
-  -- if pshutdownentry_head =/= pshutdownentry
-  -- if $consumer_queue_prefix(pshutdownentry_tail*, pshutdownentry) = eps
-def $consumer_queue_prefix(eps, pshutdownentry) = eps
-def $consumer_queue_maker(S, pmethodcapture, pshutdownentry :: pshutdownentry_tail*) = ($consumer_queue_maker_entry(S, pmethodcapture, pshutdownentry) \/ $consumer_queue_maker(S, pmethodcapture, pshutdownentry_tail*))
-def $consumer_queue_maker(S, pmethodcapture, eps) = false
-def $consumer_queue_maker_entry(S, pmethodcapture, pshutdownentry) = true
-  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
-  -- if pmethodcapture.FUNCTION = pfunction.ORIGIN
-  -- if pmethodcapture.LEXICAL_CLASS = $target_lexical_class(S, pshutdownentry.TARGET)
-  -- if pmethodcapture.CALLED_CLASS = $target_called_class(S, pshutdownentry.TARGET)
-  -- if $shutdown_entry_valid(S, pshutdownentry)
-def $consumer_queue_maker_entry(S, pmethodcapture, pshutdownentry) = false -- otherwise
+  -- if $shutdown_capture_scope(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) = $target_lexical_class(S_history, pshutdownproducer.TARGET)
+  -- if $consumer_capture_called(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) = $target_called_class(S_history, pshutdownproducer.TARGET)
+  -- if (~pshutdownproducer.INTERNAL /\ $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal(pshutdownproducer.TARGET))
+  -- if pshutdownentry.TARGET = API_METHOD_TARGET papiquery porigin ptbytes b_static
+  -- if papiquery.THIS = $target_receiver(S_history, pshutdownproducer.TARGET)
+  -- if pshutdownentry.CAPTURE = eps \/ $consumer_producer_function(pshutdownentry.CAPTURE, pfunction.ORIGIN)
+def $consumer_producer_capture(S, pshutdownentry) = false -- otherwise
+def $consumer_producer_function((pmethodcapture), porigin) = (pmethodcapture.FUNCTION = porigin)
+def $consumer_producer_function(eps, porigin) = false
+def $consumer_producer_internal(pcalltarget) = ($handler_method_tag(pcalltarget) \/ $consumer_producer_named(pcalltarget))
+  -- if $target_instance(pcalltarget) = eps
+def $consumer_producer_internal(pcalltarget) = true -- if $target_instance(pcalltarget) =/= eps
+def $consumer_producer_named(PORIGIN n pcpath) = true
+def $consumer_producer_named(pcalltarget) = false -- otherwise
+def $consumer_producer_object((pclosurescope), eps, n) = (pclosurescope.OBJECT = n)
+def $consumer_producer_object(eps, (pclosurebinding), n) = (pclosurebinding.OBJECT = n)
+def $consumer_producer_object(pclosurescope?, pclosurebinding?, n) = false -- otherwise
+def $consumer_producer_scopes((pclosurescope)) = [pclosurescope]
+def $consumer_producer_scopes(eps) = eps
+def $consumer_producer_bindings((pclosurebinding)) = [pclosurebinding]
+def $consumer_producer_bindings(eps) = eps
+def $consumer_producer_snapshot(pshutdownproducer) = true
+  -- if $target_instance(pshutdownproducer.TARGET) = eps
+  -- if pshutdownproducer.SCOPE = eps /\ pshutdownproducer.BINDING = eps
+def $consumer_producer_snapshot(pshutdownproducer) = true
+  -- if $target_instance(pshutdownproducer.TARGET) = (n)
+  -- if (pshutdownproducer.SCOPE = eps /\ pshutdownproducer.BINDING = eps) \/ $consumer_producer_object(pshutdownproducer.SCOPE, pshutdownproducer.BINDING, n)
+def $consumer_producer_snapshot(pshutdownproducer) = false -- otherwise
+
+
 def $consumer_capture_called(S, porigin, eps) = $closure_source_class(S, porigin)
 def $consumer_capture_called(S, porigin, (pmethodcapture)) = pmethodcapture.CALLED_CLASS
 def $consumer_capture_this(S, porigin, pmethodcapture?, eps) = true
@@ -293,7 +346,7 @@ def $consumer_shutdown_register(S, pconfigcall, papiquery, porigin, ptbytes, b_s
   -- if S.TODO = ptask :: ptask_tail*
   -- if pconfigcall.SENT = (NAMED_SENT (KNOWN papiquery.VALUE)) :: pnamedslot*
   -- if papiquery_selected = $consumer_query_selected(S, papiquery)
-  -- if pshutdownentry = {CALL pconfigcall, CAPTURE $consumer_capture_current(S, pconfigcall.SITE), RAW $consumer_snapshot(S, papiquery_selected), TARGET API_METHOD_TARGET papiquery_selected porigin ptbytes b_static, ARGS $shutdown_values(pnamedslot*)}
+  -- if pshutdownentry = {CALL pconfigcall, CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S), RAW $consumer_snapshot(S, papiquery_selected), TARGET API_METHOD_TARGET papiquery_selected porigin ptbytes b_static, ARGS $shutdown_values(pnamedslot*)}
 
 def $consumer_exception_invalid(S, pexceptioncall, ptbytes) = S[.TODO = eps][.COMPLETION = INTERNALFATAL ($ptascii("Invalid callback ") ++ $error_callback_name(S, pexceptioncall.CALLBACK) ++ $ptascii(", ") ++ ptbytes) ($long_and(S.REPORTING, 1) =/= 0)][.TRACE = eps][.ORIGIN = eps][.ERRORORIGIN = eps]
 def $api_finish(S, EXCEPTION_HANDLER_INVOKE pexceptioncall, pvalue, HANDLERINVALID ptbytes) = $consumer_exception_invalid(S, pexceptioncall, ptbytes)
