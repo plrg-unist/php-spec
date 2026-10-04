@@ -212,5 +212,15 @@ one provider fixture with 124 checks at `6e63009f3` distinguish success, OS refu
 NUL rejection and throw while retaining callback effects and the held lhs.
 Forged request, nonce, source, conversion, owner and response certificates reject.
 The model retains the original object for authentication; native destructor
-lifetime is not established. Broader callable consumers, warning ingress, OS/INI
-and lifecycle remain open.
+lifetime is not established.
+
+Failed directory replies now suspend an eligible error handler with the consumed
+request certificate. Normal return installs false after preserving handler CWD/raw
+writes; throw retires the pending result and restores caller arguments. Nested
+directory changes authenticate the original nonce/request and projected saved
+owner without requiring the old CWD to remain live. The internal `chdir` trace
+contains the converted requested string; explicit `Closure->__invoke` retains its
+original object. The ledger separates current `0887697` source1/136, earlier three
+source comparisons and the compiler image25 checks. Pure image and directory
+resumption calculations are reused once with the same validation branches.
+Broader callable consumers, warning ingress, OS/INI and lifecycle remain open.

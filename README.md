@@ -55,8 +55,10 @@ the held left value across RHS factory effects and authenticates its compiled
 send/callback site. Ordinary Closure PIPE follows caller strictness; normal and
 throwing borrowed-warning callbacks preserve raw mutations and caller frames.
 Stringable CHDIR PIPE uses post-callback CWD; six source comparisons and 124
-directory-provider assertions cover held operands, refusal and throw. Wider PIPE
-consumers, OS/INI behavior and lifecycle remain open.
+directory-provider assertions cover held operands, refusal and throw. Failed CHDIR
+warnings now resume eligible handlers: normal return yields false after their
+CWD/raw writes, while throw preserves caller arguments and both internal and
+wrapper trace operands. Wider PIPE consumers, OS/INI behavior and lifecycle remain open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,

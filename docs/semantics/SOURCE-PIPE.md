@@ -38,5 +38,10 @@ Stringable CHDIR PIPE uses the CWD after the callback, including an inner `chdir
 Six source comparisons and 124 provider assertions distinguish request failure,
 NUL rejection, throw and strict refusal, and reject forged directory replies.
 The held operand survives RHS source-cell retirement; provider certificate
-rooting does not establish native destructor timing. Wider CONFIG providers,
-method/array/object consumers and lifecycle remain partial.
+rooting does not establish native destructor timing. Failed CHDIR warnings now
+retain the consumed provider certificate through nested handlers. Normal return
+yields false after CWD/raw writes; throw restores caller arguments and preserves
+the converted internal argument versus the original explicit wrapper object in
+the trace. One current source/136 checks, earlier three source tuples and
+compiler image25 checks keep distinct cutoffs in the ledger. Wider CONFIG
+providers, method/array/object consumers and lifecycle remain partial.
