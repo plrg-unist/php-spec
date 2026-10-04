@@ -137,7 +137,9 @@ def observe(state, filename):
         tag, fields = 'THROWN', [class_name(root_id), message, field(root_id, 'line')['args'][0]]
     stderr = b''
     for event in events:
-        if event['tag'] == 'WARNING':
+        if event['tag'] == 'STDERR':
+            stderr += bytes(map(int, event['args'][0]))
+        elif event['tag'] == 'WARNING':
             name, line = bytes(map(int, event['args'][0])), int(event['args'][1])
             stderr += (b'Warning: Undefined variable $' + name + b' in ' + os.fsencode(filename)
                        + b' on line ' + str(line).encode() + b'\n')
@@ -263,10 +265,14 @@ def observe(state, filename):
     if uncaught_chain:
         location = bytes(map(int, field(uncaught_chain[0], 'file')['args'][0]))
     diagnostic = None
-    status = {'NORMAL': 'normal', 'EXITED': 'explicit_exit', 'FATAL': 'php_error', 'USERFATAL': 'php_error', 'INTERNALFATAL': 'php_error', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection', 'COMPILETHROWN': 'static_rejection',
+    status = {'NORMAL': 'normal', 'REQUESTFATAL': 'php_error', 'EXITED': 'explicit_exit', 'FATAL': 'php_error', 'USERFATAL': 'php_error', 'INTERNALFATAL': 'php_error', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection', 'COMPILETHROWN': 'static_rejection',
               'UNSUPPORTED': 'unsupported', 'BUDGET': 'budget_exhausted'}[tag]
     exit_status = 0 if tag == 'NORMAL' else None
-    if tag == 'EXITED':
+    if tag == 'REQUESTFATAL':
+        diagnostic = {'class': bytes(map(int, fields[0])).decode('utf-8', 'surrogateescape'),
+                      'message': b64(bytes(map(int, fields[1]))), 'line': int(fields[2])}
+        exit_status = 255
+    elif tag == 'EXITED':
         exit_status = int(fields[0]) % 256
     elif tag == 'PHPERROR':
         name, line = bytes(map(int, fields[0])), int(fields[1])
