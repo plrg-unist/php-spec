@@ -36,10 +36,12 @@ def $class_static_selection_valid(S, pstaticselection) = true
   -- if ~$ppscoped_named(phpType19) /\ ~$class_static_literal_class(phpType19)
   -- if $class_static_selection_keyword(phpType19) = eps
   -- if pstaticselection.SCOPE = eps /\ pstaticselection.CALLED = eps
+  -- if pstaticselection.CLOSURE = eps
 def $class_static_selection_valid(S, pstaticselection) = true
   -- if $class_static_selection_header(S, pstaticselection)
   -- if $origin_node(S.SOURCES, pstaticselection.SITE) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
   -- if $class_static_selection_keyword(phpType19) = (ptbytes)
+  -- if pstaticselection.CLOSURE = eps
   -- if $class_static_selection_method(S, pstaticselection.SITE) = (pmethoddesc)
   -- if pstaticselection.SCOPE = (pmethoddesc.OWNER)
   -- if pstaticselection.CALLED = (porigin_called)
@@ -53,7 +55,7 @@ def $class_static_selection_valid(S, pstaticselection) = false -- otherwise
 def $class_static_selection(S, poperand) = (pstaticselection)
   -- if S.ORIGIN = (porigin)
   -- if $scoped_selector_class(S, poperand) = (porigin_root)
-  -- if pstaticselection = {SITE porigin, ROOT porigin_root, SCOPE eps, CALLED eps}
+  -- if pstaticselection = {SITE porigin, ROOT porigin_root, SCOPE eps, CALLED eps, CLOSURE eps}
   -- if $class_static_selection_valid(S, pstaticselection)
 def $class_static_selection(S, poperand) = (pstaticselection)
   -- if S.ORIGIN = (porigin)
@@ -63,7 +65,7 @@ def $class_static_selection(S, poperand) = (pstaticselection)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
   -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
-  -- if pstaticselection = {SITE porigin, ROOT porigin_root, SCOPE pcallcontext.LEXICAL_CLASS, CALLED pcallcontext.CALLED_CLASS}
+  -- if pstaticselection = {SITE porigin, ROOT porigin_root, SCOPE pcallcontext.LEXICAL_CLASS, CALLED pcallcontext.CALLED_CLASS, CLOSURE eps}
   -- if $class_static_selection_valid(S, pstaticselection)
 def $class_static_selection(S, poperand) = eps -- otherwise
 def $class_static_selected_needed(S, porigin) = ($static_default_trigger_root(S, porigin) = eps)

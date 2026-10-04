@@ -41,7 +41,8 @@ syntax pparameterstring = { FUNCTION porigin, INDEX nat, CELL nat, OBJECT nat, L
 syntax pvariadicstring = { FUNCTION porigin, INDEX nat, ELEMENT nat, NAMED bool, OPERAND poperand, OBJECT nat, LINE int }
 syntax pparameterbacking = { FUNCTION porigin, INDEX nat, CELL nat, LINE int, VALUE ptbytes }
 dec $propref_at(ppropref*, nat) : ppropref?
-syntax pstaticselection = { SITE porigin, ROOT porigin, SCOPE porigin?, CALLED porigin? }
+syntax pclosureevidence
+syntax pstaticselection = { SITE porigin, ROOT porigin, SCOPE porigin?, CALLED porigin?, CLOSURE pclosureevidence? }
 syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat
   | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
 syntax pclassconstantflags = CCFLAGS (porigin, bool)* porigin* | CCBAD
@@ -183,9 +184,11 @@ syntax ptraceframe = { FILE preqbytes, LINE int, FUNCTION preqbytes, CLASS preqb
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
 syntax pclassstatic = { DECL ppropertyid, STATE ppropstate }
 syntax pthrowable = { KIND text, ORIGIN porigin?, FILEORIGIN porigin? }
-syntax pclosurecreation = { FUNCTION porigin, CALLSITE porigin, RECEIVER bool }
+syntax pclosurecreator = { SCOPE pclosureevidence, CALLSITE porigin? }
+syntax pclosurecreation = { FUNCTION porigin, CALLSITE porigin?, RECEIVER bool, EVIDENCE pclosurecreator? }
 syntax pclosurescope = { OBJECT nat, LEXICAL porigin, CALLED porigin, RECEIVER nat?, CREATION pclosurecreation? }
 syntax pclosurebinding = { OBJECT nat, SITE porigin, SOURCE nat, LEXICAL porigin?, CALLED porigin?, RECEIVER nat? }
+syntax pclosureevidence = CLOSURE_SCOPE pclosurescope | CLOSURE_BINDING pclosurebinding
 syntax pobject = CONSTANTCLOSURE porigin pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | INSTANCE porigin | STDINSTANCE
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat

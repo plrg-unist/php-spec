@@ -173,8 +173,13 @@ survive callbacks and selected first-fill/retirement/table history. Seven exact
 normal source agreements pass at69cc4546c;84 ownership/history premises pass at
 0288de513 after narrow fixture syntax and selected work-block validator repairs.
 Original failures remain separate; prior31/149/67 checks were not renewed.
-Captured/rebound Closure keyword references and instance/object defaults remain
-required next work.
+Captured/rebound Closure keyword references239 now retain authentic nonowning
+scope/binding evidence after pruning. Nested creation copies its immediate
+creator's body, scope, receiver and nullable callsite, including error and
+terminal callbacks; ordinary method ancestry stays exact. Nine new source
+agreements and bound69 premises pass atd6bc09789; handler58/terminal35 pass at
+860a8a19a after one fixture ordinal-binding repair. Instance/object defaults and
+wider reference/creation consumers remain required next work.
 
 
 Private and protected method arrays and class-method strings support callable
@@ -306,8 +311,8 @@ failures and interrupted evidence.
 - Values, references and coercion: suspended internal default constructor reception,
   rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred instance/object defaults and cold
-  keyword references in captured/rebound Closures remain Unsupported.
+  broader reference-result consumers. Deferred instance/object defaults and
+  wider Closure creation contexts remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.
   Wider deprecated constant consumers remain open. Generic156 return replay, temporary-return

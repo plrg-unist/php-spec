@@ -39,8 +39,15 @@ target. Failed initialization leaves the RHS unattached and retains successful
 default prefixes for retry. Selected dynamic classes and ordinary method
 self/parent/static scopes survive callback mutation in source-bound snapshots;
 selected fill/retirement/table events retain these identities without owning heap
-values. Instance/object defaults, captured/rebound Closure keyword scopes and
-wider reference consumers remain required open work.
+values. Module239 extends keyword snapshots to captured/rebound source Closures.
+Minting requires the authentic live call and its exact scope or binding row;
+historical validation uses source/template and arena identities after pruning.
+Bound called class follows the actual receiver, including a class unrelated to
+lexical scope. Nested creation copies the immediate creator's scope, receiver and
+nullable invocation site, retaining error and terminal handler ingress. These
+certificates own no Closure, receiver or captured cell. Ordinary method ancestry
+checks remain exact. Instance/object defaults and wider reference/creation
+consumers remain required open work.
 The [deferred-default review](../../coverage/semantics/deferred-static-defaults-review.json)
 records eleven earlier source agreements separately from five source-derived guard
 programs. Four217 callback comparisons preserve saved initializer contexts,
@@ -51,6 +58,8 @@ source order and release of escaped cells; earlier Unsupported controls remain
 historical evidence. Seven cold-reference comparisons and one84-premise fixture
 check delayed target ordering, visibility, ordinary method keywords, immutable
 dynamic selection, sole captured-cell ownership, failure/retry and retirement.
+Nine additional Closure sources and three programs/162 premises check immutable
+scope/creator identity, unrelated called class, alias retirement and collection.
 Two later213/215 comparisons
 initialize the inherited default
 inside a captured private handler and a raw private handler during a Stringable
