@@ -268,5 +268,41 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-from-implicit-stringify-method",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class E{function __toString():string{register_shutdown_function([\"self\",\"s\"]);return \"V;\";}private static function s(){echo \"S:\",get_called_class(),\";\";}}set_error_handler(\"w\");echo new E;",
+    "source_sha256": "22a5ef26b99c5f4717254f399f8642705c434945ac47b25c7cef78d7b48cbb18",
+    "stdout": "W:1;V;S:E;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-from-terminal-stringify-method",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class E extends Exception{function __toString():string{register_shutdown_function([\"self\",\"s\"]);return \"V;\";}private static function s(){echo \"S:\",get_called_class(),\";\";}}class D extends E{}set_error_handler(\"w\");throw new D(\"main\");",
+    "source_sha256": "1ceb6ceda431c281bbb84bc7653e61cc9d900364867029f9b1db30a37fca80bb",
+    "stdout": "W:1;S:D;",
+    "stderr": "Fatal error: Uncaught V;\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "shutdown-compound-original-receiver-after-genuine-swap",
+    "source": "<?php class C{public $v;function __construct($v){$this->v=$v;}function reg(){global $o;register_shutdown_function([&$o,\"self::h\"]);echo \"R;\";}private function h(){echo \"H:\",$this->v,\":\",get_called_class(),\";\";}}$a=new C(\"a\");$b=new C(\"b\");$o=$a;function w($n,$m,$f,$l){global $o,$b;echo \"W;\";$o=$b;return true;}set_error_handler(\"w\");$o->reg();unset($a);",
+    "source_sha256": "b59f87fbbdd9fb0fb0f4f99529446fc4d71f9d58eb6035793c6d4ee47b8c55b9",
+    "stdout": "W;R;H:a:C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-from-retired-selected-closure-maker",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class C{static function maker(){return function($e){echo \"E:\",get_called_class(),\";\";restore_exception_handler();restore_exception_handler();register_shutdown_function([\"self\",\"s\"]);echo \"R;\";};}private static function s(){echo \"S:\",get_called_class(),\";\";}}set_error_handler(\"w\");set_exception_handler(C::maker());throw new Exception(\"main\");",
+    "source_sha256": "40907be760712443e3ea8b905eef53158f1be636df51f8df70622a3cc79dcd25",
+    "stdout": "E:C;W:1;R;S:C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
