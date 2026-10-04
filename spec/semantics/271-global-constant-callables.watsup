@@ -103,15 +103,17 @@ def $constant_closure_create(S, pfunction) = $constant_callable_stamp($global_co
   -- if S_created = S[.OBJECTS = S.OBJECTS ++ [REALCLOSURE pfunction.ORIGIN eps eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_object]][.RESULT = KNOWN (POBJECT n_object)][.BASE = BASE_VALUE (KNOWN PNULL)]
 
 ;; Global scope is nullable; named class selectors do not require a class owner.
+dec $global_constant_unscoped_class_name(pstate, porigin, phpType19) : ptbytes?
 dec $global_constant_class_name(pstate, porigin, porigin?, phpType19) : ptbytes?
 def $global_constant_class_name(S, porigin_site, (porigin_scope), phpType19) = $constant_callable_class_name(S, porigin_site, porigin_scope, phpType19)
-def $global_constant_class_name(S, PORIGIN n_unit pcpath, eps, phpType19) = (ptbytes)
+def $global_constant_class_name(S, porigin_site, eps, phpType19) = $global_constant_unscoped_class_name(S, porigin_site, phpType19)
+def $global_constant_unscoped_class_name(S, PORIGIN n_unit pcpath, phpType19) = (ptbytes)
   -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
-def $global_constant_class_name(S, porigin_site, eps, NScalarString (BYTES text) metadata) = ($ppcall_literal_name($base64(text)))
+def $global_constant_unscoped_class_name(S, porigin_site, NScalarString (BYTES text) metadata) = ($ppcall_literal_name($base64(text)))
   -- if $constant_callable_invalid_class(NScalarString (BYTES text) metadata) = eps
-def $global_constant_class_name(S, porigin_site, eps, phpType19) = eps -- otherwise
+def $global_constant_unscoped_class_name(S, porigin_site, phpType19) = eps -- otherwise
 dec $global_constant_method(pstate, porigin, porigin?, nat) : (pmethoddesc, porigin)?
 def $global_constant_method(S, porigin_site, porigin_scope?, n_prefix) = ((pmethoddesc, porigin_called))
   -- if $(n_prefix <= |S.DECLARATIONS|)
@@ -409,3 +411,36 @@ def $global_constant_user_valid(S, puserconstant) = $global_constant_transfer_va
   -- if ~$constant_callable_foldable(puserconstant.CLASS)
   -- if $global_constant_prefix(S.USERCONSTANTS, puserconstant.ORIGIN, eps) = (puserconstant_prior*)
 def $global_constant_user_valid(S, puserconstant) = false -- otherwise
+
+;; Registration warns before releasing its rejected candidate. The successful
+;; earlier constant owns its value; only this genuine pending task owns the copy.
+dec $global_constant_duplicate_message(preqbytes) : ptbytes
+def $global_constant_duplicate_message(preqbytes) = $ptascii("Constant ") ++ $user_constant_key(preqbytes) ++ $ptascii(" already defined, this will be an error in PHP 9")
+def $global_constant_duplicate(S, porigin_decl, preqbytes, pvalue, pvalueclass, z) = $error_dispatch(S_pending, 2, ptbytes_message, z, DIAGNOSTIC "Warning" ptbytes_message z, ptask_resume)
+  -- if ptask_resume = GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass z
+  -- if ptbytes_message = $global_constant_duplicate_message(preqbytes)
+  -- if S_pending = S[.TODO = ptask_resume :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $global_constant_duplicate_valid(pstate, porigin, pvalue, pvalueclass, int) : bool
+def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, z) = true
+  -- if S.ORIGIN = (porigin_decl)
+  -- if S.CONSTCONTEXT = eps
+  -- if porigin_decl = PORIGIN n_unit pcpath_decl
+  -- if $global_constant_declaration_source(S.SOURCES, porigin_decl)
+  -- if $declaration_entered(S.DECLARATIONS, n_unit)
+  -- if $constant_declaration(S, porigin_decl) = ((preqbytes, z))
+  -- if $source_constant_lookup(S, preqbytes) =/= eps
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if $global_constant_transfer_valid(S, porigin_decl, pvalueclass, S.USERCONSTANTS)
+def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, z) = false -- otherwise
+def $task_nodes(GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass z) = $value_nodes(pvalue)
+def $call_task_valid(S, GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass z) = $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, z)
+rule PhpStep/global-constant-duplicate: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass z) :: ptask_tail*
+  -- if $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, z)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass z
+  -- if $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, z)
+  -- if $constant_declaration(S, porigin_decl) = ((preqbytes, z))
+  -- if perrorcall.SITE = porigin_decl /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $global_constant_duplicate_message(preqbytes)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE z
