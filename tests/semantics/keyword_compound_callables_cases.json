@@ -1,0 +1,146 @@
+[
+  {
+    "id": "method-alias",
+    "source": "<?php\nclass Owner {\n public static function ok() {}\n public function test() {\n  $method='missing'; $cb=['self', &$method];\n  set_error_handler(function($level,$message) use (&$method) { echo $message,\":\",$method,\"|\"; $method='ok'; return true; });\n  $take=function(callable $c) { echo \"admitted:\"; echo $c[1]; };\n  $take($cb); restore_error_handler();\n }\n}\n(new Owner)->test();\n",
+    "source_sha256": "0fb114e80252888a72324e496cacd30c4f90f598bd930706fd640db618e336a1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "class-alias-registration",
+    "source": "<?php\nclass Other {}\nclass Owner {\n public static function handle($n,$s,$f,$l) { echo \"Owner-handler\"; return true; }\n public function test() {\n  $class='self'; $cb=[&$class,'handle'];\n  set_error_handler(function($n,$s) use (&$class) { echo \"deprecation|\"; $class='Other'; return true; });\n  set_error_handler($cb); echo \"registered:\",$class,\"|\";\n  try { echo $missing; } catch (Throwable $e) { echo $e->getMessage(); }\n }\n}\n(new Owner)->test();\n",
+    "source_sha256": "76f4522db388b2a8651be6f23929f77d2b0d39faa6fc59d19c0095118c1a1451",
+    "expected_model": "normal"
+  },
+  {
+    "id": "compound-alias",
+    "source": "<?php\nclass Base { public static function ok() {} public static function xx() {} }\nclass Child extends Base { public function test() {\n $method='Base::xx'; $cb=['Child', &$method];\n set_error_handler(function($n,$s) use (&$method) { echo $message=$s,\"|\"; $method='Base::ok'; return true; });\n $take=function(callable $c) { echo \"admitted:\",$c[1]; };\n $take($cb); restore_error_handler();\n} }\n(new Child)->test();\n",
+    "source_sha256": "ae1c76093ebde0d56999ef6991c688c8873c56e333588052d3f9c91f0b9f0302",
+    "expected_model": "normal"
+  },
+  {
+    "id": "compound-throw",
+    "source": "<?php\nclass Base { public static function ok() {} }\nclass Child extends Base { public function test() {\n set_error_handler(function($n,$s) { echo \"deprecation|\"; throw new Exception('stop'); });\n try { set_error_handler(['Child','Base::ok']); } catch (Throwable $e) { echo $e->getMessage(); }\n restore_error_handler();\n} }\n(new Child)->test();\n",
+    "source_sha256": "1f5507d9a23ed9499fbc97462753536b208305ef9dd9254bfe4f46251b2ae2df",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-this-handler",
+    "source": "<?php\nclass Child { public function run($n,$s,$f,$l) { echo ($this instanceof Foreign)?'Foreign':'wrong',':',self::class,':',static::class; return true; } }\nclass Foreign { public function test() { error_reporting(0); set_error_handler(function($n,$s) { echo 'D|'; return true; }); set_error_handler(['Child','self::run']); echo 'R|'; echo $missing; restore_error_handler(); restore_error_handler(); } }\n(new Foreign)->test();\n",
+    "source_sha256": "15667071ab014af6710e08a786c71c37f4199d508f232ac9c67abb986dbefb4d",
+    "expected_model": "normal"
+  },
+  {
+    "id": "keyword-receiving-scope",
+    "source": "<?php\nfunction free_take(callable $cb) { echo 'wrong'; }\nclass B { public function take(callable $cb) { echo 'wrong'; } }\nclass A { private static function aonly() {} public function test() {\n set_error_handler(function($n,$s) {echo 'D|'; return true;});\n try {(new B)->take(['self','aonly']);} catch (TypeError $e) {echo 'B|';}\n try {free_take(['self','aonly']);} catch (TypeError $e) {echo 'F|';}\n restore_error_handler();\n} }\n(new A)->test();\n",
+    "source_sha256": "a376a7307a81ba637a996179f7645231d6a29f0c7ead27dae9a4b01b67c6d508",
+    "expected_model": "normal"
+  },
+  {
+    "id": "raw-keyword-direct-array",
+    "source": "<?php\nclass A { public static function run($x) {echo 'wrong';} public static function test() { $cb=['self','run']; try {$cb($missing);} catch(Error $e) {echo $e->getMessage();} } }\nA::test();\n",
+    "source_sha256": "f0f659eb0b7102412f8a4c02daf9cebd0a4574dbe9b4f0c1f6e01e7799d038e5",
+    "expected_model": "normal"
+  },
+  {
+    "id": "raw-keyword-direct-string",
+    "source": "<?php\nclass A { public static function run() {} public static function test() { $cb='self::run'; try {$cb();} catch(Error $e) {echo $e->getMessage(),'|';} try {('self::run')();} catch(Error $e) {echo $e->getMessage();} } }\nA::test();\n",
+    "source_sha256": "cafa9e9e561a7b0d7d9e9ec6eca02f44562ccdc07fa937e3a3f74dceb0f1da88",
+    "expected_model": "normal"
+  },
+  {
+    "id": "compound-direct-array-fcc",
+    "source": "<?php\nclass Base {public static function run() {echo 'wrong';}} class Child extends Base {}\n$cb=['Child','Base::run']; try {$cb();} catch(Error $e) {echo $e->getMessage(),'|';} try {$c=$cb(...);} catch(Error $e) {echo $e->getMessage();}\n",
+    "source_sha256": "c3ee192b4ac589114b54cc8f8c9ebe40800c392698064132d8d0543734c997b1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "exact-union-fast-path",
+    "source": "<?php\nclass A { public function test() {set_error_handler(function($n,$s){echo 'wrong';return true;}); $s=function(callable|string $c){echo 'S';};$a=function(callable|array $c){echo 'A';};$s('self::missing');$a(['self','missing']);restore_error_handler();} }\n(new A)->test();\n",
+    "source_sha256": "3e760c12d78d17e0c5df2c7bb6ded406ae6903e33c867580ec69dd62c95f8783",
+    "expected_model": "normal"
+  },
+  {
+    "id": "keyword-throw-mask-priority",
+    "source": "<?php\nclass A {public static function handle($n,$s,$f,$l){return true;} public function test(){set_error_handler(function($n,$s){echo 'D|';throw new Exception('stop');});try {set_error_handler(['self','handle'],new stdClass);}catch(Throwable $e){echo $e->getMessage();} restore_error_handler();} }\n(new A)->test();\n",
+    "source_sha256": "e732e76be7bfaf6367ede8a42082232ab581b30c807863662d68a73065dd2f5e",
+    "expected_model": "normal"
+  },
+  {
+    "id": "no-parent-scope-errors",
+    "source": "<?php\nclass A { public function test(){try{set_error_handler(['parent','x']);}catch(TypeError$e){echo $e->getMessage(),'|';}} }\n(new A)->test();try{set_error_handler('self::x');}catch(TypeError$e){echo $e->getMessage(),'|';}try{set_error_handler(['static','x']);}catch(TypeError$e){echo $e->getMessage();}\n",
+    "source_sha256": "5132196cb8d19523d952b6fb392f644f8659e5f697a2afd9b6e8442a10ef350b",
+    "expected_model": "normal"
+  },
+  {
+    "id": "keyword-case-slash",
+    "source": "<?php\nclass A {public static function run(){}public function test(){set_error_handler(function($n,$s){echo $s,'|';return true;});$take=function(callable $cb){echo 'Y|';};$take(['SeLf','run']);try{$take(['\\\\self','run']);}catch(TypeError$e){echo 'N|';}restore_error_handler();}}\n(new A)->test();\n",
+    "source_sha256": "8fd2216133e33a71749c3151b54aa6d23739c56d9c43dacb6b11e886c22052df",
+    "expected_model": "normal"
+  },
+  {
+    "id": "compound-parent-private-handler",
+    "source": "<?php\nclass Owner {private function handle($n,$s,$f,$l){echo 'Owner/',static::class;return true;}public function test(){error_reporting(0);set_error_handler(function($n,$s){echo 'D|';return true;});set_error_handler(['Child','self::handle']);echo $missing;restore_error_handler();restore_error_handler();}}\nclass Child extends Owner {public function handle($n,$s,$f,$l){echo 'wrong';return true;}}\n(new Child)->test();\n",
+    "source_sha256": "ccf02bf94467c51ed65fe7fc67734b72417b2de8883c88f9bd93dc37fb52c713",
+    "expected_model": "normal"
+  },
+  {
+    "id": "compound-invalid-subclass",
+    "source": "<?php\nclass A {public static function run(){}} class B {public static function test(){set_error_handler(function($n,$s){echo 'wrong';return true;});try{set_error_handler(['B','A::run']);}catch(TypeError$e){echo $e->getMessage();}restore_error_handler();}}\nB::test();\n",
+    "source_sha256": "347b53ede5f30b125f0bfe8b5ee8c19ccf9661f1143fe79f5298c0261c1d062c",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-keyword-control",
+    "source": "<?php\nclass A {public static function run(){} public function test(){ $take=function(callable ...$cb) {echo 'body';};$take(['self','run']);}}\n(new A)->test();\n",
+    "source_sha256": "9aa8be4692d92084f54d465fdb826c674dfc47519783f56cc8f6cbea21343659",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "two-stage-warning",
+    "source": "<?php\n$count = 0;\n$method = 'parent::xx';\nfunction warn($n, $s, $f, $l) {\n    global $count, $method;\n    echo $s, \"|\";\n    $count++;\n    if ($count === 1) { $method = 'parent::ok'; }\n    else { $method = 'YYYYYY::ok'; }\n    return true;\n}\nclass Base { public static function ok() {} }\nclass Child extends Base {\n    public static function receive(callable $cb) { echo \"admitted:\", $cb[1]; }\n}\nset_error_handler('warn');\n$cb = ['self', &$method];\nChild::receive($cb);\n",
+    "source_sha256": "9372a1f3162550a0fa2c5338ac35adbb8330a677a41aa3dfa453c6a9584fec58",
+    "expected_model": "normal"
+  },
+  {
+    "id": "byref-array-replaced",
+    "source": "<?php\n$cb=['self','run']; $keep=$cb;\nfunction warn($n,$s,$f,$l) { global $cb; echo 'deprecation|'; $cb=null; return true; }\nclass A {\n public static function run() {}\n public static function receive(callable &$value) { echo $value===null?'null-body|':'wrong-body|'; }\n}\nset_error_handler('warn'); A::receive($cb); echo $cb===null?'null-caller':'wrong-caller';\n",
+    "source_sha256": "6bcf6bb7a5b74341942c9be67315b8d749b1c18ec773e79a59dca4760bcc805d",
+    "expected_model": "normal"
+  },
+  {
+    "id": "constrained-scalar-fallback",
+    "source": "<?php\n$free = 'self::xx';\nfunction warn($n, $s, $f, $l) {\n    global $free;\n    echo \"deprecation|\";\n    A::$cb = '12345678';\n    $free = '12345678';\n    return true;\n}\nclass A {\n    public static string $cb = 'self::xx';\n    public static function receive(callable|int &$value) {\n        echo ($value === 12345678 ? 'free-int|' : 'wrong-value|');\n    }\n}\nset_error_handler('warn');\ntry { A::receive(A::$cb); }\ncatch (TypeError $e) { echo (A::$cb === '12345678' ? 'typed-string|' : 'wrong-typed|'); }\n$free = 'self::xx';\nA::receive($free);\necho ($free === 12345678 ? 'caller-int' : 'wrong-caller');\n",
+    "source_sha256": "c0a634d595358f6039d97447c034ccd823f48bcceec35429146785f4c6932b70",
+    "expected_model": "normal"
+  },
+  {
+    "id": "byref-string-prefix",
+    "source": "<?php\n$cb = 'self::xx';\nfunction warn($n, $s, $f, $l) {\n    global $cb;\n    echo $s, \"|\";\n    $cb = 'Nope::ok';\n    return true;\n}\nclass A {\n    public static function ok() {}\n    public static function receive(callable &$value) { echo \"admitted:\", $value; }\n}\nset_error_handler('warn');\nA::receive($cb);\n",
+    "source_sha256": "8fe7256c8d07f51cc0203c6108ee0890fc759d08b480ef15fd1651738eb5dd94",
+    "expected_model": "normal"
+  },
+  {
+    "id": "byvalue-string-prefix",
+    "source": "<?php\n$cb = 'self::xx';\nfunction warn($n, $s, $f, $l) {\n    global $cb;\n    echo $s, \"|\";\n    $cb = 'Nope::ok';\n    return true;\n}\nclass A {\n    public static function ok() {}\n    public static function receive(callable $value) { echo \"wrongly-admitted:\", $value; }\n}\nset_error_handler('warn');\ntry { A::receive($cb); }\ncatch (TypeError $e) { echo \"rejected:\", $cb; }\n",
+    "source_sha256": "24293281159d3f0ee76968cf9661f48e6915b3e37a1a9a0f898540e412248fd8",
+    "expected_model": "normal"
+  },
+  {
+    "id": "byref-string-held-length",
+    "source": "<?php\n$cb = 'self::xx';\nfunction warn($n, $s, $f, $l) {\n    global $cb;\n    echo $s, \"|\";\n    $cb = 'self::okay';\n    return true;\n}\nclass A {\n    public static function ok() {}\n    public static function receive(callable &$value) { echo \"admitted:\", $value; }\n}\nset_error_handler('warn');\nA::receive($cb);\n",
+    "source_sha256": "54c37dbc8a776aab11bf7b1a4362d8fb3b1d1d226cebd2bb1e09737e484e03c9",
+    "expected_model": "normal"
+  },
+  {
+    "id": "compound-prefix",
+    "source": "<?php\n$method = 'Base::xx';\nfunction warn($n, $s, $f, $l) {\n    global $method;\n    echo $s, \"|\";\n    $method = 'Nope::ok';\n    return true;\n}\nclass Base { public static function ok() {} }\nclass Child extends Base {\n    public static function receive(callable $cb) { echo \"admitted:\", $cb[1]; }\n}\nset_error_handler('warn');\n$cb = ['Child', &$method];\nChild::receive($cb);\n",
+    "source_sha256": "1afcba77ea6f3ddeff7efefbf749e975ccf47a191a14c536428a987701c96dc3",
+    "expected_model": "normal"
+  },
+  {
+    "id": "static-keyword-ownership",
+    "source": "<?php\nfunction warn($n,$s,$f,$l) { echo 'D|'; return true; }\nclass Base {\n public static function run($n,$s,$f,$l) { echo func_num_args(),':',self::class,':',static::class,'|'; return true; }\n}\nclass Middle extends Base {\n public function test() {\n  error_reporting(0);\n  foreach ([['parent','run'],['static','run'],'parent::run','static::run'] as $cb) {\n   set_error_handler('warn'); set_error_handler($cb); echo $missing;\n   restore_error_handler(); restore_error_handler();\n  }\n }\n}\nclass Child extends Middle {}\n(new Child)->test();\n",
+    "source_sha256": "f5ce44888028dff45743ab1752a093e3700c43557d829dabb7b921a41af63d37",
+    "expected_model": "normal"
+  }
+]

@@ -119,11 +119,11 @@
     "purpose": "An uncaught named private denial retains actual PHP error status and suppresses argument effects."
   },
   {
-    "id": "keyword-class-array-remains-open",
+    "id": "keyword-class-array-direct-error",
     "source": "<?php\nclass Owner { private static function hidden(){echo \"K\";} public static function start(){ $a=[\"self\",\"hidden\"];$a(); } }\nOwner::start();\n",
     "source_sha256": "f854f38a31db4bbfd006630f2d2c7f5366883418e5017d6ff5df9fe2850bf01a",
-    "expected_model": "unsupported",
-    "purpose": "Keyword class resolution is a separate following callable obligation."
+    "expected_model": "php_error",
+    "purpose": "Raw keyword class names retain ordinary direct-call class lookup errors."
   },
   {
     "id": "private-capture-known-closure-consumer-remains-open",

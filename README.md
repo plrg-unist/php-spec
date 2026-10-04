@@ -388,8 +388,13 @@ static selections retain called class without an object root. The
 the private source/state gates from current publication/Restore/property/ARG
 and two-slot INI interactions. Ordinary lexical private/protected array selectors
 now retain genuine access through selection and capture; object parent-private
-redirection stays distinct from concrete-class lookup. Keyword/compound, magic,
-autoload and internal array consumers remain open.
+redirection stays distinct from concrete-class lookup. Module221 stages deprecated
+keyword class selectors and qualified array methods in fixed callable reception
+and error-handler registration/dispatch. Warnings preserve the chosen class and
+string split while rereading referenced method bytes; actual receiving/emitting
+frames authenticate selection, including compound foreign-`$this` API calls.
+The [keyword/compound review](coverage/semantics/keyword-compound-callables-current-review.json)
+keeps failures and later consumers visible. Magic/autoload/internal consumers remain open.
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and
@@ -401,7 +406,8 @@ capture and saved calls. Protected checks use the root prototype; API handlers
 resolve raw values using the emitting frame. The
 [scoped-callable review](coverage/semantics/scoped-callables-current-review.json)
 keeps these observations separate from earlier public-route evidence.
-Keyword/compound, magic/autoload/internal and transformed binding consumers remain open.
+Default/variadic, `Closure::fromCallable`, other internal and user-return keyword
+warning consumers remain required; magic/autoload and transformed binding remain open.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.

@@ -102,19 +102,19 @@
     "purpose": "Uncaught known public missing-method registration error."
   },
   {
-    "id": "nonpublic-handler-method-control",
+    "id": "outside-scope-private-handler-rejection",
     "source": "<?php\nclass Owner {private static function run($n,$m,$f,$l) {}}\ntry {set_error_handler('Owner::run',512);}catch(TypeError $e) {echo 'E';}\n",
     "source_sha256": "b72e56090a162688e29c00c03181890334d65f84e92a0a8afcfcbc8d54ae3e9d",
-    "expected_model": "unsupported",
-    "purpose": "Nonpublic source callback resolution remains explicitly Unsupported, separate from agreements.",
+    "expected_model": "normal",
+    "purpose": "An outside-scope private callback rejects with the TypeError implemented by scoped API admission215.",
     "expected_normal_stdout": "E"
   },
   {
-    "id": "compound-handler-method-control",
+    "id": "deprecated-compound-handler-registration-dispatch",
     "source": "<?php\nclass Owner {public static function run($n,$m,$f,$l) {echo 'R';}}\nclass Child extends Owner {}\nset_error_handler(['Child','Owner::run'],512);trigger_error('x',512);restore_error_handler();\n",
     "source_sha256": "e27a318c520c64f38de437b196ca013f882211f587d6a9495c5fc43974417a59",
-    "expected_model": "unsupported",
-    "purpose": "Compound method callback syntax/deprecation remains outside the selected ordinary public resolver."
+    "expected_model": "normal",
+    "purpose": "Deprecated compound callbacks warn at registration and delayed dispatch before entering the selected source method."
   },
   {
     "id": "current-owned-restore-pipe-null-static-handler",

@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Deprecated callable keyword/compound admission221 now stages supplied fixed
+parameters, error registration and delayed dispatch. Warnings hold class choice
+and string boundaries while rereading referenced methods; whole byref formal
+replacement preserves its live value. Genuine receiving/emitting frames and a
+narrow API carrier admit compound foreign-`$this` selection without relaxing
+ordinary scoped eligibility. Exact union branches bypass warnings; direct/FCC
+raw keyword/compound calls preserve ordinary PHP lookup errors. The
+[221 ledger](coverage/semantics/keyword-compound-callables-current-review.json)
+records independent pins, affected checks and preserved failures. Default/variadic,
+`Closure::fromCallable`, other internal and user-return warning consumers remain
+required; unstaged special callable conversion stays Unsupported.
+
 Private and protected method arrays and class-method strings support callable
 admission, selection, capture/clone and delayed error-handler dispatch. Object
 selectors can redirect to the selecting parent's private method; concrete class
@@ -108,7 +120,8 @@ failures and interrupted evidence.
 
 ## Remaining core work
 
-- Calls: keyword/compound array and class-method-string resolution,
+- Calls: default/variadic, `Closure::fromCallable`, other internal and user-return
+  keyword/compound warning consumers,
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
   array and string Closure PIPE routes are covered; defined ordinary `$GLOBALS[key]` is admitted; missing-global warnings and whole-table snapshots remain partial.

@@ -1,6 +1,6 @@
 # Source error handlers
 
-This slice targets PHP 8.5.10 CLI NTS 64-bit. Modules206/207/211 implement
+This slice targets PHP 8.5.10 CLI NTS 64-bit. Modules206/207/211/215/221 implement
 `error_reporting`, `set_error_handler`, `restore_error_handler`,
 `get_error_handler`, `trigger_error` and `user_error` through the checked source
 call machinery. Its bounded private source/frame gates and fresh current-master property,
@@ -23,6 +23,16 @@ dispatch. The selected target authenticates against that saved emitter, while
 mutable referenced members remain opaque after entry. Static selections retain
 no receiver; a raw object-array callback still owns its selector until dropped.
 The registry retains raw values, rather than caching an entered target.
+
+Keyword class selectors and qualified array methods use resumable deprecations
+at registration and dispatch. Outer keyword choice precedes its warning; the live
+array method then determines the inner class and split before the compound warning.
+Referenced method bytes are read afterward. Dispatch disables the current handler
+before these selection warnings. The new API target authenticates compound
+`self`/`parent` selection with a foreign `$this`, while ordinary scoped carriers
+retain their existing rules. [The callable contract](SOURCE-METHODS.md#deprecated-api-keyword-and-compound-callables)
+and [221 ledger](../../coverage/semantics/keyword-compound-callables-current-review.json)
+describe these stages and their remaining consumers.
 
 Eligibility depends on the handler mask, independently of `error_reporting` or
 `@`. The active raw handler is cleared during the callback, allowing an installed
@@ -65,8 +75,7 @@ Owned unary CONFIG PIPE also composes with public static method handlers: weak
 severity reception, saved caller arguments, original-null traces and throw cleanup
 remain distinct from USER strict warnings. Other CONFIG warning producers remain open.
 
-Remaining null/Stringable API conversions, compound/scope-keyword, nonpublic,
-magic/autoload/internal callback forms,
+Remaining null/Stringable API conversions and magic/autoload/internal callback forms,
 reference-return callbacks, exception handlers and lifecycle dispatch remain open.
 Frameless named/method trace formatting in164 now accepts the authenticated
 nonempty function field. Current property and array-caller readback gates validate these shapes on the
