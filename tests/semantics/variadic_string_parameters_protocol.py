@@ -32,7 +32,7 @@ def $variadic_protocol_new_site((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) =
 def $variadic_protocol_new_site((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $variadic_protocol_new_site(pcoccurrence*)
   -- if ~$variadic_protocol_is_new(pcnode)
 dec $variadic_protocol_phase(pstate,nat) : bool
-def $variadic_protocol_phase(S,0) = $variadic_string_candidate(S)
+def $variadic_protocol_phase(S,0) = $variadic_string_candidate(S[.COMPLETION = NORMAL])
 def $variadic_protocol_phase(S,1) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $context_target(pcallcontext) = METHOD_TARGET n_object porigin_method
