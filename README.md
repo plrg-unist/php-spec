@@ -246,8 +246,9 @@ Author8/207, independent8/221 and two current scoped-handler sources retain
 separate cutoffs. [Dynamic read keys](docs/semantics/SOURCE-DIMENSION-KEYS.md)
 now stage missing key-CV, null/float and global-array-name conversions. Genuine
 temporary owners, borrowed CV tables and ordered NaN notices preserve mutation,
-COW and throwing cleanup through nested/quiet reads. Author9/246, independent14/235
-plus retained NaN2 and one current constructor interaction keep distinct cuts.
+COW and throwing cleanup through nested/quiet reads. Author9/246 includes the two
+independent NaN originals; independent14/235 and one current constructor
+interaction keep separate cuts.
 Read-write continuations and wider key/container producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw

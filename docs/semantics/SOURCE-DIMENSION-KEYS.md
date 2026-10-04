@@ -31,9 +31,10 @@ selected values are runtime facts; the rules do not reconstruct their history
 from a mutated CV. Saved emitters use the existing error-context validation,
 and throwing cleanup releases real key/base operands without213's null write.
 
-Author nine source comparisons and 62/59/55+70=246 reached assertions pass at
-their separate original cuts. Independent fourteen originals and 76/78/81=235
-checks pass at 9a8, with two NaN comparisons retained from 6f67. One actual71da
+Author nine source comparisons, including the two independent NaN originals,
+and 62/59/55+70=246 reached assertions pass at their separate original cuts.
+Independent fourteen originals and 76/78/81=235 checks pass at 9a8. The two
+author NaN comparisons retain independent tuple review at 6f67. One actual71da
 composition source passes inside a constructor in a parameter default with a captured
 parent-private handler and Child called class. The
 [ledger](../../coverage/semantics/dimension-key-review.json) records the original

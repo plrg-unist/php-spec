@@ -13,7 +13,8 @@ caller environment; ordinary arrays retain their fixed converted key. Real
 temporary owners and conversion protection distinguish COW, live references and
 sole-table retirement; NaN keeps protection across both ordered notices. Quiet
 isset/coalesce and nested temporaries keep their distinct demand/ownership paths.
-Author9/246 and independent14/235 plus retained NaN2 pass at separate cuts. One
+Author9/246 includes the two independent NaN originals; independent14/235 passes
+at its separate cut. One
 actual71da constructor in a parameter default passes with private captured
 handler selection, called class and authentic key line/name through root mutation.
 [Contract](docs/semantics/SOURCE-DIMENSION-KEYS.md),
