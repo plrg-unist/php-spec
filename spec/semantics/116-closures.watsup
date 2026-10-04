@@ -434,9 +434,10 @@ def $closure_receiver_free_ancestry(S, porigin) = $closure_receiver_free_ancestr
 def $closure_receiver_free_ancestry(S, porigin) = false -- otherwise
 
 dec $closure_scope_creation_valid(pstate, porigin, pclosurescope) : bool
-def $closure_scope_creation_valid(S, porigin, pclosurescope) = (pclosurescope.CREATION = eps)
+def $closure_scope_creation_valid(S, porigin, pclosurescope) = true
   -- if $constant_callable_source_scope(S, porigin) = eps
   -- if ~$closure_nested_creation(S, porigin)
+  -- if pclosurescope.CREATION = eps
 def $closure_scope_creation_valid(S, porigin, pclosurescope) = true
   -- if $constant_callable_source_scope(S, porigin) = eps
   -- if $closure_nested_creation(S, porigin)

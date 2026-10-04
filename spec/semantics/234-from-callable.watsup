@@ -26,6 +26,7 @@ dec $from_getter(pstate, nat) : (nat, pgettermethod, text)?
 dec $from_getter_kind(pstate, nat, ptbytes) : text?
 dec $from_compare(pstate, nat, nat) : bool
 dec $from_object(pobject) : bool
+dec $from_child_valid(pstate, porigin, pclosurescope) : bool
 
 def $intrinsic_name(INTRINSIC_FROM_CALLABLE) = $ptascii("Closure::fromCallable")
 def $config_kind(INTRINSIC_FROM_CALLABLE) = true
@@ -249,6 +250,12 @@ def $from_permission(S, pfrommethod) = true
   -- if $method_capture_class_valid(S, pmethodcapture.CALLED_CLASS)
   -- if pmethodcapture.CALLSITE = (porigin_call)
   -- if $method_capture_invocation_valid(S, pmethodcapture, porigin_call)
+def $from_permission(S, pfrommethod) = true
+  -- if pfrommethod.CREATION = (pmethodcapture)
+  -- if $trait_imported_origin(pmethodcapture.FUNCTION)
+  -- if pmethodcapture.LEXICAL_CLASS = pfrommethod.SCOPE
+  -- if pmethodcapture.CALLED_CLASS = pfrommethod.CALLED
+  -- if $method_capture_certificate_valid(S, pfrommethod.SITE, (pmethodcapture))
 def $from_permission(S, pfrommethod) = false -- otherwise
 
 def $from_class_valid(S, pfrommethod) = true
@@ -368,6 +375,47 @@ def $closure_callable(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
   -- if $closure_live_object_valid(S, n)
+
+;; A child source Closure copies its genuine captured-method creator. The
+;; historical method and receiver are lookup evidence, never extra heap owners.
+def $closure_evidence_body(S, n) = (pfrommethod.FUNCTION)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
+  -- if $class_method_origin(S.CLASSES, pfrommethod.FUNCTION) = (pmethoddesc)
+def $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope) = true
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pclosurescope.OBJECT] = FROMCALLABLECLOSURE pfrommethod
+  -- if pclosurescope.CREATION = eps
+  -- if $from_valid($from_history(S, pfrommethod), pfrommethod)
+  -- if $class_method_origin(S.CLASSES, pfrommethod.FUNCTION) = (pmethoddesc)
+  -- if pclosurescope.LEXICAL = pmethoddesc.OWNER
+  -- if pclosurescope.CALLED = pfrommethod.CLASS.CALLED
+  -- if pclosurescope.RECEIVER = $from_receiver(pfrommethod)
+def $closure_creation_stamp(S, pfunction) = ({FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, RECEIVER $closure_receiver_present($closure_bound_receiver(S, pfunction)), EVIDENCE (pclosurecreator)})
+  -- if ~$closure_nested_creation(S, pfunction.ORIGIN)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), pfunction.ORIGIN), eps) = ($origin_source(pcallcontext.FUNCTION))
+  -- if $call_current_valid(S)
+  -- if $closure_creation_scope(S, pfunction.ORIGIN)
+  -- if $closure_creator_current(S) = (pclosurecreator)
+def $from_child_valid(S, porigin, pclosurescope) = true
+  -- if ~$closure_nested_creation(S, porigin)
+  -- if pclosurescope.CREATION = (pclosurecreation)
+  -- if pclosurecreation.EVIDENCE = (pclosurecreator)
+  -- if pclosurecreator.SCOPE = CLOSURE_SCOPE pclosurescope_creator
+  -- if $(pclosurescope_creator.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pclosurescope_creator.OBJECT] = FROMCALLABLECLOSURE pfrommethod
+  -- if $closure_creator_valid(S, porigin, pclosurescope, pclosurecreation, pclosurecreator)
+def $from_child_valid(S, porigin, pclosurescope) = false -- otherwise
+def $closure_scope_creation_valid(S, porigin, pclosurescope) = $from_child_valid(S, porigin, pclosurescope)
+  -- if $constant_callable_source_scope(S, porigin) = eps
+  -- if ~$closure_nested_creation(S, porigin)
+  -- if pclosurescope.CREATION =/= eps
+def $closure_scope_classes_valid(S, porigin, pclosurescope) = true
+  -- if ~$closure_scope_original_classes(S, porigin, pclosurescope)
+  -- if $from_child_valid(S, porigin, pclosurescope)
 def $target_function(S, CLOSURE_TARGET n) = (pmethoddesc.FUNCTION)
   -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
   -- if $closure_live_object_valid(S, n)
@@ -387,10 +435,10 @@ def $clone_object(S, n_source) = $clone_scope(S[.OBJECTS = S.OBJECTS ++ [FROMCAL
   -- if S.OBJECTS[n_source] = FROMCALLABLECLOSURE pfrommethod
   -- if n = |S.OBJECTS|
 def $clone_same_kind(FROMCALLABLECLOSURE pfrommethod, FROMCALLABLECLOSURE pfrommethod) = true
-def $state_static_at(S, porigin) = $static_at(S.STATICS, porigin)
+def $state_static_at(S, porigin) = $static_at(S.STATICS, $trait_static_key(S, porigin))
   -- if $current_instance(S) = (n)
   -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
-def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new]]
+def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new[.ORIGIN = $trait_static_key(S, pstaticcell_new.ORIGIN)]]]
   -- if $current_instance(S) = (n)
   -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
 def $trace_context_function(S, pcallcontext) = pmethoddesc.NAME
