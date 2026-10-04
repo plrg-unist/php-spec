@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary string interpolation251 now follows effective CAST/FAST_CONCAT/ROPE
+order. Two-part fetched temporaries survive left callbacks; later variable
+conversion reads live borrowed slots. Undefined direct CVs keep singleton null
+but reread modes2+ without a second notice; callback-created arrays retain no
+invented owner. Real Stringable/array callbacks, throwing cleanup and compiled
+multiline lines preserve exact source/consumer/finish markers. Nine exact source
+agreements and SL237 pass at88f; affected AFTER guards and111 distinct premises
+pass ata7 in six unchanged groups with25 repeated setup premises. Original
+fixture stops, full/fast timeouts and native-only non-object-cast line probe keep
+zero credit. Actualcde/247 preservation retains240 parent modules plus251 without
+renewing those gates. [Contract](docs/semantics/SOURCE-INTERPOLATION.md) and
+[ledger](coverage/semantics/interpolation-review.json) retain these cuts. Wider
+interpolation producers/source contexts, legacy compiler deprecations and affected
+original dynamic-file observers remain required; complete core and paused return
+verification remain open.
+
 Ordinary Throwable reception250 now suspends weak-null/lossy warnings and
 Stringable parsing for NEW and explicit inherited/scoped constructor calls.
 Ordinary named-send priority stays intact; strict null/objects reject without
@@ -49,7 +65,7 @@ retain dcb/49/b371/dc9/4639 cuts; 81 conversion, 148 grouped warning and 45 shut
 premises pass at their recorded revisions. SL229/231/233 stages/init also pass.
 Actual f410/245 preservation retains 234 modules without renewing those gates.
 [The file operand ledger](coverage/semantics/file-operand-review.json) keeps
-original observer, fixture, model and timeout failures. Interpolation, wider
+original observer, fixture, model and timeout failures. Wider interpolation,
 providers/source contexts and request lifecycle remain required.
 
 Anonymous Closure/arrow default NEW245 resolves self/parent using the genuine

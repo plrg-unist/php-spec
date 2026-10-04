@@ -82,6 +82,12 @@ controls pass. The held fatal/shutdown source also matches at the actual231
 composition, freezing its destination after rendering and before the queue.
 Wider display/startup directives and diagnostic consumers stay open.
 
+[Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows
+effective CAST/FAST_CONCAT/ROPE order, retaining fetched temporaries separately
+from live variables through Stringable and warning callbacks. Nine exact source
+comparisons and 111 distinct owner/state premises pass at their recorded cuts;
+broader interpolation producers and source contexts remain required.
+
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
 licenses and offline dependency builds. The PHP source contains matching PHPT

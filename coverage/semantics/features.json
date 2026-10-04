@@ -2451,10 +2451,18 @@
       "obligations": [
         "bytes.interpolation"
       ],
-      "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "status": "partial",
+      "implementation": [
+        "spec/semantics/251-string-interpolation.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/168-user-string-runtime.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/interpolation_sources.py",
+        "tests/semantics/interpolation_protocol.py"
+      ],
+      "review": "Partial ordinary parsed strings/heredocs: effective CAST/FAST_CONCAT/ROPE order, scalar/Stringable/array/undefined callbacks, captured temporary versus borrowed CV ownership and compiled callback lines. Nine exact sources and SL237 pass at88f457d1c;111 distinct owner/authentication premises pass ata7c117b6 in six groups with25 repeated setup. Actualcde/247 preservation keeps241 modules without renewing those cuts. Wider producers/source contexts and legacy compiler deprecations remain required; original cast and dynamic-file observer gaps keep their old zero credit. See interpolation-review.json."
     },
     {
       "node": "IntersectionType",
@@ -2728,13 +2736,19 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/251-string-interpolation.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/168-user-string-runtime.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/interpolation_sources.py",
+        "tests/semantics/interpolation_protocol.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Partial ordinary parsed strings/heredocs: effective CAST/FAST_CONCAT/ROPE order, scalar/Stringable/array/undefined callbacks, captured temporary versus borrowed CV ownership and compiled callback lines. Nine exact sources and SL237 pass at88f457d1c;111 distinct owner/authentication premises pass ata7c117b6 in six groups with25 repeated setup. Actualcde/247 preservation keeps241 modules without renewing those cuts. Wider producers/source contexts and legacy compiler deprecations remain required; original cast and dynamic-file observer gaps keep their old zero credit. See interpolation-review.json. Earlier constant prepass/array omission barriers retain262 source/lint cases at9b82507a/reports22b36687, array-omission-review.json; no historical renewal or constant-context interpolation admission."
     },
     {
       "node": "Scalar_MagicConst_Class",
@@ -4832,15 +4846,26 @@
     {
       "id": "bytes.interpolation",
       "milestone": "1a-1c",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_operators.c"
+      "implementation": [
+        "spec/semantics/251-string-interpolation.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/168-user-string-runtime.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/interpolation_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/interpolation_sources.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_operators.c",
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h"
+      ],
+      "review": "Partial ordinary parsed strings/heredocs: effective CAST/FAST_CONCAT/ROPE order, scalar/Stringable/array/undefined callbacks, captured temporary versus borrowed CV ownership and compiled callback lines. Nine exact sources and SL237 pass at88f457d1c;111 distinct owner/authentication premises pass ata7c117b6 in six groups with25 repeated setup. Actualcde/247 preservation keeps241 modules without renewing those cuts. Wider producers/source contexts and legacy compiler deprecations remain required; original cast and dynamic-file observer gaps keep their old zero credit. See interpolation-review.json."
     },
     {
       "id": "bytes.output-conversion",
