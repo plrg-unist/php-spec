@@ -384,12 +384,19 @@ def $instance_default_unfinished(S, (porigin_class, porigin_decl) :: (porigin_ta
 def $instance_default_unfinished(S, (porigin_class, porigin_decl) :: (porigin_tail_class, porigin_tail_decl)*) = $instance_default_unfinished(S, (porigin_tail_class, porigin_tail_decl)*)
   -- if ~$instance_default_pending(S, porigin_class, porigin_decl) \/ $instance_default_busy(S, porigin_class, porigin_decl)
 dec $instance_default_ordered((porigin, porigin)*, (porigin, porigin)*) : bool
-def $instance_default_ordered((porigin_order_class, porigin_order_decl)*, eps) = true
-def $instance_default_ordered(eps, (porigin_target_class, porigin_target_decl) :: (porigin_tail_class, porigin_tail_decl)*) = false
-def $instance_default_ordered((porigin_class, porigin_decl) :: (porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl) :: (porigin_tail_class, porigin_tail_decl)*) = $instance_default_ordered((porigin_order_class, porigin_order_decl)*, (porigin_tail_class, porigin_tail_decl)*)
-  -- if porigin_class = porigin_target_class /\ porigin_decl = porigin_target_decl
-def $instance_default_ordered((porigin_class, porigin_decl) :: (porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl) :: (porigin_tail_class, porigin_tail_decl)*) = $instance_default_ordered((porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl) :: (porigin_tail_class, porigin_tail_decl)*)
-  -- if porigin_class =/= porigin_target_class \/ porigin_decl =/= porigin_target_decl
+def $instance_default_ordered((porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl)*) = true
+  -- if (porigin_target_class, porigin_target_decl)* = eps
+def $instance_default_ordered((porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl)*) = false
+  -- if (porigin_order_class, porigin_order_decl)* = eps
+  -- if (porigin_target_class, porigin_target_decl)* = (porigin_class, porigin_decl) :: (porigin_tail_class, porigin_tail_decl)*
+def $instance_default_ordered((porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl)*) = $instance_default_ordered((porigin_tail_class, porigin_tail_decl)*, (porigin_target_tail_class, porigin_target_tail_decl)*)
+  -- if (porigin_order_class, porigin_order_decl)* = (porigin_class, porigin_decl) :: (porigin_tail_class, porigin_tail_decl)*
+  -- if (porigin_target_class, porigin_target_decl)* = (porigin_head_class, porigin_head_decl) :: (porigin_target_tail_class, porigin_target_tail_decl)*
+  -- if porigin_class = porigin_head_class /\ porigin_decl = porigin_head_decl
+def $instance_default_ordered((porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl)*) = $instance_default_ordered((porigin_tail_class, porigin_tail_decl)*, (porigin_target_class, porigin_target_decl)*)
+  -- if (porigin_order_class, porigin_order_decl)* = (porigin_class, porigin_decl) :: (porigin_tail_class, porigin_tail_decl)*
+  -- if (porigin_target_class, porigin_target_decl)* = (porigin_head_class, porigin_head_decl) :: (porigin_target_tail_class, porigin_target_tail_decl)*
+  -- if porigin_class =/= porigin_head_class \/ porigin_decl =/= porigin_head_decl
 dec $instance_default_sequence(pstate, porigin, (porigin, porigin)*) : bool
 def $instance_default_sequence(S, porigin_root, (porigin_class, porigin_decl)*) = true
   -- if (porigin_order_class, porigin_order_decl)* = $instance_default_order(S, porigin_root, |S.CLASSES|)
