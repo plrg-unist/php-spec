@@ -73,6 +73,7 @@ dec $autoload_context_line(pautoloadcall) : int
 dec $autoload_context_site(pautoloadcall) : porigin?
 dec $autoload_api_entry_scope(pstate, papiquery, pautoloadentry) : bool
 dec $autoload_api_entry_tasks(ptask*) : pautoloadentry*
+dec $autoload_api_entry_task(ptask) : pautoloadentry*
 dec $autoload_api_entry_frames(pframe*) : pautoloadentry*
 dec $autoload_defined_entries(pautoloadentry?*) : pautoloadentry*
 dec $autoload_api_entry_owner(pstate, papiquery, pautoloadentry*) : bool
@@ -811,17 +812,18 @@ def $autoload_api_entry_scope(S, papiquery, pautoloadentry) = true
 def $autoload_api_entry_scope(S, papiquery, pautoloadentry) = false -- otherwise
 def $autoload_api_entry_owner(S, papiquery, eps) = false
 def $autoload_api_entry_owner(S, papiquery, pautoloadentry :: pautoloadentry_tail*) = ($autoload_api_entry_scope(S, papiquery, pautoloadentry) \/ $autoload_api_entry_owner(S, papiquery, pautoloadentry_tail*))
+def $autoload_api_entry_task(AUTO_REGISTER_RECEIVE pautoloadregistration) = [pautoloadregistration.ENTRY]
+def $autoload_api_entry_task(AUTO_REGISTER_NULL pautoloadregistration) = [pautoloadregistration.ENTRY]
+def $autoload_api_entry_task(AUTO_REGISTER_NOTICE pautoloadregistration) = [pautoloadregistration.ENTRY]
+def $autoload_api_entry_task(AUTO_UNREGISTER pautoloadentry) = [pautoloadentry]
+def $autoload_api_entry_task(AUTO_REFERENCE pautoloadcall pautoloadentry) = [pautoloadentry]
+def $autoload_api_entry_task(AUTO_ENTER pautoloadcall pautoloadentry poperand) = [pautoloadentry]
+def $autoload_api_entry_task(AUTO_RESULT pautoloadcall pautoloadentry poperand) = [pautoloadentry]
+def $autoload_api_entry_task(ERROR_HANDLER_INVOKE perrorcall) = $autoload_api_entry_task(perrorcall.RESUME)
+def $autoload_api_entry_task(ERROR_HANDLER_RESULT perrorcall) = $autoload_api_entry_task(perrorcall.RESUME)
+def $autoload_api_entry_task(ptask) = eps -- otherwise
 def $autoload_api_entry_tasks(eps) = eps
-def $autoload_api_entry_tasks((AUTO_REGISTER_RECEIVE pautoloadregistration) :: ptask_tail*) = pautoloadregistration.ENTRY :: $autoload_api_entry_tasks(ptask_tail*)
-def $autoload_api_entry_tasks((AUTO_REGISTER_NULL pautoloadregistration) :: ptask_tail*) = pautoloadregistration.ENTRY :: $autoload_api_entry_tasks(ptask_tail*)
-def $autoload_api_entry_tasks((AUTO_REGISTER_NOTICE pautoloadregistration) :: ptask_tail*) = pautoloadregistration.ENTRY :: $autoload_api_entry_tasks(ptask_tail*)
-def $autoload_api_entry_tasks((AUTO_UNREGISTER pautoloadentry) :: ptask_tail*) = pautoloadentry :: $autoload_api_entry_tasks(ptask_tail*)
-def $autoload_api_entry_tasks((AUTO_REFERENCE pautoloadcall pautoloadentry) :: ptask_tail*) = pautoloadentry :: $autoload_api_entry_tasks(ptask_tail*)
-def $autoload_api_entry_tasks((AUTO_ENTER pautoloadcall pautoloadentry poperand) :: ptask_tail*) = pautoloadentry :: $autoload_api_entry_tasks(ptask_tail*)
-def $autoload_api_entry_tasks((AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*) = pautoloadentry :: $autoload_api_entry_tasks(ptask_tail*)
-def $autoload_api_entry_tasks((ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*) = $autoload_api_entry_tasks([perrorcall.RESUME]) ++ $autoload_api_entry_tasks(ptask_tail*)
-def $autoload_api_entry_tasks((ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*) = $autoload_api_entry_tasks([perrorcall.RESUME]) ++ $autoload_api_entry_tasks(ptask_tail*)
-def $autoload_api_entry_tasks(ptask :: ptask_tail*) = $autoload_api_entry_tasks(ptask_tail*) -- otherwise
+def $autoload_api_entry_tasks(ptask :: ptask_tail*) = $autoload_api_entry_task(ptask) ++ $autoload_api_entry_tasks(ptask_tail*)
 def $autoload_api_entry_frames(eps) = eps
 def $autoload_api_entry_frames(pframe :: pframe_tail*) = $autoload_api_entry_tasks(pframe.TODO) ++ $autoload_api_entry_frames(pframe_tail*)
 def $api_target_valid(S, papiquery, porigin, ptbytes) = true
