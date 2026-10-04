@@ -259,13 +259,13 @@ def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, z, $
   -- if S.COMPLETION = USERFATAL ptbytes z b
 def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, 0, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in Unknown on line 0") ++ $shutdown_fatal_suffix(S, true), b)
   -- if S.COMPLETION = INTERNALFATAL ptbytes b
-def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), true)
+def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), $long_and(S.REPORTING, 1) =/= 0)
   -- if S.COMPLETION = FATAL ptbytes z
-def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("CompileError"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), true)
+def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("CompileError"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), $long_and(S.REPORTING, 64) =/= 0)
   -- if S.COMPLETION = STATICBYTES ptbytes z
-def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("CompileError"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, false), true)
+def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("CompileError"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, false), $long_and(S.REPORTING, 64) =/= 0)
   -- if S.COMPLETION = COMPILETHROWN ptbytes z
-def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("CompileError"), $ptascii(text), z, $ptascii("Fatal error: ") ++ $ptascii(text) ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), true)
+def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("CompileError"), $ptascii(text), z, $ptascii("Fatal error: ") ++ $ptascii(text) ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), $long_and(S.REPORTING, 64) =/= 0)
   -- if S.COMPLETION = STATICERROR text z
 
 def $shutdown_frozen(REQUESTFATAL ptbytes_class ptbytes_message z) = true

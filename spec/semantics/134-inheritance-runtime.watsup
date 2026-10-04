@@ -50,24 +50,24 @@ dec $class_constant_link_error(pstate, porigin, ptbytes, int) : pstate
 dec $method_link_state(pstate, pclassdesc, porigin) : pstate
 def $method_link_state(S, pclassdesc, porigin_parent) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]][.LINKEDPARENTS = S.LINKEDPARENTS ++ [CLASSLINK pclassdesc.ORIGIN (SOURCE_PARENT porigin_parent)]]
 
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend final class ") ++ pclassdesc_parent.NAME) pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend final class ") ++ pclassdesc_parent.NAME) pclassdesc.LINE]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "class"
   -- if pclassdesc_parent.FINAL
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend non-readonly class ") ++ pclassdesc_parent.NAME) pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ($ptascii("Readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend non-readonly class ") ++ pclassdesc_parent.NAME) pclassdesc.LINE]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "class"
   -- if ~pclassdesc_parent.FINAL
   -- if pclassdesc.READONLY /\ ~pclassdesc_parent.READONLY
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Non-readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend readonly class ") ++ pclassdesc_parent.NAME) pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ($ptascii("Non-readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend readonly class ") ++ pclassdesc_parent.NAME) pclassdesc.LINE]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "class"
   -- if ~pclassdesc_parent.FINAL
   -- if ~pclassdesc.READONLY /\ pclassdesc_parent.READONLY
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ptbytes_message pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ptbytes_message pclassdesc.LINE]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "class"
@@ -88,7 +88,7 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = UN
   -- if pclassdesc.READONLY = pclassdesc_parent.READONLY
   -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
   -- if $class_constant_parent_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent) = METHOD_UNSUPPORTED text
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_parent_wakeup_notice(S, pclassdesc, porigin_parent)[.COMPLETION = FATAL ptbytes_message z]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_parent_wakeup_notice(S, pclassdesc, porigin_parent)[.COMPLETION = STATICBYTES ptbytes_message z]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "class"
@@ -124,20 +124,20 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $useriter_parent_p
   -- if $class_property_override_issue(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES) = eps
   -- if $class_constant_parent_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent) = METHOD_OK
   -- if $class_method_link_issue($method_link_state(S, pclassdesc, porigin_parent), pclassdesc, porigin_parent) = METHOD_OK
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend non-readonly class stdClass")) pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ($ptascii("Readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend non-readonly class stdClass")) pclassdesc.LINE]
   -- if $ptlc(ptbytes_parent) = $ptascii("stdclass")
   -- if pclassdesc.READONLY
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]][.LINKEDPARENTS = S.LINKEDPARENTS ++ [CLASSLINK pclassdesc.ORIGIN STDCLASS_PARENT]]
   -- if $ptlc(ptbytes_parent) = $ptascii("stdclass")
   -- if ~pclassdesc.READONLY
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend non-readonly class ") ++ $ptascii(text_kind)) pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ($ptascii("Readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend non-readonly class ") ++ $ptascii(text_kind)) pclassdesc.LINE]
   -- if $throwable_link_kind(ptbytes_parent) = (text_kind)
   -- if pclassdesc.READONLY
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ptbytes_message pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ptbytes_message pclassdesc.LINE]
   -- if $throwable_link_kind(ptbytes_parent) = (text_kind)
   -- if ~pclassdesc.READONLY
   -- if $class_property_override_issue(S, pclassdesc, $throwable_layout(text_kind), pclassdesc.PROPERTIES) = (ptbytes_message)
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_root_wakeup_notice(S, pclassdesc, text_kind)[.COMPLETION = FATAL ptbytes_message z]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_root_wakeup_notice(S, pclassdesc, text_kind)[.COMPLETION = STATICBYTES ptbytes_message z]
   -- if $throwable_link_kind(ptbytes_parent) = (text_kind)
   -- if ~pclassdesc.READONLY
   -- if $class_property_override_issue(S, pclassdesc, $throwable_layout(text_kind), pclassdesc.PROPERTIES) = eps
@@ -152,14 +152,14 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_root_wakeup_n
   -- if ~pclassdesc.READONLY
   -- if $class_property_override_issue(S, pclassdesc, $throwable_layout(text_kind), pclassdesc.PROPERTIES) = eps
   -- if $pil_root_method_issue(text_kind, pclassdesc) = METHOD_OK
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend enum ") ++ ptbytes_display) pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend enum ") ++ ptbytes_display) pclassdesc.LINE]
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_parent)) = (INTERNAL ptbytes_key ptbytes_display "enum")
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend final class ") ++ ptbytes_display) pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend final class ") ++ ptbytes_display) pclassdesc.LINE]
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_parent)) = (INTERNAL ptbytes_key ptbytes_display "class")
   -- if $class_internal_final(ptbytes_parent)
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend interface ") ++ ptbytes_display) pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend interface ") ++ ptbytes_display) pclassdesc.LINE]
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_parent)) = (INTERNAL ptbytes_key ptbytes_display "interface")
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = FATAL ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend trait ") ++ ptbytes_display) pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend trait ") ++ ptbytes_display) pclassdesc.LINE]
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_parent)) = (INTERNAL ptbytes_key ptbytes_display "trait")
 def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = UNSUPPORTED "internal parent class linking"]
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_parent)) = (INTERNAL ptbytes_key ptbytes_display "class")
