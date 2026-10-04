@@ -471,6 +471,8 @@ over existing core callable forms, freezing selection across raw mutation and
 maker retirement. Genuine USER permission, internal getter scope, foreign called
 classes, defaults and shared method statics remain distinct. Existing Closure
 inputs preserve identity; factory errors wrap lookup warnings after full unwinding.
+Created source Closures retain authentic method/import scope after captures retire;
+static children add no receiver owner and nonstatic children own their receiver.
 Default/variadic, other internal and user-return keyword warning consumers remain
 required; magic/autoload and transformed binding remain open.
 The FCC compiler clears the callee result fold before recording the capture;
