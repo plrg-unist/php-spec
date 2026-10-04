@@ -119,7 +119,10 @@ def $object_default_test_stage(S, 1) = true
   -- if n_inner =/= n_outer
 def $object_default_test_stage(S, 2) = true
   -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
-  -- if S.TODO = (EVAL (NExprConstFetch (NName (BYTES text) metadata_name) metadata)) :: ptask_tail*
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant
+  -- if S.ORIGIN = (pdeprecatedconstant.SITE)
+  -- if $origin_node(S.SOURCES, pdeprecatedconstant.SITE) = (NExprConstFetch (NName (BYTES text) metadata_name) metadata)
   -- if $ptlc($base64(text)) = $ptascii("e_strict")
   -- if $class_static_at(S.CLASSSTATICS, pstaticdefaultcontext.DECL) = (pclassstatic)
   -- if $static_default_pending(pclassstatic.STATE)
