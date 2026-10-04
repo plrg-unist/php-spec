@@ -1,0 +1,17 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; direct trait NEW default control extracted from retained original native bytes; native preparation only.",
+  "cases": [
+    {
+      "id": "direct-trait-new-self-default-preserves-deprecation-before-error",
+      "source": "<?php trait T{static function f($x=new self){}}try{T::f();}catch(Error $e){echo $e->getMessage();}",
+      "source_sha256": "61f21a2662fce067945b8cfc4c39f8de4cca002be8e75c23a73b0f07b02878a6",
+      "status": "normal",
+      "stdout_base64": "Q2Fubm90IGluc3RhbnRpYXRlIHRyYWl0IFQ=",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFQ6OmYgaXMgZGVwcmVjYXRlZCwgaXQgc2hvdWxkIG9ubHkgYmUgY2FsbGVkIG9uIGEgY2xhc3MgdXNpbmcgdGhlIHRyYWl0IGluIHtGSUxFfSBvbiBsaW5lIDEK",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-default-direct-source228-p1elq46n/report.json",
+      "native_raw_sha256": "b58ccc5bb26c8df2ec8165500ecd9b266066c0893f358529eec46f128738a92c",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; retained original raw direct-trait deprecation plus caught instantiation Error"
+    }
+  ]
+}
