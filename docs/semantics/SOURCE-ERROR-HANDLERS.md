@@ -103,7 +103,11 @@ warnings through read/quiet/nested consumers. Native protection and genuine
 temporary owners preserve table COW/retirement, live cells and ordered NaN
 notices; throws skip the later write. Source, line, mode, constants and owning
 operand forms are checked without reconstructing captured dynamic-value history.
-Read-write and wider key/container producers remain required.
+[Writable dimensions242](SOURCE-DIMENSION-WRITES.md) add bounded CV-array W/RW
+and direct GLOBALS reference fetches. Native separation/protection, exact-one
+table acquisition and delayed RHS demand survive callbacks; named fetch precedes
+mapping and promotion. Append/unset/coalesce-assignment and wider producers
+remain required.
 
 Primary contracts are `zend_error_zstr_at` in `vendor/php-src/Zend/zend.c`, the
 six API bodies in `Zend/zend_builtin_functions.c`, the undefined-CV read helpers

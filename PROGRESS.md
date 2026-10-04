@@ -7,6 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Writable dimension keys242 stage defined mutable CV-array W/RW fetches through
+undefined/null/float/NaN callbacks, nested acquisition, updates and direct
+assignment/compound consumers. Separation precedes conversion; callback-created
+copies abort acquisition while real cell aliases and moved sole keepers preserve
+it. Borrowed inner rows retire with their parent; aborted intermediate fetches
+retain one genuine unnamed null cell. Delayed RHS CV demand follows successful
+conversion. Direct GLOBALS W and named reference sends preserve selected names,
+fetch/mapping priority and callable/earlier-argument owners. Throws retain the
+old typed destination and previous chain. Author11 source agreements/340 reached
+assertions include two independent originals; independent15 fresh agreements/266
+assertions retain those two separately, giving26 unique private agreements. One
+actual3b622 composition source at6ae passes private-handler/called-class and typed
+caller alias/introspection behavior. Accepted231/234 routes are preserved. The
+[contract](docs/semantics/SOURCE-DIMENSION-WRITES.md) and
+[ledger](coverage/semantics/dimension-write-continuations-review.json) retain original failures,
+revisions and the current adapter reuse. Append, unset, coalesce assignment,
+broader GLOBALS RW and earlier container/string/object producers remain required.
+
 Shutdown registration231 caches callable selection, private/rebound permission
 and copied arguments after all argument effects. Ordered callbacks run after
 normal, exit and fatal/uncaught paths, including serviced compiler failures.
@@ -66,9 +84,9 @@ at its separate cut. One
 actual71da constructor in a parameter default passes with private captured
 handler selection, called class and authentic key line/name through root mutation.
 [Contract](docs/semantics/SOURCE-DIMENSION-KEYS.md),
-[ledger](coverage/semantics/dimension-key-review.json). Read-write/reference,
-append/unset/compound/coalesce-assignment warning continuations are required next;
-wider object/key/container producers remain core work.
+[ledger](coverage/semantics/dimension-key-review.json). Writable242 covers the
+bounded CV-array consumers above; append/unset/coalesce-assignment and wider
+object/key/container producers remain core work.
 
 Prepared internal Throwable default constructors235 map completed227 values
 before names, arity and sequential reception. Default declaration strictness,
@@ -354,9 +372,10 @@ failures and interrupted evidence.
   array and string Closure PIPE routes are covered. Direct defined/missing
   `$GLOBALS[key]` reads and explicit-request full-table snapshots are admitted;
   233 additionally stages earlier missing key-CV and null/float/global-array-name
-  conversions through nested/quiet reads. Read-write continuations, wider
-  key/object/container producers and ordinary snapshots without request facts
-  remain open.
+  conversions through nested/quiet reads. Writable242 adds bounded CV-array W/RW
+  and direct GLOBALS reference fetches. Append/unset/coalesce-assignment, broader
+  GLOBALS RW, wider key/object/container producers and ordinary snapshots
+  without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
   wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
