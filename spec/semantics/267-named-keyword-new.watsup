@@ -56,6 +56,7 @@ def $keyword_new_entry_source(S, PORIGIN n pcpath, porigin_scope?) = $keyword_ne
   -- if pevalbinding.CLASS = porigin_scope?
   -- if pevalbinding.SITE = PORIGIN n_entry pcpath_entry
   -- if $(n_entry < n)
+  -- if z = $eval_site_line(S, pevalbinding.SITE)
   -- if $eval_site_valid(S, pevalbinding.SITE, z)
 def $keyword_new_entry_source(S, PORIGIN n pcpath, porigin_scope?) = $keyword_new_entry_source(S, pfilebinding.SITE, porigin_scope?)
   -- if $goto_source_owner($all_functions(S), n, pcpath) = eps
@@ -64,6 +65,7 @@ def $keyword_new_entry_source(S, PORIGIN n pcpath, porigin_scope?) = $keyword_ne
   -- if pfilebinding.CLASS = porigin_scope?
   -- if pfilebinding.SITE = PORIGIN n_entry pcpath_entry
   -- if $(n_entry < n)
+  -- if z = $file_site_line(S, pfilebinding.SITE)
   -- if $file_site_valid(S, pfilebinding.SITE, z, pfilebinding.KIND)
 def $keyword_new_entry_source(S, porigin, porigin_scope?) = porigin -- otherwise
 def $dynamic_new_scope_source(S, pdynamicnew) = $keyword_new_entry_source(S, pdynamicnew.SITE, pdynamicnew.SCOPE)
