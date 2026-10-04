@@ -1,0 +1,699 @@
+[
+  {
+    "id": "ordered-append",
+    "source": "<?php\nfunction c(){echo \"C;\";}function a(){echo \"A;\";register_shutdown_function(\"c\");return false;}function b(){echo \"B;\";}register_shutdown_function(\"a\");register_shutdown_function(\"b\");echo \"M;\";\n",
+    "source_sha256": "a94da227b0905f308ad99faeafbb3d6bfbbc1db384f214c1989d5b3486e8f424",
+    "stdout": "M;A;B;C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exit-main",
+    "source": "<?php\nfunction s(){echo \"S;\";}register_shutdown_function(\"s\");function f(){try{echo \"M;\";exit(7);}finally{echo \"BAD;\";}}f();\n",
+    "source_sha256": "f55b8a686327ce63334eadb477731bb56917edc0781a05192338418b908197de",
+    "stdout": "M;S;",
+    "stderr": "",
+    "exit": 7,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "fatal-main",
+    "source": "<?php\nfunction a(){echo \"A;\";}function b(){echo \"B;\";}register_shutdown_function(\"a\");register_shutdown_function(\"b\");trigger_error(\"main fatal\",E_USER_ERROR);\n",
+    "source_sha256": "6ab039a0e4deb2c067f65265e1bae99b80270302796049f48e8f582550dead4d",
+    "stdout": "A;B;",
+    "stderr": "Deprecated: Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead in {file} on line 2\nFatal error: main fatal in {file} on line 2\nStack trace:\n#0 {file}(2): trigger_error('main fatal', 256)\n#1 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "uncaught-main-handler",
+    "source": "<?php\nfunction s(){echo \"S;\";}function h($e){echo \"H:\",$e->getMessage(),\";\";}register_shutdown_function(\"s\");set_exception_handler(\"h\");throw new Exception(\"main\");\n",
+    "source_sha256": "ed03d1767535a9ba680060398f7c2a7abfca0d82222f5f2aa95bd6387aba031e",
+    "stdout": "H:main;S;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "uncaught-main-unhandled",
+    "source": "<?php\nfunction s(){echo \"S;\";}register_shutdown_function(\"s\");throw new Exception(\"main\");\n",
+    "source_sha256": "4ef7e48f3216befb87aefde5bb69411bdd7f81085739cbcc80e4ba911bf3468b",
+    "stdout": "S;",
+    "stderr": "Fatal error: Uncaught Exception: main in {file}:2\nStack trace:\n#0 {main}\n  thrown in {file} on line 2\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "exception-handler-exit",
+    "source": "<?php\nfunction s(){echo \"S;\";}function h($e){echo \"H;\";exit(17);}register_shutdown_function(\"s\");set_exception_handler(\"h\");throw new Exception(\"main\");\n",
+    "source_sha256": "46a948c63a48d43ab030ba73f76a8ff5a61ec7ef7e677295a6acd617ddf29c99",
+    "stdout": "H;S;",
+    "stderr": "",
+    "exit": 17,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "exception-handler-throws",
+    "source": "<?php\nfunction s(){echo \"S;\";}function h($e){echo \"H;\";throw new Exception(\"handler\");}register_shutdown_function(\"s\");set_exception_handler(\"h\");throw new Exception(\"main\");\n",
+    "source_sha256": "5fca930d7352bb67692a5e03591fa9055a9fbedf7501d12abe088cdf28fcb40f",
+    "stdout": "H;S;",
+    "stderr": "Fatal error: Uncaught Exception: handler in {file}:2\nStack trace:\n#0 [internal function]: h(Object(Exception))\n#1 {main}\n  thrown in {file} on line 2\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "shutdown-throws-handled",
+    "source": "<?php\nfunction a(){echo \"A;\";throw new Exception(\"shutdown\");}function b(){echo \"B;\";}function h($e){echo \"H:\",$e->getMessage(),\";\";}set_exception_handler(\"h\");register_shutdown_function(\"a\");register_shutdown_function(\"b\");\n",
+    "source_sha256": "6cf7aa37af885b13ba66ce5e44a108147bf6e81e2173cf7cbf3609506092bfbe",
+    "stdout": "A;H:shutdown;B;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-throws-unhandled",
+    "source": "<?php\nfunction a(){echo \"A;\";throw new Exception(\"shutdown\");}function b(){echo \"BAD;\";}register_shutdown_function(\"a\");register_shutdown_function(\"b\");\n",
+    "source_sha256": "f715ee8d563abb5e91fd3edbc92b3768c3172e1007325757fc3f3af7866b3ec4",
+    "stdout": "A;",
+    "stderr": "Fatal error: Uncaught Exception: shutdown in {file}:2\nStack trace:\n#0 [internal function]: a()\n#1 {main}\n  thrown in {file} on line 2\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "shutdown-exit",
+    "source": "<?php\nfunction a(){try{echo \"A;\";exit(9);}finally{echo \"BADF;\";}}function b(){echo \"BADB;\";}register_shutdown_function(\"a\");register_shutdown_function(\"b\");\n",
+    "source_sha256": "5354d27c1a0ac366491f8d742ba6bcf5c6d157a56c5f6451d8acdb00be3870c7",
+    "stdout": "A;",
+    "stderr": "",
+    "exit": 9,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "shutdown-fatal",
+    "source": "<?php\nfunction a(){echo \"A;\";trigger_error(\"shutdown fatal\",E_USER_ERROR);}function b(){echo \"BAD;\";}register_shutdown_function(\"a\");register_shutdown_function(\"b\");\n",
+    "source_sha256": "150cb81b4122a2962e089948db53cf53f65accf61850d301d89b19eb7ba4f393",
+    "stdout": "A;",
+    "stderr": "Deprecated: Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead in {file} on line 2\nFatal error: shutdown fatal in {file} on line 2\nStack trace:\n#0 {file}(2): trigger_error('shutdown fatal', 256)\n#1 [internal function]: a()\n#2 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "shutdown-replaces-handler",
+    "source": "<?php\nfunction h1($e){echo \"BAD;\";}function h2($e){echo \"H;\";}function a(){echo \"A;\";set_exception_handler(\"h2\");}function b(){echo \"B;\";throw new Exception(\"x\");}function c(){echo \"C;\";}set_exception_handler(\"h1\");register_shutdown_function(\"a\");register_shutdown_function(\"b\");register_shutdown_function(\"c\");\n",
+    "source_sha256": "91aaaab29e83c96fc36c72135997d1ba8eb01db5cb5c864c5b3aaf20e0517970",
+    "stdout": "A;B;H;C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "strict-weak-receive",
+    "source": "<?php\ndeclare(strict_types=1);function h(int $x){echo $x,\";\";}register_shutdown_function(\"h\",\"12\");\n",
+    "source_sha256": "a57875f314f4203a052858cb39f654c682b328e270841777f6865a09ac88e99d",
+    "stdout": "12;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "zero-formals-extra",
+    "source": "<?php\nfunction h(){echo func_num_args(),\";\",func_get_arg(0),\";\",func_get_args()[1],\";\";}register_shutdown_function(\"h\",\"first\",\"second\");\n",
+    "source_sha256": "384550b08098543341a84bb3ec60f20fd4a3c1126f375b16b4e02eb0465d31c8",
+    "stdout": "2;first;second;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "scalar-reference-copy",
+    "source": "<?php\n$x=\"old\";$r=&$x;function h(&$a){global $x;echo $a,\":\",$x,\";\";$a=\"callback\";}function b(){global $x;echo $x,\";\";}register_shutdown_function(\"h\",$r);register_shutdown_function(\"b\");$x=\"new\";\n",
+    "source_sha256": "c9793071e0394df36a683fbd8003277d7883a9067ce62a09677b4e12a19ec83a",
+    "stdout": "old:new;new;",
+    "stderr": "Warning: h(): Argument #1 ($a) must be passed by reference, value given in Unknown on line 0\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "unpacked-reference-copy",
+    "source": "<?php\n$x=\"old\";$args=[&$x];function h(&$a){global $x;echo $a,\":\",$x,\";\";$a=\"callback\";}function b(){global $x;echo $x,\";\";}register_shutdown_function(\"h\",...$args);register_shutdown_function(\"b\");$x=\"new\";\n",
+    "source_sha256": "967cbb9b46f9639af6986f7cc2e8350640c0253a4a03647f69605c3d9eba8368",
+    "stdout": "old:new;new;",
+    "stderr": "Warning: h(): Argument #1 ($a) must be passed by reference, value given in Unknown on line 0\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "array-embedded-reference",
+    "source": "<?php\n$x=\"old\";$a=[&$x];function h($v){global $x;echo count($v),\":\",$v[0],\";\";$v[0]=\"callback\";echo $x,\";\";}register_shutdown_function(\"h\",$a);$x=\"new\";$a[]=\"extra\";\n",
+    "source_sha256": "796de54843ac12a1cba19498a132492e144bec4454628d30ec6061cce8bb8bfc",
+    "stdout": "1:new;callback;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "registered builtin call"
+  },
+  {
+    "id": "private-cached-array",
+    "source": "<?php\nclass C{static function reg(){ $m=\"a\";$raw=[\"C\",&$m];register_shutdown_function($raw);$m=\"missing\";}private static function a(){echo \"A:\",get_called_class(),\";\";}}C::reg();\n",
+    "source_sha256": "3ac1a5e76d777b13b663772373c53c466786f97649f7fab9ffd52e96732a0a5c",
+    "stdout": "A:C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "compatible-this-cache",
+    "source": "<?php\nclass C{public $x=\"kept\";function reg(){register_shutdown_function(\"C::h\");}private function h(){echo $this->x,\";\";}}$c=new C();$c->reg();unset($c);\n",
+    "source_sha256": "389cc9095dce8ce1b25435db59c96ae04ac94be7f24ad534be87b1a00a8e6c7e",
+    "stdout": "kept;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "private-invoke-cache",
+    "source": "<?php\nclass C{private function __invoke(){echo \"I;\";}}$c=new C();register_shutdown_function($c);unset($c);\n",
+    "source_sha256": "cd16d4c1ace6102e4c72f878190dec12c2aaf1177cd1a6285c1cd97f70bd7e22",
+    "stdout": "I;",
+    "stderr": "Warning: The magic method C::__invoke() must have public visibility in {file} on line 2\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "registration-priority",
+    "source": "<?php\nfunction s(){echo \"S;\";}function side(){echo \"E;\";return 2;}register_shutdown_function(\"s\");try{register_shutdown_function(null,side());}catch(TypeError $e){echo $e->getMessage(),\";\";}try{register_shutdown_function();}catch(ArgumentCountError $e){echo $e->getMessage(),\";\";}\n",
+    "source_sha256": "797e90f383ab6d595d29c0a772d8cd96d2f887cdc7055d1521a722cc79c89571",
+    "stdout": "E;register_shutdown_function(): Argument #1 ($callback) must be a valid callback, no array or string given;register_shutdown_function() expects at least 1 argument, 0 given;S;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "named-registration",
+    "source": "<?php\nfunction s($v=\"default\"){echo $v,\";\";}register_shutdown_function(callback:\"s\");try{register_shutdown_function(callback:\"s\",v:\"named\");}catch(Error $e){echo $e->getMessage(),\";\";}register_shutdown_function(...[\"s\",\"positional\"]);\n",
+    "source_sha256": "e790e803705b71ca032ecb15c02c47bf686c645effd8d6f3661550c55cece804",
+    "stdout": "register_shutdown_function() does not accept unknown named parameters;default;positional;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "duplicate-registration",
+    "source": "<?php\nfunction s($v){echo $v,\";\";}register_shutdown_function(\"s\",\"one\");register_shutdown_function(\"s\",\"two\");\n",
+    "source_sha256": "8a8c904bb0147faea08c572f7c9401bfb5b0fbb98c611590283e1ddb87a5d795",
+    "stdout": "one;two;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "warning-handled-throw",
+    "source": "<?php\nfunction a(&$v){echo \"A:\",$v,\";\";}function b(){echo \"B;\";}function h($e){echo \"H:\",$e->getMessage(),\";\";}function w($n,$m,$f,$l){echo \"W:\",$f,\":\",$l,\";\";throw new Exception(\"warning\");}set_error_handler(\"w\");set_exception_handler(\"h\");register_shutdown_function(\"a\",\"value\");register_shutdown_function(\"b\");\n",
+    "source_sha256": "4b9a066c7dbb19a6a579cff6817521e84368c1c4351cf4bff7dee56851860b03",
+    "stdout": "W:Unknown:0;H:warning;A:value;B;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "append-in-exception-handler",
+    "source": "<?php\nfunction a(){echo \"A;\";throw new Exception(\"x\");}function b(){echo \"B;\";}function c(){echo \"C;\";}function h($e){echo \"H;\";register_shutdown_function(\"c\");}set_exception_handler(\"h\");register_shutdown_function(\"a\");register_shutdown_function(\"b\");\n",
+    "source_sha256": "6fbb441df3d8eb5c4126bccd6337c77224f4bf313ae166fa6294c5aaba5578ad",
+    "stdout": "A;H;B;C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "reference-return-ignored",
+    "source": "<?php\nfunction &a(){echo \"A;\";$x=\"value\";return $x;}function b(){echo \"B;\";}register_shutdown_function(\"a\");register_shutdown_function(\"b\");\n",
+    "source_sha256": "3db24f27440191adebb4b5e3ca666c22e3b1aa0ac97522065f0a400da8952ebb",
+    "stdout": "A;B;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "status-main-exit-callback-exit",
+    "source": "<?php\nfunction a(){echo \"A;\";exit(0);}function b(){echo \"BAD;\";}register_shutdown_function(\"a\");register_shutdown_function(\"b\");exit(7);\n",
+    "source_sha256": "0acf579a09ac57b3a944dc112e1b95f694da4f5f437115f5b971dbec78f67334",
+    "stdout": "A;",
+    "stderr": "",
+    "exit": 0,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "status-main-exit-handled-throw",
+    "source": "<?php\nfunction a(){echo \"A;\";throw new Exception(\"callback\");}function b(){echo \"B;\";}function h($e){echo \"H;\";}set_exception_handler(\"h\");register_shutdown_function(\"a\");register_shutdown_function(\"b\");exit(7);\n",
+    "source_sha256": "f293914f7aadbb0800fe287dfc3c88b8e0544975740bc8dc972b2548e1dba004",
+    "stdout": "A;H;B;",
+    "stderr": "",
+    "exit": 7,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "status-main-fatal-callback-exit",
+    "source": "<?php\nfunction a(){echo \"A;\";exit(0);}function b(){echo \"BAD;\";}register_shutdown_function(\"a\");register_shutdown_function(\"b\");trigger_error(\"main fatal\",E_USER_ERROR);\n",
+    "source_sha256": "0fb1325701e95ce4aa769eb2c15760c9d5709a9f7c34d9ed5908ee72dea79d90",
+    "stdout": "A;",
+    "stderr": "Deprecated: Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead in {file} on line 2\nFatal error: main fatal in {file} on line 2\nStack trace:\n#0 {file}(2): trigger_error('main fatal', 256)\n#1 {main}\n",
+    "exit": 0,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "status-main-exit-callback-fatal",
+    "source": "<?php\nfunction a(){echo \"A;\";trigger_error(\"callback fatal\",E_USER_ERROR);}register_shutdown_function(\"a\");exit(7);\n",
+    "source_sha256": "29655a759ff58b81299b14a2991540cac7952dd07b0c5488556a6b6ef8a9aceb",
+    "stdout": "A;",
+    "stderr": "Deprecated: Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead in {file} on line 2\nFatal error: callback fatal in {file} on line 2\nStack trace:\n#0 {file}(2): trigger_error('callback fatal', 256)\n#1 [internal function]: a()\n#2 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "status-fatal-before-reporting-change",
+    "source": "<?php\nfunction a(){error_reporting(0);echo \"A;\";}register_shutdown_function(\"a\");trigger_error(\"main fatal\",E_USER_ERROR);\n",
+    "source_sha256": "ccc29bce19f497c418a440812d028d1bc7c99a4af1971c500e41401ba7585661",
+    "stdout": "A;",
+    "stderr": "Deprecated: Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead in {file} on line 2\nFatal error: main fatal in {file} on line 2\nStack trace:\n#0 {file}(2): trigger_error('main fatal', 256)\n#1 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "status-uncaught-before-reporting-change",
+    "source": "<?php\nfunction a(){error_reporting(0);echo \"A;\";}register_shutdown_function(\"a\");throw new Exception(\"main\");\n",
+    "source_sha256": "37831fc5bd9aaf0d0087312f1f3f8fd1ce5284ccf21dd5df6fdc4357b565e076",
+    "stdout": "A;",
+    "stderr": "Fatal error: Uncaught Exception: main in {file}:2\nStack trace:\n#0 {main}\n  thrown in {file} on line 2\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "status-main-handler-shutdown-handler",
+    "source": "<?php\nfunction a(){echo \"A;\";throw new Exception(\"callback\");}function b(){echo \"B;\";}function h($e){echo \"H:\",$e->getMessage(),\";\";}set_exception_handler(\"h\");register_shutdown_function(\"a\");register_shutdown_function(\"b\");throw new Exception(\"main\");\n",
+    "source_sha256": "4228a48a569cb47bf783fce0b5f7b3f7f6c465db67cd420f58a433a9ddee60bb",
+    "stdout": "H:main;A;H:callback;B;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "status-shutdown-handler-exit",
+    "source": "<?php\nfunction a(){echo \"A;\";throw new Exception(\"callback\");}function b(){echo \"BAD;\";}function h($e){echo \"H;\";exit(18);}set_exception_handler(\"h\");register_shutdown_function(\"a\");register_shutdown_function(\"b\");\n",
+    "source_sha256": "8c3fb809330f10568d51734e6157e8316ae8e8ff8b40636109eb429acb0bd8c2",
+    "stdout": "A;H;",
+    "stderr": "",
+    "exit": 18,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "status-receive-typeerror-handled",
+    "source": "<?php\nfunction a(int $v){echo \"BAD;\";}function b(){echo \"B;\";}function h($e){echo $e->getMessage(),\";\";}set_exception_handler(\"h\");register_shutdown_function(\"a\",[]);register_shutdown_function(\"b\");\n",
+    "source_sha256": "fb6978cd633a9bc0562dece8e0cb4e2bb13e9a83ded4fd017034595b9cd67693",
+    "stdout": "a(): Argument #1 ($v) must be of type int, array given;B;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "status-warning-then-arity-handled",
+    "source": "<?php\nfunction a(&$v,$need){echo \"BAD;\";}function b(){echo \"B;\";}function h($e){echo $e->getMessage(),\";\";}function w($n,$m,$f,$l){echo \"W:\",$f,\":\",$l,\";\";return true;}set_error_handler(\"w\");set_exception_handler(\"h\");register_shutdown_function(\"a\",\"value\");register_shutdown_function(\"b\");\n",
+    "source_sha256": "127eea3258a7f3309bdfb8f8daa4dac6093fd92aba1de02c563b1f4b31a252bd",
+    "stdout": "W:Unknown:0;Too few arguments to function a(), 1 passed and exactly 2 expected;B;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "capture-rebound-maker",
+    "source": "<?php\nclass A{static function make(){return static function(){register_shutdown_function([\"B\",\"h\"]);};}}class B{private static function h(){echo \"B:\",get_called_class(),\";\";}}$maker=Closure::bind(A::make(),null,\"B\");$maker();unset($maker);\n",
+    "source_sha256": "eb5acec72e4712c56489dad05f30ac241c85e05df602e517ab2dae77d80393cf",
+    "stdout": "B:B;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "capture-parent-private-object",
+    "source": "<?php\nclass P{function reg(){register_shutdown_function([$this,\"h\"]);}private function h(){echo \"P:\",get_called_class(),\";\";}}class C extends P{private function h(){echo \"BAD;\";}}$c=new C();$c->reg();unset($c);\n",
+    "source_sha256": "510ad62ed74ed515cca613871bb148d3387f45cb7f9617ca9e29877085d63c56",
+    "stdout": "P:C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "capture-retired-static-selector",
+    "source": "<?php\nclass C{static function h(){echo \"H;\";}}$raw=[new C(),\"h\"];register_shutdown_function($raw);unset($raw);\n",
+    "source_sha256": "4bde4687a63c0838255e3019a6b99ac406b44acb22a9b9304b5853d67b39f388",
+    "stdout": "H;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "capture-closure-and-argument",
+    "source": "<?php\nfunction make(){ $c=function($v){echo $v[0],\";\";};$a=[\"kept\"];register_shutdown_function($c,$a);}$unused=make();\n",
+    "source_sha256": "9b28b1c13aab32ce2c33d1b462c2edd86644e166c3ef85393bdd49eef7c79dbe",
+    "stdout": "kept;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "capture-argument-cow-between-entries",
+    "source": "<?php\n$a=[\"old\"];function h(&$v){$v[0]=\"changed\";echo $v[0],\";\";}function b($v){echo $v[0],\";\";}register_shutdown_function(\"h\",$a);register_shutdown_function(\"b\",$a);unset($a);\n",
+    "source_sha256": "65ca589fbf0133134000ae7c1755e9ed1da9094ac18d31736d3a17b8960a8c61",
+    "stdout": "changed;old;",
+    "stderr": "Warning: h(): Argument #1 ($v) must be passed by reference, value given in Unknown on line 0\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "capture-builtin-registration-fcc",
+    "source": "<?php\nfunction s($v){echo $v,\";\";}$r=register_shutdown_function(...);$r(\"s\",\"captured\");unset($r);\n",
+    "source_sha256": "f8a790587e00f060dd452bdbcd57db9a9c2d91d9af2a86a42cd640875e0c5a90",
+    "stdout": "captured;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "priority-invalid-and-named",
+    "source": "<?php\nfunction side(){echo \"E;\";return \"value\";}try{register_shutdown_function(null,x:side());}catch(Error $e){echo $e->getMessage(),\";\";}\n",
+    "source_sha256": "b27f5d56f9848d8adae500957bc25118951f276642d9294555aa90d43d6abc97",
+    "stdout": "E;register_shutdown_function() does not accept unknown named parameters;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "priority-missing-and-named",
+    "source": "<?php\ntry{register_shutdown_function(x:1);}catch(Error $e){echo $e->getMessage(),\";\";}\n",
+    "source_sha256": "81a849fe41d8f997e396ed826e4f363ac78c26858913f7c7b8e1dc33763542db",
+    "stdout": "register_shutdown_function() does not accept unknown named parameters;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "freeze-mutated-uncaught-payload",
+    "source": "<?php\nclass E extends Exception{function change(){$this->message=\"later\";}}$e=new E(\"first\");function s(){global $e;$e->change();echo $e->getMessage(),\";\";}register_shutdown_function(\"s\");throw $e;\n",
+    "source_sha256": "03e9aecd07e693b6a9788b4db0564d1ff648d0a8b8d347444492381b484089d2",
+    "stdout": "later;",
+    "stderr": "Fatal error: Uncaught E: first in {file}:2\nStack trace:\n#0 {main}\n  thrown in {file} on line 2\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "freeze-empty-uncaught-message",
+    "source": "<?php\nfunction s(){echo \"S;\";}register_shutdown_function(\"s\");throw new Exception(\"\");\n",
+    "source_sha256": "1477918042998a9460d66643db58b864679dd766ecf9723d0d8421331671c596",
+    "stdout": "S;",
+    "stderr": "Fatal error: Uncaught Exception in {file}:2\nStack trace:\n#0 {main}\n  thrown in {file} on line 2\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "freeze-main-fatal-before-send-warning",
+    "source": "<?php\nfunction s(&$x){echo \"S;\";}register_shutdown_function(\"s\",\"arg\");trigger_error(\"main fatal\",E_USER_ERROR);\n",
+    "source_sha256": "8218eefedcc3e5e9e3ec8330608eb9df2e995bcb78692e939e0fd853b942f307",
+    "stdout": "S;",
+    "stderr": "Deprecated: Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead in {file} on line 2\nFatal error: main fatal in {file} on line 2\nStack trace:\n#0 {file}(2): trigger_error('main fatal', 256)\n#1 {main}\nWarning: s(): Argument #1 ($x) must be passed by reference, value given in Unknown on line 0\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "selection-after-argument-effects",
+    "source": "<?php\nclass C{static function a($v){echo \"BAD;\";}static function b($v){echo \"B:\",$v,\";\";}}$m=\"a\";$raw=[\"C\",&$m];function side(){global $m;echo \"E;\";$m=\"b\";return \"arg\";}register_shutdown_function($raw,side());$m=\"a\";\n",
+    "source_sha256": "9f3fbf2330f2506b63de082c9662deb52a46919ec906450b9a3e9c85113de0bf",
+    "stdout": "E;B:arg;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "saved-private-callback-scope",
+    "source": "<?php\nfunction child(){try{register_shutdown_function(\"C::secret\");}catch(TypeError $e){echo \"DENIED;\";}}class C{static function reg(){register_shutdown_function(self::h(...));}private static function h(){child();register_shutdown_function(\"C::secret\");}private static function secret(){echo \"S;\";}}C::reg();\n",
+    "source_sha256": "b86f0448643835b90b61eb5ccc92a5a4475db0a9dd809b39d6cc77d7a2266664",
+    "stdout": "DENIED;S;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "compile-stop-runtime-link",
+    "source": "<?php\nfunction s(){echo \"S;\";}register_shutdown_function(\"s\");class A extends Exception{}eval('class B extends A{protected function __wakeup():void{}}');echo \"BAD;\";\n",
+    "source_sha256": "ac02d1e667188f502f4b4ae4fabbb01198e9ed25390808995383258bc524d915",
+    "stdout": "S;",
+    "stderr": "Warning: The magic method B::__wakeup() must have public visibility in {file}(2) : eval()'d code on line 1\nFatal error: Access level to B::__wakeup() must be public (as in class Exception) in {file}(2) : eval()'d code on line 1\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "compile-stop-dynamic-compiler-fatal",
+    "source": "<?php\nfunction s(){echo \"S;\";}register_shutdown_function(\"s\");eval('class B{public function __wakeup():int{}}');echo \"BAD;\";\n",
+    "source_sha256": "e80ede0cf6946a8570f889bc4375f65476df96a5c041d9b9afc68bb5d8752157",
+    "stdout": "S;",
+    "stderr": "Fatal error: B::__wakeup(): Return type must be void when declared in {file}(2) : eval()'d code on line 1\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "priority-duplicate-unknown-unpack",
+    "source": "<?php function s(){}function e($n){echo $n;return 1;}try{register_shutdown_function(...[\"callback\"=>\"s\",\"x\"=>e(\"1;\")],...[\"x\"=>e(\"2;\")]);}catch(Throwable $e){echo get_class($e),\":\",$e->getMessage(),\";\";}",
+    "source_sha256": "55cb87ca4b3a755e25be9dfa58964c7713eb2f16b0cfc9361fbc193fe12c9155",
+    "stdout": "1;2;Error:Named parameter $x overwrites previous argument;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "priority-duplicate-callback-unpack",
+    "source": "<?php function s(){}function e($n){echo $n;return \"s\";}try{register_shutdown_function(...[\"callback\"=>e(\"1;\")],...[\"callback\"=>e(\"2;\")]);}catch(Throwable $e){echo get_class($e),\":\",$e->getMessage(),\";\";}",
+    "source_sha256": "380255e12373fa99e786034f676ac0a73884bc45cef908bb2d702097a8198208",
+    "stdout": "1;2;Error:Named parameter $callback overwrites previous argument;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "receive-stringable-weak",
+    "source": "<?php declare(strict_types=1);class V{function __toString(){echo \"V;\";return \"v\";}}function h(string $v){echo \"H:\",$v,\";\";}register_shutdown_function(\"h\",new V);",
+    "source_sha256": "d1dbd67058f6f4cc5ee68f70a8dfd35229937a1153b86476dc1cf028fdbe1387",
+    "stdout": "V;H:v;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "receive-variadic-stringable-weak",
+    "source": "<?php declare(strict_types=1);class V{function __toString(){echo \"V;\";return \"v\";}}function h(string ...$v){echo count($v),\":\",$v[0],\":\",$v[1],\";\";}register_shutdown_function(\"h\",new V,new V);",
+    "source_sha256": "4158c15c933b78d1d777fc3ef1d67edfd902f43b4278ac8e8f29778ae2a12266",
+    "stdout": "V;V;2:v:v;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "registered builtin call"
+  },
+  {
+    "id": "receive-private-method-default",
+    "source": "<?php class C{private const N=7;static function reg(){register_shutdown_function([\"C\",\"h\"]);}private static function h(int $v=self::N){echo $v,\";\";}}C::reg();",
+    "source_sha256": "4293c686a89a85c72ad2a94f6ce926778573b2c3398a511de4efd4375578cf89",
+    "stdout": "7;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "freeze-array-message-warning-mask",
+    "source": "<?php class E extends Exception{function change(){$this->message=[];}}function s(){echo \"S;\";}register_shutdown_function(\"s\");$e=new E(\"old\");$e->change();error_reporting(2);throw $e;",
+    "source_sha256": "ba3b4653e3381620ac61a676b56df66bd13639b45bdca223b38379c112966998",
+    "stdout": "S;",
+    "stderr": "Warning: Array to string conversion in Unknown on line 0\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "freeze-array-message-handler",
+    "source": "<?php class E extends Exception{function change(){$this->message=[];}}function s(){echo \"S;\";}register_shutdown_function(\"s\");function w($n,$m,$f,$l){echo \"W:\",$n,\":\",$f,\":\",$l,\";\";}set_error_handler(\"w\");$e=new E(\"old\");$e->change();error_reporting(2);throw $e;",
+    "source_sha256": "355751cabea7adec1ac2b6b820115c27c789cea839ec9960203b27a8d04ea8d5",
+    "stdout": "W:2:Unknown:0;S;",
+    "stderr": "",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "freeze-array-message-handler-false",
+    "source": "<?php class E extends Exception{function change(){$this->message=[];}}function s(){echo \"S;\";}register_shutdown_function(\"s\");function w($n,$m,$f,$l){echo \"W:\",$n,\":\",$f,\":\",$l,\";\";return false;}set_error_handler(\"w\");$e=new E(\"old\");$e->change();error_reporting(2);throw $e;",
+    "source_sha256": "bed5d19a6de6351cbc445c666383f0abdf499c28492d706c21073f3442b859b6",
+    "stdout": "W:2:Unknown:0;S;",
+    "stderr": "Warning: Array to string conversion in Unknown on line 0\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "freeze-array-message-handler-throws",
+    "source": "<?php class E extends Exception{function change(){$this->message=[];}}function s(){echo \"S;\";}register_shutdown_function(\"s\");function w($n,$m,$f,$l){echo \"W:\",$n,\":\",$f,\":\",$l,\";\";throw new Exception(\"warning\");}set_error_handler(\"w\");$e=new E(\"old\");$e->change();error_reporting(2);throw $e;",
+    "source_sha256": "ec17ccaa9f9c8d134576a313d94ca5f1d92f8b00d18e3ba9113e66ee042fb12a",
+    "stdout": "W:2:Unknown:0;S;",
+    "stderr": "",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "freeze-array-message-handler-installs-exception",
+    "source": "<?php class E extends Exception{function change(){$this->message=[];}}function s(){echo \"S;\";}register_shutdown_function(\"s\");function w($n,$m,$f,$l){echo \"W:\",$n,\":\",$f,\":\",$l,\";\";set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});throw new Exception(\"warning\");}set_error_handler(\"w\");$e=new E(\"old\");$e->change();error_reporting(2);throw $e;",
+    "source_sha256": "df778f60e026b81959bcf38626a2886276adfd143424a172fe4b7625dfaff9e2",
+    "stdout": "W:2:Unknown:0;H:warning;W:2:Unknown:0;H:warning;S;",
+    "stderr": "",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "freeze-array-message-handler-throws-unmasked",
+    "source": "<?php class E extends Exception{function change(){$this->message=[];}}function s(){echo \"S;\";}register_shutdown_function(\"s\");function w($n,$m,$f,$l){echo \"W:\",$n,\":\",$f,\":\",$l,\";\";throw new Exception(\"warning\");}set_error_handler(\"w\");$e=new E(\"old\");$e->change();error_reporting(3);throw $e;",
+    "source_sha256": "ac66700beec63616ac7e5447caa812e1201c58c377092e3c1859a37cae0ddab0",
+    "stdout": "W:2:Unknown:0;S;",
+    "stderr": "Fatal error: Uncaught Exception: warning in {file}:1\nStack trace:\n#0 [internal function]: w(2, 'Array to string...', 'Unknown', 0)\n#1 [internal function]: Exception->__toString()\n#2 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "freeze-array-message-protected-handler",
+    "source": "<?php class E extends Exception{function setup(){$this->message=[];set_error_handler([$this,\"w\"]);}protected function w($n,$m,$f,$l){echo \"EW:\",$f,\":\",$l,\";\";}}function s(){echo \"S;\";}register_shutdown_function(\"s\");$e=new E(\"old\");$e->setup();error_reporting(2);throw $e;",
+    "source_sha256": "bd61a0c661c51074aa452020594df057bb58905af04654167437003261df8e79",
+    "stdout": "S;",
+    "stderr": "",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "freeze-array-message-private-handler",
+    "source": "<?php class E extends Exception{function setup(){$this->message=[];set_error_handler([$this,\"w\"]);}private function w($n,$m,$f,$l){echo \"EW:\",$f,\":\",$l,\";\";}}function s(){echo \"S;\";}register_shutdown_function(\"s\");$e=new E(\"old\");$e->setup();error_reporting(2);throw $e;",
+    "source_sha256": "cdd4bd2f475e8c12f1792e7713547221eda791cad80b8cd1d2ad7f7e7ce14467",
+    "stdout": "S;",
+    "stderr": "",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "freeze-array-message-handled-empty-cache",
+    "source": "<?php class E extends Exception{function change(){$this->message=[];}}function s(){echo \"S;\";}register_shutdown_function(\"s\");function w($n,$m,$f,$l){echo \"W:\",$m,\":\",$f,\":\",$l,\";\";set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});throw new Exception(\"warning\");}$e=new E(\"old\");$e->change();set_error_handler(\"w\");error_reporting(3);throw $e;",
+    "source_sha256": "c4f66d7d9f84f95c3ad6045de793b55c549d45a006e891549c69a760e316d632",
+    "stdout": "W:Array to string conversion:Unknown:0;H:warning;W:E::__toString() must return a string:Unknown:0;H:warning;S;",
+    "stderr": "Fatal error: Uncaught E: Array in {file}:1\nStack trace:\n#0 {main}\n\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "freeze-array-message-handled-existing-cache",
+    "source": "<?php class E extends Exception{function change(){$this->message=[];}}function s(){echo \"S;\";}register_shutdown_function(\"s\");function w($n,$m,$f,$l){echo \"W:\",$m,\":\",$f,\":\",$l,\";\";set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});throw new Exception(\"warning\");}$e=new E(\"old\");$e->__toString();$e->change();set_error_handler(\"w\");error_reporting(3);throw $e;",
+    "source_sha256": "deb068e6c4eeb627952eae9f0262e3e81a3561fcc481663127f7c7c3a5714586",
+    "stdout": "W:Array to string conversion:Unknown:0;H:warning;W:E::__toString() must return a string:Unknown:0;H:warning;S;",
+    "stderr": "Fatal error: Uncaught E: Array in {file}:1\nStack trace:\n#0 {main}\n\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "freeze-two-array-chain-pending-throw",
+    "source": "<?php class E extends Exception{function change(){$this->message=[];}}function s(){echo \"S;\";}register_shutdown_function(\"s\");$i=0;function h($e){echo \"H:\",$e->getMessage(),\";\";$p=$e->getPrevious();if($p!==null){echo \"P:\",$p->getMessage(),\";\";}}function w($n,$m,$f,$l){global $i;$i=$i+1;echo \"W:\",$i,\":\",$m,\";\";set_exception_handler(\"h\");throw new Exception(\"warning\".$i);}$p=new E(\"previous\");$e=new E(\"root\",0,$p);$p->change();$e->change();set_error_handler(\"w\");error_reporting(3);throw $e;",
+    "source_sha256": "7f731786e53649d14b348616084f49a0adbf077c71a0b2a3652d9fbe19ef5964",
+    "stdout": "W:1:Array to string conversion;H:warning1;W:2:E::__toString() must return a string;H:warning2;S;",
+    "stderr": "Fatal error: Uncaught E: Array in {file}:1\nStack trace:\n#0 {main}\n\n\nNext E: Array in {file}:1\nStack trace:\n#0 {main}\n\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "array-embedded-reference-isset",
+    "source": "<?php\n$x=\"old\";$a=[&$x];function h($v){global $x;echo (isset($v[1])?2:1),\":\",$v[0],\";\";$v[0]=\"callback\";echo $x,\";\";}register_shutdown_function(\"h\",$a);$x=\"new\";$a[]=\"extra\";\n",
+    "source_sha256": "7b610d8b3d23fde0093c7868b9797174342dcafe6b02eb8cd07eef79390dad5d",
+    "stdout": "1:new;callback;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "receive-variadic-stringable-indexed",
+    "source": "<?php declare(strict_types=1);class V{function __toString(){echo \"V;\";return \"v\";}}function h(string ...$v){echo (isset($v[1])?2:1),\":\",$v[0],\":\",$v[1],\";\";}register_shutdown_function(\"h\",new V,new V);",
+    "source_sha256": "870a30670eec91e1d8442408322e3508546921a5deee40bc5b0326058c701776",
+    "stdout": "V;V;2:v:v;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "compile-fatal-callback-eval",
+    "source": "<?php\nfunction s(){echo \"S;\";eval('echo \"E;\";');echo \"T;\";}register_shutdown_function(\"s\");eval('class B{public function __wakeup():int{}}');echo \"BAD;\";\n",
+    "source_sha256": "a4dafecde93b8f504cf4f0f2be0e616ec55e8b37db1bd76e42c295885fb96cb3",
+    "stdout": "S;E;T;",
+    "stderr": "Fatal error: B::__wakeup(): Return type must be void when declared in {file}(2) : eval()'d code on line 1\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "unsupported-keyword-ingress",
+    "source": "<?php class C{static function reg(){register_shutdown_function([\"self\",\"h\"]);}static function h(){echo \"H;\";}}C::reg();\n",
+    "source_sha256": "304d8eb26dae336966ef638759f7ddff6ae6b7c23fdb38f1107d6b0a5a628184",
+    "stdout": "H;",
+    "stderr": "Deprecated: Use of \"self\" in callables is deprecated in {file} on line 1\n",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "shutdown keyword/compound callback ingress requires effectful API resolution"
+  },
+  {
+    "id": "unsupported-compound-ingress",
+    "source": "<?php class C{static function reg(){register_shutdown_function([\"C\",\"self::h\"]);}static function h(){echo \"H;\";}}C::reg();\n",
+    "source_sha256": "eaa6c91af60c1978ca1f8956898d3367e9f4917c1463ac7a3a439ed33177675b",
+    "stdout": "H;",
+    "stderr": "Deprecated: Callables of the form [\"C\", \"self::h\"] are deprecated in {file} on line 1\n",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "shutdown keyword/compound callback ingress requires effectful API resolution"
+  },
+  {
+    "id": "render-user-override-return",
+    "source": "<?php class E extends Exception{function __toString():string{echo \"R;\";return \"Pinned\";}}function s(){echo \"S;\";}register_shutdown_function(\"s\");throw new E(\"m\");",
+    "source_sha256": "2e5aa768b5d3c10d5a5eecac1288432b3d54ca2881650b0898fe5117880c7e2a",
+    "stdout": "R;S;",
+    "stderr": "Fatal error: Uncaught Pinned\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "render-user-override-exit",
+    "source": "<?php class E extends Exception{function __toString():string{echo \"R;\";exit(7);}}function s(){echo \"S;\";}register_shutdown_function(\"s\");throw new E(\"m\");",
+    "source_sha256": "ce89f25c8396f04f4488c3a410df6491ffb0dc7df0dc5c6166fe1e250e447154",
+    "stdout": "R;S;",
+    "stderr": "",
+    "exit": 7,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "render-user-override-throw",
+    "source": "<?php class E extends Exception{function __toString():string{echo \"R;\";throw new Exception(\"render\");}}function s(){echo \"S;\";}register_shutdown_function(\"s\");set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});restore_exception_handler();throw new E(\"m\");",
+    "source_sha256": "6d21ad12e38e61b67e0fd5c9aa33a0d6bd2a6e51ef388ad9b98dde0a2261cf12",
+    "stdout": "R;S;",
+    "stderr": "Fatal error: Uncaught Exception: render in {file}:1\nStack trace:\n#0 [internal function]: E->__toString()\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "render-user-override-replacement-handler",
+    "source": "<?php class E extends Exception{function __toString():string{echo \"R;\";set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});throw new Exception(\"render\");}}function s(){echo \"S;\";}register_shutdown_function(\"s\");throw new E(\"m\");",
+    "source_sha256": "042099e446482dcda85ce328fe6308136565ce2fbc20a17414cf3cdb7b4f92c7",
+    "stdout": "R;H:render;S;",
+    "stderr": "Warning: E::__toString() must return a string in Unknown on line 0\nFatal error: Uncaught \n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "render-user-override-scope-append",
+    "source": "<?php class E extends Exception{private function k(){echo \"K;\";}function __toString():string{echo \"R:\",func_num_args(),\":\",get_called_class(),\";\";$this->k();register_shutdown_function(\"t\");return \"Pinned\";}}function s(){echo \"S;\";}function t(){echo \"T;\";}register_shutdown_function(\"s\");throw new E(\"m\");",
+    "source_sha256": "965f7fc242c6aeb7192e534f9021ef054f4721c8063a2e9856ab7863ef87f369",
+    "stdout": "R:0:E;K;S;T;",
+    "stderr": "Fatal error: Uncaught Pinned\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  }
+]
