@@ -22,8 +22,9 @@ a registry owner. A static selector can retire after the handler pops its
 registration and mutates the original array. Nonstatic receivers and the
 Throwable keep their actual owners. Current and saved callback frames certify the
 null caller, internal trace, one argument and original extra operand. By-reference
-reception warns at `Unknown:0`; an error handler can handle a nested exception and
-then resume the originally selected exception callback.
+reception warns at `Unknown:0`; an error handler can install a replacement
+exception handler and throw. After the nested callback returns, the originally
+selected exception callback resumes.
 
 Invalid raw error handlers selected at that send-warning boundary produce an
 internal fatal at `Unknown:0`. Their reference sends also warn at that boundary;
