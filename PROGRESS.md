@@ -23,6 +23,18 @@ corrected native/source predictions remain in the
 Wider memoized containers, GLOBALS RW and earlier container/string/object
 producers remain required; complete core remains open.
 
+Legacy dollar-curly compiler notices258 retain the direct/computed grammar flag
+through checked fresh printing and emit before child compilation with its real
+path and the preceding compiler line. Main/include delivery reuses230 whole-unit
+publication, genuine private emitter scope, live mask/display fallback and throw
+cleanup. Five exact source/profile comparisons, SL242, 24 syntax/encoding profiles
+with320 checks and37 compiler/certificate premises pass atfa084. Actual256 parent
+preservation keeps243 modules without renewing those cuts. Original compiler and
+fixture parse stops stay zero-credit in the
+[ledger](coverage/semantics/dollar-curly-review.json). Five early-eval native pins
+remain required for the genuine partial-compilation continuation after236; wider
+interpolation and original non-object-cast/file-observer gaps remain open.
+
 Dynamic object `::class`256 evaluates one child and returns its real class name
 without a string cast. Eager parser concat keeps literal/keyword behavior; later
 compiled constant operands reject. Embedded undefined-CV callbacks keep captured
@@ -49,7 +61,7 @@ fixture stops, full/fast timeouts and native-only non-object-cast line probe kee
 zero credit. Actualcde/247 preservation retains240 parent modules plus251 without
 renewing those gates. [Contract](docs/semantics/SOURCE-INTERPOLATION.md) and
 [ledger](coverage/semantics/interpolation-review.json) retain these cuts. Wider
-interpolation producers/source contexts, legacy compiler deprecations and affected
+interpolation producers/source contexts, early eval compiler notices and affected
 original dynamic-file observers remain required; complete core and paused return
 verification remain open.
 

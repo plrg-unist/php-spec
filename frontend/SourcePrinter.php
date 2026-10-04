@@ -85,6 +85,37 @@ final class SourcePrinter extends PhpParser\PrettyPrinter\Standard {
         return $header . ($node->stmts !== null ? ' {' . $this->pStmts($node->stmts) . $this->nl . '}' : ';');
     }
 
+    protected function pEncapsList(array $encapsList, ?string $quote): string {
+        $printed = '';
+        foreach ($encapsList as $part) {
+            $kind = $part->getAttribute('encapsVarKind');
+            if ($kind === null) {
+                $printed .= parent::pEncapsList([$part], $quote);
+                continue;
+            }
+            if ($kind === 1 && $part instanceof PhpParser\Node\Expr\Variable && is_string($part->name)) {
+                $inner = $part->name;
+            } elseif ($kind === 1 && $part instanceof PhpParser\Node\Expr\ArrayDimFetch
+                && $part->var instanceof PhpParser\Node\Expr\Variable && is_string($part->var->name)
+                && $part->dim !== null) {
+                $inner = $part->var->name . '[' . $this->p($part->dim) . ']';
+            } elseif ($kind === 2 && $part instanceof PhpParser\Node\Expr\Variable
+                && $part->name instanceof PhpParser\Node\Expr) {
+                $inner = $this->p($part->name);
+                // A bare label before '[' or '}' is lexed as T_STRING_VARNAME.
+                if (preg_match('/^[a-zA-Z_\x80-\xff][a-zA-Z_0-9\x80-\xff]*(?:\[|$)/D', $inner)) {
+                    $inner = '(' . $inner . ')';
+                }
+            } else {
+                throw new RuntimeException('Invalid deprecated interpolation kind/part');
+            }
+            $comments = !$this->origTokens ? $part->getComments() : [];
+            $printed .= '${' . $inner
+                . ($comments ? ' ' . $this->pComments($comments) . $this->nl : '') . '}';
+        }
+        return $printed;
+    }
+
     protected function pScalar_String(PhpParser\Node\Scalar\String_ $node): string {
         if ($this->sourceEncoding !== null && preg_match('/[\x80-\xff]/', $node->value)) {
             return '"' . $this->escapeString($node->value, '"') . '"';

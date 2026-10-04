@@ -86,7 +86,10 @@ Wider display/startup directives and diagnostic consumers stay open.
 effective CAST/FAST_CONCAT/ROPE order, retaining fetched temporaries separately
 from live variables through Stringable and warning callbacks. Nine exact source
 comparisons and 111 distinct owner/state premises pass at their recorded cuts;
-broader interpolation producers and source contexts remain required.
+[Legacy dollar-curly compiler notices](coverage/semantics/dollar-curly-review.json)
+now preserve syntax/printing, physical pre-child warning locations and main/include
+handler delivery. Five profiles and 37 compiler premises pass; early eval delivery
+and broader interpolation producers/source contexts remain required.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
