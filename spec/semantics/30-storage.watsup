@@ -167,7 +167,7 @@ syntax ptask = OBJECT_CAST_RESULT pobjectcast | OBJECT_FOREACH_KEY pobjectforeac
   | ERROR_HANDLER_INVOKE perrorcall | ERROR_HANDLER_RESULT perrorcall | ERROR_READ_RESULT perrorread | ERROR_TRIGGER_PHASE pconfigcall nat | CONFIG_INI_NULL_RESULT pconfigcall | CHDIR_WARNING_RESULT pdircontext nat* nat | ERROR_IDENTITY_RESULT pidentityread
   | GLOBAL_READ_RESULT pglobalread
   | KEY_READ_BASE pbase pkeymode | KEY_READ_DIM poperand int pkeymode | KEY_READ_GLOBAL poperand int pkeymode | KEY_READ_RESULT pkeyread | KEY_READ_FINISH porigin ptask
-  | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_GLOBAL poperand int | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
+  | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_GLOBAL poperand int bool | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
   | KEY_COALESCE_RESULT pbase bool int | KEY_UNSET_RESULT pkeyread | KEY_UNSET_FINISH porigin pbase
   | KEY_UNSET_BASE pbase bool | KEY_UNSET_DIM poperand int bool | KEY_UNSET_FETCH_RESULT pkeyread | KEY_UNSET_NULL_RESULT pkeyread | KEY_APPEND_RESULT pappendread
   | KEY_COALESCE_RHS_RESULT pcoalesceread

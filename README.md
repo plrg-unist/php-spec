@@ -289,6 +289,12 @@ quiet row values, walks current write storage and preserves memoized keys,
 abort temporaries and late keyed-RHS null/type-error timing. Author9/233 and
 independent11/277 share two originals, giving18 unique private agreements;
 one current private-handler/typed-cell source passes.
+[Global W/RW warnings](docs/semantics/SOURCE-GLOBAL-WRITES.md) now retain selected
+names and detach callback-created aliases on returning missing-entry fetches.
+Throws preserve callback writes; compound RHS timing and nested real-cell ingress
+remain native-grounded. Author9/224 and independent12/273 share four originals,
+giving17 unique private agreements; one current private-handler/caller-cell source
+passes.
 Wider memoized containers and earlier container/string/object producers remain
 required.
 
