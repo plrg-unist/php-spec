@@ -265,6 +265,7 @@ dec $pfinserted(pstate, nat, pfitem*, int, pvalueclass?) : pfbuild
 dec $pfbuilt(pfstate, pcpath, pfbuild, nat, int) : pfstate
 
 def $pfdispatch(F, pcpath, PFARRAY phpType13*, z) = $pfitems(F, pcpath, 0, phpType13*, eps, z, 0)
+  -- if F.RECORD = eps
 def $pfitems(F, pcpath, n, phpType13*, pfitem*, z, z_previous) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
 def $pfitems(F, pcpath, n, eps, pfitem*, z, z_previous) = $pfarray(F, pcpath, pfitem*, z)
