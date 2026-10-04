@@ -78,6 +78,7 @@ dec $destructor_bailout(pcompletion) : bool
 dec $destructor_all(nat, nat) : nat*
 dec $destructor_begin(pstate) : pstate
 dec $destructor_startup_order(pstate) : bool
+dec $destructor_startup_missing(pstate) : bool
 dec $destructor_stop(pstate) : pstate
 dec $destructor_release_begin(pstate, pdestructionjob*) : pstate
 dec $destructor_release_replace(pstate, pdestructionrelease) : pstate
@@ -197,16 +198,22 @@ def $error_read_discard(S, ORDINARY_CTOR_WARNING pordinaryinternal pvalue) = $ct
 
 ;; Ordinary eager release is the immediately following lifecycle phase. During
 ;; stage2, zero-ref releases are effectful and retain their exact source caller.
+def $destruction_prune(S, pnode_live*) = S_new[.COMPLETION = UNSUPPORTED "request destructor startup symbol order"]
+  -- if S_new = $request_fatal_state($destruction_store_new(S))
+  -- if $destructor_startup_missing(S_new)
 def $destruction_prune(S, pnode_live*) = S_new[.COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"]
   -- if S_new = $request_fatal_state($destruction_store_new(S))
+  -- if ~$destructor_startup_missing(S_new)
   -- if $destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
   -- if ~$destructor_active(S_new)
 def $destruction_prune(S, pnode_live*) = $destructor_release_begin(S_new, $destruction_values($destruction_zero($heap_graph(S_new), S_new.ALLOCATIONS)))
   -- if S_new = $request_fatal_state($destruction_store_new(S))
+  -- if ~$destructor_startup_missing(S_new)
   -- if $destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
   -- if $destructor_active(S_new)
 def $destruction_prune(S, pnode_live*) = $prune_live($destruction_store_drop(S_new, $destruction_release_order($heap_graph(S_new))), pnode_live*)
   -- if S_new = $request_fatal_state($destruction_store_new(S))
+  -- if ~$destructor_startup_missing(S_new)
   -- if ~$destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
 
 def $destructor_ready(S) = true
@@ -226,6 +233,7 @@ def $destructor_ready(S) = false -- otherwise
 ;; Explicit request bootstrap installs these CLI symbols before compiled CVs.
 ;; An absent request cannot certify their historical insertion positions.
 def $destructor_startup_order(S) = (S.REQUEST =/= eps \/ (~($ptascii("argc") <- S.SYMBOLS) /\ ~($ptascii("argv") <- S.SYMBOLS)))
+def $destructor_startup_missing(S) = ($destructor_active(S) /\ ~$destructor_startup_order($global_table_view(S)))
 def $destructor_begin(S) = S_clean[.COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"]
   -- if S_report = $shutdown_freeze(S)
   -- if S_clean = $destruction_store_new($shutdown_clean(S_report))
