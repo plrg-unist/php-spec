@@ -32,7 +32,7 @@ def recorded(command, directory, stem, environment, cap):
     return result
 
 
-def run(match, native_only):
+def run(match, native_only, native_reports):
     rows = [row for row in json.loads(CASES.read_text()) if match in row['id']]
     assert rows, 'no exception-handler source selected'
     out = Path(tempfile.mkdtemp(prefix='exceptions-review-', dir=ROOT / '.tools'))
@@ -42,18 +42,40 @@ def run(match, native_only):
     flags = [part for key, value in profile.items() for part in ('-d', key + '=' + value)]
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT).decode().strip()
     runtime = ROOT / '.tools/php/bin/php'
+    identities = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
+                  for path in (runtime, ROOT / '.tools/spectec/bin/p4spectec',
+                               ROOT / 'tests/semantics/_build/default/numeric_runner.exe',
+                               ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php-file.so')}
+    previous = {}
+    for report_path in native_reports:
+        report_path = report_path.resolve()
+        evidence = json.loads(report_path.read_text())
+        assert evidence['profile'] == profile, 'different native profile'
+        for record in evidence['records']:
+            assert record['id'] not in previous, 'duplicate native record'
+            native = record.get('native', record)
+            source = Path(native['command'][-1])
+            stem = source.with_name('native') if source.name == 'source.php' else source.with_suffix('')
+            previous[record['id']] = (native, source, stem, report_path)
     print(out, flush=True)
     results = []
     for row in rows:
         directory = out / row['id']
         directory.mkdir()
         source = directory / 'source.php'
-        source.write_text(row['source'])
+        if native_reports:
+            native, source, stem, report_path = previous[row['id']]
+            assert source.read_bytes() == row['source'].encode(), 'native source differs'
+            native = dict(native, reused_from=str(report_path))
+            for suffix in ('stdout', 'stderr'):
+                (directory / ('native.' + suffix)).write_bytes(stem.with_suffix('.' + suffix).read_bytes())
+        else:
+            source.write_text(row['source'])
+            native = recorded([runtime, '-n', *flags, source], directory, 'native', environment, 30)
         assert hashlib.sha256(source.read_bytes()).hexdigest() == row['source_sha256']
-        native = recorded([runtime, '-n', *flags, source], directory, 'native', environment, 30)
         nout = (directory / 'native.stdout').read_bytes()
         nerr = (directory / 'native.stderr').read_bytes()
-        passed = (not native['timeout'] and native['exit'] == row['exit']
+        passed = (not native.get('timeout', False) and native['exit'] == row['exit']
                   and nout == row['stdout'].encode()
                   and nerr == row['stderr'].replace('{file}', str(source)).encode())
         result = {'id': row['id'], 'native': native, 'passed': passed}
@@ -76,7 +98,7 @@ def run(match, native_only):
         print(row['id'], passed, flush=True)
         if not passed:
             break
-    report = {'revision': revision, 'runtime_sha256': hashlib.sha256(runtime.read_bytes()).hexdigest(),
+    report = {'revision': revision, 'identities': identities,
               'profile': profile, 'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING_removed': True},
               'scope': 'native only' if native_only else 'original-source differential tuples',
               'selection': [row['id'] for row in rows], 'records': results,
@@ -89,5 +111,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--match', default='')
     parser.add_argument('--native-only', action='store_true')
+    parser.add_argument('--native-report', type=Path, action='append', default=[],
+                        help='reuse unchanged native source and raw streams from a report or manifest')
     args = parser.parse_args()
-    raise SystemExit(0 if run(args.match, args.native_only) else 1)
+    raise SystemExit(0 if run(args.match, args.native_only, args.native_report) else 1)

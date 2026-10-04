@@ -1,0 +1,53 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_revision": "e9037d2446b53827fcd5cd77b5cc5ac8e1e6cece",
+  "semantic_commit": "feac10ec8ccc2c506cb7f44c78ec6533bad39eee",
+  "result": "pass",
+  "source_native_tuples": 24,
+  "reached_state_cases": 9,
+  "state_assertions": 289,
+  "identities": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+    "_build/default/adapter/main.exe": "9fa8a62125cc34baf80965a829fb4aa946875aa40b1b3a8d6e90cd732b2bcaf2",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING_removed": true
+  },
+  "native_evidence": "original source and raw streams reused; no metadata-only native reruns",
+  "source_report": ".tools/exceptions-review-6_q212ee/report.json",
+  "state_reports": [
+    ".tools/exceptions-state-review-nc1v3fhk/report.json",
+    ".tools/exceptions-state-review-91pgf593/report.json",
+    ".tools/exceptions-state-review-9atiqidm/report.json",
+    ".tools/exceptions-state-review-ju9ovlj0/report.json"
+  ],
+  "state_cases": {
+    "pending-raw-registry": 32,
+    "zero-formals-original-extra": 36,
+    "saved-private-caller": 29,
+    "retired-static-selector": 40,
+    "byref-rebound-retired-send-cell": 31,
+    "ignored-reference-return": 25,
+    "warning-nested-throw-resumes-selected": 34,
+    "throw-retains-original-in-trace": 34,
+    "exit-retires-original": 28
+  },
+  "fixture_corrections": [
+    "seek only the saved exception-handler anchor",
+    "parenthesize a constructed reference bound",
+    "retain original Throwable through new exception trace argument"
+  ],
+  "scope": "raw registry and terminal user-callable exception dispatch, nested replacement and send-warning C continuations",
+  "open": [
+    "keyword/compound deprecated callback ingress until effectful API adapter",
+    "shutdown and other request lifecycle entry points",
+    "magic/internal callback forms outside existing callable admission"
+  ],
+  "reproduce_source": "python3 -B tests/semantics/exception_handler_review.py",
+  "reproduce_states": "python3 -B tests/semantics/exception_handler_state_review.py"
+}
