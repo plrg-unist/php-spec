@@ -566,6 +566,7 @@ dec $closure_capture_scope_valid(pstate, pfunction, nat) : bool
 def $closure_capture_scope_valid(S, pfunction, n) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $call_current_valid(S)
+  -- if ~$internal_closure_object(S, n)
   -- if pcallcontext.LEXICAL_CLASS = (porigin_lexical)
   -- if pcallcontext.CALLED_CLASS = (porigin_called)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
@@ -577,13 +578,13 @@ def $closure_capture_scope_valid(S, pfunction, n) = true
   -- if S.CURRENT = eps
   -- if $call_current_valid(S)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
-  -- if ~$internal_closure_object(S, n) \/ $internal_closure_capture_scope(S, pfunction, n)
+  -- if ~$internal_closure_object(S, n)
 def $closure_capture_scope_valid(S, pfunction, n) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $call_current_valid(S)
   -- if pcallcontext.LEXICAL_CLASS = eps \/ pcallcontext.CALLED_CLASS = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
-  -- if ~$internal_closure_object(S, n) \/ $internal_closure_capture_scope(S, pfunction, n)
+  -- if ~$internal_closure_object(S, n)
 def $closure_capture_scope_valid(S, pfunction, n) = false -- otherwise
 
 dec $closure_capture_valid(pstate, nat, nat) : bool

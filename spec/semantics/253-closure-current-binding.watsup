@@ -1048,12 +1048,18 @@ def $internal_closure_capture_scope(S, pfunction, n) = true
   -- if $internal_closure_current(S) = (n_source)
   -- if S.CURRENT = (pcallcontext)
   -- if $internal_closure_row(S, n) = (pinternalclosurescope)
+  -- if ~pinternalclosurescope.BOUND
   -- if pinternalclosurescope.SOURCE = n_source
   -- if pinternalclosurescope.FUNCTION = pcallcontext.FUNCTION
   -- if pinternalclosurescope.CALLSITE = pcallcontext.CALLSITE
   -- if $internal_closure_scopes(S, n_source) = ((pinternalclosurescope.LEXICAL, pinternalclosurescope.CALLED, n_receiver?))
   -- if pinternalclosurescope.RECEIVER = $closure_bound_receiver(S, pfunction)
 def $internal_closure_capture_scope(S, pfunction, n) = false -- otherwise
+def $closure_capture_scope_valid(S, pfunction, n) = true
+  -- if $internal_closure_object(S, n)
+  -- if $call_current_valid(S)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $internal_closure_capture_scope(S, pfunction, n)
 
 def $bind_receiver_live(S, eps) = true
 def $bind_receiver_live(S, (n)) = $getclass_live_object(S, n)
