@@ -132,6 +132,27 @@ CASES = {
             '~$class_statics_valid(S_done[.PROPREFS = eps])',
         ],
     },
+    'quiet-uninitialized-phase-authenticates-source-consumer-mode': {
+        'source': SOURCES['typed-uninitialized-isset-sees-handler-write'],
+        'stage': 'S.TODO = (TRAIT_PROPERTY_PHASE ptraitproperty 0) :: ptask_tail*',
+        'checks': VALID + [
+            'S.CURRENT = eps',
+            'ptraitproperty.MODE = PPIS',
+            '$class_static_at(S.CLASSSTATICS, ptraitproperty.DECL) = (pclassstatic)',
+            'pclassstatic.STATE = PROP_INITIAL',
+            '$call_task_valid(S, TRAIT_PROPERTY_PHASE ptraitproperty 0)',
+            '~$call_task_valid(S, TRAIT_PROPERTY_PHASE (ptraitproperty[.MODE = PPR]) 0)',
+            '~$call_task_valid(S, TRAIT_PROPERTY_PHASE (ptraitproperty[.MODE = PPRW]) 0)',
+            '~$call_task_valid(S, TRAIT_PROPERTY_PHASE (ptraitproperty[.MODE = PPW]) 0)',
+            '~$call_task_valid(S[.TODO = [(TRAIT_PROPERTY_PHASE ptraitproperty 0), DIM_FETCH ptraitproperty.LINE]], TRAIT_PROPERTY_PHASE ptraitproperty 0)',
+            '~$call_task_valid(S[.TODO = [(TRAIT_PROPERTY_PHASE ptraitproperty 0), UPDATE_PREP INCREMENT true ptraitproperty.LINE]], TRAIT_PROPERTY_PHASE ptraitproperty 0)',
+            '~$call_task_valid(S[.TODO = [(TRAIT_PROPERTY_PHASE ptraitproperty 0), UNSET_ARRAY]], TRAIT_PROPERTY_PHASE ptraitproperty 0)',
+        ] + DONE + [
+            '$outputs(S_done.EVENTS) = $ptascii("H;Y")',
+            '$class_static_at(S_done.CLASSSTATICS, ptraitproperty.DECL) = (pclassstatic_done)',
+            'pclassstatic_done.STATE = PROP_VALUE (DIRECT (PINT 4))',
+        ],
+    },
     'raw-trait-initializer-keeps-live-caller-and-real-binder-scope': {
         'source': RAW['direct-trait-array-default-keeps-raw-trait-scope-under-live-caller'],
         'stage': ('S.TODO = (EVAL (NScalarMagicConstClass metadata)) :: ptask_tail* '
