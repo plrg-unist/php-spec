@@ -1,6 +1,17 @@
 """Ordinary null cast/copy/SEND producers and direct ASSIGN exception timing."""
 CASES = [
-    ('casts-through-callback-created-alias', b'''<?php
+    ('cast-array-through-callback-created-alias', b'''<?php
+error_reporting(0);
+$other213=9;
+set_error_handler(function($level,$message,$file,$line) {
+    $GLOBALS['missing213'] =& $GLOBALS['other213'];
+    echo "H",func_num_args(),";";
+    return true;
+},2);
+$missing213=(array)$missing213; echo $missing213===[] && $other213===[]?"A;":"BAD;";
+restore_error_handler();
+''', b'H4;A;', 'normal'),
+    ('cast-bool-through-callback-created-alias', b'''<?php
 error_reporting(0);
 $other213=9;
 set_error_handler(function($level,$message,$file,$line) {
@@ -9,18 +20,52 @@ set_error_handler(function($level,$message,$file,$line) {
     return true;
 },2);
 $missing213=(bool)$missing213; echo $missing213===false && $other213===false?"B;":"BAD;";
-unset($missing213); $other213=9;
+restore_error_handler();
+''', b'H4;B;', 'normal'),
+    ('cast-int-through-callback-created-alias', b'''<?php
+error_reporting(0);
+$other213=9;
+set_error_handler(function($level,$message,$file,$line) {
+    $GLOBALS['missing213'] =& $GLOBALS['other213'];
+    echo "H",func_num_args(),";";
+    return true;
+},2);
 $missing213=(int)$missing213; echo $missing213===0 && $other213===0?"I;":"BAD;";
-unset($missing213); $other213=9;
+restore_error_handler();
+''', b'H4;I;', 'normal'),
+    ('cast-float-through-callback-created-alias', b'''<?php
+error_reporting(0);
+$other213=9;
+set_error_handler(function($level,$message,$file,$line) {
+    $GLOBALS['missing213'] =& $GLOBALS['other213'];
+    echo "H",func_num_args(),";";
+    return true;
+},2);
 $missing213=(float)$missing213; echo $missing213===0.0 && $other213===0.0?"D;":"BAD;";
-unset($missing213); $other213=9;
+restore_error_handler();
+''', b'H4;D;', 'normal'),
+    ('cast-string-through-callback-created-alias', b'''<?php
+error_reporting(0);
+$other213=9;
+set_error_handler(function($level,$message,$file,$line) {
+    $GLOBALS['missing213'] =& $GLOBALS['other213'];
+    echo "H",func_num_args(),";";
+    return true;
+},2);
 $missing213=(string)$missing213; echo $missing213==='' && $other213===''?"S;":"BAD;";
-unset($missing213); $other213=9;
-$missing213=(array)$missing213; echo $missing213===[] && $other213===[]?"A;":"BAD;";
-unset($missing213); $other213=9;
+restore_error_handler();
+''', b'H4;S;', 'normal'),
+    ('cast-object-through-callback-created-alias', b'''<?php
+error_reporting(0);
+$other213=9;
+set_error_handler(function($level,$message,$file,$line) {
+    $GLOBALS['missing213'] =& $GLOBALS['other213'];
+    echo "H",func_num_args(),";";
+    return true;
+},2);
 $missing213=(object)$missing213; echo $missing213 instanceof stdClass && $missing213===$other213?"O;":"BAD;";
 restore_error_handler();
-''', b'H4;B;H4;I;H4;D;H4;S;H4;A;H4;O;', 'normal'),
+''', b'H4;O;', 'normal'),
     ('selected-copy-folded-runtime-and-throw', b'''<?php
 error_reporting(0);
 $right213=8;

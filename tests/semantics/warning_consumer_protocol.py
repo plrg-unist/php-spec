@@ -26,7 +26,7 @@ NULL_READ = [
     'S_resume.TODO = perrorread.TASK :: ptask_tail*',
 ]
 CASES = [
-    ('cast-null-before-aliased-destination-write', 'casts-through-callback-created-alias',
+    ('cast-null-before-aliased-destination-write', 'cast-array-through-callback-created-alias',
      'S.TODO = (ERROR_READ_RESULT perrorread) :: ptask_tail* -- if perrorread.ORIGINAL = CAST_RESULT CASTARRAY z', [
         *NULL_READ,
         'perrorread.ORIGINAL = CAST_RESULT CASTARRAY z',

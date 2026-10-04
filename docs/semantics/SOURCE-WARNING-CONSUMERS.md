@@ -32,9 +32,12 @@ Preparation is compiler-only: four reached fixtures58/60/65/53=236 are typed,
 with alias, folded-arm, selected Closure/prior-array owner and pending-throw
 controls. Independent fixtures60/77/60=197 are separately typed. Independent
 native4 originals characterize cast/copy/SEND mutation and direct ASSIGN throw
-ordering; they are not model agreement. Author12 sources (11 ordinary plus one
+ordering; they are not model agreement. Author17 sources (16 ordinary plus one
 Unsupported control), all state checks, and independent native-reused model4
-remain pending. Fixture DSL failures retain their original reports and receive
+remain pending. The original combined six-cast source passed natively but timed
+out in the model at CLI60, earning no agreement. Six independent one-cast
+witnesses retain the same limits; only their array58 fixture is re-prepared,
+with the other178 retained. Fixture DSL failures retain their original reports and receive
 zero semantic credit. The [ledger](../../coverage/semantics/warning-consumers-review.json)
 locates preparation and native originals.
 
@@ -46,7 +49,7 @@ python3 -B tests/semantics/warning_consumer_run.py .tools/warning-consumers/PREP
 ```
 
 The complete fixed selection is authenticated before affected-case filters.
-Ordinary13 uses serial native45s/model90s/finite300s limits and1650s/1230s phase
+Ordinary13 uses serial native45s/model90s/finite300s limits and2325s/1230s phase
 limits. Original packets, streams, exits and cleanup records stay outside Git.
 The [truth family](SOURCE-WARNING-TRUTH.md) retains its earlier cast Unsupported
 control at its actual revision; only that affected cast source is selected here
