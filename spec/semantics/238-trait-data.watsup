@@ -199,7 +199,8 @@ def $trait_member_fold(S, pclassdesc, PORIGIN n pcpath) = (F_result)
   -- if S_memory = S[.CONSTCONTEXT = ({ORIGIN TRAIT_MEMBER_ORIGIN pclassdesc.ORIGIN porigin_member, LINE $expression_line(expression), FACTS eps})]
   -- if ptcontext = {NAMESPACE eps, IMPORTS eps, SCOPE PTKNOWN pclassdesc.NAME pclassdesc.PARENT, POSITION PTCONSTANT, OWNER pclassdesc.NAME, MEMBER eps, FILE $call_sourcefile(S.FILES, PORIGIN n pcpath), LINE $nabs($expression_line(expression))}
   -- if $pool_at(S.POOLS, n) = (ppool)
-  -- if F_result = $pfprepare(F[.FACTS = $trait_pool_facts(S, n, ppool.CONSTANTS)][.CLASSFACTS = $trait_pool_classes(ppool.CONSTANTS)][.CLASSES = S.CLASSES][.CLASSCONSTANTS = pclassdesc.CONSTANTS][.EXTERNAL = (S)][.DEFAULT = true][.CONSTANT = true][.CLASSCONTEXT = (ptcontext)][.FILE = ($call_sourcefile(S.FILES, PORIGIN n pcpath))][.CWD = ($call_request_cwd(S.REQUEST))][.MEMORY = S_memory], pcpath, expression, $plempty(false), $expression_line(expression))
+  -- if $trait_record_root(S, pclassdesc, PORIGIN n pcpath)
+  -- if F_result = $pfprepare(F[.RECORD = ({CLASS pclassdesc.ORIGIN, ROOT PORIGIN n pcpath})][.FACTS = $trait_pool_facts(S, n, ppool.CONSTANTS)][.CLASSFACTS = $trait_pool_classes(ppool.CONSTANTS)][.CLASSES = S.CLASSES][.CLASSCONSTANTS = pclassdesc.CONSTANTS][.EXTERNAL = (S)][.DEFAULT = true][.CONSTANT = true][.CLASSCONTEXT = (ptcontext)][.FILE = ($call_sourcefile(S.FILES, PORIGIN n pcpath))][.CWD = ($call_request_cwd(S.REQUEST))][.MEMORY = S_memory[.REPORTING = 32767]], pcpath, expression, $plempty(false), pclassdesc.LINE)
 def $trait_member_fold(S, pclassdesc, porigin) = eps -- otherwise
 def $trait_pool_facts(S, n, eps) = eps
 def $trait_pool_facts(S, n, (PCONSTANT pcpath pvalue) :: pconstant*) = (PFFACT pcpath pvalue $expression_line(expression)) :: $trait_pool_facts(S, n, pconstant*)
@@ -237,6 +238,7 @@ def $pfdispatch(F, pcpath, PFNAME name, z) = $pfremember(F, pcpath, $trait_fold_
   -- if F.EXTERNAL = (S_external)
   -- if $code_at(S_external.CODE, F.SOURCE.ID) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, ptbytes_fallback?))
+  -- if F.RECORD = eps
 def $trait_fold_class_name(F, pcpath, phpType19, pvalue?) = (pclassdesc.NAME)
   -- if $pfclassname_keyword(phpType19) = $ptascii("self")
   -- if $trait_fold_owner(F) = (porigin)

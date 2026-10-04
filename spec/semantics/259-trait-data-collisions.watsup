@@ -1,0 +1,67 @@
+;; zend_do_link_class records diagnostics while comparing copied constant ASTs.
+;; The real handler is selected only after successful class publication.
+dec $trait_record_properties(ppropertydesc*, porigin) : bool
+def $trait_record_properties(eps, porigin) = false
+def $trait_record_properties(ppropertydesc :: ppropertydesc_tail*, porigin) = (ppropertydesc.DEFAULT = PROP_DEFERRED porigin \/ $trait_record_properties(ppropertydesc_tail*, porigin))
+dec $trait_record_constants(pclassconstantdesc*, porigin) : bool
+def $trait_record_constants(eps, porigin) = false
+def $trait_record_constants(pclassconstantdesc :: pclassconstantdesc_tail*, porigin) = ((~pclassconstantdesc.FOLDED /\ pclassconstantdesc.INITIALIZER = porigin) \/ $trait_record_constants(pclassconstantdesc_tail*, porigin))
+dec $trait_record_members(pclassdesc, porigin) : bool
+def $trait_record_members(pclassdesc, porigin) = ($trait_record_properties(pclassdesc.PROPERTIES, porigin) \/ $trait_record_constants(pclassdesc.CONSTANTS, porigin))
+dec $trait_record_exports(pclassdesc*, porigin) : bool
+def $trait_record_exports(eps, porigin) = false
+def $trait_record_exports(pclassdesc :: pclassdesc_tail*, porigin) = ($trait_record_members(pclassdesc, porigin) \/ $trait_record_exports(pclassdesc_tail*, porigin))
+dec $trait_record_root(pstate, pclassdesc, porigin) : bool
+def $trait_record_root(S, pclassdesc, PORIGIN n pcpath) = true
+  -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
+  -- if $trait_needs_binding(S, pclassdesc)
+  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if $trait_record_members(pclassdesc, PORIGIN n pcpath) \/ $trait_record_exports(pclassdesc_traits*, PORIGIN n pcpath)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $($expression_line(expression) > 0)
+def $trait_record_root(S, pclassdesc, porigin) = false -- otherwise
+dec $trait_recording(pfstate, pcpath) : bool
+def $trait_recording(F, pcpath) = true
+  -- if F.RECORD = (pfrecorder)
+  -- if $trait_fold_owner(F) = (pfrecorder.CLASS)
+  -- if F.EXTERNAL = (S_external)
+  -- if $class_at(F.CLASSES, pfrecorder.CLASS) = (pclassdesc)
+  -- if $trait_record_root(S_external, pclassdesc, pfrecorder.ROOT)
+  -- if pfrecorder.ROOT = PORIGIN F.SOURCE.ID pcpath_root
+  -- if $source_unit(S_external.SOURCES, F.SOURCE.ID) = (F.SOURCE)
+  -- if $effect_below(pcpath_root, pcpath)
+  -- if $trait_fold_scope(F, pcpath)
+def $trait_recording(F, pcpath) = false -- otherwise
+
+dec $trait_record_name(pfstate, pcpath, ptbytes, ptbytes?, int) : pfstate
+def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = $pfremember(F[.RECORDED = F.RECORDED ++ [{SITE PORIGIN F.SOURCE.ID pcpath, LEVEL 8192, MESSAGE $deprecated_constant_message(), LINE z}]], pcpath, (PINT 2048), z)
+  -- if F.EXTERNAL = (S_external)
+  -- if $deprecated_constant_name(S_external, ptbytes, ptbytes_fallback?)
+def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = $pfremember(F, pcpath, $trait_fold_name_value(S_external, ptbytes, ptbytes_fallback?), z)
+  -- if F.EXTERNAL = (S_external)
+  -- if ~$deprecated_constant_name(S_external, ptbytes, ptbytes_fallback?)
+def $pfdispatch(F, pcpath, PFNAME name, z) = $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z)
+  -- if $trait_recording(F, pcpath)
+  -- if F.EXTERNAL = (S_external)
+  -- if $code_at(S_external.CODE, F.SOURCE.ID) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, ptbytes_fallback?))
+
+dec $trait_record_event(porigin, pevent) : pfdiagnostic?
+def $trait_record_event(porigin, DIAGNOSTIC "Warning" ptbytes z) = ({SITE porigin, LEVEL 2, MESSAGE ptbytes, LINE z})
+def $trait_record_event(porigin, DIAGNOSTIC "Deprecated" ptbytes z) = ({SITE porigin, LEVEL 8192, MESSAGE ptbytes, LINE z})
+def $trait_record_event(porigin, DISPLAY_STDOUT pevent) = $trait_record_event(porigin, pevent)
+def $trait_record_event(porigin, pevent) = eps -- otherwise
+dec $trait_record_events(porigin, pevent*) : pfdiagnostic*?
+def $trait_record_events(porigin, eps) = (eps)
+def $trait_record_events(porigin, pevent :: pevent_tail*) = (pfdiagnostic :: pfdiagnostic_tail*)
+  -- if $trait_record_event(porigin, pevent) = (pfdiagnostic)
+  -- if $trait_record_events(porigin, pevent_tail*) = (pfdiagnostic_tail*)
+def $trait_record_events(porigin, pevent*) = eps -- otherwise
+def $pfwarned(F, pcpath, S) = F[.MEMORY = S[.EVENTS = F.MEMORY.EVENTS]][.RECORDED = F.RECORDED ++ pfdiagnostic*][.VALUE = (pvalue)]
+  -- if $trait_recording(F, pcpath)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $(|F.MEMORY.EVENTS| <= |S.EVENTS|)
+  -- if S.EVENTS[0:|F.MEMORY.EVENTS|] = F.MEMORY.EVENTS
+  -- if n_events = $nabs($(|S.EVENTS| - |F.MEMORY.EVENTS|))
+  -- if $trait_record_events(PORIGIN F.SOURCE.ID pcpath, S.EVENTS[|F.MEMORY.EVENTS|:n_events]) = (pfdiagnostic*)
