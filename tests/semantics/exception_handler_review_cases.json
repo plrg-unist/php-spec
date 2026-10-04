@@ -214,5 +214,32 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "strict-variadic-stringable",
+    "source": "<?php declare(strict_types=1); class E extends Exception{function __toString():string{echo \"S;\";return \"text\";}}function h(string ...$e){echo func_num_args(),\":\",$e[0];}set_exception_handler(\"h\");throw new E;",
+    "source_sha256": "4443c04ff5bd5b92fbf2b0358c4143024ac40b42e30fd5d2eab26c6e4389429b",
+    "stdout": "S;1:text",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "strict-default-stringable",
+    "source": "<?php declare(strict_types=1); class D{function __toString():string{echo \"D;\";return \"default\";}}function h(Throwable $e,string $x=new D){echo func_num_args(),\":\",$x;}set_exception_handler(\"h\");throw new Exception;",
+    "source_sha256": "8972424bfd23521c25a5c0801823cba696c262266d175bff7b21955c085df54e",
+    "stdout": "D;1:default",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "weak-default-stringable",
+    "source": "<?php class D{function __toString():string{echo \"D;\";return \"default\";}}function h(Throwable $e,string $x=new D){echo func_num_args(),\":\",$x;}set_exception_handler(\"h\");throw new Exception;",
+    "source_sha256": "b8deb45a17da01a902b30f529a8c2040c65cb7a3d1b3131bf8ffcc350671da38",
+    "stdout": "D;1:default",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
