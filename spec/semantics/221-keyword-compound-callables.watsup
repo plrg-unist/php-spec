@@ -25,7 +25,7 @@ dec $api_selected_method(pstate, papiquery, ptbytes) : pmethoddesc?
 dec $api_method_magic(pstate, papiquery) : bool
 dec $api_getter_error(pstate, papiquery, ptbytes) : ptbytes?
 dec $api_method_finish(pstate, papiquery, ptbytes) : pstate
-dec $api_throw(pstate, ptask, ptbytes) : pstate
+dec $api_throw(pstate, papiquery, ptbytes, ptbytes) : pstate
 dec $api_method_result(pstate, papiquery, ptbytes) : phandlerresolution
 dec $api_finish(pstate, ptask, pvalue, phandlerresolution) : pstate
 dec $api_register(pstate, pconfigcall, pvalue) : pstate
@@ -246,13 +246,24 @@ def $api_getter_error(S, papiquery, ptbytes) = ($scope_abstract_message(S, pmeth
   -- if $method_accessible(S, pmethoddesc, papiquery.SCOPE)
   -- if pmethoddesc.ABSTRACT
 def $api_getter_error(S, papiquery, ptbytes) = eps -- otherwise
-def $api_method_finish(S, papiquery, ptbytes) = $api_throw(S, papiquery.SOURCE, ptbytes_error)
+def $api_method_finish(S, papiquery, ptbytes) = $api_throw(S, papiquery, ptbytes, ptbytes_error)
   -- if $api_getter_error(S, papiquery, ptbytes) = (ptbytes_error)
 def $api_method_finish(S, papiquery, ptbytes) = $api_finish(S, papiquery.SOURCE, papiquery.VALUE, $api_method_result(S, papiquery, ptbytes))
   -- if $api_getter_error(S, papiquery, ptbytes) = eps
-def $api_throw(S, TYPE_RECEIVE porigin n, ptbytes) = $throw_scalar(S, "Error", ptbytes, $default_parameter_line(S, porigin, n))
-def $api_throw(S, CONFIG_INVOKE pconfigcall, ptbytes) = $config_error(S, pconfigcall, "Error", ptbytes)
-def $api_throw(S, ERROR_HANDLER_INVOKE perrorcall, ptbytes) = $error_handler_restore($error_invalid_callback(S, perrorcall, ptbytes), perrorcall.CALLBACK)
+def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $throw_scalar(S, "Error", ptbytes, $default_parameter_line(S, porigin, n))
+  -- if papiquery.SOURCE = TYPE_RECEIVE porigin n
+def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $config_error(S, pconfigcall, "Error", ptbytes)
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+;; zend_call_function replaces the getter failure with Invalid callback and
+;; retains the first Error as previous; admission APIs retain the getter Error.
+def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $error_handler_restore($throwable_previous(S_new, n_new, n_old), perrorcall.CALLBACK)
+  -- if papiquery.SOURCE = ERROR_HANDLER_INVOKE perrorcall
+  -- if $class_at(S.CLASSES, papiquery.CLASS.REQUESTED) = (pclassdesc)
+  -- if S_old = $throwable_materialize($error_invalid_callback(S, perrorcall, ptbytes))
+  -- if S_old.COMPLETION = THROWING n_old
+  -- if ptbytes_outer = $ptascii("Invalid callback ") ++ $error_callback_name(S, perrorcall.CALLBACK) ++ $ptascii(", class ") ++ pclassdesc.NAME ++ $ptascii(" does not have a method \"") ++ $c_string(ptbytes_method) ++ [34]
+  -- if S_new = $throwable_materialize($error_invalid_callback(S_old[.COMPLETION = NORMAL], perrorcall, ptbytes_outer))
+  -- if S_new.COMPLETION = THROWING n_new
 
 ;; Requested-table API checks abstract/nonstatic before access. self and object
 ;; selectors retain parent-private redirection; strict selectors retain their guard.
