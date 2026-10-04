@@ -24,6 +24,7 @@ dec $eval_compile_frames_cursors(pframe*) : pevalcompile*
 dec $eval_compile_cursors(pstate) : pevalcompile*
 dec $eval_compile_cursor_at(pevalcompile*, nat) : pevalcompile?
 dec $eval_compile_unique(pevalcompile*) : bool
+dec $eval_compile_cursor_owners(pstate, pevalcompile*) : bool
 dec $eval_compile_claims_owned(pstate, pevalcompileclaim*, pevalcompile*) : bool
 dec $eval_compile_released(pstate) : bool
 dec $eval_compile_terminal(pcompletion) : bool
@@ -187,9 +188,13 @@ def $eval_compile_cursor_at(pevalcompile :: pevalcompile_tail*, n) = (pevalcompi
 def $eval_compile_cursor_at(pevalcompile :: pevalcompile_tail*, n) = $eval_compile_cursor_at(pevalcompile_tail*, n) -- if pevalcompile.PLAN.UNIT =/= n
 def $eval_compile_unique(eps) = true
 def $eval_compile_unique(pevalcompile :: pevalcompile_tail*) = ($eval_compile_cursor_at(pevalcompile_tail*, pevalcompile.PLAN.UNIT) = eps /\ $eval_compile_unique(pevalcompile_tail*))
+def $eval_compile_cursor_owners(S, eps) = true
+def $eval_compile_cursor_owners(S, pevalcompile :: pevalcompile_tail*) = ($eval_compile_cursor_at($eval_compile_tasks_cursors($eval_owner_tasks(S, pevalcontext)), pevalcompile.PLAN.UNIT) = (pevalcompile) /\ $eval_compile_cursor_owners(S, pevalcompile_tail*))
+  -- if $eval_context_at(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT) = (pevalcontext)
+def $eval_compile_cursor_owners(S, pevalcompile*) = false -- otherwise
 def $eval_compile_claims_owned(S, eps, pevalcompile*) = true
 def $eval_compile_claims_owned(S, (n, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*, pevalcompile_cursor*) = ($eval_compile_cursor_at(pevalcompile_cursor*, n) =/= eps /\ $eval_compile_claims_owned(S, pevalcompileclaim*, pevalcompile_cursor*))
-def $eval_compile_owners_valid(S) = ($eval_compile_unique($eval_compile_cursors(S)) /\ ($eval_compile_claims_owned(S, $eval_compile_waiting(S.DECLARATIONS), $eval_compile_cursors(S)) \/ $eval_compile_released(S)))
+def $eval_compile_owners_valid(S) = ($eval_compile_unique($eval_compile_cursors(S)) /\ $eval_compile_cursor_owners(S, $eval_compile_cursors(S)) /\ ($eval_compile_claims_owned(S, $eval_compile_waiting(S.DECLARATIONS), $eval_compile_cursors(S)) \/ $eval_compile_released(S)))
 def $eval_compile_released(S) = (S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING \/ S.SHUTDOWN.PHASE = SHUTDOWN_DONE \/ $eval_compile_terminal(S.COMPLETION))
 def $eval_compile_terminal(USERFATAL ptbytes z b) = true
 def $eval_compile_terminal(REQUESTFATAL ptbytes ptbytes_message z) = true
