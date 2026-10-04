@@ -1,23 +1,57 @@
 ;; Source reads evaluate derived bases before key warnings. CV table pointers are
 ;; borrowed; only real temporary operands and Zend's callback ADDREF are owners.
 dec $key_test_mode(pkeymode) : bool
+dec $key_is_array(pvalue) : bool
+dec $key_plain_value(pvalue) : bool
+dec $key_base_line(pstate) : int
+dec $key_reader(pstate, porigin, ptask) : (porigin, pkeymode)?
+dec $key_inner_mode(pkeymode) : pkeymode
+dec $key_site_mode(pstate, porigin, pkeymode, porigin, pkeymode) : bool
+dec $key_finish_task(ptask) : bool
+dec $key_context_tasks(pstate, ptask*, porigin, pkeymode) : bool
+dec $key_read_done(pstate, pvalue) : pstate
+dec $key_base_result(pstate, pbase, poperand) : poperand
+dec $key_simple_base(pbase) : bool
+dec $key_base_value(pstate, pbase, pkeymode) : pstate
+dec $key_read_global(pstate, poperand, int, pkeymode) : pstate
+dec $key_global_value(pstate, poperand, pvalue, int, pkeymode) : pstate
+dec $key_global_lookup(pstate, poperand, nat*, int, pkeymode) : pstate
+dec $key_read_dimension(pstate, poperand, int, pkeymode) : pstate
+dec $key_dimension_value(pstate, pkeyread) : pstate
+dec $key_dimension_convert(pstate, pkeyread) : pstate
+dec $key_nonarray(pstate, pkeyread) : pstate
+dec $key_test_capture(pstate, bool, bool) : pstate
+dec $key_array_lookup(pstate, pkeyread) : pstate
+dec $key_read_protect(pkeyread) : bool
+dec $key_read_roots(pkeyread) : pnode*
+dec $key_read_live(pstate, pkeyread) : bool
+dec $key_read_level(pkeyread) : int
+dec $key_read_message(pkeyread) : nat*
+dec $key_read_event(pkeyread) : pevent
+dec $key_read_dispatch(pstate, pkeyread) : pstate
+dec $key_read_resume(pstate, pkeyread) : pstate
+dec $key_read_input_source(pstate, pkeyread) : bool
+dec $key_read_shape(pkeyread) : bool
+dec $key_read_selection(pstate, pkeyread) : bool
+dec $key_value_selected(poperand, pvalue) : bool
+dec $key_global_selected(pstate, poperand, nat*) : bool
+dec $key_base_cv_source(pstate, porigin) : bool
+dec $key_read_owners_source(pstate, pkeyread) : bool
+dec $key_read_valid(pstate, pkeyread) : bool
+
 def $key_test_mode(KEY_TEST b) = true
 def $key_test_mode(pkeymode) = false -- otherwise
-dec $key_is_array(pvalue) : bool
 def $key_is_array(PARRAY n) = true
 def $key_is_array(pvalue) = false -- otherwise
-dec $key_plain_value(pvalue) : bool
 def $key_plain_value(PFLOAT n_bits) = true -- if $float_long(n_bits, true) = (i, eps)
 def $key_plain_value(PFLOAT n_bits) = false
   -- if $float_long(n_bits, true) = (i, castnotice*)
   -- if castnotice* =/= eps
 def $key_plain_value(pvalue) = true -- otherwise
-dec $key_base_line(pstate) : int
 def $key_base_line(S) = z
   -- if S.ORIGIN = (porigin)
   -- if $code_expression_at_source(S, porigin, eps) = (z)
 def $key_base_line(S) = $(-1) -- otherwise
-dec $key_reader(pstate, porigin, ptask) : (porigin, pkeymode)?
 def $key_reader(S, porigin, DIM_FETCH z) = ((porigin, KEY_R))
   -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
   -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
@@ -43,22 +77,18 @@ def $key_read_begin(S) = S[.TODO = [$at_task((porigin_read), KEY_READ_BASE S.BAS
   -- if S.TODO = ptask :: ptask_tail*
   -- if $key_reader(S, porigin, ptask) = ((porigin_read, pkeymode))
 
-dec $key_inner_mode(pkeymode) : pkeymode
 def $key_inner_mode(KEY_TEST b) = KEY_IS
 def $key_inner_mode(pkeymode) = pkeymode -- otherwise
 ;; The retained final consumer authenticates R/IS/ISSET and the left-child
 ;; source chain. It remains in the saved emitter frame during a callback.
-dec $key_site_mode(pstate, porigin, pkeymode, porigin, pkeymode) : bool
 def $key_site_mode(S, porigin, pkeymode, porigin, pkeymode) = true
 def $key_site_mode(S, porigin_root, pkeymode_root, porigin, pkeymode) = $key_site_mode(S, porigin_child, $key_inner_mode(pkeymode_root), porigin, pkeymode)
   -- if porigin_root =/= porigin
   -- if $origin_node(S.SOURCES, porigin_root) = (NExprArrayDimFetch expression phpType5 metadata)
   -- if $origin_child((porigin_root), [PCFIELD 0]) = (porigin_child)
 def $key_site_mode(S, porigin_root, pkeymode_root, porigin, pkeymode) = false -- otherwise
-dec $key_finish_task(ptask) : bool
 def $key_finish_task(KEY_READ_FINISH porigin ptask) = true
 def $key_finish_task(ptask) = false -- otherwise
-dec $key_context_tasks(pstate, ptask*, porigin, pkeymode) : bool
 def $key_context_tasks(S, (KEY_READ_FINISH porigin_root ptask) :: ptask_tail*, porigin, pkeymode) = true
   -- if $key_reader(S, porigin_root, ptask) = ((porigin_read, pkeymode_root))
   -- if $key_site_mode(S, porigin_read, pkeymode_root, porigin, pkeymode)
@@ -72,7 +102,6 @@ def $key_context_tasks(S, (KEY_READ_FINISH porigin_root ptask) :: ptask_tail*, p
   -- if ~$key_site_mode(S, porigin_read, pkeymode_root, porigin, pkeymode)
 def $key_context_tasks(S, eps, porigin, pkeymode) = false
 
-dec $key_read_done(pstate, pvalue) : pstate
 def $key_read_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
 rule PhpStep/key-read-derived-base: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), KEY_READ_BASE pbase $key_inner_mode(pkeymode)), KEY_READ_DIM poperand z pkeymode] ++ ptask_tail*]
@@ -83,21 +112,17 @@ rule PhpStep/key-read-simple-base: S ~> S_read[.TODO = ptask_tail*][.RESULT = $k
   -- if S.TODO = (KEY_READ_BASE pbase pkeymode) :: ptask_tail*
   -- if $key_simple_base(pbase)
   -- if S_read = $key_base_value(S, pbase, pkeymode)
-dec $key_base_result(pstate, pbase, poperand) : poperand
 def $key_base_result(S, BASE_VALUE poperand, poperand_result) = poperand
   -- if ~$error_missing_operand(S, poperand)
 def $key_base_result(S, pbase, poperand_result) = poperand_result -- otherwise
-dec $key_simple_base(pbase) : bool
 def $key_simple_base(BASE_DIM pbase poperand z) = false
 def $key_simple_base(BASE_GLOBAL poperand z) = false
 def $key_simple_base(pbase) = true -- otherwise
-dec $key_base_value(pstate, pbase, pkeymode) : pstate
 def $key_base_value(S, pbase, KEY_R) = $base_read(S, pbase, $key_base_line(S))
 def $key_base_value(S, pbase, pkeymode) = $quiet_base(S, pbase, $key_base_line(S)) -- if pkeymode =/= KEY_R
 
 ;; Undefined GLOBAL keys are reread after the callback. The ordinary array
 ;; helper instead latches UNDEF -> NULL, even when the key CV is now defined.
-dec $key_read_global(pstate, poperand, int, pkeymode) : pstate
 def $key_read_global(S, poperand, z, pkeymode) = $key_read_dispatch(S, pkeyread)
   -- if ~$key_test_mode(pkeymode)
   -- if $error_missing_operand(S, poperand)
@@ -112,7 +137,6 @@ def $key_read_global(S, poperand, z, pkeymode) = $key_global_value(S, poperand, 
 def $key_read_global(S, poperand, z, pkeymode) = S_key
   -- if S_key = $quiet_operand(S, poperand)
   -- if S_key.COMPLETION =/= NORMAL
-dec $key_global_value(pstate, poperand, pvalue, int, pkeymode) : pstate
 def $key_global_value(S, poperand, PARRAY n, z, pkeymode) = $key_read_dispatch(S, pkeyread)
   -- if S.ORIGIN = (porigin)
   -- if pkeyread = {SITE porigin, GLOBAL true, MODE pkeymode, INPUT poperand, VALUE PARRAY n, BASE PNULL, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_ARRAY_NAME, KEY KSTRING eps, NAME $ptascii("Array")}
@@ -125,7 +149,6 @@ def $key_global_value(S, poperand, pvalue, z, pkeymode) = S_name
   -- if ~$key_is_array(pvalue)
   -- if S_name = $stringify(S, pvalue, z)
   -- if S_name.COMPLETION =/= NORMAL
-dec $key_global_lookup(pstate, poperand, nat*, int, pkeymode) : pstate
 def $key_global_lookup(S, poperand, n_name*, z, KEY_R) = $key_read_dispatch(S, pkeyread)
   -- if $error_missing_operand($global_table_view(S), VARIABLE n_name* z)
   -- if S.ORIGIN = (porigin)
@@ -143,7 +166,6 @@ rule PhpStep/key-read-global: S ~> $key_read_global(S, poperand, z, pkeymode)
 
 ;; S.BASE here contains the genuine base operand, not a new owner for a CV's
 ;; dereferenced array. Nested fetches have a real temporary and retain it there.
-dec $key_read_dimension(pstate, poperand, int, pkeymode) : pstate
 def $key_read_dimension(S, poperand, z, pkeymode) = $key_read_dispatch(S, pkeyread)
   -- if S.ORIGIN = (porigin)
   -- if S_base = $quiet_operand(S, S.RESULT)
@@ -163,7 +185,6 @@ def $key_read_dimension(S, poperand, z, pkeymode) = $key_dimension_value(S, pkey
 def $key_read_dimension(S, poperand, z, pkeymode) = S_key
   -- if S_key = $quiet_operand(S, poperand)
   -- if S_key.COMPLETION =/= NORMAL
-dec $key_dimension_value(pstate, pkeyread) : pstate
 def $key_dimension_value(S, pkeyread) = $key_read_dispatch(S, pkeyread[.PHASE = KEY_NULL][.KEY = KSTRING eps])
   -- if pkeyread.BASE = PARRAY n
   -- if pkeyread.VALUE = PNULL
@@ -190,12 +211,10 @@ def $key_dimension_value(S, pkeyread) = S_out
   -- if ~$key_is_array(pkeyread.BASE)
   -- if S_out = $key_nonarray(S, pkeyread)
   -- if S_out.COMPLETION =/= NORMAL
-dec $key_dimension_convert(pstate, pkeyread) : pstate
 def $key_dimension_convert(S, pkeyread) = $isset_key(S, pkeyread.VALUE, pkeyread.LINE)
   -- if pkeyread.MODE = KEY_TEST b
 def $key_dimension_convert(S, pkeyread) = $dimension_key_value(S, pkeyread.VALUE, pkeyread.LINE)
   -- if ~$key_test_mode(pkeyread.MODE)
-dec $key_nonarray(pstate, pkeyread) : pstate
 def $key_nonarray(S, pkeyread) = $dimension_read(S, pkeyread.BASE, KNOWN pkeyread.VALUE, pkeyread.LINE)
   -- if pkeyread.MODE = KEY_R
 def $key_nonarray(S, pkeyread) = $quiet_dimension_value(S, pkeyread.BASE, pkeyread.VALUE, pkeyread.LINE)
@@ -209,12 +228,10 @@ def $key_nonarray(S, pkeyread) = S_test
   -- if pkeyread.MODE = KEY_TEST b
   -- if S_test = $isset_dimension_value(S, pkeyread.BASE, pkeyread.VALUE, b, pkeyread.LINE)
   -- if S_test.COMPLETION =/= NORMAL
-dec $key_test_capture(pstate, bool, bool) : pstate
 def $key_test_capture(S, b, b) = S[.RESULT = KNOWN PNULL]
 def $key_test_capture(S, b, b_result) = S[.RESULT = KNOWN (PINT 1)] -- if b =/= b_result
 ;; A quiet terminal scalar does not convert the array key. String terminals keep
 ;; their separate protocol, with its completed predicate captured above.
-dec $key_array_lookup(pstate, pkeyread) : pstate
 def $key_array_lookup(S, pkeyread) = $key_read_done(S, $entry_value(S, pitem))
   -- if pkeyread.BASE = PARRAY n
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkeyread.KEY) = (pitem)
@@ -230,18 +247,15 @@ rule PhpStep/key-read-dimension: S ~> $key_read_dimension(S, poperand, z, pkeymo
   -- if S.TODO = (KEY_READ_DIM poperand z pkeymode) :: ptask_tail*
 
 ;; The extra root exists exactly while an array conversion callback is active.
-dec $key_read_protect(pkeyread) : bool
 def $key_read_protect(pkeyread) = true
   -- if ~pkeyread.GLOBAL
   -- if pkeyread.BASE = PARRAY n
   -- if pkeyread.PHASE = KEY_NULL \/ pkeyread.PHASE = KEY_FLOAT castnotice \/ (pkeyread.PHASE = KEY_CV /\ ~$key_test_mode(pkeyread.MODE))
 def $key_read_protect(pkeyread) = false -- otherwise
-dec $key_read_roots(pkeyread) : pnode*
 def $key_read_roots(pkeyread) = $base_nodes(pkeyread.OWNERS) ++ $operand_nodes(pkeyread.INPUT) ++ $value_nodes(pkeyread.BASE)
   -- if $key_read_protect(pkeyread)
 def $key_read_roots(pkeyread) = $base_nodes(pkeyread.OWNERS) ++ $operand_nodes(pkeyread.INPUT)
   -- if ~$key_read_protect(pkeyread)
-dec $key_read_live(pstate, pkeyread) : bool
 def $key_read_live(S, pkeyread) = $($heap_owners($heap_prune($heap_graph(S)), HARRAY n) > 1)
   -- if pkeyread.BASE = PARRAY n
   -- if $key_read_protect(pkeyread)
@@ -250,10 +264,8 @@ def $key_read_live(S, pkeyread) = ((HARRAY n) <- S.ALLOCATIONS)
   -- if ~$key_read_protect(pkeyread)
 def $key_read_live(S, pkeyread) = true -- if ~$key_is_array(pkeyread.BASE)
 
-dec $key_read_level(pkeyread) : int
 def $key_read_level(pkeyread) = 8192 -- if pkeyread.PHASE = KEY_NULL \/ pkeyread.PHASE = KEY_FLOAT PRECISIONLOSS
 def $key_read_level(pkeyread) = 2 -- otherwise
-dec $key_read_message(pkeyread) : nat*
 def $key_read_message(pkeyread) = $ptascii("Undefined variable $") ++ pkeyread.NAME -- if pkeyread.PHASE = KEY_CV
 def $key_read_message(pkeyread) = $ptascii("Using null as an array offset is deprecated, use an empty string instead") -- if pkeyread.PHASE = KEY_NULL
 def $key_read_message(pkeyread) = $ptascii("Array to string conversion") -- if pkeyread.PHASE = KEY_ARRAY_NAME
@@ -267,16 +279,13 @@ def $key_read_message(pkeyread) = $ptascii("The float ") ++ n_text* ++ $ptascii(
   -- if (n_text*, b) = $number_text(NFLOAT n_bits, $(-1))
 def $key_read_message(pkeyread) = $ptascii("Undefined global variable $") ++ pkeyread.NAME -- if pkeyread.PHASE = KEY_MISSING -- if pkeyread.GLOBAL
 def $key_read_message(pkeyread) = $ptascii("Undefined array key ") ++ $missing_key_bytes(pkeyread.KEY) -- if pkeyread.PHASE = KEY_MISSING -- if ~pkeyread.GLOBAL
-dec $key_read_event(pkeyread) : pevent
 def $key_read_event(pkeyread) = WARNING pkeyread.NAME pkeyread.LINE -- if pkeyread.PHASE = KEY_CV
 def $key_read_event(pkeyread) = DIAGNOSTIC "Deprecated" $key_read_message(pkeyread) pkeyread.LINE -- if $key_read_level(pkeyread) = 8192
 def $key_read_event(pkeyread) = DIAGNOSTIC "Warning" $key_read_message(pkeyread) pkeyread.LINE -- if $key_read_level(pkeyread) = 2 -- if pkeyread.PHASE =/= KEY_CV
-dec $key_read_dispatch(pstate, pkeyread) : pstate
 def $key_read_dispatch(S, pkeyread) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $key_read_level(pkeyread), $key_read_message(pkeyread), pkeyread.LINE, $key_read_event(pkeyread), KEY_READ_RESULT pkeyread)
 
 ;; Resume releases the protection before the next conversion/lookup. The old
 ;; table can disappear even though a callback-created copy remains live.
-dec $key_read_resume(pstate, pkeyread) : pstate
 def $key_read_resume(S, pkeyread) = $key_read_done(S, PNULL)
   -- if ~$key_read_live(S, pkeyread)
 def $key_read_resume(S, pkeyread) = $key_global_value(S, pkeyread.INPUT, pvalue, pkeyread.LINE, pkeyread.MODE)
@@ -300,7 +309,6 @@ rule PhpStep/key-read-resume: S ~> $key_read_resume(S, pkeyread)
   -- if S.TODO = (KEY_READ_RESULT pkeyread) :: ptask_tail*
   -- if $key_read_valid(S, pkeyread)
 
-dec $key_read_input_source(pstate, pkeyread) : bool
 def $key_read_input_source(S, pkeyread) = true
   -- if pkeyread.INPUT = VARIABLE n_name* z
   -- if z = pkeyread.LINE
@@ -321,7 +329,6 @@ def $key_read_input_source(S, pkeyread) = true
   -- if $origin_child((pkeyread.SITE), [PCFIELD 1]) = (porigin_key)
   -- if $compiled_read(S, porigin_key) = eps
 def $key_read_input_source(S, pkeyread) = false -- otherwise
-dec $key_read_shape(pkeyread) : bool
 def $key_read_shape(pkeyread) = (pkeyread.INPUT = VARIABLE pkeyread.NAME pkeyread.LINE /\ pkeyread.VALUE = PNULL /\ pkeyread.KEY = KSTRING eps)
   -- if pkeyread.PHASE = KEY_CV
 def $key_read_shape(pkeyread) = (~pkeyread.GLOBAL /\ $key_is_array(pkeyread.BASE) /\ pkeyread.VALUE = PNULL /\ pkeyread.KEY = KSTRING eps)
@@ -334,7 +341,6 @@ def $key_read_shape(pkeyread) = (pkeyread.GLOBAL /\ $key_is_array(pkeyread.VALUE
   -- if pkeyread.PHASE = KEY_ARRAY_NAME
 def $key_read_shape(pkeyread) = (pkeyread.MODE = KEY_R /\ (pkeyread.GLOBAL \/ $key_is_array(pkeyread.BASE)))
   -- if pkeyread.PHASE = KEY_MISSING
-dec $key_read_selection(pstate, pkeyread) : bool
 def $key_read_selection(S, pkeyread) = true
   -- if pkeyread.PHASE =/= KEY_MISSING
   -- if pkeyread.INPUT = VARIABLE n_name* z \/ pkeyread.INPUT = REFERENCE n
@@ -354,18 +360,21 @@ def $key_read_selection(S, pkeyread) = true
   -- if $key_dimension_convert(S, pkeyread).KEY = pkeyread.KEY
   -- if $key_value_selected(pkeyread.INPUT, pkeyread.VALUE)
 def $key_read_selection(S, pkeyread) = false -- otherwise
-dec $key_value_selected(poperand, pvalue) : bool
 def $key_value_selected(KNOWN pvalue, pvalue) = true
 def $key_value_selected(VARIABLE n_name* z, pvalue) = true
 def $key_value_selected(REFERENCE n, pvalue) = true
 def $key_value_selected(poperand, pvalue) = false -- otherwise
-dec $key_global_selected(pstate, poperand, nat*) : bool
 def $key_global_selected(S, KNOWN pvalue, n_name*) = true
   -- if $stringify(S, pvalue, 1).RESULT = KNOWN (PSTRING n_name*)
 def $key_global_selected(S, VARIABLE n_name* z, n_selected*) = true
 def $key_global_selected(S, REFERENCE n, n_selected*) = true
 def $key_global_selected(S, poperand, n_selected*) = false -- otherwise
-dec $key_read_owners_source(pstate, pkeyread) : bool
+def $key_base_cv_source(S, porigin) = true
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $origin_node(S.SOURCES, porigin_base) = (NExprVariable phpType32 metadata)
+  -- if $cv_name(phpType32) = (n_name*)
+  -- if ~$ppglobals_base(NExprVariable phpType32 metadata)
+def $key_base_cv_source(S, porigin) = false -- otherwise
 def $key_read_owners_source(S, pkeyread) = (pkeyread.BASE = PNULL /\ pkeyread.OWNERS = BASE_VALUE (KNOWN PNULL))
   -- if pkeyread.GLOBAL
 def $key_read_owners_source(S, pkeyread) = true
@@ -376,15 +385,16 @@ def $key_read_owners_source(S, pkeyread) = true
 def $key_read_owners_source(S, pkeyread) = true
   -- if ~pkeyread.GLOBAL
   -- if pkeyread.OWNERS = BASE_VALUE (KNOWN pkeyread.BASE)
+  -- if ~$key_base_cv_source(S, pkeyread.SITE)
   -- if $origin_child((pkeyread.SITE), [PCFIELD 0]) = (porigin_base)
   -- if $compiled_read(S, porigin_base) = eps \/ $compiled_read(S, porigin_base) = (pkeyread.BASE)
 def $key_read_owners_source(S, pkeyread) = true
   -- if ~pkeyread.GLOBAL
   -- if pkeyread.OWNERS = BASE_VALUE (REFERENCE n)
+  -- if ~$key_base_cv_source(S, pkeyread.SITE)
   -- if $origin_child((pkeyread.SITE), [PCFIELD 0]) = (porigin_base)
   -- if $compiled_read(S, porigin_base) = eps
 def $key_read_owners_source(S, pkeyread) = false -- otherwise
-dec $key_read_valid(pstate, pkeyread) : bool
 def $key_read_valid(S, pkeyread) = true
   -- if S.ORIGIN = (pkeyread.SITE)
   -- if $origin_node(S.SOURCES, pkeyread.SITE) = (NExprArrayDimFetch expression phpType5 metadata)
