@@ -16,6 +16,9 @@ dec $consumer_shutdown_scope(pstate, papiquery, pshutdownentry) : bool
 dec $consumer_capture_current(pstate, porigin) : pmethodcapture?
 dec $consumer_capture_valid(pstate, porigin, pmethodcapture?) : bool
 dec $consumer_capture_function(pstate, porigin, pmethodcapture?) : porigin?
+dec $consumer_queue_capture(pstate, pshutdownentry) : bool
+dec $consumer_queue_prefix(pshutdownentry*, pshutdownentry) : pshutdownentry*?
+dec $consumer_queue_maker(pstate, pmethodcapture, pshutdownentry*) : bool
 dec $consumer_capture_called(pstate, porigin, pmethodcapture?) : porigin?
 dec $consumer_capture_this(pstate, porigin, pmethodcapture?, nat?) : bool
 dec $consumer_target_same(pcalltarget, papiquery, porigin, ptbytes) : bool
@@ -181,7 +184,7 @@ def $consumer_api_target(pcalltarget) = false -- otherwise
 def $consumer_shutdown_scope(S, papiquery, pshutdownentry) = true
   -- if papiquery.SOURCE = CONFIG_INVOKE pshutdownentry.CALL
   -- if $shutdown_registration_valid(S, pshutdownentry.CALL)
-  -- if $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
+  -- if $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) \/ $consumer_queue_capture(S, pshutdownentry)
   -- if papiquery.SCOPE = $shutdown_capture_scope(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
   -- if papiquery.CALLED = $consumer_capture_called(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
   -- if $consumer_capture_this(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE, papiquery.THIS)
@@ -215,6 +218,33 @@ def $consumer_capture_valid(S, porigin, eps) = true
 def $consumer_capture_valid(S, porigin, pmethodcapture?) = false -- otherwise
 def $consumer_capture_function(S, porigin, (pmethodcapture)) = (pmethodcapture.FUNCTION)
 def $consumer_capture_function(S, porigin, eps) = $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps)
+;; A maker entered from the queue has a genuine null C call site. Authenticate
+;; it from an earlier selected entry, so appending cannot certify itself.
+def $consumer_queue_capture(S, pshutdownentry) = true
+  -- if pshutdownentry.CAPTURE = (pmethodcapture)
+  -- if pmethodcapture.CALLSITE = eps
+  -- if pshutdownentry.CALL.SITE = PORIGIN n pcpath
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
+  -- if $function_at($all_functions(S), pmethodcapture.FUNCTION) = (pfunction)
+  -- if $trait_source_same(pfunction_source, pfunction)
+  -- if $consumer_queue_prefix(S.SHUTDOWN.ENTRIES, pshutdownentry) = (pshutdownentry_prefix*)
+  -- if $consumer_queue_maker(S, pmethodcapture, pshutdownentry_prefix*)
+def $consumer_queue_capture(S, pshutdownentry) = false -- otherwise
+def $consumer_queue_prefix(pshutdownentry :: pshutdownentry_tail*, pshutdownentry) = (eps)
+def $consumer_queue_prefix(pshutdownentry_head :: pshutdownentry_tail*, pshutdownentry) = (pshutdownentry_head :: pshutdownentry_prefix*)
+  -- if pshutdownentry_head =/= pshutdownentry
+  -- if $consumer_queue_prefix(pshutdownentry_tail*, pshutdownentry) = (pshutdownentry_prefix*)
+def $consumer_queue_prefix(pshutdownentry*, pshutdownentry) = eps -- otherwise
+def $consumer_queue_maker(S, pmethodcapture, pshutdownentry :: pshutdownentry_tail*) = true
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if pmethodcapture.FUNCTION = pfunction.ORIGIN
+  -- if pmethodcapture.LEXICAL_CLASS = $target_lexical_class(S, pshutdownentry.TARGET)
+  -- if pmethodcapture.CALLED_CLASS = $target_called_class(S, pshutdownentry.TARGET)
+  -- if $shutdown_entry_valid(S, pshutdownentry)
+def $consumer_queue_maker(S, pmethodcapture, pshutdownentry :: pshutdownentry_tail*) = $consumer_queue_maker(S, pmethodcapture, pshutdownentry_tail*)
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if pmethodcapture.FUNCTION =/= pfunction.ORIGIN
+def $consumer_queue_maker(S, pmethodcapture, pshutdownentry*) = false -- otherwise
 def $consumer_capture_called(S, porigin, eps) = $closure_source_class(S, porigin)
 def $consumer_capture_called(S, porigin, (pmethodcapture)) = pmethodcapture.CALLED_CLASS
 def $consumer_capture_this(S, porigin, pmethodcapture?, eps) = true
