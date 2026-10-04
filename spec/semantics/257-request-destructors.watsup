@@ -4,6 +4,7 @@
 dec $destruction_store_new(pstate) : pstate
 dec $destruction_store_drop(pstate, pnode*) : pstate
 dec $destruction_node_delete(pnode*, pnode) : pnode*
+dec $destruction_nodes_delete(pnode*, pnode*) : pnode*
 dec $destruction_children(hedge*, pnode) : pnode*
 dec $destruction_release_order(hgraph) : pnode*
 dec $destruction_release_walk(hgraph, pnode*, pnode*) : pnode*
@@ -26,20 +27,26 @@ def $destruction_node_delete(eps, pnode) = eps
 def $destruction_node_delete(pnode :: pnode*, pnode) = pnode*
 def $destruction_node_delete(pnode_other :: pnode*, pnode) = pnode_other :: $destruction_node_delete(pnode*, pnode)
   -- if pnode_other =/= pnode
+def $destruction_nodes_delete(pnode*, eps) = pnode*
+def $destruction_nodes_delete(pnode*, pnode_drop :: pnode_drop*) = $destruction_nodes_delete($destruction_node_delete(pnode*, pnode_drop), pnode_drop*)
 def $destruction_children(eps, pnode) = eps
 def $destruction_children((HEDGE pnode pnode_child) :: hedge*, pnode) = pnode_child :: $destruction_children(hedge*, pnode)
 def $destruction_children((HEDGE pnode_other pnode_child) :: hedge*, pnode) = $destruction_children(hedge*, pnode)
   -- if pnode_other =/= pnode
 
-;; Releasing a container visits its outgoing slots before other unrelated
-;; zero-owner nodes. Shared children and uncollected cycles remain allocated.
+;; Freeing a container finishes its outgoing slots before completing the parent
+;; free. Destructor entry will precede that free; the recycled handle comes last.
+;; Shared children and uncollected cycles remain allocated.
 def $destruction_release_order(H) = $destruction_release_walk(H, H.NODES, eps)
 def $destruction_release_walk(H, eps, pnode_done*) = pnode_done*
 def $destruction_release_walk(H, pnode :: pnode*, pnode_done*) = $destruction_release_walk(H, pnode*, pnode_done*)
   -- if ~(pnode <- H.NODES) \/ $($heap_owners(H, pnode) > 0)
-def $destruction_release_walk(H, pnode :: pnode*, pnode_done*) = $destruction_release_walk(H[.NODES = pnode_live*][.EDGES = $heap_live_edges(H.EDGES, pnode_live*)], $destruction_children(H.EDGES, pnode) ++ pnode*, pnode_done* ++ [pnode])
+def $destruction_release_walk(H, pnode :: pnode*, pnode_done*) = $destruction_release_walk(H_child[.NODES = pnode_live*][.EDGES = $heap_live_edges(H_child.EDGES, pnode_live*)], pnode*, pnode_done* ++ pnode_child* ++ [pnode])
   -- if pnode <- H.NODES
   -- if $heap_owners(H, pnode) = 0
-  -- if pnode_live* = $destruction_node_delete(H.NODES, pnode)
+  -- if pnode_parent_live* = $destruction_node_delete(H.NODES, pnode)
+  -- if H_child = H[.NODES = pnode_parent_live*][.EDGES = $heap_live_edges(H.EDGES, pnode_parent_live*)]
+  -- if pnode_child* = $destruction_release_walk(H_child, $destruction_children(H.EDGES, pnode), eps)
+  -- if pnode_live* = $destruction_nodes_delete(H_child.NODES, pnode_child*)
 
 def $destruction_prune(S, pnode_live*) = $prune_live($destruction_store_drop($destruction_store_new(S), $destruction_release_order($heap_graph(S))), pnode_live*)
