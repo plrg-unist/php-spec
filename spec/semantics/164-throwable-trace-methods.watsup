@@ -45,9 +45,15 @@ dec $throwable_single_string(pstate, nat) : preqbytes
 dec $trace_called_in(preqbytes) : bool
 def $trace_called_in(eps) = false
 def $trace_called_in(0 :: n_tail*) = false
-def $trace_called_in(n*) = true -- if n*[0:12] = $ptascii(", called in ")
+def $trace_called_in(n*) = true
+  -- if $(|n*| >= 12)
+  -- if n*[0:12] = $ptascii(", called in ")
+def $trace_called_in(n :: n_tail*) = false
+  -- if n =/= 0
+  -- if $(|n :: n_tail*| < 12)
 def $trace_called_in(n :: n_tail*) = $trace_called_in(n_tail*)
   -- if n =/= 0
+  -- if $(|n :: n_tail*| >= 12)
   -- if (n :: n_tail*)[0:12] =/= $ptascii(", called in ")
 dec $trace_display_message(text, preqbytes) : preqbytes
 def $trace_display_message(text, preqbytes) = preqbytes ++ $ptascii(" and defined")
