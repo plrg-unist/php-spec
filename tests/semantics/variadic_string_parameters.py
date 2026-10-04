@@ -28,6 +28,10 @@ CASES = {
 CASES['unpacked-hole-default'] = CASES['inherited-named-hole-default'].replace(
     b'D::take(n:7);', b'$args=["n"=>7];D::take(...$args);')
 CASES['default-constructor-stop'] = b'<?php class A{function __construct(){echo "C",func_num_args(),"|";}function __toString(){echo "T",func_num_args(),"|";return "s";}}class S extends A{}function take(string $s=new S){echo "F",func_num_args(),"|",$s;}take();'
+CASES['default-named-new'] = b'<?php class S{function __toString(){echo "T|";return "s";}}function f(string $s=new S(x:1)){echo "F|",$s;}f();'
+CASES['default-object-truth'] = b'<?php class S{function __toString(){echo "T",func_num_args(),"|";return "s";}}class U{function __construct(){echo "BAD";}}function f(string $s=(new S)?:new U){echo "F",func_num_args(),"|",$s,";";}function g(string $s=(new S)??new U){echo "G",func_num_args(),"|",$s;}f();g();'
+CASES['inherited-parent-default'] = b'<?php class A{function __toString(){return static::class;}}class B extends A{static function f(string $s=new parent){echo $s;}}class C extends B{}C::f();\n'
+CASES['named-trigger-handler-holes'] = b'<?php function handler($a,$b,$c,$d){echo "H",func_num_args(),"|",$b,"|",$a===E_USER_NOTICE?"N":"BAD";return true;}set_error_handler("handler");trigger_error(message:"x");echo "|after";\n'
 EXPECTED = {
     'positional-order': b'a0|b0|F2|a|b|a|b',
     'mixed-named-order': b'p0|z0|a0|F2|f|p|z|a|p',
@@ -42,6 +46,10 @@ EXPECTED = {
 }
 EXPECTED['unpacked-hole-default'] = EXPECTED['inherited-named-hole-default']
 EXPECTED['default-constructor-stop'] = b'C0|T0|F0|s'
+EXPECTED['default-named-new'] = b'T|F|s'
+EXPECTED['default-object-truth'] = b'T0|F0|s;T0|G0|s'
+EXPECTED['inherited-parent-default'] = b'A'
+EXPECTED['named-trigger-handler-holes'] = b'H4|x|N|after'
 
 
 def expected_stdout(name, path):
