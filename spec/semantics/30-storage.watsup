@@ -144,7 +144,7 @@ syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN 
 syntax ptraceframe = { FILE preqbytes, LINE int, FUNCTION preqbytes, CLASS preqbytes?, TYPE preqbytes?, ARGS (pkey, pvalue)*, HASARGS bool }
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
 syntax pclassstatic = { DECL ppropertyid, STATE ppropstate }
-syntax pthrowable = { KIND text, ORIGIN porigin? }
+syntax pthrowable = { KIND text, ORIGIN porigin?, FILEORIGIN porigin? }
 syntax pclosurecreation = { FUNCTION porigin, CALLSITE porigin, RECEIVER bool }
 syntax pclosurescope = { OBJECT nat, LEXICAL porigin, CALLED porigin, RECEIVER nat?, CREATION pclosurecreation? }
 syntax pclosurebinding = { OBJECT nat, SITE porigin, SOURCE nat, LEXICAL porigin?, CALLED porigin?, RECEIVER nat? }
@@ -545,6 +545,7 @@ dec $class_constant_frame_stack(pstate, pframe, pframe*) : pclassconstantcontext
 dec $class_constant_origin(pclassdesc*, porigin) : pclassconstantdesc?
 dec $class_constant_trace(pstate) : ptraceframe*
 dec $class_constant_error_origin(pstate) : porigin?
+dec $class_constant_error_line(pstate, int) : int
 dec $class_static_prepare_base(pstate, poperand, ptbytes, int) : pstate
 dec $class_static_prepare_base_ready(pstate, poperand, ptbytes, int) : pstate
 dec $class_static_select(pstate, porigin, ptbytes) : ppropertydesc?

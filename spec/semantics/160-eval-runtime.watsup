@@ -142,11 +142,20 @@ def $failed_source_at(pfailedsource :: pfailedsource_tail*, n) = (pfailedsource)
   -- if pfailedsource.UNIT = n
 def $failed_source_at(pfailedsource :: pfailedsource_tail*, n) = $failed_source_at(pfailedsource_tail*, n)
   -- if pfailedsource.UNIT =/= n
+dec $throwable_origin_valid(pstate, porigin?) : bool
+def $throwable_origin_valid(S, (porigin)) = true
+  -- if $origin_node(S.SOURCES, porigin) =/= eps
+def $throwable_origin_valid(S, (PORIGIN n eps)) = true
+  -- if $failed_source_at(S.FAILEDSOURCES, n) = (pfailedsource)
+  -- if $failed_source_record_valid(S, pfailedsource)
+def $throwable_origin_valid(S, porigin?) = false -- otherwise
 def $throwable_source_origin_valid(S, n_object, pthrowable) = true
   -- if pthrowable.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) =/= eps
+  -- if $throwable_origin_valid(S, pthrowable.FILEORIGIN)
 def $throwable_source_origin_valid(S, n_object, pthrowable) = true
   -- if pthrowable.ORIGIN = (PORIGIN n eps)
+  -- if pthrowable.FILEORIGIN = pthrowable.ORIGIN
   -- if $failed_source_at(S.FAILEDSOURCES, n) = (pfailedsource)
   -- if $failed_source_record_valid(S, pfailedsource)
   -- if pthrowable.KIND = $failed_source_kind(pfailedsource.KIND)

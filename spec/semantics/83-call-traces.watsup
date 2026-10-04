@@ -112,6 +112,8 @@ dec $variadic_operand_value(pstate, poperand) : pvalue
 def $trace_named_args(S, eps) = eps
 def $trace_named_args(S, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = (KSTRING preqbytes, $variadic_operand_value(S, poperand)) :: $trace_named_args(S, (preqbytes_tail, poperand_tail)*)
 dec $getclass_trace_operands(pnamedslot*) : poperand*
+dec $trace_context_location(pstate, pcallcontext, porigin) : (porigin, int)
+def $trace_context_location(S, pcallcontext, porigin) = (porigin, pcallcontext.LINE) -- otherwise
 dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
 def $trace_context(S, pbinding*, eps) = eps
 def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $ptascii("__toString"), CLASS ($object_name(S, n)), TYPE ($ptascii("->")), ARGS eps, HASARGS true}]
@@ -122,12 +124,13 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCT
   -- if $config_string_trace_context(S, pcallcontext)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z_call) :: (CONFIG_STRING_RESULT pconfigcall n porigin_child z_child z_call) :: ptask_tail*
-def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin), LINE pcallcontext.LINE, FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pcallcontext.NAMED)), HASARGS true}] ++ $wrapper_trace(S, pcallcontext)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin_trace), LINE z_trace, FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pcallcontext.NAMED)), HASARGS true}] ++ $wrapper_trace(S, pcallcontext)
   -- if ~$terminal_string_context(S, pcallcontext)
   -- if ~$closure_call_target($context_target(pcallcontext))
   -- if ~$config_string_trace_context(S, pcallcontext)
   -- if $error_context_trigger(S, pcallcontext) = eps
   -- if pcallcontext.CALLSITE = (porigin)
+  -- if (porigin_trace, z_trace) = $trace_context_location(S, pcallcontext, porigin)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
   -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)

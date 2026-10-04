@@ -10,7 +10,7 @@ def $deprecated_constant_name(S, preqbytes, (preqbytes_fallback)) = true
   -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes_fallback)) = eps
 def $deprecated_constant_name(S, preqbytes, preqbytes_fallback?) = false -- otherwise
 dec $deprecated_constant_source(pstate, porigin, nat) : int?
-def $deprecated_constant_source(S, PORIGIN n pcpath, n_prefix) = ($constant_runtime_line(S, z))
+def $deprecated_constant_source(S, PORIGIN n pcpath, n_prefix) = ($class_constant_error_line(S, $constant_runtime_line(S, z)))
   -- if $(n_prefix <= |S.USERCONSTANTS|)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
   -- if $code_at(S.CODE, n) = (pcode)
