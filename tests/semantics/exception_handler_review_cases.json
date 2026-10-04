@@ -241,5 +241,59 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "private-error-during-exception-send",
+    "source": "<?php class C{static function reg(){set_error_handler(\"C::w\");}private static function w($n,$s,$f,$l){echo \"BAD\";}}function h(&$e){echo \"BAD\";}C::reg();set_exception_handler(\"h\");throw new Exception(\"outer\");",
+    "source_sha256": "c80abfff17aea72759c53b069af672b39936b80625eb3c4cc36db4b42797d0dd",
+    "stdout": "",
+    "stderr": "Fatal error: Invalid callback C::w, cannot access private method C::w() in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "nominal-error-during-exception-send",
+    "source": "<?php function w(Throwable $n,$s,$f,$l){echo \"BAD\";}function h(&$e){echo \"BAD\";}set_error_handler(\"w\");set_exception_handler(\"h\");throw new Exception(\"outer\");",
+    "source_sha256": "6ab4516dd97e4d31238325b5a86232fdff91d63298c75243043b9830c1369b6e",
+    "stdout": "",
+    "stderr": "Fatal error: Uncaught TypeError: w(): Argument #1 ($n) must be of type Throwable, int given in {file}:1\nStack trace:\n#0 [internal function]: w(2, 'h(): Argument #...', 'Unknown', 0)\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "nonstatic-error-during-exception-send",
+    "source": "<?php class C{function reg(){set_error_handler(\"C::w\");}function w($n,$s,$f,$l){echo \"BAD\";}}function h(&$e){echo \"BAD\";}$c=new C;$c->reg();set_exception_handler(\"h\");throw new Exception;",
+    "source_sha256": "dfb32f62be9b79067041c09c5484a11e02663bb57cffd7e4586795b4a43f8901",
+    "stdout": "",
+    "stderr": "Fatal error: Invalid callback C::w, non-static method C::w() cannot be called statically in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "invalid-ref-error-during-exception-send",
+    "source": "<?php class C{static function w($n,$s,$f,$l){echo \"BAD\";}}function h(&$e){echo \"BAD\";}$m=\"w\";$raw=[\"C\",&$m];set_error_handler($raw);$m=17;set_exception_handler(\"h\");throw new Exception;",
+    "source_sha256": "b2384bf04f5a23cb4e40cc57e2dd2839641ffaa554b6109231548ba3e8129f21",
+    "stdout": "",
+    "stderr": "Fatal error: Invalid callback Array, second array member is not a valid method in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "byref-error-during-exception-send",
+    "source": "<?php function w(&$n,$s,$f,$l){echo \"W:\",$n,\":\",$f,\":\",$l,\";\";return true;}function h(&$e){echo \"H\";}set_error_handler(\"w\");set_exception_handler(\"h\");throw new Exception;",
+    "source_sha256": "81791c2651cddb00cba772b69df0d5b1d5db455090b7e71153d17b8bf7637ae3",
+    "stdout": "W:2:Unknown:0;H",
+    "stderr": "Warning: w(): Argument #1 ($n) must be passed by reference, value given in Unknown on line 0\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "all-byref-error-fallback-during-exception-send",
+    "source": "<?php function w(&$n,&$s,&$f,&$l){echo \"W:\",$n,\":\",$f,\":\",$l,\";\";return false;}function h(&$e){echo \"H\";}set_error_handler(\"w\");set_exception_handler(\"h\");throw new Exception;",
+    "source_sha256": "3cc3d554b11a4dc6b0a18b960957d5e1539cc50ff82e68af9485190437d0ca3e",
+    "stdout": "W:2:Unknown:0;H",
+    "stderr": "Warning: w(): Argument #1 ($n) must be passed by reference, value given in Unknown on line 0\nWarning: w(): Argument #2 ($s) must be passed by reference, value given in Unknown on line 0\nWarning: w(): Argument #3 ($f) must be passed by reference, value given in Unknown on line 0\nWarning: w(): Argument #4 ($l) must be passed by reference, value given in Unknown on line 0\nWarning: h(): Argument #1 ($e) must be passed by reference, value given in Unknown on line 0\n",
+    "exit": 0,
+    "status": "normal"
   }
 ]

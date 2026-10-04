@@ -1,11 +1,11 @@
 {
   "target": "PHP 8.5.10 CLI NTS 64-bit",
-  "tested_revision": "e9037d2446b53827fcd5cd77b5cc5ac8e1e6cece",
-  "semantic_commit": "feac10ec8ccc2c506cb7f44c78ec6533bad39eee",
+  "tested_revision": "02fcdf2f39fbc2264cb446fd56af83769dceb936",
+  "semantic_commit": "19c3fbf2e",
   "result": "pass",
-  "source_native_tuples": 24,
-  "reached_state_cases": 9,
-  "state_assertions": 289,
+  "source_native_tuples": 33,
+  "reached_state_cases": 10,
+  "state_assertions": 331,
   "identities": {
     ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
@@ -19,23 +19,17 @@
     "PHP_SPEC_SCRIPT_ENCODING_removed": true
   },
   "native_evidence": "original source and raw streams reused; no metadata-only native reruns",
-  "source_report": ".tools/exceptions-review-6_q212ee/report.json",
-  "state_reports": [
-    ".tools/exceptions-state-review-nc1v3fhk/report.json",
-    ".tools/exceptions-state-review-91pgf593/report.json",
-    ".tools/exceptions-state-review-9atiqidm/report.json",
-    ".tools/exceptions-state-review-ju9ovlj0/report.json"
-  ],
   "state_cases": {
-    "pending-raw-registry": 32,
-    "zero-formals-original-extra": 36,
-    "saved-private-caller": 29,
+    "pending-raw-registry": 36,
+    "zero-formals-original-extra": 40,
+    "saved-private-caller": 31,
     "retired-static-selector": 40,
     "byref-rebound-retired-send-cell": 31,
     "ignored-reference-return": 25,
-    "warning-nested-throw-resumes-selected": 34,
+    "warning-nested-throw-resumes-selected": 36,
     "throw-retains-original-in-trace": 34,
-    "exit-retires-original": 28
+    "exit-retires-original": 28,
+    "warning-error-saved-caller": 30
   },
   "fixture_corrections": [
     "seek only the saved exception-handler anchor",
@@ -46,8 +40,50 @@
   "open": [
     "keyword/compound deprecated callback ingress until effectful API adapter",
     "shutdown and other request lifecycle entry points",
-    "magic/internal callback forms outside existing callable admission"
+    "magic/internal callback forms outside existing callable admission",
+    "shared error-handler reference-return bodies remain an existing207 Unsupported boundary"
   ],
   "reproduce_source": "python3 -B tests/semantics/exception_handler_review.py",
-  "reproduce_states": "python3 -B tests/semantics/exception_handler_state_review.py"
+  "reproduce_states": "python3 -B tests/semantics/exception_handler_state_review.py",
+  "baseline": {
+    "revision": "e9037d2446b53827fcd5cd77b5cc5ac8e1e6cece",
+    "semantic_commit": "feac10ec8ccc2c506cb7f44c78ec6533bad39eee",
+    "source_tuples": 24,
+    "state_cases": 9,
+    "source_report": ".tools/exceptions-review-current-14/.tools/exceptions-review-6_q212ee/report.json",
+    "state_reports": [
+      ".tools/exceptions-review-current-14/.tools/exceptions-state-review-nc1v3fhk/report.json",
+      ".tools/exceptions-review-current-14/.tools/exceptions-state-review-91pgf593/report.json",
+      ".tools/exceptions-review-current-14/.tools/exceptions-state-review-9atiqidm/report.json",
+      ".tools/exceptions-review-current-14/.tools/exceptions-state-review-ju9ovlj0/report.json"
+    ]
+  },
+  "composition": {
+    "parent": "f838f5a59",
+    "revision": "2a1cc5189cb3b88417481069db6f40c20271cc7d",
+    "semantic_commit": "aa6a255472",
+    "source_tuples": 3,
+    "affected_state_cases": 4,
+    "source_report": ".tools/exceptions-review-composed-14/.tools/exceptions-review-h86eubjq/report.json",
+    "state_report": ".tools/exceptions-review-composed-14/.tools/exceptions-state-review-64v_zov2/report.json"
+  },
+  "c_warning_fixes": {
+    "revision": "02fcdf2f39fbc2264cb446fd56af83769dceb936",
+    "semantic_commit": "19c3fbf2e",
+    "source_tuples": 6,
+    "affected_state_cases": 2,
+    "source_report": ".tools/exceptions-review-composed-14/.tools/exceptions-review-_7q9iima/report.json",
+    "state_report": ".tools/exceptions-review-composed-14/.tools/exceptions-state-review-e62_3mms/report.json",
+    "original_failure": ".tools/exceptions-review-composed-14/.tools/exceptions-review-0n0d8ues/report.json"
+  },
+  "unsupported_controls": {
+    "count": 2,
+    "php_agreements": 0,
+    "report": ".tools/exceptions-review-composed-14/.tools/exceptions-boundaries-uuva1kxu/report.corrected.json",
+    "recorder_correction": "expected intentional Unsupported CLI exit1; retained packets re-evaluated without model rerun"
+  },
+  "fixes": [
+    "invalid error callback at pre-entry exception send warning terminates with plain Unknown0 fatal",
+    "error callback reference sends at this boundary emit Unknown0 warnings and preserve false fallback"
+  ]
 }
