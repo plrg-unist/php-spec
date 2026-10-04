@@ -277,7 +277,10 @@ after `finally`. Nested restore/replacement, callback throws, internal by-refere
 warnings and termination preserve selected targets and owners. Module247 stages
 keyword/compound registration and terminal re-selection through the shared221 API;
 internal deprecations preserve `Unknown:0`, handler stack effects and original
-continuations.
+continuations. [Author/composition checks](coverage/semantics/callback-api-consumers-review.json)
+cover40 source tuples and140 reached assertions; the
+[independent review](coverage/semantics/callback-api-consumer-review.json)
+keeps its separate34-source/474-assertion cut.
 
 [Shutdown callbacks](docs/semantics/SOURCE-SHUTDOWN.md) cache selected callables
 and copied arguments, then run in order after normal, exit and fatal outcomes.

@@ -295,8 +295,14 @@ Module247 supplies the effectful keyword/compound registration and terminal
 selector through shared221 stages. Exception stacks retain raw values; shutdown
 entries freeze the selected target after referenced-method warning effects.
 Borrowed producer target/callsite/scope certificates preserve genuine ordinary,
-C-handler, Stringable and Closure maker permissions after retirement. The
-remaining destructor/GC/output/free request phases stay open.
+C-handler, Stringable and Closure maker permissions after retirement.
+[Author/composition checks](coverage/semantics/callback-api-consumers-review.json)
+cover40 source tuples and140 reached assertions; the
+[independent review](coverage/semantics/callback-api-consumer-review.json)
+covers34 tuples and474 assertions at its own cut. Actual-parent getter Error,
+trait/default and retired capture interactions pass; production algorithm and
+structure checks retain the237-module cut. Accepted238/249 source preservation
+adds no execution credit. Destructor/GC/output/free request phases stay open.
 
 Called-class introspection223 implements `get_called_class()` using the active
 authenticated called class. Plain functions and global Closures stop lookup;
@@ -466,7 +472,7 @@ failures and interrupted evidence.
 
 ## Remaining core work
 
-- Calls: default/variadic, other internal and user-return
+- Calls: other internal and user-return
   keyword/compound warning consumers,
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
