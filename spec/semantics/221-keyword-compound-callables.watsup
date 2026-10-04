@@ -302,8 +302,10 @@ def $api_finish(S, TYPE_RECEIVE porigin n, pvalue, HANDLERRESOLVED pcalltarget) 
   -- if S.STORE[n_cell] = DEFINED pvalue_live
 def $api_finish(S, TYPE_RECEIVE porigin n, pvalue, HANDLERINVALID ptbytes) = $api_receive_reject(S, porigin, n)
 def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERRESOLVED pcalltarget) = $api_register(S, pconfigcall, pvalue)[.TODO = ptask_tail*]
+  -- if pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER
   -- if S.TODO = ptask :: ptask_tail*
 def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERINVALID ptbytes) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_error_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ ptbytes)
+  -- if pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER
 def $api_finish(S, ERROR_HANDLER_INVOKE perrorcall, pvalue, HANDLERRESOLVED pcalltarget) = $error_handler_enter(S[.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*], perrorcall, pcalltarget, pfunction)
   -- if S.TODO = ptask :: ptask_tail*
   -- if $target_function(S, pcalltarget) = (pfunction)
@@ -315,10 +317,12 @@ def $api_finish(S, ERROR_HANDLER_INVOKE perrorcall, pvalue, HANDLERINVALID ptbyt
 def $api_finish(S, ptask, pvalue, HANDLERUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
 
 def $api_register(S, pconfigcall, pvalue) = S_mask[.ERRORHANDLERS = S.ERRORHANDLER :: S.ERRORHANDLERS][.ERRORHANDLER = {CALLBACK (pvalue), LEVELS $error_int32(i)}][.RESULT = KNOWN $error_handler_value(S.ERRORHANDLER)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER
   -- if S_mask = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 30719))
   -- if S_mask.COMPLETION = NORMAL
   -- if S_mask.RESULT = KNOWN (PINT i)
 def $api_register(S, pconfigcall, pvalue) = S_mask
+  -- if pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER
   -- if S_mask = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 30719))
   -- if S_mask.COMPLETION =/= NORMAL
 
