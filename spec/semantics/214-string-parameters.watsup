@@ -30,8 +30,25 @@ def $parameter_string_shape([PARAMETER_STRING_RESULT pparameterstring], pparamet
 def $parameter_string_shape((THROW_SEARCH n) :: ptask*, pparameterstring) = $parameter_string_shape(ptask*, pparameterstring)
 def $parameter_string_shape(ptask*, pparameterstring) = false -- otherwise
 
-;; A saved receive is checked with its own ENV/CURRENT and following caller,
-;; rather than the nested converter's frame or a newer recursive call.
+dec $parameter_string_frame_record(ptask*) : pparameterstring?
+def $parameter_string_frame_record([STRINGIFY_RESULT n porigin_site z, PARAMETER_STRING_RESULT pparameterstring]) = (pparameterstring)
+def $parameter_string_frame_record([PARAMETER_STRING_RESULT pparameterstring]) = (pparameterstring)
+def $parameter_string_frame_record((THROW_SEARCH n) :: ptask*) = $parameter_string_frame_record(ptask*)
+def $parameter_string_frame_record(ptask*) = eps -- otherwise
+;; Only new parameter consumers change the existing saved-frame projection.
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S[.CURRENT = pframe.CONTEXT][.ENV = psymboltable.ENV][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.FRAMES = pframe_tail*]
+  -- if $parameter_string_frame_record(pframe.TODO) = (pparameterstring)
+  -- if pframe.LOCALS = (psymboltable)
+dec $parameter_string_frame_owner(pframe, pparameterstring) : bool
+def $parameter_string_frame_owner(pframe, pparameterstring) = true
+  -- if $parameter_string_frame_record(pframe.TODO) = (pparameterstring_owner)
+  -- if pparameterstring_owner.FUNCTION = pparameterstring.FUNCTION
+  -- if pparameterstring_owner.INDEX = pparameterstring.INDEX
+  -- if pparameterstring_owner.OBJECT = pparameterstring.OBJECT
+  -- if pparameterstring_owner.LINE = pparameterstring.LINE
+def $parameter_string_frame_owner(pframe, pparameterstring) = false -- otherwise
+;; The nearest matching receive owns the marker. An older recursive call
+;; cannot authorize a forged cell in a newer same-receiver receive.
 dec $parameter_string_saved(pstate, pparameterstring, pframe*) : bool
 dec $parameter_string_saved_frame(pstate, pparameterstring, pframe, pframe*) : bool
 def $parameter_string_saved_frame(S, pparameterstring, pframe, pframe_tail*) = true
@@ -40,12 +57,21 @@ def $parameter_string_saved_frame(S, pparameterstring, pframe, pframe_tail*) = t
   -- if $parameter_string_current(S[.CURRENT = pframe.CONTEXT][.ENV = psymboltable.ENV][.ORIGIN = pframe.ORIGIN][.FRAMES = pframe_tail*], pparameterstring)
 def $parameter_string_saved_frame(S, pparameterstring, pframe, pframe_tail*) = false -- otherwise
 def $parameter_string_saved(S, pparameterstring, eps) = false
-def $parameter_string_saved(S, pparameterstring, pframe :: pframe_tail*) = true
-  -- if $parameter_string_saved_frame(S, pparameterstring, pframe, pframe_tail*)
+def $parameter_string_saved(S, pparameterstring, pframe :: pframe_tail*) = $parameter_string_saved_frame(S, pparameterstring, pframe, pframe_tail*)
+  -- if $parameter_string_frame_owner(pframe, pparameterstring)
 def $parameter_string_saved(S, pparameterstring, pframe :: pframe_tail*) = $parameter_string_saved(S, pparameterstring, pframe_tail*)
-  -- if ~$parameter_string_saved_frame(S, pparameterstring, pframe, pframe_tail*)
+  -- if ~$parameter_string_frame_owner(pframe, pparameterstring)
+dec $parameter_string_active_owner(pstate, pparameterstring) : bool
+def $parameter_string_active_owner(S, pparameterstring) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pparameterstring.FUNCTION
+  -- if S.ORIGIN = ($default_parameter_origin(S, pparameterstring.FUNCTION, pparameterstring.INDEX))
+def $parameter_string_active_owner(S, pparameterstring) = false -- otherwise
 dec $parameter_string_scope_valid(pstate, pparameterstring) : bool
-def $parameter_string_scope_valid(S, pparameterstring) = ($parameter_string_record_valid(S, pparameterstring) /\ (($parameter_string_shape(S.TODO, pparameterstring) /\ $parameter_string_current(S, pparameterstring)) \/ $parameter_string_saved(S, pparameterstring, S.FRAMES)))
+def $parameter_string_scope_valid(S, pparameterstring) = ($parameter_string_record_valid(S, pparameterstring) /\ $parameter_string_shape(S.TODO, pparameterstring) /\ $parameter_string_current(S, pparameterstring))
+  -- if $parameter_string_active_owner(S, pparameterstring)
+def $parameter_string_scope_valid(S, pparameterstring) = ($parameter_string_record_valid(S, pparameterstring) /\ $parameter_string_saved(S, pparameterstring, S.FRAMES))
+  -- if ~$parameter_string_active_owner(S, pparameterstring)
 
 def $parameter_string_candidate(S) = true
   -- if S.TODO = [TYPE_RECEIVE porigin n]

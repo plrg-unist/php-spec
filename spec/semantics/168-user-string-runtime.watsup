@@ -146,7 +146,7 @@ def $stringify_entered(S, (pcallcontext), pframe :: pframe_tail*, METHOD_TARGET 
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if pframe.ORIGIN = (porigin_site)
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
-  -- if $stringify_source(S, porigin_site, z, ptask_consumer)
+  -- if $stringify_source($parameter_string_frame_scope(S, pframe, pframe_tail*), porigin_site, z, ptask_consumer)
   -- if $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*)
 def $stringify_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin_site) = $stringify_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin_site)
   -- if ~($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin_site) /\ pframe.ORIGIN = (porigin_site))
@@ -195,7 +195,7 @@ def $stringify_context_frame_valid(S, pcallcontext, pframe) = true
 def $stringify_context_frame_valid(S, pcallcontext, pframe) = false -- otherwise
 def $stringify_chain_valid(S, eps, eps) = true
 def $stringify_chain_valid(S, (pcallcontext), eps) = ~$stringify_context_kind(S, pcallcontext)
-def $stringify_chain_valid(S, (pcallcontext), pframe :: pframe_tail*) = ($stringify_context_frame_valid(S, pcallcontext, pframe) /\ $stringify_chain_valid(S, pframe.CONTEXT, pframe_tail*))
+def $stringify_chain_valid(S, (pcallcontext), pframe :: pframe_tail*) = ($stringify_context_frame_valid($parameter_string_frame_scope(S, pframe, pframe_tail*), pcallcontext, pframe) /\ $stringify_chain_valid(S, pframe.CONTEXT, pframe_tail*))
 def $stringify_chain_valid(S, eps, pframe :: pframe_tail*) = $stringify_chain_valid(S, pframe.CONTEXT, pframe_tail*)
   -- if ~$stringify_frame_marker(pframe)
 def $stringify_chain_valid(S, eps, pframe :: pframe_tail*) = false
@@ -248,7 +248,7 @@ def $stringify_pairs_valid(S, eps) = true
 def $stringify_pairs_valid(S, [ptask]) = ~$stringify_task_marker(ptask)
 def $stringify_pairs_valid(S, ptask :: ptask_next :: ptask_tail*) = ($stringify_pair_valid(S, ptask, ptask_next, ptask_tail*, $stringify_task_marker(ptask)) /\ $stringify_pairs_valid($call_after_origin(S, ptask), ptask_next :: ptask_tail*))
 def $stringify_frames_pairs_valid(S, eps) = true
-def $stringify_frames_pairs_valid(S, pframe :: pframe_tail*) = ($stringify_pairs_valid(S[.ORIGIN = pframe.ORIGIN], pframe.TODO) /\ $stringify_frames_pairs_valid(S, pframe_tail*))
+def $stringify_frames_pairs_valid(S, pframe :: pframe_tail*) = ($stringify_pairs_valid($parameter_string_frame_scope(S[.ORIGIN = pframe.ORIGIN], pframe, pframe_tail*), pframe.TODO) /\ $stringify_frames_pairs_valid(S, pframe_tail*))
 
 def $user_string_begin(S, n, porigin_site, z, ptask_consumer, ptask_tail*) = S[.TODO = (CALL_ARGS (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) eps 0 eps (porigin_site) z) :: (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.OBJECTS[n] = INSTANCE porigin_class
