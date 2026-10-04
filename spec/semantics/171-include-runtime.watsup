@@ -26,7 +26,6 @@ def $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind) = true
   -- if $origin_node(S.SOURCES, porigin_child) = (expression)
   -- if $file_site_valid(S, porigin_parent, z, n_kind)
 def $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind) = false -- otherwise
-dec $file_operand_child_site(pstate, porigin, int) : bool
 def $file_operand_child_site(S, porigin_child, z) = $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind)
   -- if $reference_origin_parent(porigin_child, 1) = ((porigin_parent, [PCFIELD 0]))
   -- if $file_node_kind($origin_node(S.SOURCES, porigin_parent)) = (n_kind)
@@ -77,7 +76,6 @@ def $call_task_valid(S, FILE_REQUEST porigin z n_kind) = $file_operand_site_vali
 def $eval_request_task(FILE_REQUEST porigin z n_kind) = true
 def $eval_requests_owned((FILE_REQUEST porigin z n_kind) :: (ORIGIN_RETURN (porigin)) :: ptask_tail*) = $eval_requests_owned(ptask_tail*)
 def $stringify_source(S, porigin_site, z, FILE_REQUEST porigin_parent z n_kind) = $file_operand_site_valid(S, porigin_parent, porigin_site, z, n_kind)
-dec $stringify_file_consumer(ptask) : bool
 def $stringify_file_consumer(FILE_REQUEST porigin z n_kind) = true
 def $stringify_file_consumer(ptask) = false -- otherwise
 def $stringify_consumer_tail_valid(S, porigin_site, z, FILE_REQUEST porigin_parent z n_kind, (ORIGIN_RETURN (porigin_parent)) :: ptask_tail*) = $file_operand_site_valid(S, porigin_parent, porigin_site, z, n_kind)
