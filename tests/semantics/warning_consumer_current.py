@@ -3,9 +3,12 @@ from pathlib import Path
 from warning_consumer_protocol import GUARDS, FINISH, PREFIX as BASE_PREFIX
 
 PREFIX = BASE_PREFIX + '''
+dec $current_is_send(ptask) : bool
+def $current_is_send(CALL_SEND pcalltarget phpType7* n poperand* porigin? z) = true
+def $current_is_send(ptask) = false -- otherwise
 dec $current_send(ptask*) : ptask?
 def $current_send((CALL_SEND pcalltarget phpType7* n poperand* porigin? z) :: ptask_tail*) = (CALL_SEND pcalltarget phpType7* n poperand* porigin? z)
-def $current_send(ptask :: ptask_tail*) = $current_send(ptask_tail*) -- otherwise
+def $current_send(ptask :: ptask_tail*) = $current_send(ptask_tail*) -- if ~$current_is_send(ptask)
 def $current_send(eps) = eps
 '''
 
