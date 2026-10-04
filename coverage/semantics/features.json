@@ -6149,20 +6149,34 @@
         "spec/semantics/33-runtime-compiler.watsup",
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/46-source-compiler.watsup",
-        "spec/semantics/51-truth-expressions.watsup"
+        "spec/semantics/51-truth-expressions.watsup",
+        "spec/semantics/209-warning-truth-continuations.watsup"
       ],
       "helper_tests": [
         "tests/semantics/truth_compiler.py",
-        "tests/semantics/truth_expressions.py"
+        "tests/semantics/truth_expressions.py",
+        "tests/semantics/warning_truth_protocol.py",
+        "tests/semantics/warning_truth_prepare.py",
+        "tests/semantics/warning_truth_pipe.py",
+        "tests/semantics/warning_truth_pipe_prepare.py",
+        "tests/semantics/warning_truth_constant.py",
+        "tests/semantics/warning_truth_constant_prepare.py",
+        "tests/semantics/warning_truth_handler.py",
+        "tests/semantics/warning_truth_handler_prepare.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/warning_truth_cases.py",
+        "tests/semantics/warning_truth_run.py",
+        "tests/semantics/warning_truth_pipe_run.py",
+        "tests/semantics/warning_truth_constant_run.py",
+        "tests/semantics/warning_truth_handler_run.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending.",
+      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending. Source-certified209 missing-CV branch/loop/short-circuit/NOT/ternary-condition continuations pass mixed author8 normal plus castUnsupported0/four225 and independent retained-native model3/three160. Original certificate failure and branch recording collision remain preserved. Current PIPE normal source1/69 and independent throwing source1/corrected96 are accepted at0d881, preserving the original wrong INSTANCE premise. Current deferred-cache normal source1/95 and independent throw source1/89 pass at8c74. Source-equivalent promotion preserves disjoint actual201 without replay or new credit. Casts/copy/SEND and broader producers stay open. warning-truth-review.json records separate revisions/profiles. The tested211 composition at38cab separately accepts author source1/93 and independent strict instance-emitter source1/107, preserving original-null branch/BOOL consumers and raw restoration through parameter rejection. Current211/constants/property endpoints remain unchanged; source-equivalent publication adds no execution credit.",
       "planned_source_tests": [
         "tests/semantics/conformance/short-circuit.php"
       ]
@@ -6247,20 +6261,34 @@
         "spec/semantics/33-runtime-compiler.watsup",
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/46-source-compiler.watsup",
-        "spec/semantics/51-truth-expressions.watsup"
+        "spec/semantics/51-truth-expressions.watsup",
+        "spec/semantics/209-warning-truth-continuations.watsup"
       ],
       "helper_tests": [
         "tests/semantics/truth_compiler.py",
-        "tests/semantics/truth_expressions.py"
+        "tests/semantics/truth_expressions.py",
+        "tests/semantics/warning_truth_protocol.py",
+        "tests/semantics/warning_truth_prepare.py",
+        "tests/semantics/warning_truth_pipe.py",
+        "tests/semantics/warning_truth_pipe_prepare.py",
+        "tests/semantics/warning_truth_constant.py",
+        "tests/semantics/warning_truth_constant_prepare.py",
+        "tests/semantics/warning_truth_handler.py",
+        "tests/semantics/warning_truth_handler_prepare.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/warning_truth_cases.py",
+        "tests/semantics/warning_truth_run.py",
+        "tests/semantics/warning_truth_pipe_run.py",
+        "tests/semantics/warning_truth_constant_run.py",
+        "tests/semantics/warning_truth_handler_run.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c"
       ],
-      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending.",
+      "review": "Independent bounded truth review: 854 exact sources +25 outcome negatives; 44 alternate exact sources and 44 compiler cases, five redirect/access and three grouping controls; 71 source/state cases with 1344 assertions plus four dense programs with 3316 assertions passed. See coverage/semantics/truth-review.json. Ordinary selected values copy, raw prepass redirects preserve delayed operands, and short-circuit compilation differs from constant prepass. Object/callback truth behavior, additional operand forms and full source-family closure remain pending. Source-certified209 missing-CV branch/loop/short-circuit/NOT/ternary-condition continuations pass mixed author8 normal plus castUnsupported0/four225 and independent retained-native model3/three160. Original certificate failure and branch recording collision remain preserved. Current PIPE normal source1/69 and independent throwing source1/corrected96 are accepted at0d881, preserving the original wrong INSTANCE premise. Current deferred-cache normal source1/95 and independent throw source1/89 pass at8c74. Source-equivalent promotion preserves disjoint actual201 without replay or new credit. Casts/copy/SEND and broader producers stay open. warning-truth-review.json records separate revisions/profiles. The tested211 composition at38cab separately accepts author source1/93 and independent strict instance-emitter source1/107, preserving original-null branch/BOOL consumers and raw restoration through parameter rejection. Current211/constants/property endpoints remain unchanged; source-equivalent publication adds no execution credit.",
       "planned_source_tests": [
         "tests/semantics/conformance/short-circuit.php"
       ]
@@ -9663,7 +9691,8 @@
         "spec/semantics/163-throwable-trace-storage.watsup",
         "spec/semantics/164-throwable-trace-methods.watsup",
         "spec/semantics/208-warning-read-continuations.watsup",
-        "spec/semantics/211-error-handler-callables.watsup"
+        "spec/semantics/211-error-handler-callables.watsup",
+        "spec/semantics/209-warning-truth-continuations.watsup"
       ],
       "helper_tests": [
         "tests/semantics/error_handler_protocol.py",
@@ -9673,7 +9702,15 @@
         "tests/semantics/warning_read_prepare.py",
         "tests/semantics/warning_read_static_set_protocol.py",
         "tests/semantics/warning_read_string_protocol.py",
-        "tests/semantics/error_handler_callables_protocol.py"
+        "tests/semantics/error_handler_callables_protocol.py",
+        "tests/semantics/warning_truth_protocol.py",
+        "tests/semantics/warning_truth_prepare.py",
+        "tests/semantics/warning_truth_pipe.py",
+        "tests/semantics/warning_truth_pipe_prepare.py",
+        "tests/semantics/warning_truth_constant.py",
+        "tests/semantics/warning_truth_constant_prepare.py",
+        "tests/semantics/warning_truth_handler.py",
+        "tests/semantics/warning_truth_handler_prepare.py"
       ],
       "source_tests": [
         "tests/semantics/error_handler_cases.py",
@@ -9684,7 +9721,12 @@
         "tests/semantics/warning_read_static_set.php",
         "tests/semantics/warning_read_string.php",
         "tests/semantics/error_handler_callables.py",
-        "tests/semantics/error_handler_callables_cases.json"
+        "tests/semantics/error_handler_callables_cases.json",
+        "tests/semantics/warning_truth_cases.py",
+        "tests/semantics/warning_truth_run.py",
+        "tests/semantics/warning_truth_pipe_run.py",
+        "tests/semantics/warning_truth_constant_run.py",
+        "tests/semantics/warning_truth_handler_run.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c",
@@ -9695,7 +9737,7 @@
         "vendor/php-src/main/main.c",
         "coverage/semantics/handler-callables-current-review.json"
       ],
-      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Accepted208 adds initially-reference left-CV identity reads with a genuine saved borrowed pointer and no extra cell owner. Privatef15 author6 normal+control0/three162 and independent3 models(native reuse)/two130 remain distinct from fresh getter/setterf959 author1/74+independent1/111 and current method-stringc67 source1/77. warning-reads-review.json binds original raw/peers and source-equivalent publication. Plain-CV wrappers, other read producers and full core remain open. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/nonpublic/magic/autoload/internal/exception/lifecycle callbacks remain open."
+      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Accepted208 adds initially-reference left-CV identity reads with a genuine saved borrowed pointer and no extra cell owner. Privatef15 author6 normal+control0/three162 and independent3 models(native reuse)/two130 remain distinct from fresh getter/setterf959 author1/74+independent1/111 and current method-stringc67 source1/77. warning-reads-review.json binds original raw/peers and source-equivalent publication. Plain-CV wrappers, other read producers and full core remain open. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/nonpublic/magic/autoload/internal/exception/lifecycle callbacks remain open. Source-certified209 missing-CV branch/loop/short-circuit/NOT/ternary-condition continuations pass mixed author8 normal plus castUnsupported0/four225 and independent retained-native model3/three160. Original certificate failure and branch recording collision remain preserved. Current PIPE normal source1/69 and independent throwing source1/corrected96 are accepted at0d881, preserving the original wrong INSTANCE premise. Current deferred-cache normal source1/95 and independent throw source1/89 pass at8c74. Source-equivalent promotion preserves disjoint actual201 without replay or new credit. Casts/copy/SEND and broader producers stay open. warning-truth-review.json records separate revisions/profiles. The tested211 composition at38cab separately accepts author source1/93 and independent strict instance-emitter source1/107, preserving original-null branch/BOOL consumers and raw restoration through parameter rejection. Current211/constants/property endpoints remain unchanged; source-equivalent publication adds no execution credit."
     },
     {
       "id": "diagnostics.exception-handler-stack",

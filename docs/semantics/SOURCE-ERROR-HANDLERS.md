@@ -49,7 +49,7 @@ output, simple assignment, unary signs and six arithmetic/identity operators.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding
-an owner; rebinding and in-place alias writes remain distinct. Other live left operands, truth/cast/copy,
+an owner; rebinding and in-place alias writes remain distinct. Other live left operands, cast/copy,
 read-modify-write, dimensions and other eligible warning producers remain
 explicitly `Unsupported`, rather than running a callback after a consumer.
 
@@ -105,3 +105,15 @@ the complete maintained selection before optional affected-case filters, records
 full streams/exits and stops on the first failure. The ordinary13 profile uses
 native45s, model90s and finite300s producer limits, serially; reused local binaries
 do not establish a fresh build, offline closure or complete PHP semantics.
+
+Module209 also retains original-null branch, loop, short-circuit, NOT and
+ternary-condition choices across handler mutation and throw. Its mixed ordinary
+author8/225 and independent native-reused model3/160 remain distinct from PIPE
+normal/throw source2 and69/corrected96, and deferred-cache normal/throw source2
+and95/89 at `8c74e624`. These gates validate their tested private compositions;
+source-equivalent promotion adds no execution or rebuild credit.
+The tested211 composition at `38cab574` separately accepts author source1/93
+and independent source1/107 across original-null truth decisions and strict
+instance-emitter parameter rejection, preserving raw restoration and saved frames.
+[Truth continuations](SOURCE-WARNING-TRUTH.md) keep casts/copy/SEND and broader
+reporting open.

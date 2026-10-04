@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source-certified warning-truth decisions209 preserve the original null across
+handler mutation and suppress pending consumers on throw. Private ordinary
+8normal/225 and independent native-reused model3/160 remain separate from current
+PIPE normal/throw1/69+1/corrected96 and deferred-cache normal/throw1/95+1/89.
+The current211 composition at `38cab574` accepts author source1/93 and independent
+strict instance-emitter source1/107, preserving original-null choices and throw cleanup.
+The [truth ledger](coverage/semantics/warning-truth-review.json) records each tested
+revision/profile and original failures; source-equivalent publication adds no
+execution or rebuild credit.
+
 Public method-array and class-method-string error handlers register raw values and
 select afresh at dispatch. Entered targets retain genuine emitter scope, arguments
 and owners through member mutation, nested replacement, throw and false fallback.
@@ -19,6 +29,7 @@ The installed families compose as follows; each ledger records its scope and lim
 | Family | Current behavior and evidence |
 | --- | --- |
 | Class constants183/184 | Owner-scoped lazy scalar/array caches preserve strict typing, inheritance priority and compile-entry availability. Warning-read and completed static-getter interactions retain cache roots/aliases;50 source observations keep their separate revisions. Closure/FCC initializers and broader consumers remain open. [Constants ledger](coverage/semantics/class-constants-current-review.json). |
+| Warning-truth decisions209 | Branch/loop/short-circuit/NOT/ternary-condition choices consume the captured null even after handlers define the CV. Saved consumers and thrown-handler cleanup retain authenticated source/line. Casts/copy/SEND remain open. [Truth ledger](coverage/semantics/warning-truth-review.json). |
 | Borrowed warning reads208 | Strict identity retains the old reference cell across callbacks without adding an owner; saved callers and throw cleanup preserve it. Defined ordinary `$GLOBALS[key]` uses the real table. Getter/setter and method-string interactions keep separate revisions. [Warning-read ledger](coverage/semantics/warning-reads-review.json). |
 | Error handlers/reporting206/207/211 | Named, closure, public source-object, ordinary method-array and class-method-string callbacks retain raw registration values and select afresh at dispatch. Entered targets, four arguments and genuine emitting frames survive member mutation, replacement, nested reentry, throw and false fallback; current CONFIG PIPE preserves weak receive and original-null trace. Broader scope/magic/internal/exception/lifecycle forms and reporting readback remain open. [Method-handler ledger](coverage/semantics/handler-callables-current-review.json), [earlier handler ledger](coverage/semantics/error-handlers-review.json). |
 | Class-method strings210 and FCC119 | Full-byte lookup separates frame-based callable admission, computed static dispatch and fixed compatible-this selection. Captures/clone retain immutable source certificates and defaults/static cells. A named throwing handler preserves the selected static caller and arguments. [String ledger](coverage/semantics/class-method-strings-current-review.json). |
