@@ -62,4 +62,14 @@ try {$destination233=$GLOBALS[keyFactory233($cell233)];} catch(Error $e) {
 }
 restore_error_handler();
 ''', b'T:9:37:handler:older;', 'normal'),
+    ('constant-null-conversion-then-missing-keeps-captured-null', b'''<?php
+error_reporting(0);$seed233=5;$a233=['live'=>$seed233];$keep233=$a233;
+function missingAfterCast233($level,$message,$file,$line) {
+    if($level===8192) {$GLOBALS['a233']['']=17;echo "D;";}
+    else {$GLOBALS['keep233']['']=31;echo "U:",$message==='Undefined array key ""'?1:0,";";}
+    return true;
+}
+set_error_handler('missingAfterCast233',8194);$result233=$a233[null];
+echo "R:",$result233===null?1:0,":",$a233[''],":",$keep233[''],";";restore_error_handler();
+''', b'D;U:1;R:1:17:31;', 'normal'),
 ]
