@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Deferred scalar/array static defaults219 retain the declaring scope, strict
+property types, parent/constants/default order and first successful fills across
+later failure/retry. Existing static rows own live values, arrays and typed aliases;
+history stores no duplicate value. Eleven native/model agreements (seven normal,
+four PHP errors) retain their original source cutoff. Five source-derived programs
+accept149 logical guards expressed as152 sequential premises after narrow fixture
+binding repairs. The [deferred-default ledger](coverage/semantics/deferred-static-defaults-review.json)
+keeps original failures and unrun broader work visible. Actual213/215 composition
+is the integration gate; instance/object defaults and cold synchronous references
+are the next required obligations.
+
 Weak Stringable string parameters214/216 convert supplied fixed values in receive
 order, preserving caller strictness and nominal/callable precedence. Free
 by-reference parameters write through their captured formal cell; existing

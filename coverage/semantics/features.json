@@ -3491,7 +3491,8 @@
         "spec/semantics/153-property-visibility-compiler.watsup",
         "spec/semantics/154-property-visibility-runtime.watsup",
         "spec/semantics/187-class-static-storage.watsup",
-        "spec/semantics/200-static-set-compiler.watsup"
+        "spec/semantics/200-static-set-compiler.watsup",
+        "spec/semantics/219-deferred-static-defaults.watsup"
       ],
       "source_tests": [
         "tests/semantics/property_compiler.py",
@@ -3506,11 +3507,13 @@
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
         "tests/semantics/private_property_scope_protocol.py",
-        "tests/semantics/static_set_access.py"
+        "tests/semantics/static_set_access.py",
+        "tests/semantics/deferred_static_default_cases.json"
       ],
-      "review": "Public/protected/private backed instance properties use source-authenticated descriptors and mangled canonical slot keys. Lexical access covers ordinary/computed/quiet/write/unset/reference consumers, invariant inheritance, foreach and casts; static/readonly/promotion/hooks/magic remain dependencies. See properties-review.json, property-references-review.json and property-visibility-review.json for distinct evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Backed static final/asymmetric declarations normalize equal access, enforce inheritance priority and source-entry linking (static-setter-access-review.json); static readonly and instance asymmetric setters remain open.",
+      "review": "Public/protected/private backed instance properties use source-authenticated descriptors and mangled canonical slot keys. Lexical access covers ordinary/computed/quiet/write/unset/reference consumers, invariant inheritance, foreach and casts; static/readonly/promotion/hooks/magic remain dependencies. See properties-review.json, property-references-review.json and property-visibility-review.json for distinct evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Backed static final/asymmetric declarations normalize equal access, enforce inheritance priority and source-entry linking (static-setter-access-review.json); static readonly and instance asymmetric setters remain open. Deferred scalar/array static defaults219 preserve declaring scope, strict binding and first-fill prefixes across later failure;11 source agreements and5 programs/149 logical guards (152 sequential premises) retain separate cutoffs. Instance/object-bearing defaults and cold synchronous references stay open; see deferred-static-defaults-review.json.",
       "helper_tests": [
-        "tests/semantics/static_set_compiler.py"
+        "tests/semantics/static_set_compiler.py",
+        "tests/semantics/deferred_static_default_protocol.py"
       ]
     },
     {
@@ -8731,10 +8734,12 @@
         "spec/semantics/154-property-visibility-runtime.watsup",
         "spec/semantics/187-class-static-storage.watsup",
         "spec/semantics/188-class-static-runtime.watsup",
-        "spec/semantics/197-property-string-runtime.watsup"
+        "spec/semantics/197-property-string-runtime.watsup",
+        "spec/semantics/219-deferred-static-defaults.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/typed_static_string_protocol.py"
+        "tests/semantics/typed_static_string_protocol.py",
+        "tests/semantics/deferred_static_default_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/properties.py",
@@ -8752,7 +8757,8 @@
         "tests/semantics/class_static_references.py",
         "tests/semantics/typed_static_string_assignment.py",
         "tests/semantics/typed_static_callable.py",
-        "tests/semantics/typed_static_restore.py"
+        "tests/semantics/typed_static_restore.py",
+        "tests/semantics/deferred_static_default_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
@@ -8762,9 +8768,10 @@
         "coverage/semantics/property-private-review.json",
         "docs/semantics/SOURCE-CLASS-STATICS.md",
         "coverage/semantics/class-static-properties.json",
-        "coverage/semantics/typed-static-string-assignment-review.json"
+        "coverage/semantics/typed-static-string-assignment-review.json",
+        "coverage/semantics/deferred-static-defaults-review.json"
       ],
-      "review": "Public/protected/private backed declarations retain typed defaults, invariant inherited overrides and original prototype visibility. Writes and typed aliases use canonical slot keys; diagnostics use declaring identity and raw names. Hooks, readonly/promotion and broader type forms remain open. Historical properties-review.json and current property-visibility-review.json retain separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json)."
+      "review": "Public/protected/private backed declarations retain typed defaults, invariant inherited overrides and original prototype visibility. Writes and typed aliases use canonical slot keys; diagnostics use declaring identity and raw names. Hooks, readonly/promotion and broader type forms remain open. Historical properties-review.json and current property-visibility-review.json retain separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json). Deferred scalar/array static defaults219 preserve declaring scope, strict binding and first-fill prefixes across later failure;11 source agreements and5 programs/149 logical guards (152 sequential premises) retain separate cutoffs. Instance/object-bearing defaults and cold synchronous references stay open; see deferred-static-defaults-review.json."
     },
     {
       "id": "properties.uninitialized",
@@ -9119,22 +9126,26 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/183-class-constant-compiler.watsup",
-        "spec/semantics/184-class-constants.watsup"
+        "spec/semantics/184-class-constants.watsup",
+        "spec/semantics/219-deferred-static-defaults.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/class_constant_protocol.py"
+        "tests/semantics/class_constant_protocol.py",
+        "tests/semantics/deferred_static_default_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/class_constant_cases.json"
+        "tests/semantics/class_constant_cases.json",
+        "tests/semantics/deferred_static_default_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_constants.c",
         "vendor/php-src/Zend/zend_API.c",
         "vendor/php-src/Zend/zend_ast.c",
-        "coverage/semantics/class-constants-current-review.json"
+        "coverage/semantics/class-constants-current-review.json",
+        "coverage/semantics/deferred-static-defaults-review.json"
       ],
-      "review": "Constants183/184/212 preserve owner-scoped lazy values, strict caches, inheritance and compile-entry availability. Selected Closure/FCC identity/scope and named constexpr ::class spelling are reviewed; rebound defaults avoid stale origin-only caches. Maintained 93 source agreements and159 + 44 + 63 callable/class-name guards retain distinct cutoffs. Incomplete-table references, unretained update selectors, wider constructor contexts and uncertified object transfers remain Unsupported; modifiers, attributes and broader consumers stay open. See class-constants-current-review.json; no family/core or fresh copied-build closure. The current214 callback retains rebound B/original A default scope and cached identity (B:A:same) at its own cutoff."
+      "review": "Constants183/184/212 preserve owner-scoped lazy values, strict caches, inheritance and compile-entry availability. Selected Closure/FCC identity/scope and named constexpr ::class spelling are reviewed; rebound defaults avoid stale origin-only caches. Maintained 93 source agreements and159 + 44 + 63 callable/class-name guards retain distinct cutoffs. Incomplete-table references, unretained update selectors, wider constructor contexts and uncertified object transfers remain Unsupported; modifiers, attributes and broader consumers stay open. See class-constants-current-review.json; no family/core or fresh copied-build closure. The current214 callback retains rebound B/original A default scope and cached identity (B:A:same) at its own cutoff. Deferred scalar/array static defaults219 preserve declaring scope, strict binding and first-fill prefixes across later failure;11 source agreements and5 programs/149 logical guards (152 sequential premises) retain separate cutoffs. Instance/object-bearing defaults and cold synchronous references stay open; see deferred-static-defaults-review.json."
     },
     {
       "id": "declarations.constant-closures",

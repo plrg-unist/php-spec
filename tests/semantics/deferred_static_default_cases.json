@@ -1,0 +1,210 @@
+{
+  "scope": "Eleven original deferred-static-default native tuples; seven normal and four PHP errors. Source, compiler and state checks retain their separate tested cutoffs.",
+  "cases": [
+    {
+      "id": "lexical_inherited_default_shared_cell",
+      "source": "<?php\nclass A { const X=N; public static int $p=self::X; }\nclass B extends A { const X=9; }\necho \"begin:\";\nconst N=2;\necho B::$p,A::$p,B::X,\":\";\nB::$p=3;\necho A::$p;\n",
+      "source_sha256": "2317626e2011e93833481b52527e5d4cc6b073bfe84d658812fa9cd72bdf05df",
+      "stdout_base64": "YmVnaW46MjI5OjM=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-17-static-property-defaults/raw/00-lexical_inherited_default_shared_cell/command.json",
+      "native_raw_sha256": "6d022fd5493105ce8ab7869c6aef37a53c64c56bda2fc346be4825f73498b0dc",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "cached_constant_then_new_initializes_property",
+      "source": "<?php\nclass A { const X=N; public static int $p=self::X; }\necho \"start:\";\nconst N=4;\necho A::X,\":\";\nnew A;\necho A::$p;\n",
+      "source_sha256": "9c9f74469db26aa81adb812608f7a5c24e18504240f4bf3e4ba00a2be34bbc48",
+      "stdout_base64": "c3RhcnQ6NDo0",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-17-static-property-defaults/raw/01-cached_constant_then_new_initializes_property/command.json",
+      "native_raw_sha256": "44f9cc6856e15f646ba38fb99a0616826a7357a133c39102d16475e610b3d533",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "lazy_float_default_strict_promotion",
+      "source": "<?php\nclass A { const X=N; public static float $p=self::X; }\nconst N=2;\necho (A::$p===2.0)?\"f\":\"bad\",\":\";\necho (A::$p===2)?\"bad\":\"ok\";\n",
+      "source_sha256": "1e6f884e68f2cdf54f554bab37e9bf6bfffa9899aa6b29ba832e082bb726d47e",
+      "stdout_base64": "Zjpvaw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-17-static-property-defaults/raw/02-lazy_float_default_strict_promotion/command.json",
+      "native_raw_sha256": "7a927a349ba692ecb618682f9ada45a21f1a0892780b909d0cadc38a0d5304f2",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "lazy_int_default_rejects_numeric_string",
+      "source": "<?php\nclass A { const X=N; public static int $p=self::X; }\nconst N=\"2\";\necho \"start:\";\necho A::$p;\n",
+      "source_sha256": "f86b148cfe6dc6ef950c165069c7ca560ccdac4d826a5d0a17c58448a4aebb54",
+      "stdout_base64": "c3RhcnQ6",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBzdHJpbmcgdG8gcHJvcGVydHkgQTo6JHAgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9OjUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-17-static-property-defaults/raw/03-lazy_int_default_rejects_numeric_string/command.json",
+      "native_raw_sha256": "34e5315702a55a21ff90d6161765da99c9bc103b85d7206c0e2cce3d147b6d88",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "partial_property_prefix_late_retry",
+      "source": "<?php\nclass A { const X=N; public static int $p=self::X; public static int $q=LATE; }\nconst N=2;\ntry { echo A::$p; } catch (Error $e) { echo \"E:\"; }\nconst LATE=3;\necho A::$p,\":\",A::$q;\n",
+      "source_sha256": "bb8124428013661b873b8fe83b6d3695b534905e6fc0b53173a3995929692967",
+      "stdout_base64": "RToyOjM=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-17-static-property-defaults/raw/04-partial_property_prefix_late_retry/command.json",
+      "native_raw_sha256": "614462742a8311ab30cb0a77e6f810ac957510c45d15413ece1e86d2e4dc6afd",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_cycle_through_property_table_update",
+      "source": "<?php\nclass A {\n const X=self::Y;\n const Y=self::X;\n public static $p=self::X;\n}\necho \"start:\";\necho A::$p;\n",
+      "source_sha256": "43d0af164c612d6d807fcce75949a68e064d78fc16c0ecabeac19c7c13bf776e",
+      "stdout_base64": "c3RhcnQ6",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgZGVjbGFyZSBzZWxmLXJlZmVyZW5jaW5nIGNvbnN0YW50IHNlbGY6OlkgaW4ge0ZJTEV9OjMKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSg4KTogW2NvbnN0YW50IGV4cHJlc3Npb25dKCkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDMK",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-17-static-property-defaults/raw/05-constant_cycle_through_property_table_update/command.json",
+      "native_raw_sha256": "b62ab7f81e96401ddb4dabcadc502c6a273a0f0b2cfc8c0d4550f7a49315d6af",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "nested_default_array_cow_shared_property",
+      "source": "<?php\nclass A { const X=[N,[N+1]]; public static array $p=self::X; }\nclass B extends A {}\nconst N=2;\n$v=B::$p;\n$v[1][0]=9;\necho $v[1][0],\":\",B::$p[1][0],\":\",A::X[1][0];\nB::$p[1][0]=7;\necho \":\",A::$p[1][0],\":\",A::X[1][0];\n",
+      "source_sha256": "89bfeff7208a25f558f062f59a3cd748c16c13f00e9f5295cd029820c7207215",
+      "stdout_base64": "OTozOjM6Nzoz",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-17-static-property-defaults/raw/06-nested_default_array_cow_shared_property/command.json",
+      "native_raw_sha256": "047ac97bf64dbf13b9a26ecc903feb5e0e507e34de49c624e633bf94cb0b3564",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "warmed_reference_default_type_source",
+      "source": "<?php\nclass A { const X=N; public static int $p=self::X; }\nclass B extends A {}\nconst N=2;\necho B::$p,\":\";\n$r=&B::$p;\n$r=7;\necho A::$p,\":\",A::X,\":\";\ntry { $r=\"bad\"; } catch (TypeError $e) { echo \"E:\"; }\necho A::$p;\n",
+      "source_sha256": "62531e31555f6c69b3f2f48e39948fd2958616fd15c5958a26a04e5bc2cce15e",
+      "stdout_base64": "Mjo3OjI6RTo3",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-17-static-property-defaults/raw/07-warmed_reference_default_type_source/command.json",
+      "native_raw_sha256": "e1f098a97a9e0635bbd51f5a93eac6f55eeb4bb391fbd06ef233f42e789f5eda",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "private_read_denial_before_initializer",
+      "source": "<?php\nclass A { const X=MISSING; private static $p=self::X; }\necho \"start:\";\necho A::$p;\n",
+      "source_sha256": "59b136f226cbcf6a53de121a69c2eb21b901d29b0b480b0bba28ee592e4c2829",
+      "stdout_base64": "c3RhcnQ6",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYW5ub3QgYWNjZXNzIHByaXZhdGUgcHJvcGVydHkgQTo6JHAgaW4ge0ZJTEV9OjQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSA0Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-17-static-property-defaults/raw/08-private_read_denial_before_initializer/command.json",
+      "native_raw_sha256": "4cd79c7ef419b493f565906c78170b55541f29e88ea42de2c4fb95be31222102",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "foreign_parent_array_default_cow",
+      "source": "<?php\nclass A { const X=[N]; }\nconst N=2;\ninclude __DIR__.\"/foreign-parent-default-child.php\";\n$v=B::$p;\n$v[0]=7;\necho $v[0],\":\",B::$p[0],\":\",B::X[0],\":\",A::X[0];\n",
+      "source_sha256": "d9fa2a3bee331b5883ba1433e8eb7a6777c21432b3c5472004fafe7dd0970923",
+      "stdout_base64": "NzoyOjk6Mg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-17-static-property-defaults/raw/09-foreign_parent_array_default_cow/command.json",
+      "native_raw_sha256": "af00259a9a51fa2a9e6b698b9fcd5463eaa00b4d80f7244641241dd865a8fc31",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "files": [
+        {
+          "name": "foreign-parent-default-child.php",
+          "source": "<?php\nclass B extends A { const X=[9]; public static array $p=parent::X; }\n",
+          "source_sha256": "8abc58be674e5d7e32e32cfd25302e891cc08870d6e3aa704a4ffee59e4f2f91"
+        }
+      ]
+    },
+    {
+      "id": "private_parent_static_new",
+      "source": "<?php\nclass A {\n    private static $p = MISSING;\n}\nclass B extends A {}\necho \"start:\";\nnew B;\n",
+      "source_sha256": "8146809bfa98ceb5de7692c05a6f4766c4612e02b6098624969664c712f83fe2",
+      "stdout_base64": "c3RhcnQ6",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIk1JU1NJTkciIGluIHtGSUxFfTo3ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgNwo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-19-private-parent-static-new/raw/00-private_parent_static_new/command.json",
+      "native_raw_sha256": "c534222cf17be28f69cd696d03e5bb9aeae7fe635bda743778050cee1b1c97fa",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "30719"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    }
+  ]
+}

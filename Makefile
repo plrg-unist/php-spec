@@ -105,6 +105,8 @@ test-semantics: build
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/class_constant_cases.json
 	python3 tests/semantics/class_constant_protocol.py
 	python3 tests/semantics/constant_callable_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/deferred_static_default_cases.json
+	python3 tests/semantics/deferred_static_default_protocol.py
 	python3 tests/semantics/default_parameter_compiler.py
 	python3 tests/semantics/default_parameters.py
 	python3 tests/semantics/default_parameter_protocol.py

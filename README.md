@@ -335,8 +335,11 @@ Discarded genuine reference getters also wrap initialized typed slots; ordinary
 by-value getters leave them unchanged. Post-return checks retain only the static
 cell owner and its property type source. A focused current-constants check
 completes a forward constant table before fetching the reference and preserves
-the typed alias; deferred property defaults and incomplete-table references
-remain Unsupported.
+the typed alias. Deferred scalar/array static defaults now evaluate in declaring
+scope with strict binding, preserving successful prefixes across later failure.
+The [deferred-default review](coverage/semantics/deferred-static-defaults-review.json)
+separates eleven source agreements from five state programs/152 sequential guards.
+Deferred instance/object defaults and incomplete-table references remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

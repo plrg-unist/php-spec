@@ -1,0 +1,102 @@
+{
+  "target": "PHP8.5.10 CLI NTS64, sole project-local oracle; baseline profile30719",
+  "scope": "Deferred scalar/array backed static defaults; partial core milestone, not all property defaults.",
+  "implementation_commit": "293a764404cd83cc91569828bf6a56c081464e74",
+  "implementation": [
+    "spec/semantics/219-deferred-static-defaults.watsup",
+    "spec/semantics/135-property-compiler.watsup",
+    "spec/semantics/184-class-constants.watsup",
+    "spec/semantics/187-class-static-storage.watsup"
+  ],
+  "contracts": [
+    "Declaring scope; strict types with int-to-float promotion.",
+    "Parent, class constants, static defaults, then table completion.",
+    "Each declaration has one live static row; history records source identities only.",
+    "Failed initialization retains earlier fills; retries skip completed values.",
+    "Inherited prototypes keep their initializer AST even after a parent cell fills.",
+    "Source/line, publication-prefix, table-order and binder validation; existing array/alias roots."
+  ],
+  "engine_symbols": [
+    "zend_compile_prop_decl",
+    "zend_update_class_constants",
+    "update_property",
+    "zend_std_get_static_property_with_info",
+    "zend_class_init_statics",
+    "zval_update_constant_ex"
+  ],
+  "artifacts": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults",
+  "runtime": {
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+    "configuration": "Reused local executables; no rebuild claim. LC_ALL=C,TZ=UTC; model baseline tests/semantics/profile.json.",
+    "limits": "Serial model CLI100000 steps/45s, host55s; numeric guard programs120s each."
+  },
+  "source_validation": {
+    "result": "PASS11 original native/model tuples:7 normal,4 PHP errors",
+    "tested_git_revision": "6771d3df8be4c13dfe25fa6bb4569e66aa344815",
+    "source_cut": "source-v4; uncommitted219 transitions at original source campaign. Subsequent narrow validator repairs do not renew source evidence.",
+    "reports": [
+      "first-model11-v3/report.json (first9)",
+      "rest2-snapshot/report.json (remaining2)"
+    ],
+    "command": "Original source CLI commands in reports; rerun catalogue via python3 tests/semantics/method_runtime.py --catalogue tests/semantics/deferred_static_default_cases.json",
+    "profile_bridge": "First10 native cases32767/four INI settings; private-parent control30719. Model baseline30719. These sources perform no warning/reporting operation; exact original streams/exits retained.",
+    "preserved_failures": [
+      "Earlier interrupted/failedfirst-model11 versions.",
+      "Foreign-child snapshot cwd mismatch in first-model11-v3: corrected only process cwd in rest2-snapshot."
+    ]
+  },
+  "state_validation": {
+    "result": "PASS5 source-derived programs/149 logical guards expressed as152 sequential premises",
+    "tested_revision": "293a764404cd83cc91569828bf6a56c081464e74",
+    "reports": [
+      "state5-v4/report.json:partial-retry43 PASS; owner-binder checker failure preserved",
+      "state5-v5/report.json:owner41,warm21,array23,prototype24 PASS"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/state5-v4/run.py",
+      "python3 .tools/deferred-static-defaults/state5-v5/run.py"
+    ],
+    "completion": "All successful phases exit0, stdout exactly true newline, stderr empty; input hashes unchanged.",
+    "scope": [
+      "Pending/duplicate/reordered/skipped task contradictions.",
+      "Partial firstfill vs premature table completion; retry preserves earlier values.",
+      "Authenticated declaring owner/root/line and constant-expression trace.",
+      "Inherited alias constraints and sole static cell root.",
+      "Independent nested default array and constant cache roots/COW.",
+      "Private parent prototype retained across later child publication."
+    ],
+    "corrections": [
+      "Only BUDGET resets to NORMAL in one-step seeker; PHP abrupt states preserved.",
+      "Two generic184 task validator overlaps excluded; marker declaration precedes use.",
+      "Three new-variable conjunctions split into six sequential premises; no guard/source change."
+    ],
+    "preserved_failures": [
+      "state5-v1/v2/v3 original failures remain.",
+      "pure-v1 throughv10 compiler failures remain.",
+      "state5-v4 owner binder fixture rejection before execution."
+    ],
+    "published_script": "tests/semantics/deferred_static_default_protocol.py; --prepare reproduces checked source/fixtures without numeric execution."
+  },
+  "compiler_validation": {
+    "result": "PASS pure-v11; SL elaboration/algorithmic/structuring via reused numeric runner; stdout true newline, stderr empty,exit0",
+    "report": "pure-v11/status.json",
+    "credit": "Pure checks only; no new source/native agreement."
+  },
+  "current_composition": {
+    "status": "pending",
+    "accepted_base": "3f63e475bf50fe3d094cb7e273f5504584dc212a",
+    "scope": "Two actual213/215 interactions, one inside current Stringable parameter receive214/216. Preserve error_context_kind105/108 guards; no full unrelated93/266 replay."
+  },
+  "review": {
+    "peer": "compiler_review_14 (prior compiler_review_13 semantic review retained)",
+    "state_acceptance": "Independent exact fixture/raw review accepts narrow repairs and5/149 logical checks at293a76440."
+  },
+  "required_next": [
+    "Deferred instance defaults before static defaults, including shadowed private templates.",
+    "Object-bearing defaults with authenticated creation/cache transfer and live roots.",
+    "Cold synchronous reference/update continuations into an incomplete table.",
+    "Broader retained selectors, traits/hooks/readonly and property consumers.",
+    "Paused returns_verify stays untouched; no unaccepted dependencies."
+  ]
+}
