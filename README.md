@@ -545,8 +545,12 @@ map prepared values with declaration strictness, named-hole filling and exact
 string-mutated traces. [Suspended reception240](coverage/semantics/internal-default-reception-review.json)
 retains real warning and Stringable callbacks, raw integer trace slots and each
 reentrant constructor owner. Current trait/display fallback preserves a filename
-argument after its global root retires. Rebound anonymous keyword defaults and broader
-ordinary/constrained conversion remain open.
+argument after its global root retires.
+[Anonymous keyword defaults](coverage/semantics/anonymous-default-new-review.json)
+resolve self/parent from the live receiving Closure lexical scope, including
+rebinding, arrows and temporary calls. Private constructors and saved recursive
+defaults retain that scope independently of called class and receiver. Ordinary
+Throwable effects, dynamic object `::class` and broader constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

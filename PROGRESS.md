@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Anonymous Closure/arrow default NEW245 resolves self/parent using the genuine
+receiving lexical scope, independently of called class and receiver. Rebinding,
+temporary Closure::call, imported trait makers and missing-scope errors preserve
+argument order and private constructor access. Source11 passes as3+6+2 at89fe;
+owner172/recursive97 pass at2d7fd, including callback retirement, same-template
+saved scopes and public task/source rejection. The original object `::class`
+observer remains Unsupported with zero agreement; reduced instanceof observers
+retain the default behavior. Original descriptor and fixture failures stay in
+the [scope ledger](coverage/semantics/anonymous-default-new-review.json).
+Actual239 child composition1 at1b593 passes after temporary maker/receiver
+variables retire; the child retains its receiver. Latest231/234/230/242 routes
+are preserved without renewed private gates. Ordinary Throwable effects and
+dynamic object `::class` remain required next.
+
 Writable dimension keys242 stage defined mutable CV-array W/RW fetches through
 undefined/null/float/NaN callbacks, nested acquisition, updates and direct
 assignment/compound consumers. Separation precedes conversion; callback-created
@@ -74,7 +88,8 @@ e7ec retains imported trait Stringable ownership and handler-mutated display
 fallback after the filename global retires.
 [The reception ledger](coverage/semantics/internal-default-reception-review.json)
 records these cuts.
-Ordinary constructor effects and rebound anonymous keyword NEW remain required.
+Ordinary constructor effects remain required; anonymous keyword defaults are
+covered by245 above.
 
 Trait method composition228 supports source use, nesting, precedence, aliases,
 visibility/final and abstract requirements in Zend's publication order. Imported
@@ -150,8 +165,8 @@ Actual221 callable source1/owner39 at2a380 authenticates the suspended construct
 through deprecation callbacks and rejects a removed retained owner.
 The [constructor ledger](coverage/semantics/default-constructors-review.json)
 keeps original failures, the fixture line correction and fresh uncached NEW facts
-precise. Ordinary internal constructor effects and rebound anonymous self/parent NEW
-remain required; complete core remains open.
+precise. Anonymous keyword defaults are covered by245; ordinary internal
+constructor effects remain required and complete core remains open.
 
 Deprecated callable keyword/compound admission221 now stages supplied fixed
 parameters, error registration and delayed dispatch. Warnings hold class choice
@@ -313,8 +328,9 @@ authentic deferred/rebound lexical scope. Counts and original failures remain in
 [parameter](coverage/semantics/weak-string-parameters-review.json),
 [variadic/default](coverage/semantics/variadic-default-string-review.json) and
 [constant](coverage/semantics/class-constants-current-review.json) ledgers and the
-family table below. Internal constructor defaults, rebound anonymous keyword NEW,
-attribute/modifier and callable initializer consumers remain required.
+family table below. Internal and anonymous keyword constructor defaults retain
+their235/240/245 cuts; broader attribute/modifier and callable initializer consumers
+remain required.
 
 Nonstatic private/protected `__invoke` supports bare calls, callable admission,
 object capture/clone and bare-object error handlers through the effective runtime
@@ -397,7 +413,7 @@ failures and interrupted evidence.
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: ordinary internal constructor effects,
-  rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
+  dynamic object `::class`, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred instance/object defaults and
   wider Closure creation contexts remain Unsupported.
