@@ -326,6 +326,7 @@ test-semantics: build
 	python3 tests/semantics/trait_method_review_protocol.py
 	python3 tests/semantics/trait_method_default_review_protocol.py
 	python3 tests/semantics/trait_method_ctor_review_protocol.py
+	python3 tests/semantics/trait_method_cold_review_protocol.py
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
 	python3 tests/semantics/eval_class_scope_protocol.py
