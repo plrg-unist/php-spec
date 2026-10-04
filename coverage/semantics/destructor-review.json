@@ -84,19 +84,96 @@
       "resolution": "9365bf313; only the affected warning state was repeated"
     }
   ],
-  "native_only_followups": [
+  "independent_native_followups": [
     {
       "report": "shutdown-review-pbo8gp_w/report.json",
       "correction": "shutdown-review-pbo8gp_w/native-expectation-correction.json",
       "behavior": "An unused return-new temporary is released before compiled locals, unlike the assigned return in source66",
-      "model_agreement_credit": 0
+      "independent_model_credit": 0
     },
     {
       "report": "destructor-native-startup-order-p3a9u5h2/report.json",
       "behavior": "Replacing startup argc preserves its earlier global slot; a fresh dynamic key has a later slot",
-      "model_agreement_credit": 0
+      "independent_model_credit": 0
+    },
+    {
+      "report": "destructor-native-unused-consumers-4utp3wmx/report.json",
+      "behavior": "Ordinary automatic construction releases its unused result before locals; a destructor C callback retains its temporary retval until after locals",
+      "independent_model_credit": 0
     }
   ],
+  "inspected_author_followons": {
+    "actor": "exceptions_dev_14",
+    "review": "Independent source, fixture and raw packet inspection; these are not additional executions by exceptions_review_14",
+    "raw_root": ".tools/destructors-current-14/.tools",
+    "accepted_source_records": [
+      {
+        "revision": "4cebbaf9e9323610715b8cceb69fdda5d51793d8",
+        "report": "shutdown-review-ps8hplsb/report.json",
+        "ids": ["discarded-return-value-chains-local-cleanup-exception", "actual-bound-private-method-frame-release", "actual-trait-collision-bailout-marking"],
+        "partial_report": true
+      },
+      {
+        "revision": "160e86544b72dfd4ccbf258841d299ada04e654c",
+        "report": "shutdown-review-evwiva35/report.json",
+        "ids": ["unused-return-temporary-keeps-live-private-callee"],
+        "partial_report": true
+      },
+      {
+        "revision": "bc1c713043095587d82c1d81114c231877c19de5",
+        "report": "shutdown-review-bek8y76e/report.json",
+        "ids": ["automatic-constructor-return-is-unused", "destructor-return-is-unused"]
+      },
+      {
+        "revision": "8a94c0e8420b563712bf3190bde3a89dde1a9328",
+        "report": "shutdown-review-41gd_ud8/report.json",
+        "ids": ["preexisting-argc-global-order"],
+        "request_scope": "Explicit FILE/ARGV match the immutable native original. Unobserved clock/ENV facts are arbitrary; no request-provider or whole-profile agreement is claimed."
+      },
+      {
+        "revision": "a43a1954bb36e22ccd41b2f887fc33f7473edd40",
+        "report": "shutdown-review-zof9n5ag/report.json",
+        "ids": ["assigned-return-value-chains-local-cleanup-exception", "fresh-dynamic-global-order"]
+      },
+      {
+        "revision": "3fade47d9825c107480cab1ac838624e6a1b3aab",
+        "report": "shutdown-review-ngl5bujk/report.json",
+        "ids": ["actual-dynamic-constructor-return-is-unused"]
+      },
+      {
+        "revision": "7a995ea6a9473f71d3e8fc9645cd36c3d05608be",
+        "report": "shutdown-review-5_v1ipv_/report.json",
+        "ids": ["dead-startup-cv-does-not-require-request"]
+      }
+    ],
+    "additional_reached_states": {
+      "revision": "4e837cabfc7553b9a692fcab0edcf64ef4a0ddc5",
+      "report": "shutdown-state-review-1vjob1vv/report.json",
+      "states": 2,
+      "assertions_including_setup": 106,
+      "covered": "Live private callee and exact owners before result release; authentic ordinary constructor destination and forged-marker negatives; budget replay"
+    },
+    "dependency_control": {
+      "revision": "8e7567064d161384aec168ea5cefef534109c7d3",
+      "report": "shutdown-review-i48i992k/report.json",
+      "id": "preexisting-argc-global-order",
+      "reason": "request environment variable",
+      "model_cli_exit": 1,
+      "stdout_stderr": "empty",
+      "agreement_credit": 0
+    },
+    "final_algorithm_init": {
+      "revision": "7a995ea6a9473f71d3e8fc9645cd36c3d05608be",
+      "report": "destructor-al-vt7j7nia/report.json",
+      "modules": 253,
+      "exit": 0,
+      "stdout": "true",
+      "stderr": "empty"
+    },
+    "preserved_failures": "shutdown-review-9e_7__dd retains the original unused-result ordering discrepancy. Mixed ps8hplsb/evwiva35 reports remain failed overall; only listed successful records are accepted. shutdown-review-g8hpxohf retains the overwritten request boundary, repaired by 8e7567064.",
+    "actual_parent_review": "476c2186a preserves accepted a4fc with module-list-only conflict.260/264/262 and trait-warning seed changes were source-reviewed; only the listed genuinely changed contexts add execution evidence.",
+    "accepted": true
+  },
   "recovery": "Raw records preserve exact commands, exits, streams and source files. For source reuse, pass each distinct native.reused_from from shutdown-review-55acvq56/report.json to destructor_review.py with --native-report. State reports identify the exact --case selections and numeric fixture commands. Binary identities are in the source report; raw generated evidence remains outside Git.",
-  "limits": "These cuts do not renew prior222/231/247 evidence. Actual-parent introduced paths and the two native-only followups require separate acceptance. Ordinary eager release before request stage, GC, WeakReference/WeakMap, queue freeing and output lifecycle remain required; paused returns verification is not resumed."
+  "limits": "The independent64/2-controls/12-state548 cuts and inspected author followons retain their separate actors and revisions; counts overlap and must not be summed as unique sources. These cuts do not renew prior222/231/247 evidence. Ordinary eager release before request stage, GC, WeakReference/WeakMap, queue freeing and output lifecycle remain required; paused returns verification is not resumed."
 }
