@@ -147,7 +147,8 @@ def $autoload_registration_valid(S, pconfigcall) = true
   -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
 def $autoload_registration_valid(S, pconfigcall) = true
   -- if $autoload_callback_kind(pconfigcall.KIND)
-  -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = (n)
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SELECTION = (n)
   -- if $(n < |S.SELECTEDCALLS|)
   -- if S.SELECTEDCALLS[n] = pselectedcall
   -- if pselectedcall.NONCE = n /\ pselectedcall.SITE = pconfigcall.SITE
@@ -155,7 +156,8 @@ def $autoload_registration_valid(S, pconfigcall) = true
   -- if $selected_entry_source_valid(S, pselectedcall)
 def $autoload_registration_valid(S, pconfigcall) = true
   -- if $autoload_callback_kind(pconfigcall.KIND)
-  -- if pconfigcall.OWNER = (n) /\ pconfigcall.SELECTION = eps
+  -- if pconfigcall.OWNER = (n)
+  -- if pconfigcall.SELECTION = eps
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pconfigcall.KIND
   -- if ($exit_fixed(S, pconfigcall.SITE) = eps /\ $exit_dynamic_site(S, pconfigcall.SITE)) \/ $exit_method_site(S, pconfigcall.SITE)
