@@ -25,7 +25,7 @@ CASES = {
     'inherited-named-default': b'<?php class A{function __toString(){echo __CLASS__,"/",static::class,"/",func_num_args(),"|";return "x";}}class B extends A{}class C{public static function take(string $s,int $n=5){echo __CLASS__,"/",static::class,"/",func_num_args(),"|",$s,"|",$n;}}class D extends C{}D::take(s:new B);',
     'same-site-reentry': b'<?php class S{public static int $n=0;function __toString(){echo "S",func_num_args(),"|";if(self::$n===0){self::$n=1;take($this);}return "s";}}function take(string $s){echo "O",func_num_args(),"|",$s,"|";}take(new S);',
     'new-property-source-stop': b'<?php class C{public static object $o;}class S{function __toString(){echo "T",func_num_args(),"|";global $v;C::$o=&$v;return "s";}}function take(string &$s){echo "F",func_num_args(),"|",$s;} $v=new S;take($v);echo "|",$v;',
-    'constant-closure-parameter': b'<?php class A{const F=static function(string $s){echo __CLASS__,"/",static::class,"/",func_num_args(),"|",$s,"|",func_get_arg(0);};}class B extends A{}class S{function __toString(){echo "T",func_num_args(),"|";return "v\\0raw";}}$f=B::F;$f(new S);',
+    'constant-closure-parameter': b'<?php class A{const F=static function(string $s){echo __CLASS__,"/",static::class,"/",func_num_args(),"|",$s,"|",func_get_arg(0);};}class B extends A{}class S{function __toString(){echo "T",func_num_args(),"|";return "v\\0raw";}}$f=B::F;$f(new S);unset($f);',
     'nonpublic-callable-priority': b'<?php class H{protected function __invoke(){echo "I",func_num_args(),"|";}public function __toString():string{echo "T",func_num_args(),"|";return "v";}}function pick(callable|string $f){$f();}function text(string $s){echo "S",func_num_args(),"|",$s;}$h=new H;pick($h);text($h);',
 }
 EXPECTED = {

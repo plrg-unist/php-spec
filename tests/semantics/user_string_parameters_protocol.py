@@ -108,6 +108,7 @@ def checks(initial, name):
             '~((HCELL pparameterstring.CELL) <- S_done.ALLOCATIONS)',
             '~((HOBJECT n_object) <- S_done.ALLOCATIONS)',
             '(HOBJECT n_closure) <- S_done.ALLOCATIONS',
+            '$heap_count(HOBJECT n_closure,$heap_graph(S_done).ROOTS) = 1 /\\ $heap_owners($heap_graph(S_done),HOBJECT n_closure) = 1',
             '$default_cache_at(S_done.CLASSCONSTANTCACHE,pconstantclosure.DECL) = (pdefaultcache)',
             '$constant_callable_record_valid(S_done,pconstantclosure)']
     if name == 'same-site-reentry':
