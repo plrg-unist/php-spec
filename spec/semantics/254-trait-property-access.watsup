@@ -12,6 +12,7 @@ dec $trait_property_below(porigin, porigin) : bool
 dec $trait_property_prepare(pstate, porigin, ptbytes, int) : pstate
 dec $trait_property_message(pstate, ptraitproperty) : ptbytes
 dec $trait_property_write_valid(pstate, ptraitpropertywrite) : bool
+dec $trait_property_write_node(expression, pbin?) : bool
 dec $trait_property_store_valid(pstate, porigin, pbin?, poperand, int) : bool
 dec $trait_property_operand_valid(pstate, poperand) : bool
 dec $trait_property_write_start(pstate, pbin?) : pstate
@@ -279,6 +280,9 @@ def $trait_property_write_start(S, pbin?) = S[.TODO = [$at_task($origin_child(S.
   -- if z = $runtime_line(S, [PCFIELD 0], expression_target)
   -- if ptraitpropertywrite = {SITE porigin_site, OP pbin?, CLASS poperand_class, NAME poperand_name, RHS expression_rhs, LINE z}
   -- if $trait_property_write_valid(S, ptraitpropertywrite)
+def $trait_property_write_node(NExprAssign expression_target expression_rhs metadata, eps) = true
+def $trait_property_write_node(expression, (pbin)) = ($key_write_op(expression) = (pbin))
+def $trait_property_write_node(expression, pbin?) = false -- otherwise
 def $trait_property_write_valid(S, ptraitpropertywrite) = true
   -- if $origin_node(S.SOURCES, ptraitpropertywrite.SITE) = (expression_target)
   -- if expression_target = NExprStaticPropertyFetch phpType19 phpType31 metadata
@@ -289,7 +293,7 @@ def $trait_property_write_valid(S, ptraitpropertywrite) = true
   -- if $origin_child((porigin_parent), [PCFIELD 1]) = (porigin_rhs)
   -- if $origin_node(S.SOURCES, porigin_rhs) = (ptraitpropertywrite.RHS)
   -- if $reference_cv(ptraitpropertywrite.RHS) = eps
-  -- if expression_parent = NExprAssign expression_target ptraitpropertywrite.RHS metadata_assign /\ ptraitpropertywrite.OP = eps \/ $key_write_op(expression_parent) = ptraitpropertywrite.OP /\ ptraitpropertywrite.OP =/= eps
+  -- if $trait_property_write_node(expression_parent, ptraitpropertywrite.OP)
   -- if $scoped_selector_class(S, ptraitpropertywrite.CLASS) = (porigin_root)
   -- if $class_at(S.CLASSES, porigin_root) = (pclassdesc)
   -- if pclassdesc.KIND = "trait"
@@ -308,7 +312,7 @@ def $trait_property_store_valid(S, porigin_site, pbin?, poperand, z) = true
   -- if $origin_node(S.SOURCES, porigin_parent) = (expression_parent)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression_target)
   -- if expression_target = NExprStaticPropertyFetch phpType19 phpType31 metadata_property
-  -- if expression_parent = NExprAssign expression_target expression_rhs metadata /\ pbin? = eps \/ $key_write_op(expression_parent) = pbin? /\ pbin? =/= eps
+  -- if $trait_property_write_node(expression_parent, pbin?)
   -- if z = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
   -- if $class_static_source_task(S[.ORIGIN = (porigin_site)], expression_target)
   -- if $trait_property_operand_valid(S, poperand)
