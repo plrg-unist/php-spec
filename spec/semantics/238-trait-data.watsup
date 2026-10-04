@@ -58,6 +58,7 @@ dec $trait_instance_layout_ready(pstate, ppropertydesc*) : bool
 dec $trait_instance_class_ready(pstate, porigin) : bool
 dec $trait_instance_named_ready(pstate, ptbytes) : bool
 dec $trait_instance_selected_ready(pstate, poperand, ptbytes) : bool
+dec $trait_static_property_read_pending(ptask*) : bool
 dec $trait_data_fatal(pstate, pclassdesc, ptbytes) : pstate
 
 def $trait_data_import_type(pclassdesc, ptbranch*) = ptbranch* -- if pclassdesc.KIND = "trait"
@@ -418,6 +419,24 @@ def $class_static_prepare_base(S, poperand, ptbytes, z) = $trait_static_prepare_
   -- if $trait_instance_selected_ready(S, poperand, ptbytes)
 def $class_static_prepare_base(S, poperand, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "deferred trait instance-default templates"]
   -- if ~$trait_instance_selected_ready(S, poperand, ptbytes)
+
+;; Raw-trait access requires a distinct deprecation continuation. Lookup,
+;; access, unset and a typed uninitialized read retain their earlier errors.
+def $trait_static_property_read_pending((ORIGIN_RETURN porigin?) :: ptask*) = $trait_static_property_read_pending(ptask*)
+def $trait_static_property_read_pending((DIM_FETCH z) :: ptask*) = true
+def $trait_static_property_read_pending(ptask*) = false -- otherwise
+def $trait_static_property_deprecation_needed(S, porigin, ptbytes) = true
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "trait"
+  -- if ~$class_constant_static_unset_tail(S.TODO)
+  -- if $class_static_select(S, porigin, ptbytes) = (ppropertydesc)
+  -- if $class_static_accessible(S, ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
+  -- if pclassstatic.STATE =/= PROP_INITIAL \/ ~$trait_static_property_read_pending(S.TODO)
+def $trait_static_property_deprecation_needed(S, porigin, ptbytes) = false -- otherwise
+def $class_static_prepare_base_ready(S, poperand_selector, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "direct trait static-property deprecation continuation"]
+  -- if $scoped_selector_class(S, poperand_selector) = (porigin_requested)
+  -- if $trait_static_property_deprecation_needed(S, porigin_requested, ptbytes)
 
 def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access trait constant ") ++ pclassdesc.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii(" directly"), z)
   -- if pclassdesc.KIND = "trait"

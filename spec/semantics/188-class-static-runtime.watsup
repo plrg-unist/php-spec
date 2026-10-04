@@ -1,6 +1,7 @@
 ;; zend_compile_static_prop evaluates the class reference before a computed
 ;; property name. A literal $name is a declaration name, not a CV read.
 dec $class_static_computed_name(phpType31) : bool
+dec $trait_static_property_deprecation_needed(pstate, porigin, ptbytes) : bool
 def $class_static_computed_name(NVarLikeIdentifier phpType33 metadata) = false
 def $class_static_computed_name(phpType31) = true -- otherwise
 def $ppdispatch(P, pcpath, NExprStaticPropertyFetch phpType19 phpType31 metadata, ppmode) = $ppconstant_error(P, $ptascii("Cannot use \"parent\" when current class scope has no parent"), P.LOCATION.LINE)
@@ -279,6 +280,7 @@ def $unset_array(S, BASE_CLASS_STATIC porigin_requested ptbytes) = $throw_scalar
 
 def $class_static_prepare_base_ready(S, poperand_selector, ptbytes, z) = S[.BASE = BASE_CLASS_STATIC porigin_requested ptbytes][.RESULT = KNOWN PNULL]
   -- if $scoped_selector_class(S, poperand_selector) = (porigin_requested)
+  -- if ~$trait_static_property_deprecation_needed(S, porigin_requested, ptbytes)
 def $class_static_prepare_base_ready(S, KNOWN (PSTRING ptbytes_class), ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ ptbytes_class ++ $ptascii("\" not found"), z)
   -- if $scoped_selector_class(S, KNOWN (PSTRING ptbytes_class)) = eps
 def $class_static_prepare_base_ready(S, poperand_selector, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "class static selector"] -- otherwise
