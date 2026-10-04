@@ -8,7 +8,9 @@ def $key_is_array(PARRAY n) = true
 def $key_is_array(pvalue) = false -- otherwise
 dec $key_plain_value(pvalue) : bool
 def $key_plain_value(PFLOAT n_bits) = true -- if $float_long(n_bits, true) = (i, eps)
-def $key_plain_value(PFLOAT n_bits) = false -- otherwise
+def $key_plain_value(PFLOAT n_bits) = false
+  -- if $float_long(n_bits, true) = (i, castnotice*)
+  -- if castnotice* =/= eps
 def $key_plain_value(pvalue) = true -- otherwise
 dec $key_base_line(pstate) : int
 def $key_base_line(S) = z
