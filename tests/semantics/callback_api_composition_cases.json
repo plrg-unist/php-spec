@@ -1,0 +1,29 @@
+[
+  {
+    "id": "shutdown-imported-trait-keyword-called-private-default",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}trait T{static function reg(){register_shutdown_function([\"self\",\"h\"]);}private static function h(Exception $e=new Exception(self::N)){echo $e->getMessage(),\":\",get_called_class(),\":\",func_num_args(),\";\";}}class C{use T;private const N=\"kept\";}class D extends C{}set_error_handler(\"w\");D::reg();exit(7);",
+    "source_sha256": "4b8040eb74e20a280cbc67e9726dcbd7f3440ef3b895168a39e08ba131f0850e",
+    "stdout": "W:1;kept:D:0;",
+    "stderr": "",
+    "exit": 7,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "shutdown-keyword-from-retired-from-callable-maker",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class C{static function maker(){return Closure::fromCallable([static::class,\"h\"]);}private static function h($e){echo \"E:\",get_called_class(),\";\";restore_exception_handler();restore_exception_handler();register_shutdown_function([\"self\",\"s\"]);echo \"R;\";}private static function s(){echo \"S:\",get_called_class(),\";\";}}class D extends C{}set_error_handler(\"w\");set_exception_handler(D::maker());throw new Exception(\"main\");",
+    "source_sha256": "1c8b2c5b53de2b7584cc542e073823079ea7cdd8abf637668f001e9acf5f2b15",
+    "stdout": "E:D;W:1;R;S:D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-cached-private-callable-default",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class C{private const F=\"self::k\";static function reg(){register_shutdown_function([\"self\",\"h\"]);}private static function h(callable $f=self::F){echo $f,\":\",get_called_class(),\":\",func_num_args(),\";\";}private static function k(){}}class D extends C{}set_error_handler(\"w\");D::reg();",
+    "source_sha256": "5dd8d987df5012dea58ea0f1cf0949055d113b60f232602e78443926ac4e8922",
+    "stdout": "W:1;W:1;self::k:D:0;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  }
+]

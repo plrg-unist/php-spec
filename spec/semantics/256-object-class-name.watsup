@@ -1,0 +1,87 @@
+;; Zend resolves parser literals without loading a class. Other children compile
+;; normally; a constant operand produced only by compilation is rejected.
+dec $ppobject_classname(ppstate, pcpath, expression) : ppstate
+dec $ppobject_classname_child(ppstate) : ppstate
+dec $object_classname_type(pvalue) : ptbytes
+def $object_classname_type(PBOOL true) = $ptascii("true")
+def $object_classname_type(PBOOL false) = $ptascii("false")
+def $object_classname_type(pvalue) = $type_bytes(pvalue) -- otherwise
+
+def $ppdispatch(P, pcpath, NExprClassConstFetch expression phpType20 metadata, PPR) = $ppobject_classname(P, pcpath, expression)
+  -- if ~P.FOLD.CONSTANT
+  -- if $pfclassname_member(phpType20)
+  -- if $pfclassname_keyword(expression) = eps
+def $ppobject_classname(P, pcpath, expression) = $ppconstant_error(P, ptbytes, P.LOCATION.LINE)
+  -- if $parser_literal(expression) =/= eps
+  -- if $pfclassname_issue(P.FOLD, expression) = (ptbytes)
+def $ppobject_classname(P, pcpath, expression) = P[.FOLD = P.FOLD[.VALUE = $pfclassname_value(P.FOLD, expression)]]
+  -- if $parser_literal(expression) =/= eps
+  -- if $pfclassname_issue(P.FOLD, expression) = eps
+def $ppobject_classname(P, pcpath, expression) = $ppobject_classname_child($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
+  -- if $parser_literal(expression) = eps
+def $ppobject_classname_child(P) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppobject_classname_child(P) = $ppconstant_error(P, $ptascii("Cannot use \"::class\" on ") ++ $object_classname_type(pvalue), P.LOCATION.LINE)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = (pvalue)
+def $ppobject_classname_child(P) = P
+  -- if P.COMPLETION = PPCNORMAL
+  -- if P.FOLD.VALUE = eps
+
+;; The child is evaluated once. Its result owns a temporary until the class-name
+;; string replaces it; CV/reference operands are dereferenced at this boundary.
+rule PhpStep/object-classname-child: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), OBJECT_CLASS_NAME z] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EVAL (NExprClassConstFetch expression phpType20 metadata)) :: ptask_tail*
+  -- if $pfclassname_member(phpType20)
+  -- if $pfclassname_keyword(expression) = eps
+  -- if $parser_literal(expression) = eps
+  -- if $method_source_task(S, NExprClassConstFetch expression phpType20 metadata)
+  -- if z = $runtime_line(S, eps, NExprClassConstFetch expression phpType20 metadata)
+rule PhpStep/object-classname-object: S ~> S_read[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING $object_name(S_read, n))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (OBJECT_CLASS_NAME z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $getclass_live_object(S_read, n)
+rule PhpStep/object-classname-type-error: S ~> $throw_scalar(S_read, "TypeError", $ptascii("Cannot use \"::class\" on ") ++ $object_classname_type(pvalue), z)
+  -- if S.TODO = (OBJECT_CLASS_NAME z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$getclass_is_object(pvalue)
+rule PhpStep/object-classname-abrupt: S ~> S_read
+  -- if S.TODO = (OBJECT_CLASS_NAME z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION =/= NORMAL
+
+dec $object_classname_task_valid(pstate, int) : bool
+def $object_classname_task_valid(S, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprClassConstFetch expression phpType20 metadata)
+  -- if $pfclassname_member(phpType20)
+  -- if $pfclassname_keyword(expression) = eps
+  -- if $parser_literal(expression) = eps
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_child, false))
+def $object_classname_task_valid(S, z) = false -- otherwise
+def $call_task_valid(S, OBJECT_CLASS_NAME z) = $object_classname_task_valid(S, z)
+def $call_task_valid(S, EVAL (NExprClassConstFetch expression phpType20 metadata)) = $method_source_task(S, NExprClassConstFetch expression phpType20 metadata)
+  -- if $pfclassname_member(phpType20)
+  -- if $pfclassname_keyword(expression) = eps
+
+;; An undefined CV remains captured null after its handler mutates the CV.
+def $error_simple_read(OBJECT_CLASS_NAME z) = true
+def $error_read_line(OBJECT_CLASS_NAME z, z_origin) = z
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = OBJECT_CLASS_NAME z
+  -- if $object_classname_task_valid(S, z)
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], perrorread.NAME)
+  -- if perrorread.LINE = z
+;; FETCH_CLASS_NAME checks that captured null even when the read handler throws,
+;; replacing the pending exception and retaining it through the previous chain.
+def $error_read_discard(S, ERROR_READ_RESULT perrorread) = $error_assign_rejected(S, $throw_scalar(S, "TypeError", $ptascii("Cannot use \"::class\" on null"), z))
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if perrorread.ORIGINAL = OBJECT_CLASS_NAME z
+  -- if $error_read_valid(S, perrorread)
