@@ -22,8 +22,9 @@ actual3b622 composition source at6ae passes private-handler/called-class and typ
 caller alias/introspection behavior. Accepted231/234 routes are preserved. The
 [contract](docs/semantics/SOURCE-DIMENSION-WRITES.md) and
 [ledger](coverage/semantics/dimension-write-continuations-review.json) retain
-original failures, revisions and the current adapter reuse. Append, unset, coalesce assignment,
-broader GLOBALS RW and earlier container/string/object producers remain required.
+original failures, revisions and the current adapter reuse. Append, unset,
+coalesce assignment, broader GLOBALS RW and earlier container/string/object
+producers remain required.
 
 Iterator declaration notices230 follow actual source/internal prototype order,
 including source erasure, direct restoration, duplicate notices and the built-in
