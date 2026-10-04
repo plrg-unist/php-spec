@@ -497,8 +497,11 @@ classes, defaults and shared method statics remain distinct. Existing Closure
 inputs preserve identity; factory errors wrap lookup warnings after full unwinding.
 Created source Closures retain authentic method/import scope after captures retire;
 static children add no receiver owner and nonstatic children own their receiver.
-Default/variadic, other internal and user-return keyword warning consumers remain
-required; magic/autoload and transformed binding remain open.
+[Default and variadic callable reception](docs/semantics/CALLABLE-RECEIVES.md)
+preserves named-hole order, live reference operands and borrowed method receipts.
+Failed lookup stages slow scalar warnings and forced Stringable conversion.
+Other internal and user-return keyword warning consumers remain required;
+magic/autoload and transformed binding remain open.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.

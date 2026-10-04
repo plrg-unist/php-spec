@@ -290,6 +290,7 @@ def $pfclass_constant_value(F, pcpath, pvalue, pvalueclass?, z) = $pfremember(F,
 def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $pfclass_constant_value(F, pcpath, pvalue, $pfclass_at(F.CLASSFACTS, pcpath_initializer), z)
   -- if $trait_fold_owner(F) = eps
   -- if F.MEMORY.COMPLETION = NORMAL
+  -- if ~F.DEFAULT
   -- if $pfclass_constant_name(F, phpType19, pvalue_class?) = (ptbytes_class)
   -- if $pfclass_constant_member(phpType20, pvalue_member?) = (ptbytes)
   -- if $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, $pfclass_constant_budget(F)) = (pclassconstantdesc)
@@ -299,6 +300,7 @@ def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_mem
 def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $pfclass_constant_value(F[.MEMORY = S_imported], pcpath, pvalue_imported, (pvalueclass), z)
   -- if $trait_fold_owner(F) = eps
   -- if F.MEMORY.COMPLETION = NORMAL
+  -- if ~F.DEFAULT
   -- if F.EXTERNAL = (S_external)
   -- if $pfclass_constant_name(F, phpType19, pvalue_class?) = (ptbytes_class)
   -- if $pfclass_constant_member(phpType20, pvalue_member?) = (ptbytes)

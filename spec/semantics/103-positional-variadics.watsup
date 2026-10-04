@@ -64,6 +64,7 @@ def $variadic_item(REFERENCE n, pvalue) = ALIAS n
 
 dec $variadic_receive(pstate, pfunction, nat) : pstate
 dec $variadic_string_candidate(pstate) : bool
+dec $api_variadic_candidate(pstate) : bool
 dec $variadic_insert(pstate, pfunction, nat, poperand, pvalue) : pstate
 def $variadic_receive(S, pfunction, n_arg) = S_value
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
@@ -97,6 +98,7 @@ rule PhpStep/variadic-receive: S ~> $variadic_receive(S, pfunction, n_arg)
   -- if $(n_arg < pcallcontext.ARGC)
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if ~$variadic_string_candidate(S)
+  -- if ~$api_variadic_candidate(S)
 rule PhpStep/variadic-complete: S ~> S[.TODO = $named_after_positional(S, pfunction)]
   -- if S.TODO = (VARIADIC_RECEIVE porigin n_arg) :: ptask_tail*
   -- if ptask_tail* = eps
