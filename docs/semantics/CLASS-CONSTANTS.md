@@ -82,13 +82,17 @@ records, invalid selection prefixes/scopes and missing roots (159 predicates).
 A later literal-class fixture adds 44 predicates. Twenty-two new full native
 comparisons bring the maintained catalogue to 72 (32 normal, 22 PHP errors, 18 static
 rejections). Source and finite cutoffs remain separate; promotion adds no rerun.
+A later current-source comparison registers a cached constant Closure as a handler.
+Its GLOBALS write leaves the folded false-left expression's original null intact,
+and repeated identity/direct invocation retains the static counter (`1null:same:2`).
+This brings the maintained catalogue to 73; the earlier 72 sources stay unchanged.
 
 Accessible references into an incomplete class table are explicitly Unsupported;
 the separate rejected control is not a native agreement. Unretained
 computed/scoped table-update selectors and named `::class` in constant expressions remain
 Unsupported. Constructor contexts outside class constants, builtin FCC targets
 and object transfers without an authenticated source/cache relation also remain
-Unsupported. Current handler/truth composition is pending. Constant modifier
+Unsupported. Constant modifier
 admission, attributes, traits/enums/internal constants and broader default/property
 consumers stay open. These checks reused the recorded runtime; they add no fresh
 copied rebuild, reporting-mask, paused return or full-core closure.

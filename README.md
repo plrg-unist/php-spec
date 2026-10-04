@@ -131,7 +131,9 @@ diagnostics. Included units fold only values available at compilation entry;
 later fills cannot rewrite earlier images. Current warning-read and static-getter
 interactions preserve cache ownership and aliases. Static Closure and fixed
 function/static-method callable initializers retain owner/called scope, cached
-identity and clone state. The catalogue of 72 sources and the new 159 + 44 state
+identity and clone state. The current handler/truth interaction retains the
+original null and cached static counter across handler mutation. The catalogue of
+73 sources and the new 159 + 44 state
 checks keep distinct tested revisions. Named constexpr `::class`, wider callable
 consumers and references into incomplete class tables remain Unsupported; the
 family stays partial.

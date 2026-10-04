@@ -1345,6 +1345,24 @@
         "error_reporting": "32767"
       },
       "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_cached_handler_folded_truth",
+      "source": "<?php\nclass A {\n    const Closure H = static function($level, $message, $file, $line) {\n        static $count = 0;\n        echo ++$count;\n        $GLOBALS['missing'] = 1;\n        return true;\n    };\n}\n$h = A::H;\nset_error_handler($h);\necho (false || $missing) ? \"bad\" : \"null\";\necho \":\", (A::H === $h) ? \"same:\" : \"bad:\";\n$h(1024, \"again\", \"file\", 7);\n",
+      "source_sha256": "c0eac0d9a90db1e21f8f4565d56b22acbc6a5991efb4ba596b8625fa16cb79e8",
+      "stdout_base64": "MW51bGw6c2FtZToy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constant-callables-current-13/.tools/constant-callables/handler-truth-paired1/raw/native/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
     }
   ]
 }
