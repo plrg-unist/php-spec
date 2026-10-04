@@ -586,5 +586,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "assigned-return-value-chains-local-cleanup-exception",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";throw new Exception($this->id);}}class R{function __destruct(){echo \"R;\";throw new Exception(\"returned\");}}function get(){if(false){$b=null;}$a=new C(\"a\");$b=new C(\"b\");return new R;}class P{function __destruct(){echo \"P;\";try{$r=get();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\":\",$e->getPrevious()->getMessage(),\":\",$e->getPrevious()->getPrevious()->getMessage(),\";\";}echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "8e75c2e325add3758d7bd2157afb21d494ea9ea86b73af2340832d0ac1f2a848",
+    "stdout": "P;C:b;C:a;R;caught:returned:a:b;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
