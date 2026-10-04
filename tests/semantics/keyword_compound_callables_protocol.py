@@ -542,5 +542,58 @@ CASES['foreign-dispatch-getter-error-chain-and-restoration'] = {
     ],
 }
 
+CASES['constant-owner-keeps-real-user-api-emitter'] = {
+    'source': SOURCES['constant-owner-keeps-real-user-api-scope'],
+    'stage': ('S.TODO = (ARGINFO_INVOKE pargcall) :: ptask_tail* '
+              '-- if pargcall.KIND = INTRINSIC_GET_CALLED_CLASS '
+              '-- if S.CURRENT = (pcallcontext) '
+              '-- if pcallcontext.TARGET = API_METHOD_TARGET papiquery porigin_handle ptbytes_method true'),
+    'checks': [
+        'ptbytes_method = $ptascii("handle")',
+        'papiquery.INPUT = PSTRING $ptascii("self")',
+        'papiquery.SCOPE = (porigin_b)',
+        'papiquery.CLASS.REQUESTED = porigin_b /\\ papiquery.CLASS.CALLED = porigin_b',
+        'papiquery.THIS = eps /\\ papiquery.CLASS.RECEIVER = eps',
+        '$class_at(S.CLASSES, porigin_b) = (pclassdesc_b)',
+        'pclassdesc_b.NAME = $ptascii("B")',
+        'pcallcontext.LEXICAL_CLASS = (porigin_b) /\\ pcallcontext.CALLED_CLASS = (porigin_b)',
+        'pcallcontext.RECEIVER = eps',
+        '$target_nodes(pcallcontext.TARGET) = eps',
+        '$class_method_origin(S.CLASSES, porigin_handle) = (pmethoddesc)',
+        'pmethoddesc.VISIBILITY = PROPERTY_PRIVATE /\\ pmethoddesc.STATIC',
+        '$api_carrier_valid(S, papiquery, porigin_handle, ptbytes_method, true)',
+        'S.FRAMES = pframe_emitter :: pframe_tail*',
+        'pframe_emitter.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_emitter*',
+        'S_emitter = $constant_frame_scope(S, pframe_emitter, pframe_tail*)',
+        'S_emitter.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*',
+        '$class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)',
+        'pclassconstantdesc.OWNER = porigin_a',
+        '$class_at(S.CLASSES, porigin_a) = (pclassdesc_a)',
+        'pclassdesc_a.NAME = $ptascii("A")',
+        '$method_current_scope(S_emitter) = (porigin_a)',
+        '$api_frame_scope(S_emitter) = (porigin_b)',
+        '$class_constant_location(S) = (pconstantlocation)',
+        'pconstantlocation.CLASS = porigin_a /\\ pconstantlocation.ROOT = pclassconstantdesc.ORIGIN',
+        '$constant_location_valid(S, pconstantlocation, |S.SOURCES|)',
+        '$handler_emitter_valid(S_emitter, pcallcontext.TARGET)',
+        '$error_entered_call_valid(S_emitter, perrorcall)',
+        '$error_context_valid(S, pcallcontext)',
+        '$class_constant_state_valid(S)',
+        *VALID,
+        '~$handler_emitter_valid(S_emitter, API_METHOD_TARGET papiquery[.SCOPE = (porigin_a)] porigin_handle ptbytes_method true)',
+        '~$error_context_valid(S, pcallcontext[.LEXICAL_CLASS = (porigin_a)])',
+        'S_budget = $drive_steps(S, 0)',
+        'S_budget.COMPLETION = BUDGET',
+        'S_done = $drive(S_budget[.COMPLETION = NORMAL], 3000)',
+        'S_done.COMPLETION = NORMAL',
+        'S_done.EVENTS = [OUTPUT $ptascii("D|"), OUTPUT $ptascii("B"), OUTPUT $ptascii(":"), OUTPUT $ptascii("B"), OUTPUT $ptascii("|"), OUTPUT $ptascii("2049"), OUTPUT $ptascii("|")]',
+        'S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+        'S_done.CONSTCONTEXT = eps /\\ S_done.CLASSCONSTANTINIT = eps',
+        'S_done.ERRORHANDLER.CALLBACK = eps /\\ S_done.ERRORHANDLERS = eps',
+        '$class_constant_state_valid(S_done)',
+        *AFTER,
+    ],
+}
+
 if __name__ == '__main__':
     protocol.run(CASES, extra_inputs=[Path(__file__), CATALOGUE])

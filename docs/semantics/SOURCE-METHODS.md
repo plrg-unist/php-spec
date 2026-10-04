@@ -358,7 +358,8 @@ methods for supplied fixed callable parameters, error-handler registration and
 delayed error dispatch. Exact scalar/array or nominal union branches keep their
 earlier priority and emit no callable warning. The selecting scope is the actual
 USER frame's lexical class; parameter checking uses the receiving frame, including
-an empty scope in a free function.
+an empty scope in a free function. A compound constant's declaration location
+does not replace that real USER permission.
 
 Keyword deprecation runs after choosing the class and before method lookup. An
 array's qualified method chooses its inner class after that callback, then emits

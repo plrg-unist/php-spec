@@ -196,5 +196,23 @@
     "source": "<?php\nfunction warn($n,$s,$f,$l) { echo 'D|'; return true; }\nclass Child {\n public function run($n,$s,$f,$l) {\n  set_error_handler('warn'); $method='self::run'; $raw=['Child',&$method];\n  set_error_handler($raw); $method='self::only';\n  try { echo $inner; } catch (Error $e) {\n   $previous=$e->getPrevious();\n   echo get_class($e),':',$e->getMessage(),'|',get_class($previous),':',$previous->getMessage(),'|';\n   echo $previous->getPrevious()===null?'chain-end|':'wrong-chain|';\n  }\n  $actual=get_error_handler(); echo $actual[1],'|';\n  $method='self::run'; echo $actual[1],'|';\n  restore_error_handler(); restore_error_handler(); return true;\n }\n}\nclass Foreign {\n private function only($n,$s,$f,$l) { echo 'wrong'; return true; }\n public function test() {\n  error_reporting(0); set_error_handler('warn');\n  set_error_handler(['Child','self::run']); echo $outer;\n  restore_error_handler(); restore_error_handler();\n }\n}\n(new Foreign)->test();\necho get_error_handler()===null?'done':'wrong-handler';\n",
     "source_sha256": "3553304e1dfb127e3c1e13729c6c255668fd3d38b8597f612bba724f61657c55",
     "expected_model": "normal"
+  },
+  {
+    "id": "constant-owner-keeps-real-user-api-scope",
+    "source": "<?php\nfunction warn($n,$s,$f,$l) { echo 'D|'; return true; }\nclass A { const VALUE = E_STRICT+1; }\nclass B {\n private static function handle($n,$s,$f,$l) { echo self::class,':',get_called_class(),'|'; return true; }\n public static function run() {\n  error_reporting(0); set_error_handler('warn'); set_error_handler(['self','handle'],E_DEPRECATED);\n  echo A::VALUE,'|'; restore_error_handler(); restore_error_handler();\n }\n}\nB::run();\n",
+    "source_sha256": "34be413bd369577f90c6aca4b462f6753fb4e0749adb6ceb0a05672393288fc3",
+    "expected_model": "normal"
+  },
+  {
+    "id": "cold-static-reference-keeps-callable-scalar-constraint",
+    "source": "<?php\n$free = 'self::xx';\nfunction warn($n, $s, $f, $l) {\n    global $free;\n    echo \"deprecation|\";\n    A::$cb = '12345678';\n    $free = '12345678';\n    return true;\n}\nclass A {\n    const CB = 'self::xx';\n    public static string $cb = self::CB;\n    public static function receive(callable|int &$value) {\n        echo ($value === 12345678 ? 'free-int|' : 'wrong-value|');\n    }\n}\nset_error_handler('warn');\ntry { A::receive(A::$cb); }\ncatch (TypeError $e) { echo (A::$cb === '12345678' ? 'typed-string|' : 'wrong-typed|'); }\n$free = 'self::xx';\nA::receive($free);\necho ($free === 12345678 ? 'caller-int' : 'wrong-caller');\n",
+    "source_sha256": "06fdff5476482d451179ed439823e3dd38d75c0734f7a486e73e6ed10b638c25",
+    "expected_model": "normal"
+  },
+  {
+    "id": "globals-warning-keeps-null-and-keyword-private-selection",
+    "source": "<?php\nerror_reporting(0);\nclass OwnerGlobals226 {\n private function handle($level,$message,$file,$line) {\n  $GLOBALS['left226'] =& $GLOBALS['null226']; $GLOBALS['missing226']=13;\n  echo 'H:',self::class,'/',get_called_class(),':',$message==='Undefined global variable $missing226'?1:0,';';\n  return true;\n }\n public function install() {\n  set_error_handler(['self','handle'],2);\n  $same226=$GLOBALS['left226'] === $GLOBALS['missing226'];\n  echo 'R:',$same226?1:0,':',$GLOBALS['old226'],':',$GLOBALS['left226']===null?1:0,':',$GLOBALS['missing226'],';';\n  restore_error_handler();\n }\n}\nclass ChildGlobals226 extends OwnerGlobals226 {\n public function handle($level,$message,$file,$line) { echo 'BAD;'; return true; }\n}\n$left226=7; $old226=&$left226; $null226=null;\n(new ChildGlobals226)->install();\n",
+    "source_sha256": "b7a0b006f8d81d2fc74dac597b28ecafecb656c1a27ceb87deeb551df4e7d666",
+    "expected_model": "normal"
   }
 ]

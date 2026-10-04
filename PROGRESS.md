@@ -16,7 +16,10 @@ fallback without relaxing ordinary scoped eligibility. Supplied guards exclude
 authentic named default holes. Exact union branches bypass warnings; direct/FCC
 raw keyword/compound calls preserve ordinary PHP lookup errors. The
 [221 ledger](coverage/semantics/keyword-compound-callables-current-review.json)
-records independent pins, affected checks and preserved failures. Default/variadic,
+records independent pins, affected checks and preserved failures. Actual include,
+cold-static and GLOBALS interactions preserve real USER permission, constrained
+references and captured null; initializer locations retain their declaration owner.
+Default/variadic,
 `Closure::fromCallable`, other internal and user-return warning consumers remain
 required; unstaged special callable conversion stays Unsupported.
 
