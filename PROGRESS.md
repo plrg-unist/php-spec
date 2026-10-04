@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Global W/RW warning continuations269 now preserve caller-CV name rereads and
+captured Array names through updates, compound assignment and nested array ingress.
+Returning missing fetches detach callback-created constrained/reentry aliases into
+a fresh null binding; throws preserve callback writes and skip later RHS demand.
+Compound walks follow eager RHS computation while simple RHS CVs stay delayed.
+Author9/224 and independent12/273 share four originals, giving17 unique private
+programs/497 assertions ated6/baba/6e8. One actualc906 source at604958 retains private
+Owner/Child selection, fresh-global detachment and live caller/static17. The
+[contract](docs/semantics/SOURCE-GLOBAL-WRITES.md) and
+[ledger](coverage/semantics/globals-write-review.json) preserve the original
+multiline Unsupported and corrected native predictions. Earlier container warnings
+and wider GLOBALS/memoized consumers remain required; complete core stays open.
+
 Ordinary named keyword NEW267 now resolves self/parent/static in the actual
 caller before class work and arguments. Inherited constructor entry uses its
 immediate owning caller; service-unit main code follows persistent scope entry
@@ -150,8 +163,9 @@ at9ac retains private Owner/Child selection, quiet row17 versus new parent13 and
 live caller/static17. Original fixture/loader failures and native prediction
 corrections remain in the
 [nested coalesce ledger](coverage/semantics/nested-coalesce-review.json).
-Wider memoized containers, GLOBALS RW and earlier container/string/object
-producers remain required; complete core and paused returns remain open.
+Wider memoized containers, wider GLOBALS consumers and earlier
+container/string/object producers remain required; complete core and paused
+returns remain open.
 
 Nested unset and append255 now suspend defined CV-rooted array walks after key
 and computed RHS evaluation. Intermediate unset separates before conversion,
@@ -166,8 +180,8 @@ agreements at7ee/d281/643/75c8. One actual0b private-FCC/called-class source pas
 at223 with abort/TEMP and live typed caller/RHS cells. Original overlap and
 corrected native/source predictions remain in the
 [tail ledger](coverage/semantics/dimension-tail-review.json).
-Wider memoized containers, GLOBALS RW and earlier container/string/object
-producers remain required; complete core remains open.
+Wider memoized containers, wider GLOBALS consumers and earlier
+container/string/object producers remain required; complete core remains open.
 
 Legacy dollar-curly compiler notices258 retain the direct/computed grammar flag
 through checked fresh printing and emit before child compilation with its real
@@ -285,8 +299,8 @@ actual3b622 composition source at6ae passes private-handler/called-class and typ
 caller alias/introspection behavior. Accepted231/234 routes are preserved. The
 [contract](docs/semantics/SOURCE-DIMENSION-WRITES.md) and
 [ledger](coverage/semantics/dimension-write-continuations-review.json) retain
-original failures, revisions and the current adapter reuse. Broader GLOBALS RW
-and earlier container/string/object producers remain required.
+original failures, revisions and the current adapter reuse. Bounded GLOBALS RW
+is covered by269 above; earlier container/string/object producers remain required.
 
 Coalesce-assignment and final unset keys249 now stage defined direct CV-array
 consumers. Quiet reads retain captured values and genuine memo operands; live CV
@@ -733,8 +747,9 @@ failures and interrupted evidence.
   conversions through nested/quiet reads. Writable242 adds bounded CV-array W/RW
   and direct GLOBALS reference fetches;249 adds direct CV-array coalesce-assignment
   and final unset;255 adds nested unset and append, and262 adds nested coalesce
-  assignment on defined CV-rooted arrays.
-  Wider memoized containers, broader GLOBALS RW, wider key/object/container
+  assignment on defined CV-rooted arrays;269 adds GLOBALS W/RW name/missing-entry
+  continuations with direct updates/compounds and nested array ingress.
+  Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container
   producers and ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
   wider startup directives/parsing/profiles,
