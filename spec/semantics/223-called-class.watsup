@@ -55,3 +55,9 @@ def $arginfo_context(S, pargcall, z) = $arginfo_finish(S, PSTRING ptbytes)
 def $arginfo_context(S, pargcall, z) = $arginfo_error(S, pargcall, "Error", $ptascii("get_called_class() must be called from within a class"))
   -- if pargcall.KIND = INTRINSIC_GET_CALLED_CLASS
   -- if $calledclass_name(S, pargcall) = eps
+
+;; A known but unimplemented core wrapper is not a missing PHP class.
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "Closure::fromCallable protocol"]
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = eps
+  -- if $ptlc(ptbytes_class) = $ptascii("closure")
+  -- if $ptlc(ptbytes_method) = $ptascii("fromcallable")
