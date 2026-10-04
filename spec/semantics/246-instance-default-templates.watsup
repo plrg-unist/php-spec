@@ -14,9 +14,10 @@ def $property_default_active_desc(S, porigin) = (ppropertydesc)
 def $property_default_active_desc(S, porigin) = eps -- otherwise
 dec $instance_default_source_valid(pstate, ppropertydesc) : bool
 def $instance_default_source_valid(S, ppropertydesc) = true
+  -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ~ppropertydesc.STATIC
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
-  -- if $constant_expression_root(S, ppropertydesc.ORIGIN) = (porigin_initializer)
+  -- if $constant_expression_root(S, porigin_decl) = (porigin_initializer)
   -- if $origin_node(S.SOURCES, porigin_initializer) = (expression)
 def $instance_default_source_valid(S, ppropertydesc) = false -- otherwise
 dec $instance_default_at(pinstancetemplate*, porigin, porigin) : pinstancetemplate?
@@ -32,13 +33,16 @@ def $instance_default_parent_state(S, porigin_class, porigin_decl) = (pinstancet
 def $instance_default_parent_state(S, porigin_class, porigin_decl) = eps -- otherwise
 dec $instance_default_initial_state(pstate, porigin, ppropertydesc) : pinstancetemplatestate
 def $instance_default_initial_state(S, porigin_class, ppropertydesc) = pinstancetemplatestate
-  -- if $instance_default_parent_state(S, porigin_class, ppropertydesc.ORIGIN) = (pinstancetemplatestate)
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if $instance_default_parent_state(S, porigin_class, porigin_decl) = (pinstancetemplatestate)
 def $instance_default_initial_state(S, porigin_class, ppropertydesc) = INSTANCE_PENDING porigin_initializer
-  -- if $instance_default_parent_state(S, porigin_class, ppropertydesc.ORIGIN) = eps
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if $instance_default_parent_state(S, porigin_class, porigin_decl) = eps
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
 dec $instance_default_initial(pstate, porigin, ppropertydesc*) : pinstancetemplate*
 def $instance_default_initial(S, porigin_class, eps) = eps
-def $instance_default_initial(S, porigin_class, ppropertydesc :: ppropertydesc_tail*) = {CLASS porigin_class, DECL ppropertydesc.ORIGIN, STATE $instance_default_initial_state(S, porigin_class, ppropertydesc)} :: $instance_default_initial(S, porigin_class, ppropertydesc_tail*)
+def $instance_default_initial(S, porigin_class, ppropertydesc :: ppropertydesc_tail*) = {CLASS porigin_class, DECL porigin_decl, STATE $instance_default_initial_state(S, porigin_class, ppropertydesc)} :: $instance_default_initial(S, porigin_class, ppropertydesc_tail*)
+  -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ~ppropertydesc.STATIC /\ $static_default_descriptor(ppropertydesc.DEFAULT)
 def $instance_default_initial(S, porigin_class, ppropertydesc :: ppropertydesc_tail*) = $instance_default_initial(S, porigin_class, ppropertydesc_tail*)
   -- if ppropertydesc.STATIC \/ ~$static_default_descriptor(ppropertydesc.DEFAULT)
@@ -49,18 +53,21 @@ def $instance_default_roots(pinstancetemplate :: pinstancetemplate_tail*) = $val
 def $instance_default_roots(pinstancetemplate :: pinstancetemplate_tail*) = $instance_default_roots(pinstancetemplate_tail*)
   -- if pinstancetemplate.STATE = INSTANCE_PENDING porigin
 def $property_template_state(S, porigin_class, ppropertydesc) = (PROP_VALUE (DIRECT pvalue))
+  -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ~ppropertydesc.STATIC
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin
-  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_class, ppropertydesc.ORIGIN) = (pinstancetemplate)
+  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_class, porigin_decl) = (pinstancetemplate)
   -- if pinstancetemplate.STATE = INSTANCE_VALUE pvalue pvalueclass
 def $property_template_state(S, porigin_class, ppropertydesc) = eps
+  -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ~ppropertydesc.STATIC
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin
-  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_class, ppropertydesc.ORIGIN) = eps
+  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_class, porigin_decl) = eps
 def $property_template_state(S, porigin_class, ppropertydesc) = eps
+  -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ~ppropertydesc.STATIC
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin
-  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_class, ppropertydesc.ORIGIN) = (pinstancetemplate)
+  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_class, porigin_decl) = (pinstancetemplate)
   -- if pinstancetemplate.STATE = INSTANCE_PENDING porigin_initializer
 def $property_template_state(S, porigin_class, ppropertydesc) = $property_default_state(S, ppropertydesc)
   -- if ppropertydesc.STATIC \/ ~$static_default_descriptor(ppropertydesc.DEFAULT)
@@ -94,9 +101,11 @@ dec $instance_default_values_done(pstate, porigin, ppropertydesc*, pclassconstan
 def $instance_default_values_done(S, porigin_class, eps, pclassconstantevent*, b_link) = true
 def $instance_default_values_done(S, porigin_class, ppropertydesc :: ppropertydesc_tail*, pclassconstantevent*, b_link) = $instance_default_values_done(S, porigin_class, ppropertydesc_tail*, pclassconstantevent*, b_link)
   -- if ppropertydesc.STATIC \/ ~$static_default_descriptor(ppropertydesc.DEFAULT)
-def $instance_default_values_done(S, porigin_class, ppropertydesc :: ppropertydesc_tail*, pclassconstantevent*, false) = ($instance_default_filled_at(S, porigin_class, ppropertydesc.ORIGIN, pclassconstantevent*, |S.CLASSES|) /\ $instance_default_values_done(S, porigin_class, ppropertydesc_tail*, pclassconstantevent*, false))
+def $instance_default_values_done(S, porigin_class, ppropertydesc :: ppropertydesc_tail*, pclassconstantevent*, false) = ($instance_default_filled_at(S, porigin_class, porigin_decl, pclassconstantevent*, |S.CLASSES|) /\ $instance_default_values_done(S, porigin_class, ppropertydesc_tail*, pclassconstantevent*, false))
+  -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ~ppropertydesc.STATIC /\ $static_default_descriptor(ppropertydesc.DEFAULT)
-def $instance_default_values_done(S, porigin_class, ppropertydesc :: ppropertydesc_tail*, pclassconstantevent*, true) = ($instance_default_inherited_done(S, porigin_class, ppropertydesc.ORIGIN, pclassconstantevent*, |S.CLASSES|) /\ $instance_default_values_done(S, porigin_class, ppropertydesc_tail*, pclassconstantevent*, true))
+def $instance_default_values_done(S, porigin_class, ppropertydesc :: ppropertydesc_tail*, pclassconstantevent*, true) = ($instance_default_inherited_done(S, porigin_class, porigin_decl, pclassconstantevent*, |S.CLASSES|) /\ $instance_default_values_done(S, porigin_class, ppropertydesc_tail*, pclassconstantevent*, true))
+  -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ~ppropertydesc.STATIC /\ $static_default_descriptor(ppropertydesc.DEFAULT)
 def $instance_default_done_at(S, porigin_class, pclassconstantevent*) = $instance_default_values_done(S, porigin_class, $property_layout(S, porigin_class, |S.CLASSES|), pclassconstantevent*, false)
 def $instance_default_link_done_at(S, porigin_class, pclassconstantevent*) = $instance_default_values_done(S, porigin_class, $property_layout(S, porigin_class, |S.CLASSES|), pclassconstantevent*, true)
@@ -130,8 +139,9 @@ def $instance_default_layout_complete(S, porigin_class, eps) = true
 def $instance_default_layout_complete(S, porigin_class, ppropertydesc :: ppropertydesc_tail*) = $instance_default_layout_complete(S, porigin_class, ppropertydesc_tail*)
   -- if ppropertydesc.STATIC \/ ~$static_default_descriptor(ppropertydesc.DEFAULT)
 def $instance_default_layout_complete(S, porigin_class, ppropertydesc :: ppropertydesc_tail*) = $instance_default_layout_complete(S, porigin_class, ppropertydesc_tail*)
+  -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ~ppropertydesc.STATIC /\ $static_default_descriptor(ppropertydesc.DEFAULT)
-  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_class, ppropertydesc.ORIGIN) = (pinstancetemplate)
+  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_class, porigin_decl) = (pinstancetemplate)
 def $instance_default_layout_complete(S, porigin_class, ppropertydesc*) = false -- otherwise
 dec $instance_default_classes_complete(pstate, (preqbytes, porigin)*) : bool
 def $instance_default_classes_complete(S, eps) = true
@@ -145,10 +155,16 @@ def $instance_default_pending(S, porigin_class, porigin_decl) = true
 def $instance_default_pending(S, porigin_class, porigin_decl) = false -- otherwise
 dec $instance_default_update_tasks(pstate, porigin, ppropertydesc*, int) : ptask*
 def $instance_default_update_tasks(S, porigin_class, eps, z) = eps
-def $instance_default_update_tasks(S, porigin_class, ppropertydesc :: ppropertydesc_tail*, z) = (INSTANCE_DEFAULT_UPDATE porigin_class ppropertydesc.ORIGIN z) :: $instance_default_update_tasks(S, porigin_class, ppropertydesc_tail*, z)
-  -- if $instance_default_pending(S, porigin_class, ppropertydesc.ORIGIN)
+def $instance_default_update_tasks(S, porigin_class, ppropertydesc :: ppropertydesc_tail*, z) = (INSTANCE_DEFAULT_UPDATE porigin_class porigin_decl z) :: $instance_default_update_tasks(S, porigin_class, ppropertydesc_tail*, z)
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if $instance_default_source_valid(S, ppropertydesc)
+  -- if $instance_default_pending(S, porigin_class, porigin_decl)
 def $instance_default_update_tasks(S, porigin_class, ppropertydesc :: ppropertydesc_tail*, z) = $instance_default_update_tasks(S, porigin_class, ppropertydesc_tail*, z)
-  -- if ~$instance_default_pending(S, porigin_class, ppropertydesc.ORIGIN)
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if $instance_default_source_valid(S, ppropertydesc)
+  -- if ~$instance_default_pending(S, porigin_class, porigin_decl)
+def $instance_default_update_tasks(S, porigin_class, ppropertydesc :: ppropertydesc_tail*, z) = $instance_default_update_tasks(S, porigin_class, ppropertydesc_tail*, z)
+  -- if ~$instance_default_source_valid(S, ppropertydesc)
 def $instance_default_tasks(S, porigin_class, z) = $instance_default_update_tasks(S, porigin_class, $property_layout(S, porigin_class, |S.CLASSES|), z)
 
 ;; The existing property initializer context carries declaring scope and traces;
@@ -298,8 +314,9 @@ def $instance_default_prior_done(S, porigin_class, porigin_decl, ppropertydesc :
 def $instance_default_prior_done(S, porigin_class, porigin_decl, ppropertydesc :: ppropertydesc_tail*, pclassconstantevent*) = $instance_default_prior_done(S, porigin_class, porigin_decl, ppropertydesc_tail*, pclassconstantevent*)
   -- if ppropertydesc.ORIGIN =/= porigin_decl
   -- if ppropertydesc.STATIC \/ ~$static_default_descriptor(ppropertydesc.DEFAULT)
-def $instance_default_prior_done(S, porigin_class, porigin_decl, ppropertydesc :: ppropertydesc_tail*, pclassconstantevent*) = ($instance_default_filled_at(S, porigin_class, ppropertydesc.ORIGIN, pclassconstantevent*, |S.CLASSES|) /\ $instance_default_prior_done(S, porigin_class, porigin_decl, ppropertydesc_tail*, pclassconstantevent*))
-  -- if ppropertydesc.ORIGIN =/= porigin_decl
+def $instance_default_prior_done(S, porigin_class, porigin_decl, ppropertydesc :: ppropertydesc_tail*, pclassconstantevent*) = ($instance_default_filled_at(S, porigin_class, porigin_previous, pclassconstantevent*, |S.CLASSES|) /\ $instance_default_prior_done(S, porigin_class, porigin_decl, ppropertydesc_tail*, pclassconstantevent*))
+  -- if ppropertydesc.ORIGIN = porigin_previous
+  -- if porigin_previous =/= porigin_decl
   -- if ~ppropertydesc.STATIC /\ $static_default_descriptor(ppropertydesc.DEFAULT)
 def $instance_default_static_ready(S, porigin_decl, pclassconstantevent*) = $instance_default_done_at(S, porigin_class, pclassconstantevent*)
   -- if $property_declaring_class(S.CLASSES, porigin_decl) = (porigin_class)
@@ -327,7 +344,8 @@ def $class_constant_history_fills(S, (CCINSTANCE porigin_class porigin_decl pori
 ;; updater may complete queued entries; the outer queue then skips those entries.
 dec $instance_default_keys(porigin, ppropertydesc*) : (porigin, porigin)*
 def $instance_default_keys(porigin_class, eps) = eps
-def $instance_default_keys(porigin_class, ppropertydesc :: ppropertydesc_tail*) = (porigin_class, ppropertydesc.ORIGIN) :: $instance_default_keys(porigin_class, ppropertydesc_tail*)
+def $instance_default_keys(porigin_class, ppropertydesc :: ppropertydesc_tail*) = (porigin_class, porigin_decl) :: $instance_default_keys(porigin_class, ppropertydesc_tail*)
+  -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ~ppropertydesc.STATIC /\ $static_default_descriptor(ppropertydesc.DEFAULT)
 def $instance_default_keys(porigin_class, ppropertydesc :: ppropertydesc_tail*) = $instance_default_keys(porigin_class, ppropertydesc_tail*)
   -- if ppropertydesc.STATIC \/ ~$static_default_descriptor(ppropertydesc.DEFAULT)
