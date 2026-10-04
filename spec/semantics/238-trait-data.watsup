@@ -1,7 +1,8 @@
 ;; Imported data keeps its physical initializer and a using-class identity.
 ;; Compatibility runs constants before properties, before parent inheritance.
 syntax ptraitdatacheck = TRAITDATAOK | TRAITDATABAD | TRAITDATAUNKNOWN text
-syntax ptraitdatavalue = TRAITVALUE pstate pvalue | TRAITUNINITIALIZED | TRAITVALUEUNKNOWN text
+syntax ptraitdatavalue = TRAITVALUE pstate pvalue pfdiagnostic* | TRAITUNINITIALIZED | TRAITVALUEUNKNOWN text pfdiagnostic*
+syntax ptraitdatacomparison = { CHECK ptraitdatacheck, NOTICES pfdiagnostic* }
 
 
 dec $trait_data_import_type(pclassdesc, ptbranch*) : ptbranch*
@@ -21,19 +22,19 @@ dec $trait_fold_value(pstate, pclassdesc, porigin) : ptraitdatavalue
 dec $trait_property_value(pstate, pclassdesc, ppropertydesc) : ptraitdatavalue
 dec $trait_constant_value(pstate, pclassdesc, pclassconstantdesc) : ptraitdatavalue
 dec $trait_data_compare(ptraitdatavalue, ptraitdatavalue) : ptraitdatacheck
-dec $trait_data_compare_left(pstate, pclassdesc, ppropertydesc, ppropertydesc, ptraitdatavalue) : ptraitdatacheck
-dec $trait_constant_compare_left(pstate, pclassdesc, pclassconstantdesc, pclassconstantdesc, ptraitdatavalue) : ptraitdatacheck
+dec $trait_data_compare_left(pstate, pclassdesc, ppropertydesc, ppropertydesc, ptraitdatavalue) : ptraitdatacomparison
+dec $trait_constant_compare_left(pstate, pclassdesc, pclassconstantdesc, pclassconstantdesc, ptraitdatavalue) : ptraitdatacomparison
 dec $trait_data_properties(pstate, pclassdesc, pclassdesc*, pclassdesc*) : pstate
 dec $trait_data_property_items(pstate, pclassdesc, pclassdesc, ppropertydesc*, pclassdesc*) : pstate
 dec $trait_data_property_one(pstate, pclassdesc, pclassdesc, ppropertydesc, pclassdesc*) : pstate
 dec $trait_data_property_checked(pstate, pclassdesc, pclassdesc, ppropertydesc, ppropertydesc, pclassdesc*, ptraitdatacheck) : pstate
-dec $trait_data_property_values(pstate, pclassdesc, pclassdesc, ppropertydesc, ppropertydesc, pclassdesc*, ptraitdatacheck) : pstate
+dec $trait_data_property_values(pstate, pclassdesc, pclassdesc, ppropertydesc, ppropertydesc, pclassdesc*, ptraitdatacomparison) : pstate
 dec $trait_data_property_error(pstate, pclassdesc, pclassdesc, ppropertydesc, pclassdesc*) : pstate
 dec $trait_data_constants(pstate, pclassdesc, pclassdesc*, pclassdesc*) : pstate
 dec $trait_data_constant_items(pstate, pclassdesc, pclassdesc, pclassconstantdesc*, pclassdesc*) : pstate
 dec $trait_data_constant_one(pstate, pclassdesc, pclassdesc, pclassconstantdesc, pclassdesc*) : pstate
 dec $trait_data_constant_checked(pstate, pclassdesc, pclassdesc, pclassconstantdesc, pclassconstantdesc, pclassdesc*, ptraitdatacheck) : pstate
-dec $trait_data_constant_values(pstate, pclassdesc, pclassdesc, pclassconstantdesc, pclassconstantdesc, pclassdesc*, ptraitdatacheck) : pstate
+dec $trait_data_constant_values(pstate, pclassdesc, pclassdesc, pclassconstantdesc, pclassconstantdesc, pclassdesc*, ptraitdatacomparison) : pstate
 dec $trait_data_constant_error(pstate, pclassdesc, pclassdesc, pclassconstantdesc, pclassdesc*) : pstate
 dec $trait_data_parents(pstate, pclassdesc, ptraitmethod*, pstate) : pstate
 dec $trait_data_bound(pstate, pclassdesc, ptraitmethod*, pclassdesc*, pstate) : pstate
@@ -200,7 +201,7 @@ def $trait_member_fold(S, pclassdesc, PORIGIN n pcpath) = (F_result)
   -- if ptcontext = {NAMESPACE eps, IMPORTS eps, SCOPE PTKNOWN pclassdesc.NAME pclassdesc.PARENT, POSITION PTCONSTANT, OWNER pclassdesc.NAME, MEMBER eps, FILE $call_sourcefile(S.FILES, PORIGIN n pcpath), LINE $nabs($expression_line(expression))}
   -- if $pool_at(S.POOLS, n) = (ppool)
   -- if $trait_record_root(S, pclassdesc, PORIGIN n pcpath)
-  -- if F_result = $pfprepare(F[.RECORD = ({CLASS pclassdesc.ORIGIN, ROOT PORIGIN n pcpath})][.FACTS = $trait_pool_facts(S, n, ppool.CONSTANTS)][.CLASSFACTS = $trait_pool_classes(ppool.CONSTANTS)][.CLASSES = S.CLASSES][.CLASSCONSTANTS = pclassdesc.CONSTANTS][.EXTERNAL = (S)][.DEFAULT = true][.CONSTANT = true][.CLASSCONTEXT = (ptcontext)][.FILE = ($call_sourcefile(S.FILES, PORIGIN n pcpath))][.CWD = ($call_request_cwd(S.REQUEST))][.MEMORY = S_memory[.REPORTING = 32767]], pcpath, expression, $plempty(false), pclassdesc.LINE)
+  -- if F_result = $pfprepare(F[.RECORD = ({CLASS pclassdesc.ORIGIN, ROOT PORIGIN n pcpath})][.FACTS = $trait_pool_facts(S, n, ppool.CONSTANTS)][.CLASSFACTS = $trait_pool_classes(ppool.CONSTANTS)][.CLASSES = S.CLASSES][.CLASSCONSTANTS = pclassdesc.CONSTANTS][.EXTERNAL = (S)][.DEFAULT = true][.CONSTANT = true][.CLASSCONTEXT = (ptcontext)][.FILE = ($call_sourcefile(S.FILES, PORIGIN n pcpath))][.CWD = ($call_request_cwd(S.REQUEST))][.MEMORY = S_memory[.REPORTING = 32767][.EVENTS = eps]], pcpath, expression, $plempty(false), pclassdesc.LINE)
 def $trait_member_fold(S, pclassdesc, porigin) = eps -- otherwise
 def $trait_pool_facts(S, n, eps) = eps
 def $trait_pool_facts(S, n, (PCONSTANT pcpath pvalue) :: pconstant*) = (PFFACT pcpath pvalue $expression_line(expression)) :: $trait_pool_facts(S, n, pconstant*)
@@ -289,38 +290,43 @@ def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_mem
   -- if $class_constant_compile_value(S_external, pclassconstantdesc) = ((pvalue, pvalueclass))
   -- if $pfclass_import(S_external, F.MEMORY, pvalue, $(|S_external.ARRAYS| + 1)) = ((S_imported, pvalue_imported))
 
-def $trait_fold_value(S, pclassdesc, porigin) = TRAITVALUE F.MEMORY pvalue
+def $trait_fold_value(S, pclassdesc, porigin) = TRAITVALUE F.MEMORY pvalue F.RECORDED
   -- if $trait_member_fold(S, pclassdesc, porigin) = (F)
   -- if F.VALUE = (pvalue)
   -- if F.MEMORY.COMPLETION = NORMAL /\ F.WARNINGS = eps
-  -- if F.MEMORY.EVENTS = S.EVENTS /\ F.MEMORY.TODO = S.TODO
-def $trait_fold_value(S, pclassdesc, porigin) = TRAITVALUEUNKNOWN "effectful or unresolved trait data initializer" -- otherwise
+  -- if F.MEMORY.EVENTS = eps /\ F.MEMORY.TODO = S.TODO
+def $trait_fold_value(S, pclassdesc, porigin) = TRAITVALUEUNKNOWN "effectful or unresolved trait data initializer" F.RECORDED
+  -- if $trait_member_fold(S, pclassdesc, porigin) = (F)
+  -- if F.VALUE = eps \/ F.MEMORY.COMPLETION =/= NORMAL \/ F.WARNINGS =/= eps \/ F.MEMORY.EVENTS =/= eps \/ F.MEMORY.TODO =/= S.TODO
+def $trait_fold_value(S, pclassdesc, porigin) = TRAITVALUEUNKNOWN "trait data initializer source" eps -- otherwise
 def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITUNINITIALIZED -- if ppropertydesc.DEFAULT = PROP_UNINITIALIZED
-def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUE S PNULL -- if ppropertydesc.DEFAULT = PROP_NULL
-def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUE S pvalue -- if ppropertydesc.DEFAULT = PROP_LITERAL pvalue
-def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUE S ($property_default_value(ppropertydesc.TYPE, pvalue))
+def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUE S PNULL eps -- if ppropertydesc.DEFAULT = PROP_NULL
+def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUE S pvalue eps -- if ppropertydesc.DEFAULT = PROP_LITERAL pvalue
+def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUE S ($property_default_value(ppropertydesc.TYPE, pvalue)) eps
   -- if ppropertydesc.DEFAULT = PROP_STORED porigin
   -- if $pool_value(S.POOLS, porigin) = (pvalue)
 def $trait_property_value(S, pclassdesc, ppropertydesc) = $trait_fold_value(S, pclassdesc, porigin) -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin
-def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUEUNKNOWN "trait property default storage" -- otherwise
+def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUEUNKNOWN "trait property default storage" eps -- otherwise
 def $trait_constant_source_type(S, pclassconstantdesc) = pclassconstantdesc_source.TYPE
   -- if $class_constant_origin(S.CLASSES, $origin_source(pclassconstantdesc.ORIGIN)) = (pclassconstantdesc_source)
 def $trait_constant_source_type(S, pclassconstantdesc) = pclassconstantdesc.TYPE -- otherwise
-def $trait_constant_value(S, pclassdesc, pclassconstantdesc) = TRAITVALUE S pvalue
+def $trait_constant_value(S, pclassdesc, pclassconstantdesc) = TRAITVALUE S pvalue eps
   -- if pclassconstantdesc.FOLDED
   -- if $pool_value(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalue)
 def $trait_constant_value(S, pclassdesc, pclassconstantdesc) = $trait_fold_value(S, pclassdesc, pclassconstantdesc.INITIALIZER) -- if ~pclassconstantdesc.FOLDED
-def $trait_constant_value(S, pclassdesc, pclassconstantdesc) = TRAITVALUEUNKNOWN "trait constant default storage" -- otherwise
+def $trait_constant_value(S, pclassdesc, pclassconstantdesc) = TRAITVALUEUNKNOWN "trait constant default storage" eps -- otherwise
 def $trait_data_compare(TRAITUNINITIALIZED, TRAITUNINITIALIZED) = TRAITDATAOK
-def $trait_data_compare(TRAITUNINITIALIZED, TRAITVALUE S pvalue) = TRAITDATABAD
-def $trait_data_compare(TRAITVALUE S pvalue, TRAITUNINITIALIZED) = TRAITDATABAD
-def $trait_data_compare(TRAITVALUE S_left pvalue_left, TRAITVALUE S_right pvalue_right) = TRAITDATAOK -- if $strict_check(S_right, pvalue_left, pvalue_right, eps) = COMPARED true
-def $trait_data_compare(TRAITVALUE S_left pvalue_left, TRAITVALUE S_right pvalue_right) = TRAITDATABAD -- if $strict_check(S_right, pvalue_left, pvalue_right, eps) = COMPARED false
+def $trait_data_compare(TRAITUNINITIALIZED, TRAITVALUE S pvalue pfdiagnostic*) = TRAITDATABAD
+def $trait_data_compare(TRAITVALUE S pvalue pfdiagnostic*, TRAITUNINITIALIZED) = TRAITDATABAD
+def $trait_data_compare(TRAITVALUE S_left pvalue_left pfdiagnostic_left*, TRAITVALUE S_right pvalue_right pfdiagnostic_right*) = TRAITDATAOK -- if $strict_check(S_right, pvalue_left, pvalue_right, eps) = COMPARED true
+def $trait_data_compare(TRAITVALUE S_left pvalue_left pfdiagnostic_left*, TRAITVALUE S_right pvalue_right pfdiagnostic_right*) = TRAITDATABAD -- if $strict_check(S_right, pvalue_left, pvalue_right, eps) = COMPARED false
 def $trait_data_compare(ptraitdatavalue_left, ptraitdatavalue_right) = TRAITDATAUNKNOWN "trait initializer compatibility evaluation" -- otherwise
-def $trait_data_compare_left(S, pclassdesc, ppropertydesc_left, ppropertydesc_right, TRAITVALUE S_left pvalue_left) = $trait_data_compare(TRAITVALUE S_left pvalue_left, $trait_property_value(S_left, pclassdesc, ppropertydesc_right))
-def $trait_data_compare_left(S, pclassdesc, ppropertydesc_left, ppropertydesc_right, ptraitdatavalue_left) = $trait_data_compare(ptraitdatavalue_left, $trait_property_value(S, pclassdesc, ppropertydesc_right)) -- otherwise
-def $trait_constant_compare_left(S, pclassdesc, pclassconstantdesc_left, pclassconstantdesc_right, TRAITVALUE S_left pvalue_left) = $trait_data_compare(TRAITVALUE S_left pvalue_left, $trait_constant_value(S_left, pclassdesc, pclassconstantdesc_right))
-def $trait_constant_compare_left(S, pclassdesc, pclassconstantdesc_left, pclassconstantdesc_right, ptraitdatavalue_left) = $trait_data_compare(ptraitdatavalue_left, $trait_constant_value(S, pclassdesc, pclassconstantdesc_right)) -- otherwise
+def $trait_data_compare_left(S, pclassdesc, ppropertydesc_left, ppropertydesc_right, TRAITVALUE S_left pvalue_left pfdiagnostic*) = $trait_comparison(TRAITVALUE S_left pvalue_left pfdiagnostic*, $trait_property_value(S_left, pclassdesc, ppropertydesc_right))
+def $trait_data_compare_left(S, pclassdesc, ppropertydesc_left, ppropertydesc_right, TRAITVALUEUNKNOWN text pfdiagnostic*) = { CHECK (TRAITDATAUNKNOWN text), NOTICES pfdiagnostic* }
+def $trait_data_compare_left(S, pclassdesc, ppropertydesc_left, ppropertydesc_right, TRAITUNINITIALIZED) = $trait_comparison(TRAITUNINITIALIZED, $trait_property_value(S, pclassdesc, ppropertydesc_right))
+def $trait_constant_compare_left(S, pclassdesc, pclassconstantdesc_left, pclassconstantdesc_right, TRAITVALUE S_left pvalue_left pfdiagnostic*) = $trait_comparison(TRAITVALUE S_left pvalue_left pfdiagnostic*, $trait_constant_value(S_left, pclassdesc, pclassconstantdesc_right))
+def $trait_constant_compare_left(S, pclassdesc, pclassconstantdesc_left, pclassconstantdesc_right, TRAITVALUEUNKNOWN text pfdiagnostic*) = { CHECK (TRAITDATAUNKNOWN text), NOTICES pfdiagnostic* }
+def $trait_constant_compare_left(S, pclassdesc, pclassconstantdesc_left, pclassconstantdesc_right, TRAITUNINITIALIZED) = $trait_comparison(TRAITUNINITIALIZED, $trait_constant_value(S, pclassdesc, pclassconstantdesc_right))
 
 def $trait_data_link(S, pclassdesc, ptraitmethod*) = $trait_data_bound(S, pclassdesc, ptraitmethod*, pclassdesc_traits*, $trait_data_constants(S, pclassdesc, pclassdesc_traits*, eps))
   -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
@@ -352,9 +358,11 @@ def $trait_data_constant_one(S, pclassdesc, pclassdesc_trait, pclassconstantdesc
 def $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*)
 def $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
 def $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATAOK) = $trait_data_constant_values(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, $trait_constant_compare_left(S, pclassdesc, pclassconstantdesc, pclassconstantdesc_prior, $trait_constant_value(S, pclassdesc, pclassconstantdesc)))
-def $trait_data_constant_values(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATAOK) = S
-def $trait_data_constant_values(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*)
-def $trait_data_constant_values(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
+dec $trait_data_constant_value_result(pstate, pclassdesc, pclassdesc, pclassconstantdesc, pclassconstantdesc, pclassdesc*, ptraitdatacheck) : pstate
+def $trait_data_constant_values(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, ptraitdatacomparison) = $trait_comparison_seed(S, pclassdesc, $trait_data_constant_value_result(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, ptraitdatacomparison.CHECK), ptraitdatacomparison.NOTICES)
+def $trait_data_constant_value_result(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATAOK) = S
+def $trait_data_constant_value_result(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*)
+def $trait_data_constant_value_result(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
 def $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*) = $trait_data_fatal(S, pclassdesc, $trait_data_prior(pclassdesc_prior*, pclassconstantdesc.NAME, true, pclassdesc.NAME) ++ $ptascii(" and ") ++ pclassdesc_trait.NAME ++ $ptascii(" define the same constant (") ++ pclassconstantdesc.NAME ++ $ptascii(") in the composition of ") ++ pclassdesc.NAME ++ $ptascii(". However, the definition differs and is considered incompatible. Class was composed"))
 
 def $trait_data_properties(S, pclassdesc, pclassdesc_traits*, pclassdesc_prior*) = S -- if S.COMPLETION =/= NORMAL
@@ -380,9 +388,11 @@ def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pcl
 def $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
 def $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
 def $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAOK) = $trait_data_property_values(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, $trait_data_compare_left(S, pclassdesc, ppropertydesc_prior, ppropertydesc, $trait_property_value(S, pclassdesc, ppropertydesc_prior)))
-def $trait_data_property_values(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAOK) = S
-def $trait_data_property_values(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
-def $trait_data_property_values(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
+dec $trait_data_property_value_result(pstate, pclassdesc, pclassdesc, ppropertydesc, ppropertydesc, pclassdesc*, ptraitdatacheck) : pstate
+def $trait_data_property_values(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, ptraitdatacomparison) = $trait_comparison_seed(S, pclassdesc, $trait_data_property_value_result(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, ptraitdatacomparison.CHECK), ptraitdatacomparison.NOTICES)
+def $trait_data_property_value_result(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAOK) = S
+def $trait_data_property_value_result(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
+def $trait_data_property_value_result(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
 def $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_fatal(S, pclassdesc, $trait_data_prior(pclassdesc_prior*, ppropertydesc.NAME, false, pclassdesc.NAME) ++ $ptascii(" and ") ++ pclassdesc_trait.NAME ++ $ptascii(" define the same property ($") ++ ppropertydesc.NAME ++ $ptascii(") in the composition of ") ++ pclassdesc.NAME ++ $ptascii(". However, the definition differs and is considered incompatible. Class was composed"))
 
 ;; Runtime initializer scope is licensed by its real pending default/constant

@@ -399,6 +399,7 @@ def $iterator_notice_batch_items(S, pdeclnoticebatch) = true
   -- if pdeclnoticebatch.KIND = NOTICE_RUNTIME
   -- if $iterator_notice_classes_plan(S, pdeclnoticebatch.CLASSES) = DECLNOTICES pdeclnotice*
   -- if $iterator_notice_items(pdeclnotice*) = pdeclnoticebatch.NOTICES
+  -- if ~$trait_notice_items(pdeclnoticebatch.NOTICES)
 def $iterator_notice_batch_items(S, pdeclnoticebatch) = true
   -- if pdeclnoticebatch.KIND = NOTICE_FILE n
   -- if $iterator_notice_unit_items(S, S.DECLARATIONS, n) = pdeclnoticebatch.NOTICES

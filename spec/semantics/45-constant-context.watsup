@@ -3,7 +3,6 @@
 syntax pffact = PFFACT pcpath pvalue int
 syntax pfcontext = PFCONTEXT pcpath plenv
 syntax pfrecorder = { CLASS porigin, ROOT porigin }
-syntax pfdiagnostic = { SITE porigin, LEVEL int, MESSAGE nat*, LINE int }
 syntax pfstate = { RECORD pfrecorder?, RECORDED pfdiagnostic*, CLASSES pclassdesc*, CLASSCONSTANTS pclassconstantdesc*, EXTERNAL pstate?, DEFAULT bool, CLASSFACTS (pcpath, pvalueclass)*, CONSTANT bool, FUNCTION ptbytes, CLASSCONTEXT ptcontext?, CLOSURE bool, SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
 syntax pfshape = PFMAGIC pmagic int | PFSCALAR pvalue int | PFNAME name | PFBINARY pbin expression expression
   | PFUNARY punary expression | PFDIM expression phpType5
