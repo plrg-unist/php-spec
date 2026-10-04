@@ -100,6 +100,14 @@ rule PhpStep/ordinary-internal-receiving-ee-commit: S ~> $ee_commit(S[.TODO = pt
   -- if pordinaryinternal.CALL.BASE = "ErrorException"
   -- if pordinaryinternal.INDEX = 6
 
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ORDINARY_CTOR_WARNING pordinaryinternal pvalue
+  -- if $ordinary_internal_receiving_valid(S, pordinaryinternal)
+  -- if $default_internal_warning(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = ((perrorcall.MESSAGE, pvalue))
+  -- if perrorcall.SITE = pordinaryinternal.CALL.SITE /\ perrorcall.LINE = pordinaryinternal.CALL.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+
 dec $ordinary_internal_string_valid(pstate, pordinaryinternal) : bool
 def $ordinary_internal_string_valid(S, pordinaryinternal) = true
   -- if $ordinary_internal_receiving_valid(S, pordinaryinternal)
