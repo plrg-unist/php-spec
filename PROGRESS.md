@@ -7,6 +7,40 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Non-object casts261 now populate stdClass scalars/arrays, share all-string tables
+through genuine COW and fast clone, and preserve numeric round trips, alias type
+owners and active foreach cursor history. NaN warnings retain the allocated object
+and original operand location; NUL-key notices retain a nonowning TABLE/SERIAL
+marker through callbacks and delayed reference promotion. Raw undefined buckets
+keep distinct read/isset/copy/comparison behavior. Twelve full source comparisons
+retain 3a/82c/b0 cuts; one actual 8ada/a4fc composition gives the first agreement for
+the former251 native-only multiline cast holder. Four source-derived groups pass
+208 premises at b0, with original fixture stops preserved. The
+[cast ledger](coverage/semantics/object-casts-review.json) separates these cuts,
+two retired-pointer originals and a longer companion timeout (zero agreement).
+Actual257 destruction/frame/pruning hooks are preserved separately. Wider
+raw-undefined consumers, lifecycle/GC and callback contexts remain required.
+
+Request-stage destructors257 now repeat reverse direct globals and then scan
+reusable live store handles. Once marks, bailout/failed-constructor suppression,
+private visibility, nested USER calls and ordered outgoing slots retain exact
+owners. Caller restoration precedes compiled CV cleanup; extras precede receiver
+release. Pending throws replace and chain through remaining slots. Ignored
+by-value ordinary and automatic-constructor returns release in the live callee before
+locals; C destructor helper returns remain retained. Eval/include continuations
+keep source history. Explicit request facts preserve startup argc order; absent
+facts keep the original environment Unsupported, and dead CVs remain admissible.
+Author78 source agreements and seven/303 reached assertions retain distinct
+cuts; independent64 agreements, two Unsupported controls and12/548 assertions
+retain theirs. Actual253/259/260 routes and final SL/AL253 pass on the preserved
+a4fc parent;264/262/266 preservation is source-reviewed without old-cut renewal.
+[Contract](docs/semantics/SOURCE-DESTRUCTORS.md),
+[author record](coverage/semantics/destructors-review.json),
+[independent ledger](coverage/semantics/destructor-review.json).
+Ordinary eager destruction and original Throwable release before stage1 are
+explicit Unsupported dependencies for the next phase. GC, output buffering,
+queue freeing and final cleanup remain required; complete core stays open.
+
 REAL binding264 now resolves scope before ordered static, `$this`-unbind and
 internal-scope warnings. Genuine handler continuations retain selected reasons
 through callback mutation and throws. The function's own compiled entries supply
@@ -281,8 +315,9 @@ recorded revision, and production stages pass on the accepted fe51 parent.
 [Contract](docs/semantics/SOURCE-SHUTDOWN.md),
 [author/composition record](coverage/semantics/shutdown-functions-review.json),
 [independent ledger](coverage/semantics/shutdown-function-review.json).
-Keyword/compound ingress now uses the staged247 consumers below. Destructors,
-GC, output buffers and queue release are required next request phases.
+Keyword/compound ingress now uses the staged247 consumers below. Request-stage
+destructors are covered separately above; eager destruction, GC, output buffers
+and queue release remain required.
 
 Internal default reception240 now suspends weak-null and lossy integer warnings
 through real error dispatch and invokes genuine Stringable callbacks in formal
@@ -347,8 +382,11 @@ guards at their original cuts. Generic arithmetic/key recording now isolates
 scratch handler/display settings and follows runtime key→value→insertion order
 with checked AST lines. Five affected source comparisons (four new plus one
 existing array neighbor),47 additional queue/array-owner guards and bounded
-AL/structure checks pass. Private-final warning ordering, real dependent-constant
-binding/caching and endogenous expression errors remain required; traits stay partial.
+AL/structure checks pass. Private-final compile warnings now join the recorded
+batch at concrete/abstract binding phases and remain handler-ineligible128. Four
+affected source comparisons (two new and two128 mask neighbors) and43 genuine
+alias/queue guards pass at their separate cuts. Real dependent-constant binding,
+caching and endogenous expression errors remain required; traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the

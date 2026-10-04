@@ -1376,16 +1376,19 @@
         "spec/semantics/56-casts.watsup",
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/58-ordinary-expressions.watsup",
-        "spec/semantics/136-property-runtime.watsup"
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/ordinary.py",
         "tests/semantics/properties.py",
-        "tests/semantics/properties_task_protocol.py"
+        "tests/semantics/properties_task_protocol.py",
+        "tests/semantics/object_cast_sources.py",
+        "tests/semantics/object_cast_protocol.py"
       ],
-      "review": "Populated public instance properties cast to array in source execution; typed-uninitialized slots are omitted. Scalar/array cast history remains in ordinary-review.json; object behavior is partial (properties-review.json)."
+      "review": "Populated public instance properties cast to array in source execution; typed-uninitialized slots are omitted. Scalar/array cast history remains in ordinary-review.json; object behavior is partial (properties-review.json). Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required."
     },
     {
       "node": "Expr_Cast_Bool",
@@ -1465,7 +1468,8 @@
         "spec/semantics/115-closure-compiler.watsup",
         "spec/semantics/116-closures.watsup",
         "spec/semantics/56-casts.watsup",
-        "spec/semantics/130-stdclass-runtime.watsup"
+        "spec/semantics/130-stdclass-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -1475,9 +1479,11 @@
         "tests/semantics/closures_state.py",
         "tests/semantics/closure_compiler.py",
         "tests/semantics/stdclass.py",
-        "tests/semantics/stdclass_protocol.py"
+        "tests/semantics/stdclass_protocol.py",
+        "tests/semantics/object_cast_sources.py",
+        "tests/semantics/object_cast_protocol.py"
       ],
-      "review": "The closure and arrow cast prerequisites remain covered by closures-review.json and arrows-review.json. Internal stdClass130 now preserves an existing object's identity and allocates distinct owned empty stdClass objects for null and empty-array casts; stdclass-review.json binds exact source and ownership checks. Nonempty array/scalar casts require properties, and broader object behavior remains open."
+      "review": "The closure and arrow cast prerequisites remain covered by closures-review.json and arrows-review.json. Internal stdClass130 now preserves an existing object's identity and allocates distinct owned empty stdClass objects for null and empty-array casts; stdclass-review.json binds exact source and ownership checks. Broader object behavior remains partial. Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required."
     },
     {
       "node": "Expr_Cast_String",
@@ -1578,7 +1584,8 @@
         "spec/semantics/149-clone-compiler.watsup",
         "spec/semantics/150-clone-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup"
       ],
       "source_tests": [
         "tests/semantics/clone_expressions.py",
@@ -1591,9 +1598,11 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/object_cast_sources.py",
+        "tests/semantics/object_cast_protocol.py"
       ],
-      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, property hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities.",
+      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, property hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required.",
       "helper_tests": [
         "tests/semantics/clone_compiler.py",
         "tests/semantics/clone_protocol.py",
@@ -3425,7 +3434,8 @@
         "spec/semantics/69-foreach-control.watsup",
         "spec/semantics/136-property-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup"
       ],
       "source_tests": [
         "tests/semantics/foreach_compiler.py",
@@ -3442,9 +3452,11 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/object_cast_sources.py",
+        "tests/semantics/object_cast_protocol.py"
       ],
-      "review": "Array traversal history is in foreach-runtime-review.json. Public-object by-value traversal uses live property slots (properties-review.json); by-reference traversal preserves slot/cell aliases and typed sources (property-references-review.json). Traversable callbacks and remaining contexts remain open. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities."
+      "review": "Array traversal history is in foreach-runtime-review.json. Public-object by-value traversal uses live property slots (properties-review.json); by-reference traversal preserves slot/cell aliases and typed sources (property-references-review.json). Traversable callbacks and remaining contexts remain open. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required."
     },
     {
       "node": "Stmt_Function",
@@ -8997,12 +9009,15 @@
         "tests/semantics/trait_data_recorded_operation_cases.json",
         "tests/semantics/trait_data_recorded_array_order_review_cases.json",
         "tests/semantics/trait_data_recorded_array_lines_review_cases.json",
-        "tests/semantics/trait_collision_operation_review_protocol.py"
+        "tests/semantics/trait_collision_operation_review_protocol.py",
+        "tests/semantics/trait_data_method_warning_order_review_cases.json",
+        "tests/semantics/trait_data_alias_warning_success_review_cases.json",
+        "tests/semantics/trait_collision_alias_warning_review_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Data238 adds scoped property/constant compatibility, full using-class identities, source diagnostics, static sharing and requested-class instance templates. Its data ledger retains72 source agreements and265 semantic state assertions at exact cuts, with92 historical dependency assertions carrying zero old-cut agreement. Broader effectful collision evaluation, readonly storage and wider dependent consumers remain required; no trait-family closure. Module254 adds raw trait-property warning continuations with retained selected cells/access modes, live callback resumption, late versus computed RHS demand and consumer-specific abrupt opcode completion. Independent33 source agreements (author6 subset) and six reached state groups/286 premises pass at unchanged15155; the literal pool owner is retained alongside one store owner. Exact cuts and original fixture/compiler failures are in trait-property-access-review.json; wider producers and full trait semantics remain partial. Module259 first recording vertical compares deferred operands before typed conversion and records direct E_STRICT collision diagnostics for post-publication delivery or default flush before later link fatal. Fourteen source tuples (11 normal/3 PHP errors),97 genuine queue/callback assertions and bounded AL/structure checks pass at retained cuts. The operation continuation additionally records arithmetic/key warnings independently of live handlers/display, follows runtime array key/value/insertion chronology and checked AST lines, with five affected source agreements (four new plus one existing array neighbor) and47 genuine queue/array-owner assertions at separate cuts. Private-final warning ordering, real dependent cache/type binding and endogenous expression errors remain required; other prepared catalogue rows carry zero agreement.",
+      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Data238 adds scoped property/constant compatibility, full using-class identities, source diagnostics, static sharing and requested-class instance templates. Its data ledger retains72 source agreements and265 semantic state assertions at exact cuts, with92 historical dependency assertions carrying zero old-cut agreement. Broader effectful collision evaluation, readonly storage and wider dependent consumers remain required; no trait-family closure. Module254 adds raw trait-property warning continuations with retained selected cells/access modes, live callback resumption, late versus computed RHS demand and consumer-specific abrupt opcode completion. Independent33 source agreements (author6 subset) and six reached state groups/286 premises pass at unchanged15155; the literal pool owner is retained alongside one store owner. Exact cuts and original fixture/compiler failures are in trait-property-access-review.json; wider producers and full trait semantics remain partial. Module259 first recording vertical compares deferred operands before typed conversion and records direct E_STRICT collision diagnostics for post-publication delivery or default flush before later link fatal. Fourteen source tuples (11 normal/3 PHP errors),97 genuine queue/callback assertions and bounded AL/structure checks pass at retained cuts. The operation continuation additionally records arithmetic/key warnings independently of live handlers/display, follows runtime array key/value/insertion chronology and checked AST lines, with five affected source agreements (four new plus one existing array neighbor) and47 genuine queue/array-owner assertions at separate cuts. Private-final compile-warning seeds now join the same ordered batch at their concrete/abstract phases, retaining handler-ineligible128. Four affected source comparisons (two new/two existing mask neighbors) and43 genuine alias/queue assertions pass at separate cuts. Real dependent cache/type binding and endogenous expression errors remain required; other prepared catalogue rows carry zero agreement.",
       "planned_source_tests": [
         "tests/semantics/conformance/trait-deferred-self-union.php",
         "tests/semantics/conformance/class-direct-self-union.php",
@@ -10273,18 +10288,22 @@
       "implementation": [
         "spec/semantics/30-storage.watsup",
         "spec/semantics/127-class-runtime.watsup",
-        "spec/semantics/130-stdclass-runtime.watsup"
+        "spec/semantics/130-stdclass-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/stdclass.py",
-        "tests/semantics/stdclass_protocol.py"
+        "tests/semantics/stdclass_protocol.py",
+        "tests/semantics/object_cast_sources.py",
+        "tests/semantics/object_cast_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_interfaces.c",
-        "coverage/semantics/stdclass-review.json"
+        "coverage/semantics/stdclass-review.json",
+        "coverage/semantics/object-casts-review.json"
       ],
-      "review": "Owned empty stdClass identity and known consumers execute in130; zero-argument new and empty null/array object casts have source and paused checks. Constructor arguments, members and nonempty casts remain open."
+      "review": "Owned empty stdClass identity and known consumers execute in130; zero-argument new and empty null/array object casts have source and paused checks. No-constructor arguments have their own132 contract; other members/internal protocols remain required. Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required."
     },
     {
       "id": "protocols.Closure",
@@ -11786,28 +11805,80 @@
     {
       "id": "lifecycle.destructor-timing",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "implementation": [
+        "spec/semantics/257-request-destructors.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/79-call-frames.watsup",
+        "spec/semantics/83-call-traces.watsup",
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/161-throwable-constructors.watsup",
+        "spec/semantics/247-handler-callable-consumers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/destructor_state.py",
+        "tests/semantics/destructor_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/destructors.py",
+        "tests/semantics/destructor_cases.json",
+        "tests/semantics/destructor_request.py",
+        "tests/semantics/destructor_review.py",
+        "tests/semantics/destructor_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/main/main.c",
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_objects_API.c",
+        "vendor/php-src/Zend/zend_objects.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "docs/semantics/SOURCE-DESTRUCTORS.md",
+        "coverage/semantics/destructors-review.json",
+        "coverage/semantics/destructor-review.json"
+      ],
+      "review": "Module257 implements request stage2 after shutdown callbacks: repeated reverse direct globals, ascending reusable live native handles, once marks, temporary receiver ownership and ordered outgoing-slot release. Explicit request facts preserve startup argc insertion; absent facts keep the existing request environment Unsupported, while dormant CVs remain admissible. Author78 exact sources/seven reached states303 premises and independent64 sources/twelve states548 premises retain separate revisions; two earlier-release controls and the static-destructor frontend control have zero agreement credit. Ordinary eager destruction, GC and later request freeing remain required."
     },
     {
       "id": "lifecycle.destructor-reentry",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "implementation": [
+        "spec/semantics/257-request-destructors.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/79-call-frames.watsup",
+        "spec/semantics/83-call-traces.watsup",
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/161-throwable-constructors.watsup",
+        "spec/semantics/247-handler-callable-consumers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/destructor_state.py",
+        "tests/semantics/destructor_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/destructors.py",
+        "tests/semantics/destructor_cases.json",
+        "tests/semantics/destructor_request.py",
+        "tests/semantics/destructor_review.py",
+        "tests/semantics/destructor_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/main/main.c",
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_objects_API.c",
+        "vendor/php-src/Zend/zend_objects.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "docs/semantics/SOURCE-DESTRUCTORS.md",
+        "coverage/semantics/destructors-review.json",
+        "coverage/semantics/destructor-review.json"
+      ],
+      "review": "Request-stage callbacks mark before entry, preserve exact temporary receiver/current or saved caller, and suspend per-slot release loops without inventing roots. Nested private permission uses the genuine USER scope; the outer C pass warns in Unknown0. Handled throws continue, unhandled/exit stops, explicit method calls do not mark, and failed automatic construction stays ineligible. Earlier eager release and cycle-collection reentry remain required; source and reached evidence is bounded by the destructor ledgers."
     },
     {
       "id": "lifecycle.shutdown-registration",
@@ -11823,7 +11894,8 @@
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/178-interface-runtime.watsup",
         "spec/semantics/179-interface-methods.watsup",
-        "spec/semantics/247-handler-callable-consumers.watsup"
+        "spec/semantics/247-handler-callable-consumers.watsup",
+        "spec/semantics/257-request-destructors.watsup"
       ],
       "helper_tests": [
         "tests/semantics/shutdown_state_review.py",
@@ -11850,9 +11922,12 @@
         "coverage/semantics/shutdown-functions-review.json",
         "coverage/semantics/shutdown-function-review.json",
         "coverage/semantics/callback-api-consumers-review.json",
-        "coverage/semantics/callback-api-consumer-review.json"
+        "coverage/semantics/callback-api-consumer-review.json",
+        "docs/semantics/SOURCE-DESTRUCTORS.md",
+        "coverage/semantics/destructors-review.json",
+        "coverage/semantics/destructor-review.json"
       ],
-      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Module247 caches keyword/compound selections after the real API warnings and pins the retired maker target/callsite/scope without new roots. Wider callable dependencies and later destructor/GC/output/free phases remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls."
+      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Module247 caches keyword/compound selections after the real API warnings and pins the retired maker target/callsite/scope without new roots. Wider callable dependencies and later destructor/GC/output/free phases remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls. Request-stage destructors257 follow the queue and are reviewed separately; shutdown entries remain owned until later freeing."
     },
     {
       "id": "lifecycle.shutdown-order",
@@ -11867,7 +11942,8 @@
         "spec/semantics/134-inheritance-runtime.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/178-interface-runtime.watsup",
-        "spec/semantics/179-interface-methods.watsup"
+        "spec/semantics/179-interface-methods.watsup",
+        "spec/semantics/257-request-destructors.watsup"
       ],
       "helper_tests": [
         "tests/semantics/shutdown_state_review.py",
@@ -11887,9 +11963,12 @@
         "vendor/php-src/Zend/zend_exceptions.c",
         "docs/semantics/SOURCE-SHUTDOWN.md",
         "coverage/semantics/shutdown-functions-review.json",
-        "coverage/semantics/shutdown-function-review.json"
+        "coverage/semantics/shutdown-function-review.json",
+        "docs/semantics/SOURCE-DESTRUCTORS.md",
+        "coverage/semantics/destructors-review.json",
+        "coverage/semantics/destructor-review.json"
       ],
-      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Keyword/compound callback API consumers, wider callable dependencies and later destructor/GC/output/free phases remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls."
+      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Wider callable dependencies, eager destruction, GC, output and later freeing remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls. Request-stage destructors257 follow the queue and are reviewed separately; shutdown entries remain owned until later freeing."
     },
     {
       "id": "lifecycle.exit-unwind",
@@ -11915,7 +11994,7 @@
         "docs/semantics/EXIT.md",
         "coverage/semantics/exit-review.json"
       ],
-      "review": "Exit/die147/148 models genuine intrinsic identities, literal/dynamic/first-class/pipe calls, ordered positional/named/array-unpacked binding, weak/strict string|int conversion, builtin receive-error traces and distinct signed32 EXITED completion with CLI low8 status. Source comparisons claim exact observable tuples only; model tags and paused ownership/authenticity assertions are separate. Shutdown/destructors, output/error/Stringable callbacks and general Throwable/catch/finally remain open; no full request-lifecycle claim. See exit-review.json and EXIT.md."
+      "review": "Exit/die147/148 models genuine intrinsic identities, literal/dynamic/first-class/pipe calls, ordered positional/named/array-unpacked binding, weak/strict string|int conversion, builtin receive-error traces and distinct signed32 EXITED completion with CLI low8 status. Source comparisons claim exact observable tuples only; model tags and paused ownership/authenticity assertions are separate. Its original exit cut leaves lifecycle/callback integration open; ordered shutdown231 and request-stage destructors257 are reviewed separately. Eager destruction, output and later request cleanup remain required; no full request-lifecycle claim. See exit-review.json and EXIT.md."
     },
     {
       "id": "lifecycle.cycles",
@@ -11972,28 +12051,80 @@
     {
       "id": "lifecycle.resurrection",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "implementation": [
+        "spec/semantics/257-request-destructors.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/79-call-frames.watsup",
+        "spec/semantics/83-call-traces.watsup",
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/161-throwable-constructors.watsup",
+        "spec/semantics/247-handler-callable-consumers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/destructor_state.py",
+        "tests/semantics/destructor_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/destructors.py",
+        "tests/semantics/destructor_cases.json",
+        "tests/semantics/destructor_request.py",
+        "tests/semantics/destructor_review.py",
+        "tests/semantics/destructor_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/main/main.c",
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_objects_API.c",
+        "vendor/php-src/Zend/zend_objects.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "docs/semantics/SOURCE-DESTRUCTORS.md",
+        "coverage/semantics/destructors-review.json",
+        "coverage/semantics/destructor-review.json"
+      ],
+      "review": "Request-stage resurrection retains the object with a once-only automatic mark; later direct/store scans do not invoke it again. Failed automatic construction also suppresses escaped objects. The native-pinned resurrection-once source is independently compared within the64-source cut. Ordinary eager resurrection and GC-cycle interactions remain required."
     },
     {
       "id": "lifecycle.exception-cleanup",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "implementation": [
+        "spec/semantics/257-request-destructors.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/40-control.watsup",
+        "spec/semantics/79-call-frames.watsup",
+        "spec/semantics/83-call-traces.watsup",
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/161-throwable-constructors.watsup",
+        "spec/semantics/247-handler-callable-consumers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/destructor_state.py",
+        "tests/semantics/destructor_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/destructors.py",
+        "tests/semantics/destructor_cases.json",
+        "tests/semantics/destructor_request.py",
+        "tests/semantics/destructor_review.py",
+        "tests/semantics/destructor_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/main/main.c",
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "vendor/php-src/Zend/zend_objects_API.c",
+        "vendor/php-src/Zend/zend_objects.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "docs/semantics/SOURCE-DESTRUCTORS.md",
+        "coverage/semantics/destructors-review.json",
+        "coverage/semantics/destructor-review.json"
+      ],
+      "review": "Within request stage2, ordinary frame leaves restore the authentic caller before ordered compiled-CV cleanup, then extras before receiver/Closure. Pending and assigned-return values remain owned; replacement destructor throws chain and become pending for remaining slots. Ignored by-value ordinary/automatic-constructor return temporaries instead release before callee restoration; C helper returns stay retained. Source-service histories and exact current/saved continuations are checked. General cleanup before stage2 and original uncaught Throwable release before stage1 remain explicit required dependencies; paused return verification is not resumed."
     },
     {
       "id": "lifecycle.ticks",

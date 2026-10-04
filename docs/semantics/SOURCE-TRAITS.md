@@ -40,8 +40,10 @@ output, missing-name priority, final/abstract conflicts and failed declaration
 rollback. Successful declaration history is replayed from raw source images;
 imported descriptors and alias identities must equal that replay's result.
 
-Private-final alias warnings use `E_COMPILE_WARNING` and do not enter ordinary
-error handlers. Abstract alias warnings occur after parent linking. Direct
+Private-final alias warnings use `E_COMPILE_WARNING`128 and do not enter ordinary
+error handlers. Concrete adaptation warnings are recorded before data comparison;
+abstract adaptation warnings follow parent linking. They join the ordered
+post-publication batch, or default-only diagnostic flush before a later fatal. Direct
 static access to an accessible concrete trait method emits the native deprecation
 before arguments or first-class capture. A throwing handler aborts the pending
 call; capture emits the warning once and subsequent invocation uses the selected
@@ -142,10 +144,12 @@ records 33 source agreements and 286 reached state premises at their actual cuts
 The [collision ledger](../../coverage/semantics/trait-collisions-review.json) records
 14 original source tuples and97 publication/callback assertions, plus five
 affected operation/array comparisons and47 queue/array-owner assertions at their
-separate cuts. Other native preparations remain uncredited until implemented.
+separate cuts. Ordered private-final delivery adds four affected sources and43
+alias/queue assertions; the two existing128 mask controls are identified separately.
+Other native preparations remain uncredited until implemented.
 
-Private-final warning ordering, real dependency binding/caching and endogenous
-collision expression errors remain required.
+Real dependency binding/caching and endogenous collision expression errors
+remain required.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
 Historical reached

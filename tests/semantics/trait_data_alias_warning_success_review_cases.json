@@ -1,0 +1,16 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64 profile.json; successful alias plus data warning delivery. Native only before comparisons.",
+  "cases": [
+    {
+      "id": "concrete-alias-warning-default-only-before-live-collision-handler",
+      "source": "<?php\nset_error_handler(function($n,$m){echo \"H\",$n,\";\";C::run();return true;});\ntrait T{private static function f(){return \"F;\";}public const X=E_STRICT;}\necho \"PRE;\";\nclass C{use T{f as final g;}public const X=2048;public static function run(){echo self::g();}}\necho \"POST;\",C::X;",
+      "source_sha256": "b9898b7071d6b3abd7b0272a009880958bd1103f9f296981cab88b664c630496",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "UFJFO0g4MTkyO0Y7UE9TVDsyMDQ4",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgNQo=",
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-collision-cont-review-259/.tools/trait-collision-alias-success-native266-d_zds199/report.json",
+      "native_raw_sha256": "959ecca7b192cc3cb9cc5bf95b28930b11435156354b0a7cb02d81eb829ede1c"
+    }
+  ]
+}

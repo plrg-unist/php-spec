@@ -58,6 +58,7 @@ dec $trait_composed_named(ptraitmethod*, ptbytes) : ptraitmethod?
 dec $trait_copy(pclassdesc, pclassdesc, pmethoddesc, pmethoddesc, ptraitcomposition) : ptraitcomposition
 dec $trait_alias_warning(pstate, pclassdesc, pmethoddesc, pmethoddesc) : pstate
 dec $trait_compile_warning(pstate, pclassdesc, pmethoddesc, pmethoddesc) : pstate
+dec $trait_compile_warning_seed(pstate, pclassdesc) : pstate
 dec $trait_requirements_walk(pstate, pclassdesc, ptraitmethod*, ptraitmethod*) : pstate
 dec $trait_requirement_bound(pstate, pclassdesc, ptraitmethod, ptraitmethod*, ptraitmethod*) : pstate
 dec $trait_requirement_duplicate(pclassdesc, pmethoddesc, pmethoddesc) : bool
@@ -421,13 +422,12 @@ def $trait_copy(pclassdesc_owner, pclassdesc_trait, pmethoddesc, pmethoddesc_ori
   -- if $trait_composed_named(ptraitmethod*, pmethoddesc.NAME) = (TRAITMETHOD pclassdesc_prior pmethoddesc_prior)
   -- if $origin_source(pmethoddesc_prior.FUNCTION.ORIGIN) =/= $origin_source(pmethoddesc.FUNCTION.ORIGIN) \/ pmethoddesc_prior.VISIBILITY =/= pmethoddesc.VISIBILITY
 
-def $trait_compile_warning(S, pclassdesc, pmethoddesc_original, pmethoddesc) = S[.EVENTS = S.EVENTS ++ [DIAGNOSTIC_SOURCE n "Warning" ($ptascii("Private methods cannot be final as they are never overridden by other classes")) pclassdesc.LINE]]
+def $trait_compile_warning(S, pclassdesc, pmethoddesc_original, pmethoddesc) = $trait_compile_warning_seed(S, pclassdesc)
   -- if ~pmethoddesc_original.FINAL
   -- if pmethoddesc.FINAL
   -- if pmethoddesc.VISIBILITY = PROPERTY_PRIVATE
   -- if $ptlc(pmethoddesc.NAME) =/= $ptascii("__construct")
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
-  -- if $long_and(S.REPORTING, 128) =/= 0
 def $trait_compile_warning(S, pclassdesc, pmethoddesc_original, pmethoddesc) = S -- otherwise
 
 def $trait_alias_warning(S, pclassdesc, pmethoddesc_original, pmethoddesc) = S -- if pmethoddesc_original.ABSTRACT

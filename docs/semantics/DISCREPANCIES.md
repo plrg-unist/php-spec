@@ -4,6 +4,24 @@ This ledger separates intentional departures from observed engine irregularities
 that the specification must reproduce. Only explicitly chosen departures belong
 in the intentional-divergence inventory.
 
+## Borrowed cast and foreach locations after callbacks
+
+Two pinned sources execute normally but continue through a location whose owner
+has retired. NaN casting selects a dereferenced CV without adding a reference
+owner; a handler can unset the caller CV and free its final local reference before
+the cast copies that selected slot. Object foreach similarly holds a property
+bucket pointer without owning its table; a key-notice handler can COW the object
+and retire the last clone retaining the selected old table before the copy.
+
+The specification stops these original cases with explicit `Unsupported` rather
+than reading retired store/table payloads or adding a synthetic owner. They have
+zero full native agreement. Separately calibrated external-reference and retained-
+clone companions keep the genuine owners alive and pass. The
+[cast ledger](../../coverage/semantics/object-casts-review.json) records exact
+originals, observed bytes, pointer/free source routes and the longer companion
+timeout. These are candidate engine memory-lifetime defects, not a chosen stable
+replacement behavior or full resolution of the wider consumers.
+
 ## Optimized argument array in a reference list
 
 PHP 8.5.10 compiles `[&$r]=func_get_args()` in an ordinary body to MAKE_REF

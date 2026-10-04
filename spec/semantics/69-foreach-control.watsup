@@ -35,14 +35,14 @@ def $foreach_start(S, statement, plocation, false, z) = S_marked[.TODO = (FOREAC
   -- if $class_plain_instance(S, n_object)
   -- if ~$useriter_instance(S, n_object)
   -- if n_iterator = S.NEXTITER
-  -- if S_marked = $objectprops_mark(S, n_object)
+  -- if S_marked = $object_foreach_reset(S, n_object)
 def $foreach_start(S, statement, plocation, true, z) = S_marked[.TODO = (FOREACH_NEXT n_iterator (HOBJECT n_object) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [OBJECTITER n_iterator n_object 0 true]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.RESULT = KNOWN (POBJECT n_object)
   -- if $class_plain_instance(S, n_object)
   -- if ~$useriter_instance(S, n_object)
   -- if n_iterator = S.NEXTITER
-  -- if S_marked = $objectprops_mark(S, n_object)
+  -- if S_marked = $object_foreach_reset(S, n_object)
 def $foreach_start(S, statement, plocation, b, z) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.RESULT = KNOWN (POBJECT n_object)
@@ -217,6 +217,7 @@ rule PhpStep/foreach-fetch-value: S ~> $foreach_body(S_next, n, HARRAY n_array, 
   -- if $cursor_position((CURSOR n_table n_saved)*, n_array) = (n_position)
   -- if $position_next(S.ARRAYS[n_array].POSITIONS, n_position) = (pkey, n_serial)
   -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = (pitem)
+  -- if pitem =/= UNINITIALIZED
   -- if S_next = $foreach_advance(S[.ORIGIN = porigin?], n, n_array, $(n_serial + 1))
 rule PhpStep/foreach-fetch-reference: S ~> $foreach_body(S_ref, n, HCELL n_cell, statement, z, pkey, REFERENCE S_ref.CELL, true)
   -- if S.TODO = (FOREACH_NEXT n (HCELL n_cell) statement porigin? z) :: ptask_tail*
@@ -226,6 +227,8 @@ rule PhpStep/foreach-fetch-reference: S ~> $foreach_body(S_ref, n, HCELL n_cell,
   -- if $iterator_lookup(S_selected.ITERATORS, n) = (ITERATOR n n_array true (CURSOR n_table n_saved)*)
   -- if $cursor_position((CURSOR n_table n_saved)*, n_array) = (n_position)
   -- if $position_next(S_selected.ARRAYS[n_array].POSITIONS, n_position) = (pkey, n_serial)
+  -- if $entry_lookup(S_selected.ARRAYS[n_array].ITEMS, pkey) = (pitem)
+  -- if pitem =/= UNINITIALIZED
   -- if S_next = $foreach_advance(S_selected, n, n_array, $(n_serial + 1))
   -- if S_ref = $element_reference(S_next, n_array, pkey)
 
@@ -246,25 +249,24 @@ rule PhpStep/foreach-fetch-object-end: S ~> $foreach_finish(S[.ORIGIN = porigin?
   -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position b_ref)
   -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
   -- if $property_next(S, n_object, ppropertyslot*, n_position, 0) = eps
-rule PhpStep/foreach-fetch-object-value: S ~> $foreach_body(S_next, n, HOBJECT n_object, statement, z, KSTRING $property_visible_name(S, n_object, ptbytes), KNOWN $entry_value(S, pitem), false)
+rule PhpStep/foreach-fetch-object: S ~> $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, b_ref)
   -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_object) statement porigin? z) :: ptask_tail*
-  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position false)
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position b_ref)
   -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
   -- if $property_next(S, n_object, ppropertyslot*, n_position, 0) = (ptbytes, pitem, n_next)
-  -- if S_next = S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next false)]
-rule PhpStep/foreach-fetch-object-reference: S ~> $foreach_body(S_ref, n, HOBJECT n_object, statement, z, KSTRING $property_visible_name(S, n_object, ptbytes), REFERENCE S_ref.CELL, true)
-  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_object) statement porigin? z) :: ptask_tail*
-  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position true)
-  -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
-  -- if $property_next(S, n_object, ppropertyslot*, n_position, 0) = (ptbytes, pitem, n_next)
-  -- if S_next = S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)]
-  -- if S_ref = $property_reference_fetch(S_next, n_object, ptbytes, z)
-  -- if S_ref.COMPLETION = NORMAL
-rule PhpStep/foreach-fetch-object-reference-abrupt: S ~> S_ref[.TODO = eps]
-  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_object) statement porigin? z) :: ptask_tail*
-  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position true)
-  -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
-  -- if $property_next(S, n_object, ppropertyslot*, n_position, 0) = (ptbytes, pitem, n_next)
-  -- if S_next = S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)]
-  -- if S_ref = $property_reference_fetch(S_next, n_object, ptbytes, z)
-  -- if S_ref.COMPLETION =/= NORMAL
+
+rule PhpStep/foreach-skip-undefined-value: S ~> $foreach_advance(S[.ORIGIN = porigin?], n, n_array, $(n_serial + 1))
+  -- if S.TODO = (FOREACH_NEXT n (HARRAY n_array) statement porigin? z) :: ptask_tail*
+  -- if $iterator_lookup(S.ITERATORS, n) = (ITERATOR n n_array false pcursor*)
+  -- if $cursor_position(pcursor*, n_array) = (n_position)
+  -- if $position_next(S.ARRAYS[n_array].POSITIONS, n_position) = (pkey, n_serial)
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, pkey) = (UNINITIALIZED)
+rule PhpStep/foreach-skip-undefined-reference: S ~> $foreach_advance(S_selected, n, n_array, $(n_serial + 1))
+  -- if S.TODO = (FOREACH_NEXT n (HCELL n_cell) statement porigin? z) :: ptask_tail*
+  -- if $foreach_owner_value(S, HCELL n_cell) = PARRAY n_original
+  -- if S_selected = $foreach_select(S[.ORIGIN = porigin?], n, HCELL n_cell, z)
+  -- if $foreach_owner_value(S_selected, HCELL n_cell) = PARRAY n_array
+  -- if $iterator_lookup(S_selected.ITERATORS, n) = (ITERATOR n n_array true pcursor*)
+  -- if $cursor_position(pcursor*, n_array) = (n_position)
+  -- if $position_next(S_selected.ARRAYS[n_array].POSITIONS, n_position) = (pkey, n_serial)
+  -- if $entry_lookup(S_selected.ARRAYS[n_array].ITEMS, pkey) = (UNINITIALIZED)

@@ -307,8 +307,18 @@ Keyword/compound selections preserve called/private scope after maker retirement
 using a borrowed target and callsite certificate. Callbacks can append entries;
 handled throws continue and callback exit stops
 the queue. Fatal-render warnings complete before diagnostics freeze and the
-queue begins. Destructors, GC, output buffers and later request cleanup remain
-required.
+queue begins.
+
+[Request-stage destructors](docs/semantics/SOURCE-DESTRUCTORS.md) repeat the
+reverse direct-global pass, then scan reusable live object-store handles. Once
+marks, nested USER permission, ordered slot/CV cleanup and pending exceptions
+preserve native callbacks and owners. Ignored by-value ordinary/constructor returns release
+before callee restoration; C callback returns retain their separate destination.
+[Author checks](coverage/semantics/destructors-review.json) retain78 source
+agreements and303 reached assertions at their actual cuts;
+[independent review](coverage/semantics/destructor-review.json) retains64
+agreements, two Unsupported controls and548 reached assertions. Eager destruction
+before this stage, GC, output buffers and later request cleanup remain required.
 Full core and a fresh combined offline rebuild remain required.
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
@@ -373,8 +383,8 @@ separates full source, paused-state and later concat checks. Other internal
 property access and lifecycle integration remain pending.
 [Exit and die](docs/semantics/EXIT.md) support literal, computed, first-class and
 pipe invocation, ordered argument binding, internal error traces and a distinct
-explicit-exit completion. Ordered shutdown callbacks follow that completion;
-destructor and later request phases remain required. Native checks compare
+explicit-exit completion. Ordered shutdown callbacks and request-stage destructors
+follow that completion; later request phases remain required. Native checks compare
 observable bytes and process status without inferring an exit category.
 [Named empty classes](docs/semantics/SOURCE-CLASSES.md) now support early and
 conditional activation, allocate owned objects, and support identity, exact class
@@ -382,7 +392,10 @@ types and literal `instanceof`; their [review](coverage/semantics/object-classes
 binds source and paused-state checks. [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
 now allocates an owned empty object with exact nominal typing and ordinary
 empty-object behavior; its [review](coverage/semantics/stdclass-review.json)
-binds source and ownership checks. [No-constructor allocation arguments](docs/semantics/SOURCE-NOCTOR-ARGS.md)
+binds source and ownership checks. [Non-object casts](docs/semantics/OBJECT-CASTS.md)
+add populated stdClass storage, shared-table COW, clone/array round trips and
+genuine NaN/key-notice callbacks, with explicit retired-pointer boundaries.
+[No-constructor allocation arguments](docs/semantics/SOURCE-NOCTOR-ARGS.md)
 evaluate positional, named and unpacked values after class lookup while retaining
 sent values through the dummy call; their [review](coverage/semantics/noctor-args-review.json)
 binds source, compiler and paused-state checks. [Empty-class inheritance](docs/semantics/SOURCE-INHERITANCE.md)
@@ -487,8 +500,9 @@ Imported deferred instance defaults use owning class templates. Raw trait-proper
 warnings retain selected cells and operand ownership through handlers and abrupt
 opcode completion. Deferred collision operands compare before type conversion;
 operation diagnostics are recorded with runtime operand order and AST lines,
-then delivered after class publication. Dependency caching, collision expression
-errors, private-final warning ordering and readonly storage remain required. A bounded
+then delivered after class publication. Private-final compile warnings retain
+their phase order and handler-ineligible severity. Dependency caching, collision
+expression errors and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
