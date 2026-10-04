@@ -103,6 +103,8 @@ dec $destructor_pending_for(pcallcontext?, pdestructionframe*) : nat?
 dec $destructor_leaving_exception(ptask*) : nat?
 dec $destructor_local_cells(pbinding*, preqbytes*) : pnode*
 dec $destructor_frame_nodes(pstate) : pnode*
+dec $destructor_context_nodes(pcallcontext?) : pnode*
+dec $destructor_frame_graph(pstate, pstate) : hgraph
 dec $destructor_frame_begin(pstate, pstate) : pstate
 dec $destructor_frame_cleanup(pstate) : pstate
 dec $destructor_frame_order(pstate, pstate) : pnode*
@@ -506,9 +508,15 @@ def $destructor_local_cells(pbinding*, preqbytes :: preqbytes_tail*) = (HCELL n)
   -- if $lookup(pbinding*, preqbytes) = (n)
 def $destructor_local_cells(pbinding*, preqbytes :: preqbytes_tail*) = $destructor_local_cells(pbinding*, preqbytes_tail*)
   -- if $lookup(pbinding*, preqbytes) = eps
-def $destructor_frame_nodes(S) = $destructor_local_cells(S.ENV, S.SYMBOLS) ++ $call_context_roots(S.CURRENT)
+def $destructor_context_nodes(eps) = eps
+def $destructor_context_nodes((pcallcontext)) = $named_roots(pcallcontext.NAMED) ++ $operands_roots(pcallcontext.EXTRA) ++ $instance_roots(pcallcontext.INSTANCE) ++ $instance_roots(pcallcontext.RECEIVER) ++ $call_target_extra_roots(pcallcontext) ++ $wrapper_roots(pcallcontext.WRAPPER)
+def $destructor_frame_nodes(S) = $destructor_local_cells(S.ENV, S.SYMBOLS) ++ $destructor_context_nodes(S.CURRENT)
 def $destructor_leaving_exception((THROW_SEARCH n) :: ptask*) = (n)
 def $destructor_leaving_exception(ptask*) = eps -- otherwise
+;; EG(exception) still owns the pending object in the unobservable restore
+;; helper, before throw_frame_resume reinstalls its ordinary THROW_SEARCH task.
+def $destructor_frame_graph(S, S_restored) = H[.ROOTS = H.ROOTS ++ $instance_roots($destructor_leaving_exception(S.TODO))]
+  -- if H = $heap_graph(S_restored)
 def $destructor_frame_cleanup(S) = S[.DESTRUCTION.CALLED = $destructor_all(0, |S.OBJECTS|)]
   -- if $destructor_active(S)
   -- if S.TODO = (EXIT_UNWIND z) :: ptask*
@@ -522,19 +530,20 @@ def $frame_release(S, S_restored) = $destructor_frame_begin(S, $destruction_stor
 
 def $frame_release(S, S_restored) = $prune_live($destruction_store_drop(S_new, $destructor_frame_order(S, S_new)), pnode_live*)
   -- if S_new = $destruction_store_new($destructor_frame_cleanup(S_restored[.DESTRUCTION.CALLED = $destructor_frame_cleanup(S).DESTRUCTION.CALLED]))
-  -- if pnode_live* = $heap_prune($heap_graph(S_new)).NODES
+  -- if pnode_live* = $heap_prune($destructor_frame_graph(S, S_new)).NODES
   -- if ~$destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
   -- if ~$destructor_frame_staged(S)
 def $frame_release(S, S_restored) = $destruction_store_new($destructor_frame_cleanup(S_restored[.DESTRUCTION.CALLED = $destructor_frame_cleanup(S).DESTRUCTION.CALLED]))
   -- if ~$destructor_frame_staged(S)
   -- if S_new = $destruction_store_new($destructor_frame_cleanup(S_restored[.DESTRUCTION.CALLED = $destructor_frame_cleanup(S).DESTRUCTION.CALLED]))
-  -- if pnode_live* = $heap_prune($heap_graph(S_new)).NODES
+  -- if pnode_live* = $heap_prune($destructor_frame_graph(S, S_new)).NODES
   -- if $destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
 def $destructor_frame_staged(S) = ($destructor_active(S) /\ S.COMPLETION = NORMAL /\ (S.TODO = eps \/ $destructor_leaving_exception(S.TODO) =/= eps) /\ S.CURRENT =/= eps /\ $destructor_frame_nodes(S) =/= eps)
 ;; The explicit slots cover CVs/context; unrelated completed temporaries are
 ;; pruned separately. Exclude handles already freed through those slots.
-def $destructor_frame_order(S, S_restored) = pnode_done* ++ $destruction_nodes_delete($destruction_release_order($heap_graph(S_restored)), pnode_done*)
-  -- if pnode_done* = $destruction_release_walk($heap_graph(S_restored), $destruction_values($destructor_frame_nodes(S)), eps)
+def $destructor_frame_order(S, S_restored) = pnode_done* ++ $destruction_nodes_delete($destruction_release_order(H), pnode_done*)
+  -- if H = $destructor_frame_graph(S, S_restored)
+  -- if pnode_done* = $destruction_release_walk(H, $destruction_values($destructor_frame_nodes(S)), eps)
 
 def $destructor_frame_begin(S, S_restored) = $destructor_release_begin(S_restored[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.DESTRUCTION.FRAMES = pdestructionframe :: S_restored.DESTRUCTION.FRAMES][.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: S_restored.TODO], $destruction_values($destructor_frame_nodes(S)))
   -- if S.CURRENT = (pcallcontext)
