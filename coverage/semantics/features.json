@@ -1991,7 +1991,8 @@
         "spec/semantics/235-internal-default-constructors.watsup",
         "spec/semantics/240-internal-default-reception.watsup",
         "spec/semantics/245-anonymous-default-new.watsup",
-        "spec/semantics/250-ordinary-throwable-reception.watsup"
+        "spec/semantics/250-ordinary-throwable-reception.watsup",
+        "spec/semantics/260-dynamic-new.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -2017,9 +2018,10 @@
         "tests/semantics/internal_default_constructor_sources.py",
         "tests/semantics/internal_default_reception_sources.py",
         "tests/semantics/anonymous_default_new_sources.py",
-        "tests/semantics/ordinary_constructor_sources.py"
+        "tests/semantics/ordinary_constructor_sources.py",
+        "tests/semantics/dynamic_new_sources.py"
       ],
-      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Dynamic class names, nonpublic constructors and other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class256 is covered separately in object-class-name-review.json and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial.",
+      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Ordinary dynamic class selectors are covered below; other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class256 is covered separately in object-class-name-review.json and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload and ordinary named keyword NEW remain required (dynamic-new-review.json).",
       "evidence": [
         "coverage/semantics/object-classes-review.json",
         "coverage/semantics/stdclass-review.json",
@@ -2029,13 +2031,15 @@
         "coverage/semantics/internal-default-constructors-review.json",
         "coverage/semantics/internal-default-reception-review.json",
         "coverage/semantics/anonymous-default-new-review.json",
-        "coverage/semantics/ordinary-throwable-reception-review.json"
+        "coverage/semantics/ordinary-throwable-reception-review.json",
+        "coverage/semantics/dynamic-new-review.json"
       ],
       "helper_tests": [
         "tests/semantics/internal_default_constructor_protocol.py",
         "tests/semantics/internal_default_reception_protocol.py",
         "tests/semantics/anonymous_default_new_protocol.py",
-        "tests/semantics/ordinary_constructor_protocol.py"
+        "tests/semantics/ordinary_constructor_protocol.py",
+        "tests/semantics/dynamic_new_protocol.py"
       ]
     },
     {
@@ -9183,9 +9187,12 @@
         "spec/semantics/133-inheritance-compiler.watsup",
         "spec/semantics/134-inheritance-runtime.watsup",
         "spec/semantics/141-method-compiler.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/260-dynamic-new.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/dynamic_new_protocol.py"
+      ],
       "source_tests": [
         "tests/semantics/inheritance.py",
         "tests/semantics/inheritance_protocol.py",
@@ -9194,14 +9201,16 @@
         "tests/semantics/method_runtime.py",
         "tests/semantics/method_wrapper_protocol.py",
         "tests/semantics/method_visibility_cases.json",
-        "tests/semantics/method_visibility_protocol.py"
+        "tests/semantics/method_visibility_protocol.py",
+        "tests/semantics/dynamic_new_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
         "coverage/semantics/inheritance-review.json",
-        "coverage/semantics/method-visibility-review.json"
+        "coverage/semantics/method-visibility-review.json",
+        "coverage/semantics/dynamic-new-review.json"
       ],
-      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Source public/protected/private effective constructors initialize owned instances; lexical visibility denial precedes arguments and constructor results cannot replace the allocated object (properties-review.json, methods-review.json, method-visibility-review.json). Dynamic class names and remaining internal constructor bodies remain open."
+      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Source public/protected/private effective constructors initialize owned instances; lexical visibility denial precedes arguments and constructor results cannot replace the allocated object (properties-review.json, methods-review.json, method-visibility-review.json). Ordinary dynamic class selectors are covered below; remaining internal constructor bodies remain open. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload and ordinary named keyword NEW remain required (dynamic-new-review.json)."
     },
     {
       "id": "classes.object-identity",
@@ -9384,13 +9393,15 @@
         "spec/semantics/188-class-static-runtime.watsup",
         "spec/semantics/198-argument-introspection-compiler.watsup",
         "spec/semantics/199-argument-introspection-runtime.watsup",
-        "spec/semantics/223-called-class.watsup"
+        "spec/semantics/223-called-class.watsup",
+        "spec/semantics/260-dynamic-new.watsup"
       ],
       "helper_tests": [
         "tests/semantics/called_class_protocol.py",
         "tests/semantics/called_class_controls.py",
         "tests/semantics/called_class_review_protocol.py",
-        "tests/semantics/called_class_review_boundaries.py"
+        "tests/semantics/called_class_review_boundaries.py",
+        "tests/semantics/dynamic_new_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/method_compiler.py",
@@ -9400,7 +9411,8 @@
         "tests/semantics/class_static_references.py",
         "tests/semantics/called_class_cases.json",
         "tests/semantics/called_class_review_cases.json",
-        "tests/semantics/called_class_review_boundaries.json"
+        "tests/semantics/called_class_review_boundaries.json",
+        "tests/semantics/dynamic_new_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
@@ -9411,9 +9423,10 @@
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "docs/semantics/CALLED-CLASS.md",
-        "coverage/semantics/called-class-review.json"
+        "coverage/semantics/called-class-review.json",
+        "coverage/semantics/dynamic-new-review.json"
       ],
-      "review": "Admitted instance calls and class-bound closures retain a distinct called class for static::class while lexical self/parent use declaring scope (methods-review.json). Bounded scoped static calls forward self/parent/static, explicit class calls select that class, and nonstatic scoped calls use the active receiver class (SOURCE-METHODS.md). Broader late-static-binding behavior remains open. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). The bounded ordinary checkpoint leaves typed object-string property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access open. Called-class introspection223 implements the admitted get_called_class() body with genuine current stopping frames, source Closure binding/capture, inherited/forwarded methods and error-handler restoration. Explicit builtin Closure->__invoke observes Closure. Ordered argument/count checks, direct/generic traces, source-selected identities and caller/owner guards have separate evidence in called-class-review.json. Original Unsupported failures retain zero agreement; actual Closure::fromCallable captures are separately implemented in234. Builtin Closure rebinding, builtin callback targets, suspension and broader reference-result consumers remain open.",
+      "review": "Admitted instance calls and class-bound closures retain a distinct called class for static::class while lexical self/parent use declaring scope (methods-review.json). Bounded scoped static calls forward self/parent/static, explicit class calls select that class, and nonstatic scoped calls use the active receiver class (SOURCE-METHODS.md). Broader late-static-binding behavior remains open. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). The bounded ordinary checkpoint leaves typed object-string property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access open. Called-class introspection223 implements the admitted get_called_class() body with genuine current stopping frames, source Closure binding/capture, inherited/forwarded methods and error-handler restoration. Explicit builtin Closure->__invoke observes Closure. Ordered argument/count checks, direct/generic traces, source-selected identities and caller/owner guards have separate evidence in called-class-review.json. Original Unsupported failures retain zero agreement; actual Closure::fromCallable captures are separately implemented in234. Builtin Closure rebinding, builtin callback targets, suspension and broader reference-result consumers remain open. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload and ordinary named keyword NEW remain required (dynamic-new-review.json).",
       "planned_source_tests": [
         "tests/semantics/conformance/variance-static-intersection-first.php",
         "tests/semantics/conformance/variance-static-intersection-second.php"

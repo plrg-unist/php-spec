@@ -20,6 +20,19 @@ elaboration stop remain separate in the
 [binding ledger](coverage/semantics/real-closure-binding-review.json).
 Temporary-current and internal API consumers remain required; returns stay paused.
 
+Ordinary dynamic NEW260 evaluates string/object selectors once and captures the
+class before arguments, class-table updates and constructor dispatch. Parser
+literals, later compiled keywords and runtime names keep distinct scope/error
+behavior; fetch/access lines stay separate from constructor call lines. Immediate
+caller records authenticate recursive constructors; completed cold-table history
+retains nonowning scope after a rebound Closure retires. Source26/compile3 and
+retired83/recursive46 pass at0091; affected source3 at a65 and new2 plus
+contexts51/rebound45 at3f817 retain separate cuts. Actual6af8/252/263 composition
+at26fba passes cached trait METHOD/clone source1 and34 scope premises with lexical
+HostA and unrelated called HostB. The [ledger](coverage/semantics/dynamic-new-review.json)
+preserves original failures and preparation-only checks. Autoload and ordinary
+named self/parent/static NEW remain required; complete core stays open.
+
 Cached property method callables (module263) now create source Closure children
 with authentic lexical scope and a separate, potentially unrelated called class.
 Copied full method/receipt authority survives wrapped or plain-clone maker
