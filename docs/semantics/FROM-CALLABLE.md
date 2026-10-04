@@ -25,6 +25,12 @@ and clone preserve genuine default reception, lexical/called scope and shared
 source method statics. Ordinary source Closure clones keep their separate static
 storage. Nominal Closure checks and fake-Closure equality use the selected target.
 
+Source Closures created inside a captured method copy its authenticated scope and
+immediate method body, including the full imported trait identity. This borrowed
+creator evidence survives the parent capture retiring. Static children retain no
+parent or former receiver; nonstatic children own their actual bound receiver.
+Cold private static references and source statics use the consuming trait class.
+
 Invalid callable values raise the factory's `TypeError`. An actual-object getter
 denial becomes its previous `Error`, with raw selected method spelling. A throwing
 deprecation handler fully unwinds and runs `finally` before the factory creates a

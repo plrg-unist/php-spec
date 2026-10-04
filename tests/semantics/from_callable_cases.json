@@ -149,5 +149,41 @@
     "source_sha256": "054c69b7ae6007d6be181afeb021a4d599b0b2a0b0c34025a8ae380aa3ee2b19",
     "expected_model": "unsupported",
     "boundary": "The final strlen capture is outside existing120 intrinsic bodies; zero agreement credit."
+  },
+  {
+    "id": "current-default",
+    "source": "<?php\nclass FromCurrentValue implements Stringable {\n public string $value;\n public function __construct(string $value) { echo 'C|'; $this->value = $value; }\n public function __toString(): string { echo 'V|'; return $this->value; }\n}\nclass FromCurrentOwner {\n private static function run(string $value = new FromCurrentValue('value'), Exception $error = new Exception('held')) {\n  static $count = 0;\n  echo ++$count, ':', self::class, ':', static::class, ':', get_called_class(), ':', $value, ':', $error->getMessage(), '|';\n }\n public function make() { return Closure::fromCallable(['self', 'run']); }\n}\nclass FromCurrentChild extends FromCurrentOwner {}\nset_error_handler(function($n,$s) { echo 'D|'; return true; }, E_DEPRECATED);\n$maker = new FromCurrentChild; $closure = $maker->make(); restore_error_handler();\nunset($maker); $copy = clone $closure; $closure(); $copy(); unset($closure, $copy);\n",
+    "source_sha256": "8883543011be317adda737d3a9fe4f8e103c19528447fa7a184b3d291435fe17",
+    "expected_model": "normal"
+  },
+  {
+    "id": "current-cold-key",
+    "source": "<?php\nclass FromColdOwner {\n public const PREFIX = 'self::';\n public static string $target = self::PREFIX . 'run';\n private static function run() { echo self::class, ':', static::class, ':', get_called_class(), '|'; }\n public function make() {\n  $callback =& self::$target;\n  set_error_handler(function($n,$s) use (&$callback) { echo 'D|'; $callback = 'self::missing'; return true; }, E_DEPRECATED);\n  $closure = Closure::fromCallable($callback); restore_error_handler(); return $closure;\n }\n}\nclass FromColdChild extends FromColdOwner {}\n$maker = new FromColdChild; $closure = $maker->make(); unset($maker);\necho FromColdOwner::$target, '|'; $closure(); unset($closure);\nset_error_handler(function($n,$s) { echo 'W|'; throw new Exception('key'); });\n$classes = ['' => 'FromColdOwner'];\ntry { Closure::fromCallable([$classes[$missing], 'run']); }\ncatch (Throwable $e) { echo get_class($e), ':', $e->getMessage(), ':', ($e->getPrevious() === null ? '1' : '0'), '|'; }\nrestore_error_handler();\n",
+    "source_sha256": "7a917a37dcdf433f97fdcecd729c0f8e52d04f59f659fe63bead94f366686523",
+    "expected_model": "normal"
+  },
+  {
+    "id": "current-creator",
+    "source": "<?php\nclass FromNestedRequested {\n public function make() { return static function() { echo self::class, ':', static::class, ':', get_called_class(), '|'; }; }\n}\nclass FromNestedForeign {\n public function make() {\n  set_error_handler(function($n,$s) { echo 'D|'; return true; }, E_DEPRECATED);\n  $parent = Closure::fromCallable(['FromNestedRequested', 'self::make']);\n  restore_error_handler(); return $parent();\n }\n}\n$maker = new FromNestedForeign; $child = $maker->make(); unset($maker); $child(); unset($child);\n",
+    "source_sha256": "7caa9ef0387ed9c076241071b7572386d2237116b0db3b535e7975dcd8463f26",
+    "expected_model": "normal"
+  },
+  {
+    "id": "current-trait-cold-v4",
+    "source": "<?php\ntrait FromCaptureTrait {\n private static function run() {\n  set_error_handler(static function() { echo 'W|'; });\n  $slot =& self::$value; restore_error_handler();\n  static $n = 0; echo $slot, ':', self::class, ':', static::class, ':', ++$n, '|'; }\n public static function capture() {\n  set_error_handler(static function() { echo 'D|'; });\n  $value = Closure::fromCallable(['self', 'run']);\n  restore_error_handler(); return $value;\n }\n}\nclass FromTraitA { use FromCaptureTrait; private static string $value = 'a' . E_STRICT; }\nclass FromTraitB { use FromCaptureTrait; private static string $value = 'b' . E_STRICT; }\n$first = FromTraitA::capture(); $copy = clone $first;\n$other = FromTraitB::capture();\n$first(); $copy(); $other(); unset($first, $copy, $other);\n",
+    "source_sha256": "9af3e19f850975322148b70e625083448af59300af5c46c6923a6faddab41e1e",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-nested-instance-child",
+    "source": "<?php\nclass NestedRequested234 {\n    public function make() {\n        return function () {\n            echo get_class($this), ':', self::class, ':', static::class,\n                 ':', get_called_class(), '|';\n        };\n    }\n}\nclass NestedForeign234 {\n    public function capture() {\n        return Closure::fromCallable([NestedRequested234::class, 'self::make']);\n    }\n}\nset_error_handler(static function () { echo 'D|'; });\n$maker = new NestedForeign234();\n$parent = $maker->capture();\n$child = $parent();\n$copy = clone $child;\nunset($maker, $parent);\n$child();\n$copy();\nunset($child, $copy);\n",
+    "source_sha256": "e1a1824e40868f53f228503a5d8f8d1faf90c1605506ff563a315586e5d83214",
+    "expected_model": "normal"
+  },
+  {
+    "id": "foreign-nested-static-parent-child",
+    "source": "<?php\nclass NestedStaticRequested234 {\n    public static function make() {\n        return function () {\n            echo isset($this) ? '1' : '0';\n            echo ':', self::class, ':', static::class,\n                 ':', get_called_class(), '|';\n        };\n    }\n}\nclass NestedStaticForeign234 {\n    public function capture() {\n        return Closure::fromCallable([NestedStaticRequested234::class, 'self::make']);\n    }\n}\nset_error_handler(static function () { echo 'D|'; });\n$maker = new NestedStaticForeign234();\n$parent = $maker->capture();\nunset($maker);\n$child = $parent();\n$copy = clone $child;\nunset($parent);\n$child();\n$copy();\nunset($child, $copy);\n",
+    "source_sha256": "3c204fc3c8f7f24edb9127ffee9458a4b6246ad2d2b3c2277a469ec1a29366b4",
+    "expected_model": "normal"
   }
 ]

@@ -116,8 +116,11 @@ callable forms. Existing Closure inputs preserve identity; method captures freez
 live method bytes and selecting permission before raw values/makers retire.
 USER admission and internal Closure getter scope remain distinct, including
 foreign receiver/called-class cases. Invocation/clone retain real defaults,
-source method statics and receiver ownership. Factory lookup-warning throws wrap
-only after handler/finally unwinding; argument-read throws before entry remain
+source method statics and receiver ownership. Created source Closures retain
+authenticated method/import scope after the parent capture retires; static
+children add no receiver owner, while nonstatic children retain their bound
+receiver. Imported private cold references and per-host source statics are covered.
+Factory lookup-warning throws wrap only after handler/finally unwinding; argument-read throws before entry remain
 unwrapped. [Contract](docs/semantics/FROM-CALLABLE.md),
 [review ledger](coverage/semantics/from-callable-review.json).
 
