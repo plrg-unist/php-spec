@@ -462,7 +462,9 @@ let execute value request =
     match Runner.Interp.eval_func "base64" [] [bytes_value json] with
     | Run.Pass value -> check (typ "preqbytes") value; value
     | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg) in
-  let startup = List.assoc_opt "startup_ini" (assoc request) |> Option.map (fun json ->
+  let startup_json = match List.filter (fun (key,_) -> key = "startup_ini") (assoc request) with
+    | [] -> None | [(_,json)] -> Some json | _ -> fail "duplicate startup INI field" in
+  let startup = startup_json |> Option.map (fun json ->
     exact ["error_reporting"; "include_path"] json;
     let reporting = match field "error_reporting" json with
       | `Null -> None | value -> Some (decode_bytes value) in
@@ -478,7 +480,7 @@ let execute value request =
      | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg));
     value) in
   Option.iter (fun facts ->
-    let include_path = match List.assoc_opt "startup_ini" (assoc request) with
+    let include_path = match startup_json with
       | None -> `String "Ljo="
       | Some json ->
           (match Runner.Interp.eval_func "c_string" [] [decode_bytes (field "include_path" json)] with
