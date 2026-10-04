@@ -112,6 +112,9 @@ dec $destructor_frame_cleanup(pstate) : pstate
 dec $destructor_frame_order(pstate, pstate) : pnode*
 dec $destructor_frame_valid(pstate, pdestructionframe) : bool
 dec $destructor_chain_pending(pstate, pdestructorcall) : pstate
+dec $destructor_resume_pending(pstate, pdestructorcall) : pstate
+dec $destructor_release_frame(ptask*, pdestructionframe) : bool
+dec $destructor_frame_tasks(ptask*, pdestructionframe, pdestructionframe) : ptask*
 
 def $destructor_method(S, n) = $effective_method(S, porigin, $ptascii("__destruct"), |S.CLASSES|)
   -- if $(n < |S.OBJECTS|)
@@ -448,7 +451,7 @@ def $call_after_origin(S, DESTRUCTOR_RESULT pdestructorcall) = S[.ORIGIN = pdest
 def $call_after_origin(S, DESTRUCTOR_RELEASE pdestructionrelease) = S[.DESTRUCTION.RELEASES = pdestructionrelease_tail*]
   -- if S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*
 def $throwable_marker(DESTRUCTOR_RESULT pdestructorcall) = (pdestructorcall.CALLER = eps)
-def $return_discard(S, DESTRUCTOR_RESULT pdestructorcall) = $destructor_chain_pending(S[.DESTRUCTION.CALLS = pdestructorcall_tail*], pdestructorcall)
+def $return_discard(S, DESTRUCTOR_RESULT pdestructorcall) = $destructor_resume_pending($destructor_chain_pending(S[.DESTRUCTION.CALLS = pdestructorcall_tail*], pdestructorcall), pdestructorcall)
   -- if pdestructorcall.CALLER =/= eps
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
 def $return_discard(S, DESTRUCTOR_RELEASE pdestructionrelease) = S[.DESTRUCTION.RELEASES = pdestructionrelease_tail*]
@@ -628,10 +631,27 @@ rule PhpStep/destructor-frame-throw: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_ta
   -- if pdestructionframe.PENDING = (n)
 def $return_discard(S, DESTRUCTOR_FRAME_EXIT pdestructionframe) = S[.DESTRUCTION.FRAMES = pdestructionframe_tail*]
   -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
+def $call_after_origin(S, DESTRUCTOR_FRAME_EXIT pdestructionframe) = S[.DESTRUCTION.FRAMES = pdestructionframe_tail*]
+  -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
 def $destructor_chain_pending(S, pdestructorcall) = $throwable_previous(S, n, n_old)
   -- if pdestructorcall.PENDING = (n_old)
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
 def $destructor_chain_pending(S, pdestructorcall) = S -- otherwise
+;; i_free_compiled_variables continues its ordered decrements after a nested
+;; destructor throws. Transfer the replacement exception to the existing frame
+;; finish owner; the next slot sees that exception as its saved pending value.
+def $destructor_release_frame((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionframe) = $destructor_release_frame(ptask_tail*, pdestructionframe)
+def $destructor_release_frame((DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_tail*, pdestructionframe) = true
+def $destructor_release_frame(ptask*, pdestructionframe) = false -- otherwise
+def $destructor_frame_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionframe, pdestructionframe_new) = (DESTRUCTOR_RELEASE pdestructionrelease) :: $destructor_frame_tasks(ptask_tail*, pdestructionframe, pdestructionframe_new)
+def $destructor_frame_tasks((DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_tail*, pdestructionframe, pdestructionframe_new) = (DESTRUCTOR_FRAME_EXIT pdestructionframe_new) :: ptask_tail*
+def $destructor_resume_pending(S, pdestructorcall) = S[.TODO = $destructor_frame_tasks(ptask_tail*, pdestructionframe, pdestructionframe_new)][.DESTRUCTION.FRAMES = pdestructionframe_new :: pdestructionframe_tail*]
+  -- if pdestructorcall.FRAME = (pdestructionframe)
+  -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $destructor_release_frame(ptask_tail*, pdestructionframe)
+  -- if pdestructionframe_new = pdestructionframe[.PENDING = (n)]
+def $destructor_resume_pending(S, pdestructorcall) = S -- otherwise
 def $destructor_frames_valid(S, eps) = true
 def $destructor_frames_valid(S, pdestructionframe :: pdestructionframe_tail*) = ($destructor_pending_valid(S, pdestructionframe.PENDING) /\ $destructor_return_operand_valid(S, pdestructionframe.VALUE) /\ $function_at($all_functions(S), pdestructionframe.FUNCTION) =/= eps /\ $destructor_frames_valid(S, pdestructionframe_tail*))
 
