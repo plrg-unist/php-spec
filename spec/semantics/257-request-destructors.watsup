@@ -37,11 +37,11 @@ def $destruction_store_drop(S, (HCELL n) :: pnode*) = $destruction_store_drop(S,
 def $destruction_store_drop(S, (HARRAY n) :: pnode*) = $destruction_store_drop(S, pnode*)
 
 def $destruction_node_delete(eps, pnode) = eps
-def $destruction_node_delete(pnode :: pnode*, pnode) = pnode*
-def $destruction_node_delete(pnode_other :: pnode*, pnode) = pnode_other :: $destruction_node_delete(pnode*, pnode)
+def $destruction_node_delete(pnode :: pnode_tail*, pnode) = pnode_tail*
+def $destruction_node_delete(pnode_other :: pnode_tail*, pnode) = pnode_other :: $destruction_node_delete(pnode_tail*, pnode)
   -- if pnode_other =/= pnode
 def $destruction_nodes_delete(pnode*, eps) = pnode*
-def $destruction_nodes_delete(pnode*, pnode_drop :: pnode_drop*) = $destruction_nodes_delete($destruction_node_delete(pnode*, pnode_drop), pnode_drop*)
+def $destruction_nodes_delete(pnode*, pnode_drop :: pnode_drop_tail*) = $destruction_nodes_delete($destruction_node_delete(pnode*, pnode_drop), pnode_drop_tail*)
 def $destruction_children(eps, pnode) = eps
 def $destruction_children((HEDGE pnode pnode_child) :: hedge*, pnode) = pnode_child :: $destruction_children(hedge*, pnode)
 def $destruction_children((HEDGE pnode_other pnode_child) :: hedge*, pnode) = $destruction_children(hedge*, pnode)
@@ -50,15 +50,15 @@ def $destruction_children((HEDGE pnode_other pnode_child) :: hedge*, pnode) = $d
 ;; Pending slots remain owners until each native decrement occurs. Invocation
 ;; precedes free_obj; the parent handle is recycled after all outgoing slots.
 def $destruction_values(eps) = eps
-def $destruction_values(pnode :: pnode*) = (DESTRUCTION_VALUE pnode) :: $destruction_values(pnode*)
+def $destruction_values(pnode :: pnode_tail*) = (DESTRUCTION_VALUE pnode) :: $destruction_values(pnode_tail*)
 def $destruction_job_nodes(eps) = eps
 def $destruction_job_nodes((DESTRUCTION_VALUE pnode) :: pdestructionjob*) = pnode :: $destruction_job_nodes(pdestructionjob*)
 def $destruction_job_nodes((DESTRUCTION_HANDLE n) :: pdestructionjob*) = $destruction_job_nodes(pdestructionjob*)
 def $destruction_free_job(HOBJECT n) = [DESTRUCTION_HANDLE n]
 def $destruction_free_job(pnode) = eps -- otherwise
 def $destruction_zero(H, eps) = eps
-def $destruction_zero(H, pnode :: pnode*) = pnode :: $destruction_zero(H, pnode*) -- if $heap_owners(H, pnode) = 0
-def $destruction_zero(H, pnode :: pnode*) = $destruction_zero(H, pnode*) -- if $($heap_owners(H, pnode) > 0)
+def $destruction_zero(H, pnode :: pnode_tail*) = pnode :: $destruction_zero(H, pnode_tail*) -- if $heap_owners(H, pnode) = 0
+def $destruction_zero(H, pnode :: pnode_tail*) = $destruction_zero(H, pnode_tail*) -- if $($heap_owners(H, pnode) > 0)
 def $destruction_release_order(H) = $destruction_release_walk(H, $destruction_values($destruction_zero(H, H.NODES)), eps)
 def $destruction_release_walk(H, eps, pnode_done*) = pnode_done*
 def $destruction_release_walk(H, (DESTRUCTION_HANDLE n) :: pdestructionjob*, pnode_done*) = $destruction_release_walk(H, pdestructionjob*, pnode_done* ++ [HOBJECT n])
@@ -114,15 +114,15 @@ def $destructor_method(S, n) = $effective_method(S, porigin, $ptascii("__destruc
   -- if S.OBJECTS[n] = INSTANCE porigin
 def $destructor_method(S, n) = eps -- otherwise
 def $destructor_classes(eps) = false
-def $destructor_classes(pclassdesc :: pclassdesc*) = ($method_named(pclassdesc.METHODS, $ptascii("__destruct")) =/= eps \/ $destructor_classes(pclassdesc*))
+def $destructor_classes(pclassdesc :: pclassdesc_tail*) = ($method_named(pclassdesc.METHODS, $ptascii("__destruct")) =/= eps \/ $destructor_classes(pclassdesc_tail*))
 def $destructor_active(S) = (S.DESTRUCTION.PHASE = DESTRUCTION_GLOBALS \/ S.DESTRUCTION.PHASE = DESTRUCTION_STORE)
 def $destructor_waiting(S, eps) = false
 def $destructor_waiting(S, (HOBJECT n) :: pnode*) = true
   -- if ~(n <- S.DESTRUCTION.CALLED)
   -- if $destructor_method(S, n) =/= eps
-def $destructor_waiting(S, pnode :: pnode*) = $destructor_waiting(S, pnode*) -- otherwise
+def $destructor_waiting(S, pnode :: pnode_tail*) = $destructor_waiting(S, pnode_tail*) -- otherwise
 def $destructor_reverse(eps) = eps
-def $destructor_reverse(preqbytes :: preqbytes*) = $destructor_reverse(preqbytes*) ++ [preqbytes]
+def $destructor_reverse(preqbytes :: preqbytes_tail*) = $destructor_reverse(preqbytes_tail*) ++ [preqbytes]
 def $destructor_all(n, n_end) = eps -- if $(n >= n_end)
 def $destructor_all(n, n_end) = n :: $destructor_all($(n + 1), n_end) -- if $(n < n_end)
 def $destructor_bailout(FATAL preqbytes z) = true
@@ -195,18 +195,18 @@ def $drive_steps(S, n) = $prune_allocations($destructor_stop(S))
 ;; The reverse direct-global pass skips real reference wrappers and objects with
 ;; another retained owner. Changes to the symbol-table size cause another pass.
 def $call_task_valid(S, DESTRUCTOR_GLOBALS) = ($shutdown_task_scope(S) /\ S.ORIGIN = eps /\ S.DESTRUCTION.PHASE = DESTRUCTION_GLOBALS /\ $destructor_pass_valid(S) /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.CALLS = eps)
-rule PhpStep/destructor-global-release: S ~> $destructor_release_begin(S[.ENV = $unbind(S.ENV, preqbytes)][.DESTRUCTION.NAMES = preqbytes*][.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)], [DESTRUCTION_VALUE (HOBJECT n)])
+rule PhpStep/destructor-global-release: S ~> $destructor_release_begin(S[.ENV = $unbind(S.ENV, preqbytes)][.DESTRUCTION.NAMES = preqbytes_tail*][.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)], [DESTRUCTION_VALUE (HOBJECT n)])
   -- if S.TODO = [DESTRUCTOR_GLOBALS]
   -- if $call_task_valid(S, DESTRUCTOR_GLOBALS)
-  -- if S.DESTRUCTION.NAMES = preqbytes :: preqbytes*
+  -- if S.DESTRUCTION.NAMES = preqbytes :: preqbytes_tail*
   -- if $lookup(S.ENV, preqbytes) = (n_cell)
   -- if ~(n_cell <- S.REFCELLS)
   -- if S.STORE[n_cell] = DEFINED (POBJECT n)
   -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
-rule PhpStep/destructor-global-skip: S ~> S[.DESTRUCTION.NAMES = preqbytes*][.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)]
+rule PhpStep/destructor-global-skip: S ~> S[.DESTRUCTION.NAMES = preqbytes_tail*][.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)]
   -- if S.TODO = [DESTRUCTOR_GLOBALS]
   -- if $call_task_valid(S, DESTRUCTOR_GLOBALS)
-  -- if S.DESTRUCTION.NAMES = preqbytes :: preqbytes*
+  -- if S.DESTRUCTION.NAMES = preqbytes :: preqbytes_tail*
   -- if ~$destructor_global_direct(S, preqbytes)
 def $destructor_global_direct(S, preqbytes) = true
   -- if $lookup(S.ENV, preqbytes) = (n)
@@ -420,11 +420,11 @@ def $throwable_continuation(S, S_next) = S_next
 
 ;; Saved caller tables still own their values. The destructor's C marker owns
 ;; one receiver while its entered USER method owns the other temporary receiver.
-def $destructor_context_call(pcallcontext, (pcallcontext), pframe :: pframe*) = (pdestructorcall)
+def $destructor_context_call(pcallcontext, (pcallcontext), pframe :: pframe_tail*) = (pdestructorcall)
   -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask*
   -- if pframe.CONTEXT = pdestructorcall.CALLER /\ pframe.ORIGIN = pdestructorcall.ORIGIN /\ pframe.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT
-  -- if pdestructorcall.CALLER =/= eps \/ (pframe.LOCALS = eps /\ pframe* = eps)
-def $destructor_context_call(pcallcontext, pcallcontext_other?, pframe :: pframe*) = $destructor_context_call(pcallcontext, pframe.CONTEXT, pframe*)
+  -- if pdestructorcall.CALLER =/= eps \/ (pframe.LOCALS = eps /\ pframe_tail* = eps)
+def $destructor_context_call(pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $destructor_context_call(pcallcontext, pframe.CONTEXT, pframe_tail*)
   -- if pcallcontext_other? =/= (pcallcontext)
 def $destructor_context_call(pcallcontext, pcallcontext_other?, pframe*) = eps -- otherwise
 def $destructor_context_kind(S, pcallcontext) = ($destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) =/= eps)
@@ -489,23 +489,23 @@ def $destruction_state_valid(S) = true
   -- if $destructor_frames_valid(S, S.DESTRUCTION.FRAMES)
 def $destruction_state_valid(S) = false -- otherwise
 def $destructor_releases_valid(S, eps) = true
-def $destructor_releases_valid(S, pdestructionrelease :: pdestructionrelease*) = ($destructor_release_live(S, pdestructionrelease) /\ $destructor_releases_valid(S, pdestructionrelease*))
+def $destructor_releases_valid(S, pdestructionrelease :: pdestructionrelease_tail*) = ($destructor_release_live(S, pdestructionrelease) /\ $destructor_releases_valid(S, pdestructionrelease_tail*))
 def $destructor_calls_valid(S, eps) = true
-def $destructor_calls_valid(S, pdestructorcall :: pdestructorcall*) = ($destructor_call_live(S, pdestructorcall) /\ $destructor_calls_valid(S, pdestructorcall*))
+def $destructor_calls_valid(S, pdestructorcall :: pdestructorcall_tail*) = ($destructor_call_live(S, pdestructorcall) /\ $destructor_calls_valid(S, pdestructorcall_tail*))
 
 def $destructor_pending_for(pcallcontext?, eps) = eps
-def $destructor_pending_for(pcallcontext?, pdestructionframe :: pdestructionframe*) = pdestructionframe.PENDING
+def $destructor_pending_for(pcallcontext?, pdestructionframe :: pdestructionframe_tail*) = pdestructionframe.PENDING
   -- if pdestructionframe.CALLER = pcallcontext?
-def $destructor_pending_for(pcallcontext?, pdestructionframe :: pdestructionframe*) = $destructor_pending_for(pcallcontext?, pdestructionframe*)
+def $destructor_pending_for(pcallcontext?, pdestructionframe :: pdestructionframe_tail*) = $destructor_pending_for(pcallcontext?, pdestructionframe_tail*)
   -- if pcallcontext? =/= pdestructionframe.CALLER
 
 ;; CV zvals are released in compiled order after Zend restores the real caller.
 ;; Remaining slots are pending owners, including aliases to the same wrapper.
 ;; Preserve the return operand or suspended Throwable through callback effects.
 def $destructor_local_cells(pbinding*, eps) = eps
-def $destructor_local_cells(pbinding*, preqbytes :: preqbytes*) = (HCELL n) :: $destructor_local_cells(pbinding*, preqbytes*)
+def $destructor_local_cells(pbinding*, preqbytes :: preqbytes_tail*) = (HCELL n) :: $destructor_local_cells(pbinding*, preqbytes_tail*)
   -- if $lookup(pbinding*, preqbytes) = (n)
-def $destructor_local_cells(pbinding*, preqbytes :: preqbytes*) = $destructor_local_cells(pbinding*, preqbytes*)
+def $destructor_local_cells(pbinding*, preqbytes :: preqbytes_tail*) = $destructor_local_cells(pbinding*, preqbytes_tail*)
   -- if $lookup(pbinding*, preqbytes) = eps
 def $destructor_frame_nodes(S) = $destructor_local_cells(S.ENV, S.SYMBOLS) ++ $call_context_roots(S.CURRENT)
 def $destructor_leaving_exception((THROW_SEARCH n) :: ptask*) = (n)
@@ -541,7 +541,7 @@ def $destructor_frame_begin(S, S_restored) = $destructor_release_begin(S_restore
   -- if S.CURRENT = (pcallcontext)
   -- if pdestructionframe = {PENDING $destructor_leaving_exception(S.TODO), VALUE S.RESULT, CALLER S_restored.CURRENT, FUNCTION pcallcontext.FUNCTION, ORIGIN S_restored.ORIGIN, CONSTCONTEXT S_restored.CONSTCONTEXT}
 def $throw_frame_resume(S, n) = S
-  -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe*
+  -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
   -- if pdestructionframe.PENDING = (n)
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask*
 def $throw_frame_resume(S, n) = S[.TODO = (THROW_SEARCH n) :: S.TODO][.RESULT = KNOWN PNULL][.HELD = eps] -- otherwise
@@ -569,7 +569,7 @@ def $destructor_chain_pending(S, pdestructorcall) = $throwable_previous(S, n, n_
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
 def $destructor_chain_pending(S, pdestructorcall) = S -- otherwise
 def $destructor_frames_valid(S, eps) = true
-def $destructor_frames_valid(S, pdestructionframe :: pdestructionframe*) = ($destructor_pending_valid(S, pdestructionframe.PENDING) /\ $destructor_return_operand_valid(S, pdestructionframe.VALUE) /\ $function_at($all_functions(S), pdestructionframe.FUNCTION) =/= eps /\ $destructor_frames_valid(S, pdestructionframe*))
+def $destructor_frames_valid(S, pdestructionframe :: pdestructionframe_tail*) = ($destructor_pending_valid(S, pdestructionframe.PENDING) /\ $destructor_return_operand_valid(S, pdestructionframe.VALUE) /\ $function_at($all_functions(S), pdestructionframe.FUNCTION) =/= eps /\ $destructor_frames_valid(S, pdestructionframe_tail*))
 
 ;; The original compiler prefix is frozen before stage2 just as it is before
 ;; the shutdown queue. Later destructor eval declarations still replay that
