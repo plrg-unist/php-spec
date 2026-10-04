@@ -18,8 +18,9 @@ retain their own owners and traces. Source17 passes as2 at5e828 plus14+1 atb6cac
 Thirteen repeated dependency bindings add no behaviors. Original overlap,
 consumer-forgery and fixture failures plus the whole141 timeout stay preserved in
 the [reception ledger](coverage/semantics/ordinary-throwable-reception-review.json).
-Actual246 template/generic-EMIT composition1 at98c passes on ab5d; latest238 is
-preserved separately without renewing private gates. Complete core remains open.
+Actual246 template/generic-EMIT composition1 at98c passes on ab5d; latest238/249
+are preserved on e2e6 separately without renewing private gates. Complete core
+remains open.
 
 Callable default/variadic reception248 now suspends keyword/compound lookup in
 actual receiving frames. Deferred class-constant defaults, named-hole preparation
