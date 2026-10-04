@@ -130,20 +130,21 @@ def $declaration_parent_probe(S, pclassdesc, porigin_parent, pmcheck) = $declara
   -- if ~$declaration_method_yes(pmcheck)
 
 dec $declaration_class_probe(pstate, pclassdesc) : pdeclprobe
-def $declaration_class_probe(S, pclassdesc) = DECLDEFER
+dec $declaration_class_probe_base(pstate, pclassdesc) : pdeclprobe
+def $declaration_class_probe_base(S, pclassdesc) = DECLDEFER
   -- if $class_internal(pclassdesc.NAME) \/ $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) =/= eps \/ pclassdesc.INTERFACES =/= eps
-def $declaration_class_probe(S, pclassdesc) = DECLREADY
+def $declaration_class_probe_base(S, pclassdesc) = DECLREADY
   -- if ~$class_internal(pclassdesc.NAME) /\ $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps /\ pclassdesc.INTERFACES = eps
   -- if pclassdesc.PARENT = eps
-def $declaration_class_probe(S, pclassdesc) = DECLREADY
+def $declaration_class_probe_base(S, pclassdesc) = DECLREADY
   -- if ~$class_internal(pclassdesc.NAME) /\ $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps /\ pclassdesc.INTERFACES = eps
   -- if pclassdesc.PARENT = (ptbytes_parent)
   -- if $class_internal(ptbytes_parent)
-def $declaration_class_probe(S, pclassdesc) = DECLDEFER
+def $declaration_class_probe_base(S, pclassdesc) = DECLDEFER
   -- if ~$class_internal(pclassdesc.NAME) /\ $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps /\ pclassdesc.INTERFACES = eps
   -- if pclassdesc.PARENT = (ptbytes_parent)
   -- if ~$class_internal(ptbytes_parent) /\ $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = eps
-def $declaration_class_probe(S, pclassdesc) = $declaration_parent_probe(S_link, pclassdesc, porigin_parent, $declaration_method_items(S_link, pclassdesc, $method_info_layout(S, porigin_parent, |S.CLASSES|)))
+def $declaration_class_probe_base(S, pclassdesc) = $declaration_parent_probe(S_link, pclassdesc, porigin_parent, $declaration_method_items(S_link, pclassdesc, $method_info_layout(S, porigin_parent, |S.CLASSES|)))
   -- if ~$class_internal(pclassdesc.NAME) /\ $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps /\ pclassdesc.INTERFACES = eps
   -- if pclassdesc.PARENT = (ptbytes_parent)
   -- if ~$class_internal(ptbytes_parent)

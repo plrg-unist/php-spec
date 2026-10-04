@@ -208,6 +208,10 @@ def $trait_plan(S, pclassdesc) = $trait_members(pcode, pcpath ++ [PCFIELD 2], 0,
   -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtTrait phpType14 phpType3 (SEQUENCE statement*) metadata)
 def $trait_plan(S, pclassdesc) = {TRAITS eps, PRECEDENCES eps, ALIASES eps} -- if pclassdesc.KIND = "interface"
 
+;; zend_compile_class_decl defers every declaration containing a trait use.
+def $declaration_class_probe(S, pclassdesc) = DECLDEFER -- if $trait_plan(S, pclassdesc).TRAITS =/= eps
+def $declaration_class_probe(S, pclassdesc) = $declaration_class_probe_base(S, pclassdesc) -- if $trait_plan(S, pclassdesc).TRAITS = eps
+
 ;; Deduplicate immediate trait entries, while retaining each method's true body.
 def $trait_used(eps, ptbytes) = eps
 def $trait_used(pclassdesc :: pclassdesc_tail*, ptbytes) = (pclassdesc) -- if $ptlc(pclassdesc.NAME) = $ptlc(ptbytes)
