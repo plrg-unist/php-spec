@@ -721,6 +721,9 @@ dec $internal_closure_object(pstate, nat) : bool
 dec $internal_closure_scope_valid(pstate, nat) : bool
 dec $internal_closure_current(pstate) : nat?
 dec $internal_closure_capture_scope(pstate, pfunction, nat) : bool
+dec $bind_scope_name(pstate, pbindscope) : ptbytes
+dec $bind_scope_origin(pbindscope) : porigin?
+dec $bind_object_scope(pstate, nat) : pbindscope
 
 dec $bound_fake_object(pstate, nat) : bool
 dec $bound_fake_internal_scope(pstate) : ptbytes?
