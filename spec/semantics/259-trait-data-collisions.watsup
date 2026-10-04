@@ -21,17 +21,7 @@ def $trait_record_root(S, pclassdesc, PORIGIN n pcpath) = true
   -- if $($expression_line(expression) > 0)
 def $trait_record_root(S, pclassdesc, porigin) = false -- otherwise
 dec $trait_recording(pfstate, pcpath) : bool
-def $trait_recording(F, pcpath) = true
-  -- if F.RECORD = (pfrecorder)
-  -- if $trait_fold_owner(F) = (pfrecorder.CLASS)
-  -- if F.EXTERNAL = (S_external)
-  -- if $class_at(F.CLASSES, pfrecorder.CLASS) = (pclassdesc)
-  -- if $trait_record_root(S_external, pclassdesc, pfrecorder.ROOT)
-  -- if pfrecorder.ROOT = PORIGIN F.SOURCE.ID pcpath_root
-  -- if $source_unit(S_external.SOURCES, F.SOURCE.ID) = (F.SOURCE)
-  -- if $effect_below(pcpath_root, pcpath)
-  -- if $trait_fold_scope(F, pcpath)
-def $trait_recording(F, pcpath) = false -- otherwise
+def $trait_recording(F, pcpath) = $trait_cache_recording(F, pcpath)
 
 ;; AST evaluation restores its parent's line after each child. Bare constant
 ;; roots retain the executing declaration line used by zval constant lookup.
@@ -41,14 +31,16 @@ def $trait_record_root_line(pfshape, z_source, z) = z_source -- otherwise
 def $pffold_line(F, pcpath, expression, z) = $trait_record_root_line($pfshape(expression), $expression_line(expression), z)
   -- if $trait_recording(F, pcpath)
   -- if F.RECORD = (pfrecorder)
-  -- if pfrecorder.ROOT = PORIGIN F.SOURCE.ID pcpath
+  -- if $trait_cache_fold_root(F) = (PORIGIN F.SOURCE.ID pcpath)
 def $pffold_line(F, pcpath, expression, z) = $expression_line(expression)
   -- if $trait_recording(F, pcpath)
   -- if F.RECORD = (pfrecorder)
-  -- if pfrecorder.ROOT =/= PORIGIN F.SOURCE.ID pcpath
+  -- if $trait_cache_fold_root(F) = (porigin_root)
+  -- if porigin_root =/= PORIGIN F.SOURCE.ID pcpath
 
 dec $trait_record_name(pfstate, pcpath, ptbytes, ptbytes?, int) : pfstate
-def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = $pfremember(F[.RECORDED = F.RECORDED ++ [{SITE PORIGIN F.SOURCE.ID pcpath, LEVEL 8192, MESSAGE $deprecated_constant_message(), LINE z}]], pcpath, (PINT 2048), z)
+def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = $pfremember(F[.RECORDED = F.RECORDED ++ [{SITE PORIGIN F.SOURCE.ID pcpath, OWNER porigin_owner, LEVEL 8192, MESSAGE $deprecated_constant_message(), LINE z}]], pcpath, (PINT 2048), z)
+  -- if $trait_fold_owner(F) = (porigin_owner)
   -- if F.EXTERNAL = (S_external)
   -- if $deprecated_constant_name(S_external, ptbytes, ptbytes_fallback?)
 def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = $pfremember(F, pcpath, $trait_fold_name_value(S_external, ptbytes, ptbytes_fallback?), z)
@@ -60,24 +52,25 @@ def $pfdispatch(F, pcpath, PFNAME name, z) = $trait_record_name(F, pcpath, ptbyt
   -- if $code_at(S_external.CODE, F.SOURCE.ID) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, ptbytes_fallback?))
 
-dec $trait_record_event(porigin, pevent) : pfdiagnostic?
-def $trait_record_event(porigin, DIAGNOSTIC "Warning" ptbytes z) = ({SITE porigin, LEVEL 2, MESSAGE ptbytes, LINE z})
-def $trait_record_event(porigin, DIAGNOSTIC "Deprecated" ptbytes z) = ({SITE porigin, LEVEL 8192, MESSAGE ptbytes, LINE z})
-def $trait_record_event(porigin, DISPLAY_STDOUT pevent) = $trait_record_event(porigin, pevent)
-def $trait_record_event(porigin, pevent) = eps -- otherwise
-dec $trait_record_events(porigin, pevent*) : pfdiagnostic*?
-def $trait_record_events(porigin, eps) = (eps)
-def $trait_record_events(porigin, pevent :: pevent_tail*) = (pfdiagnostic :: pfdiagnostic_tail*)
-  -- if $trait_record_event(porigin, pevent) = (pfdiagnostic)
-  -- if $trait_record_events(porigin, pevent_tail*) = (pfdiagnostic_tail*)
-def $trait_record_events(porigin, pevent*) = eps -- otherwise
+dec $trait_record_event(porigin, porigin, pevent) : pfdiagnostic?
+def $trait_record_event(porigin_owner, porigin, DIAGNOSTIC "Warning" ptbytes z) = ({SITE porigin, OWNER porigin_owner, LEVEL 2, MESSAGE ptbytes, LINE z})
+def $trait_record_event(porigin_owner, porigin, DIAGNOSTIC "Deprecated" ptbytes z) = ({SITE porigin, OWNER porigin_owner, LEVEL 8192, MESSAGE ptbytes, LINE z})
+def $trait_record_event(porigin_owner, porigin, DISPLAY_STDOUT pevent) = $trait_record_event(porigin_owner, porigin, pevent)
+def $trait_record_event(porigin_owner, porigin, pevent) = eps -- otherwise
+dec $trait_record_events(porigin, porigin, pevent*) : pfdiagnostic*?
+def $trait_record_events(porigin_owner, porigin, eps) = (eps)
+def $trait_record_events(porigin_owner, porigin, pevent :: pevent_tail*) = (pfdiagnostic :: pfdiagnostic_tail*)
+  -- if $trait_record_event(porigin_owner, porigin, pevent) = (pfdiagnostic)
+  -- if $trait_record_events(porigin_owner, porigin, pevent_tail*) = (pfdiagnostic_tail*)
+def $trait_record_events(porigin_owner, porigin, pevent*) = eps -- otherwise
 def $pfwarned(F, pcpath, S) = F[.MEMORY = S[.EVENTS = F.MEMORY.EVENTS]][.RECORDED = F.RECORDED ++ pfdiagnostic*][.VALUE = (pvalue)]
   -- if $trait_recording(F, pcpath)
   -- if S.RESULT = KNOWN pvalue
   -- if $(|F.MEMORY.EVENTS| <= |S.EVENTS|)
   -- if S.EVENTS[0:|F.MEMORY.EVENTS|] = F.MEMORY.EVENTS
   -- if n_events = $nabs($(|S.EVENTS| - |F.MEMORY.EVENTS|))
-  -- if $trait_record_events(PORIGIN F.SOURCE.ID pcpath, S.EVENTS[|F.MEMORY.EVENTS|:n_events]) = (pfdiagnostic*)
+  -- if $trait_fold_owner(F) = (porigin_owner)
+  -- if $trait_record_events(porigin_owner, PORIGIN F.SOURCE.ID pcpath, S.EVENTS[|F.MEMORY.EVENTS|:n_events]) = (pfdiagnostic*)
 
 ;; A source-owned scratch operation always records its raw diagnostics. The
 ;; real handler, reporting mask and display destination are used at delivery.
@@ -138,7 +131,7 @@ dec $trait_value_notices(ptraitdatavalue) : pfdiagnostic*
 def $trait_value_notices(TRAITVALUE S pvalue pfdiagnostic*) = pfdiagnostic*
 def $trait_value_notices(TRAITVALUEUNKNOWN text pfdiagnostic*) = pfdiagnostic*
 def $trait_value_notices(TRAITUNINITIALIZED) = eps
-def $trait_comparison(ptraitdatavalue_left, ptraitdatavalue_right) = { CHECK $trait_data_compare(ptraitdatavalue_left, ptraitdatavalue_right), NOTICES ($trait_value_notices(ptraitdatavalue_left) ++ $trait_value_notices(ptraitdatavalue_right)) }
+def $trait_comparison(ptraitdatavalue_left, ptraitdatavalue_right) = { CHECK $trait_data_compare(ptraitdatavalue_left, ptraitdatavalue_right), NOTICES ($trait_value_notices(ptraitdatavalue_left) ++ $trait_value_notices(ptraitdatavalue_right)), MEMORY $trait_comparison_memory(ptraitdatavalue_left, ptraitdatavalue_right) }
 dec $trait_notice_records(porigin, nat, nat, pfdiagnostic*) : pdeclnoticeitem*
 def $trait_notice_records(porigin, n_prefix, n_user, eps) = eps
 def $trait_notice_records(porigin, n_prefix, n_user, pfdiagnostic :: pfdiagnostic_tail*) = (TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) :: $trait_notice_records(porigin, n_prefix, n_user, pfdiagnostic_tail*)
@@ -147,7 +140,7 @@ def $trait_comparison_seed(S, pclassdesc, S_result, pfdiagnostic*) = S_result[.T
   -- if pfdiagnostic* =/= eps
 ;; Private-final adaptations are recorded at their real method-binding phase.
 ;; E_COMPILE_WARNING remains handler-ineligible when the batch is delivered.
-def $trait_compile_warning_seed(S, pclassdesc) = $trait_comparison_seed(S, pclassdesc, S, [{SITE pclassdesc.ORIGIN, LEVEL 128, MESSAGE $ptascii("Private methods cannot be final as they are never overridden by other classes"), LINE pclassdesc.LINE}])
+def $trait_compile_warning_seed(S, pclassdesc) = $trait_comparison_seed(S, pclassdesc, S, [{SITE pclassdesc.ORIGIN, OWNER pclassdesc.ORIGIN, LEVEL 128, MESSAGE $ptascii("Private methods cannot be final as they are never overridden by other classes"), LINE pclassdesc.LINE}])
 def $iterator_notice_seed_task(TRAIT_DATA_SEED pdeclnoticeitem*) = true
 def $iterator_notice_seed_items(TRAIT_DATA_SEED pdeclnoticeitem*) = pdeclnoticeitem*
 def $call_task_valid(S, TRAIT_DATA_SEED pdeclnoticeitem*) = false
@@ -156,9 +149,11 @@ def $iterator_notice_level(TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnosti
 def $iterator_notice_line(TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) = pfdiagnostic.LINE
 def $iterator_notice_origin(TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) = porigin
 def $iterator_notice_message(TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) = pfdiagnostic.MESSAGE
-def $iterator_notice_event(TRAIT_DATA_NOTICE (PORIGIN n pcpath) n_prefix n_user pfdiagnostic) = DIAGNOSTIC_SOURCE n "Deprecated" pfdiagnostic.MESSAGE pfdiagnostic.LINE
+def $iterator_notice_event(TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) = DIAGNOSTIC_SOURCE n "Deprecated" pfdiagnostic.MESSAGE pfdiagnostic.LINE
+  -- if $origin_source(pfdiagnostic.OWNER) = PORIGIN n pcpath
   -- if pfdiagnostic.LEVEL = 8192
-def $iterator_notice_event(TRAIT_DATA_NOTICE (PORIGIN n pcpath) n_prefix n_user pfdiagnostic) = DIAGNOSTIC_SOURCE n "Warning" pfdiagnostic.MESSAGE pfdiagnostic.LINE
+def $iterator_notice_event(TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) = DIAGNOSTIC_SOURCE n "Warning" pfdiagnostic.MESSAGE pfdiagnostic.LINE
+  -- if $origin_source(pfdiagnostic.OWNER) = PORIGIN n pcpath
   -- if pfdiagnostic.LEVEL = 2 \/ pfdiagnostic.LEVEL = 128
 
 ;; Replay only source data composition at its real publication prefix. Handler
@@ -209,6 +204,7 @@ def $trait_notice_cache_item(S, CCCACHE porigin porigin_trigger n, n_prefix) = [
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
 def $trait_notice_cache_item(S, pclassconstantevent, n_prefix) = eps -- otherwise
 dec $trait_notice_cache_prefix(pstate, pclassconstantevent*, nat) : pdefaultcache*
+dec $trait_cache_notice_prefix(pstate, pclassconstantevent*, porigin, nat) : pdefaultcache*
 def $trait_notice_cache_prefix(S, eps, n_prefix) = eps
 def $trait_notice_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix) = $trait_notice_cache_item(S, pclassconstantevent, n_prefix) ++ $trait_notice_cache_prefix(S, pclassconstantevent_tail*, n_prefix)
 dec $trait_notice_plan(pstate, porigin, nat, nat) : pdeclnoticeitem*?
@@ -217,7 +213,7 @@ def $trait_notice_plan(S, porigin, n_prefix, n_user) = ($iterator_notice_seeds(S
   -- if $iterator_notice_publication_index(S.DECLARATIONS, porigin, 0) = (n_prefix)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc_raw = pclassdesc[.PROPERTIES = $trait_notice_own_properties(pclassdesc.PROPERTIES)][.CONSTANTS = $trait_notice_own_constants(pclassdesc.CONSTANTS)][.METHODS = $trait_notice_own_methods(pclassdesc.METHODS, porigin)]
-  -- if S_before = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_raw)][.CLASSNAMES = $trait_notice_names(S, S.DECLARATIONS[0:n_prefix])][.CLASSCONSTANTCACHE = $trait_notice_cache_prefix(S, S.CLASSCONSTANTHISTORY, n_prefix)][.USERCONSTANTS = S.USERCONSTANTS[0:n_user]][.DECLARATIONS = S.DECLARATIONS[0:n_prefix]][.TODO = eps][.COMPLETION = NORMAL]
+  -- if S_before = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_raw)][.CLASSNAMES = $trait_notice_names(S, S.DECLARATIONS[0:n_prefix])][.CLASSCONSTANTCACHE = $trait_cache_notice_prefix(S, S.CLASSCONSTANTHISTORY, porigin, n_prefix)][.USERCONSTANTS = S.USERCONSTANTS[0:n_user]][.DECLARATIONS = S.DECLARATIONS[0:n_prefix]][.TODO = eps][.COMPLETION = NORMAL]
   -- if $trait_fetch(S_before, $trait_plan(S_before, pclassdesc_raw).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
   -- if ptraitplan = $trait_plan(S_before, pclassdesc_raw)
   -- if $trait_exclusions(S_before, pclassdesc_raw, pclassdesc_traits*, ptraitplan.PRECEDENCES, eps) = TRAITEXCLUSIONS (ptbytes_trait, ptbytes_method)*
