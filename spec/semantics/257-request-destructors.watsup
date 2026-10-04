@@ -306,7 +306,14 @@ def $destructor_release_replace(S, pdestructionrelease) = S[.DESTRUCTION.RELEASE
   -- if S.DESTRUCTION.RELEASES = pdestructionrelease_old :: pdestructionrelease_tail*
 def $destructor_jobs_valid(S, eps) = true
 def $destructor_jobs_valid(S, (DESTRUCTION_VALUE pnode) :: pdestructionjob*) = (pnode <- S.ALLOCATIONS /\ $destructor_jobs_valid(S, pdestructionjob*))
-def $destructor_jobs_valid(S, (DESTRUCTION_HANDLE n) :: pdestructionjob*) = ($(n < |S.DESTRUCTION.HANDLES|) /\ ~((HOBJECT n) <- S.ALLOCATIONS) /\ $destructor_jobs_valid(S, pdestructionjob*))
+def $destructor_jobs_valid(S, (DESTRUCTION_HANDLE n) :: pdestructionjob*) = true
+  -- if $(n < |S.DESTRUCTION.HANDLES|)
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS)
+  -- if n_handle = S.DESTRUCTION.HANDLES[n]
+  -- if ~(n_handle <- S.DESTRUCTION.FREE)
+  -- if $destructor_handle(S, n_handle, 0) = eps
+  -- if $destructor_jobs_valid(S, pdestructionjob*)
+def $destructor_jobs_valid(S, pdestructionjob*) = false -- otherwise
 def $destructor_release_live(S, pdestructionrelease) = ($destructor_active(S) /\ pdestructionrelease <- S.DESTRUCTION.RELEASES /\ $destructor_jobs_valid(S, pdestructionrelease.JOBS))
 def $destructor_release_valid(S, pdestructionrelease) = ($destructor_release_live(S, pdestructionrelease) /\ S.CURRENT = pdestructionrelease.CALLER /\ S.ORIGIN = pdestructionrelease.ORIGIN /\ S.CONSTCONTEXT = pdestructionrelease.CONSTCONTEXT)
 def $call_task_valid(S, DESTRUCTOR_RELEASE pdestructionrelease) = $destructor_release_valid(S, pdestructionrelease)
