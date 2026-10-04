@@ -7,6 +7,7 @@ def $parameter_string_record_valid(S, pparameterstring) = true
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[pparameterstring.INDEX]
   -- if $user_string_coercion(S, psparam.TYPE, POBJECT pparameterstring.OBJECT, false)
   -- if pparameterstring.LINE = $default_parameter_line(S, pparameterstring.FUNCTION, pparameterstring.INDEX)
+  -- if $parameter_string_site_valid(S, $default_parameter_origin(S, pparameterstring.FUNCTION, pparameterstring.INDEX), pparameterstring.LINE)
   -- if (HCELL pparameterstring.CELL) <- S.ALLOCATIONS
   -- if $(pparameterstring.CELL < |S.STORE|)
 def $parameter_string_record_valid(S, pparameterstring) = false -- otherwise
