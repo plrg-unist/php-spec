@@ -286,15 +286,17 @@ def $autoload_null_message(pconfigcall, n, preqbytes_type) = $intrinsic_name(pco
 rule PhpStep/autoload-register-flag: S ~> S[.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration[.INDEX = $(n + 1)][.THROW = b_throw][.PREPEND = b_prepend]) :: ptask_tail*]
   -- if S.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration) :: ptask_tail*
   -- if $autoload_registration_receive_valid(S, pautoloadregistration)
-  -- if n = pautoloadregistration.INDEX /\ $(n < 3)
+  -- if n = pautoloadregistration.INDEX
+  -- if $(n < 3)
   -- if $autoload_bool(S, pautoloadregistration.ENTRY.CALL, n, n = 1) = (b)
   -- if ~$autoload_registration_null_valid(S, pautoloadregistration)
-  -- if b_throw = (n = 1 /\ b) \/ (n = 2 /\ pautoloadregistration.THROW)
+  -- if b_throw = ((n = 1 /\ b) \/ (n = 2 /\ pautoloadregistration.THROW))
   -- if b_prepend = (n = 2 /\ b)
 rule PhpStep/autoload-register-flag-error: S ~> $config_error(S, pautoloadregistration.ENTRY.CALL, "TypeError", $ptascii("spl_autoload_register(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(INTRINSIC_AUTO_REGISTER, n) ++ $ptascii(") must be of type bool, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
   -- if S.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration) :: ptask_tail*
   -- if $autoload_registration_receive_valid(S, pautoloadregistration)
-  -- if n = pautoloadregistration.INDEX /\ $(n < 3)
+  -- if n = pautoloadregistration.INDEX
+  -- if $(n < 3)
   -- if $autoload_bool(S, pautoloadregistration.ENTRY.CALL, n, n = 1) = eps
   -- if pvalue = $error_api_value(pautoloadregistration.ENTRY.CALL, n, PBOOL (n = 1))
 rule PhpStep/autoload-register-null: S ~> $error_dispatch(S, 8192, ptbytes, pautoloadregistration.ENTRY.CALL.LINE, DIAGNOSTIC "Deprecated" ptbytes pautoloadregistration.ENTRY.CALL.LINE, AUTO_REGISTER_NULL pautoloadregistration)
@@ -446,7 +448,8 @@ def $autoload_call_receive(S, pconfigcall) = $autoload_explicit(S_value, pconfig
   -- if ~$config_strict(S, pconfigcall)
   -- if ~$stringable_instance(S, n) /\ $throwable_member(S, n)
   -- if S_value = $stringify(S, POBJECT n, pconfigcall.LINE)
-  -- if S_value.COMPLETION = NORMAL /\ S_value.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING ptbytes)
 def $autoload_call_receive(S, pconfigcall) = $error_dispatch(S, 8192, ptbytes, pconfigcall.LINE, DIAGNOSTIC "Deprecated" ptbytes pconfigcall.LINE, AUTO_CALL_NULL pconfigcall)
   -- if $error_api_value(pconfigcall, 0, PNULL) = PNULL /\ ~$config_strict(S, pconfigcall)
   -- if ptbytes = $autoload_null_message(pconfigcall, 0, $ptascii("string"))
@@ -783,7 +786,8 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = AUTO_REFERENCE pautoloadcall pautoloadentry
   -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
   -- if perrorcall.SITE = pautoloadcall.SITE /\ S.ORIGIN = (perrorcall.SITE)
-  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget /\ $call_parameter_reference(S, pcalltarget, 0)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $call_parameter_reference(S, pcalltarget, 0)
   -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = $autoload_reference_line(pautoloadcall)
   -- if perrorcall.MESSAGE = $autoload_reference_message(S, pautoloadentry) /\ perrorcall.EVENT = $autoload_reference_event(pautoloadcall, perrorcall.MESSAGE)
 def $exception_warning_resume(AUTO_REFERENCE pautoloadcall pautoloadentry) = true -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
@@ -865,7 +869,8 @@ def $autoload_entry_metadata(S, pautoloadentry) = true
 def $autoload_entry_metadata(S, pautoloadentry) = true
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
   -- if $target_instance(pcalltarget) = (n)
-  -- if pautoloadentry.SCOPE = (pclosurescope) /\ pautoloadentry.BINDING = eps
+  -- if pautoloadentry.SCOPE = (pclosurescope)
+  -- if pautoloadentry.BINDING = eps
   -- if pclosurescope.OBJECT = n
   -- if $(n < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
