@@ -106,8 +106,15 @@ def $dir_warning_requested_valid(S, pdircontext) = true
   -- if pdirconversion.OWNERDEPTH = pdircontext.FRAMEOWNER
   -- if pdirconversion.RESULT = pdircontext.REQUESTED
 def $dir_warning_requested_valid(S, pdircontext) = false -- otherwise
+dec $dir_warning_task_valid(ptask, pdircontext, preqbytes, nat) : bool
+def $dir_warning_task_valid(CHDIR_WARNING_RESULT pdircontext n_error* n_errno, pdircontext, n_error*, n_errno) = true
+def $dir_warning_task_valid(ERROR_HANDLER_INVOKE perrorcall, pdircontext, n_error*, n_errno) = (perrorcall.RESUME = CHDIR_WARNING_RESULT pdircontext n_error* n_errno)
+def $dir_warning_task_valid(ERROR_HANDLER_RESULT perrorcall, pdircontext, n_error*, n_errno) = (perrorcall.RESUME = CHDIR_WARNING_RESULT pdircontext n_error* n_errno)
+def $dir_warning_task_valid(ptask, pdircontext, n_error*, n_errno) = false -- otherwise
 dec $dir_warning_valid(pstate, pdircontext, preqbytes, nat) : bool
 def $dir_warning_valid(S, pdircontext, n_error*, n_errno) = true
+  -- if S.TODO = ptask :: pdircontext.TAIL
+  -- if $dir_warning_task_valid(ptask, pdircontext, n_error*, n_errno)
   -- if $config_invoke_valid(S, pdircontext.CALL)
   -- if pdircontext.CALL.KIND = INTRINSIC_CHDIR
   -- if S.ORIGIN = (pdircontext.CALL.SITE)
@@ -120,7 +127,6 @@ def $dir_warning_valid(S, pdircontext, n_error*, n_errno) = true
   -- if $(n_errno > 0)
   -- if S.FILECWD =/= eps
   -- if S.FILEINCLUDEPATH =/= eps
-  -- if S.TODO = ptask :: pdircontext.TAIL
 def $dir_warning_valid(S, pdircontext, n_error*, n_errno) = false -- otherwise
 dec $dir_warning_message(preqbytes, nat) : preqbytes
 def $dir_warning_message(n_error*, n_errno) = $ptascii("chdir(): ") ++ n_error* ++ $ptascii(" (errno ") ++ $ntunsigned(n_errno) ++ $ptascii(")")
