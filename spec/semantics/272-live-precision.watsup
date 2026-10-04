@@ -1,0 +1,21 @@
+;; OnSetPrecision retains raw INI bytes and accepts only signed64 values >= -1.
+;; zend_double_to_str narrows the live value to signed32 at each conversion.
+dec $precision_ini_long(preqbytes) : int
+def $precision_ini_long(preqbytes) = $reporting_ini_long(n_sign, n_digits)
+  -- if (n_sign, n_value*) = $ntsign($nttrim($c_string(preqbytes)))
+  -- if DIGITS n_digits n_count n_tail* = $ntdigits(n_value*, 0, 0)
+dec $precision_ini_valid(preqbytes) : bool
+def $precision_ini_valid(preqbytes) = ($startup_bytes(preqbytes) /\ $($precision_ini_long(preqbytes) >= -1))
+dec $precision_value(pstate) : int
+def $precision_value(S) = $precision_ini_long(S.PRECISIONINI)
+def $precision_state_valid(S) = ($precision_ini_valid(S.PRECISIONINIT) /\ $precision_ini_valid(S.PRECISIONINI) /\ (S.PRECISIONMODIFIED \/ S.PRECISIONINI = S.PRECISIONINIT))
+dec $precision_restore(pstate) : pstate
+def $precision_restore(S) = S[.PRECISIONINI = S.PRECISIONINIT][.PRECISIONMODIFIED = false]
+  -- if S.PRECISIONMODIFIED
+def $precision_restore(S) = S -- otherwise
+;; zend_alter_ini_entry marks modification before invoking a rejecting modifier.
+dec $precision_set(pstate, preqbytes, preqbytes) : pstate
+def $precision_set(S, preqbytes_new, preqbytes_old) = S[.PRECISIONINI = preqbytes_new][.PRECISIONMODIFIED = true][.RESULT = KNOWN (PSTRING preqbytes_old)]
+  -- if $($precision_ini_long(preqbytes_new) >= -1)
+def $precision_set(S, preqbytes_new, preqbytes_old) = S[.PRECISIONMODIFIED = true][.RESULT = KNOWN (PBOOL false)]
+  -- if $($precision_ini_long(preqbytes_new) < -1)
