@@ -213,7 +213,9 @@ def $trait_cache_bind(F, pcpath, pclassconstantdesc, z, F_value) = $pfclass_cons
   -- if $pfclass_at(F_value.CLASSFACTS, pcpath_initializer) = (pvalueclass)
   -- if $trait_cache_value_class(pvalueclass)
   -- if F.RECORD = (pfrecorder)
-  -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS F_value.LOOKUPS, PREFIX |F.MEMORY.DECLARATIONS|, USERPREFIX |F.MEMORY.USERCONSTANTS|}
+  -- if n_prefix = |F.MEMORY.DECLARATIONS|
+  -- if n_user = |F.MEMORY.USERCONSTANTS|
+  -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS F_value.LOOKUPS, PREFIX n_prefix, USERPREFIX n_user}
   -- if S_cached = F_value.MEMORY[.CONSTCONTEXT = F.MEMORY.CONSTCONTEXT][.RESULT = F.MEMORY.RESULT][.CLASSCONSTANTCACHE = F_value.MEMORY.CLASSCONSTANTCACHE ++ [{ORIGIN pclassconstantdesc.ORIGIN, VALUE pvalue, CLASS pvalueclass}]][.CLASSCONSTANTHISTORY = F_value.MEMORY.CLASSCONSTANTHISTORY ++ [CCTRAITCACHE pclassconstantdesc.ORIGIN ptraitcachecause]]
 def $trait_cache_bind(F, pcpath, pclassconstantdesc, z, F_value) = F[.RECORDED = F.RECORDED ++ F_value.RECORDED][.VALUE = eps] -- otherwise
 
