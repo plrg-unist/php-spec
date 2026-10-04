@@ -418,11 +418,12 @@ def $global_constant_user_valid(S, puserconstant) = false -- otherwise
 dec $global_constant_duplicate_message(preqbytes) : ptbytes
 def $global_constant_duplicate_message(preqbytes) = $ptascii("Constant ") ++ $user_constant_key(preqbytes) ++ $ptascii(" already defined, this will be an error in PHP 9")
 def $global_constant_duplicate(S, porigin_decl, preqbytes, pvalue, pvalueclass, z) = $error_dispatch(S_pending, 2, ptbytes_message, z, DIAGNOSTIC "Warning" ptbytes_message z, ptask_resume)
-  -- if ptask_resume = GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass z
+  -- if n_constants = |S.USERCONSTANTS|
+  -- if ptask_resume = GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants z
   -- if ptbytes_message = $global_constant_duplicate_message(preqbytes)
   -- if S_pending = S[.TODO = ptask_resume :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-dec $global_constant_duplicate_valid(pstate, porigin, pvalue, pvalueclass, int) : bool
-def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, z) = true
+dec $global_constant_duplicate_valid(pstate, porigin, pvalue, pvalueclass, nat, int) : bool
+def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, z) = true
   -- if S.ORIGIN = (porigin_decl)
   -- if S.CONSTCONTEXT = eps
   -- if porigin_decl = PORIGIN n_unit pcpath_decl
@@ -430,17 +431,18 @@ def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, z) = 
   -- if $declaration_entered(S.DECLARATIONS, n_unit)
   -- if $constant_declaration(S, porigin_decl) = ((preqbytes, z))
   -- if $source_constant_lookup(S, preqbytes) =/= eps
+  -- if $(n_constants <= |S.USERCONSTANTS|)
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)
-  -- if $global_constant_transfer_valid(S, porigin_decl, pvalueclass, S.USERCONSTANTS)
-def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, z) = false -- otherwise
-def $task_nodes(GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass z) = $value_nodes(pvalue)
-def $call_task_valid(S, GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass z) = $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, z)
+  -- if $global_constant_transfer_valid(S, porigin_decl, pvalueclass, S.USERCONSTANTS[0:n_constants])
+def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, z) = false -- otherwise
+def $task_nodes(GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants z) = $value_nodes(pvalue)
+def $call_task_valid(S, GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants z) = $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, z)
 rule PhpStep/global-constant-duplicate: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = (GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass z) :: ptask_tail*
-  -- if $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, z)
+  -- if S.TODO = (GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants z) :: ptask_tail*
+  -- if $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, z)
 def $error_call_valid(S, perrorcall) = true
-  -- if perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass z
-  -- if $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, z)
+  -- if perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants z
+  -- if $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, z)
   -- if $constant_declaration(S, porigin_decl) = ((preqbytes, z))
   -- if perrorcall.SITE = porigin_decl /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = z
   -- if perrorcall.MESSAGE = $global_constant_duplicate_message(preqbytes)
