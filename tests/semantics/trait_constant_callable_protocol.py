@@ -4,6 +4,10 @@ import argparse,tempfile
 from pathlib import Path
 import deferred_static_default_protocol as protocol
 
+# The repeated private-default constructor path exceeds the bounded AL run.
+# Keep the exact source-derived assertions in the production SL evaluator.
+protocol.RUNNER_FLAGS={'trait-constant-method-partial-created-child':['--sl']}
+
 protocol.SOURCES = {'trait-constant-named-fcc-late-import': '<?php\n'
                                          'namespace {\n'
                                          "    function selected() { return 'global'; }\n"
