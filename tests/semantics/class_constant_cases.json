@@ -1,5 +1,5 @@
 {
-  "scope": "Partial class-constant catalogue50: original25, inheritance/update12, cross-unit5 and eight actual-current interaction agreements across separately preserved revisions. Retained native tuples, no new native or whole-family claim.",
+  "scope": "Original source/native tuples for the partial class-constant implementation, including scalar/array and legal static Closure/fixed function/static-method FCC initializers. Catalogue counts do not establish one tested revision or full-family closure.",
   "cases": [
     {
       "id": "earlier_class_typed_fold",
@@ -942,6 +942,402 @@
       "status": "normal",
       "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constants-final-13/.tools/class-constants/staticcall-paired1/raw/00-completed-table-staticcall-native/command.json",
       "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_anonymous_owner_identity_clone",
+      "source": "<?php\nclass A { const Closure F = static function() { return self::class . \":\" . static::class; }; }\nclass B extends A {}\n$f=A::F; $g=B::F; $h=clone $f;\necho ($f === $g) ? \"same:\" : \"bad:\";\necho ($h === $f) ? \"bad:\" : \"clone:\";\necho $f(), \":\", $h();\n",
+      "source_sha256": "dab972d00be1b0d29402a52ab9bcf48e7690c90d4dee1658510461c9083fa356",
+      "stdout_base64": "c2FtZTpjbG9uZTpBOkE6QTpB",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-10-closures/raw/00-anonymous_owner_identity_clone/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_fixed_function_namespace_fallback_clone_qualified",
+      "source": "<?php\nnamespace { function globalfn() { echo \"G\"; } }\nnamespace N {\nfunction localfn() { echo \"L\"; }\nclass A { const \\Closure F=localfn(...); const \\Closure G=globalfn(...); }\n$f=A::F; $g=A::G; $h=clone $f;\necho ($f === A::F) ? \"same:\" : \"bad:\";\n$f(); $g(); echo \":\"; $h();\n}\n",
+      "source_sha256": "3840a3d32bec0aff3551f2091c25433d676a84d3ef91bea5ffbcb738f2d482df",
+      "stdout_base64": "c2FtZTpMRzpM",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-10-closures-rest9/raw/00-fixed_function_namespace_fallback_clone_qualified/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_fixed_method_owner_called_identity_clone",
+      "source": "<?php\nclass A { public static function f() { return self::class . \":\" . static::class; } }\nclass B extends A { const Closure F=B::f(...); }\nclass C extends B {}\n$f=C::F; $g=B::F; $h=clone $f;\necho ($f === $g) ? \"same:\" : \"bad:\";\necho $f(), \":\", $h();\n",
+      "source_sha256": "48fd6f5e3fb01dfd603f739ef710188669052de41a9366c67bd92f267152b30c",
+      "stdout_base64": "c2FtZTpBOkI6QTpC",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-10-closures-rest9/raw/01-fixed_method_owner_called_identity_clone/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_fixed_private_method_initializer_scope",
+      "source": "<?php\nclass A { private static function f() { return \"private\"; } const Closure F=self::f(...); }\nclass B extends A {}\n$f=B::F; echo $f();\n",
+      "source_sha256": "58a262bc14ba2d485e20abfefc6448269196921a3c5f5d9309430fa18a03c55d",
+      "stdout_base64": "cHJpdmF0ZQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-10-closures-rest9/raw/02-fixed_private_method_initializer_scope/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_failed_fixed_function_initializer_retry",
+      "source": "<?php\nclass A { const Closure F=late(...); }\ntry { $f=A::F; } catch (Error $e) { echo \"retry:\"; }\nif (true) { function late() { return \"ok\"; } }\n$f=A::F; echo $f(); echo ($f === A::F) ? \":same\" : \":bad\";\n",
+      "source_sha256": "c6c984af37c582c798921b905fef17121352ce528c1c82d4e628de820445b1fb",
+      "stdout_base64": "cmV0cnk6b2s6c2FtZQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-10-closures-rest9/raw/03-failed_fixed_function_initializer_retry/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_constant_array_closure_identity_cow",
+      "source": "<?php\nclass A { const array F=[static function() { return \"v\"; }]; }\n$a=A::F; $b=A::F;\necho ($a[0] === $b[0]) ? \"same:\" : \"bad:\";\n$a[0]=clone $a[0];\necho ($a[0] === $b[0]) ? \"bad:\" : \"clone:\";\necho $a[0](), $b[0]();\n",
+      "source_sha256": "80d5f7db651c1ca624ee8f0456b79a8193f86a0c99c7f9421ad1930a057efd54",
+      "stdout_base64": "c2FtZTpjbG9uZTp2dg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-10-closures-rest9/raw/04-constant_array_closure_identity_cow/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_anonymous_constant_static_cache_clone_is_independent",
+      "source": "<?php\nclass A { const Closure F=static function() { static $n=0; echo ++$n; }; }\nclass B extends A {}\n$f=A::F; $g=B::F;\n$f(); $g();\n$h=clone $f;\n$h(); $f(); $h(); $g();\n",
+      "source_sha256": "77eb02d5485b349b457c1c69d32769be549469ddd233ad94331932212e4e8801",
+      "stdout_base64": "MTIzMzQ0",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-11-callable-cache/raw/01-anonymous_constant_static_cache_clone_is_independent/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_fixed_function_fallback_frozen_before_late_namespace_declaration",
+      "source": "<?php\nnamespace { function f() { echo \"G\"; } }\nnamespace N {\nclass A { const \\Closure F=f(...); }\n$first=A::F;\nif (true) { function f() { echo \"L\"; } }\n$second=A::F;\necho ($first === $second) ? \"same:\" : \"bad:\";\n$first(); $second(); echo \":\";\n$fresh=f(...); $fresh();\n}\n",
+      "source_sha256": "cab18da1c23f5ad6048cc06de61f9ef1d94608de5d74fc241736ccec5f7e272d",
+      "stdout_base64": "c2FtZTpHRzpM",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-11-callable-cache/raw/00-fixed_function_fallback_frozen_before_late_namespace_declaration/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_failed_fcc_prefix_freezes_target_after_discarded_object",
+      "source": "<?php\nnamespace { function f() { echo \"G\"; } }\nnamespace N {\nclass A { const array X=[f(...),LATE]; }\ntry { $v=A::X; } catch (\\Error $e) { echo \"retry:\"; }\nif (true) { function f() { echo \"L\"; } }\nconst LATE=1;\n$v=A::X; $w=A::X;\necho $v[1], \":\";\n($v[0])(); ($w[0])(); echo \":\";\n$fresh=f(...); $fresh();\n}\n",
+      "source_sha256": "a6b348ea73577e080e684e2398bb8ab045f945ecc6c81f6281e412d1a9629df7",
+      "stdout_base64": "cmV0cnk6MTpHRzpM",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-12-fcc-retry/raw/00-failed_fcc_prefix_freezes_target_after_discarded_object/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_fixed_function_namespace_fallback_clone",
+      "source": "<?php\nnamespace { function globalfn() { echo \"G\"; } }\nnamespace N {\nfunction localfn() { echo \"L\"; }\nclass A { const Closure F=localfn(...); const Closure G=globalfn(...); }\n$f=A::F; $g=A::G; $h=clone $f;\necho ($f === A::F) ? \"same:\" : \"bad:\";\n$f(); $g(); echo \":\"; $h();\n}\n",
+      "source_sha256": "4a73fa56a7492a6f0fb4f3936f276ce6a88040af661e24a3a9d50f78d9c3ce4e",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBDbG9zdXJlIHRvIGNsYXNzIGNvbnN0YW50IE5cQTo6RiBvZiB0eXBlIE5cQ2xvc3VyZSBpbiB7RklMRX06NgpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDYK",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-10-closures/raw/01-fixed_function_namespace_fallback_clone/command.json",
+      "native_raw_sha256": "7237f5ca04240f6bb48fb6e19bb966b486d5640ccc0feb56da96b0976cb808b6",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_invalid_nonstatic_closure_initializer",
+      "source": "<?php\nclass A { const F=function() {}; }\necho \"unreached\";\n",
+      "source_sha256": "e05e7579374bdae2eb654087569179dd1bce548ddd5123cd3edca73a0abf39f1",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsb3N1cmVzIGluIGNvbnN0YW50IGV4cHJlc3Npb25zIG11c3QgYmUgc3RhdGljIGluIHtGSUxFfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-10-closures-rest9/raw/05-invalid_nonstatic_closure_initializer/command.json",
+      "native_raw_sha256": "80a0b739a9cc6bad618c20268ab2e0408d5e78f3a12bf1d2af84165c606da190",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_invalid_static_closure_use_initializer",
+      "source": "<?php\n$x=1;\nclass A { const F=static function() use ($x) {}; }\necho \"unreached\";\n",
+      "source_sha256": "503f9bb5a7cc016f59f3e833cf034dff4db1e5e39b4205907eb8264b8ee636f9",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UoLi4uKSB2YXJpYWJsZXMgaW4gY29uc3RhbnQgZXhwcmVzc2lvbiBpbiB7RklMRX0gb24gbGluZSAzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-10-closures-rest9/raw/06-invalid_static_closure_use_initializer/command.json",
+      "native_raw_sha256": "a2f024415a0363d385bcf3e1bb069197ef5b6d7cd742f708dda505c1ceac141d",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_invalid_dynamic_function_fcc_initializer",
+      "source": "<?php\nclass A { const F=$fn(...); }\necho \"unreached\";\n",
+      "source_sha256": "a4e36538b0c833ccc291d0dc806adfc4666ed8b730f5b21db45300afb802fb56",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgZHluYW1pYyBmdW5jdGlvbiBuYW1lIGluIGNvbnN0YW50IGV4cHJlc3Npb24gaW4ge0ZJTEV9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-10-closures-rest9/raw/07-invalid_dynamic_function_fcc_initializer/command.json",
+      "native_raw_sha256": "0f2f4c40deb644b4eef4add1b76e210d78b5c56a536a2f0f18fbb92ac5fe3ae2",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_invalid_dynamic_method_fcc_initializer",
+      "source": "<?php\nclass A { const F=self::{$method}(...); }\necho \"unreached\";\n",
+      "source_sha256": "f1f8c279f5bfa12296c0c6fb6bd85c5e6c636360192fdc52142e6a23513dc73a",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgZHluYW1pYyBtZXRob2QgbmFtZSBpbiBjb25zdGFudCBleHByZXNzaW9uIGluIHtGSUxFfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-10-closures-rest9/raw/08-invalid_dynamic_method_fcc_initializer/command.json",
+      "native_raw_sha256": "f83dfc13f21120a816f79b7e1aa93475c40290b5c15acdbf3dc22a202c6fea23",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_constant_alias_two_sites_cow",
+      "source": "<?php\nclass A {\n    const \\Closure F = static function() { echo \"A\"; };\n    const array X = [static function() { echo \"B\"; }, static function() { echo \"C\"; }];\n}\nclass B extends A {\n    const \\Closure G = parent::F;\n    const array Y = [parent::F, self::G];\n}\n$f=A::F; $g=B::G; $x=A::X; $y=B::Y;\necho ($f === $g && $y[0] === $f && $y[1] === $f) ? \"same:\" : \"bad:\";\necho ($x[0] !== $x[1]) ? \"distinct:\" : \"bad:\";\n$x[0]=$x[1];\n($x[0])(); echo \":\";\n(A::X[0])(); (A::X[1])(); $g();\n",
+      "source_sha256": "03f59c580a8caab85eec33aa2dd901358342b858fbd61804752a623d54878234",
+      "stdout_base64": "c2FtZTpkaXN0aW5jdDpDOkJDQQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-publication-operational-current/.tools/compiler-publication/constants-current13-native-13-alias-flow/raw/00-literal_alias_two_constructor_array_cow/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_fixed_literal_class",
+      "source": "<?php\nnamespace {\nclass A { public static function f() { return self::class . \":\" . static::class; } }\nclass B extends A {}\n}\nnamespace N {\nclass A { public static function f() { return \"wrong\"; } }\nclass B extends A {}\nclass C { const \\Closure F=('B')::f(...); const \\Closure G=('\\B')::f(...); }\nclass D extends C {}\n$f=C::F; $g=D::F; $h=clone $f; $q=C::G;\necho ($f === $g) ? \"same:\" : \"bad:\";\necho $f(), \":\", $h(), \":\", $q();\n}\n",
+      "source_sha256": "bae250c36d2f4fb595aa7a9b2fa3f24f9efcd696694784c3c13b2bf02e4b0269",
+      "stdout_base64": "c2FtZTpBOkI6QTpCOkE6Qg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constant-callables-13/.tools/constant-callables/literal-names-paired7/raw/00-fixed_literal_class-native/command.json",
+      "native_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_quoted_self",
+      "source": "<?php\nclass A { const X=('self')::f(...); }\n",
+      "source_sha256": "4eee421efe1f0aa73a8d2c9b39862ad664f3fe34956493a141cf4a76e729d17c",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6ICdcc2VsZicgaXMgYW4gaW52YWxpZCBjbGFzcyBuYW1lIGluIHtGSUxFfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constant-callables-13/.tools/constant-callables/literal-names-rest13/raw/01-quoted_self-native/command.json",
+      "native_raw_sha256": "cddf850182d8688e200b93db8c264bae58cbd7b55ebeca83414e2da4eb1d4b77",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_quoted_parent",
+      "source": "<?php\nclass A { const X=('\\parent')::f(...); }\n",
+      "source_sha256": "1a0b204e8e7a4913134acbe4b5b4a08ad5dc7e27dcc721b3b68a64fcfb2eb491",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6ICdccGFyZW50JyBpcyBhbiBpbnZhbGlkIGNsYXNzIG5hbWUgaW4ge0ZJTEV9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constant-callables-13/.tools/constant-callables/literal-names-rest13/raw/02-quoted_parent-native/command.json",
+      "native_raw_sha256": "8700beff9a77386ba4738225dd121da80bf284b1a0fb2cd1f53b3dc13f7f352c",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_quoted_static",
+      "source": "<?php\nclass A { const X=('STaTiC')::f(...); }\n",
+      "source_sha256": "65cfe333464e726b788502519816edbb86e45229db861e36ebef55e0f379084c",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6ICdcU1RhVGlDJyBpcyBhbiBpbnZhbGlkIGNsYXNzIG5hbWUgaW4ge0ZJTEV9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constant-callables-13/.tools/constant-callables/literal-names-rest13/raw/03-quoted_static-native/command.json",
+      "native_raw_sha256": "af2a73dc9922753f66238c51ff2174769c73094d8951ca1cb091ef48976fd0ca",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_nonstring_function",
+      "source": "<?php\nclass A { const X=(123)(...); }\n",
+      "source_sha256": "9aa21374abbec7bbce388cb1fbcd9f5574d5a9dad589807795b67286304a643b",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IElsbGVnYWwgZnVuY3Rpb24gbmFtZSBpbiB7RklMRX0gb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constant-callables-13/.tools/constant-callables/literal-names-rest13/raw/04-nonstring_function-native/command.json",
+      "native_raw_sha256": "ee42f78206a23957bcb3e5a12034ca2b1651792608610ad31b665772261e2594",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_nonstring_method",
+      "source": "<?php\nclass A { const X=A::{123}(...); }\n",
+      "source_sha256": "f87eb6b90cc52102094df7891d53e0bd9fb0ad3caacb7914fe8dac8f6b4a4837",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IElsbGVnYWwgbWV0aG9kIG5hbWUgaW4ge0ZJTEV9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constant-callables-13/.tools/constant-callables/literal-names-rest13/raw/05-nonstring_method-native/command.json",
+      "native_raw_sha256": "a6ac440ed023eaa4cfc73724cc5b9a7fa8ec5b055322de965ae0b3fa692d06d5",
+      "native_profile": {
+        "display_errors": "stderr",
+        "log_errors": "0",
+        "html_errors": "0",
+        "error_reporting": "32767"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "constant_callable_nonstring_class",
+      "source": "<?php\nclass A { const X=(123)::f(...); }\n",
+      "source_sha256": "ef0898257486ee21b9d82f68384bb17964b7624c3feddcf5c7444801be1a673d",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IElsbGVnYWwgY2xhc3MgbmFtZSBpbiB7RklMRX0gb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-class-constant-callables-13/.tools/constant-callables/literal-names-rest13/raw/06-nonstring_class-native/command.json",
+      "native_raw_sha256": "f0630ecafc6a5693061ae9f70f35eb2d8f808e2b748720162cd11c63181d648d",
       "native_profile": {
         "display_errors": "stderr",
         "log_errors": "0",
