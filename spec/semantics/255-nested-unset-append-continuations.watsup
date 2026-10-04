@@ -199,6 +199,7 @@ def $error_call_valid(S, perrorcall) = true
 dec $key_append_cut(pstate, porigin, pbase, porigin) : pbase
 dec $key_append_temporary(ptask*, pstate, porigin, nat) : ptask*
 dec $key_append_finish(pstate, pkeywriter) : pstate
+dec $key_append_place(plocation) : bool
 dec $key_append_valid(pstate, pappendread) : bool
 dec $key_append_live(pstate, pappendread) : bool
 dec $key_append_insert(pstate, pappendread) : pstate
@@ -289,13 +290,16 @@ def $key_append_resume(S, pappendread) = S_out[.TODO = ptask_tail*][.HELD = S.HE
 rule PhpStep/key-append-rhs-resume: S ~> $key_append_resume(S, pappendread)
   -- if S.TODO = (KEY_APPEND_RESULT pappendread) :: ptask_tail*
   -- if $key_append_valid(S, pappendread)
+def $key_append_place(ROOT n) = true
+def $key_append_place(ELEMENT n pkey) = true
+def $key_append_place(plocation) = false -- otherwise
 def $key_append_valid(S, pappendread) = true
   -- if S.ORIGIN = (pappendread.WRITER.SITE)
   -- if $key_append_task(pappendread.WRITER.TASK)
   -- if $key_writer_valid(S, pappendread.WRITER, eps)
   -- if pappendread.WRITER.RHS = VARIABLE pappendread.NAME z_rhs
   -- if pappendread.LINE = $key_write_line(pappendread.WRITER.TASK)
-  -- if pappendread.PLACE =/= NOWHERE
+  -- if $key_append_place(pappendread.PLACE)
   -- if (HARRAY pappendread.ARRAY) <- S.ALLOCATIONS
 def $key_append_valid(S, pappendread) = false -- otherwise
 def $call_task_valid(S, KEY_APPEND_RESULT pappendread) = $key_append_valid(S, pappendread)
