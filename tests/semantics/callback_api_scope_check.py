@@ -1,15 +1,9 @@
 #!/usr/bin/env python3
 """The retired selecting method retains its genuine inherited called scope."""
-import json
-from pathlib import Path
 
 import shutdown_state_review as runner
 
-rows = json.loads(Path(__file__).with_name('callback_api_review_cases.json').read_text())
-source = next(row['source'] for row in rows
-              if row['id'] == 'shutdown-keyword-parent-self-static-called').replace(
-                  'register_shutdown_function(["parent","h"]);', '').replace(
-                  'register_shutdown_function("static::h");', '')
+source = '<?php class C{static function reg(){register_shutdown_function(["self","h"]);}private static function h(){}}class D extends C{static function other(){}}error_reporting(0);D::reg();'
 runner.CASES = {
     'retired-inherited-method-called-scope': {
         'source': source,
@@ -26,13 +20,14 @@ runner.CASES = {
             '$class_named(S.CLASSNAMES, $ptascii("c")) = (porigin_lexical)',
             '$class_named(S.CLASSNAMES, $ptascii("d")) = (porigin_called)',
             '$effective_method(S, porigin_lexical, $ptascii("reg"), |S.CLASSES|) = (pmethoddesc)',
-            '$effective_method(S, porigin_called, $ptascii("h"), |S.CLASSES|) = (pmethoddesc_other)',
+            '$effective_method(S, porigin_called, $ptascii("other"), |S.CLASSES|) = (pmethoddesc_other)',
             'pmethodcapture.FUNCTION = pmethoddesc.FUNCTION.ORIGIN',
             '$target_function(S, pshutdownproducer.TARGET) = (pmethoddesc.FUNCTION)',
             '$target_called_class(S, pshutdownproducer.TARGET) = (porigin_called)',
             'pmethodcapture.LEXICAL_CLASS = (porigin_lexical)',
             'pmethodcapture.CALLED_CLASS = (porigin_called)',
             'pmethodcapture.CALLSITE = (porigin_call)',
+            'pshutdownproducer.SITE = (porigin_call)',
             'papiquery.SCOPE = (porigin_lexical)',
             'papiquery.CALLED = (porigin_called)', 'papiquery.THIS = eps',
             'papiquery.CLASS.CALLED = porigin_called',
@@ -51,6 +46,7 @@ runner.CASES = {
             '~$shutdown_entry_valid(S, pshutdownentry[.CAPTURE = eps])',
             '~$shutdown_entry_valid(S, pshutdownentry[.PRODUCER = eps])',
             '~$shutdown_entry_valid(S, pshutdownentry[.PRODUCER = (pshutdownproducer[.INTERNAL = true])])',
+            '~$shutdown_entry_valid(S, pshutdownentry[.PRODUCER = (pshutdownproducer[.SITE = eps])])',
             '$call_task_valid(S, SHUTDOWN_SEND 0 0 eps)',
             *runner.VALID,
             'S_paused = $drive(S, 0)', 'S_paused.COMPLETION = BUDGET',
