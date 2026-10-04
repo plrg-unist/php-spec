@@ -244,13 +244,17 @@ def $scope_handler_base(S, porigin_requested, pmethoddesc, n_receiver?, false) =
 def $scope_handler_base(S, porigin_requested, pmethoddesc, n_receiver?, true) = (pcalltarget)
   -- if $handler_public_target(S, porigin_requested, pmethoddesc, n_receiver?, pmethoddesc.NAME, true) = HANDLERRESOLVED (HANDLER_METHOD_TARGET true porigin_requested pmethoddesc.NAME pcalltarget)
 
-def $scope_handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = $scope_handler_result(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, b_class)
+;; zend_is_callable_ex consults the actual user frame, while the AST
+;; evaluator's separate lexical/file override remains in the real state.
+dec $scope_handler_method_body(pstate, porigin, nat?, ptbytes, bool) : phandlerresolution
+def $scope_handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = $scope_handler_method_body(S[.CONSTCONTEXT = eps], porigin_requested, n_receiver?, ptbytes, b_class)
+def $scope_handler_method_body(S, porigin_requested, n_receiver?, ptbytes, b_class) = $scope_handler_result(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, b_class)
   -- if $scope_method(S, porigin_requested, ptbytes, ~b_class, $method_current_scope(S)) = (pmethoddesc)
-def $scope_handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERINVALID ($ptascii("class ") ++ pclassdesc.NAME ++ $ptascii(" does not have a method \"") ++ $c_string(ptbytes) ++ [34])
+def $scope_handler_method_body(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERINVALID ($ptascii("class ") ++ pclassdesc.NAME ++ $ptascii(" does not have a method \"") ++ $c_string(ptbytes) ++ [34])
   -- if $scope_method(S, porigin_requested, ptbytes, ~b_class, $method_current_scope(S)) = eps
   -- if ~$array_magic(S, porigin_requested)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
-def $scope_handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERUNKNOWN "magic error-handler method" -- otherwise
+def $scope_handler_method_body(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERUNKNOWN "magic error-handler method" -- otherwise
 
 def $handler_target_valid(S, porigin_requested, ptbytes, SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = true
   -- if pcallableaccess.SITE = eps /\ pcallableaccess.CREATION = eps
@@ -260,7 +264,7 @@ def $scope_class_base(SCOPED_TARGET porigin_requested porigin_method porigin_cal
 def $scope_class_base(pcalltarget) = false -- otherwise
 def $handler_kind_valid(b_class, SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = (b_class = ~pcallableaccess.OBJECT)
 def $handler_emitter_valid(S, HANDLER_METHOD_TARGET b_class porigin_requested ptbytes (SCOPE_METHOD_TARGET pcalltarget pcallableaccess)) = true
-  -- if pcallableaccess.SCOPE = $method_current_scope(S)
+  -- if pcallableaccess.SCOPE = $method_current_scope(S[.CONSTCONTEXT = eps])
   -- if $handler_target_valid(S, porigin_requested, ptbytes, SCOPE_METHOD_TARGET pcalltarget pcallableaccess)
   -- if $handler_kind_valid(b_class, SCOPE_METHOD_TARGET pcalltarget pcallableaccess)
   -- if $scope_method(S, porigin_requested, ptbytes, ~b_class, pcallableaccess.SCOPE) = (pmethoddesc)

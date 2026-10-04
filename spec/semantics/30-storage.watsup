@@ -55,7 +55,8 @@ syntax pnoctorcall = { SITE porigin, CLASS ptbytes, OBJECT nat, ARGUMENTS phpTyp
 syntax psourcefile = SOURCEFILE nat nat*
 syntax pevalphase = PARSER_WAIT | UNIT_RUN
 syntax pfailedkind = FAILED_PARSE | FAILED_COMPILE
-syntax pfailedsource = { UNIT nat, SITE porigin, BYTES nat*, FILE nat*, ISFILE bool, KIND pfailedkind, MESSAGE nat*, LINE int }
+syntax pconstantlocation = { CLASS porigin, ROOT porigin, CHILD porigin }
+syntax pfailedsource = { UNIT nat, SITE porigin, BYTES nat*, FILE nat*, ISFILE bool, KIND pfailedkind, MESSAGE nat*, LINE int, LOCATION pconstantlocation? }
 syntax pfilephase = FILE_RESOLVE_WAIT | FILE_PARSE_WAIT | FILE_UNIT_RUN
 syntax pfilebinding = { UNIT nat, SITE porigin, KIND int, REQUESTED nat*, RESOLVED nat*, OPENED nat*, BYTES nat*, CLASS porigin? }
 syntax pfileopenresponse = FILE_MISSING nat nat* nat* nat* | FILE_OPEN_FAILURE nat nat* nat* nat* nat* nat* | FILE_OPENED nat nat* nat* nat* nat* nat*
@@ -143,8 +144,8 @@ syntax ptask = ARGINFO_REF_PREP pargref | ARGINFO_REF_VALUES pargref nat poperan
 syntax pdirconversion = { NONCE nat, CALLSITE porigin, CALLLINE int, OBJECT nat, RESULT nat*, SELECTION nat?, OWNERDEPTH nat }
 syntax pdircontext = { NONCE nat, CALL pconfigcall, CWD nat*, REQUESTED nat*, CONVERSION nat?, FRAMEOWNER nat, TAIL ptask* }
 syntax pfilecontext = { NONCE nat, SITE porigin, CALLER nat*, REQUESTED nat*, CWD nat*, INCLUDEPATH nat*, KIND int, LEXICAL_CLASS porigin?, OWNER nat, PHASE pfilephase, TAIL ptask*, UNIT nat?, RESOLVED nat*?, OPENED nat*?, BYTES nat*? }
-syntax pevalcontext = { UNIT nat, SITE porigin, BYTES nat*, FILE nat*, LEXICAL_CLASS porigin?, OWNER nat, PHASE pevalphase, TAIL ptask* }
-syntax pevalbinding = { UNIT nat, SITE porigin, CLASS porigin? }
+syntax pevalcontext = { UNIT nat, SITE porigin, BYTES nat*, FILE nat*, LEXICAL_CLASS porigin?, OWNER nat, PHASE pevalphase, TAIL ptask*, LOCATION pconstantlocation? }
+syntax pevalbinding = { UNIT nat, SITE porigin, CLASS porigin?, LOCATION pconstantlocation? }
 syntax pcursor = CURSOR nat nat
 syntax piterator = ITERATOR nat nat bool pcursor* | OBJECTITER nat nat nat bool
 syntax preqbytes = nat*
@@ -567,6 +568,10 @@ dec $class_constant_active(pstate) : bool
 dec $class_constant_frame_stack(pstate, pframe, pframe*) : pclassconstantcontext*
 dec $class_constant_origin(pclassdesc*, porigin) : pclassconstantdesc?
 dec $class_constant_trace(pstate) : ptraceframe*
+dec $class_constant_source_location(pstate, porigin?) : (porigin, int)?
+dec $constant_location_valid(pstate, pconstantlocation, nat) : bool
+dec $class_constant_location(pstate) : pconstantlocation?
+dec $declaration_active_class(pstate, porigin?) : bool
 dec $class_constant_error_origin(pstate) : porigin?
 dec $class_constant_error_line(pstate, int) : int
 dec $class_static_prepare_base(pstate, poperand, ptbytes, int) : pstate
@@ -576,6 +581,7 @@ dec $class_static_accessible(pstate, ppropertydesc) : bool
 dec $class_static_ref_name_matches(phpType31, ptbytes) : bool
 
 dec $static_default_scope(pstate) : porigin?
+dec $static_default_source_valid(pstate, ppropertydesc) : bool
 dec $static_default_context_at(ptask*) : pstaticdefaultcontext?
 dec $static_default_slot_valid(pstate, ppropertydesc, pclassstatic) : bool
 dec $static_default_ast_active(pstate) : bool
