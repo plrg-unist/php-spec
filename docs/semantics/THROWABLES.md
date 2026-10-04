@@ -80,6 +80,13 @@ preserve their fields. Explicit self and two-object previous cycles are legal;
 terminal rendering stops at a repeated object. Finally replacement
 keeps its transition-local generated-chain guard.
 
+[Prepared parameter-default constructors](../../coverage/semantics/internal-default-constructors-review.json)
+evaluate all AST values before internal name mapping, fill only existing named
+holes, and parse lossless scalars with default-declaration strictness. Successful
+string parsing updates supplied trace slots; trailing defaults do not increase
+argc. Source15, reached67 and affected trace2 retain separate cutoffs. Weak null,
+Stringable and lossy integer reception still require suspended continuations.
+
 Compiler rules preserve throw effects even where its result folds to true,
 compile try body before ordered catch headers/bodies, and retain first-type
 catch diagnostic lines. Legal goto entry into try reconstructs its marker;

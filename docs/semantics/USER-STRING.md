@@ -78,9 +78,12 @@ values do not classify their triggering expression. The
 [constructor ledger](../../coverage/semantics/default-constructors-review.json)
 separates source cutoffs, 183 reached premises, two actual219/222 interactions
 and actual221 callable reception/owner39. Constructor traces use the compiled
-parameter receive line; callable warnings keep the constructor formal line. Internal
-constructor defaults, rebound anonymous keyword NEW and broader constrained
-consumers remain required core work.
+parameter receive line; callable warnings keep the constructor formal line.
+[Internal default constructors](../../coverage/semantics/internal-default-constructors-review.json)
+now admit lossless scalars with declaration strictness and supplied string-slot
+mutation in later error traces. Weak null, Stringable and lossy integer reception
+remain required suspended consumers, alongside rebound anonymous keyword NEW
+and broader constrained conversions.
 
 The required consumer inventory includes echo, print, `(string)` casts,
 concat, interpolation, eval operands, weak typed conversions, dynamic variable

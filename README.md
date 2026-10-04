@@ -487,8 +487,11 @@ defaults, retaining declaring method scope and captured cells.
 [Source constructor defaults](coverage/semantics/default-constructors-review.json)
 finish class tables before allocation and evaluate all argument values before
 constructor access and name mapping. Declaration strictness, API reference warnings
-and fresh default objects retain their real owners. Internal constructor defaults,
-rebound anonymous keyword defaults and broader constrained conversion remain open.
+and fresh default objects retain their real owners.
+[Internal default constructors](coverage/semantics/internal-default-constructors-review.json)
+map prepared values with declaration strictness, named-hole filling and exact
+string-mutated traces. Suspended internal warning/Stringable reception, rebound
+anonymous keyword defaults and broader constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
