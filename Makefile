@@ -137,11 +137,17 @@ test-semantics: build
 	python3 tests/semantics/exception_handler_review.py
 	python3 tests/semantics/exception_handler_state_review.py
 	python3 tests/semantics/exception_handler_boundaries.py
+	python3 tests/semantics/shutdown_functions.py
+	python3 tests/semantics/shutdown_render_state.py
+	python3 tests/semantics/shutdown_review.py
+	python3 tests/semantics/shutdown_state_review.py
 	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
 	python3 tests/semantics/scoped_callables_protocol.py
 	python3 tests/semantics/keyword_compound_callables.py
 	python3 tests/semantics/keyword_compound_callables_protocol.py
+	python3 tests/semantics/from_callable.py
+	python3 tests/semantics/from_callable_protocol.py
 	python3 tests/semantics/invoke_publication.py
 	python3 tests/semantics/invoke_publication_protocol.py
 	python3 tests/semantics/callable_string_ini.py

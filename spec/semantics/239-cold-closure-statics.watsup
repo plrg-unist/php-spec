@@ -41,7 +41,7 @@ def $closure_creator_header(S, porigin, pclosurescope, pclosurecreation, pclosur
   -- if $closure_evidence_valid(S, pclosureevidence)
   -- if $($closure_evidence_object(pclosureevidence) < pclosurescope.OBJECT)
   -- if $closure_evidence_body(S, $closure_evidence_object(pclosureevidence)) = (pclosurecreation.FUNCTION)
-  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (pclosurecreation.FUNCTION)
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = ($origin_source(pclosurecreation.FUNCTION))
   -- if pclosurecreation.CALLSITE = pclosurecreator.CALLSITE
   -- if $closure_creator_site(S, pclosurecreator.CALLSITE)
   -- if $closure_creator_callsite(pclosureevidence, pclosurecreator.CALLSITE)
@@ -100,6 +100,8 @@ def $closure_evidence_scope_receiver(S, porigin, pclosurescope) = true
   -- if S.OBJECTS[n_receiver] = INSTANCE pclosurescope.CALLED
 def $closure_evidence_scope_receiver(S, porigin, pclosurescope) = false -- otherwise
 def $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope) = true
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = REALCLOSURE porigin_body pitem* pstaticcell*
   -- if $closure_evidence_body(S, pclosurescope.OBJECT) = (porigin)
   -- if $closure_scope_classes_valid(S, porigin, pclosurescope)
   -- if $closure_scope_creation_valid(S, porigin, pclosurescope)
@@ -177,8 +179,11 @@ def $closure_evidence_bind_receiver(S, porigin, pclosurebinding) = true
   -- if pclosurebinding.CALLED = (porigin_called)
 def $closure_evidence_bind_receiver(S, porigin, pclosurebinding) = false -- otherwise
 def $closure_evidence_valid(S, CLOSURE_BINDING pclosurebinding) = true
+  -- if $(pclosurebinding.OBJECT < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[pclosurebinding.OBJECT]) = REALCLOSURE porigin_body pitem* pstaticcell*
   -- if $closure_evidence_body(S, pclosurebinding.OBJECT) = (porigin)
   -- if $(pclosurebinding.SOURCE < pclosurebinding.OBJECT)
+  -- if $object_body(S.OBJECTS[pclosurebinding.SOURCE]) = REALCLOSURE porigin_body pitem_source* pstaticcell_source*
   -- if $closure_evidence_body(S, pclosurebinding.SOURCE) = (porigin)
   -- if $closure_evidence_bind_site(S, pclosurebinding.SITE)
   -- if $closure_evidence_bind_input(S, pclosurebinding)
@@ -234,7 +239,7 @@ def $class_static_selection_valid(S, pstaticselection) = true
   -- if $closure_evidence_body(S, $closure_evidence_object(pclosureevidence)) = (porigin_function)
   -- if pstaticselection.SITE = PORIGIN n pcpath
   -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction)
-  -- if pfunction.ORIGIN = porigin_function
+  -- if pfunction.ORIGIN = $origin_source(porigin_function)
   -- if pstaticselection.SCOPE = (porigin_scope)
   -- if pstaticselection.CALLED = (porigin_called)
   -- if $closure_evidence_lexical(pclosureevidence) = (porigin_scope)

@@ -1,0 +1,772 @@
+;; Zend stores a selected FCC and copied values, not a live raw registration.
+;; Its owners survive this queue into the later destructor/output/free phases.
+dec $shutdown_unknown_source(pstate, pconfigcall, nat) : bool
+dec $shutdown_unknown_items(pentry*) : bool
+dec $shutdown_unknown_item(pentry) : bool
+dec $shutdown_unknown_packs(pconfigpack*) : bool
+dec $shutdown_argument_named_unknown(pstate, porigin, nat) : bool
+dec $shutdown_previous_source(pstate, pconfigcall, preqbytes, nat) : bool
+dec $shutdown_source_named_at(pstate, porigin, nat, preqbytes) : bool
+dec $shutdown_named_items(pentry*, preqbytes) : bool
+dec $shutdown_previous_pack(pconfigpack, nat, nat, preqbytes) : bool
+dec $shutdown_previous_packs(pconfigpack*, nat, nat, preqbytes) : bool
+dec $shutdown_unpack_cursor(pstate) : nat
+dec $shutdown_previous_named(pstate, pconfigcall, preqbytes) : bool
+dec $shutdown_unknown_named(pstate, pconfigcall) : bool
+dec $shutdown_values(pnamedslot*) : pvalue*
+dec $shutdown_register(pstate, pconfigcall, pvalue) : pstate
+dec $shutdown_registration_valid(pstate, pconfigcall) : bool
+dec $shutdown_selection_scope(pstate, pshutdownentry) : bool
+dec $shutdown_scoped_target(pcalltarget) : bool
+dec $shutdown_capture_scope(pstate, porigin, pmethodcapture?) : porigin?
+dec $shutdown_capture_valid(pstate, porigin, pmethodcapture?) : bool
+dec $shutdown_entry_valid(pstate, pshutdownentry) : bool
+dec $shutdown_entries_valid(pstate, pshutdownentry*) : bool
+dec $shutdown_known(pvalue*) : poperand*
+dec $shutdown_args_valid(pstate, pvalue*) : bool
+dec $shutdown_reported(pstate, preqbytes, preqbytes, int, preqbytes, bool) : pstate
+dec $shutdown_file(pstate) : preqbytes
+dec $shutdown_fatal_suffix(pstate, bool) : preqbytes
+dec $shutdown_exception_suffix(pstate, nat) : preqbytes
+dec $shutdown_freeze(pstate) : pstate
+dec $shutdown_frozen(pcompletion) : bool
+dec $shutdown_terminal(pcompletion) : bool
+dec $shutdown_abort_frames(pstate) : pstate
+dec $shutdown_clean(pstate) : pstate
+dec $shutdown_begin(pstate) : pstate
+dec $shutdown_stop(pstate) : pstate
+dec $shutdown_task_scope(pstate) : bool
+dec $shutdown_sent_valid(pstate, pshutdownentry, poperand*, nat) : bool
+dec $shutdown_current_sent_valid(pstate) : bool
+dec $shutdown_received_valid(pstate) : bool
+dec $shutdown_received_suffix(poperand*, poperand*) : bool
+dec $shutdown_send_valid(pstate, nat, nat, poperand*) : bool
+dec $shutdown_reference_warning(pstate, nat, nat) : preqbytes
+dec $shutdown_reference_valid(pstate, nat, nat, poperand*) : bool
+dec $shutdown_enter_valid(pstate, nat, poperand*) : bool
+dec $shutdown_result_valid(pstate, nat, poperand*) : bool
+dec $shutdown_context_call(pcallcontext, pcallcontext?, pframe*) : (nat, poperand*)?
+dec $shutdown_context_kind(pstate, pcallcontext) : bool
+dec $shutdown_context_valid(pstate, pcallcontext) : bool
+dec $shutdown_parse_kind(preqbytes) : (int, preqbytes)
+dec $shutdown_snapshot_items(pstate, pentry*) : pentry*
+dec $shutdown_snapshot(pstate, pvalue) : parray?
+dec $shutdown_render_state_valid(pstate) : bool
+
+def $intrinsic_name(INTRINSIC_REGISTER_SHUTDOWN_FUNCTION) = $ptascii("register_shutdown_function")
+def $intrinsic_named(preqbytes) = (INTRINSIC_REGISTER_SHUTDOWN_FUNCTION) -- if $ptlc(preqbytes) = $ptascii("register_shutdown_function")
+def $error_api_kind(INTRINSIC_REGISTER_SHUTDOWN_FUNCTION) = true
+def $error_api_min(INTRINSIC_REGISTER_SHUTDOWN_FUNCTION) = 1
+def $error_api_max(INTRINSIC_REGISTER_SHUTDOWN_FUNCTION) = 9223372036854775807
+def $config_parameter(INTRINSIC_REGISTER_SHUTDOWN_FUNCTION, preqbytes) = (0) -- if preqbytes = $ptascii("callback")
+def $config_parameter_name(INTRINSIC_REGISTER_SHUTDOWN_FUNCTION, 0) = $ptascii("callback")
+def $config_destination(INTRINSIC_REGISTER_SHUTDOWN_FUNCTION, (preqbytes), n) = (0) -- if preqbytes = $ptascii("callback")
+def $config_destination(INTRINSIC_REGISTER_SHUTDOWN_FUNCTION, (preqbytes), 0) = (1) -- if preqbytes =/= $ptascii("callback")
+def $config_destination(INTRINSIC_REGISTER_SHUTDOWN_FUNCTION, (preqbytes), n) = (n) -- if preqbytes =/= $ptascii("callback") -- if $(n > 0)
+
+def $shutdown_unknown_source(S, pconfigcall, n) = true
+  -- if $(n < pconfigcall.INDEX)
+  -- if $shutdown_argument_named_unknown(S, pconfigcall.SITE, n)
+def $shutdown_unknown_source(S, pconfigcall, n) = $shutdown_unknown_source(S, pconfigcall, $(n + 1))
+  -- if $(n < pconfigcall.INDEX)
+  -- if ~$shutdown_argument_named_unknown(S, pconfigcall.SITE, n)
+def $shutdown_unknown_source(S, pconfigcall, n) = false -- if $(n >= pconfigcall.INDEX)
+def $shutdown_argument_named_unknown(S, porigin_site, n) = true
+  -- if $intrinsic_argument(S, porigin_site, n) = ((expression, false, preqbytes_name?, porigin, z))
+  -- if preqbytes_name? = (ptbytes_name)
+  -- if ptbytes_name =/= $ptascii("callback")
+def $shutdown_argument_named_unknown(S, porigin, n) = false -- otherwise
+def $shutdown_unknown_items(eps) = false
+def $shutdown_unknown_item(ENTRY (KSTRING preqbytes) pitem) = (preqbytes =/= $ptascii("callback"))
+def $shutdown_unknown_item(pentry) = false -- otherwise
+def $shutdown_unknown_items(pentry :: pentry_tail*) = ($shutdown_unknown_item(pentry) \/ $shutdown_unknown_items(pentry_tail*))
+def $shutdown_unknown_packs(eps) = false
+def $shutdown_unknown_packs(pconfigpack :: pconfigpack_tail*) = ($shutdown_unknown_items(pconfigpack.ITEMS) \/ $shutdown_unknown_packs(pconfigpack_tail*))
+def $shutdown_unknown_named(S, pconfigcall) = ($shutdown_unknown_source(S, pconfigcall, 0) \/ $shutdown_unknown_packs(pconfigcall.PACKS))
+;; Extra names remain forbidden by ZPP, but SEND diagnoses duplicates first.
+def $shutdown_previous_source(S, pconfigcall, preqbytes, n) = true
+  -- if $(n < pconfigcall.INDEX)
+  -- if $shutdown_source_named_at(S, pconfigcall.SITE, n, preqbytes)
+def $shutdown_previous_source(S, pconfigcall, preqbytes, n) = $shutdown_previous_source(S, pconfigcall, preqbytes, $(n + 1))
+  -- if $(n < pconfigcall.INDEX)
+  -- if ~$shutdown_source_named_at(S, pconfigcall.SITE, n, preqbytes)
+def $shutdown_previous_source(S, pconfigcall, preqbytes, n) = false -- if $(n >= pconfigcall.INDEX)
+def $shutdown_source_named_at(S, porigin_site, n, preqbytes) = true
+  -- if $intrinsic_argument(S, porigin_site, n) = ((expression, false, preqbytes_name?, porigin, z))
+  -- if preqbytes_name? = (preqbytes)
+def $shutdown_source_named_at(S, porigin_site, n, preqbytes) = false -- otherwise
+def $shutdown_named_items(eps, preqbytes) = false
+def $shutdown_named_items((ENTRY pkey pitem) :: pentry_tail*, preqbytes) = ($exit_key_name(pkey) = (preqbytes) \/ $shutdown_named_items(pentry_tail*, preqbytes))
+def $shutdown_previous_pack(pconfigpack, n_index, n_cursor, preqbytes) = $shutdown_named_items(pconfigpack.ITEMS, preqbytes)
+  -- if $(pconfigpack.INDEX < n_index)
+def $shutdown_previous_pack(pconfigpack, n_index, n_cursor, preqbytes) = $shutdown_named_items(pconfigpack.ITEMS[0:n_cursor], preqbytes)
+  -- if pconfigpack.INDEX = n_index
+  -- if $(n_cursor <= |pconfigpack.ITEMS|)
+def $shutdown_previous_pack(pconfigpack, n_index, n_cursor, preqbytes) = false -- otherwise
+def $shutdown_previous_packs(eps, n_index, n_cursor, preqbytes) = false
+def $shutdown_previous_packs(pconfigpack :: pconfigpack_tail*, n_index, n_cursor, preqbytes) = ($shutdown_previous_pack(pconfigpack, n_index, n_cursor, preqbytes) \/ $shutdown_previous_packs(pconfigpack_tail*, n_index, n_cursor, preqbytes))
+def $shutdown_unpack_cursor(S) = n -- if S.TODO = (CONFIG_UNPACK_NEXT pconfigcall poperand n) :: ptask_tail*
+def $shutdown_unpack_cursor(S) = 0 -- otherwise
+def $shutdown_previous_named(S, pconfigcall, preqbytes) = ($shutdown_previous_source(S, pconfigcall, preqbytes, 0) \/ $shutdown_previous_packs(pconfigcall.PACKS, pconfigcall.INDEX, $shutdown_unpack_cursor(S), preqbytes))
+def $config_send_check(S, pconfigcall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Named parameter $") ++ preqbytes ++ $ptascii(" overwrites previous argument"), z)
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+  -- if preqbytes =/= $ptascii("callback")
+  -- if $shutdown_previous_named(S, pconfigcall, preqbytes)
+def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $ptascii("register_shutdown_function() does not accept unknown named parameters"))
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+  -- if $shutdown_unknown_named(S, pconfigcall)
+def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $ptascii("register_shutdown_function() expects at least 1 argument, 0 given"))
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+  -- if ~$shutdown_unknown_named(S, pconfigcall)
+  -- if pconfigcall.SENT = eps
+def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $ptascii("register_shutdown_function(): Argument #1 ($callback) not passed"))
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+  -- if ~$shutdown_unknown_named(S, pconfigcall)
+  -- if pconfigcall.SENT = NAMED_HOLE :: pnamedslot*
+
+def $shutdown_values(eps) = eps
+def $shutdown_values((NAMED_SENT (KNOWN pvalue)) :: pnamedslot*) = pvalue :: $shutdown_values(pnamedslot*)
+def $error_api_body(S, pconfigcall) = $shutdown_register(S, pconfigcall, $error_api_value(pconfigcall, 0, PNULL)) -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+def $shutdown_register(S, pconfigcall, pvalue) = S[.SHUTDOWN.ENTRIES = S.SHUTDOWN.ENTRIES ++ [pshutdownentry]][.RESULT = KNOWN PNULL]
+  -- if ~$exception_deprecated_raw(S, pvalue)
+  -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
+  -- if pconfigcall.SENT = (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
+  -- if pshutdownentry = {CALL pconfigcall, CAPTURE $method_capture_current(S, pconfigcall.SITE), RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, ARGS $shutdown_values(pnamedslot*)}
+def $shutdown_register(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("register_shutdown_function(): Argument #1 ($callback) must be a valid callback, ") ++ ptbytes)
+  -- if ~$exception_deprecated_raw(S, pvalue)
+  -- if $error_handler_resolution(S, pvalue) = HANDLERINVALID ptbytes
+def $shutdown_register(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "shutdown callback outside admitted source callable forms"]
+  -- if ~$exception_deprecated_raw(S, pvalue)
+  -- if $error_handler_resolution(S, pvalue) = HANDLERUNKNOWN text
+def $shutdown_register(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "shutdown keyword/compound callback ingress requires effectful API resolution"]
+  -- if $exception_deprecated_raw(S, pvalue)
+
+dec $shutdown_render_chain_warning(pstate, nat, nat*) : bool
+dec $shutdown_render_origin(pstate, nat) : porigin
+dec $shutdown_render_base(pstate, nat) : preqbytes
+dec $shutdown_render_begin(pstate, nat) : pstate
+dec $shutdown_render_valid(pstate, pshutdownrender) : bool
+dec $shutdown_render_pending_valid(pstate, pshutdownrender) : bool
+dec $shutdown_render_message(pstate, nat, preqbytes) : preqbytes
+dec $shutdown_render_trace(pstate, pshutdownrender) : preqbytes
+dec $shutdown_render_piece(pstate, pshutdownrender) : preqbytes
+dec $shutdown_render_join(pstate, pshutdownrender) : preqbytes
+dec $shutdown_render_next(pstate, pshutdownrender) : nat?
+dec $shutdown_render_finish(pstate, pshutdownrender) : pstate
+dec $shutdown_render_warning_message(pstate, pshutdownrender) : preqbytes
+dec $shutdown_render_warning(pstate, pshutdownrender) : pstate
+dec $shutdown_render_frame_call(pstate, pframe, pframe*) : pshutdownrender?
+dec $shutdown_render_array_value(pvalue) : bool
+dec $shutdown_render_root_message(pshutdownrender, preqbytes) : preqbytes
+dec $shutdown_render_message_prefix(preqbytes) : preqbytes
+dec $shutdown_render_value(pvalue) : preqbytes
+dec $shutdown_render_path(pstate, nat, nat, nat*) : bool
+dec $shutdown_compiler_snapshot(pcompletion) : pcompletion?
+
+;; Registration facts stay valid after subsequent selections or maker retirement.
+def $shutdown_registration_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps
+  -- if $exit_fixed(S, pconfigcall.SITE) = ((preqbytes, preqbytes_fallback?))
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pconfigcall.KIND)
+  -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
+def $shutdown_registration_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SELECTION = (n)
+  -- if $(n < |S.SELECTEDCALLS|)
+  -- if S.SELECTEDCALLS[n] = pselectedcall
+  -- if pselectedcall.NONCE = n /\ pselectedcall.SITE = pconfigcall.SITE
+  -- if pselectedcall.KIND = pconfigcall.KIND /\ pselectedcall.LINE = pconfigcall.LINE
+  -- if $selected_entry_source_valid(S, pselectedcall)
+def $shutdown_registration_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+  -- if pconfigcall.OWNER = (n)
+  -- if pconfigcall.SELECTION = eps
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE pconfigcall.KIND
+  -- if ($exit_fixed(S, pconfigcall.SITE) = eps /\ $exit_dynamic_site(S, pconfigcall.SITE)) \/ $exit_method_site(S, pconfigcall.SITE)
+  -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
+def $shutdown_registration_valid(S, pconfigcall) = false -- otherwise
+def $shutdown_selection_scope(S, pshutdownentry) = true
+  -- if pshutdownentry.TARGET = HANDLER_METHOD_TARGET b_class porigin ptbytes (SCOPE_METHOD_TARGET pcalltarget pcallableaccess)
+  -- if pcallableaccess.SITE = eps /\ pcallableaccess.CREATION = eps
+  -- if $shutdown_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
+  -- if pcallableaccess.SCOPE = $shutdown_capture_scope(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
+def $shutdown_selection_scope(S, pshutdownentry) = true -- if ~$shutdown_scoped_target(pshutdownentry.TARGET)
+def $shutdown_scoped_target(HANDLER_METHOD_TARGET b_class porigin ptbytes (SCOPE_METHOD_TARGET pcalltarget pcallableaccess)) = true
+def $shutdown_scoped_target(pcalltarget) = false -- otherwise
+def $shutdown_capture_scope(S, porigin, eps) = $closure_source_class(S, porigin)
+def $shutdown_capture_scope(S, porigin, (pmethodcapture)) = pmethodcapture.LEXICAL_CLASS
+def $shutdown_capture_valid(S, porigin_site, eps) = true
+def $shutdown_capture_valid(S, porigin_site, (pmethodcapture)) = true
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin_site), eps) = (pmethodcapture.FUNCTION)
+  -- if $method_capture_template(S, pmethodcapture.FUNCTION)
+  -- if pmethodcapture.LEXICAL_CLASS =/= $closure_source_class(S, porigin_site) \/ $method_capture_called_scope(S, porigin_site, pmethodcapture)
+  -- if $method_capture_class_valid(S, pmethodcapture.LEXICAL_CLASS)
+  -- if $method_capture_class_valid(S, pmethodcapture.CALLED_CLASS)
+  -- if pmethodcapture.CALLSITE = (porigin_call)
+  -- if $method_capture_invocation_valid(S, pmethodcapture, porigin_call)
+def $shutdown_capture_valid(S, porigin_site, (pmethodcapture)) = true
+  -- if $trait_imported_origin(pmethodcapture.FUNCTION)
+  -- if $method_capture_certificate_valid(S, porigin_site, (pmethodcapture))
+def $shutdown_capture_valid(S, porigin_site, pmethodcapture?) = false -- otherwise
+def $shutdown_selection_scope(S, pshutdownentry) = false -- otherwise
+def $shutdown_entry_valid(S, pshutdownentry) = true
+  -- if $shutdown_registration_valid(S, pshutdownentry.CALL)
+  -- if pshutdownentry.CALL.SENT = (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
+  -- if pshutdownentry.ARGS = $shutdown_values(pnamedslot*)
+  -- if $exception_raw_selected(S, pvalue, pshutdownentry.RAW, pshutdownentry.TARGET)
+  -- if $shutdown_selection_scope(S, pshutdownentry)
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if $shutdown_args_valid(S, pshutdownentry.ARGS)
+def $shutdown_entry_valid(S, pshutdownentry) = false -- otherwise
+def $shutdown_entries_valid(S, eps) = true
+def $shutdown_entries_valid(S, pshutdownentry :: pshutdownentry_tail*) = ($shutdown_entry_valid(S, pshutdownentry) /\ $shutdown_entries_valid(S, pshutdownentry_tail*))
+def $shutdown_roots(eps) = eps
+def $shutdown_roots(pshutdownentry :: pshutdownentry_tail*) = $target_nodes(pshutdownentry.TARGET) ++ $operands_roots($shutdown_known(pshutdownentry.ARGS)) ++ $shutdown_roots(pshutdownentry_tail*)
+
+def $shutdown_known(eps) = eps
+def $shutdown_known(pvalue :: pvalue_tail*) = (KNOWN pvalue) :: $shutdown_known(pvalue_tail*)
+def $shutdown_args_valid(S, eps) = true
+def $shutdown_args_valid(S, pvalue :: pvalue_tail*) = ($config_slots_valid(S, [NAMED_SENT (KNOWN pvalue)]) /\ $shutdown_args_valid(S, pvalue_tail*))
+
+;; Snapshot terminal reporting before shutdown callbacks can mutate its inputs.
+def $shutdown_reported(S, preqbytes_class, preqbytes_message, z, preqbytes, true) = S[.COMPLETION = REQUESTFATAL preqbytes_class preqbytes_message z][.EVENTS = S.EVENTS ++ $display_events(S, STDERR preqbytes)]
+def $shutdown_reported(S, preqbytes_class, preqbytes_message, z, preqbytes, false) = S[.COMPLETION = REQUESTFATAL preqbytes_class preqbytes_message z]
+def $shutdown_file(S) = $call_sourcefile(S.FILES, porigin) -- if S.ERRORORIGIN = (porigin)
+def $shutdown_file(S) = $call_sourcefile(S.FILES, PORIGIN 0 eps) -- if S.ERRORORIGIN = eps
+def $shutdown_fatal_suffix(S, true) = [10] ++ $ptascii("Stack trace:") ++ [10] ++ $error_trace_lines(S, S.TRACE, 0) ++ [10]
+def $shutdown_fatal_suffix(S, false) = [10]
+def $shutdown_exception_suffix(S, n) = [10] ++ $ptascii("  thrown in ") ++ preqbytes_file ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ [10]
+  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if $throwable_field(S, n, "line") = PINT z
+def $shutdown_freeze(S) = S -- if S.COMPLETION = NORMAL \/ $exit_completion(S.COMPLETION) \/ $shutdown_frozen(S.COMPLETION)
+def $shutdown_freeze(S) = $shutdown_reported(S, $object_name(S, n), $echo_value($throwable_field(S, n, "message")), z, $ptascii("Fatal error: Uncaught ") ++ $throwable_chain_string(S, n, eps) ++ $shutdown_exception_suffix(S, n), $long_and(S.REPORTING, 1) =/= 0)
+  -- if S.COMPLETION = UNCAUGHT n
+  -- if $object_name(S, n) =/= $ptascii("ParseError") /\ $object_name(S, n) =/= $ptascii("CompileError")
+  -- if $throwable_field(S, n, "line") = PINT z
+def $shutdown_freeze(S) = $shutdown_reported(S, $object_name(S, n), ptbytes_message, z, ptbytes_prefix ++ ptbytes_message ++ $ptascii(" in ") ++ ptbytes_file ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ [10], $long_and(S.REPORTING, i) =/= 0)
+  -- if S.COMPLETION = UNCAUGHT n
+  -- if (i, ptbytes_prefix) = $shutdown_parse_kind($object_name(S, n))
+  -- if ptbytes_message = $echo_value($throwable_field(S, n, "message"))
+  -- if $throwable_field(S, n, "line") = PINT z
+  -- if $throwable_field(S, n, "file") = PSTRING ptbytes_file
+def $shutdown_freeze(S) = $shutdown_reported(S, $object_name(S, n), ptbytes, z, $ptascii("Fatal error: Uncaught ") ++ ptbytes ++ $shutdown_exception_suffix(S, n), $long_and(S.REPORTING, 1) =/= 0)
+  -- if S.COMPLETION = UNCAUGHT_RENDERED n ptbytes
+  -- if $throwable_field(S, n, "line") = PINT z
+def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, S.TRACE =/= eps), b)
+  -- if S.COMPLETION = USERFATAL ptbytes z b
+def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, 0, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in Unknown on line 0") ++ $shutdown_fatal_suffix(S, true), b)
+  -- if S.COMPLETION = INTERNALFATAL ptbytes b
+def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("Error"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), $long_and(S.REPORTING, 1) =/= 0)
+  -- if S.COMPLETION = FATAL ptbytes z
+def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("CompileError"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), $long_and(S.REPORTING, 64) =/= 0)
+  -- if S.COMPLETION = STATICBYTES ptbytes z
+def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("CompileError"), ptbytes, z, $ptascii("Fatal error: ") ++ ptbytes ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, false), $long_and(S.REPORTING, 64) =/= 0)
+  -- if S.COMPLETION = COMPILETHROWN ptbytes z
+def $shutdown_freeze(S) = $shutdown_reported(S, $ptascii("CompileError"), $ptascii(text), z, $ptascii("Fatal error: ") ++ $ptascii(text) ++ $ptascii(" in ") ++ $shutdown_file(S) ++ $ptascii(" on line ") ++ $decimal_integer(z) ++ $shutdown_fatal_suffix(S, true), $long_and(S.REPORTING, 64) =/= 0)
+  -- if S.COMPLETION = STATICERROR text z
+
+def $shutdown_frozen(REQUESTFATAL ptbytes_class ptbytes_message z) = true
+def $shutdown_frozen(pcompletion) = false -- otherwise
+def $shutdown_terminal(NORMAL) = true
+def $shutdown_terminal(EXITED z) = true
+def $shutdown_terminal(UNCAUGHT n) = true
+def $shutdown_terminal(UNCAUGHT_RENDERED n ptbytes) = true
+def $shutdown_terminal(FATAL ptbytes z) = true
+def $shutdown_terminal(USERFATAL ptbytes z b) = true
+def $shutdown_terminal(INTERNALFATAL ptbytes b) = true
+def $shutdown_terminal(STATICERROR text z) = true
+def $shutdown_terminal(STATICBYTES ptbytes z) = true
+def $shutdown_terminal(COMPILETHROWN ptbytes z) = true
+def $shutdown_terminal(pcompletion) = $shutdown_frozen(pcompletion) -- otherwise
+
+def $shutdown_ready(S) = true
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_PENDING /\ S.SHUTDOWN.ENTRIES =/= eps
+  -- if $shutdown_terminal(S.COMPLETION)
+  -- if ~$shutdown_render_ready(S)
+  -- if S.COMPLETION =/= NORMAL \/ S.TODO = eps
+  -- if S.COMPILESTOP \/ S.FRAMES = eps
+def $shutdown_ready(S) = true
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
+  -- if S.COMPLETION =/= NORMAL /\ $shutdown_terminal(S.COMPLETION)
+  -- if ~$shutdown_render_ready(S)
+  -- if S.COMPILESTOP \/ S.FRAMES = eps
+def $shutdown_ready(S) = false -- otherwise
+def $shutdown_abort_frames(S) = $shutdown_abort_frames($restore_frame(S)) -- if S.FRAMES =/= eps
+def $shutdown_abort_frames(S) = S -- if S.FRAMES = eps
+def $shutdown_clean(S) = $shutdown_render_release($error_release_iterators($release_temporaries($silence_unwind($shutdown_abort_frames(S))))[.CURRENT = eps][.TODO = eps][.CONSTCONTEXT = eps][.HELD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.COMPILESTOP = false][.TRACE = eps][.ERRORFATALTRACE = eps][.ERRORORIGIN = eps])
+def $shutdown_begin(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_RUNNING][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps][.SHUTDOWN.COMPLETION = S_report.COMPLETION][.COMPLETION = NORMAL][.TODO = [SHUTDOWN_SEND 0 0 eps]]
+  -- if S_report = $shutdown_freeze(S)
+  -- if S_clean = $shutdown_clean(S_report)
+def $shutdown_stop(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps]
+  -- if S_clean = $shutdown_clean($shutdown_freeze(S))
+def $drive_steps(S, n) = $drive_steps($prune_allocations($shutdown_begin(S)), n)
+  -- if $shutdown_ready(S)
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_PENDING
+def $drive_steps(S, n) = $prune_allocations($shutdown_stop(S))
+  -- if $shutdown_ready(S)
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
+
+def $shutdown_state_valid(S) = true
+  -- if $shutdown_entries_valid(S, S.SHUTDOWN.ENTRIES)
+  -- if $(S.SHUTDOWN.INDEX <= |S.SHUTDOWN.ENTRIES|)
+  -- if S.SHUTDOWN.COMPLETION = NORMAL \/ $exit_completion(S.SHUTDOWN.COMPLETION) \/ $shutdown_frozen(S.SHUTDOWN.COMPLETION)
+  -- if S.SHUTDOWN.PHASE =/= SHUTDOWN_PENDING \/ (S.SHUTDOWN.INDEX = 0 /\ S.SHUTDOWN.COMPLETION = NORMAL)
+  -- if $shutdown_current_sent_valid(S)
+  -- if $shutdown_received_valid(S)
+  -- if $shutdown_render_state_valid(S)
+def $shutdown_state_valid(S) = false -- otherwise
+
+;; C argument preparation precedes ordinary arity and weak type reception.
+def $shutdown_task_scope(S) = (S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps)
+def $shutdown_sent_valid(S, pshutdownentry, eps, n) = true
+def $shutdown_sent_valid(S, pshutdownentry, (KNOWN pvalue) :: poperand*, n) = true
+  -- if $(n < |pshutdownentry.ARGS|)
+  -- if pshutdownentry.ARGS[n] = pvalue
+  -- if ~$call_parameter_reference(S, pshutdownentry.TARGET, n)
+  -- if $shutdown_sent_valid(S, pshutdownentry, poperand*, $(n + 1))
+def $shutdown_sent_valid(S, pshutdownentry, (REFERENCE n_cell) :: poperand*, n) = true
+  -- if $(n < |pshutdownentry.ARGS|) /\ $(n_cell < |S.STORE|)
+  -- if n_cell <- S.REFCELLS
+  -- if $call_parameter_reference(S, pshutdownentry.TARGET, n)
+  -- if $shutdown_sent_valid(S, pshutdownentry, poperand*, $(n + 1))
+def $shutdown_sent_valid(S, pshutdownentry, poperand*, n) = false -- otherwise
+;; The current prefix is borrowed. It fixes genuine wrapper cells across rebinding.
+def $shutdown_current_sent_valid(S) = true
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
+  -- if $(S.SHUTDOWN.INDEX < |S.SHUTDOWN.ENTRIES|)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[S.SHUTDOWN.INDEX]
+  -- if $(|S.SHUTDOWN.SENT| <= |pshutdownentry.ARGS|)
+  -- if $shutdown_sent_valid(S, pshutdownentry, S.SHUTDOWN.SENT, 0)
+def $shutdown_current_sent_valid(S) = (S.SHUTDOWN.SENT = eps)
+  -- if S.SHUTDOWN.PHASE =/= SHUTDOWN_RUNNING
+def $shutdown_current_sent_valid(S) = false -- otherwise
+;; RECEIVED is borrowed from EXTRA. Only the ordinary receive/coercion hook
+;; changes it; SENT continues to certify the original C argument wrappers.
+def $shutdown_received_suffix(eps, eps) = true
+def $shutdown_received_suffix((KNOWN pvalue) :: poperand*, (KNOWN pvalue_received) :: poperand_received*) = $shutdown_received_suffix(poperand*, poperand_received*)
+def $shutdown_received_suffix((REFERENCE n) :: poperand*, (REFERENCE n) :: poperand_received*) = $shutdown_received_suffix(poperand*, poperand_received*)
+def $shutdown_received_suffix(poperand*, poperand_received*) = false -- otherwise
+def $shutdown_received_valid(S) = true -- if S.SHUTDOWN.RECEIVED = eps
+def $shutdown_received_valid(S) = true
+  -- if S.SHUTDOWN.RECEIVED =/= eps
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
+  -- if $(S.SHUTDOWN.INDEX < |S.SHUTDOWN.ENTRIES|)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[S.SHUTDOWN.INDEX]
+  -- if |S.SHUTDOWN.SENT| = |pshutdownentry.ARGS|
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if n_received = $call_received(|S.SHUTDOWN.SENT|, n_fixed)
+  -- if n_extra = $nabs($(|S.SHUTDOWN.SENT| - n_received))
+  -- if poperand* = S.SHUTDOWN.SENT[n_received:n_extra]
+  -- if (n_fixed = |pfunction.SIGNATURE.PARAMETERS| /\ S.SHUTDOWN.RECEIVED = poperand*) \/ ($(n_fixed < |pfunction.SIGNATURE.PARAMETERS|) /\ $shutdown_received_suffix(poperand*, S.SHUTDOWN.RECEIVED))
+def $shutdown_received_valid(S) = false -- otherwise
+def $shutdown_send_valid(S, n_index, n, poperand*) = true
+  -- if $shutdown_task_scope(S)
+  -- if S.SHUTDOWN.RECEIVED = eps
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
+  -- if S.SHUTDOWN.INDEX = n_index /\ $(n_index < |S.SHUTDOWN.ENTRIES|)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
+  -- if $shutdown_entry_valid(S, pshutdownentry)
+  -- if |poperand*| = n /\ $(n <= |pshutdownentry.ARGS|)
+  -- if poperand* = S.SHUTDOWN.SENT
+  -- if $shutdown_sent_valid(S, pshutdownentry, poperand*, 0)
+  -- if $call_sent_operands_valid(S, pshutdownentry.TARGET, 0, poperand*)
+def $shutdown_send_valid(S, n_index, n, poperand*) = false -- otherwise
+def $call_task_valid(S, SHUTDOWN_SEND n_index n poperand*) = ($shutdown_send_valid(S, n_index, n, poperand*) /\ S.ORIGIN = eps)
+def $task_nodes(SHUTDOWN_SEND n_index n poperand*) = $operands_roots(poperand*)
+def $call_after_origin(S, SHUTDOWN_SEND n_index n poperand*) = S[.ORIGIN = eps]
+rule PhpStep/shutdown-send-value: S ~> S[.SHUTDOWN.SENT = poperand* ++ [KNOWN pshutdownentry.ARGS[n]]][.TODO = [SHUTDOWN_SEND n_index $(n + 1) (poperand* ++ [KNOWN pshutdownentry.ARGS[n]])]]
+  -- if S.TODO = (SHUTDOWN_SEND n_index n poperand*) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, SHUTDOWN_SEND n_index n poperand*)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
+  -- if $(n < |pshutdownentry.ARGS|)
+  -- if ~$call_parameter_reference(S, pshutdownentry.TARGET, n)
+def $shutdown_reference_warning(S, n_index, n) = pfunction.NAME ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be passed by reference, value given")
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
+rule PhpStep/shutdown-send-reference-warning: S ~> $error_dispatch(S[.ORIGIN = (pfunction.ORIGIN)], 2, ptbytes, 0, DIAGNOSTIC_INTERNAL "Warning" ptbytes 0, SHUTDOWN_REFERENCE n_index n poperand*)
+  -- if S.TODO = (SHUTDOWN_SEND n_index n poperand*) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, SHUTDOWN_SEND n_index n poperand*)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
+  -- if $(n < |pshutdownentry.ARGS|)
+  -- if $call_parameter_reference(S, pshutdownentry.TARGET, n)
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if ptbytes = $shutdown_reference_warning(S, n_index, n)
+def $exception_warning_resume(SHUTDOWN_REFERENCE n_index n poperand*) = true
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = SHUTDOWN_REFERENCE n_index n poperand*
+  -- if $shutdown_send_valid(S, n_index, n, poperand*)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
+  -- if $(n < |pshutdownentry.ARGS|)
+  -- if $call_parameter_reference(S, pshutdownentry.TARGET, n)
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if S.ORIGIN = (pfunction.ORIGIN) /\ perrorcall.SITE = pfunction.ORIGIN
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = 0
+  -- if perrorcall.MESSAGE = $shutdown_reference_warning(S, n_index, n)
+  -- if perrorcall.EVENT = DIAGNOSTIC_INTERNAL "Warning" perrorcall.MESSAGE 0
+def $shutdown_reference_valid(S, n_index, n, poperand*) = true
+  -- if $shutdown_send_valid(S, n_index, n, poperand*)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
+  -- if $(n < |pshutdownentry.ARGS|)
+  -- if $call_parameter_reference(S, pshutdownentry.TARGET, n)
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if S.ORIGIN = (pfunction.ORIGIN)
+def $shutdown_reference_valid(S, n_index, n, poperand*) = false -- otherwise
+def $call_task_valid(S, SHUTDOWN_REFERENCE n_index n poperand*) = $shutdown_reference_valid(S, n_index, n, poperand*)
+def $task_nodes(SHUTDOWN_REFERENCE n_index n poperand*) = $operands_roots(poperand*)
+rule PhpStep/shutdown-send-reference: S ~> S_cell[.SHUTDOWN.SENT = poperand* ++ [S_cell.RESULT]][.TODO = [SHUTDOWN_SEND n_index $(n + 1) (poperand* ++ [S_cell.RESULT])]][.RESULT = KNOWN PNULL][.ORIGIN = eps]
+  -- if S.TODO = (SHUTDOWN_REFERENCE n_index n poperand*) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, SHUTDOWN_REFERENCE n_index n poperand*)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
+  -- if S_cell = $call_fresh_reference(S, pshutdownentry.ARGS[n])
+rule PhpStep/shutdown-send-done: S ~> S[.TODO = [SHUTDOWN_ENTER n_index poperand*]]
+  -- if S.TODO = (SHUTDOWN_SEND n_index n poperand*) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, SHUTDOWN_SEND n_index n poperand*)
+  -- if n = |S.SHUTDOWN.ENTRIES[n_index].ARGS|
+def $shutdown_enter_valid(S, n_index, poperand*) = true
+  -- if $shutdown_send_valid(S, n_index, |poperand*|, poperand*)
+  -- if |poperand*| = |S.SHUTDOWN.ENTRIES[n_index].ARGS| /\ S.ORIGIN = eps
+def $shutdown_enter_valid(S, n_index, poperand*) = false -- otherwise
+def $call_task_valid(S, SHUTDOWN_ENTER n_index poperand*) = $shutdown_enter_valid(S, n_index, poperand*)
+def $task_nodes(SHUTDOWN_ENTER n_index poperand*) = $operands_roots(poperand*)
+rule PhpStep/shutdown-enter: S ~> $call_arity($target_after_enter($call_enter(S[.SHUTDOWN.RECEIVED = poperand*[n_received:n_extra]][.TODO = [SHUTDOWN_RESULT n_index poperand*]], pfunction, poperand*, eps, $(-1)), pshutdownentry.TARGET), pfunction, |poperand*|, eps, $(-1))
+  -- if S.TODO = (SHUTDOWN_ENTER n_index poperand*) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, SHUTDOWN_ENTER n_index poperand*)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if n_received = $call_received(|poperand*|, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if n_extra = $nabs($(|poperand*| - n_received))
+
+;; RESULT keeps only borrowed send certificates after the formals own their args.
+def $shutdown_result_valid(S, n_index, poperand*) = true
+  -- if $shutdown_task_scope(S) /\ S.ORIGIN = eps
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
+  -- if S.SHUTDOWN.INDEX = n_index /\ $(n_index < |S.SHUTDOWN.ENTRIES|)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
+  -- if $shutdown_entry_valid(S, pshutdownentry)
+  -- if |poperand*| = |pshutdownentry.ARGS|
+  -- if poperand* = S.SHUTDOWN.SENT
+  -- if $shutdown_sent_valid(S, pshutdownentry, poperand*, 0)
+def $shutdown_result_valid(S, n_index, poperand*) = false -- otherwise
+def $call_task_valid(S, SHUTDOWN_RESULT n_index poperand*) = $shutdown_result_valid(S, n_index, poperand*)
+def $task_nodes(SHUTDOWN_RESULT n_index poperand*) = eps
+def $call_after_origin(S, SHUTDOWN_RESULT n_index poperand*) = S[.ORIGIN = eps]
+rule PhpStep/shutdown-result-next: S ~> S[.SHUTDOWN.INDEX = $(n_index + 1)][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps][.TODO = [SHUTDOWN_SEND $(n_index + 1) 0 eps]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SHUTDOWN_RESULT n_index poperand*) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $shutdown_result_valid(S, n_index, poperand*)
+  -- if $exception_return_operand(S.RESULT)
+  -- if $(n_index + 1 < |S.SHUTDOWN.ENTRIES|)
+rule PhpStep/shutdown-result-done: S ~> S[.SHUTDOWN.INDEX = $(n_index + 1)][.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps][.TODO = eps][.COMPLETION = S.SHUTDOWN.COMPLETION][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SHUTDOWN_RESULT n_index poperand*) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $shutdown_result_valid(S, n_index, poperand*)
+  -- if $exception_return_operand(S.RESULT)
+  -- if $(n_index + 1 = |S.SHUTDOWN.ENTRIES|)
+def $throwable_marker(SHUTDOWN_RESULT n_index poperand*) = true
+def $exception_terminal_tail(S, (SHUTDOWN_RESULT n_index poperand*) :: ptask_tail*) = $shutdown_result_valid(S, n_index, poperand*)
+  -- if ptask_tail* = eps
+def $throwable_continuation(S, S_next) = S_next
+  -- if S.TODO = (SHUTDOWN_ENTER n_index poperand*) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S_next.FRAMES = [pframe]
+  -- if pframe.TODO = [SHUTDOWN_RESULT n_index poperand*]
+  -- if pframe.CONTEXT = eps /\ pframe.ORIGIN = eps /\ pframe.CONSTCONTEXT = eps
+
+;; Authenticate current and saved internal contexts against their exact queue row.
+def $shutdown_context_call(pcallcontext, (pcallcontext), pframe :: pframe_tail*) = ((n_index, poperand*))
+  -- if pframe.TODO = [SHUTDOWN_RESULT n_index poperand*]
+  -- if pframe.CONTEXT = eps /\ pframe.LOCALS = eps
+  -- if pframe.ORIGIN = eps /\ pframe.CONSTCONTEXT = eps
+def $shutdown_context_call(pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $shutdown_context_call(pcallcontext, pframe.CONTEXT, pframe_tail*)
+  -- if pcallcontext_other? =/= (pcallcontext)
+def $shutdown_context_call(pcallcontext, pcallcontext_other?, pframe*) = eps -- otherwise
+def $shutdown_context_kind(S, pcallcontext) = ($shutdown_context_call(pcallcontext, S.CURRENT, S.FRAMES) =/= eps)
+def $shutdown_context_valid(S, pcallcontext) = true
+  -- if $shutdown_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((n_index, poperand*))
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
+  -- if S.SHUTDOWN.INDEX = n_index /\ $(n_index < |S.SHUTDOWN.ENTRIES|)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
+  -- if $shutdown_entry_valid(S, pshutdownentry)
+  -- if pcallcontext.TARGET = pshutdownentry.TARGET
+  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
+  -- if pcallcontext.ARGC = |pshutdownentry.ARGS| /\ |poperand*| = |pshutdownentry.ARGS|
+  -- if poperand* = S.SHUTDOWN.SENT
+  -- if $shutdown_sent_valid(S, pshutdownentry, poperand*, 0)
+  -- if pcallcontext.WRAPPER = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if n_extra = $nabs($(|poperand*| - n_received))
+  -- if |pcallcontext.EXTRA| = n_extra
+  -- if pcallcontext.EXTRA = S.SHUTDOWN.RECEIVED
+  -- if $shutdown_received_valid(S)
+  -- if $call_sent_operands_valid(S, pshutdownentry.TARGET, n_received, pcallcontext.EXTRA)
+def $shutdown_context_valid(S, pcallcontext) = false -- otherwise
+def $error_context_kind(S, pcallcontext) = true -- if $shutdown_context_kind(S, pcallcontext)
+def $error_context_valid(S, pcallcontext) = true -- if $shutdown_context_valid(S, pcallcontext)
+def $typed_caller_strict(S) = false -- if S.CURRENT = (pcallcontext) -- if $shutdown_context_valid(S, pcallcontext)
+def $wrapper_called_suffix(S, pcallcontext) = eps -- if $shutdown_context_kind(S, pcallcontext)
+def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed") -- if $shutdown_context_kind(S, pcallcontext)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if $shutdown_context_kind(S, pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S[.FRAMES = pframe_tail*]
+  -- if pframe.CONTEXT = eps /\ pframe.LOCALS = eps
+  -- if pframe.TODO = [SHUTDOWN_RESULT n_index poperand*]
+
+def $variadic_context_receive_valid(S, n_extra) = true
+  -- if S.TODO = (VARIADIC_RECEIVE porigin n_arg) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $variadic_receive_valid(S, porigin, n_arg)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if n_arg = $(n_fixed + n_extra)
+def $variadic_context_receive_valid(S, n_extra) = true
+  -- if S.TODO = (VARIADIC_STRING_RESULT pvariadicstring) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if ~pvariadicstring.NAMED /\ pvariadicstring.ELEMENT = n_extra
+  -- if $receive_string_scope_valid(S, VARIADIC_STRING_RESULT pvariadicstring)
+def $variadic_context_receive_valid(S, n_extra) = false -- otherwise
+def $variadic_context_coerced(S, n_extra, KNOWN pvalue) = S[.SHUTDOWN.RECEIVED = $variadic_replace(S.SHUTDOWN.RECEIVED, n_extra, KNOWN pvalue)]
+  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN pvalue
+  -- if S.CURRENT = (pcallcontext)
+  -- if $shutdown_context_valid(S, pcallcontext)
+  -- if $variadic_context_receive_valid(S, n_extra)
+
+def $shutdown_parse_kind(preqbytes) = (4, $ptascii("Parse error: ")) -- if preqbytes = $ptascii("ParseError")
+def $shutdown_parse_kind(preqbytes) = (64, $ptascii("Fatal error: ")) -- if preqbytes = $ptascii("CompileError")
+
+;; All selected callback members are fixed here, including referenced selectors.
+;; This snapshot is a certificate; neither it nor CALL roots the old raw array.
+def $shutdown_snapshot_items(S, eps) = eps
+def $shutdown_snapshot_items(S, (ENTRY pkey pitem) :: pentry*) = (ENTRY pkey (DIRECT $entry_value(S, pitem))) :: $shutdown_snapshot_items(S, pentry*)
+def $shutdown_snapshot(S, PARRAY n) = (S.ARRAYS[n][.ITEMS = $shutdown_snapshot_items(S, S.ARRAYS[n].ITEMS)])
+def $shutdown_snapshot(S, pvalue) = eps -- otherwise
+
+;; zend_exception_error calls the builtin __toString before emitting its fatal.
+;; A warning throw is deferred until that internal body stores its string cache.
+;; RENDER is a borrowed certificate; its task owns the original receiver and,
+;; while the body runs, the pending exception. It confers no source method scope.
+def $shutdown_render_chain_warning(S, n, nat_seen*) = false -- if n <- nat_seen*
+def $shutdown_render_chain_warning(S, n, nat_seen*) = true
+  -- if ~(n <- nat_seen*)
+  -- if $throwable_field(S, n, "message") = PARRAY n_array
+def $shutdown_render_chain_warning(S, n, nat_seen*) = $shutdown_render_chain_warning(S, n_previous, n :: nat_seen*)
+  -- if ~(n <- nat_seen*)
+  -- if ~$shutdown_render_array_value($throwable_field(S, n, "message"))
+  -- if $throwable_previous_id(S, n) = (n_previous)
+def $shutdown_render_chain_warning(S, n, nat_seen*) = false -- otherwise
+def $shutdown_render_ready(S) = true
+  -- if S.COMPLETION = UNCAUGHT n
+  -- if S.FRAMES = eps
+  -- if $object_name(S, n) =/= $ptascii("ParseError") /\ $object_name(S, n) =/= $ptascii("CompileError")
+  -- if ~$stringable_instance(S, n)
+  -- if $shutdown_render_chain_warning(S, n, eps)
+def $shutdown_render_ready(S) = false -- otherwise
+def $shutdown_render_release(S) = S[.SHUTDOWN.RENDER = eps]
+def $shutdown_render_origin(S, n) = porigin -- if S.OBJECTS[n] = THROWABLE pthrowable -- if pthrowable.ORIGIN = (porigin)
+def $shutdown_render_origin(S, n) = porigin -- if S.OBJECTS[n] = INSTANCE porigin
+def $shutdown_render_base(S, n) = $ptascii($throwable_base(pthrowable.KIND)) -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $shutdown_render_base(S, n) = $ptascii($throwable_base(text_kind))
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = (text_kind)
+def $shutdown_render_begin(S, n) = S_clean[.SHUTDOWN.RENDER = (pshutdownrender)][.TODO = [SHUTDOWN_RENDER pshutdownrender]][.ORIGIN = ($shutdown_render_origin(S, n))][.COMPLETION = NORMAL]
+  -- if S_clean = $shutdown_clean(S)
+  -- if pshutdownrender = {ROOT n, CURRENT n, SEEN eps, TEXT eps, MESSAGE eps, ROOTMESSAGE eps, PENDING eps, PHASE SHUTDOWN_RENDER_MESSAGE}
+def $drive_steps(S, n) = $drive_steps($prune_allocations($shutdown_render_begin(S, n_object)), n)
+  -- if $shutdown_render_ready(S)
+  -- if S.COMPLETION = UNCAUGHT n_object
+
+def $shutdown_render_path(S, n_root, n_current, eps) = (n_root = n_current)
+def $shutdown_render_path(S, n_root, n_current, n :: nat_tail*) = (~(n_current <- n :: nat_tail*) /\ $throwable_previous_id(S, n) = (n_current) /\ $shutdown_render_path(S, n_root, n, nat_tail*))
+def $shutdown_render_value(PARRAY n) = $ptascii("Array")
+def $shutdown_render_value(pvalue) = $echo_value(pvalue) -- otherwise
+def $shutdown_render_pending_valid(S, pshutdownrender) = true -- if pshutdownrender.PENDING = eps
+def $shutdown_render_pending_valid(S, pshutdownrender) = true
+  -- if pshutdownrender.PENDING = (n)
+  -- if $throwable_member(S, n)
+  -- if pshutdownrender.PHASE <- [SHUTDOWN_RENDER_RETURN, SHUTDOWN_RENDER_DONE] \/ ((HOBJECT n) <- S.ALLOCATIONS)
+def $shutdown_render_pending_valid(S, pshutdownrender) = false -- otherwise
+def $shutdown_render_state_valid(S) = true -- if S.SHUTDOWN.RENDER = eps
+def $shutdown_render_state_valid(S) = true
+  -- if S.SHUTDOWN.RENDER = (pshutdownrender)
+  -- if $throwable_member(S, pshutdownrender.ROOT) /\ (HOBJECT pshutdownrender.ROOT) <- S.ALLOCATIONS
+  -- if $throwable_member(S, pshutdownrender.CURRENT)
+  -- if $shutdown_render_path(S, pshutdownrender.ROOT, pshutdownrender.CURRENT, pshutdownrender.SEEN)
+  -- if $shutdown_render_pending_valid(S, pshutdownrender)
+def $shutdown_render_state_valid(S) = false -- otherwise
+def $shutdown_render_valid(S, pshutdownrender) = ($shutdown_render_state_valid(S) /\ S.SHUTDOWN.RENDER = (pshutdownrender) /\ $shutdown_task_scope(S) /\ S.ORIGIN = ($shutdown_render_origin(S, pshutdownrender.ROOT)))
+def $call_task_valid(S, SHUTDOWN_RENDER pshutdownrender) = $shutdown_render_valid(S, pshutdownrender)
+def $task_nodes(SHUTDOWN_RENDER pshutdownrender) = [HOBJECT pshutdownrender.ROOT] ++ $completion_roots(THROWING n)
+  -- if pshutdownrender.PENDING = (n)
+  -- if pshutdownrender.PHASE <- [SHUTDOWN_RENDER_MESSAGE, SHUTDOWN_RENDER_TRACE]
+def $task_nodes(SHUTDOWN_RENDER pshutdownrender) = [HOBJECT pshutdownrender.ROOT]
+  -- if pshutdownrender.PENDING = eps \/ ~(pshutdownrender.PHASE <- [SHUTDOWN_RENDER_MESSAGE, SHUTDOWN_RENDER_TRACE])
+
+def $shutdown_render_warning_message(S, pshutdownrender) = $ptascii("Array to string conversion")
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_TRACE
+def $shutdown_render_warning_message(S, pshutdownrender) = $object_name(S, pshutdownrender.ROOT) ++ $ptascii("::__toString() must return a string")
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_DONE
+def $shutdown_render_warning(S, pshutdownrender) = $error_dispatch(S[.SHUTDOWN.RENDER = (pshutdownrender)], 2, ptbytes, 0, DIAGNOSTIC_INTERNAL "Warning" ptbytes 0, SHUTDOWN_RENDER pshutdownrender)
+  -- if ptbytes = $shutdown_render_warning_message(S, pshutdownrender)
+rule PhpStep/shutdown-render-message-warning: S ~> $shutdown_render_warning(S, pshutdownrender_next)
+  -- if S.TODO = (SHUTDOWN_RENDER pshutdownrender) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $shutdown_render_valid(S, pshutdownrender)
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_MESSAGE
+  -- if pshutdownrender.PENDING = eps
+  -- if $throwable_field(S, pshutdownrender.CURRENT, "message") = PARRAY n_array
+  -- if pshutdownrender_next = pshutdownrender[.PHASE = SHUTDOWN_RENDER_TRACE][.MESSAGE = $ptascii("Array")][.ROOTMESSAGE = $shutdown_render_root_message(pshutdownrender, $ptascii("Array"))]
+rule PhpStep/shutdown-render-message: S ~> S[.SHUTDOWN.RENDER = (pshutdownrender_next)][.TODO = [SHUTDOWN_RENDER pshutdownrender_next]]
+  -- if S.TODO = (SHUTDOWN_RENDER pshutdownrender) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $shutdown_render_valid(S, pshutdownrender)
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_MESSAGE
+  -- if $shutdown_render_array_value($throwable_field(S, pshutdownrender.CURRENT, "message")) = false \/ pshutdownrender.PENDING =/= eps
+  -- if ptbytes = $shutdown_render_value($throwable_field(S, pshutdownrender.CURRENT, "message"))
+  -- if pshutdownrender_next = pshutdownrender[.PHASE = SHUTDOWN_RENDER_TRACE][.MESSAGE = ptbytes][.ROOTMESSAGE = $shutdown_render_root_message(pshutdownrender, ptbytes)]
+def $shutdown_render_array_value(PARRAY n) = true
+def $shutdown_render_array_value(pvalue) = false -- otherwise
+def $shutdown_render_root_message(pshutdownrender, ptbytes) = ptbytes -- if pshutdownrender.CURRENT = pshutdownrender.ROOT
+def $shutdown_render_root_message(pshutdownrender, ptbytes) = pshutdownrender.ROOTMESSAGE -- otherwise
+
+def $exception_warning_resume(SHUTDOWN_RENDER pshutdownrender) = true
+  -- if pshutdownrender.PHASE <- [SHUTDOWN_RENDER_TRACE, SHUTDOWN_RENDER_DONE]
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = SHUTDOWN_RENDER pshutdownrender
+  -- if $shutdown_render_valid(S, pshutdownrender)
+  -- if pshutdownrender.PHASE <- [SHUTDOWN_RENDER_TRACE, SHUTDOWN_RENDER_DONE]
+  -- if pshutdownrender.PHASE =/= SHUTDOWN_RENDER_TRACE \/ (pshutdownrender.MESSAGE = $ptascii("Array") /\ pshutdownrender.PENDING = eps)
+  -- if perrorcall.SITE = $shutdown_render_origin(S, pshutdownrender.ROOT)
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = 0
+  -- if perrorcall.MESSAGE = $shutdown_render_warning_message(S, pshutdownrender)
+  -- if perrorcall.EVENT = DIAGNOSTIC_INTERNAL "Warning" perrorcall.MESSAGE 0
+;; The C __toString has not returned, so its pending exception skips trace calls.
+def $shutdown_render_throw_pending(S) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $error_entered_call_valid(S, perrorcall)
+  -- if perrorcall.RESUME = SHUTDOWN_RENDER pshutdownrender
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_TRACE
+  -- if pshutdownrender.PENDING = eps
+def $shutdown_render_throw_pending(S) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (STRINGIFY_RESULT n_root porigin_method 0) :: (TERMINAL_STRING n_root) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $shutdown_task_scope(S)
+  -- if $throwable_member(S, n) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $stringify_result_valid(S[.TODO = [STRINGIFY_RESULT n_root porigin_method 0, TERMINAL_STRING n_root]], n_root, porigin_method, 0)
+def $shutdown_render_throw_pending(S) = false -- otherwise
+rule PhpStep/shutdown-render-warning-throw: S ~> S_restored[.SHUTDOWN.RENDER = (pshutdownrender_next)][.TODO = [SHUTDOWN_RENDER pshutdownrender_next]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $shutdown_render_throw_pending(S)
+  -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = SHUTDOWN_RENDER pshutdownrender
+  -- if S_restored = $error_handler_restore(S, perrorcall.CALLBACK)
+  -- if pshutdownrender_next = pshutdownrender[.PENDING = (n)]
+
+rule PhpStep/shutdown-render-user-throw: S ~> S[.SHUTDOWN.RENDER = (pshutdownrender)][.TODO = [THROW_SEARCH n, SHUTDOWN_RENDER pshutdownrender]][.ORIGIN = ($shutdown_render_origin(S, n_root))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $shutdown_render_throw_pending(S)
+  -- if S.TODO = (THROW_SEARCH n) :: (STRINGIFY_RESULT n_root porigin_method 0) :: (TERMINAL_STRING n_root) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $throwable_field(S, n_root, "string") = PSTRING ptbytes
+  -- if pshutdownrender = {ROOT n_root, CURRENT n_root, SEEN eps, TEXT ptbytes, MESSAGE eps, ROOTMESSAGE ptbytes, PENDING (n), PHASE SHUTDOWN_RENDER_RETURN}
+
+def $shutdown_render_message(S, n, ptbytes) = $trace_display_message(pthrowable.KIND, ptbytes) -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $shutdown_render_message(S, n, ptbytes) = ptbytes -- otherwise
+def $shutdown_render_trace(S, pshutdownrender) = $ptascii("#0 {main}") ++ [10] -- if pshutdownrender.PENDING =/= eps
+def $shutdown_render_trace(S, pshutdownrender) = $trace_array_string(S, n_trace)
+  -- if pshutdownrender.PENDING = eps
+  -- if $throwable_field(S, pshutdownrender.CURRENT, "trace") = PARRAY n_trace
+def $shutdown_render_piece(S, pshutdownrender) = $object_name(S, pshutdownrender.CURRENT) ++ ptbytes_message ++ $ptascii(" in ") ++ ptbytes_file ++ [58] ++ $decimal_integer(z) ++ [10] ++ $ptascii("Stack trace:") ++ [10] ++ $shutdown_render_trace(S, pshutdownrender)
+  -- if ptbytes_message = $shutdown_render_message_prefix($shutdown_render_message(S, pshutdownrender.CURRENT, pshutdownrender.MESSAGE))
+  -- if $throwable_field(S, pshutdownrender.CURRENT, "file") = PSTRING ptbytes_file
+  -- if $throwable_field(S, pshutdownrender.CURRENT, "line") = PINT z
+def $shutdown_render_message_prefix(eps) = eps
+def $shutdown_render_message_prefix(ptbytes) = $ptascii(": ") ++ ptbytes -- if ptbytes =/= eps
+def $shutdown_render_join(S, pshutdownrender) = $shutdown_render_piece(S, pshutdownrender) -- if pshutdownrender.TEXT = eps
+def $shutdown_render_join(S, pshutdownrender) = $shutdown_render_piece(S, pshutdownrender) ++ [10,10] ++ $ptascii("Next ") ++ pshutdownrender.TEXT -- if pshutdownrender.TEXT =/= eps
+def $shutdown_render_next(S, pshutdownrender) = (n)
+  -- if $throwable_previous_id(S, pshutdownrender.CURRENT) = (n)
+  -- if n =/= pshutdownrender.CURRENT /\ ~(n <- pshutdownrender.SEEN)
+def $shutdown_render_next(S, pshutdownrender) = eps -- otherwise
+rule PhpStep/shutdown-render-trace-next: S ~> S[.SHUTDOWN.RENDER = (pshutdownrender_next)][.TODO = [SHUTDOWN_RENDER pshutdownrender_next]]
+  -- if S.TODO = (SHUTDOWN_RENDER pshutdownrender) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $shutdown_render_valid(S, pshutdownrender)
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_TRACE
+  -- if $shutdown_render_next(S, pshutdownrender) = (n)
+  -- if pshutdownrender_next = pshutdownrender[.CURRENT = n][.SEEN = pshutdownrender.CURRENT :: pshutdownrender.SEEN][.TEXT = $shutdown_render_join(S, pshutdownrender)][.MESSAGE = eps][.PHASE = SHUTDOWN_RENDER_MESSAGE]
+rule PhpStep/shutdown-render-trace-done: S ~> $shutdown_render_finish(S, pshutdownrender)
+  -- if S.TODO = (SHUTDOWN_RENDER pshutdownrender) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $shutdown_render_valid(S, pshutdownrender)
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_TRACE
+  -- if $shutdown_render_next(S, pshutdownrender) = eps
+
+def $shutdown_render_finish(S, pshutdownrender) = S_cached[.SHUTDOWN.RENDER = (pshutdownrender_next)][.TODO = [SHUTDOWN_RENDER pshutdownrender_next]]
+  -- if pshutdownrender.PENDING = eps
+  -- if ptbytes = $shutdown_render_join(S, pshutdownrender)
+  -- if S_cached = $throwable_string_cache(S, pshutdownrender.ROOT, ptbytes)
+  -- if pshutdownrender_next = pshutdownrender[.TEXT = ptbytes][.PHASE = SHUTDOWN_RENDER_DONE]
+def $shutdown_render_finish(S, pshutdownrender) = S_cached[.SHUTDOWN.RENDER = (pshutdownrender_next)][.TODO = [THROW_SEARCH n, SHUTDOWN_RENDER pshutdownrender_next]]
+  -- if pshutdownrender.PENDING = (n)
+  -- if ptbytes = $shutdown_render_join(S, pshutdownrender)
+  -- if S_cached = $throwable_string_cache(S, pshutdownrender.ROOT, ptbytes)
+  -- if pshutdownrender_next = pshutdownrender[.TEXT = ptbytes][.PHASE = SHUTDOWN_RENDER_RETURN]
+def $throwable_marker(SHUTDOWN_RENDER pshutdownrender) = true -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_RETURN
+def $exception_terminal_tail(S, (SHUTDOWN_RENDER pshutdownrender) :: ptask_tail*) = ($shutdown_render_valid(S, pshutdownrender) /\ pshutdownrender.PHASE = SHUTDOWN_RENDER_RETURN /\ pshutdownrender.PENDING =/= eps)
+  -- if ptask_tail* = eps
+rule PhpStep/shutdown-render-return-warning: S ~> $shutdown_render_warning(S, pshutdownrender[.PHASE = SHUTDOWN_RENDER_DONE])
+  -- if S.TODO = (SHUTDOWN_RENDER pshutdownrender) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $shutdown_render_valid(S, pshutdownrender)
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_RETURN
+  -- if pshutdownrender.PENDING =/= eps
+rule PhpStep/shutdown-render-freeze: S ~> $shutdown_render_release(S_report[.TODO = eps][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
+  -- if S.TODO = (SHUTDOWN_RENDER pshutdownrender) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $shutdown_render_valid(S, pshutdownrender)
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_DONE
+  -- if $throwable_field(S, pshutdownrender.ROOT, "string") = PSTRING ptbytes
+  -- if $throwable_field(S, pshutdownrender.ROOT, "line") = PINT z
+  -- if S_report = $shutdown_reported(S, $object_name(S, pshutdownrender.ROOT), pshutdownrender.ROOTMESSAGE, z, $ptascii("Fatal error: Uncaught ") ++ ptbytes ++ $shutdown_exception_suffix(S, pshutdownrender.ROOT), $long_and(S.REPORTING, 1) =/= 0)
+
+;; This internal trace record authenticates the saved warning anchor. It does
+;; not manufacture a user callcontext or grant the renderer's receiver scope.
+def $shutdown_render_frame_call(S, pframe, pframe_tail*) = (pshutdownrender)
+  -- if pframe.CONTEXT = eps /\ pframe.LOCALS = eps
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if perrorcall.RESUME = SHUTDOWN_RENDER pshutdownrender
+  -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_TRACE
+  -- if $error_entered_call_valid($constant_frame_scope(S, pframe, pframe_tail*), perrorcall)
+def $shutdown_render_frame_call(S, pframe, pframe_tail*) = eps -- otherwise
+def $shutdown_render_trace_frame(S, pframe, pframe_tail*) = [{FILE eps, LINE $(-1), FUNCTION $ptascii("__toString"), CLASS ($shutdown_render_base(S, pshutdownrender.ROOT)), TYPE ($ptascii("->")), ARGS eps, HASARGS true}]
+  -- if $shutdown_render_frame_call(S, pframe, pframe_tail*) = (pshutdownrender)
+def $shutdown_render_trace_frame(S, pframe, pframe_tail*) = eps -- otherwise
+
+;; A fatal compiler cutoff remains authenticated after request shutdown clears
+;; its ordinary execute state. Replay still checks the exact failed publications;
+;; only this frozen request snapshot permits subsequent callback declarations.
+def $shutdown_compiler_snapshot(FATAL ptbytes z) = (REQUESTFATAL $ptascii("Error") ptbytes z)
+def $shutdown_compiler_snapshot(STATICBYTES ptbytes z) = (REQUESTFATAL $ptascii("CompileError") ptbytes z)
+def $shutdown_compiler_snapshot(STATICERROR text z) = (REQUESTFATAL $ptascii("CompileError") $ptascii(text) z)
+def $shutdown_compiler_snapshot(pcompletion) = eps -- otherwise
+def $shutdown_compiler_released(S, S_compiled) = true
+  -- if ~S.COMPILESTOP
+  -- if S.SHUTDOWN.PHASE <- [SHUTDOWN_RUNNING, SHUTDOWN_DONE]
+  -- if S.SHUTDOWN.ENTRIES =/= eps
+  -- if $shutdown_state_valid(S)
+  -- if $shutdown_compiler_snapshot(S_compiled.COMPLETION) = (pcompletion)
+  -- if S.SHUTDOWN.COMPLETION = pcompletion \/ (S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.COMPLETION = pcompletion)
+def $shutdown_compiler_released(S, S_compiled) = false -- otherwise

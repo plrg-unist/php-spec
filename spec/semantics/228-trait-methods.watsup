@@ -410,7 +410,7 @@ def $trait_copy(pclassdesc_owner, pclassdesc_trait, pmethoddesc, pmethoddesc_ori
   -- if $trait_composed_named(ptraitmethod*, pmethoddesc.NAME) = (TRAITMETHOD pclassdesc_prior pmethoddesc_prior)
   -- if $origin_source(pmethoddesc_prior.FUNCTION.ORIGIN) = $origin_source(pmethoddesc.FUNCTION.ORIGIN)
   -- if pmethoddesc_prior.VISIBILITY = pmethoddesc.VISIBILITY
-def $trait_copy(pclassdesc_owner, pclassdesc_trait, pmethoddesc, pmethoddesc_original, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = TRAITCOMPOSE ($pil_fatal(S, pclassdesc_owner, $ptascii("Trait method ") ++ pclassdesc_trait.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii(" has not been applied as ") ++ pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii(", because of collision with ") ++ pclassdesc_prior.NAME ++ $ptascii("::") ++ pmethoddesc_prior.NAME)) ptraitmethod* ptraitmethod_required*
+def $trait_copy(pclassdesc_owner, pclassdesc_trait, pmethoddesc, pmethoddesc_original, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = TRAITCOMPOSE ($pil_method_fatal(S, pclassdesc_owner.ORIGIN, $ptascii("Trait method ") ++ pclassdesc_trait.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii(" has not been applied as ") ++ pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii(", because of collision with ") ++ pclassdesc_prior.NAME ++ $ptascii("::") ++ pmethoddesc_prior.NAME, pclassdesc_owner.LINE)) ptraitmethod* ptraitmethod_required*
   -- if S.COMPLETION = NORMAL
   -- if ~pmethoddesc.ABSTRACT
   -- if $method_named(pclassdesc_owner.METHODS, pmethoddesc.NAME) = eps
@@ -479,11 +479,11 @@ def $trait_fetched(S, pclassdesc, ptraitplan, TRAITFETCHED pclassdesc_traits*) =
   -- if $pil_fetch(S, pclassdesc.INTERFACES, eps) = PILMISSING ptbytes
 def $trait_fetched(S, pclassdesc, ptraitplan, TRAITFETCHED pclassdesc_traits*) = $trait_excluded(S, pclassdesc, pclassdesc_traits*, ptraitplan, $trait_exclusions(S, pclassdesc, pclassdesc_traits*, ptraitplan.PRECEDENCES, eps))
   -- if $pil_fetch(S, pclassdesc.INTERFACES, eps) = PILFETCHED pilref*
-def $trait_excluded(S, pclassdesc, pclassdesc_traits*, ptraitplan, TRAITEXCLUSIONERROR ptbytes) = $pil_fatal(S, pclassdesc, ptbytes)
-def $trait_excluded(S, pclassdesc, pclassdesc_traits*, ptraitplan, TRAITEXCLUSIONMISSING ptbytes) = $pil_fatal(S, pclassdesc, $ptascii("Could not find trait ") ++ ptbytes)
+def $trait_excluded(S, pclassdesc, pclassdesc_traits*, ptraitplan, TRAITEXCLUSIONERROR ptbytes) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes, pclassdesc.LINE)
+def $trait_excluded(S, pclassdesc, pclassdesc_traits*, ptraitplan, TRAITEXCLUSIONMISSING ptbytes) = $pil_method_fatal(S, pclassdesc.ORIGIN, $ptascii("Could not find trait ") ++ ptbytes, pclassdesc.LINE)
 def $trait_excluded(S, pclassdesc, pclassdesc_traits*, ptraitplan, TRAITEXCLUSIONS (ptbytes_trait, ptbytes_method)*) = $trait_aliased(S, pclassdesc, pclassdesc_traits*, (ptbytes_trait, ptbytes_method)*, $trait_aliases(S, pclassdesc, pclassdesc_traits*, ptraitplan.ALIASES, eps))
-def $trait_aliased(S, pclassdesc, pclassdesc_traits*, (ptbytes_trait, ptbytes_method)*, TRAITALIASERROR ptbytes) = $pil_fatal(S, pclassdesc, ptbytes)
-def $trait_aliased(S, pclassdesc, pclassdesc_traits*, (ptbytes_trait, ptbytes_method)*, TRAITALIASMISSING ptbytes) = $pil_fatal(S, pclassdesc, $ptascii("Could not find trait ") ++ ptbytes)
+def $trait_aliased(S, pclassdesc, pclassdesc_traits*, (ptbytes_trait, ptbytes_method)*, TRAITALIASERROR ptbytes) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes, pclassdesc.LINE)
+def $trait_aliased(S, pclassdesc, pclassdesc_traits*, (ptbytes_trait, ptbytes_method)*, TRAITALIASMISSING ptbytes) = $pil_method_fatal(S, pclassdesc.ORIGIN, $ptascii("Could not find trait ") ++ ptbytes, pclassdesc.LINE)
 def $trait_aliased(S, pclassdesc, pclassdesc_traits*, (ptbytes_trait, ptbytes_method)*, TRAITALIASES ptraitalias*) = $trait_composed(pclassdesc, $trait_copy_traits(pclassdesc, pclassdesc_traits*, ptraitalias*, (ptbytes_trait, ptbytes_method)*, TRAITCOMPOSE S eps eps))
 def $trait_composed(pclassdesc, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = S -- if S.COMPLETION =/= NORMAL
 def $trait_composed(pclassdesc, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = $trait_linked(S, pclassdesc_composed, ptraitmethod_required*, $trait_parent_link(S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_composed)], pclassdesc_composed))
@@ -582,7 +582,7 @@ def $trait_final_interfaces(S, pclassdesc, S_required) = $class_static_finish(S,
   -- if pclassdesc_current.INTERFACES =/= eps
 
 ;; New source trait names retain the ordinary wrong-kind class-link errors.
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_fatal(S, pclassdesc, $ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend trait ") ++ pclassdesc_parent.NAME)
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_method_fatal(S, pclassdesc.ORIGIN, $ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend trait ") ++ pclassdesc_parent.NAME, pclassdesc.LINE)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "trait"
