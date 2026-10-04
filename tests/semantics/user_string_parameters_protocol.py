@@ -117,7 +117,7 @@ def checks(initial, name):
         '~$parameter_string_current(S_pending[.CURRENT = (pcallcontext_receive[.ARGC = 0])],pparameterstring)',
         *valid('S_pending'), *seek('S_pending', 'S_entered', 1),
         'S_entered.CURRENT = (pcallcontext_converter)',
-        'pcallcontext_converter.ARGC = 0 /\\ pcallcontext_converter.INSTANCE = (n_object)',
+        'pcallcontext_converter.ARGC = 0 /\\ pcallcontext_converter.RECEIVER = (n_object)',
         'S_entered.FRAMES = pframe_receive :: pframe_tail*',
         'pframe_receive.CONTEXT = (pcallcontext_receive)',
         'pframe_receive.TODO = [STRINGIFY_RESULT n_object porigin_site z, PARAMETER_STRING_RESULT pparameterstring]',
