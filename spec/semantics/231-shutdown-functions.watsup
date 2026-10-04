@@ -38,6 +38,9 @@ dec $shutdown_stop(pstate) : pstate
 dec $shutdown_task_scope(pstate) : bool
 dec $shutdown_sent_valid(pstate, pshutdownentry, poperand*, nat) : bool
 dec $shutdown_current_sent_valid(pstate) : bool
+dec $shutdown_received_valid(pstate) : bool
+dec $shutdown_received_suffix(poperand*, poperand*) : bool
+dec $shutdown_variadic_receive(pstate, nat) : bool
 dec $shutdown_send_valid(pstate, nat, nat, poperand*) : bool
 dec $shutdown_reference_warning(pstate, nat, nat) : preqbytes
 dec $shutdown_reference_valid(pstate, nat, nat, poperand*) : bool
@@ -292,10 +295,10 @@ def $shutdown_ready(S) = false -- otherwise
 def $shutdown_abort_frames(S) = $shutdown_abort_frames($restore_frame(S)) -- if S.FRAMES =/= eps
 def $shutdown_abort_frames(S) = S -- if S.FRAMES = eps
 def $shutdown_clean(S) = $shutdown_render_release($error_release_iterators($release_temporaries($silence_unwind($shutdown_abort_frames(S))))[.CURRENT = eps][.TODO = eps][.CONSTCONTEXT = eps][.HELD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.COMPILESTOP = false][.TRACE = eps][.ERRORFATALTRACE = eps][.ERRORORIGIN = eps])
-def $shutdown_begin(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_RUNNING][.SHUTDOWN.SENT = eps][.SHUTDOWN.COMPLETION = S_report.COMPLETION][.COMPLETION = NORMAL][.TODO = [SHUTDOWN_SEND 0 0 eps]]
+def $shutdown_begin(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_RUNNING][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps][.SHUTDOWN.COMPLETION = S_report.COMPLETION][.COMPLETION = NORMAL][.TODO = [SHUTDOWN_SEND 0 0 eps]]
   -- if S_report = $shutdown_freeze(S)
   -- if S_clean = $shutdown_clean(S_report)
-def $shutdown_stop(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT = eps]
+def $shutdown_stop(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps]
   -- if S_clean = $shutdown_clean($shutdown_freeze(S))
 def $drive_steps(S, n) = $drive_steps($prune_allocations($shutdown_begin(S)), n)
   -- if $shutdown_ready(S)
@@ -310,6 +313,7 @@ def $shutdown_state_valid(S) = true
   -- if S.SHUTDOWN.COMPLETION = NORMAL \/ $exit_completion(S.SHUTDOWN.COMPLETION) \/ $shutdown_frozen(S.SHUTDOWN.COMPLETION)
   -- if S.SHUTDOWN.PHASE =/= SHUTDOWN_PENDING \/ (S.SHUTDOWN.INDEX = 0 /\ S.SHUTDOWN.COMPLETION = NORMAL)
   -- if $shutdown_current_sent_valid(S)
+  -- if $shutdown_received_valid(S)
   -- if $shutdown_render_state_valid(S)
 def $shutdown_state_valid(S) = false -- otherwise
 
@@ -337,8 +341,29 @@ def $shutdown_current_sent_valid(S) = true
 def $shutdown_current_sent_valid(S) = (S.SHUTDOWN.SENT = eps)
   -- if S.SHUTDOWN.PHASE =/= SHUTDOWN_RUNNING
 def $shutdown_current_sent_valid(S) = false -- otherwise
+;; RECEIVED is borrowed from EXTRA. Only the ordinary receive/coercion hook
+;; changes it; SENT continues to certify the original C argument wrappers.
+def $shutdown_received_suffix(eps, eps) = true
+def $shutdown_received_suffix((KNOWN pvalue) :: poperand*, (KNOWN pvalue_received) :: poperand_received*) = $shutdown_received_suffix(poperand*, poperand_received*)
+def $shutdown_received_suffix((REFERENCE n) :: poperand*, (REFERENCE n) :: poperand_received*) = $shutdown_received_suffix(poperand*, poperand_received*)
+def $shutdown_received_suffix(poperand*, poperand_received*) = false -- otherwise
+def $shutdown_received_valid(S) = true -- if S.SHUTDOWN.RECEIVED = eps
+def $shutdown_received_valid(S) = true
+  -- if S.SHUTDOWN.RECEIVED =/= eps
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
+  -- if $(S.SHUTDOWN.INDEX < |S.SHUTDOWN.ENTRIES|)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[S.SHUTDOWN.INDEX]
+  -- if |S.SHUTDOWN.SENT| = |pshutdownentry.ARGS|
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if n_received = $call_received(|S.SHUTDOWN.SENT|, n_fixed)
+  -- if n_extra = $nabs($(|S.SHUTDOWN.SENT| - n_received))
+  -- if poperand* = S.SHUTDOWN.SENT[n_received:n_extra]
+  -- if (n_fixed = |pfunction.SIGNATURE.PARAMETERS| /\ S.SHUTDOWN.RECEIVED = poperand*) \/ ($(n_fixed < |pfunction.SIGNATURE.PARAMETERS|) /\ $shutdown_received_suffix(poperand*, S.SHUTDOWN.RECEIVED))
+def $shutdown_received_valid(S) = false -- otherwise
 def $shutdown_send_valid(S, n_index, n, poperand*) = true
   -- if $shutdown_task_scope(S)
+  -- if S.SHUTDOWN.RECEIVED = eps
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
   -- if S.SHUTDOWN.INDEX = n_index /\ $(n_index < |S.SHUTDOWN.ENTRIES|)
   -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
@@ -410,12 +435,14 @@ def $shutdown_enter_valid(S, n_index, poperand*) = true
 def $shutdown_enter_valid(S, n_index, poperand*) = false -- otherwise
 def $call_task_valid(S, SHUTDOWN_ENTER n_index poperand*) = $shutdown_enter_valid(S, n_index, poperand*)
 def $task_nodes(SHUTDOWN_ENTER n_index poperand*) = $operands_roots(poperand*)
-rule PhpStep/shutdown-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = [SHUTDOWN_RESULT n_index poperand*]], pfunction, poperand*, eps, $(-1)), pshutdownentry.TARGET), pfunction, |poperand*|, eps, $(-1))
+rule PhpStep/shutdown-enter: S ~> $call_arity($target_after_enter($call_enter(S[.SHUTDOWN.RECEIVED = poperand*[n_received:n_extra]][.TODO = [SHUTDOWN_RESULT n_index poperand*]], pfunction, poperand*, eps, $(-1)), pshutdownentry.TARGET), pfunction, |poperand*|, eps, $(-1))
   -- if S.TODO = (SHUTDOWN_ENTER n_index poperand*) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $call_task_valid(S, SHUTDOWN_ENTER n_index poperand*)
   -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
   -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if n_received = $call_received(|poperand*|, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if n_extra = $nabs($(|poperand*| - n_received))
 
 ;; RESULT keeps only borrowed send certificates after the formals own their args.
 def $shutdown_result_valid(S, n_index, poperand*) = true
@@ -431,13 +458,13 @@ def $shutdown_result_valid(S, n_index, poperand*) = false -- otherwise
 def $call_task_valid(S, SHUTDOWN_RESULT n_index poperand*) = $shutdown_result_valid(S, n_index, poperand*)
 def $task_nodes(SHUTDOWN_RESULT n_index poperand*) = eps
 def $call_after_origin(S, SHUTDOWN_RESULT n_index poperand*) = S[.ORIGIN = eps]
-rule PhpStep/shutdown-result-next: S ~> S[.SHUTDOWN.INDEX = $(n_index + 1)][.SHUTDOWN.SENT = eps][.TODO = [SHUTDOWN_SEND $(n_index + 1) 0 eps]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/shutdown-result-next: S ~> S[.SHUTDOWN.INDEX = $(n_index + 1)][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps][.TODO = [SHUTDOWN_SEND $(n_index + 1) 0 eps]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (SHUTDOWN_RESULT n_index poperand*) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $shutdown_result_valid(S, n_index, poperand*)
   -- if $exception_return_operand(S.RESULT)
   -- if $(n_index + 1 < |S.SHUTDOWN.ENTRIES|)
-rule PhpStep/shutdown-result-done: S ~> S[.SHUTDOWN.INDEX = $(n_index + 1)][.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT = eps][.TODO = eps][.COMPLETION = S.SHUTDOWN.COMPLETION][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/shutdown-result-done: S ~> S[.SHUTDOWN.INDEX = $(n_index + 1)][.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps][.TODO = eps][.COMPLETION = S.SHUTDOWN.COMPLETION][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (SHUTDOWN_RESULT n_index poperand*) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $shutdown_result_valid(S, n_index, poperand*)
@@ -477,7 +504,9 @@ def $shutdown_context_valid(S, pcallcontext) = true
   -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
   -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if n_extra = $nabs($(|poperand*| - n_received))
-  -- if pcallcontext.EXTRA = poperand*[n_received:n_extra]
+  -- if |pcallcontext.EXTRA| = n_extra
+  -- if pcallcontext.EXTRA = S.SHUTDOWN.RECEIVED
+  -- if $shutdown_received_valid(S)
   -- if $call_sent_operands_valid(S, pshutdownentry.TARGET, n_received, pcallcontext.EXTRA)
 def $shutdown_context_valid(S, pcallcontext) = false -- otherwise
 def $error_context_kind(S, pcallcontext) = true -- if $shutdown_context_kind(S, pcallcontext)
@@ -493,6 +522,25 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCT
 def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S[.FRAMES = pframe_tail*]
   -- if pframe.CONTEXT = eps /\ pframe.LOCALS = eps
   -- if pframe.TODO = [SHUTDOWN_RESULT n_index poperand*]
+
+def $shutdown_variadic_receive(S, n_extra) = true
+  -- if S.TODO = (VARIADIC_RECEIVE porigin n_arg) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $variadic_receive_valid(S, porigin, n_arg)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if n_arg = $(n_fixed + n_extra)
+def $shutdown_variadic_receive(S, n_extra) = true
+  -- if S.TODO = (VARIADIC_STRING_RESULT pvariadicstring) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if ~pvariadicstring.NAMED /\ pvariadicstring.ELEMENT = n_extra
+  -- if $receive_string_scope_valid(S, VARIADIC_STRING_RESULT pvariadicstring)
+def $shutdown_variadic_receive(S, n_extra) = false -- otherwise
+def $variadic_context_coerced(S, n_extra, KNOWN pvalue) = S[.SHUTDOWN.RECEIVED = $variadic_replace(S.SHUTDOWN.RECEIVED, n_extra, KNOWN pvalue)]
+  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN pvalue
+  -- if S.CURRENT = (pcallcontext)
+  -- if $shutdown_context_valid(S, pcallcontext)
+  -- if $shutdown_variadic_receive(S, n_extra)
 
 def $shutdown_parse_kind(preqbytes) = (4, $ptascii("Parse error: ")) -- if preqbytes = $ptascii("ParseError")
 def $shutdown_parse_kind(preqbytes) = (64, $ptascii("Fatal error: ")) -- if preqbytes = $ptascii("CompileError")
