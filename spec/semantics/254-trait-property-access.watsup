@@ -368,6 +368,7 @@ dec $trait_property_pending_store(pstate, ptraitproperty, pvalue) : pstate
 dec $trait_property_pending_type(ptypeconversion) : bool
 dec $trait_property_pending_compound(pstate, ptraitproperty, pbin, poperand) : pstate
 dec $trait_property_abrupt_end(pstate, nat, ptask*) : pstate
+dec $trait_property_abrupt_valid(pstate, ptraitproperty, nat) : bool
 
 def $trait_property_opcode_context(S, porigin, (ORIGIN_RETURN (porigin_parent)) :: ptask_tail*) = $trait_property_opcode_context(S, porigin_parent, ptask_tail*)
 def $trait_property_opcode_context(S, porigin, ptask :: ptask_tail*) = ((porigin, ptask, ptask_tail*)) -- otherwise
@@ -456,7 +457,8 @@ rule PhpStep/trait-property-handler-throw-opcode: S ~> S_done[.HELD = S.HELD]
   -- if S_view = S[.ORIGIN = (porigin)][.BASE = BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME][.TODO = ptask :: ptask_after*][.HELD = S.HELD ++ [HOBJECT n]]
   -- if S_opcode = $trait_property_opcode($hold_task_inputs(S_view), ptraitproperty, porigin, ptask)
   -- if S_done = $trait_property_abrupt_end(S_opcode, n, ptask_after*)
-def $call_task_valid(S, TRAIT_PROPERTY_ABRUPT ptraitproperty n) = ($throwable_live(S, n) /\ $trait_property_selected(S[.TODO = (TRAIT_PROPERTY_PHASE ptraitproperty 1) :: ptask_tail*], ptraitproperty))
+def $trait_property_abrupt_valid(S, ptraitproperty, n) = ($throwable_live(S, n) /\ $trait_property_selected(S[.TODO = (TRAIT_PROPERTY_PHASE ptraitproperty 1) :: ptask_tail*], ptraitproperty))
   -- if S.TODO = (TRAIT_PROPERTY_ABRUPT ptraitproperty n) :: ptask_tail*
-def $call_task_valid(S, TRAIT_PROPERTY_ABRUPT ptraitproperty n) = false -- otherwise
+def $trait_property_abrupt_valid(S, ptraitproperty, n) = false -- otherwise
+def $call_task_valid(S, TRAIT_PROPERTY_ABRUPT ptraitproperty n) = $trait_property_abrupt_valid(S, ptraitproperty, n)
 def $task_nodes(TRAIT_PROPERTY_ABRUPT ptraitproperty n) = [HOBJECT n]
