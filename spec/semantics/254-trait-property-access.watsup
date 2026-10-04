@@ -1,0 +1,464 @@
+;; zend_std_get_static_property_with_info retains an address, not its value.
+;; Source mode and the consuming continuation survive ordinary handler frames.
+dec $trait_property_source(pstate, porigin, porigin, ptbytes, int) : bool
+dec $trait_property_selected(pstate, ptraitproperty) : bool
+dec $trait_property_phase_valid(pstate, ptraitproperty, nat) : bool
+dec $trait_property_tail(ptask*, ptraitproperty) : ptask*?
+dec $trait_property_target_kind(pcnode) : ppmode?
+dec $trait_property_quiet_kind(bool) : ppmode
+dec $trait_property_source_kind(pstate, porigin) : ppmode?
+dec $trait_property_consumer(pstate, porigin, porigin, ptask*) : ppmode?
+dec $trait_property_below(porigin, porigin) : bool
+dec $trait_property_prepare(pstate, porigin, ptbytes, int) : pstate
+dec $trait_property_message(pstate, ptraitproperty) : ptbytes
+dec $trait_property_write_valid(pstate, ptraitpropertywrite) : bool
+dec $trait_property_store_valid(pstate, porigin, pbin?, poperand, int) : bool
+dec $trait_property_operand_valid(pstate, poperand) : bool
+dec $trait_property_write_start(pstate, pbin?) : pstate
+dec $trait_property_write_ready(pstate, ptraitpropertywrite, ptask*) : pstate
+
+def $trait_property_below(PORIGIN n pcpath, PORIGIN n pcpath_site) = $effect_below(pcpath, pcpath_site)
+def $trait_property_below(porigin, porigin_site) = false -- otherwise
+def $trait_property_target_kind(NExprAssign expression_left expression_right metadata) = (PPW)
+def $trait_property_target_kind(NExprAssignRef expression_left expression_right metadata) = (PPW)
+def $trait_property_target_kind(pcnode) = (PPRW) -- if $key_write_op(pcnode) =/= eps
+def $trait_property_target_kind(pcnode) = (PPRW) -- if $key_write_update(pcnode) =/= eps
+def $trait_property_target_kind(NExprAssignOpCoalesce expression_left expression_right metadata) = (PPIS)
+def $trait_property_target_kind(NExprBinaryOpCoalesce expression_left expression_right metadata) = (PPIS)
+def $trait_property_target_kind(NExprEmpty expression metadata) = (PPIS)
+def $trait_property_target_kind(pcnode) = eps -- otherwise
+def $trait_property_quiet_kind(true) = PPIS
+def $trait_property_quiet_kind(false) = PPR
+
+;; Array/object left chains inherit the compiler's outer fetch mode. Argument
+;; mode is selected by the authenticated receiving function, not by its AST.
+def $trait_property_source_kind(S, porigin) = $trait_property_source_kind(S, porigin_parent)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprArrayDimFetch expression phpType5 metadata)
+def $trait_property_source_kind(S, porigin) = $trait_property_source_kind(S, porigin_parent)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprPropertyFetch expression phpType20 metadata)
+def $trait_property_source_kind(S, porigin) = $trait_property_source_kind(S, porigin_parent)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprNullsafePropertyFetch expression phpType20 metadata)
+def $trait_property_source_kind(S, porigin) = (ppmode)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (pcnode)
+  -- if $trait_property_target_kind(pcnode) = (ppmode)
+def $trait_property_source_kind(S, porigin) = (PPIS)
+  -- if $reference_origin_parent(porigin, 2) = ((porigin_parent, [PCFIELD 0, PCINDEX n]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprIsset (SEQUENCE expression*) metadata)
+  -- if $(n < |expression*|)
+def $trait_property_source_kind(S, porigin) = (PPW)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 1]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignRef expression_left expression_right metadata)
+def $trait_property_source_kind(S, porigin) = (PPW)
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 1]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NArrayItem phpType5 expression (BOOLEAN true) (BOOLEAN false) metadata)
+def $trait_property_source_kind(S, porigin) = eps
+  -- if $reference_origin_parent(porigin, 1) = ((porigin_parent, [PCFIELD 1]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata)
+def $trait_property_source_kind(S, porigin) = (PPR) -- otherwise
+
+def $trait_property_consumer(S, porigin_site, porigin, (ORIGIN_RETURN (porigin_outer)) :: ptask_tail*) = $trait_property_consumer(S, porigin_site, porigin_outer, ptask_tail*)
+  -- if $trait_property_below(porigin_outer, porigin_site)
+def $trait_property_consumer(S, porigin_site, porigin, (DIM_INDEX expression_key z) :: ptask_tail*) = $trait_property_consumer(S, porigin_site, porigin, ptask_tail*)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression expression_key metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $trait_property_below(porigin_base, porigin_site)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 1], expression_key)
+def $trait_property_consumer(S, porigin_site, porigin, (DIM_APPEND z) :: ptask_tail*) = $trait_property_consumer(S, porigin_site, porigin, ptask_tail*)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression ABSENT metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $trait_property_below(porigin_base, porigin_site)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], expression)
+def $trait_property_consumer(S, porigin_site, porigin, (NULLSAFE_CHECK phpType20 z b) :: ptask_tail*) = ($trait_property_quiet_kind(b))
+  -- if $nullsafe_property_task(S[.ORIGIN = (porigin)], phpType20, z, b, true)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $trait_property_below(porigin_base, porigin_site)
+def $trait_property_consumer(S, porigin_site, porigin, (NULLSAFE_PROP_PREP phpType20 z b) :: ptask_tail*) = ($trait_property_quiet_kind(b))
+  -- if $nullsafe_property_task(S[.ORIGIN = (porigin)], phpType20, z, b, false)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $trait_property_below(porigin_base, porigin_site)
+def $trait_property_consumer(S, porigin_site, porigin, (NULLSAFE_DIM_INDEX expression_key z b) :: ptask_tail*) = ($trait_property_quiet_kind(b))
+  -- if $nullsafe_index_task(S[.ORIGIN = (porigin)], expression_key, z, b)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $trait_property_below(porigin_base, porigin_site)
+def $trait_property_consumer(S, porigin_site, porigin, (DIM_FETCH z) :: ptask_tail*) = (PPR)
+  -- if $trait_property_below(porigin, porigin_site)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, expression)
+def $trait_property_consumer(S, porigin_site, porigin, (ASSIGN_PREP expression_target expression_rhs) :: ptask_tail*) = (PPW)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign expression_target expression_rhs metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $trait_property_below(porigin_target, porigin_site)
+def $trait_property_consumer(S, porigin_site, porigin, (COMPOUND_PREP pbin expression_target expression_rhs z) :: ptask_tail*) = (PPRW)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $key_write_op(pcnode) = (pbin)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_rhs)
+  -- if $origin_node(S.SOURCES, porigin_target) = (expression_target)
+  -- if $origin_node(S.SOURCES, porigin_rhs) = (expression_rhs)
+  -- if $trait_property_below(porigin_target, porigin_site)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, pcnode)
+def $trait_property_consumer(S, porigin_site, porigin, (UPDATE_PREP pupdate b z) :: ptask_tail*) = (PPRW)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $key_write_update(pcnode) = ((pupdate, b))
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $trait_property_below(porigin_target, porigin_site)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, pcnode)
+def $trait_property_consumer(S, porigin_site, porigin, (ISSET_RESULT b z) :: ptask_tail*) = (PPIS)
+  -- if $trait_property_below(porigin, porigin_site)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, expression)
+  -- if $trait_property_source_kind(S, porigin) = (PPIS)
+def $trait_property_consumer(S, porigin_site, porigin, (COALESCE_QUIET expression_rhs z_left z_right) :: ptask_tail*) = (PPIS)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce expression_left expression_rhs metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $trait_property_below(porigin_left, porigin_site)
+  -- if z_left = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], expression_left)
+  -- if z_right = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 1], expression_rhs)
+def $trait_property_consumer(S, porigin_site, porigin, (COALESCE_ASSIGN_PREP expression_left expression_rhs z) :: ptask_tail*) = (PPIS)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpCoalesce expression_left expression_rhs metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $trait_property_below(porigin_left, porigin_site)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, NExprAssignOpCoalesce expression_left expression_rhs metadata)
+def $trait_property_consumer(S, porigin_site, porigin, (PROPERTY_REF_PREP expression_rhs z) :: ptask_tail*) = (PPW)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignRef expression_target expression_rhs metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $trait_property_below(porigin_target, porigin_site)
+  -- if $property_ref_assignment_task(S[.ORIGIN = (porigin)], expression_rhs, z)
+def $trait_property_consumer(S, porigin_site, porigin, (PROPERTY_REF_BIND pbase n_cell z) :: ptask_tail*) = (PPW)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignRef expression_target expression_rhs metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $trait_property_below(porigin_target, porigin_site)
+  -- if $call_task_valid(S[.ORIGIN = (porigin)][.TODO = (PROPERTY_REF_BIND pbase n_cell z) :: ptask_tail*][.BASE = pbase], PROPERTY_REF_BIND pbase n_cell z)
+def $trait_property_consumer(S, porigin_site, porigin, (PROPERTY_REF_FETCH z) :: ptask_tail*) = (PPW)
+  -- if porigin_site = porigin
+  -- if $class_static_ref_fetch_task(S[.ORIGIN = (porigin)][.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*][.BASE = BASE_CLASS_STATIC porigin_root ptbytes], z)
+  -- if S.BASE = BASE_CLASS_STATIC porigin_root ptbytes
+;; A property read as a source call argument uses the selected signature.
+def $trait_property_consumer(S, porigin_site, porigin, (CALL_REF_FETCH pcalltarget n porigin_call?) :: ptask_tail*) = (PPW)
+  -- if $trait_property_below(porigin, porigin_site)
+  -- if $call_task_valid(S[.ORIGIN = (porigin)], CALL_REF_FETCH pcalltarget n porigin_call?)
+def $trait_property_consumer(S, porigin_site, porigin, (TRAIT_PROPERTY_STORE porigin_site pbin? poperand z) :: ptask_tail*) = $trait_property_target_kind(pcnode)
+  -- if $trait_property_store_valid(S, porigin_site, pbin?, poperand, z)
+  -- if $reference_origin_parent(porigin_site, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (pcnode)
+def $trait_property_consumer(S, porigin_site, porigin, ptask*) = eps -- otherwise
+
+def $trait_property_source(S, porigin_site, porigin_root, ptbytes, z) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $class_static_source_task(S[.ORIGIN = (porigin_site)], NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin_site)], eps, NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $class_static_ref_name_matches(phpType31, ptbytes)
+  -- if $class_at(S.CLASSES, porigin_root) = (pclassdesc)
+  -- if $class_static_selector_source_name(S[.ORIGIN = (porigin_site)], phpType19) = (ptbytes_source)
+  -- if $ptlc(ptbytes_source) = $ptlc(pclassdesc.NAME)
+def $trait_property_source(S, porigin_site, porigin_root, ptbytes, z) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $class_static_source_task(S[.ORIGIN = (porigin_site)], NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin_site)], eps, NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $class_static_ref_name_matches(phpType31, ptbytes)
+  -- if $class_static_selector_source_name(S[.ORIGIN = (porigin_site)], phpType19) = eps
+  -- if ~$ppscoped_named(phpType19) /\ ~$class_static_literal_class(phpType19)
+def $trait_property_source(S, porigin_site, porigin_root, ptbytes, z) = false -- otherwise
+
+def $trait_property_tail((TRAIT_PROPERTY_PHASE ptraitproperty n) :: ptask_tail*, ptraitproperty) = (ptask_tail*) -- if n <- [0,1]
+def $trait_property_tail((ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*, ptraitproperty) = (ptask_tail*) -- if perrorcall.RESUME = TRAIT_PROPERTY_PHASE ptraitproperty 1
+def $trait_property_tail((ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*, ptraitproperty) = (ptask_tail*) -- if perrorcall.RESUME = TRAIT_PROPERTY_PHASE ptraitproperty 1
+def $trait_property_tail(ptask*, ptraitproperty) = eps -- otherwise
+
+def $trait_property_selected(S, ptraitproperty) = true
+  -- if S.ORIGIN = (ptraitproperty.SITE)
+  -- if $trait_property_source(S, ptraitproperty.SITE, ptraitproperty.ROOT, ptraitproperty.NAME, ptraitproperty.LINE)
+  -- if $trait_property_tail(S.TODO, ptraitproperty) = (ptask_tail*)
+  -- if S_view = S[.BASE = BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME]
+  -- if $trait_property_consumer(S_view, ptraitproperty.SITE, ptraitproperty.SITE, ptask_tail*) = (ptraitproperty.MODE)
+  -- if $trait_property_source_kind(S, ptraitproperty.SITE) = eps \/ $trait_property_source_kind(S, ptraitproperty.SITE) = (ptraitproperty.MODE)
+  -- if $class_at(S.CLASSES, ptraitproperty.ROOT) = (pclassdesc)
+  -- if pclassdesc.KIND = "trait"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (ptraitproperty.ROOT)
+  -- if $class_static_select(S, ptraitproperty.ROOT, ptraitproperty.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ptraitproperty.DECL
+  -- if $class_static_accessible(S, ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, ptraitproperty.DECL) = (pclassstatic)
+  -- if ~$static_default_pending(pclassstatic.STATE)
+  -- if $class_constant_static_work(S_view[.TODO = ptask_tail*], KNOWN (PSTRING pclassdesc.NAME), ptraitproperty.NAME, ptraitproperty.LINE) = eps
+  -- if $call_current_valid(S)
+def $trait_property_selected(S, ptraitproperty) = false -- otherwise
+
+def $trait_property_phase_valid(S, ptraitproperty, 0) = true
+  -- if $trait_property_selected(S, ptraitproperty)
+  -- if S.BASE = BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME
+  -- if $class_static_at(S.CLASSSTATICS, ptraitproperty.DECL) = (pclassstatic)
+  -- if pclassstatic.STATE =/= PROP_INITIAL \/ ~(ptraitproperty.MODE = PPR \/ ptraitproperty.MODE = PPRW)
+def $trait_property_phase_valid(S, ptraitproperty, 1) = $trait_property_selected(S, ptraitproperty)
+def $trait_property_phase_valid(S, ptraitproperty, n) = false -- otherwise
+
+def $trait_property_prepare(S, porigin_root, ptbytes, z) = S_ready
+  -- if S.ORIGIN = (porigin_site)
+  -- if $class_static_select(S, porigin_root, ptbytes) = (ppropertydesc)
+  -- if $trait_property_consumer(S[.BASE = BASE_CLASS_STATIC porigin_root ptbytes], porigin_site, porigin_site, S.TODO) = (ppmode)
+  -- if ptraitproperty = {SITE porigin_site, ROOT porigin_root, DECL ppropertydesc.ORIGIN, NAME ptbytes, MODE ppmode, LINE z}
+  -- if S_ready = S[.BASE = BASE_CLASS_STATIC porigin_root ptbytes][.TODO = (TRAIT_PROPERTY_PHASE ptraitproperty 0) :: S.TODO][.RESULT = KNOWN PNULL]
+  -- if $trait_property_phase_valid(S_ready, ptraitproperty, 0)
+def $trait_property_prepare(S, porigin_root, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "uncertified trait static-property deprecation"] -- otherwise
+def $class_static_prepare_base_ready(S, poperand_selector, ptbytes, z) = $trait_property_prepare(S, porigin_requested, ptbytes, z)
+  -- if $scoped_selector_class(S, poperand_selector) = (porigin_requested)
+  -- if $trait_static_property_deprecation_needed(S, porigin_requested, ptbytes)
+
+def $trait_property_message(S, ptraitproperty) = $ptascii("Accessing static trait property ") ++ $property_declaring_name(S.CLASSES, ptraitproperty.DECL) ++ $ptascii("::$") ++ ptraitproperty.NAME ++ $ptascii(" is deprecated, it should only be accessed on a class using the trait")
+def $call_task_valid(S, TRAIT_PROPERTY_PHASE ptraitproperty n) = $trait_property_phase_valid(S, ptraitproperty, n)
+def $task_nodes(TRAIT_PROPERTY_PHASE ptraitproperty n) = eps
+rule PhpStep/trait-property-deprecated: S ~> $error_dispatch(S, 8192, $trait_property_message(S, ptraitproperty), ptraitproperty.LINE, DIAGNOSTIC "Deprecated" $trait_property_message(S, ptraitproperty) ptraitproperty.LINE, TRAIT_PROPERTY_PHASE ptraitproperty 1)
+  -- if S.TODO = (TRAIT_PROPERTY_PHASE ptraitproperty 0) :: ptask_tail*
+  -- if $trait_property_phase_valid(S, ptraitproperty, 0)
+rule PhpStep/trait-property-resume: S ~> S[.TODO = ptask_tail*][.BASE = BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (TRAIT_PROPERTY_PHASE ptraitproperty 1) :: ptask_tail*
+  -- if $trait_property_phase_valid(S, ptraitproperty, 1)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = TRAIT_PROPERTY_PHASE ptraitproperty 1
+  -- if $trait_property_selected(S, ptraitproperty)
+  -- if perrorcall.SITE = ptraitproperty.SITE
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.LINE = ptraitproperty.LINE
+  -- if perrorcall.MESSAGE = $trait_property_message(S, ptraitproperty)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+
+;; Saved emitter views intentionally lack BASE. Only a source-bound future
+;; reference fetch borrows this address; an executing fetch stays strict.
+def $class_static_ref_fetch_pending(S, z, (TRAIT_PROPERTY_PHASE ptraitproperty n) :: (PROPERTY_REF_FETCH z) :: ptask_tail*) = $class_static_ref_fetch_task(S[.BASE = BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME][.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*], z)
+  -- if n <- [0,1]
+  -- if $trait_property_selected(S, ptraitproperty)
+  -- if z = ptraitproperty.LINE
+def $class_static_ref_fetch_pending(S, z, (ERROR_HANDLER_INVOKE perrorcall) :: (PROPERTY_REF_FETCH z) :: ptask_tail*) = $class_static_ref_fetch_task(S[.BASE = BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME][.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*], z)
+  -- if perrorcall.RESUME = TRAIT_PROPERTY_PHASE ptraitproperty 1
+  -- if $error_call_valid(S, perrorcall)
+  -- if z = ptraitproperty.LINE
+def $class_static_ref_fetch_pending(S, z, (ERROR_HANDLER_RESULT perrorcall) :: (PROPERTY_REF_FETCH z) :: ptask_tail*) = $class_static_ref_fetch_task(S[.BASE = BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME][.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*], z)
+  -- if perrorcall.RESUME = TRAIT_PROPERTY_PHASE ptraitproperty 1
+  -- if $error_call_valid(S, perrorcall)
+  -- if z = ptraitproperty.LINE
+
+;; Class FETCH_CLASS has already selected its entry. A property-name CV and
+;; address lookup remain delayed until a non-CV RHS has evaluated.
+def $trait_property_write_pending(S, poperand, (ORIGIN_RETURN (porigin)) :: ptask_tail*) = $trait_property_write_pending(S[.ORIGIN = (porigin)], poperand, ptask_tail*)
+def $trait_property_write_pending(S, poperand, (ASSIGN_PREP expression_target expression_rhs) :: ptask_tail*) = true
+  -- if $reference_cv(expression_rhs) = eps
+  -- if $class_static_assign_task(S, expression_target, expression_rhs)
+  -- if $scoped_selector_class(S, poperand) = (porigin_root)
+  -- if $class_at(S.CLASSES, porigin_root) = (pclassdesc)
+  -- if pclassdesc.KIND = "trait"
+def $trait_property_write_pending(S, poperand, (COMPOUND_PREP pbin expression_target expression_rhs z) :: ptask_tail*) = true
+  -- if $reference_cv(expression_rhs) = eps
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $key_write_op(pcnode) = (pbin)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_rhs)
+  -- if $origin_node(S.SOURCES, porigin_target) = (expression_target)
+  -- if expression_target = NExprStaticPropertyFetch phpType19 phpType31 metadata
+  -- if $origin_node(S.SOURCES, porigin_rhs) = (expression_rhs)
+  -- if z = $runtime_line(S, eps, pcnode)
+  -- if $scoped_selector_class(S, poperand) = (porigin_root)
+  -- if $class_at(S.CLASSES, porigin_root) = (pclassdesc)
+  -- if pclassdesc.KIND = "trait"
+def $trait_property_write_pending(S, poperand, ptask*) = false -- otherwise
+
+def $trait_property_write_task(S) = $trait_property_write_pending(S, poperand_class, S.TODO)
+  -- if S.BASE = BASE_CLASS_STATIC_PENDING poperand_class poperand_name
+def $trait_property_write_task(S) = false -- otherwise
+def $trait_property_write_start(S, pbin?) = S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_rhs), TRAIT_PROPERTY_WRITE ptraitpropertywrite] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.BASE = BASE_CLASS_STATIC_PENDING poperand_class poperand_name
+  -- if $origin_child(S.ORIGIN, [PCFIELD 0]) = (porigin_site)
+  -- if $origin_child(S.ORIGIN, [PCFIELD 1]) = (porigin_rhs)
+  -- if $origin_node(S.SOURCES, porigin_rhs) = (expression_rhs)
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression_target)
+  -- if z = $runtime_line(S, [PCFIELD 0], expression_target)
+  -- if ptraitpropertywrite = {SITE porigin_site, OP pbin?, CLASS poperand_class, NAME poperand_name, RHS expression_rhs, LINE z}
+  -- if $trait_property_write_valid(S, ptraitpropertywrite)
+def $trait_property_write_valid(S, ptraitpropertywrite) = true
+  -- if $origin_node(S.SOURCES, ptraitpropertywrite.SITE) = (expression_target)
+  -- if expression_target = NExprStaticPropertyFetch phpType19 phpType31 metadata
+  -- if $property_pending_source_base(S[.ORIGIN = (ptraitpropertywrite.SITE)], BASE_CLASS_STATIC_PENDING ptraitpropertywrite.CLASS ptraitpropertywrite.NAME, expression_target)
+  -- if ptraitpropertywrite.LINE = $runtime_line(S[.ORIGIN = (ptraitpropertywrite.SITE)], eps, expression_target)
+  -- if $reference_origin_parent(ptraitpropertywrite.SITE, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (pcnode)
+  -- if $origin_child((porigin_parent), [PCFIELD 1]) = (porigin_rhs)
+  -- if $origin_node(S.SOURCES, porigin_rhs) = (ptraitpropertywrite.RHS)
+  -- if $reference_cv(ptraitpropertywrite.RHS) = eps
+  -- if pcnode = NExprAssign expression_target ptraitpropertywrite.RHS metadata_assign /\ ptraitpropertywrite.OP = eps \/ $key_write_op(pcnode) = ptraitpropertywrite.OP /\ ptraitpropertywrite.OP =/= eps
+  -- if $scoped_selector_class(S, ptraitpropertywrite.CLASS) = (porigin_root)
+  -- if $class_at(S.CLASSES, porigin_root) = (pclassdesc)
+  -- if pclassdesc.KIND = "trait"
+def $trait_property_write_valid(S, ptraitpropertywrite) = false -- otherwise
+def $trait_property_write_ready(S, ptraitpropertywrite, ptask_tail*) = S_name
+  -- if S_held = S[.ORIGIN = (ptraitpropertywrite.SITE)][.TODO = (TRAIT_PROPERTY_STORE ptraitpropertywrite.SITE ptraitpropertywrite.OP S.RESULT ptraitpropertywrite.LINE) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S_name = $resolve_name(S_held, ptraitpropertywrite.NAME, ptraitpropertywrite.LINE)
+  -- if S_name.COMPLETION =/= NORMAL
+def $trait_property_write_ready(S, ptraitpropertywrite, ptask_tail*) = $class_static_prepare_base(S_name[.RESULT = KNOWN PNULL], ptraitpropertywrite.CLASS, ptbytes, ptraitpropertywrite.LINE)
+  -- if S_held = S[.ORIGIN = (ptraitpropertywrite.SITE)][.TODO = (TRAIT_PROPERTY_STORE ptraitpropertywrite.SITE ptraitpropertywrite.OP S.RESULT ptraitpropertywrite.LINE) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S_name = $resolve_name(S_held, ptraitpropertywrite.NAME, ptraitpropertywrite.LINE)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING ptbytes)
+def $trait_property_store_valid(S, porigin_site, pbin?, poperand, z) = true
+  -- if $reference_origin_parent(porigin_site, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (pcnode)
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression_target)
+  -- if expression_target = NExprStaticPropertyFetch phpType19 phpType31 metadata_property
+  -- if pcnode = NExprAssign expression_target expression_rhs metadata /\ pbin? = eps \/ $key_write_op(pcnode) = pbin? /\ pbin? =/= eps
+  -- if z = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
+  -- if $class_static_source_task(S[.ORIGIN = (porigin_site)], expression_target)
+  -- if $trait_property_operand_valid(S, poperand)
+def $trait_property_store_valid(S, porigin_site, pbin?, poperand, z) = false -- otherwise
+def $trait_property_operand_valid(S, KNOWN (PARRAY n)) = ($(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS)
+def $trait_property_operand_valid(S, KNOWN (POBJECT n)) = ($(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS)
+def $trait_property_operand_valid(S, poperand) = $call_reference_operand_valid(S, poperand) -- otherwise
+rule PhpStep/trait-property-assignment-rhs: S ~> $trait_property_write_start(S, eps)
+  -- if S.TODO = (ASSIGN_PREP expression_target expression_rhs) :: ptask_tail*
+  -- if $trait_property_write_task(S)
+rule PhpStep/trait-property-compound-rhs: S ~> $trait_property_write_start(S, (pbin))
+  -- if S.TODO = (COMPOUND_PREP pbin expression_target expression_rhs z) :: ptask_tail*
+  -- if $trait_property_write_task(S)
+rule PhpStep/trait-property-write-address: S ~> $trait_property_write_ready(S, ptraitpropertywrite, ptask_tail*)
+  -- if S.TODO = (TRAIT_PROPERTY_WRITE ptraitpropertywrite) :: ptask_tail*
+  -- if $trait_property_write_valid(S, ptraitpropertywrite)
+rule PhpStep/trait-property-assignment-store: S ~> S_written[.HELD = S.HELD][.ORIGIN = (porigin_parent)]
+  -- if S.TODO = (TRAIT_PROPERTY_STORE porigin_site eps poperand z) :: ptask_tail*
+  -- if $trait_property_store_valid(S, porigin_site, eps, poperand, z)
+  -- if $reference_origin_parent(porigin_site, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if S_written = $assign_array($hold_task_inputs(S), S.BASE, poperand, z)
+rule PhpStep/trait-property-compound-store: S ~> S_written[.HELD = S.HELD][.ORIGIN = (porigin_parent)]
+  -- if S.TODO = (TRAIT_PROPERTY_STORE porigin_site (pbin) poperand z) :: ptask_tail*
+  -- if $trait_property_store_valid(S, porigin_site, (pbin), poperand, z)
+  -- if $reference_origin_parent(porigin_site, 1) = ((porigin_parent, [PCFIELD 0]))
+  -- if S_written = $compound_target($hold_task_inputs(S), pbin, S.BASE, poperand, z)
+def $call_task_valid(S, TRAIT_PROPERTY_WRITE ptraitpropertywrite) = $trait_property_write_valid(S, ptraitpropertywrite)
+def $call_task_valid(S, TRAIT_PROPERTY_STORE porigin pbin? poperand z) = $trait_property_store_valid(S, porigin, pbin?, poperand, z)
+def $task_nodes(TRAIT_PROPERTY_WRITE ptraitpropertywrite) = $operand_nodes(ptraitpropertywrite.CLASS) ++ $operand_nodes(ptraitpropertywrite.NAME)
+def $task_nodes(TRAIT_PROPERTY_STORE porigin pbin? poperand z) = $operand_nodes(poperand)
+
+;; A raw trait default table uses the genuine initializer binder, independently
+;; of the live caller's lexical scope. Nested imports keep their full DECL.
+def $trait_member_initializer_scope(S, PORIGIN n pcpath, porigin_site) = (porigin_owner)
+  -- if $constant_expression_below(S, PORIGIN n pcpath, porigin_site)
+  -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "trait"
+  -- if $static_default_scope(S) = (porigin_owner)
+  -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
+  -- if pstaticdefaultcontext.DECL = PORIGIN n pcpath
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL
+  -- if $static_default_context_valid(S, pconstantcontext)
+
+def $trait_static_property_read_pending((DIM_INDEX expression z) :: ptask*) = $trait_static_property_read_pending(ptask*)
+def $trait_static_property_read_pending((UPDATE_PREP pupdate b z) :: ptask*) = true
+def $trait_static_property_read_pending((COMPOUND_PREP pbin expression_left expression_right z) :: ptask*) = true
+def $trait_static_property_read_pending((TRAIT_PROPERTY_STORE porigin (pbin) poperand z) :: ptask*) = true
+def $trait_static_property_read_pending((NULLSAFE_CHECK phpType20 z b) :: ptask*) = ~b
+def $trait_static_property_read_pending((NULLSAFE_PROP_PREP phpType20 z b) :: ptask*) = ~b
+def $trait_static_property_read_pending((NULLSAFE_DIM_INDEX expression z b) :: ptask*) = ~b
+
+;; zend_std_get_static_property returns the address even when the handler
+;; throws. The current opcode completes before NEXT_OPCODE propagates it.
+dec $trait_property_opcode_context(pstate, porigin, ptask*) : (porigin, ptask, ptask*)?
+dec $trait_property_opcode(pstate, ptraitproperty, porigin, ptask) : pstate
+dec $trait_property_pending_store(pstate, ptraitproperty, pvalue) : pstate
+dec $trait_property_pending_type(ptypeconversion) : bool
+dec $trait_property_pending_compound(pstate, ptraitproperty, pbin, poperand) : pstate
+dec $trait_property_abrupt_end(pstate, nat, ptask*) : pstate
+
+def $trait_property_opcode_context(S, porigin, (ORIGIN_RETURN (porigin_parent)) :: ptask_tail*) = $trait_property_opcode_context(S, porigin_parent, ptask_tail*)
+def $trait_property_opcode_context(S, porigin, ptask :: ptask_tail*) = ((porigin, ptask, ptask_tail*)) -- otherwise
+def $trait_property_opcode_context(S, porigin, eps) = eps
+
+def $error_read_discard(S, TRAIT_PROPERTY_PHASE ptraitproperty 1) = S[.TODO = (TRAIT_PROPERTY_ABRUPT ptraitproperty n) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $trait_property_selected(S[.TODO = (TRAIT_PROPERTY_PHASE ptraitproperty 1) :: ptask_tail*], ptraitproperty)
+
+def $trait_property_pending_type(TYPEREJECT) = true
+def $trait_property_pending_type(TYPEDEPENDENT text) = true
+def $trait_property_pending_type(ptypeconversion) = false -- otherwise
+def $trait_property_pending_store(S, ptraitproperty, pvalue) = S
+  -- if $class_static_select(S, ptraitproperty.ROOT, ptraitproperty.NAME) = (ppropertydesc)
+  -- if $class_static_set_allowed(S, ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if $trait_property_pending_type($typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S)))
+def $trait_property_pending_store(S, ptraitproperty, pvalue) = $assign_array(S, BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME, KNOWN pvalue, ptraitproperty.LINE) -- otherwise
+
+def $trait_property_pending_compound(S, ptraitproperty, pbin, poperand) = S_read
+  -- if S_read = $rw_base(S, BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME, STRINGCOMPOUND, ptraitproperty.LINE)
+  -- if S_read.COMPLETION =/= NORMAL
+def $trait_property_pending_compound(S, ptraitproperty, pbin, poperand) = S_value
+  -- if S_read = $rw_base(S, BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME, STRINGCOMPOUND, ptraitproperty.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if $location_slot(S_read, S_read.LOCATION) = DEFINED pvalue_left
+  -- if S_rhs = $quiet_operand(S_read, poperand)
+  -- if S_rhs.RESULT = KNOWN pvalue_right
+  -- if S_value = $compound_value(S_rhs, pbin, pvalue_left, pvalue_right, ptraitproperty.LINE)
+  -- if S_value.COMPLETION =/= NORMAL
+def $trait_property_pending_compound(S, ptraitproperty, pbin, poperand) = $trait_property_pending_store(S_value, ptraitproperty, pvalue)
+  -- if S_read = $rw_base(S, BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME, STRINGCOMPOUND, ptraitproperty.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if $location_slot(S_read, S_read.LOCATION) = DEFINED pvalue_left
+  -- if S_rhs = $quiet_operand(S_read, poperand)
+  -- if S_rhs.RESULT = KNOWN pvalue_right
+  -- if S_value = $compound_value(S_rhs, pbin, pvalue_left, pvalue_right, ptraitproperty.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+
+def $trait_property_opcode(S, ptraitproperty, porigin, ASSIGN_PREP expression_target expression_rhs) = $trait_property_pending_store(S_read, ptraitproperty, pvalue)
+  -- if $reference_cv(expression_rhs) = (ptbytes)
+  -- if S_read = $quiet_operand(S, VARIABLE ptbytes ptraitproperty.LINE)
+  -- if S_read.RESULT = KNOWN pvalue
+def $trait_property_opcode(S, ptraitproperty, porigin, COMPOUND_PREP pbin expression_target expression_rhs z) = $trait_property_pending_compound(S, ptraitproperty, pbin, VARIABLE ptbytes ptraitproperty.LINE)
+  -- if $reference_cv(expression_rhs) = (ptbytes)
+def $trait_property_opcode(S, ptraitproperty, porigin, TRAIT_PROPERTY_STORE porigin_site eps poperand z) = $trait_property_pending_store(S_read, ptraitproperty, pvalue)
+  -- if S_read = $quiet_operand(S, poperand)
+  -- if S_read.RESULT = KNOWN pvalue
+def $trait_property_opcode(S, ptraitproperty, porigin, TRAIT_PROPERTY_STORE porigin_site (pbin) poperand z) = $trait_property_pending_compound(S, ptraitproperty, pbin, poperand)
+def $trait_property_opcode(S, ptraitproperty, porigin, UPDATE_PREP pupdate b z) = S_read
+  -- if S_read = $rw_base(S, BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME, STRINGINCDEC, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $trait_property_opcode(S, ptraitproperty, porigin, UPDATE_PREP pupdate b z) = S_value
+  -- if S_read = $rw_base(S, BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME, STRINGINCDEC, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if $location_slot(S_read, S_read.LOCATION) = DEFINED pvalue
+  -- if S_value = $update_value(S_read, pupdate, pvalue, z)
+  -- if S_value.COMPLETION =/= NORMAL
+def $trait_property_opcode(S, ptraitproperty, porigin, UPDATE_PREP pupdate b z) = $trait_property_pending_store(S_value, ptraitproperty, pvalue_new)
+  -- if S_read = $rw_base(S, BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME, STRINGINCDEC, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if $location_slot(S_read, S_read.LOCATION) = DEFINED pvalue
+  -- if S_value = $update_value(S_read, pupdate, pvalue, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue_new
+def $trait_property_opcode(S, ptraitproperty, porigin, PROPERTY_REF_PREP expression_rhs z) = $assign_array_reference_cv(S, BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME, ptbytes, z)
+  -- if $reference_cv(expression_rhs) = (ptbytes)
+def $trait_property_opcode(S, ptraitproperty, porigin, PROPERTY_REF_BIND pbase n_cell z) = $assign_array_reference(S, BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME, n_cell, z)
+def $trait_property_opcode(S, ptraitproperty, porigin, PROPERTY_REF_FETCH z) = $class_static_reference_fetch(S, ptraitproperty.DECL, z)
+def $trait_property_opcode(S, ptraitproperty, porigin, CALL_REF_FETCH pcalltarget n porigin_call?) = $class_static_reference_fetch(S, ptraitproperty.DECL, ptraitproperty.LINE)
+def $trait_property_opcode(S, ptraitproperty, porigin, ptask) = S -- otherwise
+
+def $trait_property_abrupt_end(S, n, ptask_tail*) = S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.COMPLETION = NORMAL
+def $trait_property_abrupt_end(S, n, ptask_tail*) = S_chained[.TODO = (THROW_SEARCH n_new) :: ptask_tail*][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $throwable_pending(S.COMPLETION)
+  -- if S_error = $throwable_materialize(S)
+  -- if S_error.COMPLETION = THROWING n_new
+  -- if S_chained = $throwable_previous(S_error, n_new, n)
+def $trait_property_abrupt_end(S, n, ptask_tail*) = S -- otherwise
+rule PhpStep/trait-property-handler-throw-opcode: S ~> S_done[.HELD = S.HELD]
+  -- if S.TODO = (TRAIT_PROPERTY_ABRUPT ptraitproperty n) :: ptask_tail*
+  -- if $trait_property_selected(S[.TODO = (TRAIT_PROPERTY_PHASE ptraitproperty 1) :: ptask_tail*], ptraitproperty)
+  -- if $throwable_live(S, n)
+  -- if $trait_property_opcode_context(S, ptraitproperty.SITE, ptask_tail*) = ((porigin, ptask, ptask_after*))
+  -- if S_view = S[.ORIGIN = (porigin)][.BASE = BASE_CLASS_STATIC ptraitproperty.ROOT ptraitproperty.NAME][.TODO = ptask :: ptask_after*][.HELD = S.HELD ++ [HOBJECT n]]
+  -- if S_opcode = $trait_property_opcode($hold_task_inputs(S_view), ptraitproperty, porigin, ptask)
+  -- if S_done = $trait_property_abrupt_end(S_opcode, n, ptask_after*)
+def $call_task_valid(S, TRAIT_PROPERTY_ABRUPT ptraitproperty n) = ($throwable_live(S, n) /\ $trait_property_selected(S[.TODO = (TRAIT_PROPERTY_PHASE ptraitproperty 1) :: ptask_tail*], ptraitproperty))
+  -- if S.TODO = (TRAIT_PROPERTY_ABRUPT ptraitproperty n) :: ptask_tail*
+def $call_task_valid(S, TRAIT_PROPERTY_ABRUPT ptraitproperty n) = false -- otherwise
+def $task_nodes(TRAIT_PROPERTY_ABRUPT ptraitproperty n) = [HOBJECT n]
