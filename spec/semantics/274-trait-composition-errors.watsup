@@ -119,7 +119,6 @@ def $trait_fold_value(S, pclassdesc, porigin) = TRAITVALUEERROR F.MEMORY ptraitd
   -- if $trait_member_fold(S, pclassdesc, porigin) = (F)
   -- if $trait_fold_error(F) = (ptraitdataerror)
 def $trait_value_notices(TRAITVALUEERROR S ptraitdataerror pfdiagnostic*) = pfdiagnostic*
-dec $trait_value_error(ptraitdatavalue) : bool
 def $trait_value_error(TRAITVALUEERROR S ptraitdataerror pfdiagnostic*) = true
 def $trait_value_error(ptraitdatavalue) = false -- otherwise
 def $trait_comparison_memory(ptraitdatavalue, TRAITVALUEERROR S ptraitdataerror pfdiagnostic*) = (S)
