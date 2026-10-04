@@ -1,3 +1,4 @@
+dec $static_default_pending(ppropstate) : bool
 ;; A static declaration owns one cell for its declaring class. Descendants
 ;; resolve the declaration before consulting this table; they do not copy it.
 def $class_static_initial(S, eps) = (eps)
@@ -53,7 +54,7 @@ def $class_static_source_covered(S, pclassstatic, ppropertydesc) = $propref_sour
   -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
 def $class_static_source_covered(S, pclassstatic, ppropertydesc) = true -- otherwise
 def $class_static_rows_valid(S, eps) = true
-def $class_static_rows_valid(S, pclassstatic :: pclassstatic_tail*) = ($property_slot_valid(S, ppropertydesc, {DECL (pclassstatic.DECL), NAME ppropertydesc.KEY, STATE pclassstatic.STATE}) /\ $class_static_source_covered(S, pclassstatic, ppropertydesc) /\ $class_static_rows_valid(S, pclassstatic_tail*))
+def $class_static_rows_valid(S, pclassstatic :: pclassstatic_tail*) = ($static_default_slot_valid(S, ppropertydesc, pclassstatic) /\ $class_static_source_covered(S, pclassstatic, ppropertydesc) /\ $class_static_rows_valid(S, pclassstatic_tail*))
   -- if $class_static_active_desc(S, S.CLASSNAMES, pclassstatic.DECL) = (ppropertydesc)
   -- if $class_static_at(pclassstatic_tail*, pclassstatic.DECL) = eps
   -- if pclassstatic.STATE =/= PROP_UNSET
@@ -76,4 +77,4 @@ def $class_static_roots(eps) = eps
 def $class_static_roots(pclassstatic :: pclassstatic_tail*) = $item_nodes(pitem) ++ $class_static_roots(pclassstatic_tail*)
   -- if pclassstatic.STATE = PROP_VALUE pitem
 def $class_static_roots(pclassstatic :: pclassstatic_tail*) = $class_static_roots(pclassstatic_tail*)
-  -- if pclassstatic.STATE = PROP_INITIAL \/ pclassstatic.STATE = PROP_UNSET
+  -- if pclassstatic.STATE = PROP_INITIAL \/ pclassstatic.STATE = PROP_UNSET \/ $static_default_pending(pclassstatic.STATE)

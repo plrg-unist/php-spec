@@ -64,7 +64,7 @@ def main():
         '~$call_descriptors_valid(S[.TODO = (EVAL_AWAIT 999) :: ptask_tail*])',
         '~$call_descriptors_valid(S[.TODO = (AT pevalcontext.SITE (EVAL_AWAIT n)) :: ptask_tail*])',
         '~$call_descriptors_valid(S[.TODO = (CHOOSE S.TODO eps 0) :: ptask_tail*])',
-        'pfailedsource = {UNIT n, SITE pevalcontext.SITE, BYTES pevalcontext.BYTES, FILE pevalcontext.FILE, ISFILE false, KIND FAILED_PARSE, MESSAGE ([88]), LINE 1}',
+        'pfailedsource = {UNIT n, SITE pevalcontext.SITE, BYTES pevalcontext.BYTES, FILE pevalcontext.FILE, ISFILE false, KIND FAILED_PARSE, MESSAGE ([88]), LINE 1, LOCATION eps}',
         '~$call_descriptors_valid(S[.FAILEDSOURCES = [pfailedsource]])',
         '$eval_response_valid(S, ' + response + ')',
         '~$eval_response_valid(S, ' + response_wrong_id + ')',

@@ -69,7 +69,9 @@ remain distinct from USER strict warnings. Other CONFIG warning producers remain
 
 Remaining null/Stringable API conversions, compound/scope-keyword, nonpublic,
 magic/autoload/internal callback forms,
-reference-return callbacks, exception handlers and lifecycle dispatch remain open.
+reference-return callbacks and later lifecycle dispatch remain open.
+[Exception handlers](SOURCE-EXCEPTION-HANDLERS.md) use a separate uncaught boundary
+with one Throwable argument and a nullable raw registration stack.
 Frameless named/method trace formatting in164 now accepts the authenticated
 nonempty function field. Current property and array-caller readback gates validate these shapes on the
 tested private source composition.
@@ -100,8 +102,9 @@ are reused; a fresh combined offline rebuild and complete core remain open. The
 [method-handler ledger](../../coverage/semantics/handler-callables-current-review.json)
 keeps source15/five258 and independent source9/three185 separate from current
 PIPE source1/state93, including the preserved failed attempts. Its early
-get_called_class() Unsupported source has zero agreement; corrected static::class
-observations do not implement that introspection body.
+get_called_class() Unsupported source keeps zero agreement. Later
+[called-class introspection](CALLED-CLASS.md) has separate source and frame checks;
+the earlier static::class observations retain their original scope.
 
 In a private project root with the built local SpecTec algorithmic tool at
 `.tools/spectec/bin/p4spectec`, prepare and run the exact report separately:

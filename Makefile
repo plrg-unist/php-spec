@@ -105,6 +105,8 @@ test-semantics: build
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/class_constant_cases.json
 	python3 tests/semantics/class_constant_protocol.py
 	python3 tests/semantics/constant_callable_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/deferred_static_default_cases.json
+	python3 tests/semantics/deferred_static_default_protocol.py
 	python3 tests/semantics/default_parameter_compiler.py
 	python3 tests/semantics/default_parameters.py
 	python3 tests/semantics/default_parameter_protocol.py
@@ -126,6 +128,12 @@ test-semantics: build
 	python3 tests/semantics/class_method_strings_protocol.py
 	python3 tests/semantics/error_handler_callables.py
 	python3 tests/semantics/error_handler_callables_protocol.py
+	python3 tests/semantics/exception_handlers.py
+	python3 tests/semantics/exception_handler_state.py
+	python3 tests/semantics/exception_handler_review.py
+	python3 tests/semantics/exception_handler_state_review.py
+	python3 tests/semantics/exception_handler_boundaries.py
+	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
 	python3 tests/semantics/scoped_callables_protocol.py
 	python3 tests/semantics/invoke_publication.py
@@ -291,6 +299,12 @@ test-semantics: build
 	python3 tests/semantics/clone_controls.py
 	python3 tests/semantics/get_class_intrinsic.py
 	python3 tests/semantics/get_class_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/called_class_cases.json
+	python3 tests/semantics/called_class_protocol.py
+	python3 tests/semantics/called_class_controls.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/called_class_review_cases.json
+	python3 tests/semantics/called_class_review_protocol.py
+	python3 tests/semantics/called_class_review_boundaries.py
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
 	python3 tests/semantics/eval_class_scope_protocol.py

@@ -84,14 +84,19 @@ def $closure_live_object_valid(S, n) = true
   -- if $heap_valid($heap_graph(S))
 
 ;; Allocation snapshots the failing frame before any owner is discarded.
-def $throwable_allocate(S, text, preqbytes, z, ptraceframe*) = S_trace[.OBJECTS = S_trace.OBJECTS ++ [THROWABLE pthrowable]][.OBJECTPROPS = S_trace.OBJECTPROPS ++ [{OBJECT n, SLOTS $throwable_slots(text, preqbytes, $call_sourcefile(S.FILES, porigin), $class_constant_error_line(S, z), n_trace, PNULL), MATERIALIZED false}]][.ALLOCATIONS = S_trace.ALLOCATIONS ++ [HOBJECT n]][.COMPLETION = THROWING n][.TRACE = eps][.ERRORORIGIN = eps]
-  -- if $throwable_kind(text)
+dec $throwable_allocate_at(pstate, text, preqbytes, porigin, int, ptraceframe*) : pstate
+def $throwable_allocate(S, text, preqbytes, z, ptraceframe*) = $throwable_allocate_at(S, text, preqbytes, porigin, $class_constant_error_line(S, z), ptraceframe*)
   -- if $class_constant_error_origin(S) = (porigin)
+def $throwable_allocate(S, text, preqbytes, z, ptraceframe*) = S[.COMPLETION = UNSUPPORTED "invalid Throwable allocation context"] -- otherwise
+;; Parser/preflight failures use the compiled unit, even while an execution
+;; override is live. Runtime-created ParseError keeps the ordinary route.
+def $throwable_allocate_at(S, text, preqbytes, porigin, z, ptraceframe*) = S_trace[.OBJECTS = S_trace.OBJECTS ++ [THROWABLE pthrowable]][.OBJECTPROPS = S_trace.OBJECTPROPS ++ [{OBJECT n, SLOTS $throwable_slots(text, preqbytes, $call_sourcefile(S.FILES, porigin), z, n_trace, PNULL), MATERIALIZED false}]][.ALLOCATIONS = S_trace.ALLOCATIONS ++ [HOBJECT n]][.COMPLETION = THROWING n][.TRACE = eps][.ERRORORIGIN = eps]
+  -- if $throwable_kind(text)
   -- if S_trace = $trace_materialize(S, ptraceframe*)
   -- if S_trace.RESULT = KNOWN (PARRAY n_trace)
   -- if n = |S_trace.OBJECTS|
   -- if pthrowable = {KIND text, ORIGIN (porigin), FILEORIGIN (porigin)}
-def $throwable_allocate(S, text, preqbytes, z, ptraceframe*) = S[.COMPLETION = UNSUPPORTED "invalid Throwable allocation context"] -- otherwise
+def $throwable_allocate_at(S, text, preqbytes, porigin, z, ptraceframe*) = S[.COMPLETION = UNSUPPORTED "invalid Throwable allocation context"] -- otherwise
 
 def $throwable_pending(THROWN text preqbytes z) = true
 def $throwable_pending(PHPERROR preqbytes z) = true
@@ -207,15 +212,19 @@ rule PhpStep/throw-search-frame: S ~> S_restored[.TODO = (THROW_SEARCH n) :: S_r
   -- if ptask_tail* = eps
   -- if S.FRAMES =/= eps
   -- if S_restored = $restore_frame(S)
+dec $exception_terminal_tail(pstate, ptask*) : bool
+dec $exception_dispatch_ready(pstate) : bool
 rule PhpStep/throw-search-uncaught: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = pthrowable.FILEORIGIN]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-  -- if ptask_tail* = eps
+  -- if $exception_terminal_tail(S, ptask_tail*)
+  -- if ~$exception_dispatch_ready(S)
   -- if S.FRAMES = eps
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $throwable_terminal_renderable(S, n, eps)
 rule PhpStep/throw-search-uncaught-source: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-  -- if ptask_tail* = eps
+  -- if $exception_terminal_tail(S, ptask_tail*)
+  -- if ~$exception_dispatch_ready(S)
   -- if S.FRAMES = eps
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $throwable_member(S, n)
@@ -224,7 +233,8 @@ rule PhpStep/throw-search-uncaught-source: S ~> S[.TODO = eps][.COMPLETION = UNC
 def $task_nodes(TERMINAL_STRING n) = [HOBJECT n]
 rule PhpStep/throw-search-uncaught-unrenderable: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Throwable terminal message conversion"][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-  -- if ptask_tail* = eps
+  -- if $exception_terminal_tail(S, ptask_tail*)
+  -- if ~$exception_dispatch_ready(S)
   -- if S.FRAMES = eps
   -- if $throwable_member(S, n)
   -- if ~$stringable_instance(S, n)

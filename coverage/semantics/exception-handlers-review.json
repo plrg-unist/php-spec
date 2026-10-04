@@ -1,0 +1,85 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING_removed": true
+  },
+  "identities": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+    "_build/default/adapter/main.exe": "9fa8a62125cc34baf80965a829fb4aa946875aa40b1b3a8d6e90cd732b2bcaf2",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f"
+  },
+  "build": "Existing runtime, frontend, adapter and numeric executables reused; production specifications compiled below. Fresh combined offline rebuild remains required.",
+  "artifact_root": ".tools/exceptions-handlers-current-14/.tools",
+  "author_sources": {
+    "tuples": 29,
+    "runs": [
+      {
+        "revision": "1d8d8e478a547366fd1526cd44793b258102a303",
+        "passing_tuples": 3,
+        "report": "exception-handlers-8zkw2mbh/report.json"
+      },
+      {
+        "revision": "226542af113714dd1a206ad4be5bd982d4596064",
+        "passing_tuples": 26,
+        "report": "exception-handlers-yn2ac06v/report.json"
+      }
+    ],
+    "native_originals": "exceptions-author-native-pvzp8i_v",
+    "correction": "First report stops at a filename-normalization recorder failure; only three passing tuples credited. Remaining 26 reuse exact original native source/streams after the correction."
+  },
+  "author_states": {
+    "cases": 6,
+    "assertions": 216,
+    "runs": [
+      {
+        "revision": "aa6a255472f4808f07c661a6b378180d6b1405e1",
+        "passing_cases": 3,
+        "assertions": 113,
+        "report": "exception-handler-state-hit52q71/report.json"
+      },
+      {
+        "revision": "abe39e0731ce4540086d0a670a503fe96f3250b3",
+        "passing_cases": 3,
+        "assertions": 103,
+        "report": "exception-handler-state-_v2tp1yy/report.json"
+      }
+    ],
+    "correction": "First report retains a wrong fixture assumption of null error-warning callsite. Corrected affected checks authenticate the real warning marker; no semantic change or repeat of passing cases."
+  },
+  "independent_review": {
+    "record": "coverage/semantics/exception-handler-review.json",
+    "source_tuples": 33,
+    "state_cases": 10,
+    "latest_assertions": 331,
+    "unsupported_controls": 2,
+    "control_agreements": 0
+  },
+  "actual_parent_composition": {
+    "parent": "ce2ffb1899ddbdb6830f29699bab562accd66f90",
+    "revision": "e6122e46ecac29689858ec044427ab354878dacd",
+    "source": "Foreign-file scalar static default emits E_STRICT from an entered exception callback; ordinary error handler retains actual caller filename, line5 and null active exception handler.",
+    "stdout": "1;F:5:N;2048",
+    "stderr": "",
+    "native_exit": 0,
+    "model_exit": 0,
+    "report": "exception-static-default-i6dh29_w/report.json",
+    "production_compile": {
+      "algo_exit": 0,
+      "struct_exit": 0,
+      "report": "exception-production-compile-am4elntc/report.json"
+    }
+  },
+  "reproduce": [
+    "python3 tests/semantics/exception_handlers.py",
+    "python3 tests/semantics/exception_handler_state.py",
+    "python3 tests/semantics/exception_handler_static_default.py",
+    "p4spectec algo <spec/semantics/modules.json entries>",
+    "p4spectec struct <spec/semantics/modules.json entries>"
+  ],
+  "raw_records": "Reports retain full producer argv/cwd, profile, caps, exits and original streams; no blanket rerun after test/docs-only publication.",
+  "remaining": "Effectful keyword/compound API ingress, wider magic/autoload/internal callables, request lifecycle, shared207 reference-return bodies and temporary-value reference returns remain outside this terminal milestone."
+}

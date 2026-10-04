@@ -17,6 +17,36 @@ rows together. Failed linking through modules 127/178 preserves the prior names,
 links and rows, including an already active parent's cells. Missing compiled
 default pools yield explicit Unsupported rather than invented initial values.
 
+Module219 evaluates deferred scalar/array static defaults at the first permitted
+fetch or construction. The class updater completes the parent, then class
+constants, then declaration-ordered static defaults, before marking the table
+complete. Each initializer runs in its declaring lexical scope and binds with
+strict property types, including int-to-float promotion. A failed later
+initializer preserves earlier values and their first-fill history; a retry skips
+those values. The existing `CLASSSTATICS` row owns the value and later aliases;
+the `CCSTATIC` history entry stores only source/trigger/publication identities.
+Compound AST errors retain the constant-expression trace, while a simple unresolved
+constant keeps the triggering fetch location. Module229 permits same-default
+reevaluation during a callback. Successful outer binding replaces the reentrant
+value without duplicating first-fill or table-completion history. Escaped typed
+aliases keep nonowning type constraints authenticated by retirement events;
+reattachment and rebinding preserve Zend's ordered source removal. Throwing or
+strictly rejected outer evaluation leaves the live row and alias intact. Instance
+and object-bearing defaults and synchronous
+references into an incomplete table also remain required open work.
+The [deferred-default review](../../coverage/semantics/deferred-static-defaults-review.json)
+records eleven earlier source agreements separately from five source-derived guard
+programs. Four217 callback comparisons preserve saved initializer contexts,
+private declaring scope and compound traces; one cross-file comparison checks
+the caller file for a simple constant default. Thirteen new reentry comparisons
+and an inherited67-premise fixture cover replacement, failure/retry, array COW,
+source order and release of escaped cells; earlier Unsupported controls remain
+historical evidence. Two later213/215 comparisons
+initialize the inherited default
+inside a captured private handler and a raw private handler during a Stringable
+parameter receive. Captured null survives the first handler's variable write and
+the second handler's throw; the warmed typed alias remains the shared static cell.
+
 Lookup retains a selected instance descriptor long enough to check access before
 rejecting it as an undeclared static property. Denied and undeclared errors name
 the requested class; uninitialized and type errors name the declaration owner.
@@ -99,7 +129,7 @@ and the declaration type source remains attached. A current-constants control
 uses a literal property default and completes a deferred child constant table
 through ordinary access before the getter. It checks the sole static owner after
 discard, then static storage plus the live global alias after binding. Deferred
-property defaults and synchronous references into incomplete tables remain
+instance/object-bearing defaults and synchronous references into incomplete tables remain
 Unsupported. The
 [reference review](../../coverage/semantics/static-method-reference-review.json)
 keeps the original instance-spelled control and its preserved StaticCall failure

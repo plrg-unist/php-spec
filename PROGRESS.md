@@ -7,6 +7,77 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Iterator224 adds compatible explicit declarations and inherited internal
+obligations for source by-value foreach; callbacks use
+effective runtime methods and retain the iterator/current result through key and
+body. Independent source26 confirms callback order, reference results, ownership,
+lexical/called scope, inherited signatures and source-interface priority at its
+two recorded cutoffs. Author source5 and owner125 retain their original results.
+Cursor checks enforce unique live continuation and metadata IDs below `NEXTITER`;
+cursor49 and claim85 pass separately. Independent source1/reference63 and affected
+fatal teardown38 pass with unchanged87d semantics; the latter corrects only a
+fixture line binding. On accepted2e8, source12 passes control cleanup, arbitrary
+keys, assignment priority, covariance and the remaining throwing callback stages
+at284803284. Independent source1/protocol16 at the same cutoff confirms zero-argument
+Stringable default reception. Earlier results and original failures remain preserved.
+Tentative-return deprecations are the immediate declaration follow-on, followed
+by IteratorAggregate, ArrayAccess and remaining reference/ordinary object
+traversal. [Scope and boundaries](docs/semantics/ITERATORS.md).
+
+Direct missing `$GLOBALS[key]` R-fetches226 dispatch before their consumers and
+retain the original null through key/global mutation. Handler throws skip later
+ASSIGN/SEND, preserving typed destinations and the original exception chain.
+Quiet/reference acquisitions keep their existing real cells. Genuine76 whole-table
+snapshots under explicit request facts preserve numeric keys, singleton unwrap,
+shared reference owners and COW after global retirement. Author8/207 and
+independent8/221 pass at distinct private cutoffs. Two current derived sources
+on accepted ed6 pass at bb90, retaining private first-class handlers, called class,
+eager identity reads and a cold typed static alias. The combined observer retains
+its inconclusive CLI60 timeout. [Contract](docs/semantics/SOURCE-GLOBAL-WARNINGS.md),
+[ledger](coverage/semantics/global-warning-reads-review.json).
+
+Exception handlers222 retain nullable raw stacks and dispatch an uncaught
+Throwable after `finally` through the ordinary weak call receiver. Genuine null
+caller and saved-frame certificates preserve one argument, selected targets and
+owners through restoration, replacement, nested warning handling, throws and exit.
+Author29/216 and independent33/331 retain their distinct source cutoffs; two
+explicit Unsupported controls add no agreement. Actual219 composition preserves
+cross-file diagnostic origins during static defaults, and production algorithm
+and structure checks pass. [Contract](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md),
+[author/composition record](coverage/semantics/exception-handlers-review.json),
+[independent review](coverage/semantics/exception-handler-review.json).
+Keyword/compound callback ingress and later request lifecycle remain required.
+
+Called-class introspection223 implements `get_called_class()` using the active
+authenticated called class. Plain functions and global Closures stop lookup;
+captured/rebound source Closures retain their own class, while explicit builtin
+Closure wrappers return `Closure`. Argument/count priority, optimized/generic
+trace paths and real handler/emitter restoration are checked separately in the
+[called-class ledger](coverage/semantics/called-class-review.json).
+
+Deferred scalar/array static defaults219 retain the declaring scope, strict
+property types, parent/constants/default order and first successful fills across
+later failure/retry. Existing static rows own live values, arrays and typed aliases;
+history stores no duplicate value. Eleven native/model agreements (seven normal,
+four PHP errors) retain their original source cutoff. Five source-derived programs
+accept 149 logical guards expressed as 152 sequential premises after narrow fixture
+binding repairs. The [deferred-default ledger](coverage/semantics/deferred-static-defaults-review.json)
+keeps original failures and unrun broader work visible. Two actual213/215
+interactions at 8da51d193 retain inherited defaults through captured/private raw
+handlers, captured-null cast/throwing assignment and a 214/216 Stringable receive.
+Actual217 composition adds four normal agreements at 5c0887541, including saved
+initializer contexts and compound callback traces, plus one cross-file fast-path
+diagnostic agreement at 663811e8c. The unchanged owner41 guard passes. Module229
+now supports same-default callback reentry: successful outer binding replaces
+the live row, while escaped typed aliases retain ordered nonowning constraints.
+Throw/type failure preserves the reentrant row; first-fill and table completion
+remain once-only. Thirteen exact normal native/model comparisons and an inherited
+67-premise ownership/history fixture pass at bf0954840. The earlier Unsupported
+controls and declaration-order failure remain historical evidence; prior18/149
+checks were not renewed. Cold synchronous references and instance/object defaults
+are the next required obligations.
+
+
 Private and protected method arrays and class-method strings support callable
 admission, selection, capture/clone and delayed error-handler dispatch. Object
 selectors can redirect to the selecting parent's private method; concrete class
@@ -44,48 +115,15 @@ outer-array prepass redirect and cached target/handler retention. Source-equival
 publication preserves subsequent reporting, parameter backing and named-class
 changes. [Consumer ledger](coverage/semantics/warning-consumers-review.json).
 
-Weak Stringable string parameters214/216 convert supplied fixed values in receive
-order, preserving caller strictness and nominal/callable precedence. Free
-by-reference parameters write through their captured formal cell; existing
-property constraints reject before the callback. Same-site reentry and throws
-retain authentic receive frames and release converter owners. When a callback
-attaches property sources, parameter authority permits the resulting backing
-string without relaxing later writes or binds. Legal source rebinding, exact
-string receives and cell retirement preserve or remove that authority as needed;
-throws mint none.
-The [parameter ledger](coverage/semantics/weak-string-parameters-review.json)
-separates the earlier 214 checks from source6/state299 and independent2 at
-73d6 on accepted6395. The current reporting composition preserves those tested
-routes and adds no execution credit.
-
-Stringable variadic/default receives218 preserve positional then named order,
-captured reference cells and fresh constructor-free default objects. Method
-`new self`/`new parent` uses declaring scope; named NEW arguments and object truth
-follow the constant AST evaluator. Genuine defaults cannot mint supplied backing
-authority. The [ledger](coverage/semantics/variadic-default-string-review.json)
-keeps source6+6, focused4, independent3 and meaningful336 at separate cutoffs,
-including original NEW-self and fixture-budget failures. Three new source witnesses
-on actual scoped/diagnostic composition preserve retired private capture, rebound
-lexical defaults and active NEW argument facts through handler return. Direct holes derive from
-source; unpack/wrapper holes remain structurally checked. Default constructors,
-rebound anonymous keyword NEW and broader constrained conversions remain open.
-
-Named constexpr `::class` preserves namespace/alias spelling without requiring
-class lookup, declaring self/parent and source-spelled known parents. Deferred
-Closure/eval contexts use their authenticated lexical scope; rebound defaults
-avoid origin-only cache reuse. Seventeen constant-context and two ordinary-form
-source comparisons plus 25/38 focused guards retain separate tested cutoffs.
-The maintained catalogue contains 93 agreements; the callable helper retains its
-earlier 159 + 44 predicates and adds these 63. [The constants ledger](coverage/semantics/class-constants-current-review.json)
-preserves original failures and the refuted native concat prediction. Static
-Closure/FCC identity, owner/called scope, clone cells and compile-entry caches
-remain covered by their earlier checks. On actual reporting/214 composition, a
-Stringable receive callback invokes the rebound B default before original A and
-retains cached identity (`B:A:same`). Released216 backing authorization composes
-without changing the named-class/default-cache paths. Wider callable initializer contexts,
-builtin FCC targets, uncertified object transfers, unretained update selectors and
-references into incomplete tables remain Unsupported. Modifier admission,
-attributes and broader consumers stay open; the runtime is reused.
+Fixed and variadic Stringable receives preserve receive order, captured cells,
+caller strictness and backing authority; constructor-free defaults retain declaring
+scope and fresh objects. Named constexpr `::class` retains source spelling and
+authentic deferred/rebound lexical scope. Counts and original failures remain in
+[parameter](coverage/semantics/weak-string-parameters-review.json),
+[variadic/default](coverage/semantics/variadic-default-string-review.json) and
+[constant](coverage/semantics/class-constants-current-review.json) ledgers and the
+family table below. Broader constructor, attribute/modifier and callable initializer
+consumers remain required.
 
 Nonstatic private/protected `__invoke` supports bare calls, callable admission,
 object capture/clone and bare-object error handlers through the effective runtime
@@ -111,7 +149,14 @@ and four independent sources plus 211 conditions keep their actual revisions.
 Current 210 compilation and one scoped private-handler/Stringable-backing/lexical
 class-name source comparison establish added composition separately. The
 [diagnostic ledger](coverage/semantics/reporting-diagnostics-review.json) retains
-original failures and the open compound callback/eval filename obligation.
+original failures and cutoffs. The separate
+[eval-location increment](coverage/semantics/compound-eval-location-review.json)
+retains genuine filename owner/root/child through compound class, method/Closure
+and static-property callbacks, with real eval call sites and lexical scopes.
+Compiler exceptions use their failed unit; ordinary runtime exceptions keep the
+execution override. Five original agreements/81 controls retain their distinct
+cuts. One current inherited static-default/private-handler source plus214 compiler
+stages at2c0c validate that composition and the static-fill compiler-prefix bridge.
 
 The installed families compose as follows; each ledger records its scope and limits.
 
@@ -122,6 +167,7 @@ The installed families compose as follows; each ledger records its scope and lim
 | Warning-read consumers213 | Six casts, selected ternary/coalesce copies and ordinary by-value sends preserve captured null, aliases and selected targets through callbacks. Direct ASSIGN retains its null write through throw. Mixed21/control0+236 and independent10/197 remain separate from fresh static-reference/outer-array source1/94 and cached-callee source1/96 at181f. [Consumer ledger](coverage/semantics/warning-consumers-review.json). |
 | Borrowed warning reads208 | Strict identity retains the old reference cell across callbacks without adding an owner; saved callers and throw cleanup preserve it. Defined ordinary `$GLOBALS[key]` uses the real table. Getter/setter and method-string interactions keep separate revisions. [Warning-read ledger](coverage/semantics/warning-reads-review.json). |
 | Error handlers/reporting206/207/211 | Raw registrations and selected targets retain four arguments and genuine emitting frames through mutation, replacement, nested reentry, throw and false fallback. Reporting get/set/Restore separates full raw bytes, signed32 masks and modified-entry state across suppression and handler writes; twelve normal sources across two revisions and 74 conditions are accepted. Fifteen nondeprecated error constants resolve exactly. Diagnostic ingress217 adds runtime `E_STRICT` and handled lossy reporting conversions with distinct 14+4/211 evidence and current source1. Broader handler forms and producer coverage remain open. [Diagnostics](coverage/semantics/reporting-diagnostics-review.json). [Reporting](coverage/semantics/reporting-ini-review.json), [method handlers](coverage/semantics/handler-callables-current-review.json), [earlier handlers](coverage/semantics/error-handlers-review.json). |
+| Exception handlers222 | Raw nullable set/get/restore stacks and null-caller uncaught dispatch reuse ordinary calls with one authentic Throwable. Selected snapshots survive registry removal; weak receive, by-reference warning resume, nested restoration/replacement, throws, exit and fatal masks preserve ownership and termination. Author29/216 and independent33/331 pass at recorded cutoffs; actual219 source1 and production algorithm/structure gates pass. [Exception contract](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md). |
 | Class-method strings210 and FCC119 | Full-byte lookup separates frame-based callable admission, computed static dispatch and fixed compatible-this selection. Captures/clone retain immutable source certificates and defaults/static cells. A named throwing handler preserves the selected static caller and arguments. [String ledger](coverage/semantics/class-method-strings-current-review.json). |
 | Method arrays205 | Public source method arrays retain immutable selected receiver/owner/called-class certificates through dynamic calls and capture. Current two-slot INI checkpoint **f9f47f115/61370c98/1353** accepts source1/finite103; broader resolution remains open. [Array ledger](coverage/semantics/array-callables-current-review.json). |
 | Include/configuration | Failed CHDIR warnings retain provider certificates and caller frames through handler CWD/raw writes, false fallback and throw. One current throwing source/136 conditions, earlier three sources and compiler25 checks keep separate revisions. Stringable CHDIR PIPE retains post-callback CWD/held operands; unary CONFIG PIPE preserves source strictness through borrowed warnings. [PIPE ledger](coverage/semantics/include-config-pipe-review.json). Raw getters, primitive/null Restore, weak-null handler continuations and two-slot INI ownership retain their separate checkpoints. [Readback](coverage/semantics/include-ini-readback-review.json), [INI](coverage/semantics/include-stringable-ini-option-review.json). |
@@ -147,15 +193,21 @@ failures and interrupted evidence.
 - Calls: keyword/compound array and class-method-string resolution,
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
-  array and string Closure PIPE routes are covered; defined ordinary `$GLOBALS[key]` is admitted; missing-global warnings and whole-table snapshots remain partial.
-- Include/configuration: compound initializer callback/eval filename creation,
+  array and string Closure PIPE routes are covered. Direct defined/missing
+  `$GLOBALS[key]` reads and explicit-request full-table snapshots are admitted;
+  earlier key-expression warnings, nested/read-write warning continuations and
+  ordinary snapshots without request facts remain open.
+- Include/configuration: wider initializer/callback/compile-warning consumers,
   nondefault startup profiles, wider directives,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: direct/inherited default constructor dispatch,
   rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred property defaults and references into incomplete constant tables remain Unsupported.
+  broader reference-result consumers. Deferred instance/object defaults and cold
+  synchronous references into incomplete constant tables remain Unsupported.
+  Uncertified object transfers, unretained update selectors, builtin FCC targets and
+  wider callable initializers remain Unsupported; modifiers/attributes stay open.
   Wider deprecated constant consumers remain open. Generic156 return replay, temporary-return
   Notice timing and typed
   by-reference string conversion186 remain open; accepted ordinary by-value
@@ -167,10 +219,10 @@ failures and interrupted evidence.
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,
-  exception/lifecycle handlers and broader API/callable argument consumers.
+  later exception-handler lifecycle entry and broader API/callable argument consumers.
   Broader constant consumers and compiler reporting interactions remain open.
-  get_called_class() remains an unimplemented introspection body; static::class
-  observations do not close it.
+  Called-class introspection223 leaves builtin Closure rebinding, builtin API
+  callback targets, suspension and wider reference-result consumers open.
 
 `returns_verify` is temporarily paused by the user. Preserve its branches and
 evidence; do not retry the blocked engine experiment, substitute a reviewer,

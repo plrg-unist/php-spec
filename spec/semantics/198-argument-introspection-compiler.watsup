@@ -1,6 +1,6 @@
 ;; The pinned compiler admits initial literal builtin routes for these bodies.
 ;; Existing87 owns static write rejection; consumers reuse its bounded fact.
-def $pparginfo_builtin(ptbytes) = ($ptlc(ptbytes) <- [$ptascii("func_num_args"), $ptascii("func_get_arg"), $ptascii("func_get_args")])
+def $pparginfo_builtin(ptbytes) = ($ptlc(ptbytes) <- [$ptascii("func_num_args"), $ptascii("func_get_arg"), $ptascii("func_get_args"), $ptascii("get_called_class")])
 ;; Constant property selectors are converted by the compiler for any receiver.
 def $ppproperty_constant_name(P, pcpath) = $ppfoldresult(P, $pfwarned(P.FOLD, pcpath, $stringify(P.FOLD.MEMORY, PARRAY n, P.LOCATION.LINE)))
   -- if P.COMPLETION = PPCNORMAL

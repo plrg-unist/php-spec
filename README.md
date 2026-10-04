@@ -63,8 +63,10 @@ separates full INI bytes, the live signed32 mask and modified-entry Restore,
 including suppression and handler writes. [Diagnostic ingress](coverage/semantics/reporting-diagnostics-review.json)
 adds runtime `E_STRICT` deprecations and lossy reporting conversions, retaining
 captured values, caller frames and initializer locations through callbacks.
-Compound initializer callback/eval filenames, startup profiles, wider PIPE/INI
-consumers and lifecycle remain open.
+[Compound initializer eval locations](coverage/semantics/compound-eval-location-review.json)
+retain authenticated filename owners and child lines through callbacks and later
+eval execution, separately from callback scope and compiler exception locations.
+Startup profiles, wider initializer/PIPE/INI consumers and lifecycle remain open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
@@ -130,6 +132,11 @@ Object/frame-dependent targets remain unfinished.
 values, reference history and compiler/runtime rejection phases. Its
 [independent review](coverage/semantics/array-unpack-review.json) audits 155 exact
 sources; Traversable objects remain unfinished. Array call arguments are covered by the later call-unpack checkpoint below.
+[Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
+callbacks with effective method selection, retained current values and abrupt
+cleanup. Explicit compatible return declarations are admitted; tentative-return
+deprecations, IteratorAggregate, ArrayAccess and other Traversable consumers
+remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.
@@ -226,6 +233,18 @@ Captured-null ASSIGN through a typed alias preserves its value on rejection and
 raises a caller TypeError retaining the handler's previous chain. The
 [consumer review](coverage/semantics/warning-consumers-review.json) records the
 separate source and ownership checks; ordinary missing reference sends stay quiet.
+
+[Missing global reads](docs/semantics/SOURCE-GLOBAL-WARNINGS.md)
+capture null before callbacks and skip later writes when a handler throws. Genuine
+request snapshots preserve numeric keys, shared reference cells and array COW.
+Author8/207, independent8/221 and two current scoped-handler sources retain
+separate cutoffs; earlier key warnings and broader consumers remain open.
+
+[Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
+nullable stacks and dispatch an uncaught Throwable with one authentic argument
+after `finally`. Nested restore/replacement, callback throws, internal by-reference
+warnings and termination preserve selected targets and owners. Keyword/compound
+callback ingress and later request lifecycle remain open.
 Full core and a fresh combined offline rebuild remain required.
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
@@ -344,8 +363,14 @@ Discarded genuine reference getters also wrap initialized typed slots; ordinary
 by-value getters leave them unchanged. Post-return checks retain only the static
 cell owner and its property type source. A focused current-constants check
 completes a forward constant table before fetching the reference and preserves
-the typed alias; deferred property defaults and incomplete-table references
-remain Unsupported.
+the typed alias. Deferred scalar/array static defaults now evaluate in declaring
+scope with strict binding, preserving successful prefixes across later failure.
+The [deferred-default review](coverage/semantics/deferred-static-defaults-review.json)
+separates eighteen earlier source agreements and five state programs/152 premises
+from thirteen new reentry comparisons and one inherited67 ownership/history fixture.
+Same-default reentry replaces the live row while escaped typed aliases retain
+their ordered constraints; failure preserves the reentrant value. Deferred
+instance/object defaults and incomplete-table references remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -487,3 +512,8 @@ reads live fixed parameters and retained positional extras, with fresh result
 arrays and native receive/context priorities. Bounded private checks cover
 inherited source object invocation and Stringable SET ownership; broader
 Generator/Fiber and unfinished callback interactions remain open.
+
+[Called-class introspection](docs/semantics/CALLED-CLASS.md) now implements
+`get_called_class()` through inherited/forwarded methods, source Closure binding,
+captures and handlers. Real stopping frames and explicit builtin Closure wrappers
+preserve their distinct scope, argument priorities and error traces.

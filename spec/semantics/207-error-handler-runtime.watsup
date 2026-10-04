@@ -8,6 +8,8 @@ dec $error_selected_roots(pcalltarget?) : pnode*
 dec $error_default(pstate, pevent, int) : pstate
 dec $error_level_name(int) : text
 dec $error_user_deprecation() : preqbytes
+dec $error_handler_file(pstate, perrorcall) : preqbytes
+dec $exception_warning_resume(ptask) : bool
 dec $error_handler_values(pstate, perrorcall) : pvalue*
 dec $error_handler_operands(pstate, pcalltarget, pvalue*, nat, int) : (pstate, poperand*)
 dec $error_handler_enter(pstate, perrorcall, pcalltarget, pfunction) : pstate
@@ -18,6 +20,8 @@ dec $error_read_line(ptask, int) : int
 dec $error_read_operand(perrorread) : poperand
 dec $error_read_plan(pstate) : perrorread?
 dec $identity_read_plan(pstate) : pidentityread?
+dec $global_read_plan(pstate) : pglobalread?
+dec $global_read_begin(pstate, pglobalread) : pstate
 dec $identity_read_begin(pstate, pidentityread) : pstate
 dec $identity_read_discard(pstate, ptask) : pstate
 dec $error_variable_source(pstate, porigin?, pcpath, preqbytes) : bool
@@ -112,11 +116,18 @@ def $call_task_valid(S, ERROR_TRIGGER_PHASE pconfigcall n) = ($error_trigger_kin
 def $error_handler_target(S, pvalue) = (pcalltarget)
   -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
 def $error_handler_target(S, pvalue) = eps -- otherwise
+def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, porigin)
+  -- if $class_constant_error_origin(S) = (porigin)
+def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, perrorcall.SITE) -- otherwise
 def $error_handler_values(S, perrorcall) = [PINT perrorcall.LEVEL, PSTRING perrorcall.MESSAGE, PSTRING n_file*, PINT perrorcall.LINE]
-  -- if n_file* = $call_sourcefile(S.FILES, perrorcall.SITE)
+  -- if ~$exception_warning_resume(perrorcall.RESUME)
+  -- if n_file* = $error_handler_file(S, perrorcall)
   -- if n_file* =/= eps
 def $error_handler_values(S, perrorcall) = [PINT perrorcall.LEVEL, PSTRING perrorcall.MESSAGE, PNULL, PINT perrorcall.LINE]
-  -- if $call_sourcefile(S.FILES, perrorcall.SITE) = eps
+  -- if ~$exception_warning_resume(perrorcall.RESUME)
+  -- if $error_handler_file(S, perrorcall) = eps
+dec $error_reference_event(pstate, ptbytes, int) : pevent
+def $error_reference_event(S, ptbytes, z) = DIAGNOSTIC "Warning" ptbytes z -- otherwise
 def $error_handler_operands(S, pcalltarget, eps, n, z) = (S, eps)
 def $error_handler_operands(S, pcalltarget, pvalue :: pvalue_tail*, n, z) = (S_next, (KNOWN pvalue) :: poperand*)
   -- if ~$call_parameter_reference(S, pcalltarget, n)
@@ -125,7 +136,7 @@ def $error_handler_operands(S, pcalltarget, pvalue :: pvalue_tail*, n, z) = (S_n
   -- if $call_parameter_reference(S, pcalltarget, n)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
-  -- if S_cell = $call_fresh_reference($error_default(S[.ERRORFATALTRACE = eps], DIAGNOSTIC "Warning" (pfunction.NAME ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be passed by reference, value given")) z, 2), pvalue)
+  -- if S_cell = $call_fresh_reference($error_default(S[.ERRORFATALTRACE = eps], $error_reference_event(S, pfunction.NAME ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be passed by reference, value given"), z), 2), pvalue)
   -- if S_cell.RESULT = REFERENCE n_cell
   -- if $error_handler_operands(S_cell, pcalltarget, pvalue_tail*, $(n + 1), z) = (S_next, poperand*)
 def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = $call_arity($target_after_enter($call_enter(S_args, pfunction, poperand*, (perrorcall.SITE), perrorcall.LINE), pcalltarget), pfunction, 4, (perrorcall.SITE), perrorcall.LINE)
@@ -158,6 +169,7 @@ def $error_invalid_callback(S, perrorcall, ptbytes) = $error_api_error(S, pconfi
 def $error_invalid_callback(S, perrorcall, ptbytes) = $throw_scalar(S, "Error", ptbytes, perrorcall.LINE) -- otherwise
 rule PhpStep/error-handler-invalid-callback: S ~> $error_handler_restore($error_invalid_callback(S, perrorcall, $ptascii("Invalid callback ") ++ $error_callback_name(S, perrorcall.CALLBACK) ++ $ptascii(", ") ++ n_reason*), perrorcall.CALLBACK)
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if ~$exception_warning_resume(perrorcall.RESUME)
   -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_target(S, perrorcall.CALLBACK) = eps
   -- if $error_handler_resolution(S, perrorcall.CALLBACK) = HANDLERINVALID n_reason*
@@ -213,7 +225,9 @@ def $error_read_plan(S) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
 def $error_read_plan(S) = eps -- otherwise
-def $error_read_pending(S) = ($error_handler_eligible(S, 2) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps))
+def $error_read_pending(S) = ($error_handler_eligible(S, 2) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps \/ $global_read_plan(S) =/= eps))
+def $error_read_begin(S) = $global_read_begin(S, pglobalread)
+  -- if $global_read_plan(S) = (pglobalread)
 def $error_read_begin(S) = $identity_read_begin(S, pidentityread)
   -- if $identity_read_plan(S) = (pidentityread)
 def $error_read_begin(S) = $error_dispatch(S, 2, $ptascii("Undefined variable $") ++ perrorread.NAME, perrorread.LINE, WARNING perrorread.NAME perrorread.LINE, ERROR_READ_RESULT perrorread)

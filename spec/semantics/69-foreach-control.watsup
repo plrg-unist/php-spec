@@ -33,12 +33,14 @@ def $foreach_start(S, statement, plocation, false, z) = S_marked[.TODO = (FOREAC
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.RESULT = KNOWN (POBJECT n_object)
   -- if $class_plain_instance(S, n_object)
+  -- if ~$useriter_instance(S, n_object)
   -- if n_iterator = S.NEXTITER
   -- if S_marked = $objectprops_mark(S, n_object)
 def $foreach_start(S, statement, plocation, true, z) = S_marked[.TODO = (FOREACH_NEXT n_iterator (HOBJECT n_object) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [OBJECTITER n_iterator n_object 0 true]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.RESULT = KNOWN (POBJECT n_object)
   -- if $class_plain_instance(S, n_object)
+  -- if ~$useriter_instance(S, n_object)
   -- if n_iterator = S.NEXTITER
   -- if S_marked = $objectprops_mark(S, n_object)
 def $foreach_start(S, statement, plocation, b, z) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]

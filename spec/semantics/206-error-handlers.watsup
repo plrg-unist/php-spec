@@ -58,9 +58,11 @@ def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCo
 def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects at least 1 argument, 0 given"))
   -- if $error_api_min(pconfigcall.KIND) = 1
   -- if pconfigcall.SENT = eps
+  -- if pconfigcall.KIND =/= INTRINSIC_SET_EXCEPTION_HANDLER
 def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects at most ") ++ $decimal_integer(n_max) ++ $ptascii(" argument") ++ $config_plural(n_max) ++ $ptascii(", ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
   -- if n_max = $error_api_max(pconfigcall.KIND)
   -- if $(n_max > 0 /\ |pconfigcall.SENT| > n_max)
+  -- if pconfigcall.KIND =/= INTRINSIC_SET_EXCEPTION_HANDLER
 def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($") ++ $config_parameter_name(pconfigcall.KIND, 0) ++ $ptascii(") not passed"))
   -- if $error_api_min(pconfigcall.KIND) = 1
   -- if pconfigcall.SENT = NAMED_HOLE :: pnamedslot*
