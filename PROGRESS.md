@@ -45,8 +45,15 @@ Throw/type failure preserves the reentrant row; first-fill and table completion
 remain once-only. Thirteen exact normal native/model comparisons and an inherited
 67-premise ownership/history fixture pass at bf0954840. The earlier Unsupported
 controls and declaration-order failure remain historical evidence; prior18/149
-checks were not renewed. Cold synchronous references and instance/object defaults
-are the next required obligations.
+checks were not renewed. Cold static-reference continuations232 now keep the
+captured RHS cell rooted through class-table initialization and reselect the live
+target afterward. Immutable dynamic/ordinary method self/parent/static snapshots
+survive callbacks and selected first-fill/retirement/table history. Seven exact
+normal source agreements pass at69cc4546c;84 ownership/history premises pass at
+0288de513 after narrow fixture syntax and selected work-block validator repairs.
+Original failures remain separate; prior31/149/67 checks were not renewed.
+Captured/rebound Closure keyword references and instance/object defaults remain
+required next work.
 
 
 Private and protected method arrays and class-method strings support callable
@@ -173,7 +180,7 @@ failures and interrupted evidence.
   rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred instance/object defaults and cold
-  synchronous references into incomplete constant tables remain Unsupported.
+  keyword references in captured/rebound Closures remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.
   Wider deprecated constant consumers remain open. Generic156 return replay, temporary-return

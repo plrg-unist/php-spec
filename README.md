@@ -358,8 +358,12 @@ The [deferred-default review](coverage/semantics/deferred-static-defaults-review
 separates eighteen earlier source agreements and five state programs/152 premises
 from thirteen new reentry comparisons and one inherited67 ownership/history fixture.
 Same-default reentry replaces the live row while escaped typed aliases retain
-their ordered constraints; failure preserves the reentrant value. Deferred
-instance/object defaults and incomplete-table references remain open.
+their ordered constraints; failure preserves the reentrant value. Cold
+static reference targets now complete cold tables while keeping the captured RHS
+cell alive through callbacks. Dynamic and ordinary method keyword selectors keep
+their selected class/name; seven source comparisons and an 84-premise fixture
+cover failure/retry, replacement and ownership. Captured/rebound Closure keyword
+references and deferred instance/object defaults remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
