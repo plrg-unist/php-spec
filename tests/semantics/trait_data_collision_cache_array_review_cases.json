@@ -1,0 +1,31 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only next259 cache preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Imported typed Y array cache survives both temporary collision operands and publication; later static fill shares then detaches through ordinary COW. Native-only zero model credit. A later strict property collision flushes the recorded warning without invoking the handler; the successfully filled imported dependency remains a cache effect of the failed attempt.",
+  "cases": [
+    {
+      "id": "imported-array-dependency-has-one-cache-owner-before-static-fill-and-cow",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo \"H\",$l,\";\";return true;});\ntrait T{public const array Y=[E_STRICT=>\"X\"];public static array $x=self::Y;}\necho \"PRE;\";\nclass C{use T;public static array $x=self::Y;}\necho \"POST;\",C::Y[2048],\":\",C::$x[2048],\";\";\nC::$x[2048]=\"W\";\necho C::Y[2048],\":\",C::$x[2048];\n",
+      "source_sha256": "430424f0a762bc440c087805b79f009628594c59c0851b55c5ede6fdd91ca482",
+      "status": "normal",
+      "stdout_base64": "UFJFO0gzO1BPU1Q7WDpYO1g6Vw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-array-cache-native259-3py6m1kr/report.json",
+      "native_raw_sha256": "8e64eae6e605ddf69b2a4bd4bf93754743ae421613cd013f3812848b3cbf310c"
+    },
+    {
+      "id": "imported-array-dependency-fill-survives-later-strict-collision-fatal",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo \"H\",$l,\";\";return true;});\ntrait T{public const array Y=[E_STRICT=>\"X\"];public static array $x=self::Y;}\necho \"PRE;\";\nclass C{use T;public static array $x=[2048=>\"different\"];}\necho \"POST;\";\n",
+      "source_sha256": "bc80ddbb261c8515a0f24402e4e5e3c93b48fce5ef47c7b9da37588efc0a68d8",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-array-failed-link-native259-zwmjqsti/report.json",
+      "native_raw_sha256": "9143cc8ffa8bc617befd890d3a8da2718819a558f83a27f630ee9ddd48ae39b5"
+    }
+  ]
+}
