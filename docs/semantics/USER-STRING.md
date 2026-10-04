@@ -81,9 +81,11 @@ and actual221 callable reception/owner39. Constructor traces use the compiled
 parameter receive line; callable warnings keep the constructor formal line.
 [Internal default constructors](../../coverage/semantics/internal-default-constructors-review.json)
 now admit lossless scalars with declaration strictness and supplied string-slot
-mutation in later error traces. Weak null, Stringable and lossy integer reception
-remain required suspended consumers, alongside rebound anonymous keyword NEW
-and broader constrained conversions.
+mutation in later error traces. [Internal default reception240](../../coverage/semantics/internal-default-reception-review.json)
+now suspends weak null, Stringable and lossy integer parsing in formal order.
+Each callback retains its own internal constructor trace and original argument
+owners through reentry, throws and global retirement. Rebound anonymous keyword
+NEW and broader ordinary/constrained consumers remain required.
 
 The required consumer inventory includes echo, print, `(string)` casts,
 concat, interpolation, eval operands, weak typed conversions, dynamic variable
