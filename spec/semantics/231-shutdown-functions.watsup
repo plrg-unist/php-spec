@@ -230,7 +230,7 @@ def $shutdown_args_valid(S, eps) = true
 def $shutdown_args_valid(S, pvalue :: pvalue_tail*) = ($config_slots_valid(S, [NAMED_SENT (KNOWN pvalue)]) /\ $shutdown_args_valid(S, pvalue_tail*))
 
 ;; Snapshot terminal reporting before shutdown callbacks can mutate its inputs.
-def $shutdown_reported(S, preqbytes_class, preqbytes_message, z, preqbytes, true) = S[.COMPLETION = REQUESTFATAL preqbytes_class preqbytes_message z][.EVENTS = S.EVENTS ++ [STDERR preqbytes]]
+def $shutdown_reported(S, preqbytes_class, preqbytes_message, z, preqbytes, true) = S[.COMPLETION = REQUESTFATAL preqbytes_class preqbytes_message z][.EVENTS = S.EVENTS ++ $display_events(S, STDERR preqbytes)]
 def $shutdown_reported(S, preqbytes_class, preqbytes_message, z, preqbytes, false) = S[.COMPLETION = REQUESTFATAL preqbytes_class preqbytes_message z]
 def $shutdown_file(S) = $call_sourcefile(S.FILES, porigin) -- if S.ERRORORIGIN = (porigin)
 def $shutdown_file(S) = $call_sourcefile(S.FILES, PORIGIN 0 eps) -- if S.ERRORORIGIN = eps

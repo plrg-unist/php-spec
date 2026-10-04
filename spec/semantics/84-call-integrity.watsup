@@ -1,6 +1,7 @@
 dec $shutdown_state_valid(pstate) : bool
 dec $closure_unit_code_valid(pstate, ppstate, pcode) : bool
 dec $startup_state_valid(pstate) : bool
+dec $display_state_valid(pstate) : bool
 dec $closure_state_valid(pstate) : bool
 dec $dynamic_unit_code_valid(ppstate, pcode) : bool
 dec $dynamic_result_valid(pstate) : bool
@@ -336,6 +337,7 @@ dec $call_descriptors_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
 def $call_descriptors_valid(S) = true
   -- if $startup_state_valid(S)
+  -- if $display_state_valid(S)
   -- if $eval_state_valid(S)
   -- if $call_projection(S, S.SOURCES) = FUNCTIONCHECK S.FUNCTIONS
   -- if $class_state_valid(S)

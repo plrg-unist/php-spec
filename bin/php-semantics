@@ -72,7 +72,7 @@ class AdapterSession:
         self.process.stderr.close()
 
 
-def observe(state, filename):
+def observe(state, filename, display_mode=2):
     def source_filename(unit):
         for sourcefile in state['FILES']:
             if int(sourcefile['args'][0]) == int(unit):
@@ -80,7 +80,7 @@ def observe(state, filename):
         raise ValueError(f'unknown source unit {unit}')
 
     events = state['EVENTS']
-    stdout = b''.join(bytes(map(int, event['args'][0])) for event in events if event['tag'] == 'OUTPUT')
+    stdout = b''
     completion = state['COMPLETION']
     tag, fields = completion['tag'], completion['args']
     uncaught_chain = []
@@ -135,29 +135,29 @@ def observe(state, filename):
         message = (fields[1] if uncaught_rendered
                    else list(exception_message(field(root_id, 'message'))[0]))
         tag, fields = 'THROWN', [class_name(root_id), message, field(root_id, 'line')['args'][0]]
-    stderr = b''
-    for event in events:
+    def diagnostic_bytes(event):
+        data = b''
         if event['tag'] == 'STDERR':
-            stderr += bytes(map(int, event['args'][0]))
+            data += bytes(map(int, event['args'][0]))
         elif event['tag'] == 'WARNING':
             name, line = bytes(map(int, event['args'][0])), int(event['args'][1])
-            stderr += (b'Warning: Undefined variable $' + name + b' in ' + os.fsencode(filename)
+            data += (b'Warning: Undefined variable $' + name + b' in ' + os.fsencode(filename)
                        + b' on line ' + str(line).encode() + b'\n')
         elif event['tag'] == 'WARNING_SOURCE':
             unit, name, line = event['args']
-            stderr += (b'Warning: Undefined variable $' + bytes(map(int, name)) + b' in '
+            data += (b'Warning: Undefined variable $' + bytes(map(int, name)) + b' in '
                        + source_filename(unit) + b' on line ' + str(line).encode() + b'\n')
         elif event['tag'] == 'DIAGNOSTIC':
             severity, message, line = event['args']
-            stderr += (severity.encode() + b': ' + bytes(map(int, message)) + b' in ' + os.fsencode(filename)
+            data += (severity.encode() + b': ' + bytes(map(int, message)) + b' in ' + os.fsencode(filename)
                        + b' on line ' + str(line).encode() + b'\n')
         elif event['tag'] == 'DIAGNOSTIC_INTERNAL':
             severity, message, line = event['args']
-            stderr += (severity.encode() + b': ' + bytes(map(int, message)) + b' in Unknown'
+            data += (severity.encode() + b': ' + bytes(map(int, message)) + b' in Unknown'
                        + b' on line ' + str(line).encode() + b'\n')
         elif event['tag'] == 'DIAGNOSTIC_SOURCE':
             unit, severity, message, line = event['args']
-            stderr += (severity.encode() + b': ' + bytes(map(int, message)) + b' in '
+            data += (severity.encode() + b': ' + bytes(map(int, message)) + b' in '
                        + source_filename(unit) + b' on line ' + str(line).encode() + b'\n')
         elif event['tag'] in {'DIAGNOSTIC_STACK', 'DIAGNOSTIC_STACK_SOURCE'}:
             if event['tag'] == 'DIAGNOSTIC_STACK_SOURCE':
@@ -166,9 +166,19 @@ def observe(state, filename):
             else:
                 severity, message, line, trace = event['args']
                 event_file = os.fsencode(filename)
-            stderr += (severity.encode() + b': ' + bytes(map(int, message)) + b' in '
+            data += (severity.encode() + b': ' + bytes(map(int, message)) + b' in '
                        + event_file + b' on line ' + str(line).encode()
                        + b'\nStack trace:\n' + bytes(map(int, trace)) + b'\n')
+        return data
+
+    stderr = b''
+    for event in events:
+        if event['tag'] == 'OUTPUT':
+            stdout += bytes(map(int, event['args'][0]))
+        elif event['tag'] == 'DISPLAY_STDOUT':
+            stdout += b'\n' + diagnostic_bytes(event['args'][0])
+        else:
+            stderr += diagnostic_bytes(event)
     def array_items(array_id):
         return state['ARRAYS'][array_id]['ITEMS']
 
@@ -268,6 +278,8 @@ def observe(state, filename):
     status = {'NORMAL': 'normal', 'REQUESTFATAL': 'php_error', 'EXITED': 'explicit_exit', 'FATAL': 'php_error', 'USERFATAL': 'php_error', 'INTERNALFATAL': 'php_error', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection', 'COMPILETHROWN': 'static_rejection',
               'UNSUPPORTED': 'unsupported', 'BUDGET': 'budget_exhausted'}[tag]
     exit_status = 0 if tag == 'NORMAL' else None
+    event_stderr = stderr
+    stderr = b''
     if tag == 'REQUESTFATAL':
         diagnostic = {'class': bytes(map(int, fields[0])).decode('utf-8', 'surrogateescape'),
                       'message': b64(bytes(map(int, fields[1]))), 'line': int(fields[2])}
@@ -292,7 +304,11 @@ def observe(state, filename):
             for chain_id in uncaught_chain:
                 messages[chain_id], array_warning = exception_message(field(chain_id, 'message'))
                 if array_warning and int(state['REPORTING']) & 2:
-                    stderr += b'Warning: Array to string conversion in Unknown on line 0\n'
+                    warning = b'Warning: Array to string conversion in Unknown on line 0\n'
+                    if int(display_mode) == 1:
+                        stdout += b'\n' + warning
+                    elif int(display_mode) == 2:
+                        event_stderr += warning
         if int(state['REPORTING']) & (4 if classname == 'ParseError' else 64 if classname == 'CompileError' else 1):
             if classname in {'ParseError', 'CompileError'}:
                 prefix = b'Parse error: ' if classname == 'ParseError' else b'Fatal error: '
@@ -346,7 +362,11 @@ def observe(state, filename):
         stderr += (b'Fatal error: ' + message + b' in ' + location
                   + b' on line ' + str(line).encode() + b'\nStack trace:\n' + stack)
         exit_status = 255
-    return {'status': status, 'stdout': b64(stdout), 'stderr': b64(stderr),
+    if int(display_mode) == 1 and stderr:
+        stdout += b'\n' + stderr
+    elif int(display_mode) == 2:
+        event_stderr += stderr
+    return {'status': status, 'stdout': b64(stdout), 'stderr': b64(event_stderr),
             'exit_status': exit_status, 'diagnostic': diagnostic,
             'reason': fields[0] if tag == 'UNSUPPORTED' else None, 'events': events}
 
@@ -358,7 +378,7 @@ def main():
     parser.add_argument('--timeout', type=float, default=30)
     parser.add_argument('--request-context', type=Path, help='JSON file containing explicit primitive request facts')
     parser.add_argument('--file-snapshot', type=Path, help='finite include/require resolution and file-byte facts')
-    parser.add_argument('--startup-ini', type=Path, help='JSON registered startup error_reporting (base64 or null) and include_path (base64) facts')
+    parser.add_argument('--startup-ini', type=Path, help='JSON registered startup display_errors (base64 or null), or error_reporting/include_path with optional display_errors')
     args = parser.parse_args()
     if args.steps < 0 or args.timeout <= 0:
         parser.error('steps must be nonnegative and timeout positive')
@@ -436,7 +456,7 @@ def main():
         adapter.close()
     if not result.get('ok'):
         return {'status': result.get('category', 'runner_failure'), 'detail': result}
-    outcome = observe(result['state'], filename)
+    outcome = observe(result['state'], filename, result['display_mode'])
     outcome['frontend'] = 'accepted'
     outcome['checked'] = 'program'
     return outcome

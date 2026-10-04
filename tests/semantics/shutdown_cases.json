@@ -147,7 +147,7 @@
     "id": "exception-variadic-view-during-shutdown",
     "source": "<?php declare(strict_types=1);class E extends Exception{function __toString(){echo \"V;\";return \"text\";}}function a(){throw new E;}function h(string ...$v){echo func_num_args(),\":\",func_get_arg(0),\";\";}function s(){echo \"S;\";}set_exception_handler(\"h\");register_shutdown_function(\"a\");register_shutdown_function(\"s\");",
     "source_sha256": "5737f78065e499c837b85420af535ddec6873cc48bd58d6c713c6b0d01600990",
-    "status": "ok",
+    "status": "normal",
     "exit": 0,
     "stdout": "V;1:text;S;",
     "stderr": ""

@@ -143,8 +143,12 @@ state. Eval uses checked parsing in eval mode, then independent static/dynamic
 semantics. Neither source service compiles/evaluates PHP through Zend.
 The [registered startup increment](../../coverage/semantics/startup-ini-review.json)
 supplies original reporting/include-path bytes before compilation; those facts
-remain distinct from live INI values, the reporting mask and CWD. Wider startup
-directives and INI parsing/profiles remain required.
+remain distinct from live INI values, the reporting mask and CWD.
+[Live display inputs](../../coverage/semantics/display-errors-review.json) retain
+nullable original/live bytes and capture each ordinary diagnostic destination
+after callbacks. The text CLI preserves stdout order and earlier stderr across
+later display writes. Required shutdown fatal freezing remains a separate actual
+lifecycle interaction; wider display directives and INI parsing/profiles stay open.
 
 Backticks remain core syntax. Their command construction/dispatch is specified;
 a finite shell service supplies explicit response bytes/failure/effects. Missing
