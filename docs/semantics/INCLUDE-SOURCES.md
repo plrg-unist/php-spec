@@ -219,10 +219,26 @@ Fourteen author and four independent normal-source agreements plus 211 state
 conditions retain their distinct tested revisions and original failures. Current
 210-module compilation and one scoped private-handler/backing-receive/class-name
 source comparison establish the added branch composition separately. Executables
-are reused. Eval filename creation inside compound-initializer callbacks remains
-required follow-on work; clearing evaluator context for late filename validation
-does not close it. Wider INI/startup, warning producers, OS services and lifecycle
-remain partial.
+are reused; these earlier results retain their original cutoffs.
+
+[Compound initializer eval locations](../../coverage/semantics/compound-eval-location-review.json)
+capture the filename-owning class, genuine constant/default declaration and
+current AST child when eval requests parsing. The child's line comes from compiled
+source metadata; eval's actual call site and lexical class remain separate.
+The saved source identities authenticate later bindings after initializer retirement,
+including rebound Closure defaults whose filename owner and child occupy different
+units. Plain nested constant fetches retain the outer compound override. Inherited
+static defaults use their declaring property owner, preserving the requested table
+class and original trace location. Raw private handlers use the emitting user frame.
+
+Genuine parser/preflight ParseError and CompileError allocations use their failed
+unit's filename and line; ordinary runtime exceptions, including user-created
+ParseError, keep the active execution override. Five original source agreements and
+81 controls retain distinct cuts; one current static-default/private-handler source
+and 214-module compilation validate that composition separately. The compiler prefix
+retains static-fill ordinals without importing property values as class constants.
+Wider initializer/callback and compile-warning consumers, INI/startup profiles,
+warning producers, OS services and lifecycle remain partial.
 
 Eligible weak-null `ini_get`/`ini_restore` deprecations now suspend through
 `CONFIG_INI_NULL_RESULT`. Handlers receive four values weakly; normal handling,
