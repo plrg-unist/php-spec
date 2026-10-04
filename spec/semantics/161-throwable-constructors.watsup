@@ -277,5 +277,8 @@ def $ctor_receive(S, pctorcall) = S_previous
   -- if S_code.COMPLETION = NORMAL
   -- if S_previous = $ctor_previous_value(S_code, pctorcall, $named_slot_at(pctorcall.SENT, 2))
   -- if S_previous.COMPLETION =/= NORMAL
+dec $ordinary_internal_ready(pstate, pctorcall) : bool
+def $ordinary_internal_ready(S, pctorcall) = false -- otherwise
 rule PhpStep/ctor-invoke: S ~> $ctor_receive(S[.TODO = ptask_tail*], pctorcall)
   -- if S.TODO = (CTOR_INVOKE pctorcall) :: ptask_tail*
+  -- if ~$ordinary_internal_ready(S, pctorcall)

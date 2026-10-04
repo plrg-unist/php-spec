@@ -1923,16 +1923,24 @@
         "spec/semantics/20-machine.watsup",
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/141-method-compiler.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/250-ordinary-throwable-reception.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/method_compiler.py",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/method_wrapper_protocol.py"
+        "tests/semantics/method_wrapper_protocol.py",
+        "tests/semantics/ordinary_constructor_sources.py"
       ],
-      "review": "Bounded public instance methods and constructors now compile/link/execute with inherited signatures, source-owned descriptors, lexical/called scope, bound closures, and ordinary/nullsafe argument protocols. Closure->__invoke preserves weak receives and original wrapper trace operands. See methods-review.json and SOURCE-METHODS.md. Nonpublic/static methods, first-class method callables, user magic protocols and broader class integration remain open."
+      "review": "Bounded public instance methods and constructors now compile/link/execute with inherited signatures, source-owned descriptors, lexical/called scope, bound closures, and ordinary/nullsafe argument protocols. Closure->__invoke preserves weak receives and original wrapper trace operands. See methods-review.json and SOURCE-METHODS.md. Nonpublic/static methods, first-class method callables, user magic protocols and broader class integration remain open. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial.",
+      "helper_tests": [
+        "tests/semantics/ordinary_constructor_protocol.py"
+      ],
+      "evidence": [
+        "coverage/semantics/ordinary-throwable-reception-review.json"
+      ]
     },
     {
       "node": "Expr_New",
@@ -1960,7 +1968,8 @@
         "spec/semantics/227-default-constructors.watsup",
         "spec/semantics/235-internal-default-constructors.watsup",
         "spec/semantics/240-internal-default-reception.watsup",
-        "spec/semantics/245-anonymous-default-new.watsup"
+        "spec/semantics/245-anonymous-default-new.watsup",
+        "spec/semantics/250-ordinary-throwable-reception.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -1985,9 +1994,10 @@
         "tests/semantics/default_constructor_api_protocol.py",
         "tests/semantics/internal_default_constructor_sources.py",
         "tests/semantics/internal_default_reception_sources.py",
-        "tests/semantics/anonymous_default_new_sources.py"
+        "tests/semantics/anonymous_default_new_sources.py",
+        "tests/semantics/ordinary_constructor_sources.py"
       ],
-      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Dynamic class names, nonpublic constructors and other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults and rebound anonymous keyword NEW remain required; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Weak-null/Stringable/lossy suspended reception and rebound anonymous keyword NEW remain required; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects and rebound anonymous keyword defaults remain required; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects and object ::class remain required; status stays partial.",
+      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Dynamic class names, nonpublic constructors and other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class remains required and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial.",
       "evidence": [
         "coverage/semantics/object-classes-review.json",
         "coverage/semantics/stdclass-review.json",
@@ -1996,12 +2006,14 @@
         "coverage/semantics/default-constructors-review.json",
         "coverage/semantics/internal-default-constructors-review.json",
         "coverage/semantics/internal-default-reception-review.json",
-        "coverage/semantics/anonymous-default-new-review.json"
+        "coverage/semantics/anonymous-default-new-review.json",
+        "coverage/semantics/ordinary-throwable-reception-review.json"
       ],
       "helper_tests": [
         "tests/semantics/internal_default_constructor_protocol.py",
         "tests/semantics/internal_default_reception_protocol.py",
-        "tests/semantics/anonymous_default_new_protocol.py"
+        "tests/semantics/anonymous_default_new_protocol.py",
+        "tests/semantics/ordinary_constructor_protocol.py"
       ]
     },
     {
@@ -2211,19 +2223,25 @@
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/141-method-compiler.watsup",
         "spec/semantics/142-method-runtime.watsup",
-        "spec/semantics/201-static-set-runtime.watsup"
+        "spec/semantics/201-static-set-runtime.watsup",
+        "spec/semantics/250-ordinary-throwable-reception.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/method_runtime.py",
         "tests/semantics/static_set_access.py",
-        "tests/semantics/static_set_compiler.py"
+        "tests/semantics/static_set_compiler.py",
+        "tests/semantics/ordinary_constructor_sources.py"
       ],
-      "review": "Historical ordinary-array constant prepass remains in array-omission-review.json with20/45 and its existing tests. Ordinary static/scoped dispatch and capture are covered separately by static-method-review.json. Selected reference RHS acquisition with untyped return signatures preserves named/parent/self/late-static selection, typed cells and returned-cell cleanup. static-method-reference-review.json separates compiler rejection, typed initialization/error priority, independent scopes and current raw-getter/handler/PIPE interactions. Discarded genuine getters now wrap initialized typed slots, with post-return ownership/type-source checks and an ordinary by-value control. Legal untyped-slot ignored/used getters, shared aliases and typed-source attachment/removal are now bounded; ordinary non-FCC StaticCall direct reference sends retain the real cell, with value-Notice/FCC controls. Broader temporary-return Notice timing, broader resolution and typed return verification remain open; status stays partial.",
+      "review": "Historical ordinary-array constant prepass remains in array-omission-review.json with20/45 and its existing tests. Ordinary static/scoped dispatch and capture are covered separately by static-method-review.json. Selected reference RHS acquisition with untyped return signatures preserves named/parent/self/late-static selection, typed cells and returned-cell cleanup. static-method-reference-review.json separates compiler rejection, typed initialization/error priority, independent scopes and current raw-getter/handler/PIPE interactions. Discarded genuine getters now wrap initialized typed slots, with post-return ownership/type-source checks and an ordinary by-value control. Legal untyped-slot ignored/used getters, shared aliases and typed-source attachment/removal are now bounded; ordinary non-FCC StaticCall direct reference sends retain the real cell, with value-Notice/FCC controls. Broader temporary-return Notice timing, broader resolution and typed return verification remain open; status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial.",
       "helper_tests": [
         "tests/semantics/static_method_protocol.py",
-        "tests/semantics/static_set_access_protocol.py"
+        "tests/semantics/static_set_access_protocol.py",
+        "tests/semantics/ordinary_constructor_protocol.py"
+      ],
+      "evidence": [
+        "coverage/semantics/ordinary-throwable-reception-review.json"
       ]
     },
     {
@@ -10076,33 +10094,44 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/151-throwable-compiler.watsup",
-        "spec/semantics/152-throwable-runtime.watsup"
+        "spec/semantics/152-throwable-runtime.watsup",
+        "spec/semantics/250-ordinary-throwable-reception.watsup"
       ],
       "helper_tests": [
         "tests/semantics/throwable_compiler.py",
-        "tests/semantics/throwable_protocol.py"
+        "tests/semantics/throwable_protocol.py",
+        "tests/semantics/ordinary_constructor_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/throwable_expressions.py"
+        "tests/semantics/throwable_expressions.py",
+        "tests/semantics/ordinary_constructor_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_interfaces.c",
-        "docs/semantics/THROWABLES.md"
+        "docs/semantics/THROWABLES.md",
+        "coverage/semantics/ordinary-throwable-reception-review.json"
       ],
-      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending."
+      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial."
     },
     {
       "id": "protocols.Exception",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_interfaces.c"
+      "implementation": [
+        "spec/semantics/250-ordinary-throwable-reception.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/ordinary_constructor_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/ordinary_constructor_sources.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c",
+        "coverage/semantics/ordinary-throwable-reception-review.json"
+      ],
+      "review": "Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial."
     },
     {
       "id": "protocols.Error",
@@ -10203,15 +10232,22 @@
     {
       "id": "protocols.Stringable",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_interfaces.c"
+      "implementation": [
+        "spec/semantics/250-ordinary-throwable-reception.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/ordinary_constructor_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/ordinary_constructor_sources.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_interfaces.c",
+        "coverage/semantics/ordinary-throwable-reception-review.json"
+      ],
+      "review": "Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial."
     },
     {
       "id": "protocols.UnitEnum",

@@ -574,8 +574,13 @@ argument after its global root retires.
 [Anonymous keyword defaults](coverage/semantics/anonymous-default-new-review.json)
 resolve self/parent from the live receiving Closure lexical scope, including
 rebinding, arrows and temporary calls. Private constructors and saved recursive
-defaults retain that scope independently of called class and receiver. Ordinary
-Throwable effects, dynamic object `::class` and broader constrained conversion remain open.
+defaults retain that scope independently of called class and receiver.
+[Ordinary Throwable constructors](coverage/semantics/ordinary-throwable-reception-review.json)
+suspend null/lossy warnings and Stringable parsing for NEW and explicit inherited
+or scoped calls. Fields commit only after all parameters pass; successful string
+casts replace sent slots and retire their old temporary owners. Callback traces
+and recursive conversion consumers retain their own constructor. Dynamic object
+`::class` and broader constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
