@@ -29,7 +29,7 @@ dec $interpolation_line(pstate, porigin, nat, nat) : int
 def $interpolation_line(S, porigin, 2, n) = $runtime_line(S[.ORIGIN = (porigin)], eps, NScalarInterpolatedString (SEQUENCE phpType30*) metadata)
   -- if $origin_node(S.SOURCES, porigin) = (NScalarInterpolatedString (SEQUENCE phpType30*) metadata)
 def $interpolation_line(S, porigin, n_mode, n) = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0, PCINDEX n], expression)
-  -- if $(n_mode /= 2)
+  -- if n_mode =/= 2
   -- if $interpolation_parts(S, porigin) = (phpType30*)
   -- if phpType30*[n] = expression
 
@@ -48,7 +48,7 @@ def $interpolation_values_valid(S, pinterpolation, n_offset) = true
   -- if $(pinterpolation.INDEX + n_offset <= |phpType30*|)
   -- if $(|pinterpolation.VALUES| = |phpType30*| - pinterpolation.INDEX - n_offset)
 def $interpolation_values_valid(S, pinterpolation, n_offset) = true
-  -- if $(pinterpolation.MODE /= 2)
+  -- if pinterpolation.MODE =/= 2
   -- if pinterpolation.VALUES = eps
 def $interpolation_values_valid(S, pinterpolation, n_offset) = false -- otherwise
 
@@ -136,7 +136,7 @@ rule PhpStep/interpolation-start: S ~> S[.TODO = ptask_start :: (INTERPOLATE_FIN
   -- if ptask_start = $interpolation_start(porigin, n_mode)
 def $interpolation_start(porigin, 2) = INTERPOLATE_COLLECT porigin 0 eps
 def $interpolation_start(porigin, n_mode) = INTERPOLATE_NEXT {SITE porigin, INDEX 0, MODE n_mode, LINE 0, TEXT eps, VALUES eps}
-  -- if $(n_mode /= 2)
+  -- if n_mode =/= 2
 
 rule PhpStep/interpolation-collect-literal: S ~> S[.TODO = (INTERPOLATE_COLLECT porigin $(n + 1) (poperand* ++ [KNOWN (PSTRING $base64(text))])) :: ptask_tail*]
   -- if S.TODO = (INTERPOLATE_COLLECT porigin n poperand*) :: ptask_tail*
@@ -169,11 +169,11 @@ rule PhpStep/interpolation-literal: S ~> S[.TODO = (INTERPOLATE_NEXT pinterpolat
   -- if phpType30*[pinterpolation.INDEX] = NInterpolatedStringPart (BYTES text) metadata
   -- if poperand_tail* = $interpolation_remaining(pinterpolation.MODE, pinterpolation.VALUES)
 def $interpolation_remaining(2, poperand :: poperand*) = poperand*
-def $interpolation_remaining(n_mode, eps) = eps -- if $(n_mode /= 2)
+def $interpolation_remaining(n_mode, eps) = eps -- if n_mode =/= 2
 rule PhpStep/interpolation-expression: S ~> S[.TODO = [$at_task(($interpolation_child(pinterpolation.SITE, pinterpolation.INDEX)), EVAL expression), INTERPOLATE_CONVERT pinterpolation[.LINE = $interpolation_line(S, pinterpolation.SITE, pinterpolation.MODE, pinterpolation.INDEX)]] ++ ptask_tail*]
   -- if S.TODO = (INTERPOLATE_NEXT pinterpolation) :: ptask_tail*
   -- if $interpolation_next_valid(S, pinterpolation)
-  -- if $(pinterpolation.MODE /= 2)
+  -- if pinterpolation.MODE =/= 2
   -- if $interpolation_parts(S, pinterpolation.SITE) = (phpType30*)
   -- if $(pinterpolation.INDEX < |phpType30*|)
   -- if phpType30*[pinterpolation.INDEX] = expression
