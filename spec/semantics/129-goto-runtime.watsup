@@ -220,13 +220,13 @@ def $goto_choose_owner((pfunction_left), (pfunction_right)) = (pfunction_right)
 def $goto_source_owner(eps, n, pcpath) = eps
 def $goto_source_owner(pfunction :: pfunction_tail*, n, pcpath) = $goto_choose_owner($goto_owner_at(pfunction, n, pcpath), $goto_source_owner(pfunction_tail*, n, pcpath))
 def $goto_owner_scope(eps, eps) = true
-def $goto_owner_scope((pcallcontext), (pfunction)) = (pcallcontext.FUNCTION = pfunction.ORIGIN)
+def $goto_owner_scope((pcallcontext), (pfunction)) = ($origin_source(pcallcontext.FUNCTION) = $origin_source(pfunction.ORIGIN))
 def $goto_owner_scope(eps, (pfunction)) = false
 def $goto_owner_scope((pcallcontext), eps) = false
 dec $trait_active_source_owner(pstate, nat, pcpath) : pfunction?
 dec $trait_source_same(pfunction, pfunction) : bool
 dec $goto_scope_valid(pstate, porigin) : bool
-def $goto_scope_valid(S, PORIGIN n pcpath) = $goto_owner_scope(S.CURRENT, $trait_active_source_owner(S, n, pcpath))
+def $goto_scope_valid(S, PORIGIN n pcpath) = ($goto_owner_scope(S.CURRENT, $trait_active_source_owner(S, n, pcpath)) /\ $call_current_valid(S))
 def $goto_task_valid(S, statement, (porigin)) = ($goto_source_match(S, statement, (porigin)) /\ $goto_scope_valid(S, porigin) /\ $goto_resolved_site(S, porigin, $goto_target(S, porigin)))
 def $goto_task_valid(S, statement, eps) = false
 dec $goto_label_valid(pstate, statement, porigin?) : bool

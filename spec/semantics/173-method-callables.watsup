@@ -32,6 +32,7 @@ def $method_capture_called_scope(S, porigin_site, pmethodcapture) = true
   -- if $method_capture_class_valid(S, pmethodcapture.CALLED_CLASS)
 def $method_capture_called_scope(S, porigin_site, pmethodcapture) = false -- otherwise
 
+dec $trait_capture_plain_scope(pstate, porigin) : bool
 dec $method_capture_current(pstate, porigin) : pmethodcapture?
 def $method_capture_current(S, porigin_site) = eps
   -- if S.CURRENT = (pcallcontext)
@@ -40,6 +41,7 @@ def $method_capture_current(S, porigin_site) = eps
 def $method_capture_current(S, porigin_site) = ({FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, LEXICAL_CLASS pcallcontext.LEXICAL_CLASS, CALLED_CLASS pcallcontext.CALLED_CLASS})
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.LEXICAL_CLASS =/= $closure_source_class(S, porigin_site) \/ $method_capture_called_scope(S, porigin_site, {FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, LEXICAL_CLASS pcallcontext.LEXICAL_CLASS, CALLED_CLASS pcallcontext.CALLED_CLASS})
+  -- if ~$trait_capture_plain_scope(S, porigin_site)
 def $method_capture_current(S, porigin_site) = eps -- otherwise
 
 dec $method_capture_creation_context_valid(pstate, porigin) : bool

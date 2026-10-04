@@ -851,15 +851,16 @@ def $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_
   -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
   -- if ~$scoped_ctor_private_denied(S, pmethoddesc, n_receiver?)
 dec $scoped_select_found(pstate, phpType19, porigin, pmethoddesc, poperand, ptbytes, phpType7*, int) : pstate
-def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_called, eps, poperand_selector, ptbytes, phpType7*, z)
+dec $scoped_select_found_base(pstate, phpType19, porigin, pmethoddesc, poperand, ptbytes, phpType7*, int) : pstate
+def $scoped_select_found_base(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_called, eps, poperand_selector, ptbytes, phpType7*, z)
   -- if pmethoddesc.STATIC
   -- if $scoped_called_class(S, phpType19, porigin_requested) = (porigin_called)
-def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_called, (n_receiver), poperand_selector, ptbytes, phpType7*, z)
+def $scoped_select_found_base(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $scoped_select_access(S, phpType19, porigin_requested, pmethoddesc, porigin_called, (n_receiver), poperand_selector, ptbytes, phpType7*, z)
   -- if ~pmethoddesc.STATIC
   -- if $scoped_current_receiver(S) = (n_receiver)
   -- if $scoped_receiver_valid(S, porigin_requested, pmethoddesc, (n_receiver))
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
-def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Non-static method ") ++ pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() cannot be called statically"), z)[.TODO = eps]
+def $scoped_select_found_base(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Non-static method ") ++ pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() cannot be called statically"), z)[.TODO = eps]
   -- if ~pmethoddesc.STATIC
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
   -- if ~$scoped_receiver_valid(S, porigin_requested, pmethoddesc, $scoped_current_receiver(S))
