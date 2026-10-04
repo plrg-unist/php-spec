@@ -304,5 +304,41 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "exception-registration-private-getter-error",
+    "source": "<?php class A{private function h(){}}class B extends A{}function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}set_error_handler(\"w\");function r($e){echo \"R:\",$e->getMessage(),\";\";}set_exception_handler(\"r\");try{set_exception_handler([new B,\"B::h\"]);}catch(Throwable $e){echo \"C:\",get_class($e),\":\",$e->getMessage(),\";\";}throw new Exception(\"after\");",
+    "source_sha256": "431c437d63f8ee5b9871f1dd4faace232da7465bf1a26ad09316cd265febaf1c",
+    "stdout": "W:1;C:TypeError:set_exception_handler(): Argument #1 ($callback) must be a valid callback or null, cannot access private method B::h();R:after;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-registration-private-getter-error",
+    "source": "<?php class A{private function h(){}}class B extends A{}function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}set_error_handler(\"w\");function s(){echo \"S;\";}register_shutdown_function(\"s\");try{register_shutdown_function([new B,\"B::h\"]);}catch(Throwable $e){echo \"C:\",get_class($e),\":\",$e->getMessage(),\";\";}",
+    "source_sha256": "f9a7ab10a26be21358e53585a2a433be5138e4707e6f3343b7c4b893d7792bde",
+    "stdout": "W:1;C:TypeError:register_shutdown_function(): Argument #1 ($callback) must be a valid callback, cannot access private method B::h();S;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exception-registration-foreign-getter-error",
+    "source": "<?php class Requested{}class Maker{function reg(){try{set_exception_handler([\"Requested\",\"self::h\"]);}catch(Throwable $e){echo \"C:\",get_class($e),\":\",$e->getMessage(),\";\";}}}class Foreign extends Maker{private function h(){}}function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}set_error_handler(\"w\");function r($e){echo \"R:\",$e->getMessage(),\";\";}set_exception_handler(\"r\");(new Foreign)->reg();throw new Exception(\"after\");",
+    "source_sha256": "08373f72455e8eb4dfce79db298b8a522fe3f7fa17ba0511751908b01fc4051d",
+    "stdout": "W:1;C:Error:Call to private method Foreign::h() from scope Maker;R:after;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-registration-foreign-getter-error",
+    "source": "<?php class Requested{}class Maker{function reg(){try{register_shutdown_function([\"Requested\",\"self::h\"]);}catch(Throwable $e){echo \"C:\",get_class($e),\":\",$e->getMessage(),\";\";}}}class Foreign extends Maker{private function h(){}}function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}set_error_handler(\"w\");function s(){echo \"S;\";}register_shutdown_function(\"s\");(new Foreign)->reg();",
+    "source_sha256": "83ccba3deed3e4cf18801689bf65d6de1dc17e59182826d28fc1176312f7dba9",
+    "stdout": "W:1;C:Error:Call to private method Foreign::h() from scope Maker;S;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
