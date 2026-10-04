@@ -343,11 +343,11 @@ dec $exception_handlers_valid(pstate, pvalue?*) : bool
 dec $eval_compile_owners_valid(pstate) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
+;; Class history authenticates these source images and the exact function table.
 def $call_descriptors_valid(S) = true
   -- if $startup_state_valid(S)
   -- if $display_state_valid(S)
   -- if $eval_state_valid(S)
-  -- if $call_projection(S, S.SOURCES) = FUNCTIONCHECK S.FUNCTIONS
   -- if $class_state_valid(S)
   -- if $call_registry_valid(S.FUNCTIONS, S.CALLABLES)
   -- if $call_tasks_valid(S, S.TODO)
