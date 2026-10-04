@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Object defaults (module252) now create static/no-use source Closures and
+function/method callables in genuine declaring scope. Requested-class templates
+share their object values with instances and preserve exact successful bindings
+across late inheritance, retry and reentry; arrays copy containers and share
+embedded objects. Nonowning receipts/copy certificates reject foreign transfers
+and survive source retirement, including plain clones. Nine normal source
+agreements retain 0d0d (first2)/0e472 (other7); six programs/335 premises retain
+0e472/72d5.
+One actual238 trait-import source and98 premises pass at a502: cached private
+method/function targets keep their first authentic lookup, while each property
+uses its own publication prefix and fresh called class. All original compiler,
+permission and fixture-seek failures remain separate in the
+[default ledger](coverage/semantics/deferred-static-defaults-review.json).
+Other object/default producers and consumers remain required; complete core and
+paused return verification remain open.
+
 Dynamic object `::class`256 evaluates one child and returns its real class name
 without a string cast. Eager parser concat keeps literal/keyword behavior; later
 compiled constant operands reject. Embedded undefined-CV callbacks keep captured
@@ -400,8 +416,9 @@ allocation. Strict failure/retry and reentry retain once-only fill history;
 objects copy template values and arrays remain owned after object collection.
 Eight exact source agreements pass at80900fa4b; three programs/172 phase, copy
 and ownership premises pass at449b45763 after a fixture source-origin binding
-repair. Original compilation failures remain separate. Object-bearing defaults
-and wider consumers remain required next work.
+repair. Original compilation failures remain separate. Module252 extends these
+templates to certified Closure/FCC values; other object/default producers and
+wider consumers remain required.
 
 
 Private and protected method arrays and class-method strings support callable
@@ -535,7 +552,7 @@ failures and interrupted evidence.
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: dynamic object `::class`, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred object-bearing defaults and
+  broader reference-result consumers. Other object-bearing default producers and
   wider Closure creation contexts remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.

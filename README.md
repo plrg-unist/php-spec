@@ -437,7 +437,13 @@ the parent's actual state when a child links and filling constants, instance
 defaults and statics in order before allocating an object. Eight new source
 agreements and three programs/172 state premises check private shadows, strict
 failure/retry, reentry, link-time copies and template ownership after collection.
-Object-bearing defaults and wider consumers remain open.
+Deferred static/no-use Closure and function/method callable defaults now retain
+shared template object identities through arrays, constant aliases, retry and
+reentry. Nine new source agreements and six programs/335 premises retain their
+separate cuts. One actual trait-import source and 98 premises distinguish the
+first cached target from each fresh called class/publication prefix, including
+retired source objects and namespace fallback. Other object producers and wider
+property/callable consumers remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
