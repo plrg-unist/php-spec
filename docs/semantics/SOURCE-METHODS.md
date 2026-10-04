@@ -9,6 +9,9 @@ and [nonpublic-method review](../../coverage/semantics/method-visibility-review.
 bind separate native sources, compiler projections and paused ownership checks;
 these are bounded observations, not complete class semantics.
 
+[Source trait composition](SOURCE-TRAITS.md) imports method bodies into distinct
+using-class and alias identities, preserving source provenance and inherited cells.
+
 ## Descriptors and dispatch
 
 Class-owned method descriptors retain their declaring origin, signature, body,

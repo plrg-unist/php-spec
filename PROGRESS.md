@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Trait method composition228 supports source use, nesting, precedence, aliases,
+visibility/final and abstract requirements in Zend's publication order. Imported
+class/alias identities retain physical body provenance, using/called scope,
+defaults, static cells, captures, Closures, goto/eval and finalizer ownership.
+Failed declarations restore unpublished tables; compile warnings and direct
+trait-call deprecations retain their phases and callback ownership. The
+[trait ledger](coverage/semantics/trait-methods-review.json) keeps the63 source
+union, separate controls and252 conditions at their actual revisions, including
+original failures. Trait properties/constants and enum semantics remain required;
+the method checkpoint does not close the trait family.
+
 Prepared internal Throwable default constructors235 now map the completed227
 value table before arity and sequential reception. Default declaration strictness,
 finite named-hole filling, inherited owners and nested previous objects preserve
@@ -274,9 +285,10 @@ failures and interrupted evidence.
   by-reference string conversion186 remain open; accepted ordinary by-value
   classification does not close them. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
-- Objects and lifetime: remaining static members, traits, hooks, readonly/instance asymmetric
+- Objects and lifetime: remaining static members, trait property/constant composition,
+  enums, hooks, readonly/instance asymmetric
   access, traversal, output handlers and lifecycle callbacks. Static cells remain
-  partial across trait/inheritance sharing, bind/clone, include/eval reactivation
+  partial across property trait/inheritance sharing, bind/clone, include/eval reactivation
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,
