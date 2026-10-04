@@ -197,3 +197,5 @@ CASES = [
 
 from reporting_protocol import CASE as REPORTING_CASE
 CASES.append(REPORTING_CASE)
+from reporting_diagnostics_protocol import CASES as REPORTING_DIAGNOSTICS_CASES
+CASES.extend(REPORTING_DIAGNOSTICS_CASES)

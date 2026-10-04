@@ -90,6 +90,7 @@ def inputs():
         'tests/semantics/recorded_worker.py', 'tests/semantics/error_handler_cases.py',
         'tests/semantics/error_handler_protocol.py', 'tests/semantics/error_handler_prepare.py',
         'tests/semantics/reporting_cases.py', 'tests/semantics/reporting_protocol.py',
+        'tests/semantics/reporting_diagnostics_cases.py', 'tests/semantics/reporting_diagnostics_protocol.py',
         'tests/semantics/error_handler_run.py', 'bin/php-semantics', '.tools/php/bin/php',
         '.tools/php-file.so', '_build/default/adapter/main.exe',
         'tests/semantics/_build/default/numeric_runner.exe', '.tools/spectec/bin/p4spectec']]
@@ -108,6 +109,9 @@ def main():
     from error_handler_cases import CASES
     from error_handler_protocol import CASES as FIXED
     from reporting_cases import CASES as REPORTING_CASES, STDERR as REPORTING_STDERR
+    from reporting_diagnostics_cases import CASES as DIAGNOSTICS_CASES, STDERR as DIAGNOSTICS_STDERR
+    REPORTING_CASES = REPORTING_CASES + DIAGNOSTICS_CASES
+    REPORTING_STDERR = REPORTING_STDERR | DIAGNOSTICS_STDERR
     reporting_ids = {case[0] for case in REPORTING_CASES}
     expected = {name: (source, stdout, status) for name, source, stdout, status in CASES}
     sources = preparation['sources']
