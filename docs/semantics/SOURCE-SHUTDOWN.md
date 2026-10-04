@@ -17,7 +17,8 @@ request's earlier status. Internal by-reference warnings use `Unknown:0` and
 retain the selected callback when a replacement exception handler handles a
 warning handler's throw.
 
-Terminal diagnostics are emitted and frozen before queue entry. Later reporting
+Terminal diagnostics are emitted and frozen before queue entry. Display routing
+is sampled after formatter callbacks; later mode changes cannot reroute a fatal. Later reporting
 or Throwable changes cannot erase them. Admitted scalar/array default Throwable
 messages preserve conversion effects; an array message calls the existing error
 handler before freezing. If that warning throws, the
@@ -26,7 +27,10 @@ its trace calls use the native fallback. The pending Throwable then uses the
 exception handler. If handled, a separate return-type warning follows before
 the original cached fatal is emitted. The saved warning anchor contributes an
 authentic internal `Exception->__toString()` or `Error->__toString()` trace
-without granting that class's source method permission.
+without granting that class's source method permission. User overrides reuse the
+ordinary selected method call with zero arguments and its lexical permission.
+If a replacement exception handler handles their throw, the original C call
+continues with its return warning and current private string cache.
 
 The queue and selected arguments remain owned through this phase's DONE state,
 as Zend frees shutdown registrations after later destructor/output stages.
@@ -41,6 +45,9 @@ Source comparisons and source-reached state checks are separate gates:
 ```sh
 python3 tests/semantics/shutdown_functions.py
 python3 tests/semantics/shutdown_render_state.py
+python3 tests/semantics/shutdown_review.py
+python3 tests/semantics/shutdown_state_review.py
+python3 tests/semantics/display_errors.py --case shutdown-freeze
 ```
 
 Keyword/compound callback ingress needs the accepted221 effectful API consumer.

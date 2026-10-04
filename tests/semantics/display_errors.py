@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Live display decoding, raw Restore, ordered events and finite include output."""
 from pathlib import Path
+import argparse
 import base64
 import hashlib
 import json
@@ -24,10 +25,11 @@ CASES = [
     ('fatal-off', 'fatal.php', '0', 255),
     ('callback-routing', 'routing.php', 'StDeRr', 0),
     ('included-routing', 'include/main.php', 'StDeRr', 0),
+    ('shutdown-freeze', 'freeze.php', 'StDeRr', 255),
 ]
 
 
-def main():
+def main(selected=None):
     out = Path(tempfile.mkdtemp(prefix='display-errors-', dir=R / '.tools'))
     print(out, flush=True)
     profile = json.loads((R / 'tests/semantics/profile.json').read_text())
@@ -41,12 +43,14 @@ def main():
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=R, text=True).strip()
     rows = []
     for name, source, display, expected_exit in CASES:
+        if selected and name not in selected:
+            continue
         directory = out / name
         directory.mkdir()
         script = directory / 'main.php'
         script.write_bytes((SOURCES / source).read_bytes())
         startup = {'display_errors': b64(display.encode())}
-        if name == 'callback-routing':
+        if name in ('callback-routing', 'shutdown-freeze'):
             startup.update(error_reporting=b64(b'30719'), include_path=b64(b'.:'))
         startup_path = directory / 'startup.json'
         startup_path.write_text(json.dumps(startup) + '\n')
@@ -81,11 +85,14 @@ def main():
     assert before == {str(path.relative_to(R)): digest(path) for path in inputs}
     assert revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=R, text=True).strip()
     report = {'revision': revision, 'inputs': before, 'rows': rows,
-              'scope': 'Ordinary diagnostic routing; shutdown/fatal freeze waits for accepted lifecycle composition.',
+              'scope': 'Ordinary diagnostic routing and fatal destination freezing before ordered shutdown callbacks.',
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING': 'absent'}}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     return all(row['pass'] for row in rows)
 
 
 if __name__ == '__main__':
-    raise SystemExit(0 if main() else 1)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--case', action='append', choices=[case[0] for case in CASES])
+    args = parser.parse_args()
+    raise SystemExit(0 if main(args.case) else 1)
