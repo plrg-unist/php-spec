@@ -296,9 +296,9 @@ def $class_static_ref_pending_tail((PROPERTY_BASE_PREP phpType20 z) :: ptask_tai
 def $class_static_ref_pending_tail(ptask*) = false -- otherwise
 dec $class_static_target_base(pstate, poperand, ptbytes, int) : pstate
 def $class_static_target_base(S, poperand_selector, ptbytes, z) = S[.BASE = BASE_CLASS_STATIC_PENDING poperand_selector (KNOWN (PSTRING ptbytes))][.RESULT = KNOWN PNULL]
-  -- if $class_static_ref_pending_tail(S.TODO)
+  -- if $class_static_ref_pending_tail(S.TODO) \/ $trait_property_write_pending(S, poperand_selector, S.TODO)
 def $class_static_target_base(S, poperand_selector, ptbytes, z) = $class_static_prepare_base(S, poperand_selector, ptbytes, z)
-  -- if ~$class_static_ref_pending_tail(S.TODO)
+  -- if ~$class_static_ref_pending_tail(S.TODO) /\ ~$trait_property_write_pending(S, poperand_selector, S.TODO)
 def $reference_acquire(S, BASE_CLASS_STATIC_PENDING poperand_class poperand_name, z) = S_class[.BASE = S.BASE]
   -- if S_class = $class_static_prepare_base(S, poperand_class, eps, z)
   -- if S_class.COMPLETION =/= NORMAL
@@ -376,20 +376,20 @@ rule PhpStep/class-static-class-abrupt: S ~> S_class[.TODO = eps]
 rule PhpStep/class-static-name: S ~> $class_static_prepare_base(S_name[.TODO = ptask_tail*], poperand_selector, n_name*, z)
   -- if S.TODO = (STATIC_PROP_NAME phpType19 poperand_selector z) :: (STATIC_PROP_CAPTURE porigin poperand_selector z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
-  -- if ~$class_static_ref_pending_tail(ptask_tail*)
+  -- if ~$class_static_ref_pending_tail(ptask_tail*) /\ ~$trait_property_write_pending(S, poperand_selector, ptask_tail*)
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
 rule PhpStep/class-static-name-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (STATIC_PROP_NAME phpType19 poperand_selector z) :: (STATIC_PROP_CAPTURE porigin poperand_selector z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
-  -- if ~$class_static_ref_pending_tail(ptask_tail*)
+  -- if ~$class_static_ref_pending_tail(ptask_tail*) /\ ~$trait_property_write_pending(S, poperand_selector, ptask_tail*)
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
 rule PhpStep/class-static-name-reference: S ~> S[.TODO = ptask_tail*][.BASE = BASE_CLASS_STATIC_PENDING poperand_selector $captured_name(S, [PCFIELD 1], S.RESULT)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (STATIC_PROP_NAME phpType19 poperand_selector z) :: (STATIC_PROP_CAPTURE porigin poperand_selector z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
-  -- if $class_static_ref_pending_tail(ptask_tail*)
+  -- if $class_static_ref_pending_tail(ptask_tail*) \/ $trait_property_write_pending(S, poperand_selector, ptask_tail*)
 
 dec $class_static_source_task(pstate, expression) : bool
 def $class_static_source_task(S, expression) = true

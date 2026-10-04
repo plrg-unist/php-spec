@@ -4,6 +4,8 @@ The partial executable rule covers parsed ordinary double-quoted strings and
 heredocs, with literal bytes, scalar conversion and real Stringable callbacks.
 [The ledger](../../coverage/semantics/interpolation-review.json) retains nine exact
 source agreements at `88f457d1c` and 111 distinct state premises at `a7c117b6`.
+Legacy direct/computed dollar-curly compiler notices are covered for ordinary
+main/include units by the [separate ledger](../../coverage/semantics/dollar-curly-review.json).
 Full interpolation and complete core semantics remain open.
 
 Zend groups adjacent nonempty literal parts and drops empty literals before
@@ -40,6 +42,16 @@ require their first matching descriptor to have the exact adjacent FINISH.
 Singleton/rope traces use the part's compiled line; two-part callbacks share the
 compiled final-producer line. Multiline originals constrain both choices.
 
+Legacy `${name}`/`${name[expr]}` and `${expr}` parts retain distinct grammar
+flags through checked fresh printing. The compiler emits each deprecation before
+compiling that child, using its structural path and the preceding compiler line.
+Included-unit notices use the existing whole-unit publication queue: real private
+emitter scope, live reporting/display after false handlers, and thrown-handler
+cleanup remain intact. Five source/profile agreements, 24 syntax/encoding profiles
+with 320 checks, and 37 compiler/certificate premises retain the tested `fa084` cut.
+Early eval delivery requires the genuine partial-compilation continuation and
+stays open; its five native pins have no model agreement.
+
 The source routes are `zend_compile_encaps_list`/`zend_compile_rope_finalize` in
 `vendor/php-src/Zend/zend_compile.c` and CAST/FAST_CONCAT/ROPE handlers in
 `Zend/zend_vm_def.h`. The maintained sources and control groups are:
@@ -47,12 +59,15 @@ The source routes are `zend_compile_encaps_list`/`zend_compile_rope_finalize` in
 ```sh
 python3 tests/semantics/interpolation_sources.py
 python3 tests/semantics/interpolation_protocol.py
+python3 tests/dollar_curly_metadata.py
+python3 tests/semantics/dollar_curly_sources.py
+python3 tests/semantics/dollar_curly_protocol.py
 ```
 
 The six control groups keep the original 111 premises and repeat only 25 setup
 or binding premises. Each passes within the unchanged 90-second cap. The full
 and first fast-group timeouts remain failures. A native multiline probe using
 unsupported non-object cast-to-object has zero model credit; its declared-holder
-companion is a separate agreement. Wider source contexts, producers and legacy
-interpolation compiler deprecations remain required, as do the original dynamic
+companion is a separate agreement. Wider source contexts/producers, early eval
+notices and shell-exec interpolation compilation remain required, as do the original dynamic
 file warning cases whose interpolation observers were previously Unsupported.

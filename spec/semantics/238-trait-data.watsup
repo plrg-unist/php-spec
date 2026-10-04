@@ -432,11 +432,8 @@ def $trait_static_property_deprecation_needed(S, porigin, ptbytes) = true
   -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
   -- if pclassstatic.STATE =/= PROP_INITIAL \/ ~$trait_static_property_read_pending(S.TODO)
 def $trait_static_property_deprecation_needed(S, porigin, ptbytes) = false -- otherwise
-def $class_static_prepare_base_ready(S, poperand_selector, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "direct trait static-property deprecation continuation"]
-  -- if $scoped_selector_class(S, poperand_selector) = (porigin_requested)
-  -- if $trait_static_property_deprecation_needed(S, porigin_requested, ptbytes)
 
-def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access trait constant ") ++ pclassdesc.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii(" directly"), z)
+def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access trait constant ") ++ $class_constant_message_class(S, pclassdesc, ptbytes_class) ++ $ptascii("::") ++ ptbytes ++ $ptascii(" directly"), z)
   -- if pclassdesc.KIND = "trait"
 
 def $trait_data_fatal(S, pclassdesc, ptbytes) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes, pclassdesc.LINE)

@@ -7,6 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Legacy dollar-curly compiler notices258 retain the direct/computed grammar flag
+through checked fresh printing and emit before child compilation with its real
+path and the preceding compiler line. Main/include delivery reuses230 whole-unit
+publication, genuine private emitter scope, live mask/display fallback and throw
+cleanup. Five exact source/profile comparisons, SL242, 24 syntax/encoding profiles
+with320 checks and37 compiler/certificate premises pass atfa084. Actual256 parent
+preservation keeps243 modules without renewing those cuts. Original compiler and
+fixture parse stops stay zero-credit in the
+[ledger](coverage/semantics/dollar-curly-review.json). Five early-eval native pins
+remain required for the genuine partial-compilation continuation after236; wider
+interpolation and original non-object-cast/file-observer gaps remain open.
+
+Dynamic object `::class`256 evaluates one child and returns its real class name
+without a string cast. Eager parser concat keeps literal/keyword behavior; later
+compiled constant operands reject. Embedded undefined-CV callbacks keep captured
+null, including a throwing handler retained as the new TypeError previous chain;
+dimension throws keep ordinary abort behavior. Source20 and seven full compiler
+rejections pass at026ba, with165 reached premises in43+70+52 groups covering actual
+lines, task/source admission, temporary retirement and read/exception ownership.
+Unused preparation has zero execution. Original native prediction failures and
+historical245 Unsupported stay preserved in the
+[class-name ledger](coverage/semantics/object-class-name-review.json). One actual251
+interpolation source atf626 on4208 retains callback receivers through global-slot
+replacement and sees the later mutated operand. Actual247/251 routes are preserved;
+complete core remains open.
+
 Ordinary string interpolation251 now follows effective CAST/FAST_CONCAT/ROPE
 order. Two-part fetched temporaries survive left callbacks; later variable
 conversion reads live borrowed slots. Undefined direct CVs keep singleton null
@@ -19,7 +45,7 @@ fixture stops, full/fast timeouts and native-only non-object-cast line probe kee
 zero credit. Actualcde/247 preservation retains240 parent modules plus251 without
 renewing those gates. [Contract](docs/semantics/SOURCE-INTERPOLATION.md) and
 [ledger](coverage/semantics/interpolation-review.json) retain these cuts. Wider
-interpolation producers/source contexts, legacy compiler deprecations and affected
+interpolation producers/source contexts, early eval compiler notices and affected
 original dynamic-file observers remain required; complete core and paused return
 verification remain open.
 
@@ -80,7 +106,7 @@ the [scope ledger](coverage/semantics/anonymous-default-new-review.json).
 Actual239 child composition1 at1b593 passes after temporary maker/receiver
 variables retire; the child retains its receiver. Latest231/234/230/242 routes
 are preserved without renewed private gates. Ordinary Throwable effects are
-covered by250 above; dynamic object `::class` remains required.
+covered by250 above; object `::class` is covered by256 at its separate cutoff.
 
 Writable dimension keys242 stage defined mutable CV-array W/RW fetches through
 undefined/null/float/NaN callbacks, nested acquisition, updates and direct
@@ -188,8 +214,22 @@ The [data ledger](coverage/semantics/trait-data-review.json) records72 source tu
 and265 genuine state assertions at preserved cuts; four historical dependency
 controls retain92 assertions and zero old-cut agreement. Runtime link fatals keep
 native severity, reporting masks and declaration phase. Effectful collision
-evaluation, direct trait-property deprecations, readonly storage and enums remain
+evaluation, readonly storage and enums remain
 required; this checkpoint does not close the trait family.
+
+Raw trait static-property warnings254 follow lookup, access, table fill and typed
+read priority. Retained source/root/member/mode resumes the live cell through
+handler rebinding. Computed RHS values keep one store owner; compiled literals
+also retain their pool owner. Late CV values remain delayed. Handler throws still finish
+the actual write/update/reference opcode, while fetch-only reference promotion
+aborts later assignment or call. Typed/Stringable conversion preserves pending
+exceptions. Independent source33 (author6 subset) and six reached state groups286
+pass at unchanged15155; preparation and incorrect owner assertions are retained
+without extra credit in the [access ledger](coverage/semantics/trait-property-access-review.json).
+Actual accepted core routes, including258, are preserved in244 modules without
+renewing those cuts. Effectful collisions and
+deferred-value comparison before type conversion259, readonly storage and enum
+semantics remain required; the trait family stays open.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
@@ -533,7 +573,7 @@ failures and interrupted evidence.
 - Objects and lifetime: remaining static members, effectful trait data composition,
   enums, hooks, readonly/instance asymmetric
   access, traversal, output handlers and lifecycle callbacks. Static cells remain
-  partial across direct trait-property diagnostics, bind/clone, include/eval reactivation
+  partial across wider producers, bind/clone, include/eval reactivation
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,
