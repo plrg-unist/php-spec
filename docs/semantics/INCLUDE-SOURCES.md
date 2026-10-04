@@ -19,6 +19,24 @@ OS/stream-open facts supplied by the snapshot; the parser and model do not
 derive them from Zend execution. An already included resolved path skips before
 those failure facts produce a warning.
 
+[Stringable file operands](../../coverage/semantics/file-operand-review.json)
+run the ordinary checked `__toString` callback before resolution, once checks or
+provider creation. Conversion retains its receiver after global rebinding;
+normal return restores the authentic include parent and samples live CWD/path.
+Throw and invalid conversion complete without demanding file facts or allocating
+a provider nonce. The four keywords retain their compiled operand line and
+zero-argument Throwable frame.
+
+Failed-open warnings suspend for eligible handlers. The stream message is fixed
+before the first callback; the second include warning or required `Error` samples
+the live effective path after that callback. Throw skips the remaining failure
+phases. Reentrant includes keep the saved warning owner, and normal, throw, exit,
+fatal and compiler-stop cleanup retire it at the actual task drop. Fifteen exact
+source agreements and 81/148/45 state premises retain separate tested cuts in the
+ledger, including shutdown cleanup and active-eval trace composition. Original
+count/interpolation observer failures remain preserved with zero full agreement;
+interpolation and wider provider/source contexts remain required work.
+
 `parse-file` has a separate checked request from `parse-eval`: request nonce,
 file mode and raw CLI profile, requested/resolved/opened identities, and bytes.
 The local native extension parses file syntax only. The worker then imports a

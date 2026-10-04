@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Stringable include/require operands now convert before resolution and once
+checks, retaining the receiver through rebinding and nested eval. Callback writes
+determine subsequent CWD/path lookup; throw completes without file facts or a
+provider nonce. Failed-open handlers resume ordered warning phases, sampling the
+second message after callback1 and preserving saved owners and zero-argument
+file traces. Exit, fatal and compiler-stop drops retire only their actual warning
+owner; frozen output precedes shutdown callbacks. Fifteen exact source agreements
+retain dcb/49/b371/dc9/4639 cuts; 81 conversion, 148 grouped warning and 45 shutdown
+premises pass at their recorded revisions. SL229/231/233 stages/init also pass.
+Actual f410/245 preservation retains 234 modules without renewing those gates.
+[The file operand ledger](coverage/semantics/file-operand-review.json) keeps
+original observer, fixture, model and timeout failures. Interpolation, wider
+providers/source contexts and request lifecycle remain required.
+
 Anonymous Closure/arrow default NEW245 resolves self/parent using the genuine
 receiving lexical scope, independently of called class and receiver. Rebinding,
 temporary Closure::call, imported trait makers and missing-scope errors preserve

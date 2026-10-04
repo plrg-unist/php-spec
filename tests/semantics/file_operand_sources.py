@@ -16,7 +16,7 @@ b64 = lambda value: base64.b64encode(value).decode()
 CASES = [(name, 'convert/' + name + '.php') for name in ('kinds', 'mutation', 'owner', 'throw', 'bad', 'multiline')]
 CASES += [('live', 'warning/live.php'), ('warning-throw', 'warning/throw.php'),
           ('required', 'warning/required.php'), ('exit', 'warning/exit.php'), ('fatal', 'warning/fatal.php')]
-CASES += [('late-once', 'once/core-observer.php'), ('throw-require', 'throw-require.php'), ('shutdown', 'shutdown/main.php')]
+CASES += [('late-once', 'once/core-observer.php'), ('throw-require', 'throw-require.php'), ('shutdown', 'shutdown/main.php'), ('eval-warning', 'eval/main.php')]
 
 
 def snapshot(name, source):
@@ -31,8 +31,8 @@ def snapshot(name, source):
                         'include_path': b64(path), 'status': 'opened', 'resolved': b64(bytes(target)),
                         'opened': b64(bytes(target)), 'source': b64(target.read_bytes())})
 
-    def missing(requested, path=b'.:'):
-        entries.append({'caller': b64(bytes(source)), 'requested': b64(requested), 'cwd': b64(cwd),
+    def missing(requested, path=b'.:', caller=None):
+        entries.append({'caller': b64(bytes(source) if caller is None else caller), 'requested': b64(requested), 'cwd': b64(cwd),
                         'include_path': b64(path), 'status': 'missing', 'stream_error': b64(b'No such file or directory')})
 
     def changed(current, target):
@@ -63,6 +63,8 @@ def snapshot(name, source):
     elif name == 'shutdown':
         missing(b'shutdown-missing.php')
         opened(bytes(directory / 'compile-bad.php'), directory / 'compile-bad.php', b'callback-path')
+    elif name == 'eval-warning':
+        missing(b'eval-warning-missing.php', caller=bytes(source) + b"(7) : eval()'d code")
     else:
         raise AssertionError(name)
     return {'version': 2, 'main': b64(bytes(source)), 'cwd': b64(cwd), 'include_path': b64(b'.:'),
@@ -112,7 +114,7 @@ def main():
     assert revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=R, text=True).strip()
     (out / 'report.json').write_text(json.dumps({'revision': revision, 'inputs': before, 'rows': rows,
         'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING': 'absent'},
-        'scope': 'Fourteen distinct maintained sources; original count/interpolation observers retain zero agreement in the ledger.'}, indent=2) + '\n')
+        'scope': 'Fifteen distinct maintained sources; original count/interpolation observers retain zero agreement in the ledger.'}, indent=2) + '\n')
     return all(row['pass'] for row in rows)
 
 

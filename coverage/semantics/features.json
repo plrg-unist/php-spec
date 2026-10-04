@@ -1774,13 +1774,26 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/171-include-runtime.watsup",
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/163-throwable-trace-storage.watsup",
+        "spec/semantics/243-file-warning-continuations.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/file_operand_sources.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Bounded finite-provider runtime covers the four include/require forms, Stringable operand callbacks before path/once lookup, resumable failed-open handlers and authentic zero-argument traces. Fifteen exact sources and81/148/45 source-derived premises retain their distinct revisions in file-operand-review.json. The historical ordinary-array constant-prepass barrier remains separately recorded in array-omission-review.json. Wider providers, interpolation and source contexts remain required; no family closure or renewed full campaign is claimed.",
+      "helper_tests": [
+        "tests/semantics/file_operand_protocol.py"
+      ],
+      "evidence": [
+        "coverage/semantics/array-omission-review.json",
+        "coverage/semantics/include-source-author.json",
+        "coverage/semantics/file-operand-review.json"
+      ]
     },
     {
       "node": "Expr_Instanceof",
@@ -10602,7 +10615,10 @@
         "adapter/main.ml",
         "frontend/worker.php",
         "spec/semantics/172-file-context-intrinsics.watsup",
-        "spec/semantics/173-chdir-runtime.watsup"
+        "spec/semantics/173-chdir-runtime.watsup",
+        "spec/semantics/243-file-warning-continuations.watsup",
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/163-throwable-trace-storage.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
@@ -10615,11 +10631,13 @@
         "tests/semantics/include_chdir_adapter_protocol.py",
         "tests/semantics/include_ini_prefix_protocol.py",
         "tests/semantics/include_chdir_pipe_protocol.py",
-        "tests/semantics/include_chdir_warning_protocol.py"
+        "tests/semantics/include_chdir_warning_protocol.py",
+        "tests/semantics/file_operand_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
-        "tests/semantics/include_mutable_execution.py"
+        "tests/semantics/include_mutable_execution.py",
+        "tests/semantics/file_operand_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
@@ -10636,9 +10654,10 @@
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
         "coverage/semantics/include-ini-readback-review.json",
-        "coverage/semantics/include-config-pipe-review.json"
+        "coverage/semantics/include-config-pipe-review.json",
+        "coverage/semantics/file-operand-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks. Stringable include/require conversion now precedes live path/CWD/once sampling; failed-open handlers retain saved phase owners, live second-message paths and compiler-stop cleanup. File-operand ledger separates15 source agreements and81/148/45 controls at their actual cuts, including active-eval traces. Original count/interpolation observer failures have zero full agreement; interpolation and broader providers/source contexts remain required."
     },
     {
       "id": "dynamic.require",
@@ -10650,7 +10669,10 @@
         "adapter/main.ml",
         "frontend/worker.php",
         "spec/semantics/172-file-context-intrinsics.watsup",
-        "spec/semantics/173-chdir-runtime.watsup"
+        "spec/semantics/173-chdir-runtime.watsup",
+        "spec/semantics/243-file-warning-continuations.watsup",
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/163-throwable-trace-storage.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
@@ -10663,11 +10685,13 @@
         "tests/semantics/include_chdir_adapter_protocol.py",
         "tests/semantics/include_ini_prefix_protocol.py",
         "tests/semantics/include_chdir_pipe_protocol.py",
-        "tests/semantics/include_chdir_warning_protocol.py"
+        "tests/semantics/include_chdir_warning_protocol.py",
+        "tests/semantics/file_operand_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
-        "tests/semantics/include_mutable_execution.py"
+        "tests/semantics/include_mutable_execution.py",
+        "tests/semantics/file_operand_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
@@ -10684,9 +10708,10 @@
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
         "coverage/semantics/include-ini-readback-review.json",
-        "coverage/semantics/include-config-pipe-review.json"
+        "coverage/semantics/include-config-pipe-review.json",
+        "coverage/semantics/file-operand-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks. Stringable include/require conversion now precedes live path/CWD/once sampling; failed-open handlers retain saved phase owners, live second-message paths and compiler-stop cleanup. File-operand ledger separates15 source agreements and81/148/45 controls at their actual cuts, including active-eval traces. Original count/interpolation observer failures have zero full agreement; interpolation and broader providers/source contexts remain required."
     },
     {
       "id": "dynamic.include-once",
@@ -10698,7 +10723,10 @@
         "adapter/main.ml",
         "frontend/worker.php",
         "spec/semantics/172-file-context-intrinsics.watsup",
-        "spec/semantics/173-chdir-runtime.watsup"
+        "spec/semantics/173-chdir-runtime.watsup",
+        "spec/semantics/243-file-warning-continuations.watsup",
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/163-throwable-trace-storage.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
@@ -10711,11 +10739,13 @@
         "tests/semantics/include_chdir_adapter_protocol.py",
         "tests/semantics/include_ini_prefix_protocol.py",
         "tests/semantics/include_chdir_pipe_protocol.py",
-        "tests/semantics/include_chdir_warning_protocol.py"
+        "tests/semantics/include_chdir_warning_protocol.py",
+        "tests/semantics/file_operand_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
-        "tests/semantics/include_mutable_execution.py"
+        "tests/semantics/include_mutable_execution.py",
+        "tests/semantics/file_operand_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
@@ -10732,9 +10762,10 @@
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
         "coverage/semantics/include-ini-readback-review.json",
-        "coverage/semantics/include-config-pipe-review.json"
+        "coverage/semantics/include-config-pipe-review.json",
+        "coverage/semantics/file-operand-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks. Stringable include/require conversion now precedes live path/CWD/once sampling; failed-open handlers retain saved phase owners, live second-message paths and compiler-stop cleanup. File-operand ledger separates15 source agreements and81/148/45 controls at their actual cuts, including active-eval traces. Original count/interpolation observer failures have zero full agreement; interpolation and broader providers/source contexts remain required."
     },
     {
       "id": "dynamic.require-once",
@@ -10746,7 +10777,10 @@
         "adapter/main.ml",
         "frontend/worker.php",
         "spec/semantics/172-file-context-intrinsics.watsup",
-        "spec/semantics/173-chdir-runtime.watsup"
+        "spec/semantics/173-chdir-runtime.watsup",
+        "spec/semantics/243-file-warning-continuations.watsup",
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/163-throwable-trace-storage.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
@@ -10759,11 +10793,13 @@
         "tests/semantics/include_chdir_adapter_protocol.py",
         "tests/semantics/include_ini_prefix_protocol.py",
         "tests/semantics/include_chdir_pipe_protocol.py",
-        "tests/semantics/include_chdir_warning_protocol.py"
+        "tests/semantics/include_chdir_warning_protocol.py",
+        "tests/semantics/file_operand_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
-        "tests/semantics/include_mutable_execution.py"
+        "tests/semantics/include_mutable_execution.py",
+        "tests/semantics/file_operand_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
@@ -10780,9 +10816,10 @@
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
         "coverage/semantics/include-ini-readback-review.json",
-        "coverage/semantics/include-config-pipe-review.json"
+        "coverage/semantics/include-config-pipe-review.json",
+        "coverage/semantics/file-operand-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks. Stringable include/require conversion now precedes live path/CWD/once sampling; failed-open handlers retain saved phase owners, live second-message paths and compiler-stop cleanup. File-operand ledger separates15 source agreements and81/148/45 controls at their actual cuts, including active-eval traces. Original count/interpolation observer failures have zero full agreement; interpolation and broader providers/source contexts remain required."
     },
     {
       "id": "dynamic.source-identity",
@@ -10842,7 +10879,10 @@
         "adapter/main.ml",
         "frontend/worker.php",
         "spec/semantics/172-file-context-intrinsics.watsup",
-        "spec/semantics/173-chdir-runtime.watsup"
+        "spec/semantics/173-chdir-runtime.watsup",
+        "spec/semantics/243-file-warning-continuations.watsup",
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/163-throwable-trace-storage.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
@@ -10855,11 +10895,13 @@
         "tests/semantics/include_chdir_adapter_protocol.py",
         "tests/semantics/include_ini_prefix_protocol.py",
         "tests/semantics/include_chdir_pipe_protocol.py",
-        "tests/semantics/include_chdir_warning_protocol.py"
+        "tests/semantics/include_chdir_warning_protocol.py",
+        "tests/semantics/file_operand_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
-        "tests/semantics/include_mutable_execution.py"
+        "tests/semantics/include_mutable_execution.py",
+        "tests/semantics/file_operand_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
@@ -10876,9 +10918,10 @@
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
         "coverage/semantics/include-ini-readback-review.json",
-        "coverage/semantics/include-config-pipe-review.json"
+        "coverage/semantics/include-config-pipe-review.json",
+        "coverage/semantics/file-operand-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks. Stringable include/require conversion now precedes live path/CWD/once sampling; failed-open handlers retain saved phase owners, live second-message paths and compiler-stop cleanup. File-operand ledger separates15 source agreements and81/148/45 controls at their actual cuts, including active-eval traces. Original count/interpolation observer failures have zero full agreement; interpolation and broader providers/source contexts remain required."
     },
     {
       "id": "dynamic.included-declarations",
@@ -10890,7 +10933,10 @@
         "adapter/main.ml",
         "frontend/worker.php",
         "spec/semantics/172-file-context-intrinsics.watsup",
-        "spec/semantics/173-chdir-runtime.watsup"
+        "spec/semantics/173-chdir-runtime.watsup",
+        "spec/semantics/243-file-warning-continuations.watsup",
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/163-throwable-trace-storage.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
@@ -10903,11 +10949,13 @@
         "tests/semantics/include_chdir_adapter_protocol.py",
         "tests/semantics/include_ini_prefix_protocol.py",
         "tests/semantics/include_chdir_pipe_protocol.py",
-        "tests/semantics/include_chdir_warning_protocol.py"
+        "tests/semantics/include_chdir_warning_protocol.py",
+        "tests/semantics/file_operand_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
-        "tests/semantics/include_mutable_execution.py"
+        "tests/semantics/include_mutable_execution.py",
+        "tests/semantics/file_operand_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
@@ -10924,9 +10972,10 @@
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
         "coverage/semantics/include-ini-readback-review.json",
-        "coverage/semantics/include-config-pipe-review.json"
+        "coverage/semantics/include-config-pipe-review.json",
+        "coverage/semantics/file-operand-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks. Stringable include/require conversion now precedes live path/CWD/once sampling; failed-open handlers retain saved phase owners, live second-message paths and compiler-stop cleanup. File-operand ledger separates15 source agreements and81/148/45 controls at their actual cuts, including active-eval traces. Original count/interpolation observer failures have zero full agreement; interpolation and broader providers/source contexts remain required."
     },
     {
       "id": "dynamic.included-return",
@@ -10938,7 +10987,10 @@
         "adapter/main.ml",
         "frontend/worker.php",
         "spec/semantics/172-file-context-intrinsics.watsup",
-        "spec/semantics/173-chdir-runtime.watsup"
+        "spec/semantics/173-chdir-runtime.watsup",
+        "spec/semantics/243-file-warning-continuations.watsup",
+        "spec/semantics/168-user-string-runtime.watsup",
+        "spec/semantics/163-throwable-trace-storage.watsup"
       ],
       "helper_tests": [
         "tests/include_source_service.py",
@@ -10951,11 +11003,13 @@
         "tests/semantics/include_chdir_adapter_protocol.py",
         "tests/semantics/include_ini_prefix_protocol.py",
         "tests/semantics/include_chdir_pipe_protocol.py",
-        "tests/semantics/include_chdir_warning_protocol.py"
+        "tests/semantics/include_chdir_warning_protocol.py",
+        "tests/semantics/file_operand_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/include_execution.py",
-        "tests/semantics/include_mutable_execution.py"
+        "tests/semantics/include_mutable_execution.py",
+        "tests/semantics/file_operand_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
@@ -10972,9 +11026,10 @@
         "coverage/semantics/include-stringable-restore-review.json",
         "coverage/semantics/include-stringable-ini-option-review.json",
         "coverage/semantics/include-ini-readback-review.json",
-        "coverage/semantics/include-config-pipe-review.json"
+        "coverage/semantics/include-config-pipe-review.json",
+        "coverage/semantics/file-operand-review.json"
       ],
-      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks."
+      "review": "Raw getters, unary-null handlers, two-slot INI priority and current SENT ownership retain their separate accepted checkpoints. Unary CONFIG PIPE authenticates held lhs/send/callback sites, ordinary factory targets and source strictness;12 earlier normal sources retain ca29/51e/b920 identities with finite165; two current borrowed-warning composition sources retain a separate revision. Explicit Closure->__invoke alone uses weak wrapper parsing. CHDIR PIPE adds six normal sources/124 provider checks at 6e63009f3 with post-callback CWD and held lhs. Original failures remain preserved; wider providers/PIPE consumers, names/absent environment, producers/directives and full core remain partial. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks. Stringable include/require conversion now precedes live path/CWD/once sampling; failed-open handlers retain saved phase owners, live second-message paths and compiler-stop cleanup. File-operand ledger separates15 source agreements and81/148/45 controls at their actual cuts, including active-eval traces. Original count/interpolation observer failures have zero full agreement; interpolation and broader providers/source contexts remain required."
     },
     {
       "id": "dynamic.autoload-registration",

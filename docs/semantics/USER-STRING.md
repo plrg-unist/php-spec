@@ -93,13 +93,19 @@ callback retirement and recursive calls sharing a template. Ordinary Throwable
 effects, dynamic object `::class` and broader constrained consumers remain required.
 
 The required consumer inventory includes echo, print, `(string)` casts,
-concat, interpolation, eval operands, weak typed conversions, dynamic variable
+concat, interpolation, eval/include/require operands, weak typed conversions, dynamic variable
 names, string-offset assigned values, `exit`, and object-versus-string loose
 comparison. Array keys and dynamic method names reject objects without
 calling `__toString`. Interpolation currently lacks a general executable
 runtime rule and needs a separate compiler/runtime increment. Internal
 Throwable `__toString` uses its own finite trace/property protocol; user
 subclass overrides remain a separate dependency.
+
+The installed [file operand bridge](../../coverage/semantics/file-operand-review.json)
+converts all four include/require forms before path lookup or once skipping.
+Receiver retention, callback mutation, nested eval and throwing cleanup use the
+same authenticated implicit-call continuation; provider facts are sampled only
+after conversion returns.
 
 The first private increment admits declarations and the finite implicit
 `Stringable` relation. Until the shared callback continuation reaches a

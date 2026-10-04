@@ -27,7 +27,10 @@ records the separate parse-only bridge; the [exception-kind extension](coverage/
 records the later CompileError classification. [Reached eval execution](docs/semantics/DYNAMIC-EVAL.md)
 and [finite-provider include/require](docs/semantics/INCLUDE-SOURCES.md) use checked
 machine pauses. A finite version-2 provider supports checked CWD and
-`include_path` changes. [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
+`include_path` changes. [Stringable include/require operands](coverage/semantics/file-operand-review.json)
+convert before path lookup and once checks. Failed-open warnings resume handlers
+with live path sampling, saved owners and zero-argument file traces; fatal cleanup
+preserves frozen output before shutdown callbacks. [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
 preserves captured array arguments and has separate source and paused-state checks.
