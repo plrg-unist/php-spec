@@ -437,8 +437,13 @@ capture and saved calls. Protected checks use the root prototype; API handlers
 resolve raw values using the emitting frame. The
 [scoped-callable review](coverage/semantics/scoped-callables-current-review.json)
 keeps these observations separate from earlier public-route evidence.
-Default/variadic, `Closure::fromCallable`, other internal and user-return keyword
-warning consumers remain required; magic/autoload and transformed binding remain open.
+[`Closure::fromCallable`](docs/semantics/FROM-CALLABLE.md) now invokes the factory
+over existing core callable forms, freezing selection across raw mutation and
+maker retirement. Genuine USER permission, internal getter scope, foreign called
+classes, defaults and shared method statics remain distinct. Existing Closure
+inputs preserve identity; factory errors wrap lookup warnings after full unwinding.
+Default/variadic, other internal and user-return keyword warning consumers remain
+required; magic/autoload and transformed binding remain open.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.

@@ -1,0 +1,208 @@
+{
+  "status": "PRIVATE_REVIEWED",
+  "scope": "Actual PHP8.5.10 Closure::fromCallable API entry, selection, creation and invocation over existing core callable forms; no complete-core or paused-return claim.",
+  "code": {
+    "base": "85eed2534ce34bd8dc233b3b6f54fabba6290836",
+    "semantic_revision": "920f04113",
+    "module234_sha256": "e967582636ff59bc4cfe6d6ef2de67fe8f3a7a9049f406dc91200056bb7802e2",
+    "actual_parent_pending": "8af27216fc5dbeff04ea4f30eaa8aa9ea9ad8213",
+    "cutoffs": "Each raw report binds its working tree and exact inputs. Earlier completed rows retain those cuts; failed mixed batches are not aggregate passes. Changed warning/guard paths have affected checks only."
+  },
+  "runtime": {
+    "oracle": "PHP8.5.10 CLI NTS64, vendored34308a6666b2d489c509541ea9befea9e2b42348",
+    "reused_binaries": true,
+    "rebuild_claim": false,
+    "identities": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "9fa8a62125cc34baf80965a829fb4aa946875aa40b1b3a8d6e90cd732b2bcaf2",
+      "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+      "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "source_environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "unset"
+    },
+    "numeric_environment": {
+      "LC_ALL": "C.UTF-8",
+      "TZ": "unset",
+      "PHP_SPEC_SCRIPT_ENCODING": "unset"
+    },
+    "caps": {
+      "jobs": 1,
+      "native_seconds": 45,
+      "model_steps": 100000,
+      "model_seconds": 45,
+      "outer_seconds": 55,
+      "numeric_seconds": 300
+    },
+    "limits": "Actual inherited OS limits are recorded at each launch; no added memory/CPU override."
+  },
+  "source_checks": [
+    {
+      "report": ".tools/calls-review14-fromcallable-20261004/source-review-otokp5jz/report.json",
+      "sha256": "5f466bed898d11d2cea4557dda93ffd3294df63b6c5b47e9e475a4ca7eed385f",
+      "revision": "85eed2534ce34bd8dc233b3b6f54fabba6290836",
+      "module234_sha256": "08d6557e39bf4a41c9c84bb611525d03528dd130388e7f7c8cdfac828547a7f8",
+      "completed_passes": [
+        "identity-static"
+      ],
+      "preserved_nonpasses": []
+    },
+    {
+      "report": ".tools/calls-review14-fromcallable-20261004/source-review-v6bwewqu/report.json",
+      "sha256": "b88ed0b6ffd20ac0bd1afc2fb59c276024dd58158d19c23a0bf9749d756b54e6",
+      "revision": "85eed2534ce34bd8dc233b3b6f54fabba6290836",
+      "module234_sha256": "08d6557e39bf4a41c9c84bb611525d03528dd130388e7f7c8cdfac828547a7f8",
+      "completed_passes": [
+        "compound-held-cache"
+      ],
+      "preserved_nonpasses": []
+    },
+    {
+      "report": ".tools/calls-review14-fromcallable-20261004/source-author-ytclea_l/report.json",
+      "sha256": "d74ccd4f7d6ba427217ef9272a3f1e6b982d807d316894b2144351c87d824486",
+      "revision": "85eed2534ce34bd8dc233b3b6f54fabba6290836",
+      "module234_sha256": "5e7fb983bfed84b35730fa3312794f1ea282909fac1e9f9fb7910dce50572a04",
+      "completed_passes": [
+        "scoped-default-static",
+        "scalar-snapshot-cache",
+        "receiving-scope",
+        "warning-throw-creation-v2",
+        "static-foreign-called",
+        "object-private-selector-v2",
+        "foreign-getter-parent-private"
+      ],
+      "preserved_nonpasses": [
+        "foreign-getter-chain-v2",
+        "entry-forms",
+        "warning-null-send"
+      ]
+    },
+    {
+      "report": ".tools/calls-review14-fromcallable-20261004/source-review-m00nhzah/report.json",
+      "sha256": "65047b11468227145bad5178912082345f8a8ae65a4360980044863903326ba3",
+      "revision": "85eed2534ce34bd8dc233b3b6f54fabba6290836",
+      "module234_sha256": "7ba25024dbbc58a2f90c528154fd496140b9b7586b94bfdcbd1e4210a0e29b9d",
+      "completed_passes": [
+        "entry-forms"
+      ],
+      "preserved_nonpasses": []
+    },
+    {
+      "report": ".tools/calls-review14-fromcallable-20261004/source-review-sniueehc/report.json",
+      "sha256": "03f291101c04e0d0e25ba540e2f234e24d361ea8bed069b98ac58181c9f7c616",
+      "revision": "85eed2534ce34bd8dc233b3b6f54fabba6290836",
+      "module234_sha256": "7ba25024dbbc58a2f90c528154fd496140b9b7586b94bfdcbd1e4210a0e29b9d",
+      "completed_passes": [
+        "warning-null-send"
+      ],
+      "preserved_nonpasses": []
+    },
+    {
+      "report": ".tools/calls-review14-fromcallable-20261004/source-review-8_vqd_h6/report.json",
+      "sha256": "c1344a470a68d661b77c467d3ee303e440cad1b89776f21472358d16bf2a2351",
+      "revision": "85eed2534ce34bd8dc233b3b6f54fabba6290836",
+      "module234_sha256": "59e8d44de0a3cfcf37c870c94782a6d04aa293c6a12a50732a368cc0df49b44e",
+      "completed_passes": [
+        "argument-read-throw-before-api",
+        "foreign-getter-denial-case"
+      ],
+      "preserved_nonpasses": []
+    },
+    {
+      "report": ".tools/calls-dev14-fromcallable-20261004/source-author-yk9ead6m/report.json",
+      "sha256": "32cbcc22b91c6b89b3a08e30728942a6594a0cdd8d3c0bd48945c7c83cd96200",
+      "revision": "85eed2534ce34bd8dc233b3b6f54fabba6290836",
+      "module234_sha256": "7ba25024dbbc58a2f90c528154fd496140b9b7586b94bfdcbd1e4210a0e29b9d",
+      "completed_passes": [
+        "argument-error-order-v2",
+        "fake-equality-nominal"
+      ],
+      "preserved_nonpasses": []
+    },
+    {
+      "report": ".tools/calls-dev14-fromcallable-20261004/source-author-0avmq8gy/report.json",
+      "sha256": "21f70e0b93267bc03d3d16b3972b27bc893f1bdaf1fa5e8d60d497c19a37585f",
+      "revision": "85eed2534ce34bd8dc233b3b6f54fabba6290836",
+      "module234_sha256": "7ba25024dbbc58a2f90c528154fd496140b9b7586b94bfdcbd1e4210a0e29b9d",
+      "completed_passes": [
+        "foreign-run-cache",
+        "foreign-public-fallback",
+        "foreign-private-factory",
+        "foreign-entered-getter-denial",
+        "warning-finally-replacement",
+        "rebound-maker-permission",
+        "getter-invoke-v2",
+        "cached-static-default",
+        "late-chain"
+      ],
+      "preserved_nonpasses": []
+    },
+    {
+      "report": ".tools/calls-dev14-fromcallable-20261004/source-author-149olda6/report.json",
+      "sha256": "b0fc15da7e8f5196d84282bbcaa2f71826b516199322d8544069812b9b7cae77",
+      "revision": "920f041131e7e4340b557557ba2888c812096cb5",
+      "module234_sha256": "e967582636ff59bc4cfe6d6ef2de67fe8f3a7a9049f406dc91200056bb7802e2",
+      "completed_passes": [
+        "scalar-snapshot-cache",
+        "getter-invoke-v2",
+        "late-chain",
+        "warning-finally-replacement",
+        "argument-error-order"
+      ],
+      "preserved_nonpasses": []
+    }
+  ],
+  "state_checks": [
+    {
+      "report": ".tools/calls-keyword-compound-current-13/.tools/closure-call-protocol-4bq99uro/report.json",
+      "sha256": "e331a2739d42ec797626dda8f90581eb3b3d15e610e09882514dbceae03313a0",
+      "conditions": 250,
+      "cases": [
+        "capture-static-foreign-called-retired-maker",
+        "capture-instance-foreign-frame-clone-owners",
+        "capture-compound-frozen-leaf-after-alias-retirement",
+        "capture-rebound-maker-permission-after-retirement"
+      ],
+      "result": "pass",
+      "module234_sha256": "59e8d44de0a3cfcf37c870c94782a6d04aa293c6a12a50732a368cc0df49b44e"
+    },
+    {
+      "report": ".tools/calls-keyword-compound-current-13/.tools/closure-call-protocol-utxii6az/report.json",
+      "sha256": "804ef13631175505ba17e3b4a01b1bbfb4687d571e2ffcd9d1353fa956ba5915",
+      "conditions": 69,
+      "cases": [
+        "capture-static-private-default-after-raw-retirement"
+      ],
+      "result": "pass",
+      "module234_sha256": "59e8d44de0a3cfcf37c870c94782a6d04aa293c6a12a50732a368cc0df49b44e"
+    },
+    {
+      "report": ".tools/calls-keyword-compound-current-13/.tools/closure-call-protocol-7l5h3ki2/report.json",
+      "sha256": "5f3c3692e3ce24c0b45620e882d4c3e146d6b727aeaa2cde78a14dcef170d89a",
+      "conditions": 52,
+      "cases": [
+        "capture-warning-finally-chain-after-handler-restoration"
+      ],
+      "result": "pass",
+      "module234_sha256": "e967582636ff59bc4cfe6d6ef2de67fe8f3a7a9049f406dc91200056bb7802e2"
+    }
+  ],
+  "commands": {
+    "source": "Peer review_source.py FILTER and author source/source-new/source-affected.py. Per-process command/cwd/environment/exit and reused native pins are in each report.",
+    "state": "Peer .tools/fromcallable-review14-state.py and author state.py [warning-finally]. Numeric commands/exits are in state-review-kplc6tru, state-author-9vwdob4l and state-author-pruzyh7m command.json."
+  },
+  "failures": {
+    "originals": "Ignored calls-dev14-fromcallable-20261004, calls-review14-fromcallable-20261004 and private closure-call-protocol directories.",
+    "inconclusive": "Combined foreign-getter-chain-v2 model timed out at45s; zero agreement. Four bounded splits pass without cap increases.",
+    "repaired": "CONFIG file-mode gates, computed-entry overlap, captured-null SEND staging, output-helper/global-frame fixture premises, record-shape guards and authentic post-unwind trace RESULT normalization. Launcher/recorder originals remain; affected checks only.",
+    "controls": "Original argument-error-order.php ends in unsupported strlen capture; exact prefix control passes at920, zero agreement. Original private __invoke declaration warning and uncaught-chain originals stay outside supported comparisons."
+  },
+  "review": "Independent four250 entered conditions and two affected source comparisons pass. Exact maintained fixture/helper relocation is reviewed without rerun. Author static/default69 and restored throw-chain52 remain separate.",
+  "remaining": [
+    "Internal factory targets/capture of API itself, arbitrary library captures, magic/autoload and transformed fake-Closure binding.",
+    "Default/variadic, exception/shutdown registration and other internal/user-return keyword consumers require genuine staged adapters."
+  ]
+}

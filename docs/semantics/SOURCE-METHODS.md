@@ -389,8 +389,10 @@ Direct calls and first-class conversion retain ordinary lookup: raw keyword clas
 names reject as missing classes, and qualified array methods reject as literal
 undefined method names. The [221 ledger](../../coverage/semantics/keyword-compound-callables-current-review.json)
 records source comparisons, independent counterexamples, paused states and failures.
-Default/variadic reception, `Closure::fromCallable`, other internal consumers and
-user-return warning ingress remain required. Unstaged special callable checks stay
+Module234 adds actual [`Closure::fromCallable`](FROM-CALLABLE.md) selection and
+invocation with durable capture permission, cached methods and genuine receivers.
+Default/variadic reception, other internal consumers and user-return warning
+ingress remain required. Unstaged special callable checks stay
 Unsupported; kind-changing or shorter retained method buffers, magic/autoload and
 reference-return handlers remain open. Primary rules follow `zend_is_callable_at_frame`,
 `zend_is_callable_check_class` and `zend_is_callable_check_func` in vendored
