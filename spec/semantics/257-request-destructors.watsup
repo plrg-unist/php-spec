@@ -117,6 +117,7 @@ dec $destructor_frame_order(pstate, pstate) : pnode*
 dec $destructor_unused_return(pstate) : bool
 dec $destructor_return_discarded(ptask*) : bool
 dec $destructor_constructor_return(pstate) : bool
+dec $destructor_constructor_marker(ptask*, nat) : bool
 dec $destructor_frame_valid(pstate, pdestructionframe) : bool
 dec $destructor_chain_pending(pstate, pdestructorcall) : pstate
 dec $destructor_resume_pending(pstate, pdestructorcall) : pstate
@@ -674,12 +675,15 @@ def $destructor_return_discarded((ORIGIN_RETURN porigin?) :: ptask*) = $destruct
 def $destructor_return_discarded(METHOD_RESULT :: ptask*) = $destructor_return_discarded(ptask*)
 def $destructor_return_discarded(DISCARD :: ptask*) = true
 def $destructor_return_discarded(ptask*) = false -- otherwise
+def $destructor_constructor_marker((ORIGIN_RETURN porigin?) :: ptask*, n) = $destructor_constructor_marker(ptask*, n)
+def $destructor_constructor_marker((CTOR_RESULT n) :: ptask*, n) = true
+def $destructor_constructor_marker(ptask*, n) = false -- otherwise
 def $destructor_constructor_return(S) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = METHOD_TARGET n porigin
   -- if $ptlc(pcallcontext.NAME) = $ptascii("__construct")
   -- if S.FRAMES = pframe :: pframe_tail*
-  -- if pframe.TODO = (CTOR_RESULT n) :: ptask_tail*
+  -- if $destructor_constructor_marker(pframe.TODO, n)
   -- if $ctor_result_valid($restore_frame_raw(S), n)
 def $destructor_constructor_return(S) = false -- otherwise
 def $destructor_unused_return(S) = true
