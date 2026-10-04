@@ -6,6 +6,7 @@ dec $key_write_path_kind(ptask*) : bool?
 dec $key_write_path_task(ptask) : bool
 dec $key_write_finish_task(ptask) : bool
 dec $key_write_reference_task(ptask) : bool
+dec $key_write_named_task(ptask) : bool
 dec $key_write_no_rhs(ptask) : bool
 dec $key_write_direct_task(ptask) : bool
 dec $key_write_array_slot(pslot) : bool
@@ -49,6 +50,8 @@ dec $key_write_finish(pstate, pkeywriter) : pstate
 dec $key_write_reference(pstate) : pstate
 dec $key_write_update_null(pstate, pupdate, bool, int) : pstate
 dec $key_write_finish_roots(pkeywriter) : pnode*
+dec $key_write_named_value(pstate, ptask) : pstate
+dec $key_write_named_finish(pstate, ptask) : pstate
 
 def $key_write_op(NExprAssignOpPlus expression_left expression_right metadata) = (ADD)
 def $key_write_op(NExprAssignOpMinus expression_left expression_right metadata) = (SUBTRACT)
@@ -75,10 +78,13 @@ def $key_write_finish_task(ptask) = false -- otherwise
 def $key_write_reference_task(ACQUIRE_ARRAY z) = true
 def $key_write_reference_task(CALL_REF_FETCH pcalltarget n porigin?) = true
 def $key_write_reference_task(ptask) = false -- otherwise
+def $key_write_named_task(NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) = true
+def $key_write_named_task(ptask) = false -- otherwise
 def $key_write_no_rhs(ACQUIRE_ARRAY z) = true
 def $key_write_no_rhs(CALL_REF_FETCH pcalltarget n porigin?) = true
 def $key_write_no_rhs(UPDATE_PREP pupdate b z) = true
 def $key_write_no_rhs(DIM_PATH pbase z) = true
+def $key_write_no_rhs(NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) = true
 def $key_write_no_rhs(ptask) = false -- otherwise
 def $key_write_direct_task(ASSIGN_ARRAY pbase z b) = true
 def $key_write_direct_task(COMPOUND_APPLY pbin pbase b z) = true
@@ -109,6 +115,7 @@ def $key_write_path_kind((COMPOUND_PREP pbin expression_target expression_rhs z)
 def $key_write_path_kind((UPDATE_PREP pupdate b z) :: ptask_tail*) = (true)
 def $key_write_path_kind((ACQUIRE_ARRAY z) :: ptask_tail*) = (false)
 def $key_write_path_kind((CALL_REF_FETCH pcalltarget n porigin?) :: ptask_tail*) = (false)
+def $key_write_path_kind((NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) :: ptask_tail*) = (false)
 def $key_write_path_kind(ptask*) = eps -- otherwise
 
 def $key_write_writer(S, porigin, ACQUIRE_ARRAY z, pbase, poperand) = ({SITE porigin, TARGET porigin, TASK ACQUIRE_ARRAY z, BASE pbase, RHS KNOWN PNULL, TEMP eps})
@@ -119,6 +126,16 @@ def $key_write_writer(S, porigin, CALL_REF_FETCH pcalltarget n porigin_call?, pb
   -- if expression = NExprArrayDimFetch expression_base phpType5 metadata
   -- if ~$call_temporary_base(expression)
   -- if $call_task_valid(S[.ORIGIN = (porigin)], CALL_REF_FETCH pcalltarget n porigin_call?)
+def $key_write_writer(S, porigin, NAMED_SEND pcalltarget phpType7* n pnamedargs porigin_call? z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK NAMED_SEND pcalltarget phpType7* n pnamedargs porigin_call? z, BASE pbase, RHS KNOWN PNULL, TEMP eps})
+  -- if $call_task_valid(S[.ORIGIN = (porigin)], NAMED_SEND pcalltarget phpType7* n pnamedargs porigin_call? z)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if phpType7_arg = $named_source(S, porigin_call?, n)
+  -- if expression = $named_expression(phpType7_arg)
+  -- if expression = NExprArrayDimFetch expression_base phpType5 metadata
+  -- if $named_reference(pfunction, $named_arg_target(pfunction, phpType7_arg, |pnamedargs.SLOTS|))
+  -- if ~$call_temporary_base(expression)
+  -- if $named_origin(S, porigin_call?, n) = (porigin_target)
+  -- if ~$arginfo_nullsafe_origin(S, (porigin_target))
 def $key_write_writer(S, porigin, UPDATE_PREP pupdate b z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK UPDATE_PREP pupdate b z, BASE pbase, RHS KNOWN PNULL, TEMP eps})
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
   -- if $key_write_update(pcnode) = ((pupdate, b))
@@ -155,7 +172,7 @@ def $key_write_root(S, BASE_VALUE (VARIABLE n_name* z)) = true
   -- if S_read = $quiet_operand(S, VARIABLE n_name* z)
   -- if S_read.RESULT = KNOWN (PARRAY n)
 def $key_write_root(S, BASE_DIM pbase poperand z) = $key_write_root(S, pbase)
-def $key_write_root(S, BASE_PLACE porigin plocation) = true
+def $key_write_root(S, BASE_PLACE porigin plocation) = (plocation = NOWHERE \/ $key_write_array_slot($location_slot(S, plocation)) \/ $key_write_array_init($location_slot(S, plocation)))
 def $key_write_root(S, BASE_GLOBAL poperand z) = true
 def $key_write_root(S, pbase) = false -- otherwise
 def $key_write_plan(S) = (pkeywriter)
@@ -205,10 +222,14 @@ rule PhpStep/key-write-start: S ~> $key_write_begin(S)
 ;; and INDIRECT places never add roots, including a retired parent array row.
 def $base_nodes(BASE_PLACE porigin plocation) = eps
 def $base_acquire(S, BASE_PLACE porigin plocation, z) = S[.LOCATION = plocation]
+def $rw_base(S, BASE_PLACE porigin plocation, pstringfetch, z) = S[.LOCATION = plocation]
 def $key_write_finish_roots(pkeywriter) = $base_nodes(pkeywriter.BASE) ++ $key_write_temporary_root(pkeywriter.TEMP)
   -- if pkeywriter.TASK = DIM_PATH pbase z
 def $key_write_finish_roots(pkeywriter) = $base_nodes(pkeywriter.BASE) ++ $operand_nodes(pkeywriter.RHS) ++ $key_write_temporary_root(pkeywriter.TEMP)
   -- if ~$key_write_path_task(pkeywriter.TASK)
+  -- if ~$key_write_named_task(pkeywriter.TASK)
+def $key_write_finish_roots(pkeywriter) = $task_nodes(pkeywriter.TASK) ++ $base_nodes(pkeywriter.BASE) ++ $key_write_temporary_root(pkeywriter.TEMP)
+  -- if $key_write_named_task(pkeywriter.TASK)
 def $task_nodes(KEY_WRITE_BASE pbase b) = eps
 def $task_nodes(KEY_WRITE_DIM poperand z b) = eps
 def $task_nodes(KEY_WRITE_GLOBAL poperand z) = eps
@@ -395,6 +416,7 @@ def $key_write_rhs_source(S, pkeywriter) = false -- otherwise
 def $key_writer_valid(S, pkeywriter, ptask*) = true
   -- if $key_write_writer(S, pkeywriter.SITE, pkeywriter.TASK, pkeywriter.BASE, pkeywriter.RHS) = (pkeywriter[.TEMP = eps])
   -- if $key_write_target_base(pkeywriter.BASE)
+  -- if ~$key_write_mode(pkeywriter.TASK, ptask*) \/ ~$key_write_global_root(pkeywriter.BASE)
   -- if $key_write_base_source(S, pkeywriter.TARGET, pkeywriter.BASE)
   -- if $key_write_rhs_source(S, pkeywriter)
   -- if $key_write_temporary_valid(S, pkeywriter)
@@ -483,6 +505,8 @@ def $key_write_finish(S, pkeywriter) = S[.BASE = BASE_PLACE pkeywriter.TARGET S.
   -- if pkeywriter.TASK = DIM_PATH pbase z
 def $key_write_finish(S, pkeywriter) = $key_write_reference(S)
   -- if $key_write_reference_task(pkeywriter.TASK)
+def $key_write_finish(S, pkeywriter) = $key_write_named_finish(S, pkeywriter.TASK)
+  -- if $key_write_named_task(pkeywriter.TASK)
 def $key_write_finish(S, pkeywriter) = $update_location(S, pupdate, b, z)
   -- if pkeywriter.TASK = UPDATE_PREP pupdate b z
   -- if S.LOCATION =/= NOWHERE
@@ -498,6 +522,29 @@ def $key_write_finish(S, pkeywriter) = $write_operand(S, pkeywriter.RHS, z)
 def $key_write_finish(S, pkeywriter) = S[.RESULT = KNOWN PNULL]
   -- if S.LOCATION = NOWHERE
   -- if $key_write_direct_task(pkeywriter.TASK)
+
+;; A named SEND fetches before mapping, but promotes its real reference only
+;; after the name is accepted. Previously supplied arguments remain rooted.
+def $key_write_named_value(S, NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) = S_checked
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if phpType7_arg = $named_source(S, porigin?, n)
+  -- if S_checked = $named_check(S, pnamedargs, $named_arg_target(pfunction, phpType7_arg, |pnamedargs.SLOTS|), phpType7_arg, $named_line(S, porigin?, n))
+  -- if S_checked.COMPLETION =/= NORMAL
+def $key_write_named_value(S, NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) = $call_send_parameter(S_promoted, pcalltarget, $named_index(pfunction.SIGNATURE.PARAMETERS, pnamedtarget), $named_expression(phpType7_arg), porigin?, $named_origin(S, porigin?, n), z_arg)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if phpType7_arg = $named_source(S, porigin?, n)
+  -- if pnamedtarget = $named_arg_target(pfunction, phpType7_arg, |pnamedargs.SLOTS|)
+  -- if z_arg = $named_line(S, porigin?, n)
+  -- if S_checked = $named_check(S, pnamedargs, pnamedtarget, phpType7_arg, z_arg)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_promoted = $key_write_reference(S_checked)
+def $key_write_named_finish(S, NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) = S_value
+  -- if S_value = $key_write_named_value(S, NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z)
+  -- if S_value.COMPLETION =/= NORMAL
+def $key_write_named_finish(S, NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) = S_value[.TODO = (NAMED_ARGS pcalltarget phpType7* $(n + 1) $named_store(pnamedargs, $named_arg_target(pfunction, $named_source(S, porigin?, n), n), S_value.RESULT) porigin? z) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_value = $key_write_named_value(S, NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if $target_function(S, pcalltarget) = (pfunction)
 rule PhpStep/key-write-finish: S ~> S_out[.HELD = S.HELD]
   -- if S.TODO = (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*
   -- if S.ORIGIN = (pkeywriter.SITE)

@@ -58,4 +58,14 @@ function dormantGlobal242($level,$message,$file,$line) {echo "H;";return true;}
 set_error_handler('dormantGlobal242',8194);$first242=++$GLOBALS['counter242'];$second242=($GLOBALS['counter242']+=7);
 echo "G:",$first242,":",$second242,":",$counter242,";";restore_error_handler();
 ''', b'G:6:13:13;', 'normal'),
+    ('dormant-handler-preserves-nested-string-terminal-consumers', b'''<?php
+error_reporting(0);$seed242='ab';$a242=['row'=>$seed242];
+function dormantString242($level,$message,$file,$line) {echo "H;";return true;}
+set_error_handler('dormantString242',8194);$result242=($a242['row'][0]='z');
+echo "S:",$result242,":",$a242['row'],";";
+try {$ref242=&$a242['row'][0];} catch(Error $e) {echo "F:",$e->getMessage(),";";}
+try {$a242['row'][0]+=1;} catch(Error $e) {echo "C:",$e->getMessage(),";";}
+try {++$a242['row'][0];} catch(Error $e) {echo "I:",$e->getMessage(),";";}
+restore_error_handler();
+''', b'S:z:zb;F:Cannot create references to/from string offsets;C:Cannot use assign-op operators with string offsets;I:Cannot increment/decrement string offsets;', 'normal'),
 ]
