@@ -161,7 +161,8 @@ cleanup. Tentative-return declarations use real prototype order and runtime/file
 warning delivery after publication. Early eval warnings suspend genuine
 compilation at each publication; handler throws or exit preserve later class
 publication, while user fatals stop it. Compiler fatal formatting retains the
-primary diagnostic through source effects and nested eval/include compilation failures.
+primary diagnostic through source effects, nested eval/include compilation and
+deferred runtime class-link failures.
 IteratorAggregate, ArrayAccess and other Traversable consumers remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
@@ -517,8 +518,10 @@ opcode completion. Deferred collision operands compare before type conversion;
 operation diagnostics are recorded with runtime operand order and AST lines,
 then delivered after class publication. Private-final compile warnings retain
 their phase order and handler-ineligible severity. Successful collision dependency
-fills retain real typed caches and distinct import scopes; failed-link cache
-disposition, collision expression errors and readonly storage remain required. A bounded
+fills retain real typed caches and distinct import scopes. Collision expression
+errors stop the comparison, flush earlier diagnostics without handlers and render
+the pending Error before the composition fatal. Failed-link cache disposition,
+cyclic and object-bearing dependencies, and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound

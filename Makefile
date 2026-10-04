@@ -384,6 +384,10 @@ test-semantics: build
 	python3 tests/semantics/trait_method_ctor_review_protocol.py
 	python3 tests/semantics/trait_method_cold_review_protocol.py
 	python3 tests/semantics/trait_method_closure_cold_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_collision_error_review_cases.json
+	python3 tests/semantics/method_runtime.py --match property-error-keeps --catalogue tests/semantics/trait_data_collision_error_function_review_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_collision_held_primary_review_cases.json
+	python3 tests/semantics/trait_collision_error_review_protocol.py
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
 	python3 tests/semantics/eval_class_scope_protocol.py
@@ -432,5 +436,6 @@ test-semantics: build
 	python3 tests/semantics/user_iterator_protocol.py
 	python3 tests/semantics/iterator_declaration_notices.py
 	python3 tests/semantics/eval_declaration_notices_protocol.py
+	python3 tests/semantics/runtime_formatter_protocol.py
 	python3 tests/semantics/destructuring_mechanism.py
 	python3 tests/semantics/validate.py
