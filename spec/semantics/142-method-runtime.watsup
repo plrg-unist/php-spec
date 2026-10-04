@@ -236,6 +236,10 @@ def $method_frame_site_scope(S, pframe :: pframe_tail*, pfunction?) = $method_co
 def $method_frame_site_scope(S, pframe :: pframe_tail*, pfunction?) = $method_frame_site_scope(S, pframe_tail*, pfunction?)
   -- if ~$goto_owner_scope(pframe.CONTEXT, pfunction?)
 def $method_frame_site_scope(S, eps, pfunction?) = eps
+dec $constructor_source_name(pstate, pcalltarget, porigin) : preqbytes?
+dec $dynamic_new_entered(pstate, pcalltarget, porigin) : bool
+def $dynamic_new_entered(S, pcalltarget, porigin) = false -- otherwise
+def $constructor_source_name(S, pcalltarget, porigin) = $new_source_name(S, porigin) -- if ~$dynamic_new_entered(S, pcalltarget, porigin)
 dec $method_site_scope(pstate, porigin, porigin) : porigin?
 dec $method_entered_here(pstate, porigin, porigin) : bool
 def $method_entered_here(S, porigin_method, porigin_site) = true
@@ -359,9 +363,9 @@ def $method_call_selected(S, METHOD_TARGET n porigin_method, (PORIGIN n_unit pcp
   -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__construct")
-  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $new_source_name(S, PORIGIN n_unit pcpath) = (preqbytes)
+  -- if $constructor_source_name(S, METHOD_TARGET n porigin_method, PORIGIN n_unit pcpath) = (preqbytes)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_class)
@@ -759,6 +763,10 @@ def $scoped_source_name(S, NName (BYTES text) metadata) = ($ptascii(text_kind))
   -- if $ptlc($base64(text)) = $ptascii("parent")
   -- if $method_current_scope(S) = (porigin_class)
   -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (INTERNAL_THROWABLE_PARENT text_kind)
+def $scoped_source_name(S, NName (BYTES text) metadata) = ($ptascii("stdClass"))
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+  -- if $method_current_scope(S) = (porigin_class)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (STDCLASS_PARENT)
 def $scoped_source_name(S, NName (BYTES text) metadata) = (pclassdesc.NAME)
   -- if $ptlc($base64(text)) = $ptascii("static")
   -- if S.CURRENT = (pcallcontext)
@@ -965,21 +973,21 @@ dec $constructor_start_ready(pstate, preqbytes, phpType7*, int) : pstate
 dec $constructor_failed_object(pstate, nat) : pstate
 dec $parameter_default_constructor(pstate, phpType28, phpType7*, metadata) : bool
 def $constructor_start_ready(S, preqbytes, phpType7*, z) = S_new[.TODO = [$method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), CTOR_RESULT n] ++ S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new = $new_class(S, preqbytes, $new_allocation_line(S, z))
   -- if S_new.COMPLETION = NORMAL
   -- if S_new.RESULT = KNOWN (POBJECT n)
   -- if S_new.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S_new, porigin_class, $ptascii("__construct"), |S_new.CLASSES|) = (pmethoddesc)
   -- if $method_accessible(S_new, pmethoddesc, $method_current_scope(S_new))
-def $constructor_start_ready(S, preqbytes, phpType7*, z) = $method_denied($constructor_failed_object(S_new, n), pmethoddesc, $ptascii("__construct"), $method_current_scope(S_new), true, z)[.TODO = eps]
-  -- if S_new = $new_class(S, preqbytes, z)
+def $constructor_start_ready(S, preqbytes, phpType7*, z) = $method_denied($constructor_failed_object(S_new, n), pmethoddesc, $ptascii("__construct"), $method_current_scope(S_new), true, $new_allocation_line(S, z))[.TODO = eps]
+  -- if S_new = $new_class(S, preqbytes, $new_allocation_line(S, z))
   -- if S_new.COMPLETION = NORMAL
   -- if S_new.RESULT = KNOWN (POBJECT n)
   -- if S_new.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S_new, porigin_class, $ptascii("__construct"), |S_new.CLASSES|) = (pmethoddesc)
   -- if ~$method_accessible(S_new, pmethoddesc, $method_current_scope(S_new))
 def $constructor_start_ready(S, preqbytes, phpType7*, z) = S_new
-  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new = $new_class(S, preqbytes, $new_allocation_line(S, z))
   -- if S_new.COMPLETION =/= NORMAL
 
 rule PhpStep/new-with-constructor: S ~> $constructor_start(S[.TODO = ptask_tail*], preqbytes, phpType7*, $runtime_line(S, eps, NExprNew name (SEQUENCE phpType7*) metadata))
@@ -1139,7 +1147,7 @@ def $call_task_valid(S, METHOD_RESULT) = $method_result_valid(S)
 dec $ctor_result_valid(pstate, nat) : bool
 def $ctor_result_valid(S, n) = true
   -- if S.ORIGIN = (PORIGIN n_unit pcpath)
-  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $new_source_name(S, PORIGIN n_unit pcpath) = (preqbytes)
   -- if $(n < |S.OBJECTS|)

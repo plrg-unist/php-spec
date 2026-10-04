@@ -214,6 +214,7 @@ def $class_constant_table_event(S, porigin, porigin_root, porigin_trigger, n) = 
   -- if pstaticselection.ROOT = porigin_root /\ pstaticselection.SITE = porigin_trigger
 def $class_constant_table_event(S, porigin, porigin_root, porigin_trigger, n) = CCUPDATE porigin porigin_root porigin_trigger n
   -- if $class_static_selection_at(S.TODO) = eps
+  -- if ~$dynamic_new_table_selected(S, porigin_trigger)
 def $static_default_retirement_event(CCSTATICRETIRESELECT porigin pstaticselection n n_cell, porigin, n_cell) = true
 
 def $class_constant_history_fills(S, (CCSTATICSELECT porigin pstaticselection n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled* ++ [porigin], n)

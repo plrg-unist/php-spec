@@ -38,7 +38,7 @@ def $ctor_method_start(S, n, z) = $ctor_start(S[.TODO = ptask_tail*], n, CTOR_ME
   -- if S.TODO = ptask :: ptask_tail*
 def $constructor_start_ready(S, preqbytes, phpType7*, z) = $ctor_start(S_new, n, CTOR_NEW, z)
   -- if $throwable_constructor_kind(preqbytes) = (text_kind)
-  -- if S_new = $new_class(S, preqbytes, z)
+  -- if S_new = $new_class(S, preqbytes, $new_allocation_line(S, z))
   -- if S_new.COMPLETION = NORMAL
   -- if S_new.RESULT = KNOWN (POBJECT n)
   -- if S_new.OBJECTS[n] = THROWABLE pthrowable
@@ -46,7 +46,7 @@ def $constructor_start_ready(S, preqbytes, phpType7*, z) = $ctor_start(S_new, n,
 
 dec $ctor_arguments(pstate, porigin) : pcallarguments
 def $ctor_arguments(S, porigin) = PCALLARGUMENTS phpType7* 1
-  -- if $origin_node(S.SOURCES, porigin) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
 def $ctor_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
