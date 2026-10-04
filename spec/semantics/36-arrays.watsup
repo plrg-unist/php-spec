@@ -129,7 +129,7 @@ dec $array_read(pstate, pvalue, poperand, int) : pstate
 def $array_read(S, PARRAY n, poperand, z) = S_key
   -- if S_key = $dimension_key(S, poperand, z)
   -- if S_key.COMPLETION =/= NORMAL
-def $array_read(S, PARRAY n, poperand, z) = S_key[.RESULT = KNOWN $entry_value(S_key, pitem)]
+def $array_read(S, PARRAY n, poperand, z) = S_key[.RESULT = KNOWN $entry_read_value(S_key, pitem)]
   -- if S_key = $dimension_key(S, poperand, z)
   -- if S_key.COMPLETION = NORMAL
   -- if $entry_lookup(S_key.ARRAYS[n].ITEMS, S_key.KEY) = (pitem)
@@ -143,10 +143,17 @@ def $array_read(S, pvalue, poperand, z) = S[.COMPLETION = UNSUPPORTED "non-array
 
 dec $strict_check(pstate, pvalue, pvalue, nat*) : pcomparison
 dec $entries_strict(pstate, pentry*, pentry*, nat*) : pcomparison
-def $entries_strict(S, eps, eps, n_seen*) = COMPARED true
+def $entries_strict(S, eps, pentry_right*, n_seen*) = COMPARED true
+def $entries_strict(S, (ENTRY pkey UNINITIALIZED) :: pentry_left*, pentry_right*, n_seen*) = $entries_strict(S, pentry_left*, pentry_right*, n_seen*)
+def $entries_strict(S, (ENTRY pkey pitem) :: pentry_left*, (ENTRY pkey_right UNINITIALIZED) :: pentry_right*, n_seen*) = $entries_strict(S, (ENTRY pkey pitem) :: pentry_left*, pentry_right*, n_seen*)
+  -- if pitem =/= UNINITIALIZED
 def $entries_strict(S, (ENTRY pkey pitem_1) :: pentry_left*, (ENTRY pkey pitem_2) :: pentry_right*, n_seen*) = $entries_strict(S, pentry_left*, pentry_right*, n_seen*)
+  -- if pitem_1 =/= UNINITIALIZED
+  -- if pitem_2 =/= UNINITIALIZED
   -- if $strict_check(S, $entry_value(S, pitem_1), $entry_value(S, pitem_2), n_seen*) = COMPARED true
 def $entries_strict(S, (ENTRY pkey pitem_1) :: pentry_left*, (ENTRY pkey pitem_2) :: pentry_right*, n_seen*) = RECURSIVE
+  -- if pitem_1 =/= UNINITIALIZED
+  -- if pitem_2 =/= UNINITIALIZED
   -- if $strict_check(S, $entry_value(S, pitem_1), $entry_value(S, pitem_2), n_seen*) = RECURSIVE
 def $entries_strict(S, pentry_left*, pentry_right*, n_seen*) = COMPARED false
   -- otherwise

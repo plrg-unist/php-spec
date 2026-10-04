@@ -34,11 +34,24 @@ the live handler mask and reporting settings. Nested includes own separate
 queues. Source/compiler chronology authenticates batches, and one continuation
 owns each runtime publication or file unit across current tasks and saved frames.
 
-Genuine early `eval` diagnostic callbacks remain temporary Unsupported. Their
-per-class delivery, later publication after handler throws and pending-exception
-fatal priority are the immediate required follow-on. Runtime class declarations
-inside completed eval units are admitted. Concrete Traversable-only classes also
-await the native core-fatal location (`Unknown`, line0).
+Module236 suspends genuine early `eval` compilation for each class's notices;
+generic compiler warnings run at their actual point before publication. The
+handler can traverse classes already published, with the real eval caller scope,
+line and trace. A handler's exception or exit remains owned while later classes
+publish, then prevents the unit's statements from running. A user fatal stops
+compilation and retires the compiler owner before request shutdown.
+
+Later hard declaration failures retain their diagnostic prefix and primary fatal
+while a pending exception's source formatter runs. Recorded nonfatal diagnostics
+stay suppressed during formatting. Formatter throws, exit, conditional class
+publication and nested hard eval/include compilation failures preserve the original fatal
+and genuine user trace. The compact compiler plan is checked against the accepted
+source image; pause/resume chronology proves the actual publication prefix.
+Compiler continuations have one real task owner and cannot hide in source wrappers
+or branches. Concrete Traversable-only classes still await the native core-fatal
+location (`Unknown`, line0).
+Deferred runtime declaration failures inside a fatal formatter require their own
+targeted checks; the compiler-stop results do not establish that path.
 
 `IteratorAggregate`, `ArrayAccess`, Traversable argument/array unpacking and wider
 ordinary object/reference traversal remain required. Broader object destruction
@@ -49,7 +62,19 @@ complete traversal or complete PHP core semantics.
 expectations. `python3 tests/semantics/user_iterator_protocol.py --select cursor-claims,cursor-alias`
 reaches real callback/body states and rejects duplicate or aliased cursor claims.
 `python3 tests/semantics/iterator_declaration_notices.py` checks notice order,
-prototype replacement, suppressors, publication and fatal-prefix behavior;
-early-eval controls assert only the temporary Unsupported boundary.
+prototype replacement, suppressors, file/eval publication and fatal-prefix behavior.
+`python3 tests/semantics/eval_declaration_notices_protocol.py --select pending`
+reaches a real early-eval pause and checks source-plan, prefix and owner authority.
+Its other phases cover callback/traversal frames, nested compilers, retained
+exceptions and fatal formatter/file retirement. The `file-public` and
+`file-history-retirement` phases use the maintained runner's `--sl` option with
+the same strict checks, disabled cache and300-second cap; other phases retain
+AL mode. Their43/49 predicates pass at semantic c9e6 (private43b), after the original
+AL attempts timed out without a verdict. The ordinary independent phases retain
+their separate65/36/28/42/30/45 cut at ea077, nested-fatal57 at3bd and the coherent
+function-descriptor forgery24 at c9e6. Authored USERfatal48 and21 distinct source
+agreements keep their original cuts; affected nested/file source2 passes at3bd.
+Actual23c composition source2 at5cf39c0dd covers dollar-curly compiler callbacks
+changing live reporting and pending compiler exit before request destruction.
 Raw native/model commands, outputs, revisions and runtime profiles stay in ignored
 `.tools` directories; the harness records each selected run separately.

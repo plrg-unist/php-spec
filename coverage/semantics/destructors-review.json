@@ -1,0 +1,144 @@
+{
+  "actor": "exceptions_dev_14",
+  "scope": "Request stage2 after ordered shutdown callbacks; earlier eager release and later GC/output/freeing remain required",
+  "baseline": "cde31ae42683ffb0eaa141ec1d8681ec936d0e0a",
+  "actual_accepted_parent": "a4fc3c68638a96cdfaa9501eb0fbf1b29710a634",
+  "runtime": "PHP 8.5.10 CLI NTS64",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed",
+    "source_cap_seconds": "native30/model75(inner60)",
+    "state_and_algorithm_cap_seconds": 120,
+    "jobs": 1
+  },
+  "raw_root": ".tools/destructors-current-14/.tools",
+  "sources": {
+    "distinct_exact_agreements": 78,
+    "partition": "64 request-stage sources, four declaration/compiled-order sources, ten new actual cleanup/startup sources; assigned source66 has one affected replay and no extra distinct credit",
+    "raw_cut_index": "destructor-publication-cuts.json",
+    "cut_index_scope": "Every passing record retains its real revision and report. Mixed reports remain failed overall; only exact passing records count. These cuts do not claim an all78 replay on the final parent.",
+    "suite": [
+      "tests/semantics/destructor_review.py",
+      "tests/semantics/destructors.py",
+      "tests/semantics/destructor_request.py"
+    ],
+    "actual_cleanup_reports": [
+      "shutdown-review-ps8hplsb/report.json",
+      "shutdown-review-evwiva35/report.json",
+      "shutdown-review-bek8y76e/report.json",
+      "shutdown-review-ngl5bujk/report.json"
+    ],
+    "actual_order_reports": [
+      "shutdown-review-41gd_ud8/report.json",
+      "shutdown-review-zof9n5ag/report.json",
+      "shutdown-review-5_v1ipv_/report.json"
+    ],
+    "startup_scope": "Explicit matching FILE/ARGV facts reproduce preexisting argc order. Unobserved clock/environment facts are arbitrary; no request-provider or whole-profile agreement is claimed. The dormant compiled argc CV requires no request access."
+  },
+  "reached_states": {
+    "distinct": 7,
+    "assertions_including_setup": 303,
+    "cuts": [
+      {
+        "revision": "98a048ef7f3e076f838500f6828740a9c90a963a",
+        "report": "shutdown-state-review-8bgvjb74/report.json",
+        "distinct": 1,
+        "assertions": 44,
+        "report_passed": false,
+        "passing_state": "repeated-child-slots-retain-unconsumed-owners"
+      },
+      {
+        "revision": "f8a2d5d1dbc9de9505a0f57d79ec91b6dc318cff",
+        "report": "shutdown-state-review-phcfxc3a/report.json",
+        "distinct": 1,
+        "assertions": 43
+      },
+      {
+        "revision": "b5d072a5ed9c324bf091caf73d87ccaea7a94595",
+        "report": "shutdown-state-review-kzwrzhcc/report.json",
+        "distinct": 3,
+        "assertions": 110
+      },
+      {
+        "revision": "4e837cabfc7553b9a692fcab0edcf64ef4a0ddc5",
+        "report": "shutdown-state-review-1vjob1vv/report.json",
+        "distinct": 2,
+        "assertions": 106
+      }
+    ],
+    "covered": "Ordered remaining owners, exact replacement/previous Throwable, once flags, authentic current/saved scope, suspended-parent suffix, retained assigned return and pre-restore unused by-value/ordinary-constructor destination; negative certificates and exact budget replay"
+  },
+  "compiler": {
+    "production_revision": "7a995ea6a9473f71d3e8fc9645cd36c3d05608be",
+    "production_report": "shutdown-review-5_v1ipv_/report.json",
+    "production": "SL execution; accepted checked program, normal CLI0, exact M;D; stdout and empty stderr",
+    "algorithm_revision": "7a995ea6a9473f71d3e8fc9645cd36c3d05608be",
+    "algorithm_report": "destructor-al-vt7j7nia/report.json",
+    "algorithm": "AL elaboration, algorithmic checking and init;253 modules; true/empty stderr/exit0; cache disabled and encountered determinism",
+    "preserved_earlier_reports": [
+      "destructor-al-cwbtu558/report.json",
+      "destructor-al-x22oep7d/report.json",
+      "destructor-al-a3_u_i6q/report.json"
+    ],
+    "preservation": "Actual253 bound-method,259 bailout marking and260 dynamic constructor sources are compared. Accepted264/262/266 paths are preserved by focused source inspection; no old-family execution credit is renewed."
+  },
+  "zero_agreement_controls": {
+    "earlier_release": {
+      "count": 2,
+      "reason": "ordinary destructor release before request stage",
+      "catalogue": "tests/semantics/destructor_review_cases.json"
+    },
+    "absent_request": {
+      "count": 1,
+      "revision": "8e7567064d161384aec168ea5cefef534109c7d3",
+      "report": "shutdown-review-i48i992k/report.json",
+      "reason": "request environment variable",
+      "CLI_exit": 1,
+      "streams": "empty"
+    },
+    "static_destructor_frontend": {
+      "count": 1,
+      "report": "shutdown-review-lzz5bflp/report.json",
+      "category": "frontend_failure/parser_rejection",
+      "reason": "Destructor __destruct() cannot be static on line 1"
+    }
+  },
+  "preserved_failures": [
+    {
+      "report": "shutdown-review-9e_7__dd/report.json",
+      "cause": "Ignored by-value return held through locals instead of pre-restore release",
+      "resolution": "810/4ce; the original exact native source passes as the first record of ps8hplsb"
+    },
+    {
+      "reports": "shutdown-review-ps8hplsb/report.json; shutdown-review-evwiva35/report.json; shutdown-review-3gbz6sxi/report.json",
+      "cause": "Private METHOD_RESULT and ordinary CTOR_RESULT destinations needed exact wrappers/selected method name",
+      "resolution": "3e6/d38/bc1; private record and ctor pair pass at their separate cuts; mixed reports stay failed"
+    },
+    {
+      "report": "shutdown-state-review-eqjbw_2s/report.json",
+      "cause": "Fixture used PRIVATE rather than PROPERTY_PRIVATE",
+      "resolution": "Only the affected private-scope fixture corrected;1vjob1vv passes106"
+    },
+    {
+      "report": "shutdown-review-g8hpxohf/report.json",
+      "cause": "Existing request environment Unsupported overwritten during RHS destructor pruning",
+      "resolution": "8e7567064 preserves original completion; i48i992k confirms the original boundary with zero agreement credit"
+    },
+    {
+      "report": "destructor-al-lebvtu9z/report.json",
+      "cause": "Fixture command loaded the generated schema twice",
+      "resolution": "Existing modules list already includes it; corrected command only"
+    },
+    {
+      "report": "shutdown-state-review-8bgvjb74/report.json",
+      "cause": "Suspended-parent saved continuation failed after the repeated-slots record passed",
+      "resolution": "Only the suspended-parent state repeated; phcfxc3a passes43 on f8/602. The mixed original report remains failed."
+    }
+  ],
+  "independent": "coverage/semantics/destructor-review.json records the other actor64 exact sources, two controls and12 reached states548 premises. Counts overlap source families and must not be added as independent unique coverage.",
+  "recovery": "Raw reports preserve revisions, exact source filenames, commands, identities, profiles, exits and whole streams. Reuse their native.reused_from reports with --native-report; run only the recorded --match/--case selection. The optional request wrapper supplies the documented primitive facts. Generated evidence stays outside Git.",
+  "limits": "Earlier ordinary eager destruction and original uncaught Throwable release before stage1 are explicit Unsupported dependencies, not moved into stage2. DONE retains remaining native owners and shutdown entries. Cycles/GC, WeakReference/WeakMap, output buffering, queue release and final request cleanup remain required. This is neither complete lifecycle/core nor a fresh offline rebuild; paused returns verification remains paused."
+}

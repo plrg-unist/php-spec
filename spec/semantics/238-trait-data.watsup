@@ -200,7 +200,7 @@ def $trait_member_fold(S, pclassdesc, PORIGIN n pcpath) = (F_result)
   -- if $($expression_line(expression) > 0)
   -- if F = $pfbegin(n, pcunit.AST)
   -- if porigin_member = PORIGIN n pcpath[0:$nabs($(|pcpath| - 1))]
-  -- if S_memory = S[.CONSTCONTEXT = ({ORIGIN TRAIT_MEMBER_ORIGIN pclassdesc.ORIGIN porigin_member, LINE $expression_line(expression), FACTS eps})]
+  -- if S_memory = S[.CONSTCONTEXT = ({ORIGIN TRAIT_MEMBER_ORIGIN pclassdesc.ORIGIN porigin_member, LINE $expression_line(expression), FACTS eps})][.ORIGIN = eps][.ERRORHANDLER = {CALLBACK eps, LEVELS 0}][.ERRORFATALTRACE = eps][.DISPLAYINI = ($ptascii("stderr"))]
   -- if ptcontext = {NAMESPACE eps, IMPORTS eps, SCOPE PTKNOWN pclassdesc.NAME pclassdesc.PARENT, POSITION PTCONSTANT, OWNER pclassdesc.NAME, MEMBER eps, FILE $call_sourcefile(S.FILES, PORIGIN n pcpath), LINE $nabs($expression_line(expression))}
   -- if $pool_at(S.POOLS, n) = (ppool)
   -- if $trait_record_root(S, pclassdesc, PORIGIN n pcpath)

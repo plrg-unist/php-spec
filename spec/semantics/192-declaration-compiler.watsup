@@ -1,3 +1,4 @@
+dec $declaration_compile_result(pstate, ppstate) : pstate
 ;; Completed source images install once. Live declarations then follow the
 ;; compiler's source checkpoints, interleaved with their preceding diagnostics.
 dec $declaration_install(pstate, pcunit, ppinstalled) : pstate
@@ -11,7 +12,8 @@ def $declaration_install(S, pcunit, ppinstalled) = S_installed
 dec $declaration_stop(pstate, ppstate, pcompilestop) : pstate
 dec $iterator_notice_compile_stop(pstate) : pstate
 dec $iterator_notice_compile_finish(pstate, ptask*, nat) : pstate
-def $declaration_stop(S, P, pcompilestop) = $declaration_exit($iterator_notice_compile_stop(S)[.TODO = eps][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, S.COMPLETION, P.FOLD.SOURCE.ID)], P.FOLD.SOURCE.ID, pcompilestop)
+dec $eval_compile_declaration_stop(pstate, nat) : pstate
+def $declaration_stop(S, P, pcompilestop) = $eval_compile_declaration_stop($declaration_exit($iterator_notice_compile_stop(S)[.TODO = eps][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, S.COMPLETION, P.FOLD.SOURCE.ID)], P.FOLD.SOURCE.ID, pcompilestop), P.FOLD.SOURCE.ID)
 
 dec $declaration_class_checkpoint(pstate, pclassdesc, pdeclprobe) : pstate
 def $declaration_class_checkpoint(S, pclassdesc, DECLREADY) = $activate_class(S, pclassdesc)
@@ -67,9 +69,9 @@ def $declaration_fold_result(S, P, pppublication*, n_diagnostics, n_checkpoint) 
 def $declaration_fold_result(S, P, pppublication*, n_diagnostics, n_checkpoint) = $declaration_stop(S, P, PCSLINK n_checkpoint)
   -- if S.COMPLETION =/= NORMAL /\ ~$declaration_unsupported(S.COMPLETION)
 
-def $declaration_compile(S, P) = $declaration_fold(S_installed, P, P.PUBLICATIONS, 0, 0)
+def $declaration_compile_result(S, P) = $declaration_fold(S_installed, P, P.PUBLICATIONS, 0, 0)
   -- if S_installed = $declaration_install(S, P.FOLD.SOURCE, P.INSTALLED)
   -- if S_installed.COMPLETION = NORMAL
-def $declaration_compile(S, P) = $declaration_stop(S_installed, P, PCSUNSUPPORTED 0)
+def $declaration_compile_result(S, P) = $declaration_stop(S_installed, P, PCSUNSUPPORTED 0)
   -- if S_installed = $declaration_install(S, P.FOLD.SOURCE, P.INSTALLED)
   -- if S_installed.COMPLETION =/= NORMAL

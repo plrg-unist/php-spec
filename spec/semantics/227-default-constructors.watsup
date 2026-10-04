@@ -122,7 +122,7 @@ rule PhpStep/default-new-selected: S ~> S[.TODO = (DEFAULT_CTOR_ARGS {NEW pdefau
   -- if S.OBJECTS[pdefaultnew.OBJECT] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
   -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
-rule PhpStep/default-new-denied: S ~> $method_denied(S, pmethoddesc, $ptascii("__construct"), $method_current_scope(S), true, pdefaultnew.LINE)[.TODO = eps]
+rule PhpStep/default-new-denied: S ~> $method_denied($constructor_failed_object(S, pdefaultnew.OBJECT), pmethoddesc, $ptascii("__construct"), $method_current_scope(S), true, pdefaultnew.LINE)[.TODO = eps]
   -- if S.TODO = (DEFAULT_NEW_ARGS pdefaultnew) :: ptask_tail*
   -- if $default_new_valid(S, pdefaultnew)
   -- if pdefaultnew.INDEX = |pdefaultnew.ARGUMENTS|

@@ -1,0 +1,27 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64 profile.json; recording-scope arithmetic diagnostics. Native-only before model comparisons.",
+  "cases": [
+    {
+      "id": "recorded-numeric-string-warning-ignores-live-handler-during-fold",
+      "source": "<?php\nset_error_handler(function($n,$m){echo \"H\",$n,\";\";C::marker();return true;});\ntrait T{public static $x=E_STRICT+\"2tail\";}\necho \"PRE;\";\nclass C{use T;public static $x=2050;public static function marker(){echo \"M;\";}}\necho \"POST;\",C::$x;",
+      "source_sha256": "033877a52bf81054468ed39cabcd539944701b4b25f0c909b284366ff6941a97",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "UFJFO0g4MTkyO007SDI7TTtQT1NUOzIwNTA=",
+      "stderr_template_base64": "",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-effectful-data-259/.tools/trait-record-arithmetic-native259-_badxl0_/report.json",
+      "native_raw_sha256": "7c8bdd1434f063ae1394646033d03f2665427637fe1a1acf57821b0c343fc795"
+    },
+    {
+      "id": "recorded-float-key-deprecation-ignores-live-display-and-mask",
+      "source": "<?php\nini_set(\"display_errors\",\"0\");error_reporting(0);\nset_error_handler(function($n,$m){echo \"H\",$n,\";\";return true;});\ntrait T{public static $x=[(E_STRICT+0.5)=>\"X\"];}\necho \"PRE;\";\nclass C{use T;public static $x=[2048=>\"X\"];}\necho \"POST;\",C::$x[2048];",
+      "source_sha256": "90357920658fd39664d8f1f380b707b75348dffa80a92ad5ec6562b7be77b378",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "UFJFO0g4MTkyO0g4MTkyO1BPU1Q7WA==",
+      "stderr_template_base64": "",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-effectful-data-259/.tools/trait-record-arithmetic-native259-_badxl0_/report.json",
+      "native_raw_sha256": "17cb6cb880b8ea7e10a29d9fbb3144be4c91ddfbee0bb40c1e246d46289233b2"
+    }
+  ]
+}

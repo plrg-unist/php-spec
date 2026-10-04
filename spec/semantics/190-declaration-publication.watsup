@@ -45,6 +45,8 @@ syntax pdeclentry = (nat, porigin?, int)
 dec $declaration_open_item(pdeclaration, pdeclentry?) : pdeclentry?
 def $declaration_open_item(PDENTER n porigin? z, pdeclentry?) = ((n, porigin?, z))
 def $declaration_open_item(PDEXIT n pcompilestop, pdeclentry?) = eps
+def $declaration_open_item(PDEVALPAUSE n n_checkpoint n_diagnostic pdeclnoticeitem*, pdeclentry?) = eps
+def $declaration_open_item(PDEVALRESUME n z, pdeclentry?) = ((n, eps, z))
 def $declaration_open_item(pdeclaration, pdeclentry?) = pdeclentry? -- otherwise
 dec $declaration_open_from(pdeclaration*, (nat, porigin?, int)?) : (nat, porigin?, int)?
 dec $declaration_open(pdeclaration*) : (nat, porigin?, int)?

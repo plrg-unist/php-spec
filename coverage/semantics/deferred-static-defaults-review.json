@@ -14,7 +14,8 @@
     "spec/semantics/212-constant-callables.watsup",
     "spec/semantics/173-method-callables.watsup",
     "spec/semantics/252-object-property-defaults.watsup",
-    "spec/semantics/263-property-callable-creation.watsup"
+    "spec/semantics/263-property-callable-creation.watsup",
+    "spec/semantics/265-trait-constant-callables.watsup"
   ],
   "contracts": [
     "Declaring scope; strict types with int-to-float promotion.",
@@ -34,7 +35,8 @@
     "Cold inherited templates create separate objects; late copies freeze the successful parent binding before CCLINK. Retry preserves the successful object/certificate prefix; outer reentry replaces only the requested template.",
     "Direct/alias/array and immutable literal-key projection flow is source-authenticated; strict/type/throw paths mint no object value binding. Plain clones retain copied scope and earlier permission authority without new constant receipts.",
     "Shared trait-property ASTs cache their first authentic private method/global function target. Each later receipt carries its own full DECL/publication prefix and fresh called class; retired first-source objects remain lookup-only authority, and ordinary method ancestry is unchanged.",
-    "Cached property METHOD children copy authentic full importing method/receipt/scope and invocation evidence. Wrapped/plain maker retirement leaves historical authority valid without heap ownership; lexical and unrelated called classes remain distinct, including private NEW self defaults and real child clones."
+    "Cached property METHOD children copy authentic full importing method/receipt/scope and invocation evidence. Wrapped/plain maker retirement leaves historical authority valid without heap ownership; lexical and unrelated called classes remain distinct, including private NEW self defaults and real child clones.",
+    "Shared trait-constant FCC ASTs retain the first authenticated private method/global function target after partial failure. Named/method receipts keep current full declaration prefixes; METHOD captures select fresh called classes, while REAL constant Closures use their own declaring owner. Copied METHOD child evidence remains nonowning and ordinary ancestry stays exact."
   ],
   "engine_symbols": [
     "zend_compile_prop_decl",
@@ -47,7 +49,8 @@
     "ZEND_DECLARE_LAMBDA_FUNCTION",
     "zend_ast_evaluate_ex: ZEND_AST_CALL, ZEND_AST_STATIC_CALL, ZEND_AST_OP_ARRAY",
     "zend_create_fake_closure",
-    "zend_create_closure"
+    "zend_create_closure",
+    "zend_do_traits_constant_binding"
   ],
   "artifacts": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults",
   "runtime": {
@@ -138,9 +141,11 @@
     "temporary_creation": "compiler_review_14 independently accepted authentic CALL evidence, disjoint repair, source/fixture/recorder and exact raw at e32/49d/adbf; six source agreements/193 premises, original failure retained.",
     "instance_templates": "compiler_review_14 independently accepted the requested-class ownership/link-copy/order/strict/reentry source and fixtures, exact eight raw source tuples at80900fa4b and three172-premise AL guards at449b45763; original compile/fixture failures retained, earlier evidence not replayed.",
     "object_defaults": "compiler_review_14 independently accepted object/source/copy/ownership/clone authority, original nine full tuples and six335 guards at retained cuts, then nonrecursive cached-target/fresh-called/publication split, exact actual238 source and98 raw guards ata502. Inputs stable and original failures retained; no prior renewal.",
-    "property_method_children": "compiler_review_14 independently accepted the historical/live authority split, exact source/fixture/recorder and two publicCLI tuples ataa899, static105 premises at9ae61 and default65 atb8d10. Original fixture stops remain zero-credit; earlier evidence retained without replay."
+    "property_method_children": "compiler_review_14 independently accepted the historical/live authority split, exact source/fixture/recorder and two publicCLI tuples ataa899, static105 premises at9ae61 and default65 atb8d10. Original fixture stops remain zero-credit; earlier evidence retained without replay.",
+    "trait_constant_callables": "compiler_review_14 independently accepted exact nonrecursive first/current receipt authority, source/fixture/runner and three raw publicCLI tuples plus58+54 AL premises at4e2d. Byte-identical122 premises passed production SL at733826c23 with det:true/cache:false and unchanged120s cap. AL timeouts/localizers retain zero-credit; earlier evidence was not replayed."
   },
   "required_next": [
+    "Compiled keyword NEW under a cached trait-constant METHOD must use its exact receipt authority, preserving separate lexical/called classes; ordinary keyword NEW and wider default/callable consumers remain required.",
     "Other object-bearing default expression producers, remaining constructor/default consumers and arbitrary object transfers.",
     "Wider retained reference/update and transformed callable creation consumers; ordinary method, captured/rebound, temporary-call and cached property METHOD child scope evidence is supported.",
     "Broader retained selectors, traits/hooks/readonly and property consumers.",
@@ -453,5 +458,46 @@
       "model-v2 default65 elaboration failure from nonexistent CELLS/wrong slot item; no default-state credit. Correct reached STORE/DEFINED observation reran only default65."
     ],
     "credit": "Two new publicCLI source agreements and170 AL premises; prior252 nine/335 and actual238 one/98 retained. Wider transformed METHOD creation contexts remain required."
+  },
+  "trait_constant_callable_validation": {
+    "result": "PASS3 exact native/publicCLI normal tuples,112 AL premises and122 SL premises; modes and cutoffs stay distinct.",
+    "tested_revisions": {
+      "source3_and_AL112": "4e2d53c75c71f45859650378ea2e0476d4f33164",
+      "SL122": "733826c23fa5adf8bac728dd90cb85b74b4b4e2a"
+    },
+    "scope": "Late imported NAMED/METHOD target caching, REAL per-declaration scope, private cached lexical owner versus fresh unrelated called class, actual partial initializer failure/source retirement, wrapped/plain makers, copied children/private NEW self defaults, successful readonly cache roots and exact source/prefix/scope forgeries.",
+    "reports": [
+      "reviewer14-trait-constant-fcc-native-v2/report.json",
+      "reviewer14-trait-constant-fcc-native-v3/report.json",
+      "reviewer14-trait-constant-fcc-native-v4/report.json",
+      "trait-constant-model-v1/report.json",
+      "trait-constant-model-v2/report.json"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/trait-constant-model-v1/run.py",
+      "python3 .tools/deferred-static-defaults/trait-constant-model-v2/run.py"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "profile": "Full baseline30719; pinned local PHP8.5.10 CLI NTS64 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398. Existing237-capable adapter reused; fixture runner rebuilt locally only for leading --sl selection, AL default unchanged.",
+    "limits": "Serial publicCLI100000 steps/45s, host55s; guards120s, jobs1; det:true/cache:false in both modes.",
+    "completion": "Credited source tuples accepted/checked program/normal with null reason/diagnostic and exact complete native exits/streams. Guard outputs exactly true newline, empty stderr, process+cleanup0, owned groups empty and watched inputs unchanged.",
+    "published_fixture": "tests/semantics/trait_constant_callable_protocol.py; exact prepared-v3 NAMED58/REAL54/METHOD122. METHOD source/check bytes unchanged when selecting SL.",
+    "SL_runner": {
+      "binary_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "build_record": "trait-constant-model-v2/runner-build.json",
+      "guard_sha256": "b6bc4af05cc73f11d52149fc0c7e74ba988a438043d9cf2f8301872ae0fa7b0c",
+      "duration_seconds": 27.19
+    },
+    "preserved_failures": [
+      "Original model-v1 METHOD122 AL host timeout120s; no assertion or state pass credit. Bounded AL localizersv1-v5 retain strict passing prefixes through real table completion/default-object allocation and later timeouts. The identical complete guard passed SL without cap, cache, determinism, semantic or assertion changes.",
+      "Simpler native-only METHOD controls remain v1/v3; the closed three-original model set uses stronger partial-METHODv4."
+    ],
+    "credit": "Three new publicCLI SL agreements plus58+54 AL and122 SL premises. Earlier252/263 evidence retained without renewal; complete core and broader callable/default consumers remain open."
   }
 }
