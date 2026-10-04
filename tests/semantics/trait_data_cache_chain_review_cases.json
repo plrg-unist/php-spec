@@ -1,0 +1,19 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64, project profile; native-only preparation, zero model credit.",
+  "scope": "Successful recursive dependency lookup selects full importing Y/Z descriptors. Both cache rows share the array before the later static COW write.",
+  "cases": [
+    {
+      "id": "imported-array-dependency-chain-keeps-two-cache-owners-and-cow",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo \"H\",$l,\";\";return true;});\ntrait T{public const array Z=[E_STRICT=>\"X\"];public const array Y=self::Z;public static array $x=self::Y;}\necho \"PRE;\";\nclass C{use T;public static array $x=self::Y;}\necho \"POST;\",C::Y[2048],\":\",C::$x[2048],\";\";\nC::$x[2048]=\"W\";\necho C::Z[2048],\":\",C::Y[2048],\":\",C::$x[2048];\n",
+      "source_sha256": "6c1598ef44d1ff269ea2c4f885732973d2b377094d8cddba87447bd3ecdd0fce",
+      "status": "normal",
+      "stdout_base64": "UFJFO0gzO1BPU1Q7WDpYO1g6WDpX",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-cache-review-266/.tools/trait-chain-native-266-wr14125a/report.json",
+      "native_raw_sha256": "24765fd7c910f8d9e4735d047517fe95a45f3c4ef00d17d638b4909178db9901"
+    }
+  ],
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr"
+}

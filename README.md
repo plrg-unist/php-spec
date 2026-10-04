@@ -516,8 +516,9 @@ warnings retain selected cells and operand ownership through handlers and abrupt
 opcode completion. Deferred collision operands compare before type conversion;
 operation diagnostics are recorded with runtime operand order and AST lines,
 then delivered after class publication. Private-final compile warnings retain
-their phase order and handler-ineligible severity. Dependency caching, collision
-expression errors and readonly storage remain required. A bounded
+their phase order and handler-ineligible severity. Successful collision dependency
+fills retain real typed caches and distinct import scopes; failed-link cache
+disposition, collision expression errors and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
@@ -590,13 +591,13 @@ The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.
 Readonly members, hooks and user magic methods remain open.
-Ordinary [`Closure::call`](docs/semantics/CLOSURE-CALL.md) temporarily changes
-receiver/scope, evaluates arguments before binding validation, preserves original
-wrapper arguments and returns values from reference-returning closures. Its
-[bounded review](coverage/semantics/closure-call-review.json) includes a current
-canonical projection and focused installed checks. Named receivers and isolated
-reference formals are installed with bounded source/state checks; unpacking
-remains open ([argument review](coverage/semantics/closure-call-arguments-review.json)).
+[`Closure::call`](docs/semantics/CLOSURE-CALL.md) invokes ordinary and fake method
+captures with temporary receiver/scope, shared source statics and original wrapper
+values. Binding warnings precede inner-name errors; forwarding reference warnings
+precede fresh cell allocation and preserve the captured value through callbacks.
+Finite getters and created children retain their selected scope and owners.
+The [new review](coverage/semantics/temporary-fake-call-review.json) preserves
+source/state cuts; unpacking and REAL temporary-current lifetime remain required.
 [Print expressions](docs/semantics/SOURCE-PRINT.md) preserve output effects while
 returning constant integer 1, including folded expressions and reference demand.
 Source, compiler and paused ownership checks cover admitted conversions;

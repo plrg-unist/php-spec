@@ -1,0 +1,25 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only259 preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Nested class constant lookup during trait collision retains composing-class filename and original trait fetch AST line, and caches only dependency Y.",
+  "cases": [
+    {
+      "id": "dependent-constant-warning-uses-composing-file-and-physical-trait-fetch-line",
+      "source": "<?php\ninclude __DIR__.\"/trait.php\";\nset_error_handler(function($n,$m,$f,$l){echo ($f===__FILE__?\"CFILE\":\"BAD\"),\":\",$l,\";\";return true;});\necho \"PRE;\";\nclass C{use T;public const X=2048;public const Y=E_STRICT;}\necho \"POST;\",C::Y,\":\",C::X;",
+      "source_sha256": "d3ba8d5feca45ca32cd98407900328fdc016051aa3c7eb21f9d4d238dc46ae44",
+      "files": [
+        {
+          "name": "trait.php",
+          "source": "<?php\ntrait T{\n public const X=self::Y;\n}",
+          "source_sha256": "1c574397dab211466db082c710736c524bab1f650289205faccc3771b81487f7"
+        }
+      ],
+      "status": "normal",
+      "stdout_base64": "UFJFO0NGSUxFOjM7UE9TVDsyMDQ4OjIwNDg=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-file-native259-qhh0v9bd/report.json",
+      "native_raw_sha256": "eac70b5270285b36880e7c47a2ac2f2a6251a810c398e3f18513f47ec5d53ee8"
+    }
+  ]
+}
