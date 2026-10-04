@@ -26,9 +26,8 @@ def $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind) = true
   -- if $origin_node(S.SOURCES, porigin_child) = (expression)
   -- if $file_site_valid(S, porigin_parent, z, n_kind)
 def $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind) = false -- otherwise
-def $file_operand_child_site(S, porigin_child, z) = $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind)
+def $file_operand_child_site(S, porigin_child, z) = ($file_operand_site_valid(S, porigin_parent, porigin_child, z, 1) \/ $file_operand_site_valid(S, porigin_parent, porigin_child, z, 2) \/ $file_operand_site_valid(S, porigin_parent, porigin_child, z, 3) \/ $file_operand_site_valid(S, porigin_parent, porigin_child, z, 4))
   -- if $reference_origin_parent(porigin_child, 1) = ((porigin_parent, [PCFIELD 0]))
-  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprInclude expression (INTEGER n_kind) metadata)
 def $file_operand_child_site(S, porigin_child, z) = false -- otherwise
 
 rule PhpStep/file-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), $at_task($origin_child(S.ORIGIN, [PCFIELD 0]), FILE_REQUEST porigin z n_kind)] ++ ptask_tail*]
