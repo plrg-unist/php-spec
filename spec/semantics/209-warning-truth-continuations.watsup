@@ -1,0 +1,111 @@
+;; Missing CV truth reads consume the original null, even if a handler defines
+;; the same name. Each suspended consumer is reconstructed from checked source.
+;; The ordinary profile emits BOOL results into distinct temporary slots.
+def $error_simple_read(CHOOSE ptask_true* ptask_false* z) = true
+def $error_simple_read(SHORT_RESULT b expression z_left z_right) = true
+def $error_simple_read(TRUTH_RESULT b z) = true
+def $error_simple_read(SELECT_VALUE phpType5 expression z_cond z_true z_false) = true
+def $error_read_line(CHOOSE ptask_true* ptask_false* z, z_origin) = z
+def $error_read_line(SHORT_RESULT b expression z_left z_right, z_origin) = z_left
+def $error_read_line(TRUTH_RESULT b z, z_origin) = z
+def $error_read_line(SELECT_VALUE phpType5 expression z_cond z_true z_false, z_origin) = z_cond
+
+dec $truth_if_head_source(pstate, porigin, nat, phpType54, phpType54*, phpType55, perrorread) : bool
+def $truth_if_head_source(S, porigin, n, NStmtElseIf expression (SEQUENCE statement*) metadata, phpType54_tail*, phpType55, perrorread) = true
+  -- if perrorread.ORIGINAL = CHOOSE $statement_tasks(statement*, $origin_child((porigin), [PCFIELD 2, PCINDEX n, PCFIELD 1]), 0) $if_tail(S, phpType54_tail*, phpType55, $(n + 1)) z
+  -- if z = $runtime_line(S, [PCFIELD 2, PCINDEX n, PCFIELD 0], expression)
+  -- if perrorread.LINE = z
+  -- if $error_variable_source(S, (porigin), [PCFIELD 2, PCINDEX n, PCFIELD 0], perrorread.NAME)
+def $truth_if_head_source(S, porigin, n, phpType54_head, phpType54_tail*, phpType55, perrorread) = false -- otherwise
+dec $truth_if_tail_source(pstate, porigin, nat, phpType54*, phpType55, perrorread) : bool
+def $truth_if_tail_source(S, porigin, n, phpType54_head :: phpType54_tail*, phpType55, perrorread) = true
+  -- if $truth_if_head_source(S, porigin, n, phpType54_head, phpType54_tail*, phpType55, perrorread)
+def $truth_if_tail_source(S, porigin, n, phpType54_head :: phpType54_tail*, phpType55, perrorread) = $truth_if_tail_source(S, porigin, $(n + 1), phpType54_tail*, phpType55, perrorread)
+  -- if ~$truth_if_head_source(S, porigin, n, phpType54_head, phpType54_tail*, phpType55, perrorread)
+def $truth_if_tail_source(S, porigin, n, phpType54_tail*, phpType55, perrorread) = false -- otherwise
+
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtIf expression (SEQUENCE statement*) (SEQUENCE phpType54*) phpType55 metadata)
+  -- if perrorread.ORIGINAL = CHOOSE $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 1]), 0) $if_tail(S, phpType54*, phpType55, 0) z
+  -- if z = $runtime_line(S, [PCFIELD 0], expression)
+  -- if perrorread.LINE = z
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], perrorread.NAME)
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtIf expression phpType23 (SEQUENCE phpType54*) phpType55 metadata)
+  -- if $truth_if_tail_source(S, porigin, 0, phpType54*, phpType55, perrorread)
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtWhile expression phpType23 metadata)
+  -- if perrorread.ORIGINAL = CHOOSE $loop_body_tasks(NStmtWhile expression phpType23 metadata, S.ORIGIN) eps z
+  -- if z = $runtime_line(S, [PCFIELD 0], expression)
+  -- if perrorread.LINE = z
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], perrorread.NAME)
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtDo phpType23 expression metadata)
+  -- if perrorread.ORIGINAL = CHOOSE $loop_body_tasks(NStmtDo phpType23 expression metadata, S.ORIGIN) eps z
+  -- if z = $runtime_line(S, [PCFIELD 1], expression)
+  -- if perrorread.LINE = z
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 1], perrorread.NAME)
+
+dec $truth_for_last_source(pstate, expression*, nat, preqbytes, int) : bool
+def $truth_for_last_source(S, [expression], n, n_name*, z) = ($error_variable_source(S, S.ORIGIN, [PCFIELD 1, PCINDEX n], n_name*) /\ $runtime_line(S, [PCFIELD 1, PCINDEX n], expression) = z)
+def $truth_for_last_source(S, expression :: expression_tail*, n, n_name*, z) = $truth_for_last_source(S, expression_tail*, $(n + 1), n_name*, z)
+  -- if expression_tail* =/= eps
+def $truth_for_last_source(S, expression*, n, n_name*, z) = false -- otherwise
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtFor phpType25_init (SEQUENCE expression*) phpType25_step phpType23 metadata)
+  -- if perrorread.ORIGINAL = CHOOSE $loop_body_tasks(NStmtFor phpType25_init (SEQUENCE expression*) phpType25_step phpType23 metadata, S.ORIGIN) eps z
+  -- if perrorread.LINE = z
+  -- if $truth_for_last_source(S, expression*, 0, perrorread.NAME, z)
+
+dec $truth_short_source(pcnode) : (bool, expression, expression)?
+def $truth_short_source(NExprBinaryOpBooleanAnd expression_left expression_right metadata) = ((false, expression_left, expression_right))
+def $truth_short_source(NExprBinaryOpLogicalAnd expression_left expression_right metadata) = ((false, expression_left, expression_right))
+def $truth_short_source(NExprBinaryOpBooleanOr expression_left expression_right metadata) = ((true, expression_left, expression_right))
+def $truth_short_source(NExprBinaryOpLogicalOr expression_left expression_right metadata) = ((true, expression_left, expression_right))
+def $truth_short_source(pcnode) = eps -- otherwise
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $truth_short_source(pcnode) = ((b_or, expression_left, expression_right))
+  -- if perrorread.ORIGINAL = SHORT_RESULT b_or expression_right z_left z_right
+  -- if z_left = $runtime_line(S, [PCFIELD 0], expression_left)
+  -- if z_right = $runtime_line(S, [PCFIELD 1], expression_right)
+  -- if perrorread.LINE = z_left
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], perrorread.NAME)
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $truth_short_source(pcnode) = ((b_or, expression_left, expression_right))
+  -- if perrorread.ORIGINAL = TRUTH_RESULT false z
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if z = $runtime_line(S, [PCFIELD 1], expression_right)
+  -- if perrorread.LINE = z
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 1], perrorread.NAME)
+;; Constant-left folding emits BOOL for the redirected right operand.
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression, true, z))
+  -- if perrorread.ORIGINAL = TRUTH_RESULT false z
+  -- if perrorread.LINE = z
+  -- if $error_variable_source(S, (porigin_target), eps, perrorread.NAME)
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBooleanNot expression metadata)
+  -- if perrorread.ORIGINAL = TRUTH_RESULT true z
+  -- if z = $runtime_line(S, [PCFIELD 0], expression)
+  -- if perrorread.LINE = z
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], perrorread.NAME)
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond phpType5 expression_false metadata)
+  -- if perrorread.ORIGINAL = SELECT_VALUE phpType5 expression_false z_cond z_true z_false
+  -- if z_cond = $runtime_line(S, [PCFIELD 0], expression_cond)
+  -- if z_true = $true_arm_line(S, phpType5)
+  -- if z_false = $runtime_line(S, [PCFIELD 2], expression_false)
+  -- if perrorread.LINE = z_cond
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], perrorread.NAME)

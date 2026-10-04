@@ -161,12 +161,20 @@ def $redirect_tasks(porigin, expression, false, true, z) = [AT porigin (DIM_PREP
 def $redirect_tasks(porigin, expression, true, false, z) = [AT porigin (EVAL expression), TRUTH_RESULT false z]
 def $redirect_tasks(porigin, expression, true, true, z) = [AT porigin (EVAL expression), TRUTH_RESULT false z, DIM_CAPTURE]
 
-def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = $redirect_effect_tasks(S, porigin, porigin_target) ++ $redirect_tasks(porigin_target, expression_target, b, false, z) ++ ptask*]
+;; A folded BOOL still consumes its operand at the original expression. Retain
+;; that origin through conversion, then restore the enclosing consumer.
+def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = $redirect_effect_tasks(S, porigin, porigin_target) ++ $redirect_tasks(porigin_target, expression_target, true, false, z) ++ [ORIGIN_RETURN S.ORIGIN] ++ ptask*][.ORIGIN = (porigin)]
   -- if $compiled_read(S, porigin) = eps
-  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, b, z))
-def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = $redirect_effect_tasks(S, porigin, porigin_target) ++ $redirect_tasks(porigin_target, expression_target, b, true, z) ++ ptask*]
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, true, z))
+def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = $redirect_effect_tasks(S, porigin, porigin_target) ++ $redirect_tasks(porigin_target, expression_target, true, true, z) ++ [ORIGIN_RETURN S.ORIGIN] ++ ptask*][.ORIGIN = (porigin)]
   -- if $compiled_read(S, porigin) = eps
-  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, b, z))
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, true, z))
+def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = $redirect_effect_tasks(S, porigin, porigin_target) ++ $redirect_tasks(porigin_target, expression_target, false, false, z) ++ ptask*]
+  -- if $compiled_read(S, porigin) = eps
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, false, z))
+def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = $redirect_effect_tasks(S, porigin, porigin_target) ++ $redirect_tasks(porigin_target, expression_target, false, true, z) ++ ptask*]
+  -- if $compiled_read(S, porigin) = eps
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, false, z))
 
 def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = ptask*][.RESULT = KNOWN pvalue]
   -- if $compiled_read(S, porigin) = (pvalue)
