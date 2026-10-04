@@ -89,22 +89,21 @@ def $ppparameter_new(P, pcpath, phpType28, SEQUENCE phpType7*, metadata) = $pppa
 
 ;; Constructor calls need their own suspended default-evaluation context. Keep
 ;; this boundary source-bound; ordinary constructors retain their existing path.
-def $parameter_default_constructor(S, NExprNew name (SEQUENCE phpType7*) metadata) = true
-  -- if S.COMPLETION = NORMAL
-  -- if ~$ppfirstclass(phpType7*)
+def $parameter_default_constructor(S, name, phpType7*, metadata) = (S.COMPLETION = NORMAL /\ ~$ppfirstclass(phpType7*) /\ $parameter_string_site_valid(S, pconstantcontext.ORIGIN, pconstantcontext.LINE) /\ $default_context_valid(S, pconstantcontext) /\ $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata) /\ $constant_expression_below(S, pconstantcontext.ORIGIN, PORIGIN n_unit pcpath))
   -- if S.CONSTCONTEXT = (pconstantcontext)
-  -- if $default_context_valid(S, pconstantcontext)
-  -- if $origin_node(S.SOURCES, pconstantcontext.ORIGIN) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 expression phpType37 metadata_param)
   -- if S.ORIGIN = (PORIGIN n_unit pcpath)
-  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
-  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, PORIGIN n_unit pcpath)
+def $parameter_default_constructor(S, name, phpType7*, metadata) = false
+  -- if S.CONSTCONTEXT = eps
+def $parameter_default_constructor(S, name, phpType7*, metadata) = false
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.ORIGIN = eps
+rule PhpStep/parameter-default-constructor-unsupported: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "parameter default constructor"]
+  -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if $parameter_default_constructor(S, name, phpType7*, metadata)
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
   -- if $new_has_ctor(S, preqbytes)
-def $parameter_default_constructor(S, expression) = false -- otherwise
-rule PhpStep/parameter-default-constructor-unsupported: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "parameter default constructor"]
-  -- if S.TODO = (EVAL expression) :: ptask_tail*
-  -- if $parameter_default_constructor(S, expression)
 
 ;; Default objects are never cached. This nonowning tag records allocation
 ;; class only; the ordinary NEW evaluator supplies the actual object and effects.
