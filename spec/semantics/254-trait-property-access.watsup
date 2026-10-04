@@ -325,16 +325,14 @@ rule PhpStep/trait-property-compound-rhs: S ~> $trait_property_write_start(S, (p
 rule PhpStep/trait-property-write-address: S ~> $trait_property_write_ready(S, ptraitpropertywrite, ptask_tail*)
   -- if S.TODO = (TRAIT_PROPERTY_WRITE ptraitpropertywrite) :: ptask_tail*
   -- if $trait_property_write_valid(S, ptraitpropertywrite)
-rule PhpStep/trait-property-assignment-store: S ~> S_written[.HELD = S.HELD][.ORIGIN = (porigin_parent)]
+rule PhpStep/trait-property-assignment-store: S ~> S[.TODO = (ASSIGN_ARRAY S.BASE z false) :: ptask_tail*][.RESULT = poperand][.ORIGIN = (porigin_parent)]
   -- if S.TODO = (TRAIT_PROPERTY_STORE porigin_site eps poperand z) :: ptask_tail*
   -- if $trait_property_store_valid(S, porigin_site, eps, poperand, z)
   -- if $reference_origin_parent(porigin_site, 1) = ((porigin_parent, [PCFIELD 0]))
-  -- if S_written = $assign_array($hold_task_inputs(S), S.BASE, poperand, z)
-rule PhpStep/trait-property-compound-store: S ~> S_written[.HELD = S.HELD][.ORIGIN = (porigin_parent)]
+rule PhpStep/trait-property-compound-store: S ~> S[.TODO = (COMPOUND_APPLY pbin S.BASE false z) :: ptask_tail*][.RESULT = poperand][.ORIGIN = (porigin_parent)]
   -- if S.TODO = (TRAIT_PROPERTY_STORE porigin_site (pbin) poperand z) :: ptask_tail*
   -- if $trait_property_store_valid(S, porigin_site, (pbin), poperand, z)
   -- if $reference_origin_parent(porigin_site, 1) = ((porigin_parent, [PCFIELD 0]))
-  -- if S_written = $compound_target($hold_task_inputs(S), pbin, S.BASE, poperand, z)
 def $call_task_valid(S, TRAIT_PROPERTY_WRITE ptraitpropertywrite) = $trait_property_write_valid(S, ptraitpropertywrite)
 def $call_task_valid(S, TRAIT_PROPERTY_STORE porigin pbin? poperand z) = $trait_property_store_valid(S, porigin, pbin?, poperand, z)
 def $task_nodes(TRAIT_PROPERTY_WRITE ptraitpropertywrite) = $operand_nodes(ptraitpropertywrite.CLASS) ++ $operand_nodes(ptraitpropertywrite.NAME)
