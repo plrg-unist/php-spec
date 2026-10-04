@@ -148,5 +148,11 @@
     "source": "<?php\nfunction literalCallableDefault248(callable $value=['self','only']) {}\n",
     "source_sha256": "c03570c975edb2bf288138b34bd9ce737877b2ef19db8050fbf162ffd0681d8f",
     "expected_model": "static_rejection"
+  },
+  {
+    "id": "actual-created-closure-default-scope",
+    "source": "<?php\nclass ActualDefaultConstant248 { public const CB=['self','only']; }\nclass ActualRequested248 {\n private static function only() {}\n public function __toString(): string { echo 'T|'; return 'text'; }\n public function make() {\n  return function(string $text=new self, callable $cb=ActualDefaultConstant248::CB, int $tag=0) {\n   echo 'B:',self::class,':',get_called_class(),':',$text,':',$tag,'|';\n  };\n }\n}\nclass ActualForeign248 {\n public function make() { return Closure::fromCallable(['ActualRequested248','self::make']); }\n}\nset_error_handler(function($level,$message) { echo 'D|'; return true; });\n$parent=(new ActualForeign248)->make();\n$child=$parent(); unset($parent);\n$child(tag:3); unset($child);\nrestore_error_handler();\n",
+    "source_sha256": "97d62a7cba7251694e614655913c28e77791277f42ebf584479e795e5d3a1f73",
+    "expected_model": "normal"
   }
 ]

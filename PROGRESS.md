@@ -10,14 +10,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 Callable default/variadic reception248 now suspends keyword/compound lookup in
 actual receiving frames. Deferred class-constant defaults, named-hole preparation
 and supplied/variadic operands keep their distinct order and ownership. Referenced
-methods and current/future operands remain live, including borrowed retired arrays.
-Failed lookup checks constrained sources before slow scalar fallback; lossy
-warnings freeze their result and dual-role objects still invoke Stringable.
-Author116 and independent180 conditions pass on018, with exact source agreements
-at separate758/018 cuts and affected221 hole/variadic controls. Original compiler
-and fixture failures stay preserved; RuntimeException Unsupported controls have
-zero agreement. The [contract](docs/semantics/CALLABLE-RECEIVES.md)
-and [ledger](coverage/semantics/callable-receives-review.json) retain these cutoffs.
+methods/current operands remain live, including borrowed retired arrays. Failed
+lookup checks constrained sources before slow scalar fallback; lossy warnings
+freeze their result and dual-role objects still invoke Stringable. Source23 normal
+and one literal compiler rejection retain758/018/060 cuts; two affected221 sources
+stay separate. Author116, independent180 and affected old hole35 conditions pass
+on018. Actual99a composition keeps created-child default scope after a foreign
+capture retires and passes AL236. Original compiler/fixture failures stay preserved;
+RuntimeException Unsupported controls have zero agreement. The
+[contract](docs/semantics/CALLABLE-RECEIVES.md) and
+[ledger](coverage/semantics/callable-receives-review.json) retain these cutoffs.
 Other internal and user-return consumers remain required; return verification
 stays paused and complete core remains open.
 
