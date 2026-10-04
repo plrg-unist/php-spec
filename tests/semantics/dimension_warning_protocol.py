@@ -58,7 +58,7 @@ CASES=[
   ]),
  ('nan-first-return-retains-protection-and-ordered-tail','nan-conversion-keeps-protection-across-both-notices',
   'S.TODO = (KEY_READ_RESULT pkeyread) :: ptask_tail*\n  -- if $key_float_phase(pkeyread.PHASE)',[
-    'S.TODO = (KEY_READ_RESULT pkeyread) :: ptask_tail*','pkeyread.PHASE = KEY_FLOAT RANGEWARNING [PRECISIONLOSS]',
+    'S.TODO = (KEY_READ_RESULT pkeyread) :: ptask_tail*','pkeyread.PHASE = KEY_FLOAT RANGEWARNING ([PRECISIONLOSS])',
     '~pkeyread.GLOBAL','pkeyread.MODE = KEY_R','pkeyread.VALUE = PFLOAT n_bits',
     '$float_long(n_bits, true) = (0, [RANGEWARNING, PRECISIONLOSS])','pkeyread.KEY = KINT 0',
     'pkeyread.INPUT = VARIABLE $ptascii("key233") 7','pkeyread.OWNERS = BASE_VALUE (VARIABLE $ptascii("a233") 7)',
@@ -69,7 +69,7 @@ CASES=[
     '$lookup(S.ENV, $ptascii("a233")) = (n_a)','S.STORE[n_a] = DEFINED (PARRAY n_current)','n_current =/= n_original',
     '$entry_lookup(S.ARRAYS[n_current].ITEMS, KINT 0) = (DIRECT (PINT 17))',
     '~$key_read_valid(S, pkeyread[.PHASE = KEY_FLOAT RANGEWARNING eps])',
-    '~$key_read_valid(S, pkeyread[.PHASE = KEY_FLOAT PRECISIONLOSS [RANGEWARNING]])',
+    '~$key_read_valid(S, pkeyread[.PHASE = KEY_FLOAT PRECISIONLOSS ([RANGEWARNING])])',
     '~$key_read_valid(S, pkeyread[.PHASE = KEY_FLOAT RANGEWARNING (RANGEWARNING :: [PRECISIONLOSS])])',
     '~$key_read_valid(S, pkeyread[.KEY = KINT 1])','~$key_read_valid(S, pkeyread[.LINE = 999])',
     '~$key_read_valid(S, pkeyread[.OWNERS = BASE_VALUE (KNOWN pkeyread.BASE)])',
