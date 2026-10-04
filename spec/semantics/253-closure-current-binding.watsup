@@ -66,6 +66,7 @@ dec $internal_creator_history(pstate, nat) : pstate
 dec $internal_creator_body(pstate, nat) : porigin?
 dec $internal_closure_history_valid(pstate, nat) : bool
 dec $real_bind_internal(pstate, nat, nat?, pbindscope) : bool
+dec $real_bind_internal_receiver(pstate, nat?, pbindscope) : bool
 dec $real_bind_scope(nat?, pbindscope) : pbindscope
 dec $real_bind_allocate(pstate, pconfigcall, nat, nat?, pbindscope) : pstate
 dec $bind_scope_internal(pbindscope) : bool
@@ -993,13 +994,9 @@ def $clone_scope(S, n_source, n_new) = S[.OBJECTS = $object_set(S.OBJECTS, n_new
 
 def $real_bind_scope((n), BIND_UNSCOPED) = BIND_INTERNAL ($ptascii("Closure"))
 def $real_bind_scope(n?, pbindscope) = pbindscope -- otherwise
-def $real_bind_internal(S, n_source, n_receiver?, pbindscope) = true
-  -- if $internal_closure_object(S, n_source)
-def $real_bind_internal(S, n_source, (n_receiver), pbindscope) = true
-  -- if pbindscope = BIND_UNSCOPED \/ ~$bind_is_instance(S, n_receiver)
-def $real_bind_internal(S, n_source, n_receiver?, pbindscope) = true
-  -- if pbindscope = BIND_INTERNAL ptbytes
-def $real_bind_internal(S, n_source, n_receiver?, pbindscope) = false -- otherwise
+def $real_bind_internal(S, n_source, n_receiver?, pbindscope) = ($internal_closure_object(S, n_source) \/ $bind_scope_internal(pbindscope) \/ $real_bind_internal_receiver(S, n_receiver?, pbindscope))
+def $real_bind_internal_receiver(S, (n_receiver), pbindscope) = (pbindscope = BIND_UNSCOPED \/ ~$bind_is_instance(S, n_receiver))
+def $real_bind_internal_receiver(S, eps, pbindscope) = false
 def $real_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope) = S_copy[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n_new)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
