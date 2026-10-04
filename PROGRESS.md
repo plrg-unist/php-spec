@@ -14,7 +14,13 @@ Append, handled throw, exit override, weak/default/variadic reception and intern
 send-warning continuations preserve selected targets and native owners. Frozen
 fatal diagnostics precede the queue; effectful default message warnings finish
 the builtin cache before pending exception dispatch. Exact registered and
-converted argument views remain separate. [Contract](docs/semantics/SOURCE-SHUTDOWN.md).
+converted argument views remain separate. Existing176 user formatters retain their
+C return-warning continuation after handled throws; actual237 freezes the live
+display destination after formatting. Author23 source/two88 state checks retain
+their separate cutoffs, and production stages pass on actual8af.
+[Contract](docs/semantics/SOURCE-SHUTDOWN.md),
+[author/composition record](coverage/semantics/shutdown-functions-review.json),
+[independent ledger](coverage/semantics/shutdown-function-review.json).
 Keyword/compound ingress needs the accepted221 consumers; destructors, GC,
 output buffers and queue release are required next request phases.
 
