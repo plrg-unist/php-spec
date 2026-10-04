@@ -97,5 +97,23 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "render-captured-message-owner",
+    "source": "<?php\nclass E extends Exception { function __construct(){ $this->message=[]; } function change(){ $this->message=\"later\"; } } function s(){echo \"S;\";} function w($n,$m,$f,$l){global $e; $e->change(); $e=null; echo \"W;\"; return true;} register_shutdown_function(\"s\"); set_error_handler(\"w\"); $e=new E; throw $e;\n",
+    "source_sha256": "9218cd1052053d2f2a561c5304330d212b73f380cd2276a7dff736d4fe8186a8",
+    "stdout": "W;S;",
+    "stderr": "Fatal error: Uncaught E: Array in {file}:2\nStack trace:\n#0 {main}\n  thrown in {file} on line 2\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "render-warning-exit",
+    "source": "<?php\nclass E extends Exception { function __construct(){ $this->message=[]; } } function s(){echo \"S;\";} function w(){echo \"W;\"; exit(7);} register_shutdown_function(\"s\"); set_error_handler(\"w\"); throw new E;\n",
+    "source_sha256": "78078a214d32163d9a0c103bc217b9b28b9b5775061cfee9b5aa1c81028327df",
+    "stdout": "W;S;",
+    "stderr": "",
+    "exit": 7,
+    "status": "explicit_exit"
   }
 ]
