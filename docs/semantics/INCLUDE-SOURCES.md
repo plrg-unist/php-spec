@@ -24,8 +24,8 @@ run the ordinary checked `__toString` callback before resolution, once checks or
 provider creation. Conversion retains its receiver after global rebinding;
 normal return restores the authentic include parent and samples live CWD/path.
 Throw and invalid conversion complete without demanding file facts or allocating
-a provider nonce. The four keywords retain their compiled operand line and
-zero-argument Throwable frame.
+a provider nonce. Pre-parser conversion/warning frames retain the compiled operand line and zero
+arguments; executed included-unit frames retain their opened-path argument.
 
 Failed-open warnings suspend for eligible handlers. The stream message is fixed
 before the first callback; the second include warning or required `Error` samples
