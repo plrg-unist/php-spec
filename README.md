@@ -482,8 +482,9 @@ Imported deferred instance defaults use owning class templates. Raw trait-proper
 warnings retain selected cells and operand ownership through handlers and abrupt
 opcode completion. Deferred collision operands compare before type conversion;
 operation diagnostics are recorded with runtime operand order and AST lines,
-then delivered after class publication. Dependency caching, collision expression
-errors, private-final warning ordering and readonly storage remain required. A bounded
+then delivered after class publication. Private-final compile warnings retain
+their phase order and handler-ineligible severity. Dependency caching, collision
+expression errors and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound

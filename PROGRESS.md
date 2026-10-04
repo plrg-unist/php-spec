@@ -331,8 +331,11 @@ guards at their original cuts. Generic arithmetic/key recording now isolates
 scratch handler/display settings and follows runtime key→value→insertion order
 with checked AST lines. Five affected source comparisons (four new plus one
 existing array neighbor),47 additional queue/array-owner guards and bounded
-AL/structure checks pass. Private-final warning ordering, real dependent-constant
-binding/caching and endogenous expression errors remain required; traits stay partial.
+AL/structure checks pass. Private-final compile warnings now join the recorded
+batch at concrete/abstract binding phases and remain handler-ineligible128. Four
+affected source comparisons (two new and two128 mask neighbors) and43 genuine
+alias/queue guards pass at their separate cuts. Real dependent-constant binding,
+caching and endogenous expression errors remain required; traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
