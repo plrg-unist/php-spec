@@ -1,6 +1,7 @@
 # Include/require source boundary
 
-The pinned PHP 8.5.10 CLI profile starts with `include_path=.:`. The finite
+The default PHP 8.5.10 CLI profile starts with `include_path=.:`. Explicit
+registered startup inputs can supply a different initial path. The finite
 file snapshot is explicit input to a semantic run. It contains the canonical
 main script path and initial CWD. Version 1 has unique `(caller filename,
 requested operand bytes)` entries under the fixed profile; version 2 keys
@@ -195,7 +196,26 @@ exit. Exact scalar options work without file facts; Stringable options retain
 authenticated callbacks and late old-value sampling. Twelve normal sources
 across two revisions and 74 conditions are accepted. Fifteen nondeprecated
 error constants are admitted; the diagnostic increment below adds `E_STRICT`
-and handled lossy conversions. Nondefault startup profiles remain required.
+and handled lossy conversions.
+
+The [startup increment225](../../coverage/semantics/startup-ini-review.json)
+accepts registered `error_reporting` and `include_path` bytes before compilation.
+`bin/php-semantics FILE --startup-ini INPUT.json` takes exactly those two keys:
+canonical base64 strings, with JSON null also permitted for `error_reporting`.
+These are effective registered values: native CLI `-d` expressions have already
+been evaluated. Null reporting starts with mask30719; a present empty string
+starts with mask0, though both raw getters return empty bytes. Restore returns
+the original startup value only when the reporting entry is modified. Silence
+can leave an unmodified original raw value with a different live mask; a later
+Restore remains a no-op.
+
+Known INI values do not imply known CWD. Stringable INI conversion works with
+explicit startup facts alone; CHDIR and file requests still require authentic
+directory facts. A file snapshot must use the startup path's C-string prefix.
+Nine exact profile comparisons include callback/silence mutation and a genuine
+finite include after nondefault path Restore; 99 state and 15 transport controls
+authenticate all four ordinary/request/file entry variants. Wider startup
+directives, INI parsing/profiles and request lifecycle remain required.
 
 [Diagnostic ingress217](../../coverage/semantics/reporting-diagnostics-review.json)
 fetches `E_STRICT` at runtime and dispatches its deprecation through the genuine

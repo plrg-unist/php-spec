@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Registered startup inputs225 provide original `error_reporting` and
+`include_path` bytes before compilation, independently of file/CWD facts.
+Getters and Restore preserve null/empty reporting, signed32 masks and raw bytes
+through setters, `@` and callbacks. Restore of an unmodified reporting entry
+remains a no-op even when silence leaves its live mask different from startup.
+Author7 and independent2 exact profile comparisons, 99 source-derived state
+premises and 15 transport controls pass at36810; that cut also passes216-module
+SL stages/init and the changed adapter build. The source-equivalent actual0592
+composition retains all220 parent modules plus225, with no renewed execution
+credit. [Startup ledger](coverage/semantics/startup-ini-review.json).
+Wider directives, startup parsing/profiles and lifecycle remain required.
+
 Source-owned parameter default constructors227 complete lazy class tables before
 allocation and evaluate every AST argument before constructor access/name mapping.
 Direct/inherited dispatch preserves declaring permission, called class, default
@@ -237,7 +249,7 @@ failures and interrupted evidence.
   earlier key-expression warnings, nested/read-write warning continuations and
   ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
-  nondefault startup profiles, wider directives,
+  wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: internal default constructor dispatch,

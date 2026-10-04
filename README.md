@@ -66,7 +66,12 @@ captured values, caller frames and initializer locations through callbacks.
 [Compound initializer eval locations](coverage/semantics/compound-eval-location-review.json)
 retain authenticated filename owners and child lines through callbacks and later
 eval execution, separately from callback scope and compiler exception locations.
-Startup profiles, wider initializer/PIPE/INI consumers and lifecycle remain open.
+[Registered startup inputs](coverage/semantics/startup-ini-review.json) supply
+the initial `error_reporting` and `include_path` bytes before compilation.
+Getters and Restore retain those facts through setters, silence and callbacks;
+null reporting and an explicit empty string have distinct masks. Nine exact
+profile comparisons, 99 state premises and 15 transport controls pass.
+Wider startup directives, initializer/PIPE/INI consumers and lifecycle remain open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
@@ -109,7 +114,7 @@ entry availability, repeated execution and failure. Compile-stop freezes caller
 snapshots and preserves completed effects; it retires the active source request
 without ordinary unwinding. [Publication evidence](coverage/semantics/compiler-publication-review.json)
 links source30, history107, modifier286 and later interaction checks.
-Reporting startup profiles and remaining diagnostic producers stay open.
+Wider startup directives and remaining diagnostic producers stay open.
 
 [Loose and ordered comparisons](docs/semantics/COMPARISONS.md) now cover scalar
 and array values, with [independent evidence](coverage/semantics/comparison-review.json).
