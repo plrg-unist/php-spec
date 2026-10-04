@@ -68,4 +68,14 @@ try {$a242['row'][0]+=1;} catch(Error $e) {echo "C:",$e->getMessage(),";";}
 try {++$a242['row'][0];} catch(Error $e) {echo "I:",$e->getMessage(),";";}
 restore_error_handler();
 ''', b'S:z:zb;F:Cannot create references to/from string offsets;C:Cannot use assign-op operators with string offsets;I:Cannot increment/decrement string offsets;', 'normal'),
+    ('named-reference-retains-selected-callable-and-earlier-array', b'''<?php
+error_reporting(0);$seed242=5;$earlier242=[&$seed242];$start242=7;$a242=[1=>$start242];$key242=1.5;
+function namedTarget242($earlier,&$ref) {echo "C:",$earlier[0],":",$ref,";";$ref=19;}
+$callee242=namedTarget242(...);
+function keepNamed242($level,$message,$file,$line) {
+    $GLOBALS['seed242']=17;$GLOBALS['key242']=7.5;unset($GLOBALS['callee242'],$GLOBALS['earlier242'],$GLOBALS['seed242']);echo "D;";return false;
+}
+set_error_handler('keepNamed242',8192);$callee242(earlier:$earlier242,ref:$a242[$key242]);restore_error_handler();
+echo "R:",$a242[1],":",$key242,":",isset($callee242)?1:0,":",isset($earlier242)?1:0,":",isset($seed242)?1:0,";";
+''', b'D;C:17:7;R:19:7.5:0:0:0;', 'normal'),
 ]
