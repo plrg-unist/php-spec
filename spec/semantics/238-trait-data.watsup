@@ -50,6 +50,13 @@ dec $trait_member_initializer_scope(pstate, porigin, porigin) : porigin?
 dec $trait_property_fast_equal(ptbranch*, ptbranch*) : bool
 dec $trait_property_source_fast_equal(pstate, ppropertydesc, ppropertydesc) : bool
 dec $trait_property_keyword_spelling(pstate, ppropertydesc) : ptbytes?
+dec $trait_member_type_input(pstate, porigin) : ptinput?
+dec $trait_member_display_type(pstate, porigin, ptbranch*) : ptbranch*
+dec $trait_type_display(ptbranch*, ptinput) : ptbranch*
+dec $trait_type_display_branch(ptbranch, ptinput) : ptbranch
+dec $trait_type_display_atom(ptatom, ptinput) : ptatom
+dec $trait_type_keyword_named(ptinput, ptbytes) : ptbytes?
+dec $trait_type_keyword_names(ptinput*, ptbytes) : ptbytes?
 dec $trait_type_keyword_spelling(ptinput) : ptbytes?
 dec $trait_type_keyword_spellings(ptinput*) : ptbytes?
 dec $trait_type_contextual(ptbranch*) : bool
@@ -94,7 +101,9 @@ def $trait_property_source_items(ppropertydesc :: ppropertydesc_tail*, porigin) 
 def $trait_property_source_at(eps, porigin) = eps
 def $trait_property_source_at(pclassdesc :: pclassdesc_tail*, porigin) = (ppropertydesc) -- if $trait_property_source_items(pclassdesc.PROPERTIES, porigin) = (ppropertydesc)
 def $trait_property_source_at(pclassdesc :: pclassdesc_tail*, porigin) = $trait_property_source_at(pclassdesc_tail*, porigin) -- if $trait_property_source_items(pclassdesc.PROPERTIES, porigin) = eps
-def $property_type_name(S, ppropertydesc) = $pttypename($trait_property_source_type(S, ppropertydesc))
+def $property_type_name(S, ppropertydesc) = $pttypename($trait_member_display_type(S, porigin, $trait_property_source_type(S, ppropertydesc))) -- if ppropertydesc.ORIGIN = porigin
+def $property_type_name(S, ppropertydesc) = $pttypename(ppropertydesc.TYPE) -- otherwise
+def $trait_constant_type_name(S, pclassconstantdesc) = $pttypename($trait_member_display_type(S, pclassconstantdesc.ORIGIN, $trait_constant_source_type(S, pclassconstantdesc)))
 def $trait_property_source_type(S, ppropertydesc) = ppropertydesc_source.TYPE
   -- if ppropertydesc.ORIGIN = porigin
   -- if $trait_property_source_at(S.CLASSES, $origin_source(porigin)) = (ppropertydesc_source)
@@ -138,6 +147,35 @@ def $trait_property_keyword_spelling(S, ppropertydesc) = $trait_type_keyword_spe
   -- if $(|pcpath| >= 2)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath[0:$nabs($(|pcpath| - 2))]) = (NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata_group)
 def $trait_property_keyword_spelling(S, ppropertydesc) = eps -- otherwise
+;; Only diagnostics project source keyword spelling; stored and checked types
+;; remain normalized and bound to their authentic declaring owner.
+def $trait_member_type_input(S, porigin) = ($ptast(phpType18))
+  -- if $origin_source(porigin) = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NPropertyItem phpType40 expression metadata)
+  -- if $(|pcpath| >= 2)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath[0:$nabs($(|pcpath| - 2))]) = (NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata_group)
+def $trait_member_type_input(S, porigin) = ($ptast(phpType18))
+  -- if $origin_source(porigin) = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NConst phpType11 expression metadata)
+  -- if $(|pcpath| >= 2)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath[0:$nabs($(|pcpath| - 2))]) = (NStmtClassConst phpType14 phpType24 phpType18 phpType45 metadata_group)
+def $trait_member_type_input(S, porigin) = eps -- otherwise
+def $trait_member_display_type(S, porigin, ptbranch*) = $trait_type_display(ptbranch*, ptinput) -- if $trait_member_type_input(S, porigin) = (ptinput)
+def $trait_member_display_type(S, porigin, ptbranch*) = ptbranch* -- if $trait_member_type_input(S, porigin) = eps
+def $trait_type_display(ptbranch*, ptinput) = ($trait_type_display_branch(ptbranch, ptinput))*
+def $trait_type_display_branch(PTBRANCH ptatom*, ptinput) = PTBRANCH ($trait_type_display_atom(ptatom, ptinput))*
+def $trait_type_display_atom(ptatom, ptinput) = PTCLASS ptbytes
+  -- if ptatom <- [PTSELF, PTPARENT, PTSTATIC]
+  -- if $trait_type_keyword_named(ptinput, $ptatomname(ptatom)) = (ptbytes)
+def $trait_type_display_atom(ptatom, ptinput) = ptatom -- otherwise
+def $trait_type_keyword_named(PTNAME PTPLAIN ptbytes, ptbytes_keyword) = (ptbytes) -- if $ptlc(ptbytes) = ptbytes_keyword
+def $trait_type_keyword_named(PTNULLABLE ptinput, ptbytes) = $trait_type_keyword_named(ptinput, ptbytes)
+def $trait_type_keyword_named(PTUNION ptinput*, ptbytes) = $trait_type_keyword_names(ptinput*, ptbytes)
+def $trait_type_keyword_named(PTINTER ptinput*, ptbytes) = $trait_type_keyword_names(ptinput*, ptbytes)
+def $trait_type_keyword_named(ptinput, ptbytes) = eps -- otherwise
+def $trait_type_keyword_names(eps, ptbytes) = eps
+def $trait_type_keyword_names(ptinput :: ptinput_tail*, ptbytes) = (ptbytes_raw) -- if $trait_type_keyword_named(ptinput, ptbytes) = (ptbytes_raw)
+def $trait_type_keyword_names(ptinput :: ptinput_tail*, ptbytes) = $trait_type_keyword_names(ptinput_tail*, ptbytes) -- if $trait_type_keyword_named(ptinput, ptbytes) = eps
 def $trait_type_keyword_spelling(PTNAME PTPLAIN ptbytes) = (ptbytes) -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
 def $trait_type_keyword_spelling(PTNULLABLE ptinput) = $trait_type_keyword_spelling(ptinput)
 def $trait_type_keyword_spelling(PTUNION ptinput*) = $trait_type_keyword_spellings(ptinput*)
