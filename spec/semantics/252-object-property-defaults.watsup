@@ -111,21 +111,25 @@ def $property_callable_clone_receipt_owner(S, pconstantclosure :: pconstantclosu
   -- if $property_callable_method_receipt_owner(S, pconstantclosure, pmethoddesc, porigin_site, porigin_requested) = (porigin_owner)
 def $property_callable_clone_receipt_owner(S, pconstantclosure :: pconstantclosure_tail*, pmethoddesc, porigin_site, porigin_requested, n) = $property_callable_clone_receipt_owner(S, pconstantclosure_tail*, pmethoddesc, porigin_site, porigin_requested, n)
   -- if $(pconstantclosure.OBJECT >= n) \/ $property_callable_method_receipt_owner(S, pconstantclosure, pmethoddesc, porigin_site, porigin_requested) = eps
-def $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
+dec $property_callable_method_history_owner(pstate, pmethoddesc, porigin, porigin, pclosurescope) : porigin?
+def $property_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
   -- if n = pclosurescope.OBJECT
-  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n <- S.ALLOCATIONS)
+  -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = CONSTANTCLOSURE porigin_site (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_requested eps)
   -- if $constant_callable_record(S.CONSTANTCLOSURES, n) = (pconstantclosure)
   -- if $property_callable_method_receipt_owner(S, pconstantclosure, pmethoddesc, porigin_site, porigin_requested) = (porigin_owner)
   -- if pclosurescope.LEXICAL = pmethoddesc.OWNER /\ pclosurescope.CALLED = porigin_requested
   -- if pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps
-def $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
+def $property_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
   -- if n = pclosurescope.OBJECT
-  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n <- S.ALLOCATIONS)
+  -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_requested eps
   -- if $property_callable_clone_receipt_owner(S, S.CONSTANTCLOSURES, pmethoddesc, porigin_site, porigin_requested, n) = (porigin_owner)
   -- if pclosurescope.LEXICAL = pmethoddesc.OWNER /\ pclosurescope.CALLED = porigin_requested
   -- if pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps
+def $property_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps -- otherwise
+def $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = $property_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope)
+  -- if (HOBJECT pclosurescope.OBJECT) <- S.ALLOCATIONS
 def $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps -- otherwise
 
 ;; A plain clone keeps its copied lexical row without becoming a constant object.
