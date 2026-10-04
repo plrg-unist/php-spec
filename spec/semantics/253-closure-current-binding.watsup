@@ -37,6 +37,8 @@ dec $fake_bind_select_scope(pstate, pconfigcall, nat, pvalue) : pstate
 dec $fake_bind_warning(pstate, pconfigcall, pbindscoperesult, ptbytes) : pstate
 dec $fake_bind_warning_message(pstate, nat, nat?, pbindscope) : ptbytes?
 dec $fake_bind_finish(pstate, pconfigcall, nat, nat?, pbindscope) : pstate
+dec $real_bind_result(pstate, pconfigcall, nat, nat?, pbindscope) : pstate
+dec $real_bind_warning_message(pstate, nat, nat?, pbindscope) : ptbytes?
 dec $fake_bind_allocate(pstate, pconfigcall, nat, nat?, pbindscope) : pstate
 dec $fake_bind_name(pstate, nat) : ptbytes
 dec $fake_bind_slots(pnamedslot*) : poperand*
@@ -64,6 +66,7 @@ dec $internal_creator_history(pstate, nat) : pstate
 dec $internal_creator_body(pstate, nat) : porigin?
 dec $internal_closure_history_valid(pstate, nat) : bool
 dec $real_bind_internal(pstate, nat, nat?, pbindscope) : bool
+dec $real_bind_internal_receiver(pstate, nat?, pbindscope) : bool
 dec $real_bind_scope(nat?, pbindscope) : pbindscope
 dec $real_bind_allocate(pstate, pconfigcall, nat, nat?, pbindscope) : pstate
 dec $bind_scope_internal(pbindscope) : bool
@@ -605,21 +608,9 @@ def $fake_bind_finish(S, pconfigcall, n_source, n_receiver?, pbindscope) = $fake
 def $fake_bind_finish(S, pconfigcall, n_source, n_receiver?, pbindscope) = $fake_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope)
   -- if $fake_bind_object(S, n_source)
   -- if $fake_bind_warning_message(S, n_source, n_receiver?, pbindscope) = eps
-;; Existing ordinary bind production remains separate from fake static sharing.
-def $fake_bind_finish(S, pconfigcall, n_source, n_receiver?, pbindscope) = $bind_result(S[.TODO = (BIND_INVOKE pbindcall) :: ptask_tail*], pbindcall)
+;; Ordinary binding validates its compile flags before cloning its own statics.
+def $fake_bind_finish(S, pconfigcall, n_source, n_receiver?, pbindscope) = $real_bind_result(S, pconfigcall, n_source, n_receiver?, pbindscope)
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
-  -- if ~$internal_closure_object(S, n_source)
-  -- if ~$real_bind_internal(S, n_source, n_receiver?, pbindscope)
-  -- if S.TODO = ptask :: ptask_tail*
-  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BIND
-  -- if pbindcall = {SITE pconfigcall.SITE, SOURCE eps, KIND STATIC_BIND, INDEX pconfigcall.INDEX, SENT $fake_bind_slots(pconfigcall.SENT), LINE pconfigcall.LINE}
-def $fake_bind_finish(S, pconfigcall, n_source, n_receiver?, pbindscope) = $bind_result(S[.TODO = (BIND_INVOKE pbindcall) :: ptask_tail*], pbindcall)
-  -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
-  -- if ~$internal_closure_object(S, n_source)
-  -- if ~$real_bind_internal(S, n_source, n_receiver?, pbindscope)
-  -- if S.TODO = ptask :: ptask_tail*
-  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BINDTO
-  -- if pbindcall = {SITE pconfigcall.SITE, SOURCE (n_source), KIND INSTANCE_BIND, INDEX pconfigcall.INDEX, SENT $fake_bind_slots(pconfigcall.SENT), LINE pconfigcall.LINE}
 
 def $fake_bind_slots(eps) = eps
 def $fake_bind_slots((NAMED_SENT poperand) :: pnamedslot*) = poperand :: $fake_bind_slots(pnamedslot*)
@@ -646,6 +637,7 @@ def $task_nodes(FAKE_BIND_WARNING pbindwarning) = $config_nodes(pbindwarning.CAL
 def $call_task_valid(S, FAKE_BIND_WARNING pbindwarning) = ($config_invoke_valid(S, pbindwarning.CALL) /\ $closure_bind_kind(pbindwarning.CALL.KIND) /\ $fake_bind_warning_valid(S, pbindwarning))
 def $fake_bind_warning_valid(S, pbindwarning) = true
   -- if $fake_bind_source(pbindwarning.CALL) = (n_source)
+  -- if $fake_bind_object(S, n_source)
   -- if pbindwarning.SCOPE = BIND_SCOPE pbindscope
   -- if $fake_bind_scope_argument(S, n_source, $fake_bind_scope_value(S, pbindwarning.CALL), pbindscope)
   -- if $fake_bind_warning_message(S, n_source, $fake_bind_this(pbindwarning.CALL), pbindscope) = (pbindwarning.MESSAGE)
@@ -1002,28 +994,20 @@ def $clone_scope(S, n_source, n_new) = S[.OBJECTS = $object_set(S.OBJECTS, n_new
 
 def $real_bind_scope((n), BIND_UNSCOPED) = BIND_INTERNAL ($ptascii("Closure"))
 def $real_bind_scope(n?, pbindscope) = pbindscope -- otherwise
-def $real_bind_internal(S, n_source, n_receiver?, pbindscope) = true
-  -- if $internal_closure_object(S, n_source)
-def $real_bind_internal(S, n_source, (n_receiver), pbindscope) = true
-  -- if pbindscope = BIND_UNSCOPED \/ ~$bind_is_instance(S, n_receiver)
-def $real_bind_internal(S, n_source, n_receiver?, pbindscope) = true
-  -- if pbindscope = BIND_INTERNAL ptbytes
-def $real_bind_internal(S, n_source, n_receiver?, pbindscope) = false -- otherwise
-def $fake_bind_finish(S, pconfigcall, n_source, n_receiver?, pbindscope) = $real_bind_allocate(S, pconfigcall, n_source, n_receiver?, $real_bind_scope(n_receiver?, pbindscope))
-  -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
-  -- if $real_bind_internal(S, n_source, n_receiver?, pbindscope)
+def $real_bind_internal(S, n_source, n_receiver?, pbindscope) = ($internal_closure_object(S, n_source) \/ $bind_scope_internal(pbindscope) \/ $real_bind_internal_receiver(S, n_receiver?, pbindscope))
+def $real_bind_internal_receiver(S, (n_receiver), pbindscope) = (pbindscope = BIND_UNSCOPED \/ ~$bind_is_instance(S, n_receiver))
+def $real_bind_internal_receiver(S, eps, pbindscope) = false
 def $real_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope) = S_copy[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n_new)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if ~$closure_static(S, pfunction) \/ n_receiver? = eps
-  -- if n_receiver? =/= eps \/ $target_receiver(S, CLOSURE_TARGET n_source) = eps
   -- if ~$bind_scope_internal(pbindscope) \/ pbindscope = $fake_bind_scope(S, n_source) \/ pbindscope = BIND_INTERNAL ($ptascii("Closure")) /\ n_receiver? =/= eps
   -- if n_new = |S.OBJECTS|
   -- if pinternalclosurescope = {SOURCE n_source, FUNCTION porigin, CALLSITE (pconfigcall.SITE), LEXICAL pbindscope, CALLED $fake_bind_new_called(S, n_receiver?, pbindscope), RECEIVER n_receiver?, BOUND true}
   -- if S_new = S[.OBJECTS = S.OBJECTS ++ [INTERNALSCOPECLOSURE pinternalclosurescope (REALCLOSURE porigin eps eps)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_new]]
   -- if S_copy = $clone_statics($clone_captures(S_new, n_new, pitem*), n_new, pstaticcell*)
-def $real_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope) = S[.COMPLETION = UNSUPPORTED "internally scoped ordinary Closure binding warning or unbinding"] -- otherwise
+def $real_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope) = S[.COMPLETION = UNSUPPORTED "invalid internally scoped ordinary Closure binding"] -- otherwise
 def $bind_scope_internal(BIND_INTERNAL ptbytes) = true
 def $bind_scope_internal(pbindscope) = false -- otherwise
 
