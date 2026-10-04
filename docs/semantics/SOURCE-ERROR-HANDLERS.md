@@ -117,3 +117,8 @@ and independent source1/107 across original-null truth decisions and strict
 instance-emitter parameter rejection, preserving raw restoration and saved frames.
 [Truth continuations](SOURCE-WARNING-TRUTH.md) keep casts/copy/SEND and broader
 reporting open.
+
+The private [consumer213 slice](SOURCE-WARNING-CONSUMERS.md) adds casts, selected
+value copies and ordinary by-value sends, including direct assignment null writes
+through handler throw. Its compiler-only236/197 and native4 characterization do
+not yet establish new source/model/state agreement or canonical installation.
