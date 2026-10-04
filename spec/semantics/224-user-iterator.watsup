@@ -1,0 +1,270 @@
+;; PHP 8.5.10 zend_interfaces.stub.php and zend_user_it_* supply these
+;; language protocols. Tentative-return notices are a separate pending slice.
+dec $useriter_members() : ptbytes*
+def $useriter_members() = [$ptascii("current"), $ptascii("next"), $ptascii("key"), $ptascii("valid"), $ptascii("rewind")]
+def $useriter_builtin(ptbytes) = ($ptlc(ptbytes) <- [$ptascii("iterator"), $ptascii("traversable")])
+dec $useriter_signature(ptbytes) : pssignature
+def $useriter_signature(ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTBUILTIN "mixed"]))]), BYREF false }
+  -- if $ptlc(ptbytes) <- [$ptascii("current"), $ptascii("key")]
+def $useriter_signature(ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTBUILTIN "bool"]))]), BYREF false }
+  -- if $ptlc(ptbytes) = $ptascii("valid")
+def $useriter_signature(ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTBUILTIN "void"]))]), BYREF false }
+  -- if $ptlc(ptbytes) <- [$ptascii("next"), $ptascii("rewind")]
+dec $useriter_scope() : pvclass
+def $useriter_scope() = { NAME $ptascii("Iterator"), PARENT eps, ANCESTORS ([$ptascii("Traversable")]), FINAL false }
+
+dec $useriter_method_issue(pstate, pclassdesc, pmethoddesc) : pmethodissue
+dec $useriter_method_compared(pstate, pclassdesc, pmethoddesc, pmmethod, pmmethod, pmcheck) : pmethodissue
+dec $useriter_return_compared(pmethoddesc, pmcheck) : pmethodissue
+def $useriter_method_issue(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Cannot make non static method Iterator::") ++ $ptlc(pmethoddesc.NAME) ++ $ptascii("() static in class ") ++ pclassdesc.NAME) pmethoddesc.FUNCTION.LINE pmethoddesc.OWNER
+  -- if pmethoddesc.STATIC
+def $useriter_method_issue(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() must be public (as in class Iterator)")) pmethoddesc.FUNCTION.LINE pmethoddesc.OWNER
+  -- if ~pmethoddesc.STATIC
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
+def $useriter_method_issue(S, pclassdesc, pmethoddesc) = $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, $pmcompare(PMUSER pmmethod_selected, $pil_scope(S, pclassdesc), PMUSER pmmethod_proto[.SIGNATURE = pmmethod_proto.SIGNATURE[.RETURNS = eps]], $useriter_scope(), $method_active_registry(S, S.CLASSNAMES)))
+  -- if ~pmethoddesc.STATIC
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmmethod_selected = $pmethod_user(pmethoddesc, pclassdesc, $call_sourcefile(S.FILES, pmethoddesc.OWNER))
+  -- if pmmethod_proto = $pil_signature_method($ptascii("Iterator"), $ptlc(pmethoddesc.NAME), $call_sourcefile(S.FILES, pmethoddesc.OWNER), $useriter_signature(pmethoddesc.NAME))
+def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVYES ptbytes*) = $useriter_return_compared(pmethoddesc, $pmcompare(PMUSER pmmethod_selected, $pil_scope(S, pclassdesc), PMUSER pmmethod_proto, $useriter_scope(), $method_active_registry(S, S.CLASSNAMES)))
+def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVNO ptbytes*) = $pil_internal_source_result(pmethoddesc, $pmmismatch(pmmethod_selected, $pil_scope(S, pclassdesc), pmmethod_proto, $useriter_scope(), 14))
+def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVUNRESOLVED ptbytes*) = METHOD_UNSUPPORTED "Iterator dependent method declaration"
+def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMUNSUPPORTED text) = METHOD_UNSUPPORTED text
+def $useriter_return_compared(pmethoddesc, PMCHECK PVYES ptbytes*) = METHOD_OK
+def $useriter_return_compared(pmethoddesc, PMCHECK PVNO ptbytes*) = METHOD_UNSUPPORTED "Iterator tentative return declaration"
+def $useriter_return_compared(pmethoddesc, PMCHECK PVUNRESOLVED ptbytes*) = METHOD_UNSUPPORTED "Iterator tentative dependent return declaration"
+def $useriter_return_compared(pmethoddesc, PMUNSUPPORTED text) = METHOD_UNSUPPORTED text
+
+dec $useriter_methods(pstate, pclassdesc, ptbytes*, ppmethodinherited*) : pmethodissue
+def $useriter_methods(S, pclassdesc, eps, ppmethodinherited*) = METHOD_OK
+def $useriter_methods(S, pclassdesc, ptbytes :: ptbytes_tail*, ppmethodinherited*) = $useriter_methods(S, pclassdesc, ptbytes_tail*, ppmethodinherited*)
+  -- if $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = eps
+def $useriter_methods(S, pclassdesc, ptbytes :: ptbytes_tail*, ppmethodinherited*) = $useriter_methods(S, pclassdesc, ptbytes_tail*, ppmethodinherited*)
+  -- if $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = (PPMINHERITED pmethoddesc pclassdesc_selected)
+  -- if $useriter_method_issue(S, pclassdesc_selected, pmethoddesc) = METHOD_OK
+def $useriter_methods(S, pclassdesc, ptbytes :: ptbytes_tail*, ppmethodinherited*) = pmethodissue
+  -- if $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = (PPMINHERITED pmethoddesc pclassdesc_selected)
+  -- if pmethodissue = $useriter_method_issue(S, pclassdesc_selected, pmethoddesc)
+  -- if pmethodissue =/= METHOD_OK
+def $useriter_contract(S, pclassdesc) = $useriter_methods(S, pclassdesc, $useriter_members(), $pil_info_extra(S, pclassdesc.ORIGIN, $ppmethod_own(pclassdesc, pclassdesc.METHODS), |S.CLASSES|))
+  -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Iterator"), |S.CLASSES|)
+def $useriter_contract(S, pclassdesc) = METHOD_UNSUPPORTED "concrete Traversable-only class core fatal"
+  -- if pclassdesc.KIND = "class"
+  -- if ~pclassdesc.ABSTRACT
+  -- if ~$class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Iterator"), |S.CLASSES|)
+  -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Traversable"), |S.CLASSES|)
+def $useriter_contract(S, pclassdesc) = METHOD_OK -- otherwise
+def $useriter_after_issue(S, pclassdesc, METHOD_OK) = $useriter_contract(S, pclassdesc)
+def $useriter_after_issue(S, pclassdesc, pmethodissue) = pmethodissue -- otherwise
+def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited*) = $useriter_methods(S, pclassdesc, $useriter_members(), ppmethodinherited*)
+  -- if $ptlc(ptbytes) = $ptascii("iterator")
+def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited*) = METHOD_OK
+  -- if $ptlc(ptbytes) = $ptascii("traversable")
+def $pil_ref_names(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = [ptbytes, $ptascii("Traversable")] ++ $pil_ref_names(S, pilref_tail*, n)
+  -- if $ptlc(ptbytes) = $ptascii("iterator")
+dec $useriter_abstract(pstate, pclassdesc, ptbytes*, pilabstract*) : pilabstract*
+def $useriter_abstract(S, pclassdesc, eps, pilabstract*) = pilabstract*
+def $useriter_abstract(S, pclassdesc, ptbytes :: ptbytes_tail*, pilabstract*) = $useriter_abstract(S, pclassdesc, ptbytes_tail*, $pil_abs_add(S, pclassdesc, ptbytes, $ptascii("Iterator::") ++ ptbytes, pilabstract*))
+def $pil_abs_refs(S, pclassdesc_child, (PILBUILTIN ptbytes) :: pilref_tail*, n, pilabstract*) = $pil_abs_refs(S, pclassdesc_child, pilref_tail*, n, $useriter_abstract(S, pclassdesc_child, $useriter_members(), pilabstract*))
+  -- if $ptlc(ptbytes) = $ptascii("iterator")
+
+def $useriter_instance(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_origin_matches(S, porigin_class, $ptascii("Iterator"), |S.CLASSES|)
+def $useriter_instance(S, n) = false -- otherwise
+dec $useriter_site(pstate, statement, porigin, int) : bool
+def $useriter_site(S, statement, porigin_site, z) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (statement)
+  -- if statement = NStmtForeach expression_iterable phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
+  -- if ~$ppforeach_references(expression_value, b_ref)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin_site)], [PCFIELD 0], expression_iterable)
+def $useriter_site(S, statement, porigin_site, z) = false -- otherwise
+dec $useriter_has_key(statement) : bool
+def $useriter_has_key(NStmtForeach expression_iterable ABSENT phpType4 expression_value phpType23 phpType4_else metadata) = false
+def $useriter_has_key(NStmtForeach expression_iterable expression_key phpType4 expression_value phpType23 phpType4_else metadata) = true
+def $useriter_has_key(statement) = false -- otherwise
+dec $useriter_result_valid(pstate, nat, nat, statement, porigin, int, text, poperand) : bool
+def $useriter_result_valid(S, n, n_object, statement, porigin_site, z, text_stage, poperand) = true
+  -- if $useriter_instance(S, n_object)
+  -- if $useriter_site(S, statement, porigin_site, z)
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object 0 false)
+  -- if text_stage <- ["rewind", "valid", "current", "key", "next"]
+  -- if $call_reference_operand_valid(S, poperand)
+  -- if text_stage = "key" \/ poperand = KNOWN PNULL
+  -- if text_stage =/= "key" \/ $useriter_has_key(statement)
+def $useriter_result_valid(S, n, n_object, statement, porigin_site, z, text_stage, poperand) = false -- otherwise
+dec $useriter_method_selected(pstate, nat, porigin, text) : bool
+def $useriter_method_selected(S, n, porigin_method, text_stage) = true
+  -- if $useriter_instance(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii(text_stage), |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+  -- if $target_function(S, METHOD_TARGET n porigin_method) = (pmethoddesc.FUNCTION)
+def $useriter_method_selected(S, n, porigin_method, text_stage) = false -- otherwise
+dec $useriter_pending(pstate, pcalltarget, porigin) : bool
+def $useriter_pending(S, METHOD_TARGET n_object porigin_method, porigin_site) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.TODO = (CALL_ARGS (METHOD_TARGET n_object porigin_method) eps 0 eps (porigin_site) z) :: (USERITER_RESULT n n_object statement porigin_site z text_stage poperand) :: ptask_tail*
+  -- if $useriter_result_valid(S, n, n_object, statement, porigin_site, z, text_stage, poperand)
+  -- if $useriter_method_selected(S, n_object, porigin_method, text_stage)
+def $useriter_pending(S, pcalltarget, porigin_site) = false -- otherwise
+def $useriter_pending_site(S, porigin_site) = true
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin_site) z) :: ptask_tail*
+  -- if $useriter_pending(S, pcalltarget, porigin_site)
+def $useriter_pending_site(S, porigin_site) = false -- otherwise
+dec $useriter_frame(pstate, pcallcontext, pframe) : bool
+def $useriter_frame(S, pcallcontext, pframe) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $context_target(pcallcontext) = METHOD_TARGET n_object porigin_method
+  -- if pframe.ORIGIN = (porigin_site)
+  -- if pframe.TODO = (USERITER_RESULT n n_object statement porigin_site z text_stage poperand) :: ptask_tail*
+  -- if pcallcontext.LINE = z
+  -- if pcallcontext.ARGC = 0
+  -- if pcallcontext.EXTRA = eps
+  -- if pcallcontext.NAMED = eps
+  -- if $useriter_result_valid(S, n, n_object, statement, porigin_site, z, text_stage, poperand)
+  -- if $useriter_method_selected(S, n_object, porigin_method, text_stage)
+def $useriter_frame(S, pcallcontext, pframe) = false -- otherwise
+dec $useriter_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
+def $useriter_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin_site) = $useriter_frame(S, pcallcontext, pframe)
+  -- if $context_target(pcallcontext) = pcalltarget
+  -- if pcallcontext.CALLSITE = (porigin_site)
+def $useriter_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin_site) = $useriter_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin_site)
+  -- if ~($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin_site))
+def $useriter_entered(S, eps, pframe :: pframe_tail*, pcalltarget, porigin_site) = $useriter_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin_site)
+def $useriter_entered(S, pcallcontext?, eps, pcalltarget, porigin_site) = false
+def $useriter_selected(S, pcalltarget, porigin_site) = ($useriter_pending(S, pcalltarget, porigin_site) \/ $useriter_entered(S, S.CURRENT, S.FRAMES, pcalltarget, porigin_site))
+def $useriter_context_kind(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtForeach expression_iterable phpType5 phpType4 expression_value phpType23 phpType4_else metadata)
+  -- if $context_target(pcallcontext) = METHOD_TARGET n_object porigin_method
+  -- if $useriter_instance(S, n_object)
+def $useriter_context_kind(S, pcallcontext) = false -- otherwise
+def $useriter_context(S, pcallcontext) = true
+  -- if $useriter_context_kind(S, pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $useriter_entered(S, S.CURRENT, S.FRAMES, $context_target(pcallcontext), porigin_site)
+def $useriter_context(S, pcallcontext) = false -- otherwise
+dec $useriter_marker(pframe) : bool
+def $useriter_marker(pframe) = true
+  -- if pframe.TODO = (USERITER_RESULT n n_object statement porigin_site z text_stage poperand) :: ptask_tail*
+def $useriter_marker(pframe) = false -- otherwise
+def $useriter_chain_valid(S, eps, eps) = true
+def $useriter_chain_valid(S, (pcallcontext), eps) = ~$useriter_context_kind(S, pcallcontext)
+def $useriter_chain_valid(S, (pcallcontext), pframe :: pframe_tail*) = ($useriter_frame(S, pcallcontext, pframe) /\ $useriter_chain_valid(S, pframe.CONTEXT, pframe_tail*))
+  -- if $useriter_context_kind(S, pcallcontext) \/ $useriter_marker(pframe)
+def $useriter_chain_valid(S, (pcallcontext), pframe :: pframe_tail*) = $useriter_chain_valid(S, pframe.CONTEXT, pframe_tail*)
+  -- if ~$useriter_context_kind(S, pcallcontext)
+  -- if ~$useriter_marker(pframe)
+def $useriter_chain_valid(S, eps, pframe :: pframe_tail*) = $useriter_chain_valid(S, pframe.CONTEXT, pframe_tail*)
+  -- if ~$useriter_marker(pframe)
+def $useriter_chain_valid(S, eps, pframe :: pframe_tail*) = false -- if $useriter_marker(pframe)
+
+def $call_line_valid(S, (porigin_site), z) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (statement)
+  -- if $useriter_site(S, statement, porigin_site, z)
+def $call_arguments_valid(S, (porigin_site), 0, eps, eps, 0) = $useriter_pending_site(S, porigin_site)
+  -- if $useriter_pending_site(S, porigin_site)
+def $call_arity_valid(S, pcallcontext) = true -- if $useriter_context(S, pcallcontext)
+def $call_extent_valid(S, pcallcontext) = true -- if $useriter_context(S, pcallcontext)
+def $named_context_valid(S, pcallcontext) = true -- if $useriter_context(S, pcallcontext)
+def $call_task_valid(S, USERITER_RESULT n n_object statement porigin_site z text_stage poperand) = $useriter_result_valid(S, n, n_object, statement, porigin_site, z, text_stage, poperand)
+dec $useriter_next_valid(pstate, nat, nat, statement, porigin, int, poperand) : bool
+def $useriter_next_valid(S, n, n_object, statement, porigin_site, z, poperand) = true
+  -- if $useriter_instance(S, n_object)
+  -- if $useriter_site(S, statement, porigin_site, z)
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object 0 false)
+  -- if $call_reference_operand_valid(S, poperand)
+def $useriter_next_valid(S, n, n_object, statement, porigin_site, z, poperand) = false -- otherwise
+def $call_task_valid(S, USERITER_NEXT n n_object statement porigin_site z poperand) = $useriter_next_valid(S, n, n_object, statement, porigin_site, z, poperand)
+
+dec $useriter_call(pstate, nat, nat, statement, porigin, int, text, poperand, ptask*) : pstate
+def $useriter_call(S, n, n_object, statement, porigin_site, z, text_stage, poperand, ptask_tail*) = S[.ORIGIN = (porigin_site)][.TODO = (CALL_ARGS (METHOD_TARGET n_object pmethoddesc.FUNCTION.ORIGIN) eps 0 eps (porigin_site) z) :: (USERITER_RESULT n n_object statement porigin_site z text_stage poperand) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii(text_stage), |S.CLASSES|) = (pmethoddesc)
+def $foreach_start(S, statement, plocation, false, z) = $useriter_call(S[.ITERATORS = S.ITERATORS ++ [OBJECTITER n n_object 0 false]][.NEXTITER = $(n + 1)], n, n_object, statement, porigin_site, z, "rewind", KNOWN PNULL, ptask_tail*)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.RESULT = KNOWN (POBJECT n_object)
+  -- if $useriter_instance(S, n_object)
+  -- if n = S.NEXTITER
+def $foreach_start(S, statement, plocation, true, z) = $throw_scalar(S, "Error", $ptascii("An iterator cannot be used with foreach by reference"), z)
+  -- if S.RESULT = KNOWN (POBJECT n_object)
+  -- if $useriter_instance(S, n_object)
+
+rule PhpStep/useriter-rewind-next: S ~> $useriter_call(S, n, n_object, statement, porigin_site, z, "valid", KNOWN PNULL, ptask_tail*)
+  -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z text_stage poperand) :: ptask_tail*
+  -- if text_stage <- ["rewind", "next"]
+rule PhpStep/useriter-valid-end: S ~> $foreach_finish(S_read, n)
+  -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z "valid" poperand) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$truth(S_read, pvalue)
+rule PhpStep/useriter-valid-current: S ~> $useriter_call(S_read, n, n_object, statement, porigin_site, z, "current", KNOWN PNULL, ptask_tail*)
+  -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z "valid" poperand) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $truth(S_read, pvalue)
+rule PhpStep/useriter-current-key: S ~> $useriter_call(S, n, n_object, statement, porigin_site, z, "key", S.RESULT, ptask_tail*)
+  -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z "current" poperand) :: ptask_tail*
+  -- if statement = NStmtForeach expression_iterable expression_key phpType4 expression_value phpType23 phpType4_else metadata
+dec $useriter_key_tasks(pstate, phpType5, pvalue) : ptask*
+def $useriter_key_tasks(S, ABSENT, pvalue) = eps
+def $useriter_key_tasks(S, expression, pvalue) = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), LIST_STORE expression (KNOWN pvalue) false $runtime_line(S, [PCFIELD 1], expression))]
+dec $useriter_body(pstate, nat, nat, statement, porigin, int, poperand, pvalue) : pstate
+def $useriter_body(S, n, n_object, statement_foreach, porigin_site, z, poperand, pvalue_key) = S_read[.TODO = [$foreach_value_task(S_read, expression_value, KNOWN pvalue, false, z)] ++ $useriter_key_tasks(S_read, phpType5, pvalue_key) ++ $statement_tasks(statement*, $origin_child((porigin_site), [PCFIELD 4]), 0) ++ [(USERITER_NEXT n n_object statement_foreach porigin_site z poperand)] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if statement_foreach = NStmtForeach expression_iterable phpType5 phpType4 expression_value (SEQUENCE statement*) phpType4_else metadata
+  -- if S_read = $resolve_at(S[.ORIGIN = (porigin_site)], poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+rule PhpStep/useriter-current-value: S ~> $useriter_body(S, n, n_object, statement, porigin_site, z, S.RESULT, PNULL)
+  -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z "current" poperand) :: ptask_tail*
+  -- if statement = NStmtForeach expression_iterable ABSENT phpType4 expression_value phpType23 phpType4_else metadata
+rule PhpStep/useriter-key-body: S ~> $useriter_body(S_read, n, n_object, statement, porigin_site, z, poperand, pvalue_key)
+  -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z "key" poperand) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_key
+rule PhpStep/useriter-body-next: S ~> $useriter_call(S, n, n_object, statement, porigin_site, z, "next", KNOWN PNULL, ptask_tail*)
+  -- if S.TODO = (USERITER_NEXT n n_object statement porigin_site z poperand) :: ptask_tail*
+
+;; The cached current result owns its actual returned reference/value through
+;; key() and the body, and is retired before next(). PHP keys need no coercion.
+def $task_nodes(USERITER_RESULT n n_object statement porigin_site z text_stage poperand) = [HOBJECT n_object] ++ $operand_nodes(poperand)
+def $task_nodes(USERITER_NEXT n n_object statement porigin_site z poperand) = [HOBJECT n_object] ++ $operand_nodes(poperand)
+def $return_discard(S, USERITER_RESULT n n_object statement porigin_site z text_stage poperand) = S[.ITERATORS = $iterator_remove(S.ITERATORS, n)][.ORIGIN = (porigin_site)]
+def $return_discard(S, USERITER_NEXT n n_object statement porigin_site z poperand) = S[.ITERATORS = $iterator_remove(S.ITERATORS, n)][.ORIGIN = (porigin_site)]
+def $loop_marker(USERITER_NEXT n n_object statement porigin_site z poperand) = true
+def $jump_loop(S, porigin_source, 1, n_original, false) = $foreach_finish(S[.ORIGIN = (porigin_site)], n)
+  -- if S.TODO = (USERITER_NEXT n n_object statement porigin_site z poperand) :: ptask_tail*
+def $jump_loop(S, porigin_source, 1, n_original, true) = S[.ORIGIN = (porigin_site)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (USERITER_NEXT n n_object statement porigin_site z poperand) :: ptask_tail*
+def $jump_loop(S, porigin_source, n_depth, n_original, b) = $jump_loop($foreach_finish(S, n), porigin_source, $nabs($(n_depth - 1)), n_original, b)
+  -- if S.TODO = (USERITER_NEXT n n_object statement porigin_site z poperand) :: ptask_tail*
+  -- if $(n_depth > 1)
+def $goto_foreach_task(USERITER_NEXT n n_object statement porigin_site z poperand) = true
+def $goto_marker_valid(S, USERITER_NEXT n n_object statement porigin_site z poperand) = $useriter_next_valid(S, n, n_object, statement, porigin_site, z, poperand)
+def $goto_drop_iterators(piterator*, (USERITER_NEXT n n_object statement porigin_owner z poperand) :: ptask_tail*, porigin_target) = $goto_drop_iterators(piterator*, ptask_tail*, porigin_target)
+  -- if $goto_foreach_keep((porigin_owner), porigin_target)
+def $goto_drop_iterators(piterator*, (USERITER_NEXT n n_object statement porigin_owner z poperand) :: ptask_tail*, porigin_target) = $goto_drop_iterators($iterator_remove(piterator*, n), ptask_tail*, porigin_target)
+  -- if ~$goto_foreach_keep((porigin_owner), porigin_target)
+def $goto_saved((USERITER_NEXT n n_object statement porigin z poperand) :: ptask_tail*, porigin) = GOTOTASKS ((USERITER_NEXT n n_object statement porigin z poperand) :: ptask_tail*)
+def $goto_saved_match(USERITER_NEXT n n_object statement porigin_marker z poperand, porigin) = (porigin_marker = porigin)
+def $goto_marker_origin(USERITER_NEXT n n_object statement porigin_site z poperand) = (porigin_site)
+
+def $error_task_iterator(USERITER_RESULT n n_object statement porigin_site z text_stage poperand) = [n]
+def $error_task_iterator(USERITER_NEXT n n_object statement porigin_site z poperand) = [n]
+
+def $useriter_source_contract(S, pclassdesc, porigin) = $useriter_contract(S, pclassdesc)
+  -- if $pil_nominal(S, porigin, $ptascii("Iterator"), |S.CLASSES|)
+def $useriter_source_contract(S, pclassdesc, porigin) = METHOD_OK -- otherwise
+def $useriter_source_after(S, pclassdesc, porigin, METHOD_OK) = $useriter_source_contract(S, pclassdesc, porigin)
+def $useriter_source_after(S, pclassdesc, porigin, pmethodissue) = pmethodissue -- otherwise

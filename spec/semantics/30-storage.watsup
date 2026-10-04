@@ -105,6 +105,7 @@ syntax ptask = ARGINFO_REF_PREP pargref | ARGINFO_REF_VALUES pargref nat poperan
   | ERROR_HANDLER_INVOKE perrorcall | ERROR_HANDLER_RESULT perrorcall | ERROR_READ_RESULT perrorread | ERROR_TRIGGER_PHASE pconfigcall nat | CONFIG_INI_NULL_RESULT pconfigcall | CHDIR_WARNING_RESULT pdircontext nat* nat | ERROR_IDENTITY_RESULT pidentityread
   | GLOBAL_READ_RESULT pglobalread
   | DEPRECATED_CONSTANT_RESULT pdeprecatedconstant | REPORTING_LONG_RESULT pconfigcall int
+  | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | TYPE_RETURN_THROW nat porigin int
   | STATIC_STRING_RESULT pstaticstring | STATIC_STRING_CAPTURE pstaticstring
   | PARAMETER_STRING_RESULT pparameterstring
@@ -602,3 +603,15 @@ dec $scope_target_site(pstate, pcalltarget, porigin, bool) : pcalltarget
 dec $scope_convert_current(pstate, pcalltarget, porigin) : bool
 dec $scope_capture_matches(pcalltarget, pmethodcapture?) : bool
 dec $scope_handler_method(pstate, porigin, nat?, ptbytes, bool) : phandlerresolution
+
+dec $useriter_instance(pstate, nat) : bool
+dec $useriter_selected(pstate, pcalltarget, porigin) : bool
+dec $useriter_pending_site(pstate, porigin) : bool
+dec $useriter_context(pstate, pcallcontext) : bool
+dec $useriter_context_kind(pstate, pcallcontext) : bool
+dec $useriter_chain_valid(pstate, pcallcontext?, pframe*) : bool
+dec $useriter_contract(pstate, pclassdesc) : pmethodissue
+dec $useriter_after_issue(pstate, pclassdesc, pmethodissue) : pmethodissue
+dec $useriter_builtin(ptbytes) : bool
+dec $useriter_source_contract(pstate, pclassdesc, porigin) : pmethodissue
+dec $useriter_source_after(pstate, pclassdesc, porigin, pmethodissue) : pmethodissue

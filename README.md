@@ -132,6 +132,11 @@ Object/frame-dependent targets remain unfinished.
 values, reference history and compiler/runtime rejection phases. Its
 [independent review](coverage/semantics/array-unpack-review.json) audits 155 exact
 sources; Traversable objects remain unfinished. Array call arguments are covered by the later call-unpack checkpoint below.
+[Iterator foreach](docs/semantics/ITERATORS.md) adds by-value source Iterator
+callbacks with effective method selection, retained current values and abrupt
+cleanup. Explicit compatible return declarations are admitted; tentative-return
+deprecations, IteratorAggregate, ArrayAccess and other Traversable consumers
+remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.

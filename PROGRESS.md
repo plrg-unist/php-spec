@@ -7,6 +7,14 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Iterator224 is a private milestone under independent review. Compatible explicit
+declarations and inherited internal obligations admit source by-value foreach;
+callbacks use effective runtime methods and retain the iterator/current result
+through key and body. The first keyed source smoke passes at the candidate.
+Tentative-return deprecations are the immediate declaration follow-on, followed
+by IteratorAggregate, ArrayAccess and remaining reference/ordinary object
+traversal. [Scope and boundaries](docs/semantics/ITERATORS.md).
+
 Direct missing `$GLOBALS[key]` R-fetches226 dispatch before their consumers and
 retain the original null through key/global mutation. Handler throws skip later
 ASSIGN/SEND, preserving typed destinations and the original exception chain.
