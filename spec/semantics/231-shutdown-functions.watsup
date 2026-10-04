@@ -702,6 +702,7 @@ def $shutdown_compiler_released(S, S_compiled) = true
   -- if ~S.COMPILESTOP
   -- if S.SHUTDOWN.PHASE <- [SHUTDOWN_RUNNING, SHUTDOWN_DONE]
   -- if S.SHUTDOWN.ENTRIES =/= eps
+  -- if $shutdown_state_valid(S)
   -- if $shutdown_compiler_snapshot(S_compiled.COMPLETION) = (pcompletion)
   -- if S.SHUTDOWN.COMPLETION = pcompletion \/ (S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.COMPLETION = pcompletion)
 def $shutdown_compiler_released(S, S_compiled) = false -- otherwise
