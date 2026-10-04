@@ -51,8 +51,10 @@ known or temporary values and initially-reference CVs in strict identity compari
 Module208 retains the borrowed old cell through the saved caller without adding
 an owner; rebinding and in-place alias writes remain distinct. Module213 adds six casts, selected value copies and ordinary by-value sends,
 retaining selected targets and prior argument owners. Direct ASSIGN also performs
-its captured-null destination write after a thrown handler; rejected constrained
-writes remain pending. Other live left operands, read-modify-write, dimensions
+its captured-null destination write after a thrown handler. Module220 adds
+rejected constrained writes with unchanged values and caller TypeError/previous
+priority; private source/state gates and a current scoped-handler interaction pass.
+Other live left operands, read-modify-write, dimensions
 and other eligible warning producers remain
 explicitly `Unsupported`, rather than running a callback after a consumer.
 

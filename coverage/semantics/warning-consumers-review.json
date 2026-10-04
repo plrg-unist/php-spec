@@ -128,7 +128,7 @@
       "current_finite_phase": 330
     }
   },
-  "remaining": "Constrained rejection chains, other producers, broader byref/reference-result consumers, paused returns and full-core/offline remain separate",
+  "remaining": "other producers, broader byref/reference-result consumers, paused returns and full-core/offline remain separate",
   "publication": {
     "base": "6771d3df8be4c13dfe25fa6bb4569e66aa344815",
     "source": "5ae04fc52ac13df60cbafcd4e1f493c684943712",
@@ -154,6 +154,98 @@
     "author_peer": {
       "path": "/home/user/workspace/php-spec/.tools/warning-consumers-review-13-h1b1ke_l/CURRENT-AUTHOR-ACTUAL-PEER.json",
       "sha256": "da83ea21e9aff193a17b8d0dbd2e0f3bfe81eae91cb94537a04eabbe854cdeae"
+    }
+  },
+  "reference_write_extension": {
+    "status": "Independently accepted private220 and current215/217/220 scoped interaction; broader consumers remain open",
+    "base": "1bc27033d0382cd2009e824ba73ea41ee222569b",
+    "implementation": [
+      "spec/semantics/213-warning-read-consumers.watsup",
+      "spec/semantics/220-missing-reference-constrained-write.watsup"
+    ],
+    "scope": "Existing86/105 missing-CV reference sends retain real null cells without warnings, named priority and selected targets; rejected ASSIGN retains the live typed value and replaces/chains the pending handler error at the restored emitter",
+    "primary": [
+      "vendor/php-src/Zend/zend_vm_def.h: SEND_REF/SEND_VAR_EX/ASSIGN",
+      "vendor/php-src/Zend/zend_execute.c: zend_assign_to_typed_ref_ex",
+      "vendor/php-src/Zend/zend_exceptions.c: zend_throw_exception_internal"
+    ],
+    "author": {
+      "sources": 9,
+      "main_assertions": [
+        65,
+        61,
+        85
+      ],
+      "status": "Nine normal source/native/model agreements and65/61/85 state assertions passed; independently checked raw tuples and release",
+      "report": "/home/user/workspace/php-spec/.tools/argument-warning-reference-current-13/.tools/warning-consumers/run-xye2bcq0/report.json",
+      "report_sha256": "ebf39fe78f8e321040586db00fa1e7a8276eb8ad83d7cd9e64238a3a297b3c60",
+      "release": "/home/user/workspace/php-spec/.tools/argument-warning-reference-current-13/.tools/warning-consumers/run-xye2bcq0/RELEASE.json",
+      "compiler_preparation": "/home/user/workspace/php-spec/.tools/argument-warning-reference-current-13/.tools/warning-consumers/prepared-chain-r2-2h1zyqpl/report.json",
+      "original_fixture_failures": [
+        "/home/user/workspace/php-spec/.tools/argument-warning-reference-current-13/.tools/warning-consumers/prepared-q1xz6xp6/report.json",
+        "/home/user/workspace/php-spec/.tools/argument-warning-reference-current-13/.tools/warning-consumers/prepared-un9pmz34/report.json"
+      ]
+    },
+    "independent_native": {
+      "report": "/home/user/workspace/php-spec/.tools/warning-reference-review-13/native-cbhkh_gp/report.json",
+      "report_sha256": "b41dd911d9500dfe6930d89299737dc24b8f7e0f43dee1445a00d7b3cba1bffc",
+      "release": "/home/user/workspace/php-spec/.tools/warning-reference-review-13/NATIVE-RELEASE5.json",
+      "release_sha256": "408f131d2404bb4f8a96a60694c1f236f6c13f4f2fc5694b1cf006c893a72338",
+      "peer_sha256": "0a5906548d56db70052c5f50a3aff91ef1d0b7be8a35a8d5607f6188475a3674",
+      "scope": "Five exact native tuples, zero model/state/agreement"
+    },
+    "limits_seconds": {
+      "native": 45,
+      "model": 90,
+      "finite": 300,
+      "source_phase": 1245,
+      "finite_phase": 930
+    },
+    "remaining": "Broader warning/reference-result consumers, paused returns and full-core/offline validation remain separate.",
+    "tested_revision": "484d1a9f0d7cc9f116bf4f6e555712cf105933ae",
+    "independent": {
+      "sources": 5,
+      "main_assertions": [
+        75,
+        75,
+        99
+      ],
+      "report": "/home/user/workspace/php-spec/.tools/warning-reference-review-13/states-r2-2650_7vt/report.json",
+      "report_sha256": "ca3a2776159613e0897e1bfc95d2edfe3f8eb48febf26eeeffbed42ad985d71d",
+      "release": "/home/user/workspace/php-spec/.tools/warning-reference-review-13/states-r2-2650_7vt/RELEASE5.json",
+      "release_sha256": "e79f6e258f1545e9cdececc19a8ab32aed467f5cb8c21e5bfb5edcaf4aefc354",
+      "scope": "Five exact retained original native/model agreements; corrected reached75/75 and separately unrun99 passed at unchanged private semantics",
+      "original_fixture_failures": [
+        "/home/user/workspace/php-spec/.tools/warning-reference-review-13/own-run-fedgubzn",
+        "/home/user/workspace/php-spec/.tools/warning-reference-review-13/states-r1-gc9_hrai"
+      ],
+      "corrections": "NAMED_SEND restores the call origin; CALL_REF_FETCH retains ORIGIN_RETURN before SEND. Correct only those fixture premises; preserve model5 and unaffected passed state75."
+    },
+    "reproduction": {
+      "author": "python3 -B tests/semantics/warning_reference_run.py .tools/warning-consumers/prepared-chain-r2-2h1zyqpl/report.json",
+      "independent": "External run-own.py, continue-states.py and final continue-second-state.py retain exact argv/exits and compiler/runtime identities in raw reports",
+      "environment": "ordinary13 profile; LC_ALL=C, TZ=UTC, PHP_SPEC_SCRIPT_ENCODING unset; serial jobs=1; actual resource limits recorded at launch",
+      "runtime": "Reused pinned PHP8.5.10 CLI NTS64 and existing adapter/numeric runner/compiler; no rebuild or full-family claim"
+    },
+    "current_composition": {
+      "accepted_cutoff": "3919ae4c97846f25c9c267b9b05388a856e3e4f2",
+      "tested_revision": "5bce22c8ee78d294ba0d92c042bd42b646e197ac",
+      "sources": 1,
+      "agreement": 1,
+      "source": "tests/semantics/warning_reference_scoped_reduced.php",
+      "report": "/home/user/workspace/php-spec/.tools/argument-warning-reference-composed-14/.tools/warning-reference-scoped/run-2k_ukomz/report.json",
+      "report_sha256": "6713c6b336dde51e90756d63ecb50c78d2c09f3ae69fc20c8fe18e6c4ee5b406",
+      "release": "/home/user/workspace/php-spec/.tools/argument-warning-reference-composed-14/.tools/warning-reference-scoped/run-2k_ukomz/RELEASE.json",
+      "scope": "Active parent emitter selects its private handler over Child public handle; live typed caller alias remains9, caller introspection remains9 and TypeError line19/file/new-emitter trace are authentic. Both previous identities are checked before retiring global owners; chain messages are checked afterward",
+      "original_inconclusive": {
+        "source": "tests/semantics/warning_reference_scoped.php",
+        "report": "/home/user/workspace/php-spec/.tools/argument-warning-reference-composed-14/.tools/warning-reference-scoped/run-493_py31/report.json",
+        "outcome": "Native exact tuple passed; model CLI60 timeout, zero agreement. Original bytes, launcher and raw records preserved",
+        "reduction": "Remove both foreach frame counts and older-handler trace access; preserve all other bytes and assignment line19"
+      },
+      "command": "python3 -B .tools/warning-reference-scoped/run.py",
+      "validation": "Native/model exit0, no timeout or stderr, normal exact stdout, stable inputs/revision and all groups empty; saved45/90/CLI60/steps100000 caps and reused binaries",
+      "publication": "Acceptance documentation changes add no execution or rebuild credit"
     }
   }
 }

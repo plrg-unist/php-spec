@@ -13,10 +13,11 @@ def $parameter_string_record_valid(S, pparameterstring) = true
 def $parameter_string_record_valid(S, pparameterstring) = false -- otherwise
 
 dec $parameter_string_current(pstate, pparameterstring) : bool
+dec $fixed_parameter_supplied(pstate, nat) : bool
 def $parameter_string_current(S, pparameterstring) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pparameterstring.FUNCTION
-  -- if $(pparameterstring.INDEX < pcallcontext.ARGC)
+  -- if $fixed_parameter_supplied(S, pparameterstring.INDEX)
   -- if $function_at($all_functions(S), pparameterstring.FUNCTION) = (pfunction)
   -- if $(pparameterstring.INDEX < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[pparameterstring.INDEX].NAME) = (pparameterstring.CELL)
@@ -78,7 +79,7 @@ def $parameter_string_candidate(S) = true
   -- if S.TODO = [TYPE_RECEIVE porigin n]
   -- if $typed_receive_valid(S, porigin, n)
   -- if S.CURRENT = (pcallcontext)
-  -- if $(n < pcallcontext.ARGC)
+  -- if $fixed_parameter_supplied(S, n)
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)

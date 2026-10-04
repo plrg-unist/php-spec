@@ -159,7 +159,8 @@ dec $named_operands(pnamedslot*) : poperand*
 def $named_operands(eps) = eps
 def $named_operands((NAMED_SENT poperand) :: pnamedslot*) = poperand :: $named_operands(pnamedslot*)
 dec $named_enter(pstate, pfunction, pnamedargs, porigin?, int) : pstate
-def $named_enter(S, pfunction, pnamedargs, porigin?, z) = S_bound[.CURRENT = ({TARGET pfunction.ORIGIN, WRAPPER eps, INSTANCE eps, RECEIVER eps, LEXICAL_CLASS eps, CALLED_CLASS eps, FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA $named_operands(pnamedargs.SLOTS[n_received:n_extra]), NAMED pnamedargs.NAMED})][.TODO = [NAMED_PREFLIGHT pfunction.ORIGIN 0]][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $named_holes(pnamedslot*, nat) : nat*
+def $named_enter(S, pfunction, pnamedargs, porigin?, z) = S_bound[.CURRENT = ({TARGET pfunction.ORIGIN, WRAPPER eps, INSTANCE eps, RECEIVER eps, LEXICAL_CLASS eps, CALLED_CLASS eps, FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, HOLES $named_holes(pnamedargs.SLOTS[0:n_received], 0), EXTRA $named_operands(pnamedargs.SLOTS[n_received:n_extra]), NAMED pnamedargs.NAMED})][.TODO = [NAMED_PREFLIGHT pfunction.ORIGIN 0]][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
   -- if n_args = |pnamedargs.SLOTS|
   -- if psparam_fixed* = $call_fixed_parameters(psparam*)
@@ -280,25 +281,33 @@ def $named_replace((preqbytes, poperand_old) :: (preqbytes_tail, poperand_tail)*
 dec $named_coerced(pstate, nat, poperand, pvalue) : pstate
 def $named_coerced(S, n, KNOWN pvalue_old, pvalue) = S[.CURRENT = (pcallcontext[.NAMED = $named_replace(pcallcontext.NAMED, n, KNOWN pvalue)])]
   -- if S.CURRENT = (pcallcontext)
+def $named_coerced(S, n_index, REFERENCE n, pvalue) = S
+  -- if S.STORE[n] = DEFINED pvalue
 def $named_coerced(S, n_index, REFERENCE n, pvalue) = $write_cell_checked(S, n, pvalue, $property_current_line(S))
+  -- if S.STORE[n] =/= DEFINED pvalue
 dec $named_tail_index(nat, nat) : nat
 def $named_tail_index(n_fixed, n_args) = n_fixed -- if $(n_fixed >= n_args)
 def $named_tail_index(n_fixed, n_args) = n_args -- if $(n_fixed < n_args)
 dec $named_receive(pstate, pfunction, nat) : pstate
+dec $named_variadic_insert(pstate, pfunction, nat, poperand, pvalue) : pstate
 def $named_receive(S, pfunction, n) = S_value
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if S.CURRENT = (pcallcontext)
   -- if (preqbytes, poperand) = pcallcontext.NAMED[n]
   -- if S_value = $variadic_value(S, pfunction, n_fixed, $named_tail_index(n_fixed, pcallcontext.ARGC), poperand)
   -- if S_value.COMPLETION =/= NORMAL
-def $named_receive(S, pfunction, n) = $literal_item_insert(S_array, n_array, (KSTRING preqbytes), $variadic_item(poperand, pvalue), z)[.TODO = [NAMED_VARIADIC_RECEIVE pfunction.ORIGIN $(n + 1)]][.RESULT = KNOWN PNULL]
+def $named_receive(S, pfunction, n) = $named_variadic_insert(S_value, pfunction, n, poperand, pvalue)
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if S.CURRENT = (pcallcontext)
   -- if (preqbytes, poperand) = pcallcontext.NAMED[n]
   -- if S_value = $variadic_value(S, pfunction, n_fixed, $named_tail_index(n_fixed, pcallcontext.ARGC), poperand)
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue
-  -- if S_coerced = $named_coerced(S_value, n, poperand, pvalue)
+def $named_variadic_insert(S, pfunction, n, poperand, pvalue) = $literal_item_insert(S_array, n_array, (KSTRING preqbytes), $variadic_item(poperand, pvalue), z)[.TODO = [NAMED_VARIADIC_RECEIVE pfunction.ORIGIN $(n + 1)]][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if S.CURRENT = (pcallcontext)
+  -- if (preqbytes, poperand_current) = pcallcontext.NAMED[n]
+  -- if S_coerced = $named_coerced(S, n, poperand, pvalue)
   -- if $lookup(S_coerced.ENV, pfunction.SIGNATURE.PARAMETERS[n_fixed].NAME) = (n_cell)
   -- if z = $default_parameter_line(S, pfunction.ORIGIN, n_fixed)
   -- if S_array = $location_array(S_coerced, ROOT n_cell, z)
@@ -309,6 +318,7 @@ rule PhpStep/named-tail-receive: S ~> $named_receive(S, pfunction, n)
   -- if S.CURRENT = (pcallcontext)
   -- if $(n < |pcallcontext.NAMED|)
   -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if ~$variadic_string_candidate(S)
 rule PhpStep/named-tail-done: S ~> S[.TODO = $function_tasks(S, pfunction)]
   -- if S.TODO = (NAMED_VARIADIC_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps

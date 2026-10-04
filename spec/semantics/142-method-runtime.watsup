@@ -943,6 +943,7 @@ rule PhpStep/scoped-name-type: S ~> $throw_scalar(S_name, "Error", $ptascii("Met
 
 dec $constructor_start(pstate, preqbytes, phpType7*, int) : pstate
 dec $constructor_start_ready(pstate, preqbytes, phpType7*, int) : pstate
+dec $parameter_default_constructor(pstate, phpType28, phpType7*, metadata) : bool
 def $constructor_start_ready(S, preqbytes, phpType7*, z) = S_new[.TODO = [$method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), CTOR_RESULT n] ++ S_new.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_new = $new_class(S, preqbytes, z)
   -- if S_new.COMPLETION = NORMAL
@@ -969,6 +970,7 @@ rule PhpStep/new-with-constructor: S ~> $constructor_start(S[.TODO = ptask_tail*
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
   -- if $new_has_ctor(S, preqbytes)
+  -- if ~$parameter_default_constructor(S, name, phpType7*, metadata)
 rule PhpStep/constructor-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CTOR_RESULT n) :: ptask_tail*
 

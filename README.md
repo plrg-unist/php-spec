@@ -222,6 +222,10 @@ records selecting-scope and retired-creator checks. The [method-handler ledger](
 separates original source/state checks from current PIPE warning composition;
 the [earlier handler review](coverage/semantics/error-handlers-review.json) retains
 its distinct revisions and remaining diagnostic/callable obligations.
+Captured-null ASSIGN through a typed alias preserves its value on rejection and
+raises a caller TypeError retaining the handler's previous chain. The
+[consumer review](coverage/semantics/warning-consumers-review.json) records the
+separate source and ownership checks; ordinary missing reference sends stay quiet.
 Full core and a fresh combined offline rebuild remain required.
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
@@ -450,8 +454,12 @@ sources. Reentrant receives retain distinct formal cells, and callback throws
 keep the original exception without authorizing a backing-value exception.
 Cached constant Closures and nonpublic invokable objects preserve these rules.
 Six focused sources, 299 state checks and two independent instance-property
-controls cover the new backing behavior; variadic reception and broader
-constrained conversion remain open.
+controls cover the new backing behavior.
+[Variadic and default reception](coverage/semantics/variadic-default-string-review.json)
+converts positional then named Stringable elements and fresh constructor-free
+defaults, retaining declaring method scope and captured cells. Constructor-default
+execution, rebound anonymous keyword defaults and broader constrained conversion
+remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

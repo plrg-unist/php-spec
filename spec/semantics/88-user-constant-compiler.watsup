@@ -1,4 +1,6 @@
 dec $ppclass_constant_initializer(ppstate) : bool
+dec $ppparameter_new_site(ppstate, pcpath) : bool
+dec $ppparameter_new(ppstate, pcpath, phpType28, phpType6, metadata) : ppstate
 dec $ppconstant_closure(ppstate, bool, phpType21, metadata) : ppstate
 dec $ppconstant_function_callable(ppstate, phpType19, metadata) : ppstate
 dec $ppconstant_method_callable(ppstate, phpType19, phpType20, metadata) : ppstate
@@ -78,7 +80,9 @@ def $ppconstant_node(P, pcpath, NExprClosure phpType14 (BOOLEAN b) phpType4_ref 
 def $ppconstant_node(P, pcpath, NExprNew phpType28 phpType6 metadata) = $ppconstant_error(P, $ptascii("New expressions are not supported in this context"), $nabs($source_line(metadata)))
   -- if $ppclass_constant_initializer(P)
 def $ppconstant_node(P, pcpath, NExprNew phpType28 phpType6 metadata) = $ppunsupported(P, "object constant initializer")
-  -- if ~$ppclass_constant_initializer(P)
+  -- if ~$ppclass_constant_initializer(P) /\ ~$ppparameter_new_site(P, pcpath)
+def $ppconstant_node(P, pcpath, NExprNew phpType28 phpType6 metadata) = $ppparameter_new(P, pcpath, phpType28, phpType6, metadata)
+  -- if ~$ppclass_constant_initializer(P) /\ $ppparameter_new_site(P, pcpath)
 def $ppconstant_node(P, pcpath, NExprPropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
 def $ppconstant_node(P, pcpath, NExprNullsafePropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
 def $ppconstant_node(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppconstant_method_callable(P, phpType19, phpType20, metadata)

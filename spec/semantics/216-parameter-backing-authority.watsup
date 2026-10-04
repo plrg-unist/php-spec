@@ -17,12 +17,13 @@ def $parameter_backing_remove(pparameterbacking :: pparameterbacking_tail*, n_ce
 dec $parameter_backing_source(pstate, pparameterbacking) : bool
 def $parameter_backing_source(S, pparameterbacking) = true
   -- if $function_at($all_functions(S), pparameterbacking.FUNCTION) = (pfunction)
-  -- if $(pparameterbacking.INDEX < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $(pparameterbacking.INDEX < |pfunction.SIGNATURE.PARAMETERS|)
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[pparameterbacking.INDEX]
   -- if psparam.BYREF
   -- if "string" <- $ptmasks(psparam.TYPE)
   -- if porigin_site = $default_parameter_origin(S, pparameterbacking.FUNCTION, pparameterbacking.INDEX)
-  -- if $origin_node(S.SOURCES, porigin_site) = (NParam phpType14 phpType24 phpType18 (BOOLEAN true) (BOOLEAN false) phpType10 phpType5 phpType37 metadata)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NParam phpType14 phpType24 phpType18 (BOOLEAN true) (BOOLEAN b_variadic) phpType10 phpType5 phpType37 metadata)
+  -- if b_variadic = psparam.VARIADIC
   -- if $parameter_string_site_valid(S, porigin_site, pparameterbacking.LINE)
   -- if pparameterbacking.LINE = $default_parameter_line(S, pparameterbacking.FUNCTION, pparameterbacking.INDEX)
 def $parameter_backing_source(S, pparameterbacking) = false -- otherwise
@@ -70,7 +71,7 @@ def $parameter_backing_receive_exact(S) = true
   -- if S.TODO = [TYPE_RECEIVE porigin n]
   -- if $typed_receive_valid(S, porigin, n)
   -- if S.CURRENT = (pcallcontext)
-  -- if $(n < pcallcontext.ARGC)
+  -- if $fixed_parameter_supplied(S, n)
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
   -- if psparam.BYREF

@@ -129,7 +129,7 @@ def $call_arity(S, pfunction, n_args, porigin?, z) = $default_begin(S, pfunction
 def $call_arity(S, pfunction, n_args, porigin?, z) = S[.TODO = [TYPE_RECEIVE pfunction.ORIGIN 0]]
   -- if $typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
 dec $call_enter(pstate, pfunction, poperand*, porigin?, int) : pstate
-def $call_enter(S, pfunction, poperand*, porigin?, z) = S_bound[.CURRENT = ({TARGET pfunction.ORIGIN, WRAPPER eps, INSTANCE eps, RECEIVER eps, LEXICAL_CLASS eps, CALLED_CLASS eps, FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, EXTRA poperand*[n_received:n_extra], NAMED eps})][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $call_enter(S, pfunction, poperand*, porigin?, z) = S_bound[.CURRENT = ({TARGET pfunction.ORIGIN, WRAPPER eps, INSTANCE eps, RECEIVER eps, LEXICAL_CLASS eps, CALLED_CLASS eps, FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, HOLES eps, EXTRA poperand*[n_received:n_extra], NAMED eps})][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
   -- if n_args = |poperand*|
   -- if psparam_fixed* = $call_fixed_parameters(psparam*)
