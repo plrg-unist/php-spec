@@ -1,0 +1,102 @@
+{
+  "actor": "exceptions_review_14",
+  "scope": "Request stage2 after the shutdown queue, including nested release under the genuine restored caller",
+  "baseline": "cde31ae42683ffb0eaa141ec1d8681ec936d0e0a",
+  "runtime": "PHP 8.5.10 CLI NTS64",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed",
+    "native_cap_seconds": 30,
+    "source_model_cap_seconds": 75,
+    "state_cap_seconds": 120,
+    "jobs": 1
+  },
+  "raw_root": ".tools/destructor-review-current-14/.tools",
+  "sources": {
+    "revision": "9adcfc8319b2434359580172b9b901984581afe6",
+    "semantics_equal": "f8a2d5d1dbc9de9505a0f57d79ec91b6dc318cff",
+    "catalogue": "tests/semantics/destructor_review_cases.json",
+    "runner": "tests/semantics/destructor_review.py",
+    "report": "shutdown-review-55acvq56/report.json",
+    "native_reused": true,
+    "exact_stdout_stderr_exit_status_agreements": 64,
+    "explicit_unsupported_dependency_controls": 2,
+    "unsupported_reason": "ordinary destructor release before request stage",
+    "runner_exit": 0,
+    "model_exits": [0, 1],
+    "passed": true
+  },
+  "reached_states": {
+    "runner": "tests/semantics/destructor_state_review.py",
+    "distinct_states": 12,
+    "assertions_including_setup": 548,
+    "cuts": [
+      {
+        "revision": "9adcfc8319b2434359580172b9b901984581afe6",
+        "report": "shutdown-state-review-vw52w6zq/report.json",
+        "passed_states": [
+          "repeated-child-slots-retain-unconsumed-owners",
+          "saved-destructor-context-with-ordinary-helper"
+        ],
+        "assertions": 91
+      },
+      {
+        "revision": "a26a1e32c3d56eee1a5d87d1d9804e56dfa0ba8c",
+        "semantic_change": "269f013f23f4c62e445b2b9ab77b3de09e3cba8b",
+        "report": "shutdown-state-review-la845y5d/report.json",
+        "passed_states": [
+          "global-selected-receiver-before-entry",
+          "live-recycled-handle-selects-new-object",
+          "failed-constructor-retained-this-is-already-marked",
+          "suspended-throw-child-return-keeps-original-parent",
+          "returned-object-owner-survives-ordered-local-release",
+          "extra-arguments-precede-the-receiver-release",
+          "private-nested-destructor-retains-api-producer-scope",
+          "eval-publication-retains-authentic-request-history",
+          "return-owner-release-retains-active-replacement-throwable"
+        ],
+        "assertions": 417
+      },
+      {
+        "revision": "4ce7b5fc934064ff24057ab9d4050c9bab566fac",
+        "semantic_change": "9365bf31369e9371bad1d5d247aa5d3e420c3a65",
+        "report": "shutdown-state-review-bzfzaquz/report.json",
+        "passed_states": ["ignored-private-warning-retains-one-receiver"],
+        "assertions": 40
+      }
+    ],
+    "covered": "Exact receiver and pending owners; per-slot release; recycled handles; once flags; current/saved null-C and USER scope; private API capture after retirement; constructor suppression; replacement Throwable chains; returned operand retention; eval history; budget pause and exact replay",
+    "passed": true
+  },
+  "preserved_failures": [
+    {
+      "report": "shutdown-state-review-t9myqk1y/report.json",
+      "diagnostic": "destructor-selected-diagnostic-jjttdeyj",
+      "cause": "Future GLOBALS/STORE validation retained the selected borrowed CALL after ENTER",
+      "resolution": "269f013f2; affected global and recycled-store entry states passed after the correction"
+    },
+    {
+      "report": "shutdown-state-review-vw52w6zq/report.json",
+      "cause": "Saved private-warning ERROR_HANDLER_RESULT did not project its authentic warning resume before validating GLOBALS",
+      "resolution": "9365bf313; only the affected warning state was repeated"
+    }
+  ],
+  "native_only_followups": [
+    {
+      "report": "shutdown-review-pbo8gp_w/report.json",
+      "correction": "shutdown-review-pbo8gp_w/native-expectation-correction.json",
+      "behavior": "An unused return-new temporary is released before compiled locals, unlike the assigned return in source66",
+      "model_agreement_credit": 0
+    },
+    {
+      "report": "destructor-native-startup-order-p3a9u5h2/report.json",
+      "behavior": "Replacing startup argc preserves its earlier global slot; a fresh dynamic key has a later slot",
+      "model_agreement_credit": 0
+    }
+  ],
+  "recovery": "Raw records preserve exact commands, exits, streams and source files. For source reuse, pass each distinct native.reused_from from shutdown-review-55acvq56/report.json to destructor_review.py with --native-report. State reports identify the exact --case selections and numeric fixture commands. Binary identities are in the source report; raw generated evidence remains outside Git.",
+  "limits": "These cuts do not renew prior222/231/247 evidence. Actual-parent introduced paths and the two native-only followups require separate acceptance. Ordinary eager release before request stage, GC, WeakReference/WeakMap, queue freeing and output lifecycle remain required; paused returns verification is not resumed."
+}
