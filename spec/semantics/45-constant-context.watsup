@@ -608,7 +608,7 @@ def $pfclassname_keyword(phpType19) = eps -- otherwise
 def $pfclassname_fixed(phpType19) = true -- if phpType19 = name
 def $pfclassname_fixed(expression) = ($parser_literal(expression) =/= eps)
 def $pfclassname_fixed(phpType19) = false -- otherwise
-def $pfclassname_scope_known(F) = (~F.CLOSURE /\ (F.CLASSCONTEXT =/= eps \/ F.FUNCTION =/= eps))
+def $pfclassname_scope_known(F) = (~F.CLOSURE /\ ~$ptrait_context(F.CLASSCONTEXT) /\ (F.CLASSCONTEXT =/= eps \/ F.FUNCTION =/= eps))
 def $pfclassname_issue(F, expression) = ($ptascii("Illegal class name"))
   -- if $parser_literal(expression) = (pvalue)
   -- if $pfclass_scalar(pvalue)

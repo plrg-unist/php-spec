@@ -1,0 +1,137 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64 baseline profile; originals retained outside Git.",
+  "cases": [
+    {
+      "id": "plain-import-and-parameters",
+      "source": "<?php trait T{function f(int $n){echo self::class,\":\",$n;}}class C{use T;}(new C)->f(4);",
+      "source_sha256": "22ed3ccca0d3af939950e59eece630a24d9ed726f07bae23a09ab7374d27cc90",
+      "status": "normal",
+      "stdout_base64": "Qzo0",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-native-author228-3td4u82x/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "2b467f4351c58ed2729db73a5929954e8ac56b85d4a03b06b4962684ec7ef4c6"
+    },
+    {
+      "id": "qualified-alias-missing-trait",
+      "source": "<?php echo \"PRE;\";trait T{function f(){}}class C{use T{Missing::f as g;}}",
+      "source_sha256": "2877356af9e9430093853d03cc6a53f1e9f1fde8ab77f351c9566fa29b42d111",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENvdWxkIG5vdCBmaW5kIHRyYWl0IE1pc3NpbmcgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-native-author228-3td4u82x/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "2b467f4351c58ed2729db73a5929954e8ac56b85d4a03b06b4962684ec7ef4c6"
+    },
+    {
+      "id": "qualified-precedence-missing-trait",
+      "source": "<?php echo \"PRE;\";trait T{function f(){}}class C{use T{Missing::f insteadof T;}}",
+      "source_sha256": "dc369396d8016232cbd8062db308e99737923fd09a7f0c63f39c5e14e19e9e1b",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENvdWxkIG5vdCBmaW5kIHRyYWl0IE1pc3NpbmcgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-native-author228-3td4u82x/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "2b467f4351c58ed2729db73a5929954e8ac56b85d4a03b06b4962684ec7ef4c6"
+    },
+    {
+      "id": "qualified-alias-wrong-kind-canonical-name",
+      "source": "<?php echo \"PRE;\";class NotATrait{}trait T{function f(){}}class C{use T{notatrait::f as g;}}",
+      "source_sha256": "8eac3c8dde1a15095291fddf3a5f1c770b88bc1c2ce770b83ecb32377153ffc8",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIE5vdEFUcmFpdCBpcyBub3QgYSB0cmFpdCwgT25seSB0cmFpdHMgbWF5IGJlIHVzZWQgaW4gJ2FzJyBhbmQgJ2luc3RlYWRvZicgc3RhdGVtZW50cyBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-native-author228-3td4u82x/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "2b467f4351c58ed2729db73a5929954e8ac56b85d4a03b06b4962684ec7ef4c6"
+    },
+    {
+      "id": "class-extends-trait-kind",
+      "source": "<?php echo \"PRE;\";trait T{}class C extends T{}",
+      "source_sha256": "a3ff735e5cb0a2bb9d64bf05446610f5033048d8bf629f983cbc12fbd9c6b0dc",
+      "status": "php_error",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIEMgY2Fubm90IGV4dGVuZCB0cmFpdCBUIGluIHtGSUxFfSBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-native-author228-3td4u82x/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "2b467f4351c58ed2729db73a5929954e8ac56b85d4a03b06b4962684ec7ef4c6"
+    },
+    {
+      "id": "class-implements-trait-kind",
+      "source": "<?php echo \"PRE;\";trait T{}class C implements T{}",
+      "source_sha256": "2489ae34333e299cca1c318d282d76a0b0f68bc82dc10139c69eec48bd3ea451",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgY2Fubm90IGltcGxlbWVudCBUIC0gaXQgaXMgbm90IGFuIGludGVyZmFjZSBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-native-author228-3td4u82x/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "2b467f4351c58ed2729db73a5929954e8ac56b85d4a03b06b4962684ec7ef4c6"
+    },
+    {
+      "id": "interface-extends-trait-kind",
+      "source": "<?php echo \"PRE;\";trait T{}interface I extends T{}",
+      "source_sha256": "61d4f16c83f33743a48a00b61a9bd8fe464cf20492de78a2189f501556de373b",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEkgY2Fubm90IGltcGxlbWVudCBUIC0gaXQgaXMgbm90IGFuIGludGVyZmFjZSBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-native-author228-3td4u82x/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "2b467f4351c58ed2729db73a5929954e8ac56b85d4a03b06b4962684ec7ef4c6"
+    },
+    {
+      "id": "interface-use-trait-kind",
+      "source": "<?php echo \"PRE;\";trait T{}interface I{use T;}",
+      "source_sha256": "ad370bcd0b62e8506263d01769c3f0470e41a3f895378a24a30a4bf7f20f19b9",
+      "status": "static_rejection",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgdHJhaXRzIGluc2lkZSBvZiBpbnRlcmZhY2VzLiBUIGlzIHVzZWQgaW4gSSBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-native-author228-3td4u82x/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "2b467f4351c58ed2729db73a5929954e8ac56b85d4a03b06b4962684ec7ef4c6"
+    },
+    {
+      "id": "parentless-trait-parent-type-declaration",
+      "source": "<?php echo \"PRE;\";trait T{function f(parent $x){}}class C{use T;}echo \"POST\";",
+      "source_sha256": "46eaeb23242170ac6369c1050777179424db7c643ddc0dd4af35bb1c7eadbf12",
+      "status": "normal",
+      "stdout_base64": "UFJFO1BPU1Q=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-native-author228-3td4u82x/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "2b467f4351c58ed2729db73a5929954e8ac56b85d4a03b06b4962684ec7ef4c6"
+    },
+    {
+      "id": "direct-trait-deprecation-before-argument-handler-throw",
+      "source": "<?php trait T{static function f($x){echo \"B\";}}class E{static function h($n,$m){echo get_called_class(),\"H\";throw new Exception;}}function a(){echo \"A\";return 1;}set_error_handler(E::h(...));try{T::f(a());}catch(Exception $e){echo \"C\";}",
+      "source_sha256": "6632933d3442af77177d8d7fa3f98d3a4047be18e503dfd4afedb72c8501f8b7",
+      "status": "normal",
+      "stdout_base64": "RUhD",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-native-author228-3td4u82x/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "2b467f4351c58ed2729db73a5929954e8ac56b85d4a03b06b4962684ec7ef4c6"
+    },
+    {
+      "id": "direct-trait-capture-deprecation-once",
+      "source": "<?php trait T{static function f(){echo \"F\";}}set_error_handler(function($n,$m){echo \"H\";return true;});$f=T::f(...);echo \"C\";$f();$f();",
+      "source_sha256": "93533bc13f05cfed1e2e76036541d94533fec8c779ad83a20ce7251f5194e4f3",
+      "status": "normal",
+      "stdout_base64": "SENGRg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-methods-native-author228-3td4u82x/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "2b467f4351c58ed2729db73a5929954e8ac56b85d4a03b06b4962684ec7ef4c6"
+    }
+  ]
+}

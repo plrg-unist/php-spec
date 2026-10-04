@@ -1,9 +1,14 @@
 ;; Task scopes retain the compiled source instance and structural occurrence.
 ;; Metadata and expression equality never select an occurrence. Bare helper
 ;; states may have no source context; their tasks keep that absence explicitly.
+dec $origin_source(porigin) : porigin
+def $origin_source(PORIGIN n pcpath) = PORIGIN n pcpath
+def $origin_source(TRAIT_ORIGIN porigin_owner porigin_source ptbytes) = $origin_source(porigin_source)
+
 dec $origin_child(porigin?, pcpath) : porigin?
 def $origin_child(eps, pcpath) = eps
 def $origin_child((PORIGIN n pcpath_parent), pcpath) = (PORIGIN n (pcpath_parent ++ pcpath))
+def $origin_child((TRAIT_ORIGIN porigin_owner porigin_source ptbytes), pcpath) = $origin_child(($origin_source(porigin_source)), pcpath)
 
 dec $at_task(porigin?, ptask) : ptask
 def $at_task(eps, ptask) = ptask
@@ -20,6 +25,7 @@ def $origin_node(pcunit :: pcunit_tail*, PORIGIN n pcpath) = $occurrence_node(pc
   -- if pcunit.ID = n
 def $origin_node(pcunit :: pcunit_tail*, PORIGIN n pcpath) = $origin_node(pcunit_tail*, PORIGIN n pcpath)
   -- if pcunit.ID =/= n
+def $origin_node(pcunit :: pcunit_tail*, TRAIT_ORIGIN porigin_owner porigin_source ptbytes) = $origin_node(pcunit :: pcunit_tail*, $origin_source(porigin_source))
 
 dec $task_source_node(ptask) : pcnode?
 def $task_source_node(STMT statement) = (statement)

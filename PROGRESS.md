@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Trait method composition228 supports source use, nesting, precedence, aliases,
+visibility/final and abstract requirements in Zend's publication order. Imported
+class/alias identities retain physical body provenance, using/called scope,
+defaults, static cells, captures, Closures, goto/eval and finalizer ownership.
+Failed declarations restore unpublished tables; compile warnings and direct
+trait-call deprecations retain their phases and callback ownership. The
+[trait ledger](coverage/semantics/trait-methods-review.json) keeps the63 source
+union, separate controls and252 conditions at their actual revisions, including
+original failures. Actual227/232/239 composition adds nine source comparisons and
+127 state premises at separate cutoffs: saved default constructors, cold selected
+references, physical interface diagnostic files and imported-maker Closure scope.
+Accepted233/237 routes remain preserved. Trait properties/constants and enums
+remain required; the method checkpoint does not close the trait family.
+
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
 caller environment; ordinary arrays retain their fixed converted key. Real
@@ -309,9 +323,10 @@ failures and interrupted evidence.
   by-reference string conversion186 remain open; accepted ordinary by-value
   classification does not close them. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
-- Objects and lifetime: remaining static members, traits, hooks, readonly/instance asymmetric
+- Objects and lifetime: remaining static members, trait property/constant composition,
+  enums, hooks, readonly/instance asymmetric
   access, traversal, output handlers and lifecycle callbacks. Static cells remain
-  partial across trait/inheritance sharing, bind/clone, include/eval reactivation
+  partial across property trait/inheritance sharing, bind/clone, include/eval reactivation
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,

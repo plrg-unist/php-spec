@@ -1,0 +1,41 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; separate genuine retired capture caller-scope controls, native preparation only.",
+  "cases": [
+    {
+      "id": "ordinary-parent-caller-retired-private-alias",
+      "source": "<?php trait T{function f(){echo __CLASS__,\":\",get_called_class(),\";\";}function make(){return $this->secret(...);}}class C{use T{f as private secret;}}class D extends C{function go(){return parent::make();}}$f=(new D)->go();$f();",
+      "source_sha256": "e6a15704e487c41cb202cafdb0ea48033c5435a97d01de1fb7e83fea6283a9f8",
+      "status": "normal",
+      "stdout_base64": "QzpEOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-capture-caller-native228-6ru25aa8/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; maker scope differs from authenticated caller scope",
+      "native_raw_sha256": "252e175bd45ea0d1f3bb392945408e58f799a6c5ac9effd97385337d7069a7dd"
+    },
+    {
+      "id": "imported-parent-caller-retired-private-alias",
+      "source": "<?php trait T{function f(){echo __CLASS__,\":\",get_called_class(),\";\";}function make(){return $this->secret(...);}}trait U{function go(){return parent::make();}}class C{use T{f as private secret;}}class D extends C{use U;}$f=(new D)->go();$f();",
+      "source_sha256": "858a59085740d0387f913fefb5b8db7edea864fd74d8eeed297a65a929ae021e",
+      "status": "normal",
+      "stdout_base64": "QzpEOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-capture-caller-native228-6ru25aa8/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; maker scope differs from authenticated caller scope",
+      "native_raw_sha256": "252e175bd45ea0d1f3bb392945408e58f799a6c5ac9effd97385337d7069a7dd"
+    },
+    {
+      "id": "eval-parent-caller-retired-private-alias",
+      "source": "<?php trait T{function f(){echo __CLASS__,\":\",get_called_class(),\";\";}function make(){return $this->secret(...);}}class C{use T{f as private secret;}}class D extends C{function go(){return eval(\"return parent::make();\");}}$f=(new D)->go();$f();",
+      "source_sha256": "f23ea6b515dc3a00fd431c979fea55e243b4754b180fb022471888bcf32f5600",
+      "status": "normal",
+      "stdout_base64": "QzpEOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-capture-eval-caller-native228-pk90580_/report.json",
+      "native_raw_sha256": "038afdec55fa7aabd131fa7353690459f989329a2662e8f4a7ced099c814ce63",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; authenticated eval caller scope differs from maker scope"
+    }
+  ]
+}

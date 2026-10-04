@@ -1,0 +1,41 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; three actual-parent232/228 source controls; native preparation only, not private228 method agreements.",
+  "cases": [
+    {
+      "id": "cold-self-reference-keeps-inherited-alias-owner",
+      "source": "<?php trait T{static function f(){$r=&self::$p;$r=7;echo self::$p,\";\";}}class C{use T{f as g;}public static $p=LATE;}class D extends C{}const LATE=3;D::g();echo C::$p,\";\";",
+      "source_sha256": "95bd7115bceeb66983eb5d8d0ef6e13f94cc34d746fb5fd851ebaba98473b675",
+      "status": "normal",
+      "stdout_base64": "Nzs3Ow==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-cold-native-composition228-8r95mj3a/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; trait method plus using-class cold static property; ordinary AssignRef only",
+      "native_raw_sha256": "46bcc61209e00a58db291edac43371ceb67cb292ae47500d276ba05d15a78d0d"
+    },
+    {
+      "id": "cold-parent-reference-keeps-importing-scope",
+      "source": "<?php class P{public static $p=LATE;}trait T{static function f(){$r=&parent::$p;$r=5;echo parent::$p,\";\";}}class C extends P{use T{f as g;}}class D extends C{}const LATE=1;D::g();echo P::$p,\";\";",
+      "source_sha256": "9a433ad7dbace83d066cdfe09aaff679c4646cd5b15efc380f54bb3b793383bb",
+      "status": "normal",
+      "stdout_base64": "NTs1Ow==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-cold-native-composition228-8r95mj3a/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; trait method plus using-class cold static property; ordinary AssignRef only",
+      "native_raw_sha256": "46bcc61209e00a58db291edac43371ceb67cb292ae47500d276ba05d15a78d0d"
+    },
+    {
+      "id": "cold-static-reference-selects-called-class-cell",
+      "source": "<?php trait T{static function f(){$r=&static::$p;$r=8;}}class C{use T;public static $p=LATE;}class D extends C{public static $p=LATE_D;}const LATE=1;const LATE_D=2;D::f();echo C::$p,\":\",D::$p,\";\";",
+      "source_sha256": "f00a90469bc9bf0da55fe7866ba9e32614fbf11ebce4efd16bac3b3143a64075",
+      "status": "normal",
+      "stdout_base64": "MTo4Ow==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-cold-native-composition228-8r95mj3a/report.json",
+      "native_profile": "PHP8.5.10 -n profile.json; LC_ALL=C TZ=UTC; trait method plus using-class cold static property; ordinary AssignRef only",
+      "native_raw_sha256": "46bcc61209e00a58db291edac43371ceb67cb292ae47500d276ba05d15a78d0d"
+    }
+  ]
+}
