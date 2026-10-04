@@ -70,7 +70,7 @@ def $from_site(S, porigin) = false -- otherwise
 
 def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
-  -- if $from_site(S, porigin)
+  -- if $from_site(S, porigin) \/ $closure_current_site(S, porigin) \/ $closure_binding_api_site(S, porigin)
 def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
   -- if pconfigcall.SELECTION = eps

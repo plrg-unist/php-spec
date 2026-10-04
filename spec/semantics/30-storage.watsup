@@ -209,7 +209,7 @@ syntax pclosurebinding = { OBJECT nat, SITE porigin, SOURCE nat, LEXICAL porigin
 syntax pbindscope = BIND_UNSCOPED | BIND_CLASS porigin | BIND_INTERNAL ptbytes
 ;; The old source and scope row certify permission without retaining their heap owners.
 syntax pboundfake = { SITE porigin, SOURCE nat, ORIGINAL pclosurescope?, SCOPE pbindscope, CALLED pbindscope, RECEIVER nat? }
-syntax pinternalclosurescope = { SOURCE nat, FUNCTION porigin, CALLSITE porigin?, LEXICAL pbindscope, CALLED pbindscope, RECEIVER nat? }
+syntax pinternalclosurescope = { SOURCE nat, FUNCTION porigin, CALLSITE porigin?, LEXICAL pbindscope, CALLED pbindscope, RECEIVER nat?, BOUND bool }
 syntax pbindscoperesult = BIND_SCOPE pbindscope | BIND_SCOPE_MISSING ptbytes | BIND_SCOPE_UNKNOWN text
 syntax pbindwarning = { CALL pconfigcall, SCOPE pbindscoperesult, MESSAGE ptbytes }
 syntax pclosureevidence = CLOSURE_SCOPE pclosurescope | CLOSURE_BINDING pclosurebinding | CLOSURE_CALL porigin nat nat porigin
@@ -703,3 +703,6 @@ dec $closure_bind_kind(pintrinsic) : bool
 dec $closure_static_api_kind(pintrinsic) : bool
 dec $closure_static_api_owner_valid(pstate, nat) : bool
 dec $closure_binding_api_site(pstate, porigin) : bool
+
+dec $closure_current_method_site(pstate, porigin) : bool
+dec $closure_current_site(pstate, porigin) : bool
