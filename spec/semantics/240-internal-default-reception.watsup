@@ -132,9 +132,15 @@ def $default_internal_string_valid(S, pdefaultinternal) = true
   -- if $(pdefaultinternal.INDEX < $default_internal_arity(pdefaultinternal.CALL.BASE))
   -- if $default_internal_string_object(S, pdefaultinternal.CALL, pdefaultinternal.INDEX) = (n_object)
 def $default_internal_string_valid(S, pdefaultinternal) = false -- otherwise
-def $call_task_valid(S, DEFAULT_INTERNAL_CTOR_STRING pdefaultinternal) = $default_internal_string_valid(S, pdefaultinternal)
-def $stringify_source(S, porigin_site, z, DEFAULT_INTERNAL_CTOR_STRING pdefaultinternal) = true
+dec $default_internal_user_string_valid(pstate, pdefaultinternal) : bool
+def $default_internal_user_string_valid(S, pdefaultinternal) = true
   -- if $default_internal_string_valid(S, pdefaultinternal)
+  -- if $default_internal_string_object(S, pdefaultinternal.CALL, pdefaultinternal.INDEX) = (n)
+  -- if $stringable_instance(S, n)
+def $default_internal_user_string_valid(S, pdefaultinternal) = false -- otherwise
+def $call_task_valid(S, DEFAULT_INTERNAL_CTOR_STRING pdefaultinternal) = $default_internal_user_string_valid(S, pdefaultinternal)
+def $stringify_source(S, porigin_site, z, DEFAULT_INTERNAL_CTOR_STRING pdefaultinternal) = true
+  -- if $default_internal_user_string_valid(S, pdefaultinternal)
   -- if porigin_site = pdefaultinternal.CALL.SITE /\ z = pdefaultinternal.CALL.LINE
 
 dec $default_internal_string_record(ptask*) : (nat, porigin, int, pdefaultinternal)?
@@ -189,7 +195,7 @@ rule PhpStep/default-internal-receiving-user-string: S ~> $user_string_begin(S, 
   -- if $stringable_instance(S, n)
 rule PhpStep/default-internal-receiving-string-done: S ~> $default_internal_receiving_next(S, pdefaultinternal, PSTRING ptbytes, ptask_tail*)
   -- if S.TODO = (DEFAULT_INTERNAL_CTOR_STRING pdefaultinternal) :: ptask_tail*
-  -- if $default_internal_string_valid(S, pdefaultinternal)
+  -- if $default_internal_user_string_valid(S, pdefaultinternal)
   -- if S.RESULT = KNOWN (PSTRING ptbytes)
 rule PhpStep/default-internal-receiving-builtin-string: S ~> $default_internal_receiving_next(S_value, pdefaultinternal, PSTRING ptbytes, ptask_tail*)
   -- if S.TODO = (DEFAULT_INTERNAL_CTOR_RECEIVE pdefaultinternal) :: ptask_tail*
