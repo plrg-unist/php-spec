@@ -18,8 +18,8 @@ dec $parameter_protocol_is_output(pevent) : bool
 def $parameter_protocol_is_output(OUTPUT ptbytes) = true
 def $parameter_protocol_is_output(pevent) = false -- otherwise
 def $parameter_protocol_output(eps) = eps
-def $parameter_protocol_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $parameter_protocol_output(pevent*)
-def $parameter_protocol_output(pevent :: pevent*) = $parameter_protocol_output(pevent*)
+def $parameter_protocol_output((OUTPUT ptbytes) :: pevent_tail*) = ptbytes ++ $parameter_protocol_output(pevent_tail*)
+def $parameter_protocol_output(pevent :: pevent_tail*) = $parameter_protocol_output(pevent_tail*)
   -- if ~$parameter_protocol_is_output(pevent)
 dec $parameter_protocol_phase(pstate,nat) : bool
 def $parameter_protocol_phase(S,0) = $parameter_string_candidate(S)
