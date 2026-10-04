@@ -17,7 +17,8 @@ inherited-admission correction and the source-reached owner125 at267c pass;
 their raw failures remain preserved.
 Cursor checks now enforce a unique live continuation and metadata record below
 `NEXTITER`. Focused cursor49 and claim85 guards pass at their recorded candidate
-cutoffs; the final reference/reentry protocol review remains pending.
+cutoffs. Independent source1/reference63 and the affected fatal teardown38 pass
+with unchanged87d semantics; the latter corrects a fixture line binding only.
 Tentative-return deprecations are the immediate declaration follow-on, followed
 by IteratorAggregate, ArrayAccess and remaining reference/ordinary object
 traversal. [Scope and boundaries](docs/semantics/ITERATORS.md).
