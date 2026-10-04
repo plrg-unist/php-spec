@@ -206,14 +206,18 @@ def $stringify_chain_valid(S, eps, pframe :: pframe_tail*) = false
 def $task_nodes(STRINGIFY_RESULT n porigin_site z) = [HOBJECT n]
 
 dec $stringify_result_valid(pstate, nat, porigin, int) : bool
+dec $default_internal_string_result_kind(ptask*) : bool
+def $default_internal_string_result_kind(ptask*) = false -- otherwise
 def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if S.ORIGIN = (porigin_site)
+  -- if ~$default_internal_string_result_kind(S.TODO)
   -- if $stringable_instance(S, n)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
   -- if ~$typed_return_source(S, porigin_site, z)
   -- if $stringify_site_valid(S, porigin_site, z)
 def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if S.ORIGIN = (porigin_site)
+  -- if ~$default_internal_string_result_kind(S.TODO)
   -- if $stringable_instance(S, n)
   -- if $typed_return_source(S, porigin_site, z)
   -- if $stringify_site_valid(S, porigin_site, z)

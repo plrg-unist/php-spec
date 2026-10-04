@@ -142,6 +142,7 @@ def $default_internal_string_record((STRINGIFY_RESULT n porigin_site z) :: (DEFA
 def $default_internal_string_record((CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: ptask_tail*) = $default_internal_string_record(ptask_tail*)
 def $default_internal_string_record((THROW_SEARCH n) :: ptask_tail*) = $default_internal_string_record(ptask_tail*)
 def $default_internal_string_record(ptask*) = eps -- otherwise
+def $default_internal_string_result_kind(ptask*) = ($default_internal_string_record(ptask*) =/= eps)
 def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
   -- if $default_internal_string_record(pframe.TODO) = ((n, porigin_site, z, pdefaultinternal))
 dec $default_internal_string_marker(pstate, nat, porigin, int) : bool
@@ -162,6 +163,7 @@ def $default_internal_string_site_valid(S, porigin_site, z) = true
   -- if $default_internal_string_record(S.TODO) = ((n, porigin_site, z, pdefaultinternal))
   -- if $default_internal_string_marker(S, n, porigin_site, z)
 def $default_internal_string_site_valid(S, porigin_site, z) = true
+  -- if $default_internal_string_record(S.TODO) = eps
   -- if $default_internal_string_saved_site(S, S.FRAMES, porigin_site, z)
 def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if S.ORIGIN = (porigin_site)
