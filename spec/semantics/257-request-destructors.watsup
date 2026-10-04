@@ -461,6 +461,9 @@ def $call_after_origin(S, DESTRUCTOR_ENTER pdestructorcall) = S[.ORIGIN = pdestr
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
 def $call_after_origin(S, DESTRUCTOR_WARNING pdestructorcall) = S[.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT][.DESTRUCTION.CALLS = pdestructorcall_tail*]
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+def $call_after_origin(S, ERROR_HANDLER_RESULT perrorcall) = $call_after_origin(S, DESTRUCTOR_WARNING pdestructorcall)
+  -- if perrorcall.RESUME = DESTRUCTOR_WARNING pdestructorcall
+  -- if $error_call_valid(S, perrorcall)
 def $call_after_origin(S, DESTRUCTOR_RELEASE pdestructionrelease) = S[.DESTRUCTION.RELEASES = pdestructionrelease_tail*]
   -- if S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*
 def $throwable_marker(DESTRUCTOR_RESULT pdestructorcall) = (pdestructorcall.CALLER = eps)
