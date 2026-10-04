@@ -1,0 +1,39 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; three actual254 source/consumer boundaries: quiet nullsafe chain, normal Stringable conversion, and conversion suppressed by a pending handler exception. Native-only preparation; zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "nullsafe-quiet-chain-keeps-static-fetch-native-demand",
+      "source": "<?php class E{public int $p=1;}trait T{public static ?E $x;}set_error_handler(function($n,$m){echo \"H;\";error_reporting(0);T::$x=new E;return true;});try{echo isset(T::$x?->p)?\"Y\":\"N\";}catch(Error $e){echo \"E:\",$e->getMessage();}",
+      "source_sha256": "d833ed67866405e0bd83ec83ac30814af739d6c580782c3c34110701d7127b29",
+      "status": "normal",
+      "stdout_base64": "SDtZ",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-0k6gozlc/report.json",
+      "native_raw_sha256": "4a25278bc62aafd2cb40b6c20f24218e409d1c6df49a448756e5cf7ad5c39f72"
+    },
+    {
+      "id": "pending-handler-exception-skips-stringable-property-conversion-body",
+      "source": "<?php class V implements Stringable{public function __toString():string{echo \"S;\";return \"new\";}}trait T{public static string $x=\"old\";}set_error_handler(function($n,$m){echo \"H;\";throw new Exception(\"STOP\");});try{T::$x=new V;}catch(Exception $e){echo \"CAUGHT;\";}restore_error_handler();error_reporting(0);echo T::$x;",
+      "source_sha256": "e401ae9ad3ad1d58782b921d315a14f694414c0d5d6824b84288de7dc5937c6c",
+      "status": "normal",
+      "stdout_base64": "SDtDQVVHSFQ7b2xk",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-btra7v2h/report.json",
+      "native_raw_sha256": "5bbf3dd92baa7d10d22e26b6a701254caa7b36cfd2eeda06e0e7181b4f422aa7"
+    },
+    {
+      "id": "normal-handler-resume-enters-stringable-property-conversion-body",
+      "source": "<?php class V implements Stringable{public function __toString():string{echo \"S;\";return \"new\";}}trait T{public static string $x=\"old\";}set_error_handler(function($n,$m){echo \"H;\";return true;});T::$x=new V;restore_error_handler();error_reporting(0);echo T::$x;",
+      "source_sha256": "a2c9f0f2397848e37f2454ef55ff5179815aca73ad138204a2c61d7b83c07c69",
+      "status": "normal",
+      "stdout_base64": "SDtTO25ldw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-ntfpda7g/report.json",
+      "native_raw_sha256": "44d7e9da2d65a6f90c10a3ce9da61cf042dd792e833b04eea702dc1083227330"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; original scalar type/update-entry neighbors. Instance-template dependency controls remain zero semantic agreement until246; static deferred default and constant-only read are independent first-phase comparisons.",
+  "cases": [
+    {
+      "id": "imported-instance-scalar-rejects-wrong-type",
+      "source": "<?php trait T{public int $x=self::X;}class C{use T;const X=\"s\";}echo \"PRE;\";try{$c=new C;echo \"BAD;\";}catch(TypeError $e){echo $e->getMessage();}",
+      "source_sha256": "fd1de6a74a32d88598b94dfc4e95d81a0c014fe9b683e6678dd081d1f59b3356",
+      "status": "normal",
+      "stdout_base64": "UFJFO0Nhbm5vdCBhc3NpZ24gc3RyaW5nIHRvIHByb3BlcnR5IEM6OiR4IG9mIHR5cGUgaW50",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-scalar-native238-rtkot5j1/report.json",
+      "native_raw_sha256": "276ba822d6efeaebd01c16ed301aac3221f3005158cad9f3149b7831c87718c3"
+    },
+    {
+      "id": "imported-instance-scalar-checked-by-static-table-use",
+      "source": "<?php trait T{public int $x=self::X;public static $y=1;}class C{use T;const X=\"s\";}echo \"PRE;\";try{echo C::$y;}catch(TypeError $e){echo $e->getMessage();}",
+      "source_sha256": "b792335ac7ba5c54ac4828c90f3f1ac96cb441bfe45d3cafe545df4f8316c8de",
+      "status": "normal",
+      "stdout_base64": "UFJFO0Nhbm5vdCBhc3NpZ24gc3RyaW5nIHRvIHByb3BlcnR5IEM6OiR4IG9mIHR5cGUgaW50",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-scalar-native238-rtkot5j1/report.json",
+      "native_raw_sha256": "276ba822d6efeaebd01c16ed301aac3221f3005158cad9f3149b7831c87718c3"
+    },
+    {
+      "id": "imported-static-scalar-rejects-wrong-type",
+      "source": "<?php trait T{public static int $x=self::X;}class C{use T;const X=\"s\";}echo \"PRE;\";try{echo C::$x;}catch(TypeError $e){echo $e->getMessage();}",
+      "source_sha256": "efca9e9df78ff8deae918c9d0e4f282c4e2847390a6c68525eef453863ee9f9e",
+      "status": "normal",
+      "stdout_base64": "UFJFO0Nhbm5vdCBhc3NpZ24gc3RyaW5nIHRvIHByb3BlcnR5IEM6OiR4IG9mIHR5cGUgaW50",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-scalar-native238-rtkot5j1/report.json",
+      "native_raw_sha256": "276ba822d6efeaebd01c16ed301aac3221f3005158cad9f3149b7831c87718c3"
+    },
+    {
+      "id": "imported-instance-type-error-does-not-block-constant-only-read",
+      "source": "<?php trait T{public int $x=self::X;}class C{use T;const X=\"s\";}echo \"PRE;\",C::X;",
+      "source_sha256": "004dbec44558d06f8f1c72ff6f426ae3b1247aee273c48cfc08612070a9d49a5",
+      "status": "normal",
+      "stdout_base64": "UFJFO3M=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-scalar-native238-rtkot5j1/report.json",
+      "native_raw_sha256": "276ba822d6efeaebd01c16ed301aac3221f3005158cad9f3149b7831c87718c3"
+    }
+  ]
+}

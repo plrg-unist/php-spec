@@ -378,6 +378,7 @@ rule PhpStep/static-default-bind: S ~> $static_default_restore($static_default_b
   -- if pvalueclass = $constant_class(S_value, porigin_initializer)
   -- if $static_default_class_supported(pvalueclass)
   -- if $constant_value_class_valid(S_value, pvalue, pvalueclass)
+  -- if $property_default_transfer_valid(S_value, ppropertydesc, pvalueclass)
 rule PhpStep/static-default-bind-object: S ~> $static_default_restore(S_value[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "object-bearing deferred static default"], pstaticdefaultcontext)
   -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
   -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
@@ -387,7 +388,7 @@ rule PhpStep/static-default-bind-object: S ~> $static_default_restore(S_value[.T
   -- if S_value.RESULT = KNOWN pvalue
   -- if $class_constant_runtime_type(S_value, ppropertydesc.TYPE, pvalue)
   -- if ~$static_default_class_supported($constant_class(S_value, porigin_initializer))
-rule PhpStep/static-default-bind-type: S ~> $throw_scalar($static_default_restore(S_value[.TODO = ptask_tail*], pstaticdefaultcontext), "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S_value, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, pstaticdefaultcontext.DECL) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), pstaticdefaultcontext.LINE)
+rule PhpStep/static-default-bind-type: S ~> $throw_scalar($static_default_restore(S_value[.TODO = ptask_tail*], pstaticdefaultcontext), "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S_value, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, pstaticdefaultcontext.DECL) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), pstaticdefaultcontext.LINE)
   -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
   -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
   -- if S_value = $resolve_at(S, S.RESULT, pstaticdefaultcontext.LINE)

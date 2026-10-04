@@ -11,6 +11,7 @@ syntax pfkey = PFNO_KEY | PFKEY pvalue?
 syntax pfitem = PFITEM pvalue? pfkey bool pvalueclass? | PFSPREAD pvalue? pvalueclass?
 syntax pfbuild = PFBUILT pstate pvalueclass? | PFDEFER | PFSTATIC text | PFSTATICBYTES ptbytes
 var F : pfstate
+dec $trait_fold_owner(pfstate) : porigin?
 
 ;; Append/spread use the successful operation's existing NEXT history. Failure
 ;; diagnostics and values remain the responsibility of that operation.
@@ -176,6 +177,7 @@ def $pftracked(F, pcpath, expression, z) = $pfdispatch(F, pcpath, $pfshape(expre
 
 def $pfdispatch(F, pcpath, PFSCALAR pvalue z_leaf, z) = $pfremember(F, pcpath, (pvalue), z_leaf)
 def $pfdispatch(F, pcpath, PFNAME name, z) = $pfnamed(F, pcpath, $pnresolve(F.ENV, PLCONSTANT, name), z)
+  -- if $trait_fold_owner(F) = eps
 def $pfnamed(F, pcpath, PNRESOLVED pnreference, z) = $pfremember(F, pcpath, $pffoldname(F, pnreference), z)
 def $pffoldname(F, pnreference) = $pnfold(pnreference)
   -- if ~F.DEFAULT
@@ -646,6 +648,7 @@ def $pfclassname_value(F, phpType19) = eps -- otherwise
 def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = F[.VALUE = eps]
   -- if ~F.CONSTANT
 def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = $pfclassname_fold(F, pcpath, phpType19, z)
+  -- if $trait_fold_owner(F) = eps
   -- if F.CONSTANT
 def $pfclassname_fold(F, pcpath, phpType19, z) = F[.MEMORY = F.MEMORY[.COMPLETION = STATICBYTES ptbytes z]][.VALUE = eps]
   -- if $pfclassname_issue(F, phpType19) = (ptbytes)
@@ -794,12 +797,13 @@ def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING false)
 def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING $(|ptbytes| <= 1))
   -- if $pffact(F.FACTS, pcpath) = (PSTRING ptbytes)
   -- if pmagic <- [MAGICNAMESPACE, MAGICFUNCTION, MAGICMETHOD]
-def $pfclass_shape(F, pcpath, PFMAGIC MAGICCLASS z) = (PVSTRING true)
+def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING true)
   -- if $pffact(F.FACTS, pcpath) = (PSTRING ptbytes)
+  -- if pmagic <- [MAGICCLASS, MAGICTRAIT]
 def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING true)
   -- if $pffact(F.FACTS, pcpath) = (PSTRING ptbytes)
   -- if ptbytes = eps
-  -- if pmagic <- [MAGICTRAIT, MAGICPROPERTY]
+  -- if pmagic = MAGICPROPERTY
 
 def $pfclass_literal(NScalarString (BYTES text) metadata) = (PVSTRING $(|ptbytes| <= 1))
   -- if $string_kind(metadata) = (z)

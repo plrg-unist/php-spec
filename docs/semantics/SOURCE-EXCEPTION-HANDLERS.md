@@ -42,15 +42,19 @@ python3 tests/semantics/exception_handler_state.py
 python3 tests/semantics/exception_handler_review.py
 python3 tests/semantics/exception_handler_state_review.py
 python3 tests/semantics/exception_handler_static_default.py
-python3 tests/semantics/exception_handler_boundaries.py
+python3 tests/semantics/callback_api_review.py --match exception-
 ```
 
 The [author/composition record](../../coverage/semantics/exception-handlers-review.json)
 and [independent review](../../coverage/semantics/exception-handler-review.json)
 separate original source tuples, ownership/context checks and affected corrections.
-The two explicit Unsupported controls receive no PHP agreement credit.
-Scope-keyword/compound callback ingress needs the effectful API adapter. Wider
-magic/autoload/internal callbacks and the destructor/GC/output request phases
+The earlier two explicit Unsupported controls retain zero agreement credit at
+their original cut. Module247 now stages scope-keyword/compound registration and
+terminal selection through the shared221 API. Registration keeps raw values;
+terminal deprecations use the genuine null caller and `Unknown:0`. Warning
+callbacks may mutate referenced methods, restore or replace handlers, throw or
+exit; the original selected continuation and Throwable remain authenticated.
+Wider magic/autoload/internal callbacks and the destructor/GC/output request phases
 remain open. Ordered shutdown callback entry is implemented by module231. Shared207 error-handler reference-return bodies and temporary-value
 reference returns retain their existing Unsupported boundaries; accepted local
 variable reference returns are ignored correctly by this exception callback.

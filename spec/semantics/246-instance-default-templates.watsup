@@ -32,7 +32,7 @@ def $instance_default_parent_state(S, porigin_class, porigin_decl) = (pinstancet
   -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_parent, porigin_decl) = (pinstancetemplate)
 def $instance_default_parent_state(S, porigin_class, porigin_decl) = eps -- otherwise
 dec $instance_default_initial_state(pstate, porigin, ppropertydesc) : pinstancetemplatestate
-def $instance_default_initial_state(S, porigin_class, ppropertydesc) = pinstancetemplatestate
+def $instance_default_initial_state(S, porigin_class, ppropertydesc) = $instance_default_copy_state(S, porigin_class, pinstancetemplatestate)
   -- if ppropertydesc.ORIGIN = porigin_decl
   -- if $instance_default_parent_state(S, porigin_class, porigin_decl) = (pinstancetemplatestate)
 def $instance_default_initial_state(S, porigin_class, ppropertydesc) = INSTANCE_PENDING porigin_initializer
@@ -49,7 +49,7 @@ def $instance_default_initial(S, porigin_class, ppropertydesc :: ppropertydesc_t
 def $instance_default_publish(S, porigin_class) = S[.INSTANCEDEFAULTS = S.INSTANCEDEFAULTS ++ $instance_default_initial(S, porigin_class, $property_layout(S, porigin_class, |S.CLASSES|))]
 def $instance_default_roots(eps) = eps
 def $instance_default_roots(pinstancetemplate :: pinstancetemplate_tail*) = $value_nodes(pvalue) ++ $instance_default_roots(pinstancetemplate_tail*)
-  -- if pinstancetemplate.STATE = INSTANCE_VALUE pvalue pvalueclass
+  -- if $instance_default_value(pinstancetemplate.STATE) = ((pvalue, pvalueclass))
 def $instance_default_roots(pinstancetemplate :: pinstancetemplate_tail*) = $instance_default_roots(pinstancetemplate_tail*)
   -- if pinstancetemplate.STATE = INSTANCE_PENDING porigin
 def $property_template_state(S, porigin_class, ppropertydesc) = (PROP_VALUE (DIRECT pvalue))
@@ -57,7 +57,7 @@ def $property_template_state(S, porigin_class, ppropertydesc) = (PROP_VALUE (DIR
   -- if ~ppropertydesc.STATIC
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin
   -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_class, porigin_decl) = (pinstancetemplate)
-  -- if pinstancetemplate.STATE = INSTANCE_VALUE pvalue pvalueclass
+  -- if $instance_default_value(pinstancetemplate.STATE) = ((pvalue, pvalueclass))
 def $property_template_state(S, porigin_class, ppropertydesc) = eps
   -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ~ppropertydesc.STATIC
@@ -128,12 +128,14 @@ def $instance_default_row_state_valid(S, pinstancetemplate, ppropertydesc) = tru
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin
   -- if ~$instance_default_filled_at(S, pinstancetemplate.CLASS, pinstancetemplate.DECL, S.CLASSCONSTANTHISTORY, |S.CLASSES|)
 def $instance_default_row_state_valid(S, pinstancetemplate, ppropertydesc) = true
-  -- if pinstancetemplate.STATE = INSTANCE_VALUE pvalue pvalueclass
+  -- if $instance_default_value(pinstancetemplate.STATE) = ((pvalue, pvalueclass))
   -- if $instance_default_filled_at(S, pinstancetemplate.CLASS, pinstancetemplate.DECL, S.CLASSCONSTANTHISTORY, |S.CLASSES|)
   -- if $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)
   -- if $class_constant_runtime_type(S, ppropertydesc.TYPE, pvalue)
   -- if $static_default_class_supported(pvalueclass)
+  -- if $property_default_transfer_valid(S, ppropertydesc, pvalueclass)
+  -- if $instance_object_state_valid(S, pinstancetemplate, ppropertydesc)
 def $instance_default_row_state_valid(S, pinstancetemplate, ppropertydesc) = false -- otherwise
 dec $instance_default_rows_valid(pstate, pinstancetemplate*) : bool
 def $instance_default_rows_valid(S, eps) = true
@@ -258,7 +260,7 @@ rule PhpStep/instance-default-update: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin_de
 rule PhpStep/instance-default-update-filled: S ~> S[.TODO = ptask_tail*]
   -- if S.TODO = (INSTANCE_DEFAULT_UPDATE porigin_class porigin_decl z) :: ptask_tail*
   -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_class, porigin_decl) = (pinstancetemplate)
-  -- if pinstancetemplate.STATE = INSTANCE_VALUE pvalue pvalueclass
+  -- if $instance_default_value(pinstancetemplate.STATE) = ((pvalue, pvalueclass))
   -- if $instance_default_task_valid(S, porigin_class, porigin_decl, z)
 dec $instance_default_set(pinstancetemplate*, porigin, porigin, pinstancetemplatestate) : pinstancetemplate*
 def $instance_default_set(eps, porigin_class, porigin_decl, pinstancetemplatestate) = eps
@@ -275,7 +277,7 @@ def $instance_default_record(S, porigin_class, pstaticdefaultcontext) = [CCINSTA
 def $instance_default_record(S, porigin_class, pstaticdefaultcontext) = eps
   -- if $instance_default_filled_at(S, porigin_class, pstaticdefaultcontext.DECL, S.CLASSCONSTANTHISTORY, |S.CLASSES|)
 dec $instance_default_bound(pstate, porigin, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) : pstate
-def $instance_default_bound(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) = S[.INSTANCEDEFAULTS = $instance_default_set(S.INSTANCEDEFAULTS, porigin_class, pstaticdefaultcontext.DECL, INSTANCE_VALUE $property_default_value(ppropertydesc.TYPE, pvalue) pvalueclass)][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ $instance_default_record(S, porigin_class, pstaticdefaultcontext)]
+def $instance_default_bound(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) = S[.INSTANCEDEFAULTS = $instance_default_set(S.INSTANCEDEFAULTS, porigin_class, pstaticdefaultcontext.DECL, $instance_default_bound_state(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass))][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ $instance_default_record(S, porigin_class, pstaticdefaultcontext)]
 rule PhpStep/instance-default-bind: S ~> $static_default_restore($instance_default_bound(S_value, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pstaticdefaultcontext)
   -- if S.TODO = (INSTANCE_DEFAULT_BIND porigin_class pstaticdefaultcontext) :: ptask_tail*
   -- if $instance_default_bind_valid(S, porigin_class, pstaticdefaultcontext)
@@ -288,6 +290,7 @@ rule PhpStep/instance-default-bind: S ~> $static_default_restore($instance_defau
   -- if pvalueclass = $constant_class(S_value, porigin_initializer)
   -- if $static_default_class_supported(pvalueclass)
   -- if $constant_value_class_valid(S_value, pvalue, pvalueclass)
+  -- if $property_default_transfer_valid(S_value, ppropertydesc, pvalueclass)
 rule PhpStep/instance-default-bind-object: S ~> $static_default_restore(S_value[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "object-bearing deferred instance default"], pstaticdefaultcontext)
   -- if S.TODO = (INSTANCE_DEFAULT_BIND porigin_class pstaticdefaultcontext) :: ptask_tail*
   -- if $property_default_active_desc(S, pstaticdefaultcontext.DECL) = (ppropertydesc)
@@ -297,7 +300,7 @@ rule PhpStep/instance-default-bind-object: S ~> $static_default_restore(S_value[
   -- if S_value.RESULT = KNOWN pvalue
   -- if $class_constant_runtime_type(S_value, ppropertydesc.TYPE, pvalue)
   -- if ~$static_default_class_supported($constant_class(S_value, porigin_initializer))
-rule PhpStep/instance-default-bind-type: S ~> $throw_scalar($static_default_restore(S_value[.TODO = ptask_tail*], pstaticdefaultcontext), "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S_value, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, pstaticdefaultcontext.DECL) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), pstaticdefaultcontext.LINE)
+rule PhpStep/instance-default-bind-type: S ~> $throw_scalar($static_default_restore(S_value[.TODO = ptask_tail*], pstaticdefaultcontext), "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S_value, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, pstaticdefaultcontext.DECL) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), pstaticdefaultcontext.LINE)
   -- if S.TODO = (INSTANCE_DEFAULT_BIND porigin_class pstaticdefaultcontext) :: ptask_tail*
   -- if $property_default_active_desc(S, pstaticdefaultcontext.DECL) = (ppropertydesc)
   -- if S_value = $resolve_at(S, S.RESULT, pstaticdefaultcontext.LINE)
@@ -346,7 +349,7 @@ def $class_constant_history_fills(S, (CCINSTANCE porigin_class porigin_decl pori
   -- if $instance_default_source_valid(S, ppropertydesc)
   -- if $instance_default_prior_done(S, porigin_class, porigin_decl, $property_layout(S, porigin_class, |S.CLASSES|), pclassconstantevent_before*)
   -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_class, porigin_decl) = (pinstancetemplate)
-  -- if pinstancetemplate.STATE = INSTANCE_VALUE pvalue pvalueclass
+  -- if $instance_default_value(pinstancetemplate.STATE) = ((pvalue, pvalueclass))
   -- if $class_constant_values_done($class_constant_layout(S, porigin_class, |S.CLASSES|), porigin_cached*)
   -- if $class_constant_parent_done(S, porigin_class, (porigin_flag, b_flag)*)
   -- if $class_constant_parent_chain(S, porigin_root, porigin_class, |S.CLASSES|)

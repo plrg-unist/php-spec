@@ -51,8 +51,12 @@ Existing local binaries were reused; no fresh build or full-family closure is
 claimed.
 
 [Writable242](SOURCE-DIMENSION-WRITES.md) adds bounded CV-array W/RW and direct
-GLOBALS reference consumers. Append, unset, coalesce assignment and broader
-GLOBALS RW remain required. Object/magic key conversion, earlier missing
+GLOBALS reference consumers. [Coalesce/unset249](SOURCE-DIMENSION-EDITS.md) adds
+direct CV-array consumers with genuine memo operands and distinct read/write lines.
+[Nested unset and append255](SOURCE-DIMENSION-TAILS.md) preserves intermediate
+protection and late RHS demand on defined CV-rooted arrays.
+Wider memoized containers and broader GLOBALS RW remain required. Object/magic
+key conversion, earlier missing
 container producers, other string/scalar diagnostics and broader reference-result
 consumers remain core obligations. Paused returns and request snapshot evidence
 remain separate.

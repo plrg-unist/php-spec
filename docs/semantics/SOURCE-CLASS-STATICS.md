@@ -4,10 +4,13 @@ Modules 187/188 implement backed static declarations in ordinary source classes,
 including public, protected and private access, typed defaults and uninitialized
 values, reads, assignment, quiet tests, dimensions, updates and reference binding.
 Modules 200/201 add backed static asymmetric setters and final declarations.
-Readonly, instance asymmetric setters, promotion, traits, hooks and magic remain
+Readonly, instance asymmetric setters, promotion, hooks and magic remain
 separate obligations. The [storage ledger](../../coverage/semantics/class-static-properties.json)
 and [setter ledger](../../coverage/semantics/static-setter-access-review.json)
 keep historical tests distinct from current interaction checks.
+Trait composition238 and raw-property warning continuations254 retain distinct
+declaring identities, live handler resumption and opcode ownership; see the
+[trait contract](SOURCE-TRAITS.md).
 
 Each declaration owns one `CLASSSTATICS` row keyed by its declaring property ID.
 An inherited declaration resolves to that same row; a redeclaration owns a new
@@ -58,8 +61,19 @@ and the full instance layout, including shadowed private slots, before statics
 and allocation. A resumed outer initializer may replace its reentrant template
 without duplicating first-fill history; objects and previously linked children
 keep their copied values. Template rows own values and arrays; history owns no
-heap values. Object-bearing defaults and wider reference/creation consumers
-remain required open work.
+heap values. Module252 admits static/no-use source Closure and function/method
+callable values, including arrays and class-constant aliases. Object slots copy
+the value and retain the same Closure identity; cold inherited templates create separately,
+while late children copy the exact successful parent binding certificate. Reentry
+replaces only the requested template, and failed/throwing binds publish no object
+value certificate. Literal-key array projections retain authenticated source
+flow after temporary arrays retire. Receipts carry full declaring identity and
+publication prefixes without owning objects. Plain Closure/method clones retain
+their genuine copied scope and earlier source authority. Shared trait FCC initializer
+ASTs retain the first authenticated callable target; subsequent properties use a
+fresh declaration prefix and called class, without rechecking the cached private
+target under an unrelated class. Ordinary method ancestry stays exact. Other
+object/default producers and wider reference/creation consumers remain required.
 The [deferred-default review](../../coverage/semantics/deferred-static-defaults-review.json)
 records eleven earlier source agreements separately from five source-derived guard
 programs. Four217 callback comparisons preserve saved initializer contexts,
@@ -78,6 +92,11 @@ scope admission and collection. Their separate cutoffs and original validator
 failure remain in the review.
 Eight later instance-template sources and three programs/172 premises check
 phase ordering, strict failure/retry, reentry, parent snapshots and owning roots.
+Nine later object-default comparisons and six programs/335 premises check object
+identity, constant/array transfers, full declaring authority, partial retry,
+reentry, late copies, strict rejection, nested-class defaults and source pruning.
+One actual trait-import comparison and98 premises separately check the cached
+target, fresh called class/publication, namespace fallback and dead cache sources.
 Two later213/215 comparisons
 initialize the inherited default
 inside a captured private handler and a raw private handler during a Stringable
@@ -166,7 +185,7 @@ and the declaration type source remains attached. A current-constants control
 uses a literal property default and completes a deferred child constant table
 through ordinary access before the getter. It checks the sole static owner after
 discard, then static storage plus the live global alias after binding. Deferred
-object-bearing defaults and wider consumers remain open. The
+object producers and wider consumers remain open. The
 [reference review](../../coverage/semantics/static-method-reference-review.json)
 keeps the original instance-spelled control and its preserved StaticCall failure
 distinct from fresh static-getter acceptance. Legal untyped object/scalar/null

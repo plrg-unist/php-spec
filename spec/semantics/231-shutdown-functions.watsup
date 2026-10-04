@@ -131,7 +131,7 @@ def $shutdown_register(S, pconfigcall, pvalue) = S[.SHUTDOWN.ENTRIES = S.SHUTDOW
   -- if ~$exception_deprecated_raw(S, pvalue)
   -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
   -- if pconfigcall.SENT = (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
-  -- if pshutdownentry = {CALL pconfigcall, CAPTURE $method_capture_current(S, pconfigcall.SITE), RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, ARGS $shutdown_values(pnamedslot*)}
+  -- if pshutdownentry = {CALL pconfigcall, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, ARGS $shutdown_values(pnamedslot*)}
 def $shutdown_register(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("register_shutdown_function(): Argument #1 ($callback) must be a valid callback, ") ++ ptbytes)
   -- if ~$exception_deprecated_raw(S, pvalue)
   -- if $error_handler_resolution(S, pvalue) = HANDLERINVALID ptbytes

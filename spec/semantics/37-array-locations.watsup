@@ -2,6 +2,8 @@ dec $call_temporary_location(pbase) : bool
 dec $temporary_reference_target(pstate, pbase, int) : pstate
 dec $key_write_pending(pstate) : bool
 dec $key_write_begin(pstate) : pstate
+dec $key_coalesce_pending(pstate) : bool
+dec $key_unset_pending(pstate) : bool
 ;; Direct cells and array element locations preserve designation through writes.
 dec $location_slot(pstate, plocation) : pslot
 def $location_slot(S, ROOT n) = S.STORE[n]

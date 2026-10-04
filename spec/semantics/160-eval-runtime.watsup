@@ -410,18 +410,18 @@ def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S_context, psy
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
   -- if S_context = S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*]
-  -- if ~$default_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext)
+  -- if ~$default_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext) /\ ~$ordinary_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext)
   -- if $config_string_trace_context(S_context, pcallcontext)
 def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S_context, psymboltable.ENV, pframe.CONTEXT)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
   -- if S_context = $constant_frame_scope(S, pframe, pframe_tail*)
-  -- if $default_internal_callback_context(S_context, pcallcontext)
+  -- if $default_internal_callback_context(S_context, pcallcontext) \/ $ordinary_internal_callback_context(S_context, pcallcontext)
 def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S, psymboltable.ENV, pframe.CONTEXT)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
   -- if S_context = S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*]
-  -- if ~$default_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext)
+  -- if ~$default_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext) /\ ~$ordinary_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext)
   -- if ~$config_string_trace_context(S_context, pcallcontext)
 def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S.FILES, porigin_parent), LINE z, FUNCTION $ptascii("eval"), CLASS eps, TYPE eps, ARGS eps, HASARGS false}]
   -- if $stringify_context_kind(S, pcallcontext)

@@ -1,0 +1,322 @@
+{
+  "scope": "PHP8.5.10 staged keyword/compound set_exception_handler registration, terminal reselection, and cached register_shutdown_function selection",
+  "reviewer": "exceptions_review_14",
+  "baseline": "5836ab41e9502fdb860bfc59619fb01325f27039",
+  "reviewed_semantics": "8aa303678648f7cd031277d06d3f5691ff9fd77a",
+  "implementation_freeze": "73e9bba858e31ab7999fb3d8ded957ded6245440",
+  "local_source": {
+    "revision": "d728108e32ee4e4bf65cccbb5d34f981237fb748",
+    "actor": "exceptions_review_14",
+    "count": 34,
+    "statuses": {
+      "normal": 24,
+      "php_error": 8,
+      "explicit_exit": 2
+    },
+    "selection": [
+      "exception-self-late-null-scope",
+      "shutdown-self-cached-private",
+      "exception-compound-register-and-late",
+      "shutdown-compound-live-method-warning",
+      "exception-compound-terminal-warning-replacement",
+      "shutdown-keyword-warning-append",
+      "shutdown-compound-receiver-alias-retirement",
+      "exception-compound-receiver-alias-retirement",
+      "exception-compound-terminal-pop-original",
+      "exception-compound-late-private-getter",
+      "shutdown-keyword-parent-self-static-called",
+      "shutdown-compound-raw-container-cow-retirement",
+      "shutdown-compound-foreign-private-fallback",
+      "exception-compound-terminal-abstract",
+      "exception-compound-terminal-inherited-private-object",
+      "exception-compound-terminal-inherited-private-static",
+      "exception-keyword-registration-warning-throw-preserves-stack",
+      "shutdown-keyword-registration-warning-throw-keeps-inner-append",
+      "shutdown-keyword-argument-effects-before-warning",
+      "exception-keyword-arity-before-warning",
+      "exception-compound-terminal-warning-throw-without-replacement",
+      "exception-compound-terminal-warning-exit",
+      "exception-compound-terminal-warning-restore-and-throw",
+      "shutdown-keyword-append-from-cached-called-scope",
+      "handler-keyword-referenced-class-selection-timing",
+      "shutdown-compound-retired-intrinsic-api-and-static-selector",
+      "exception-compound-retired-api-and-static-selector",
+      "exception-compound-byref-warning-keeps-selected-leaf",
+      "shutdown-keyword-from-retired-method-exception-handler",
+      "shutdown-keyword-from-method-error-handler",
+      "shutdown-keyword-from-implicit-stringify-method",
+      "shutdown-keyword-from-terminal-stringify-method",
+      "shutdown-compound-original-receiver-after-genuine-swap",
+      "shutdown-keyword-from-retired-selected-closure-maker"
+    ],
+    "report": ".tools/callback-api-review-current-14/.tools/shutdown-review-xik244hm/report.json",
+    "command": "python3 tests/semantics/callback_api_review.py --native-report <each retained native manifest>",
+    "driver_exit": 0,
+    "model_cli_exits": [
+      0
+    ],
+    "model_timeout_seconds": 60,
+    "process_cap_seconds": 75,
+    "result": "Exact native stdout, stderr, exit and model status; frontend accepted and checked program. Native streams reused, not reexecuted."
+  },
+  "local_reached": {
+    "actor": "exceptions_review_14",
+    "count": 10,
+    "assertions": 474,
+    "cuts": [
+      {
+        "revision": "d728108e32ee4e4bf65cccbb5d34f981237fb748",
+        "count": 8,
+        "report": ".tools/callback-api-review-current-14/.tools/shutdown-state-review-riktovii/report.json",
+        "selection": [
+          "cached-live-leaf-after-registration-warning",
+          "cached-private-receiver-after-alias-retirement",
+          "terminal-selector-after-stack-restore",
+          "entered-terminal-api-marker",
+          "retired-intrinsic-api-and-static-shutdown-selector",
+          "retired-terminal-static-selector",
+          "byref-warning-preserves-immutable-terminal-leaf",
+          "retired-method-exception-maker-capture"
+        ]
+      },
+      {
+        "revision": "4dc2c0c481309a72ace2721b125e643511f24e69",
+        "count": 2,
+        "report": ".tools/callback-api-review-current-14/.tools/shutdown-state-review-4877ioif/report.json",
+        "selection": [
+          "original-receiver-despite-genuine-replacement",
+          "retired-selected-closure-maker-scope"
+        ]
+      }
+    ],
+    "commands": [
+      "python3 tests/semantics/callback_api_state_review.py",
+      "python3 tests/semantics/callback_api_state_review.py --case original-receiver-despite-genuine-replacement --case retired-selected-closure-maker-scope"
+    ],
+    "first_driver_exit": 1,
+    "corrected_driver_exit": 0,
+    "passed_runner_exits": [
+      0
+    ],
+    "process_cap_seconds": 120,
+    "result": "Cached leaf/class/private/called/receiver/site authenticity, retired API/selector/Closure ownership, exact Throwable/byref sends, current/saved C frames, malformed certificate negatives, and zero-budget replay."
+  },
+  "fixture_correction": {
+    "revision": "4dc2c0c48",
+    "first_failure": ".tools/callback-api-review-current-14/.tools/shutdown-state-review-riktovii/original-receiver-despite-genuine-replacement",
+    "reason": "The isolated scope-helper query was changed without changing the retained entry whose target it validates. The control now changes both embedded target query and entry and rejects the actual producer/state certificate.",
+    "rerun": "Only the failed ninth and not-yet-run tenth checkpoint; semantics unchanged."
+  },
+  "identities": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+    "_build/default/adapter/main.exe": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f"
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING_removed": true
+  },
+  "native_manifests": [
+    ".tools/callback-api-review-current-14/.tools/callback-api-native-review-ssf9oc4t/manifest.json",
+    ".tools/callback-api-review-current-14/.tools/callback-api-native-review-cq1u876n/manifest.json",
+    ".tools/callback-api-review-current-14/.tools/callback-api-native-review-x_05spiy/manifest.json",
+    ".tools/callback-api-review-current-14/.tools/callback-api-native-review-nars562p/manifest.json",
+    ".tools/callback-api-review-current-14/.tools/callback-api-native-review-3v6z8yhb/manifest.json",
+    ".tools/callback-api-review-current-14/.tools/callback-api-native-review-w8qbilfl/manifest.json",
+    ".tools/callback-api-review-current-14/.tools/callback-api-native-review-erruvboj/manifest.json",
+    ".tools/callback-api-review-current-14/.tools/shutdown-review-d5qveq4s/report.json"
+  ],
+  "source_files": [
+    "tests/semantics/callback_api_review_cases.json",
+    "tests/semantics/callback_api_review.py",
+    "tests/semantics/callback_api_state_review.py"
+  ],
+  "remaining": [
+    "Magic/autoload/internal callable bodies outside accepted families",
+    "Destructor, GC, output-buffer and later request-release phases",
+    "Paused return verification and temporary-value reference returns"
+  ],
+  "historical_cuts": "Earlier222 and231 acceptance and zero-agreement Unsupported controls retain their original revisions; no old campaign renewal or fresh rebuild claim.",
+  "actual_parent_review": {
+    "parent": "ab5d8c305",
+    "reviewed_semantics": "ed5d821d3f577ea92a0cb8c762e79957d516ae72",
+    "test_only_head": "752ee8e587d757e07d84d3d86b097a1bca0393a2",
+    "model_actor": "exceptions_dev_14",
+    "inspection_actor": "exceptions_review_14",
+    "source_count": 9,
+    "packets": [
+      {
+        "revision": "46bac6166f7b3d2bbdb8a10db740c51c23607ca2",
+        "report": ".tools/callback-consumers-composed-14/.tools/shutdown-review-m2syi95h/report.json",
+        "selection": [
+          "shutdown-imported-trait-keyword-called-private-default",
+          "shutdown-keyword-from-retired-from-callable-maker",
+          "shutdown-keyword-cached-private-callable-default"
+        ],
+        "recorder_correction": ".tools/callback-consumers-composed-14/.tools/shutdown-review-m2syi95h/fixture-correction.json",
+        "reason": "Incorrect expected CLI status; preserved original packet matches native. No model rerun.",
+        "statuses": [
+          "explicit_exit"
+        ],
+        "php_exits": [
+          7
+        ],
+        "model_cli_exits": [
+          0
+        ]
+      },
+      {
+        "revision": "7c6614cf582f73e9d0bc8836a26c485995aa051d",
+        "report": ".tools/callback-consumers-composed-14/.tools/shutdown-review-s6sh2f3c/report.json",
+        "selection": [
+          "shutdown-keyword-from-retired-from-callable-maker",
+          "shutdown-keyword-cached-private-callable-default"
+        ],
+        "recorder_correction": ".tools/callback-consumers-composed-14/.tools/shutdown-review-s6sh2f3c/fixture-correction.json",
+        "reason": "Incorrect expected CLI status; preserved original packet matches native. No model rerun.",
+        "statuses": [
+          "normal"
+        ],
+        "php_exits": [
+          0
+        ],
+        "model_cli_exits": [
+          0
+        ]
+      },
+      {
+        "revision": "68e74bff1fa3faad64ac9fb5daecc292efe4a6ee",
+        "report": ".tools/callback-consumers-composed-14/.tools/shutdown-review-jq5l1pme/report.json",
+        "selection": [
+          "shutdown-keyword-cached-private-callable-default"
+        ],
+        "statuses": [
+          "normal"
+        ],
+        "php_exits": [
+          0
+        ],
+        "model_cli_exits": [
+          0
+        ]
+      },
+      {
+        "revision": "ed5d821d3f577ea92a0cb8c762e79957d516ae72",
+        "report": ".tools/callback-consumers-composed-14/.tools/shutdown-review-7ucwzvor/report.json",
+        "selection": [
+          "exception-registration-private-getter-error",
+          "shutdown-registration-private-getter-error",
+          "exception-registration-foreign-getter-error",
+          "shutdown-registration-foreign-getter-error"
+        ],
+        "statuses": [
+          "normal",
+          "normal",
+          "normal",
+          "normal"
+        ],
+        "php_exits": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "model_cli_exits": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "revision": "ed5d821d3f577ea92a0cb8c762e79957d516ae72",
+        "report": ".tools/callback-consumers-composed-14/.tools/shutdown-review-nncko_u8/report.json",
+        "selection": [
+          "unsupported-keyword-ingress",
+          "unsupported-compound-ingress"
+        ],
+        "statuses": [
+          "normal",
+          "normal"
+        ],
+        "php_exits": [
+          0,
+          0
+        ],
+        "model_cli_exits": [
+          0,
+          0
+        ]
+      }
+    ],
+    "result": "Independent inspection of retained JSON and native byte streams confirms checked program, exact stdout/stderr, native exit and CLI status, model CLI0 and no timeout. Author model runs add no reviewer execution credit.",
+    "changed_contexts": [
+      "Imported-trait private/default/called-D maker",
+      "Retired accepted234 fromCallable maker",
+      "Accepted248 named callable default with zero supplied arguments",
+      "Foreign-object getter Error versus direct private-table TypeError for both registration APIs",
+      "Two historical231 keyword/compound Unsupported rows now supported"
+    ],
+    "compiler": {
+      "revision": "ed5d821d3f577ea92a0cb8c762e79957d516ae72",
+      "actor": "exceptions_dev_14",
+      "report": ".tools/callback-consumers-composed-14/.tools/callback-api-compile-rw1w732o/report.json",
+      "module_count": 237,
+      "stages": [
+        "algo",
+        "struct"
+      ],
+      "exits": [
+        0,
+        0
+      ],
+      "cap_seconds": 120,
+      "result": "PASS; no timeout and empty remaining process groups."
+    },
+    "reached": {
+      "revision": "752ee8e587d757e07d84d3d86b097a1bca0393a2",
+      "actor": "exceptions_dev_14",
+      "report": ".tools/callback-consumers-composed-14/.tools/shutdown-state-review-tesa1eee/report.json",
+      "selection": [
+        "retired-imported-trait-api-maker"
+      ],
+      "assertions": 75,
+      "runner_exit": 0,
+      "result": "PASS; fixture independently inspected: imported physical/using owner, called class, API/maker source, alternative genuine import/function/site/called negatives, borrowed producer, budget replay and DONE."
+    },
+    "first_semantic_failure": {
+      "revision": "b22e4f8cf",
+      "raw": ".tools/callback-consumers-composed-14/.tools/shutdown-review-9qyv32d5",
+      "reason": "Genuine foreign-object private getter Error lacked a CONFIG api_throw arm and fell into Unsupported. The three-line ed5 fix admits only exception/shutdown registration kinds, disjoint from shared221/234/248 stages."
+    },
+    "credit": "The three new composition sources, four review-native controls and two historical transition rows are overlapping author-run selections, not an addition to either independent34/10/474 or author distinct totals."
+  },
+  "additional_native_controls": {
+    "catalogue_revision": "563621cbe",
+    "count": 4,
+    "reports": [
+      ".tools/callback-api-review-current-14/.tools/shutdown-review-0wlb8561/report.json",
+      ".tools/callback-api-review-current-14/.tools/shutdown-review-tcbo5cp2/report.json"
+    ],
+    "first_fixture_failure": ".tools/callback-api-review-current-14/.tools/shutdown-review-zlmyzge2/report.json",
+    "correction": "The direct inherited-private control is TypeError, rather than a genuine object get_method Error. Expectation corrected from its original native packet without reexecution; separate foreign getter controls retain Error."
+  }
+}

@@ -89,15 +89,23 @@ fallback retains the filename after handler mutation and global retirement.
 [Anonymous keyword defaults245](../../coverage/semantics/anonymous-default-new-review.json)
 now resolve self/parent from the authentic live receiving Closure, separately
 from called class and receiver. Saved defaults retain lexical scope through
-callback retirement and recursive calls sharing a template. Ordinary Throwable
-effects, dynamic object `::class` and broader constrained consumers remain required.
+callback retirement and recursive calls sharing a template.
+[Ordinary Throwable reception250](../../coverage/semantics/ordinary-throwable-reception-review.json)
+uses the same real warning and Stringable callbacks for NEW and explicit methods.
+Successful string parsing replaces supplied slots and releases their old object;
+integer trace slots remain raw. Receiver fields commit after every formal passes,
+and a current conversion consumer cannot borrow permission from an older frame
+at the same site. [Dynamic object `::class`256](../../coverage/semantics/object-class-name-review.json)
+returns a class name without Stringable conversion; broader constrained consumers remain required.
 
 The required consumer inventory includes echo, print, `(string)` casts,
 concat, interpolation, eval/include/require operands, weak typed conversions, dynamic variable
 names, string-offset assigned values, `exit`, and object-versus-string loose
 comparison. Array keys and dynamic method names reject objects without
-calling `__toString`. Interpolation currently lacks a general executable
-runtime rule and needs a separate compiler/runtime increment. Internal
+calling `__toString`. [Ordinary interpolation](SOURCE-INTERPOLATION.md) now stages
+effective CAST/FAST_CONCAT/ROPE conversions through genuine callbacks, retaining
+temporary owners and borrowed variables separately. Broader interpolation
+producers and source contexts remain required. Internal
 Throwable `__toString` uses its own finite trace/property protocol; user
 subclass overrides remain a separate dependency.
 
