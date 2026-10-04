@@ -25,7 +25,9 @@ and history-retirement49 pass in strict production SL mode on semantic c9e6
 Equivalent call-admission deduplication at c9e6 retains the mandatory source
 history/function-table proof; a new coherent descriptor-forgery24 check passes.
 The maintained runner's optional `--sl` flag selects that mode only for the two
-file phases. Original failures, AL timeouts and fixture corrections remain
+file phases. Actual23c composition source2 at5cf39c0dd confirms live dollar-curly
+warning effects and later class publication before request destructors after exit.
+Original failures, AL timeouts and fixture corrections remain
 outside Git with no failed-run credit.
 [Contract and maintained tests](docs/semantics/ITERATORS.md).
 
@@ -171,8 +173,8 @@ cleanup. Five exact source/profile comparisons, SL242, 24 syntax/encoding profil
 with320 checks and37 compiler/certificate premises pass atfa084. Actual256 parent
 preservation keeps243 modules without renewing those cuts. Original compiler and
 fixture parse stops stay zero-credit in the
-[ledger](coverage/semantics/dollar-curly-review.json). Five early-eval native pins
-remain required for the genuine partial-compilation continuation after236; wider
+[ledger](coverage/semantics/dollar-curly-review.json). The early-eval effects pin
+passes with236 at5cf39c0dd; four other native-only originals remain required. Wider
 interpolation and original non-object-cast/file-observer gaps remain open.
 
 Dynamic object `::class`256 evaluates one child and returns its real class name
@@ -296,7 +298,6 @@ Combined and first reduced coalesce CLI60 timeouts retain zero agreement. The
 [ledger](coverage/semantics/dimension-edit-review.json) keep original cuts and
 native prediction corrections. Nested unset and append are covered by255 above;
 wider memoized containers and other producers remain required.
-
 
 Shutdown registration231 caches callable selection, private/rebound permission
 and copied arguments after all argument effects. Ordered callbacks run after
