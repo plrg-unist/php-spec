@@ -51,7 +51,7 @@
     "id": "method-call-created-children-retired-makers",
     "source": "<?php\nclass FakeMethodChildOwner268 {\n    public int $id;\n    private function __construct($id = 0) { $this->id = $id; }\n    public static function create($id) { return new self($id); }\n    private function maker() {\n        static $n = 0;\n        echo 'P:', ++$n, '|';\n        return [\n            static function () { echo self::class, '/', static::class, '|'; },\n            function ($value = new self) {\n                static $m = 0;\n                echo self::class, '/', static::class, ':', $this->id, ':', $value::class, ':', ++$m, '|';\n                return Closure::getCurrent();\n            }\n        ];\n    }\n    public function capture() { return $this->maker(...); }\n}\n$original = FakeMethodChildOwner268::create(1);\n$source = $original->capture();\n$receiver = FakeMethodChildOwner268::create(2);\n$children = $source->call($receiver);\n$static = $children[0];\n$child = $children[1];\n$copy = clone $child;\nunset($original, $source, $receiver, $children, $child);\n$static();\necho (int)($copy() === $copy), '|';\nunset($static, $copy);\n",
     "source_sha256": "2f3911cd4cac21c80583337930d7dd99a15b1ef85844b0c24aaebd6c96123d75",
-    "expected_model": "unsupported"
+    "expected_model": "normal"
   },
   {
     "id": "from-foreign-call-created-static-child",

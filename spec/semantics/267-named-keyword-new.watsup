@@ -130,3 +130,8 @@ def $ordinary_keyword_new_task_valid(S, NExprNew (NName (BYTES text) metadata_na
 def $call_task_valid(S, EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) = $ordinary_keyword_new_task_valid(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if phpType7* =/= eps
   -- if $ptlc($base64(text)) = $ptascii("static")
+;; Cached constant METHODs carry the same selected-NEW scope obligation as
+;; property METHODs. Keep their receipt permissions disjoint.
+def $dynamic_new_property_method_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = true
+  -- if $property_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps
+  -- if $class_constant_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps

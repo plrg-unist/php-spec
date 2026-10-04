@@ -51,6 +51,8 @@ memoization, write continuations and final unset liveness.
 genuine abort temporaries and late RHS warning/insertion.
 [Nested coalesce262](SOURCE-NESTED-COALESCE.md) adds recursive quiet/write walks
 and preserves the selected keyed entry through delayed RHS warning/throw.
-Wider memoized containers, broader GLOBALS RW, earlier missing/scalar containers,
+[Global W/RW269](SOURCE-GLOBAL-WRITES.md) adds name/missing-entry continuations
+for direct updates/compounds and nested array ingress.
+Wider memoized/GLOBALS consumers, earlier missing/scalar containers,
 string/key warnings and object/magic/computed acquisitions remain required.
 Read233, snapshots226 and paused returns retain separate scope.
