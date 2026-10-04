@@ -8,7 +8,8 @@
     "spec/semantics/184-class-constants.watsup",
     "spec/semantics/187-class-static-storage.watsup",
     "spec/semantics/229-static-default-reentry.watsup",
-    "spec/semantics/232-cold-static-references.watsup"
+    "spec/semantics/232-cold-static-references.watsup",
+    "spec/semantics/239-cold-closure-statics.watsup"
   ],
   "contracts": [
     "Declaring scope; strict types with int-to-float promotion.",
@@ -20,7 +21,9 @@
     "Resumed successful update replaces a reentrant live row; firstfill and table completion remain once-only.",
     "Escaped typed aliases retain ordered nonowning property constraints authenticated by retirement history; abrupt/type failures retain the live row.",
     "Cold non-CV static targets keep the captured RHS cell rooted while authentic class-table work runs; resumed binding reselects the live target only after completion.",
-    "Dynamic and ordinary method self/parent/static selectors retain immutable source/class/scope snapshots through callbacks and neutral selected fill/retire/table history."
+    "Dynamic and ordinary method self/parent/static selectors retain immutable source/class/scope snapshots through callbacks and neutral selected fill/retire/table history.",
+    "Captured/rebound source Closure keyword selectors copy authentic live scope/binding evidence; nested creation retains exact immediate creator body/scope/receiver and nullable invocation site. Arena/source facts remain valid after pruning, without adding heap roots or weakening ordinary method ancestry.",
+    "Temporary Closure::call creation copies the authentic live source, receiver class/index and invocation site; source/arena facts remain valid after collection without owning the maker or receiver. Ordinary and copied validation branches are disjoint."
   ],
   "engine_symbols": [
     "zend_compile_prop_decl",
@@ -28,7 +31,9 @@
     "update_property",
     "zend_std_get_static_property_with_info",
     "zend_class_init_statics",
-    "zval_update_constant_ex"
+    "zval_update_constant_ex",
+    "ZEND_METHOD(Closure, call)",
+    "ZEND_DECLARE_LAMBDA_FUNCTION"
   ],
   "artifacts": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults",
   "runtime": {
@@ -114,12 +119,14 @@
     "composition": "Independent native baselines and exact model/raw/additive merge review accepted by compiler_review_14 at 8da51d193; final catalogue/docs publication contains no semantic change.",
     "diagnostic_composition": "compiler_review_14 independently accepts actual217 merge, four new raw agreements, exact Unsupported2/owner41 and cross-file source/finite-snapshot/sharedorigin repair at their recorded cutoffs.",
     "reentry": "compiler_review_14 independently accepted representation, failure/retry/rebind/source-order/GC transitions, exact inherited67 fixture and recorder, all13 complete raw native/model tuples atbf0954840. No previous18/149 renewal.",
-    "cold_references": "compiler_review_14 independently accepted the representation/source/fixture, seven exact native/model tuples at69cc, narrow validator repair and84-premise raw at0288; no historical renewal."
+    "cold_references": "compiler_review_14 independently accepted the representation/source/fixture, seven exact native/model tuples at69cc, narrow validator repair and84-premise raw at0288; no historical renewal.",
+    "cold_closures": "compiler_review_14 independently accepted SOURCE/BOUND nullable creator representation, source/fixture/recorder and all9 exact native/model tuples plus bound69 atd6bc; handler58/terminal35 at860, total162 premises. Original compilation/fixture failures remain; no previous evidence renewal.",
+    "temporary_creation": "compiler_review_14 independently accepted authentic CALL evidence, disjoint repair, source/fixture/recorder and exact raw at e32/49d/adbf; six source agreements/193 premises, original failure retained."
   },
   "required_next": [
     "Deferred instance defaults before static defaults, including shadowed private templates.",
     "Object-bearing defaults with authenticated creation/cache transfer and live roots.",
-    "Cold keyword selection in captured/rebound source Closures and wider reference/update consumers; ordinary method snapshots are supported.",
+    "Wider retained reference/update consumers and remaining creation paths; ordinary method, captured/rebound and temporary-call scope evidence is supported.",
     "Broader retained selectors, traits/hooks/readonly and property consumers.",
     "Paused returns_verify stays untouched; no unaccepted dependencies."
   ],
@@ -240,5 +247,77 @@
       "v2 reached queue state but failed class invariant: missing selected static_default_blocks/static_default_phases cases. v3 adds the existing ordered sequence/reset rules; no PhpStep change or source renewal."
     ],
     "credit": "Seven new source agreements at69cc;84 guard premises at0288. PublicCLI SL compilation and numeric AL state credit remain distinct. Earlier31/149/67 evidence is unchanged."
+  },
+  "cold_closure_validation": {
+    "result": "PASS9 exact native/model normal tuples and three AL source-derived programs/162 premises",
+    "source_revision": "d6bc097899ba12acfe912c61c4c3106b1ad4dae7",
+    "state_revisions": {
+      "bound69": "d6bc097899ba12acfe912c61c4c3106b1ad4dae7",
+      "handler58_terminal35": "860a8a19a6c5e1a73fbb707bbc6765534aae4bba"
+    },
+    "scope": "Captured self/parent/static, bound foreign called class, null receiver and clone, nested captured scopes, reentrant retirement/sole RHS owner, throw/retry, genuine error emission and terminal null-site creator ingress. Scope/receiver/bind/source/site transplant negatives and post-prune history validate the nonowning representation.",
+    "reports": [
+      "cold-closure-model-v2/report.json",
+      "cold-closure-model-v3/report.json",
+      "reviewer14-cold-closure-native-v1/report.json",
+      "reviewer14-cold-closure-native-v2/report.json",
+      "reviewer14-cold-closure-native-v3/report.json",
+      "reviewer14-cold-closure-native-v4/report.json"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/cold-closure-model-v2/run.py",
+      "python3 .tools/deferred-static-defaults/cold-closure-model-v3/run.py"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "completion": "Exact full native/model tuples, accepted checked program/normal/null reason+diagnostic, process+cleanup0, empty external/model stderr and groups, inputs stable. Guard stdout exactly true newline/empty stderr0.",
+    "profile": "All nine originals use full baseline30719 and the same pinned local oracle.",
+    "state_fixtures": "cold-closure-state-prepared-v3/bound-reentry.watsup69; v4/handler-nested58 and terminal-nested35. Source bytes match native-v1/v3/v4.",
+    "preserved_failures": [
+      "v1 compilation-only empty iteration at239:121; renamed optional lexical parameter, no source credit.",
+      "v2 handler fixture parse-only at131:34, missing-source length in PORIGIN constructor; fixed only with sequential ordinal binding. Nine source agreements and bound69 were retained; v3 executes affected/unrun two guards only."
+    ],
+    "credit": "Nine new publicCLI source agreements and162 numeric AL guard premises. Earlier38/84/149/67 evidence unchanged."
+  },
+  "temporary_creation_validation": {
+    "result": "PASS6 exact native/model normal tuples and three AL source-derived programs/193 premises",
+    "tested_revisions": {
+      "five_sources_global77": "e32dcc64a77fe1563ea8b972f4851e345796f30d",
+      "callback81": "49d0b9579f9d6b71b6924d7d46e71af1f457994f",
+      "own_class_source35": "adbfde09ea5ef5de89cdbca6c4c6793e3d0ffa52"
+    },
+    "scope": "Temporary-call child scope, nonstatic receiver ownership, static child/clone rebound into a cold class, unrelated physical owner, two temporary creators, callback CV removal/resume/throw, ordinary/copied same-class overlap and historical evidence after real collection.",
+    "reports": [
+      "temporary-creation-model-v1/report.json",
+      "temporary-creation-model-v2/report.json",
+      "temporary-creation-model-v3/report.json",
+      "reviewer14-temporary-creation-native-v1/report.json",
+      "reviewer14-temporary-creation-native-v2/report.json"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/temporary-creation-model-v1/run.py",
+      "python3 .tools/deferred-static-defaults/temporary-creation-model-v2/run.py",
+      "python3 .tools/deferred-static-defaults/temporary-creation-model-v3/run.py"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "completion": "Successful publicCLI phases accepted/checked program, exact full normal native tuples, null reason/diagnostic, process+cleanup0, empty internal/external stderr and owned groups. Guards exactly true newline/empty stderr0; inputs stable.",
+    "profile": "Full baseline30719, same pinned PHP8.5.10 oracle for all six originals.",
+    "adapter": "Reused accepted 237-capable include-dev-14-display/_build/default/adapter/main.exe, SHA256 d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d; adapter sources match accepted parent, no rebuild claim.",
+    "state_fixtures": "temporary-creation-state-prepared-v1/global-escaping-child77 and callback-resume-throw81; v2/own-class-static-child35. Exact native source bytes; caught trace genuinely owns receiver before deliberate final root release.",
+    "preserved_failures": [
+      "v1 callback81 failed at its receiver-free premise: ordinary static-forbidden and copied-creator rules both matched. Narrow disjoint receiver/class predicates repaired at49d; only callback81 rerun. Original five sources/global77 retained. Fresh own-class source/35 separately tests the related classes overlap."
+    ],
+    "credit": "Six new publicCLI source agreements and193 numeric AL guard premises. Earlier47 source/162 Closure state evidence retained without replay."
   }
 }

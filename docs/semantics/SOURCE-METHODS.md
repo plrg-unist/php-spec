@@ -9,6 +9,9 @@ and [nonpublic-method review](../../coverage/semantics/method-visibility-review.
 bind separate native sources, compiler projections and paused ownership checks;
 these are bounded observations, not complete class semantics.
 
+[Source trait composition](SOURCE-TRAITS.md) imports method bodies into distinct
+using-class and alias identities, preserving source provenance and inherited cells.
+
 ## Descriptors and dispatch
 
 Class-owned method descriptors retain their declaring origin, signature, body,
@@ -296,11 +299,11 @@ nullsafe first-class method expression emits PHP's compile-time rejection.
 Ordinary real-Closure `bindTo` and static `bind` are in private review under
 the separate [binding contract](CLOSURE-BINDING.md); that evidence does not
 establish `Closure::call` or captured-callable rebinding.
-Interface methods and traits,
-static/readonly properties, hooks, user magic methods, destructors,
-remaining closure services and internal protocols are still open.
-Deferred `new` parameter defaults remain outside the admitted initializer
-language and require a separate cache/scope provenance increment.
+Trait property/constant composition, remaining static/readonly properties,
+hooks, user magic methods, destructors, remaining closure services and internal
+protocols are still open. Deferred `new` parameter defaults use the
+[source constructor-default rules](../../coverage/semantics/default-constructors-review.json); remaining
+keyword NEW and initializer consumers retain explicit boundaries.
 Unsupported declarations/consumers remain explicit; no native evaluation fallback
 is used. Generated Throwable errors and ordered catches use owned objects;
 finally transfers have a separate contract. Dynamic lifecycle
@@ -389,8 +392,10 @@ Direct calls and first-class conversion retain ordinary lookup: raw keyword clas
 names reject as missing classes, and qualified array methods reject as literal
 undefined method names. The [221 ledger](../../coverage/semantics/keyword-compound-callables-current-review.json)
 records source comparisons, independent counterexamples, paused states and failures.
-Default/variadic reception, `Closure::fromCallable`, other internal consumers and
-user-return warning ingress remain required. Unstaged special callable checks stay
+Module234 adds actual [`Closure::fromCallable`](FROM-CALLABLE.md) selection and
+invocation with durable capture permission, cached methods and genuine receivers.
+Default/variadic reception, other internal consumers and user-return warning
+ingress remain required. Unstaged special callable checks stay
 Unsupported; kind-changing or shorter retained method buffers, magic/autoload and
 reference-return handlers remain open. Primary rules follow `zend_is_callable_at_frame`,
 `zend_is_callable_check_class` and `zend_is_callable_check_func` in vendored

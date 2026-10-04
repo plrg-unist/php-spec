@@ -1,0 +1,77 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; cross-file imported source/internal interface method diagnostic controls. Separate affected selection, outside accepted63.",
+  "cases": [
+    {
+      "id": "source-interface-static-import",
+      "source": "<?php echo \"PRE;\";require __DIR__.\"/trait.php\";interface I {function f();}class C implements I {use T;}",
+      "source_sha256": "c2723f612ba693502de74bba1f354981686a5ecb0303ac9be644631f7f8b1316",
+      "files": [
+        {
+          "name": "trait.php",
+          "source": "<?php\ntrait T {\n public static function f() {}\n}\n",
+          "source_sha256": "3781412f028e33508c5b68adf6c82f34cfd0321bd207c49c47a40fbdf863ad5e"
+        }
+      ],
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBtYWtlIG5vbiBzdGF0aWMgbWV0aG9kIEk6OmYoKSBzdGF0aWMgaW4gY2xhc3MgQyBpbiB7RklMRTp0cmFpdC5waHB9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-interface-file-native228-a4v42iuf/report.json",
+      "native_raw_sha256": "60aa3495b06a13fa82705c3014a724df8bf5591d21440bb1cfb2091c1ea4dd20"
+    },
+    {
+      "id": "source-interface-protected-import",
+      "source": "<?php echo \"PRE;\";require __DIR__.\"/trait.php\";interface I {function f();}class C implements I {use T;}",
+      "source_sha256": "c2723f612ba693502de74bba1f354981686a5ecb0303ac9be644631f7f8b1316",
+      "files": [
+        {
+          "name": "trait.php",
+          "source": "<?php\ntrait T {\n protected function f() {}\n}\n",
+          "source_sha256": "b92bbf73ac12dcc9e8e8567d242e5bcde9f1e32ba97613fc76e8d359d9ad4636"
+        }
+      ],
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEFjY2VzcyBsZXZlbCB0byBDOjpmKCkgbXVzdCBiZSBwdWJsaWMgKGFzIGluIGNsYXNzIEkpIGluIHtGSUxFOnRyYWl0LnBocH0gb24gbGluZSAzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-interface-file-native228-a4v42iuf/report.json",
+      "native_raw_sha256": "60aa3495b06a13fa82705c3014a724df8bf5591d21440bb1cfb2091c1ea4dd20"
+    },
+    {
+      "id": "source-interface-unavailable-signature-import",
+      "source": "<?php echo \"PRE;\";require __DIR__.\"/trait.php\";interface I {function f(MissingA $a);}class C implements I {use T;}",
+      "source_sha256": "e6aeb131001217a50398cb494d17dba7ef1c6cc616b840f5d55878ab023b381e",
+      "files": [
+        {
+          "name": "trait.php",
+          "source": "<?php\ntrait T {\n public function f(MissingB $a) {}\n}\n",
+          "source_sha256": "3416d968638874dbf69679ff4366c64c5979b4136b766ebcd9922c73ffa5198d"
+        }
+      ],
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENvdWxkIG5vdCBjaGVjayBjb21wYXRpYmlsaXR5IGJldHdlZW4gQzo6ZihNaXNzaW5nQiAkYSkgYW5kIEk6OmYoTWlzc2luZ0EgJGEpLCBiZWNhdXNlIGNsYXNzIE1pc3NpbmdBIGlzIG5vdCBhdmFpbGFibGUgaW4ge0ZJTEU6dHJhaXQucGhwfSBvbiBsaW5lIDMKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-interface-file-native228-a4v42iuf/report.json",
+      "native_raw_sha256": "60aa3495b06a13fa82705c3014a724df8bf5591d21440bb1cfb2091c1ea4dd20"
+    },
+    {
+      "id": "throwable-static-import",
+      "source": "<?php echo \"PRE;\";require __DIR__.\"/trait.php\";class C implements Throwable {use T;}",
+      "source_sha256": "4960f3d00b92e0c4f8d0c655d1abd926165415fc49cff67ea284c0d941e047ce",
+      "files": [
+        {
+          "name": "trait.php",
+          "source": "<?php\ntrait T {\n public static function getMessage() {}\n}\n",
+          "source_sha256": "4fe9aa5bfa194ba2270df4a1db834bd7ec380e0042928d4bd8bf8dee4b821de2"
+        }
+      ],
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBtYWtlIG5vbiBzdGF0aWMgbWV0aG9kIFRocm93YWJsZTo6Z2V0TWVzc2FnZSgpIHN0YXRpYyBpbiBjbGFzcyBDIGluIHtGSUxFOnRyYWl0LnBocH0gb24gbGluZSAzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-interface-file-native228-a4v42iuf/report.json",
+      "native_raw_sha256": "60aa3495b06a13fa82705c3014a724df8bf5591d21440bb1cfb2091c1ea4dd20"
+    }
+  ]
+}

@@ -7,6 +7,54 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Shutdown registration231 caches callable selection, private/rebound permission
+and copied arguments after all argument effects. Ordered callbacks run after
+normal, exit and fatal/uncaught paths, including serviced compiler failures.
+Append, handled throw, exit override, weak/default/variadic reception and internal
+send-warning continuations preserve selected targets and native owners. Frozen
+fatal diagnostics precede the queue; effectful default message warnings finish
+the builtin cache before pending exception dispatch. Exact registered and
+converted argument views remain separate. Existing176 user formatters retain their
+C return-warning continuation after handled throws; actual237 freezes the live
+display destination after formatting. Imported trait makers preserve using scope
+and physical provenance after retirement. Fatal snapshots retain runtime/compile
+severity before callback mask writes; actual240 default reception retains its
+warning and Stringable owners. Author checks cover 29 source tuples and 149 state
+assertions; independent checks cover 77 tuples and 559 assertions. Each keeps its
+recorded revision, and production stages pass on the accepted fe51 parent.
+[Contract](docs/semantics/SOURCE-SHUTDOWN.md),
+[author/composition record](coverage/semantics/shutdown-functions-review.json),
+[independent ledger](coverage/semantics/shutdown-function-review.json).
+Keyword/compound ingress needs the accepted221 consumers; destructors, GC,
+output buffers and queue release are required next request phases.
+
+Internal default reception240 now suspends weak-null and lossy integer warnings
+through real error dispatch and invokes genuine Stringable callbacks in formal
+order. Raw integer slots and rewritten string slots preserve internal constructor
+traces, with the nearest saved owner through reentrant handlers. Exact source14
+atd9 and builtin/fallback2 at7c pass; all185 reached premises at7c pass in unchanged
+133+24+28 source groups under120-second caps. The original full185 timeout and
+first-source interpreter overlap remain preserved. One composition source at
+e7ec retains imported trait Stringable ownership and handler-mutated display
+fallback after the filename global retires.
+[The reception ledger](coverage/semantics/internal-default-reception-review.json)
+records these cuts.
+Ordinary constructor effects and rebound anonymous keyword NEW remain required.
+
+Trait method composition228 supports source use, nesting, precedence, aliases,
+visibility/final and abstract requirements in Zend's publication order. Imported
+class/alias identities retain physical body provenance, using/called scope,
+defaults, static cells, captures, Closures, goto/eval and finalizer ownership.
+Failed declarations restore unpublished tables; compile warnings and direct
+trait-call deprecations retain their phases and callback ownership. The
+[trait ledger](coverage/semantics/trait-methods-review.json) keeps the63 source
+union, separate controls and252 conditions at their actual revisions, including
+original failures. Actual227/232/239 composition adds nine source comparisons and
+127 state premises at separate cutoffs: saved default constructors, cold selected
+references, physical interface diagnostic files and imported-maker Closure scope.
+Accepted233/237 routes remain preserved. Trait properties/constants and enums
+remain required; the method checkpoint does not close the trait family.
+
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
 caller environment; ordinary arrays retain their fixed converted key. Real
@@ -22,15 +70,26 @@ handler selection, called class and authentic key line/name through root mutatio
 append/unset/compound/coalesce-assignment warning continuations are required next;
 wider object/key/container producers remain core work.
 
-Prepared internal Throwable default constructors235 now map the completed227
-value table before arity and sequential reception. Default declaration strictness,
-finite named-hole filling, inherited owners and nested previous objects preserve
-trace argc and ErrorException fields. Source8+7/reached67 at9fa and affected
-string-slot trace2 at7fb keep separate cuts in the
-[internal ledger](coverage/semantics/internal-default-constructors-review.json).
-The original count observer remains Unsupported with zero agreement. Weak-null,
-Stringable and lossy integer warnings require real suspended continuations next;
-rebound anonymous keyword NEW follows.
+Prepared internal Throwable default constructors235 map completed227 values
+before names, arity and sequential reception. Default declaration strictness,
+finite holes and nested previous owners retain exact trace argc and ErrorException
+fields. Earlier8+7/reached67 at9fa and string-slot trace2 at7fb keep their own cuts
+in the [scalar ledger](coverage/semantics/internal-default-constructors-review.json);
+the original count observer remains Unsupported with zero agreement.
+
+Live `display_errors`237 retains nullable original/live INI entries and raw
+get/set/Restore. Ordinary text diagnostics capture stdout/stderr/off after handler
+effects, keeping their position among source output across later writes and
+include retirement. Current terminal errors preserve status255 when display is
+off. Ten author and one independent exact comparisons, 76 source-derived state
+premises and 17 entry/transport controls pass at b8e8, alongside223-module SL
+stages/init and the changed adapter build. Actualddb6/233 preservation retains
+225 modules with the reviewed display and dimension-warning routes, without renewed execution.
+The [display ledger](coverage/semantics/display-errors-review.json) separates
+source-defined nullable controls from native profiles. The held shutdown/fatal
+source matches its independent original at actual231/237 cutccd900: rendering
+selects the fatal destination before queue OFF/Restore writes. This composition
+has its own record; wider display, parser/profiles and request phases remain open.
 
 Registered startup inputs225 provide original `error_reporting` and
 `include_path` bytes before compilation, independently of file/CWD facts.
@@ -56,8 +115,8 @@ Actual221 callable source1/owner39 at2a380 authenticates the suspended construct
 through deprecation callbacks and rejects a removed retained owner.
 The [constructor ledger](coverage/semantics/default-constructors-review.json)
 keeps original failures, the fixture line correction and fresh uncached NEW facts
-precise. Broader internal reception and rebound anonymous self/parent NEW remain
-required; complete core remains open.
+precise. Ordinary internal constructor effects and rebound anonymous self/parent NEW
+remain required; complete core remains open.
 
 Deprecated callable keyword/compound admission221 now stages supplied fixed
 parameters, error registration and delayed dispatch. Warnings hold class choice
@@ -71,9 +130,21 @@ raw keyword/compound calls preserve ordinary PHP lookup errors. The
 records independent pins, affected checks and preserved failures. Actual include,
 cold-static and GLOBALS interactions preserve real USER permission, constrained
 references and captured null; initializer locations retain their declaration owner.
-Default/variadic,
-`Closure::fromCallable`, other internal and user-return warning consumers remain
+Default/variadic, other internal and user-return warning consumers remain
 required; unstaged special callable conversion stays Unsupported.
+
+`Closure::fromCallable`234 selects and creates durable captures over existing core
+callable forms. Existing Closure inputs preserve identity; method captures freeze
+live method bytes and selecting permission before raw values/makers retire.
+USER admission and internal Closure getter scope remain distinct, including
+foreign receiver/called-class cases. Invocation/clone retain real defaults,
+source method statics and receiver ownership. Created source Closures retain
+authenticated method/import scope after the parent capture retires; static
+children add no receiver owner, while nonstatic children retain their bound
+receiver. Imported private cold references and per-host source statics are covered.
+Factory lookup-warning throws wrap only after handler/finally unwinding; argument-read throws before entry remain
+unwrapped. [Contract](docs/semantics/FROM-CALLABLE.md),
+[review ledger](coverage/semantics/from-callable-review.json).
 
 Iterator224 adds compatible explicit declarations and inherited internal
 obligations for source by-value foreach; callbacks use
@@ -114,7 +185,7 @@ cross-file diagnostic origins during static defaults, and production algorithm
 and structure checks pass. [Contract](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md),
 [author/composition record](coverage/semantics/exception-handlers-review.json),
 [independent review](coverage/semantics/exception-handler-review.json).
-Keyword/compound callback ingress and later request lifecycle remain required.
+Keyword/compound callback ingress and the remaining request phases stay open.
 
 Called-class introspection223 implements `get_called_class()` using the active
 authenticated called class. Plain functions and global Closures stop lookup;
@@ -149,8 +220,19 @@ survive callbacks and selected first-fill/retirement/table history. Seven exact
 normal source agreements pass at69cc4546c;84 ownership/history premises pass at
 0288de513 after narrow fixture syntax and selected work-block validator repairs.
 Original failures remain separate; prior31/149/67 checks were not renewed.
-Captured/rebound Closure keyword references and instance/object defaults remain
-required next work.
+Captured/rebound Closure keyword references239 now retain authentic nonowning
+scope/binding evidence after pruning. Nested creation copies its immediate
+creator's body, scope, receiver and nullable callsite, including error and
+terminal callbacks; ordinary method ancestry stays exact. Nine new source
+agreements and bound69 premises pass atd6bc09789; handler58/terminal35 pass at
+860a8a19a after one fixture ordinal-binding repair. Temporary Closure::call child
+creation now retains authentic source/receiver scope after maker collection;
+nonstatic children keep the receiver and static children keep only nonowning
+evidence. Five source agreements/global77 pass at e32dcc64a, affected callback81
+at49d0b9579 after making ordinary/copied scope rules disjoint, and a fresh
+same-class source/35 atadbfde09e: six sources/193 premises total. The original
+validator failure is retained. Instance/object defaults and wider consumers
+remain required next work.
 
 
 Private and protected method arrays and class-method strings support callable
@@ -265,7 +347,7 @@ failures and interrupted evidence.
 
 ## Remaining core work
 
-- Calls: default/variadic, `Closure::fromCallable`, other internal and user-return
+- Calls: default/variadic, other internal and user-return
   keyword/compound warning consumers,
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
@@ -279,11 +361,11 @@ failures and interrupted evidence.
   wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
-- Values, references and coercion: suspended internal default constructor reception,
+- Values, references and coercion: ordinary internal constructor effects,
   rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred instance/object defaults and cold
-  keyword references in captured/rebound Closures remain Unsupported.
+  broader reference-result consumers. Deferred instance/object defaults and
+  wider Closure creation contexts remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.
   Wider deprecated constant consumers remain open. Generic156 return replay, temporary-return
@@ -291,13 +373,14 @@ failures and interrupted evidence.
   by-reference string conversion186 remain open; accepted ordinary by-value
   classification does not close them. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
-- Objects and lifetime: remaining static members, traits, hooks, readonly/instance asymmetric
+- Objects and lifetime: remaining static members, trait property/constant composition,
+  enums, hooks, readonly/instance asymmetric
   access, traversal, output handlers and lifecycle callbacks. Static cells remain
-  partial across trait/inheritance sharing, bind/clone, include/eval reactivation
+  partial across property trait/inheritance sharing, bind/clone, include/eval reactivation
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,
-  later exception-handler lifecycle entry and broader API/callable argument consumers.
+  broader API/callable argument consumers and remaining request phases.
   Broader constant consumers and compiler reporting interactions remain open.
   Called-class introspection223 leaves builtin Closure rebinding, builtin API
   callback targets, suspension and wider reference-result consumers open.

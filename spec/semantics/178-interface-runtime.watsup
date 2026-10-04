@@ -1,6 +1,6 @@
 ;; Direct interface links are recorded only after every dependency was fetched.
 syntax pilfetch = PILFETCHED pilref* | PILMISSING ptbytes
-syntax pilresult = PILOK pilref* | PILFATAL ptbytes | PILMISSINGRESULT ptbytes | PILUNSUPPORTED text
+syntax pilresult = PILOK pilref* | PILFATAL ptbytes | PILCOMPILEFATAL ptbytes | PILMISSINGRESULT ptbytes | PILUNSUPPORTED text
 syntax piltargets = PILTARGETS pilref*
 dec $pil_at(pinterfacelink*, porigin) : piltargets?
 dec $pil_fetch(pstate, ptbytes*, pilref*) : pilfetch
@@ -37,12 +37,12 @@ dec $pil_name(pilref) : ptbytes
 def $pil_name(PILSOURCE ptbytes porigin) = ptbytes
 def $pil_name(PILBUILTIN ptbytes) = ptbytes
 def $pil_check(S, pclassdesc, eps, ptbytes_seen*, pilref_done* ) = PILOK pilref_done*
-def $pil_check(S, pclassdesc, pilref :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL ($pil_role(pclassdesc) ++ [32] ++ pclassdesc.NAME ++ $ptascii(" cannot implement previously implemented interface ") ++ $pil_name(pilref))
+def $pil_check(S, pclassdesc, pilref :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILCOMPILEFATAL ($pil_role(pclassdesc) ++ [32] ++ pclassdesc.NAME ++ $ptascii(" cannot implement previously implemented interface ") ++ $pil_name(pilref))
   -- if $ptlc($pil_name(pilref)) <- ptbytes_seen*
 def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = PILFATAL (pclassdesc.NAME ++ $ptascii(" cannot implement ") ++ pclassdesc_dep.NAME ++ $ptascii(" - it is not an interface"))
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
-  -- if pclassdesc_dep.KIND = "class"
+  -- if pclassdesc_dep.KIND =/= "interface"
 def $pil_check(S, pclassdesc, (PILSOURCE ptbytes porigin) :: pilref_tail*, ptbytes_seen*, pilref_done* ) = $pil_check(S, pclassdesc, pilref_tail*, ptbytes_seen* ++ [$ptlc(ptbytes)], pilref_done* ++ [PILSOURCE ptbytes porigin])
   -- if ~($ptlc(ptbytes) <- ptbytes_seen*)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc_dep)
@@ -70,20 +70,21 @@ def $pil_activate(S, S_parent, pclassdesc, pilresult) = S_parent
 def $pil_activate(S, S_parent, pclassdesc, PILOK pilref* ) = $pil_method_publish(S, $pil_publish(S_parent, pclassdesc, pilref*), pclassdesc)
   -- if S_parent.COMPLETION = NORMAL
 def $pil_activate(S, S_parent, pclassdesc, PILFATAL ptbytes) = $pil_fatal(S, pclassdesc, ptbytes)
+def $pil_activate(S, S_parent, pclassdesc, PILCOMPILEFATAL ptbytes) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes, pclassdesc.LINE)
   -- if S_parent.COMPLETION = NORMAL
 def $pil_activate(S, S_parent, pclassdesc, PILMISSINGRESULT ptbytes) = $throw_scalar(S[.ORIGIN = (pclassdesc.ORIGIN)], "Error", $ptascii("Interface \"") ++ ptbytes ++ $ptascii("\" not found"), pclassdesc.LINE)
   -- if S_parent.COMPLETION = NORMAL
 def $pil_activate(S, S_parent, pclassdesc, PILUNSUPPORTED text) = S[.COMPLETION = UNSUPPORTED text]
   -- if S_parent.COMPLETION = NORMAL
 
-def $activate_class_body(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_activate(S, S, pclassdesc, $pil_checked(S, pclassdesc, $pil_fetch(S, pclassdesc.INTERFACES, eps))))
+def $activate_class_base_body(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_activate(S, S, pclassdesc, $pil_checked(S, pclassdesc, $pil_fetch(S, pclassdesc.INTERFACES, eps))))
   -- if S.COMPLETION = NORMAL
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if pclassdesc.PARENT = eps
   -- if pclassdesc.INTERFACES =/= eps
   -- if $class_static_initial(S, pclassdesc.PROPERTIES) = (pclassstatic*)
-def $activate_class_body(S, pclassdesc) = $activate_parented_class(S, pclassdesc, ptbytes_parent)
+def $activate_class_base_body(S, pclassdesc) = $activate_parented_class(S, pclassdesc, ptbytes_parent)
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "class"
   -- if ~$class_internal(pclassdesc.NAME)
@@ -93,7 +94,7 @@ def $activate_class_body(S, pclassdesc) = $activate_parented_class(S, pclassdesc
   -- if $class_static_initial(S, pclassdesc.PROPERTIES) = (pclassstatic*)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = eps
   -- if ~$class_internal(ptbytes_parent)
-def $activate_class_body(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_parent_activate(S, pclassdesc, ptbytes_parent, $pil_fetch(S, pclassdesc.INTERFACES, eps)))
+def $activate_class_base_body(S, pclassdesc) = $class_static_finish(S, pclassdesc, $pil_parent_activate(S, pclassdesc, ptbytes_parent, $pil_fetch(S, pclassdesc.INTERFACES, eps)))
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "class"
   -- if ~$class_internal(pclassdesc.NAME)
@@ -109,13 +110,13 @@ def $pil_parent_activate(S, pclassdesc, ptbytes_parent, PILFETCHED pilref* ) = S
 def $pil_parent_activate(S, pclassdesc, ptbytes_parent, PILFETCHED pilref* ) = $pil_activate(S, S_parent, pclassdesc, $pil_check(S_parent, pclassdesc, pilref*, eps, eps))
   -- if S_parent = $activate_parented_class(S, pclassdesc, ptbytes_parent)
   -- if S_parent.COMPLETION = NORMAL
-def $activate_class_body(S, pclassdesc) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]]
+def $activate_class_base_body(S, pclassdesc) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]]
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "interface"
   -- if ~$class_internal(pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if pclassdesc.INTERFACES = eps
-def $activate_class_body(S, pclassdesc) = $pil_fatal(S, pclassdesc, $ptascii("Cannot redeclare ") ++ $ptascii(pclassdesc_old.KIND) ++ [32] ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41])
+def $activate_class_base_body(S, pclassdesc) = $pil_fatal(S, pclassdesc, $ptascii("Cannot redeclare ") ++ $ptascii(pclassdesc_old.KIND) ++ [32] ++ pclassdesc_old.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc_old.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc_old.LINE) ++ [41])
   -- if S.COMPLETION = NORMAL
   -- if pclassdesc.KIND = "interface"
   -- if ~$class_internal(pclassdesc.NAME)
@@ -141,7 +142,7 @@ def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot ins
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "interface"
 
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_fatal(S, pclassdesc, $ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend interface ") ++ pclassdesc_parent.NAME)
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_method_fatal(S, pclassdesc.ORIGIN, $ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend interface ") ++ pclassdesc_parent.NAME, pclassdesc.LINE)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "interface"

@@ -1,0 +1,40 @@
+{
+  "cases": [
+    {
+      "id": "new-parent-default-uses-import-owner",
+      "source": "<?php trait T{function f($x=new parent){echo get_class($x),\":\",__CLASS__,\";\";}}class P{}class C extends P{use T{f as g;}}class D extends C{}class Q{}class E extends Q{use T;}(new D)->f();(new D)->g();(new E)->f();",
+      "source_sha256": "34983e5ff471fd2789e3c54b60be23751ca332f7e30b9156c15f777ee042dad0",
+      "status": "normal",
+      "stdout_base64": "UDpDO1A6QztROkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-defaults-native-author228-d41qefjq/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "8492c63278ad04de3a5d7816576e5e5324d5dc0bffd4b7247a7dbaede90c5a89"
+    },
+    {
+      "id": "new-parent-default-no-parent-error",
+      "source": "<?php trait T{function f($x=new parent){echo \"N\";}}class C{use T;}try{(new C)->f();}catch(Error $e){echo $e->getMessage();}",
+      "source_sha256": "2f166c059b8b31490b78d67f8ac735cab2c092df153f84cd04707c6a67c2776e",
+      "status": "normal",
+      "stdout_base64": "Q2Fubm90IGFjY2VzcyAicGFyZW50IiB3aGVuIGN1cnJlbnQgY2xhc3Mgc2NvcGUgaGFzIG5vIHBhcmVudA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-defaults-native-author228-d41qefjq/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "8492c63278ad04de3a5d7816576e5e5324d5dc0bffd4b7247a7dbaede90c5a89"
+    },
+    {
+      "id": "new-self-default-alias-fresh-objects",
+      "source": "<?php trait T{function f($x=new self){return $x;}}class C{use T{f as g;}}class E{use T;}$c=new C;echo get_class($c->g()),\":\",get_class((new E)->f()),\":\",$c->f()===$c->g()?\"S\":\"F\";",
+      "source_sha256": "8286013cbb4916033f85510387c0ecf1ecbd83763ffd6ad31a0867ad36b6aff0",
+      "status": "normal",
+      "stdout_base64": "QzpFOkY=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-composition-current-14/.tools/trait-defaults-native-author228-d41qefjq/report.json",
+      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC; original runtime and lint",
+      "native_raw_sha256": "8492c63278ad04de3a5d7816576e5e5324d5dc0bffd4b7247a7dbaede90c5a89"
+    }
+  ]
+}

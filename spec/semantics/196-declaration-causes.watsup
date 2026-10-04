@@ -334,11 +334,15 @@ def $declaration_invocation(S, pfunction, porigin_site, porigin_lexical?, porigi
 
 ;; An arrow return callback uses the arrow declaration as its saved return
 ;; site; creation availability still uses the containing source body above.
+dec $declaration_arrow_source(pcnode?) : bool
+def $declaration_arrow_source((NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)) = true
+def $declaration_arrow_source(pcnode?) = false -- otherwise
 dec $declaration_cause_owner(pstate, porigin) : pfunction?
 def $declaration_cause_owner(S, porigin) = (pfunction)
   -- if $origin_node(S.SOURCES, porigin) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
-def $declaration_cause_owner(S, PORIGIN n pcpath) = $goto_source_owner($all_functions(S), n, pcpath) -- otherwise
+def $declaration_cause_owner(S, PORIGIN n pcpath) = $goto_source_owner($all_functions(S), n, pcpath)
+  -- if ~$declaration_arrow_source($origin_node(S.SOURCES, PORIGIN n pcpath)) \/ $function_at(S.CLOSURETEMPLATES, PORIGIN n pcpath) = eps
 
 ;; The first global scope gives the actual executing unit. Dynamic service
 ;; boundaries then authenticate outer callers without replacing that unit.
@@ -347,10 +351,11 @@ def $declaration_cause_walk(S, PORIGIN n_site pcpath, (porigin_function, porigin
   -- if $(n > 0)
   -- if porigin_callsite? = (porigin_call)
   -- if $declaration_cause_owner(S, PORIGIN n_site pcpath) = (pfunction)
-  -- if pfunction.ORIGIN = porigin_function
-  -- if $declaration_callable_available(S, pfunction, n)
+  -- if $function_at($all_functions(S), porigin_function) = (pfunction_selected)
+  -- if $trait_source_same(pfunction, pfunction_selected)
+  -- if $declaration_callable_available(S, pfunction_selected, n)
   -- if $declaration_active_class(S, porigin_lexical?) /\ $declaration_active_class(S, porigin_called?)
-  -- if $declaration_invocation(S, pfunction, porigin_call, porigin_lexical?, porigin_called?, pdeclcalls)
+  -- if $declaration_invocation(S, pfunction_selected, porigin_call, porigin_lexical?, porigin_called?, pdeclcalls)
 def $declaration_cause_walk(S, PORIGIN 0 pcpath, eps, n_unit, b_unit, n) = true
   -- if $(n > 0)
   -- if $declaration_cause_owner(S, PORIGIN 0 pcpath) = eps

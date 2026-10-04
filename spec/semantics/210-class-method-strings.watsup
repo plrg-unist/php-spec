@@ -216,10 +216,10 @@ def $clone_object(S, n_source) = $clone_scope(S[.OBJECTS = S.OBJECTS ++ [STRINGM
   -- if S.OBJECTS[n_source] = STRINGMETHODCLOSURE pcalltarget pstringselection
   -- if n = |S.OBJECTS|
 def $clone_same_kind(STRINGMETHODCLOSURE pcalltarget pstringselection, STRINGMETHODCLOSURE pcalltarget pstringselection) = true
-def $state_static_at(S, porigin) = $static_at(S.STATICS, porigin)
+def $state_static_at(S, porigin) = $static_at(S.STATICS, $trait_static_key(S, porigin))
   -- if $current_instance(S) = (n)
   -- if S.OBJECTS[n] = STRINGMETHODCLOSURE pcalltarget pstringselection
-def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new]]
+def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new[.ORIGIN = $trait_static_key(S, pstaticcell_new.ORIGIN)]]]
   -- if $current_instance(S) = (n)
   -- if S.OBJECTS[n] = STRINGMETHODCLOSURE pcalltarget pstringselection
 def $trace_context_function(S, pcallcontext) = pmethoddesc.NAME
@@ -272,6 +272,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if S_read.OBJECTS[n] = STRINGMETHODCLOSURE pcalltarget pstringselection
   -- if $closure_known_other_method(ptbytes)
+  -- if $ptlc(ptbytes) =/= $ptascii("fromcallable")
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method Closure::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL

@@ -19,6 +19,8 @@ dec $reporting_ini_mask(preqbytes) : int
 dec $startup_reporting_mask(pstartup?) : int
 dec $startup_reporting_ini(pstartup?) : preqbytes
 dec $startup_include_path(pstartup?) : preqbytes
+dec $display_ini_bytes(preqbytes?) : preqbytes
+dec $display_restore(pstate) : pstate
 dec $config_kind(pintrinsic) : bool
 def $config_kind(INTRINSIC_GET_INCLUDE_PATH) = true
 def $config_kind(INTRINSIC_INI_GET) = true
@@ -171,6 +173,7 @@ def $config_parameter(INTRINSIC_CHDIR, preqbytes) = (0) -- if preqbytes = $ptasc
 def $config_parameter(pintrinsic, preqbytes) = eps -- otherwise
 def $config_destination(pintrinsic, eps, n) = (n)
 def $config_destination(pintrinsic, (preqbytes), n) = $config_parameter(pintrinsic, preqbytes)
+  -- if pintrinsic =/= INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
 dec $config_send_check(pstate, pconfigcall, preqbytes?, int) : pstate
 def $config_send_check(S, pconfigcall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $c_string(preqbytes), z)
   -- if $config_destination(pconfigcall.KIND, (preqbytes), |pconfigcall.SENT|) = eps
@@ -327,11 +330,13 @@ def $config_object(POBJECT n) = true
 def $config_object(pvalue) = false -- otherwise
 def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe, ptraceframe_invoke]
   -- if $config_method_receiver(S, pconfigcall)
+  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE
   -- if pvalue_original* = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
   -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue_original*, 0), HASARGS true}
 def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe]
   -- if ~$config_method_receiver(S, pconfigcall)
+  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 dec $config_error(pstate, pconfigcall, text, preqbytes) : pstate
 def $config_error(S, pconfigcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pconfigcall.SITE)], text, preqbytes, pconfigcall.LINE, $source_trace_prefixed(S, $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))))
@@ -343,6 +348,14 @@ def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = $throwable_allocate(
   -- if $config_ini_value_conversion(pvalue) = TYPEREJECT
 def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S_value[.TODO = ptask_tail*][.REPORTING = $reporting_ini_mask(n_new*)][.REPORTINGINI = n_new*][.REPORTINGMODIFIED = true][.RESULT = KNOWN (PSTRING S.REPORTINGINI)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if n_option* = $ptascii("error_reporting")
+  -- if $config_ini_value_conversion(pvalue) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_value = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING n_new*)
+  -- if S.TODO = ptask :: ptask_tail*
+def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S_value[.TODO = ptask_tail*][.DISPLAYINI = (n_new*)][.DISPLAYMODIFIED = true][.RESULT = KNOWN (PSTRING $display_ini_bytes(S.DISPLAYINI))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_option* = $ptascii("display_errors")
   -- if $config_ini_value_conversion(pvalue) = ptypeconversion
   -- if ptypeconversion =/= TYPEREJECT
   -- if S_value = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
@@ -371,13 +384,15 @@ def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S_value[.TODO = ptas
 def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if n_option* =/= $ptascii("include_path")
   -- if n_option* =/= $ptascii("error_reporting")
-  -- if $ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting")] \/ n_option* = eps \/ 0 <- n_option*
+  -- if n_option* =/= $ptascii("display_errors")
+  -- if $ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting"), $ptascii("display_errors")] \/ n_option* = eps \/ 0 <- n_option*
   -- if $config_ini_value_conversion(pvalue) =/= TYPEREJECT
   -- if S.TODO = ptask :: ptask_tail*
 ;; Primitive option strings cannot name a directive in the pinned profile.
 def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if n_option* =/= $ptascii("include_path")
   -- if n_option* =/= $ptascii("error_reporting")
+  -- if n_option* =/= $ptascii("display_errors")
   -- if n_option* =/= eps
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]
   -- if $typed_scalar(pvalue_option)
@@ -397,18 +412,19 @@ def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_ini_unary_kind(pconfigcall.KIND)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
   -- if ~$config_strict(S, pconfigcall)
-  -- if S.FILEINCLUDEPATH =/= eps
 def $config_ini_null_valid(S, pconfigcall) = false -- otherwise
 dec $config_ini_option_miss(pconfigcall, preqbytes) : bool
 def $config_ini_option_miss(pconfigcall, n_option*) = true
   -- if n_option* =/= $ptascii("include_path")
   -- if n_option* =/= $ptascii("error_reporting")
-  -- if $ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting")] \/ n_option* = eps \/ 0 <- n_option*
+  -- if n_option* =/= $ptascii("display_errors")
+  -- if $ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting"), $ptascii("display_errors")] \/ n_option* = eps \/ 0 <- n_option*
 ;; Converted primitive options cannot name a directive in the pinned profile.
 def $config_ini_option_miss(pconfigcall, n_option*) = true
   -- if n_option* =/= $ptascii("include_path")
   -- if n_option* =/= $ptascii("error_reporting")
-  -- if ~($ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting")] \/ n_option* = eps \/ 0 <- n_option*)
+  -- if n_option* =/= $ptascii("display_errors")
+  -- if ~($ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting"), $ptascii("display_errors")] \/ n_option* = eps \/ 0 <- n_option*)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
   -- if $typed_scalar(pvalue)
   -- if ~$method_string(pvalue)
@@ -416,6 +432,9 @@ def $config_ini_option_miss(pconfigcall, n_option*) = false -- otherwise
 dec $config_ini_get_finish(pstate, pconfigcall, preqbytes) : pstate
 def $config_ini_get_finish(S, pconfigcall, n_option*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING S.REPORTINGINI)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if n_option* = $ptascii("error_reporting")
+  -- if S.TODO = ptask :: ptask_tail*
+def $config_ini_get_finish(S, pconfigcall, n_option*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING $display_ini_bytes(S.DISPLAYINI))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_option* = $ptascii("display_errors")
   -- if S.TODO = ptask :: ptask_tail*
 def $config_ini_get_finish(S, pconfigcall, n_option*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING n_raw*)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if n_option* = $ptascii("include_path")
@@ -436,6 +455,10 @@ def $config_ini_unary_finish(S, pconfigcall, n_option*) = $config_reporting_rest
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
   -- if n_option* = $ptascii("error_reporting")
   -- if S.TODO = ptask :: ptask_tail*
+def $config_ini_unary_finish(S, pconfigcall, n_option*) = $display_restore(S)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if n_option* = $ptascii("display_errors")
+  -- if S.TODO = ptask :: ptask_tail*
 def $config_ini_unary_finish(S, pconfigcall, n_option*) = S[.TODO = ptask_tail*][.FILEINCLUDEPATH = ($startup_include_path(S.STARTUP))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
   -- if n_option* = $ptascii("include_path")
@@ -449,14 +472,11 @@ def $config_ini_unary_finish(S, pconfigcall, n_option*) = S[.COMPLETION = UNSUPP
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
   -- if n_option* =/= $ptascii("include_path")
   -- if n_option* =/= $ptascii("error_reporting")
+  -- if n_option* =/= $ptascii("display_errors")
   -- if ~$config_ini_option_miss(pconfigcall, n_option*)
-;; Exact reporting options use known request-global state without file facts.
-dec $config_reporting_selected(pconfigcall) : bool
-def $config_reporting_selected(pconfigcall) = true
-  -- if $config_ini_unary_kind(pconfigcall.KIND) \/ pconfigcall.KIND = INTRINSIC_INI_SET
-  -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN (PSTRING n_option*))
-  -- if n_option* = $ptascii("error_reporting")
-def $config_reporting_selected(pconfigcall) = false -- otherwise
+;; INI argument conversion is independent of file facts; lookup follows it.
+dec $config_ini_kind(pintrinsic) : bool
+def $config_ini_kind(pintrinsic) = ($config_ini_unary_kind(pintrinsic) \/ pintrinsic = INTRINSIC_INI_SET)
 dec $config_receive(pstate, pconfigcall) : pstate
 def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects exactly ") ++ $decimal_integer($config_required(pconfigcall.KIND)) ++ $ptascii(" argument") ++ $config_plural($config_required(pconfigcall.KIND)) ++ $ptascii(", ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
   -- if |pconfigcall.SENT| =/= $config_required(pconfigcall.KIND)
@@ -568,7 +588,7 @@ def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError",
   -- if $config_conversion(S, pconfigcall, pvalue) = TYPEREJECT
   -- if ~$config_object(pvalue)
   -- if ~(pvalue = PNULL /\ ~$config_strict(S, pconfigcall))
-;; The finite include_path and error_reporting directive names are exact.
+;; The finite include_path, error_reporting and display_errors names are exact.
 def $config_receive(S, pconfigcall) = $config_ini_finish(S, pconfigcall, n_option*, pvalue)
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PSTRING n_option*)), NAMED_SENT (KNOWN pvalue)]
@@ -658,12 +678,13 @@ def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError",
   -- if ~$config_object(pvalue)
   -- if ~(pvalue = PNULL /\ ~$config_strict(S, pconfigcall))
 def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"]
+  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE
   -- if S.FILEINCLUDEPATH = eps
-  -- if ~$config_reporting_selected(pconfigcall)
+  -- if ~$config_ini_kind(pconfigcall.KIND)
 def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "include_path intrinsic operand outside checked scalar domain"] -- otherwise
 dec $config_string_launch(pstate, pconfigcall) : bool
 def $config_string_launch(S, pconfigcall) = true
-  -- if S.FILEINCLUDEPATH =/= eps
+  -- if S.FILEINCLUDEPATH =/= eps \/ $config_ini_kind(pconfigcall.KIND)
   -- if pconfigcall.KIND =/= INTRINSIC_CHDIR \/ S.FILECWD =/= eps
   -- if $config_string_object(pconfigcall) = (n_object)
   -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
@@ -697,14 +718,16 @@ rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
   -- if ~$error_api_kind(pconfigcall.KIND)
-  -- if S.FILEINCLUDEPATH =/= eps \/ $config_reporting_selected(pconfigcall)
+  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE
+  -- if S.FILEINCLUDEPATH =/= eps \/ $config_ini_kind(pconfigcall.KIND)
   -- if ~$config_string_launch(S, pconfigcall)
 rule PhpStep/config-invoke-no-file: S ~> S[.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
   -- if ~$error_api_kind(pconfigcall.KIND)
+  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE
   -- if S.FILEINCLUDEPATH = eps
-  -- if ~$config_reporting_selected(pconfigcall)
+  -- if ~$config_ini_kind(pconfigcall.KIND)
 rule PhpStep/config-invoke-unbound: S ~> S[.COMPLETION = UNSUPPORTED "include_path intrinsic selection has no source binding"]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if ~$config_invoke_valid(S, pconfigcall)
@@ -754,7 +777,8 @@ rule PhpStep/config-restore-string-ignored: S ~> S[.ORIGIN = (pconfigcall.SITE)]
   -- if S.RESULT = KNOWN (PSTRING n_option*)
   -- if n_option* =/= $ptascii("include_path")
   -- if n_option* =/= $ptascii("error_reporting")
-  -- if $ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting")] \/ n_option* = eps \/ 0 <- n_option*
+  -- if n_option* =/= $ptascii("display_errors")
+  -- if $ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting"), $ptascii("display_errors")] \/ n_option* = eps \/ 0 <- n_option*
 rule PhpStep/config-restore-reporting-string-result: S ~> $config_reporting_restore(S)[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
@@ -762,6 +786,13 @@ rule PhpStep/config-restore-reporting-string-result: S ~> $config_reporting_rest
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
   -- if S.RESULT = KNOWN (PSTRING n_option*)
   -- if n_option* = $ptascii("error_reporting")
+rule PhpStep/config-restore-display-string-result: S ~> $display_restore(S)[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if S.RESULT = KNOWN (PSTRING n_option*)
+  -- if n_option* = $ptascii("display_errors")
 rule PhpStep/config-restore-string-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "ini_restore option outside finite include_path domain"]
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
@@ -770,6 +801,7 @@ rule PhpStep/config-restore-string-unsupported: S ~> S[.COMPLETION = UNSUPPORTED
   -- if S.RESULT = KNOWN (PSTRING n_option*)
   -- if $ptlc(n_option*) =/= $ptascii("include_path")
   -- if $ptlc(n_option*) =/= $ptascii("error_reporting")
+  -- if $ptlc(n_option*) =/= $ptascii("display_errors")
   -- if n_option* =/= eps
   -- if ~(0 <- n_option*)
 rule PhpStep/config-ini-get-string-result: S ~> $config_ini_get_finish(S_call, pconfigcall, n_option*)

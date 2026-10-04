@@ -71,7 +71,13 @@ the initial `error_reporting` and `include_path` bytes before compilation.
 Getters and Restore retain those facts through setters, silence and callbacks;
 null reporting and an explicit empty string have distinct masks. Nine exact
 profile comparisons, 99 state premises and 15 transport controls pass.
-Wider startup directives, initializer/PIPE/INI consumers and lifecycle remain open.
+[Live display errors](coverage/semantics/display-errors-review.json) add nullable
+startup bytes, raw get/set/Restore and ordered stdout/stderr/off diagnostics.
+Emission captures its destination after callback effects; later writes retain
+earlier output. Eleven exact comparisons, 76 state premises and 17 transport
+controls pass. The held fatal/shutdown source also matches at the actual231
+composition, freezing its destination after rendering and before the queue.
+Wider display/startup directives and diagnostic consumers stay open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
@@ -255,7 +261,14 @@ Read-write continuations and wider key/container producers remain required.
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
 after `finally`. Nested restore/replacement, callback throws, internal by-reference
 warnings and termination preserve selected targets and owners. Keyword/compound
-callback ingress and later request lifecycle remain open.
+callback ingress remains open.
+
+[Shutdown callbacks](docs/semantics/SOURCE-SHUTDOWN.md) cache selected callables
+and copied arguments, then run in order after normal, exit and fatal outcomes.
+Callbacks can append entries; handled throws continue and callback exit stops
+the queue. Fatal-render warnings complete before diagnostics freeze and the
+queue begins. Destructors, GC, output buffers and later request cleanup remain
+required.
 Full core and a fresh combined offline rebuild remain required.
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
@@ -320,8 +333,9 @@ separates full source, paused-state and later concat checks. Other internal
 property access and lifecycle integration remain pending.
 [Exit and die](docs/semantics/EXIT.md) support literal, computed, first-class and
 pipe invocation, ordered argument binding, internal error traces and a distinct
-explicit-exit completion. Shutdown/destructor callbacks remain pending; native
-checks compare observable bytes and process status without inferring an exit category.
+explicit-exit completion. Ordered shutdown callbacks follow that completion;
+destructor and later request phases remain required. Native checks compare
+observable bytes and process status without inferring an exit category.
 [Named empty classes](docs/semantics/SOURCE-CLASSES.md) now support early and
 conditional activation, allocate owned objects, and support identity, exact class
 types and literal `instanceof`; their [review](coverage/semantics/object-classes-review.json)
@@ -385,7 +399,13 @@ static reference targets now complete cold tables while keeping the captured RHS
 cell alive through callbacks. Dynamic and ordinary method keyword selectors keep
 their selected class/name; seven source comparisons and an 84-premise fixture
 cover failure/retry, replacement and ownership. Captured/rebound Closure keyword
-references and deferred instance/object defaults remain open.
+references now retain authentic scope/binding and nested creator evidence after
+collection, including unrelated called classes and handler ingress. Nine new
+sources and 162 state premises pass separately. Temporary `Closure::call` children
+retain the authentic receiver scope after their maker retires, with genuine
+receiver ownership for nonstatic children and nonowning evidence for static
+children. Six new sources and 193 state premises pass at separate cutoffs.
+Deferred instance/object defaults and wider consumers remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -404,7 +424,10 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 [review](coverage/semantics/nullsafe-properties-review.json) binds source,
 compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
-bound closures and `Closure->__invoke` trampolines. A bounded
+bound closures and `Closure->__invoke` trampolines.
+[Source trait methods](docs/semantics/SOURCE-TRAITS.md) compose nested uses, conflicts
+and adaptations with using-class scope, original body provenance and distinct
+class/alias static cells. Trait properties and constants remain the next phase. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
@@ -452,8 +475,15 @@ capture and saved calls. Protected checks use the root prototype; API handlers
 resolve raw values using the emitting frame. The
 [scoped-callable review](coverage/semantics/scoped-callables-current-review.json)
 keeps these observations separate from earlier public-route evidence.
-Default/variadic, `Closure::fromCallable`, other internal and user-return keyword
-warning consumers remain required; magic/autoload and transformed binding remain open.
+[`Closure::fromCallable`](docs/semantics/FROM-CALLABLE.md) now invokes the factory
+over existing core callable forms, freezing selection across raw mutation and
+maker retirement. Genuine USER permission, internal getter scope, foreign called
+classes, defaults and shared method statics remain distinct. Existing Closure
+inputs preserve identity; factory errors wrap lookup warnings after full unwinding.
+Created source Closures retain authentic method/import scope after captures retire;
+static children add no receiver owner and nonstatic children own their receiver.
+Default/variadic, other internal and user-return keyword warning consumers remain
+required; magic/autoload and transformed binding remain open.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.
@@ -505,8 +535,11 @@ constructor access and name mapping. Declaration strictness, API reference warni
 and fresh default objects retain their real owners.
 [Internal default constructors](coverage/semantics/internal-default-constructors-review.json)
 map prepared values with declaration strictness, named-hole filling and exact
-string-mutated traces. Suspended internal warning/Stringable reception, rebound
-anonymous keyword defaults and broader constrained conversion remain open.
+string-mutated traces. [Suspended reception240](coverage/semantics/internal-default-reception-review.json)
+retains real warning and Stringable callbacks, raw integer trace slots and each
+reentrant constructor owner. Current trait/display fallback preserves a filename
+argument after its global root retires. Rebound anonymous keyword defaults and broader
+ordinary/constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

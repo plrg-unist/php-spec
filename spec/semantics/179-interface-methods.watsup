@@ -91,7 +91,6 @@ dec $pil_stringable_nominal(pstate, pclassdesc, bool) : pmethodissue
 dec $pil_stringable_method(pstate, pclassdesc, pmethoddesc?) : pmethodissue
 dec $pil_issue_line(pclassdesc, pmethoddesc) : int
 dec $pil_reline(pclassdesc, pmethoddesc, pmethodissue) : pmethodissue
-dec $pil_method_fatal(pstate, porigin, ptbytes, int) : pstate
 
 def $pil_info_pick(eps, ptbytes) = eps
 def $pil_info_pick((PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*, ptbytes) = (PPMINHERITED pmethoddesc pclassdesc)
@@ -113,15 +112,15 @@ def $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = eps
   -- if $effective_method(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = eps
 
 def $pil_scope(S, pclassdesc) = $pmethod_scope(pclassdesc, $method_all_ancestor_names(S, pclassdesc.ORIGIN, |S.CLASSES|))
-def $pil_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto) = $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto, $pmcompare(PMUSER $pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pil_scope(S, pclassdesc_child), PMUSER $pmethod_user(pmethoddesc_proto, pclassdesc_proto, $call_sourcefile(S.FILES, pclassdesc_proto.ORIGIN)), $pil_scope(S, pclassdesc_proto), $method_active_registry(S, S.CLASSNAMES)))
+def $pil_signature_issue(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto) = $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto, $pmcompare(PMUSER $pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pmethoddesc_child.FUNCTION.ORIGIN)), $pil_scope(S, pclassdesc_child), PMUSER $pmethod_user(pmethoddesc_proto, pclassdesc_proto, $call_sourcefile(S.FILES, pmethoddesc_proto.FUNCTION.ORIGIN)), $pil_scope(S, pclassdesc_proto), $method_active_registry(S, S.CLASSNAMES)))
 def $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto, PMCHECK PVYES ptbytes*) = METHOD_OK
 def $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto, PMCHECK PVNO ptbytes*) = METHOD_ISSUE pmdiagnostic.MESSAGE pclassdesc_child.LINE
-  -- if $pmmismatch($pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pil_scope(S, pclassdesc_child), $pmethod_user(pmethoddesc_proto, pclassdesc_proto, $call_sourcefile(S.FILES, pclassdesc_proto.ORIGIN)), $pil_scope(S, pclassdesc_proto), 14) = PMDIAGNOSTIC pmdiagnostic
+  -- if $pmmismatch($pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pmethoddesc_child.FUNCTION.ORIGIN)), $pil_scope(S, pclassdesc_child), $pmethod_user(pmethoddesc_proto, pclassdesc_proto, $call_sourcefile(S.FILES, pmethoddesc_proto.FUNCTION.ORIGIN)), $pil_scope(S, pclassdesc_proto), 14) = PMDIAGNOSTIC pmdiagnostic
 def $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto, PMCHECK PVUNRESOLVED ptbytes_missing*) = METHOD_ISSUE pmdiagnostic.MESSAGE pclassdesc_child.LINE
-  -- if $pmunavailable($pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pclassdesc_child.ORIGIN)), $pil_scope(S, pclassdesc_child), $pmethod_user(pmethoddesc_proto, pclassdesc_proto, $call_sourcefile(S.FILES, pclassdesc_proto.ORIGIN)), $pil_scope(S, pclassdesc_proto), ptbytes_missing*, 14) = PMDIAGNOSTIC pmdiagnostic
+  -- if $pmunavailable($pmethod_user(pmethoddesc_child, pclassdesc_child, $call_sourcefile(S.FILES, pmethoddesc_child.FUNCTION.ORIGIN)), $pil_scope(S, pclassdesc_child), $pmethod_user(pmethoddesc_proto, pclassdesc_proto, $call_sourcefile(S.FILES, pmethoddesc_proto.FUNCTION.ORIGIN)), $pil_scope(S, pclassdesc_proto), ptbytes_missing*, 14) = PMDIAGNOSTIC pmdiagnostic
 def $pil_signature_result(S, pclassdesc_child, pmethoddesc_child, pclassdesc_proto, pmethoddesc_proto, PMUNSUPPORTED text) = METHOD_UNSUPPORTED text
 def $pil_issue_line(pclassdesc, pmethoddesc) = pmethoddesc.FUNCTION.LINE
-def $pil_reline(pclassdesc, pmethoddesc, METHOD_ISSUE ptbytes_message z) = METHOD_FILEISSUE ptbytes_message $pil_issue_line(pclassdesc, pmethoddesc) pmethoddesc.OWNER
+def $pil_reline(pclassdesc, pmethoddesc, METHOD_ISSUE ptbytes_message z) = METHOD_FILEISSUE ptbytes_message $pil_issue_line(pclassdesc, pmethoddesc) pmethoddesc.FUNCTION.ORIGIN
 def $pil_reline(pclassdesc, pmethoddesc, METHOD_OK) = METHOD_OK
 def $pil_reline(pclassdesc, pmethoddesc, METHOD_UNSUPPORTED text) = METHOD_UNSUPPORTED text
 
@@ -140,11 +139,11 @@ def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_pro
 def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_OK
   -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = (PPMINHERITED pmethoddesc_selected pclassdesc_selected)
   -- if pmethoddesc_selected.FUNCTION.ORIGIN = pmethoddesc_proto.FUNCTION.ORIGIN
-def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_FILEISSUE ptbytes_message $pil_issue_line(pclassdesc, pmethoddesc_selected) pmethoddesc_selected.OWNER
+def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_FILEISSUE ptbytes_message $pil_issue_line(pclassdesc, pmethoddesc_selected) pmethoddesc_selected.FUNCTION.ORIGIN
   -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = (PPMINHERITED pmethoddesc_selected pclassdesc_selected)
   -- if pmethoddesc_selected.FUNCTION.ORIGIN =/= pmethoddesc_proto.FUNCTION.ORIGIN
   -- if $pmethod_static_issue(pclassdesc_selected, pmethoddesc_selected, pclassdesc_proto, pmethoddesc_proto) = (ptbytes_message)
-def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc_selected.NAME ++ $ptascii("::") ++ pmethoddesc_selected.NAME ++ $ptascii("() must be public (as in class ") ++ pclassdesc_proto.NAME ++ [41]) $pil_issue_line(pclassdesc, pmethoddesc_selected) pmethoddesc_selected.OWNER
+def $pil_method_one(S, pclassdesc, PPMINHERITED pmethoddesc_proto pclassdesc_proto, ppmethodinherited*) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc_selected.NAME ++ $ptascii("::") ++ pmethoddesc_selected.NAME ++ $ptascii("() must be public (as in class ") ++ pclassdesc_proto.NAME ++ [41]) $pil_issue_line(pclassdesc, pmethoddesc_selected) pmethoddesc_selected.FUNCTION.ORIGIN
   -- if $pil_selected(S, pclassdesc, pmethoddesc_proto.NAME, ppmethodinherited*) = (PPMINHERITED pmethoddesc_selected pclassdesc_selected)
   -- if pmethoddesc_selected.FUNCTION.ORIGIN =/= pmethoddesc_proto.FUNCTION.ORIGIN
   -- if $pmethod_static_issue(pclassdesc_selected, pmethoddesc_selected, pclassdesc_proto, pmethoddesc_proto) = eps
@@ -182,7 +181,7 @@ def $pil_order_throwable_seen(S, pclassdesc, pilref_seen*) = $pil_stringable_iss
   -- if $pil_internal_source_infos(S, $pil_info_missing(eps, $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_parent_source_infos(S, pclassdesc) ++ $pil_proto_refs(S, pilref_seen*, |S.CLASSES|))) = METHOD_OK
 def $pil_order_rooted(S, pclassdesc, pmethodissue) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
-def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_ISSUE ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead")) pclassdesc.LINE
+def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_RUNTIMEISSUE ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead")) pclassdesc.LINE
   -- if pclassdesc.KIND = "class"
   -- if ~$pil_throwable_allowed(S, pclassdesc)
 def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_OK
@@ -232,7 +231,7 @@ def $pil_stringable_nominal(S, pclassdesc, true) = $pil_stringable_method(S, pcl
 def $pil_stringable_method(S, pclassdesc, eps) = METHOD_OK
 def $pil_stringable_method(S, pclassdesc, pmethoddesc) = METHOD_OK
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-def $pil_stringable_method(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc_method.NAME ++ $ptascii("::__toString() must be public (as in class Stringable)")) $pil_issue_line(pclassdesc, pmethoddesc) pmethoddesc.OWNER
+def $pil_stringable_method(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc_method.NAME ++ $ptascii("::__toString() must be public (as in class Stringable)")) $pil_issue_line(pclassdesc, pmethoddesc) pmethoddesc.FUNCTION.ORIGIN
   -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_method)
 def $pil_contract_issue(S, pclassdesc) = pmethodissue
@@ -253,11 +252,13 @@ def $pil_methods_valid(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)
   -- if $pil_abstract_message(S, pclassdesc) = eps
 def $pil_methods_valid(S, (preqbytes, porigin)*) = false -- otherwise
 
-def $pil_method_fatal(S, PORIGIN n pcpath, ptbytes_message, z) = S[.COMPLETION = FATAL ptbytes_message z][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL ptbytes_message z, n)][.TRACE = $eval_exception_trace(S)]
+def $pil_method_fatal(S, PORIGIN n pcpath, ptbytes_message, z) = S[.COMPLETION = STATICBYTES ptbytes_message z][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, STATICBYTES ptbytes_message z, n)][.TRACE = $eval_exception_trace(S)]
 def $pil_method_publish(S, S_candidate, pclassdesc) = $class_constant_link_error(S, pclassdesc.ORIGIN, ptbytes_message, z)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_COMPILEISSUE ptbytes_message z
 def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_method_fatal(S, porigin_selected, ptbytes_message, z)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_FILEISSUE ptbytes_message z porigin_selected
+def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_fatal(S, pclassdesc, ptbytes_message)
+  -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_RUNTIMEISSUE ptbytes_message z
 def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, z)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_ISSUE ptbytes_message z
 def $pil_method_publish(S, S_candidate, pclassdesc) = S[.COMPLETION = UNSUPPORTED text]
@@ -276,3 +277,6 @@ def $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) 
   -- if pmethodissue =/= METHOD_OK
 def $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) = $pil_order_checked_methods(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*)
   -- if $class_constant_interface_issue(S, pclassdesc, pilref, pilref_seen*) = METHOD_OK
+
+;; Imported methods keep the original trait diagnostic file.
+def $pil_method_fatal(S, TRAIT_ORIGIN porigin_owner porigin_source ptbytes, ptbytes_message, z) = $pil_method_fatal(S, $origin_source(porigin_source), ptbytes_message, z)

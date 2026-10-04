@@ -107,7 +107,7 @@ def $declaration_file_wait(pfilecontext :: pfilecontext_tail*, n, porigin, S_pre
 dec $declaration_service_available(pstate, porigin?) : bool
 dec $declaration_cause_valid(pstate, porigin, pdeclcause) : bool
 dec $declaration_history_final(pstate, pstate) : bool
-def $declaration_history_final(S, S_prefix) = ($declaration_registries_equal(S, S_prefix) /\ $declaration_units_entered(S_prefix.DECLARATIONS, S.SOURCES) /\ $declaration_failures_entered(S_prefix.DECLARATIONS, S.FAILEDSOURCES))
+def $declaration_history_final(S, S_prefix) = (S.CLASSES = S_prefix.CLASSES /\ $declaration_registries_equal(S, S_prefix) /\ $declaration_units_entered(S_prefix.DECLARATIONS, S.SOURCES) /\ $declaration_failures_entered(S_prefix.DECLARATIONS, S.FAILEDSOURCES))
 dec $declaration_stop_terminal(pcompletion) : bool
 def $declaration_stop_terminal(THROWN text ptbytes z) = false
 def $declaration_stop_terminal(COMPILETHROWN ptbytes z) = false
@@ -116,6 +116,7 @@ def $declaration_stop_terminal(pcompletion) = true -- otherwise
 
 dec $declaration_history_fold(pstate, pstate, (nat, ppstate)*, pdeclaration*, nat) : bool
 dec $declaration_history_compiled(pstate, pstate, (nat, ppstate)*, pdeclaration*, nat, pstate) : bool
+dec $shutdown_compiler_released(pstate, pstate) : bool
 def $declaration_history_fold(S, S_prefix, (n, P)*, eps, n_next) = $declaration_history_final(S, S_prefix)
 def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next porigin? z) :: pdeclaration*, n_next) = $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled)
   -- if $declaration_entry_binding(S, S_prefix, n_next, porigin?)
@@ -123,7 +124,7 @@ def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next porigin? z) 
   -- if $declaration_compiler_at((n, P)*, n_next) = (P_current)
   -- if S_compiled = $declaration_fold($declaration_enter(S_prefix[.REPORTING = z][.COMPLETION = NORMAL][.ERRORORIGIN = eps], n_next, porigin?), P_current, P_current.PUBLICATIONS, 0, 0)
 def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_fold(S, S_compiled[.COMPLETION = NORMAL][.TODO = eps], (n, P)*, pdeclaration_tail*, $(n_next + 1))
-  -- if ~$declaration_stop_terminal(S_compiled.COMPLETION)
+  -- if ~$declaration_stop_terminal(S_compiled.COMPLETION) \/ $shutdown_compiler_released(S, S_compiled)
   -- if n_prefix = $nabs($(|S_prefix.DECLARATIONS| + 1))
   -- if $(n_prefix <= |S_compiled.DECLARATIONS|)
   -- if n_count = $nabs($(|S_compiled.DECLARATIONS| - n_prefix))
@@ -177,10 +178,9 @@ def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRFUNCTION porigin pdeclca
   -- if S_published.CALLABLES = S_prefix.CALLABLES ++ [($ptlc(pfunction.NAME), porigin)]
 def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration*, n_next) = false -- otherwise
 
-def $declaration_history_valid(S) = $declaration_history_fold(S, $declaration_history_seed(S), (n, P)*, S.DECLARATIONS, 0)
+def $declaration_history_valid(S) = $declaration_history_fold(S, $declaration_history_seed(S[.CLASSES = $declaration_image_classes((n, P)*)]), (n, P)*, S.DECLARATIONS, 0)
   -- if $declaration_files_entered(S.DECLARATIONS, S.FILES)
   -- if $declaration_images(S, S.SOURCES) = DECLIMAGES (n, P)*
-  -- if S.CLASSES = $declaration_image_classes((n, P)*)
   -- if S.FUNCTIONS = $declaration_image_functions((n, P)*)
 def $declaration_history_valid(S) = false -- otherwise
 
