@@ -205,7 +205,6 @@ rule PhpStep/property-pending-computed: S ~> S[.TODO = [$at_task($origin_child(S
 rule PhpStep/property-pending-name: S ~> S[.TODO = ptask_tail*][.BASE = BASE_PROPERTY_PENDING pbase $captured_name(S, [PCFIELD 1], S.RESULT) $property_receiver_source_line(S)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_BASE_NAME pbase z) :: ptask_tail*
 
-dec $property_static_pending_base(pstate, poperand, poperand, int) : pstate
 def $property_static_pending_base(S, poperand_class, poperand_name, z) = S_class
   -- if S_class = $class_static_prepare_base(S, poperand_class, eps, z)
   -- if S_class.COMPLETION =/= NORMAL
