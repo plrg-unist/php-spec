@@ -496,5 +496,32 @@
     "exit": 255,
     "status": "php_error",
     "expected_unsupported": "ordinary destructor release before request stage"
+  },
+  {
+    "id": "nested-private-destructor-registers-private-keyword-callback",
+    "source": "<?php class C{private function __destruct(){echo \"C;\";register_shutdown_function([\"self\",\"s\"]);}private static function s(){echo \"S;\";}static function drop(){unset($GLOBALS[\"c\"]);}}class D{function __destruct(){echo \"D;\";C::drop();echo \"TAIL;\";}}set_error_handler(function($n,$m,$f,$l){echo \"W:\",$l,\";\";});$c=new C;$d=new D;",
+    "source_sha256": "5802d095a6c59520c7c8cbcb28e8f8a2027e6aa222e3cc608393c2217035a2e6",
+    "stdout": "D;C;W:1;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "method-frame-extra-arguments-release-before-receiver",
+    "source": "<?php class A{function __destruct(){echo \"A;\";}}class C{function f(){unset($GLOBALS[\"c\"]);}function __destruct(){echo \"C;\";}}class P{function __destruct(){echo \"P;\";$GLOBALS[\"c\"]->f(new A);echo \"TAIL;\";}}$c=new C;$p=new P;",
+    "source_sha256": "04fb0ed0bebcbedd17eea207273f04b75ffcefb4049c2d99498024e9740f30d3",
+    "stdout": "P;A;C;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "normal-frame-return-owner-survives-local-destructor",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";}}function get(){$a=new C(\"local\");$x=new C(\"result\");return $x;}class P{function __destruct(){echo \"P;\";$r=get();echo \"got;\";unset($r);echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "500b2be97071ba8bbb0ef661ab4384ed91e0d7f63678513452efc24a6a55a92f",
+    "stdout": "P;C:local;got;C:result;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
