@@ -1,0 +1,95 @@
+;; Trait bodies retain source occurrences; imports are distinct callable identities.
+dec $ptrait_scope(ptscope) : bool
+def $ptrait_scope(PTTRAIT ptbytes) = true
+def $ptrait_scope(ptscope) = false -- otherwise
+dec $ptrait_context(ptcontext?) : bool
+def $ptrait_context((ptcontext)) = $ptrait_scope(ptcontext.SCOPE)
+def $ptrait_context(eps) = false
+dec $ppmethod_scope_context(pchheader) : ptscope
+def $ppmethod_scope_context(pchheader) = PTTRAIT pchheader.NAME -- if pchheader.KIND = "trait"
+def $ppmethod_scope_context(pchheader) = PTKNOWN pchheader.NAME pchheader.PARENT -- if pchheader.KIND =/= "trait"
+dec $ppmethod_flags(int, text) : bool
+def $ppmethod_flags(flags, text_kind) = (flags <- [0,1,2,4,8,9,10,12,16,17,18,24,25,26,32,33,34,36,40,41,42,44] \/ (text_kind = "trait" /\ flags <- [20,28]))
+
+;; Deferred self/parent types are admitted only for trait method declarations.
+;; Importing rewrites them with the selected class, preserving other contracts.
+dec $trait_type_atom(ptatom, ptbytes, ptbytes?) : ptatom
+def $trait_type_atom(PTSELF, ptbytes, ptbytes_parent?) = PTCLASS ptbytes
+def $trait_type_atom(PTPARENT, ptbytes, (ptbytes_parent)) = PTCLASS ptbytes_parent
+def $trait_type_atom(ptatom, ptbytes, ptbytes_parent?) = ptatom -- otherwise
+dec $trait_type_branches(ptbranch*, ptbytes, ptbytes?) : ptbranch*
+def $trait_type_branches(eps, ptbytes, ptbytes_parent?) = eps
+def $trait_type_branches((PTBRANCH ptatom*) :: ptbranch*, ptbytes, ptbytes_parent?) = (PTBRANCH ($trait_type_atom(ptatom, ptbytes, ptbytes_parent?))*) :: $trait_type_branches(ptbranch*, ptbytes, ptbytes_parent?)
+dec $trait_type_parameters(psparam*, ptbytes, ptbytes?) : psparam*
+def $trait_type_parameters(eps, ptbytes, ptbytes_parent?) = eps
+def $trait_type_parameters(psparam :: psparam_tail*, ptbytes, ptbytes_parent?) = psparam[.TYPE = $trait_type_branches(psparam.TYPE, ptbytes, ptbytes_parent?)] :: $trait_type_parameters(psparam_tail*, ptbytes, ptbytes_parent?)
+dec $trait_type_signature(pssignature, ptbytes, ptbytes?) : pssignature
+def $trait_type_signature(pssignature, ptbytes, ptbytes_parent?) = pssignature[.PARAMETERS = $trait_type_parameters(pssignature.PARAMETERS, ptbytes, ptbytes_parent?)][.RETURNS = $trait_type_branches(pssignature.RETURNS, ptbytes, ptbytes_parent?)]
+dec $ppmethod_supported_signature(pssignature, text) : bool
+def $ppmethod_supported_signature(pssignature, "trait") = $ppsupported_signature($trait_type_signature(pssignature, $ptascii("trait"), ($ptascii("parent"))))
+def $ppmethod_supported_signature(pssignature, text_kind) = $ppsupported_signature(pssignature) -- if text_kind =/= "trait"
+
+dec $pptrait_body_uses(phpType23) : bool
+def $pptrait_body_uses(SEQUENCE statement*) = $pptrait_members_use(statement*)
+def $pptrait_body_uses(phpType23) = false -- otherwise
+dec $pptrait_members_use(statement*) : bool
+def $pptrait_members_use(eps) = false
+def $pptrait_members_use((NStmtTraitUse phpType42 phpType62 metadata) :: statement*) = true
+def $pptrait_members_use(statement :: statement_tail*) = $pptrait_members_use(statement_tail*) -- otherwise
+
+def $ppmethod_members((NStmtTraitUse phpType42 phpType62 metadata) :: statement*, b) = $ppmethod_members(statement*, true)
+def $ppmember_groups(P, pcpath, n, (NStmtTraitUse (SEQUENCE name*) (SEQUENCE phpType63*) metadata) :: statement*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement*, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pchheader.KIND = "class" \/ pchheader.KIND = "trait"
+  -- if pcpath_use = $ppmember_path(pcpath, pchheader, n)
+  -- if P_next = $pptrait_adaptations($pptrait_names(P, pcpath_use ++ [PCFIELD 0], 0, name*), pcpath_use ++ [PCFIELD 1], 0, phpType63*)
+dec $pptrait_names(ppstate, pcpath, nat, name*) : ppstate
+def $pptrait_names(P, pcpath, n, eps) = P
+def $pptrait_names(P, pcpath, n, name :: name*) = $pptrait_names($ppclass_name(P, pcpath ++ [PCINDEX n], $pnclassresolve(P.ENV, name)), pcpath, $(n + 1), name*)
+  -- if P.COMPLETION = PPCNORMAL
+def $pptrait_names(P, pcpath, n, name*) = P -- if P.COMPLETION =/= PPCNORMAL
+dec $pptrait_adaptations(ppstate, pcpath, nat, phpType63*) : ppstate
+def $pptrait_adaptations(P, pcpath, n, eps) = P
+def $pptrait_adaptations(P, pcpath, n, (NStmtTraitUseAdaptationAlias phpType44 phpType11 phpType64 phpType3 metadata) :: phpType63*) = $pptrait_adaptations($pptrait_qualified(P, pcpath ++ [PCINDEX n, PCFIELD 0], phpType44), pcpath, $(n + 1), phpType63*)
+  -- if P.COMPLETION = PPCNORMAL
+def $pptrait_adaptations(P, pcpath, n, (NStmtTraitUseAdaptationPrecedence phpType44 phpType11 (SEQUENCE name*) metadata) :: phpType63*) = $pptrait_adaptations($pptrait_names($pptrait_qualified(P, pcpath ++ [PCINDEX n, PCFIELD 0], phpType44), pcpath ++ [PCINDEX n, PCFIELD 2], 0, name*), pcpath, $(n + 1), phpType63*)
+  -- if P.COMPLETION = PPCNORMAL
+def $pptrait_adaptations(P, pcpath, n, phpType63*) = P -- if P.COMPLETION =/= PPCNORMAL
+dec $pptrait_qualified(ppstate, pcpath, phpType44) : ppstate
+def $pptrait_qualified(P, pcpath, ABSENT) = P
+def $pptrait_qualified(P, pcpath, name) = $ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name))
+
+def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]][.CLASSES = P_next.CLASSES ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, KIND "trait", NAME pchheader.NAME, PARENT eps, INTERFACES eps, PROPERTIES eps, METHODS pmethoddesc*, CONSTANTS eps, ABSTRACT false, FINAL false, READONLY false, EARLY (P.EARLY = (pcpath) /\ ~$pptrait_body_uses(pchheader.BODY) /\ ~$ppclass_early(P.CLASSES, pchheader.NAME) /\ ~$class_internal(pchheader.NAME)), LINE P.LOCATION.LINE }]]
+  -- if pchheader.KIND = "trait"
+  -- if pchheader.BODY = SEQUENCE statement*
+  -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
+  -- if PPMEMBERS P_next eps pmethoddesc* = $ppmember_groups(P_header, pcpath, 0, statement*, eps, eps, pchheader)
+def $ppstatement(P, pcpath, NStmtTrait phpType14 phpType3 phpType23 metadata) = $ppclass_result(P_line, pcpath, $pchcompile(NStmtTrait phpType14 phpType3 phpType23 metadata, P.CLASSCONTEXT =/= eps, $ppclass_context(P_line)))
+  -- if P.COMPLETION = PPCNORMAL /\ $($source_line(metadata) > 0)
+  -- if P_line = $pplocate(P, pcpath, $source_line(metadata))
+def $ppstatement(P, pcpath, NStmtTrait phpType14 phpType3 phpType23 metadata) = $ppunsupported(P, "missing trait compiler line")
+  -- if P.COMPLETION = PPCNORMAL /\ $source_line(metadata) = 0
+
+;; __TRAIT__, __METHOD__, __FUNCTION__ keep their source spelling. __CLASS__
+;; and self::class remain deferred until the imported lexical scope is selected.
+def $pmagic_scoped(MAGICTRAIT, (ptcontext), b, ptbytes_file?, ptbytes_cwd?, plenv, ptbytes_function, z) = VALUE (PSTRING ptbytes)
+  -- if $(z > 0) /\ ptcontext.SCOPE = PTTRAIT ptbytes
+def $pfdispatch(F, pcpath, PFMAGIC MAGICCLASS z_leaf, z) = $pfremember(F, pcpath, eps, z_leaf)
+  -- if $ptrait_context(F.CLASSCONTEXT)
+def $ppdispatch(P, pcpath, NScalarMagicConstClass metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = eps]]
+  -- if $ptrait_context(P.CLASSCONTEXT)
+def $ppdispatch(P, pcpath, NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = eps]]
+  -- if ~P.FOLD.CONSTANT /\ $ptrait_context(P.CLASSCONTEXT)
+  -- if $pfclassname_keyword(phpType19) <- [$ptascii("self"), $ptascii("parent")]
+  -- if $ptlc($base64(text_member)) = $ptascii("class")
+rule PhpStep/trait-class-magic: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING pclassdesc.NAME)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EVAL (NScalarMagicConstClass metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NScalarMagicConstClass metadata)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if S.CURRENT = (pcallcontext) /\ pcallcontext.LEXICAL_CLASS = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+
+def $default_parameter_origin(S, TRAIT_ORIGIN porigin_owner porigin_source ptbytes, n) = PORIGIN n_unit (pcpath ++ [PCFIELD 4, PCINDEX n])
+  -- if $origin_source(porigin_source) = PORIGIN n_unit pcpath
+def $default_scope_node(NScalarMagicConstClass metadata) = true

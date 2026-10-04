@@ -276,3 +276,6 @@ def $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) 
   -- if pmethodissue =/= METHOD_OK
 def $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) = $pil_order_checked_methods(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*)
   -- if $class_constant_interface_issue(S, pclassdesc, pilref, pilref_seen*) = METHOD_OK
+
+;; Imported methods keep the original trait diagnostic file.
+def $pil_method_fatal(S, TRAIT_ORIGIN porigin_owner porigin_source ptbytes, ptbytes_message, z) = $pil_method_fatal(S, $origin_source(porigin_source), ptbytes_message, z)

@@ -1,7 +1,7 @@
 ;; Independent local declaration types. No declaration activation or class lookup.
 syntax ptbytes = nat*
 syntax ptqual = PTPLAIN | PTFULL | PTRELATIVE
-syntax ptscope = PTGLOBAL | PTKNOWN ptbytes ptbytes? | PTANONYMOUS bool | PTDEFERRED
+syntax ptscope = PTGLOBAL | PTKNOWN ptbytes ptbytes? | PTANONYMOUS bool | PTDEFERRED | PTTRAIT ptbytes
 syntax ptposition = PTPARAMETER | PTRETURN | PTPROPERTY | PTCONSTANT
 syntax ptcontext = { NAMESPACE ptbytes, IMPORTS (ptbytes, ptbytes)*, SCOPE ptscope,
   POSITION ptposition, OWNER ptbytes, MEMBER ptbytes, FILE ptbytes, LINE nat }
@@ -94,9 +94,9 @@ def $ptscope(ptcontext, "parent") = PTOK ([(PTBRANCH ([(PTCLASS ptbytes_parent)]
 def $ptscope(ptcontext, "static") = PTOK ([(PTBRANCH ([PTSTATIC]))]) eps
   -- if ptcontext.SCOPE =/= PTGLOBAL
 def $ptscope(ptcontext, "self") = PTOK ([(PTBRANCH ([PTSELF]))]) eps
-  -- if ptcontext.SCOPE = PTDEFERRED \/ ptcontext.SCOPE = PTANONYMOUS true \/ ptcontext.SCOPE = PTANONYMOUS false
+  -- if $ptrait_scope(ptcontext.SCOPE) \/ ptcontext.SCOPE = PTDEFERRED \/ ptcontext.SCOPE = PTANONYMOUS true \/ ptcontext.SCOPE = PTANONYMOUS false
 def $ptscope(ptcontext, "parent") = PTOK ([(PTBRANCH ([PTPARENT]))]) eps
-  -- if ptcontext.SCOPE = PTDEFERRED \/ ptcontext.SCOPE = PTANONYMOUS true
+  -- if $ptrait_scope(ptcontext.SCOPE) \/ ptcontext.SCOPE = PTDEFERRED \/ ptcontext.SCOPE = PTANONYMOUS true
 
 dec $ptclasswarnings(ptcontext, ptqual, ptbytes, ptbytes) : ptdiagnostic*
 def $ptclasswarnings(ptcontext, ptqual, ptbytes, ptbytes_name) = [$ptissue(ptcontext, "deprecated", "underscore-class", [(PTBRANCH ([(PTCLASS ptbytes_name)]))])]
