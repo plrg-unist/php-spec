@@ -30,9 +30,22 @@ def $error_read_source(S, perrorread) = true
   -- if perrorread.LINE = z
 
 dec $error_copy_arm(pstate, porigin, pcpath, preqbytes, int) : bool
+dec $error_copy_condition(pstate, porigin) : bool?
+def $error_copy_condition(S, porigin) = ($truth(S, pvalue))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond phpType5 expression_false metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $compiled_read(S, porigin_cond) = (pvalue)
+def $error_copy_condition(S, porigin) = eps -- otherwise
 dec $error_copy_selected(pstate, porigin, pcpath) : bool
 def $error_copy_selected(S, porigin, pcpath) = true
   -- if $compiled_redirect(S, porigin) = eps
+  -- if $error_copy_condition(S, porigin) = eps
+def $error_copy_selected(S, porigin, [PCFIELD 1]) = true
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $error_copy_condition(S, porigin) = (true)
+def $error_copy_selected(S, porigin, [PCFIELD 2]) = true
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $error_copy_condition(S, porigin) = (false)
 def $error_copy_selected(S, porigin, pcpath) = true
   -- if $compiled_redirect(S, porigin) = ((porigin_target, expression, false, z))
   -- if $origin_child((porigin), pcpath) = (porigin_target)
