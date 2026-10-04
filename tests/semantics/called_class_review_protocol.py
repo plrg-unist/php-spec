@@ -243,7 +243,7 @@ CASES = {
             '$closure_scope_row_valid(S, pclosurescope)',
             'pcallcontext.CALLED_CLASS = (porigin_called)',
             '$calledclass_name(S, pargcall) = ($ptascii("B"))',
-            '~$closure_scope_row_valid(S, pclosurescope[.CALLED = porigin_owner])',
+            '~$closure_scope_row_valid(S, pclosurescope[.CALLED = PORIGIN 999 eps])',
             '~$call_current_valid(S[.CURRENT = (pcallcontext[.CALLED_CLASS = (porigin_owner)])])',
             *FINISH,
         ],
