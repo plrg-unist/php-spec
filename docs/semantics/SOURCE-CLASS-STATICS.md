@@ -81,6 +81,14 @@ clone makers may retire without becoming historical roots. Static and
 receiver-free nonstatic children retain private `new self` default scope, and
 real child clones copy the same authority. Ordinary creation/ancestry checks
 stay exact; wider transformed callable creation contexts remain required.
+Module265 applies the shared AST target cache to imported class constants.
+Current full declarations keep fresh publication prefixes/called classes, and
+the first exact receipt authenticates the cached private method or namespace
+fallback target even after a failed initializer's object retires. REAL constant
+Closures retain each declaring owner. Wrapped/plain cached METHOD makers create
+children with copied importing identity and private-default scope; successful
+readonly constant caches remain owning roots. Compiled keyword NEW under these
+METHOD contexts and broader callable/default consumers remain required.
 The [deferred-default review](../../coverage/semantics/deferred-static-defaults-review.json)
 records eleven earlier source agreements separately from five source-derived guard
 programs. Four217 callback comparisons preserve saved initializer contexts,
@@ -108,6 +116,11 @@ Two later property-method child comparisons and105+65 premises check wrapped
 and plain makers, child clones, private defaults, full import/scope/site
 transplants and historical evidence after actual source collection. Source and
 state cutoffs stay separate; original fixture stops receive no agreement credit.
+Three later trait-constant comparisons and58+54 AL/122 SL premises check frozen
+targets, fresh called classes, per-import REAL scope, real partial failure,
+historical maker authority and successful constant-cache ownership. The complete
+constructor fixture uses production SL under the unchanged120s cap; original AL
+timeouts receive no pass credit. All source and assertion bytes remain unchanged.
 Two later213/215 comparisons
 initialize the inherited default
 inside a captured private handler and a raw private handler during a Stringable

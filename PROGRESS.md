@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Trait-constant callables265 retain the first shared AST method/function target,
+while each imported declaration records its own publication prefix and called
+class. REAL Closures use their own declaring scope. Exact receipts authenticate
+cached private targets after a real partial initializer failure; wrapped/plain
+makers can create children with lexical/called scope and private defaults after
+maker retirement. Successful constant caches own their values; history owns none.
+Three source agreements and58+54 AL premises pass at4e2d; the unchanged122-premise
+constructor guard passes SL at733 in27s under the same120s cap. AL timeouts remain
+zero-credit in the [default ledger](coverage/semantics/deferred-static-defaults-review.json).
+Compiled keyword NEW under the cached constant METHOD is the immediate remaining
+consumer; wider callable/default behavior and complete core stay open.
+
 Ordinary dynamic NEW260 evaluates string/object selectors once and captures the
 class before arguments, class-table updates and constructor dispatch. Parser
 literals, later compiled keywords and runtime names keep distinct scope/error
