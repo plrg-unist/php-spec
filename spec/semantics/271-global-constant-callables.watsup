@@ -289,7 +289,8 @@ def $global_constant_real_receipt(S, pconstantclosure, porigin_site, porigin_sco
   -- if $global_constant_callable_header(S, pconstantclosure)
   -- if pconstantclosure.SITE = porigin_site
   -- if pconstantclosure.DECL = PORIGIN n_unit pcpath_decl
-  -- if $global_constant_scope(S, n_unit) = (true, (porigin_scope))
+  -- if $global_constant_scope(S, n_unit) = (true, porigin_entry?)
+  -- if porigin_entry? = (porigin_scope)
   -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE porigin_site (REALCLOSURE porigin_site eps pstaticcell*)
 def $global_constant_real_receipt(S, pconstantclosure, porigin_site, porigin_scope) = false -- otherwise
 dec $global_constant_real_clone(pstate, pconstantclosure*, porigin, porigin, nat) : bool
