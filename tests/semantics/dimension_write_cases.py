@@ -46,4 +46,10 @@ try {$destination242=&$a242[$key242];} catch(Error $e) {
 }
 restore_error_handler();
 ''', b'W;C:9:1:19:handler:older;', 'normal'),
+    ('constant-null-compound-abort-skips-delayed-rhs-cv-demand', b'''<?php
+error_reporting(0);$seed242=5;$a242=[''=>$seed242];
+function abortConstant242($level,$message,$file,$line) {$GLOBALS['held242']=$GLOBALS['a242'];echo $level===8192?"D;":"U;";return true;}
+set_error_handler('abortConstant242',8194);$result242=($a242[null]+=$missingRhs242);
+echo "R:",$result242===null?1:0,":",$a242[''],":",$held242[''],":",isset($missingRhs242)?1:0,";";restore_error_handler();
+''', b'D;R:1:5:5:0;', 'normal'),
 ]
