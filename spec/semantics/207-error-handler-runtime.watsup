@@ -396,7 +396,8 @@ def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed")
 ;; Legacy ZPP converts the message zval in place; the level zval stays raw.
 def $error_trigger_trace_values(S, pconfigcall) = $trace_extra(S, $getclass_trace_operands($named_slot_set(pconfigcall.SENT, 0, KNOWN (PSTRING n*))))
   -- if $error_trigger_message(S, pconfigcall) = (n*)
-def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}] ++ $config_trace_frames(S, pconfigcall, $error_trigger_trace_values(S, pconfigcall))
+def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $error_trigger_trace_values(S, pconfigcall) -- otherwise
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}] ++ $config_trace_frames(S, pconfigcall, $error_handler_trace_values(S, pcallcontext, pconfigcall))
   -- if $error_context_trigger(S, pcallcontext) = (pconfigcall)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
