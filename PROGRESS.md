@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source-owned parameter default constructors227 complete lazy class tables before
+allocation and evaluate every AST argument before constructor access/name mapping.
+Direct/inherited dispatch preserves declaring permission, called class, default
+declaration strictness and the compiled receive line. Required-reference API
+warnings precede temporary wrapping; completed values and nested Stringable
+receives retain genuine object/cell/frame owners. Source2/independent16 at a223,
+affected cold5 at954 and reached183/affected fact2 atd441 retain separate cuts.
+Actual219/222/229 composition2 at2b153 passes normal and terminal-handler paths.
+Actual221 callable source1/owner39 at2a380 authenticates the suspended constructor
+through deprecation callbacks and rejects a removed retained owner.
+The [constructor ledger](coverage/semantics/default-constructors-review.json)
+keeps original failures, the fixture line correction and fresh uncached NEW facts
+precise. Internal Throwable default dispatch and rebound anonymous self/parent
+NEW are the immediate required follow-ons; complete core remains open.
+
 Deprecated callable keyword/compound admission221 now stages supplied fixed
 parameters, error registration and delayed dispatch. Warnings hold class choice
 and string boundaries while rereading referenced methods; whole byref formal
@@ -138,8 +153,8 @@ authentic deferred/rebound lexical scope. Counts and original failures remain in
 [parameter](coverage/semantics/weak-string-parameters-review.json),
 [variadic/default](coverage/semantics/variadic-default-string-review.json) and
 [constant](coverage/semantics/class-constants-current-review.json) ledgers and the
-family table below. Broader constructor, attribute/modifier and callable initializer
-consumers remain required.
+family table below. Internal constructor defaults, rebound anonymous keyword NEW,
+attribute/modifier and callable initializer consumers remain required.
 
 Nonstatic private/protected `__invoke` supports bare calls, callable admission,
 object capture/clone and bare-object error handlers through the effective runtime
@@ -218,7 +233,7 @@ failures and interrupted evidence.
   nondefault startup profiles, wider directives,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
-- Values, references and coercion: direct/inherited default constructor dispatch,
+- Values, references and coercion: internal default constructor dispatch,
   rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred instance/object defaults and cold

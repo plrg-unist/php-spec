@@ -33,6 +33,9 @@ CASES = {
     'owned-phases': b'<?php\nfunction h($level,$message,$file,$line){echo $level===E_WARNING?"W|":"D|";return true;}\nset_error_handler("h");\nclass V{function __toString(){echo "T|";return "v";}}\nclass C{\n    const X=E_STRICT;\n    public string $p="";\n    function __construct(string &$v,int $n){$this->p=$v;echo "C",$n,"|";}\n    function __toString(){echo "S|";return $this->p;}\n}\nfunction f(\n    string $s =\n        new C(new V,1)\n){echo "F|",$s;}\nf();\n',
     'ordinary-positional-control': b'<?php function g(int $x,int $y){echo "G|",$x+$y;} g(1,2);\n',
     'direct-class-fetch': b'<?php function h($l,$m,$f,$n){echo "D|";return true;} set_error_handler("h"); class K{const X=[E_STRICT];} function f(array $x=K::X){echo $x[0];} f();\n',
+    'static-default-constructor-composition': b'<?php\nfunction h($a,$b,$c,$d){echo "D",func_num_args(),"|";return true;}\nset_error_handler("h");\nclass C{const X=E_STRICT;public static int $p=self::X;function __construct($x){echo "C",$x,"/",self::$p,"|";}function __toString(){echo "T",func_num_args(),"|";return "s";}}\nfunction take(string $s=new C(E_STRICT)){echo "F",func_num_args(),"|",$s;}\ntake();\n',
+    'static-constructor-terminal-composition': b'<?php\nfunction d($a,$b,$c,$d){echo "D",func_num_args(),"|";return true;}\nset_error_handler("d");\nfunction terminal($e){echo "U",func_num_args(),"|",$e->getMessage(),"|",$e->getTrace()[0]["line"];}\nset_exception_handler("terminal");\nclass C{const X=E_STRICT;public static int $p=self::X;function __construct($x){echo "C",$x,"/",self::$p,"|";throw new Exception("ctor");}}\nfunction take($c=new C(E_STRICT)){echo "BAD";}\ntake();\necho "BAD";\n',
+    'deprecated-callable-constructor-composition': b'<?php\nfunction h($level,$message,$file,$line){echo "D",func_num_args(),"|";return true;}\nset_error_handler("h");\nclass C{\n    static function m(){}\n    function __construct(callable $cb){echo "C",func_num_args(),"|";}\n    function __toString(){echo "T",func_num_args(),"|";return "s";}\n}\nfunction take(string $s=new C("self::m")){echo "F",func_num_args(),"|",$s;}\ntake();\n',
 }
 EXPECTED = {
     'direct-default-constructor': b'C0|T0|F0|s',
@@ -56,6 +59,9 @@ EXPECTED = {
     'owned-phases': b'D|W|T|C1|S|F|v',
     'ordinary-positional-control': b'G|3',
     'direct-class-fetch': b'D|2048',
+    'static-default-constructor-composition': b'D4|D4|C2048/2048|T0|F0|s',
+    'static-constructor-terminal-composition': b'D4|D4|C2048/2048|U1|ctor|7',
+    'deprecated-callable-constructor-composition': b'D4|C1|T0|F0|s',
 }
 
 

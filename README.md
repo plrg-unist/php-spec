@@ -483,9 +483,12 @@ Six focused sources, 299 state checks and two independent instance-property
 controls cover the new backing behavior.
 [Variadic and default reception](coverage/semantics/variadic-default-string-review.json)
 converts positional then named Stringable elements and fresh constructor-free
-defaults, retaining declaring method scope and captured cells. Constructor-default
-execution, rebound anonymous keyword defaults and broader constrained conversion
-remain open.
+defaults, retaining declaring method scope and captured cells.
+[Source constructor defaults](coverage/semantics/default-constructors-review.json)
+finish class tables before allocation and evaluate all argument values before
+constructor access and name mapping. Declaration strictness, API reference warnings
+and fresh default objects retain their real owners. Internal constructor defaults,
+rebound anonymous keyword defaults and broader constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
