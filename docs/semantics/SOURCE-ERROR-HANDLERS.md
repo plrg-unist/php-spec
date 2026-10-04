@@ -117,3 +117,10 @@ and independent source1/107 across original-null truth decisions and strict
 instance-emitter parameter rejection, preserving raw restoration and saved frames.
 [Truth continuations](SOURCE-WARNING-TRUTH.md) keep casts/copy/SEND and broader
 reporting open.
+
+The private [consumer213 slice](SOURCE-WARNING-CONSUMERS.md) adds casts, selected
+value copies and ordinary by-value sends, including direct assignment null writes
+through handler throw. Mixed21 normal tuples, one Unsupported control and cast58
+are accepted separately from the remaining corrected60/unrun65/53, independent
+source10/197 and native4 characterization. The original copy fixture premise and
+grouped model timeouts stay preserved; actual-master checks and installation remain pending.

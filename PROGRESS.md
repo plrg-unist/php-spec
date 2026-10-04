@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Private warning-consumer213 adds casts, selected copies and ordinary by-value
+argument sends, with direct-ASSIGN captured-null writes even when a handler throws.
+Mixed author observations retain21 normal tuples, one exact Unsupported control
+and cast58 at their tested revisions. Copy60 failed an incorrect redirect premise;
+its fixed-condition guard and corrected fixture are reviewed and typed. Only
+copy60 and unrun65/53, independent source10/197 and actual-master interaction
+remain pending. Grouped model timeouts and the original fixture failure earn
+no failed-check credit. The outer-array prepass needs one fresh reached check.
+[Consumer ledger](coverage/semantics/warning-consumers-review.json).
+
+
 Weak Stringable string parameters214 convert supplied fixed values in receive
 order, preserving caller strictness and nominal/callable precedence. Free
 by-reference parameters write through their captured formal cell; existing

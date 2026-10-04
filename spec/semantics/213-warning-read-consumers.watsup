@@ -1,0 +1,110 @@
+;; Ordinary CV reads at CAST, QM_ASSIGN and by-value SEND boundaries.
+;; Callback mutation cannot turn the interrupted uninitialized value into a read
+;; of the newly defined CV. Targets and already supplied arguments stay captured.
+dec $error_cast_source(pcnode) : pcast?
+def $error_cast_source(NExprCastBool expression metadata) = (CASTBOOL)
+def $error_cast_source(NExprCastInt expression metadata) = (CASTINT)
+def $error_cast_source(NExprCastDouble expression metadata) = (CASTFLOAT)
+def $error_cast_source(NExprCastString expression metadata) = (CASTSTRING)
+def $error_cast_source(NExprCastArray expression metadata) = (CASTARRAY)
+def $error_cast_source(NExprCastObject expression metadata) = (CASTOBJECT)
+def $error_cast_source(pcnode) = eps -- otherwise
+def $error_simple_read(CAST_RESULT pcast z) = true
+def $error_simple_read(VALUE_COPY z) = true
+def $error_simple_read(CALL_SEND pcalltarget phpType7* n poperand* porigin? z) = true
+def $error_simple_read(NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) = true
+def $error_simple_read(UNPACK_SEND punpackcall) = true
+def $error_read_line(CAST_RESULT pcast z, z_origin) = z
+def $error_read_line(VALUE_COPY z, z_origin) = z
+def $error_read_line(CALL_SEND pcalltarget phpType7* n poperand* porigin? z, z_origin) = z_origin
+def $error_read_line(NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z, z_origin) = z_origin
+def $error_read_line(UNPACK_SEND punpackcall, z_origin) = z_origin
+
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if perrorread.ORIGINAL = CAST_RESULT pcast z
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $error_cast_source(pcnode) = (pcast)
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], perrorread.NAME)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z)
+  -- if perrorread.LINE = z
+
+dec $error_copy_arm(pstate, porigin, pcpath, preqbytes, int) : bool
+dec $error_copy_condition(pstate, porigin) : bool?
+def $error_copy_condition(S, porigin) = ($truth(S, pvalue))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond phpType5 expression_false metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $compiled_read(S, porigin_cond) = (pvalue)
+def $error_copy_condition(S, porigin) = eps -- otherwise
+dec $error_copy_selected(pstate, porigin, pcpath) : bool
+def $error_copy_selected(S, porigin, pcpath) = true
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $error_copy_condition(S, porigin) = eps
+def $error_copy_selected(S, porigin, [PCFIELD 1]) = true
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $error_copy_condition(S, porigin) = (true)
+def $error_copy_selected(S, porigin, [PCFIELD 2]) = true
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $error_copy_condition(S, porigin) = (false)
+def $error_copy_selected(S, porigin, pcpath) = true
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression, false, z))
+  -- if $origin_child((porigin), pcpath) = (porigin_target)
+def $error_copy_selected(S, porigin, pcpath) = false -- otherwise
+def $error_copy_arm(S, porigin, pcpath, n*, z) = ($error_copy_selected(S, porigin, pcpath) /\ $error_variable_source(S, (porigin), pcpath, n*) /\ $code_expression_at_source(S, porigin, pcpath) = (z))
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if perrorread.ORIGINAL = VALUE_COPY z
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond phpType5 expression_false metadata)
+  -- if $error_copy_arm(S, porigin, [PCFIELD 1], perrorread.NAME, z) \/ $error_copy_arm(S, porigin, [PCFIELD 2], perrorread.NAME, z)
+  -- if perrorread.LINE = z
+def $error_read_source(S, perrorread) = true
+  -- if S.ORIGIN = (porigin)
+  -- if perrorread.ORIGINAL = VALUE_COPY z
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
+  -- if $error_copy_arm(S, porigin, [PCFIELD 1], perrorread.NAME, z)
+  -- if perrorread.LINE = z
+
+;; The selected target and source-order argument are certified before dispatch.
+;; Named-slot errors precede the CV read, as in zend_handle_named_arg.
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = CALL_SEND pcalltarget phpType7_tail* n poperand* (porigin) z
+  -- if S.ORIGIN = (porigin)
+  -- if $call_task_valid(S, perrorread.ORIGINAL)
+  -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
+  -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata
+  -- if ~$call_parameter_reference(S, pcalltarget, n)
+  -- if $error_variable_source(S, (porigin), [PCFIELD n_field, PCINDEX n, PCFIELD 1], perrorread.NAME)
+  -- if perrorread.LINE = $call_send_line(S, (porigin), n)
+dec $error_named_send_source(pstate, perrorread, pcalltarget, pnamedargs, porigin?, nat) : bool
+def $error_named_send_source(S, perrorread, pcalltarget, pnamedargs, (porigin), n) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $call_task_valid(S, perrorread.ORIGINAL)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
+  -- if phpType7*[n] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata
+  -- if pnamedtarget = $named_arg_target(pfunction, phpType7*[n], |pnamedargs.SLOTS|)
+  -- if ~$named_reference(pfunction, pnamedtarget)
+  -- if $named_check(S[.COMPLETION = NORMAL], pnamedargs, pnamedtarget, phpType7*[n], $named_line(S, (porigin), n)).COMPLETION = NORMAL
+  -- if $error_variable_source(S, (porigin), [PCFIELD n_field, PCINDEX n, PCFIELD 1], perrorread.NAME)
+  -- if perrorread.LINE = $named_line(S, (porigin), n)
+def $error_named_send_source(S, perrorread, pcalltarget, pnamedargs, porigin?, n) = false -- otherwise
+def $error_read_source(S, perrorread) = $error_named_send_source(S, perrorread, pcalltarget, pnamedargs, porigin?, n)
+  -- if perrorread.ORIGINAL = NAMED_SEND pcalltarget phpType7_tail* n pnamedargs porigin? z
+def $error_read_source(S, perrorread) = $error_named_send_source(S, perrorread, punpackcall.FUNCTION, punpackcall.SENT, punpackcall.CALLSITE, punpackcall.INDEX)
+  -- if perrorread.ORIGINAL = UNPACK_SEND punpackcall
+
+;; ASSIGN writes through its destination before checking the pending exception.
+;; CAST/QM_ASSIGN/SEND only write their null temporary/argument; later consumers
+;; are retired. Rejected constrained writes need native exception chaining.
+dec $error_assign_throw(pstate, preqbytes) : pstate
+def $error_assign_throw(S, n*) = S_written
+  -- if S_written = $scope_write_name(S, [PCFIELD 0], n*, PNULL)
+  -- if S_written.COMPLETION = NORMAL
+def $error_assign_throw(S, n*) = S[.COMPLETION = UNSUPPORTED "error-handler throw with rejected constrained assignment"]
+  -- if S_written = $scope_write_name(S, [PCFIELD 0], n*, PNULL)
+  -- if S_written.COMPLETION =/= NORMAL
+def $error_read_discard(S, ERROR_READ_RESULT perrorread) = $error_assign_throw(S, n*)
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if perrorread.ORIGINAL = WRITE_NAME n* z
+  -- if $error_read_valid(S, perrorread)
