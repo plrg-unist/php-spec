@@ -81,6 +81,7 @@ dec $new_class(pstate, preqbytes, int) : pstate
 def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "internal class construction"]
   -- if $class_internal(preqbytes)
   -- if $ptlc(preqbytes) =/= $ptascii("stdclass")
+  -- if $ptlc(preqbytes) =/= $ptascii("closure")
   -- if $throwable_constructor_kind(preqbytes) = eps
 def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ preqbytes ++ $ptascii("\" not found"), z)
   -- if ~$class_internal(preqbytes)

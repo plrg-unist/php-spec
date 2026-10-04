@@ -1,6 +1,6 @@
 {
   "target": "PHP8.5.10 CLI NTS64, sole project-local oracle; baseline profile30719",
-  "scope": "Deferred scalar/array static defaults and class-owned instance templates; partial core milestone, object-bearing defaults and wider consumers remain required.",
+  "scope": "Deferred scalar/array and certified Closure/FCC static defaults and class-owned instance templates; partial core milestone, other object/default producers and wider consumers remain required.",
   "implementation_commit": "293a764404cd83cc91569828bf6a56c081464e74",
   "implementation": [
     "spec/semantics/219-deferred-static-defaults.watsup",
@@ -10,7 +10,11 @@
     "spec/semantics/229-static-default-reentry.watsup",
     "spec/semantics/232-cold-static-references.watsup",
     "spec/semantics/239-cold-closure-statics.watsup",
-    "spec/semantics/246-instance-default-templates.watsup"
+    "spec/semantics/246-instance-default-templates.watsup",
+    "spec/semantics/212-constant-callables.watsup",
+    "spec/semantics/173-method-callables.watsup",
+    "spec/semantics/252-object-property-defaults.watsup",
+    "spec/semantics/263-property-callable-creation.watsup"
   ],
   "contracts": [
     "Declaring scope; strict types with int-to-float promotion.",
@@ -25,7 +29,12 @@
     "Dynamic and ordinary method self/parent/static selectors retain immutable source/class/scope snapshots through callbacks and neutral selected fill/retire/table history.",
     "Captured/rebound source Closure keyword selectors copy authentic live scope/binding evidence; nested creation retains exact immediate creator body/scope/receiver and nullable invocation site. Arena/source facts remain valid after pruning, without adding heap roots or weakening ordinary method ancestry.",
     "Temporary Closure::call creation copies the authentic live source, receiver class/index and invocation site; source/arena facts remain valid after collection without owning the maker or receiver. Ordinary and copied validation branches are disjoint.",
-    "Deferred instance templates own values by requested CLASS/full DECL. Activation copies actual parent STATE once; strict successful fills/reentry replace only that template. CCINSTANCE history is neutral and reconstructs completed inheritance from the pre-CCLINK prefix; object slots copy values without owning metadata."
+    "Deferred instance templates own values by requested CLASS/full DECL. Activation copies actual parent STATE once; strict successful fills/reentry replace only that template. CCINSTANCE history is neutral and reconstructs completed inheritance from the pre-CCLINK prefix; object slots copy values without owning metadata.",
+    "Static/no-use source Closure and function/method FCC values use authentic full declaring identity. Templates/static rows own actual values; receipt and successful binding/copy certificates remain nonowning.",
+    "Cold inherited templates create separate objects; late copies freeze the successful parent binding before CCLINK. Retry preserves the successful object/certificate prefix; outer reentry replaces only the requested template.",
+    "Direct/alias/array and immutable literal-key projection flow is source-authenticated; strict/type/throw paths mint no object value binding. Plain clones retain copied scope and earlier permission authority without new constant receipts.",
+    "Shared trait-property ASTs cache their first authentic private method/global function target. Each later receipt carries its own full DECL/publication prefix and fresh called class; retired first-source objects remain lookup-only authority, and ordinary method ancestry is unchanged.",
+    "Cached property METHOD children copy authentic full importing method/receipt/scope and invocation evidence. Wrapped/plain maker retirement leaves historical authority valid without heap ownership; lexical and unrelated called classes remain distinct, including private NEW self defaults and real child clones."
   ],
   "engine_symbols": [
     "zend_compile_prop_decl",
@@ -35,7 +44,10 @@
     "zend_class_init_statics",
     "zval_update_constant_ex",
     "ZEND_METHOD(Closure, call)",
-    "ZEND_DECLARE_LAMBDA_FUNCTION"
+    "ZEND_DECLARE_LAMBDA_FUNCTION",
+    "zend_ast_evaluate_ex: ZEND_AST_CALL, ZEND_AST_STATIC_CALL, ZEND_AST_OP_ARRAY",
+    "zend_create_fake_closure",
+    "zend_create_closure"
   ],
   "artifacts": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults",
   "runtime": {
@@ -124,11 +136,13 @@
     "cold_references": "compiler_review_14 independently accepted the representation/source/fixture, seven exact native/model tuples at69cc, narrow validator repair and84-premise raw at0288; no historical renewal.",
     "cold_closures": "compiler_review_14 independently accepted SOURCE/BOUND nullable creator representation, source/fixture/recorder and all9 exact native/model tuples plus bound69 atd6bc; handler58/terminal35 at860, total162 premises. Original compilation/fixture failures remain; no previous evidence renewal.",
     "temporary_creation": "compiler_review_14 independently accepted authentic CALL evidence, disjoint repair, source/fixture/recorder and exact raw at e32/49d/adbf; six source agreements/193 premises, original failure retained.",
-    "instance_templates": "compiler_review_14 independently accepted the requested-class ownership/link-copy/order/strict/reentry source and fixtures, exact eight raw source tuples at80900fa4b and three172-premise AL guards at449b45763; original compile/fixture failures retained, earlier evidence not replayed."
+    "instance_templates": "compiler_review_14 independently accepted the requested-class ownership/link-copy/order/strict/reentry source and fixtures, exact eight raw source tuples at80900fa4b and three172-premise AL guards at449b45763; original compile/fixture failures retained, earlier evidence not replayed.",
+    "object_defaults": "compiler_review_14 independently accepted object/source/copy/ownership/clone authority, original nine full tuples and six335 guards at retained cuts, then nonrecursive cached-target/fresh-called/publication split, exact actual238 source and98 raw guards ata502. Inputs stable and original failures retained; no prior renewal.",
+    "property_method_children": "compiler_review_14 independently accepted the historical/live authority split, exact source/fixture/recorder and two publicCLI tuples ataa899, static105 premises at9ae61 and default65 atb8d10. Original fixture stops remain zero-credit; earlier evidence retained without replay."
   },
   "required_next": [
-    "Object-bearing defaults with authenticated creation/cache transfer and live roots.",
-    "Wider retained reference/update consumers and remaining creation paths; ordinary method, captured/rebound and temporary-call scope evidence is supported.",
+    "Other object-bearing default expression producers, remaining constructor/default consumers and arbitrary object transfers.",
+    "Wider retained reference/update and transformed callable creation consumers; ordinary method, captured/rebound, temporary-call and cached property METHOD child scope evidence is supported.",
     "Broader retained selectors, traits/hooks/readonly and property consumers.",
     "Paused returns_verify stays untouched; no unaccepted dependencies."
   ],
@@ -356,5 +370,88 @@
       "Earlier native-v2 nonexporting byref capture and incorrect partial-retry line prediction are retained native-only; accepted eight source rows use the corrected exported-alias original and actual native line12 tuple."
     ],
     "credit": "Eight new publicCLI SL source agreements and172 numeric AL guard premises at separate cutoffs. Earlier53 source agreements and earlier static/reference/Closure guards retained without replay."
+  },
+  "object_default_validation": {
+    "result": "PASS9 exact normal native/model object-default tuples and six335 AL premises; separate actual238 cached-target source1+98 AL premises.",
+    "source_revisions": {
+      "first2": "0d0d7bf3d15af1d209c53168e56896d50932be98",
+      "remaining7": "0e47259a04f800651ee82fa107c5230b3177cbdc"
+    },
+    "state_revisions": {
+      "cold73_late61": "0e47259a04f800651ee82fa107c5230b3177cbdc",
+      "throw57_retry46_nested44_private54": "72d5b9271b2acf5530960eecf0165e72b75d1389"
+    },
+    "actual_trait_revision": "a5028967627d84f359f612b7e0d6c8bdf5e71382",
+    "scope": "Shared object identity through templates/constants/arrays, cold/late inheritance, private/named callable scope, partial retry, reentry replacement/throw/typed alias, strict type rejection, nested class-declaration property creation, clone/source retirement, and actual trait cached-target/fresh-called/publication and namespace fallback.",
+    "reports": [
+      "object-default-model-v2/report.json",
+      "object-default-model-v4/report.json",
+      "object-default-model-v5/report.json",
+      "object-default-cache-model-v1/report.json",
+      "reviewer14-object-default-native-v1/report.json",
+      "reviewer14-object-default-native-v2/report.json",
+      "reviewer14-object-default-native-v3/report.json",
+      "reviewer14-object-default-native-v4/report.json",
+      "reviewer14-object-default-trait-native-v2/report.json"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/object-default-model-v2/run.py",
+      "python3 .tools/deferred-static-defaults/object-default-model-v4/run.py",
+      "python3 .tools/deferred-static-defaults/object-default-model-v5/run.py",
+      "python3 .tools/deferred-static-defaults/object-default-cache-model-v1/run.py"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "profile": "Full baseline30719, pinned PHP8.5.10 oracle b9adb7; reused237-capable adapter and numeric executables, no rebuild claim.",
+    "completion": "Credited publicCLI tuples accepted/checked program/normal, null reason/diagnostic and exact native exits/streams. Guards exactly true newline. Process and cleanup0, empty stderr/groups, unchanged watched inputs.",
+    "state_fixtures": "Prepared-v6 six335; stage-corrected prepared-v7 final four201. Prepared-v8 adds only exact actual trait source/98, seven433 maintained premises total.",
+    "preserved_failures": [
+      "model-v1 compile-only direct length constructor syntax; no PHP credit. model-v2 first2 passed before downstream PPCSTATIC caused masked class constant modifier metadata; generic non-PPCEXPR preservation repaired the real partial helper without changing modifier admission.",
+      "model-v3 private METHOD property creation reached interpreter failure because ordinary physical-site permission lacked declaring receipt authority; wrapped and genuine plain-clone receipt proof repaired that seam.",
+      "model-v4 seven sources and two134 guards passed before throw57 stage2 exhausted its bounded seek for a bare EVAL E_STRICT that is never published. Fixture-only exact ERROR_HANDLER_INVOKE/DEPRECATED_CONSTANT_RESULT checkpoint repaired; model-v5 ran only four affected/unrun201 guards.",
+      "Trait native-v1 fresh HostB/HostB prediction failed: first cached fptr stays lexicalHostA with fresh calledHostB. Original native-only source/report retained; stronger native-v2 adds namespace fallback and naturally retired static cache source, then matches model separately."
+    ],
+    "credit": "Nine new publicCLI SL source agreements and335 AL premises at retained separate cuts; actual238 one new SL source/98 AL premises ata502. Prior61 catalogue rows and2468/172 are preserved without replay."
+  },
+  "property_method_child_validation": {
+    "result": "PASS2 exact native/model normal tuples and two source-derived AL programs/170 premises",
+    "tested_revisions": {
+      "source2": "aa899c0a7f7bb16229c48f1c1021df23ceb02ea8",
+      "static105": "9ae61ed437f03060ff39b85fc0d65cdefaccdc12",
+      "default65": "b8d10eaa557e767a78aca52e5942102502df92bf"
+    },
+    "scope": "Cached trait/property METHOD creates static or receiver-free nonstatic source Closure children with separate lexical/called scope. Wrapped/plain maker and original child retirement, real child clone, private NEW self default, full import/body/site/receipt mutations and actual-only roots.",
+    "reports": [
+      "reviewer14-property-method-child-native-v1/report.json",
+      "property-child-model-v1/report.json",
+      "property-child-model-v2/report.json",
+      "property-child-model-v3/report.json"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/property-child-model-v1/run.py",
+      "python3 .tools/deferred-static-defaults/property-child-model-v2/run.py",
+      "python3 .tools/deferred-static-defaults/property-child-model-v3/run.py"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "profile": "Full baseline30719; pinned project-local PHP8.5.10 CLI NTS64 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "limits": "Serial publicCLI100000 steps/45s, host55s; AL guards120s; jobs1.",
+    "completion": "Credited publicCLI tuples accepted/checked program, normal with null reason/diagnostic, exact complete native stdout/stderr/exit0. Guards exactly true newline/empty stderr0; process and cleanup0, owned groups empty and watched inputs stable.",
+    "published_fixture": "tests/semantics/property_callable_creation_protocol.py; final prepared-v4 static105/default65 PHP bytes match exact native originals.",
+    "preserved_failures": [
+      "model-v1 static105 parse-only failure at inline PORIGIN path; no state credit. Ordinal/path preparation repair reran only affected/unrun guards.",
+      "model-v2 default65 elaboration failure from nonexistent CELLS/wrong slot item; no default-state credit. Correct reached STORE/DEFINED observation reran only default65."
+    ],
+    "credit": "Two new publicCLI source agreements and170 AL premises; prior252 nine/335 and actual238 one/98 retained. Wider transformed METHOD creation contexts remain required."
   }
 }

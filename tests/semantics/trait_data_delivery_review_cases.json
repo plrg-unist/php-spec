@@ -1,0 +1,29 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only259 preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Next259 recorded collision-diagnostic delivery and fatal-flush controls; native only, zero model credit.",
+  "cases": [
+    {
+      "id": "collision-warning-flushes-before-parent-final-fatal-without-handler",
+      "source": "<?php\nset_error_handler(function($n,$m){echo \"H;\";return true;});\nclass P{final public function f(){}}\ntrait T{public static $x=E_STRICT;}\necho \"PRE;\";\nclass C extends P{use T;public static $x=2048;public function f(){}}\necho \"POST;\";",
+      "source_sha256": "7980c156e45fde3c1725d598a1819aa1930bd5aabf9080e613c9fa941cbc2d60",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSA2CkZhdGFsIGVycm9yOiBDYW5ub3Qgb3ZlcnJpZGUgZmluYWwgbWV0aG9kIFA6OmYoKSBpbiB7RklMRX0gb24gbGluZSA2ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-delivery-native259-4yekurr7/report.json",
+      "native_raw_sha256": "8b863e8be4a78f6f6a3a20053385ae1db80d69c975758b9258a0697034d278f7"
+    },
+    {
+      "id": "constant-then-property-recorded-warnings-see-replaced-handler",
+      "source": "<?php\nset_error_handler(function($n,$m){echo \"H;\";set_error_handler(function($n,$m){echo \"J;\";return true;});return true;});\ntrait T{public const X=E_STRICT;public static $x=E_STRICT;}\necho \"PRE;\";\nclass C{use T;public const X=2048;public static $x=2048;}\necho \"POST;\";",
+      "source_sha256": "ce8abbd68acd870688fdbab67a462bbfb5db9f827e5784a014c152ea1d086620",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7SjtQT1NUOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-delivery-native259-4yekurr7/report.json",
+      "native_raw_sha256": "6389060dd5dd6b2fc64698797536427bb7e6696a8e544a84d403e4159cec4a1d"
+    }
+  ]
+}

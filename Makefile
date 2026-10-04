@@ -39,6 +39,7 @@ test: build
 	python3 tests/concat_line_metadata.py
 	python3 tests/nullary_line_metadata.py
 	python3 tests/clone_line_metadata.py
+	python3 tests/dollar_curly_metadata.py
 	python3 tests/phase_ledger.py
 	python3 tests/parallel_validation_test.py
 	python3 tests/validate.py --elaborate --lint-all
@@ -111,6 +112,8 @@ test-semantics: build
 	python3 tests/semantics/cold_closure_static_protocol.py
 	python3 tests/semantics/closure_call_creation_protocol.py
 	python3 tests/semantics/instance_default_template_protocol.py
+	python3 tests/semantics/object_property_default_protocol.py
+	python3 tests/semantics/property_callable_creation_protocol.py
 	python3 tests/semantics/default_parameter_compiler.py
 	python3 tests/semantics/default_parameters.py
 	python3 tests/semantics/default_parameter_protocol.py
@@ -150,6 +153,8 @@ test-semantics: build
 	python3 tests/semantics/callable_receive_protocol.py
 	python3 tests/semantics/from_callable.py
 	python3 tests/semantics/from_callable_protocol.py
+	python3 tests/semantics/closure_current_binding.py
+	python3 tests/semantics/closure_current_binding_protocol.py
 	python3 tests/semantics/invoke_publication.py
 	python3 tests/semantics/invoke_publication_protocol.py
 	python3 tests/semantics/callable_string_ini.py
@@ -281,6 +286,10 @@ test-semantics: build
 	python3 tests/semantics/ordinary_constructor_protocol.py --group string
 	python3 tests/semantics/ordinary_constructor_protocol.py --group warning
 	python3 tests/semantics/ordinary_constructor_protocol.py --group recursive
+	python3 tests/semantics/object_class_name_sources.py
+	python3 tests/semantics/object_class_name_protocol.py --group temporary
+	python3 tests/semantics/object_class_name_protocol.py --group returned
+	python3 tests/semantics/object_class_name_protocol.py --group thrown
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
@@ -363,6 +372,10 @@ test-semantics: build
 	python3 tests/semantics/include_execution.py
 	python3 tests/semantics/file_operand_sources.py
 	python3 tests/semantics/file_operand_protocol.py
+	python3 tests/semantics/interpolation_sources.py
+	python3 tests/semantics/interpolation_protocol.py
+	python3 tests/semantics/dollar_curly_sources.py
+	python3 tests/semantics/dollar_curly_protocol.py
 	python3 tests/semantics/startup_ini.py
 	python3 tests/semantics/startup_ini_protocol.py
 	python3 tests/semantics/display_errors.py

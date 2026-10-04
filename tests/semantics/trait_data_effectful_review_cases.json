@@ -1,0 +1,161 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; next required effectful trait compatibility evaluation. Native-only preparation; zero model credit before this subsequent phase.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Separate from254 direct-property deprecation. Real temporary default evaluation, flags before values, call/throw behavior during class composition and later uncached demand.",
+  "cases": [
+    {
+      "id": "property-compatibility-effects-use-existing-then-incoming-and-do-not-fill-table",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo $l,\";\";return true;});\ntrait T{\n public static $x=E_STRICT;\n}\necho \"PRE;\";\nclass C{\n use T;\n public static $x=E_STRICT;\n}\necho \"POST;\",C::$x;",
+      "source_sha256": "855175609a6eae6a399f7efb17382e97e38decb025d0d43ea700a3fb5b75c692",
+      "status": "normal",
+      "stdout_base64": "UFJFOzc7NztQT1NUOzExOzIwNDg=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-effectful-native-next-ucaj2i9c/report.json",
+      "native_raw_sha256": "fcd9d0811154ad96e55994466f0b5784087fe07761cfffebc21829cd5bc3922a"
+    },
+    {
+      "id": "constant-compatibility-effects-use-incoming-then-existing-and-do-not-cache",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo $l,\";\";return true;});\ntrait T{\n public const X=E_STRICT;\n}\necho \"PRE;\";\nclass C{\n use T;\n public const X=E_STRICT;\n}\necho \"POST;\",C::X;",
+      "source_sha256": "e9531ae4fad0ad85db8d112008161a454d1343759bd79acdb662f11e6f903179",
+      "status": "normal",
+      "stdout_base64": "UFJFOzc7NztQT1NUOzExOzIwNDg=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-effectful-native-next-ucaj2i9c/report.json",
+      "native_raw_sha256": "fcd9d0811154ad96e55994466f0b5784087fe07761cfffebc21829cd5bc3922a"
+    },
+    {
+      "id": "property-flag-conflict-precedes-effectful-value-demand",
+      "source": "<?php set_error_handler(function($n,$m){echo \"H;\";return true;});trait T{private static $x=E_STRICT;}echo \"PRE;\";class C{use T;public static $x=2048;}echo \"POST;\";",
+      "source_sha256": "40b34d423dbafec5b14efda7e19d457fbf119576c66d140e36c941966acbbb4b",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-effectful-native-next-ucaj2i9c/report.json",
+      "native_raw_sha256": "d7b63e07030ab17220e3d40942a43ef7d19bfc731161cf62d42cf393eb3d67aa"
+    },
+    {
+      "id": "constant-final-conflict-precedes-effectful-value-demand",
+      "source": "<?php set_error_handler(function($n,$m){echo \"H;\";return true;});trait T{final public const X=E_STRICT;}echo \"PRE;\";class C{use T;public const X=2048;}echo \"POST;\";",
+      "source_sha256": "91f5bc5144a7bcd3a89488b899b68290b364c80be55639c7f27c8f846b04aa13",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIGNvbnN0YW50IChYKSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-effectful-native-next-ucaj2i9c/report.json",
+      "native_raw_sha256": "935110fdc121e534294e5bb5d9814cf88b90771bd0eb992f378eba4e9b525a99"
+    },
+    {
+      "id": "property-callback-throw-remains-catchable",
+      "source": "<?php set_error_handler(function($n,$m){echo \"H;\";throw new Exception(\"STOP\");});trait T{public static $x=E_STRICT;}echo \"PRE;\";try{class C{use T;public static $x=2048;}echo \"POST;\";}catch(Exception $e){echo \"CAUGHT;\";}",
+      "source_sha256": "a6212b52d7eada16ca8dc8a2127da6412357ad4bd08b93fb790aa56c516111d1",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7Q0FVR0hUOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-effectful-native-next-ucaj2i9c/report.json",
+      "native_raw_sha256": "4b1415b9fe9b9589aafa6edbc1ad54e63aafb995ca4052b31284dd450aabb1e8"
+    },
+    {
+      "id": "effectful-constant-handler-can-call-consuming-class-method",
+      "source": "<?php set_error_handler(function($n,$m){echo \"H;\";try{C::marker();}catch(Error $e){echo \"UNLINKED;\";}return true;});trait T{public const X=E_STRICT;}echo \"PRE;\";class C{use T;public const X=2048;public static function marker(){echo \"M;\";}}echo \"POST;\";C::marker();echo C::X;",
+      "source_sha256": "0a1daf8a1e03a6cacd52c8cd4ddbd21e2a7eb411a510b757df2051422ae98574",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7TTtQT1NUO007MjA0OA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-effectful-native-next-ucaj2i9c/report.json",
+      "native_raw_sha256": "739e498fb1440cbd8b25d2f75b0b0ee5c328c1eb9b5adcfb8ed4b76ede94695e"
+    },
+    {
+      "id": "effectful-array-property-comparison-uses-composing-scope-and-temporaries",
+      "source": "<?php set_error_handler(function($n,$m){echo \"H;\";return true;});trait T{public array $x=[E_STRICT,__CLASS__];}echo \"PRE;\";class C{use T;public array $x=[2048,\"C\"];}echo \"POST;\";$c=new C;echo $c->x[0],\":\",$c->x[1];",
+      "source_sha256": "bf0a46fbc7ba7dbe35fc0df931cbf6b905e637969dacd695abab97f7bc94ecee",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7UE9TVDsyMDQ4OkM=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-effectful-native-next-ucaj2i9c/report.json",
+      "native_raw_sha256": "96ab3346ab23ae0caa5dab00d86169ac8f30b230c52e1cea12f5bc7058eef9cb"
+    },
+    {
+      "id": "effectful-constant-comparison-can-use-current-class-constant-table",
+      "source": "<?php set_error_handler(function($n,$m){echo \"H;\";return true;});trait T{public const X=E_STRICT;}echo \"PRE;\";class C{use T;public const X=self::Y;public const Y=2048;}echo \"POST;\",C::X;",
+      "source_sha256": "71810e73fa15296f672e78a84fd4a6fb56df3ce5ff2b1e17454ba857d406febf",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7UE9TVDsyMDQ4",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-effectful-native-next-ucaj2i9c/report.json",
+      "native_raw_sha256": "f82a3ef543208a7a8aaca86026cc133bbd2b927bdfc5d3b7592380037257b78c"
+    },
+    {
+      "id": "property-existing-error-precedes-incoming-warning",
+      "source": "<?php set_error_handler(function($n,$m){echo \"H;\";return true;});trait T{public static $x=E_STRICT;}echo \"PRE;\";try{class C{use T;public static $x=self::MISSING;public static function marker(){echo \"M;\";}}}catch(Error $e){echo \"CAUGHT;\";}try{C::marker();}catch(Error $e){echo \"ABSENT;\";}",
+      "source_sha256": "9bbbbd27dc1785fd49d01a7453c13e684e90a1f3d44ae176d401829cbb1d2de7",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "V2FybmluZzogVW5jYXVnaHQgRXJyb3I6IFVuZGVmaW5lZCBjb25zdGFudCBzZWxmOjpNSVNTSU5HIGluIHtGSUxFfToxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMQpGYXRhbCBlcnJvcjogQyBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxCg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-effectful-native-next-hxou4vt7/report.json",
+      "native_raw_sha256": "c7106e2a71acb39ab459b3b565602b9b9dd2cdf76ab106595882c0f83dc08bde"
+    },
+    {
+      "id": "constant-incoming-warning-precedes-existing-error",
+      "source": "<?php set_error_handler(function($n,$m){echo \"H;\";return true;});trait T{public const X=E_STRICT;}echo \"PRE;\";try{class C{use T;public const X=self::MISSING;public static function marker(){echo \"M;\";}}}catch(Error $e){echo \"CAUGHT;\";}try{C::marker();}catch(Error $e){echo \"ABSENT;\";}",
+      "source_sha256": "b47591b822f5fe35d93f98597855650e9a8910780f6bbb3c7acc5c75a27b497c",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAxCldhcm5pbmc6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgc2VsZjo6TUlTU0lORyBpbiB7RklMRX06MQpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDEKRmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIGNvbnN0YW50IChYKSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxCg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-effectful-native-next-hxou4vt7/report.json",
+      "native_raw_sha256": "8999d205128085b0c43ecd78b3f5fec1fd96fbeaa574023eaa191a9f0c8bf5ce"
+    },
+    {
+      "id": "property-callback-throw-keeps-successfully-composed-class",
+      "source": "<?php set_error_handler(function($n,$m){echo \"H;\";throw new Exception(\"STOP\");});trait T{public static $x=E_STRICT;}echo \"PRE;\";try{class C{use T;public static $x=2048;public static function marker(){echo \"M;\";}}}catch(Exception $e){echo \"CAUGHT;\";}restore_error_handler();C::marker();echo C::$x;",
+      "source_sha256": "ebd983ac55bc8123bb78201c4e7102e1fdd63ac0766b7f9274bd0e9b15e95e6d",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7Q0FVR0hUO007MjA0OA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-effectful-data-259/.tools/trait-collision-native259-1le7lrm1/report.json",
+      "native_raw_sha256": "67e0b096459c8f644efaacf2ec90faae881c9db8c1561c6588a827a516e62373"
+    },
+    {
+      "id": "property-pending-exception-skips-second-handler-but-completes-comparison",
+      "source": "<?php set_error_handler(function($n,$m){echo \"H;\";throw new Exception(\"STOP\");});trait T{public static $x=E_STRICT;}echo \"PRE;\";try{class C{use T;public static $x=E_STRICT;public static function marker(){echo \"M;\";}}}catch(Exception $e){echo \"CAUGHT;\";}restore_error_handler();C::marker();echo C::$x;",
+      "source_sha256": "433ba53e089177363394bf8b1da26b4de0f1ba89166a5bbea138c4cc987ee1ba",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7Q0FVR0hUO007MjA0OA==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAxCg==",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-effectful-data-259/.tools/trait-collision-native259-1le7lrm1/report.json",
+      "native_raw_sha256": "085aa4f19e89dd96fdcb4e3000200739163ff542289365c374826a197fe70bfa"
+    },
+    {
+      "id": "property-deferred-int-versus-float-is-strict-before-type-update",
+      "source": "<?php trait T{public static float $x=self::Y;}echo \"PRE;\";class C{use T;public const Y=1;public static float $x=1.0;}echo \"POST;\";",
+      "source_sha256": "4a8c4707bbecccbb6b773eb35b96bd2cdc3ce685e4db742c035b646ae1759449",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-effectful-data-259/.tools/trait-collision-type-native259-mybsnohx/report.json",
+      "native_raw_sha256": "5da638a5bd6293c46b3c697f31e73a53d05dc6a71449792e14d51acd829cd8ce"
+    },
+    {
+      "id": "constant-deferred-int-versus-float-is-strict-before-type-update",
+      "source": "<?php trait T{public const float X=self::Y;}echo \"PRE;\";class C{use T;public const Y=1;public const float X=1.0;}echo \"POST;\";",
+      "source_sha256": "5650956ab32b059a580d03dd9710563bb82b9a1a2a6702011a5c007b30e5d9bb",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIGNvbnN0YW50IChYKSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-effectful-data-259/.tools/trait-collision-type-native259-mybsnohx/report.json",
+      "native_raw_sha256": "170914cf2c26ce759d0877346813e13f09206a9750cbf82c55b8e06dc56da8ba"
+    }
+  ]
+}

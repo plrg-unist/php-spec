@@ -568,6 +568,8 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if $object_body(S_read.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $closure_known_other_method(ptbytes)
   -- if $ptlc(ptbytes) =/= $ptascii("fromcallable")
+  -- if $ptlc(ptbytes) =/= $ptascii("getcurrent")
+  -- if $ptlc(ptbytes) =/= $ptascii("bind")
   -- if $ptlc(ptbytes) =/= $ptascii("bindto") /\ $ptlc(ptbytes) =/= $ptascii("call")
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure method consumer"]
   -- if S_read = $resolve_at(S, poperand, z)
@@ -576,7 +578,10 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if $(n < |S_read.OBJECTS|)
   -- if $object_body(S_read.OBJECTS[n]) = NAMEDCLOSURE porigin
   -- if $closure_known_other_method(ptbytes)
+  -- if $ptlc(ptbytes) =/= $ptascii("bindto")
   -- if $ptlc(ptbytes) =/= $ptascii("fromcallable")
+  -- if $ptlc(ptbytes) =/= $ptascii("getcurrent")
+  -- if $ptlc(ptbytes) =/= $ptascii("bind")
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure method consumer"]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -584,7 +589,10 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if $(n < |S_read.OBJECTS|)
   -- if S_read.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
   -- if $closure_known_other_method(ptbytes)
+  -- if $ptlc(ptbytes) =/= $ptascii("bindto")
   -- if $ptlc(ptbytes) =/= $ptascii("fromcallable")
+  -- if $ptlc(ptbytes) =/= $ptascii("getcurrent")
+  -- if $ptlc(ptbytes) =/= $ptascii("bind")
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -697,12 +705,14 @@ rule PhpStep/method-no-class-self: S ~> $throw_scalar(S[.TODO = ptask_tail*], "E
   -- if $pfclassname_keyword(phpType19) = $ptascii("self")
   -- if $ptlc($base64(text_member)) = $ptascii("class")
   -- if $method_current_scope(S) = eps
+  -- if $bound_fake_internal_scope(S) = eps
   -- if $method_source_task(S, NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)
 rule PhpStep/method-no-class-static: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", $ptascii("Cannot use \"static\" in the global scope"), $source_line(metadata))
   -- if S.TODO = (EVAL (NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)) :: ptask_tail*
   -- if $pfclassname_keyword(phpType19) = $ptascii("static")
   -- if $ptlc($base64(text_member)) = $ptascii("class")
   -- if $method_called_scope(S) = eps
+  -- if $bound_fake_internal_called(S) = eps
   -- if $method_source_task(S, NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)
 rule PhpStep/method-parent-class: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING pclassdesc_parent.NAME)]
   -- if S.CONSTCONTEXT = eps
@@ -722,6 +732,7 @@ rule PhpStep/method-parent-no-class: S ~> $throw_scalar(S[.TODO = ptask_tail*], 
   -- if $ptlc($base64(text_member)) = $ptascii("class")
   -- if $method_source_task(S, NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)
   -- if $method_current_scope(S) = eps
+  -- if $bound_fake_internal_scope(S) = eps
 rule PhpStep/method-parent-no-parent: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", $ptascii("Cannot use \"parent\" when current class scope has no parent"), $source_line(metadata))
   -- if S.CONSTCONTEXT = eps
   -- if S.TODO = (EVAL (NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)) :: ptask_tail*
@@ -906,6 +917,7 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpTy
   -- if ($ptlc(ptbytes_method) =/= $ptascii("__tostring") \/ $scoped_internal_method_kind(S, phpType19, n_class*, ptbytes_method) = eps)
   -- if $ptlc(n_class*) =/= $ptascii("closure") \/ $ptlc(ptbytes_method) =/= $ptascii("bind")
   -- if $ptlc(n_class*) =/= $ptascii("closure") \/ $ptlc(ptbytes_method) =/= $ptascii("fromcallable")
+  -- if $ptlc(n_class*) =/= $ptascii("closure") \/ $ptlc(ptbytes_method) =/= $ptascii("getcurrent")
 def $scoped_select(S, phpType19, poperand_selector, ptbytes_method, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "scoped method selection"] -- otherwise
 dec $scoped_name_prepare(pstate, phpType19, poperand, phpType20, phpType7*, int) : pstate
 def $scoped_name_prepare(S, phpType19, poperand_selector, NIdentifier (BYTES text) metadata_name, phpType7*, z) = $scoped_select(S, phpType19, poperand_selector, $base64(text), phpType7*, z)

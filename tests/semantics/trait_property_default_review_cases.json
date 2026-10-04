@@ -1,0 +1,17 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; exact raw trait property false-handler fallback diagnostic and original source line. Native-only preparation; zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "false-handler-renders-trait-fetch-warning-at-original-source-line",
+      "source": "<?php\ntrait T{public static int $x=1;}\nset_error_handler(function($n,$m){echo \"H\",$n,\";\";return false;});\necho T::$x,\";\";\n",
+      "source_sha256": "c5232c0f3b4f60f48ad4bf5ebcf6e283493535af18ef65580e28920b373d4edb",
+      "status": "normal",
+      "stdout_base64": "SDgxOTI7MTs=",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQWNjZXNzaW5nIHN0YXRpYyB0cmFpdCBwcm9wZXJ0eSBUOjokeCBpcyBkZXByZWNhdGVkLCBpdCBzaG91bGQgb25seSBiZSBhY2Nlc3NlZCBvbiBhIGNsYXNzIHVzaW5nIHRoZSB0cmFpdCBpbiB7RklMRX0gb24gbGluZSA0Cg==",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-sgz1k5mk/report.json",
+      "native_raw_sha256": "048d36152605d57571df2e5b14b0e9a84b6a03ccc35a9bd6ef00f40b13c30730"
+    }
+  ]
+}
