@@ -406,7 +406,12 @@ sources and 162 state premises pass separately. Temporary `Closure::call` childr
 retain the authentic receiver scope after their maker retires, with genuine
 receiver ownership for nonstatic children and nonowning evidence for static
 children. Six new sources and 193 state premises pass at separate cutoffs.
-Deferred instance/object defaults and wider consumers remain open.
+Deferred scalar/array instance defaults now use class-owned templates, copying
+the parent's actual state when a child links and filling constants, instance
+defaults and statics in order before allocating an object. Eight new source
+agreements and three programs/172 state premises check private shadows, strict
+failure/retry, reentry, link-time copies and template ownership after collection.
+Object-bearing defaults and wider consumers remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

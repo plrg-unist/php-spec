@@ -246,8 +246,15 @@ nonstatic children keep the receiver and static children keep only nonowning
 evidence. Five source agreements/global77 pass at e32dcc64a, affected callback81
 at49d0b9579 after making ordinary/copied scope rules disjoint, and a fresh
 same-class source/35 atadbfde09e: six sources/193 premises total. The original
-validator failure is retained. Instance/object defaults and wider consumers
-remain required next work.
+validator failure is retained. Module246 now owns deferred scalar/array instance
+templates by requested class and declaration, copies actual parent state at link
+time, and fills constants, private-shadow instance layouts and statics before
+allocation. Strict failure/retry and reentry retain once-only fill history;
+objects copy template values and arrays remain owned after object collection.
+Eight exact source agreements pass at80900fa4b; three programs/172 phase, copy
+and ownership premises pass at449b45763 after a fixture source-origin binding
+repair. Original compilation failures remain separate. Object-bearing defaults
+and wider consumers remain required next work.
 
 
 Private and protected method arrays and class-method strings support callable
@@ -379,7 +386,7 @@ failures and interrupted evidence.
 - Values, references and coercion: ordinary internal constructor effects,
   rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred instance/object defaults and
+  broader reference-result consumers. Deferred object-bearing defaults and
   wider Closure creation contexts remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.
