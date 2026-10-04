@@ -1,0 +1,514 @@
+;; Named holes are receive metadata, not arguments. Capture their positions
+;; before default evaluation can replace the missing slots.
+def $named_holes(eps, n) = eps
+def $named_holes(NAMED_HOLE :: pnamedslot*, n) = n :: $named_holes(pnamedslot*, $(n + 1))
+def $named_holes((NAMED_SENT poperand) :: pnamedslot*, n) = $named_holes(pnamedslot*, $(n + 1))
+dec $call_hole_rows_valid(pstate, pcallcontext, pfunction, nat*, nat) : bool
+def $call_hole_rows_valid(S, pcallcontext, pfunction, eps, n_min) = true
+def $call_hole_rows_valid(S, pcallcontext, pfunction, n :: n_tail*, n_min) = true
+  -- if $(n >= n_min) /\ $(n < pcallcontext.ARGC)
+  -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if porigin_site = $default_parameter_origin(S, pfunction.ORIGIN, n)
+  -- if $parameter_string_site_valid(S, porigin_site, $default_parameter_line(S, pfunction.ORIGIN, n))
+  -- if $call_hole_rows_valid(S, pcallcontext, pfunction, n_tail*, $(n + 1))
+def $call_hole_rows_valid(S, pcallcontext, pfunction, n*, n_min) = false -- otherwise
+dec $call_holes_source_valid(pstate, pcallcontext, pfunction) : bool
+def $call_holes_source_valid(S, pcallcontext, pfunction) = true
+  -- if $call_unpack_site(S, pcallcontext.CALLSITE) \/ pcallcontext.WRAPPER =/= eps
+  -- if ~$stringify_context_kind(S, pcallcontext) /\ ~$error_context_kind(S, pcallcontext)
+def $call_holes_source_valid(S, pcallcontext, pfunction) = (pcallcontext.HOLES = eps)
+  -- if $stringify_context_kind(S, pcallcontext) \/ $error_context_kind(S, pcallcontext)
+def $call_holes_source_valid(S, pcallcontext, pfunction) = (pcallcontext.HOLES = $named_holes(pnamedargs.SLOTS[0:n_fixed], 0))
+  -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
+  -- if pcallcontext.WRAPPER = eps
+  -- if ~$stringify_context_kind(S, pcallcontext) /\ ~$error_context_kind(S, pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $call_argument_source(S, porigin_site) = PCALLARGUMENTS phpType7* n_field
+  -- if pnamedargs = $named_call_shape(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
+  -- if n_fixed = $call_received(|pnamedargs.SLOTS|, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+def $call_holes_source_valid(S, pcallcontext, pfunction) = (pcallcontext.HOLES = eps)
+  -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
+  -- if pcallcontext.WRAPPER = eps
+  -- if ~$stringify_context_kind(S, pcallcontext) /\ ~$error_context_kind(S, pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $call_argument_source(S, porigin_site) = PCALLNOARGUMENTS
+def $call_holes_source_valid(S, pcallcontext, pfunction) = false -- otherwise
+def $call_holes_valid(S, pcallcontext) = true
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if $call_hole_rows_valid(S, pcallcontext, pfunction, pcallcontext.HOLES, 0)
+  -- if $call_holes_source_valid(S, pcallcontext, pfunction)
+def $call_holes_valid(S, pcallcontext) = false -- otherwise
+def $fixed_parameter_supplied(S, n) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n < pcallcontext.ARGC)
+  -- if ~(n <- pcallcontext.HOLES)
+  -- if $call_holes_valid(S, pcallcontext)
+def $fixed_parameter_supplied(S, n) = false -- otherwise
+dec $fixed_parameter_defaulted(pstate, nat) : bool
+def $fixed_parameter_defaulted(S, n) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n >= pcallcontext.ARGC) \/ n <- pcallcontext.HOLES
+  -- if $call_holes_valid(S, pcallcontext)
+def $fixed_parameter_defaulted(S, n) = false -- otherwise
+
+;; DEFAULT also labels property initializers. Only a genuine NParam subtree
+;; admits NEW here; class-constant and property NEW rules remain separate.
+def $ppparameter_new_site(P, pcpath) = (P.FOLD.DEFAULT /\ $default_below(P.FOLD.SOURCE.OCCURRENCES, pcpath))
+;; Method defaults use the declaring scope. Rebound anonymous Closure defaults
+;; retain their separate live-scope boundary; ordinary NEW resolution is exact.
+dec $ppparameter_new_selector(ptscope, name) : ptbytes?
+def $ppparameter_new_selector(PTKNOWN ptbytes_owner ptbytes_parent?, NName (BYTES text) metadata) = (ptbytes_owner)
+  -- if $ptlc($base64(text)) = $ptascii("self")
+def $ppparameter_new_selector(PTKNOWN ptbytes_owner (ptbytes_parent), NName (BYTES text) metadata) = (ptbytes_parent)
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+def $ppparameter_new_selector(ptscope, name) = eps -- otherwise
+def $ppparameter_new_resolve(P, pcpath, name) = $ppparameter_new_selector(ptcontext.SCOPE, name)
+  -- if P.CLASSCONTEXT = (ptcontext)
+  -- if $ppparameter_new_site(P, pcpath) /\ ~P.CLOSURE
+def $ppparameter_new_resolve(P, pcpath, name) = eps
+  -- if P.CLASSCONTEXT = (ptcontext)
+  -- if ~$ppparameter_new_site(P, pcpath) \/ P.CLOSURE
+def $ppparameter_new_resolve(P, pcpath, name) = eps
+  -- if P.CLASSCONTEXT = eps
+def $ppnew_class_name(P, pcpath, name) = $ppclass_name(P, pcpath, PNRESOLVED {ORIGINAL name, KIND PLCLASS, RESOLVED ptbytes, FULL true, FALLBACK eps})
+  -- if $ppparameter_new_resolve(P, pcpath, name) = (ptbytes)
+def $ppnew_class_name(P, pcpath, name) = $ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name))
+  -- if $ppparameter_new_resolve(P, pcpath, name) = eps
+dec $ppparameter_new_class(ppstate, phpType28, metadata) : ppstate
+def $ppparameter_new_class(P, phpType28, metadata) = $ppconstant_error(P, $ptascii("\"static\" is not allowed in compile-time constants"), $nabs($source_line(metadata)))
+  -- if phpType28 = name
+  -- if $ptast(name) = PTNAME PTPLAIN ptbytes
+  -- if $ptlc(ptbytes) = $ptascii("static")
+def $ppparameter_new_class(P, phpType28, metadata) = P
+  -- if phpType28 = name
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if ptqual =/= PTPLAIN \/ $ptlc(ptbytes) =/= $ptascii("static")
+def $ppparameter_new_class(P, phpType28, metadata) = $ppunsupported(P, "parameter default class target")
+  -- otherwise
+dec $ppparameter_new_args(ppstate, pcpath, nat, phpType7*, bool) : ppstate
+def $ppparameter_new_args(P, pcpath, n, phpType7*, b_named) = P -- if P.COMPLETION =/= PPCNORMAL
+def $ppparameter_new_args(P, pcpath, n, eps, b_named) = P -- if P.COMPLETION = PPCNORMAL
+def $ppparameter_new_args(P, pcpath, n, (NArg phpType3 expression phpType4_ref (BOOLEAN true) metadata) :: phpType7*, b_named) = $ppconstant_error(P, $ptascii("Argument unpacking in constant expressions is not supported"), $nabs($source_line(metadata)))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppparameter_new_args(P, pcpath, n, (NArg ABSENT expression phpType4_ref (BOOLEAN false) metadata) :: phpType7*, true) = $ppconstant_error(P, $ptascii("Cannot use positional argument after named argument"), $nabs($source_line(metadata)))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppparameter_new_args(P, pcpath, n, (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, b_named) = $ppparameter_new_args($ppconstant_validate(P, pcpath ++ [PCINDEX n, PCFIELD 1], expression), pcpath, $(n + 1), phpType7*, (b_named \/ phpType3 =/= ABSENT))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if phpType3 =/= ABSENT \/ ~b_named
+def $ppparameter_new_args(P, pcpath, n, phpType7*, b_named) = $ppunsupported(P, "edited parameter default new arguments") -- otherwise
+dec $ppparameter_new_ready(ppstate, pcpath, phpType7*, metadata) : ppstate
+def $ppparameter_new_ready(P, pcpath, phpType7*, metadata) = P -- if P.COMPLETION =/= PPCNORMAL
+def $ppparameter_new_ready(P, pcpath, phpType7*, metadata) = $ppconstant_error(P, $ptascii("Cannot create Closure for new expression"), $nabs($source_line(metadata)))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppfirstclass(phpType7*)
+def $ppparameter_new_ready(P, pcpath, phpType7*, metadata) = $ppparameter_new_args(P, pcpath ++ [PCFIELD 1], 0, phpType7*, false)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if ~$ppfirstclass(phpType7*)
+def $ppparameter_new(P, pcpath, phpType28, SEQUENCE phpType7*, metadata) = $ppparameter_new_ready($ppparameter_new_class(P, phpType28, metadata), pcpath, phpType7*, metadata)
+
+;; Constructor calls need their own suspended default-evaluation context. Keep
+;; this boundary source-bound; ordinary constructors retain their existing path.
+def $parameter_default_constructor(S, name, phpType7*, metadata) = (S.COMPLETION = NORMAL /\ ~$ppfirstclass(phpType7*) /\ $parameter_string_site_valid(S, pconstantcontext.ORIGIN, pconstantcontext.LINE) /\ $default_context_valid(S, pconstantcontext) /\ $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata) /\ $constant_expression_below(S, pconstantcontext.ORIGIN, PORIGIN n_unit pcpath))
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+def $parameter_default_constructor(S, name, phpType7*, metadata) = false
+  -- if S.CONSTCONTEXT = eps
+def $parameter_default_constructor(S, name, phpType7*, metadata) = false
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.ORIGIN = eps
+rule PhpStep/parameter-default-constructor-unsupported: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "parameter default constructor"]
+  -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if $parameter_default_constructor(S, name, phpType7*, metadata)
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $new_has_ctor(S, preqbytes)
+
+;; The AST default evaluator keeps a named argument table even without a
+;; constructor. Its values run in source order and are discarded after NEW.
+dec $parameter_default_noctor_at(pstate, pnoctorcall, pconstantcontext, pcnode?) : bool
+def $parameter_default_noctor_at(S, pnoctorcall, pconstantcontext, (NExprNew name (SEQUENCE phpType7*) metadata)) = ($parameter_string_site_valid(S, pconstantcontext.ORIGIN, pconstantcontext.LINE) /\ $default_context_valid(S, pconstantcontext) /\ $constant_expression_below(S, pconstantcontext.ORIGIN, pnoctorcall.SITE))
+def $parameter_default_noctor_at(S, pnoctorcall, pconstantcontext, pcnode?) = false -- otherwise
+def $parameter_default_noctor(S, pnoctorcall) = $parameter_default_noctor_at(S, pnoctorcall, pconstantcontext, $origin_node(S.SOURCES, pnoctorcall.SITE))
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+def $parameter_default_noctor(S, pnoctorcall) = false
+  -- if S.CONSTCONTEXT = eps
+def $parameter_new_prefix(eps) = true
+def $parameter_new_prefix((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $parameter_new_prefix(phpType7*)
+def $parameter_new_prefix((NArg (NIdentifier phpType33 metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $parameter_new_prefix(phpType7*)
+def $parameter_new_prefix(phpType7*) = false -- otherwise
+def $noctor_direct_count_at(S, pnoctorcall, phpType7*) = |phpType7*|
+  -- if $parameter_default_noctor(S, pnoctorcall)
+def $noctor_direct_count_at(S, pnoctorcall, phpType7*) = $noctor_direct_count(phpType7*)
+  -- if ~$parameter_default_noctor(S, pnoctorcall)
+dec $parameter_new_name_present(phpType7*, ptbytes) : bool
+def $parameter_new_name_present(eps, ptbytes) = false
+def $parameter_new_name_present((NArg ABSENT expression phpType4_ref phpType4_unpack metadata) :: phpType7*, ptbytes) = $parameter_new_name_present(phpType7*, ptbytes)
+def $parameter_new_name_present((NArg (NIdentifier (BYTES text) metadata_name) expression phpType4_ref phpType4_unpack metadata) :: phpType7*, ptbytes) = true
+  -- if $base64(text) = ptbytes
+def $parameter_new_name_present((NArg (NIdentifier (BYTES text) metadata_name) expression phpType4_ref phpType4_unpack metadata) :: phpType7*, ptbytes) = $parameter_new_name_present(phpType7*, ptbytes)
+  -- if $base64(text) =/= ptbytes
+def $parameter_new_name_present(phpType7*, ptbytes) = false -- otherwise
+rule PhpStep/parameter-default-new-named: S ~> S_value[.TODO = (NOCTOR_ARGS $noctor_advance(pnoctorcall, pnoctorcall.SENT ++ [S_value.RESULT])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
+  -- if $parameter_default_noctor(S, pnoctorcall)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[pnoctorcall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
+  -- if S_value.COMPLETION = NORMAL
+  -- if ~$parameter_new_name_present(phpType7*[0:pnoctorcall.INDEX], $base64(text))
+rule PhpStep/parameter-default-new-named-duplicate: S ~> $throw_scalar(S_value, "Error", $ptascii("Named parameter $") ++ $base64(text) ++ $ptascii(" overwrites previous argument"), $noctor_arg_line(S, pnoctorcall))
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
+  -- if $parameter_default_noctor(S, pnoctorcall)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[pnoctorcall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
+  -- if S_value.COMPLETION = NORMAL
+  -- if $parameter_new_name_present(phpType7*[0:pnoctorcall.INDEX], $base64(text))
+rule PhpStep/parameter-default-new-named-abrupt: S ~> S_value
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
+  -- if $parameter_default_noctor(S, pnoctorcall)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if phpType7*[pnoctorcall.INDEX] = NArg (NIdentifier phpType33 metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
+  -- if S_value.COMPLETION =/= NORMAL
+
+;; Default objects are never cached. This nonowning tag records allocation
+;; class only; the ordinary NEW evaluator supplies the actual object and effects.
+def $constant_shape_class(S, porigin, PFNEW phpType28 phpType6) = PVOBJECT
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $origin_node(S.SOURCES, pconstantcontext.ORIGIN) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 expression phpType37 metadata)
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+def $constant_value_class_valid(S, POBJECT n, PVOBJECT) = ((HOBJECT n) <- S.ALLOCATIONS /\ $(n < |S.OBJECTS|))
+def $constant_fact_value_valid(pconstantfact) = true
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVOBJECT
+def $constant_class_tree_valid(PVOBJECT) = true
+def $constant_fact_truth(pconstantfact) = (true)
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVOBJECT
+
+;; Element verification has the same constrained-reference priority as a fixed
+;; receive. Generic reference-return classification is unchanged.
+def $variadic_conversion(S, psparam, poperand) = TYPEREJECT
+  -- if psparam.BYREF
+  -- if $typed_reference_operand_source(S, poperand)
+  -- if $typed_conversion_at(S, psparam.TYPE, $variadic_operand_value(S, poperand), $typed_caller_strict(S)) = TYPEDEPENDENT "user object string conversion"
+def $variadic_conversion(S, psparam, poperand) = $typed_reference_conversion(S, psparam.TYPE, $variadic_operand_value(S, poperand), $typed_caller_strict(S), (psparam.BYREF /\ $typed_reference_operand_source(S, poperand)))
+  -- if ~psparam.BYREF \/ ~$typed_reference_operand_source(S, poperand) \/ $typed_conversion_at(S, psparam.TYPE, $variadic_operand_value(S, poperand), $typed_caller_strict(S)) =/= TYPEDEPENDENT "user object string conversion"
+
+dec $variadic_string_from(pstate, pfunction, nat, bool, poperand) : pvariadicstring?
+def $variadic_string_from(S, pfunction, n_element, b_named, poperand) = (pvariadicstring)
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if $(n_fixed < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $variadic_operand_value(S, poperand) = POBJECT n_object
+  -- if $variadic_conversion(S, pfunction.SIGNATURE.PARAMETERS[n_fixed], poperand) = TYPEDEPENDENT "user object string conversion"
+  -- if z = $default_parameter_line(S, pfunction.ORIGIN, n_fixed)
+  -- if $parameter_string_site_valid(S, $default_parameter_origin(S, pfunction.ORIGIN, n_fixed), z)
+  -- if pvariadicstring = {FUNCTION pfunction.ORIGIN, INDEX n_fixed, ELEMENT n_element, NAMED b_named, OPERAND poperand, OBJECT n_object, LINE z}
+def $variadic_string_from(S, pfunction, n_element, b_named, poperand) = eps -- otherwise
+dec $variadic_string_selected(pstate) : pvariadicstring?
+def $variadic_string_selected(S) = $variadic_string_from(S, pfunction, n_element, false, pcallcontext.EXTRA[n_element])
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [VARIADIC_RECEIVE porigin n_arg]
+  -- if $variadic_receive_valid(S, porigin, n_arg)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n_arg < pcallcontext.ARGC)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if n_element = $(n_arg - n_fixed)
+def $variadic_string_selected(S) = $variadic_string_from(S, pfunction, n_element, true, poperand)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [NAMED_VARIADIC_RECEIVE porigin n_element]
+  -- if $named_tail_valid(S, porigin, n_element)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(n_element < |pcallcontext.NAMED|)
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if (ptbytes, poperand) = pcallcontext.NAMED[n_element]
+def $variadic_string_selected(S) = eps -- otherwise
+def $variadic_string_candidate(S) = ($variadic_string_selected(S) =/= eps)
+
+;; Named-hole defaults were evaluated by preflight, without conversion. Tail
+;; defaults arrive here only after their own DEFAULT_BIND has completed.
+dec $default_string_producer(pstate, pfunction, nat) : bool
+def $default_string_producer(S, pfunction, n) = true
+  -- if S.TODO = [TYPE_RECEIVE pfunction.ORIGIN n]
+  -- if $typed_receive_valid(S, pfunction.ORIGIN, n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if n <- pcallcontext.HOLES
+def $default_string_producer(S, pfunction, n) = true
+  -- if S.TODO = [DEFAULT_BIND pfunction.ORIGIN n]
+  -- if $default_bind_task_valid(S, pfunction.ORIGIN, n)
+def $default_string_producer(S, pfunction, n) = true
+  -- if S.TODO = [DEFAULT_RECEIVE pfunction.ORIGIN n]
+  -- if $default_task_valid(S, pfunction.ORIGIN, n)
+def $default_string_producer(S, pfunction, n) = false -- otherwise
+def $default_string_candidate(S, pfunction, n, POBJECT n_object) = true
+  -- if S.COMPLETION = NORMAL
+  -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $fixed_parameter_defaulted(S, n)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if $default_string_producer(S, pfunction, n)
+  -- if $typed_parameter_conversion(S, pfunction.SIGNATURE.PARAMETERS[n], POBJECT n_object) = TYPEDEPENDENT "user object string conversion"
+  -- if $parameter_string_site_valid(S, $default_parameter_origin(S, pfunction.ORIGIN, n), $default_parameter_line(S, pfunction.ORIGIN, n))
+def $default_string_candidate(S, pfunction, n, pvalue) = false -- otherwise
+def $default_string_begin(S, pfunction, n, n_object) = $user_string_begin(S_initial[.ORIGIN = (porigin_site)], n_object, porigin_site, z, DEFAULT_STRING_RESULT pparameterstring, eps)
+  -- if S_initial = $write_name(S, pfunction.SIGNATURE.PARAMETERS[n].NAME, POBJECT n_object)
+  -- if S_initial.COMPLETION = NORMAL
+  -- if $lookup(S_initial.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if porigin_site = $default_parameter_origin(S, pfunction.ORIGIN, n)
+  -- if z = $default_parameter_line(S, pfunction.ORIGIN, n)
+  -- if pparameterstring = {FUNCTION pfunction.ORIGIN, INDEX n, CELL n_cell, OBJECT n_object, LINE z}
+def $default_string_begin(S, pfunction, n, n_object) = S_initial
+  -- if S_initial = $write_name(S, pfunction.SIGNATURE.PARAMETERS[n].NAME, POBJECT n_object)
+  -- if S_initial.COMPLETION =/= NORMAL
+
+;; All captured values are owned by their consumer. Source/index/line and the
+;; immediately owning receive frame authenticate the capture throughout reentry.
+dec $receive_string_function(ptask) : porigin
+def $receive_string_function(DEFAULT_STRING_RESULT pparameterstring) = pparameterstring.FUNCTION
+def $receive_string_function(PARAMETER_STRING_RESULT pparameterstring) = pparameterstring.FUNCTION
+def $receive_string_function(VARIADIC_STRING_RESULT pvariadicstring) = pvariadicstring.FUNCTION
+dec $receive_string_index(ptask) : nat
+def $receive_string_index(DEFAULT_STRING_RESULT pparameterstring) = pparameterstring.INDEX
+def $receive_string_index(PARAMETER_STRING_RESULT pparameterstring) = pparameterstring.INDEX
+def $receive_string_index(VARIADIC_STRING_RESULT pvariadicstring) = pvariadicstring.INDEX
+dec $receive_string_object(ptask) : nat
+def $receive_string_object(DEFAULT_STRING_RESULT pparameterstring) = pparameterstring.OBJECT
+def $receive_string_object(PARAMETER_STRING_RESULT pparameterstring) = pparameterstring.OBJECT
+def $receive_string_object(VARIADIC_STRING_RESULT pvariadicstring) = pvariadicstring.OBJECT
+dec $receive_string_line(ptask) : int
+def $receive_string_line(DEFAULT_STRING_RESULT pparameterstring) = pparameterstring.LINE
+def $receive_string_line(PARAMETER_STRING_RESULT pparameterstring) = pparameterstring.LINE
+def $receive_string_line(VARIADIC_STRING_RESULT pvariadicstring) = pvariadicstring.LINE
+dec $receive_string_shape(ptask*, ptask) : bool
+def $receive_string_shape([CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z, STRINGIFY_RESULT n porigin_site z, ptask_consumer], ptask_consumer) = (n = $receive_string_object(ptask_consumer) /\ z = $receive_string_line(ptask_consumer))
+def $receive_string_shape([STRINGIFY_RESULT n porigin_site z, ptask_consumer], ptask_consumer) = (n = $receive_string_object(ptask_consumer) /\ z = $receive_string_line(ptask_consumer))
+def $receive_string_shape([ptask_consumer], ptask_consumer) = true
+def $receive_string_shape((THROW_SEARCH n) :: ptask*, ptask_consumer) = $receive_string_shape(ptask*, ptask_consumer)
+def $receive_string_shape(ptask*, ptask_consumer) = false -- otherwise
+dec $receive_string_frame_task(ptask*) : ptask?
+def $receive_string_frame_task([STRINGIFY_RESULT n porigin_site z, DEFAULT_STRING_RESULT pparameterstring]) = (DEFAULT_STRING_RESULT pparameterstring)
+def $receive_string_frame_task([DEFAULT_STRING_RESULT pparameterstring]) = (DEFAULT_STRING_RESULT pparameterstring)
+def $receive_string_frame_task([STRINGIFY_RESULT n porigin_site z, VARIADIC_STRING_RESULT pvariadicstring]) = (VARIADIC_STRING_RESULT pvariadicstring)
+def $receive_string_frame_task([VARIADIC_STRING_RESULT pvariadicstring]) = (VARIADIC_STRING_RESULT pvariadicstring)
+def $receive_string_frame_task([STRINGIFY_RESULT n porigin_site z, PARAMETER_STRING_RESULT pparameterstring]) = (PARAMETER_STRING_RESULT pparameterstring)
+def $receive_string_frame_task([PARAMETER_STRING_RESULT pparameterstring]) = (PARAMETER_STRING_RESULT pparameterstring)
+def $receive_string_frame_task((THROW_SEARCH n) :: ptask*) = $receive_string_frame_task(ptask*)
+def $receive_string_frame_task(ptask*) = eps -- otherwise
+def $parameter_string_frame_record([STRINGIFY_RESULT n porigin_site z, DEFAULT_STRING_RESULT pparameterstring]) = (pparameterstring)
+def $parameter_string_frame_record([DEFAULT_STRING_RESULT pparameterstring]) = (pparameterstring)
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S[.CURRENT = pframe.CONTEXT][.ENV = psymboltable.ENV][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.FRAMES = pframe_tail*]
+  -- if $receive_string_frame_task(pframe.TODO) = (VARIADIC_STRING_RESULT pvariadicstring)
+  -- if pframe.LOCALS = (psymboltable)
+
+dec $receive_string_operand_mode(psparam, poperand) : bool
+def $receive_string_operand_mode(psparam, REFERENCE n_cell) = psparam.BYREF
+def $receive_string_operand_mode(psparam, KNOWN pvalue) = ~psparam.BYREF
+dec $receive_string_operand_valid(pstate, pvariadicstring) : bool
+dec $receive_string_record_valid(pstate, ptask) : bool
+def $receive_string_record_valid(S, DEFAULT_STRING_RESULT pparameterstring) = true
+  -- if $parameter_string_record_valid(S, pparameterstring)
+  -- if $function_at($all_functions(S), pparameterstring.FUNCTION) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, pparameterstring.INDEX) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if pdefault.ORIGIN = $constant_child($default_parameter_origin(S, pfunction.ORIGIN, pparameterstring.INDEX), [PCFIELD 6])
+def $receive_string_record_valid(S, VARIADIC_STRING_RESULT pvariadicstring) = true
+  -- if $function_at($all_functions(S), pvariadicstring.FUNCTION) = (pfunction)
+  -- if pvariadicstring.INDEX = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if $(pvariadicstring.INDEX < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[pvariadicstring.INDEX]
+  -- if psparam.VARIADIC
+  -- if $receive_string_operand_mode(psparam, pvariadicstring.OPERAND)
+  -- if $user_string_coercion(S, psparam.TYPE, POBJECT pvariadicstring.OBJECT, false)
+  -- if pvariadicstring.LINE = $default_parameter_line(S, pvariadicstring.FUNCTION, pvariadicstring.INDEX)
+  -- if $parameter_string_site_valid(S, $default_parameter_origin(S, pvariadicstring.FUNCTION, pvariadicstring.INDEX), pvariadicstring.LINE)
+  -- if $receive_string_operand_valid(S, pvariadicstring)
+def $receive_string_record_valid(S, ptask) = false -- otherwise
+def $receive_string_operand_valid(S, pvariadicstring) = true
+  -- if pvariadicstring.OPERAND = KNOWN (POBJECT pvariadicstring.OBJECT)
+def $receive_string_operand_valid(S, pvariadicstring) = true
+  -- if pvariadicstring.OPERAND = REFERENCE n_cell
+  -- if n_cell <- S.REFCELLS
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if $(n_cell < |S.STORE|)
+def $receive_string_operand_valid(S, pvariadicstring) = false -- otherwise
+
+dec $variadic_string_position_valid(pstate, pvariadicstring) : bool
+dec $receive_string_current(pstate, ptask) : bool
+def $receive_string_current(S, DEFAULT_STRING_RESULT pparameterstring) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pparameterstring.FUNCTION
+  -- if $fixed_parameter_defaulted(S, pparameterstring.INDEX)
+  -- if $function_at($all_functions(S), pparameterstring.FUNCTION) = (pfunction)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[pparameterstring.INDEX].NAME) = (pparameterstring.CELL)
+  -- if S.ORIGIN = ($default_parameter_origin(S, pparameterstring.FUNCTION, pparameterstring.INDEX))
+  -- if ~$typed_caller_strict(S)
+def $receive_string_current(S, VARIADIC_STRING_RESULT pvariadicstring) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pvariadicstring.FUNCTION
+  -- if S.ORIGIN = ($default_parameter_origin(S, pvariadicstring.FUNCTION, pvariadicstring.INDEX))
+  -- if ~$typed_caller_strict(S)
+  -- if $variadic_string_position_valid(S, pvariadicstring)
+def $receive_string_current(S, ptask) = false -- otherwise
+def $variadic_string_position_valid(S, pvariadicstring) = true
+  -- if ~pvariadicstring.NAMED
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(pvariadicstring.ELEMENT < |pcallcontext.EXTRA|)
+  -- if pcallcontext.EXTRA[pvariadicstring.ELEMENT] = pvariadicstring.OPERAND
+  -- if n_arg = $(pvariadicstring.INDEX + pvariadicstring.ELEMENT)
+  -- if $variadic_receive_valid(S[.ORIGIN = (pvariadicstring.FUNCTION)][.TODO = [VARIADIC_RECEIVE pvariadicstring.FUNCTION n_arg]], pvariadicstring.FUNCTION, n_arg)
+def $variadic_string_position_valid(S, pvariadicstring) = true
+  -- if pvariadicstring.NAMED
+  -- if S.CURRENT = (pcallcontext)
+  -- if $(pvariadicstring.ELEMENT < |pcallcontext.NAMED|)
+  -- if (ptbytes, pvariadicstring.OPERAND) = pcallcontext.NAMED[pvariadicstring.ELEMENT]
+  -- if $named_tail_valid(S[.ORIGIN = (pvariadicstring.FUNCTION)][.TODO = [NAMED_VARIADIC_RECEIVE pvariadicstring.FUNCTION pvariadicstring.ELEMENT]], pvariadicstring.FUNCTION, pvariadicstring.ELEMENT)
+def $variadic_string_position_valid(S, pvariadicstring) = false -- otherwise
+
+dec $receive_string_same_owner(ptask, ptask) : bool
+def $receive_string_same_owner(VARIADIC_STRING_RESULT pvariadicstring, VARIADIC_STRING_RESULT pvariadicstring_other) = (pvariadicstring.FUNCTION = pvariadicstring_other.FUNCTION /\ pvariadicstring.INDEX = pvariadicstring_other.INDEX /\ pvariadicstring.ELEMENT = pvariadicstring_other.ELEMENT /\ pvariadicstring.NAMED = pvariadicstring_other.NAMED /\ pvariadicstring.OBJECT = pvariadicstring_other.OBJECT /\ pvariadicstring.LINE = pvariadicstring_other.LINE)
+def $receive_string_same_owner(DEFAULT_STRING_RESULT pparameterstring, DEFAULT_STRING_RESULT pparameterstring_other) = (pparameterstring.FUNCTION = pparameterstring_other.FUNCTION /\ pparameterstring.INDEX = pparameterstring_other.INDEX /\ pparameterstring.OBJECT = pparameterstring_other.OBJECT /\ pparameterstring.LINE = pparameterstring_other.LINE)
+def $receive_string_same_owner(DEFAULT_STRING_RESULT pparameterstring, PARAMETER_STRING_RESULT pparameterstring_other) = (pparameterstring.FUNCTION = pparameterstring_other.FUNCTION /\ pparameterstring.INDEX = pparameterstring_other.INDEX /\ pparameterstring.OBJECT = pparameterstring_other.OBJECT /\ pparameterstring.LINE = pparameterstring_other.LINE)
+def $receive_string_same_owner(ptask, ptask_other) = false -- otherwise
+dec $receive_string_saved(pstate, ptask, pframe*) : bool
+dec $receive_string_saved_frame(pstate, ptask, pframe, pframe*) : bool
+def $receive_string_saved_frame(S, ptask_consumer, pframe, pframe_tail*) = true
+  -- if pframe.LOCALS = (psymboltable)
+  -- if $receive_string_shape(pframe.TODO, ptask_consumer)
+  -- if S_owner = S[.CURRENT = pframe.CONTEXT][.ENV = psymboltable.ENV][.ORIGIN = pframe.ORIGIN][.FRAMES = pframe_tail*]
+  -- if $receive_string_record_valid(S_owner, ptask_consumer)
+  -- if $receive_string_current(S_owner, ptask_consumer)
+def $receive_string_saved_frame(S, ptask_consumer, pframe, pframe_tail*) = false -- otherwise
+def $receive_string_saved(S, ptask_consumer, eps) = false
+def $receive_string_saved(S, ptask_consumer, pframe :: pframe_tail*) = $receive_string_saved_frame(S, ptask_consumer, pframe, pframe_tail*)
+  -- if $receive_string_frame_task(pframe.TODO) = (ptask_owner)
+  -- if $receive_string_same_owner(ptask_consumer, ptask_owner)
+def $receive_string_saved(S, ptask_consumer, pframe :: pframe_tail*) = $receive_string_saved(S, ptask_consumer, pframe_tail*)
+  -- if $receive_string_frame_task(pframe.TODO) = eps
+def $receive_string_saved(S, ptask_consumer, pframe :: pframe_tail*) = $receive_string_saved(S, ptask_consumer, pframe_tail*)
+  -- if $receive_string_frame_task(pframe.TODO) = (ptask_owner)
+  -- if ~$receive_string_same_owner(ptask_consumer, ptask_owner)
+dec $receive_string_active_owner(pstate, ptask) : bool
+def $receive_string_active_owner(S, ptask_consumer) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = $receive_string_function(ptask_consumer)
+  -- if S.ORIGIN = ($default_parameter_origin(S, $receive_string_function(ptask_consumer), $receive_string_index(ptask_consumer)))
+def $receive_string_active_owner(S, ptask_consumer) = false -- otherwise
+dec $receive_string_scope_valid(pstate, ptask) : bool
+def $receive_string_scope_valid(S, ptask_consumer) = ($receive_string_record_valid(S, ptask_consumer) /\ $receive_string_shape(S.TODO, ptask_consumer) /\ $receive_string_current(S, ptask_consumer))
+  -- if $receive_string_active_owner(S, ptask_consumer)
+def $receive_string_scope_valid(S, ptask_consumer) = $receive_string_saved(S, ptask_consumer, S.FRAMES)
+  -- if ~$receive_string_active_owner(S, ptask_consumer)
+
+def $stringify_source(S, porigin_site, z, DEFAULT_STRING_RESULT pparameterstring) = true
+  -- if porigin_site = $default_parameter_origin(S, pparameterstring.FUNCTION, pparameterstring.INDEX)
+  -- if z = pparameterstring.LINE
+  -- if $receive_string_scope_valid(S, DEFAULT_STRING_RESULT pparameterstring)
+def $stringify_source(S, porigin_site, z, VARIADIC_STRING_RESULT pvariadicstring) = true
+  -- if porigin_site = $default_parameter_origin(S, pvariadicstring.FUNCTION, pvariadicstring.INDEX)
+  -- if z = pvariadicstring.LINE
+  -- if $receive_string_scope_valid(S, VARIADIC_STRING_RESULT pvariadicstring)
+dec $receive_string_extended(ptask) : bool
+def $receive_string_extended(DEFAULT_STRING_RESULT pparameterstring) = true
+def $receive_string_extended(VARIADIC_STRING_RESULT pvariadicstring) = true
+def $receive_string_extended(ptask) = false -- otherwise
+dec $receive_string_result_marker(pstate, ptask*, nat, porigin, int) : bool
+def $receive_string_result_marker(S, [STRINGIFY_RESULT n porigin_site z, ptask_consumer], n, porigin_site, z) = $stringify_source(S, porigin_site, z, ptask_consumer)
+  -- if $receive_string_extended(ptask_consumer)
+def $receive_string_result_marker(S, (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: ptask*, n, porigin_site, z) = $receive_string_result_marker(S, ptask*, n, porigin_site, z)
+def $receive_string_result_marker(S, (THROW_SEARCH n_throw) :: ptask*, n, porigin_site, z) = $receive_string_result_marker(S, ptask*, n, porigin_site, z)
+def $receive_string_result_marker(S, ptask*, n, porigin_site, z) = false -- otherwise
+def $stringify_result_valid(S, n, porigin_site, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $receive_string_result_marker(S, S.TODO, n, porigin_site, z)
+def $task_nodes(DEFAULT_STRING_RESULT pparameterstring) = [HCELL pparameterstring.CELL, HOBJECT pparameterstring.OBJECT]
+def $task_nodes(VARIADIC_STRING_RESULT pvariadicstring) = $operand_nodes(pvariadicstring.OPERAND) ++ [HOBJECT pvariadicstring.OBJECT]
+def $call_task_valid(S, DEFAULT_STRING_RESULT pparameterstring) = $receive_string_scope_valid(S, DEFAULT_STRING_RESULT pparameterstring)
+def $call_task_valid(S, VARIADIC_STRING_RESULT pvariadicstring) = $receive_string_scope_valid(S, VARIADIC_STRING_RESULT pvariadicstring)
+
+;; Mint only at the authenticated normal receive result. Persistent216 source
+;; checks remain independent of whichever caller is active afterward.
+dec $receive_string_cell(ptask) : nat?
+def $receive_string_cell(DEFAULT_STRING_RESULT pparameterstring) = (pparameterstring.CELL)
+def $receive_string_cell(VARIADIC_STRING_RESULT pvariadicstring) = (n_cell)
+  -- if pvariadicstring.OPERAND = REFERENCE n_cell
+def $receive_string_cell(VARIADIC_STRING_RESULT pvariadicstring) = eps
+  -- if pvariadicstring.OPERAND = KNOWN pvalue
+dec $receive_backing_admission(pstate, ptask, nat, ptbytes) : bool
+def $receive_backing_admission(S, ptask_consumer, n_cell, ptbytes) = true
+  -- if ptask_consumer = VARIADIC_STRING_RESULT pvariadicstring
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [ptask_consumer]
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if $receive_string_scope_valid(S, ptask_consumer)
+  -- if $receive_string_cell(ptask_consumer) = (n_cell)
+  -- if n_cell <- S.REFCELLS
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if $parameter_backing_source(S, {FUNCTION $receive_string_function(ptask_consumer), INDEX $receive_string_index(ptask_consumer), CELL n_cell, LINE $receive_string_line(ptask_consumer), VALUE ptbytes})
+def $receive_backing_admission(S, ptask_consumer, n_cell, ptbytes) = false -- otherwise
+dec $receive_string_store(pstate, ptask, nat, ptbytes) : pstate
+def $receive_string_store(S, DEFAULT_STRING_RESULT pparameterstring, n_cell, ptbytes) = $write_cell_checked(S, n_cell, PSTRING ptbytes, pparameterstring.LINE)
+def $receive_string_store(S, VARIADIC_STRING_RESULT pvariadicstring, n_cell, ptbytes) = $write_cell_checked(S, n_cell, PSTRING ptbytes, pvariadicstring.LINE)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+def $receive_string_store(S, VARIADIC_STRING_RESULT pvariadicstring, n_cell, ptbytes) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED (PSTRING ptbytes))][.PARAMETERBACKINGS = pparameterbacking :: $parameter_backing_remove(S.PARAMETERBACKINGS, n_cell)]
+  -- if ptask_consumer = VARIADIC_STRING_RESULT pvariadicstring
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if $receive_backing_admission(S, ptask_consumer, n_cell, ptbytes)
+  -- if pparameterbacking = {FUNCTION $receive_string_function(ptask_consumer), INDEX $receive_string_index(ptask_consumer), CELL n_cell, LINE $receive_string_line(ptask_consumer), VALUE ptbytes}
+def $receive_string_store(S, VARIADIC_STRING_RESULT pvariadicstring, n_cell, ptbytes) = S[.COMPLETION = UNSUPPORTED "invalid parameter backing conversion"]
+  -- if ptask_consumer = VARIADIC_STRING_RESULT pvariadicstring
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if ~$receive_backing_admission(S, ptask_consumer, n_cell, ptbytes)
+
+rule PhpStep/variadic-string-begin: S ~> $user_string_begin(S[.ORIGIN = (porigin_site)], pvariadicstring.OBJECT, porigin_site, pvariadicstring.LINE, VARIADIC_STRING_RESULT pvariadicstring, eps)
+  -- if $variadic_string_selected(S) = (pvariadicstring)
+  -- if porigin_site = $default_parameter_origin(S, pvariadicstring.FUNCTION, pvariadicstring.INDEX)
+dec $variadic_string_finish(pstate, pvariadicstring, pvalue) : pstate
+def $variadic_string_finish(S, pvariadicstring, pvalue) = $variadic_insert(S, pfunction, $(pvariadicstring.INDEX + pvariadicstring.ELEMENT), pvariadicstring.OPERAND, pvalue)
+  -- if ~pvariadicstring.NAMED
+  -- if $function_at($all_functions(S), pvariadicstring.FUNCTION) = (pfunction)
+def $variadic_string_finish(S, pvariadicstring, pvalue) = $named_variadic_insert(S, pfunction, pvariadicstring.ELEMENT, pvariadicstring.OPERAND, pvalue)
+  -- if pvariadicstring.NAMED
+  -- if $function_at($all_functions(S), pvariadicstring.FUNCTION) = (pfunction)
+rule PhpStep/variadic-string-value: S ~> $variadic_string_finish(S, pvariadicstring, PSTRING ptbytes)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [VARIADIC_STRING_RESULT pvariadicstring]
+  -- if $receive_string_scope_valid(S, VARIADIC_STRING_RESULT pvariadicstring)
+  -- if pvariadicstring.OPERAND = KNOWN pvalue
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+rule PhpStep/variadic-string-reference: S ~> $variadic_string_finish(S_store, pvariadicstring, PSTRING ptbytes)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [VARIADIC_STRING_RESULT pvariadicstring]
+  -- if $receive_string_scope_valid(S, VARIADIC_STRING_RESULT pvariadicstring)
+  -- if pvariadicstring.OPERAND = REFERENCE n_cell
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_store = $receive_string_store(S, VARIADIC_STRING_RESULT pvariadicstring, n_cell, ptbytes)
+  -- if S_store.COMPLETION = NORMAL
+rule PhpStep/variadic-string-reference-abrupt: S ~> S_store
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [VARIADIC_STRING_RESULT pvariadicstring]
+  -- if $receive_string_scope_valid(S, VARIADIC_STRING_RESULT pvariadicstring)
+  -- if pvariadicstring.OPERAND = REFERENCE n_cell
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_store = $receive_string_store(S, VARIADIC_STRING_RESULT pvariadicstring, n_cell, ptbytes)
+  -- if S_store.COMPLETION =/= NORMAL
+rule PhpStep/default-string-store: S ~> S_store[.TODO = $default_next(S_store, pfunction, $(pparameterstring.INDEX + 1))][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [DEFAULT_STRING_RESULT pparameterstring]
+  -- if $receive_string_scope_valid(S, DEFAULT_STRING_RESULT pparameterstring)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if $function_at($all_functions(S), pparameterstring.FUNCTION) = (pfunction)
+  -- if S_store = $receive_string_store(S, DEFAULT_STRING_RESULT pparameterstring, pparameterstring.CELL, ptbytes)
+  -- if S_store.COMPLETION = NORMAL
+rule PhpStep/default-string-store-abrupt: S ~> S_store
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [DEFAULT_STRING_RESULT pparameterstring]
+  -- if $receive_string_scope_valid(S, DEFAULT_STRING_RESULT pparameterstring)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_store = $receive_string_store(S, DEFAULT_STRING_RESULT pparameterstring, pparameterstring.CELL, ptbytes)
+  -- if S_store.COMPLETION =/= NORMAL

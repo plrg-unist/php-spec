@@ -1,0 +1,180 @@
+{
+  "target": "PHP8.5.10 CLI NTS64, sole project-local oracle; baseline profile30719",
+  "scope": "Deferred scalar/array backed static defaults; partial core milestone, not all property defaults.",
+  "implementation_commit": "293a764404cd83cc91569828bf6a56c081464e74",
+  "implementation": [
+    "spec/semantics/219-deferred-static-defaults.watsup",
+    "spec/semantics/135-property-compiler.watsup",
+    "spec/semantics/184-class-constants.watsup",
+    "spec/semantics/187-class-static-storage.watsup"
+  ],
+  "contracts": [
+    "Declaring scope; strict types with int-to-float promotion.",
+    "Parent, class constants, static defaults, then table completion.",
+    "Each declaration has one live static row; history records source identities only.",
+    "Failed initialization retains earlier fills; retries skip completed values.",
+    "Inherited prototypes keep their initializer AST even after a parent cell fills.",
+    "Source/line, publication-prefix, table-order and binder validation; existing array/alias roots."
+  ],
+  "engine_symbols": [
+    "zend_compile_prop_decl",
+    "zend_update_class_constants",
+    "update_property",
+    "zend_std_get_static_property_with_info",
+    "zend_class_init_statics",
+    "zval_update_constant_ex"
+  ],
+  "artifacts": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults",
+  "runtime": {
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+    "configuration": "Reused local executables; no rebuild claim. LC_ALL=C,TZ=UTC; model baseline tests/semantics/profile.json.",
+    "limits": "Serial model CLI100000 steps/45s, host55s; numeric guard programs120s each."
+  },
+  "source_validation": {
+    "result": "PASS11 original native/model tuples:7 normal,4 PHP errors",
+    "tested_git_revision": "6771d3df8be4c13dfe25fa6bb4569e66aa344815",
+    "source_cut": "source-v4; uncommitted219 transitions at original source campaign. Subsequent narrow validator repairs do not renew source evidence.",
+    "reports": [
+      "first-model11-v3/report.json (first9)",
+      "rest2-snapshot/report.json (remaining2)"
+    ],
+    "command": "Original source CLI commands in reports; rerun catalogue via python3 tests/semantics/method_runtime.py --catalogue tests/semantics/deferred_static_default_cases.json",
+    "profile_bridge": "First10 native cases32767/four INI settings; private-parent control30719. Model baseline30719. These sources perform no warning/reporting operation; exact original streams/exits retained.",
+    "preserved_failures": [
+      "Earlier interrupted/failedfirst-model11 versions.",
+      "Foreign-child snapshot cwd mismatch in first-model11-v3: corrected only process cwd in rest2-snapshot."
+    ]
+  },
+  "state_validation": {
+    "result": "PASS5 source-derived programs/149 logical guards expressed as152 sequential premises",
+    "tested_revision": "293a764404cd83cc91569828bf6a56c081464e74",
+    "reports": [
+      "state5-v4/report.json:partial-retry43 PASS; owner-binder checker failure preserved",
+      "state5-v5/report.json:owner41,warm21,array23,prototype24 PASS"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/state5-v4/run.py",
+      "python3 .tools/deferred-static-defaults/state5-v5/run.py"
+    ],
+    "completion": "All successful phases exit0, stdout exactly true newline, stderr empty; input hashes unchanged.",
+    "scope": [
+      "Pending/duplicate/reordered/skipped task contradictions.",
+      "Partial firstfill vs premature table completion; retry preserves earlier values.",
+      "Authenticated declaring owner/root/line and constant-expression trace.",
+      "Inherited alias constraints and sole static cell root.",
+      "Independent nested default array and constant cache roots/COW.",
+      "Private parent prototype retained across later child publication."
+    ],
+    "corrections": [
+      "Only BUDGET resets to NORMAL in one-step seeker; PHP abrupt states preserved.",
+      "Two generic184 task validator overlaps excluded; marker declaration precedes use.",
+      "Three new-variable conjunctions split into six sequential premises; no guard/source change."
+    ],
+    "preserved_failures": [
+      "state5-v1/v2/v3 original failures remain.",
+      "pure-v1 throughv10 compiler failures remain.",
+      "state5-v4 owner binder fixture rejection before execution."
+    ],
+    "published_script": "tests/semantics/deferred_static_default_protocol.py; --prepare reproduces checked source/fixtures without numeric execution."
+  },
+  "compiler_validation": {
+    "result": "PASS pure-v11 AL compilation/algorithmic checks via reused numeric runner; stdout true newline, stderr empty,exit0",
+    "report": "pure-v11/status.json",
+    "credit": "AL pure checks only; public sourceCLI SL credit belongs to the distinct source/composition cutoffs."
+  },
+  "current_composition": {
+    "status": "PASS2 exact original native/model normal tuples",
+    "tested_revision": "8da51d193d0767c6778506fc89969eb91c8ff7e5",
+    "accepted_base": "3f63e475bf50fe3d094cb7e273f5504584dc212a",
+    "scope": "Captured private FCC handler lazily initializes inherited static default while213 cast preserves captured null. Raw private handler initializes/aliases default during214/216 Stringable receive;213 ASSIGN writes captured null through throw.",
+    "reports": [
+      "reviewer14-composition-native-v1/report.json",
+      "composition-model-v1/report.json"
+    ],
+    "command": "python3 .tools/deferred-static-defaults/composition-model-v1/run.py",
+    "limits": "Serial100000steps45s;host55s per model source. Same baseline30719/environment and exact original bytes/cwd.",
+    "outcomes": [
+      "captured-handler:2:0:5:5:9",
+      "parameter-handler:3:N:ok:7"
+    ],
+    "completion": "Native/model exit0;exact full stdout/stderr and normal checked status;both input sets unchanged. Public modelCLI performsSL elaboration,algorithmic checks and structuring.",
+    "merge": "Only additive30 declarations and PROGRESS conflict resolution;105/108 error_context_kind guards identical to accepted3f63.",
+    "credit": "Two new agreements only; no rerun/renewal of earlier11 or unrelated93/266."
+  },
+  "review": {
+    "peer": "compiler_review_14 (prior compiler_review_13 semantic review retained)",
+    "state_acceptance": "Independent exact fixture/raw review accepts narrow repairs and5/149 logical checks at293a76440.",
+    "composition": "Independent native baselines and exact model/raw/additive merge review accepted by compiler_review_14 at 8da51d193; final catalogue/docs publication contains no semantic change.",
+    "diagnostic_composition": "compiler_review_14 independently accepts actual217 merge, four new raw agreements, exact Unsupported2/owner41 and cross-file source/finite-snapshot/sharedorigin repair at their recorded cutoffs."
+  },
+  "required_next": [
+    "Immediate same-default reentry: authenticate resumed outer update, retain firstfill history once, and preserve escaped alias type constraints after live-row replacement.",
+    "Deferred instance defaults before static defaults, including shadowed private templates.",
+    "Object-bearing defaults with authenticated creation/cache transfer and live roots.",
+    "Cold synchronous reference/update continuations into an incomplete table.",
+    "Broader retained selectors, traits/hooks/readonly and property consumers.",
+    "Paused returns_verify stays untouched; no unaccepted dependencies."
+  ],
+  "diagnostic_composition": {
+    "result": "PASS4 new native/model normal tuples; Unsupported2 and owner41 are separate checked controls",
+    "tested_revision": "5c08875416d463191f90a9ecb1cb3ef3384aeb06",
+    "accepted_base": "3919ae4c97846f25c9c267b9b05388a856e3e4f2",
+    "scope": "Preserves217 globally busy constants vs active evaluator and saved CONSTCONTEXT bindings. Covers handled simple default, compound callback/throw trace, independent declaring-private default nested under static default and globally busy class constant.",
+    "reports": [
+      "reviewer14-217219-native-v1/report.json",
+      "reviewer14-217219-native-v2/report.json",
+      "reviewer14-217219-native-v3/report.json",
+      "composition217-model-v1/report.json",
+      "composition217-model-v2/report.json"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/composition217-model-v1/run.py",
+      "python3 .tools/deferred-static-defaults/composition217-model-v2/run.py"
+    ],
+    "outcomes": [
+      "handled:H:2048:2048",
+      "compound-trace:HLTV7:30719",
+      "nested-private-default:H4:2049:2049",
+      "busy-constant-nested-private:H4:2048:2048"
+    ],
+    "controls": "Native reentry write/alias sources are normal PHP. Model accepted/checked Unsupported with exact reentrant deferred static default update reason, H: prefix, no diagnostic/stderr, publicCLI process+cleanup1; no native-agreement credit. Owner41 uses unchanged source-derived fixture, AL true newline/empty stderr0.",
+    "preserved_failure": "v1 recorder expected exit0 for Unsupported; original checked boundary/exit1 raw retained. v2 corrects only exit expectation and runs affected/unrun controls plus owner41; no supported-source repeat.",
+    "cross_file": {
+      "result": "PASS1 exact new native/model normal tuple:F:8:E:4:T:8",
+      "tested_revision": "663811e8c94f30f328f81b42136a3b2d6e246bb1",
+      "reports": [
+        "reviewer14-217219-native-v4/report.json",
+        "composition217-model-v3/report.json"
+      ],
+      "command": "python3 .tools/deferred-static-defaults/composition217-model-v3/run.py",
+      "scope": "Exact main+included declaration with one-entry finite snapshot.207 handler file uses existing displayed origin,184 static execution point includes plain and compound defaults; source/resume SITE unchanged.",
+      "completion": "Normal/accepted/checked, process+cleanup0, exact full native streams/exits, input hashes unchanged. No replay of earlier four; their same-unit locations are unchanged."
+    },
+    "credit": "SL source checks and AL owner41 retain distinct credit; no earlier11/2 or unrelated93/266 renewal."
+  },
+  "reentry_controls": [
+    {
+      "id": "reenter-write",
+      "source": "reviewer14-217219-native-v1/reenter-write.php",
+      "source_sha256": "a851be7b60c35f627076c22993211134825b3f30601083560206b626a20aff45",
+      "native_stdout_base64": "SDoyMDQ4OjIwNDg6MjA0OA==",
+      "native_exit": 0,
+      "model_status": "unsupported",
+      "model_reason": "reentrant deferred static default update",
+      "model_stdout_base64": "SDo=",
+      "model_process_exit": 1
+    },
+    {
+      "id": "reenter-alias",
+      "source": "reviewer14-217219-native-v1/reenter-alias.php",
+      "source_sha256": "b5499fe344615cfb09fee39996f655c83bbc300d4eaa8e2719fb3c5bf62e7f0f",
+      "native_stdout_base64": "SDoyMDQ4OjIwNDg6dHlwZWQ6MjA0ODo5",
+      "native_exit": 0,
+      "model_status": "unsupported",
+      "model_reason": "reentrant deferred static default update",
+      "model_stdout_base64": "SDo=",
+      "model_process_exit": 1
+    }
+  ]
+}

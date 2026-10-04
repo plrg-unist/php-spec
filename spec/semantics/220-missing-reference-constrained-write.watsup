@@ -1,0 +1,22 @@
+;; ASSIGN validates the live destination after the warning callback. A rejected
+;; null write keeps that cell's value and replaces the handler error, retaining
+;; the original object through the new TypeError's previous chain.
+dec $error_assign_materialized(pstate, nat, ptask*) : pstate
+dec $error_assign_chained(pstate, nat, ptask*) : pstate
+
+def $error_assign_rejected(S, S_written) = $error_assign_materialized($throwable_materialize(S_written[.TODO = S.TODO]), n_old, ptask_tail*)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_old) :: ptask_tail*
+  -- if $throwable_member(S, n_old)
+  -- if S_written.COMPLETION = THROWN "TypeError" preqbytes z
+def $error_assign_rejected(S, S_written) = S_written
+  -- if S_written.COMPLETION = UNSUPPORTED text
+def $error_assign_rejected(S, S_written) = S_written[.COMPLETION = UNSUPPORTED "handler assignment replacement outside admitted TypeError"] -- otherwise
+
+def $error_assign_materialized(S, n_old, ptask_tail*) = $error_assign_chained($throwable_previous(S, n_new, n_old), n_new, ptask_tail*)
+  -- if S.COMPLETION = THROWING n_new
+def $error_assign_materialized(S, n_old, ptask_tail*) = S -- otherwise
+
+def $error_assign_chained(S, n_new, ptask_tail*) = $throwable_begin(S[.TODO = ptask_tail*])
+  -- if S.COMPLETION = THROWING n_new
+def $error_assign_chained(S, n_new, ptask_tail*) = S -- otherwise

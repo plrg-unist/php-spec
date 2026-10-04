@@ -1,0 +1,419 @@
+;; Deferred static defaults keep values in the existing declaring-property cell.
+;; Fill history contains only source origins; it does not retain a second value.
+def $static_default_pending(PROP_DEFERRED porigin) = true
+def $static_default_pending(ppropstate) = false -- otherwise
+
+def $property_default_state(S, ppropertydesc) = (PROP_DEFERRED porigin)
+  -- if ppropertydesc.STATIC
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin
+
+dec $static_default_fill_event(pclassconstantevent) : bool
+dec $static_default_descriptor(ppropdefault) : bool
+dec $static_default_bind_marker(ptask) : bool
+dec $static_default_parent(pstate, porigin) : porigin?
+def $static_default_parent(S, porigin) = (porigin_parent)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $static_default_parent(S, porigin) = eps -- otherwise
+def $static_default_source_valid(S, ppropertydesc) = true
+  -- if ppropertydesc.STATIC
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if $constant_expression_root(S, porigin_decl) = (porigin_initializer)
+  -- if $origin_node(S.SOURCES, porigin_initializer) = (expression)
+def $static_default_source_valid(S, ppropertydesc) = false -- otherwise
+def $static_default_fills(eps) = eps
+def $static_default_fills((CCSTATIC porigin porigin_trigger n) :: pclassconstantevent*) = porigin :: $static_default_fills(pclassconstantevent*)
+def $static_default_fills(pclassconstantevent :: pclassconstantevent_tail*) = $static_default_fills(pclassconstantevent_tail*)
+  -- if ~$static_default_fill_event(pclassconstantevent)
+def $static_default_fill_event(CCSTATIC porigin porigin_trigger n) = true
+def $static_default_fill_event(pclassconstantevent) = false -- otherwise
+
+dec $static_default_origins(ppropertydesc*) : porigin*
+dec $static_default_complete(porigin*, porigin*) : bool
+def $static_default_complete(eps, porigin_filled*) = true
+def $static_default_complete(porigin :: porigin_tail*, porigin_filled*) = (porigin <- porigin_filled* /\ $static_default_complete(porigin_tail*, porigin_filled*))
+def $static_default_values_done(ppropertydesc*, porigin_filled*) = $static_default_complete($static_default_origins(ppropertydesc*), porigin_filled*)
+def $static_default_descriptor(PROP_DEFERRED porigin) = true
+def $static_default_descriptor(ppropdefault) = false -- otherwise
+
+def $static_default_context_at(eps) = eps
+def $static_default_context_at((STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*) = (pstaticdefaultcontext)
+def $static_default_context_at(ptask :: ptask_tail*) = $static_default_context_at(ptask_tail*)
+  -- if ~$static_default_bind_marker(ptask)
+def $static_default_bind_marker(STATIC_DEFAULT_BIND pstaticdefaultcontext) = true
+def $static_default_bind_marker(ptask) = false -- otherwise
+
+def $static_default_scope(S) = $property_declaring_class(S.CLASSES, pconstantcontext.ORIGIN)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
+  -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pconstantcontext.ORIGIN) = (ppropertydesc)
+  -- if $static_default_descriptor(ppropertydesc.DEFAULT)
+def $static_default_scope(S) = eps -- otherwise
+def $method_current_scope(S) = (porigin)
+  -- if ~$class_constant_active(S)
+  -- if $static_default_scope(S) = (porigin)
+
+def $static_default_origins(eps) = eps
+def $static_default_origins(ppropertydesc :: ppropertydesc_tail*) = porigin :: $static_default_origins(ppropertydesc_tail*)
+  -- if ppropertydesc.ORIGIN = porigin
+  -- if ppropertydesc.STATIC /\ $static_default_descriptor(ppropertydesc.DEFAULT)
+def $static_default_origins(ppropertydesc :: ppropertydesc_tail*) = $static_default_origins(ppropertydesc_tail*)
+  -- if ~ppropertydesc.STATIC \/ ~$static_default_descriptor(ppropertydesc.DEFAULT)
+dec $static_default_parent_origins(pstate, porigin) : porigin*
+def $static_default_parent_origins(S, porigin) = $static_default_origins($property_info_layout(S, porigin_parent, |S.CLASSES|))
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $static_default_parent_origins(S, porigin) = eps -- otherwise
+
+dec $static_default_pending_entry(pstate, ppropertydesc, porigin*) : bool
+def $static_default_pending_entry(S, ppropertydesc, porigin_seen*) = true
+  -- if ppropertydesc.ORIGIN = porigin
+  -- if ppropertydesc.STATIC
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if ~(porigin <- porigin_seen*)
+  -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_DEFERRED porigin_initializer
+  -- if $static_default_source_valid(S, ppropertydesc)
+def $static_default_pending_entry(S, ppropertydesc, porigin_seen*) = false -- otherwise
+dec $static_default_pending_order(pstate, ppropertydesc*, porigin*) : porigin*
+def $static_default_pending_order(S, eps, porigin_seen*) = eps
+def $static_default_pending_order(S, ppropertydesc :: ppropertydesc_tail*, porigin_seen*) = porigin :: $static_default_pending_order(S, ppropertydesc_tail*, porigin_seen* ++ [porigin])
+  -- if $static_default_pending_entry(S, ppropertydesc, porigin_seen*)
+  -- if ppropertydesc.ORIGIN = porigin
+def $static_default_pending_order(S, ppropertydesc :: ppropertydesc_tail*, porigin_seen*) = $static_default_pending_order(S, ppropertydesc_tail*, porigin_seen*)
+  -- if ~$static_default_pending_entry(S, ppropertydesc, porigin_seen*)
+
+dec $static_default_update_tasks(porigin*, int) : ptask*
+def $static_default_update_tasks(eps, z) = eps
+def $static_default_update_tasks(porigin :: porigin_tail*, z) = (STATIC_DEFAULT_UPDATE porigin z) :: $static_default_update_tasks(porigin_tail*, z)
+def $static_default_tasks(S, porigin, z) = $static_default_update_tasks($static_default_pending_order(S, $property_info_layout(S, porigin, |S.CLASSES|), $static_default_parent_origins(S, porigin)), z)
+
+dec $static_default_restore(pstate, pstaticdefaultcontext) : pstate
+def $static_default_restore(S, pstaticdefaultcontext) = S[.CONSTCONTEXT = pstaticdefaultcontext.PREVIOUS][.ORIGIN = pstaticdefaultcontext.ORIGIN]
+
+;; Inherited static prototypes retain their AST even after the live cell fills.
+;; Linking therefore differs from a successful update of the live table.
+def $static_default_link_done(S, porigin, 0) = false
+def $static_default_link_done(S, porigin, n) = ($static_default_values_done(pclassdesc.PROPERTIES, eps) /\ $static_default_link_done(S, porigin_parent, $nabs($(n - 1))))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $static_default_link_done(S, porigin, n) = $static_default_values_done(pclassdesc.PROPERTIES, eps)
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $static_default_parent(S, porigin) = eps
+def $static_default_link_done(S, porigin, n) = false -- otherwise
+
+dec $static_default_filled(pstate, ppropertydesc) : bool
+def $static_default_filled(S, ppropertydesc) = true
+  -- if ppropertydesc.ORIGIN = porigin
+  -- if porigin <- $static_default_fills(S.CLASSCONSTANTHISTORY)
+def $static_default_filled(S, ppropertydesc) = false -- otherwise
+def $static_default_slot_valid(S, ppropertydesc, pclassstatic) = true
+  -- if pclassstatic.DECL = ppropertydesc.ORIGIN
+  -- if ppropertydesc.STATIC
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if pclassstatic.STATE = PROP_DEFERRED porigin_initializer
+  -- if $static_default_source_valid(S, ppropertydesc)
+  -- if ~$static_default_filled(S, ppropertydesc)
+def $static_default_slot_valid(S, ppropertydesc, pclassstatic) = $property_slot_valid(S, ppropertydesc, {DECL (ppropertydesc.ORIGIN), NAME ppropertydesc.KEY, STATE pclassstatic.STATE})
+  -- if pclassstatic.DECL = ppropertydesc.ORIGIN
+  -- if ~$static_default_descriptor(ppropertydesc.DEFAULT) \/ $static_default_filled(S, ppropertydesc)
+def $static_default_slot_valid(S, ppropertydesc, pclassstatic) = false -- otherwise
+
+dec $static_default_trigger_root(pstate, porigin) : porigin?
+def $static_default_trigger_root(S, PORIGIN n pcpath) = $class_named(S.CLASSNAMES, $ptlc(ptbytes))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew phpType28 phpType6 metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+def $static_default_trigger_root(S, PORIGIN n pcpath) = $class_named(S.CLASSNAMES, $ptlc(ptbytes))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+def $static_default_trigger_root(S, porigin) = $class_named(S.CLASSNAMES, $ptlc(ptbytes))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticPropertyFetch phpType19 phpType31 metadata)
+  -- if ~$ppscoped_named(phpType19)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_class)
+  -- if $compiled_read(S, porigin_class) = (PSTRING ptbytes)
+def $static_default_trigger_root(S, porigin) = eps -- otherwise
+dec $static_default_first(porigin*, porigin*) : porigin?
+def $static_default_first(eps, porigin_filled*) = eps
+def $static_default_first(porigin :: porigin_tail*, porigin_filled*) = (porigin)
+  -- if ~(porigin <- porigin_filled*)
+def $static_default_first(porigin :: porigin_tail*, porigin_filled*) = $static_default_first(porigin_tail*, porigin_filled*)
+  -- if porigin <- porigin_filled*
+def $static_default_history_fill(S, porigin, porigin_trigger, n, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*) = true
+  -- if ~(porigin <- porigin_filled*)
+  -- if $class_static_active_desc(S, S.CLASSNAMES, porigin) = (ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $static_default_source_valid(S, ppropertydesc)
+  -- if $property_declaring_class(S.CLASSES, porigin) = (porigin_owner)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_owner) = (false)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $static_default_first($static_default_origins(pclassdesc.PROPERTIES), porigin_filled*) = (porigin)
+  -- if $class_constant_values_done($class_constant_layout(S, porigin_owner, |S.CLASSES|), porigin_cached*)
+  -- if $class_constant_parent_done(S, porigin_owner, (porigin_flag, b_flag)*)
+  -- if $static_default_trigger_root(S, porigin_trigger) = (porigin_root)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_root) = (false)
+  -- if $class_constant_parent_chain(S, porigin_root, porigin_owner, |S.CLASSES|)
+  -- if $class_constant_history_trigger(S, porigin_trigger, n)
+  -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
+  -- if ~$static_default_pending(pclassstatic.STATE)
+def $static_default_history_fill(S, porigin, porigin_trigger, n, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*) = false -- otherwise
+
+;; Source selected roots and their owner table authenticate both update tasks
+;; and saved evaluator contexts. The binder does not own another property value.
+dec $static_default_table_at(ptask*) : porigin?
+def $static_default_table_at(eps) = eps
+def $static_default_table_at((CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*) = (porigin)
+def $static_default_table_at((CLASS_CONST_UPDATE porigin z) :: ptask_tail*) = $static_default_table_at(ptask_tail*)
+def $static_default_table_at(ptask :: ptask_tail*) = $static_default_table_at(ptask_tail*)
+  -- if ~$class_constant_update_marker(ptask)
+def $static_default_table_at(ptask*) = eps -- otherwise
+dec $static_default_site_valid(pstate, porigin, porigin, porigin?, pconstantcontext?, int, ptask*) : bool
+def $static_default_site_valid(S, porigin, porigin_root, (porigin_trigger), pconstantcontext_previous?, z, ptask*) = true
+  -- if $class_static_active_desc(S, S.CLASSNAMES, porigin) = (ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $static_default_source_valid(S, ppropertydesc)
+  -- if $property_declaring_class(S.CLASSES, porigin) = (porigin_owner)
+  -- if $static_default_table_at(ptask*) = (porigin_owner)
+  -- if $class_constant_update_target(S, ptask*) = (porigin_root)
+  -- if $class_constant_update_site(S, porigin_trigger, porigin_root)
+  -- if $class_constant_parent_chain(S, porigin_root, porigin_owner, |S.CLASSES|)
+  -- if $origin_node(S.SOURCES, porigin_trigger) = (expression)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin_trigger)][.CONSTCONTEXT = pconstantcontext_previous?], eps, expression)
+def $static_default_site_valid(S, porigin, porigin_root, porigin_trigger?, pconstantcontext_previous?, z, ptask*) = false -- otherwise
+dec $static_default_task_valid(pstate, porigin, int) : bool
+def $static_default_task_valid(S, porigin, z) = true
+  -- if $class_constant_update_target(S, S.TODO) = (porigin_root)
+  -- if $static_default_site_valid(S, porigin, porigin_root, S.ORIGIN, S.CONSTCONTEXT, z, S.TODO)
+def $static_default_task_valid(S, porigin, z) = false -- otherwise
+def $call_task_valid(S, STATIC_DEFAULT_UPDATE porigin z) = $static_default_task_valid(S, porigin, z)
+dec $static_default_bind_valid(pstate, pstaticdefaultcontext) : bool
+def $static_default_bind_valid(S, pstaticdefaultcontext) = true
+  -- if $static_default_site_valid(S, pstaticdefaultcontext.DECL, pstaticdefaultcontext.ROOT, pstaticdefaultcontext.ORIGIN, pstaticdefaultcontext.PREVIOUS, pstaticdefaultcontext.LINE, S.TODO)
+  -- if $class_static_at(S.CLASSSTATICS, pstaticdefaultcontext.DECL) = (pclassstatic)
+  -- if $static_default_pending(pclassstatic.STATE)
+  -- if S.ORIGIN = (pstaticdefaultcontext.DECL)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL
+  -- if pconstantcontext.LINE = pstaticdefaultcontext.LINE
+  -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
+  -- if $constant_branches_valid(S)
+  -- if $constant_context_valid($static_default_restore(S, pstaticdefaultcontext))
+def $static_default_bind_valid(S, pstaticdefaultcontext) = false -- otherwise
+def $call_task_valid(S, STATIC_DEFAULT_BIND pstaticdefaultcontext) = $static_default_bind_valid(S, pstaticdefaultcontext)
+def $static_default_property_context(S, pconstantcontext) = true
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pconstantcontext.ORIGIN) = (ppropertydesc)
+  -- if $static_default_descriptor(ppropertydesc.DEFAULT)
+def $static_default_property_context(S, pconstantcontext) = false -- otherwise
+def $static_default_context_valid(S, pconstantcontext) = true
+  -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
+  -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL
+  -- if pconstantcontext.LINE = pstaticdefaultcontext.LINE
+  -- if $static_default_site_valid(S, pstaticdefaultcontext.DECL, pstaticdefaultcontext.ROOT, pstaticdefaultcontext.ORIGIN, pstaticdefaultcontext.PREVIOUS, pstaticdefaultcontext.LINE, S.TODO)
+  -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
+  -- if $constant_branches_valid(S)
+def $static_default_context_valid(S, pconstantcontext) = false -- otherwise
+
+dec $static_default_order(pstate, porigin, nat) : porigin*
+def $static_default_order(S, porigin, 0) = eps
+def $static_default_order(S, porigin, n) = $static_default_order(S, porigin_parent, $nabs($(n - 1))) ++ $static_default_origins(pclassdesc.PROPERTIES)
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+def $static_default_order(S, porigin, n) = $static_default_origins(pclassdesc.PROPERTIES)
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $static_default_parent(S, porigin) = eps
+def $static_default_order(S, porigin, n) = eps -- otherwise
+dec $static_default_busy(pstate, porigin) : bool
+def $static_default_busy(S, porigin) = true
+  -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
+  -- if pstaticdefaultcontext.DECL = porigin
+def $static_default_busy(S, porigin) = false -- otherwise
+dec $static_default_binding_present(ptask*, porigin) : bool
+def $static_default_binding_present(eps, porigin) = false
+def $static_default_binding_present((STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*, porigin) = (pstaticdefaultcontext.DECL = porigin \/ $static_default_binding_present(ptask_tail*, porigin))
+def $static_default_binding_present(ptask :: ptask_tail*, porigin) = $static_default_binding_present(ptask_tail*, porigin)
+  -- if ~$static_default_bind_marker(ptask)
+dec $static_default_saved_binding(pframe*, porigin) : bool
+def $static_default_saved_binding(eps, porigin) = false
+def $static_default_saved_binding(pframe :: pframe_tail*, porigin) = ($static_default_binding_present(pframe.TODO, porigin) \/ $static_default_saved_binding(pframe_tail*, porigin))
+dec $static_default_reentering(pstate, porigin) : bool
+def $static_default_reentering(S, porigin) = ($static_default_binding_present(S.TODO, porigin) \/ $static_default_saved_binding(S.FRAMES, porigin))
+dec $static_default_unfilled(pstate, porigin) : bool
+def $static_default_unfilled(S, porigin) = true
+  -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
+  -- if $static_default_pending(pclassstatic.STATE) /\ ~$static_default_busy(S, porigin)
+def $static_default_unfilled(S, porigin) = false -- otherwise
+dec $static_default_unfinished(pstate, porigin*) : porigin*
+def $static_default_unfinished(S, eps) = eps
+def $static_default_unfinished(S, porigin :: porigin_tail*) = porigin :: $static_default_unfinished(S, porigin_tail*)
+  -- if $static_default_unfilled(S, porigin)
+def $static_default_unfinished(S, porigin :: porigin_tail*) = $static_default_unfinished(S, porigin_tail*)
+  -- if ~$static_default_unfilled(S, porigin)
+
+dec $static_default_sequence(pstate, porigin, porigin*) : bool
+def $static_default_sequence(S, porigin_root, porigin_remaining*) = true
+  -- if porigin_order* = $static_default_order(S, porigin_root, |S.CLASSES|)
+  -- if $class_constant_update_ordered(porigin_order*, porigin_remaining*)
+  -- if $static_default_unfinished(S, porigin_order*) = $static_default_unfinished(S, porigin_remaining*)
+def $static_default_sequence(S, porigin_root, porigin_remaining*) = false -- otherwise
+def $static_default_blocks(S, eps, porigin_acc*) = (porigin_acc* = eps)
+def $static_default_blocks(S, (STATIC_DEFAULT_UPDATE porigin z) :: ptask_tail*, porigin_acc*) = $static_default_blocks(S, ptask_tail*, porigin_acc* ++ [porigin])
+def $static_default_blocks(S, (CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*, porigin_acc*) = $static_default_blocks(S, ptask_tail*, porigin_acc*)
+def $static_default_blocks(S, (CLASS_CONST_UPDATE porigin z) :: ptask_tail*, porigin_acc*) = $static_default_blocks(S, ptask_tail*, porigin_acc*)
+def $static_default_blocks(S, (CLASS_CONST_CONSTRUCT ptbytes phpType7* b_ctor z) :: ptask_tail*, porigin_acc*) = true
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_root)
+  -- if $static_default_sequence(S, porigin_root, porigin_acc*)
+  -- if $static_default_blocks(S, ptask_tail*, eps)
+def $static_default_blocks(S, (CLASS_CONST_STATIC poperand ptbytes z) :: ptask_tail*, porigin_acc*) = true
+  -- if $scoped_selector_class(S, poperand) = (porigin_root)
+  -- if $static_default_sequence(S, porigin_root, porigin_acc*)
+  -- if $static_default_blocks(S, ptask_tail*, eps)
+def $static_default_blocks(S, ptask :: ptask_tail*, eps) = $static_default_blocks(S, ptask_tail*, eps)
+  -- if ~$class_constant_update_marker(ptask)
+  -- if ~$static_default_update_marker(ptask)
+def $static_default_blocks(S, ptask*, porigin_acc*) = false -- otherwise
+def $static_default_update_marker(STATIC_DEFAULT_UPDATE porigin z) = true
+def $static_default_update_marker(ptask) = false -- otherwise
+def $static_default_binders_unique(eps, porigin_seen*) = true
+def $static_default_binders_unique((STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*, porigin_seen*) = (~(pstaticdefaultcontext.DECL <- porigin_seen*) /\ $static_default_binders_unique(ptask_tail*, porigin_seen* ++ [pstaticdefaultcontext.DECL]))
+def $static_default_binders_unique(ptask :: ptask_tail*, porigin_seen*) = $static_default_binders_unique(ptask_tail*, porigin_seen*)
+  -- if ~$static_default_bind_marker(ptask)
+def $static_default_phases(eps, b_property) = true
+def $static_default_phases((CLASS_CONST_UPDATE porigin z) :: ptask_tail*, false) = $static_default_phases(ptask_tail*, false)
+def $static_default_phases((STATIC_DEFAULT_UPDATE porigin z) :: ptask_tail*, b_property) = $static_default_phases(ptask_tail*, true)
+def $static_default_phases((STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*, b_property) = $static_default_phases(ptask_tail*, true)
+def $static_default_phases((CLASS_CONST_TABLE_UPDATE porigin z) :: ptask_tail*, b_property) = $static_default_phases(ptask_tail*, false)
+def $static_default_phases(ptask :: ptask_tail*, b_property) = $static_default_phases(ptask_tail*, b_property)
+  -- if ~$static_default_update_marker(ptask) /\ ~$static_default_bind_marker(ptask) /\ ~$class_constant_update_marker(ptask)
+def $static_default_phases((CLASS_CONST_CONSTRUCT ptbytes phpType7* b_ctor z) :: ptask_tail*, b_property) = $static_default_phases(ptask_tail*, false)
+def $static_default_phases((CLASS_CONST_STATIC poperand ptbytes z) :: ptask_tail*, b_property) = $static_default_phases(ptask_tail*, false)
+def $static_default_phases(ptask*, b_property) = false -- otherwise
+
+;; The one-node constant fast path keeps the updater's fetch location. Compound
+;; ASTs retain their declaration node and override until the strict bind begins.
+dec $static_default_ast(pstate, pstaticdefaultcontext) : bool
+def $static_default_ast(S, pstaticdefaultcontext) = false
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $origin_node(S.SOURCES, porigin_initializer) = (NExprConstFetch name metadata)
+def $static_default_ast(S, pstaticdefaultcontext) = true -- otherwise
+dec $static_default_binding_head(ptask*, porigin) : bool
+def $static_default_binding_head((STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*, porigin) = (pstaticdefaultcontext.DECL = porigin)
+def $static_default_binding_head(ptask*, porigin) = false -- otherwise
+def $static_default_ast_active(S) = true
+  -- if ~$class_constant_active(S)
+  -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL
+  -- if $static_default_ast(S, pstaticdefaultcontext)
+  -- if ~$static_default_binding_head(S.TODO, pstaticdefaultcontext.DECL)
+def $static_default_ast_active(S) = false -- otherwise
+dec $static_default_previous(pconstantcontext?, porigin) : bool
+def $static_default_previous((pconstantcontext), porigin) = (pconstantcontext.ORIGIN = porigin)
+def $static_default_previous(eps, porigin) = false
+dec $static_default_enclosing(pclassconstantcontext*, porigin) : bool
+def $static_default_enclosing(eps, porigin) = false
+def $static_default_enclosing(pclassconstantcontext :: pclassconstantcontext_tail*, porigin) = ($static_default_previous(pclassconstantcontext.PREVIOUS, porigin) \/ $static_default_enclosing(pclassconstantcontext_tail*, porigin))
+
+dec $static_default_active(pstate, porigin) : bool
+def $static_default_active(S, porigin) = true
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = porigin
+def $static_default_active(S, porigin) = $static_default_enclosing(S.CLASSCONSTANTINIT, porigin) -- otherwise
+def $static_default_trace_context(S) = (pstaticdefaultcontext)
+  -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
+  -- if $static_default_active(S, pstaticdefaultcontext.DECL)
+  -- if $static_default_ast(S, pstaticdefaultcontext)
+  -- if ~$static_default_binding_head(S.TODO, pstaticdefaultcontext.DECL)
+def $static_default_trace_context(S) = eps -- otherwise
+def $static_default_error_origin(S) = pstaticdefaultcontext.ORIGIN
+  -- if ~$class_constant_active(S)
+  -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
+  -- if $static_default_active(S, pstaticdefaultcontext.DECL)
+  -- if ~$static_default_ast(S, pstaticdefaultcontext)
+def $static_default_error_origin(S) = S.ORIGIN -- otherwise
+def $static_default_trace(S) = [{FILE $call_sourcefile(S.FILES, porigin_trigger), LINE pstaticdefaultcontext.LINE, FUNCTION $ptascii("[constant expression]"), CLASS eps, TYPE eps, ARGS eps, HASARGS false}]
+  -- if $static_default_trace_context(S) = (pstaticdefaultcontext)
+  -- if pstaticdefaultcontext.ORIGIN = (porigin_trigger)
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
+  -- if $class_constant_error_origin(S) = (porigin_error)
+  -- if $call_sourcefile(S.FILES, porigin_error) =/= $call_sourcefile(S.FILES, porigin_trigger) \/ $constant_runtime_line(S, z) =/= pstaticdefaultcontext.LINE
+def $static_default_trace(S) = eps -- otherwise
+
+rule PhpStep/static-default-update: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin, LINE z, FACTS eps})][.ORIGIN = (porigin)][.TODO = [AT porigin_initializer (EVAL expression), STATIC_DEFAULT_BIND {DECL porigin, ROOT porigin_root, PREVIOUS S.CONSTCONTEXT, ORIGIN S.ORIGIN, LINE z}] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (STATIC_DEFAULT_UPDATE porigin z) :: ptask_tail*
+  -- if $class_static_active_desc(S, S.CLASSNAMES, porigin) = (ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_DEFERRED porigin_initializer
+  -- if $origin_node(S.SOURCES, porigin_initializer) = (expression)
+  -- if $class_constant_update_target(S, ptask_tail*) = (porigin_root)
+  -- if $static_default_task_valid(S, porigin, z)
+  -- if ~$static_default_reentering(S, porigin)
+rule PhpStep/static-default-update-reentry: S ~> S[.COMPLETION = UNSUPPORTED "reentrant deferred static default update"]
+  -- if S.TODO = (STATIC_DEFAULT_UPDATE porigin z) :: ptask_tail*
+  -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
+  -- if $static_default_pending(pclassstatic.STATE)
+  -- if $static_default_task_valid(S, porigin, z)
+  -- if $static_default_reentering(S, porigin)
+rule PhpStep/static-default-update-filled: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (STATIC_DEFAULT_UPDATE porigin z) :: ptask_tail*
+  -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
+  -- if ~$static_default_pending(pclassstatic.STATE)
+  -- if $static_default_task_valid(S, porigin, z)
+
+dec $static_default_class_supported(pvalueclass) : bool
+dec $static_default_array_supported((pkey, pvalueclass)*) : bool
+def $static_default_class_supported(PVSCALAR) = true
+def $static_default_class_supported(PVSTRING b) = true
+def $static_default_class_supported(PVARRAY b (pkey, pvalueclass)*) = $static_default_array_supported((pkey, pvalueclass)*)
+def $static_default_class_supported(pvalueclass) = false -- otherwise
+def $static_default_array_supported(eps) = true
+def $static_default_array_supported((pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*) = ($static_default_class_supported(pvalueclass) /\ $static_default_array_supported((pkey_tail, pvalueclass_tail)*))
+
+rule PhpStep/static-default-bind: S ~> $static_default_restore(S_value[.TODO = ptask_tail*][.CLASSSTATICS = $class_static_set(S_value.CLASSSTATICS, pstaticdefaultcontext.DECL, PROP_VALUE (DIRECT $property_default_value(ppropertydesc.TYPE, pvalue)))][.CLASSCONSTANTHISTORY = S_value.CLASSCONSTANTHISTORY ++ [CCSTATIC pstaticdefaultcontext.DECL porigin_trigger n_prefix]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pstaticdefaultcontext)
+  -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
+  -- if $static_default_bind_valid(S, pstaticdefaultcontext)
+  -- if pstaticdefaultcontext.ORIGIN = (porigin_trigger)
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if S_value = $resolve_at(S, S.RESULT, pstaticdefaultcontext.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if $class_constant_runtime_type(S_value, ppropertydesc.TYPE, pvalue)
+  -- if pvalueclass = $constant_class(S_value, porigin_initializer)
+  -- if $static_default_class_supported(pvalueclass)
+  -- if $constant_value_class_valid(S_value, pvalue, pvalueclass)
+  -- if n_prefix = |S_value.DECLARATIONS|
+rule PhpStep/static-default-bind-object: S ~> $static_default_restore(S_value[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "object-bearing deferred static default"], pstaticdefaultcontext)
+  -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if S_value = $resolve_at(S, S.RESULT, pstaticdefaultcontext.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if $class_constant_runtime_type(S_value, ppropertydesc.TYPE, pvalue)
+  -- if ~$static_default_class_supported($constant_class(S_value, porigin_initializer))
+rule PhpStep/static-default-bind-type: S ~> $throw_scalar($static_default_restore(S_value[.TODO = ptask_tail*], pstaticdefaultcontext), "TypeError", $ptascii("Cannot assign ") ++ $typed_given(S_value, pvalue) ++ $ptascii(" to property ") ++ $property_declaring_name(S.CLASSES, pstaticdefaultcontext.DECL) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" of type ") ++ $pttypename(ppropertydesc.TYPE), pstaticdefaultcontext.LINE)
+  -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if S_value = $resolve_at(S, S.RESULT, pstaticdefaultcontext.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$class_constant_runtime_type(S_value, ppropertydesc.TYPE, pvalue)
+rule PhpStep/static-default-bind-abrupt: S ~> S_value
+  -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
+  -- if S_value = $resolve_at(S, S.RESULT, pstaticdefaultcontext.LINE)
+  -- if S_value.COMPLETION =/= NORMAL
+
+def $call_after_origin(S, STATIC_DEFAULT_BIND pstaticdefaultcontext) = $static_default_restore(S, pstaticdefaultcontext)
+def $return_discard(S, STATIC_DEFAULT_BIND pstaticdefaultcontext) = $static_default_restore(S[.CONSTCONTEXT = eps], pstaticdefaultcontext)[.CONSTCONTEXT = eps]
+def $task_nodes(STATIC_DEFAULT_UPDATE porigin z) = eps
+def $task_nodes(STATIC_DEFAULT_BIND pstaticdefaultcontext) = eps

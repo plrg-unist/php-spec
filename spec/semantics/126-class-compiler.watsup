@@ -229,6 +229,8 @@ def $ppstatement(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 ph
   -- if P_line = $pplocate(P, pcpath, z)
 
 dec $ppclass_name(ppstate, pcpath, pnresult) : ppstate
+dec $ppnew_class_name(ppstate, pcpath, name) : ppstate
+dec $ppparameter_new_resolve(ppstate, pcpath, name) : ptbytes?
 dec $pnclassresolve(plenv, name) : pnresult
 dec $pnclassclear(pnresult) : pnresult
 def $pnclassresolve(plenv, name) = $pnclassclear($pnqualify(plenv, PLCLASS, name, ptqual, ptbytes))
@@ -244,7 +246,7 @@ def $pnclassclear(PNUNSUPPORTED text) = PNUNSUPPORTED text
 def $ppclass_name(P, pcpath, PNUNSUPPORTED text) = $ppunsupported(P, text)
 def $ppclass_name(P, pcpath, PNRESOLVED pnreference) = P[.NAMES = P.NAMES ++ [(pcpath, pnreference)]][.FOLD = P.FOLD[.VALUE = eps]]
 
-def $ppdispatch(P, pcpath, NExprNew name (SEQUENCE eps) metadata, PPR) = $ppclass_name(P, pcpath, $pnclassresolve(P.ENV, name))
+def $ppdispatch(P, pcpath, NExprNew name (SEQUENCE eps) metadata, PPR) = $ppnew_class_name(P, pcpath, name)
 dec $ppnew_named(phpType28) : bool
 def $ppnew_named(name) = true
 def $ppnew_named(phpType28) = false -- otherwise

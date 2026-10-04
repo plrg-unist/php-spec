@@ -45,6 +45,7 @@ dec $default_cacheable(pvalueclass) : bool
 def $default_cacheable(PVSCALAR) = true
 def $default_cacheable(PVSTRING b) = b
 def $default_cacheable(PVARRAY b (pkey, pvalueclass)*) = b
+def $default_cacheable(PVOBJECT) = false
 ;; A rebound Closure re-evaluates deferred scope-dependent defaults. Follow the
 ;; compiled selection, so folded values and pruned branches remain cacheable.
 dec $default_scope_dependent(pstate, porigin) : bool

@@ -270,7 +270,9 @@ def $arginfo_wrapper_trace(S, pargcall, pvalue*) = [{FILE $call_sourcefile(S.FIL
   -- if $arginfo_method_receiver(S, pargcall)
 def $arginfo_wrapper_trace(S, pargcall, pvalue*) = eps -- otherwise
 dec $arginfo_error(pstate, pargcall, text, preqbytes) : pstate
+dec $calledclass_special(pstate, pargcall) : bool
 def $arginfo_error(S, pargcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pargcall.SITE)], text, preqbytes, pargcall.LINE, $source_trace_prefixed(S, [ptraceframe] ++ $arginfo_wrapper_trace(S, pargcall, pvalue*)))
+  -- if ~$calledclass_special(S, pargcall)
   -- if pvalue* = $trace_extra(S, $getclass_trace_operands(pargcall.SENT))
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pargcall.SITE), LINE pargcall.LINE, FUNCTION $intrinsic_name(pargcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 dec $arginfo_destination(pintrinsic, preqbytes?, nat) : nat?
@@ -370,6 +372,7 @@ def $arginfo_selected_valid(S, pargcall) = true
   -- if pargcall.OWNER = eps
   -- if pargcall.SELECTION = eps
   -- if $exit_fixed(S, pargcall.SITE) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
   -- if $intrinsic_lookup($dynamic_lookup_name(preqbytes), preqbytes_fallback?) = (pargcall.KIND)
 def $arginfo_selected_valid(S, pargcall) = true
   -- if pargcall.OWNER = eps
@@ -508,9 +511,11 @@ def $arginfo_context(S, pargcall, z) = $arginfo_error(S, pargcall, "ValueError",
   -- if pargcall.KIND = INTRINSIC_FUNC_GET_ARG
   -- if $(z < 0)
 def $arginfo_context(S, pargcall, z) = $arginfo_error(S, pargcall, "Error", $arginfo_global_message(pargcall.KIND))
+  -- if pargcall.KIND =/= INTRINSIC_GET_CALLED_CLASS
   -- if ~(pargcall.KIND = INTRINSIC_FUNC_GET_ARG /\ $(z < 0))
   -- if $arginfo_global(S, pargcall)
 def $arginfo_context(S, pargcall, z) = $arginfo_error(S, pargcall, "Error", $ptascii("Cannot call ") ++ $intrinsic_name(pargcall.KIND) ++ $ptascii("() dynamically"))
+  -- if pargcall.KIND =/= INTRINSIC_GET_CALLED_CLASS
   -- if ~(pargcall.KIND = INTRINSIC_FUNC_GET_ARG /\ $(z < 0))
   -- if ~$arginfo_global(S, pargcall)
   -- if $arginfo_dynamic(S, pargcall)
