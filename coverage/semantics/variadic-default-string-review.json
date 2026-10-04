@@ -1,0 +1,168 @@
+{
+  "status": "independently accepted bounded private slice; current composition pending",
+  "implementation": "ff7c2bad40f06cb201d58ff5c638289c6894b957",
+  "fixture_budget_fix": "bd535ba859ce7fe6120fcd43ba7bbcd2c15b3c7b",
+  "maintained_source_publication": "747a6f8d9",
+  "scope": [
+    "Positional/named Stringable variadic elements run in receive order and retain genuine captured cell/object/frame owners.",
+    "Supplied fixed parameters are distinct from omitted/named-hole defaults; fresh no-constructor object defaults are not cached.",
+    "Method NEW self/parent defaults use declaring scope; fixed/variadic/default coercion retains caller strictness and nominal/callable priority.",
+    "No-constructor default NEW evaluates named values in order and checks duplicate names after current value evaluation; default object truth is true.",
+    "Existing reference property sources reject before callbacks; newly attached sources retain parameter-authorized backing strings without weakening later writes or binds.",
+    "Authenticated stringify/error handler receives carry empty HOLES independently of the triggering source argument spelling."
+  ],
+  "validation": {
+    "original_first6": {
+      "revision": "1d41a2cfcc2dfef0e138c927de7c4136cc01c3a5",
+      "agreements": 6,
+      "qualification": {
+        "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-review13/variadic-default-first-six-original-raw-accepted.json",
+        "sha256": "5e28a96f0fb71080d8b298f077389e003f420bfe4ebe1ee8cf9bfd94f096ea12"
+      }
+    },
+    "remaining_originals": {
+      "head": "ff7c2bad40f06cb201d58ff5c638289c6894b957",
+      "agreements": 6,
+      "unsupported_controls": 1,
+      "selected": [
+        "inherited-named-hole-default",
+        "default-conversion-throw",
+        "variadic-same-object-reentry",
+        "required-hole-before-conversion",
+        "variadic-attach-throw",
+        "unpacked-hole-default",
+        "default-constructor-stop"
+      ],
+      "report": "/home/user/workspace/php-spec/.tools/property-variadic-default-guard-13/.tools/variadic-string-parameters-i65mw6cd/report.json",
+      "sha256": "3c3fa11c583b9e61f01b80e18851a0536db44622bd6426afff0c3e5a51596bc6",
+      "outer_retains_first_fixture_fail": "/home/user/workspace/php-spec/.tools/property-static-set-dev13/author-diomwcro/report.json"
+    },
+    "state336": {
+      "revision": "bd535ba859ce7fe6120fcd43ba7bbcd2c15b3c7b",
+      "conditions": 336,
+      "stage_counts": [
+        75,
+        36,
+        71,
+        71,
+        25,
+        58
+      ],
+      "report": {
+        "path": "/home/user/workspace/php-spec/.tools/property-static-set-dev13/author-8e7nm8z3/report.json",
+        "sha256": "e465e371abdccdd94deb60ebac55d279acbf80c3b255aeec1029607877953114"
+      }
+    },
+    "independent_affected4": {
+      "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-review14/affected4/source-result.json",
+      "sha256": "1c08014a2e1b1103c610a311a11a529d88301cbf78d7ebde7c672f69b5037cd5"
+    },
+    "independent_original3": {
+      "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-review14/original3/source-result.json",
+      "sha256": "ec4b5ffc01c8d63d8a06ecafb07b08760cd87fbc0501e00a4dde4416faf324ab"
+    },
+    "independent_review": {
+      "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-review14/semantic-review.json",
+      "sha256": "fe7affaaf26ae77c602d76365f1186b5e4f6262df6509734896f430b9536a74b"
+    }
+  },
+  "reproduction": {
+    "target": "PHP 8.5.10 CLI NTS signed64",
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_pin": "da36ac3c434cd291940293a63da64544307730a3",
+    "private_root": "/home/user/workspace/php-spec/.tools/property-variadic-default-guard-13",
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "other": "inherited"
+    },
+    "runtime": {
+      ".tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "mode": "0o755"
+      },
+      ".tools/php-file.so": {
+        "sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+        "mode": "0o775"
+      },
+      "_build/default/adapter/main.exe": {
+        "sha256": "9fa8a62125cc34baf80965a829fb4aa946875aa40b1b3a8d6e90cd732b2bcaf2",
+        "mode": "0o555"
+      },
+      "tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+        "mode": "0o555"
+      }
+    },
+    "source_plan": {
+      "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-dev14/ff7c2bad4-author-plan.json",
+      "sha256": "80834d0e672c31eb5083327271f179dce205a63834c7087c5ae94baee299af4d"
+    },
+    "state_plan": {
+      "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-dev14/bd535ba85-state-plan.json",
+      "sha256": "c3550eca761fbd940ec34318da6198163294c14b90100d7852156ae3dc7235b0"
+    },
+    "source_freeze": {
+      "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-dev14/ff7c2bad4-freeze.json",
+      "sha256": "199869c3f0aa6af5fb41f8097f1ff3f91ae6788530309f8136d65484022a8e8d"
+    },
+    "state_freeze": {
+      "path": "/home/user/workspace/php-spec/.tools/property-variadic-default-dev14/bd535ba85-freeze.json",
+      "sha256": "27b9c006dca25c9fe6afd60e31efc9d579bae45fd5a9d350f9bfc5ad60a9308f"
+    },
+    "limits": {
+      "native_seconds": 30,
+      "model_seconds": 90,
+      "application_seconds": 60,
+      "steps": 100000,
+      "numeric_seconds": 120,
+      "worker_seconds": 30,
+      "outer_source_seconds": 900,
+      "outer_state_seconds": 300,
+      "outer_independent_seconds": 420,
+      "jobs": 1
+    },
+    "raw": "Ignored .tools reports retain exact argv/cwd/environment, original sources, request facts, raw native/model output, exits and stable input snapshots. No archive is a build input."
+  },
+  "engine_routes": {
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "Zend/zend_vm_def.h": [
+      "ZEND_RECV_INIT",
+      "ZEND_RECV_VARIADIC"
+    ],
+    "Zend/zend_execute.c": [
+      "zend_verify_recv_arg_type",
+      "zend_verify_variadic_arg_type",
+      "zend_handle_undef_args"
+    ],
+    "Zend/zend_ast.c": [
+      "zend_ast_fetch_class",
+      "zend_ast_evaluate_ex / ZEND_AST_NEW"
+    ],
+    "Zend/zend_compile.c": [
+      "zend_compile_const_expr_class_reference",
+      "zend_compile_const_expr_new"
+    ]
+  },
+  "preserved_failures": {
+    "original_1d41": {
+      "path": "/home/user/workspace/php-spec/.tools/property-static-set-dev13/author-6nk83wz4/report.json",
+      "sha256": "91edb15ae9cf04026e5429d4d01037028b73748a0ade8de38a1e32e60a54762b"
+    },
+    "first_meaningful_ff7c": {
+      "path": "/home/user/workspace/php-spec/.tools/property-static-set-dev13/author-diomwcro/report.json",
+      "sha256": "ec13e77f1dd7d94c363eb81e07bd21f6e09b3d6d686b4d4b67f23cc75a0f314a"
+    },
+    "budget_projection": "/home/user/workspace/php-spec/.tools/property-variadic-default-dev14/phase0-original-projection",
+    "disposition": "Generic method default NEW-self resolution repaired; first real state fixture skipped every BUDGET receive checkpoint and was corrected only in the phase0 probe. Both outer failures remain FAIL."
+  },
+  "publication": "Four maintained counterexample sources and expected bytes exactly match independently executed originals. Helper/runtime unchanged; fixture publication adds no execution credit. Metadata changes require no semantic rerun.",
+  "remaining": [
+    "Direct named-hole lists are checked against authentic source shape. Dynamic unpack/wrapper holes are checked structurally (sorted/range/genuine NParam) and do not yet have equivalent source provenance checks.",
+    "Both direct and inherited constructor-default dispatch remain explicit Unsupported and required next core work.",
+    "Rebound anonymous Closure NEW self/parent defaults remain explicit Unsupported and required next core work.",
+    "Broader constrained weak conversions and complete core remain open; paused returns are unchanged."
+  ]
+}

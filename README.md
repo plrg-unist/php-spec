@@ -445,8 +445,12 @@ sources. Reentrant receives retain distinct formal cells, and callback throws
 keep the original exception without authorizing a backing-value exception.
 Cached constant Closures and nonpublic invokable objects preserve these rules.
 Six focused sources, 299 state checks and two independent instance-property
-controls cover the new backing behavior; variadic reception and broader
-constrained conversion remain open.
+controls cover the new backing behavior.
+[Variadic and default reception](coverage/semantics/variadic-default-string-review.json)
+converts positional then named Stringable elements and fresh constructor-free
+defaults, retaining declaring method scope and captured cells. Constructor-default
+execution, rebound anonymous keyword defaults and broader constrained conversion
+remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

@@ -53,7 +53,22 @@ The backing increment passes source6/state299 and two independent instance
 attachment/rebind/throw controls at73d6. Throws retain callback mutations and
 mint no backing certificate. Modeled allocation retirement is distinct from
 destructor or GC callback completeness.
-Variadic/default callback reception and broader constrained consumers remain open.
+Variadic elements now convert in positional then named insertion order. Reference
+elements retain their captured cell, including exact-string reuse of a certified
+backing value; existing property sources still reject before the callback.
+Genuine omitted and named-hole defaults use a separate receive scratch cell and
+cannot authorize supplied-parameter backing. Method `new self`/`new parent`
+defaults use the declaring class. Constructor-free named NEW arguments evaluate
+in source order, check duplicates after the current value and are discarded.
+Default objects remain fresh and uncached; object truth selects constant branches.
+
+The [variadic/default ledger](../../coverage/semantics/variadic-default-string-review.json)
+keeps the earlier six and repaired six source agreements, four counterexamples,
+three independent sources and 336 source-reached state conditions at their actual
+cutoffs. Direct named-hole metadata derives from source; unpacked/wrapped holes
+retain structural checks and their existing dynamic provenance limitation.
+Direct/inherited constructor-default dispatch, rebound anonymous keyword NEW
+defaults and broader constrained consumers remain required core work.
 
 The required consumer inventory includes echo, print, `(string)` casts,
 concat, interpolation, eval operands, weak typed conversions, dynamic variable

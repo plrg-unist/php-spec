@@ -45,6 +45,16 @@ separates the earlier 214 checks from source6/state299 and independent2 at
 73d6 on accepted6395. The current reporting composition preserves those tested
 routes and adds no execution credit.
 
+Stringable variadic/default receives218 preserve positional then named order,
+captured reference cells and fresh constructor-free default objects. Method
+`new self`/`new parent` uses declaring scope; named NEW arguments and object truth
+follow the constant AST evaluator. Genuine defaults cannot mint supplied backing
+authority. The [ledger](coverage/semantics/variadic-default-string-review.json)
+keeps source6+6, focused4, independent3 and meaningful336 at separate cutoffs,
+including original NEW-self and fixture-budget failures. Direct holes derive from
+source; unpack/wrapper holes remain structurally checked. Default constructors,
+rebound anonymous keyword NEW and broader constrained conversions remain open.
+
 Named constexpr `::class` preserves namespace/alias spelling without requiring
 class lookup, declaring self/parent and source-spelled known parents. Deferred
 Closure/eval contexts use their authenticated lexical scope; rebound defaults
@@ -102,7 +112,7 @@ The installed families compose as follows; each ledger records its scope and lim
 | Include/configuration | Failed CHDIR warnings retain provider certificates and caller frames through handler CWD/raw writes, false fallback and throw. One current throwing source/136 conditions, earlier three sources and compiler25 checks keep separate revisions. Stringable CHDIR PIPE retains post-callback CWD/held operands; unary CONFIG PIPE preserves source strictness through borrowed warnings. [PIPE ledger](coverage/semantics/include-config-pipe-review.json). Raw getters, primitive/null Restore, weak-null handler continuations and two-slot INI ownership retain their separate checkpoints. [Readback](coverage/semantics/include-ini-readback-review.json), [INI](coverage/semantics/include-stringable-ini-option-review.json). |
 | Stringable SET/Restore and paths | SET separates raw INI bytes from effective C-string paths. Weak Restore uses exact full-name lookup and preserves callback mutations on misses. Current ARG/Restore checks retain caller arguments and zero-argument callbacks. [Restore](coverage/semantics/include-stringable-restore-review.json), [prefix](coverage/semantics/include-ini-prefix-review.json), [SET](coverage/semantics/include-set-current-review.json). |
 | Typed static properties197 | Weak simple Stringable assignment rechecks live aliases and retains paired callback owners. Current Restore/ARG/INI composition preserves full property bytes, caller arguments and normal/throw cleanup. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json). |
-| Weak string parameters214/216 | Supplied value/free-reference conversion preserves receive order, caller strictness, nominal/callable precedence and captured formal-cell ownership. Existing constraints reject before callbacks; newly attached sources permit only the parameter-authorized backing value. Later ordinary writes/binds enforce live types, and throw/retirement removes transient owners. Source6/state299 and independent2 keep their tested revision distinct from the earlier cached Closure/invocation checks. [Parameter ledger](coverage/semantics/weak-string-parameters-review.json). |
+| Weak string parameters214/216/218 | Fixed and positional/named variadic receives preserve caller strictness, nominal/callable precedence and captured cells; existing constraints reject before callbacks. Newly attached sources permit only the parameter-authorized backing value. Constructor-free defaults use genuine scratch cells, declaring method scope and fresh objects. Source6/state299/independent2 and variadic/default6+6/focused4/independent3/state336 retain separate cutoffs. [Parameter ledger](coverage/semantics/weak-string-parameters-review.json), [variadic/default ledger](coverage/semantics/variadic-default-string-review.json). |
 | Static setters200/201 | Backed final/asymmetric declarations normalize equivalent setters and preserve inheritance/error priority; direct and indirect consumers retain lexical access, live raw-slot checks and typed aliases. [Setter ledger](coverage/semantics/static-setter-access-review.json). |
 | StaticCall reference acquisition141/142 | Getters with untyped return signatures retain scoped selection, typed and legal untyped static aliases and returned-cell cleanup. Typed REF flags preserve initialization/error priority even when discarded. Direct reference sends retain the real cell; ignored untyped getters leave raw values unchanged. Ownership/type-source and getter/borrowed-read checks keep their distinct revisions. [Reference ledger](coverage/semantics/static-method-reference-review.json). |
 | Argument introspection198/199 | Ordinary current and saved frames retain genuine named/unpacked argument views through invocation and callbacks. [Argument ledger](coverage/semantics/argument-introspection-calls-current-review.json). |
@@ -127,7 +137,8 @@ failures and interrupted evidence.
   nondefault startup profiles, wider directives,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
-- Values, references and coercion: variadic/default callback reception and broader weak
+- Values, references and coercion: direct/inherited default constructor dispatch,
+  rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
   broader reference-result consumers. Deferred property defaults and references into incomplete constant tables remain Unsupported.
   Wider deprecated constant consumers remain open. Generic156 return replay, temporary-return
