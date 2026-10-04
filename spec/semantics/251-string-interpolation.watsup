@@ -113,12 +113,22 @@ def $interpolation_collect_valid(S, porigin, n, poperand*, b_capture) = true
   -- if ~b_capture \/ ($(n < |phpType30*|) /\ $interpolation_expression_part(S, porigin, n))
 def $interpolation_collect_valid(S, porigin, n, poperand*, b_capture) = false -- otherwise
 
+dec $interpolation_finish_tail(ptask*, porigin) : bool
+def $interpolation_finish_tail((INTERPOLATE_FINISH porigin_finish) :: ptask_tail*, porigin) = (porigin_finish = porigin)
+def $interpolation_finish_tail(ptask*, porigin) = false -- otherwise
+dec $interpolation_after_tail(ptask*, pinterpolation) : bool
+def $interpolation_after_tail(eps, pinterpolation) = false
+def $interpolation_after_tail(ptask :: ptask_tail*, pinterpolation) = $interpolation_finish_tail(ptask_tail*, pinterpolation.SITE)
+  -- if ptask = INTERPOLATE_AFTER pinterpolation
+def $interpolation_after_tail(ptask :: ptask_tail*, pinterpolation) = $interpolation_after_tail(ptask_tail*, pinterpolation)
+  -- if ptask =/= INTERPOLATE_AFTER pinterpolation
+
 def $call_task_valid(S, INTERPOLATE_COLLECT porigin n poperand*) = $interpolation_collect_valid(S, porigin, n, poperand*, false)
 def $call_task_valid(S, INTERPOLATE_CAPTURE porigin n poperand*) = $interpolation_collect_valid(S, porigin, n, poperand*, true)
 def $call_task_valid(S, INTERPOLATE_NEXT pinterpolation) = $interpolation_next_valid(S, pinterpolation)
 def $call_task_valid(S, INTERPOLATE_CONVERT pinterpolation) = ($interpolation_convert_valid(S, pinterpolation) /\ $interpolation_operands_valid(S, pinterpolation.SITE, $(pinterpolation.INDEX + 1), pinterpolation.VALUES))
 def $call_task_valid(S, INTERPOLATE_RESOLVE pinterpolation n_name*) = ($interpolation_convert_valid(S, pinterpolation) /\ $(pinterpolation.MODE >= 2) /\ $interpolation_cv(S, pinterpolation, n_name*) /\ $interpolation_operands_valid(S, pinterpolation.SITE, $(pinterpolation.INDEX + 1), pinterpolation.VALUES))
-def $call_task_valid(S, INTERPOLATE_AFTER pinterpolation) = ($interpolation_after_valid(S, pinterpolation) /\ $interpolation_operands_valid(S, pinterpolation.SITE, $(pinterpolation.INDEX + 1), pinterpolation.VALUES))
+def $call_task_valid(S, INTERPOLATE_AFTER pinterpolation) = ($interpolation_after_valid(S, pinterpolation) /\ $interpolation_operands_valid(S, pinterpolation.SITE, $(pinterpolation.INDEX + 1), pinterpolation.VALUES) /\ $interpolation_after_tail(S.TODO, pinterpolation))
 def $call_task_valid(S, INTERPOLATE_FINISH porigin) = (S.ORIGIN = (porigin) /\ $interpolation_parts(S, porigin) =/= eps)
 
 def $task_nodes(INTERPOLATE_COLLECT porigin n poperand*) = $interpolation_operand_nodes(poperand*)
@@ -241,7 +251,8 @@ def $interpolation_context_line_valid(S, pcallcontext) = false -- otherwise
 def $stringify_source(S, porigin_site, z, INTERPOLATE_AFTER pinterpolation) = true
   -- if porigin_site = $interpolation_child(pinterpolation.SITE, pinterpolation.INDEX)
   -- if z = pinterpolation.LINE
-  -- if $call_task_valid(S[.ORIGIN = (porigin_site)], INTERPOLATE_AFTER pinterpolation)
+  -- if $interpolation_after_valid(S[.ORIGIN = (porigin_site)], pinterpolation)
+  -- if $interpolation_operands_valid(S, pinterpolation.SITE, $(pinterpolation.INDEX + 1), pinterpolation.VALUES)
 def $stringify_interpolation_consumer(INTERPOLATE_AFTER pinterpolation) = true
 def $stringify_interpolation_consumer(ptask) = false -- otherwise
 def $stringify_consumer_tail_valid(S, porigin_site, z, INTERPOLATE_AFTER pinterpolation, (INTERPOLATE_FINISH porigin) :: ptask_tail*) = (porigin = pinterpolation.SITE /\ $stringify_source(S, porigin_site, z, INTERPOLATE_AFTER pinterpolation))
