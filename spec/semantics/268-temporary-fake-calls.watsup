@@ -189,6 +189,7 @@ def $closure_scope_append(S, pfunction, n) = S[.OBJECTS = $object_set(S.OBJECTS,
 def $internal_creator_body(S, n) = (porigin)
   -- if S.OBJECTS[n] = INTERNALCALLCLOSURE pinternalclosurescope (REALCLOSURE porigin pitem* pstaticcell*)
   -- if $internal_closure_history_valid(S, n)
+dec $internal_call_child_receiver(pstate, pfunction, nat?) : bool
 def $internal_closure_history_valid(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INTERNALCALLCLOSURE pinternalclosurescope (REALCLOSURE porigin pitem* pstaticcell*)
@@ -205,7 +206,6 @@ def $internal_closure_history_valid(S, n) = true
   -- if pinternalclosurescope.LEXICAL = BIND_INTERNAL ($ptascii("Closure"))
   -- if pinternalclosurescope.CALLED = pinternalclosurescope.LEXICAL
   -- if $internal_call_child_receiver(S, pfunction, pinternalclosurescope.RECEIVER)
-dec $internal_call_child_receiver(pstate, pfunction, nat?) : bool
 def $internal_call_child_receiver(S, pfunction, eps) = $closure_static(S, pfunction)
 def $internal_call_child_receiver(S, pfunction, (n_receiver)) = true
   -- if $(n_receiver < |S.OBJECTS|)

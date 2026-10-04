@@ -7,6 +7,7 @@ dec $closure_call_real(pstate, nat) : bool
 dec $closure_call_parameters(pstate, nat) : psparam*
 dec $closure_call_warning(pstate, nat, nat) : ptbytes?
 dec $closure_call_pending_object(pstate, nat) : bool
+dec $closure_call_positional_receiver_valid(pstate, pclosurecall) : bool
 dec $closure_call_function_name(pstate, pfunction, nat) : preqbytes
 dec $closure_call_body_name(pstate, pfunction) : ptbytes
 dec $closure_call_wrapper_names_valid((preqbytes, poperand)*, (preqbytes, poperand)*) : bool
@@ -280,7 +281,6 @@ def $closure_call_progress_valid(S, pclosurecall) = true
   -- if $closure_call_raw_unique_names(pclosurecall.RAW)
   -- if $closure_call_invalid_sent_valid(S, $closure_call_parameters(S, pclosurecall.SOURCE), pclosurecall, phpType7_tail*[0:n_done])
 def $closure_call_progress_valid(S, pclosurecall) = false -- otherwise
-dec $closure_call_positional_receiver_valid(pstate, pclosurecall) : bool
 def $closure_call_positional_receiver_valid(S, pclosurecall) = $closure_call_pending_object(S, n_receiver)
   -- if pclosurecall.FIRST = (POBJECT n_receiver)
   -- if pclosurecall.RECEIVER = (n_receiver)
