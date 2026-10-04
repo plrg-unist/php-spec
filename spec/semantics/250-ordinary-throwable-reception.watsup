@@ -15,6 +15,12 @@ def $ordinary_internal_string_evidence(S, n) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
 def $ordinary_internal_string_evidence(S, n) = true
   -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = eps
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) = (text_kind)
+  -- if $throwable_nominal(text_kind, $ptascii("Stringable"), 4)
+def $ordinary_internal_string_evidence(S, n) = true
+  -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $throwable_nominal(pthrowable.KIND, $ptascii("Stringable"), 4)
 def $ordinary_internal_string_evidence(S, n) = false -- otherwise
