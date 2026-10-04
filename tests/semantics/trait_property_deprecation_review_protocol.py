@@ -182,7 +182,7 @@ CASES = {
             '$trait_initializer_scope(S[.TODO = eps]) = eps',
             '$trait_initializer_scope(S[.ORIGIN = (PORIGIN 999 eps)]) = eps',
             '$trait_initializer_scope(S[.SOURCES = eps]) = eps',
-            '~$static_default_context_valid(S[.CLASSSTATICS = eps], pconstantcontext)',
+            '~$class_statics_valid(S[.CLASSSTATICS = eps])',
             '~$call_current_valid(S[.CURRENT = (pcallcontext[.LEXICAL_CLASS = (porigin_t)])])',
             'PhpStep: S ~> S_class',
             'S_class.RESULT = KNOWN (PSTRING $ptascii("T"))',
