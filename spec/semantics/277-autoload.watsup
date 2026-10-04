@@ -217,7 +217,7 @@ def $autoload_defined_entries((pautoloadentry) :: pautoloadentry_tail?*) = pauto
 def $autoload_registry_valid(S) = true
   -- if $autoload_capacity_valid(S.AUTOLOAD.CAPACITY)
   -- if $(|S.AUTOLOAD.ENTRIES| <= S.AUTOLOAD.CAPACITY)
-  -- if S.AUTOLOAD.CAPACITY > 0 \/ S.AUTOLOAD.ENTRIES = eps
+  -- if $(S.AUTOLOAD.CAPACITY > 0) \/ S.AUTOLOAD.ENTRIES = eps
   -- if pautoloadentry* = $autoload_defined_entries(S.AUTOLOAD.ENTRIES)
   -- if ($autoload_entry_live(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER /\ pautoloadentry.TARGET =/= AUTO_ALL)*
 
@@ -275,8 +275,8 @@ def $autoload_registration_receive_valid(S, pautoloadregistration) = true
   -- if $autoload_entry_live(S, pautoloadregistration.ENTRY)
   -- if pautoloadregistration.ENTRY.CALL.KIND = INTRINSIC_AUTO_REGISTER
   -- if $(1 <= pautoloadregistration.INDEX) /\ $(pautoloadregistration.INDEX <= 3)
-  -- if (pautoloadregistration.INDEX = 1 /\ pautoloadregistration.THROW) \/ (pautoloadregistration.INDEX > 1 /\ $autoload_bool(S, pautoloadregistration.ENTRY.CALL, 1, true) = (pautoloadregistration.THROW))
-  -- if (pautoloadregistration.INDEX < 3 /\ ~pautoloadregistration.PREPEND) \/ (pautoloadregistration.INDEX = 3 /\ $autoload_bool(S, pautoloadregistration.ENTRY.CALL, 2, false) = (pautoloadregistration.PREPEND))
+  -- if (pautoloadregistration.INDEX = 1 /\ pautoloadregistration.THROW) \/ ($(pautoloadregistration.INDEX > 1) /\ $autoload_bool(S, pautoloadregistration.ENTRY.CALL, 1, true) = (pautoloadregistration.THROW))
+  -- if ($(pautoloadregistration.INDEX < 3) /\ ~pautoloadregistration.PREPEND) \/ (pautoloadregistration.INDEX = 3 /\ $autoload_bool(S, pautoloadregistration.ENTRY.CALL, 2, false) = (pautoloadregistration.PREPEND))
 def $autoload_registration_receive_valid(S, pautoloadregistration) = false -- otherwise
 def $autoload_registration_null_valid(S, pautoloadregistration) = ($autoload_registration_receive_valid(S, pautoloadregistration) /\ $(pautoloadregistration.INDEX < 3) /\ $error_api_value(pautoloadregistration.ENTRY.CALL, pautoloadregistration.INDEX, PBOOL false) = PNULL /\ ~$config_strict(S, pautoloadregistration.ENTRY.CALL))
 def $autoload_registration_notice_valid(S, pautoloadregistration) = ($autoload_registration_receive_valid(S, pautoloadregistration) /\ pautoloadregistration.INDEX = 3 /\ ~pautoloadregistration.THROW)
@@ -504,7 +504,8 @@ def $autoload_active_frames(pframe :: pframe_tail*, ptbytes) = ($autoload_active
 def $autoload_pending(S, ptbytes) = true
   -- if ~$dynamic_new_known(S, $autoload_lookup_name(ptbytes))
   -- if $autoload_class_name(ptbytes)
-  -- if $autoload_count(S.AUTOLOAD.ENTRIES) > 0
+  -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
+  -- if $(n_count > 0)
   -- if ~$autoload_active_tasks(S.TODO, $ptlc($autoload_lookup_name(ptbytes)))
   -- if ~$autoload_active_frames(S.FRAMES, $ptlc($autoload_lookup_name(ptbytes)))
 def $autoload_parent_pending(S, pclassdesc) = true
@@ -827,7 +828,7 @@ def $api_target_valid(S, papiquery, porigin, ptbytes) = true
 ;; A mixed table starts at eight buckets. Appends compact only at capacity;
 ;; external HashPosition cursors are intentionally left at their old indices.
 def $autoload_initialize(S) = S[.AUTOLOAD.CAPACITY = 8] -- if S.AUTOLOAD.CAPACITY = 0
-def $autoload_initialize(S) = S -- if S.AUTOLOAD.CAPACITY > 0
+def $autoload_initialize(S) = S -- if $(S.AUTOLOAD.CAPACITY > 0)
 def $autoload_resize(S) = S -- if $(|S.AUTOLOAD.ENTRIES| < S.AUTOLOAD.CAPACITY)
 def $autoload_resize(S) = S[.AUTOLOAD.ENTRIES = $autoload_compact(S.AUTOLOAD.ENTRIES)]
   -- if $(|S.AUTOLOAD.ENTRIES| >= S.AUTOLOAD.CAPACITY)
@@ -838,9 +839,10 @@ def $autoload_resize(S) = S[.AUTOLOAD.CAPACITY = $(2 * S.AUTOLOAD.CAPACITY)]
   -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
   -- if $(|S.AUTOLOAD.ENTRIES| <= n_count + (n_count / 32))
 def $autoload_append(S, pautoloadentry) = S[.AUTOLOAD.ENTRIES = S.AUTOLOAD.ENTRIES ++ [(pautoloadentry)]]
-def $autoload_prepend(S, b) = S -- if ~b \/ $autoload_count(S.AUTOLOAD.ENTRIES) <= 1
+def $autoload_prepend(S, b) = S -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES) -- if ~b \/ $(n_count <= 1)
 def $autoload_prepend(S, true) = S[.AUTOLOAD.ENTRIES = [(pautoloadentry)] ++ $autoload_compact(S.AUTOLOAD.ENTRIES[0:n])]
-  -- if $autoload_count(S.AUTOLOAD.ENTRIES) > 1
+  -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
+  -- if $(n_count > 1)
   -- if n = $(|S.AUTOLOAD.ENTRIES| - 1)
   -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
 def $autoload_capacity_valid(0) = true
@@ -857,7 +859,18 @@ def $autoload_entry_metadata(S, pautoloadentry) = true
   -- if $target_instance(pcalltarget) = (n)
   -- if pautoloadentry.SCOPE = (pclosurescope)
   -- if pautoloadentry.BINDING = eps
-  -- if pclosurescope.OBJECT = n /\ $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope)
+  -- if pclosurescope.OBJECT = n
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope)
+def $autoload_entry_metadata(S, pautoloadentry) = true
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_instance(pcalltarget) = (n)
+  -- if pautoloadentry.SCOPE = (pclosurescope) /\ pautoloadentry.BINDING = eps
+  -- if pclosurescope.OBJECT = n
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
+  -- if $closure_scope_row_valid($autoload_entry_history(S, pautoloadentry), pclosurescope)
 def $autoload_entry_metadata(S, pautoloadentry) = true
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
   -- if $target_instance(pcalltarget) = (n)
