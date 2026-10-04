@@ -264,8 +264,12 @@ bounded CV-array W/RW and direct GLOBALS reference fetches. Callback copies abor
 acquisition; real cell aliases, moved sole keepers, delayed RHS reads and named
 reference priority retain their native behavior. Author11/340 and independent15
 fresh/266 plus two retained originals keep separate cuts; one current typed-caller
-interaction passes. Append, unset, coalesce assignment and wider producers
-remain required.
+interaction passes. [Coalesce assignment and unset keys](docs/semantics/SOURCE-DIMENSION-EDITS.md)
+now stage direct CV-array consumers: memoized keys and separate read/write lines,
+write-copy abort, unset liveness and shared typed cells survive callbacks.
+Author6/255 and independent10/216 share one original, giving15 unique private
+agreements; two reduced current trait-handler sources pass. Nested unset,
+wider memoized containers, append and wider producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -444,9 +448,12 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
-[Source trait methods](docs/semantics/SOURCE-TRAITS.md) compose nested uses, conflicts
+[Source traits](docs/semantics/SOURCE-TRAITS.md) compose nested uses, conflicts
 and adaptations with using-class scope, original body provenance and distinct
-class/alias static cells. Trait properties and constants remain the next phase. A bounded
+class/alias static cells. Property/constant composition preserves invariant source
+types, strict evaluated compatibility, per-import identities and static sharing.
+Imported deferred instance defaults use owning class templates. Effectful
+collisions and direct trait-property warning continuations remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound

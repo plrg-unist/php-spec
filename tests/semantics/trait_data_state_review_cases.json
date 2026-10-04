@@ -1,0 +1,60 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only unresolved compatibility, imported reference constraints and default COW controls; zero model agreement until238 execution.",
+  "cases": [
+    {
+      "id": "property-unresolved-different-nominals-conflict",
+      "source": "<?php echo \"PRE;\";trait T{public ?A $x=null;}class C{use T;public ?B $x=null;}echo \"POST\";",
+      "source_sha256": "987c567fb9ad8500a5ba0af3de447668d62c613b65705c9ee93e1e74aa1a739a",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-state-native238-ms1s0it6/report.json",
+      "native_raw_sha256": "5073f74e28fa7170e799b0d9093d3743f39dd5480443f4eba9f1be0afdd414cf"
+    },
+    {
+      "id": "constant-unresolved-different-nominals-permitted",
+      "source": "<?php trait T{public const ?A X=null;}class C{use T;public const ?B X=null;}echo C::X===null?\"Y\":\"N\";",
+      "source_sha256": "7ccdb05f02653d2ced2af0d55bf7fb5ee207292ed6fb2ffc510dc0afcc54e976",
+      "status": "normal",
+      "stdout_base64": "WQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-state-native238-ms1s0it6/report.json",
+      "native_raw_sha256": "5073f74e28fa7170e799b0d9093d3743f39dd5480443f4eba9f1be0afdd414cf"
+    },
+    {
+      "id": "static-reference-keeps-both-import-type-sources",
+      "source": "<?php trait T{public static ?self $p=null;}class C{use T;}class E{use T;}$r=&C::$p;E::$p=&$r;try{$r=new C;}catch(TypeError $e){echo $e->getMessage(),\";\";}echo C::$p===null&&E::$p===null?\"N\":\"BAD\";",
+      "source_sha256": "1fa0612bb7a93628df1b42d0db6f48d500d615fe08fe6c5c35d0aad468c3012f",
+      "status": "normal",
+      "stdout_base64": "Q2Fubm90IGFzc2lnbiBDIHRvIHJlZmVyZW5jZSBoZWxkIGJ5IHByb3BlcnR5IEU6OiRwIG9mIHR5cGUgP3NlbGY7Tg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-state-native238-ms1s0it6/report.json",
+      "native_raw_sha256": "5073f74e28fa7170e799b0d9093d3743f39dd5480443f4eba9f1be0afdd414cf"
+    },
+    {
+      "id": "static-reference-child-reuse-keeps-narrow-type-source",
+      "source": "<?php trait T{public static ?self $p=null;}class C{use T;}class E extends C{use T;}$r=&C::$p;E::$p=&$r;try{$r=new C;}catch(TypeError $e){echo \"E;\";}$r=new E;echo C::$p===$r&&E::$p===$r?\"Y\":\"N\";",
+      "source_sha256": "94a10ae3df772d99056e03c6daeceb200605d259e96610338ea77fcf59217734",
+      "status": "normal",
+      "stdout_base64": "RTtZ",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-state-native238-ms1s0it6/report.json",
+      "native_raw_sha256": "5073f74e28fa7170e799b0d9093d3743f39dd5480443f4eba9f1be0afdd414cf"
+    },
+    {
+      "id": "static-array-default-cow-per-import",
+      "source": "<?php trait T{public static array $p=[1];}class C{use T;}class E{use T;}C::$p[0]=2;echo C::$p[0],\":\",E::$p[0];",
+      "source_sha256": "7e93d03e98508f92514477bbf81bc0a4237abbeb23ca212fcd04af2d359ae0fe",
+      "status": "normal",
+      "stdout_base64": "Mjox",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-data-state-native238-ms1s0it6/report.json",
+      "native_raw_sha256": "5073f74e28fa7170e799b0d9093d3743f39dd5480443f4eba9f1be0afdd414cf"
+    }
+  ]
+}

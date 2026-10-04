@@ -1,0 +1,448 @@
+;; Imported data keeps its physical initializer and a using-class identity.
+;; Compatibility runs constants before properties, before parent inheritance.
+syntax ptraitdatacheck = TRAITDATAOK | TRAITDATABAD | TRAITDATAUNKNOWN text
+syntax ptraitdatavalue = TRAITVALUE pstate pvalue | TRAITUNINITIALIZED | TRAITVALUEUNKNOWN text
+
+
+dec $trait_data_import_type(pclassdesc, ptbranch*) : ptbranch*
+dec $trait_data_property(pclassdesc, ppropertydesc) : ppropertydesc
+dec $trait_data_constant(pclassdesc, pclassconstantdesc) : pclassconstantdesc
+dec $trait_data_private_key(ppropertydesc, ptbytes) : ptbytes
+dec $trait_data_prior(pclassdesc*, ptbytes, bool, ptbytes) : ptbytes
+dec $trait_data_scope(pstate, pclassdesc) : pvclass
+dec $trait_data_ancestors(pstate, pclassdesc) : ptbytes*
+dec $trait_data_types(pstate, pclassdesc, ptbranch*, pclassdesc, ptbranch*, bool, bool) : ptraitdatacheck
+dec $trait_property_source_type(pstate, ppropertydesc) : ptbranch*
+dec $trait_property_source_at(pclassdesc*, porigin) : ppropertydesc?
+dec $trait_property_source_items(ppropertydesc*, porigin) : ppropertydesc?
+dec $trait_data_covariance(pvresult, pvresult, bool) : ptraitdatacheck
+dec $trait_member_fold(pstate, pclassdesc, porigin) : pfstate?
+dec $trait_fold_value(pstate, pclassdesc, porigin) : ptraitdatavalue
+dec $trait_property_value(pstate, pclassdesc, ppropertydesc) : ptraitdatavalue
+dec $trait_property_coerced(ptraitdatavalue, ptbranch*) : ptraitdatavalue
+dec $trait_constant_coerced(ptraitdatavalue, ptbranch*) : ptraitdatavalue
+dec $trait_constant_value(pstate, pclassdesc, pclassconstantdesc) : ptraitdatavalue
+dec $trait_data_compare(ptraitdatavalue, ptraitdatavalue) : ptraitdatacheck
+dec $trait_data_compare_left(pstate, pclassdesc, ppropertydesc, ppropertydesc, ptraitdatavalue) : ptraitdatacheck
+dec $trait_constant_compare_left(pstate, pclassdesc, pclassconstantdesc, pclassconstantdesc, ptraitdatavalue) : ptraitdatacheck
+dec $trait_data_properties(pstate, pclassdesc, pclassdesc*, pclassdesc*) : pstate
+dec $trait_data_property_items(pstate, pclassdesc, pclassdesc, ppropertydesc*, pclassdesc*) : pstate
+dec $trait_data_property_one(pstate, pclassdesc, pclassdesc, ppropertydesc, pclassdesc*) : pstate
+dec $trait_data_property_checked(pstate, pclassdesc, pclassdesc, ppropertydesc, ppropertydesc, pclassdesc*, ptraitdatacheck) : pstate
+dec $trait_data_property_values(pstate, pclassdesc, pclassdesc, ppropertydesc, ppropertydesc, pclassdesc*, ptraitdatacheck) : pstate
+dec $trait_data_property_error(pstate, pclassdesc, pclassdesc, ppropertydesc, pclassdesc*) : pstate
+dec $trait_data_constants(pstate, pclassdesc, pclassdesc*, pclassdesc*) : pstate
+dec $trait_data_constant_items(pstate, pclassdesc, pclassdesc, pclassconstantdesc*, pclassdesc*) : pstate
+dec $trait_data_constant_one(pstate, pclassdesc, pclassdesc, pclassconstantdesc, pclassdesc*) : pstate
+dec $trait_data_constant_checked(pstate, pclassdesc, pclassdesc, pclassconstantdesc, pclassconstantdesc, pclassdesc*, ptraitdatacheck) : pstate
+dec $trait_data_constant_values(pstate, pclassdesc, pclassdesc, pclassconstantdesc, pclassconstantdesc, pclassdesc*, ptraitdatacheck) : pstate
+dec $trait_data_constant_error(pstate, pclassdesc, pclassdesc, pclassconstantdesc, pclassdesc*) : pstate
+dec $trait_data_parents(pstate, pclassdesc, ptraitmethod*, pstate) : pstate
+dec $trait_data_bound(pstate, pclassdesc, ptraitmethod*, pclassdesc*, pstate) : pstate
+dec $trait_fold_name_value(pstate, ptbytes, ptbytes?) : pvalue?
+dec $trait_fold_scope(pfstate, pcpath) : bool
+dec $trait_pool_facts(pstate, nat, pconstant*) : pffact*
+dec $trait_pool_classes(pconstant*) : (pcpath, pvalueclass)*
+dec $trait_fold_class_name(pfstate, pcpath, phpType19, pvalue?) : ptbytes?
+dec $trait_fold_classname(pfstate, pcpath, phpType19, int) : pfstate
+dec $trait_fold_constant_lookup(pfstate, pclassdesc, ptbytes, nat) : pclassconstantdesc?
+dec $trait_member_initializer_scope(pstate, porigin, porigin) : porigin?
+dec $trait_property_fast_equal(ptbranch*, ptbranch*) : bool
+dec $trait_property_source_fast_equal(pstate, ppropertydesc, ppropertydesc) : bool
+dec $trait_property_keyword_spelling(pstate, ppropertydesc) : ptbytes?
+dec $trait_member_type_input(pstate, porigin) : ptinput?
+dec $trait_member_display_type(pstate, porigin, ptbranch*) : ptbranch*
+dec $trait_type_display(ptbranch*, ptinput) : ptbranch*
+dec $trait_type_display_branch(ptbranch, ptinput) : ptbranch
+dec $trait_type_display_atom(ptatom, ptinput) : ptatom
+dec $trait_type_keyword_named(ptinput, ptbytes) : ptbytes?
+dec $trait_type_keyword_names(ptinput*, ptbytes) : ptbytes?
+dec $trait_type_keyword_spelling(ptinput) : ptbytes?
+dec $trait_type_keyword_spellings(ptinput*) : ptbytes?
+dec $trait_type_contextual(ptbranch*) : bool
+dec $trait_type_contextual_atoms(ptatom*) : bool
+dec $trait_type_names(ptbranch*) : nat
+dec $trait_type_atom_names(ptatom*) : nat
+dec $trait_type_atom_nominal(ptatom) : nat
+dec $trait_data_needs(pvresult) : bool
+dec $trait_static_property_read_pending(ptask*) : bool
+dec $trait_data_fatal(pstate, pclassdesc, ptbytes) : pstate
+
+def $trait_data_import_type(pclassdesc, ptbranch*) = ptbranch* -- if pclassdesc.KIND = "trait"
+def $trait_data_import_type(pclassdesc, ptbranch*) = $trait_type_branches(ptbranch*, pclassdesc.NAME, pclassdesc.PARENT) -- if pclassdesc.KIND =/= "trait"
+def $trait_data_private_key(ppropertydesc, ptbytes) = [0] ++ ptbytes ++ [0] ++ ppropertydesc.NAME -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE
+def $trait_data_private_key(ppropertydesc, ptbytes) = ppropertydesc.KEY -- if ppropertydesc.VISIBILITY =/= PROPERTY_PRIVATE
+def $trait_data_property(pclassdesc, ppropertydesc) = ppropertydesc[.ORIGIN = TRAIT_MEMBER_ORIGIN pclassdesc.ORIGIN ($origin_source(porigin))][.KEY = $trait_data_private_key(ppropertydesc, pclassdesc.NAME)][.TYPE = $trait_data_import_type(pclassdesc, ppropertydesc.TYPE)]
+  -- if ppropertydesc.ORIGIN = porigin
+def $trait_data_constant(pclassdesc, pclassconstantdesc) = pclassconstantdesc[.ORIGIN = TRAIT_MEMBER_ORIGIN pclassdesc.ORIGIN ($origin_source(pclassconstantdesc.ORIGIN))][.OWNER = pclassdesc.ORIGIN][.OWNERNAME = pclassdesc.NAME][.TYPE = $trait_data_import_type(pclassdesc, pclassconstantdesc.TYPE)]
+
+;; Even a compatible earlier trait is the exporter named by a later conflict.
+def $trait_data_prior(eps, ptbytes, b_constant, ptbytes_owner) = ptbytes_owner
+def $trait_data_prior(pclassdesc :: pclassdesc_tail*, ptbytes, true, ptbytes_owner) = pclassdesc.NAME -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) =/= eps
+def $trait_data_prior(pclassdesc :: pclassdesc_tail*, ptbytes, false, ptbytes_owner) = pclassdesc.NAME -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ptbytes) =/= eps
+def $trait_data_prior(pclassdesc :: pclassdesc_tail*, ptbytes, true, ptbytes_owner) = $trait_data_prior(pclassdesc_tail*, ptbytes, true, ptbytes_owner) -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) = eps
+def $trait_data_prior(pclassdesc :: pclassdesc_tail*, ptbytes, false, ptbytes_owner) = $trait_data_prior(pclassdesc_tail*, ptbytes, false, ptbytes_owner) -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ptbytes) = eps
+
+def $trait_data_ancestors(S, pclassdesc) = [pclassdesc_parent.NAME] ++ $method_all_ancestor_names(S, pclassdesc_parent.ORIGIN, |S.CLASSES|)
+  -- if pclassdesc.PARENT = (ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc_parent)
+def $trait_data_ancestors(S, pclassdesc) = eps -- otherwise
+def $trait_data_scope(S, pclassdesc) = $pmethod_scope(pclassdesc, $trait_data_ancestors(S, pclassdesc))
+def $trait_property_source_items(eps, porigin) = eps
+def $trait_property_source_items(ppropertydesc :: ppropertydesc_tail*, porigin) = (ppropertydesc) -- if ppropertydesc.ORIGIN = porigin
+def $trait_property_source_items(ppropertydesc :: ppropertydesc_tail*, porigin) = $trait_property_source_items(ppropertydesc_tail*, porigin) -- if ppropertydesc.ORIGIN =/= porigin
+def $trait_property_source_at(eps, porigin) = eps
+def $trait_property_source_at(pclassdesc :: pclassdesc_tail*, porigin) = (ppropertydesc) -- if $trait_property_source_items(pclassdesc.PROPERTIES, porigin) = (ppropertydesc)
+def $trait_property_source_at(pclassdesc :: pclassdesc_tail*, porigin) = $trait_property_source_at(pclassdesc_tail*, porigin) -- if $trait_property_source_items(pclassdesc.PROPERTIES, porigin) = eps
+def $property_type_name(S, ppropertydesc) = $pttypename($trait_member_display_type(S, porigin, $trait_property_source_type(S, ppropertydesc))) -- if ppropertydesc.ORIGIN = porigin
+def $property_type_name(S, ppropertydesc) = $pttypename(ppropertydesc.TYPE) -- otherwise
+def $trait_constant_type_name(S, pclassconstantdesc) = $pttypename($trait_member_display_type(S, pclassconstantdesc.ORIGIN, $trait_constant_source_type(S, pclassconstantdesc)))
+def $trait_property_source_type(S, ppropertydesc) = ppropertydesc_source.TYPE
+  -- if ppropertydesc.ORIGIN = porigin
+  -- if $trait_property_source_at(S.CLASSES, $origin_source(porigin)) = (ppropertydesc_source)
+def $trait_property_source_type(S, ppropertydesc) = ppropertydesc.TYPE -- otherwise
+;; Zend's identical raw mask/name shortcut precedes scoped type comparison.
+;; This comparison-only view keeps the published bound types and every flag.
+def $trait_property_inherit_message(S, ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = $ppproperty_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child[.TYPE = ppropertydesc_parent.TYPE])
+  -- if $trait_property_source_fast_equal(S, ppropertydesc_parent, ppropertydesc_child)
+def $trait_property_inherit_message(S, ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = $ppproperty_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child)
+  -- if ~$trait_property_source_fast_equal(S, ppropertydesc_parent, ppropertydesc_child)
+def $trait_data_types(S, pclassdesc_left, eps, pclassdesc_right, eps, b_constant, b_fast) = TRAITDATAOK
+def $trait_data_types(S, pclassdesc_left, ptbranch_left*, pclassdesc_right, ptbranch_right*, b_constant, b_fast) = TRAITDATABAD
+  -- if (ptbranch_left* = eps /\ ptbranch_right* =/= eps) \/ (ptbranch_left* =/= eps /\ ptbranch_right* = eps)
+def $trait_data_types(S, pclassdesc_left, ptbranch_left*, pclassdesc_right, ptbranch_right*, false, true) = TRAITDATAOK
+  -- if ptbranch_left* =/= eps /\ ptbranch_right* =/= eps
+def $trait_data_types(S, pclassdesc_left, ptbranch_left*, pclassdesc_right, ptbranch_right*, b_constant, b_fast) = $trait_data_covariance($pvcovariant(ptbranch_left*, pvclass_left, ptbranch_right*, pvclass_right, pvclasses), $pvcovariant(ptbranch_right*, pvclass_right, ptbranch_left*, pvclass_left, pvclasses), b_constant)
+  -- if ptbranch_left* =/= eps /\ ptbranch_right* =/= eps
+  -- if b_constant \/ ~b_fast
+  -- if pvclass_left = $trait_data_scope(S, pclassdesc_left)
+  -- if pvclass_right = $trait_data_scope(S, pclassdesc_right)
+  -- if pvclasses = $method_active_registry(S, S.CLASSNAMES)
+def $trait_data_covariance(PVINCOMPATIBLE, pvresult, b_constant) = TRAITDATABAD
+def $trait_data_covariance(pvresult, PVINCOMPATIBLE, b_constant) = TRAITDATABAD -- if pvresult =/= PVINCOMPATIBLE
+def $trait_data_covariance(PVCOMPATIBLE, PVCOMPATIBLE, b_constant) = TRAITDATAOK
+def $trait_data_covariance(PVNEEDS ptbytes*, pvresult, true) = TRAITDATAOK -- if pvresult = PVCOMPATIBLE \/ $trait_data_needs(pvresult)
+def $trait_data_covariance(PVCOMPATIBLE, PVNEEDS ptbytes*, true) = TRAITDATAOK
+def $trait_data_covariance(pvresult_left, pvresult_right, false) = TRAITDATABAD
+  -- if $trait_data_needs(pvresult_left) \/ $trait_data_needs(pvresult_right)
+  -- if pvresult_left =/= PVINCOMPATIBLE /\ pvresult_right =/= PVINCOMPATIBLE
+def $trait_data_covariance(pvresult_left, pvresult_right, b_constant) = TRAITDATAUNKNOWN "unsupported trait data type compatibility" -- otherwise
+def $trait_property_fast_equal(ptbranch_left*, ptbranch_right*) = ($ppproperty_type_equal(ptbranch_left*, ptbranch_right*) /\ $($trait_type_names(ptbranch_left*) <= 1))
+def $trait_property_source_fast_equal(S, ppropertydesc_left, ppropertydesc_right) = ($trait_property_fast_equal($trait_property_source_type(S, ppropertydesc_left), $trait_property_source_type(S, ppropertydesc_right)) /\ (~$trait_type_contextual($trait_property_source_type(S, ppropertydesc_left)) \/ ($trait_property_keyword_spelling(S, ppropertydesc_left) =/= eps /\ $trait_property_keyword_spelling(S, ppropertydesc_left) = $trait_property_keyword_spelling(S, ppropertydesc_right))))
+def $trait_type_contextual(eps) = false
+def $trait_type_contextual((PTBRANCH ptatom*) :: ptbranch*) = ($trait_type_contextual_atoms(ptatom*) \/ $trait_type_contextual(ptbranch*))
+def $trait_type_contextual_atoms(eps) = false
+def $trait_type_contextual_atoms(ptatom :: ptatom_tail*) = (ptatom <- [PTSELF, PTPARENT, PTSTATIC] \/ $trait_type_contextual_atoms(ptatom_tail*))
+def $trait_property_keyword_spelling(S, ppropertydesc) = $trait_type_keyword_spelling($ptast(phpType18))
+  -- if ppropertydesc.ORIGIN = porigin
+  -- if $origin_source(porigin) = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NPropertyItem phpType40 expression metadata)
+  -- if $(|pcpath| >= 2)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath[0:$nabs($(|pcpath| - 2))]) = (NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata_group)
+def $trait_property_keyword_spelling(S, ppropertydesc) = eps -- otherwise
+;; Only diagnostics project source keyword spelling; stored and checked types
+;; remain normalized and bound to their authentic declaring owner.
+def $trait_member_type_input(S, porigin) = ($ptast(phpType18))
+  -- if $origin_source(porigin) = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NPropertyItem phpType40 expression metadata)
+  -- if $(|pcpath| >= 2)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath[0:$nabs($(|pcpath| - 2))]) = (NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata_group)
+def $trait_member_type_input(S, porigin) = ($ptast(phpType18))
+  -- if $origin_source(porigin) = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NConst phpType11 expression metadata)
+  -- if $(|pcpath| >= 2)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath[0:$nabs($(|pcpath| - 2))]) = (NStmtClassConst phpType14 phpType24 phpType18 phpType45 metadata_group)
+def $trait_member_type_input(S, porigin) = eps -- otherwise
+def $trait_member_display_type(S, porigin, ptbranch*) = $trait_type_display(ptbranch*, ptinput) -- if $trait_member_type_input(S, porigin) = (ptinput)
+def $trait_member_display_type(S, porigin, ptbranch*) = ptbranch* -- if $trait_member_type_input(S, porigin) = eps
+def $trait_type_display(ptbranch*, ptinput) = ($trait_type_display_branch(ptbranch, ptinput))*
+def $trait_type_display_branch(PTBRANCH ptatom*, ptinput) = PTBRANCH ($trait_type_display_atom(ptatom, ptinput))*
+def $trait_type_display_atom(ptatom, ptinput) = PTCLASS ptbytes
+  -- if ptatom <- [PTSELF, PTPARENT, PTSTATIC]
+  -- if $trait_type_keyword_named(ptinput, $ptatomname(ptatom)) = (ptbytes)
+def $trait_type_display_atom(ptatom, ptinput) = ptatom -- otherwise
+def $trait_type_keyword_named(PTNAME PTPLAIN ptbytes, ptbytes_keyword) = (ptbytes) -- if $ptlc(ptbytes) = ptbytes_keyword
+def $trait_type_keyword_named(PTNULLABLE ptinput, ptbytes) = $trait_type_keyword_named(ptinput, ptbytes)
+def $trait_type_keyword_named(PTUNION ptinput*, ptbytes) = $trait_type_keyword_names(ptinput*, ptbytes)
+def $trait_type_keyword_named(PTINTER ptinput*, ptbytes) = $trait_type_keyword_names(ptinput*, ptbytes)
+def $trait_type_keyword_named(ptinput, ptbytes) = eps -- otherwise
+def $trait_type_keyword_names(eps, ptbytes) = eps
+def $trait_type_keyword_names(ptinput :: ptinput_tail*, ptbytes) = (ptbytes_raw) -- if $trait_type_keyword_named(ptinput, ptbytes) = (ptbytes_raw)
+def $trait_type_keyword_names(ptinput :: ptinput_tail*, ptbytes) = $trait_type_keyword_names(ptinput_tail*, ptbytes) -- if $trait_type_keyword_named(ptinput, ptbytes) = eps
+def $trait_type_keyword_spelling(PTNAME PTPLAIN ptbytes) = (ptbytes) -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $trait_type_keyword_spelling(PTNULLABLE ptinput) = $trait_type_keyword_spelling(ptinput)
+def $trait_type_keyword_spelling(PTUNION ptinput*) = $trait_type_keyword_spellings(ptinput*)
+def $trait_type_keyword_spelling(PTINTER ptinput*) = $trait_type_keyword_spellings(ptinput*)
+def $trait_type_keyword_spelling(ptinput) = eps -- otherwise
+def $trait_type_keyword_spellings(eps) = eps
+def $trait_type_keyword_spellings(ptinput :: ptinput_tail*) = (ptbytes) -- if $trait_type_keyword_spelling(ptinput) = (ptbytes)
+def $trait_type_keyword_spellings(ptinput :: ptinput_tail*) = $trait_type_keyword_spellings(ptinput_tail*) -- if $trait_type_keyword_spelling(ptinput) = eps
+def $trait_type_names(eps) = 0
+def $trait_type_names((PTBRANCH ptatom*) :: ptbranch*) = $($trait_type_atom_names(ptatom*) + $trait_type_names(ptbranch*))
+def $trait_type_atom_names(eps) = 0
+def $trait_type_atom_names(ptatom :: ptatom_tail*) = $($trait_type_atom_nominal(ptatom) + $trait_type_atom_names(ptatom_tail*))
+def $trait_type_atom_nominal(PTCLASS ptbytes) = 1
+def $trait_type_atom_nominal(PTSELF) = 1
+def $trait_type_atom_nominal(PTPARENT) = 1
+def $trait_type_atom_nominal(PTSTATIC) = 1
+def $trait_type_atom_nominal(ptatom) = 0 -- otherwise
+def $trait_data_needs(PVNEEDS ptbytes*) = true
+def $trait_data_needs(pvresult) = false -- otherwise
+
+;; Reuse the checked expression folder in a scratch arena. Scratch arrays never
+;; become descriptor values or live heap owners. Effectful work remains deferred.
+def $trait_member_fold(S, pclassdesc, PORIGIN n pcpath) = (F_result)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $($expression_line(expression) > 0)
+  -- if F = $pfbegin(n, pcunit.AST)
+  -- if porigin_member = PORIGIN n pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if S_memory = S[.CONSTCONTEXT = ({ORIGIN TRAIT_MEMBER_ORIGIN pclassdesc.ORIGIN porigin_member, LINE $expression_line(expression), FACTS eps})]
+  -- if ptcontext = {NAMESPACE eps, IMPORTS eps, SCOPE PTKNOWN pclassdesc.NAME pclassdesc.PARENT, POSITION PTCONSTANT, OWNER pclassdesc.NAME, MEMBER eps, FILE $call_sourcefile(S.FILES, PORIGIN n pcpath), LINE $nabs($expression_line(expression))}
+  -- if $pool_at(S.POOLS, n) = (ppool)
+  -- if F_result = $pfprepare(F[.FACTS = $trait_pool_facts(S, n, ppool.CONSTANTS)][.CLASSFACTS = $trait_pool_classes(ppool.CONSTANTS)][.CLASSES = S.CLASSES][.CLASSCONSTANTS = pclassdesc.CONSTANTS][.EXTERNAL = (S)][.DEFAULT = true][.CONSTANT = true][.CLASSCONTEXT = (ptcontext)][.FILE = ($call_sourcefile(S.FILES, PORIGIN n pcpath))][.CWD = ($call_request_cwd(S.REQUEST))][.MEMORY = S_memory], pcpath, expression, $plempty(false), $expression_line(expression))
+def $trait_member_fold(S, pclassdesc, porigin) = eps -- otherwise
+def $trait_pool_facts(S, n, eps) = eps
+def $trait_pool_facts(S, n, (PCONSTANT pcpath pvalue) :: pconstant*) = (PFFACT pcpath pvalue $expression_line(expression)) :: $trait_pool_facts(S, n, pconstant*)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+def $trait_pool_facts(S, n, (PCONSTANT pcpath pvalue) :: pconstant*) = $trait_pool_facts(S, n, pconstant*)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = eps
+def $trait_pool_facts(S, n, (PCCLASS pcpath pvalueclass) :: pconstant*) = $trait_pool_facts(S, n, pconstant*)
+def $trait_pool_classes(eps) = eps
+def $trait_pool_classes((PCCLASS pcpath pvalueclass) :: pconstant*) = (pcpath, pvalueclass) :: $trait_pool_classes(pconstant*)
+def $trait_pool_classes((PCONSTANT pcpath pvalue) :: pconstant*) = $trait_pool_classes(pconstant*)
+
+def $trait_fold_owner(F) = (porigin_owner)
+  -- if F.MEMORY.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN F.SOURCE.ID pcpath)
+  -- if $class_at(F.CLASSES, porigin_owner) = (pclassdesc)
+  -- if F.CLASSCONTEXT = (ptcontext)
+  -- if ptcontext.SCOPE = PTKNOWN pclassdesc.NAME pclassdesc.PARENT
+  -- if ptcontext.OWNER = pclassdesc.NAME
+  -- if $constant_expression_root(F.MEMORY, pconstantcontext.ORIGIN) =/= eps
+def $trait_fold_owner(F) = eps -- otherwise
+def $trait_fold_scope(F, pcpath) = $constant_expression_below(F.MEMORY, pconstantcontext.ORIGIN, PORIGIN F.SOURCE.ID pcpath)
+  -- if $trait_fold_owner(F) =/= eps
+  -- if F.MEMORY.CONSTCONTEXT = (pconstantcontext)
+def $trait_fold_scope(F, pcpath) = false -- otherwise
+def $trait_fold_name_value(S, ptbytes, ptbytes_fallback?) = (puserconstant.VALUE) -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(ptbytes)) = (puserconstant)
+def $trait_fold_name_value(S, ptbytes, ptbytes_fallback?) = (pvalue)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(ptbytes)) = eps
+  -- if $constant_lookup_bytes(ptbytes) = (VALUE pvalue)
+def $trait_fold_name_value(S, ptbytes, (ptbytes_fallback)) = $trait_fold_name_value(S, ptbytes_fallback, eps)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(ptbytes)) = eps
+  -- if $constant_lookup_bytes(ptbytes) = eps
+def $trait_fold_name_value(S, ptbytes, ptbytes_fallback?) = eps -- otherwise
+def $pfdispatch(F, pcpath, PFNAME name, z) = $pfremember(F, pcpath, $trait_fold_name_value(S_external, ptbytes, ptbytes_fallback?), z)
+  -- if $trait_fold_scope(F, pcpath)
+  -- if F.EXTERNAL = (S_external)
+  -- if $code_at(S_external.CODE, F.SOURCE.ID) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, ptbytes_fallback?))
+def $trait_fold_class_name(F, pcpath, phpType19, pvalue?) = (pclassdesc.NAME)
+  -- if $pfclassname_keyword(phpType19) = $ptascii("self")
+  -- if $trait_fold_owner(F) = (porigin)
+  -- if $class_at(F.CLASSES, porigin) = (pclassdesc)
+def $trait_fold_class_name(F, pcpath, phpType19, pvalue?) = pclassdesc.PARENT
+  -- if $pfclassname_keyword(phpType19) = $ptascii("parent")
+  -- if $trait_fold_owner(F) = (porigin)
+  -- if $class_at(F.CLASSES, porigin) = (pclassdesc)
+def $trait_fold_class_name(F, pcpath, phpType19, pvalue?) = (ptbytes)
+  -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
+  -- if F.EXTERNAL = (S_external)
+  -- if $code_at(S_external.CODE, F.SOURCE.ID) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, ptbytes_fallback?))
+def $trait_fold_class_name(F, pcpath, phpType19, (PSTRING ptbytes)) = (ptbytes) -- if ~$ppscoped_named(phpType19)
+def $trait_fold_class_name(F, pcpath, phpType19, pvalue?) = eps -- otherwise
+def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = $trait_fold_classname(F, pcpath, phpType19, z) -- if $trait_fold_scope(F, pcpath)
+def $trait_fold_classname(F, pcpath, phpType19, z) = $pfremember(F, pcpath, (PSTRING ptbytes), z) -- if $trait_fold_class_name(F, pcpath, phpType19, eps) = (ptbytes)
+def $trait_fold_classname(F, pcpath, phpType19, z) = F[.VALUE = eps] -- otherwise
+def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = $trait_fold_constant_lookup(F, pclassdesc, ptbytes, n)
+  -- if $trait_fold_scope(F, pcpath)
+  -- if $trait_fold_owner(F) = (porigin)
+  -- if $class_at(F.CLASSES, porigin) = (pclassdesc)
+  -- if $ptlc(pclassdesc.NAME) = $ptlc(ptbytes_class)
+def $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, n) = $class_constant_lookup(S_external, porigin_class, ptbytes, n)
+  -- if $trait_fold_scope(F, pcpath)
+  -- if $trait_fold_owner(F) = (porigin)
+  -- if $class_at(F.CLASSES, porigin) = (pclassdesc)
+  -- if $ptlc(pclassdesc.NAME) =/= $ptlc(ptbytes_class)
+  -- if F.EXTERNAL = (S_external)
+  -- if $class_named(S_external.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_class)
+def $trait_fold_constant_lookup(F, pclassdesc, ptbytes, n) = (pclassconstantdesc) -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) = (pclassconstantdesc)
+def $trait_fold_constant_lookup(F, pclassdesc, ptbytes, n) = $class_constant_lookup(S_external, porigin_parent, ptbytes, $nabs($(n - 1)))
+  -- if $class_constant_desc(pclassdesc.CONSTANTS, ptbytes) = eps
+  -- if $(n > 0)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if F.EXTERNAL = (S_external)
+  -- if $class_named(S_external.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+def $trait_fold_constant_lookup(F, pclassdesc, ptbytes, n) = eps -- otherwise
+
+def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $pfclass_constant_value(F[.MEMORY = S_imported], pcpath, pvalue_imported, (pvalueclass), z)
+  -- if $trait_fold_scope(F, pcpath)
+  -- if F.EXTERNAL = (S_external)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if $trait_fold_class_name(F, pcpath, phpType19, pvalue_class?) = (ptbytes_class)
+  -- if $pfclass_constant_member(phpType20, pvalue_member?) = (ptbytes)
+  -- if $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, $pfclass_constant_budget(F)) = (pclassconstantdesc)
+  -- if $pfclass_constant_visible(F, pclassconstantdesc)
+  -- if $class_constant_compile_value(S_external, pclassconstantdesc) = ((pvalue, pvalueclass))
+  -- if $pfclass_import(S_external, F.MEMORY, pvalue, $(|S_external.ARRAYS| + 1)) = ((S_imported, pvalue_imported))
+
+def $trait_fold_value(S, pclassdesc, porigin) = TRAITVALUE F.MEMORY pvalue
+  -- if $trait_member_fold(S, pclassdesc, porigin) = (F)
+  -- if F.VALUE = (pvalue)
+  -- if F.MEMORY.COMPLETION = NORMAL /\ F.WARNINGS = eps
+  -- if F.MEMORY.EVENTS = S.EVENTS /\ F.MEMORY.TODO = S.TODO
+def $trait_fold_value(S, pclassdesc, porigin) = TRAITVALUEUNKNOWN "effectful or unresolved trait data initializer" -- otherwise
+def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITUNINITIALIZED -- if ppropertydesc.DEFAULT = PROP_UNINITIALIZED
+def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUE S PNULL -- if ppropertydesc.DEFAULT = PROP_NULL
+def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUE S pvalue -- if ppropertydesc.DEFAULT = PROP_LITERAL pvalue
+def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUE S ($property_default_value(ppropertydesc.TYPE, pvalue))
+  -- if ppropertydesc.DEFAULT = PROP_STORED porigin
+  -- if $pool_value(S.POOLS, porigin) = (pvalue)
+def $trait_property_value(S, pclassdesc, ppropertydesc) = $trait_property_coerced($trait_fold_value(S, pclassdesc, porigin), ppropertydesc.TYPE) -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin
+def $trait_property_value(S, pclassdesc, ppropertydesc) = TRAITVALUEUNKNOWN "trait property default storage" -- otherwise
+def $trait_constant_source_type(S, pclassconstantdesc) = pclassconstantdesc_source.TYPE
+  -- if $class_constant_origin(S.CLASSES, $origin_source(pclassconstantdesc.ORIGIN)) = (pclassconstantdesc_source)
+def $trait_constant_source_type(S, pclassconstantdesc) = pclassconstantdesc.TYPE -- otherwise
+def $trait_constant_value(S, pclassdesc, pclassconstantdesc) = TRAITVALUE S pvalue
+  -- if pclassconstantdesc.FOLDED
+  -- if $pool_value(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalue)
+def $trait_constant_value(S, pclassdesc, pclassconstantdesc) = $trait_constant_coerced($trait_fold_value(S, pclassdesc, pclassconstantdesc.INITIALIZER), pclassconstantdesc.TYPE) -- if ~pclassconstantdesc.FOLDED
+def $trait_constant_value(S, pclassdesc, pclassconstantdesc) = TRAITVALUEUNKNOWN "trait constant default storage" -- otherwise
+def $trait_property_coerced(TRAITVALUE S pvalue, ptbranch*) = TRAITVALUE S ($property_default_value(ptbranch*, pvalue))
+def $trait_property_coerced(ptraitdatavalue, ptbranch*) = ptraitdatavalue -- otherwise
+def $trait_constant_coerced(TRAITVALUE S pvalue, ptbranch*) = TRAITVALUE S ($class_constant_typed_value(ptbranch*, pvalue))
+def $trait_constant_coerced(ptraitdatavalue, ptbranch*) = ptraitdatavalue -- otherwise
+def $trait_data_compare(TRAITUNINITIALIZED, TRAITUNINITIALIZED) = TRAITDATAOK
+def $trait_data_compare(TRAITUNINITIALIZED, TRAITVALUE S pvalue) = TRAITDATABAD
+def $trait_data_compare(TRAITVALUE S pvalue, TRAITUNINITIALIZED) = TRAITDATABAD
+def $trait_data_compare(TRAITVALUE S_left pvalue_left, TRAITVALUE S_right pvalue_right) = TRAITDATAOK -- if $strict_check(S_right, pvalue_left, pvalue_right, eps) = COMPARED true
+def $trait_data_compare(TRAITVALUE S_left pvalue_left, TRAITVALUE S_right pvalue_right) = TRAITDATABAD -- if $strict_check(S_right, pvalue_left, pvalue_right, eps) = COMPARED false
+def $trait_data_compare(ptraitdatavalue_left, ptraitdatavalue_right) = TRAITDATAUNKNOWN "trait initializer compatibility evaluation" -- otherwise
+def $trait_data_compare_left(S, pclassdesc, ppropertydesc_left, ppropertydesc_right, TRAITVALUE S_left pvalue_left) = $trait_data_compare(TRAITVALUE S_left pvalue_left, $trait_property_value(S_left, pclassdesc, ppropertydesc_right))
+def $trait_data_compare_left(S, pclassdesc, ppropertydesc_left, ppropertydesc_right, ptraitdatavalue_left) = $trait_data_compare(ptraitdatavalue_left, $trait_property_value(S, pclassdesc, ppropertydesc_right)) -- otherwise
+def $trait_constant_compare_left(S, pclassdesc, pclassconstantdesc_left, pclassconstantdesc_right, TRAITVALUE S_left pvalue_left) = $trait_data_compare(TRAITVALUE S_left pvalue_left, $trait_constant_value(S_left, pclassdesc, pclassconstantdesc_right))
+def $trait_constant_compare_left(S, pclassdesc, pclassconstantdesc_left, pclassconstantdesc_right, ptraitdatavalue_left) = $trait_data_compare(ptraitdatavalue_left, $trait_constant_value(S, pclassdesc, pclassconstantdesc_right)) -- otherwise
+
+def $trait_data_link(S, pclassdesc, ptraitmethod*) = $trait_data_bound(S, pclassdesc, ptraitmethod*, pclassdesc_traits*, $trait_data_constants(S, pclassdesc, pclassdesc_traits*, eps))
+  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+def $trait_data_bound(S, pclassdesc, ptraitmethod*, pclassdesc_traits*, S_constants) = S_constants -- if S_constants.COMPLETION =/= NORMAL
+def $trait_data_bound(S, pclassdesc, ptraitmethod*, pclassdesc_traits*, S_constants) = $trait_data_parents(S, pclassdesc, ptraitmethod*, $trait_data_properties(S_constants, pclassdesc_constants, pclassdesc_traits*, eps))
+  -- if S_constants.COMPLETION = NORMAL
+  -- if $class_at(S_constants.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_constants)
+def $trait_data_parents(S, pclassdesc, ptraitmethod*, S_data) = S_data -- if S_data.COMPLETION =/= NORMAL
+def $trait_data_parents(S, pclassdesc, ptraitmethod*, S_data) = $trait_linked(S_data, pclassdesc_data, ptraitmethod*, $trait_parent_link(S_data, pclassdesc_data))
+  -- if S_data.COMPLETION = NORMAL
+  -- if $class_at(S_data.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_data)
+
+def $trait_data_constants(S, pclassdesc, pclassdesc_traits*, pclassdesc_prior*) = S -- if S.COMPLETION =/= NORMAL
+def $trait_data_constants(S, pclassdesc, eps, pclassdesc_prior*) = S -- if S.COMPLETION = NORMAL
+def $trait_data_constants(S, pclassdesc, pclassdesc_trait :: pclassdesc_traits*, pclassdesc_prior*) = $trait_data_constants($trait_data_constant_items(S, pclassdesc, pclassdesc_trait, pclassdesc_trait.CONSTANTS, pclassdesc_prior*), pclassdesc, pclassdesc_traits*, pclassdesc_prior* ++ [pclassdesc_trait]) -- if S.COMPLETION = NORMAL
+def $trait_data_constant_items(S, pclassdesc, pclassdesc_trait, pclassconstantdesc*, pclassdesc_prior*) = S -- if S.COMPLETION =/= NORMAL
+def $trait_data_constant_items(S, pclassdesc, pclassdesc_trait, eps, pclassdesc_prior*) = S -- if S.COMPLETION = NORMAL
+def $trait_data_constant_items(S, pclassdesc, pclassdesc_trait, pclassconstantdesc :: pclassconstantdesc_tail*, pclassdesc_prior*) = $trait_data_constant_items($trait_data_constant_one(S, pclassdesc_current, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*), pclassdesc, pclassdesc_trait, pclassconstantdesc_tail*, pclassdesc_prior*)
+  -- if S.COMPLETION = NORMAL
+  -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_current)
+def $trait_data_constant_one(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*) = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc[.CONSTANTS = pclassdesc.CONSTANTS ++ [$trait_data_constant(pclassdesc, pclassconstantdesc)]])]
+  -- if $class_constant_desc(pclassdesc.CONSTANTS, pclassconstantdesc.NAME) = eps
+def $trait_data_constant_one(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*) = $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*)
+  -- if $class_constant_desc(pclassdesc.CONSTANTS, pclassconstantdesc.NAME) = (pclassconstantdesc_prior)
+  -- if pclassconstantdesc_prior.VISIBILITY =/= pclassconstantdesc.VISIBILITY \/ pclassconstantdesc_prior.FINAL =/= pclassconstantdesc.FINAL
+def $trait_data_constant_one(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*) = $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, $trait_data_types(S, pclassdesc, $trait_constant_source_type(S, pclassconstantdesc_prior), pclassdesc_trait, pclassconstantdesc.TYPE, true, false))
+  -- if $class_constant_desc(pclassdesc.CONSTANTS, pclassconstantdesc.NAME) = (pclassconstantdesc_prior)
+  -- if pclassconstantdesc_prior.VISIBILITY = pclassconstantdesc.VISIBILITY /\ pclassconstantdesc_prior.FINAL = pclassconstantdesc.FINAL
+def $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*)
+def $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
+def $trait_data_constant_checked(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATAOK) = $trait_data_constant_values(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, $trait_constant_compare_left(S, pclassdesc, pclassconstantdesc, pclassconstantdesc_prior, $trait_constant_value(S, pclassdesc, pclassconstantdesc)))
+def $trait_data_constant_values(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATAOK) = S
+def $trait_data_constant_values(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*)
+def $trait_data_constant_values(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
+def $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*) = $trait_data_fatal(S, pclassdesc, $trait_data_prior(pclassdesc_prior*, pclassconstantdesc.NAME, true, pclassdesc.NAME) ++ $ptascii(" and ") ++ pclassdesc_trait.NAME ++ $ptascii(" define the same constant (") ++ pclassconstantdesc.NAME ++ $ptascii(") in the composition of ") ++ pclassdesc.NAME ++ $ptascii(". However, the definition differs and is considered incompatible. Class was composed"))
+
+def $trait_data_properties(S, pclassdesc, pclassdesc_traits*, pclassdesc_prior*) = S -- if S.COMPLETION =/= NORMAL
+def $trait_data_properties(S, pclassdesc, eps, pclassdesc_prior*) = S -- if S.COMPLETION = NORMAL
+def $trait_data_properties(S, pclassdesc, pclassdesc_trait :: pclassdesc_traits*, pclassdesc_prior*) = $trait_data_properties($trait_data_property_items(S, pclassdesc, pclassdesc_trait, pclassdesc_trait.PROPERTIES, pclassdesc_prior*), pclassdesc, pclassdesc_traits*, pclassdesc_prior* ++ [pclassdesc_trait]) -- if S.COMPLETION = NORMAL
+def $trait_data_property_items(S, pclassdesc, pclassdesc_trait, ppropertydesc*, pclassdesc_prior*) = S -- if S.COMPLETION =/= NORMAL
+def $trait_data_property_items(S, pclassdesc, pclassdesc_trait, eps, pclassdesc_prior*) = S -- if S.COMPLETION = NORMAL
+def $trait_data_property_items(S, pclassdesc, pclassdesc_trait, ppropertydesc :: ppropertydesc_tail*, pclassdesc_prior*) = $trait_data_property_items($trait_data_property_one(S, pclassdesc_current, pclassdesc_trait, ppropertydesc, pclassdesc_prior*), pclassdesc, pclassdesc_trait, ppropertydesc_tail*, pclassdesc_prior*)
+  -- if S.COMPLETION = NORMAL
+  -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_current)
+def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_fatal(S, pclassdesc, $ptascii("Readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot use trait with a non-readonly property ") ++ pclassdesc_trait.NAME ++ $ptascii("::$") ++ ppropertydesc.NAME)
+  -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = eps
+  -- if pclassdesc.READONLY
+def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc[.PROPERTIES = pclassdesc.PROPERTIES ++ [$trait_data_property(pclassdesc, ppropertydesc)]])]
+  -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = eps
+  -- if ~pclassdesc.READONLY
+def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
+  -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc_prior)
+  -- if ppropertydesc_prior.VISIBILITY =/= ppropertydesc.VISIBILITY \/ ppropertydesc_prior.STATIC =/= ppropertydesc.STATIC
+def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, $trait_data_types(S, pclassdesc, $trait_property_source_type(S, ppropertydesc_prior), pclassdesc_trait, ppropertydesc.TYPE, false, $trait_property_source_fast_equal(S, ppropertydesc_prior, ppropertydesc)))
+  -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc_prior)
+  -- if ppropertydesc_prior.VISIBILITY = ppropertydesc.VISIBILITY /\ ppropertydesc_prior.STATIC = ppropertydesc.STATIC
+def $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
+def $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
+def $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAOK) = $trait_data_property_values(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, $trait_data_compare_left(S, pclassdesc, ppropertydesc_prior, ppropertydesc, $trait_property_value(S, pclassdesc, ppropertydesc_prior)))
+def $trait_data_property_values(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAOK) = S
+def $trait_data_property_values(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
+def $trait_data_property_values(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
+def $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_fatal(S, pclassdesc, $trait_data_prior(pclassdesc_prior*, ppropertydesc.NAME, false, pclassdesc.NAME) ++ $ptascii(" and ") ++ pclassdesc_trait.NAME ++ $ptascii(" define the same property ($") ++ ppropertydesc.NAME ++ $ptascii(") in the composition of ") ++ pclassdesc.NAME ++ $ptascii(". However, the definition differs and is considered incompatible. Class was composed"))
+
+;; Runtime initializer scope is licensed by its real pending default/constant
+;; binding and physical expression, never by an arbitrary wrapped origin.
+def $trait_member_initializer_scope(S, TRAIT_MEMBER_ORIGIN porigin_owner porigin_source, porigin_site) = (porigin_owner)
+  -- if $constant_expression_below(S, TRAIT_MEMBER_ORIGIN porigin_owner porigin_source, porigin_site)
+  -- if $class_constant_origin(S.CLASSES, TRAIT_MEMBER_ORIGIN porigin_owner porigin_source) = (pclassconstantdesc)
+  -- if pclassconstantdesc.OWNER = porigin_owner
+  -- if $class_constant_active(S)
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if pclassconstantcontext.DECL = pclassconstantdesc.ORIGIN
+def $trait_member_initializer_scope(S, TRAIT_MEMBER_ORIGIN porigin_owner porigin_source, porigin_site) = (porigin_owner)
+  -- if $constant_expression_below(S, TRAIT_MEMBER_ORIGIN porigin_owner porigin_source, porigin_site)
+  -- if $static_default_scope(S) = (porigin_owner)
+  -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
+  -- if pstaticdefaultcontext.DECL = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL
+  -- if $static_default_context_valid(S, pconstantcontext)
+def $trait_member_initializer_scope(S, porigin, porigin_site) = eps -- otherwise
+def $trait_initializer_scope(S) = $trait_member_initializer_scope(S, pconstantcontext.ORIGIN, porigin)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.ORIGIN = (porigin)
+def $trait_initializer_scope(S) = eps -- otherwise
+rule PhpStep/trait-member-class-magic: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING pclassdesc.NAME)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EVAL (NScalarMagicConstClass metadata)) :: ptask_tail*
+  -- if $trait_initializer_scope(S) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NScalarMagicConstClass metadata)
+  -- if $compiled_read(S, porigin_site) = eps
+def $constant_shape_class(S, porigin, PFMAGIC MAGICCLASS z_leaf) = PVSTRING true
+  -- if $trait_initializer_scope(S[.ORIGIN = (porigin)]) =/= eps
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarMagicConstClass metadata)
+  -- if z_leaf = $source_line(metadata)
+  -- if $compiled_read(S, porigin) = eps
+
+;; Raw-trait access requires a distinct deprecation continuation. Lookup,
+;; access, unset and a typed uninitialized read retain their earlier errors.
+def $trait_static_property_read_pending((ORIGIN_RETURN porigin?) :: ptask*) = $trait_static_property_read_pending(ptask*)
+def $trait_static_property_read_pending((DIM_FETCH z) :: ptask*) = true
+def $trait_static_property_read_pending(ptask*) = false -- otherwise
+def $trait_static_property_deprecation_needed(S, porigin, ptbytes) = true
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "trait"
+  -- if ~$class_constant_static_unset_tail(S.TODO)
+  -- if $class_static_select(S, porigin, ptbytes) = (ppropertydesc)
+  -- if $class_static_accessible(S, ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
+  -- if pclassstatic.STATE =/= PROP_INITIAL \/ ~$trait_static_property_read_pending(S.TODO)
+def $trait_static_property_deprecation_needed(S, porigin, ptbytes) = false -- otherwise
+def $class_static_prepare_base_ready(S, poperand_selector, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "direct trait static-property deprecation continuation"]
+  -- if $scoped_selector_class(S, poperand_selector) = (porigin_requested)
+  -- if $trait_static_property_deprecation_needed(S, porigin_requested, ptbytes)
+
+def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access trait constant ") ++ pclassdesc.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii(" directly"), z)
+  -- if pclassdesc.KIND = "trait"
+
+def $trait_data_fatal(S, pclassdesc, ptbytes) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes, pclassdesc.LINE)
