@@ -19,14 +19,12 @@ def $dir_warning_result_ready(S) = false -- otherwise
 dec $dir_warning_probe_live(pstate) : bool
 def $dir_warning_probe_live(S) = (~S.COMPILESTOP /\\ (S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET))
 dec $dir_warning_seek_result(pstate, nat) : pstate
-def $dir_warning_seek_result(S, 0) = S
-def $dir_warning_seek_result(S, n + 1) = S -- if $dir_warning_result_ready(S)
-def $dir_warning_seek_result(S, n + 1) = S
-  -- if ~$dir_warning_result_ready(S)
-  -- if ~$dir_warning_probe_live(S)
-def $dir_warning_seek_result(S, n + 1) = $dir_warning_seek_result($drive_steps(S[.COMPLETION = NORMAL], 1), n)
+def $dir_warning_seek_result(S, n) = S -- if $dir_warning_result_ready(S)
+def $dir_warning_seek_result(S, n) = $dir_warning_seek_result($drive_steps(S[.COMPLETION = NORMAL], 1), $nabs($(n - 1)))
+  -- if $(n > 0)
   -- if ~$dir_warning_result_ready(S)
   -- if $dir_warning_probe_live(S)
+def $dir_warning_seek_result(S, n) = S -- otherwise
 '''
 
 
