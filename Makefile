@@ -380,5 +380,9 @@ test-semantics: build
 	python3 tests/semantics/foreach.py
 	python3 tests/semantics/foreach_compiler.py
 	python3 tests/semantics/foreach_source_compiler.py
+	python3 tests/semantics/user_iterator.py
+	python3 tests/semantics/user_iterator_protocol.py
+	python3 tests/semantics/iterator_declaration_notices.py
+	python3 tests/semantics/eval_declaration_notices_protocol.py
 	python3 tests/semantics/destructuring_mechanism.py
 	python3 tests/semantics/validate.py
