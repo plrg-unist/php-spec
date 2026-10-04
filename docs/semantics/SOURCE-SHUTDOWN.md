@@ -18,8 +18,9 @@ retain the selected callback when a replacement exception handler handles a
 warning handler's throw.
 
 Terminal diagnostics are emitted and frozen before queue entry. Later reporting
-or Throwable changes cannot erase them. Default Throwable message conversion
-calls the existing error handler before freezing. If that warning throws, the
+or Throwable changes cannot erase them. Admitted scalar/array default Throwable
+messages preserve conversion effects; an array message calls the existing error
+handler before freezing. If that warning throws, the
 builtin formatter finishes and caches its string while the exception is pending;
 its trace calls use the native fallback. The pending Throwable then uses the
 exception handler. If handled, a separate return-type warning follows before

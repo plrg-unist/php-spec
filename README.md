@@ -249,7 +249,14 @@ separate cutoffs; earlier key warnings and broader consumers remain open.
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
 after `finally`. Nested restore/replacement, callback throws, internal by-reference
 warnings and termination preserve selected targets and owners. Keyword/compound
-callback ingress and later request lifecycle remain open.
+callback ingress remains open.
+
+[Shutdown callbacks](docs/semantics/SOURCE-SHUTDOWN.md) cache selected callables
+and copied arguments, then run in order after normal, exit and fatal outcomes.
+Callbacks can append entries; handled throws continue and callback exit stops
+the queue. Fatal-render warnings complete before diagnostics freeze and the
+queue begins. Destructors, GC, output buffers and later request cleanup remain
+required.
 Full core and a fresh combined offline rebuild remain required.
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)

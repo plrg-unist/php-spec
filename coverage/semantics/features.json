@@ -10998,28 +10998,60 @@
     {
       "id": "lifecycle.shutdown-registration",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "implementation": [
+        "spec/semantics/231-shutdown-functions.watsup",
+        "spec/semantics/160-eval-runtime.watsup",
+        "spec/semantics/171-include-runtime.watsup",
+        "spec/semantics/195-declaration-history.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/shutdown_state_review.py",
+        "tests/semantics/shutdown_render_state.py"
+      ],
+      "source_tests": [
+        "tests/semantics/shutdown_functions.py",
+        "tests/semantics/shutdown_cases.json",
+        "tests/semantics/shutdown_review.py",
+        "tests/semantics/shutdown_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/ext/standard/basic_functions.c",
+        "vendor/php-src/main/main.c",
+        "vendor/php-src/Zend/zend_exceptions.c",
+        "docs/semantics/SOURCE-SHUTDOWN.md"
+      ],
+      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Keyword/compound callback API consumers, wider callable dependencies and later destructor/GC/output/free phases remain required; queue entries stay owned through DONE and complete request cleanup is not claimed."
     },
     {
       "id": "lifecycle.shutdown-order",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "implementation": [
+        "spec/semantics/231-shutdown-functions.watsup",
+        "spec/semantics/160-eval-runtime.watsup",
+        "spec/semantics/171-include-runtime.watsup",
+        "spec/semantics/195-declaration-history.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/shutdown_state_review.py",
+        "tests/semantics/shutdown_render_state.py"
+      ],
+      "source_tests": [
+        "tests/semantics/shutdown_functions.py",
+        "tests/semantics/shutdown_cases.json",
+        "tests/semantics/shutdown_review.py",
+        "tests/semantics/shutdown_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/ext/standard/basic_functions.c",
+        "vendor/php-src/main/main.c",
+        "vendor/php-src/Zend/zend_exceptions.c",
+        "docs/semantics/SOURCE-SHUTDOWN.md"
+      ],
+      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Keyword/compound callback API consumers, wider callable dependencies and later destructor/GC/output/free phases remain required; queue entries stay owned through DONE and complete request cleanup is not claimed."
     },
     {
       "id": "lifecycle.exit-unwind",

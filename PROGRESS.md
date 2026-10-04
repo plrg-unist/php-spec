@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Shutdown registration231 caches callable selection, private/rebound permission
+and copied arguments after all argument effects. Ordered callbacks run after
+normal, exit and fatal/uncaught paths, including serviced compiler failures.
+Append, handled throw, exit override, weak/default/variadic reception and internal
+send-warning continuations preserve selected targets and native owners. Frozen
+fatal diagnostics precede the queue; effectful default message warnings finish
+the builtin cache before pending exception dispatch. Exact registered and
+converted argument views remain separate. [Contract](docs/semantics/SOURCE-SHUTDOWN.md).
+Keyword/compound ingress needs the accepted221 consumers; destructors, GC,
+output buffers and queue release are required next request phases.
+
 Prepared internal Throwable default constructors235 now map the completed227
 value table before arity and sequential reception. Default declaration strictness,
 finite named-hole filling, inherited owners and nested previous objects preserve
@@ -99,7 +110,7 @@ cross-file diagnostic origins during static defaults, and production algorithm
 and structure checks pass. [Contract](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md),
 [author/composition record](coverage/semantics/exception-handlers-review.json),
 [independent review](coverage/semantics/exception-handler-review.json).
-Keyword/compound callback ingress and later request lifecycle remain required.
+Keyword/compound callback ingress and the remaining request phases stay open.
 
 Called-class introspection223 implements `get_called_class()` using the active
 authenticated called class. Plain functions and global Closures stop lookup;
@@ -280,7 +291,7 @@ failures and interrupted evidence.
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,
-  later exception-handler lifecycle entry and broader API/callable argument consumers.
+  broader API/callable argument consumers and remaining request phases.
   Broader constant consumers and compiler reporting interactions remain open.
   Called-class introspection223 leaves builtin Closure rebinding, builtin API
   callback targets, suspension and wider reference-result consumers open.
