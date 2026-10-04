@@ -199,6 +199,7 @@ rule PhpStep/throw-search-miss: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin) :: ptask_tail*
   -- if $throwable_handler(S, n, porigin) = eps
   -- if ~$finally_present(S, porigin)
+dec $shutdown_render_throw_pending(pstate) : bool
 dec $throwable_marker(ptask) : bool
 def $throwable_marker(TRY_END porigin) = true
 def $throwable_marker(ptask) = false -- otherwise
@@ -215,7 +216,6 @@ rule PhpStep/throw-search-frame: S ~> S_restored[.TODO = (THROW_SEARCH n) :: S_r
   -- if S_restored = $restore_frame(S)
 dec $exception_terminal_tail(pstate, ptask*) : bool
 dec $exception_dispatch_ready(pstate) : bool
-dec $shutdown_render_throw_pending(pstate) : bool
 rule PhpStep/throw-search-uncaught: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = pthrowable.FILEORIGIN]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $exception_terminal_tail(S, ptask_tail*)
