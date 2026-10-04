@@ -261,6 +261,10 @@ test-semantics: build
 	python3 tests/semantics/default_constructor_api_protocol.py
 	python3 tests/semantics/internal_default_constructor_sources.py
 	python3 tests/semantics/internal_default_constructor_protocol.py
+	python3 tests/semantics/internal_default_reception_sources.py
+	python3 tests/semantics/internal_default_reception_protocol.py --group owner
+	python3 tests/semantics/internal_default_reception_protocol.py --group pure
+	python3 tests/semantics/internal_default_reception_protocol.py --group builtin
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py

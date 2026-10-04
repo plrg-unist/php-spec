@@ -176,6 +176,10 @@ def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
 dec $call_line_valid(pstate, porigin?, int) : bool
 dec $static_string_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
 dec $static_string_context_line_valid(pstate, pcallcontext) : bool
+dec $default_internal_string_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
+def $default_internal_string_pending_line_valid(S, pcalltarget, porigin?, z) = false -- otherwise
+dec $default_internal_string_context_line_valid(pstate, pcallcontext) : bool
+def $default_internal_string_context_line_valid(S, pcallcontext) = false -- otherwise
 def $call_line_valid(S, (PORIGIN n pcpath), z) = true
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
@@ -259,7 +263,7 @@ def $call_task_valid(S, ERROR_UNWIND pcompletion) = (S.TODO = [ERROR_UNWIND pcom
 def $call_task_valid(S, AT porigin ptask) = $call_task_valid(S[.ORIGIN = (porigin)], ptask)
 def $call_task_valid(S, CALL_REF_PREP pcalltarget_function n porigin?) = $call_reference_task_valid(S, pcalltarget_function, n, porigin?)
 def $call_task_valid(S, CALL_REF_FETCH pcalltarget_function n porigin?) = $call_reference_task_valid(S, pcalltarget_function, n, porigin?)
-def $call_task_valid(S, CALL_ARGS pcalltarget_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, pcalltarget_function, porigin?) /\ ($call_line_valid(S, porigin?, z) \/ $concat_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $typed_return_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $config_string_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $static_string_pending_line_valid(S, pcalltarget_function, porigin?, z)) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 0) /\ $call_sent_operands_valid(S, pcalltarget_function, 0, poperand*))
+def $call_task_valid(S, CALL_ARGS pcalltarget_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, pcalltarget_function, porigin?) /\ ($call_line_valid(S, porigin?, z) \/ $concat_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $typed_return_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $config_string_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $static_string_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $default_internal_string_pending_line_valid(S, pcalltarget_function, porigin?, z)) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 0) /\ $call_sent_operands_valid(S, pcalltarget_function, 0, poperand*))
 def $call_task_valid(S, CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, pcalltarget_function, porigin?) /\ $call_line_valid(S, porigin?, z) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 1) /\ $call_sent_operands_valid(S, pcalltarget_function, 0, poperand*))
 def $call_task_valid(S, ptask) = true -- otherwise
 dec $call_after_origin(pstate, ptask) : pstate
@@ -284,7 +288,7 @@ def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if pcallcontext.PARAMS = (psparam.NAME)*
   -- if preqbytes* = pfunction.CVS
   -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
-  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
+  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $default_internal_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
   -- if ~$default_ctor_context_kind(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
   -- if $call_arity_valid(S, pcallcontext)
   -- if $wrapper_context_valid(S, pcallcontext)
