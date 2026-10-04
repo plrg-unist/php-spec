@@ -1,0 +1,112 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "registration-time selection and argument copies, ordered weak C shutdown calls, compiler stops and fatal rendering before queue entry",
+  "result": "frozen supported families pass; actual-parent affected checks pending",
+  "source_native_tuples": 68,
+  "distinct_reached_cases": 11,
+  "distinct_state_assertions": 417,
+  "affected_state_replays": 4,
+  "affected_replay_assertions": 147,
+  "baseline": {
+    "semantic_commit": "ea48463260c56a8683f06e8c81fbbbe869659575",
+    "source_tuples": 53,
+    "reports": [
+      {"report": ".tools/shutdown-review-current-14/.tools/shutdown-review-5ugem2ly/report.json", "accepted_prefix": 16},
+      {"report": ".tools/shutdown-review-current-14/.tools/shutdown-review-0ztofmqb/report.json", "accepted_prefix": 32},
+      {"report": ".tools/shutdown-review-current-14/.tools/shutdown-review-aj5hobj_/report.json", "accepted_prefix": 4},
+      {"report": ".tools/shutdown-review-current-14/.tools/shutdown-review-v6bp0mi5/report.json", "accepted_prefix": 1}
+    ],
+    "note": "Each report retains its first failure and exact tested revision; only the listed passing prefix receives agreement credit."
+  },
+  "compiler_service": {
+    "semantic_commit": "241af8f67",
+    "tested_revision": "a1733f4fea25ad25729c2564b9960116f2308e27",
+    "source_tuples": 2,
+    "report": ".tools/shutdown-review-current-14/.tools/shutdown-review-mc4pdc6_/report.json"
+  },
+  "compiler_history": {
+    "semantic_commit": "e85b7c50c",
+    "tested_revision": "d4d443f0898011a3580c56e6f8adcde9528ea2fe",
+    "source_tuples": 1,
+    "source_report": ".tools/shutdown-review-current-14/.tools/shutdown-review-ij1h7avh/report.json",
+    "state_report": ".tools/shutdown-review-current-14/.tools/shutdown-state-review-mizc86ek/report.json"
+  },
+  "renderer_and_received_view": {
+    "semantic_commit": "e80e1cfa0",
+    "tested_revision": "90f66a85fadd2c3ab5f4b5bd5030269a4adc9f79",
+    "source_tuples": 12,
+    "source_reports": [
+      ".tools/shutdown-review-current-14/.tools/shutdown-review-lh5lpyv5/report.json",
+      ".tools/shutdown-review-current-14/.tools/shutdown-review-o7q4swt5/report.json"
+    ],
+    "state_report": ".tools/shutdown-review-current-14/.tools/shutdown-state-review-073_57q4/report.json",
+    "state_scope": "one new converted-view case and four affected existing C context/reference guards"
+  },
+  "states": {
+    "cases": {
+      "cached-private-reference-selection": 47,
+      "retired-api-and-static-selector": 35,
+      "zero-formals-original-extra": 43,
+      "saved-private-callback-scope": 35,
+      "warning-throw-resumes-selected": 32,
+      "retired-reference-send-cell": 41,
+      "ignored-reference-return": 28,
+      "append-from-exception-handler": 32,
+      "frozen-fatal-survives-reporting-write": 28,
+      "compiler-fatal-queue-history": 34,
+      "converted-variadic-original-owners": 62
+    },
+    "earlier_reports": [
+      ".tools/shutdown-review-current-14/.tools/shutdown-state-review-hupxlit0/report.json",
+      ".tools/shutdown-review-current-14/.tools/shutdown-state-review-rviy9ivk/report.json",
+      ".tools/shutdown-review-current-14/.tools/shutdown-state-review-fx675jb6/report.json"
+    ],
+    "method": "Checked original programs reach each positive state; negative certificate changes, exact owners and budget replay are checked separately from observable source agreement."
+  },
+  "unsupported_controls": {
+    "count": 4,
+    "php_agreements": 0,
+    "scope": "two original count() observers and shutdown keyword/compound callable ingress",
+    "reports": [
+      ".tools/shutdown-review-current-14/.tools/shutdown-review-5ugem2ly/report.json",
+      ".tools/shutdown-review-current-14/.tools/shutdown-review-m132y3zh/report.json",
+      ".tools/shutdown-review-current-14/.tools/shutdown-review-owf7fb1y/report.json",
+      ".tools/shutdown-review-current-14/.tools/shutdown-review-z06iqu8e/report.json"
+    ],
+    "recorder_correction": "Keyword control correctly exited CLI1 with the exact Unsupported reason and empty streams. Original packet/process outputs were rechecked after correcting a CLI0 premise in f8f6b2f5d; no semantic rerun or source agreement was added."
+  },
+  "identities": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+    "_build/default/adapter/main.exe": "9fa8a62125cc34baf80965a829fb4aa946875aa40b1b3a8d6e90cd732b2bcaf2",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f"
+  },
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING_removed": true
+  },
+  "reproduce_source": "python3 -B tests/semantics/shutdown_review.py",
+  "reproduce_states": "python3 -B tests/semantics/shutdown_state_review.py",
+  "raw_commands_and_exits": "Each report and per-case process record retains exact commands, revision, exits, streams and timeouts. Unchanged native originals were reused.",
+  "fixes": [
+    "serviced compiler fatal paths enter the shutdown queue and preserve authentic compiler history through later callback eval",
+    "converted variadic introspection keeps a borrowed received view while original registered objects retain their queue owners",
+    "effectful default message warnings preserve formatter cache, pending Throwable order and frozen fatal bytes"
+  ],
+  "fixture_corrections": [
+    "dynamic array argument isolates queue ownership from an existing literal pool owner",
+    "parenthesize a reference marker and match the accepted trigger_error DIAGNOSTIC carrier",
+    "compiler service checkpoint uses its actually observed ENTER marker",
+    "replace the exact unsupported count() body with an accepted isset observer in a separate companion"
+  ],
+  "open": [
+    "shutdown and exception keyword/compound effectful API consumers",
+    "wider callable targets and existing shared error-handler reference-return body boundary",
+    "generic builtin count() observer dependency",
+    "destructors, GC, output buffers, queue release and remaining request lifetime phases",
+    "temporary-value reference returns outside the accepted return contract"
+  ]
+}
