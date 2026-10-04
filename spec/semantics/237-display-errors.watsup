@@ -1,0 +1,60 @@
+;; PHP's display decoder reads a nullable INI entry before emitting diagnostics.
+;; Present empty bytes disable display; a null entry selects stdout.
+dec $display_mode_number(int) : int
+def $display_mode_number(i) = i -- if i <- [0, 1, 2]
+def $display_mode_number(i) = 1 -- otherwise
+dec $display_mode(preqbytes?) : int
+def $display_mode(eps) = 1
+def $display_mode((preqbytes)) = 1
+  -- if $ptlc(preqbytes) <- [$ptascii("on"), $ptascii("yes"), $ptascii("true"), $ptascii("stdout")]
+def $display_mode((preqbytes)) = 2 -- if $ptlc(preqbytes) = $ptascii("stderr")
+def $display_mode((preqbytes)) = $display_mode_number($long_and($reporting_ini_mask(preqbytes), 255))
+  -- if ~($ptlc(preqbytes) <- [$ptascii("on"), $ptascii("yes"), $ptascii("true"), $ptascii("stdout"), $ptascii("stderr")])
+dec $display_state_mode(pstate) : int
+def $display_state_mode(S) = $display_mode(S.DISPLAYINI)
+def $display_ini_bytes(eps) = eps
+def $display_ini_bytes((preqbytes)) = preqbytes
+def $display_state_valid(S) = ($startup_reporting_valid(S.DISPLAYINIT) /\ $startup_reporting_valid(S.DISPLAYINI) /\ (S.DISPLAYMODIFIED \/ S.DISPLAYINI = S.DISPLAYINIT) /\ (~S.DISPLAYMODIFIED \/ S.DISPLAYINI =/= eps))
+def $display_restore(S) = S[.DISPLAYINI = S.DISPLAYINIT][.DISPLAYMODIFIED = false] -- if S.DISPLAYMODIFIED
+def $display_restore(S) = S -- otherwise
+;; Events retain their selected destination across later callback mutations.
+def $display_events(S, pevent) = eps -- if $display_mode(S.DISPLAYINI) = 0
+def $display_events(S, pevent) = [DISPLAY_STDOUT pevent] -- if $display_mode(S.DISPLAYINI) = 1
+def $display_events(S, pevent) = [pevent] -- if $display_mode(S.DISPLAYINI) = 2
+dec $display_initial(pstartup?, preqbytes?) : pstate
+def $display_initial(eps, preqbytes?) = $initial_state(NORMAL)[.DISPLAYINIT = preqbytes?][.DISPLAYINI = preqbytes?]
+def $display_initial((pstartup), preqbytes?) = $startup_state(NORMAL, pstartup)[.DISPLAYINIT = preqbytes?][.DISPLAYINI = preqbytes?]
+dec $display_startup_valid(pstartup?) : bool
+def $display_startup_valid(eps) = true
+def $display_startup_valid((pstartup)) = $startup_valid(pstartup)
+dec $php_display_run(program, nat, text, pstartup?, preqbytes?) : pstate
+def $php_display_run(program, n, text_file, pstartup?, preqbytes?) = $drive($compile_source($display_initial(pstartup?, preqbytes?)[.FILES = [SOURCEFILE 0 n_file*]], $ppstart(0, program, n_file*)), n)
+  -- if n_file* = $base64(text_file)
+  -- if $source_filename(n_file*)
+  -- if $display_startup_valid(pstartup?)
+  -- if $startup_reporting_valid(preqbytes?)
+def $php_display_run(program, n, text_file, pstartup?, preqbytes?) = $initial_state(UNSUPPORTED "invalid startup display INI or source filename") -- otherwise
+dec $php_request_display_run(program, nat, text, prequest, pstartup?, preqbytes?) : pstate
+def $php_request_display_run(program, n, text_file, Q, pstartup?, preqbytes?) = $drive($compile_source($request_bootstrap($display_initial(pstartup?, preqbytes?)[.FILES = [SOURCEFILE 0 n_file*]], Q), $ppstart_cwd(0, program, n_file*, Q.CWD)), n)
+  -- if n_file* = $base64(text_file)
+  -- if $source_filename(n_file*)
+  -- if $request_valid(Q)
+  -- if $display_startup_valid(pstartup?)
+  -- if $startup_reporting_valid(preqbytes?)
+def $php_request_display_run(program, n, text_file, Q, pstartup?, preqbytes?) = $initial_state(UNSUPPORTED "invalid startup display INI, request or source filename") -- otherwise
+dec $php_file_display_run(program, nat, preqbytes, preqbytes, pstartup?, preqbytes?) : pstate
+def $php_file_display_run(program, n, n_file*, n_cwd*, pstartup?, preqbytes?) = $drive($compile_source($display_initial(pstartup?, preqbytes?)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.INCLUDEDOPENED = [n_file*]], $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
+  -- if $source_filename(n_file*)
+  -- if $source_filename(n_cwd*)
+  -- if $display_startup_valid(pstartup?)
+  -- if $startup_reporting_valid(preqbytes?)
+def $php_file_display_run(program, n, n_file*, n_cwd*, pstartup?, preqbytes?) = $initial_state(UNSUPPORTED "invalid startup display INI or file context") -- otherwise
+dec $php_request_file_display_run(program, nat, preqbytes, prequest, preqbytes, pstartup?, preqbytes?) : pstate
+def $php_request_file_display_run(program, n, n_file*, Q, n_cwd*, pstartup?, preqbytes?) = $drive($compile_source($request_bootstrap($display_initial(pstartup?, preqbytes?)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.INCLUDEDOPENED = [n_file*]], Q), $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
+  -- if Q.CWD = (n_cwd*)
+  -- if $source_filename(n_file*)
+  -- if $source_filename(n_cwd*)
+  -- if $request_valid(Q)
+  -- if $display_startup_valid(pstartup?)
+  -- if $startup_reporting_valid(preqbytes?)
+def $php_request_file_display_run(program, n, n_file*, Q, n_cwd*, pstartup?, preqbytes?) = $initial_state(UNSUPPORTED "invalid startup display INI, request or file context") -- otherwise
