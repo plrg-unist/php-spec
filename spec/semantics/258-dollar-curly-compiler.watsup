@@ -3,7 +3,8 @@
 dec $interpolation_legacy_kind(metadata) : int?
 def $interpolation_legacy_kind(eps) = eps
 def $interpolation_legacy_kind((MencapsVarKind int) :: metadataEntry*) = (int)
-def $interpolation_legacy_kind(metadataEntry :: metadataEntry_tail*) = $interpolation_legacy_kind(metadataEntry_tail*) -- otherwise
+def $interpolation_legacy_kind(metadataEntry :: metadataEntry_tail*) = $interpolation_legacy_kind(metadataEntry_tail*)
+  -- if $plmetatag(metadataEntry) =/= "encaps-var-kind"
 
 dec $interpolation_legacy_shape(phpType30, int) : bool
 def $interpolation_legacy_shape(NExprVariable (BYTES text) metadata, 1) = true
