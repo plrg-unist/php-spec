@@ -50,6 +50,8 @@ the ledger. Existing local binaries were reused; no fresh build is claimed.
 
 [Nested unset and append255](SOURCE-DIMENSION-TAILS.md) adds bounded CV-rooted
 walks with distinct intermediate/final conversion and late RHS demand.
+[Nested coalesce262](SOURCE-NESTED-COALESCE.md) adds genuine quiet row owners,
+recursive memoized writes, abort temporaries and late keyed-RHS continuations.
 Wider memoized containers, broader GLOBALS RW and earlier
 missing/scalar/string/object acquisitions remain required follow-ons.
 Read233, writable242 and paused returns keep their separate accepted scope.

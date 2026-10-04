@@ -282,6 +282,11 @@ agreements; two reduced current trait-handler sources pass.
 intermediate conversion protection, abort temporaries and late RHS/null-insertion
 timing. Author6/247 and independent18/356 share one original, giving23 unique
 private agreements; one current private-handler/typed-cell source passes.
+[Nested coalesce assignment](docs/semantics/SOURCE-NESTED-COALESCE.md) now owns
+quiet row values, walks current write storage and preserves memoized keys,
+abort temporaries and late keyed-RHS null/type-error timing. Author9/233 and
+independent11/277 share two originals, giving18 unique private agreements;
+one current private-handler/typed-cell source passes.
 Wider memoized containers and earlier container/string/object producers remain
 required.
 
@@ -482,8 +487,9 @@ Imported deferred instance defaults use owning class templates. Raw trait-proper
 warnings retain selected cells and operand ownership through handlers and abrupt
 opcode completion. Deferred collision operands compare before type conversion;
 operation diagnostics are recorded with runtime operand order and AST lines,
-then delivered after class publication. Dependency caching, collision expression
-errors, private-final warning ordering and readonly storage remain required. A bounded
+then delivered after class publication. Private-final compile warnings retain
+their phase order and handler-ineligible severity. Dependency caching, collision
+expression errors and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound

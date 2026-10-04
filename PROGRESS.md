@@ -81,6 +81,22 @@ permission and fixture-seek failures remain separate in the
 Other object/default producers and consumers remain required; complete core and
 paused return verification remain open.
 
+Nested coalesce-assignment262 now owns quiet row values on defined CV-rooted
+array chains while the memoized write walks current storage. Computed keys run
+once; variable keys stay live. Prefix copy-abort creates a genuine temporary,
+while final-key abort skips a delayed RHS CV. Late keyed RHS warnings follow
+entry acquisition, write captured null through handler throw and recheck a live
+typed cell at the restored emitter. Author9/233 and independent11/277 share two
+originals, giving18 unique private programs/510 assertions atf9/2b65/cf7. The
+independent tail check found and verified the late-dispatch double-pop fix; only
+five affected sources and84/76/76 states were renewed. One actual6013 source
+at9ac retains private Owner/Child selection, quiet row17 versus new parent13 and
+live caller/static17. Original fixture/loader failures and native prediction
+corrections remain in the
+[nested coalesce ledger](coverage/semantics/nested-coalesce-review.json).
+Wider memoized containers, GLOBALS RW and earlier container/string/object
+producers remain required; complete core and paused returns remain open.
+
 Nested unset and append255 now suspend defined CV-rooted array walks after key
 and computed RHS evaluation. Intermediate unset separates before conversion,
 latches missing keys as null and skips the next deprecation if the table dies;
@@ -331,8 +347,11 @@ guards at their original cuts. Generic arithmetic/key recording now isolates
 scratch handler/display settings and follows runtime key→value→insertion order
 with checked AST lines. Five affected source comparisons (four new plus one
 existing array neighbor),47 additional queue/array-owner guards and bounded
-AL/structure checks pass. Private-final warning ordering, real dependent-constant
-binding/caching and endogenous expression errors remain required; traits stay partial.
+AL/structure checks pass. Private-final compile warnings now join the recorded
+batch at concrete/abstract binding phases and remain handler-ineligible128. Four
+affected source comparisons (two new and two128 mask neighbors) and43 genuine
+alias/queue guards pass at their separate cuts. Real dependent-constant binding,
+caching and endogenous expression errors remain required; traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
@@ -656,7 +675,8 @@ failures and interrupted evidence.
   233 additionally stages earlier missing key-CV and null/float/global-array-name
   conversions through nested/quiet reads. Writable242 adds bounded CV-array W/RW
   and direct GLOBALS reference fetches;249 adds direct CV-array coalesce-assignment
-  and final unset;255 adds nested unset and append on defined CV-rooted arrays.
+  and final unset;255 adds nested unset and append, and262 adds nested coalesce
+  assignment on defined CV-rooted arrays.
   Wider memoized containers, broader GLOBALS RW, wider key/object/container
   producers and ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
