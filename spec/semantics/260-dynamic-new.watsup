@@ -91,6 +91,8 @@ def $dynamic_new_record(S, porigin, pvalue, ptbytes, z, z_fetch) = {SITE porigin
 def $dynamic_new_record(S, porigin, pvalue, ptbytes, z, z_fetch) = {SITE porigin, SOURCE pvalue, CLASS ptbytes, LINE z, FETCHLINE z_fetch, SCOPE $method_context_scope(S.CURRENT), CALLED $dynamic_new_called(S.CURRENT), CLOSURE $closure_evidence_current(S)}
   -- if $dynamic_new_keyword(S, porigin) =/= eps
 dec $dynamic_new_record_scope(pstate, pdynamicnew) : bool
+dec $dynamic_new_scope_source(pstate, pdynamicnew) : porigin
+def $dynamic_new_scope_source(S, pdynamicnew) = pdynamicnew.SITE -- otherwise
 dec $dynamic_new_property_method_scope(pstate, pmethoddesc, porigin, porigin, pclosurescope) : bool
 def $dynamic_new_property_method_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = true
   -- if $property_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps
@@ -115,7 +117,7 @@ def $dynamic_new_record_scope(S, pdynamicnew) = true
   -- if $dynamic_new_keyword(S, pdynamicnew.SITE) =/= eps
   -- if pdynamicnew.CLOSURE = eps
   -- if pdynamicnew.SCOPE = (porigin_scope)
-  -- if $class_static_selection_scope_method(S, pdynamicnew.SITE, porigin_scope) = (pmethoddesc)
+  -- if $class_static_selection_scope_method(S, $dynamic_new_scope_source(S, pdynamicnew), porigin_scope) = (pmethoddesc)
   -- if pdynamicnew.CALLED = (porigin_called)
   -- if $class_constant_parent_chain(S, porigin_called, pmethoddesc.OWNER, |S.CLASSES|)
 def $dynamic_new_record_scope(S, pdynamicnew) = true
@@ -125,7 +127,7 @@ def $dynamic_new_record_scope(S, pdynamicnew) = true
   -- if pclosurescope.CREATION = eps
   -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
-  -- if $class_static_selection_scope_method(S, pdynamicnew.SITE, pclosurescope.LEXICAL) = (pmethoddesc)
+  -- if $class_static_selection_scope_method(S, $dynamic_new_scope_source(S, pdynamicnew), pclosurescope.LEXICAL) = (pmethoddesc)
   -- if porigin_method = pmethoddesc.FUNCTION.ORIGIN
   -- if $dynamic_new_method_scope_authorized(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope, pmethodcapture?)
 def $dynamic_new_record_scope(S, pdynamicnew) = true
@@ -134,7 +136,7 @@ def $dynamic_new_record_scope(S, pdynamicnew) = true
   -- if $closure_evidence_valid(S, pclosureevidence)
   -- if $object_body(S.OBJECTS[$closure_evidence_object(pclosureevidence)]) = REALCLOSURE porigin_body pitem* pstaticcell*
   -- if $closure_evidence_body(S, $closure_evidence_object(pclosureevidence)) = (porigin_function)
-  -- if pdynamicnew.SITE = PORIGIN n pcpath
+  -- if $dynamic_new_scope_source(S, pdynamicnew) = PORIGIN n pcpath
   -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction)
   -- if pfunction.ORIGIN = $origin_source(porigin_function)
   -- if pdynamicnew.SCOPE = $closure_evidence_lexical(pclosureevidence)
@@ -169,8 +171,11 @@ def $dynamic_new_record_name(S, pdynamicnew) = $dynamic_new_value_name(S, pdynam
 def $dynamic_new_record_name(S, pdynamicnew) = $dynamic_new_record_keyword_name(S, pdynamicnew, name)
   -- if $dynamic_new_keyword(S, pdynamicnew.SITE) = (name)
 dec $dynamic_new_record_valid(pstate, pdynamicnew) : bool
+dec $dynamic_new_source_valid(pstate, pdynamicnew) : bool
+def $dynamic_new_source_valid(S, pdynamicnew) = true -- otherwise
 def $dynamic_new_record_valid(S, pdynamicnew) = true
   -- if $dynamic_new_site(S, pdynamicnew.SITE, pdynamicnew.LINE, pdynamicnew.FETCHLINE)
+  -- if $dynamic_new_source_valid(S, pdynamicnew)
   -- if $origin_child((pdynamicnew.SITE), [PCFIELD 0]) = (porigin_child)
   -- if $compiled_read(S, porigin_child) = eps \/ $compiled_read(S, porigin_child) = (pdynamicnew.SOURCE)
   -- if $dynamic_new_record_scope(S, pdynamicnew)
