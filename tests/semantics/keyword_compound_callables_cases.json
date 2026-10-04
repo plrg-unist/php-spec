@@ -93,7 +93,7 @@
     "id": "variadic-keyword-control",
     "source": "<?php\nclass A {public static function run(){} public function test(){ $take=function(callable ...$cb) {echo 'body';};$take(['self','run']);}}\n(new A)->test();\n",
     "source_sha256": "9aa8be4692d92084f54d465fdb826c674dfc47519783f56cc8f6cbea21343659",
-    "expected_model": "unsupported"
+    "expected_model": "normal"
   },
   {
     "id": "two-stage-warning",
@@ -153,7 +153,7 @@
     "id": "default-callable-hole-control",
     "source": "<?php\nclass StringBox { public function __toString(): string { echo 'S|'; return 'str'; } }\nclass Owner {\n const CB=['self','run'];\n public static function run() {}\n public function take(string $text=new StringBox, callable $cb=self::CB, int $last=0) { echo 'body'; }\n public function test() { set_error_handler(function($n,$s){echo 'D|';return true;}); $this->take(last:1); restore_error_handler(); }\n}\nclass Child extends Owner {}\n(new Child)->test();\n",
     "source_sha256": "92c961cd16a86a27b6e77a13a9eb6a7523c35d00f7513e3221d522d0951cf831",
-    "expected_model": "unsupported"
+    "expected_model": "normal"
   },
   {
     "id": "foreign-this-called-class",

@@ -147,6 +147,8 @@ test-semantics: build
 	python3 tests/semantics/scoped_callables_protocol.py
 	python3 tests/semantics/keyword_compound_callables.py
 	python3 tests/semantics/keyword_compound_callables_protocol.py
+	python3 tests/semantics/callable_receives.py
+	python3 tests/semantics/callable_receive_protocol.py
 	python3 tests/semantics/from_callable.py
 	python3 tests/semantics/from_callable_protocol.py
 	python3 tests/semantics/invoke_publication.py

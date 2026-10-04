@@ -33,9 +33,12 @@ dec $api_method_result(pstate, papiquery, ptbytes) : phandlerresolution
 dec $api_finish(pstate, ptask, pvalue, phandlerresolution) : pstate
 dec $api_register(pstate, pconfigcall, pvalue) : pstate
 dec $api_receive_reject(pstate, porigin, nat) : pstate
+dec $api_fallback_reject(pstate, ptask) : pstate
+dec $api_slow_conversion(pstate, ptbranch*, pvalue, bool) : ptypeconversion
 dec $api_pure_array_method(pstate, papiquery, ptbytes) : phandlerresolution
 dec $api_item_snapshot(pitem, pvalue) : bool
 dec $api_raw_shape(pstate, papiquery) : bool
+dec $api_borrowed_array(pstate, papiquery) : bool
 dec $api_query_shape(pstate, papiquery, nat) : bool
 dec $api_source_valid(pstate, papiquery) : bool
 dec $api_query_valid(pstate, papiquery, nat) : bool
@@ -329,22 +332,7 @@ def $api_register(S, pconfigcall, pvalue) = S_mask
   -- if S_mask = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 30719))
   -- if S_mask.COMPLETION =/= NORMAL
 
-def $api_receive_reject(S, porigin, n) = $default_store($typed_apply(S, ptypeconversion, z), pfunction, n, pvalue_new)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
-  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
-  -- if $lookup(S.ENV, psparam.NAME) = (n_cell)
-  -- if S.STORE[n_cell] = DEFINED pvalue
-  -- if z = $default_parameter_line(S, porigin, n)
-  -- if ptypeconversion = $api_scalar_conversion(S, psparam, pvalue)
-  -- if ptypeconversion =/= TYPEREJECT
-  -- if $typed_apply(S, ptypeconversion, z).RESULT = KNOWN pvalue_new
-def $api_receive_reject(S, porigin, n) = $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ psparam.NAME ++ $ptascii(") must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given") ++ $wrapper_called_suffix(S, pcallcontext), $default_parameter_line(S, porigin, n))
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
-  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
-  -- if $lookup(S.ENV, psparam.NAME) = (n_cell)
-  -- if S.STORE[n_cell] = DEFINED pvalue
-  -- if $api_scalar_conversion(S, psparam, pvalue) = TYPEREJECT
-  -- if S.CURRENT = (pcallcontext)
+def $api_receive_reject(S, porigin, n) = $api_fallback_reject(S, TYPE_RECEIVE porigin n)
 
 rule PhpStep/api-callable-receive: S ~> $api_begin(S, TYPE_RECEIVE porigin n, pvalue)
   -- if $api_receive_candidate(S)
@@ -414,7 +402,7 @@ def $api_item_snapshot(pitem, pvalue) = false -- otherwise
 def $api_raw_shape(S, papiquery) = true
   -- if papiquery.VALUE = PARRAY n
   -- if $(n < |S.ARRAYS|)
-  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if (HARRAY n) <- S.ALLOCATIONS \/ $api_borrowed_array(S, papiquery)
   -- if |S.ARRAYS[n].ITEMS| = 2
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (papiquery.METHOD)
@@ -548,9 +536,8 @@ def $handler_emitter_valid(S, API_METHOD_TARGET papiquery porigin_method ptbytes
   -- if papiquery.THIS = $api_frame_this(S)
   -- if papiquery.LINE = $api_source_line(S, papiquery.SOURCE)
 
-def $api_scalar_conversion(S, psparam, pvalue) = ptypeconversion
-  -- if ptypeconversion = $typed_conversion(psparam.TYPE, pvalue, $typed_caller_strict(S))
-  -- if ~$typed_parameter_source(S, psparam) \/ $typed_reference_allowed(ptypeconversion, pvalue)
+def $api_scalar_conversion(S, psparam, pvalue) = $api_slow_conversion(S, psparam.TYPE, pvalue, $typed_caller_strict(S))
+  -- if ~$typed_parameter_source(S, psparam)
 def $api_scalar_conversion(S, psparam, pvalue) = TYPEREJECT -- otherwise
 
 def $api_leaf_snapshot(papiquery, ptbytes) = true -- if papiquery.METHOD = ALIAS n

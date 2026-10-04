@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Callable default/variadic reception248 now suspends keyword/compound lookup in
+actual receiving frames. Deferred class-constant defaults, named-hole preparation
+and supplied/variadic operands keep their distinct order and ownership. Referenced
+methods/current operands remain live, including borrowed retired arrays. Failed
+lookup checks constrained sources before slow scalar fallback; lossy warnings
+freeze their result and dual-role objects still invoke Stringable. Source23 normal
+and one literal compiler rejection retain758/018/060 cuts; two affected221 sources
+stay separate. Author116, independent180 and affected old hole35 conditions pass
+on018. Actual99a composition keeps created-child default scope after a foreign
+capture retires and passes AL236. Original compiler/fixture failures stay preserved;
+RuntimeException Unsupported controls have zero agreement. The
+[contract](docs/semantics/CALLABLE-RECEIVES.md) and
+[ledger](coverage/semantics/callable-receives-review.json) retain these cutoffs.
+Other internal and user-return consumers remain required; return verification
+stays paused and complete core remains open.
+
 Stringable include/require operands now convert before resolution and once
 checks, retaining the receiver through rebinding and nested eval. Callback writes
 determine subsequent CWD/path lookup; throw completes without file facts or a
@@ -194,8 +210,8 @@ raw keyword/compound calls preserve ordinary PHP lookup errors. The
 records independent pins, affected checks and preserved failures. Actual include,
 cold-static and GLOBALS interactions preserve real USER permission, constrained
 references and captured null; initializer locations retain their declaration owner.
-Default/variadic, other internal and user-return warning consumers remain
-required; unstaged special callable conversion stays Unsupported.
+Default/variadic reception is covered by248 above; other internal and user-return
+warning consumers remain required. Unstaged special conversion stays Unsupported.
 
 `Closure::fromCallable`234 selects and creates durable captures over existing core
 callable forms. Existing Closure inputs preserve identity; method captures freeze
