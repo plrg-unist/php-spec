@@ -39,6 +39,7 @@ test: build
 	python3 tests/concat_line_metadata.py
 	python3 tests/nullary_line_metadata.py
 	python3 tests/clone_line_metadata.py
+	python3 tests/dollar_curly_metadata.py
 	python3 tests/phase_ledger.py
 	python3 tests/parallel_validation_test.py
 	python3 tests/validate.py --elaborate --lint-all
@@ -369,6 +370,8 @@ test-semantics: build
 	python3 tests/semantics/file_operand_protocol.py
 	python3 tests/semantics/interpolation_sources.py
 	python3 tests/semantics/interpolation_protocol.py
+	python3 tests/semantics/dollar_curly_sources.py
+	python3 tests/semantics/dollar_curly_protocol.py
 	python3 tests/semantics/startup_ini.py
 	python3 tests/semantics/startup_ini_protocol.py
 	python3 tests/semantics/display_errors.py
