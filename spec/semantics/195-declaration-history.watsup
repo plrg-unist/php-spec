@@ -151,14 +151,16 @@ def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S
 ;; A rejected dynamic unit has no accepted image; a pending segment is only
 ;; its entry. Both still consume the same fresh unit identity.
 def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration_entry :: (PDEXIT n_next PCSREJECT) :: pdeclaration*, n_next) = $declaration_history_fold(S, $declaration_exit($declaration_enter_at(S_prefix[.REPORTING = z], n_next, (porigin), z_precision), n_next, PCSREJECT), (n, P)*, pdeclaration*, $(n_next + 1))
-  -- if $declaration_entry_input(pdeclaration_entry, n_next) = (((porigin), z, z_precision))
+  -- if $declaration_entry_input(pdeclaration_entry, n_next) = ((porigin_site?, z, z_precision))
+  -- if porigin_site? = (porigin)
   -- if $declaration_compiler_at((n, P)*, n_next) = eps
   -- if $failed_source_at(S.FAILEDSOURCES, n_next) = (pfailedsource)
   -- if pfailedsource.SITE = porigin
   -- if $declaration_entry_binding(S, S_prefix, n_next, (porigin))
   -- if $declaration_service_available(S_prefix, (porigin))
 def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration_entry :: pdeclaration_tail*, n_next) = $declaration_history_final(S, $declaration_enter_at(S_prefix[.REPORTING = z], n_next, (porigin), z_precision))
-  -- if $declaration_entry_input(pdeclaration_entry, n_next) = (((porigin), z, z_precision))
+  -- if $declaration_entry_input(pdeclaration_entry, n_next) = ((porigin_site?, z, z_precision))
+  -- if porigin_site? = (porigin)
   -- if pdeclaration_tail* = eps
   -- if S.COMPLETION = SOURCE_PENDING /\ S.REPORTING = z
   -- if $declaration_compiler_at((n, P)*, n_next) = eps /\ $failed_source_at(S.FAILEDSOURCES, n_next) = eps
