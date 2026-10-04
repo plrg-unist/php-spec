@@ -136,6 +136,8 @@ test-semantics: build
 	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
 	python3 tests/semantics/scoped_callables_protocol.py
+	python3 tests/semantics/keyword_compound_callables.py
+	python3 tests/semantics/keyword_compound_callables_protocol.py
 	python3 tests/semantics/invoke_publication.py
 	python3 tests/semantics/invoke_publication_protocol.py
 	python3 tests/semantics/callable_string_ini.py

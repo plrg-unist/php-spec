@@ -75,16 +75,11 @@ def $scope_array_dispatch(S, porigin_requested, pmethoddesc, n_receiver?, ptbyte
   -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
   -- if ~pmethoddesc.ABSTRACT
 
-def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, parraymode) = ARRAYUNKNOWN "compound array callable method"
-  -- if $typed_callable_method(ptbytes, false, false)
 def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, ARRAY_ADMISSION) = $scope_array_admit(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes)
-  -- if ~$typed_callable_method(ptbytes, false, false)
   -- if $scope_method(S, porigin_requested, ptbytes, n_receiver? =/= eps, $method_current_scope(S)) = (pmethoddesc)
 def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, ARRAY_DISPATCH) = $scope_array_dispatch(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes)
-  -- if ~$typed_callable_method(ptbytes, false, false)
   -- if $scope_method(S, porigin_requested, ptbytes, n_receiver? =/= eps, $method_current_scope(S)) = (pmethoddesc)
 def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, parraymode) = ARRAYINVALID ($ptascii("Call to undefined method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"))
-  -- if ~$typed_callable_method(ptbytes, false, false)
   -- if $scope_method(S, porigin_requested, ptbytes, n_receiver? =/= eps, $method_current_scope(S)) = eps
   -- if ~$array_magic(S, porigin_requested)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
@@ -253,13 +248,9 @@ def $scope_handler_base(S, porigin_requested, pmethoddesc, n_receiver?, true) = 
 ;; evaluator's separate lexical/file override remains in the real state.
 dec $scope_handler_method_body(pstate, porigin, nat?, ptbytes, bool) : phandlerresolution
 def $scope_handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = $scope_handler_method_body(S[.CONSTCONTEXT = eps], porigin_requested, n_receiver?, ptbytes, b_class)
-def $scope_handler_method_body(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERUNKNOWN "compound error-handler method"
-  -- if $typed_callable_method(ptbytes, false, false)
 def $scope_handler_method_body(S, porigin_requested, n_receiver?, ptbytes, b_class) = $scope_handler_result(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, b_class)
-  -- if ~$typed_callable_method(ptbytes, false, false)
   -- if $scope_method(S, porigin_requested, ptbytes, ~b_class, $method_current_scope(S)) = (pmethoddesc)
 def $scope_handler_method_body(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERINVALID ($ptascii("class ") ++ pclassdesc.NAME ++ $ptascii(" does not have a method \"") ++ $c_string(ptbytes) ++ [34])
-  -- if ~$typed_callable_method(ptbytes, false, false)
   -- if $scope_method(S, porigin_requested, ptbytes, ~b_class, $method_current_scope(S)) = eps
   -- if ~$array_magic(S, porigin_requested)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)

@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Deprecated callable keyword/compound admission221 now stages supplied fixed
+parameters, error registration and delayed dispatch. Warnings hold class choice
+and string boundaries while rereading referenced methods; whole byref formal
+replacement preserves its live value. Genuine receiving/emitting frames and a
+narrow API carrier admit compound foreign-`$this` selection and declared receiver
+fallback without relaxing ordinary scoped eligibility. Supplied guards exclude
+authentic named default holes. Exact union branches bypass warnings; direct/FCC
+raw keyword/compound calls preserve ordinary PHP lookup errors. The
+[221 ledger](coverage/semantics/keyword-compound-callables-current-review.json)
+records independent pins, affected checks and preserved failures. Actual include,
+cold-static and GLOBALS interactions preserve real USER permission, constrained
+references and captured null; initializer locations retain their declaration owner.
+Default/variadic,
+`Closure::fromCallable`, other internal and user-return warning consumers remain
+required; unstaged special callable conversion stays Unsupported.
+
 Iterator224 adds compatible explicit declarations and inherited internal
 obligations for source by-value foreach; callbacks use
 effective runtime methods and retain the iterator/current result through key and
@@ -190,7 +206,8 @@ failures and interrupted evidence.
 
 ## Remaining core work
 
-- Calls: keyword/compound array and class-method-string resolution,
+- Calls: default/variadic, `Closure::fromCallable`, other internal and user-return
+  keyword/compound warning consumers,
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
   array and string Closure PIPE routes are covered. Direct defined/missing
