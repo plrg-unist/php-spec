@@ -64,7 +64,7 @@ dec $compiled_name_bytes_at(pvalue, int) : nat*
 def $compiled_name_bytes(pvalue) = $compiled_name_bytes_at(pvalue, 14)
 def $compiled_name_bytes_at(PARRAY n, z_precision) = [65,114,114,97,121]
 def $compiled_name_bytes_at(PFLOAT n_bits, z_precision) = n_text*
-  -- if (n_text*, b_warning) = $number_text($number_float(n_bits), z_precision)
+  -- if (n_text*, b_warning) = $number_text(NFLOAT n_bits, z_precision)
 def $compiled_name_bytes_at(pvalue, z_precision) = $echo_value(pvalue)
   -- if ~$is_array_value(pvalue)
   -- if $type_bytes(pvalue) =/= $ptascii("float")
