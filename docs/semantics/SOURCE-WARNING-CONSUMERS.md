@@ -12,9 +12,16 @@ Cast and copy results use temporaries before a later destination assignment;
 a thrown callback suppresses that assignment or the selected callee body.
 Direct variable assignment differs: its captured null is written to the real
 destination even after the handler throws, before the same pending exception
-continues. This includes unconstrained and null-admitting typed aliases. A typed
-destination rejecting null remains explicit `Unsupported` until replacement
-TypeError/previous-exception priority is implemented.
+continues. This includes unconstrained and null-admitting typed aliases.
+Private220 implements rejection at the live typed destination: the value is
+unchanged and a new caller TypeError retains the pending handler error and its
+older previous chain. Source/state execution for that extension remains pending.
+
+Ordinary missing-CV by-reference sends acquire a real null cell without an
+undefined-variable warning. Named errors precede that acquisition; a later
+reference operand uses the value a prior callback defined, while the selected
+callee remains fixed. Five independent native probes confirm these timings.
+They add no model/state agreement; the new nine-source/three-fixture gate is pending.
 
 Ordinary ternary copies authenticate a fixed compiled condition without rereading
 its live variable. Prepass copies retain the actual redirect, expression origin and
@@ -58,8 +65,19 @@ Ordinary13 uses serial native45s/model90s/finite300s limits and3000s/1230s phase
 limits. Original packets, streams, exits and cleanup records stay outside Git.
 The [truth family](SOURCE-WARNING-TRUTH.md) retains its earlier cast Unsupported
 control at its actual revision; only that affected cast source is selected here
-as newly admitted behavior. Wider producers, constrained rejection, broader byref/reference-result
-consumers and paused return validation remain separate obligations.
+as newly admitted behavior. Wider producers, broader reference-result consumers
+and paused return validation remain separate obligations.
 Source-equivalent publication preserves released reporting430249, parameter
 backing216 and named-class6771 paths without renewing the accepted observations.
 Combined validation and a fresh offline rebuild remain open.
+
+Prepare the new reference/write fixtures and run their generated report separately:
+
+```sh
+python3 -B tests/semantics/warning_reference_prepare.py
+python3 -B tests/semantics/warning_reference_run.py .tools/warning-consumers/PREPARED/report.json
+```
+
+This fixed selection uses ordinary13 and the same45/90/300 producer caps, with
+1245/930 serial phase limits. It includes only the changed predecessor rejection
+source from the earlier consumer suite.

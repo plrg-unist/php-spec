@@ -7,11 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Private220 validates ordinary missing-CV reference sends and rejected ASSIGN
+writes. Reference sends create genuine null cells without warnings, after named
+slot selection. A rejected write retains the live typed value and replaces a
+thrown handler error with a TypeError carrying its previous chain. The small
+implementation is reviewed and elaborated; nine source comparisons and three
+reached fixtures remain unrun. Five independent native characterizations pass
+with zero model/state agreement credit. Existing213 observations stay separate.
+
 Warning-read consumers213 retain original null for six casts, selected copies and
 ordinary by-value sends across handler mutation. Selected callees and prior arrays
 keep their real owners; named-slot errors precede warnings. Direct ASSIGN writes
-null even after a handler throws, before the same exception continues; rejected
-constrained writes remain Unsupported. Mixed author21 normal tuples/control0 and
+null even after a handler throws, before the same exception continues. Its
+original rejected constrained-write control is addressed by private220 above.
+Mixed author21 normal tuples/control0 and
 58/60/65/53=236, plus independent10/197, retain their actual revisions and original
 failures. Fresh actual6395 composition at181f separately accepts source1/94 and
 independent cached-callee source1/96, covering static-reference sends, the real
