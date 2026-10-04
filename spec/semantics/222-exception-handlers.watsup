@@ -14,6 +14,7 @@ dec $exception_snapshot(pstate, pvalue) : parray?
 dec $exception_selected_valid(pstate, pexceptioncall) : bool
 dec $exception_enter_valid(pstate, pexceptioncall) : bool
 dec $exception_send_valid(pstate, pexceptioncall) : bool
+dec $exception_received_valid(pstate, pexceptioncall) : bool
 dec $exception_task_scope(pstate) : bool
 dec $exception_return_operand(poperand) : bool
 dec $exception_result_valid(pstate, pexceptioncall) : bool
@@ -143,8 +144,20 @@ def $exception_send_valid(S, pexceptioncall) = true
   -- if pexceptioncall.SENT = (REFERENCE n)
   -- if $(n < |S.STORE|)
 def $exception_send_valid(S, pexceptioncall) = false -- otherwise
-def $exception_result_valid(S, pexceptioncall) = ($exception_selected_valid(S, pexceptioncall) /\ $exception_send_valid(S, pexceptioncall))
-def $exception_enter_valid(S, pexceptioncall) = ($exception_selected_valid(S, pexceptioncall) /\ pexceptioncall.SENT = eps)
+;; SENT preserves the original object/reference; RECEIVED borrows the converted
+;; variadic view and is changed only by the authentic positional receiver.
+def $exception_received_valid(S, pexceptioncall) = true -- if pexceptioncall.RECEIVED = pexceptioncall.SENT
+def $exception_received_valid(S, pexceptioncall) = true
+  -- if pexceptioncall.SENT = (KNOWN (POBJECT pexceptioncall.OBJECT))
+  -- if pexceptioncall.RECEIVED = (KNOWN pvalue)
+  -- if pexceptioncall.TARGET = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if pfunction.SIGNATURE.PARAMETERS = psparam :: psparam_tail*
+  -- if psparam.VARIADIC /\ ~psparam.BYREF
+  -- if $typed_exact(psparam.TYPE, pvalue) \/ $typed_object_exact(S, psparam.TYPE, pvalue)
+def $exception_received_valid(S, pexceptioncall) = false -- otherwise
+def $exception_result_valid(S, pexceptioncall) = ($exception_selected_valid(S, pexceptioncall) /\ $exception_send_valid(S, pexceptioncall) /\ $exception_received_valid(S, pexceptioncall))
+def $exception_enter_valid(S, pexceptioncall) = ($exception_selected_valid(S, pexceptioncall) /\ pexceptioncall.SENT = eps /\ pexceptioncall.RECEIVED = eps)
 def $exception_task_scope(S) = (S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps)
 def $call_task_valid(S, EXCEPTION_HANDLER_RESULT pexceptioncall) = ($exception_task_scope(S) /\ $exception_result_valid(S, pexceptioncall))
 def $call_task_valid(S, EXCEPTION_HANDLER_ENTER pexceptioncall) = ($exception_task_scope(S) /\ $exception_enter_valid(S, pexceptioncall))
@@ -157,7 +170,7 @@ def $exception_invoke_valid(S, pexceptioncall) = true
   -- if $throwable_member(S, pexceptioncall.OBJECT)
   -- if (HOBJECT pexceptioncall.OBJECT) <- S.ALLOCATIONS
   -- if pexceptioncall.TARGET = eps
-  -- if pexceptioncall.SENT = eps
+  -- if pexceptioncall.SENT = eps /\ pexceptioncall.RECEIVED = eps
   -- if pexceptioncall.RAW = $exception_snapshot(S, pexceptioncall.CALLBACK)
 def $exception_invoke_valid(S, pexceptioncall) = false -- otherwise
 def $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall) = $exception_invoke_valid(S, pexceptioncall)
@@ -182,12 +195,12 @@ def $exception_dispatch_ready(S) = true
   -- if S.EXCEPTIONHANDLER = (pvalue)
   -- if $throwable_member(S, n)
 def $exception_dispatch_ready(S) = false -- otherwise
-rule PhpStep/exception-handler-dispatch: S ~> S[.TODO = (EXCEPTION_HANDLER_INVOKE {OBJECT n, CALLBACK pvalue, TARGET eps, ORIGIN S.ORIGIN, RAW $exception_snapshot(S, pvalue), SENT eps}) :: ptask_tail*][.EXCEPTIONHANDLERS = (pvalue) :: S.EXCEPTIONHANDLERS][.EXCEPTIONHANDLER = eps][.ORIGIN = eps][.CONSTCONTEXT = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/exception-handler-dispatch: S ~> S[.TODO = (EXCEPTION_HANDLER_INVOKE {OBJECT n, CALLBACK pvalue, TARGET eps, ORIGIN S.ORIGIN, RAW $exception_snapshot(S, pvalue), SENT eps, RECEIVED eps}) :: ptask_tail*][.EXCEPTIONHANDLERS = (pvalue) :: S.EXCEPTIONHANDLERS][.EXCEPTIONHANDLER = eps][.ORIGIN = eps][.CONSTCONTEXT = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $exception_dispatch_ready(S)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if S.EXCEPTIONHANDLER = (pvalue)
 
-def $exception_handler_enter(S, pexceptioncall, poperand) = $call_arity($target_after_enter($call_enter(S[.TODO = (EXCEPTION_HANDLER_RESULT (pexceptioncall[.SENT = (poperand)])) :: ptask_tail*][.ORIGIN = eps], pfunction, [poperand], eps, $(-1)), pcalltarget), pfunction, 1, eps, $(-1))
+def $exception_handler_enter(S, pexceptioncall, poperand) = $call_arity($target_after_enter($call_enter(S[.TODO = (EXCEPTION_HANDLER_RESULT (pexceptioncall[.SENT = (poperand)][.RECEIVED = (poperand)])) :: ptask_tail*][.ORIGIN = eps], pfunction, [poperand], eps, $(-1)), pcalltarget), pfunction, 1, eps, $(-1))
   -- if S.TODO = ptask :: ptask_tail*
   -- if pexceptioncall.TARGET = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
@@ -306,7 +319,7 @@ def $exception_context_anchor(S, pcallcontext, pcallcontext_other?, pframe*) = f
 def $exception_context_kind(S, pcallcontext) = ($exception_context_call(S, pcallcontext) =/= eps)
 def $exception_extra_valid(pcallcontext, pexceptioncall, 0) = true
   -- if pcallcontext.EXTRA = [poperand]
-  -- if pexceptioncall.SENT = (poperand)
+  -- if pexceptioncall.RECEIVED = (poperand)
 def $exception_extra_valid(pcallcontext, pexceptioncall, n) = true -- if $(n > 0)
 def $exception_extra_valid(pcallcontext, pexceptioncall, n) = false -- otherwise
 def $exception_context_valid(S, pcallcontext) = true
@@ -345,13 +358,22 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCT
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
   -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
 
+def $variadic_context_coerced(S, 0, KNOWN pvalue) = S[.FRAMES = pframe_next :: pframe_tail*]
+  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN pvalue
+  -- if S.CURRENT = (pcallcontext)
+  -- if $exception_context_valid(S, pcallcontext)
+  -- if $variadic_context_receive_valid(S, 0)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask_saved*
+  -- if pframe_next = pframe[.TODO = (EXCEPTION_HANDLER_RESULT (pexceptioncall[.RECEIVED = (KNOWN pvalue)])) :: ptask_saved*]
+
 ;; Receive errors can save the new callback marker instead of the source task.
 def $throwable_continuation(S, S_next) = S_next
   -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
   -- if S_next.FRAMES = pframe :: S.FRAMES
   -- if $error_handler_target(S, pexceptioncall.CALLBACK) = (pcalltarget)
   -- if pframe.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall_entered) :: ptask_tail*
-  -- if pexceptioncall_entered = pexceptioncall[.TARGET = (pcalltarget)][.SENT = (KNOWN (POBJECT pexceptioncall.OBJECT))]
+  -- if pexceptioncall_entered = pexceptioncall[.TARGET = (pcalltarget)][.SENT = (KNOWN (POBJECT pexceptioncall.OBJECT))][.RECEIVED = (KNOWN (POBJECT pexceptioncall.OBJECT))]
   -- if pframe.CONTEXT = eps
   -- if pframe.ORIGIN = eps
   -- if pframe.CONSTCONTEXT = eps
@@ -364,6 +386,7 @@ def $throwable_continuation(S, S_next) = S_next
   -- if pexceptioncall_entered.CALLBACK = pexceptioncall.CALLBACK
   -- if pexceptioncall_entered.RAW = pexceptioncall.RAW
   -- if pexceptioncall_entered.ORIGIN = pexceptioncall.ORIGIN
+  -- if pexceptioncall_entered.RECEIVED = pexceptioncall_entered.SENT
   -- if $exception_send_valid(S_next, pexceptioncall_entered)
   -- if pframe.CONTEXT = eps
   -- if pframe.ORIGIN = eps

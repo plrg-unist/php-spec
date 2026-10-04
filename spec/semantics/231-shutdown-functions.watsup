@@ -40,7 +40,6 @@ dec $shutdown_sent_valid(pstate, pshutdownentry, poperand*, nat) : bool
 dec $shutdown_current_sent_valid(pstate) : bool
 dec $shutdown_received_valid(pstate) : bool
 dec $shutdown_received_suffix(poperand*, poperand*) : bool
-dec $shutdown_variadic_receive(pstate, nat) : bool
 dec $shutdown_send_valid(pstate, nat, nat, poperand*) : bool
 dec $shutdown_reference_warning(pstate, nat, nat) : preqbytes
 dec $shutdown_reference_valid(pstate, nat, nat, poperand*) : bool
@@ -523,24 +522,24 @@ def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S[.FRAMES = pframe_
   -- if pframe.CONTEXT = eps /\ pframe.LOCALS = eps
   -- if pframe.TODO = [SHUTDOWN_RESULT n_index poperand*]
 
-def $shutdown_variadic_receive(S, n_extra) = true
+def $variadic_context_receive_valid(S, n_extra) = true
   -- if S.TODO = (VARIADIC_RECEIVE porigin n_arg) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $variadic_receive_valid(S, porigin, n_arg)
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if n_arg = $(n_fixed + n_extra)
-def $shutdown_variadic_receive(S, n_extra) = true
+def $variadic_context_receive_valid(S, n_extra) = true
   -- if S.TODO = (VARIADIC_STRING_RESULT pvariadicstring) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if ~pvariadicstring.NAMED /\ pvariadicstring.ELEMENT = n_extra
   -- if $receive_string_scope_valid(S, VARIADIC_STRING_RESULT pvariadicstring)
-def $shutdown_variadic_receive(S, n_extra) = false -- otherwise
+def $variadic_context_receive_valid(S, n_extra) = false -- otherwise
 def $variadic_context_coerced(S, n_extra, KNOWN pvalue) = S[.SHUTDOWN.RECEIVED = $variadic_replace(S.SHUTDOWN.RECEIVED, n_extra, KNOWN pvalue)]
   -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN pvalue
   -- if S.CURRENT = (pcallcontext)
   -- if $shutdown_context_valid(S, pcallcontext)
-  -- if $shutdown_variadic_receive(S, n_extra)
+  -- if $variadic_context_receive_valid(S, n_extra)
 
 def $shutdown_parse_kind(preqbytes) = (4, $ptascii("Parse error: ")) -- if preqbytes = $ptascii("ParseError")
 def $shutdown_parse_kind(preqbytes) = (64, $ptascii("Fatal error: ")) -- if preqbytes = $ptascii("CompileError")

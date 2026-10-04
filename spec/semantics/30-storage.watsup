@@ -94,7 +94,7 @@ syntax papiquery = { SOURCE ptask, VALUE pvalue, INPUT pvalue, METHOD pitem, SCO
 syntax perrorread = { ORIGINAL ptask, INPUT poperand, BASE pbase, NAME nat*, LINE int, TASK ptask, RESULT poperand }
 ;; A dereferenced CV pointer is borrowed across an error callback, not a zval owner.
 syntax pidentityread = { SITE porigin, OP pbin, LEFT nat*, LEFTLINE int, RIGHT nat*, LINE int, CELL nat, BASE pbase }
-syntax pexceptioncall = { OBJECT nat, CALLBACK pvalue, TARGET pcalltarget?, ORIGIN porigin?, RAW parray?, SENT poperand? }
+syntax pexceptioncall = { OBJECT nat, CALLBACK pvalue, TARGET pcalltarget?, ORIGIN porigin?, RAW parray?, SENT poperand?, RECEIVED poperand? }
 syntax pglobalread = { SITE porigin, NAME nat*, LINE int }
 syntax pshutdownentry = { CALL pconfigcall, CAPTURE pmethodcapture?, RAW parray?, TARGET pcalltarget, ARGS pvalue* }
 syntax pshutdownphase = SHUTDOWN_PENDING | SHUTDOWN_RUNNING | SHUTDOWN_DONE

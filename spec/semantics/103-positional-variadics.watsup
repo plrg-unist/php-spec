@@ -48,6 +48,7 @@ def $variadic_replace(poperand_old :: poperand_tail*, n, poperand) = poperand_ol
 
 dec $variadic_coerced(pstate, nat, poperand, pvalue) : pstate
 dec $variadic_context_coerced(pstate, nat, poperand) : pstate
+dec $variadic_context_receive_valid(pstate, nat) : bool
 def $variadic_context_coerced(S, n_extra, poperand) = S -- otherwise
 def $variadic_coerced(S, n_extra, KNOWN pvalue_old, pvalue) = S_received[.CURRENT = (pcallcontext[.EXTRA = $variadic_replace(pcallcontext.EXTRA, n_extra, KNOWN pvalue)])]
   -- if S.CURRENT = (pcallcontext)
