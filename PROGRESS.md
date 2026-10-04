@@ -13,8 +13,8 @@ durable children with only the genuine new receiver owner. Binding warnings
 precede inner-name errors; reference warnings precede fresh-cell allocation and
 retain frozen values through callback writes, allocations and throws. Private18
 normal source agreements retain e2ce; totalized task guards at9342 pass AL252 and
-two author owner/throw fixtures100 conditions. Independent frame/child/reference
-checks and actual267 factory/default composition are being closed in the
+five owner/frame/throw fixtures317 runner conditions (302 supplied checks and
+15 reached setup; author106/independent211). Actual267 composition is being closed in the
 [ledger](coverage/semantics/temporary-fake-call-review.json). The original
 nondefault `new self` setup Unsupported retains zero agreement atfa90. Unpacking,
 further internal consumers and REAL temporary-current lifetime remain required;

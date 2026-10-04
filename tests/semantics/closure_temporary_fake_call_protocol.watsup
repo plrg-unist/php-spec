@@ -7,3 +7,21 @@ def $temporary_call_without(eps, pnode) = eps
 def $temporary_call_without(pnode :: pnode_tail*, pnode) = $temporary_call_without(pnode_tail*, pnode)
 def $temporary_call_without(pnode_head :: pnode_tail*, pnode) = pnode_head :: $temporary_call_without(pnode_tail*, pnode)
   -- if pnode_head =/= pnode
+
+dec $fake_call_outputs(pevent*) : ptbytes
+def $fake_call_outputs(eps) = eps
+def $fake_call_outputs((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $fake_call_outputs(pevent*)
+dec $fake_call_has_static(pstaticcell*, nat) : bool
+def $fake_call_has_static(eps, n) = false
+def $fake_call_has_static(pstaticcell :: pstaticcell_tail*, n) = true -- if pstaticcell.CELL = n
+def $fake_call_has_static(pstaticcell :: pstaticcell_tail*, n) = $fake_call_has_static(pstaticcell_tail*, n) -- if pstaticcell.CELL =/= n
+dec $fake_call_prepared_stage(pstate) : bool
+def $fake_call_prepared_stage(S) = true
+  -- if S.TODO = (CLOSURE_CALL_FORWARD pclosurecall 1 pnamedargs n_base) :: ptask_tail*
+  -- if pclosurecall.RAW = [(KINT 1, KNOWN (PINT 5))]
+def $fake_call_prepared_stage(S) = false -- otherwise
+dec $fake_call_seek_prepared(pstate, nat) : pstate
+def $fake_call_seek_prepared(S, n) = S -- if $fake_call_prepared_stage(S)
+def $fake_call_seek_prepared(S, n) = $fake_call_seek_prepared($drive_steps(S[.COMPLETION = NORMAL], 1), $nabs($(n - 1)))
+  -- if ~$fake_call_prepared_stage(S)
+  -- if $(n > 0)

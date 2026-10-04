@@ -1,5 +1,5 @@
 {
-  "status": "PRIVATE_REVIEW",
+  "status": "PRIVATE_ACCEPTED",
   "scope": "PHP8.5.10 temporary Closure::call over existing method/function/invoke/factory/bound captures and finite getters. REAL temporary-current lifetime is separate; full core remains open.",
   "code": {
     "base": "fa90b7bec0f07d0efec781d6f2549b244aa3031e",
@@ -56,17 +56,43 @@
     "author": {
       "revision": "9342aebddcb02a6b76904c8dd0427e9ab771e99c",
       "programs": 2,
-      "conditions": 100,
+      "conditions": 106,
       "scope": "Finite getter result/source/new receiver ownership; genuine binding-warning throw/finally search, frozen reason, forged task rejection, budget/resume and retirement.",
       "protocol": ".tools/closure-call-protocol-dmimbcch/report.json",
       "launch": "/home/user/workspace/php-spec/.tools/calls-dev14-temporary-call-20261005/state-h2kwjole/command.json",
-      "result": "numeric0, every condition true, stable"
+      "result": "numeric0, every condition true, stable",
+      "supplied_checks": 100
     },
     "independent": {
-      "status": "RUNNING",
+      "revision": "9342aebddcb02a6b76904c8dd0427e9ab771e99c",
       "programs": 3,
-      "conditions": 211
-    }
+      "conditions": 211,
+      "supplied_checks": 202,
+      "split": [
+        67,
+        71,
+        73
+      ],
+      "scope": "Actual private METHOD frame/weak values/shared statics and safe fake-current Error; dummy temporary-call child with retired makers/new receiver; reference warning before allocation and actual fresh ID after handler cells, forged frame/source/history/base guards, budget/resume/full retirement.",
+      "cuts": [
+        {
+          "conditions": 67,
+          "protocol": ".tools/closure-call-protocol-zvudwj6s/report.json",
+          "launch": "/home/user/workspace/php-spec/.tools/calls-review14-fake-call-20261005/state-review-ba2gr3_7/command.json",
+          "result": "Successful METHOD row only in stable original mixed batch."
+        },
+        {
+          "conditions": 144,
+          "protocol": ".tools/closure-call-protocol-iy6lgext/report.json",
+          "launch": "/home/user/workspace/php-spec/.tools/calls-review14-fake-call-20261005/state-review-w1_33tlg/command.json",
+          "result": "Affected internal-child71/reference73 pass, numeric0, stable."
+        }
+      ]
+    },
+    "programs": 5,
+    "supplied_checks": 302,
+    "runner_conditions": 317,
+    "count_note": "Runner adds three reached-state setup conditions per CASE. Earlier311 mixed author100 supplied checks with independent211 runner conditions; exact317 total counts302 checks+15 setup. Metadata correction only."
   },
   "compiler": {
     "revision": "9342aebddcb02a6b76904c8dd0427e9ab771e99c",
@@ -93,6 +119,10 @@
       "launch": "/home/user/workspace/php-spec/.tools/calls-dev14-temporary-call-20261005/state-ou8th4ur/command.json",
       "protocol": ".tools/closure-call-protocol-k_9ztgsc/report.json",
       "reason": "Both genuine stages reached; permissive84 otherwise fallback admitted forged new task fields. Total tag-specific Boolean guard repaired9342; affected100 pass."
+    },
+    {
+      "protocol": ".tools/closure-call-protocol-zvudwj6s/report.json",
+      "reason": "Independent METHOD67 passed; reference fixture inline-record DSL syntax and internal-child optional-tuple upcast stopped the other two. Corrected only typed fixture comparison/update; affected144 pass. Prefix isolation remains outside Git."
     }
   ],
   "maintained": {
@@ -107,5 +137,9 @@
     "Further internal API capture and missing core internal bodies",
     "REAL temporary-current lifetime decision; no engine probe or paused-return dependency",
     "returns_verify remains paused; no unaccepted returns imports"
-  ]
+  ],
+  "review": {
+    "reviewer": "calls_review_14",
+    "semantic": "AFFIRMATIVE on9342; genuine execution/counterexamples and all317 runner conditions accepted. Actual-parent and publication review pending."
+  }
 }
