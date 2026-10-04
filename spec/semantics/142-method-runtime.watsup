@@ -566,6 +566,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if $(n < |S_read.OBJECTS|)
   -- if $object_body(S_read.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if $closure_known_other_method(ptbytes)
+  -- if $ptlc(ptbytes) =/= $ptascii("fromcallable")
   -- if $ptlc(ptbytes) =/= $ptascii("bindto") /\ $ptlc(ptbytes) =/= $ptascii("call")
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure method consumer"]
   -- if S_read = $resolve_at(S, poperand, z)
@@ -574,6 +575,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if $(n < |S_read.OBJECTS|)
   -- if $object_body(S_read.OBJECTS[n]) = NAMEDCLOSURE porigin
   -- if $closure_known_other_method(ptbytes)
+  -- if $ptlc(ptbytes) =/= $ptascii("fromcallable")
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "Closure method consumer"]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -581,6 +583,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if $(n < |S_read.OBJECTS|)
   -- if S_read.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
   -- if $closure_known_other_method(ptbytes)
+  -- if $ptlc(ptbytes) =/= $ptascii("fromcallable")
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method ") ++ $object_name(S_read, n) ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -767,6 +770,7 @@ def $scoped_dynamic_class(S, z) = $throw_scalar(S_read, "Error", $ptascii("Class
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (PSTRING n*)
   -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = eps
+  -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("closure")
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING pclassdesc.NAME)]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
