@@ -290,6 +290,12 @@ test-semantics: build
 	python3 tests/semantics/object_class_name_protocol.py --group temporary
 	python3 tests/semantics/object_class_name_protocol.py --group returned
 	python3 tests/semantics/object_class_name_protocol.py --group thrown
+	python3 tests/semantics/dynamic_new_sources.py
+	python3 tests/semantics/dynamic_new_protocol.py --group retired
+	python3 tests/semantics/dynamic_new_protocol.py --group recursive
+	python3 tests/semantics/dynamic_new_protocol.py --group contexts
+	python3 tests/semantics/dynamic_new_protocol.py --group rebound
+	python3 tests/semantics/dynamic_new_protocol.py --group cached
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py

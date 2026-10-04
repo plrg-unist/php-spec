@@ -615,6 +615,11 @@ and recursive conversion consumers retain their own constructor.
 [Dynamic object `::class`](coverage/semantics/object-class-name-review.json) returns
 the real class name without a cast, preserving child effects, compiled lines and
 captured missing-CV reads through handlers. Broader constrained conversion remains open.
+[Ordinary dynamic NEW](coverage/semantics/dynamic-new-review.json) captures a string or object
+class selector before arguments and releases selector temporaries before class work.
+Compiled keyword scopes survive recursive constructors and retired receiving Closures;
+cached property method callables retain lexical and called class separately.
+Autoload and ordinary named keyword NEW remain required.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
