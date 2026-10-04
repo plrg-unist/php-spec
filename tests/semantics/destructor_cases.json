@@ -80,5 +80,23 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "automatic-constructor-return-is-unused",
+    "source": "<?php class L{function __destruct(){echo \"L;\";}}class R{function __destruct(){echo \"R;\";}}class C{function __construct(){$l=new L;return new R;}}class P{function __destruct(){echo \"P;\";new C;echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "0e052fe5dfc1783c31eb896c8b7931f9712d0d95b1d57538716edd731436804f",
+    "stdout": "P;R;L;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "destructor-return-is-unused",
+    "source": "<?php class L{function __destruct(){echo \"L;\";}}class R{function __destruct(){echo \"R;\";}}class P{function __destruct(){echo \"P;\";$l=new L;return new R;}}$p=new P;",
+    "source_sha256": "4be3556899e8f9b5ab0e4c71b0be66104f555049732d0755564d21219a20b1bc",
+    "stdout": "P;L;R;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
