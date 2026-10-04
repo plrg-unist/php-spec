@@ -110,14 +110,7 @@ def $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope) = true
   -- if $closure_evidence_scope_receiver(S, porigin, pclosurescope)
 
 dec $closure_evidence_bind_site(pstate, porigin) : bool
-def $closure_evidence_bind_site(S, porigin) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
-  -- if $ptlc($base64(text)) = $ptascii("bindto")
-def $closure_evidence_bind_site(S, porigin) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
-  -- if $ptlc($base64(text_class)) = $ptascii("closure")
-  -- if $ptlc($base64(text)) = $ptascii("bind")
-def $closure_evidence_bind_site(S, porigin) = false -- otherwise
+def $closure_evidence_bind_site(S, porigin) = $closure_binding_api_site(S, porigin)
 ;; Literal scope operands keep their compiled identity. Dynamic operands are
 ;; the authentic bound row's frozen value, never a later CV lookup.
 dec $closure_evidence_scope_fixed(expression) : bool
@@ -139,7 +132,7 @@ def $closure_evidence_scope_input(S, porigin, eps) = true
 def $closure_evidence_scope_input(S, porigin, porigin_lexical?) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $parser_literal(expression) = (PSTRING ptbytes)
-  -- if $ptlc(ptbytes) =/= $ptascii("static")
+  -- if ptbytes =/= $ptascii("static")
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = porigin_lexical?
 def $closure_evidence_scope_input(S, porigin, porigin_lexical?) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
@@ -148,7 +141,7 @@ def $closure_evidence_scope_input(S, porigin, porigin_lexical?) = true
 def $closure_evidence_scope_input(S, porigin, porigin_lexical?) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $parser_literal(expression) = (PSTRING ptbytes)
-  -- if $ptlc(ptbytes) = $ptascii("static")
+  -- if ptbytes = $ptascii("static")
 def $closure_evidence_scope_input(S, porigin, porigin_lexical?) = false -- otherwise
 dec $closure_evidence_bind_input(pstate, pclosurebinding) : bool
 def $closure_evidence_bind_input(S, pclosurebinding) = $closure_evidence_scope_input(S, porigin_scope, pclosurebinding.LEXICAL)

@@ -48,6 +48,8 @@ The catalogue is `tests/semantics/dimension_edit_cases.py`.
 selected source-reached fixtures; their AL_mode numeric runner commands are in
 the ledger. Existing local binaries were reused; no fresh build is claimed.
 
-Nested unset, wider memoized containers, append, broader GLOBALS RW and earlier
-missing/scalar/string/object acquisitions remain required immediate follow-ons.
+[Nested unset and append255](SOURCE-DIMENSION-TAILS.md) adds bounded CV-rooted
+walks with distinct intermediate/final conversion and late RHS demand.
+Wider memoized containers, broader GLOBALS RW and earlier
+missing/scalar/string/object acquisitions remain required follow-ons.
 Read233, writable242 and paused returns keep their separate accepted scope.

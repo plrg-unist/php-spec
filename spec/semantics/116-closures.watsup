@@ -35,6 +35,7 @@ def $closure_scope_roots(pclosurescope :: pclosurescope_tail*, n) = $closure_sco
   -- if pclosurescope.OBJECT =/= n
 def $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*) ++ $static_roots(pstaticcell*) ++ $closure_scope_roots(S.CLOSURESCOPES, n) ++ $binding_receiver_roots(S.CLOSUREBINDINGS, n)
   -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if ~$internal_closure_object(S, n)
 def $node_children(S, HOBJECT n) = eps
   -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin
 
@@ -78,6 +79,7 @@ dec $closure_creator_valid(pstate, porigin, pclosurescope, pclosurecreation, pcl
 dec $closure_scope_append(pstate, pfunction, nat) : pstate
 def $closure_scope_append(S, pfunction, n) = S[.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL porigin_lexical, CALLED porigin_called, RECEIVER $closure_bound_receiver(S, pfunction), CREATION $closure_creation_stamp(S, pfunction)}]]
   -- if S.CURRENT = (pcallcontext)
+  -- if $internal_closure_current(S) = eps
   -- if pcallcontext.LEXICAL_CLASS = (porigin_lexical)
   -- if pcallcontext.CALLED_CLASS = (porigin_called)
 def $closure_scope_append(S, pfunction, n) = S -- otherwise
@@ -139,16 +141,19 @@ def $target_receiver(S, CLOSURE_TARGET n) = pclosurescope.RECEIVER
 def $target_receiver(S, CLOSURE_TARGET n) = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if ~$bound_fake_object(S, n) /\ ~$internal_closure_object(S, n)
 def $target_lexical_class(S, CLOSURE_TARGET n) = (pclosurescope.LEXICAL)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
 def $target_lexical_class(S, CLOSURE_TARGET n) = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if ~$bound_fake_object(S, n) /\ ~$internal_closure_object(S, n)
 def $target_called_class(S, CLOSURE_TARGET n) = (pclosurescope.CALLED)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
 def $target_called_class(S, CLOSURE_TARGET n) = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if ~$bound_fake_object(S, n) /\ ~$internal_closure_object(S, n)
 
 dec $closure_body(pstate, pfunction) : ptask*
 def $closure_body(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$typed_fallthrough(pfunction)]
@@ -333,6 +338,8 @@ def $closure_live_object_valid(S, n) = true
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if $closure_object_progress(S, n, pitem*, $closure_lexicals(pfunction.CODE.EXPRESSIONS), pstaticcell*, $closure_capture_tasks(S.TODO, n) ++ $closure_capture_frames(S.FRAMES, n))
   -- if $closure_static_cells_valid(S, pfunction, pstaticcell*)
+  -- if ~$internal_closure_object(S, n) \/ $internal_closure_scope_valid(S, n)
+
 def $closure_live_object_valid(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
@@ -505,6 +512,7 @@ def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_comp
   -- if $closure_source_class(S, porigin) = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if ~$internal_closure_object(S, n)
 def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
@@ -559,6 +567,7 @@ dec $closure_capture_scope_valid(pstate, pfunction, nat) : bool
 def $closure_capture_scope_valid(S, pfunction, n) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $call_current_valid(S)
+  -- if ~$internal_closure_object(S, n)
   -- if pcallcontext.LEXICAL_CLASS = (porigin_lexical)
   -- if pcallcontext.CALLED_CLASS = (porigin_called)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
@@ -570,11 +579,13 @@ def $closure_capture_scope_valid(S, pfunction, n) = true
   -- if S.CURRENT = eps
   -- if $call_current_valid(S)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if ~$internal_closure_object(S, n)
 def $closure_capture_scope_valid(S, pfunction, n) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $call_current_valid(S)
   -- if pcallcontext.LEXICAL_CLASS = eps \/ pcallcontext.CALLED_CLASS = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if ~$internal_closure_object(S, n)
 def $closure_capture_scope_valid(S, pfunction, n) = false -- otherwise
 
 dec $closure_capture_valid(pstate, nat, nat) : bool

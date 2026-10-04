@@ -56,6 +56,7 @@ def $clone_scope(S, n_source, n_new) = S[.CLOSURESCOPES = S.CLOSURESCOPES ++ [pc
 def $clone_scope(S, n_source, n_new) = S
   -- if $closure_scope_at(S.CLOSURESCOPES, n_source) = eps
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n_source) = eps
+  -- if ~$internal_closure_object(S, n_source)
 
 dec $clone_object(pstate, nat) : pstate
 def $clone_object(S, n_source) = $stdclass_clone(S, n_source)

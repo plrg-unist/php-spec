@@ -1,0 +1,155 @@
+;; zend_do_link_class records diagnostics while comparing copied constant ASTs.
+;; The real handler is selected only after successful class publication.
+dec $trait_record_properties(ppropertydesc*, porigin) : bool
+def $trait_record_properties(eps, porigin) = false
+def $trait_record_properties(ppropertydesc :: ppropertydesc_tail*, porigin) = (ppropertydesc.DEFAULT = PROP_DEFERRED porigin \/ $trait_record_properties(ppropertydesc_tail*, porigin))
+dec $trait_record_constants(pclassconstantdesc*, porigin) : bool
+def $trait_record_constants(eps, porigin) = false
+def $trait_record_constants(pclassconstantdesc :: pclassconstantdesc_tail*, porigin) = ((~pclassconstantdesc.FOLDED /\ pclassconstantdesc.INITIALIZER = porigin) \/ $trait_record_constants(pclassconstantdesc_tail*, porigin))
+dec $trait_record_members(pclassdesc, porigin) : bool
+def $trait_record_members(pclassdesc, porigin) = ($trait_record_properties(pclassdesc.PROPERTIES, porigin) \/ $trait_record_constants(pclassdesc.CONSTANTS, porigin))
+dec $trait_record_exports(pclassdesc*, porigin) : bool
+def $trait_record_exports(eps, porigin) = false
+def $trait_record_exports(pclassdesc :: pclassdesc_tail*, porigin) = ($trait_record_members(pclassdesc, porigin) \/ $trait_record_exports(pclassdesc_tail*, porigin))
+def $trait_record_root(S, pclassdesc, PORIGIN n pcpath) = true
+  -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
+  -- if $trait_needs_binding(S, pclassdesc)
+  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if $trait_record_members(pclassdesc, PORIGIN n pcpath) \/ $trait_record_exports(pclassdesc_traits*, PORIGIN n pcpath)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $($expression_line(expression) > 0)
+def $trait_record_root(S, pclassdesc, porigin) = false -- otherwise
+dec $trait_recording(pfstate, pcpath) : bool
+def $trait_recording(F, pcpath) = true
+  -- if F.RECORD = (pfrecorder)
+  -- if $trait_fold_owner(F) = (pfrecorder.CLASS)
+  -- if F.EXTERNAL = (S_external)
+  -- if $class_at(F.CLASSES, pfrecorder.CLASS) = (pclassdesc)
+  -- if $trait_record_root(S_external, pclassdesc, pfrecorder.ROOT)
+  -- if pfrecorder.ROOT = PORIGIN F.SOURCE.ID pcpath_root
+  -- if $source_unit(S_external.SOURCES, F.SOURCE.ID) = (F.SOURCE)
+  -- if $effect_below(pcpath_root, pcpath)
+  -- if $trait_fold_scope(F, pcpath)
+def $trait_recording(F, pcpath) = false -- otherwise
+
+dec $trait_record_name(pfstate, pcpath, ptbytes, ptbytes?, int) : pfstate
+def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = $pfremember(F[.RECORDED = F.RECORDED ++ [{SITE PORIGIN F.SOURCE.ID pcpath, LEVEL 8192, MESSAGE $deprecated_constant_message(), LINE z}]], pcpath, (PINT 2048), z)
+  -- if F.EXTERNAL = (S_external)
+  -- if $deprecated_constant_name(S_external, ptbytes, ptbytes_fallback?)
+def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = $pfremember(F, pcpath, $trait_fold_name_value(S_external, ptbytes, ptbytes_fallback?), z)
+  -- if F.EXTERNAL = (S_external)
+  -- if ~$deprecated_constant_name(S_external, ptbytes, ptbytes_fallback?)
+def $pfdispatch(F, pcpath, PFNAME name, z) = $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z)
+  -- if $trait_recording(F, pcpath)
+  -- if F.EXTERNAL = (S_external)
+  -- if $code_at(S_external.CODE, F.SOURCE.ID) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, ptbytes_fallback?))
+
+dec $trait_record_event(porigin, pevent) : pfdiagnostic?
+def $trait_record_event(porigin, DIAGNOSTIC "Warning" ptbytes z) = ({SITE porigin, LEVEL 2, MESSAGE ptbytes, LINE z})
+def $trait_record_event(porigin, DIAGNOSTIC "Deprecated" ptbytes z) = ({SITE porigin, LEVEL 8192, MESSAGE ptbytes, LINE z})
+def $trait_record_event(porigin, DISPLAY_STDOUT pevent) = $trait_record_event(porigin, pevent)
+def $trait_record_event(porigin, pevent) = eps -- otherwise
+dec $trait_record_events(porigin, pevent*) : pfdiagnostic*?
+def $trait_record_events(porigin, eps) = (eps)
+def $trait_record_events(porigin, pevent :: pevent_tail*) = (pfdiagnostic :: pfdiagnostic_tail*)
+  -- if $trait_record_event(porigin, pevent) = (pfdiagnostic)
+  -- if $trait_record_events(porigin, pevent_tail*) = (pfdiagnostic_tail*)
+def $trait_record_events(porigin, pevent*) = eps -- otherwise
+def $pfwarned(F, pcpath, S) = F[.MEMORY = S[.EVENTS = F.MEMORY.EVENTS]][.RECORDED = F.RECORDED ++ pfdiagnostic*][.VALUE = (pvalue)]
+  -- if $trait_recording(F, pcpath)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $(|F.MEMORY.EVENTS| <= |S.EVENTS|)
+  -- if S.EVENTS[0:|F.MEMORY.EVENTS|] = F.MEMORY.EVENTS
+  -- if n_events = $nabs($(|S.EVENTS| - |F.MEMORY.EVENTS|))
+  -- if $trait_record_events(PORIGIN F.SOURCE.ID pcpath, S.EVENTS[|F.MEMORY.EVENTS|:n_events]) = (pfdiagnostic*)
+
+dec $trait_value_notices(ptraitdatavalue) : pfdiagnostic*
+def $trait_value_notices(TRAITVALUE S pvalue pfdiagnostic*) = pfdiagnostic*
+def $trait_value_notices(TRAITVALUEUNKNOWN text pfdiagnostic*) = pfdiagnostic*
+def $trait_value_notices(TRAITUNINITIALIZED) = eps
+def $trait_comparison(ptraitdatavalue_left, ptraitdatavalue_right) = { CHECK $trait_data_compare(ptraitdatavalue_left, ptraitdatavalue_right), NOTICES ($trait_value_notices(ptraitdatavalue_left) ++ $trait_value_notices(ptraitdatavalue_right)) }
+dec $trait_notice_records(porigin, nat, nat, pfdiagnostic*) : pdeclnoticeitem*
+def $trait_notice_records(porigin, n_prefix, n_user, eps) = eps
+def $trait_notice_records(porigin, n_prefix, n_user, pfdiagnostic :: pfdiagnostic_tail*) = (TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) :: $trait_notice_records(porigin, n_prefix, n_user, pfdiagnostic_tail*)
+def $trait_comparison_seed(S, pclassdesc, S_result, eps) = S_result
+def $trait_comparison_seed(S, pclassdesc, S_result, pfdiagnostic*) = S_result[.TODO = S_result.TODO ++ [TRAIT_DATA_SEED $trait_notice_records(pclassdesc.ORIGIN, |S.DECLARATIONS|, |S.USERCONSTANTS|, pfdiagnostic*)]]
+  -- if pfdiagnostic* =/= eps
+def $iterator_notice_seed_task(TRAIT_DATA_SEED pdeclnoticeitem*) = true
+def $iterator_notice_seed_items(TRAIT_DATA_SEED pdeclnoticeitem*) = pdeclnoticeitem*
+def $call_task_valid(S, TRAIT_DATA_SEED pdeclnoticeitem*) = false
+def $task_nodes(TRAIT_DATA_SEED pdeclnoticeitem*) = eps
+def $iterator_notice_level(TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) = pfdiagnostic.LEVEL
+def $iterator_notice_line(TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) = pfdiagnostic.LINE
+def $iterator_notice_origin(TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) = porigin
+def $iterator_notice_message(TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) = pfdiagnostic.MESSAGE
+def $iterator_notice_event(TRAIT_DATA_NOTICE (PORIGIN n pcpath) n_prefix n_user pfdiagnostic) = DIAGNOSTIC_SOURCE n "Deprecated" pfdiagnostic.MESSAGE pfdiagnostic.LINE
+  -- if pfdiagnostic.LEVEL = 8192
+def $iterator_notice_event(TRAIT_DATA_NOTICE (PORIGIN n pcpath) n_prefix n_user pfdiagnostic) = DIAGNOSTIC_SOURCE n "Warning" pfdiagnostic.MESSAGE pfdiagnostic.LINE
+  -- if pfdiagnostic.LEVEL = 2
+
+;; Replay only source data composition at its real publication prefix. Handler
+;; writes cannot change the name environment sampled by the earlier comparison.
+def $trait_notice_items(eps) = false
+def $trait_notice_items((TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) :: pdeclnoticeitem*) = true
+def $trait_notice_items((METHOD_NOTICE pdeclnotice) :: pdeclnoticeitem*) = $trait_notice_items(pdeclnoticeitem*)
+def $trait_notice_items((COMPILER_NOTICE pldiagnostic) :: pdeclnoticeitem*) = $trait_notice_items(pdeclnoticeitem*)
+dec $trait_notice_first(pdeclnoticeitem*) : (porigin, nat, nat)?
+def $trait_notice_first((TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnostic) :: pdeclnoticeitem*) = ((porigin, n_prefix, n_user))
+def $trait_notice_first((METHOD_NOTICE pdeclnotice) :: pdeclnoticeitem*) = $trait_notice_first(pdeclnoticeitem*)
+def $trait_notice_first((COMPILER_NOTICE pldiagnostic) :: pdeclnoticeitem*) = $trait_notice_first(pdeclnoticeitem*)
+def $trait_notice_first(eps) = eps
+dec $trait_notice_own_property(ppropertyid) : bool
+def $trait_notice_own_property(PORIGIN n pcpath) = true
+def $trait_notice_own_property(ppropertyid) = false -- otherwise
+dec $trait_notice_own_properties(ppropertydesc*) : ppropertydesc*
+def $trait_notice_own_properties(eps) = eps
+def $trait_notice_own_properties(ppropertydesc :: ppropertydesc_tail*) = ppropertydesc :: $trait_notice_own_properties(ppropertydesc_tail*)
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+def $trait_notice_own_properties(ppropertydesc :: ppropertydesc_tail*) = $trait_notice_own_properties(ppropertydesc_tail*)
+  -- if ~$trait_notice_own_property(ppropertydesc.ORIGIN)
+dec $trait_notice_own_constants(pclassconstantdesc*) : pclassconstantdesc*
+def $trait_notice_own_constants(eps) = eps
+def $trait_notice_own_constants(pclassconstantdesc :: pclassconstantdesc_tail*) = pclassconstantdesc :: $trait_notice_own_constants(pclassconstantdesc_tail*)
+  -- if pclassconstantdesc.ORIGIN = $origin_source(pclassconstantdesc.ORIGIN)
+def $trait_notice_own_constants(pclassconstantdesc :: pclassconstantdesc_tail*) = $trait_notice_own_constants(pclassconstantdesc_tail*)
+  -- if pclassconstantdesc.ORIGIN =/= $origin_source(pclassconstantdesc.ORIGIN)
+dec $trait_notice_name(pstate, pdeclaration) : (preqbytes, porigin)*
+def $trait_notice_name(S, PDRCLASS porigin pdeclcause) = [($ptlc(pclassdesc.NAME), porigin)]
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $trait_notice_name(S, PDECLASS n porigin) = [($ptlc(pclassdesc.NAME), porigin)]
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $trait_notice_name(S, pdeclaration) = eps -- otherwise
+dec $trait_notice_names(pstate, pdeclaration*) : (preqbytes, porigin)*
+def $trait_notice_names(S, eps) = eps
+def $trait_notice_names(S, pdeclaration :: pdeclaration_tail*) = $trait_notice_name(S, pdeclaration) ++ $trait_notice_names(S, pdeclaration_tail*)
+dec $trait_notice_cache_item(pstate, pclassconstantevent, nat) : pdefaultcache*
+def $trait_notice_cache_item(S, CCCACHE porigin porigin_trigger n, n_prefix) = [pdefaultcache]
+  -- if $(n <= n_prefix)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
+def $trait_notice_cache_item(S, pclassconstantevent, n_prefix) = eps -- otherwise
+dec $trait_notice_cache_prefix(pstate, pclassconstantevent*, nat) : pdefaultcache*
+def $trait_notice_cache_prefix(S, eps, n_prefix) = eps
+def $trait_notice_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix) = $trait_notice_cache_item(S, pclassconstantevent, n_prefix) ++ $trait_notice_cache_prefix(S, pclassconstantevent_tail*, n_prefix)
+dec $trait_notice_plan(pstate, porigin, nat, nat) : pdeclnoticeitem*?
+def $trait_notice_plan(S, porigin, n_prefix, n_user) = ($iterator_notice_seeds(S_data.TODO))
+  -- if $(n_prefix < |S.DECLARATIONS| /\ n_user <= |S.USERCONSTANTS|)
+  -- if $iterator_notice_publication_index(S.DECLARATIONS, porigin, 0) = (n_prefix)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc_raw = pclassdesc[.PROPERTIES = $trait_notice_own_properties(pclassdesc.PROPERTIES)][.CONSTANTS = $trait_notice_own_constants(pclassdesc.CONSTANTS)]
+  -- if S_before = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_raw)][.CLASSNAMES = $trait_notice_names(S, S.DECLARATIONS[0:n_prefix])][.CLASSCONSTANTCACHE = $trait_notice_cache_prefix(S, S.CLASSCONSTANTHISTORY, n_prefix)][.USERCONSTANTS = S.USERCONSTANTS[0:n_user]][.DECLARATIONS = S.DECLARATIONS[0:n_prefix]][.TODO = eps][.COMPLETION = NORMAL]
+  -- if $trait_fetch(S_before, $trait_plan(S_before, pclassdesc_raw).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if S_constants = $trait_data_constants(S_before, pclassdesc_raw, pclassdesc_traits*, eps)
+  -- if S_constants.COMPLETION = NORMAL
+  -- if $class_at(S_constants.CLASSES, porigin) = (pclassdesc_constants)
+  -- if S_data = $trait_data_properties(S_constants, pclassdesc_constants, pclassdesc_traits*, eps)
+  -- if S_data.COMPLETION = NORMAL
+def $trait_notice_plan(S, porigin, n_prefix, n_user) = eps -- otherwise
+def $iterator_notice_batch_items(S, pdeclnoticebatch) = true
+  -- if pdeclnoticebatch.KIND = NOTICE_RUNTIME
+  -- if $trait_notice_first(pdeclnoticebatch.NOTICES) = ((porigin, n_prefix, n_user))
+  -- if pdeclnoticebatch.CLASSES = [(porigin, n_prefix)]
+  -- if $trait_notice_plan(S, porigin, n_prefix, n_user) = (pdeclnoticeitem*)
+  -- if $iterator_notice_classes_plan(S, pdeclnoticebatch.CLASSES) = DECLNOTICES pdeclnotice*
+  -- if pdeclnoticebatch.NOTICES = pdeclnoticeitem* ++ $iterator_notice_items(pdeclnotice*)
