@@ -303,6 +303,10 @@ test-semantics: build
 	python3 tests/semantics/dynamic_new_protocol.py --group contexts
 	python3 tests/semantics/dynamic_new_protocol.py --group rebound
 	python3 tests/semantics/dynamic_new_protocol.py --group cached
+	python3 tests/semantics/named_keyword_new_sources.py
+	python3 tests/semantics/named_keyword_new_protocol.py --group cold
+	python3 tests/semantics/named_keyword_new_protocol.py --group recursive
+	python3 tests/semantics/named_keyword_new_protocol.py --group eval
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py

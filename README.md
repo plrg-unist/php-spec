@@ -639,7 +639,10 @@ captured missing-CV reads through handlers. Broader constrained conversion remai
 class selector before arguments and releases selector temporaries before class work.
 Compiled keyword scopes survive recursive constructors and retired receiving Closures;
 cached property method callables retain lexical and called class separately.
-Autoload and ordinary named keyword NEW remain required.
+[Ordinary named keyword NEW](coverage/semantics/named-keyword-new-review.json)
+uses lexical self/parent and called static scope through inherited constructors,
+rebound Closures and eval. Known invalid function scopes reject at compilation;
+deferred scopes fail before arguments. Autoload remains required.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

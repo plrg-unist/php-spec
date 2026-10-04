@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Ordinary named keyword NEW267 now resolves self/parent/static in the actual
+caller before class work and arguments. Inherited constructor entry uses its
+immediate owning caller; service-unit main code follows persistent scope entry
+bindings. Known function scope errors compile; main, eval, trait and Closure
+errors remain deferred. Source18 normal/4 compiler and reached cold57/recursive44
+plus corrected eval53 pass at91dc. Original preparation/eval-fixture failures
+remain in the [ledger](coverage/semantics/named-keyword-new-review.json).
+Autoload and complete core remain open; returns stay paused.
+
 Request-stage destructors257 now repeat reverse direct globals and then scan
 reusable live store handles. Once marks, bailout/failed-constructor suppression,
 private visibility, nested USER calls and ordered outgoing slots retain exact
@@ -53,8 +62,7 @@ retired83/recursive46 pass at0091; affected source3 at a65 and new2 plus
 contexts51/rebound45 at3f817 retain separate cuts. Actual6af8/252/263 composition
 at26fba passes cached trait METHOD/clone source1 and34 scope premises with lexical
 HostA and unrelated called HostB. The [ledger](coverage/semantics/dynamic-new-review.json)
-preserves original failures and preparation-only checks. Autoload and ordinary
-named self/parent/static NEW remain required; complete core stays open.
+preserves original failures and preparation-only checks. Ordinary named keywords are covered by267; autoload and complete core stay open.
 
 Cached property method callables (module263) now create source Closure children
 with authentic lexical scope and a separate, potentially unrelated called class.
