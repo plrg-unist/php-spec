@@ -1,6 +1,57 @@
 """Runtime deprecated constants and lossy reporting ZPP diagnostics."""
 
 CASES = [
+    ('independent-estrict-class-default-handler-throw-context', br'''<?php
+function innerDefault($value=E_STRICT){echo 'I';return $value;}
+class DiagnosticBox{const VALUE=E_STRICT;}
+set_error_handler(function($level,$message){
+    echo 'H',func_num_args(),':',innerDefault(),':',E_STRICT,'|';
+    throw new Exception('stop');
+},E_DEPRECATED);
+$value=7;
+try {$value=DiagnosticBox::VALUE;}catch(Exception $e){echo 'T',$value,':',error_reporting(),'|';}
+restore_error_handler();
+set_error_handler(function($level,$message){echo 'R',func_num_args(),'|';return 0;},E_DEPRECATED);
+echo DiagnosticBox::VALUE,':',DiagnosticBox::VALUE,':',innerDefault(),':',E_STRICT;
+restore_error_handler();
+''', b'H4:I2048:2048|T7:30719|R4|2048:2048:I2048:R4|2048', 'normal'),
+    ('estrict-compound-class-handler-location', br'''<?php
+function compoundHandler($level,$message,$file,$line) {
+    echo $file===__FILE__&&$line===8?'H':'X';
+    throw new Exception('handler');
+}
+set_error_handler('compoundHandler',E_DEPRECATED);
+class CompoundConstant {
+    const VALUE=E_STRICT+1;
+}
+$value=7;
+try {$value=CompoundConstant::VALUE;}catch(Exception $e){
+    $trace=$e->getTrace();$synthetic=$trace[0];$handler=$trace[1];
+    echo $e->getFile()===__FILE__&&$e->getLine()===8?'L':'X';
+    echo $synthetic===['file'=>__FILE__,'line'=>4,'function'=>'[constant expression]']?'T':'X';
+    echo $handler['function']==='compoundHandler'&&$handler['line']===11&&$handler['args'][3]===8?'V':'X';
+}
+restore_error_handler();
+echo $value,':',error_reporting();
+''', b'HLTV7:30719', 'normal'),
+    ('estrict-compound-method-default-handler-location', br'''<?php
+function methodDefaultHandler($level,$message,$file,$line) {
+    echo $file===__FILE__&&$line===8?'H':'X';
+    throw new Exception('handler');
+}
+set_error_handler('methodDefaultHandler',E_DEPRECATED);
+class MethodDefault {
+    public static function receive($value=E_STRICT+1){echo 'BODY';}
+}
+try {MethodDefault::receive();}catch(Exception $e){
+    $trace=$e->getTrace();$synthetic=$trace[0];$handler=$trace[1];$method=$trace[2];
+    echo $e->getFile()===__FILE__&&$e->getLine()===8?'L':'X';
+    echo $synthetic===['file'=>__FILE__,'line'=>4,'function'=>'[constant expression]']?'T':'X';
+    echo $handler['function']==='methodDefaultHandler'&&$handler['line']===8&&$handler['args'][3]===8&&$method['function']==='receive'&&$method['line']===10?'D':'X';
+}
+restore_error_handler();
+echo '|',error_reporting();
+''', b'HLTD|30719', 'normal'),
     ('estrict-handler-publishes-namespace-shadow', br'''<?php
 namespace Late;
 set_error_handler(function($level,$message){echo 'H';eval('namespace Late; const E_STRICT="shadow";');return 0;},E_DEPRECATED);

@@ -2,6 +2,14 @@
 
 SHADOW_SOURCE = b'namespace Late; const E_STRICT="shadow";'
 
+CLASS_PREFIX = r'''
+dec $diagnostic_drop_class_bind(ptask*, porigin) : ptask*
+def $diagnostic_drop_class_bind(eps, porigin) = eps
+def $diagnostic_drop_class_bind((CLASS_CONST_BIND porigin) :: ptask_tail*, porigin) = $diagnostic_drop_class_bind(ptask_tail*, porigin)
+def $diagnostic_drop_class_bind(ptask :: ptask_tail*, porigin) = ptask :: $diagnostic_drop_class_bind(ptask_tail*, porigin)
+  -- if ptask =/= CLASS_CONST_BIND porigin
+'''
+
 def checked_shadow_program(frontend, adapter):
     import base64
     parsed = frontend.request({'op': 'parse-eval', 'id': '1', 'mode': 'eval',
@@ -13,6 +21,63 @@ def checked_shadow_program(frontend, adapter):
     return checked['fixture']
 
 CASES = [
+    ('estrict-suspended-class-protocol', 'independent-estrict-class-default-handler-throw-context', '''true
+  -- if S.CLASSCONSTANTINIT =/= eps
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant''', [
+        'S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*',
+        'perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant',
+        'S.CLASSCONSTANTINIT = [pclassconstantcontext]',
+        'S.CONSTCONTEXT = (pconstantcontext)',
+        'pconstantcontext.ORIGIN = pclassconstantcontext.DECL',
+        'pclassconstantcontext.PREVIOUS = eps',
+        '$class_constant_bindings(S.TODO) = [pclassconstantcontext.DECL]',
+        '$class_constant_frames_bindings(S.FRAMES) = eps',
+        '$class_constant_scope_stack(S) = [pclassconstantcontext]',
+        '$class_constant_active(S)',
+        '$class_constant_busy_unique(S.CLASSCONSTANTINIT)',
+        '$class_constant_state_valid(S)',
+        '$call_descriptors_valid(S)',
+        'PhpStep: S ~> S_handler',
+        'S_handler.CONSTCONTEXT = eps',
+        'S_handler.CLASSCONSTANTINIT = [pclassconstantcontext]',
+        '~$class_constant_active(S_handler)',
+        '$class_constant_scope_stack(S_handler) = eps',
+        'S_handler.FRAMES = pframe :: pframe_saved*',
+        'pframe.CONSTCONTEXT = (pconstantcontext)',
+        '$class_constant_bindings(pframe.TODO) = [pclassconstantcontext.DECL]',
+        '$class_constant_frames_bindings(S_handler.FRAMES) = [pclassconstantcontext.DECL]',
+        '$class_constant_frame_stack(S_handler, pframe, pframe_saved*) = [pclassconstantcontext]',
+        'S_scope = $constant_frame_scope(S_handler, pframe, pframe_saved*)',
+        'S_scope.CONSTCONTEXT = (pconstantcontext)',
+        'S_scope.CLASSCONSTANTINIT = [pclassconstantcontext]',
+        '$class_constant_scope_stack(S_scope) = [pclassconstantcontext]',
+        '$class_constant_active(S_scope)',
+        '$constant_context_valid(S_handler)',
+        '$constant_context_valid(S_scope)',
+        '$class_constant_state_valid(S_handler)',
+        '$call_descriptors_valid(S_handler)',
+        '~$call_descriptors_valid(S_handler[.FRAMES = pframe[.CONSTCONTEXT = eps] :: pframe_saved*])',
+        '~$call_descriptors_valid(S_handler[.FRAMES = pframe[.CONSTCONTEXT = (pconstantcontext[.LINE = $(pconstantcontext.LINE + 1)])] :: pframe_saved*])',
+        '~$call_descriptors_valid(S_handler[.FRAMES = pframe[.CONSTCONTEXT = (pconstantcontext[.ORIGIN = pdeprecatedconstant.SITE])] :: pframe_saved*])',
+        '~$class_constant_state_valid(S_handler[.FRAMES = pframe[.TODO = $diagnostic_drop_class_bind(pframe.TODO, pclassconstantcontext.DECL)] :: pframe_saved*])',
+        '~$class_constant_state_valid(S_handler[.CLASSCONSTANTINIT = eps])',
+        '~$class_constant_state_valid(S_handler[.CLASSCONSTANTINIT = [pclassconstantcontext[.LINE = $(pclassconstantcontext.LINE + 1)]]])',
+        '~$class_constant_protected(pclassconstantcontext.SELECTION, pclassconstantcontext.PREVIOUS)',
+        '$class_constant_busy_unique([pclassconstantcontext, pclassconstantcontext])',
+        'pclassconstantcontext_protected = pclassconstantcontext[.PREVIOUS = (pconstantcontext)]',
+        '$class_constant_protected(pclassconstantcontext_protected.SELECTION, pclassconstantcontext_protected.PREVIOUS)',
+        '$class_constant_busy_unique([pclassconstantcontext_protected])',
+        '~$class_constant_busy_unique([pclassconstantcontext_protected, pclassconstantcontext_protected])',
+        '~$class_constant_state_valid(S_handler[.CLASSCONSTANTINIT = [pclassconstantcontext_protected, pclassconstantcontext_protected]][.CONSTCONTEXT = (pconstantcontext)][.TODO = (CLASS_CONST_BIND pclassconstantcontext.DECL) :: S_handler.TODO][.FRAMES = pframe[.CONSTCONTEXT = (pconstantcontext)] :: pframe_saved*])',
+        'S_done = $drive(S, 1500)',
+        'S_done.COMPLETION = NORMAL',
+        'S_done.CONSTCONTEXT = eps',
+        'S_done.CLASSCONSTANTINIT = eps',
+        '~$deprecated_constant_active(S_done)',
+        '$class_constant_state_valid(S_done)',
+        '$call_descriptors_valid(S_done)',
+    ]),
     ('estrict-selected-shadow-protocol', 'estrict-handler-publishes-namespace-shadow', '''true
   -- if S.TODO = ptask :: ptask_tail*
   -- if $deprecated_constant_active_task(ptask)''', [
