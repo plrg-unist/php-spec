@@ -75,7 +75,8 @@ def $property_template_state(S, porigin_class, ppropertydesc) = $property_defaul
 ;; First fill and publication identities reconstruct the linking-time copy.
 ;; Neither this history nor the class/type metadata stores a second value.
 dec $instance_default_fill_event(pclassconstantevent, porigin, porigin) : bool
-def $instance_default_fill_event(CCINSTANCE porigin_class porigin_decl porigin_root porigin_trigger pstaticselection? n, porigin_class, porigin_decl) = true
+def $instance_default_fill_event(CCINSTANCE porigin_event_class porigin_event_decl porigin_root porigin_trigger pstaticselection? n, porigin_class, porigin_decl) = true
+  -- if porigin_event_class = porigin_class /\ porigin_event_decl = porigin_decl
 def $instance_default_fill_event(pclassconstantevent, porigin_class, porigin_decl) = false -- otherwise
 dec $instance_default_fill_present(pclassconstantevent*, porigin, porigin) : bool
 def $instance_default_fill_present(eps, porigin_class, porigin_decl) = false
@@ -84,7 +85,8 @@ def $instance_default_fill_present(pclassconstantevent :: pclassconstantevent_ta
 def $instance_default_fill_present(pclassconstantevent :: pclassconstantevent_tail*, porigin_class, porigin_decl) = $instance_default_fill_present(pclassconstantevent_tail*, porigin_class, porigin_decl)
   -- if ~$instance_default_fill_event(pclassconstantevent, porigin_class, porigin_decl)
 dec $instance_default_link_event(pclassconstantevent, porigin) : bool
-def $instance_default_link_event(CCLINK porigin n, porigin) = true
+def $instance_default_link_event(CCLINK porigin_link n, porigin) = true
+  -- if porigin_link = porigin
 def $instance_default_link_event(pclassconstantevent, porigin) = false -- otherwise
 dec $instance_default_link_prefix(pclassconstantevent*, porigin, pclassconstantevent*) : pclassconstantevent*?
 def $instance_default_link_prefix(eps, porigin, pclassconstantevent_acc*) = eps
@@ -203,7 +205,8 @@ def $instance_default_site_valid(S, porigin_class, pstaticdefaultcontext, ptask*
   -- if pstaticdefaultcontext.LINE = $runtime_line(S_site, eps, expression)
 def $instance_default_site_valid(S, porigin_class, pstaticdefaultcontext, ptask*) = false -- otherwise
 def $property_default_update_suffix(eps, ptask) = eps
-def $property_default_update_suffix(ptask :: ptask_tail*, ptask) = (ptask :: ptask_tail*)
+def $property_default_update_suffix(ptask :: ptask_tail*, ptask_target) = (ptask :: ptask_tail*)
+  -- if ptask = ptask_target
 def $property_default_update_suffix(ptask :: ptask_tail*, ptask_target) = $property_default_update_suffix(ptask_tail*, ptask_target)
   -- if ptask =/= ptask_target
   -- if ~$class_constant_update_continuation(ptask)
@@ -381,9 +384,10 @@ def $instance_default_unfinished(S, (porigin_class, porigin_decl) :: (porigin_ta
 def $instance_default_unfinished(S, (porigin_class, porigin_decl) :: (porigin_tail_class, porigin_tail_decl)*) = $instance_default_unfinished(S, (porigin_tail_class, porigin_tail_decl)*)
   -- if ~$instance_default_pending(S, porigin_class, porigin_decl) \/ $instance_default_busy(S, porigin_class, porigin_decl)
 dec $instance_default_ordered((porigin, porigin)*, (porigin, porigin)*) : bool
-def $instance_default_ordered((porigin, porigin)*, eps) = true
+def $instance_default_ordered((porigin_order_class, porigin_order_decl)*, eps) = true
 def $instance_default_ordered(eps, (porigin_class, porigin_decl) :: (porigin_tail_class, porigin_tail_decl)*) = false
-def $instance_default_ordered((porigin_class, porigin_decl) :: (porigin_order_class, porigin_order_decl)*, (porigin_class, porigin_decl) :: (porigin_tail_class, porigin_tail_decl)*) = $instance_default_ordered((porigin_order_class, porigin_order_decl)*, (porigin_tail_class, porigin_tail_decl)*)
+def $instance_default_ordered((porigin_class, porigin_decl) :: (porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl) :: (porigin_tail_class, porigin_tail_decl)*) = $instance_default_ordered((porigin_order_class, porigin_order_decl)*, (porigin_tail_class, porigin_tail_decl)*)
+  -- if porigin_class = porigin_target_class /\ porigin_decl = porigin_target_decl
 def $instance_default_ordered((porigin_class, porigin_decl) :: (porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl) :: (porigin_tail_class, porigin_tail_decl)*) = $instance_default_ordered((porigin_order_class, porigin_order_decl)*, (porigin_target_class, porigin_target_decl) :: (porigin_tail_class, porigin_tail_decl)*)
   -- if porigin_class =/= porigin_target_class \/ porigin_decl =/= porigin_target_decl
 dec $instance_default_sequence(pstate, porigin, (porigin, porigin)*) : bool
