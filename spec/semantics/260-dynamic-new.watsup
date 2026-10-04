@@ -194,7 +194,17 @@ def $call_task_valid(S, EVAL (NExprNew expression (SEQUENCE phpType7*) metadata)
 def $call_task_valid(S, DYNAMIC_NEW_CLASS z z_fetch) = $dynamic_new_site(S, porigin, z, z_fetch)
   -- if S.ORIGIN = (porigin)
 def $call_task_valid(S, DYNAMIC_NEW_CLASS z z_fetch) = false -- otherwise
-def $call_task_valid(S, DYNAMIC_NEW_FINISH pdynamicnew) = $dynamic_new_valid(S, pdynamicnew)
+dec $dynamic_new_finish_head(pstate, pdynamicnew) : bool
+def $dynamic_new_finish_head(S, pdynamicnew) = true
+  -- if S.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*
+def $dynamic_new_finish_head(S, pdynamicnew) = false -- otherwise
+dec $dynamic_new_finish_result(pstate, pdynamicnew) : bool
+def $dynamic_new_finish_result(S, pdynamicnew) = true
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $getclass_live_object(S, n)
+  -- if $ptlc($object_name(S, n)) = $ptlc(pdynamicnew.CLASS)
+def $dynamic_new_finish_result(S, pdynamicnew) = false -- otherwise
+def $call_task_valid(S, DYNAMIC_NEW_FINISH pdynamicnew) = ($dynamic_new_valid(S, pdynamicnew) /\ (~$dynamic_new_finish_head(S, pdynamicnew) \/ S.COMPLETION =/= NORMAL \/ $dynamic_new_finish_result(S, pdynamicnew)))
 def $task_nodes(DYNAMIC_NEW_FINISH pdynamicnew) = eps
 
 ;; Undefined direct CVs are captured null across the real warning handler.

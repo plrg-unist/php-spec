@@ -142,18 +142,18 @@ rule PhpStep/noctor-named: S ~> S[.TODO = [$at_task($noctor_arg_origin(pnoctorca
   -- if pnoctorcall.ARGUMENTS = (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*
 rule PhpStep/noctor-send-positional: S ~> S_value[.TODO = (NOCTOR_ARGS $noctor_advance(pnoctorcall, pnoctorcall.SENT ++ [S_value.RESULT])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
-  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if phpType7*[pnoctorcall.INDEX] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/noctor-send-named: S ~> $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $base64(text), $noctor_arg_line(S, pnoctorcall))
   -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
   -- if ~$parameter_default_noctor(S, pnoctorcall)
-  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if phpType7*[pnoctorcall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
 rule PhpStep/noctor-send-abrupt: S ~> S_value
   -- if S.TODO = (NOCTOR_SEND pnoctorcall) :: ptask_tail*
-  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $origin_node(S.SOURCES, pnoctorcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if phpType7*[pnoctorcall.INDEX] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if S_value = $resolve_at(S, S.RESULT, $noctor_arg_line(S, pnoctorcall))
   -- if S_value.COMPLETION =/= NORMAL
