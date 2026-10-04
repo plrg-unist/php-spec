@@ -140,6 +140,22 @@ def $class_static_selected_task(S, pstaticselection, ptbytes, z) = false -- othe
 def $class_static_selected_ready(S, pstaticselection, ptbytes, z) = $class_constant_static_reference_ready(S, pstaticselection.ROOT, ptbytes, z)
   -- if S.TODO = (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*
 def $class_static_selected_ready(S, pstaticselection, ptbytes, z) = true -- otherwise
+
+;; A future reference fetch has no prepared BASE until the selected class
+;; continuation runs. Its exact source marker certifies that pending base.
+dec $class_static_ref_fetch_head(ptask*) : bool
+dec $class_static_ref_fetch_pending(pstate, int, ptask*) : bool
+def $class_static_ref_fetch_head((PROPERTY_REF_FETCH z) :: ptask_tail*) = true
+def $class_static_ref_fetch_head(ptask*) = false -- otherwise
+def $class_static_ref_fetch_pending(S, z, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: (PROPERTY_REF_FETCH z) :: ptask_tail*) = $class_static_ref_fetch_task(S[.BASE = BASE_CLASS_STATIC pstaticselection.ROOT ptbytes][.TODO = (PROPERTY_REF_FETCH z) :: ptask_tail*], z)
+  -- if $class_static_selected_task(S, pstaticselection, ptbytes, z)
+def $class_static_ref_fetch_pending(S, z, ptask :: ptask_tail*) = $class_static_ref_fetch_pending(S, z, ptask_tail*)
+  -- if ~$class_constant_update_continuation(ptask)
+def $class_static_ref_fetch_pending(S, z, ptask*) = false -- otherwise
+def $class_static_ref_fetch_task(S, z) = $class_static_ref_fetch_pending(S, z, S.TODO)
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if ~$class_static_ref_fetch_head(S.TODO)
+
 def $call_task_valid(S, CLASS_CONST_SELECTED pstaticselection ptbytes z) = $class_static_selected_task(S, pstaticselection, ptbytes, z)
 def $class_constant_update_continuation(CLASS_CONST_SELECTED pstaticselection ptbytes z) = true
 def $class_constant_update_target(S, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: ptask_tail*) = (pstaticselection.ROOT)
