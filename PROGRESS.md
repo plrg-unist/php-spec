@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Dynamic object `::class`256 evaluates one child and returns its real class name
+without a string cast. Eager parser concat keeps literal/keyword behavior; later
+compiled constant operands reject. Embedded undefined-CV callbacks keep captured
+null, including a throwing handler retained as the new TypeError previous chain;
+dimension throws keep ordinary abort behavior. Source20 and seven full compiler
+rejections pass at026ba, with165 reached premises in43+70+52 groups covering actual
+lines, task/source admission, temporary retirement and read/exception ownership.
+Unused preparation has zero execution. Original native prediction failures and
+historical245 Unsupported stay preserved in the
+[class-name ledger](coverage/semantics/object-class-name-review.json). One actual251
+interpolation source atf626 on4208 retains callback receivers through global-slot
+replacement and sees the later mutated operand. Actual247/251 routes are preserved;
+complete core remains open.
+
 Ordinary string interpolation251 now follows effective CAST/FAST_CONCAT/ROPE
 order. Two-part fetched temporaries survive left callbacks; later variable
 conversion reads live borrowed slots. Undefined direct CVs keep singleton null
@@ -80,7 +94,7 @@ the [scope ledger](coverage/semantics/anonymous-default-new-review.json).
 Actual239 child composition1 at1b593 passes after temporary maker/receiver
 variables retire; the child retains its receiver. Latest231/234/230/242 routes
 are preserved without renewed private gates. Ordinary Throwable effects are
-covered by250 above; dynamic object `::class` remains required.
+covered by250 above; object `::class` is covered by256 at its separate cutoff.
 
 Writable dimension keys242 stage defined mutable CV-array W/RW fetches through
 undefined/null/float/NaN callbacks, nested acquisition, updates and direct

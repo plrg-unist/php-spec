@@ -585,8 +585,10 @@ defaults retain that scope independently of called class and receiver.
 suspend null/lossy warnings and Stringable parsing for NEW and explicit inherited
 or scoped calls. Fields commit only after all parameters pass; successful string
 casts replace sent slots and retire their old temporary owners. Callback traces
-and recursive conversion consumers retain their own constructor. Dynamic object
-`::class` and broader constrained conversion remain open.
+and recursive conversion consumers retain their own constructor.
+[Dynamic object `::class`](coverage/semantics/object-class-name-review.json) returns
+the real class name without a cast, preserving child effects, compiled lines and
+captured missing-CV reads through handlers. Broader constrained conversion remains open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
