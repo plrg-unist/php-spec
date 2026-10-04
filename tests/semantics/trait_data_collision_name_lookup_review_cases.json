@@ -1,0 +1,18 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only next259 preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Named C::Y cannot bypass an unpublished using-class lookup via equal class spelling; self::Y remains a different source operation.",
+  "cases": [
+    {
+      "id": "named-composing-class-is-not-fetchable-during-trait-value-comparison",
+      "source": "<?php\ntrait T{public static $x=C::Y;}\necho \"PRE;\";\nclass C{use T;public const Y=2048;public static $x=2048;}\necho \"POST;\";",
+      "source_sha256": "59f35fd4248c2d13d8688c0054d409d4a5b70fb702a1ede3045f353d13077e60",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "V2FybmluZzogVW5jYXVnaHQgRXJyb3I6IENsYXNzICJDIiBub3QgZm91bmQgaW4ge0ZJTEV9OjIKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSg0KTogW2NvbnN0YW50IGV4cHJlc3Npb25dKCkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDIKRmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNAo=",
+      "exit_status": 255,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-name-native259-pq4jkb8o/report.json",
+      "native_raw_sha256": "1355c284dac2c9be2e6ab10284c02960d46b119047960a778784a5462c284d63"
+    }
+  ]
+}

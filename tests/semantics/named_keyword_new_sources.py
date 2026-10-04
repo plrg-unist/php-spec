@@ -34,6 +34,7 @@ CASES = {
     'named-keyword-free-static-rejection': b"<?php\necho 'unreachable|';\nfunction factory() { return new static(argument()); }\nfunction argument() { echo 'V|'; return 1; }\n",
     'named-keyword-known-parent-rejection': b"<?php\necho 'unreachable|';\nclass A {\n    public static function run() {\n        return new parent(argument());\n    }\n}\nfunction argument() { echo 'V|'; return 1; }\n",
     'named-keyword-null-bound-current-composition': b"<?php\nclass A {\n    private function __construct($mark) { echo 'CA', $mark, '|'; }\n    public static function maker() { return function () {\n        $self = new self(1);\n        $static = new static(2);\n        echo $self::class, '/', $static::class, '|';\n        return Closure::getCurrent();\n    }; }\n}\nclass B { public function __construct() {} }\n$maker = A::maker(); $receiver = new B;\n$bound = $maker->bindTo($receiver, A::class);\n$null = $bound->bindTo(null);\nunset($maker, $receiver, $bound);\n$returned = $null();\necho $returned === $null ? 'same' : 'foreign';\nunset($returned, $null);\n",
+    'named-keyword-constant-method-cold-retirement': b'<?php\ntrait ConstantNewFactory {\n    private static function maker() {\n        $lexical = new (\'se\'.(\'lf\' ^ "\\0\\0"))(1);\n        $late = new static(2);\n        echo \'S\', $lexical::class, \'/\', $late::class, \'|\';\n        return $late;\n    }\n    public const array F = [self::maker(...), ConstantNewLate::X];\n}\nclass ConstantNewA {\n    use ConstantNewFactory;\n    private function __construct($mark) { echo \'A\', $mark, \'|\'; }\n}\ntry {\n    $first = ConstantNewA::F;\n} catch (Error $e) {\n    echo \'F|\';\n}\nif (true) {\n    class ConstantNewLate { public const X = 7; }\n    class ConstantNewB {\n        use ConstantNewFactory;\n        public function __construct($mark) { echo \'B\', $mark, \'|\'; }\n    }\n}\n$values = ConstantNewB::F;\n$maker = $values[0];\n$makerClone = clone $maker;\nunset($values, $maker);\n$made = $makerClone();\nunset($makerClone);\necho \'R\', $made::class, \'|\';\nunset($made);\n$retry = ConstantNewA::F;\n$retryMaker = $retry[0];\nunset($retry);\n$again = $retryMaker();\nunset($retryMaker);\necho \'R\', $again::class;\n',
 }
 EXPECTED = {
     'dynamic-new-stdclass-parent': b'stdClass/stdClass',
@@ -55,6 +56,7 @@ EXPECTED = {
     'named-keyword-eval-no-parent': b'Cannot access "parent" when current class scope has no parent',
     'named-keyword-recursive-factory': b'CA|CB|FB|RB|FA|',
     'named-keyword-null-bound-current-composition': b'CA1|CA2|A/A|same',
+    'named-keyword-constant-method-cold-retirement': b'F|A1|B2|SConstantNewA/ConstantNewB|RConstantNewB|A1|A2|SConstantNewA/ConstantNewA|RConstantNewA',
 }
 COMPILED = {
     'named-keyword-free-self-rejection': (b'Cannot use "self" when no class scope is active', 3),

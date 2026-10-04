@@ -163,6 +163,8 @@ test-semantics: build
 	python3 tests/semantics/closure_current_binding_protocol.py
 	python3 tests/semantics/closure_real_binding.py
 	python3 tests/semantics/closure_real_binding_protocol.py
+	python3 tests/semantics/closure_temporary_fake_call.py
+	python3 tests/semantics/closure_temporary_fake_call_protocol.py
 	python3 tests/semantics/invoke_publication.py
 	python3 tests/semantics/invoke_publication_protocol.py
 	python3 tests/semantics/callable_string_ini.py
@@ -310,6 +312,7 @@ test-semantics: build
 	python3 tests/semantics/named_keyword_new_protocol.py --group cold
 	python3 tests/semantics/named_keyword_new_protocol.py --group recursive
 	python3 tests/semantics/named_keyword_new_protocol.py --group eval
+	python3 tests/semantics/named_keyword_new_protocol.py --group constant
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py

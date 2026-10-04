@@ -1,0 +1,79 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only next259 preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Before parent inheritance, self sees only the current composed constant table. Imported dependency cache identity and __CLASS__ remain per using class; later trait members cannot satisfy earlier collisions. Public dependent constants retain their original declaring scope, typed conversion and persistent cache. Real cache fills pass between comparison operands in their native demand order.",
+  "cases": [
+    {
+      "id": "self-collision-lookup-does-not-see-parent-before-inheritance",
+      "source": "<?php\nclass P{public const Y=2048;}\ntrait T{public static $x=self::Y;}\necho \"PRE;\";\nclass C extends P{use T;public static $x=2048;}\necho \"POST;\",C::$x;\n",
+      "source_sha256": "9f8b3a100aeb2b88cbe59b56f1e57c3b4023632e495b15ec5591474f53d146fd",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "V2FybmluZzogVW5jYXVnaHQgRXJyb3I6IFVuZGVmaW5lZCBjb25zdGFudCBzZWxmOjpZIGluIHtGSUxFfTozClN0YWNrIHRyYWNlOgojMCB7RklMRX0oNSk6IFtjb25zdGFudCBleHByZXNzaW9uXSgpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAzCkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDUK",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-self-parent-native259-y14um2_j/report.json",
+      "native_raw_sha256": "502979a346bbdc0afbeff016dff26d2cfb86781240c7b3708596ac9faaf0e8dc"
+    },
+    {
+      "id": "later-trait-constant-is-unavailable-to-earlier-collision",
+      "source": "<?php\nset_error_handler(function($n,$m){echo \"H;\";return true;});\ntrait T{public const X=self::Y;public const Y=E_STRICT;}\necho \"PRE;\";\nclass C{use T;public const X=2048;}\necho \"POST;\",C::Y;\n",
+      "source_sha256": "9f35b56d2a775dbc006eb1f59dc8aed75ccd789d20660c29163d596158f188c4",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "V2FybmluZzogVW5jYXVnaHQgRXJyb3I6IFVuZGVmaW5lZCBjb25zdGFudCBzZWxmOjpZIGluIHtGSUxFfTozClN0YWNrIHRyYWNlOgojMCB7RklMRX0oNSk6IFtjb25zdGFudCBleHByZXNzaW9uXSgpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAzCkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBjb25zdGFudCAoWCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNQo=",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-import-order-native259-tvmld3c_/report.json",
+      "native_raw_sha256": "3371ccc989e2fd551001ce0eead334d67f77987e27838b7b0827ef4428ecd87d"
+    },
+    {
+      "id": "earlier-imported-dependency-caches-distinct-using-class-values",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo \"H\",$l,\";\";return true;});\ntrait T{public const string Y=E_STRICT.__CLASS__;public const string X=self::Y;}\necho \"PRE;\";\nclass C{use T;public const string X=\"2048C\";}\necho \"C:\",C::Y,\";\";\nclass E{use T;public const string X=\"2048E\";}\necho \"E:\",E::Y,\";C:\",C::Y;\n",
+      "source_sha256": "e79d12aba84e3cd4183edc4c7a973eea9d6c6ad1e8a895bfb9544dd5c76bc528",
+      "status": "normal",
+      "stdout_base64": "UFJFO0gzO0M6MjA0OEM7SDM7RToyMDQ4RTtDOjIwNDhD",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-import-order-native259-tvmld3c_/report.json",
+      "native_raw_sha256": "50ade586eef2e9a37dbfe623caca7ef24e5278a2d3ea2d2fcc4bebfeb970ab82"
+    },
+    {
+      "id": "public-dependent-constant-binds-in-original-owner-before-outer-comparison",
+      "source": "<?php\nclass P{public const int Z=1;public const float Y=self::Z+E_STRICT;}\nset_error_handler(function($n,$m,$f,$l){echo \"H\",$l,\";\";return true;});\ntrait T{public static float $x=P::Y;}\necho \"PRE;\";\nclass C{use T;public const int Z=999;public static float $x=2049.0;}\necho \"POST;\",(P::Y===2049.0?\"P\":\"BAD\"),\":\",(C::$x===2049.0?\"C\":\"BAD\");\n",
+      "source_sha256": "9c14ccc58e751fc5e3a288d361898bea93c865efd749c067067e8d1f7861df3d",
+      "status": "normal",
+      "stdout_base64": "UFJFO0gyO1BPU1Q7UDpD",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-public-owner-native259-z1vnof5a/report.json",
+      "native_raw_sha256": "946afe70bd832b23d50bb17551a90a5253f0eedae363e0e1b4008be7b238bbe3"
+    },
+    {
+      "id": "property-operands-share-real-dependency-fill-prior-first",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo \"H\",$l,\";\";return true;});\ntrait T{public static $x=self::Y;}\necho \"PRE;\";\nclass C{use T;public const int Y=E_STRICT;public static $x=self::Y;}\necho \"POST;Y:\",C::Y,\":X:\",C::$x;\n",
+      "source_sha256": "dd3dc725c8c18baa6e0417da1cf08f78d0f0c082d0111d9bc6b04ac09b865a3d",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g1O1BPU1Q7WToyMDQ4Olg6MjA0OA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-operand-cache-native259-1yyd38as/report.json",
+      "native_raw_sha256": "2a432e46d52d78867a4e664c03c9fa60a93fd903f6a99083a51359f812ee8473"
+    },
+    {
+      "id": "constant-operands-share-real-dependency-fill-incoming-first",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo \"H\",$l,\";\";return true;});\ntrait T{public const X=self::Y;}\necho \"PRE;\";\nclass C{use T;public const X=self::Y;public const int Y=E_STRICT;}\necho \"POST;Y:\",C::Y,\":X:\",C::X;\n",
+      "source_sha256": "fc66ac7ea3e9866dd19de3df64d8a721b7d33f653a37f7e978b2c27bdc6f8667",
+      "status": "normal",
+      "stdout_base64": "UFJFO0gzO1BPU1Q7WToyMDQ4Olg6MjA0OA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-operand-cache-native259-1yyd38as/report.json",
+      "native_raw_sha256": "6f4846ec13af352ac986437aa34e8df8ea1eea7c9f9a35031cc3c847e1b2ad44"
+    }
+  ]
+}
