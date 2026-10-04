@@ -638,6 +638,160 @@ protocol.CHECKS['private-named-fcc'] = [
  '$heap_owners($heap_graph(S_dead), HOBJECT n_clone) = 1'
 ]
 
+protocol.PREFIX += r'''
+dec $object_default_cache_replace(pconstantclosure*, nat, pconstantclosure) : pconstantclosure*
+def $object_default_cache_replace(eps, n_target, pconstantclosure_new) = eps
+def $object_default_cache_replace(pconstantclosure :: pconstantclosure_tail*, n_target, pconstantclosure_new) = pconstantclosure_new :: pconstantclosure_tail*
+  -- if pconstantclosure.OBJECT = n_target
+def $object_default_cache_replace(pconstantclosure :: pconstantclosure_tail*, n_target, pconstantclosure_new) = pconstantclosure :: $object_default_cache_replace(pconstantclosure_tail*, n_target, pconstantclosure_new)
+  -- if pconstantclosure.OBJECT =/= n_target
+def $object_default_test_stage(S, 5) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_lexical)
+  -- if pcallcontext.CALLED_CLASS = (porigin_called)
+  -- if porigin_lexical =/= porigin_called
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE pcallcontext.FUNCTION porigin_site porigin_called eps
+'''
+
+protocol.SOURCES['trait-property-fcc-cache-publication'] = ('<?php\n'
+ 'namespace {\n'
+ "    function selected() { return 'global'; }\n"
+ '}\n'
+ 'namespace N {\n'
+ '    trait Maker {\n'
+ "        private static function reveal() { return self::class . '/' . "
+ 'get_called_class(); }\n'
+ '        public \\Closure $f = self::reveal(...);\n'
+ '        public static \\Closure $s = self::reveal(...);\n'
+ '        public \\Closure $n = selected(...);\n'
+ '    }\n'
+ '    class HostA { use Maker; }\n'
+ '    $a = new HostA;\n'
+ "    echo ($a->f)(), ':', (HostA::$s)(), ':', ($a->n)(), ';';\n"
+ "    HostA::$s = static function() { return 'replacement'; };\n"
+ '    if (true) {\n'
+ "        function selected() { return 'late'; }\n"
+ '        class HostB { use Maker; }\n'
+ '    }\n'
+ '    $b = new HostB;\n'
+ "    echo ($b->f)(), ':', (HostB::$s)(), ':', ($b->n)(), ':', selected();\n"
+ '}\n')
+
+protocol.CHECKS['trait-property-fcc-cache-publication'] = ['S = $object_default_test_seek(S_initial[.COMPLETION = NORMAL], 5, 7000)',
+ 'S.CURRENT = (pcallcontext)',
+ 'pcallcontext.LEXICAL_CLASS = (porigin_a)',
+ 'pcallcontext.CALLED_CLASS = (porigin_b)',
+ 'porigin_a =/= porigin_b',
+ '$class_at(S.CLASSES, porigin_a) = (pclassdesc_a)',
+ '$class_at(S.CLASSES, porigin_b) = (pclassdesc_b)',
+ 'pclassdesc_a.PROPERTIES = [ppropertydesc_af, ppropertydesc_as, ppropertydesc_an]',
+ 'pclassdesc_b.PROPERTIES = [ppropertydesc_bf, ppropertydesc_bs, ppropertydesc_bn]',
+ 'ppropertydesc_af.ORIGIN = porigin_af',
+ 'ppropertydesc_as.ORIGIN = porigin_as',
+ 'ppropertydesc_an.ORIGIN = porigin_an',
+ 'ppropertydesc_bf.ORIGIN = porigin_bf',
+ 'ppropertydesc_bs.ORIGIN = porigin_bs',
+ 'ppropertydesc_bn.ORIGIN = porigin_bn',
+ 'ppropertydesc_af.DEFAULT = PROP_DEFERRED porigin_site_f',
+ 'ppropertydesc_bf.DEFAULT = PROP_DEFERRED porigin_site_f',
+ 'ppropertydesc_as.DEFAULT = PROP_DEFERRED porigin_site_s',
+ 'ppropertydesc_bs.DEFAULT = PROP_DEFERRED porigin_site_s',
+ 'ppropertydesc_an.DEFAULT = PROP_DEFERRED porigin_site_n',
+ 'ppropertydesc_bn.DEFAULT = PROP_DEFERRED porigin_site_n',
+ '$constant_callable_first(S.CONSTANTCLOSURES, porigin_site_f) = (pconstantclosure_af)',
+ '$constant_callable_first(S.CONSTANTCLOSURES, porigin_site_s) = (pconstantclosure_as)',
+ '$constant_callable_first(S.CONSTANTCLOSURES, porigin_site_n) = (pconstantclosure_an)',
+ '$instance_default_at(S.INSTANCEDEFAULTS, porigin_b, porigin_bf) = (pinstancetemplate_bf)',
+ 'pinstancetemplate_bf.STATE = INSTANCE_OBJECT_VALUE (POBJECT n_bf) (PVCLOSURE n_bf '
+ 'porigin_site_f) pinstanceobjectcertificate_bf',
+ '$instance_default_at(S.INSTANCEDEFAULTS, porigin_b, porigin_bn) = (pinstancetemplate_bn)',
+ 'pinstancetemplate_bn.STATE = INSTANCE_OBJECT_VALUE (POBJECT n_bn) (PVCLOSURE n_bn '
+ 'porigin_site_n) pinstanceobjectcertificate_bn',
+ '$constant_callable_record(S.CONSTANTCLOSURES, n_bf) = (pconstantclosure_bf)',
+ '$constant_callable_record(S.CONSTANTCLOSURES, n_bn) = (pconstantclosure_bn)',
+ 'pconstantclosure_af.DECL = porigin_af',
+ 'pconstantclosure_as.DECL = porigin_as',
+ 'pconstantclosure_an.DECL = porigin_an',
+ 'pconstantclosure_bf.DECL = porigin_bf',
+ 'pconstantclosure_bn.DECL = porigin_bn',
+ '$(pconstantclosure_af.PREFIX < pconstantclosure_bf.PREFIX)',
+ '$(pconstantclosure_an.PREFIX < pconstantclosure_bn.PREFIX)',
+ '$property_callable_receipt_owner(S, pconstantclosure_af) = (porigin_a)',
+ '$property_callable_receipt_owner(S, pconstantclosure_bf) = (porigin_b)',
+ '$property_callable_cached_method(S, porigin_site_f) = (pmethoddesc_a)',
+ '$constant_callable_method_fresh(S, porigin_site_f, porigin_b, pconstantclosure_bf.PREFIX) = '
+ '((pmethoddesc_b, porigin_b))',
+ 'pmethoddesc_a.FUNCTION.ORIGIN =/= pmethoddesc_b.FUNCTION.ORIGIN',
+ 'pmethoddesc_a.OWNER = porigin_a',
+ 'pmethoddesc_b.OWNER = porigin_b',
+ '~$method_accessible(S, pmethoddesc_a, (porigin_b))',
+ '~$class_origin_matches(S, porigin_b, pclassdesc_a.NAME, |S.CLASSES|)',
+ '$constant_callable_method(S, porigin_site_f, porigin_b, pconstantclosure_bf.PREFIX) = '
+ '((pmethoddesc_a, porigin_b))',
+ '$constant_callable_method(S, porigin_site_f, porigin_b, 0) = eps',
+ '$closure_scope_at(S.CLOSURESCOPES, n_bf) = (pclosurescope_bf)',
+ 'pclosurescope_bf.LEXICAL = porigin_a /\\ pclosurescope_bf.CALLED = porigin_b',
+ '$property_callable_method_owner(S, pmethoddesc_a, porigin_site_f, porigin_b, '
+ 'pclosurescope_bf) = (porigin_b)',
+ '$closure_scope_row_valid(S, pclosurescope_bf)',
+ '$call_current_valid(S)',
+ '$constant_callable_record_valid(S, pconstantclosure_bf)',
+ '$property_callable_method_receipt_owner(S, pconstantclosure_bf[.DECL = porigin_af], '
+ 'pmethoddesc_a, porigin_site_f, porigin_b) = eps',
+ '$property_callable_method_receipt_owner(S, pconstantclosure_bf[.PREFIX = '
+ 'pconstantclosure_af.PREFIX], pmethoddesc_a, porigin_site_f, porigin_b) = eps',
+ '~$closure_scope_row_valid(S, pclosurescope_bf[.LEXICAL = porigin_b])',
+ '~$closure_scope_row_valid(S, pclosurescope_bf[.CALLED = porigin_a])',
+ 'S_wrong_method = S[.OBJECTS = $object_set(S.OBJECTS, n_bf, CONSTANTCLOSURE porigin_site_f '
+ '(METHODCLOSURE pmethoddesc_b.FUNCTION.ORIGIN porigin_site_f porigin_b eps))]',
+ '~$closure_scope_row_valid(S_wrong_method, pclosurescope_bf[.LEXICAL = porigin_b])',
+ 'S_wrong_first = S[.OBJECTS = $object_set(S.OBJECTS, pconstantclosure_af.OBJECT, '
+ 'CONSTANTCLOSURE porigin_site_f (METHODCLOSURE pmethoddesc_b.FUNCTION.ORIGIN porigin_site_f '
+ 'porigin_a eps))]',
+ '$property_callable_cached_method(S_wrong_first, porigin_site_f) = eps',
+ '~$closure_scope_row_valid(S_wrong_first, pclosurescope_bf)',
+ 'S_wrong_prefix = S[.CONSTANTCLOSURES = $object_default_cache_replace(S.CONSTANTCLOSURES, '
+ 'pconstantclosure_af.OBJECT, pconstantclosure_af[.PREFIX = 0])]',
+ '$property_callable_cached_method(S_wrong_prefix, porigin_site_f) = eps',
+ 'S_wrong_decl = S[.CONSTANTCLOSURES = $object_default_cache_replace(S.CONSTANTCLOSURES, '
+ 'pconstantclosure_af.OBJECT, pconstantclosure_af[.DECL = porigin_bf])]',
+ '$property_callable_cached_method(S_wrong_decl, porigin_site_f) = eps',
+ '~$property_default_transfer_valid(S, ppropertydesc_af, PVCLOSURE n_bf porigin_site_f)',
+ '$property_default_transfer_valid(S, ppropertydesc_bf, PVCLOSURE n_bf porigin_site_f)',
+ '~((HOBJECT pconstantclosure_as.OBJECT) <- S.ALLOCATIONS)',
+ '$property_callable_cached_method(S, porigin_site_s) = (pmethoddesc_a)',
+ '$property_callable_cached_function(S, porigin_site_n) = (pfunction_global)',
+ '$constant_callable_function_fresh(S, porigin_site_n, pconstantclosure_bn.PREFIX) = '
+ '(pfunction_late)',
+ 'pfunction_global.ORIGIN =/= pfunction_late.ORIGIN',
+ '$constant_callable_function(S, porigin_site_n, pconstantclosure_bn.PREFIX) = '
+ '(pfunction_global)',
+ '$constant_callable_function(S, porigin_site_n, 0) = eps',
+ 'S_done = $drive_steps(S, 4500)',
+ 'S_done.COMPLETION = NORMAL',
+ 'S_done.TODO = eps',
+ '$object_default_test_output(S_done.EVENTS) = '
+ '$ptascii("N\\\\HostA/N\\\\HostA:N\\\\HostA/N\\\\HostA:global;N\\\\HostA/N\\\\HostB:N\\\\HostA/N\\\\HostB:global:late")',
+ '$constant_callable_records_valid(S_done, S_done.CONSTANTCLOSURES)',
+ '$instance_default_state_valid(S_done)',
+ 'S_clone = $clone_object(S_done, n_bf)',
+ 'S_clone.RESULT = KNOWN (POBJECT n_clone)',
+ '$closure_scope_at(S_clone.CLOSURESCOPES, n_clone) = (pclosurescope_clone)',
+ '$closure_scope_row_valid(S_clone, pclosurescope_clone)',
+ 'S_dead = $prune_allocations(S_clone[.INSTANCEDEFAULTS = eps][.CLASSSTATICS = eps][.ENV = '
+ 'eps][.GLOBALTABLE = eps][.BASE = BASE_VALUE (KNOWN PNULL)])',
+ '~((HOBJECT pconstantclosure_af.OBJECT) <- S_dead.ALLOCATIONS)',
+ '~((HOBJECT pconstantclosure_as.OBJECT) <- S_dead.ALLOCATIONS)',
+ '$closure_scope_at(S_dead.CLOSURESCOPES, pconstantclosure_af.OBJECT) = eps',
+ '$property_callable_cached_method(S_dead, porigin_site_f) = (pmethoddesc_a)',
+ '$property_callable_cached_method(S_dead, porigin_site_s) = (pmethoddesc_a)',
+ '$property_callable_cached_function(S_dead, porigin_site_n) = (pfunction_global)',
+ '$closure_scope_row_valid(S_dead, pclosurescope_clone)',
+ '$constant_callable_records_valid(S_dead, S_dead.CONSTANTCLOSURES)',
+ '$heap_owners($heap_graph(S_dead), HOBJECT pconstantclosure_af.OBJECT) = 0',
+ '$heap_owners($heap_graph(S_dead), HOBJECT n_clone) = 1']
+
 if __name__ == '__main__':
  parser=argparse.ArgumentParser();parser.add_argument('--prepare');args=parser.parse_args()
  if args.prepare:protocol.prepare(Path(args.prepare));print(args.prepare)
