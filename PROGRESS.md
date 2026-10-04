@@ -326,10 +326,13 @@ linking fold. Constants demand incoming then existing values; properties reverse
 that order. Successful publication precedes live handler delivery; a handler throw
 keeps the composed class. Later link fatals flush recorded diagnostics without
 calling user handlers. The [collision ledger](coverage/semantics/trait-collisions-review.json)
-retains14 source tuples (11 normal/3 PHP errors),97 reached queue/callback guards
-and bounded AL/structure checks at exact cuts. Generic operation warnings,
-private-final warning ordering, real dependent-constant binding/caching and
-endogenous expression errors remain required next; this is a partial checkpoint.
+retains14 source tuples (11 normal/3 PHP errors) and97 reached queue/callback
+guards at their original cuts. Generic arithmetic/key recording now isolates
+scratch handler/display settings and follows runtime key→value→insertion order
+with checked AST lines. Five affected source comparisons (four new plus one
+existing array neighbor),47 additional queue/array-owner guards and bounded
+AL/structure checks pass. Private-final warning ordering, real dependent-constant
+binding/caching and endogenous expression errors remain required; traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
