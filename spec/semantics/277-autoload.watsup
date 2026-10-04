@@ -247,7 +247,7 @@ def $autoload_compact(eps :: pautoloadentry_tail?*) = $autoload_compact(pautoloa
 def $autoload_compact((pautoloadentry) :: pautoloadentry_tail?*) = (pautoloadentry) :: $autoload_compact(pautoloadentry_tail?*)
 def $autoload_trim(pautoloadentry?*) = pautoloadentry?* -- if pautoloadentry?* = eps
 def $autoload_trim(pautoloadentry?*) = $autoload_trim(pautoloadentry?*[0:n]) -- if $(|pautoloadentry?*| > 0) -- if n = $(|pautoloadentry?*| - 1) -- if pautoloadentry?*[n] = eps
-def $autoload_trim(pautoloadentry?*) = pautoloadentry?* -- if $(|pautoloadentry?*| > 0) -- if pautoloadentry?*[$(|pautoloadentry?*| - 1)] =/= eps
+def $autoload_trim(pautoloadentry?*) = pautoloadentry?* -- if $(|pautoloadentry?*| > 0) -- if n = $(|pautoloadentry?*| - 1) -- if pautoloadentry?*[n] =/= eps
 def $autoload_seek(pautoloadentry?*, n) = eps -- if $(n >= |pautoloadentry?*|)
 def $autoload_seek(pautoloadentry?*, n) = (n) -- if $(n < |pautoloadentry?*|) -- if pautoloadentry?*[n] =/= eps
 def $autoload_seek(pautoloadentry?*, n) = $autoload_seek(pautoloadentry?*, $(n + 1)) -- if $(n < |pautoloadentry?*|) -- if pautoloadentry?*[n] = eps
