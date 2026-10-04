@@ -19,6 +19,7 @@ dec $consumer_capture_function(pstate, porigin, pmethodcapture?) : porigin?
 dec $consumer_queue_capture(pstate, pshutdownentry) : bool
 dec $consumer_queue_prefix(pshutdownentry*, pshutdownentry) : pshutdownentry*?
 dec $consumer_queue_maker(pstate, pmethodcapture, pshutdownentry*) : bool
+dec $consumer_queue_maker_entry(pstate, pmethodcapture, pshutdownentry) : bool
 dec $consumer_capture_called(pstate, porigin, pmethodcapture?) : porigin?
 dec $consumer_capture_this(pstate, porigin, pmethodcapture?, nat?) : bool
 dec $consumer_target_same(pcalltarget, papiquery, porigin, ptbytes) : bool
@@ -234,17 +235,19 @@ def $consumer_queue_prefix(pshutdownentry :: pshutdownentry_tail*, pshutdownentr
 def $consumer_queue_prefix(pshutdownentry_head :: pshutdownentry_tail*, pshutdownentry) = (pshutdownentry_head :: pshutdownentry_prefix*)
   -- if pshutdownentry_head =/= pshutdownentry
   -- if $consumer_queue_prefix(pshutdownentry_tail*, pshutdownentry) = (pshutdownentry_prefix*)
-def $consumer_queue_prefix(pshutdownentry*, pshutdownentry) = eps -- otherwise
-def $consumer_queue_maker(S, pmethodcapture, pshutdownentry :: pshutdownentry_tail*) = true
+def $consumer_queue_prefix(pshutdownentry_head :: pshutdownentry_tail*, pshutdownentry) = eps
+  -- if pshutdownentry_head =/= pshutdownentry
+  -- if $consumer_queue_prefix(pshutdownentry_tail*, pshutdownentry) = eps
+def $consumer_queue_prefix(eps, pshutdownentry) = eps
+def $consumer_queue_maker(S, pmethodcapture, pshutdownentry :: pshutdownentry_tail*) = ($consumer_queue_maker_entry(S, pmethodcapture, pshutdownentry) \/ $consumer_queue_maker(S, pmethodcapture, pshutdownentry_tail*))
+def $consumer_queue_maker(S, pmethodcapture, eps) = false
+def $consumer_queue_maker_entry(S, pmethodcapture, pshutdownentry) = true
   -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
   -- if pmethodcapture.FUNCTION = pfunction.ORIGIN
   -- if pmethodcapture.LEXICAL_CLASS = $target_lexical_class(S, pshutdownentry.TARGET)
   -- if pmethodcapture.CALLED_CLASS = $target_called_class(S, pshutdownentry.TARGET)
   -- if $shutdown_entry_valid(S, pshutdownentry)
-def $consumer_queue_maker(S, pmethodcapture, pshutdownentry :: pshutdownentry_tail*) = $consumer_queue_maker(S, pmethodcapture, pshutdownentry_tail*)
-  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
-  -- if pmethodcapture.FUNCTION =/= pfunction.ORIGIN
-def $consumer_queue_maker(S, pmethodcapture, pshutdownentry*) = false -- otherwise
+def $consumer_queue_maker_entry(S, pmethodcapture, pshutdownentry) = false -- otherwise
 def $consumer_capture_called(S, porigin, eps) = $closure_source_class(S, porigin)
 def $consumer_capture_called(S, porigin, (pmethodcapture)) = pmethodcapture.CALLED_CLASS
 def $consumer_capture_this(S, porigin, pmethodcapture?, eps) = true

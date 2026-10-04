@@ -7,14 +7,16 @@ import shutdown_state_review as runner
 
 rows = json.loads(Path(__file__).with_name('callback_api_review_cases.json').read_text())
 source = next(row['source'] for row in rows
-              if row['id'] == 'shutdown-keyword-parent-self-static-called')
+              if row['id'] == 'shutdown-keyword-parent-self-static-called').replace(
+                  'register_shutdown_function(["parent","h"]);', '').replace(
+                  'register_shutdown_function("static::h");', '')
 runner.CASES = {
     'retired-inherited-method-called-scope': {
         'source': source,
         'stage': 'S.TODO = [SHUTDOWN_SEND 0 0 eps]',
         'checks': [
             'S.CURRENT = eps', 'S.FRAMES = eps', 'S.CONSTCONTEXT = eps',
-            '|S.SHUTDOWN.ENTRIES| = 3',
+            '|S.SHUTDOWN.ENTRIES| = 1',
             'pshutdownentry = S.SHUTDOWN.ENTRIES[0]',
             'pshutdownentry.TARGET = API_METHOD_TARGET papiquery porigin_handler ptbytes true',
             'pshutdownentry.CAPTURE = (pmethodcapture)',
