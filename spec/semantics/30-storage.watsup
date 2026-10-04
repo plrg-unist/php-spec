@@ -109,7 +109,7 @@ syntax pconstantcontext
 syntax pdestructionjob = DESTRUCTION_VALUE pnode | DESTRUCTION_HANDLE nat
 syntax pdestructionrelease = {JOBS pdestructionjob*, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
 syntax pdestructionframe = {PENDING nat?, VALUE poperand, CALLER pcallcontext?, FUNCTION porigin, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
-syntax pdestructorcall = {OBJECT nat, TARGET pcalltarget, STORE bool, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, LINE int, RELEASE pdestructionrelease?, PENDING nat?}
+syntax pdestructorcall = {OBJECT nat, TARGET pcalltarget, STORE bool, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, LINE int, RELEASE pdestructionrelease?, FRAME pdestructionframe?, PENDING nat?}
 syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED nat*, PHASE pdestructionphase, NAMES nat**, PASS nat**, COUNT nat, INDEX nat, COMPLETION pcompletion, RELEASES pdestructionrelease*, CALLS pdestructorcall*, FRAMES pdestructionframe*}
 syntax pshutdownrenderphase = SHUTDOWN_RENDER_MESSAGE | SHUTDOWN_RENDER_TRACE | SHUTDOWN_RENDER_RETURN | SHUTDOWN_RENDER_DONE
 syntax pshutdownrender = { ROOT nat, CURRENT nat, SEEN nat*, TEXT nat*, MESSAGE nat*, ROOTMESSAGE nat*, PENDING nat?, PHASE pshutdownrenderphase }

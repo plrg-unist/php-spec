@@ -99,7 +99,9 @@ dec $destructor_unique(nat*) : bool
 dec $destructor_pass_valid(pstate) : bool
 dec $destructor_callsite(pdestructorcall) : porigin?
 dec $destructor_line(pdestructorcall) : int
-dec $destructor_pending_for(pcallcontext?, pdestructionframe*) : nat?
+dec $destructor_frame_for(pcallcontext?, pdestructionframe*) : pdestructionframe?
+dec $destructor_frame_pending(pdestructionframe?) : nat?
+dec $destructor_call_pending_valid(pstate, pdestructorcall) : bool
 dec $destructor_leaving_exception(ptask*) : nat?
 dec $destructor_local_cells(pbinding*, preqbytes*) : pnode*
 dec $destructor_frame_nodes(pstate) : pnode*
@@ -345,7 +347,8 @@ def $destructor_free(S, pnode, pdestructionrelease) = $destructor_release_replac
 
 def $destructor_select(S, n, b_store, pdestructionrelease?) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]][.DESTRUCTION.CALLS = pdestructorcall :: S.DESTRUCTION.CALLS][.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: S.TODO]
   -- if $destructor_method(S, n) = (pmethoddesc)
-  -- if pdestructorcall = {OBJECT n, TARGET METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, STORE b_store, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, LINE $property_current_line(S), RELEASE pdestructionrelease?, PENDING $destructor_pending_for(S.CURRENT, S.DESTRUCTION.FRAMES)}
+  -- if pdestructionframe? = $destructor_frame_for(S.CURRENT, S.DESTRUCTION.FRAMES)
+  -- if pdestructorcall = {OBJECT n, TARGET METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, STORE b_store, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, LINE $property_current_line(S), RELEASE pdestructionrelease?, FRAME pdestructionframe?, PENDING $destructor_frame_pending(pdestructionframe?)}
 def $destructor_call_live(S, pdestructorcall) = true
   -- if $destructor_active(S)
   -- if pdestructorcall <- S.DESTRUCTION.CALLS
@@ -354,7 +357,7 @@ def $destructor_call_live(S, pdestructorcall) = true
   -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
   -- if pdestructorcall.TARGET = METHOD_TARGET pdestructorcall.OBJECT pmethoddesc.FUNCTION.ORIGIN
   -- if ~pmethoddesc.STATIC
-  -- if pdestructorcall.PENDING = $destructor_pending_for(pdestructorcall.CALLER, S.DESTRUCTION.FRAMES)
+  -- if $destructor_call_pending_valid(S, pdestructorcall)
   -- if ~pdestructorcall.STORE \/ (S.DESTRUCTION.PHASE = DESTRUCTION_STORE /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps /\ pdestructorcall.RELEASE = eps /\ S.DESTRUCTION.INDEX = $(S.DESTRUCTION.HANDLES[pdestructorcall.OBJECT] + 1))
   -- if pdestructorcall.STORE \/ $destructor_leaf_valid(S, pdestructorcall)
 def $destructor_call_live(S, pdestructorcall) = false -- otherwise
@@ -532,11 +535,19 @@ def $destructor_releases_valid(S, pdestructionrelease :: pdestructionrelease_tai
 def $destructor_calls_valid(S, eps) = true
 def $destructor_calls_valid(S, pdestructorcall :: pdestructorcall_tail*) = ($destructor_call_live(S, pdestructorcall) /\ $destructor_calls_valid(S, pdestructorcall_tail*))
 
-def $destructor_pending_for(pcallcontext?, eps) = eps
-def $destructor_pending_for(pcallcontext?, pdestructionframe :: pdestructionframe_tail*) = pdestructionframe.PENDING
+def $destructor_frame_for(pcallcontext?, eps) = eps
+def $destructor_frame_for(pcallcontext?, pdestructionframe :: pdestructionframe_tail*) = (pdestructionframe)
   -- if pdestructionframe.CALLER = pcallcontext?
-def $destructor_pending_for(pcallcontext?, pdestructionframe :: pdestructionframe_tail*) = $destructor_pending_for(pcallcontext?, pdestructionframe_tail*)
+def $destructor_frame_for(pcallcontext?, pdestructionframe :: pdestructionframe_tail*) = $destructor_frame_for(pcallcontext?, pdestructionframe_tail*)
   -- if pcallcontext? =/= pdestructionframe.CALLER
+def $destructor_frame_pending(eps) = eps
+def $destructor_frame_pending((pdestructionframe)) = pdestructionframe.PENDING
+;; A nested normal return may prepend another frame with the same caller. The
+;; selected destructor retains its original borrowed pending-frame anchor.
+def $destructor_call_pending_valid(S, pdestructorcall) = (pdestructorcall.PENDING = eps)
+  -- if pdestructorcall.FRAME = eps
+def $destructor_call_pending_valid(S, pdestructorcall) = (pdestructionframe <- S.DESTRUCTION.FRAMES /\ pdestructionframe.CALLER = pdestructorcall.CALLER /\ pdestructionframe.PENDING = pdestructorcall.PENDING)
+  -- if pdestructorcall.FRAME = (pdestructionframe)
 
 ;; CV zvals are released in compiled order after Zend restores the real caller.
 ;; Remaining slots are pending owners, including aliases to the same wrapper.
