@@ -87,7 +87,16 @@ def run(match, exclude_matches, start_at, native_only, native_reports):
                   and nerr == row['stderr'].replace('{file}', str(source)).encode())
         result = {'id': row['id'], 'native': native, 'passed': passed}
         if passed and not native_only:
-            model = recorded([ROOT / 'bin/php-semantics', source, '--steps', '100000', '--timeout', '60'],
+            model_command = [ROOT / 'bin/php-semantics', source, '--steps', '100000', '--timeout', '60']
+            if 'request' in row:
+                request = dict(row['request'])
+                filename = base64.b64encode(os.fsencode(source)).decode()
+                request.update(file=filename, argv=[filename, *request.pop('args')])
+                context = directory / 'request.json'
+                context.write_text(json.dumps(request) + '\n')
+                model_command.extend(['--request-context', context])
+                result.update(request=request, request_scope=row['request_scope'])
+            model = recorded(model_command,
                              directory, 'model', environment, 75)
             try:
                 actual = json.loads((directory / 'model.stdout').read_bytes())
