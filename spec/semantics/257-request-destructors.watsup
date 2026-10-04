@@ -115,6 +115,7 @@ dec $destructor_frame_begin(pstate, pstate) : pstate
 dec $destructor_frame_cleanup(pstate) : pstate
 dec $destructor_frame_order(pstate, pstate) : pnode*
 dec $destructor_unused_return(pstate) : bool
+dec $destructor_return_discarded(ptask*) : bool
 dec $destructor_frame_valid(pstate, pdestructionframe) : bool
 dec $destructor_chain_pending(pstate, pdestructorcall) : pstate
 dec $destructor_resume_pending(pstate, pdestructorcall) : pstate
@@ -668,6 +669,9 @@ def $destructor_frame_cleanup(S) = $request_fatal_state(S) -- otherwise
 ;; ZEND_RETURN frees an unused temporary before zend_leave_helper restores the
 ;; caller. Keep that decrement in the live callee scope, then reuse its normal
 ;; return unwind for the ordered compiled-variable release.
+def $destructor_return_discarded((ORIGIN_RETURN porigin?) :: ptask*) = $destructor_return_discarded(ptask*)
+def $destructor_return_discarded(DISCARD :: ptask*) = true
+def $destructor_return_discarded(ptask*) = false -- otherwise
 def $destructor_unused_return(S) = true
   -- if $destructor_active(S)
   -- if S.COMPLETION = NORMAL
@@ -676,7 +680,7 @@ def $destructor_unused_return(S) = true
   -- if $operand_nodes(S.RESULT) =/= eps
   -- if ~$reference_returning(S)
   -- if S.FRAMES = pframe :: pframe_tail*
-  -- if pframe.TODO = DISCARD :: ptask_tail*
+  -- if $destructor_return_discarded(pframe.TODO)
   -- if $return_unwind_source_valid(S, S.ORIGIN)
 def $destructor_unused_return(S) = false -- otherwise
 def $frame_release(S, S_restored) = $destructor_release_begin($destruction_store_new(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = [RETURN_UNWIND (KNOWN PNULL) S.ORIGIN]]), $destruction_values($operand_nodes(S.RESULT)))
