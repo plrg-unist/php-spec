@@ -336,8 +336,8 @@ def $entry_read_value(S, pitem) = $entry_value(S, pitem) -- otherwise
 def $stdclass_raw_undefined(S, POBJECT n, ptbytes) = true
   -- if S.OBJECTS[n] = STDINSTANCE
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes
-  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
-  -- if $property_slot_at(ppropertyslot*, ptbytes) = (ppropertyslot)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE UNINITIALIZED
 def $stdclass_raw_undefined(S, pvalue, ptbytes) = false -- otherwise
 
