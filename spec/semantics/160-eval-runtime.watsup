@@ -376,7 +376,8 @@ dec $eval_trace_saved(pstate, pcallcontext?, pframe*, nat) : ptraceframe*
 dec $eval_trace_preparser(pstate, pcallcontext?, pframe) : ptraceframe*
 dec $stringify_context_frame_valid(pstate, pcallcontext, pframe) : bool
 dec $eval_frame_context(pstate, pframe, pframe*) : ptraceframe*
-def $eval_frame_context(S, pframe, pframe_tail*) = eps
+dec $shutdown_render_trace_frame(pstate, pframe, pframe*) : ptraceframe*
+def $eval_frame_context(S, pframe, pframe_tail*) = $shutdown_render_trace_frame(S, pframe, pframe_tail*)
   -- if pframe.CONTEXT = eps
 def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S_context, psymboltable.ENV, pframe.CONTEXT)
   -- if pframe.CONTEXT = (pcallcontext)
@@ -526,10 +527,11 @@ dec $eval_continue(pstate, psourceresponse) : pstate
 def $eval_continue(S, psourceresponse) = $drive_steps(S_next, n)
   -- if S.SERVICELEFT = (n)
   -- if S_next = $eval_resume(S, psourceresponse)
-  -- if S_next.COMPLETION = NORMAL
+  -- if S_next.COMPLETION = NORMAL \/ $shutdown_ready(S_next)
 def $eval_continue(S, psourceresponse) = S_next
   -- if S_next = $eval_resume(S, psourceresponse)
   -- if S_next.COMPLETION =/= NORMAL
+  -- if ~$shutdown_ready(S_next)
 
 rule PhpStep/eval-end: S ~> S[.EVALCONTEXTS = pevalcontext_tail*][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pevalcontext.SITE)]
   -- if S.TODO = (EVAL_END n) :: ptask_tail*

@@ -178,6 +178,7 @@ def $exception_dispatch_ready(S) = true
   -- if S.CURRENT = eps
   -- if S.FRAMES = eps
   -- if $exception_terminal_tail(S, ptask_tail*)
+  -- if ~$shutdown_render_throw_pending(S)
   -- if S.EXCEPTIONHANDLER = (pvalue)
   -- if $throwable_member(S, n)
 def $exception_dispatch_ready(S) = false -- otherwise

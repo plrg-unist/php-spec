@@ -116,6 +116,7 @@ def $declaration_stop_terminal(pcompletion) = true -- otherwise
 
 dec $declaration_history_fold(pstate, pstate, (nat, ppstate)*, pdeclaration*, nat) : bool
 dec $declaration_history_compiled(pstate, pstate, (nat, ppstate)*, pdeclaration*, nat, pstate) : bool
+dec $shutdown_compiler_released(pstate, pstate) : bool
 def $declaration_history_fold(S, S_prefix, (n, P)*, eps, n_next) = $declaration_history_final(S, S_prefix)
 def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next porigin? z) :: pdeclaration*, n_next) = $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled)
   -- if $declaration_entry_binding(S, S_prefix, n_next, porigin?)
@@ -123,7 +124,7 @@ def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next porigin? z) 
   -- if $declaration_compiler_at((n, P)*, n_next) = (P_current)
   -- if S_compiled = $declaration_fold($declaration_enter(S_prefix[.REPORTING = z][.COMPLETION = NORMAL][.ERRORORIGIN = eps], n_next, porigin?), P_current, P_current.PUBLICATIONS, 0, 0)
 def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_fold(S, S_compiled[.COMPLETION = NORMAL][.TODO = eps], (n, P)*, pdeclaration_tail*, $(n_next + 1))
-  -- if ~$declaration_stop_terminal(S_compiled.COMPLETION)
+  -- if ~$declaration_stop_terminal(S_compiled.COMPLETION) \/ $shutdown_compiler_released(S, S_compiled)
   -- if n_prefix = $nabs($(|S_prefix.DECLARATIONS| + 1))
   -- if $(n_prefix <= |S_compiled.DECLARATIONS|)
   -- if n_count = $nabs($(|S_compiled.DECLARATIONS| - n_prefix))

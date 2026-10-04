@@ -47,8 +47,11 @@ def $variadic_replace(poperand_old :: poperand_tail*, n, poperand) = poperand_ol
   -- if $(n - 1) = n_next
 
 dec $variadic_coerced(pstate, nat, poperand, pvalue) : pstate
-def $variadic_coerced(S, n_extra, KNOWN pvalue_old, pvalue) = S[.CURRENT = (pcallcontext[.EXTRA = $variadic_replace(pcallcontext.EXTRA, n_extra, KNOWN pvalue)])]
+dec $variadic_context_coerced(pstate, nat, poperand) : pstate
+def $variadic_context_coerced(S, n_extra, poperand) = S -- otherwise
+def $variadic_coerced(S, n_extra, KNOWN pvalue_old, pvalue) = S_received[.CURRENT = (pcallcontext[.EXTRA = $variadic_replace(pcallcontext.EXTRA, n_extra, KNOWN pvalue)])]
   -- if S.CURRENT = (pcallcontext)
+  -- if S_received = $variadic_context_coerced(S, n_extra, KNOWN pvalue)
 def $variadic_coerced(S, n_extra, REFERENCE n, pvalue) = S
   -- if S.STORE[n] = DEFINED pvalue
 def $variadic_coerced(S, n_extra, REFERENCE n, pvalue) = $write_cell_checked(S, n, pvalue, $property_current_line(S))
