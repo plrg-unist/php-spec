@@ -314,7 +314,6 @@ def $api_finish(S, TYPE_RECEIVE porigin n, pvalue, HANDLERRESOLVED pcalltarget) 
   -- if S.STORE[n_cell] = DEFINED pvalue_live
 def $api_finish(S, TYPE_RECEIVE porigin n, pvalue, HANDLERINVALID ptbytes) = $api_receive_reject(S, porigin, n)
 def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERRESOLVED pcalltarget) = $api_register(S, pconfigcall, pvalue)[.TODO = ptask_tail*]
-  -- if pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER
   -- if S.TODO = ptask :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER
 def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERINVALID ptbytes) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_error_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ ptbytes)
