@@ -264,8 +264,12 @@ bounded CV-array W/RW and direct GLOBALS reference fetches. Callback copies abor
 acquisition; real cell aliases, moved sole keepers, delayed RHS reads and named
 reference priority retain their native behavior. Author11/340 and independent15
 fresh/266 plus two retained originals keep separate cuts; one current typed-caller
-interaction passes. Append, unset, coalesce assignment and wider producers
-remain required.
+interaction passes. [Coalesce assignment and unset keys](docs/semantics/SOURCE-DIMENSION-EDITS.md)
+now stage direct CV-array consumers: memoized keys and separate read/write lines,
+write-copy abort, unset liveness and shared typed cells survive callbacks.
+Author6/255 and independent10/216 share one original, giving15 unique private
+agreements; two reduced current trait-handler sources pass. Nested unset,
+wider memoized containers, append and wider producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument

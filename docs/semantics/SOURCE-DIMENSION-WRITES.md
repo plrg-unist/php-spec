@@ -45,6 +45,8 @@ The catalogue is `tests/semantics/dimension_write_cases.py`.
 `python3 -B tests/semantics/dimension_write_prepare.py [fixture-id ...]` compiles
 selected source-reached fixtures; their numeric runner commands are in the ledger.
 
-Append, unset, coalesce assignment, broader GLOBALS RW, earlier missing/scalar
-containers, string/key warnings and object/magic/computed acquisitions remain
-required follow-ons. Read233, snapshots226 and paused returns retain separate scope.
+[Coalesce/unset249](SOURCE-DIMENSION-EDITS.md) adds bounded direct CV-array quiet
+memoization, write continuations and final unset liveness. Nested unset, wider
+memoized containers, append, broader GLOBALS RW, earlier missing/scalar containers,
+string/key warnings and object/magic/computed acquisitions remain required.
+Read233, snapshots226 and paused returns retain separate scope.

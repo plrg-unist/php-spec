@@ -66,9 +66,23 @@ actual3b622 composition source at6ae passes private-handler/called-class and typ
 caller alias/introspection behavior. Accepted231/234 routes are preserved. The
 [contract](docs/semantics/SOURCE-DIMENSION-WRITES.md) and
 [ledger](coverage/semantics/dimension-write-continuations-review.json) retain
-original failures, revisions and the current adapter reuse. Append, unset,
-coalesce assignment, broader GLOBALS RW and earlier container/string/object
-producers remain required.
+original failures, revisions and the current adapter reuse. Broader GLOBALS RW
+and earlier container/string/object producers remain required.
+
+Coalesce-assignment and final unset keys249 now stage defined direct CV-array
+consumers. Quiet reads retain captured values and genuine memo operands; live CV
+and computed keys keep distinct later demand. Actual read/write lines, copy-induced
+write abort, delayed RHS suppression and retired-storage reinitialization are
+preserved. Unset keeps ordered float protection and deletes callback-shared tables
+by liveness while real cells survive. Author6/255 and independent10/216 share one
+multiline original, giving15 unique private agreements at cfb/ab7. Two reduced
+actualab5 trait-handler sources pass at f5/ea: private selection, Child called
+class, read11/write8, copied-table abort/deletion and shared typed caller cells.
+Combined and first reduced coalesce CLI60 timeouts retain zero agreement. The
+[contract](docs/semantics/SOURCE-DIMENSION-EDITS.md) and
+[ledger](coverage/semantics/dimension-edit-review.json) keep original cuts and
+native prediction corrections. Nested unset, wider memoized containers and append
+are immediate required follow-ons; complete core remains open.
 
 Iterator declaration notices230 follow actual source/internal prototype order,
 including source erasure, direct restoration, duplicate notices and the built-in
@@ -147,8 +161,9 @@ actual71da constructor in a parameter default passes with private captured
 handler selection, called class and authentic key line/name through root mutation.
 [Contract](docs/semantics/SOURCE-DIMENSION-KEYS.md),
 [ledger](coverage/semantics/dimension-key-review.json). Writable242 covers the
-bounded CV-array consumers above; append/unset/coalesce-assignment and wider
-object/key/container producers remain core work.
+bounded CV-array consumers above;249 adds direct coalesce-assignment/final unset.
+Nested unset, wider memoized containers, append and wider object/key/container
+producers remain core work.
 
 Prepared internal Throwable default constructors235 map completed227 values
 before names, arity and sequential reception. Default declaration strictness,
@@ -442,9 +457,10 @@ failures and interrupted evidence.
   `$GLOBALS[key]` reads and explicit-request full-table snapshots are admitted;
   233 additionally stages earlier missing key-CV and null/float/global-array-name
   conversions through nested/quiet reads. Writable242 adds bounded CV-array W/RW
-  and direct GLOBALS reference fetches. Append/unset/coalesce-assignment, broader
-  GLOBALS RW, wider key/object/container producers and ordinary snapshots
-  without request facts remain open.
+  and direct GLOBALS reference fetches;249 adds direct CV-array coalesce-assignment
+  and final unset. Nested unset, wider memoized containers, append, broader GLOBALS
+  RW, wider key/object/container producers and ordinary snapshots without request
+  facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
   wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
