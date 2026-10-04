@@ -381,16 +381,16 @@ dec $object_foreach_key_used(statement) : bool
 def $object_foreach_key_used(NStmtForeach expression phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) = (phpType5 =/= ABSENT)
 def $object_foreach_key_used(statement) = false -- otherwise
 dec $object_foreach_notice(statement, ptbytes) : preqbytes?
-def $object_foreach_notice(statement, ptbytes) = preqbytes?
+def $object_foreach_notice(statement, ptbytes) = preqbytes_notice?
   -- if $object_foreach_key_used(statement)
-  -- if (preqbytes?, preqbytes) = $object_member_name(ptbytes)
+  -- if (preqbytes_notice?, preqbytes) = $object_member_name(ptbytes)
 def $object_foreach_notice(statement, ptbytes) = eps
   -- if ~$object_foreach_key_used(statement)
 
 dec $object_foreach_deliver(pstate, nat, nat, statement, int, ptbytes, poperand, bool) : pstate
 def $object_foreach_deliver(S, n, n_object, statement, z, ptbytes, poperand, b_ref) = $foreach_body(S, n, HOBJECT n_object, statement, z, KSTRING preqbytes, poperand, b_ref)
   -- if $object_foreach_notice(statement, ptbytes) = eps
-  -- if (preqbytes?, preqbytes) = $object_member_name(ptbytes)
+  -- if (preqbytes_notice?, preqbytes) = $object_member_name(ptbytes)
 def $object_foreach_deliver(S, n, n_object, statement, z, ptbytes, poperand, b_ref) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8, preqbytes_warning, z, DIAGNOSTIC "Notice" preqbytes_warning z, OBJECT_FOREACH_KEY pobjectforeach)
   -- if S.TODO = ptask :: ptask_tail*
   -- if $object_foreach_notice(statement, ptbytes) = (preqbytes_warning)
@@ -484,14 +484,14 @@ rule PhpStep/object-foreach-key-result: S ~> $foreach_body(S, pobjectforeach.ITE
   -- if $object_foreach_valid(S, pobjectforeach)
   -- if ~pobjectforeach.REF
   -- if $origin_node(S.SOURCES, pobjectforeach.SITE) = (statement)
-  -- if (preqbytes?, preqbytes) = $object_member_name(pobjectforeach.KEY)
+  -- if (preqbytes_notice?, preqbytes) = $object_member_name(pobjectforeach.KEY)
   -- if $object_foreach_bucket(S, pobjectforeach) = (pitem)
 rule PhpStep/object-foreach-key-reference: S ~> $foreach_body(S_ref, pobjectforeach.ITERATOR, HOBJECT pobjectforeach.OBJECT, statement, pobjectforeach.LINE, KSTRING preqbytes, REFERENCE S_ref.CELL, true)
   -- if S.TODO = (OBJECT_FOREACH_KEY pobjectforeach) :: ptask_tail*
   -- if $object_foreach_valid(S, pobjectforeach)
   -- if pobjectforeach.REF
   -- if $origin_node(S.SOURCES, pobjectforeach.SITE) = (statement)
-  -- if (preqbytes?, preqbytes) = $object_member_name(pobjectforeach.KEY)
+  -- if (preqbytes_notice?, preqbytes) = $object_member_name(pobjectforeach.KEY)
   -- if $object_foreach_bucket(S, pobjectforeach) = (pitem)
   -- if pitem =/= UNINITIALIZED
   -- if S_ref = $object_table_reference_bucket(S, pobjectforeach.TABLE, pobjectforeach.KEY)
