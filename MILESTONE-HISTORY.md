@@ -23,6 +23,7 @@ projected and installed observations.
 
 | Modules | Behavior and evidence |
 | --- | --- |
+| 216 parameter backing authority | Free string-BYREF reception writes the captured cell after callback source attachment, removal or rebinding. A nonowning NParam certificate permits only that exact backing string; ordinary writes/binds still enforce sources, successful writes clear authority and retired cells prune it. Author6/state299 and independent instance rebind/throw2 pass at73d6; earlier214 Unsupported remains historical. [Review](coverage/semantics/weak-string-parameters-review.json) |
 | 214 supplied weak Stringable parameters | Ordered value/free-reference conversion preserves caller strictness, nominal/callable precedence, captured formal cells and original thrown exceptions. Author11 plus one explicit callback-attached-source Unsupported, state178, independent2 and current cached-Closure/nonpublic-callable source2/state46 keep distinct revisions. Broader constrained and variadic consumers remain open. [Review](coverage/semantics/weak-string-parameters-review.json) |
 | 119/120 | First-class named-function callables: 17 source outcomes, reference-context pairs and paused guards. [Review](coverage/semantics/first-class-review.json) |
 | 121–123 | Pipe arrow syntax and execution: separately reviewed 30,980-entry classified syntax gate, 12 runtime source outcomes and five paused stages/89 assertions. [Syntax](coverage/semantics/pipe-syntax-review.json) · [runtime](coverage/semantics/pipe-review.json) |

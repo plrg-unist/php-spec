@@ -30,18 +30,29 @@ Supplied fixed string parameters now use the same resumable callback in receive
 order. Nominal or callable membership retains the original object before string
 coercion; caller strictness rejects before conversion. By-value formals retain a
 copy. Free by-reference formals retain their entered cell across callback
-mutation and write the string there only while unconstrained. Existing property
-type sources reject conversion before the callback. A callback that attaches a
-new property source instead ends in explicit Unsupported before writeback;
-modeling that live backing-value exception remains required core work and must
-use parameter authority, not the paused typed-reference-return witness.
+mutation and write the string there even when the callback attaches property
+type sources. Existing sources reject conversion before the callback. The new
+216 authority comes from the genuine normal BYREF receive and actual NParam;
+it permits only the exact resulting backing string, including when that string
+does not satisfy a newly attached property type. It grants no ordinary write or
+bind permission and uses no paused typed-reference-return witness.
+
+Later exact-string receives advance without rewriting the certified cell.
+Ordinary assignments and new property bindings still enforce live sources;
+successful value writes clear the certificate, and allocation retirement prunes
+it. Source detachment and rebinding follow the captured formal cell even when a
+callback replaces the global alias. The certificate adds no heap owner.
 
 The continuation binds the actual NParam occurrence, supplied index, formal cell
 and original receiver. Same-site recursion authenticates each marker against its
 nearest owning receive frame. Conversion throws propagate the original exception
 without a receive TypeError wrapper. The [parameter ledger](../../coverage/semantics/weak-string-parameters-review.json)
-keeps author11 plus one Unsupported control, state178, independent2 and current
-cached-Closure/nonpublic-callable source2/state46 at their distinct revisions.
+keeps the earlier author11 plus one Unsupported control, state178, independent2
+and cached-Closure/nonpublic-callable source2/state46 at their distinct revisions.
+The backing increment passes source6/state299 and two independent instance
+attachment/rebind/throw controls at73d6. Throws retain callback mutations and
+mint no backing certificate. Modeled allocation retirement is distinct from
+destructor or GC callback completeness.
 Variadic/default callback reception and broader constrained consumers remain open.
 
 The required consumer inventory includes echo, print, `(string)` casts,
