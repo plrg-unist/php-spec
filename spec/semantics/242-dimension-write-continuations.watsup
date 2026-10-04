@@ -1,5 +1,8 @@
 ;; Writable array helpers separate first, protect the selected table during
 ;; diagnostics, then require exactly one remaining owner before acquisition.
+dec $key_append_expression(expression) : bool
+dec $key_append_task(ptask) : bool
+dec $key_append_context(pstate, ptask*) : bool
 dec $key_write_op(pcnode) : pbin?
 dec $key_write_update(pcnode) : (pupdate, bool)?
 dec $key_write_path_kind(ptask*) : bool?
@@ -113,6 +116,7 @@ def $key_write_path_kind((DIM_INDEX expression z) :: ptask_tail*) = $key_write_p
 def $key_write_path_kind((DIM_PATH pbase z) :: ptask_tail*) = $key_write_path_kind(ptask_tail*)
 def $key_write_path_kind((DIM_APPEND z) :: ptask_tail*) = $key_write_path_kind(ptask_tail*)
 def $key_write_path_kind((ASSIGN_PREP expression_target expression_rhs) :: ptask_tail*) = (false)
+  -- if ~$key_append_expression(expression_target)
 def $key_write_path_kind((COMPOUND_PREP pbin expression_target expression_rhs z) :: ptask_tail*) = (true)
 def $key_write_path_kind((UPDATE_PREP pupdate b z) :: ptask_tail*) = (true)
 def $key_write_path_kind((ACQUIRE_ARRAY z) :: ptask_tail*) = (false)
@@ -294,6 +298,7 @@ rule PhpStep/key-write-dimension: S ~> $key_write_dimension(S, poperand, z, b)
 rule PhpStep/key-write-initialize-dimension: S ~> S_array[.RESULT = KNOWN PNULL]
   -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
   -- if $key_write_array_init($location_slot(S, S.LOCATION))
+  -- if S.LOCATION =/= NOWHERE \/ ~$key_append_context(S, S.TODO)
   -- if S_array = $fetch_location_array(S, S.LOCATION, z)
 
 def $key_write_value(S, pkeywrite) = $key_write_dispatch(S, pkeywrite[.READ.PHASE = KEY_NULL][.READ.KEY = KSTRING eps])
@@ -555,6 +560,7 @@ def $key_write_named_finish(S, NAMED_SEND pcalltarget phpType7* n pnamedargs por
   -- if $target_function(S, pcalltarget) = (pfunction)
 rule PhpStep/key-write-finish: S ~> S_out[.HELD = S.HELD]
   -- if S.TODO = (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*
+  -- if ~$key_append_task(pkeywriter.TASK)
   -- if S.ORIGIN = (pkeywriter.SITE)
   -- if $key_writer_valid(S, pkeywriter, ptask_tail*)
   -- if S_out = $key_write_finish($hold_task_inputs(S), pkeywriter)
