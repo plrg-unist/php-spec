@@ -1,0 +1,159 @@
+[
+  {
+    "id": "public-array-string-function-controls",
+    "source": "<?php\nclass Base { public function run($v){echo __CLASS__,\"/\",static::class,\":\",func_num_args(),\":\",func_get_arg(0);} public static function stat($v){echo \"S:\",$v;} }\nclass Leaf extends Base {}\nfunction carry($v){return \"F:\".$v;}\n$cb=[new Leaf,\"run\"]; $cb(...[\"v\"=>\"x\"]); echo \"|\"; ('Base::stat')(v:\"y\"); echo \"|\"; $f=\"carry\"; echo $f(\"z\");\n",
+    "source_sha256": "a5442a2b2d4e461bf35e1a98b5743b908777c589bdc89c872241242f76bdbe3e",
+    "expected_model": "normal",
+    "purpose": "Keep ordinary public target carriers and registered function strings while scoped routes are added.",
+    "expected_normal_stdout": "Base/Leaf:1:x|S:y|F:z"
+  },
+  {
+    "id": "protected-prototype-ancestor-direct-selection",
+    "source": "<?php\nclass Root { protected function run($v){echo \"BAD-ROOT\";} public function start(){ $cb=[new Right,\"run\"]; $cb(v:\"x\"); } }\nclass Right extends Root { protected function run($v){echo __CLASS__,\"/\",static::class,\":\",$v;} }\n(new Root)->start();\n",
+    "source_sha256": "47fe7d55b3ca2a37827dbc13e28bb14aa4d9d01332e23baeccfb8872a0d54ee1",
+    "expected_model": "normal",
+    "purpose": "An ancestor receiving scope accesses an overriding protected method through the prototype class.",
+    "expected_normal_stdout": "Right/Right:x"
+  },
+  {
+    "id": "qualified-protected-static-array-and-string",
+    "source": "<?php\nnamespace A;\nclass Root { protected static function f($v){echo \"BAD-ROOT\";} public static function start(){ $a=[\"\\\\A\\\\Leaf\",\"F\"]; $a(v:\"x\"); $s=\"\\\\a\\\\lEaF::f\"; $s(v:\"y\"); } }\nclass Leaf extends Root { protected static function f($v){echo __CLASS__,\"/\",static::class,\":\",$v;} }\nRoot::start();\n",
+    "source_sha256": "402cb24d69723fa9d43f76c4dc2f207feea6aa104a71f8093005e66bfcc12edd",
+    "expected_model": "normal",
+    "purpose": "Full qualified bytes and case-insensitive concrete class lookup preserve protected access and called identity.",
+    "expected_normal_stdout": "A\\Leaf/A\\Leaf:xA\\Leaf/A\\Leaf:y"
+  },
+  {
+    "id": "protected-denial-precedes-argument-effects",
+    "source": "<?php\nclass Hidden { protected static function run($v){echo \"BAD-BODY\";} }\nfunction side(){echo \"BAD-ARG\";return \"x\";}\n$cb=[\"Hidden\",\"rUN\"]; try{$cb(side());}catch(Error $e){echo $e->getMessage();}\n",
+    "source_sha256": "b7d1e4f6069ec87848144a3b6440267bca8c9036795ff804ec52e7f6dc0f4da5",
+    "expected_model": "normal",
+    "purpose": "Direct access failure occurs before dynamic argument evaluation.",
+    "expected_normal_stdout": "Call to protected method Hidden::rUN() from global scope"
+  },
+  {
+    "id": "private-static-inherited-concrete-array-and-string",
+    "source": "<?php\nclass Owner { private static function hidden($v){echo __CLASS__,\"/\",static::class,\":\",$v;} public static function start(){ $a=[\"Child\",\"hidden\"]; $a(\"x\"); $s=\"Child::hidden\"; $s(\"y\"); } }\nclass Child extends Owner {}\nOwner::start();\n",
+    "source_sha256": "d0b5177176d2fc5415f9e35cc7727e511bbcd735437710256bfa074b2a645f73",
+    "expected_model": "normal",
+    "purpose": "Concrete Child lookup retains an inherited Owner private descriptor under Owner access.",
+    "expected_normal_stdout": "Owner/Child:xOwner/Child:y"
+  },
+  {
+    "id": "private-static-array-capture-clone-default-static",
+    "source": "<?php\nclass Owner { private static function run($v=\"d\"){static $n=0;$n++;echo __CLASS__,\"/\",static::class,\":\",$v,\":\",$n;} public static function make(&$saved){$saved=[\"Child\",\"run\"](...);} }\nclass Child extends Owner {}\n$saved=null;Owner::make($saved);$copy=clone $saved;unset($saved);$copy();$copy(v:\"x\");unset($copy);\n",
+    "source_sha256": "491f4cf0a68c4ec35cb58c1c0ac3039ae06d83fa370814d3f3a7fd2f47e4f3db",
+    "expected_model": "normal",
+    "purpose": "A private array capture retains permission, nominal Closure identity, method defaults and shared static cell after its creator returns.",
+    "expected_normal_stdout": "Owner/Child:d:1Owner/Child:x:2"
+  },
+  {
+    "id": "private-fixed-string-capture-ref-default-clone",
+    "source": "<?php\nclass Owner {\n private function run(&$v,$suffix=\"d\"){static $n=0;$n++;$v.=\"K\";echo __CLASS__,\"/\",static::class,\":\",$suffix,\":\",$n,\":\",$v;}\n public function make(&$saved){$other=new Child;$saved=(\"Owner::run\")(...);}\n}\nclass Child extends Owner {}\n$saved=null;$creator=new Child;$creator->make($saved);$creator=null;$copy=clone $saved;unset($saved);$v=\"x\";$copy(v:$v);echo \"|\";$copy(...[\"v\"=>&$v,\"suffix\"=>\"y\"]);unset($copy);\n",
+    "source_sha256": "00e3839190e67cad595583a36dad50547a1369b8a572b4967ace55d09c6143a5",
+    "expected_model": "normal",
+    "purpose": "Fixed private string capture binds genuine this, survives creator retirement and shares byref parameter/default/static method behavior across clone calls.",
+    "expected_normal_stdout": "Owner/Child:d:1:xK|Owner/Child:y:2:xKK"
+  },
+  {
+    "id": "private-fixed-static-ref-parameter",
+    "source": "<?php\nclass Owner { private static function run(&$v){$v=\"K\";} public static function start(){ $v=\"x\";('Owner::run')($v);echo $v;} }\nOwner::start();\n",
+    "source_sha256": "a764510c0e3a81b78f988a02fa118b973d58af7e090590ffe77c766aa45dd497",
+    "expected_model": "normal",
+    "purpose": "A fixed private static string uses real by-reference argument acquisition, without a by-reference return.",
+    "expected_normal_stdout": "K"
+  },
+  {
+    "id": "folded-fixed-private-method-string",
+    "source": "<?php\nclass Owner { private function hidden($v){echo __CLASS__,\"/\",static::class,\":\",$v;} public function start(){(\"Owner\".\"::hidden\")(v:\"x\");} }\nclass Child extends Owner {}\n(new Child)->start();\n",
+    "source_sha256": "50060c59092c20ee24867cd59715ab8cfe0167a0fa4da97e24a6ea6b2f8eb0ec",
+    "expected_model": "normal",
+    "purpose": "The compiler-folded fixed string uses nonpublic declaration selection and active compatible this.",
+    "expected_normal_stdout": "Owner/Child:x"
+  },
+  {
+    "id": "protected-abstract-direct-versus-api-order",
+    "source": "<?php\nabstract class Hidden { abstract protected function run($v); }\n$a=[\"Hidden\",\"run\"];try{$a(\"x\");}catch(Error $e){echo $e->getMessage(),\"|\";}\ntry{set_error_handler($a);}catch(TypeError $e){echo $e->getMessage();}\n",
+    "source_sha256": "f16f2f4753af3cb216c9b0fff0ba06b8c914030662f359b27f23a6fb452719b4",
+    "expected_model": "normal",
+    "purpose": "Direct access precedes abstract rejection; API callback validation rejects abstract before visibility.",
+    "expected_normal_stdout": "Call to protected method Hidden::run() from global scope|set_error_handler(): Argument #1 ($callback) must be a valid callback or null, cannot call abstract method Hidden::run()"
+  },
+  {
+    "id": "private-static-api-denial",
+    "source": "<?php\nclass Owner { private static function run($a,$b,$c,$d){} }\ntry{set_error_handler(\"Owner::run\");}catch(TypeError $e){echo $e->getMessage();}\n",
+    "source_sha256": "f7604dcfe5e643f0c5050159f343bf34349db745331547c271c715e2717f0ed7",
+    "expected_model": "normal",
+    "purpose": "Concrete private static callback API denial retains ordinary requested-class diagnostics.",
+    "expected_normal_stdout": "set_error_handler(): Argument #1 ($callback) must be a valid callback or null, cannot access private method Owner::run()"
+  },
+  {
+    "id": "receiving-scope-callable-byref-and-union",
+    "source": "<?php\nclass Owner { private static function hidden($v){echo $v;} public static function take(callable &$cb){echo \"A\";$cb(\"x\");} public static function union(callable|string $cb){echo \"U\";$cb(\"y\");} public static function start(){ $s=\"Owner::hidden\";self::take($s);$a=[\"Owner\",\"hidden\"];self::union($a); } }\nOwner::start();\n",
+    "source_sha256": "df307f72eaccfdb5dc0922d7cd4edf2e71deea59bca53d6b6e6ad27de386e8df",
+    "expected_model": "normal",
+    "purpose": "Receiving lexical Owner admits private string and array values, with byref parameter and callable|string priority; no return target.",
+    "expected_normal_stdout": "AxUy"
+  },
+  {
+    "id": "private-captured-static-string-pipe",
+    "source": "<?php\nclass Owner { private static function hidden($v){echo \"P\",$v;} public static function make(&$saved){$saved=(\"Owner::hidden\")(...);} }\n$saved=null;Owner::make($saved);\"x\" |> $saved;unset($saved);\n",
+    "source_sha256": "044ad6fa224c5ade2f0455fda48003920ae02d70488bd216cdc49d9dbb5e5144",
+    "expected_model": "normal",
+    "purpose": "A captured private static string keeps producer permission at a later PIPE consumer.",
+    "expected_normal_stdout": "Px"
+  },
+  {
+    "id": "private-object-handler-parent-versus-public-child",
+    "source": "<?php\nclass Owner { private function handler($a,$b,$c,$d){echo __CLASS__,\"/\",static::class,\":\",func_num_args();} public function start(){set_error_handler([new Child,\"handler\"]);trigger_error(\"warning\",512);restore_error_handler();} }\nclass Child extends Owner { public function handler($a,$b,$c,$d){echo \"BAD-CHILD\";} }\n(new Owner)->start();\n",
+    "source_sha256": "a0b94d8f7ecdbf604bf76f042eb96b5466cc47df1ebeaf55ef726284a6769896",
+    "expected_model": "normal",
+    "purpose": "Explicit object API lookup redirects to lexical Owner private even when Child has a public effective descriptor.",
+    "expected_normal_stdout": "Owner/Child:4"
+  },
+  {
+    "id": "uncaught-private-class-array-call",
+    "source": "<?php\nclass Owner { private static function hidden($v){echo \"BAD-BODY\";} }\nfunction side(){echo \"BAD-ARG\";return \"x\";}\n$a=[\"Owner\",\"hidden\"];$a(side());\n",
+    "source_sha256": "5b2ff248367f21ebd5ad103ad27de584c15a5d07d3a3c6d87b7e5578f22862ff",
+    "expected_model": "php_error",
+    "purpose": "An uncaught named private denial retains actual PHP error status and suppresses argument effects."
+  },
+  {
+    "id": "keyword-class-array-remains-open",
+    "source": "<?php\nclass Owner { private static function hidden(){echo \"K\";} public static function start(){ $a=[\"self\",\"hidden\"];$a(); } }\nOwner::start();\n",
+    "source_sha256": "f854f38a31db4bbfd006630f2d2c7f5366883418e5017d6ff5df9fe2850bf01a",
+    "expected_model": "unsupported",
+    "purpose": "Keyword class resolution is a separate following callable obligation."
+  },
+  {
+    "id": "private-capture-known-closure-consumer-remains-open",
+    "source": "<?php\nclass Owner { private static function hidden(){echo \"K\";} public static function make(&$saved){$saved=(\"Owner::hidden\")(...);} }\n$saved=null;Owner::make($saved);$saved->bindTo(null);\n",
+    "source_sha256": "d67c34364f7f302d92c414f90340b915297f1a58cf73a1e8be476b3e75e25501",
+    "expected_model": "unsupported",
+    "purpose": "Known unsupported Closure consumer does not inherit arbitrary new binding behavior."
+  },
+  {
+    "id": "private-static-handler-current-dir-warning",
+    "source": "<?php\nclass Owner {\n private static function handle(string $level,$message,$file,$line){echo \"H\",func_num_args(),\":\",$level,\":\",__CLASS__,\"/\",static::class;throw new Error(\"halt\");}\n public function emit($v){echo __CLASS__,\"/\",static::class,\":\",func_num_args(),\":\",func_get_arg(0),\"|\";set_error_handler(\"Owner::handle\");try{chdir(\"missing\");}catch(Error $e){echo \"|E\";}restore_error_handler();echo \"|\",func_num_args(),\":\",func_get_arg(0);}\n}\nclass Child extends Owner {}\n(new Child)->emit(...[\"v\"=>\"x\"]);\n",
+    "source_sha256": "58e96677b6c11852003e0668818920ad3fe2e63f24757209224bac028c1ac418",
+    "expected_model": "normal",
+    "purpose": "A private static raw method handler selects anew in the saved Owner/Child DIR-warning emitter and receives weak ARG4 before throwing.",
+    "expected_normal_stdout": "Owner/Child:1:x|H4:2:Owner/Child|E|1:x",
+    "profile": "file"
+  },
+  {
+    "id": "literal-key-overwrite-preserves-object-selection",
+    "source": "<?php\nclass Owner { private static function hidden(){echo \"O\";} public static function start(){([\"Child\",0=>new Child,1=>\"hidden\"])();} }\nclass Child extends Owner { public static function hidden(){echo \"BAD-CHILD\";} }\nOwner::start();\n",
+    "source_sha256": "8ebf2e335979258fe0f499ca8b2534c318a8cb1981e67b09f52fc29771494c62",
+    "expected_model": "normal",
+    "expected_normal_stdout": "O",
+    "purpose": "A later explicit key0 overwrite makes an object selector; literal kind proof must leave keyed tails opaque."
+  },
+  {
+    "id": "private-handler-current-assign-null-through-throw",
+    "source": "<?php declare(strict_types=1); class Owner {private function handle($level,$message,$file,$line){echo \"H\",func_num_args(),\":\",__CLASS__,\"/\",static::class;throw new Error(\"stop\");}public function run(&$v){$other=new Child;$handler=new Child;set_error_handler([$handler,\"handle\"]);$handler=null;try{$v=$missing;}catch(Error $e){echo \"|\",($v===null?\"N\":\"BAD\"),\":\",(func_get_arg(0)===null?\"N\":\"BAD\");}restore_error_handler();}}class Child extends Owner {public function handle($level,$message,$file,$line){echo \"BAD-Child\";}}$v=\"x\";(new Child)->run($v);echo \"|\",($v===null?\"N\":\"BAD\");",
+    "source_sha256": "2a609636fd64056fbb452aba12421c260faea123b1357c91d974cf5b7c6423b7",
+    "expected_model": "normal",
+    "expected_normal_stdout": "H4:Owner/Child|N:N|N"
+  }
+]

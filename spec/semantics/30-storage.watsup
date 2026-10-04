@@ -11,7 +11,9 @@ syntax pvstage = PVFOLD | PVEXEC
 syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)* | PVCLOSURE nat porigin
 syntax parrayselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, NAME ptbytes }
 syntax pstringselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, ORIGINAL ptbytes }
-syntax pcalltarget = porigin | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget
+syntax pmethodcapture = { FUNCTION porigin, CALLSITE porigin?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin? }
+syntax pcallableaccess = { SITE porigin?, SCOPE porigin?, OBJECT bool, CREATION pmethodcapture? }
+syntax pcalltarget = porigin | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess
 syntax parraymode = ARRAY_ADMISSION | ARRAY_DISPATCH
 syntax parrayresolution = ARRAYRESOLVED pcalltarget porigin ptbytes | ARRAYADMITTED | ARRAYINVALID ptbytes | ARRAYUNKNOWN text
 syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass
@@ -149,7 +151,6 @@ syntax pthrowable = { KIND text, ORIGIN porigin? }
 syntax pclosurecreation = { FUNCTION porigin, CALLSITE porigin, RECEIVER bool }
 syntax pclosurescope = { OBJECT nat, LEXICAL porigin, CALLED porigin, RECEIVER nat?, CREATION pclosurecreation? }
 syntax pclosurebinding = { OBJECT nat, SITE porigin, SOURCE nat, LEXICAL porigin?, CALLED porigin?, RECEIVER nat? }
-syntax pmethodcapture = { FUNCTION porigin, CALLSITE porigin?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin? }
 syntax pobject = CONSTANTCLOSURE porigin pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | INSTANCE porigin | STDINSTANCE
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
@@ -572,3 +573,12 @@ dec $static_default_trace_context(pstate) : pstaticdefaultcontext?
 dec $static_default_trace(pstate) : ptraceframe*
 dec $static_default_error_origin(pstate) : porigin?
 dec $static_default_binders_unique(ptask*, porigin*) : bool
+
+;; Permission-bearing array/string/API selection hooks.
+dec $scope_array_method(pstate, porigin, nat?, ptbytes, parraymode) : parrayresolution
+dec $scope_string_fixed(pstate, ptbytes, ptbytes) : parrayresolution
+dec $scope_target_tag(pcalltarget) : bool
+dec $scope_target_site(pstate, pcalltarget, porigin, bool) : pcalltarget
+dec $scope_convert_current(pstate, pcalltarget, porigin) : bool
+dec $scope_capture_matches(pcalltarget, pmethodcapture?) : bool
+dec $scope_handler_method(pstate, porigin, nat?, ptbytes, bool) : phandlerresolution

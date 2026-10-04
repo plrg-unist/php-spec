@@ -155,6 +155,19 @@ def $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n pcpath_target, express
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b_constant))
 def $compiled_redirect(S, porigin) = eps
   -- otherwise
+dec $copy_redirect_child(pstate, porigin, porigin) : bool
+def $copy_redirect_child(S, PORIGIN n pcpath, PORIGIN n pcpath_target) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond phpType5 expression_false metadata)
+  -- if pcpath_target = pcpath ++ [PCFIELD 1] \/ pcpath_target = pcpath ++ [PCFIELD 2]
+def $copy_redirect_child(S, PORIGIN n pcpath, PORIGIN n pcpath_target) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
+  -- if pcpath_target = pcpath ++ [PCFIELD 1]
+def $copy_redirect_child(S, porigin, porigin_target) = false -- otherwise
+dec $compiled_copy_redirect(pstate, porigin) : int?
+def $compiled_copy_redirect(S, porigin) = ($runtime_line(S[.ORIGIN = (porigin_target)], eps, expression_target))
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, false, z))
+  -- if $copy_redirect_child(S, porigin, porigin_target)
+def $compiled_copy_redirect(S, porigin) = eps -- otherwise
 dec $redirect_tasks(porigin, expression, bool, bool, int) : ptask*
 def $redirect_tasks(porigin, expression, false, false, z) = [AT porigin (EVAL expression)]
 def $redirect_tasks(porigin, expression, false, true, z) = [AT porigin (DIM_PREP expression)]
@@ -169,9 +182,15 @@ def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = $redir
 def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = $redirect_effect_tasks(S, porigin, porigin_target) ++ $redirect_tasks(porigin_target, expression_target, true, true, z) ++ [ORIGIN_RETURN S.ORIGIN] ++ ptask*][.ORIGIN = (porigin)]
   -- if $compiled_read(S, porigin) = eps
   -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, true, z))
+;; A selected conditional/coalesce arm still has Zend's QM_ASSIGN boundary.
+def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = $redirect_effect_tasks(S, porigin, porigin_target) ++ [AT porigin_target (EVAL expression_target), VALUE_COPY z_copy, ORIGIN_RETURN S.ORIGIN] ++ ptask*][.ORIGIN = (porigin)]
+  -- if $compiled_read(S, porigin) = eps
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, false, z))
+  -- if $compiled_copy_redirect(S, porigin) = (z_copy)
 def $enter_compiled_task(S, porigin, EVAL expression, ptask*) = S[.TODO = $redirect_effect_tasks(S, porigin, porigin_target) ++ $redirect_tasks(porigin_target, expression_target, false, false, z) ++ ptask*]
   -- if $compiled_read(S, porigin) = eps
   -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, false, z))
+  -- if $compiled_copy_redirect(S, porigin) = eps
 def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = $redirect_effect_tasks(S, porigin, porigin_target) ++ $redirect_tasks(porigin_target, expression_target, false, true, z) ++ ptask*]
   -- if $compiled_read(S, porigin) = eps
   -- if $compiled_redirect(S, porigin) = ((porigin_target, expression_target, false, z))

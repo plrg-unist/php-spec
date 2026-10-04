@@ -146,11 +146,11 @@ $r = $missing_short209 || false;
 echo ($r ? 'BAD' : 'F'), ':', $seen;
 restore_error_handler();
 ''', b'F;T;F:0', 'normal'),
-    ('cast-warning-ingress-pending', b'''<?php
+    ('cast-warning-read-conversion', b'''<?php
 error_reporting(0);
 set_error_handler(function() { echo 'H'; }, 2);
 $r = (bool) $missing_cast209;
 echo ($r ? 'BAD' : 'F');
 restore_error_handler();
-''', b'HF', 'unsupported'),
+''', b'HF', 'normal'),
 ]

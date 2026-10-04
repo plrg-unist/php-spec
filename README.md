@@ -211,9 +211,12 @@ binds942 source/state/protocol gates and the one-state-test bridge.
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
 now use authenticated callback frames, registration stacks and bounded missing-CV
-continuations. Public method arrays and class-method strings keep raw registration
-values, resolve them at dispatch, and freeze the entered target through reference
-mutation, replacement and throw. The [method-handler ledger](coverage/semantics/handler-callables-current-review.json)
+continuations. Public and lexical private/protected method arrays and class-method
+strings keep raw registration values, resolve them at dispatch, and freeze the
+entered target through reference
+mutation, replacement and throw, with access checked against the genuine emitting
+frame. The [scoped-callable ledger](coverage/semantics/scoped-callables-current-review.json)
+records selecting-scope and retired-creator checks. The [method-handler ledger](coverage/semantics/handler-callables-current-review.json)
 separates original source/state checks from current PIPE warning composition;
 the [earlier handler review](coverage/semantics/error-handlers-review.json) retains
 its distinct revisions and remaining diagnostic/callable obligations.
@@ -386,15 +389,22 @@ and method choices survive referenced-member mutation and array retirement;
 static selections retain called class without an object root. The
 [array review](coverage/semantics/array-callables-current-review.json) separates
 the private source/state gates from current publication/Restore/property/ARG
-and two-slot INI interactions. Scope-dependent names, nonpublic/magic/autoload and internal array
-consumers remain open.
+and two-slot INI interactions. Ordinary lexical private/protected array selectors
+now retain genuine access through selection and capture; object parent-private
+redirection stays distinct from concrete-class lookup. Keyword/compound, magic,
+autoload and internal array consumers remain open.
 Public concrete class-method strings now distinguish
 computed static dispatch from fixed calls using a compatible active receiver.
 Immutable string captures/clone retain selected descriptors, called scope and
 receiver ownership; callable admission uses the receiving frame independently.
 The [class-method string review](coverage/semantics/class-method-strings-current-review.json)
 records selected source/state evidence and separate Unsupported controls.
-Broader nonpublic/magic/autoload/internal or scope-dependent strings remain open.
+Lexical private/protected class-method strings retain selecting scope through
+capture and saved calls. Protected checks use the root prototype; API handlers
+resolve raw values using the emitting frame. The
+[scoped-callable review](coverage/semantics/scoped-callables-current-review.json)
+keeps these observations separate from earlier public-route evidence.
+Keyword/compound, magic/autoload/internal and transformed binding consumers remain open.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.

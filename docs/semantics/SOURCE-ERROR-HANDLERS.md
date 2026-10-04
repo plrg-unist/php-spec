@@ -49,8 +49,11 @@ output, simple assignment, unary signs and six arithmetic/identity operators.
 Missing-left binaries retain the later right read; missing-right binaries admit
 known or temporary values and initially-reference CVs in strict identity comparisons.
 Module208 retains the borrowed old cell through the saved caller without adding
-an owner; rebinding and in-place alias writes remain distinct. Other live left operands, cast/copy,
-read-modify-write, dimensions and other eligible warning producers remain
+an owner; rebinding and in-place alias writes remain distinct. Module213 adds six casts, selected value copies and ordinary by-value sends,
+retaining selected targets and prior argument owners. Direct ASSIGN also performs
+its captured-null destination write after a thrown handler; rejected constrained
+writes remain pending. Other live left operands, read-modify-write, dimensions
+and other eligible warning producers remain
 explicitly `Unsupported`, rather than running a callback after a consumer.
 
 Weak-null `ini_get` and `ini_restore` are admitted internal producers. Their
@@ -68,8 +71,10 @@ reference-return callbacks, exception handlers and lifecycle dispatch remain ope
 Frameless named/method trace formatting in164 now accepts the authenticated
 nonempty function field. Current property and array-caller readback gates validate these shapes on the
 tested private source composition.
-`REPORTINGINI` records reporting setters; it is not wider INI readback or a new
-request-profile initializer. Uncaught/fatal reporting outside this slice and
+`REPORTINGINI` retains full raw bytes separately from the signed32 effective mask;
+reporting get/set/Restore and modified-entry state are recorded in the
+[reporting ledger](../../coverage/semantics/reporting-ini-review.json). Broader
+directives and startup profiles remain separate. Uncaught/fatal reporting outside this slice and
 broader global/reference behavior also remain core obligations.
 
 Primary contracts are `zend_error_zstr_at` in `vendor/php-src/Zend/zend.c`, the
@@ -115,5 +120,12 @@ source-equivalent promotion adds no execution or rebuild credit.
 The tested211 composition at `38cab574` separately accepts author source1/93
 and independent source1/107 across original-null truth decisions and strict
 instance-emitter parameter rejection, preserving raw restoration and saved frames.
-[Truth continuations](SOURCE-WARNING-TRUTH.md) keep casts/copy/SEND and broader
-reporting open.
+[Truth continuations](SOURCE-WARNING-TRUTH.md) retain their historical cast control;
+the later [consumer slice](SOURCE-WARNING-CONSUMERS.md) covers its admitted path.
+
+The [consumer213 slice](SOURCE-WARNING-CONSUMERS.md) separately accepts mixed21
+normal tuples/control0 and236 conditions, plus independent10/197. Fresh source1/94
+and cached-callee source1/96 at181f cover the actual static-reference, outer-array
+prepass and cached-callable composition. Grouped model timeouts and the original
+copy fixture premise remain preserved. Publication retains later released
+reporting, parameter backing and named-class paths with no fresh execution credit.

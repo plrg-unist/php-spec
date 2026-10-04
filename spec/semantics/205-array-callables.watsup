@@ -56,29 +56,7 @@ def $array_public_target(S, porigin_class, pmethoddesc, eps, ptbytes, ARRAY_DISP
 dec $array_magic(pstate, porigin) : bool
 def $array_magic(S, porigin_class) = ($effective_method(S, porigin_class, $ptascii("__call"), |S.CLASSES|) =/= eps \/ $effective_method(S, porigin_class, $ptascii("__callStatic"), |S.CLASSES|) =/= eps)
 dec $array_method(pstate, porigin, nat?, ptbytes, parraymode) : parrayresolution
-def $array_method(S, porigin_class, n_receiver?, ptbytes, parraymode) = ARRAYUNKNOWN "compound array callable method"
-  -- if $typed_callable_method(ptbytes, false, false)
-def $array_method(S, porigin_class, n_receiver?, ptbytes, parraymode) = $array_public_target(S, porigin_class, pmethoddesc, n_receiver?, ptbytes, parraymode)
-  -- if ~$typed_callable_method(ptbytes, false, false)
-  -- if $effective_method(S, porigin_class, ptbytes, |S.CLASSES|) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-  -- if ~pmethoddesc.ABSTRACT
-def $array_method(S, porigin_class, n_receiver?, ptbytes, parraymode) = ARRAYINVALID ($ptascii("Cannot call abstract method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("()"))
-  -- if ~$typed_callable_method(ptbytes, false, false)
-  -- if $effective_method(S, porigin_class, ptbytes, |S.CLASSES|) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-  -- if pmethoddesc.ABSTRACT
-  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
-def $array_method(S, porigin_class, n_receiver?, ptbytes, parraymode) = ARRAYUNKNOWN "nonpublic array callable method"
-  -- if ~$typed_callable_method(ptbytes, false, false)
-  -- if $effective_method(S, porigin_class, ptbytes, |S.CLASSES|) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
-def $array_method(S, porigin_class, n_receiver?, ptbytes, parraymode) = ARRAYINVALID ($ptascii("Call to undefined method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"))
-  -- if ~$typed_callable_method(ptbytes, false, false)
-  -- if $effective_method(S, porigin_class, ptbytes, |S.CLASSES|) = eps
-  -- if ~$array_magic(S, porigin_class)
-  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
-def $array_method(S, porigin_class, n_receiver?, ptbytes, parraymode) = ARRAYUNKNOWN "magic array callable method" -- otherwise
+def $array_method(S, porigin_class, n_receiver?, ptbytes, parraymode) = $scope_array_method(S, porigin_class, n_receiver?, ptbytes, parraymode)
 
 dec $array_receiver(pstate, pvalue, ptbytes, parraymode) : parrayresolution
 def $array_receiver(S, POBJECT n, ptbytes, parraymode) = ARRAYINVALID ($ptascii("Call to undefined method stdClass::") ++ $c_string(ptbytes) ++ $ptascii("()"))
@@ -159,13 +137,13 @@ def $call_selected_valid(S, ARRAY_METHOD_TARGET pcalltarget parrayselection, (po
   -- if $array_target_identity(S, pcalltarget, parrayselection)
 
 dec $array_dynamic_result(pstate, parrayresolution, porigin, int, int) : pstate
-def $array_dynamic_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_call) = S[.TODO = $method_args_task(ARRAY_METHOD_TARGET pcalltarget {SITE porigin_site, INIT z_init, LINE z_call, REQUESTED porigin_requested, NAME ptbytes}, $dynamic_arguments(S, porigin_site), (porigin_site), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $array_dynamic_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_call) = S[.TODO = $method_args_task(ARRAY_METHOD_TARGET ($scope_target_site(S, pcalltarget, porigin_site, false)) {SITE porigin_site, INIT z_init, LINE z_call, REQUESTED porigin_requested, NAME ptbytes}, $dynamic_arguments(S, porigin_site), (porigin_site), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $array_dynamic_result(S, ARRAYINVALID ptbytes, porigin_site, z_init, z_call) = $throw_scalar(S, "Error", ptbytes, z_init)
 def $array_dynamic_result(S, ARRAYUNKNOWN text, porigin_site, z_init, z_call) = S[.COMPLETION = UNSUPPORTED text]
 def $array_dynamic(S, n, porigin_site, z_init, z_call) = $array_dynamic_result(S, $array_resolve(S, n, ARRAY_DISPATCH), porigin_site, z_init, z_call)
 
 dec $array_capture_result(pstate, parrayresolution, porigin, int, int) : pstate
-def $array_capture_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_convert) = S[.TODO = (ARRAY_CONVERT pcalltarget {SITE porigin_site, INIT z_init, LINE z_convert, REQUESTED porigin_requested, NAME ptbytes}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $array_capture_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_convert) = S[.TODO = (ARRAY_CONVERT ($scope_target_site(S, pcalltarget, porigin_site, true)) {SITE porigin_site, INIT z_init, LINE z_convert, REQUESTED porigin_requested, NAME ptbytes}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $array_capture_result(S, ARRAYINVALID ptbytes, porigin_site, z_init, z_convert) = $throw_scalar(S, "Error", ptbytes, z_init)
 def $array_capture_result(S, ARRAYUNKNOWN text, porigin_site, z_init, z_convert) = S[.COMPLETION = UNSUPPORTED text]
 def $array_firstclass_value(S, n, PORIGIN n_unit pcpath, z_init) = $array_capture_result(S, $array_resolve(S, n, ARRAY_DISPATCH), PORIGIN n_unit pcpath, z_init, z_convert)
@@ -177,6 +155,7 @@ def $array_convert_valid(S, pcalltarget, parrayselection) = true
   -- if S.ORIGIN = (parrayselection.SITE)
   -- if $array_target_identity(S, pcalltarget, parrayselection)
   -- if $array_site_valid(S, parrayselection, true)
+  -- if $scope_convert_current(S, pcalltarget, parrayselection.SITE)
   -- if $call_current_valid(S)
   -- if $method_capture_creation_context_valid(S, parrayselection.SITE)
   -- if $method_capture_certificate_valid(S, parrayselection.SITE, $method_capture_current(S, parrayselection.SITE))
@@ -204,6 +183,7 @@ def $closure_scope_row_valid(S, pclosurescope) = true
   -- if $array_target_identity(S, pcalltarget, parrayselection)
   -- if $array_site_valid(S, parrayselection, true)
   -- if $method_capture_certificate_valid(S, parrayselection.SITE, pmethodcapture?)
+  -- if $scope_capture_matches(pcalltarget, pmethodcapture?)
   -- if $target_lexical_class(S, pcalltarget) = (pclosurescope.LEXICAL)
   -- if $target_called_class(S, pcalltarget) = (pclosurescope.CALLED)
   -- if $target_receiver(S, pcalltarget) = pclosurescope.RECEIVER

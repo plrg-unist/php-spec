@@ -23,29 +23,7 @@ def $handler_method_receiver(pmethoddesc, n) = eps -- if pmethoddesc.STATIC
 def $handler_method_receiver(pmethoddesc, n) = (n) -- if ~pmethoddesc.STATIC
 
 dec $handler_method(pstate, porigin, nat?, ptbytes, bool) : phandlerresolution
-def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERUNKNOWN "compound error-handler method"
-  -- if $typed_callable_method(ptbytes, false, false)
-def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = $handler_public_target(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, b_class)
-  -- if ~$typed_callable_method(ptbytes, false, false)
-  -- if $effective_method(S, porigin_requested, ptbytes, |S.CLASSES|) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-  -- if ~pmethoddesc.ABSTRACT
-def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERINVALID ($ptascii("cannot call abstract method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("()"))
-  -- if ~$typed_callable_method(ptbytes, false, false)
-  -- if $effective_method(S, porigin_requested, ptbytes, |S.CLASSES|) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
-  -- if pmethoddesc.ABSTRACT
-  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
-def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERUNKNOWN "nonpublic error-handler method"
-  -- if ~$typed_callable_method(ptbytes, false, false)
-  -- if $effective_method(S, porigin_requested, ptbytes, |S.CLASSES|) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
-def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERINVALID ($ptascii("class ") ++ pclassdesc.NAME ++ $ptascii(" does not have a method \"") ++ $c_string(ptbytes) ++ [34])
-  -- if ~$typed_callable_method(ptbytes, false, false)
-  -- if $effective_method(S, porigin_requested, ptbytes, |S.CLASSES|) = eps
-  -- if ~$array_magic(S, porigin_requested)
-  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
-def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERUNKNOWN "magic error-handler method" -- otherwise
+def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = $scope_handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class)
 
 dec $handler_receiver(pstate, pvalue, ptbytes) : phandlerresolution
 def $handler_receiver(S, POBJECT n, ptbytes) = $handler_method(S, porigin_class, (n), ptbytes, false)
@@ -141,6 +119,7 @@ def $handler_emitter_valid(S, HANDLER_METHOD_TARGET true porigin ptbytes pcallta
   -- if $effective_method(S, porigin, ptbytes, |S.CLASSES|) = (pmethoddesc)
   -- if $handler_public_target(S, porigin, pmethoddesc, $handler_implicit_receiver(S, porigin), ptbytes, true) = HANDLERRESOLVED (HANDLER_METHOD_TARGET true porigin ptbytes pcalltarget)
 def $handler_emitter_valid(S, HANDLER_METHOD_TARGET false porigin ptbytes pcalltarget) = ($handler_target_valid(S, porigin, ptbytes, pcalltarget) /\ $handler_kind_valid(false, pcalltarget))
+  -- if ~$scope_target_tag(pcalltarget)
 def $handler_emitter_valid(S, pcalltarget) = true -- if ~$handler_method_tag(pcalltarget)
 def $handler_emitter_valid(S, pcalltarget) = false -- otherwise
 
@@ -195,7 +174,7 @@ def $error_handler_retained(S, PSTRING ptbytes) = true
   -- if ~$typed_callable_method(ptbytes_method, false, false)
   -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin)
   -- if $effective_method(S, porigin, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if ~pmethoddesc.ABSTRACT
 def $error_handler_retained(S, pvalue) = true
   -- if ~$is_array_value(pvalue)
   -- if $typed_callable(S, pvalue) = (true) \/ $typed_callable(S, pvalue) = eps

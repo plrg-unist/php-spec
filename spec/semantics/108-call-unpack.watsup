@@ -253,6 +253,7 @@ def $named_preflight_stage(S, porigin, n) = true
   -- if $unpack_defined_prefix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n)
 def $named_receives_ready(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)
+  -- if ~$error_context_kind(S, pcallcontext)
   -- if $call_unpack_site(S, pcallcontext.CALLSITE)
   -- if n_limit = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if $unpack_defined_prefix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n_limit)

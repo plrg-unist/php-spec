@@ -1,0 +1,292 @@
+dec $scope_method(pstate, porigin, ptbytes, bool, porigin?) : pmethoddesc?
+dec $scope_denied_message(pstate, pmethoddesc, ptbytes, porigin?) : ptbytes
+dec $scope_abstract_message(pstate, pmethoddesc) : ptbytes
+dec $scope_wrap(pstate, pcalltarget, pmethoddesc, bool) : pcalltarget
+dec $scope_array_target(pstate, porigin, pmethoddesc, nat?, ptbytes) : parrayresolution
+dec $scope_array_admit(pstate, porigin, pmethoddesc, nat?, ptbytes) : parrayresolution
+dec $scope_array_dispatch(pstate, porigin, pmethoddesc, nat?, ptbytes) : parrayresolution
+dec $scope_method_base(pcalltarget) : bool
+dec $scope_capture_certificate(pstate, porigin, porigin?, pmethodcapture?) : bool
+dec $scope_access_origin(pstate, pcallableaccess, porigin) : bool
+dec $scope_target_valid(pstate, pcalltarget, pcallableaccess) : bool
+dec $scope_site_matches(pcalltarget, porigin) : bool
+dec $scope_identity(pstate, pcalltarget, porigin, ptbytes, pcallableaccess) : bool
+dec $scope_static_base(pcalltarget) : bool
+dec $scope_string_base(pcalltarget, pmethoddesc, bool) : bool
+dec $scope_handler_result(pstate, porigin, pmethoddesc, nat?, ptbytes, bool) : phandlerresolution
+dec $scope_handler_base(pstate, porigin, pmethoddesc, nat?, bool) : pcalltarget?
+dec $scope_class_base(pcalltarget) : bool
+dec $scope_emitter_receiver(pstate, pcalltarget, porigin, bool) : nat?
+dec $scope_array_literal_kind(expression) : bool?
+dec $scope_array_kind_valid(pstate, porigin, bool) : bool
+
+;; Object selectors can redirect to a lexical parent-private method. Concrete
+;; class selectors use their effective table, with the selecting scope's access.
+def $scope_method(S, porigin_requested, ptbytes, true, porigin_scope?) = $method_class_selected(S, porigin_requested, ptbytes, porigin_scope?)
+def $scope_method(S, porigin_requested, ptbytes, false, porigin_scope?) = $effective_method(S, porigin_requested, ptbytes, |S.CLASSES|)
+
+def $scope_denied_message(S, pmethoddesc, ptbytes, porigin_scope?) = $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ $ptascii(" method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()") ++ $method_scope_suffix(S, porigin_scope?)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+def $scope_abstract_message(S, pmethoddesc) = $ptascii("Cannot call abstract method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("()")
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+
+;; Public selections retain their existing carriers. Only a permission-bearing
+;; selection adds a scope snapshot; its creator certificate owns no heap node.
+def $scope_wrap(S, pcalltarget, pmethoddesc, b_object) = pcalltarget
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+def $scope_wrap(S, pcalltarget, pmethoddesc, b_object) = SCOPE_METHOD_TARGET pcalltarget {SITE eps, SCOPE $method_current_scope(S), OBJECT b_object, CREATION eps}
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
+def $scope_array_target(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes) = ARRAYRESOLVED ($scope_wrap(S, pcalltarget, pmethoddesc, n_receiver? =/= eps)) porigin_requested ptbytes
+  -- if $array_public_target(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, ARRAY_DISPATCH) = ARRAYRESOLVED pcalltarget porigin_requested ptbytes
+def $scope_array_target(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes) = ARRAYINVALID ptbytes_error
+  -- if $array_public_target(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, ARRAY_DISPATCH) = ARRAYINVALID ptbytes_error
+
+def $scope_array_admit(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes) = ARRAYINVALID ($scope_abstract_message(S, pmethoddesc))
+  -- if pmethoddesc.ABSTRACT
+def $scope_array_admit(S, porigin_requested, pmethoddesc, eps, ptbytes) = $array_public_target(S, porigin_requested, pmethoddesc, eps, ptbytes, ARRAY_ADMISSION)
+  -- if ~pmethoddesc.ABSTRACT /\ ~pmethoddesc.STATIC
+  -- if ~$array_implicit_this(S, porigin_requested)
+def $scope_array_admit(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes) = $array_public_target(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, ARRAY_ADMISSION)
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.STATIC \/ n_receiver? =/= eps \/ $array_implicit_this(S, porigin_requested)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+def $scope_array_admit(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes) = ARRAYADMITTED
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.STATIC \/ n_receiver? =/= eps \/ $array_implicit_this(S, porigin_requested)
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
+  -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
+def $scope_array_admit(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes) = ARRAYUNKNOWN "magic scoped callable admission"
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.STATIC \/ n_receiver? =/= eps \/ $array_implicit_this(S, porigin_requested)
+  -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if $array_magic(S, porigin_requested)
+def $scope_array_admit(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes) = ARRAYINVALID ($scope_denied_message(S, pmethoddesc, ptbytes, $method_current_scope(S))) -- otherwise
+
+def $scope_array_dispatch(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes) = ARRAYINVALID ($scope_denied_message(S, pmethoddesc, ptbytes, $method_current_scope(S)))
+  -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if ~$array_magic(S, porigin_requested)
+def $scope_array_dispatch(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes) = ARRAYUNKNOWN "magic scoped callable dispatch"
+  -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if $array_magic(S, porigin_requested)
+def $scope_array_dispatch(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes) = ARRAYINVALID ($scope_abstract_message(S, pmethoddesc))
+  -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if pmethoddesc.ABSTRACT
+def $scope_array_dispatch(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes) = $scope_array_target(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes)
+  -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if ~pmethoddesc.ABSTRACT
+
+def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, parraymode) = ARRAYUNKNOWN "compound array callable method"
+  -- if $typed_callable_method(ptbytes, false, false)
+def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, ARRAY_ADMISSION) = $scope_array_admit(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes)
+  -- if ~$typed_callable_method(ptbytes, false, false)
+  -- if $scope_method(S, porigin_requested, ptbytes, n_receiver? =/= eps, $method_current_scope(S)) = (pmethoddesc)
+def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, ARRAY_DISPATCH) = $scope_array_dispatch(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes)
+  -- if ~$typed_callable_method(ptbytes, false, false)
+  -- if $scope_method(S, porigin_requested, ptbytes, n_receiver? =/= eps, $method_current_scope(S)) = (pmethoddesc)
+def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, parraymode) = ARRAYINVALID ($ptascii("Call to undefined method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("()"))
+  -- if ~$typed_callable_method(ptbytes, false, false)
+  -- if $scope_method(S, porigin_requested, ptbytes, n_receiver? =/= eps, $method_current_scope(S)) = eps
+  -- if ~$array_magic(S, porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+def $scope_array_method(S, porigin_requested, n_receiver?, ptbytes, parraymode) = ARRAYUNKNOWN "magic array callable method" -- otherwise
+
+def $scope_string_fixed(S, ptbytes_class, ptbytes_method) = ARRAYRESOLVED ($scope_wrap(S, SCOPED_TARGET porigin_requested pmethoddesc.FUNCTION.ORIGIN porigin_called (n_receiver) (KNOWN (PSTRING pclassdesc.NAME)), pmethoddesc, false)) porigin_requested ptbytes_method
+  -- if ~($ptlc($typed_callable_name(ptbytes_class)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if $effective_method(S, porigin_requested, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if $string_fixed_receiver(S, porigin_requested) = (n_receiver)
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
+def $scope_string_fixed(S, ptbytes_class, ptbytes_method) = $array_receiver(S, PSTRING ptbytes_class, ptbytes_method, ARRAY_DISPATCH) -- otherwise
+
+;; The wrapper never changes execution eligibility of its exact underlying
+;; target. Selection identity separately distinguishes object and class lookup.
+def $scope_method_base(METHOD_TARGET n porigin) = true
+def $scope_method_base(STATIC_METHOD_TARGET porigin_requested porigin_method) = true
+def $scope_method_base(SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand) = true
+def $scope_method_base(pcalltarget) = false -- otherwise
+def $scope_target_tag(SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = true
+def $scope_target_tag(pcalltarget) = false -- otherwise
+def $scope_capture_certificate(S, porigin_site, porigin_scope?, eps) = (porigin_scope? = $closure_source_class(S, porigin_site))
+def $scope_capture_certificate(S, porigin_site, porigin_scope?, (pmethodcapture)) = true
+  -- if pmethodcapture.LEXICAL_CLASS = porigin_scope?
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin_site), eps) = (pmethodcapture.FUNCTION)
+  -- if $method_capture_template(S, pmethodcapture.FUNCTION)
+  -- if pmethodcapture.LEXICAL_CLASS =/= $closure_source_class(S, porigin_site) \/ $method_capture_called_scope(S, porigin_site, pmethodcapture)
+  -- if $method_capture_class_valid(S, pmethodcapture.LEXICAL_CLASS)
+  -- if $method_capture_class_valid(S, pmethodcapture.CALLED_CLASS)
+  -- if pmethodcapture.CALLSITE = (porigin_call)
+  -- if $method_capture_invocation_valid(S, pmethodcapture, porigin_call)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+def $scope_capture_certificate(S, porigin_site, porigin_scope?, pmethodcapture?) = false -- otherwise
+
+def $scope_access_origin(S, pcallableaccess, porigin_method) = true
+  -- if pcallableaccess.SITE = eps /\ pcallableaccess.CREATION = eps
+def $scope_access_origin(S, pcallableaccess, porigin_method) = true
+  -- if pcallableaccess.SITE = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if pcallableaccess.CREATION = eps
+  -- if pcallableaccess.SCOPE = $method_site_scope(S, porigin_method, porigin_site)
+def $scope_access_origin(S, pcallableaccess, porigin_method) = true
+  -- if pcallableaccess.SITE = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+  -- if $scope_capture_certificate(S, porigin_site, pcallableaccess.SCOPE, pcallableaccess.CREATION)
+def $scope_access_origin(S, pcallableaccess, porigin_method) = false -- otherwise
+def $scope_target_valid(S, pcalltarget, pcallableaccess) = true
+  -- if $scope_method_base(pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if $method_accessible(S, pmethoddesc, pcallableaccess.SCOPE)
+  -- if $scope_access_origin(S, pcallableaccess, pfunction.ORIGIN)
+def $scope_target_valid(S, pcalltarget, pcallableaccess) = false -- otherwise
+def $target_nodes(SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = $target_nodes(pcalltarget)
+def $target_instance(SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = eps
+def $target_receiver(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = $target_receiver(S, pcalltarget)
+def $target_lexical_class(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = $target_lexical_class(S, pcalltarget)
+def $target_called_class(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = $target_called_class(S, pcalltarget)
+def $target_function(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = $target_function(S, pcalltarget)
+  -- if $scope_target_valid(S, pcalltarget, pcallableaccess)
+
+def $scope_target_site(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess, porigin_site, true) = SCOPE_METHOD_TARGET pcalltarget pcallableaccess[.SITE = (porigin_site)][.CREATION = $method_capture_current(S, porigin_site)]
+def $scope_target_site(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess, porigin_site, false) = SCOPE_METHOD_TARGET pcalltarget pcallableaccess[.SITE = (porigin_site)]
+def $scope_target_site(S, pcalltarget, porigin_site, b_capture) = pcalltarget -- otherwise
+def $scope_site_matches(SCOPE_METHOD_TARGET pcalltarget pcallableaccess, porigin_site) = (pcallableaccess.SITE = (porigin_site))
+def $scope_site_matches(pcalltarget, porigin_site) = true -- otherwise
+def $scope_convert_current(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess, porigin_site) = (pcallableaccess.SITE = (porigin_site) /\ pcallableaccess.SCOPE = $method_current_scope(S) /\ pcallableaccess.CREATION = $method_capture_current(S, porigin_site))
+def $scope_convert_current(S, pcalltarget, porigin_site) = true -- otherwise
+def $scope_capture_matches(SCOPE_METHOD_TARGET pcalltarget pcallableaccess, pmethodcapture?) = (pcallableaccess.CREATION = pmethodcapture?)
+def $scope_capture_matches(pcalltarget, pmethodcapture?) = true -- otherwise
+
+def $scope_identity(S, METHOD_TARGET n porigin_method, porigin_requested, ptbytes, pcallableaccess) = true
+  -- if pcallableaccess.OBJECT
+  -- if S.OBJECTS[n] = INSTANCE porigin_requested
+  -- if $scope_method(S, porigin_requested, ptbytes, true, pcallableaccess.SCOPE) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
+  -- if porigin_method = pmethoddesc.FUNCTION.ORIGIN
+  -- if $scope_target_valid(S, METHOD_TARGET n porigin_method, pcallableaccess)
+def $scope_identity(S, STATIC_METHOD_TARGET porigin_requested porigin_method, porigin_requested, ptbytes, pcallableaccess) = true
+  -- if $scope_method(S, porigin_requested, ptbytes, pcallableaccess.OBJECT, pcallableaccess.SCOPE) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
+  -- if porigin_method = pmethoddesc.FUNCTION.ORIGIN
+  -- if $scope_target_valid(S, STATIC_METHOD_TARGET porigin_requested porigin_method, pcallableaccess)
+def $scope_identity(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? (KNOWN (PSTRING ptbytes_class)), porigin_requested, ptbytes, pcallableaccess) = true
+  -- if ~pcallableaccess.OBJECT
+  -- if $scope_method(S, porigin_requested, ptbytes, false, pcallableaccess.SCOPE) = (pmethoddesc)
+  -- if porigin_method = pmethoddesc.FUNCTION.ORIGIN
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if ptbytes_class = pclassdesc.NAME
+  -- if $handler_receiver_identity(S, porigin_called, n_receiver?)
+  -- if $scope_target_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? (KNOWN (PSTRING ptbytes_class)), pcallableaccess)
+def $scope_identity(S, pcalltarget, porigin_requested, ptbytes, pcallableaccess) = false -- otherwise
+
+;; An immutable literal constrains selector kind; deferred variable and reference
+;; members keep their selected snapshot after the original value changes.
+def $scope_array_literal_kind(NExprArray (SEQUENCE ((NArrayItem ABSENT (NScalarString phpType33 metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_item) :: (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_second) :: eps)) metadata) = (false)
+def $scope_array_literal_kind(NExprArray (SEQUENCE ((NArrayItem ABSENT (NExprNew phpType28 phpType6 metadata_new) (BOOLEAN false) (BOOLEAN false) metadata_item) :: (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_second) :: eps)) metadata) = (true)
+def $scope_array_literal_kind(expression) = eps -- otherwise
+def $scope_array_kind_valid(S, porigin_site, b_object) = (b_object = b_literal)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $scope_array_literal_kind(expression) = (b_literal)
+def $scope_array_kind_valid(S, porigin_site, b_object) = true -- otherwise
+
+def $array_target_identity(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess, parrayselection) = true
+  -- if $scope_site_matches(SCOPE_METHOD_TARGET pcalltarget pcallableaccess, parrayselection.SITE)
+  -- if $scope_array_kind_valid(S, parrayselection.SITE, pcallableaccess.OBJECT)
+  -- if $scope_identity(S, pcalltarget, parrayselection.REQUESTED, parrayselection.NAME, pcallableaccess)
+  -- if pcallableaccess.OBJECT \/ $scope_static_base(pcalltarget)
+def $scope_static_base(STATIC_METHOD_TARGET porigin_requested porigin_method) = true
+def $scope_static_base(pcalltarget) = false -- otherwise
+def $string_target_identity(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess, pstringselection) = true
+  -- if ~pcallableaccess.OBJECT
+  -- if $scope_site_matches(SCOPE_METHOD_TARGET pcalltarget pcallableaccess, pstringselection.SITE)
+  -- if $method_string_parts(pstringselection.ORIGINAL) = ((ptbytes_class, ptbytes_method))
+  -- if $string_target_descriptor(S, pstringselection) = (pmethoddesc)
+  -- if $scope_string_base(pcalltarget, pmethoddesc, $dynamic_fixed_name(S, pstringselection.SITE) =/= eps)
+  -- if $scope_identity(S, pcalltarget, pstringselection.REQUESTED, ptbytes_method, pcallableaccess)
+def $scope_string_base(STATIC_METHOD_TARGET porigin_requested porigin_method, pmethoddesc, b_fixed) = pmethoddesc.STATIC
+def $scope_string_base(SCOPED_TARGET porigin_requested porigin_method porigin_called (n_receiver) poperand, pmethoddesc, true) = ~pmethoddesc.STATIC
+def $scope_string_base(pcalltarget, pmethoddesc, b_fixed) = false -- otherwise
+def $string_receiver_site_valid(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess, porigin_site) = $string_receiver_site_valid(S, pcalltarget, porigin_site)
+
+;; API lookup rejects abstract and class-nonstatic callbacks before visibility.
+;; Registration keeps the raw value; dispatch selects again in its user emitter.
+def $scope_handler_result(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, b_class) = HANDLERINVALID ($ptascii("cannot call abstract method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("()"))
+  -- if pmethoddesc.ABSTRACT
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+def $scope_handler_result(S, porigin_requested, pmethoddesc, eps, ptbytes, b_class) = $handler_public_target(S, porigin_requested, pmethoddesc, eps, ptbytes, b_class)
+  -- if ~pmethoddesc.ABSTRACT /\ ~pmethoddesc.STATIC
+def $scope_handler_result(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, b_class) = HANDLERUNKNOWN "magic scoped error-handler method"
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.STATIC \/ n_receiver? =/= eps
+  -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if $array_magic(S, porigin_requested)
+def $scope_handler_result(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, b_class) = HANDLERINVALID ($ptascii("cannot access ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ $ptascii(" method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("()"))
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.STATIC \/ n_receiver? =/= eps
+  -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if ~$array_magic(S, porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+def $scope_handler_result(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, b_class) = $handler_public_target(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, b_class)
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.STATIC \/ n_receiver? =/= eps
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+def $scope_handler_result(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, b_class) = HANDLERRESOLVED (HANDLER_METHOD_TARGET b_class porigin_requested ptbytes ($scope_wrap(S, pcalltarget, pmethoddesc, ~b_class)))
+  -- if ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.STATIC \/ n_receiver? =/= eps
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
+  -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if $scope_handler_base(S, porigin_requested, pmethoddesc, n_receiver?, b_class) = (pcalltarget)
+def $scope_handler_base(S, porigin_requested, pmethoddesc, (n_receiver), false) = (METHOD_TARGET n_receiver pmethoddesc.FUNCTION.ORIGIN)
+  -- if ~pmethoddesc.STATIC
+def $scope_handler_base(S, porigin_requested, pmethoddesc, n_receiver?, false) = (STATIC_METHOD_TARGET porigin_requested pmethoddesc.FUNCTION.ORIGIN)
+  -- if pmethoddesc.STATIC
+def $scope_handler_base(S, porigin_requested, pmethoddesc, n_receiver?, true) = (pcalltarget)
+  -- if $handler_public_target(S, porigin_requested, pmethoddesc, n_receiver?, pmethoddesc.NAME, true) = HANDLERRESOLVED (HANDLER_METHOD_TARGET true porigin_requested pmethoddesc.NAME pcalltarget)
+
+def $scope_handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERUNKNOWN "compound error-handler method"
+  -- if $typed_callable_method(ptbytes, false, false)
+def $scope_handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = $scope_handler_result(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, b_class)
+  -- if ~$typed_callable_method(ptbytes, false, false)
+  -- if $scope_method(S, porigin_requested, ptbytes, ~b_class, $method_current_scope(S)) = (pmethoddesc)
+def $scope_handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERINVALID ($ptascii("class ") ++ pclassdesc.NAME ++ $ptascii(" does not have a method \"") ++ $c_string(ptbytes) ++ [34])
+  -- if ~$typed_callable_method(ptbytes, false, false)
+  -- if $scope_method(S, porigin_requested, ptbytes, ~b_class, $method_current_scope(S)) = eps
+  -- if ~$array_magic(S, porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+def $scope_handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERUNKNOWN "magic error-handler method" -- otherwise
+
+def $handler_target_valid(S, porigin_requested, ptbytes, SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = true
+  -- if pcallableaccess.SITE = eps /\ pcallableaccess.CREATION = eps
+  -- if $scope_identity(S, pcalltarget, porigin_requested, ptbytes, pcallableaccess)
+  -- if pcallableaccess.OBJECT \/ $scope_class_base(pcalltarget)
+def $scope_class_base(SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand) = true
+def $scope_class_base(pcalltarget) = false -- otherwise
+def $handler_kind_valid(b_class, SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = (b_class = ~pcallableaccess.OBJECT)
+def $handler_emitter_valid(S, HANDLER_METHOD_TARGET b_class porigin_requested ptbytes (SCOPE_METHOD_TARGET pcalltarget pcallableaccess)) = true
+  -- if pcallableaccess.SCOPE = $method_current_scope(S)
+  -- if $handler_target_valid(S, porigin_requested, ptbytes, SCOPE_METHOD_TARGET pcalltarget pcallableaccess)
+  -- if $handler_kind_valid(b_class, SCOPE_METHOD_TARGET pcalltarget pcallableaccess)
+  -- if $scope_method(S, porigin_requested, ptbytes, ~b_class, pcallableaccess.SCOPE) = (pmethoddesc)
+  -- if $scope_handler_base(S, porigin_requested, pmethoddesc, $scope_emitter_receiver(S, pcalltarget, porigin_requested, b_class), b_class) = (pcalltarget)
+def $scope_emitter_receiver(S, pcalltarget, porigin_requested, true) = $handler_implicit_receiver(S, porigin_requested)
+def $scope_emitter_receiver(S, METHOD_TARGET n porigin_method, porigin_requested, false) = (n)
+def $scope_emitter_receiver(S, STATIC_METHOD_TARGET porigin_class porigin_method, porigin_requested, false) = eps
+
+;; Fixed names are visible in declaration history. Authenticate nonpublic
+;; permission against the historical caller, independently of target tags.
+def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $dynamic_fixed_name(S, porigin_site) = (ptbytes_lookup)
+  -- if $method_string_parts($string_original(S, ptbytes_lookup, porigin_site)) = ((ptbytes_class, ptbytes_method))
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_requested)
+  -- if $effective_method(S, porigin_requested, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if $method_accessible(S, pmethoddesc, $declaration_caller_lexical(pdeclcalls))
+  -- if $declaration_static_called(S, expression, pmethoddesc, porigin_requested, porigin_called, pdeclcalls)
