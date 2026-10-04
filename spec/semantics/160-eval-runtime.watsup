@@ -142,11 +142,20 @@ def $failed_source_at(pfailedsource :: pfailedsource_tail*, n) = (pfailedsource)
   -- if pfailedsource.UNIT = n
 def $failed_source_at(pfailedsource :: pfailedsource_tail*, n) = $failed_source_at(pfailedsource_tail*, n)
   -- if pfailedsource.UNIT =/= n
+dec $throwable_origin_valid(pstate, porigin?) : bool
+def $throwable_origin_valid(S, (porigin)) = true
+  -- if $origin_node(S.SOURCES, porigin) =/= eps
+def $throwable_origin_valid(S, (PORIGIN n eps)) = true
+  -- if $failed_source_at(S.FAILEDSOURCES, n) = (pfailedsource)
+  -- if $failed_source_record_valid(S, pfailedsource)
+def $throwable_origin_valid(S, porigin?) = false -- otherwise
 def $throwable_source_origin_valid(S, n_object, pthrowable) = true
   -- if pthrowable.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) =/= eps
+  -- if $throwable_origin_valid(S, pthrowable.FILEORIGIN)
 def $throwable_source_origin_valid(S, n_object, pthrowable) = true
   -- if pthrowable.ORIGIN = (PORIGIN n eps)
+  -- if pthrowable.FILEORIGIN = pthrowable.ORIGIN
   -- if $failed_source_at(S.FAILEDSOURCES, n) = (pfailedsource)
   -- if $failed_source_record_valid(S, pfailedsource)
   -- if pthrowable.KIND = $failed_source_kind(pfailedsource.KIND)
@@ -241,7 +250,7 @@ dec $eval_await_head(ptask*, nat) : bool
 def $eval_await_head((EVAL_AWAIT n) :: ptask_tail*, n) = true
 def $eval_await_head(ptask*, n) = false -- otherwise
 def $eval_context_phase_valid(S, pevalcontext) = ((pevalcontext.PHASE = PARSER_WAIT /\ $eval_head_context(S.EVALCONTEXTS, pevalcontext) /\ $eval_await_head(S.TODO, pevalcontext.UNIT) /\ pevalcontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pevalcontext.SITE) /\ pevalcontext.LEXICAL_CLASS = $eval_class_origin(S) /\ $source_unit(S.SOURCES, pevalcontext.UNIT) = eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = eps /\ $eval_wait_completion(S.COMPLETION)) \/ (pevalcontext.PHASE = UNIT_RUN /\ $source_unit(S.SOURCES, pevalcontext.UNIT) =/= eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = ({UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS}) /\ $code_at(S.CODE, pevalcontext.UNIT) =/= eps))
-def $eval_site_line(S, porigin) = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], expression)
+def $eval_site_line(S, porigin) = $runtime_line(S[.ORIGIN = (porigin)][.CONSTCONTEXT = eps], [PCFIELD 0], expression)
   -- if $origin_node(S.SOURCES, porigin) = (NExprEval expression metadata)
 def $eval_site_line(S, porigin) = 0 -- otherwise
 dec $eval_context_valid(pstate, pevalcontext) : bool

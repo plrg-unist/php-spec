@@ -98,7 +98,7 @@ def $trace_frame_array_valid(S, n, n_trace) = true
   -- if (HARRAY n) <- S.ALLOCATIONS
   -- if n =/= n_trace
   -- if S.ARRAYS[n].ITEMS = [ENTRY (KSTRING $ptascii("file")) (DIRECT (PSTRING preqbytes_file)), ENTRY (KSTRING $ptascii("line")) (DIRECT (PINT z_line)), ENTRY (KSTRING $ptascii("function")) (DIRECT (PSTRING preqbytes_function))]
-  -- if preqbytes_function = $ptascii("eval")
+  -- if preqbytes_function <- [$ptascii("eval"), $ptascii("[constant expression]")]
 def $trace_frame_array_valid(S, n, n_trace) = false -- otherwise
 dec $trace_frames_valid(pstate, pentry*, nat, nat) : bool
 def $trace_frames_valid(S, eps, n_index, n_trace) = true

@@ -54,7 +54,7 @@ def $enter_constant_task(S, porigin, EVAL expression, ptask*) = $enter_compiled_
 def $enter_constant_task(S, porigin, ptask, ptask_tail*) = $enter_compiled_task(S, porigin, ptask, ptask_tail*)
   -- otherwise
 
-rule PhpStep/constant-observe: S ~> S[.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE $pvclass_operand(pvalue), CLASS $constant_result_class(S, porigin)})])][.TODO = ptask_tail*]
+rule PhpStep/constant-observe: S ~> S[.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE $pvclass_operand(pvalue), CLASS $constant_class(S, porigin)})])][.TODO = ptask_tail*]
   -- if S.TODO = (CONSTANT_OBSERVE porigin) :: ptask_tail*
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if S.RESULT = KNOWN pvalue
@@ -103,6 +103,11 @@ def $constant_name_class(S, preqbytes, (preqbytes_fallback)) = $constant_name_cl
 def $constant_name_class(S, preqbytes, preqbytes_fallback?) = PVSCALAR
   -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
   -- if $constant_lookup_bytes(preqbytes) = (VALUE pvalue)
+;; The source name was resolved by CODE.NAMES. Classification permits the
+;; completed runtime fetch; it does not supply a value to constant folding.
+def $constant_name_class(S, preqbytes, preqbytes_fallback?) = PVSCALAR
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
+  -- if preqbytes = $ptascii("E_STRICT")
 
 def $constant_shape_class(S, PORIGIN n pcpath, PFNAME name) = $constant_name_class(S, preqbytes, preqbytes_fallback?)
   -- if $code_at(S.CODE, n) = (pcode)

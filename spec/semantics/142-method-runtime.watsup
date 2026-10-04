@@ -65,8 +65,8 @@ def $method_selected_scope(S, n, ptbytes, porigin?) = $effective_method(S, porig
   -- if S.OBJECTS[n] = INSTANCE porigin_class
 def $method_selected_scope(S, n, ptbytes, porigin?) = eps -- otherwise
 dec $method_current_scope(pstate) : porigin?
-def $method_current_scope(S) = pcallcontext.LEXICAL_CLASS -- if S.CURRENT = (pcallcontext) -- if S.CLASSCONSTANTINIT = eps
-def $method_current_scope(S) = eps -- if S.CURRENT = eps /\ S.CLASSCONSTANTINIT = eps
+def $method_current_scope(S) = pcallcontext.LEXICAL_CLASS -- if S.CURRENT = (pcallcontext) -- if ~$class_constant_active(S)
+def $method_current_scope(S) = eps -- if S.CURRENT = eps /\ ~$class_constant_active(S)
 dec $method_called_scope(pstate) : porigin?
 def $method_called_scope(S) = pcallcontext.CALLED_CLASS -- if S.CURRENT = (pcallcontext)
 def $method_called_scope(S) = eps -- otherwise
