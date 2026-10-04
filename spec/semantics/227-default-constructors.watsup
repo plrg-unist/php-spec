@@ -238,3 +238,16 @@ def $default_ctor_context_valid(S, pcallcontext) = true
   -- if pcallcontext.LINE = pdefaultctor.NEW.LINE
   -- if pcallcontext.WRAPPER = eps
 def $default_ctor_context_valid(S, pcallcontext) = false -- otherwise
+
+;; Prepared API arguments use the same preflight for positional and named slots.
+;; The retained default-constructor phase authenticates this additional entry.
+def $named_preflight_stage(S, porigin, n) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $default_ctor_context_valid(S, pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (DEFAULT_CTOR_RESULT pdefaultctor) :: ptask_tail*
+  -- if pdefaultctor.FUNCTION = porigin
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if n_limit = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $(n <= n_limit)
+  -- if $named_preflight_slots(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), pdefaultctor.PREPARED.SLOTS, n)
