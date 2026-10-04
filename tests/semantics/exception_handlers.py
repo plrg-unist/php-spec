@@ -53,7 +53,7 @@ def run(selected, native_records):
                 native = recorded([str(runtime), '-n', *flags, str(source)], native_stem, 30)
             nout = native_stem.with_suffix('.stdout').read_bytes()
             nerr = native_stem.with_suffix('.stderr').read_bytes()
-            passed = (not native['timeout'] and native['exit'] == row['exit']
+            passed = (not native.get('timeout', False) and native['exit'] == row['exit']
                       and nout == row['stdout'].encode()
                       and nerr == row['stderr'].replace('{file}', str(native_source)).encode())
             result = {'id': row['id'], 'native': native, 'passed': False}
