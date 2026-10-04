@@ -341,7 +341,8 @@ completes a forward constant table before fetching the reference and preserves
 the typed alias. Deferred scalar/array static defaults now evaluate in declaring
 scope with strict binding, preserving successful prefixes across later failure.
 The [deferred-default review](coverage/semantics/deferred-static-defaults-review.json)
-separates eleven source agreements from five state programs/152 sequential guards.
+separates eleven earlier and two current callback agreements from five state
+programs/152 sequential guards.
 Deferred instance/object defaults and incomplete-table references remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases

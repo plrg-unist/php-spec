@@ -12,11 +12,13 @@ property types, parent/constants/default order and first successful fills across
 later failure/retry. Existing static rows own live values, arrays and typed aliases;
 history stores no duplicate value. Eleven native/model agreements (seven normal,
 four PHP errors) retain their original source cutoff. Five source-derived programs
-accept149 logical guards expressed as152 sequential premises after narrow fixture
+accept 149 logical guards expressed as 152 sequential premises after narrow fixture
 binding repairs. The [deferred-default ledger](coverage/semantics/deferred-static-defaults-review.json)
-keeps original failures and unrun broader work visible. Actual213/215 composition
-is the integration gate; instance/object defaults and cold synchronous references
-are the next required obligations.
+keeps original failures and unrun broader work visible. Two actual213/215
+interactions at 8da51d193 retain inherited defaults through captured/private raw
+handlers, captured-null cast/throwing assignment and a 214/216 Stringable receive.
+Instance/object defaults and cold synchronous references are the next required
+obligations.
 
 Private and protected method arrays and class-method strings support callable
 admission, selection, capture/clone and delayed error-handler dispatch. Object
@@ -129,7 +131,8 @@ failures and interrupted evidence.
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
 - Values, references and coercion: variadic/default callback reception and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred property defaults and references into incomplete constant tables remain Unsupported.
+  broader reference-result consumers. Deferred instance/object defaults and cold
+  synchronous references into incomplete constant tables remain Unsupported.
   Deprecated constant producer ingress remains open. Generic156 return replay, temporary-return
   Notice timing and typed
   by-reference string conversion186 remain open; accepted ordinary by-value

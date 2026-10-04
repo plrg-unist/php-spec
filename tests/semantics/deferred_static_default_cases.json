@@ -1,5 +1,5 @@
 {
-  "scope": "Eleven original deferred-static-default native tuples; seven normal and four PHP errors. Source, compiler and state checks retain their separate tested cutoffs.",
+  "scope": "Deferred-static-default source catalogue:11 earlier agreements (7normal,4PHP errors), plus2 current213/215 interactions at8da51d193. Distinct validation cutoffs, not full property/default closure.",
   "cases": [
     {
       "id": "lexical_inherited_default_shared_cell",
@@ -203,6 +203,60 @@
         "log_errors": "0",
         "html_errors": "0",
         "error_reporting": "30719"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "current_captured-handler",
+      "source": "<?php\nclass A {\n    private const X=N;\n    public static int $p=self::X;\n    private static function handle($level,$message,$file,$line) {\n        echo B::$p,\":\";\n        $r=&B::$p;\n        $r=5;\n        $GLOBALS[\"missing\"]=9;\n        return true;\n    }\n    public static function capture() { return self::handle(...); }\n}\nclass B extends A {}\nconst N=2;\nset_error_handler(A::capture());\necho (int)$missing,\":\",A::$p,\":\",B::$p,\":\",$missing;\nrestore_error_handler();\n",
+      "source_sha256": "41a761e4fd0af15b313405ccefcd43ddcc9e3f84703584ae3fb9f811e7f55fdf",
+      "stdout_base64": "MjowOjU6NTo5",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-composition-native-v1/report.json",
+      "native_raw_sha256": "fc0ebd1af87e5c7afe92e8cd7cc3e900e7c7cf5bcdbd29386f528caa4f52523d",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "current_parameter-handler",
+      "source": "<?php\nclass A {\n    private const X=N;\n    public static int $p=self::X;\n    private static function handle($level,$message,$file,$line) {\n        echo B::$p,\":\";\n        $r=&B::$p;\n        $r=7;\n        throw new Error(\"stop\");\n    }\n    public static function run(&$v) {\n        set_error_handler(\"A::handle\");\n        try { $v=$missing; }\n        catch (Error $e) { echo ($v===null) ? \"N:\" : \"bad:\"; }\n        restore_error_handler();\n    }\n}\nclass B extends A {}\nclass O {\n    public function __toString():string {\n        $v=\"old\";\n        A::run($v);\n        return \"ok\";\n    }\n}\nfunction take(string $v) { echo $v,\":\",B::$p; }\nconst N=3;\ntake(new O);\n",
+      "source_sha256": "63bb3503af4a6cfd8a3550341053d1d675af5d6be1445b8df0a9953da873e036",
+      "stdout_base64": "MzpOOm9rOjc=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-composition-native-v1/report.json",
+      "native_raw_sha256": "3741e405e3d626ecbe86c9cd76df3a3d69e9d41b7231a86622e2fe46ef0fdfe4",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
       },
       "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
     }

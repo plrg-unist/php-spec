@@ -29,7 +29,11 @@ Compound AST errors retain the constant-expression trace, while a simple unresol
 constant keeps the triggering fetch location. Instance and object-bearing defaults
 and synchronous references into an incomplete table remain required open work.
 The [deferred-default review](../../coverage/semantics/deferred-static-defaults-review.json)
-records eleven source agreements separately from five source-derived guard programs.
+records eleven earlier source agreements separately from five source-derived guard
+programs. Two later213/215 callback comparisons initialize the inherited default
+inside a captured private handler and a raw private handler during a Stringable
+parameter receive. Captured null survives the first handler's variable write and
+the second handler's throw; the warmed typed alias remains the shared static cell.
 
 Lookup retains a selected instance descriptor long enough to check access before
 rejecting it as an undeclared static property. Denied and undeclared errors name
