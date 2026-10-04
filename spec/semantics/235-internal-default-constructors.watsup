@@ -108,11 +108,11 @@ def $default_internal_parameter_plain(S, pctorcall, 3, pnamedslot) = $ee_filenam
 def $default_internal_parameter_plain(S, pctorcall, 4, pnamedslot) = $ee_line_value(S, pctorcall, pnamedslot)
 def $default_internal_parameter_plain(S, pctorcall, 5, pnamedslot) = $ee_previous_value(S, pctorcall, pnamedslot)
 dec $default_internal_receive(pstate, pctorcall, nat, pvalue*) : pstate
-def $default_internal_receive(S, pctorcall, n, pvalue*) = $default_internal_receive(S_next, pctorcall, $(n + 1), pvalue* ++ [pvalue])
+def $default_internal_receive(S, pctorcall, n, pvalue*) = $default_internal_receive(S_next, pctorcall, $(n + 1), pvalue* ++ [pvalue_step])
   -- if $(n < $default_internal_arity(pctorcall.BASE))
   -- if S_next = $default_internal_parameter(S, pctorcall, n, $named_slot_at(pctorcall.SENT, n))
   -- if S_next.COMPLETION = NORMAL
-  -- if S_next.RESULT = KNOWN pvalue
+  -- if S_next.RESULT = KNOWN pvalue_step
 def $default_internal_receive(S, pctorcall, n, pvalue*) = S_next
   -- if $(n < $default_internal_arity(pctorcall.BASE))
   -- if S_next = $default_internal_parameter(S, pctorcall, n, $named_slot_at(pctorcall.SENT, n))
