@@ -71,7 +71,7 @@ def $anonymous_default_new_task_valid(S, expression) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $anonymous_default_new_site(S, porigin)
 def $anonymous_default_new_task_valid(S, expression) = false -- otherwise
-def $call_task_valid(S, EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) = (~$anonymous_default_new_task_kind(S) \/ $anonymous_default_new_task_valid(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata))
+def $call_task_valid(S, EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) = ((~$anonymous_default_new_task_kind(S) \/ $anonymous_default_new_task_valid(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) /\ $ordinary_keyword_new_task_valid(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata))
   -- if phpType7* =/= eps
   -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent")]
 

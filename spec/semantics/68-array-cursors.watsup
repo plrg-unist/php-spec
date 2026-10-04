@@ -72,11 +72,19 @@ dec $iterator_copies(piterator*, nat, nat) : piterator*
 def $iterator_copies(eps, n_source, n_target) = eps
 def $iterator_copies(piterator :: piterator_tail*, n_source, n_target) = $iterator_copy(piterator, n_source, n_target) :: $iterator_copies(piterator_tail*, n_source, n_target)
 
+def $defined_positions(eps, pentry*) = eps
+def $defined_positions((POSITION pkey n) :: pposition_tail*, pentry*) = (POSITION pkey n) :: $defined_positions(pposition_tail*, pentry*)
+  -- if $entry_lookup(pentry*, pkey) = (pitem)
+def $defined_positions((POSITION pkey n) :: pposition_tail*, pentry*) = $defined_positions(pposition_tail*, pentry*)
+  -- if $entry_lookup(pentry*, pkey) = eps
+
 def $duplicate_array(S, n_source) = S_copy
-  -- if S_copy = $allocate_array(S, S.ARRAYS[n_source][.ITEMS = $duplicate_entries(S, n_source, S.ARRAYS[n_source].ITEMS)])
+  -- if pentry* = $duplicate_entries(S, n_source, S.ARRAYS[n_source].ITEMS)
+  -- if S_copy = $allocate_array(S, S.ARRAYS[n_source][.ITEMS = pentry*][.POSITIONS = $defined_positions(S.ARRAYS[n_source].POSITIONS, pentry*)])
   -- if S.ARRAYS[n_source].ITEMS = eps
 def $duplicate_array(S, n_source) = S_copy[.ITERATORS = $iterator_copies(S.ITERATORS, n_source, |S.ARRAYS|)]
-  -- if S_copy = $allocate_array(S, S.ARRAYS[n_source][.ITEMS = $duplicate_entries(S, n_source, S.ARRAYS[n_source].ITEMS)])
+  -- if pentry* = $duplicate_entries(S, n_source, S.ARRAYS[n_source].ITEMS)
+  -- if S_copy = $allocate_array(S, S.ARRAYS[n_source][.ITEMS = pentry*][.POSITIONS = $defined_positions(S.ARRAYS[n_source].POSITIONS, pentry*)])
   -- if S.ARRAYS[n_source].ITEMS =/= eps
 
 ;; Destruction poisons native iterator table pointers. Stable array IDs are never

@@ -1,6 +1,6 @@
 ;; Request state and pending work are explicit; PHP effects never use host I/O.
 syntax pmagic = MAGICFILE | MAGICDIR | MAGICLINE | MAGICNAMESPACE | MAGICCLASS | MAGICFUNCTION | MAGICMETHOD | MAGICTRAIT | MAGICPROPERTY
-syntax pvalue = PNULL | PBOOL bool | PINT int | PFLOAT nat | PSTRING nat* | PARRAY nat | POBJECT nat
+syntax pvalue = PUNDEFINED | PNULL | PBOOL bool | PINT int | PFLOAT nat | PSTRING nat* | PARRAY nat | POBJECT nat
 syntax pkey = KINT int | KSTRING nat*
 syntax pitem = DIRECT pvalue | UNINITIALIZED | ALIAS nat
 syntax pentry = ENTRY pkey pitem

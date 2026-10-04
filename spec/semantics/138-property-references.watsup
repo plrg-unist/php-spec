@@ -421,7 +421,7 @@ def $property_bind_prepare(S, n_object, ptbytes, n_cell, z) = $property_store_ke
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
 
 dec $property_bind_commit(pstate, nat, ptbytes, nat) : pstate
-def $property_bind_commit(S, n_object, ptbytes, n_cell) = S_attached[.OBJECTPROPS = $objectprops_set(S_attached.OBJECTPROPS, n_object, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (ALIAS n_cell)))][.RESULT = REFERENCE n_cell]
+def $property_bind_commit(S, n_object, ptbytes, n_cell) = $object_table_sync(S_attached[.OBJECTPROPS = $objectprops_set(S_attached.OBJECTPROPS, n_object, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (ALIAS n_cell)))][.RESULT = REFERENCE n_cell], n_object)
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if S_attached = $propref_attach_slot($propref_detach_slot($reference_cell(S, n_cell), n_object, ppropertyslot), n_object, ppropertyslot, n_cell)
@@ -591,17 +591,20 @@ def $call_task_valid(S, PROPERTY_REF_BIND pbase n_cell z) = ($property_ref_base_
 def $call_task_valid(S, PROPERTY_REF_BIND_CV pbase n_name* z) = ($property_ref_base_task(S, pbase, z) /\ $property_ref_rhs_cv(S, n_name*))
 def $call_task_valid(S, PROPERTY_REF_FETCH z) = $property_ref_fetch_task(S, z)
 
-def $property_reference_fetch(S, n_object, ptbytes, z) = $reference_cell(S, n_cell)[.CELL = n_cell][.RESULT = REFERENCE n_cell]
+dec $property_reference_fetch_unshared(pstate, nat, ptbytes, int) : pstate
+def $property_reference_fetch(S, n_object, ptbytes, z) = $object_table_sync($property_reference_fetch_unshared($object_table_write(S, n_object), n_object, ptbytes, z), n_object)
+
+def $property_reference_fetch_unshared(S, n_object, ptbytes, z) = $reference_cell(S, n_cell)[.CELL = n_cell][.RESULT = REFERENCE n_cell]
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
-def $property_reference_fetch(S, n_object, ptbytes, z) = S_attached[.OBJECTPROPS = $objectprops_set(S_attached.OBJECTPROPS, n_object, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (ALIAS n_cell)))][.CELL = n_cell][.RESULT = REFERENCE n_cell]
+def $property_reference_fetch_unshared(S, n_object, ptbytes, z) = S_attached[.OBJECTPROPS = $objectprops_set(S_attached.OBJECTPROPS, n_object, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (ALIAS n_cell)))][.CELL = n_cell][.RESULT = REFERENCE n_cell]
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
   -- if n_cell = |S.STORE|
   -- if S_attached = $propref_attach_slot($reference_cell(S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]], n_cell), n_object, ppropertyslot, n_cell)
-def $property_reference_fetch(S, n_object, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access uninitialized non-nullable property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" by reference"), z)
+def $property_reference_fetch_unshared(S, n_object, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access uninitialized non-nullable property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" by reference"), z)
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
@@ -609,7 +612,7 @@ def $property_reference_fetch(S, n_object, ptbytes, z) = $throw_scalar(S, "Error
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ppropertydesc.TYPE =/= eps
   -- if $typed_conversion_at(S, ppropertydesc.TYPE, PNULL, false) = TYPEREJECT
-def $property_reference_fetch(S, n_object, ptbytes, z) = $property_reference_fetch(S_null, n_object, ptbytes, z)
+def $property_reference_fetch_unshared(S, n_object, ptbytes, z) = $property_reference_fetch(S_null, n_object, ptbytes, z)
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
@@ -618,14 +621,14 @@ def $property_reference_fetch(S, n_object, ptbytes, z) = $property_reference_fet
   -- if ppropertydesc.TYPE = eps \/ $typed_conversion_at(S, ppropertydesc.TYPE, PNULL, false) =/= TYPEREJECT
   -- if S_null = $property_store_key(S, n_object, ptbytes, PNULL, z)
   -- if S_null.COMPLETION = NORMAL
-def $property_reference_fetch(S, n_object, ptbytes, z) = $property_reference_fetch(S_null, n_object, ptbytes, z)
+def $property_reference_fetch_unshared(S, n_object, ptbytes, z) = $property_reference_fetch(S_null, n_object, ptbytes, z)
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
   -- if S_null = $property_store_key(S, n_object, ptbytes, PNULL, z)
   -- if S_null.COMPLETION = NORMAL
-def $property_reference_fetch(S, n_object, ptbytes, z) = S_null
+def $property_reference_fetch_unshared(S, n_object, ptbytes, z) = S_null
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
   -- if S_null = $property_store_key(S, n_object, ptbytes, PNULL, z)
   -- if S_null.COMPLETION =/= NORMAL
-def $property_reference_fetch(S, n_object, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "property reference fetch"] -- otherwise
+def $property_reference_fetch_unshared(S, n_object, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "property reference fetch"] -- otherwise

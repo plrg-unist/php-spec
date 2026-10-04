@@ -42,7 +42,9 @@ compiles selected reached fixtures; original AL_mode runner commands remain in
 the ledger. Production source execution uses SL_mode. Existing local binaries
 are reused; there is no fresh build or portability claim.
 
-Earlier initial container/string/object warnings, GLOBALS RW, wider memoized
-containers and remaining write/reference consumers remain required core work.
+[Global W/RW269](SOURCE-GLOBAL-WRITES.md) separately adds name/missing-entry
+updates and compound/nested array ingress. Earlier initial container/string/object
+warnings, wider GLOBALS/memoized and remaining write/reference consumers remain
+required core work.
 Selected agreement does not establish complete core semantics; paused returns
 remain unchanged.
