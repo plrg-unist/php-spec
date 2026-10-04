@@ -6,6 +6,43 @@ from destructor_state_review import SOURCES, VALID, REPLAY
 import shutdown_state_review as runner
 
 runner.CASES = {
+    'unused-return-keeps-callee-scope-before-locals': {
+        'source': '<?php class L{function __destruct(){echo "L;";}}class C{private function __destruct(){echo "C:",get_called_class(),";";}static function make(){$l=new L;return new C;}}class P{function __destruct(){echo "P;";C::make();echo "TAIL;";}}$p=new P;',
+        'stage': 'S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: '
+                 '(DESTRUCTOR_RELEASE pdestructionrelease) :: '
+                 '[RETURN_UNWIND (KNOWN PNULL) porigin_source?] '
+                 '-- if S.CURRENT = (pcallcontext) '
+                 '-- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc_caller) '
+                 '-- if pmethoddesc_caller.NAME = $ptascii("make")',
+        'checks': [
+            'pdestructorcall.CALLER = (pcallcontext)',
+            'pdestructorcall.ORIGIN = S.ORIGIN',
+            'pdestructorcall.CONSTCONTEXT = eps',
+            'pdestructorcall.PENDING = eps', 'pdestructorcall.FRAME = eps',
+            'pdestructionrelease.CALLER = S.CURRENT',
+            'pdestructionrelease.JOBS = eps',
+            '$lookup(S.ENV, $ptascii("l")) = (n_local)',
+            'S.STORE[n_local] = DEFINED (POBJECT n_local_object)',
+            '$heap_owners($heap_graph(S), HOBJECT n_local_object) = 1',
+            '$heap_owners($heap_graph(S), HOBJECT pdestructorcall.OBJECT) = 2',
+            '$class_named(S.CLASSNAMES, $ptascii("c")) = (porigin_class)',
+            'pcallcontext.LEXICAL_CLASS = (porigin_class)',
+            'pcallcontext.CALLED_CLASS = (porigin_class)',
+            '$destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)',
+            'pmethoddesc.VISIBILITY = PRIVATE',
+            '$method_accessible(S, pmethoddesc, $method_current_scope(S))',
+            '$return_unwind_source_valid(S, porigin_source?)',
+            '$destructor_enter_valid(S, pdestructorcall)',
+            '~$destructor_enter_valid(S, pdestructorcall[.CALLER = eps])',
+            '~$destructor_enter_valid(S, pdestructorcall[.ORIGIN = eps])',
+            *VALID, *REPLAY,
+            '~((HOBJECT n_local_object) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT pdestructorcall.OBJECT) <- S_done.ALLOCATIONS)',
+            'S_done.EVENTS = [OUTPUT $ptascii("P;"), OUTPUT $ptascii("C:"), '
+            'OUTPUT $ptascii("C"), OUTPUT $ptascii(";"), OUTPUT $ptascii("L;"), '
+            'OUTPUT $ptascii("TAIL;")]',
+        ],
+    },
     'replacement-exception-owns-remaining-local-loop': {
         'source': SOURCES['remaining-locals-chain-replacement-throwables'],
         'stage': 'S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: '

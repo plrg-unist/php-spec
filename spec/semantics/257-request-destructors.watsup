@@ -77,6 +77,7 @@ dec $destructor_reverse(preqbytes*) : preqbytes*
 dec $destructor_bailout(pcompletion) : bool
 dec $destructor_all(nat, nat) : nat*
 dec $destructor_begin(pstate) : pstate
+dec $destructor_startup_order(pstate) : bool
 dec $destructor_stop(pstate) : pstate
 dec $destructor_release_begin(pstate, pdestructionjob*) : pstate
 dec $destructor_release_replace(pstate, pdestructionrelease) : pstate
@@ -222,14 +223,23 @@ def $destructor_ready(S) = true
   -- if S.COMPILESTOP \/ S.FRAMES = eps
   -- if ~$shutdown_render_ready(S)
 def $destructor_ready(S) = false -- otherwise
+;; Explicit request bootstrap installs these CLI symbols before compiled CVs.
+;; An absent request cannot certify their historical insertion positions.
+def $destructor_startup_order(S) = (S.REQUEST =/= eps \/ (~($ptascii("argc") <- S.SYMBOLS) /\ ~($ptascii("argv") <- S.SYMBOLS)))
 def $destructor_begin(S) = S_clean[.COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"]
   -- if S_report = $shutdown_freeze(S)
   -- if S_clean = $destruction_store_new($shutdown_clean(S_report))
   -- if $destructor_waiting(S_clean, $destruction_nodes_delete(S_clean.ALLOCATIONS, $heap_prune($heap_graph(S_clean)).NODES))
+def $destructor_begin(S) = S_clean[.COMPLETION = UNSUPPORTED "request destructor startup symbol order"]
+  -- if S_report = $shutdown_freeze(S)
+  -- if S_clean = $destruction_store_new($shutdown_clean(S_report))
+  -- if ~$destructor_waiting(S_clean, $destruction_nodes_delete(S_clean.ALLOCATIONS, $heap_prune($heap_graph(S_clean)).NODES))
+  -- if ~$destructor_startup_order(S_clean)
 def $destructor_begin(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_DONE][.DESTRUCTION.PHASE = DESTRUCTION_GLOBALS][.DESTRUCTION.NAMES = $destructor_reverse(S_clean.SYMBOLS)][.DESTRUCTION.PASS = $destructor_reverse(S_clean.SYMBOLS)][.DESTRUCTION.INDEX = 0][.DESTRUCTION.COUNT = |S_clean.ENV|][.DESTRUCTION.COMPLETION = S_report.COMPLETION][.COMPLETION = NORMAL][.TODO = [DESTRUCTOR_GLOBALS]]
   -- if S_report = $shutdown_freeze(S)
   -- if S_clean = $destruction_store_new($shutdown_clean(S_report))
   -- if ~$destructor_waiting(S_clean, $destruction_nodes_delete(S_clean.ALLOCATIONS, $heap_prune($heap_graph(S_clean)).NODES))
+  -- if $destructor_startup_order(S_clean)
 def $destructor_stop(S) = S_clean[.DESTRUCTION.PHASE = DESTRUCTION_DONE][.DESTRUCTION.CALLED = $destructor_all(0, |S_clean.OBJECTS|)][.DESTRUCTION.RELEASES = eps][.DESTRUCTION.CALLS = eps][.DESTRUCTION.FRAMES = eps]
   -- if S_clean = $shutdown_clean($shutdown_freeze(S))
 def $drive_steps(S, n) = $drive_steps($prune_allocations($destructor_begin(S)), n)
