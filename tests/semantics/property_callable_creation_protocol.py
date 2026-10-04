@@ -231,7 +231,7 @@ $property_child_test_output(S_done.EVENTS) = $ptascii("A:ScopeA/ScopeB/ScopeA")
 ~((HOBJECT n_child) <- S_done.ALLOCATIONS)
 $closure_scope_at(S_done.CLOSURESCOPES, n_child) = eps
 $lookup(S_done.ENV, $ptascii("childClone")) = (n_cell_clone)
-S_done.CELLS[n_cell_clone] = DIRECT (POBJECT n_child_clone)
+S_done.STORE[n_cell_clone] = DEFINED (POBJECT n_child_clone)
 $closure_scope_at(S_done.CLOSURESCOPES, n_child_clone) = (pclosurescope_child_clone)
 pclosurescope_child_clone.CREATION = pclosurescope_child.CREATION
 pclosurescope_child_clone.RECEIVER = eps
