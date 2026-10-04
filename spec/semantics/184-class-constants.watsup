@@ -672,7 +672,9 @@ rule PhpStep/class-constant-update: S ~> $class_constant_value(S[.TODO = DISCARD
   -- if S.TODO = (CLASS_CONST_UPDATE porigin z) :: ptask_tail*
   -- if $class_constant_update_target(S, ptask_tail*) = (porigin_class)
   -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
-rule PhpStep/class-constant-construct: S ~> $constructor_start_ready(S[.TODO = ptask_tail*], ptbytes, phpType7*, z)
+dec $parameter_default_new_ready(pstate, ptbytes, phpType7*, int) : bool
+dec $constructor_after_class_update(pstate, ptbytes, phpType7*, int) : pstate
+rule PhpStep/class-constant-construct: S ~> $constructor_after_class_update(S[.TODO = ptask_tail*], ptbytes, phpType7*, z)
   -- if S.TODO = (CLASS_CONST_CONSTRUCT ptbytes phpType7* true z) :: ptask_tail*
 rule PhpStep/class-constant-construct-noctor: S ~> $noctor_start_ready(S[.TODO = ptask_tail*], ptbytes, phpType7*, z)
   -- if S.TODO = (CLASS_CONST_CONSTRUCT ptbytes phpType7* false z) :: ptask_tail*
@@ -721,7 +723,7 @@ def $class_constant_constructor_task(S, ptbytes, phpType7*, b_ctor, z) = true
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
   -- if b_ctor = $new_has_ctor(S, ptbytes)
-  -- if z = $runtime_line(S, eps, NExprNew phpType28 (SEQUENCE phpType7*) metadata)
+  -- if (z = $runtime_line(S, eps, NExprNew phpType28 (SEQUENCE phpType7*) metadata) /\ (~b_ctor \/ ~$parameter_default_constructor(S, phpType28, phpType7*, metadata))) \/ (b_ctor /\ $parameter_default_new_ready(S, ptbytes, phpType7*, z))
   -- if $class_constant_constructor_ready(S, ptbytes, phpType7*, b_ctor, z)
 def $class_constant_constructor_task(S, ptbytes, phpType7*, b_ctor, z) = false -- otherwise
 def $class_constant_constructor_ready(S, ptbytes, phpType7*, b_ctor, z) = ($class_constant_new_work(S, ptbytes, z) = eps)
