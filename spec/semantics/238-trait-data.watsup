@@ -194,7 +194,7 @@ def $trait_fold_class_name(F, pcpath, phpType19, pvalue?) = (ptbytes)
   -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
   -- if F.EXTERNAL = (S_external)
   -- if $code_at(S_external.CODE, F.SOURCE.ID) = (pcode)
-  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes, ptbytes_fallback?))
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, ptbytes_fallback?))
 def $trait_fold_class_name(F, pcpath, phpType19, (PSTRING ptbytes)) = (ptbytes) -- if ~$ppscoped_named(phpType19)
 def $trait_fold_class_name(F, pcpath, phpType19, pvalue?) = eps -- otherwise
 def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = $trait_fold_classname(F, pcpath, phpType19, z) -- if $trait_fold_scope(F, pcpath)
