@@ -230,8 +230,22 @@ The [data ledger](coverage/semantics/trait-data-review.json) records72 source tu
 and265 genuine state assertions at preserved cuts; four historical dependency
 controls retain92 assertions and zero old-cut agreement. Runtime link fatals keep
 native severity, reporting masks and declaration phase. Effectful collision
-evaluation, direct trait-property deprecations, readonly storage and enums remain
+evaluation, readonly storage and enums remain
 required; this checkpoint does not close the trait family.
+
+Raw trait static-property warnings254 follow lookup, access, table fill and typed
+read priority. Retained source/root/member/mode resumes the live cell through
+handler rebinding. Computed RHS values keep one store owner; compiled literals
+also retain their pool owner. Late CV values remain delayed. Handler throws still finish
+the actual write/update/reference opcode, while fetch-only reference promotion
+aborts later assignment or call. Typed/Stringable conversion preserves pending
+exceptions. Independent source33 (author6 subset) and six reached state groups286
+pass at unchanged15155; preparation and incorrect owner assertions are retained
+without extra credit in the [access ledger](coverage/semantics/trait-property-access-review.json).
+Actual accepted core routes, including258, are preserved in244 modules without
+renewing those cuts. Effectful collisions and
+deferred-value comparison before type conversion259, readonly storage and enum
+semantics remain required; the trait family stays open.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
@@ -575,7 +589,7 @@ failures and interrupted evidence.
 - Objects and lifetime: remaining static members, effectful trait data composition,
   enums, hooks, readonly/instance asymmetric
   access, traversal, output handlers and lifecycle callbacks. Static cells remain
-  partial across direct trait-property diagnostics, bind/clone, include/eval reactivation
+  partial across wider producers, bind/clone, include/eval reactivation
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.
 - Control and diagnostics: Generator/Fiber, remaining warning/read producers,

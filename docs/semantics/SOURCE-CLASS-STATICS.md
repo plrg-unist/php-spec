@@ -4,10 +4,13 @@ Modules 187/188 implement backed static declarations in ordinary source classes,
 including public, protected and private access, typed defaults and uninitialized
 values, reads, assignment, quiet tests, dimensions, updates and reference binding.
 Modules 200/201 add backed static asymmetric setters and final declarations.
-Readonly, instance asymmetric setters, promotion, traits, hooks and magic remain
+Readonly, instance asymmetric setters, promotion, hooks and magic remain
 separate obligations. The [storage ledger](../../coverage/semantics/class-static-properties.json)
 and [setter ledger](../../coverage/semantics/static-setter-access-review.json)
 keep historical tests distinct from current interaction checks.
+Trait composition238 and raw-property warning continuations254 retain distinct
+declaring identities, live handler resumption and opcode ownership; see the
+[trait contract](SOURCE-TRAITS.md).
 
 Each declaration owns one `CLASSSTATICS` row keyed by its declaring property ID.
 An inherited declaration resolves to that same row; a redeclaration owns a new

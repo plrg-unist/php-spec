@@ -1,0 +1,4 @@
+;; These handler-controlled witnesses finish with ordinary stdout events only.
+dec $trait_property_test_output(pevent*) : ptbytes
+def $trait_property_test_output(eps) = eps
+def $trait_property_test_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $trait_property_test_output(pevent*)

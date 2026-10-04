@@ -1,0 +1,50 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; direct trait property precomputed RHS and callback-abrupt opcode completion. Native-only preparation; zero model credit before254.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "precomputed-rhs-class-cv-rebinding-keeps-earlier-selected-trait",
+      "source": "<?php trait T{public static $x=1;public static $other=2;}class C{use T;}$cls=\"T\";$name=\"x\";set_error_handler(function($n,$m){echo \"H;\";return true;});echo $cls::$$name=($cls=\"C\");restore_error_handler();error_reporting(0);echo \":\",T::$x,\":\",C::$x;",
+      "source_sha256": "526ca471885dd23f9abb451871311782eff7eb44eab53b7cc85fde5fff9035ab",
+      "status": "normal",
+      "stdout_base64": "SDtDOkM6MQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-4tw6g_ta/report.json",
+      "native_raw_sha256": "2a038c0ff36fbff23b67568e7924638b8123006a64badc6433e696cce0b27dee"
+    },
+    {
+      "id": "precomputed-rhs-property-name-cv-is-demanded-later",
+      "source": "<?php trait T{public static $x=1;public static $other=2;}$cls=\"T\";$name=\"x\";set_error_handler(function($n,$m){echo \"H;\";return true;});echo $cls::$$name=($name=\"other\");restore_error_handler();error_reporting(0);echo \":\",T::$x,\":\",T::$other;",
+      "source_sha256": "7d8ba49a69868a8ae728f8289e9d79db8c530e46958e1ed4b91eeb96984ba91c",
+      "status": "normal",
+      "stdout_base64": "SDtvdGhlcjoxOm90aGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-4tw6g_ta/report.json",
+      "native_raw_sha256": "30b6726cb0afbc9f2534a2243d0933d91701ca52bf2e412f30c5cde1ecf1a38b"
+    },
+    {
+      "id": "computed-property-name-temp-precedes-rhs-name-cv-rebinding",
+      "source": "<?php trait T{public static $x=1;public static $other=2;}$name=\"x\";set_error_handler(function($n,$m){echo \"H;\";return true;});echo T::${($name=\"other\")}=($name=\"x\");restore_error_handler();error_reporting(0);echo \":\",T::$x,\":\",T::$other;",
+      "source_sha256": "aa5000f65f5f68595c6193f05ba7ca366a0eccc3b7cf25333f461004073ff93e",
+      "status": "normal",
+      "stdout_base64": "SDt4OjE6eA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-4tw6g_ta/report.json",
+      "native_raw_sha256": "402c37be2244513419bdc571bf8caf1f6d1c2931ac325526a38aa7174e05bdad"
+    },
+    {
+      "id": "precomputed-array-rhs-installed-before-handler-exception-propagates",
+      "source": "<?php trait T{public static array $x=[2];}set_error_handler(function($n,$m){echo \"H;\";throw new Exception(\"STOP\");});echo \"PRE;\";try{T::$x=[1];}catch(Exception $e){echo \"CAUGHT;\";}restore_error_handler();error_reporting(0);echo T::$x[0];",
+      "source_sha256": "d42616dfbd8331f44c15aa9bb48662f6be0bd1ed4d385e9562656fb9a0a1ba69",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7Q0FVR0hUOzE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-4tw6g_ta/report.json",
+      "native_raw_sha256": "a11f324c207d5b632612b20fd566183331eca67bd50e3b28713571e580a97dbb"
+    }
+  ]
+}
