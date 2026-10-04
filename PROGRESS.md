@@ -38,8 +38,8 @@ effects, keeping their position among source output across later writes and
 include retirement. Current terminal errors preserve status255 when display is
 off. Ten author and one independent exact comparisons, 76 source-derived state
 premises and 17 entry/transport controls pass at b8e8, alongside223-module SL
-stages/init and the changed adapter build. Actual71da/235 preservation retains
-224 modules with unchanged tested display routes and no renewed execution.
+stages/init and the changed adapter build. Actualddb6/233 preservation retains
+225 modules with the reviewed display and dimension-warning routes, without renewed execution.
 The [display ledger](coverage/semantics/display-errors-review.json) separates
 source-defined nullable controls from native profiles. The held shutdown/fatal
 freeze source remains native-only until required actual231 composition; wider
