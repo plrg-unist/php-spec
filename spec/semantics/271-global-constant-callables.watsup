@@ -193,7 +193,11 @@ def $global_constant_method_message(S, porigin_method) = $ptascii("Calling stati
 dec $global_constant_method_resume_valid(pstate, porigin, porigin, porigin, nat) : bool
 def $global_constant_method_resume_valid(S, porigin_site, porigin_method, porigin_called, n_prefix) = true
   -- if S.ORIGIN = (porigin_site)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
   -- if $global_constant_callable_context(S, porigin_site) = ((porigin_decl, porigin_scope?))
+  -- if porigin_site = PORIGIN n_unit pcpath_site
+  -- if $declaration_entered(S.DECLARATIONS[0:n_prefix], n_unit)
+  -- if $global_constant_scope_published(S.DECLARATIONS[0:n_prefix], porigin_scope?)
   -- if $global_constant_method(S, porigin_site, porigin_scope?, n_prefix) = ((pmethoddesc, porigin_called))
   -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method /\ pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if $global_constant_method_trait(S, pmethoddesc)
