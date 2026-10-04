@@ -249,6 +249,7 @@ rule PhpStep/exception-warning-invalid-callback: S ~> S[.TODO = eps][.COMPLETION
   -- if $error_handler_resolution(S, perrorcall.CALLBACK) = HANDLERINVALID n_reason*
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = EXCEPTION_HANDLER_ENTER pexceptioncall
+  -- if $exception_task_scope(S)
   -- if $exception_enter_valid(S, pexceptioncall)
   -- if pexceptioncall.TARGET = (pcalltarget)
   -- if $call_parameter_reference(S, pcalltarget, 0)
@@ -259,6 +260,10 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LINE = 0
   -- if perrorcall.MESSAGE = $exception_reference_warning(S, pexceptioncall)
   -- if perrorcall.EVENT = DIAGNOSTIC_INTERNAL "Warning" perrorcall.MESSAGE 0
+def $error_reference_event(S, ptbytes, 0) = DIAGNOSTIC_INTERNAL "Warning" ptbytes 0
+  -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if $exception_warning_resume(perrorcall.RESUME)
+  -- if $error_entered_call_valid(S, perrorcall)
 def $error_handler_values(S, perrorcall) = [PINT 2, PSTRING perrorcall.MESSAGE, PSTRING $ptascii("Unknown"), PINT 0]
   -- if $exception_warning_resume(perrorcall.RESUME)
 

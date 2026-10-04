@@ -124,6 +124,8 @@ def $error_handler_values(S, perrorcall) = [PINT perrorcall.LEVEL, PSTRING perro
 def $error_handler_values(S, perrorcall) = [PINT perrorcall.LEVEL, PSTRING perrorcall.MESSAGE, PNULL, PINT perrorcall.LINE]
   -- if ~$exception_warning_resume(perrorcall.RESUME)
   -- if $error_handler_file(S, perrorcall) = eps
+dec $error_reference_event(pstate, ptbytes, int) : pevent
+def $error_reference_event(S, ptbytes, z) = DIAGNOSTIC "Warning" ptbytes z -- otherwise
 def $error_handler_operands(S, pcalltarget, eps, n, z) = (S, eps)
 def $error_handler_operands(S, pcalltarget, pvalue :: pvalue_tail*, n, z) = (S_next, (KNOWN pvalue) :: poperand*)
   -- if ~$call_parameter_reference(S, pcalltarget, n)
@@ -132,7 +134,7 @@ def $error_handler_operands(S, pcalltarget, pvalue :: pvalue_tail*, n, z) = (S_n
   -- if $call_parameter_reference(S, pcalltarget, n)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
-  -- if S_cell = $call_fresh_reference($error_default(S[.ERRORFATALTRACE = eps], DIAGNOSTIC "Warning" (pfunction.NAME ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be passed by reference, value given")) z, 2), pvalue)
+  -- if S_cell = $call_fresh_reference($error_default(S[.ERRORFATALTRACE = eps], $error_reference_event(S, pfunction.NAME ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be passed by reference, value given"), z), 2), pvalue)
   -- if S_cell.RESULT = REFERENCE n_cell
   -- if $error_handler_operands(S_cell, pcalltarget, pvalue_tail*, $(n + 1), z) = (S_next, poperand*)
 def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = $call_arity($target_after_enter($call_enter(S_args, pfunction, poperand*, (perrorcall.SITE), perrorcall.LINE), pcalltarget), pfunction, 4, (perrorcall.SITE), perrorcall.LINE)
