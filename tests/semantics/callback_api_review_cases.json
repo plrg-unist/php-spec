@@ -92,51 +92,136 @@
   {
     "id": "shutdown-keyword-parent-self-static-called",
     "source": "<?php function w($n,$m,$f,$l){echo \"W;\";return true;}class A{static function h(){echo \"A:\",get_called_class(),\";\";}}class C extends A{static function reg(){register_shutdown_function([\"parent\",\"h\"]);register_shutdown_function([\"self\",\"h\"]);register_shutdown_function(\"static::h\");}static function h(){echo \"C:\",get_called_class(),\";\";}}class D extends C{static function h(){echo \"D:\",get_called_class(),\";\";}}set_error_handler(\"w\");D::reg();",
-    "source_sha256": "84db3488744d3557c8fcd7dc86825d274595e2b814b6a3b82c1a5e6833d3ed67"
+    "source_sha256": "84db3488744d3557c8fcd7dc86825d274595e2b814b6a3b82c1a5e6833d3ed67",
+    "stdout": "W;W;W;A:D;C:D;D:D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   },
   {
     "id": "shutdown-compound-raw-container-cow-retirement",
     "source": "<?php $o=new C;$cb=[$o,\"self::h\"];function w($n,$m,$f,$l){global $o,$cb;echo \"W;\";$o=null;$cb=[];return true;}class C{public $v=\"kept\";static function reg(){global $cb;register_shutdown_function($cb);echo \"R;\";}private function h(){echo \"H:\",$this->v,\":\",get_called_class(),\";\";}}set_error_handler(\"w\");C::reg();",
-    "source_sha256": "69a96e0e33a69789f30bdb251190d00d27fabbb1d7a251e3121868f5d839a4d7"
+    "source_sha256": "69a96e0e33a69789f30bdb251190d00d27fabbb1d7a251e3121868f5d839a4d7",
+    "stdout": "W;R;H:kept:C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   },
   {
     "id": "shutdown-compound-foreign-private-fallback",
     "source": "<?php function w($n,$m,$f,$l){echo \"W;\";return true;}class Child{}class Foreign{private function h(){echo \"H:\",self::class,\":\",get_called_class(),\";\";}function reg(){register_shutdown_function([\"Child\",\"self::h\"]);echo \"R;\";}}set_error_handler(\"w\");(new Foreign)->reg();",
-    "source_sha256": "32b121cd6527a00cd7d7bf0fc9b1d148741af42ac2386aa96cef43bd7f8ccf5f"
+    "source_sha256": "32b121cd6527a00cd7d7bf0fc9b1d148741af42ac2386aa96cef43bd7f8ccf5f",
+    "stdout": "W;R;H:Foreign:Foreign;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   },
   {
     "id": "exception-compound-terminal-abstract",
     "source": "<?php $m=\"h\";function s(){echo \"S;\";}abstract class A{abstract static function h($e);}class B extends A{static function h($e){echo \"BAD;\";}}register_shutdown_function(\"s\");set_exception_handler([\"B\",&$m]);$m=\"A::h\";throw new Exception(\"main\");",
-    "source_sha256": "0f3d0f2572d061bc352d6af7a2c197c3b19d905b1e2bb26800fda1fc334633fc"
+    "source_sha256": "0f3d0f2572d061bc352d6af7a2c197c3b19d905b1e2bb26800fda1fc334633fc",
+    "stdout": "S;",
+    "stderr": "Deprecated: Callables of the form [\"B\", \"A::h\"] are deprecated in Unknown on line 0\nFatal error: Invalid callback B::A::h, cannot call abstract method A::h() in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
   },
   {
     "id": "exception-compound-terminal-inherited-private-object",
     "source": "<?php $m=\"ok\";function s(){echo \"S;\";}class A{private function h($e){echo \"BAD;\";}}class B extends A{function ok($e){echo \"BAD;\";}}$o=new B;register_shutdown_function(\"s\");set_exception_handler([$o,&$m]);$m=\"B::h\";throw new Exception(\"main\");",
-    "source_sha256": "1cb588f525058057213ce30933e9bb9642e17f005f47e22cf1a5bb4dc1c71ef3"
+    "source_sha256": "1cb588f525058057213ce30933e9bb9642e17f005f47e22cf1a5bb4dc1c71ef3",
+    "stdout": "S;",
+    "stderr": "Deprecated: Callables of the form [\"B\", \"B::h\"] are deprecated in Unknown on line 0\nFatal error: Invalid callback B::B::h, cannot access private method B::h() in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
   },
   {
     "id": "exception-compound-terminal-inherited-private-static",
     "source": "<?php $m=\"ok\";function s(){echo \"S;\";}class A{private static function h($e){echo \"BAD;\";}}class B extends A{static function ok($e){echo \"BAD;\";}}register_shutdown_function(\"s\");set_exception_handler([\"B\",&$m]);$m=\"B::h\";throw new Exception(\"main\");",
-    "source_sha256": "723763a3b028497353863bc30afa34f3c3cb915962ffb9825ca8f20edb724247"
+    "source_sha256": "723763a3b028497353863bc30afa34f3c3cb915962ffb9825ca8f20edb724247",
+    "stdout": "S;",
+    "stderr": "Deprecated: Callables of the form [\"B\", \"B::h\"] are deprecated in Unknown on line 0\nFatal error: Invalid callback B::B::h, cannot access private method B::h() in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
   },
   {
     "id": "exception-keyword-registration-warning-throw-preserves-stack",
     "source": "<?php function r($e){echo \"R:\",$e->getMessage(),\";\";}function w($n,$m,$f,$l){echo \"W;\";throw new Exception(\"warning\");}class C{static function reg(){set_exception_handler([\"self\",\"h\"]);}static function h($e){echo \"BAD;\";}}set_exception_handler(\"r\");set_error_handler(\"w\");try{C::reg();}catch(Exception $e){echo \"C:\",$e->getMessage(),\":\",get_exception_handler(),\";\";}throw new Exception(\"main\");",
-    "source_sha256": "1b27ebd01cf121f0a5024683c89ed50dbb5d323c9f927af818ac87e89a22c595"
+    "source_sha256": "1b27ebd01cf121f0a5024683c89ed50dbb5d323c9f927af818ac87e89a22c595",
+    "stdout": "W;C:warning:r;R:main;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   },
   {
     "id": "shutdown-keyword-registration-warning-throw-keeps-inner-append",
     "source": "<?php function i(){echo \"I;\";}function w($n,$m,$f,$l){echo \"W;\";register_shutdown_function(\"i\");throw new Exception(\"warning\");}class C{static function reg(){register_shutdown_function([\"self\",\"h\"]);}static function h(){echo \"BAD;\";}}set_error_handler(\"w\");try{C::reg();}catch(Exception $e){echo \"C:\",$e->getMessage(),\";\";}",
-    "source_sha256": "46d20d77bf23582671e35c75359537a021ec71bba4f91988dcd42d19b69f592b"
+    "source_sha256": "46d20d77bf23582671e35c75359537a021ec71bba4f91988dcd42d19b69f592b",
+    "stdout": "W;C:warning;I;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   },
   {
     "id": "shutdown-keyword-argument-effects-before-warning",
     "source": "<?php function a(){echo \"A;\";return \"x\";}function w($n,$m,$f,$l){echo \"W;\";throw new Exception(\"warning\");}class C{static function reg(){register_shutdown_function([\"self\",\"h\"],a());}static function h($x){echo \"BAD;\";}}set_error_handler(\"w\");try{C::reg();}catch(Exception $e){echo \"C:\",$e->getMessage(),\";\";}",
-    "source_sha256": "1fd507996b5d63201986e7bd368242ad0194db41f8e7771d20ea658c17307304"
+    "source_sha256": "1fd507996b5d63201986e7bd368242ad0194db41f8e7771d20ea658c17307304",
+    "stdout": "A;W;C:warning;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   },
   {
     "id": "exception-keyword-arity-before-warning",
     "source": "<?php function a(){echo \"A;\";return 1;}function w($n,$m,$f,$l){echo \"BAD;\";return true;}class C{static function reg(){set_exception_handler([\"self\",\"h\"],a());}static function h($e){echo \"BAD;\";}}set_error_handler(\"w\");try{C::reg();}catch(ArgumentCountError $e){echo \"C:\",$e->getMessage(),\";\";}",
-    "source_sha256": "fec7c7c3f2a8001d7e47c35c7337cb6a1eb3d0a9e586d3ed75d68c6ab85e1b72"
+    "source_sha256": "fec7c7c3f2a8001d7e47c35c7337cb6a1eb3d0a9e586d3ed75d68c6ab85e1b72",
+    "stdout": "A;C:set_exception_handler() expects exactly 1 argument, 2 given;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "exception-compound-terminal-warning-throw-without-replacement",
+    "source": "<?php function s(){echo \"S;\";}function w($n,$m,$f,$l){echo \"W:\",$l,\";\";if($l===0){throw new Exception(\"warning\");}return true;}class A{static function h($e){echo \"BAD;\";}}class B extends A{}set_error_handler(\"w\");register_shutdown_function(\"s\");set_exception_handler([\"B\",\"A::h\"]);throw new Exception(\"main\");",
+    "source_sha256": "f37c544735062b6fd43960087d26a3f6f520f2151e6234b29a83618619788f89",
+    "stdout": "W:1;W:0;S;",
+    "stderr": "Fatal error: Uncaught Exception: warning in {file}:1\nStack trace:\n#0 [internal function]: w(8192, 'Callables of th...', 'Unknown', 0)\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "exception-compound-terminal-warning-exit",
+    "source": "<?php function s(){echo \"S;\";}function w($n,$m,$f,$l){echo \"W:\",$l,\";\";if($l===0){exit(9);}return true;}class A{static function h($e){echo \"BAD;\";}}class B extends A{}set_error_handler(\"w\");register_shutdown_function(\"s\");set_exception_handler([\"B\",\"A::h\"]);throw new Exception(\"main\");",
+    "source_sha256": "21c1a5bd6cc83717e5bbd95aba525be9e260889b6be8123815d6329e90176692",
+    "stdout": "W:1;W:0;S;",
+    "stderr": "",
+    "exit": 9,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "exception-compound-terminal-warning-restore-and-throw",
+    "source": "<?php $once=true;function s(){echo \"S;\";}function w($n,$m,$f,$l){global $once;echo \"W:\",$l,\";\";if($l===0&&$once){$once=false;restore_exception_handler();throw new Exception(\"warning\");}return true;}class A{static function h($e){echo \"H:\",$e->getMessage(),\";\";}}class B extends A{}set_error_handler(\"w\");register_shutdown_function(\"s\");set_exception_handler([\"B\",\"A::h\"]);throw new Exception(\"main\");",
+    "source_sha256": "b1aef7d559591d0bf4b2c39c917822e24f8e28d14f07b372039d42f62308fb6c",
+    "stdout": "W:1;W:0;H:warning;H:main;S;",
+    "stderr": "Deprecated: Callables of the form [\"B\", \"A::h\"] are deprecated in Unknown on line 0\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "shutdown-keyword-append-from-cached-called-scope",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class C{static function reg(){register_shutdown_function([\"self\",\"h\"]);}private static function h(){echo \"H:\",get_called_class(),\";\";register_shutdown_function([\"static\",\"j\"]);}static function j(){echo \"C:\",get_called_class(),\";\";}}class D extends C{static function j(){echo \"J:\",get_called_class(),\";\";}}set_error_handler(\"w\");D::reg();",
+    "source_sha256": "f2a569382b3c1ddfaec412072d2a1075df1480f5f761eeec94b5dd0baa6f964a",
+    "stdout": "W:1;H:D;W:1;J:D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "handler-keyword-referenced-class-selection-timing",
+    "source": "<?php $k=\"self\";function w($n,$m,$f,$l){global $k;echo \"W;\";$k=\"D\";return true;}class C{static function reg(){global $k;set_exception_handler([&$k,\"h\"]);$k=\"self\";register_shutdown_function([&$k,\"h\"]);echo \"R;\";}static function h($e=null){echo \"C:\",$e===null?\"null\":$e->getMessage(),\";\";}}class D{static function h($e=null){echo \"D:\",$e===null?\"null\":$e->getMessage(),\";\";}}set_error_handler(\"w\");C::reg();throw new Exception(\"main\");",
+    "source_sha256": "882ab7842fdf22629363c0c58e4296746b80635a93102445fe50919b6bd10fb3",
+    "stdout": "W;W;R;D:main;C:null;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
