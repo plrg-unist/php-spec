@@ -17,6 +17,8 @@ dec $scope_handler_result(pstate, porigin, pmethoddesc, nat?, ptbytes, bool) : p
 dec $scope_handler_base(pstate, porigin, pmethoddesc, nat?, bool) : pcalltarget?
 dec $scope_class_base(pcalltarget) : bool
 dec $scope_emitter_receiver(pstate, pcalltarget, porigin, bool) : nat?
+dec $scope_array_literal_kind(expression) : bool?
+dec $scope_array_kind_valid(pstate, porigin, bool) : bool
 
 ;; Object selectors can redirect to a lexical parent-private method. Concrete
 ;; class selectors use their effective table, with the selecting scope's access.
@@ -183,8 +185,19 @@ def $scope_identity(S, SCOPED_TARGET porigin_requested porigin_method porigin_ca
   -- if $scope_target_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? (KNOWN (PSTRING ptbytes_class)), pcallableaccess)
 def $scope_identity(S, pcalltarget, porigin_requested, ptbytes, pcallableaccess) = false -- otherwise
 
+;; An immutable literal constrains selector kind; deferred variable and reference
+;; members keep their selected snapshot after the original value changes.
+def $scope_array_literal_kind(NExprArray (SEQUENCE ((NArrayItem ABSENT (NScalarString phpType33 metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_item) :: phpType13*)) metadata) = (false)
+def $scope_array_literal_kind(NExprArray (SEQUENCE ((NArrayItem ABSENT (NExprNew phpType28 phpType6 metadata_new) (BOOLEAN false) (BOOLEAN false) metadata_item) :: phpType13*)) metadata) = (true)
+def $scope_array_literal_kind(expression) = eps -- otherwise
+def $scope_array_kind_valid(S, porigin_site, b_object) = (b_object = b_literal)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $scope_array_literal_kind(expression) = (b_literal)
+def $scope_array_kind_valid(S, porigin_site, b_object) = true -- otherwise
+
 def $array_target_identity(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess, parrayselection) = true
   -- if $scope_site_matches(SCOPE_METHOD_TARGET pcalltarget pcallableaccess, parrayselection.SITE)
+  -- if $scope_array_kind_valid(S, parrayselection.SITE, pcallableaccess.OBJECT)
   -- if $scope_identity(S, pcalltarget, parrayselection.REQUESTED, parrayselection.NAME, pcallableaccess)
   -- if pcallableaccess.OBJECT \/ $scope_static_base(pcalltarget)
 def $scope_static_base(STATIC_METHOD_TARGET porigin_requested porigin_method) = true
