@@ -137,7 +137,7 @@ def $trait_comparison_error(TRAITDATAERROR ptraitdataerror) = true
 def $trait_comparison_error(ptraitdatacheck) = false -- otherwise
 def $trait_comparison_complete(S, pclassdesc, ptraitdatacomparison, S_result) = $trait_comparison_seed(S, pclassdesc, S_result, ptraitdatacomparison.NOTICES)
   -- if ~$trait_comparison_error(ptraitdatacomparison.CHECK)
-def $trait_comparison_complete(S, pclassdesc, ptraitdatacomparison, S_result) = $prune_allocations(S_warning[.COMPLETION = S_result.COMPLETION][.ERRORORIGIN = S_result.ERRORORIGIN][.TRACE = eps][.ERRORFATALTRACE = eps][.TODO = $iterator_notice_without_seeds(S_result.TODO)])
+def $trait_comparison_complete(S, pclassdesc, ptraitdatacomparison, S_result) = $prune_allocations(S_warning[.RESULT = S_result.RESULT][.COMPLETION = S_result.COMPLETION][.ERRORORIGIN = S_result.ERRORORIGIN][.TRACE = eps][.ERRORFATALTRACE = eps][.TODO = $iterator_notice_without_seeds(S_result.TODO)])
   -- if ptraitdatacomparison.CHECK = TRAITDATAERROR ptraitdataerror
   -- if $iterator_notice_link_fatal(S_result.COMPLETION)
   -- if S_flushed = $iterator_notice_default(S_result, $iterator_notice_seeds(S.TODO) ++ $trait_notice_records(pclassdesc.ORIGIN, |S.DECLARATIONS|, |S.USERCONSTANTS|, ptraitdatacomparison.NOTICES))
