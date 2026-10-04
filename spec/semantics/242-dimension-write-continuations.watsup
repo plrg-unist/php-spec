@@ -109,11 +109,11 @@ def $key_write_path_kind(ptask*) = eps -- otherwise
 def $key_write_writer(S, porigin, ACQUIRE_ARRAY z, pbase, poperand) = ({SITE porigin, TARGET porigin, TASK ACQUIRE_ARRAY z, BASE pbase, RHS KNOWN PNULL, TEMP eps})
   -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
   -- if $code_expression_at_source(S, porigin, eps) = (z)
-def $key_write_writer(S, porigin, CALL_REF_FETCH pcalltarget n porigin?, pbase, poperand) = ({SITE porigin, TARGET porigin, TASK CALL_REF_FETCH pcalltarget n porigin?, BASE pbase, RHS KNOWN PNULL, TEMP eps})
+def $key_write_writer(S, porigin, CALL_REF_FETCH pcalltarget n porigin_call?, pbase, poperand) = ({SITE porigin, TARGET porigin, TASK CALL_REF_FETCH pcalltarget n porigin_call?, BASE pbase, RHS KNOWN PNULL, TEMP eps})
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if expression = NExprArrayDimFetch expression_base phpType5 metadata
   -- if ~$call_temporary_base(expression)
-  -- if $call_task_valid(S[.ORIGIN = (porigin)], CALL_REF_FETCH pcalltarget n porigin?)
+  -- if $call_task_valid(S[.ORIGIN = (porigin)], CALL_REF_FETCH pcalltarget n porigin_call?)
 def $key_write_writer(S, porigin, UPDATE_PREP pupdate b z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK UPDATE_PREP pupdate b z, BASE pbase, RHS KNOWN PNULL, TEMP eps})
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
   -- if $key_write_update(pcnode) = ((pupdate, b))
