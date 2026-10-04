@@ -44,5 +44,32 @@
     "stderr": "Fatal error: Method C::__destruct() cannot take arguments in {file} on line 1\nStack trace:\n#0 {main}\n",
     "exit": 255,
     "status": "static_rejection"
+  },
+  {
+    "id": "discarded-return-value-chains-local-cleanup-exception",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";throw new Exception($this->id);}}class R{function __destruct(){echo \"R;\";throw new Exception(\"returned\");}}function get(){if(false){$b=null;}$a=new C(\"a\");$b=new C(\"b\");return new R;}class P{function __destruct(){echo \"P;\";try{get();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\":\",$e->getPrevious()->getMessage(),\":\",$e->getPrevious()->getPrevious()->getMessage(),\";\";}echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "c93b9038f0250ee7501bd5919b030f408ba5bc5fd0e15b1558deddcaef7aea2a",
+    "stdout": "P;R;C:b;C:a;caught:a:b:returned;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "actual-bound-private-method-frame-release",
+    "source": "<?php class A{function __destruct(){echo \"A;\";}}class C{private function f(){unset($GLOBALS[\"c\"]);echo \"F:\",get_called_class(),\";\";}function capture(){return $this->f(...);}function __destruct(){echo \"C;\";}}class P{function __destruct(){echo \"P;\";$f=$GLOBALS[\"c\"]->capture();$g=$f->bindTo($GLOBALS[\"c\"]);unset($f);$g(new A);unset($g);echo \"TAIL;\";}}$c=new C;$p=new P;",
+    "source_sha256": "25e722403946826ef42341ead46814687caeb9b2aa3de6cdbb27cbd591738d81",
+    "stdout": "P;F:C;A;C;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "actual-trait-collision-bailout-marking",
+    "source": "<?php class D{function __destruct(){echo \"D:old;\";}}class N{function __destruct(){echo \"D:new;\";}}function s(){echo \"S;\";$GLOBALS[\"born\"]=new N;}function w(){echo \"BAD;\";return true;}set_error_handler(\"w\");trait T{public $x=E_STRICT;}$old=new D;register_shutdown_function(\"s\");echo \"M;\";class C{use T;public $x=2;}",
+    "source_sha256": "574d26841966803c2e5fe3628c53389f10218751e242be0f1ef90723da6e720b",
+    "stdout": "M;S;D:new;",
+    "stderr": "Deprecated: Constant E_STRICT is deprecated since 8.4, the error level was removed in {file} on line 1\nFatal error: C and T define the same property ($x) in the composition of C. However, the definition differs and is considered incompatible. Class was composed in {file} on line 1\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
   }
 ]
