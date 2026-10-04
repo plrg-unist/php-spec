@@ -24,6 +24,8 @@ dec $api_outer_class(papiquery) : porigin
 dec $api_object_method(pstate, papiquery, ptbytes) : pmethoddesc?
 dec $api_selected_method(pstate, papiquery, ptbytes) : pmethoddesc?
 dec $api_method_magic(pstate, papiquery) : bool
+dec $api_getter_scope(papiquery) : porigin?
+dec $api_getter_denied(pstate, papiquery, pmethoddesc, ptbytes) : ptbytes
 dec $api_getter_error(pstate, papiquery, ptbytes) : ptbytes?
 dec $api_method_finish(pstate, papiquery, ptbytes) : pstate
 dec $api_throw(pstate, papiquery, ptbytes, ptbytes) : pstate
@@ -224,7 +226,7 @@ def $api_object_class(S, papiquery) = (porigin_object)
   -- if S.OBJECTS[n] = INSTANCE porigin_object
   -- if ~papiquery.CLASS.STRICT \/ $effective_method(S, papiquery.CLASS.REQUESTED, $ptascii("__call"), |S.CLASSES|) = eps
 def $api_object_class(S, papiquery) = eps -- otherwise
-def $api_object_method(S, papiquery, ptbytes) = $scope_method(S, porigin_object, ptbytes, true, papiquery.SCOPE)
+def $api_object_method(S, papiquery, ptbytes) = $scope_method(S, porigin_object, ptbytes, true, $api_getter_scope(papiquery))
   -- if $scope_method(S, papiquery.CLASS.REQUESTED, ptbytes, ~papiquery.CLASS.STRICT, papiquery.SCOPE) = eps
   -- if $api_object_class(S, papiquery) = (porigin_object)
 def $api_object_method(S, papiquery, ptbytes) = eps -- otherwise
@@ -238,14 +240,16 @@ def $api_method_magic(S, papiquery) = true
   -- if $api_object_class(S, papiquery) = (porigin_object)
   -- if $array_magic(S, porigin_object)
 def $api_method_magic(S, papiquery) = $array_magic(S, papiquery.CLASS.REQUESTED) -- otherwise
-def $api_getter_error(S, papiquery, ptbytes) = ($scope_denied_message(S, pmethoddesc, ptbytes, papiquery.SCOPE))
+def $api_getter_scope(papiquery) = papiquery.SCOPE -- otherwise
+def $api_getter_denied(S, papiquery, pmethoddesc, ptbytes) = $scope_denied_message(S, pmethoddesc, ptbytes, $api_getter_scope(papiquery)) -- otherwise
+def $api_getter_error(S, papiquery, ptbytes) = ($api_getter_denied(S, papiquery, pmethoddesc, ptbytes))
   -- if $api_object_method(S, papiquery, ptbytes) = (pmethoddesc)
-  -- if ~$method_accessible(S, pmethoddesc, papiquery.SCOPE)
+  -- if ~$method_accessible(S, pmethoddesc, $api_getter_scope(papiquery))
   -- if $api_object_class(S, papiquery) = (porigin_object)
   -- if $effective_method(S, porigin_object, $ptascii("__call"), |S.CLASSES|) = eps
 def $api_getter_error(S, papiquery, ptbytes) = ($scope_abstract_message(S, pmethoddesc))
   -- if $api_object_method(S, papiquery, ptbytes) = (pmethoddesc)
-  -- if $method_accessible(S, pmethoddesc, papiquery.SCOPE)
+  -- if $method_accessible(S, pmethoddesc, $api_getter_scope(papiquery))
   -- if pmethoddesc.ABSTRACT
 def $api_getter_error(S, papiquery, ptbytes) = eps -- otherwise
 def $api_method_finish(S, papiquery, ptbytes) = $api_throw(S, papiquery, ptbytes, ptbytes_error)
@@ -256,6 +260,7 @@ def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $throw_scalar(S, "Error"
   -- if papiquery.SOURCE = TYPE_RECEIVE porigin n
 def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $config_error(S, pconfigcall, "Error", ptbytes)
   -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER
 ;; zend_call_function replaces the getter failure with Invalid callback and
 ;; retains the first Error as previous; admission APIs retain the getter Error.
 def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $error_handler_restore($throwable_previous(S_new, n_new, n_old), perrorcall.CALLBACK)
@@ -303,7 +308,9 @@ def $api_finish(S, TYPE_RECEIVE porigin n, pvalue, HANDLERRESOLVED pcalltarget) 
 def $api_finish(S, TYPE_RECEIVE porigin n, pvalue, HANDLERINVALID ptbytes) = $api_receive_reject(S, porigin, n)
 def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERRESOLVED pcalltarget) = $api_register(S, pconfigcall, pvalue)[.TODO = ptask_tail*]
   -- if S.TODO = ptask :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER
 def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERINVALID ptbytes) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_error_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ ptbytes)
+  -- if pconfigcall.KIND = INTRINSIC_SET_ERROR_HANDLER
 def $api_finish(S, ERROR_HANDLER_INVOKE perrorcall, pvalue, HANDLERRESOLVED pcalltarget) = $error_handler_enter(S[.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*], perrorcall, pcalltarget, pfunction)
   -- if S.TODO = ptask :: ptask_tail*
   -- if $target_function(S, pcalltarget) = (pfunction)

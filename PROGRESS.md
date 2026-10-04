@@ -143,9 +143,21 @@ raw keyword/compound calls preserve ordinary PHP lookup errors. The
 records independent pins, affected checks and preserved failures. Actual include,
 cold-static and GLOBALS interactions preserve real USER permission, constrained
 references and captured null; initializer locations retain their declaration owner.
-Default/variadic,
-`Closure::fromCallable`, other internal and user-return warning consumers remain
+Default/variadic, other internal and user-return warning consumers remain
 required; unstaged special callable conversion stays Unsupported.
+
+`Closure::fromCallable`234 selects and creates durable captures over existing core
+callable forms. Existing Closure inputs preserve identity; method captures freeze
+live method bytes and selecting permission before raw values/makers retire.
+USER admission and internal Closure getter scope remain distinct, including
+foreign receiver/called-class cases. Invocation/clone retain real defaults,
+source method statics and receiver ownership. Created source Closures retain
+authenticated method/import scope after the parent capture retires; static
+children add no receiver owner, while nonstatic children retain their bound
+receiver. Imported private cold references and per-host source statics are covered.
+Factory lookup-warning throws wrap only after handler/finally unwinding; argument-read throws before entry remain
+unwrapped. [Contract](docs/semantics/FROM-CALLABLE.md),
+[review ledger](coverage/semantics/from-callable-review.json).
 
 Iterator224 adds compatible explicit declarations and inherited internal
 obligations for source by-value foreach; callbacks use
@@ -347,7 +359,7 @@ failures and interrupted evidence.
 
 ## Remaining core work
 
-- Calls: default/variadic, `Closure::fromCallable`, other internal and user-return
+- Calls: default/variadic, other internal and user-return
   keyword/compound warning consumers,
   magic/autoload/internal consumers, dynamic compile-warning handler delivery,
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
