@@ -76,5 +76,7 @@ function-descriptor forgery24 at c9e6. Authored USERfatal48 and21 distinct sourc
 agreements keep their original cuts; affected nested/file source2 passes at3bd.
 Actual23c composition source2 at5cf39c0dd covers dollar-curly compiler callbacks
 changing live reporting and pending compiler exit before request destruction.
+One actual261 source at0ef99 confirms NaN-to-object warning suppression and the
+retained scalar during a source fatal formatter.
 Raw native/model commands, outputs, revisions and runtime profiles stay in ignored
 `.tools` directories; the harness records each selected run separately.

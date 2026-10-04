@@ -29,6 +29,8 @@ file phases. Actual23c composition source2 at5cf39c0dd confirms live dollar-curl
 warning effects and later class publication before request destructors after exit.
 The final1d4f union preserves261 object-cast frame cleanup,265 callable receipts
 and267 keyword NEW source guards; these source2 results retain their5cf cutoff.
+One actual261 source at0ef99 confirms a fatal formatter's NaN object cast keeps
+its value while the recorded conversion warning stays suppressed.
 Original failures, AL timeouts and fixture corrections remain
 outside Git with no failed-run credit.
 [Contract and maintained tests](docs/semantics/ITERATORS.md).

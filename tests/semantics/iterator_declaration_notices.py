@@ -75,6 +75,16 @@ CASES = {
                                        'unit': php(cls('InnerBad', CURRENT.replace('next():void', 'next($x):void'), parent='ParentIt', interfaces=''))},
     'current-dollar-curly-effects': {'source': b'<?php\nset_error_handler(function($n,$m,$f,$l){echo \'H:\'.$l.\':\'.error_reporting().\'|\';ini_set(\'display_errors\',\'stdout\');error_reporting(0);return false;});\necho eval(\'$x="V";$name="x";return "${x}${$name}";\');echo \'|END\';\n'},
     'current-request-destructor-exit': {'source': b'<?php\nabstract class ParentIt implements Iterator {}\nclass Kept {function __destruct(){echo "D";try{new B;echo "B";}catch(Error $e){echo "b";}}}\n$kept=new Kept;\nfunction notice($level,$message,$file,$line){echo "H";exit(7);}\nset_error_handler("notice");\neval(\'class A extends ParentIt {public function current(){return 7;}public function next():void{}public function key():mixed{return 10;}public function valid():bool{return true;}public function rewind():void{}}\nclass B extends ParentIt {public function current(){return 7;}public function next():void{}public function key():mixed{return 10;}public function valid():bool{return true;}public function rewind():void{}}echo "BAD";\');\necho "BAD";\n'},
+    'current-object-cast-fatal-formatter': {'source': b'''<?php
+abstract class ParentIt implements Iterator {}
+class NoticeException extends Exception {function __toString():string {echo "F";$v=NAN;$o=(object)$v;echo ($o->scalar!==$o->scalar ? "N" : "X");return "formatted";}}
+function notice($level,$message,$file,$line){echo "H";throw new NoticeException("handler");}
+set_error_handler("notice");
+try{eval('class A extends ParentIt {public function current(){return 7;}public function next():void{}public function key():mixed{return 10;}public function valid():bool{return true;}public function rewind():void{}}
+class B extends ParentIt {public function current(){return 7;}public function next($x):void{}public function key():mixed{return 10;}public function valid():bool{return true;}public function rewind():void{}}
+echo "BAD";');}catch(Exception $e){echo "caught";}
+echo "BAD";
+'''},
 }
 
 
