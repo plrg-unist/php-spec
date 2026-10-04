@@ -95,7 +95,12 @@ a denied setter preserves that error as its previous exception. Initialized
 typed slots also acquire their reference wrapper when the caller discards the
 result. Ordinary by-value getters leave the raw slot unchanged. After a discarded
 reference return, static storage alone owns the cell, its edge retains the object,
-and the declaration type source remains attached. The
+and the declaration type source remains attached. A current-constants control
+uses a literal property default and completes a deferred child constant table
+through ordinary access before the getter. It checks the sole static owner after
+discard, then static storage plus the live global alias after binding. Deferred
+property defaults and synchronous references into incomplete tables remain
+Unsupported. The
 [reference review](../../coverage/semantics/static-method-reference-review.json)
 keeps the original instance-spelled control and its preserved StaticCall failure
 distinct from fresh static-getter acceptance. Untyped static-slot raw-object/scalar

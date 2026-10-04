@@ -200,6 +200,7 @@ lowering; first-class call results reject in reference context. The
 [reference review](../../coverage/semantics/static-method-reference-review.json)
 also checks discarded genuine reference getters: typed slots acquire an alias
 before return, while ordinary by-value getters leave them raw. It does not close
+deferred property defaults or references into incomplete class-constant tables,
 untyped static-slot raw-object/scalar admission, temporary-return Notice timing
 or typed return verification.
 Shared ordinary type classification adds no paused-return validation.

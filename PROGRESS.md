@@ -33,7 +33,11 @@ now wrap initialized typed slots before returning. Two source comparisons and
 retained type sources and the sole static-storage owner. An independent inherited
 by-value versus suppressed-reference getter also passes at that revision. The PIPE/getter source at
 **b41a2ef26** preserves raw INI bytes, callback/getter argument views and the shared
-typed cell. Untyped static-slot admission,
+typed cell. A separate source and 46 state assertions at **ff9b7ca78** check
+forward class-constant table completion before a discarded getter, its sole
+static cell owner, and the later live global alias/type rejection. Deferred
+property defaults and references into incomplete tables remain Unsupported.
+Untyped static-slot admission,
 temporary-return Notice timing and typed return verification remain open.
 
 Stringable CHDIR PIPE uses the working directory after its callback and retains

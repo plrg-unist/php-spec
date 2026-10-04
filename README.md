@@ -317,7 +317,10 @@ handled borrowed reads and a Stringable CONFIG PIPE restore the inherited
 getter's scope and arguments while retaining full raw INI bytes.
 Discarded genuine reference getters also wrap initialized typed slots; ordinary
 by-value getters leave them unchanged. Post-return checks retain only the static
-cell owner and its property type source.
+cell owner and its property type source. A focused current-constants check
+completes a forward constant table before fetching the reference and preserves
+the typed alias; deferred property defaults and incomplete-table references
+remain Unsupported.
 Untyped static-slot raw-object/scalar admission, readonly/hooks, instance asymmetric
 setters, temporary-return Notice timing and broader
 callable/typed-reference consumers remain open.
