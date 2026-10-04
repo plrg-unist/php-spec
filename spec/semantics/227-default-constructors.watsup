@@ -70,7 +70,8 @@ rule PhpStep/default-new-value: S ~> S_value[.TODO = (DEFAULT_NEW_ARGS pdefaultn
   -- if S_value = $resolve_at(S, S.RESULT, pdefaultnew.LINE)
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue
-  -- if $default_new_unique(pdefaultnew.ARGUMENTS[0:$(pdefaultnew.INDEX + 1)])
+  -- if n_next = $(pdefaultnew.INDEX + 1)
+  -- if $default_new_unique(pdefaultnew.ARGUMENTS[0:n_next])
 rule PhpStep/default-new-value-duplicate: S ~> $throw_scalar(S_value, "Error", $ptascii("Named parameter $") ++ $base64(text) ++ $ptascii(" overwrites previous argument"), pdefaultnew.LINE)
   -- if S.TODO = (DEFAULT_NEW_SEND pdefaultnew) :: ptask_tail*
   -- if S_value = $resolve_at(S, S.RESULT, pdefaultnew.LINE)
