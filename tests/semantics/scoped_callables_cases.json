@@ -140,5 +140,13 @@
     "purpose": "A private static raw method handler selects anew in the saved Owner/Child DIR-warning emitter and receives weak ARG4 before throwing.",
     "expected_normal_stdout": "Owner/Child:1:x|H4:2:Owner/Child|E|1:x",
     "profile": "file"
+  },
+  {
+    "id": "literal-key-overwrite-preserves-object-selection",
+    "source": "<?php\nclass Owner { private static function hidden(){echo \"O\";} public static function start(){([\"Child\",0=>new Child,1=>\"hidden\"])();} }\nclass Child extends Owner { public static function hidden(){echo \"BAD-CHILD\";} }\nOwner::start();\n",
+    "source_sha256": "8ebf2e335979258fe0f499ca8b2534c318a8cb1981e67b09f52fc29771494c62",
+    "expected_model": "normal",
+    "expected_normal_stdout": "O",
+    "purpose": "A later explicit key0 overwrite makes an object selector; literal kind proof must leave keyed tails opaque."
   }
 ]
