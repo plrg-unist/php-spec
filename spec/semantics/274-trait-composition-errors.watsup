@@ -1,0 +1,148 @@
+;; A failed copied AST stops the comparison. Zend flushes recorded diagnostics,
+;; renders its pending exception without a user handler, then emits the link fatal.
+dec $trait_collision_trace(pfstate, porigin, int) : ptraceframe*
+def $trait_collision_trace(F, porigin_owner, z) = $eval_exception_trace_from(S_external, [{FILE $call_sourcefile(S_external.FILES, pclassdesc.ORIGIN), LINE pclassdesc.LINE, FUNCTION $ptascii("[constant expression]"), CLASS eps, TYPE eps, ARGS eps, HASARGS false}])
+  -- if F.EXTERNAL = (S_external)
+  -- if F.RECORD = (pfrecorder)
+  -- if $class_at(S_external.CLASSES, pfrecorder.CLASS) = (pclassdesc)
+  -- if $call_sourcefile(S_external.FILES, porigin_owner) =/= $call_sourcefile(S_external.FILES, pclassdesc.ORIGIN) \/ z =/= pclassdesc.LINE
+def $trait_collision_trace(F, porigin_owner, z) = $eval_exception_trace(S_external)
+  -- if F.EXTERNAL = (S_external)
+  -- if F.RECORD = (pfrecorder)
+  -- if $class_at(S_external.CLASSES, pfrecorder.CLASS) = (pclassdesc)
+  -- if $call_sourcefile(S_external.FILES, porigin_owner) = $call_sourcefile(S_external.FILES, pclassdesc.ORIGIN) /\ z = pclassdesc.LINE
+
+def $trait_collision_raise(F, pcpath, S, text_kind, preqbytes, z) = F[.VALUE = eps][.RECORDED = F.RECORDED ++ pfdiagnostic*][.MEMORY = S[.COMPLETION = THROWN text_kind preqbytes z][.ERRORORIGIN = (porigin_owner)][.TRACE = $trait_collision_trace(F, porigin_owner, z)][.EVENTS = F.MEMORY.EVENTS][.TODO = F.MEMORY.TODO]]
+  -- if $trait_recording(F, pcpath)
+  -- if $throwable_kind(text_kind)
+  -- if $trait_fold_owner(F) = (porigin_owner)
+  -- if $(|F.MEMORY.EVENTS| <= |S.EVENTS|)
+  -- if S.EVENTS[0:|F.MEMORY.EVENTS|] = F.MEMORY.EVENTS
+  -- if n_events = $nabs($(|S.EVENTS| - |F.MEMORY.EVENTS|))
+  -- if $trait_record_events(porigin_owner, PORIGIN F.SOURCE.ID pcpath, S.EVENTS[|F.MEMORY.EVENTS|:n_events]) = (pfdiagnostic*)
+def $trait_collision_raise(F, pcpath, S, text_kind, preqbytes, z) = F[.VALUE = eps][.MEMORY = F.MEMORY[.COMPLETION = UNSUPPORTED "trait collision exception source"]] -- otherwise
+
+;; Source names keep keyword spelling; named classes use the public name table.
+dec $trait_collision_class_name(pfstate, pcpath, phpType19) : preqbytes?
+def $trait_collision_class_name(F, pcpath, name) = (ptbytes)
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if $ppscoped_keyword(name)
+def $trait_collision_class_name(F, pcpath, phpType19) = (ptbytes)
+  -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
+  -- if $code_at(F.MEMORY.CODE, F.SOURCE.ID) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, ptbytes_fallback?))
+def $trait_collision_class_name(F, pcpath, phpType19) = eps -- otherwise
+def $trait_collision_class_issue(F, pcpath, phpType19, phpType20) = ($ptascii("Class \"") ++ ptbytes_class ++ $ptascii("\" not found"))
+  -- if $trait_collision_class_name(F, pcpath, phpType19) = (ptbytes_class)
+  -- if $pfclass_constant_member(phpType20, eps) = (ptbytes)
+  -- if $trait_fold_owner(F) = (porigin_owner)
+  -- if $trait_cache_requested(F.MEMORY, porigin_owner, phpType19, PORIGIN F.SOURCE.ID pcpath) = eps
+  -- if ~$ppscoped_keyword(phpType19) /\ ~$class_internal(ptbytes_class)
+def $trait_collision_class_issue(F, pcpath, phpType19, phpType20) = ($ptascii("Cannot access \"parent\" when current class scope has no parent"))
+  -- if $pfclassname_keyword(phpType19) = $ptascii("parent")
+  -- if $pfclass_constant_member(phpType20, eps) = (ptbytes)
+  -- if $trait_fold_owner(F) = (porigin_owner)
+  -- if $trait_cache_requested(F.MEMORY, porigin_owner, phpType19, PORIGIN F.SOURCE.ID pcpath) = eps
+def $trait_collision_class_issue(F, pcpath, phpType19, phpType20) = ($ptascii("Undefined constant ") ++ ptbytes_class ++ $ptascii("::") ++ ptbytes)
+  -- if $trait_collision_class_name(F, pcpath, phpType19) = (ptbytes_class)
+  -- if $pfclass_constant_member(phpType20, eps) = (ptbytes)
+  -- if $trait_fold_owner(F) = (porigin_owner)
+  -- if $trait_cache_requested(F.MEMORY, porigin_owner, phpType19, PORIGIN F.SOURCE.ID pcpath) = (porigin)
+  -- if $trait_cache_lookup(F.MEMORY, porigin, ptbytes) = eps
+def $trait_collision_class_issue(F, pcpath, phpType19, phpType20) = ($ptascii("Cannot access ") ++ $property_visibility_name(pclassconstantdesc.VISIBILITY) ++ $ptascii(" constant ") ++ ptbytes_class ++ $ptascii("::") ++ ptbytes)
+  -- if $trait_collision_class_name(F, pcpath, phpType19) = (ptbytes_class)
+  -- if $pfclass_constant_member(phpType20, eps) = (ptbytes)
+  -- if $trait_fold_owner(F) = (porigin_owner)
+  -- if $trait_cache_requested(F.MEMORY, porigin_owner, phpType19, PORIGIN F.SOURCE.ID pcpath) = (porigin)
+  -- if $trait_cache_lookup(F.MEMORY, porigin, ptbytes) = (pclassconstantdesc)
+  -- if ~$trait_cache_visible(F.MEMORY, porigin_owner, pclassconstantdesc)
+def $trait_collision_class_issue(F, pcpath, phpType19, phpType20) = ($ptascii("Cannot access trait constant ") ++ ptbytes_class ++ $ptascii("::") ++ ptbytes ++ $ptascii(" directly"))
+  -- if $trait_collision_class_name(F, pcpath, phpType19) = (ptbytes_class)
+  -- if $pfclass_constant_member(phpType20, eps) = (ptbytes)
+  -- if $trait_fold_owner(F) = (porigin_owner)
+  -- if $trait_cache_requested(F.MEMORY, porigin_owner, phpType19, PORIGIN F.SOURCE.ID pcpath) = (porigin)
+  -- if $trait_cache_lookup(F.MEMORY, porigin, ptbytes) = (pclassconstantdesc)
+  -- if $trait_cache_visible(F.MEMORY, porigin_owner, pclassconstantdesc)
+  -- if $class_at(F.MEMORY.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "trait"
+def $trait_collision_class_issue(F, pcpath, phpType19, phpType20) = eps -- otherwise
+def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $trait_collision_raise(F, pcpath, F.MEMORY, "Error", preqbytes, z)
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if $trait_recording(F, pcpath)
+  -- if $trait_collision_class_issue(F, pcpath, phpType19, phpType20) = (preqbytes)
+def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = $trait_collision_raise(F, pcpath, F.MEMORY, "Error", $ptascii("Undefined constant \"") ++ ptbytes ++ [34], z)
+  -- if F.EXTERNAL = (S_external)
+  -- if ~$deprecated_constant_name(S_external, ptbytes, ptbytes_fallback?)
+  -- if $trait_fold_name_value(S_external, ptbytes, ptbytes_fallback?) = eps
+def $pfpure_value(F, pcpath, S, z) = ($trait_collision_raise(F, pcpath, S, text_kind, preqbytes, z_error))
+  -- if $trait_recording(F, pcpath)
+  -- if S.COMPLETION = THROWN text_kind preqbytes z_error
+
+;; Retain the failed child instead of restarting an array from its earlier state.
+def $trait_record_array(F, pcpath, n, n_item, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, z, pvalueclass?) = F_key
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F_key = $pfitemkey(F, pcpath ++ [PCFIELD 0, PCINDEX n_item, PCFIELD 0], phpType5, z)
+  -- if F_key.MEMORY.COMPLETION =/= NORMAL
+def $trait_record_array(F, pcpath, n, n_item, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, z, pvalueclass?) = F_value
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if pcpath_item = pcpath ++ [PCFIELD 0, PCINDEX n_item]
+  -- if F_key = $pfitemkey(F, pcpath_item ++ [PCFIELD 0], phpType5, z)
+  -- if F_key.MEMORY.COMPLETION = NORMAL
+  -- if $trait_record_key_ready($pfkey(phpType5, F_key.VALUE))
+  -- if F_value = $pffold(F_key, pcpath_item ++ [PCFIELD 1], expression, z)
+  -- if F_value.MEMORY.COMPLETION =/= NORMAL
+def $trait_record_array(F, pcpath, n, n_item, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType13*, z, pvalueclass?) = F_value
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F_value = $pffold(F, pcpath ++ [PCFIELD 0, PCINDEX n_item, PCFIELD 1], expression, z)
+  -- if F_value.MEMORY.COMPLETION =/= NORMAL
+def $trait_record_array_key(F, pcpath, n, n_item, pvalue, PFKEY (pvalue_key), phpType13*, z, pvalueclass?, pvalueclass_item?) = $trait_collision_raise(F, pcpath, S_key, text_kind, preqbytes, z_error)
+  -- if S_key = $key_value(F.MEMORY, pvalue_key, false, z)
+  -- if S_key.COMPLETION = THROWN text_kind preqbytes z_error
+def $trait_record_array_insert(F, pcpath, n, n_item, pkey?, pvalue, phpType13*, z, pvalueclass?, pvalueclass_item?) = $trait_collision_raise(F, pcpath, S_insert, text_kind, preqbytes, z_error)
+  -- if S_insert = $literal_insert(F.MEMORY, n, pkey?, pvalue, z)
+  -- if S_insert.COMPLETION = THROWN text_kind preqbytes z_error
+
+;; Nested failures retain their diagnostics and memory but never fill Y's cache.
+def $trait_cache_bind(F, pcpath, pclassconstantdesc, z, F_value) = F[.VALUE = eps][.RECORDED = F.RECORDED ++ F_value.RECORDED][.MEMORY = F_value.MEMORY[.CONSTCONTEXT = F.MEMORY.CONSTCONTEXT]]
+  -- if $trait_fold_error(F_value) = (ptraitdataerror)
+def $trait_cache_bind(F, pcpath, pclassconstantdesc, z, F_value) = $trait_collision_raise(F[.RECORDED = F.RECORDED ++ F_value.RECORDED], pcpath, F_value.MEMORY, "TypeError", $ptascii("Cannot assign ") ++ $typed_given(F_value.MEMORY, pvalue) ++ $ptascii(" to class constant ") ++ pclassconstantdesc.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc.NAME ++ $ptascii(" of type ") ++ $trait_constant_type_name(F_value.MEMORY, pclassconstantdesc), z)
+  -- if F_value.MEMORY.COMPLETION = NORMAL
+  -- if F_value.VALUE = (pvalue)
+  -- if ~$class_constant_runtime_type(F_value.MEMORY, pclassconstantdesc.TYPE, pvalue)
+
+def $trait_fold_error(F) = ({KIND text_kind, MESSAGE preqbytes, OWNER porigin_owner, LINE z, TRACE F.MEMORY.TRACE})
+  -- if F.MEMORY.COMPLETION = THROWN text_kind preqbytes z
+  -- if F.MEMORY.ERRORORIGIN = (porigin_owner)
+  -- if $throwable_kind(text_kind)
+def $trait_fold_error(F) = eps -- otherwise
+def $trait_fold_value(S, pclassdesc, porigin) = TRAITVALUEERROR F.MEMORY ptraitdataerror F.RECORDED
+  -- if $trait_member_fold(S, pclassdesc, porigin) = (F)
+  -- if $trait_fold_error(F) = (ptraitdataerror)
+def $trait_value_notices(TRAITVALUEERROR S ptraitdataerror pfdiagnostic*) = pfdiagnostic*
+dec $trait_value_error(ptraitdatavalue) : bool
+def $trait_value_error(TRAITVALUEERROR S ptraitdataerror pfdiagnostic*) = true
+def $trait_value_error(ptraitdatavalue) = false -- otherwise
+def $trait_comparison_memory(ptraitdatavalue, TRAITVALUEERROR S ptraitdataerror pfdiagnostic*) = (S)
+  -- if ~$trait_value_error(ptraitdatavalue)
+def $trait_comparison_memory(TRAITVALUEERROR S ptraitdataerror pfdiagnostic*, ptraitdatavalue) = (S)
+def $trait_data_compare(TRAITVALUEERROR S ptraitdataerror pfdiagnostic*, ptraitdatavalue) = TRAITDATAERROR ptraitdataerror
+def $trait_data_compare(TRAITVALUE S pvalue pfdiagnostic*, TRAITVALUEERROR S_error ptraitdataerror pfdiagnostic_error*) = TRAITDATAERROR ptraitdataerror
+def $trait_data_compare(TRAITUNINITIALIZED, TRAITVALUEERROR S ptraitdataerror pfdiagnostic*) = TRAITDATAERROR ptraitdataerror
+def $trait_data_compare_left(S, pclassdesc, ppropertydesc_left, ppropertydesc_right, TRAITVALUEERROR S_error ptraitdataerror pfdiagnostic*) = {CHECK (TRAITDATAERROR ptraitdataerror), NOTICES pfdiagnostic*, MEMORY (S_error)}
+def $trait_constant_compare_left(S, pclassdesc, pclassconstantdesc_left, pclassconstantdesc_right, TRAITVALUEERROR S_error ptraitdataerror pfdiagnostic*) = {CHECK (TRAITDATAERROR ptraitdataerror), NOTICES pfdiagnostic*, MEMORY (S_error)}
+def $trait_data_constant_value_result(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassconstantdesc_prior, pclassdesc_prior*, TRAITDATAERROR ptraitdataerror) = $trait_data_constant_error(S, pclassdesc, pclassdesc_trait, pclassconstantdesc, pclassdesc_prior*)
+def $trait_data_property_value_result(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAERROR ptraitdataerror) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
+
+dec $trait_comparison_error(ptraitdatacheck) : bool
+def $trait_comparison_error(TRAITDATAERROR ptraitdataerror) = true
+def $trait_comparison_error(ptraitdatacheck) = false -- otherwise
+def $trait_comparison_complete(S, pclassdesc, ptraitdatacomparison, S_result) = $trait_comparison_seed(S, pclassdesc, S_result, ptraitdatacomparison.NOTICES)
+  -- if ~$trait_comparison_error(ptraitdatacomparison.CHECK)
+def $trait_comparison_complete(S, pclassdesc, ptraitdatacomparison, S_result) = $prune_allocations(S_warning[.COMPLETION = S_result.COMPLETION][.ERRORORIGIN = S_result.ERRORORIGIN][.TRACE = eps][.ERRORFATALTRACE = eps][.TODO = $iterator_notice_without_seeds(S_result.TODO)])
+  -- if ptraitdatacomparison.CHECK = TRAITDATAERROR ptraitdataerror
+  -- if $iterator_notice_link_fatal(S_result.COMPLETION)
+  -- if S_flushed = $iterator_notice_default(S_result, $iterator_notice_seeds(S.TODO) ++ $trait_notice_records(pclassdesc.ORIGIN, |S.DECLARATIONS|, |S.USERCONSTANTS|, ptraitdatacomparison.NOTICES))
+  -- if S_throw = $throwable_allocate_at(S_flushed, ptraitdataerror.KIND, ptraitdataerror.MESSAGE, ptraitdataerror.OWNER, ptraitdataerror.LINE, ptraitdataerror.TRACE)
+  -- if S_throw.COMPLETION = THROWING n_throw
+  -- if $origin_source(ptraitdataerror.OWNER) = PORIGIN n_unit pcpath
+  -- if S_warning = $error_default(S_throw[.ERRORFATALTRACE = eps], DIAGNOSTIC_SOURCE n_unit "Warning" ($ptascii("Uncaught ") ++ $throwable_chain_string(S_throw, n_throw, [n_throw]) ++ $ptascii("\n  thrown")) ptraitdataerror.LINE, 2)

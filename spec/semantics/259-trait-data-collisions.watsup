@@ -46,6 +46,7 @@ def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = $pfremember(F
 def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = $pfremember(F, pcpath, $trait_fold_name_value(S_external, ptbytes, ptbytes_fallback?), z)
   -- if F.EXTERNAL = (S_external)
   -- if ~$deprecated_constant_name(S_external, ptbytes, ptbytes_fallback?)
+  -- if $trait_fold_name_value(S_external, ptbytes, ptbytes_fallback?) =/= eps
 def $pfdispatch(F, pcpath, PFNAME name, z) = $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z)
   -- if $trait_recording(F, pcpath)
   -- if F.EXTERNAL = (S_external)

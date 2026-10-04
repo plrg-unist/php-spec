@@ -1,0 +1,16 @@
+{
+  "target": "PHP8.5.10 CLI NTS64",
+  "cases": [
+    {
+      "id": "failed-dependent-typed-constant-uses-outer-demand-line-and-default-error-renderer",
+      "source": "<?php\nset_error_handler(function($n,$m){echo \"H;\";return true;});\ntrait T{public static float $x=self::Y;}\necho \"PRE;\";\nclass C{use T;public const float Y=self::Z;public const Z=\"bad\";public static float $x=1.0;}\necho \"POST;\";\n",
+      "source_sha256": "4fbdf207aac63a48d0da1979118d473e6865ce7326b356c5ff40398b2dd95226",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "V2FybmluZzogVW5jYXVnaHQgVHlwZUVycm9yOiBDYW5ub3QgYXNzaWduIHN0cmluZyB0byBjbGFzcyBjb25zdGFudCBDOjpZIG9mIHR5cGUgZmxvYXQgaW4ge0ZJTEV9OjMKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSg1KTogW2NvbnN0YW50IGV4cHJlc3Npb25dKCkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDMKRmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNQo=",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-collision-errors-270/.tools/trait-collision-type-error-native270-jhbj52mb/report.json"
+    }
+  ]
+}
