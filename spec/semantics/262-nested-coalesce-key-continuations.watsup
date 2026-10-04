@@ -1,9 +1,5 @@
 ;; Nested ??= keeps its quiet operand owners, then refetches real writable
 ;; places. Every memoized prefix has its own CODEWRITE occurrence.
-dec $key_coalesce_array_base(pbase) : bool
-dec $key_coalesce_base_read_view(pstate, porigin, pbase) : pbase?
-dec $key_coalesce_write_base_source(pstate, porigin, pbase) : bool
-dec $key_coalesce_walk(ptask*) : bool
 dec $key_coalesce_temporary(ptask*, pstate, porigin, nat) : ptask*
 def $key_coalesce_array_base(BASE_DIM pbase poperand z) = $key_tail_chain(pbase)
 def $key_coalesce_array_base(pbase) = false -- otherwise

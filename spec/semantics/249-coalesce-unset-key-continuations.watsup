@@ -1,6 +1,9 @@
 ;; Quiet ??= retains the evaluated operands for the later memoized write.
 ;; CVs remain delayed; an evaluated scalar key is not evaluated again.
 dec $key_edit_direct_base(pbase) : bool
+dec $key_coalesce_array_base(pbase) : bool
+dec $key_coalesce_base_read_view(pstate, porigin, pbase) : pbase?
+dec $key_coalesce_write_base_source(pstate, porigin, pbase) : bool
 dec $key_coalesce_source(pstate, porigin, pbase, bool, int) : porigin?
 dec $key_coalesce_write_source(pstate, porigin, pbase, bool, int) : porigin?
 dec $key_coalesce_read_view(pstate, pkeyread) : pkeyread
