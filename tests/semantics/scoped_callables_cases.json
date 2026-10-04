@@ -148,5 +148,12 @@
     "expected_model": "normal",
     "expected_normal_stdout": "O",
     "purpose": "A later explicit key0 overwrite makes an object selector; literal kind proof must leave keyed tails opaque."
+  },
+  {
+    "id": "private-handler-current-assign-null-through-throw",
+    "source": "<?php declare(strict_types=1); class Owner {private function handle($level,$message,$file,$line){echo \"H\",func_num_args(),\":\",__CLASS__,\"/\",static::class;throw new Error(\"stop\");}public function run(&$v){$other=new Child;$handler=new Child;set_error_handler([$handler,\"handle\"]);$handler=null;try{$v=$missing;}catch(Error $e){echo \"|\",($v===null?\"N\":\"BAD\"),\":\",(func_get_arg(0)===null?\"N\":\"BAD\");}restore_error_handler();}}class Child extends Owner {public function handle($level,$message,$file,$line){echo \"BAD-Child\";}}$v=\"x\";(new Child)->run($v);echo \"|\",($v===null?\"N\":\"BAD\");",
+    "source_sha256": "2a609636fd64056fbb452aba12421c260faea123b1357c91d974cf5b7c6423b7",
+    "expected_model": "normal",
+    "expected_normal_stdout": "H4:Owner/Child|N:N|N"
   }
 ]
