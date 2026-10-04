@@ -1,0 +1,204 @@
+;; Ordinary SEND/name processing is unchanged. The live API slots own values;
+;; SOURCE records only nonowning metadata for the received-prefix certificate.
+def $ordinary_internal_ready(S, pctorcall) = true
+  -- if $call_task_valid(S, CTOR_INVOKE pctorcall)
+  -- if $(|pctorcall.SENT| <= $default_internal_arity(pctorcall.BASE))
+
+;; Successful weak string parsing releases the supplied object. Completed
+;; prefix evidence uses its immutable arena body, not a new live owner.
+dec $ordinary_internal_string_evidence(pstate, nat) : bool
+def $ordinary_internal_string_evidence(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+def $ordinary_internal_string_evidence(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_nominal(pthrowable.KIND, $ptascii("Stringable"), 4)
+def $ordinary_internal_string_evidence(S, n) = false -- otherwise
+
+dec $ordinary_internal_received_value(pstate, pctorcall, nat, pvalue) : bool
+def $ordinary_internal_received_value(S, pctorcall, n, PSTRING ptbytes) = true
+  -- if ~$exit_strict(S, pctorcall.SITE)
+  -- if $default_internal_string(pctorcall.BASE, n)
+  -- if $named_slot_at(pctorcall.SENT, n) = NAMED_SENT (KNOWN (POBJECT n_object))
+  -- if $ordinary_internal_string_evidence(S, n_object)
+def $ordinary_internal_received_value(S, pctorcall, n, pvalue) = true
+  -- if $default_internal_warning(S, pctorcall, n) = ((ptbytes, pvalue))
+def $ordinary_internal_received_value(S, pctorcall, n, pvalue) = true
+  -- if $default_internal_warning(S, pctorcall, n) = eps
+  -- if S_value = $default_internal_parameter(S, pctorcall, n, $named_slot_at(pctorcall.SENT, n))
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+def $ordinary_internal_received_value(S, pctorcall, n, pvalue) = false -- otherwise
+dec $ordinary_internal_received_prefix(pstate, pctorcall, pvalue*, nat) : bool
+def $ordinary_internal_received_prefix(S, pctorcall, eps, n) = true
+def $ordinary_internal_received_prefix(S, pctorcall, pvalue :: pvalue_tail*, n) = ($ordinary_internal_received_value(S, pctorcall, n, pvalue) /\ $ordinary_internal_received_prefix(S, pctorcall, pvalue_tail*, $(n + 1)))
+dec $ordinary_internal_receiving_valid(pstate, pordinaryinternal) : bool
+def $ordinary_internal_receiving_valid(S, pordinaryinternal) = true
+  -- if $ordinary_internal_ready(S, pordinaryinternal.SOURCE)
+  -- if pctorcall_filled = pordinaryinternal.SOURCE[.SENT = $default_internal_fill(pordinaryinternal.SOURCE.BASE, pordinaryinternal.SOURCE.SENT, 0)]
+  -- if pordinaryinternal.CALL = $default_internal_received_call(pctorcall_filled, pordinaryinternal.VALUES, 0)
+  -- if pordinaryinternal.INDEX = |pordinaryinternal.VALUES|
+  -- if $(pordinaryinternal.INDEX <= $default_internal_arity(pordinaryinternal.CALL.BASE))
+  -- if $ordinary_internal_received_prefix(S, pctorcall_filled, pordinaryinternal.VALUES, 0)
+def $ordinary_internal_receiving_valid(S, pordinaryinternal) = false -- otherwise
+dec $ordinary_internal_receiving_nodes(pordinaryinternal) : pnode*
+def $ordinary_internal_receiving_nodes(pordinaryinternal) = $ctor_nodes(pordinaryinternal.CALL)
+def $task_nodes(ORDINARY_CTOR_RECEIVE pordinaryinternal) = $ordinary_internal_receiving_nodes(pordinaryinternal)
+def $task_nodes(ORDINARY_CTOR_WARNING pordinaryinternal pvalue) = $ordinary_internal_receiving_nodes(pordinaryinternal) ++ $value_nodes(pvalue)
+def $task_nodes(ORDINARY_CTOR_STRING pordinaryinternal) = $ordinary_internal_receiving_nodes(pordinaryinternal)
+def $call_task_valid(S, ORDINARY_CTOR_RECEIVE pordinaryinternal) = $ordinary_internal_receiving_valid(S, pordinaryinternal)
+dec $ordinary_internal_warning_valid(pstate, pordinaryinternal, pvalue) : bool
+def $ordinary_internal_warning_valid(S, pordinaryinternal, pvalue) = true
+  -- if $ordinary_internal_receiving_valid(S, pordinaryinternal)
+  -- if $default_internal_warning(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = ((ptbytes, pvalue))
+def $ordinary_internal_warning_valid(S, pordinaryinternal, pvalue) = false -- otherwise
+def $call_task_valid(S, ORDINARY_CTOR_WARNING pordinaryinternal pvalue) = $ordinary_internal_warning_valid(S, pordinaryinternal, pvalue)
+
+rule PhpStep/ordinary-internal-constructor-receive: S ~> S[.TODO = (ORDINARY_CTOR_RECEIVE {SOURCE pctorcall, CALL pctorcall[.SENT = $default_internal_fill(pctorcall.BASE, pctorcall.SENT, 0)], INDEX 0, VALUES eps}) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CTOR_INVOKE pctorcall) :: ptask_tail*
+  -- if $ordinary_internal_ready(S, pctorcall)
+dec $ordinary_internal_receiving_next(pstate, pordinaryinternal, pvalue, ptask*) : pstate
+def $ordinary_internal_receiving_next(S, pordinaryinternal, pvalue, ptask_tail*) = S[.TODO = (ORDINARY_CTOR_RECEIVE pordinaryinternal[.CALL = $default_internal_string_slot(pordinaryinternal.CALL, pordinaryinternal.INDEX, pvalue)][.INDEX = $(pordinaryinternal.INDEX + 1)][.VALUES = pordinaryinternal.VALUES ++ [pvalue]]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/ordinary-internal-receiving-warning: S ~> $error_dispatch(S, 8192, ptbytes, pordinaryinternal.CALL.LINE, DIAGNOSTIC "Deprecated" ptbytes pordinaryinternal.CALL.LINE, ORDINARY_CTOR_WARNING pordinaryinternal pvalue)
+  -- if S.TODO = (ORDINARY_CTOR_RECEIVE pordinaryinternal) :: ptask_tail*
+  -- if $ordinary_internal_receiving_valid(S, pordinaryinternal)
+  -- if $(pordinaryinternal.INDEX < $default_internal_arity(pordinaryinternal.CALL.BASE))
+  -- if $default_internal_warning(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = ((ptbytes, pvalue))
+rule PhpStep/ordinary-internal-receiving-warning-done: S ~> $ordinary_internal_receiving_next(S, pordinaryinternal, pvalue, ptask_tail*)
+  -- if S.TODO = (ORDINARY_CTOR_WARNING pordinaryinternal pvalue) :: ptask_tail*
+  -- if $ordinary_internal_warning_valid(S, pordinaryinternal, pvalue)
+rule PhpStep/ordinary-internal-receiving-value: S ~> $ordinary_internal_receiving_next(S_value, pordinaryinternal, pvalue, ptask_tail*)
+  -- if S.TODO = (ORDINARY_CTOR_RECEIVE pordinaryinternal) :: ptask_tail*
+  -- if $ordinary_internal_receiving_valid(S, pordinaryinternal)
+  -- if $(pordinaryinternal.INDEX < $default_internal_arity(pordinaryinternal.CALL.BASE))
+  -- if $default_internal_warning(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = eps
+  -- if $default_internal_string_object(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = eps
+  -- if S_value = $default_internal_parameter(S, pordinaryinternal.CALL, pordinaryinternal.INDEX, $named_slot_at(pordinaryinternal.CALL.SENT, pordinaryinternal.INDEX))
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+rule PhpStep/ordinary-internal-receiving-error: S ~> S_value
+  -- if S.TODO = (ORDINARY_CTOR_RECEIVE pordinaryinternal) :: ptask_tail*
+  -- if $ordinary_internal_receiving_valid(S, pordinaryinternal)
+  -- if $(pordinaryinternal.INDEX < $default_internal_arity(pordinaryinternal.CALL.BASE))
+  -- if $default_internal_warning(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = eps
+  -- if $default_internal_string_object(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = eps
+  -- if S_value = $default_internal_parameter(S, pordinaryinternal.CALL, pordinaryinternal.INDEX, $named_slot_at(pordinaryinternal.CALL.SENT, pordinaryinternal.INDEX))
+  -- if S_value.COMPLETION =/= NORMAL
+rule PhpStep/ordinary-internal-receiving-commit: S ~> $ctor_commit(S[.TODO = ptask_tail*], pordinaryinternal.CALL, pvalue_message, pvalue_code, pvalue_previous)
+  -- if S.TODO = (ORDINARY_CTOR_RECEIVE pordinaryinternal) :: ptask_tail*
+  -- if $ordinary_internal_receiving_valid(S, pordinaryinternal)
+  -- if pordinaryinternal.CALL.BASE =/= "ErrorException"
+  -- if pordinaryinternal.INDEX = 3
+  -- if pordinaryinternal.VALUES = [pvalue_message, pvalue_code, pvalue_previous]
+rule PhpStep/ordinary-internal-receiving-ee-commit: S ~> $ee_commit(S[.TODO = ptask_tail*], pordinaryinternal.CALL, pordinaryinternal.VALUES)
+  -- if S.TODO = (ORDINARY_CTOR_RECEIVE pordinaryinternal) :: ptask_tail*
+  -- if $ordinary_internal_receiving_valid(S, pordinaryinternal)
+  -- if pordinaryinternal.CALL.BASE = "ErrorException"
+  -- if pordinaryinternal.INDEX = 6
+
+dec $ordinary_internal_string_valid(pstate, pordinaryinternal) : bool
+def $ordinary_internal_string_valid(S, pordinaryinternal) = true
+  -- if $ordinary_internal_receiving_valid(S, pordinaryinternal)
+  -- if $(pordinaryinternal.INDEX < $default_internal_arity(pordinaryinternal.CALL.BASE))
+  -- if $default_internal_string_object(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = (n_object)
+def $ordinary_internal_string_valid(S, pordinaryinternal) = false -- otherwise
+dec $ordinary_internal_user_string_valid(pstate, pordinaryinternal) : bool
+def $ordinary_internal_user_string_valid(S, pordinaryinternal) = true
+  -- if $ordinary_internal_string_valid(S, pordinaryinternal)
+  -- if $default_internal_string_object(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = (n)
+  -- if $stringable_instance(S, n)
+def $ordinary_internal_user_string_valid(S, pordinaryinternal) = false -- otherwise
+def $call_task_valid(S, ORDINARY_CTOR_STRING pordinaryinternal) = $ordinary_internal_user_string_valid(S, pordinaryinternal)
+def $stringify_source(S, porigin_site, z, ORDINARY_CTOR_STRING pordinaryinternal) = true
+  -- if $ordinary_internal_user_string_valid(S, pordinaryinternal)
+  -- if porigin_site = pordinaryinternal.CALL.SITE /\ z = pordinaryinternal.CALL.LINE
+
+dec $ordinary_internal_string_record(ptask*) : (nat, porigin, int, pordinaryinternal)?
+def $ordinary_internal_string_record((STRINGIFY_RESULT n porigin_site z) :: (ORDINARY_CTOR_STRING pordinaryinternal) :: ptask_tail*) = ((n, porigin_site, z, pordinaryinternal))
+def $ordinary_internal_string_record((CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: ptask_tail*) = $ordinary_internal_string_record(ptask_tail*)
+def $ordinary_internal_string_record((THROW_SEARCH n) :: ptask_tail*) = $ordinary_internal_string_record(ptask_tail*)
+def $ordinary_internal_string_record(ptask*) = eps -- otherwise
+def $ordinary_internal_string_result_kind(ptask*) = ($ordinary_internal_string_record(ptask*) =/= eps)
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $ordinary_internal_string_record(pframe.TODO) = ((n, porigin_site, z, pordinaryinternal))
+dec $ordinary_internal_string_marker(pstate, nat, porigin, int) : bool
+def $ordinary_internal_string_marker(S, n, porigin_site, z) = true
+  -- if $ordinary_internal_string_record(S.TODO) = ((n, porigin_site, z, pordinaryinternal))
+  -- if $stringify_source(S, porigin_site, z, ORDINARY_CTOR_STRING pordinaryinternal)
+  -- if $default_internal_string_object(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = (n)
+def $ordinary_internal_string_marker(S, n, porigin_site, z) = false -- otherwise
+dec $ordinary_internal_string_frame_site(pstate, pframe, pframe*, porigin, int) : bool
+def $ordinary_internal_string_frame_site(S, pframe, pframe_tail*, porigin_site, z) = true
+  -- if $ordinary_internal_string_record(pframe.TODO) = ((n, porigin_site, z, pordinaryinternal))
+  -- if $ordinary_internal_string_marker($constant_frame_scope(S, pframe, pframe_tail*), n, porigin_site, z)
+def $ordinary_internal_string_frame_site(S, pframe, pframe_tail*, porigin_site, z) = false -- otherwise
+dec $ordinary_internal_string_saved_site(pstate, pframe*, porigin, int) : bool
+def $ordinary_internal_string_saved_site(S, eps, porigin_site, z) = false
+def $ordinary_internal_string_saved_site(S, pframe :: pframe_tail*, porigin_site, z) = ($ordinary_internal_string_frame_site(S, pframe, pframe_tail*, porigin_site, z) \/ $ordinary_internal_string_saved_site(S, pframe_tail*, porigin_site, z))
+def $ordinary_internal_string_site_valid(S, porigin_site, z) = true
+  -- if $ordinary_internal_string_record(S.TODO) = ((n, porigin_site, z, pordinaryinternal))
+  -- if $ordinary_internal_string_marker(S, n, porigin_site, z)
+def $ordinary_internal_string_site_valid(S, porigin_site, z) = true
+  -- if $ordinary_internal_string_record(S.TODO) = eps
+  -- if $ordinary_internal_string_saved_site(S, S.FRAMES, porigin_site, z)
+def $stringify_result_valid(S, n, porigin_site, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $ordinary_internal_string_marker(S, n, porigin_site, z)
+
+dec $ordinary_internal_string_context_data(pstate, pcallcontext, pcallcontext?, pframe*) : pordinaryinternal?
+def $ordinary_internal_string_context_data(S, pcallcontext, (pcallcontext), pframe :: pframe_tail*) = (pordinaryinternal)
+  -- if $ordinary_internal_string_record(pframe.TODO) = ((n, porigin_site, z, pordinaryinternal))
+  -- if pcallcontext.CALLSITE = (porigin_site) /\ pcallcontext.LINE = z
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if $stringify_method_selected(S, n, porigin_method, porigin_site)
+  -- if $ordinary_internal_string_marker($constant_frame_scope(S, pframe, pframe_tail*), n, porigin_site, z)
+def $ordinary_internal_string_context_data(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $ordinary_internal_string_context_data(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
+  -- if pcallcontext_other? =/= (pcallcontext)
+def $ordinary_internal_string_context_data(S, pcallcontext, pcallcontext_other?, pframe*) = eps -- otherwise
+
+rule PhpStep/ordinary-internal-receiving-user-string: S ~> $user_string_begin(S, n, pordinaryinternal.CALL.SITE, pordinaryinternal.CALL.LINE, ORDINARY_CTOR_STRING pordinaryinternal, ptask_tail*)
+  -- if S.TODO = (ORDINARY_CTOR_RECEIVE pordinaryinternal) :: ptask_tail*
+  -- if $ordinary_internal_string_valid(S, pordinaryinternal)
+  -- if $default_internal_string_object(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = (n)
+  -- if $stringable_instance(S, n)
+rule PhpStep/ordinary-internal-receiving-string-done: S ~> $ordinary_internal_receiving_next(S, pordinaryinternal, PSTRING ptbytes, ptask_tail*)
+  -- if S.TODO = (ORDINARY_CTOR_STRING pordinaryinternal) :: ptask_tail*
+  -- if $ordinary_internal_user_string_valid(S, pordinaryinternal)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+rule PhpStep/ordinary-internal-receiving-builtin-string: S ~> $ordinary_internal_receiving_next(S_value, pordinaryinternal, PSTRING ptbytes, ptask_tail*)
+  -- if S.TODO = (ORDINARY_CTOR_RECEIVE pordinaryinternal) :: ptask_tail*
+  -- if $ordinary_internal_string_valid(S, pordinaryinternal)
+  -- if $default_internal_string_object(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = (n)
+  -- if ~$stringable_instance(S, n) /\ $throwable_member(S, n)
+  -- if S_value = $stringify(S, POBJECT n, pordinaryinternal.CALL.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING ptbytes)
+rule PhpStep/ordinary-internal-receiving-builtin-string-error: S ~> S_value
+  -- if S.TODO = (ORDINARY_CTOR_RECEIVE pordinaryinternal) :: ptask_tail*
+  -- if $ordinary_internal_string_valid(S, pordinaryinternal)
+  -- if $default_internal_string_object(S, pordinaryinternal.CALL, pordinaryinternal.INDEX) = (n)
+  -- if ~$stringable_instance(S, n) /\ $throwable_member(S, n)
+  -- if S_value = $stringify(S, POBJECT n, pordinaryinternal.CALL.LINE)
+  -- if S_value.COMPLETION =/= NORMAL
+
+;; Callback locations are internal; the actual ordinary constructor frame
+;; keeps its compiled call line and live rewritten slots through reentry.
+def $ordinary_internal_callback_context(S, pcallcontext) = true
+  -- if $ordinary_internal_string_context_data(S, pcallcontext, S.CURRENT, S.FRAMES) = (pordinaryinternal)
+def $ordinary_internal_callback_context(S, pcallcontext) = true
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ORDINARY_CTOR_WARNING pordinaryinternal pvalue
+  -- if $error_context_valid(S, pcallcontext)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE ($ptascii("->")), ARGS eps, HASARGS true}, $default_internal_ctor_trace(S, pordinaryinternal.CALL)]
+  -- if $ordinary_internal_string_context_data(S, pcallcontext, S.CURRENT, S.FRAMES) = (pordinaryinternal)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}, $default_internal_ctor_trace(S, pordinaryinternal.CALL)]
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ORDINARY_CTOR_WARNING pordinaryinternal pvalue_warning
+  -- if $error_context_valid(S, pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
