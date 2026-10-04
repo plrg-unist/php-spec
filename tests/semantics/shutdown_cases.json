@@ -151,5 +151,14 @@
     "exit": 0,
     "stdout": "V;1:text;S;",
     "stderr": ""
+  },
+  {
+    "id": "trait-private-default-shutdown",
+    "source": "<?php declare(strict_types=1);trait T{static function reg(){register_shutdown_function([self::class,\"h\"]);}private static function h(Exception $e=new Exception(self::N)){echo $e->getMessage(),\":\",get_called_class(),\":\",func_num_args(),\";\";}}class C{use T;private const N=\"kept\";}C::reg();exit(7);",
+    "stdout": "kept:C:0;",
+    "stderr": "",
+    "exit": 7,
+    "status": "explicit_exit",
+    "source_sha256": "1efc46ffe944eec747201c9dd2c07120da39cccc25e5d20c7f52bee712104c97"
   }
 ]
