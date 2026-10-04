@@ -5,6 +5,13 @@ dec $shutdown_unknown_items(pentry*) : bool
 dec $shutdown_unknown_item(pentry) : bool
 dec $shutdown_unknown_packs(pconfigpack*) : bool
 dec $shutdown_argument_named_unknown(pstate, porigin, nat) : bool
+dec $shutdown_previous_source(pstate, pconfigcall, preqbytes, nat) : bool
+dec $shutdown_source_named_at(pstate, porigin, nat, preqbytes) : bool
+dec $shutdown_named_items(pentry*, preqbytes) : bool
+dec $shutdown_previous_pack(pconfigpack, nat, nat, preqbytes) : bool
+dec $shutdown_previous_packs(pconfigpack*, nat, nat, preqbytes) : bool
+dec $shutdown_unpack_cursor(pstate) : nat
+dec $shutdown_previous_named(pstate, pconfigcall, preqbytes) : bool
 dec $shutdown_unknown_named(pstate, pconfigcall) : bool
 dec $shutdown_values(pnamedslot*) : pvalue*
 dec $shutdown_register(pstate, pconfigcall, pvalue) : pstate
@@ -12,6 +19,7 @@ dec $shutdown_registration_valid(pstate, pconfigcall) : bool
 dec $shutdown_selection_scope(pstate, pshutdownentry) : bool
 dec $shutdown_scoped_target(pcalltarget) : bool
 dec $shutdown_capture_scope(pstate, porigin, pmethodcapture?) : porigin?
+dec $shutdown_capture_valid(pstate, porigin, pmethodcapture?) : bool
 dec $shutdown_entry_valid(pstate, pshutdownentry) : bool
 dec $shutdown_entries_valid(pstate, pshutdownentry*) : bool
 dec $shutdown_known(pvalue*) : poperand*
@@ -55,15 +63,15 @@ def $config_destination(INTRINSIC_REGISTER_SHUTDOWN_FUNCTION, (preqbytes), n) = 
 
 def $shutdown_unknown_source(S, pconfigcall, n) = true
   -- if $(n < pconfigcall.INDEX)
-  -- if $intrinsic_argument(S, pconfigcall.SITE, n) = ((expression, false, (preqbytes), porigin, z))
-  -- if preqbytes =/= $ptascii("callback")
+  -- if $shutdown_argument_named_unknown(S, pconfigcall.SITE, n)
 def $shutdown_unknown_source(S, pconfigcall, n) = $shutdown_unknown_source(S, pconfigcall, $(n + 1))
   -- if $(n < pconfigcall.INDEX)
   -- if ~$shutdown_argument_named_unknown(S, pconfigcall.SITE, n)
 def $shutdown_unknown_source(S, pconfigcall, n) = false -- if $(n >= pconfigcall.INDEX)
 def $shutdown_argument_named_unknown(S, porigin_site, n) = true
-  -- if $intrinsic_argument(S, porigin_site, n) = ((expression, false, (preqbytes), porigin, z))
-  -- if preqbytes =/= $ptascii("callback")
+  -- if $intrinsic_argument(S, porigin_site, n) = ((expression, false, preqbytes_name?, porigin, z))
+  -- if preqbytes_name? = (ptbytes_name)
+  -- if ptbytes_name =/= $ptascii("callback")
 def $shutdown_argument_named_unknown(S, porigin, n) = false -- otherwise
 def $shutdown_unknown_items(eps) = false
 def $shutdown_unknown_item(ENTRY (KSTRING preqbytes) pitem) = (preqbytes =/= $ptascii("callback"))
@@ -72,6 +80,35 @@ def $shutdown_unknown_items(pentry :: pentry_tail*) = ($shutdown_unknown_item(pe
 def $shutdown_unknown_packs(eps) = false
 def $shutdown_unknown_packs(pconfigpack :: pconfigpack_tail*) = ($shutdown_unknown_items(pconfigpack.ITEMS) \/ $shutdown_unknown_packs(pconfigpack_tail*))
 def $shutdown_unknown_named(S, pconfigcall) = ($shutdown_unknown_source(S, pconfigcall, 0) \/ $shutdown_unknown_packs(pconfigcall.PACKS))
+;; Extra names remain forbidden by ZPP, but SEND diagnoses duplicates first.
+def $shutdown_previous_source(S, pconfigcall, preqbytes, n) = true
+  -- if $(n < pconfigcall.INDEX)
+  -- if $shutdown_source_named_at(S, pconfigcall.SITE, n, preqbytes)
+def $shutdown_previous_source(S, pconfigcall, preqbytes, n) = $shutdown_previous_source(S, pconfigcall, preqbytes, $(n + 1))
+  -- if $(n < pconfigcall.INDEX)
+  -- if ~$shutdown_source_named_at(S, pconfigcall.SITE, n, preqbytes)
+def $shutdown_previous_source(S, pconfigcall, preqbytes, n) = false -- if $(n >= pconfigcall.INDEX)
+def $shutdown_source_named_at(S, porigin_site, n, preqbytes) = true
+  -- if $intrinsic_argument(S, porigin_site, n) = ((expression, false, preqbytes_name?, porigin, z))
+  -- if preqbytes_name? = (preqbytes)
+def $shutdown_source_named_at(S, porigin_site, n, preqbytes) = false -- otherwise
+def $shutdown_named_items(eps, preqbytes) = false
+def $shutdown_named_items((ENTRY pkey pitem) :: pentry_tail*, preqbytes) = ($exit_key_name(pkey) = (preqbytes) \/ $shutdown_named_items(pentry_tail*, preqbytes))
+def $shutdown_previous_pack(pconfigpack, n_index, n_cursor, preqbytes) = $shutdown_named_items(pconfigpack.ITEMS, preqbytes)
+  -- if $(pconfigpack.INDEX < n_index)
+def $shutdown_previous_pack(pconfigpack, n_index, n_cursor, preqbytes) = $shutdown_named_items(pconfigpack.ITEMS[0:n_cursor], preqbytes)
+  -- if pconfigpack.INDEX = n_index
+  -- if $(n_cursor <= |pconfigpack.ITEMS|)
+def $shutdown_previous_pack(pconfigpack, n_index, n_cursor, preqbytes) = false -- otherwise
+def $shutdown_previous_packs(eps, n_index, n_cursor, preqbytes) = false
+def $shutdown_previous_packs(pconfigpack :: pconfigpack_tail*, n_index, n_cursor, preqbytes) = ($shutdown_previous_pack(pconfigpack, n_index, n_cursor, preqbytes) \/ $shutdown_previous_packs(pconfigpack_tail*, n_index, n_cursor, preqbytes))
+def $shutdown_unpack_cursor(S) = n -- if S.TODO = (CONFIG_UNPACK_NEXT pconfigcall poperand n) :: ptask_tail*
+def $shutdown_unpack_cursor(S) = 0 -- otherwise
+def $shutdown_previous_named(S, pconfigcall, preqbytes) = ($shutdown_previous_source(S, pconfigcall, preqbytes, 0) \/ $shutdown_previous_packs(pconfigcall.PACKS, pconfigcall.INDEX, $shutdown_unpack_cursor(S), preqbytes))
+def $config_send_check(S, pconfigcall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Named parameter $") ++ preqbytes ++ $ptascii(" overwrites previous argument"), z)
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+  -- if preqbytes =/= $ptascii("callback")
+  -- if $shutdown_previous_named(S, pconfigcall, preqbytes)
 def $error_api_arity(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $ptascii("register_shutdown_function() does not accept unknown named parameters"))
   -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
   -- if $shutdown_unknown_named(S, pconfigcall)
@@ -129,13 +166,23 @@ def $shutdown_registration_valid(S, pconfigcall) = false -- otherwise
 def $shutdown_selection_scope(S, pshutdownentry) = true
   -- if pshutdownentry.TARGET = HANDLER_METHOD_TARGET b_class porigin ptbytes (SCOPE_METHOD_TARGET pcalltarget pcallableaccess)
   -- if pcallableaccess.SITE = eps /\ pcallableaccess.CREATION = eps
-  -- if $method_capture_certificate_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
+  -- if $shutdown_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
   -- if pcallableaccess.SCOPE = $shutdown_capture_scope(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
 def $shutdown_selection_scope(S, pshutdownentry) = true -- if ~$shutdown_scoped_target(pshutdownentry.TARGET)
 def $shutdown_scoped_target(HANDLER_METHOD_TARGET b_class porigin ptbytes (SCOPE_METHOD_TARGET pcalltarget pcallableaccess)) = true
 def $shutdown_scoped_target(pcalltarget) = false -- otherwise
 def $shutdown_capture_scope(S, porigin, eps) = $closure_source_class(S, porigin)
 def $shutdown_capture_scope(S, porigin, (pmethodcapture)) = pmethodcapture.LEXICAL_CLASS
+def $shutdown_capture_valid(S, porigin_site, eps) = true
+def $shutdown_capture_valid(S, porigin_site, (pmethodcapture)) = true
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin_site), eps) = (pmethodcapture.FUNCTION)
+  -- if $method_capture_template(S, pmethodcapture.FUNCTION)
+  -- if pmethodcapture.LEXICAL_CLASS =/= $closure_source_class(S, porigin_site) \/ $method_capture_called_scope(S, porigin_site, pmethodcapture)
+  -- if $method_capture_class_valid(S, pmethodcapture.LEXICAL_CLASS)
+  -- if $method_capture_class_valid(S, pmethodcapture.CALLED_CLASS)
+  -- if pmethodcapture.CALLSITE = (porigin_call)
+  -- if $method_capture_invocation_valid(S, pmethodcapture, porigin_call)
+def $shutdown_capture_valid(S, porigin_site, pmethodcapture?) = false -- otherwise
 def $shutdown_selection_scope(S, pshutdownentry) = false -- otherwise
 def $shutdown_entry_valid(S, pshutdownentry) = true
   -- if $shutdown_registration_valid(S, pshutdownentry.CALL)
