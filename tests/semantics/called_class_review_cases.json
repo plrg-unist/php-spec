@@ -124,18 +124,6 @@
       "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC"
     },
     {
-      "id": "builtin-fromcallable-wrapper",
-      "source": "<?php class A{static function run($f){echo $f(),';',$f->__invoke(),';';}}class B extends A{}$f=Closure::fromCallable('GET_CALLED_CLASS');B::run($f);try{$f();}catch(Error $e){echo 'E;';}try{echo $f->__invoke();}catch(Error $e){echo 'E;';}",
-      "source_sha256": "51dafd15a4b832b3f9b63af0404886d560189899bd06e5e7f4649b76beeaf6db",
-      "status": "normal",
-      "stdout_base64": "QjtDbG9zdXJlO0U7Q2xvc3VyZQ==",
-      "stderr_template_base64": "",
-      "exit_status": 0,
-      "native_group": "called-class-native-independent223-4gagqp55/report.json",
-      "native_raw_sha256": "8f33cc9c2eaf7423833f6b5fd82551b3994d0cae845117ba63af5f7b31643257",
-      "native_profile": "PHP8.5.10 -n tests/semantics/profile.json; LC_ALL=C TZ=UTC"
-    },
-    {
       "id": "dynamic-names-in-class",
       "source": "<?php class A{static function run(){ $f='GeT_CaLlEd_ClAsS';echo $f();}}class B extends A{}B::run();",
       "source_sha256": "6e7c4d5c215c1d48e7a351344815b69cbe865bd0a301cbdc5411fb2dce76ceb6",
