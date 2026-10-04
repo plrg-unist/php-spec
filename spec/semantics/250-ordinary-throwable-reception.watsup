@@ -165,6 +165,16 @@ def $ordinary_internal_string_site_valid(S, porigin_site, z) = true
 def $ordinary_internal_string_site_valid(S, porigin_site, z) = true
   -- if $ordinary_internal_string_record(S.TODO) = eps
   -- if $ordinary_internal_string_saved_site(S, S.FRAMES, porigin_site, z)
+;; An older same-site conversion cannot certify a different current consumer.
+;; Genuine generic consumers keep their own source and tail admission.
+dec $ordinary_internal_result_source(pstate, nat, porigin, int, ptask*) : bool
+def $ordinary_internal_result_source(S, n, porigin_site, z, (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*) = ($stringify_source(S, porigin_site, z, ptask_consumer) /\ $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*))
+def $ordinary_internal_result_source(S, n, porigin_site, z, (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: ptask_tail*) = $ordinary_internal_result_source(S, n, porigin_site, z, ptask_tail*)
+def $ordinary_internal_result_source(S, n, porigin_site, z, (THROW_SEARCH n_throw) :: ptask_tail*) = $ordinary_internal_result_source(S, n, porigin_site, z, ptask_tail*)
+def $ordinary_internal_result_source(S, n, porigin_site, z, ptask*) = false -- otherwise
+def $ordinary_internal_generic_result_valid(S, n, porigin_site, z) = false
+  -- if $ordinary_internal_string_site_valid(S, porigin_site, z)
+  -- if ~$ordinary_internal_result_source(S, n, porigin_site, z, S.TODO)
 def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if S.ORIGIN = (porigin_site)
   -- if $ordinary_internal_string_marker(S, n, porigin_site, z)
