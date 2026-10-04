@@ -798,7 +798,6 @@ rule PhpStep/config-restore-string-ignored: S ~> S[.ORIGIN = (pconfigcall.SITE)]
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
   -- if S.ORIGIN = (porigin_child)
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
-  -- if S.FILEINCLUDEPATH = (n_old*)
   -- if S.RESULT = KNOWN (PSTRING n_option*)
   -- if n_option* =/= $ptascii("include_path")
   -- if n_option* =/= $ptascii("error_reporting")
@@ -819,6 +818,13 @@ rule PhpStep/config-restore-display-string-result: S ~> $display_restore(S)[.ORI
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
   -- if S.RESULT = KNOWN (PSTRING n_option*)
   -- if n_option* = $ptascii("display_errors")
+rule PhpStep/config-restore-precision-string-result: S ~> $precision_restore(S)[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if S.RESULT = KNOWN (PSTRING n_option*)
+  -- if n_option* = $ptascii("precision")
 rule PhpStep/config-restore-string-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "ini_restore option outside finite include_path domain"]
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
@@ -828,6 +834,7 @@ rule PhpStep/config-restore-string-unsupported: S ~> S[.COMPLETION = UNSUPPORTED
   -- if $ptlc(n_option*) =/= $ptascii("include_path")
   -- if $ptlc(n_option*) =/= $ptascii("error_reporting")
   -- if $ptlc(n_option*) =/= $ptascii("display_errors")
+  -- if $ptlc(n_option*) =/= $ptascii("precision")
   -- if n_option* =/= eps
   -- if ~(0 <- n_option*)
 rule PhpStep/config-ini-get-string-result: S ~> $config_ini_get_finish(S_call, pconfigcall, n_option*)
