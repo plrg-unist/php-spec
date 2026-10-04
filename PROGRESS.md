@@ -350,8 +350,12 @@ existing array neighbor),47 additional queue/array-owner guards and bounded
 AL/structure checks pass. Private-final compile warnings now join the recorded
 batch at concrete/abstract binding phases and remain handler-ineligible128. Four
 affected source comparisons (two new and two128 mask neighbors) and43 genuine
-alias/queue guards pass at their separate cuts. Real dependent-constant binding,
-caching and endogenous expression errors remain required; traits stay partial.
+alias/queue guards pass at their separate cuts. Module266 binds referenced
+deferred constants in their real declaring scopes before strict comparison,
+retaining typed caches between operands and distinct full import identities.
+Ten normal source comparisons and201 unique cache/owner/lookup-chain guards pass;20 repeated setup checks add no coverage.
+Failed-link cache disposition, object-bearing dependency values and endogenous
+expression errors remain required; traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the

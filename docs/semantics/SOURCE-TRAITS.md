@@ -1,6 +1,6 @@
 # Source trait composition
 
-Modules 228, 238, 254 and 259 compile, link and access source traits under pinned PHP 8.5.10.
+Modules 228, 238, 254, 259 and 266 compile, link and access source traits under pinned PHP 8.5.10.
 A using class overrides trait methods; trait methods override inherited methods.
 Nested uses, duplicate imports, `insteadof`, aliases, visibility changes and final
 adaptations preserve Zend's method selection and diagnostics. Abstract trait
@@ -98,6 +98,15 @@ earlier diagnostics through the default renderer without calling user handlers.
 The sampled constant-name prefix and actual source/default roots authenticate
 each recorded item independently of later handler mutations.
 
+Module 266 binds a referenced deferred class constant in its real declaring scope,
+including typed conversion, before comparing the outer temporary. Its cache
+persists between operands and later reads; the compared property/constant stays
+unfilled. Full import identities separate caches for different using classes.
+Each cache owns its value; recursive dependencies can share one array, and
+later static writes retain copy-on-write. Source-owned collision tables, lookup chains and publication prefixes
+authenticate these fills without making an unlinked composing class public.
+Only already-inserted constants are available before parent inheritance.
+
 Raw trait static-property access emits `E_DEPRECATED` after lookup, access,
 table initialization and a required typed read. Quiet probes can therefore warn
 on an uninitialized slot while an ordinary read fails first. Each access reaching
@@ -146,10 +155,13 @@ The [collision ledger](../../coverage/semantics/trait-collisions-review.json) re
 affected operation/array comparisons and47 queue/array-owner assertions at their
 separate cuts. Ordered private-final delivery adds four affected sources and43
 alias/queue assertions; the two existing128 mask controls are identified separately.
+The successful dependency-cache checkpoint adds10 normal sources and201 unique
+cache/lookup/owner assertions;20 repeated setup checks are excluded.
 Other native preparations remain uncredited until implemented.
 
-Real dependency binding/caching and endogenous collision expression errors
-remain required.
+Failed linking after a dependency fill, object-bearing dependency values and
+endogenous collision expression errors remain required. The successful-cache
+checkpoint uses an explicit Unsupported boundary for those failed links.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
 Historical reached
