@@ -92,10 +92,10 @@ def $interpolation_operand_valid(S, porigin, n, poperand) = false -- otherwise
 
 dec $interpolation_operands_valid(pstate, porigin, nat, poperand*) : bool
 def $interpolation_operands_valid(S, porigin, n, eps) = true
-def $interpolation_operands_valid(S, porigin, n, poperand :: poperand*) = ($interpolation_operand_valid(S, porigin, n, poperand) /\ $interpolation_operands_valid(S, porigin, $(n + 1), poperand*))
+def $interpolation_operands_valid(S, porigin, n, poperand :: poperand_tail*) = ($interpolation_operand_valid(S, porigin, n, poperand) /\ $interpolation_operands_valid(S, porigin, $(n + 1), poperand_tail*))
 dec $interpolation_operand_nodes(poperand*) : pnode*
 def $interpolation_operand_nodes(eps) = eps
-def $interpolation_operand_nodes(poperand :: poperand*) = $operand_nodes(poperand) ++ $interpolation_operand_nodes(poperand*)
+def $interpolation_operand_nodes(poperand :: poperand_tail*) = $operand_nodes(poperand) ++ $interpolation_operand_nodes(poperand_tail*)
 
 dec $interpolation_next_valid(pstate, pinterpolation) : bool
 def $interpolation_next_valid(S, pinterpolation) = (S.ORIGIN = (pinterpolation.SITE) /\ $interpolation_base_valid(S, pinterpolation) /\ $interpolation_values_valid(S, pinterpolation, 0) /\ $interpolation_operands_valid(S, pinterpolation.SITE, pinterpolation.INDEX, pinterpolation.VALUES))
@@ -168,7 +168,7 @@ rule PhpStep/interpolation-literal: S ~> S[.TODO = (INTERPOLATE_NEXT pinterpolat
   -- if $(pinterpolation.INDEX < |phpType30*|)
   -- if phpType30*[pinterpolation.INDEX] = NInterpolatedStringPart (BYTES text) metadata
   -- if poperand_tail* = $interpolation_remaining(pinterpolation.MODE, pinterpolation.VALUES)
-def $interpolation_remaining(2, poperand :: poperand*) = poperand*
+def $interpolation_remaining(2, poperand :: poperand_tail*) = poperand_tail*
 def $interpolation_remaining(n_mode, eps) = eps -- if n_mode =/= 2
 rule PhpStep/interpolation-expression: S ~> S[.TODO = [$at_task(($interpolation_child(pinterpolation.SITE, pinterpolation.INDEX)), EVAL expression), INTERPOLATE_CONVERT pinterpolation[.LINE = $interpolation_line(S, pinterpolation.SITE, pinterpolation.MODE, pinterpolation.INDEX)]] ++ ptask_tail*]
   -- if S.TODO = (INTERPOLATE_NEXT pinterpolation) :: ptask_tail*
