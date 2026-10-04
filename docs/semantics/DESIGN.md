@@ -152,9 +152,10 @@ remain dynamic even when their values can be folded.
 
 Terminal throw/error/Unsupported outcomes release pending tasks, scratch values
 and `HELD`, even when the last task already emptied `TODO`; environment roots and
-uncollected cycles survive. This is temporary cleanup in the current machine
-without catch/finally or call frames, not effectful PHP request shutdown or future
-exception unwinding. Budget exhaustion preserves the interrupted state and roots.
+uncollected cycles survive. That initial temporary cleanup preceded call frames
+and exception unwinding. [Ordered shutdown callbacks](SOURCE-SHUTDOWN.md) now
+extend request completion; later destructor/output stages remain required.
+Budget exhaustion preserves the interrupted state and roots.
 Source-unit/compiled-occurrence identities now travel with runtime tasks.
 The active permanent pool installer and occurrence-based fact consumption retain
 constant array identity across repeated execution; calls still need their own frames.

@@ -1,3 +1,4 @@
+dec $shutdown_state_valid(pstate) : bool
 dec $closure_unit_code_valid(pstate, ppstate, pcode) : bool
 dec $startup_state_valid(pstate) : bool
 dec $display_state_valid(pstate) : bool
@@ -377,6 +378,7 @@ def $call_descriptors_valid(S) = true
   -- if $silences_valid(S)
   -- if $error_handlers_valid(S, S.ERRORHANDLER :: S.ERRORHANDLERS)
   -- if $exception_handlers_valid(S, S.EXCEPTIONHANDLER :: S.EXCEPTIONHANDLERS)
+  -- if $shutdown_state_valid(S)
   -- if $user_constants_valid(S, S.USERCONSTANTS)
   -- if $class_constant_state_valid(S)
   -- if $constant_callable_records_valid(S, S.CONSTANTCLOSURES)

@@ -181,7 +181,7 @@ def $pil_order_throwable_seen(S, pclassdesc, pilref_seen*) = $pil_stringable_iss
   -- if $pil_internal_source_infos(S, $pil_info_missing(eps, $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_parent_source_infos(S, pclassdesc) ++ $pil_proto_refs(S, pilref_seen*, |S.CLASSES|))) = METHOD_OK
 def $pil_order_rooted(S, pclassdesc, pmethodissue) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
-def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_ISSUE ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead")) pclassdesc.LINE
+def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_RUNTIMEISSUE ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable, extend Exception or Error instead")) pclassdesc.LINE
   -- if pclassdesc.KIND = "class"
   -- if ~$pil_throwable_allowed(S, pclassdesc)
 def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_OK
@@ -252,11 +252,13 @@ def $pil_methods_valid(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)
   -- if $pil_abstract_message(S, pclassdesc) = eps
 def $pil_methods_valid(S, (preqbytes, porigin)*) = false -- otherwise
 
-def $pil_method_fatal(S, PORIGIN n pcpath, ptbytes_message, z) = S[.COMPLETION = FATAL ptbytes_message z][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, FATAL ptbytes_message z, n)][.TRACE = $eval_exception_trace(S)]
+def $pil_method_fatal(S, PORIGIN n pcpath, ptbytes_message, z) = S[.COMPLETION = STATICBYTES ptbytes_message z][.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, STATICBYTES ptbytes_message z, n)][.TRACE = $eval_exception_trace(S)]
 def $pil_method_publish(S, S_candidate, pclassdesc) = $class_constant_link_error(S, pclassdesc.ORIGIN, ptbytes_message, z)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_COMPILEISSUE ptbytes_message z
 def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_method_fatal(S, porigin_selected, ptbytes_message, z)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_FILEISSUE ptbytes_message z porigin_selected
+def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_fatal(S, pclassdesc, ptbytes_message)
+  -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_RUNTIMEISSUE ptbytes_message z
 def $pil_method_publish(S, S_candidate, pclassdesc) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, z)
   -- if $pil_contract_issue(S_candidate, pclassdesc) = METHOD_ISSUE ptbytes_message z
 def $pil_method_publish(S, S_candidate, pclassdesc) = S[.COMPLETION = UNSUPPORTED text]

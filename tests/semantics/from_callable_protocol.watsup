@@ -1,0 +1,9 @@
+dec $capture_outputs(pevent*) : ptbytes
+def $capture_outputs(eps) = eps
+def $capture_outputs((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $capture_outputs(pevent*)
+def $capture_outputs((WARNING ptbytes z) :: pevent*) = $capture_outputs(pevent*)
+def $capture_outputs((DIAGNOSTIC text ptbytes z) :: pevent*) = $capture_outputs(pevent*)
+
+dec $capture_retired_refs(pstate, nat*) : bool
+def $capture_retired_refs(S, eps) = true
+def $capture_retired_refs(S, n :: nat*) = (~((HCELL n) <- S.ALLOCATIONS) /\ $heap_owners($heap_graph(S), HCELL n) = 0 /\ $capture_retired_refs(S, nat*))

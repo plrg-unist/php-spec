@@ -24,10 +24,12 @@ def $closure_callable(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
+  -- if pintrinsic =/= INTRINSIC_FROM_CALLABLE
 def $closure_live_object_valid(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
+  -- if pintrinsic =/= INTRINSIC_FROM_CALLABLE
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if $ptlc(preqbytes) = $ptascii("closure")
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
@@ -236,6 +238,7 @@ dec $intrinsic_argument(pstate, porigin, nat) : (expression, bool, preqbytes?, p
 def $exit_argument(S, pexitcall) = $intrinsic_argument(S, pexitcall.SITE, pexitcall.INDEX)
 dec $exit_argument_name(phpType3) : preqbytes?
 dec $exit_send_path(pcpath, nat, nat, bool) : pcpath
+dec $from_method_site(pstate, porigin) : bool
 dec $exit_callable_arguments(pstate, porigin) : pcallarguments
 def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 1
   -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata)
@@ -243,11 +246,11 @@ def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 1
 def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
-  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+  -- if $method_source_name(phpType20, $ptascii("__invoke")) \/ $from_method_site(S, porigin)
 def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
-  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+  -- if $method_source_name(phpType20, $ptascii("__invoke")) \/ $from_method_site(S, porigin)
 def $exit_callable_arguments(S, porigin) = PCALLNOARGUMENTS -- otherwise
 dec $exit_call_valid(pstate, pexitcall) : bool
 dec $exit_prefix_valid(phpType7*, nat, bool) : bool

@@ -37,6 +37,7 @@ def $class_static_selection_root(S, ptbytes, porigin_scope, porigin_called) = $s
 def $class_static_selection_root(S, ptbytes, porigin_scope, porigin_called) = (porigin_called)
   -- if ptbytes = $ptascii("static")
 def $class_static_selection_root(S, ptbytes, porigin_scope, porigin_called) = eps -- otherwise
+dec $from_current(pstate) : bool
 dec $class_static_selection_header(pstate, pstaticselection) : bool
 def $class_static_selection_header(S, pstaticselection) = true
   -- if $class_at(S.CLASSES, pstaticselection.ROOT) = (pclassdesc)
@@ -79,6 +80,7 @@ def $class_static_selection(S, poperand) = (pstaticselection)
   -- if $scoped_selector_class(S, poperand) = (porigin_root)
   -- if $class_static_selection_method(S, porigin) = (pmethoddesc)
   -- if $call_current_valid(S)
+  -- if ~$from_current(S)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
   -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
