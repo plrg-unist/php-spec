@@ -10,7 +10,7 @@ def $key_coalesce_array_base(pbase) = false -- otherwise
 def $key_coalesce_root(S, BASE_DIM (BASE_DIM pbase poperand z) poperand_outer z_outer) = $key_coalesce_root(S, BASE_DIM pbase poperand z)
 def $key_coalesce_write_root(S, BASE_DIM (BASE_DIM pbase poperand z) poperand_outer z_outer) = $key_coalesce_write_root(S, BASE_DIM pbase poperand z)
 def $key_coalesce_base_read_view(S, porigin, BASE_VALUE poperand) = (BASE_VALUE poperand)
-def $key_coalesce_base_read_view(S, porigin, BASE_PLACE porigin plocation) = (BASE_PLACE porigin plocation)
+def $key_coalesce_base_read_view(S, porigin, BASE_PLACE porigin NOWHERE) = (BASE_PLACE porigin NOWHERE)
 def $key_coalesce_base_read_view(S, porigin, BASE_DIM pbase poperand z_write) = (BASE_DIM pbase_read poperand z_read)
   -- if porigin = PORIGIN n pcpath
   -- if $code_at(S.CODE, n) = (pcode)
@@ -42,3 +42,74 @@ rule PhpStep/key-coalesce-intermediate-null: S ~> S[.TODO = $key_coalesce_tempor
   -- if $key_coalesce_walk(S.TODO)
   -- if $origin_child(S.ORIGIN, [PCFIELD 0]) = (porigin)
   -- if n = |S.STORE|
+
+;; Keyed ASSIGN_DIM creates the final entry before demanding a missing RHS.
+;; Its selected element is borrowed. A callback can attach a real constrained
+;; cell there, and the captured null is written even through a handler throw.
+dec $key_coalesce_rhs_begin(pstate, pkeywriter) : pstate
+dec $key_coalesce_rhs_place(pstate, pcoalesceread) : bool
+dec $key_coalesce_rhs_valid(pstate, pcoalesceread) : bool
+dec $key_coalesce_rhs_null(pstate, pcoalesceread) : pstate
+dec $key_coalesce_rhs_throw(pstate, pcoalesceread) : pstate
+def $key_coalesce_rhs_begin(S, pkeywriter) = $error_dispatch(S[.RESULT = KNOWN PNULL], 2, $ptascii("Undefined variable $") ++ n_name*, z_write, WARNING n_name* z_write, KEY_COALESCE_RHS_RESULT pcoalesceread)
+  -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE (BASE_DIM pbase poperand z_write) b z
+  -- if pkeywriter.RHS = VARIABLE n_name* z_rhs
+  -- if pcoalesceread = {WRITER pkeywriter, PLACE S.LOCATION, NAME n_name*, LINE z_write}
+def $key_write_finish(S, pkeywriter) = $key_coalesce_rhs_begin(S, pkeywriter)
+  -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE pbase b z
+  -- if S.LOCATION =/= NOWHERE
+  -- if $error_missing_operand(S, pkeywriter.RHS)
+def $task_nodes(KEY_COALESCE_RHS_RESULT pcoalesceread) = $key_write_finish_roots(pcoalesceread.WRITER)
+def $key_coalesce_rhs_place(S, pcoalesceread) = true
+  -- if pcoalesceread.PLACE = ELEMENT n pkey
+  -- if $origin_child((pcoalesceread.WRITER.TARGET), [PCFIELD 1]) = (porigin_key)
+  -- if $compiled_read(S, porigin_key) = eps
+def $key_coalesce_rhs_place(S, pcoalesceread) = true
+  -- if pcoalesceread.PLACE = ELEMENT n pkey
+  -- if $origin_child((pcoalesceread.WRITER.TARGET), [PCFIELD 1]) = (porigin_key)
+  -- if $compiled_read(S, porigin_key) = (pvalue)
+  -- if $key_selected_key(pvalue) = (pkey)
+def $key_coalesce_rhs_place(S, pcoalesceread) = false -- otherwise
+def $key_coalesce_rhs_valid(S, pcoalesceread) = true
+  -- if S.ORIGIN = (pcoalesceread.WRITER.SITE)
+  -- if pcoalesceread.WRITER.TASK = COALESCE_ASSIGN_WRITE (BASE_DIM pbase poperand z_write) b z
+  -- if $key_writer_valid(S, pcoalesceread.WRITER, eps)
+  -- if pcoalesceread.WRITER.RHS = VARIABLE pcoalesceread.NAME z_rhs
+  -- if pcoalesceread.LINE = z_write
+  -- if $key_coalesce_rhs_place(S, pcoalesceread)
+def $key_coalesce_rhs_valid(S, pcoalesceread) = false -- otherwise
+def $key_coalesce_rhs_null(S, pcoalesceread) = $write_cell_checked(S, n_cell, PNULL, pcoalesceread.LINE)
+  -- if pcoalesceread.PLACE = ELEMENT n pkey
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
+def $key_coalesce_rhs_null(S, pcoalesceread) = $location_write(S, pcoalesceread.PLACE, PNULL)
+  -- if pcoalesceread.PLACE = ELEMENT n pkey
+  -- if ~$alias_item($entry_lookup(S.ARRAYS[n].ITEMS, pkey))
+rule PhpStep/key-coalesce-rhs-resume: S ~> S_out[.HELD = S.HELD]
+  -- if S.TODO = (KEY_COALESCE_RHS_RESULT pcoalesceread) :: ptask_tail*
+  -- if $key_coalesce_rhs_valid(S, pcoalesceread)
+  -- if S_out = $key_coalesce_rhs_null($hold_task_inputs(S[.RESULT = KNOWN PNULL]), pcoalesceread)
+def $call_task_valid(S, KEY_COALESCE_RHS_RESULT pcoalesceread) = $key_coalesce_rhs_valid(S, pcoalesceread)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = KEY_COALESCE_RHS_RESULT pcoalesceread
+  -- if $key_coalesce_rhs_valid(S, pcoalesceread)
+  -- if perrorcall.SITE = pcoalesceread.WRITER.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pcoalesceread.LINE
+  -- if perrorcall.MESSAGE = $ptascii("Undefined variable $") ++ pcoalesceread.NAME
+  -- if perrorcall.EVENT = WARNING pcoalesceread.NAME pcoalesceread.LINE
+def $key_coalesce_rhs_throw(S, pcoalesceread) = S_written[.RESULT = S.RESULT][.HELD = S.HELD]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if S_probe = S[.HELD = S.HELD ++ $task_nodes(KEY_COALESCE_RHS_RESULT pcoalesceread)]
+  -- if $key_coalesce_rhs_valid(S_probe, pcoalesceread)
+  -- if S_written = $key_coalesce_rhs_null(S_probe, pcoalesceread)
+  -- if S_written.COMPLETION = NORMAL
+def $key_coalesce_rhs_throw(S, pcoalesceread) = $error_assign_rejected(S_probe, S_written)[.HELD = S.HELD]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if S_probe = S[.HELD = S.HELD ++ $task_nodes(KEY_COALESCE_RHS_RESULT pcoalesceread)]
+  -- if $key_coalesce_rhs_valid(S_probe, pcoalesceread)
+  -- if S_written = $key_coalesce_rhs_null(S_probe, pcoalesceread)
+  -- if S_written.COMPLETION =/= NORMAL
+def $key_coalesce_rhs_throw(S, pcoalesceread) = S -- otherwise
+def $error_read_discard(S, KEY_COALESCE_RHS_RESULT pcoalesceread) = $key_coalesce_rhs_throw(S, pcoalesceread)

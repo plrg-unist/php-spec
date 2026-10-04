@@ -112,6 +112,7 @@ def $key_write_valid(S, pkeywrite) = true
 def $key_write_finish(S, pkeywriter) = $write_operand(S, pkeywriter.RHS, z)
   -- if pkeywriter.TASK = COALESCE_ASSIGN_WRITE pbase b z
   -- if S.LOCATION =/= NOWHERE
+  -- if ~$error_missing_operand(S, pkeywriter.RHS)
 ;; A quiet callback may retire the original CV. Its later W walk can still
 ;; initialize null/undefined storage through the ordinary native W helper.
 def $key_coalesce_write_root(S, BASE_DIM (BASE_VALUE (VARIABLE n_name* z_base)) poperand z) = true

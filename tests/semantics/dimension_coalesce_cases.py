@@ -1,5 +1,18 @@
 """Native predictions for nested CV-array coalesce assignment."""
 CASES = [
+    ('multiline-late-rhs-uses-final-memoized-write-line', b'''<?php
+error_reporting(0);
+$seed=null;$a=[1=>[1=>$seed]];$outer=1.5;$inner=1.5;
+function key262(){echo "K;";return $GLOBALS['outer'];}
+set_error_handler(function($n,$m,$f,$l){if($n===2){echo "U:",$l,";";$GLOBALS['missing']=37;}else{echo "D:",$l,";";}return false;},30719);
+$r=($a[
+    key262()
+    +0.0
+][
+    $inner
+]??=$missing);restore_error_handler();
+echo "R:",$r===null?1:0,":",$a[1][1]===null?1:0,":",$missing,";";
+''', b'K;D:8;D:10;D:7;D:10;U:10;R:1:1:37;'),
     ('missing-prefix-key-kept-table-latches-null-and-deprecates', b'''<?php
 error_reporting(0);
 $seed=5;$a=[''=>[1=>$seed],1=>[1=>13]];$held=$a;
