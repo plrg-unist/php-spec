@@ -16,5 +16,14 @@
     "stderr": "",
     "exit": 0,
     "status": "ok"
+  },
+  {
+    "id": "shutdown-keyword-cached-private-callable-default",
+    "source": "<?php function w($n,$m,$f,$l){echo \"W:\",$l,\";\";return true;}class C{private const F=\"self::k\";static function reg(){register_shutdown_function([\"self\",\"h\"]);}private static function h(callable $f=self::F){echo $f,\":\",get_called_class(),\":\",func_num_args(),\";\";}private static function k(){}}class D extends C{}set_error_handler(\"w\");D::reg();",
+    "source_sha256": "5dd8d987df5012dea58ea0f1cf0949055d113b60f232602e78443926ac4e8922",
+    "stdout": "W:1;W:1;self::k:D:0;",
+    "stderr": "",
+    "exit": 0,
+    "status": "ok"
   }
 ]
