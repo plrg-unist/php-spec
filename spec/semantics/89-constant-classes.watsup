@@ -196,6 +196,7 @@ def $constant_expression_root(S, PORIGIN n pcpath) = (PORIGIN n (pcpath ++ [PCFI
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 expression phpType37 metadata)
 def $constant_expression_root(S, PORIGIN n pcpath) = (PORIGIN n (pcpath ++ [PCFIELD 1]))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NPropertyItem phpType40 expression metadata)
+def $constant_expression_root(S, TRAIT_MEMBER_ORIGIN porigin_owner porigin_source) = $constant_expression_root(S, $origin_source(porigin_source))
 def $constant_expression_root(S, porigin) = eps -- otherwise
 def $constant_expression_below(S, porigin_root, PORIGIN n pcpath) = true
   -- if $constant_expression_root(S, porigin_root) = (PORIGIN n pcpath_root)
@@ -331,7 +332,7 @@ def $constant_branches_at(S, n, eps) = true
 def $constant_branches_at(S, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($constant_node_branches_valid(S, PORIGIN n pcpath, pcnode) /\ $constant_branches_at(S, n, pcoccurrence*))
 def $constant_branches_valid(S) = $constant_branches_at(S, n, pcunit.OCCURRENCES)
   -- if S.CONSTCONTEXT = (pconstantcontext)
-  -- if pconstantcontext.ORIGIN = PORIGIN n pcpath
+  -- if $origin_source(pconstantcontext.ORIGIN) = PORIGIN n pcpath
   -- if $source_unit(S.SOURCES, n) = (pcunit)
 
 def $constant_fact_pool_valid(S, pconstantfact) = true
