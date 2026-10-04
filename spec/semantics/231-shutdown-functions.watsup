@@ -29,6 +29,7 @@ dec $shutdown_begin(pstate) : pstate
 dec $shutdown_stop(pstate) : pstate
 dec $shutdown_task_scope(pstate) : bool
 dec $shutdown_sent_valid(pstate, pshutdownentry, poperand*, nat) : bool
+dec $shutdown_current_sent_valid(pstate) : bool
 dec $shutdown_send_valid(pstate, nat, nat, poperand*) : bool
 dec $shutdown_reference_warning(pstate, nat, nat) : preqbytes
 dec $shutdown_reference_valid(pstate, nat, nat, poperand*) : bool
@@ -219,10 +220,10 @@ def $shutdown_ready(S) = false -- otherwise
 def $shutdown_abort_frames(S) = $shutdown_abort_frames($restore_frame(S)) -- if S.FRAMES =/= eps
 def $shutdown_abort_frames(S) = S -- if S.FRAMES = eps
 def $shutdown_clean(S) = $error_release_iterators($release_temporaries($silence_unwind($shutdown_abort_frames(S))))[.CURRENT = eps][.TODO = eps][.CONSTCONTEXT = eps][.HELD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.COMPILESTOP = false][.TRACE = eps][.ERRORFATALTRACE = eps][.ERRORORIGIN = eps]
-def $shutdown_begin(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_RUNNING][.SHUTDOWN.COMPLETION = S_report.COMPLETION][.COMPLETION = NORMAL][.TODO = [SHUTDOWN_SEND 0 0 eps]]
+def $shutdown_begin(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_RUNNING][.SHUTDOWN.SENT = eps][.SHUTDOWN.COMPLETION = S_report.COMPLETION][.COMPLETION = NORMAL][.TODO = [SHUTDOWN_SEND 0 0 eps]]
   -- if S_report = $shutdown_freeze(S)
   -- if S_clean = $shutdown_clean(S_report)
-def $shutdown_stop(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_DONE]
+def $shutdown_stop(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT = eps]
   -- if S_clean = $shutdown_clean($shutdown_freeze(S))
 def $drive_steps(S, n) = $drive_steps($prune_allocations($shutdown_begin(S)), n)
   -- if $shutdown_ready(S)
@@ -236,6 +237,7 @@ def $shutdown_state_valid(S) = true
   -- if $(S.SHUTDOWN.INDEX <= |S.SHUTDOWN.ENTRIES|)
   -- if S.SHUTDOWN.COMPLETION = NORMAL \/ $exit_completion(S.SHUTDOWN.COMPLETION) \/ $shutdown_frozen(S.SHUTDOWN.COMPLETION)
   -- if S.SHUTDOWN.PHASE =/= SHUTDOWN_PENDING \/ (S.SHUTDOWN.INDEX = 0 /\ S.SHUTDOWN.COMPLETION = NORMAL)
+  -- if $shutdown_current_sent_valid(S)
 def $shutdown_state_valid(S) = false -- otherwise
 
 ;; C argument preparation precedes ordinary arity and weak type reception.
@@ -252,6 +254,16 @@ def $shutdown_sent_valid(S, pshutdownentry, (REFERENCE n_cell) :: poperand*, n) 
   -- if $call_parameter_reference(S, pshutdownentry.TARGET, n)
   -- if $shutdown_sent_valid(S, pshutdownentry, poperand*, $(n + 1))
 def $shutdown_sent_valid(S, pshutdownentry, poperand*, n) = false -- otherwise
+;; The current prefix is borrowed. It fixes genuine wrapper cells across rebinding.
+def $shutdown_current_sent_valid(S) = true
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
+  -- if $(S.SHUTDOWN.INDEX < |S.SHUTDOWN.ENTRIES|)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[S.SHUTDOWN.INDEX]
+  -- if $(|S.SHUTDOWN.SENT| <= |pshutdownentry.ARGS|)
+  -- if $shutdown_sent_valid(S, pshutdownentry, S.SHUTDOWN.SENT, 0)
+def $shutdown_current_sent_valid(S) = (S.SHUTDOWN.SENT = eps)
+  -- if S.SHUTDOWN.PHASE =/= SHUTDOWN_RUNNING
+def $shutdown_current_sent_valid(S) = false -- otherwise
 def $shutdown_send_valid(S, n_index, n, poperand*) = true
   -- if $shutdown_task_scope(S)
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
@@ -259,13 +271,14 @@ def $shutdown_send_valid(S, n_index, n, poperand*) = true
   -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
   -- if $shutdown_entry_valid(S, pshutdownentry)
   -- if |poperand*| = n /\ $(n <= |pshutdownentry.ARGS|)
+  -- if poperand* = S.SHUTDOWN.SENT
   -- if $shutdown_sent_valid(S, pshutdownentry, poperand*, 0)
   -- if $call_sent_operands_valid(S, pshutdownentry.TARGET, 0, poperand*)
 def $shutdown_send_valid(S, n_index, n, poperand*) = false -- otherwise
 def $call_task_valid(S, SHUTDOWN_SEND n_index n poperand*) = ($shutdown_send_valid(S, n_index, n, poperand*) /\ S.ORIGIN = eps)
 def $task_nodes(SHUTDOWN_SEND n_index n poperand*) = $operands_roots(poperand*)
 def $call_after_origin(S, SHUTDOWN_SEND n_index n poperand*) = S[.ORIGIN = eps]
-rule PhpStep/shutdown-send-value: S ~> S[.TODO = [SHUTDOWN_SEND n_index $(n + 1) (poperand* ++ [KNOWN pshutdownentry.ARGS[n]])]]
+rule PhpStep/shutdown-send-value: S ~> S[.SHUTDOWN.SENT = poperand* ++ [KNOWN pshutdownentry.ARGS[n]]][.TODO = [SHUTDOWN_SEND n_index $(n + 1) (poperand* ++ [KNOWN pshutdownentry.ARGS[n]])]]
   -- if S.TODO = (SHUTDOWN_SEND n_index n poperand*) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $call_task_valid(S, SHUTDOWN_SEND n_index n poperand*)
@@ -307,7 +320,7 @@ def $shutdown_reference_valid(S, n_index, n, poperand*) = true
 def $shutdown_reference_valid(S, n_index, n, poperand*) = false -- otherwise
 def $call_task_valid(S, SHUTDOWN_REFERENCE n_index n poperand*) = $shutdown_reference_valid(S, n_index, n, poperand*)
 def $task_nodes(SHUTDOWN_REFERENCE n_index n poperand*) = $operands_roots(poperand*)
-rule PhpStep/shutdown-send-reference: S ~> S_cell[.TODO = [SHUTDOWN_SEND n_index $(n + 1) (poperand* ++ [S_cell.RESULT])]][.RESULT = KNOWN PNULL][.ORIGIN = eps]
+rule PhpStep/shutdown-send-reference: S ~> S_cell[.SHUTDOWN.SENT = poperand* ++ [S_cell.RESULT]][.TODO = [SHUTDOWN_SEND n_index $(n + 1) (poperand* ++ [S_cell.RESULT])]][.RESULT = KNOWN PNULL][.ORIGIN = eps]
   -- if S.TODO = (SHUTDOWN_REFERENCE n_index n poperand*) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $call_task_valid(S, SHUTDOWN_REFERENCE n_index n poperand*)
@@ -339,18 +352,19 @@ def $shutdown_result_valid(S, n_index, poperand*) = true
   -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
   -- if $shutdown_entry_valid(S, pshutdownentry)
   -- if |poperand*| = |pshutdownentry.ARGS|
+  -- if poperand* = S.SHUTDOWN.SENT
   -- if $shutdown_sent_valid(S, pshutdownentry, poperand*, 0)
 def $shutdown_result_valid(S, n_index, poperand*) = false -- otherwise
 def $call_task_valid(S, SHUTDOWN_RESULT n_index poperand*) = $shutdown_result_valid(S, n_index, poperand*)
 def $task_nodes(SHUTDOWN_RESULT n_index poperand*) = eps
 def $call_after_origin(S, SHUTDOWN_RESULT n_index poperand*) = S[.ORIGIN = eps]
-rule PhpStep/shutdown-result-next: S ~> S[.SHUTDOWN.INDEX = $(n_index + 1)][.TODO = [SHUTDOWN_SEND $(n_index + 1) 0 eps]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/shutdown-result-next: S ~> S[.SHUTDOWN.INDEX = $(n_index + 1)][.SHUTDOWN.SENT = eps][.TODO = [SHUTDOWN_SEND $(n_index + 1) 0 eps]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (SHUTDOWN_RESULT n_index poperand*) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $shutdown_result_valid(S, n_index, poperand*)
   -- if $exception_return_operand(S.RESULT)
   -- if $(n_index + 1 < |S.SHUTDOWN.ENTRIES|)
-rule PhpStep/shutdown-result-done: S ~> S[.SHUTDOWN.INDEX = $(n_index + 1)][.SHUTDOWN.PHASE = SHUTDOWN_DONE][.TODO = eps][.COMPLETION = S.SHUTDOWN.COMPLETION][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/shutdown-result-done: S ~> S[.SHUTDOWN.INDEX = $(n_index + 1)][.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT = eps][.TODO = eps][.COMPLETION = S.SHUTDOWN.COMPLETION][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (SHUTDOWN_RESULT n_index poperand*) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $shutdown_result_valid(S, n_index, poperand*)
@@ -384,6 +398,7 @@ def $shutdown_context_valid(S, pcallcontext) = true
   -- if pcallcontext.TARGET = pshutdownentry.TARGET
   -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
   -- if pcallcontext.ARGC = |pshutdownentry.ARGS| /\ |poperand*| = |pshutdownentry.ARGS|
+  -- if poperand* = S.SHUTDOWN.SENT
   -- if $shutdown_sent_valid(S, pshutdownentry, poperand*, 0)
   -- if pcallcontext.WRAPPER = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps
   -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
