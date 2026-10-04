@@ -71,5 +71,14 @@
     "stderr": "Deprecated: Constant E_STRICT is deprecated since 8.4, the error level was removed in {file} on line 1\nFatal error: C and T define the same property ($x) in the composition of C. However, the definition differs and is considered incompatible. Class was composed in {file} on line 1\nStack trace:\n#0 {main}\n",
     "exit": 255,
     "status": "php_error"
+  },
+  {
+    "id": "unused-return-temporary-keeps-live-private-callee",
+    "source": "<?php class L{function __destruct(){echo \"L;\";}}class C{private function __destruct(){echo \"C:\",get_called_class(),\";\";}static function make(){$l=new L;return new C;}}class P{function __destruct(){echo \"P;\";C::make();echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "985a531d109a0f075a0b8fe7dcf185d713051f413276b1a9e4eb5fbe89f3e2d6",
+    "stdout": "P;C:C;L;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
