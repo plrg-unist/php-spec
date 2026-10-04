@@ -17,7 +17,8 @@ STAGES = ['reference-uninitialized-error-chain', 'dimension-null-error-chain',
           'private-string-callback-allowed', 'protected-string-callback-allowed', 'reference-return-denied',
           'receiver-rhs-live-alias', 'receiver-uninitialized-unset', 'receiver-direct-demands',
           'unset-continuation-property', 'unset-continuation-static', 'static-reference-return-denied',
-          'static-reference-discarded-typed-slot', 'static-reference-constant-table-discarded']
+          'static-reference-discarded-typed-slot', 'static-reference-constant-table-discarded',
+          'static-reference-untyped-object', 'static-reference-untyped-scalar', 'static-reference-named-send']
 PREFIX = STRING_PREFIX + r'''
 dec $set_protocol_phase(pstate,nat) : bool
 def $set_protocol_phase(S,0) = true
@@ -51,6 +52,31 @@ def $set_protocol_phase(S,10) = true
   -- if S.TODO = (STMT (NStmtTryCatch phpType23 phpType65 phpType67 metadata)) :: ptask_tail*
   -- if S.CURRENT = eps /\ S.FRAMES = eps
   -- if $static_protocol_output(S.EVENTS) = $ptascii("2|A/B/0|")
+def $set_protocol_phase(S,11) = true
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $static_protocol_output(S.EVENTS) = $ptascii("A/B/0|D|")
+def $set_protocol_phase(S,12) = true
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $static_protocol_output(S.EVENTS) = $ptascii("A/B/0|D|A/B/0|U|")
+def $set_protocol_phase(S,13) = true
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $static_protocol_output(S.EVENTS) = $ptascii("A/B/0|null|")
+def $set_protocol_phase(S,14) = true
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $static_protocol_output(S.EVENTS) = $ptascii("A/B/0|null|A/B/0|C|")
+def $set_protocol_phase(S,15) = true
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $static_protocol_output(S.EVENTS) = $ptascii("A/B/0|null|A/B/0|C|Cannot assign array to reference held by property A::$t of type int|F|")
+def $set_protocol_phase(S,16) = true
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.NAME = $ptascii("put")
+  -- if $static_protocol_output(S.EVENTS) = $ptascii("A/B/0|P1|")
 def $set_protocol_phase(S,n) = false -- otherwise
 dec $set_protocol_seek(pstate,nat,nat) : pstate
 def $set_protocol_seek(S,n_phase,n) = S
@@ -94,7 +120,128 @@ def before(initial, phase):
             *valid('S_after')]
 
 
+def untyped_checkpoint(parent, state, phase):
+    return [state + '_found = $set_protocol_seek(' + parent + ',' + str(phase) + ',4096)',
+            state + '_found.COMPLETION = NORMAL \\/ ' + state + '_found.COMPLETION = BUDGET',
+            state + ' = ' + state + '_found[.COMPLETION = NORMAL]',
+            '$set_protocol_phase(' + state + ',' + str(phase) + ')',
+            state + '.CURRENT = eps /\\ ' + state + '.FRAMES = eps /\\ ' + state + '.RESULT = KNOWN PNULL /\\ ' + state + '.BASE = BASE_VALUE (KNOWN PNULL) /\\ ' + state + '.HELD = eps']
+
+
 def checks(initial, name):
+    if name == 'static-reference-named-send':
+        result = ['S_initial = ' + initial,
+                  'S_found = $set_protocol_seek(S_initial,16,4096)',
+                  'S_found.COMPLETION = NORMAL \\/ S_found.COMPLETION = BUDGET',
+                  'S_put = S_found[.COMPLETION = NORMAL]',
+                  '$set_protocol_phase(S_put,16)',
+                  'S_put.CURRENT = (pcallcontext)',
+                  'pcallcontext.ARGC = 1 /\\ pcallcontext.PARAMS = [$ptascii("v")] /\\ pcallcontext.WRAPPER = eps /\\ pcallcontext.NAMED = eps',
+                  'pcallcontext.LEXICAL_CLASS = eps /\\ pcallcontext.CALLED_CLASS = eps',
+                  'S_put.RESULT = KNOWN PNULL /\\ S_put.BASE = BASE_VALUE (KNOWN PNULL) /\\ S_put.HELD = eps',
+                  '$class_named(S_put.CLASSNAMES,$ptascii("a")) = (porigin_a)',
+                  '$class_named(S_put.CLASSNAMES,$ptascii("b")) = (porigin_b)',
+                  'S_put.CLASSSTATICS = [pclassstatic]',
+                  'pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)',
+                  '$class_static_select(S_put,porigin_a,$ptascii("p")) = (ppropertydesc)',
+                  '$class_static_select(S_put,porigin_b,$ptascii("p")) = (ppropertydesc)',
+                  'ppropertydesc.ORIGIN = pclassstatic.DECL /\\ ppropertydesc.TYPE = eps',
+                  '$lookup(S_put.ENV,$ptascii("v")) = n_cell',
+                  'S_put.STORE[n_cell] = DEFINED (PINT 1) /\\ n_cell <- S_put.REFCELLS /\\ (HCELL n_cell) <- S_put.ALLOCATIONS',
+                  'S_put.PROPREFS = eps',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_put).ROOTS) = 2 /\\ $heap_owners($heap_graph(S_put),HCELL n_cell) = 2',
+                  *valid('S_put'),
+                  'S_done = $drive_steps(S_put,4096)',
+                  'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+                  'S_done.RESULT = KNOWN PNULL /\\ S_done.BASE = BASE_VALUE (KNOWN (PINT 7)) /\\ S_done.HELD = eps',
+                  'S_done.CLASSSTATICS = S_put.CLASSSTATICS /\\ S_done.STORE[n_cell] = DEFINED (PINT 7) /\\ S_done.PROPREFS = eps',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_done).ROOTS) = 1 /\\ $heap_owners($heap_graph(S_done),HCELL n_cell) = 1',
+                  '$static_protocol_output(S_done.EVENTS) = $ptascii("A/B/0|P1|7")',
+                  *valid('S_done')]
+        return result, 'S_done'
+    if name == 'static-reference-untyped-object':
+        result = ['S_initial = ' + initial,
+                  *untyped_checkpoint('S_initial', 'S_raw', 11),
+                  '$class_named(S_raw.CLASSNAMES,$ptascii("a")) = (porigin_a)',
+                  '$class_named(S_raw.CLASSNAMES,$ptascii("b")) = (porigin_b)',
+                  'S_raw.CLASSSTATICS = [pclassstatic]',
+                  'pclassstatic.STATE = PROP_VALUE (DIRECT (POBJECT n_old))',
+                  '$class_static_select(S_raw,porigin_a,$ptascii("p")) = (ppropertydesc)',
+                  '$class_static_select(S_raw,porigin_b,$ptascii("p")) = (ppropertydesc)',
+                  'ppropertydesc.ORIGIN = pclassstatic.DECL /\\ ppropertydesc.TYPE = eps',
+                  'S_raw.PROPREFS = eps',
+                  '$heap_count(HOBJECT n_old,$heap_graph(S_raw).ROOTS) = 1 /\\ $heap_owners($heap_graph(S_raw),HOBJECT n_old) = 1',
+                  *valid('S_raw'),
+                  *untyped_checkpoint('S_raw', 'S_alias', 12),
+                  'S_alias.CLASSSTATICS = [pclassstatic_alias]',
+                  'pclassstatic_alias.STATE = PROP_VALUE (ALIAS n_cell)',
+                  'pclassstatic_alias = pclassstatic[.STATE = PROP_VALUE (ALIAS n_cell)]',
+                  'S_alias.STORE[n_cell] = DEFINED (POBJECT n_old)',
+                  'n_cell <- S_alias.REFCELLS /\\ (HCELL n_cell) <- S_alias.ALLOCATIONS',
+                  'S_alias.PROPREFS = eps',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_alias).ROOTS) = 2 /\\ $heap_owners($heap_graph(S_alias),HCELL n_cell) = 2',
+                  '$heap_count(HOBJECT n_old,$heap_graph(S_alias).ROOTS) = 0 /\\ $heap_owners($heap_graph(S_alias),HOBJECT n_old) = 1',
+                  *valid('S_alias'),
+                  'S_done = $drive_steps(S_alias,4096)',
+                  'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+                  'S_done.RESULT = KNOWN PNULL /\\ S_done.BASE = BASE_VALUE (KNOWN PNULL) /\\ S_done.HELD = eps',
+                  'S_done.CLASSSTATICS = S_alias.CLASSSTATICS /\\ S_done.PROPREFS = eps',
+                  'S_done.STORE[n_cell] = DEFINED (POBJECT n_new)',
+                  'n_new =/= n_old /\\ ~((HOBJECT n_old) <- S_done.ALLOCATIONS)',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_done).ROOTS) = 1 /\\ $heap_owners($heap_graph(S_done),HCELL n_cell) = 1',
+                  '$heap_count(HOBJECT n_new,$heap_graph(S_done).ROOTS) = 0 /\\ $heap_owners($heap_graph(S_done),HOBJECT n_new) = 1',
+                  '$property_read(S_done,POBJECT n_new,$ptascii("x"),1).RESULT = KNOWN (PINT 3)',
+                  '$static_protocol_output(S_done.EVENTS) = $ptascii("A/B/0|D|A/B/0|U|2|2|3|3")',
+                  *valid('S_done')]
+        return result, 'S_done'
+    if name == 'static-reference-untyped-scalar':
+        result = ['S_initial = ' + initial,
+                  *untyped_checkpoint('S_initial', 'S_raw', 13),
+                  '$class_named(S_raw.CLASSNAMES,$ptascii("a")) = (porigin_a)',
+                  '$class_named(S_raw.CLASSNAMES,$ptascii("b")) = (porigin_b)',
+                  '$class_static_select(S_raw,porigin_a,$ptascii("p")) = (ppropertydesc_p)',
+                  '$class_static_select(S_raw,porigin_b,$ptascii("p")) = (ppropertydesc_p)',
+                  '$class_static_select(S_raw,porigin_a,$ptascii("t")) = (ppropertydesc_t)',
+                  'ppropertydesc_p.TYPE = eps /\\ ppropertydesc_t.TYPE = [(PTBRANCH ([(PTBUILTIN "int")]))]',
+                  '$class_static_at(S_raw.CLASSSTATICS,ppropertydesc_p.ORIGIN) = (pclassstatic_p)',
+                  'pclassstatic_p.STATE = PROP_VALUE (DIRECT PNULL) /\\ S_raw.PROPREFS = eps',
+                  *valid('S_raw'),
+                  *untyped_checkpoint('S_raw', 'S_bound', 14),
+                  '$class_static_at(S_bound.CLASSSTATICS,ppropertydesc_p.ORIGIN) = (pclassstatic_p_bound)',
+                  'pclassstatic_p_bound.STATE = PROP_VALUE (ALIAS n_cell)',
+                  'pclassstatic_p_bound = pclassstatic_p[.STATE = PROP_VALUE (ALIAS n_cell)]',
+                  '$class_static_at(S_bound.CLASSSTATICS,ppropertydesc_t.ORIGIN) = (pclassstatic_t)',
+                  'pclassstatic_t.STATE = PROP_VALUE (ALIAS n_cell) /\\ S_bound.STORE[n_cell] = DEFINED (PINT 2)',
+                  'S_bound.PROPREFS = [ppropref]',
+                  'ppropref.CELL = n_cell /\\ ppropref.SOURCES = [CLASS_PROP_SOURCE ppropertydesc_t.ORIGIN]',
+                  '~$propref_source_present(S_bound.PROPREFS,n_cell,CLASS_PROP_SOURCE ppropertydesc_p.ORIGIN)',
+                  '~$class_statics_valid(S_bound[.PROPREFS = eps])',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_bound).ROOTS) = 3 /\\ $heap_owners($heap_graph(S_bound),HCELL n_cell) = 3',
+                  *valid('S_bound'),
+                  *untyped_checkpoint('S_bound', 'S_free', 15),
+                  '$class_static_at(S_free.CLASSSTATICS,ppropertydesc_p.ORIGIN) = (pclassstatic_p[.STATE = PROP_VALUE (ALIAS n_cell)])',
+                  '$class_static_at(S_free.CLASSSTATICS,ppropertydesc_t.ORIGIN) = (pclassstatic_t_free)',
+                  'pclassstatic_t_free.STATE = PROP_VALUE (ALIAS n_other)',
+                  'pclassstatic_t_free = pclassstatic_t[.STATE = PROP_VALUE (ALIAS n_other)]',
+                  'n_other =/= n_cell /\\ S_free.STORE[n_cell] = DEFINED (PINT 2) /\\ S_free.STORE[n_other] = DEFINED (PINT 7)',
+                  '$propref_at(S_free.PROPREFS,n_cell) = eps',
+                  'S_free.PROPREFS = [ppropref_new]',
+                  'ppropref_new.CELL = n_other /\\ ppropref_new.SOURCES = [CLASS_PROP_SOURCE ppropertydesc_t.ORIGIN]',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_free).ROOTS) = 2 /\\ $heap_owners($heap_graph(S_free),HCELL n_cell) = 2',
+                  '$heap_count(HCELL n_other,$heap_graph(S_free).ROOTS) = 2 /\\ $heap_owners($heap_graph(S_free),HCELL n_other) = 2',
+                  *valid('S_free'),
+                  'S_done = $drive_steps(S_free,4096)',
+                  'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+                  'S_done.RESULT = KNOWN PNULL /\\ S_done.BASE = BASE_VALUE (KNOWN PNULL) /\\ S_done.HELD = eps',
+                  'S_done.CLASSSTATICS = S_free.CLASSSTATICS /\\ S_done.PROPREFS = S_free.PROPREFS',
+                  'S_done.STORE[n_cell] = DEFINED (PARRAY n_array)',
+                  'S_done.STORE[n_other] = DEFINED (PINT 7)',
+                  '$heap_count(HCELL n_cell,$heap_graph(S_done).ROOTS) = 1 /\\ $heap_owners($heap_graph(S_done),HCELL n_cell) = 1',
+                  '$heap_count(HCELL n_other,$heap_graph(S_done).ROOTS) = 1 /\\ $heap_owners($heap_graph(S_done),HCELL n_other) = 1',
+                  '$heap_count(HARRAY n_array,$heap_graph(S_done).ROOTS) = 0 /\\ $heap_owners($heap_graph(S_done),HARRAY n_array) = 1',
+                  '$static_protocol_output(S_done.EVENTS) = $ptascii("A/B/0|null|A/B/0|C|Cannot assign array to reference held by property A::$t of type int|F|free|free|7|7")',
+                  *valid('S_done')]
+        return result, 'S_done'
     if name == 'static-reference-constant-table-discarded':
         result = ['S_initial = ' + initial,
                   'S_found = $set_protocol_seek(S_initial,10,4096)',

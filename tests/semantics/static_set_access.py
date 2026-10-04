@@ -211,6 +211,18 @@ CASES['static-reference-discarded-typed-slot'] = b'<?php class O{public int $x=1
 EXPECTED['static-reference-discarded-typed-slot'] = b'2|Cannot indirectly modify private(set) property A::$p from global scope|2'
 CASES['static-reference-constant-table-discarded'] = b'<?php class A{const int X=2;public private(set) static int $p=2;public static function &ref(){echo __CLASS__,"/",static::class,"/",func_num_args();return static::$p;}}class B extends A{const int X=9;const int U=self::V;const int V=4;}echo B::$p,"|";B::ref();echo "|";try{$r=&B::ref();$r=[];}catch(TypeError $e){echo "|",$e->getMessage();}echo "|",A::$p,"|",B::$p;'
 EXPECTED['static-reference-constant-table-discarded'] = b'2|A/B/0|A/B/0|Cannot assign array to reference held by property A::$p of type int|2|2'
+CASES['static-reference-untyped-object'] = b'<?php class O{public int $x=1;}class A{public static $p;public static function init(){self::$p=new O;}public static function &ref(){echo __CLASS__,"/",static::class,"/",func_num_args(),"|";return static::$p;}}class B extends A{}A::init();B::ref();echo "D|";$r=&B::ref();echo "U|";$r->x=2;echo A::$p->x,"|",B::$p->x;$r=new O;$r->x=3;unset($r);echo "|",A::$p->x,"|",B::$p->x;'
+EXPECTED['static-reference-untyped-object'] = b'A/B/0|D|A/B/0|U|2|2|3|3'
+CASES['static-reference-untyped-scalar'] = b'<?php class A{public static $p;public static int $t=0;public static function &ref(){echo __CLASS__,"/",static::class,"/",func_num_args(),"|";return static::$p;}}class B extends A{}B::ref();echo A::$p===null?"null|":"other|";$r=&B::ref();$r=2;A::$t=&$r;echo "C|";try{$r=[];}catch(TypeError $e){echo $e->getMessage(),"|";}$q=7;A::$t=&$q;echo "F|";$r=[];$r[]="free";echo A::$p[0],"|",B::$p[0],"|",A::$t,"|",B::$t;unset($r,$q);'
+EXPECTED['static-reference-untyped-scalar'] = b'A/B/0|null|A/B/0|C|Cannot assign array to reference held by property A::$t of type int|F|free|free|7|7'
+CASES['static-reference-untyped-visibility'] = b'<?php class A{private static $p=1;protected static $q=2;public static function &get(){echo __CLASS__,"/",static::class,"|";return self::$p;}}class B extends A{public static function &blocked(){echo "B/",static::class,"|";return parent::$p;}public static function &protectedRef(){return parent::$q;}}class C extends B{}try{$denied=&C::blocked();}catch(Error $e){echo $e->getMessage(),"|";}$r=&C::get();$r="private";echo $r,"|";$s=&C::protectedRef();$s=[];$s[]=3;echo $s[0];'
+EXPECTED['static-reference-untyped-visibility'] = b'B/C|Cannot access private property A::$p|A/C|private|3'
+CASES['static-reference-named-send'] = b'<?php class A{protected static $p=1;public static function &ref(){echo __CLASS__,"/",static::class,"/",func_num_args(),"|";return static::$p;}public static function read(){return self::$p;}}class B extends A{}function put(&$v){echo "P",func_num_args(),"|";$v=7;}put(v:B::ref());echo A::read();'
+EXPECTED['static-reference-named-send'] = b'A/B/0|P1|7'
+CASES['static-reference-value-send'] = b'<?php class A{public static $p=2;public static function value(){echo "V|";return self::$p;}}function put(&$v){echo "P|";$v=7;echo $v,"|";}put(A::value());echo A::$p;'
+EXPECTED['static-reference-value-send'] = b'V|P|7|2'
+CASES['static-reference-firstclass-send'] = b'<?php class A{public static function f(){echo "BAD";}}function put(&$v){echo "BAD";}try{put(A::f(...));}catch(Error $e){echo $e->getMessage();}'
+EXPECTED['static-reference-firstclass-send'] = b'put(): Argument #1 ($v) could not be passed by reference'
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -260,7 +272,9 @@ def main():
             assert native.returncode == 0, (name, native.returncode)
             if name in EXPECTED:
                 expected_stderr = (b'Warning: Undefined variable $missing in ' + os.fsencode(path) + b' on line 1\n'
-                                   if name == 'reference-write-cv-denied' else b'')
+                                   if name == 'reference-write-cv-denied' else
+                                   b'Notice: Only variables should be passed by reference in ' + os.fsencode(path) + b' on line 1\n'
+                                   if name == 'static-reference-value-send' else b'')
                 assert native.stdout == EXPECTED[name] and native.stderr == expected_stderr, (name, native.stdout, native.stderr)
             facts = {'version': 2, 'main': driver.b64(os.fsencode(path)),
                      'cwd': driver.b64(os.fsencode(directory)), 'include_path': driver.b64(b'.:'),

@@ -319,6 +319,8 @@ def $ppmethod_call_name(P, pcpath, expression) = $ppclearvalue($ppexpr(P, pcpath
 def $ppcall_deferred(NExprMethodCall expression phpType20 phpType6 metadata) = PPR
 def $ppcall_deferred(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = PPR
 def $ppcall_deferred(NExprStaticCall phpType19 phpType20 phpType6 metadata) = PPR
+def $ppsend_var(NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata) = true
+  -- if ~$ppfirstclass(phpType7*)
 def $ppcall_read(NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = true
 def $ppcall_read(NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata, PPR) = true
   -- if ~$ppfirstclass(phpType7*)
