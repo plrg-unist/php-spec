@@ -174,6 +174,14 @@ rule PhpStep/trait-class-magic: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PST
   -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $call_current_valid(S)
+def $constant_shape_class(S, porigin, PFMAGIC MAGICCLASS z_leaf) = PVSTRING true
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarMagicConstClass metadata)
+  -- if z_leaf = $source_line(metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $call_current_valid(S)
 
 def $default_parameter_origin(S, TRAIT_ORIGIN porigin_owner porigin_source ptbytes, n) = PORIGIN n_unit (pcpath ++ [PCFIELD 4, PCINDEX n])
   -- if $origin_source(porigin_source) = PORIGIN n_unit pcpath
