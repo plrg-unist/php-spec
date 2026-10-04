@@ -1,0 +1,247 @@
+{
+  "status": "PRIVATE_REVIEWED",
+  "scope": "PHP8.5.10 deprecated callable default/positional/named variadic reception and shared supplied slow-fallback warning/Stringable continuations; no paused-return or full-core claim.",
+  "code": {
+    "base": "3b622bb7fe17307c641394208b81249abcf5e046",
+    "semantic_revision": "018bd48760f1fc5ec9dae4882c8ff1467b607292",
+    "module248_sha256": "42ed1ac4264e4930c95c4a132e0dbe40f5354f41d602616f60021e2846e971bc",
+    "class_constant_default_fix": "Both folded/imported183 branches reject F.DEFAULT, matching default-specific Zend substitution flags."
+  },
+  "runtime": {
+    "oracle": "Vendored34308a6666b2d489c509541ea9befea9e2b42348 PHP8.5.10 CLI NTS64",
+    "reused_binaries": true,
+    "rebuild_claim": false,
+    "identities": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "numeric_runner_sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+    "caps": {
+      "jobs": 1,
+      "native_seconds": 45,
+      "model_steps": 100000,
+      "model_seconds": 45,
+      "outer_seconds": 55,
+      "numeric_seconds": 300
+    },
+    "environment": "Sources LC_ALL=C/TZ=UTC; numeric LC_ALL=C.UTF-8/TZ unset; PHP_SPEC_SCRIPT_ENCODING unset. Exact inherited OS limits and commands/exits are in launch records."
+  },
+  "compiler_checks": [
+    {
+      "record": ".tools/calls-dev14-default-variadic-20261004/compile-5qdsfk4b/command.json",
+      "revision": "7580626e1",
+      "modules": 231,
+      "exit": 0,
+      "stdout": "true",
+      "stderr": ""
+    },
+    {
+      "record": ".tools/calls-dev14-default-variadic-20261004/compile-9rpqk86s/command.json",
+      "revision": "018bd4876",
+      "modules": 231,
+      "exit": 0,
+      "stdout": "true",
+      "stderr": ""
+    }
+  ],
+  "source_checks": [
+    {
+      "report": ".tools/calls-dev14-default-variadic-20261004/source-author-2a2j_ctf/report.json",
+      "revision": "7580626e193742a91b2bc04b03cdeb2f1d9baba7",
+      "agreement_ids": [
+        "default-keyword-repeat",
+        "variadic-whole-reference-replacement",
+        "variadic-held-scalar-width",
+        "variadic-named-method-alias",
+        "variadic-value-snapshot-error",
+        "default-hole-order-v2",
+        "variadic-compound-held-prefix",
+        "variadic-retired-original-array",
+        "default-byref-omitted-hole",
+        "variadic-weak-current-scalar-fallback",
+        "variadic-strict-current-scalar-fallback",
+        "variadic-lossy-fallback-warning",
+        "variadic-constrained-string-fallback",
+        "variadic-constrained-current-exact-fallback",
+        "variadic-failed-lookup-dual-stringable"
+      ],
+      "nonagreements": [
+        {
+          "id": "variadic-handler-finally-throw",
+          "agreement": 0,
+          "model": {
+            "command": [
+              "/home/user/workspace/php-spec/.tools/calls-keyword-compound-current-13/bin/php-semantics",
+              "/home/user/workspace/php-spec/.tools/calls-review14-callable-receive-20261004/variadic-handler-finally-throw.php",
+              "--steps",
+              "100000",
+              "--timeout",
+              "45"
+            ],
+            "cwd": "/home/user/workspace/php-spec/.tools/calls-dev14-default-variadic-20261004/source-author-2a2j_ctf/variadic-handler-finally-throw",
+            "timeout": 55,
+            "exit": 1,
+            "status": "unsupported",
+            "reason": "internal class construction"
+          }
+        },
+        {
+          "id": "default-hole-error-priority",
+          "agreement": 0,
+          "model": {
+            "command": [
+              "/home/user/workspace/php-spec/.tools/calls-keyword-compound-current-13/bin/php-semantics",
+              "/home/user/workspace/php-spec/.tools/calls-review14-callable-receive-20261004/default-hole-error-priority.php",
+              "--steps",
+              "100000",
+              "--timeout",
+              "45"
+            ],
+            "cwd": "/home/user/workspace/php-spec/.tools/calls-dev14-default-variadic-20261004/source-author-2a2j_ctf/default-hole-error-priority",
+            "timeout": 55,
+            "exit": 1,
+            "status": "unsupported",
+            "reason": "internal class construction"
+          }
+        },
+        {
+          "id": "default-foreign-constant-owner",
+          "agreement": 0,
+          "model": {
+            "command": [
+              "/home/user/workspace/php-spec/.tools/calls-keyword-compound-current-13/bin/php-semantics",
+              "/home/user/workspace/php-spec/.tools/calls-review14-callable-receive-20261004/default-foreign-constant-owner.php",
+              "--steps",
+              "100000",
+              "--timeout",
+              "45"
+            ],
+            "cwd": "/home/user/workspace/php-spec/.tools/calls-dev14-default-variadic-20261004/source-author-2a2j_ctf/default-foreign-constant-owner",
+            "timeout": 55,
+            "exit": 0,
+            "status": "static_rejection",
+            "reason": null
+          }
+        }
+      ]
+    },
+    {
+      "report": ".tools/calls-dev14-default-variadic-20261004/source-author-11j2wpv3/report.json",
+      "revision": "018bd48760f1fc5ec9dae4882c8ff1467b607292",
+      "agreement_ids": [
+        "default-foreign-constant-owner",
+        "variadic-handler-finally-throw-exception",
+        "default-hole-error-priority-exception",
+        "variadic-lossy-fallback-finally-throw-exception"
+      ],
+      "nonagreements": []
+    },
+    {
+      "report": ".tools/calls-dev14-default-variadic-20261004/source-author-fubkss9o/report.json",
+      "revision": "018bd48760f1fc5ec9dae4882c8ff1467b607292",
+      "agreement_ids": [
+        "default-imported-class-constant",
+        "default-exact-union-bypass",
+        "fixed-failed-lookup-scalar-and-stringable",
+        "literal-callable-default-rejection"
+      ],
+      "nonagreements": []
+    },
+    {
+      "report": ".tools/calls-dev14-default-variadic-20261004/source-author-xpm826m1/report.json",
+      "revision": "018bd48760f1fc5ec9dae4882c8ff1467b607292",
+      "agreement_ids": [
+        "variadic-keyword-control",
+        "default-callable-hole-control"
+      ],
+      "nonagreements": []
+    }
+  ],
+  "state_checks": [
+    {
+      "report": ".tools/closure-call-protocol-u85qnnvm/report.json",
+      "revision": "018bd48760f1fc5ec9dae4882c8ff1467b607292",
+      "result": "pass",
+      "stable": true,
+      "records": [
+        {
+          "id": "failed-lookup-lossy-int-keeps-pre-warning-result",
+          "source_sha256": "d65a960ccb662c1cd3aa5ed88d360f1ec006f255f0acd00e1bd51007fff69ed3",
+          "assertions": 60,
+          "pass": true
+        },
+        {
+          "id": "failed-lookup-forces-dual-object-string-conversion",
+          "source_sha256": "3591dcfa772528cca7f41b58b13ede428f284ccfed32e11a8a2e7212082d60fd",
+          "assertions": 56,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "report": ".tools/closure-call-protocol-d1jpmlwd/report.json",
+      "revision": "018bd48760f1fc5ec9dae4882c8ff1467b607292",
+      "result": "pass",
+      "stable": true,
+      "records": [
+        {
+          "id": "default-warning-keeps-receiving-scope-and-formal-owner",
+          "source_sha256": "22d747d7db80dc1bdd7ca01b166b546a1b059803de0b229039f062f0f1291891",
+          "assertions": 65,
+          "pass": true
+        },
+        {
+          "id": "variadic-replaced-reference-keeps-borrowed-method-after-array-retirement",
+          "source_sha256": "2a2598d7122c15372d4dfcbc3683d65c6df8ed5de88e180a9c033599f2cd8b76",
+          "assertions": 70,
+          "pass": true
+        },
+        {
+          "id": "second-lossy-warning-throw-keeps-frozen-result-uncommitted",
+          "source_sha256": "e96ae5e784f022401b279723175fc58a480b14ee6de2c9d22e29de082c8bf298",
+          "assertions": 45,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "report": ".tools/closure-call-protocol-_7r5f0kp/report.json",
+      "revision": "018bd48760f1fc5ec9dae4882c8ff1467b607292",
+      "result": "pass",
+      "stable": true,
+      "records": [
+        {
+          "id": "named-default-hole-cannot-enter-supplied-api-stage",
+          "source_sha256": "92c961cd16a86a27b6e77a13a9eb6a7523c35d00f7513e3221d522d0951cf831",
+          "assertions": 35,
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "raw_launchers": [
+    ".tools/calls-dev14-default-variadic-20261004/state-author-bhjjvqud/command.json",
+    ".tools/calls-review14-callable-receive-20261004/state-review-e7moqe_2/command.json",
+    ".tools/calls-dev14-default-variadic-20261004/state-author-czbh3p0r/command.json"
+  ],
+  "preserved": {
+    "first_source_nonagreements": "Foreign class-constant default prematurely rejected at compile time; fixed on018 and compared by source11j2wpv3. RuntimeException originals stay Unsupported controls, zero agreement; exact Exception variants have fresh comparisons.",
+    "author_state_fixture_failure": ".tools/calls-dev14-default-variadic-20261004/state-author-8eybyv4m and private protocol-5_2belgg: constructor-inline length syntax failed before any semantic state. Only fixture bounds changed for the affected rerun.",
+    "native_originals": ".tools/calls-review14-callable-receive-20261004/native-pins-v1..v7.json and author native-pins-author-v1/v2.json; warmed order-v1 is not the cold ordering discriminator."
+  },
+  "tests": {
+    "sources": "tests/semantics/callable_receive_cases.json",
+    "protocol": "tests/semantics/callable_receive_protocol.py",
+    "new_state_conditions": 296,
+    "affected_old_hole_conditions": 35,
+    "cuts": "Source passes retain758/018; five source-derived states296 plus the affected old hole retain018. Exact fixture/source copying adds no execution credit. RuntimeException controls add no engine agreement."
+  },
+  "review": "Independent calls_review_14 signoff on018:180 real default/borrowed-history/throw conditions, scope/source/arena/index forgeries, budget resumption and retirement; author116 complementary entered loss-warning/converter conditions. Four additional compiler/shared-TYPE controls and affected old controls passed at their own reports. Actual-parent composition remains pending.",
+  "remaining": [
+    "Other internal callable consumers (exceptions247 owns its separate adapters).",
+    "User-return warning consumers; returns verification remains paused.",
+    "Magic/autoload, shortened/kind-changing retained method buffers and broader constructor/builtin converter dependencies."
+  ]
+}

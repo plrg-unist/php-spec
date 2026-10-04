@@ -4,6 +4,11 @@ The paired compiler90/runtime91 increment admits untyped positional default para
 
 Compiler17 normalizes signatures through its suspension interface and compiler90 uses the existing45 constant-expression pipeline in the declaration's namespace, imports and magic context. Every source default is compiled, including defaults removed by required-after-optional normalization. Function CODE owns actual parameter subtrees as well as the body. A surviving DEFAULTS entry records its zero-based index, original Param field6 origin and STORED or DEFERRED kind. Stored values borrow the existing unit pool. Parameter CODEEXPR entries retain emitted receive lines, including required parameters and discarded defaults.
 
+Class-constant references remain deferred under Zend's parameter-default
+substitution flags, including known own, foreign and imported constants.
+[Callable reception248](CALLABLE-RECEIVES.md) checks their completed values in
+the receiving frame without using the constant declaration as callable permission.
+
 After supplied operands bind and the callee activates, DEFAULT_RECEIVE fills omitted slots in order. Supplied operands skip default evaluation. Fully supplied calls keep their existing task schedule. Missing required parameters report the first missing parameter's opcode line and the normalized required count. A deferred receive evaluates through the existing expression machine under the actual parameter context, then DEFAULT_BIND writes the result. The context reuses the constant observer's source paths and recorded branch results; it never evaluates an expression again to infer allocation provenance.
 
 An omitted by-reference parameter starts in a fresh ordinary cell. Body alias acquisition promotes that cell. Each invocation owns its parameter values independently, so escaped aliases and array COW preserve repeated-call and recursive freshness. No reference wrapper is introduced solely from the signature flag.

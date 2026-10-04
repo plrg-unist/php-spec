@@ -7396,9 +7396,12 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/102-variadic-compiler.watsup",
-        "spec/semantics/103-positional-variadics.watsup"
+        "spec/semantics/103-positional-variadics.watsup",
+        "spec/semantics/248-callable-receives.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/callable_receive_protocol.py"
+      ],
       "source_tests": [
         "tests/semantics/variadic.py",
         "tests/semantics/variadic_cases.json",
@@ -7406,7 +7409,9 @@
         "tests/semantics/variadic_compiler_cases.json",
         "tests/semantics/variadic_protocol.py",
         "tests/semantics/variadic_state.py",
-        "coverage/semantics/variadic-review.json"
+        "coverage/semantics/variadic-review.json",
+        "tests/semantics/callable_receives.py",
+        "tests/semantics/callable_receive_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -7414,9 +7419,11 @@
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/Zend/zend_compile.c",
         "coverage/semantics/variadic-review.json",
-        "docs/semantics/SOURCE-POSITIONAL-VARIADICS.md"
+        "docs/semantics/SOURCE-POSITIONAL-VARIADICS.md",
+        "coverage/semantics/callable-receives-review.json",
+        "docs/semantics/CALLABLE-RECEIVES.md"
       ],
-      "review": "Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named user-function binding is now accepted1a562e8f; builtin execution and complete callable/type/object protocols remain required; array call unpack is separately reviewed in call-unpack-review.json. No family closure.",
+      "review": "Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named user-function binding is now accepted1a562e8f; builtin execution and complete callable/type/object protocols remain required; array call unpack is separately reviewed in call-unpack-review.json. No family closure. Module248 stages deprecated callable default and positional/named variadic reception in the authentic receiving frame, preserving named-hole preparation, live references, borrowed method receipts, slow scalar warnings and forced Stringable conversion. Literal defaults and exact unions retain their earlier priority; internal/return consumers remain required. Evidence cuts stay separate in callable-receives-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/named-variadic.php"
       ]
@@ -7522,13 +7529,15 @@
         "spec/semantics/95-typed-calls.watsup",
         "spec/semantics/84-call-integrity.watsup",
         "spec/semantics/235-internal-default-constructors.watsup",
-        "spec/semantics/240-internal-default-reception.watsup"
+        "spec/semantics/240-internal-default-reception.watsup",
+        "spec/semantics/248-callable-receives.watsup"
       ],
       "helper_tests": [
         "tests/semantics/signatures.py",
         "coverage/semantics/signatures.json",
         "tests/semantics/internal_default_constructor_protocol.py",
-        "tests/semantics/internal_default_reception_protocol.py"
+        "tests/semantics/internal_default_reception_protocol.py",
+        "tests/semantics/callable_receive_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/default_parameters.py",
@@ -7548,7 +7557,9 @@
         "tests/semantics/typed_function_state.py",
         "coverage/semantics/typed-function-review.json",
         "tests/semantics/internal_default_constructor_sources.py",
-        "tests/semantics/internal_default_reception_sources.py"
+        "tests/semantics/internal_default_reception_sources.py",
+        "tests/semantics/callable_receives.py",
+        "tests/semantics/callable_receive_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -7557,9 +7568,11 @@
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/typed-function-review.json",
         "coverage/semantics/internal-default-constructors-review.json",
-        "coverage/semantics/internal-default-reception-review.json"
+        "coverage/semantics/internal-default-reception-review.json",
+        "coverage/semantics/callable-receives-review.json",
+        "docs/semantics/CALLABLE-RECEIVES.md"
       ],
-      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Weak-null/Stringable/lossy suspended reception and rebound anonymous keyword NEW remain required; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects and rebound anonymous keyword defaults remain required; status stays partial.",
+      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Weak-null/Stringable/lossy suspended reception and rebound anonymous keyword NEW remain required; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects and rebound anonymous keyword defaults remain required; status stays partial. Module248 stages deprecated callable default and positional/named variadic reception in the authentic receiving frame, preserving named-hole preparation, live references, borrowed method receipts, slow scalar warnings and forced Stringable conversion. Literal defaults and exact unions retain their earlier priority; internal/return consumers remain required. Evidence cuts stay separate in callable-receives-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/named-variadic.php",
         "tests/semantics/conformance/parameter-global-relative-null.php",
@@ -7895,12 +7908,14 @@
         "spec/semantics/210-class-method-strings.watsup",
         "spec/semantics/211-error-handler-callables.watsup",
         "spec/semantics/221-keyword-compound-callables.watsup",
-        "spec/semantics/234-from-callable.watsup"
+        "spec/semantics/234-from-callable.watsup",
+        "spec/semantics/248-callable-receives.watsup"
       ],
       "helper_tests": [
         "tests/semantics/scoped_callables_protocol.py",
         "tests/semantics/keyword_compound_callables_protocol.py",
-        "tests/semantics/from_callable_protocol.py"
+        "tests/semantics/from_callable_protocol.py",
+        "tests/semantics/callable_receive_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/scoped_callables.py",
@@ -7908,7 +7923,9 @@
         "tests/semantics/keyword_compound_callables.py",
         "tests/semantics/keyword_compound_callables_cases.json",
         "tests/semantics/from_callable.py",
-        "tests/semantics/from_callable_cases.json"
+        "tests/semantics/from_callable_cases.json",
+        "tests/semantics/callable_receives.py",
+        "tests/semantics/callable_receive_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -7916,9 +7933,11 @@
         "vendor/php-src/Zend/zend_API.c",
         "vendor/php-src/Zend/zend_object_handlers.c",
         "coverage/semantics/keyword-compound-callables-current-review.json",
-        "coverage/semantics/from-callable-review.json"
+        "coverage/semantics/from-callable-review.json",
+        "coverage/semantics/callable-receives-review.json",
+        "docs/semantics/CALLABLE-RECEIVES.md"
       ],
-      "review": "Ordinary public/private/protected method-array and class-method-string admission uses the genuine receiving scope. Object selectors may redirect to lexical parent-private methods; concrete selectors use the requested table, and protected access follows the root prototype. Direct/captured/API selections retain distinct scope and error ordering. Module221 stages fixed supplied callable receives and error registration/dispatch for deprecated keyword/compound forms, retaining chosen classes and string bounds across live reference mutation. A narrow API target authenticates foreign-this compound selection without weakening ordinary scoped eligibility. Direct/FCC raw forms retain PHP lookup errors. Default/variadic, other internal and user-return warning consumers, magic/autoload and full callable closure remain required. See scoped-callables-current-review.json and keyword-compound-callables-current-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload and transformed fake-Closure binding remain required."
+      "review": "Ordinary public/private/protected method-array and class-method-string admission uses the genuine receiving scope. Object selectors may redirect to lexical parent-private methods; concrete selectors use the requested table, and protected access follows the root prototype. Direct/captured/API selections retain distinct scope and error ordering. Module221 stages fixed supplied callable receives and error registration/dispatch for deprecated keyword/compound forms, retaining chosen classes and string bounds across live reference mutation. A narrow API target authenticates foreign-this compound selection without weakening ordinary scoped eligibility. Direct/FCC raw forms retain PHP lookup errors. Default/variadic, other internal and user-return warning consumers, magic/autoload and full callable closure remain required. See scoped-callables-current-review.json and keyword-compound-callables-current-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload and transformed fake-Closure binding remain required. Module248 stages deprecated callable default and positional/named variadic reception in the authentic receiving frame, preserving named-hole preparation, live references, borrowed method receipts, slow scalar warnings and forced Stringable conversion. Literal defaults and exact unions retain their earlier priority; internal/return consumers remain required. Evidence cuts stay separate in callable-receives-review.json."
     },
     {
       "id": "calls.closure-binding",

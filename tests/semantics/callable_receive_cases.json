@@ -1,0 +1,152 @@
+[
+  {
+    "id": "default-keyword-repeat",
+    "source": "<?php\nclass ReceiveBase248 {\n    protected static function base() {}\n}\nclass ReceiveOwner248 extends ReceiveBase248 {\n    public const SELF_CB = ['self', 'own'];\n    public const PARENT_CB = ['parent', 'base'];\n    public const STATIC_CB = 'static::own';\n    private static function own() {}\n    public static function selfDefault(callable $cb = self::SELF_CB, int $tag = 0) {\n        echo 'S:', $tag, ':', self::class, ':', static::class, '|';\n    }\n    public static function parentDefault(callable $cb = self::PARENT_CB) { echo 'P|'; }\n    public static function staticDefault(callable $cb = self::STATIC_CB) { echo 'T|'; }\n}\nclass ReceiveChild248 extends ReceiveOwner248 {}\nclass ReceiveCaller248 {\n    public static function go() {\n        ReceiveChild248::selfDefault();\n        ReceiveChild248::selfDefault();\n        ReceiveChild248::selfDefault(tag: 7);\n        ReceiveChild248::parentDefault();\n        ReceiveChild248::staticDefault();\n    }\n}\nset_error_handler(function ($level, $message) { echo 'D:', $message, '|'; return true; });\nReceiveCaller248::go();\nrestore_error_handler();\n",
+    "source_sha256": "1c462579c6442f7ecf4987719a919ee9722ac387fea275a24968da4d24e08363",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-whole-reference-replacement",
+    "source": "<?php\nclass ReceiveReplace248 {\n    private static function ok() {}\n    public static function take(callable &...$items) {\n        echo 'B:', $items[0], ':', $items[1][0], ':', $items[1][1], '|';\n    }\n}\n$first = ['self', 'ok'];\n$keep = $first;\n$second = ['self', 'missing'];\nset_error_handler(function ($level, $message) use (&$first, &$second) {\n    echo 'D|';\n    $first = 7;\n    $second = ['ReceiveReplace248', 'ok'];\n    return true;\n});\nReceiveReplace248::take($first, $second);\necho 'A:', $first, ':', $second[0], '|';\nrestore_error_handler();\n",
+    "source_sha256": "103d62efea16fd07bee618c26f8fd789255201cd51f91d080c448f67588927e1",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-held-scalar-width",
+    "source": "<?php\nclass ReceiveWidth248 {\n    private static function ok() {}\n    public static function take(callable &...$items) { echo 'B:', $items[0], '|'; }\n}\n$method = 'self::xx';\nset_error_handler(function ($level, $message) use (&$method) {\n    echo 'D|'; $method = 'self::okay'; return true;\n});\nReceiveWidth248::take($method);\necho 'A:', $method, '|';\nrestore_error_handler();\n",
+    "source_sha256": "79d4cacd677e8cff8520aeb517476fd8f1a24202795944938c92564d455e95ca",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-named-method-alias",
+    "source": "<?php\nclass ReceiveNamed248 {\n    private static function ok() {}\n    public static function take(int $head, callable &...$items) {\n        echo 'B:', $head, ':', $items['first'][1], ':', $items['later'][0], '|';\n        $items['later'] = ['ReceiveNamed248', 'ok'];\n    }\n}\n$name = 'xx';\n$first = ['self', &$name];\n$later = ['self', 'missing'];\nset_error_handler(function ($level, $message) use (&$name, &$later) {\n    echo 'D|'; $name = 'ok'; $later = ['ReceiveNamed248', 'ok']; return true;\n});\nReceiveNamed248::take(head: 4, first: $first, later: $later);\necho 'A:', $name, ':', $later[1], '|';\nrestore_error_handler();\n",
+    "source_sha256": "b466da6c87437d590329bff8bfd9c32c08aa49eb782cb61eb7e58e681d11b0ff",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-value-snapshot-error",
+    "source": "<?php\nclass ReceiveSnapshot248 {\n    private static function ok() {}\n    public static function take(callable ...$items) { echo 'BODY|'; }\n}\n$name = 'xx';\n$first = ['self', &$name];\n$later = 'self::missing';\nset_error_handler(function ($level, $message) use (&$name, &$later) {\n    echo 'D|'; $name = 'ok'; $later = 'ReceiveSnapshot248::ok'; return true;\n});\ntry { ReceiveSnapshot248::take($first, $later); }\ncatch (Throwable $error) { echo get_class($error), ':', $error->getMessage(), '|'; }\necho 'A:', $name, ':', $later, '|';\nrestore_error_handler();\n",
+    "source_sha256": "04599816daaa8d549ef6e9f741efaaf0c1fb3583fac2a467366d5c2c136cb389",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-handler-finally-throw-exception",
+    "source": "<?php\nclass ReceiveThrow248 {\n    private static function ok() {}\n    public static function take(callable &...$items) { echo 'BODY|'; }\n}\n$first = ['self', 'ok'];\n$later = ['self', 'missing'];\nset_error_handler(function ($level, $message) use (&$later) {\n    echo 'D|';\n    try { throw new Exception('stop'); }\n    finally { echo 'F|'; $later = ['ReceiveThrow248', 'ok']; }\n});\ntry { ReceiveThrow248::take($first, $later); }\ncatch (Throwable $error) { echo get_class($error), ':', $error->getMessage(), '|'; }\necho 'A:', $first[0], ':', $later[1], '|';\nrestore_error_handler();\n",
+    "source_sha256": "17e7bd4ef5daf3b20569492ae0ede0ec2105eea22275f9dea6a23c9c0f97cf1d",
+    "expected_model": "normal"
+  },
+  {
+    "id": "default-hole-order-v2",
+    "source": "<?php\nclass ReceiveOrderCold248 {\n    public const CB = ['self', 'ok'];\n    private static function ok() {}\n    public static function tail(callable $cb = self::CB, int $old = E_STRICT, int $tag = 0) {\n        echo 'B:', $old, ':', $tag, '|';\n    }\n    public static function hole(callable $cb = self::CB, int $old = E_STRICT, int $tag = 0) {\n        echo 'B:', $old, ':', $tag, '|';\n    }\n}\nset_error_handler(function ($level, $message) { echo 'D:', $message, '|'; return true; });\necho 'TAIL|'; ReceiveOrderCold248::tail();\necho 'HOLE|'; ReceiveOrderCold248::hole(tag: 8);\nrestore_error_handler();\n",
+    "source_sha256": "75df37775cfbdf9935dd76b81eb1ce19eb7334c42fd600d4727b5ede400e0a00",
+    "expected_model": "normal"
+  },
+  {
+    "id": "default-hole-error-priority-exception",
+    "source": "<?php\nclass ReceivePriority248 {\n    public const CB = ['self', 'missing'];\n    public static function tail(callable $cb = self::CB, int $old = E_STRICT, int $tag = 0) { echo 'BODY|'; }\n    public static function hole(callable $cb = self::CB, int $old = E_STRICT, int $tag = 0) { echo 'BODY|'; }\n}\nset_error_handler(function ($level, $message) {\n    if ($message === 'Use of \"self\" in callables is deprecated') { echo 'SELF|'; return true; }\n    echo 'CONSTANT|'; throw new Exception('prepare');\n});\necho 'TAIL|';\ntry { ReceivePriority248::tail(); }\ncatch (Throwable $error) { echo get_class($error), '|'; }\necho 'HOLE|';\ntry { ReceivePriority248::hole(tag: 8); }\ncatch (Throwable $error) { echo get_class($error), ':', $error->getMessage(), '|'; }\nrestore_error_handler();\n",
+    "source_sha256": "151457cd1ecc0527355835741e7c7cc1278036e56570993461d8919cc736c1ab",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-compound-held-prefix",
+    "source": "<?php\nclass ReceiveBase248 { protected static function ok() {} }\nclass OtherlyBase248 {}\nclass ReceiveCompound248 extends ReceiveBase248 {\n    public static function take(callable &...$items) { echo 'B:', $items[0][1], '|'; }\n}\n$method = 'ReceiveBase248::xx';\n$input = ['ReceiveCompound248', &$method];\nset_error_handler(function ($level, $message) use (&$method) {\n    echo 'D|'; $method = 'OtherlyBase248::ok'; return true;\n});\nReceiveCompound248::take($input);\necho 'A:', $method, '|';\nrestore_error_handler();\n",
+    "source_sha256": "1ab232b441892317bb0eecd264b459e6e8d2417f6c3919abe832e84d3618187e",
+    "expected_model": "normal"
+  },
+  {
+    "id": "default-foreign-constant-owner",
+    "source": "<?php\nclass ReceiveConstantOwner248 { public const CB = ['self', 'only']; }\nclass ReceivePermission248 {\n    private static function only() {}\n    public static function take(callable $cb = ReceiveConstantOwner248::CB, int $tag = 0) {\n        echo 'B:', self::class, ':', static::class, ':', $tag, '|';\n    }\n}\nclass ReceivePermissionChild248 extends ReceivePermission248 {}\nclass ReceiveForeignCaller248 {\n    public static function go() {\n        ReceivePermissionChild248::take();\n        ReceivePermissionChild248::take(tag: 3);\n    }\n}\nset_error_handler(function ($level, $message) { echo 'D|'; return true; });\nReceiveForeignCaller248::go();\nrestore_error_handler();\n",
+    "source_sha256": "22d747d7db80dc1bdd7ca01b166b546a1b059803de0b229039f062f0f1291891",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-retired-original-array",
+    "source": "<?php\nclass ReceiveRetired248 {\n    private static function ok() {}\n    public static function take(callable &...$items) { echo 'B:', $items[0], '|'; }\n}\n$method = 'ok';\n$input = ['self', &$method];\nset_error_handler(function ($level, $message) use (&$input) {\n    echo 'D|'; $input = 7; return true;\n});\nReceiveRetired248::take($input);\necho 'A:', $input, ':', $method, '|';\nrestore_error_handler();\n",
+    "source_sha256": "2a2598d7122c15372d4dfcbc3683d65c6df8ed5de88e180a9c033599f2cd8b76",
+    "expected_model": "normal"
+  },
+  {
+    "id": "default-byref-omitted-hole",
+    "source": "<?php\nclass ReceiveRefDefault248 {\n    public const CB = ['self', 'ok'];\n    private static function ok() {}\n    public static function take(callable &$cb = self::CB, int $tag = 0) { echo 'B:', $tag, '|'; }\n}\nset_error_handler(function ($level, $message) { echo 'D|'; return true; });\nReceiveRefDefault248::take();\nReceiveRefDefault248::take(tag: 6);\nrestore_error_handler();\n",
+    "source_sha256": "198a82f694e4a1f2b994ecb6a2ca2e371ab2914e5787e89f10c6646bf429fe15",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-weak-current-scalar-fallback",
+    "source": "<?php\nclass ReceiveWeakFallback248 {\n    public static function take(callable|int &...$items) { echo 'B:', $items[0], '|'; }\n}\n$method = 'missing';\n$input = ['self', &$method];\nset_error_handler(function ($level, $message) use (&$input) { echo 'D|'; $input = 7; return true; });\ntry { ReceiveWeakFallback248::take($input); }\ncatch (Throwable $error) { echo get_class($error), '|'; }\necho 'A:', $input, '|';\nrestore_error_handler();\n",
+    "source_sha256": "45a3eceb499dadb1bc2fcada1cdc27fd93e0f1bea9ea27a12ea32c3d18900748",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-strict-current-scalar-fallback",
+    "source": "<?php\ndeclare(strict_types=1);\nclass ReceiveStrictFallback248 {\n    public static function take(callable|int &...$items) { echo 'B:', $items[0], '|'; }\n}\n$method = 'missing';\n$input = ['self', &$method];\nset_error_handler(function ($level, $message) use (&$input) { echo 'D|'; $input = 7; return true; });\ntry { ReceiveStrictFallback248::take($input); }\ncatch (Throwable $error) { echo get_class($error), '|'; }\necho 'A:', $input, '|';\nrestore_error_handler();\n",
+    "source_sha256": "de14fa5c09e54a022f09402f0b9397c807f0ec253289d9b6014d7adf91017556",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-lossy-fallback-warning",
+    "source": "<?php\nclass ReceiveLossyFallback248 {\n    public static function take(callable|int &...$items) { echo 'B:', $items[0], '|'; }\n}\n$input = 'self::xx';\n$hits = 0;\nset_error_handler(function ($level, $message) use (&$input, &$hits) {\n    $hits++;\n    echo 'D:', $message, '|';\n    if ($hits === 1) { $input = '123456.5'; }\n    else { $input = 99; }\n    return true;\n});\nReceiveLossyFallback248::take($input);\necho 'A:', $input, ':', $hits, '|';\nrestore_error_handler();\n",
+    "source_sha256": "d65a960ccb662c1cd3aa5ed88d360f1ec006f255f0acd00e1bd51007fff69ed3",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-constrained-string-fallback",
+    "source": "<?php\nclass ReceiveConstrainedString248 {\n    public static string $input = 'self::xx';\n    public static function take(callable|int &...$items) { echo 'BODY|'; }\n}\n$value =& ReceiveConstrainedString248::$input;\nset_error_handler(function ($level, $message) use (&$value) { echo 'D|'; $value = '123456.5'; return true; });\ntry { ReceiveConstrainedString248::take($value); }\ncatch (Throwable $error) { echo get_class($error), '|'; }\necho 'A:', $value, '|';\nrestore_error_handler();\n",
+    "source_sha256": "e7b5d7cc5a8cba69ec126852f1dedb5e78f93b895e28b12f9c50cedffe7f8c23",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-constrained-current-exact-fallback",
+    "source": "<?php\nclass ReceiveConstrainedExact248 {\n    public static array|int $input = [];\n    public static function take(callable|int &...$items) { echo 'BODY|'; }\n}\n$method = 'missing';\nReceiveConstrainedExact248::$input = ['self', &$method];\n$value =& ReceiveConstrainedExact248::$input;\nset_error_handler(function ($level, $message) use (&$value) { echo 'D|'; $value = 7; return true; });\ntry { ReceiveConstrainedExact248::take($value); }\ncatch (Throwable $error) { echo get_class($error), '|'; }\necho 'A:', $value, '|';\nrestore_error_handler();\n",
+    "source_sha256": "6d1d8172594ac469c5164e5c799778f0274d3e894e5a4955a468055c960bcbe3",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-failed-lookup-dual-stringable",
+    "source": "<?php\nclass ReceiveDualStringable248 {\n    public function __invoke() { echo 'INVOKE|'; }\n    public function __toString(): string { echo 'T|'; return 'converted'; }\n}\nclass ReceiveDualFallback248 {\n    public static function take(callable|string &...$items) {\n        echo 'B:', $items[0] === 'converted' ? 'string' : 'other', '|';\n    }\n}\n$method = 'missing';\n$input = ['self', &$method];\nset_error_handler(function ($level, $message) use (&$input) {\n    echo 'D|'; $input = new ReceiveDualStringable248; return true;\n});\nReceiveDualFallback248::take($input);\necho 'A:', $input, '|';\nrestore_error_handler();\n",
+    "source_sha256": "3591dcfa772528cca7f41b58b13ede428f284ccfed32e11a8a2e7212082d60fd",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-lossy-fallback-finally-throw-exception",
+    "source": "<?php\nclass ReceiveLossyThrow248 {\n    public static function take(callable|int &...$items) { echo 'BODY|'; }\n}\n$input = 'self::xx';\n$hits = 0;\nset_error_handler(function ($level, $message) use (&$input, &$hits) {\n    $hits++;\n    echo 'D:', $message, '|';\n    if ($hits === 1) { $input = '123456.5'; }\n    else {\n        try { throw new Exception('loss'); }\n        finally { echo 'F|'; $input = 77; }\n    }\n    return true;\n});\ntry { ReceiveLossyThrow248::take($input); }\ncatch (Exception $error) { echo 'C:', $error->getMessage(), '|'; }\necho 'A:', $input, ':', $hits, '|';\nrestore_error_handler();\n",
+    "source_sha256": "e96ae5e784f022401b279723175fc58a480b14ee6de2c9d22e29de082c8bf298",
+    "expected_model": "normal"
+  },
+  {
+    "id": "variadic-handler-finally-throw",
+    "source": "<?php\nclass ReceiveThrow248 {\n    private static function ok() {}\n    public static function take(callable &...$items) { echo 'BODY|'; }\n}\n$first = ['self', 'ok'];\n$later = ['self', 'missing'];\nset_error_handler(function ($level, $message) use (&$later) {\n    echo 'D|';\n    try { throw new RuntimeException('stop'); }\n    finally { echo 'F|'; $later = ['ReceiveThrow248', 'ok']; }\n});\ntry { ReceiveThrow248::take($first, $later); }\ncatch (Throwable $error) { echo get_class($error), ':', $error->getMessage(), '|'; }\necho 'A:', $first[0], ':', $later[1], '|';\nrestore_error_handler();\n",
+    "source_sha256": "ac6b69a76b81481c997aac85d50304fbeb4a551db52dfa6ccaff0a098d647c4d",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "default-hole-error-priority",
+    "source": "<?php\nclass ReceivePriority248 {\n    public const CB = ['self', 'missing'];\n    public static function tail(callable $cb = self::CB, int $old = E_STRICT, int $tag = 0) { echo 'BODY|'; }\n    public static function hole(callable $cb = self::CB, int $old = E_STRICT, int $tag = 0) { echo 'BODY|'; }\n}\nset_error_handler(function ($level, $message) {\n    if ($message === 'Use of \"self\" in callables is deprecated') { echo 'SELF|'; return true; }\n    echo 'CONSTANT|'; throw new RuntimeException('prepare');\n});\necho 'TAIL|';\ntry { ReceivePriority248::tail(); }\ncatch (Throwable $error) { echo get_class($error), '|'; }\necho 'HOLE|';\ntry { ReceivePriority248::hole(tag: 8); }\ncatch (Throwable $error) { echo get_class($error), ':', $error->getMessage(), '|'; }\nrestore_error_handler();\n",
+    "source_sha256": "e77039a80eaa13d6f4a1b468c2db27c22faf284ce9dca867ccfcff5a110b0f26",
+    "expected_model": "unsupported"
+  },
+  {
+    "id": "default-imported-class-constant",
+    "source": "<?php\nclass ImportedDefaultConstant248 { public const CB = ['self', 'only']; }\neval('class ImportedDefaultOwner248 {\n private static function only() {}\n public static function take(callable $cb=ImportedDefaultConstant248::CB, int $tag=0) {\n  echo \"B:\", self::class, \":\", static::class, \":\", $tag, \"|\";\n }\n}\nclass ImportedDefaultChild248 extends ImportedDefaultOwner248 {}');\nset_error_handler(function($level,$message) { echo 'D|'; return true; });\nImportedDefaultChild248::take();\nImportedDefaultChild248::take(tag:3);\nrestore_error_handler();\n",
+    "source_sha256": "d09a1beb37124b609248a058d429709b4c8058a10e144aed0343bb766d288b68",
+    "expected_model": "normal"
+  },
+  {
+    "id": "default-exact-union-bypass",
+    "source": "<?php\nclass ExactReceive248 {\n public const CB = ['self', 'missing'];\n public static function defaults(callable|array $cb=self::CB, int $tag=0) { echo 'B:', $tag, '|'; }\n public static function strings(callable|string ...$values) { echo 'S:', $values[0], ':', $values['named'], '|'; }\n public static function arrays(callable|array ...$values) { echo 'A:', $values[0][1], ':', $values['named'][1], '|'; }\n}\nset_error_handler(function($level,$message) { echo 'WRONG-WARNING|'; return true; });\nExactReceive248::defaults();\nExactReceive248::defaults(tag:2);\nExactReceive248::strings('self::missing', named:'parent::missing');\nExactReceive248::arrays(['self','missing'], named:['parent','missing']);\nrestore_error_handler();\n",
+    "source_sha256": "dc3212f85fcd529f4352464076928a5d4a3af95d1908d73164d6575f80ad4923",
+    "expected_model": "normal"
+  },
+  {
+    "id": "fixed-failed-lookup-scalar-and-stringable",
+    "source": "<?php\nclass FixedDual248 {\n public function __invoke() { echo 'WRONG-INVOKE|'; }\n public function __toString(): string { echo 'T|'; return 'fixed'; }\n}\nclass FixedFallback248 {\n public static function reject(callable|int &$value) { echo 'WRONG-BODY|'; }\n public static function convert(callable|string &$value) { echo 'B:', $value, '|'; }\n}\n$method='missing'; $input=['self', &$method]; $mode=0;\nset_error_handler(function($level,$message) use(&$input,&$mode) {\n echo 'D|'; $input=$mode===0?7:new FixedDual248; return true;\n});\ntry { FixedFallback248::reject($input); } catch(TypeError $error) { echo 'R:', $input, '|'; }\n$mode=1; $input=['self', &$method];\nFixedFallback248::convert($input);\necho 'A:', $input, '|';\nrestore_error_handler();\n",
+    "source_sha256": "aa68f946510e345678fbb3c10dd494fd49c4c2b73a8fa831cf9caec866c30cff",
+    "expected_model": "normal"
+  },
+  {
+    "id": "literal-callable-default-rejection",
+    "source": "<?php\nfunction literalCallableDefault248(callable $value=['self','only']) {}\n",
+    "source_sha256": "c03570c975edb2bf288138b34bd9ce737877b2ef19db8050fbf162ffd0681d8f",
+    "expected_model": "static_rejection"
+  }
+]

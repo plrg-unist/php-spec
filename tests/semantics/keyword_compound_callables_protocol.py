@@ -358,8 +358,8 @@ CASES['named-default-hole-cannot-enter-supplied-api-stage'] = {
         'S.EVENTS = [OUTPUT $ptascii("S|")]',
         *VALID,
         'S_done = $drive(S, 3000)',
-        'S_done.COMPLETION = UNSUPPORTED "deprecated callable admission continuation"',
-        'S_done.EVENTS = [OUTPUT $ptascii("S|")]',
+        'S_done.COMPLETION = NORMAL',
+        'S_done.EVENTS = [OUTPUT $ptascii("S|"), OUTPUT $ptascii("D|"), OUTPUT $ptascii("body")]',
         *AFTER,
     ],
 }

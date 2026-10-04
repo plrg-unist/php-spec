@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Callable default/variadic reception248 now suspends keyword/compound lookup in
+actual receiving frames. Deferred class-constant defaults, named-hole preparation
+and supplied/variadic operands keep their distinct order and ownership. Referenced
+methods and current/future operands remain live, including borrowed retired arrays.
+Failed lookup checks constrained sources before slow scalar fallback; lossy
+warnings freeze their result and dual-role objects still invoke Stringable.
+Author116 and independent180 conditions pass on018, with exact source agreements
+at separate758/018 cuts and affected221 hole/variadic controls. Original compiler
+and fixture failures stay preserved; RuntimeException Unsupported controls have
+zero agreement. The [contract](docs/semantics/CALLABLE-RECEIVES.md)
+and [ledger](coverage/semantics/callable-receives-review.json) retain these cutoffs.
+Other internal and user-return consumers remain required; return verification
+stays paused and complete core remains open.
+
 Shutdown registration231 caches callable selection, private/rebound permission
 and copied arguments after all argument effects. Ordered callbacks run after
 normal, exit and fatal/uncaught paths, including serviced compiler failures.
@@ -130,8 +144,8 @@ raw keyword/compound calls preserve ordinary PHP lookup errors. The
 records independent pins, affected checks and preserved failures. Actual include,
 cold-static and GLOBALS interactions preserve real USER permission, constrained
 references and captured null; initializer locations retain their declaration owner.
-Default/variadic, other internal and user-return warning consumers remain
-required; unstaged special callable conversion stays Unsupported.
+Default/variadic reception is covered by248 above; other internal and user-return
+warning consumers remain required. Unstaged special conversion stays Unsupported.
 
 `Closure::fromCallable`234 selects and creates durable captures over existing core
 callable forms. Existing Closure inputs preserve identity; method captures freeze
