@@ -431,7 +431,7 @@ def $eval_trace_saved_before(S, pcallcontext?, pframe :: pframe_tail*, n_owner, 
 dec $eval_exception_trace_from(pstate, ptraceframe*) : ptraceframe*
 def $eval_exception_trace_from(S, ptraceframe_prefix*) = ptraceframe_before* ++ ptraceframe_source* ++ ptraceframe_context* ++ $eval_trace_saved_before(S, S.CURRENT, S.FRAMES, $nabs($(|S.FRAMES| - 1)), preqbytes_next?)
   -- if ptraceframe_before* = ptraceframe_prefix* ++ $class_constant_trace(S)
-  -- if preqbytes_before? = $source_trace_file(ptraceframe_before*, eps)
+  -- if preqbytes_before? = $source_trace_file(ptraceframe_prefix*, eps)
   -- if ptraceframe_source* = $source_trace_at_before(S, S.EVALCONTEXTS, S.FILECONTEXTS, |S.FRAMES|, preqbytes_before?)
   -- if ptraceframe_context* = $trace_context(S, S.ENV, S.CURRENT)
   -- if preqbytes_next? = $source_trace_context_file(S, S.CURRENT, ptraceframe_context*, $source_trace_file(ptraceframe_source*, preqbytes_before?))
