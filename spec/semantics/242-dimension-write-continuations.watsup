@@ -26,6 +26,7 @@ dec $key_coalesce_walk(ptask*) : bool
 dec $key_coalesce_rhs_pending(pstate, pkeywriter) : bool
 dec $key_write_array_init(pslot) : bool
 dec $key_write_writer(pstate, porigin, ptask, pbase, poperand) : pkeywriter?
+dec $key_write_compound_line(pstate, porigin, porigin, pbase, int) : bool
 dec $key_write_plan(pstate) : pkeywriter?
 dec $key_write_task_base(ptask, pbase, poperand) : pbase
 dec $key_write_mode(ptask, ptask*) : bool
@@ -127,6 +128,7 @@ def $key_write_path_kind((ACQUIRE_ARRAY z) :: ptask_tail*) = (false)
 def $key_write_path_kind((CALL_REF_FETCH pcalltarget n porigin?) :: ptask_tail*) = (false)
 def $key_write_path_kind((NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) :: ptask_tail*) = (false)
 def $key_write_path_kind(ptask*) = eps -- otherwise
+def $key_write_compound_line(S, porigin, porigin_target, pbase, z) = ($code_expression_at_source(S, porigin_target, [PCFIELD 1]) = (z)) -- otherwise
 
 def $key_write_writer(S, porigin, ACQUIRE_ARRAY z, pbase, poperand) = ({SITE porigin, TARGET porigin, TASK ACQUIRE_ARRAY z, BASE pbase, RHS KNOWN PNULL, TEMP eps})
   -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
@@ -160,7 +162,7 @@ def $key_write_writer(S, porigin, COMPOUND_APPLY pbin pbase b z, pbase, poperand
   -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_rhs)
   -- if $origin_node(S.SOURCES, porigin_rhs) = (expression_rhs)
   -- if b = $assignment_self(expression_target, expression_rhs)
-  -- if $code_expression_at_source(S, porigin_target, [PCFIELD 1]) = (z)
+  -- if $key_write_compound_line(S, porigin, porigin_target, pbase, z)
 def $key_write_writer(S, porigin, ASSIGN_ARRAY pbase z b, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK ASSIGN_ARRAY pbase z b, BASE pbase, RHS poperand, TEMP eps})
   -- if $origin_node(S.SOURCES, porigin) = (NExprAssign expression_target expression_rhs metadata)
   -- if b = $assignment_self(expression_target, expression_rhs)

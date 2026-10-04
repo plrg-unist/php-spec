@@ -2,6 +2,10 @@
 ;; null only after a returning callback; it replaces a callback-created reference
 ;; rather than assigning null through that reference's constraints. Throws leave
 ;; the callback's binding untouched. The original finish owns operands once.
+;; Direct globals compile as ASSIGN_OP after the RHS; their FETCH_RW name
+;; line stays in BASE_GLOBAL and can differ from that final operation's line.
+def $key_write_compound_line(S, porigin, porigin_target, BASE_GLOBAL poperand z_name, z) = ($code_expression_at_source(S, porigin, eps) = (z))
+
 dec $global_rw_initialize(pstate, nat*) : pstate
 def $global_rw_initialize(S, n_name*) = $global_table_view(S_view[.ENV = (BIND n_name* n) :: $unbind(S_view.ENV, n_name*)][.STORE = S_view.STORE ++ [DEFINED PNULL]][.SYMBOLS = $symbol_add(S_view.SYMBOLS, n_name*)][.ALLOCATIONS = S_view.ALLOCATIONS ++ [HCELL n]][.CELL = n][.RESULT = KNOWN PNULL])
   -- if S_view = $global_table_view(S)
