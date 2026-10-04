@@ -49,6 +49,8 @@ selected source-reached fixtures; their numeric runner commands are in the ledge
 memoization, write continuations and final unset liveness.
 [Nested unset and append255](SOURCE-DIMENSION-TAILS.md) adds delayed prefix walks,
 genuine abort temporaries and late RHS warning/insertion.
+[Nested coalesce262](SOURCE-NESTED-COALESCE.md) adds recursive quiet/write walks
+and preserves the selected keyed entry through delayed RHS warning/throw.
 Wider memoized containers, broader GLOBALS RW, earlier missing/scalar containers,
 string/key warnings and object/magic/computed acquisitions remain required.
 Read233, snapshots226 and paused returns retain separate scope.

@@ -1,0 +1,16 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64 profile.json; runtime array key/value/conversion order. Native only before comparisons.",
+  "cases": [
+    {
+      "id": "recorded-array-key-before-value-and-conversion-before-next-entry",
+      "source": "<?php\nset_error_handler(function($n,$m){if($n===2){echo \"W;\";}elseif($m===\"Constant E_STRICT is deprecated since 8.4, the error level was removed\"){echo \"D;\";}else{echo \"K;\";}return true;});\ntrait T{public static $x=[(E_STRICT+0.5)=>(E_STRICT+\"2tail\"),(E_STRICT+1)=>\"Y\"];}\necho \"PRE;\";\nclass C{use T;public static $x=[2048=>2050,2049=>\"Y\"];}\necho \"POST;\",C::$x[2048],\":\",C::$x[2049];",
+      "source_sha256": "24f983bc2d2e15ddfefc96f49157dbc254787491659f9e4de8a4e49e6382d681",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "UFJFO0Q7RDtXO0s7RDtQT1NUOzIwNTA6WQ==",
+      "stderr_template_base64": "",
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-collision-cont-review-259/.tools/trait-collision-array-order-native259-diay944x/report.json",
+      "native_raw_sha256": "d761be48540575386644e198632bd08846b07bcdb3282d51f16963c343d99d1b"
+    }
+  ]
+}

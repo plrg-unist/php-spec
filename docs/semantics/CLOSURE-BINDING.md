@@ -26,5 +26,23 @@ evidence retains its original bounded scope.
 [Current Closure and fake binding253](CLOSURE-CURRENT-BINDING.md) adds genuine
 CONFIG argument transport, computed/imported API sites, fake method/function/
 getter/intrinsic binding, shared source statics and the internal REAL scope carrier.
-Complete REAL warning/unbinding and temporary-call consumers remain required. The [review ledger](../../coverage/semantics/closure-binding-review.json)
+Module264 completes the admitted REAL binding warning and null-unbinding routes.
+After resolving scope, a nonnull receiver on a static Closure warns first;
+removing an existing receiver from a `USES_THIS` Closure warns next; changing to
+an internal class scope warns last. Selected warnings suspend through the real
+error handler and return null without making a copy, even after callback writes
+or class declarations. Handler throws retain their writes and unwind normally.
+
+`USES_THIS` is a compile flag derived from the function's own compiled expression
+entries. Direct `$this`, property/method/send/isset/empty uses and eager literal
+name concatenation count, including dead code. Nested Closure bodies and runtime
+name or general constant folding do not set the enclosing function's flag.
+Without a previous receiver, even a `USES_THIS` body may bind null. A valid
+unbind keeps the selected lexical scope, sets called scope to that scope, removes
+the receiver, copies REAL statics and preserves captured reference cells.
+Explicit null scope removes the original class permission.
+
+The [REAL binding ledger](../../coverage/semantics/real-closure-binding-review.json)
+records the new warning/frame/owner checks separately. Temporary-call and captured
+internal API consumers remain required. The [original review ledger](../../coverage/semantics/closure-binding-review.json)
 separates the original-base differential from current-base and installed checks.

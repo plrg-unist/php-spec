@@ -33,6 +33,20 @@ def $trait_recording(F, pcpath) = true
   -- if $trait_fold_scope(F, pcpath)
 def $trait_recording(F, pcpath) = false -- otherwise
 
+;; AST evaluation restores its parent's line after each child. Bare constant
+;; roots retain the executing declaration line used by zval constant lookup.
+dec $trait_record_root_line(pfshape, int, int) : int
+def $trait_record_root_line(PFNAME name, z_source, z) = z
+def $trait_record_root_line(pfshape, z_source, z) = z_source -- otherwise
+def $pffold_line(F, pcpath, expression, z) = $trait_record_root_line($pfshape(expression), $expression_line(expression), z)
+  -- if $trait_recording(F, pcpath)
+  -- if F.RECORD = (pfrecorder)
+  -- if pfrecorder.ROOT = PORIGIN F.SOURCE.ID pcpath
+def $pffold_line(F, pcpath, expression, z) = $expression_line(expression)
+  -- if $trait_recording(F, pcpath)
+  -- if F.RECORD = (pfrecorder)
+  -- if pfrecorder.ROOT =/= PORIGIN F.SOURCE.ID pcpath
+
 dec $trait_record_name(pfstate, pcpath, ptbytes, ptbytes?, int) : pfstate
 def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = $pfremember(F[.RECORDED = F.RECORDED ++ [{SITE PORIGIN F.SOURCE.ID pcpath, LEVEL 8192, MESSAGE $deprecated_constant_message(), LINE z}]], pcpath, (PINT 2048), z)
   -- if F.EXTERNAL = (S_external)
@@ -65,6 +79,61 @@ def $pfwarned(F, pcpath, S) = F[.MEMORY = S[.EVENTS = F.MEMORY.EVENTS]][.RECORDE
   -- if n_events = $nabs($(|S.EVENTS| - |F.MEMORY.EVENTS|))
   -- if $trait_record_events(PORIGIN F.SOURCE.ID pcpath, S.EVENTS[|F.MEMORY.EVENTS|:n_events]) = (pfdiagnostic*)
 
+;; A source-owned scratch operation always records its raw diagnostics. The
+;; real handler, reporting mask and display destination are used at delivery.
+def $pfpure_value(F, pcpath, S, z) = ($pfremember(F_result, pcpath, (pvalue), z))
+  -- if $trait_recording(F, pcpath)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = F.MEMORY.TODO
+  -- if S.RESULT = KNOWN pvalue
+  -- if F_result = $pfwarned(F, pcpath, S)
+;; zend_ast_evaluate_ex demands each key, then its value, then insertion.
+;; The compiler's two-pass value-first fold remains the RECORD=eps path.
+dec $trait_record_array(pfstate, pcpath, nat, nat, phpType13*, int, pvalueclass?) : pfstate
+dec $trait_record_array_key(pfstate, pcpath, nat, nat, pvalue, pfkey, phpType13*, int, pvalueclass?, pvalueclass?) : pfstate
+dec $trait_record_array_insert(pfstate, pcpath, nat, nat, pkey?, pvalue, phpType13*, int, pvalueclass?, pvalueclass?) : pfstate
+dec $trait_record_key_ready(pfkey) : bool
+def $trait_record_key_ready(PFNO_KEY) = true
+def $trait_record_key_ready(PFKEY (pvalue)) = true
+def $trait_record_key_ready(pfkey) = false -- otherwise
+def $pfdispatch(F, pcpath, PFARRAY phpType13*, z) = $trait_record_array(F[.MEMORY = S], pcpath, n, 0, phpType13*, z, $pfclass_array_start(F.CONSTANT, phpType13* = eps))
+  -- if $trait_recording(F, pcpath)
+  -- if S = $allocate_array(F.MEMORY, $array_empty())
+  -- if S.RESULT = KNOWN (PARRAY n)
+def $trait_record_array(F, pcpath, n, n_item, eps, z, pvalueclass?) = $pfclass_record($pfremember(F, pcpath, (PARRAY n), z), pcpath, pvalueclass?)
+  -- if F.MEMORY.COMPLETION = NORMAL
+def $trait_record_array(F, pcpath, n, n_item, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, z, pvalueclass?) = $trait_record_array_key(F_value, pcpath, n, $(n_item + 1), pvalue, pfkey, phpType13*, z, pvalueclass?, $pfclass_at(F_value.CLASSFACTS, pcpath_item ++ [PCFIELD 1]))
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if pcpath_item = pcpath ++ [PCFIELD 0, PCINDEX n_item]
+  -- if F_key = $pfitemkey(F, pcpath_item ++ [PCFIELD 0], phpType5, z)
+  -- if F_key.MEMORY.COMPLETION = NORMAL
+  -- if pfkey = $pfkey(phpType5, F_key.VALUE)
+  -- if $trait_record_key_ready(pfkey)
+  -- if F_value = $pffold(F_key, pcpath_item ++ [PCFIELD 1], expression, z)
+  -- if F_value.MEMORY.COMPLETION = NORMAL
+  -- if F_value.VALUE = (pvalue)
+def $trait_record_array_key(F, pcpath, n, n_item, pvalue, PFNO_KEY, phpType13*, z, pvalueclass?, pvalueclass_item?) = $trait_record_array_insert(F, pcpath, n, n_item, eps, pvalue, phpType13*, z, pvalueclass?, pvalueclass_item?)
+def $trait_record_array_key(F, pcpath, n, n_item, pvalue, PFKEY (pvalue_key), phpType13*, z, pvalueclass?, pvalueclass_item?) = $trait_record_array_insert(F_key, pcpath, n, n_item, (S_key.KEY), pvalue, phpType13*, z, pvalueclass?, pvalueclass_item?)
+  -- if S_key = $key_value(F.MEMORY, pvalue_key, false, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if F_key = $pfwarned(F, pcpath, S_key)
+def $trait_record_array_key(F, pcpath, n, n_item, pvalue, pfkey, phpType13*, z, pvalueclass?, pvalueclass_item?) = F[.VALUE = eps] -- otherwise
+def $trait_record_array_insert(F, pcpath, n, n_item, pkey?, pvalue, phpType13*, z, pvalueclass?, pvalueclass_item?) = $trait_record_array(F_insert, pcpath, n, n_item, phpType13*, z, $pfclass_insert(pvalueclass?, F.MEMORY.ARRAYS[n].NEXT, pkey?, pvalueclass_item?))
+  -- if S_insert = $literal_insert(F.MEMORY, n, pkey?, pvalue, z)
+  -- if S_insert.COMPLETION = NORMAL
+  -- if F_insert = $pfwarned(F, pcpath, S_insert)
+def $trait_record_array_insert(F, pcpath, n, n_item, pkey?, pvalue, phpType13*, z, pvalueclass?, pvalueclass_item?) = F[.VALUE = eps] -- otherwise
+def $trait_record_array(F, pcpath, n, n_item, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType13*, z, pvalueclass?) = $trait_record_array(F_spread, pcpath, n, $(n_item + 1), phpType13*, z, $pfclass_spread(pvalueclass?, F_value.MEMORY.ARRAYS[n].NEXT, $pfclass_at(F_value.CLASSFACTS, pcpath_value)))
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if pcpath_value = pcpath ++ [PCFIELD 0, PCINDEX n_item, PCFIELD 1]
+  -- if F_value = $pffold(F, pcpath_value, expression, z)
+  -- if F_value.MEMORY.COMPLETION = NORMAL
+  -- if F_value.VALUE = (PARRAY n_source)
+  -- if S_spread = $array_unpack(F_value.MEMORY, n, PARRAY n_source, z)
+  -- if S_spread.COMPLETION = NORMAL
+  -- if F_spread = $pfwarned(F_value, pcpath, S_spread)
+def $trait_record_array(F, pcpath, n, n_item, phpType13*, z, pvalueclass?) = F[.VALUE = eps] -- otherwise
+
 dec $trait_value_notices(ptraitdatavalue) : pfdiagnostic*
 def $trait_value_notices(TRAITVALUE S pvalue pfdiagnostic*) = pfdiagnostic*
 def $trait_value_notices(TRAITVALUEUNKNOWN text pfdiagnostic*) = pfdiagnostic*
@@ -76,6 +145,9 @@ def $trait_notice_records(porigin, n_prefix, n_user, pfdiagnostic :: pfdiagnosti
 def $trait_comparison_seed(S, pclassdesc, S_result, eps) = S_result
 def $trait_comparison_seed(S, pclassdesc, S_result, pfdiagnostic*) = S_result[.TODO = S_result.TODO ++ [TRAIT_DATA_SEED $trait_notice_records(pclassdesc.ORIGIN, |S.DECLARATIONS|, |S.USERCONSTANTS|, pfdiagnostic*)]]
   -- if pfdiagnostic* =/= eps
+;; Private-final adaptations are recorded at their real method-binding phase.
+;; E_COMPILE_WARNING remains handler-ineligible when the batch is delivered.
+def $trait_compile_warning_seed(S, pclassdesc) = $trait_comparison_seed(S, pclassdesc, S, [{SITE pclassdesc.ORIGIN, LEVEL 128, MESSAGE $ptascii("Private methods cannot be final as they are never overridden by other classes"), LINE pclassdesc.LINE}])
 def $iterator_notice_seed_task(TRAIT_DATA_SEED pdeclnoticeitem*) = true
 def $iterator_notice_seed_items(TRAIT_DATA_SEED pdeclnoticeitem*) = pdeclnoticeitem*
 def $call_task_valid(S, TRAIT_DATA_SEED pdeclnoticeitem*) = false
@@ -87,7 +159,7 @@ def $iterator_notice_message(TRAIT_DATA_NOTICE porigin n_prefix n_user pfdiagnos
 def $iterator_notice_event(TRAIT_DATA_NOTICE (PORIGIN n pcpath) n_prefix n_user pfdiagnostic) = DIAGNOSTIC_SOURCE n "Deprecated" pfdiagnostic.MESSAGE pfdiagnostic.LINE
   -- if pfdiagnostic.LEVEL = 8192
 def $iterator_notice_event(TRAIT_DATA_NOTICE (PORIGIN n pcpath) n_prefix n_user pfdiagnostic) = DIAGNOSTIC_SOURCE n "Warning" pfdiagnostic.MESSAGE pfdiagnostic.LINE
-  -- if pfdiagnostic.LEVEL = 2
+  -- if pfdiagnostic.LEVEL = 2 \/ pfdiagnostic.LEVEL = 128
 
 ;; Replay only source data composition at its real publication prefix. Handler
 ;; writes cannot change the name environment sampled by the earlier comparison.
@@ -115,6 +187,13 @@ def $trait_notice_own_constants(pclassconstantdesc :: pclassconstantdesc_tail*) 
   -- if pclassconstantdesc.ORIGIN = $origin_source(pclassconstantdesc.ORIGIN)
 def $trait_notice_own_constants(pclassconstantdesc :: pclassconstantdesc_tail*) = $trait_notice_own_constants(pclassconstantdesc_tail*)
   -- if pclassconstantdesc.ORIGIN =/= $origin_source(pclassconstantdesc.ORIGIN)
+dec $trait_notice_own_methods(pmethoddesc*, porigin) : pmethoddesc*
+def $trait_notice_own_methods(eps, porigin) = eps
+def $trait_notice_own_methods(pmethoddesc :: pmethoddesc_tail*, porigin) = pmethoddesc :: $trait_notice_own_methods(pmethoddesc_tail*, porigin)
+  -- if pmethoddesc.OWNER = porigin
+  -- if ~$trait_imported_origin(pmethoddesc.FUNCTION.ORIGIN)
+def $trait_notice_own_methods(pmethoddesc :: pmethoddesc_tail*, porigin) = $trait_notice_own_methods(pmethoddesc_tail*, porigin)
+  -- if pmethoddesc.OWNER =/= porigin \/ $trait_imported_origin(pmethoddesc.FUNCTION.ORIGIN)
 dec $trait_notice_name(pstate, pdeclaration) : (preqbytes, porigin)*
 def $trait_notice_name(S, PDRCLASS porigin pdeclcause) = [($ptlc(pclassdesc.NAME), porigin)]
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
@@ -133,18 +212,28 @@ dec $trait_notice_cache_prefix(pstate, pclassconstantevent*, nat) : pdefaultcach
 def $trait_notice_cache_prefix(S, eps, n_prefix) = eps
 def $trait_notice_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix) = $trait_notice_cache_item(S, pclassconstantevent, n_prefix) ++ $trait_notice_cache_prefix(S, pclassconstantevent_tail*, n_prefix)
 dec $trait_notice_plan(pstate, porigin, nat, nat) : pdeclnoticeitem*?
-def $trait_notice_plan(S, porigin, n_prefix, n_user) = ($iterator_notice_seeds(S_data.TODO))
+def $trait_notice_plan(S, porigin, n_prefix, n_user) = ($iterator_notice_seeds(S_required.TODO))
   -- if $(n_prefix < |S.DECLARATIONS| /\ n_user <= |S.USERCONSTANTS|)
   -- if $iterator_notice_publication_index(S.DECLARATIONS, porigin, 0) = (n_prefix)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-  -- if pclassdesc_raw = pclassdesc[.PROPERTIES = $trait_notice_own_properties(pclassdesc.PROPERTIES)][.CONSTANTS = $trait_notice_own_constants(pclassdesc.CONSTANTS)]
+  -- if pclassdesc_raw = pclassdesc[.PROPERTIES = $trait_notice_own_properties(pclassdesc.PROPERTIES)][.CONSTANTS = $trait_notice_own_constants(pclassdesc.CONSTANTS)][.METHODS = $trait_notice_own_methods(pclassdesc.METHODS, porigin)]
   -- if S_before = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_raw)][.CLASSNAMES = $trait_notice_names(S, S.DECLARATIONS[0:n_prefix])][.CLASSCONSTANTCACHE = $trait_notice_cache_prefix(S, S.CLASSCONSTANTHISTORY, n_prefix)][.USERCONSTANTS = S.USERCONSTANTS[0:n_user]][.DECLARATIONS = S.DECLARATIONS[0:n_prefix]][.TODO = eps][.COMPLETION = NORMAL]
   -- if $trait_fetch(S_before, $trait_plan(S_before, pclassdesc_raw).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
-  -- if S_constants = $trait_data_constants(S_before, pclassdesc_raw, pclassdesc_traits*, eps)
+  -- if ptraitplan = $trait_plan(S_before, pclassdesc_raw)
+  -- if $trait_exclusions(S_before, pclassdesc_raw, pclassdesc_traits*, ptraitplan.PRECEDENCES, eps) = TRAITEXCLUSIONS (ptbytes_trait, ptbytes_method)*
+  -- if $trait_aliases(S_before, pclassdesc_raw, pclassdesc_traits*, ptraitplan.ALIASES, eps) = TRAITALIASES ptraitalias*
+  -- if $trait_copy_traits(pclassdesc_raw, pclassdesc_traits*, ptraitalias*, (ptbytes_trait, ptbytes_method)*, TRAITCOMPOSE S_before eps eps) = TRAITCOMPOSE S_methods ptraitmethod* ptraitmethod_required*
+  -- if S_methods.COMPLETION = NORMAL
+  -- if pclassdesc_methods = pclassdesc_raw[.METHODS = pclassdesc_raw.METHODS ++ $trait_composed_methods(ptraitmethod*)]
+  -- if S_composed = S_methods[.CLASSES = $trait_class_set(S_methods.CLASSES, pclassdesc_methods)]
+  -- if S_constants = $trait_data_constants(S_composed, pclassdesc_methods, pclassdesc_traits*, eps)
   -- if S_constants.COMPLETION = NORMAL
   -- if $class_at(S_constants.CLASSES, porigin) = (pclassdesc_constants)
   -- if S_data = $trait_data_properties(S_constants, pclassdesc_constants, pclassdesc_traits*, eps)
   -- if S_data.COMPLETION = NORMAL
+  -- if $class_at(S_data.CLASSES, porigin) = (pclassdesc_data)
+  -- if S_required = $trait_requirements(S_data, pclassdesc_data, ptraitmethod_required*)
+  -- if S_required.COMPLETION = NORMAL
 def $trait_notice_plan(S, porigin, n_prefix, n_user) = eps -- otherwise
 def $iterator_notice_batch_items(S, pdeclnoticebatch) = true
   -- if pdeclnoticebatch.KIND = NOTICE_RUNTIME

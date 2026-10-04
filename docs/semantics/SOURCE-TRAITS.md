@@ -40,8 +40,10 @@ output, missing-name priority, final/abstract conflicts and failed declaration
 rollback. Successful declaration history is replayed from raw source images;
 imported descriptors and alias identities must equal that replay's result.
 
-Private-final alias warnings use `E_COMPILE_WARNING` and do not enter ordinary
-error handlers. Abstract alias warnings occur after parent linking. Direct
+Private-final alias warnings use `E_COMPILE_WARNING`128 and do not enter ordinary
+error handlers. Concrete adaptation warnings are recorded before data comparison;
+abstract adaptation warnings follow parent linking. They join the ordered
+post-publication batch, or default-only diagnostic flush before a later fatal. Direct
 static access to an accessible concrete trait method emits the native deprecation
 before arguments or first-class capture. A throwing handler aborts the pending
 call; capture emits the warning once and subsequent invocation uses the selected
@@ -83,8 +85,12 @@ the actual compiled fetch name. Runtime inherited property/constant faults retai
 cutoffs remain static rejections. Deferred typed operands compare before table
 conversion; compiled literal defaults retain their compile-time conversion.
 
-Module259 records direct `E_STRICT` collision diagnostics in the source-owned
-scratch fold. Constants evaluate the incoming operand first; properties evaluate
+Module259 records `E_STRICT` and arithmetic/key collision diagnostics in a
+source-owned scratch fold isolated from the live handler, display and mask.
+Runtime array evaluation demands each key, then its value, then insertion before
+the next entry. Recorded diagnostics retain checked AST lines; a bare constant
+root retains the executing declaration line. Constants evaluate the incoming
+operand first; properties evaluate
 the existing operand first. Temporary values do not fill the compared defaults.
 Successful class publication precedes delivery through the live handler registry.
 A delivery exception preserves that publication; a later link fatal flushes
@@ -136,11 +142,14 @@ cover warning resumption, saved emitters, access modes, abrupt opcode completion
 and RHS ownership. The [property-access ledger](../../coverage/semantics/trait-property-access-review.json)
 records 33 source agreements and 286 reached state premises at their actual cuts.
 The [collision ledger](../../coverage/semantics/trait-collisions-review.json) records
-14 exact source tuples and 97 reached publication/callback assertions. Its other
-native preparations remain uncredited until their required paths are implemented.
+14 original source tuples and97 publication/callback assertions, plus five
+affected operation/array comparisons and47 queue/array-owner assertions at their
+separate cuts. Ordered private-final delivery adds four affected sources and43
+alias/queue assertions; the two existing128 mask controls are identified separately.
+Other native preparations remain uncredited until implemented.
 
-Generic operation warnings, private-final warning ordering, real dependency
-binding/caching and endogenous collision expression errors remain required.
+Real dependency binding/caching and endogenous collision expression errors
+remain required.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
 Historical reached

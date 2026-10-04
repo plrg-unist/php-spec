@@ -256,7 +256,8 @@
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/75-request-environment.watsup",
         "spec/semantics/76-globals.watsup",
-        "spec/semantics/255-nested-unset-append-continuations.watsup"
+        "spec/semantics/255-nested-unset-append-continuations.watsup",
+        "spec/semantics/262-nested-coalesce-key-continuations.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -264,18 +265,24 @@
         "tests/semantics/request_environment.py",
         "tests/semantics/globals_compiler.py",
         "tests/semantics/dimension_tail_cases.py",
-        "tests/semantics/dimension_tail_current_private.php"
+        "tests/semantics/dimension_tail_current_private.php",
+        "tests/semantics/dimension_coalesce_cases.py",
+        "tests/semantics/dimension_coalesce_current.php"
       ],
-      "review": "Historical storage review: Array reference acquisition/rebinding, captured locations/COW and delayed key/RHS ordering are reviewed. Scalar/string reads, string writes and reference errors are source-active; temporary-expression targets reject during compilation. Independent evidence: dimension-read-review.json, dimension-write-review.json and traversal-temporary-review.json. Quiet access modes, object callbacks, frames/properties and source GC remain pending. Known admitted false-reference FETCH deprecation mismatch remains open: false-reference-fetch-review.json. Current addition: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required.",
+      "review": "Historical storage review: Array reference acquisition/rebinding, captured locations/COW and delayed key/RHS ordering are reviewed. Scalar/string reads, string writes and reference errors are source-active; temporary-expression targets reject during compilation. Independent evidence: dimension-read-review.json, dimension-write-review.json and traversal-temporary-review.json. Quiet access modes, object callbacks, frames/properties and source GC remain pending. Known admitted false-reference FETCH deprecation mismatch remains open: false-reference-fetch-review.json. Current addition: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json",
         "tests/semantics/dimension_tail_protocol.py",
-        "tests/semantics/dimension_tail_prepare.py"
+        "tests/semantics/dimension_tail_prepare.py",
+        "tests/semantics/dimension_coalesce_protocol.py",
+        "tests/semantics/dimension_coalesce_prepare.py"
       ],
       "evidence": [
         "coverage/semantics/dimension-tail-review.json",
-        "docs/semantics/SOURCE-DIMENSION-TAILS.md"
+        "docs/semantics/SOURCE-DIMENSION-TAILS.md",
+        "coverage/semantics/nested-coalesce-review.json",
+        "docs/semantics/SOURCE-NESTED-COALESCE.md"
       ]
     },
     {
@@ -426,7 +433,8 @@
         "spec/semantics/72-coalesce-assignment-control.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
         "spec/semantics/154-property-visibility-runtime.watsup",
-        "spec/semantics/249-coalesce-unset-key-continuations.watsup"
+        "spec/semantics/249-coalesce-unset-key-continuations.watsup",
+        "spec/semantics/262-nested-coalesce-key-continuations.watsup"
       ],
       "source_tests": [
         "tests/semantics/coalesce_assignment.py",
@@ -444,16 +452,22 @@
         "tests/semantics/private_property_scope_protocol.py",
         "tests/semantics/dimension_edit_cases.py",
         "tests/semantics/dimension_edit_current_coalesce_lean.php",
-        "tests/semantics/dimension_edit_current_unset.php"
+        "tests/semantics/dimension_edit_current_unset.php",
+        "tests/semantics/dimension_coalesce_cases.py",
+        "tests/semantics/dimension_coalesce_current.php"
       ],
-      "review": "Variable/dimension coalescing assignment uses memoized operands and explicit write occurrence lines (coalesce-assignment-review.json); GLOBALS/environment paths retain their explicit-request evidence in request-environment-review.json. Public/protected/private property targets now reuse evaluated receiver/name operands, preserve quiet denial and RHS/write-error ordering, and cover nested targets and multiline descriptors (property-visibility-review.json). Static/readonly/hooks/magic dependencies remain open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Nested unset, wider memoized containers, append and wider producers remain required; dimension-edit-review.json preserves the separate cuts.",
+      "review": "Variable/dimension coalescing assignment uses memoized operands and explicit write occurrence lines (coalesce-assignment-review.json); GLOBALS/environment paths retain their explicit-request evidence in request-environment-review.json. Public/protected/private property targets now reuse evaluated receiver/name operands, preserve quiet denial and RHS/write-error ordering, and cover nested targets and multiline descriptors (property-visibility-review.json). Static/readonly/hooks/magic dependencies remain open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Nested unset, wider memoized containers, append and wider producers remain required; dimension-edit-review.json preserves the separate cuts. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required.",
       "helper_tests": [
         "tests/semantics/dimension_edit_protocol.py",
-        "tests/semantics/dimension_edit_prepare.py"
+        "tests/semantics/dimension_edit_prepare.py",
+        "tests/semantics/dimension_coalesce_protocol.py",
+        "tests/semantics/dimension_coalesce_prepare.py"
       ],
       "evidence": [
         "coverage/semantics/dimension-edit-review.json",
-        "docs/semantics/SOURCE-DIMENSION-EDITS.md"
+        "docs/semantics/SOURCE-DIMENSION-EDITS.md",
+        "coverage/semantics/nested-coalesce-review.json",
+        "docs/semantics/SOURCE-NESTED-COALESCE.md"
       ]
     },
     {
@@ -1991,7 +2005,8 @@
         "spec/semantics/235-internal-default-constructors.watsup",
         "spec/semantics/240-internal-default-reception.watsup",
         "spec/semantics/245-anonymous-default-new.watsup",
-        "spec/semantics/250-ordinary-throwable-reception.watsup"
+        "spec/semantics/250-ordinary-throwable-reception.watsup",
+        "spec/semantics/260-dynamic-new.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -2017,9 +2032,10 @@
         "tests/semantics/internal_default_constructor_sources.py",
         "tests/semantics/internal_default_reception_sources.py",
         "tests/semantics/anonymous_default_new_sources.py",
-        "tests/semantics/ordinary_constructor_sources.py"
+        "tests/semantics/ordinary_constructor_sources.py",
+        "tests/semantics/dynamic_new_sources.py"
       ],
-      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Dynamic class names, nonpublic constructors and other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class256 is covered separately in object-class-name-review.json and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial.",
+      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Ordinary dynamic class selectors are covered below; other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class256 is covered separately in object-class-name-review.json and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload and ordinary named keyword NEW remain required (dynamic-new-review.json).",
       "evidence": [
         "coverage/semantics/object-classes-review.json",
         "coverage/semantics/stdclass-review.json",
@@ -2029,13 +2045,15 @@
         "coverage/semantics/internal-default-constructors-review.json",
         "coverage/semantics/internal-default-reception-review.json",
         "coverage/semantics/anonymous-default-new-review.json",
-        "coverage/semantics/ordinary-throwable-reception-review.json"
+        "coverage/semantics/ordinary-throwable-reception-review.json",
+        "coverage/semantics/dynamic-new-review.json"
       ],
       "helper_tests": [
         "tests/semantics/internal_default_constructor_protocol.py",
         "tests/semantics/internal_default_reception_protocol.py",
         "tests/semantics/anonymous_default_new_protocol.py",
-        "tests/semantics/ordinary_constructor_protocol.py"
+        "tests/semantics/ordinary_constructor_protocol.py",
+        "tests/semantics/dynamic_new_protocol.py"
       ]
     },
     {
@@ -5158,7 +5176,8 @@
         "spec/semantics/233-dimension-key-continuations.watsup",
         "spec/semantics/242-dimension-write-continuations.watsup",
         "spec/semantics/249-coalesce-unset-key-continuations.watsup",
-        "spec/semantics/255-nested-unset-append-continuations.watsup"
+        "spec/semantics/255-nested-unset-append-continuations.watsup",
+        "spec/semantics/262-nested-coalesce-key-continuations.watsup"
       ],
       "helper_tests": [
         "tests/semantics/numeric_context.py",
@@ -5170,7 +5189,9 @@
         "tests/semantics/dimension_edit_protocol.py",
         "tests/semantics/dimension_edit_prepare.py",
         "tests/semantics/dimension_tail_protocol.py",
-        "tests/semantics/dimension_tail_prepare.py"
+        "tests/semantics/dimension_tail_prepare.py",
+        "tests/semantics/dimension_coalesce_protocol.py",
+        "tests/semantics/dimension_coalesce_prepare.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -5183,7 +5204,9 @@
         "tests/semantics/dimension_edit_current_coalesce_lean.php",
         "tests/semantics/dimension_edit_current_unset.php",
         "tests/semantics/dimension_tail_cases.py",
-        "tests/semantics/dimension_tail_current_private.php"
+        "tests/semantics/dimension_tail_current_private.php",
+        "tests/semantics/dimension_coalesce_cases.py",
+        "tests/semantics/dimension_coalesce_current.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
@@ -5192,9 +5215,11 @@
         "coverage/semantics/dimension-edit-review.json",
         "docs/semantics/SOURCE-DIMENSION-EDITS.md",
         "coverage/semantics/dimension-tail-review.json",
-        "docs/semantics/SOURCE-DIMENSION-TAILS.md"
+        "docs/semantics/SOURCE-DIMENSION-TAILS.md",
+        "coverage/semantics/nested-coalesce-review.json",
+        "docs/semantics/SOURCE-NESTED-COALESCE.md"
       ],
-      "review": "Independent reviewer: pure helper reviewed and 921 cases repeated with stable fingerprints (commit 33e503aa); complete source/context behavior remains pending. Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending. Read-key warning continuations233 now preserve genuine operands, conversion protection and ordered float notices; dimension-key-review.json retains original source/state/current cuts. Wider producers remain open. Writable242 adds bounded defined CV-array W/RW and direct GLOBALS reference warnings with preconversion separation, exact-one acquisition, real cells, delayed RHS and named priority. Author11/340 (including two independent originals), independent15 fresh/266 plus those retained2, and actual3b622 current1 keep distinct cuts in dimension-write-continuations-review.json. Broader GLOBALS RW and wider producers remain required. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Module249 retains its separate cuts in dimension-edit-review.json; wider memoized containers and producers remain required. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required."
+      "review": "Independent reviewer: pure helper reviewed and 921 cases repeated with stable fingerprints (commit 33e503aa); complete source/context behavior remains pending. Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending. Read-key warning continuations233 now preserve genuine operands, conversion protection and ordered float notices; dimension-key-review.json retains original source/state/current cuts. Wider producers remain open. Writable242 adds bounded defined CV-array W/RW and direct GLOBALS reference warnings with preconversion separation, exact-one acquisition, real cells, delayed RHS and named priority. Author11/340 (including two independent originals), independent15 fresh/266 plus those retained2, and actual3b622 current1 keep distinct cuts in dimension-write-continuations-review.json. Broader GLOBALS RW and wider producers remain required. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Module249 retains its separate cuts in dimension-edit-review.json; wider memoized containers and producers remain required. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required."
     },
     {
       "id": "coercion.weak-types",
@@ -5491,24 +5516,31 @@
         "spec/semantics/20-machine.watsup",
         "spec/semantics/30-storage.watsup",
         "spec/semantics/40-control.watsup",
-        "spec/semantics/255-nested-unset-append-continuations.watsup"
+        "spec/semantics/255-nested-unset-append-continuations.watsup",
+        "spec/semantics/262-nested-coalesce-key-continuations.watsup"
       ],
       "helper_tests": [
         "tests/semantics/dimension_tail_protocol.py",
-        "tests/semantics/dimension_tail_prepare.py"
+        "tests/semantics/dimension_tail_prepare.py",
+        "tests/semantics/dimension_coalesce_protocol.py",
+        "tests/semantics/dimension_coalesce_prepare.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
         "tests/semantics/dimension_tail_cases.py",
-        "tests/semantics/dimension_tail_current_private.php"
+        "tests/semantics/dimension_tail_current_private.php",
+        "tests/semantics/dimension_coalesce_cases.py",
+        "tests/semantics/dimension_coalesce_current.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "coverage/semantics/dimension-tail-review.json",
-        "docs/semantics/SOURCE-DIMENSION-TAILS.md"
+        "docs/semantics/SOURCE-DIMENSION-TAILS.md",
+        "coverage/semantics/nested-coalesce-review.json",
+        "docs/semantics/SOURCE-NESTED-COALESCE.md"
       ],
-      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending. Known admitted false-reference FETCH deprecation mismatch remains open: false-reference-fetch-review.json. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required.",
+      "review": "Independent reviewer: scalar storage commit 5a083605; 53 source comparisons and 12 negatives repeated with stable fingerprints; arrays/frames/properties/handler interactions pending. Known admitted false-reference FETCH deprecation mismatch remains open: false-reference-fetch-review.json. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required.",
       "planned_source_tests": [
         "tests/semantics/conformance/string-offset.php",
         "tests/semantics/conformance/string-read-numeric-keys.php",
@@ -5937,7 +5969,8 @@
         "spec/semantics/233-dimension-key-continuations.watsup",
         "spec/semantics/242-dimension-write-continuations.watsup",
         "spec/semantics/249-coalesce-unset-key-continuations.watsup",
-        "spec/semantics/255-nested-unset-append-continuations.watsup"
+        "spec/semantics/255-nested-unset-append-continuations.watsup",
+        "spec/semantics/262-nested-coalesce-key-continuations.watsup"
       ],
       "helper_tests": [
         "tests/semantics/dimension_warning_protocol.py",
@@ -5947,7 +5980,9 @@
         "tests/semantics/dimension_edit_protocol.py",
         "tests/semantics/dimension_edit_prepare.py",
         "tests/semantics/dimension_tail_protocol.py",
-        "tests/semantics/dimension_tail_prepare.py"
+        "tests/semantics/dimension_tail_prepare.py",
+        "tests/semantics/dimension_coalesce_protocol.py",
+        "tests/semantics/dimension_coalesce_prepare.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -5960,7 +5995,9 @@
         "tests/semantics/dimension_edit_current_coalesce_lean.php",
         "tests/semantics/dimension_edit_current_unset.php",
         "tests/semantics/dimension_tail_cases.py",
-        "tests/semantics/dimension_tail_current_private.php"
+        "tests/semantics/dimension_tail_current_private.php",
+        "tests/semantics/dimension_coalesce_cases.py",
+        "tests/semantics/dimension_coalesce_current.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
@@ -5969,9 +6006,11 @@
         "coverage/semantics/dimension-edit-review.json",
         "docs/semantics/SOURCE-DIMENSION-EDITS.md",
         "coverage/semantics/dimension-tail-review.json",
-        "docs/semantics/SOURCE-DIMENSION-TAILS.md"
+        "docs/semantics/SOURCE-DIMENSION-TAILS.md",
+        "coverage/semantics/nested-coalesce-review.json",
+        "docs/semantics/SOURCE-NESTED-COALESCE.md"
       ],
-      "review": " Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending. Read-key warning continuations233 now preserve genuine operands, conversion protection and ordered float notices; dimension-key-review.json retains original source/state/current cuts. Wider producers remain open. Writable242 adds bounded defined CV-array W/RW and direct GLOBALS reference warnings with preconversion separation, exact-one acquisition, real cells, delayed RHS and named priority. Author11/340 (including two independent originals), independent15 fresh/266 plus those retained2, and actual3b622 current1 keep distinct cuts in dimension-write-continuations-review.json. Broader GLOBALS RW and wider producers remain required. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Module249 retains its separate cuts in dimension-edit-review.json; wider memoized containers and producers remain required. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required.",
+      "review": " Independent ordinary-array review eb48f793:251 source comparisons +22 negatives,75+12 exploratory probes; writes/COW, embedded refs, recursive comparisons and callback contexts pending. Read-key warning continuations233 now preserve genuine operands, conversion protection and ordered float notices; dimension-key-review.json retains original source/state/current cuts. Wider producers remain open. Writable242 adds bounded defined CV-array W/RW and direct GLOBALS reference warnings with preconversion separation, exact-one acquisition, real cells, delayed RHS and named priority. Author11/340 (including two independent originals), independent15 fresh/266 plus those retained2, and actual3b622 current1 keep distinct cuts in dimension-write-continuations-review.json. Broader GLOBALS RW and wider producers remain required. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Module249 retains its separate cuts in dimension-edit-review.json; wider memoized containers and producers remain required. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required.",
       "planned_source_tests": [
         "tests/semantics/conformance/key-collisions.php",
         "tests/semantics/conformance/array-unpack.php"
@@ -6767,11 +6806,14 @@
         "spec/semantics/72-coalesce-assignment-control.watsup",
         "spec/semantics/75-request-environment.watsup",
         "spec/semantics/76-globals.watsup",
-        "spec/semantics/249-coalesce-unset-key-continuations.watsup"
+        "spec/semantics/249-coalesce-unset-key-continuations.watsup",
+        "spec/semantics/262-nested-coalesce-key-continuations.watsup"
       ],
       "helper_tests": [
         "tests/semantics/dimension_edit_protocol.py",
-        "tests/semantics/dimension_edit_prepare.py"
+        "tests/semantics/dimension_edit_prepare.py",
+        "tests/semantics/dimension_coalesce_protocol.py",
+        "tests/semantics/dimension_coalesce_prepare.py"
       ],
       "source_tests": [
         "tests/semantics/coalesce_assignment.py",
@@ -6781,15 +6823,19 @@
         "tests/semantics/request_environment.py",
         "tests/semantics/dimension_edit_cases.py",
         "tests/semantics/dimension_edit_current_coalesce_lean.php",
-        "tests/semantics/dimension_edit_current_unset.php"
+        "tests/semantics/dimension_edit_current_unset.php",
+        "tests/semantics/dimension_coalesce_cases.py",
+        "tests/semantics/dimension_coalesce_current.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "coverage/semantics/request-environment-review.json",
         "coverage/semantics/dimension-edit-review.json",
-        "docs/semantics/SOURCE-DIMENSION-EDITS.md"
+        "docs/semantics/SOURCE-DIMENSION-EDITS.md",
+        "coverage/semantics/nested-coalesce-review.json",
+        "docs/semantics/SOURCE-NESTED-COALESCE.md"
       ],
-      "review": "Variable/DIM coalescing assignment accepted at f073c750/coalesce-assignment-review.json:137 exact sources,18 separate controls, author8/3760 and independent7/3024 state assertions,9 edited descriptors/74 assertions. Reference-valued memoized operands retain cells; write occurrence lines are explicit. GLOBALS/environment paths now have explicit-request witnesses at652d10b7; object protocols and full family closure remain pending. Explicit-request GLOBALS and source-context paths additionally accepted at652d10b7; broader frame/object/dynamic-source obligations remain open. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Nested unset, wider memoized containers, append and wider producers remain required; dimension-edit-review.json preserves the separate cuts.",
+      "review": "Variable/DIM coalescing assignment accepted at f073c750/coalesce-assignment-review.json:137 exact sources,18 separate controls, author8/3760 and independent7/3024 state assertions,9 edited descriptors/74 assertions. Reference-valued memoized operands retain cells; write occurrence lines are explicit. GLOBALS/environment paths now have explicit-request witnesses at652d10b7; object protocols and full family closure remain pending. Explicit-request GLOBALS and source-context paths additionally accepted at652d10b7; broader frame/object/dynamic-source obligations remain open. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Nested unset, wider memoized containers, append and wider producers remain required; dimension-edit-review.json preserves the separate cuts. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required.",
       "planned_source_tests": [
         "tests/semantics/conformance/coalesce-write.php"
       ]
@@ -7953,7 +7999,7 @@
         "coverage/semantics/from-callable-review.json",
         "coverage/semantics/deferred-static-defaults-review.json"
       ],
-      "review": "Explicit and arrow closures retain captures, reference/static cells, source origins and owned callable identities (closures-review.json, arrows-review.json). Class-bound lexical/called scope, applicable receivers and ordinary/nullsafe Closure->__invoke now execute; the wrapper receives weakly and traces original arguments (methods-review.json). Selected public array-origin method closures retain receiver/scopes/static cells through capture and clone, including origin-only maker retirement (array-callables-current-review.json). Broader rebinding, clone/lifecycle and collection remain open. Public concrete class-method strings distinguish computed static dispatch from fixed compatible-this selection; immutable string captures/clone preserve requested descriptors, owner/called scope and receiver retirement (class-method-strings-current-review.json). Broader scope-dependent/nonpublic/magic/autoload/internal and transformed binding consumers remain open. Bare-object first-class capture/clone admits effective private/protected nonstatic __invoke and retains inherited owner/called class, receiver, source certificate and method cells; explicit nonpublic method capture stays access-checked. Wider binding/lifecycle consumers remain open. See invoke-publication-current-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload remain required. Module253 adds exact immediate REAL getCurrent and __invoke capture identity, transformed fake bindings with shared source statics and new-receiver-only ownership, and durable internal REAL/created-child scope evidence. Complete REAL warning/unbinding, temporary-current escape, internal API capture and further internal keyword consumers remain required; evidence cuts remain separate in closure-current-binding-review.json. Module263 creates source Closure children from authentic cached property METHOD callables, preserving full imported method authority, lexical/unrelated called scope, private NEW self defaults and child clones after wrapped/plain makers retire. Two exact new source tuples and105+65 source-derived AL premises retain separate accepted cutoffs. Ordinary ancestry remains exact; wider transformed callable creation contexts stay required.",
+      "review": "Explicit and arrow closures retain captures, reference/static cells, source origins and owned callable identities (closures-review.json, arrows-review.json). Class-bound lexical/called scope, applicable receivers and ordinary/nullsafe Closure->__invoke now execute; the wrapper receives weakly and traces original arguments (methods-review.json). Selected public array-origin method closures retain receiver/scopes/static cells through capture and clone, including origin-only maker retirement (array-callables-current-review.json). Broader rebinding, clone/lifecycle and collection remain open. Public concrete class-method strings distinguish computed static dispatch from fixed compatible-this selection; immutable string captures/clone preserve requested descriptors, owner/called scope and receiver retirement (class-method-strings-current-review.json). Broader scope-dependent/nonpublic/magic/autoload/internal and transformed binding consumers remain open. Bare-object first-class capture/clone admits effective private/protected nonstatic __invoke and retains inherited owner/called class, receiver, source certificate and method cells; explicit nonpublic method capture stays access-checked. Wider binding/lifecycle consumers remain open. See invoke-publication-current-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload remain required. Module253 adds exact immediate REAL getCurrent and __invoke capture identity, transformed fake bindings with shared source statics and new-receiver-only ownership, and durable internal REAL/created-child scope evidence. Module264 adds ordered REAL static/internal warnings and compiled USES_THIS-sensitive null unbinding, with genuine handler continuation, copied REAL statics, captured aliases and explicit scope removal. Evidence cuts remain separate in real-closure-binding-review.json. Temporary-current escape, internal API capture and further internal keyword consumers remain required. Module263 creates source Closure children from authentic cached property METHOD callables, preserving full imported method authority, lexical/unrelated called scope, private NEW self defaults and child clones after wrapped/plain makers retire. Two exact new source tuples and105+65 source-derived AL premises retain separate accepted cutoffs. Ordinary ancestry remains exact; wider transformed callable creation contexts stay required.",
       "planned_source_tests": [
         "tests/semantics/conformance/closure-capture.php"
       ]
@@ -8226,7 +8272,7 @@
         "coverage/semantics/callable-receives-review.json",
         "docs/semantics/CALLABLE-RECEIVES.md"
       ],
-      "review": "Ordinary public/private/protected method-array and class-method-string admission uses the genuine receiving scope. Object selectors may redirect to lexical parent-private methods; concrete selectors use the requested table, and protected access follows the root prototype. Direct/captured/API selections retain distinct scope and error ordering. Module221 stages fixed supplied callable receives and error registration/dispatch for deprecated keyword/compound forms, retaining chosen classes and string bounds across live reference mutation. A narrow API target authenticates foreign-this compound selection without weakening ordinary scoped eligibility. Direct/FCC raw forms retain PHP lookup errors. Default/variadic, other internal and user-return warning consumers, magic/autoload and full callable closure remain required. See scoped-callables-current-review.json and keyword-compound-callables-current-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload remain required. Module253 adds exact immediate REAL getCurrent and __invoke capture identity, transformed fake bindings with shared source statics and new-receiver-only ownership, and durable internal REAL/created-child scope evidence. Complete REAL warning/unbinding, temporary-current escape, internal API capture and further internal keyword consumers remain required; evidence cuts remain separate in closure-current-binding-review.json. Module248 stages deprecated callable default and positional/named variadic reception in the authentic receiving frame, preserving named-hole preparation, live references, borrowed method receipts, slow scalar warnings and forced Stringable conversion. Literal defaults and exact unions retain their earlier priority; internal/return consumers remain required. Evidence cuts stay separate in callable-receives-review.json."
+      "review": "Ordinary public/private/protected method-array and class-method-string admission uses the genuine receiving scope. Object selectors may redirect to lexical parent-private methods; concrete selectors use the requested table, and protected access follows the root prototype. Direct/captured/API selections retain distinct scope and error ordering. Module221 stages fixed supplied callable receives and error registration/dispatch for deprecated keyword/compound forms, retaining chosen classes and string bounds across live reference mutation. A narrow API target authenticates foreign-this compound selection without weakening ordinary scoped eligibility. Direct/FCC raw forms retain PHP lookup errors. Default/variadic, other internal and user-return warning consumers, magic/autoload and full callable closure remain required. See scoped-callables-current-review.json and keyword-compound-callables-current-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload remain required. Module253 adds exact immediate REAL getCurrent and __invoke capture identity, transformed fake bindings with shared source statics and new-receiver-only ownership, and durable internal REAL/created-child scope evidence. Module264 adds ordered REAL static/internal warnings and compiled USES_THIS-sensitive null unbinding, with genuine handler continuation, copied REAL statics, captured aliases and explicit scope removal. Evidence cuts remain separate in real-closure-binding-review.json. Temporary-current escape, internal API capture and further internal keyword consumers remain required. Module248 stages deprecated callable default and positional/named variadic reception in the authentic receiving frame, preserving named-hole preparation, live references, borrowed method receipts, slow scalar warnings and forced Stringable conversion. Literal defaults and exact unions retain their earlier priority; internal/return consumers remain required. Evidence cuts stay separate in callable-receives-review.json."
     },
     {
       "id": "calls.closure-binding",
@@ -8235,26 +8281,31 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/181-closure-binding.watsup",
-        "spec/semantics/253-closure-current-binding.watsup"
+        "spec/semantics/253-closure-current-binding.watsup",
+        "spec/semantics/264-real-closure-binding.watsup"
       ],
       "helper_tests": [
         "tests/semantics/closure_binding_protocol.py",
         "tests/semantics/closure_current_binding_protocol.py",
-        "tests/semantics/first_class_internal_protocol.py"
+        "tests/semantics/first_class_internal_protocol.py",
+        "tests/semantics/closure_real_binding_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/closure_binding_cases.json",
         "tests/semantics/closure_current_binding.py",
-        "tests/semantics/closure_current_binding_cases.json"
+        "tests/semantics/closure_current_binding_cases.json",
+        "tests/semantics/closure_real_binding.py",
+        "tests/semantics/closure_real_binding_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_closures.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "docs/semantics/CLOSURE-BINDING.md",
         "docs/semantics/CLOSURE-CURRENT-BINDING.md",
-        "coverage/semantics/closure-current-binding-review.json"
+        "coverage/semantics/closure-current-binding-review.json",
+        "coverage/semantics/real-closure-binding-review.json"
       ],
-      "review": "Historical181 covers bounded ordinary REAL bindings at its retained cutoff. Module253 adds authentic CONFIG entry/argument transport, exact immediate REAL getCurrent identity, existing-object __invoke capture identity and transformed fake binding over existing named/method/getter/intrinsic forms. Fake statics share their frozen source; new receivers are the only durable owners. Internal REAL bindings and created children copy genuine template/scope/called/receiver evidence after prior makers retire, with ordinary REAL clone statics. Selected warnings preserve scope/error order and unwind callback writes. Current source/state cuts remain separate in closure-current-binding-review.json. Complete REAL warning/USES_THIS-unbind behavior, temporary current-object escape, internal API capture and further keyword consumers remain required; no full binding closure or paused-return dependency."
+      "review": "Historical181 covers bounded ordinary REAL bindings at its retained cutoff. Module253 adds authentic CONFIG entry/argument transport, exact immediate REAL getCurrent identity, existing-object __invoke capture identity and transformed fake binding over existing named/method/getter/intrinsic forms. Fake statics share their frozen source; new receivers are the only durable owners. Internal REAL bindings and created children copy genuine template/scope/called/receiver evidence after prior makers retire, with ordinary REAL clone statics. Selected warnings preserve scope/error order and unwind callback writes. Current source/state cuts remain separate in closure-current-binding-review.json. Module264 stages ordered REAL static/internal warnings and USES_THIS-sensitive unbinding through genuine handlers; the flag follows own compiled entries and eager parser literal names, excluding nested bodies and runtime-name folding. Valid copies preserve captures, copy statics and reset called scope; explicit null removes class permission. Source/owner checks remain separate in real-closure-binding-review.json. Temporary current-object escape, internal API capture and further keyword consumers remain required; no full binding closure or paused-return dependency."
     },
     {
       "id": "calls.argument-introspection",
@@ -8942,12 +8993,19 @@
         "tests/semantics/trait_data_delivery_review_cases.json",
         "tests/semantics/trait_data_recording_scope_review_cases.json",
         "tests/semantics/trait_collision_review_protocol.py",
-        "coverage/semantics/trait-collisions-review.json"
+        "coverage/semantics/trait-collisions-review.json",
+        "tests/semantics/trait_data_recorded_operation_cases.json",
+        "tests/semantics/trait_data_recorded_array_order_review_cases.json",
+        "tests/semantics/trait_data_recorded_array_lines_review_cases.json",
+        "tests/semantics/trait_collision_operation_review_protocol.py",
+        "tests/semantics/trait_data_method_warning_order_review_cases.json",
+        "tests/semantics/trait_data_alias_warning_success_review_cases.json",
+        "tests/semantics/trait_collision_alias_warning_review_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Data238 adds scoped property/constant compatibility, full using-class identities, source diagnostics, static sharing and requested-class instance templates. Its data ledger retains72 source agreements and265 semantic state assertions at exact cuts, with92 historical dependency assertions carrying zero old-cut agreement. Broader effectful collision evaluation, readonly storage and wider dependent consumers remain required; no trait-family closure. Module254 adds raw trait-property warning continuations with retained selected cells/access modes, live callback resumption, late versus computed RHS demand and consumer-specific abrupt opcode completion. Independent33 source agreements (author6 subset) and six reached state groups/286 premises pass at unchanged15155; the literal pool owner is retained alongside one store owner. Exact cuts and original fixture/compiler failures are in trait-property-access-review.json; wider producers and full trait semantics remain partial. Module259 first recording vertical compares deferred operands before typed conversion and records direct E_STRICT collision diagnostics for post-publication delivery or default flush before later link fatal. Fourteen source tuples (11 normal/3 PHP errors),97 genuine queue/callback assertions and bounded AL/structure checks pass at retained cuts. Generic operation warnings, private-final warning ordering, real dependent cache/type binding and endogenous expression errors remain required; other prepared catalogue rows carry zero agreement.",
+      "review": "Method228 compiles and links source traits, nested use, precedence, aliases/visibility/final and abstract requirements in native order. Distinct class/alias identities preserve physical source, lexical/called scope, defaults, static cells, captures/Closures, goto/eval and finalizer ownership. TraitUse defers early publication; warnings, deprecations and rollback are source-authenticated. Finite63 source union, separate controls and252 paused-state conditions retain their exact cutoffs in trait-methods-review.json. Actual227/232/239 composition separately adds source9/state127, including pending-fetch guards and physical interface diagnostics, preserving233/237. Data238 adds scoped property/constant compatibility, full using-class identities, source diagnostics, static sharing and requested-class instance templates. Its data ledger retains72 source agreements and265 semantic state assertions at exact cuts, with92 historical dependency assertions carrying zero old-cut agreement. Broader effectful collision evaluation, readonly storage and wider dependent consumers remain required; no trait-family closure. Module254 adds raw trait-property warning continuations with retained selected cells/access modes, live callback resumption, late versus computed RHS demand and consumer-specific abrupt opcode completion. Independent33 source agreements (author6 subset) and six reached state groups/286 premises pass at unchanged15155; the literal pool owner is retained alongside one store owner. Exact cuts and original fixture/compiler failures are in trait-property-access-review.json; wider producers and full trait semantics remain partial. Module259 first recording vertical compares deferred operands before typed conversion and records direct E_STRICT collision diagnostics for post-publication delivery or default flush before later link fatal. Fourteen source tuples (11 normal/3 PHP errors),97 genuine queue/callback assertions and bounded AL/structure checks pass at retained cuts. The operation continuation additionally records arithmetic/key warnings independently of live handlers/display, follows runtime array key/value/insertion chronology and checked AST lines, with five affected source agreements (four new plus one existing array neighbor) and47 genuine queue/array-owner assertions at separate cuts. Private-final compile-warning seeds now join the same ordered batch at their concrete/abstract phases, retaining handler-ineligible128. Four affected source comparisons (two new/two existing mask neighbors) and43 genuine alias/queue assertions pass at separate cuts. Real dependent cache/type binding and endogenous expression errors remain required; other prepared catalogue rows carry zero agreement.",
       "planned_source_tests": [
         "tests/semantics/conformance/trait-deferred-self-union.php",
         "tests/semantics/conformance/class-direct-self-union.php",
@@ -9178,9 +9236,12 @@
         "spec/semantics/133-inheritance-compiler.watsup",
         "spec/semantics/134-inheritance-runtime.watsup",
         "spec/semantics/141-method-compiler.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/260-dynamic-new.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/dynamic_new_protocol.py"
+      ],
       "source_tests": [
         "tests/semantics/inheritance.py",
         "tests/semantics/inheritance_protocol.py",
@@ -9189,14 +9250,16 @@
         "tests/semantics/method_runtime.py",
         "tests/semantics/method_wrapper_protocol.py",
         "tests/semantics/method_visibility_cases.json",
-        "tests/semantics/method_visibility_protocol.py"
+        "tests/semantics/method_visibility_protocol.py",
+        "tests/semantics/dynamic_new_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
         "coverage/semantics/inheritance-review.json",
-        "coverage/semantics/method-visibility-review.json"
+        "coverage/semantics/method-visibility-review.json",
+        "coverage/semantics/dynamic-new-review.json"
       ],
-      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Source public/protected/private effective constructors initialize owned instances; lexical visibility denial precedes arguments and constructor results cannot replace the allocated object (properties-review.json, methods-review.json, method-visibility-review.json). Dynamic class names and remaining internal constructor bodies remain open."
+      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Source public/protected/private effective constructors initialize owned instances; lexical visibility denial precedes arguments and constructor results cannot replace the allocated object (properties-review.json, methods-review.json, method-visibility-review.json). Ordinary dynamic class selectors are covered below; remaining internal constructor bodies remain open. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload and ordinary named keyword NEW remain required (dynamic-new-review.json)."
     },
     {
       "id": "classes.object-identity",
@@ -9379,13 +9442,15 @@
         "spec/semantics/188-class-static-runtime.watsup",
         "spec/semantics/198-argument-introspection-compiler.watsup",
         "spec/semantics/199-argument-introspection-runtime.watsup",
-        "spec/semantics/223-called-class.watsup"
+        "spec/semantics/223-called-class.watsup",
+        "spec/semantics/260-dynamic-new.watsup"
       ],
       "helper_tests": [
         "tests/semantics/called_class_protocol.py",
         "tests/semantics/called_class_controls.py",
         "tests/semantics/called_class_review_protocol.py",
-        "tests/semantics/called_class_review_boundaries.py"
+        "tests/semantics/called_class_review_boundaries.py",
+        "tests/semantics/dynamic_new_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/method_compiler.py",
@@ -9395,7 +9460,8 @@
         "tests/semantics/class_static_references.py",
         "tests/semantics/called_class_cases.json",
         "tests/semantics/called_class_review_cases.json",
-        "tests/semantics/called_class_review_boundaries.json"
+        "tests/semantics/called_class_review_boundaries.json",
+        "tests/semantics/dynamic_new_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
@@ -9406,9 +9472,10 @@
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "docs/semantics/CALLED-CLASS.md",
-        "coverage/semantics/called-class-review.json"
+        "coverage/semantics/called-class-review.json",
+        "coverage/semantics/dynamic-new-review.json"
       ],
-      "review": "Admitted instance calls and class-bound closures retain a distinct called class for static::class while lexical self/parent use declaring scope (methods-review.json). Bounded scoped static calls forward self/parent/static, explicit class calls select that class, and nonstatic scoped calls use the active receiver class (SOURCE-METHODS.md). Broader late-static-binding behavior remains open. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). The bounded ordinary checkpoint leaves typed object-string property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access open. Called-class introspection223 implements the admitted get_called_class() body with genuine current stopping frames, source Closure binding/capture, inherited/forwarded methods and error-handler restoration. Explicit builtin Closure->__invoke observes Closure. Ordered argument/count checks, direct/generic traces, source-selected identities and caller/owner guards have separate evidence in called-class-review.json. Original Unsupported failures retain zero agreement; actual Closure::fromCallable captures are separately implemented in234. Builtin Closure rebinding, builtin callback targets, suspension and broader reference-result consumers remain open.",
+      "review": "Admitted instance calls and class-bound closures retain a distinct called class for static::class while lexical self/parent use declaring scope (methods-review.json). Bounded scoped static calls forward self/parent/static, explicit class calls select that class, and nonstatic scoped calls use the active receiver class (SOURCE-METHODS.md). Broader late-static-binding behavior remains open. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). The bounded ordinary checkpoint leaves typed object-string property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access open. Called-class introspection223 implements the admitted get_called_class() body with genuine current stopping frames, source Closure binding/capture, inherited/forwarded methods and error-handler restoration. Explicit builtin Closure->__invoke observes Closure. Ordered argument/count checks, direct/generic traces, source-selected identities and caller/owner guards have separate evidence in called-class-review.json. Original Unsupported failures retain zero agreement; actual Closure::fromCallable captures are separately implemented in234. Builtin Closure rebinding, builtin callback targets, suspension and broader reference-result consumers remain open. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload and ordinary named keyword NEW remain required (dynamic-new-review.json).",
       "planned_source_tests": [
         "tests/semantics/conformance/variance-static-intersection-first.php",
         "tests/semantics/conformance/variance-static-intersection-second.php"
@@ -10233,12 +10300,14 @@
         "spec/semantics/115-closure-compiler.watsup",
         "spec/semantics/116-closures.watsup",
         "spec/semantics/234-from-callable.watsup",
-        "spec/semantics/253-closure-current-binding.watsup"
+        "spec/semantics/253-closure-current-binding.watsup",
+        "spec/semantics/264-real-closure-binding.watsup"
       ],
       "helper_tests": [
         "tests/semantics/from_callable_protocol.py",
         "tests/semantics/closure_current_binding_protocol.py",
-        "tests/semantics/first_class_internal_protocol.py"
+        "tests/semantics/first_class_internal_protocol.py",
+        "tests/semantics/closure_real_binding_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/closures.py",
@@ -10248,7 +10317,9 @@
         "tests/semantics/from_callable.py",
         "tests/semantics/from_callable_cases.json",
         "tests/semantics/closure_current_binding.py",
-        "tests/semantics/closure_current_binding_cases.json"
+        "tests/semantics/closure_current_binding_cases.json",
+        "tests/semantics/closure_real_binding.py",
+        "tests/semantics/closure_real_binding_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_interfaces.c",
@@ -10256,9 +10327,10 @@
         "coverage/semantics/closures-review.json",
         "coverage/semantics/arrows-review.json",
         "coverage/semantics/from-callable-review.json",
-        "coverage/semantics/closure-current-binding-review.json"
+        "coverage/semantics/closure-current-binding-review.json",
+        "coverage/semantics/real-closure-binding-review.json"
       ],
-      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload remain required. Module253 adds exact immediate REAL getCurrent and __invoke capture identity, transformed fake bindings with shared source statics and new-receiver-only ownership, and durable internal REAL/created-child scope evidence. Complete REAL warning/unbinding, temporary-current escape, internal API capture and further internal keyword consumers remain required; evidence cuts remain separate in closure-current-binding-review.json."
+      "review": "Real explicit closure foundation115/116 on1017/9325; closures-review.json binds70 source outcomes (31 normal,28 PHP errors,11 static rejections),26 compiler phases/109 projections,20 protocol/217, author2 dense/443, independent4 dense/621 and24 complete old1008 response bridges with only verified empty object/template/instance additions removed. Exact original70 model-only replays and28 prior scalar/array CLI regressions are separate from fresh maintained profiles. Shared object identities, ordered explicit captures, per-invocation value bindings, selected target owners and instance statics are reviewed. Scalar/array-to-object construction, ordinary class/property objects, closure binding/clone/first-class/method services, cycle collection and dynamic-source lifetime remain required; no family closure. Arrow implicit captures and the shared explicit/arrow suppression-guard correction are now separately reviewed on1026/365a; see arrows-review.json. Module234 implements actual Closure::fromCallable over existing core targets with USER permission, internal Closure getter scope, keyword/compound warnings, durable frozen method bytes, foreign receivers/called classes, genuine defaults and shared source statics. A Closure object and its __invoke pair preserve identity. Created source Closures retain authentic method/import scope after parent retirement, with receiver ownership only for bound nonstatic children. Factory wrapping follows full handler/finally unwind; before-entry argument throws stay unwrapped. Source, paused-state and failure cutoffs remain distinct in from-callable-review.json. Internal API targets, arbitrary library captures, magic/autoload remain required. Module253 adds exact immediate REAL getCurrent and __invoke capture identity, transformed fake bindings with shared source statics and new-receiver-only ownership, and durable internal REAL/created-child scope evidence. Module264 adds ordered REAL static/internal warnings and compiled USES_THIS-sensitive null unbinding, with genuine handler continuation, copied REAL statics, captured aliases and explicit scope removal. Evidence cuts remain separate in real-closure-binding-review.json. Temporary-current escape, internal API capture and further internal keyword consumers remain required."
     },
     {
       "id": "protocols.Throwable",
@@ -10671,7 +10743,8 @@
         "spec/semantics/233-dimension-key-continuations.watsup",
         "spec/semantics/242-dimension-write-continuations.watsup",
         "spec/semantics/249-coalesce-unset-key-continuations.watsup",
-        "spec/semantics/255-nested-unset-append-continuations.watsup"
+        "spec/semantics/255-nested-unset-append-continuations.watsup",
+        "spec/semantics/262-nested-coalesce-key-continuations.watsup"
       ],
       "helper_tests": [
         "tests/semantics/error_handler_protocol.py",
@@ -10708,7 +10781,9 @@
         "tests/semantics/dimension_edit_protocol.py",
         "tests/semantics/dimension_edit_prepare.py",
         "tests/semantics/dimension_tail_protocol.py",
-        "tests/semantics/dimension_tail_prepare.py"
+        "tests/semantics/dimension_tail_prepare.py",
+        "tests/semantics/dimension_coalesce_protocol.py",
+        "tests/semantics/dimension_coalesce_prepare.py"
       ],
       "source_tests": [
         "tests/semantics/error_handler_cases.py",
@@ -10752,7 +10827,9 @@
         "tests/semantics/dimension_edit_current_coalesce_lean.php",
         "tests/semantics/dimension_edit_current_unset.php",
         "tests/semantics/dimension_tail_cases.py",
-        "tests/semantics/dimension_tail_current_private.php"
+        "tests/semantics/dimension_tail_current_private.php",
+        "tests/semantics/dimension_coalesce_cases.py",
+        "tests/semantics/dimension_coalesce_current.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c",
@@ -10774,9 +10851,11 @@
         "coverage/semantics/dimension-edit-review.json",
         "docs/semantics/SOURCE-DIMENSION-EDITS.md",
         "coverage/semantics/dimension-tail-review.json",
-        "docs/semantics/SOURCE-DIMENSION-TAILS.md"
+        "docs/semantics/SOURCE-DIMENSION-TAILS.md",
+        "coverage/semantics/nested-coalesce-review.json",
+        "docs/semantics/SOURCE-NESTED-COALESCE.md"
       ],
-      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Accepted208 adds initially-reference left-CV identity reads with a genuine saved borrowed pointer and no extra cell owner. Privatef15 author6 normal+control0/three162 and independent3 models(native reuse)/two130 remain distinct from fresh getter/setterf959 author1/74+independent1/111 and current method-stringc67 source1/77. warning-reads-review.json binds original raw/peers and source-equivalent publication. Plain-CV wrappers, other read producers and full core remain open. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/magic/autoload/internal/exception/lifecycle callbacks remain open. Source-certified209 missing-CV branch/loop/short-circuit/NOT/ternary-condition continuations pass mixed author8 normal plus castUnsupported0/four225 and independent retained-native model3/three160. Original certificate failure and branch recording collision remain preserved. Current PIPE normal source1/69 and independent throwing source1/corrected96 are accepted at0d881, preserving the original wrong INSTANCE premise. Current deferred-cache normal source1/95 and independent throw source1/89 pass at8c74. Source-equivalent promotion preserves disjoint actual201 without replay or new credit. Broader producers stay open; later consumer checks remain separate. warning-truth-review.json records separate revisions/profiles. The tested211 composition at38cab separately accepts author source1/93 and independent strict instance-emitter source1/107, preserving original-null branch/BOOL consumers and raw restoration through parameter rejection. Current211/constants/property endpoints remain unchanged; source-equivalent publication adds no execution credit. Private/protected nonstatic bare-object handlers use effective __invoke lookup without ordinary explicit visibility access. Selected ARG4, replacement/throw and strict USER truth-warning parameter rejection retain the genuine saved emitter and cleanup. Dynamic compilation-warning and wider callable consumers remain open. See invoke-publication-current-review.json. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks. Lexical private/protected ordinary array/string selectors215 now authenticate actual selecting scope across saved calls, capture/clone and API dispatch. Object parent-private redirection differs from concrete-class lookup; protected access follows the root prototype. Origin-only creator permission survives retirement without a new owner, and API raw callbacks resolve at each dispatch. See scoped-callables-current-review.json. Module221 stages keyword/compound error registration and delayed dispatch, clearing the registry before selection warnings and authenticating foreign-this API targets. Default/variadic, other internal and user-return warning ingress, magic/autoload and transformed consumers remain required; keyword-compound-callables-current-review.json records its separate evidence. Source-certified213 casts, selected copies and ordinary by-value sends preserve captured null and selected owners through handler mutation; direct ASSIGN writes null through handler throw. Mixed author21 normal/control0+236 and independent10/197 retain their tested revisions and original failures. Fresh actual6395 composition at181f accepts static-reference/outer-array source1/94 and complementary cached-callee source1/96. Source-equivalent publication preserves released reporting, backing216 and named-class6771; no fresh execution or rebuild credit. Broader producers and paused returns remain open (warning-consumers-review.json). Fresh actual213 source1/94 selects lexical Owner-private over Child-public and preserves captured-null WRITE_NAME on handler throw, genuine caller argument view and selected receiver cleanup. scoped-callables-current-review.json keeps it distinct from the earlier scoped author/independent checks. Module220 passes author9 sources/211 checks and independent5 sources/249 checks at484d. Existing86/105 missing-CV reference sends retain real null cells without warnings after named selection. Rejected post-handler ASSIGN keeps the live typed value and chains the handler error under a caller TypeError at the restored emitter. Two independent fixture phase failures remain preserved; only affected/unrun states were executed. Actual3919 composition preserves215/217 and passes one reduced scoped-handler source at5bce: typed caller alias/introspection, authentic TypeError line/file/emitter trace and retained previous-chain identity/lifetime. The original heavier observer keeps its CLI60 timeout and zero agreement. Broader producers and paused returns stay open. Module226 captures the missing direct global R-fetch name/null before callbacks; throws skip later ASSIGN/SEND and preserve the typed destination/original exception. Genuine76 request snapshots retain numeric keys, singleton unwrap, shared references, COW and pool owners. Author8/207 and independent8/221 preserve their private cutoffs; two derived currented6 sources atbb90 retain private/called-class/eager208 and cold typed219 alias/chain interactions. Original count Unsupported, fixture failures and combined CLI60 timeout remain preserved with no agreement credit. Wider key/object/container producers, ordinary snapshots without request facts and broader reference-result consumers remain required. Read-key warning continuations233 now preserve genuine operands, conversion protection and ordered float notices; dimension-key-review.json retains original source/state/current cuts. Wider producers remain open. Writable242 adds bounded defined CV-array W/RW and direct GLOBALS reference warnings with preconversion separation, exact-one acquisition, real cells, delayed RHS and named priority. Author11/340 (including two independent originals), independent15 fresh/266 plus those retained2, and actual3b622 current1 keep distinct cuts in dimension-write-continuations-review.json. Broader GLOBALS RW and wider producers remain required. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Module249 retains its separate cuts in dimension-edit-review.json; wider memoized containers and producers remain required. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required."
+      "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Accepted208 adds initially-reference left-CV identity reads with a genuine saved borrowed pointer and no extra cell owner. Privatef15 author6 normal+control0/three162 and independent3 models(native reuse)/two130 remain distinct from fresh getter/setterf959 author1/74+independent1/111 and current method-stringc67 source1/77. warning-reads-review.json binds original raw/peers and source-equivalent publication. Plain-CV wrappers, other read producers and full core remain open. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/magic/autoload/internal/exception/lifecycle callbacks remain open. Source-certified209 missing-CV branch/loop/short-circuit/NOT/ternary-condition continuations pass mixed author8 normal plus castUnsupported0/four225 and independent retained-native model3/three160. Original certificate failure and branch recording collision remain preserved. Current PIPE normal source1/69 and independent throwing source1/corrected96 are accepted at0d881, preserving the original wrong INSTANCE premise. Current deferred-cache normal source1/95 and independent throw source1/89 pass at8c74. Source-equivalent promotion preserves disjoint actual201 without replay or new credit. Broader producers stay open; later consumer checks remain separate. warning-truth-review.json records separate revisions/profiles. The tested211 composition at38cab separately accepts author source1/93 and independent strict instance-emitter source1/107, preserving original-null branch/BOOL consumers and raw restoration through parameter rejection. Current211/constants/property endpoints remain unchanged; source-equivalent publication adds no execution credit. Private/protected nonstatic bare-object handlers use effective __invoke lookup without ordinary explicit visibility access. Selected ARG4, replacement/throw and strict USER truth-warning parameter rejection retain the genuine saved emitter and cleanup. Dynamic compilation-warning and wider callable consumers remain open. See invoke-publication-current-review.json. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks. Lexical private/protected ordinary array/string selectors215 now authenticate actual selecting scope across saved calls, capture/clone and API dispatch. Object parent-private redirection differs from concrete-class lookup; protected access follows the root prototype. Origin-only creator permission survives retirement without a new owner, and API raw callbacks resolve at each dispatch. See scoped-callables-current-review.json. Module221 stages keyword/compound error registration and delayed dispatch, clearing the registry before selection warnings and authenticating foreign-this API targets. Default/variadic, other internal and user-return warning ingress, magic/autoload and transformed consumers remain required; keyword-compound-callables-current-review.json records its separate evidence. Source-certified213 casts, selected copies and ordinary by-value sends preserve captured null and selected owners through handler mutation; direct ASSIGN writes null through handler throw. Mixed author21 normal/control0+236 and independent10/197 retain their tested revisions and original failures. Fresh actual6395 composition at181f accepts static-reference/outer-array source1/94 and complementary cached-callee source1/96. Source-equivalent publication preserves released reporting, backing216 and named-class6771; no fresh execution or rebuild credit. Broader producers and paused returns remain open (warning-consumers-review.json). Fresh actual213 source1/94 selects lexical Owner-private over Child-public and preserves captured-null WRITE_NAME on handler throw, genuine caller argument view and selected receiver cleanup. scoped-callables-current-review.json keeps it distinct from the earlier scoped author/independent checks. Module220 passes author9 sources/211 checks and independent5 sources/249 checks at484d. Existing86/105 missing-CV reference sends retain real null cells without warnings after named selection. Rejected post-handler ASSIGN keeps the live typed value and chains the handler error under a caller TypeError at the restored emitter. Two independent fixture phase failures remain preserved; only affected/unrun states were executed. Actual3919 composition preserves215/217 and passes one reduced scoped-handler source at5bce: typed caller alias/introspection, authentic TypeError line/file/emitter trace and retained previous-chain identity/lifetime. The original heavier observer keeps its CLI60 timeout and zero agreement. Broader producers and paused returns stay open. Module226 captures the missing direct global R-fetch name/null before callbacks; throws skip later ASSIGN/SEND and preserve the typed destination/original exception. Genuine76 request snapshots retain numeric keys, singleton unwrap, shared references, COW and pool owners. Author8/207 and independent8/221 preserve their private cutoffs; two derived currented6 sources atbb90 retain private/called-class/eager208 and cold typed219 alias/chain interactions. Original count Unsupported, fixture failures and combined CLI60 timeout remain preserved with no agreement credit. Wider key/object/container producers, ordinary snapshots without request facts and broader reference-result consumers remain required. Read-key warning continuations233 now preserve genuine operands, conversion protection and ordered float notices; dimension-key-review.json retains original source/state/current cuts. Wider producers remain open. Writable242 adds bounded defined CV-array W/RW and direct GLOBALS reference warnings with preconversion separation, exact-one acquisition, real cells, delayed RHS and named priority. Author11/340 (including two independent originals), independent15 fresh/266 plus those retained2, and actual3b622 current1 keep distinct cuts in dimension-write-continuations-review.json. Broader GLOBALS RW and wider producers remain required. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Module249 retains its separate cuts in dimension-edit-review.json; wider memoized containers and producers remain required. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required."
     },
     {
       "id": "diagnostics.exception-handler-stack",

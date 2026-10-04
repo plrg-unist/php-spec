@@ -111,6 +111,9 @@ direct CV-array quiet memoization/write demand and final unset liveness, includi
 typed-cell/throwing cleanup and authentic read/write lines.
 [Nested unset and append255](SOURCE-DIMENSION-TAILS.md) keeps intermediate table
 protection, genuine abort temporaries and the distinct late RHS throw boundary.
+[Nested coalesce262](SOURCE-NESTED-COALESCE.md) retains genuine quiet rows,
+memoized operands and every late-RHS continuation task; typed-entry rejection
+restores the emitter and retains the handler's older exception chain.
 Wider memoized containers and earlier container/string/object producers remain
 required.
 
