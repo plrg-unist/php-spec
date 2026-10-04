@@ -1,0 +1,95 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; direct trait-property pending exceptions complete the current opcode, with consumer-specific type-error policy. Native-only preparation; zero model credit before254.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Direct W/RW/update/reference writes finish before propagation; fetch-ref can initialize nullable storage but does not enter the following assignment/call. Typed property failure suppresses a secondary TypeError; nonnullable reference failure chains a new Error.",
+  "cases": [
+    {
+      "id": "late-cv-assignment-completes-before-handler-exception-propagates",
+      "source": "<?php trait T{public static int $x=1;}$v=2;set_error_handler(function($n,$m)use(&$v){echo \"H;\";$v=5;throw new Exception(\"STOP\");});try{T::$x=$v;}catch(Exception $e){echo \"CAUGHT;\";}restore_error_handler();error_reporting(0);echo T::$x;",
+      "source_sha256": "f1853450b08342bad9c4adc1076e8e071ba92e3f1b57820f11050a4f23d79430",
+      "status": "normal",
+      "stdout_base64": "SDtDQVVHSFQ7NQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-6q9xpb1b/report.json",
+      "native_raw_sha256": "3ca3a21ebb06f0c872f0dd14fd1eded4ef75b251a40850d93bc784ef02bc7fce"
+    },
+    {
+      "id": "compound-completes-live-cell-update-before-handler-exception-propagates",
+      "source": "<?php trait T{public static int $x=1;}$v=2;set_error_handler(function($n,$m)use(&$v){echo \"H;\";error_reporting(0);T::$x=9;$v=3;throw new Exception(\"STOP\");});try{T::$x+=$v;}catch(Exception $e){echo \"CAUGHT;\";}restore_error_handler();echo T::$x;",
+      "source_sha256": "cf8bc38acddb213345e5f5d8e8881f5d5a6cd7cee2bbb52c862dc91bec493b7c",
+      "status": "normal",
+      "stdout_base64": "SDtDQVVHSFQ7MTI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-6q9xpb1b/report.json",
+      "native_raw_sha256": "38f5eac136871c3e614a35a35c9a3daf87f91d113f6a1782fed6a5f89853446a"
+    },
+    {
+      "id": "increment-completes-before-handler-exception-propagates",
+      "source": "<?php trait T{public static int $x=1;}set_error_handler(function($n,$m){echo \"H;\";error_reporting(0);T::$x=9;throw new Exception(\"STOP\");});try{++T::$x;}catch(Exception $e){echo \"CAUGHT;\";}restore_error_handler();echo T::$x;",
+      "source_sha256": "4e9090b357e6f54301ff4f601c0c4685cb1f00961752d905cdaca4b084bc26f6",
+      "status": "normal",
+      "stdout_base64": "SDtDQVVHSFQ7MTA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-6q9xpb1b/report.json",
+      "native_raw_sha256": "6cf00dc556fae7681563f288d1a6523ac9a144c4aefa80745acb44e5af33fab7"
+    },
+    {
+      "id": "reference-assignment-completes-binding-before-handler-exception-propagates",
+      "source": "<?php trait T{public static int $x=1;}$v=2;set_error_handler(function($n,$m)use(&$v){echo \"H;\";$v=5;throw new Exception(\"STOP\");});try{T::$x=&$v;}catch(Exception $e){echo \"CAUGHT;\";}restore_error_handler();error_reporting(0);$v=7;echo T::$x;",
+      "source_sha256": "40f94c4d8cdaa234bec22561a816c8abc2b7d77a3a47d661011ae601f9f514fb",
+      "status": "normal",
+      "stdout_base64": "SDtDQVVHSFQ7Nw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-6q9xpb1b/report.json",
+      "native_raw_sha256": "2e500af476c3420a19787ba248971be2643c700af4067d66b2441fa16f197fb3"
+    },
+    {
+      "id": "reference-fetch-initializes-nullable-slot-but-aborts-rhs-assignment",
+      "source": "<?php trait T{public static ?int $x;}set_error_handler(function($n,$m){echo \"H;\";throw new Exception(\"STOP\");});try{$r=&T::$x;}catch(Exception $e){echo \"CAUGHT;\";}restore_error_handler();error_reporting(0);echo isset($r)?\"R:\":\"N:\";try{echo T::$x===null?\"NULL\":\"OTHER\";}catch(Error $e){echo \"UNINITIALIZED\";}",
+      "source_sha256": "a281230fdb7170046675c54506f35c92aa2d271ec5bba1328dc590268655d6c8",
+      "status": "normal",
+      "stdout_base64": "SDtDQVVHSFQ7TjpOVUxM",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-6q9xpb1b/report.json",
+      "native_raw_sha256": "d3e0fca759380558375c3062ced7b45061a7840e61c49775069112e352270a3d"
+    },
+    {
+      "id": "reference-send-initializes-nullable-slot-but-aborts-callee-entry",
+      "source": "<?php trait T{public static ?int $x;}function take(&$v){echo \"F;\";$v=7;}set_error_handler(function($n,$m){echo \"H;\";throw new Exception(\"STOP\");});try{take(T::$x);}catch(Exception $e){echo \"CAUGHT;\";}restore_error_handler();error_reporting(0);try{echo T::$x===null?\"NULL\":\"OTHER\";}catch(Error $e){echo \"UNINITIALIZED\";}",
+      "source_sha256": "b4053df338cfd259b3750437b5229ce4f8cdc41f87979657e751aa4268ff7ec3",
+      "status": "normal",
+      "stdout_base64": "SDtDQVVHSFQ7TlVMTA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-6q9xpb1b/report.json",
+      "native_raw_sha256": "b94787dc3f40a49d9953aa22f4c61dcedbcca7a8c7ebd992278edf6123b2e6e8"
+    },
+    {
+      "id": "typed-assignment-failure-preserves-pending-handler-exception-and-cell",
+      "source": "<?php trait T{public static int $x=1;}set_error_handler(function($n,$m){echo \"H;\";throw new Exception(\"STOP\");});try{T::$x=\"bad\";}catch(Throwable $e){echo get_class($e),\":\",$e->getMessage(),\":\",$e->getPrevious()===null?\"NONE\":\"PREV\";}restore_error_handler();error_reporting(0);echo \":\",T::$x;",
+      "source_sha256": "898bfbb73a828122b96a34c99bba3b4498a81a0b9b3e5f6cd08d1e7496ca6efa",
+      "status": "normal",
+      "stdout_base64": "SDtFeGNlcHRpb246U1RPUDpOT05FOjE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-b_r7z6u1/report.json",
+      "native_raw_sha256": "5f2cd864f1d95baac03e75220482d97a919ddcd27ebe13ca87f7870069280a82"
+    },
+    {
+      "id": "nonnullable-reference-fetch-error-chains-pending-handler-exception",
+      "source": "<?php trait T{public static int $x;}set_error_handler(function($n,$m){echo \"H;\";throw new Exception(\"STOP\");});try{$r=&T::$x;}catch(Throwable $e){echo get_class($e),\":\",$e->getMessage(),\"|\",$e->getPrevious()->getMessage();}",
+      "source_sha256": "a98365ddcadad7f7423f522fdd8d98d6a992d410ad7a67419a563c79b1910e02",
+      "status": "normal",
+      "stdout_base64": "SDtFcnJvcjpDYW5ub3QgYWNjZXNzIHVuaW5pdGlhbGl6ZWQgbm9uLW51bGxhYmxlIHByb3BlcnR5IFQ6OiR4IGJ5IHJlZmVyZW5jZXxTVE9Q",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-z1w_dybv/report.json",
+      "native_raw_sha256": "70d60a778e760f604219bb27574b36e83bb2396d92e2a4d5fc8b48a78475db42"
+    }
+  ]
+}
