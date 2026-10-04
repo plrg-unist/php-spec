@@ -63,7 +63,6 @@ dec $internal_closure_scopes(pstate, nat) : (pbindscope, pbindscope, nat?)?
 dec $internal_creator_history(pstate, nat) : pstate
 dec $internal_creator_body(pstate, nat) : porigin?
 dec $internal_closure_history_valid(pstate, nat) : bool
-dec $internal_closure_current(pstate) : nat?
 dec $real_bind_internal(pstate, nat, nat?, pbindscope) : bool
 dec $real_bind_scope(nat?, pbindscope) : pbindscope
 dec $real_bind_allocate(pstate, pconfigcall, nat, nat?, pbindscope) : pstate
@@ -416,7 +415,6 @@ def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BINDTO
   -- if pconfigcall.OWNER = (n)
   -- if $closure_callable(S, n)
-  -- if ~$internal_closure_object(S, n)
 def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BIND
   -- if $closure_binding_site(S, pconfigcall.SITE, INTRINSIC_CLOSURE_BIND)

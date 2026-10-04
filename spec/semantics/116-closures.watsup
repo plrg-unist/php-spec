@@ -79,6 +79,7 @@ dec $closure_creator_valid(pstate, porigin, pclosurescope, pclosurecreation, pcl
 dec $closure_scope_append(pstate, pfunction, nat) : pstate
 def $closure_scope_append(S, pfunction, n) = S[.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL porigin_lexical, CALLED porigin_called, RECEIVER $closure_bound_receiver(S, pfunction), CREATION $closure_creation_stamp(S, pfunction)}]]
   -- if S.CURRENT = (pcallcontext)
+  -- if $internal_closure_current(S) = eps
   -- if pcallcontext.LEXICAL_CLASS = (porigin_lexical)
   -- if pcallcontext.CALLED_CLASS = (porigin_called)
 def $closure_scope_append(S, pfunction, n) = S -- otherwise
