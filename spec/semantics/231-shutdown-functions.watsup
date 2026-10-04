@@ -609,7 +609,8 @@ def $call_task_valid(S, SHUTDOWN_RENDER pshutdownrender) = $shutdown_render_vali
 def $task_nodes(SHUTDOWN_RENDER pshutdownrender) = [HOBJECT pshutdownrender.ROOT] ++ $completion_roots(THROWING n)
   -- if pshutdownrender.PENDING = (n)
   -- if pshutdownrender.PHASE <- [SHUTDOWN_RENDER_MESSAGE, SHUTDOWN_RENDER_TRACE]
-def $task_nodes(SHUTDOWN_RENDER pshutdownrender) = [HOBJECT pshutdownrender.ROOT] -- otherwise
+def $task_nodes(SHUTDOWN_RENDER pshutdownrender) = [HOBJECT pshutdownrender.ROOT]
+  -- if pshutdownrender.PENDING = eps \/ ~(pshutdownrender.PHASE <- [SHUTDOWN_RENDER_MESSAGE, SHUTDOWN_RENDER_TRACE])
 
 def $shutdown_render_warning_message(S, pshutdownrender) = $ptascii("Array to string conversion")
   -- if pshutdownrender.PHASE = SHUTDOWN_RENDER_TRACE
