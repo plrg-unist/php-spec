@@ -16,8 +16,10 @@ rejections pass at026ba, with165 reached premises in43+70+52 groups covering act
 lines, task/source admission, temporary retirement and read/exception ownership.
 Unused preparation has zero execution. Original native prediction failures and
 historical245 Unsupported stay preserved in the
-[class-name ledger](coverage/semantics/object-class-name-review.json). Complete core
-remains open.
+[class-name ledger](coverage/semantics/object-class-name-review.json). One actual251
+interpolation source atf626 on4208 retains callback receivers through global-slot
+replacement and sees the later mutated operand. Actual247/251 routes are preserved;
+complete core remains open.
 
 Ordinary string interpolation251 now follows effective CAST/FAST_CONCAT/ROPE
 order. Two-part fetched temporaries survive left callbacks; later variable

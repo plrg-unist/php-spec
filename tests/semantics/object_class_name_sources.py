@@ -38,6 +38,7 @@ CASES = {
     'literal-class-int': b'<?php\necho "unreachable|";\necho (1)::class;\n',
     'constant-class-dynamic': b'<?php\necho "unreachable|";\nconst INVALID = ($missing)::class;\n',
     'computed-class-nonparser-string': b"<?php\necho 'unreachable|';\necho ('Gh'.true)::class;\n",
+    'dynamic-class-interpolation-owner-composition': b'<?php\nclass First {\n    public function __toString() {\n        global $left, $right;\n        $left = null;\n        $right = new Later;\n        echo $this::class, \'|\';\n        return \'first\';\n    }\n}\nclass Later {\n    public function __toString() { echo $this::class, \'|\'; return \'last\'; }\n}\n$left = new First;\n$right = \'old\';\necho "pre:{$left}/{$right}", \'|\', $right::class;\nunset($left, $right);\n',
 }
 EXPECTED = {
     'dynamic-class-cv-reference': b'CaseChild/CaseChild/BaseClass',
@@ -60,6 +61,7 @@ EXPECTED = {
     'dynamic-class-parser-concat-keywords': b'A/Ghost/Ghost',
     'dynamic-class-supported-internal-objects': b'stdClass/Closure/Exception',
     'dynamic-class-compiled-lines': b'H@6|E@6|R|E@11',
+    'dynamic-class-interpolation-owner-composition': b'First|Later|pre:first/last|Later',
 }
 COMPILED = {
     'computed-class-true': b'Cannot use "::class" on true',
