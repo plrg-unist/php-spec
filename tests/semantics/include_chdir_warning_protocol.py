@@ -190,7 +190,7 @@ def main():
     fixture = directory / 'protocol.watsup'
     fixture.write_text(body)
     modules = [str(ROOT / name) for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
-    result = subprocess.run([str(ROOT / '_build/default/tests/semantics/numeric_runner.exe'),
+    result = subprocess.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
                              *modules, str(fixture)], cwd=ROOT, capture_output=True, timeout=300)
     (directory / 'numeric.stdout').write_bytes(result.stdout)
     (directory / 'numeric.stderr').write_bytes(result.stderr)
