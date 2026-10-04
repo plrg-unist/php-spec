@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit, ordinary profile",
+  "status": "bounded independently reviewed source/runtime/compiler agreement; full core remains partial",
+  "behavior": [
+    "Method parameters/body compile before static __invoke fatal or nonpublic publication warning; prior private-final warnings and later inheritance access failures retain their order.",
+    "Bare source objects and their first-class capture/callable/API admission use the effective runtime __invoke table regardless of visibility. Explicit method calls/captures keep lexical access; nonpublic named array/string resolution is separate.",
+    "Selected inherited owner/called class and receiver survive argument effects, capture/clone, default/static cells, handler replacement/throw and retirement.",
+    "Strict USER truth-warning reception rejects integer level before a private handler body; a separate direct API handler control receives weakly."
+  ],
+  "production": {
+    "spec/semantics/141-method-compiler.watsup": "18c2485ea61ed0e49c5639da62c25019f9440a81e865d31b2cfdb892250436fd",
+    "spec/semantics/142-method-runtime.watsup": "e89577d4928211c2ff6b130474b73132b8f5e41752d62e565b1faae2e047cb00",
+    "spec/semantics/173-method-callables.watsup": "a6e8a3d540ecea7e499b570d04100622408060e6a69d9a8731dd99379a713253"
+  },
+  "author": {
+    "tested_root": ".tools/calls-invoke-publication-current-13",
+    "head": "1ad66fa12d4b753a07c680f71ce982ad46cfbe13",
+    "source_identity": "d8b14fdd0559b5683c50450131625eff87156e23b49bd2d66417ef6bee13e627",
+    "sources": {
+      "normal": 11,
+      "php_error": 1,
+      "static_rejection": 3,
+      "separate_unsupported": 2
+    },
+    "finite": {
+      "runtime": [
+        28,
+        31
+      ],
+      "compiler": [
+        17,
+        16,
+        13,
+        11
+      ],
+      "total": 116
+    },
+    "unique_selected_children": 23,
+    "actual_child_invocations": 25,
+    "report": {
+      "path": ".tools/calls-dev13-invoke-publication-20261004/invoke-publication-author17-6-combined-report-v1.json",
+      "sha256": "23e399a0a4a28cf1aed81ed09ff5c5a284cbc463e8b0d042191bcfcfa7eeb98d"
+    },
+    "release": {
+      "path": ".tools/calls-dev13-invoke-publication-20261004/invoke-publication-author17-6-combined-RELEASE1.json",
+      "sha256": "a34a1ba485083391a2bcf67a25630cb7d40abde27178438f263ada0750d7ad58"
+    },
+    "independent_peer": {
+      "path": ".tools/calls-review13-invoke-publication-20261004/author17-6-combined-originals-and-closure-review-v1.json",
+      "sha256": "7a499bef39346c8a15b5d5a0a83c677486fa3b66800584c796f487d8f7d11132"
+    }
+  },
+  "independent": {
+    "tested_root": ".tools/calls-invoke-publication-current-13",
+    "head": "1ad66fa12d4b753a07c680f71ce982ad46cfbe13",
+    "sources": {
+      "normal": 7,
+      "static_rejection": 3,
+      "separate_unsupported": 2
+    },
+    "finite": [
+      54,
+      58,
+      60
+    ],
+    "total_conditions": 172,
+    "unique_selected_children": 15,
+    "actual_child_invocations": 16,
+    "report": {
+      "path": ".tools/calls-review13-invoke-publication-20261004/invoke-publication-independent12-3-combined-report-v1.json",
+      "sha256": "13dc7528361e1fdb8d9fc1d193625a3f30e150fe3389ec90830af6110fc0f2d6"
+    },
+    "release": {
+      "path": ".tools/calls-review13-invoke-publication-20261004/invoke-publication-independent12-3-combined-RELEASE1.json",
+      "sha256": "b38e699964fd4f5c7f7713ec36adc331f1dee811cee0b32cfd58fb40e7c07d32"
+    },
+    "original_peers": [
+      {
+        "path": ".tools/calls-dev13-invoke-publication-20261004/independent15-partial-originals-review-v1.json",
+        "sha256": "92bfc0243c8a02bc793b0f00c529997fc914bea0cffb84ddc4d776ca133e79d3"
+      },
+      {
+        "path": ".tools/calls-dev13-invoke-publication-20261004/independent-remainder2-originals-review-v1.json",
+        "sha256": "6e3e4aaa5b21e1dc0e3e78063a6642b17a0178e9468cd0b9170b78293149464a"
+      }
+    ]
+  },
+  "current_truth": {
+    "tested_root": ".tools/calls-invoke-publication-truth-current-13",
+    "head": "1e203e185f392875b1eadedb79158f0265a42783",
+    "source_identity": "14d519dd0c3bb5a6c16bd6f196a846a9d0e4f7c50d6b21979843a10c060006f0",
+    "implementation_files": 1405,
+    "modules": 204,
+    "sources": {
+      "normal": 1,
+      "stdout": "R"
+    },
+    "finite_conditions": 83,
+    "report": {
+      "path": ".tools/calls-invoke-publication-truth-current-13/.tools/invoke-publication-current-truth2-model-czvskk4e/report.json",
+      "sha256": "e330d3d56fa39c42e38aa4c2e1d1d87f09b74a26be982d17678ed7ca955b6efc"
+    },
+    "release": {
+      "path": ".tools/calls-dev13-invoke-publication-20261004/invoke-publication-current-truth2-RELEASE1.json",
+      "sha256": "24dca32e4abeca614f1ccdfe1a65cc12118a72b69e2e1d76586775b06c98e1c3"
+    },
+    "independent_peer": {
+      "path": ".tools/calls-review13-invoke-publication-20261004/current-truth2-originals-and-release-review-v1.json",
+      "sha256": "4578323dfaab0388267dbdfab7638e5c268bb66c9a62afdfb4a10a99092d571b"
+    },
+    "bridge": "Actual ARG209 and ordinary non-FCC StaticCall reference-send classifier preserved; prior source/runtime/compiler observations remain at W, not re-executed on this root."
+  },
+  "runtime": {
+    "profile": {
+      "path": ".tools/calls-invoke-publication-truth-current-13/tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "executables_reused": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      ".tools/request-clock.so": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+      "_build/default/adapter/main.exe": "9fa8a62125cc34baf80965a829fb4aa946875aa40b1b3a8d6e90cd732b2bcaf2",
+      "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "removed in ordinary source commands",
+      "opcache": "disabled by -n ordinary profile"
+    },
+    "caps_seconds": {
+      "native_source": 45,
+      "model_request": 45,
+      "source_model_parent": 55,
+      "parser_adapter": 30,
+      "runtime_numeric": 300,
+      "compiler_numeric": 120,
+      "owned_child": 400,
+      "current_campaign_parent": 920
+    },
+    "commands": "Literal native/model command arrays and complete ordered-module numeric commands, exits, binary streams and worker completions are retained in the linked original peers/raw campaigns outside Git. Successful witnesses exit0/true/empty stderr; source tuples compare complete native/model stdout and warning/fatal stderr. Binaries reused; no rebuild or offline credit."
+  },
+  "original_failures": [
+    {
+      "campaign": "author23",
+      "failure": "Inherited protected-to-private access failure was predicted static_rejection; actual php_error/native255/model0 bytes agree, including both visibility warnings and fatal. Original report/child/driver/launcher1 remain unchanged; maintained expectation corrected.",
+      "release": {
+        "path": ".tools/calls-dev13-invoke-publication-20261004/invoke-publication-author23-failed-RELEASE1.json",
+        "sha256": "3d7c6f385b5e6ca2cb2f09d12afbd0675d2679ef31362e69a0412841167e7535"
+      }
+    },
+    {
+      "campaign": "author-finite6",
+      "failure": "Unactivated class descriptor was incorrectly expected absent; installed image stores it. Runtime59 passed; failed17 had zero credit and final40 was unrun. Only affected/unrun compiler checks followed.",
+      "release": {
+        "path": ".tools/calls-dev13-invoke-publication-20261004/invoke-publication-author-finite6-failed-RELEASE1.json",
+        "sha256": "149ab8bb21af4400f0e47987a8d3ba0180a34ca7d097f99dafa0c158167503a1"
+      }
+    },
+    {
+      "campaign": "author-compiler4",
+      "failure": "Static fatal fixture incorrectly expected empty installed CODE/pool and main preflight rejection. Corrected17 passed; failed16 had zero credit. Only affected16 and unrun13/11 followed with actual installed code/pool/PCSCOMPILER history.",
+      "release": {
+        "path": ".tools/calls-dev13-invoke-publication-20261004/invoke-publication-author-compiler4-failed-RELEASE1.json",
+        "sha256": "9b3d7aebbd6e04aa267527d6c6bbc26f5021e1628966ec2d31610b241641488b"
+      }
+    },
+    {
+      "campaign": "independent15",
+      "failure": "Protected cloned capture source uses unpacking; stale CALL_ARGS stage exhausted seek before assertions. Source12/54 passed; failed58 had zero credit and60 was unrun. Only the authentic UNPACK_ARGS stage/task and unrun60 followed, preserving the source and other55 checks.",
+      "release": {
+        "path": ".tools/calls-review13-invoke-publication-20261004/invoke-publication-independent15-failed-RELEASE1.json",
+        "sha256": "429ef05d6d252c5d16b6ae17ca3e3e26a84a8430aca84f09db9ed7c30d5d1277"
+      }
+    }
+  ],
+  "limits": [
+    "Separate Unsupported controls receive zero native agreement; selected passing subsets do not establish full core.",
+    "Shared95 and return bodies unchanged. Ordinary by-value callable return classification inherits the broader bare-object lookup source-only; no new return target/agreement or paused185/186 dependency.",
+    "Delivery of nonpublic declaration warnings to already registered handlers during include/eval remains unvalidated. Wider nonpublic/scope-dependent array/string/API lookup, __call/__callStatic, autoload/internal, transformed wrappers and lifecycle behavior remain open.",
+    "Final combined current-source gates and a fresh copied-path network-isolated offline rebuild remain required. Original raw evidence and failures stay outside Git; metadata composition adds no execution credit."
+  ],
+  "publication_union": {
+    "root": ".tools/calls-invoke-publication-final-current-13",
+    "source_head": "2fc4797f5deb7eaf8607c55777932f61362b2c81",
+    "parent": "8a7bef6894d9c97e015d7038f9785a62be9123de",
+    "modules": 205,
+    "compiler_handoff": {
+      "path": "/home/user/workspace/php-spec/.tools/compiler-class-constant-callables-current-13/.tools/constant-callables/INSTALLED-HANDOFF.json",
+      "sha256": "f245b55734e68aaf8fc74464d78903fb95fbdba2a17b1caac7e7f4b9fdf3616b"
+    },
+    "compiler_release": {
+      "path": "/home/user/workspace/php-spec/.tools/compiler-class-constant-callables-current-13/.tools/constant-callables/WRITER-RELEASE.json",
+      "sha256": "bcc569034d5f49ff87f9c6aa6716936dbe0233389102e8853984c6bfbe6b4958"
+    },
+    "source_record": {
+      "path": "/home/user/workspace/php-spec/.tools/calls-dev13-invoke-publication-20261004/final-current-source-composition-v1/record.json",
+      "sha256": "6823afd67a858e33546c2fdcb597f11469e4f9f2185b6d7f2ea40d5a1352fb80"
+    },
+    "bridge": "Exact reviewed invocation hunks and maintained test bodies compose onto actual212. One-layer object_body readers and scoped-entry ORIGIN/constant_callable_active guards remain intact. Ordinary INSTANCE bare lookup and capture do not enter a constant initializer; independent source review adds no execution credit."
+  },
+  "installation": null
+}

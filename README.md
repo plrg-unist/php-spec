@@ -362,7 +362,13 @@ adds runtime-class dispatch, first-class capture and ordinary `callable` typing.
 Installed **18a1383d7/b3a02ebc/1304** accepts 21 author sources and
 20 finite stages/537 maintained assertions. Independent checks accept 37 sources
 and 29 stages/997 assertions, including FIRST7/331 then SET79/finally50.
-Transformed weak wrappers, nonpublic/static publication and other magic
+Nonstatic private/protected `__invoke` now uses the effective runtime method table
+for bare calls, callable admission and object capture/clone. Publication emits the
+visibility warning after compiling parameters/body; static `__invoke` rejects at
+that point, before that warning. Explicit calls keep ordinary lexical access.
+The [publication review](coverage/semantics/invoke-publication-current-review.json)
+separates source, runtime/compiler and strict warning-handler observations.
+Dynamic include/eval warning delivery, transformed weak wrappers and other magic
 protocols remain open. Public concrete source method arrays now share callable
 admission, dynamic dispatch and first-class capture/clone. Selected receivers
 and method choices survive referenced-member mutation and array retirement;

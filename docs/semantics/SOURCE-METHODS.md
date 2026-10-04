@@ -94,41 +94,42 @@ nonstatic receivers; named nested functions clear it. The sparse `CLOSURESCOPES`
 table is source-authenticated and follows live closure ownership. Inherited
 method statics share declaring-origin storage; overrides have distinct storage.
 
-## Public object invocation
+## Object invocation
 
-The [public `__invoke` union](../../coverage/semantics/source-invoke-current-review.json)
-supports bare object calls and object first-class conversion through the runtime
-class method table. It keeps the real receiver before argument effects, the
-declaring owner for inherited bodies and the receiver class for called scope.
-A dual-role Stringable object uses `__invoke` as its callee without a string cast.
-Ordinary by-value `callable` parameters admit these public invokable objects.
+Bare source-object calls and object first-class conversion select effective
+runtime-table `__invoke` without a visibility check. Private/protected methods
+retain their declaring owner, runtime called class and real receiver. An Owner
+method's bare call selects a Child override even when explicit `->__invoke`
+from that lexical frame selects Owner's private declaration. Ordinary explicit
+method calls and captures retain their existing visibility checks; this does
+not broaden nonpublic method-array or class-method-string resolution.
+
+A dual-role Stringable object uses the selected `__invoke` without a string cast.
 [Callable/string parameter reception](../../coverage/semantics/callable-string-current-review.json)
-retains known callable members before weak `__toString` conversion, independent
-of union order. Reviewed weak/strict, inherited, value/reference and unpacked
-checks preserve the object and its ownership. Public source method arrays have the bounded contract below; broader
-class/method classification remains open.
+admits these nonstatic invokable objects before weak conversion in either union
+order. Weak/strict, typed by-reference parameter and unpacked controls retain
+receiver ownership. Modules95 and the return bodies are unchanged; shared
+ordinary by-value callable return classification inherits the lookup change
+without a new return target, agreement or paused-return validation.
 
-Conversion authenticates the evaluated source and ordinary CV, direct `$this`
-or owned non-CV operand before resolution. Selected targets then retain their
-receiver independently of a changed CV. Unfinished saved conversion tasks use
-structural checks; the operand guard runs at the active conversion boundary.
-Capture certificates add no receiver or issuer roots.
+Compilation processes method parameters/body before magic-method validation.
+Static `__invoke` is fatal at that point and emits no nonpublic-visibility warning;
+a private-final begin warning can precede that fatal. Nonpublic `__invoke` warns
+at publication even in an unexecuted declaration, while ordinary inheritance
+access compatibility may subsequently reject the class. Delivery of these
+warnings to already registered handlers during include/eval remains separate.
 
-The installed union over final SET **4015f160d** is
-**18a1383d7/b3a02ebc/1304**. Fresh author checks accept 21 sources and
-20 finite stages/537 maintained assertions; independent checks accept 37 sources
-and 29 stages/997 assertions. Independent FIRST7/331 then SET owner79/finally50
-run before the source/common20 phases. Both campaigns preserve strict original
-streams, exits and freshly checked fixtures. Their 11/19 fresh native comparisons
-remain distinct from 10/18 saved catalogue oracle comparisons.
-
-Private **486874ba6** retains source54/finite49/1,475 and independent
-source70/finite58/1,935. Earlier9c8/fec4 source65/finite45/1,368 and zero-state
-body elaboration, private **63879c77d** and the unexecuted named294 blueprint
-retain their original receipts. Captured-clone native `SFT7` and bare `ASFT7`/throw
-`ASF` observations remain distinct original composition evidence.
-Nonpublic/static declaration timing, transformed weak wrappers and real CONFIG
-PIPE replay remain separate. Native-only destructor observations are not model credit.
+Selection authenticates evaluated source operands before argument effects and
+keeps the selected receiver independently of changed CVs. Bare-object capture,
+clone and later calls retain source certificates, owner/called scopes and shared
+method cells without a new carrier. Bare-object error handlers use the same
+lookup, preserving genuine ARG4 and strict USER versus weak direct-API reception.
+The [publication review](../../coverage/semantics/invoke-publication-current-review.json)
+binds separate source, compiler/runtime, independent and current truth-warning
+checks, including original failures. Earlier public invocation evidence remains
+in its [ledger](../../coverage/semantics/source-invoke-current-review.json).
+Transformed weak wrappers, wider magic protocols and native-only lifecycle
+observations remain outside these selected agreements.
 
 ## Public source method arrays
 
