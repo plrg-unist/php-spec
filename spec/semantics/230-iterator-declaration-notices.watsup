@@ -320,7 +320,16 @@ def $iterator_notice_owners_valid(ptask*, pframe*) = $iterator_notice_owners_uni
 def $iterator_notice_file_flushing(S, pfilecontext) = ((NOTICE_UNIT_OWNER n) <- ($iterator_notice_tasks_owners(S.TODO) ++ $iterator_notice_frames_owners(S.FRAMES)))
   -- if pfilecontext.UNIT = (n)
 def $iterator_notice_file_flushing(S, pfilecontext) = false -- otherwise
-def $file_trace_frame(S, pfilecontext) = {FILE $call_sourcefile(S.FILES, pfilecontext.SITE), LINE $file_site_line(S, pfilecontext.SITE), FUNCTION $file_keyword(pfilecontext.KIND), CLASS eps, TYPE eps, ARGS eps, HASARGS false}
+;; Zend's TOP_FUNCTION handler inserts its include row without advancing the
+;; filename retained from a younger real trace row.
+def $iterator_notice_file_handler(S, (pcallcontext)) = true
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DECL_NOTICE_RESUME pdeclnoticebatch
+  -- if pdeclnoticebatch.KIND = NOTICE_FILE n
+def $iterator_notice_file_handler(S, pcallcontext?) = false -- otherwise
+def $file_trace_frame_before(S, pfilecontext, eps) = $file_trace_frame(S, pfilecontext)[.ARGS = eps][.HASARGS = false]
+  -- if $iterator_notice_file_flushing(S, pfilecontext)
+def $file_trace_frame_before(S, pfilecontext, (preqbytes)) = $file_trace_frame(S, pfilecontext)[.ARGS = $trace_indexed_args([PSTRING preqbytes], 0)][.HASARGS = true]
   -- if $iterator_notice_file_flushing(S, pfilecontext)
 
 ;; A pending exception suppresses remaining eligible callbacks. Ineligible
