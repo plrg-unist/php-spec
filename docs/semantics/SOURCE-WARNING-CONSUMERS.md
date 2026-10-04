@@ -28,18 +28,20 @@ helpers in `Zend/zend_execute.c`, and assignment/ternary lowering in
 These are the pinned PHP8.5.10 ordinary CLI profile, without OPcache/JIT claims.
 Discarded `(void)$cv` has no corresponding read and is not admitted by this rule.
 
-Preparation is compiler-only: four reached fixtures58/60/65/53=236 are typed,
-with alias, folded-arm, selected Closure/prior-array owner and pending-throw
-controls. Independent fixtures60/77/60=197 are separately typed. Independent
-native4 originals characterize cast/copy/SEND mutation and direct ASSIGN throw
-ordering; they are not model agreement. Author17 sources (16 ordinary plus one
-Unsupported control), all state checks, and independent native-reused model4
-remain pending. The original combined six-cast source passed natively but timed
-out in the model at CLI60, earning no agreement. Six independent one-cast
-witnesses retain the same limits; only their array58 fixture is re-prepared,
-with the other178 retained. Fixture DSL failures retain their original reports and receive
-zero semantic credit. The [ledger](../../coverage/semantics/warning-consumers-review.json)
-locates preparation and native originals.
+Six ordinary author one-cast tuples passed at241dd0. The original grouped cast
+and copy sources passed natively but reached the model CLI60 limit, earning no
+agreement. The fixed22 sources (21 ordinary plus one Unsupported control) retain
+those six observations; only changed/unrun16 and all state checks remain pending.
+Four reached fixtures58/60/65/53=236 are typed, with alias, folded-arm, selected
+Closure/prior-array owner and pending-throw controls. Only the bounded copy60
+is newly prepared; the other176 retain their original fixtures and compiler output.
+Independent fixtures60/77/60=197 retain the SEND/ASSIGN137 and separately typed
+bounded array60 successor. Their ten model sources and state checks remain
+pending; seven changed cast sources need fresh native tuples, while the other
+three reuse native originals. Native4 originally characterized timing without
+model agreement. Fixture DSL failures remain preserved
+with zero semantic credit. The [ledger](../../coverage/semantics/warning-consumers-review.json)
+locates original observations and preparation.
 
 With built local tools, prepare and run the actual generated report:
 
@@ -49,7 +51,7 @@ python3 -B tests/semantics/warning_consumer_run.py .tools/warning-consumers/PREP
 ```
 
 The complete fixed selection is authenticated before affected-case filters.
-Ordinary13 uses serial native45s/model90s/finite300s limits and2325s/1230s phase
+Ordinary13 uses serial native45s/model90s/finite300s limits and3000s/1230s phase
 limits. Original packets, streams, exits and cleanup records stay outside Git.
 The [truth family](SOURCE-WARNING-TRUTH.md) retains its earlier cast Unsupported
 control at its actual revision; only that affected cast source is selected here

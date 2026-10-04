@@ -48,7 +48,7 @@ CASES = [
         '$heap_valid($heap_graph(S_cast))',
         *GUARDS, *FINISH,
     ]),
-    ('copy-keeps-actual-folded-arm', 'selected-copy-folded-runtime-and-throw',
+    ('copy-keeps-actual-folded-arm', 'selected-copy-folded-true-null',
      'S.TODO = (ERROR_READ_RESULT perrorread) :: ptask_tail*', [
         *NULL_READ,
         'perrorread.ORIGINAL = VALUE_COPY z', 'perrorread.NAME = $ptascii("left213")',

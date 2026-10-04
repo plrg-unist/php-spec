@@ -9,9 +9,10 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 Private warning-consumer213 adds casts, selected copies and ordinary by-value
 argument sends, with direct-ASSIGN captured-null writes even when a handler throws.
-Author four236 and independent three197 are compiler-only prepared; native4
-characterizes timing. A combined six-cast model timeout has zero credit; its bounded17 source/state campaign and actual-master
-integration remain pending. [Consumer ledger](coverage/semantics/warning-consumers-review.json).
+Six one-cast source tuples are accepted at241dd0; grouped cast/copy model timeouts
+earn no agreement. Four236 and independent three197 are compiler-only prepared;
+changed/unrun16 sources, state checks and actual-master integration remain pending.
+[Consumer ledger](coverage/semantics/warning-consumers-review.json).
 
 Source-certified warning-truth decisions209 preserve the original null across
 handler mutation and suppress pending consumers on throw. Private ordinary

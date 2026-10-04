@@ -11,7 +11,7 @@ from error_handler_run import ROOT, ENV, describe, group, recorded
 from warning_consumer_cases import CASES as SOURCES
 from warning_consumer_protocol import CASES
 
-SOURCE_CAP = 2325
+SOURCE_CAP = 3000
 FINITE_CAP = 1230
 
 

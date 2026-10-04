@@ -66,7 +66,7 @@ set_error_handler(function($level,$message,$file,$line) {
 $missing213=(object)$missing213; echo $missing213 instanceof stdClass && $missing213===$other213?"O;":"BAD;";
 restore_error_handler();
 ''', b'H4;O;', 'normal'),
-    ('selected-copy-folded-runtime-and-throw', b'''<?php
+    ('selected-copy-folded-true-null', b'''<?php
 error_reporting(0);
 $right213=8;
 set_error_handler(function($level,$message,$file,$line) {
@@ -75,16 +75,57 @@ set_error_handler(function($level,$message,$file,$line) {
     return true;
 },2);
 $copy213=true ? $left213 : $right213; echo $copy213===null?"N:":"BAD:",$left213,";";
-unset($left213);
+restore_error_handler();
+''', b'H4;N:9;', 'normal'),
+    ('selected-copy-folded-false-null', b'''<?php
+error_reporting(0);
+$right213=8;
+set_error_handler(function($level,$message,$file,$line) {
+    $GLOBALS['left213']=9;
+    echo "H",func_num_args(),";";
+    return true;
+},2);
 $copy213=false ? $right213 : $left213; echo $copy213===null?"N:":"BAD:",$left213,";";
-unset($left213); $condition213=true;
+restore_error_handler();
+''', b'H4;N:9;', 'normal'),
+    ('selected-copy-runtime-true-null', b'''<?php
+error_reporting(0);
+$right213=8;
+set_error_handler(function($level,$message,$file,$line) {
+    $GLOBALS['left213']=9;
+    echo "H",func_num_args(),";";
+    return true;
+},2);
+$condition213=true;
 $copy213=$condition213 ? $left213 : $right213; echo $copy213===null?"N:":"BAD:",$left213,";";
-unset($left213);
+restore_error_handler();
+''', b'H4;N:9;', 'normal'),
+    ('selected-copy-coalesce-null', b'''<?php
+error_reporting(0);
+$right213=8;
+set_error_handler(function($level,$message,$file,$line) {
+    $GLOBALS['left213']=9;
+    echo "H",func_num_args(),";";
+    return true;
+},2);
 $copy213=null ?? $left213; echo $copy213===null?"N:":"BAD:",$left213,";";
-unset($left213);
+restore_error_handler();
+''', b'H4;N:9;', 'normal'),
+    ('selected-copy-shorthand-null', b'''<?php
+error_reporting(0);
+$right213=8;
+set_error_handler(function($level,$message,$file,$line) {
+    $GLOBALS['left213']=9;
+    echo "H",func_num_args(),";";
+    return true;
+},2);
 $copy213=false ?: $left213; echo $copy213===null?"N:":"BAD:",$left213,";";
 restore_error_handler();
-unset($left213); $copy213='old';
+''', b'H4;N:9;', 'normal'),
+    ('selected-copy-throw-preserves-destination', b'''<?php
+error_reporting(0);
+$right213=8;
+$copy213='old';
 $throw213=function($level,$message,$file,$line) {
     $GLOBALS['left213']=9;
     $GLOBALS['copy213']='handler';
@@ -96,7 +137,7 @@ try {$copy213=true ? $left213 : $right213;} catch(Error $e) {
     echo "C:",$copy213,":",$left213,":",get_error_handler()===$throw213?1:0,";";
 }
 restore_error_handler();
-''', b'H4;N:9;H4;N:9;H4;N:9;H4;N:9;H4;N:9;T4;C:handler:9:1;', 'normal'),
+''', b'T4;C:handler:9:1;', 'normal'),
     ('positional-send-retains-closure-and-array', b'''<?php
 error_reporting(0);
 $seed213=[]; $seed213[]=1;

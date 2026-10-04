@@ -120,5 +120,6 @@ reporting open.
 
 The private [consumer213 slice](SOURCE-WARNING-CONSUMERS.md) adds casts, selected
 value copies and ordinary by-value sends, including direct assignment null writes
-through handler throw. Its compiler-only236/197 and native4 characterization do
-not yet establish new source/model/state agreement or canonical installation.
+through handler throw. Six one-cast source tuples are accepted separately from
+the compiler-only236/197 and native4 characterization. Remaining source/state
+checks and canonical installation stay pending; grouped model timeouts earn no agreement.
