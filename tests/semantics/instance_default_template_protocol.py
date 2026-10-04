@@ -66,14 +66,22 @@ dec $instance_template_test_output(pevent*) : ptbytes
 def $instance_template_test_output(eps) = eps
 def $instance_template_test_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $instance_template_test_output(pevent*)
 dec $instance_template_test_objects(pstate, pnode*, porigin) : nat*
+dec $instance_template_test_object(pstate, pnode, porigin) : bool
+def $instance_template_test_object(S, HOBJECT n, porigin) = (S.OBJECTS[n] = INSTANCE porigin)
+def $instance_template_test_object(S, pnode, porigin) = false -- otherwise
 def $instance_template_test_objects(S, eps, porigin) = eps
 def $instance_template_test_objects(S, (HOBJECT n) :: pnode*, porigin) = n :: $instance_template_test_objects(S, pnode*, porigin)
   -- if S.OBJECTS[n] = INSTANCE porigin
-def $instance_template_test_objects(S, pnode :: pnode_tail*, porigin) = $instance_template_test_objects(S, pnode_tail*, porigin) -- otherwise
+def $instance_template_test_objects(S, pnode :: pnode_tail*, porigin) = $instance_template_test_objects(S, pnode_tail*, porigin)
+  -- if ~$instance_template_test_object(S, pnode, porigin)
+dec $instance_template_test_fill_event(pclassconstantevent) : bool
+def $instance_template_test_fill_event(CCINSTANCE porigin_class porigin_decl porigin_root porigin_trigger pstaticselection? n) = true
+def $instance_template_test_fill_event(pclassconstantevent) = false -- otherwise
 dec $instance_template_test_fills(pclassconstantevent*) : (porigin, porigin)*
 def $instance_template_test_fills(eps) = eps
 def $instance_template_test_fills((CCINSTANCE porigin_class porigin_decl porigin_root porigin_trigger pstaticselection? n) :: pclassconstantevent*) = (porigin_class, porigin_decl) :: $instance_template_test_fills(pclassconstantevent*)
-def $instance_template_test_fills(pclassconstantevent :: pclassconstantevent_tail*) = $instance_template_test_fills(pclassconstantevent_tail*) -- otherwise
+def $instance_template_test_fills(pclassconstantevent :: pclassconstantevent_tail*) = $instance_template_test_fills(pclassconstantevent_tail*)
+  -- if ~$instance_template_test_fill_event(pclassconstantevent)
 dec $instance_template_test_stage(pstate, nat) : bool
 def $instance_template_test_stage(S, 0) = true
   -- if S.TODO = (INSTANCE_DEFAULT_UPDATE porigin_a porigin_p z) :: ptask_tail*

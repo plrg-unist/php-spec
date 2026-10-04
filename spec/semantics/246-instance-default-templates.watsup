@@ -74,14 +74,24 @@ def $property_template_state(S, porigin_class, ppropertydesc) = $property_defaul
 
 ;; First fill and publication identities reconstruct the linking-time copy.
 ;; Neither this history nor the class/type metadata stores a second value.
+dec $instance_default_fill_event(pclassconstantevent, porigin, porigin) : bool
+def $instance_default_fill_event(CCINSTANCE porigin_class porigin_decl porigin_root porigin_trigger pstaticselection? n, porigin_class, porigin_decl) = true
+def $instance_default_fill_event(pclassconstantevent, porigin_class, porigin_decl) = false -- otherwise
 dec $instance_default_fill_present(pclassconstantevent*, porigin, porigin) : bool
 def $instance_default_fill_present(eps, porigin_class, porigin_decl) = false
-def $instance_default_fill_present((CCINSTANCE porigin_class porigin_decl porigin_root porigin_trigger pstaticselection? n) :: pclassconstantevent*, porigin_class, porigin_decl) = true
-def $instance_default_fill_present(pclassconstantevent :: pclassconstantevent_tail*, porigin_class, porigin_decl) = $instance_default_fill_present(pclassconstantevent_tail*, porigin_class, porigin_decl) -- otherwise
+def $instance_default_fill_present(pclassconstantevent :: pclassconstantevent_tail*, porigin_class, porigin_decl) = true
+  -- if $instance_default_fill_event(pclassconstantevent, porigin_class, porigin_decl)
+def $instance_default_fill_present(pclassconstantevent :: pclassconstantevent_tail*, porigin_class, porigin_decl) = $instance_default_fill_present(pclassconstantevent_tail*, porigin_class, porigin_decl)
+  -- if ~$instance_default_fill_event(pclassconstantevent, porigin_class, porigin_decl)
+dec $instance_default_link_event(pclassconstantevent, porigin) : bool
+def $instance_default_link_event(CCLINK porigin n, porigin) = true
+def $instance_default_link_event(pclassconstantevent, porigin) = false -- otherwise
 dec $instance_default_link_prefix(pclassconstantevent*, porigin, pclassconstantevent*) : pclassconstantevent*?
 def $instance_default_link_prefix(eps, porigin, pclassconstantevent_acc*) = eps
-def $instance_default_link_prefix((CCLINK porigin n) :: pclassconstantevent*, porigin, pclassconstantevent_acc*) = (pclassconstantevent_acc*)
-def $instance_default_link_prefix(pclassconstantevent :: pclassconstantevent_tail*, porigin, pclassconstantevent_acc*) = $instance_default_link_prefix(pclassconstantevent_tail*, porigin, pclassconstantevent_acc* ++ [pclassconstantevent]) -- otherwise
+def $instance_default_link_prefix(pclassconstantevent :: pclassconstantevent_tail*, porigin, pclassconstantevent_acc*) = (pclassconstantevent_acc*)
+  -- if $instance_default_link_event(pclassconstantevent, porigin)
+def $instance_default_link_prefix(pclassconstantevent :: pclassconstantevent_tail*, porigin, pclassconstantevent_acc*) = $instance_default_link_prefix(pclassconstantevent_tail*, porigin, pclassconstantevent_acc* ++ [pclassconstantevent])
+  -- if ~$instance_default_link_event(pclassconstantevent, porigin)
 dec $instance_default_inherited_done(pstate, porigin, porigin, pclassconstantevent*, nat) : bool
 dec $instance_default_filled_at(pstate, porigin, porigin, pclassconstantevent*, nat) : bool
 def $instance_default_filled_at(S, porigin_class, porigin_decl, pclassconstantevent*, n) = true
