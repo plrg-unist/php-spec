@@ -6,35 +6,28 @@ def $precision_ini_long(preqbytes) = $reporting_ini_long(n_sign, n_digits)
   -- if DIGITS n_digits n_count n_tail* = $ntdigits(n_value*, 0, 0)
 dec $precision_ini_valid(preqbytes) : bool
 def $precision_ini_valid(preqbytes) = ($startup_bytes(preqbytes) /\ $($precision_ini_long(preqbytes) >= -1))
-dec $precision_value(pstate) : int
 def $precision_value(S) = $precision_ini_long(S.PRECISIONINI)
 dec $precision_main_entry_valid(pstate) : bool
 dec $precision_eval_waits_valid(pstate, pevalcontext*) : bool
 dec $precision_file_waits_valid(pstate, pfilecontext*) : bool
 def $precision_state_valid(S) = ($precision_ini_valid(S.PRECISIONINIT) /\ $precision_ini_valid(S.PRECISIONINI) /\ (S.PRECISIONMODIFIED \/ S.PRECISIONINI = S.PRECISIONINIT) /\ $precision_main_entry_valid(S) /\ $precision_eval_waits_valid(S, S.EVALCONTEXTS) /\ $precision_file_waits_valid(S, S.FILECONTEXTS))
-dec $precision_restore(pstate) : pstate
 def $precision_restore(S) = S[.PRECISIONINI = S.PRECISIONINIT][.PRECISIONMODIFIED = false]
   -- if S.PRECISIONMODIFIED
 def $precision_restore(S) = S -- otherwise
 ;; zend_alter_ini_entry marks modification before invoking a rejecting modifier.
-dec $precision_set(pstate, preqbytes, preqbytes) : pstate
 def $precision_set(S, preqbytes_new, preqbytes_old) = S[.PRECISIONINI = preqbytes_new][.PRECISIONMODIFIED = true][.RESULT = KNOWN (PSTRING preqbytes_old)]
   -- if $($precision_ini_long(preqbytes_new) >= -1)
 def $precision_set(S, preqbytes_new, preqbytes_old) = S[.PRECISIONMODIFIED = true][.RESULT = KNOWN (PBOOL false)]
   -- if $($precision_ini_long(preqbytes_new) < -1)
 
 ;; Compiler memory uses a numeric input, distinct from live request INI bytes.
-dec $precision_memory(pstate, int) : pstate
 def $precision_memory(S, z_precision) = S[.PRECISIONINIT = preqbytes][.PRECISIONINI = preqbytes][.PRECISIONMODIFIED = false]
   -- if preqbytes = $decimal_integer(z_precision)
-dec $compile_source_precision(pstate, ppstate) : ppstate
 def $compile_source_precision(S, P) = P
   -- if $precision_value(P.FOLD.MEMORY) = $precision_value(S)
 def $compile_source_precision(S, P) = $ppstart_precision_external(P.FOLD.SOURCE.ID, P.FOLD.SOURCE.AST, P.LOCATION.FILE, P.FOLD.CWD, P.EVALCLASS, P.FOLD.EXTERNAL, $precision_value(S))
   -- if $precision_value(P.FOLD.MEMORY) =/= $precision_value(S)
 
-dec $parser_literal_origin(pstate, porigin?, expression) : pvalue?
-dec $source_precision(pstate, porigin?) : int?
 def $source_precision(S, (PORIGIN n pcpath)) = $declaration_precision(S.DECLARATIONS, n)
   -- if S.DECLARATIONS =/= eps
 def $source_precision(S, porigin?) = (14)
@@ -43,7 +36,6 @@ def $source_precision(S, porigin?) = eps -- otherwise
 def $parser_literal_origin(S, porigin?, expression) = $parser_literal_at(expression, z_precision)
   -- if $source_precision(S, porigin?) = (z_precision)
 def $parser_literal_origin(S, porigin?, expression) = eps -- otherwise
-dec $cv_source_name(pstate, phpType32) : preqbytes?
 def $cv_source_name(S, phpType32) = $cv_name_at(phpType32, z_precision)
   -- if $source_precision(S, S.ORIGIN) = (z_precision)
 def $cv_source_name(S, phpType32) = eps -- otherwise

@@ -47,13 +47,11 @@ def $declaration_enter_at(S, n, porigin?, z_precision) = S[.DECLARATIONS = S.DEC
 def $declaration_exit(S, n, pcompilestop) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDEXIT n pcompilestop]]
 
 ;; Default entries keep their original spelling. Both forms are one entry event.
-dec $declaration_entry_input(pdeclaration, nat) : (porigin?, int, int)?
 def $declaration_entry_input(PDENTER n porigin? z, n) = ((porigin?, z, 14))
 def $declaration_entry_input(PDENTERPRECISION n porigin? z z_precision, n) = ((porigin?, z, z_precision))
   -- if z_precision =/= 14
   -- if $(z_precision >= -1 /\ z_precision <= 9223372036854775807)
 def $declaration_entry_input(pdeclaration, n) = eps -- otherwise
-dec $declaration_precision(pdeclaration*, nat) : int?
 def $declaration_precision(eps, n) = eps
 def $declaration_precision(pdeclaration :: pdeclaration_tail*, n) = (z_precision)
   -- if $declaration_entry_input(pdeclaration, n) = ((porigin?, z, z_precision))
