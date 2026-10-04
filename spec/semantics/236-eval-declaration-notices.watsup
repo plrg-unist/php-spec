@@ -156,6 +156,14 @@ def $eval_compile_stop_result(S, pevalcompile) = $eval_compile_formatter_hard(S,
   -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
   -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= pevalcompile.PLAN.UNIT
 def $eval_compile_stop_result(S, pevalcompile) = $eval_compile_fatal_pending(S, pevalcompile) -- otherwise
+def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.SERVICELEFT = eps]
+  -- if S_compiled.COMPLETION = REQUESTFATAL ptbytes_class ptbytes_message z
+  -- if ~S_compiled.COMPILESTOP
+  -- if $eval_compile_fatal_current(S_compiled) = (pevalcompilefatal)
+  -- if $eval_compile_fatal_valid(S_compiled, pevalcompilefatal)
+  -- if $shutdown_compiler_snapshot(pevalcompilefatal.COMPLETION) = (S_compiled.COMPLETION)
+  -- if pevalcompilefatal.CURSOR.PLAN.UNIT =/= pevalcontext.UNIT
+  -- if $eval_context_at(S_compiled.EVALCONTEXTS, pevalcontext.UNIT) = eps
 
 ;; The marker suffix retains the actual eval caller while callbacks run.
 def $eval_compile_work((DECL_NOTICES pdeclnoticebatch) :: (EVAL_COMPILE_RESUME pevalcompile) :: ptask*, ptask_tail*) = [DECL_NOTICES pdeclnoticebatch, EVAL_COMPILE_RESUME pevalcompile] ++ ptask*
