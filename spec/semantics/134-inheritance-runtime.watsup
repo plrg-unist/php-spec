@@ -34,16 +34,17 @@ def $property_info_layout(S, porigin, n) = $property_info_append(pclassdesc.PROP
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (INTERNAL_THROWABLE_PARENT text_kind)
 def $property_info_layout(S, porigin, n) = eps -- otherwise
 
+dec $trait_property_inherit_message(pstate, ptbytes, ptbytes, ppropertydesc, ppropertydesc) : ptbytes?
 dec $class_property_override_issue(pstate, pclassdesc, ppropertydesc*, ppropertydesc*) : ptbytes?
 def $class_property_override_issue(S, pclassdesc_child, eps, ppropertydesc_own*) = eps
 def $class_property_override_issue(S, pclassdesc_child, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = $class_property_override_issue(S, pclassdesc_child, ppropertydesc_tail*, ppropertydesc_own*)
   -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = eps
 def $class_property_override_issue(S, pclassdesc_child, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = (ptbytes_message)
   -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_found)
-  -- if $ppproperty_inherit_message(pclassdesc_child.NAME, $property_declaring_name(S.CLASSES, ppropertydesc_parent.ORIGIN), ppropertydesc_parent, ppropertydesc_found) = (ptbytes_message)
+  -- if $trait_property_inherit_message(S, pclassdesc_child.NAME, $property_declaring_name(S.CLASSES, ppropertydesc_parent.ORIGIN), ppropertydesc_parent, ppropertydesc_found) = (ptbytes_message)
 def $class_property_override_issue(S, pclassdesc_child, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = $class_property_override_issue(S, pclassdesc_child, ppropertydesc_tail*, ppropertydesc_own*)
   -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_found)
-  -- if $ppproperty_inherit_message(pclassdesc_child.NAME, $property_declaring_name(S.CLASSES, ppropertydesc_parent.ORIGIN), ppropertydesc_parent, ppropertydesc_found) = eps
+  -- if $trait_property_inherit_message(S, pclassdesc_child.NAME, $property_declaring_name(S.CLASSES, ppropertydesc_parent.ORIGIN), ppropertydesc_parent, ppropertydesc_found) = eps
 
 dec $class_constant_parent_issue(pstate, pclassdesc, porigin) : pmethodissue
 dec $class_constant_link_error(pstate, porigin, ptbytes, int) : pstate
