@@ -299,7 +299,7 @@ def $shutdown_ready(S) = true
 def $shutdown_ready(S) = false -- otherwise
 def $shutdown_abort_frames(S) = $shutdown_abort_frames($restore_frame($file_warning_drop_scope(S))) -- if S.FRAMES =/= eps
 def $shutdown_abort_frames(S) = $file_warning_drop_scope(S) -- if S.FRAMES = eps
-def $shutdown_clean(S) = $shutdown_render_release($error_release_iterators($release_temporaries($silence_unwind($shutdown_abort_frames(S))))[.CURRENT = eps][.TODO = eps][.CONSTCONTEXT = eps][.HELD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.COMPILESTOP = false][.TRACE = eps][.ERRORFATALTRACE = eps][.ERRORORIGIN = eps])
+def $shutdown_clean(S) = $shutdown_render_release($error_release_iterators($release_temporaries($silence_unwind($shutdown_abort_frames(S))))[.CURRENT = eps][.TODO = eps][.CONSTCONTEXT = eps][.OBJECTCAST = eps][.HELD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.COMPILESTOP = false][.TRACE = eps][.ERRORFATALTRACE = eps][.ERRORORIGIN = eps])
 def $shutdown_begin(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_RUNNING][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps][.SHUTDOWN.COMPLETION = S_report.COMPLETION][.COMPLETION = NORMAL][.TODO = [SHUTDOWN_SEND 0 0 eps]]
   -- if S_report = $shutdown_freeze(S)
   -- if S_clean = $shutdown_clean(S_report)

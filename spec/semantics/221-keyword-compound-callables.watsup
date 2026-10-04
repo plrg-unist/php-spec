@@ -580,10 +580,10 @@ def $api_pending_task(ptask) = false -- otherwise
 dec $api_pending_tasks(ptask*) : bool
 def $api_pending_tasks(eps) = false
 def $api_pending_tasks(ptask :: ptask_tail*) = ($api_pending_task(ptask) \/ $api_pending_tasks(ptask_tail*))
-def $api_saved_frame_scope(S, pframe, pframe_tail*) = $set_active_table(S[.CURRENT = pframe.CONTEXT][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.FRAMES = pframe_tail*][.BORROWEDREAD = pframe.BORROWEDREAD], psymboltable)
+def $api_saved_frame_scope(S, pframe, pframe_tail*) = $set_active_table(S[.CURRENT = pframe.CONTEXT][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.FRAMES = pframe_tail*][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST], psymboltable)
   -- if $api_pending_tasks(pframe.TODO)
   -- if pframe.LOCALS = (psymboltable)
-def $api_saved_frame_scope(S, pframe, pframe_tail*) = $set_active_table(S[.CURRENT = pframe.CONTEXT][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.FRAMES = pframe_tail*][.BORROWEDREAD = pframe.BORROWEDREAD], psymboltable)
+def $api_saved_frame_scope(S, pframe, pframe_tail*) = $set_active_table(S[.CURRENT = pframe.CONTEXT][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.FRAMES = pframe_tail*][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST], psymboltable)
   -- if $api_pending_tasks(pframe.TODO)
   -- if pframe.LOCALS = eps /\ pframe.CONTEXT = eps
   -- if S.GLOBALTABLE = (psymboltable)

@@ -9,7 +9,8 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 Trait-constant callables265 retain the first shared AST method/function target,
 while named/method captures record each current publication prefix and METHOD
-captures select fresh called classes. REAL Closures use their own declaring scope. Exact receipts authenticate
+captures select fresh called classes. REAL Closures use their own declaring scope.
+Exact receipts authenticate
 cached private targets after a real partial initializer failure; wrapped/plain
 makers can create children with lexical/called scope and private defaults after
 maker retirement. Successful constant caches own their values; history owns none.
@@ -18,6 +19,20 @@ constructor guard passes SL at733 in27s under the same120s cap. AL timeouts rema
 zero-credit in the [default ledger](coverage/semantics/deferred-static-defaults-review.json).
 Compiled keyword NEW under the cached constant METHOD is the immediate remaining
 consumer; wider callable/default behavior and complete core stay open.
+
+Non-object casts261 now populate stdClass scalars/arrays, share all-string tables
+through genuine COW and fast clone, and preserve numeric round trips, alias type
+owners and active foreach cursor history. NaN warnings retain the allocated object
+and original operand location; NUL-key notices retain a nonowning TABLE/SERIAL
+marker through callbacks and delayed reference promotion. Raw undefined buckets
+keep distinct read/isset/copy/comparison behavior. Twelve full source comparisons
+retain 3a/82c/b0 cuts; one actual 8ada/a4fc composition gives the first agreement for
+the former251 native-only multiline cast holder. Four source-derived groups pass
+208 premises at b0, with original fixture stops preserved. The
+[cast ledger](coverage/semantics/object-casts-review.json) separates these cuts,
+two retired-pointer originals and a longer companion timeout (zero agreement).
+Actual257 destruction/frame/pruning hooks are preserved separately. Wider
+raw-undefined consumers, lifecycle/GC and callback contexts remain required.
 
 Request-stage destructors257 now repeat reverse direct globals and then scan
 reusable live store handles. Once marks, bailout/failed-constructor suppression,
