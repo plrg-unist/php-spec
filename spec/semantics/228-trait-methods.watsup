@@ -11,6 +11,11 @@ syntax ptraitcomposition = TRAITCOMPOSE pstate ptraitmethod* ptraitmethod*
 dec $trait_issue_has_source(pmethodissue) : bool
 dec $trait_static_entry(pfunction, porigin, porigin) : bool
 dec $trait_capture_this(pstate, porigin) : bool
+dec $trait_capture_invocation(pstate, pfunction, pmethodcapture, porigin) : bool
+dec $trait_capture_callers(pstate, pfunction, pmethodcapture, porigin, pfunction, pfunction*) : bool
+dec $trait_capture_caller(pstate, pfunction, pmethodcapture, porigin, pfunction, pfunction) : bool
+dec $trait_capture_global(pstate, nat, pcpath) : bool
+dec $trait_capture_scopes(pstate, pfunction, pmethodcapture, porigin, pfunction, (preqbytes, porigin)*) : bool
 dec $trait_method_call_valid(pstate, ptraitcall) : bool
 dec $trait_method_deprecation(pstate, ptraitcall) : preqbytes
 dec $trait_type_atom(ptatom, ptbytes, ptbytes?) : ptatom
@@ -683,8 +688,33 @@ def $method_capture_certificate_valid(S, porigin_site, (pmethodcapture)) = true
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
   -- if $class_origin_matches(S, porigin_called, pclassdesc.NAME, |S.CLASSES|)
   -- if pmethodcapture.CALLSITE = (porigin_call)
-  -- if $declaration_invocation(S, pfunction, porigin_call, pmethodcapture.LEXICAL_CLASS, pmethodcapture.CALLED_CLASS, [(pmethodcapture.FUNCTION, pmethodcapture.CALLSITE, pmethodcapture.LEXICAL_CLASS, pmethodcapture.CALLED_CLASS)])
+  -- if $trait_capture_invocation(S, pfunction, pmethodcapture, porigin_call)
   -- if ~$trait_capture_this(S, porigin_site) \/ ~pmethoddesc.STATIC
 def $trait_capture_this(S, porigin_site) = $method_capture_this(expression)
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 phpType6 metadata)
 def $trait_capture_this(S, porigin_site) = false -- otherwise
+
+;; The saved maker is the callee. Its call site's own physical body determines
+;; admissible caller scopes, including real imports and rebound Closures.
+def $trait_capture_invocation(S, pfunction, pmethodcapture, PORIGIN n pcpath) = $trait_capture_callers(S, pfunction, pmethodcapture, PORIGIN n pcpath, pfunction_caller, $all_functions(S))
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_caller)
+  -- if $class_method_origin(S.CLASSES, pfunction_caller.ORIGIN) =/= eps
+def $trait_capture_invocation(S, pfunction, pmethodcapture, PORIGIN n pcpath) = ($declaration_invocation(S, pfunction, PORIGIN n pcpath, pmethodcapture.LEXICAL_CLASS, pmethodcapture.CALLED_CLASS, eps) \/ $trait_capture_scopes(S, pfunction, pmethodcapture, PORIGIN n pcpath, pfunction_caller, S.CLASSNAMES))
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_caller)
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction_caller.ORIGIN) = (pfunction_caller)
+def $trait_capture_invocation(S, pfunction, pmethodcapture, PORIGIN n pcpath) = $declaration_invocation(S, pfunction, PORIGIN n pcpath, pmethodcapture.LEXICAL_CLASS, pmethodcapture.CALLED_CLASS, eps)
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = eps \/ $trait_capture_global(S, n, pcpath)
+def $trait_capture_callers(S, pfunction, pmethodcapture, porigin_site, pfunction_source, eps) = false
+def $trait_capture_callers(S, pfunction, pmethodcapture, porigin_site, pfunction_source, pfunction_candidate :: pfunction_tail*) = ($trait_capture_caller(S, pfunction, pmethodcapture, porigin_site, pfunction_source, pfunction_candidate) \/ $trait_capture_callers(S, pfunction, pmethodcapture, porigin_site, pfunction_source, pfunction_tail*))
+def $trait_capture_caller(S, pfunction, pmethodcapture, porigin_site, pfunction_source, pfunction_candidate) = $declaration_invocation(S, pfunction, porigin_site, pmethodcapture.LEXICAL_CLASS, pmethodcapture.CALLED_CLASS, [(pfunction_candidate.ORIGIN, eps, (pmethoddesc.OWNER), pmethodcapture.CALLED_CLASS)])
+  -- if $trait_source_same(pfunction_source, pfunction_candidate)
+  -- if $class_method_origin(S.CLASSES, pfunction_candidate.ORIGIN) = (pmethoddesc)
+  -- if $declaration_active_class(S, (pmethoddesc.OWNER))
+def $trait_capture_caller(S, pfunction, pmethodcapture, porigin_site, pfunction_source, pfunction_candidate) = false -- otherwise
+
+def $trait_capture_scopes(S, pfunction, pmethodcapture, porigin_site, pfunction_caller, eps) = false
+def $trait_capture_scopes(S, pfunction, pmethodcapture, porigin_site, pfunction_caller, (preqbytes, porigin_class) :: (preqbytes_tail, porigin_tail)*) = ($declaration_invocation(S, pfunction, porigin_site, pmethodcapture.LEXICAL_CLASS, pmethodcapture.CALLED_CLASS, [(pfunction_caller.ORIGIN, eps, (porigin_class), pmethodcapture.CALLED_CLASS)]) \/ $trait_capture_scopes(S, pfunction, pmethodcapture, porigin_site, pfunction_caller, (preqbytes_tail, porigin_tail)*))
+def $trait_capture_global(S, n, pcpath) = true
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction)
+  -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
+def $trait_capture_global(S, n, pcpath) = false -- otherwise
