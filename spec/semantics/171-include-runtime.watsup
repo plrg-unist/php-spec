@@ -258,21 +258,8 @@ def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S
   -- if $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind)
 def $file_trace_frame(S, pfilecontext) = {FILE $call_sourcefile(S.FILES, pfilecontext.SITE), LINE $file_site_line(S, pfilecontext.SITE), FUNCTION $file_keyword(pfilecontext.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args([PSTRING n_opened*], 0), HASARGS true}
   -- if pfilecontext.OPENED = (n_opened*)
-def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_stream*) = S_second[.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if (pfilecontext.KIND = 1 \/ pfilecontext.KIND = 2)
-  -- if z = $file_site_line(S, pfilecontext.SITE)
-  -- if n_keyword* = $file_keyword(pfilecontext.KIND)
-  -- if S_ready = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = NORMAL][.ORIGIN = (pfilecontext.SITE)]
-  -- if S_first = $diagnostic(S_ready, "Warning", n_keyword* ++ $ptascii("(") ++ n_warning_path* ++ $ptascii("): Failed to open stream: ") ++ n_stream*, z)
-  -- if S_second = $diagnostic(S_first, "Warning", n_keyword* ++ $ptascii("(): Failed opening '") ++ pfilecontext.REQUESTED ++ $ptascii("' for inclusion (include_path='") ++ pfilecontext.INCLUDEPATH ++ $ptascii("')"), z)
-def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_stream*) = S_object[.TODO = (THROW_SEARCH n_object) :: pfilecontext.TAIL][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if (pfilecontext.KIND = 3 \/ pfilecontext.KIND = 4)
-  -- if z = $file_site_line(S, pfilecontext.SITE)
-  -- if n_keyword* = $file_keyword(pfilecontext.KIND)
-  -- if S_ready = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = NORMAL][.ORIGIN = (pfilecontext.SITE)]
-  -- if S_first = $diagnostic(S_ready, "Warning", n_keyword* ++ $ptascii("(") ++ n_warning_path* ++ $ptascii("): Failed to open stream: ") ++ n_stream*, z)
-  -- if S_object = $throwable_materialize($throw_scalar(S_first, "Error", $ptascii("Failed opening required '") ++ pfilecontext.REQUESTED ++ $ptascii("' (include_path='") ++ pfilecontext.INCLUDEPATH ++ $ptascii("')"), z))
-  -- if S_object.COMPLETION = THROWING n_object
+dec $file_warning_start(pstate, pfilecontext, pfilecontext*, preqbytes, preqbytes) : pstate
+def $file_open_failed(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_stream*) = $file_warning_start(S, pfilecontext, pfilecontext_tail*, n_warning_path*, n_stream*)
 dec $file_include_after_compile(preqbytes*, preqbytes) : preqbytes*
 dec $file_once_record_open(pstate, int, preqbytes) : pstate
 def $file_once_kind(2) = true

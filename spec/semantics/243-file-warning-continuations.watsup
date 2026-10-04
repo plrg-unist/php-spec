@@ -1,0 +1,139 @@
+;; Failed opening retains its source wrapper while the two C diagnostics run.
+;; Only the provider's stream text is frozen before the first user callback.
+dec $file_warning_phase(pfilephase) : bool
+def $file_warning_phase(FILE_WARNING_STREAM n_path* n_stream*) = true
+def $file_warning_phase(FILE_WARNING_OPEN n_path*) = true
+def $file_warning_phase(pfilephase) = false -- otherwise
+dec $file_warning_marker(pfilephase, nat) : bool
+def $file_warning_marker(FILE_WARNING_STREAM n_path* n_stream*, n_phase) = (n_phase = 0 \/ n_phase = 1)
+def $file_warning_marker(FILE_WARNING_OPEN n_path*, n_phase) = (n_phase = 2 \/ n_phase = 3)
+def $file_warning_marker(pfilephase, n_phase) = false -- otherwise
+dec $file_warning_payload_valid(pfilecontext) : bool
+def $file_warning_payload_valid(pfilecontext) = ($startup_bytes(n_path*) /\ $startup_bytes(n_stream*) /\ n_stream* =/= eps)
+  -- if pfilecontext.PHASE = FILE_WARNING_STREAM n_path* n_stream*
+def $file_warning_payload_valid(pfilecontext) = ($startup_bytes(n_path*) /\ $c_string(n_path*) = n_path* /\ n_path* =/= eps /\ (pfilecontext.KIND = 1 \/ pfilecontext.KIND = 2))
+  -- if pfilecontext.PHASE = FILE_WARNING_OPEN n_path*
+def $file_warning_payload_valid(pfilecontext) = false -- otherwise
+dec $file_context_at(pfilecontext*, nat) : pfilecontext?
+def $file_context_at(eps, n_nonce) = eps
+def $file_context_at(pfilecontext :: pfilecontext_tail*, n_nonce) = (pfilecontext)
+  -- if pfilecontext.NONCE = n_nonce
+def $file_context_at(pfilecontext :: pfilecontext_tail*, n_nonce) = $file_context_at(pfilecontext_tail*, n_nonce)
+  -- if pfilecontext.NONCE =/= n_nonce
+dec $file_warning_scope_valid(pstate, pfilecontext) : bool
+def $file_warning_scope_valid(S, pfilecontext) = (pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S))
+dec $file_warning_saved_owner_valid(pstate, pfilecontext, pframe*) : bool
+def $file_warning_saved_owner_valid(S, pfilecontext, eps) = false
+def $file_warning_saved_owner_valid(S, pfilecontext, pframe :: pframe_tail*) = $file_warning_scope_valid($constant_frame_scope(S, pframe, pframe_tail*), pfilecontext)
+  -- if pfilecontext.OWNER = |pframe_tail*|
+def $file_warning_saved_owner_valid(S, pfilecontext, pframe :: pframe_tail*) = $file_warning_saved_owner_valid(S, pfilecontext, pframe_tail*)
+  -- if pfilecontext.OWNER =/= |pframe_tail*|
+dec $file_warning_owner_valid(pstate, pfilecontext) : bool
+def $file_warning_owner_valid(S, pfilecontext) = $file_warning_scope_valid(S, pfilecontext)
+  -- if pfilecontext.OWNER = |S.FRAMES|
+def $file_warning_owner_valid(S, pfilecontext) = $file_warning_saved_owner_valid(S, pfilecontext, S.FRAMES)
+  -- if $(pfilecontext.OWNER < |S.FRAMES|)
+def $file_warning_owner_valid(S, pfilecontext) = false
+  -- if $(pfilecontext.OWNER > |S.FRAMES|)
+def $file_context_phase_valid(S, pfilecontext) = (pfilecontext.UNIT = eps /\ pfilecontext.RESOLVED = eps /\ pfilecontext.OPENED = eps /\ pfilecontext.BYTES = eps /\ $file_warning_payload_valid(pfilecontext) /\ $file_warning_owner_valid(S, pfilecontext))
+  -- if $file_warning_phase(pfilecontext.PHASE)
+def $file_marker_match(pfilecontext, FILE_WARNING_PHASE n_nonce n_phase) = (pfilecontext.NONCE = n_nonce /\ $file_warning_marker(pfilecontext.PHASE, n_phase))
+def $file_marker_match(pfilecontext, ERROR_HANDLER_INVOKE perrorcall) = $file_marker_match(pfilecontext, perrorcall.RESUME)
+def $file_marker_match(pfilecontext, ERROR_HANDLER_RESULT perrorcall) = $file_marker_match(pfilecontext, perrorcall.RESUME)
+dec $file_warning_task_valid(pstate, nat, nat) : bool
+def $file_warning_task_valid(S, n_nonce, n_phase) = ($file_warning_marker(pfilecontext.PHASE, n_phase) /\ $file_warning_payload_valid(pfilecontext) /\ $file_warning_scope_valid(S, pfilecontext))
+  -- if $file_context_at(S.FILECONTEXTS, n_nonce) = (pfilecontext)
+def $file_warning_task_valid(S, n_nonce, n_phase) = false
+  -- if $file_context_at(S.FILECONTEXTS, n_nonce) = eps
+def $call_task_valid(S, FILE_WARNING_PHASE n_nonce n_phase) = $file_warning_task_valid(S, n_nonce, n_phase)
+def $eval_wrapped_marker(FILE_WARNING_PHASE n_nonce n_phase) = true
+def $eval_wrapped_marker(ERROR_HANDLER_INVOKE perrorcall) = $eval_wrapped_marker(perrorcall.RESUME)
+def $eval_wrapped_marker(ERROR_HANDLER_RESULT perrorcall) = $eval_wrapped_marker(perrorcall.RESUME)
+def $eval_marker_valid(S, FILE_WARNING_PHASE n_nonce n_phase) = $file_warning_marker(pfilecontext.PHASE, n_phase)
+  -- if $file_context_at(S.FILECONTEXTS, n_nonce) = (pfilecontext)
+def $eval_marker_valid(S, FILE_WARNING_PHASE n_nonce n_phase) = false
+  -- if $file_context_at(S.FILECONTEXTS, n_nonce) = eps
+
+dec $file_warning_stream_message(pfilecontext, preqbytes, preqbytes) : preqbytes
+def $file_warning_stream_message(pfilecontext, n_path*, n_stream*) = $file_keyword(pfilecontext.KIND) ++ $ptascii("(") ++ n_path* ++ $ptascii("): Failed to open stream: ") ++ n_stream*
+dec $file_warning_open_message(pfilecontext, preqbytes) : preqbytes
+def $file_warning_open_message(pfilecontext, n_path*) = $file_keyword(pfilecontext.KIND) ++ $ptascii("(): Failed opening '") ++ pfilecontext.REQUESTED ++ $ptascii("' for inclusion (include_path='") ++ n_path* ++ $ptascii("')")
+dec $file_warning_line(pstate, pfilecontext) : int
+def $file_warning_line(S, pfilecontext) = $class_constant_error_line(S, $file_site_line(S, pfilecontext.SITE))
+def $file_warning_start(S, pfilecontext, pfilecontext_tail*, n_path*, n_stream*) = S[.FILECONTEXTS = pfilecontext_next :: pfilecontext_tail*][.TODO = (FILE_WARNING_PHASE pfilecontext.NONCE 0) :: pfilecontext.TAIL][.SERVICELEFT = eps][.COMPLETION = NORMAL][.ORIGIN = (pfilecontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pfilecontext_next = pfilecontext[.PHASE = FILE_WARNING_STREAM n_path* n_stream*]
+rule PhpStep/file-warning-stream: S ~> $error_dispatch(S, 2, n_message*, z, DIAGNOSTIC "Warning" n_message* z, FILE_WARNING_PHASE n_nonce 1)
+  -- if S.TODO = (FILE_WARNING_PHASE n_nonce 0) :: ptask_tail*
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.NONCE = n_nonce
+  -- if $file_warning_task_valid(S, n_nonce, 0)
+  -- if pfilecontext.PHASE = FILE_WARNING_STREAM n_path* n_stream*
+  -- if n_message* = $file_warning_stream_message(pfilecontext, n_path*, n_stream*)
+  -- if z = $file_warning_line(S, pfilecontext)
+rule PhpStep/file-warning-open-prepare: S ~> S[.FILECONTEXTS = pfilecontext[.PHASE = FILE_WARNING_OPEN n_path*] :: pfilecontext_tail*][.TODO = (FILE_WARNING_PHASE n_nonce 2) :: ptask_tail*]
+  -- if S.TODO = (FILE_WARNING_PHASE n_nonce 1) :: ptask_tail*
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.NONCE = n_nonce
+  -- if $file_warning_task_valid(S, n_nonce, 1)
+  -- if pfilecontext.KIND = 1 \/ pfilecontext.KIND = 2
+  -- if $file_include_path(S.FILEINCLUDEPATH) = (n_path*)
+rule PhpStep/file-warning-open: S ~> $error_dispatch(S, 2, n_message*, z, DIAGNOSTIC "Warning" n_message* z, FILE_WARNING_PHASE n_nonce 3)
+  -- if S.TODO = (FILE_WARNING_PHASE n_nonce 2) :: ptask_tail*
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.NONCE = n_nonce
+  -- if $file_warning_task_valid(S, n_nonce, 2)
+  -- if pfilecontext.PHASE = FILE_WARNING_OPEN n_path*
+  -- if n_message* = $file_warning_open_message(pfilecontext, n_path*)
+  -- if z = $file_warning_line(S, pfilecontext)
+rule PhpStep/file-warning-false: S ~> S[.FILECONTEXTS = pfilecontext_tail*][.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FILE_WARNING_PHASE n_nonce 3) :: ptask_tail*
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.NONCE = n_nonce
+  -- if $file_warning_task_valid(S, n_nonce, 3)
+rule PhpStep/file-warning-required: S ~> S_object[.FILECONTEXTS = pfilecontext_tail*][.TODO = (THROW_SEARCH n_object) :: ptask_tail*][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FILE_WARNING_PHASE n_nonce 1) :: ptask_tail*
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.NONCE = n_nonce
+  -- if $file_warning_task_valid(S, n_nonce, 1)
+  -- if pfilecontext.KIND = 3 \/ pfilecontext.KIND = 4
+  -- if $file_include_path(S.FILEINCLUDEPATH) = (n_path*)
+  -- if z = $file_warning_line(S, pfilecontext)
+  -- if S_object = $throwable_materialize($throw_scalar(S, "Error", $ptascii("Failed opening required '") ++ pfilecontext.REQUESTED ++ $ptascii("' (include_path='") ++ n_path* ++ $ptascii("')"), z))
+  -- if S_object.COMPLETION = THROWING n_object
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = FILE_WARNING_PHASE n_nonce 1
+  -- if $file_warning_task_valid(S, n_nonce, 1)
+  -- if $file_context_at(S.FILECONTEXTS, n_nonce) = (pfilecontext)
+  -- if pfilecontext.PHASE = FILE_WARNING_STREAM n_path* n_stream*
+  -- if perrorcall.SITE = pfilecontext.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = $file_warning_line(S, pfilecontext)
+  -- if perrorcall.MESSAGE = $file_warning_stream_message(pfilecontext, n_path*, n_stream*)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = FILE_WARNING_PHASE n_nonce 3
+  -- if $file_warning_task_valid(S, n_nonce, 3)
+  -- if $file_context_at(S.FILECONTEXTS, n_nonce) = (pfilecontext)
+  -- if pfilecontext.PHASE = FILE_WARNING_OPEN n_path*
+  -- if perrorcall.SITE = pfilecontext.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = $file_warning_line(S, pfilecontext)
+  -- if perrorcall.MESSAGE = $file_warning_open_message(pfilecontext, n_path*)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+
+dec $file_warning_remove(pfilecontext*, nat) : pfilecontext*
+def $file_warning_remove(eps, n_nonce) = eps
+def $file_warning_remove(pfilecontext :: pfilecontext_tail*, n_nonce) = pfilecontext_tail*
+  -- if pfilecontext.NONCE = n_nonce
+def $file_warning_remove(pfilecontext :: pfilecontext_tail*, n_nonce) = pfilecontext :: $file_warning_remove(pfilecontext_tail*, n_nonce)
+  -- if pfilecontext.NONCE =/= n_nonce
+def $return_discard(S, FILE_WARNING_PHASE n_nonce n_phase) = S[.FILECONTEXTS = $file_warning_remove(S.FILECONTEXTS, n_nonce)]
+def $error_read_discard(S, FILE_WARNING_PHASE n_nonce n_phase) = $return_discard(S, FILE_WARNING_PHASE n_nonce n_phase)
+
+;; The pre-parser include/require frame has no operand argument in backtraces.
+def $file_trace_phase(FILE_WARNING_STREAM n_path* n_stream*) = true
+def $file_trace_phase(FILE_WARNING_OPEN n_path*) = true
+def $file_trace_frame(S, pfilecontext) = {FILE pfilecontext.CALLER, LINE $file_site_line(S, pfilecontext.SITE), FUNCTION $file_keyword(pfilecontext.KIND), CLASS eps, TYPE eps, ARGS eps, HASARGS false}
+  -- if $file_warning_phase(pfilecontext.PHASE)
+def $source_trace_merge(S, pevalcontext :: pevalcontext_tail*, pfilecontext :: pfilecontext_tail*) = [$file_trace_frame(S, pfilecontext)] ++ $source_trace_merge(S, pevalcontext :: pevalcontext_tail*, pfilecontext_tail*)
+  -- if $file_warning_phase(pfilecontext.PHASE)
