@@ -495,7 +495,10 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.MESSAGE = $key_read_message(pkeywrite.READ)
   -- if perrorcall.EVENT = $key_read_event(pkeywrite.READ)
 
-def $key_write_reference(S) = $call_fresh_reference(S, PNULL) -- if S.LOCATION = NOWHERE
+def $key_write_reference(S) = S_cell[.CELL = n]
+  -- if S.LOCATION = NOWHERE
+  -- if n = |S.STORE|
+  -- if S_cell = $call_fresh_reference(S, PNULL)
 def $key_write_reference(S) = $call_location_reference(S) -- if S.LOCATION =/= NOWHERE
 def $key_write_update_null(S, pupdate, b_post, z) = S_changed -- if S_changed = $update_value(S, pupdate, PNULL, z) -- if ~b_post
 def $key_write_update_null(S, pupdate, true, z) = S_changed[.RESULT = KNOWN PNULL]
