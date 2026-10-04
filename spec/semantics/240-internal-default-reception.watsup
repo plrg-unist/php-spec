@@ -39,7 +39,8 @@ def $default_internal_received_value(S, pctorcall, n, pvalue) = true
   -- if $default_internal_warning(S, pctorcall, n) = eps
   -- if $default_internal_string_object(S, pctorcall, n) = eps
   -- if S_value = $default_internal_parameter_plain(S, pctorcall, n, $named_slot_at(pctorcall.SENT, n))
-  -- if S_value.COMPLETION = NORMAL /\ S_value.RESULT = KNOWN pvalue
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
 def $default_internal_received_value(S, pctorcall, n, pvalue) = false -- otherwise
 dec $default_internal_received_prefix(pstate, pctorcall, pvalue*, nat) : bool
 def $default_internal_received_prefix(S, pctorcall, eps, n) = true
@@ -95,7 +96,8 @@ rule PhpStep/default-internal-receiving-value: S ~> $default_internal_receiving_
   -- if $default_internal_warning(S, pdefaultinternal.CALL, pdefaultinternal.INDEX) = eps
   -- if $default_internal_string_object(S, pdefaultinternal.CALL, pdefaultinternal.INDEX) = eps
   -- if S_value = $default_internal_parameter(S, pdefaultinternal.CALL, pdefaultinternal.INDEX, $named_slot_at(pdefaultinternal.CALL.SENT, pdefaultinternal.INDEX))
-  -- if S_value.COMPLETION = NORMAL /\ S_value.RESULT = KNOWN pvalue
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
 rule PhpStep/default-internal-receiving-error: S ~> S_value
   -- if S.TODO = (DEFAULT_INTERNAL_CTOR_RECEIVE pdefaultinternal) :: ptask_tail*
   -- if $default_internal_receiving_valid(S, pdefaultinternal)
@@ -192,7 +194,8 @@ rule PhpStep/default-internal-receiving-builtin-string: S ~> $default_internal_r
   -- if $default_internal_string_object(S, pdefaultinternal.CALL, pdefaultinternal.INDEX) = (n)
   -- if ~$stringable_instance(S, n) /\ $throwable_member(S, n)
   -- if S_value = $stringify(S, POBJECT n, pdefaultinternal.CALL.LINE)
-  -- if S_value.COMPLETION = NORMAL /\ S_value.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING ptbytes)
 rule PhpStep/default-internal-receiving-builtin-string-error: S ~> S_value
   -- if S.TODO = (DEFAULT_INTERNAL_CTOR_RECEIVE pdefaultinternal) :: ptask_tail*
   -- if $default_internal_string_valid(S, pdefaultinternal)
