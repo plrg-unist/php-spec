@@ -523,5 +523,41 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "failed-internal-constructor-skips-user-destructor",
+    "source": "<?php class E extends Exception{function __destruct(){echo \"D;\";}}try{new E([]);}catch(Throwable $e){echo \"C;\";}",
+    "source_sha256": "a8a67718b4443472f1558851bd9b3eca6f206e0137d3850e856d31f5d7902afb",
+    "stdout": "C;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "failed-manual-internal-constructor-keeps-user-destructor",
+    "source": "<?php class E extends Exception{function __destruct(){echo \"D;\";}}$e=new E;try{$e->__construct([]);}catch(Throwable $t){echo \"C;\";}",
+    "source_sha256": "3ee425ffbcfeaa4865ed4082dc0f3e7a3b0c44adf5e8c8864733bd0fdf89baaf",
+    "stdout": "C;D;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "remaining-locals-chain-replacement-throwables",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";throw new Exception($this->id);}}function drop(){if(false){$b=null;}$a=new C(\"a\");$b=new C(\"b\");throw new Exception(\"parent\");}class P{function __destruct(){echo \"P;\";try{drop();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\":\",$e->getPrevious()->getMessage(),\":\",$e->getPrevious()->getPrevious()->getMessage(),\";\";}echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "0f41ef29d7402b3bd4f9b29a1aa7ff69b64e09ac576d1f54bc9621e63367d9bc",
+    "stdout": "P;C:b;C:a;caught:a:b:parent;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "normal-locals-chain-replacement-throwables",
+    "source": "<?php class C{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"C:\",$this->id,\";\";throw new Exception($this->id);}}function drop(){if(false){$b=null;}$a=new C(\"a\");$b=new C(\"b\");}class P{function __destruct(){echo \"P;\";try{drop();}catch(Throwable $e){echo \"caught:\",$e->getMessage(),\":\",$e->getPrevious()->getMessage(),\":\",$e->getPrevious()->getPrevious()===null?\"none\":\"other\",\";\";}echo \"TAIL;\";}}$p=new P;",
+    "source_sha256": "1a4eb3abcc719cac5328e0cc8cf51cfe4f697ed8891a29fbee4127344ce8628b",
+    "stdout": "P;C:b;C:a;caught:a:b:none;TAIL;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
