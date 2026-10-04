@@ -50,6 +50,30 @@ def $anonymous_default_new_name(S, porigin) = pclassdesc.PARENT
   -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
 
+;; Nonempty NEW tasks previously used the ordinary permissive admission. Classify
+;; the anonymous parameter context without borrowing the task's tested origin.
+dec $anonymous_default_new_task_kind(pstate) : bool
+def $anonymous_default_new_task_kind(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.CLOSURETEMPLATES, pcallcontext.FUNCTION) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (pcnode)
+  -- if $default_closure_node(pcnode)
+  -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_function
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = PORIGIN n_unit pcpath_parameter
+  -- if $origin_node(S.SOURCES, pconstantcontext.ORIGIN) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata)
+  -- if $effect_below(pcpath_function, pcpath_parameter)
+def $anonymous_default_new_task_kind(S) = false -- otherwise
+dec $anonymous_default_new_task_valid(pstate, expression) : bool
+def $anonymous_default_new_task_valid(S, expression) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $anonymous_default_new_site(S, porigin)
+def $anonymous_default_new_task_valid(S, expression) = false -- otherwise
+def $call_task_valid(S, EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) = (~$anonymous_default_new_task_kind(S) \/ $anonymous_default_new_task_valid(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata))
+  -- if phpType7* =/= eps
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent")]
+
 rule PhpStep/anonymous-default-new-no-scope: S ~> $throw_scalar(S, "Error", $ptascii("Cannot access \"") ++ $ptlc($base64(text)) ++ $ptascii("\" when no class scope is active"), $runtime_line(S, eps, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata))
   -- if S.TODO = (EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
