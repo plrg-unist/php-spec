@@ -10,6 +10,7 @@ def $coerce_string(LEADNUM pnumber) = COERCED pnumber true
 def $coerce_string(NOTNUMERIC) = BADNUMBER
 
 dec $coerce_number(pvalue) : pcoercion
+def $coerce_number(PUNDEFINED) = BADNUMBER
 def $coerce_number(PNULL) = COERCED (NINT 0) false
 def $coerce_number(PBOOL false) = COERCED (NINT 0) false
 def $coerce_number(PBOOL true) = COERCED (NINT 1) false
@@ -49,7 +50,11 @@ def $throw_scalar(S, text, n_message*, z) = S[.COMPLETION = UNSUPPORTED "missing
 def $throw_scalar(S, text, n_message*, z) = S -- if S.COMPLETION =/= NORMAL
 
 dec $type_failure(pstate, pbin, pvalue, pvalue, int) : pstate
+def $type_failure(S, pbin, pvalue_1, pvalue_2, z) = S[.COMPLETION = UNSUPPORTED "raw undefined arithmetic"]
+  -- if pvalue_1 = PUNDEFINED \/ pvalue_2 = PUNDEFINED
 def $type_failure(S, pbin, pvalue_1, pvalue_2, z) = $throw_scalar(S, "TypeError", ([85,110,115,117,112,112,111,114,116,101,100,32,111,112,101,114,97,110,100,32,116,121,112,101,115,58,32] ++ $value_type_bytes_at(S, pvalue_1) ++ [32] ++ $operator_bytes(pbin) ++ [32] ++ $value_type_bytes_at(S, pvalue_2)), z)
+  -- if pvalue_1 =/= PUNDEFINED
+  -- if pvalue_2 =/= PUNDEFINED
 
 dec $leading_warning(pstate, bool, int) : pstate
 def $leading_warning(S, false, z) = S
@@ -129,6 +134,7 @@ def $stringify(S, PFLOAT n, z) = S[.COMPLETION = UNSUPPORTED "missing source lin
   -- if $(z <= 0)
 def $stringify(S, PSTRING n*, z) = S[.RESULT = KNOWN (PSTRING n*)]
 def $stringify(S, PINT i, z) = S[.RESULT = KNOWN (PSTRING $decimal_integer(i))]
+def $stringify(S, PUNDEFINED, z) = S[.RESULT = KNOWN (PSTRING eps)]
 def $stringify(S, PNULL, z) = S[.RESULT = KNOWN (PSTRING eps)]
 def $stringify(S, PBOOL b, z) = S[.RESULT = KNOWN (PSTRING $echo_value(PBOOL b))]
 

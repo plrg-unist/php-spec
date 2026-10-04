@@ -1,0 +1,509 @@
+;; stdClass may own the same HashTable as an array or another stdClass. Its
+;; projected slots are lookup metadata; only the table owns their items.
+def $object_table_at(eps, n) = eps
+def $object_table_at(pobjecttable :: pobjecttable_tail*, n) = (pobjecttable.TABLE)
+  -- if pobjecttable.OBJECT = n
+def $object_table_at(pobjecttable :: pobjecttable_tail*, n) = $object_table_at(pobjecttable_tail*, n)
+  -- if pobjecttable.OBJECT =/= n
+dec $object_table_remove(pobjecttable*, nat) : pobjecttable*
+def $object_table_remove(eps, n) = eps
+def $object_table_remove(pobjecttable :: pobjecttable_tail*, n) = pobjecttable_tail*
+  -- if pobjecttable.OBJECT = n
+def $object_table_remove(pobjecttable :: pobjecttable_tail*, n) = pobjecttable :: $object_table_remove(pobjecttable_tail*, n)
+  -- if pobjecttable.OBJECT =/= n
+def $object_tables_prune(eps, pnode*) = eps
+def $object_tables_prune(pobjecttable :: pobjecttable_tail*, pnode*) = pobjecttable :: $object_tables_prune(pobjecttable_tail*, pnode*)
+  -- if (HOBJECT pobjecttable.OBJECT) <- pnode*
+def $object_tables_prune(pobjecttable :: pobjecttable_tail*, pnode*) = $object_tables_prune(pobjecttable_tail*, pnode*)
+  -- if ~((HOBJECT pobjecttable.OBJECT) <- pnode*)
+
+dec $object_table_slots(pentry*) : ppropertyslot*
+def $object_table_slots(eps) = eps
+def $object_table_slots((ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*) = {DECL eps, NAME ptbytes, STATE PROP_VALUE pitem} :: $object_table_slots(pentry_tail*)
+dec $object_table_item_valid(pstate, pitem) : bool
+def $object_table_item_valid(S, ALIAS n) = true
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if n <- S.REFCELLS
+  -- if (HCELL n) <- S.ALLOCATIONS
+def $object_table_item_valid(S, DIRECT pvalue) = true
+def $object_table_item_valid(S, UNINITIALIZED) = true
+def $object_table_item_valid(S, pitem) = false -- otherwise
+dec $object_table_entries_valid(pstate, pentry*) : bool
+def $object_table_entries_valid(S, eps) = true
+def $object_table_entries_valid(S, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*) = ($object_table_item_valid(S, pitem) /\ $object_table_entries_valid(S, pentry_tail*))
+  -- if $(n < 256) -- for n in ptbytes
+  -- if $entry_lookup(pentry_tail*, KSTRING ptbytes) = eps
+def $object_table_entries_valid(S, pentry*) = false -- otherwise
+def $stdclass_slots_valid(S, eps) = true
+def $stdclass_slots_valid(S, ppropertyslot :: ppropertyslot_tail*) = ($object_table_item_valid(S, pitem) /\ $stdclass_slots_valid(S, ppropertyslot_tail*))
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if $(n < 256) -- for n in ppropertyslot.NAME
+def $stdclass_slots_valid(S, ppropertyslot :: ppropertyslot_tail*) = $stdclass_slots_valid(S, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_UNSET
+  -- if $(n < 256) -- for n in ppropertyslot.NAME
+def $stdclass_slots_valid(S, ppropertyslot*) = false -- otherwise
+dec $object_tables_list_valid(pstate, pobjecttable*) : bool
+def $object_tables_list_valid(S, eps) = true
+def $object_tables_list_valid(S, pobjecttable :: pobjecttable_tail*) = $object_tables_list_valid(S, pobjecttable_tail*)
+  -- if $(pobjecttable.OBJECT < |S.OBJECTS|)
+  -- if $(pobjecttable.TABLE < |S.ARRAYS|)
+  -- if S.OBJECTS[pobjecttable.OBJECT] = STDINSTANCE
+  -- if (HOBJECT pobjecttable.OBJECT) <- S.ALLOCATIONS
+  -- if (HARRAY pobjecttable.TABLE) <- S.ALLOCATIONS
+  -- if $object_table_at(pobjecttable_tail*, pobjecttable.OBJECT) = eps
+  -- if $objectprops_record_at(S.OBJECTPROPS, pobjecttable.OBJECT) = (pobjectprops)
+  -- if pobjectprops.MATERIALIZED
+  -- if $object_table_entries_valid(S, S.ARRAYS[pobjecttable.TABLE].ITEMS)
+  -- if $property_entries(pobjectprops.SLOTS) = S.ARRAYS[pobjecttable.TABLE].ITEMS
+def $object_tables_list_valid(S, pobjecttable*) = false -- otherwise
+def $object_tables_valid(S) = $object_tables_list_valid(S, S.OBJECTTABLES)
+
+;; Writable lookup separates a shared property table even when the selected
+;; entry is already a reference. A sole table keeps its existing wrappers.
+dec $object_table_write_slots(pstate, nat, ppropertyslot*) : ppropertyslot*
+def $object_table_write_slots(S, n_table, eps) = eps
+def $object_table_write_slots(S, n_table, ppropertyslot :: ppropertyslot_tail*) = ppropertyslot[.STATE = PROP_UNSET] :: $object_table_write_slots(S, n_table, ppropertyslot_tail*)
+  -- if ppropertyslot.STATE = PROP_VALUE UNINITIALIZED
+def $object_table_write_slots(S, n_table, ppropertyslot :: ppropertyslot_tail*) = ppropertyslot[.STATE = PROP_VALUE $duplicate_item(S, n_table, pitem)] :: $object_table_write_slots(S, n_table, ppropertyslot_tail*)
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if pitem =/= UNINITIALIZED
+def $object_table_write_slots(S, n_table, ppropertyslot :: ppropertyslot_tail*) = ppropertyslot :: $object_table_write_slots(S, n_table, ppropertyslot_tail*)
+  -- if ppropertyslot.STATE = PROP_UNSET
+def $object_table_write(S, n) = S[.ARRAYS = S.ARRAYS ++ [S.ARRAYS[n_table][.ITEMS = $property_entries(ppropertyslot_new*)][.POSITIONS = $defined_positions(S.ARRAYS[n_table].POSITIONS, $property_entries(ppropertyslot_new*))]]][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_new]][.OBJECTTABLES = $object_table_remove(S.OBJECTTABLES, n) ++ [{OBJECT n, TABLE n_new}]][.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n, ppropertyslot_new*)]
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $($heap_owners($heap_prune($heap_graph(S)), HARRAY n_table) > 1)
+  -- if ppropertyslot_new* = $object_table_write_slots(S, n_table, pobjectprops.SLOTS)
+  -- if n_new = |S.ARRAYS|
+def $object_table_write(S, n) = S
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if $heap_owners($heap_prune($heap_graph(S)), HARRAY n_table) = 1
+def $object_table_write(S, n) = S
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+def $object_table_write_value(S, POBJECT n) = $object_table_write(S, n)
+def $object_table_write_value(S, pvalue) = S -- otherwise
+
+dec $object_table_all_strings(pentry*) : bool
+def $object_table_all_strings(eps) = true
+def $object_table_all_strings((ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*) = $object_table_all_strings(pentry_tail*)
+def $object_table_all_strings(pentry*) = false -- otherwise
+dec $object_table_key(pkey) : ptbytes
+def $object_table_key(KSTRING ptbytes) = ptbytes
+def $object_table_key(KINT z) = $decimal_integer(z)
+dec $object_table_copy_item(pstate, nat, pitem) : pitem
+def $object_table_copy_item(S, n_source, ALIAS n_cell) = DIRECT pvalue
+  -- if H = $heap_prune($heap_graph(S)[.ROOTS = $machine_roots(S) ++ [HARRAY n_source]])
+  -- if $heap_owners(H, HCELL n_cell) = 1
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $object_table_copy_item(S, n_source, pitem) = pitem -- otherwise
+dec $object_table_from_array(pstate, nat, pentry*, parray) : parray
+def $object_table_from_array(S, n_source, eps, parray) = parray
+def $object_table_from_array(S, n_source, (ENTRY pkey UNINITIALIZED) :: pentry_tail*, parray) = $object_table_from_array(S, n_source, pentry_tail*, parray)
+def $object_table_from_array(S, n_source, (ENTRY pkey pitem) :: pentry_tail*, parray) = $object_table_from_array(S, n_source, pentry_tail*, $array_insert(parray, KSTRING $object_table_key(pkey), $object_table_copy_item(S, n_source, pitem)))
+  -- if pitem =/= UNINITIALIZED
+dec $object_cast_array(pstate, nat) : pstate
+def $object_cast_array(S, n_source) = S_new[.OBJECTTABLES = S_new.OBJECTTABLES ++ [{OBJECT n, TABLE n_source}]][.OBJECTPROPS = $objectprops_set(S_new.OBJECTPROPS, n, $object_table_slots(S.ARRAYS[n_source].ITEMS))]
+  -- if $object_table_all_strings(S.ARRAYS[n_source].ITEMS)
+  -- if S_new = $objectprops_mark($new_class(S, $ptascii("stdClass"), 0), |S.OBJECTS|)
+  -- if n = |S.OBJECTS|
+def $object_cast_array(S, n_source) = $object_cast_array(S_table, |S.ARRAYS|)
+  -- if ~$object_table_all_strings(S.ARRAYS[n_source].ITEMS)
+  -- if parray = $object_table_from_array(S, n_source, S.ARRAYS[n_source].ITEMS, $array_empty())
+  -- if S_table = $allocate_array(S, parray)
+dec $object_cast_scalar(pstate, pitem) : pstate
+def $object_cast_scalar(S, pitem) = $objectprops_mark(S_new[.OBJECTPROPS = $objectprops_set(S_new.OBJECTPROPS, |S.OBJECTS|, [{DECL eps, NAME ($ptascii("scalar")), STATE PROP_VALUE pitem}])], |S.OBJECTS|)
+  -- if S_new = $new_class(S, $ptascii("stdClass"), 0)
+def $cast_value(S, CASTOBJECT, PARRAY n, z) = $object_cast_array(S, n)
+  -- if S.ARRAYS[n].ITEMS =/= eps
+def $cast_value(S, CASTOBJECT, PUNDEFINED, z) = $object_cast_scalar(S, UNINITIALIZED)
+def $cast_value(S, CASTOBJECT, pvalue, z) = $object_cast_scalar(S, DIRECT pvalue)
+  -- if ~($is_array_value(pvalue) \/ $cast_object_value(pvalue) \/ pvalue = PNULL)
+  -- if pvalue =/= PUNDEFINED
+def $cast_value(S, CASTINT, PUNDEFINED, z) = S[.RESULT = KNOWN (PINT 0)]
+
+;; Cast-to-array and fast stdClass clone can reuse the real property table.
+def $object_table_materialize(S, n) = S
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+def $object_table_materialize(S, n) = S[.ARRAYS = S.ARRAYS ++ [$property_cast_array(pobjectprops.SLOTS)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_table]][.OBJECTTABLES = S.OBJECTTABLES ++ [{OBJECT n, TABLE n_table}]][.OBJECTPROPS = $objectprops_mark(S, n).OBJECTPROPS]
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if n_table = |S.ARRAYS|
+dec $object_table_numeric_keys(pentry*) : bool
+def $object_table_numeric_keys(eps) = false
+def $object_table_numeric_keys((ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*) = true
+  -- if $string_key(ptbytes) = INTEGERKEY z
+def $object_table_numeric_keys((ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*) = $object_table_numeric_keys(pentry_tail*)
+  -- if $string_key(ptbytes) = STRINGKEY
+dec $object_table_to_array(pstate, nat, pentry*, parray) : parray
+def $object_table_to_array(S, n_source, eps, parray) = parray
+def $object_table_to_array(S, n_source, (ENTRY (KSTRING ptbytes) UNINITIALIZED) :: pentry_tail*, parray) = $object_table_to_array(S, n_source, pentry_tail*, parray)
+def $object_table_to_array(S, n_source, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*, parray) = $object_table_to_array(S, n_source, pentry_tail*, $array_insert(parray, KINT z, $object_table_copy_item(S, n_source, pitem)))
+  -- if pitem =/= UNINITIALIZED
+  -- if $string_key(ptbytes) = INTEGERKEY z
+def $object_table_to_array(S, n_source, (ENTRY (KSTRING ptbytes) pitem) :: pentry_tail*, parray) = $object_table_to_array(S, n_source, pentry_tail*, $array_insert(parray, KSTRING ptbytes, $object_table_copy_item(S, n_source, pitem)))
+  -- if pitem =/= UNINITIALIZED
+  -- if $string_key(ptbytes) = STRINGKEY
+def $stdclass_cast_array(S, n) = S_table[.RESULT = KNOWN (PARRAY n_table)]
+  -- if S_table = $object_table_materialize(S, n)
+  -- if $object_table_at(S_table.OBJECTTABLES, n) = (n_table)
+  -- if ~$object_table_numeric_keys(S_table.ARRAYS[n_table].ITEMS)
+def $stdclass_cast_array(S, n) = $allocate_array(S_table, $object_table_to_array(S_table, n_table, S_table.ARRAYS[n_table].ITEMS, $array_empty()))
+  -- if S_table = $object_table_materialize(S, n)
+  -- if $object_table_at(S_table.OBJECTTABLES, n) = (n_table)
+  -- if $object_table_numeric_keys(S_table.ARRAYS[n_table].ITEMS)
+def $stdclass_clone(S, n_source) = S_table[.OBJECTS = S_table.OBJECTS ++ [STDINSTANCE]][.OBJECTPROPS = S_table.OBJECTPROPS ++ [{OBJECT n, SLOTS pobjectprops.SLOTS, MATERIALIZED true}]][.OBJECTTABLES = S_table.OBJECTTABLES ++ [{OBJECT n, TABLE n_table}]][.ALLOCATIONS = S_table.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if S_table = $object_table_materialize(S, n_source)
+  -- if $objectprops_record_at(S_table.OBJECTPROPS, n_source) = (pobjectprops)
+  -- if $object_table_at(S_table.OBJECTTABLES, n_source) = (n_table)
+  -- if n = |S_table.OBJECTS|
+
+;; Synchronize the lookup projection after a writable helper, retaining bucket
+;; serials for existing keys and allocating a new serial only for new entries.
+dec $object_table_prune_keys(pentry*, pentry*, parray) : parray
+def $object_table_prune_keys(eps, pentry_new*, parray) = parray
+def $object_table_prune_keys((ENTRY pkey pitem) :: pentry_tail*, pentry_new*, parray) = $object_table_prune_keys(pentry_tail*, pentry_new*, parray[.ITEMS = $entry_delete(parray.ITEMS, pkey)][.POSITIONS = $position_delete(parray.POSITIONS, pkey)])
+  -- if $entry_lookup(pentry_new*, pkey) = eps
+def $object_table_prune_keys((ENTRY pkey pitem) :: pentry_tail*, pentry_new*, parray) = $object_table_prune_keys(pentry_tail*, pentry_new*, parray)
+  -- if $entry_lookup(pentry_new*, pkey) = (pitem_new)
+dec $object_table_insert_entries(pentry*, parray) : parray
+def $object_table_insert_entries(eps, parray) = parray
+def $object_table_insert_entries((ENTRY pkey pitem) :: pentry_tail*, parray) = $object_table_insert_entries(pentry_tail*, $array_insert(parray, pkey, pitem))
+def $object_table_sync(S, n) = S[.ARRAYS = $array_replace(S.ARRAYS, n_table, $object_table_insert_entries(pentry*, $object_table_prune_keys(S.ARRAYS[n_table].ITEMS, pentry*, S.ARRAYS[n_table])))]
+  -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if pentry* = $property_entries(pobjectprops.SLOTS)
+def $object_table_sync(S, n) = S
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+def $object_table_sync_value(S, POBJECT n) = $object_table_sync(S, n)
+def $object_table_sync_value(S, pvalue) = S -- otherwise
+
+;; FE_FETCH_RW promotes its selected bucket directly, after key diagnostics.
+;; A clone made since reset shares that write; this is not writable lookup.
+dec $object_table_reference_slots(pstate, nat, ptbytes, nat, pobjectprops*) : pobjectprops*
+def $object_table_reference_slots(S, n_table, ptbytes, n_cell, eps) = eps
+def $object_table_reference_slots(S, n_table, ptbytes, n_cell, pobjectprops :: pobjectprops_tail*) = pobjectprops[.SLOTS = $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_VALUE (ALIAS n_cell))] :: $object_table_reference_slots(S, n_table, ptbytes, n_cell, pobjectprops_tail*)
+  -- if $object_table_at(S.OBJECTTABLES, pobjectprops.OBJECT) = (n_table)
+def $object_table_reference_slots(S, n_table, ptbytes, n_cell, pobjectprops :: pobjectprops_tail*) = pobjectprops :: $object_table_reference_slots(S, n_table, ptbytes, n_cell, pobjectprops_tail*)
+  -- if $object_table_at(S.OBJECTTABLES, pobjectprops.OBJECT) =/= (n_table)
+dec $object_table_reference_bucket(pstate, nat, ptbytes) : pstate
+def $object_table_reference_bucket(S, n_table, ptbytes) = $reference_cell(S, n_cell)[.CELL = n_cell][.RESULT = REFERENCE n_cell]
+  -- if $entry_lookup(S.ARRAYS[n_table].ITEMS, KSTRING ptbytes) = (ALIAS n_cell)
+def $object_table_reference_bucket(S, n_table, ptbytes) = S_ref[.ARRAYS = $array_replace(S_ref.ARRAYS, n_table, $array_insert(S_ref.ARRAYS[n_table], KSTRING ptbytes, ALIAS n_cell))][.OBJECTPROPS = $object_table_reference_slots(S_ref, n_table, ptbytes, n_cell, S_ref.OBJECTPROPS)][.CELL = n_cell][.RESULT = REFERENCE n_cell]
+  -- if $entry_lookup(S.ARRAYS[n_table].ITEMS, KSTRING ptbytes) = (DIRECT pvalue)
+  -- if n_cell = |S.STORE|
+  -- if S_ref = $reference_cell(S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]], n_cell)
+
+;; ZEND_CAST allocates the object before the NaN warning. A CV is a borrowed
+;; zval location; preexisting references were dereferenced before dispatch.
+def $object_cast_warning(S, CASTOBJECT, PFLOAT n) = $fparts_nan($float_decode(n))
+def $object_cast_warning(S, pcast, pvalue) = false -- otherwise
+dec $object_cast_input_cell(pstate, poperand) : nat?
+def $object_cast_input_cell(S, VARIABLE ptbytes z) = $lookup(S.ENV, ptbytes)
+def $object_cast_input_cell(S, REFERENCE n) = (n)
+def $object_cast_input_cell(S, KNOWN pvalue) = eps
+dec $object_cast_referenced(pstate, nat?) : bool
+def $object_cast_referenced(S, (n)) = (n <- S.REFCELLS)
+def $object_cast_referenced(S, eps) = false
+
+dec $object_cast_input_source(pstate, pobjectcast) : bool
+dec $object_cast_source(pstate, pobjectcast) : bool
+def $object_cast_source(S, pobjectcast) = true
+  -- if $origin_node(S.SOURCES, pobjectcast.SITE) = (NExprCastObject expression metadata)
+  -- if $code_expression_at_source(S, pobjectcast.SITE, [PCFIELD 0]) = (z)
+  -- if pobjectcast.LINE = $runtime_line(S[.ORIGIN = (pobjectcast.SITE)], [PCFIELD 0], expression)
+  -- if $object_cast_input_source(S, pobjectcast)
+def $object_cast_source(S, pobjectcast) = false -- otherwise
+def $object_cast_input_source(S, pobjectcast) = true
+  -- if pobjectcast.INPUT = KNOWN (PFLOAT n)
+  -- if $origin_node(S.SOURCES, pobjectcast.SITE) = (NExprCastObject expression metadata)
+  -- if $reference_cv(expression) = eps
+  -- if $fparts_nan($float_decode(n))
+  -- if pobjectcast.CELL = eps
+  -- if ~pobjectcast.REFERENCED
+def $object_cast_input_source(S, pobjectcast) = true
+  -- if pobjectcast.INPUT = VARIABLE ptbytes z
+  -- if $error_variable_source(S, (pobjectcast.SITE), [PCFIELD 0], ptbytes)
+  -- if $code_expression_at_source(S, pobjectcast.SITE, [PCFIELD 0]) = (z)
+  -- if pobjectcast.CELL = (n)
+  -- if $(n < |S.STORE|)
+def $object_cast_input_source(S, pobjectcast) = true
+  -- if pobjectcast.INPUT = REFERENCE n
+  -- if $origin_node(S.SOURCES, pobjectcast.SITE) = (NExprCastObject expression metadata)
+  -- if $reference_cv(expression) = eps
+  -- if pobjectcast.CELL = (n)
+  -- if $(n < |S.STORE|)
+  -- if pobjectcast.REFERENCED
+  -- if n <- S.REFCELLS
+  -- if (HCELL n) <- S.ALLOCATIONS
+def $object_cast_input_source(S, pobjectcast) = false -- otherwise
+
+dec $object_cast_valid(pstate, pobjectcast) : bool
+def $object_cast_valid(S, pobjectcast) = true
+  -- if S.OBJECTCAST = (pobjectcast)
+  -- if S.ORIGIN = (pobjectcast.SITE)
+  -- if $object_cast_source(S, pobjectcast)
+  -- if $(pobjectcast.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pobjectcast.OBJECT] = STDINSTANCE
+  -- if $objectprops_at(S.OBJECTPROPS, pobjectcast.OBJECT) = (eps)
+  -- if (HOBJECT pobjectcast.OBJECT) <- S.ALLOCATIONS
+  -- if $heap_owners($heap_prune($heap_graph(S)), HOBJECT pobjectcast.OBJECT) = 1
+def $object_cast_valid(S, pobjectcast) = false -- otherwise
+
+dec $object_cast_task_count(ptask, pobjectcast) : nat
+def $object_cast_task_count(OBJECT_CAST_RESULT pobjectcast, pobjectcast) = 1
+def $object_cast_task_count(ERROR_HANDLER_INVOKE perrorcall, pobjectcast) = $object_cast_task_count(perrorcall.RESUME, pobjectcast)
+def $object_cast_task_count(ERROR_HANDLER_RESULT perrorcall, pobjectcast) = $object_cast_task_count(perrorcall.RESUME, pobjectcast)
+def $object_cast_task_count(AT porigin ptask, pobjectcast) = $object_cast_task_count(ptask, pobjectcast)
+def $object_cast_task_count(ptask, pobjectcast) = 0 -- otherwise
+dec $object_cast_tasks_count(ptask*, pobjectcast) : nat
+def $object_cast_tasks_count(eps, pobjectcast) = 0
+def $object_cast_tasks_count(ptask :: ptask_tail*, pobjectcast) = $($object_cast_task_count(ptask, pobjectcast) + $object_cast_tasks_count(ptask_tail*, pobjectcast))
+def $object_cast_scope_valid(S) = true -- if S.OBJECTCAST = eps
+def $object_cast_scope_valid(S) = ($object_cast_valid(S, pobjectcast) /\ $object_cast_tasks_count(S.TODO, pobjectcast) = 1)
+  -- if S.OBJECTCAST = (pobjectcast)
+def $task_nodes(OBJECT_CAST_RESULT pobjectcast) = [HOBJECT pobjectcast.OBJECT] ++ $operand_nodes(pobjectcast.INPUT)
+def $call_task_valid(S, OBJECT_CAST_RESULT pobjectcast) = $object_cast_valid(S, pobjectcast)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OBJECT_CAST_RESULT pobjectcast
+  -- if $object_cast_valid(S, pobjectcast)
+  -- if perrorcall.SITE = pobjectcast.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pobjectcast.LINE
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to object")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+
+dec $object_cast_after_item(pstate, pobjectcast) : pitem?
+def $object_cast_after_item(S, pobjectcast) = (DIRECT (PFLOAT n))
+  -- if pobjectcast.INPUT = KNOWN (PFLOAT n)
+  -- if pobjectcast.CELL = eps
+def $object_cast_after_item(S, pobjectcast) = (DIRECT pvalue)
+  -- if pobjectcast.CELL = (n)
+  -- if pobjectcast.REFERENCED
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if S.STORE[n] = DEFINED pvalue
+def $object_cast_after_item(S, pobjectcast) = (ALIAS n)
+  -- if pobjectcast.INPUT = VARIABLE ptbytes z
+  -- if pobjectcast.CELL = (n)
+  -- if ~pobjectcast.REFERENCED
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if n <- S.REFCELLS
+def $object_cast_after_item(S, pobjectcast) = (DIRECT pvalue)
+  -- if pobjectcast.INPUT = VARIABLE ptbytes z
+  -- if pobjectcast.CELL = (n)
+  -- if ~pobjectcast.REFERENCED
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if ~(n <- S.REFCELLS)
+def $object_cast_after_item(S, pobjectcast) = (UNINITIALIZED)
+  -- if pobjectcast.INPUT = VARIABLE ptbytes z
+  -- if ~pobjectcast.REFERENCED
+  -- if pobjectcast.CELL = (n)
+  -- if $lookup(S.ENV, ptbytes) =/= (n)
+def $object_cast_after_item(S, pobjectcast) = eps -- otherwise
+
+rule PhpStep/object-cast-nan: S ~> $error_dispatch(S_new[.OBJECTCAST = (pobjectcast)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $ptascii("unexpected NAN value was coerced to object"), z, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to object")) z, OBJECT_CAST_RESULT pobjectcast)
+  -- if S.TODO = (CAST_RESULT CASTOBJECT z) :: ptask_tail*
+  -- if S.OBJECTCAST = eps
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PFLOAT n_bits)
+  -- if $fparts_nan($float_decode(n_bits))
+  -- if S.ORIGIN = (porigin)
+  -- if pobjectcast = {SITE porigin, LINE z, OBJECT (|S.OBJECTS|), INPUT S.RESULT, CELL $object_cast_input_cell(S, S.RESULT), REFERENCED $object_cast_referenced(S, $object_cast_input_cell(S, S.RESULT))}
+  -- if $object_cast_source(S, pobjectcast)
+  -- if S_new = $new_class(S_read, $ptascii("stdClass"), z)
+rule PhpStep/object-cast-nan-result: S ~> $objectprops_mark(S[.OBJECTCAST = eps][.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, pobjectcast.OBJECT, [{DECL eps, NAME ($ptascii("scalar")), STATE PROP_VALUE pitem}])][.RESULT = KNOWN (POBJECT pobjectcast.OBJECT)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = ptask_tail*], pobjectcast.OBJECT)
+  -- if S.TODO = (OBJECT_CAST_RESULT pobjectcast) :: ptask_tail*
+  -- if $object_cast_valid(S, pobjectcast)
+  -- if $object_cast_after_item(S, pobjectcast) = (pitem)
+rule PhpStep/object-cast-nan-expired: S ~> S[.OBJECTCAST = eps][.TODO = eps][.COMPLETION = UNSUPPORTED "borrowed object-cast operand lifetime"]
+  -- if S.TODO = (OBJECT_CAST_RESULT pobjectcast) :: ptask_tail*
+  -- if $object_cast_valid(S, pobjectcast)
+  -- if $object_cast_after_item(S, pobjectcast) = eps
+def $return_discard(S, OBJECT_CAST_RESULT pobjectcast) = S[.OBJECTCAST = eps]
+  -- if S.OBJECTCAST = (pobjectcast)
+def $error_read_discard(S, OBJECT_CAST_RESULT pobjectcast) = S[.OBJECTCAST = eps]
+  -- if S.OBJECTCAST = (pobjectcast)
+
+;; Raw IS_UNDEF can be exposed by the post-warning scalar insertion. Quiet
+;; reads and hash comparison retain their own null/skip rules.
+def $entry_read_value(S, UNINITIALIZED) = PUNDEFINED
+def $entry_read_value(S, pitem) = $entry_value(S, pitem) -- otherwise
+def $stdclass_raw_undefined(S, POBJECT n, ptbytes) = true
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if $property_slot_at(ppropertyslot*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE UNINITIALIZED
+def $stdclass_raw_undefined(S, pvalue, ptbytes) = false -- otherwise
+
+;; Key unmangling happens after the iterator advances, but before the selected
+;; bucket is copied into the value target. The bucket pointer is borrowed.
+dec $object_member_tail(ptbytes, nat) : preqbytes
+dec $object_member_name(ptbytes) : (preqbytes?, preqbytes)
+def $object_member_name(ptbytes) = (eps, ptbytes)
+  -- if ~$property_bad_name(ptbytes)
+def $object_member_name(0 :: ptbytes_tail) = (($ptascii("Illegal member variable name")), 0 :: ptbytes_tail)
+  -- if $(|ptbytes_tail| < 2)
+def $object_member_name(0 :: ptbytes_tail) = (($ptascii("Illegal member variable name")), 0 :: ptbytes_tail)
+  -- if $(|ptbytes_tail| >= 2)
+  -- if ptbytes_tail[0] = 0
+def $object_member_name(0 :: ptbytes_tail) = (($ptascii("Corrupt member variable name")), 0 :: ptbytes_tail)
+  -- if $(|ptbytes_tail| >= 2)
+  -- if ptbytes_tail[0] =/= 0
+  -- if $(|$c_string(ptbytes_tail)| >= |ptbytes_tail| - 1)
+def $object_member_name(0 :: ptbytes_tail) = (eps, $object_member_tail(ptbytes_tail, |$c_string(ptbytes_tail)|))
+  -- if $(|ptbytes_tail| >= 2)
+  -- if ptbytes_tail[0] =/= 0
+  -- if $(|$c_string(ptbytes_tail)| < |ptbytes_tail| - 1)
+def $object_member_tail(ptbytes, n_class) = ptbytes[n_start : n_length]
+  -- if n_start = $(n_class + 1)
+  -- if n_length = $(|ptbytes| - n_start)
+  -- if |$c_string(ptbytes[n_start : n_length])| = n_length
+def $object_member_tail(ptbytes, n_class) = ptbytes[n_start : n_length]
+  -- if n_initial = $(n_class + 1)
+  -- if n_initial_length = $(|ptbytes| - n_initial)
+  -- if n_anon = |$c_string(ptbytes[n_initial : n_initial_length])|
+  -- if $(n_anon < n_initial_length)
+  -- if n_start = $(n_initial + n_anon + 1)
+  -- if n_length = $(|ptbytes| - n_start)
+
+def $object_foreach_reset(S, n) = $objectprops_mark($object_table_materialize($object_table_write(S, n), n), n)
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $object_foreach_reset(S, n) = $objectprops_mark(S, n)
+  -- if S.OBJECTS[n] =/= STDINSTANCE
+
+dec $object_foreach_key_used(statement) : bool
+def $object_foreach_key_used(NStmtForeach expression phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) = (phpType5 =/= ABSENT)
+def $object_foreach_key_used(statement) = false -- otherwise
+dec $object_foreach_notice(statement, ptbytes) : preqbytes?
+def $object_foreach_notice(statement, ptbytes) = preqbytes?
+  -- if $object_foreach_key_used(statement)
+  -- if (preqbytes?, preqbytes) = $object_member_name(ptbytes)
+def $object_foreach_notice(statement, ptbytes) = eps
+  -- if ~$object_foreach_key_used(statement)
+
+dec $object_foreach_deliver(pstate, nat, nat, statement, int, ptbytes, poperand, bool) : pstate
+def $object_foreach_deliver(S, n, n_object, statement, z, ptbytes, poperand, b_ref) = $foreach_body(S, n, HOBJECT n_object, statement, z, KSTRING preqbytes, poperand, b_ref)
+  -- if $object_foreach_notice(statement, ptbytes) = eps
+  -- if (preqbytes?, preqbytes) = $object_member_name(ptbytes)
+def $object_foreach_deliver(S, n, n_object, statement, z, ptbytes, poperand, b_ref) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8, preqbytes_warning, z, DIAGNOSTIC "Notice" preqbytes_warning z, OBJECT_FOREACH_KEY pobjectforeach)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $object_foreach_notice(statement, ptbytes) = (preqbytes_warning)
+  -- if S.ORIGIN = (porigin)
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = (n_table)
+  -- if $position_lookup(S.ARRAYS[n_table].POSITIONS, KSTRING ptbytes) = (n_serial)
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position b_ref)
+  -- if pobjectforeach = {SITE porigin, LINE z, OBJECT n_object, ITERATOR n, POSITION n_position, TABLE n_table, SERIAL n_serial, KEY ptbytes, REF b_ref}
+
+def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, false) = $object_foreach_deliver(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next false)], n, n_object, statement, z, $property_visible_name(S, n_object, ptbytes), KNOWN $entry_read_value(S, pitem), false)
+def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, true) = $object_foreach_deliver(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n, n_object, statement, z, ptbytes, KNOWN PNULL, true)
+  -- if S.OBJECTS[n_object] = STDINSTANCE
+  -- if $object_foreach_notice(statement, ptbytes) = (preqbytes)
+def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, true) = $object_foreach_deliver(S_ref, n, n_object, statement, z, ptbytes, REFERENCE S_ref.CELL, true)
+  -- if S.OBJECTS[n_object] = STDINSTANCE
+  -- if $object_foreach_notice(statement, ptbytes) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = (n_table)
+  -- if S_ref = $object_table_reference_bucket(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_table, ptbytes)
+def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, true) = $object_foreach_deliver(S_ref, n, n_object, statement, z, $property_visible_name(S, n_object, ptbytes), REFERENCE S_ref.CELL, true)
+  -- if S.OBJECTS[n_object] =/= STDINSTANCE
+  -- if S_ref = $property_reference_fetch(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_object, ptbytes, z)
+  -- if S_ref.COMPLETION = NORMAL
+def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, true) = S_ref[.TODO = eps]
+  -- if S.OBJECTS[n_object] =/= STDINSTANCE
+  -- if S_ref = $property_reference_fetch(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_object, ptbytes, z)
+  -- if S_ref.COMPLETION =/= NORMAL
+
+dec $object_foreach_task_count(ptask, nat) : nat
+def $object_foreach_task_count(OBJECT_FOREACH_KEY pobjectforeach, n) = 1
+  -- if pobjectforeach.ITERATOR = n
+def $object_foreach_task_count(FOREACH_NEXT n pnode statement porigin? z, n) = 1
+def $object_foreach_task_count(ERROR_HANDLER_INVOKE perrorcall, n) = $object_foreach_task_count(perrorcall.RESUME, n)
+def $object_foreach_task_count(ERROR_HANDLER_RESULT perrorcall, n) = $object_foreach_task_count(perrorcall.RESUME, n)
+def $object_foreach_task_count(AT porigin ptask, n) = $object_foreach_task_count(ptask, n)
+def $object_foreach_task_count(ptask, n) = 0 -- otherwise
+dec $object_foreach_tasks_count(ptask*, nat) : nat
+def $object_foreach_tasks_count(eps, n) = 0
+def $object_foreach_tasks_count(ptask :: ptask_tail*, n) = $($object_foreach_task_count(ptask, n) + $object_foreach_tasks_count(ptask_tail*, n))
+dec $object_foreach_serial_valid(pstate, pobjectforeach) : bool
+def $object_foreach_serial_valid(S, pobjectforeach) = true
+  -- if $position_lookup(S.ARRAYS[pobjectforeach.TABLE].POSITIONS, KSTRING pobjectforeach.KEY) = (pobjectforeach.SERIAL)
+def $object_foreach_serial_valid(S, pobjectforeach) = true
+  -- if $position_lookup(S.ARRAYS[pobjectforeach.TABLE].POSITIONS, KSTRING pobjectforeach.KEY) = eps
+def $object_foreach_serial_valid(S, pobjectforeach) = false -- otherwise
+dec $object_foreach_valid(pstate, pobjectforeach) : bool
+def $object_foreach_valid(S, pobjectforeach) = true
+  -- if S.ORIGIN = (pobjectforeach.SITE)
+  -- if $origin_node(S.SOURCES, pobjectforeach.SITE) = (statement)
+  -- if statement = NStmtForeach expression phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
+  -- if $object_foreach_key_used(statement)
+  -- if pobjectforeach.REF = $ppforeach_references(expression_value, b_ref)
+  -- if pobjectforeach.LINE = $runtime_line(S, [PCFIELD 0], expression)
+  -- if $(pobjectforeach.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pobjectforeach.OBJECT] = STDINSTANCE
+  -- if (HOBJECT pobjectforeach.OBJECT) <- S.ALLOCATIONS
+  -- if $objectprops_record_at(S.OBJECTPROPS, pobjectforeach.OBJECT) = (pobjectprops)
+  -- if $(pobjectforeach.POSITION > 0)
+  -- if $(pobjectforeach.POSITION <= |pobjectprops.SLOTS|)
+  -- if pobjectprops.SLOTS[$nabs($(pobjectforeach.POSITION - 1))].NAME = pobjectforeach.KEY
+  -- if $(pobjectforeach.TABLE < |S.ARRAYS|)
+  -- if $(pobjectforeach.SERIAL < S.ARRAYS[pobjectforeach.TABLE].SERIAL)
+  -- if $object_foreach_serial_valid(S, pobjectforeach)
+  -- if $(n < 256) -- for n in pobjectforeach.KEY
+  -- if $object_foreach_notice(statement, pobjectforeach.KEY) = (preqbytes)
+  -- if $iterator_lookup(S.ITERATORS, pobjectforeach.ITERATOR) = (OBJECTITER pobjectforeach.ITERATOR pobjectforeach.OBJECT pobjectforeach.POSITION pobjectforeach.REF)
+  -- if $object_foreach_tasks_count(S.TODO, pobjectforeach.ITERATOR) = 1
+def $object_foreach_valid(S, pobjectforeach) = false -- otherwise
+def $task_nodes(OBJECT_FOREACH_KEY pobjectforeach) = [HOBJECT pobjectforeach.OBJECT]
+def $call_task_valid(S, OBJECT_FOREACH_KEY pobjectforeach) = $object_foreach_valid(S, pobjectforeach)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OBJECT_FOREACH_KEY pobjectforeach
+  -- if $object_foreach_valid(S, pobjectforeach)
+  -- if perrorcall.SITE = pobjectforeach.SITE
+  -- if perrorcall.LEVEL = 8
+  -- if perrorcall.LINE = pobjectforeach.LINE
+  -- if $origin_node(S.SOURCES, pobjectforeach.SITE) = (statement)
+  -- if $object_foreach_notice(statement, pobjectforeach.KEY) = (perrorcall.MESSAGE)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE perrorcall.LINE
+
+dec $object_foreach_bucket(pstate, pobjectforeach) : pitem?
+def $object_foreach_bucket(S, pobjectforeach) = (pitem)
+  -- if (HARRAY pobjectforeach.TABLE) <- S.ALLOCATIONS
+  -- if $position_lookup(S.ARRAYS[pobjectforeach.TABLE].POSITIONS, KSTRING pobjectforeach.KEY) = (pobjectforeach.SERIAL)
+  -- if $entry_lookup(S.ARRAYS[pobjectforeach.TABLE].ITEMS, KSTRING pobjectforeach.KEY) = (pitem)
+def $object_foreach_bucket(S, pobjectforeach) = (UNINITIALIZED)
+  -- if (HARRAY pobjectforeach.TABLE) <- S.ALLOCATIONS
+  -- if $position_lookup(S.ARRAYS[pobjectforeach.TABLE].POSITIONS, KSTRING pobjectforeach.KEY) =/= (pobjectforeach.SERIAL)
+def $object_foreach_bucket(S, pobjectforeach) = eps -- otherwise
+rule PhpStep/object-foreach-key-result: S ~> $foreach_body(S, pobjectforeach.ITERATOR, HOBJECT pobjectforeach.OBJECT, statement, pobjectforeach.LINE, KSTRING preqbytes, KNOWN $entry_read_value(S, pitem), false)
+  -- if S.TODO = (OBJECT_FOREACH_KEY pobjectforeach) :: ptask_tail*
+  -- if $object_foreach_valid(S, pobjectforeach)
+  -- if ~pobjectforeach.REF
+  -- if $origin_node(S.SOURCES, pobjectforeach.SITE) = (statement)
+  -- if (preqbytes?, preqbytes) = $object_member_name(pobjectforeach.KEY)
+  -- if $object_foreach_bucket(S, pobjectforeach) = (pitem)
+rule PhpStep/object-foreach-key-reference: S ~> $foreach_body(S_ref, pobjectforeach.ITERATOR, HOBJECT pobjectforeach.OBJECT, statement, pobjectforeach.LINE, KSTRING preqbytes, REFERENCE S_ref.CELL, true)
+  -- if S.TODO = (OBJECT_FOREACH_KEY pobjectforeach) :: ptask_tail*
+  -- if $object_foreach_valid(S, pobjectforeach)
+  -- if pobjectforeach.REF
+  -- if $origin_node(S.SOURCES, pobjectforeach.SITE) = (statement)
+  -- if (preqbytes?, preqbytes) = $object_member_name(pobjectforeach.KEY)
+  -- if $object_foreach_bucket(S, pobjectforeach) = (pitem)
+  -- if pitem =/= UNINITIALIZED
+  -- if S_ref = $object_table_reference_bucket(S, pobjectforeach.TABLE, pobjectforeach.KEY)
+rule PhpStep/object-foreach-key-reference-deleted: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "borrowed object-foreach bucket lifetime"]
+  -- if S.TODO = (OBJECT_FOREACH_KEY pobjectforeach) :: ptask_tail*
+  -- if $object_foreach_valid(S, pobjectforeach)
+  -- if pobjectforeach.REF
+  -- if $object_foreach_bucket(S, pobjectforeach) = (UNINITIALIZED)
+rule PhpStep/object-foreach-key-expired: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "borrowed object-foreach bucket lifetime"]
+  -- if S.TODO = (OBJECT_FOREACH_KEY pobjectforeach) :: ptask_tail*
+  -- if $object_foreach_valid(S, pobjectforeach)
+  -- if $object_foreach_bucket(S, pobjectforeach) = eps
+
+def $return_discard(S, OBJECT_FOREACH_KEY pobjectforeach) = S[.ITERATORS = $iterator_remove(S.ITERATORS, pobjectforeach.ITERATOR)]
+def $error_read_discard(S, OBJECT_FOREACH_KEY pobjectforeach) = S[.ITERATORS = $iterator_remove(S.ITERATORS, pobjectforeach.ITERATOR)]

@@ -175,16 +175,21 @@ def $property_hash_order(S, ppropertyslot_left :: ppropertyslot_tail*, pproperty
   -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*) = porder
   -- if porder =/= ORDER 0
 def $entries_order(S, eps, pentry_right*, pnode_seen*) = ORDER 0
-def $entries_order(S, (ENTRY pkey pitem) :: pentry_left*, pentry_right*, pnode_seen*) = ORDER 1
+def $entries_order(S, (ENTRY pkey UNINITIALIZED) :: pentry_left*, pentry_right*, pnode_seen*) = $entries_order(S, pentry_left*, pentry_right*, pnode_seen*)
+def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*) = ORDER 1
+  -- if pitem_left =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = eps
 def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*) = $entries_order(S, pentry_left*, pentry_right*, pnode_seen*)
+  -- if pitem_left =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
   -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*) = ORDER 0
 def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*) = ORDER i
+  -- if pitem_left =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
   -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*) = ORDER i
   -- if i =/= 0
 def $entries_order(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*) = ORDERRECURSIVE
+  -- if pitem_left =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
   -- if $value_order(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*) = ORDERRECURSIVE
 
@@ -296,9 +301,12 @@ def $entries_order_continue(S, ORDER 0, pentry_left*, pentry_right*, pnode_seen*
 def $entries_order_continue(S, porder, pentry_left*, pentry_right*, pnode_seen*, z) = (S, porder) -- otherwise
 
 def $entries_order_effect(S, eps, pentry_right*, pnode_seen*, z) = (S, ORDER 0)
+def $entries_order_effect(S, (ENTRY pkey UNINITIALIZED) :: pentry_left*, pentry_right*, pnode_seen*, z) = $entries_order_effect(S, pentry_left*, pentry_right*, pnode_seen*, z)
 def $entries_order_effect(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*, z) = (S, ORDER 1)
+  -- if pitem_left =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = eps
 def $entries_order_effect(S, (ENTRY pkey pitem_left) :: pentry_left*, pentry_right*, pnode_seen*, z) = $entries_order_continue(S_next, porder, pentry_left*, pentry_right*, pnode_seen*, z)
+  -- if pitem_left =/= UNINITIALIZED
   -- if $entry_lookup(pentry_right*, pkey) = (pitem_right)
   -- if (S_next, porder) = $value_order_effect(S, $entry_value(S, pitem_left), $entry_value(S, pitem_right), pnode_seen*, z)
 def $value_order_effect(S, PARRAY n_left, PARRAY n_right, pnode_seen*, z) = $entries_order_effect(S, S.ARRAYS[n_left].ITEMS, S.ARRAYS[n_right].ITEMS, (HARRAY n_left) :: pnode_seen*, z)

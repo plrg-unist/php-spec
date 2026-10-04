@@ -58,8 +58,11 @@ def $clone_scope(S, n_source, n_new) = S
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n_source) = eps
 
 dec $clone_object(pstate, nat) : pstate
+def $clone_object(S, n_source) = $stdclass_clone(S, n_source)
+  -- if S.OBJECTS[n_source] = STDINSTANCE
 def $clone_object(S, n_source) = $clone_plain(S, n_source)
   -- if $class_plain_instance(S, n_source)
+  -- if S.OBJECTS[n_source] =/= STDINSTANCE
 def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE porigin]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
   -- if $object_body(S.OBJECTS[n_source]) = NAMEDCLOSURE porigin
   -- if n = |S.OBJECTS|
