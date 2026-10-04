@@ -5,13 +5,16 @@ def $class_constant_event_ordinal(CCSTATICRETIRE porigin porigin_trigger n n_cel
 def $class_constant_compile_events(S, (CCSTATICRETIRE porigin porigin_trigger n n_cell) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
 dec $static_default_retire(pstate, pstaticdefaultcontext) : pstate
 dec $static_default_firstfill(pstate, pstaticdefaultcontext, ppropertydesc) : pstate
+dec $static_default_fill_event_for(pstate, pstaticdefaultcontext, nat) : pclassconstantevent
+dec $static_default_retire_event_for(pstate, pstaticdefaultcontext, nat, nat) : pclassconstantevent
+dec $static_default_retirement_event(pclassconstantevent, porigin, nat) : bool
 dec $proprefs_retire(ppropref*, nat, porigin, nat) : ppropref*
 def $proprefs_retire(eps, n_cell, porigin, n_event) = eps
 def $proprefs_retire(ppropref :: ppropref_tail*, n_cell, porigin, n_event) = ppropref[.SOURCES = $propref_replace(ppropref.SOURCES, CLASS_PROP_SOURCE porigin, RETIRED_CLASS_PROP_SOURCE porigin n_event)] :: ppropref_tail*
   -- if ppropref.CELL = n_cell
 def $proprefs_retire(ppropref :: ppropref_tail*, n_cell, porigin, n_event) = ppropref :: $proprefs_retire(ppropref_tail*, n_cell, porigin, n_event)
   -- if ppropref.CELL =/= n_cell
-def $static_default_retire(S, pstaticdefaultcontext) = S[.PROPREFS = $proprefs_retire(S.PROPREFS, n_cell, pstaticdefaultcontext.DECL, |S.CLASSCONSTANTHISTORY|)][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCSTATICRETIRE pstaticdefaultcontext.DECL porigin_trigger n_prefix n_cell]]
+def $static_default_retire(S, pstaticdefaultcontext) = S[.PROPREFS = $proprefs_retire(S.PROPREFS, n_cell, pstaticdefaultcontext.DECL, |S.CLASSCONSTANTHISTORY|)][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [$static_default_retire_event_for(S, pstaticdefaultcontext, n_prefix, n_cell)]]
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
   -- if $static_default_bind_valid(S, pstaticdefaultcontext)
@@ -31,7 +34,7 @@ def $static_default_retire(S, pstaticdefaultcontext) = S[.PROPREFS = $proprefs_r
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)
   -- if n_prefix = |S.DECLARATIONS|
 def $static_default_retire(S, pstaticdefaultcontext) = S -- otherwise
-def $static_default_firstfill(S, pstaticdefaultcontext, ppropertydesc) = S[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCSTATIC pstaticdefaultcontext.DECL porigin_trigger n_prefix]]
+def $static_default_firstfill(S, pstaticdefaultcontext, ppropertydesc) = S[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [$static_default_fill_event_for(S, pstaticdefaultcontext, n_prefix)]]
   -- if ~$static_default_filled(S, ppropertydesc)
   -- if pstaticdefaultcontext.ORIGIN = (porigin_trigger)
   -- if n_prefix = |S.DECLARATIONS|
@@ -56,7 +59,7 @@ def $class_constant_history_fills(S, (CCSTATICRETIRE porigin porigin_trigger n n
 
 def $propref_source_valid(S, n_cell, RETIRED_CLASS_PROP_SOURCE porigin n_event) = true
   -- if $(n_event < |S.CLASSCONSTANTHISTORY|)
-  -- if S.CLASSCONSTANTHISTORY[n_event] = CCSTATICRETIRE porigin porigin_trigger n_prefix n_cell
+  -- if $static_default_retirement_event(S.CLASSCONSTANTHISTORY[n_event], porigin, n_cell)
   -- if $class_constant_history_valid(S)
   -- if $(n_cell < |S.STORE|)
   -- if n_cell <- S.REFCELLS
@@ -66,6 +69,8 @@ def $propref_source_valid(S, n_cell, RETIRED_CLASS_PROP_SOURCE porigin n_event) 
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue) \/ $parameter_backing_value(S, n_cell, pvalue)
 def $propref_descriptor(S, RETIRED_CLASS_PROP_SOURCE porigin n_event) = $class_static_active_desc(S, S.CLASSNAMES, porigin)
+def $static_default_retirement_event(CCSTATICRETIRE porigin porigin_trigger n_prefix n_cell, porigin, n_cell) = true
+def $static_default_retirement_event(pclassconstantevent, porigin, n_cell) = false -- otherwise
 
 ;; Live and retained sources have one Zend property-info identity. Removal
 ;; selects its first occurrence; any surviving live tag inherits the witness.

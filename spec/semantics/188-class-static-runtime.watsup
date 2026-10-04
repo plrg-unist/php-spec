@@ -286,6 +286,8 @@ def $class_static_prepare_base_ready(S, poperand_selector, ptbytes, z) = S[.COMP
 ;; Literal class lookup and a property-name CV remain part of Zend's delayed
 ;; static fetch. Dynamic class FETCH_CLASS and name expression effects ran first.
 dec $class_static_ref_pending_tail(ptask*) : bool
+def $class_static_ref_pending_base(BASE_CLASS_STATIC_PENDING poperand_class poperand_name) = true
+def $class_static_ref_pending_base(pbase) = false -- otherwise
 def $class_static_ref_pending_tail((ORIGIN_RETURN porigin?) :: ptask_tail*) = $class_static_ref_pending_tail(ptask_tail*)
 def $class_static_ref_pending_tail((PROPERTY_REF_PREP expression z) :: ptask_tail*) = ($reference_cv(expression) = eps)
 def $class_static_ref_pending_tail((PROPERTY_BASE_PREP phpType20 z) :: ptask_tail*) = true
@@ -511,6 +513,22 @@ rule PhpStep/class-static-reference-source-pending: S ~> S[.TODO = [$at_task($or
   -- if S.TODO = (PROPERTY_REF_PREP expression z) :: ptask_tail*
   -- if S.BASE = BASE_CLASS_STATIC_PENDING poperand_class poperand_name
   -- if $reference_cv(expression) = eps
+
+;; The delayed target fetch resolves its class and name after the RHS. Keep the
+;; captured RHS cell in the binder while the ordinary class updater runs, then
+;; reselect the live row at the assignment occurrence.
+dec $property_static_pending_base(pstate, poperand, poperand, int) : pstate
+dec $class_static_ref_bind_start(pstate, poperand, nat, int, ptask*) : pstate
+def $class_static_ref_bind_start(S, poperand_class, n_cell, z, ptask_tail*) = $class_static_prepare_base(S[.ORIGIN = $origin_child(S.ORIGIN, [PCFIELD 0])][.TODO = [ORIGIN_RETURN S.ORIGIN, PROPERTY_REF_BIND S.BASE n_cell z] ++ ptask_tail*][.LOCATION = NOWHERE], poperand_class, ptbytes, z)
+  -- if S.BASE = BASE_CLASS_STATIC porigin_requested ptbytes
+rule PhpStep/class-static-reference-bind-pending: S ~> $class_static_ref_bind_start(S_base, poperand_class, n_cell, z, ptask_tail*)
+  -- if S.TODO = (PROPERTY_REF_BIND (BASE_CLASS_STATIC_PENDING poperand_class poperand_name) n_cell z) :: ptask_tail*
+  -- if S_base = $property_static_pending_base(S, poperand_class, poperand_name, z)
+  -- if S_base.COMPLETION = NORMAL
+rule PhpStep/class-static-reference-bind-pending-abrupt: S ~> S_base[.TODO = eps]
+  -- if S.TODO = (PROPERTY_REF_BIND (BASE_CLASS_STATIC_PENDING poperand_class poperand_name) n_cell z) :: ptask_tail*
+  -- if S_base = $property_static_pending_base(S, poperand_class, poperand_name, z)
+  -- if S_base.COMPLETION =/= NORMAL
 rule PhpStep/class-static-reference-acquire: S ~> S[.TODO = [DIM_PREP (NExprStaticPropertyFetch phpType19 phpType31 metadata), PROPERTY_REF_FETCH $runtime_line(S, eps, NExprStaticPropertyFetch phpType19 phpType31 metadata)] ++ ptask_tail*]
   -- if S.TODO = (ACQUIRE (NExprStaticPropertyFetch phpType19 phpType31 metadata)) :: ptask_tail*
 

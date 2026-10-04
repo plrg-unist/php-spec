@@ -7,6 +7,71 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
+null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
+caller environment; ordinary arrays retain their fixed converted key. Real
+temporary owners and conversion protection distinguish COW, live references and
+sole-table retirement; NaN keeps protection across both ordered notices. Quiet
+isset/coalesce and nested temporaries keep their distinct demand/ownership paths.
+Author9/246 includes the two independent NaN originals; independent14/235 passes
+at its separate cut. One
+actual71da constructor in a parameter default passes with private captured
+handler selection, called class and authentic key line/name through root mutation.
+[Contract](docs/semantics/SOURCE-DIMENSION-KEYS.md),
+[ledger](coverage/semantics/dimension-key-review.json). Read-write/reference,
+append/unset/compound/coalesce-assignment warning continuations are required next;
+wider object/key/container producers remain core work.
+
+Prepared internal Throwable default constructors235 now map the completed227
+value table before arity and sequential reception. Default declaration strictness,
+finite named-hole filling, inherited owners and nested previous objects preserve
+trace argc and ErrorException fields. Source8+7/reached67 at9fa and affected
+string-slot trace2 at7fb keep separate cuts in the
+[internal ledger](coverage/semantics/internal-default-constructors-review.json).
+The original count observer remains Unsupported with zero agreement. Weak-null,
+Stringable and lossy integer warnings require real suspended continuations next;
+rebound anonymous keyword NEW follows.
+
+Live `display_errors`237 retains nullable original/live INI entries and raw
+get/set/Restore. Ordinary text diagnostics capture stdout/stderr/off after handler
+effects, keeping their position among source output across later writes and
+include retirement. Current terminal errors preserve status255 when display is
+off. Ten author and one independent exact comparisons, 76 source-derived state
+premises and 17 entry/transport controls pass at b8e8, alongside223-module SL
+stages/init and the changed adapter build. Actualddb6/233 preservation retains
+225 modules with the reviewed display and dimension-warning routes, without renewed execution.
+The [display ledger](coverage/semantics/display-errors-review.json) separates
+source-defined nullable controls from native profiles. The held shutdown/fatal
+freeze source remains native-only until required actual231 composition; wider
+display directives, parser/profiles and output/lifecycle consumers remain open.
+
+Registered startup inputs225 provide original `error_reporting` and
+`include_path` bytes before compilation, independently of file/CWD facts.
+Getters and Restore preserve null/empty reporting, signed32 masks and raw bytes
+through setters, `@` and callbacks. Restore of an unmodified reporting entry
+remains a no-op even when silence leaves its live mask different from startup.
+Author7 and independent2 exact profile comparisons, 99 source-derived state
+premises and 15 transport controls pass at36810; that cut also passes216-module
+SL stages/init and the changed adapter build. The source-equivalent actual0592
+composition retains all220 parent modules plus225, with no renewed execution
+credit. [Startup ledger](coverage/semantics/startup-ini-review.json).
+Wider directives, startup parsing/profiles and lifecycle remain required.
+
+Source-owned parameter default constructors227 complete lazy class tables before
+allocation and evaluate every AST argument before constructor access/name mapping.
+Direct/inherited dispatch preserves declaring permission, called class, default
+declaration strictness and the compiled receive line. Required-reference API
+warnings precede temporary wrapping; completed values and nested Stringable
+receives retain genuine object/cell/frame owners. Source2/independent16 at a223,
+affected cold5 at954 and reached183/affected fact2 atd441 retain separate cuts.
+Actual219/222/229 composition2 at2b153 passes normal and terminal-handler paths.
+Actual221 callable source1/owner39 at2a380 authenticates the suspended constructor
+through deprecation callbacks and rejects a removed retained owner.
+The [constructor ledger](coverage/semantics/default-constructors-review.json)
+keeps original failures, the fixture line correction and fresh uncached NEW facts
+precise. Broader internal reception and rebound anonymous self/parent NEW remain
+required; complete core remains open.
+
 Deprecated callable keyword/compound admission221 now stages supplied fixed
 parameters, error registration and delayed dispatch. Warnings hold class choice
 and string boundaries while rereading referenced methods; whole byref formal
@@ -99,8 +164,20 @@ Throw/type failure preserves the reentrant row; first-fill and table completion
 remain once-only. Thirteen exact normal native/model comparisons and an inherited
 67-premise ownership/history fixture pass at bf0954840. The earlier Unsupported
 controls and declaration-order failure remain historical evidence; prior18/149
-checks were not renewed. Cold synchronous references and instance/object defaults
-are the next required obligations.
+checks were not renewed. Cold static-reference continuations232 now keep the
+captured RHS cell rooted through class-table initialization and reselect the live
+target afterward. Immutable dynamic/ordinary method self/parent/static snapshots
+survive callbacks and selected first-fill/retirement/table history. Seven exact
+normal source agreements pass at69cc4546c;84 ownership/history premises pass at
+0288de513 after narrow fixture syntax and selected work-block validator repairs.
+Original failures remain separate; prior31/149/67 checks were not renewed.
+Captured/rebound Closure keyword references239 now retain authentic nonowning
+scope/binding evidence after pruning. Nested creation copies its immediate
+creator's body, scope, receiver and nullable callsite, including error and
+terminal callbacks; ordinary method ancestry stays exact. Nine new source
+agreements and bound69 premises pass atd6bc09789; handler58/terminal35 pass at
+860a8a19a after one fixture ordinal-binding repair. Instance/object defaults and
+wider reference/creation consumers remain required next work.
 
 
 Private and protected method arrays and class-method strings support callable
@@ -147,8 +224,8 @@ authentic deferred/rebound lexical scope. Counts and original failures remain in
 [parameter](coverage/semantics/weak-string-parameters-review.json),
 [variadic/default](coverage/semantics/variadic-default-string-review.json) and
 [constant](coverage/semantics/class-constants-current-review.json) ledgers and the
-family table below. Broader constructor, attribute/modifier and callable initializer
-consumers remain required.
+family table below. Internal constructor defaults, rebound anonymous keyword NEW,
+attribute/modifier and callable initializer consumers remain required.
 
 Nonstatic private/protected `__invoke` supports bare calls, callable admission,
 object capture/clone and bare-object error handlers through the effective runtime
@@ -221,17 +298,19 @@ failures and interrupted evidence.
   transformed wrappers and broader CONFIG PIPE consumers. Only the selected captured-static
   array and string Closure PIPE routes are covered. Direct defined/missing
   `$GLOBALS[key]` reads and explicit-request full-table snapshots are admitted;
-  earlier key-expression warnings, nested/read-write warning continuations and
-  ordinary snapshots without request facts remain open.
+  233 additionally stages earlier missing key-CV and null/float/global-array-name
+  conversions through nested/quiet reads. Read-write continuations, wider
+  key/object/container producers and ordinary snapshots without request facts
+  remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
-  nondefault startup profiles, wider directives,
+  wider startup directives/parsing/profiles,
   other warning producers, OS services and lifecycle. The
   [include contract](docs/semantics/INCLUDE-SOURCES.md) separates these consumers.
-- Values, references and coercion: direct/inherited default constructor dispatch,
+- Values, references and coercion: suspended internal default constructor reception,
   rebound anonymous keyword NEW defaults, dynamic hole provenance and broader weak
   parameter/property conversion, constrained-reference object conversion, wider nonstatic delayed receivers and
-  broader reference-result consumers. Deferred instance/object defaults and cold
-  synchronous references into incomplete constant tables remain Unsupported.
+  broader reference-result consumers. Deferred instance/object defaults and
+  wider Closure creation contexts remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.
   Wider deprecated constant consumers remain open. Generic156 return replay, temporary-return

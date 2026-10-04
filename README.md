@@ -66,7 +66,17 @@ captured values, caller frames and initializer locations through callbacks.
 [Compound initializer eval locations](coverage/semantics/compound-eval-location-review.json)
 retain authenticated filename owners and child lines through callbacks and later
 eval execution, separately from callback scope and compiler exception locations.
-Startup profiles, wider initializer/PIPE/INI consumers and lifecycle remain open.
+[Registered startup inputs](coverage/semantics/startup-ini-review.json) supply
+the initial `error_reporting` and `include_path` bytes before compilation.
+Getters and Restore retain those facts through setters, silence and callbacks;
+null reporting and an explicit empty string have distinct masks. Nine exact
+profile comparisons, 99 state premises and 15 transport controls pass.
+[Live display errors](coverage/semantics/display-errors-review.json) add nullable
+startup bytes, raw get/set/Restore and ordered stdout/stderr/off diagnostics.
+Emission captures its destination after callback effects; later writes retain
+earlier output. Eleven exact comparisons, 76 state premises and 17 transport
+controls pass. Required shutdown fatal freezing awaits the accepted lifecycle
+composition; wider display/startup directives and diagnostic consumers stay open.
 
 All required non-system inputs are local and pinned. See
 [dependencies/README.md](dependencies/README.md) for prerequisites, provenance,
@@ -109,7 +119,7 @@ entry availability, repeated execution and failure. Compile-stop freezes caller
 snapshots and preserves completed effects; it retires the active source request
 without ordinary unwinding. [Publication evidence](coverage/semantics/compiler-publication-review.json)
 links source30, history107, modifier286 and later interaction checks.
-Reporting startup profiles and remaining diagnostic producers stay open.
+Wider startup directives and remaining diagnostic producers stay open.
 
 [Loose and ordered comparisons](docs/semantics/COMPARISONS.md) now cover scalar
 and array values, with [independent evidence](coverage/semantics/comparison-review.json).
@@ -238,7 +248,13 @@ separate source and ownership checks; ordinary missing reference sends stay quie
 capture null before callbacks and skip later writes when a handler throws. Genuine
 request snapshots preserve numeric keys, shared reference cells and array COW.
 Author8/207, independent8/221 and two current scoped-handler sources retain
-separate cutoffs; earlier key warnings and broader consumers remain open.
+separate cutoffs. [Dynamic read keys](docs/semantics/SOURCE-DIMENSION-KEYS.md)
+now stage missing key-CV, null/float and global-array-name conversions. Genuine
+temporary owners, borrowed CV tables and ordered NaN notices preserve mutation,
+COW and throwing cleanup through nested/quiet reads. Author9/246 includes the two
+independent NaN originals; independent14/235 and one current constructor
+interaction keep separate cuts.
+Read-write continuations and wider key/container producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -369,8 +385,15 @@ The [deferred-default review](coverage/semantics/deferred-static-defaults-review
 separates eighteen earlier source agreements and five state programs/152 premises
 from thirteen new reentry comparisons and one inherited67 ownership/history fixture.
 Same-default reentry replaces the live row while escaped typed aliases retain
-their ordered constraints; failure preserves the reentrant value. Deferred
-instance/object defaults and incomplete-table references remain open.
+their ordered constraints; failure preserves the reentrant value. Cold
+static reference targets now complete cold tables while keeping the captured RHS
+cell alive through callbacks. Dynamic and ordinary method keyword selectors keep
+their selected class/name; seven source comparisons and an 84-premise fixture
+cover failure/retry, replacement and ownership. Captured/rebound Closure keyword
+references now retain authentic scope/binding and nested creator evidence after
+collection, including unrelated called classes and handler ingress. Nine new
+sources and 162 state premises pass separately. Deferred instance/object defaults
+and wider consumers remain open.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -488,9 +511,15 @@ Six focused sources, 299 state checks and two independent instance-property
 controls cover the new backing behavior.
 [Variadic and default reception](coverage/semantics/variadic-default-string-review.json)
 converts positional then named Stringable elements and fresh constructor-free
-defaults, retaining declaring method scope and captured cells. Constructor-default
-execution, rebound anonymous keyword defaults and broader constrained conversion
-remain open.
+defaults, retaining declaring method scope and captured cells.
+[Source constructor defaults](coverage/semantics/default-constructors-review.json)
+finish class tables before allocation and evaluate all argument values before
+constructor access and name mapping. Declaration strictness, API reference warnings
+and fresh default objects retain their real owners.
+[Internal default constructors](coverage/semantics/internal-default-constructors-review.json)
+map prepared values with declaration strictness, named-hole filling and exact
+string-mutated traces. Suspended internal warning/Stringable reception, rebound
+anonymous keyword defaults and broader constrained conversion remain open.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

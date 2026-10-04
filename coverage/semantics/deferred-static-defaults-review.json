@@ -7,7 +7,9 @@
     "spec/semantics/135-property-compiler.watsup",
     "spec/semantics/184-class-constants.watsup",
     "spec/semantics/187-class-static-storage.watsup",
-    "spec/semantics/229-static-default-reentry.watsup"
+    "spec/semantics/229-static-default-reentry.watsup",
+    "spec/semantics/232-cold-static-references.watsup",
+    "spec/semantics/239-cold-closure-statics.watsup"
   ],
   "contracts": [
     "Declaring scope; strict types with int-to-float promotion.",
@@ -17,7 +19,10 @@
     "Inherited prototypes keep their initializer AST even after a parent cell fills.",
     "Source/line, publication-prefix, table-order and binder validation; existing array/alias roots.",
     "Resumed successful update replaces a reentrant live row; firstfill and table completion remain once-only.",
-    "Escaped typed aliases retain ordered nonowning property constraints authenticated by retirement history; abrupt/type failures retain the live row."
+    "Escaped typed aliases retain ordered nonowning property constraints authenticated by retirement history; abrupt/type failures retain the live row.",
+    "Cold non-CV static targets keep the captured RHS cell rooted while authentic class-table work runs; resumed binding reselects the live target only after completion.",
+    "Dynamic and ordinary method self/parent/static selectors retain immutable source/class/scope snapshots through callbacks and neutral selected fill/retire/table history.",
+    "Captured/rebound source Closure keyword selectors copy authentic live scope/binding evidence; nested creation retains exact immediate creator body/scope/receiver and nullable invocation site. Arena/source facts remain valid after pruning, without adding heap roots or weakening ordinary method ancestry."
   ],
   "engine_symbols": [
     "zend_compile_prop_decl",
@@ -110,12 +115,14 @@
     "state_acceptance": "Independent exact fixture/raw review accepts narrow repairs and5/149 logical checks at293a76440.",
     "composition": "Independent native baselines and exact model/raw/additive merge review accepted by compiler_review_14 at 8da51d193; final catalogue/docs publication contains no semantic change.",
     "diagnostic_composition": "compiler_review_14 independently accepts actual217 merge, four new raw agreements, exact Unsupported2/owner41 and cross-file source/finite-snapshot/sharedorigin repair at their recorded cutoffs.",
-    "reentry": "compiler_review_14 independently accepted representation, failure/retry/rebind/source-order/GC transitions, exact inherited67 fixture and recorder, all13 complete raw native/model tuples atbf0954840. No previous18/149 renewal."
+    "reentry": "compiler_review_14 independently accepted representation, failure/retry/rebind/source-order/GC transitions, exact inherited67 fixture and recorder, all13 complete raw native/model tuples atbf0954840. No previous18/149 renewal.",
+    "cold_references": "compiler_review_14 independently accepted the representation/source/fixture, seven exact native/model tuples at69cc, narrow validator repair and84-premise raw at0288; no historical renewal.",
+    "cold_closures": "compiler_review_14 independently accepted SOURCE/BOUND nullable creator representation, source/fixture/recorder and all9 exact native/model tuples plus bound69 atd6bc; handler58/terminal35 at860, total162 premises. Original compilation/fixture failures remain; no previous evidence renewal."
   },
   "required_next": [
     "Deferred instance defaults before static defaults, including shadowed private templates.",
     "Object-bearing defaults with authenticated creation/cache transfer and live roots.",
-    "Cold synchronous reference/update continuations into an incomplete table.",
+    "Wider retained reference/update consumers and temporary-call Closure creation; ordinary method and captured/rebound cold keyword snapshots are supported.",
     "Broader retained selectors, traits/hooks/readonly and property consumers.",
     "Paused returns_verify stays untouched; no unaccepted dependencies."
   ],
@@ -202,5 +209,75 @@
     "historical_compile": "183 traverses CCSTATIC and CCSTATICRETIRE publication ordinals without substituting static values into compiler class constants.",
     "preserved_failure": "reentry-model-v1 first source failed before execution:184 class_constant_update_ordered declared after new use. Narrow declaration move only; all affected/unrun sources and fixture then passed in v2. A-only50 preparation v1 remains unrun.",
     "credit": "13 new source agreements only; original18 and original149/152 state evidence are unchanged. PublicCLI SL compilation credit and numeric AL state credit remain distinct."
+  },
+  "cold_reference_validation": {
+    "result": "PASS7 exact native/model normal tuples and one84-premise AL ownership/history fixture",
+    "source_revision": "69cc4546c93786438aab914576eee0fe15964e65",
+    "state_revision": "0288de513b5e13828f3e8b11eefbbf8c3eae569b",
+    "scope": "Delayed non-CV static target acquisition, visibility-before-update, captured dynamic class/delayed name, ordinary method self/parent/late-static, sole queued RHS cell owner, selected reentry retirement, partial failure and callback throw/rebind/retry.",
+    "reports": [
+      "cold-reference-model-v1/report.json",
+      "cold-reference-model-v3/report.json",
+      "reviewer14-cold-reference-native-v1/report.json",
+      "reviewer14-cold-reference-native-v3/report.json",
+      "reviewer14-cold-reference-native-v5/report.json",
+      "reviewer14-cold-reference-native-v6/report.json",
+      "reviewer14-cold-reference-native-v7/report.json"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/cold-reference-model-v1/run.py",
+      "python3 .tools/deferred-static-defaults/cold-reference-model-v3/run.py"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "completion": "Seven exact full native/model tuples; accepted/checked normal/null reason+diagnostic, process+cleanup0, empty external/model stderr, no owned groups, inputs unchanged. Numeric guard stdout true newline/empty stderr0.",
+    "state_fixture": "cold-state-prepared-v5/selected-cold-reference.watsup; exact native-v6 source.84 sequential premises check immutable selection, queued and ready binder identity, firstfill/retirement, sole captured RHS owner through callback, ordered type sources and nonowning GC.",
+    "profile": "All current sources use full baseline30719. Exact old self getter is newly aligned in native-v7; original32767 native-only record remains unchanged.",
+    "preserved_failures": [
+      "v1 fixture rejected before execution at146.123: retirement constructor contained an unparenthesized length expression; fixed by a sequential ordinal binding.",
+      "v2 reached queue state but failed class invariant: missing selected static_default_blocks/static_default_phases cases. v3 adds the existing ordered sequence/reset rules; no PhpStep change or source renewal."
+    ],
+    "credit": "Seven new source agreements at69cc;84 guard premises at0288. PublicCLI SL compilation and numeric AL state credit remain distinct. Earlier31/149/67 evidence is unchanged."
+  },
+  "cold_closure_validation": {
+    "result": "PASS9 exact native/model normal tuples and three AL source-derived programs/162 premises",
+    "source_revision": "d6bc097899ba12acfe912c61c4c3106b1ad4dae7",
+    "state_revisions": {
+      "bound69": "d6bc097899ba12acfe912c61c4c3106b1ad4dae7",
+      "handler58_terminal35": "860a8a19a6c5e1a73fbb707bbc6765534aae4bba"
+    },
+    "scope": "Captured self/parent/static, bound foreign called class, null receiver and clone, nested captured scopes, reentrant retirement/sole RHS owner, throw/retry, genuine error emission and terminal null-site creator ingress. Scope/receiver/bind/source/site transplant negatives and post-prune history validate the nonowning representation.",
+    "reports": [
+      "cold-closure-model-v2/report.json",
+      "cold-closure-model-v3/report.json",
+      "reviewer14-cold-closure-native-v1/report.json",
+      "reviewer14-cold-closure-native-v2/report.json",
+      "reviewer14-cold-closure-native-v3/report.json",
+      "reviewer14-cold-closure-native-v4/report.json"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/cold-closure-model-v2/run.py",
+      "python3 .tools/deferred-static-defaults/cold-closure-model-v3/run.py"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "completion": "Exact full native/model tuples, accepted checked program/normal/null reason+diagnostic, process+cleanup0, empty external/model stderr and groups, inputs stable. Guard stdout exactly true newline/empty stderr0.",
+    "profile": "All nine originals use full baseline30719 and the same pinned local oracle.",
+    "state_fixtures": "cold-closure-state-prepared-v3/bound-reentry.watsup69; v4/handler-nested58 and terminal-nested35. Source bytes match native-v1/v3/v4.",
+    "preserved_failures": [
+      "v1 compilation-only empty iteration at239:121; renamed optional lexical parameter, no source credit.",
+      "v2 handler fixture parse-only at131:34, missing-source length in PORIGIN constructor; fixed only with sequential ordinal binding. Nine source agreements and bound69 were retained; v3 executes affected/unrun two guards only."
+    ],
+    "credit": "Nine new publicCLI source agreements and162 numeric AL guard premises. Earlier38/84/149/67 evidence unchanged."
   }
 }

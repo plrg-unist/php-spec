@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS64",
+  "status": "Independently accepted bounded233 and one actual71da constructor interaction; complete core remains open",
+  "scope": "Earlier missing key-CV and null/float/global-array-name conversions for ordinary dimension R/IS/ISSET reads; real base/key operand ownership and throwing cleanup",
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/207-error-handler-runtime.watsup",
+    "spec/semantics/233-dimension-key-continuations.watsup"
+  ],
+  "primary": [
+    "Zend/zend_vm_def.h: zend_fetch_var_address_helper, FETCH_DIM_R, ISSET_ISEMPTY_DIM_OBJ",
+    "Zend/zend_execute.c: slow_index_convert, zend_find_array_dim_slow",
+    "Zend/zend_operators.h: zend_dval_to_lval_safe"
+  ],
+  "certificates": "Source/line/mode, compiled input and deterministic selected key/name, genuine CV versus computed/nested operand ownership, and an ordered remaining float-notice suffix. Consistent selected dynamic values remain runtime facts without post-callback history reconstruction.",
+  "author": {
+    "source_comparisons": 9,
+    "state_assertions": [
+      62,
+      59,
+      55,
+      70
+    ],
+    "source_runs": [
+      {
+        "tested": "38bde5ccd2e128f6dbc4e01b4f50d63340760cd9",
+        "report": "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/models-5bg795mb/report.json",
+        "accepted_rows": [
+          "global-array-name-conversion-keeps-selected-name"
+        ]
+      },
+      {
+        "tested": "aaf53401de65ffdc1656fd1c3ef0deffcc9aeb31",
+        "report": "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/models-gllyoguc/report.json",
+        "accepted_rows": [
+          "array-null-conversion-retains-shared-old-table",
+          "array-null-conversion-releases-sole-protection",
+          "isset-undefined-key-has-no-first-protection",
+          "nested-key-cast-retains-original-null",
+          "global-conversion-throw-releases-real-key-temporary"
+        ]
+      },
+      {
+        "tested": "cf616acf8cd909cd2b5abd9619c1d2ff453f5875",
+        "report": "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/models-au8y0oi6/report.json",
+        "accepted_rows": [
+          "constant-null-conversion-then-missing-keeps-captured-null"
+        ]
+      },
+      {
+        "tested": "6f67afa4663b8b26c849756737ad1e29e31c9ee9",
+        "report": "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/nan-models-aq1t_ai_/report.json",
+        "accepted_rows": [
+          "nan-conversion-keeps-protection-across-both-notices",
+          "nan-first-notice-throw-preserves-priority-and-destination"
+        ]
+      }
+    ],
+    "state_runs": [
+      {
+        "tested": "869007aee9ca2e60fbce7d6a94632218b5ac07c2",
+        "preparation": "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/prepared-u7x_u1sl/report.json",
+        "report": "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/states-__9gdlzt/report.json",
+        "assertions": [
+          62,
+          59,
+          55
+        ]
+      },
+      {
+        "tested": "9a8e88b7c56ed9d4282aff740f2da52d43ac5047",
+        "preparation": "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/prepared-wbpnnrks/report.json",
+        "report": "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/states-2vjuo_a9/report.json",
+        "assertions": [
+          70
+        ]
+      }
+    ],
+    "native_reports": [
+      "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/native-clzdwvhm/report.json",
+      "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/native-20gl9g8_/report.json",
+      "/home/user/workspace/php-spec/.tools/dimension-warning-review-15/native-nan-ejnxas_5/report.json"
+    ],
+    "execution": "Only the listed true rows are accepted from reports that also preserve later failures. Corrections ran affected/unrun rows. The later ordered float-tail change does not execute in the seven earlier sources or176 retained states; the fresh two NaN sources and70 states cover it. Later9a8 fixture notation edits do not change6f67 production.",
+    "root": "/home/user/workspace/php-spec/.tools/dimension-warning-current-15"
+  },
+  "independent": {
+    "tested": "9a8e88b7c56ed9d4282aff740f2da52d43ac5047",
+    "source_comparisons": 14,
+    "state_assertions": [
+      76,
+      78,
+      81
+    ],
+    "preparation": "/home/user/workspace/php-spec/.tools/dimension-warning-review-15/prepared-lwc3n2qh/report.json",
+    "result": {
+      "path": "/home/user/workspace/php-spec/.tools/dimension-warning-review-15/own-run-tigt7qs3/report.json",
+      "sha256": "8bffab3d5c933f5f97a0ac4f44a0f500314b9a75daae1fc2c661fcedf80e83b6"
+    },
+    "release": "/home/user/workspace/php-spec/.tools/dimension-warning-review-15/own-run-tigt7qs3/RELEASE.json",
+    "execution": "14 previously unrun originals and76/78/81=235 reached checks all strict PASS. The two NaN originals are included in author9, retaining their6f67 model execution and independent original-tuple review; no native/NAN passes were replayed.",
+    "native_reports": [
+      "/home/user/workspace/php-spec/.tools/dimension-warning-review-15/native-jau60x22/report.json",
+      "/home/user/workspace/php-spec/.tools/dimension-warning-review-15/native-extra-okh045ta/report.json",
+      "/home/user/workspace/php-spec/.tools/dimension-warning-review-15/native-critical-41nqvt91/report.json",
+      "/home/user/workspace/php-spec/.tools/dimension-warning-review-15/native-string-pcgbceq5/report.json",
+      "/home/user/workspace/php-spec/.tools/dimension-warning-review-15/native-nan-ejnxas_5/report.json"
+    ],
+    "peer_reviewed_author_nan_comparisons": 2
+  },
+  "runtime": "Existing pinned local PHP/parser/SpecTec/adapter/numeric binaries reused. Exact executed identities and changed inputs are in each original context; no fresh offline build is claimed.",
+  "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, PHP_SPEC_SCRIPT_ENCODING unset; jobs1; native45, model90/CLI60/steps100000, source phase480, finite300/phase930; actual rlimits recorded read-only in each context.",
+  "preserved_failures": {
+    "loader": [
+      "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/models-xz8gc7_b/report.json",
+      "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/models-x5ph9nu1/report.json",
+      "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/models-6zq1zgtc/report.json"
+    ],
+    "runtime": "models-5bg795mb source2 hit overlapping conversion/abrupt branches; models-gllyoguc source7 replayed a diagnostic in certificate validation. Both were corrected narrowly, with successful earlier rows retained.",
+    "fresh_fixture_notation": [
+      "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/prepared-3rd8b2id/report.json",
+      "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/prepared-m5hnkf9i/report.json",
+      "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/prepared-rplqnvun/report.json"
+    ],
+    "native_prediction": "OWN native-jau60x22 rows2/8 corrected initial root-unset/rebind and quiet-GLOBALS-isset predictions to their original actual bytes: rebound caller CV/table yields17; GLOBALS isset suppresses undefined key-CV U while ordinary/null isset demand it. The NaN first-throw prediction expected a later D callback; original native bytes instead suppress D and preserve destination9/original+older chain. Sources and original predictions remain unchanged in the native reports."
+  },
+  "reproducibility": {
+    "author_root": "/home/user/workspace/php-spec/.tools/dimension-warning-current-15",
+    "compiler": "python3 -B tests/semantics/dimension_warning_prepare.py [fixture-id ...]",
+    "source": "Saved run-models.py and run-nan-models.py reuse original native bytes; model argv is bin/php-semantics SOURCE --steps 100000 --timeout 60. Exact source/native/model argv, cwd and tuples are in *.process.json/*.exit.json.",
+    "finite": "python3 -B .tools/dimension-warning/run-finite.py PREPARED/report.json; each numeric runner argv uses current modules.json plus the checked fixture.",
+    "independent": [
+      "python3 -B /home/user/workspace/php-spec/.tools/dimension-warning-review-15/prepare-own.py",
+      "python3 -B /home/user/workspace/php-spec/.tools/dimension-warning-review-15/run-own.py /home/user/workspace/php-spec/.tools/dimension-warning-review-15/prepared-lwc3n2qh/report.json"
+    ],
+    "current": "python3 -B .tools/dimension-warning/run-current.py"
+  },
+  "remaining": "Read-write/reference/append/unset/compound/coalesce-assignment warning continuations; object/magic conversions, earlier missing containers, other scalar/string diagnostics and broader source consumers. No permanent core exclusion; paused returns remain separate.",
+  "limits": "No engine bug or intentional divergence identified. These bounded agreements do not establish full core or semantic equivalence.",
+  "current_composition": {
+    "base": "71da24dd5ba11aa7ac71df99d3994fe70bae752a",
+    "tested": "a244e0a43adbe84fac12325a3fb3fa59935482d0",
+    "source": "tests/semantics/dimension_warning_current.php",
+    "scope": "One accepted227 constructor in a parameter default reads GLOBALS with its local array key. Parent-private captured handler215 and Child called class223 retain genuine constructor/receiver/key owners; handler root mutation does not replace captured Array name; result17 initializes the typed property and returns to the default receiver. Accepted235 internal constructors are preserved, without claiming their unrelated branch executes.",
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/dimension-warning-current-15/.tools/dimension-warning/current-tc3gx_hm/report.json",
+      "sha256": "a1de15f6ce3c3ea4d4bf7d444125784585e60ce4064a0024c9b48fe7ac10f9d1"
+    },
+    "result": "Original native/model normal0, exact stdout H:ChildCurrentKey233:1:13:1;C:17;R:17:changed233; empty stderr/no timeout/stable inputs/groups empty",
+    "source_sha256": "8769759c02b66b4f78e76f9cd8e8df19bc6bd8bffb3f9964d140f9ad60b4ed51"
+  }
+}

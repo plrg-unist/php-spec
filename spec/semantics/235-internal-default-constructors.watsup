@@ -1,0 +1,144 @@
+;; Internal API name mapping starts after the whole constant-AST value table.
+;; The ordinary CTOR_ARGS evaluator instead checks names before later values.
+def $task_nodes(DEFAULT_INTERNAL_CTOR_ARGS pdefaultnew pctorcall) = $default_new_nodes(pdefaultnew) ++ $named_slots_roots(pctorcall.SENT)
+dec $default_internal_target(pstate, nat) : bool
+def $default_internal_target(S, n) = true
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_constructor_kind($ptascii(pthrowable.KIND)) = (pthrowable.KIND)
+def $default_internal_target(S, n) = true
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $throwable_member(S, n)
+  -- if $effective_method(S, porigin_class, $ptascii("__construct"), |S.CLASSES|) = eps
+def $default_internal_target(S, n) = false -- otherwise
+rule PhpStep/default-internal-constructor-start: S ~> S_ctor[.TODO = (DEFAULT_INTERNAL_CTOR_ARGS pdefaultnew pctorcall) :: ptask_tail*]
+  -- if S.TODO = (DEFAULT_NEW_ARGS pdefaultnew) :: ptask_tail*
+  -- if $default_new_valid(S, pdefaultnew)
+  -- if pdefaultnew.INDEX = |pdefaultnew.ARGUMENTS|
+  -- if $default_internal_target(S, pdefaultnew.OBJECT)
+  -- if S_ctor = $ctor_start(S[.TODO = ptask_tail*], pdefaultnew.OBJECT, CTOR_NEW, pdefaultnew.LINE)
+  -- if S_ctor.TODO = (CTOR_ARGS pctorcall) :: ptask_tail*
+  -- if $ctor_selected(S_ctor, pctorcall)
+
+dec $default_internal_prefix(pdefaultnew, pctorcall, nat) : pctorcall?
+def $default_internal_prefix(pdefaultnew, pctorcall, 0) = (pctorcall)
+def $default_internal_prefix(pdefaultnew, pctorcall, n) = ($ctor_sent(pctorcall_prefix, KNOWN pdefaultnew.VALUES[n_index], ptbytes_name?)[.INDEX = n])
+  -- if $(n > 0)
+  -- if n_index = $nabs($(n - 1))
+  -- if $default_internal_prefix(pdefaultnew, pctorcall, n_index) = (pctorcall_prefix)
+  -- if pdefaultnew.ARGUMENTS[n_index] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata
+  -- if ptbytes_name? = $exit_argument_name(phpType3)
+  -- if ptbytes_name? =/= eps \/ ~pctorcall_prefix.NAMED
+  -- if $ctor_destination_for(pctorcall.BASE, ptbytes_name?, |pctorcall_prefix.SENT|) = (n_destination)
+  -- if $named_slot_at(pctorcall_prefix.SENT, n_destination) = NAMED_HOLE
+def $default_internal_prefix(pdefaultnew, pctorcall, n) = eps -- otherwise
+dec $default_internal_valid(pstate, pdefaultnew, pctorcall) : bool
+def $default_internal_valid(S, pdefaultnew, pctorcall) = true
+  -- if $default_new_valid(S, pdefaultnew)
+  -- if pdefaultnew.INDEX = |pdefaultnew.ARGUMENTS|
+  -- if $ctor_selected(S, pctorcall)
+  -- if pctorcall.SITE = pdefaultnew.SITE /\ pctorcall.LINE = pdefaultnew.LINE
+  -- if pctorcall.RECEIVER = pdefaultnew.OBJECT /\ pctorcall.MODE = CTOR_NEW
+  -- if $(pctorcall.INDEX <= pdefaultnew.INDEX)
+  -- if pctorcall_initial = pctorcall[.INDEX = 0][.SENT = eps][.NAMED = false]
+  -- if $default_internal_prefix(pdefaultnew, pctorcall_initial, pctorcall.INDEX) = (pctorcall)
+def $default_internal_valid(S, pdefaultnew, pctorcall) = false -- otherwise
+def $call_task_valid(S, DEFAULT_INTERNAL_CTOR_ARGS pdefaultnew pctorcall) = $default_internal_valid(S, pdefaultnew, pctorcall)
+
+rule PhpStep/default-internal-constructor-value: S ~> S_checked[.TODO = (DEFAULT_INTERNAL_CTOR_ARGS pdefaultnew ($ctor_sent(pctorcall, KNOWN pdefaultnew.VALUES[pctorcall.INDEX], ptbytes_name?)[.INDEX = $(pctorcall.INDEX + 1)])) :: ptask_tail*]
+  -- if S.TODO = (DEFAULT_INTERNAL_CTOR_ARGS pdefaultnew pctorcall) :: ptask_tail*
+  -- if $default_internal_valid(S, pdefaultnew, pctorcall)
+  -- if $(pctorcall.INDEX < pdefaultnew.INDEX)
+  -- if pdefaultnew.ARGUMENTS[pctorcall.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata
+  -- if ptbytes_name? = $exit_argument_name(phpType3)
+  -- if S_checked = $ctor_send_check(S, pctorcall, ptbytes_name?, pdefaultnew.LINE)
+  -- if S_checked.COMPLETION = NORMAL
+rule PhpStep/default-internal-constructor-name-error: S ~> S_checked
+  -- if S.TODO = (DEFAULT_INTERNAL_CTOR_ARGS pdefaultnew pctorcall) :: ptask_tail*
+  -- if $default_internal_valid(S, pdefaultnew, pctorcall)
+  -- if $(pctorcall.INDEX < pdefaultnew.INDEX)
+  -- if pdefaultnew.ARGUMENTS[pctorcall.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata
+  -- if S_checked = $ctor_send_check(S, pctorcall, $exit_argument_name(phpType3), pdefaultnew.LINE)
+  -- if S_checked.COMPLETION =/= NORMAL
+
+;; zend_handle_undef_args fills only existing named holes before internal parsing
+;; and trace capture. It does not add omitted trailing formals to argc.
+dec $default_internal_hole(text, nat) : pvalue
+def $default_internal_hole(text, 0) = PSTRING eps
+def $default_internal_hole(text, 1) = PINT 0
+def $default_internal_hole("ErrorException", 2) = PINT 1
+def $default_internal_hole(text, n) = PNULL -- otherwise
+dec $default_internal_fill(text, pnamedslot*, nat) : pnamedslot*
+def $default_internal_fill(text, eps, n) = eps
+def $default_internal_fill(text, NAMED_HOLE :: pnamedslot*, n) = (NAMED_SENT (KNOWN $default_internal_hole(text, n))) :: $default_internal_fill(text, pnamedslot*, $(n + 1))
+def $default_internal_fill(text, (NAMED_SENT poperand) :: pnamedslot*, n) = (NAMED_SENT poperand) :: $default_internal_fill(text, pnamedslot*, $(n + 1))
+dec $default_internal_arity(text) : nat
+def $default_internal_arity("ErrorException") = 6
+def $default_internal_arity(text) = 3 -- otherwise
+dec $default_internal_nonnullable(text, nat) : bool
+def $default_internal_nonnullable(text, n) = ($(n < 2) \/ (text = "ErrorException" /\ n = 2))
+dec $default_internal_parameter_name(nat) : ptbytes
+def $default_internal_parameter_name(0) = $ptascii("message")
+def $default_internal_parameter_name(1) = $ptascii("code")
+def $default_internal_parameter_name(n) = $ptascii("severity") -- otherwise
+dec $default_internal_parameter_type(nat) : ptbytes
+def $default_internal_parameter_type(0) = $ptascii("string")
+def $default_internal_parameter_type(n) = $ptascii("int") -- otherwise
+dec $default_internal_integer(text, nat) : bool
+def $default_internal_integer(text, n) = (n = 1 \/ (text = "ErrorException" /\ (n = 2 \/ n = 4)))
+dec $default_internal_parameter(pstate, pctorcall, nat, pnamedslot) : pstate
+dec $default_internal_parameter_plain(pstate, pctorcall, nat, pnamedslot) : pstate
+def $default_internal_parameter(S, pctorcall, n, NAMED_SENT (KNOWN PNULL)) = $ctor_type_error(S, pctorcall, $(n + 1), $default_internal_parameter_name(n), $default_internal_parameter_type(n), PNULL)
+  -- if $default_internal_nonnullable(pctorcall.BASE, n)
+  -- if $exit_strict(S, pctorcall.SITE)
+def $default_internal_parameter(S, pctorcall, n, NAMED_SENT (KNOWN PNULL)) = S[.COMPLETION = UNSUPPORTED "internal default constructor null reception"]
+  -- if $default_internal_nonnullable(pctorcall.BASE, n)
+  -- if ~$exit_strict(S, pctorcall.SITE)
+def $default_internal_parameter(S, pctorcall, 0, NAMED_SENT (KNOWN (POBJECT n))) = $ctor_type_error(S, pctorcall, 1, $ptascii("message"), $ptascii("string"), POBJECT n)
+  -- if $exit_strict(S, pctorcall.SITE)
+def $default_internal_parameter(S, pctorcall, 3, NAMED_SENT (KNOWN (POBJECT n))) = S[.COMPLETION = UNSUPPORTED "internal default constructor Stringable filename reception"]
+  -- if pctorcall.BASE = "ErrorException"
+  -- if ~$exit_strict(S, pctorcall.SITE)
+  -- if $class_instanceof(S, POBJECT n, $ptascii("Stringable"))
+def $default_internal_parameter(S, pctorcall, n, NAMED_SENT (KNOWN pvalue)) = S[.COMPLETION = UNSUPPORTED "internal default constructor precision warning"]
+  -- if $default_internal_integer(pctorcall.BASE, n)
+  -- if $typed_conversion([(PTBRANCH ([PTBUILTIN "int"]))], pvalue, $exit_strict(S, pctorcall.SITE)) = TYPEINTEGER pvalue
+  -- if $reporting_lossy_value(pvalue) =/= eps
+def $default_internal_parameter(S, pctorcall, n, pnamedslot) = $default_internal_parameter_plain(S, pctorcall, n, pnamedslot) -- otherwise
+def $default_internal_parameter_plain(S, pctorcall, 0, pnamedslot) = $ctor_message_value(S, pctorcall, pnamedslot)
+def $default_internal_parameter_plain(S, pctorcall, 1, pnamedslot) = $ctor_code_value(S, pctorcall, pnamedslot)
+def $default_internal_parameter_plain(S, pctorcall, 2, pnamedslot) = $ctor_previous_value(S, pctorcall, pnamedslot) -- if pctorcall.BASE =/= "ErrorException"
+def $default_internal_parameter_plain(S, pctorcall, 2, pnamedslot) = $ee_severity_value(S, pctorcall, pnamedslot) -- if pctorcall.BASE = "ErrorException"
+def $default_internal_parameter_plain(S, pctorcall, 3, pnamedslot) = $ee_filename_value(S, pctorcall, pnamedslot)
+def $default_internal_parameter_plain(S, pctorcall, 4, pnamedslot) = $ee_line_value(S, pctorcall, pnamedslot)
+def $default_internal_parameter_plain(S, pctorcall, 5, pnamedslot) = $ee_previous_value(S, pctorcall, pnamedslot)
+;; Internal string parsing rewrites a supplied argument; integer parsing does
+;; not. Later errors observe the rewritten string without adding trailing args.
+dec $default_internal_string_slot(pctorcall, nat, pvalue) : pctorcall
+def $default_internal_string_slot(pctorcall, n, PSTRING ptbytes) = pctorcall[.SENT = $named_slot_set(pctorcall.SENT, n, KNOWN (PSTRING ptbytes))]
+  -- if n = 0 \/ (pctorcall.BASE = "ErrorException" /\ n = 3)
+  -- if $(n < |pctorcall.SENT|)
+def $default_internal_string_slot(pctorcall, n, pvalue) = pctorcall -- otherwise
+dec $default_internal_receive(pstate, pctorcall, nat, pvalue*) : pstate
+def $default_internal_receive(S, pctorcall, n, pvalue*) = $default_internal_receive(S_next, $default_internal_string_slot(pctorcall, n, pvalue_step), $(n + 1), pvalue* ++ [pvalue_step])
+  -- if $(n < $default_internal_arity(pctorcall.BASE))
+  -- if S_next = $default_internal_parameter(S, pctorcall, n, $named_slot_at(pctorcall.SENT, n))
+  -- if S_next.COMPLETION = NORMAL
+  -- if S_next.RESULT = KNOWN pvalue_step
+def $default_internal_receive(S, pctorcall, n, pvalue*) = S_next
+  -- if $(n < $default_internal_arity(pctorcall.BASE))
+  -- if S_next = $default_internal_parameter(S, pctorcall, n, $named_slot_at(pctorcall.SENT, n))
+  -- if S_next.COMPLETION =/= NORMAL
+def $default_internal_receive(S, pctorcall, 3, [pvalue_message, pvalue_code, pvalue_previous]) = $ctor_commit(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous)
+  -- if pctorcall.BASE =/= "ErrorException"
+def $default_internal_receive(S, pctorcall, 6, pvalue*) = $ee_commit(S, pctorcall, pvalue*)
+  -- if pctorcall.BASE = "ErrorException"
+rule PhpStep/default-internal-constructor-arity: S ~> $ctor_receive(S[.TODO = ptask_tail*], pctorcall)
+  -- if S.TODO = (DEFAULT_INTERNAL_CTOR_ARGS pdefaultnew pctorcall) :: ptask_tail*
+  -- if $default_internal_valid(S, pdefaultnew, pctorcall)
+  -- if pctorcall.INDEX = pdefaultnew.INDEX
+  -- if $(|pctorcall.SENT| > $default_internal_arity(pctorcall.BASE))
+rule PhpStep/default-internal-constructor-receive: S ~> $default_internal_receive(S[.TODO = ptask_tail*], pctorcall[.SENT = $default_internal_fill(pctorcall.BASE, pctorcall.SENT, 0)], 0, eps)
+  -- if S.TODO = (DEFAULT_INTERNAL_CTOR_ARGS pdefaultnew pctorcall) :: ptask_tail*
+  -- if $default_internal_valid(S, pdefaultnew, pctorcall)
+  -- if pctorcall.INDEX = pdefaultnew.INDEX
+  -- if $(|pctorcall.SENT| <= $default_internal_arity(pctorcall.BASE))
