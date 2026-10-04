@@ -21,10 +21,12 @@ def recorded(command, directory, stem, environment, cap):
         timed_out = False
         try:
             process.wait(timeout=cap)
-        except subprocess.TimeoutExpired:
-            timed_out = True
+        except BaseException as error:
             os.killpg(process.pid, signal.SIGKILL)
             process.wait()
+            if not isinstance(error, subprocess.TimeoutExpired):
+                raise
+            timed_out = True
     result = {'command': list(map(str, command)), 'exit': process.returncode, 'timeout': timed_out}
     (directory / (stem + '.process.json')).write_text(json.dumps(result) + '\n')
     return result
@@ -58,7 +60,12 @@ def run(match, native_only):
         if passed and not native_only:
             model = recorded([ROOT / 'bin/php-semantics', source, '--steps', '100000', '--timeout', '60'],
                              directory, 'model', environment, 75)
-            actual = json.loads((directory / 'model.stdout').read_bytes())
+            try:
+                actual = json.loads((directory / 'model.stdout').read_bytes())
+            except ValueError:
+                actual = {'runner_error': 'invalid model JSON'}
+            if not isinstance(actual, dict):
+                actual = {'runner_error': 'model result is not an object'}
             passed = (not model['timeout'] and model['exit'] == 0
                       and not (directory / 'model.stderr').read_bytes()
                       and actual.get('frontend') == 'accepted' and actual.get('checked') == 'program'
@@ -67,11 +74,13 @@ def run(match, native_only):
             result.update(model=model, observation=actual, passed=passed)
         results.append(result)
         print(row['id'], passed, flush=True)
+        if not passed:
+            break
     report = {'revision': revision, 'runtime_sha256': hashlib.sha256(runtime.read_bytes()).hexdigest(),
               'profile': profile, 'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING_removed': True},
               'scope': 'native only' if native_only else 'original-source differential tuples',
               'selection': [row['id'] for row in rows], 'records': results,
-              'passed': all(result['passed'] for result in results)}
+              'passed': len(results) == len(rows) and all(result['passed'] for result in results)}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     return report['passed']
 

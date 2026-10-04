@@ -196,5 +196,23 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "raw-detach-cache",
+    "source": "<?php\nclass C{static function h($e){global $raw;restore_exception_handler();restore_exception_handler();$raw[1]=\"other\";echo \"H:\";}static function other($e){echo \"BAD\";}}$raw=[\"C\",\"h\"];set_exception_handler($raw);throw new Exception(\"outer\");\n",
+    "source_sha256": "198a89d14f74a01f20ddbd2272fe8cca0bed6f0cfaf4b49586e28798bdb497da",
+    "stdout": "H:",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "raw-detach-cache-warning",
+    "source": "<?php\nclass C{static function h(&$e){echo \"H:\";}static function other(&$e){echo \"BAD\";}}function w($n,$s,$f,$l){global $raw;restore_exception_handler();restore_exception_handler();$raw[1]=\"other\";echo \"W;\";return true;}$raw=[\"C\",\"h\"];set_exception_handler($raw);set_error_handler(\"w\");throw new Exception(\"outer\");\n",
+    "source_sha256": "bf7f87e262a6e66328c65f4e0362e489280378c8db4f8491eca72aa216c88133",
+    "stdout": "W;H:",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
