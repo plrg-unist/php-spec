@@ -220,6 +220,9 @@ def $hold_literal_reference(S) = S_inputs[.HELD = S_inputs.HELD ++ [HCELL S.CELL
 ;; Called on completed task states and the explicit location-separation boundary
 ;; below. Other helpers may borrow RESULT and must not prune without holding inputs.
 dec $prune_allocations(pstate) : pstate
+dec $prune_live(pstate, pnode*) : pstate
+dec $destruction_prune(pstate, pnode*) : pstate
+def $destruction_prune(S, pnode_live*) = $prune_live(S, pnode_live*) -- otherwise
 dec $iterators_prune(piterator*, pnode*) : piterator*
 dec $closure_scopes_prune(pclosurescope*, pnode*) : pclosurescope*
 dec $closure_bindings_prune(pclosurebinding*, pnode*) : pclosurebinding*
@@ -228,8 +231,9 @@ def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = pclosu
   -- if (HOBJECT pclosurescope.OBJECT) <- pnode*
 def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = $closure_scopes_prune(pclosurescope_tail*, pnode*)
   -- if ~((HOBJECT pclosurescope.OBJECT) <- pnode*)
-def $prune_allocations(S) = S[.ALLOCATIONS = pnode_live*][.CLOSURESCOPES = $closure_scopes_prune(S.CLOSURESCOPES, pnode_live*)][.CLOSUREBINDINGS = $closure_bindings_prune(S.CLOSUREBINDINGS, pnode_live*)][.OBJECTPROPS = $objectprops_prune(S.OBJECTPROPS, pnode_live*)][.PROPREFS = $proprefs_prune(S.PROPREFS, S.OBJECTPROPS, pnode_live*)][.REFCOERCIONS = $reference_coercions_prune(S.REFCOERCIONS, pnode_live*)][.PARAMETERBACKINGS = $parameter_backings_prune(S.PARAMETERBACKINGS, pnode_live*)][.ITERATORS = $iterators_prune(S.ITERATORS, pnode_live*)]
+def $prune_allocations(S) = $destruction_prune(S, pnode_live*)
   -- if pnode_live* = $heap_prune($heap_graph(S)).NODES
+def $prune_live(S, pnode_live*) = S[.ALLOCATIONS = pnode_live*][.CLOSURESCOPES = $closure_scopes_prune(S.CLOSURESCOPES, pnode_live*)][.CLOSUREBINDINGS = $closure_bindings_prune(S.CLOSUREBINDINGS, pnode_live*)][.OBJECTPROPS = $objectprops_prune(S.OBJECTPROPS, pnode_live*)][.PROPREFS = $proprefs_prune(S.PROPREFS, S.OBJECTPROPS, pnode_live*)][.REFCOERCIONS = $reference_coercions_prune(S.REFCOERCIONS, pnode_live*)][.PARAMETERBACKINGS = $parameter_backings_prune(S.PARAMETERBACKINGS, pnode_live*)][.ITERATORS = $iterators_prune(S.ITERATORS, pnode_live*)]
 
 ;; zend_array_dup_value unwraps singleton references, except a reference back to
 ;; the source array. Count surviving incoming edges, including uncollected cycles

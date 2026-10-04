@@ -1,0 +1,45 @@
+;; Request stage2 follows the shutdown queue. Zend store handles are separate
+;; from semantic object identities and reuse the most recently freed hole.
+
+dec $destruction_store_new(pstate) : pstate
+dec $destruction_store_drop(pstate, pnode*) : pstate
+dec $destruction_node_delete(pnode*, pnode) : pnode*
+dec $destruction_children(hedge*, pnode) : pnode*
+dec $destruction_release_order(hgraph) : pnode*
+dec $destruction_release_walk(hgraph, pnode*, pnode*) : pnode*
+
+def $destruction_store_new(S) = S -- if |S.DESTRUCTION.HANDLES| = |S.OBJECTS|
+def $destruction_store_new(S) = $destruction_store_new(S[.DESTRUCTION.HANDLES = S.DESTRUCTION.HANDLES ++ [n]][.DESTRUCTION.FREE = nat*])
+  -- if $(|S.DESTRUCTION.HANDLES| < |S.OBJECTS|)
+  -- if ~S.DESTRUCTION.NOREUSE
+  -- if S.DESTRUCTION.FREE = n :: nat*
+def $destruction_store_new(S) = $destruction_store_new(S[.DESTRUCTION.HANDLES = S.DESTRUCTION.HANDLES ++ [S.DESTRUCTION.NEXT]][.DESTRUCTION.NEXT = $(S.DESTRUCTION.NEXT + 1)])
+  -- if $(|S.DESTRUCTION.HANDLES| < |S.OBJECTS|)
+  -- if S.DESTRUCTION.NOREUSE \/ S.DESTRUCTION.FREE = eps
+
+def $destruction_store_drop(S, eps) = S
+def $destruction_store_drop(S, (HOBJECT n) :: pnode*) = $destruction_store_drop(S[.DESTRUCTION.FREE = S.DESTRUCTION.HANDLES[n] :: S.DESTRUCTION.FREE], pnode*)
+def $destruction_store_drop(S, (HCELL n) :: pnode*) = $destruction_store_drop(S, pnode*)
+def $destruction_store_drop(S, (HARRAY n) :: pnode*) = $destruction_store_drop(S, pnode*)
+
+def $destruction_node_delete(eps, pnode) = eps
+def $destruction_node_delete(pnode :: pnode*, pnode) = pnode*
+def $destruction_node_delete(pnode_other :: pnode*, pnode) = pnode_other :: $destruction_node_delete(pnode*, pnode)
+  -- if pnode_other =/= pnode
+def $destruction_children(eps, pnode) = eps
+def $destruction_children((HEDGE pnode pnode_child) :: hedge*, pnode) = pnode_child :: $destruction_children(hedge*, pnode)
+def $destruction_children((HEDGE pnode_other pnode_child) :: hedge*, pnode) = $destruction_children(hedge*, pnode)
+  -- if pnode_other =/= pnode
+
+;; Releasing a container visits its outgoing slots before other unrelated
+;; zero-owner nodes. Shared children and uncollected cycles remain allocated.
+def $destruction_release_order(H) = $destruction_release_walk(H, H.NODES, eps)
+def $destruction_release_walk(H, eps, pnode_done*) = pnode_done*
+def $destruction_release_walk(H, pnode :: pnode*, pnode_done*) = $destruction_release_walk(H, pnode*, pnode_done*)
+  -- if ~(pnode <- H.NODES) \/ $($heap_owners(H, pnode) > 0)
+def $destruction_release_walk(H, pnode :: pnode*, pnode_done*) = $destruction_release_walk(H[.NODES = pnode_live*][.EDGES = $heap_live_edges(H.EDGES, pnode_live*)], $destruction_children(H.EDGES, pnode) ++ pnode*, pnode_done* ++ [pnode])
+  -- if pnode <- H.NODES
+  -- if $heap_owners(H, pnode) = 0
+  -- if pnode_live* = $destruction_node_delete(H.NODES, pnode)
+
+def $destruction_prune(S, pnode_live*) = $prune_live($destruction_store_drop($destruction_store_new(S), $destruction_release_order($heap_graph(S))), pnode_live*)
