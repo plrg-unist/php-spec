@@ -206,10 +206,17 @@ def $error_read_source(S, perrorread) = true
   -- if $interpolation_cv(S, pinterpolation, perrorread.NAME)
   -- if $interpolation_operand_valid(S, pinterpolation.SITE, pinterpolation.INDEX, perrorread.INPUT)
   -- if perrorread.LINE = pinterpolation.LINE
-rule PhpStep/interpolation-resolve: S ~> S_read[.TODO = (INTERPOLATE_CONVERT pinterpolation) :: ptask_tail*][.BASE = BASE_VALUE S_read.RESULT]
+dec $interpolation_reread(pstate, pinterpolation, preqbytes) : poperand
+def $interpolation_reread(S, pinterpolation, n_name*) = VARIABLE n_name* $variable_line(BYTES text, metadata)
+  -- if $origin_node(S.SOURCES, $interpolation_child(pinterpolation.SITE, pinterpolation.INDEX)) = (NExprVariable (BYTES text) metadata)
+  -- if n_name* = $base64(text)
+  -- if ~$error_missing_operand(S, VARIABLE n_name* pinterpolation.LINE)
+def $interpolation_reread(S, pinterpolation, n_name*) = KNOWN PNULL
+  -- if $error_missing_operand(S, VARIABLE n_name* pinterpolation.LINE)
+rule PhpStep/interpolation-resolve: S ~> S[.TODO = (INTERPOLATE_CONVERT pinterpolation) :: ptask_tail*][.RESULT = poperand][.BASE = BASE_VALUE poperand]
   -- if S.TODO = (INTERPOLATE_RESOLVE pinterpolation n_name*) :: ptask_tail*
   -- if $call_task_valid(S, INTERPOLATE_RESOLVE pinterpolation n_name*)
-  -- if S_read = $quiet_name(S, n_name*)
+  -- if poperand = $interpolation_reread(S, pinterpolation, n_name*)
 
 ;; The child, effective cardinality and conversion line authenticate implicit
 ;; Stringable calls without authorizing the enclosing echo/interpolation node.
