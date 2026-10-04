@@ -1,4 +1,10 @@
 dec $error_entered_call_valid(pstate, perrorcall) : bool
+dec $handler_emitter_valid(pstate, pcalltarget) : bool
+dec $error_invalid_callback(pstate, perrorcall, ptbytes) : pstate
+dec $error_handler_selected(pstate, pvalue, pcalltarget) : bool
+dec $error_handler_retained(pstate, pvalue) : bool
+dec $error_callback_name(pstate, pvalue) : ptbytes
+dec $error_selected_roots(pcalltarget?) : pnode*
 dec $error_default(pstate, pevent, int) : pstate
 dec $error_level_name(int) : text
 dec $error_user_deprecation() : preqbytes
@@ -100,15 +106,10 @@ def $selected_task_nonce(ERROR_HANDLER_INVOKE perrorcall) = $selected_task_nonce
 def $selected_task_nonce(ERROR_HANDLER_RESULT perrorcall) = $selected_task_nonce(perrorcall.RESUME)
 def $call_task_valid(S, ERROR_TRIGGER_PHASE pconfigcall n) = ($error_trigger_kind(pconfigcall.KIND) /\ $config_invoke_valid(S, pconfigcall) /\ $(n <= 2) /\ $error_trigger_level(S, pconfigcall) =/= eps /\ $error_trigger_message(S, pconfigcall) =/= eps)
 
-;; Only a selected ordinary source body is admitted here. Native/internal,
-;; array and unimplemented visibility forms are visible pending dependencies.
-def $error_handler_target(S, PSTRING n*) = (pfunction.ORIGIN)
-  -- if $call_target(S, $typed_callable_name(n*), eps) = (pfunction)
-def $error_handler_target(S, POBJECT n) = (CLOSURE_TARGET n)
-  -- if $closure_callable(S, n)
-  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
-def $error_handler_target(S, POBJECT n) = (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN)
-  -- if $object_invoke_method(S, n) = (pmethoddesc)
+;; Registration keeps the raw callback. Resolve it anew at dispatch, then
+;; retain that selection through argument reception and callback effects.
+def $error_handler_target(S, pvalue) = (pcalltarget)
+  -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
 def $error_handler_target(S, pvalue) = eps -- otherwise
 def $error_handler_values(S, perrorcall) = [PINT perrorcall.LEVEL, PSTRING perrorcall.MESSAGE, PSTRING n_file*, PINT perrorcall.LINE]
   -- if n_file* = $call_sourcefile(S.FILES, perrorcall.SITE)
@@ -150,13 +151,15 @@ rule PhpStep/error-handler-pending-callable: S ~> S[.COMPLETION = UNSUPPORTED "e
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_target(S, perrorcall.CALLBACK) = eps
-  -- if $typed_callable(S, perrorcall.CALLBACK) = (true) \/ $typed_callable(S, perrorcall.CALLBACK) = eps \/ $is_array_value(perrorcall.CALLBACK)
-rule PhpStep/error-handler-invalid-callback: S ~> $error_handler_restore($throw_scalar(S, "Error", $ptascii("Invalid callback ") ++ $error_handler_invalid(perrorcall.CALLBACK), perrorcall.LINE), perrorcall.CALLBACK)
+  -- if $error_handler_resolution(S, perrorcall.CALLBACK) = HANDLERUNKNOWN text
+def $error_invalid_callback(S, perrorcall, ptbytes) = $error_api_error(S, pconfigcall, "Error", ptbytes)
+  -- if perrorcall.RESUME = ERROR_TRIGGER_PHASE pconfigcall n
+def $error_invalid_callback(S, perrorcall, ptbytes) = $throw_scalar(S, "Error", ptbytes, perrorcall.LINE) -- otherwise
+rule PhpStep/error-handler-invalid-callback: S ~> $error_handler_restore($error_invalid_callback(S, perrorcall, $ptascii("Invalid callback ") ++ $error_callback_name(S, perrorcall.CALLBACK) ++ $ptascii(", ") ++ n_reason*), perrorcall.CALLBACK)
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_target(S, perrorcall.CALLBACK) = eps
-  -- if $typed_callable(S, perrorcall.CALLBACK) = (false)
-  -- if ~$is_array_value(perrorcall.CALLBACK)
+  -- if $error_handler_resolution(S, perrorcall.CALLBACK) = HANDLERINVALID n_reason*
 ;; A fatal default bails out before Zend reaches automatic raw restoration.
 def $error_fallback_finish(S, pvalue) = $error_handler_restore(S, pvalue) -- if S.COMPLETION = NORMAL
 def $error_fallback_finish(S, pvalue) = S -- if S.COMPLETION =/= NORMAL
@@ -171,7 +174,9 @@ rule PhpStep/error-handler-handled: S ~> $error_handler_restore(S[.TODO = perror
   -- if pvalue =/= PBOOL false
 def $return_discard(S, ERROR_HANDLER_RESULT perrorcall) = $error_handler_restore($identity_read_discard(S, perrorcall.RESUME), perrorcall.CALLBACK)
 def $task_nodes(ERROR_HANDLER_INVOKE perrorcall) = $value_nodes(perrorcall.CALLBACK) ++ $task_nodes(perrorcall.RESUME)
-def $task_nodes(ERROR_HANDLER_RESULT perrorcall) = $value_nodes(perrorcall.CALLBACK) ++ $task_nodes(perrorcall.RESUME)
+def $task_nodes(ERROR_HANDLER_RESULT perrorcall) = $value_nodes(perrorcall.CALLBACK) ++ $task_nodes(perrorcall.RESUME) ++ $error_selected_roots(perrorcall.TARGET)
+def $error_selected_roots(eps) = eps
+def $error_selected_roots((pcalltarget)) = $target_nodes(pcalltarget)
 
 ;; A missing read produces the uninitialized/null value even when the callback
 ;; defines that same CV. No source expression is evaluated a second time.
@@ -325,7 +330,8 @@ def $call_task_valid(S, ERROR_HANDLER_INVOKE perrorcall) = ($error_call_valid(S,
 def $error_entered_call_valid(S, perrorcall) = true
   -- if $error_call_valid(S, perrorcall)
   -- if perrorcall.TARGET = (pcalltarget)
-  -- if $error_handler_target(S, perrorcall.CALLBACK) = (pcalltarget)
+  -- if $error_handler_selected(S, perrorcall.CALLBACK, pcalltarget)
+  -- if $handler_emitter_valid(S, pcalltarget)
 def $error_entered_call_valid(S, perrorcall) = false -- otherwise
 def $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall) = $error_entered_call_valid(S, perrorcall)
 def $error_context_frame_head(pcallcontext, pframe :: pframe_caller :: pframe_tail*) = (perrorcall)
@@ -352,7 +358,7 @@ def $error_context_anchor(S, pcallcontext, (pcallcontext), pframe :: pframe_tail
   -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if pframe.ORIGIN = (perrorcall.SITE)
   -- if perrorcall.TARGET = (pcallcontext.TARGET)
-  -- if $error_call_valid(S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD], perrorcall)
+  -- if $error_entered_call_valid(S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*][.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO][.BORROWEDREAD = pframe.BORROWEDREAD], perrorcall)
 def $error_context_anchor(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $error_context_anchor(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
   -- if pcallcontext_other? =/= (pcallcontext)
 def $error_context_anchor(S, pcallcontext, pcallcontext_other?, pframe*) = false -- otherwise
@@ -362,7 +368,7 @@ def $error_context_valid(S, pcallcontext) = true
   -- if perrorcall.TARGET = (pcallcontext.TARGET)
   -- if pcallcontext.CALLSITE = (perrorcall.SITE)
   -- if pcallcontext.LINE = perrorcall.LINE
-  -- if $error_handler_target(S, perrorcall.CALLBACK) = (pcallcontext.TARGET)
+  -- if $error_handler_selected(S, perrorcall.CALLBACK, pcallcontext.TARGET)
   -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF
   -- if pcallcontext.WRAPPER = eps
@@ -411,4 +417,4 @@ def $error_handlers_valid(S, perrorhandler :: perrorhandler_tail*) = true
 def $error_handlers_valid(S, perrorhandler*) = false -- otherwise
 
 def $error_handler_registered(S, {CALLBACK eps, LEVELS i}) = true
-def $error_handler_registered(S, {CALLBACK (pvalue), LEVELS i}) = ($typed_callable(S, pvalue) = (true) \/ $typed_callable(S, pvalue) = eps)
+def $error_handler_registered(S, {CALLBACK (pvalue), LEVELS i}) = $error_handler_retained(S, pvalue)

@@ -1,0 +1,221 @@
+;; zend_is_callable_ex resolves an API callback at the first user frame.
+;; Unlike a computed source call, a class-name callback may select its this.
+dec $handler_implicit_receiver(pstate, porigin) : nat?
+def $handler_implicit_receiver(S, porigin_requested) = (n_receiver)
+  -- if $array_implicit_this(S, porigin_requested)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.RECEIVER = (n_receiver)
+def $handler_implicit_receiver(S, porigin_requested) = eps -- otherwise
+
+dec $handler_public_target(pstate, porigin, pmethoddesc, nat?, ptbytes, bool) : phandlerresolution
+dec $handler_method_receiver(pmethoddesc, nat) : nat?
+def $handler_public_target(S, porigin_requested, pmethoddesc, (n_receiver), ptbytes, b_class) = HANDLERRESOLVED (HANDLER_METHOD_TARGET b_class porigin_requested ptbytes (SCOPED_TARGET porigin_requested pmethoddesc.FUNCTION.ORIGIN porigin_called n_this? (KNOWN (PSTRING pclassdesc.NAME))))
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if n_this? = $handler_method_receiver(pmethoddesc, n_receiver)
+def $handler_public_target(S, porigin_requested, pmethoddesc, eps, ptbytes, b_class) = HANDLERRESOLVED (HANDLER_METHOD_TARGET b_class porigin_requested ptbytes (SCOPED_TARGET porigin_requested pmethoddesc.FUNCTION.ORIGIN porigin_requested eps (KNOWN (PSTRING pclassdesc.NAME))))
+  -- if pmethoddesc.STATIC
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+def $handler_public_target(S, porigin_requested, pmethoddesc, eps, ptbytes, b_class) = HANDLERINVALID ($ptascii("non-static method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() cannot be called statically"))
+  -- if ~pmethoddesc.STATIC
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+def $handler_method_receiver(pmethoddesc, n) = eps -- if pmethoddesc.STATIC
+def $handler_method_receiver(pmethoddesc, n) = (n) -- if ~pmethoddesc.STATIC
+
+dec $handler_method(pstate, porigin, nat?, ptbytes, bool) : phandlerresolution
+def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERUNKNOWN "compound error-handler method"
+  -- if $typed_callable_method(ptbytes, false, false)
+def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = $handler_public_target(S, porigin_requested, pmethoddesc, n_receiver?, ptbytes, b_class)
+  -- if ~$typed_callable_method(ptbytes, false, false)
+  -- if $effective_method(S, porigin_requested, ptbytes, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~pmethoddesc.ABSTRACT
+def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERINVALID ($ptascii("cannot call abstract method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("()"))
+  -- if ~$typed_callable_method(ptbytes, false, false)
+  -- if $effective_method(S, porigin_requested, ptbytes, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pmethoddesc.ABSTRACT
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERUNKNOWN "nonpublic error-handler method"
+  -- if ~$typed_callable_method(ptbytes, false, false)
+  -- if $effective_method(S, porigin_requested, ptbytes, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
+def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERINVALID ($ptascii("class ") ++ pclassdesc.NAME ++ $ptascii(" does not have a method \"") ++ $c_string(ptbytes) ++ [34])
+  -- if ~$typed_callable_method(ptbytes, false, false)
+  -- if $effective_method(S, porigin_requested, ptbytes, |S.CLASSES|) = eps
+  -- if ~$array_magic(S, porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+def $handler_method(S, porigin_requested, n_receiver?, ptbytes, b_class) = HANDLERUNKNOWN "magic error-handler method" -- otherwise
+
+dec $handler_receiver(pstate, pvalue, ptbytes) : phandlerresolution
+def $handler_receiver(S, POBJECT n, ptbytes) = $handler_method(S, porigin_class, (n), ptbytes, false)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+def $handler_receiver(S, POBJECT n, ptbytes) = HANDLERINVALID ($ptascii("class stdClass does not have a method \"") ++ $c_string(ptbytes) ++ [34])
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if ~$typed_callable_method(ptbytes, false, false)
+def $handler_receiver(S, PSTRING ptbytes_class, ptbytes) = HANDLERUNKNOWN "scoped error-handler class"
+  -- if $ptlc($typed_callable_name(ptbytes_class)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $handler_receiver(S, PSTRING ptbytes_class, ptbytes) = $handler_method(S, porigin_requested, $handler_implicit_receiver(S, porigin_requested), ptbytes, true)
+  -- if ~($ptlc($typed_callable_name(ptbytes_class)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_requested)
+def $handler_receiver(S, pvalue, ptbytes) = HANDLERUNKNOWN "error-handler class, autoload or internal method lookup" -- otherwise
+
+def $error_handler_resolution(S, PSTRING ptbytes) = HANDLERRESOLVED pfunction.ORIGIN
+  -- if $call_target(S, $typed_callable_name(ptbytes), eps) = (pfunction)
+def $error_handler_resolution(S, PSTRING ptbytes) = HANDLERUNKNOWN "internal error-handler body"
+  -- if $call_target(S, $typed_callable_name(ptbytes), eps) = eps
+  -- if $typed_registered(S, ptbytes)
+def $error_handler_resolution(S, PSTRING ptbytes) = $handler_receiver(S, PSTRING ptbytes_class, ptbytes_method)
+  -- if ~$typed_registered(S, ptbytes)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+def $error_handler_resolution(S, PSTRING ptbytes) = HANDLERINVALID $error_handler_invalid(PSTRING ptbytes)
+  -- if ~$typed_registered(S, ptbytes)
+  -- if $method_string_parts(ptbytes) = eps
+def $error_handler_resolution(S, PARRAY n) = HANDLERINVALID ptbytes
+  -- if $error_handler_array_invalid(S, n) = (ptbytes)
+def $error_handler_resolution(S, PARRAY n) = $handler_receiver(S, $entry_value(S, pitem_receiver), ptbytes)
+  -- if $typed_callback_array(S, n)
+  -- if S.ARRAYS[n] = parray
+  -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(parray.ITEMS, KINT 1) = (pitem_method)
+  -- if $entry_value(S, pitem_method) = PSTRING ptbytes
+def $error_handler_resolution(S, POBJECT n) = HANDLERRESOLVED (CLOSURE_TARGET n)
+  -- if $closure_callable(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+def $error_handler_resolution(S, POBJECT n) = HANDLERRESOLVED (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN)
+  -- if $object_invoke_method(S, n) = (pmethoddesc)
+def $error_handler_resolution(S, pvalue) = HANDLERINVALID $error_handler_invalid(pvalue)
+  -- if ~$is_array_value(pvalue) /\ ~$typed_string_value(pvalue)
+  -- if $typed_callable(S, pvalue) = (false)
+def $error_handler_resolution(S, pvalue) = HANDLERUNKNOWN "error-handler callable form" -- otherwise
+def $error_handler_callable(S, pvalue) = (true)
+  -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
+def $error_handler_callable(S, pvalue) = (false)
+  -- if $error_handler_resolution(S, pvalue) = HANDLERINVALID ptbytes
+def $error_handler_callable(S, pvalue) = (true)
+  -- if $error_handler_resolution(S, pvalue) = HANDLERUNKNOWN text
+  -- if $typed_callable(S, pvalue) = (true)
+def $error_handler_callable(S, pvalue) = eps
+  -- if $error_handler_resolution(S, pvalue) = HANDLERUNKNOWN text
+  -- if $typed_callable(S, pvalue) =/= (true)
+
+;; This is an API selection, not a source dynamic-call/FCC certificate.
+;; The name/descriptor and receiver are immutable for this entered invocation.
+dec $handler_kind_valid(bool, pcalltarget) : bool
+dec $handler_target_valid(pstate, porigin, ptbytes, pcalltarget) : bool
+dec $handler_receiver_identity(pstate, porigin, nat?) : bool
+def $handler_receiver_identity(S, porigin_called, eps) = true
+def $handler_receiver_identity(S, porigin_called, (n)) = (S.OBJECTS[n] = INSTANCE porigin_called)
+def $handler_target_valid(S, porigin_requested, ptbytes, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? (KNOWN (PSTRING ptbytes_class))) = true
+  -- if ~$typed_callable_method(ptbytes, false, false)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if ptbytes_class = pclassdesc.NAME
+  -- if $effective_method(S, porigin_requested, ptbytes, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if porigin_method = pmethoddesc.FUNCTION.ORIGIN
+  -- if $target_function(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? (KNOWN (PSTRING ptbytes_class))) = (pmethoddesc.FUNCTION)
+  -- if $handler_receiver_identity(S, porigin_called, n_receiver?)
+def $handler_target_valid(S, porigin_requested, ptbytes, pcalltarget) = false -- otherwise
+def $target_nodes(HANDLER_METHOD_TARGET b_class porigin ptbytes pcalltarget) = $target_nodes(pcalltarget)
+def $target_instance(HANDLER_METHOD_TARGET b_class porigin ptbytes pcalltarget) = eps
+def $target_receiver(S, HANDLER_METHOD_TARGET b_class porigin ptbytes pcalltarget) = $target_receiver(S, pcalltarget)
+def $target_lexical_class(S, HANDLER_METHOD_TARGET b_class porigin ptbytes pcalltarget) = $target_lexical_class(S, pcalltarget)
+def $target_called_class(S, HANDLER_METHOD_TARGET b_class porigin ptbytes pcalltarget) = $target_called_class(S, pcalltarget)
+def $target_function(S, HANDLER_METHOD_TARGET b_class porigin ptbytes pcalltarget) = $target_function(S, pcalltarget)
+  -- if $handler_target_valid(S, porigin, ptbytes, pcalltarget)
+  -- if $handler_kind_valid(b_class, pcalltarget)
+
+dec $handler_method_tag(pcalltarget) : bool
+;; A class-name selector may borrow the emitting user frame's this. The bit
+;; records only that source kind; it neither owns nor rereads the raw members.
+def $handler_kind_valid(b_class, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand) = (b_class \/ porigin_requested = porigin_called)
+def $handler_kind_valid(b_class, pcalltarget) = false -- otherwise
+def $handler_emitter_valid(S, HANDLER_METHOD_TARGET true porigin ptbytes pcalltarget) = true
+  -- if $handler_target_valid(S, porigin, ptbytes, pcalltarget)
+  -- if $effective_method(S, porigin, ptbytes, |S.CLASSES|) = (pmethoddesc)
+  -- if $handler_public_target(S, porigin, pmethoddesc, $handler_implicit_receiver(S, porigin), ptbytes, true) = HANDLERRESOLVED (HANDLER_METHOD_TARGET true porigin ptbytes pcalltarget)
+def $handler_emitter_valid(S, HANDLER_METHOD_TARGET false porigin ptbytes pcalltarget) = ($handler_target_valid(S, porigin, ptbytes, pcalltarget) /\ $handler_kind_valid(false, pcalltarget))
+def $handler_emitter_valid(S, pcalltarget) = true -- if ~$handler_method_tag(pcalltarget)
+def $handler_emitter_valid(S, pcalltarget) = false -- otherwise
+
+;; Direct members are immutable in the retained copied container. Aliases may
+;; change after entry and must not be dereferenced to authenticate that entry.
+dec $handler_raw_method(pitem, ptbytes) : bool
+dec $handler_raw_receiver(pstate, pitem, bool, porigin, pcalltarget) : bool
+def $handler_raw_method(DIRECT (PSTRING ptbytes), ptbytes) = true
+def $handler_raw_method(ALIAS n, ptbytes) = true
+def $handler_raw_method(pitem, ptbytes) = false -- otherwise
+def $handler_raw_receiver(S, DIRECT (POBJECT n), false, porigin, pcalltarget) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $target_receiver(S, pcalltarget) = eps \/ $target_receiver(S, pcalltarget) = (n)
+def $handler_raw_receiver(S, DIRECT (PSTRING ptbytes), true, porigin, pcalltarget) = true
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes))) = (porigin)
+def $handler_raw_receiver(S, ALIAS n, b_class, porigin, pcalltarget) = true
+def $handler_raw_receiver(S, pitem, b_class, porigin, pcalltarget) = false -- otherwise
+
+def $error_handler_selected(S, PARRAY n, HANDLER_METHOD_TARGET b_class porigin ptbytes pcalltarget) = true
+  -- if $error_handler_retained(S, PARRAY n)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if $handler_raw_method(pitem_method, ptbytes)
+  -- if $handler_raw_receiver(S, pitem_receiver, b_class, porigin, pcalltarget)
+  -- if $handler_target_valid(S, porigin, ptbytes, pcalltarget)
+  -- if $handler_kind_valid(b_class, pcalltarget)
+def $error_handler_selected(S, PSTRING ptbytes_original, HANDLER_METHOD_TARGET true porigin ptbytes pcalltarget) = true
+  -- if ~$typed_registered(S, ptbytes_original)
+  -- if $method_string_parts(ptbytes_original) = ((ptbytes_class, ptbytes))
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin)
+  -- if $handler_target_valid(S, porigin, ptbytes, pcalltarget)
+def $error_handler_selected(S, pvalue, pcalltarget) = ($error_handler_target(S, pvalue) = (pcalltarget))
+  -- if ~$is_array_value(pvalue)
+  -- if ~$handler_method_tag(pcalltarget)
+def $error_handler_selected(S, pvalue, pcalltarget) = false -- otherwise
+def $handler_method_tag(HANDLER_METHOD_TARGET b_class porigin ptbytes pcalltarget) = true
+def $handler_method_tag(pcalltarget) = false -- otherwise
+
+;; Copied containers keep their keys while embedded reference cells can change
+;; kinds/names/receivers. Registry validity must not re-check current callability.
+def $error_handler_retained(S, PARRAY n) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if |S.ARRAYS[n].ITEMS| = 2
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) =/= eps
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) =/= eps
+def $error_handler_retained(S, PSTRING ptbytes) = true
+  -- if $typed_callable(S, PSTRING ptbytes) = (false)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if ~$typed_callable_method(ptbytes_method, false, false)
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin)
+  -- if $effective_method(S, porigin, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+def $error_handler_retained(S, pvalue) = true
+  -- if ~$is_array_value(pvalue)
+  -- if $typed_callable(S, pvalue) = (true) \/ $typed_callable(S, pvalue) = eps
+def $error_handler_retained(S, pvalue) = false -- otherwise
+
+dec $error_receiver_name(pstate, pvalue) : ptbytes?
+def $error_receiver_name(S, PSTRING ptbytes) = (ptbytes)
+def $error_receiver_name(S, POBJECT n) = (pclassdesc.NAME)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $error_receiver_name(S, POBJECT n) = ($ptascii("stdClass")) -- if S.OBJECTS[n] = STDINSTANCE
+def $error_receiver_name(S, pvalue) = eps -- otherwise
+dec $error_callback_plain(pvalue) : ptbytes
+def $error_callback_name(S, PSTRING ptbytes) = $c_string(ptbytes)
+def $error_callback_name(S, PARRAY n) = $c_string(ptbytes_class) ++ $ptascii("::") ++ $c_string(ptbytes_method)
+  -- if |S.ARRAYS[n].ITEMS| = 2
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if $entry_value(S, pitem_method) = PSTRING ptbytes_method
+  -- if $error_receiver_name(S, $entry_value(S, pitem_receiver)) = (ptbytes_class)
+def $error_callback_name(S, pvalue) = $error_callback_plain(pvalue) -- otherwise
+def $error_callback_plain(PARRAY n) = $ptascii("Array")
+def $error_callback_plain(pvalue) = $echo_value(pvalue) -- otherwise

@@ -1,6 +1,8 @@
 ;; PHP 8.5.10 Zend handler registration stores a raw zval and an int32 mask.
 ;; The existing CONFIG transport supplies evaluated positional/named/unpacked
 ;; values and source certificates; these APIs do not require file-mode facts.
+dec $error_handler_resolution(pstate, pvalue) : phandlerresolution
+dec $error_handler_callable(pstate, pvalue) : bool?
 def $intrinsic_name(INTRINSIC_ERROR_REPORTING) = $ptascii("error_reporting")
 def $intrinsic_name(INTRINSIC_SET_ERROR_HANDLER) = $ptascii("set_error_handler")
 def $intrinsic_name(INTRINSIC_RESTORE_ERROR_HANDLER) = $ptascii("restore_error_handler")
@@ -124,7 +126,7 @@ def $error_handler_array_invalid(S, n) = ($ptascii("second array member is not a
 def $error_handler_array_invalid(S, n) = eps -- otherwise
 dec $error_handler_registration(pstate, pconfigcall, pvalue) : pstate
 def $error_handler_registration(S, pconfigcall, pvalue) = S_mask[.ERRORHANDLERS = S.ERRORHANDLER :: S.ERRORHANDLERS][.ERRORHANDLER = {CALLBACK (pvalue), LEVELS $error_int32(i)}][.RESULT = KNOWN $error_handler_value(S.ERRORHANDLER)]
-  -- if $typed_callable(S, pvalue) = (true)
+  -- if $error_handler_callable(S, pvalue) = (true)
   -- if S_mask = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 30719))
   -- if S_mask.COMPLETION = NORMAL
   -- if S_mask.RESULT = KNOWN (PINT i)
@@ -132,21 +134,14 @@ def $error_handler_registration(S, pconfigcall, PNULL) = S_mask[.ERRORHANDLERS =
   -- if S_mask = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 30719))
   -- if S_mask.COMPLETION = NORMAL
 def $error_handler_registration(S, pconfigcall, pvalue) = S_mask
-  -- if pvalue = PNULL \/ $typed_callable(S, pvalue) = (true)
+  -- if pvalue = PNULL \/ $error_handler_callable(S, pvalue) = (true)
   -- if S_mask = $error_api_long(S, pconfigcall, 1, $error_api_value(pconfigcall, 1, PINT 30719))
   -- if S_mask.COMPLETION =/= NORMAL
-def $error_handler_registration(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_error_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ $error_handler_invalid(pvalue))
+def $error_handler_registration(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_error_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ n_reason*)
   -- if pvalue =/= PNULL
-  -- if ~$is_array_value(pvalue)
-  -- if $typed_callable(S, pvalue) = (false)
-def $error_handler_registration(S, pconfigcall, PARRAY n) = $config_error(S, pconfigcall, "TypeError", $ptascii("set_error_handler(): Argument #1 ($callback) must be a valid callback or null, ") ++ n_reason*)
-  -- if $typed_callable(S, PARRAY n) = (false)
-  -- if $error_handler_array_invalid(S, n) = (n_reason*)
-def $error_handler_registration(S, pconfigcall, PARRAY n) = S[.COMPLETION = UNSUPPORTED "error-handler array callback resolution"]
-  -- if $typed_callable(S, PARRAY n) = (false)
-  -- if $error_handler_array_invalid(S, n) = eps
+  -- if $error_handler_resolution(S, pvalue) = HANDLERINVALID n_reason*
 def $error_handler_registration(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "error-handler callable registration form"]
-  -- if $typed_callable(S, pvalue) = eps
+  -- if $error_handler_callable(S, pvalue) = eps
 
 def $error_trigger_kind(INTRINSIC_TRIGGER_ERROR) = true
 def $error_trigger_kind(INTRINSIC_USER_ERROR) = true
