@@ -581,7 +581,7 @@ def $class_constant_context_valid(S, pconstantcontext) = true
   -- if $constant_branches_valid(S)
 def $class_constant_context_valid(S, pconstantcontext) = false -- otherwise
 
-def $class_constant_scope_valid(S, pclassconstantcontext_busy*) = ($class_constant_table_blocks(S, S.TODO, eps) /\ $class_constant_stack_valid(S_scope, S_scope.CLASSCONSTANTINIT) /\ $class_constant_previous_valid(S_scope) /\ $class_constant_bindings(S_scope.TODO) = $class_constant_contexts(S_scope.CLASSCONSTANTINIT) /\ $class_constant_pairs_valid(S.TODO) /\ $class_constant_update_blocks(S[.CLASSCONSTANTINIT = pclassconstantcontext_busy*], S.TODO, eps) /\ $static_default_blocks(S_scope, S_scope.TODO, eps) /\ $static_default_phases(S_scope.TODO, false) /\ $static_default_binders_unique(S_scope.TODO, eps))
+def $class_constant_scope_valid(S, pclassconstantcontext_busy*) = ($class_constant_table_blocks(S, S.TODO, eps) /\ $class_constant_stack_valid(S_scope, S_scope.CLASSCONSTANTINIT) /\ $class_constant_previous_valid(S_scope) /\ $class_constant_bindings(S_scope.TODO) = $class_constant_contexts(S_scope.CLASSCONSTANTINIT) /\ $class_constant_pairs_valid(S.TODO) /\ $class_constant_update_blocks(S[.CLASSCONSTANTINIT = pclassconstantcontext_busy*], S.TODO, eps) /\ $static_default_blocks(S_scope, S_scope.TODO, eps) /\ $static_default_phases(S_scope.TODO, false) /\ $static_default_binders_unique(S_scope.TODO, eps) /\ $instance_default_scope_valid(S_scope))
   -- if S_scope = S[.CLASSCONSTANTINIT = $class_constant_scope_stack(S)]
 dec $class_constant_saved_scopes_valid(pstate, pframe*) : bool
 def $class_constant_saved_scopes_valid(S, eps) = true
@@ -746,7 +746,7 @@ def $class_constant_table_sequence(S, porigin_root, porigin_remaining*) = false 
 def $class_constant_table_tasks(S, porigin, z, 0) = eps
 def $class_constant_table_tasks(S, porigin, z, n) = eps
   -- if $(n > 0) /\ $class_constant_table_done(S, porigin)
-def $class_constant_table_tasks(S, porigin, z, n) = $class_constant_table_parent_tasks(S, porigin, z, n) ++ $class_constant_update_tasks($class_constant_update_pending(S, $class_constant_layout(S, porigin, n), $class_constant_update_origins($class_constant_parent_layout(S, porigin, n), eps)), z) ++ $static_default_tasks(S, porigin, z) ++ [CLASS_CONST_TABLE_UPDATE porigin z]
+def $class_constant_table_tasks(S, porigin, z, n) = $class_constant_table_parent_tasks(S, porigin, z, n) ++ $class_constant_update_tasks($class_constant_update_pending(S, $class_constant_layout(S, porigin, n), $class_constant_update_origins($class_constant_parent_layout(S, porigin, n), eps)), z) ++ $instance_default_tasks(S, porigin, z) ++ $static_default_tasks(S, porigin, z) ++ [CLASS_CONST_TABLE_UPDATE porigin z]
   -- if $(n > 0) /\ ~$class_constant_table_done(S, porigin)
 
 ;; Table completion is distinct from an individual successful constant fetch.
@@ -953,6 +953,7 @@ def $class_constant_update_blocks(S, (CLASS_CONST_STATIC poperand ptbytes z) :: 
 def $class_constant_update_blocks(S, ptask :: ptask_tail*, eps) = $class_constant_update_blocks(S, ptask_tail*, eps)
   -- if ~$class_constant_update_marker(ptask)
   -- if ~$static_default_update_marker(ptask)
+  -- if ~$instance_default_update_marker(ptask)
 def $class_constant_update_blocks(S, ptask*, porigin*) = false -- otherwise
 def $class_constant_update_marker(CLASS_CONST_TABLE_UPDATE porigin z) = true
 def $class_constant_update_marker(CLASS_CONST_UPDATE porigin z) = true
@@ -1082,7 +1083,7 @@ def $class_constant_history_fills(S, (CCLINK porigin n) :: pclassconstantevent*,
   -- if $class_constant_flag((porigin_flag, b_flag)*, porigin) = eps
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
-  -- if b_done = ($class_constant_values_done($class_constant_layout(S, porigin, |S.CLASSES|), porigin_cached*) /\ $static_default_link_done(S, porigin, |S.CLASSES|))
+  -- if b_done = ($class_constant_values_done($class_constant_layout(S, porigin, |S.CLASSES|), porigin_cached*) /\ $static_default_link_done(S, porigin, |S.CLASSES|) /\ $instance_default_link_done_at(S, porigin, S.CLASSCONSTANTHISTORY[0:$nabs($(|S.CLASSCONSTANTHISTORY| - |pclassconstantevent*| - 1))]))
 def $class_constant_history_fills(S, (CCCACHE porigin porigin_trigger n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached* ++ [porigin], porigin_filled*, n)
   -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
   -- if ~(porigin <- porigin_cached*)
@@ -1094,12 +1095,14 @@ def $class_constant_history_fills(S, (CCCACHE porigin porigin_trigger n) :: pcla
 def $class_constant_history_fills(S, (CCSTATIC porigin porigin_trigger n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled* ++ [porigin], n)
   -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
   -- if $static_default_history_fill(S, porigin, porigin_trigger, n, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*)
+  -- if $instance_default_static_ready(S, porigin, S.CLASSCONSTANTHISTORY[0:$nabs($(|S.CLASSCONSTANTHISTORY| - |pclassconstantevent*| - 1))])
 def $class_constant_history_fills(S, (CCUPDATE porigin porigin_root porigin_trigger n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, $class_constant_flag_done((porigin_flag, b_flag)*, porigin), porigin_cached*, porigin_filled*, n)
   -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
   -- if $class_constant_flag((porigin_flag, b_flag)*, porigin) = (false)
   -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_root) = (b_root)
   -- if $class_constant_values_done($class_constant_layout(S, porigin, |S.CLASSES|), porigin_cached*)
   -- if $static_default_values_done($property_info_layout(S, porigin, |S.CLASSES|), porigin_filled*)
+  -- if $instance_default_done_at(S, porigin, S.CLASSCONSTANTHISTORY[0:$nabs($(|S.CLASSCONSTANTHISTORY| - |pclassconstantevent*| - 1))])
   -- if $class_constant_parent_done(S, porigin, (porigin_flag, b_flag)*)
   -- if $class_constant_history_trigger(S, porigin_trigger, n)
   -- if $class_constant_update_site(S, porigin_trigger, porigin_root)
@@ -1116,10 +1119,11 @@ def $class_constant_table_done(S, porigin) = true
   -- if $class_constant_flag((porigin_flag, b_flag)*, porigin) = (true)
 def $class_constant_table_done(S, porigin) = false -- otherwise
 
-def $class_constant_publish(S, S_published, pclassdesc) = S_published[.CLASSCONSTANTHISTORY = S_published.CLASSCONSTANTHISTORY ++ [CCLINK pclassdesc.ORIGIN n_prefix]]
+def $class_constant_publish(S, S_published, pclassdesc) = S_defaults[.CLASSCONSTANTHISTORY = S_published.CLASSCONSTANTHISTORY ++ [CCLINK pclassdesc.ORIGIN n_prefix]]
   -- if S.COMPLETION = NORMAL /\ S_published.COMPLETION = NORMAL
   -- if S_published.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]
   -- if n_prefix = |S_published.DECLARATIONS|
+  -- if S_defaults = $instance_default_publish(S_published, pclassdesc.ORIGIN)
 def $class_constant_publish(S, S_published, pclassdesc) = S_published -- otherwise
 
 ;; A completed table belongs to the actual source-selected requested class or
@@ -1178,6 +1182,7 @@ rule PhpStep/class-constant-table-complete: S ~> S[.TODO = ptask_tail*][.CLASSCO
   -- if $class_constant_parent_chain(S, porigin_root, porigin, |S.CLASSES|)
   -- if $class_constant_values_done($class_constant_layout(S, porigin, |S.CLASSES|), $class_constant_cache_origins(S.CLASSCONSTANTCACHE))
   -- if $static_default_values_done($property_info_layout(S, porigin, |S.CLASSES|), $static_default_fills(S.CLASSCONSTANTHISTORY))
+  -- if $instance_default_done_at(S, porigin, S.CLASSCONSTANTHISTORY)
   -- if $class_constant_table_parent_tasks(S, porigin, z, |S.CLASSES|) = eps
   -- if n_prefix = |S.DECLARATIONS|
 rule PhpStep/class-constant-table-complete-again: S ~> S[.TODO = ptask_tail*]
@@ -1200,6 +1205,7 @@ def $class_constant_table_blocks(S, (CLASS_CONST_STATIC poperand ptbytes z) :: p
 def $class_constant_table_blocks(S, ptask :: ptask_tail*, eps) = $class_constant_table_blocks(S, ptask_tail*, eps)
   -- if ~$class_constant_update_marker(ptask)
   -- if ~$static_default_update_marker(ptask)
+  -- if ~$instance_default_update_marker(ptask)
 def $class_constant_table_blocks(S, ptask*, porigin_acc*) = false -- otherwise
 
 

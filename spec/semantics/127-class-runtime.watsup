@@ -97,14 +97,14 @@ def $new_class(S, preqbytes, z) = S[.OBJECTS = S.OBJECTS ++ [INSTANCE porigin]][
   -- if ~pclassdesc.ABSTRACT
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
   -- if n = |S.OBJECTS|
-  -- if $property_initial_slots(S, $property_layout(S, porigin, |S.CLASSES|)) = (ppropertyslot*)
+  -- if $property_initial_slots(S, porigin, $property_layout(S, porigin, |S.CLASSES|)) = (ppropertyslot*)
 def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "invalid compiled property default"]
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin)
   -- if ~$class_internal(preqbytes)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.ABSTRACT
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
-  -- if $property_initial_slots(S, $property_layout(S, porigin, |S.CLASSES|)) = eps
+  -- if $property_initial_slots(S, porigin, $property_layout(S, porigin, |S.CLASSES|)) = eps
 dec $new_source_name(pstate, porigin) : preqbytes?
 dec $trait_default_new_site(pstate, porigin) : bool
 dec $trait_default_new_name(pstate, porigin) : preqbytes?
