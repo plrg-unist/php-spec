@@ -11,6 +11,7 @@ syntax pfkey = PFNO_KEY | PFKEY pvalue?
 syntax pfitem = PFITEM pvalue? pfkey bool pvalueclass? | PFSPREAD pvalue? pvalueclass?
 syntax pfbuild = PFBUILT pstate pvalueclass? | PFDEFER | PFSTATIC text | PFSTATICBYTES ptbytes
 var F : pfstate
+dec $trait_fold_owner(pfstate) : porigin?
 
 ;; Append/spread use the successful operation's existing NEXT history. Failure
 ;; diagnostics and values remain the responsibility of that operation.

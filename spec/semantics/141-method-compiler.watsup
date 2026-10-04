@@ -5,7 +5,6 @@ dec $ppmethod_supported_signature(pssignature, text) : bool
 syntax ppmembers = PPMEMBERS ppstate ppropertydesc* pmethoddesc*
 dec $ppmethod_members(statement*, bool) : bool
 dec $ppmember_groups(ppstate, pcpath, nat, statement*, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
-dec $ppmember_path(pcpath, pchheader, nat) : pcpath
 def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 3, PCINDEX n]
   -- if pchheader.KIND = "interface"
 def $ppmember_path(pcpath, pchheader, n) = pcpath ++ [PCFIELD 2, PCINDEX n]

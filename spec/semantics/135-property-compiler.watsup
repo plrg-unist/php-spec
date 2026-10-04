@@ -46,6 +46,7 @@ def $ppproperty_statements(eps) = true
 def $ppproperty_statements((NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata) :: statement_tail*) = $ppproperty_statements(statement_tail*)
 def $ppproperty_statements(statement*) = false -- otherwise
 
+dec $ppmember_path(pcpath, pchheader, nat) : pcpath
 dec $ppproperty_groups(ppstate, pcpath, nat, statement*, ppropertydesc*, pchheader) : ppropertywork
 dec $ppproperty_group(ppstate, pcpath, int, phpType18, phpType57*, ppropertydesc*, pchheader, int) : ppropertywork
 dec $ppproperty_items(ppstate, pcpath, nat, int, phpType18, phpType57*, ppropertydesc*, pchheader, int) : ppropertywork
