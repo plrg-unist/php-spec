@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Deferred runtime class-link failures275 now replay the held notice prefix and
+primary compiler fatal, retaining the genuine inner eval/include trace row.
+Source history rederives the failed binding and exact rollback; the immediate
+report requires its authentic failure/caller record. Seven exact source agreements
+pass at4293f196: runtime eval, constant and include counterparts plus the four
+remaining258 eval originals. Independent source-derived eval81/constant83/include84
+checks pass in strict SL at the same semantic cut, proving public/history/owner
+admission and retirement while rejecting forged failure rows. Earlier236 cuts
+retain their identities; full traversal and core remain open.
+
 Early-eval declaration diagnostics236 now suspend authentic compilation at each
 publication, including generic warnings before class publication. Handler throws
 and exit retain later publications while skipping the unit body; user fatals stop
