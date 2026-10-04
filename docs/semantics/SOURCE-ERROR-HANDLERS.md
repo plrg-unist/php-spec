@@ -69,7 +69,9 @@ remain distinct from USER strict warnings. Other CONFIG warning producers remain
 
 Remaining null/Stringable API conversions, compound/scope-keyword, nonpublic,
 magic/autoload/internal callback forms,
-reference-return callbacks, exception handlers and lifecycle dispatch remain open.
+reference-return callbacks and later lifecycle dispatch remain open.
+[Exception handlers](SOURCE-EXCEPTION-HANDLERS.md) use a separate uncaught boundary
+with one Throwable argument and a nullable raw registration stack.
 Frameless named/method trace formatting in164 now accepts the authenticated
 nonempty function field. Current property and array-caller readback gates validate these shapes on the
 tested private source composition.
