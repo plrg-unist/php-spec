@@ -1,0 +1,449 @@
+;; Writable array helpers separate first, protect the selected table during
+;; diagnostics, then require exactly one remaining owner before acquisition.
+dec $key_write_op(pcnode) : pbin?
+dec $key_write_update(pcnode) : (pupdate, bool)?
+dec $key_write_path_kind(ptask*) : bool?
+dec $key_write_path_task(ptask) : bool
+dec $key_write_finish_task(ptask) : bool
+dec $key_write_reference_task(ptask) : bool
+dec $key_write_no_rhs(ptask) : bool
+dec $key_write_direct_task(ptask) : bool
+dec $key_write_array_slot(pslot) : bool
+dec $key_write_captured_base(pbase) : bool
+dec $key_write_place_shape(pkeywrite) : bool
+dec $key_write_writer(pstate, porigin, ptask, pbase, poperand) : pkeywriter?
+dec $key_write_plan(pstate) : pkeywriter?
+dec $key_write_task_base(ptask, pbase, poperand) : pbase
+dec $key_write_mode(ptask, ptask*) : bool
+dec $key_write_root(pstate, pbase) : bool
+dec $key_write_base_source(pstate, porigin, pbase) : bool
+dec $key_write_input_source(pstate, porigin, poperand, int, bool) : bool
+dec $key_write_rhs_source(pstate, pkeywriter) : bool
+dec $key_write_self(ptask) : bool
+dec $key_write_line(ptask) : int
+dec $key_write_done(pstate, plocation) : pstate
+dec $key_write_dimension(pstate, poperand, int, bool) : pstate
+dec $key_write_value(pstate, pkeywrite) : pstate
+dec $key_write_lookup(pstate, pkeywrite) : pstate
+dec $key_write_insert(pstate, pkeywrite) : pstate
+dec $key_write_dispatch(pstate, pkeywrite) : pstate
+dec $key_write_single(pstate, pkeywrite) : bool
+dec $key_write_resume(pstate, pkeywrite) : pstate
+dec $key_write_global(pstate, poperand, int) : pstate
+dec $key_write_global_value(pstate, poperand, pvalue, int) : pstate
+dec $key_write_global_name(pstate, nat*, int) : pstate
+dec $key_write_shape(pkeywrite) : bool
+dec $key_write_site(pstate, porigin, bool, porigin, bool) : bool
+dec $key_write_context(pstate, ptask*, porigin, bool) : bool
+dec $key_write_valid(pstate, pkeywrite) : bool
+dec $key_writer_valid(pstate, pkeywriter, ptask*) : bool
+dec $key_write_finish(pstate, pkeywriter) : pstate
+dec $key_write_reference(pstate) : pstate
+dec $key_write_update_null(pstate, pupdate, bool, int) : pstate
+dec $key_write_finish_roots(pkeywriter) : pnode*
+
+def $key_write_op(NExprAssignOpPlus expression_left expression_right metadata) = (ADD)
+def $key_write_op(NExprAssignOpMinus expression_left expression_right metadata) = (SUBTRACT)
+def $key_write_op(NExprAssignOpMul expression_left expression_right metadata) = (MULTIPLY)
+def $key_write_op(NExprAssignOpDiv expression_left expression_right metadata) = (DIVIDE)
+def $key_write_op(NExprAssignOpMod expression_left expression_right metadata) = (MODULO)
+def $key_write_op(NExprAssignOpPow expression_left expression_right metadata) = (POWER)
+def $key_write_op(NExprAssignOpConcat expression_left expression_right metadata) = (CONCAT)
+def $key_write_op(NExprAssignOpBitwiseAnd expression_left expression_right metadata) = (BITAND)
+def $key_write_op(NExprAssignOpBitwiseOr expression_left expression_right metadata) = (BITOR)
+def $key_write_op(NExprAssignOpBitwiseXor expression_left expression_right metadata) = (BITXOR)
+def $key_write_op(NExprAssignOpShiftLeft expression_left expression_right metadata) = (SHIFTLEFT)
+def $key_write_op(NExprAssignOpShiftRight expression_left expression_right metadata) = (SHIFTRIGHT)
+def $key_write_op(pcnode) = eps -- otherwise
+def $key_write_update(NExprPreInc expression metadata) = ((INCREMENT, false))
+def $key_write_update(NExprPostInc expression metadata) = ((INCREMENT, true))
+def $key_write_update(NExprPreDec expression metadata) = ((DECREMENT, false))
+def $key_write_update(NExprPostDec expression metadata) = ((DECREMENT, true))
+def $key_write_update(pcnode) = eps -- otherwise
+def $key_write_path_task(DIM_PATH pbase z) = true
+def $key_write_path_task(ptask) = false -- otherwise
+def $key_write_finish_task(KEY_WRITE_FINISH pkeywriter) = true
+def $key_write_finish_task(ptask) = false -- otherwise
+def $key_write_reference_task(ACQUIRE_ARRAY z) = true
+def $key_write_reference_task(CALL_REF_FETCH pcalltarget n porigin?) = true
+def $key_write_reference_task(ptask) = false -- otherwise
+def $key_write_no_rhs(ACQUIRE_ARRAY z) = true
+def $key_write_no_rhs(CALL_REF_FETCH pcalltarget n porigin?) = true
+def $key_write_no_rhs(UPDATE_PREP pupdate b z) = true
+def $key_write_no_rhs(DIM_PATH pbase z) = true
+def $key_write_no_rhs(ptask) = false -- otherwise
+def $key_write_direct_task(ASSIGN_ARRAY pbase z b) = true
+def $key_write_direct_task(COMPOUND_APPLY pbin pbase b z) = true
+def $key_write_direct_task(ptask) = false -- otherwise
+def $key_write_array_slot(DEFINED (PARRAY n)) = true
+def $key_write_array_slot(pslot) = false -- otherwise
+def $key_write_captured_base(BASE_PLACE porigin plocation) = true
+def $key_write_captured_base(BASE_DIM pbase poperand z) = $key_write_captured_base(pbase)
+def $key_write_captured_base(pbase) = false -- otherwise
+
+;; Only a pending outer dimension makes DIM_PATH an intermediate fetch. Final
+;; ASSIGN_DIM and DIM_OP keep their conversion after the evaluated RHS.
+def $key_write_path_kind((ORIGIN_RETURN porigin?) :: ptask_tail*) = $key_write_path_kind(ptask_tail*)
+def $key_write_path_kind((DIM_INDEX expression z) :: ptask_tail*) = $key_write_path_kind(ptask_tail*)
+def $key_write_path_kind((DIM_PATH pbase z) :: ptask_tail*) = $key_write_path_kind(ptask_tail*)
+def $key_write_path_kind((DIM_APPEND z) :: ptask_tail*) = $key_write_path_kind(ptask_tail*)
+def $key_write_path_kind((ASSIGN_PREP expression_target expression_rhs) :: ptask_tail*) = (false)
+def $key_write_path_kind((COMPOUND_PREP pbin expression_target expression_rhs z) :: ptask_tail*) = (true)
+def $key_write_path_kind((UPDATE_PREP pupdate b z) :: ptask_tail*) = (true)
+def $key_write_path_kind((ACQUIRE_ARRAY z) :: ptask_tail*) = (false)
+def $key_write_path_kind((CALL_REF_FETCH pcalltarget n porigin?) :: ptask_tail*) = (false)
+def $key_write_path_kind(ptask*) = eps -- otherwise
+
+def $key_write_writer(S, porigin, ACQUIRE_ARRAY z, pbase, poperand) = ({SITE porigin, TARGET porigin, TASK ACQUIRE_ARRAY z, BASE pbase, RHS KNOWN PNULL})
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if $code_expression_at_source(S, porigin, eps) = (z)
+def $key_write_writer(S, porigin, CALL_REF_FETCH pcalltarget n porigin?, pbase, poperand) = ({SITE porigin, TARGET porigin, TASK CALL_REF_FETCH pcalltarget n porigin?, BASE pbase, RHS KNOWN PNULL})
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if expression = NExprArrayDimFetch expression_base phpType5 metadata
+  -- if ~$call_temporary_base(expression)
+  -- if $call_task_valid(S[.ORIGIN = (porigin)], CALL_REF_FETCH pcalltarget n porigin?)
+def $key_write_writer(S, porigin, UPDATE_PREP pupdate b z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK UPDATE_PREP pupdate b z, BASE pbase, RHS KNOWN PNULL})
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $key_write_update(pcnode) = ((pupdate, b))
+  -- if $code_expression_at_source(S, porigin, eps) = (z)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+def $key_write_writer(S, porigin, COMPOUND_APPLY pbin pbase b z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK COMPOUND_APPLY pbin pbase b z, BASE pbase, RHS poperand})
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $key_write_op(pcnode) = (pbin)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $origin_node(S.SOURCES, porigin_target) = (expression_target)
+  -- if expression_target = NExprArrayDimFetch expression phpType5 metadata
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_rhs)
+  -- if $origin_node(S.SOURCES, porigin_rhs) = (expression_rhs)
+  -- if b = $assignment_self(expression_target, expression_rhs)
+  -- if $code_expression_at_source(S, porigin_target, [PCFIELD 1]) = (z)
+def $key_write_writer(S, porigin, ASSIGN_ARRAY pbase z b, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK ASSIGN_ARRAY pbase z b, BASE pbase, RHS poperand})
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign expression_target expression_rhs metadata)
+  -- if b = $assignment_self(expression_target, expression_rhs)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $code_expression_at_source(S, porigin_target, eps) = (z)
+def $key_write_writer(S, porigin, DIM_PATH pbase z, BASE_DIM pbase poperand z, poperand) = ({SITE porigin, TARGET porigin, TASK DIM_PATH pbase z, BASE BASE_DIM pbase poperand z, RHS poperand})
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+def $key_write_writer(S, porigin, ptask, pbase, poperand) = eps -- otherwise
+def $key_write_task_base(ASSIGN_ARRAY pbase z b, pbase_current, poperand) = pbase
+def $key_write_task_base(COMPOUND_APPLY pbin pbase b z, pbase_current, poperand) = pbase
+def $key_write_task_base(DIM_PATH pbase z, pbase_current, poperand) = BASE_DIM pbase poperand z
+def $key_write_task_base(ptask, pbase, poperand) = pbase -- otherwise
+def $key_write_mode(UPDATE_PREP pupdate b z, ptask*) = true
+def $key_write_mode(COMPOUND_APPLY pbin pbase b z, ptask*) = true
+def $key_write_mode(DIM_PATH pbase z, ptask*) = b -- if $key_write_path_kind(ptask*) = (b)
+def $key_write_mode(ptask, ptask*) = false -- otherwise
+def $key_write_root(S, BASE_VALUE (VARIABLE n_name* z)) = true
+  -- if S_read = $quiet_operand(S, VARIABLE n_name* z)
+  -- if S_read.RESULT = KNOWN (PARRAY n)
+def $key_write_root(S, BASE_DIM pbase poperand z) = $key_write_root(S, pbase)
+def $key_write_root(S, BASE_PLACE porigin plocation) = true
+def $key_write_root(S, BASE_GLOBAL poperand z) = true
+def $key_write_root(S, pbase) = false -- otherwise
+def $key_write_plan(S) = (pkeywriter)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$key_write_path_task(ptask)
+  -- if $key_write_writer(S, porigin, ptask, $key_write_task_base(ptask, S.BASE, S.RESULT), S.RESULT) = (pkeywriter)
+  -- if $key_write_root(S, pkeywriter.BASE)
+  -- if $key_write_base_source(S, pkeywriter.TARGET, pkeywriter.BASE)
+def $key_write_plan(S) = (pkeywriter)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (DIM_PATH pbase z) :: ptask_tail*
+  -- if ptask_tail* = (ORIGIN_RETURN porigin_parent?) :: (DIM_INDEX expression z_outer) :: ptask_more*
+  -- if $key_write_path_kind(ptask_tail*) =/= eps
+  -- if $key_write_writer(S, porigin, DIM_PATH pbase z, BASE_DIM pbase S.RESULT z, S.RESULT) = (pkeywriter)
+  -- if $key_write_root(S, pbase)
+  -- if $key_write_base_source(S, porigin, pkeywriter.BASE)
+def $key_write_plan(S) = eps -- otherwise
+def $key_write_pending(S) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $error_handler_eligible(S, 2) \/ $error_handler_eligible(S, 8192) \/ $key_write_captured_base($key_write_task_base(ptask, S.BASE, S.RESULT))
+  -- if $key_write_plan(S) =/= eps
+def $key_write_pending(S) = false -- otherwise
+def $key_write_self(ASSIGN_ARRAY pbase z b) = b
+def $key_write_self(COMPOUND_APPLY pbin pbase b z) = b
+def $key_write_self(ptask) = false -- otherwise
+def $key_write_line(ASSIGN_ARRAY pbase z b) = z
+def $key_write_line(COMPOUND_APPLY pbin pbase b z) = z
+def $key_write_line(ptask) = $(-1) -- otherwise
+def $key_write_begin(S) = S_ready[.TODO = [$at_task((pkeywriter.TARGET), KEY_WRITE_BASE pkeywriter.BASE $key_write_mode(pkeywriter.TASK, ptask_tail*)), KEY_WRITE_FINISH pkeywriter] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_ready = S -- if ~$key_write_self(ptask)
+  -- if $key_write_plan(S_ready) = (pkeywriter)
+def $key_write_begin(S) = S_ready[.TODO = [$at_task((pkeywriter.TARGET), KEY_WRITE_BASE pkeywriter.BASE $key_write_mode(pkeywriter.TASK, ptask_tail*)), KEY_WRITE_FINISH pkeywriter] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $key_write_self(ptask)
+  -- if S_ready = $resolve_at(S, S.RESULT, $key_write_line(ptask))
+  -- if S_ready.COMPLETION = NORMAL
+  -- if $key_write_plan(S_ready) = (pkeywriter)
+rule PhpStep/key-write-start: S ~> $key_write_begin(S)
+  -- if $key_write_pending(S)
+
+;; The finish carrier owns each original operand once. Captured table pointers
+;; and INDIRECT places never add roots, including a retired parent array row.
+def $base_nodes(BASE_PLACE porigin plocation) = eps
+def $base_acquire(S, BASE_PLACE porigin plocation, z) = S[.LOCATION = plocation]
+def $key_write_finish_roots(pkeywriter) = $base_nodes(pkeywriter.BASE)
+  -- if pkeywriter.TASK = DIM_PATH pbase z
+def $key_write_finish_roots(pkeywriter) = $base_nodes(pkeywriter.BASE) ++ $operand_nodes(pkeywriter.RHS)
+  -- if ~$key_write_path_task(pkeywriter.TASK)
+def $task_nodes(KEY_WRITE_BASE pbase b) = eps
+def $task_nodes(KEY_WRITE_DIM poperand z b) = eps
+def $task_nodes(KEY_WRITE_GLOBAL poperand z) = eps
+def $task_nodes(KEY_WRITE_FINISH pkeywriter) = $key_write_finish_roots(pkeywriter)
+def $task_nodes(KEY_WRITE_RESULT pkeywrite) = $value_nodes(pkeywrite.READ.BASE)
+  -- if ~pkeywrite.READ.GLOBAL
+def $task_nodes(KEY_WRITE_RESULT pkeywrite) = eps -- if pkeywrite.READ.GLOBAL
+
+def $key_write_done(S, plocation) = S[.TODO = ptask_tail*][.LOCATION = plocation][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+rule PhpStep/key-write-derived-base: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), KEY_WRITE_BASE pbase b), KEY_WRITE_DIM poperand z b] ++ ptask_tail*]
+  -- if S.TODO = (KEY_WRITE_BASE (BASE_DIM pbase poperand z) b) :: ptask_tail*
+rule PhpStep/key-write-cv-base: S ~> S_place[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (KEY_WRITE_BASE (BASE_VALUE (VARIABLE n_name* z)) b) :: ptask_tail*
+  -- if S_place = $base_acquire(S, BASE_VALUE (VARIABLE n_name* z), z)
+rule PhpStep/key-write-captured-place: S ~> S[.TODO = ptask_tail*][.LOCATION = plocation][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (KEY_WRITE_BASE (BASE_PLACE porigin plocation) b) :: ptask_tail*
+rule PhpStep/key-write-global-base: S ~> S[.TODO = (KEY_WRITE_GLOBAL poperand z) :: ptask_tail*]
+  -- if S.TODO = (KEY_WRITE_BASE (BASE_GLOBAL poperand z) false) :: ptask_tail*
+
+def $key_write_dimension(S, poperand, z, b_rw) = $key_write_dispatch(S_array[.RESULT = KNOWN PNULL], pkeywrite)
+  -- if S.ORIGIN = (porigin)
+  -- if $location_slot(S, S.LOCATION) = DEFINED (PARRAY n_old)
+  -- if S_array = $location_array(S, S.LOCATION, z)
+  -- if S_array.RESULT = KNOWN (PARRAY n)
+  -- if $error_missing_operand(S_array, poperand)
+  -- if poperand = VARIABLE n_name* z_operand
+  -- if pkeywrite = {READ {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE PNULL, BASE PARRAY n, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_CV, KEY KSTRING eps, NAME n_name*}, PLACE S.LOCATION, RW b_rw}
+def $key_write_dimension(S, poperand, z, b_rw) = $key_write_value(S_array[.RESULT = KNOWN PNULL], pkeywrite)
+  -- if S.ORIGIN = (porigin)
+  -- if $location_slot(S, S.LOCATION) = DEFINED (PARRAY n_old)
+  -- if S_array = $location_array(S, S.LOCATION, z)
+  -- if S_array.RESULT = KNOWN (PARRAY n)
+  -- if ~$error_missing_operand(S_array, poperand)
+  -- if S_key = $quiet_operand(S_array, poperand)
+  -- if S_key.RESULT = KNOWN pvalue
+  -- if pkeywrite = {READ {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue, BASE PARRAY n, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}, PLACE S.LOCATION, RW b_rw}
+def $key_write_dimension(S, poperand, z, b_rw) = $key_write_done(S_place, S_place.LOCATION)
+  -- if ~$key_write_array_slot($location_slot(S, S.LOCATION))
+  -- if S_place = $rw_dimension(S, (poperand), STRINGNESTED, z)
+  -- if b_rw
+def $key_write_dimension(S, poperand, z, false) = $key_write_done(S_place, S_place.LOCATION)
+  -- if ~$key_write_array_slot($location_slot(S, S.LOCATION))
+  -- if S_place = $dimension_location(S, (poperand), STRINGNESTED, z)
+rule PhpStep/key-write-dimension: S ~> $key_write_dimension(S, poperand, z, b)
+  -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
+
+def $key_write_value(S, pkeywrite) = $key_write_dispatch(S, pkeywrite[.READ.PHASE = KEY_NULL][.READ.KEY = KSTRING eps])
+  -- if pkeywrite.READ.VALUE = PNULL
+def $key_write_value(S, pkeywrite) = $key_write_dispatch(S, pkeywrite[.READ.PHASE = KEY_FLOAT castnotice castnotice_tail*][.READ.KEY = KINT i])
+  -- if pkeywrite.READ.VALUE = PFLOAT n_bits
+  -- if $float_long(n_bits, true) = (i, castnotice :: castnotice_tail*)
+def $key_write_value(S, pkeywrite) = $key_write_lookup(S, pkeywrite[.READ.KEY = pkey])
+  -- if pkeywrite.READ.VALUE =/= PNULL
+  -- if $key_plain_value(pkeywrite.READ.VALUE)
+  -- if $key_selected_key(pkeywrite.READ.VALUE) = (pkey)
+def $key_write_value(S, pkeywrite) = S_key
+  -- if $key_selected_key(pkeywrite.READ.VALUE) = eps
+  -- if S_key = $dimension_key_value(S, pkeywrite.READ.VALUE, pkeywrite.READ.LINE)
+
+def $key_write_lookup(S, pkeywrite) = $key_write_done(S, ELEMENT n pkeywrite.READ.KEY)
+  -- if pkeywrite.READ.BASE = PARRAY n
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkeywrite.READ.KEY) = (pitem)
+def $key_write_lookup(S, pkeywrite) = $key_write_dispatch(S, pkeywrite[.READ.PHASE = KEY_MISSING])
+  -- if pkeywrite.RW
+  -- if pkeywrite.READ.BASE = PARRAY n
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkeywrite.READ.KEY) = eps
+def $key_write_lookup(S, pkeywrite) = $key_write_done($element_location(S, n, pkeywrite.READ.KEY), ELEMENT n pkeywrite.READ.KEY)
+  -- if ~pkeywrite.RW
+  -- if pkeywrite.READ.BASE = PARRAY n
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkeywrite.READ.KEY) = eps
+def $key_write_insert(S, pkeywrite) = $key_write_done(S_inserted, ELEMENT n pkeywrite.READ.KEY)
+  -- if pkeywrite.READ.BASE = PARRAY n
+  -- if S_inserted = $location_write(S, ELEMENT n pkeywrite.READ.KEY, PNULL)
+def $key_write_dispatch(S, pkeywrite) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $key_read_level(pkeywrite.READ), $key_read_message(pkeywrite.READ), pkeywrite.READ.LINE, $key_read_event(pkeywrite.READ), KEY_WRITE_RESULT pkeywrite)
+def $key_write_single(S, pkeywrite) = ($heap_owners($heap_prune($heap_graph(S)), HARRAY n) = 2)
+  -- if pkeywrite.READ.BASE = PARRAY n
+  -- if ~pkeywrite.READ.GLOBAL
+def $key_write_single(S, pkeywrite) = true -- if pkeywrite.READ.GLOBAL
+def $key_write_resume(S, pkeywrite) = $key_write_dispatch(S, pkeywrite[.READ.PHASE = KEY_FLOAT castnotice_next castnotice_tail*])
+  -- if pkeywrite.READ.PHASE = KEY_FLOAT castnotice (castnotice_next :: castnotice_tail*)
+def $key_write_resume(S, pkeywrite) = $key_write_done(S, NOWHERE)
+  -- if ~$key_float_more(pkeywrite.READ.PHASE)
+  -- if ~$key_write_single(S, pkeywrite)
+def $key_write_resume(S, pkeywrite) = $key_write_value(S, pkeywrite[.READ.PHASE = KEY_NULL][.READ.VALUE = PNULL][.READ.NAME = eps])
+  -- if ~pkeywrite.READ.GLOBAL
+  -- if pkeywrite.READ.PHASE = KEY_CV
+  -- if $key_write_single(S, pkeywrite)
+def $key_write_resume(S, pkeywrite) = $key_write_lookup(S, pkeywrite)
+  -- if pkeywrite.READ.PHASE = KEY_NULL \/ ($key_float_phase(pkeywrite.READ.PHASE) /\ ~$key_float_more(pkeywrite.READ.PHASE))
+  -- if $key_write_single(S, pkeywrite)
+def $key_write_resume(S, pkeywrite) = $key_write_insert(S, pkeywrite)
+  -- if pkeywrite.READ.PHASE = KEY_MISSING
+  -- if $key_write_single(S, pkeywrite)
+def $key_write_resume(S, pkeywrite) = $key_write_global_value(S, pkeywrite.READ.INPUT, pvalue, pkeywrite.READ.LINE)
+  -- if pkeywrite.READ.GLOBAL
+  -- if pkeywrite.READ.PHASE = KEY_CV
+  -- if S_key = $quiet_operand(S, pkeywrite.READ.INPUT)
+  -- if S_key.RESULT = KNOWN pvalue
+def $key_write_resume(S, pkeywrite) = $key_write_global_name(S, pkeywrite.READ.NAME, pkeywrite.READ.LINE)
+  -- if pkeywrite.READ.GLOBAL
+  -- if pkeywrite.READ.PHASE = KEY_ARRAY_NAME
+rule PhpStep/key-write-resume: S ~> $key_write_resume(S, pkeywrite)
+  -- if S.TODO = (KEY_WRITE_RESULT pkeywrite) :: ptask_tail*
+  -- if $key_write_valid(S, pkeywrite)
+
+def $key_write_global(S, poperand, z) = $key_write_dispatch(S, pkeywrite)
+  -- if $error_missing_operand(S, poperand)
+  -- if poperand = VARIABLE n_name* z_operand
+  -- if S.ORIGIN = (porigin)
+  -- if pkeywrite = {READ {SITE porigin, GLOBAL true, MODE KEY_R, INPUT poperand, VALUE PNULL, BASE PNULL, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_CV, KEY KSTRING eps, NAME n_name*}, PLACE NOWHERE, RW false}
+def $key_write_global(S, poperand, z) = $key_write_global_value(S, poperand, pvalue, z)
+  -- if ~$error_missing_operand(S, poperand)
+  -- if S_key = $quiet_operand(S, poperand)
+  -- if S_key.RESULT = KNOWN pvalue
+def $key_write_global_value(S, poperand, PARRAY n, z) = $key_write_dispatch(S, pkeywrite)
+  -- if S.ORIGIN = (porigin)
+  -- if pkeywrite = {READ {SITE porigin, GLOBAL true, MODE KEY_R, INPUT poperand, VALUE PARRAY n, BASE PNULL, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_ARRAY_NAME, KEY KSTRING eps, NAME $ptascii("Array")}, PLACE NOWHERE, RW false}
+def $key_write_global_value(S, poperand, pvalue, z) = $key_write_global_name(S, n_name*, z)
+  -- if ~$key_is_array(pvalue)
+  -- if S_name = $stringify(S, pvalue, z)
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+def $key_write_global_name(S, n_name*, z) = $key_write_done(S_place, S_place.LOCATION)
+  -- if S_place = $global_location(S, n_name*, z)
+rule PhpStep/key-write-global: S ~> $key_write_global(S, poperand, z)
+  -- if S.TODO = (KEY_WRITE_GLOBAL poperand z) :: ptask_tail*
+
+;; Source and constant guards authenticate forms, converted keys and notice
+;; suffixes. Consistent dynamically selected bytes/places remain runtime facts.
+def $key_write_input_source(S, porigin, poperand, z, b_global) = $key_read_input_source(S, {SITE porigin, GLOBAL b_global, MODE KEY_R, INPUT poperand, VALUE PNULL, BASE PNULL, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_CV, KEY KSTRING eps, NAME eps})
+def $key_write_base_source(S, porigin, BASE_VALUE (VARIABLE n_name* z)) = ($error_variable_source(S, (porigin), eps, n_name*) /\ $code_expression_at_source(S, porigin, eps) = (z))
+def $key_write_base_source(S, porigin, BASE_DIM pbase poperand z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if ~$ppglobals_base(expression)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $key_write_base_source(S, porigin_base, pbase)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+  -- if $key_write_input_source(S, porigin, poperand, z, false)
+def $key_write_base_source(S, porigin, BASE_GLOBAL poperand z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if $ppglobals_base(expression)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+  -- if $key_write_input_source(S, porigin, poperand, z, true)
+def $key_write_base_source(S, porigin, BASE_PLACE porigin plocation) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
+def $key_write_base_source(S, porigin, pbase) = false -- otherwise
+def $key_write_rhs_source(S, pkeywriter) = true
+  -- if $key_write_no_rhs(pkeywriter.TASK)
+def $key_write_rhs_source(S, pkeywriter) = true
+  -- if ~$key_write_no_rhs(pkeywriter.TASK)
+  -- if pkeywriter.RHS = VARIABLE n_name* z
+  -- if $error_variable_source(S, (pkeywriter.SITE), [PCFIELD 1], n_name*)
+  -- if $code_expression_at_source(S, pkeywriter.SITE, [PCFIELD 1]) = (z)
+def $key_write_rhs_source(S, pkeywriter) = true
+  -- if ~$key_write_no_rhs(pkeywriter.TASK)
+  -- if pkeywriter.RHS = KNOWN pvalue
+  -- if ~$key_operand_cv_source(S, pkeywriter.SITE, [PCFIELD 1]) \/ $key_write_self(pkeywriter.TASK)
+  -- if $origin_child((pkeywriter.SITE), [PCFIELD 1]) = (porigin_rhs)
+  -- if $compiled_read(S, porigin_rhs) = (pvalue) \/ $compiled_read(S, porigin_rhs) = eps
+def $key_write_rhs_source(S, pkeywriter) = true
+  -- if ~$key_write_no_rhs(pkeywriter.TASK)
+  -- if pkeywriter.RHS = REFERENCE n
+  -- if $origin_child((pkeywriter.SITE), [PCFIELD 1]) = (porigin_rhs)
+  -- if $compiled_read(S, porigin_rhs) = eps
+  -- if ~$key_operand_cv_source(S, pkeywriter.SITE, [PCFIELD 1])
+def $key_write_rhs_source(S, pkeywriter) = false -- otherwise
+def $key_writer_valid(S, pkeywriter, ptask*) = true
+  -- if $key_write_writer(S, pkeywriter.SITE, pkeywriter.TASK, pkeywriter.BASE, pkeywriter.RHS) = (pkeywriter)
+  -- if $key_write_base_source(S, pkeywriter.TARGET, pkeywriter.BASE)
+  -- if $key_write_rhs_source(S, pkeywriter)
+  -- if ~$key_write_path_task(pkeywriter.TASK) \/ $key_write_path_kind(ptask*) =/= eps
+def $key_writer_valid(S, pkeywriter, ptask*) = false -- otherwise
+def $key_write_site(S, porigin, b, porigin, b) = true
+def $key_write_site(S, porigin_root, b_root, porigin, b) = $key_write_site(S, porigin_child, b_root, porigin, b)
+  -- if porigin_root =/= porigin
+  -- if $origin_node(S.SOURCES, porigin_root) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if $origin_child((porigin_root), [PCFIELD 0]) = (porigin_child)
+def $key_write_site(S, porigin_root, b_root, porigin, b) = false -- otherwise
+def $key_write_context(S, (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*, porigin, b) = ($key_writer_valid(S, pkeywriter, ptask_tail*) /\ $key_write_site(S, pkeywriter.TARGET, $key_write_mode(pkeywriter.TASK, ptask_tail*), porigin, b))
+def $key_write_context(S, ptask :: ptask_tail*, porigin, b) = $key_write_context(S, ptask_tail*, porigin, b)
+  -- if ~$key_write_finish_task(ptask)
+def $key_write_context(S, eps, porigin, b) = false
+def $key_write_shape(pkeywrite) = true
+  -- if pkeywrite.READ.OWNERS = BASE_VALUE (KNOWN PNULL)
+  -- if $key_read_shape(pkeywrite.READ)
+  -- if pkeywrite.READ.PHASE =/= KEY_MISSING
+  -- if $key_value_selected(pkeywrite.READ.INPUT, pkeywrite.READ.VALUE)
+def $key_write_shape(pkeywrite) = true
+  -- if pkeywrite.RW
+  -- if ~pkeywrite.READ.GLOBAL
+  -- if pkeywrite.READ.OWNERS = BASE_VALUE (KNOWN PNULL)
+  -- if pkeywrite.READ.PHASE = KEY_MISSING
+  -- if $key_read_shape(pkeywrite.READ)
+  -- if $key_selected_key(pkeywrite.READ.VALUE) = (pkeywrite.READ.KEY)
+  -- if $key_value_selected(pkeywrite.READ.INPUT, pkeywrite.READ.VALUE)
+def $key_write_shape(pkeywrite) = false -- otherwise
+def $key_write_place_shape(pkeywrite) = (pkeywrite.PLACE = NOWHERE /\ ~pkeywrite.RW /\ pkeywrite.READ.BASE = PNULL)
+  -- if pkeywrite.READ.GLOBAL
+def $key_write_place_shape(pkeywrite) = true
+  -- if ~pkeywrite.READ.GLOBAL
+  -- if pkeywrite.READ.BASE = PARRAY n
+  -- if pkeywrite.PLACE = ROOT n_cell
+def $key_write_place_shape(pkeywrite) = true
+  -- if ~pkeywrite.READ.GLOBAL
+  -- if pkeywrite.READ.BASE = PARRAY n
+  -- if pkeywrite.PLACE = ELEMENT n_parent pkey
+def $key_write_place_shape(pkeywrite) = false -- otherwise
+def $key_write_valid(S, pkeywrite) = true
+  -- if S.ORIGIN = (pkeywrite.READ.SITE)
+  -- if $key_write_context(S, S.TODO, pkeywrite.READ.SITE, pkeywrite.RW)
+  -- if $origin_node(S.SOURCES, pkeywrite.READ.SITE) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if pkeywrite.READ.GLOBAL = $ppglobals_base(expression)
+  -- if $code_expression_at_source(S, pkeywrite.READ.SITE, [PCFIELD 1]) = (pkeywrite.READ.LINE)
+  -- if $key_read_input_source(S, pkeywrite.READ)
+  -- if $key_write_shape(pkeywrite)
+  -- if pkeywrite.READ.MODE = KEY_R
+  -- if $key_write_place_shape(pkeywrite)
+def $key_write_valid(S, pkeywrite) = false -- otherwise
+def $call_task_valid(S, KEY_WRITE_RESULT pkeywrite) = $key_write_valid(S, pkeywrite)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = KEY_WRITE_RESULT pkeywrite
+  -- if $key_write_valid(S, pkeywrite)
+  -- if perrorcall.SITE = pkeywrite.READ.SITE
+  -- if perrorcall.LEVEL = $key_read_level(pkeywrite.READ)
+  -- if perrorcall.LINE = pkeywrite.READ.LINE
+  -- if perrorcall.MESSAGE = $key_read_message(pkeywrite.READ)
+  -- if perrorcall.EVENT = $key_read_event(pkeywrite.READ)
+
+def $key_write_reference(S) = $call_fresh_reference(S, PNULL) -- if S.LOCATION = NOWHERE
+def $key_write_reference(S) = $call_location_reference(S) -- if S.LOCATION =/= NOWHERE
+def $key_write_update_null(S, pupdate, b_post, z) = S_changed -- if S_changed = $update_value(S, pupdate, PNULL, z) -- if ~b_post
+def $key_write_update_null(S, pupdate, true, z) = S_changed[.RESULT = KNOWN PNULL]
+  -- if S_changed = $update_value(S, pupdate, PNULL, z)
+  -- if S_changed.COMPLETION = NORMAL
+def $key_write_finish(S, pkeywriter) = S[.BASE = BASE_PLACE pkeywriter.TARGET S.LOCATION][.RESULT = KNOWN PNULL]
+  -- if pkeywriter.TASK = DIM_PATH pbase z
+def $key_write_finish(S, pkeywriter) = $key_write_reference(S)
+  -- if $key_write_reference_task(pkeywriter.TASK)
+def $key_write_finish(S, pkeywriter) = $update_location(S, pupdate, b, z)
+  -- if pkeywriter.TASK = UPDATE_PREP pupdate b z
+  -- if S.LOCATION =/= NOWHERE
+def $key_write_finish(S, pkeywriter) = $key_write_update_null(S, pupdate, b, z)
+  -- if pkeywriter.TASK = UPDATE_PREP pupdate b z
+  -- if S.LOCATION = NOWHERE
+def $key_write_finish(S, pkeywriter) = $compound_operands(S, pbin, pkeywriter.RHS, z)
+  -- if pkeywriter.TASK = COMPOUND_APPLY pbin pbase b z
+  -- if S.LOCATION =/= NOWHERE
+def $key_write_finish(S, pkeywriter) = $write_operand(S, pkeywriter.RHS, z)
+  -- if pkeywriter.TASK = ASSIGN_ARRAY pbase z b
+  -- if S.LOCATION =/= NOWHERE
+def $key_write_finish(S, pkeywriter) = S[.RESULT = KNOWN PNULL]
+  -- if S.LOCATION = NOWHERE
+  -- if $key_write_direct_task(pkeywriter.TASK)
+rule PhpStep/key-write-finish: S ~> S_out[.HELD = S.HELD]
+  -- if S.TODO = (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*
+  -- if S.ORIGIN = (pkeywriter.SITE)
+  -- if $key_writer_valid(S, pkeywriter, ptask_tail*)
+  -- if S_out = $key_write_finish($hold_task_inputs(S), pkeywriter)
