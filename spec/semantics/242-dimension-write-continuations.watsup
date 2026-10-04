@@ -423,6 +423,7 @@ def $key_write_rhs_source(S, pkeywriter) = true
   -- if ~$key_operand_cv_source(S, pkeywriter.SITE, [PCFIELD 1])
 def $key_write_rhs_source(S, pkeywriter) = false -- otherwise
 def $key_writer_valid(S, pkeywriter, ptask*) = true
+  -- if ~$key_append_task(pkeywriter.TASK)
   -- if $key_write_writer(S, pkeywriter.SITE, pkeywriter.TASK, pkeywriter.BASE, pkeywriter.RHS) = (pkeywriter[.TEMP = eps])
   -- if $key_write_target_base(pkeywriter.BASE)
   -- if ~$key_write_mode(pkeywriter.TASK, ptask*) \/ ~$key_write_global_root(pkeywriter.BASE)
