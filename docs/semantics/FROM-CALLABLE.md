@@ -44,8 +44,9 @@ The maintained [source cases](../../tests/semantics/from_callable_cases.json) an
 boundaries; the [review ledger](../../coverage/semantics/from-callable-review.json)
 records distinct source/state cutoffs and original failures. Capturing or dynamically
 calling the internal factory itself, arbitrary library-builtin captures, magic and
-autoload callables, transformed fake-Closure binding and remaining callable warning
-consumers stay required. No return-verification or complete-core claim is made.
+autoload callables and remaining callable warning consumers stay required.
+[Transformed fake binding and current Closure253](CLOSURE-CURRENT-BINDING.md)
+cover the selected capture/binding phase with its remaining REAL/temporary boundaries. No return-verification or complete-core claim is made.
 
 Rules follow vendored `Zend/zend_closures.c` (`zend_create_closure_from_callable`,
 `create_closure_from_callable`, `zend_create_fake_closure`, `zend_create_closure_ex`),

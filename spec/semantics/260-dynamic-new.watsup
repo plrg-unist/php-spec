@@ -92,6 +92,8 @@ def $dynamic_new_record(S, porigin, pvalue, ptbytes, z, z_fetch) = {SITE porigin
   -- if $dynamic_new_keyword(S, porigin) =/= eps
 dec $dynamic_new_record_scope(pstate, pdynamicnew) : bool
 dec $dynamic_new_property_method_scope(pstate, pmethoddesc, porigin, porigin, pclosurescope) : bool
+def $dynamic_new_property_method_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = true
+  -- if $property_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps
 def $dynamic_new_property_method_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = false -- otherwise
 dec $dynamic_new_method_receiver(pstate, pmethoddesc, pclosurescope) : bool
 def $dynamic_new_method_receiver(S, pmethoddesc, pclosurescope) = true

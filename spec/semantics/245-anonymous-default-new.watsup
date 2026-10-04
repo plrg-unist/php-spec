@@ -17,6 +17,7 @@ def $anonymous_default_new_object_valid(S, n) = true
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
   -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if ~$internal_closure_object(S, n)
   -- if $closure_source_class(S, porigin) = eps
 def $anonymous_default_new_object_valid(S, n) = false -- otherwise
 
@@ -80,6 +81,7 @@ rule PhpStep/anonymous-default-new-no-scope: S ~> $throw_scalar(S, "Error", $pta
   -- if $anonymous_default_new_site(S, porigin)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.LEXICAL_CLASS = eps
+  -- if $bound_fake_internal_scope(S) = eps
 rule PhpStep/anonymous-default-new-parent-missing: S ~> $throw_scalar(S, "Error", $ptascii("Cannot access \"parent\" when current class scope has no parent"), $runtime_line(S, eps, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata))
   -- if S.TODO = (EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)

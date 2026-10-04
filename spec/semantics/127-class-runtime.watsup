@@ -86,6 +86,7 @@ def $new_class(S, preqbytes, z) = S[.COMPLETION = UNSUPPORTED "internal class co
   -- if $class_internal(preqbytes)
   -- if ~$internal_new_forbidden(preqbytes)
   -- if $ptlc(preqbytes) =/= $ptascii("stdclass")
+  -- if $ptlc(preqbytes) =/= $ptascii("closure")
   -- if $throwable_constructor_kind(preqbytes) = eps
 def $new_class(S, preqbytes, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ preqbytes ++ $ptascii("\" not found"), z)
   -- if ~$class_internal(preqbytes)

@@ -15,10 +15,11 @@ def $interpolation_groups((NInterpolatedStringPart (BYTES text) metadata) :: php
   -- if $base64(text) =/= eps
 def $interpolation_groups(expression :: phpType30*, b) = $(1 + $interpolation_groups(phpType30*, false))
 
+dec $ppinterpolation_notice(ppstate, pcpath, phpType30) : ppstate
 dec $ppinterpolation(ppstate, pcpath, nat, phpType30*) : ppstate
 def $ppinterpolation(P, pcpath, n, eps) = $ppclearvalue(P)
-def $ppinterpolation(P, pcpath, n, (NInterpolatedStringPart (BYTES text) metadata) :: phpType30*) = $ppinterpolation($pplocate(P, pcpath ++ [PCINDEX n], $source_line(metadata)), pcpath, $(n + 1), phpType30*)
-def $ppinterpolation(P, pcpath, n, expression :: phpType30*) = $ppinterpolation($ppexpr(P, pcpath ++ [PCINDEX n], expression, PPR), pcpath, $(n + 1), phpType30*)
+def $ppinterpolation(P, pcpath, n, (NInterpolatedStringPart (BYTES text) metadata) :: phpType30*) = $ppinterpolation($pplocate($ppinterpolation_notice(P, pcpath ++ [PCINDEX n], NInterpolatedStringPart (BYTES text) metadata), pcpath ++ [PCINDEX n], $source_line(metadata)), pcpath, $(n + 1), phpType30*)
+def $ppinterpolation(P, pcpath, n, expression :: phpType30*) = $ppinterpolation($ppexpr($ppinterpolation_notice(P, pcpath ++ [PCINDEX n], expression), pcpath ++ [PCINDEX n], expression, PPR), pcpath, $(n + 1), phpType30*)
 def $pptemporary(NScalarInterpolatedString phpType29 metadata) = true
 def $ppdispatch(P, pcpath, NScalarInterpolatedString (SEQUENCE phpType30*) metadata, PPR) = $ppinterpolation(P, pcpath ++ [PCFIELD 0], 0, phpType30*)
 

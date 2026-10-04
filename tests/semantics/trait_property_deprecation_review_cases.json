@@ -1,0 +1,160 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; independent direct trait static-property continuation, selection, operand timing, raw default scope and reference controls. Prepared native only; zero model credit before254.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "selected-trait-root-and-name-survive-handler-rebinding",
+      "source": "<?php trait T{public static int $x=1;public static int $other=2;}class C{use T;}$cls=\"T\";$name=\"x\";set_error_handler(function($n,$m)use(&$cls,&$name){echo \"H\",$n,\";\";$cls=\"C\";$name=\"other\";error_reporting(0);T::$x=9;return true;});echo $cls::$$name,\":\",$cls,\":\",$name,\":\",C::$x;",
+      "source_sha256": "10a719889687e71fc74fdfd2067b2c9a8008ef6c9406bae7afcc5d0b8179261d",
+      "status": "normal",
+      "stdout_base64": "SDgxOTI7OTpDOm90aGVyOjE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-q95sqr39/report.json",
+      "native_raw_sha256": "0b0f496c6dc877d862cfd41326f3c06444f90c2226af807ebb84039963ae0258"
+    },
+    {
+      "id": "compound-rereads-live-trait-cell-and-late-rhs-cv",
+      "source": "<?php trait T{public static int $x=1;}$v=2;set_error_handler(function($n,$m)use(&$v){echo \"H;\";error_reporting(0);T::$x=9;$v=3;return true;});echo T::$x+=$v;",
+      "source_sha256": "b211fe53a3e15e7c7eb00c67ac7b87da9cdd85cec922e720b378ae1fe2a4c849",
+      "status": "normal",
+      "stdout_base64": "SDsxMg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-q95sqr39/report.json",
+      "native_raw_sha256": "9c4fb990561bd98c46d1dd8214833c107ba91cbda7330b3aeffcaf1c7c17350b"
+    },
+    {
+      "id": "assignment-late-rhs-cv-sees-handler-write",
+      "source": "<?php trait T{public static int $x=1;}$v=2;set_error_handler(function($n,$m)use(&$v){echo \"H;\";$v=9;return true;});echo T::$x=$v,\":\",$v;",
+      "source_sha256": "83e2cd69b812c2e8046a8dee3e82670f2e28928544ebe19f57c3224f42fbd8c5",
+      "status": "normal",
+      "stdout_base64": "SDs5Ojk=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-q95sqr39/report.json",
+      "native_raw_sha256": "ba80aa6159d335a84d76c6879a6e3878d345f9a5a4b1c3c35d8d92673ba0bae3"
+    },
+    {
+      "id": "assignment-precomputed-rhs-keeps-value",
+      "source": "<?php trait T{public static int $x=1;}$v=2;set_error_handler(function($n,$m)use(&$v){echo \"H\",$v,\";\";$v=9;return true;});echo T::$x=($v=7),\":\",$v;",
+      "source_sha256": "002c1e8790d4460ac618244b0f4d720ec7254f416bcbbe23e6a3fe36bc9fbad8",
+      "status": "normal",
+      "stdout_base64": "SDc7Nzo5",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-q95sqr39/report.json",
+      "native_raw_sha256": "5e9b42ad668fc0a1993eb5fb8ea5eda1ac5ab5b5b3a586700b07581ee048b9d4"
+    },
+    {
+      "id": "nonnullable-reference-error-follows-deprecation",
+      "source": "<?php trait T{public static int $x;}set_error_handler(function($n,$m){echo \"H\",$n,\";\";return true;});try{$r=&T::$x;}catch(Error $e){echo $e->getMessage();}",
+      "source_sha256": "b49d684d4d1acbccd0a04a71fb49b4f8ec52ace7c68982e6d66a2db5fd86a715",
+      "status": "normal",
+      "stdout_base64": "SDgxOTI7Q2Fubm90IGFjY2VzcyB1bmluaXRpYWxpemVkIG5vbi1udWxsYWJsZSBwcm9wZXJ0eSBUOjokeCBieSByZWZlcmVuY2U=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-q95sqr39/report.json",
+      "native_raw_sha256": "5c5b3512516fdeb96ceb21fa59cde6d971ed18ecd855e493bb7327a082bf79e2"
+    },
+    {
+      "id": "nullable-reference-bind-follows-handler-initialization",
+      "source": "<?php trait T{public static ?int $x;}set_error_handler(function($n,$m){echo \"H;\";error_reporting(0);T::$x=4;return true;});$r=&T::$x;echo $r;",
+      "source_sha256": "9ac482b31e490d2fbfef362e240ceac6ae59fc63d0bd339587978c4ecc2f165a",
+      "status": "normal",
+      "stdout_base64": "SDs0",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-q95sqr39/report.json",
+      "native_raw_sha256": "ad6dd5b7aeeff5b84a368c87c232f9db9575cc2e885077a4796f656a66ff88de"
+    },
+    {
+      "id": "nested-raw-trait-uses-selected-lexical-scope-and-physical-source",
+      "source": "<?php trait T{public static array $x=[__CLASS__,__TRAIT__];}trait U{use T;}class Q{static function show(){echo U::$x[0],\":\",U::$x[1];}}set_error_handler(function($n,$m){echo \"H\",$n,\";\";return true;});Q::show();",
+      "source_sha256": "7c9156dfdf963dfb61fe4dd3a2e923c05564a86d9064443ca8f1ef80a7bffb2c",
+      "status": "normal",
+      "stdout_base64": "SDgxOTI7VTpIODE5MjtU",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-q95sqr39/report.json",
+      "native_raw_sha256": "8151e37d783048e1cceaae9969622a0e2c482201c57d20ca6a012aa73279f9c5"
+    },
+    {
+      "id": "quiet-null-read-sees-handler-write",
+      "source": "<?php trait T{public static ?int $x=null;}set_error_handler(function($n,$m){echo \"H;\";error_reporting(0);T::$x=4;return true;});echo T::$x??9;",
+      "source_sha256": "b71ff06a938dec7af0688fa6d3133da9ae5eef64a03dfbb8f4aa4d8ae090ca34",
+      "status": "normal",
+      "stdout_base64": "SDs0",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-q95sqr39/report.json",
+      "native_raw_sha256": "ad6dd5b7aeeff5b84a368c87c232f9db9575cc2e885077a4796f656a66ff88de"
+    },
+    {
+      "id": "typed-uninitialized-isset-sees-handler-write",
+      "source": "<?php trait T{public static int $x;}set_error_handler(function($n,$m){echo \"H;\";error_reporting(0);T::$x=4;return true;});echo isset(T::$x)?\"Y\":\"N\";",
+      "source_sha256": "db6e3fa46e7c151125fad36652f69c868d472c511a742c7729c1660d593799a7",
+      "status": "normal",
+      "stdout_base64": "SDtZ",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-q95sqr39/report.json",
+      "native_raw_sha256": "4a25278bc62aafd2cb40b6c20f24218e409d1c6df49a448756e5cf7ad5c39f72"
+    },
+    {
+      "id": "handler-throw-precedes-assignment-rhs-cv-demand",
+      "source": "<?php trait T{public static int $x=1;}set_error_handler(function($n,$m){echo \"H\",$n,\";\";throw new Exception(\"STOP\");});try{T::$x=$missing;}catch(Exception $e){echo $e->getMessage();}",
+      "source_sha256": "dc9bc3edb827878b43d2b2ca5e20344cb65c0bdaa2518d5f34f366d9657c2ed9",
+      "status": "normal",
+      "stdout_base64": "SDgxOTI7U1RPUA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-q95sqr39/report.json",
+      "native_raw_sha256": "cb141e21500d0274c5c61eea027692a2c981f4cfeacc5e2184a95fe93e73d9aa"
+    },
+    {
+      "id": "compound-uninitialized-read-fails-after-precomputed-rhs",
+      "source": "<?php trait T{public static int $x;}$v=2;set_error_handler(function($n,$m){echo \"H;\";return true;});try{T::$x+=($v=4);}catch(Error $e){echo \"E\",$v,\";\",$e->getMessage();}",
+      "source_sha256": "4dee03b2cb083de8535b9ab3f9ce031b63b6b1b584972cad98c130bb67f335b8",
+      "status": "normal",
+      "stdout_base64": "RTQ7VHlwZWQgc3RhdGljIHByb3BlcnR5IFQ6OiR4IG11c3Qgbm90IGJlIGFjY2Vzc2VkIGJlZm9yZSBpbml0aWFsaXphdGlvbg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-q95sqr39/report.json",
+      "native_raw_sha256": "31fe37b3c883bdaa3663a978f632fc8ad8cc74f29865818879e361d264ac3cb0"
+    },
+    {
+      "id": "asymmetric-set-access-error-follows-deprecation",
+      "source": "<?php trait T{public private(set) static int $x=1;}set_error_handler(function($n,$m){echo \"H\",$n,\";\";return true;});try{T::$x=2;}catch(Error $e){echo $e->getMessage();}",
+      "source_sha256": "a5383e173053c7721d3384750d0db3ebc6139fefbbc431774abc60a797244835",
+      "status": "normal",
+      "stdout_base64": "SDgxOTI7Q2Fubm90IG1vZGlmeSBwcml2YXRlKHNldCkgcHJvcGVydHkgVDo6JHggZnJvbSBnbG9iYWwgc2NvcGU=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-q95sqr39/report.json",
+      "native_raw_sha256": "23305b2dcec2f262f6e37ceeadd3fa1912bd132bc3badcf29d44ec9ad4fe301c"
+    },
+    {
+      "id": "assignment-reference-live-rhs-after-handler-retirement",
+      "source": "<?php trait T{public static int $x=1;}$v=2;set_error_handler(function($n,$m)use(&$v){echo \"H;\";$v=4;return true;});T::$x=&$v;restore_error_handler();error_reporting(0);$v=5;echo T::$x;",
+      "source_sha256": "d3e07be201d32fef26ea29d20644504ff9d48a7ca2b85a37d65edf86b3408e47",
+      "status": "normal",
+      "stdout_base64": "SDs1",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-wk7ktv69/report.json",
+      "native_raw_sha256": "c3eaa1f075c26764b7c5e8111a8d4316f9dfbf975ff970da819bd96dde3f8777"
+    },
+    {
+      "id": "by-reference-send-preserves-cell-after-handler-retirement",
+      "source": "<?php trait T{public static ?int $x;}function take(&$v){echo \"F\",$v,\";\";$v=7;}set_error_handler(function($n,$m){echo \"H;\";error_reporting(0);T::$x=4;return true;});take(T::$x);restore_error_handler();echo T::$x;",
+      "source_sha256": "42fc100f3d8d42eed1a99a77168de475fe5e4b2d80a9db2e1bbbe08942453f2d",
+      "status": "normal",
+      "stdout_base64": "SDtGNDs3",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-254/.tools/trait-static-native254-wk7ktv69/report.json",
+      "native_raw_sha256": "f6680f0b341b1da8491e05a9f78e1fc4c9eeeaa9a4b13c8698169eb83697662d"
+    }
+  ]
+}

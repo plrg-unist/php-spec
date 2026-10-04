@@ -1,6 +1,6 @@
 # Source trait composition
 
-Modules 228 and 238 compile and link source traits under pinned PHP 8.5.10.
+Modules 228, 238, 254 and 259 compile, link and access source traits under pinned PHP 8.5.10.
 A using class overrides trait methods; trait methods override inherited methods.
 Nested uses, duplicate imports, `insteadof`, aliases, visibility changes and final
 adaptations preserve Zend's method selection and diagnostics. Abstract trait
@@ -80,11 +80,42 @@ Pure collision evaluation uses the checked expression folder in a scratch arena;
 temporary arrays do not become live descriptor values. Source class aliases use
 the actual compiled fetch name. Runtime inherited property/constant faults retain
 `E_COMPILE_ERROR` and their completed-declaration phase, while early compiler
-cutoffs remain static rejections.
+cutoffs remain static rejections. Deferred typed operands compare before table
+conversion; compiled literal defaults retain their compile-time conversion.
+
+Module259 records direct `E_STRICT` collision diagnostics in the source-owned
+scratch fold. Constants evaluate the incoming operand first; properties evaluate
+the existing operand first. Temporary values do not fill the compared defaults.
+Successful class publication precedes delivery through the live handler registry.
+A delivery exception preserves that publication; a later link fatal flushes
+earlier diagnostics through the default renderer without calling user handlers.
+The sampled constant-name prefix and actual source/default roots authenticate
+each recorded item independently of later handler mutations.
+
+Raw trait static-property access emits `E_DEPRECATED` after lookup, access,
+table initialization and a required typed read. Quiet probes can therefore warn
+on an uninitialized slot while an ordinary read fails first. Each access reaching
+this phase warns; importing-class access uses its ordinary property table. A retained
+source, root, declaration, name and access mode survive handler rebinding and
+saved frames. Resumption reads the live selected cell, including handler writes.
+
+Assignments preserve Zend's operand order: a simple RHS variable is read after
+the warning, while a computed RHS is retained before address lookup. Direct
+assignment, compound update, increment and reference binding finish their opcode
+before a handler exception propagates. A reference fetch can promote a nullable
+slot but abort the following assignment or call. Pending exceptions suppress
+secondary typed rejection and user Stringable entry; valid scalar conversions
+can still finish. A new nonnullable reference error chains
+the handler exception. The address receipt owns no value. Its store task owns
+one additional RHS reference; a compiled literal's pool owner remains intact.
+Default initialization uses the raw declaring trait scope independently of the
+live caller, with physical `__TRAIT__` preserved through nested imports.
 
 The source truth is `Zend/zend_compile.c::zend_compile_class_decl`,
 `Zend/zend_inheritance.c::zend_do_link_class` and its trait binding helpers,
-`Zend/zend_object_handlers.c::zend_std_get_static_method`, and the trait branch
+`Zend/zend_object_handlers.c::zend_std_get_static_method`,
+`zend_std_get_static_property_with_info`,
+`Zend/zend_execute.c::zend_fetch_static_property_address_ex`, and the trait branch
 of `Zend/zend_ast.c::zend_ast_evaluate_ex`.
 
 Run author source controls with
@@ -100,12 +131,23 @@ the reference/initializer/type-identity and instance-template protocols check
 genuine full import states, including a distinct live caller during initialization.
 The [data ledger](../../coverage/semantics/trait-data-review.json) keeps original
 failures, actual-parent interactions and explicit dependencies separate.
+The `trait_property_*review_cases.json` catalogues and two property protocols
+cover warning resumption, saved emitters, access modes, abrupt opcode completion
+and RHS ownership. The [property-access ledger](../../coverage/semantics/trait-property-access-review.json)
+records 33 source agreements and 286 reached state premises at their actual cuts.
+The [collision ledger](../../coverage/semantics/trait-collisions-review.json) records
+14 exact source tuples and 97 reached publication/callback assertions. Its other
+native preparations remain uncredited until their required paths are implemented.
 
-Effectful or unresolved collision evaluation and direct trait static-property
-deprecation continuations remain required. Reached deprecation controls are explicit
-Unsupported and carry zero native agreement; missing/private/unset errors retain
-their earlier priority. The original instance-template Unsupported controls remain
-historical evidence, with actual246 interactions recorded separately. A parentless
+Generic operation warnings, private-final warning ordering, real dependency
+binding/caching and endogenous collision expression errors remain required.
+An excluded `parent::` collision control terminated the pinned engine with
+SIGSEGV; it supplies no language-level oracle result or agreement.
+Historical reached
+deprecation controls remain zero agreement at their old cuts; module254 has its
+own source and state evidence. Missing/private/unset errors retain their earlier
+priority. The original instance-template Unsupported controls remain historical
+evidence, with actual246 interactions recorded separately. A parentless
 trait `parent` parameter remains a valid declaration; receiving that unresolved
 dependent type retains the existing Unsupported boundary. Closure keyword NEW
 defaults use the separate module245 protocol; broader body keyword NEW retains

@@ -1,0 +1,30 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; native-only259 preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Namespaced constant lookup and actual Q/R caller/captured handler scope through recorded trait collision diagnostics.",
+  "preparation_failure": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-recording-scope-native259-c3dmwqxu/report.json",
+  "cases": [
+    {
+      "id": "namespaced-e-strict-shadow-emits-no-builtin-collision-warning",
+      "source": "<?php namespace N;const E_STRICT=9;set_error_handler(function($n,$m){echo \"H;\";return true;});trait T{public static $x=E_STRICT;}echo \"PRE;\";class C{use T;public static $x=9;}echo \"POST;\",C::$x;",
+      "source_sha256": "25e1d9c69435bd106df8fc3a4b7f75ab0de7d70d39a818760379ca8da249ef4e",
+      "status": "normal",
+      "stdout_base64": "UFJFO1BPU1Q7OQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-recording-scope-native259-c3dmwqxu/report.json",
+      "native_raw_sha256": "fffb6f995d66c7a218941a5ab07e39c6a5d8df90cb7b0d6e8085104001258bee"
+    },
+    {
+      "id": "recorded-collision-handler-keeps-real-lexical-and-called-maker-scope",
+      "source": "<?php trait T{public const X=E_STRICT;}function linkClass(){class C{use T;public const X=2048;public static function marker(){echo \"M;\";}}}class Q{public static function run(){set_error_handler(function($n,$m){echo self::class,\":\",get_called_class(),\";\";C::marker();return true;});linkClass();}}class R extends Q{}echo \"PRE;\";R::run();echo \"POST;\",C::X;",
+      "source_sha256": "defc74bdfc979d8e5d66ce684f3eff321bac7018581d8bf3bd120676db317950",
+      "status": "normal",
+      "stdout_base64": "UFJFO1E6UjtNO1BPU1Q7MjA0OA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-recording-scope-native259-etg6nuv0/report.json",
+      "native_raw_sha256": "e456b6878fbd32594cf8c5c583acad0ae35c2457c9a5cc9d1e65bbc07a36b4a4"
+    }
+  ]
+}
