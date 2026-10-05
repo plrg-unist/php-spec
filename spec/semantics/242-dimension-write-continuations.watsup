@@ -40,6 +40,9 @@ dec $key_write_self(ptask) : bool
 dec $key_write_line(ptask) : int
 dec $key_write_done(pstate, plocation) : pstate
 dec $key_write_dimension(pstate, poperand, int, bool) : pstate
+dec $key_write_selected(pstate, poperand, int, bool) : pstate
+dec $container_write_root(pstate, pbase) : bool
+dec $container_write_pending(pstate) : bool
 dec $key_write_value(pstate, pkeywrite) : pstate
 dec $key_write_lookup(pstate, pkeywrite) : pstate
 dec $key_write_insert(pstate, pkeywrite) : pstate
@@ -192,7 +195,7 @@ def $key_write_plan(S) = (pkeywriter)
   -- if S.TODO = ptask :: ptask_tail*
   -- if ~$key_write_path_task(ptask)
   -- if $key_write_writer(S, porigin, ptask, $key_write_task_base(ptask, S.BASE, S.RESULT), S.RESULT) = (pkeywriter)
-  -- if $key_write_root(S, pkeywriter.BASE)
+  -- if $container_write_root(S, pkeywriter.BASE)
   -- if $key_write_target_base(pkeywriter.BASE)
   -- if $key_writer_base_source(S, pkeywriter)
 def $key_write_plan(S) = (pkeywriter)
@@ -273,21 +276,21 @@ rule PhpStep/key-write-null-temporary: S ~> S[.TODO = $key_write_add_temporary(p
 rule PhpStep/key-write-global-base: S ~> S[.TODO = (KEY_WRITE_GLOBAL poperand z b) :: ptask_tail*]
   -- if S.TODO = (KEY_WRITE_BASE (BASE_GLOBAL poperand z) b) :: ptask_tail*
 
-def $key_write_dimension(S, poperand, z, b_rw) = $key_write_dispatch(S_array[.RESULT = KNOWN PNULL], pkeywrite)
-  -- if S.ORIGIN = (porigin)
-  -- if $location_slot(S, S.LOCATION) = DEFINED (PARRAY n_old)
+def $key_write_dimension(S, poperand, z, b_rw) = $key_write_selected(S_array, poperand, z, b_rw)
+  -- if $key_write_array_slot($location_slot(S, S.LOCATION))
   -- if S_array = $location_array(S, S.LOCATION, z)
-  -- if S_array.RESULT = KNOWN (PARRAY n)
-  -- if $error_missing_operand(S_array, poperand)
+  -- if S_array.COMPLETION = NORMAL
+def $key_write_selected(S, poperand, z, b_rw) = $key_write_dispatch(S[.RESULT = KNOWN PNULL], pkeywrite)
+  -- if S.ORIGIN = (porigin)
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if $error_missing_operand(S, poperand)
   -- if poperand = VARIABLE n_name* z_operand
   -- if pkeywrite = {READ {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE PNULL, BASE PARRAY n, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_CV, KEY KSTRING eps, NAME n_name*}, PLACE S.LOCATION, RW b_rw}
-def $key_write_dimension(S, poperand, z, b_rw) = $key_write_value(S_array[.RESULT = KNOWN PNULL], pkeywrite)
+def $key_write_selected(S, poperand, z, b_rw) = $key_write_value(S[.RESULT = KNOWN PNULL], pkeywrite)
   -- if S.ORIGIN = (porigin)
-  -- if $location_slot(S, S.LOCATION) = DEFINED (PARRAY n_old)
-  -- if S_array = $location_array(S, S.LOCATION, z)
-  -- if S_array.RESULT = KNOWN (PARRAY n)
-  -- if ~$error_missing_operand(S_array, poperand)
-  -- if S_key = $quiet_operand(S_array, poperand)
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if ~$error_missing_operand(S, poperand)
+  -- if S_key = $quiet_operand(S, poperand)
   -- if S_key.RESULT = KNOWN pvalue
   -- if pkeywrite = {READ {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue, BASE PARRAY n, OWNERS BASE_VALUE (KNOWN PNULL), LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}, PLACE S.LOCATION, RW b_rw}
 def $key_write_dimension(S, poperand, z, b_rw) = $key_write_done(S_place, S_place.LOCATION)
@@ -300,9 +303,11 @@ def $key_write_dimension(S, poperand, z, false) = $key_write_done(S_place, S_pla
 rule PhpStep/key-write-dimension: S ~> $key_write_dimension(S, poperand, z, b)
   -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
   -- if ~$key_write_array_init($location_slot(S, S.LOCATION))
+  -- if ~$container_write_pending(S)
 rule PhpStep/key-write-initialize-dimension: S ~> S_array[.RESULT = KNOWN PNULL]
   -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
   -- if $key_write_array_init($location_slot(S, S.LOCATION))
+  -- if ~$container_write_pending(S)
   -- if S.LOCATION =/= NOWHERE \/ (~$key_append_context(S, S.TODO) /\ ~$key_coalesce_walk(S.TODO))
   -- if S_array = $fetch_location_array(S, S.LOCATION, z)
 

@@ -115,6 +115,8 @@ test-semantics: build
 	python3 tests/semantics/object_property_default_protocol.py
 	python3 tests/semantics/property_callable_creation_protocol.py
 	python3 tests/semantics/trait_constant_callable_protocol.py
+	python3 tests/semantics/global_constant_callable_protocol.py
+	python3 tests/semantics/global_constant_prebind_protocol.py
 	python3 tests/semantics/default_parameter_compiler.py
 	python3 tests/semantics/default_parameters.py
 	python3 tests/semantics/default_parameter_protocol.py
@@ -240,6 +242,8 @@ test-semantics: build
 	python3 tests/semantics/stdclass_protocol.py
 	python3 tests/semantics/object_cast_sources.py
 	python3 tests/semantics/object_cast_protocol.py
+	python3 tests/semantics/precision_sources.py
+	python3 tests/semantics/precision_protocol.py
 	python3 tests/semantics/noctor_compiler.py
 	python3 tests/semantics/noctor_args.py
 	python3 tests/semantics/noctor_args_protocol.py
@@ -384,6 +388,21 @@ test-semantics: build
 	python3 tests/semantics/trait_method_ctor_review_protocol.py
 	python3 tests/semantics/trait_method_cold_review_protocol.py
 	python3 tests/semantics/trait_method_closure_cold_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_collision_error_review_cases.json
+	python3 tests/semantics/method_runtime.py --match property-error-keeps --catalogue tests/semantics/trait_data_collision_error_function_review_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_collision_held_primary_review_cases.json
+	python3 tests/semantics/trait_collision_error_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_collision_cycle_review_cases.json
+	python3 tests/semantics/trait_collision_cycle_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_cache_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_cache_review_cases.json
+	python3 tests/semantics/trait_failed_cache_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_cache_error_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_cache_requestfatal_review_cases.json
+	python3 tests/semantics/trait_failed_cache_error_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_trait_cache_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_trait_priority_review_cases.json
+	python3 tests/semantics/trait_failed_trait_cache_review_protocol.py
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
 	python3 tests/semantics/eval_class_scope_protocol.py
@@ -432,5 +451,6 @@ test-semantics: build
 	python3 tests/semantics/user_iterator_protocol.py
 	python3 tests/semantics/iterator_declaration_notices.py
 	python3 tests/semantics/eval_declaration_notices_protocol.py
+	python3 tests/semantics/runtime_formatter_protocol.py
 	python3 tests/semantics/destructuring_mechanism.py
 	python3 tests/semantics/validate.py

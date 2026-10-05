@@ -81,7 +81,7 @@ dec $declaration_class_value(pstate, porigin) : pvalue?
 def $declaration_class_value(S, porigin) = (pvalue)
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $pool_value(S.POOLS, porigin) = (pvalue)
-def $declaration_class_value(S, porigin) = $parser_literal(expression)
+def $declaration_class_value(S, porigin) = $parser_literal_origin(S, (porigin), expression)
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $pool_value(S.POOLS, porigin) = eps
 def $declaration_class_value(S, porigin) = eps -- otherwise
@@ -181,21 +181,21 @@ def $declaration_receiver_selection(S, porigin_site, expression, porigin_called,
 def $declaration_method_call_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls, b_firstclass) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $ppfirstclass(phpType7*) = b_firstclass
-  -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
+  -- if $scoped_source_method_origin(S, porigin_site, phpType20, pmethoddesc.NAME)
   -- if $declaration_receiver_selection(S, porigin_site, expression, porigin_called, pdeclcalls)
   -- if $declaration_method_at(S, porigin_called, pmethoddesc.NAME, $declaration_caller_lexical(pdeclcalls)) = (pmethoddesc)
   -- if $method_accessible(S, pmethoddesc, $declaration_caller_lexical(pdeclcalls))
 def $declaration_method_call_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls, b_firstclass) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if $ppfirstclass(phpType7*) = b_firstclass
-  -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
+  -- if $scoped_source_method_origin(S, porigin_site, phpType20, pmethoddesc.NAME)
   -- if $declaration_receiver_selection(S, porigin_site, expression, porigin_called, pdeclcalls)
   -- if $declaration_method_at(S, porigin_called, pmethoddesc.NAME, $declaration_caller_lexical(pdeclcalls)) = (pmethoddesc)
   -- if $method_accessible(S, pmethoddesc, $declaration_caller_lexical(pdeclcalls))
 def $declaration_method_call_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls, b_firstclass) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
   -- if $ppfirstclass(phpType7*) = b_firstclass
-  -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
+  -- if $scoped_source_method_origin(S, porigin_site, phpType20, pmethoddesc.NAME)
   -- if $declaration_requested(S, porigin_site, phpType19, pdeclcalls) = (porigin_requested)
   -- if $effective_method(S, porigin_requested, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
   -- if $declaration_static_called(S, phpType19, pmethoddesc, porigin_requested, porigin_called, pdeclcalls)
@@ -205,7 +205,7 @@ def $declaration_method_call_selection(S, pmethoddesc, porigin_called, porigin_s
   -- if porigin_site = PORIGIN n_unit pcpath
   -- if $declaration_class_value(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = eps
   -- if $ppfirstclass(phpType7*) = b_firstclass
-  -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
+  -- if $scoped_source_method_origin(S, porigin_site, phpType20, pmethoddesc.NAME)
   -- if $effective_method(S, porigin_called, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
   -- if $declaration_static_called(S, expression_class, pmethoddesc, porigin_called, porigin_called, pdeclcalls)
   -- if $method_accessible(S, pmethoddesc, $declaration_caller_lexical(pdeclcalls))

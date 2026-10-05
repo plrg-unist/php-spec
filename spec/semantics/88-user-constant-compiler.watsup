@@ -31,7 +31,7 @@ def $ppconstant_list(P, pcpath, n, phpType46*) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppconstant_list(P, pcpath, n, eps) = P
   -- if P.COMPLETION = PPCNORMAL
-def $ppconstant_list(P, pcpath, n, (NConst phpType11 expression metadata) :: phpType46*) = $ppconstant_list($ppconstant_name($ppconstant_expr(P, pcpath ++ [PCINDEX n, PCFIELD 1], expression), pcpath ++ [PCINDEX n], phpType11), pcpath, $(n + 1), phpType46*)
+def $ppconstant_list(P, pcpath, n, (NConst phpType11 expression metadata) :: phpType46*) = $ppconstant_list($ppconstant_name($ppconstant_expr(P[.LOCATION.PATH = pcpath ++ [PCINDEX n, PCFIELD 1]], pcpath ++ [PCINDEX n, PCFIELD 1], expression), pcpath ++ [PCINDEX n], phpType11), pcpath, $(n + 1), phpType46*)
   -- if P.COMPLETION = PPCNORMAL
 
 def $ppconstant_expr(P, pcpath, expression) = $ppconstant_emit($ppconstant_validate($ppfoldresult(P, $pfprepare($ppclass_fold(P)[.CONSTANT = true], pcpath, expression, P.ENV, P.LOCATION.LINE)), pcpath, expression), pcpath, expression)[.FOLD.CONSTANT = false]

@@ -468,9 +468,21 @@ def $trait_parent_available(S, pclassdesc) = ($class_internal(ptbytes) \/ $class
   -- if pclassdesc.PARENT = (ptbytes)
 def $trait_needs_binding(S, pclassdesc) = (S.COMPLETION = NORMAL /\ ~$class_internal(pclassdesc.NAME) /\ $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps /\ $trait_parent_available(S, pclassdesc) /\ $trait_plan(S, pclassdesc).TRAITS =/= eps)
 
+dec $trait_cache_failed(pstate, pstate) : bool
+dec $trait_failed_cache_ready(pstate, pstate) : bool
+dec $trait_failed_cache_restore(pstate, pstate) : pstate
 def $trait_restore(S, S_result) = S_result -- if S_result.COMPLETION = NORMAL
 def $trait_restore(S, S_result) = S_result[.CLASSES = S.CLASSES][.CLASSNAMES = S.CLASSNAMES][.LINKEDPARENTS = S.LINKEDPARENTS][.LINKEDINTERFACES = S.LINKEDINTERFACES][.CLASSSTATICS = S.CLASSSTATICS]
   -- if S_result.COMPLETION =/= NORMAL
+  -- if ~$trait_cache_failed(S, S_result)
+def $trait_restore(S, S_result) = $trait_failed_cache_restore(S, S_result)
+  -- if S_result.COMPLETION =/= NORMAL
+  -- if $trait_cache_failed(S, S_result)
+  -- if $trait_failed_cache_ready(S, S_result)
+def $trait_restore(S, S_result) = S[.COMPLETION = UNSUPPORTED "trait dependency cache after failed composition"]
+  -- if S_result.COMPLETION =/= NORMAL
+  -- if $trait_cache_failed(S, S_result)
+  -- if ~$trait_failed_cache_ready(S, S_result)
 
 def $activate_class_body(S, pclassdesc) = $activate_class_base_body(S, pclassdesc)
   -- if ~$trait_needs_binding(S, pclassdesc)
@@ -716,7 +728,7 @@ def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_
 def $trait_method_call_valid(S, ptraitcall) = true
   -- if S.ORIGIN = (ptraitcall.SITE)
   -- if $origin_node(S.SOURCES, ptraitcall.SITE) = (NExprStaticCall ptraitcall.CLASS phpType20 (SEQUENCE ptraitcall.ARGUMENTS) metadata)
-  -- if $scoped_source_method(phpType20, ptraitcall.METHOD)
+  -- if $scoped_source_method_origin(S, ptraitcall.SITE, phpType20, ptraitcall.METHOD)
   -- if $scoped_selector_class(S, ptraitcall.SELECTOR) = (ptraitcall.REQUESTED)
   -- if $class_at(S.CLASSES, ptraitcall.REQUESTED) = (pclassdesc)
   -- if pclassdesc.KIND = "trait"

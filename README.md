@@ -82,6 +82,13 @@ controls pass. The held fatal/shutdown source also matches at the actual231
 composition, freezing its destination after rendering and before the queue.
 Wider display/startup directives and diagnostic consumers stay open.
 
+[Live precision](coverage/semantics/precision-review.json) preserves raw startup,
+get/set/Restore and callback-time float formatting. Each parsed unit keeps its
+creation precision for folded literals and ordinary compiled operands; deferred
+initializer ASTs convert with the live value. Sixteen source/profile comparisons,
+194 supplied state checks and 12 transport controls pass at their recorded cuts.
+Changing precision during suspended eval compilation remains explicit Unsupported.
+
 [Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows
 effective CAST/FAST_CONCAT/ROPE order, retaining fetched temporaries separately
 from live variables through Stringable and warning callbacks. Nine exact source
@@ -161,7 +168,8 @@ cleanup. Tentative-return declarations use real prototype order and runtime/file
 warning delivery after publication. Early eval warnings suspend genuine
 compilation at each publication; handler throws or exit preserve later class
 publication, while user fatals stop it. Compiler fatal formatting retains the
-primary diagnostic through source effects and nested eval/include compilation failures.
+primary diagnostic through source effects, nested eval/include compilation and
+deferred runtime class-link failures.
 IteratorAggregate, ArrayAccess and other Traversable consumers remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
@@ -295,8 +303,13 @@ Throws preserve callback writes; compound RHS timing and nested real-cell ingres
 remain native-grounded. Author9/224 and independent12/273 share four originals,
 giving17 unique private agreements; one current private-handler/caller-cell source
 passes.
-Wider memoized containers and earlier container/string/object producers remain
-required.
+[Container initialization and reference writes](docs/semantics/SOURCE-CONTAINER-WRITES.md)
+now stage undefined/null/false CV-rooted W/RW containers and final array-reference
+ingress. Real false-conversion protection, distinct FETCH/ASSIGN/DIM_OP paths,
+delayed source demand and typed backing through COW survive callbacks. Author12/242
+and independent21/275 share three originals, giving30 unique private agreements;
+one current private-handler/captured-cell source passes. Wider read/quiet/memoized/
+GLOBALS containers and string/object producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -488,6 +501,15 @@ agreements and112 AL/122 SL premises check partial failure, copied children and
 actual constant-cache ownership. Compiled/named keyword NEW now retains exact
 constant METHOD receipt authority through plain-clone retirement; one source and
 38 reached premises retain their separate [cut](coverage/semantics/named-keyword-new-review.json).
+Global `const` Closure and function/method callable values now evaluate before
+registration, retaining the genuine main/include/eval entry scope and shared
+constant ownership. Duplicate-warning callbacks hold their discarded candidate
+and captured lookup prefix; raw-trait notices precede allocation. Nine new source
+agreements and seven AL programs/341 premises retain their distinct cuts.
+Per-child alias receipts now preserve reads before and after callback namespace
+shadows; three further source agreements and two AL programs/184 premises verify
+first registration, mixed selections and throwing retry. Global `new` and wider
+object producers remain required.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -516,8 +538,16 @@ warnings retain selected cells and operand ownership through handlers and abrupt
 opcode completion. Deferred collision operands compare before type conversion;
 operation diagnostics are recorded with runtime operand order and AST lines,
 then delivered after class publication. Private-final compile warnings retain
-their phase order and handler-ineligible severity. Dependency caching, collision
-expression errors and readonly storage remain required. A bounded
+their phase order and handler-ineligible severity. Successful collision dependency
+fills retain real typed caches and distinct import scopes. Collision expression
+errors stop the comparison, flush earlier diagnostics without handlers and render
+the pending Error before the composition fatal. Cyclic lookups retain full imported
+constant identities and release transient failure allocations. Failed class links,
+including an initializer Error before the composition fatal, retain caches for
+published owners and release unpublished import caches. Raw trait composition uses
+the same source-kind proof; direct trait constants still fail before evaluation.
+Wider failed-link contexts,
+object-bearing dependencies and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound

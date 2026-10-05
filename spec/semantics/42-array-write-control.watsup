@@ -46,7 +46,9 @@ rule PhpStep/array-reference-capture: S ~> S[.TODO = (REF_ARRAY pbase S.CELL z) 
   -- if ~$reference_value_call(S)
 rule PhpStep/array-reference-bind: S ~> S_bound[.HELD = S.HELD]
   -- if S.TODO = (REF_ARRAY pbase n_source z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
   -- if S_bound = $assign_array_reference($hold_task_inputs(S), pbase, n_source, z)
 rule PhpStep/array-reference-bind-cv: S ~> S_bound[.HELD = S.HELD]
   -- if S.TODO = (REF_ARRAY_CV pbase n_source* z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
   -- if S_bound = $assign_array_reference_cv($hold_task_inputs(S), pbase, n_source*, z)

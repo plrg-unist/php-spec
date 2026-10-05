@@ -1,6 +1,7 @@
 ;; Initial parser ZVAL strings use finalized-function modes. A string produced
 ;; by later expression compilation still follows INIT_FCALL_BY_NAME with no fbc.
 dec $ppcall_literal(expression) : ptbytes?
+dec $ppcall_literal_at(expression, int) : ptbytes?
 dec $ppcall_dynamic(expression) : bool
 dec $ppcall_literal_name(ptbytes) : ptbytes
 dec $ppcall_literal_reference(ptbytes, metadata) : pnresult
@@ -8,9 +9,10 @@ dec $ppcall_literal_compile(ppstate, pcpath, ptbytes, phpType7*, metadata) : pps
 dec $ppcall_init(ppstate, pcpath) : ppstate
 dec $ppcall_constant_name(ppstate, pcpath, metadata) : ppstate
 
-def $ppcall_literal(expression) = (ptbytes)
-  -- if $parser_literal(expression) = (PSTRING ptbytes)
-def $ppcall_literal(expression) = eps -- otherwise
+def $ppcall_literal(expression) = $ppcall_literal_at(expression, 14)
+def $ppcall_literal_at(expression, z_precision) = (ptbytes)
+  -- if $parser_literal_at(expression, z_precision) = (PSTRING ptbytes)
+def $ppcall_literal_at(expression, z_precision) = eps -- otherwise
 def $ppcall_dynamic(expression) = ($ppcall_literal(expression) = eps)
 def $ppcall_literal_name(92 :: ptbytes) = ptbytes
 def $ppcall_literal_name(ptbytes) = ptbytes -- otherwise
@@ -21,7 +23,7 @@ def $ppcall_literal_reference(ptbytes, metadata) = PNRESOLVED { ORIGINAL NName (
 
 def $ppdispatch(P, pcpath, NExprFuncCall expression (SEQUENCE phpType7*) metadata, PPR) = $ppcall_literal_compile(P, pcpath, ptbytes, phpType7*, metadata)
   -- if ~$ppfirstclass(phpType7*)
-  -- if $ppcall_literal(expression) = (ptbytes)
+  -- if $ppcall_literal_at(expression, $precision_value(P.FOLD.MEMORY)) = (ptbytes)
 def $ppdispatch(P, pcpath, NExprFuncCall expression (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppcall_init($ppcall_constant_name($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, metadata), pcpath), pcpath ++ [PCFIELD 1], 0, phpType7*, PNUNSUPPORTED "dynamic call has deferred parameter modes")
   -- if ~$ppfirstclass(phpType7*)
   -- if $ppcall_dynamic(expression)

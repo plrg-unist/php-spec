@@ -67,7 +67,7 @@ def $ppbuiltin_defined(expression) = true
   -- if ~(92 <- ptbytes) /\ ~(58 <- ptbytes)
 def $ppbuiltin_defined(expression) = false -- otherwise
 def $ppbuiltin_constant(P, expression) = (pvalue)
-  -- if $parser_literal(expression) = (pvalue)
+  -- if $parser_literal_at(expression, $precision_value(P.FOLD.MEMORY)) = (pvalue)
 def $ppbuiltin_constant(P, NExprConstFetch name metadata) = $pnfold(pnreference)
   -- if $pnresolve(P.ENV, PLCONSTANT, name) = PNRESOLVED pnreference
 def $ppbuiltin_constant(P, expression) = eps -- otherwise
