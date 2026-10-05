@@ -253,6 +253,17 @@ rule PhpStep/named-default-bind: S ~> $named_hole_store($default_cache_value(S_v
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue
   -- if pvalueclass = $constant_class(S_value, pdefault.ORIGIN)
+  -- if $parameter_default_transfer_valid(S_value, pfunction, n, pvalue, pvalueclass)
+rule PhpStep/named-default-transfer: S ~> S_value[.COMPLETION = UNSUPPORTED "uncertified parameter callable default transfer"]
+  -- if S.TODO = (NAMED_DEFAULT_BIND porigin n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if S_value = $resolve_at(S, S.RESULT, $default_parameter_line(S, porigin, n))
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if pvalueclass = $constant_class(S_value, pdefault.ORIGIN)
+  -- if ~$parameter_default_transfer_valid(S_value, pfunction, n, pvalue, pvalueclass)
 rule PhpStep/named-default-abrupt: S ~> S_value
   -- if S.TODO = (NAMED_DEFAULT_BIND porigin n) :: ptask_tail*
   -- if ptask_tail* = eps

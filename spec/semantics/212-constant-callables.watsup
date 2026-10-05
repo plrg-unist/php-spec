@@ -51,6 +51,10 @@ dec $constant_callable_method_create(pstate, porigin) : pstate
 dec $constant_callable_method_allocate(pstate, porigin, pmethoddesc, porigin, nat) : pstate
 dec $constant_callable_classes_foldable((pkey, pvalueclass)*) : bool
 dec $ppconstant_callable_initializer(ppstate) : bool
+dec $parameter_callable_active(pstate, porigin) : bool
+dec $parameter_callable_record_kind(pstate, pconstantclosure) : bool
+dec $parameter_callable_cached_method(pstate, porigin) : pmethoddesc?
+dec $parameter_callable_cached_function(pstate, porigin) : pfunction?
 
 def $ppconstant_closure(P, false, phpType21, metadata) = $ppconstant_error(P, $ptascii("Closures in constant expressions must be static"), $psline(metadata))
 def $ppconstant_closure(P, true, SEQUENCE phpType22*, metadata) = $ppconstant_error(P, $ptascii("Cannot use(...) variables in constant expression"), $psline(metadata))
@@ -138,7 +142,7 @@ def $constant_callable_context(S, porigin) = ((pclassconstantdesc.ORIGIN, pclass
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
   -- if $constant_callable_form(pcnode)
 def $constant_callable_context(S, porigin) = eps -- otherwise
-def $constant_callable_active(S, porigin) = ($constant_callable_context(S, porigin) =/= eps \/ $global_constant_callable_active(S, porigin))
+def $constant_callable_active(S, porigin) = ($constant_callable_context(S, porigin) =/= eps \/ $global_constant_callable_active(S, porigin) \/ $parameter_callable_active(S, porigin))
 
 def $constant_callable_record(eps, n) = eps
 def $constant_callable_record(pconstantclosure :: pconstantclosure_tail*, n) = (pconstantclosure)
@@ -155,9 +159,9 @@ def $constant_callable_prefix(S, porigin) = pconstantclosure.PREFIX
 def $constant_callable_prefix(S, porigin) = |S.DECLARATIONS|
   -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin) = eps
 def $constant_callable_creation_prefix(S, porigin) = |S.DECLARATIONS|
-  -- if $property_callable_initializer(S, porigin) \/ $constant_callable_imported_context(S, porigin)
+  -- if $property_callable_initializer(S, porigin) \/ $constant_callable_imported_context(S, porigin) \/ $parameter_callable_active(S, porigin)
 def $constant_callable_creation_prefix(S, porigin) = $constant_callable_prefix(S, porigin)
-  -- if ~$property_callable_initializer(S, porigin) /\ ~$constant_callable_imported_context(S, porigin)
+  -- if ~$property_callable_initializer(S, porigin) /\ ~$constant_callable_imported_context(S, porigin) /\ ~$parameter_callable_active(S, porigin)
 def $constant_callable_stamp(S, n, porigin, n_prefix) = S[.OBJECTS = $object_set(S.OBJECTS, n, CONSTANTCLOSURE porigin S.OBJECTS[n])][.CONSTANTCLOSURES = S.CONSTANTCLOSURES ++ [{OBJECT n, SITE porigin, DECL porigin_decl, PREFIX n_prefix}]]
   -- if $constant_callable_context(S, porigin) = ((porigin_decl, porigin_owner))
 
@@ -357,6 +361,7 @@ def $constant_callable_record_prefix(S, pconstantclosure) = true
 def $constant_callable_record_prefix(S, pconstantclosure) = (pconstantclosure.PREFIX = pconstantclosure_first.PREFIX)
   -- if ~$property_callable_record(S, pconstantclosure)
   -- if ~$constant_callable_imported_record(S, pconstantclosure)
+  -- if ~$parameter_callable_record_kind(S, pconstantclosure)
   -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (expression)
   -- if $firstclass_site(S, pconstantclosure.SITE) \/ $constant_callable_method_site(S, pconstantclosure.SITE)
   -- if $constant_callable_first(S.CONSTANTCLOSURES, pconstantclosure.SITE) = (pconstantclosure_first)

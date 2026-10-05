@@ -74,6 +74,8 @@ dec $closure_creation_stamp(pstate, pfunction) : pclosurecreation?
 dec $closure_evidence_current(pstate) : pclosureevidence?
 dec $closure_creator_current(pstate) : pclosurecreator?
 dec $closure_scope_classes_valid(pstate, porigin, pclosurescope) : bool
+dec $parameter_callable_source_site(pstate, porigin) : bool
+dec $parameter_callable_real_unscoped(pstate, nat) : bool
 dec $closure_scope_receiver_free(pstate, porigin, pclosurescope) : bool
 dec $closure_creator_valid(pstate, porigin, pclosurescope, pclosurecreation, pclosurecreator) : bool
 dec $closure_scope_append(pstate, pfunction, nat) : pstate
@@ -443,10 +445,12 @@ def $closure_receiver_free_ancestry(S, porigin) = false -- otherwise
 dec $closure_scope_creation_valid(pstate, porigin, pclosurescope) : bool
 def $closure_scope_creation_valid(S, porigin, pclosurescope) = true
   -- if $constant_callable_source_scope(S, porigin) = eps
+  -- if ~$parameter_callable_source_site(S, porigin)
   -- if ~$closure_nested_creation(S, porigin)
   -- if pclosurescope.CREATION = eps
 def $closure_scope_creation_valid(S, porigin, pclosurescope) = true
   -- if $constant_callable_source_scope(S, porigin) = eps
+  -- if ~$parameter_callable_source_site(S, porigin)
   -- if $closure_nested_creation(S, porigin)
   -- if pclosurescope.CREATION = (pclosurecreation)
   -- if pclosurecreation.EVIDENCE = eps
@@ -457,11 +461,13 @@ def $closure_scope_creation_valid(S, porigin, pclosurescope) = true
   -- if $method_capture_invocation_valid(S, {FUNCTION pclosurecreation.FUNCTION, CALLSITE pclosurecreation.CALLSITE, LEXICAL_CLASS (pclosurescope.LEXICAL), CALLED_CLASS (pclosurescope.CALLED)}, porigin_call)
 def $closure_scope_creation_valid(S, porigin, pclosurescope) = $closure_creator_valid(S, porigin, pclosurescope, pclosurecreation, pclosurecreator)
   -- if $constant_callable_source_scope(S, porigin) = eps
+  -- if ~$parameter_callable_source_site(S, porigin)
   -- if $closure_nested_creation(S, porigin)
   -- if pclosurescope.CREATION = (pclosurecreation)
   -- if pclosurecreation.EVIDENCE = (pclosurecreator)
 def $closure_scope_creation_valid(S, porigin, pclosurescope) = (pclosurescope.CREATION = eps)
   -- if $constant_callable_source_scope(S, porigin) =/= eps
+  -- if ~$parameter_callable_source_site(S, porigin)
 def $closure_scope_creation_valid(S, porigin, pclosurescope) = false -- otherwise
 
 dec $trait_closure_source_matches(pstate, porigin, porigin) : bool
@@ -509,6 +515,7 @@ def $closure_scope_complete(S, eps) = true
 def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if ~$parameter_callable_source_site(S, porigin)
   -- if $closure_source_class(S, porigin) = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
