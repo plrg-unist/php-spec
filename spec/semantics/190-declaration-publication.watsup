@@ -68,14 +68,20 @@ def $declaration_file_unit(pfilecontext :: pfilecontext_tail*, n_depth) = $pmmax
 def $declaration_file_unit(pfilecontext :: pfilecontext_tail*, n_depth) = $declaration_file_unit(pfilecontext_tail*, n_depth)
   -- if pfilecontext.PHASE =/= FILE_UNIT_RUN \/ $(pfilecontext.OWNER > n_depth) \/ pfilecontext.UNIT = eps
 
-dec $declaration_context(pstate, pcallcontext?) : (porigin, porigin?, porigin?, porigin?)*
-dec $declaration_frames(pstate, pframe*) : (porigin, porigin?, porigin?, porigin?)*
+dec $declaration_autoload_context(pstate, pcallcontext) : pdeclcall?
+def $declaration_autoload_context(S, pcallcontext) = eps -- otherwise
+dec $declaration_context(pstate, pcallcontext?) : pdeclcall*
+dec $declaration_frames(pstate, pframe*) : pdeclcall*
 dec $declaration_cause(pstate) : pdeclcause
 def $declaration_context(S, (pcallcontext)) = [(pcallcontext.FUNCTION, pcallcontext.CALLSITE, pcallcontext.LEXICAL_CLASS, pcallcontext.CALLED_CLASS)]
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) =/= eps
+  -- if $declaration_autoload_context(S, pcallcontext) = eps
+def $declaration_context(S, (pcallcontext)) = [pdeclcall]
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) =/= eps
+  -- if $declaration_autoload_context(S, pcallcontext) = (pdeclcall)
 def $declaration_context(S, pcallcontext?) = eps -- otherwise
 def $declaration_frames(S, eps) = eps
-def $declaration_frames(S, pframe :: pframe_tail*) = $declaration_context(S, pframe.CONTEXT) ++ $declaration_frames(S, pframe_tail*)
+def $declaration_frames(S, pframe :: pframe_tail*) = $declaration_context($constant_frame_scope(S, pframe, pframe_tail*), pframe.CONTEXT) ++ $declaration_frames(S, pframe_tail*)
 def $declaration_cause(S) = { UNIT $pmmax($declaration_eval_unit(S.EVALCONTEXTS, |S.FRAMES|), $declaration_file_unit(S.FILECONTEXTS, |S.FRAMES|)), CALLS ($declaration_context(S, S.CURRENT) ++ $declaration_frames(S, S.FRAMES)) }
 
 dec $declaration_success(pstate, pstate, porigin, ppubkind) : pstate
