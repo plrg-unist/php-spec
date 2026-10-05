@@ -434,7 +434,8 @@ $global_new_current(S_table)
 ~$new_has_ctor(S_table, ptbytes_class)
 $autoload_pending(S_table, ptbytes_class) = false
 $class_at(S_table.CLASSES, porigin_class) = (pclassdesc)
-pclassdesc.NAME = ptbytes_class /\ pclassdesc.PROPERTIES = [ppropertydesc]
+pclassdesc.NAME = ptbytes_class
+pclassdesc.PROPERTIES = [ppropertydesc]
 ppropertydesc.ORIGIN = porigin_property /\ ~ppropertydesc.STATIC
 ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
 $instance_default_at(S_table.INSTANCEDEFAULTS, porigin_class, porigin_property) = (pinstancetemplate_pending)
