@@ -307,7 +307,7 @@ def $access_nonobject(S, paccess, PBOOL false) = $error_dispatch(S[.ORIGIN = (pa
 
 def $access_arguments(paccess) = [KNOWN paccess.OFFSET, KNOWN paccess.VALUE] -- if paccess.MODE = ACCESS_SET
 def $access_arguments(paccess) = [KNOWN paccess.OFFSET] -- if paccess.MODE =/= ACCESS_SET
-def $access_call(S, paccess, ptbytes) = S[.TODO = (CALL_ARGS (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) eps |poperand*| poperand* (paccess.SITE) paccess.LINE) :: (ACCESS_RESULT paccess[.PHASE = ACCESS_CALL ptbytes]) :: ptask_tail*][.ORIGIN = (paccess.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $access_call(S, paccess, ptbytes) = S[.TODO = (CALL_ARGS (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) eps (|poperand*|) poperand* (paccess.SITE) paccess.LINE) :: (ACCESS_RESULT paccess[.PHASE = ACCESS_CALL ptbytes]) :: ptask_tail*][.ORIGIN = (paccess.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if paccess.OBJECT = (n)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, ptbytes, |S.CLASSES|) = (pmethoddesc)
