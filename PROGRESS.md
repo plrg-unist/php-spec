@@ -15,7 +15,7 @@ operands instead use live precision after callbacks. Sixteen exact source/profil
 comparisons across eleven main programs retain d028/e594/73011 cuts. At73011,
 state54/39/27/74 (194 supplied checks plus12 program bindings) and transport12 pass;
 SL261 and the changed adapter jobs1 build retain their separate cuts. The actual
-c36 parent is preserved in264 modules through focused source review, with no
+ae0 parent is preserved in264 modules through focused source review, with no
 renewed execution. [Ledger](coverage/semantics/precision-review.json) retains the
 include-history and deferred-concat mismatches plus fixture failures. Changed
 precision during suspended eval compilation, Array include/eval warning ingress,

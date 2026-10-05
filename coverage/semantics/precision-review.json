@@ -3,10 +3,11 @@
   "status": "independently_reviewed_partial",
   "target": "PHP 8.5.10 CLI NTS 64-bit",
   "current_composition": {
-    "revision": "645e6d160c6c1e680a0ac8f825910840c6db77d5",
-    "parent": "c36f46e773db82782483fdbce2fd21954669ed0a",
+    "revision": "f53e22dea9946bfb8a92f21704bf56dc408e3baa",
+    "parent": "ae0aa479eb5369c879c3b42c358a12aae0ec6c9f",
     "modules": 264,
-    "bridge": "Exact ordered parent263 plus272. Actual271/274/275 global registration, trait-error and report/unwind hooks retained alongside normalized precision entry/replay. Focused independent source review found no introduced interaction requiring renewed execution."
+    "initial_c36_revision": "645e6d160c6c1e680a0ac8f825910840c6db77d5",
+    "bridge": "Exact ordered parent263 plus272. Actual271/274/275 global registration, trait-error and report/unwind hooks retained alongside normalized precision entry/replay. The final21-line trait self-cycle follow-up is disjoint from precision fields/capture/runtime paths; no renewed execution."
   },
   "contract": [
     "PRECISIONINIT/PRECISIONINI preserve complete registered/live octets, with modified-entry Restore. Signed64 decimal prefix uses C-string bytes; values below-1 reject. Failed runtime writes mark modified without replacing raw bytes; invalid startup modifiers fall back to the directive default14.",
