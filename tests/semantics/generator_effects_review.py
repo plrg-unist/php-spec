@@ -36,6 +36,7 @@ CASES = {
     'send-two-yield-expression': (b'<?php\nfunction seq(){$x=(yield 1)+(yield 2);return $x;}$g=seq();echo $g->send(5);echo $g->send(7)===null?"N":"X";echo $g->getReturn();', b'2N12'),
     'send-argument-throw-keeps-paused': (b'<?php\nfunction argument(){echo "A";throw new Exception("E");}function seq(){$x=yield 1;echo $x;yield 2;}$g=seq();echo $g->current();try{$g->send(argument());}catch(Exception $e){echo "E";foreach($e->getTrace() as $r){echo $r["function"],";";}}echo $g->current(),":",$g->key();echo $g->send(8);$g->next();', b'1AEargument;1:082'),
     'reentrant-send-throw': (b'<?php\nfunction seq(){$x=yield 1;try{$GLOBALS["g"]->send(4);}catch(Error $e){echo "S";}try{$GLOBALS["g"]->throw(new Exception("E"));}catch(Error $e){echo "T";}echo $x,":",$GLOBALS["g"]->current();yield 3;}$g=seq();echo $g->send(2);$g->next();', b'ST2:13'),
+    'parent-default-autoload-precision-send': (b'<?php\nfunction load($name){echo "L";if($name==="Box"){class Box{public $s;function __construct($s){echo "K",$s,"|";$this->s=$s;}}}ini_set("precision","5");}function seq($b=new Box((string)1.234567)){echo "B",$b->s,":","F" . 1.234567,"|";$x=yield $b;echo $x===$GLOBALS["o"]?"I":"X";yield $x;return $b;}spl_autoload_register("load");ini_set("precision","3");$g=seq();echo "C";$o=new Box("O");echo $g->send($o)===$o?"V":"X";$g->next();$r=$g->getReturn();echo $r===$o?"X":"R";echo $r->s;', b'LK1.2346|CKO|B1.2346:F1.234567|IVR1.2346'),
 }
 
 
