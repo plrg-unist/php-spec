@@ -12,6 +12,7 @@ dec $rcontainer_test(pstate, pcontainerread, pvalue) : pstate
 dec $rcontainer_dispatch(pstate, pcontainerread) : pstate
 dec $rcontainer_resume(pstate, pcontainerread) : pstate
 dec $rcontainer_message(pstate, pcontainerread) : ptbytes
+dec $rcontainer_value_name(pstate, pvalue) : ptbytes
 dec $rcontainer_event(pstate, pcontainerread) : pevent
 dec $rcontainer_selector_valid(pstate, pcontainerread) : bool
 dec $rcontainer_phase_valid(pstate, pcontainerread) : bool
@@ -103,11 +104,10 @@ def $rcontainer_message(S, pcontainerread) = $ptascii("Undefined variable $") ++
   -- if pcontainerread.PHASE = READ_BASE_CV n_name*
 def $rcontainer_message(S, pcontainerread) = $ptascii("Undefined variable $") ++ n_name*
   -- if pcontainerread.PHASE = READ_KEY_CV n_name*
-def $rcontainer_message(S, pcontainerread) = $ptascii("Trying to access array offset on ") ++ $object_name(S, n)
-  -- if pcontainerread.PHASE = READ_OFFSET (POBJECT n)
-def $rcontainer_message(S, pcontainerread) = $ptascii("Trying to access array offset on ") ++ $dimension_value_name(pvalue)
+def $rcontainer_value_name(S, POBJECT n) = $object_name(S, n)
+def $rcontainer_value_name(S, pvalue) = $dimension_value_name(pvalue) -- otherwise
+def $rcontainer_message(S, pcontainerread) = $ptascii("Trying to access array offset on ") ++ $rcontainer_value_name(S, pvalue)
   -- if pcontainerread.PHASE = READ_OFFSET pvalue
-  -- if $value_type_bytes(pvalue) =/= $ptascii("object")
 def $rcontainer_event(S, pcontainerread) = WARNING n_name* pcontainerread.READ.LINE
   -- if pcontainerread.PHASE = READ_BASE_CV n_name*
 def $rcontainer_event(S, pcontainerread) = WARNING n_name* pcontainerread.READ.LINE
