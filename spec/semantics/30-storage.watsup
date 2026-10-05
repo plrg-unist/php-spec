@@ -262,7 +262,7 @@ syntax pfrommethod = { SITE porigin, INPUT pvalue, METHOD ptbytes, SCOPE porigin
 syntax pfiberstatus = FIBER_INIT | FIBER_RUNNING | FIBER_SUSPENDED | FIBER_TERMINATED
 syntax pfibervm = { GLOBAL bool, TABLE psymboltable, TODO ptask*, ORIGIN porigin?, CURRENT pcallcontext?, FRAMES pframe*, HELD pnode*, RESULT poperand, BASE pbase, CELL nat, KEY pkey, LOCATION plocation, REPORTING int, SILENCES psilence*, BORROWEDREAD pidentityread?, OBJECTCAST pobjectcast?, CONSTCONTEXT pconstantcontext?, TRACE ptraceframe*, ERRORFATALTRACE ptraceframe*, ERRORORIGIN porigin? }
 syntax pfibercaller = { OBJECT nat, PREVIOUS nat?, VM pfibervm, API pfiberapi }
-syntax pfiber = { READY bool, CALL pconfigcall?, RAW pvalue, TARGET pcalltarget?, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer?, ENTRY pnamedargs?, STATUS pfiberstatus, VM pfibervm?, VALUE pvalue, FAILED bool, SEQUENCE nat }
+syntax pfiber = { READY bool, CALL pconfigcall?, RAW pvalue, TARGET pcalltarget?, BIRTH pdynamicnew?, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer?, ENTRY pnamedargs?, STATUS pfiberstatus, VM pfibervm?, VALUE pvalue, FAILED bool, SEQUENCE nat }
 syntax pobject = FIBER pfiber | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
@@ -827,6 +827,9 @@ dec $fiber_scope(pstate, pfiber) : porigin?
 dec $fiber_scope_target(pcalltarget) : porigin?
 dec $fiber_producer_valid(pstate, pfiber) : bool
 dec $fiber_cache_valid(pstate, nat, pfiber) : bool
+dec $fiber_birth_valid(pstate, pfiber) : bool
+dec $fiber_cache_view(pstate, pdynamicnew?) : pstate
+dec $fiber_dynamic_birth_site(pstate, porigin) : bool
 dec $fiber_return_error(pfiber) : ptbytes
 dec $fiber_blocked(pstate) : bool
 dec $fiber_resume_error(pintrinsic) : ptbytes
@@ -866,6 +869,8 @@ dec $fiber_waiting_ids(pfibercaller*) : nat*
 dec $fiber_previous_ids(nat?) : nat*
 dec $fiber_callers_valid(pstate, nat?, pfibercaller*, nat*) : bool
 dec $fiber_live_records(pstate, pnode*) : bool
+dec $fiber_node_sequence(pstate, pnode) : nat?
+dec $fiber_sequences_unique(pstate, pnode*, nat*) : bool
 dec $fiber_state_valid(pstate) : bool
 dec $fiber_any_method_site(pstate, porigin) : bool
 dec $fiber_source_method(phpType20) : bool

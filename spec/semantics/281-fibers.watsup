@@ -9,7 +9,7 @@ def $fiber_at(S, n) = eps -- otherwise
 def $fiber_object(FIBER pfiber) = true
 def $fiber_object(pobject) = false -- otherwise
 def $fiber_put(S, n, pfiber) = S[.OBJECTS = $object_set(S.OBJECTS, n, FIBER pfiber)]
-def $fiber_empty() = {READY false, CALL eps, RAW PNULL, TARGET eps, CAPTURE eps, PRODUCER eps, ENTRY eps, STATUS FIBER_INIT, VM eps, VALUE PNULL, FAILED false, SEQUENCE 0}
+def $fiber_empty() = {READY false, CALL eps, RAW PNULL, TARGET eps, BIRTH eps, CAPTURE eps, PRODUCER eps, ENTRY eps, STATUS FIBER_INIT, VM eps, VALUE PNULL, FAILED false, SEQUENCE 0}
 def $object_name(S, n) = $ptascii("Fiber") -- if S.OBJECTS[n] = FIBER pfiber
 def $class_instanceof(S, POBJECT n, ptbytes) = ($ptlc($typed_callable_name(ptbytes)) = $ptascii("fiber"))
   -- if S.OBJECTS[n] = FIBER pfiber
@@ -183,7 +183,6 @@ def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING ($ptascii("Fib
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (PSTRING ptbytes)
   -- if $ptlc($typed_callable_name(ptbytes)) = $ptascii("fiber")
-def $closure_static_api_kind(pintrinsic) = true -- if $fiber_kind(pintrinsic) /\ $fiber_static(pintrinsic)
 def $config_selected_valid(S, pconfigcall) = true
   -- if $fiber_kind(pconfigcall.KIND)
   -- if pconfigcall.SELECTION = eps
@@ -241,13 +240,22 @@ def $fiber_receive_value(S, pconfigcall, pvalue) = $config_error(S, pconfigcall,
   -- if pconfigcall.OWNER = (n)
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.READY
-def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done($fiber_put(S, n, pfiber[.READY = true][.CALL = (pconfigcall)][.RAW = pvalue][.TARGET = (pcalltarget)][.CAPTURE = $consumer_capture_current(S, pconfigcall.SITE)][.PRODUCER = $consumer_producer_current(S)]), PNULL)
+def $fiber_receive_value(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "Fiber callback internal callable body"]
   -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
   -- if ~$api_special(S, pvalue)
   -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
   -- if pconfigcall.OWNER = (n)
   -- if $fiber_at(S, n) = (pfiber)
   -- if ~pfiber.READY
+  -- if $target_function(S, pcalltarget) = eps
+def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done($fiber_put(S, n, pfiber[.READY = true][.CALL = (pconfigcall)][.RAW = pvalue][.TARGET = (pcalltarget)][.BIRTH = $dynamic_new_find(S, S.TODO, pconfigcall.SITE)][.CAPTURE = $consumer_capture_current(S, pconfigcall.SITE)][.PRODUCER = $consumer_producer_current(S)]), PNULL)
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if ~$api_special(S, pvalue)
+  -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if ~pfiber.READY
+  -- if $target_function(S, pcalltarget) = (pfunction)
 
 def $fiber_producer_view(S, eps) = S
 def $fiber_producer_view(S, (pshutdownproducer)) = $consumer_producer_history(S, pshutdownproducer)
@@ -274,15 +282,33 @@ def $fiber_producer_valid(S, pfiber) = true
   -- if (~pshutdownproducer.INTERNAL /\ $consumer_capture_valid(S, pconfigcall.SITE, pfiber.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal(S_history, pshutdownproducer.TARGET))
   -- if pfiber.CAPTURE = eps \/ $consumer_producer_function(pfiber.CAPTURE, pfunction.ORIGIN)
 def $fiber_producer_valid(S, pfiber) = false -- otherwise
+def $fiber_dynamic_birth_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew expression phpType6 metadata)
+def $fiber_dynamic_birth_site(S, porigin) = false -- otherwise
+def $fiber_birth_valid(S, pfiber) = true
+  -- if pfiber.BIRTH = eps
+  -- if pfiber.CALL = (pconfigcall)
+  -- if ~$fiber_dynamic_birth_site(S, pconfigcall.SITE)
+def $fiber_birth_valid(S, pfiber) = true
+  -- if pfiber.BIRTH = (pdynamicnew)
+  -- if pfiber.CALL = (pconfigcall)
+  -- if pdynamicnew.SITE = pconfigcall.SITE /\ pdynamicnew.LINE = pconfigcall.LINE
+  -- if $ptlc(pdynamicnew.CLASS) = $ptascii("fiber")
+  -- if $dynamic_new_record_valid(S, pdynamicnew)
+def $fiber_birth_valid(S, pfiber) = false -- otherwise
+def $fiber_cache_view(S, eps) = S
+def $fiber_cache_view(S, (pdynamicnew)) = S[.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: S.TODO]
 def $fiber_cache_valid(S, n, pfiber) = true
   -- if pfiber.READY
   -- if pfiber.CALL = (pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
   -- if pconfigcall.OWNER = (n) /\ pconfigcall.SELECTION = eps
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pfiber.RAW)]
-  -- if $fiber_site(S, pconfigcall.SITE, INTRINSIC_FIBER_CONSTRUCT)
+  -- if $fiber_birth_valid(S, pfiber)
+  -- if S_site = $fiber_cache_view(S, pfiber.BIRTH)
+  -- if $fiber_site(S_site, pconfigcall.SITE, INTRINSIC_FIBER_CONSTRUCT)
   -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
-  -- if $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)
+  -- if $intrinsic_count(S_site, pconfigcall.SITE) = (pconfigcall.INDEX)
   -- if $fiber_producer_valid(S, pfiber)
   -- if pfiber.TARGET = (pcalltarget)
   -- if $error_handler_selected(S, pfiber.RAW, pcalltarget)
@@ -520,9 +546,12 @@ rule PhpStep/fiber-enter: S ~> $target_after_enter($named_enter(S_next[.TODO = p
   -- if pnamedargs_mapped = $fiber_named_map(pfunction, {SLOTS pnamedargs.SLOTS, NAMED eps}, pnamedargs.NAMED)
   -- if S_next = $fiber_put(S, n, pfiber[.ENTRY = (pnamedargs_mapped)])
 
-def $fiber_terminated(pfiber, pvalue, b) = pfiber[.CALL = eps][.RAW = PNULL][.TARGET = eps][.CAPTURE = eps][.PRODUCER = eps][.ENTRY = eps][.STATUS = FIBER_TERMINATED][.VM = eps][.VALUE = pvalue][.FAILED = b]
-rule PhpStep/fiber-finish: S ~> $fiber_back($fiber_put(S_read, n, $fiber_terminated(pfiber, pvalue, false)), PNULL, false)
-  -- if S.TODO = [FIBER_FINISH n]
+def $fiber_terminated(pfiber, pvalue, b) = pfiber[.CALL = eps][.RAW = PNULL][.TARGET = eps][.BIRTH = eps][.CAPTURE = eps][.PRODUCER = eps][.ENTRY = eps][.STATUS = FIBER_TERMINATED][.VM = eps][.VALUE = pvalue][.FAILED = b]
+dec $fiber_finish(pstate, nat) : pstate
+rule PhpStep/fiber-finish: S ~> $fiber_finish(S, n)
+  -- if S.TODO = (FIBER_FINISH n) :: ptask_tail*
+  -- if ptask_tail* = eps
+def $fiber_finish(S, n) = $fiber_back($fiber_put(S_read, n, $fiber_terminated(pfiber, pvalue, false)), PNULL, false)
   -- if S.ACTIVEFIBER = (n)
   -- if S.FRAMES = eps /\ S.CURRENT = eps
   -- if $fiber_at(S, n) = (pfiber)
@@ -530,7 +559,8 @@ rule PhpStep/fiber-finish: S ~> $fiber_back($fiber_put(S_read, n, $fiber_termina
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
 rule PhpStep/fiber-finish-throw: S ~> $fiber_back($fiber_put(S, n_fiber, $fiber_terminated(pfiber, PNULL, true)), POBJECT n_throwable, true)
-  -- if S.TODO = [THROW_SEARCH n_throwable, FIBER_FINISH n_fiber]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_FINISH n_fiber) :: ptask_tail*
+  -- if ptask_tail* = eps
   -- if S.ACTIVEFIBER = (n_fiber)
   -- if S.FRAMES = eps /\ S.CURRENT = eps
   -- if $fiber_at(S, n_fiber) = (pfiber)
@@ -702,7 +732,7 @@ def $fiber_record_valid(S, n, pfiber) = true -- if pfiber = $fiber_empty()
 def $fiber_record_valid(S, n, pfiber) = true
   -- if pfiber.READY /\ pfiber.STATUS = FIBER_TERMINATED
   -- if pfiber.CALL = eps /\ pfiber.RAW = PNULL /\ pfiber.TARGET = eps
-  -- if pfiber.CAPTURE = eps /\ pfiber.PRODUCER = eps /\ pfiber.ENTRY = eps /\ pfiber.VM = eps
+  -- if pfiber.BIRTH = eps /\ pfiber.CAPTURE = eps /\ pfiber.PRODUCER = eps /\ pfiber.ENTRY = eps /\ pfiber.VM = eps
   -- if $(pfiber.SEQUENCE > 0) /\ $(pfiber.SEQUENCE < S.FIBERSEQ)
   -- if ~pfiber.FAILED \/ pfiber.VALUE = PNULL
 def $fiber_record_valid(S, n, pfiber) = true
@@ -750,7 +780,19 @@ def $fiber_live_records(S, pnode :: pnode_tail*) = ($fiber_live_node_valid(S, pn
 def $fiber_live_node_valid(S, HOBJECT n) = $fiber_record_valid(S, n, pfiber)
   -- if S.OBJECTS[n] = FIBER pfiber
 def $fiber_live_node_valid(S, pnode) = true -- otherwise
-def $fiber_state_valid(S) = ($fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps) /\ $fiber_live_records(S, S.ALLOCATIONS) /\ $(S.FIBERSEQ > 0))
+def $fiber_node_sequence(S, HOBJECT n) = (pfiber.SEQUENCE)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FIBER pfiber
+  -- if $(pfiber.SEQUENCE > 0)
+def $fiber_node_sequence(S, pnode) = eps -- otherwise
+def $fiber_sequences_unique(S, eps, n_seen*) = true
+def $fiber_sequences_unique(S, pnode :: pnode_tail*, n_seen*) = $fiber_sequences_unique(S, pnode_tail*, n_seen*)
+  -- if $fiber_node_sequence(S, pnode) = eps
+def $fiber_sequences_unique(S, pnode :: pnode_tail*, n_seen*) = $fiber_sequences_unique(S, pnode_tail*, n :: n_seen*)
+  -- if $fiber_node_sequence(S, pnode) = (n)
+  -- if ~(n <- n_seen*)
+def $fiber_sequences_unique(S, pnode*, n_seen*) = false -- otherwise
+def $fiber_state_valid(S) = ($fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps) /\ $fiber_live_records(S, S.ALLOCATIONS) /\ $fiber_sequences_unique(S, S.ALLOCATIONS, eps) /\ $(S.FIBERSEQ > 0))
 def $call_descriptors_valid(S) = ($call_descriptors_local_valid(S) /\ $fiber_state_valid(S))
 
 def $closure_live_object_valid(S, n) = true -- if S.OBJECTS[n] = FIBER pfiber
