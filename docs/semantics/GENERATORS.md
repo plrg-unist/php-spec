@@ -106,7 +106,7 @@ an equivalent operand-binding rewrite passes production SL preparation.
 Three new source-derived phases pass at fixture `887f51d29`, semantic `26328ca39`:
 array146, finally124 and initialization101 (371 conditions). Full public and
 heap admission check actual input/cache/return owners, pending-finally exception
-identity and previous chaining. Heap-valid count/type/phase/site, wrapped or
+identity and previous chaining. Heap-valid count/type/phase/method/line, wrapped or
 stranded resume, and doubled/misplaced search mutations reject; zero-budget
 resumption matches direct execution. Their raw record is
 `generator-effects-protocol-szlr6xpv`.
