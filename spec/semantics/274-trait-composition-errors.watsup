@@ -182,6 +182,14 @@ def $trait_comparison_complete(S, pclassdesc, ptraitdatacomparison, S_result) = 
 
 ;; The failure is rederived by275 from a real class/cause and exact rollback.
 ;; Its pure replay has no held formatter and therefore produces this snapshot.
+dec $trait_failed_cache_source(pstate, pclassdesc) : bool
+def $trait_failed_cache_source(S, pclassdesc) = true
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+def $trait_failed_cache_source(S, pclassdesc) = true
+  -- if pclassdesc.KIND = "trait"
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtTrait phpType14 phpType3 phpType23 metadata)
+def $trait_failed_cache_source(S, pclassdesc) = false -- otherwise
 def $runtime_class_replay_fatal(S_prefix, S, pclassdesc) = true
   -- if S.COMPLETION = REQUESTFATAL ptbytes_class ptbytes_message z
   -- if ptbytes_class = $ptascii("CompileError")
@@ -189,7 +197,7 @@ def $runtime_class_replay_fatal(S_prefix, S, pclassdesc) = true
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
   -- if $class_at(S_prefix.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
-  -- if $origin_node(S_prefix.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $trait_failed_cache_source(S_prefix, pclassdesc)
   -- if $trait_plan(S_prefix, pclassdesc).TRAITS =/= eps
   -- if S.ERRORORIGIN = $compiled_error_origin(S_prefix.ERRORORIGIN, STATICBYTES ptbytes_message z, n)
 ;; Failed linking retires the composing class's temporary fills. Constants of
@@ -227,7 +235,7 @@ def $trait_failed_cache_ready(S, S_result) = true
   -- if $runtime_class_replay_fatal(S, S_result[.CLASSES = S.CLASSES], pclassdesc)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
-  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $trait_failed_cache_source(S, pclassdesc)
   -- if $trait_plan(S, pclassdesc).TRAITS =/= eps
   -- if $(|S.CLASSCONSTANTCACHE| <= |S_result.CLASSCONSTANTCACHE|)
   -- if S_result.CLASSCONSTANTCACHE[0:|S.CLASSCONSTANTCACHE|] = S.CLASSCONSTANTCACHE
@@ -278,7 +286,7 @@ def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRTRAITCACHEFAIL porigin p
   -- if $declaration_cause_valid(S_prefix, porigin, pdeclcause)
   -- if ~$declaration_early(S_prefix.DECLARATIONS, porigin, PPCLASS)
   -- if $class_at(S_prefix.CLASSES, porigin) = (pclassdesc)
-  -- if $origin_node(S_prefix.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $trait_failed_cache_source(S_prefix, pclassdesc)
   -- if S_failed = $activate_class_body(S_prefix[.COMPLETION = NORMAL], pclassdesc)
   -- if $runtime_class_replay_fatal(S_prefix, S_failed, pclassdesc)
   -- if $runtime_class_rollback(S_prefix, S_failed)

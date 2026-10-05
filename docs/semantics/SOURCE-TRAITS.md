@@ -121,7 +121,9 @@ Cyclic lookup errors follow the genuine source chain and compare full imported
 constant identities, including recursion through an earlier distinct dependency.
 After a failed class link, caches filled for already published declaring owners
 survive rollback; fills for the unpublished importing class are retired. This
-includes an initializer Error reported before the composition fatal.
+includes an initializer Error reported before the composition fatal. Failed raw
+trait composition uses its real trait declaration and kind; direct trait-constant
+access remains denied before dependency evaluation.
 A source-rederived failure marker authenticates the original collision and public
 owner prefix without granting publication or held-primary authority.
 
