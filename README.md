@@ -173,7 +173,9 @@ deferred runtime class-link failures.
 IteratorAggregate, ArrayAccess and other Traversable consumers remain required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
-`getReturn` and value `foreach` retain real resumer scope and traces. Delegation,
+`getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and
+traces. Inputs survive initialization; exception injection preserves ordinary
+catch/finally execution and exception identity. Delegation,
 reference yields, further call forms and forced-close/destructor behavior remain
 required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
@@ -566,8 +568,11 @@ published owners and release unpublished import caches. Raw trait composition us
 the same source-kind proof; direct trait constants still fail before evaluation.
 Published Closure/FCC dependencies retain their real initializer scope, callable
 receipts and cache owners through successful and failed composition; array keys
-and duplicate-key selection keep source-derived proofs. Wider object initialization,
-held/open failed-link contexts and readonly storage remain required. A bounded
+and duplicate-key selection keep source-derived proofs. Errors inside those
+initializers preserve actual Throwable fields and demand traces, retire failed
+temporary owners and keep completed nested caches. Wider initializer contexts,
+unpublished-owner births, held/open failed links and readonly storage remain
+required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
@@ -720,8 +725,13 @@ Thirty-six private source agreements and one current global-constant loader
 interaction retain separate cuts. The 263 original finite premises pass with
 seven typing bindings and eight repeated compaction setup premises; the split
 compaction groups use the existing strict SL runner at the unchanged120s cap.
-Default/global-constant AST NEW, wider class-link consumers and complete core
-remain required. Default `spl_autoload` filesystem search stays excluded.
+[Parameter-default NEW autoload](coverage/semantics/default-new-autoload-review.json)
+now completes lookup before allocation and nested arguments, then reselects the
+loaded constructor under the receiving declaration scope. Nine private sources
+and 174 reached premises pass at separate cuts; one actual generator interaction
+preserves eager default creation before suspension. Global-constant AST NEW
+autoload and wider class-link consumers remain required. Default `spl_autoload`
+filesystem search stays excluded.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
@@ -753,7 +763,10 @@ Intentional departures are recorded in [engine discrepancies](docs/semantics/DIS
 reads live fixed parameters and retained positional extras, with fresh result
 arrays and native receive/context priorities. Bounded private checks cover
 inherited source object invocation and Stringable SET ownership; broader
-Generator/Fiber and unfinished callback interactions remain open.
+Generator and unfinished callback interactions remain open. Live
+[Fiber transfers](docs/semantics/FIBERS.md) now retain separate VM continuations,
+shared globals and handlers, cached callbacks and original C argument buffers;
+cleanup and wider Fiber consumers remain required.
 
 [Called-class introspection](docs/semantics/CALLED-CLASS.md) now implements
 `get_called_class()` through inherited/forwarded methods, source Closure binding,

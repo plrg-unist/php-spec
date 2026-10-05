@@ -38,6 +38,10 @@ dec $trait_cache_object_steps(pfstate, pcpath, pclassconstantdesc, int, pstate, 
 dec $trait_cache_object_step(pstate, ptraitcachecause) : pstate
 dec $trait_cache_object_bind(pstate, ptraitcachecause) : pstate
 dec $trait_cache_object_binding(ptask*) : bool
+dec $trait_cache_object_type_error(pstate) : bool
+dec $trait_cache_object_resume(pfstate, pcpath, pclassconstantdesc, int, pstate, pstate, ptraitcachecause) : pfstate
+dec $trait_cache_object_scalar_error(pcompletion) : bool
+dec $trait_cache_object_failure_context(pstate, pstate) : pstate
 dec $trait_cache_object_lookups(pclassconstantcontext*, porigin*) : porigin*?
 dec $trait_cache_object_events(porigin, porigin, pevent*) : pfdiagnostic*?
 dec $trait_cache_object_event(porigin, porigin, pevent) : pfdiagnostic?
@@ -316,10 +320,21 @@ def $trait_cache_object_bind(S, ptraitcachecause) = $class_constant_result($clas
   -- if S_cached = S_value[.CLASSCONSTANTCACHE = S_value.CLASSCONSTANTCACHE ++ [{ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]][.CLASSCONSTANTHISTORY = S_value.CLASSCONSTANTHISTORY ++ [CCTRAITCACHE porigin ptraitcachecause_selected]]
   -- if $trait_cache_bound_value(S_cached, pclassconstantdesc, pvalueclass, ptraitcachecause.PREFIX)
 def $trait_cache_object_bind(S, ptraitcachecause) = S[.COMPLETION = UNSUPPORTED "uncertified public trait object dependency binding"] -- otherwise
+;; Typed rejection restores the real binder's demand context before throwing.
+def $trait_cache_object_type_error(S) = true
+  -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if S_value = $resolve_at(S, S.RESULT, pconstantcontext.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$class_constant_runtime_type(S_value, pclassconstantdesc.TYPE, pvalue)
+def $trait_cache_object_type_error(S) = false -- otherwise
 def $trait_cache_object_step(S, ptraitcachecause) = $trait_cache_object_bind(S, ptraitcachecause)
   -- if $trait_cache_object_binding(S.TODO)
+  -- if ~$trait_cache_object_type_error(S)
 def $trait_cache_object_step(S, ptraitcachecause) = S_next
-  -- if ~$trait_cache_object_binding(S.TODO)
+  -- if ~$trait_cache_object_binding(S.TODO) \/ $trait_cache_object_type_error(S)
   -- PhpStep: S ~> S_next
 
 def $trait_cache_object_event(porigin_owner, porigin, DIAGNOSTIC_SOURCE n text ptbytes z) = $trait_record_event(porigin_owner, porigin, DIAGNOSTIC text ptbytes z)
@@ -335,7 +350,7 @@ def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcacheca
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = eps /\ S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
-def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = $trait_cache_object_steps(F[.RECORDED = F.RECORDED ++ pfdiagnostic*], pcpath, pclassconstantdesc, z, S_next[.EVENTS = eps], ptraitcachecause)
+def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = $trait_cache_object_resume(F[.RECORDED = F.RECORDED ++ pfdiagnostic*], pcpath, pclassconstantdesc, z, S, S_next[.EVENTS = eps], ptraitcachecause)
   -- if S.COMPLETION = NORMAL /\ S.TODO =/= eps
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
   -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc_active)
@@ -346,11 +361,60 @@ def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcacheca
   -- if $trait_cache_object_events(pclassconstantdesc_active.OWNER, porigin_site, S_next.EVENTS) = (pfdiagnostic*)
 def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = F[.VALUE = eps][.MEMORY = $trait_cache_object_restore(F, S)[.COMPLETION = UNSUPPORTED "public trait object dependency evaluation"]] -- otherwise
 
+;; Sample the same continuation used by ordinary Throwable allocation. Its
+;; actual fields supply the later default renderer; the first object and failed
+;; initializer owners retire once the outer comparison context is restored.
+def $trait_cache_object_scalar_error(THROWN text preqbytes z) = true
+def $trait_cache_object_scalar_error(PHPERROR preqbytes z) = true
+def $trait_cache_object_scalar_error(pcompletion) = false -- otherwise
+;; A compiled AT failure precedes child entry; ARRAY_VALUE instead resolves
+;; after ORIGIN_RETURN restored the item. Both retain their real source child.
+def $trait_cache_object_failure_context(S, S_next) = S_next[.ORIGIN = (porigin_child)]
+  -- if S.TODO = (AT porigin_child (EVAL expression)) :: ptask_tail*
+  -- if S_next.ORIGIN = S.ORIGIN
+  -- if S_next.CLASSCONSTANTINIT = S.CLASSCONSTANTINIT /\ S_next.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if $class_constant_active(S)
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression)
+  -- if $constant_expression_below(S, pclassconstantcontext.DECL, porigin_child)
+def $trait_cache_object_failure_context(S, S_next) = S_next[.ORIGIN = (porigin_value)]
+  -- if S.TODO = (ARRAY_VALUE n poperand? phpType13* z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_item)
+  -- if S_next.ORIGIN = S.ORIGIN
+  -- if S_next.CLASSCONSTANTINIT = S.CLASSCONSTANTINIT /\ S_next.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if $class_constant_active(S)
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if $origin_node(S.SOURCES, porigin_item) = (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata)
+  -- if porigin_value = $constant_child(porigin_item, [PCFIELD 1])
+  -- if $constant_expression_below(S, pclassconstantcontext.DECL, porigin_value)
+  -- if z = $runtime_line(S, [PCFIELD 1], expression)
+def $trait_cache_object_failure_context(S, S_next) = S_next -- otherwise
+def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S_next, ptraitcachecause)
+  -- if S_next.COMPLETION = NORMAL
+def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = F[.VALUE = eps][.MEMORY = S_pruned[.HELD = S_restored.HELD]]
+  -- if $trait_recording(F, pcpath)
+  -- if $trait_cache_object_scalar_error(S_next.COMPLETION)
+  -- if S_failure = $trait_cache_object_failure_context(S, S_next)
+  -- if S_cont = $throwable_continuation(S, S_failure)
+  -- if ptraceframe* = $eval_exception_trace(S_cont)
+  -- if S_throw = $throwable_transition(S, S_failure)
+  -- if S_throw.COMPLETION = THROWING n_throw
+  -- if S_throw.OBJECTS[n_throw] = THROWABLE pthrowable
+  -- if pthrowable.FILEORIGIN = (porigin_owner)
+  -- if $throwable_field(S_throw, n_throw, "message") = PSTRING preqbytes
+  -- if $throwable_field(S_throw, n_throw, "line") = PINT z_error
+  -- if F.EXTERNAL = (S_external)
+  -- if S_restored = $trait_cache_object_restore(F, S_throw)[.COMPLETION = THROWN pthrowable.KIND preqbytes z_error][.ERRORORIGIN = (porigin_owner)][.TRACE = ptraceframe*]
+  ;; Dispatch is isolated, but the outside registry still owns its callbacks.
+  -- if pnode_registry* = $error_handler_roots(S_external.ERRORHANDLER) ++ $error_handler_stack_roots(S_external.ERRORHANDLERS)
+  -- if S_pruned = $prune_allocations(S_restored[.HELD = S_restored.HELD ++ pnode_registry*])
+def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = F[.VALUE = eps][.MEMORY = $trait_cache_object_restore(F, S_next)[.COMPLETION = UNSUPPORTED "public trait object dependency exception"]] -- otherwise
+
 def $trait_comparison_memory(ptraitdatavalue_left, TRAITVALUE S pvalue pfdiagnostic*) = (S)
   -- if ~$trait_value_error(ptraitdatavalue_left)
 def $trait_comparison_memory(TRAITVALUE S pvalue pfdiagnostic*, TRAITUNINITIALIZED) = (S)
 def $trait_comparison_memory(ptraitdatavalue_left, ptraitdatavalue_right) = eps -- otherwise
-def $trait_cache_transfer(S, (S_memory)) = $prune_allocations(S[.ARRAYS = S_memory.ARRAYS][.OBJECTS = S_memory.OBJECTS][.CLOSURESCOPES = S_memory.CLOSURESCOPES][.CONSTANTCLOSURES = S_memory.CONSTANTCLOSURES][.ALLOCATIONS = S_memory.ALLOCATIONS][.CLASSCONSTANTCACHE = S_memory.CLASSCONSTANTCACHE][.CLASSCONSTANTHISTORY = S_memory.CLASSCONSTANTHISTORY])
+def $trait_cache_transfer(S, (S_memory)) = $prune_allocations(S[.ARRAYS = S_memory.ARRAYS][.OBJECTS = S_memory.OBJECTS][.OBJECTPROPS = S_memory.OBJECTPROPS][.CLOSURESCOPES = S_memory.CLOSURESCOPES][.CONSTANTCLOSURES = S_memory.CONSTANTCLOSURES][.ALLOCATIONS = S_memory.ALLOCATIONS][.CLASSCONSTANTCACHE = S_memory.CLASSCONSTANTCACHE][.CLASSCONSTANTHISTORY = S_memory.CLASSCONSTANTHISTORY])
 def $trait_cache_transfer(S, eps) = S
 def $trait_cache_new_events(eps) = false
 def $trait_cache_new_events((CCTRAITCACHE porigin ptraitcachecause) :: pclassconstantevent*) = true

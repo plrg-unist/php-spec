@@ -1,0 +1,45 @@
+{
+  "scope": "Native-only incoming trait constant TypeError after a public FCC fill: executing class filename with real incoming fetch line (separately pinned at9), prior original preserved; zero model credit.",
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; exact project baseline profile.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "incoming-trait-constant-public-fcc-type-error-uses-executing-file",
+      "source": "<?php\nclass P{private static function f(){}public const int Y=[self::f(...),E_STRICT][0];}\ninclude __DIR__.\"/trait.php\";\nset_error_handler(function(){echo \"H;\";return true;});register_shutdown_function(function(){echo \"S;\";});echo \"PRE;\";\nclass C{use T;public const X=P::Y;}\necho \"POST;\";\n",
+      "source_sha256": "4dac9a62e1ec3b1ec37fa73120fb09f31fd250f936818da3e09bde5b9812e202",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1M7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAyCldhcm5pbmc6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBDbG9zdXJlIHRvIGNsYXNzIGNvbnN0YW50IFA6Olkgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9OjIKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSg1KTogW2NvbnN0YW50IGV4cHJlc3Npb25dKCkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDIKRmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIGNvbnN0YW50IChYKSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "files": [
+        {
+          "name": "trait.php",
+          "source": "<?php\ntrait T{public const X=P::Y;}\n",
+          "source_sha256": "ac542bec3cb9cd1019d1b497b6ba155a583d8bfdca12e7d1a3c1b6f0bca0e8ed"
+        }
+      ],
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-object-init-error-review-266/.tools/trait-public-object-crossfile-bind-error-native266-38nc7sqv/report.json",
+      "native_raw_sha256": "5119e3c1e5142a7e81f526694866713caf50ae4398bc4234e33cefb9378195f6"
+    },
+    {
+      "id": "incoming-trait-constant-public-fcc-type-error-keeps-distinct-fetch-line",
+      "source": "<?php\nclass P{private static function f(){}public const int Y=[self::f(...),E_STRICT][0];}\ninclude __DIR__.\"/trait.php\";\nset_error_handler(function(){echo \"H;\";return true;});register_shutdown_function(function(){echo \"S;\";});echo \"PRE;\";\nclass C{use T;public const X=P::Y;}\necho \"POST;\";\n",
+      "source_sha256": "4dac9a62e1ec3b1ec37fa73120fb09f31fd250f936818da3e09bde5b9812e202",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1M7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAyCldhcm5pbmc6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBDbG9zdXJlIHRvIGNsYXNzIGNvbnN0YW50IFA6Olkgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9OjkKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSg1KTogW2NvbnN0YW50IGV4cHJlc3Npb25dKCkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDkKRmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIGNvbnN0YW50IChYKSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "files": [
+        {
+          "name": "trait.php",
+          "source": "<?php\n\n\n\n\n\n\n\ntrait T{public const X=P::Y;}\n",
+          "source_sha256": "97a343650de53412355af5d69ebda6ba4c25af30fb2a3802c09ecb41dce94d67"
+        }
+      ],
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-object-init-error-review-266/.tools/trait-public-object-crossfile-distinct-lines-native266-k0u5_wm9/report.json",
+      "native_raw_sha256": "f1eb8bd96de1e15da9774595e4e54c5f2862e26a59a5e59737a35c7589ced2a4"
+    }
+  ]
+}

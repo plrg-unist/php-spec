@@ -114,8 +114,14 @@ authenticate their values; cache roots retain objects together with their scope 
 receipt rows. Captured declaration/user prefixes rederive dynamic array keys, and
 literal dimensions select the last matching source entry. Failed composition keeps
 public-owner object caches while releasing temporary arrays and Error allocations.
-Errors inside these real callable initializers, unpublished-owner births and wider
-object transfers remain required.
+Errors inside these callable dependencies use the real failing runtime step and
+Throwable continuation. Typed rejection restores the binder's demand context;
+expression and array-key failures retain their authenticated expression child.
+Actual Throwable fields and trace supply the later default report. Cleanup releases
+failed initializer/Throwable owners while retaining completed nested caches and
+the outside handler registry's captured graph; scratch handler dispatch stays
+isolated. Further initializer contexts, unpublished-owner births and wider object
+transfers remain required.
 
 Module 274 stops supported collision expressions at the first endogenous Error,
 preserving earlier diagnostics and skipping the second operand. It flushes those
@@ -197,11 +203,16 @@ three PHP-error source comparisons and194 supplied restoration/history/owner
 conditions; six generated setup checks are recorded separately. Reported Errors
 after fills add three PHP-error comparisons and188 supplied cache-cause/cleanup
 conditions, with six generated setup checks separate.
+Real callable-initializer failures add four PHP-error comparisons and four reached
+groups/678 supplied source/context/registry/cleanup conditions;12 generated setup
+checks are separate. Genuine expression children supply expression-error traces,
+typed binding restores its demand context, and failed temporary owners retire
+without dropping completed nested caches or the original handler graph.
 Other native preparations remain uncredited until implemented.
 
-Dependency fills in held/open compilation, failed raw-trait composition and
-object-bearing values remain required. These
-wider failed-fill paths keep an explicit Unsupported boundary.
+Dependency fills in held/open compilation and unpublished-owner object creation
+keep explicit Unsupported boundaries. Cross-file constant typed demand and further
+callable initializer contexts remain unvalidated obligations.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
 Historical reached

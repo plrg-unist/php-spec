@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Fiber281 now implements live user-callback construction and direct
+start/suspend/resume/throw, status, current identity and stored returns. Callback
+selection is cached; genuine VM stacks, live reporting masks and C argument
+buffers survive suspension while globals, INI and handler registration stay
+shared. Nested waiting Fibers remain running. Thirty normal originals and thirteen
+source-derived states/782 conditions retain their mixed cuts. Deferred/literal
+named holes, entry-error caller provenance and raw named-buffer admission are
+checked through genuine pending continuations and malformed records. Actual
+constant-NEW identity and a separate running Generator preserve genuine owners;
+global Generator admission stays on the actual machine while parked Fiber stacks
+keep their local guards. Three Unsupported controls earn zero agreement. The
+allocated-Fiber argument source and null-callsite preflight state checks retain
+separate cuts.
+[The contract](docs/semantics/FIBERS.md) records raw reports and the required
+force-close, internal/reference callbacks, API entry, unpacking and initializer
+switching follow-ons. Full core stays open; returns verification remains paused.
+
 Generator280 creates object-owned suspended frames after eager ordinary receives.
 Value yields, literal iterator methods, `getReturn` and value foreach retain
 captured aliases, ordinary private creation scope and real resumer traces.
@@ -27,6 +44,32 @@ receive/yield/return and retirement; its noncached instance owners pass full
 public/heap admission. Original interpreter/fixture failures retain zero credit.
 [Scope and maintained tests](docs/semantics/GENERATORS.md).
 
+Literal Generator `send`/`throw` capture one argument before initialization,
+deliver used yield results or an ordinary Throwable search, and retain actual
+API arguments and live resumer traces. Twenty-three new normal sources agree
+at26328 in separate author5/independent18 cuts. Fresh initialization failure keeps
+the supplied exception primary and links the initialization exception as previous.
+Independent array146/finally124/initialization101 pass at fixture887f51d29,
+semantic26328 (371 conditions across three originals): actual input owners,
+exception identity, full public admission and malformed resume rejection.
+One actualc729 source at63b45/semanticca7da combines default NEW autoload,
+live/default versus parser-folded precision and fresh sent-object identity.
+The original SL structuring failure retains zero credit. Full Generator
+follow-ons remain open.
+
+Parameter-default NEW autoload285 resumes authentic deferred initializers after
+lookup, preserving declaration strictness and formal lines. Loaded constructors
+are selected afresh; allocation and all nested AST arguments precede constructor
+access, while loader throw/miss suppresses arguments. Nine private sources agree
+at07a78; lookup94/recursive37/retirement43 pass at ebb346, including retained
+receiving owners and heap-valid pending/history tag, line and caller forgeries.
+One actuald57/GEN280 source agrees at24f376: lookup/arguments/construction remain
+eager before generator suspension. Original public/fixture failures and the
+parameter-Closure initializer Unsupported retain zero credit; its WeakReference
+lifetime oracle is native-only. The [ledger](coverage/semantics/default-new-autoload-review.json)
+keeps these cuts distinct. Global-constant NEW autoload, parameter callable
+initializer producers and wider lookup/link consumers remain required.
+
 Autoload277 now implements the four required SPL control APIs with real callable
 caches, owner roots and live queue cursor/capacity behavior. Ordinary named/dynamic
 NEW and class-parent lookup suspend before arguments; lookup inherits source
@@ -38,8 +81,9 @@ sources pass at b967 and two at b440; guard cuts stay separate in the
 pass with seven typing bindings and eight repeated setup premises. One actual
 b025/global-constant REAL loader source passes at a37. Original failures and AL
 timeouts remain retained; SL uses the existing exact runner at the same120s cap.
-Default/global-constant AST NEW, wider lookup/link consumers and complete core
-remain required; default filesystem search is excluded and returns stay paused.
+Parameter-default AST NEW is covered by285 above. Global-constant AST NEW and
+wider lookup/link consumers remain required; default filesystem search is
+excluded and returns stay paused.
 
 Scalar-container continuations282 now stage missing-base, key-CV and offset
 warnings through ordinary and quiet reads. Missing-base warnings resume with
@@ -627,8 +671,13 @@ and captured-prefix array/DIM proofs. Seven source comparisons agree (five norma
 two PHP errors); five genuine reached source/flow/ownership groups pass409 supplied
 conditions, with15 generated setup checks separate. Exact cuts and the retained
 DIM-dispatch failures are in the collision ledger.
-General callable-initializer Errors and unpublished-owner births remain required.
-Traits stay partial.
+Real callable-initializer expression Errors, typed rejection and array-key TypeError
+now use actual Throwable fields and demand traces, keeping completed nested caches
+while retiring failed owners. Four PHP-error comparisons pass atf780; four reached
+groups pass678 supplied source/context/registry/cleanup conditions atba2/d33, with12
+generated setup checks separate. The retained handler graph survives scratch cleanup.
+Wider initializer contexts, cross-file constant demand and unpublished-owner births
+remain required. Traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the

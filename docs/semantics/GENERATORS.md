@@ -26,6 +26,22 @@ then returns its by-value completion or throws without advancing a suspended
 yield. Positional excess arguments run before the argument-count error and appear
 in its trace.
 
+Literal `send` and `throw` validate and capture their single argument before
+initialization. Fresh calls first reach the initial yield, then deliver the
+value or Throwable at that suspension. `send` supplies the result of a used
+yield expression; `next` supplies null. Closed `send` returns null, while closed
+`throw` rethrows the same object. If fresh initialization throws, `throw` keeps
+its supplied exception as primary and links the initialization exception as its
+previous exception. Ordinary catch/finally execution can yield again before the
+pending exception resumes.
+
+The saved API operation owns its argument through initialization and resumption.
+Arrays keep copied-container behavior and shared embedded references; objects
+retain identity. API trace rows retain the actual argument and live caller.
+Admission separates pending argument evaluation from completed resume arity,
+type and phase. A restored exception search precedes one closed, unsuccessful
+resume marker; it cannot be duplicated or moved into a saved owner frame.
+
 Value `foreach` uses the native Generator iterator protocol without adding a
 synthetic method trace row. Direct method resumption adds its actual method row.
 Both retain the live resumer and eager receive arguments, including nested calls
@@ -43,7 +59,7 @@ frame scopes, Closure targets and one real saved resumer per running Generator.
 Internal continuations cannot hide in source wrappers or branches. Public
 admission and ownership checks use actual source-reached states.
 
-Delegation, reference yields, arrow Generators, `send`/`throw`, dynamic/nullsafe
+Delegation, reference yields, arrow Generators, dynamic/nullsafe
 API calls, named/unpacked API arguments, scoped static and implicit callback
 creation, and creation through changed/imported caller scope remain required.
 Started force-close finalizers, eager destruction and cyclic collection also
@@ -80,9 +96,36 @@ Raw private records are `.tools/generator-independent-n_gi07p8` (first5),
 `generator-review-protocol-8m71dnav` (abrupt). These directories retain runtime,
 profile, commands, exits, exact bytes and stable semantic inputs.
 
+Twenty-three new send/throw sources agree at `26328ca39` in separate five and
+eighteen source cuts: `generator-effects-review-_839imxs` and
+`generator-effects-review-zjs5gu53`. They cover fresh/paused/closed inputs,
+argument errors before initialization, array/reference sharing, real API trace
+arguments, catch/finally suspension and reentrant calls. The original
+`generator-effects-review-xsm5m8_5` structuring failure earns no agreement;
+an equivalent operand-binding rewrite passes production SL preparation.
+Three new source-derived phases pass at fixture `887f51d29`, semantic `26328ca39`:
+array146, finally124 and initialization101 (371 conditions). Full public and
+heap admission check actual input/cache/return owners, pending-finally exception
+identity and previous chaining. Heap-valid count/type/phase/method/line, wrapped or
+stranded resume, and doubled/misplaced search mutations reject; zero-budget
+resumption matches direct execution. Their raw record is
+`generator-effects-protocol-szlr6xpv`.
+
+One introduced source agrees on actual parent `c729a1f62`, semantic union
+`ca7da215e` and fixture `63b45bb26`: default NEW autoload changes live precision
+before eager argument/construction, while the body retains parser-folded text;
+fresh `send` retains its distinct object input and the original default return.
+Raw record `generator-effects-review-w21x2zng` keeps this cut separate.
+The actual union also passes production SL structuring with the complete main
+and a fresh adapter build (`generator-effects-actual-sl-n4ctdfq0`).
+
 `python3 tests/semantics/generator_review.py --select first-current-rewind`
 compares ordinary PHP source with the pinned native runtime.
 `python3 tests/semantics/generator_review_protocol.py --select carrier`
 checks source-reached frame movement, cached owners and malformed continuations.
+`python3 tests/semantics/generator_effects_review.py --select send-fresh-target`
+compares input delivery and exception injection with the pinned runtime.
+`python3 tests/semantics/generator_effects_review_protocol.py --select array-input`
+checks actual input owners and resume admission.
 Raw commands, profiles and observations stay in ignored `.tools` directories.
 This slice does not establish complete Generator or complete core semantics.

@@ -83,7 +83,7 @@ syntax pnamedslot = NAMED_HOLE | NAMED_SENT poperand
 syntax pnamedargs = { SLOTS pnamedslot*, NAMED (nat*, poperand)* }
 syntax pdefaultctor = { NEW pdefaultnew, FUNCTION porigin, INDEX nat, PREPARED pnamedargs }
 syntax punpackcall = { FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX nat, SENT pnamedargs, CALLSITE porigin?, LINE int }
-syntax pintrinsic = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION | INTRINSIC_AUTO_REGISTER | INTRINSIC_AUTO_UNREGISTER | INTRINSIC_AUTO_FUNCTIONS | INTRINSIC_AUTO_CALL | INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC_GET_CLASS | INTRINSIC_GET_CALLED_CLASS | INTRINSIC_FROM_CALLABLE | INTRINSIC_CLOSURE_CURRENT | INTRINSIC_CLOSURE_BIND | INTRINSIC_CLOSURE_BINDTO | INTRINSIC_FUNC_NUM_ARGS | INTRINSIC_FUNC_GET_ARG | INTRINSIC_FUNC_GET_ARGS | INTRINSIC_GET_INCLUDE_PATH | INTRINSIC_SET_INCLUDE_PATH | INTRINSIC_INI_GET | INTRINSIC_INI_SET | INTRINSIC_INI_RESTORE | INTRINSIC_CHDIR
+syntax pintrinsic = INTRINSIC_FIBER_CONSTRUCT | INTRINSIC_FIBER_RESUME | INTRINSIC_FIBER_THROW | INTRINSIC_FIBER_SUSPEND | INTRINSIC_FIBER_CURRENT | INTRINSIC_FIBER_STARTED | INTRINSIC_FIBER_SUSPENDED | INTRINSIC_FIBER_RUNNING | INTRINSIC_FIBER_TERMINATED | INTRINSIC_FIBER_RETURN | INTRINSIC_REGISTER_SHUTDOWN_FUNCTION | INTRINSIC_AUTO_REGISTER | INTRINSIC_AUTO_UNREGISTER | INTRINSIC_AUTO_FUNCTIONS | INTRINSIC_AUTO_CALL | INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC_GET_CLASS | INTRINSIC_GET_CALLED_CLASS | INTRINSIC_FROM_CALLABLE | INTRINSIC_CLOSURE_CURRENT | INTRINSIC_CLOSURE_BIND | INTRINSIC_CLOSURE_BINDTO | INTRINSIC_FUNC_NUM_ARGS | INTRINSIC_FUNC_GET_ARG | INTRINSIC_FUNC_GET_ARGS | INTRINSIC_GET_INCLUDE_PATH | INTRINSIC_SET_INCLUDE_PATH | INTRINSIC_INI_GET | INTRINSIC_INI_SET | INTRINSIC_INI_RESTORE | INTRINSIC_CHDIR
   | INTRINSIC_ERROR_REPORTING | INTRINSIC_SET_ERROR_HANDLER | INTRINSIC_RESTORE_ERROR_HANDLER | INTRINSIC_GET_ERROR_HANDLER | INTRINSIC_TRIGGER_ERROR | INTRINSIC_USER_ERROR
   | INTRINSIC_SET_EXCEPTION_HANDLER | INTRINSIC_RESTORE_EXCEPTION_HANDLER | INTRINSIC_GET_EXCEPTION_HANDLER
 syntax pexitcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT poperand*, NAMED bool, OWNER nat?, LINE int }
@@ -174,9 +174,12 @@ syntax pconstantcontext = { ORIGIN porigin, LINE int, FACTS pconstantfact* }
 syntax pstaticdefaultcontext = { DECL porigin, ROOT porigin, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
 syntax pinterpolation = { SITE porigin, INDEX nat, MODE nat, LINE int, TEXT nat*, VALUES poperand* }
 syntax psourceoperand = { SITE porigin, LINE int, KIND int, INPUT poperand, OWNER nat, TAIL ptask* }
-syntax ptask = GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
+syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat }
+syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int }
+syntax ptask = FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat pnamedargs | FIBER_FINISH nat | FIBER_WAIT pfiberapi | FIBER_CONTINUE pfiberapi | GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
   | AUTO_NEXT pautoloadcall | AUTO_REFERENCE pautoloadcall pautoloadentry | AUTO_ENTER pautoloadcall pautoloadentry poperand | AUTO_RESULT pautoloadcall pautoloadentry poperand
   | AUTO_NEW preqbytes phpType7* int int | AUTO_PUBLISH porigin | AUTO_EXPLICIT_DONE pconfigcall
+  | AUTO_DEFAULT_NEW preqbytes phpType7* porigin int
   | CLOSURE_CALL_WARNING pclosurecall ptbytes | CLOSURE_CALL_GETTER_RESULT pclosurecall | CLOSURE_CALL_REFERENCE pclosurecall nat pnamedargs nat | OBJECT_CAST_RESULT pobjectcast | OBJECT_FOREACH_KEY pobjectforeach | TRAIT_PROPERTY_ABRUPT ptraitproperty nat | TRAIT_PROPERTY_WRITE ptraitpropertywrite | TRAIT_PROPERTY_STORE porigin pbin? poperand int | TRAIT_PROPERTY_PHASE ptraitproperty nat | TRAIT_METHOD_PHASE ptraitcall nat | ARGINFO_REF_PREP pargref | ARGINFO_REF_VALUES pargref nat poperand* | ARGINFO_REF_CAPTURE pargref nat poperand* | ARGINFO_REF_ERROR pargref poperand* | ARGINFO_ARGS pargcall | ARGINFO_SEND pargcall | ARGINFO_UNPACK_PREP pargcall | ARGINFO_UNPACK_NEXT pargcall poperand nat | ARGINFO_INVOKE pargcall | FILE_REQUEST porigin int int | FILE_RESOLVE_AWAIT nat | FILE_PARSE_AWAIT nat | FILE_END nat | FILE_WARNING_PHASE nat nat | EVAL_REQUEST porigin int | EVAL_AWAIT nat | EVAL_END nat | GETCLASS_ARGS pgetclasscall | GETCLASS_SEND pgetclasscall | GETCLASS_UNPACK_PREP pgetclasscall | GETCLASS_UNPACK_NEXT pgetclasscall poperand nat | GETCLASS_INVOKE pgetclasscall | CONFIG_ARGS pconfigcall | CONFIG_SEND pconfigcall | CONFIG_UNPACK_PREP pconfigcall | CONFIG_UNPACK_NEXT pconfigcall poperand nat | CONFIG_INVOKE pconfigcall | CONFIG_STRING_RESULT pconfigcall nat porigin int int | CHDIR_AWAIT pconfigcall nat | GETTER_ARGS pgettercall | GETTER_SEND pgettercall | GETTER_UNPACK_PREP pgettercall | GETTER_UNPACK_NEXT pgettercall poperand nat | GETTER_INVOKE pgettercall | GETTER_CAPTURE_RESULT nat porigin | FAKE_BIND_WARNING pbindwarning | BIND_ARGS pbindcall | BIND_SEND pbindcall | BIND_INVOKE pbindcall | CLOSURE_CALL_ARGS pclosurecall | CLOSURE_CALL_SEND pclosurecall | CLOSURE_CALL_INVOKE pclosurecall | FINALLY_ONLY porigin | FINALLY_RESUME porigin nat? | FINALLY_RETURN porigin porigin poperand | FINALLY_REF_RETURN porigin porigin poperand int | FINALLY_JUMP porigin porigin nat nat bool | FINALLY_GOTO porigin porigin pcpath pcpath | FINALLY_PHASE porigin nat | GOTO_UNWIND porigin pcpath pcpath | TRY_END porigin | THROW_VALUE porigin int | THROW_SEARCH nat | CATCH_BIND porigin nat nat | CLONE_ARGS pclonecall | CLONE_SEND pclonecall | CLONE_UNPACK_PREP pclonecall | CLONE_UNPACK_NEXT pclonecall poperand nat | CLONE_INVOKE pclonecall | CLONE_UPDATE pclonecall nat nat nat | EXIT_ARGS pexitcall | EXIT_SEND pexitcall | EXIT_UNPACK_PREP pexitcall | EXIT_UNPACK_NEXT pexitcall poperand nat | EXIT_INVOKE pexitcall | EXIT_UNWIND int | MATCH_START porigin | MATCH_SCAN porigin poperand nat nat | MATCH_COMPARE porigin poperand nat nat | MATCH_RESULT porigin poperand nat | CLOSURE_CAPTURE nat nat | CLOSURE_RECEIVE porigin nat | STATIC_INIT porigin | STATIC_BIND porigin | UNPACK_ARGS punpackcall | UNPACK_SEND punpackcall | UNPACK_PREP punpackcall | UNPACK_NEXT punpackcall poperand nat bool | NAMED_ARGS pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_SEND pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_PREFLIGHT porigin nat | NAMED_DEFAULT_BIND porigin nat | NAMED_VARIADIC_RECEIVE porigin nat | VARIADIC_BEGIN porigin | VARIADIC_RECEIVE porigin nat | SILENCE_END porigin | TYPE_RECEIVE porigin nat | TYPE_FALLTHROUGH porigin | DEFAULT_RECEIVE porigin nat | DEFAULT_BIND porigin nat | CONSTANT_OBSERVE porigin | CONSTANT_INIT expression | CONSTANT_BIND porigin | DEFAULT_NEW_ARGS pdefaultnew | DEFAULT_NEW_SEND pdefaultnew | DEFAULT_CTOR_ARGS pdefaultctor | DEFAULT_CTOR_REF_RESULT pdefaultctor | DEFAULT_CTOR_RESULT pdefaultctor
   | DEFAULT_INTERNAL_CTOR_ARGS pdefaultnew pctorcall
   | CALLABLE_DEFAULT_RECEIVE porigin nat
@@ -280,18 +283,23 @@ syntax pbindwarning = { CALL pconfigcall, SCOPE pbindscoperesult, MESSAGE ptbyte
 syntax pclosureevidence = CLOSURE_SCOPE pclosurescope | CLOSURE_BINDING pclosurebinding | CLOSURE_CALL porigin nat nat porigin
 ;; A durable fake closure keeps selection certificates, never the raw callback container.
 syntax pfrommethod = { SITE porigin, INPUT pvalue, METHOD ptbytes, SCOPE porigin?, CALLED porigin?, THIS nat?, CLASS papiclass, OUTER papiclass?, ORIGINAL ptbytes, PREFIX nat, WIDTH nat, FUNCTION porigin, NAME ptbytes, STATIC bool, CREATION pmethodcapture?, ARRAY bool, INVOKE bool }
+;; Fibers move VM-local control; heap, class tables, INI and handlers stay shared.
+syntax pfiberstatus = FIBER_INIT | FIBER_RUNNING | FIBER_SUSPENDED | FIBER_TERMINATED
+syntax pfibervm = { GLOBAL bool, TABLE psymboltable, TODO ptask*, ORIGIN porigin?, CURRENT pcallcontext?, FRAMES pframe*, HELD pnode*, RESULT poperand, BASE pbase, CELL nat, KEY pkey, LOCATION plocation, REPORTING int, SILENCES psilence*, BORROWEDREAD pidentityread?, OBJECTCAST pobjectcast?, CONSTCONTEXT pconstantcontext?, TRACE ptraceframe*, ERRORFATALTRACE ptraceframe*, ERRORORIGIN porigin? }
+syntax pfibercaller = { OBJECT nat, PREVIOUS nat?, VM pfibervm, API pfiberapi }
+syntax pfiber = { READY bool, CALL pconfigcall?, RAW pvalue, TARGET pcalltarget?, BIRTH pdynamicnew?, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer?, ENTRY pnamedargs?, STATUS pfiberstatus, VM pfibervm?, VALUE pvalue, FAILED bool, SEQUENCE nat }
 syntax pgeneratorphase = GENERATOR_FRESH | GENERATOR_PAUSED | GENERATOR_RUNNING | GENERATOR_CLOSED
 syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, INDEX int, VALUE pvalue?, KEY pvalue?, RETURN pvalue?, CLOSURE nat? }
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }
-syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool }
-syntax pobject = GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
+syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue* }
+syntax pobject = FIBER pfiber | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
 syntax pdeclaration = PDENTER nat porigin? int | PDENTERPRECISION nat porigin? int int | PDECLASS nat porigin | PDEFUNCTION nat porigin | PDRCLASS porigin pdeclcause | PDRFUNCTION porigin pdeclcause | PDRCLASSFATAL porigin pdeclcause | PDRTRAITCACHEFAIL porigin pdeclcause | PDCOMPILEWARNING pldiagnostic | PDEVALPAUSE nat nat nat pdeclnoticeitem* | PDEVALRESUME nat int | PDEVALRESUMEPRECISION nat int int | PDEVALFATALNOTICES nat pdeclnoticeitem* | PDEXIT nat pcompilestop
 dec $object_body(pobject) : pobject
 
-syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, CLOSUREBINDINGS pclosurebinding*, OBJECTPROPS pobjectprops*, OBJECTTABLES pobjecttable*, PROPREFS ppropref*, REFCOERCIONS prefcoercion*, CONTAINERINITS pcontainerinit*, PARAMETERBACKINGS pparameterbacking*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, DECLARATIONS pdeclaration*, LINKEDPARENTS pclasslink*, LINKEDINTERFACES pinterfacelink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, CLASSSTATICS pclassstatic*, INSTANCEDEFAULTS pinstancetemplate*, CLASSCONSTANTCACHE pdefaultcache*, CLASSCONSTANTHISTORY pclassconstantevent*, CLASSCONSTANTINIT pclassconstantcontext*, CONSTANTCLOSURES pconstantclosure*, CONSTANTOBJECTS pconstantobject*, STARTUP pstartup?, REPORTING int, REPORTINGINI preqbytes, REPORTINGMODIFIED bool, DISPLAYINIT preqbytes?, DISPLAYINI preqbytes?, DISPLAYMODIFIED bool, PRECISIONINIT preqbytes, PRECISIONINI preqbytes, PRECISIONMODIFIED bool, SILENCES psilence*, ERRORHANDLER perrorhandler, ERRORHANDLERS perrorhandler*, EXCEPTIONHANDLER pvalue?, EXCEPTIONHANDLERS pvalue?*, AUTOLOAD pautoloadregistry, SHUTDOWN pshutdown, DESTRUCTION pdestruction, BORROWEDREAD pidentityread?, OBJECTCAST pobjectcast?, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORFATALTRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, FILECWD preqbytes?, FILEINCLUDEPATH preqbytes?, FILESEQ nat, DIRSEQ nat, DIRCONVSEQ nat, DIRCONVERSIONS pdirconversion*, DIRCONTEXT pdircontext?, SELECTSEQ nat, SELECTEDCALLS pselectedcall*, FILECONTEXTS pfilecontext*, FILEBINDINGS pfilebinding*, INCLUDEDOPENED preqbytes*, EVALCONTEXTS pevalcontext*, EVALBINDINGS pevalbinding*, FAILEDSOURCES pfailedsource*, SERVICELEFT nat?, COMPILESTOP bool, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
+syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, CLOSUREBINDINGS pclosurebinding*, OBJECTPROPS pobjectprops*, OBJECTTABLES pobjecttable*, PROPREFS ppropref*, REFCOERCIONS prefcoercion*, CONTAINERINITS pcontainerinit*, PARAMETERBACKINGS pparameterbacking*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, DECLARATIONS pdeclaration*, LINKEDPARENTS pclasslink*, LINKEDINTERFACES pinterfacelink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, CLASSSTATICS pclassstatic*, INSTANCEDEFAULTS pinstancetemplate*, CLASSCONSTANTCACHE pdefaultcache*, CLASSCONSTANTHISTORY pclassconstantevent*, CLASSCONSTANTINIT pclassconstantcontext*, CONSTANTCLOSURES pconstantclosure*, CONSTANTOBJECTS pconstantobject*, STARTUP pstartup?, REPORTING int, REPORTINGINI preqbytes, REPORTINGMODIFIED bool, DISPLAYINIT preqbytes?, DISPLAYINI preqbytes?, DISPLAYMODIFIED bool, PRECISIONINIT preqbytes, PRECISIONINI preqbytes, PRECISIONMODIFIED bool, SILENCES psilence*, ERRORHANDLER perrorhandler, ERRORHANDLERS perrorhandler*, EXCEPTIONHANDLER pvalue?, EXCEPTIONHANDLERS pvalue?*, AUTOLOAD pautoloadregistry, SHUTDOWN pshutdown, DESTRUCTION pdestruction, BORROWEDREAD pidentityread?, OBJECTCAST pobjectcast?, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORFATALTRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, ACTIVEFIBER nat?, FIBERCALLERS pfibercaller*, FIBERSEQ nat, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, FILECWD preqbytes?, FILEINCLUDEPATH preqbytes?, FILESEQ nat, DIRSEQ nat, DIRCONVSEQ nat, DIRCONVERSIONS pdirconversion*, DIRCONTEXT pdircontext?, SELECTSEQ nat, SELECTEDCALLS pselectedcall*, FILECONTEXTS pfilecontext*, FILEBINDINGS pfilebinding*, INCLUDEDOPENED preqbytes*, EVALCONTEXTS pevalcontext*, EVALBINDINGS pevalbinding*, FAILEDSOURCES pfailedsource*, SERVICELEFT nat?, COMPILESTOP bool, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
 
 dec $parser_literal_origin(pstate, porigin?, expression) : pvalue?
@@ -816,6 +824,106 @@ dec $closure_current_site(pstate, porigin) : bool
 
 dec $trait_property_write_pending(pstate, poperand, ptask*) : bool
 dec $trait_property_write_task(pstate) : bool
+
+;; Fiber API, VM snapshots and owned waiting caller continuations.
+dec $fiber_at(pstate, nat) : pfiber?
+dec $fiber_object(pobject) : bool
+dec $fiber_put(pstate, nat, pfiber) : pstate
+dec $fiber_empty() : pfiber
+dec $fiber_vm_nodes(pfibervm) : pnode*
+dec $fiber_saved_nodes(pfibervm?) : pnode*
+dec $fiber_callback_nodes(pfiber) : pnode*
+dec $fiber_caller_nodes(pfibercaller*) : pnode*
+dec $fiber_vm(pstate) : pfibervm
+dec $fiber_local_table(pstate) : psymboltable
+dec $fiber_globals(pstate) : psymboltable
+dec $fiber_vm_table(pstate, pfibervm) : psymboltable
+dec $fiber_vm_globals(pstate, pfibervm) : psymboltable?
+dec $fiber_vm_restore(pstate, pfibervm) : pstate
+dec $fiber_fresh_vm(pstate, nat, pnamedargs) : pstate
+dec $fiber_transfer_domain(pstate) : bool
+dec $fiber_kind(pintrinsic) : bool
+dec $fiber_optional(pintrinsic) : bool
+dec $fiber_method(ptbytes) : pintrinsic?
+dec $fiber_method_name(pintrinsic) : ptbytes
+dec $fiber_static(pintrinsic) : bool
+dec $fiber_new_site(pstate, porigin) : bool
+dec $fiber_static_class(pstate, porigin, phpType19) : bool
+dec $fiber_source_name(pintrinsic?) : ptbytes
+dec $fiber_method_site(pstate, porigin, pintrinsic?) : bool
+dec $fiber_site(pstate, porigin, pintrinsic) : bool
+dec $fiber_start_config(pstate, pintrinsic, nat?, int, bool) : pstate
+dec $fiber_receive(pstate, pconfigcall) : pstate
+dec $fiber_done(pstate, pvalue) : pstate
+dec $fiber_max(pintrinsic) : nat
+dec $fiber_count_word(pintrinsic) : ptbytes
+dec $fiber_config_value(pconfigcall) : pvalue
+dec $fiber_config_sent(pconfigcall) : pvalue?
+dec $fiber_receive_value(pstate, pconfigcall, pvalue) : pstate
+dec $fiber_producer_view(pstate, pshutdownproducer?) : pstate
+dec $fiber_scope(pstate, pfiber) : porigin?
+dec $fiber_scope_target(pcalltarget) : porigin?
+dec $fiber_producer_valid(pstate, pfiber) : bool
+dec $fiber_cache_valid(pstate, nat, pfiber) : bool
+dec $fiber_birth_valid(pstate, pfiber) : bool
+dec $fiber_cache_view(pstate, pdynamicnew?) : pstate
+dec $fiber_dynamic_birth_site(pstate, porigin) : bool
+dec $fiber_return_error(pfiber) : ptbytes
+dec $fiber_blocked(pstate) : bool
+dec $fiber_resume_error(pintrinsic) : ptbytes
+dec $fiber_resume_ready(pstate, pconfigcall) : bool
+dec $fiber_start_check(pstate, pfiberstart, ptbytes?, int) : pstate
+dec $fiber_start_sent(pfiberstart, pvalue, ptbytes?) : pfiberstart
+dec $fiber_start(pstate, pfiberstart) : pstate
+dec $fiber_activate(pstate, nat, pfiber, pfiberapi, bool, pvalue) : pstate
+dec $fiber_resume(pstate, pconfigcall, pvalue) : pstate
+dec $fiber_inject(pstate, pfiberapi, pvalue) : pstate
+dec $fiber_suspend(pstate, pconfigcall, pvalue) : pstate
+dec $fiber_back(pstate, pvalue, bool) : pstate
+dec $fiber_name_error(pfunction, pnamedargs, (ptbytes, poperand)*) : ptbytes?
+dec $fiber_named_map(pfunction, pnamedargs, (ptbytes, poperand)*) : pnamedargs
+dec $fiber_parameters_reference(psparam*) : bool
+dec $fiber_terminated(pfiber, pvalue, bool) : pfiber
+dec $fiber_marker(ptask) : bool
+dec $fiber_api_nodes(pfiberapi) : pnode*
+dec $fiber_value_nodes(pvalue?) : pnode*
+dec $fiber_base_frame(pstate, pframe) : bool
+dec $fiber_context_kind(pstate, pcallcontext) : bool
+dec $fiber_context_valid(pstate, pcallcontext) : bool
+dec $fiber_trace_type(pintrinsic) : ptbytes
+dec $fiber_api_valid(pstate, pfiberapi) : bool
+dec $fiber_fixed_buffer_valid(pstate, porigin, pintrinsic, pvalue?) : bool
+dec $intrinsic_extent(pstate, porigin) : nat
+dec $fiber_start_shape(pstate, porigin, nat, pnamedargs) : bool
+dec $fiber_start_prefix(pstate, porigin, nat, nat, pnamedargs) : bool
+dec $fiber_start_valid(pstate, pfiberstart, bool) : bool
+dec $fiber_wait_valid(pstate, pfiberapi) : bool
+dec $fiber_continue_valid(pstate, pfiberapi) : bool
+dec $fiber_finish_valid(pstate, nat) : bool
+dec $fiber_enter_valid(pstate, nat, pnamedargs) : bool
+dec $fiber_record_valid(pstate, nat, pfiber) : bool
+dec $fiber_vm_valid(pstate, pfibervm, nat?, pfibercaller*) : bool
+dec $fiber_waiting_ids(pfibercaller*) : nat*
+dec $fiber_previous_ids(nat?) : nat*
+dec $fiber_callers_valid(pstate, nat?, pfibercaller*, nat*) : bool
+dec $fiber_live_records(pstate, pnode*) : bool
+dec $fiber_node_sequence(pstate, pnode) : nat?
+dec $fiber_sequences_unique(pstate, pnode*, nat*) : bool
+dec $fiber_state_valid(pstate) : bool
+dec $fiber_any_method_site(pstate, porigin) : bool
+dec $fiber_source_method(phpType20) : bool
+dec $fiber_api_trace(pstate, pfiberapi) : ptraceframe
+dec $fiber_api_trace_args(pstate, pfiberapi) : (pkey, pvalue)*
+dec $fiber_caller_trace(pstate) : ptraceframe*
+dec $fiber_vm_iterators(pfibervm) : nat*
+dec $fiber_object_iterators(pstate, pnode*) : nat*
+dec $fiber_caller_iterators(pfibercaller*) : nat*
+dec $fiber_saved_iterators(pstate) : nat*
+dec $fiber_retired_stack(pstate, pnode*, pnode*) : bool
+dec $fiber_prune(pstate, pnode*) : pstate
+dec $fiber_live_node_valid(pstate, pnode) : bool
+dec $fiber_node_iterators(pstate, pnode) : nat*
+dec $fiber_retired_node(pstate, pnode, pnode*) : bool
 
 ;; Registration/lookup hooks are false until the autoload module is loaded.
 dec $autoload_api_kind(pintrinsic) : bool
