@@ -36,6 +36,7 @@ dec $trait_cache_object_nodes(pstate, porigin, nat, pcoccurrence*) : bool
 dec $trait_cache_object_read(pfstate, pcpath, pclassconstantdesc, int) : pfstate
 dec $trait_cache_object_steps(pfstate, pcpath, pclassconstantdesc, int, pstate, ptraitcachecause) : pfstate
 dec $trait_cache_object_step(pstate, ptraitcachecause) : pstate
+dec $trait_cache_object_bind(pstate, ptraitcachecause) : pstate
 dec $trait_cache_object_binding(ptask*) : bool
 dec $trait_cache_object_lookups(pclassconstantcontext*, porigin*) : porigin*?
 dec $trait_cache_object_events(porigin, porigin, pevent*) : pfdiagnostic*?
@@ -294,7 +295,7 @@ def $trait_cache_object_lookups(pclassconstantcontext :: pclassconstantcontext_t
   -- if $trait_cache_object_lookups(pclassconstantcontext_tail*, porigin_base*) = (porigin_previous*)
 def $trait_cache_object_lookups(pclassconstantcontext*, porigin_base*) = eps -- otherwise
 
-def $trait_cache_object_step(S, ptraitcachecause) = $class_constant_result($class_constant_restore(S_cached[.TODO = ptask_tail*], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
+def $trait_cache_object_bind(S, ptraitcachecause) = $class_constant_result($class_constant_restore(S_cached[.TODO = ptask_tail*], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
   -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
   -- if pclassconstantcontext.DECL = porigin
@@ -313,9 +314,9 @@ def $trait_cache_object_step(S, ptraitcachecause) = $class_constant_result($clas
   -- if $constant_callable_published(S_value.DECLARATIONS[0:ptraitcachecause.PREFIX], pclassconstantdesc.OWNER)
   -- if S_cached = S_value[.CLASSCONSTANTCACHE = S_value.CLASSCONSTANTCACHE ++ [{ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]][.CLASSCONSTANTHISTORY = S_value.CLASSCONSTANTHISTORY ++ [CCTRAITCACHE porigin ptraitcachecause_selected]]
   -- if $trait_cache_bound_value(S_cached, pclassconstantdesc, pvalueclass, ptraitcachecause.PREFIX)
-def $trait_cache_object_step(S, ptraitcachecause) = S[.COMPLETION = UNSUPPORTED "uncertified public trait object dependency binding"]
+def $trait_cache_object_bind(S, ptraitcachecause) = S[.COMPLETION = UNSUPPORTED "uncertified public trait object dependency binding"] -- otherwise
+def $trait_cache_object_step(S, ptraitcachecause) = $trait_cache_object_bind(S, ptraitcachecause)
   -- if $trait_cache_object_binding(S.TODO)
-  -- otherwise
 def $trait_cache_object_step(S, ptraitcachecause) = S_next
   -- if ~$trait_cache_object_binding(S.TODO)
   -- PhpStep: S ~> S_next
