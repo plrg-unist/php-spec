@@ -1,0 +1,67 @@
+;; Pause the genuine published dependency loop immediately before its first
+;; failing step. The seed copies238's source-owned comparison context without
+;; invoking the folder to completion, then266/184 perform every runtime step.
+dec $review_trait_object_seed(pstate, pclassdesc, porigin) : pfstate?
+def $review_trait_object_seed(S, pclassdesc, PORIGIN n pcpath) = (F_seed)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $($expression_line(expression) > 0)
+  -- if F = $pfbegin(n, pcunit.AST)
+  -- if porigin_member = PORIGIN n pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if S_memory = S[.CONSTCONTEXT = ({ORIGIN TRAIT_MEMBER_ORIGIN pclassdesc.ORIGIN porigin_member, LINE $expression_line(expression), FACTS eps})][.ORIGIN = eps][.ERRORHANDLER = {CALLBACK eps, LEVELS 0}][.ERRORFATALTRACE = eps][.DISPLAYINI = ($ptascii("stderr"))]
+  -- if ptcontext = {NAMESPACE eps, IMPORTS eps, SCOPE PTKNOWN pclassdesc.NAME pclassdesc.PARENT, POSITION PTCONSTANT, OWNER pclassdesc.NAME, MEMBER eps, FILE $call_sourcefile(S.FILES, PORIGIN n pcpath), LINE $nabs($expression_line(expression))}
+  -- if $pool_at(S.POOLS, n) = (ppool)
+  -- if $trait_record_root(S, pclassdesc, PORIGIN n pcpath)
+  -- if F_seed = $pfcontextualize(F[.RECORD = ({CLASS pclassdesc.ORIGIN, ROOT PORIGIN n pcpath, TABLE pclassdesc.CONSTANTS})][.FACTS = $trait_pool_facts(S, n, ppool.CONSTANTS)][.CLASSFACTS = $trait_pool_classes(ppool.CONSTANTS)][.CLASSES = S.CLASSES][.CLASSCONSTANTS = pclassdesc.CONSTANTS][.EXTERNAL = (S)][.DEFAULT = true][.CONSTANT = true][.CLASSCONTEXT = (ptcontext)][.FILE = ($call_sourcefile(S.FILES, PORIGIN n pcpath))][.CWD = ($call_request_cwd(S.REQUEST))][.MEMORY = S_memory[.REPORTING = 32767][.EVENTS = eps]][.ENV = $plempty(false)], pcpath)
+
+dec $review_trait_object_start(pfstate, pcpath, pclassconstantdesc, int) : (pstate, ptraitcachecause)?
+def $review_trait_object_start(F, pcpath, pclassconstantdesc, z) = ((S_start, ptraitcachecause))
+  -- if F.RECORD = (pfrecorder)
+  -- if $trait_recording(F, pcpath)
+  -- if $trait_fold_owner(F) = (porigin_owner)
+  -- if porigin_site = PORIGIN F.SOURCE.ID pcpath
+  -- if $origin_node(F.MEMORY.SOURCES, porigin_site) = (NExprClassConstFetch phpType19 phpType20 metadata)
+  -- if $trait_cache_requested(F.MEMORY, porigin_owner, phpType19, porigin_site) = (porigin_requested)
+  -- if $class_at(F.MEMORY.CLASSES, porigin_requested) = (pclassdesc_requested)
+  -- if $pfclass_constant_member(phpType20, eps) = (ptbytes_member)
+  -- if porigin_lookups* = F.LOOKUPS ++ [porigin_site]
+  -- if n_prefix = |F.MEMORY.DECLARATIONS|
+  -- if n_user = |F.MEMORY.USERCONSTANTS|
+  -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS porigin_lookups*, PREFIX n_prefix, USERPREFIX n_user}
+  -- if $trait_cache_cause_selected(F.MEMORY, ptraitcachecause) = (pclassconstantdesc)
+  -- if $constant_callable_published(F.MEMORY.DECLARATIONS, pclassconstantdesc.OWNER)
+  -- if F.MEMORY.CLASSCONSTANTINIT = eps
+  -- if S_base = F.MEMORY[.TODO = eps][.CONSTCONTEXT = eps][.ORIGIN = (porigin_site)]
+  -- if S_start = $class_constant_begin(S_base, pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING pclassdesc_requested.NAME)) ptbytes_member, $class_constant_message_class(S_base, pclassdesc_requested, pclassdesc_requested.NAME), z)
+
+dec $review_trait_object_error(pfstate, pstate, ptraitcachecause, nat) : (pfstate, pstate, pstate)?
+def $review_trait_object_error(F, S, ptraitcachecause, 0) = eps
+def $review_trait_object_error(F, S, ptraitcachecause, n) = ((F[.RECORDED = F.RECORDED ++ pfdiagnostic*], S, S_next[.EVENTS = eps]))
+  -- if $(n > 0)
+  -- if S.COMPLETION = NORMAL /\ S.TODO =/= eps
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc_active)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $class_constant_active(S)
+  -- if $constant_callable_path(S, porigin_site, pclassconstantdesc_active.INITIALIZER) \/ $trait_cache_object_binding(S.TODO) \/ (porigin_site) = pclassconstantcontext.ORIGIN \/ porigin_site = pclassconstantdesc_active.ORIGIN
+  -- if S_next = $trait_cache_object_step(S, ptraitcachecause)
+  -- if $trait_cache_object_events(pclassconstantdesc_active.OWNER, porigin_site, S_next.EVENTS) = (pfdiagnostic*)
+  -- if $trait_cache_object_scalar_error(S_next.COMPLETION)
+def $review_trait_object_error(F, S, ptraitcachecause, n) = $review_trait_object_error(F[.RECORDED = F.RECORDED ++ pfdiagnostic*], S_next[.EVENTS = eps], ptraitcachecause, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if S.COMPLETION = NORMAL /\ S.TODO =/= eps
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc_active)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $class_constant_active(S)
+  -- if $constant_callable_path(S, porigin_site, pclassconstantdesc_active.INITIALIZER) \/ $trait_cache_object_binding(S.TODO) \/ (porigin_site) = pclassconstantcontext.ORIGIN \/ porigin_site = pclassconstantdesc_active.ORIGIN
+  -- if S_next = $trait_cache_object_step(S, ptraitcachecause)
+  -- if $trait_cache_object_events(pclassconstantdesc_active.OWNER, porigin_site, S_next.EVENTS) = (pfdiagnostic*)
+  -- if S_next.COMPLETION = NORMAL
+
+dec $review_trait_initializer_output(pevent*) : ptbytes
+dec $review_trait_initializer_event(pevent) : ptbytes
+def $review_trait_initializer_output(eps) = eps
+def $review_trait_initializer_output(pevent :: pevent_tail*) = $review_trait_initializer_event(pevent) ++ $review_trait_initializer_output(pevent_tail*)
+def $review_trait_initializer_event(OUTPUT ptbytes) = ptbytes
+def $review_trait_initializer_event(pevent) = eps -- otherwise

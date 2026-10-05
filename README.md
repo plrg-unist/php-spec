@@ -560,8 +560,11 @@ published owners and release unpublished import caches. Raw trait composition us
 the same source-kind proof; direct trait constants still fail before evaluation.
 Published Closure/FCC dependencies retain their real initializer scope, callable
 receipts and cache owners through successful and failed composition; array keys
-and duplicate-key selection keep source-derived proofs. Wider object initialization,
-held/open failed-link contexts and readonly storage remain required. A bounded
+and duplicate-key selection keep source-derived proofs. Errors inside those
+initializers preserve actual Throwable fields and demand traces, retire failed
+temporary owners and keep completed nested caches. Wider initializer contexts,
+unpublished-owner births, held/open failed links and readonly storage remain
+required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
