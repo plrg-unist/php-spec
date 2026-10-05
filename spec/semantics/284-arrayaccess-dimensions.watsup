@@ -328,7 +328,8 @@ def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "ArrayAccess
 def $access_truth_consumed(paccess) = true
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetExists")
-  -- if paccess.MODE = ACCESS_READ KEY_IS \/ paccess.MODE = ACCESS_READ (KEY_TEST b)
+  -- if paccess.MODE = ACCESS_READ pkeymode
+  -- if pkeymode = KEY_IS \/ $key_test_mode(pkeymode)
 def $access_truth_consumed(paccess) = true
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetGet")
@@ -545,6 +546,7 @@ def $access_valid(S, paccess) = true
   -- if $access_capture_valid(paccess)
   -- if $access_selected_valid(paccess)
   -- if ~paccess.OUTER \/ paccess.OBJECT =/= eps
+  -- if ~($access_call_phase(paccess.PHASE) \/ $access_truth_phase(paccess.PHASE)) \/ paccess.OBJECT =/= eps
   -- if paccess.OBJECT = eps \/ $access_object_valid(S, paccess.OBJECT)
   -- if $call_reference_operand_valid(S, paccess.INPUT)
   -- if $call_reference_operand_valid(S, paccess.RHS)
