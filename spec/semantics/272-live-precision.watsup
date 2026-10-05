@@ -110,6 +110,7 @@ dec $precision_pause_tag(pdeclaration) : bool
 dec $eval_precision_epochs_from(pdeclaration*, nat, int, (nat, nat, nat)*, (nat, nat, int)*) : (nat, nat, int)*?
 dec $compiler_epoch_value((nat, nat, int)*, nat, nat, int) : int
 dec $ppprecision_without(ppexprdone*, pcpath) : ppexprdone*
+dec $ppprecision_tag(ppexprdone) : bool
 dec $precision_compiler_current(pstate, nat, nat, nat) : int?
 dec $eval_compile_precision_prefix(ppstate, ppstate, pevalcompile) : bool
 dec $eval_compile_precision_publications(ppinstalled, ppinstalled, pppublication*) : bool
@@ -153,12 +154,14 @@ def $pfcompiler_precision(F) = F -- if F.COMPILEPRECISIONS = eps
 def $ppcompiler_precision(P) = P[.FOLD = $pfcompiler_precision(P.FOLD[.CHECKPOINT = |P.PUBLICATIONS|][.DIAGNOSTIC = |P.DIAGNOSTICS|])]
 
 ;; These descriptors name compiler conversion points, not parser literal text.
+def $ppprecision_tag(PPCPRECISION pcpath z) = true
+def $ppprecision_tag(ppexprdone) = false -- otherwise
 def $ppprecision_without(eps, pcpath) = eps
 def $ppprecision_without((PPCPRECISION pcpath z) :: ppexprdone*, pcpath) = $ppprecision_without(ppexprdone*, pcpath)
 def $ppprecision_without((PPCPRECISION pcpath_other z) :: ppexprdone*, pcpath) = (PPCPRECISION pcpath_other z) :: $ppprecision_without(ppexprdone*, pcpath)
   -- if pcpath_other =/= pcpath
 def $ppprecision_without(ppexprdone :: ppexprdone_tail*, pcpath) = ppexprdone :: $ppprecision_without(ppexprdone_tail*, pcpath)
-  -- otherwise
+  -- if ~$ppprecision_tag(ppexprdone)
 def $pprecord_precision(P, pcpath) = P[.EXPRESSIONS = $ppprecision_without(P.EXPRESSIONS, pcpath) ++ [PPCPRECISION pcpath z_precision]]
   -- if z_precision = $precision_value(P.FOLD.MEMORY)
   -- if z_precision =/= P.FOLD.PARSEPRECISION
@@ -166,7 +169,8 @@ def $pprecord_precision(P, pcpath) = P[.EXPRESSIONS = $ppprecision_without(P.EXP
   -- if $precision_value(P.FOLD.MEMORY) = P.FOLD.PARSEPRECISION
 def $export_precisions(eps) = eps
 def $export_precisions((PPCPRECISION pcpath z) :: ppexprdone*) = (PCCPRECISION pcpath z) :: $export_precisions(ppexprdone*)
-def $export_precisions(ppexprdone :: ppexprdone_tail*) = $export_precisions(ppexprdone_tail*) -- otherwise
+def $export_precisions(ppexprdone :: ppexprdone_tail*) = $export_precisions(ppexprdone_tail*)
+  -- if ~$ppprecision_tag(ppexprdone)
 def $compiled_precision(S, (PORIGIN n pcpath)) = (z)
   -- if $pool_at(S.POOLS, n) = (ppool)
   -- if $constant_precision_at(ppool.CONSTANTS, pcpath) = (z)
