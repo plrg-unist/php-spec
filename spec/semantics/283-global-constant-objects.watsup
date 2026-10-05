@@ -52,7 +52,15 @@ def $default_new_scope(S) = porigin_scope?
   -- if S.ORIGIN = (porigin_site)
   -- if $global_new_context(S, porigin_site) = ((porigin_decl, porigin_scope?))
 def $default_new_scope(S) = $method_current_scope(S) -- if ~$global_new_current(S)
-def $global_new_internal(S, ptbytes) = ($global_new_current(S) /\ $class_internal(ptbytes))
+def $global_new_unsupported_target(S, ptbytes) = true
+  -- if $global_new_current(S) /\ $class_internal(ptbytes)
+def $global_new_unsupported_target(S, ptbytes) = true
+  -- if $global_new_current(S) /\ ~$class_internal(ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if ~pclassdesc.ABSTRACT
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) =/= eps
+def $global_new_unsupported_target(S, ptbytes) = false -- otherwise
 
 dec $global_new_scope_error(pstate, porigin) : ptbytes?
 def $global_new_scope_error(S, porigin_site) = ($ptascii("Cannot access \"") ++ $ptlc($base64(text)) ++ $ptascii("\" when no class scope is active"))
