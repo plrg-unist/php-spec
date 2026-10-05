@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Fiber281 now implements live user-callback construction and direct
+start/suspend/resume/throw, status, current identity and stored returns. Callback
+selection is cached; genuine VM stacks, live reporting masks and C argument
+buffers survive suspension while globals, INI and handler registration stay
+shared. Nested waiting Fibers remain running. Thirty normal originals and thirteen
+source-derived states/782 conditions retain their mixed cuts. Deferred/literal
+named holes, entry-error caller provenance and raw named-buffer admission are
+checked through genuine pending continuations and malformed records. Actual
+constant-NEW identity and a separate running Generator preserve genuine owners;
+global Generator admission stays on the actual machine while parked Fiber stacks
+keep their local guards. Three Unsupported controls earn zero agreement. The
+allocated-Fiber argument source and null-callsite preflight state checks retain
+separate cuts.
+[The contract](docs/semantics/FIBERS.md) records raw reports and the required
+force-close, internal/reference callbacks, API entry, unpacking and initializer
+switching follow-ons. Full core stays open; returns verification remains paused.
+
 Generator280 creates object-owned suspended frames after eager ordinary receives.
 Value yields, literal iterator methods, `getReturn` and value foreach retain
 captured aliases, ordinary private creation scope and real resumer traces.

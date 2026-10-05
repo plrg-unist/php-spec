@@ -12,6 +12,7 @@ def $typed_caller_strict(S) = pfunction.CODE.STRICT
   -- if S.CURRENT = (pcallcontext_current)
   -- if pcallcontext_current.WRAPPER = eps
   -- if ~$error_context_direct_trigger(S)
+  -- if ~$fiber_context_kind(S, pcallcontext_current)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.CONTEXT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
@@ -19,6 +20,7 @@ def $typed_caller_strict(S) = pcode.STRICT
   -- if S.CURRENT = (pcallcontext_current)
   -- if pcallcontext_current.WRAPPER = eps
   -- if ~$error_context_direct_trigger(S)
+  -- if ~$fiber_context_kind(S, pcallcontext_current)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.CONTEXT = eps
   -- if S.CURRENT = (pcallcontext)

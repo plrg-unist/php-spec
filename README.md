@@ -763,7 +763,10 @@ Intentional departures are recorded in [engine discrepancies](docs/semantics/DIS
 reads live fixed parameters and retained positional extras, with fresh result
 arrays and native receive/context priorities. Bounded private checks cover
 inherited source object invocation and Stringable SET ownership; broader
-Generator/Fiber and unfinished callback interactions remain open.
+Generator and unfinished callback interactions remain open. Live
+[Fiber transfers](docs/semantics/FIBERS.md) now retain separate VM continuations,
+shared globals and handlers, cached callbacks and original C argument buffers;
+cleanup and wider Fiber consumers remain required.
 
 [Called-class introspection](docs/semantics/CALLED-CLASS.md) now implements
 `get_called_class()` through inherited/forwarded methods, source Closure binding,

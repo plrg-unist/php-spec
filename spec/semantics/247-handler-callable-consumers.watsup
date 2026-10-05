@@ -247,7 +247,7 @@ def $consumer_capture_valid(S, porigin, (pmethodcapture)) = true
 ;; A C-selected maker may retire its old registry and Closure before the new
 ;; queue entry runs. Keep only its immutable target and scope/binding records.
 ;; Reconstruction below is for pure lookups and creates no heap owners.
-def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SITE pcallcontext.CALLSITE, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext) \/ $stringify_context_kind(S, pcallcontext))})
+def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SITE pcallcontext.CALLSITE, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext) \/ $stringify_context_kind(S, pcallcontext) \/ $fiber_context_kind(S, pcallcontext))})
   -- if S.CURRENT = (pcallcontext)
 def $consumer_producer_current(S) = eps -- if S.CURRENT = eps
 def $consumer_producer_scope(S, pcalltarget) = $closure_scope_at(S.CLOSURESCOPES, n)
