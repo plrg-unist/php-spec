@@ -262,8 +262,8 @@ syntax pclosureevidence = CLOSURE_SCOPE pclosurescope | CLOSURE_BINDING pclosure
 ;; A durable fake closure keeps selection certificates, never the raw callback container.
 syntax pfrommethod = { SITE porigin, INPUT pvalue, METHOD ptbytes, SCOPE porigin?, CALLED porigin?, THIS nat?, CLASS papiclass, OUTER papiclass?, ORIGINAL ptbytes, PREFIX nat, WIDTH nat, FUNCTION porigin, NAME ptbytes, STATIC bool, CREATION pmethodcapture?, ARRAY bool, INVOKE bool }
 syntax pobject = INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
-syntax pdeclcall = (porigin, porigin?, porigin?, porigin?) | DECL_AUTOLOAD porigin porigin? porigin? pautoloadcall pautoloadentry
-syntax pdeclcause = { UNIT nat, CALLS pdeclcall* }
+syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
+syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
 syntax pdeclaration = PDENTER nat porigin? int | PDECLASS nat porigin | PDEFUNCTION nat porigin | PDRCLASS porigin pdeclcause | PDRFUNCTION porigin pdeclcause | PDCOMPILEWARNING pldiagnostic | PDEVALPAUSE nat nat nat pdeclnoticeitem* | PDEVALRESUME nat int | PDEVALFATALNOTICES nat pdeclnoticeitem* | PDEXIT nat pcompilestop
 dec $object_body(pobject) : pobject

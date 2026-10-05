@@ -36,6 +36,8 @@ dec $autoload_entry_metadata(pstate, pautoloadentry) : bool
 dec $autoload_entry_current_metadata(pstate, pautoloadentry) : bool
 dec $autoload_declaration_new(pstate, porigin, preqbytes, int, int) : bool
 dec $autoload_declaration_resume(pstate, pautoloadcall) : bool
+dec $autoload_declaration_capture(pstate, nat) : pdeclautoload*
+dec $autoload_declaration_from(pstate, nat) : pdeclautoload*
 dec $autoload_selected_scope(pstate, pautoloadentry, pcalltarget) : bool
 dec $autoload_resolve(pstate, pconfigcall) : pstate
 dec $autoload_new_diagnostic(pstate, preqbytes) : preqbytes
@@ -706,12 +708,19 @@ def $autoload_context_valid(S, pcallcontext) = true
   -- if $call_sent_operands_valid(S, pcallcontext.TARGET, n_received, pcallcontext.EXTRA)
 
 ;; Publication keeps only the selected callback and frozen request, not roots.
-def $declaration_autoload_context(S, pcallcontext) = (DECL_AUTOLOAD pcallcontext.FUNCTION pcallcontext.LEXICAL_CLASS pcallcontext.CALLED_CLASS pautoloadcall pautoloadentry)
+def $autoload_declaration_capture(S, n) = [(n, pautoloadcall, pautoloadentry)]
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) =/= eps
   -- if $autoload_context_valid(S, pcallcontext)
   -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand))
-def $declaration_caller_lexical((DECL_AUTOLOAD porigin_function porigin_lexical? porigin_called? pautoloadcall pautoloadentry) :: pdeclcalls) = porigin_lexical?
-def $declaration_caller_called((DECL_AUTOLOAD porigin_function porigin_lexical? porigin_called? pautoloadcall pautoloadentry) :: pdeclcalls) = porigin_called?
-def $declaration_caller_receiver(S, (DECL_AUTOLOAD porigin_function porigin_lexical? porigin_called? pautoloadcall pautoloadentry) :: pdeclcalls) = $declaration_caller_receiver(S, (porigin_function, $autoload_context_site(pautoloadcall), porigin_lexical?, porigin_called?) :: pdeclcalls)
+def $autoload_declaration_capture(S, n) = eps -- otherwise
+def $autoload_declaration_from(S, n) = $autoload_declaration_capture(S, n)
+  -- if S.FRAMES = eps
+def $autoload_declaration_from(S, n) = $autoload_declaration_capture(S, n) ++ $autoload_declaration_from(S_next, n_next)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if S_next = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if n_next = $(n + |$declaration_context(S, S.CURRENT)|)
+def $declaration_autoload(S) = $autoload_declaration_from(S, 0)
 def $autoload_declaration_new(S, PORIGIN n_unit pcpath, ptbytes, z, z_fetch) = true
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
@@ -744,7 +753,8 @@ def $autoload_declaration_resume(S, pautoloadcall) = true
   -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME)
   -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
 def $autoload_declaration_resume(S, pautoloadcall) = false -- otherwise
-def $declaration_autoload_invocation(S, pautoloadcall, pautoloadentry, porigin_function, porigin_lexical?, porigin_called?) = true
+def $declaration_autoload_invocation(S, pautoloadcall, pautoloadentry, porigin_function, porigin_callsite?, porigin_lexical?, porigin_called?) = true
+  -- if porigin_callsite? = $autoload_context_site(pautoloadcall)
   -- if $autoload_declaration_resume(S, pautoloadcall)
   -- if $autoload_entry_valid(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
