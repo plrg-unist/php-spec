@@ -132,6 +132,12 @@ def $config_parameter_name(INTRINSIC_AUTO_REGISTER, 2) = $ptascii("prepend")
 def $config_parameter_name(INTRINSIC_AUTO_UNREGISTER, 0) = $ptascii("callback")
 def $config_parameter_name(INTRINSIC_AUTO_CALL, 0) = $ptascii("class")
 def $config_string_kind(INTRINSIC_AUTO_CALL) = true
+def $config_string_launch(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_CALL
+  -- if S.FILEINCLUDEPATH = eps
+  -- if $config_string_object(pconfigcall) = (n_object)
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
 def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
   -- if $(|pcpath_child| >= 3)
   -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
