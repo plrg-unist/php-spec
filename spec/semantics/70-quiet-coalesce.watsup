@@ -1,3 +1,4 @@
+dec $access_instance(pstate, pvalue) : bool
 dec $constant_quiet_capture(pstate) : pstate
 ;; BP_VAR_IS fetches retain key/name expression effects, while absent locations
 ;; return null. This is distinct from ISSET_ISEMPTY's terminal string protocol.
@@ -64,6 +65,9 @@ dec $quiet_dimension_value(pstate, pvalue, pvalue, int) : pstate
 def $quiet_dimension_value(S, PARRAY n, pvalue_key, z) = $quiet_array(S, n, pvalue_key, z)
 def $quiet_dimension_value(S, PSTRING n_bytes*, pvalue_key, z) = $quiet_string(S, n_bytes*, pvalue_key, z)
 def $quiet_dimension_value(S, POBJECT n, pvalue_key, z) = $throw_scalar(S, "Error", $ptascii("Cannot use object of type ") ++ $object_name(S, n) ++ $ptascii(" as array"), z)
+  -- if ~$access_instance(S, POBJECT n)
+def $quiet_dimension_value(S, POBJECT n, pvalue_key, z) = S[.COMPLETION = UNSUPPORTED "ArrayAccess memoized quiet dimension protocol"]
+  -- if $access_instance(S, POBJECT n)
 def $quiet_dimension_value(S, pvalue_base, pvalue_key, z) = S[.RESULT = KNOWN PNULL] -- otherwise
 
 dec $quiet_dimension(pstate, pvalue, poperand, int) : pstate
