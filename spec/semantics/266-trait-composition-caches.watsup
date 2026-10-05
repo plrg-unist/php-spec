@@ -407,7 +407,9 @@ def $trait_cache_object_demand(F, pcpath, S, S_next, ptraitcachecause) = ((pfrec
   -- if porigin_site = PORIGIN F.SOURCE.ID pcpath
   -- if $origin_node(F.MEMORY.SOURCES, porigin_site) = (NExprClassConstFetch phpType19 phpType20 metadata_site)
   -- if z = $expression_line(NExprClassConstFetch phpType19 phpType20 metadata_site)
-  -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS [porigin_site], PREFIX |F.MEMORY.DECLARATIONS|, USERPREFIX |F.MEMORY.USERCONSTANTS|}
+  -- if porigin_lookups* = [porigin_site]
+  -- if n_prefix = |F.MEMORY.DECLARATIONS| /\ n_user = |F.MEMORY.USERCONSTANTS|
+  -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS porigin_lookups*, PREFIX n_prefix, USERPREFIX n_user}
   -- if $trait_cache_cause_selected(F.MEMORY, ptraitcachecause) = (pclassconstantdesc)
   -- if $constant_callable_published(F.MEMORY.DECLARATIONS, pclassconstantdesc.OWNER)
   -- if S.SOURCES = F.MEMORY.SOURCES /\ S.CODE = F.MEMORY.CODE /\ S.FILES = F.MEMORY.FILES
