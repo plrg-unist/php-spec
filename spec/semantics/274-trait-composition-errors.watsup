@@ -200,6 +200,7 @@ dec $trait_failed_cache_keep(pstate, porigin) : bool
 dec $trait_failed_cache_values(pstate, pdefaultcache*) : pdefaultcache*
 dec $trait_failed_cache_events(pstate, pclassconstantevent*) : pclassconstantevent*
 dec $trait_failed_cache_index(pdeclaration*, porigin, nat) : nat?
+dec $trait_failed_cache_item(pdeclaration) : porigin?
 
 def $trait_failed_cache_class(S, S_result) = (ptraitcachecause.CLASS)
   -- if $(|S.CLASSCONSTANTHISTORY| < |S_result.CLASSCONSTANTHISTORY|)
@@ -259,8 +260,12 @@ def $trait_failed_cache_restore(S, S_result) = $prune_allocations(S_restored)
 ;; This row records a source-rederived failure, never a publication or a held
 ;; primary. The real prefix separately authenticates each retained target owner.
 def $trait_failed_cache_index(eps, porigin, n) = eps
-def $trait_failed_cache_index((PDRTRAITCACHEFAIL porigin pdeclcause) :: pdeclaration*, porigin, n) = (n)
-def $trait_failed_cache_index(pdeclaration :: pdeclaration_tail*, porigin, n) = $trait_failed_cache_index(pdeclaration_tail*, porigin, $(n + 1)) -- otherwise
+def $trait_failed_cache_item(PDRTRAITCACHEFAIL porigin pdeclcause) = (porigin)
+def $trait_failed_cache_item(pdeclaration) = eps -- otherwise
+def $trait_failed_cache_index(pdeclaration :: pdeclaration_tail*, porigin, n) = (n)
+  -- if $trait_failed_cache_item(pdeclaration) = (porigin)
+def $trait_failed_cache_index(pdeclaration :: pdeclaration_tail*, porigin, n) = $trait_failed_cache_index(pdeclaration_tail*, porigin, $(n + 1))
+  -- if $trait_failed_cache_item(pdeclaration) =/= (porigin)
 def $trait_cache_cause_point(S, ptraitcachecause) = true
   -- if $trait_failed_cache_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = (ptraitcachecause.PREFIX)
   -- if $iterator_notice_publication_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = eps

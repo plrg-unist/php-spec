@@ -258,7 +258,9 @@ def $trait_cache_interfaces(pinterfacelink :: pinterfacelink_tail*, porigin) = $
 def $trait_cache_interfaces(pinterfacelink :: pinterfacelink_tail*, porigin) = pinterfacelink :: $trait_cache_interfaces(pinterfacelink_tail*, porigin)
   -- if pinterfacelink.OWNER =/= porigin
 def $trait_cache_preinherit(S, porigin) = S[.LINKEDPARENTS = $trait_cache_parents(S.LINKEDPARENTS, porigin)][.LINKEDINTERFACES = $trait_cache_interfaces(S.LINKEDINTERFACES, porigin)]
-def $trait_cache_cause_point(S, ptraitcachecause) = ($iterator_notice_publication_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = (ptraitcachecause.PREFIX)) -- otherwise
+def $trait_cache_cause_point(S, ptraitcachecause) = true
+  -- if $iterator_notice_publication_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = (ptraitcachecause.PREFIX)
+def $trait_cache_cause_point(S, ptraitcachecause) = false -- otherwise
 def $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
   -- if $(ptraitcachecause.PREFIX <= |S.DECLARATIONS| /\ ptraitcachecause.USERPREFIX <= |S.USERCONSTANTS|)
   -- if $class_at(S.CLASSES, ptraitcachecause.CLASS) = (pclassdesc)
