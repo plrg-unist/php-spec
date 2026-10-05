@@ -212,6 +212,7 @@ def $trait_failed_cache_items(S, S_result, (CCTRAITCACHE porigin ptraitcachecaus
   -- if $trait_cache_cause_selected(S_result, ptraitcachecause) = (pclassconstantdesc)
   -- if pclassconstantdesc.ORIGIN = porigin /\ pdefaultcache.ORIGIN = porigin
   -- if $class_constant_origin(S_result.CLASSES, porigin) = (pclassconstantdesc)
+  -- if ~$trait_failed_cache_keep(S, porigin) \/ $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = eps
   -- if $trait_cache_value_class(pdefaultcache.CLASS)
 def $trait_failed_cache_items(S, S_result, pclassconstantevent*, pdefaultcache*, porigin) = false -- otherwise
