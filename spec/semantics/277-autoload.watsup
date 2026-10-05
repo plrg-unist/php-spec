@@ -506,8 +506,7 @@ def $autoload_class_name(ptbytes) = true
 def $autoload_class_char(n) = ($(48 <= n) /\ $(n <= 57)) \/ ($(65 <= n) /\ $(n <= 90)) \/ ($(97 <= n) /\ $(n <= 122)) \/ n = 95 \/ n = 92 \/ ($(128 <= n) /\ $(n <= 255))
 def $autoload_class_chars(eps) = true
 def $autoload_class_chars(n :: n_tail*) = ($autoload_class_char(n) /\ $autoload_class_chars(n_tail*))
-def $autoload_lookup_name(92 :: n*) = n*
-def $autoload_lookup_name(n*) = n* -- otherwise
+def $autoload_lookup_name(n*) = n*
 
 def $autoload_active_task(AUTO_NEXT pautoloadcall, ptbytes) = (pautoloadcall.MODE = AUTO_LOOKUP /\ pautoloadcall.KEY = ptbytes)
 def $autoload_active_task(AUTO_REFERENCE pautoloadcall pautoloadentry, ptbytes) = (pautoloadcall.MODE = AUTO_LOOKUP /\ pautoloadcall.KEY = ptbytes)
