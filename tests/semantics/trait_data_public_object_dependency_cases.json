@@ -1,0 +1,42 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; project profile. Native-only public Closure/FCC dependency preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "property-collision-fills-public-real-closure-cache-once",
+      "source": "<?php\nclass P{public const Y=static function(){echo self::class,\":\",static::class,\";\";};}\ntrait T{public static $x=P::Y;}\necho \"PRE;\";\nclass C{use T;public static $x=P::Y;}\n$a=P::Y;echo C::$x===$a?\"Y;\":\"N;\";(C::$x)();\n",
+      "source_sha256": "430b5a3451dc00bced1371b427895386348fffac5e1e1800ed7f77a12f1aa226",
+      "status": "normal",
+      "stdout_base64": "UFJFO1k7UDpQOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-object-dependency-266/.tools/trait-public-object-native266-wxh1cit_/report.json",
+      "native_raw_sha256": "903231914fde24e83f3f5f10ac1c58358c5d1ef4aa9df17a0dd3ec712466b60c"
+    },
+    {
+      "id": "property-collision-keeps-public-private-fcc-array-cache-and-cow",
+      "source": "<?php\nclass P{private static function secret(){echo self::class,\":\",static::class,\";\";}public const array Y=[E_STRICT=>self::secret(...)];}\ntrait T{public static array $x=P::Y;}\nset_error_handler(function($n){echo \"H;\";return true;});echo \"PRE;\";\nclass C{use T;public static array $x=P::Y;}\necho \"POST;\";$a=P::Y;echo C::$x[2048]===$a[2048]?\"Y;\":\"N;\";($a[2048])();\nC::$x[2048]=null;(P::Y[2048])();echo isset(C::$x[2048])?\"Y;\":\"N;\";\n",
+      "source_sha256": "c4559477bd5e25b3b60936ec22be440f461412ede453d066c8e1858ce239de11",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7UE9TVDtZO1A6UDtQOlA7Tjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-object-dependency-266/.tools/trait-public-object-native266-wxh1cit_/report.json",
+      "native_raw_sha256": "350315e963e4f5abd64878209179855cf5d95ce666cbdfd1b3a343952717b684"
+    },
+    {
+      "id": "constant-collision-shares-public-real-closure-cache",
+      "source": "<?php\nclass P{public const Y=static function(){echo self::class,\":\",static::class,\";\";};}\ntrait T{public const X=P::Y;}\necho \"PRE;\";\nclass C{use T;public const X=P::Y;}\necho C::X===P::Y?\"Y;\":\"N;\";(C::X)();\n",
+      "source_sha256": "67053f984fea1329240e91dc3f3739b40bd6983ea7c43898abc167e477331fb9",
+      "status": "normal",
+      "stdout_base64": "UFJFO1k7UDpQOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-object-dependency-266/.tools/trait-public-object-native266-wxh1cit_/report.json",
+      "native_raw_sha256": "903231914fde24e83f3f5f10ac1c58358c5d1ef4aa9df17a0dd3ec712466b60c"
+    }
+  ]
+}

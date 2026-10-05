@@ -25,6 +25,7 @@ dec $class_constant_publish(pstate, pstate, pclassdesc) : pstate
 dec $runtime_class_link_result(pstate, pstate, pclassdesc) : pstate
 def $runtime_class_link_result(S, S_result, pclassdesc) = S_result -- otherwise
 def $activate_class(S, pclassdesc) = $runtime_class_link_result(S, $iterator_notice_publication(S, $class_constant_publish(S, $declaration_class_success(S, $activate_class_body(S, pclassdesc), pclassdesc), pclassdesc), pclassdesc), pclassdesc)
+  -- if ~$autoload_parent_pending(S, pclassdesc)
 dec $class_static_initial(pstate, ppropertydesc*) : pclassstatic*?
 dec $class_static_commit(pstate, pclassstatic*) : pstate
 dec $class_static_finish(pstate, pclassdesc, pstate) : pstate
@@ -130,7 +131,7 @@ def $new_source_name(S, porigin) = $trait_default_new_name(S, porigin)
   -- if ~$anonymous_default_new_site(S, porigin) /\ $trait_default_new_site(S, porigin)
 def $new_source_name(S, PORIGIN n pcpath) = (preqbytes)
   -- if ~$anonymous_default_new_site(S, PORIGIN n pcpath) /\ ~$trait_default_new_site(S, PORIGIN n pcpath)
-  -- if ~$ordinary_keyword_new_site(S, PORIGIN n pcpath)
+  -- if ~$ordinary_keyword_new_site(S, PORIGIN n pcpath) /\ ~$global_new_site(S, PORIGIN n pcpath)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
 def $new_source_name(S, porigin) = eps -- otherwise
@@ -142,6 +143,7 @@ rule PhpStep/new-class: S ~> $noctor_start(S[.TODO = ptask_tail*], preqbytes, ep
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $new_source_name(S, PORIGIN n pcpath) = (preqbytes)
   -- if ~$new_has_ctor(S, preqbytes)
+  -- if ~$global_new_current(S)
 
 dec $class_instanceof(pstate, pvalue, preqbytes) : bool
 def $class_instanceof(S, POBJECT n, preqbytes) = true

@@ -56,5 +56,7 @@ and `container_warning_protocol.py`. `python3 -B tests/semantics/container_warni
 [fixture-id ...]` compiles selected reached fixtures; original runner commands
 and runtime/environment identities remain in raw records. Production comparisons use SL_mode; reached
 fixtures use AL_mode and existing local tools, with no rebuild/portability claim.
-Wider read/quiet/memoized/unset containers, string/object/key producers and GLOBALS
-siblings remain required core work. Paused return verification remains separate.
+[Scalar/missing reads282](SOURCE-CONTAINER-READS.md) now stage ordinary and quiet
+base/key/offset warnings. Wider writable memoized/unset/append containers,
+string/object/ArrayAccess and key/base producers, and GLOBALS siblings remain
+required core work. Paused return verification remains separate.

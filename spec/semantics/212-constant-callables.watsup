@@ -402,6 +402,7 @@ def $constant_shape_class(S, porigin, PFSTOP) = $constant_callable_class(S, pori
 ;; Zend compile-time substitution cannot store any object, including one inside
 ;; an otherwise constant array. Cached objects remain runtime-only values.
 def $constant_callable_foldable(PVCLOSURE n porigin) = false
+def $constant_callable_foldable(PVINSTANCE n porigin) = false
 def $constant_callable_foldable(PVARRAY b (pkey, pvalueclass)*) = $constant_callable_classes_foldable((pkey, pvalueclass)*)
 def $constant_callable_foldable(pvalueclass) = true -- otherwise
 def $constant_callable_classes_foldable(eps) = true
@@ -422,6 +423,10 @@ dec $constant_callable_alias_source(pcnode) : bool
 dec $constant_callable_alias_visible(pstate, pclassconstantdesc, porigin) : bool
 dec $constant_callable_array_flow(pstate, porigin, porigin, nat, phpType13*, (pkey, pvalueclass)*, int, nat, porigin*) : bool
 dec $constant_callable_flow_key(pstate, porigin, phpType5, int) : pkey?
+dec $constant_callable_array_flow_key(pstate, porigin, phpType5, int, porigin, nat) : pkey?
+dec $trait_cache_flow_context(pstate, porigin, porigin, nat) : (pclassconstantdesc, ptraitcachecause)?
+dec $trait_cache_dim_active(pstate, porigin, porigin, pvalueclass, nat) : bool
+dec $trait_cache_dim_flow(pstate, porigin, porigin, pvalueclass, nat, porigin*) : bool
 
 def $constant_callable_cache_prefix(eps, porigin) = eps
 def $constant_callable_cache_event(CCCACHE porigin porigin_trigger n) = ((porigin, n))
@@ -459,6 +464,9 @@ def $constant_callable_flow_at(S, porigin, porigin_owner, pvalueclass, n_prefix,
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
   -- if ~$constant_callable_form(pcnode) /\ ~$constant_callable_array_source(pcnode) /\ ~$constant_callable_alias_source(pcnode)
   -- if $constant_callable_foldable(pvalueclass)
+def $constant_callable_flow_at(S, porigin, porigin_owner, PVCLOSURE n porigin_site, n_prefix, porigin_seen*) = $trait_cache_dim_flow(S, porigin, porigin_owner, PVCLOSURE n porigin_site, n_prefix, porigin_seen*)
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $trait_cache_dim_active(S, porigin, porigin_owner, PVCLOSURE n porigin_site, n_prefix)
 def $constant_callable_flow_at(S, porigin, porigin_owner, pvalueclass, n_prefix, porigin_seen*) = false -- otherwise
 
 def $constant_callable_array_source(NExprArray (SEQUENCE phpType13*) metadata) = true
@@ -528,9 +536,11 @@ def $constant_callable_alias_visible(S, pclassconstantdesc, porigin_owner) = fal
 def $constant_callable_array_flow(S, porigin, porigin_owner, n, eps, eps, i, n_prefix, porigin_seen*) = true
 def $constant_callable_array_flow(S, porigin, porigin_owner, n, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, (pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*, i, n_prefix, porigin_seen*) = $constant_callable_array_flow(S, porigin, porigin_owner, $(n + 1), phpType13*, (pkey_tail, pvalueclass_tail)*, $next_history(i, pkey), n_prefix, porigin_seen*)
   -- if porigin_item = $constant_child(porigin, [PCFIELD 0, PCINDEX n])
-  -- if $constant_callable_flow_key(S, porigin_item, phpType5, i) = (pkey)
+  -- if $constant_callable_array_flow_key(S, porigin_item, phpType5, i, porigin_owner, n_prefix) = (pkey)
   -- if $constant_callable_flow(S, $constant_child(porigin_item, [PCFIELD 1]), porigin_owner, pvalueclass, n_prefix, porigin_seen*)
 def $constant_callable_array_flow(S, porigin, porigin_owner, n, phpType13*, (pkey, pvalueclass)*, i, n_prefix, porigin_seen*) = false -- otherwise
+def $constant_callable_array_flow_key(S, porigin, phpType5, i, porigin_owner, n_prefix) = $constant_callable_flow_key(S, porigin, phpType5, i)
+  -- if $trait_cache_flow_context(S, porigin, porigin_owner, n_prefix) = eps
 def $constant_callable_flow_key(S, porigin, ABSENT, i) = ($pvclass_append_key(i))
 def $constant_callable_flow_key(S, porigin, expression, i) = (S_key.KEY)
   -- if $compiled_read(S, $constant_child(porigin, [PCFIELD 0])) = (pvalue)

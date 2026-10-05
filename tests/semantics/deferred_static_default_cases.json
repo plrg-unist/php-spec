@@ -2319,6 +2319,94 @@
         "zend.assertions": "1"
       },
       "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "globals283_global-new-argument-access-order",
+      "source": "<?php\nclass GlobalNewNoCtor { public int $tag = 3; }\nclass GlobalNewPrivateCtor {\n    private function __construct(int $value) { echo 'CTOR:'; }\n}\nset_error_handler(static function ($level) { echo $level, ':'; return true; });\nconst GLOBAL_NEW_PLAIN = new GlobalNewNoCtor(ignored: E_STRICT + 0);\necho GLOBAL_NEW_PLAIN->tag, ':';\ntry {\n    eval('const GLOBAL_NEW_DENIED = new GlobalNewPrivateCtor(E_STRICT + 0);');\n} catch (Error $e) { echo 'F:'; }\nrestore_error_handler();\ntry { $denied = GLOBAL_NEW_DENIED; } catch (Error $e) { echo 'U'; }\n",
+      "source_sha256": "bd543ca815cffae6e01313e8bcf36ac99e546a5d29136314d1abc7f2e5e65aa8",
+      "stdout_base64": "ODE5MjozOjgxOTI6RjpV",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-global-new-native-v1/report.json",
+      "native_raw_sha256": "b87f5025ef537c3ffafe44f6665305eef753ae94c0ff54c199cc251182e85df3",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "globals283_global-new-inherited-entry-scope",
+      "source": "<?php\nclass GlobalNewScopeParent {\n    protected function __construct() { echo 'P:'; }\n}\nclass GlobalNewScopeOwner extends GlobalNewScopeParent {\n    private function __construct() { echo 'O:'; }\n    public static function load() {\n        include __DIR__ . '/global-new-entry-scope.inc.php';\n        eval('const GLOBAL_NEW_EVAL = new self();');\n    }\n}\nclass GlobalNewScopeChild extends GlobalNewScopeOwner {}\nGlobalNewScopeChild::load();\n$self = GLOBAL_NEW_SELF;\n$parent = GLOBAL_NEW_PARENT;\n$fromEval = GLOBAL_NEW_EVAL;\necho $self::class, '/', $parent::class, '/', $fromEval::class;\n",
+      "source_sha256": "f3e1f8af8e00ac0ef209cd213a0c1bf383f3da0f56b9d247fa7ffd6a6fae65ae",
+      "stdout_base64": "TzpQOk86R2xvYmFsTmV3U2NvcGVPd25lci9HbG9iYWxOZXdTY29wZVBhcmVudC9HbG9iYWxOZXdTY29wZU93bmVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-global-new-native-v1/report.json",
+      "native_raw_sha256": "b87f5025ef537c3ffafe44f6665305eef753ae94c0ff54c199cc251182e85df3",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "files": [
+        {
+          "name": "global-new-entry-scope.inc.php",
+          "source": "<?php\nconst GLOBAL_NEW_SELF = new self(), GLOBAL_NEW_PARENT = new parent();\n",
+          "source_sha256": "f6a8de2856d19e9a1ccb87576b286ab56be024f691182e658f0fa1e8f195cfc3"
+        }
+      ]
+    },
+    {
+      "id": "globals283_global-new-throw-escape-retry",
+      "source": "<?php\nclass GlobalNewRetry {\n    public static int $next = 0;\n    public int $id = 0;\n    public function __construct() {\n        $this->id = ++self::$next;\n        echo 'C', $this->id, ':';\n        if ($this->id === 1) {\n            $GLOBALS['escaped'] = $this;\n            throw new Error('stop');\n        }\n    }\n    public function __destruct() {\n        if ($this->id === 1) { echo 'BAD:'; }\n    }\n}\ntry { eval('const GLOBAL_NEW_RETRY = new GlobalNewRetry();'); }\ncatch (Error $e) { echo 'F:'; }\ntry { $missing = GLOBAL_NEW_RETRY; } catch (Error $e) { echo 'U:'; }\n$held = $GLOBALS['escaped'];\nunset($GLOBALS['escaped']);\necho $held->id, ':';\nunset($held, $e);\neval('const GLOBAL_NEW_RETRY = new GlobalNewRetry();');\n$retry = GLOBAL_NEW_RETRY;\necho $retry->id;\n",
+      "source_sha256": "499ab38f55c274c0dec53ff5450f6a3d7a262354376a17329408dfa06597ee5e",
+      "stdout_base64": "QzE6RjpVOjE6QzI6Mg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-global-new-native-v2/report.json",
+      "native_raw_sha256": "20b67689a6febfd3157cb4fc18cdfbb882b928ecf18baf877bcdb21ce501b566",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
     }
   ]
 }

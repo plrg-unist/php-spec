@@ -1,0 +1,216 @@
+{
+  "decision": "accepted within the documented bounded scope; full core remains partial",
+  "reviewer": "arguments_review_14",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned vendor source and ordinary profile",
+  "implementation": "spec/semantics/282-container-read-continuations.watsup",
+  "scope": "Missing direct-CV and null/bool/int/float R/quiet container continuations, ordered base/key/offset diagnostics, nested copied row values, borrowed selected pointers, genuine key temporaries, quiet terminal predicates and throw suppression.",
+  "limits": "Initial string/object/ArrayAccess reads, full ArrayAccess interface contracts/dimension dispatch, wider variable/property bases, GLOBALS quiet/memoized/unset and writable memoized/unset/append containers remain required. Dynamic selected cells and sampled values are runtime facts, not callback-history proofs; paused returns remain separate.",
+  "behavior_contract": "docs/semantics/SOURCE-CONTAINER-READS.md",
+  "engine_sources": [
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_FETCH_DIM_R, ZEND_FETCH_DIM_IS, ZEND_ISSET_ISEMPTY_DIM_OBJ",
+    "vendor/php-src/Zend/zend_execute.c:zend_fetch_dimension_address_read, zend_isset_dim_slow, zend_isempty_dim_slow",
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_dim, zend_compile_isset_or_empty"
+  ],
+  "runtime": {
+    "tests/semantics/profile.json": {
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+      "bytes": 352
+    },
+    ".tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "bytes": 49551712
+    },
+    "_build/default/adapter/main.exe": {
+      "sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "bytes": 29115976
+    },
+    ".tools/spectec/bin/p4spectec": {
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+      "bytes": 32150944
+    },
+    "tests/semantics/_build/default/numeric_runner.exe": {
+      "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+      "bytes": 28628992
+    }
+  },
+  "execution": {
+    "production": "SL_mode",
+    "reached_fixtures": "AL_mode",
+    "jobs": 1,
+    "caps_seconds": {
+      "native": 45,
+      "compiler": 120,
+      "model": 90,
+      "CLI": 60,
+      "finite": 300,
+      "source_phase": 480,
+      "finite_phase": 930
+    },
+    "steps": 100000,
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING_removed": true
+    },
+    "resource_limits": {
+      "AS": [
+        -1,
+        -1
+      ],
+      "CPU": [
+        -1,
+        -1
+      ],
+      "STACK": [
+        8388608,
+        -1
+      ],
+      "DATA": [
+        -1,
+        -1
+      ],
+      "NOFILE": [
+        1024,
+        524288
+      ],
+      "NPROC": [
+        495325,
+        495325
+      ]
+    },
+    "build": "Existing project-local binaries reused; no fresh-build or portability claim. Exact commands, raw streams, exits and before/after inputs remain in each context/report."
+  },
+  "author": {
+    "source_count": 8,
+    "source_cuts": [
+      {
+        "cut": "943e186e49bc8ef056a7116b4e548239ef2fe25b",
+        "count": 6,
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read/models-syt4in3y/report.json",
+          "sha256": "07fe166def57c696c94a79fee8e44991cfa75fc883aee4fbf95113408f4d9ccf"
+        }
+      },
+      {
+        "cut": "394be21123f6d8ec5bd8d5bd48e3a5600e071ff4",
+        "count": 1,
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read/models-rgokoeld/report.json",
+          "sha256": "1fc604125563fbd0155e60c6699f4e95fb7d90ffd41804e5651b79c8d5635a6f"
+        }
+      },
+      {
+        "cut": "b5010f407deeddf623e7212be1dc7b6cb331670b",
+        "count": 1,
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read/models-mkwxq2c7/report.json",
+          "sha256": "a233cd0f3c5e2020dece3f357d598ed045ee960e2a97ce4aff3797e4e962447e"
+        }
+      }
+    ],
+    "shared_independent_originals": 1,
+    "finite_cut": "c9a76cbe509c16489cf1f0047da64aa2b658c7d8",
+    "preparation": {
+      "path": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read/prepared-cnzl3cqm/report.json",
+      "sha256": "bc7f8a8b211e3dbd6edf4d5e214638a740963ad90d502fff442d732331aca9c8"
+    },
+    "finite": {
+      "path": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read/states-yogpn2qn/report.json",
+      "sha256": "fdbcc1ff928ac0d81e80efeafdd6b7e982269333fd5bb29badfc9e91996d485c"
+    },
+    "assertions": [
+      69,
+      72,
+      71
+    ],
+    "assertion_total": 212
+  },
+  "independent": {
+    "source_count": 13,
+    "fresh_source_count": 12,
+    "retained_original": "The exact object-name original remains at b501/models-mkwxq2c7 and is not replayed.",
+    "cut": "c9a76cbe509c16489cf1f0047da64aa2b658c7d8",
+    "preparation": {
+      "path": "/home/user/workspace/php-spec/.tools/container-read-review-22/prepared-gewgz379/report.json",
+      "sha256": "db2e092a2ad5306754f2074ba92bf9d1a774b28789088fc1018fe0cf085e367d"
+    },
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/container-read-review-22/own-run-p8vmsg2k/report.json",
+      "sha256": "c023aacbdb14a6bfb5b0b17f47b1408f29e8f05cf357c857bc71bff7913b2630"
+    },
+    "release": {
+      "path": "/home/user/workspace/php-spec/.tools/container-read-review-22/own-run-p8vmsg2k/RELEASE.json",
+      "sha256": "13df9781a470ab8c5fd18e69f6ad92cbb026c4b48759db8f6810202083b3d986"
+    },
+    "assertions": [
+      77,
+      67,
+      65,
+      63
+    ],
+    "assertion_total": 272
+  },
+  "unique_private_programs": 20,
+  "private_reached_assertions": 484,
+  "current_composition": {
+    "tested_cut": "5eefe8137b7fda7d021941ac97e6ab58c476668e",
+    "accepted_parent": "b02578e6f23963d12c14edc843c78a1a0f6a4134",
+    "source": "tests/semantics/container_read_current.php",
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read/current-f493e4ku/report.json",
+      "sha256": "d856c3462f39a67ece21ebe12fdc6c2642db6a1b46244c2f6afe3233ba4cdf69"
+    },
+    "release": {
+      "path": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read/current-f493e4ku/RELEASE.json",
+      "sha256": "fcf1a6b7f276905dfc7fcaa9d548d842be156fa8555f00dea05c5a4df1832762"
+    },
+    "stdout": "H:OwnerReadCurrent282/ChildReadCurrent282:9;R:17:17:1;V:17;",
+    "result": "Native/model normal0, accepted+checked, identical stdout, empty stderr, no timeout, stable clean inputs and closed groups; model7.63s.",
+    "scope": "Lexical parent-private FCC forwarding Child called class, genuine computed reference-array key ignored on the scalar path, handler mutation/retirement, live caller/introspection/static17."
+  },
+  "publication_parent": "b02578e6f23963d12c14edc843c78a1a0f6a4134",
+  "publication_compatibility": "Actual accepted order and additive storage syntax preserved. Introduced271 lookup/READS facts remain empty for scalar9 property fill; no user-constant alias/duplicate or raw-trait/cache failure uses274/266 rollback. Exact reviewed233/282 and current source retained. Later c67 guard affects only ArrayAccess terminal object admission, not the accepted private/current paths; source review adds no renewed execution credit.",
+  "quiet_object_boundary": {
+    "cut": "c67be5c9684728e4748e8aa31343ea68e152a41f",
+    "native": {
+      "path": "/home/user/workspace/php-spec/.tools/container-read-review-22/native-1uoeqskj/report.json",
+      "sha256": "3113cc82f57bd10a1dea2313825c22a9c0354d50dc1fedf376d34ec1c0e4e148"
+    },
+    "changed_stages": {
+      "path": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read/check-lzo8gpwv/report.json",
+      "sha256": "b7a14677bb70fda577cd43ab9a49ee605b4ad0651d8c8224377be7d39fa2dc26"
+    },
+    "model_report": {
+      "path": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read/boundary-v1vubaeq/report.json",
+      "sha256": "a6cd11c949a3730411632f0484b4f518ddd445e7fec53b8a65881fd08bee50ab"
+    },
+    "stdClass": "One separate normal agreement: K;C:Cannot use object of type stdClass as array; native/model normal0, accepted+checked, identical stdout, empty stderr, no timeout. This is additional to the twenty private programs.",
+    "ArrayAccess_native": "K;X:1;I:1;K;X:1;G;M:1; normal0, empty stderr, no timeout.",
+    "ArrayAccess_model": "Earlier Unsupported internal interface method contract, accepted+checked, exit1 and empty stdout/stderr before K. The requested target-guard assertion failed; zero agreement and zero guard-execution credit.",
+    "guard": "Complementary ArrayAccess/ordinary-object branches are source-reviewed only. Full ArrayAccess remains required core work.",
+    "release": {
+      "path": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read/boundary-v1vubaeq/RELEASE.json",
+      "sha256": "8780a562eaedad72397a97da633b4187b19538c478dd9d16cd2f0ed7e42ab585"
+    }
+  },
+  "preserved_failures": [
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read/models-4iz8qkfh",
+      "cause": "First c399 object formatter admitted overlapping message rules through the value-type spelling. Closed POBJECT/otherwise helper corrected the nondeterministic interpreter failure; original has zero credit."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read/boundary-v1vubaeq",
+      "cause": "ArrayAccess target-guard control fails because the existing internal interface contract stops the program earlier. Preserve that actual Unsupported and zero target credit; stdClass row remains a normal agreement."
+    }
+  ],
+  "native_prediction_corrections": "Private, current and quiet-object native predictions matched their original saved outputs; no prediction was forced into the oracle.",
+  "reproduction": {
+    "catalogue": "tests/semantics/container_read_cases.py and container_read_current.php preserve exact accepted original bytes; container_read_protocol.py supplies the three source-reached recipes.",
+    "preparer": "python3 -B tests/semantics/container_read_prepare.py [fixture-id ...]",
+    "source_command": "bin/php-semantics SOURCE --steps 100000 --timeout 60",
+    "finite_command": "tests/semantics/_build/default/numeric_runner.exe MODULES FIXTURE",
+    "author_raw": "/home/user/workspace/php-spec/.tools/container-read-current-22/.tools/container-read",
+    "independent_raw": "/home/user/workspace/php-spec/.tools/container-read-review-22",
+    "independent_helpers": "own_cases.py, own_protocol.py, prepare-own.py, run-own.py; quiet_object_cases.py retains the two later boundary originals. Raw source/native/model argv, profile, limits, stdout/stderr/exits and explicit producer closures remain outside Git."
+  }
+}

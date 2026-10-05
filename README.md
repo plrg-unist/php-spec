@@ -308,8 +308,16 @@ now stage undefined/null/false CV-rooted W/RW containers and final array-referen
 ingress. Real false-conversion protection, distinct FETCH/ASSIGN/DIM_OP paths,
 delayed source demand and typed backing through COW survive callbacks. Author12/242
 and independent21/275 share three originals, giving30 unique private agreements;
-one current private-handler/captured-cell source passes. Wider read/quiet/memoized/
-GLOBALS containers and string/object producers remain required.
+one current private-handler/captured-cell source passes.
+[Scalar-container reads](docs/semantics/SOURCE-CONTAINER-READS.md) now stage
+missing-base, key-CV and offset warnings, retaining independent null, borrowed
+selected pointers and genuine row/key temporaries. Quiet coalesce and terminal
+isset/empty preserve their different demands; throws suppress later callbacks.
+Author8/212 and independent13/272 share one original (20 unique private programs);
+one current private-handler/key-temporary/caller-cell source passes. A separate
+stdClass transition agrees; ArrayAccess still stops at the required interface
+contract and has no guard-execution credit. Initial string/object/ArrayAccess,
+wider base and GLOBALS/memoized producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -508,7 +516,11 @@ and captured lookup prefix; raw-trait notices precede allocation. Nine new sourc
 agreements and seven AL programs/341 premises retain their distinct cuts.
 Per-child alias receipts now preserve reads before and after callback namespace
 shadows; three further source agreements and two AL programs/184 premises verify
-first registration, mixed selections and throwing retry. Global `new` and wider
+first registration, mixed selections and throwing retry. Global `const new` now
+retains the allocated identity through argument evaluation and constructor return,
+including ignored no-constructor arguments, access errors, inherited include/eval
+scope and escaped failure/retry. Three new source agreements and 274 AL premises
+retain separate cuts. Eager destructor cleanup, cold-table continuation and wider
 object producers remain required.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
@@ -542,10 +554,14 @@ their phase order and handler-ineligible severity. Successful collision dependen
 fills retain real typed caches and distinct import scopes. Collision expression
 errors stop the comparison, flush earlier diagnostics without handlers and render
 the pending Error before the composition fatal. Cyclic lookups retain full imported
-constant identities and release transient failure allocations. Hard failed links
-retain caches for published owners and release unpublished import caches.
-Error-after-fill, wider failed-link contexts, object-bearing dependencies and
-readonly storage remain required. A bounded
+constant identities and release transient failure allocations. Failed class links,
+including an initializer Error before the composition fatal, retain caches for
+published owners and release unpublished import caches. Raw trait composition uses
+the same source-kind proof; direct trait constants still fail before evaluation.
+Published Closure/FCC dependencies retain their real initializer scope, callable
+receipts and cache owners through successful and failed composition; array keys
+and duplicate-key selection keep source-derived proofs. Wider object initialization,
+held/open failed-link contexts and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
@@ -688,7 +704,18 @@ cached property method callables retain lexical and called class separately.
 [Ordinary named keyword NEW](coverage/semantics/named-keyword-new-review.json)
 uses lexical self/parent and called static scope through inherited constructors,
 rebound Closures and eval. Known invalid function scopes reject at compilation;
-deferred scopes fail before arguments. Autoload remains required.
+deferred scopes fail before arguments.
+[Autoload registration and dispatch](coverage/semantics/autoload-review.json)
+now capture real callable targets and preserve live queue mutations, including
+HashTable compaction. Ordinary named/dynamic NEW and class-parent lookup suspend
+before argument demand; explicit dispatch keeps its weak internal context.
+Callbacks retain genuine ownership and declaration authority after unregistering.
+Thirty-six private source agreements and one current global-constant loader
+interaction retain separate cuts. The 263 original finite premises pass with
+seven typing bindings and eight repeated compaction setup premises; the split
+compaction groups use the existing strict SL runner at the unchanged120s cap.
+Default/global-constant AST NEW, wider class-link consumers and complete core
+remain required. Default `spl_autoload` filesystem search stays excluded.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

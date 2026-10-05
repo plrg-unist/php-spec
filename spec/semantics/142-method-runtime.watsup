@@ -1360,6 +1360,7 @@ def $wrapper_called_suffix(S, pcallcontext) = eps -- if pcallcontext.WRAPPER =/=
 def $wrapper_called_suffix(S, pcallcontext) = $ptascii(", called in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE)
   -- if pcallcontext.WRAPPER = eps
   -- if $error_context_trigger(S, pcallcontext) = eps
+  -- if ~$autoload_internal_context(S, pcallcontext)
   -- if ~$exception_warning_context(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
 dec $wrapper_values(pstate, pnamedslot*) : pvalue*
@@ -1397,6 +1398,7 @@ def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed") -- if pcallcon
 def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE)
   -- if pcallcontext.WRAPPER = eps
   -- if $error_context_trigger(S, pcallcontext) = eps
+  -- if ~$autoload_internal_context(S, pcallcontext)
   -- if ~$exception_warning_context(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
 
