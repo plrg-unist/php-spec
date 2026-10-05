@@ -308,8 +308,16 @@ now stage undefined/null/false CV-rooted W/RW containers and final array-referen
 ingress. Real false-conversion protection, distinct FETCH/ASSIGN/DIM_OP paths,
 delayed source demand and typed backing through COW survive callbacks. Author12/242
 and independent21/275 share three originals, giving30 unique private agreements;
-one current private-handler/captured-cell source passes. Wider read/quiet/memoized/
-GLOBALS containers and string/object producers remain required.
+one current private-handler/captured-cell source passes.
+[Scalar-container reads](docs/semantics/SOURCE-CONTAINER-READS.md) now stage
+missing-base, key-CV and offset warnings, retaining independent null, borrowed
+selected pointers and genuine row/key temporaries. Quiet coalesce and terminal
+isset/empty preserve their different demands; throws suppress later callbacks.
+Author8/212 and independent13/272 share one original (20 unique private programs);
+one current private-handler/key-temporary/caller-cell source passes. A separate
+stdClass transition agrees; ArrayAccess still stops at the required interface
+contract and has no guard-execution credit. Initial string/object/ArrayAccess,
+wider base and GLOBALS/memoized producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument

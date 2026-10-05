@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Scalar-container continuations282 now stage missing-base, key-CV and offset
+warnings through ordinary and quiet reads. Missing-base warnings resume with
+independent null; defined scalar pointers can change the later message type
+without creating a late array lookup. Genuine nested row/key operands retain
+real owners, and terminal isset/empty string predicates remain distinct from
+coalesce. Throws suppress later callbacks and writes. Author8/212 and independent13/272
+share one original (20 unique private programs/484 assertions). One actualb025
+source at5eefe retains private Owner/Child selection, key-temporary ownership and
+live caller/static17. The [contract](docs/semantics/SOURCE-CONTAINER-READS.md) and
+[ledger](coverage/semantics/container-read-review.json) retain separate source cuts
+and the original formatter failure. A separate stdClass transition agrees;
+the ArrayAccess control stops at the earlier interface-contract Unsupported and
+earns no guard-execution credit. Full ArrayAccess, string/object, wider base and
+GLOBALS/memoized producers remain required.
+
 Container continuations276 now initialize undefined/null/false CV-rooted W/RW
 storage before key demand and preserve final array-reference source cells. False
 callbacks retain genuine protection and distinct FETCH/ASSIGN/DIM_OP selection;
@@ -867,7 +882,9 @@ failures and interrupted evidence.
   assignment on defined CV-rooted arrays;269 adds GLOBALS W/RW name/missing-entry
   continuations with direct updates/compounds and nested array ingress.
   Container276 adds undefined/null/false W/RW initialization and final array-reference
-  ingress; wider read/quiet/memoized/unset/append containers stay open.
+  ingress;282 stages missing/scalar R and quiet-container warnings with genuine
+  row/key owners. Initial string/object/ArrayAccess reads, wider variable/property
+  bases and writable memoized/unset/append containers stay open.
   Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container
   producers and ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
