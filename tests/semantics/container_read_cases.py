@@ -38,3 +38,11 @@ $i282=isset($missingI282[null]);$e282=empty($missingE282[1.5]);$c282=$missingC28
 restore_error_handler();echo "Q:",$i282?1:0,":",$e282?1:0,":",$c282,":",isset($missingI282)?1:0,":",isset($missingE282)?1:0,":",isset($missingC282)?1:0,";";
 """, b'Q:0:1:17:0:0:0;'),
 ]
+
+# A genuine evaluated key operand keeps its real reference cell during Warning.
+CASES.append(('scalar-offset-retains-real-key-temporary-through-handler', b"""<?php
+error_reporting(0);$cell282=9;$held282=&$cell282;$scalar282=13;
+set_error_handler(function($n,$m){echo "O:",$m==='Trying to access array offset on int'?1:0,";";unset($GLOBALS['cell282'],$GLOBALS['held282']);return false;},2);
+$r282=$scalar282[[&$cell282]];
+restore_error_handler();echo "R:",$r282===null?1:0,":",isset($cell282)?1:0,":",isset($held282)?1:0,";";
+""", b'O:1;R:1:0:0;'))
