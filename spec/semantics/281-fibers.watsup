@@ -1,3 +1,4 @@
+dec $fiber_named_target(pfunction, ptbytes) : pnamedtarget
 ;; Fibers have independent VM stacks and live reporting masks. The object arena,
 ;; zval store, globals, INI, handler registries and allocation nonces are shared.
 def $fiber_at(S, n) = (pfiber)
@@ -7,7 +8,7 @@ def $fiber_at(S, n) = (pfiber)
 def $fiber_at(S, n) = eps -- otherwise
 def $fiber_object(FIBER pfiber) = true
 def $fiber_object(pobject) = false -- otherwise
-def $fiber_put(S, n, pfiber) = S[.OBJECTS = S.OBJECTS[0:n] ++ [FIBER pfiber] ++ S.OBJECTS[$(n + 1):$nabs($(|S.OBJECTS| - n - 1))]]
+def $fiber_put(S, n, pfiber) = S[.OBJECTS = $object_set(S.OBJECTS, n, FIBER pfiber)]
 def $fiber_empty() = {READY false, CALL eps, RAW PNULL, TARGET eps, CAPTURE eps, PRODUCER eps, ENTRY eps, STATUS FIBER_INIT, VM eps, VALUE PNULL, FAILED false, SEQUENCE 0}
 def $object_name(S, n) = $ptascii("Fiber") -- if S.OBJECTS[n] = FIBER pfiber
 def $class_instanceof(S, POBJECT n, ptbytes) = ($ptlc($typed_callable_name(ptbytes)) = $ptascii("fiber"))
@@ -292,16 +293,20 @@ def $fiber_cache_valid(S, n, pfiber) = false -- otherwise
 ;; Statuses distinguish explicit suspension from waiting for a nested Fiber.
 def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done(S, PBOOL (pfiber.STATUS =/= FIBER_INIT))
   -- if pconfigcall.KIND = INTRINSIC_FIBER_STARTED
-  -- if pconfigcall.OWNER = (n) /\ $fiber_at(S, n) = (pfiber)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
 def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done(S, PBOOL (pfiber.STATUS = FIBER_SUSPENDED))
   -- if pconfigcall.KIND = INTRINSIC_FIBER_SUSPENDED
-  -- if pconfigcall.OWNER = (n) /\ $fiber_at(S, n) = (pfiber)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
 def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done(S, PBOOL (pfiber.STATUS = FIBER_RUNNING))
   -- if pconfigcall.KIND = INTRINSIC_FIBER_RUNNING
-  -- if pconfigcall.OWNER = (n) /\ $fiber_at(S, n) = (pfiber)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
 def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done(S, PBOOL (pfiber.STATUS = FIBER_TERMINATED))
   -- if pconfigcall.KIND = INTRINSIC_FIBER_TERMINATED
-  -- if pconfigcall.OWNER = (n) /\ $fiber_at(S, n) = (pfiber)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
 def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done(S, PNULL)
   -- if pconfigcall.KIND = INTRINSIC_FIBER_CURRENT
   -- if S.ACTIVEFIBER = eps
@@ -310,11 +315,13 @@ def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done(S, POBJECT n)
   -- if S.ACTIVEFIBER = (n)
 def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done(S, pfiber.VALUE)
   -- if pconfigcall.KIND = INTRINSIC_FIBER_RETURN
-  -- if pconfigcall.OWNER = (n) /\ $fiber_at(S, n) = (pfiber)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.STATUS = FIBER_TERMINATED /\ ~pfiber.FAILED
 def $fiber_receive_value(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "FiberError", $fiber_return_error(pfiber))
   -- if pconfigcall.KIND = INTRINSIC_FIBER_RETURN
-  -- if pconfigcall.OWNER = (n) /\ $fiber_at(S, n) = (pfiber)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.STATUS =/= FIBER_TERMINATED \/ pfiber.FAILED
 def $fiber_return_error(pfiber) = $ptascii("Cannot get fiber return value: The fiber has not been started") -- if pfiber.STATUS = FIBER_INIT
 def $fiber_return_error(pfiber) = $ptascii("Cannot get fiber return value: The fiber has not returned") -- if pfiber.STATUS =/= FIBER_INIT /\ pfiber.STATUS =/= FIBER_TERMINATED
@@ -336,7 +343,8 @@ def $fiber_receive_value(S, pconfigcall, pvalue) = $config_error(S, pconfigcall,
   -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
   -- if pconfigcall.KIND =/= INTRINSIC_FIBER_THROW \/ $class_instanceof(S, pvalue, $ptascii("Throwable"))
   -- if ~$fiber_blocked(S)
-  -- if pconfigcall.OWNER = (n) /\ $fiber_at(S, n) = (pfiber)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.STATUS =/= FIBER_SUSPENDED
 def $fiber_receive_value(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "Fiber switch during an initializer or source loader continuation"]
   -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW, INTRINSIC_FIBER_SUSPEND]
@@ -488,7 +496,7 @@ def $fiber_name_error(pfunction, pnamedargs, (ptbytes, poperand)*) = ($ptascii("
 def $fiber_named_map(pfunction, pnamedargs, eps) = pnamedargs
 def $fiber_named_map(pfunction, pnamedargs, (ptbytes, poperand) :: (ptbytes_tail, poperand_tail)*) = $fiber_named_map(pfunction, $named_store(pnamedargs, $fiber_named_target(pfunction, ptbytes), poperand), (ptbytes_tail, poperand_tail)*)
 def $fiber_parameters_reference(eps) = false
-def $fiber_parameters_reference(psparam :: psparam*) = (psparam.BYREF \/ $fiber_parameters_reference(psparam*))
+def $fiber_parameters_reference(psparam :: psparam_tail*) = (psparam.BYREF \/ $fiber_parameters_reference(psparam_tail*))
 rule PhpStep/fiber-enter-name-error: S ~> $throw_scalar(S, "Error", ptbytes, $(-1))
   -- if S.TODO = (FIBER_ENTER n pnamedargs) :: ptask_tail*
   -- if $fiber_at(S, n) = (pfiber)
@@ -533,7 +541,7 @@ def $fiber_marker(ptask) = false -- otherwise
 ;; The waiting frame owns its actual receiver and argument buffer once. The
 ;; suspended static API continuation and all frozen IDs are nonowning.
 def $fiber_api_nodes(pfiberapi) = [HOBJECT pfiberapi.OBJECT] ++ $wrapper_roots(pfiberapi.START) ++ $fiber_value_nodes(pfiberapi.SENT)
-def $fiber_caller_nodes(pfibercaller :: pfibercaller*) = $fiber_api_nodes(pfibercaller.API) ++ $fiber_vm_nodes(pfibercaller.VM) ++ $fiber_caller_nodes(pfibercaller*)
+def $fiber_caller_nodes(pfibercaller :: pfibercaller_tail*) = $fiber_api_nodes(pfibercaller.API) ++ $fiber_vm_nodes(pfibercaller.VM) ++ $fiber_caller_nodes(pfibercaller_tail*)
 def $task_nodes(FIBER_ARGS pfiberstart) = [HOBJECT pfiberstart.OBJECT] ++ $named_slots_roots(pfiberstart.SENT.SLOTS) ++ $named_roots(pfiberstart.SENT.NAMED)
 def $task_nodes(FIBER_SEND pfiberstart) = [HOBJECT pfiberstart.OBJECT] ++ $named_slots_roots(pfiberstart.SENT.SLOTS) ++ $named_roots(pfiberstart.SENT.NAMED)
 def $task_nodes(FIBER_ENTER n pnamedargs) = eps
@@ -586,7 +594,7 @@ def $typed_caller_strict(S) = false
   -- if S.CURRENT = (pcallcontext)
   -- if $fiber_context_kind(S, pcallcontext)
 def $ordinary_internal_callback_context(S, pcallcontext) = true -- if $fiber_context_kind(S, pcallcontext)
-def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args($trace_parameters(S, pbinding*, pcallcontext.PARAMS, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA), 0) ++ $trace_named_args(S, pcallcontext.NAMED), HASARGS true}]
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS ($trace_indexed_args($trace_parameters(S, pbinding*, pcallcontext.PARAMS, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA), 0) ++ $trace_named_args(S, pcallcontext.NAMED)), HASARGS true}]
   -- if $fiber_context_kind(S, pcallcontext)
 
 def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $fiber_method_name(pconfigcall.KIND), CLASS ($ptascii("Fiber")), TYPE ($fiber_trace_type(pconfigcall.KIND)), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
@@ -601,7 +609,8 @@ def $fiber_api_valid(S, pfiberapi) = true
   -- if $call_line_valid(S, (pfiberapi.SITE), pfiberapi.LINE)
   -- if $fiber_at(S, pfiberapi.OBJECT) = (pfiber)
   -- if pfiberapi.KIND = eps
-  -- if pfiberapi.START = (pnamedargs) /\ pfiberapi.SENT = eps
+  -- if pfiberapi.START = (pnamedargs)
+  -- if pfiberapi.SENT = eps
   -- if $fiber_method_site(S, pfiberapi.SITE, eps)
   -- if $fiber_start_shape(S, pfiberapi.SITE, $intrinsic_extent(S, pfiberapi.SITE), pnamedargs)
 def $fiber_api_valid(S, pfiberapi) = true
@@ -626,14 +635,14 @@ def $fiber_fixed_buffer_valid(S, porigin, pintrinsic, pvalue?) = false -- otherw
 def $intrinsic_extent(S, porigin) = n -- if $intrinsic_count(S, porigin) = (n)
 def $fiber_start_shape(S, porigin, n, pnamedargs) = $fiber_start_prefix(S, porigin, n, 0, pnamedargs)
 def $fiber_start_prefix(S, porigin, 0, n_pos, pnamedargs) = (|pnamedargs.SLOTS| = n_pos /\ pnamedargs.NAMED = eps)
-def $fiber_start_prefix(S, porigin, n, n_pos, pnamedargs) = $fiber_start_prefix(S, porigin, $(n - 1), n_pos, {SLOTS pnamedargs.SLOTS, NAMED pnamedargs.NAMED[0:$nabs($(|pnamedargs.NAMED| - 1))]})
+def $fiber_start_prefix(S, porigin, n, n_pos, pnamedargs) = $fiber_start_prefix(S, porigin, $nabs($(n - 1)), n_pos, {SLOTS pnamedargs.SLOTS, NAMED pnamedargs.NAMED[0:$nabs($(|pnamedargs.NAMED| - 1))]})
   -- if $(n > 0)
-  -- if $intrinsic_argument(S, porigin, $(n - 1)) = ((expression, false, (ptbytes), porigin_arg, z))
+  -- if $intrinsic_argument(S, porigin, $nabs($(n - 1))) = ((expression, false, (ptbytes), porigin_arg, z))
   -- if pnamedargs.NAMED =/= eps
   -- if pnamedargs.NAMED[$nabs($(|pnamedargs.NAMED| - 1))] = (ptbytes, KNOWN pvalue)
-def $fiber_start_prefix(S, porigin, n, n_pos, pnamedargs) = $fiber_start_prefix(S, porigin, $(n - 1), $(n_pos + 1), pnamedargs)
+def $fiber_start_prefix(S, porigin, n, n_pos, pnamedargs) = $fiber_start_prefix(S, porigin, $nabs($(n - 1)), $(n_pos + 1), pnamedargs)
   -- if $(n > 0)
-  -- if $intrinsic_argument(S, porigin, $(n - 1)) = ((expression, false, eps, porigin_arg, z))
+  -- if $intrinsic_argument(S, porigin, $nabs($(n - 1))) = ((expression, false, eps, porigin_arg, z))
   -- if $(n_pos < |pnamedargs.SLOTS|)
   -- if pnamedargs.SLOTS[$nabs($(|pnamedargs.SLOTS| - n_pos - 1))] = NAMED_SENT (KNOWN pvalue)
 def $fiber_start_prefix(S, porigin, n, n_pos, pnamedargs) = false -- otherwise
@@ -682,7 +691,8 @@ def $fiber_enter_valid(S, n, pnamedargs) = true
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.STATUS = FIBER_RUNNING /\ pfiber.ENTRY = (pnamedargs)
   -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
-  -- if pfibercaller.OBJECT = n /\ pfibercaller.API.START = (pnamedargs)
+  -- if pfibercaller.OBJECT = n
+  -- if pfibercaller.API.START = (pnamedargs)
   -- if pfibercaller.API.SEQUENCE = pfiber.SEQUENCE
   -- if S.CURRENT = eps /\ S.FRAMES = eps
   -- if $fiber_cache_valid(S, n, pfiber)
@@ -720,7 +730,7 @@ def $fiber_vm_valid(S, pfibervm, n?, pfibercaller*) = true
 def $fiber_vm_valid(S, pfibervm, n?, pfibercaller*) = false -- otherwise
 
 def $fiber_waiting_ids(eps) = eps
-def $fiber_waiting_ids(pfibercaller :: pfibercaller*) = $fiber_previous_ids(pfibercaller.PREVIOUS) ++ $fiber_waiting_ids(pfibercaller*)
+def $fiber_waiting_ids(pfibercaller :: pfibercaller_tail*) = $fiber_previous_ids(pfibercaller.PREVIOUS) ++ $fiber_waiting_ids(pfibercaller_tail*)
 def $fiber_previous_ids(eps) = eps
 def $fiber_previous_ids((n)) = [n]
 def $fiber_callers_valid(S, eps, eps, n_seen*) = true
@@ -736,9 +746,10 @@ def $fiber_callers_valid(S, (n), pfibercaller :: pfibercaller_tail*, n_seen*) = 
 def $fiber_callers_valid(S, n?, pfibercaller*, n_seen*) = false -- otherwise
 
 def $fiber_live_records(S, eps) = true
-def $fiber_live_records(S, (HOBJECT n) :: pnode*) = ($fiber_record_valid(S, n, pfiber) /\ $fiber_live_records(S, pnode*))
+def $fiber_live_records(S, pnode :: pnode_tail*) = ($fiber_live_node_valid(S, pnode) /\ $fiber_live_records(S, pnode_tail*))
+def $fiber_live_node_valid(S, HOBJECT n) = $fiber_record_valid(S, n, pfiber)
   -- if S.OBJECTS[n] = FIBER pfiber
-def $fiber_live_records(S, pnode :: pnode*) = $fiber_live_records(S, pnode*) -- otherwise
+def $fiber_live_node_valid(S, pnode) = true -- otherwise
 def $fiber_state_valid(S) = ($fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps) /\ $fiber_live_records(S, S.ALLOCATIONS) /\ $(S.FIBERSEQ > 0))
 def $call_descriptors_valid(S) = ($call_descriptors_local_valid(S) /\ $fiber_state_valid(S))
 
@@ -796,22 +807,24 @@ def $fiber_caller_trace(S) = [$fiber_api_trace(S, pfibercaller.API)] ++ $eval_ex
 
 def $fiber_vm_iterators(pfibervm) = $error_task_iterators(pfibervm.TODO) ++ $error_saved_iterators(pfibervm.FRAMES)
 def $fiber_object_iterators(S, eps) = eps
-def $fiber_object_iterators(S, (HOBJECT n) :: pnode*) = $fiber_vm_iterators(pfibervm) ++ $fiber_object_iterators(S, pnode*)
+def $fiber_object_iterators(S, pnode :: pnode_tail*) = $fiber_node_iterators(S, pnode) ++ $fiber_object_iterators(S, pnode_tail*)
+def $fiber_node_iterators(S, HOBJECT n) = $fiber_vm_iterators(pfibervm)
   -- if S.OBJECTS[n] = FIBER pfiber
   -- if pfiber.VM = (pfibervm)
-def $fiber_object_iterators(S, pnode :: pnode*) = $fiber_object_iterators(S, pnode*) -- otherwise
+def $fiber_node_iterators(S, pnode) = eps -- otherwise
 def $fiber_caller_iterators(eps) = eps
-def $fiber_caller_iterators(pfibercaller :: pfibercaller*) = $fiber_vm_iterators(pfibercaller.VM) ++ $fiber_caller_iterators(pfibercaller*)
+def $fiber_caller_iterators(pfibercaller :: pfibercaller_tail*) = $fiber_vm_iterators(pfibercaller.VM) ++ $fiber_caller_iterators(pfibercaller_tail*)
 def $fiber_saved_iterators(S) = $fiber_object_iterators(S, S.ALLOCATIONS) ++ $fiber_caller_iterators(S.FIBERCALLERS)
 
 ;; Force-close/finally and request cleanup are the next lifecycle increment.
 ;; Do not silently collect a suspended stack before those actions exist.
 def $fiber_retired_stack(S, eps, pnode_live*) = false
-def $fiber_retired_stack(S, (HOBJECT n) :: pnode*, pnode_live*) = true
+def $fiber_retired_stack(S, pnode :: pnode_tail*, pnode_live*) = ($fiber_retired_node(S, pnode, pnode_live*) \/ $fiber_retired_stack(S, pnode_tail*, pnode_live*))
+def $fiber_retired_node(S, HOBJECT n, pnode_live*) = true
   -- if S.OBJECTS[n] = FIBER pfiber
   -- if pfiber.STATUS = FIBER_SUSPENDED
   -- if ~((HOBJECT n) <- pnode_live*)
-def $fiber_retired_stack(S, pnode :: pnode*, pnode_live*) = $fiber_retired_stack(S, pnode*, pnode_live*) -- otherwise
+def $fiber_retired_node(S, pnode, pnode_live*) = false -- otherwise
 def $fiber_prune(S, pnode_live*) = S[.COMPLETION = UNSUPPORTED "force-closing a suspended Fiber"]
   -- if $fiber_retired_stack(S, S.ALLOCATIONS, pnode_live*)
 def $fiber_prune(S, pnode_live*) = $destruction_prune(S, pnode_live*)
