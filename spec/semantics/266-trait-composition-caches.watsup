@@ -41,6 +41,7 @@ dec $trait_cache_object_binding(ptask*) : bool
 dec $trait_cache_object_type_error(pstate) : bool
 dec $trait_cache_object_resume(pfstate, pcpath, pclassconstantdesc, int, pstate, pstate, ptraitcachecause) : pfstate
 dec $trait_cache_object_scalar_error(pcompletion) : bool
+dec $trait_cache_object_failure_context(pstate, pstate) : pstate
 dec $trait_cache_object_lookups(pclassconstantcontext*, porigin*) : porigin*?
 dec $trait_cache_object_events(porigin, porigin, pevent*) : pfdiagnostic*?
 dec $trait_cache_object_event(porigin, porigin, pevent) : pfdiagnostic?
@@ -365,14 +366,29 @@ def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcacheca
 def $trait_cache_object_scalar_error(THROWN text preqbytes z) = true
 def $trait_cache_object_scalar_error(PHPERROR preqbytes z) = true
 def $trait_cache_object_scalar_error(pcompletion) = false -- otherwise
+;; ARRAY_VALUE resolves its value after ORIGIN_RETURN restored the item. The
+;; real item, consumer and active initializer identify that diagnostic child.
+def $trait_cache_object_failure_context(S, S_next) = S_next[.ORIGIN = (porigin_value)]
+  -- if S.TODO = (ARRAY_VALUE n poperand? phpType13* z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_item)
+  -- if S_next.ORIGIN = S.ORIGIN
+  -- if S_next.CLASSCONSTANTINIT = S.CLASSCONSTANTINIT /\ S_next.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if $class_constant_active(S)
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if $origin_node(S.SOURCES, porigin_item) = (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata)
+  -- if porigin_value = $constant_child(porigin_item, [PCFIELD 1])
+  -- if $constant_expression_below(S, pclassconstantcontext.DECL, porigin_value)
+  -- if z = $runtime_line(S, [PCFIELD 1], expression)
+def $trait_cache_object_failure_context(S, S_next) = S_next -- otherwise
 def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S_next, ptraitcachecause)
   -- if S_next.COMPLETION = NORMAL
 def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = F[.VALUE = eps][.MEMORY = $prune_allocations($trait_cache_object_restore(F, S_throw)[.COMPLETION = THROWN pthrowable.KIND preqbytes z_error][.ERRORORIGIN = (porigin_owner)][.TRACE = ptraceframe*])]
   -- if $trait_recording(F, pcpath)
   -- if $trait_cache_object_scalar_error(S_next.COMPLETION)
-  -- if S_cont = $throwable_continuation(S, S_next)
+  -- if S_failure = $trait_cache_object_failure_context(S, S_next)
+  -- if S_cont = $throwable_continuation(S, S_failure)
   -- if ptraceframe* = $eval_exception_trace(S_cont)
-  -- if S_throw = $throwable_transition(S, S_next)
+  -- if S_throw = $throwable_transition(S, S_failure)
   -- if S_throw.COMPLETION = THROWING n_throw
   -- if S_throw.OBJECTS[n_throw] = THROWABLE pthrowable
   -- if pthrowable.FILEORIGIN = (porigin_owner)
