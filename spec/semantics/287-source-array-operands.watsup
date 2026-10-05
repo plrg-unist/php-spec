@@ -144,11 +144,13 @@ def $source_operand_body(S, psourceoperand, n) = ($compiled_work(n, P.WORK) ++ [
   -- if P = $declaration_compiler_state($eval_source_ppstate(S, pcunit))
 def $source_operand_body(S, psourceoperand, n) = eps -- otherwise
 def $task_nodes(SOURCE_OPERAND_ENTER psourceoperand n) = $operand_nodes(psourceoperand.INPUT)
-def $call_task_valid(S, SOURCE_OPERAND_ENTER psourceoperand n) = true
+dec $source_operand_enter_valid(pstate, psourceoperand, nat) : bool
+def $source_operand_enter_valid(S, psourceoperand, n) = true
   -- if $source_operand_valid(S, psourceoperand)
   -- if $source_operand_body(S, psourceoperand, n) = (ptask_body*)
   -- if $source_operand_suffix(S.TODO, SOURCE_OPERAND_ENTER psourceoperand n, ptask_body*)
-def $call_task_valid(S, SOURCE_OPERAND_ENTER psourceoperand n) = false -- otherwise
+def $source_operand_enter_valid(S, psourceoperand, n) = false -- otherwise
+def $call_task_valid(S, SOURCE_OPERAND_ENTER psourceoperand n) = $source_operand_enter_valid(S, psourceoperand, n)
 rule PhpStep/source-operand-enter: S ~> S[.TODO = ptask_tail*]
   -- if S.TODO = (SOURCE_OPERAND_ENTER psourceoperand n) :: ptask_tail*
   -- if $call_task_valid(S, SOURCE_OPERAND_ENTER psourceoperand n)
@@ -157,7 +159,8 @@ rule PhpStep/source-operand-enter: S ~> S[.TODO = ptask_tail*]
 def $source_operand_throw(n, (SOURCE_OPERAND_RELEASE psourceoperand) :: ptask_tail*) = (SOURCE_OPERAND_THROW psourceoperand n) :: ptask_tail*
 def $source_operand_throw(n, ptask_tail*) = (THROW_SEARCH n) :: ptask_tail* -- otherwise
 def $task_nodes(SOURCE_OPERAND_THROW psourceoperand n) = (HOBJECT n) :: $operand_nodes(psourceoperand.INPUT)
-def $call_task_valid(S, SOURCE_OPERAND_THROW psourceoperand n) = true
+dec $source_operand_throw_valid(pstate, psourceoperand, nat) : bool
+def $source_operand_throw_valid(S, psourceoperand, n) = true
   -- if $source_operand_valid(S, psourceoperand)
   -- if $source_operand_suffix(S.TODO, SOURCE_OPERAND_THROW psourceoperand n, psourceoperand.TAIL)
   -- if $(n < |S.OBJECTS|)
@@ -167,7 +170,8 @@ def $call_task_valid(S, SOURCE_OPERAND_THROW psourceoperand n) = true
   -- if $failed_source_at(S.FAILEDSOURCES, n_unit) = (pfailedsource)
   -- if pfailedsource.SITE = psourceoperand.SITE
   -- if pfailedsource.ISFILE = (psourceoperand.KIND =/= 0)
-def $call_task_valid(S, SOURCE_OPERAND_THROW psourceoperand n) = false -- otherwise
+def $source_operand_throw_valid(S, psourceoperand, n) = false -- otherwise
+def $call_task_valid(S, SOURCE_OPERAND_THROW psourceoperand n) = $source_operand_throw_valid(S, psourceoperand, n)
 rule PhpStep/source-operand-throw: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*]
   -- if S.TODO = (SOURCE_OPERAND_THROW psourceoperand n) :: ptask_tail*
   -- if $call_task_valid(S, SOURCE_OPERAND_THROW psourceoperand n)
