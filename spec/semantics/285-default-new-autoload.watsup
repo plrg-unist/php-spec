@@ -1,0 +1,97 @@
+;; AST default lookup finishes before allocation or argument evaluation. A loader
+;; can publish a constructor, so resume through the prepared default evaluator.
+dec $autoload_default_source_valid(pstate, porigin, preqbytes, phpType7*, porigin, int) : bool
+def $autoload_default_source_valid(S, porigin_site, ptbytes, phpType7*, porigin_parameter, z) = true
+  -- if $parameter_string_site_valid(S, porigin_parameter, z)
+  -- if $constant_expression_below(S, porigin_parameter, porigin_site)
+  -- if $constant_expression_root(S, porigin_parameter) = (porigin_default)
+  -- if $default_function_at($all_functions(S), porigin_default) = (pfunction)
+  -- if $default_origin_at(pfunction.DEFAULTS, porigin_default) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if porigin_parameter = $default_parameter_origin(S, pfunction.ORIGIN, pdefault.INDEX)
+  -- if z = $default_parameter_line(S, pfunction.ORIGIN, pdefault.INDEX)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $parameter_new_prefix(phpType7*)
+  -- if porigin_site = PORIGIN n_unit pcpath
+  -- if porigin_parameter = PORIGIN n_unit pcpath_parameter
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = $goto_source_owner($all_functions(S), n_unit, pcpath_parameter)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+def $autoload_default_source_valid(S, porigin_site, ptbytes, phpType7*, porigin_parameter, z) = false -- otherwise
+
+;; A Closure body nested in a default is ordinary code. Classification follows
+;; only the initializer path, without crossing an intervening function body.
+dec $autoload_default_occurrence(pstate, porigin, pcoccurrence) : bool
+def $autoload_default_occurrence(S, PORIGIN n_unit pcpath, PCOCCURRENCE pcpath_parameter pcnode) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_parameter) = ((z, b))
+  -- if $autoload_default_source_valid(S, PORIGIN n_unit pcpath, ptbytes, phpType7*, PORIGIN n_unit pcpath_parameter, z)
+def $autoload_default_occurrence(S, porigin, pcoccurrence) = false -- otherwise
+dec $autoload_default_occurrences(pstate, porigin, pcoccurrence*) : bool
+def $autoload_default_occurrences(S, porigin, eps) = false
+def $autoload_default_occurrences(S, porigin, pcoccurrence :: pcoccurrence_tail*) = ($autoload_default_occurrence(S, porigin, pcoccurrence) \/ $autoload_default_occurrences(S, porigin, pcoccurrence_tail*))
+def $autoload_ordinary_new_source(S, PORIGIN n_unit pcpath) = false
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if $autoload_default_occurrences(S, PORIGIN n_unit pcpath, pcunit.OCCURRENCES)
+
+;; A suspended receiving function owns its parameter initializer, although the
+;; parameter lies outside BODY. Reuse the same exact default source proof.
+dec $autoload_default_owner_from(pstate, porigin, pcoccurrence*) : pfunction?
+def $autoload_default_owner_from(S, PORIGIN n_unit pcpath, pcoccurrence :: pcoccurrence_tail*) = (pfunction)
+  -- if $autoload_default_occurrence(S, PORIGIN n_unit pcpath, pcoccurrence)
+  -- if pcoccurrence = PCOCCURRENCE pcpath_parameter pcnode
+  -- if $constant_expression_root(S, PORIGIN n_unit pcpath_parameter) = (porigin_default)
+  -- if $default_function_at($all_functions(S), porigin_default) = (pfunction)
+def $autoload_default_owner_from(S, porigin, pcoccurrence :: pcoccurrence_tail*) = $autoload_default_owner_from(S, porigin, pcoccurrence_tail*)
+  -- if ~$autoload_default_occurrence(S, porigin, pcoccurrence)
+def $autoload_default_owner_from(S, porigin, eps) = eps
+def $declaration_default_new_owner(S, PORIGIN n_unit pcpath) = $autoload_default_owner_from(S, PORIGIN n_unit pcpath, pcunit.OCCURRENCES)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+
+dec $autoload_default_ready(pstate, preqbytes, phpType7*, porigin, int) : bool
+def $autoload_default_ready(S, ptbytes, phpType7*, porigin_parameter, z) = true
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = porigin_parameter /\ pconstantcontext.LINE = z
+  -- if $parameter_string_site_valid(S, porigin_parameter, z)
+  -- if $default_context_valid(S, pconstantcontext)
+  -- if $parameter_default_new_ready(S, ptbytes, phpType7*, z)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $autoload_default_source_valid(S, porigin_site, ptbytes, phpType7*, porigin_parameter, z)
+def $autoload_default_ready(S, ptbytes, phpType7*, porigin_parameter, z) = false -- otherwise
+
+def $autoload_new_resume(S, ptbytes, phpType7*, z) = AUTO_DEFAULT_NEW ptbytes phpType7* pconstantcontext.ORIGIN z
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $autoload_default_ready(S, ptbytes, phpType7*, pconstantcontext.ORIGIN, z)
+
+rule PhpStep/autoload-default-new-constructor: S ~> $default_new_start(S[.TODO = ptask_tail*], ptbytes, phpType7*, z)
+  -- if S.TODO = (AUTO_DEFAULT_NEW ptbytes phpType7* porigin_parameter z) :: ptask_tail*
+  -- if $autoload_default_ready(S, ptbytes, phpType7*, porigin_parameter, z)
+  -- if $dynamic_new_known(S, ptbytes) /\ $new_has_ctor(S, ptbytes)
+rule PhpStep/autoload-default-new-noctor: S ~> $noctor_start(S[.TODO = ptask_tail*], ptbytes, phpType7*, z)
+  -- if S.TODO = (AUTO_DEFAULT_NEW ptbytes phpType7* porigin_parameter z) :: ptask_tail*
+  -- if $autoload_default_ready(S, ptbytes, phpType7*, porigin_parameter, z)
+  -- if $dynamic_new_known(S, ptbytes) /\ ~$new_has_ctor(S, ptbytes)
+rule PhpStep/autoload-default-new-missing: S ~> $throw_scalar(S, "Error", $ptascii("Class \"") ++ $c_string(ptbytes) ++ $ptascii("\" not found"), z)
+  -- if S.TODO = (AUTO_DEFAULT_NEW ptbytes phpType7* porigin_parameter z) :: ptask_tail*
+  -- if $autoload_default_ready(S, ptbytes, phpType7*, porigin_parameter, z)
+  -- if ~$dynamic_new_known(S, ptbytes)
+
+def $autoload_resume_valid(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_DEFAULT_NEW ptbytes phpType7* porigin_parameter z
+  -- if S.ORIGIN = (pautoloadcall.SITE)
+  -- if $autoload_default_ready(S, ptbytes, phpType7*, porigin_parameter, z)
+  -- if pautoloadcall.NAME = $autoload_lookup_name(ptbytes)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = z
+def $autoload_declaration_resume(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_DEFAULT_NEW ptbytes phpType7* porigin_parameter z
+  -- if $autoload_default_source_valid(S, pautoloadcall.SITE, ptbytes, phpType7*, porigin_parameter, z)
+  -- if pautoloadcall.NAME = $autoload_lookup_name(ptbytes)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = z
+  -- if $autoload_class_name(pautoloadcall.NAME)
+def $call_task_valid(S, AUTO_DEFAULT_NEW ptbytes phpType7* porigin_parameter z) = $autoload_default_ready(S, ptbytes, phpType7*, porigin_parameter, z)
+def $task_nodes(AUTO_DEFAULT_NEW ptbytes phpType7* porigin_parameter z) = eps
