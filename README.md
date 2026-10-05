@@ -720,8 +720,13 @@ Thirty-six private source agreements and one current global-constant loader
 interaction retain separate cuts. The 263 original finite premises pass with
 seven typing bindings and eight repeated compaction setup premises; the split
 compaction groups use the existing strict SL runner at the unchanged120s cap.
-Default/global-constant AST NEW, wider class-link consumers and complete core
-remain required. Default `spl_autoload` filesystem search stays excluded.
+[Parameter-default NEW autoload](coverage/semantics/default-new-autoload-review.json)
+now completes lookup before allocation and nested arguments, then reselects the
+loaded constructor under the receiving declaration scope. Nine private sources
+and 174 reached premises pass at separate cuts; one actual generator interaction
+preserves eager default creation before suspension. Global-constant AST NEW
+autoload and wider class-link consumers remain required. Default `spl_autoload`
+filesystem search stays excluded.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

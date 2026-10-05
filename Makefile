@@ -329,6 +329,10 @@ test-semantics: build
 	python3 tests/semantics/autoload_protocol.py --group traces
 	python3 tests/semantics/autoload_protocol.py --group reference
 	python3 tests/semantics/autoload_protocol.py --group retirement
+	python3 tests/semantics/default_new_autoload_sources.py
+	python3 tests/semantics/default_new_autoload_protocol.py --group lookup
+	python3 tests/semantics/default_new_autoload_protocol.py --group recursive
+	python3 tests/semantics/default_new_autoload_protocol.py --group retirement
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
