@@ -676,8 +676,11 @@ now use actual Throwable fields and demand traces, keeping completed nested cach
 while retiring failed owners. Four PHP-error comparisons pass atf780; four reached
 groups pass678 supplied source/context/registry/cleanup conditions atba2/d33, with12
 generated setup checks separate. The retained handler graph survives scratch cleanup.
-Wider initializer contexts, cross-file constant demand and unpublished-owner births
-remain required. Traits stay partial.
+Cross-file constant collision typed demand now preserves the executing class file,
+physical fetch line and genuine constant-expression frame. Two PHP-error comparisons
+and one reached group/139 supplied conditions pass, with five service/setup checks
+separate. Wider initializer contexts and unpublished-owner births remain required.
+Traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the

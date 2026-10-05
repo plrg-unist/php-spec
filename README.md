@@ -570,8 +570,10 @@ Published Closure/FCC dependencies retain their real initializer scope, callable
 receipts and cache owners through successful and failed composition; array keys
 and duplicate-key selection keep source-derived proofs. Errors inside those
 initializers preserve actual Throwable fields and demand traces, retire failed
-temporary owners and keep completed nested caches. Wider initializer contexts,
-unpublished-owner births, held/open failed links and readonly storage remain
+temporary owners and keep completed nested caches. Cross-file typed constant
+demand retains the composing file, physical fetch line and expression frame. Wider
+initializer contexts, unpublished-owner births, held/open failed links and readonly
+storage remain
 required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent

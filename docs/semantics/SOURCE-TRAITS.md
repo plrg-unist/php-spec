@@ -116,7 +116,10 @@ literal dimensions select the last matching source entry. Failed composition kee
 public-owner object caches while releasing temporary arrays and Error allocations.
 Errors inside these callable dependencies use the real failing runtime step and
 Throwable continuation. Typed rejection restores the binder's demand context;
-expression and array-key failures retain their authenticated expression child.
+an incoming constant collision authenticates its composing file and physical fetch
+line across the borrowed initializer, retaining the real constant-expression frame.
+The full source/cause and rederived typed step supply this override. Property,
+expression and array-key failures retain their ordinary authenticated continuation.
 Actual Throwable fields and trace supply the later default report. Cleanup releases
 failed initializer/Throwable owners while retaining completed nested caches and
 the outside handler registry's captured graph; scratch handler dispatch stays
@@ -208,11 +211,14 @@ groups/678 supplied source/context/registry/cleanup conditions;12 generated setu
 checks are separate. Genuine expression children supply expression-error traces,
 typed binding restores its demand context, and failed temporary owners retire
 without dropping completed nested caches or the original handler graph.
+Cross-file typed constant demand adds two PHP-error comparisons and139 supplied
+reached conditions; five multi-file service/setup checks are separate. Source and
+declaration-image mutations cannot borrow a foreign diagnostic context.
 Other native preparations remain uncredited until implemented.
 
 Dependency fills in held/open compilation and unpublished-owner object creation
-keep explicit Unsupported boundaries. Cross-file constant typed demand and further
-callable initializer contexts remain unvalidated obligations.
+keep explicit Unsupported boundaries. Further callable initializer contexts remain
+unvalidated obligations.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
 Historical reached
