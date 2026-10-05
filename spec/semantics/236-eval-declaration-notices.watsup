@@ -138,7 +138,7 @@ def $eval_compile_finish(S, pevalcompile) = $eval_compile_stop(S[.COMPLETION = U
   -- if pevalcompile.PLAN.COMPLETION = PPCABRUPT (UNSUPPORTED text)
 def $eval_compile_finish(S, pevalcompile) = $eval_compile_stop(S[.COMPLETION = UNSUPPORTED "namespace eval compilation without diagnostic"], pevalcompile, PCSUNSUPPORTED pevalcompile.CHECKPOINT)
   -- if pevalcompile.PLAN.COMPLETION = PPCNAMESPACE
-def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = $compiled_work(pevalcompile.PLAN.UNIT, pevalcompile.PLAN.WORK) ++ [EVAL_END pevalcompile.PLAN.UNIT] ++ pevalcontext.TAIL][.EVALCONTEXTS = $eval_compile_context_phase(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT, UNIT_RUN)][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = $source_operand_work(pevalcompile.PLAN.UNIT, $compiled_work(pevalcompile.PLAN.UNIT, pevalcompile.PLAN.WORK) ++ [EVAL_END pevalcompile.PLAN.UNIT], pevalcontext.TAIL)][.EVALCONTEXTS = $source_operand_contexts($eval_compile_context_phase(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT, UNIT_RUN), pevalcompile.PLAN.UNIT)][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pevalcompile.PENDING = NORMAL
   -- if $eval_context_at(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT) = (pevalcontext)
 def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = (THROW_SEARCH n) :: pevalcontext.TAIL][.EVALCONTEXTS = pevalcontext_tail*][.ORIGIN = (pevalcontext.SITE)]

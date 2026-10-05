@@ -58,11 +58,13 @@ rule PhpStep/file-request-object: S ~> $user_string_begin(S_read, n, porigin_chi
 rule PhpStep/file-request: S ~> $file_request_start(S_value, porigin, z, n_kind, ptask_tail*)
   -- if S.TODO = (FILE_REQUEST porigin z n_kind) :: ptask_tail*
   -- if ~$eval_callback_ready(S, z)
+  -- if ~$source_array_ready(S, z)
   -- if S_value = $eval_operand(S, z)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/file-request-abrupt: S ~> S_value
   -- if S.TODO = (FILE_REQUEST porigin z n_kind) :: ptask_tail*
   -- if ~$eval_callback_ready(S, z)
+  -- if ~$source_array_ready(S, z)
   -- if S_value = $eval_operand(S, z)
   -- if S_value.COMPLETION =/= NORMAL
 def $call_task_valid(S, FILE_REQUEST porigin z n_kind) = $file_operand_site_valid(S, porigin, porigin_child, z, n_kind)
@@ -316,7 +318,7 @@ def $file_parse_context_response(pfilecontext :: pfilecontext_tail*, psourceresp
 def $file_parse_response_valid(S, psourceresponse) = (S.COMPLETION = SOURCE_PENDING /\ S.SERVICELEFT =/= eps /\ $file_pending_state_valid(S) /\ $file_parse_context_response(S.FILECONTEXTS, psourceresponse) /\ $eval_response_shape(psourceresponse) /\ $call_descriptors_valid(S))
 
 dec $file_compile_result(pstate, pfilecontext, pfilecontext*, ppstate) : pstate
-def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.FILECONTEXTS = pfilecontext[.PHASE = FILE_UNIT_RUN] :: pfilecontext_tail*][.TODO = $iterator_notice_work(S_compiled.TODO, $compiled_work(n_unit, P.WORK) ++ [FILE_END n_unit] ++ pfilecontext.TAIL)][.SERVICELEFT = eps][.ORIGIN = (pfilecontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.INCLUDEDOPENED = $file_include_after_compile(S_compiled.INCLUDEDOPENED, n_opened*)]
+def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.FILECONTEXTS = pfilecontext[.PHASE = FILE_UNIT_RUN][.TAIL = $source_operand_tail(pfilecontext.TAIL)] :: pfilecontext_tail*][.TODO = $iterator_notice_work(S_compiled.TODO, $source_operand_work(n_unit, $compiled_work(n_unit, P.WORK) ++ [FILE_END n_unit], pfilecontext.TAIL))][.SERVICELEFT = eps][.ORIGIN = (pfilecontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.INCLUDEDOPENED = $file_include_after_compile(S_compiled.INCLUDEDOPENED, n_opened*)]
   -- if S_compiled.COMPLETION = NORMAL
   -- if P.COMPLETION = PPCNORMAL
   -- if pfilecontext.UNIT = (n_unit)
@@ -364,7 +366,7 @@ def $file_parse_resume_accepted(S, pfilecontext, pfilecontext_tail*, program) = 
 dec $file_parse_resume_valid(pstate, psourceresponse) : pstate
 def $file_parse_resume_valid(S, SOURCE_ACCEPT n_unit n_bytes* program) = $file_parse_resume_accepted(S, pfilecontext, pfilecontext_tail*, program)
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
-def $file_parse_resume_rejected(S, pfilecontext, pfilecontext_tail*, pfailedkind, n_message*, z) = S_object[.FILECONTEXTS = pfilecontext_tail*][.TODO = (THROW_SEARCH n_object) :: pfilecontext.TAIL][.ORIGIN = (pfilecontext.SITE)][.SERVICELEFT = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.CONSTCONTEXT = eps]
+def $file_parse_resume_rejected(S, pfilecontext, pfilecontext_tail*, pfailedkind, n_message*, z) = S_object[.FILECONTEXTS = pfilecontext_tail*][.TODO = $source_operand_throw(n_object, pfilecontext.TAIL)][.ORIGIN = (pfilecontext.SITE)][.SERVICELEFT = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.CONSTCONTEXT = eps]
   -- if pfilecontext.UNIT = (n_unit)
   -- if pfilecontext.OPENED = (n_opened*)
   -- if pfilecontext.BYTES = (n_bytes*)

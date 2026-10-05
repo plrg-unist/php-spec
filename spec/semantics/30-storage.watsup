@@ -173,6 +173,7 @@ syntax pconstantfact = { ORIGIN porigin, VALUE pvalue?, CLASS pvalueclass, LOOKU
 syntax pconstantcontext = { ORIGIN porigin, LINE int, FACTS pconstantfact* }
 syntax pstaticdefaultcontext = { DECL porigin, ROOT porigin, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
 syntax pinterpolation = { SITE porigin, INDEX nat, MODE nat, LINE int, TEXT nat*, VALUES poperand* }
+syntax psourceoperand = { SITE porigin, LINE int, KIND int, INPUT poperand, OWNER nat, TAIL ptask* }
 syntax ptask = GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
   | AUTO_NEXT pautoloadcall | AUTO_REFERENCE pautoloadcall pautoloadentry | AUTO_ENTER pautoloadcall pautoloadentry poperand | AUTO_RESULT pautoloadcall pautoloadentry poperand
   | AUTO_NEW preqbytes phpType7* int int | AUTO_PUBLISH porigin | AUTO_EXPLICIT_DONE pconfigcall
@@ -234,6 +235,7 @@ syntax ptask = GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* 
   | CLASS_CONST_SELECTED pstaticselection ptbytes int
   | METHOD_PREP phpType20 phpType7* bool bool int | METHOD_NAME poperand phpType7* int | METHOD_RESULT | CTOR_RESULT nat
   | INTERPOLATE_COLLECT porigin nat poperand* | INTERPOLATE_CAPTURE porigin nat poperand* | INTERPOLATE_NEXT pinterpolation | INTERPOLATE_CONVERT pinterpolation | INTERPOLATE_RESOLVE pinterpolation nat* | INTERPOLATE_ARRAY_RESULT pinterpolation poperand | INTERPOLATE_AFTER pinterpolation | INTERPOLATE_FINISH porigin
+  | SOURCE_ARRAY_RESULT psourceoperand | SOURCE_OPERAND_RELEASE psourceoperand | SOURCE_OPERAND_ENTER psourceoperand nat | SOURCE_OPERAND_THROW psourceoperand nat
   | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | STRINGIFY_RESULT nat porigin int | TERMINAL_STRING nat | PRINT_EMIT porigin int | CLONE_RESULT porigin int | NAME_READ int
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int

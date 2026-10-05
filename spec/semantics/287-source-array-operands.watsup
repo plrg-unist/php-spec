@@ -1,0 +1,186 @@
+;; zval_try_get_tmp_string warns before any source provider/compile operation.
+;; A CV remains borrowed; only a genuine captured operand retains heap nodes.
+def $source_array_ready(S, z) = true
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PARRAY n)
+def $source_array_ready(S, z) = false -- otherwise
+
+dec $source_operand_child(psourceoperand) : porigin
+dec $source_operand_keyword(int) : preqbytes
+def $source_operand_child(psourceoperand) = porigin
+  -- if $origin_child((psourceoperand.SITE), [PCFIELD 0]) = (porigin)
+dec $source_operand_site(pstate, psourceoperand) : bool
+def $source_operand_site(S, psourceoperand) = $eval_operand_site_valid(S, psourceoperand.SITE, $source_operand_child(psourceoperand), psourceoperand.LINE)
+  -- if psourceoperand.KIND = 0
+def $source_operand_site(S, psourceoperand) = $file_operand_site_valid(S, psourceoperand.SITE, $source_operand_child(psourceoperand), psourceoperand.LINE, psourceoperand.KIND)
+  -- if psourceoperand.KIND =/= 0
+
+dec $source_operand_input(pstate, psourceoperand) : bool
+def $source_operand_input(S, psourceoperand) = true
+  -- if psourceoperand.INPUT = VARIABLE n_name* z
+  -- if $origin_node(S.SOURCES, $source_operand_child(psourceoperand)) = (NExprVariable phpType32 metadata)
+  -- if $cv_source_name(S[.ORIGIN = ($source_operand_child(psourceoperand))], phpType32) = (n_name*)
+  -- if z = $variable_line(phpType32, metadata)
+def $source_operand_input(S, psourceoperand) = true
+  -- if psourceoperand.INPUT = KNOWN (PARRAY n)
+  -- if $origin_node(S.SOURCES, $source_operand_child(psourceoperand)) = (expression)
+  -- if $reference_cv(expression) = eps
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+def $source_operand_input(S, psourceoperand) = true
+  -- if psourceoperand.INPUT = REFERENCE n
+  -- if $origin_node(S.SOURCES, $source_operand_child(psourceoperand)) = (expression)
+  -- if $reference_cv(expression) = eps
+  -- if $call_reference_operand_valid(S, psourceoperand.INPUT)
+def $source_operand_input(S, psourceoperand) = false -- otherwise
+
+dec $source_operand_valid(pstate, psourceoperand) : bool
+def $source_operand_valid(S, psourceoperand) = ($source_operand_site(S, psourceoperand) /\ $source_operand_input(S, psourceoperand) /\ psourceoperand.OWNER = |S.FRAMES|)
+  -- if psourceoperand.TAIL = (ORIGIN_RETURN (psourceoperand.SITE)) :: ptask_tail*
+def $source_operand_valid(S, psourceoperand) = false -- otherwise
+
+;; Find the first exact marker in the actual emitter's task list. A bad suffix
+;; cannot borrow a later identical marker, including under an error wrapper.
+dec $source_operand_marker(ptask) : ptask
+def $source_operand_marker(ERROR_HANDLER_INVOKE perrorcall) = $source_operand_marker(perrorcall.RESUME)
+def $source_operand_marker(ERROR_HANDLER_RESULT perrorcall) = $source_operand_marker(perrorcall.RESUME)
+def $source_operand_marker(ptask) = ptask -- otherwise
+dec $source_operand_suffix(ptask*, ptask, ptask*) : bool
+def $source_operand_suffix(eps, ptask_expected, ptask_expected_tail*) = false
+def $source_operand_suffix(ptask :: ptask_tail*, ptask_expected, ptask_expected_tail*) = (ptask_tail* = ptask_expected_tail*)
+  -- if $source_operand_marker(ptask) = ptask_expected
+def $source_operand_suffix(ptask :: ptask_tail*, ptask_expected, ptask_expected_tail*) = $source_operand_suffix(ptask_tail*, ptask_expected, ptask_expected_tail*)
+  -- if $source_operand_marker(ptask) =/= ptask_expected
+
+dec $source_array_valid(pstate, psourceoperand) : bool
+def $source_array_valid(S, psourceoperand) = ($source_operand_valid(S, psourceoperand) /\ S.ORIGIN = ($source_operand_child(psourceoperand)) /\ $source_operand_suffix(S.TODO, SOURCE_ARRAY_RESULT psourceoperand, psourceoperand.TAIL))
+dec $source_array_line(pstate, psourceoperand) : int
+def $source_array_line(S, psourceoperand) = $class_constant_error_line(S, psourceoperand.LINE)
+
+dec $source_array_begin(pstate, poperand, porigin, int, int, ptask*) : pstate
+def $source_array_begin(S, poperand, porigin, z, n_kind, ptask_tail*) = $error_dispatch(S, 2, $ptascii("Array to string conversion"), z_warning, DIAGNOSTIC "Warning" $ptascii("Array to string conversion") z_warning, SOURCE_ARRAY_RESULT psourceoperand)
+  -- if psourceoperand = {SITE porigin, LINE z, KIND n_kind, INPUT poperand, OWNER |S.FRAMES|, TAIL ptask_tail*}
+  -- if $source_operand_valid(S, psourceoperand)
+  -- if S.ORIGIN = ($source_operand_child(psourceoperand))
+  -- if z_warning = $source_array_line(S, psourceoperand)
+def $source_array_begin(S, poperand, porigin, z, n_kind, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "invalid source array operand"] -- otherwise
+
+rule PhpStep/eval-array-operand: S ~> $source_array_begin(S_read, S.RESULT, porigin, z, 0, ptask_tail*)
+  -- if S.TODO = (EVAL_REQUEST porigin z) :: ptask_tail*
+  -- if $source_array_ready(S, z)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+rule PhpStep/file-array-operand: S ~> $source_array_begin(S_read, S.RESULT, porigin, z, n_kind, ptask_tail*)
+  -- if S.TODO = (FILE_REQUEST porigin z n_kind) :: ptask_tail*
+  -- if $source_array_ready(S, z)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+
+def $call_task_valid(S, SOURCE_ARRAY_RESULT psourceoperand) = $source_array_valid(S, psourceoperand)
+def $task_nodes(SOURCE_ARRAY_RESULT psourceoperand) = $operand_nodes(psourceoperand.INPUT)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = SOURCE_ARRAY_RESULT psourceoperand
+  -- if $source_array_valid(S, psourceoperand)
+  -- if perrorcall.SITE = $source_operand_child(psourceoperand)
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = $source_array_line(S, psourceoperand)
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+
+;; The warning has already selected the static result; callback CV writes must
+;; not become code bytes or a new filename. Provider facts are sampled now.
+dec $source_array_request(pstate, psourceoperand) : pstate
+def $source_array_request(S, psourceoperand) = $eval_request_start(S[.RESULT = KNOWN (PSTRING $ptascii("Array"))], psourceoperand.SITE, psourceoperand.LINE, (SOURCE_OPERAND_RELEASE psourceoperand) :: psourceoperand.TAIL)
+  -- if psourceoperand.KIND = 0
+def $source_array_request(S, psourceoperand) = $file_request_start(S[.RESULT = KNOWN (PSTRING $ptascii("Array"))], psourceoperand.SITE, psourceoperand.LINE, psourceoperand.KIND, (SOURCE_OPERAND_RELEASE psourceoperand) :: psourceoperand.TAIL)
+  -- if psourceoperand.KIND =/= 0
+rule PhpStep/source-array-result: S ~> $source_array_request(S, psourceoperand)
+  -- if S.TODO = (SOURCE_ARRAY_RESULT psourceoperand) :: ptask_tail*
+  -- if $source_array_valid(S, psourceoperand)
+
+def $task_nodes(SOURCE_OPERAND_RELEASE psourceoperand) = $operand_nodes(psourceoperand.INPUT)
+def $call_task_valid(S, SOURCE_OPERAND_RELEASE psourceoperand) = ($source_operand_valid(S, psourceoperand) /\ $source_operand_suffix(S.TODO, SOURCE_OPERAND_RELEASE psourceoperand, psourceoperand.TAIL))
+rule PhpStep/source-operand-release: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (SOURCE_OPERAND_RELEASE psourceoperand) :: ptask_tail*
+  -- if $call_task_valid(S, SOURCE_OPERAND_RELEASE psourceoperand)
+
+;; Normal source completion moves the sole owner past compiler notices and
+;; before body entry. Context suffixes keep only the real caller continuation.
+def $source_operand_tail((SOURCE_OPERAND_RELEASE psourceoperand) :: ptask_tail*) = ptask_tail*
+def $source_operand_tail(ptask*) = ptask* -- otherwise
+def $source_operand_work(n, ptask_work*, (SOURCE_OPERAND_RELEASE psourceoperand) :: ptask_tail*) = (SOURCE_OPERAND_ENTER psourceoperand n) :: ptask_work* ++ ptask_tail*
+def $source_operand_work(n, ptask_work*, ptask_tail*) = ptask_work* ++ ptask_tail* -- otherwise
+def $source_operand_contexts(eps, n) = eps
+def $source_operand_contexts(pevalcontext :: pevalcontext_tail*, n) = pevalcontext[.TAIL = $source_operand_tail(pevalcontext.TAIL)] :: pevalcontext_tail*
+  -- if pevalcontext.UNIT = n
+def $source_operand_contexts(pevalcontext :: pevalcontext_tail*, n) = pevalcontext :: $source_operand_contexts(pevalcontext_tail*, n)
+  -- if pevalcontext.UNIT =/= n
+
+dec $source_operand_body(pstate, psourceoperand, nat) : ptask*?
+dec $source_operand_file_context(pfilecontext*, nat) : pfilecontext?
+def $source_operand_file_context(eps, n) = eps
+def $source_operand_file_context(pfilecontext :: pfilecontext_tail*, n) = (pfilecontext)
+  -- if pfilecontext.UNIT = (n)
+def $source_operand_file_context(pfilecontext :: pfilecontext_tail*, n) = $source_operand_file_context(pfilecontext_tail*, n)
+  -- if pfilecontext.UNIT =/= (n)
+def $source_operand_body(S, psourceoperand, n) = ($compiled_work(n, P.WORK) ++ [EVAL_END n] ++ psourceoperand.TAIL)
+  -- if psourceoperand.KIND = 0
+  -- if $eval_context_at(S.EVALCONTEXTS, n) = (pevalcontext)
+  -- if pevalcontext.PHASE = UNIT_RUN
+  -- if pevalcontext.SITE = psourceoperand.SITE
+  -- if pevalcontext.OWNER = psourceoperand.OWNER
+  -- if pevalcontext.TAIL = psourceoperand.TAIL
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if P = $declaration_compiler_state($eval_source_ppstate(S, pcunit))
+def $source_operand_body(S, psourceoperand, n) = ($compiled_work(n, P.WORK) ++ [FILE_END n] ++ psourceoperand.TAIL)
+  -- if psourceoperand.KIND =/= 0
+  -- if $source_operand_file_context(S.FILECONTEXTS, n) = (pfilecontext)
+  -- if pfilecontext.PHASE = FILE_UNIT_RUN
+  -- if pfilecontext.SITE = psourceoperand.SITE
+  -- if pfilecontext.OWNER = psourceoperand.OWNER
+  -- if pfilecontext.KIND = psourceoperand.KIND
+  -- if pfilecontext.TAIL = psourceoperand.TAIL
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if P = $declaration_compiler_state($eval_source_ppstate(S, pcunit))
+def $source_operand_body(S, psourceoperand, n) = eps -- otherwise
+def $task_nodes(SOURCE_OPERAND_ENTER psourceoperand n) = $operand_nodes(psourceoperand.INPUT)
+def $call_task_valid(S, SOURCE_OPERAND_ENTER psourceoperand n) = true
+  -- if $source_operand_valid(S, psourceoperand)
+  -- if $source_operand_body(S, psourceoperand, n) = (ptask_body*)
+  -- if $source_operand_suffix(S.TODO, SOURCE_OPERAND_ENTER psourceoperand n, ptask_body*)
+def $call_task_valid(S, SOURCE_OPERAND_ENTER psourceoperand n) = false -- otherwise
+rule PhpStep/source-operand-enter: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (SOURCE_OPERAND_ENTER psourceoperand n) :: ptask_tail*
+  -- if $call_task_valid(S, SOURCE_OPERAND_ENTER psourceoperand n)
+
+;; FREE_OP1 precedes propagation of a parser/compiler exception as well.
+def $source_operand_throw(n, (SOURCE_OPERAND_RELEASE psourceoperand) :: ptask_tail*) = (SOURCE_OPERAND_THROW psourceoperand n) :: ptask_tail*
+def $source_operand_throw(n, ptask_tail*) = (THROW_SEARCH n) :: ptask_tail* -- otherwise
+def $task_nodes(SOURCE_OPERAND_THROW psourceoperand n) = (HOBJECT n) :: $operand_nodes(psourceoperand.INPUT)
+def $call_task_valid(S, SOURCE_OPERAND_THROW psourceoperand n) = true
+  -- if $source_operand_valid(S, psourceoperand)
+  -- if $source_operand_suffix(S.TODO, SOURCE_OPERAND_THROW psourceoperand n, psourceoperand.TAIL)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if pthrowable.ORIGIN = (PORIGIN n_unit eps)
+  -- if $failed_source_at(S.FAILEDSOURCES, n_unit) = (pfailedsource)
+  -- if pfailedsource.SITE = psourceoperand.SITE
+  -- if pfailedsource.ISFILE = (psourceoperand.KIND =/= 0)
+def $call_task_valid(S, SOURCE_OPERAND_THROW psourceoperand n) = false -- otherwise
+rule PhpStep/source-operand-throw: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*]
+  -- if S.TODO = (SOURCE_OPERAND_THROW psourceoperand n) :: ptask_tail*
+  -- if $call_task_valid(S, SOURCE_OPERAND_THROW psourceoperand n)
+
+;; An entered Array warning still has the genuine pre-parser zero-args source
+;; frame, even though no file/eval context or provider nonce exists yet.
+def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S.FILES, psourceoperand.SITE), LINE psourceoperand.LINE, FUNCTION $source_operand_keyword(psourceoperand.KIND), CLASS eps, TYPE eps, ARGS eps, HASARGS false}]
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = SOURCE_ARRAY_RESULT psourceoperand
+  -- if perrorcall.TARGET = (pcallcontext.TARGET)
+  -- if pcallcontext.CALLSITE = (perrorcall.SITE)
+  -- if $error_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)
+  -- if S_scope = S[.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO]
+  -- if $source_operand_site(S_scope, psourceoperand)
+  -- if psourceoperand.TAIL = ptask_tail*
+def $source_operand_keyword(0) = $ptascii("eval")
+def $source_operand_keyword(n) = $file_keyword(n) -- if n =/= 0

@@ -44,6 +44,11 @@ def $eval_string_result(PSTRING n*) = true
 def $eval_string_result(pvalue) = false -- otherwise
 dec $eval_operand(pstate, int) : pstate
 dec $eval_callback_ready(pstate, int) : bool
+dec $source_array_ready(pstate, int) : bool
+dec $source_operand_tail(ptask*) : ptask*
+dec $source_operand_work(nat, ptask*, ptask*) : ptask*
+dec $source_operand_contexts(pevalcontext*, nat) : pevalcontext*
+dec $source_operand_throw(nat, ptask*) : ptask*
 def $eval_callback_ready(S, z) = true
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
@@ -94,11 +99,13 @@ rule PhpStep/eval-request-object: S ~> $user_string_begin(S_read, n, porigin_chi
 rule PhpStep/eval-request: S ~> $eval_request_start(S_value, porigin, z, ptask_tail*)
   -- if S.TODO = (EVAL_REQUEST porigin z) :: ptask_tail*
   -- if ~$eval_callback_ready(S, z)
+  -- if ~$source_array_ready(S, z)
   -- if S_value = $eval_operand(S, z)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/eval-request-abrupt: S ~> S_value
   -- if S.TODO = (EVAL_REQUEST porigin z) :: ptask_tail*
   -- if ~$eval_callback_ready(S, z)
+  -- if ~$source_array_ready(S, z)
   -- if S_value = $eval_operand(S, z)
   -- if S_value.COMPLETION =/= NORMAL
 
@@ -487,7 +494,7 @@ def $eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) = fals
 dec $eval_redeclare_class(pstate, pevalcontext, pclassdesc*, nat*, int) : bool
 def $eval_redeclare_class(S, pevalcontext, eps, n_message*, z) = false
 def $eval_redeclare_class(S, pevalcontext, pclassdesc :: pclassdesc_tail*, n_message*, z) = ($eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) \/ $eval_redeclare_class(S, pevalcontext, pclassdesc_tail*, n_message*, z))
-def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext[.PHASE = UNIT_RUN] :: pevalcontext_tail*][.TODO = $compiled_work(pevalcontext.UNIT, P.WORK) ++ [EVAL_END pevalcontext.UNIT] ++ pevalcontext.TAIL][.SERVICELEFT = eps][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext[.PHASE = UNIT_RUN][.TAIL = $source_operand_tail(pevalcontext.TAIL)] :: pevalcontext_tail*][.TODO = $source_operand_work(pevalcontext.UNIT, $compiled_work(pevalcontext.UNIT, P.WORK) ++ [EVAL_END pevalcontext.UNIT], pevalcontext.TAIL)][.SERVICELEFT = eps][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_compiled.COMPLETION = NORMAL
   -- if ~$eval_compile_paused_unit(S_compiled, pevalcontext.UNIT)
   -- if P.COMPLETION = PPCNORMAL
@@ -557,7 +564,7 @@ def $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program) = $eval_
 dec $eval_resume_valid(pstate, psourceresponse) : pstate
 def $eval_resume_valid(S, SOURCE_ACCEPT n n_bytes* program) = $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program)
   -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
-def $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, pfailedkind, n_message*, z) = S_object[.EVALCONTEXTS = pevalcontext_tail*][.TODO = (THROW_SEARCH n_object) :: pevalcontext.TAIL][.ORIGIN = (pevalcontext.SITE)][.SERVICELEFT = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.CONSTCONTEXT = eps]
+def $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, pfailedkind, n_message*, z) = S_object[.EVALCONTEXTS = pevalcontext_tail*][.TODO = $source_operand_throw(n_object, pevalcontext.TAIL)][.ORIGIN = (pevalcontext.SITE)][.SERVICELEFT = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.CONSTCONTEXT = eps]
   -- if pfailedsource = {UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, BYTES pevalcontext.BYTES, FILE pevalcontext.FILE, ISFILE false, KIND pfailedkind, MESSAGE n_message*, LINE z, LOCATION pevalcontext.LOCATION}
   -- if S_failed = $declaration_exit(S, pevalcontext.UNIT, PCSREJECT)[.FAILEDSOURCES = pfailedsource :: S.FAILEDSOURCES][.ORIGIN = (PORIGIN pevalcontext.UNIT eps)][.COMPLETION = THROWN $failed_source_kind(pfailedkind) n_message* z]
   -- if S_object = $throwable_allocate_at(S_failed, $failed_source_kind(pfailedkind), n_message*, PORIGIN pevalcontext.UNIT eps, z, $eval_exception_trace(S_failed))
