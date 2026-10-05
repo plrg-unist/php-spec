@@ -62,6 +62,7 @@ dec $generator_owners_valid(pstate) : bool
 dec $generator_flat_tasks(ptask*) : bool
 dec $generator_flat_walk(ptask*) : bool
 dec $generator_resume_position(ptask*) : bool
+dec $generator_search_valid(pstate, ptask*) : bool
 dec $generator_flat_frames(pframe*) : bool
 dec $generator_frame_valid(pstate, pgenerator, pframe) : bool
 dec $generator_integer(int) : bool
@@ -484,8 +485,10 @@ rule PhpStep/generator-invoke-arguments: S ~> $generator_argument_error(S[.TODO 
   -- if poperand* =/= eps
   -- if pgeneratorop.NAME <- ["rewind", "valid", "current", "key", "next", "getreturn"]
 rule PhpStep/generator-invoke-effects: S ~> $generator_invoke_effect(S[.TODO = ptask_tail*], pgeneratorop, pvalue)
-  -- if S.TODO = (GENERATOR_ARGS pgeneratorop eps ([KNOWN pvalue])) :: ptask_tail*
+  -- if S.TODO = (GENERATOR_ARGS pgeneratorop eps poperand*) :: ptask_tail*
   -- if pgeneratorop.NAME <- ["send", "throw"]
+  -- if |poperand*| = 1
+  -- if poperand*[0] = KNOWN pvalue
 rule PhpStep/generator-invoke-effects-count: S ~> $generator_argument_error(S[.TODO = ptask_tail*], pgeneratorop, poperand*)
   -- if S.TODO = (GENERATOR_ARGS pgeneratorop eps poperand*) :: ptask_tail*
   -- if pgeneratorop.NAME <- ["send", "throw"]
@@ -792,7 +795,7 @@ def $generator_node_valid(S, HARRAY n) = true
 def $generator_node_valid(S, HCELL n) = true
 def $generator_object_valid(S, GENERATOR pgenerator) = $generator_record_valid(S, pgenerator)
 def $generator_object_valid(S, pobject) = true -- otherwise
-def $generator_state_valid(S) = ($generator_objects_valid(S, S.ALLOCATIONS) /\ $generator_owners_valid(S) /\ $generator_cursor_owners_valid(S) /\ $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES))
+def $generator_state_valid(S) = ($generator_objects_valid(S, S.ALLOCATIONS) /\ $generator_owners_valid(S) /\ $generator_cursor_owners_valid(S) /\ $generator_flat_tasks(S.TODO) /\ $generator_search_valid(S, S.TODO) /\ $generator_flat_frames(S.FRAMES))
 ;; These object-domain walkers leave Generator payload authentication to the
 ;; mandatory generator_state_valid conjunct of public call admission.
 def $closure_live_object_valid(S, n) = true
@@ -837,8 +840,11 @@ def $generator_flat_branch(ptask :: ptask_tail*) = (~$generator_internal_task(pt
 def $generator_flat_walk(eps) = true
 def $generator_flat_walk(ptask :: ptask_tail*) = (~$generator_nested_task(ptask) /\ $generator_flat_walk(ptask_tail*))
 def $generator_resume_position((GENERATOR_RESUME pgeneratorop) :: ptask*) = ($generator_resume_ids(ptask*) = eps)
-def $generator_resume_position((THROW_SEARCH n) :: ptask*) = $generator_resume_position(ptask*)
+def $generator_resume_position((THROW_SEARCH n) :: (GENERATOR_RESUME pgeneratorop) :: ptask*) = ($generator_resume_ids(ptask*) = eps)
 def $generator_resume_position(ptask*) = ($generator_resume_ids(ptask*) = eps) -- otherwise
+def $generator_search_valid(S, (THROW_SEARCH n) :: (GENERATOR_RESUME pgeneratorop) :: ptask*) = (pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.RETURN = eps /\ $generator_input_valid(S, POBJECT n))
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+def $generator_search_valid(S, ptask*) = true -- otherwise
 def $generator_flat_tasks(ptask*) = ($generator_flat_walk(ptask*) /\ $generator_resume_position(ptask*))
 def $generator_flat_frames(eps) = true
 def $generator_flat_frames(pframe :: pframe_tail*) = ($generator_flat_tasks(pframe.TODO) /\ ($generator_resume_ids(pframe.TODO) = eps \/ $generator_resume_head(pframe.TODO)) /\ $generator_flat_frames(pframe_tail*))
