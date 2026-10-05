@@ -74,11 +74,14 @@ SOURCES={'global-new-argument-access-order': '<?php\n'
 
 SOURCES['global-new-cold-table-noctor']="<?php\nclass GlobalNewColdNoCtor { public int $p = E_STRICT + 0; }\nset_error_handler(static function ($level, $message, $file, $line) { echo $level, ':', $line, ';'; return true; });\nconst GLOBAL_NEW_COLD = new GlobalNewColdNoCtor(ignored: E_STRICT + 0);\nrestore_error_handler();\necho GLOBAL_NEW_COLD->p;\n"
 
+SOURCES['global-new-cold-table-throw-retry']="<?php\nclass GlobalNewColdRetry { public int $p = E_STRICT + GlobalNewColdLate::X; }\nset_error_handler(static function ($level, $message, $file, $line) { echo $level, ':', $line, ';'; return true; });\ntry { eval('const GLOBAL_NEW_COLD_RETRY = new GlobalNewColdRetry(ignored: E_STRICT + 0);'); }\ncatch (Error $e) { echo 'F:'; }\ntry { GLOBAL_NEW_COLD_RETRY; }\ncatch (Error $e) { echo 'U:'; }\neval('class GlobalNewColdLate { public const X = 7; }');\neval('const GLOBAL_NEW_COLD_RETRY = new GlobalNewColdRetry(ignored: E_STRICT + 0);');\nrestore_error_handler();\necho GLOBAL_NEW_COLD_RETRY->p;\n"
+
 FILES={'global-new-inherited-entry-scope':('global-new-entry-scope.inc.php','<?php\nconst GLOBAL_NEW_SELF = new self(), GLOBAL_NEW_PARENT = new parent();\n')}
 EVALS={
  'global-new-argument-access-order':['const GLOBAL_NEW_DENIED = new GlobalNewPrivateCtor(E_STRICT + 0);'],
  'global-new-inherited-entry-scope':['const GLOBAL_NEW_EVAL = new self();'],
  'global-new-throw-escape-retry':['const GLOBAL_NEW_RETRY = new GlobalNewRetry();'],
+ 'global-new-cold-table-throw-retry':['const GLOBAL_NEW_COLD_RETRY = new GlobalNewColdRetry(ignored: E_STRICT + 0);','class GlobalNewColdLate { public const X = 7; }'],
 }
 PREFIX=global_protocol.PREFIX+r"""
 dec $global_new_test_arg_task(ptask) : bool
@@ -139,6 +142,10 @@ def $global_test_stage(S, ptbytes, 16) = true
   -- if S.TODO = (CLASS_CONST_CONSTRUCT ptbytes_class phpType7* true z) :: ptask_tail*
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if $global_test_name(S, pconstantcontext.ORIGIN, ptbytes)
+def $global_test_stage(S, ptbytes, 17) = true
+  -- if $global_test_output(S.EVENTS) = $ptascii("8192:2;F:U:")
+  -- if S.CONSTCONTEXT = eps
+  -- if $user_constant_at(S.USERCONSTANTS, ptbytes) = eps
 
 """
 CHECKS={}
@@ -494,6 +501,89 @@ S_done = $global_test_finish(S_values, 2600)
 $global_test_output(S_done.EVENTS) = $ptascii("8192:2;8192:4;2048")
 $user_constant_at(S_done.USERCONSTANTS, ptbytes_const) = (puserconstant)
 puserconstant.VALUE = POBJECT pdefaultnew.OBJECT /\ puserconstant.CLASS = PVINSTANCE pdefaultnew.OBJECT porigin_site
+$global_new_record(S_done.CONSTANTOBJECTS, pdefaultnew.OBJECT) = (pconstantobject_complete)
+pconstantobject_complete = pconstantobject[.COMPLETE = true]
+$global_new_records_valid(S_done, S_done.CONSTANTOBJECTS)
+$user_constants_valid(S_done, S_done.USERCONSTANTS)
+S_roots = $prune_allocations(S_done[.ENV = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
+(HOBJECT pdefaultnew.OBJECT) <- S_roots.ALLOCATIONS
+$heap_owners($heap_graph(S_roots), HOBJECT pdefaultnew.OBJECT) = 1
+S_roots.USERCONSTANTS = S_done.USERCONSTANTS
+""")
+
+CHECKS['global-new-cold-table-throw-retry']=premises(r"""
+ptbytes_const = $ptascii("GLOBAL_NEW_COLD_RETRY")
+ptbytes_class = $ptascii("GlobalNewColdRetry")
+S_table = $global_test_find(S_initial[.COMPLETION = NORMAL], ptbytes_const, 15, 1800)
+S_table.TODO = (INSTANCE_DEFAULT_UPDATE porigin_class porigin_property z) :: ptask_table*
+S_table.CONSTCONTEXT = (pconstantcontext_first)
+S_table.ORIGIN = (porigin_site_first)
+porigin_decl_first = pconstantcontext_first.ORIGIN
+porigin_site_first = PORIGIN n_failed pcpath_new
+porigin_decl_first = PORIGIN n_failed pcpath_decl
+$global_new_context(S_table, porigin_site_first) = ((porigin_decl_first, eps))
+$class_at(S_table.CLASSES, porigin_class) = (pclassdesc)
+pclassdesc.NAME = ptbytes_class
+pclassdesc.PROPERTIES = [ppropertydesc]
+ppropertydesc.ORIGIN = porigin_property /\ ~ppropertydesc.STATIC
+ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+$instance_default_at(S_table.INSTANCEDEFAULTS, porigin_class, porigin_property) = (pinstancetemplate_pending)
+pinstancetemplate_pending.STATE = INSTANCE_PENDING porigin_initializer
+S_table.CONSTANTOBJECTS = eps
+~((INSTANCE porigin_class) <- S_table.OBJECTS)
+$user_constant_at(S_table.USERCONSTANTS, ptbytes_const) = eps
+$call_tasks_valid(S_table, S_table.TODO)
+S_failed = $global_test_find(S_table, ptbytes_const, 17, 2600)
+$global_test_output(S_failed.EVENTS) = $ptascii("8192:2;F:U:")
+S_failed.CONSTCONTEXT = eps
+S_failed.CONSTANTOBJECTS = eps
+~((INSTANCE porigin_class) <- S_failed.OBJECTS)
+$user_constant_at(S_failed.USERCONSTANTS, ptbytes_const) = eps
+$instance_default_at(S_failed.INSTANCEDEFAULTS, porigin_class, porigin_property) = (pinstancetemplate_pending)
+~$instance_default_fill_present(S_failed.CLASSCONSTANTHISTORY, porigin_class, porigin_property)
+~$class_constant_table_done(S_failed, porigin_class)
+$class_constant_new_work(S_failed, ptbytes_class, z) = ptask_work*
+ptask_work* =/= eps
+$class_named(S_failed.CLASSNAMES, $ptascii("globalnewcoldlate")) = eps
+$call_descriptors_valid(S_failed)
+S_ready = $global_test_find(S_failed, ptbytes_const, 16, 3000)
+S_ready.TODO = (CLASS_CONST_CONSTRUCT ptbytes_class phpType7_arguments* true z) :: ptask_ready*
+S_ready.CONSTCONTEXT = (pconstantcontext_retry)
+S_ready.ORIGIN = (porigin_site_retry)
+porigin_decl_retry = pconstantcontext_retry.ORIGIN
+porigin_site_retry = PORIGIN n_retry pcpath_new
+porigin_decl_retry = PORIGIN n_retry pcpath_decl
+$(n_retry > n_failed)
+porigin_decl_retry =/= porigin_decl_first /\ porigin_site_retry =/= porigin_site_first
+$global_new_context(S_ready, porigin_site_retry) = ((porigin_decl_retry, eps))
+$class_named(S_ready.CLASSNAMES, $ptascii("globalnewcoldlate")) = (porigin_late)
+$class_constant_table_done(S_ready, porigin_class)
+$instance_default_at(S_ready.INSTANCEDEFAULTS, porigin_class, porigin_property) = (pinstancetemplate_filled)
+pinstancetemplate_filled.STATE = INSTANCE_VALUE (PINT 2055) PVSCALAR
+S_ready.CONSTANTOBJECTS = eps
+~((INSTANCE porigin_class) <- S_ready.OBJECTS)
+$global_test_output(S_ready.EVENTS) = $ptascii("8192:2;F:U:8192:2;")
+$call_task_valid(S_ready, CLASS_CONST_CONSTRUCT ptbytes_class phpType7_arguments* true z)
+~$call_task_valid(S_ready, CLASS_CONST_CONSTRUCT ptbytes_class phpType7_arguments* false z)
+~$call_task_valid(S_ready[.CONSTCONTEXT = (pconstantcontext_first)], CLASS_CONST_CONSTRUCT ptbytes_class phpType7_arguments* true z)
+~$call_task_valid(S_ready[.ORIGIN = (porigin_site_first)], CLASS_CONST_CONSTRUCT ptbytes_class phpType7_arguments* true z)
+S_args = $global_test_next(S_ready)
+S_args.TODO = (DEFAULT_NEW_ARGS pdefaultnew) :: ptask_args*
+pdefaultnew.CLASS = ptbytes_class /\ pdefaultnew.SITE = porigin_site_retry
+pdefaultnew.INDEX = 0 /\ pdefaultnew.VALUES = eps
+S_args.CONSTANTOBJECTS = [pconstantobject]
+pconstantobject = {OBJECT pdefaultnew.OBJECT, SITE porigin_site_retry, DECL porigin_decl_retry, CLASS porigin_class, PREFIX n_prefix, COMPLETE false}
+$global_new_header(S_args, pconstantobject)
+$global_new_pending(S_args, pdefaultnew)
+$default_new_valid(S_args, pdefaultnew)
+~$global_new_pending(S_args[.CONSTANTOBJECTS = [pconstantobject[.SITE = porigin_site_first][.DECL = porigin_decl_first]]], pdefaultnew)
+~$global_new_header(S_args, pconstantobject[.DECL = porigin_decl_first])
+~$global_new_header(S_args, pconstantobject[.SITE = porigin_site_first])
+S_done = $global_test_finish(S_args, 3000)
+$global_test_output(S_done.EVENTS) = $ptascii("8192:2;F:U:8192:2;8192:1;2055")
+$user_constant_at(S_done.USERCONSTANTS, ptbytes_const) = (puserconstant)
+puserconstant.ORIGIN = porigin_decl_retry
+puserconstant.VALUE = POBJECT pdefaultnew.OBJECT /\ puserconstant.CLASS = PVINSTANCE pdefaultnew.OBJECT porigin_site_retry
 $global_new_record(S_done.CONSTANTOBJECTS, pdefaultnew.OBJECT) = (pconstantobject_complete)
 pconstantobject_complete = pconstantobject[.COMPLETE = true]
 $global_new_records_valid(S_done, S_done.CONSTANTOBJECTS)
