@@ -276,4 +276,4 @@ def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRTRAITCACHEFAIL porigin p
   -- if S_failed = $activate_class_body(S_prefix[.COMPLETION = NORMAL], pclassdesc)
   -- if $iterator_notice_link_fatal(S_failed.COMPLETION)
   -- if $runtime_class_rollback(S_prefix, S_failed)
-  -- if S_failed.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRTRAITCACHEFAIL porigin pdeclcause_replay]
+  -- if S_failed.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRTRAITCACHEFAIL porigin $declaration_cause(S_prefix)]
