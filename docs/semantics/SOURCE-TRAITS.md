@@ -108,6 +108,15 @@ later static writes retain copy-on-write. Source-owned collision tables, lookup 
 authenticate these fills without making an unlinked composing class public.
 Only already-inserted constants are available before parent inheritance.
 
+Already-published Closure/FCC dependencies use the real class-constant initializer
+and binder. Full declaring identities, callable receipts and source transfer proofs
+authenticate their values; cache roots retain objects together with their scope and
+receipt rows. Captured declaration/user prefixes rederive dynamic array keys, and
+literal dimensions select the last matching source entry. Failed composition keeps
+public-owner object caches while releasing temporary arrays and Error allocations.
+Errors inside these real callable initializers, unpublished-owner births and wider
+object transfers remain required.
+
 Module 274 stops supported collision expressions at the first endogenous Error,
 preserving earlier diagnostics and skipping the second operand. It flushes those
 diagnostics without user handlers, renders the uncaught Error through Zend's

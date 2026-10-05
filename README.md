@@ -559,8 +559,10 @@ constant identities and release transient failure allocations. Failed class link
 including an initializer Error before the composition fatal, retain caches for
 published owners and release unpublished import caches. Raw trait composition uses
 the same source-kind proof; direct trait constants still fail before evaluation.
-Wider failed-link contexts,
-object-bearing dependencies and readonly storage remain required. A bounded
+Published Closure/FCC dependencies retain their real initializer scope, callable
+receipts and cache owners through successful and failed composition; array keys
+and duplicate-key selection keep source-derived proofs. Wider object initialization,
+held/open failed-link contexts and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
