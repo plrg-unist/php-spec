@@ -1,0 +1,19 @@
+{
+  "scope": "Native-only already filled public private-FCC Closure survives an initializer Error before failed raw-trait link; one recorded E_STRICT and shutdown identity/invocation. Zero model credit.",
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; project profile. Native-only public object Error cleanup preparation; zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "published-private-fcc-cache-survives-raw-trait-operand-error",
+      "source": "<?php\nclass P{\n private static function reveal(){return self::class.\"/\".get_called_class();}\n public const Closure Y=[self::reveal(...), E_STRICT][0];\n}\ntrait T{public static $x=DOES_NOT_EXIST;}\nregister_shutdown_function(function(){\n $first=P::Y;echo ($first===P::Y?\"S;\":\"D;\"),$first(),\";\";\n try{U::marker();}catch(Error $e){echo \"U;\";}\n});\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\necho \"PRE;\";\ntrait U{use T;public static $x=P::Y;public static function marker(){echo \"M;\";}}\necho \"POST;\";\n",
+      "source_sha256": "ab985d7b9f0e1613260ec8c1ce71273b9ef054a3c0e613447423bec4b3e058d5",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1M7UC9QO1U7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSA0Cldhcm5pbmc6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIkRPRVNfTk9UX0VYSVNUIiBpbiB7RklMRX06MTMKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxMwpGYXRhbCBlcnJvcjogVSBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgVS4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxMwo=",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-object-cache-review-274/.tools/trait-failed-public-closure-error-native266-1aj4bz96/report.json",
+      "native_raw_sha256": "8ff45ced4efb2f00f459632570fca830ed0198efe9b3956652fc736a0dc194ee"
+    }
+  ]
+}
