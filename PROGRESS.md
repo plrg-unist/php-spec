@@ -111,8 +111,11 @@ USERCONSTANTS and real GLOBALS/CV owners retain values. Three exact source tuple
 pass at17c12b379; argument103/inherited84/retry87 AL premises retain041ce1/00578e/
 bc44da cuts (274 total). The optional-tuple and restored-MAIN fixture failures
 remain zero-credit. Frozen duplicate/argument-abort destructor originals await
-genuine eager release; cold no-constructor table work has a separate native-only
-control. Internal/Throwable/autoload and wider object/constant producers remain
+genuine eager release. Cold no-constructor table work adds source1 atd2fb and80 AL
+premises ata1e14a2b4: the instance-template warning precedes ignored arguments,
+with no allocation until table completion and no premature COMPLETE. Its three
+elaboration stops and one slice-length execution failure retain zero credit.
+Internal/Throwable/autoload and wider object/constant producers remain
 required; full core stays open and return verification stays paused.
 
 Deferred runtime class-link failures275 now replay the held notice prefix and

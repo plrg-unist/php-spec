@@ -94,8 +94,12 @@ and saved phase owners, premature completion, full declaration/source/class/
 prefix/result mutations, mutable-field identity, immutable include/eval access
 and actual GLOBALTABLE-to-MAIN-ENV ownership. Original optional-tuple and restored
 MAIN fixture failures retain zero credit. Duplicate-candidate and argument-abort
-destructor originals remain uncredited until genuine eager release is available;
-cold no-constructor table work has a separate native-only control. Internal and
+destructor originals remain uncredited until genuine eager release is available.
+A separate cold no-constructor source passes atd2fb and80 AL premises ata1e14a2b4
+check the pending instance table, true construction marker, warning order2→4,
+fresh incomplete allocation and sole installed-constant ownership. Its three
+elaboration stops and one slice-length execution failure remain zero-credit;
+no runtime rules or prior source/state gates changed. Internal and
 Throwable NEW, autoload, wider object-producing initializers, remaining builtin
 constant values and `define`/`defined` remain open. Class/default and callable
 consumer families retain their separate inventory and evidence; no complete-core claim.
