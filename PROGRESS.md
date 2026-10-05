@@ -20,6 +20,11 @@ Full public admission, live/suspended cursor owners, captured references and
 natural try/finally cleanup pass; failed checks remain retained. Delegation/reference
 yields, further call forms,
 changed caller scopes, force-close finalizers and destruction/GC remain required.
+Three introduced parent sources agree at9abff: constructor-created constant
+identity, deferred REAL Closure autoload and parse-folded versus live precision.
+The new constant95 state phase retains the same completed receipt through
+receive/yield/return and retirement; its noncached instance owners pass full
+public/heap admission. Original interpreter/fixture failures retain zero credit.
 [Scope and maintained tests](docs/semantics/GENERATORS.md).
 
 Autoload277 now implements the four required SPL control APIs with real callable

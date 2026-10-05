@@ -50,6 +50,12 @@ Started force-close finalizers, eager destruction and cyclic collection also
 remain required; their explicit Unsupported controls earn no agreement.
 Natural return/throw/finally cleanup is distinct from forced close.
 
+Constructor-created global constant instances follow the existing noncache
+policy for object defaults. Receives, yield caches and return values retain the
+original instance identity; the completed source receipt adds no heap owner.
+Ordinary deferred body NEW can run a registered autoload Closure, while creation
+inside an implicit autoload callback remains a required scope boundary.
+
 Twenty-seven normal sources and three compiler rejections agree at `e235d8dd1`
 in separate first5 and independent25 cuts. Four independent source-derived
 phases pass: carrier144 and Closure154 at `2f21dec3e`, nested77 at `d7ca57f5c`
@@ -57,6 +63,15 @@ and abrupt44 at `6c221db16`. Their 419 premises check full public admission at
 genuine stable states, moving frames, cached/reference owners, cursor uniqueness
 and natural try/finally cleanup. Closure154 is the passing phase in the record
 whose later nested check failed; original failures remain retained.
+
+Three introduced parent sources agree at `9abff30b8`: global constant default
+identity, deferred REAL Closure autoload and parse-folded versus live precision
+after a container warning. A new 95-premise constant phase passes at the same
+cut, checking full public/heap admission, unchanged nonowning receipts and the
+2→3→3→1 receive/cache/return/constant owner flow. Their raw records are
+`generator-independent-cigy7vgb` and `generator-review-protocol-1z9ssugw`; the
+initial `generator-independent-gbe1sfu4` interpreter failure and native fixture
+failures remain retained with zero credit.
 
 Raw private records are `.tools/generator-independent-n_gi07p8` (first5),
 `generator-independent-3xhzyjou` (remaining25 and six zero-credit controls),
