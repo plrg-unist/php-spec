@@ -27,6 +27,17 @@ receive/yield/return and retirement; its noncached instance owners pass full
 public/heap admission. Original interpreter/fixture failures retain zero credit.
 [Scope and maintained tests](docs/semantics/GENERATORS.md).
 
+Literal Generator `send`/`throw` capture one argument before initialization,
+deliver used yield results or an ordinary Throwable search, and retain actual
+API arguments and live resumer traces. Twenty-three new normal sources agree
+at26328 in separate author5/independent18 cuts. Fresh initialization failure keeps
+the supplied exception primary and links the initialization exception as previous.
+Independent array146/finally124/initialization101 pass at fixture887f51d29,
+semantic26328 (371 conditions across three originals): actual input owners,
+exception identity, full public admission and malformed resume rejection.
+The original SL structuring failure retains zero credit. Full Generator
+follow-ons remain open.
+
 Autoload277 now implements the four required SPL control APIs with real callable
 caches, owner roots and live queue cursor/capacity behavior. Ordinary named/dynamic
 NEW and class-parent lookup suspend before arguments; lookup inherits source
