@@ -619,6 +619,32 @@ def $fiber_context_valid(S, pcallcontext) = true
   -- if ~$fiber_parameters_reference(pfunction.SIGNATURE.PARAMETERS)
 def $fiber_context_valid(S, pcallcontext) = false -- otherwise
 
+;; C callback preflight uses the mapped START buffer rather than source-call
+;; argument syntax. The ordinary task still checks its function origin/index.
+def $named_call_shape(S, pcalltarget, eps) = pnamedargs
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = pcalltarget
+  -- if $fiber_context_valid(S, pcallcontext)
+  -- if S.ACTIVEFIBER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.ENTRY = (pnamedargs)
+def $named_preflight_stage(S, porigin, n_index) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $fiber_context_valid(S, pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pfunction.ORIGIN = porigin
+  -- if pnamedargs = $named_call_shape(S, pcallcontext.TARGET, eps)
+  -- if n_limit = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $(n_index <= n_limit)
+  -- if $named_preflight_slots(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), pnamedargs.SLOTS, n_index)
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $fiber_context_valid(S, pcallcontext)
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pnamedargs = $named_call_shape(S, pcallcontext.TARGET, eps)
+  -- if $named_preflight_slots(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), pnamedargs.SLOTS, pcallcontext.ARGC)
+
 def $call_arity_valid(S, pcallcontext) = true -- if $fiber_context_valid(S, pcallcontext)
 def $call_saved_context_valid(S, pframe) = true -- if $fiber_base_frame(S, pframe)
 def $call_holes_source_valid(S, pcallcontext, pfunction) = true
