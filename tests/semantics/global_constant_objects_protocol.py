@@ -240,8 +240,11 @@ $class_named(S_self.CLASSNAMES, $ptlc($ptascii("GlobalNewScopeOwner"))) = (porig
 $class_named(S_self.CLASSNAMES, $ptlc($ptascii("GlobalNewScopeChild"))) = (porigin_child)
 $class_named(S_self.CLASSNAMES, $ptlc($ptascii("GlobalNewScopeParent"))) = (porigin_parent)
 pcallcontext_loader.LEXICAL_CLASS = (porigin_owner) /\ pcallcontext_loader.CALLED_CLASS = (porigin_child)
-$global_constant_scope(S_self, n_file) = (true, (porigin_owner))
-$global_new_context(S_self, pdefaultnew_self.SITE) = ((pconstantcontext_self.ORIGIN, (porigin_owner)))
+$global_constant_scope(S_self, n_file) = (true, porigin_scope_file?)
+porigin_scope_file? = (porigin_owner)
+$global_new_context(S_self, pdefaultnew_self.SITE) = ((porigin_decl_self, porigin_entry_file?))
+porigin_decl_self = pconstantcontext_self.ORIGIN
+porigin_entry_file? = (porigin_owner)
 $default_new_scope(S_self) = (porigin_owner)
 $new_source_name(S_self, pdefaultnew_self.SITE) = ($ptascii("GlobalNewScopeOwner"))
 $global_new_record(S_self.CONSTANTOBJECTS, pdefaultnew_self.OBJECT) = (pconstantobject_self)
@@ -280,8 +283,11 @@ S_eval.TODO = (DEFAULT_NEW_ARGS pdefaultnew_eval) :: ptask_eval*
 S_eval.CONSTCONTEXT = (pconstantcontext_eval)
 pconstantcontext_eval.ORIGIN = PORIGIN n_eval pcpath_eval
 n_eval =/= n_file
-$global_constant_scope(S_eval, n_eval) = (true, (porigin_owner))
-$global_new_context(S_eval, pdefaultnew_eval.SITE) = ((pconstantcontext_eval.ORIGIN, (porigin_owner)))
+$global_constant_scope(S_eval, n_eval) = (true, porigin_scope_eval?)
+porigin_scope_eval? = (porigin_owner)
+$global_new_context(S_eval, pdefaultnew_eval.SITE) = ((porigin_decl_eval, porigin_entry_eval?))
+porigin_decl_eval = pconstantcontext_eval.ORIGIN
+porigin_entry_eval? = (porigin_owner)
 $default_new_scope(S_eval) = (porigin_owner)
 $global_new_record(S_eval.CONSTANTOBJECTS, pdefaultnew_eval.OBJECT) = (pconstantobject_eval)
 pconstantobject_eval.CLASS = porigin_owner /\ ~pconstantobject_eval.COMPLETE
