@@ -46,3 +46,6 @@ set_error_handler(function($n,$m){echo "O:",$m==='Trying to access array offset 
 $r282=$scalar282[[&$cell282]];
 restore_error_handler();echo "R:",$r282===null?1:0,":",isset($cell282)?1:0,":",isset($held282)?1:0,";";
 """, b'O:1;R:1:0:0;'))
+
+# Exact independently authored object-transition original, retained at b501.
+CASES.append(('scalar-key-warning-samples-object-class-after-object-retirement', b"<?php\nerror_reporting(0); $a282=3;\nset_error_handler(function($n,$m){\n    if ($m==='Undefined variable $key282') {\n        echo 'K;'; $GLOBALS['a282']=new stdClass; $GLOBALS['key282']=1;\n    } else { echo 'O:',$m,';'; unset($GLOBALS['a282']); }\n    return true;\n});\n$r282=$a282[$key282];\nrestore_error_handler(); echo 'R:',(int)($r282===null),':',(int)isset($a282),':',$key282,';';\n", b'K;O:Trying to access array offset on stdClass;R:1:0:1;'))
