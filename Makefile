@@ -116,6 +116,7 @@ test-semantics: build
 	python3 tests/semantics/property_callable_creation_protocol.py
 	python3 tests/semantics/trait_constant_callable_protocol.py
 	python3 tests/semantics/global_constant_callable_protocol.py
+	python3 tests/semantics/global_constant_prebind_protocol.py
 	python3 tests/semantics/default_parameter_compiler.py
 	python3 tests/semantics/default_parameters.py
 	python3 tests/semantics/default_parameter_protocol.py
@@ -393,6 +394,15 @@ test-semantics: build
 	python3 tests/semantics/trait_collision_error_review_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_collision_cycle_review_cases.json
 	python3 tests/semantics/trait_collision_cycle_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_cache_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_cache_review_cases.json
+	python3 tests/semantics/trait_failed_cache_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_cache_error_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_cache_requestfatal_review_cases.json
+	python3 tests/semantics/trait_failed_cache_error_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_trait_cache_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_trait_priority_review_cases.json
+	python3 tests/semantics/trait_failed_trait_cache_review_protocol.py
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
 	python3 tests/semantics/eval_class_scope_protocol.py

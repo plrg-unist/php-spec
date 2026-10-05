@@ -31,11 +31,20 @@ source transfer; array aliases retain existing object identity.
 
 Duplicate registration suspends through the genuine warning dispatcher. Its
 continuation owns the actual discarded candidate and captures the preceding
-constant-table prefix, so callback namespace shadows cannot change that alias
-lookup. Return or throw preserves the installed binding and releases the
-candidate. Raw-trait method capture similarly suspends before allocation; its
+constant-table prefix plus its completed alias-read facts. Return or throw
+preserves the installed binding and releases the candidate. Raw-trait method
+capture similarly suspends before allocation; its
 saved source/target/publication facts authenticate resumption. Receipt metadata
 adds no roots, and successful constants remain owners after local variables die.
+
+Each nonfoldable global alias read records its full consuming `NConst`, leaf
+source, selected donor declaration, allocation class and table prefix. The
+observer checks the actual result before minting this proof. Binding and later
+row validation use each read's captured prefix, bounded by the consuming row's
+preceding table or duplicate continuation's bind prefix. A callback may therefore
+shadow a name between two operands without changing the first selection. Arrays
+still copy their containers normally. Installed rows retain filtered nonowning
+read facts; failed evaluation clears scratch facts and retry selects afresh.
 
 Public source-state checks bind table names and declaration tasks to actual `NConst` origins and compiler descriptors. They check unique names, valid task indexes, initializer/bind/observer ordering, declaration context, exact source-derived pooled class facts, and value/class tag and ordered array topology. Metadata adds no heap owners.
 
@@ -57,8 +66,11 @@ retains exact profiles, failures and fixture recovery. Matching8.5.10 sources ar
 `zend_register_constant`: evaluate in the executing op-array scope, then register,
 and destroy a duplicate candidate only after its warning finishes.
 
-An alias evaluated before an initializer callback publishes a namespace shadow
-still needs its own immutable transfer continuation; this is immediate required
-work. Global NEW, wider object-producing initializers, remaining builtin constant
-values and `define`/`defined` remain open. Class/default and callable consumer
-families retain their separate inventory and evidence; no complete-core claim.
+Three further exact originals pass at9619d2f57. The maintained
+`global_constant_prebind_protocol.py` passes mixed90 and retry94 AL premises at
+4262f787e, including before/after selections, wrong donor/leaf/holder/result,
+consumer-prefix bounds, failed-unit transplants and candidate collection. Original
+compile and fixture failures retain zero credit; earlier nine/341 cuts are not
+renewed. Global NEW, wider object-producing initializers, remaining builtin
+constant values and `define`/`defined` remain open. Class/default and callable
+consumer families retain their separate inventory and evidence; no complete-core claim.

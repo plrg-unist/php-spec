@@ -236,10 +236,10 @@ def $global_test_stage(S, ptbytes, 1) = true
   -- if $global_test_name(S, porigin_decl, ptbytes)
 def $global_test_stage(S, ptbytes, 2) = true
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
-  -- if perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants z
+  -- if perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants pconstantfact_read* z
   -- if $global_test_name(S, porigin_decl, ptbytes)
 def $global_test_stage(S, ptbytes, 3) = true
-  -- if S.TODO = (GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants z) :: ptask_tail*
+  -- if S.TODO = (GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants pconstantfact_read* z) :: ptask_tail*
   -- if $global_test_name(S, porigin_decl, ptbytes)
 def $global_test_stage(S, ptbytes, 4) = true
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
@@ -425,21 +425,21 @@ $user_constants_valid(S_failed, S_failed.USERCONSTANTS)
 $constant_callable_record_valid(S_failed, pconstantclosure_first)
 S_warning = $global_test_find(S_failed, $ptascii("FIRST"), 2, 1600)
 S_warning.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_warning*
-perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_duplicate (POBJECT n_duplicate) pvalueclass_duplicate n_constants z
+perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_duplicate (POBJECT n_duplicate) pvalueclass_duplicate n_constants pconstantfact_read* z
 porigin_duplicate =/= puserconstant_first.ORIGIN
 n_duplicate =/= n_first
 $constant_callable_record(S_warning.CONSTANTCLOSURES, n_duplicate) = (pconstantclosure_duplicate)
 pconstantclosure_duplicate.DECL = porigin_duplicate
-$global_constant_duplicate_valid(S_warning, porigin_duplicate, POBJECT n_duplicate, pvalueclass_duplicate, n_constants, z)
+$global_constant_duplicate_valid(S_warning, porigin_duplicate, POBJECT n_duplicate, pvalueclass_duplicate, n_constants, pconstantfact_read*, z)
 $error_call_valid(S_warning, perrorcall)
 $task_nodes(perrorcall.RESUME) = [HOBJECT n_duplicate]
 $user_constant_at(S_warning.USERCONSTANTS, $ptascii("FIRST")) = (puserconstant_first)
 S_held = $prune_allocations(S_warning)
 (HOBJECT n_duplicate) <- S_held.ALLOCATIONS
 (HOBJECT n_first) <- S_held.ALLOCATIONS
-~$global_constant_duplicate_valid(S_warning, porigin_duplicate, POBJECT n_duplicate, pvalueclass_duplicate, 0, z)
-~$global_constant_duplicate_valid(S_warning, porigin_duplicate, POBJECT n_first, pvalueclass_duplicate, n_constants, z)
-~$global_constant_duplicate_valid(S_warning, puserconstant_first.ORIGIN, POBJECT n_duplicate, pvalueclass_duplicate, n_constants, z)
+~$global_constant_duplicate_valid(S_warning, porigin_duplicate, POBJECT n_duplicate, pvalueclass_duplicate, 0, pconstantfact_read*, z)
+~$global_constant_duplicate_valid(S_warning, porigin_duplicate, POBJECT n_first, pvalueclass_duplicate, n_constants, pconstantfact_read*, z)
+~$global_constant_duplicate_valid(S_warning, puserconstant_first.ORIGIN, POBJECT n_duplicate, pvalueclass_duplicate, n_constants, pconstantfact_read*, z)
 S_resumed = $global_test_find(S_warning, $ptascii("FIRST"), 3, 1600)
 $user_constant_at(S_resumed.USERCONSTANTS, $ptascii("FIRST")) = (puserconstant_first)
 S_done = $global_test_finish(S_resumed, 2400)
@@ -467,7 +467,7 @@ S_pending_roots = $prune_allocations(S_warning)
 (HOBJECT n_outer) <- S_pending_roots.ALLOCATIONS
 S_duplicate = $global_test_find(S_warning, $ptascii("REENTRANT_VALUE"), 2, 2600)
 S_duplicate.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_duplicate*
-perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_outer (PARRAY n_candidate) pvalueclass_candidate n_constants z
+perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_outer (PARRAY n_candidate) pvalueclass_candidate n_constants pconstantfact_read* z
 porigin_outer = pconstantclosure_outer.DECL
 $user_constant_at(S_duplicate.USERCONSTANTS, $ptascii("REENTRANT_VALUE")) = (puserconstant_inner)
 puserconstant_inner.VALUE = PARRAY n_inner_array
@@ -476,11 +476,11 @@ S_duplicate.ARRAYS[n_candidate].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_outer
 n_inner =/= n_outer /\ n_inner_array =/= n_candidate
 puserconstant_inner.ORIGIN =/= porigin_outer
 $global_test_output(S_duplicate.EVENTS) = $ptascii("8192:U:")
-$global_constant_duplicate_valid(S_duplicate, porigin_outer, PARRAY n_candidate, pvalueclass_candidate, n_constants, z)
+$global_constant_duplicate_valid(S_duplicate, porigin_outer, PARRAY n_candidate, pvalueclass_candidate, n_constants, pconstantfact_read*, z)
 $error_call_valid(S_duplicate, perrorcall)
 $task_nodes(perrorcall.RESUME) = [HARRAY n_candidate]
-~$global_constant_duplicate_valid(S_duplicate, porigin_outer, PARRAY n_inner_array, pvalueclass_candidate, n_constants, z)
-~$global_constant_duplicate_valid(S_duplicate, porigin_outer, PARRAY n_candidate, pvalueclass_candidate, 0, z)
+~$global_constant_duplicate_valid(S_duplicate, porigin_outer, PARRAY n_inner_array, pvalueclass_candidate, n_constants, pconstantfact_read*, z)
+~$global_constant_duplicate_valid(S_duplicate, porigin_outer, PARRAY n_candidate, pvalueclass_candidate, 0, pconstantfact_read*, z)
 ~$error_call_valid(S_duplicate, perrorcall[.LINE = $(z + 1)])
 S_held = $prune_allocations(S_duplicate)
 (HARRAY n_candidate) <- S_held.ALLOCATIONS
@@ -595,10 +595,10 @@ ptbytes_dup = $user_constant_key($ptascii("GlobalAliasScope") ++ [92] ++ $ptasci
 ptbytes_seed = $user_constant_key($ptascii("GlobalAliasScope") ++ [92] ++ $ptascii("SEED"))
 S_warning = $global_test_find(S_initial[.COMPLETION = NORMAL], ptbytes_dup, 2, 2200)
 S_warning.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_warning*
-perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_decl (PARRAY n_candidate) pvalueclass_candidate n_constants z
+perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_decl (PARRAY n_candidate) pvalueclass_candidate n_constants pconstantfact_read* z
 $user_constant_at(S_warning.USERCONSTANTS, ptbytes_dup) = (puserconstant_original)
 $user_constant_at(S_warning.USERCONSTANTS, ptbytes_seed) = eps
-$global_constant_duplicate_valid(S_warning, porigin_decl, PARRAY n_candidate, pvalueclass_candidate, n_constants, z)
+$global_constant_duplicate_valid(S_warning, porigin_decl, PARRAY n_candidate, pvalueclass_candidate, n_constants, pconstantfact_read*, z)
 $error_call_valid(S_warning, perrorcall)
 S_warning.ARRAYS[n_candidate].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_original)), ENTRY (KINT 1) (DIRECT (POBJECT n_discarded))]
 puserconstant_original.VALUE = POBJECT n_original
@@ -606,18 +606,18 @@ $constant_callable_record(S_warning.CONSTANTCLOSURES, n_discarded) = (pconstantc
 pconstantclosure_discarded.DECL = porigin_decl
 $task_nodes(perrorcall.RESUME) = [HARRAY n_candidate]
 S_resumed = $global_test_find(S_warning, ptbytes_dup, 3, 2400)
-S_resumed.TODO = (GLOBAL_CONSTANT_DUPLICATE porigin_decl (PARRAY n_candidate) pvalueclass_candidate n_constants z) :: ptask_resume*
+S_resumed.TODO = (GLOBAL_CONSTANT_DUPLICATE porigin_decl (PARRAY n_candidate) pvalueclass_candidate n_constants pconstantfact_read* z) :: ptask_resume*
 $(n_constants < |S_resumed.USERCONSTANTS|)
 $user_constant_at(S_resumed.USERCONSTANTS, ptbytes_seed) = (puserconstant_late)
 puserconstant_late.VALUE = POBJECT n_late
 n_late =/= n_original
 $user_constant_at(S_resumed.USERCONSTANTS, ptbytes_dup) = (puserconstant_original)
-$global_constant_transfer_valid(S_resumed, porigin_decl, pvalueclass_candidate, S_resumed.USERCONSTANTS[0:n_constants])
-~$global_constant_transfer_valid(S_resumed, porigin_decl, pvalueclass_candidate, S_resumed.USERCONSTANTS)
-$global_constant_duplicate_valid(S_resumed, porigin_decl, PARRAY n_candidate, pvalueclass_candidate, n_constants, z)
-~$global_constant_duplicate_valid(S_resumed, porigin_decl, PARRAY n_candidate, pvalueclass_candidate, |S_resumed.USERCONSTANTS|, z)
-~$global_constant_duplicate_valid(S_resumed, porigin_decl, PARRAY n_candidate, pvalueclass_candidate, 0, z)
-~$global_constant_duplicate_valid(S_resumed, porigin_decl, PARRAY n_candidate, pvalueclass_candidate, $(|S_resumed.USERCONSTANTS| + 1), z)
+$global_constant_transfer_reads_valid(S_resumed, porigin_decl, pvalueclass_candidate, S_resumed.USERCONSTANTS[0:n_constants], pconstantfact_read*)
+~$global_constant_transfer_reads_valid(S_resumed, porigin_decl, pvalueclass_candidate, S_resumed.USERCONSTANTS, eps)
+$global_constant_duplicate_valid(S_resumed, porigin_decl, PARRAY n_candidate, pvalueclass_candidate, n_constants, pconstantfact_read*, z)
+~$global_constant_duplicate_valid(S_resumed, porigin_decl, PARRAY n_candidate, pvalueclass_candidate, n_constants, eps, z)
+~$global_constant_duplicate_valid(S_resumed, porigin_decl, PARRAY n_candidate, pvalueclass_candidate, 0, pconstantfact_read*, z)
+~$global_constant_duplicate_valid(S_resumed, porigin_decl, PARRAY n_candidate, pvalueclass_candidate, $(|S_resumed.USERCONSTANTS| + 1), pconstantfact_read*, z)
 S_held = $prune_allocations(S_resumed)
 (HARRAY n_candidate) <- S_held.ALLOCATIONS
 (HOBJECT n_discarded) <- S_held.ALLOCATIONS

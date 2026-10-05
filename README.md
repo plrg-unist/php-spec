@@ -505,8 +505,11 @@ Global `const` Closure and function/method callable values now evaluate before
 registration, retaining the genuine main/include/eval entry scope and shared
 constant ownership. Duplicate-warning callbacks hold their discarded candidate
 and captured lookup prefix; raw-trait notices precede allocation. Nine new source
-agreements and seven AL programs/341 premises pass at distinct cuts. Pre-bind
-callback alias shadows, global `new` and wider object producers remain required.
+agreements and seven AL programs/341 premises retain their distinct cuts.
+Per-child alias receipts now preserve reads before and after callback namespace
+shadows; three further source agreements and two AL programs/184 premises verify
+first registration, mixed selections and throwing retry. Global `new` and wider
+object producers remain required.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -539,8 +542,12 @@ their phase order and handler-ineligible severity. Successful collision dependen
 fills retain real typed caches and distinct import scopes. Collision expression
 errors stop the comparison, flush earlier diagnostics without handlers and render
 the pending Error before the composition fatal. Cyclic lookups retain full imported
-constant identities and release transient failure allocations. Failed-link cache
-disposition, object-bearing dependencies and readonly storage remain required. A bounded
+constant identities and release transient failure allocations. Failed class links,
+including an initializer Error before the composition fatal, retain caches for
+published owners and release unpublished import caches. Raw trait composition uses
+the same source-kind proof; direct trait constants still fail before evaluation.
+Wider failed-link contexts,
+object-bearing dependencies and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
