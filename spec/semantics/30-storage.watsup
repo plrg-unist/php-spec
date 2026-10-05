@@ -143,6 +143,8 @@ syntax pcontainerinit = { CELL nat, ARRAY nat, SITE porigin, LINE int }
 syntax pcontainerphase = CONTAINER_CV ptbytes | CONTAINER_FALSE nat | CONTAINER_KEY_CV ptbytes
 syntax pcontainerkind = CONTAINER_FETCH | CONTAINER_ASSIGN | CONTAINER_COMPOUND
 syntax pcontainerwrite = { SITE porigin, WRITER pkeywriter, INPUT poperand, PLACE plocation, BINDING ptbytes?, LINE int, RW bool, KIND pcontainerkind, PHASE pcontainerphase }
+syntax pcontainerreadphase = READ_BASE_CV ptbytes | READ_KEY_CV ptbytes | READ_OFFSET pvalue
+syntax pcontainerread = { READ pkeyread, SELECTED poperand, PHASE pcontainerreadphase }
 syntax perrorcall = { SITE porigin, LEVEL int, MESSAGE nat*, LINE int, EVENT pevent, CALLBACK pvalue, TARGET pcalltarget?, RESUME ptask }
 syntax pfdiagnostic = { SITE porigin, OWNER porigin, LEVEL int, MESSAGE nat*, LINE int }
 syntax pdeclnotice = { CLASS porigin, METHOD porigin, LINE int, MESSAGE nat* }
@@ -189,6 +191,7 @@ syntax ptask = AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL 
   | KEY_READ_BASE pbase pkeymode | KEY_READ_DIM poperand int pkeymode | KEY_READ_GLOBAL poperand int pkeymode | KEY_READ_RESULT pkeyread | KEY_READ_FINISH porigin ptask
   | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_GLOBAL poperand int bool | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
   | CONTAINER_WRITE_RESULT pcontainerwrite
+  | CONTAINER_READ_RESULT pcontainerread
   | KEY_COALESCE_RESULT pbase bool int | KEY_UNSET_RESULT pkeyread | KEY_UNSET_FINISH porigin pbase
   | KEY_UNSET_BASE pbase bool | KEY_UNSET_DIM poperand int bool | KEY_UNSET_FETCH_RESULT pkeyread | KEY_UNSET_NULL_RESULT pkeyread | KEY_APPEND_RESULT pappendread
   | KEY_COALESCE_RHS_RESULT pcoalesceread
