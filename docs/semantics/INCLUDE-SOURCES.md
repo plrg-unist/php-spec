@@ -27,6 +27,25 @@ Throw and invalid conversion complete without demanding file facts or allocating
 a provider nonce. Pre-parser conversion/warning frames retain the compiled operand line and zero
 arguments; executed included-unit frames retain their opened-path argument.
 
+[Array operands287](../../coverage/semantics/source-array-review.json) dispatch
+`Array to string conversion` before eval parsing, file resolution and once checks.
+Normal callbacks leave the selected bytes fixed as `Array`, even if they replace
+the source operand; throw creates no provider nonce. Conversion traces use the
+authentic child site and zero arguments. Borrowed CV inputs gain no array root,
+including absent or mask-ineligible handlers. Captured inputs retain their sole
+owner through provider, parsing and compiler notices, then release it before a
+nontrivial included body or parser-error catch search. The context's saved tail
+does not retain a second owner after that boundary.
+
+Four destructor-free originals agree and 73/60/45/29 state premises pass.
+Parser-rejection helper states use the existing production allocation-pruning
+boundary to register ParseError handles; this is not an extra reached VM step.
+Maintained tests are `source_array_sources.py` and `source_array_protocol.py`.
+The original destructor lifetime witness remains native-only until genuine eager
+release is installed. Fast constant returns, destructor traces before body entry,
+captured Stringable lifetime and undefined-source warning ingress remain required,
+along with broader providers.
+
 Failed-open warnings suspend for eligible handlers. The stream message is fixed
 before the first callback; the second include warning or required `Error` samples
 the live effective path after that callback. Throw skips the remaining failure
@@ -261,8 +280,11 @@ even when a negative update fails. Restore changes only a modified entry.
 Main, eval and opened file units capture effective precision before parsing;
 accepted and rejected histories retain it after live writes. File/request wrappers
 keep their existing path/CWD distinctions. Sixteen exact comparisons, 194 supplied
-state checks and 12 transport controls pass. Changed precision during suspended
-eval compilation and Array operand warning continuations remain required.
+state checks and 12 transport controls retain their original cuts. Later genuine
+suspended-eval resume epochs preserve compiler conversion precision and exact
+image refresh separately from parser creation; their source/state cuts remain in
+the same ledger. Array warning continuations are covered by287 above; wider
+configuration, source lifetime and provider behavior remain required.
 
 [Diagnostic ingress217](../../coverage/semantics/reporting-diagnostics-review.json)
 fetches `E_STRICT` at runtime and dispatches its deprecation through the genuine

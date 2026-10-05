@@ -1,0 +1,118 @@
+{
+  "scope": "Array eval/include operand conversion warnings, frozen source bytes and borrowed/captured lifetime through finite parser/provider stages.",
+  "status": "independently_reviewed_bounded_runtime",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "contract": [
+    "Real207 warning dispatch precedes parser/provider and once lookup. Returned callbacks freeze Array without rereading replaced operands; throw creates no provider nonce. Exact compiled child/kind/line, saved owner and caller tail authenticate continuations and zero-argument pre-parser traces.",
+    "VARIABLE is borrowed. Captured INPUT alone roots its array; RESULT/BASE are cleared for eligible, absent and mask-ineligible handlers. Saved callback frames retain the marker, with no extra context-tail owner.",
+    "Nontrivial file compilation places owned release after compiler notices and before body; parser rejection retains the array until the actual pre-catch discard. Raw parser helper states use production prune_allocations for ParseError handle registration, not an extra reached VM transition."
+  ],
+  "primary_engine": {
+    "files": [
+      "vendor/php-src/Zend/zend_execute.c",
+      "vendor/php-src/Zend/zend_operators.c",
+      "vendor/php-src/Zend/zend_vm_def.h"
+    ],
+    "symbols": [
+      "zend_include_or_eval",
+      "__zval_get_string_func",
+      "ZEND_INCLUDE_OR_EVAL"
+    ],
+    "routes": "zval_try_get_tmp_string dispatches Array warning, then yields static Array or NULL on exception. Captured FREE_OP1 follows resolution/parse/compile before nontrivial body; borrowed CV adds no owner."
+  },
+  "accepted_checks": {
+    "semantic_revision": "3b2c19fa03442e3fe23dd2b9d9a3fbe0e0ea56e5",
+    "modules": 270,
+    "full_source_agreements": 4,
+    "source_cases": [
+      "routing",
+      "throw",
+      "eval",
+      "core-observer"
+    ],
+    "state_groups": {
+      "borrowed": 73,
+      "captured": 60,
+      "eval": 45,
+      "throw": 29
+    },
+    "main_premises": 207,
+    "original_logical_checks": 206,
+    "result": "Whole native/model streams exact; frontend accepted/checked program, normal0/reason-null. Strict SL270 stages/init application-evaluations0; state outputs true/newline, empty stderr,0. Recorded inputs/head/status stable, launchers reaped and owned groups empty."
+  },
+  "actual_parent": {
+    "parent": "33df402eb8a18c32a0cd96f0d9d31db5afc608d2",
+    "revision": "5a0e5dd95aa62b4dc40bb166a90abceda0214416",
+    "modules": 273,
+    "bridge": "Exact ordered actual272+287; Fiber160 trace hook, ArrayAccess284 carriers/guards and trait-demand266 trace retained. Independent source review found no ordinary-source interaction requiring renewal. Current-union SL273 passes exact stages/init0."
+  },
+  "runtime": {
+    "sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      ".tools/cprefix-compiler/compiler": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+      ".tools/recorded-process.py": "7813bae32063a59cff2c0292878cc3f5ebbf27d3e6123907c9bea49e5858fe8a",
+      "_build/default/adapter/main.exe": "1d7cebf175b60a6e2a534460ec2c4aff206cdd901e34f35f959041a49f5ac2f9",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "fresh_rebuild": false,
+    "reuse": "Accepted precision-capable adapter and b57 strict-SL numeric wrapper reused.",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent"
+    },
+    "caps_seconds": {
+      "native": 30,
+      "model": 90,
+      "request": 60,
+      "numeric": 90,
+      "compile": 300
+    },
+    "jobs": 1
+  },
+  "profiles": {
+    "author3": "Recorded baseline plus explicit include_path=.:; authentic reporting/path startup header. routing uses v2 CWD/path facts; throw/eval do not acquire file facts.",
+    "independent_core": "Recorded legacy baseline; canonical native CWD and v2 finite file facts, no invented startup header."
+  },
+  "raw_references": {
+    "private_root": ".tools/include-dev-14-array-ingress",
+    "independent_root": ".tools/include-review-14/array-source-ingress",
+    "author_native": ".tools/array-native-ca2v929y/report.json",
+    "author_model": ".tools/array-ingress-models-gkdo3dgw/report.json",
+    "private_compile": ".tools/array-ingress-compile-fdvptqtp/report.json",
+    "independent_native": "native-array-source-core-observer-h30bgcgt/report.json",
+    "independent_model": "model-core-observer-app1u7yw/report.json",
+    "state_borrowed_captured": ".tools/array-controls-a5tzvczx/report.json",
+    "state_eval_throw": ".tools/array-controls-1uyyd7_6/report.json",
+    "accepted_state_render": ".tools/array-controls-ready-7dnq6w4i/prepared.json",
+    "actual_compile": ".tools/array-ingress-compile-4vb8wi6r/report.json",
+    "independent_note": ".tools/include-review-14/array-source-ingress-independent-review.json",
+    "recovery": "References resolve under their stated project-local ignored roots; exact argv/CWD/caps/exits/streams and input hashes are retained in process/report files. No bulky raw evidence is tracked."
+  },
+  "preserved_failures": [
+    "Compiler originals mz8a18wh/n7gaalgr/rxejuobj remain zero application credit: explicit owner binding, dedicated task validity and pure rejection guard corrections preceded 3b2c compilation.",
+    "Prepared204 nonce/unit mismatch remained unexecuted; authentic reached source-unit bindings produced206 checks. Original eval dot-binding elaboration failure remains in a5tzvczx; split tail equality produced207 physical premises.",
+    "Eval false zlm5xm8e and prefix/component vectors trd323rp/23x29rud/nb4s2_bl/bd8_gu5h remain zero full credit. Only raw parser helper pruning and authentic no-CWD startup setup changed; no source guard relaxation.",
+    "Original lifetime.php/native-array-source-lifetime-3gpk8qma is native-only, zero model agreement, pending accepted eager release. The separately calibrated destructor-free core-observer keeps conversion/path/once behavior with distinct source/native identity."
+  ],
+  "maintained": {
+    "source": "tests/semantics/source_array_sources.py",
+    "state": "tests/semantics/source_array_protocol.py",
+    "fixtures": "tests/semantics/source-arrays/",
+    "promotion": "Nine PHP files equal original bytes, with author/core children separated. All four complete helper/main renders match accepted7dnq6w4i after source pathname/CWD substitution only; this prep parity adds no execution credit.",
+    "commands": [
+      "python3 tests/semantics/source_array_sources.py",
+      "python3 tests/semantics/source_array_protocol.py --group borrowed",
+      "python3 tests/semantics/source_array_protocol.py --group captured",
+      "python3 tests/semantics/source_array_protocol.py --group eval",
+      "python3 tests/semantics/source_array_protocol.py --group throw"
+    ]
+  },
+  "remaining": [
+    "Original destructor lifetime after accepted eager270 release; no private dependency imported",
+    "Fast constant-return/owned result boundary and destructor traces before body; captured Stringable source-operand lifetime",
+    "Undefined-source warning ingress and wider source/provider/stream consumers",
+    "Complete core and later combined/offline gates; returns_verify remains paused"
+  ]
+}

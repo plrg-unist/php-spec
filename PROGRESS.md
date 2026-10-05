@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Array eval/include conversion287 dispatches the real warning before parser or
+file-provider work and freezes `Array` after callbacks, even when they replace
+the operand. Borrowed variables gain no temporary owner; captured arrays survive
+provider/parsing/compiler notices and retire before nontrivial file bodies or
+catch search. Four exact destructor-free sources and 207 state premises pass at
+3b2c; actual33df preserves Fiber/ArrayAccess/trait-demand routes and passes SL273
+at5a0e. The [ledger](coverage/semantics/source-array-review.json) retains original
+fixture/compiler failures and the native-only destructor lifetime witness pending
+accepted eager release. Undefined operands, captured Stringable lifetime, fast
+returns, destructor traces and wider providers remain required.
+
 ArrayAccess284 now admits its builtin interface contract and direct R/IS,
 isset/empty, Set/append and Unset calls. Effective inherited methods and tentative
 return notices preserve prototype order and ReturnTypeWillChange suppression.

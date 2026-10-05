@@ -30,7 +30,16 @@ machine pauses. A finite version-2 provider supports checked CWD and
 `include_path` changes. [Stringable include/require operands](coverage/semantics/file-operand-review.json)
 convert before path lookup and once checks. Failed-open warnings resume handlers
 with live path sampling, saved owners and zero-argument file traces; fatal cleanup
-preserves frozen output before shutdown callbacks. [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
+preserves frozen output before shutdown callbacks.
+
+Array eval/include operands now dispatch the real conversion warning before
+parser or file-provider work. [The Array operand ledger](coverage/semantics/source-array-review.json)
+records frozen `Array` bytes after callbacks, borrowed versus captured owners,
+late path/once lookup and cleanup before nontrivial file bodies or catch search.
+Four exact sources and 207 state premises pass; the destructor lifetime original
+awaits accepted eager release, and wider source/provider behavior remains required.
+
+[Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
 preserves captured array arguments and has separate source and paused-state checks.
