@@ -390,7 +390,7 @@ def $trait_cache_object_failure_context(S, S_next) = S_next[.ORIGIN = (porigin_v
 def $trait_cache_object_failure_context(S, S_next) = S_next -- otherwise
 def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S_next, ptraitcachecause)
   -- if S_next.COMPLETION = NORMAL
-def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = F[.VALUE = eps][.MEMORY = $prune_allocations($trait_cache_object_restore(F, S_throw)[.COMPLETION = THROWN pthrowable.KIND preqbytes z_error][.ERRORORIGIN = (porigin_owner)][.TRACE = ptraceframe*])]
+def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = F[.VALUE = eps][.MEMORY = S_pruned[.HELD = S_restored.HELD]]
   -- if $trait_recording(F, pcpath)
   -- if $trait_cache_object_scalar_error(S_next.COMPLETION)
   -- if S_failure = $trait_cache_object_failure_context(S, S_next)
@@ -402,6 +402,11 @@ def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptra
   -- if pthrowable.FILEORIGIN = (porigin_owner)
   -- if $throwable_field(S_throw, n_throw, "message") = PSTRING preqbytes
   -- if $throwable_field(S_throw, n_throw, "line") = PINT z_error
+  -- if F.EXTERNAL = (S_external)
+  -- if S_restored = $trait_cache_object_restore(F, S_throw)[.COMPLETION = THROWN pthrowable.KIND preqbytes z_error][.ERRORORIGIN = (porigin_owner)][.TRACE = ptraceframe*]
+  ;; Dispatch is isolated, but the outside registry still owns its callbacks.
+  -- if pnode_registry* = $error_handler_roots(S_external.ERRORHANDLER) ++ $error_handler_stack_roots(S_external.ERRORHANDLERS)
+  -- if S_pruned = $prune_allocations(S_restored[.HELD = S_restored.HELD ++ pnode_registry*])
 def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = F[.VALUE = eps][.MEMORY = $trait_cache_object_restore(F, S_next)[.COMPLETION = UNSUPPORTED "public trait object dependency exception"]] -- otherwise
 
 def $trait_comparison_memory(ptraitdatavalue_left, TRAITVALUE S pvalue pfdiagnostic*) = (S)
