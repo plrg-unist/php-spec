@@ -319,8 +319,73 @@ def $closure_scope_classes_valid(S, porigin_site, pclosurescope) = true
   -- if ~$closure_scope_original_classes(S, porigin_site, pclosurescope)
   -- if $global_constant_real_scope_valid(S, porigin_site, pclosurescope)
 
-;; Installed constants retain the preceding constant bindings. A later
-;; namespace shadow cannot change an earlier alias's source transfer.
+;; Each object-bearing user-constant read retains its own lookup prefix. The
+;; selected row is immutable; this evidence owns neither its value nor a cell.
+dec $global_constant_lookup_required(pstate, porigin, pconstantfact) : bool
+def $global_constant_lookup_required(S, porigin_decl, pconstantfact) = true
+  -- if $global_constant_declaration_source(S.SOURCES, porigin_decl)
+  -- if ~$constant_callable_foldable(pconstantfact.CLASS)
+  -- if $compiled_redirect(S, pconstantfact.ORIGIN) = eps
+  -- if $origin_node(S.SOURCES, pconstantfact.ORIGIN) = (NExprConstFetch name metadata)
+def $global_constant_lookup_required(S, porigin_decl, pconstantfact) = false -- otherwise
+def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = ({ORIGIN porigin_decl, SITE porigin_site, DECL puserconstant.ORIGIN, PREFIX |S.USERCONSTANTS|})
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if porigin_decl = pconstantcontext.ORIGIN
+  -- if porigin_decl = PORIGIN n_unit pcpath_decl
+  -- if $global_constant_declaration_source(S.SOURCES, porigin_decl)
+  -- if $constant_declaration(S, porigin_decl) = ((preqbytes, pconstantcontext.LINE))
+  -- if $declaration_entered(S.DECLARATIONS, n_unit)
+  -- if $global_constant_scope(S, n_unit) = (true, porigin_scope?)
+  -- if $global_constant_scope_published(S.DECLARATIONS, porigin_scope?)
+  -- if $constant_bindings(S, S.TODO) = [porigin_decl]
+  -- if S.TODO = (CONSTANT_OBSERVE porigin_site) :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+  -- if $constant_callable_path(S, porigin_site, $constant_child(porigin_decl, [PCFIELD 1]))
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if ~$constant_callable_foldable(pvalueclass)
+  -- if $global_constant_alias(S, S.USERCONSTANTS, porigin_site) = (puserconstant)
+  -- if pvalueclass = puserconstant.CLASS
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = eps -- otherwise
+dec $global_constant_lookup_valid(pstate, porigin, pconstantfact, puserconstant*) : bool
+def $global_constant_lookup_valid(S, porigin_decl, pconstantfact, puserconstant_prior*) = true
+  -- if porigin_decl = PORIGIN n_unit pcpath_decl
+  -- if $global_constant_lookup_required(S, porigin_decl, pconstantfact)
+  -- if $constant_declaration(S, porigin_decl) = ((preqbytes, z))
+  -- if $declaration_entered(S.DECLARATIONS, n_unit)
+  -- if $global_constant_scope(S, n_unit) = (true, porigin_scope?)
+  -- if $global_constant_scope_published(S.DECLARATIONS, porigin_scope?)
+  -- if $constant_callable_path(S, pconstantfact.ORIGIN, $constant_child(porigin_decl, [PCFIELD 1]))
+  -- if pconstantfact.LOOKUP = (pconstantlookup)
+  -- if pconstantlookup.ORIGIN = porigin_decl /\ pconstantlookup.SITE = pconstantfact.ORIGIN
+  -- if $(pconstantlookup.PREFIX <= |puserconstant_prior*|)
+  -- if $global_constant_alias(S, puserconstant_prior*[0:pconstantlookup.PREFIX], pconstantfact.ORIGIN) = (puserconstant)
+  -- if pconstantlookup.DECL = puserconstant.ORIGIN
+  -- if pconstantfact.CLASS = puserconstant.CLASS
+  -- if pconstantfact.VALUE = eps
+  -- if $constant_fact_value_valid(pconstantfact)
+def $global_constant_lookup_valid(S, porigin_decl, pconstantfact, puserconstant_prior*) = false -- otherwise
+def $global_constant_fact_lookup_valid(S, porigin_decl, pconstantfact) = true
+  -- if pconstantfact.LOOKUP = eps
+  -- if ~$global_constant_lookup_required(S, porigin_decl, pconstantfact)
+def $global_constant_fact_lookup_valid(S, porigin_decl, pconstantfact) = $global_constant_lookup_valid(S, porigin_decl, pconstantfact, S.USERCONSTANTS)
+  -- if pconstantfact.LOOKUP =/= eps
+def $global_constant_fact_lookup_valid(S, porigin_decl, pconstantfact) = false -- otherwise
+dec $global_constant_read_facts(pconstantfact*) : pconstantfact*
+def $global_constant_read_facts(eps) = eps
+def $global_constant_read_facts(pconstantfact :: pconstantfact_tail*) = pconstantfact :: $global_constant_read_facts(pconstantfact_tail*)
+  -- if pconstantfact.LOOKUP =/= eps
+def $global_constant_read_facts(pconstantfact :: pconstantfact_tail*) = $global_constant_read_facts(pconstantfact_tail*)
+  -- if pconstantfact.LOOKUP = eps
+def $global_constant_reads(S, porigin_decl) = $global_constant_read_facts(pconstantcontext.FACTS)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = porigin_decl
+def $global_constant_reads(S, porigin_decl) = eps -- otherwise
+dec $global_constant_reads_valid(pstate, porigin, pconstantfact*, puserconstant*) : bool
+def $global_constant_reads_valid(S, porigin_decl, eps, puserconstant_prior*) = true
+def $global_constant_reads_valid(S, porigin_decl, pconstantfact :: pconstantfact_tail*, puserconstant_prior*) = ($global_constant_lookup_valid(S, porigin_decl, pconstantfact, puserconstant_prior*) /\ $constant_fact_at(pconstantfact_tail*, pconstantfact.ORIGIN) = eps /\ $global_constant_reads_valid(S, porigin_decl, pconstantfact_tail*, puserconstant_prior*))
+
+;; Installed constants bound every captured read by their preceding bindings.
 dec $global_constant_prefix(puserconstant*, porigin, puserconstant*) : puserconstant*?
 def $global_constant_prefix(eps, porigin_decl, puserconstant_prior*) = eps
 def $global_constant_prefix(puserconstant :: puserconstant_tail*, porigin_decl, puserconstant_prior*) = (puserconstant_prior*)
@@ -354,9 +419,9 @@ def $global_constant_class_alias(S, porigin_site, porigin_scope?) = (pclassconst
   -- if $class_constant_lookup(S, porigin_class, ptbytes_name, |S.CLASSES|) = (pclassconstantdesc)
   -- if $global_constant_class_visible(S, pclassconstantdesc, porigin_scope?)
 def $global_constant_class_alias(S, porigin_site, porigin_scope?) = eps -- otherwise
-dec $global_constant_flow(pstate, porigin, porigin, porigin?, pvalueclass, puserconstant*, porigin*) : bool
-dec $global_constant_flow_at(pstate, porigin, porigin, porigin?, pvalueclass, puserconstant*, porigin*) : bool
-dec $global_constant_array_flow(pstate, porigin, porigin, porigin?, nat, phpType13*, (pkey, pvalueclass)*, int, puserconstant*, porigin*) : bool
+dec $global_constant_flow(pstate, porigin, porigin, porigin?, pvalueclass, puserconstant*, pconstantfact*, porigin*) : bool
+dec $global_constant_flow_at(pstate, porigin, porigin, porigin?, pvalueclass, puserconstant*, pconstantfact*, porigin*) : bool
+dec $global_constant_array_flow(pstate, porigin, porigin, porigin?, nat, phpType13*, (pkey, pvalueclass)*, int, puserconstant*, pconstantfact*, porigin*) : bool
 dec $global_constant_class_supported(pvalueclass) : bool
 dec $global_constant_classes_supported((pkey, pvalueclass)*) : bool
 def $global_constant_class_supported(PVOBJECT) = false
@@ -364,52 +429,53 @@ def $global_constant_class_supported(PVARRAY b (pkey, pvalueclass)*) = $global_c
 def $global_constant_class_supported(pvalueclass) = true -- otherwise
 def $global_constant_classes_supported(eps) = true
 def $global_constant_classes_supported((pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*) = ($global_constant_class_supported(pvalueclass) /\ $global_constant_classes_supported((pkey_tail, pvalueclass_tail)*))
-def $global_constant_flow(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, porigin_seen*) = true
+def $global_constant_flow(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = true
   -- if $constant_callable_foldable(pvalueclass)
-def $global_constant_flow(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, porigin_seen*) = $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, porigin_seen* ++ [porigin_site])
+def $global_constant_flow(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, porigin_seen* ++ [porigin_site])
   -- if ~$constant_callable_foldable(pvalueclass)
   -- if ~(porigin_site <- porigin_seen*)
-def $global_constant_flow(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, porigin_seen*) = false -- otherwise
-def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, porigin_seen*) = $global_constant_flow(S, porigin_target, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, porigin_seen*)
+def $global_constant_flow(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = false -- otherwise
+def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = $global_constant_flow(S, porigin_target, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, porigin_seen*)
   -- if $compiled_redirect(S, porigin_site) = ((porigin_target, expression, false, z))
-def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVCLOSURE n_object porigin_site, puserconstant_prior*, porigin_seen*) = true
+def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVCLOSURE n_object porigin_site, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = true
   -- if $compiled_redirect(S, porigin_site) = eps
   -- if $constant_callable_record(S.CONSTANTCLOSURES, n_object) = (pconstantclosure)
   -- if pconstantclosure.DECL = porigin_decl /\ pconstantclosure.SITE = porigin_site
   -- if $constant_callable_identity_valid(S, n_object, porigin_site)
-def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, porigin_seen*) = true
+def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = true
   -- if $compiled_redirect(S, porigin_site) = eps
-  -- if $global_constant_alias(S, puserconstant_prior*, porigin_site) = (puserconstant)
-  -- if puserconstant.CLASS = pvalueclass
-def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, porigin_seen*) = $constant_callable_alias_flow(S, pclassconstantdesc, pvalueclass, |S.DECLARATIONS|, porigin_seen*)
+  -- if $constant_fact_at(pconstantfact_read*, porigin_site) = (pconstantfact)
+  -- if pconstantfact.CLASS = pvalueclass
+  -- if $global_constant_lookup_valid(S, porigin_decl, pconstantfact, puserconstant_prior*)
+def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = $constant_callable_alias_flow(S, pclassconstantdesc, pvalueclass, |S.DECLARATIONS|, porigin_seen*)
   -- if $compiled_redirect(S, porigin_site) = eps
   -- if $global_constant_class_alias(S, porigin_site, porigin_scope?) = (pclassconstantdesc)
-def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVARRAY b (pkey, pvalueclass)*, puserconstant_prior*, porigin_seen*) = $global_constant_array_flow(S, porigin_site, porigin_decl, porigin_scope?, 0, phpType13*, (pkey, pvalueclass)*, $(-9223372036854775808), puserconstant_prior*, porigin_seen*)
+def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVARRAY b (pkey, pvalueclass)*, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = $global_constant_array_flow(S, porigin_site, porigin_decl, porigin_scope?, 0, phpType13*, (pkey, pvalueclass)*, $(-9223372036854775808), puserconstant_prior*, pconstantfact_read*, porigin_seen*)
   -- if $compiled_redirect(S, porigin_site) = eps
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprArray (SEQUENCE phpType13*) metadata)
-def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, porigin_seen*) = $global_constant_flow(S, porigin_target, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, porigin_seen*)
+def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = $global_constant_flow(S, porigin_target, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, porigin_seen*)
   -- if $compiled_redirect(S, porigin_site) = eps
   -- if $property_callable_projection(S, porigin_site) = (porigin_target)
-def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, porigin_seen*) = false -- otherwise
-def $global_constant_array_flow(S, porigin_array, porigin_decl, porigin_scope?, n_item, eps, eps, i, puserconstant_prior*, porigin_seen*) = true
-def $global_constant_array_flow(S, porigin_array, porigin_decl, porigin_scope?, n_item, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, (pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*, i, puserconstant_prior*, porigin_seen*) = $global_constant_array_flow(S, porigin_array, porigin_decl, porigin_scope?, $(n_item + 1), phpType13*, (pkey_tail, pvalueclass_tail)*, $next_history(i, pkey), puserconstant_prior*, porigin_seen*)
+def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = false -- otherwise
+def $global_constant_array_flow(S, porigin_array, porigin_decl, porigin_scope?, n_item, eps, eps, i, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = true
+def $global_constant_array_flow(S, porigin_array, porigin_decl, porigin_scope?, n_item, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, (pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*, i, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = $global_constant_array_flow(S, porigin_array, porigin_decl, porigin_scope?, $(n_item + 1), phpType13*, (pkey_tail, pvalueclass_tail)*, $next_history(i, pkey), puserconstant_prior*, pconstantfact_read*, porigin_seen*)
   -- if porigin_item = $constant_child(porigin_array, [PCFIELD 0, PCINDEX n_item])
   -- if $constant_callable_flow_key(S, porigin_item, phpType5, i) = (pkey)
-  -- if $global_constant_flow(S, $constant_child(porigin_item, [PCFIELD 1]), porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, porigin_seen*)
-def $global_constant_array_flow(S, porigin_array, porigin_decl, porigin_scope?, n_item, phpType13*, (pkey, pvalueclass)*, i, puserconstant_prior*, porigin_seen*) = false -- otherwise
-def $global_constant_transfer_valid(S, porigin_decl, pvalueclass, puserconstant_prior*) = true
+  -- if $global_constant_flow(S, $constant_child(porigin_item, [PCFIELD 1]), porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, porigin_seen*)
+def $global_constant_array_flow(S, porigin_array, porigin_decl, porigin_scope?, n_item, phpType13*, (pkey, pvalueclass)*, i, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = false -- otherwise
+def $global_constant_transfer_valid(S, porigin_decl, pvalueclass, puserconstant_prior*) = $global_constant_transfer_reads_valid(S, porigin_decl, pvalueclass, puserconstant_prior*, $global_constant_reads(S, porigin_decl))
+def $global_constant_transfer_reads_valid(S, porigin_decl, pvalueclass, puserconstant_prior*, pconstantfact_read*) = true
   -- if $constant_callable_foldable(pvalueclass) /\ $global_constant_class_supported(pvalueclass)
-def $global_constant_transfer_valid(S, porigin_decl, pvalueclass, puserconstant_prior*) = $global_constant_flow(S, $constant_child(porigin_decl, [PCFIELD 1]), porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, eps)
+  -- if $global_constant_reads_valid(S, porigin_decl, pconstantfact_read*, puserconstant_prior*)
+def $global_constant_transfer_reads_valid(S, porigin_decl, pvalueclass, puserconstant_prior*, pconstantfact_read*) = $global_constant_flow(S, $constant_child(porigin_decl, [PCFIELD 1]), porigin_decl, porigin_scope?, pvalueclass, puserconstant_prior*, pconstantfact_read*, eps)
   -- if ~$constant_callable_foldable(pvalueclass)
   -- if $global_constant_class_supported(pvalueclass)
   -- if porigin_decl = PORIGIN n_unit pcpath_decl
   -- if $global_constant_declaration_source(S.SOURCES, porigin_decl)
   -- if $global_constant_scope(S, n_unit) = (true, porigin_scope?)
-def $global_constant_transfer_valid(S, porigin_decl, pvalueclass, puserconstant_prior*) = false -- otherwise
-def $global_constant_user_valid(S, puserconstant) = true
-  -- if $constant_callable_foldable(puserconstant.CLASS) /\ $global_constant_class_supported(puserconstant.CLASS)
-def $global_constant_user_valid(S, puserconstant) = $global_constant_transfer_valid(S, puserconstant.ORIGIN, puserconstant.CLASS, puserconstant_prior*)
-  -- if ~$constant_callable_foldable(puserconstant.CLASS)
+  -- if $global_constant_reads_valid(S, porigin_decl, pconstantfact_read*, puserconstant_prior*)
+def $global_constant_transfer_reads_valid(S, porigin_decl, pvalueclass, puserconstant_prior*, pconstantfact_read*) = false -- otherwise
+def $global_constant_user_valid(S, puserconstant) = $global_constant_transfer_reads_valid(S, puserconstant.ORIGIN, puserconstant.CLASS, puserconstant_prior*, puserconstant.READS)
   -- if $global_constant_prefix(S.USERCONSTANTS, puserconstant.ORIGIN, eps) = (puserconstant_prior*)
 def $global_constant_user_valid(S, puserconstant) = false -- otherwise
 
@@ -417,13 +483,13 @@ def $global_constant_user_valid(S, puserconstant) = false -- otherwise
 ;; earlier constant owns its value; only this genuine pending task owns the copy.
 dec $global_constant_duplicate_message(preqbytes) : ptbytes
 def $global_constant_duplicate_message(preqbytes) = $ptascii("Constant ") ++ $user_constant_key(preqbytes) ++ $ptascii(" already defined, this will be an error in PHP 9")
-def $global_constant_duplicate(S, porigin_decl, preqbytes, pvalue, pvalueclass, z) = $error_dispatch(S_pending, 2, ptbytes_message, z, DIAGNOSTIC "Warning" ptbytes_message z, ptask_resume)
+def $global_constant_duplicate(S, porigin_decl, preqbytes, pvalue, pvalueclass, pconstantfact_read*, z) = $error_dispatch(S_pending, 2, ptbytes_message, z, DIAGNOSTIC "Warning" ptbytes_message z, ptask_resume)
   -- if n_constants = |S.USERCONSTANTS|
-  -- if ptask_resume = GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants z
+  -- if ptask_resume = GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants pconstantfact_read* z
   -- if ptbytes_message = $global_constant_duplicate_message(preqbytes)
   -- if S_pending = S[.TODO = ptask_resume :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-dec $global_constant_duplicate_valid(pstate, porigin, pvalue, pvalueclass, nat, int) : bool
-def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, z) = true
+dec $global_constant_duplicate_valid(pstate, porigin, pvalue, pvalueclass, nat, pconstantfact*, int) : bool
+def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, pconstantfact_read*, z) = true
   -- if S.ORIGIN = (porigin_decl)
   -- if S.CONSTCONTEXT = eps
   -- if porigin_decl = PORIGIN n_unit pcpath_decl
@@ -433,16 +499,16 @@ def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_con
   -- if $(n_constants <= |S.USERCONSTANTS|)
   -- if $source_constant_lookup(S[.USERCONSTANTS = S.USERCONSTANTS[0:n_constants]], preqbytes) =/= eps
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)
-  -- if $global_constant_transfer_valid(S, porigin_decl, pvalueclass, S.USERCONSTANTS[0:n_constants])
-def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, z) = false -- otherwise
-def $task_nodes(GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants z) = $value_nodes(pvalue)
-def $call_task_valid(S, GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants z) = $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, z)
+  -- if $global_constant_transfer_reads_valid(S, porigin_decl, pvalueclass, S.USERCONSTANTS[0:n_constants], pconstantfact_read*)
+def $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, pconstantfact_read*, z) = false -- otherwise
+def $task_nodes(GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants pconstantfact_read* z) = $value_nodes(pvalue)
+def $call_task_valid(S, GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants pconstantfact_read* z) = $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, pconstantfact_read*, z)
 rule PhpStep/global-constant-duplicate: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = (GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants z) :: ptask_tail*
-  -- if $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, z)
+  -- if S.TODO = (GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants pconstantfact_read* z) :: ptask_tail*
+  -- if $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, pconstantfact_read*, z)
 def $error_call_valid(S, perrorcall) = true
-  -- if perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants z
-  -- if $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, z)
+  -- if perrorcall.RESUME = GLOBAL_CONSTANT_DUPLICATE porigin_decl pvalue pvalueclass n_constants pconstantfact_read* z
+  -- if $global_constant_duplicate_valid(S, porigin_decl, pvalue, pvalueclass, n_constants, pconstantfact_read*, z)
   -- if $constant_declaration(S, porigin_decl) = ((preqbytes, z))
   -- if perrorcall.SITE = porigin_decl /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = z
   -- if perrorcall.MESSAGE = $global_constant_duplicate_message(preqbytes)
