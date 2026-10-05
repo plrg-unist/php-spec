@@ -36,10 +36,13 @@ CASES = {
     'inherited-method-scope': (b'<?php\nclass A {private $x=4;const C="A";function seq(){yield $this->x;yield self::C;yield static::class;}}class B extends A {}$b=new B;$g=$b->seq();unset($b);echo "C";foreach($g as $v){echo $v,";";}', b'C4;A;B;'),
     'over-arity-trace-before-initialize': (b'<?php\nfunction seq(){echo "B";yield 1;}function value(){echo "A";return 3;}$g=seq();try{$g->current(value());}catch(ArgumentCountError $e){$t=$e->getTrace();echo $t[0]["function"],":",$t[0]["args"][0],":";}echo $g->current();', b'Acurrent:3:B1'),
     'intersection-native-acceptance': (b'<?php\nfunction seq():Iterator&Countable {yield 1;}$g=seq();echo $g instanceof Generator?"G":"X";echo $g instanceof Countable?"C":"N";foreach($g as $v){echo $v;}', b'GN1'),
+    'private-creation-live-resumer': (b'<?php\nclass A {private $x=4;private function seq(){yield $this->x;}public function make(){return $this->seq();}}$a=new A;$g=$a->make();unset($a);echo "C";echo $g->current();', b'C4'),
+    'same-function-nested-resume-trace': (b'<?php\nfunction seq($n){if($n){foreach(seq($n-1) as $v){yield $v;}}else{throw new Exception("x");yield 1;}}function go($g){$g->current();}$g=seq(2);try{go($g);}catch(Exception $e){foreach($e->getTrace() as $r){echo $r["function"],":";if($r["function"]==="seq"){echo $r["args"][0];}echo ";";}}', b'seq:0;seq:1;seq:2;current:;go:;'),
 }
 DECLARATIONS = {
     'invalid-scalar-supertype': (b'<?php\nfunction seq():int {yield 1;}\necho "X";', b'Generator return type must be a supertype of Generator, int given', 2),
     'invalid-class-supertype': (b'<?php\nfunction seq():Countable {yield 1;}\necho "X";', b'Generator return type must be a supertype of Generator, Countable given', 2),
+    'invalid-dnf-supertype': (b'<?php\nfunction seq():(Iterator&Countable)|false {yield 1;}\necho "X";', b'Generator return type must be a supertype of Generator, (Iterator&Countable)|false given', 2),
 }
 UNSUPPORTED = {
     'unstarted-release': (b'<?php\nclass Box {function __destruct(){echo "D";}}function seq($b){try{echo "B";yield 1;}finally{echo "F";}}$g=seq(new Box);echo "C";unset($g);echo "Z";', b'CDZ'),
@@ -47,6 +50,7 @@ UNSUPPORTED = {
     'previous-yield-retirement-before-cv': (b'<?php\n$v=1;class Box {function __destruct(){$GLOBALS["v"]=9;echo "D";}}function seq(){global $v;yield new Box;yield $v=>$v;}$g=seq();$g->current();echo "C";$g->next();echo $g->key(),":",$g->current();', b'CD9:9'),
     'closed-last-yield-owner': (b'<?php\nclass Box {function __destruct(){echo "D";}}function seq(){yield new Box;}$g=seq();$g->current();echo "A";$g->next();echo "B";echo $g->current()===null?"N":"X";unset($g);echo "C";', b'ABNDC'),
     "started-finally-force-close": (b'<?php\nfunction seq(){try{echo "A";yield 1;echo "B";yield 2;}finally{echo "F";}}$g=seq();foreach($g as $v){echo $v;break;}echo "C";foreach($g as $v){echo $v;break;}echo "D";$g->next();echo $g->current();unset($g);echo "Z";', b'A1C1DB2FZ'),
+    'request-finally-force-close': (b'<?php\nfunction seq(){try{yield 1;}finally{echo "F";}}$g=seq();echo $g->current();echo "Z";', b'1ZF'),
 }
 UNSUPPORTED_REASONS = {
     'unstarted-release': "ordinary destructor release before request stage",
@@ -54,6 +58,7 @@ UNSUPPORTED_REASONS = {
     'previous-yield-retirement-before-cv': "ordinary destructor release before request stage",
     'closed-last-yield-owner': "ordinary destructor release before request stage",
     "started-finally-force-close": "started generator force-close finalizer",
+    'request-finally-force-close': "started generator force-close finalizer",
 }
 
 
@@ -84,6 +89,9 @@ def main():
     print(directory, flush=True)
     try:
         (directory / "candidate.diff").write_bytes(subprocess.check_output(["git", "diff", "HEAD"], cwd=ROOT))
+        candidate = ROOT / 'spec/semantics/280-generators.watsup'
+        if candidate.exists():
+            (directory / 'candidate-generator.watsup').write_bytes(candidate.read_bytes())
         report["tools"]["test_sha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
         if args.mode == "full":
             report["tools"]["adapter_sha256"] = hashlib.sha256((ROOT / "_build/default/adapter/main.exe").read_bytes()).hexdigest()

@@ -15,6 +15,7 @@ import typed_static_invoke_set_protocol as driver
 ROOT = source.ROOT
 CASES = {
     "carrier": (b'<?php\n$cell=7;function seq(&$r){$a=[&$r];yield $a;return $a;}$g=seq($cell);$g->current();$cell=9;$g->next();echo $g->getReturn()[0];unset($g);echo "Z";', b'9Z'),
+    "closure": (b'<?php\n$cell=7;$f=function(&$r){$a=[&$r];yield $a;return $a;};$g=$f($cell);unset($f);$g->current();$cell=9;$g->next();echo $g->getReturn()[0];unset($g);echo "Z";', b'9Z'),
     "nested": (b'<?php\nfunction inner(){yield [1];yield [2];}function outer(){foreach(inner() as $v){yield $v;}}foreach(outer() as $v){echo $v[0];}echo "Z";', b'12Z'),
     "abrupt": (b'<?php\nfunction seq(){try{yield [7];throw new Exception("x");}finally{echo "F";}}$g=seq();echo $g->current()[0];try{$g->next();}catch(Exception $e){echo "E";}echo $g->valid()?"T":"N";unset($g);echo "Z";', b'7FENZ'),
 }
@@ -99,7 +100,7 @@ def rejected(checks, name, expression):
 def assertions(checked, path, directory, name):
     initial = '$php_file_run(' + checked['fixture'] + ',0,' + driver.byte_expr(os.fsencode(path)) + ',' + driver.byte_expr(os.fsencode(directory)) + ')'
     checks = ['S_initial = ' + initial, '~S_initial.COMPILESTOP']
-    if name == 'carrier':
+    if name in ('carrier', 'closure'):
         checks += seek('S_fresh', 'S_initial', 0) + valid('S_fresh', True)
         checks += r'''
 S_fresh.TODO = (GENERATOR_ARGS pgeneratorop eps eps) :: ptask_fresh*
@@ -113,6 +114,11 @@ pgenerator_fresh.RETURN = eps
 pcallcontext_fresh.FUNCTION = pgenerator_fresh.FUNCTION
 $trace_slot(S_fresh,S_fresh.ENV,$ptascii("g")) = POBJECT pgeneratorop.OBJECT
 '''.strip().splitlines()
+        if name == 'closure':
+            checks += ['pgenerator_fresh.CLOSURE = (n_closure)',
+                       'pcallcontext_fresh.INSTANCE = (n_closure)',
+                       'n_closure =/= pgeneratorop.OBJECT',
+                       '(HOBJECT n_closure) <- S_fresh.ALLOCATIONS']
         rejected(checks, 'fresh_no_frame', '$generator_set(S_fresh,pgeneratorop.OBJECT,pgenerator_fresh[.FRAME = eps])')
         rejected(checks, 'fresh_cached_value', '$generator_set(S_fresh,pgeneratorop.OBJECT,pgenerator_fresh[.VALUE = (PINT 1)])')
         rejected(checks, 'fresh_cv', '$generator_set(S_fresh,pgeneratorop.OBJECT,pgenerator_fresh[.FRAME = (pframe_fresh[.LOCALS = (psymboltable_fresh[.CVS = eps])])])')
@@ -162,6 +168,10 @@ $heap_owners($heap_graph(S_closed),HARRAY n_array) = 2
 S_closed.STORE[n_cell] = DEFINED (PINT 9)
 '''.strip().splitlines()
         rejected(checks, 'closed_cache_pair', '$generator_set(S_closed,pgeneratorop.OBJECT,pgenerator_closed[.KEY = eps])')
+        if name == 'closure':
+            checks += ['pgenerator_closed.CLOSURE = (n_closure)',
+                       '$heap_owners($heap_graph(S_closed),HOBJECT n_closure) = 1']
+            rejected(checks, 'closed_closure_target', '$generator_set(S_closed,pgeneratorop.OBJECT,pgenerator_closed[.CLOSURE = (pgeneratorop.OBJECT)])')
         previous = 'S_closed'
     elif name == 'nested':
         checks += seek('S_nested', 'S_initial', 4) + valid('S_nested', True)
@@ -198,10 +208,12 @@ $generator_finalizer_tasks(S_paused,pframe_paused.TODO)
                'S_resumed.FRAMES = eps', 'S_resumed.ITERATORS = eps',
                '$generator_review_outputs(S_resumed.EVENTS) = ' + driver.byte_expr(CASES[name][1])]
     checks += valid('S_resumed')
-    if name == 'carrier':
+    if name in ('carrier', 'closure'):
         checks += ['~((HOBJECT pgeneratorop.OBJECT) <- S_resumed.ALLOCATIONS)',
                    '~((HARRAY n_array) <- S_resumed.ALLOCATIONS)',
                    '(HCELL n_cell) <- S_resumed.ALLOCATIONS']
+        if name == 'closure':
+            checks += ['~((HOBJECT n_closure) <- S_resumed.ALLOCATIONS)']
     if name == 'abrupt':
         checks += ['~((HOBJECT pgeneratorop.OBJECT) <- S_resumed.ALLOCATIONS)',
                    '~((HARRAY n_array) <- S_resumed.ALLOCATIONS)']
@@ -222,6 +234,9 @@ def main():
     print(out, flush=True)
     try:
         (out / 'candidate.diff').write_bytes(subprocess.check_output(['git', 'diff', 'HEAD'], cwd=ROOT))
+        candidate = ROOT / 'spec/semantics/280-generators.watsup'
+        if candidate.exists():
+            (out / 'candidate-generator.watsup').write_bytes(candidate.read_bytes())
         report['tools'] = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
                            for path in [Path(__file__), ROOT / '.tools/php/bin/php']}
         if args.mode != 'native':
