@@ -208,7 +208,8 @@ def $trait_cache_evaluate(F, pcpath, pclassconstantdesc, z) = (F_value)
   -- if $class_at(F.MEMORY.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
   -- if $pool_at(F.MEMORY.POOLS, n) = (ppool)
   -- if ptcontext = {NAMESPACE eps, IMPORTS eps, SCOPE PTKNOWN pclassdesc.NAME pclassdesc.PARENT, POSITION PTCONSTANT, OWNER pclassdesc.NAME, MEMBER eps, FILE $call_sourcefile(F.MEMORY.FILES, pclassconstantdesc.OWNER), LINE $nabs(z)}
-  -- if F_start = $pfbegin(n, pcunit.AST)
+  -- if $source_precision(F.MEMORY, (pclassconstantdesc.INITIALIZER)) = (z_precision)
+  -- if F_start = $pfbegin(n, pcunit.AST)[.PARSEPRECISION = z_precision]
   -- if S_memory = F.MEMORY[.CONSTCONTEXT = ({ORIGIN pclassconstantdesc.ORIGIN, LINE z, FACTS eps})]
   -- if F_value = $pfprepare(F_start[.RECORD = (pfrecorder)][.LOOKUPS = porigin_lookups*][.FACTS = $trait_pool_facts(F.MEMORY, n, ppool.CONSTANTS)][.CLASSFACTS = $trait_pool_classes(ppool.CONSTANTS)][.CLASSES = F.CLASSES][.CLASSCONSTANTS = pclassdesc.CONSTANTS][.EXTERNAL = (S_external)][.DEFAULT = true][.CONSTANT = true][.CLASSCONTEXT = (ptcontext)][.FILE = ($call_sourcefile(F.MEMORY.FILES, pclassconstantdesc.INITIALIZER))][.CWD = F.CWD][.MEMORY = S_memory], pcpath_initializer, expression, $plempty(false), z)
 def $trait_cache_evaluate(F, pcpath, pclassconstantdesc, z) = eps -- otherwise

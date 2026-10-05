@@ -3,6 +3,9 @@
 dec $compilation_pool_offset(pconstant*, pconstant*) : nat?
 dec $compilation_array_constant(pconstant) : bool
 dec $declaration_compiler_state(ppstate) : ppstate
+dec $eval_precision_epochs(pdeclaration*, nat) : (nat, nat, int)*?
+syntax pcompilemap = (nat, nat)*
+dec $compilation_correspondence(pstate, ppinstalled, pconstant*) : pcompilemap?
 def $compilation_pool_offset(eps, eps) = (0)
 def $compilation_pool_offset((PCONSTANT pcpath (PARRAY n_local)) :: pconstant*, (PCONSTANT pcpath (PARRAY n_actual)) :: pconstant_tail*) = (n_offset)
   -- if $(n_local <= n_actual)
@@ -28,7 +31,176 @@ def $compilation_pool_valid(S, n_unit, ppinstalled) = true
   -- if $compilation_pool_offset(ppinstalled.CONSTANTS, ppool.CONSTANTS) = (n_offset)
   -- if ppool.CONSTANTS = $pool_shift_constants(ppinstalled.CONSTANTS, n_offset)
   -- if $compilation_pool_arrays(S, $pool_shift_arrays(ppinstalled.ARRAYS, n_offset), n_offset, ppinstalled.ALLOCATIONS)
+def $compilation_pool_valid(S, n_unit, ppinstalled) = true
+  -- if $eval_precision_epochs(S.DECLARATIONS, n_unit) = ((n_checkpoint, n_diagnostic, z_precision)*)
+  -- if (n_checkpoint, n_diagnostic, z_precision)* =/= eps
+  -- if $pool_at(S.POOLS, n_unit) = (ppool)
+  -- if $compilation_correspondence(S, ppinstalled, ppool.CONSTANTS) = (pcompilemap)
 def $compilation_pool_valid(S, n_unit, ppinstalled) = false -- otherwise
+
+;; A refreshed unit keeps earlier immutable tables, even if callbacks allocated
+;; arrays between compiler epochs. Derive the exact injective correspondence
+;; from source constants and their nested table edges; it grants no heap root.
+dec $compilation_map_at(pcompilemap, nat) : nat?
+dec $compilation_map_live(pcompilemap, nat) : bool
+dec $compilation_map_value(pvalue, pcompilemap) : pvalue
+dec $compilation_map_entries(pentry*, pcompilemap) : pentry*
+dec $compilation_map_constants(pconstant*, pcompilemap) : pconstant*
+dec $compilation_pair_value(pstate, parray*, pvalue, pvalue, pcompilemap) : pcompilemap?
+dec $compilation_pair_entries(pstate, parray*, pentry*, pentry*, pcompilemap) : pcompilemap?
+dec $compilation_pair_constants(pstate, parray*, pconstant*, pconstant*, pcompilemap) : pcompilemap?
+dec $compilation_metadata_constant(pconstant) : bool
+dec $compilation_map_arrays(pstate, parray*, pnode*, pcompilemap) : bool
+
+def $compilation_map_at(eps, n) = eps
+def $compilation_map_at((n, n_live) :: (n_local, n_actual)*, n) = (n_live)
+def $compilation_map_at((n_other, n_live) :: (n_local, n_actual)*, n) = $compilation_map_at((n_local, n_actual)*, n)
+  -- if n_other =/= n
+def $compilation_map_live(eps, n) = false
+def $compilation_map_live((n_local, n) :: (n_tail_local, n_tail_live)*, n) = true
+def $compilation_map_live((n_local, n_other) :: (n_tail_local, n_tail_live)*, n) = $compilation_map_live((n_tail_local, n_tail_live)*, n)
+  -- if n_other =/= n
+def $compilation_map_value(PARRAY n, pcompilemap) = PARRAY n_live
+  -- if $compilation_map_at(pcompilemap, n) = (n_live)
+def $compilation_map_value(pvalue, pcompilemap) = pvalue -- if ~$is_array_value(pvalue)
+def $compilation_map_entries(eps, pcompilemap) = eps
+def $compilation_map_entries((ENTRY pkey (DIRECT pvalue)) :: pentry*, pcompilemap) = (ENTRY pkey (DIRECT $compilation_map_value(pvalue, pcompilemap))) :: $compilation_map_entries(pentry*, pcompilemap)
+def $compilation_map_constants(eps, pcompilemap) = eps
+def $compilation_map_constants((PCONSTANT pcpath pvalue) :: pconstant*, pcompilemap) = (PCONSTANT pcpath $compilation_map_value(pvalue, pcompilemap)) :: $compilation_map_constants(pconstant*, pcompilemap)
+def $compilation_map_constants((PCCLASS pcpath pvalueclass) :: pconstant*, pcompilemap) = (PCCLASS pcpath pvalueclass) :: $compilation_map_constants(pconstant*, pcompilemap)
+def $compilation_map_constants((PCCPRECISION pcpath z) :: pconstant*, pcompilemap) = (PCCPRECISION pcpath z) :: $compilation_map_constants(pconstant*, pcompilemap)
+
+def $compilation_pair_value(S, parray*, PARRAY n_local, PARRAY n_live, pcompilemap) = (pcompilemap)
+  -- if $compilation_map_at(pcompilemap, n_local) = (n_live)
+def $compilation_pair_value(S, parray*, PARRAY n_local, PARRAY n_live, pcompilemap) = $compilation_pair_entries(S, parray*, parray*[n_local].ITEMS, S.ARRAYS[n_live].ITEMS, pcompilemap ++ [(n_local, n_live)])
+  -- if $compilation_map_at(pcompilemap, n_local) = eps
+  -- if ~$compilation_map_live(pcompilemap, n_live)
+  -- if $(n_local < |parray*| /\ n_live < |S.ARRAYS|)
+  -- if (HARRAY n_live) <- S.ALLOCATIONS
+def $compilation_pair_value(S, parray*, pvalue, pvalue, pcompilemap) = (pcompilemap)
+  -- if ~$is_array_value(pvalue)
+def $compilation_pair_value(S, parray*, pvalue, pvalue_actual, pcompilemap) = eps -- otherwise
+def $compilation_pair_entries(S, parray*, eps, eps, pcompilemap) = (pcompilemap)
+def $compilation_pair_entries(S, parray*, (ENTRY pkey (DIRECT pvalue)) :: pentry*, (ENTRY pkey (DIRECT pvalue_actual)) :: pentry_actual*, pcompilemap) = $compilation_pair_entries(S, parray*, pentry*, pentry_actual*, pcompilemap_next)
+  -- if $compilation_pair_value(S, parray*, pvalue, pvalue_actual, pcompilemap) = (pcompilemap_next)
+def $compilation_pair_entries(S, parray*, pentry*, pentry_actual*, pcompilemap) = eps -- otherwise
+def $compilation_pair_constants(S, parray*, eps, eps, pcompilemap) = (pcompilemap)
+def $compilation_pair_constants(S, parray*, (PCONSTANT pcpath pvalue) :: pconstant*, (PCONSTANT pcpath pvalue_actual) :: pconstant_actual*, pcompilemap) = $compilation_pair_constants(S, parray*, pconstant*, pconstant_actual*, pcompilemap_next)
+  -- if $compilation_pair_value(S, parray*, pvalue, pvalue_actual, pcompilemap) = (pcompilemap_next)
+def $compilation_pair_constants(S, parray*, pconstant :: pconstant_tail*, pconstant :: pconstant_actual*, pcompilemap) = $compilation_pair_constants(S, parray*, pconstant_tail*, pconstant_actual*, pcompilemap)
+  -- if ~$compilation_array_constant(pconstant)
+  -- if $compilation_metadata_constant(pconstant)
+def $compilation_pair_constants(S, parray*, pconstant*, pconstant_actual*, pcompilemap) = eps -- otherwise
+def $compilation_metadata_constant(PCCLASS pcpath pvalueclass) = true
+def $compilation_metadata_constant(PCCPRECISION pcpath z) = true
+def $compilation_metadata_constant(pconstant) = false -- otherwise
+def $compilation_map_arrays(S, parray*, eps, pcompilemap) = true
+def $compilation_map_arrays(S, parray*, (HARRAY n_local) :: pnode*, pcompilemap) = $compilation_map_arrays(S, parray*, pnode*, pcompilemap)
+  -- if $compilation_map_at(pcompilemap, n_local) = (n_live)
+  -- if $(n_local < |parray*| /\ n_live < |S.ARRAYS|)
+  -- if (HARRAY n_live) <- S.ALLOCATIONS
+  -- if S.ARRAYS[n_live] = parray*[n_local][.ITEMS = $compilation_map_entries(parray*[n_local].ITEMS, pcompilemap)]
+def $compilation_map_arrays(S, parray*, pnode*, pcompilemap) = false -- otherwise
+def $compilation_correspondence(S, ppinstalled, pconstant*) = (pcompilemap)
+  -- if $compilation_pair_constants(S, ppinstalled.ARRAYS, ppinstalled.CONSTANTS, pconstant*, eps) = (pcompilemap)
+  -- if $compilation_map_arrays(S, ppinstalled.ARRAYS, ppinstalled.ALLOCATIONS, pcompilemap)
+  -- if |pcompilemap| = |ppinstalled.ALLOCATIONS|
+  -- if pconstant* = $compilation_map_constants(ppinstalled.CONSTANTS, pcompilemap)
+def $compilation_correspondence(S, ppinstalled, pconstant*) = eps -- otherwise
+
+dec $compilation_refresh_value(pstate, parray*, pcompilemap, pcompilemap, pvalue) : (pstate, pcompilemap, pvalue)?
+dec $compilation_refresh_entries(pstate, parray*, pcompilemap, pcompilemap, pentry*) : (pstate, pcompilemap, pentry*)?
+dec $compilation_refresh_array(pstate, parray*, pcompilemap, pcompilemap, nat) : (pstate, pcompilemap, nat)?
+dec $compilation_refresh_arrays(pstate, parray*, pcompilemap, pcompilemap, pnode*) : (pstate, pcompilemap)?
+dec $compilation_reuse_table(pstate, pcompilemap, pcompilemap, parray) : nat?
+dec $compilation_refresh_table(pstate, pcompilemap, pcompilemap, nat, parray) : (pstate, pcompilemap, nat)
+dec $compilation_reuse_local(pstate, pcompilemap, pcompilemap, nat, parray) : nat?
+dec $compilation_pool_replace(ppool*, nat, pconstant*) : ppool*
+dec $compilation_refresh_pool(pstate, nat, ppinstalled, ppinstalled) : pstate
+
+def $compilation_refresh_value(S, parray*, pcompilemap_old, pcompilemap, PARRAY n) = ((S_next, pcompilemap_next, PARRAY n_live))
+  -- if $compilation_refresh_array(S, parray*, pcompilemap_old, pcompilemap, n) = ((S_next, pcompilemap_next, n_live))
+def $compilation_refresh_value(S, parray*, pcompilemap_old, pcompilemap, pvalue) = ((S, pcompilemap, pvalue))
+  -- if ~$is_array_value(pvalue)
+def $compilation_refresh_value(S, parray*, pcompilemap_old, pcompilemap, pvalue) = eps -- otherwise
+def $compilation_refresh_entries(S, parray*, pcompilemap_old, pcompilemap, eps) = ((S, pcompilemap, eps))
+def $compilation_refresh_entries(S, parray*, pcompilemap_old, pcompilemap, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = ((S_next, pcompilemap_next, (ENTRY pkey (DIRECT pvalue_next)) :: pentry_next*))
+  -- if $compilation_refresh_value(S, parray*, pcompilemap_old, pcompilemap, pvalue) = ((S_value, pcompilemap_value, pvalue_next))
+  -- if $compilation_refresh_entries(S_value, parray*, pcompilemap_old, pcompilemap_value, pentry*) = ((S_next, pcompilemap_next, pentry_next*))
+def $compilation_refresh_entries(S, parray*, pcompilemap_old, pcompilemap, pentry*) = eps -- otherwise
+def $compilation_refresh_array(S, parray*, pcompilemap_old, pcompilemap, n) = ((S, pcompilemap, n_live))
+  -- if $compilation_map_at(pcompilemap, n) = (n_live)
+def $compilation_refresh_array(S, parray*, pcompilemap_old, pcompilemap, n) = ($compilation_refresh_table(S_entries, pcompilemap_old, pcompilemap_entries, n, parray*[n][.ITEMS = pentry*]))
+  -- if $compilation_map_at(pcompilemap, n) = eps
+  -- if $(n < |parray*|)
+  -- if $compilation_refresh_entries(S, parray*, pcompilemap_old, pcompilemap, parray*[n].ITEMS) = ((S_entries, pcompilemap_entries, pentry*))
+def $compilation_refresh_array(S, parray*, pcompilemap_old, pcompilemap, n) = eps -- otherwise
+def $compilation_refresh_arrays(S, parray*, pcompilemap_old, pcompilemap, eps) = ((S, pcompilemap))
+def $compilation_refresh_arrays(S, parray*, pcompilemap_old, pcompilemap, (HARRAY n) :: pnode*) = $compilation_refresh_arrays(S_next, parray*, pcompilemap_old, pcompilemap_next, pnode*)
+  -- if $compilation_refresh_array(S, parray*, pcompilemap_old, pcompilemap, n) = ((S_next, pcompilemap_next, n_live))
+def $compilation_refresh_arrays(S, parray*, pcompilemap_old, pcompilemap, pnode*) = eps -- otherwise
+def $compilation_reuse_table(S, eps, pcompilemap, parray) = eps
+def $compilation_reuse_table(S, (n_local, n_live) :: (n_tail_local, n_tail_live)*, pcompilemap, parray) = (n_live)
+  -- if $(n_live < |S.ARRAYS|)
+  -- if S.ARRAYS[n_live] = parray
+  -- if ~$compilation_map_live(pcompilemap, n_live)
+def $compilation_reuse_table(S, (n_local, n_live) :: (n_tail_local, n_tail_live)*, pcompilemap, parray) = $compilation_reuse_table(S, (n_tail_local, n_tail_live)*, pcompilemap, parray) -- otherwise
+def $compilation_refresh_table(S, pcompilemap_old, pcompilemap, n, parray) = (S, pcompilemap ++ [(n, n_live)], n_live)
+  -- if $compilation_reuse_local(S, pcompilemap_old, pcompilemap, n, parray) = (n_live)
+def $compilation_refresh_table(S, pcompilemap_old, pcompilemap, n, parray) = (S[.ARRAYS = S.ARRAYS ++ [parray]][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_live]], pcompilemap ++ [(n, n_live)], n_live)
+  -- if $compilation_reuse_local(S, pcompilemap_old, pcompilemap, n, parray) = eps
+  -- if n_live = |S.ARRAYS|
+def $compilation_reuse_local(S, pcompilemap_old, pcompilemap, n, parray) = (n_live)
+  -- if $compilation_map_at(pcompilemap_old, n) = (n_live)
+  -- if $(n_live < |S.ARRAYS|)
+  -- if S.ARRAYS[n_live] = parray
+  -- if ~$compilation_map_live(pcompilemap, n_live)
+def $compilation_reuse_local(S, pcompilemap_old, pcompilemap, n, parray) = $compilation_reuse_table(S, pcompilemap_old, pcompilemap, parray) -- otherwise
+def $compilation_pool_replace(eps, n, pconstant*) = eps
+def $compilation_pool_replace(ppool :: ppool_tail*, n, pconstant*) = ppool[.CONSTANTS = pconstant*] :: ppool_tail* -- if ppool.UNIT = n
+def $compilation_pool_replace(ppool :: ppool_tail*, n, pconstant*) = ppool :: $compilation_pool_replace(ppool_tail*, n, pconstant*) -- if ppool.UNIT =/= n
+def $compilation_refresh_pool(S, n, ppinstalled_old, ppinstalled) = S_next[.POOLS = $compilation_pool_replace(S_next.POOLS, n, $compilation_map_constants(ppinstalled.CONSTANTS, pcompilemap))]
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $heap_unique(ppinstalled.ALLOCATIONS)
+  -- if $pool_arrays_valid(ppinstalled.ARRAYS, ppinstalled.ALLOCATIONS, ppinstalled.ALLOCATIONS)
+  -- if $constants_valid(pcunit, ppinstalled.CONSTANTS, ppinstalled.ALLOCATIONS)
+  -- if $pool_at(S.POOLS, n) = (ppool)
+  -- if $compilation_correspondence(S, ppinstalled_old, ppool.CONSTANTS) = (pcompilemap_old)
+  -- if $compilation_refresh_arrays(S, ppinstalled.ARRAYS, pcompilemap_old, eps, ppinstalled.ALLOCATIONS) = ((S_next, pcompilemap))
+  -- if |pcompilemap| = |ppinstalled.ALLOCATIONS|
+def $compilation_refresh_pool(S, n, ppinstalled_old, ppinstalled) = S[.COMPLETION = UNSUPPORTED "invalid refreshed compilation pool"] -- otherwise
+
+dec $compilation_classes_without(pclassdesc*, nat) : pclassdesc*
+dec $compilation_functions_without(pfunction*, nat) : pfunction*
+dec $compilation_classes_replace(pclassdesc*, nat, pclassdesc*) : pclassdesc*
+dec $compilation_functions_replace(pfunction*, nat, pfunction*) : pfunction*
+dec $compilation_code_replace(pcode*, pcode) : pcode*
+dec $compilation_refresh_image(pstate, nat, ppinstalled, ppinstalled) : pstate
+def $compilation_classes_without(eps, n) = eps
+def $compilation_classes_without(pclassdesc :: pclassdesc_tail*, n) = $compilation_classes_without(pclassdesc_tail*, n)
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+def $compilation_classes_without(pclassdesc :: pclassdesc_tail*, n) = pclassdesc :: $compilation_classes_without(pclassdesc_tail*, n) -- otherwise
+def $compilation_functions_without(eps, n) = eps
+def $compilation_functions_without(pfunction :: pfunction_tail*, n) = $compilation_functions_without(pfunction_tail*, n)
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+def $compilation_functions_without(pfunction :: pfunction_tail*, n) = pfunction :: $compilation_functions_without(pfunction_tail*, n) -- otherwise
+def $compilation_classes_replace(eps, n, pclassdesc*) = pclassdesc*
+def $compilation_classes_replace(pclassdesc :: pclassdesc_tail*, n, pclassdesc_new*) = pclassdesc_new* ++ $compilation_classes_without(pclassdesc_tail*, n)
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+def $compilation_classes_replace(pclassdesc :: pclassdesc_tail*, n, pclassdesc_new*) = pclassdesc :: $compilation_classes_replace(pclassdesc_tail*, n, pclassdesc_new*) -- otherwise
+def $compilation_functions_replace(eps, n, pfunction*) = pfunction*
+def $compilation_functions_replace(pfunction :: pfunction_tail*, n, pfunction_new*) = pfunction_new* ++ $compilation_functions_without(pfunction_tail*, n)
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+def $compilation_functions_replace(pfunction :: pfunction_tail*, n, pfunction_new*) = pfunction :: $compilation_functions_replace(pfunction_tail*, n, pfunction_new*) -- otherwise
+def $compilation_code_replace(eps, pcode) = [pcode]
+def $compilation_code_replace(pcode_old :: pcode*, pcode_new) = pcode_new :: pcode* -- if pcode_old.UNIT = pcode_new.UNIT
+def $compilation_code_replace(pcode_old :: pcode*, pcode_new) = pcode_old :: $compilation_code_replace(pcode*, pcode_new) -- if pcode_old.UNIT =/= pcode_new.UNIT
+def $compilation_refresh_image(S, n, ppinstalled_old, ppinstalled) = S_pool[.CLASSES = $compilation_classes_replace(S.CLASSES, n, ppinstalled.CLASSES)][.FUNCTIONS = $compilation_functions_replace(S.FUNCTIONS, n, ppinstalled.FUNCTIONS)][.CLOSURETEMPLATES = $compilation_functions_replace(S.CLOSURETEMPLATES, n, ppinstalled.CLOSURETEMPLATES)][.CODE = $compilation_code_replace(S.CODE, ppinstalled.CODE)]
+  -- if S_pool = $compilation_refresh_pool(S, n, ppinstalled_old, ppinstalled)
+  -- if S_pool.COMPLETION = NORMAL
+def $compilation_refresh_image(S, n, ppinstalled_old, ppinstalled) = S_pool
+  -- if S_pool = $compilation_refresh_pool(S, n, ppinstalled_old, ppinstalled)
+  -- if S_pool.COMPLETION =/= NORMAL
 
 dec $compilation_image_valid(pstate, pcunit, ppstate) : bool
 def $compilation_image_valid(S, pcunit, P) = true

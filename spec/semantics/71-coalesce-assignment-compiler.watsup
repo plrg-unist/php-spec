@@ -23,6 +23,7 @@ def $ppcoalescethis(P, expression) = P -- otherwise
 def $ppcoalesceassign(P, pcpath, expression_1, expression_2) = $ppclearvalue($pprefetch($ppassignright($ppexpr(P, pcpath ++ [PCFIELD 0], expression_1, PPIS), pcpath, expression_1, expression_2, false), pcpath ++ [PCFIELD 0], expression_1))
 
 def $ppmemo_at(eps, pcpath) = eps
+def $ppmemo_at((PPCPRECISION pcpath_other z) :: ppexprdone*, pcpath) = $ppmemo_at(ppexprdone*, pcpath)
 def $ppmemo_at((PPCEFFECT pcpath_effect) :: ppexprdone*, pcpath) = $ppmemo_at(ppexprdone*, pcpath)
 def $ppmemo_at((PPCEXPR pcpath n pvalue?) :: ppexprdone*, pcpath) = ((n, pvalue?))
 def $ppmemo_at((PPCEXPR pcpath_other n pvalue?) :: ppexprdone*, pcpath) = $ppmemo_at(ppexprdone*, pcpath)
