@@ -70,3 +70,20 @@ echo "R:",$r276,":",$a276[1],":",$a276[2],":",CompoundCowBool276::$value[2],":",
 $a276=false;echo "V:",CompoundCowBool276::$value===false?1:0,":",$copy276[1],";";
 """, b'D;M;R:3:3:5:5:0;V:1:3;'),
 ]
+
+# Exact independent originals already accepted in the twelve-source campaign.
+CASES += [
+    ('false-throw-illegal-array-key-replaces-error-with-original-chain', b"""<?php
+error_reporting(0);class IllegalAfterThrow276{public static int $dest=9;}$a276=false;$key276=[];
+$older276=new Error('older');$error276=new Error('handler',0,$older276);$original276=$error276;
+set_error_handler(function($n,$m){echo "D;";$e=$GLOBALS['error276'];unset($GLOBALS['error276'],$GLOBALS['older276']);throw $e;},8192);
+try{IllegalAfterThrow276::$dest=($a276[$key276]=17);}catch(TypeError $e){echo "C:",$e->getMessage()==='Cannot access offset of type array on array'?1:0,":",IllegalAfterThrow276::$dest,":",$a276===[]?1:0,":",$e->getPrevious()===$original276?1:0,":",$e->getPrevious()->getMessage(),":",$e->getPrevious()->getPrevious()->getMessage(),";";}
+restore_error_handler();
+""", b'D;C:1:9:1:1:handler:older;'),
+    ('typed-bool-reference-compound-initializes-array-without-fetch-check', b"""<?php
+error_reporting(0);class CompoundBool276{public static bool $value=false;}$a276=&CompoundBool276::$value;
+set_error_handler(function($n,$m){echo $n===8192?"D;":"M;";return false;},8194);
+try{$r276=($a276[1]+=3);echo "R:",$r276,":",$a276[1],":",CompoundBool276::$value[1],";";}catch(TypeError $e){echo "T:",CompoundBool276::$value===false?1:0,":",$e->getMessage(),";";}
+restore_error_handler();
+""", b'D;M;R:3:3:3;'),
+]
