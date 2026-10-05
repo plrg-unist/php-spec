@@ -532,8 +532,11 @@ links now retain dependency caches owned by already published classes and retire
 unpublished import caches with their array owners. Three PHP-error sources and194
 supplied reached restoration/history/ownership conditions pass; six generated setup
 checks are separate. A source-rederived failure marker authenticates retention
-without publishing the failed class. Error-after-fill, held/open compilation,
-raw-trait failed fills and object-bearing dependencies remain required. Traits stay partial.
+without publishing the failed class. The same disposition after a reported
+initializer Error adds three PHP-error comparisons and188 supplied reached
+cache-cause/cleanup checks, with six generated setup checks separate. Held/open
+compilation, raw-trait failed fills and object-bearing dependencies remain required.
+Traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
