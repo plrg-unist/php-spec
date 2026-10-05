@@ -614,6 +614,11 @@ def $generator_retained_object(GENERATOR pgenerator, pcallcontext) = true
   -- if pframe.CONTEXT = (pcallcontext)
 def $generator_retained_object(pobject, pcallcontext) = false -- otherwise
 def $generator_context_retained(S, pcallcontext) = ($generator_context_operation(S, pcallcontext) =/= eps \/ $generator_retained_nodes(S, S.ALLOCATIONS, pcallcontext))
+;; Task validation views a suspended frame without inventing a caller frame.
+def $call_current_valid(S) = $call_context_valid(S, pcallcontext, S.CVS)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = eps
+  -- if $generator_retained_nodes(S, S.ALLOCATIONS, pcallcontext)
 def $generator_method_scope_kind(S, porigin_method, porigin_site) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = porigin_method /\ pcallcontext.CALLSITE = (porigin_site)
