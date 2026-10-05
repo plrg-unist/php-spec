@@ -445,6 +445,9 @@ S_table.CONSTANTOBJECTS = eps
 $class_constant_new_work(S_table, ptbytes_class, z) = ptask_work*
 ptask_work* =/= eps
 $origin_node(S_table.SOURCES, porigin_site) = (NExprNew phpType28 (SEQUENCE phpType7_arguments*) metadata)
+n_work = |ptask_work*|
+n_tail = $(n_work + 1)
+ptask_tail* = S_table.TODO[n_tail:|S_table.TODO|]
 S_table.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes_class phpType7_arguments* true z] ++ ptask_tail*
 $class_constant_constructor_task(S_table, ptbytes_class, phpType7_arguments*, true, z)
 ~$class_constant_constructor_task(S_table, ptbytes_class, phpType7_arguments*, false, z)
