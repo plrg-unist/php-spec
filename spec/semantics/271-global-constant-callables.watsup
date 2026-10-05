@@ -328,7 +328,7 @@ def $global_constant_lookup_required(S, porigin_decl, pconstantfact) = true
   -- if $compiled_redirect(S, pconstantfact.ORIGIN) = eps
   -- if $origin_node(S.SOURCES, pconstantfact.ORIGIN) = (NExprConstFetch name metadata)
 def $global_constant_lookup_required(S, porigin_decl, pconstantfact) = false -- otherwise
-def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = ({ORIGIN porigin_decl, SITE porigin_site, DECL puserconstant.ORIGIN, PREFIX |S.USERCONSTANTS|})
+def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = ({ORIGIN porigin_decl, SITE porigin_site, DECL puserconstant.ORIGIN, PREFIX n_constants})
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if porigin_decl = pconstantcontext.ORIGIN
   -- if porigin_decl = PORIGIN n_unit pcpath_decl
@@ -346,6 +346,7 @@ def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = 
   -- if $global_constant_alias(S, S.USERCONSTANTS, porigin_site) = (puserconstant)
   -- if pvalueclass = puserconstant.CLASS
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if n_constants = |S.USERCONSTANTS|
 def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = eps -- otherwise
 dec $global_constant_lookup_valid(pstate, porigin, pconstantfact, puserconstant*) : bool
 def $global_constant_lookup_valid(S, porigin_decl, pconstantfact, puserconstant_prior*) = true
