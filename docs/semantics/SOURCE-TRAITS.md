@@ -210,9 +210,9 @@ typed binding restores its demand context, and failed temporary owners retire
 without dropping completed nested caches or the original handler graph.
 Other native preparations remain uncredited until implemented.
 
-Dependency fills in held/open compilation, unpublished-owner object creation and
-wider callable initializer contexts remain required. These
-wider failed-fill paths keep an explicit Unsupported boundary.
+Dependency fills in held/open compilation and unpublished-owner object creation
+keep explicit Unsupported boundaries. Cross-file constant typed demand and further
+callable initializer contexts remain unvalidated obligations.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
 Historical reached
