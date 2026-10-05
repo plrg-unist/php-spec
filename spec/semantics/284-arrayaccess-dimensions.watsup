@@ -13,6 +13,7 @@ dec $arrayaccess_notice_method(pstate, pclassdesc, pclassdesc, pmethoddesc, pmch
 dec $arrayaccess_notice_members(pstate, pclassdesc, ptbytes*, ppmethodinherited*, ppmethodinherited*) : pdeclnoticeplan
 dec $access_instance(pstate, pvalue) : bool
 dec $access_base(pstate, pbase) : bool
+dec $access_probe(pstate, pbase) : bool
 dec $access_record(pstate, porigin, int, paccessmode, pbase, poperand, poperand, ptask, nat?, bool) : paccess
 dec $access_dimension(pstate, poperand, int, pkeymode) : pstate
 dec $access_set_plan(pstate) : paccess?
@@ -157,7 +158,11 @@ def $access_instance(S, pvalue) = false -- otherwise
 def $access_base(S, BASE_VALUE poperand) = $access_instance(S, pvalue)
   -- if S_read = $quiet_operand(S, poperand)
   -- if S_read.RESULT = KNOWN pvalue
-def $access_base(S, BASE_DIM pbase poperand z) = $access_base(S, pbase)
+def $access_base(S, BASE_DIM pbase poperand z) = true
+  -- if $access_base(S, pbase)
+def $access_base(S, BASE_DIM pbase poperand z) = $access_probe(S, BASE_DIM pbase poperand z)
+  -- if ~$access_base(S, pbase)
+def $access_base(S, BASE_GLOBAL poperand z) = $access_probe(S, BASE_GLOBAL poperand z)
 def $access_base(S, pbase) = false -- otherwise
 def $access_read_pending(S) = true
   -- if S.ORIGIN = (porigin)
@@ -601,3 +606,12 @@ def $access_cv_operand(poperand) = false -- otherwise
 
 def $access_read_object(n, KEY_TEST b) = eps
 def $access_read_object(n, pkeymode) = (n) -- if ~$key_test_mode(pkeymode)
+
+;; This admission probe performs no user call and retains no roots. Any observed
+;; diagnostic belongs to the real KEY_READ_BASE execution, not to this predicate.
+def $access_probe(S, pbase) = true
+  -- if S_probe = $quiet_base(S, pbase, $(-1))
+  -- if S_probe.COMPLETION = NORMAL
+  -- if S_probe.RESULT = KNOWN pvalue
+  -- if $access_instance(S, pvalue)
+def $access_probe(S, pbase) = false -- otherwise
