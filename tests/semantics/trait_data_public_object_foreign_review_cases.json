@@ -1,0 +1,19 @@
+{
+  "scope": "Independent native-only warm valid foreign Z Closure versus cold public Y Closure during trait property compatibility; zero model credit.",
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; project profile. Native-only object source-flow preparation; zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "cold-public-closure-fill-keeps-distinct-warm-foreign-object",
+      "source": "<?php\nclass P{\n public const Y=static function(){echo self::class,\":\",static::class,\";\";};\n public const Closure Z=static function(){echo \"Z;\";};\n}\n$z=P::Z;\ntrait T{public static $x=P::Y;}\necho \"PRE;\";\nclass C{use T;public static $x=P::Y;}\n$a=P::Y;echo C::$x===$a?\"Y;\":\"N;\";(C::$x)();echo $z===$a?\"S;\":\"D;\";\n",
+      "source_sha256": "4c6bcea64d39f40d5a0c372a924b28016d1765a0f391a623452bff19e05f7770",
+      "status": "normal",
+      "stdout_base64": "UFJFO1k7UDpQO0Q7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-object-cache-review-274/.tools/trait-public-foreign-closure-native266-i6td7284/report.json",
+      "native_raw_sha256": "7afa8f48ae3b5c78bc1049b4f0d287252bd836b5f0fb0ddd8d6005e2fc5f810d"
+    }
+  ]
+}
