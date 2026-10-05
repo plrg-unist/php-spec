@@ -34,6 +34,7 @@ CASES = {
     'empty-getreturn-completes': (b'<?php\nfunction seq(){if(false)yield 1;echo "B";return 6;}$g=seq();echo "C";echo $g->getReturn();echo $g->valid()?"T":"F";echo $g->current()===null?"N":"X";$g->rewind();echo "R";', b'CB6FNR'),
     'getreturn-array-copy': (b'<?php\nfunction seq(){yield 1;return [2,3];}$g=seq();$g->next();$r=$g->getReturn();$r[0]=9;echo $g->getReturn()[0],":",$r[0],":",$g->getReturn()[1];', b'2:9:3'),
     'inherited-method-scope': (b'<?php\nclass A {private $x=4;const C="A";function seq(){yield $this->x;yield self::C;yield static::class;}}class B extends A {}$b=new B;$g=$b->seq();unset($b);echo "C";foreach($g as $v){echo $v,";";}', b'C4;A;B;'),
+    'over-arity-trace-before-initialize': (b'<?php\nfunction seq(){echo "B";yield 1;}function value(){echo "A";return 3;}$g=seq();try{$g->current(value());}catch(ArgumentCountError $e){$t=$e->getTrace();echo $t[0]["function"],":",$t[0]["args"][0],":";}echo $g->current();', b'Acurrent:3:B1'),
 }
 UNSUPPORTED = {
     'unstarted-release': (b'<?php\nclass Box {function __destruct(){echo "D";}}function seq($b){try{echo "B";yield 1;}finally{echo "F";}}$g=seq(new Box);echo "C";unset($g);echo "Z";', b'CDZ'),
