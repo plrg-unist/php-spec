@@ -335,7 +335,7 @@ def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcacheca
   -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc_active)
   -- if S.ORIGIN = (porigin_site)
   -- if $class_constant_active(S)
-  -- if $constant_callable_path(S, porigin_site, pclassconstantdesc_active.INITIALIZER) \/ $trait_cache_object_binding(S.TODO) \/ porigin_site = pclassconstantcontext.ORIGIN \/ porigin_site = pclassconstantdesc_active.ORIGIN
+  -- if $constant_callable_path(S, porigin_site, pclassconstantdesc_active.INITIALIZER) \/ $trait_cache_object_binding(S.TODO) \/ (porigin_site) = pclassconstantcontext.ORIGIN \/ porigin_site = pclassconstantdesc_active.ORIGIN
   -- if S_next = $trait_cache_object_step(S, ptraitcachecause)
   -- if $trait_cache_object_events(pclassconstantdesc_active.OWNER, porigin_site, S_next.EVENTS) = (pfdiagnostic*)
 def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = F[.VALUE = eps][.MEMORY = $trait_cache_object_restore(F, S)[.COMPLETION = UNSUPPORTED "public trait object dependency evaluation"]] -- otherwise
