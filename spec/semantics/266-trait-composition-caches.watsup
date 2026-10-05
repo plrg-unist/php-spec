@@ -45,6 +45,7 @@ dec $trait_cache_bound_value(pstate, pclassconstantdesc, pvalueclass, nat) : boo
 dec $trait_cache_flow_events(pstate, pclassconstantevent*, porigin, porigin, nat) : (pclassconstantdesc, ptraitcachecause)?
 dec $trait_cache_flow_event(pstate, pclassconstantevent, porigin, porigin, nat) : (pclassconstantdesc, ptraitcachecause)?
 dec $trait_cache_source_key(pstate, porigin, porigin, nat) : pvalue?
+dec $trait_cache_flow_key(pstate, porigin, phpType5, int, porigin, nat) : pkey?
 dec $trait_cache_dim_source(pstate, porigin, pkey, porigin, nat) : porigin?
 dec $trait_cache_dim_items(pstate, porigin, pkey, porigin, nat, nat, phpType13*, int, porigin?) : porigin?
 
@@ -449,16 +450,14 @@ def $trait_cache_source_key(S, PORIGIN n pcpath, porigin_owner, n_prefix) = F_re
   -- if F_result.MEMORY.COMPLETION = NORMAL
 def $trait_cache_source_key(S, porigin, porigin_owner, n_prefix) = eps -- otherwise
 
-def $constant_callable_array_flow_key(S, porigin, ABSENT, i, porigin_owner, n_prefix) = ($pvclass_append_key(i))
+def $constant_callable_array_flow_key(S, porigin, phpType5, i, porigin_owner, n_prefix) = $trait_cache_flow_key(S, porigin, phpType5, i, porigin_owner, n_prefix)
   -- if $trait_cache_flow_context(S, porigin, porigin_owner, n_prefix) =/= eps
-def $constant_callable_array_flow_key(S, porigin, expression, i, porigin_owner, n_prefix) = (S_key.KEY)
-  -- if $trait_cache_flow_context(S, porigin, porigin_owner, n_prefix) =/= eps
+def $trait_cache_flow_key(S, porigin, ABSENT, i, porigin_owner, n_prefix) = ($pvclass_append_key(i))
+def $trait_cache_flow_key(S, porigin, expression, i, porigin_owner, n_prefix) = (S_key.KEY)
   -- if $trait_cache_source_key(S, $constant_child(porigin, [PCFIELD 0]), porigin_owner, n_prefix) = (pvalue)
   -- if S_key = $key_value($initial_state(NORMAL), pvalue, true, $expression_line(expression))
   -- if S_key.COMPLETION = NORMAL
-def $constant_callable_array_flow_key(S, porigin, phpType5, i, porigin_owner, n_prefix) = eps
-  -- if $trait_cache_flow_context(S, porigin, porigin_owner, n_prefix) =/= eps
-  -- otherwise
+def $trait_cache_flow_key(S, porigin, phpType5, i, porigin_owner, n_prefix) = eps -- otherwise
 
 ;; A literal-array dimension keeps the selected source occurrence, including
 ;; replacement by a later same key. Its object still needs the actual receipt.
