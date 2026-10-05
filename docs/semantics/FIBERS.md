@@ -64,10 +64,10 @@ source-derived states/782 conditions retain the mixed cuts below.
 | Reporting/INI and parked-handler states, 137 conditions | `949d94782`, `fiber-state-review-_egc0_sx` |
 | Named-default and entry-error states, 172 conditions | `6dc7900c4`, `fiber-state-review-8tppvo5a` |
 | Actual constant-NEW identity transfer and separate running Generator: two normal originals | `5b720fd10`, `fiber-review-yxlc_qs5` |
-| Initializer/autoload and active-Generator helper transfer controls: no agreement | `5b720fd10`, `fiber-review-yxlc_qs5` |
+| Autoload and active-Generator helper transfer controls: no agreement | `5b720fd10`, `fiber-review-yxlc_qs5` |
 | Separate running Generator with parked Fiber, 102 conditions | `5e81060c6`, `fiber-state-review-1pzg3rap` |
 | Module AL checks | `ae3c73e1d`, `fiber-al-hmn8wukf`, 264 modules; entry-error cut `29f6ba481`, `fiber-al-n_s2keum`; prior preflight cut `6e053c12c`, `fiber-al-csrau3ee` |
-| Actual-parent AL check, 271 modules | `5b720fd10`, `fiber-al-nu57_5eg` |
+| Actual-parent AL checks, 271 modules | `07c427f3e`, `fiber-al-wvfym0ir`, preserving accepted `0e1252529`; prior interaction cut `5b720fd10`, `fiber-al-nu57_5eg` |
 
 Sources use 100000 steps, 60 seconds per model and a 75-second process cap;
 state checks use 4000-step seek/resume budgets and 120 seconds per case. Runs are
