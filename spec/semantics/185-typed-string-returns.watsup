@@ -13,6 +13,7 @@ def $typed_return_source(S, porigin_site, z) = false -- otherwise
 
 dec $typed_return_callback_type(pstate, nat) : bool
 def $typed_return_callback_type(S, n) = true
+  -- if ~$generator_active(S)
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF

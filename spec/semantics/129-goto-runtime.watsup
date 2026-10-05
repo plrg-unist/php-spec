@@ -11,7 +11,7 @@ def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $compiled_work(n, P.WORK)
   -- if P = $eval_source_ppstate(S, pcunit)
   -- if P.COMPLETION = PPCNORMAL
   -- if $declaration_unit_complete(S.DECLARATIONS, n)
-def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $function_tasks(S, pfunction)
+def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $function_body_tasks(S, pfunction)
   -- if S.CURRENT = (pcallcontext)
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
   -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_function
@@ -21,7 +21,7 @@ def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $closure_body(S, pfunction)
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
   -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_function
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata)
-def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $function_tasks(S, pfunction)
+def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $function_body_tasks(S, pfunction)
   -- if S.CURRENT = (pcallcontext)
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
   -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_function

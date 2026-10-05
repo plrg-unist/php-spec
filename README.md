@@ -171,6 +171,11 @@ publication, while user fatals stop it. Compiler fatal formatting retains the
 primary diagnostic through source effects, nested eval/include compilation and
 deferred runtime class-link failures.
 IteratorAggregate, ArrayAccess and other Traversable consumers remain required.
+[Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
+ordinary bodies in object-owned frames. Value yields, literal iterator methods,
+`getReturn` and value `foreach` retain real resumer scope and traces. Delegation,
+reference yields, further call forms and forced-close/destructor behavior remain
+required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.

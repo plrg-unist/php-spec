@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Generator280 creates object-owned suspended frames after eager ordinary receives.
+Value yields, literal iterator methods, `getReturn` and value foreach retain
+captured aliases, ordinary private creation scope and real resumer traces.
+Generator-specific completion bypasses ordinary declared-return coercion;
+return-supertype admission mirrors the pinned one-level intersection scan.
+Twenty-seven normal sources and three compiler rejections agree at e235d8dd1
+in separate first5 and independent25 cuts. Six lifecycle Unsupported controls
+earn no agreement. Independent source-reached carrier144/Closure154 pass at2f21,
+nested77 atd7ca and abrupt44 at6c221 (419 premises across four originals).
+Full public admission, live/suspended cursor owners, captured references and
+natural try/finally cleanup pass; failed checks remain retained. Delegation/reference
+yields, further call forms,
+changed caller scopes, force-close finalizers and destruction/GC remain required.
+Three introduced parent sources agree at9abff: constructor-created constant
+identity, deferred REAL Closure autoload and parse-folded versus live precision.
+The new constant95 state phase retains the same completed receipt through
+receive/yield/return and retirement; its noncached instance owners pass full
+public/heap admission. Original interpreter/fixture failures retain zero credit.
+[Scope and maintained tests](docs/semantics/GENERATORS.md).
+
 Autoload277 now implements the four required SPL control APIs with real callable
 caches, owner roots and live queue cursor/capacity behavior. Ordinary named/dynamic
 NEW and class-parent lookup suspend before arguments; lookup inherits source
