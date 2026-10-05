@@ -156,7 +156,7 @@ def $access_dimension(S, poperand, z, pkeymode) = $access_key(S, paccess[.SELECT
   -- if S_read = $quiet_operand(S, S.RESULT)
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if S.ORIGIN = (porigin)
-  -- if paccess = $access_record(S, porigin, z, ACCESS_READ pkeymode, BASE_VALUE S.RESULT, poperand, KNOWN PNULL, KEY_READ_DIM poperand z pkeymode, (n), ~$key_test_mode(pkeymode))
+  -- if paccess = $access_record(S, porigin, z, ACCESS_READ pkeymode, BASE_VALUE S.RESULT, poperand, KNOWN PNULL, KEY_READ_DIM poperand z pkeymode, $access_read_object(n, pkeymode), ~$key_test_mode(pkeymode))
 rule PhpStep/access-read: S ~> $access_dimension(S, poperand, z, pkeymode)
   -- if S.TODO = (KEY_READ_DIM poperand z pkeymode) :: ptask_tail*
   -- if $access_dimension_pending(S)
@@ -611,3 +611,7 @@ def $access_container(S, pcontainerread, n) = $access_call(S, paccess, $ptascii(
 dec $access_cv_operand(poperand) : bool
 def $access_cv_operand(VARIABLE n_name* z) = true
 def $access_cv_operand(poperand) = false -- otherwise
+
+dec $access_read_object(nat, pkeymode) : nat?
+def $access_read_object(n, KEY_TEST b) = eps
+def $access_read_object(n, pkeymode) = (n) -- if ~$key_test_mode(pkeymode)
