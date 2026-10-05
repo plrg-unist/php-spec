@@ -527,8 +527,11 @@ def $fiber_named_map(pfunction, pnamedargs, eps) = pnamedargs
 def $fiber_named_map(pfunction, pnamedargs, (ptbytes, poperand) :: (ptbytes_tail, poperand_tail)*) = $fiber_named_map(pfunction, $named_store(pnamedargs, $fiber_named_target(pfunction, ptbytes), poperand), (ptbytes_tail, poperand_tail)*)
 def $fiber_parameters_reference(eps) = false
 def $fiber_parameters_reference(psparam :: psparam_tail*) = (psparam.BYREF \/ $fiber_parameters_reference(psparam_tail*))
-rule PhpStep/fiber-enter-name-error: S ~> $throw_scalar(S, "Error", ptbytes, $(-1))
+rule PhpStep/fiber-enter-name-error: S ~> $throwable_allocate_at(S, "Error", ptbytes, pfibercaller.API.SITE, pfibercaller.API.LINE, $eval_exception_trace(S))
   -- if S.TODO = (FIBER_ENTER n pnamedargs) :: ptask_tail*
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.OBJECT = n
+  -- if pfibercaller.API.KIND = eps /\ pfibercaller.API.START = (pnamedargs)
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.TARGET = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
@@ -662,7 +665,7 @@ def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FI
 def $fiber_trace_type(pintrinsic) = $ptascii("::") -- if $fiber_static(pintrinsic)
 def $fiber_trace_type(pintrinsic) = $ptascii("->") -- if ~$fiber_static(pintrinsic)
 
-;; Each transfer consumes one global sequence number. A suspended continuation
+;; Each start/resume/throw activation consumes one global sequence number. A suspended continuation
 ;; must name its own last transfer, so a stale saved stack cannot be replayed.
 def $fiber_api_valid(S, pfiberapi) = true
   -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)

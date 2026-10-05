@@ -223,5 +223,13 @@
     "native_stdout": "3/ABZ|7|Unknown named parameter $missing|1:1|Cannot get fiber return value: The fiber threw an exception|Named parameter $a overwrites previous argument|1:1",
     "native_stderr": "",
     "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-entry-name-error-caller-provenance",
+    "source": "<?php\n$f = new Fiber(function ($a) { echo 'bad'; });\ntry {\n    $f->start(missing: 1);\n} catch (Error $e) {\n    $t = $e->getTrace();\n    echo (int)($e->getFile() === __FILE__), ':', $e->getLine(), '|';\n    echo (int)!isset($t[1]), ':', (int)($t[0]['file'] === __FILE__), ':', $t[0]['line'], ':', $t[0]['class'], ':', $t[0]['type'], ':', $t[0]['function'], ':', $t[0]['args']['missing'], '|';\n}\n$d = new Fiber(function ($a) { echo 'bad'; });\ntry {\n    $d->start(1, a: 2);\n} catch (Error $e) {\n    $t = $e->getTrace();\n    echo (int)($e->getFile() === __FILE__), ':', $e->getLine(), '|';\n    echo (int)!isset($t[1]), ':', (int)($t[0]['file'] === __FILE__), ':', $t[0]['line'], ':', $t[0]['class'], ':', $t[0]['type'], ':', $t[0]['function'], ':', $t[0]['args'][0], ':', $t[0]['args']['a'];\n}\n",
+    "source_sha256": "4dc674f4a5deb23b90cdc879758402e5011b88fb7ed52b3b50fd4a9370616ef2",
+    "native_stdout": "1:4|1:1:4:Fiber:->:start:1|1:12|1:1:12:Fiber:->:start:1:2",
+    "native_stderr": "",
+    "expected_model": "normal"
   }
 ]
