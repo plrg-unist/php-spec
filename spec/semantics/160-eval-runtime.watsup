@@ -423,7 +423,7 @@ def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S_context, psy
   -- if pframe.LOCALS = (psymboltable)
   -- if S_context = $constant_frame_scope(S, pframe, pframe_tail*)
   -- if $default_internal_callback_context(S_context, pcallcontext) \/ $ordinary_internal_callback_context(S_context, pcallcontext) \/ $autoload_context_kind(S_context, pcallcontext)
-def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S, psymboltable.ENV, pframe.CONTEXT)
+def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context($generator_trace_scope(S, pframe.CONTEXT, pframe_tail*), psymboltable.ENV, pframe.CONTEXT)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
   -- if S_context = S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*]

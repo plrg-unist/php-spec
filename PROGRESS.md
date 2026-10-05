@@ -7,6 +7,52 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Generator280 creates object-owned suspended frames after eager ordinary receives.
+Value yields, literal iterator methods, `getReturn` and value foreach retain
+captured aliases, ordinary private creation scope and real resumer traces.
+Generator-specific completion bypasses ordinary declared-return coercion;
+return-supertype admission mirrors the pinned one-level intersection scan.
+Twenty-seven normal sources and three compiler rejections agree at e235d8dd1
+in separate first5 and independent25 cuts. Six lifecycle Unsupported controls
+earn no agreement. Independent source-reached carrier144/Closure154 pass at2f21,
+nested77 atd7ca and abrupt44 at6c221 (419 premises across four originals).
+Full public admission, live/suspended cursor owners, captured references and
+natural try/finally cleanup pass; failed checks remain retained. Delegation/reference
+yields, further call forms,
+changed caller scopes, force-close finalizers and destruction/GC remain required.
+Three introduced parent sources agree at9abff: constructor-created constant
+identity, deferred REAL Closure autoload and parse-folded versus live precision.
+The new constant95 state phase retains the same completed receipt through
+receive/yield/return and retirement; its noncached instance owners pass full
+public/heap admission. Original interpreter/fixture failures retain zero credit.
+[Scope and maintained tests](docs/semantics/GENERATORS.md).
+
+Literal Generator `send`/`throw` capture one argument before initialization,
+deliver used yield results or an ordinary Throwable search, and retain actual
+API arguments and live resumer traces. Twenty-three new normal sources agree
+at26328 in separate author5/independent18 cuts. Fresh initialization failure keeps
+the supplied exception primary and links the initialization exception as previous.
+Independent array146/finally124/initialization101 pass at fixture887f51d29,
+semantic26328 (371 conditions across three originals): actual input owners,
+exception identity, full public admission and malformed resume rejection.
+One actualc729 source at63b45/semanticca7da combines default NEW autoload,
+live/default versus parser-folded precision and fresh sent-object identity.
+The original SL structuring failure retains zero credit. Full Generator
+follow-ons remain open.
+
+Parameter-default NEW autoload285 resumes authentic deferred initializers after
+lookup, preserving declaration strictness and formal lines. Loaded constructors
+are selected afresh; allocation and all nested AST arguments precede constructor
+access, while loader throw/miss suppresses arguments. Nine private sources agree
+at07a78; lookup94/recursive37/retirement43 pass at ebb346, including retained
+receiving owners and heap-valid pending/history tag, line and caller forgeries.
+One actuald57/GEN280 source agrees at24f376: lookup/arguments/construction remain
+eager before generator suspension. Original public/fixture failures and the
+parameter-Closure initializer Unsupported retain zero credit; its WeakReference
+lifetime oracle is native-only. The [ledger](coverage/semantics/default-new-autoload-review.json)
+keeps these cuts distinct. Global-constant NEW autoload, parameter callable
+initializer producers and wider lookup/link consumers remain required.
+
 Autoload277 now implements the four required SPL control APIs with real callable
 caches, owner roots and live queue cursor/capacity behavior. Ordinary named/dynamic
 NEW and class-parent lookup suspend before arguments; lookup inherits source
@@ -18,8 +64,9 @@ sources pass at b967 and two at b440; guard cuts stay separate in the
 pass with seven typing bindings and eight repeated setup premises. One actual
 b025/global-constant REAL loader source passes at a37. Original failures and AL
 timeouts remain retained; SL uses the existing exact runner at the same120s cap.
-Default/global-constant AST NEW, wider lookup/link consumers and complete core
-remain required; default filesystem search is excluded and returns stay paused.
+Parameter-default AST NEW is covered by285 above. Global-constant AST NEW and
+wider lookup/link consumers remain required; default filesystem search is
+excluded and returns stay paused.
 
 Scalar-container continuations282 now stage missing-base, key-CV and offset
 warnings through ordinary and quiet reads. Missing-base warnings resume with
@@ -52,16 +99,33 @@ containers, string/object producers and complete core remain required.
 Live precision272 now preserves registered/raw get/set/Restore through option
 callbacks, runtime string types/conversions, nonnumeric comparisons and late trace
 formatting. Each main/eval/file unit retains creation precision for parser-folded
-literals and ordinary compiled operands; genuine constant/default/property AST
-operands instead use live precision after callbacks. Sixteen exact source/profile
-comparisons across eleven main programs retain d028/e594/73011 cuts. At73011,
+literals; compiled operands retain their conversion-point precision, while genuine
+constant/default/property AST operands instead use live precision after callbacks.
+Sixteen exact source/profile comparisons across eleven main programs retain
+d028/e594/73011 cuts. At73011,
 state54/39/27/74 (194 supplied checks plus12 program bindings) and transport12 pass;
 SL261 and the changed adapter jobs1 build retain their separate cuts. The actual
 ae0 parent is preserved in264 modules through focused source review, with no
 renewed execution. [Ledger](coverage/semantics/precision-review.json) retains the
-include-history and deferred-concat mismatches plus fixture failures. Changed
-precision during suspended eval compilation, Array include/eval warning ingress,
-`serialize_precision` and wider raw-float Throwable formatters remain required.
+include-history and deferred-concat mismatches plus fixture failures. Array
+include/eval warning ingress, `serialize_precision` and wider raw-float Throwable
+formatters remain required.
+
+Suspended eval compilation now records genuine precision resume epochs, retaining
+parser creation separately from later concat/name/fold conversion points. Image
+refresh preserves escaped earlier arrays, callback allocations and enriched bound
+class data; pending throw/exit still permit later compilation and publication.
+Nine exact source comparisons retain c9a/f03 cuts. The325 supplied state controls
+plus16 program bindings retain f03/193/da3 cuts; named compiler-handler
+class causes require the real pending notice and exact eval entry. Actual266 key
+scratch now seeds source creation precision separately from live AST evaluation;
+one new exact source and28 supplied checks plus1 binding pass at75173 in strict
+SL. Both AL timeouts and the stale-wrapper rejection remain zero-credit. The
+actual318/GEN parent retains269 modules and passes SL at66453, without renewing
+source/state cuts. Original compiler/fixture failures and the former Unsupported
+frontier remain in the
+[precision ledger](coverage/semantics/precision-review.json). Wider callback cause
+selection, formatter/provider interactions and complete core remain required.
 
 Global constant callables271 now evaluate static/no-use Closures and function or
 static-method FCCs before registration. REAL lexical/called scope comes from the
@@ -91,8 +155,13 @@ USERCONSTANTS and real GLOBALS/CV owners retain values. Three exact source tuple
 pass at17c12b379; argument103/inherited84/retry87 AL premises retain041ce1/00578e/
 bc44da cuts (274 total). The optional-tuple and restored-MAIN fixture failures
 remain zero-credit. Frozen duplicate/argument-abort destructor originals await
-genuine eager release; cold no-constructor table work has a separate native-only
-control. Internal/Throwable/autoload and wider object/constant producers remain
+genuine eager release. Cold no-constructor table work adds source1 atd2fb and80 AL
+premises ata1e14a2b4: the instance-template warning precedes ignored arguments,
+with no allocation until table completion and no premature COMPLETE. A further
+source1/81 AL premises at97dab9f8b check failed table work before allocation and
+fresh declaration/NEW identities on same-text eval retry. The earlier cold fixture's three
+elaboration stops and one slice-length execution failure retain zero credit.
+Internal/Throwable/autoload and wider object/constant producers remain
 required; full core stays open and return verification stays paused.
 
 Deferred runtime class-link failures275 now replay the held notice prefix and

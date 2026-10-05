@@ -245,6 +245,8 @@ test-semantics: build
 	python3 tests/semantics/object_cast_protocol.py
 	python3 tests/semantics/precision_sources.py
 	python3 tests/semantics/precision_protocol.py
+	python3 tests/semantics/suspended_precision_sources.py
+	python3 tests/semantics/suspended_precision_protocol.py
 	python3 tests/semantics/noctor_compiler.py
 	python3 tests/semantics/noctor_args.py
 	python3 tests/semantics/noctor_args_protocol.py
@@ -327,6 +329,10 @@ test-semantics: build
 	python3 tests/semantics/autoload_protocol.py --group traces
 	python3 tests/semantics/autoload_protocol.py --group reference
 	python3 tests/semantics/autoload_protocol.py --group retirement
+	python3 tests/semantics/default_new_autoload_sources.py
+	python3 tests/semantics/default_new_autoload_protocol.py --group lookup
+	python3 tests/semantics/default_new_autoload_protocol.py --group recursive
+	python3 tests/semantics/default_new_autoload_protocol.py --group retirement
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
@@ -469,6 +475,8 @@ test-semantics: build
 	python3 tests/semantics/foreach_source_compiler.py
 	python3 tests/semantics/user_iterator.py
 	python3 tests/semantics/user_iterator_protocol.py
+	python3 tests/semantics/generator_effects_review.py
+	python3 tests/semantics/generator_effects_review_protocol.py
 	python3 tests/semantics/iterator_declaration_notices.py
 	python3 tests/semantics/eval_declaration_notices_protocol.py
 	python3 tests/semantics/runtime_formatter_protocol.py

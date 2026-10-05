@@ -129,36 +129,42 @@ CHECKS = {'initial': ['S_base = $initial_state(NORMAL)',
              '$call_descriptors_valid(S_file_done)',
              '$source_precision(S_file_done,(PORIGIN 1 eps)) = (3)'],
  'abrupt': ['S_rejected = '
-            '$php_precision_run(program_rejected,1000,"@REJECTED@",eps,false,eps,$ptascii("5junk"))',
-            'S_rejected.COMPLETION = SOURCE_PENDING',
-            'S_rejected.EVALCONTEXTS = pevalcontext :: eps',
-            '$declaration_precision(S_rejected.DECLARATIONS,1) = (3)',
-            '$call_descriptors_valid(S_rejected)',
-            'S_rejected_done = $eval_continue(S_rejected,(SOURCE_PARSE_REJECT 1 pevalcontext.BYTES '
-            '$ptascii("Unclosed \'(\'") 1))',
-            'S_rejected_done.COMPLETION = NORMAL',
-            '$precision_value(S_rejected_done) = 1',
-            '$call_descriptors_valid(S_rejected_done)',
-            '$declaration_history_valid(S_rejected_done)',
-            '$failed_source_at(S_rejected_done.FAILEDSOURCES,1) = (pfailedsource)',
-            'pfailedsource.KIND = FAILED_PARSE',
-            '$source_precision(S_rejected_done,(PORIGIN 1 eps)) = (3)',
-            'S_early = $php_precision_run(program_early,1000,"@EARLY@",eps,false,eps,$ptascii("5junk"))',
-            'S_early.COMPLETION = SOURCE_PENDING',
-            '$declaration_precision(S_early.DECLARATIONS,1) = (3)',
-            'S_early_resume = $precision_resume_seek($eval_resume(S_early,(SOURCE_ACCEPT 1 '
-            '$base64("ZnVuY3Rpb24gcHJlY2lzaW9uUGF1c2VkKCR4KXtyZXR1cm4gIiR7eH0iO30gY2xhc3MgUHJlY2lzaW9uTGF0ZXIge30=") '
-            'program_earlybody)),1000)',
-            'S_early_resume.COMPLETION = BUDGET',
-            '$precision_value(S_early_resume) = 1',
-            'S_early_resume.TODO = (EVAL_COMPILE_RESUME pevalcompile) :: ptask_tail*',
-            '$eval_compile_cursor_valid(S_early_resume,pevalcompile)',
-            '~$precision_eval_resume_valid(S_early_resume,pevalcompile)',
-            'S_early_stop = $drive_steps(S_early_resume[.COMPLETION = NORMAL],1)',
-            'S_early_stop.COMPLETION = UNSUPPORTED "precision changed during suspended eval compilation"',
-            '$precision_value(S_early_stop) = 1',
-            'S_early_stop.TODO = eps',
-            '$source_precision(S_early_stop,(PORIGIN 1 eps)) = (3)'],
+ '$php_precision_run(program_rejected,1000,"@REJECTED@",eps,false,eps,$ptascii("5junk"))',
+ 'S_rejected.COMPLETION = SOURCE_PENDING',
+ 'S_rejected.EVALCONTEXTS = pevalcontext :: eps',
+ '$declaration_precision(S_rejected.DECLARATIONS,1) = (3)',
+ '$call_descriptors_valid(S_rejected)',
+ 'S_rejected_done = $eval_continue(S_rejected,(SOURCE_PARSE_REJECT 1 pevalcontext.BYTES '
+ '$ptascii("Unclosed \'(\'") 1))',
+ 'S_rejected_done.COMPLETION = NORMAL',
+ '$precision_value(S_rejected_done) = 1',
+ '$call_descriptors_valid(S_rejected_done)',
+ '$declaration_history_valid(S_rejected_done)',
+ '$failed_source_at(S_rejected_done.FAILEDSOURCES,1) = (pfailedsource)',
+ 'pfailedsource.KIND = FAILED_PARSE',
+ '$source_precision(S_rejected_done,(PORIGIN 1 eps)) = (3)',
+ 'S_open = $php_precision_run(program_early,1000,"@EARLY@",eps,false,eps,$ptascii("5junk"))',
+ 'S_open.COMPLETION = SOURCE_PENDING',
+ 'S_ready = $precision_resume_seek($eval_resume(S_open,(SOURCE_ACCEPT 1 '
+ '$base64("ZnVuY3Rpb24gcHJlY2lzaW9uUGF1c2VkKCR4KXtyZXR1cm4gIiR7eH0iO30gY2xhc3MgUHJlY2lzaW9uTGF0ZXIge30=") '
+ 'program_earlybody)),1000)',
+ 'S_ready.COMPLETION = BUDGET',
+ 'S_ready.TODO = (EVAL_COMPILE_RESUME pevalcompile) :: ptask_tail*',
+ '$eval_compile_cursor_valid(S_ready,pevalcompile)',
+ '$precision_value(S_ready) = 1',
+ '~$precision_eval_resume_valid(S_ready,pevalcompile)',
+ 'S_changed = $drive_steps(S_ready[.COMPLETION = NORMAL],1)',
+ 'S_changed.COMPLETION = BUDGET',
+ '$eval_precision_epochs(S_changed.DECLARATIONS,1) = '
+ '([(pevalcompile.CHECKPOINT,pevalcompile.DIAGNOSTIC,1)])',
+ '$source_precision(S_changed,(PORIGIN 1 eps)) = (3)',
+ '$call_descriptors_valid(S_changed)',
+ 'S_done = $drive(S_changed[.COMPLETION = NORMAL],1000)',
+ 'S_done.COMPLETION = NORMAL /\\ S_done.EVALCONTEXTS = eps',
+ '$eval_compile_cursors(S_done) = eps',
+ 'S_done.FRAMES = eps',
+ 'S_done.TODO = eps',
+ '$call_descriptors_valid(S_done)'],
  'ast': ['S_ast_class = '
          '$precision_ast_seek($php_precision_run(program_class,0,"@CLASS@",eps,false,eps,$ptascii("5junk")),0,1000)',
          'S_ast_class.COMPLETION = BUDGET',
@@ -268,7 +274,8 @@ HELPERS = {'dynamic': 'dec $precision_control_capture(pdeclaration*, nat, int) :
  'abrupt': 'dec $precision_resume_ready(pstate) : bool\n'
            'def $precision_resume_ready(S) = true\n'
            '  -- if S.TODO = (EVAL_COMPILE_RESUME pevalcompile) :: ptask_tail*\n'
-           '  -- if $precision_value(S) = 1\n'
+           '  -- if $eval_precision_epochs(S.DECLARATIONS, pevalcompile.PLAN.UNIT) = (epochs)\n'
+           '  -- if |epochs| = 0\n'
            'def $precision_resume_ready(S) = false -- otherwise\n'
            'dec $precision_resume_seek(pstate, nat) : pstate\n'
            'def $precision_resume_seek(S, n) = S -- if $precision_resume_ready(S)\n'
@@ -501,7 +508,7 @@ def main(groups=None):
     assert inputs == {str(path.relative_to(R)): sha(path) for path in watched}
     assert revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=R, text=True).strip()
     report = {'revision': revision, 'inputs': inputs, 'rows': rows, 'passed': all(row['passed'] for row in rows),
-              'scope': '194 supplied checks plus12 program bindings; changed suspended-eval precision remains Unsupported.',
+              'scope': '199 supplied checks plus12 program bindings; later eval folding follows authenticated precision epochs.',
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING': 'absent'}}
     (directory / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     assert report['passed'], report

@@ -7,6 +7,15 @@ def $constant_at(eps, pcpath) = eps
 def $constant_at((PCONSTANT pcpath pvalue) :: pconstant*, pcpath) = (pvalue)
 def $constant_at((PCONSTANT pcpath_other pvalue) :: pconstant*, pcpath) = $constant_at(pconstant*, pcpath)
   -- if pcpath_other =/= pcpath
+def $constant_at((PCCPRECISION pcpath_other z) :: pconstant*, pcpath) = $constant_at(pconstant*, pcpath)
+
+dec $constant_precision_at(pconstant*, pcpath) : int?
+def $constant_precision_at(eps, pcpath) = eps
+def $constant_precision_at((PCCPRECISION pcpath z) :: pconstant*, pcpath) = (z)
+def $constant_precision_at((PCCPRECISION pcpath_other z) :: pconstant*, pcpath) = $constant_precision_at(pconstant*, pcpath)
+  -- if pcpath_other =/= pcpath
+def $constant_precision_at((PCONSTANT pcpath_other pvalue) :: pconstant*, pcpath) = $constant_precision_at(pconstant*, pcpath)
+def $constant_precision_at((PCCLASS pcpath_other pvalueclass) :: pconstant*, pcpath) = $constant_precision_at(pconstant*, pcpath)
 
 dec $pool_at(ppool*, nat) : ppool?
 def $pool_at(eps, n) = eps
@@ -23,6 +32,7 @@ def $pool_value(ppool_tail*, PORIGIN n pcpath) = eps
 dec $constants_nodes(pconstant*) : pnode*
 def $constants_nodes(eps) = eps
 def $constants_nodes((PCONSTANT pcpath pvalue) :: pconstant*) = $value_nodes(pvalue) ++ $constants_nodes(pconstant*)
+def $constants_nodes((PCCPRECISION pcpath z) :: pconstant*) = $constants_nodes(pconstant*)
 def $pools_nodes(eps) = eps
 def $pools_nodes(ppool :: ppool_tail*) = $constants_nodes(ppool.CONSTANTS) ++ $pools_nodes(ppool_tail*)
 
@@ -54,6 +64,11 @@ def $constants_valid(pcunit, (PCONSTANT pcpath pvalue) :: pconstant*, pnode*) = 
   -- if $constants_valid(pcunit, pconstant*, pnode*)
 def $constants_valid(pcunit, pconstant*, pnode*) = false
   -- otherwise
+def $constants_valid(pcunit, (PCCPRECISION pcpath z) :: pconstant*, pnode*) = true
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (expression)
+  -- if $(z >= -1 /\ z <= 9223372036854775807)
+  -- if $constant_precision_at(pconstant*, pcpath) = eps
+  -- if $constants_valid(pcunit, pconstant*, pnode*)
 
 ;; Constant tables have direct entries only. Backing slots may already have
 ;; been reclaimed; live tables must point only to other live allocations.
@@ -87,6 +102,7 @@ def $pool_shift_nodes((HARRAY n_old) :: pnode*, n) = (HARRAY $(n_old + n)) :: $p
 dec $pool_shift_constants(pconstant*, nat) : pconstant*
 def $pool_shift_constants(eps, n) = eps
 def $pool_shift_constants((PCONSTANT pcpath pvalue) :: pconstant*, n) = (PCONSTANT pcpath $pool_shift_value(pvalue, n)) :: $pool_shift_constants(pconstant*, n)
+def $pool_shift_constants((PCCPRECISION pcpath z) :: pconstant*, n) = (PCCPRECISION pcpath z) :: $pool_shift_constants(pconstant*, n)
 
 ;; Preserve all backing slots so neither reclaimed IDs nor retained dynamic
 ;; arrays collide with this unit. Duplicate installation is an internal error;
@@ -108,6 +124,7 @@ def $install_pool(S, pcunit, parray_tail*, pnode*, pconstant*) = S[.COMPLETION =
 
 ;; Allocation classes are source facts, never heap owners.
 dec $constant_class_at(pconstant*, pcpath) : pvalueclass?
+def $constant_class_at((PCCPRECISION pcpath_other z) :: pconstant*, pcpath) = $constant_class_at(pconstant*, pcpath)
 def $constant_class_at(eps, pcpath) = eps
 def $constant_class_at((PCCLASS pcpath pvalueclass) :: pconstant*, pcpath) = (pvalueclass)
 def $constant_class_at((PCCLASS pcpath_other pvalueclass) :: pconstant*, pcpath) = $constant_class_at(pconstant*, pcpath)
