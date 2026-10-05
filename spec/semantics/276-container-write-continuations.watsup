@@ -1,0 +1,398 @@
+;; Container initialization precedes dimension-key conversion. FETCH follows
+;; the current borrowed container after false conversion; ASSIGN separates it
+;; again, while DIM_OP retains its allocated table. Only that warning protection
+;; is an owner here; the original KEY_WRITE_FINISH owns operands and temporaries.
+dec $container_slot(pslot) : bool
+dec $container_writer(ptask*) : pkeywriter?
+dec $container_kind(pkeywriter, porigin) : pcontainerkind
+dec $container_binding(pstate, porigin, plocation) : ptbytes?
+dec $container_binding_source(pstate, pcontainerwrite) : bool
+dec $container_place(plocation) : bool
+dec $container_name(pcontainerphase) : ptbytes
+dec $container_undefined_rw(pstate, porigin, bool) : bool
+dec $container_throw_assign(pstate, pcontainerwrite) : pstate
+dec $container_record(pstate, poperand, int, bool, pcontainerphase) : pcontainerwrite
+dec $container_false(pslot) : bool
+dec $container_initialize(pstate, pcontainerwrite, bool) : pstate
+dec $container_array_new(pstate, pcontainerwrite) : pstate
+dec $container_note(pstate, pcontainerwrite, nat) : pstate
+dec $container_cell(pstate, plocation) : nat?
+dec $container_init_at(pcontainerinit*, nat) : pcontainerinit?
+dec $container_init_remove(pcontainerinit*, nat) : pcontainerinit*
+dec $container_init_row_valid(pstate, pcontainerinit) : bool
+dec $container_init_rows_valid(pstate, pcontainerinit*) : bool
+dec $container_init_transport(pstate, nat, nat) : pstate
+dec $container_store(pstate, plocation, pvalue) : pstate
+dec $container_direct_key(pvalue) : bool
+dec $container_illegal_key(pvalue) : bool
+dec $container_cv_initialize(pstate, pcontainerwrite) : pstate
+dec $container_after_init(pstate, pcontainerwrite, bool) : pstate
+dec $container_current(pstate, pcontainerwrite) : pstate
+dec $container_selected(pstate, pcontainerwrite) : pstate
+dec $container_expired(pstate, pcontainerwrite) : pstate
+dec $container_dispatch(pstate, pcontainerwrite) : pstate
+dec $container_resume(pstate, pcontainerwrite) : pstate
+dec $container_release(pstate, pcontainerwrite) : pstate
+dec $container_valid(pstate, pcontainerwrite) : bool
+dec $container_phase_valid(pstate, pcontainerwrite) : bool
+dec $container_level(pcontainerwrite) : int
+dec $container_message(pcontainerwrite) : ptbytes
+dec $container_event(pcontainerwrite) : pevent
+dec $container_live(pstate, pcontainerwrite) : bool
+dec $container_throw(pstate, pcontainerwrite) : pstate
+dec $container_throw_effect(pstate, pcontainerwrite, bool) : pstate
+dec $container_throw_lookup(pstate, pcontainerwrite) : pstate
+dec $reference_write_task(ptask) : bool
+dec $reference_write_finish(pstate, pkeywriter) : pstate
+
+def $container_slot(UNDEFINED) = true
+def $container_slot(DEFINED PNULL) = true
+def $container_slot(DEFINED (PBOOL false)) = true
+def $container_slot(pslot) = false -- otherwise
+def $container_false(DEFINED (PBOOL false)) = true
+def $container_false(pslot) = false -- otherwise
+def $container_write_root(S, BASE_VALUE (VARIABLE n_name* z)) = true
+  -- if S_read = $quiet_operand(S, VARIABLE n_name* z)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $container_slot(DEFINED pvalue) \/ $key_is_array(pvalue)
+def $container_write_root(S, BASE_DIM pbase poperand z) = $container_write_root(S, pbase)
+def $container_write_root(S, pbase) = $key_write_root(S, pbase) -- otherwise
+def $container_writer((KEY_WRITE_FINISH pkeywriter) :: ptask_tail*) = (pkeywriter)
+def $container_writer(ptask :: ptask_tail*) = $container_writer(ptask_tail*) -- if ~$key_write_finish_task(ptask)
+def $container_writer(eps) = eps
+def $container_kind(pkeywriter, porigin) = CONTAINER_ASSIGN
+  -- if pkeywriter.TARGET = porigin
+  -- if pkeywriter.TASK = ASSIGN_ARRAY pbase z b
+def $container_kind(pkeywriter, porigin) = CONTAINER_COMPOUND
+  -- if pkeywriter.TARGET = porigin
+  -- if pkeywriter.TASK = COMPOUND_APPLY pbin pbase b z
+def $container_kind(pkeywriter, porigin) = CONTAINER_FETCH -- otherwise
+def $container_binding(S, porigin, plocation) = (n_name*)
+  -- if ~$location_reference(S, plocation)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $origin_node(S.SOURCES, porigin_base) = (NExprVariable phpType32 metadata)
+  -- if $cv_name(phpType32) = (n_name*)
+  -- if ~$this_name(n_name*)
+  -- if n_name* =/= $ptascii("GLOBALS")
+def $container_binding(S, porigin, plocation) = eps -- otherwise
+def $container_record(S, poperand, z, b, pcontainerphase) = {SITE porigin, WRITER pkeywriter, INPUT poperand, PLACE S.LOCATION, BINDING $container_binding(S, porigin, S.LOCATION), LINE z, RW b, KIND $container_kind(pkeywriter, porigin), PHASE pcontainerphase}
+  -- if S.ORIGIN = (porigin)
+  -- if $container_writer(S.TODO) = (pkeywriter)
+def $container_write_pending(S) = true
+  -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
+  -- if $container_slot($location_slot(S, S.LOCATION))
+  -- if S.LOCATION =/= NOWHERE
+  -- if $container_writer(ptask_tail*) =/= eps
+def $container_write_pending(S) = false -- otherwise
+
+def $container_current(S, pcontainerwrite) = $location_name(S, n_name*)
+  -- if pcontainerwrite.BINDING = (n_name*)
+def $container_current(S, pcontainerwrite) = S[.LOCATION = pcontainerwrite.PLACE]
+  -- if pcontainerwrite.BINDING = eps
+;; An undefined nonreference CV is overwritten after its callback. A newly
+;; attached reference belongs to the callback and is detached, not assigned into.
+def $container_cv_initialize(S, pcontainerwrite) = S_array[.ENV = (BIND n_name* n) :: $unbind(S_array.ENV, n_name*)][.SYMBOLS = $symbol_add(S_array.SYMBOLS, n_name*)][.STORE = S_array.STORE ++ [DEFINED (PARRAY n_array)]][.ALLOCATIONS = S_array.ALLOCATIONS ++ [HCELL n]][.LOCATION = ROOT n][.CELL = n]
+  -- if pcontainerwrite.PHASE = CONTAINER_CV n_name*
+  -- if S_array = $allocate_array(S, $array_empty())
+  -- if S_array.RESULT = KNOWN (PARRAY n_array)
+  -- if n = |S_array.STORE|
+def $container_store(S, ROOT n, pvalue) = $reference_coercion_store(S, n, DEFINED pvalue)[.RESULT = KNOWN pvalue]
+def $container_store(S, ELEMENT n pkey, pvalue) = $reference_coercion_store(S, n_cell, DEFINED pvalue)[.RESULT = KNOWN pvalue]
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
+def $container_store(S, ELEMENT n pkey, pvalue) = S[.ARRAYS = $array_replace(S.ARRAYS, n, $array_insert(S.ARRAYS[n], pkey, DIRECT pvalue))][.RESULT = KNOWN pvalue]
+  -- if ~$alias_item($entry_lookup(S.ARRAYS[n].ITEMS, pkey))
+def $container_array_new(S, pcontainerwrite) = $container_note($container_store(S_array, pcontainerwrite.PLACE, PARRAY n), pcontainerwrite, n)
+  -- if pcontainerwrite.KIND = CONTAINER_COMPOUND
+  -- if S_array = $allocate_array(S, $array_empty())
+  -- if S_array.RESULT = KNOWN (PARRAY n)
+def $container_array_new(S, pcontainerwrite) = $location_array_new(S, pcontainerwrite.PLACE, pcontainerwrite.LINE)
+  -- if pcontainerwrite.KIND =/= CONTAINER_COMPOUND
+def $container_initialize(S, pcontainerwrite, b_false) = S_array
+  -- if S_array = $container_array_new(S, pcontainerwrite)
+  -- if S_array.COMPLETION =/= NORMAL
+def $container_initialize(S, pcontainerwrite, b_false) = $container_after_init(S_array, pcontainerwrite, b_false)
+  -- if S_array = $container_array_new(S, pcontainerwrite)
+  -- if S_array.COMPLETION = NORMAL
+def $container_after_init(S, pcontainerwrite, true) = $container_dispatch(S[.RESULT = KNOWN PNULL], pcontainerwrite[.PLACE = S.LOCATION][.PHASE = CONTAINER_FALSE n])
+  -- if S.RESULT = KNOWN (PARRAY n)
+def $container_after_init(S, pcontainerwrite, false) = $key_write_selected(S, pcontainerwrite.INPUT, pcontainerwrite.LINE, pcontainerwrite.RW)
+
+rule PhpStep/container-write-undefined-rw: S ~> $container_dispatch(S, $container_record(S, poperand, z, true, CONTAINER_CV n_name*))
+  -- if S.TODO = (KEY_WRITE_DIM poperand z true) :: ptask_tail*
+  -- if $container_write_pending(S)
+  -- if $location_slot(S, S.LOCATION) = UNDEFINED
+  -- if S.ORIGIN = (porigin)
+  -- if $container_binding(S, porigin, S.LOCATION) = (n_name*)
+rule PhpStep/container-write-initialize: S ~> $container_initialize(S, pcontainerwrite, b_false)
+  -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
+  -- if $container_write_pending(S)
+  -- if S.ORIGIN = (porigin)
+  -- if ~$container_undefined_rw(S, porigin, b)
+  -- if pcontainerwrite = $container_record(S, poperand, z, b, CONTAINER_KEY_CV eps)
+  -- if b_false = ($container_false($location_slot(S, S.LOCATION)) /\ (pcontainerwrite.KIND =/= CONTAINER_FETCH \/ ~$location_reference(S, S.LOCATION)))
+
+def $container_undefined_rw(S, porigin, b) = (b /\ $location_slot(S, S.LOCATION) = UNDEFINED /\ $container_binding(S, porigin, S.LOCATION) =/= eps)
+def $task_nodes(CONTAINER_WRITE_RESULT pcontainerwrite) = [HARRAY n]
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+def $task_nodes(CONTAINER_WRITE_RESULT pcontainerwrite) = eps
+  -- if pcontainerwrite.PHASE = CONTAINER_CV n_name*
+def $task_nodes(CONTAINER_WRITE_RESULT pcontainerwrite) = eps
+  -- if pcontainerwrite.PHASE = CONTAINER_KEY_CV n_name*
+def $container_level(pcontainerwrite) = 8192 -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+def $container_level(pcontainerwrite) = 2 -- otherwise
+def $container_message(pcontainerwrite) = $ptascii("Automatic conversion of false to array is deprecated")
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+def $container_name(CONTAINER_CV n_name*) = n_name*
+def $container_name(CONTAINER_KEY_CV n_name*) = n_name*
+def $container_message(pcontainerwrite) = $ptascii("Undefined variable $") ++ $container_name(pcontainerwrite.PHASE)
+  -- otherwise
+def $container_event(pcontainerwrite) = DIAGNOSTIC "Deprecated" $container_message(pcontainerwrite) pcontainerwrite.LINE
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+def $container_event(pcontainerwrite) = WARNING $container_name(pcontainerwrite.PHASE) pcontainerwrite.LINE -- otherwise
+def $container_dispatch(S, pcontainerwrite) = $error_dispatch(S[.RESULT = KNOWN PNULL], $container_level(pcontainerwrite), $container_message(pcontainerwrite), pcontainerwrite.LINE, $container_event(pcontainerwrite), CONTAINER_WRITE_RESULT pcontainerwrite)
+def $container_live(S, pcontainerwrite) = $($heap_owners($heap_prune($heap_graph(S)), HARRAY n) > 1)
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+def $container_live(S, pcontainerwrite) = true -- otherwise
+def $container_release(S, pcontainerwrite) = S[.TODO = (KEY_WRITE_DIM pcontainerwrite.INPUT pcontainerwrite.LINE pcontainerwrite.RW) :: ptask_tail*]
+  -- if S.TODO = (CONTAINER_WRITE_RESULT pcontainerwrite) :: ptask_tail*
+def $container_selected(S, pcontainerwrite) = $key_write_selected(S_current[.RESULT = KNOWN (PARRAY n)], pcontainerwrite.INPUT, pcontainerwrite.LINE, pcontainerwrite.RW)
+  -- if pcontainerwrite.KIND = CONTAINER_FETCH
+  -- if S_current = $container_current(S, pcontainerwrite)
+  -- if $location_slot(S_current, S_current.LOCATION) = DEFINED (PARRAY n)
+def $container_selected(S, pcontainerwrite) = $key_write_selected(S_current, pcontainerwrite.INPUT, pcontainerwrite.LINE, pcontainerwrite.RW)
+  -- if pcontainerwrite.KIND = CONTAINER_ASSIGN
+  -- if S_place = $container_current(S, pcontainerwrite)
+  -- if S_current = $location_array(S_place, S_place.LOCATION, pcontainerwrite.LINE)
+  -- if S_current.COMPLETION = NORMAL
+def $container_selected(S, pcontainerwrite) = S_current
+  -- if pcontainerwrite.KIND = CONTAINER_ASSIGN
+  -- if S_place = $container_current(S, pcontainerwrite)
+  -- if S_current = $location_array(S_place, S_place.LOCATION, pcontainerwrite.LINE)
+  -- if S_current.COMPLETION =/= NORMAL
+def $container_selected(S, pcontainerwrite) = $key_write_selected(S[.LOCATION = pcontainerwrite.PLACE][.RESULT = KNOWN (PARRAY n)], pcontainerwrite.INPUT, pcontainerwrite.LINE, pcontainerwrite.RW)
+  -- if pcontainerwrite.KIND = CONTAINER_COMPOUND
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+def $container_expired(S, pcontainerwrite) = $container_dispatch(S, pcontainerwrite[.PHASE = CONTAINER_KEY_CV n_name*])
+  -- if $error_missing_operand(S, pcontainerwrite.INPUT)
+  -- if pcontainerwrite.INPUT = VARIABLE n_name* z
+def $container_expired(S, pcontainerwrite) = $key_write_done(S, NOWHERE)
+  -- if ~$error_missing_operand(S, pcontainerwrite.INPUT)
+def $container_resume(S, pcontainerwrite) = $container_after_init(S_array, pcontainerwrite[.PLACE = S_array.LOCATION], $container_false($location_slot(S_current, S_current.LOCATION)))
+  -- if pcontainerwrite.PHASE = CONTAINER_CV n_name*
+  -- if S_current = $container_current(S, pcontainerwrite)
+  -- if S_array = $container_cv_initialize(S_current, pcontainerwrite)
+def $container_resume(S, pcontainerwrite) = $container_selected($container_release(S, pcontainerwrite), pcontainerwrite)
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+  -- if $container_live(S, pcontainerwrite)
+def $container_resume(S, pcontainerwrite) = $container_expired(S, pcontainerwrite)
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+  -- if ~$container_live(S, pcontainerwrite)
+def $container_resume(S, pcontainerwrite) = $key_write_done(S, NOWHERE)
+  -- if pcontainerwrite.PHASE = CONTAINER_KEY_CV n_name*
+rule PhpStep/container-write-resume: S ~> $container_resume(S, pcontainerwrite)
+  -- if S.TODO = (CONTAINER_WRITE_RESULT pcontainerwrite) :: ptask_tail*
+  -- if $container_valid(S, pcontainerwrite)
+
+;; Guards authenticate the actual dimension, emitting line, operand and source
+;; consumer. A selected borrowed location/binding is a runtime fact, not a root.
+def $container_phase_valid(S, pcontainerwrite) = true
+  -- if pcontainerwrite.PHASE = CONTAINER_CV n_name*
+  -- if pcontainerwrite.RW
+  -- if pcontainerwrite.BINDING = (n_name*)
+  -- if $error_variable_source(S, (pcontainerwrite.SITE), [PCFIELD 0], n_name*)
+def $container_phase_valid(S, pcontainerwrite) = ((HARRAY n) <- S.ALLOCATIONS)
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+  -- if pcontainerwrite.KIND =/= CONTAINER_FETCH \/ ~$key_base_cv_source(S, pcontainerwrite.SITE) \/ pcontainerwrite.BINDING =/= eps
+def $container_phase_valid(S, pcontainerwrite) = true
+  -- if pcontainerwrite.PHASE = CONTAINER_KEY_CV n_name*
+  -- if pcontainerwrite.INPUT = VARIABLE n_name* z
+def $container_phase_valid(S, pcontainerwrite) = false -- otherwise
+def $container_binding_source(S, pcontainerwrite) = true -- if pcontainerwrite.BINDING = eps
+def $container_binding_source(S, pcontainerwrite) = $error_variable_source(S, (pcontainerwrite.SITE), [PCFIELD 0], n_name*)
+  -- if pcontainerwrite.BINDING = (n_name*)
+def $container_place(ROOT n) = true
+def $container_place(ELEMENT n pkey) = true
+def $container_place(plocation) = false -- otherwise
+def $container_valid(S, pcontainerwrite) = true
+  -- if S.ORIGIN = (pcontainerwrite.SITE)
+  -- if $container_writer(S.TODO) = (pcontainerwrite.WRITER)
+  -- if $key_write_context(S, S.TODO, pcontainerwrite.SITE, pcontainerwrite.RW)
+  -- if pcontainerwrite.KIND = $container_kind(pcontainerwrite.WRITER, pcontainerwrite.SITE)
+  -- if $origin_node(S.SOURCES, pcontainerwrite.SITE) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if ~$ppglobals_base(expression)
+  -- if $code_expression_at_source(S, pcontainerwrite.SITE, [PCFIELD 1]) = (pcontainerwrite.LINE)
+  -- if $key_write_input_source(S, pcontainerwrite.SITE, pcontainerwrite.INPUT, pcontainerwrite.LINE, false)
+  -- if $container_binding_source(S, pcontainerwrite)
+  -- if $container_place(pcontainerwrite.PLACE)
+  -- if $container_phase_valid(S, pcontainerwrite)
+def $container_valid(S, pcontainerwrite) = false -- otherwise
+def $call_task_valid(S, CONTAINER_WRITE_RESULT pcontainerwrite) = $container_valid(S, pcontainerwrite)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CONTAINER_WRITE_RESULT pcontainerwrite
+  -- if $container_valid(S, pcontainerwrite)
+  -- if perrorcall.SITE = pcontainerwrite.SITE
+  -- if perrorcall.LEVEL = $container_level(pcontainerwrite)
+  -- if perrorcall.LINE = pcontainerwrite.LINE
+  -- if perrorcall.MESSAGE = $container_message(pcontainerwrite)
+  -- if perrorcall.EVENT = $container_event(pcontainerwrite)
+
+;; Pending handler errors still initialize UNDEF RW. False conversion with a
+;; plain W key precreates the entry; direct ASSIGN also writes its delayed RHS.
+;; Conversion keys and missing RW lookups stop while that error is pending.
+def $container_direct_key(PINT i) = true
+def $container_direct_key(PSTRING n_name*) = true
+def $container_direct_key(PBOOL b) = true
+def $container_direct_key(pvalue) = false -- otherwise
+def $container_illegal_key(PARRAY n) = true
+def $container_illegal_key(POBJECT n) = true
+def $container_illegal_key(pvalue) = false -- otherwise
+def $container_throw_lookup(S, pcontainerwrite) = $dimension_key_value(S, pvalue, pcontainerwrite.LINE)
+  -- if S_key = $quiet_operand(S, pcontainerwrite.INPUT)
+  -- if S_key.RESULT = KNOWN pvalue
+  -- if $container_illegal_key(pvalue)
+def $container_throw_lookup(S, pcontainerwrite) = $element_location(S, n, pkey)
+  -- if ~pcontainerwrite.RW
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if S_key = $quiet_operand(S, pcontainerwrite.INPUT)
+  -- if S_key.RESULT = KNOWN pvalue
+  -- if $container_direct_key(pvalue)
+  -- if $key_selected_key(pvalue) = (pkey)
+def $container_throw_lookup(S, pcontainerwrite) = S[.LOCATION = NOWHERE] -- otherwise
+def $container_throw_effect(S, pcontainerwrite, b_live) = S_array
+  -- if pcontainerwrite.PHASE = CONTAINER_CV n_name*
+  -- if S_array = $container_cv_initialize(S, pcontainerwrite)
+def $container_throw_effect(S, pcontainerwrite, b_live) = S
+  -- if pcontainerwrite.PHASE = CONTAINER_KEY_CV n_name*
+def $container_throw_effect(S, pcontainerwrite, false) = S
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+def $container_throw_effect(S, pcontainerwrite, true) = S_place
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+  -- if pcontainerwrite.KIND = CONTAINER_FETCH
+  -- if S_current = $container_current(S, pcontainerwrite)
+  -- if $location_slot(S_current, S_current.LOCATION) = DEFINED (PARRAY n_current)
+  -- if S_place = $container_throw_lookup(S_current[.RESULT = KNOWN (PARRAY n_current)], pcontainerwrite)
+def $container_throw_effect(S, pcontainerwrite, true) = $container_throw_lookup(S[.LOCATION = pcontainerwrite.PLACE][.RESULT = KNOWN (PARRAY n)], pcontainerwrite)
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+  -- if pcontainerwrite.KIND = CONTAINER_COMPOUND
+def $container_throw_effect(S, pcontainerwrite, true) = S_written
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+  -- if pcontainerwrite.KIND = CONTAINER_ASSIGN
+  -- if S_current = $container_current(S, pcontainerwrite)
+  -- if S_array = $location_array(S_current, S_current.LOCATION, pcontainerwrite.LINE)
+  -- if S_array.COMPLETION = NORMAL
+  -- if S_place = $container_throw_lookup(S_array, pcontainerwrite)
+  -- if S_written = $container_throw_assign(S_place, pcontainerwrite)
+def $container_throw_assign(S, pcontainerwrite) = $write_operand(S, pcontainerwrite.WRITER.RHS, $key_write_line(pcontainerwrite.WRITER.TASK))
+  -- if S.LOCATION =/= NOWHERE
+def $container_throw_assign(S, pcontainerwrite) = S -- if S.LOCATION = NOWHERE
+def $container_throw(S, pcontainerwrite) = S_changed[.RESULT = S.RESULT][.HELD = S.HELD]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if S_probe = S[.HELD = S.HELD ++ $task_nodes(CONTAINER_WRITE_RESULT pcontainerwrite)]
+  -- if $container_valid(S_probe, pcontainerwrite)
+  -- if S_changed = $container_throw_effect(S, pcontainerwrite, $container_live(S_probe, pcontainerwrite))
+  -- if S_changed.COMPLETION = NORMAL
+def $container_throw(S, pcontainerwrite) = $error_assign_rejected(S_probe, S_changed)[.HELD = S.HELD]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if S_probe = S[.HELD = S.HELD ++ $task_nodes(CONTAINER_WRITE_RESULT pcontainerwrite)]
+  -- if $container_valid(S_probe, pcontainerwrite)
+  -- if S_changed = $container_throw_effect(S, pcontainerwrite, $container_live(S_probe, pcontainerwrite))
+  -- if S_changed.COMPLETION =/= NORMAL
+def $container_throw(S, pcontainerwrite) = S -- otherwise
+def $error_read_discard(S, CONTAINER_WRITE_RESULT pcontainerwrite) = $container_throw(S, pcontainerwrite)
+
+;; Assignment by reference fetches its target before demanding a simple source
+;; CV. An already acquired source cell remains a genuine owner through callbacks.
+def $reference_write_task(REF_ARRAY pbase n z) = true
+def $reference_write_task(REF_ARRAY_CV pbase n_name* z) = true
+def $reference_write_task(ptask) = false -- otherwise
+def $key_write_task_base(REF_ARRAY pbase n z, pbase_current, poperand) = pbase
+def $key_write_task_base(REF_ARRAY_CV pbase n_name* z, pbase_current, poperand) = pbase
+def $key_write_writer(S, porigin, REF_ARRAY pbase n z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK REF_ARRAY pbase n z, BASE pbase, RHS REFERENCE n, TEMP eps})
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignRef expression_target expression_source metadata)
+  -- if $reference_cv(expression_source) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $origin_node(S.SOURCES, porigin_target) = (NExprArrayDimFetch expression phpType5 metadata_dim)
+  -- if $code_expression_at_source(S, porigin_target, eps) = (z)
+def $key_write_writer(S, porigin, REF_ARRAY_CV pbase n_name* z, pbase, poperand) = ({SITE porigin, TARGET porigin_target, TASK REF_ARRAY_CV pbase n_name* z, BASE pbase, RHS KNOWN PNULL, TEMP eps})
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignRef expression_target expression_source metadata)
+  -- if $reference_cv(expression_source) = (n_name*)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $origin_node(S.SOURCES, porigin_target) = (NExprArrayDimFetch expression phpType5 metadata_dim)
+  -- if $code_expression_at_source(S, porigin_target, eps) = (z)
+def $key_write_no_rhs(REF_ARRAY_CV pbase n_name* z) = true
+def $reference_write_finish(S, pkeywriter) = $bind_element_reference(S, n_array, pkey, n_source)
+  -- if pkeywriter.TASK = REF_ARRAY pbase n_source z
+  -- if S.LOCATION = ELEMENT n_array pkey
+def $reference_write_finish(S, pkeywriter) = $bind_element_reference(S_source, n_array, pkey, S_source.CELL)
+  -- if pkeywriter.TASK = REF_ARRAY_CV pbase n_name* z
+  -- if S.LOCATION = ELEMENT n_array pkey
+  -- if S_source = $acquire_name(S, n_name*)
+  -- if S_source.COMPLETION = NORMAL
+def $reference_write_finish(S, pkeywriter) = $throw_scalar(S, "Error", $ptascii("Cannot assign by reference to an array dimension of an object"), z)
+  -- if pkeywriter.TASK = REF_ARRAY pbase n_source z
+  -- if S.LOCATION = NOWHERE
+def $reference_write_finish(S, pkeywriter) = $throw_scalar(S_source, "Error", $ptascii("Cannot assign by reference to an array dimension of an object"), z)
+  -- if pkeywriter.TASK = REF_ARRAY_CV pbase n_name* z
+  -- if S.LOCATION = NOWHERE
+  -- if S_source = $acquire_name(S, n_name*)
+  -- if S_source.COMPLETION = NORMAL
+def $key_write_finish(S, pkeywriter) = $reference_write_finish(S, pkeywriter)
+  -- if $reference_write_task(pkeywriter.TASK)
+
+;; DIM_OP raw initialization can bypass a reference's property type. Remember
+;; only that actual array value and source opcode. Pointer separation transports
+;; it; ordinary whole-cell stores clear it and still perform their type checks.
+def $container_cell(S, ROOT n) = (n)
+def $container_cell(S, ELEMENT n pkey) = (n_cell)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
+def $container_cell(S, plocation) = eps -- otherwise
+def $container_note(S, pcontainerwrite, n_array) = S[.CONTAINERINITS = {CELL n_cell, ARRAY n_array, SITE pcontainerwrite.WRITER.SITE, LINE pcontainerwrite.LINE} :: $container_init_remove(S.CONTAINERINITS, n_cell)]
+  -- if $container_cell(S, pcontainerwrite.PLACE) = (n_cell)
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if $propref_nonarray_source(S, ppropref.SOURCES) =/= eps
+def $container_note(S, pcontainerwrite, n_array) = S -- otherwise
+def $container_init_at(eps, n) = eps
+def $container_init_at(pcontainerinit :: pcontainerinit_tail*, n) = (pcontainerinit) -- if pcontainerinit.CELL = n
+def $container_init_at(pcontainerinit :: pcontainerinit_tail*, n) = $container_init_at(pcontainerinit_tail*, n) -- if pcontainerinit.CELL =/= n
+def $container_init_remove(eps, n) = eps
+def $container_init_remove(pcontainerinit :: pcontainerinit_tail*, n) = $container_init_remove(pcontainerinit_tail*, n) -- if pcontainerinit.CELL = n
+def $container_init_remove(pcontainerinit :: pcontainerinit_tail*, n) = pcontainerinit :: $container_init_remove(pcontainerinit_tail*, n) -- if pcontainerinit.CELL =/= n
+def $container_init_clear(S, n) = S[.CONTAINERINITS = $container_init_remove(S.CONTAINERINITS, n)]
+def $container_inits_prune(eps, pnode*) = eps
+def $container_inits_prune(pcontainerinit :: pcontainerinit_tail*, pnode*) = pcontainerinit :: $container_inits_prune(pcontainerinit_tail*, pnode*)
+  -- if (HCELL pcontainerinit.CELL) <- pnode*
+def $container_inits_prune(pcontainerinit :: pcontainerinit_tail*, pnode*) = $container_inits_prune(pcontainerinit_tail*, pnode*)
+  -- if ~((HCELL pcontainerinit.CELL) <- pnode*)
+def $container_init_row_valid(S, pcontainerinit) = true
+  -- if (HCELL pcontainerinit.CELL) <- S.ALLOCATIONS
+  -- if (HARRAY pcontainerinit.ARRAY) <- S.ALLOCATIONS
+  -- if pcontainerinit.CELL <- S.REFCELLS
+  -- if $(pcontainerinit.CELL < |S.STORE|)
+  -- if S.STORE[pcontainerinit.CELL] = DEFINED (PARRAY pcontainerinit.ARRAY)
+  -- if $origin_node(S.SOURCES, pcontainerinit.SITE) = (pcnode)
+  -- if $key_write_op(pcnode) =/= eps
+  -- if $origin_child((pcontainerinit.SITE), [PCFIELD 0]) = (porigin_target)
+  -- if $origin_node(S.SOURCES, porigin_target) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if ~$ppglobals_base(expression)
+  -- if $code_expression_at_source(S, porigin_target, [PCFIELD 1]) = (pcontainerinit.LINE)
+def $container_init_row_valid(S, pcontainerinit) = false -- otherwise
+def $container_init_rows_valid(S, eps) = true
+def $container_init_rows_valid(S, pcontainerinit :: pcontainerinit_tail*) = ($container_init_row_valid(S, pcontainerinit) /\ $container_init_at(pcontainerinit_tail*, pcontainerinit.CELL) = eps /\ $container_init_rows_valid(S, pcontainerinit_tail*))
+def $container_inits_valid(S) = $container_init_rows_valid(S, S.CONTAINERINITS)
+def $container_init_value(S, n_cell, PARRAY n_array) = true
+  -- if $container_init_at(S.CONTAINERINITS, n_cell) = (pcontainerinit)
+  -- if pcontainerinit.ARRAY = n_array
+  -- if $container_init_row_valid(S, pcontainerinit)
+def $container_init_value(S, n_cell, pvalue) = false -- otherwise
+def $container_init_transport(S, n_cell, n_array) = S_written[.CONTAINERINITS = pcontainerinit[.ARRAY = n_array] :: $container_init_remove(S_written.CONTAINERINITS, n_cell)]
+  -- if $container_init_at(S.CONTAINERINITS, n_cell) = (pcontainerinit)
+  -- if S_written = $reference_coercion_store(S, n_cell, DEFINED (PARRAY n_array))
+def $location_array_store(S, ROOT n_cell, PARRAY n_array) = $container_init_transport(S, n_cell, n_array)[.RESULT = KNOWN (PARRAY n_array)]
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $container_init_value(S, n_cell, pvalue)
+def $location_array_store(S, ELEMENT n_parent pkey, PARRAY n_array) = $container_init_transport(S, n_cell, n_array)[.RESULT = KNOWN (PARRAY n_array)]
+  -- if $entry_lookup(S.ARRAYS[n_parent].ITEMS, pkey) = (ALIAS n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $container_init_value(S, n_cell, pvalue)

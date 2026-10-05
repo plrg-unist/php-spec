@@ -254,20 +254,24 @@ def $echo_value(PFLOAT n) = n_out*
 ;; Parser-created ZVALs are narrower than compiler constant facts.
 dec $parser_literal_text(pvalue) : nat*?
 dec $parser_literal(expression) : pvalue?
-def $parser_literal(NScalarInt (INTEGER i) metadata) = (PINT i)
-def $parser_literal(NScalarFloat (FLOAT text) metadata) = (PFLOAT $hex_bits(text, 0))
-def $parser_literal(NScalarString (BYTES text) metadata) = (PSTRING $base64(text))
-def $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = (PSTRING (n_1* ++ n_2*))
-  -- if $parser_literal(expression_1) = (pvalue_1)
-  -- if $parser_literal(expression_2) = (pvalue_2)
-  -- if $parser_literal_text(pvalue_1) = (n_1*)
-  -- if $parser_literal_text(pvalue_2) = (n_2*)
-def $parser_literal(expression) = eps -- otherwise
-def $parser_literal_text(PINT i) = ($decimal_integer(i))
-def $parser_literal_text(PSTRING n*) = (n*)
-def $parser_literal_text(PFLOAT n) = (n_text*)
-  -- if (n_text*, false) = $number_text(NFLOAT n, 14)
-def $parser_literal_text(pvalue) = eps -- otherwise
+dec $parser_literal_at(expression, int) : pvalue?
+dec $parser_literal_text_at(pvalue, int) : nat*?
+def $parser_literal(expression) = $parser_literal_at(expression, 14)
+def $parser_literal_text(pvalue) = $parser_literal_text_at(pvalue, 14)
+def $parser_literal_at(NScalarInt (INTEGER i) metadata, z_precision) = (PINT i)
+def $parser_literal_at(NScalarFloat (FLOAT text) metadata, z_precision) = (PFLOAT $hex_bits(text, 0))
+def $parser_literal_at(NScalarString (BYTES text) metadata, z_precision) = (PSTRING $base64(text))
+def $parser_literal_at(NExprBinaryOpConcat expression_1 expression_2 metadata, z_precision) = (PSTRING (n_1* ++ n_2*))
+  -- if $parser_literal_at(expression_1, z_precision) = (pvalue_1)
+  -- if $parser_literal_at(expression_2, z_precision) = (pvalue_2)
+  -- if $parser_literal_text_at(pvalue_1, z_precision) = (n_1*)
+  -- if $parser_literal_text_at(pvalue_2, z_precision) = (n_2*)
+def $parser_literal_at(expression, z_precision) = eps -- otherwise
+def $parser_literal_text_at(PINT i, z_precision) = ($decimal_integer(i))
+def $parser_literal_text_at(PSTRING n*, z_precision) = (n*)
+def $parser_literal_text_at(PFLOAT n, z_precision) = (n_text*)
+  -- if (n_text*, false) = $number_text(NFLOAT n, z_precision)
+def $parser_literal_text_at(pvalue, z_precision) = eps -- otherwise
 
 dec $metadata_array_hole_line(metadataEntry) : int
 def $metadata_array_hole_line(MarrayFirstHoleLine z) = z

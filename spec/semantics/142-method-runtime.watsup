@@ -381,14 +381,17 @@ def $scoped_method_literal(NExprBinaryOpConcat expression_1 expression_2 metadat
   -- if $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = (PSTRING n*)
 def $scoped_method_literal(phpType20) = false -- otherwise
 dec $scoped_source_method(phpType20, ptbytes) : bool
-def $scoped_source_method(NIdentifier (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
-def $scoped_source_method(NScalarString (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
-def $scoped_source_method(NExprBinaryOpConcat expression_1 expression_2 metadata, ptbytes) = ($ptlc(n*) = $ptlc(ptbytes))
-  -- if $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata) = (PSTRING n*)
-def $scoped_source_method(expression_name, ptbytes) = true
+dec $scoped_source_method_at(phpType20, ptbytes, int) : bool
+dec $scoped_source_method_origin(pstate, porigin, phpType20, ptbytes) : bool
+def $scoped_source_method(phpType20, ptbytes) = $scoped_source_method_at(phpType20, ptbytes, 14)
+def $scoped_source_method_at(NIdentifier (BYTES text) metadata, ptbytes, z_precision) = ($ptlc($base64(text)) = $ptlc(ptbytes))
+def $scoped_source_method_at(NScalarString (BYTES text) metadata, ptbytes, z_precision) = ($ptlc($base64(text)) = $ptlc(ptbytes))
+def $scoped_source_method_at(NExprBinaryOpConcat expression_1 expression_2 metadata, ptbytes, z_precision) = ($ptlc(n*) = $ptlc(ptbytes))
+  -- if $parser_literal_at(NExprBinaryOpConcat expression_1 expression_2 metadata, z_precision) = (PSTRING n*)
+def $scoped_source_method_at(expression_name, ptbytes, z_precision) = true
   -- if $property_computed_name(expression_name)
   -- if ~$scoped_method_literal(expression_name)
-def $scoped_source_method(phpType20, ptbytes) = false -- otherwise
+def $scoped_source_method_at(phpType20, ptbytes, z_precision) = false -- otherwise
 dec $scoped_requested_site(pstate, porigin, phpType19, porigin, pcallcontext?) : bool
 def $scoped_requested_site(S, porigin_site, NName (BYTES text) metadata, porigin_requested, pcallcontext_caller?) = true
   -- if $ptlc($base64(text)) = $ptascii("self")
@@ -441,7 +444,7 @@ def $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method pori
   -- if $target_function(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector) = (pfunction)
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
-  -- if $scoped_source_method(phpType20, pmethoddesc.NAME)
+  -- if $scoped_source_method_origin(S, porigin_site, phpType20, pmethoddesc.NAME)
   -- if $scoped_site_context(S, porigin_method, porigin_site) = pcallcontext_caller?
   -- if $scoped_requested_site(S, porigin_site, phpType19, porigin_requested, pcallcontext_caller?)
   -- if $scoped_called_site(S, phpType19, porigin_requested, porigin_called, pcallcontext_caller?, pmethoddesc, n_receiver?)
@@ -843,7 +846,7 @@ def $scoped_ctor_arm_at(S, porigin_site) = true
   -- if $ptlc($base64(text)) = $ptascii("__construct")
 def $scoped_ctor_arm_at(S, porigin_site) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 (NExprBinaryOpConcat expression_1 expression_2 metadata_name) (SEQUENCE phpType7*) metadata)
-  -- if $parser_literal(NExprBinaryOpConcat expression_1 expression_2 metadata_name) = (PSTRING n*)
+  -- if $parser_literal_origin(S, (porigin_site), NExprBinaryOpConcat expression_1 expression_2 metadata_name) = (PSTRING n*)
   -- if $ptlc(n*) = $ptascii("__construct")
 def $scoped_ctor_arm_at(S, porigin_site) = false -- otherwise
 def $scoped_ctor_arm(S) = $scoped_ctor_arm_at(S, porigin_site) -- if S.ORIGIN = (porigin_site)
@@ -1361,6 +1364,7 @@ def $wrapper_called_suffix(S, pcallcontext) = eps -- if pcallcontext.WRAPPER =/=
 def $wrapper_called_suffix(S, pcallcontext) = $ptascii(", called in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE)
   -- if pcallcontext.WRAPPER = eps
   -- if $error_context_trigger(S, pcallcontext) = eps
+  -- if ~$autoload_internal_context(S, pcallcontext)
   -- if ~$exception_warning_context(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
 dec $wrapper_values(pstate, pnamedslot*) : pvalue*
@@ -1398,6 +1402,7 @@ def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed") -- if pcallcon
 def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE)
   -- if pcallcontext.WRAPPER = eps
   -- if $error_context_trigger(S, pcallcontext) = eps
+  -- if ~$autoload_internal_context(S, pcallcontext)
   -- if ~$exception_warning_context(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
 

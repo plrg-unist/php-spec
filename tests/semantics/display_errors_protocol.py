@@ -140,7 +140,7 @@ def transport(prepared_path):
         ('partial-reporting-display', {'display_errors': startup['display_errors'], 'error_reporting': b64(b'1')}, 'unexpected/missing fields'),
         ('display-number', {'display_errors': 1}, 'expected string'),
         ('noncanonical-display', {'display_errors': 'Zh=='}, 'noncanonical base64 padding'),
-        ('unknown-key', dict(startup, precision=b64(b'14')), 'unexpected/missing fields'),
+        ('unknown-key', dict(startup, unknown_option=b64(b'14')), 'unexpected/missing fields'),
     ]
     for name, ini, reason in bad:
         cases.append((name, dict(request, startup_ini=ini), reason))

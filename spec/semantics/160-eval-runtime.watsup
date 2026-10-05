@@ -416,18 +416,18 @@ def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S_context, psy
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
   -- if S_context = S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*]
-  -- if ~$default_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext) /\ ~$ordinary_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext)
+  -- if ~$default_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext) /\ ~$ordinary_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext) /\ ~$autoload_context_kind($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext)
   -- if $config_string_trace_context(S_context, pcallcontext)
 def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S_context, psymboltable.ENV, pframe.CONTEXT)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
   -- if S_context = $constant_frame_scope(S, pframe, pframe_tail*)
-  -- if $default_internal_callback_context(S_context, pcallcontext) \/ $ordinary_internal_callback_context(S_context, pcallcontext)
+  -- if $default_internal_callback_context(S_context, pcallcontext) \/ $ordinary_internal_callback_context(S_context, pcallcontext) \/ $autoload_context_kind(S_context, pcallcontext)
 def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context($generator_trace_scope(S, pframe.CONTEXT, pframe_tail*), psymboltable.ENV, pframe.CONTEXT)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
   -- if S_context = S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*]
-  -- if ~$default_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext) /\ ~$ordinary_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext)
+  -- if ~$default_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext) /\ ~$ordinary_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext) /\ ~$autoload_context_kind($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext)
   -- if ~$config_string_trace_context(S_context, pcallcontext)
 def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S.FILES, porigin_parent), LINE z, FUNCTION $ptascii("eval"), CLASS eps, TYPE eps, ARGS eps, HASARGS false}]
   -- if $stringify_context_kind(S, pcallcontext)
@@ -544,7 +544,7 @@ def $eval_source_ppstate_body(S, pcunit) = $ppstart_eval_state(S, pcunit.ID, pcu
 def $eval_source_ppstate_body(S, pcunit) = $ppstart_eval_state(S, pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST), eps)
   -- if $eval_binding_at(S.EVALBINDINGS, pcunit.ID) = (pevalbinding)
   -- if pevalbinding.CLASS = eps
-def $eval_source_ppstate_body(S, pcunit) = $ppstart_cwd(pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST))
+def $eval_source_ppstate_body(S, pcunit) = $ppstart_eval_state(S, pcunit.ID, pcunit.AST, $call_sourcefile(S.FILES, PORIGIN pcunit.ID eps), $call_request_cwd(S.REQUEST), eps)
   -- if pcunit.ID = 0
   -- if $eval_binding_at(S.EVALBINDINGS, pcunit.ID) = eps
 def $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program) = $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P)

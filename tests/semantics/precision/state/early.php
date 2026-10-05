@@ -1,0 +1,1 @@
+<?php set_error_handler(function(){ini_set("precision","1tail");return true;}); ini_set("precision","3tail"); eval('function precisionPaused($x){return "${x}";} class PrecisionLater {}');

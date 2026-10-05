@@ -1,7 +1,7 @@
 {
   "version": 1,
   "target": "PHP8.5.10 CLI NTS64",
-  "status": "Independently accepted recording, private-final ordering, successful dependency caches and first-failure Error checkpoints; wider trait semantics remain partial.",
+  "status": "Independently accepted recording, private-final ordering, successful caches, first-failure/cyclic Errors and hard/reported-Error failed-cache disposition; wider trait semantics remain partial.",
   "implementation": "spec/semantics/259-trait-data-collisions.watsup",
   "semantic_revision": "c7f02b253f6d284e47ed8b6a51efbac1eb8c3f2a",
   "scope": [
@@ -113,9 +113,8 @@
     "engine_control": "trait_data_dependency_review_cases.json excluded_controls preserves the SIGSEGV parent:: collision, with zero language-level oracle credit; no rerun or engine investigation."
   },
   "required_next": [
-    "Failed-link dependency-cache disposition and object-bearing dependent values; module266 supports successful scalar/string/array fills.",
-    "Cyclic collision lookup errors and object-bearing dependencies; ordinary first-failure expression errors are recorded in the separate274 checkpoint.",
-    "Readonly storage and the remaining core trait/enum obligations."
+    "Dependency fills in held/open compilation.",
+    "Object-bearing dependency values, readonly storage and remaining core trait/enum obligations."
   ],
   "raw_policy": "Large originals are outside Git. Other effectful/dependency catalogue members are native preparation, not agreement; changed deferred coercion checks are explicit affected comparisons.",
   "operation_continuation": {
@@ -517,9 +516,329 @@
       "provenance": "Reviewer .tools/trait274-error-review/identity.json and held-primary raw report/runner command/status retain current rebuilt --sl runner identity and both original preparation/replay failures."
     },
     "required_next": [
-      "Cyclic dependent lookup errors.",
       "Failed linking after successful dependency fills and object-bearing dependency values.",
       "Readonly storage and remaining trait/enum obligations."
     ]
+  },
+  "cycle_continuation": {
+    "status": "Independently accepted direct and two-hop copied lookup cycle errors; failed-cache and object-bearing dependencies remain required.",
+    "implementation": "spec/semantics/274-trait-composition-errors.watsup",
+    "semantic_revision": "0875c3d7c6ad6f665dc0165d791b8225894e266b",
+    "composition_revision": "e02b12bbaf401dfb0404a574a29a66d12a3bb132",
+    "author_root": "/home/user/workspace/php-spec/.tools/trait-collision-cycle-274",
+    "review_root": "/home/user/workspace/php-spec/.tools/introspection-trait-cycle-review-274",
+    "scope": "Source-authenticated visited lookup chains compare full imported constant IDs; direct and recursive later-dependency cycles use the default Error/fatal route without handler entry or retained cache/Throwable/scratch owners.",
+    "source": {
+      "unique_agreements": 2,
+      "php_error": 2,
+      "catalogue": "tests/semantics/trait_data_collision_cycle_review_cases.json",
+      "cuts": [
+        {
+          "revision": "e02b12bbaf401dfb0404a574a29a66d12a3bb132",
+          "raw": ".tools/method-runtime-87j0bvg0/report.json",
+          "count": 1,
+          "selection": "recursive-imported-constant",
+          "catalogue": "tests/semantics/trait_data_collision_error_function_review_cases.json",
+          "driver_exit": 0,
+          "inputs_stable": true
+        },
+        {
+          "revision": "08e022599af52a673703509dbf67778f03918845",
+          "raw": ".tools/method-runtime-jbm7ysv4/report.json",
+          "count": 1,
+          "selection": "recursive-imported-Y-Z-Z",
+          "driver_exit": 0,
+          "inputs_stable": true
+        }
+      ]
+    },
+    "state": {
+      "revision": "08e022599af52a673703509dbf67778f03918845",
+      "protocol": "tests/semantics/trait_collision_cycle_review_protocol.py",
+      "raw": ".tools/closure-call-protocol-5htxduvv/report.json",
+      "fixtures": 1,
+      "assertions": 87,
+      "driver_exit": 0,
+      "inputs_stable": true,
+      "result": "Genuine full Y/Z lookup chain rejects source/owner/visited-tail mutations and finishes with no cache or transient Error/trace/scratch owner."
+    },
+    "compiler": {
+      "revision": "e02b12bbaf401dfb0404a574a29a66d12a3bb132",
+      "modules": 262,
+      "jobs": 1,
+      "timeout_seconds": 120,
+      "cuts": [
+        [
+          "algo",
+          ".tools/trait274-algo-zqnz42em/report.json",
+          8067225
+        ],
+        [
+          "struct",
+          ".tools/trait274-struct-jy1m617j/report.json",
+          7663271
+        ]
+      ],
+      "result": "Complete exit0/empty stderr using unchanged local tools; no old Error/cache execution renewed."
+    },
+    "actual_parent": {
+      "revision": "c36f46e773db82782483fdbce2fd21954669ed0a",
+      "candidate": "0572ed779a7f4c3b459efb0eec6a6d2e08703cfe",
+      "modules": 263,
+      "result": "Independently accepted focused current271 preservation at0572: exact263 modules and parent callable authority remain intact; no new module or old semantic renewal."
+    },
+    "provenance": {
+      "author": ".tools/trait274-cycle-prep/tools.json",
+      "review": ".tools/trait274-cycle-review/identity.json",
+      "detail": "Exact environment, commands, local tools, exits and stable raw reports remain outside Git."
+    },
+    "required_next": [
+      "Failed-link dependency-cache disposition.",
+      "Object-bearing dependency values, readonly storage and remaining trait/enum obligations."
+    ]
+  },
+  "failed_cache_continuation": {
+    "status": "Independently accepted hard/reported-Error failed-cache disposition for source classes and raw traits; held/open and object-bearing paths remain required.",
+    "implementation": "spec/semantics/274-trait-composition-errors.watsup",
+    "semantic_revision": "819c15eab65d9475b552c073e23d0e914685f46b",
+    "author_root": "/home/user/workspace/php-spec/.tools/trait-failed-cache-274",
+    "review_root": "/home/user/workspace/php-spec/.tools/introspection-trait-failed-cache-review-274",
+    "scope": "Hard source class-link failure retains only newly filled caches whose exact declaring descriptors and owners were published at the original prefix; unpublished import caches/events and scratch array owners retire. PDRTRAITCACHEFAIL rederives the source collision, hard failure and rollback, without class publication or held-primary authority.",
+    "source": {
+      "unique_agreements": 3,
+      "php_error": 3,
+      "cuts": [
+        {
+          "revision": "819c15eab65d9475b552c073e23d0e914685f46b",
+          "catalogue": "tests/semantics/trait_data_failed_cache_cases.json",
+          "raw": ".tools/method-runtime-ixpueu7q/report.json",
+          "count": 2,
+          "driver_exit": 0,
+          "inputs_stable": true
+        },
+        {
+          "revision": "f164a9cfc7de0d0754f0f28956ee8bca12e14d29",
+          "catalogue": "tests/semantics/trait_data_failed_cache_review_cases.json",
+          "raw": ".tools/method-runtime-81p7xuot/report.json",
+          "count": 1,
+          "driver_exit": 0,
+          "inputs_stable": true
+        }
+      ]
+    },
+    "state": {
+      "protocol": "tests/semantics/trait_failed_cache_review_protocol.py",
+      "fixtures": 2,
+      "supplied_conditions": 194,
+      "generated_setup_conditions": 6,
+      "cuts": [
+        {
+          "revision": "27ec94e83fc70b52e9e45e407ce9f6d5c83ebf74",
+          "raw": ".tools/closure-call-protocol-qjiafmis/report.json",
+          "supplied_conditions": 104,
+          "runner_conditions": 107,
+          "worker_result": "pass",
+          "driver_exit": 1,
+          "inputs_stable": true
+        },
+        {
+          "revision": "9a273275db5b17c240dbf60aeed244505c5ce8bb",
+          "raw": ".tools/closure-call-protocol-b0ayb1xk/report.json",
+          "supplied_conditions": 90,
+          "runner_conditions": 93,
+          "worker_result": "pass",
+          "driver_exit": 0,
+          "inputs_stable": true
+        }
+      ],
+      "result": "Published array cache has one retained cache owner, survives shutdown COW and rejects source/cause/history mutations; unpublished imported cache/event and array allocation retire. Raw restore still has inadmissible unflushed seeds, while the real activate_class boundary flushes them before completed-state validation. The original mixed driver retains its later incorrect terminal expectation failure."
+    },
+    "compiler": {
+      "revision": "819c15eab65d9475b552c073e23d0e914685f46b",
+      "modules": 263,
+      "jobs": 1,
+      "timeout_seconds": 120,
+      "cuts": [
+        [
+          "algo",
+          ".tools/trait274-algo-471j0gd4/report.json",
+          8148219
+        ],
+        [
+          "struct",
+          ".tools/trait274-struct-b6i2crds/report.json",
+          7743862
+        ]
+      ],
+      "result": "Complete exit0/empty stderr with unchanged local tools; earlier unrelated Error/cache/cycle cuts remain closed."
+    },
+    "actual_parent": {
+      "revision": "18e60e72359349467a149c602adb3b3737d91e56",
+      "candidate": "45e6fc4ffc25b549ebc3c716dd0f6131ac8f9238",
+      "modules": 265,
+      "result": "Independently accepted focused latest18e preservation:271 lookup receipts require genuine global NStmtConst roots and remain disjoint from trait imports/collision defaults;184/217 facts retain neutral LOOKUP fields. Cache/failure cause authority and the exact ordered265-module accepted parent are unchanged. No new semantic renewal."
+    },
+    "provenance": {
+      "author": ".tools/trait274-failed-cache-prep/tools.json",
+      "review": ".tools/trait274-failed-cache-review/identity.json",
+      "detail": "Raw harness records retain exact revisions, commands, local tools, environment, exits and stable inputs outside Git."
+    },
+    "preserved_failures": [
+      "Compiler preparation b22bwe1f unbound replay cause and ja8f5_dh non-pure journal scan; zero model credit.",
+      "Fixture pieprqcb TRAITFETCHED elaboration, cux1s979 pre-production seed boundary and qjiafmis later no-shutdown terminal expectation; corrected only affected fixtures, no implementation change."
+    ],
+    "required_next": [
+      "Dependency fills in held/open compilation.",
+      "Object-bearing dependency values, readonly storage and remaining core trait/enum obligations."
+    ],
+    "reported_error": {
+      "status": "Independently accepted reported endogenous Error after scalar/array dependency fills; wider failed-fill contexts remain required.",
+      "semantic_revision": "be5123a0916768de375eea88e8f23d1962293082",
+      "composition_revision": "e2d706953595dbb3abc0788a7e5a2a41edc8cdd7",
+      "author_root": "/home/user/workspace/php-spec/.tools/trait-failed-cache-requestfatal-274",
+      "review_root": "/home/user/workspace/php-spec/.tools/introspection-trait-failed-cache-requestfatal-review-274",
+      "scope": "The exact source class image authenticates reported CompileError before rollback; source-rederived failure markers retain already published dependency owners and retire unpublished imports after first-error rendering, without held-primary/open-compile permission.",
+      "source": {
+        "unique_agreements": 3,
+        "php_error": 3,
+        "cuts": [
+          {
+            "revision": "e2d706953595dbb3abc0788a7e5a2a41edc8cdd7",
+            "catalogue": "tests/semantics/trait_data_failed_cache_error_cases.json",
+            "raw": ".tools/method-runtime-qytfp35c/report.json",
+            "count": 2,
+            "driver_exit": 0,
+            "inputs_stable": true
+          },
+          {
+            "revision": "f0eea746f2fa6644b2a6b6468c4697007c66f176",
+            "catalogue": "tests/semantics/trait_data_failed_cache_requestfatal_review_cases.json",
+            "raw": ".tools/method-runtime-0m7_447a/report.json",
+            "count": 1,
+            "driver_exit": 0,
+            "inputs_stable": true
+          }
+        ]
+      },
+      "state": {
+        "revision": "dd36856e67204adb93161dcd98d48eaf4f65471a",
+        "protocol": "tests/semantics/trait_failed_cache_error_review_protocol.py",
+        "raw": ".tools/closure-call-protocol-_ct3icui/report.json",
+        "fixtures": 2,
+        "supplied_conditions": 188,
+        "generated_setup_conditions": 6,
+        "driver_exit": 0,
+        "inputs_stable": true,
+        "result": "Genuine reported class failures reject fatal kind/origin/trace and source/cause mutations, retain a sole published-array cache owner through shutdown COW, retire unpublished imports and release transient Throwable/trace allocations."
+      },
+      "compiler": {
+        "revision": "e2d706953595dbb3abc0788a7e5a2a41edc8cdd7",
+        "modules": 265,
+        "jobs": 1,
+        "timeout_seconds": 120,
+        "cuts": [
+          [
+            "algo",
+            ".tools/trait274-algo-rmfppjsv/report.json",
+            8232946
+          ],
+          [
+            "struct",
+            ".tools/trait274-struct-lhr947wd/report.json",
+            7828283
+          ]
+        ],
+        "result": "Complete exit0/empty stderr with copied current18e tools; hard-cache and earlier Error/cache cuts unchanged."
+      },
+      "actual_parent": {
+        "revision": "481b0b1f6fb50a47e66890ba7ca2b78a14531a62",
+        "modules": 265,
+        "result": "Installed hard-cache source and current18e prebind/precision/container preservation remain intact; the semantic delta is the reviewed five-line source/cause-bound reported-fatal extension."
+      },
+      "provenance": {
+        "author": ".tools/trait274-requestfatal-prep/tools.json",
+        "review": ".tools/trait274-requestfatal-cache-review/identity.json",
+        "detail": "Exact copied tools, commands, environment, exits and stable raw reports retained outside Git."
+      },
+      "required_next": [
+        "Dependency fills in held/open compilation.",
+        "Object-bearing dependency values, readonly storage and remaining core trait/enum obligations."
+      ]
+    },
+    "raw_trait": {
+      "status": "Independently accepted raw-trait failed-cache source-kind continuation; wider trait semantics remain partial.",
+      "semantic_revision": "ea0f8f51f6c4eb1a2d476e458cef6dccaf1768af",
+      "composition_revision": "ab58e0689fc6e4de961572587a189e135ac7435f",
+      "author_root": "/home/user/workspace/php-spec/.tools/trait-failed-trait-cache-274",
+      "review_root": "/home/user/workspace/php-spec/.tools/introspection-trait-failed-trait-cache-review-274",
+      "scope": "Real NStmtTrait/KINDtrait and NStmtClass/KINDclass pairs authenticate failure readiness, reported-fatal replay and the source-rederived rollback marker. Published dependency caches survive failed trait composition; raw self::Y is rejected before filling or warning. Existing full cause/table/lookup/target and held/open restrictions remain.",
+      "source": {
+        "unique_agreements": 3,
+        "php_error": 3,
+        "cuts": [
+          {
+            "revision": "ab58e0689fc6e4de961572587a189e135ac7435f",
+            "catalogue": "tests/semantics/trait_data_failed_trait_cache_cases.json",
+            "raw": ".tools/method-runtime-6nl4lyob/report.json",
+            "count": 2,
+            "driver_exit": 0,
+            "inputs_stable": true
+          },
+          {
+            "revision": "1a69bc1774545f3ce589dc29dc67b348b6548e2a",
+            "catalogue": "tests/semantics/trait_data_failed_trait_priority_review_cases.json",
+            "raw": ".tools/method-runtime-a2unbh07/report.json",
+            "count": 1,
+            "driver_exit": 0,
+            "inputs_stable": true
+          }
+        ]
+      },
+      "state": {
+        "revision": "828589fbb888fc8c3d3d4010769f1fcad38eef67",
+        "protocol": "tests/semantics/trait_failed_trait_cache_review_protocol.py",
+        "raw": ".tools/closure-call-protocol-fqmnll4a/report.json",
+        "fixtures": 1,
+        "supplied_conditions": 68,
+        "generated_setup_conditions": 3,
+        "driver_exit": 0,
+        "inputs_stable": true,
+        "result": "Genuine failed raw-trait composition rejects source/kind/history/marker mutations, retains one published-array cache owner through shutdown COW, and leaves the using trait unpublished."
+      },
+      "compiler": {
+        "revision": "ab58e0689fc6e4de961572587a189e135ac7435f",
+        "modules": 265,
+        "jobs": 1,
+        "timeout_seconds": 120,
+        "cuts": [
+          [
+            "algo",
+            ".tools/trait274-algo-5ypks2a2/report.json",
+            8232994
+          ],
+          [
+            "struct",
+            ".tools/trait274-struct-imdrdn4p/report.json",
+            7828133
+          ]
+        ],
+        "result": "Complete exit0/empty stderr with copied unchanged current265 tools; earlier hard/Error/cache/cycle cuts remain closed."
+      },
+      "actual_parent": {
+        "revision": "51442b00685288590de8ea3ec51cb7b391468878",
+        "modules": 265,
+        "result": "Independently accepted focused514 preservation/publication: source delta equals the reviewed/tested source-kind helper, exact ordered265 parent modules and all accepted routes remain intact; copied priority catalogue/protocol match their reviewed cuts. No new semantic renewal.",
+        "candidate": "1a34330ba5e5bf5c49c6c5aa0cd4f444935a0ef6"
+      },
+      "provenance": {
+        "author": ".tools/trait274-raw-trait-cache-prep/tools.json",
+        "review": ".tools/trait274-failed-trait-cache-review/identity.json",
+        "detail": "Exact local tools, commands, environment, exits and stable raw reports retained outside Git."
+      },
+      "required_next": [
+        "Dependency fills in held/open compilation and object-bearing values.",
+        "Readonly storage and remaining core trait/enum obligations."
+      ]
+    }
   }
 }

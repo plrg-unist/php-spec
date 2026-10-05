@@ -319,10 +319,17 @@ def $eval_compile_paused_unit(S, n) = ($eval_compile_claim_at($eval_compile_wait
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext[.PHASE = EVAL_COMPILE] :: pevalcontext_tail*][.SERVICELEFT = eps]
   -- if S_compiled.COMPLETION = NORMAL
   -- if $eval_compile_paused_unit(S_compiled, pevalcontext.UNIT)
+dec $precision_eval_resume_valid(pstate, pevalcompile) : bool
 rule PhpStep/eval-compile-resume: S ~> $eval_compile_loop(S[.DECLARATIONS = S.DECLARATIONS ++ [PDEVALRESUME pevalcompile.PLAN.UNIT S.REPORTING]][.TODO = ptask_tail*], pevalcompile)
   -- if S.TODO = (EVAL_COMPILE_RESUME pevalcompile) :: ptask_tail*
   -- if $eval_compile_cursor_valid(S, pevalcompile)
   -- if $eval_compile_waiting(S.DECLARATIONS) = (pevalcompile.PLAN.UNIT, pevalcompile.CHECKPOINT, pevalcompile.DIAGNOSTIC, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*
+  -- if $precision_eval_resume_valid(S, pevalcompile)
+rule PhpStep/eval-compile-precision-changed: S ~> S[.COMPLETION = UNSUPPORTED "precision changed during suspended eval compilation"]
+  -- if S.TODO = (EVAL_COMPILE_RESUME pevalcompile) :: ptask_tail*
+  -- if $eval_compile_cursor_valid(S, pevalcompile)
+  -- if $eval_compile_waiting(S.DECLARATIONS) = (pevalcompile.PLAN.UNIT, pevalcompile.CHECKPOINT, pevalcompile.DIAGNOSTIC, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*
+  -- if ~$precision_eval_resume_valid(S, pevalcompile)
 def $throwable_marker(EVAL_COMPILE_RESUME pevalcompile) = true
 def $throwable_marker(EVAL_COMPILE_END n) = true
 rule PhpStep/eval-compile-throw-pending: S ~> S[.TODO = (EVAL_COMPILE_RESUME pevalcompile[.PENDING = THROWING n]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -332,12 +339,13 @@ rule PhpStep/eval-compile-throw-pending: S ~> S[.TODO = (EVAL_COMPILE_RESUME pev
 ;; Replay the source-produced segment up to its next genuine pause. Runtime
 ;; declarations and nested unit entries use the existing chronological replay;
 ;; a resume reopens exactly the most recently suspended compiler.
-def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next porigin? z) :: pdeclaration*, n_next) = $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, $(n_next + 1), S_compiled)
+def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration_entry :: pdeclaration*, n_next) = $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, $(n_next + 1), S_compiled)
+  -- if $declaration_entry_input(pdeclaration_entry, n_next) = ((porigin?, z, z_precision))
   -- if $eval_compile_unit(S, n_next)
   -- if $declaration_entry_binding(S, S_prefix, n_next, porigin?)
   -- if $declaration_service_available(S_prefix, porigin?)
   -- if $declaration_compiler_at((n, P)*, n_next) = (P_current)
-  -- if S_compiled = $eval_compile_loop($declaration_enter(S_prefix[.REPORTING = z][.COMPLETION = NORMAL][.ERRORORIGIN = eps], n_next, porigin?), {PLAN $eval_compile_plan(P_current), CHECKPOINT 0, DIAGNOSTIC 0, PENDING NORMAL})
+  -- if S_compiled = $eval_compile_loop($declaration_enter_at(S_prefix[.REPORTING = z][.COMPLETION = NORMAL][.ERRORORIGIN = eps], n_next, porigin?, z_precision), {PLAN $eval_compile_plan(P_current), CHECKPOINT 0, DIAGNOSTIC 0, PENDING NORMAL})
 def $declaration_history_fold(S, S_prefix, (n, P)*, (PDEVALRESUME n_unit z) :: pdeclaration*, n_next) = $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled)
   -- if $eval_compile_waiting(S_prefix.DECLARATIONS) = (n_unit, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*
   -- if $declaration_compiler_at((n, P)*, n_unit) = (P_current)

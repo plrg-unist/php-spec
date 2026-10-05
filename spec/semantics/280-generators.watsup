@@ -84,6 +84,7 @@ dec $generator_context_retained(pstate, pcallcontext) : bool
 dec $generator_retained_nodes(pstate, pnode*, pcallcontext) : bool
 dec $generator_retained_node(pstate, pnode, pcallcontext) : bool
 dec $generator_retained_object(pobject, pcallcontext) : bool
+dec $generator_resume_head(ptask*) : bool
 dec $generator_creation_supported(pstate, pcallcontext) : bool
 dec $generator_creation_target(pstate, pcalltarget, porigin?) : bool
 dec $generator_creation_method(pstate, porigin, porigin?) : bool
@@ -175,7 +176,7 @@ rule PhpStep/generator-create-scope-unsupported: S ~> S[.TODO = eps][.COMPLETION
 
 ;; Ordinary creation permission follows its original source caller. Changed
 ;; Closure scopes and implicit protocol calls need their own retained proof.
-def $generator_creation_supported(S, pcallcontext) = $generator_creation_target(S, pcallcontext.TARGET, pcallcontext.CALLSITE)
+def $generator_creation_supported(S, pcallcontext) = (~$autoload_context_kind(S, pcallcontext) /\ $generator_creation_target(S, pcallcontext.TARGET, pcallcontext.CALLSITE))
 def $generator_creation_target(S, porigin, porigin_site?) = $call_selected_valid(S, porigin, porigin_site?)
 def $generator_creation_target(S, CLOSURE_TARGET n, porigin_site?) = $call_selected_valid(S, CLOSURE_TARGET n, porigin_site?)
 def $generator_creation_target(S, METHOD_TARGET n porigin, porigin_site?) = $generator_creation_method(S, porigin, porigin_site?)
@@ -758,7 +759,7 @@ def $generator_resume_pairs(S, pcallcontext?, pframe :: pframe_tail*) = $generat
   -- if ~$generator_resume_head(pframe.TODO)
 def $generator_resume_head((GENERATOR_RESUME pgeneratorop) :: ptask*) = true
 def $generator_resume_head(ptask*) = false -- otherwise
-def $reference_call_frames_valid((pcallcontext), pframe :: pframe_tail*) = (pframe.ORIGIN = (pgeneratorop.SITE) /\ $reference_call_frames_valid(pframe.CONTEXT, pframe_tail*))
+def $reference_call_frame_site(pcallcontext, pframe) = (pframe.ORIGIN = (pgeneratorop.SITE))
   -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask*
 def $useriter_task_ids(GENERATOR_NEXT pgeneratorop) = $generator_loop_ids(pgeneratorop.LOOP)
 def $useriter_task_ids(GENERATOR_RESUME pgeneratorop) = $generator_loop_ids(pgeneratorop.LOOP)

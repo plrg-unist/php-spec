@@ -118,8 +118,14 @@ restores the emitter and retains the handler's older exception chain.
 aliases on a returning missing fetch; throws preserve callback writes and skip
 initialization and delayed RHS demand. Name conversion remains distinct from
 ordinary array-key conversion.
-Wider memoized containers and earlier container/string/object producers remain
-required.
+[Container276](SOURCE-CONTAINER-WRITES.md) adds initial W/RW storage and final
+array-reference ingress: false protection, consumer-specific post-throw effects
+and source-backed typed DIM_OP backing retain native behavior.
+[Scalar reads282](SOURCE-CONTAINER-READS.md) stage missing-base, key-CV and offset
+warnings while preserving borrowed selections and genuine temporary owners.
+Missing-base null, post-key message sampling, quiet predicates and throw suppression
+remain distinct. String/object/ArrayAccess, wider base and memoized/GLOBALS producers
+remain required.
 
 Primary contracts are `zend_error_zstr_at` in `vendor/php-src/Zend/zend.c`, the
 six API bodies in `Zend/zend_builtin_functions.c`, the undefined-CV read helpers

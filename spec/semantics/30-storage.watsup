@@ -8,7 +8,7 @@ syntax plocation = ROOT nat | ELEMENT nat pkey | PROPERTY nat ptbytes | CLASS_ST
 syntax pbase = BASE_VALUE poperand | BASE_GLOBAL poperand int | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int | BASE_PLACE porigin plocation | BASE_PROPERTY pvalue ptbytes | BASE_PROPERTY_PENDING pbase poperand int | BASE_CHAIN_PROPERTY pvalue ptbytes int | BASE_CLASS_STATIC porigin ptbytes | BASE_CLASS_STATIC_PENDING poperand poperand | BASE_SHORT
 syntax pnode = HCELL nat | HARRAY nat | HOBJECT nat
 syntax pvstage = PVFOLD | PVEXEC
-syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)* | PVCLOSURE nat porigin | PVOBJECT
+syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)* | PVCLOSURE nat porigin | PVOBJECT | PVINSTANCE nat porigin
 syntax parrayselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, NAME ptbytes }
 syntax pstringselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, ORIGINAL ptbytes }
 syntax pmethodcapture = { FUNCTION porigin, CALLSITE porigin?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin? }
@@ -83,7 +83,7 @@ syntax pnamedslot = NAMED_HOLE | NAMED_SENT poperand
 syntax pnamedargs = { SLOTS pnamedslot*, NAMED (nat*, poperand)* }
 syntax pdefaultctor = { NEW pdefaultnew, FUNCTION porigin, INDEX nat, PREPARED pnamedargs }
 syntax punpackcall = { FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX nat, SENT pnamedargs, CALLSITE porigin?, LINE int }
-syntax pintrinsic = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION | INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC_GET_CLASS | INTRINSIC_GET_CALLED_CLASS | INTRINSIC_FROM_CALLABLE | INTRINSIC_CLOSURE_CURRENT | INTRINSIC_CLOSURE_BIND | INTRINSIC_CLOSURE_BINDTO | INTRINSIC_FUNC_NUM_ARGS | INTRINSIC_FUNC_GET_ARG | INTRINSIC_FUNC_GET_ARGS | INTRINSIC_GET_INCLUDE_PATH | INTRINSIC_SET_INCLUDE_PATH | INTRINSIC_INI_GET | INTRINSIC_INI_SET | INTRINSIC_INI_RESTORE | INTRINSIC_CHDIR
+syntax pintrinsic = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION | INTRINSIC_AUTO_REGISTER | INTRINSIC_AUTO_UNREGISTER | INTRINSIC_AUTO_FUNCTIONS | INTRINSIC_AUTO_CALL | INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC_GET_CLASS | INTRINSIC_GET_CALLED_CLASS | INTRINSIC_FROM_CALLABLE | INTRINSIC_CLOSURE_CURRENT | INTRINSIC_CLOSURE_BIND | INTRINSIC_CLOSURE_BINDTO | INTRINSIC_FUNC_NUM_ARGS | INTRINSIC_FUNC_GET_ARG | INTRINSIC_FUNC_GET_ARGS | INTRINSIC_GET_INCLUDE_PATH | INTRINSIC_SET_INCLUDE_PATH | INTRINSIC_INI_GET | INTRINSIC_INI_SET | INTRINSIC_INI_RESTORE | INTRINSIC_CHDIR
   | INTRINSIC_ERROR_REPORTING | INTRINSIC_SET_ERROR_HANDLER | INTRINSIC_RESTORE_ERROR_HANDLER | INTRINSIC_GET_ERROR_HANDLER | INTRINSIC_TRIGGER_ERROR | INTRINSIC_USER_ERROR
   | INTRINSIC_SET_EXCEPTION_HANDLER | INTRINSIC_RESTORE_EXCEPTION_HANDLER | INTRINSIC_GET_EXCEPTION_HANDLER
 syntax pexitcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT poperand*, NAMED bool, OWNER nat?, LINE int }
@@ -113,6 +113,14 @@ syntax pclosurescope, pclosurebinding
 ;; The selecting callback is borrowed history, not a retained queue owner.
 syntax pshutdownproducer = { TARGET pcalltarget, SITE porigin?, SCOPE pclosurescope?, BINDING pclosurebinding?, INTERNAL bool }
 syntax pshutdownentry = { CALL pconfigcall, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer?, RAW parray?, TARGET pcalltarget, ARGS pvalue* }
+;; Autoload registry buckets retain only the selected callable cache.
+syntax preqbytes
+syntax pautoloadtarget = AUTO_DEFAULT | AUTO_ALL | AUTO_TARGET pcalltarget
+syntax pautoloadentry = { CALL pconfigcall, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer?, RAW parray?, TARGET pautoloadtarget, SCOPE pclosurescope?, BINDING pclosurebinding? }
+syntax pautoloadregistry = { ENTRIES pautoloadentry?*, CAPACITY nat }
+syntax pautoloadmode = AUTO_LOOKUP | AUTO_EXPLICIT pconfigcall
+syntax pautoloadcall = { SITE porigin, NAME preqbytes, KEY preqbytes, LINE int, MODE pautoloadmode, INDEX nat, RESUME ptask }
+syntax pautoloadregistration = { ENTRY pautoloadentry, INDEX nat, THROW bool, PREPEND bool }
 syntax pshutdownphase = SHUTDOWN_PENDING | SHUTDOWN_RUNNING | SHUTDOWN_DONE
 syntax pdestructionphase = DESTRUCTION_PENDING | DESTRUCTION_GLOBALS | DESTRUCTION_STORE | DESTRUCTION_DONE
 syntax pcallcontext
@@ -132,6 +140,12 @@ syntax pkeywriter = { SITE porigin, TARGET porigin, TASK ptask, BASE pbase, RHS 
 syntax pkeywrite = { READ pkeyread, PLACE plocation, RW bool }
 syntax pappendread = { WRITER pkeywriter, PLACE plocation, ARRAY nat, NAME ptbytes, LINE int }
 syntax pcoalesceread = { WRITER pkeywriter, PLACE plocation, NAME ptbytes, LINE int }
+syntax pcontainerinit = { CELL nat, ARRAY nat, SITE porigin, LINE int }
+syntax pcontainerphase = CONTAINER_CV ptbytes | CONTAINER_FALSE nat | CONTAINER_KEY_CV ptbytes
+syntax pcontainerkind = CONTAINER_FETCH | CONTAINER_ASSIGN | CONTAINER_COMPOUND
+syntax pcontainerwrite = { SITE porigin, WRITER pkeywriter, INPUT poperand, PLACE plocation, BINDING ptbytes?, LINE int, RW bool, KIND pcontainerkind, PHASE pcontainerphase }
+syntax pcontainerreadphase = READ_BASE_CV ptbytes | READ_KEY_CV ptbytes | READ_OFFSET pvalue
+syntax pcontainerread = { READ pkeyread, SELECTED poperand, PHASE pcontainerreadphase }
 syntax perrorcall = { SITE porigin, LEVEL int, MESSAGE nat*, LINE int, EVENT pevent, CALLBACK pvalue, TARGET pcalltarget?, RESUME ptask }
 syntax pfdiagnostic = { SITE porigin, OWNER porigin, LEVEL int, MESSAGE nat*, LINE int }
 syntax pdeclnotice = { CLASS porigin, METHOD porigin, LINE int, MESSAGE nat* }
@@ -154,11 +168,15 @@ syntax ptraitproperty = {SITE porigin, ROOT porigin, DECL ppropertyid, NAME nat*
 syntax ptraitpropertywrite = {SITE porigin, OP pbin?, CLASS poperand, NAME poperand, RHS expression, LINE int}
 syntax pdefaultinternal = {NEW pdefaultnew, CALL pctorcall, INDEX nat, VALUES pvalue*}
 syntax pordinaryinternal = {SOURCE pctorcall, CALL pctorcall, INDEX nat, VALUES pvalue*}
-syntax pconstantfact = { ORIGIN porigin, VALUE pvalue?, CLASS pvalueclass }
+syntax pconstantlookup = { ORIGIN porigin, SITE porigin, DECL porigin, PREFIX nat }
+syntax pconstantfact = { ORIGIN porigin, VALUE pvalue?, CLASS pvalueclass, LOOKUP pconstantlookup? }
 syntax pconstantcontext = { ORIGIN porigin, LINE int, FACTS pconstantfact* }
 syntax pstaticdefaultcontext = { DECL porigin, ROOT porigin, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
 syntax pinterpolation = { SITE porigin, INDEX nat, MODE nat, LINE int, TEXT nat*, VALUES poperand* }
-syntax ptask = GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_NEXT pgeneratorop | CLOSURE_CALL_WARNING pclosurecall ptbytes | CLOSURE_CALL_GETTER_RESULT pclosurecall | CLOSURE_CALL_REFERENCE pclosurecall nat pnamedargs nat | OBJECT_CAST_RESULT pobjectcast | OBJECT_FOREACH_KEY pobjectforeach | TRAIT_PROPERTY_ABRUPT ptraitproperty nat | TRAIT_PROPERTY_WRITE ptraitpropertywrite | TRAIT_PROPERTY_STORE porigin pbin? poperand int | TRAIT_PROPERTY_PHASE ptraitproperty nat | TRAIT_METHOD_PHASE ptraitcall nat | ARGINFO_REF_PREP pargref | ARGINFO_REF_VALUES pargref nat poperand* | ARGINFO_REF_CAPTURE pargref nat poperand* | ARGINFO_REF_ERROR pargref poperand* | ARGINFO_ARGS pargcall | ARGINFO_SEND pargcall | ARGINFO_UNPACK_PREP pargcall | ARGINFO_UNPACK_NEXT pargcall poperand nat | ARGINFO_INVOKE pargcall | FILE_REQUEST porigin int int | FILE_RESOLVE_AWAIT nat | FILE_PARSE_AWAIT nat | FILE_END nat | FILE_WARNING_PHASE nat nat | EVAL_REQUEST porigin int | EVAL_AWAIT nat | EVAL_END nat | GETCLASS_ARGS pgetclasscall | GETCLASS_SEND pgetclasscall | GETCLASS_UNPACK_PREP pgetclasscall | GETCLASS_UNPACK_NEXT pgetclasscall poperand nat | GETCLASS_INVOKE pgetclasscall | CONFIG_ARGS pconfigcall | CONFIG_SEND pconfigcall | CONFIG_UNPACK_PREP pconfigcall | CONFIG_UNPACK_NEXT pconfigcall poperand nat | CONFIG_INVOKE pconfigcall | CONFIG_STRING_RESULT pconfigcall nat porigin int int | CHDIR_AWAIT pconfigcall nat | GETTER_ARGS pgettercall | GETTER_SEND pgettercall | GETTER_UNPACK_PREP pgettercall | GETTER_UNPACK_NEXT pgettercall poperand nat | GETTER_INVOKE pgettercall | GETTER_CAPTURE_RESULT nat porigin | FAKE_BIND_WARNING pbindwarning | BIND_ARGS pbindcall | BIND_SEND pbindcall | BIND_INVOKE pbindcall | CLOSURE_CALL_ARGS pclosurecall | CLOSURE_CALL_SEND pclosurecall | CLOSURE_CALL_INVOKE pclosurecall | FINALLY_ONLY porigin | FINALLY_RESUME porigin nat? | FINALLY_RETURN porigin porigin poperand | FINALLY_REF_RETURN porigin porigin poperand int | FINALLY_JUMP porigin porigin nat nat bool | FINALLY_GOTO porigin porigin pcpath pcpath | FINALLY_PHASE porigin nat | GOTO_UNWIND porigin pcpath pcpath | TRY_END porigin | THROW_VALUE porigin int | THROW_SEARCH nat | CATCH_BIND porigin nat nat | CLONE_ARGS pclonecall | CLONE_SEND pclonecall | CLONE_UNPACK_PREP pclonecall | CLONE_UNPACK_NEXT pclonecall poperand nat | CLONE_INVOKE pclonecall | CLONE_UPDATE pclonecall nat nat nat | EXIT_ARGS pexitcall | EXIT_SEND pexitcall | EXIT_UNPACK_PREP pexitcall | EXIT_UNPACK_NEXT pexitcall poperand nat | EXIT_INVOKE pexitcall | EXIT_UNWIND int | MATCH_START porigin | MATCH_SCAN porigin poperand nat nat | MATCH_COMPARE porigin poperand nat nat | MATCH_RESULT porigin poperand nat | CLOSURE_CAPTURE nat nat | CLOSURE_RECEIVE porigin nat | STATIC_INIT porigin | STATIC_BIND porigin | UNPACK_ARGS punpackcall | UNPACK_SEND punpackcall | UNPACK_PREP punpackcall | UNPACK_NEXT punpackcall poperand nat bool | NAMED_ARGS pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_SEND pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_PREFLIGHT porigin nat | NAMED_DEFAULT_BIND porigin nat | NAMED_VARIADIC_RECEIVE porigin nat | VARIADIC_BEGIN porigin | VARIADIC_RECEIVE porigin nat | SILENCE_END porigin | TYPE_RECEIVE porigin nat | TYPE_FALLTHROUGH porigin | DEFAULT_RECEIVE porigin nat | DEFAULT_BIND porigin nat | CONSTANT_OBSERVE porigin | CONSTANT_INIT expression | CONSTANT_BIND porigin | DEFAULT_NEW_ARGS pdefaultnew | DEFAULT_NEW_SEND pdefaultnew | DEFAULT_CTOR_ARGS pdefaultctor | DEFAULT_CTOR_REF_RESULT pdefaultctor | DEFAULT_CTOR_RESULT pdefaultctor
+syntax ptask = GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
+  | AUTO_NEXT pautoloadcall | AUTO_REFERENCE pautoloadcall pautoloadentry | AUTO_ENTER pautoloadcall pautoloadentry poperand | AUTO_RESULT pautoloadcall pautoloadentry poperand
+  | AUTO_NEW preqbytes phpType7* int int | AUTO_PUBLISH porigin | AUTO_EXPLICIT_DONE pconfigcall
+  | CLOSURE_CALL_WARNING pclosurecall ptbytes | CLOSURE_CALL_GETTER_RESULT pclosurecall | CLOSURE_CALL_REFERENCE pclosurecall nat pnamedargs nat | OBJECT_CAST_RESULT pobjectcast | OBJECT_FOREACH_KEY pobjectforeach | TRAIT_PROPERTY_ABRUPT ptraitproperty nat | TRAIT_PROPERTY_WRITE ptraitpropertywrite | TRAIT_PROPERTY_STORE porigin pbin? poperand int | TRAIT_PROPERTY_PHASE ptraitproperty nat | TRAIT_METHOD_PHASE ptraitcall nat | ARGINFO_REF_PREP pargref | ARGINFO_REF_VALUES pargref nat poperand* | ARGINFO_REF_CAPTURE pargref nat poperand* | ARGINFO_REF_ERROR pargref poperand* | ARGINFO_ARGS pargcall | ARGINFO_SEND pargcall | ARGINFO_UNPACK_PREP pargcall | ARGINFO_UNPACK_NEXT pargcall poperand nat | ARGINFO_INVOKE pargcall | FILE_REQUEST porigin int int | FILE_RESOLVE_AWAIT nat | FILE_PARSE_AWAIT nat | FILE_END nat | FILE_WARNING_PHASE nat nat | EVAL_REQUEST porigin int | EVAL_AWAIT nat | EVAL_END nat | GETCLASS_ARGS pgetclasscall | GETCLASS_SEND pgetclasscall | GETCLASS_UNPACK_PREP pgetclasscall | GETCLASS_UNPACK_NEXT pgetclasscall poperand nat | GETCLASS_INVOKE pgetclasscall | CONFIG_ARGS pconfigcall | CONFIG_SEND pconfigcall | CONFIG_UNPACK_PREP pconfigcall | CONFIG_UNPACK_NEXT pconfigcall poperand nat | CONFIG_INVOKE pconfigcall | CONFIG_STRING_RESULT pconfigcall nat porigin int int | CHDIR_AWAIT pconfigcall nat | GETTER_ARGS pgettercall | GETTER_SEND pgettercall | GETTER_UNPACK_PREP pgettercall | GETTER_UNPACK_NEXT pgettercall poperand nat | GETTER_INVOKE pgettercall | GETTER_CAPTURE_RESULT nat porigin | FAKE_BIND_WARNING pbindwarning | BIND_ARGS pbindcall | BIND_SEND pbindcall | BIND_INVOKE pbindcall | CLOSURE_CALL_ARGS pclosurecall | CLOSURE_CALL_SEND pclosurecall | CLOSURE_CALL_INVOKE pclosurecall | FINALLY_ONLY porigin | FINALLY_RESUME porigin nat? | FINALLY_RETURN porigin porigin poperand | FINALLY_REF_RETURN porigin porigin poperand int | FINALLY_JUMP porigin porigin nat nat bool | FINALLY_GOTO porigin porigin pcpath pcpath | FINALLY_PHASE porigin nat | GOTO_UNWIND porigin pcpath pcpath | TRY_END porigin | THROW_VALUE porigin int | THROW_SEARCH nat | CATCH_BIND porigin nat nat | CLONE_ARGS pclonecall | CLONE_SEND pclonecall | CLONE_UNPACK_PREP pclonecall | CLONE_UNPACK_NEXT pclonecall poperand nat | CLONE_INVOKE pclonecall | CLONE_UPDATE pclonecall nat nat nat | EXIT_ARGS pexitcall | EXIT_SEND pexitcall | EXIT_UNPACK_PREP pexitcall | EXIT_UNPACK_NEXT pexitcall poperand nat | EXIT_INVOKE pexitcall | EXIT_UNWIND int | MATCH_START porigin | MATCH_SCAN porigin poperand nat nat | MATCH_COMPARE porigin poperand nat nat | MATCH_RESULT porigin poperand nat | CLOSURE_CAPTURE nat nat | CLOSURE_RECEIVE porigin nat | STATIC_INIT porigin | STATIC_BIND porigin | UNPACK_ARGS punpackcall | UNPACK_SEND punpackcall | UNPACK_PREP punpackcall | UNPACK_NEXT punpackcall poperand nat bool | NAMED_ARGS pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_SEND pcalltarget phpType7* nat pnamedargs porigin? int | NAMED_PREFLIGHT porigin nat | NAMED_DEFAULT_BIND porigin nat | NAMED_VARIADIC_RECEIVE porigin nat | VARIADIC_BEGIN porigin | VARIADIC_RECEIVE porigin nat | SILENCE_END porigin | TYPE_RECEIVE porigin nat | TYPE_FALLTHROUGH porigin | DEFAULT_RECEIVE porigin nat | DEFAULT_BIND porigin nat | CONSTANT_OBSERVE porigin | CONSTANT_INIT expression | CONSTANT_BIND porigin | DEFAULT_NEW_ARGS pdefaultnew | DEFAULT_NEW_SEND pdefaultnew | DEFAULT_CTOR_ARGS pdefaultctor | DEFAULT_CTOR_REF_RESULT pdefaultctor | DEFAULT_CTOR_RESULT pdefaultctor
   | DEFAULT_INTERNAL_CTOR_ARGS pdefaultnew pctorcall
   | CALLABLE_DEFAULT_RECEIVE porigin nat
   | CALLABLE_SCALAR_RESULT ptask poperand pvalue int
@@ -173,12 +191,14 @@ syntax ptask = GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* 
   | GLOBAL_READ_RESULT pglobalread
   | KEY_READ_BASE pbase pkeymode | KEY_READ_DIM poperand int pkeymode | KEY_READ_GLOBAL poperand int pkeymode | KEY_READ_RESULT pkeyread | KEY_READ_FINISH porigin ptask
   | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_GLOBAL poperand int bool | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
+  | CONTAINER_WRITE_RESULT pcontainerwrite
+  | CONTAINER_READ_RESULT pcontainerread
   | KEY_COALESCE_RESULT pbase bool int | KEY_UNSET_RESULT pkeyread | KEY_UNSET_FINISH porigin pbase
   | KEY_UNSET_BASE pbase bool | KEY_UNSET_DIM poperand int bool | KEY_UNSET_FETCH_RESULT pkeyread | KEY_UNSET_NULL_RESULT pkeyread | KEY_APPEND_RESULT pappendread
   | KEY_COALESCE_RHS_RESULT pcoalesceread
   | DEPRECATED_CONSTANT_RESULT pdeprecatedconstant | REPORTING_LONG_RESULT pconfigcall int
   | GLOBAL_CONSTANT_METHOD_RESUME porigin porigin porigin nat
-  | GLOBAL_CONSTANT_DUPLICATE porigin pvalue pvalueclass nat int
+  | GLOBAL_CONSTANT_DUPLICATE porigin pvalue pvalueclass nat pconstantfact* int
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
   | TRAIT_DATA_SEED pdeclnoticeitem* | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
@@ -233,8 +253,9 @@ syntax psymboltable = { ENV pbinding*, CVS preqbytes*, SYMBOLS preqbytes* }
 syntax pclassconstantselection = CLASS_CONST_FETCH poperand ptbytes | CLASS_CONST_UPDATE_SELECT porigin
 syntax pclassconstantcontext = { DECL porigin, SELECTION pclassconstantselection, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
 syntax pconstantclosure = { OBJECT nat, SITE porigin, DECL porigin, PREFIX nat }
+syntax pconstantobject = { OBJECT nat, SITE porigin, DECL porigin, CLASS porigin, PREFIX nat, COMPLETE bool }
 syntax pdefaultcache = { ORIGIN porigin, VALUE pvalue, CLASS pvalueclass }
-syntax puserconstant = { NAME preqbytes, ORIGIN porigin, VALUE pvalue, CLASS pvalueclass }
+syntax puserconstant = { NAME preqbytes, ORIGIN porigin, VALUE pvalue, CLASS pvalueclass, READS pconstantfact* }
 syntax pcallcontext = { TARGET pcalltarget, WRAPPER pnamedargs?, INSTANCE nat?, RECEIVER nat?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin?, FUNCTION porigin, NAME preqbytes, CALLSITE porigin?, LINE int, PARAMS preqbytes*, ARGC nat, HOLES nat*, EXTRA poperand*, NAMED (preqbytes, poperand)* }
 syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN porigin?, HELD pnode*, CONTEXT pcallcontext?, BORROWEDREAD pidentityread?, OBJECTCAST pobjectcast?, CONSTCONTEXT pconstantcontext? }
 syntax ptraceframe = { FILE preqbytes, LINE int, FUNCTION preqbytes, CLASS preqbytes?, TYPE preqbytes?, ARGS (pkey, pvalue)*, HASARGS bool }
@@ -262,14 +283,19 @@ syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FI
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }
 syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool }
 syntax pobject = GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
-syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)* }
+syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
+syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
-syntax pdeclaration = PDENTER nat porigin? int | PDECLASS nat porigin | PDEFUNCTION nat porigin | PDRCLASS porigin pdeclcause | PDRFUNCTION porigin pdeclcause | PDRCLASSFATAL porigin pdeclcause | PDCOMPILEWARNING pldiagnostic | PDEVALPAUSE nat nat nat pdeclnoticeitem* | PDEVALRESUME nat int | PDEVALFATALNOTICES nat pdeclnoticeitem* | PDEXIT nat pcompilestop
+syntax pdeclaration = PDENTER nat porigin? int | PDENTERPRECISION nat porigin? int int | PDECLASS nat porigin | PDEFUNCTION nat porigin | PDRCLASS porigin pdeclcause | PDRFUNCTION porigin pdeclcause | PDRCLASSFATAL porigin pdeclcause | PDRTRAITCACHEFAIL porigin pdeclcause | PDCOMPILEWARNING pldiagnostic | PDEVALPAUSE nat nat nat pdeclnoticeitem* | PDEVALRESUME nat int | PDEVALFATALNOTICES nat pdeclnoticeitem* | PDEXIT nat pcompilestop
 dec $object_body(pobject) : pobject
 
-syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, CLOSUREBINDINGS pclosurebinding*, OBJECTPROPS pobjectprops*, OBJECTTABLES pobjecttable*, PROPREFS ppropref*, REFCOERCIONS prefcoercion*, PARAMETERBACKINGS pparameterbacking*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, DECLARATIONS pdeclaration*, LINKEDPARENTS pclasslink*, LINKEDINTERFACES pinterfacelink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, CLASSSTATICS pclassstatic*, INSTANCEDEFAULTS pinstancetemplate*, CLASSCONSTANTCACHE pdefaultcache*, CLASSCONSTANTHISTORY pclassconstantevent*, CLASSCONSTANTINIT pclassconstantcontext*, CONSTANTCLOSURES pconstantclosure*, STARTUP pstartup?, REPORTING int, REPORTINGINI preqbytes, REPORTINGMODIFIED bool, DISPLAYINIT preqbytes?, DISPLAYINI preqbytes?, DISPLAYMODIFIED bool, SILENCES psilence*, ERRORHANDLER perrorhandler, ERRORHANDLERS perrorhandler*, EXCEPTIONHANDLER pvalue?, EXCEPTIONHANDLERS pvalue?*, SHUTDOWN pshutdown, DESTRUCTION pdestruction, BORROWEDREAD pidentityread?, OBJECTCAST pobjectcast?, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORFATALTRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, FILECWD preqbytes?, FILEINCLUDEPATH preqbytes?, FILESEQ nat, DIRSEQ nat, DIRCONVSEQ nat, DIRCONVERSIONS pdirconversion*, DIRCONTEXT pdircontext?, SELECTSEQ nat, SELECTEDCALLS pselectedcall*, FILECONTEXTS pfilecontext*, FILEBINDINGS pfilebinding*, INCLUDEDOPENED preqbytes*, EVALCONTEXTS pevalcontext*, EVALBINDINGS pevalbinding*, FAILEDSOURCES pfailedsource*, SERVICELEFT nat?, COMPILESTOP bool, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
+syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, CLOSUREBINDINGS pclosurebinding*, OBJECTPROPS pobjectprops*, OBJECTTABLES pobjecttable*, PROPREFS ppropref*, REFCOERCIONS prefcoercion*, CONTAINERINITS pcontainerinit*, PARAMETERBACKINGS pparameterbacking*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, DECLARATIONS pdeclaration*, LINKEDPARENTS pclasslink*, LINKEDINTERFACES pinterfacelink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, CLASSSTATICS pclassstatic*, INSTANCEDEFAULTS pinstancetemplate*, CLASSCONSTANTCACHE pdefaultcache*, CLASSCONSTANTHISTORY pclassconstantevent*, CLASSCONSTANTINIT pclassconstantcontext*, CONSTANTCLOSURES pconstantclosure*, CONSTANTOBJECTS pconstantobject*, STARTUP pstartup?, REPORTING int, REPORTINGINI preqbytes, REPORTINGMODIFIED bool, DISPLAYINIT preqbytes?, DISPLAYINI preqbytes?, DISPLAYMODIFIED bool, PRECISIONINIT preqbytes, PRECISIONINI preqbytes, PRECISIONMODIFIED bool, SILENCES psilence*, ERRORHANDLER perrorhandler, ERRORHANDLERS perrorhandler*, EXCEPTIONHANDLER pvalue?, EXCEPTIONHANDLERS pvalue?*, AUTOLOAD pautoloadregistry, SHUTDOWN pshutdown, DESTRUCTION pdestruction, BORROWEDREAD pidentityread?, OBJECTCAST pobjectcast?, DEFAULTCACHE pdefaultcache*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORFATALTRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, FRAMES pframe*, CURRENT pcallcontext?, REQUEST prequest?, FILECWD preqbytes?, FILEINCLUDEPATH preqbytes?, FILESEQ nat, DIRSEQ nat, DIRCONVSEQ nat, DIRCONVERSIONS pdirconversion*, DIRCONTEXT pdircontext?, SELECTSEQ nat, SELECTEDCALLS pselectedcall*, FILECONTEXTS pfilecontext*, FILEBINDINGS pfilebinding*, INCLUDEDOPENED preqbytes*, EVALCONTEXTS pevalcontext*, EVALBINDINGS pevalbinding*, FAILEDSOURCES pfailedsource*, SERVICELEFT nat?, COMPILESTOP bool, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
   ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
 
+dec $parser_literal_origin(pstate, porigin?, expression) : pvalue?
+dec $source_precision(pstate, porigin?) : int?
+dec $cv_name_at(phpType32, int) : preqbytes?
+dec $cv_source_name(pstate, phpType32) : preqbytes?
 dec $object_foreach_reset(pstate, nat) : pstate
 dec $object_foreach_fetch(pstate, nat, nat, statement, porigin?, int, ptbytes, pitem, nat, bool) : pstate
 dec $object_cast_warning(pstate, pcast, pvalue) : bool
@@ -407,6 +433,10 @@ dec $write_cell_checked(pstate, nat, pvalue, int) : pstate
 dec $reference_coercion_source(pstate, porigin, int) : bool
 dec $reference_coercions_valid(pstate) : bool
 dec $reference_coercion_value(pstate, nat, pvalue) : bool
+dec $container_init_value(pstate, nat, pvalue) : bool
+dec $container_inits_valid(pstate) : bool
+dec $container_init_clear(pstate, nat) : pstate
+dec $container_inits_prune(pcontainerinit*, pnode*) : pcontainerinit*
 dec $reference_coercion_producer(pstate, nat, porigin, int) : bool
 dec $reference_coercion_write(pstate, nat, porigin, int, ptbytes) : pstate
 dec $reference_coercion_clear(pstate, nat) : pstate
@@ -784,3 +814,32 @@ dec $closure_current_site(pstate, porigin) : bool
 
 dec $trait_property_write_pending(pstate, poperand, ptask*) : bool
 dec $trait_property_write_task(pstate) : bool
+
+;; Registration/lookup hooks are false until the autoload module is loaded.
+dec $autoload_api_kind(pintrinsic) : bool
+def $autoload_api_kind(pintrinsic) = false -- otherwise
+dec $autoload_pending(pstate, preqbytes) : bool
+def $autoload_pending(pstate, preqbytes) = false -- otherwise
+dec $autoload_parent_pending(pstate, pclassdesc) : bool
+def $autoload_parent_pending(pstate, pclassdesc) = false -- otherwise
+dec $autoload_registry_valid(pstate) : bool
+dec $autoload_roots(pautoloadentry?*) : pnode*
+dec $autoload_context_kind(pstate, pcallcontext) : bool
+def $autoload_context_kind(pstate, pcallcontext) = false -- otherwise
+dec $autoload_context_valid(pstate, pcallcontext) : bool
+def $autoload_context_valid(pstate, pcallcontext) = false -- otherwise
+dec $autoload_internal_context(pstate, pcallcontext) : bool
+def $autoload_internal_context(pstate, pcallcontext) = false -- otherwise
+
+;; Global constant AST NEW shares prepared-value phases with parameter defaults.
+dec $global_new_site(pstate, porigin) : bool
+dec $global_new_active(pstate, porigin) : bool
+dec $global_new_current(pstate) : bool
+dec $global_new_unsupported_target(pstate, ptbytes) : bool
+dec $constant_ast_constructor_context(pstate, pconstantcontext) : bool
+dec $default_new_scope(pstate) : porigin?
+dec $global_new_records_valid(pstate, pconstantobject*) : bool
+dec $global_new_birth(pstate, pstate, ptbytes, nat) : pstate
+dec $global_new_pending(pstate, pdefaultnew) : bool
+dec $global_new_complete(pstate, pstate, pdefaultnew) : pstate
+dec $global_new_argument_owned(pstate, pdefaultnew) : bool

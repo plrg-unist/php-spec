@@ -45,6 +45,8 @@ dec $key_base_cv_source(pstate, porigin) : bool
 dec $key_operand_cv_source(pstate, porigin, pcpath) : bool
 dec $key_read_owners_source(pstate, pkeyread) : bool
 dec $key_read_valid(pstate, pkeyread) : bool
+dec $rcontainer_base_pending(pstate, pbase, poperand, int, pkeymode) : bool
+dec $rcontainer_pending(pstate, poperand, int, pkeymode) : bool
 
 def $key_selected_key(PNULL) = (KSTRING eps)
 def $key_selected_key(PBOOL false) = (KINT 0)
@@ -135,6 +137,7 @@ def $key_read_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.
   -- if S.TODO = ptask :: ptask_tail*
 rule PhpStep/key-read-derived-base: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), KEY_READ_BASE pbase $key_inner_mode(pkeymode)), KEY_READ_DIM poperand z pkeymode] ++ ptask_tail*]
   -- if S.TODO = (KEY_READ_BASE (BASE_DIM pbase poperand z) pkeymode) :: ptask_tail*
+  -- if ~$rcontainer_base_pending(S, pbase, poperand, z, pkeymode)
 rule PhpStep/key-read-global-base: S ~> S[.TODO = (KEY_READ_GLOBAL poperand z pkeymode) :: ptask_tail*]
   -- if S.TODO = (KEY_READ_BASE (BASE_GLOBAL poperand z) pkeymode) :: ptask_tail*
 rule PhpStep/key-read-simple-base: S ~> S_read[.TODO = ptask_tail*][.RESULT = $key_base_result(S, pbase, S_read.RESULT)][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -286,6 +289,7 @@ def $key_array_lookup(S, pkeyread) = $key_read_done(S, PNULL)
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkeyread.KEY) = eps
 rule PhpStep/key-read-dimension: S ~> $key_read_dimension(S, poperand, z, pkeymode)
   -- if S.TODO = (KEY_READ_DIM poperand z pkeymode) :: ptask_tail*
+  -- if ~$rcontainer_pending(S, poperand, z, pkeymode)
 
 ;; The extra root exists exactly while an array conversion callback is active.
 def $key_read_protect(pkeyread) = true
@@ -368,7 +372,8 @@ def $key_read_input_source(S, pkeyread) = true
   -- if pkeyread.INPUT = KNOWN (PSTRING n_name*)
   -- if $origin_child((pkeyread.SITE), [PCFIELD 1]) = (porigin_key)
   -- if $compiled_read(S, porigin_key) = (pvalue)
-  -- if n_name* = $compiled_name_bytes(pvalue)
+  -- if $source_precision(S, (porigin_key)) = (z_precision)
+  -- if n_name* = $compiled_name_bytes_at(pvalue, z_precision)
   -- if pkeyread.GLOBAL
 def $key_read_input_source(S, pkeyread) = true
   -- if $key_held_operand(pkeyread.INPUT)

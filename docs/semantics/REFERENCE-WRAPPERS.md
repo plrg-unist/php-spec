@@ -28,3 +28,9 @@ in the `coverage/semantics/false-reference-*` archives.
 
 `tests/semantics/write_fetch.py` retains computed-write regressions and checks
 plain versus existing reference cells through writes, nested unsets and resumption.
+
+[Container276](SOURCE-CONTAINER-WRITES.md) stages those false/undefined writable
+callbacks and genuine array-reference assignment. Captured source cells own once;
+simple source CVs stay delayed until target acquisition. Raw typed DIM_OP array
+backing records its source in `CONTAINERINITS`, adding no owner or ordinary type
+permission. Pointer COW transports that backing; whole-cell stores clear it.
