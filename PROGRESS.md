@@ -534,8 +534,11 @@ supplied reached restoration/history/ownership conditions pass; six generated se
 checks are separate. A source-rederived failure marker authenticates retention
 without publishing the failed class. The same disposition after a reported
 initializer Error adds three PHP-error comparisons and188 supplied reached
-cache-cause/cleanup checks, with six generated setup checks separate. Held/open
-compilation, raw-trait failed fills and object-bearing dependencies remain required.
+cache-cause/cleanup checks, with six generated setup checks separate. Failed raw
+trait composition adds three PHP-error comparisons and68 supplied source-kind,
+cache-owner and rollback conditions; three generated setup checks are separate.
+Direct trait-constant denial precedes dependency evaluation. Held/open compilation
+and object-bearing dependencies remain required.
 Traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,

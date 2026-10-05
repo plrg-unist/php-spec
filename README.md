@@ -544,7 +544,9 @@ errors stop the comparison, flush earlier diagnostics without handlers and rende
 the pending Error before the composition fatal. Cyclic lookups retain full imported
 constant identities and release transient failure allocations. Failed class links,
 including an initializer Error before the composition fatal, retain caches for
-published owners and release unpublished import caches. Wider failed-link contexts,
+published owners and release unpublished import caches. Raw trait composition uses
+the same source-kind proof; direct trait constants still fail before evaluation.
+Wider failed-link contexts,
 object-bearing dependencies and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
