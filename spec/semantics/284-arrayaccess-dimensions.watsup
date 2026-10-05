@@ -1,9 +1,55 @@
 ;; Zend 8.5.10 ArrayAccess contracts and language-triggered ordinary method calls.
 dec $arrayaccess_members() : ptbytes*
-def $arrayaccess_members() = [$ptascii("offsetExists"), $ptascii("offsetGet"), $ptascii("offsetSet"), $ptascii("offsetUnset")]
 dec $arrayaccess_parameter(text) : psparam
-def $arrayaccess_parameter(text) = { NAME $ptascii(text), TYPE ([(PTBRANCH ([PTBUILTIN "mixed"]))]), BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE }
 dec $arrayaccess_signature(ptbytes) : pssignature
+dec $arrayaccess_scope() : pvclass
+dec $arrayaccess_member_name(ptbytes) : ptbytes
+dec $arrayaccess_method_issue(pstate, pclassdesc, pmethoddesc) : pmethodissue
+dec $arrayaccess_method_compared(pstate, pclassdesc, pmethoddesc, pmmethod, pmmethod, pmcheck) : pmethodissue
+dec $arrayaccess_methods(pstate, pclassdesc, ptbytes*, ppmethodinherited*) : pmethodissue
+dec $arrayaccess_abstract(pstate, pclassdesc, ptbytes*, pilabstract*) : pilabstract*
+dec $arrayaccess_notice_return(pstate, pclassdesc, pmethoddesc) : pmcheck
+dec $arrayaccess_notice_method(pstate, pclassdesc, pclassdesc, pmethoddesc, pmcheck) : pdeclnoticeplan
+dec $arrayaccess_notice_members(pstate, pclassdesc, ptbytes*, ppmethodinherited*, ppmethodinherited*) : pdeclnoticeplan
+dec $access_instance(pstate, pvalue) : bool
+dec $access_base(pstate, pbase) : bool
+dec $access_record(pstate, porigin, int, paccessmode, pbase, poperand, poperand, ptask, nat?, bool) : paccess
+dec $access_dimension(pstate, poperand, int, pkeymode) : pstate
+dec $access_set_plan(pstate) : paccess?
+dec $access_key(pstate, paccess) : pstate
+dec $access_key_done(pstate, paccess) : pstate
+dec $access_value(pstate, paccess) : pstate
+dec $access_offset(pstate, paccess) : pstate
+dec $access_live(pstate, paccess) : pstate
+dec $access_call(pstate, paccess, ptbytes) : pstate
+dec $access_arguments(paccess) : poperand*
+dec $access_nonobject(pstate, paccess, pvalue) : pstate
+dec $access_result(pstate, paccess, pvalue) : pstate
+dec $access_predicate(pstate, paccess, bool) : pstate
+dec $access_warning_name(paccess) : ptbytes
+dec $access_dispatch(pstate, paccess) : pstate
+dec $access_roots(paccess, bool) : pnode*
+dec $access_object_roots(nat?, bool) : pnode*
+dec $access_offset_roots(pvalue, bool) : pnode*
+dec $access_source(pstate, paccess) : bool
+dec $access_base_source(pstate, paccess) : bool
+dec $access_phase(paccess) : bool
+dec $access_valid(pstate, paccess) : bool
+dec $access_capture_valid(paccess) : bool
+dec $access_object_valid(pstate, nat?) : bool
+dec $access_call_phase(paccessphase) : bool
+dec $access_method_selected(pstate, paccess, pcalltarget) : bool
+dec $access_pending(pstate, pcalltarget, porigin) : bool
+dec $access_frame(pstate, pcallcontext, pframe) : bool
+dec $access_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
+dec $access_marker(pframe) : bool
+dec $access_known_base(pbase) : bool
+dec $access_is_object(pvalue) : bool
+dec $access_context_node(pcnode) : bool
+dec $access_cv_operand(poperand) : bool
+dec $access_read_object(nat, pkeymode) : nat?
+def $arrayaccess_members() = [$ptascii("offsetExists"), $ptascii("offsetGet"), $ptascii("offsetSet"), $ptascii("offsetUnset")]
+def $arrayaccess_parameter(text) = { NAME $ptascii(text), TYPE ([(PTBRANCH ([PTBUILTIN "mixed"]))]), BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE }
 def $arrayaccess_signature(ptbytes) = { PARAMETERS ([$arrayaccess_parameter("offset")]), RETURNS ([(PTBRANCH ([PTBUILTIN "bool"]))]), BYREF false }
   -- if $ptlc(ptbytes) = $ptascii("offsetexists")
 def $arrayaccess_signature(ptbytes) = { PARAMETERS ([$arrayaccess_parameter("offset")]), RETURNS ([(PTBRANCH ([PTBUILTIN "mixed"]))]), BYREF false }
@@ -12,15 +58,11 @@ def $arrayaccess_signature(ptbytes) = { PARAMETERS ([$arrayaccess_parameter("off
   -- if $ptlc(ptbytes) = $ptascii("offsetset")
 def $arrayaccess_signature(ptbytes) = { PARAMETERS ([$arrayaccess_parameter("offset")]), RETURNS ([(PTBRANCH ([PTBUILTIN "void"]))]), BYREF false }
   -- if $ptlc(ptbytes) = $ptascii("offsetunset")
-dec $arrayaccess_scope() : pvclass
 def $arrayaccess_scope() = { NAME $ptascii("ArrayAccess"), PARENT eps, ANCESTORS eps, FINAL false }
-dec $arrayaccess_member_name(ptbytes) : ptbytes
 def $arrayaccess_member_name(ptbytes) = $ptascii("offsetExists") -- if $ptlc(ptbytes) = $ptascii("offsetexists")
 def $arrayaccess_member_name(ptbytes) = $ptascii("offsetGet") -- if $ptlc(ptbytes) = $ptascii("offsetget")
 def $arrayaccess_member_name(ptbytes) = $ptascii("offsetSet") -- if $ptlc(ptbytes) = $ptascii("offsetset")
 def $arrayaccess_member_name(ptbytes) = $ptascii("offsetUnset") -- if $ptlc(ptbytes) = $ptascii("offsetunset")
-dec $arrayaccess_method_issue(pstate, pclassdesc, pmethoddesc) : pmethodissue
-dec $arrayaccess_method_compared(pstate, pclassdesc, pmethoddesc, pmmethod, pmmethod, pmcheck) : pmethodissue
 def $arrayaccess_method_issue(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Cannot make non static method ArrayAccess::") ++ $arrayaccess_member_name(pmethoddesc.NAME) ++ $ptascii("() static in class ") ++ pclassdesc.NAME) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
   -- if pmethoddesc.STATIC
 def $arrayaccess_method_issue(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() must be public (as in class ArrayAccess)")) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
@@ -35,7 +77,6 @@ def $arrayaccess_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, 
 def $arrayaccess_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVNO ptbytes*) = $pil_internal_source_result(pmethoddesc[.OWNER = pmethoddesc.FUNCTION.ORIGIN], $pmmismatch(pmmethod_selected, $pil_scope(S, pclassdesc), pmmethod_proto, $arrayaccess_scope(), 14))
 def $arrayaccess_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVUNRESOLVED ptbytes*) = METHOD_UNSUPPORTED "ArrayAccess dependent method declaration"
 def $arrayaccess_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMUNSUPPORTED text) = METHOD_UNSUPPORTED text
-dec $arrayaccess_methods(pstate, pclassdesc, ptbytes*, ppmethodinherited*) : pmethodissue
 def $arrayaccess_methods(S, pclassdesc, eps, ppmethodinherited*) = METHOD_OK
 def $arrayaccess_methods(S, pclassdesc, ptbytes :: ptbytes_tail*, ppmethodinherited*) = $arrayaccess_methods(S, pclassdesc, ptbytes_tail*, ppmethodinherited*)
   -- if $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = eps
@@ -46,28 +87,23 @@ def $arrayaccess_methods(S, pclassdesc, ptbytes :: ptbytes_tail*, ppmethodinheri
   -- if $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = (PPMINHERITED pmethoddesc pclassdesc_selected)
   -- if pmethodissue = $arrayaccess_method_issue(S, pclassdesc_selected, pmethoddesc)
   -- if pmethodissue =/= METHOD_OK
-dec $arrayaccess_after_issue(pstate, pclassdesc, pmethodissue) : pmethodissue
 def $arrayaccess_after_issue(S, pclassdesc, METHOD_OK) = $arrayaccess_methods(S, pclassdesc, $arrayaccess_members(), $pil_info_extra(S, pclassdesc.ORIGIN, $ppmethod_own(pclassdesc, pclassdesc.METHODS), |S.CLASSES|))
   -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("ArrayAccess"), |S.CLASSES|)
 def $arrayaccess_after_issue(S, pclassdesc, pmethodissue) = pmethodissue -- otherwise
 def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited*) = $arrayaccess_methods(S, pclassdesc, $arrayaccess_members(), ppmethodinherited*)
   -- if $ptlc(ptbytes) = $ptascii("arrayaccess")
-dec $arrayaccess_abstract(pstate, pclassdesc, ptbytes*, pilabstract*) : pilabstract*
 def $arrayaccess_abstract(S, pclassdesc, eps, pilabstract*) = pilabstract*
 def $arrayaccess_abstract(S, pclassdesc, ptbytes :: ptbytes_tail*, pilabstract*) = $arrayaccess_abstract(S, pclassdesc, ptbytes_tail*, $pil_abs_add(S, pclassdesc, ptbytes, $ptascii("ArrayAccess::") ++ ptbytes, pilabstract*))
 def $pil_abs_refs(S, pclassdesc_child, (PILBUILTIN ptbytes) :: pilref_tail*, n, pilabstract*) = $pil_abs_refs(S, pclassdesc_child, pilref_tail*, n, $arrayaccess_abstract(S, pclassdesc_child, $arrayaccess_members(), pilabstract*))
   -- if $ptlc(ptbytes) = $ptascii("arrayaccess")
-dec $arrayaccess_parent_publish(pstate, pstate, pclassdesc) : pstate
 def $arrayaccess_parent_publish(S, S_parent, pclassdesc) = $pil_method_publish(S, S_parent, pclassdesc)
   -- if $class_origin_matches(S_parent, pclassdesc.ORIGIN, $ptascii("ArrayAccess"), |S_parent.CLASSES|)
 def $arrayaccess_parent_publish(S, S_parent, pclassdesc) = S_parent -- otherwise
 
 ;; Tentative return declarations use the existing published-class notice queue.
-dec $arrayaccess_notice_return(pstate, pclassdesc, pmethoddesc) : pmcheck
 def $arrayaccess_notice_return(S, pclassdesc, pmethoddesc) = $pmcompare(PMUSER pmmethod_selected, $pil_scope(S, pclassdesc), PMUSER pmmethod_proto, $arrayaccess_scope(), $method_active_registry(S, S.CLASSNAMES))
   -- if pmmethod_selected = $pmethod_user(pmethoddesc, pclassdesc, $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN))
   -- if pmmethod_proto = $pil_signature_method($ptascii("ArrayAccess"), $arrayaccess_member_name(pmethoddesc.NAME), $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN), $arrayaccess_signature(pmethoddesc.NAME))
-dec $arrayaccess_notice_method(pstate, pclassdesc, pclassdesc, pmethoddesc, pmcheck) : pdeclnoticeplan
 def $arrayaccess_notice_method(S, pclassdesc, pclassdesc_selected, pmethoddesc, PMCHECK PVYES ptbytes*) = DECLNOTICES eps
 def $arrayaccess_notice_method(S, pclassdesc, pclassdesc_selected, pmethoddesc, PMCHECK PVNO ptbytes*) = DECLNOTICES eps
   -- if $iterator_notice_suppressed(S, pmethoddesc)
@@ -77,7 +113,6 @@ def $arrayaccess_notice_method(S, pclassdesc, pclassdesc_selected, pmethoddesc, 
   -- if $pmcdisplay($pmdeclaration($pil_signature_method($ptascii("ArrayAccess"), $arrayaccess_member_name(pmethoddesc.NAME), $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN), $arrayaccess_signature(pmethoddesc.NAME)), $arrayaccess_scope(), 14)) = PMTEXT ptbytes_parent
 def $arrayaccess_notice_method(S, pclassdesc, pclassdesc_selected, pmethoddesc, PMCHECK PVUNRESOLVED ptbytes*) = DECLNOTICESUNSUPPORTED "ArrayAccess tentative dependent return declaration"
 def $arrayaccess_notice_method(S, pclassdesc, pclassdesc_selected, pmethoddesc, PMUNSUPPORTED text) = DECLNOTICESUNSUPPORTED text
-dec $arrayaccess_notice_members(pstate, pclassdesc, ptbytes*, ppmethodinherited*, ppmethodinherited*) : pdeclnoticeplan
 def $arrayaccess_notice_members(S, pclassdesc, eps, ppmethodinherited_mask*, ppmethodinherited*) = DECLNOTICES eps
 def $arrayaccess_notice_members(S, pclassdesc, ptbytes :: ptbytes_tail*, ppmethodinherited_mask*, ppmethodinherited*) = $arrayaccess_notice_members(S, pclassdesc, ptbytes_tail*, ppmethodinherited_mask*, ppmethodinherited*)
   -- if $pil_selected(S, pclassdesc, ptbytes, ppmethodinherited*) = eps
@@ -93,12 +128,10 @@ def $arrayaccess_notice_members(S, pclassdesc, ptbytes :: ptbytes_tail*, ppmetho
   -- if $arrayaccess_method_issue(S, pclassdesc_selected, pmethoddesc) = METHOD_OK
   -- if ~$pil_info_named(ppmethodinherited_mask*, ptbytes)
 
-dec $arrayaccess_notice_parent(pstate, pclassdesc, ppmethodinherited*) : pdeclnoticeplan
 def $arrayaccess_notice_parent(S, pclassdesc, ppmethodinherited*) = $arrayaccess_notice_members(S, pclassdesc, $arrayaccess_members(), $method_info_layout(S, porigin_parent, |S.CLASSES|), ppmethodinherited*)
   -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
   -- if $class_origin_matches(S, porigin_parent, $ptascii("ArrayAccess"), |S.CLASSES|)
 def $arrayaccess_notice_parent(S, pclassdesc, ppmethodinherited*) = DECLNOTICES eps -- otherwise
-dec $arrayaccess_notice_source(pstate, pclassdesc, porigin, ppmethodinherited*) : pdeclnoticeplan
 def $arrayaccess_notice_source(S, pclassdesc, porigin, ppmethodinherited*) = DECLNOTICESUNSUPPORTED "combined Iterator/ArrayAccess source interface notice order"
   -- if $pil_nominal(S, porigin, $ptascii("Iterator"), |S.CLASSES|)
   -- if $pil_nominal(S, porigin, $ptascii("ArrayAccess"), |S.CLASSES|)
@@ -119,23 +152,19 @@ def $iterator_notice_ref(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*,
 
 ;; The original operands, the VM's outer object pin and std-handler offset copy
 ;; are distinct roots. SELECTED and VALUE are borrowed facts, never extra owners.
-dec $access_instance(pstate, pvalue) : bool
 def $access_instance(S, POBJECT n) = $class_instanceof(S, POBJECT n, $ptascii("ArrayAccess"))
 def $access_instance(S, pvalue) = false -- otherwise
-dec $access_base(pstate, pbase) : bool
 def $access_base(S, BASE_VALUE poperand) = $access_instance(S, pvalue)
   -- if S_read = $quiet_operand(S, poperand)
   -- if S_read.RESULT = KNOWN pvalue
 def $access_base(S, BASE_DIM pbase poperand z) = $access_base(S, pbase)
 def $access_base(S, pbase) = false -- otherwise
-dec $access_read_pending(pstate) : bool
 def $access_read_pending(S) = true
   -- if S.ORIGIN = (porigin)
   -- if S.TODO = ptask :: ptask_tail*
   -- if $key_reader(S, porigin, ptask) =/= eps
   -- if $access_base(S, S.BASE)
 def $access_read_pending(S) = false -- otherwise
-dec $access_dimension_pending(pstate) : bool
 def $access_dimension_pending(S) = true
   -- if S.TODO = (KEY_READ_DIM poperand z pkeymode) :: ptask_tail*
   -- if S_read = $quiet_operand(S, S.RESULT)
@@ -143,7 +172,6 @@ def $access_dimension_pending(S) = true
   -- if $access_instance(S, pvalue)
 def $access_dimension_pending(S) = false -- otherwise
 
-dec $access_record(pstate, porigin, int, paccessmode, pbase, poperand, poperand, ptask, nat?, bool) : paccess
 def $access_record(S, porigin_target, z, paccessmode, pbase, poperand_key, poperand_rhs, ptask, n?, b) = {SITE porigin, TARGET porigin_target, LINE z, KEYLINE z_key, MODE paccessmode, BASE pbase, INPUT poperand_key, RHS poperand_rhs, SELECTED KNOWN PNULL, OBJECT n?, OFFSET PNULL, VALUE PNULL, LATCH false, OUTER b, TASK ptask, PHASE ACCESS_KEY_CV eps}
   -- if S.ORIGIN = (porigin)
   -- if $code_expression_at_source(S, porigin_target, [PCFIELD 1]) = (z_key)
@@ -151,7 +179,6 @@ def $access_record(S, porigin_target, z, paccessmode, pbase, poperand_key, poper
   -- if S.ORIGIN = (porigin)
   -- if $code_expression_at_source(S, porigin_target, [PCFIELD 1]) = eps
 
-dec $access_dimension(pstate, poperand, int, pkeymode) : pstate
 def $access_dimension(S, poperand, z, pkeymode) = $access_key(S, paccess[.SELECTED = $rcontainer_selected(S, S.RESULT)])
   -- if S_read = $quiet_operand(S, S.RESULT)
   -- if S_read.RESULT = KNOWN (POBJECT n)
@@ -161,7 +188,6 @@ rule PhpStep/access-read: S ~> $access_dimension(S, poperand, z, pkeymode)
   -- if S.TODO = (KEY_READ_DIM poperand z pkeymode) :: ptask_tail*
   -- if $access_dimension_pending(S)
 
-dec $access_set_plan(pstate) : paccess?
 def $access_set_plan(S) = (paccess)
   -- if S.TODO = (ASSIGN_ARRAY (BASE_DIM (BASE_VALUE poperand_base) poperand z_key) z b) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
@@ -179,12 +205,10 @@ def $access_set_plan(S) = (paccess)
   -- if $access_instance(S, POBJECT n)
   -- if paccess = $access_record(S, porigin_target, z, ACCESS_SET, BASE_VALUE poperand_base, KNOWN PNULL, S.RESULT, ASSIGN_ARRAY (BASE_APPEND (BASE_VALUE poperand_base) z_base) z b, (n), true)
 def $access_set_plan(S) = eps -- otherwise
-dec $access_set_pending(pstate) : bool
 def $access_set_pending(S) = ($access_set_plan(S) =/= eps)
 rule PhpStep/access-set: S ~> $access_key(S, paccess)
   -- if $access_set_plan(S) = (paccess)
 
-dec $access_unset_pending(pstate) : bool
 def $access_unset_pending(S) = true
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
   -- if S.BASE = BASE_DIM (BASE_VALUE poperand_base) poperand z
@@ -198,13 +222,6 @@ rule PhpStep/access-unset: S ~> $access_key(S, paccess[.SELECTED = $rcontainer_s
   -- if S.ORIGIN = (porigin)
   -- if paccess = $access_record(S, porigin, z, ACCESS_UNSET, BASE_VALUE poperand_base, poperand, KNOWN PNULL, UNSET_ARRAY, eps, false)
 
-dec $access_key(pstate, paccess) : pstate
-dec $access_key_done(pstate, paccess) : pstate
-dec $access_value(pstate, paccess) : pstate
-dec $access_offset(pstate, paccess) : pstate
-dec $access_live(pstate, paccess) : pstate
-dec $access_call(pstate, paccess, ptbytes) : pstate
-dec $access_arguments(paccess) : poperand*
 def $access_key(S, paccess) = $access_dispatch(S, paccess[.PHASE = ACCESS_KEY_CV n_name*][.LATCH = true])
   -- if paccess.INPUT = VARIABLE n_name* z
   -- if $error_missing_operand(S, paccess.INPUT)
@@ -267,7 +284,6 @@ def $access_live(S, paccess) = $access_nonobject(S, paccess, pvalue)
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
   -- if S_read.RESULT = KNOWN pvalue
   -- if ~$access_instance(S, pvalue)
-dec $access_nonobject(pstate, paccess, pvalue) : pstate
 def $access_nonobject(S, paccess, pvalue) = $key_read_done(S_out, pvalue_result)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
   -- if S_out = $key_nonarray(S, {SITE paccess.TARGET, GLOBAL false, MODE KEY_TEST b, INPUT paccess.INPUT, VALUE paccess.OFFSET, BASE pvalue, OWNERS paccess.BASE, LINE paccess.LINE, PHASE KEY_NULL, KEY KSTRING eps, NAME eps})
@@ -295,8 +311,6 @@ def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "ArrayAccess
   -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF
 
 ;; Call returns feed the original language consumer; there is no synthetic AST.
-dec $access_result(pstate, paccess, pvalue) : pstate
-dec $access_predicate(pstate, paccess, bool) : pstate
 def $access_predicate(S, paccess, b_result) = $key_read_done(S_capture, pvalue)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
   -- if S_capture = $key_test_capture(S, b, b_result)
@@ -304,23 +318,23 @@ def $access_predicate(S, paccess, b_result) = $key_read_done(S_capture, pvalue)
 def $access_result(S, paccess, pvalue) = $access_call(S, paccess, $ptascii("offsetGet"))
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetExists")
-  -- if $truth(pvalue)
+  -- if $truth(S, pvalue)
   -- if paccess.MODE = ACCESS_READ KEY_IS \/ paccess.MODE = ACCESS_READ (KEY_TEST true)
 def $access_result(S, paccess, pvalue) = $key_read_done(S, PNULL)
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetExists")
-  -- if ~$truth(pvalue)
+  -- if ~$truth(S, pvalue)
   -- if paccess.MODE = ACCESS_READ KEY_IS
-def $access_result(S, paccess, pvalue) = $access_predicate(S, paccess, ~$truth(pvalue))
+def $access_result(S, paccess, pvalue) = $access_predicate(S, paccess, ~$truth(S, pvalue))
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetExists")
-  -- if ~$truth(pvalue)
+  -- if ~$truth(S, pvalue)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST true)
-def $access_result(S, paccess, pvalue) = $access_predicate(S, paccess, $truth(pvalue))
+def $access_result(S, paccess, pvalue) = $access_predicate(S, paccess, $truth(S, pvalue))
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetExists")
   -- if paccess.MODE = ACCESS_READ (KEY_TEST false)
-def $access_result(S, paccess, pvalue) = $access_predicate(S, paccess, ~$truth(pvalue))
+def $access_result(S, paccess, pvalue) = $access_predicate(S, paccess, ~$truth(S, pvalue))
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetGet")
   -- if paccess.MODE = ACCESS_READ (KEY_TEST true)
@@ -341,10 +355,8 @@ rule PhpStep/access-result: S ~> $access_result(S_read, paccess, pvalue)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
 
-dec $access_warning_name(paccess) : ptbytes
 def $access_warning_name(paccess) = n_name* -- if paccess.PHASE = ACCESS_KEY_CV n_name*
 def $access_warning_name(paccess) = n_name* -- if paccess.PHASE = ACCESS_VALUE_CV n_name*
-dec $access_dispatch(pstate, paccess) : pstate
 def $access_dispatch(S, paccess) = $error_dispatch(S[.ORIGIN = (paccess.SITE)], 2, $ptascii("Undefined variable $") ++ n_name*, paccess.LINE, WARNING n_name* paccess.LINE, ACCESS_RESUME paccess)
   -- if n_name* = $access_warning_name(paccess)
 rule PhpStep/access-key-resume: S ~> $access_key_done(S, paccess)
@@ -356,12 +368,9 @@ rule PhpStep/access-value-resume: S ~> $access_offset(S, paccess)
   -- if paccess.PHASE = ACCESS_VALUE_CV n_name*
   -- if $access_valid(S, paccess)
 
-dec $access_roots(paccess, bool) : pnode*
 def $access_roots(paccess, b_inner) = $base_nodes(paccess.BASE) ++ $operand_nodes(paccess.INPUT) ++ $operand_nodes(paccess.RHS) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) ++ $access_object_roots(paccess.OBJECT, b_inner) ++ $access_offset_roots(paccess.OFFSET, b_inner)
-dec $access_object_roots(nat?, bool) : pnode*
 def $access_object_roots((n), true) = [HOBJECT n]
 def $access_object_roots(n?, b) = eps -- otherwise
-dec $access_offset_roots(pvalue, bool) : pnode*
 def $access_offset_roots(pvalue, true) = $value_nodes(pvalue)
 def $access_offset_roots(pvalue, false) = eps
 def $task_nodes(ACCESS_RESULT paccess) = $access_roots(paccess, true)
@@ -370,10 +379,6 @@ def $return_discard(S, ACCESS_RESULT paccess) = S[.ORIGIN = (paccess.SITE)]
 def $return_discard(S, ACCESS_RESUME paccess) = S[.ORIGIN = (paccess.SITE)]
 
 ;; Source certificates bind the implicit protocol to its original DIM consumer.
-dec $access_source(pstate, paccess) : bool
-dec $access_base_source(pstate, paccess) : bool
-dec $access_phase(paccess) : bool
-dec $access_valid(pstate, paccess) : bool
 def $access_base_source(S, paccess) = $key_read_owners_source(S, {SITE paccess.TARGET, GLOBAL false, MODE KEY_R, INPUT paccess.INPUT, VALUE PNULL, BASE pvalue, OWNERS paccess.BASE, LINE paccess.KEYLINE, PHASE KEY_NULL, KEY KSTRING eps, NAME eps})
   -- if paccess.BASE = BASE_VALUE (KNOWN pvalue)
 def $access_base_source(S, paccess) = $key_read_owners_source(S, {SITE paccess.TARGET, GLOBAL false, MODE KEY_R, INPUT paccess.INPUT, VALUE PNULL, BASE PNULL, OWNERS paccess.BASE, LINE paccess.KEYLINE, PHASE KEY_NULL, KEY KSTRING eps, NAME eps})
@@ -454,7 +459,6 @@ def $access_phase(paccess) = true
   -- if ptbytes = $ptascii("offsetUnset")
 def $access_phase(paccess) = false -- otherwise
 
-dec $access_capture_valid(paccess) : bool
 def $access_capture_valid(paccess) = (paccess.OFFSET = PNULL /\ $access_cv_operand(paccess.INPUT))
   -- if paccess.LATCH
 def $access_capture_valid(paccess) = (paccess.OFFSET = pvalue)
@@ -473,7 +477,6 @@ def $access_valid(S, paccess) = true
   -- if $call_reference_operand_valid(S, paccess.INPUT)
   -- if $call_reference_operand_valid(S, paccess.RHS)
 def $access_valid(S, paccess) = false -- otherwise
-dec $access_object_valid(pstate, nat?) : bool
 def $access_object_valid(S, (n)) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if $access_instance(S, POBJECT n)
@@ -481,7 +484,6 @@ def $access_object_valid(S, n?) = false -- otherwise
 
 def $call_task_valid(S, ACCESS_RESULT paccess) = ($access_valid(S, paccess) /\ $access_call_phase(paccess.PHASE))
 def $call_task_valid(S, ACCESS_RESUME paccess) = ($access_valid(S, paccess) /\ ~$access_call_phase(paccess.PHASE))
-dec $access_call_phase(paccessphase) : bool
 def $access_call_phase(ACCESS_CALL ptbytes) = true
 def $access_call_phase(paccessphase) = false -- otherwise
 def $error_call_valid(S, perrorcall) = true
@@ -496,7 +498,6 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.EVENT = WARNING n_name* paccess.LINE
 
 ;; Entered user calls retain the real result marker in the saved emitter frame.
-dec $access_method_selected(pstate, paccess, pcalltarget) : bool
 def $access_method_selected(S, paccess, METHOD_TARGET n porigin_method) = true
   -- if paccess.OBJECT = (n)
   -- if paccess.PHASE = ACCESS_CALL ptbytes
@@ -508,7 +509,6 @@ def $access_method_selected(S, paccess, METHOD_TARGET n porigin_method) = true
   -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
   -- if $target_function(S, METHOD_TARGET n porigin_method) = (pmethoddesc.FUNCTION)
 def $access_method_selected(S, paccess, pcalltarget) = false -- otherwise
-dec $access_pending(pstate, pcalltarget, porigin) : bool
 def $access_pending(S, pcalltarget, porigin) = true
   -- if S.TODO = (CALL_ARGS pcalltarget eps n poperand* (porigin) z) :: (ACCESS_RESULT paccess) :: ptask_tail*
   -- if paccess.SITE = porigin
@@ -518,13 +518,11 @@ def $access_pending(S, pcalltarget, porigin) = true
   -- if $access_valid(S, paccess)
   -- if $access_method_selected(S, paccess, pcalltarget)
 def $access_pending(S, pcalltarget, porigin) = false -- otherwise
-dec $access_pending_site(pstate, porigin) : bool
 def $access_pending_site(S, porigin) = true
   -- if S.TODO = (CALL_ARGS pcalltarget eps n poperand* (porigin) z) :: ptask_tail*
   -- if $access_pending(S, pcalltarget, porigin)
 def $access_pending_site(S, porigin) = false -- otherwise
 
-dec $access_frame(pstate, pcallcontext, pframe) : bool
 def $access_frame(S, pcallcontext, pframe) = true
   -- if pframe.TODO = (ACCESS_RESULT paccess) :: ptask_tail*
   -- if pframe.ORIGIN = (paccess.SITE)
@@ -542,7 +540,6 @@ def $access_frame(S, pcallcontext, pframe) = true
   -- if $call_sent_operands_valid(S, $context_target(pcallcontext), n_received, pcallcontext.EXTRA)
 def $access_frame(S, pcallcontext, pframe) = false -- otherwise
 
-dec $access_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
 def $access_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $access_frame(S, pcallcontext, pframe)
   -- if $context_target(pcallcontext) = pcalltarget
   -- if pcallcontext.CALLSITE = (porigin)
@@ -550,9 +547,7 @@ def $access_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, pori
   -- if ~($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin))
 def $access_entered(S, eps, pframe :: pframe_tail*, pcalltarget, porigin) = $access_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
 def $access_entered(S, pcallcontext?, eps, pcalltarget, porigin) = false
-dec $access_selected(pstate, pcalltarget, porigin) : bool
 def $access_selected(S, pcalltarget, porigin) = ($access_pending(S, pcalltarget, porigin) \/ $access_entered(S, S.CURRENT, S.FRAMES, pcalltarget, porigin))
-dec $access_context_kind(pstate, pcallcontext) : bool
 def $access_context_kind(S, pcallcontext) = true
   -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
   -- if pcallcontext.CALLSITE = (porigin)
@@ -560,16 +555,13 @@ def $access_context_kind(S, pcallcontext) = true
   -- if $access_context_node(pcnode)
   -- if $access_instance(S, POBJECT n)
 def $access_context_kind(S, pcallcontext) = false -- otherwise
-dec $access_context(pstate, pcallcontext) : bool
 def $access_context(S, pcallcontext) = true
   -- if $access_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $access_entered(S, S.CURRENT, S.FRAMES, $context_target(pcallcontext), porigin)
 def $access_context(S, pcallcontext) = false -- otherwise
-dec $access_marker(pframe) : bool
 def $access_marker(pframe) = true -- if pframe.TODO = (ACCESS_RESULT paccess) :: ptask_tail*
 def $access_marker(pframe) = false -- otherwise
-dec $access_chain(pstate, pcallcontext?, pframe*) : bool
 def $access_chain(S, eps, eps) = true
 def $access_chain(S, (pcallcontext), eps) = ~$access_context_kind(S, pcallcontext)
 def $access_chain(S, (pcallcontext), pframe :: pframe_tail*) = ($access_frame(S, pcallcontext, pframe) /\ $access_chain(S, pframe.CONTEXT, pframe_tail*))
@@ -591,27 +583,21 @@ def $call_arity_valid(S, pcallcontext) = $access_context(S, pcallcontext) -- if 
 def $call_extent_valid(S, pcallcontext) = $access_context(S, pcallcontext) -- if $access_context_kind(S, pcallcontext)
 def $named_context_valid(S, pcallcontext) = $access_context(S, pcallcontext) -- if $access_context_kind(S, pcallcontext)
 
-dec $access_known_base(pbase) : bool
 def $access_known_base(BASE_VALUE (KNOWN pvalue)) = true
 def $access_known_base(pbase) = false -- otherwise
-dec $access_is_object(pvalue) : bool
 def $access_is_object(POBJECT n) = true
 def $access_is_object(pvalue) = false -- otherwise
-dec $access_context_node(pcnode) : bool
 def $access_context_node(NExprArrayDimFetch expression phpType5 metadata) = true
 def $access_context_node(NExprAssign expression expression_rhs metadata) = true
 def $access_context_node(pcnode) = false -- otherwise
 
 ;; This terminal is reached from the scalar helper only after its key U. It has
 ;; no VM receiver pin; std_has_dimension supplies the sole handler protection.
-dec $access_container(pstate, pcontainerread, nat) : pstate
 def $access_container(S, pcontainerread, n) = $access_call(S, paccess, $ptascii("offsetExists"))
   -- if paccess = {SITE pcontainerread.READ.SITE, TARGET pcontainerread.READ.SITE, LINE pcontainerread.READ.LINE, KEYLINE pcontainerread.READ.LINE, MODE ACCESS_READ pcontainerread.READ.MODE, BASE pcontainerread.READ.OWNERS, INPUT pcontainerread.READ.INPUT, RHS KNOWN PNULL, SELECTED pcontainerread.SELECTED, OBJECT (n), OFFSET pcontainerread.READ.VALUE, VALUE PNULL, LATCH (pcontainerread.READ.PHASE = KEY_CV), OUTER false, TASK KEY_READ_DIM pcontainerread.READ.INPUT pcontainerread.READ.LINE pcontainerread.READ.MODE, PHASE ACCESS_CALL $ptascii("offsetExists")}
 
-dec $access_cv_operand(poperand) : bool
 def $access_cv_operand(VARIABLE n_name* z) = true
 def $access_cv_operand(poperand) = false -- otherwise
 
-dec $access_read_object(nat, pkeymode) : nat?
 def $access_read_object(n, KEY_TEST b) = eps
 def $access_read_object(n, pkeymode) = (n) -- if ~$key_test_mode(pkeymode)

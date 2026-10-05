@@ -799,3 +799,16 @@ dec $closure_current_site(pstate, porigin) : bool
 
 dec $trait_property_write_pending(pstate, poperand, ptask*) : bool
 dec $trait_property_write_task(pstate) : bool
+
+;; Language-triggered ArrayAccess call and dimension admission.
+dec $arrayaccess_after_issue(pstate, pclassdesc, pmethodissue) : pmethodissue
+dec $arrayaccess_parent_publish(pstate, pstate, pclassdesc) : pstate
+dec $access_read_pending(pstate) : bool
+dec $access_dimension_pending(pstate) : bool
+dec $access_set_pending(pstate) : bool
+dec $access_unset_pending(pstate) : bool
+dec $access_pending_site(pstate, porigin) : bool
+dec $access_selected(pstate, pcalltarget, porigin) : bool
+dec $access_context_kind(pstate, pcallcontext) : bool
+dec $access_context(pstate, pcallcontext) : bool
+dec $access_chain(pstate, pcallcontext?, pframe*) : bool
