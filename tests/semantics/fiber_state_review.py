@@ -153,6 +153,22 @@ CASES = {
             'pfiber_done.TARGET = eps', 'pfiber_done.ENTRY = eps', 'pfiber_done.VM = eps',
         ],
     },
+    'interleaved-transfer-stamps-are-distinct': {
+        'source': SOURCES['review-fiber-interleaved-foreach-cursors'],
+        'stage': 'S.ACTIVEFIBER = eps -- if $lookup(S.ENV, $ptascii("a")) = (n_cell_a) -- if S.STORE[n_cell_a] = DEFINED (POBJECT n_a) -- if S.OBJECTS[n_a] = FIBER pfiber_a -- if pfiber_a.STATUS = FIBER_SUSPENDED -- if $lookup(S.ENV, $ptascii("b")) = (n_cell_b) -- if S.STORE[n_cell_b] = DEFINED (POBJECT n_b) -- if S.OBJECTS[n_b] = FIBER pfiber_b -- if pfiber_b.STATUS = FIBER_SUSPENDED',
+        'checks': [
+            'S.FIBERCALLERS = eps', 'n_a =/= n_b',
+            'pfiber_a.SEQUENCE =/= pfiber_b.SEQUENCE',
+            'pfiber_a.VM = (pfibervm_a)',
+            'pfibervm_a.TODO = (FIBER_CONTINUE pfiberapi_a) :: ptask_saved*',
+            'pfiberapi_a.SEQUENCE = pfiber_a.SEQUENCE',
+            '$fiber_record_valid(S, n_a, pfiber_a)',
+            '$fiber_record_valid(S, n_b, pfiber_b)',
+            'S_bad = $fiber_put(S, n_a, pfiber_a[.SEQUENCE = pfiber_b.SEQUENCE][.VM = (pfibervm_a[.TODO = (FIBER_CONTINUE pfiberapi_a[.SEQUENCE = pfiber_b.SEQUENCE]) :: ptask_saved*])])',
+            '~$fiber_state_valid(S_bad)', '~$call_descriptors_valid(S_bad)',
+            *VALID, *PAUSE, *DONE,
+        ],
+    },
 }
 
 
@@ -204,16 +220,18 @@ def run(selected):
             'dec $main() : bool\ndef $main() = true\n'
             '  -- if S_initial = $php_run(' + checked['fixture'] + ', 0, '
             + json.dumps(base64.b64encode(str(source).encode()).decode()) + ')\n'
-            '  -- if S = $seek(S_initial[.COMPLETION = NORMAL], 4000)[.COMPLETION = NORMAL]\n'
+            '  -- if S_reached = $seek(S_initial[.COMPLETION = NORMAL], 4000)\n'
+            '  -- if S_reached.COMPLETION = NORMAL \\/ S_reached.COMPLETION = BUDGET\n'
+            '  -- if S = S_reached[.COMPLETION = NORMAL]\n'
             '  -- if ' + case['stage'] + '\n'
             + ''.join('  -- if ' + clause + '\n' for clause in case['checks']))
         process = recorded([ROOT / 'tests/semantics/_build/default/numeric_runner.exe',
-                            *modules, fixture], directory, 'model', environment, 120)
+                            '--sl', *modules, fixture], directory, 'model', environment, 120)
         passed = (not process['timeout'] and process['exit'] == 0 and
                   (directory / 'model.stdout').read_bytes() == b'true\n' and
                   not (directory / 'model.stderr').read_bytes())
         records.append({'id': name, 'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
-                        'assertions': len(case['checks']) + 3, 'process': process, 'passed': passed})
+                        'assertions': len(case['checks']) + 5, 'process': process, 'passed': passed})
         print(name, passed, flush=True)
         if not passed:
             print((directory / 'model.stderr').read_text()[-2500:], flush=True)

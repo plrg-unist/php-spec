@@ -190,5 +190,21 @@
     "native_stdout": "1:1:held|Fiber:->:start:6:held|1:1",
     "native_stderr": "",
     "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-getreturn-retains-array-owner",
+    "source": "<?php\n$f = new Fiber(function () {\n    return [1];\n});\n$f->start();\n$a = $f->getReturn();\n$a[0] = 9;\necho $f->getReturn()[0], '/', $a[0];\n",
+    "source_sha256": "166adf811736b32fa41ae1bbb99e489aa682bc7ad1822577427bc4735e85313f",
+    "native_stdout": "1/9",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-dynamic-new-cache-survives-class-variable-write",
+    "source": "<?php\n$class = 'Fiber';\n$f = new $class(function () {\n    echo 'A';\n    Fiber::suspend('s');\n    return 7;\n});\n$class = 'stdClass';\necho $f->start(), '|';\n$class = 'Exception';\necho $f->resume(), '|', $f->getReturn();\n",
+    "source_sha256": "3e25004e74f5941a7b3c89193d94209d67a50d9be2918b4bd0b71616e176b2cd",
+    "native_stdout": "As||7",
+    "native_stderr": "",
+    "expected_model": "normal"
   }
 ]
