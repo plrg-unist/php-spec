@@ -53,8 +53,8 @@ Natural return/throw/finally cleanup is distinct from forced close.
 Constructor-created global constant instances follow the existing noncache
 policy for object defaults. Receives, yield caches and return values retain the
 original instance identity; the completed source receipt adds no heap owner.
-Ordinary deferred body NEW can run a registered autoload Closure, while creation
-inside an implicit autoload callback remains a required scope boundary.
+Ordinary deferred body NEW can run a registered autoload Closure. Generator
+functions used as implicit autoload callbacks remain a required scope boundary.
 
 Twenty-seven normal sources and three compiler rejections agree at `e235d8dd1`
 in separate first5 and independent25 cuts. Four independent source-derived
