@@ -1,6 +1,7 @@
 # Source trait composition
 
-Modules 228, 238, 254 and 259 compile, link and access source traits under pinned PHP 8.5.10.
+Modules 228, 238, 254, 259, 266 and 274 compile, link and access source traits under
+pinned PHP 8.5.10.
 A using class overrides trait methods; trait methods override inherited methods.
 Nested uses, duplicate imports, `insteadof`, aliases, visibility changes and final
 adaptations preserve Zend's method selection and diagnostics. Abstract trait
@@ -98,6 +99,27 @@ earlier diagnostics through the default renderer without calling user handlers.
 The sampled constant-name prefix and actual source/default roots authenticate
 each recorded item independently of later handler mutations.
 
+Module 266 binds a referenced deferred class constant in its real declaring scope,
+including typed conversion, before comparing the outer temporary. Its cache
+persists between operands and later reads; the compared property/constant stays
+unfilled. Full import identities separate caches for different using classes.
+Each cache owns its value; recursive dependencies can share one array, and
+later static writes retain copy-on-write. Source-owned collision tables, lookup chains and publication prefixes
+authenticate these fills without making an unlinked composing class public.
+Only already-inserted constants are available before parent inheritance.
+
+Module 274 stops supported collision expressions at the first endogenous Error,
+preserving earlier diagnostics and skipping the second operand. It flushes those
+diagnostics without user handlers, renders the uncaught Error through Zend's
+default exception route, then reports the composition fatal without a second
+trace. Real caller frames and checked constant-expression locations remain
+distinct; transient Error, trace and scratch allocations are released. Named
+classes use the public registry, while `self` sees only the composing table.
+A held primary fatal intercepts this failure before the inner Error reports;
+source-owned failed-class replay retains the exact class and dynamic unit origin.
+Cyclic lookup errors follow the genuine source chain and compare full imported
+constant identities, including recursion through an earlier distinct dependency.
+
 Raw trait static-property access emits `E_DEPRECATED` after lookup, access,
 table initialization and a required typed read. Quiet probes can therefore warn
 on an uninitialized slot while an ordinary read fails first. Each access reaching
@@ -123,6 +145,8 @@ The source truth is `Zend/zend_compile.c::zend_compile_class_decl`,
 `zend_std_get_static_property_with_info`,
 `Zend/zend_execute.c::zend_fetch_static_property_address_ex`, and the trait branch
 of `Zend/zend_ast.c::zend_ast_evaluate_ex`.
+Pending exception and fatal output follow `Zend/zend.c::zend_error_zstr_at` and
+`Zend/zend_exceptions.c::zend_exception_error`.
 
 Run author source controls with
 `python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_method_cases.json`.
@@ -146,10 +170,18 @@ The [collision ledger](../../coverage/semantics/trait-collisions-review.json) re
 affected operation/array comparisons and47 queue/array-owner assertions at their
 separate cuts. Ordered private-final delivery adds four affected sources and43
 alias/queue assertions; the two existing128 mask controls are identified separately.
+The successful dependency-cache checkpoint adds10 normal sources and201 unique
+cache/lookup/owner assertions;20 repeated setup checks are excluded.
+The Error checkpoint adds ten PHP-error source comparisons and156 reached
+first-failure/cleanup assertions, with ten separate formatter helper checks.
+The actual275 held-primary interaction adds one source and112 replay assertions.
+Direct and two-hop cyclic lookups add two PHP-error comparisons and87 reached
+chain/cleanup assertions at separate cuts.
 Other native preparations remain uncredited until implemented.
 
-Real dependency binding/caching and endogenous collision expression errors
-remain required.
+Failed linking after a dependency fill and object-bearing dependency values
+remain required. The successful-cache checkpoint uses an explicit
+Unsupported boundary for those failed links.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
 Historical reached

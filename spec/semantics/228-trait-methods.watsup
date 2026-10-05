@@ -468,9 +468,14 @@ def $trait_parent_available(S, pclassdesc) = ($class_internal(ptbytes) \/ $class
   -- if pclassdesc.PARENT = (ptbytes)
 def $trait_needs_binding(S, pclassdesc) = (S.COMPLETION = NORMAL /\ ~$class_internal(pclassdesc.NAME) /\ $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps /\ $trait_parent_available(S, pclassdesc) /\ $trait_plan(S, pclassdesc).TRAITS =/= eps)
 
+dec $trait_cache_failed(pstate, pstate) : bool
 def $trait_restore(S, S_result) = S_result -- if S_result.COMPLETION = NORMAL
 def $trait_restore(S, S_result) = S_result[.CLASSES = S.CLASSES][.CLASSNAMES = S.CLASSNAMES][.LINKEDPARENTS = S.LINKEDPARENTS][.LINKEDINTERFACES = S.LINKEDINTERFACES][.CLASSSTATICS = S.CLASSSTATICS]
   -- if S_result.COMPLETION =/= NORMAL
+  -- if ~$trait_cache_failed(S, S_result)
+def $trait_restore(S, S_result) = S[.COMPLETION = UNSUPPORTED "trait dependency cache after failed composition"]
+  -- if S_result.COMPLETION =/= NORMAL
+  -- if $trait_cache_failed(S, S_result)
 
 def $activate_class_body(S, pclassdesc) = $activate_class_base_body(S, pclassdesc)
   -- if ~$trait_needs_binding(S, pclassdesc)

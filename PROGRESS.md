@@ -7,6 +7,46 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Global constant callables271 now evaluate static/no-use Closures and function or
+static-method FCCs before registration. REAL lexical/called scope comes from the
+immutable source entry, including inherited include/eval scope; NAMED functions
+remain unscoped. Exact full declaration/value flow authenticates installed values,
+while USERCONSTANTS own them. Duplicate-warning continuations retain candidates
+and their pre-callback lookup prefix, preserving the original binding on return
+or throw. Raw-trait METHOD notices precede allocation and resume the captured
+target. Nine exact source agreements retain414/5d0/92ff cuts; seven source-derived
+AL programs/341 premises pass at21b5, checking scopes, transfer forgeries, retry,
+reentry and genuine collection. Original compile/interpreter failures remain
+zero-credit in the [ledger](coverage/semantics/deferred-static-defaults-review.json).
+Immediate next: retain an alias evaluated before an initializer callback publishes
+a namespace shadow. Global NEW, wider object/constant producers and full core
+remain open; return verification stays paused.
+
+Deferred runtime class-link failures275 now replay the held notice prefix and
+primary compiler fatal, retaining the genuine inner eval/include trace row.
+Source history rederives the failed binding and exact rollback; the immediate
+report requires its authentic failure/caller record. Seven exact source agreements
+pass at4293f196: runtime eval, constant and include counterparts plus the four
+remaining258 eval originals. Independent source-derived eval81/constant83/include84
+checks pass in strict SL at the same semantic cut, proving public/history/owner
+admission and retirement while rejecting forged failure rows. Earlier236 cuts
+retain their identities; full traversal and core remain open.
+
+Temporary fake/METHOD `Closure::call`268 now checks the actual selected scope,
+executes user bodies and finite getters, preserves source statics and creates
+durable children with only the genuine new receiver owner. Binding warnings
+precede inner-name errors; reference warnings precede fresh-cell allocation and
+retain frozen values through callback writes, allocations and throws. Private18
+normal source agreements retain e2ce; totalized task guards at9342 pass AL252 and
+five owner/frame/throw fixtures317 runner conditions (302 supplied checks and
+15 reached setup; author106/independent211). The exact original factory/default
+source1 and AL258 pass the actual0ef union at975fac. The final8350 parent keeps
+its separate GLOBALS and cached constant-NEW routes through focused source review.
+The [ledger](coverage/semantics/temporary-fake-call-review.json) preserves mixed
+cuts and the original fa90 setup Unsupported with zero agreement. Unpacking,
+further internal consumers and REAL temporary-current lifetime remain required;
+return verification stays paused.
+
 Global W/RW warning continuations269 now preserve caller-CV name rereads and
 captured Array names through updates, compound assignment and nested array ingress.
 Returning missing fetches detach callback-created constrained/reentry aliases into
@@ -64,6 +104,9 @@ errors remain deferred. Source18 normal/4 compiler and reached cold57/recursive4
 plus corrected eval53 pass at91dc. Actual23c/264/257 composition at9b8 passes
 private self/static and current identity after null-binding resets called scope.
 Original preparation/eval-fixture failures remain in the [ledger](coverage/semantics/named-keyword-new-review.json).
+Cached constant METHODs now admit compiled/named keyword NEW through exact265
+receipt authority. One new source and38 reached premises pass at0da3, including
+unrelated lexical/called scope and history after plain-clone retirement.
 Autoload and complete core remain open; returns stay paused.
 
 Trait-constant callables265 retain the first shared AST method/function target,
@@ -76,8 +119,8 @@ maker retirement. Successful constant caches own their values; history owns none
 Three source agreements and58+54 AL premises pass at4e2d; the unchanged122-premise
 constructor guard passes SL at733 in27s under the same120s cap. AL timeouts remain
 zero-credit in the [default ledger](coverage/semantics/deferred-static-defaults-review.json).
-Compiled keyword NEW under the cached constant METHOD is the immediate remaining
-consumer; wider callable/default behavior and complete core stay open.
+Compiled/named keyword NEW uses that exact cached METHOD authority through267
+above; wider callable/default behavior and complete core stay open.
 
 Non-object casts261 now populate stdClass scalars/arrays, share all-string tables
 through genuine COW and fast clone, and preserve numeric round trips, alias type
@@ -228,7 +271,7 @@ with320 checks and37 compiler/certificate premises pass atfa084. Actual256 paren
 preservation keeps243 modules without renewing those cuts. Original compiler and
 fixture parse stops stay zero-credit in the
 [ledger](coverage/semantics/dollar-curly-review.json). The early-eval effects pin
-passes with236 at5cf39c0dd; four other native-only originals remain required. Wider
+passes with236 at5cf39c0dd; the other four originals first pass with275 at4293f196. Wider
 interpolation and original non-object-cast/file-observer gaps remain open.
 
 Dynamic object `::class`256 evaluates one child and returns its real class name
@@ -441,8 +484,19 @@ existing array neighbor),47 additional queue/array-owner guards and bounded
 AL/structure checks pass. Private-final compile warnings now join the recorded
 batch at concrete/abstract binding phases and remain handler-ineligible128. Four
 affected source comparisons (two new and two128 mask neighbors) and43 genuine
-alias/queue guards pass at their separate cuts. Real dependent-constant binding,
-caching and endogenous expression errors remain required; traits stay partial.
+alias/queue guards pass at their separate cuts. Module266 binds referenced
+deferred constants in their real declaring scopes before strict comparison,
+retaining typed caches between operands and distinct full import identities.
+Ten normal source comparisons and201 unique cache/owner/lookup-chain guards pass;20 repeated setup checks add no coverage.
+Module274 stops copied expressions at their first Error, default-flushes prior
+diagnostics and renders the pending exception before a no-trace composition fatal.
+Ten PHP-error sources and156 reached failure/cleanup checks pass, with ten separate
+formatter checks. Held-primary reporting uses the genuine failed-class route275;
+one actual source and112 reached replay checks pass at separate cuts. Failed-link
+cache disposition and object-bearing dependencies remain required. Direct and
+two-hop cyclic lookup errors now use full imported identities; two PHP-error
+sources and87 reached chain/cleanup checks pass at their separate cuts. Traits
+stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the

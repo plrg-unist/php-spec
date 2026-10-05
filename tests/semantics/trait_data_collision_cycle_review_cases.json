@@ -1,0 +1,44 @@
+{
+  "scope": "Retained direct cycle plus independently pinned two-hop visited-tail cycle; zero model credit until checked.",
+  "cases": [
+    {
+      "id": "recursive-imported-constant-stops-with-default-only-error",
+      "source": "<?php\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\ntrait T{public const int Y=self::Y;public static $x=self::Y;}\necho \"PRE;\";\nclass C{use T;public static $x=1;}\necho \"POST;\";\n",
+      "source_sha256": "a757826866a4424659c519b3f78435abd8f1a8f089950c881f290507057a1d65",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "V2FybmluZzogVW5jYXVnaHQgRXJyb3I6IENhbm5vdCBkZWNsYXJlIHNlbGYtcmVmZXJlbmNpbmcgY29uc3RhbnQgc2VsZjo6WSBpbiB7RklMRX06MwpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDUpOiBbY29uc3RhbnQgZXhwcmVzc2lvbl0oKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMwpGYXRhbCBlcnJvcjogQyBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-cache-review-266/.tools/trait-error-trace-cycle-native-274-3n9h6v2p/report.json",
+      "native_raw_sha256": "a592ea92f1486542657c6e36377637817c4872dee6c6f3ef7f1cbd6a1c7bdf12"
+    },
+    {
+      "id": "recursive-imported-Y-Z-Z-lookup-uses-full-visited-tail",
+      "source": "<?php\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\ntrait T{public const int Y=self::Z;public const int Z=self::Z;public static $x=self::Y;}\necho \"PRE;\";\nclass C{use T;public static $x=1;}\necho \"POST;\";\n",
+      "source_sha256": "15519da1ac643de4cc2247257b39ce24ba957f3a8e2109bcd31477630c15d987",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "V2FybmluZzogVW5jYXVnaHQgRXJyb3I6IENhbm5vdCBkZWNsYXJlIHNlbGYtcmVmZXJlbmNpbmcgY29uc3RhbnQgc2VsZjo6WiBpbiB7RklMRX06MwpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDUpOiBbY29uc3RhbnQgZXhwcmVzc2lvbl0oKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMwpGYXRhbCBlcnJvcjogQyBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-cycle-review-274/.tools/trait-cycle-two-hop-native274-v429cehc/report.json",
+      "native_raw_sha256": "42bb0cc5328af4c751798391f117316e3b66ab763267050c425620dd0325c75e"
+    }
+  ]
+}

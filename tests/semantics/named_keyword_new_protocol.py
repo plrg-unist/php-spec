@@ -95,6 +95,8 @@ def $keyword_new_seek(S,n_phase,n) = $keyword_new_seek($drive_steps(S[.COMPLETIO
 """
 
 
+PREFIX += '\ndec $fixture_const_keyword_ctor(pstate) : bool\ndef $fixture_const_keyword_ctor(S) = true\n  -- if S.CURRENT = (pcallcontext)\n  -- if pcallcontext.TARGET = METHOD_TARGET n porigin_method\n  -- if $object_name(S,n) = $ptascii("ConstantNewB")\n  -- if S.FRAMES = pframe :: pframe_tail*\n  -- if pframe.TODO = (CTOR_RESULT n) :: (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*\n  -- if pdynamicnew.SOURCE = PSTRING $ptascii("static")\n  -- if pdynamicnew.CLOSURE = (CLOSURE_SCOPE pclosurescope)\ndef $fixture_const_keyword_ctor(S) = false -- otherwise\ndec $fixture_const_keyword_seek(pstate,nat) : pstate\ndef $fixture_const_keyword_seek(S,n) = S\n  -- if S.COMPLETION =/= NORMAL /\\ S.COMPLETION =/= BUDGET\ndef $fixture_const_keyword_seek(S,n) = S\n  -- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n  -- if $fixture_const_keyword_ctor(S)\ndef $fixture_const_keyword_seek(S,0) = S\n  -- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n  -- if ~$fixture_const_keyword_ctor(S)\ndef $fixture_const_keyword_seek(S,n) = $fixture_const_keyword_seek($drive_steps(S[.COMPLETION = NORMAL],1),$nabs($(n - 1)))\n  -- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n  -- if ~$fixture_const_keyword_ctor(S) /\\ $(n > 0)\n'
+
 def valid(state):
     return [f'$call_descriptors_valid({state})',f'$heap_valid($heap_graph({state}))']
 
@@ -221,6 +223,39 @@ def eval_scope(initial,expected):
         '~((HOBJECT n_a) <- S_done.ALLOCATIONS)']
     return checks
 
+def constant_method(initial, expected, valid, completed):
+    return [
+        'S_initial = ' + initial, '~S_initial.COMPILESTOP',
+        'S_found = $fixture_const_keyword_seek(S_initial,2048)',
+        r'S_found.COMPLETION = NORMAL \/ S_found.COMPLETION = BUDGET',
+        'S_ctor = S_found[.COMPLETION = NORMAL]',
+        '$fixture_const_keyword_ctor(S_ctor)', *valid('S_ctor'),
+        'S_ctor.CURRENT = (pcallcontext_ctor)',
+        'S_ctor.FRAMES = pframe :: pframe_tail*',
+        'pframe.TODO = (CTOR_RESULT n_ctor) :: (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*',
+        'pdynamicnew.CLOSURE = (CLOSURE_SCOPE pclosurescope)',
+        '$class_named(S_ctor.CLASSNAMES,$ptascii("constantnewa")) = (porigin_a)',
+        '$class_named(S_ctor.CLASSNAMES,$ptascii("constantnewb")) = (porigin_b)',
+        'pdynamicnew.SCOPE = (porigin_a)', 'pdynamicnew.CALLED = (porigin_b)',
+        '~$class_constant_parent_chain(S_ctor,porigin_b,porigin_a,|S_ctor.CLASSES|)',
+        'pframe.CONTEXT = (pcallcontext_maker)',
+        'pcallcontext_maker.TARGET = CLOSURE_TARGET pclosurescope.OBJECT',
+        '$object_body(S_ctor.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?',
+        'S_maker = $constant_frame_scope(S_ctor,pframe,pframe_tail*)',
+        '$dynamic_new_valid(S_maker,pdynamicnew)',
+        '$class_static_selection_scope_method(S_maker,pdynamicnew.SITE,pclosurescope.LEXICAL) = (pmethoddesc)',
+        '$class_constant_callable_method_history_owner(S_maker,pmethoddesc,porigin_site,porigin_requested,pclosurescope) =/= eps',
+        '$constructor_source_name(S_ctor,pcallcontext_ctor.TARGET,pdynamicnew.SITE) = ($ptascii("ConstantNewB"))',
+        *completed('S_ctor', expected),
+        '~((HOBJECT pclosurescope.OBJECT) <- S_done.ALLOCATIONS)',
+        '$closure_scope_at(S_done.CLOSURESCOPES,pclosurescope.OBJECT) = eps',
+        '$dynamic_new_record_valid(S_done,pdynamicnew)',
+        '$class_constant_callable_method_history_owner(S_done,pmethoddesc,porigin_site,porigin_requested,pclosurescope) =/= eps',
+        'pclosurescope_wrong = pclosurescope[.CALLED = porigin_a]',
+        'pdynamicnew_wrong = pdynamicnew[.CALLED = (porigin_a)][.CLASS = $ptascii("ConstantNewA")][.CLOSURE = (CLOSURE_SCOPE pclosurescope_wrong)]',
+        '~$dynamic_new_record_valid(S_done,pdynamicnew_wrong)',
+    ]
+
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -228,13 +263,14 @@ def sha(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--freeze', type=Path)
-    parser.add_argument('--group', choices=['cold','recursive','eval'], required=True)
+    parser.add_argument('--group', choices=['cold','recursive','eval','constant'], required=True)
     parser.add_argument('--elaborate-only', action='store_true')
     args = parser.parse_args()
     os.environ.update(LC_ALL='C', TZ='UTC', GIT_OPTIONAL_LOCKS='0')
     name = {'cold':'named-keyword-cold-maker-retirement',
             'recursive':'named-keyword-recursive-factory',
-            'eval':'named-keyword-eval-inherited-scope'}[args.group]
+            'eval':'named-keyword-eval-inherited-scope',
+            'constant':'named-keyword-constant-method-cold-retirement'}[args.group]
     expected = sources.EXPECTED[name]
     before = cross.snapshot(args.freeze)
     out = Path(tempfile.mkdtemp(prefix='keyword-new-protocol-' + args.group + '-', dir=OWN))
@@ -262,7 +298,7 @@ def main():
             eval_checked = adapter.request({'op':'check','ast':eval_parsed['ast'],'fixture':True})
             assert eval_checked['ok'] is True
             clauses += ['program_eval = '+eval_checked['fixture']]
-        body = {'cold':cold,'recursive':recursive,'eval':eval_scope}[args.group](initial,expected)
+        body = constant_method(initial,expected,valid,completed) if args.group == 'constant' else {'cold':cold,'recursive':recursive,'eval':eval_scope}[args.group](initial,expected)
         clauses += body
         (out / 'assertions.json').write_text(json.dumps(clauses,indent=2)+'\n')
         fixture = out / 'protocol.watsup'

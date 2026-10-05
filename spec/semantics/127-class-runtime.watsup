@@ -22,7 +22,9 @@ dec $activate_class_body(pstate, pclassdesc) : pstate
 dec $activate_class_base_body(pstate, pclassdesc) : pstate
 dec $declaration_class_success(pstate, pstate, pclassdesc) : pstate
 dec $class_constant_publish(pstate, pstate, pclassdesc) : pstate
-def $activate_class(S, pclassdesc) = $iterator_notice_publication(S, $class_constant_publish(S, $declaration_class_success(S, $activate_class_body(S, pclassdesc), pclassdesc), pclassdesc), pclassdesc)
+dec $runtime_class_link_result(pstate, pstate, pclassdesc) : pstate
+def $runtime_class_link_result(S, S_result, pclassdesc) = S_result -- otherwise
+def $activate_class(S, pclassdesc) = $runtime_class_link_result(S, $iterator_notice_publication(S, $class_constant_publish(S, $declaration_class_success(S, $activate_class_body(S, pclassdesc), pclassdesc), pclassdesc), pclassdesc), pclassdesc)
 dec $class_static_initial(pstate, ppropertydesc*) : pclassstatic*?
 dec $class_static_commit(pstate, pclassstatic*) : pstate
 dec $class_static_finish(pstate, pclassdesc, pstate) : pstate

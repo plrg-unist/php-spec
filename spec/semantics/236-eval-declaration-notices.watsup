@@ -280,7 +280,9 @@ def $eval_compile_terminal(pcompletion) = false -- otherwise
 
 ;; Fatal frame teardown retires a compiler only after its actual task owner is
 ;; discarded. An older saved compiler remains owned until its frame restores.
-def $eval_compile_unwind(S) = S[.EVALCONTEXTS = $eval_compile_unwind_contexts(S, S.EVALCONTEXTS)]
+dec $runtime_class_unwind(pstate) : pstate
+def $runtime_class_unwind(S) = S -- otherwise
+def $eval_compile_unwind(S) = $runtime_class_unwind(S[.EVALCONTEXTS = $eval_compile_unwind_contexts(S, S.EVALCONTEXTS)])
 def $eval_compile_unwind_contexts(S, eps) = eps
 def $eval_compile_unwind_contexts(S, pevalcontext :: pevalcontext_tail*) = pevalcontext :: $eval_compile_unwind_contexts(S, pevalcontext_tail*)
   -- if pevalcontext.PHASE =/= EVAL_COMPILE \/ $eval_owner_marker_count(S, pevalcontext) =/= 0
