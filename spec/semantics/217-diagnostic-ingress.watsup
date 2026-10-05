@@ -36,7 +36,7 @@ def $deprecated_constant_active_frames(pframe :: pframe_tail*) = ($deprecated_co
 dec $deprecated_constant_active(pstate) : bool
 def $deprecated_constant_active(S) = ($deprecated_constant_active_tasks(S.TODO) \/ $deprecated_constant_active_frames(S.FRAMES))
 dec $deprecated_constant_result(pstate, porigin, ptask*) : pstate
-def $deprecated_constant_result(S, porigin, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT 2048)][.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE (PINT 2048), CLASS PVSCALAR})])]
+def $deprecated_constant_result(S, porigin, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT 2048)][.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE (PINT 2048), CLASS PVSCALAR, LOOKUP eps})])]
   -- if S.CONSTCONTEXT = (pconstantcontext)
 def $deprecated_constant_result(S, porigin, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT 2048)]
   -- if S.CONSTCONTEXT = eps

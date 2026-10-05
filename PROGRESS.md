@@ -45,9 +45,14 @@ target. Nine exact source agreements retain414/5d0/92ff cuts; seven source-deriv
 AL programs/341 premises pass at21b5, checking scopes, transfer forgeries, retry,
 reentry and genuine collection. Original compile/interpreter failures remain
 zero-credit in the [ledger](coverage/semantics/deferred-static-defaults-review.json).
-Immediate next: retain an alias evaluated before an initializer callback publishes
-a namespace shadow. Global NEW, wider object/constant producers and full core
-remain open; return verification stays paused.
+Per-child alias proofs now retain the exact donor and table prefix for each
+completed read, so first registration can preserve an earlier fallback without
+freezing later operands. Installed rows and duplicate continuations retain only
+nonowning lookup facts. Three fresh source agreements pass at9619d2f57; mixed90
+and retry94 AL premises pass at4262f787e, checking distinct selections, failed-unit
+transplants, candidate retirement and genuine constant roots. Their compile and
+fixture stops remain zero-credit. Global NEW, wider object/constant producers and
+full core remain open; return verification stays paused.
 
 Deferred runtime class-link failures275 now replay the held notice prefix and
 primary compiler fatal, retaining the genuine inner eval/include trace row.

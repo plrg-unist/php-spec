@@ -505,8 +505,11 @@ Global `const` Closure and function/method callable values now evaluate before
 registration, retaining the genuine main/include/eval entry scope and shared
 constant ownership. Duplicate-warning callbacks hold their discarded candidate
 and captured lookup prefix; raw-trait notices precede allocation. Nine new source
-agreements and seven AL programs/341 premises pass at distinct cuts. Pre-bind
-callback alias shadows, global `new` and wider object producers remain required.
+agreements and seven AL programs/341 premises retain their distinct cuts.
+Per-child alias receipts now preserve reads before and after callback namespace
+shadows; three further source agreements and two AL programs/184 premises verify
+first registration, mixed selections and throwing retry. Global `new` and wider
+object producers remain required.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
