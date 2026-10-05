@@ -41,6 +41,19 @@ receive/yield/return and retirement; its noncached instance owners pass full
 public/heap admission. Original interpreter/fixture failures retain zero credit.
 [Scope and maintained tests](docs/semantics/GENERATORS.md).
 
+Parameter-default NEW autoload285 resumes authentic deferred initializers after
+lookup, preserving declaration strictness and formal lines. Loaded constructors
+are selected afresh; allocation and all nested AST arguments precede constructor
+access, while loader throw/miss suppresses arguments. Nine private sources agree
+at07a78; lookup94/recursive37/retirement43 pass at ebb346, including retained
+receiving owners and heap-valid pending/history tag, line and caller forgeries.
+One actuald57/GEN280 source agrees at24f376: lookup/arguments/construction remain
+eager before generator suspension. Original public/fixture failures and the
+parameter-Closure initializer Unsupported retain zero credit; its WeakReference
+lifetime oracle is native-only. The [ledger](coverage/semantics/default-new-autoload-review.json)
+keeps these cuts distinct. Global-constant NEW autoload, parameter callable
+initializer producers and wider lookup/link consumers remain required.
+
 Autoload277 now implements the four required SPL control APIs with real callable
 caches, owner roots and live queue cursor/capacity behavior. Ordinary named/dynamic
 NEW and class-parent lookup suspend before arguments; lookup inherits source
@@ -52,8 +65,9 @@ sources pass at b967 and two at b440; guard cuts stay separate in the
 pass with seven typing bindings and eight repeated setup premises. One actual
 b025/global-constant REAL loader source passes at a37. Original failures and AL
 timeouts remain retained; SL uses the existing exact runner at the same120s cap.
-Default/global-constant AST NEW, wider lookup/link consumers and complete core
-remain required; default filesystem search is excluded and returns stay paused.
+Parameter-default AST NEW is covered by285 above. Global-constant AST NEW and
+wider lookup/link consumers remain required; default filesystem search is
+excluded and returns stay paused.
 
 Scalar-container continuations282 now stage missing-base, key-CV and offset
 warnings through ordinary and quiet reads. Missing-base warnings resume with

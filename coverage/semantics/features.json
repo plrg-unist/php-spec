@@ -2141,7 +2141,8 @@
         "spec/semantics/250-ordinary-throwable-reception.watsup",
         "spec/semantics/260-dynamic-new.watsup",
         "spec/semantics/267-named-keyword-new.watsup",
-        "spec/semantics/283-global-constant-objects.watsup"
+        "spec/semantics/283-global-constant-objects.watsup",
+        "spec/semantics/285-default-new-autoload.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -2171,9 +2172,10 @@
         "tests/semantics/dynamic_new_sources.py",
         "tests/semantics/named_keyword_new_sources.py",
         "coverage/semantics/named-keyword-new-review.json",
-        "tests/semantics/global_constant_objects_protocol.py"
+        "tests/semantics/global_constant_objects_protocol.py",
+        "tests/semantics/default_new_autoload_sources.py"
       ],
-      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Ordinary dynamic class selectors are covered below; other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class256 is covered separately in object-class-name-review.json and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload remains required (dynamic-new-review.json). Ordinary named keyword NEW267 adds actual lexical/called scope, immediate inherited constructor owners and persistent service-entry scope. Source18 normal/4 compiler and reached154 clauses at91dc retain distinct failure/preparation records in named-keyword-new-review.json; complete core stays partial. Global constant NEW283 has three exact source agreements at17c12b379 and103/84/87 AL premises at041ce1/00578e/bc44da (274 total). Nonfoldable instance identity completes only after every argument and constructor return; inherited file/eval entry scope and genuine escaped retry retain owners. A separate cold no-constructor success1/80 and failure-retry1/81 AL verify table-before-argument/allocation order and fresh eval identity. Eager destructor release and internal/Throwable/autoload lanes remain required; deferred-static-defaults-review.json keeps failures and cuts separate.",
+      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Ordinary dynamic class selectors are covered below; other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class256 is covered separately in object-class-name-review.json and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload remains required (dynamic-new-review.json). Ordinary named keyword NEW267 adds actual lexical/called scope, immediate inherited constructor owners and persistent service-entry scope. Source18 normal/4 compiler and reached154 clauses at91dc retain distinct failure/preparation records in named-keyword-new-review.json; complete core stays partial. Global constant NEW283 has three exact source agreements at17c12b379 and103/84/87 AL premises at041ce1/00578e/bc44da (274 total). Nonfoldable instance identity completes only after every argument and constructor return; inherited file/eval entry scope and genuine escaped retry retain owners. A separate cold no-constructor success1/80 and failure-retry1/81 AL verify table-before-argument/allocation order and fresh eval identity. Eager destructor release and internal/Throwable/autoload lanes remain required; deferred-static-defaults-review.json keeps failures and cuts separate. Module285 adds authentic parameter-default NEW autoload with lookup before nested arguments, fresh loaded-constructor selection, declaration strictness and retained receiving/declaration owners. Nine private sources at07a78 and174 reached premises at ebb346 stay distinct from actuald57/GEN280 composition1 at24f376; global AST NEW autoload and wider consumers remain required.",
       "evidence": [
         "coverage/semantics/object-classes-review.json",
         "coverage/semantics/stdclass-review.json",
@@ -2185,7 +2187,8 @@
         "coverage/semantics/anonymous-default-new-review.json",
         "coverage/semantics/ordinary-throwable-reception-review.json",
         "coverage/semantics/dynamic-new-review.json",
-        "coverage/semantics/deferred-static-defaults-review.json"
+        "coverage/semantics/deferred-static-defaults-review.json",
+        "coverage/semantics/default-new-autoload-review.json"
       ],
       "helper_tests": [
         "tests/semantics/internal_default_constructor_protocol.py",
@@ -2194,7 +2197,8 @@
         "tests/semantics/ordinary_constructor_protocol.py",
         "tests/semantics/dynamic_new_protocol.py",
         "tests/semantics/named_keyword_new_protocol.py",
-        "tests/semantics/global_constant_objects_protocol.py"
+        "tests/semantics/global_constant_objects_protocol.py",
+        "tests/semantics/default_new_autoload_protocol.py"
       ]
     },
     {
@@ -2830,7 +2834,8 @@
         "spec/semantics/227-default-constructors.watsup",
         "spec/semantics/235-internal-default-constructors.watsup",
         "spec/semantics/240-internal-default-reception.watsup",
-        "spec/semantics/245-anonymous-default-new.watsup"
+        "spec/semantics/245-anonymous-default-new.watsup",
+        "spec/semantics/285-default-new-autoload.watsup"
       ],
       "source_tests": [
         "tests/semantics/default_parameters.py",
@@ -2863,9 +2868,10 @@
         "tests/semantics/default_constructor_sources.py",
         "tests/semantics/internal_default_constructor_sources.py",
         "tests/semantics/internal_default_reception_sources.py",
-        "tests/semantics/anonymous_default_new_sources.py"
+        "tests/semantics/anonymous_default_new_sources.py",
+        "tests/semantics/default_new_autoload_sources.py"
       ],
-      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named binding, argument unpacking and complete callable/type/object protocols remain pending; no family closure. Supplied weak Stringable string parameters214 preserve caller strictness, nominal/callable priority, captured free-BYREF cells and original throws; existing property constraints reject before callbacks. Earlier214 author11 plus one historical Unsupported/state178/independent2/current source2-state46 remain distinct. Parameter authority216 now permits only the exact captured backing string after callback source mutation, with ordinary writes/binds still enforcing types and no added heap owner. Source6/state299 and independent instance rebind/throw2 at73d6 are recorded in weak-string-parameters-review.json. Module218 converts positional/named Stringable variadics and genuine constructor-free defaults in receive order, with declaring method self/parent, captured cells and no default backing authority. Source cutoffs and336 meaningful states remain separate in variadic-default-string-review.json. Internal default constructor dispatch, rebound anonymous keyword NEW, dynamic hole provenance and broader constrained conversion remain required; paused typed-return verification is untouched. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults and rebound anonymous keyword NEW remain required; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Weak-null/Stringable/lossy suspended reception and rebound anonymous keyword NEW remain required; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects and rebound anonymous keyword defaults remain required; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects and object ::class remain required; status stays partial.",
+      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named binding, argument unpacking and complete callable/type/object protocols remain pending; no family closure. Supplied weak Stringable string parameters214 preserve caller strictness, nominal/callable priority, captured free-BYREF cells and original throws; existing property constraints reject before callbacks. Earlier214 author11 plus one historical Unsupported/state178/independent2/current source2-state46 remain distinct. Parameter authority216 now permits only the exact captured backing string after callback source mutation, with ordinary writes/binds still enforcing types and no added heap owner. Source6/state299 and independent instance rebind/throw2 at73d6 are recorded in weak-string-parameters-review.json. Module218 converts positional/named Stringable variadics and genuine constructor-free defaults in receive order, with declaring method self/parent, captured cells and no default backing authority. Source cutoffs and336 meaningful states remain separate in variadic-default-string-review.json. Internal default constructor dispatch, rebound anonymous keyword NEW, dynamic hole provenance and broader constrained conversion remain required; paused typed-return verification is untouched. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults and rebound anonymous keyword NEW remain required; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Weak-null/Stringable/lossy suspended reception and rebound anonymous keyword NEW remain required; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects and rebound anonymous keyword defaults remain required; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects and object ::class remain required; status stays partial. Module285 adds authentic parameter-default NEW autoload with lookup before nested arguments, fresh loaded-constructor selection, declaration strictness and retained receiving/declaration owners. Nine private sources at07a78 and174 reached premises at ebb346 stay distinct from actuald57/GEN280 composition1 at24f376; global AST NEW autoload and wider consumers remain required.",
       "helper_tests": [
         "tests/semantics/signatures.py",
         "coverage/semantics/signatures.json",
@@ -2873,7 +2879,8 @@
         "tests/semantics/default_constructor_api_protocol.py",
         "tests/semantics/internal_default_constructor_protocol.py",
         "tests/semantics/internal_default_reception_protocol.py",
-        "tests/semantics/anonymous_default_new_protocol.py"
+        "tests/semantics/anonymous_default_new_protocol.py",
+        "tests/semantics/default_new_autoload_protocol.py"
       ],
       "evidence": [
         "coverage/semantics/weak-string-parameters-review.json",
@@ -2881,7 +2888,8 @@
         "coverage/semantics/default-constructors-review.json",
         "coverage/semantics/internal-default-constructors-review.json",
         "coverage/semantics/internal-default-reception-review.json",
-        "coverage/semantics/anonymous-default-new-review.json"
+        "coverage/semantics/anonymous-default-new-review.json",
+        "coverage/semantics/default-new-autoload-review.json"
       ]
     },
     {
@@ -8245,7 +8253,8 @@
         "spec/semantics/235-internal-default-constructors.watsup",
         "spec/semantics/240-internal-default-reception.watsup",
         "spec/semantics/245-anonymous-default-new.watsup",
-        "spec/semantics/248-callable-receives.watsup"
+        "spec/semantics/248-callable-receives.watsup",
+        "spec/semantics/285-default-new-autoload.watsup"
       ],
       "helper_tests": [
         "tests/semantics/signatures.py",
@@ -8253,7 +8262,8 @@
         "tests/semantics/internal_default_constructor_protocol.py",
         "tests/semantics/internal_default_reception_protocol.py",
         "tests/semantics/anonymous_default_new_protocol.py",
-        "tests/semantics/callable_receive_protocol.py"
+        "tests/semantics/callable_receive_protocol.py",
+        "tests/semantics/default_new_autoload_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/default_parameters.py",
@@ -8276,7 +8286,8 @@
         "tests/semantics/internal_default_reception_sources.py",
         "tests/semantics/anonymous_default_new_sources.py",
         "tests/semantics/callable_receives.py",
-        "tests/semantics/callable_receive_cases.json"
+        "tests/semantics/callable_receive_cases.json",
+        "tests/semantics/default_new_autoload_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -8288,9 +8299,10 @@
         "coverage/semantics/internal-default-reception-review.json",
         "coverage/semantics/anonymous-default-new-review.json",
         "coverage/semantics/callable-receives-review.json",
-        "docs/semantics/CALLABLE-RECEIVES.md"
+        "docs/semantics/CALLABLE-RECEIVES.md",
+        "coverage/semantics/default-new-autoload-review.json"
       ],
-      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Weak-null/Stringable/lossy suspended reception and rebound anonymous keyword NEW remain required; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects and rebound anonymous keyword defaults remain required; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects and object ::class remain required; status stays partial. Module248 stages deprecated callable default and positional/named variadic reception in the authentic receiving frame, preserving named-hole preparation, live references, borrowed method receipts, slow scalar warnings and forced Stringable conversion. Literal defaults and exact unions retain their earlier priority; internal/return consumers remain required. Evidence cuts stay separate in callable-receives-review.json.",
+      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Weak-null/Stringable/lossy suspended reception and rebound anonymous keyword NEW remain required; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects and rebound anonymous keyword defaults remain required; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects and object ::class remain required; status stays partial. Module248 stages deprecated callable default and positional/named variadic reception in the authentic receiving frame, preserving named-hole preparation, live references, borrowed method receipts, slow scalar warnings and forced Stringable conversion. Literal defaults and exact unions retain their earlier priority; internal/return consumers remain required. Evidence cuts stay separate in callable-receives-review.json. Module285 adds authentic parameter-default NEW autoload with lookup before nested arguments, fresh loaded-constructor selection, declaration strictness and retained receiving/declaration owners. Nine private sources at07a78 and174 reached premises at ebb346 stay distinct from actuald57/GEN280 composition1 at24f376; global AST NEW autoload and wider consumers remain required.",
       "planned_source_tests": [
         "tests/semantics/conformance/named-variadic.php",
         "tests/semantics/conformance/parameter-global-relative-null.php",
@@ -12048,20 +12060,24 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/277-autoload.watsup"
+        "spec/semantics/277-autoload.watsup",
+        "spec/semantics/285-default-new-autoload.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/autoload_protocol.py"
+        "tests/semantics/autoload_protocol.py",
+        "tests/semantics/default_new_autoload_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/autoload_sources.py"
+        "tests/semantics/autoload_sources.py",
+        "tests/semantics/default_new_autoload_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/ext/spl/php_spl.c",
-        "coverage/semantics/autoload-review.json"
+        "coverage/semantics/autoload-review.json",
+        "coverage/semantics/default-new-autoload-review.json"
       ],
-      "review": "Module277 covers the four required SPL control APIs, ordinary named/dynamic NEW and class-parent lookup with real callback ownership, live queue mutations, source/internal contexts and retained declaration authority. Source36/private263 original finite premises plus typed/repeated setup and actual global-constant loader1 retain separate cuts in autoload-review.json. Parameter/global-constant AST NEW and wider class-link/lookup consumers remain required; immutable copied metadata is bounded source/class evidence, not complete value provenance."
+      "review": "Module277 covers the four required SPL control APIs, ordinary named/dynamic NEW and class-parent lookup with real callback ownership, live queue mutations, source/internal contexts and retained declaration authority. Source36/private263 original finite premises plus typed/repeated setup and actual global-constant loader1 retain separate cuts in autoload-review.json. Global-constant AST NEW and wider class-link/lookup consumers remain required; immutable copied metadata is bounded source/class evidence, not complete value provenance. Module285 adds authentic parameter-default NEW autoload with lookup before nested arguments, fresh loaded-constructor selection, declaration strictness and retained receiving/declaration owners. Nine private sources at07a78 and174 reached premises at ebb346 stay distinct from actuald57/GEN280 composition1 at24f376; global AST NEW autoload and wider consumers remain required."
     },
     {
       "id": "dynamic.autoload-dispatch",
@@ -12069,20 +12085,24 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/277-autoload.watsup"
+        "spec/semantics/277-autoload.watsup",
+        "spec/semantics/285-default-new-autoload.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/autoload_protocol.py"
+        "tests/semantics/autoload_protocol.py",
+        "tests/semantics/default_new_autoload_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/autoload_sources.py"
+        "tests/semantics/autoload_sources.py",
+        "tests/semantics/default_new_autoload_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/ext/spl/php_spl.c",
-        "coverage/semantics/autoload-review.json"
+        "coverage/semantics/autoload-review.json",
+        "coverage/semantics/default-new-autoload-review.json"
       ],
-      "review": "Module277 covers the four required SPL control APIs, ordinary named/dynamic NEW and class-parent lookup with real callback ownership, live queue mutations, source/internal contexts and retained declaration authority. Source36/private263 original finite premises plus typed/repeated setup and actual global-constant loader1 retain separate cuts in autoload-review.json. Parameter/global-constant AST NEW and wider class-link/lookup consumers remain required; immutable copied metadata is bounded source/class evidence, not complete value provenance."
+      "review": "Module277 covers the four required SPL control APIs, ordinary named/dynamic NEW and class-parent lookup with real callback ownership, live queue mutations, source/internal contexts and retained declaration authority. Source36/private263 original finite premises plus typed/repeated setup and actual global-constant loader1 retain separate cuts in autoload-review.json. Global-constant AST NEW and wider class-link/lookup consumers remain required; immutable copied metadata is bounded source/class evidence, not complete value provenance. Module285 adds authentic parameter-default NEW autoload with lookup before nested arguments, fresh loaded-constructor selection, declaration strictness and retained receiving/declaration owners. Nine private sources at07a78 and174 reached premises at ebb346 stay distinct from actuald57/GEN280 composition1 at24f376; global AST NEW autoload and wider consumers remain required."
     },
     {
       "id": "dynamic.shell-dispatch",
