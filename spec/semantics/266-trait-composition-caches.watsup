@@ -42,6 +42,9 @@ dec $trait_cache_object_type_error(pstate) : bool
 dec $trait_cache_object_resume(pfstate, pcpath, pclassconstantdesc, int, pstate, pstate, ptraitcachecause) : pfstate
 dec $trait_cache_object_scalar_error(pcompletion) : bool
 dec $trait_cache_object_failure_context(pstate, pstate) : pstate
+dec $trait_cache_object_demand(pfstate, pcpath, pstate, pstate, ptraitcachecause) : (porigin, int, ptraceframe*)?
+dec $trait_cache_object_exception(pfstate, pcpath, pstate, pstate, ptraitcachecause) : (pstate, ptraceframe*)
+dec $trait_cache_object_exception_at(pstate, pstate, (porigin, int, ptraceframe*)?) : (pstate, ptraceframe*)
 dec $trait_cache_object_lookups(pclassconstantcontext*, porigin*) : porigin*?
 dec $trait_cache_object_events(porigin, porigin, pevent*) : pfdiagnostic*?
 dec $trait_cache_object_event(porigin, porigin, pevent) : pfdiagnostic?
@@ -389,15 +392,41 @@ def $trait_cache_object_failure_context(S, S_next) = S_next[.ORIGIN = (porigin_v
   -- if $constant_expression_below(S, pclassconstantcontext.DECL, porigin_value)
   -- if z = $runtime_line(S, [PCFIELD 1], expression)
 def $trait_cache_object_failure_context(S, S_next) = S_next -- otherwise
+;; A typed dependency bind restores the outer constant AST's fetch override.
+;; The collision's execution point remains the real composing declaration.
+def $trait_cache_object_demand(F, pcpath, S, S_next, ptraitcachecause) = ((pfrecorder.CLASS, z, $trait_collision_trace(F, pfrecorder.CLASS, z)))
+  -- if F.RECORD = (pfrecorder)
+  -- if F.LOOKUPS = eps
+  -- if $trait_recording(F, pcpath)
+  -- if pfrecorder.ROOT = PORIGIN n pcpath_root
+  -- if $(|pcpath_root| > 0)
+  -- if porigin_member = PORIGIN n pcpath_root[0:$nabs($(|pcpath_root| - 1))]
+  -- if $origin_node(F.MEMORY.SOURCES, porigin_member) = (NConst phpType14 expression metadata)
+  -- if pfrecorder.ROOT = $constant_child(porigin_member, [PCFIELD 1])
+  -- if porigin_site = PORIGIN F.SOURCE.ID pcpath
+  -- if $origin_node(F.MEMORY.SOURCES, porigin_site) = (NExprClassConstFetch phpType19 phpType20 metadata_site)
+  -- if z = $expression_line(NExprClassConstFetch phpType19 phpType20 metadata_site)
+  -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS [porigin_site], PREFIX |F.MEMORY.DECLARATIONS|, USERPREFIX |F.MEMORY.USERCONSTANTS|}
+  -- if $trait_cache_cause_selected(F.MEMORY, ptraitcachecause) = (pclassconstantdesc)
+  -- if $constant_callable_published(F.MEMORY.DECLARATIONS, pclassconstantdesc.OWNER)
+  -- if $class_constant_active(S) /\ $trait_cache_object_type_error(S)
+  -- if S.CLASSCONSTANTINIT = [pclassconstantcontext]
+  -- if pclassconstantcontext.DECL = pclassconstantdesc.ORIGIN /\ pclassconstantcontext.ORIGIN = (porigin_site)
+  -- if pclassconstantcontext.LINE = z /\ pclassconstantcontext.PREVIOUS = eps
+  -- if S_next = $trait_cache_object_step(S, ptraitcachecause)
+def $trait_cache_object_demand(F, pcpath, S, S_next, ptraitcachecause) = eps -- otherwise
+def $trait_cache_object_exception(F, pcpath, S, S_next, ptraitcachecause) = $trait_cache_object_exception_at(S, S_next, $trait_cache_object_demand(F, pcpath, S, S_next, ptraitcachecause))
+def $trait_cache_object_exception_at(S, S_next, ((porigin, z, ptraceframe*))) = ($throwable_allocate_at(S_cont, text_kind, ptbytes, porigin, z, ptraceframe*), ptraceframe*)
+  -- if S_next.COMPLETION = THROWN text_kind ptbytes z
+  -- if S_cont = $throwable_continuation(S, S_next)
+def $trait_cache_object_exception_at(S, S_next, eps) = ($throwable_transition(S, S_next), $eval_exception_trace($throwable_continuation(S, S_next)))
 def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S_next, ptraitcachecause)
   -- if S_next.COMPLETION = NORMAL
 def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = F[.VALUE = eps][.MEMORY = S_pruned[.HELD = S_restored.HELD]]
   -- if $trait_recording(F, pcpath)
   -- if $trait_cache_object_scalar_error(S_next.COMPLETION)
   -- if S_failure = $trait_cache_object_failure_context(S, S_next)
-  -- if S_cont = $throwable_continuation(S, S_failure)
-  -- if ptraceframe* = $eval_exception_trace(S_cont)
-  -- if S_throw = $throwable_transition(S, S_failure)
+  -- if (S_throw, ptraceframe*) = $trait_cache_object_exception(F, pcpath, S, S_failure, ptraitcachecause)
   -- if S_throw.COMPLETION = THROWING n_throw
   -- if S_throw.OBJECTS[n_throw] = THROWABLE pthrowable
   -- if pthrowable.FILEORIGIN = (porigin_owner)
