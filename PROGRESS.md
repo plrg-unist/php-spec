@@ -579,7 +579,13 @@ cache-cause/cleanup checks, with six generated setup checks separate. Failed raw
 trait composition adds three PHP-error comparisons and68 supplied source-kind,
 cache-owner and rollback conditions; three generated setup checks are separate.
 Direct trait-constant denial precedes dependency evaluation. Held/open compilation
-and object-bearing dependencies remain required.
+and wider object-bearing dependencies remain required. Published Closure/FCC
+dependencies now use real initializer/binder contexts, source/receipt value flow
+and captured-prefix array/DIM proofs. Seven source comparisons agree (five normal,
+two PHP errors); five genuine reached source/flow/ownership groups pass409 supplied
+conditions, with15 generated setup checks separate. Exact cuts and the retained
+DIM-dispatch failures are in the collision ledger.
+General callable-initializer Errors and unpublished-owner births remain required.
 Traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
