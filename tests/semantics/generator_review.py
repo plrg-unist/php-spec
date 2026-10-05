@@ -35,6 +35,11 @@ CASES = {
     'getreturn-array-copy': (b'<?php\nfunction seq(){yield 1;return [2,3];}$g=seq();$g->next();$r=$g->getReturn();$r[0]=9;echo $g->getReturn()[0],":",$r[0],":",$g->getReturn()[1];', b'2:9:3'),
     'inherited-method-scope': (b'<?php\nclass A {private $x=4;const C="A";function seq(){yield $this->x;yield self::C;yield static::class;}}class B extends A {}$b=new B;$g=$b->seq();unset($b);echo "C";foreach($g as $v){echo $v,";";}', b'C4;A;B;'),
     'over-arity-trace-before-initialize': (b'<?php\nfunction seq(){echo "B";yield 1;}function value(){echo "A";return 3;}$g=seq();try{$g->current(value());}catch(ArgumentCountError $e){$t=$e->getTrace();echo $t[0]["function"],":",$t[0]["args"][0],":";}echo $g->current();', b'Acurrent:3:B1'),
+    'intersection-native-acceptance': (b'<?php\nfunction seq():Iterator&Countable {yield 1;}$g=seq();echo $g instanceof Generator?"G":"X";echo $g instanceof Countable?"C":"N";foreach($g as $v){echo $v;}', b'GN1'),
+}
+DECLARATIONS = {
+    'invalid-scalar-supertype': (b'<?php\nfunction seq():int {yield 1;}\necho "X";', b'Generator return type must be a supertype of Generator, int given', 2),
+    'invalid-class-supertype': (b'<?php\nfunction seq():Countable {yield 1;}\necho "X";', b'Generator return type must be a supertype of Generator, Countable given', 2),
 }
 UNSUPPORTED = {
     'unstarted-release': (b'<?php\nclass Box {function __destruct(){echo "D";}}function seq($b){try{echo "B";yield 1;}finally{echo "F";}}$g=seq(new Box);echo "C";unset($g);echo "Z";', b'CDZ'),
@@ -66,8 +71,8 @@ def main():
     parser.add_argument("--mode", choices=["native", "full"], default="full")
     parser.add_argument("--select", help="Comma-separated exact case IDs")
     args = parser.parse_args()
-    names = args.select.split(",") if args.select else list(CASES) + list(UNSUPPORTED)
-    assert names and len(set(names)) == len(names) and all(n in CASES or n in UNSUPPORTED for n in names)
+    names = args.select.split(",") if args.select else list(CASES) + list(DECLARATIONS) + list(UNSUPPORTED)
+    assert names and len(set(names)) == len(names) and all(n in CASES or n in DECLARATIONS or n in UNSUPPORTED for n in names)
     profile = json.loads((ROOT / "tests/semantics/profile.json").read_text())
     php = ROOT / ".tools/php/bin/php"
     flags = [arg for key, value in profile.items() for arg in ["-d", f"{key}={value}"]]
@@ -92,14 +97,22 @@ def main():
         for name in names:
             case = directory / name
             case.mkdir()
-            source, expected = (CASES | UNSUPPORTED)[name]
+            if name in DECLARATIONS:
+                source, message, line = DECLARATIONS[name]
+                expected = b''
+            else:
+                source, expected = (CASES | UNSUPPORTED)[name]
             path = case / "source.php"
             path.write_bytes(source)
             row = {"id": name, "source_sha256": hashlib.sha256(source).hexdigest()}
             report["records"].append(row)
             native = run([str(php), "-n", *flags, str(path)], case / "native", 10)
             row["native_exit"] = native.returncode
-            assert native.returncode == 0 and native.stdout == expected and not native.stderr, (name, native)
+            if name in DECLARATIONS:
+                expected_error = b'Fatal error: ' + message + b' in ' + os.fsencode(path) + b' on line ' + str(line).encode() + b'\nStack trace:\n#0 {main}\n'
+                assert native.returncode == 255 and not native.stdout and native.stderr == expected_error, (name, native)
+            else:
+                assert native.returncode == 0 and native.stdout == expected and not native.stderr, (name, native)
             if args.mode == "full":
                 model = run([str(ROOT / "bin/php-semantics"), str(path), "--steps", "100000", "--timeout", "60"], case / "model", 90)
                 row["model_exit"] = model.returncode
@@ -112,8 +125,13 @@ def main():
                     assert observation["reason"] == UNSUPPORTED_REASONS[name], (name, observation)
                     report["unsupported"] += 1
                 else:
-                    assert model.returncode == 0 and observation["status"] == "normal", (name, observation)
-                    assert observation["reason"] is None and observation["diagnostic"] is None
+                    assert model.returncode == 0 and observation["status"] == ("static_rejection" if name in DECLARATIONS else "normal"), (name, observation)
+                    assert observation["reason"] is None
+                    if name in DECLARATIONS:
+                        assert observation["diagnostic"]["class"] == "CompileError" and observation["diagnostic"]["line"] == line
+                        assert base64.b64decode(observation["diagnostic"]["message"], validate=True) == message
+                    else:
+                        assert observation["diagnostic"] is None
                     assert observation["exit_status"] == native.returncode
                     assert base64.b64decode(observation["stdout"], validate=True) == native.stdout, (name, observation)
                     assert base64.b64decode(observation["stderr"], validate=True) == native.stderr, (name, observation)
