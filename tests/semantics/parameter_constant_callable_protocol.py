@@ -181,10 +181,11 @@ def $parameter_test_stage(S, n_stage) = false -- otherwise
 dec $parameter_test_seek(pstate, nat, nat) : pstate
 def $parameter_test_seek(S, n_stage, n_limit) = S
   -- if $parameter_test_stage(S, n_stage)
-def $parameter_test_seek(S, n_stage, n_limit) = $parameter_test_seek($global_test_next(S), n_stage, $(n_limit - 1))
+def $parameter_test_seek(S, n_stage, n_limit) = $parameter_test_seek($global_test_next(S), n_stage, n_rest)
   -- if ~$parameter_test_stage(S, n_stage)
   -- if $(n_limit > 0)
   -- if (S.COMPLETION = NORMAL \/ S.COMPLETION = SOURCE_PENDING) /\ ~S.COMPILESTOP
+  -- if n_rest = $(n_limit - 1)
 dec $parameter_test_without_constant(pconstantclosure*, nat) : pconstantclosure*
 def $parameter_test_without_constant(eps, n_object) = eps
 def $parameter_test_without_constant(pconstantclosure :: pconstantclosure_tail*, n_object) = $parameter_test_without_constant(pconstantclosure_tail*, n_object)
