@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Autoload277 now implements the four required SPL control APIs with real callable
+caches, owner roots and live queue cursor/capacity behavior. Ordinary named/dynamic
+NEW and class-parent lookup suspend before arguments; lookup inherits source
+strictness/site while explicit dispatch is weak/internal. Selected names retain
+exactly one raw slash normalization. Indexed declaration certificates preserve
+loader authority after unregistering and receiver/scope retirement. Thirty-four
+sources pass at b967 and two at b440; guard cuts stay separate in the
+[ledger](coverage/semantics/autoload-review.json). Its 263 original finite premises
+pass with seven typing bindings and eight repeated setup premises. One actual
+b025/global-constant REAL loader source passes at a37. Original failures and AL
+timeouts remain retained; SL uses the existing exact runner at the same120s cap.
+Default/global-constant AST NEW, wider lookup/link consumers and complete core
+remain required; default filesystem search is excluded and returns stay paused.
+
 Container continuations276 now initialize undefined/null/false CV-rooted W/RW
 storage before key demand and preserve final array-reference source cells. False
 callbacks retain genuine protection and distinct FETCH/ASSIGN/DIM_OP selection;
@@ -139,7 +153,7 @@ Original preparation/eval-fixture failures remain in the [ledger](coverage/seman
 Cached constant METHODs now admit compiled/named keyword NEW through exact265
 receipt authority. One new source and38 reached premises pass at0da3, including
 unrelated lexical/called scope and history after plain-clone retirement.
-Autoload and complete core remain open; returns stay paused.
+Wider autoload consumers and complete core remain open; returns stay paused.
 
 Trait-constant callables265 retain the first shared AST method/function target,
 while named/method captures record each current publication prefix and METHOD

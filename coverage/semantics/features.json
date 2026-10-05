@@ -11861,28 +11861,44 @@
     {
       "id": "dynamic.autoload-registration",
       "milestone": "5a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute.c"
+      "implementation": [
+        "spec/semantics/277-autoload.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/autoload_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/autoload_sources.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/ext/spl/php_spl.c",
+        "coverage/semantics/autoload-review.json"
+      ],
+      "review": "Module277 covers the four required SPL control APIs, ordinary named/dynamic NEW and class-parent lookup with real callback ownership, live queue mutations, source/internal contexts and retained declaration authority. Source36/private263 original finite premises plus typed/repeated setup and actual global-constant loader1 retain separate cuts in autoload-review.json. Parameter/global-constant AST NEW and wider class-link/lookup consumers remain required; immutable copied metadata is bounded source/class evidence, not complete value provenance."
     },
     {
       "id": "dynamic.autoload-dispatch",
       "milestone": "5a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute.c"
+      "implementation": [
+        "spec/semantics/277-autoload.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/autoload_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/autoload_sources.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_execute.c",
+        "vendor/php-src/ext/spl/php_spl.c",
+        "coverage/semantics/autoload-review.json"
+      ],
+      "review": "Module277 covers the four required SPL control APIs, ordinary named/dynamic NEW and class-parent lookup with real callback ownership, live queue mutations, source/internal contexts and retained declaration authority. Source36/private263 original finite premises plus typed/repeated setup and actual global-constant loader1 retain separate cuts in autoload-review.json. Parameter/global-constant AST NEW and wider class-link/lookup consumers remain required; immutable copied metadata is bounded source/class evidence, not complete value provenance."
     },
     {
       "id": "dynamic.shell-dispatch",

@@ -690,7 +690,18 @@ cached property method callables retain lexical and called class separately.
 [Ordinary named keyword NEW](coverage/semantics/named-keyword-new-review.json)
 uses lexical self/parent and called static scope through inherited constructors,
 rebound Closures and eval. Known invalid function scopes reject at compilation;
-deferred scopes fail before arguments. Autoload remains required.
+deferred scopes fail before arguments.
+[Autoload registration and dispatch](coverage/semantics/autoload-review.json)
+now capture real callable targets and preserve live queue mutations, including
+HashTable compaction. Ordinary named/dynamic NEW and class-parent lookup suspend
+before argument demand; explicit dispatch keeps its weak internal context.
+Callbacks retain genuine ownership and declaration authority after unregistering.
+Thirty-six private source agreements and one current global-constant loader
+interaction retain separate cuts. The 263 original finite premises pass with
+seven typing bindings and eight repeated compaction setup premises; the split
+compaction groups use the existing strict SL runner at the unchanged120s cap.
+Default/global-constant AST NEW, wider class-link consumers and complete core
+remain required. Default `spl_autoload` filesystem search stays excluded.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
