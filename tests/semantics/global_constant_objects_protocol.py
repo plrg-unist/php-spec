@@ -72,6 +72,8 @@ SOURCES={'global-new-argument-access-order': '<?php\n'
                                   '$retry = GLOBAL_NEW_RETRY;\n'
                                   'echo $retry->id;\n'}
 
+SOURCES['global-new-cold-table-noctor']="<?php\nclass GlobalNewColdNoCtor { public int $p = E_STRICT + 0; }\nset_error_handler(static function ($level, $message, $file, $line) { echo $level, ':', $line, ';'; return true; });\nconst GLOBAL_NEW_COLD = new GlobalNewColdNoCtor(ignored: E_STRICT + 0);\nrestore_error_handler();\necho GLOBAL_NEW_COLD->p;\n"
+
 FILES={'global-new-inherited-entry-scope':('global-new-entry-scope.inc.php','<?php\nconst GLOBAL_NEW_SELF = new self(), GLOBAL_NEW_PARENT = new parent();\n')}
 EVALS={
  'global-new-argument-access-order':['const GLOBAL_NEW_DENIED = new GlobalNewPrivateCtor(E_STRICT + 0);'],
@@ -129,6 +131,15 @@ def $global_test_stage(S, ptbytes, 14) = true
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.CONSTCONTEXT = (pconstantcontext)
   -- if $global_test_name(S, pconstantcontext.ORIGIN, ptbytes)
+def $global_test_stage(S, ptbytes, 15) = true
+  -- if S.TODO = (INSTANCE_DEFAULT_UPDATE porigin_class porigin_decl z) :: ptask_tail*
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $global_test_name(S, pconstantcontext.ORIGIN, ptbytes)
+def $global_test_stage(S, ptbytes, 16) = true
+  -- if S.TODO = (CLASS_CONST_CONSTRUCT ptbytes_class phpType7* true z) :: ptask_tail*
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $global_test_name(S, pconstantcontext.ORIGIN, ptbytes)
+
 """
 CHECKS={}
 premises=global_protocol.premises
@@ -408,6 +419,83 @@ $global_new_header(S_roots, pconstantobject_failed)
 $global_new_records_valid(S_roots, S_roots.CONSTANTOBJECTS)
 S_roots.USERCONSTANTS = S_done.USERCONSTANTS
 $user_constants_valid(S_roots, S_roots.USERCONSTANTS)
+""")
+
+
+CHECKS['global-new-cold-table-noctor']=premises(r"""
+ptbytes_const = $ptascii("GLOBAL_NEW_COLD")
+ptbytes_class = $ptascii("GlobalNewColdNoCtor")
+S_table = $global_test_find(S_initial[.COMPLETION = NORMAL], ptbytes_const, 15, 1800)
+S_table.TODO = (INSTANCE_DEFAULT_UPDATE porigin_class porigin_property z) :: ptask_table*
+S_table.CONSTCONTEXT = (pconstantcontext)
+S_table.ORIGIN = (porigin_site)
+$global_new_context(S_table, porigin_site) = ((pconstantcontext.ORIGIN, eps))
+$global_new_current(S_table)
+~$new_has_ctor(S_table, ptbytes_class)
+$autoload_pending(S_table, ptbytes_class) = false
+$class_at(S_table.CLASSES, porigin_class) = (pclassdesc)
+pclassdesc.NAME = ptbytes_class /\ pclassdesc.PROPERTIES = [ppropertydesc]
+ppropertydesc.ORIGIN = porigin_property /\ ~ppropertydesc.STATIC
+ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+$instance_default_at(S_table.INSTANCEDEFAULTS, porigin_class, porigin_property) = (pinstancetemplate_pending)
+pinstancetemplate_pending.STATE = INSTANCE_PENDING porigin_initializer
+S_table.CONSTANTOBJECTS = eps
+~((INSTANCE porigin_class) <- S_table.OBJECTS)
+$class_constant_new_work(S_table, ptbytes_class, z) = ptask_work*
+ptask_work* =/= eps
+S_table.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes_class phpType7_arguments* true z] ++ ptask_tail*
+$class_constant_constructor_task(S_table, ptbytes_class, phpType7_arguments*, true, z)
+~$class_constant_constructor_task(S_table, ptbytes_class, phpType7_arguments*, false, z)
+$call_tasks_valid(S_table, S_table.TODO)
+$class_constant_state_valid(S_table)
+$global_test_output(S_table.EVENTS) = eps
+S_ready = $global_test_find(S_table, ptbytes_const, 16, 2400)
+S_ready.TODO = (CLASS_CONST_CONSTRUCT ptbytes_class phpType7_arguments* true z) :: ptask_tail*
+S_ready.CONSTCONTEXT = (pconstantcontext_ready)
+pconstantcontext_ready.ORIGIN = pconstantcontext.ORIGIN
+S_ready.ORIGIN = (porigin_site)
+$class_constant_new_work(S_ready, ptbytes_class, z) = eps
+$class_constant_table_done(S_ready, porigin_class)
+$instance_default_at(S_ready.INSTANCEDEFAULTS, porigin_class, porigin_property) = (pinstancetemplate_filled)
+pinstancetemplate_filled.STATE = INSTANCE_VALUE (PINT 2048) PVSCALAR
+S_ready.CONSTANTOBJECTS = eps
+~((INSTANCE porigin_class) <- S_ready.OBJECTS)
+$global_test_output(S_ready.EVENTS) = $ptascii("8192:2;")
+$call_task_valid(S_ready, CLASS_CONST_CONSTRUCT ptbytes_class phpType7_arguments* true z)
+~$call_task_valid(S_ready, CLASS_CONST_CONSTRUCT ptbytes_class phpType7_arguments* false z)
+~$call_task_valid(S_ready, CLASS_CONST_CONSTRUCT ptbytes_class phpType7_arguments* true $(z + 1))
+$call_descriptors_valid(S_ready)
+S_args = $global_test_next(S_ready)
+S_args.TODO = (DEFAULT_NEW_ARGS pdefaultnew) :: ptask_args*
+pdefaultnew.CLASS = ptbytes_class /\ pdefaultnew.SITE = porigin_site
+pdefaultnew.INDEX = 0 /\ pdefaultnew.VALUES = eps
+S_args.CONSTANTOBJECTS = [pconstantobject]
+pconstantobject.OBJECT = pdefaultnew.OBJECT /\ pconstantobject.CLASS = porigin_class /\ ~pconstantobject.COMPLETE
+$global_new_pending(S_args, pdefaultnew)
+$default_new_valid(S_args, pdefaultnew)
+$objectprops_at(S_args.OBJECTPROPS, pdefaultnew.OBJECT) = (ppropertyslot*)
+$property_slot_at(ppropertyslot*, $ptascii("p")) = (ppropertyslot_p)
+ppropertyslot_p.STATE = PROP_VALUE (DIRECT (PINT 2048))
+S_early = S_args[.CONSTANTOBJECTS = [pconstantobject[.COMPLETE = true]]]
+~$global_new_records_valid(S_early, S_early.CONSTANTOBJECTS)
+S_values = $global_test_find(S_args, ptbytes_const, 10, 2400)
+S_values.TODO = (DEFAULT_NEW_ARGS pdefaultnew_values) :: ptask_values*
+pdefaultnew_values.OBJECT = pdefaultnew.OBJECT /\ pdefaultnew_values.INDEX = 1 /\ pdefaultnew_values.VALUES = [PINT 2048]
+$global_test_output(S_values.EVENTS) = $ptascii("8192:2;8192:4;")
+$global_new_record(S_values.CONSTANTOBJECTS, pdefaultnew.OBJECT) = (pconstantobject)
+$global_new_complete_phase(S_values, pdefaultnew_values)
+S_done = $global_test_finish(S_values, 2600)
+$global_test_output(S_done.EVENTS) = $ptascii("8192:2;8192:4;2048")
+$user_constant_at(S_done.USERCONSTANTS, ptbytes_const) = (puserconstant)
+puserconstant.VALUE = POBJECT pdefaultnew.OBJECT /\ puserconstant.CLASS = PVINSTANCE pdefaultnew.OBJECT porigin_site
+$global_new_record(S_done.CONSTANTOBJECTS, pdefaultnew.OBJECT) = (pconstantobject_complete)
+pconstantobject_complete = pconstantobject[.COMPLETE = true]
+$global_new_records_valid(S_done, S_done.CONSTANTOBJECTS)
+$user_constants_valid(S_done, S_done.USERCONSTANTS)
+S_roots = $prune_allocations(S_done[.ENV = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
+(HOBJECT pdefaultnew.OBJECT) <- S_roots.ALLOCATIONS
+$heap_owners($heap_graph(S_roots), HOBJECT pdefaultnew.OBJECT) = 1
+S_roots.USERCONSTANTS = S_done.USERCONSTANTS
 """)
 
 def prepare(out):
