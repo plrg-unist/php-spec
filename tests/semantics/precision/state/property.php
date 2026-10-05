@@ -1,0 +1,1 @@
+<?php function precisionPropertyNotice(){ini_set("precision","1tail");return true;} set_error_handler("precisionPropertyNotice"); class PrecisionProperty {public static $x=E_STRICT . 12.3456789;} echo PrecisionProperty::$x;

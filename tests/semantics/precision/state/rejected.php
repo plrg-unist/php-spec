@@ -1,0 +1,1 @@
+<?php ini_set("precision","3tail"); try { eval("if ("); } catch (ParseError $e) {} ini_set("precision","1tail");

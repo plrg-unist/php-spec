@@ -1,0 +1,198 @@
+{
+  "scope": "Live precision startup/get/set/Restore, runtime float-string consumers and authenticated source-unit capture; bounded partial core scope.",
+  "status": "independently_reviewed_partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "current_composition": {
+    "revision": "645e6d160c6c1e680a0ac8f825910840c6db77d5",
+    "parent": "c36f46e773db82782483fdbce2fd21954669ed0a",
+    "modules": 264,
+    "bridge": "Exact ordered parent263 plus272. Actual271/274/275 global registration, trait-error and report/unwind hooks retained alongside normalized precision entry/replay. Focused independent source review found no introduced interaction requiring renewed execution."
+  },
+  "contract": [
+    "PRECISIONINIT/PRECISIONINI preserve complete registered/live octets, with modified-entry Restore. Signed64 decimal prefix uses C-string bytes; values below-1 reject. Failed runtime writes mark modified without replacing raw bytes; invalid startup modifiers fall back to the directive default14.",
+    "Stringable option conversion precedes float value conversion and late old-value sampling. No file/CWD facts are required for precision or case-sensitive option misses.",
+    "Runtime stringify, weak string conversion, nonnumeric float/string comparison and late trace arguments use current precision. Formatter C-int narrowing remains distinct from the registered zend_long. Trace formatting is pure and adds finite .0 without a NaN warning.",
+    "Each real source unit retains effective creation precision before parser service. Canonical default14 PDENTER remains unchanged; nondefault PDENTERPRECISION records the exact accepted long. Main capture equals registered startup; live parser waits match current precision, while retired captures may differ.",
+    "Accepted/rejected/pending histories and compiler replay recognize both entry forms, preserving genuine eval publication pauses/resumes. Missing/wrong unit captures reject complete state admission; no missing-entry fallback to14 for real units.",
+    "Parser folding, compiled float names and ordinary compiled concat operands use authentic unit capture. Genuine deferred NConst/NParam/NPropertyItem expression ancestry instead selects live conversion; ordinary handler code retaining an outer initializer context stays compiled.",
+    "A precision change during suspended eval compilation produces explicit Unsupported, rather than using a stale later-fold image. The live cursor is checked before that transition, and terminal TODO retirement afterward; this is zero full-behavior agreement.",
+    "The optional startup precision transport key is canonical base64, nonnullable, and can combine with display and the complete reporting/path pair. All four entry variants preserve unknown file facts versus authenticated finite file/CWD facts."
+  ],
+  "primary_engine": {
+    "tree": "6cf60397fba27e0d712b7ae0f872d5a46059d664",
+    "files": [
+      "vendor/php-src/main/main.c",
+      "vendor/php-src/Zend/zend_ini.c",
+      "vendor/php-src/Zend/zend_operators.c",
+      "vendor/php-src/Zend/zend_ast.c",
+      "vendor/php-src/Zend/zend_compile.c",
+      "vendor/php-src/Zend/zend_vm_def.h",
+      "vendor/php-src/Zend/zend_smart_str.c",
+      "vendor/php-src/ext/standard/basic_functions.c"
+    ],
+    "symbols": [
+      "OnSetPrecision",
+      "zend_ini_alter_entry_ex",
+      "zend_ini_restore",
+      "PHP_FUNCTION(ini_set)",
+      "zend_double_to_str",
+      "zend_compare_double_to_string",
+      "smart_str_append_double",
+      "zend_ast_create_concat_op",
+      "zend_compile_binary_op",
+      "zend_compile_const_decl",
+      "zend_ast_evaluate_ex"
+    ]
+  },
+  "source_gates": [
+    {
+      "count": 7,
+      "selection": "settings-default/prefix/zero/shortest/wide/rejected-startup and runtime-consumers",
+      "revision": "d0288bf5689520cc8de4f4f27a66d001a3ede48c",
+      "native": ".tools/include-dev-14-precision/.tools/precision-native-cxcrmwoj/report.json",
+      "model": ".tools/include-dev-14-precision/.tools/precision-models-ky9mjr2m/report.json"
+    },
+    {
+      "count": 1,
+      "selection": "included-parser-point",
+      "revision": "e5949bb89d6fccf3d0084ccb6b603ce3ed8a9ed8",
+      "native": ".tools/include-dev-14-precision/.tools/precision-native-cxcrmwoj/report.json",
+      "model": ".tools/include-dev-14-precision/.tools/precision-models-acgcthgb/report.json"
+    },
+    {
+      "count": 6,
+      "selection": "option-callback/parser-point/comparison-trace/literal-callback/included-compiler-point/compiled-names",
+      "revision": "e5949bb89d6fccf3d0084ccb6b603ce3ed8a9ed8",
+      "model": ".tools/include-review-14/precision/model-precision-syzr8d17/report.json",
+      "native_records": [
+        ".tools/include-review-14/precision/native-precision-main-osvjon5u/report.json",
+        ".tools/include-review-14/precision/native-precision-parser-point-ti0ynne_/report.json",
+        ".tools/include-review-14/precision/native-precision-comparison-trace-dzxblwtn/report.json",
+        ".tools/include-review-14/precision/native-precision-literal-callback-1wsd4pyi/report.json",
+        ".tools/include-review-14/precision/native-precision-compiler-point-rn2_fb0k/report.json",
+        ".tools/include-review-14/precision/native-precision-compiled-names-6f56ghhn/report.json"
+      ]
+    },
+    {
+      "count": 1,
+      "selection": "global-deferred-concat and ordinary callback captured literal",
+      "revision": "73011a3172c312f0b83586899bebdfa27742e46f",
+      "native": ".tools/include-dev-14-precision/.tools/precision-global-native-0ou3t2pc/report.json",
+      "model": ".tools/include-dev-14-precision/.tools/precision-global-model-elngy5lh/report.json"
+    },
+    {
+      "count": 1,
+      "selection": "class-deferred-concat unchanged original",
+      "revision": "73011a3172c312f0b83586899bebdfa27742e46f",
+      "native": ".tools/include-review-14/precision/native-precision-deferred-concat-q_fun55j/report.json",
+      "model": ".tools/include-review-14/precision/model-precision-90lq6g1m/report.json"
+    }
+  ],
+  "accepted_checks": {
+    "source_profile_comparisons": 16,
+    "distinct_main_programs": 11,
+    "result": "Full stdout/stderr exact, accepted frontend, checked program, normal0/reason-null; source/native bytes and profile identities preserved at their distinct cuts.",
+    "state": {
+      "revision": "73011a3172c312f0b83586899bebdfa27742e46f",
+      "supplied_checks": 194,
+      "program_bindings": 12,
+      "groups": {
+        "initial": 54,
+        "dynamic": 39,
+        "abrupt": 27,
+        "ast": 74
+      },
+      "raw": [
+        ".tools/include-dev-14-precision/.tools/precision-control-run-5p8b5ad0/report.json",
+        ".tools/include-dev-14-precision/.tools/precision-control-run-g7zv8yc5/report.json",
+        ".tools/include-dev-14-precision/.tools/precision-control-run-wo5xdchr/report.json"
+      ],
+      "result": "Each accepted group true newline, empty stderr, exit0; normal reaping/empty groups and stable inputs/head."
+    },
+    "transport": {
+      "revision": "73011a3172c312f0b83586899bebdfa27742e46f",
+      "checks": 12,
+      "raw": ".tools/include-dev-14-precision/.tools/precision-transport-x7fym4eb/report.json",
+      "rows": ".tools/include-dev-14-precision/.tools/precision-transport-x7fym4eb/transport-report.json",
+      "result": "Seven entry positives, four precise-reason negatives including duplicate-key JSON, and genuine execute/eval/resume captured3/live1/output12.3L."
+    },
+    "compiler": {
+      "revision": "73011a3172c312f0b83586899bebdfa27742e46f",
+      "modules": 261,
+      "raw": ".tools/include-dev-14-precision/.tools/precision-compile-hajqa3wz/report.json",
+      "result": "Exact SL parse/elaborate/algorithmic-analysis-and-guards/structure-final/init; application-evaluations0."
+    },
+    "adapter_build": {
+      "revision": "d0288bf5689520cc8de4f4f27a66d001a3ede48c",
+      "raw": ".tools/include-dev-14-precision/.tools/precision-build-iw7a6uoh/report.json",
+      "jobs": 1,
+      "result": "Changed adapter only; numeric/PHP/compiler reused."
+    }
+  },
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "numeric_sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+    "adapter_sha256": "1d7cebf175b60a6e2a534460ec2c4aff206cdd901e34f35f959041a49f5ac2f9",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "other": "inherited"
+    },
+    "caps_seconds": {
+      "native": 30,
+      "model": 90,
+      "request": 60,
+      "numeric": 90,
+      "compile_build": 300
+    },
+    "fresh_runtime_rebuild": false
+  },
+  "preserved_failures": [
+    {
+      "raw": [
+        ".tools/include-dev-14-precision/.tools/precision-compile-45raeuww/report.json",
+        ".tools/include-dev-14-precision/.tools/precision-compile-45wt2o8m/report.json",
+        ".tools/include-dev-14-precision/.tools/precision-compile-oiti06yx/report.json"
+      ],
+      "result": "Mechanical compiler declaration/pure-branch failures, zero application or source credit. Corrected only affected source and compiler gates."
+    },
+    {
+      "raw": ".tools/include-dev-14-precision/.tools/precision-models-ky9mjr2m/report.json",
+      "result": "Eighth included-unit model originally Unsupported invalid file parser response, zero agreement. Actual precision/wait guards passed;195 optional-site tuple binding was the concrete history failure. Seven earlier comparisons retain d028."
+    },
+    {
+      "raw": ".tools/include-review-14/precision/model-precision-7e3sn1b0/report.json",
+      "result": "Original deferred AST emitted startup12.346 after callback set1; genuine Zend emitted1.0E+1. Fixed only59/272 ancestry selection and reran this unchanged original. Its native forecast failure records echoV: ordering; no native replay."
+    },
+    {
+      "raw": ".tools/include-dev-14-precision/.tools/precision-control-run-len3zeba/report.json",
+      "result": "Dynamic fixture parse stop at bare PORIGIN path; zero predicate credit. Grouped the path literal only."
+    },
+    {
+      "raw": [
+        ".tools/include-dev-14-precision/.tools/precision-control-run-g7zv8yc5/report.json",
+        ".tools/include-dev-14-precision/.tools/precision-abrupt-vector-2r7u881v/report.json"
+      ],
+      "result": "Old abrupt23 false checked a retired compiler cursor. Reached vector confirmed exact Unsupported and authentic rejected history; corrected27 checks the live BUDGET cursor then terminal TODOeps. Dynamic39 in the first report remains accepted."
+    }
+  ],
+  "maintained_regressions": {
+    "sources": "tests/semantics/precision_sources.py",
+    "state_transport": "tests/semantics/precision_protocol.py",
+    "fixtures": "tests/semantics/precision/",
+    "bridge": "Twenty PHP copies are byte-exact;194 supplied check sequences/helpers and12 program bindings retain tested logic with generated path/CWD/setup metadata. Transport12 and sixteen profiles preserve selection and full-byte predicates. Promotion adds no execution credit. Existing display unknown-key fixture now uses unknown_option because precision is genuinely admitted.",
+    "commands": [
+      "python3 tests/semantics/precision_sources.py",
+      "python3 tests/semantics/precision_protocol.py"
+    ]
+  },
+  "independent_review": ".tools/include-review-14/precision-independent-review.json",
+  "remaining": [
+    "Authentic later-fold continuation when precision changes during suspended eval compilation",
+    "serialize_precision, wider startup parsing/profiles and unusual raw-float Throwable message formatters",
+    "Array-to-string warning ingress for include/require and eval operands; wider provider/compiler/lifecycle interactions",
+    "Complete core/combined gates and offline rebuild; returns_verify remains paused"
+  ]
+}
