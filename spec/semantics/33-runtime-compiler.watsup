@@ -60,13 +60,19 @@ def $runtime_write_line(S, pcpath) = 0 -- otherwise
 ;; Constant variable names are converted while compiling. Preserve the original
 ;; pool operand; normalize only a captured name at that compiled occurrence.
 dec $compiled_name_bytes(pvalue) : nat*
-def $compiled_name_bytes(PARRAY n) = [65,114,114,97,121]
-def $compiled_name_bytes(pvalue) = $echo_value(pvalue)
+dec $compiled_name_bytes_at(pvalue, int) : nat*
+def $compiled_name_bytes(pvalue) = $compiled_name_bytes_at(pvalue, 14)
+def $compiled_name_bytes_at(PARRAY n, z_precision) = [65,114,114,97,121]
+def $compiled_name_bytes_at(PFLOAT n_bits, z_precision) = n_text*
+  -- if (n_text*, b_warning) = $number_text(NFLOAT n_bits, z_precision)
+def $compiled_name_bytes_at(pvalue, z_precision) = $echo_value(pvalue)
   -- if ~$is_array_value(pvalue)
+  -- if $type_bytes(pvalue) =/= $ptascii("float")
 dec $captured_name(pstate, pcpath, poperand) : poperand
-def $captured_name(S, pcpath, KNOWN pvalue) = KNOWN (PSTRING $compiled_name_bytes(pvalue))
+def $captured_name(S, pcpath, KNOWN pvalue) = KNOWN (PSTRING $compiled_name_bytes_at(pvalue, z_precision))
   -- if $origin_child(S.ORIGIN, pcpath) = (porigin)
   -- if $compiled_read(S, porigin) = (pvalue_original)
+  -- if $source_precision(S, (porigin)) = (z_precision)
 def $captured_name(S, pcpath, poperand) = poperand
   -- otherwise
 
@@ -296,7 +302,9 @@ dec $declaration_parser_rejects(pcompletion?) : bool
 dec $declaration_compile_preflight(pstate, ppstate, pcompletion?) : pstate
 dec $compile_source(pstate, ppstate) : pstate
 dec $compile_source_begin(pstate, ppstate) : pstate
-def $compile_source(S, P) = $scope_check($compile_source_begin($request_compile(S, P), P))
+dec $compile_source_precision(pstate, ppstate) : ppstate
+def $compile_source(S, P) = $scope_check($compile_source_begin($request_compile(S, P_source), P_source))
+  -- if P_source = $compile_source_precision(S, P)
 def $compile_source_begin(S, P) = $compile_source_ready($declaration_enter(S, P.FOLD.SOURCE.ID, eps), P)
   -- if S.COMPLETION = NORMAL
 def $compile_source_begin(S, P) = S -- if S.COMPLETION =/= NORMAL

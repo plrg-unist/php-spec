@@ -67,7 +67,7 @@ def $propref_source_valid(S, n_cell, RETIRED_CLASS_PROP_SOURCE porigin n_event) 
   -- if $class_static_active_desc(S, S.CLASSNAMES, porigin) = (ppropertydesc)
   -- if ppropertydesc.TYPE =/= eps
   -- if S.STORE[n_cell] = DEFINED pvalue
-  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue) \/ $parameter_backing_value(S, n_cell, pvalue)
+  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue) \/ $container_init_value(S, n_cell, pvalue) \/ $parameter_backing_value(S, n_cell, pvalue)
 def $propref_descriptor(S, RETIRED_CLASS_PROP_SOURCE porigin n_event) = $class_static_active_desc(S, S.CLASSNAMES, porigin)
 def $static_default_retirement_event(CCSTATICRETIRE porigin porigin_trigger n_prefix n_cell, porigin, n_cell) = true
 def $static_default_retirement_event(pclassconstantevent, porigin, n_cell) = false -- otherwise

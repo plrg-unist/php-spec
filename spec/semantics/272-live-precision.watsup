@@ -1,0 +1,108 @@
+;; OnSetPrecision retains raw INI bytes and accepts only signed64 values >= -1.
+;; zend_double_to_str narrows the live value to signed32 at each conversion.
+dec $precision_ini_long(preqbytes) : int
+def $precision_ini_long(preqbytes) = $reporting_ini_long(n_sign, n_digits)
+  -- if (n_sign, n_value*) = $ntsign($nttrim($c_string(preqbytes)))
+  -- if DIGITS n_digits n_count n_tail* = $ntdigits(n_value*, 0, 0)
+dec $precision_ini_valid(preqbytes) : bool
+def $precision_ini_valid(preqbytes) = ($startup_bytes(preqbytes) /\ $($precision_ini_long(preqbytes) >= -1))
+def $precision_value(S) = $precision_ini_long(S.PRECISIONINI)
+dec $precision_main_entry_valid(pstate) : bool
+dec $precision_eval_waits_valid(pstate, pevalcontext*) : bool
+dec $precision_file_waits_valid(pstate, pfilecontext*) : bool
+def $precision_state_valid(S) = ($precision_ini_valid(S.PRECISIONINIT) /\ $precision_ini_valid(S.PRECISIONINI) /\ (S.PRECISIONMODIFIED \/ S.PRECISIONINI = S.PRECISIONINIT) /\ $precision_main_entry_valid(S) /\ $precision_eval_waits_valid(S, S.EVALCONTEXTS) /\ $precision_file_waits_valid(S, S.FILECONTEXTS))
+def $precision_restore(S) = S[.PRECISIONINI = S.PRECISIONINIT][.PRECISIONMODIFIED = false]
+  -- if S.PRECISIONMODIFIED
+def $precision_restore(S) = S -- otherwise
+;; zend_alter_ini_entry marks modification before invoking a rejecting modifier.
+def $precision_set(S, preqbytes_new, preqbytes_old) = S[.PRECISIONINI = preqbytes_new][.PRECISIONMODIFIED = true][.RESULT = KNOWN (PSTRING preqbytes_old)]
+  -- if $($precision_ini_long(preqbytes_new) >= -1)
+def $precision_set(S, preqbytes_new, preqbytes_old) = S[.PRECISIONMODIFIED = true][.RESULT = KNOWN (PBOOL false)]
+  -- if $($precision_ini_long(preqbytes_new) < -1)
+
+;; Compiler memory uses a numeric input, distinct from live request INI bytes.
+def $precision_memory(S, z_precision) = S[.PRECISIONINIT = preqbytes][.PRECISIONINI = preqbytes][.PRECISIONMODIFIED = false]
+  -- if preqbytes = $decimal_integer(z_precision)
+def $compile_source_precision(S, P) = P
+  -- if $precision_value(P.FOLD.MEMORY) = $precision_value(S)
+def $compile_source_precision(S, P) = $ppstart_precision_external(P.FOLD.SOURCE.ID, P.FOLD.SOURCE.AST, P.LOCATION.FILE, P.FOLD.CWD, P.EVALCLASS, P.FOLD.EXTERNAL, $precision_value(S))
+  -- if $precision_value(P.FOLD.MEMORY) =/= $precision_value(S)
+
+def $source_precision(S, (PORIGIN n pcpath)) = $declaration_precision(S.DECLARATIONS, n)
+  -- if S.DECLARATIONS =/= eps
+def $source_precision(S, porigin?) = (14)
+  -- if S.SOURCES = eps /\ S.CODE = eps /\ S.DECLARATIONS = eps
+def $source_precision(S, porigin?) = eps -- otherwise
+;; Deferred AST operands convert when evaluated; ordinary compiled literals keep
+;; their source precision, including ordinary code called by an initializer.
+def $concat_runtime_constant(S, porigin) = $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+def $concat_runtime_constant(S, porigin) = false -- otherwise
+def $parser_literal_origin(S, porigin?, expression) = $parser_literal_at(expression, z_precision)
+  -- if $source_precision(S, porigin?) = (z_precision)
+def $parser_literal_origin(S, porigin?, expression) = eps -- otherwise
+def $cv_source_name(S, phpType32) = $cv_name_at(phpType32, z_precision)
+  -- if $source_precision(S, S.ORIGIN) = (z_precision)
+def $cv_source_name(S, phpType32) = eps -- otherwise
+
+;; Capture entry checks are independent of later callback writes to live INI.
+def $precision_main_entry_valid(S) = (z_precision = $precision_ini_long(S.PRECISIONINIT))
+  -- if $declaration_precision(S.DECLARATIONS, 0) = (z_precision)
+def $precision_main_entry_valid(S) = true -- otherwise
+def $precision_eval_waits_valid(S, eps) = true
+def $precision_eval_waits_valid(S, pevalcontext :: pevalcontext_tail*) = ($declaration_precision(S.DECLARATIONS, pevalcontext.UNIT) = ($precision_value(S)) /\ $precision_eval_waits_valid(S, pevalcontext_tail*))
+  -- if pevalcontext.PHASE = PARSER_WAIT
+def $precision_eval_waits_valid(S, pevalcontext :: pevalcontext_tail*) = $precision_eval_waits_valid(S, pevalcontext_tail*)
+  -- if pevalcontext.PHASE =/= PARSER_WAIT
+def $precision_file_waits_valid(S, eps) = true
+def $precision_file_waits_valid(S, pfilecontext :: pfilecontext_tail*) = ($declaration_precision(S.DECLARATIONS, n) = ($precision_value(S)) /\ $precision_file_waits_valid(S, pfilecontext_tail*))
+  -- if pfilecontext.PHASE = FILE_PARSE_WAIT
+  -- if pfilecontext.UNIT = (n)
+def $precision_file_waits_valid(S, pfilecontext :: pfilecontext_tail*) = $precision_file_waits_valid(S, pfilecontext_tail*)
+  -- if pfilecontext.PHASE =/= FILE_PARSE_WAIT
+
+;; Startup precision is an independent registered fact; it invents no file CWD.
+dec $precision_initial(pstartup?, bool, preqbytes?, preqbytes) : pstate
+def $precision_initial(pstartup?, true, preqbytes_display?, preqbytes_precision) = $display_initial(pstartup?, preqbytes_display?)[.PRECISIONINIT = preqbytes_precision][.PRECISIONINI = preqbytes_precision]
+def $precision_initial(pstartup?, false, preqbytes_display?, preqbytes_precision) = $display_initial(pstartup?, ($ptascii("stderr")))[.PRECISIONINIT = preqbytes_precision][.PRECISIONINI = preqbytes_precision]
+dec $precision_startup_valid(pstartup?, bool, preqbytes?, preqbytes) : bool
+def $precision_startup_valid(pstartup?, b_display, preqbytes_display?, preqbytes_precision) = ($display_startup_valid(pstartup?) /\ (~b_display \/ $startup_reporting_valid(preqbytes_display?)) /\ $precision_ini_valid(preqbytes_precision))
+dec $php_precision_run(program, nat, text, pstartup?, bool, preqbytes?, preqbytes) : pstate
+def $php_precision_run(program, n, text_file, pstartup?, b_display, preqbytes_display?, preqbytes_precision) = $drive($compile_source($precision_initial(pstartup?, b_display, preqbytes_display?, preqbytes_precision)[.FILES = [SOURCEFILE 0 n_file*]], $ppstart(0, program, n_file*)), n)
+  -- if n_file* = $base64(text_file)
+  -- if $source_filename(n_file*)
+  -- if $precision_startup_valid(pstartup?, b_display, preqbytes_display?, preqbytes_precision)
+def $php_precision_run(program, n, text_file, pstartup?, b_display, preqbytes_display?, preqbytes_precision) = $initial_state(UNSUPPORTED "invalid startup precision INI or source filename") -- otherwise
+dec $php_request_precision_run(program, nat, text, prequest, pstartup?, bool, preqbytes?, preqbytes) : pstate
+def $php_request_precision_run(program, n, text_file, Q, pstartup?, b_display, preqbytes_display?, preqbytes_precision) = $drive($compile_source($request_bootstrap($precision_initial(pstartup?, b_display, preqbytes_display?, preqbytes_precision)[.FILES = [SOURCEFILE 0 n_file*]], Q), $ppstart_cwd(0, program, n_file*, Q.CWD)), n)
+  -- if n_file* = $base64(text_file)
+  -- if $source_filename(n_file*)
+  -- if $request_valid(Q)
+  -- if $precision_startup_valid(pstartup?, b_display, preqbytes_display?, preqbytes_precision)
+def $php_request_precision_run(program, n, text_file, Q, pstartup?, b_display, preqbytes_display?, preqbytes_precision) = $initial_state(UNSUPPORTED "invalid startup precision INI, request or source filename") -- otherwise
+dec $php_file_precision_run(program, nat, preqbytes, preqbytes, pstartup?, bool, preqbytes?, preqbytes) : pstate
+def $php_file_precision_run(program, n, n_file*, n_cwd*, pstartup?, b_display, preqbytes_display?, preqbytes_precision) = $drive($compile_source($precision_initial(pstartup?, b_display, preqbytes_display?, preqbytes_precision)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.FILEINCLUDEPATH = ($startup_include_path(pstartup?))][.INCLUDEDOPENED = [n_file*]], $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
+  -- if $source_filename(n_file*)
+  -- if $source_filename(n_cwd*)
+  -- if $precision_startup_valid(pstartup?, b_display, preqbytes_display?, preqbytes_precision)
+def $php_file_precision_run(program, n, n_file*, n_cwd*, pstartup?, b_display, preqbytes_display?, preqbytes_precision) = $initial_state(UNSUPPORTED "invalid startup precision INI or file context") -- otherwise
+dec $php_request_file_precision_run(program, nat, preqbytes, prequest, preqbytes, pstartup?, bool, preqbytes?, preqbytes) : pstate
+def $php_request_file_precision_run(program, n, n_file*, Q, n_cwd*, pstartup?, b_display, preqbytes_display?, preqbytes_precision) = $drive($compile_source($request_bootstrap($precision_initial(pstartup?, b_display, preqbytes_display?, preqbytes_precision)[.FILES = [SOURCEFILE 0 n_file*]][.FILECWD = (n_cwd*)][.FILEINCLUDEPATH = ($startup_include_path(pstartup?))][.INCLUDEDOPENED = [n_file*]], Q), $ppstart_cwd(0, program, n_file*, (n_cwd*))), n)
+  -- if Q.CWD = (n_cwd*)
+  -- if $source_filename(n_file*)
+  -- if $source_filename(n_cwd*)
+  -- if $request_valid(Q)
+  -- if $precision_startup_valid(pstartup?, b_display, preqbytes_display?, preqbytes_precision)
+def $php_request_file_precision_run(program, n, n_file*, Q, n_cwd*, pstartup?, b_display, preqbytes_display?, preqbytes_precision) = $initial_state(UNSUPPORTED "invalid startup precision INI, request or file context") -- otherwise
+
+;; Literal names retain their own source unit's parsing precision.
+def $scoped_source_method_origin(S, porigin, phpType20, preqbytes) = $scoped_source_method_at(phpType20, preqbytes, z_precision)
+  -- if $source_precision(S, (porigin)) = (z_precision)
+def $scoped_source_method_origin(S, porigin, phpType20, preqbytes) = false -- otherwise
+def $method_capture_source_name_origin(S, porigin, phpType20, preqbytes) = $method_capture_source_name_at(phpType20, preqbytes, z_precision)
+  -- if $source_precision(S, (porigin)) = (z_precision)
+def $method_capture_source_name_origin(S, porigin, phpType20, preqbytes) = false -- otherwise
+
+;; The current eval plan is compiled before its diagnostic callbacks. A changed
+;; compiler precision requires a genuine later-fold continuation, not stale text.
+def $precision_eval_resume_valid(S, pevalcompile) = ($declaration_precision(S.DECLARATIONS, pevalcompile.PLAN.UNIT) = ($precision_value(S)))

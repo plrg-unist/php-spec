@@ -45,8 +45,9 @@ selected reached fixtures; exact source and AL_mode runner commands remain in th
 raw records. Production source execution uses SL_mode and existing local tools;
 there is no fresh build or portability claim.
 
-Earlier initial container/string/object warnings, wider GLOBALS quiet/memoized/
-unset consumers and remaining read-write/reference producers remain required core
+[Container276](SOURCE-CONTAINER-WRITES.md) adds initial undefined/null/false
+CV-rooted W/RW storage and final array-reference writes. Wider container/string/
+object producers and GLOBALS quiet/memoized/unset consumers remain required core
 work. Full-table snapshots without request facts and paused return verification
 retain their separate boundaries; selected agreement does not establish complete
 core semantics.

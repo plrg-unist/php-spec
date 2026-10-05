@@ -149,7 +149,7 @@ def $reference_coercion_value(S, n_cell, PSTRING n_text*) = true
   -- if $reference_coercion_row_valid(S, prefcoercion)
 def $reference_coercion_value(S, n_cell, pvalue) = false -- otherwise
 def $reference_coercion_clear(S, n_cell) = S[.REFCOERCIONS = $reference_coercion_remove(S.REFCOERCIONS, n_cell)]
-def $reference_coercion_store(S, n_cell, pslot) = $parameter_backing_clear($reference_coercion_clear(S, n_cell), n_cell)[.STORE = $set_cell(S.STORE, n_cell, pslot)]
+def $reference_coercion_store(S, n_cell, pslot) = $parameter_backing_clear($container_init_clear($reference_coercion_clear(S, n_cell), n_cell), n_cell)[.STORE = $set_cell(S.STORE, n_cell, pslot)]
 def $reference_coercions_prune(eps, pnode*) = eps
 def $reference_coercions_prune(prefcoercion :: prefcoercion_tail*, pnode*) = prefcoercion :: $reference_coercions_prune(prefcoercion_tail*, pnode*)
   -- if (HCELL prefcoercion.CELL) <- pnode*
@@ -187,7 +187,7 @@ def $propref_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes porigin
   -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ppropertydesc.TYPE =/= eps
   -- if S.STORE[n_cell] = DEFINED pvalue
-  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue) \/ $parameter_backing_value(S, n_cell, pvalue)
+  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue) \/ $container_init_value(S, n_cell, pvalue) \/ $parameter_backing_value(S, n_cell, pvalue)
 def $propref_source_valid(S, n_cell, CLASS_PROP_SOURCE ppropertyid) = true
   -- if $(n_cell < |S.STORE|)
   -- if n_cell <- S.REFCELLS
@@ -197,7 +197,7 @@ def $propref_source_valid(S, n_cell, CLASS_PROP_SOURCE ppropertyid) = true
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
   -- if pclassstatic.STATE = PROP_VALUE (ALIAS n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
-  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue) \/ $parameter_backing_value(S, n_cell, pvalue)
+  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue) \/ $container_init_value(S, n_cell, pvalue) \/ $parameter_backing_value(S, n_cell, pvalue)
 def $propref_source_valid(S, n_cell, pproptypesource) = false -- otherwise
 dec $propref_sources_valid(pstate, nat, pproptypesource*) : bool
 def $propref_sources_valid(S, n_cell, eps) = true

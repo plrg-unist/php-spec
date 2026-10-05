@@ -151,6 +151,13 @@ later display writes. [Shutdown callbacks](SOURCE-SHUTDOWN.md) freeze the fatal
 destination after rendering and before the queue. Wider display directives,
 INI parsing/profiles and later request stages stay open.
 
+[Live precision](../../coverage/semantics/precision-review.json) separates raw
+registered/current bytes and Restore from runtime formatting and each unit's
+captured parser precision. Later eval/include parsing observes current precision;
+retired source literals retain their creation value. Deferred AST operands instead
+convert with live precision. Changed precision during suspended eval compilation,
+`serialize_precision` and wider formatter consumers remain required.
+
 Backticks remain core syntax. Their command construction/dispatch is specified;
 a finite shell service supplies explicit response bytes/failure/effects. Missing
 service yields Unsupported. Implementing the process library is outside this
