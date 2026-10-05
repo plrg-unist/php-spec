@@ -65,7 +65,10 @@ def $source_array_begin(S, poperand, porigin, z, n_kind, ptask_tail*) = $error_d
   -- if $source_operand_valid(S, psourceoperand)
   -- if S.ORIGIN = ($source_operand_child(psourceoperand))
   -- if z_warning = $source_array_line(S, psourceoperand)
-def $source_array_begin(S, poperand, porigin, z, n_kind, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "invalid source array operand"] -- otherwise
+def $source_array_begin(S, poperand, porigin, z, n_kind, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "invalid source array operand"]
+  -- if n_owner = |S.FRAMES|
+  -- if psourceoperand = {SITE porigin, LINE z, KIND n_kind, INPUT poperand, OWNER n_owner, TAIL ptask_tail*}
+  -- if ~$source_operand_valid(S, psourceoperand) \/ S.ORIGIN =/= ($source_operand_child(psourceoperand))
 
 rule PhpStep/eval-array-operand: S ~> $source_array_begin(S_read, S.RESULT, porigin, z, 0, ptask_tail*)
   -- if S.TODO = (EVAL_REQUEST porigin z) :: ptask_tail*
