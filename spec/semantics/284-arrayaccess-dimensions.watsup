@@ -37,6 +37,8 @@ dec $access_base_source(pstate, paccess) : bool
 dec $access_phase(paccess) : bool
 dec $access_valid(pstate, paccess) : bool
 dec $access_capture_valid(paccess) : bool
+dec $access_selected_valid(paccess) : bool
+dec $access_rhs_selected(poperand, poperand, pvalue) : bool
 dec $access_object_valid(pstate, nat?) : bool
 dec $access_call_phase(paccessphase) : bool
 dec $access_method_selected(pstate, paccess, pcalltarget) : bool
@@ -45,8 +47,7 @@ dec $access_frame(pstate, pcallcontext, pframe) : bool
 dec $access_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
 dec $access_marker(pframe) : bool
 dec $access_known_base(pbase) : bool
-dec $access_is_object(pvalue) : bool
-dec $access_context_node(pcnode) : bool
+dec $access_context_node(pcnode, ptbytes) : bool
 dec $access_cv_operand(poperand) : bool
 dec $access_read_object(nat, pkeymode) : nat?
 def $arrayaccess_members() = [$ptascii("offsetExists"), $ptascii("offsetGet"), $ptascii("offsetSet"), $ptascii("offsetUnset")]
@@ -289,16 +290,20 @@ def $access_live(S, paccess) = $access_nonobject(S, paccess, pvalue)
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
   -- if S_read.RESULT = KNOWN pvalue
   -- if ~$access_instance(S, pvalue)
-def $access_nonobject(S, paccess, pvalue) = $key_read_done(S_out, pvalue_result)
+def $access_nonobject(S, paccess, pvalue) = $rcontainer_test(S, {READ {SITE paccess.TARGET, GLOBAL false, MODE KEY_TEST b, INPUT paccess.INPUT, VALUE paccess.OFFSET, BASE pvalue, OWNERS paccess.BASE, LINE paccess.LINE, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}, SELECTED paccess.SELECTED, PHASE READ_OFFSET pvalue}, pvalue)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
-  -- if S_out = $key_nonarray(S, {SITE paccess.TARGET, GLOBAL false, MODE KEY_TEST b, INPUT paccess.INPUT, VALUE paccess.OFFSET, BASE pvalue, OWNERS paccess.BASE, LINE paccess.LINE, PHASE KEY_NULL, KEY KSTRING eps, NAME eps})
+def $access_nonobject(S, paccess, pvalue) = $key_read_done(S_out, PNULL)
+  -- if paccess.MODE = ACCESS_UNSET
+  -- if pvalue =/= PBOOL false
+  -- if S_out = $unset_nonarray(S, pvalue, paccess.LINE)
   -- if S_out.COMPLETION = NORMAL
-  -- if S_out.RESULT = KNOWN pvalue_result
-def $access_nonobject(S, paccess, POBJECT n) = $throw_scalar(S, "Error", $ptascii("Cannot use object of type ") ++ $object_name(S, n) ++ $ptascii(" as array"), paccess.LINE)
+def $access_nonobject(S, paccess, pvalue) = S_out
   -- if paccess.MODE = ACCESS_UNSET
-def $access_nonobject(S, paccess, pvalue) = S[.COMPLETION = UNSUPPORTED "ArrayAccess unset callback selected a non-object container"]
+  -- if pvalue =/= PBOOL false
+  -- if S_out = $unset_nonarray(S, pvalue, paccess.LINE)
+  -- if S_out.COMPLETION =/= NORMAL
+def $access_nonobject(S, paccess, PBOOL false) = $error_dispatch(S[.ORIGIN = (paccess.SITE)], 8192, $ptascii("Automatic conversion of false to array is deprecated"), paccess.LINE, DIAGNOSTIC "Deprecated" $ptascii("Automatic conversion of false to array is deprecated") paccess.LINE, ACCESS_RESUME paccess[.PHASE = ACCESS_UNSET_FALSE][.VALUE = PBOOL false])
   -- if paccess.MODE = ACCESS_UNSET
-  -- if ~$access_is_object(pvalue)
 
 def $access_arguments(paccess) = [KNOWN paccess.OFFSET, KNOWN paccess.VALUE] -- if paccess.MODE = ACCESS_SET
 def $access_arguments(paccess) = [KNOWN paccess.OFFSET] -- if paccess.MODE =/= ACCESS_SET
@@ -372,6 +377,10 @@ rule PhpStep/access-value-resume: S ~> $access_offset(S, paccess)
   -- if S.TODO = (ACCESS_RESUME paccess) :: ptask_tail*
   -- if paccess.PHASE = ACCESS_VALUE_CV n_name*
   -- if $access_valid(S, paccess)
+rule PhpStep/access-unset-false-resume: S ~> $key_read_done(S, PNULL)
+  -- if S.TODO = (ACCESS_RESUME paccess) :: ptask_tail*
+  -- if paccess.PHASE = ACCESS_UNSET_FALSE
+  -- if $access_valid(S, paccess)
 
 def $access_roots(paccess, b_inner) = $base_nodes(paccess.BASE) ++ $operand_nodes(paccess.INPUT) ++ $operand_nodes(paccess.RHS) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) ++ $access_object_roots(paccess.OBJECT, b_inner) ++ $access_offset_roots(paccess.OFFSET, b_inner)
 def $access_object_roots((n), true) = [HOBJECT n]
@@ -443,6 +452,11 @@ def $access_phase(paccess) = true
   -- if paccess.SELECTED = KNOWN PNULL
   -- if paccess.VALUE = PNULL
 def $access_phase(paccess) = true
+  -- if paccess.PHASE = ACCESS_UNSET_FALSE
+  -- if paccess.MODE = ACCESS_UNSET
+  -- if paccess.VALUE = PBOOL false
+  -- if paccess.OBJECT = eps
+def $access_phase(paccess) = true
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if paccess.MODE = ACCESS_READ KEY_R
   -- if ptbytes = $ptascii("offsetGet")
@@ -472,11 +486,26 @@ def $access_capture_valid(paccess) = (paccess.OFFSET = pvalue)
   -- if paccess.INPUT = KNOWN pvalue
 def $access_capture_valid(paccess) = true -- otherwise
 
+def $access_rhs_selected(KNOWN pvalue, KNOWN pvalue, pvalue) = true
+def $access_rhs_selected(REFERENCE n, REFERENCE n, pvalue) = true
+def $access_rhs_selected(VARIABLE n_name* z, VARIABLE n_name* z, pvalue) = true
+def $access_rhs_selected(VARIABLE n_name* z, REFERENCE n, pvalue) = true
+def $access_rhs_selected(VARIABLE n_name* z, KNOWN PNULL, PNULL) = true
+def $access_rhs_selected(poperand, poperand_selected, pvalue) = false -- otherwise
+def $access_selected_valid(paccess) = $access_rhs_selected(paccess.RHS, paccess.SELECTED, paccess.VALUE)
+  -- if paccess.MODE = ACCESS_SET
+  -- if paccess.PHASE = ACCESS_CALL ptbytes
+def $access_selected_valid(paccess) = (paccess.SELECTED = KNOWN PNULL)
+  -- if paccess.MODE = ACCESS_SET
+  -- if ~$access_call_phase(paccess.PHASE)
+def $access_selected_valid(paccess) = true -- if paccess.MODE =/= ACCESS_SET
+
 def $access_valid(S, paccess) = true
   -- if S.ORIGIN = (paccess.SITE)
   -- if $access_source(S, paccess)
   -- if $access_phase(paccess)
   -- if $access_capture_valid(paccess)
+  -- if $access_selected_valid(paccess)
   -- if ~paccess.OUTER \/ paccess.OBJECT =/= eps
   -- if paccess.OBJECT = eps \/ $access_object_valid(S, paccess.OBJECT)
   -- if $call_reference_operand_valid(S, paccess.INPUT)
@@ -495,12 +524,22 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = ACCESS_RESUME paccess
   -- if $access_valid(S, paccess)
   -- if ~$access_call_phase(paccess.PHASE)
+  -- if paccess.PHASE =/= ACCESS_UNSET_FALSE
   -- if perrorcall.SITE = paccess.SITE
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.LINE = paccess.LINE
   -- if n_name* = $access_warning_name(paccess)
   -- if perrorcall.MESSAGE = $ptascii("Undefined variable $") ++ n_name*
   -- if perrorcall.EVENT = WARNING n_name* paccess.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ACCESS_RESUME paccess
+  -- if paccess.PHASE = ACCESS_UNSET_FALSE
+  -- if $access_valid(S, paccess)
+  -- if perrorcall.SITE = paccess.SITE
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.LINE = paccess.LINE
+  -- if perrorcall.MESSAGE = $ptascii("Automatic conversion of false to array is deprecated")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE paccess.LINE
 
 ;; Entered user calls retain the real result marker in the saved emitter frame.
 def $access_method_selected(S, paccess, METHOD_TARGET n porigin_method) = true
@@ -557,7 +596,10 @@ def $access_context_kind(S, pcallcontext) = true
   -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
-  -- if $access_context_node(pcnode)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $access_context_node(pcnode, $ptlc(pmethoddesc.NAME))
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
   -- if $access_instance(S, POBJECT n)
 def $access_context_kind(S, pcallcontext) = false -- otherwise
 def $access_context(S, pcallcontext) = true
@@ -590,11 +632,9 @@ def $named_context_valid(S, pcallcontext) = $access_context(S, pcallcontext) -- 
 
 def $access_known_base(BASE_VALUE (KNOWN pvalue)) = true
 def $access_known_base(pbase) = false -- otherwise
-def $access_is_object(POBJECT n) = true
-def $access_is_object(pvalue) = false -- otherwise
-def $access_context_node(NExprArrayDimFetch expression phpType5 metadata) = true
-def $access_context_node(NExprAssign expression expression_rhs metadata) = true
-def $access_context_node(pcnode) = false -- otherwise
+def $access_context_node(NExprArrayDimFetch expression phpType5 metadata, ptbytes) = (ptbytes <- [$ptascii("offsetexists"), $ptascii("offsetget"), $ptascii("offsetunset")])
+def $access_context_node(NExprAssign (NExprArrayDimFetch expression phpType5 metadata_dim) expression_rhs metadata, ptbytes) = (ptbytes = $ptascii("offsetset"))
+def $access_context_node(pcnode, ptbytes) = false -- otherwise
 
 ;; This terminal is reached from the scalar helper only after its key U. It has
 ;; no VM receiver pin; std_has_dimension supplies the sole handler protection.
