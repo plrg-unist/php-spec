@@ -24,17 +24,30 @@ CASES = {
     'bare-return-compatible': (b'<?php\nfunction seq():Generator {return;yield 1;}$g=seq();echo "C";echo $g->valid()?"T":"F";$g->rewind();echo "R";', b'CFR'),
     'compatible-types': (b'<?php\nfunction a():Generator {yield 1;} function b():Iterator {yield 2;}function c():Traversable {yield 3;}function d():object {yield 4;}function e():mixed {yield 5;}function f():Generator|array {yield 6;}foreach(a() as $v){echo $v;}foreach(b() as $v){echo $v;}foreach(c() as $v){echo $v;}foreach(d() as $v){echo $v;}foreach(e() as $v){echo $v;}foreach(f() as $v){echo $v;}', b'123456'),
     'nested-yield-isolation': (b'<?php\nfunction plain(){function child(){yield 1;} $f=function(){yield 2;};echo "O";return 3;}echo plain();', b'O3'),
-    'unstarted-release': (b'<?php\nclass Box {function __destruct(){echo "D";}}function seq($b){try{echo "B";yield 1;}finally{echo "F";}}$g=seq(new Box);echo "C";unset($g);echo "Z";', b'CDZ'),
     'foreach-resume-trace': (b'<?php\nfunction seq(){throw new Exception("x");yield 1;}function resume($g){foreach($g as $v){echo "X";}}$g=seq();echo "C";try{resume($g);}catch(Exception $e){foreach($e->getTrace() as $row){echo $row["function"],";";}}', b'Cseq;resume;'),
     'nullary-yield': (b'<?php\nfunction seq(){yield;yield 8;}$g=seq();echo $g->current()===null?"N":"X";echo $g->key();$g->next();echo $g->current(),":",$g->key();', b'N08:1'),
     'yielded-array-alias-copy': (b'<?php\nfunction seq(&$r){$a=[&$r];yield $a;$a[0]=9;yield $a;}$r=1;$g=seq($r);$v=$g->current();$v[1]=2;$r=3;echo $g->current()[0],":",isset($g->current()[1])?"X":"N";$g->next();echo ":",$v[0],":",$g->current()[0],":",isset($g->current()[1])?"X":"N";$g->next();echo ":",$r;', b'3:N:9:9:N:9'),
+    'generator-retval-skips-stringable-return': (b'<?php\nclass Str {function __toString():string {echo "X";return "str";}}function seq():Generator|string {if(false)yield 1;return new Str;}$g=seq();echo "C";echo $g->valid()?"T":"F";unset($g);echo "Z";', b'CFZ'),
+    'running-cached-getters': (b'<?php\nfunction seq(){yield 1;echo $GLOBALS["g"]->current(),":",$GLOBALS["g"]->key(),":";echo $GLOBALS["g"]->valid()?"T":"F";yield 2;}$g=seq();$g->current();$g->next();echo $g->current();', b'1:0:T2'),
+    'implicit-key-signed64-wrap': (b'<?php\nfunction seq(){yield PHP_INT_MAX=>1;yield 2;yield 3;}foreach(seq() as $k=>$v){echo $k,":",$v,";";}', b'9223372036854775807:1;-9223372036854775808:2;-9223372036854775807:3;'),
+    'early-getreturn-initializes': (b'<?php\nfunction seq():Generator {echo "A";yield 1;echo "B";return 9;}$g=seq();echo "C";try{$g->getReturn();echo "X";}catch(Exception $e){echo "R";}echo $g->current();$g->rewind();$g->next();echo $g->getReturn();', b'CAR1B9'),
+    'empty-getreturn-completes': (b'<?php\nfunction seq(){if(false)yield 1;echo "B";return 6;}$g=seq();echo "C";echo $g->getReturn();echo $g->valid()?"T":"F";echo $g->current()===null?"N":"X";$g->rewind();echo "R";', b'CB6FNR'),
+    'getreturn-array-copy': (b'<?php\nfunction seq(){yield 1;return [2,3];}$g=seq();$g->next();$r=$g->getReturn();$r[0]=9;echo $g->getReturn()[0],":",$r[0],":",$g->getReturn()[1];', b'2:9:3'),
+    'inherited-method-scope': (b'<?php\nclass A {private $x=4;const C="A";function seq(){yield $this->x;yield self::C;yield static::class;}}class B extends A {}$b=new B;$g=$b->seq();unset($b);echo "C";foreach($g as $v){echo $v,";";}', b'C4;A;B;'),
+}
+UNSUPPORTED = {
+    'unstarted-release': (b'<?php\nclass Box {function __destruct(){echo "D";}}function seq($b){try{echo "B";yield 1;}finally{echo "F";}}$g=seq(new Box);echo "C";unset($g);echo "Z";', b'CDZ'),
     'yielded-object-retirement': (b'<?php\nclass Box {function __destruct(){echo "D";}}function seq($o){yield $o;unset($o);yield 0;}$o=new Box;$g=seq($o);unset($o);echo "C";$v=$g->current();$g->next();echo "N";unset($v);echo "V";unset($g);echo "Z";', b'CNDVZ'),
     'previous-yield-retirement-before-cv': (b'<?php\n$v=1;class Box {function __destruct(){$GLOBALS["v"]=9;echo "D";}}function seq(){global $v;yield new Box;yield $v=>$v;}$g=seq();$g->current();echo "C";$g->next();echo $g->key(),":",$g->current();', b'CD9:9'),
     'closed-last-yield-owner': (b'<?php\nclass Box {function __destruct(){echo "D";}}function seq(){yield new Box;}$g=seq();$g->current();echo "A";$g->next();echo "B";echo $g->current()===null?"N":"X";unset($g);echo "C";', b'ABNDC'),
-    'generator-retval-skips-stringable-return': (b'<?php\nclass Str {function __toString():string {echo "X";return "str";}}function seq():Generator|string {if(false)yield 1;return new Str;}$g=seq();echo "C";echo $g->valid()?"T":"F";unset($g);echo "Z";', b'CFZ'),
-}
-UNSUPPORTED = {
     "started-finally-force-close": (b'<?php\nfunction seq(){try{echo "A";yield 1;echo "B";yield 2;}finally{echo "F";}}$g=seq();foreach($g as $v){echo $v;break;}echo "C";foreach($g as $v){echo $v;break;}echo "D";$g->next();echo $g->current();unset($g);echo "Z";', b'A1C1DB2FZ'),
+}
+UNSUPPORTED_REASONS = {
+    'unstarted-release': "ordinary destructor release before request stage",
+    'yielded-object-retirement': "ordinary destructor release before request stage",
+    'previous-yield-retirement-before-cv': "ordinary destructor release before request stage",
+    'closed-last-yield-owner': "ordinary destructor release before request stage",
+    "started-finally-force-close": "started generator force-close finalizer",
 }
 
 
@@ -95,6 +108,7 @@ def main():
                 assert observation["frontend"] == "accepted" and observation["checked"] == "program"
                 if name in UNSUPPORTED:
                     assert model.returncode == 1 and observation["status"] == "unsupported", (name, observation)
+                    assert observation["reason"] == UNSUPPORTED_REASONS[name], (name, observation)
                     report["unsupported"] += 1
                 else:
                     assert model.returncode == 0 and observation["status"] == "normal", (name, observation)
