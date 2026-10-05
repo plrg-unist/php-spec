@@ -128,8 +128,15 @@ def $global_new_tasks_busy(ptask :: ptask_tail*, n_object) = ($global_new_task_b
 dec $global_new_frames_busy(pframe*, nat) : bool
 def $global_new_frames_busy(eps, n_object) = false
 def $global_new_frames_busy(pframe :: pframe_tail*, n_object) = ($global_new_tasks_busy(pframe.TODO, n_object) \/ $global_new_frames_busy(pframe_tail*, n_object))
+dec $global_new_completed(pstate, pconstantobject) : bool
+def $global_new_completed(S, pconstantobject) = true
+  -- if pconstantobject.COMPLETE
+  -- if $global_new_header(S, pconstantobject)
+  -- if ~$global_new_tasks_busy(S.TODO, pconstantobject.OBJECT)
+  -- if ~$global_new_frames_busy(S.FRAMES, pconstantobject.OBJECT)
+def $global_new_completed(S, pconstantobject) = false -- otherwise
 def $global_new_records_valid(S, eps) = true
-def $global_new_records_valid(S, pconstantobject :: pconstantobject_tail*) = ($global_new_header(S, pconstantobject) /\ $global_new_record(pconstantobject_tail*, pconstantobject.OBJECT) = eps /\ (~pconstantobject.COMPLETE \/ (~$global_new_tasks_busy(S.TODO, pconstantobject.OBJECT) /\ ~$global_new_frames_busy(S.FRAMES, pconstantobject.OBJECT))) /\ $global_new_records_valid(S, pconstantobject_tail*))
+def $global_new_records_valid(S, pconstantobject :: pconstantobject_tail*) = ($global_new_header(S, pconstantobject) /\ $global_new_record(pconstantobject_tail*, pconstantobject.OBJECT) = eps /\ (~pconstantobject.COMPLETE \/ $global_new_completed(S, pconstantobject)) /\ $global_new_records_valid(S, pconstantobject_tail*))
 
 def $global_new_birth(S, S_new, ptbytes, n_object) = S_new[.CONSTANTOBJECTS = S.CONSTANTOBJECTS ++ [{OBJECT n_object, SITE porigin_site, DECL porigin_decl, CLASS porigin_class, PREFIX n_prefix, COMPLETE false}]]
   -- if S.ORIGIN = (porigin_site)
@@ -184,8 +191,8 @@ dec $global_new_value_class(pstate, porigin) : pvalueclass
 def $global_new_value_class(S, porigin_site) = PVINSTANCE n_object porigin_site
   -- if S.RESULT = KNOWN (POBJECT n_object)
   -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = (pconstantobject)
-  -- if pconstantobject.SITE = porigin_site /\ pconstantobject.COMPLETE
-  -- if $global_new_header(S, pconstantobject)
+  -- if pconstantobject.SITE = porigin_site
+  -- if $global_new_completed(S, pconstantobject)
   -- if (HOBJECT n_object) <- S.ALLOCATIONS
 def $global_new_value_class(S, porigin_site) = PVOBJECT -- otherwise
 def $constant_shape_class(S, porigin_site, PFNEW phpType28 phpType6) = $global_new_value_class(S, porigin_site)
@@ -193,8 +200,8 @@ def $constant_shape_class(S, porigin_site, PFNEW phpType28 phpType6) = $global_n
 def $constant_value_class_valid(S, POBJECT n_object, PVINSTANCE n_original porigin_site) = true
   -- if n_object = n_original
   -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = (pconstantobject)
-  -- if pconstantobject.SITE = porigin_site /\ pconstantobject.COMPLETE
-  -- if $global_new_header(S, pconstantobject)
+  -- if pconstantobject.SITE = porigin_site
+  -- if $global_new_completed(S, pconstantobject)
   -- if (HOBJECT n_object) <- S.ALLOCATIONS
 def $constant_fact_value_valid(pconstantfact) = true
   -- if pconstantfact.VALUE = eps
@@ -206,8 +213,8 @@ def $constant_fact_truth(pconstantfact) = (true)
 def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVINSTANCE n_object porigin_site, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = true
   -- if $compiled_redirect(S, porigin_site) = eps
   -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = (pconstantobject)
-  -- if pconstantobject.SITE = porigin_site /\ pconstantobject.DECL = porigin_decl /\ pconstantobject.COMPLETE
-  -- if $global_new_header(S, pconstantobject)
+  -- if pconstantobject.SITE = porigin_site /\ pconstantobject.DECL = porigin_decl
+  -- if $global_new_completed(S, pconstantobject)
 
 ;; Argument evaluation returns before AST NEW's constructor-failed marking.
 ;; Its real object is released normally; entered/access-failed constructors keep
