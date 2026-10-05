@@ -119,8 +119,9 @@ A held primary fatal intercepts this failure before the inner Error reports;
 source-owned failed-class replay retains the exact class and dynamic unit origin.
 Cyclic lookup errors follow the genuine source chain and compare full imported
 constant identities, including recursion through an earlier distinct dependency.
-After a hard failed class link, caches filled for already published declaring
-owners survive rollback; fills for the unpublished importing class are retired.
+After a failed class link, caches filled for already published declaring owners
+survive rollback; fills for the unpublished importing class are retired. This
+includes an initializer Error reported before the composition fatal.
 A source-rederived failure marker authenticates the original collision and public
 owner prefix without granting publication or held-primary authority.
 
@@ -182,11 +183,13 @@ The actual275 held-primary interaction adds one source and112 replay assertions.
 Direct and two-hop cyclic lookups add two PHP-error comparisons and87 reached
 chain/cleanup assertions at separate cuts. Hard failed-cache disposition adds
 three PHP-error source comparisons and194 supplied restoration/history/owner
-conditions; six generated setup checks are recorded separately.
+conditions; six generated setup checks are recorded separately. Reported Errors
+after fills add three PHP-error comparisons and188 supplied cache-cause/cleanup
+conditions, with six generated setup checks separate.
 Other native preparations remain uncredited until implemented.
 
-Dependency fills followed by a reported endogenous Error, held/open compilation,
-failed raw-trait composition and object-bearing values remain required. These
+Dependency fills in held/open compilation, failed raw-trait composition and
+object-bearing values remain required. These
 wider failed-fill paths keep an explicit Unsupported boundary.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
