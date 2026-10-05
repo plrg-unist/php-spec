@@ -18,6 +18,7 @@ CASES = {
     "closure": (b'<?php\n$cell=7;$f=function(&$r){$a=[&$r];yield $a;return $a;};$g=$f($cell);unset($f);$g->current();$cell=9;$g->next();echo $g->getReturn()[0];unset($g);echo "Z";', b'9Z'),
     "nested": (b'<?php\nfunction inner(){yield [1];yield [2];}function outer(){foreach(inner() as $v){yield $v;}}foreach(outer() as $v){echo $v[0];}echo "Z";', b'12Z'),
     "abrupt": (b'<?php\nfunction seq($v){try{yield [$v];throw new Exception("x");}finally{echo "F";}}$g=seq(7);echo $g->current()[0];try{$g->next();}catch(Exception $e){echo "E";}echo $g->valid()?"T":"N";unset($g);echo "Z";', b'7FENZ'),
+    "constant": source.CASES['parent-constant-default'],
 }
 PREFIX = r'''
 dec $generator_review_next_head(ptask) : bool
@@ -118,7 +119,58 @@ def rejected(checks, name, expression):
 def assertions(checked, path, directory, name):
     initial = '$php_file_run(' + checked['fixture'] + ',0,' + driver.byte_expr(os.fsencode(path)) + ',' + driver.byte_expr(os.fsencode(directory)) + ')'
     checks = ['S_initial = ' + initial, '~S_initial.COMPILESTOP']
-    if name in ('carrier', 'closure'):
+    if name == 'constant':
+        checks += seek('S_fresh', 'S_initial', 0) + valid('S_fresh')
+        checks += r'''
+S_fresh.TODO = (GENERATOR_ARGS pgeneratorop eps eps) :: ptask_fresh*
+S_fresh.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator_fresh
+pgenerator_fresh.FRAME = (pframe_fresh)
+pframe_fresh.LOCALS = (psymboltable_fresh)
+$user_constant_at(S_fresh.USERCONSTANTS, $ptascii("C")) = (puserconstant)
+puserconstant.VALUE = POBJECT n_constant
+n_constant =/= pgeneratorop.OBJECT
+$global_new_record(S_fresh.CONSTANTOBJECTS, n_constant) = (pconstantobject)
+S_fresh.OBJECTS[n_constant] = INSTANCE pconstantobject.CLASS
+puserconstant.CLASS = PVINSTANCE n_constant pconstantobject.SITE
+pconstantobject.COMPLETE
+$global_new_completed(S_fresh, pconstantobject)
+$trace_slot(S_fresh, psymboltable_fresh.ENV, $ptascii("x")) = POBJECT n_constant
+$heap_owners($heap_graph(S_fresh), HOBJECT n_constant) = 2
+$objectprops_at(S_fresh.OBJECTPROPS, n_constant) = (ppropertyslot*)
+$property_slot_at(ppropertyslot*, $ptascii("n")) = (ppropertyslot_n)
+ppropertyslot_n.STATE = PROP_VALUE (DIRECT (PINT 9))
+~$constant_value_class_valid(S_fresh, POBJECT pgeneratorop.OBJECT, puserconstant.CLASS)
+S_bad_receipt = S_fresh[.CONSTANTOBJECTS = eps]
+$heap_graph(S_bad_receipt) = $heap_graph(S_fresh)
+~$user_constants_valid(S_bad_receipt, S_bad_receipt.USERCONSTANTS)
+~$call_descriptors_valid(S_bad_receipt)
+'''.strip().splitlines()
+        checks += seek('S_paused', 'S_fresh', 2) + valid('S_paused')
+        checks += r'''
+S_paused.USERCONSTANTS = S_fresh.USERCONSTANTS
+S_paused.CONSTANTOBJECTS = S_fresh.CONSTANTOBJECTS
+$global_new_completed(S_paused, pconstantobject)
+S_paused.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator_paused
+pgenerator_paused.VALUE = (POBJECT n_constant)
+pgenerator_paused.RETURN = eps
+pgenerator_paused.FRAME = (pframe_paused)
+pframe_paused.LOCALS = (psymboltable_paused)
+$trace_slot(S_paused, psymboltable_paused.ENV, $ptascii("x")) = POBJECT n_constant
+$heap_owners($heap_graph(S_paused), HOBJECT n_constant) = 3
+'''.strip().splitlines()
+        checks += seek('S_closed', 'S_paused', 3) + valid('S_closed')
+        checks += r'''
+S_closed.USERCONSTANTS = S_fresh.USERCONSTANTS
+S_closed.CONSTANTOBJECTS = S_fresh.CONSTANTOBJECTS
+$global_new_completed(S_closed, pconstantobject)
+S_closed.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator_closed
+pgenerator_closed.FRAME = eps
+pgenerator_closed.VALUE = (POBJECT n_constant)
+pgenerator_closed.RETURN = (POBJECT n_constant)
+$heap_owners($heap_graph(S_closed), HOBJECT n_constant) = 3
+'''.strip().splitlines()
+        previous = 'S_closed'
+    elif name in ('carrier', 'closure'):
         checks += seek('S_fresh', 'S_initial', 0) + valid('S_fresh')
         checks += r'''
 S_fresh.TODO = (GENERATOR_ARGS pgeneratorop eps eps) :: ptask_fresh*
@@ -253,6 +305,13 @@ $heap_valid($heap_graph(S_detached_view))
                'S_resumed.FRAMES = eps', 'S_resumed.ITERATORS = eps',
                '$generator_review_outputs(S_resumed.EVENTS) = ' + driver.byte_expr(CASES[name][1])]
     checks += valid('S_resumed')
+    if name == 'constant':
+        checks += ['~((HOBJECT pgeneratorop.OBJECT) <- S_resumed.ALLOCATIONS)',
+                   '(HOBJECT n_constant) <- S_resumed.ALLOCATIONS',
+                   '$heap_owners($heap_graph(S_resumed), HOBJECT n_constant) = 1',
+                   'S_resumed.USERCONSTANTS = S_fresh.USERCONSTANTS',
+                   'S_resumed.CONSTANTOBJECTS = S_fresh.CONSTANTOBJECTS',
+                   '$global_new_completed(S_resumed, pconstantobject)']
     if name in ('carrier', 'closure'):
         checks += ['~((HOBJECT pgeneratorop.OBJECT) <- S_resumed.ALLOCATIONS)',
                    '~((HARRAY n_array) <- S_resumed.ALLOCATIONS)',
