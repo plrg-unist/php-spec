@@ -1,0 +1,198 @@
+;; FETCH_DIM_R selects the scalar path before key-CV callbacks. Its borrowed
+;; pointer can change the later diagnostic type, but never supplies an array read.
+dec $rcontainer_scalar(pvalue) : bool
+dec $rcontainer_selected(pstate, poperand) : poperand
+dec $rcontainer_record(pstate, poperand, poperand, pvalue, int, pkeymode, pcontainerreadphase) : pcontainerread
+dec $rcontainer_missing(pstate, poperand, poperand, int, pkeymode) : pstate
+dec $rcontainer_dimension(pstate, poperand, int, pkeymode) : pstate
+dec $rcontainer_key(pstate, pcontainerread) : pstate
+dec $rcontainer_finish(pstate, pcontainerread) : pstate
+dec $rcontainer_value(pstate, pcontainerread) : pvalue
+dec $rcontainer_test(pstate, pcontainerread, pvalue) : pstate
+dec $rcontainer_dispatch(pstate, pcontainerread) : pstate
+dec $rcontainer_resume(pstate, pcontainerread) : pstate
+dec $rcontainer_message(pcontainerread) : ptbytes
+dec $rcontainer_event(pcontainerread) : pevent
+dec $rcontainer_selector_valid(pstate, pcontainerread) : bool
+dec $rcontainer_phase_valid(pstate, pcontainerread) : bool
+dec $rcontainer_valid(pstate, pcontainerread) : bool
+
+def $rcontainer_scalar(PNULL) = true
+def $rcontainer_scalar(PBOOL b) = true
+def $rcontainer_scalar(PINT i) = true
+def $rcontainer_scalar(PFLOAT n) = true
+def $rcontainer_scalar(pvalue) = false -- otherwise
+
+def $rcontainer_base_pending(S, BASE_VALUE (VARIABLE n_name* z_base), poperand, z, pkeymode) = $error_missing_operand(S, VARIABLE n_name* z_base)
+def $rcontainer_base_pending(S, pbase, poperand, z, pkeymode) = false -- otherwise
+
+def $rcontainer_pending(S, poperand, z, pkeymode) = true
+  -- if S_base = $quiet_operand(S, S.RESULT)
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.RESULT = KNOWN pvalue
+  -- if $rcontainer_scalar(pvalue)
+def $rcontainer_pending(S, poperand, z, pkeymode) = false -- otherwise
+
+;; A CV containing a reference is dereferenced once, before the key callback.
+;; SELECTED is a borrowed fact; only the original operand owns its real temporary.
+def $rcontainer_selected(S, VARIABLE n_name* z) = REFERENCE n
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if n <- S.REFCELLS
+def $rcontainer_selected(S, poperand) = poperand -- otherwise
+
+def $rcontainer_record(S, poperand_base, poperand, pvalue, z, pkeymode, pcontainerreadphase) = {READ {SITE porigin, GLOBAL false, MODE pkeymode, INPUT poperand, VALUE PNULL, BASE pvalue, OWNERS BASE_VALUE poperand_base, LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}, SELECTED $rcontainer_selected(S, poperand_base), PHASE pcontainerreadphase}
+  -- if S.ORIGIN = (porigin)
+
+def $rcontainer_missing(S, VARIABLE n_name* z_base, poperand, z, KEY_R) = $rcontainer_dispatch(S, pcontainerread[.SELECTED = KNOWN PNULL])
+  -- if pcontainerread = $rcontainer_record(S, VARIABLE n_name* z_base, poperand, PNULL, z, KEY_R, READ_BASE_CV n_name*)
+def $rcontainer_missing(S, VARIABLE n_name* z_base, poperand, z, pkeymode) = $rcontainer_key(S, pcontainerread)
+  -- if pkeymode =/= KEY_R
+  -- if pcontainerread = $rcontainer_record(S, VARIABLE n_name* z_base, poperand, PNULL, z, pkeymode, READ_OFFSET PNULL)
+rule PhpStep/read-container-missing-base: S ~> $rcontainer_missing(S, poperand_base, poperand, z, pkeymode)
+  -- if S.TODO = (KEY_READ_BASE (BASE_DIM (BASE_VALUE poperand_base) poperand z) pkeymode) :: ptask_tail*
+  -- if $rcontainer_base_pending(S, BASE_VALUE poperand_base, poperand, z, pkeymode)
+
+def $rcontainer_dimension(S, poperand, z, pkeymode) = $rcontainer_key(S, pcontainerread)
+  -- if S_base = $quiet_operand(S, S.RESULT)
+  -- if S_base.RESULT = KNOWN pvalue
+  -- if pcontainerread = $rcontainer_record(S, S.RESULT, poperand, pvalue, z, pkeymode, READ_OFFSET pvalue)
+rule PhpStep/read-container-dimension: S ~> $rcontainer_dimension(S, poperand, z, pkeymode)
+  -- if S.TODO = (KEY_READ_DIM poperand z pkeymode) :: ptask_tail*
+  -- if $rcontainer_pending(S, poperand, z, pkeymode)
+
+def $rcontainer_key(S, pcontainerread) = $rcontainer_dispatch(S, pcontainerread[.READ.PHASE = KEY_CV][.READ.NAME = n_name*][.READ.VALUE = PNULL][.PHASE = READ_KEY_CV n_name*])
+  -- if pcontainerread.READ.INPUT = VARIABLE n_name* z
+  -- if $error_missing_operand(S, pcontainerread.READ.INPUT)
+def $rcontainer_key(S, pcontainerread) = $rcontainer_finish(S, pcontainerread[.READ.PHASE = KEY_NULL][.READ.NAME = eps][.READ.VALUE = pvalue])
+  -- if ~$error_missing_operand(S, pcontainerread.READ.INPUT)
+  -- if S_key = $quiet_operand(S, pcontainerread.READ.INPUT)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.RESULT = KNOWN pvalue
+def $rcontainer_key(S, pcontainerread) = S_key
+  -- if S_key = $quiet_operand(S, pcontainerread.READ.INPUT)
+  -- if S_key.COMPLETION =/= NORMAL
+
+def $rcontainer_value(S, pcontainerread) = pvalue
+  -- if S_base = $quiet_operand(S, pcontainerread.SELECTED)
+  -- if S_base.RESULT = KNOWN pvalue
+
+def $rcontainer_finish(S, pcontainerread) = $rcontainer_dispatch(S, pcontainerread[.PHASE = READ_OFFSET $rcontainer_value(S, pcontainerread)])
+  -- if pcontainerread.READ.MODE = KEY_R
+def $rcontainer_finish(S, pcontainerread) = $key_read_done(S, PNULL)
+  -- if pcontainerread.READ.MODE = KEY_IS
+def $rcontainer_finish(S, pcontainerread) = $rcontainer_test(S, pcontainerread, $rcontainer_value(S, pcontainerread))
+  -- if pcontainerread.READ.MODE = KEY_TEST b
+
+;; Terminal ISSET/EMPTY samples the selected pointer after key U. Its slow
+;; helper admits the existing string predicate, but has no late array branch.
+def $rcontainer_test(S, pcontainerread, PSTRING n_bytes*) = $key_read_done(S_test, pvalue)
+  -- if pcontainerread.READ.MODE = KEY_TEST b
+  -- if S_out = $isset_string(S, n_bytes*, pcontainerread.READ.VALUE, b, pcontainerread.READ.LINE)
+  -- if S_out.COMPLETION = NORMAL
+  -- if S_out.RESULT = KNOWN (PBOOL b_result)
+  -- if S_test = $key_test_capture(S_out, b, b_result)
+  -- if S_test.RESULT = KNOWN pvalue
+def $rcontainer_test(S, pcontainerread, PSTRING n_bytes*) = S_out
+  -- if pcontainerread.READ.MODE = KEY_TEST b
+  -- if S_out = $isset_string(S, n_bytes*, pcontainerread.READ.VALUE, b, pcontainerread.READ.LINE)
+  -- if S_out.COMPLETION =/= NORMAL
+def $rcontainer_test(S, pcontainerread, POBJECT n) = $throw_scalar(S, "Error", $ptascii("Cannot use object of type ") ++ $object_name(S, n) ++ $ptascii(" as array"), pcontainerread.READ.LINE)
+def $rcontainer_test(S, pcontainerread, pvalue) = $key_read_done(S, PNULL) -- otherwise
+
+def $rcontainer_message(pcontainerread) = $ptascii("Undefined variable $") ++ n_name*
+  -- if pcontainerread.PHASE = READ_BASE_CV n_name*
+def $rcontainer_message(pcontainerread) = $ptascii("Undefined variable $") ++ n_name*
+  -- if pcontainerread.PHASE = READ_KEY_CV n_name*
+def $rcontainer_message(pcontainerread) = $ptascii("Trying to access array offset on ") ++ $dimension_value_name(pvalue)
+  -- if pcontainerread.PHASE = READ_OFFSET pvalue
+def $rcontainer_event(pcontainerread) = WARNING n_name* pcontainerread.READ.LINE
+  -- if pcontainerread.PHASE = READ_BASE_CV n_name*
+def $rcontainer_event(pcontainerread) = WARNING n_name* pcontainerread.READ.LINE
+  -- if pcontainerread.PHASE = READ_KEY_CV n_name*
+def $rcontainer_event(pcontainerread) = DIAGNOSTIC "Warning" $rcontainer_message(pcontainerread) pcontainerread.READ.LINE
+  -- if pcontainerread.PHASE = READ_OFFSET pvalue
+def $rcontainer_dispatch(S, pcontainerread) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $rcontainer_message(pcontainerread), pcontainerread.READ.LINE, $rcontainer_event(pcontainerread), CONTAINER_READ_RESULT pcontainerread)
+
+def $rcontainer_resume(S, pcontainerread) = $rcontainer_key(S, pcontainerread)
+  -- if pcontainerread.PHASE = READ_BASE_CV n_name*
+def $rcontainer_resume(S, pcontainerread) = $rcontainer_finish(S, pcontainerread[.READ.PHASE = KEY_NULL][.READ.NAME = eps][.PHASE = READ_OFFSET PNULL])
+  -- if pcontainerread.PHASE = READ_KEY_CV n_name*
+def $rcontainer_resume(S, pcontainerread) = $key_read_done(S, PNULL)
+  -- if pcontainerread.PHASE = READ_OFFSET pvalue
+rule PhpStep/read-container-resume: S ~> $rcontainer_resume(S, pcontainerread)
+  -- if S.TODO = (CONTAINER_READ_RESULT pcontainerread) :: ptask_tail*
+  -- if $rcontainer_valid(S, pcontainerread)
+
+;; Runtime selected cells are captured facts, not callback history. Source CV
+;; forms cannot masquerade as genuine held operands or invent a table owner.
+def $rcontainer_selector_valid(S, pcontainerread) = true
+  -- if pcontainerread.READ.OWNERS = BASE_VALUE (KNOWN pcontainerread.READ.BASE)
+  -- if pcontainerread.SELECTED = KNOWN pcontainerread.READ.BASE
+def $rcontainer_selector_valid(S, pcontainerread) = true
+  -- if pcontainerread.READ.OWNERS = BASE_VALUE (REFERENCE n)
+  -- if pcontainerread.SELECTED = REFERENCE n
+def $rcontainer_selector_valid(S, pcontainerread) = true
+  -- if pcontainerread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
+  -- if pcontainerread.SELECTED = VARIABLE n_name* z
+def $rcontainer_selector_valid(S, pcontainerread) = true
+  -- if pcontainerread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
+  -- if pcontainerread.SELECTED = REFERENCE n
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if $(n < |S.STORE|)
+def $rcontainer_selector_valid(S, pcontainerread) = true
+  -- if pcontainerread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
+  -- if pcontainerread.SELECTED = KNOWN PNULL
+  -- if pcontainerread.READ.BASE = PNULL
+  -- if pcontainerread.READ.MODE = KEY_R
+def $rcontainer_selector_valid(S, pcontainerread) = false -- otherwise
+
+def $rcontainer_phase_valid(S, pcontainerread) = true
+  -- if pcontainerread.PHASE = READ_BASE_CV n_name*
+  -- if pcontainerread.READ.MODE = KEY_R
+  -- if pcontainerread.READ.BASE = PNULL
+  -- if pcontainerread.READ.VALUE = PNULL
+  -- if pcontainerread.READ.PHASE = KEY_NULL
+  -- if pcontainerread.READ.NAME = eps
+  -- if pcontainerread.SELECTED = KNOWN PNULL
+  -- if pcontainerread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
+  -- if $error_variable_source(S, (pcontainerread.READ.SITE), [PCFIELD 0], n_name*)
+def $rcontainer_phase_valid(S, pcontainerread) = true
+  -- if pcontainerread.PHASE = READ_KEY_CV n_name*
+  -- if pcontainerread.READ.PHASE = KEY_CV
+  -- if pcontainerread.READ.INPUT = VARIABLE n_name* pcontainerread.READ.LINE
+  -- if pcontainerread.READ.NAME = n_name*
+  -- if pcontainerread.READ.VALUE = PNULL
+def $rcontainer_phase_valid(S, pcontainerread) = true
+  -- if pcontainerread.PHASE = READ_OFFSET pvalue
+  -- if pcontainerread.READ.MODE = KEY_R
+  -- if pcontainerread.READ.PHASE = KEY_NULL
+  -- if pcontainerread.READ.NAME = eps
+  -- if $key_value_selected(pcontainerread.READ.INPUT, pcontainerread.READ.VALUE)
+  -- if pcontainerread.SELECTED = KNOWN pvalue \/ $key_runtime_operand(pcontainerread.SELECTED)
+def $rcontainer_phase_valid(S, pcontainerread) = false -- otherwise
+
+def $rcontainer_valid(S, pcontainerread) = true
+  -- if S.ORIGIN = (pcontainerread.READ.SITE)
+  -- if $origin_node(S.SOURCES, pcontainerread.READ.SITE) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if ~pcontainerread.READ.GLOBAL
+  -- if ~$ppglobals_base(expression)
+  -- if $code_expression_at_source(S, pcontainerread.READ.SITE, [PCFIELD 1]) = (pcontainerread.READ.LINE)
+  -- if $key_context_tasks(S, S.TODO, pcontainerread.READ.SITE, pcontainerread.READ.MODE)
+  -- if $rcontainer_scalar(pcontainerread.READ.BASE)
+  -- if pcontainerread.READ.KEY = KSTRING eps
+  -- if $key_read_input_source(S, pcontainerread.READ)
+  -- if $key_read_owners_source(S, pcontainerread.READ)
+  -- if $rcontainer_selector_valid(S, pcontainerread)
+  -- if $rcontainer_phase_valid(S, pcontainerread)
+def $rcontainer_valid(S, pcontainerread) = false -- otherwise
+
+def $call_task_valid(S, CONTAINER_READ_RESULT pcontainerread) = $rcontainer_valid(S, pcontainerread)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CONTAINER_READ_RESULT pcontainerread
+  -- if $rcontainer_valid(S, pcontainerread)
+  -- if perrorcall.SITE = pcontainerread.READ.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pcontainerread.READ.LINE
+  -- if perrorcall.MESSAGE = $rcontainer_message(pcontainerread)
+  -- if perrorcall.EVENT = $rcontainer_event(pcontainerread)
+def $task_nodes(CONTAINER_READ_RESULT pcontainerread) = $key_read_roots(pcontainerread.READ)
