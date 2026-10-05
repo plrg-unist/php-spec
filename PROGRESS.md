@@ -668,8 +668,13 @@ and captured-prefix array/DIM proofs. Seven source comparisons agree (five norma
 two PHP errors); five genuine reached source/flow/ownership groups pass409 supplied
 conditions, with15 generated setup checks separate. Exact cuts and the retained
 DIM-dispatch failures are in the collision ledger.
-General callable-initializer Errors and unpublished-owner births remain required.
-Traits stay partial.
+Real callable-initializer expression Errors, typed rejection and array-key TypeError
+now use actual Throwable fields and demand traces, keeping completed nested caches
+while retiring failed owners. Four PHP-error comparisons pass atf780; four reached
+groups pass678 supplied source/context/registry/cleanup conditions atba2/d33, with12
+generated setup checks separate. The retained handler graph survives scratch cleanup.
+Wider initializer contexts, cross-file constant demand and unpublished-owner births
+remain required. Traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the

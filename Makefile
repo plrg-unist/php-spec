@@ -427,6 +427,8 @@ test-semantics: build
 	python3 tests/semantics/trait_public_object_review_protocol.py
 	python3 tests/semantics/trait_failed_object_cache_review_protocol.py
 	python3 tests/semantics/trait_public_object_array_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_public_object_initializer_review_cases.json
+	python3 tests/semantics/trait_public_object_initializer_review_protocol.py
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
 	python3 tests/semantics/eval_class_scope_protocol.py
