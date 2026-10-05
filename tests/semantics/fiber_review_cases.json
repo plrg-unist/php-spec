@@ -231,5 +231,31 @@
     "native_stdout": "1:4|1:1:4:Fiber:->:start:1|1:12|1:1:12:Fiber:->:start:1:2",
     "native_stderr": "",
     "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-actual-global-new-transfer",
+    "source": "<?php\nclass FiberCurrentValue281 { public int $value = 7; }\nconst FIBER_CURRENT_VALUE281 = new FiberCurrentValue281();\n$f = new Fiber(function ($value) {\n    echo (int)($value === FIBER_CURRENT_VALUE281), '|';\n    Fiber::suspend($value);\n    return $value;\n});\n$value = $f->start(FIBER_CURRENT_VALUE281);\necho (int)($value === FIBER_CURRENT_VALUE281), '|';\n$value->value = 9;\n$f->resume();\necho $f->getReturn()->value, '|';\n",
+    "source_sha256": "8cda5e3121741092d251f36c3899322b7c2913a7824dd7c7682e827b9be36b0f",
+    "native_stdout": "1|1|9|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-generator-helper-transfer-boundary",
+    "source": "<?php\nfunction fiber_generator_start281($fiber) { $fiber->start(); }\nfunction fiber_generator_body281($fiber) { fiber_generator_start281($fiber); yield 1; }\n$f = new Fiber(static function () { echo 'F|'; });\n$g = fiber_generator_body281($f);\necho $g->current(), '|';\n",
+    "source_sha256": "9bc35d91bdce6b8d1f4a84b7ea4e521dd6c732a8c1246eceff970bf52221af40",
+    "native_stdout": "F|1|",
+    "native_stderr": "",
+    "expected_model": "unsupported",
+    "unsupported_reason": "Fiber switch during an initializer, source loader or Generator continuation"
+  },
+  {
+    "id": "review-fiber-autoload-helper-transfer-boundary",
+    "source": "<?php\nfunction fiber_autoload_start281($fiber) { $fiber->start(); }\n$f = new Fiber(static function () { echo 'F|'; });\nspl_autoload_register(function ($name) use ($f) {\n    fiber_autoload_start281($f);\n    class FiberAutoloadValue281 {}\n});\nnew FiberAutoloadValue281();\necho 'D|';\n",
+    "source_sha256": "a107beec36f8c456dd860a04a97d946fe307ba5cfd58451a3c98b2ad5f7d8ad9",
+    "native_stdout": "F|D|",
+    "native_stderr": "",
+    "expected_model": "unsupported",
+    "unsupported_reason": "Fiber switch during an initializer, source loader or Generator continuation"
   }
 ]

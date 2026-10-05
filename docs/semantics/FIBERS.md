@@ -2,8 +2,8 @@
 
 Module 281 models live PHP 8.5.10 Fibers: constructor selection, direct
 `start`, `suspend`, `resume`, `throw`, status, `getCurrent` and `getReturn`.
-The first milestone covers existing declared user callbacks with by-value
-parameters. Selection is cached when the constructor receives its callback;
+The first milestone covers existing declared nongenerator user callbacks with
+by-value parameters. Selection is cached when the constructor receives its callback;
 later changes to a referenced method name do not select another function.
 Callable validation precedes the repeated-constructor status error. Callback
 receive is weak because the Fiber enters through an internal call.
@@ -89,8 +89,9 @@ The affected successful original above keeps that earlier failure at zero credit
 Force-close and request/fatal cleanup, deprecated constructor callable stages,
 core internal callback bodies, reference forwarding, API callable/FCC entry,
 `start` unpacking and switching during initialization/source loading remain
-required. The first transfer domain rejects active constant/default or source
-initialization. Actual late Fiber-shutdown/frameless switching restrictions need
+required. The first transfer domain rejects active or saved constant/default and autoload
+initialization, and active Generator execution, including switches in their helper
+calls. Their shared pending flags and parked ownership remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not
 blanket blocked at this pin. Property and broader object consumers remain tracked
 separately. Full core and paused return verification are not closed by this cut.
