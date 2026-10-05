@@ -533,8 +533,9 @@ then delivered after class publication. Private-final compile warnings retain
 their phase order and handler-ineligible severity. Successful collision dependency
 fills retain real typed caches and distinct import scopes. Collision expression
 errors stop the comparison, flush earlier diagnostics without handlers and render
-the pending Error before the composition fatal. Failed-link cache disposition,
-cyclic and object-bearing dependencies, and readonly storage remain required. A bounded
+the pending Error before the composition fatal. Cyclic lookups retain full imported
+constant identities and release transient failure allocations. Failed-link cache
+disposition, object-bearing dependencies and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound

@@ -391,6 +391,8 @@ test-semantics: build
 	python3 tests/semantics/method_runtime.py --match property-error-keeps --catalogue tests/semantics/trait_data_collision_error_function_review_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_collision_held_primary_review_cases.json
 	python3 tests/semantics/trait_collision_error_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_collision_cycle_review_cases.json
+	python3 tests/semantics/trait_collision_cycle_review_protocol.py
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
 	python3 tests/semantics/eval_class_scope_protocol.py
