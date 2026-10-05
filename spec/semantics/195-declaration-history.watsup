@@ -188,11 +188,14 @@ def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRFUNCTION porigin pdeclca
   -- if S_published.CALLABLES = S_prefix.CALLABLES ++ [($ptlc(pfunction.NAME), porigin)]
 def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration*, n_next) = false -- otherwise
 
+dec $runtime_class_report_valid(pstate) : bool
+def $runtime_class_report_valid(S) = true -- otherwise
 def $declaration_history_valid(S) = $declaration_history_fold(S, $declaration_history_seed(S[.CLASSES = $declaration_image_classes((n, P)*)]), (n, P)*, S.DECLARATIONS, 0)
   -- if $declaration_files_entered(S.DECLARATIONS, S.FILES)
   -- if $declaration_images(S, S.SOURCES) = DECLIMAGES (n, P)*
   -- if S.FUNCTIONS = $declaration_image_functions((n, P)*)
   -- if $eval_compile_plans_valid(S, (n, P)*)
+  -- if $runtime_class_report_valid(S)
 def $declaration_history_valid(S) = false -- otherwise
 
 

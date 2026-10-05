@@ -395,9 +395,11 @@ def $method_capture_in_scope(S, pmethoddesc, porigin_site, porigin_requested, pc
 dec $method_capture_live(pstate, pmethoddesc, porigin, porigin, pclosurescope) : bool
 dec $property_callable_method_owner(pstate, pmethoddesc, porigin, porigin, pclosurescope) : porigin?
 dec $class_constant_callable_method_owner(pstate, pmethoddesc, porigin, porigin, pclosurescope) : porigin?
+dec $global_constant_method_live(pstate, pmethoddesc, porigin, porigin, pclosurescope) : bool
 def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = $method_capture_in_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope, $closure_source_class(S, porigin_site), eps)
   -- if $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps
   -- if $class_constant_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps
+  -- if ~$global_constant_method_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope)
 def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = true
   -- if $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
 def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = true

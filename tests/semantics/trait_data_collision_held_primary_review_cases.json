@@ -1,0 +1,32 @@
+{
+  "scope": "One actual275/274 held-primary interaction; original native bytes retained, zero model credit until checked.",
+  "cases": [
+    {
+      "id": "held-eval-primary-precedes-new-trait-collision-error",
+      "source": "<?php\nabstract class ParentIt implements Iterator {}\nclass NoticeException extends Exception {function __toString():string {echo \"F\";eval('trait T{public static $x=self::MISSING;}class InnerBad{use T;public static $x=0;}');return \"formatted\";}}\nfunction notice($level,$message,$file,$line){echo \"H\";throw new NoticeException(\"handler\");}\nset_error_handler(\"notice\");\ntry{eval('class A extends ParentIt {public function current(){return 7;}public function next():void{}public function key():mixed{return 10;}public function valid():bool{return true;}public function rewind():void{}}\nclass B extends ParentIt {public function current(){return 7;}public function next($x):void{}public function key():mixed{return 10;}public function valid():bool{return true;}public function rewind():void{}}\necho \"BAD\";');}catch(Exception $e){echo \"caught\";}\necho \"BAD\";\n",
+      "source_sha256": "85313a2df3f0f24de0ce3698fa33b7a91286653c0cdd8e7e6890664cd4143ccc",
+      "status": "php_error",
+      "stdout_base64": "SEY=",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogUmV0dXJuIHR5cGUgb2YgQjo6Y3VycmVudCgpIHNob3VsZCBlaXRoZXIgYmUgY29tcGF0aWJsZSB3aXRoIEl0ZXJhdG9yOjpjdXJyZW50KCk6IG1peGVkLCBvciB0aGUgI1tcUmV0dXJuVHlwZVdpbGxDaGFuZ2VdIGF0dHJpYnV0ZSBzaG91bGQgYmUgdXNlZCB0byB0ZW1wb3JhcmlseSBzdXBwcmVzcyB0aGUgbm90aWNlIGluIHtGSUxFfSg2KSA6IGV2YWwoKSdkIGNvZGUgb24gbGluZSAyCkRlcHJlY2F0ZWQ6IFJldHVybiB0eXBlIG9mIEI6OmN1cnJlbnQoKSBzaG91bGQgZWl0aGVyIGJlIGNvbXBhdGlibGUgd2l0aCBJdGVyYXRvcjo6Y3VycmVudCgpOiBtaXhlZCwgb3IgdGhlICNbXFJldHVyblR5cGVXaWxsQ2hhbmdlXSBhdHRyaWJ1dGUgc2hvdWxkIGJlIHVzZWQgdG8gdGVtcG9yYXJpbHkgc3VwcHJlc3MgdGhlIG5vdGljZSBpbiB7RklMRX0oNikgOiBldmFsKCknZCBjb2RlIG9uIGxpbmUgMgpGYXRhbCBlcnJvcjogRGVjbGFyYXRpb24gb2YgQjo6bmV4dCgkeCk6IHZvaWQgbXVzdCBiZSBjb21wYXRpYmxlIHdpdGggSXRlcmF0b3I6Om5leHQoKTogdm9pZCBpbiB7RklMRX0oNikgOiBldmFsKCknZCBjb2RlIG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDMpOiBldmFsKCkKIzEge0ZJTEV9KDYpOiBOb3RpY2VFeGNlcHRpb24tPl9fdG9TdHJpbmcoKQojMiB7bWFpbn0K",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-collision-errors-270/.tools/trait-collision-held-primary-native274-hlzj6jrz/report.json",
+      "native_raw_sha256": "2e4f20e896a02396f44bb5a1b2b3040c911c119b83daad58ec70ae94ed911004"
+    }
+  ]
+}

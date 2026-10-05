@@ -17,6 +17,8 @@ dec $trait_cache_active(pfstate) : pclassconstantdesc?
 dec $trait_cache_recording(pfstate, pcpath) : bool
 dec $trait_cache_fold_root(pfstate) : porigin?
 dec $trait_cache_transfer(pstate, pstate?) : pstate
+dec $trait_collision_raise(pfstate, pcpath, pstate, text, preqbytes, int) : pfstate
+dec $trait_collision_class_issue(pfstate, pcpath, phpType19, phpType20) : preqbytes?
 dec $pfpure_value(pfstate, pcpath, pstate, int) : pfstate?
 
 ;; Append/spread use the successful operation's existing NEXT history. Failure

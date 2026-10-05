@@ -161,7 +161,8 @@ cleanup. Tentative-return declarations use real prototype order and runtime/file
 warning delivery after publication. Early eval warnings suspend genuine
 compilation at each publication; handler throws or exit preserve later class
 publication, while user fatals stop it. Compiler fatal formatting retains the
-primary diagnostic through source effects and nested eval/include compilation failures.
+primary diagnostic through source effects, nested eval/include compilation and
+deferred runtime class-link failures.
 IteratorAggregate, ArrayAccess and other Traversable consumers remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
@@ -488,6 +489,12 @@ agreements and112 AL/122 SL premises check partial failure, copied children and
 actual constant-cache ownership. Compiled/named keyword NEW now retains exact
 constant METHOD receipt authority through plain-clone retirement; one source and
 38 reached premises retain their separate [cut](coverage/semantics/named-keyword-new-review.json).
+Global `const` Closure and function/method callable values now evaluate before
+registration, retaining the genuine main/include/eval entry scope and shared
+constant ownership. Duplicate-warning callbacks hold their discarded candidate
+and captured lookup prefix; raw-trait notices precede allocation. Nine new source
+agreements and seven AL programs/341 premises pass at distinct cuts. Pre-bind
+callback alias shadows, global `new` and wider object producers remain required.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -517,8 +524,10 @@ opcode completion. Deferred collision operands compare before type conversion;
 operation diagnostics are recorded with runtime operand order and AST lines,
 then delivered after class publication. Private-final compile warnings retain
 their phase order and handler-ineligible severity. Successful collision dependency
-fills retain real typed caches and distinct import scopes; failed-link cache
-disposition, collision expression errors and readonly storage remain required. A bounded
+fills retain real typed caches and distinct import scopes. Collision expression
+errors stop the comparison, flush earlier diagnostics without handlers and render
+the pending Error before the composition fatal. Failed-link cache disposition,
+cyclic and object-bearing dependencies, and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound
