@@ -50,6 +50,27 @@ def $parameter_callable_record(pparameterclosure :: pparameterclosure_tail*, n_o
 def $parameter_callable_record(pparameterclosure :: pparameterclosure_tail*, n_object) = $parameter_callable_record(pparameterclosure_tail*, n_object)
   -- if pparameterclosure.OBJECT =/= n_object
 
+;; Only genuinely unscoped source receives mint this immutable, nonowning
+;; source marker. Live scope rows can retire without changing that proof.
+dec $parameter_callable_source_proof(pparameterreceive?) : bool
+def $parameter_callable_source_proof((PARAMETER_SOURCE n_source)) = true
+def $parameter_callable_source_proof(pparameterreceive?) = false -- otherwise
+dec $parameter_callable_source_wrapper(pobject) : bool
+def $parameter_callable_source_wrapper(PARAMETERSOURCECLOSURE n_source pobject) = true
+def $parameter_callable_source_wrapper(pobject) = false -- otherwise
+dec $parameter_callable_wrap(pparameterreceive?, pobject) : pobject
+def $parameter_callable_wrap((PARAMETER_SOURCE n_source), pobject) = PARAMETERSOURCECLOSURE n_source pobject
+def $parameter_callable_wrap(pparameterreceive?, pobject) = pobject -- otherwise
+def $parameter_callable_body_unwrap(PARAMETERSOURCECLOSURE n_source pobject) = pobject
+def $object_changed(CONSTANTCLOSURE porigin_site (PARAMETERSOURCECLOSURE n_source (REALCLOSURE porigin_body pitem_old* pstaticcell_old*)), REALCLOSURE porigin_body pitem* pstaticcell*) = CONSTANTCLOSURE porigin_site (PARAMETERSOURCECLOSURE n_source (REALCLOSURE porigin_body pitem* pstaticcell*))
+dec $parameter_callable_wrapper_proof(pobject, pparameterreceive?) : bool
+def $parameter_callable_wrapper_proof(PARAMETERSOURCECLOSURE n_source pobject, (PARAMETER_SOURCE n_source)) = true
+def $parameter_callable_wrapper_proof(pobject, pparameterreceive?) = true
+  -- if ~$parameter_callable_source_wrapper(pobject)
+  -- if ~$parameter_callable_source_proof(pparameterreceive?)
+def $parameter_callable_wrapper_proof(pobject, pparameterreceive?) = false -- otherwise
+
+dec $parameter_callable_current_evidence(pstate, pfunction) : pparameterreceive?
 dec $parameter_callable_scope_valid(pstate, pparameterclosure, pfunction) : bool
 def $parameter_callable_scope_valid(S, pparameterclosure, pfunction) = true
   -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
@@ -70,13 +91,19 @@ def $parameter_callable_scope_valid(S, pparameterclosure, pfunction) = true
   -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
   -- if pparameterclosure.SCOPE = eps
   -- if pparameterclosure.EVIDENCE = (PARAMETER_SOURCE n_source)
-  -- if $(n_source < pparameterclosure.OBJECT) /\ $(n_source < |S.OBJECTS|)
+  -- if $(n_source < pparameterclosure.OBJECT) /\ $(pparameterclosure.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pparameterclosure.OBJECT] = CONSTANTCLOSURE porigin_site (PARAMETERSOURCECLOSURE n_source pobject)
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
   -- if $closure_source_class(S, pfunction.ORIGIN) = eps
   -- if ~(HOBJECT n_source <- S.ALLOCATIONS) \/ ($closure_scope_at(S.CLOSURESCOPES, n_source) = eps /\ $closure_binding_at(S.CLOSUREBINDINGS, n_source) = eps /\ ~$internal_closure_object(S, n_source))
+def $parameter_callable_scope_valid(S, pparameterclosure, pfunction) = true
+  -- if pparameterclosure.OBJECT = |S.OBJECTS|
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
+  -- if pparameterclosure.SCOPE = eps
+  -- if pparameterclosure.EVIDENCE = (PARAMETER_SOURCE n_source)
+  -- if $parameter_callable_current_evidence(S, pfunction) = (PARAMETER_SOURCE n_source)
 def $parameter_callable_scope_valid(S, pparameterclosure, pfunction) = false -- otherwise
 
-dec $parameter_callable_current_evidence(pstate, pfunction) : pparameterreceive?
 dec $parameter_callable_function_published(pstate, pfunction, nat) : bool
 def $parameter_callable_function_published(S, pfunction, n_prefix) = true
   -- if $(n_prefix <= |S.DECLARATIONS|)
@@ -131,6 +158,8 @@ dec $parameter_callable_header(pstate, pconstantclosure) : pparameterclosure?
 def $parameter_callable_header(S, pconstantclosure) = (pparameterclosure)
   -- if $(pconstantclosure.OBJECT < |S.OBJECTS|) /\ $(pconstantclosure.PREFIX <= |S.DECLARATIONS|)
   -- if $parameter_callable_record(S.PARAMETERCLOSURES, pconstantclosure.OBJECT) = (pparameterclosure)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE pobject
+  -- if $parameter_callable_wrapper_proof(pobject, pparameterclosure.EVIDENCE)
   -- if $function_at($all_functions(S), pparameterclosure.FUNCTION) = (pfunction)
   -- if $parameter_callable_source(S, pfunction, pparameterclosure.INDEX, pconstantclosure.SITE)
   -- if pconstantclosure.DECL = $default_parameter_origin(S, pfunction.ORIGIN, pparameterclosure.INDEX)
@@ -144,7 +173,7 @@ def $parameter_callable_header(S, pconstantclosure) = eps -- otherwise
 
 def $parameter_callable_active(S, porigin_site) = ($parameter_callable_context(S, porigin_site) =/= eps)
 def $parameter_callable_record_kind(S, pconstantclosure) = ($parameter_callable_record(S.PARAMETERCLOSURES, pconstantclosure.OBJECT) =/= eps)
-def $constant_callable_stamp(S, n_object, porigin_site, n_prefix) = S[.OBJECTS = $object_set(S.OBJECTS, n_object, CONSTANTCLOSURE porigin_site S.OBJECTS[n_object])][.CONSTANTCLOSURES = S.CONSTANTCLOSURES ++ [{OBJECT n_object, SITE porigin_site, DECL porigin_parameter, PREFIX n_prefix}]][.PARAMETERCLOSURES = S.PARAMETERCLOSURES ++ [pparameterclosure[.OBJECT = n_object]]]
+def $constant_callable_stamp(S, n_object, porigin_site, n_prefix) = S[.OBJECTS = $object_set(S.OBJECTS, n_object, CONSTANTCLOSURE porigin_site ($parameter_callable_wrap(pparameterclosure.EVIDENCE, S.OBJECTS[n_object])))][.CONSTANTCLOSURES = S.CONSTANTCLOSURES ++ [{OBJECT n_object, SITE porigin_site, DECL porigin_parameter, PREFIX n_prefix}]][.PARAMETERCLOSURES = S.PARAMETERCLOSURES ++ [pparameterclosure[.OBJECT = n_object]]]
   -- if $parameter_callable_context(S, porigin_site) = (pparameterclosure)
   -- if porigin_parameter = $default_parameter_origin(S, pparameterclosure.FUNCTION, pparameterclosure.INDEX)
 def $constant_closure_create(S, pfunction) = $constant_callable_stamp($global_constant_real_scope(S_created, n_object, pparameterclosure.SCOPE), n_object, pfunction.ORIGIN, |S.DECLARATIONS|)
@@ -165,13 +194,13 @@ def $parameter_callable_cached_function(S, porigin_site) = (pfunction)
   -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin_site) = (pconstantclosure_first)
   -- if $parameter_callable_header(S, pconstantclosure_first) = (pparameterclosure_first)
   -- if $constant_callable_function_fresh(S, porigin_site, pconstantclosure_first.PREFIX) = (pfunction)
-  -- if S.OBJECTS[pconstantclosure_first.OBJECT] = CONSTANTCLOSURE porigin_site (NAMEDCLOSURE pfunction.ORIGIN)
+  -- if $object_body(S.OBJECTS[pconstantclosure_first.OBJECT]) = NAMEDCLOSURE pfunction.ORIGIN
 def $parameter_callable_cached_function(S, porigin_site) = eps -- otherwise
 def $parameter_callable_cached_method(S, porigin_site) = (pmethoddesc)
   -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin_site) = (pconstantclosure_first)
   -- if $parameter_callable_header(S, pconstantclosure_first) = (pparameterclosure_first)
   -- if $global_constant_method(S, porigin_site, pparameterclosure_first.SCOPE, pconstantclosure_first.PREFIX) = ((pmethoddesc, porigin_first_called))
-  -- if S.OBJECTS[pconstantclosure_first.OBJECT] = CONSTANTCLOSURE porigin_site (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_first_called eps)
+  -- if $object_body(S.OBJECTS[pconstantclosure_first.OBJECT]) = METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_first_called eps
   -- if pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if $method_accessible(S, pmethoddesc, pparameterclosure_first.SCOPE)
 def $parameter_callable_cached_method(S, porigin_site) = eps -- otherwise
@@ -197,17 +226,23 @@ def $parameter_callable_method_access(S, porigin_site, porigin_scope?, pmethodde
 
 dec $parameter_callable_birth(pstate, pconstantclosure, pparameterclosure) : bool
 def $parameter_callable_birth(S, pconstantclosure, pparameterclosure) = true
-  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (REALCLOSURE pconstantclosure.SITE eps pstaticcell*)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE pobject
+  -- if $parameter_callable_wrapper_proof(pobject, pparameterclosure.EVIDENCE)
+  -- if $object_body(S.OBJECTS[pconstantclosure.OBJECT]) = REALCLOSURE pconstantclosure.SITE eps pstaticcell*
   -- if $function_at(S.CLOSURETEMPLATES, pconstantclosure.SITE) = (pfunction)
   -- if $closure_lexicals(pfunction.CODE.EXPRESSIONS) = eps
   -- if $global_constant_live_scope(S, pconstantclosure, pparameterclosure.SCOPE)
 def $parameter_callable_birth(S, pconstantclosure, pparameterclosure) = true
-  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (NAMEDCLOSURE porigin_function)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE pobject
+  -- if $parameter_callable_wrapper_proof(pobject, pparameterclosure.EVIDENCE)
+  -- if $object_body(S.OBJECTS[pconstantclosure.OBJECT]) = NAMEDCLOSURE porigin_function
   -- if $constant_callable_function(S, pconstantclosure.SITE, pconstantclosure.PREFIX) = (pfunction)
   -- if pfunction.ORIGIN = porigin_function
   -- if $closure_scope_at(S.CLOSURESCOPES, pconstantclosure.OBJECT) = eps
 def $parameter_callable_birth(S, pconstantclosure, pparameterclosure) = true
-  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE porigin_method pconstantclosure.SITE porigin_called eps)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE pobject
+  -- if $parameter_callable_wrapper_proof(pobject, pparameterclosure.EVIDENCE)
+  -- if $object_body(S.OBJECTS[pconstantclosure.OBJECT]) = METHODCLOSURE porigin_method pconstantclosure.SITE porigin_called eps
   -- if $parameter_callable_method(S, pconstantclosure.SITE, pparameterclosure.SCOPE, pconstantclosure.PREFIX) = ((pmethoddesc, porigin_called))
   -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method /\ pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if $parameter_callable_method_access(S, pconstantclosure.SITE, pparameterclosure.SCOPE, pmethoddesc)
@@ -297,7 +332,7 @@ dec $parameter_callable_method_receipt(pstate, pconstantclosure, pmethoddesc, po
 def $parameter_callable_method_receipt(S, pconstantclosure, pmethoddesc, porigin_site, porigin_called) = true
   -- if $parameter_callable_header(S, pconstantclosure) = (pparameterclosure)
   -- if pconstantclosure.SITE = porigin_site
-  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE porigin_site (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_called eps)
+  -- if $object_body(S.OBJECTS[pconstantclosure.OBJECT]) = METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_called eps
   -- if $parameter_callable_method(S, porigin_site, pparameterclosure.SCOPE, pconstantclosure.PREFIX) = ((pmethoddesc, porigin_called))
   -- if pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if $parameter_callable_method_access(S, porigin_site, pparameterclosure.SCOPE, pmethoddesc)
@@ -314,7 +349,7 @@ def $parameter_callable_method_live(S, pmethoddesc, porigin_site, porigin_called
   -- if $(n_object < |S.OBJECTS|) /\ (HOBJECT n_object) <- S.ALLOCATIONS
   -- if pclosurescope.LEXICAL = pmethoddesc.OWNER /\ pclosurescope.CALLED = porigin_called
   -- if pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps
-  -- if S.OBJECTS[n_object] = CONSTANTCLOSURE porigin_site (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_called eps)
+  -- if $object_body(S.OBJECTS[n_object]) = METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_called eps
   -- if $constant_callable_record(S.CONSTANTCLOSURES, n_object) = (pconstantclosure)
   -- if $parameter_callable_method_receipt(S, pconstantclosure, pmethoddesc, porigin_site, porigin_called)
 def $parameter_callable_method_live(S, pmethoddesc, porigin_site, porigin_called, pclosurescope) = true
@@ -335,7 +370,7 @@ def $parameter_callable_real_receipt(S, pconstantclosure, porigin_site, porigin_
   -- if $parameter_callable_header(S, pconstantclosure) = (pparameterclosure)
   -- if pconstantclosure.SITE = porigin_site
   -- if pparameterclosure.SCOPE = porigin_scope?
-  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE porigin_site (REALCLOSURE porigin_site eps pstaticcell*)
+  -- if $object_body(S.OBJECTS[pconstantclosure.OBJECT]) = REALCLOSURE porigin_site eps pstaticcell*
 def $parameter_callable_real_receipt(S, pconstantclosure, porigin_site, porigin_scope?) = false -- otherwise
 dec $parameter_callable_real_clone(pstate, pconstantclosure*, porigin, porigin?, nat) : bool
 def $parameter_callable_real_clone(S, eps, porigin_site, porigin_scope?, n_object) = false
@@ -347,7 +382,7 @@ def $parameter_callable_real_clone(S, pconstantclosure :: pconstantclosure_tail*
 dec $parameter_callable_real_scope_valid(pstate, porigin, pclosurescope) : bool
 def $parameter_callable_real_scope_valid(S, porigin_site, pclosurescope) = true
   -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
-  -- if S.OBJECTS[pclosurescope.OBJECT] = CONSTANTCLOSURE porigin_site (REALCLOSURE porigin_site eps pstaticcell*)
+  -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = REALCLOSURE porigin_site eps pstaticcell*
   -- if $constant_callable_record(S.CONSTANTCLOSURES, pclosurescope.OBJECT) = (pconstantclosure)
   -- if $parameter_callable_real_receipt(S, pconstantclosure, porigin_site, (pclosurescope.LEXICAL))
   -- if pclosurescope.CALLED = pclosurescope.LEXICAL
@@ -362,7 +397,7 @@ def $parameter_callable_real_scope_valid(S, porigin_site, pclosurescope) = true
 def $parameter_callable_real_scope_valid(S, porigin_site, pclosurescope) = false -- otherwise
 def $parameter_callable_real_unscoped(S, n_object) = true
   -- if $(n_object < |S.OBJECTS|)
-  -- if S.OBJECTS[n_object] = CONSTANTCLOSURE porigin_site (REALCLOSURE porigin_site eps pstaticcell*)
+  -- if $object_body(S.OBJECTS[n_object]) = REALCLOSURE porigin_site eps pstaticcell*
   -- if $constant_callable_record(S.CONSTANTCLOSURES, n_object) = (pconstantclosure)
   -- if $parameter_callable_real_receipt(S, pconstantclosure, porigin_site, eps)
   -- if $closure_scope_at(S.CLOSURESCOPES, n_object) = eps /\ $closure_binding_at(S.CLOSUREBINDINGS, n_object) = eps

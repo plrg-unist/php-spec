@@ -41,7 +41,9 @@ def $node_children(S, HOBJECT n) = eps
 
 ;; The source birth marker survives only mutable real-Closure contents. Cloning
 ;; reads the plain body and allocates an ordinary object without this marker.
-def $object_body(CONSTANTCLOSURE porigin pobject) = pobject
+dec $parameter_callable_body_unwrap(pobject) : pobject
+def $parameter_callable_body_unwrap(pobject) = pobject -- otherwise
+def $object_body(CONSTANTCLOSURE porigin pobject) = $parameter_callable_body_unwrap(pobject)
 def $object_body(pobject) = pobject -- otherwise
 dec $object_changed(pobject, pobject) : pobject
 def $object_changed(CONSTANTCLOSURE porigin (REALCLOSURE porigin_body pitem_old* pstaticcell_old*), REALCLOSURE porigin_body pitem* pstaticcell*) = CONSTANTCLOSURE porigin (REALCLOSURE porigin_body pitem* pstaticcell*)
