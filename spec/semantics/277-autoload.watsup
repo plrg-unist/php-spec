@@ -43,6 +43,8 @@ dec $autoload_resolve(pstate, pconfigcall) : pstate
 dec $autoload_new_diagnostic(pstate, preqbytes) : preqbytes
 dec $autoload_new_resume(pstate, preqbytes, phpType7*, int) : ptask
 def $autoload_new_resume(S, ptbytes, phpType7*, z) = AUTO_NEW ptbytes phpType7* z z -- otherwise
+dec $autoload_ordinary_new_source(pstate, porigin) : bool
+def $autoload_ordinary_new_source(S, porigin) = true -- otherwise
 dec $autoload_bool(pstate, pconfigcall, nat, bool) : bool?
 dec $autoload_registration_receive_valid(pstate, pautoloadregistration) : bool
 dec $autoload_registration_null_valid(pstate, pautoloadregistration) : bool
@@ -652,6 +654,7 @@ def $autoload_resume_valid(S, pautoloadcall) = true
   -- if pautoloadcall.MODE = AUTO_LOOKUP
   -- if pautoloadcall.RESUME = AUTO_NEW ptbytes phpType7* z z_fetch
   -- if S.ORIGIN = (pautoloadcall.SITE)
+  -- if $autoload_ordinary_new_source(S, pautoloadcall.SITE)
   -- if $origin_node(S.SOURCES, pautoloadcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if $new_source_name(S, pautoloadcall.SITE) = (ptbytes)
   -- if pautoloadcall.NAME = $autoload_lookup_name(ptbytes)
@@ -746,6 +749,7 @@ def $autoload_declaration_new(S, porigin, ptbytes, z, z_fetch) = false -- otherw
 def $autoload_declaration_resume(S, pautoloadcall) = true
   -- if pautoloadcall.MODE = AUTO_LOOKUP
   -- if pautoloadcall.RESUME = AUTO_NEW ptbytes phpType7* z z_fetch
+  -- if $autoload_ordinary_new_source(S, pautoloadcall.SITE)
   -- if $origin_node(S.SOURCES, pautoloadcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if $autoload_declaration_new(S, pautoloadcall.SITE, ptbytes, z, z_fetch)
   -- if pautoloadcall.NAME = $autoload_lookup_name(ptbytes) /\ pautoloadcall.KEY = $ptlc(pautoloadcall.NAME)
@@ -808,7 +812,7 @@ def $call_task_valid(S, AUTO_NEXT pautoloadcall) = $autoload_call_valid(S, pauto
 def $call_task_valid(S, AUTO_REFERENCE pautoloadcall pautoloadentry) = $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
 def $call_task_valid(S, AUTO_ENTER pautoloadcall pautoloadentry poperand) = $autoload_sent_valid(S, pautoloadcall, pautoloadentry, poperand)
 def $call_task_valid(S, AUTO_RESULT pautoloadcall pautoloadentry poperand) = $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
-def $call_task_valid(S, AUTO_NEW ptbytes phpType7* z z_fetch) = true -- if S.ORIGIN = (porigin) -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata) -- if $new_source_name(S, porigin) = (ptbytes) -- if $call_line_valid(S, (porigin), z) \/ $dynamic_new_site(S, porigin, z, z_fetch) -- if z_fetch = z \/ $dynamic_new_site(S, porigin, z, z_fetch)
+def $call_task_valid(S, AUTO_NEW ptbytes phpType7* z z_fetch) = true -- if S.ORIGIN = (porigin) -- if $autoload_ordinary_new_source(S, porigin) -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata) -- if $new_source_name(S, porigin) = (ptbytes) -- if $call_line_valid(S, (porigin), z) \/ $dynamic_new_site(S, porigin, z, z_fetch) -- if z_fetch = z \/ $dynamic_new_site(S, porigin, z, z_fetch)
 def $call_task_valid(S, AUTO_PUBLISH porigin) = true -- if $class_at(S.CLASSES, porigin) = (pclassdesc) -- if pclassdesc.PARENT =/= eps -- if S.ORIGIN = (porigin)
 def $call_task_valid(S, AUTO_EXPLICIT_DONE pconfigcall) = ($config_invoke_valid(S, pconfigcall) /\ pconfigcall.KIND = INTRINSIC_AUTO_CALL)
 def $task_nodes(AUTO_REGISTER_RECEIVE pautoloadregistration) = $config_nodes(pautoloadregistration.ENTRY.CALL) ++ $autoload_entry_nodes(pautoloadregistration.ENTRY)

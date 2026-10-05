@@ -1,5 +1,9 @@
 ;; AST default lookup finishes before allocation or argument evaluation. A loader
 ;; can publish a constructor, so resume through the prepared default evaluator.
+def $autoload_ordinary_new_source(S, PORIGIN n_unit pcpath) = false
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if $default_below(pcunit.OCCURRENCES, pcpath)
+
 dec $autoload_default_source_valid(pstate, porigin, preqbytes, phpType7*, porigin, int) : bool
 def $autoload_default_source_valid(S, porigin_site, ptbytes, phpType7*, porigin_parameter, z) = true
   -- if $parameter_string_site_valid(S, porigin_parameter, z)
