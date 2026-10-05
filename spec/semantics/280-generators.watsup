@@ -77,6 +77,9 @@ dec $generator_running_owners(pstate, pnode*, nat*) : bool
 dec $generator_running_owner(pstate, pnode, nat*) : bool
 dec $generator_owner_object(pobject, nat, nat*) : bool
 dec $generator_resume_pairs(pstate, pcallcontext?, pframe*) : bool
+dec $generator_suspended_cursor_ids(pstate, pnode*) : nat*
+dec $generator_object_cursor_ids(pobject) : nat*
+dec $generator_cursor_owners_valid(pstate) : bool
 dec $generator_context_retained(pstate, pcallcontext) : bool
 dec $generator_retained_nodes(pstate, pnode*, pcallcontext) : bool
 dec $generator_retained_node(pstate, pnode, pcallcontext) : bool
@@ -674,7 +677,7 @@ def $generator_node_valid(S, HARRAY n) = true
 def $generator_node_valid(S, HCELL n) = true
 def $generator_object_valid(S, GENERATOR pgenerator) = $generator_record_valid(S, pgenerator)
 def $generator_object_valid(S, pobject) = true -- otherwise
-def $generator_state_valid(S) = ($generator_objects_valid(S, S.ALLOCATIONS) /\ $generator_owners_valid(S) /\ $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES))
+def $generator_state_valid(S) = ($generator_objects_valid(S, S.ALLOCATIONS) /\ $generator_owners_valid(S) /\ $generator_cursor_owners_valid(S) /\ $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES))
 ;; These object-domain walkers leave Generator payload authentication to the
 ;; mandatory generator_state_valid conjunct of public call admission.
 def $closure_live_object_valid(S, n) = true
@@ -752,5 +755,15 @@ def $generator_resume_head((GENERATOR_RESUME pgeneratorop) :: ptask*) = true
 def $generator_resume_head(ptask*) = false -- otherwise
 def $reference_call_frames_valid((pcallcontext), pframe :: pframe_tail*) = (pframe.ORIGIN = (pgeneratorop.SITE) /\ $reference_call_frames_valid(pframe.CONTEXT, pframe_tail*))
   -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask*
+def $useriter_task_ids(GENERATOR_NEXT pgeneratorop) = $generator_loop_ids(pgeneratorop.LOOP)
+def $useriter_task_ids(GENERATOR_RESUME pgeneratorop) = $generator_loop_ids(pgeneratorop.LOOP)
+def $generator_suspended_cursor_ids(S, eps) = eps
+def $generator_suspended_cursor_ids(S, (HOBJECT n) :: pnode_tail*) = $generator_object_cursor_ids(S.OBJECTS[n]) ++ $generator_suspended_cursor_ids(S, pnode_tail*)
+def $generator_suspended_cursor_ids(S, (HARRAY n) :: pnode_tail*) = $generator_suspended_cursor_ids(S, pnode_tail*)
+def $generator_suspended_cursor_ids(S, (HCELL n) :: pnode_tail*) = $generator_suspended_cursor_ids(S, pnode_tail*)
+def $generator_object_cursor_ids(GENERATOR pgenerator) = $useriter_tasks_ids(pframe.TODO)
+  -- if pgenerator.FRAME = (pframe)
+def $generator_object_cursor_ids(pobject) = eps -- otherwise
+def $generator_cursor_owners_valid(S) = $useriter_ids_unique($useriter_tasks_ids(S.TODO) ++ $useriter_frames_ids(S.FRAMES) ++ $generator_suspended_cursor_ids(S, S.ALLOCATIONS))
 def $generator_owners_valid(S) = ($heap_unique((HOBJECT n)*) /\ $generator_running_owners(S, S.ALLOCATIONS, $generator_saved_ids(S.FRAMES)) /\ $generator_resume_pairs(S, S.CURRENT, S.FRAMES))
   -- if n* = $generator_resume_ids(S.TODO) ++ $generator_saved_ids(S.FRAMES)
