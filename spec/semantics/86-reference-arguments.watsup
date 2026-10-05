@@ -52,9 +52,16 @@ def $call_location_reference(S) = S_cell[.RESULT = REFERENCE S_cell.CELL]
   -- if S.COMPLETION = NORMAL
   -- if S.LOCATION = ELEMENT n pkey
   -- if S_cell = $element_reference(S, n, pkey)
-def $call_location_reference(S) = $property_reference_fetch(S, n, ptbytes, $property_current_line(S))
+def $call_location_reference(S) = S_checked
   -- if S.COMPLETION = NORMAL
   -- if S.LOCATION = PROPERTY n ptbytes
+  -- if S_checked = $property_reference_check(S, n, ptbytes, $property_current_line(S))
+  -- if S_checked.COMPLETION =/= NORMAL
+def $call_location_reference(S) = $property_reference_fetch(S_checked, n, ptbytes, $property_current_line(S))
+  -- if S.COMPLETION = NORMAL
+  -- if S.LOCATION = PROPERTY n ptbytes
+  -- if S_checked = $property_reference_check(S, n, ptbytes, $property_current_line(S))
+  -- if S_checked.COMPLETION = NORMAL
 
 dec $call_reference_base(pstate, pbase, int) : pstate
 def $call_reference_base(S, BASE_DIM pbase poperand z_key, z) = $reference_acquire(S, BASE_DIM pbase poperand z_key, z)

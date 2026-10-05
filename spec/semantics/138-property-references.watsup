@@ -436,7 +436,13 @@ def $assign_property_reference(S, n_object, ptbytes, n_cell, z) = S_prepared
   -- if S_prepared = $property_bind_prepare(S, n_object, ptbytes, n_cell, z)
   -- if S_prepared.COMPLETION =/= NORMAL
 
-def $reference_acquire(S, BASE_PROPERTY pvalue ptbytes, z) = $base_acquire(S, BASE_PROPERTY pvalue ptbytes, z)
+def $reference_acquire(S, BASE_PROPERTY pvalue ptbytes, z) = S_target
+  -- if S_target = $base_acquire(S, BASE_PROPERTY pvalue ptbytes, z)
+  -- if S_target.COMPLETION =/= NORMAL
+def $reference_acquire(S, BASE_PROPERTY pvalue ptbytes, z) = $property_reference_check(S_target, n_object, ptbytes_key, z)
+  -- if S_target = $base_acquire(S, BASE_PROPERTY pvalue ptbytes, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.LOCATION = PROPERTY n_object ptbytes_key
 def $assign_array_reference(S, BASE_PROPERTY pvalue ptbytes, n_cell, z) = $assign_property_reference(S_target, n_object, ptbytes_key, n_cell, z)
   -- if S_target = $reference_acquire(S, BASE_PROPERTY pvalue ptbytes, z)
   -- if S_target.COMPLETION = NORMAL

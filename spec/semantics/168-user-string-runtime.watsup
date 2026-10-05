@@ -39,6 +39,8 @@ dec $static_string_site_valid(pstate, porigin, int) : bool
 dec $parameter_string_site_valid(pstate, porigin, int) : bool
 dec $file_operand_child_site(pstate, porigin, int) : bool
 dec $interpolation_child_site_valid(pstate, porigin, int) : bool
+dec $compound_string_site_valid(pstate, porigin, int) : bool
+def $compound_string_site_valid(S, porigin_site, z) = false -- otherwise
 def $concat_line_valid(S, porigin_site, z) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpConcat expression_left expression_right metadata)
   -- if $runtime_line(S[.ORIGIN = (porigin_site)], [PCFIELD 1], expression_right) = z
@@ -108,7 +110,7 @@ dec $default_internal_string_site_valid(pstate, porigin, int) : bool
 def $default_internal_string_site_valid(S, porigin_site, z) = false -- otherwise
 dec $ordinary_internal_string_site_valid(pstate, porigin, int) : bool
 def $ordinary_internal_string_site_valid(S, porigin_site, z) = false -- otherwise
-def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $file_operand_child_site(S, porigin_site, z) \/ $interpolation_child_site_valid(S, porigin_site, z) \/ $config_string_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1) \/ $terminal_string_site(S, porigin_site, z) \/ $typed_return_source(S, porigin_site, z) \/ $static_string_site_valid(S, porigin_site, z) \/ $parameter_string_site_valid(S, porigin_site, z) \/ $default_internal_string_site_valid(S, porigin_site, z) \/ $ordinary_internal_string_site_valid(S, porigin_site, z))
+def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $file_operand_child_site(S, porigin_site, z) \/ $interpolation_child_site_valid(S, porigin_site, z) \/ $config_string_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1) \/ $terminal_string_site(S, porigin_site, z) \/ $typed_return_source(S, porigin_site, z) \/ $static_string_site_valid(S, porigin_site, z) \/ $parameter_string_site_valid(S, porigin_site, z) \/ $default_internal_string_site_valid(S, porigin_site, z) \/ $ordinary_internal_string_site_valid(S, porigin_site, z) \/ $compound_string_site_valid(S, porigin_site, z))
 
 dec $stringify_consumer_tail_valid(pstate, porigin, int, ptask, ptask*) : bool
 dec $stringify_eval_consumer(ptask) : bool
@@ -222,11 +224,14 @@ dec $ordinary_internal_string_result_kind(ptask*) : bool
 def $ordinary_internal_string_result_kind(ptask*) = false -- otherwise
 dec $ordinary_internal_generic_result_valid(pstate, nat, porigin, int) : bool
 def $ordinary_internal_generic_result_valid(S, n, porigin_site, z) = true -- otherwise
+dec $compound_string_result_guard(pstate, nat, porigin, int) : bool
+def $compound_string_result_guard(S, n, porigin_site, z) = true -- otherwise
 def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if S.ORIGIN = (porigin_site)
   -- if ~$default_internal_string_result_kind(S.TODO) /\ ~$ordinary_internal_string_result_kind(S.TODO)
   -- if ~$eval_compile_string_result_kind(S.TODO)
   -- if $ordinary_internal_generic_result_valid(S, n, porigin_site, z)
+  -- if $compound_string_result_guard(S, n, porigin_site, z)
   -- if $stringable_instance(S, n)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
   -- if ~$typed_return_source(S, porigin_site, z)
@@ -236,6 +241,7 @@ def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if ~$default_internal_string_result_kind(S.TODO) /\ ~$ordinary_internal_string_result_kind(S.TODO)
   -- if ~$eval_compile_string_result_kind(S.TODO)
   -- if $ordinary_internal_generic_result_valid(S, n, porigin_site, z)
+  -- if $compound_string_result_guard(S, n, porigin_site, z)
   -- if $stringable_instance(S, n)
   -- if $typed_return_source(S, porigin_site, z)
   -- if $stringify_site_valid(S, porigin_site, z)

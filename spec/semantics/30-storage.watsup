@@ -180,6 +180,7 @@ syntax psourceoperand = { SITE porigin, LINE int, KIND int, INPUT poperand, OWNE
 syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat }
 syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int }
 syntax ptask = FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat pnamedargs | FIBER_FINISH nat | FIBER_WAIT pfiberapi | FIBER_CONTINUE pfiberapi | GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
+  | COMPOUND_STRING_PREP plocation pvalue pvalue porigin int | COMPOUND_STRING_LEFT plocation pvalue porigin int | COMPOUND_STRING_RIGHT plocation ptbytes porigin int
   | AUTO_NEXT pautoloadcall | AUTO_REFERENCE pautoloadcall pautoloadentry | AUTO_ENTER pautoloadcall pautoloadentry poperand | AUTO_RESULT pautoloadcall pautoloadentry poperand
   | AUTO_NEW preqbytes phpType7* int int | AUTO_PUBLISH porigin | AUTO_EXPLICIT_DONE pconfigcall
   | AUTO_DEFAULT_NEW preqbytes phpType7* porigin int
@@ -464,6 +465,7 @@ dec $parameter_backing_write(pstate, pparameterstring, ptbytes) : pstate
 dec $parameter_backing_receive_exact(pstate) : bool
 dec $propref_detach_slot(pstate, nat, ppropertyslot) : pstate
 dec $property_reference_fetch(pstate, nat, ptbytes, int) : pstate
+dec $property_reference_check(pstate, nat, ptbytes, int) : pstate
 dec $property_current_line(pstate) : int
 dec $objectprops_prune(pobjectprops*, pnode*) : pobjectprops*
 dec $proprefs_prune(ppropref*, pobjectprops*, pnode*) : ppropref*
