@@ -1,9 +1,9 @@
-dec $arrayaccess_notice_parent(pstate, pclassdesc, ppmethodinherited*) : pdeclnoticeplan
-dec $arrayaccess_notice_source(pstate, pclassdesc, porigin, ppmethodinherited*) : pdeclnoticeplan
 dec $trait_notice_items(pdeclnoticeitem*) : bool
 ;; Zend 8.5.10 checks the actual inherited/interface entry. A source method
 ;; replaces its tentative prototype; a fresh direct Iterator link restores it.
 syntax pdeclnoticeplan = DECLNOTICES pdeclnotice* | DECLNOTICESUNSUPPORTED text
+dec $arrayaccess_notice_parent(pstate, pclassdesc, ppmethodinherited*) : pdeclnoticeplan
+dec $arrayaccess_notice_source(pstate, pclassdesc, porigin, ppmethodinherited*) : pdeclnoticeplan
 dec $iterator_notice_join(pdeclnoticeplan, pdeclnoticeplan) : pdeclnoticeplan
 def $iterator_notice_join(DECLNOTICES pdeclnotice*, DECLNOTICES pdeclnotice_tail*) = DECLNOTICES (pdeclnotice* ++ pdeclnotice_tail*)
 def $iterator_notice_join(DECLNOTICESUNSUPPORTED text, pdeclnoticeplan) = DECLNOTICESUNSUPPORTED text
