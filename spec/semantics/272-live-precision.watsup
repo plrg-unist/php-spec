@@ -130,29 +130,29 @@ def $precision_pause_tag(pdeclaration) = false -- otherwise
 def $eval_precision_epochs(pdeclaration*, n) = $eval_precision_epochs_from(pdeclaration*, n, z_precision, eps, eps)
   -- if $declaration_precision(pdeclaration*, n) = (z_precision)
 def $eval_precision_epochs(pdeclaration*, n) = eps -- otherwise
-def $eval_precision_epochs_from(eps, n, z_current, (n_unit, n_checkpoint, n_diagnostic)*, (n_cp, n_diag, z_epoch)*) = ((n_cp, n_diag, z_epoch)*)
-def $eval_precision_epochs_from((PDEVALPAUSE n_unit n_checkpoint n_diagnostic pdeclnoticeitem*) :: pdeclaration*, n, z_current, (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*) = $eval_precision_epochs_from(pdeclaration*, n, z_current, (n_unit, n_checkpoint, n_diagnostic) :: (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*)
-def $eval_precision_epochs_from(pdeclaration_resume :: pdeclaration*, n, z_current, (n, n_checkpoint, n_diagnostic) :: (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*) = $eval_precision_epochs_from(pdeclaration*, n, z_precision, (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)* ++ [(n_checkpoint, n_diagnostic, z_precision)])
+def $eval_precision_epochs_from(eps, n, z_current, waits, epochs) = (epochs)
+def $eval_precision_epochs_from((PDEVALPAUSE n_unit n_checkpoint n_diagnostic pdeclnoticeitem*) :: pdeclaration*, n, z_current, waits, epochs) = $eval_precision_epochs_from(pdeclaration*, n, z_current, (n_unit, n_checkpoint, n_diagnostic) :: waits, epochs)
+def $eval_precision_epochs_from(pdeclaration_resume :: pdeclaration*, n, z_current, (n, n_checkpoint, n_diagnostic) :: waits, epochs) = $eval_precision_epochs_from(pdeclaration*, n, z_precision, waits, epochs ++ [(n_checkpoint, n_diagnostic, z_precision)])
   -- if $precision_resume_input(pdeclaration_resume) = ((n, z, z_resume?))
   -- if z_resume? = (z_precision)
   -- if z_precision =/= z_current
-def $eval_precision_epochs_from(pdeclaration_resume :: pdeclaration*, n, z_current, (n, n_checkpoint, n_diagnostic) :: (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*) = $eval_precision_epochs_from(pdeclaration*, n, z_current, (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*)
+def $eval_precision_epochs_from(pdeclaration_resume :: pdeclaration*, n, z_current, (n, n_checkpoint, n_diagnostic) :: waits, epochs) = $eval_precision_epochs_from(pdeclaration*, n, z_current, waits, epochs)
   -- if $precision_resume_input(pdeclaration_resume) = ((n, z, eps))
-def $eval_precision_epochs_from(pdeclaration_resume :: pdeclaration*, n, z_current, (n_other, n_checkpoint, n_diagnostic) :: (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*) = $eval_precision_epochs_from(pdeclaration*, n, z_current, (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*)
+def $eval_precision_epochs_from(pdeclaration_resume :: pdeclaration*, n, z_current, (n_other, n_checkpoint, n_diagnostic) :: waits, epochs) = $eval_precision_epochs_from(pdeclaration*, n, z_current, waits, epochs)
   -- if n_other =/= n
   -- if $precision_resume_input(pdeclaration_resume) = ((n_other, z, z_precision?))
-def $eval_precision_epochs_from(pdeclaration :: pdeclaration_tail*, n, z_current, (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*) = $eval_precision_epochs_from(pdeclaration_tail*, n, z_current, (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*)
+def $eval_precision_epochs_from(pdeclaration :: pdeclaration_tail*, n, z_current, waits, epochs) = $eval_precision_epochs_from(pdeclaration_tail*, n, z_current, waits, epochs)
   -- if ~$precision_resume_tag(pdeclaration)
   -- if ~$precision_pause_tag(pdeclaration)
-def $eval_precision_epochs_from(pdeclaration*, n, z_current, (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*) = eps -- otherwise
+def $eval_precision_epochs_from(pdeclaration*, n, z_current, waits, epochs) = eps -- otherwise
 
 def $compiler_epoch_value(eps, n_checkpoint, n_diagnostic, z) = z
-def $compiler_epoch_value((n_cp, n_diag, z_epoch) :: (n_tail_cp, n_tail_diag, z_tail)*, n_checkpoint, n_diagnostic, z) = $compiler_epoch_value((n_tail_cp, n_tail_diag, z_tail)*, n_checkpoint, n_diagnostic, z_epoch)
+def $compiler_epoch_value((n_cp, n_diag, z_epoch) :: epochs, n_checkpoint, n_diagnostic, z) = $compiler_epoch_value(epochs, n_checkpoint, n_diagnostic, z_epoch)
   -- if $(n_cp <= n_checkpoint /\ n_diag <= n_diagnostic)
-def $compiler_epoch_value((n_cp, n_diag, z_epoch) :: (n_tail_cp, n_tail_diag, z_tail)*, n_checkpoint, n_diagnostic, z) = $compiler_epoch_value((n_tail_cp, n_tail_diag, z_tail)*, n_checkpoint, n_diagnostic, z)
+def $compiler_epoch_value((n_cp, n_diag, z_epoch) :: epochs, n_checkpoint, n_diagnostic, z) = $compiler_epoch_value(epochs, n_checkpoint, n_diagnostic, z)
   -- if $(n_cp > n_checkpoint \/ n_diag > n_diagnostic)
-def $pfcompiler_precision(F) = F[.MEMORY = $precision_memory(F.MEMORY, $compiler_epoch_value((n_cp, n_diag, z_epoch)*, F.CHECKPOINT, $(F.DIAGNOSTIC + |F.WARNINGS|), F.PARSEPRECISION))]
-  -- if F.COMPILEPRECISIONS = ((n_cp, n_diag, z_epoch)*)
+def $pfcompiler_precision(F) = F[.MEMORY = $precision_memory(F.MEMORY, $compiler_epoch_value(epochs, F.CHECKPOINT, $(F.DIAGNOSTIC + |F.WARNINGS|), F.PARSEPRECISION))]
+  -- if F.COMPILEPRECISIONS = (epochs)
 def $pfcompiler_precision(F) = F -- if F.COMPILEPRECISIONS = eps
 def $ppcompiler_precision(P) = P[.FOLD = $pfcompiler_precision(P.FOLD[.CHECKPOINT = |P.PUBLICATIONS|][.DIAGNOSTIC = |P.DIAGNOSTICS|])]
 
@@ -179,9 +179,9 @@ def $compiled_precision(S, (PORIGIN n pcpath)) = (z)
   -- if $constant_precision_at(ppool.CONSTANTS, pcpath) = (z)
 def $compiled_precision(S, porigin?) = $source_precision(S, porigin?) -- otherwise
 
-def $precision_compiler_current(S, n, n_checkpoint, n_diagnostic) = ($compiler_epoch_value((n_cp, n_diag, z_epoch)*, n_checkpoint, n_diagnostic, z_parser))
+def $precision_compiler_current(S, n, n_checkpoint, n_diagnostic) = ($compiler_epoch_value(epochs, n_checkpoint, n_diagnostic, z_parser))
   -- if $declaration_precision(S.DECLARATIONS, n) = (z_parser)
-  -- if $eval_precision_epochs(S.DECLARATIONS, n) = ((n_cp, n_diag, z_epoch)*)
+  -- if $eval_precision_epochs(S.DECLARATIONS, n) = (epochs)
 def $precision_compiler_current(S, n, n_checkpoint, n_diagnostic) = eps -- otherwise
 def $precision_eval_resume_valid(S, pevalcompile) = ($precision_compiler_current(S, pevalcompile.PLAN.UNIT, pevalcompile.CHECKPOINT, pevalcompile.DIAGNOSTIC) = ($precision_value(S)))
 def $precision_resume_value(S, n, n_checkpoint, n_diagnostic, eps) = $precision_compiler_current(S, n, n_checkpoint, n_diagnostic)
@@ -212,7 +212,7 @@ def $eval_compile_precision_resume(S, pevalcompile, ptask*) = $eval_compile_loop
   -- if $compilation_image_valid(S, pcunit, P_old)
   -- if pevalcompile.PLAN = $eval_compile_plan(P_old)
   -- if S_epoch = S[.DECLARATIONS = S.DECLARATIONS ++ [PDEVALRESUMEPRECISION pevalcompile.PLAN.UNIT S.REPORTING $precision_value(S)]]
-  -- if $eval_precision_epochs(S_epoch.DECLARATIONS, pcunit.ID) = ((n_cp, n_diag, z_epoch)*)
+  -- if $eval_precision_epochs(S_epoch.DECLARATIONS, pcunit.ID) = (epochs)
   -- if P = $declaration_compiler_state($eval_source_ppstate(S_epoch, pcunit))
   -- if $eval_compile_precision_prefix(P_old, P, pevalcompile)
   -- if S_refreshed = $compilation_refresh_image(S_epoch, pcunit.ID, P_old.INSTALLED, P.INSTALLED)

@@ -31,8 +31,8 @@ def $compilation_pool_valid(S, n_unit, ppinstalled) = true
   -- if ppool.CONSTANTS = $pool_shift_constants(ppinstalled.CONSTANTS, n_offset)
   -- if $compilation_pool_arrays(S, $pool_shift_arrays(ppinstalled.ARRAYS, n_offset), n_offset, ppinstalled.ALLOCATIONS)
 def $compilation_pool_valid(S, n_unit, ppinstalled) = true
-  -- if $eval_precision_epochs(S.DECLARATIONS, n_unit) = ((n_checkpoint, n_diagnostic, z_precision)*)
-  -- if (n_checkpoint, n_diagnostic, z_precision)* =/= eps
+  -- if $eval_precision_epochs(S.DECLARATIONS, n_unit) = (epochs)
+  -- if epochs =/= eps
   -- if $pool_at(S.POOLS, n_unit) = (ppool)
   -- if $compilation_correspondence(S, ppinstalled, ppool.CONSTANTS) = (pcompilemap)
 def $compilation_pool_valid(S, n_unit, ppinstalled) = false -- otherwise
