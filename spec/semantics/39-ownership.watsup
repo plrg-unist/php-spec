@@ -231,8 +231,13 @@ def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = pclosu
   -- if (HOBJECT pclosurescope.OBJECT) <- pnode*
 def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = $closure_scopes_prune(pclosurescope_tail*, pnode*)
   -- if ~((HOBJECT pclosurescope.OBJECT) <- pnode*)
+dec $generator_prune_pending(pstate, pnode*) : bool
+def $prune_allocations(S) = S[.COMPLETION = UNSUPPORTED "started generator force-close finalizer"]
+  -- if pnode_live* = $heap_prune($heap_graph(S)).NODES
+  -- if $generator_prune_pending(S, pnode_live*)
 def $prune_allocations(S) = $destruction_prune(S, pnode_live*)
   -- if pnode_live* = $heap_prune($heap_graph(S)).NODES
+  -- if ~$generator_prune_pending(S, pnode_live*)
 def $prune_live(S, pnode_live*) = S[.ALLOCATIONS = pnode_live*][.CLOSURESCOPES = $closure_scopes_prune(S.CLOSURESCOPES, pnode_live*)][.CLOSUREBINDINGS = $closure_bindings_prune(S.CLOSUREBINDINGS, pnode_live*)][.OBJECTPROPS = $objectprops_prune(S.OBJECTPROPS, pnode_live*)][.OBJECTTABLES = $object_tables_prune(S.OBJECTTABLES, pnode_live*)][.PROPREFS = $proprefs_prune(S.PROPREFS, S.OBJECTPROPS, pnode_live*)][.REFCOERCIONS = $reference_coercions_prune(S.REFCOERCIONS, pnode_live*)][.PARAMETERBACKINGS = $parameter_backings_prune(S.PARAMETERBACKINGS, pnode_live*)][.ITERATORS = $iterators_prune(S.ITERATORS, pnode_live*)]
 
 ;; zend_array_dup_value unwraps singleton references, except a reference back to

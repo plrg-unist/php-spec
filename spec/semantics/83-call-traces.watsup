@@ -116,6 +116,8 @@ dec $trace_context_location(pstate, pcallcontext, porigin) : (porigin, int)
 def $trace_context_location(S, pcallcontext, porigin) = (porigin, pcallcontext.LINE) -- otherwise
 dec $exception_warning_context(pstate, pcallcontext) : bool
 dec $destructor_context_kind(pstate, pcallcontext) : bool
+dec $generator_context_trace_kind(pstate, pcallcontext) : bool
+dec $generator_trace_scope(pstate, pcallcontext?, pframe*) : pstate
 dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
 dec $default_internal_callback_context(pstate, pcallcontext) : bool
 def $default_internal_callback_context(S, pcallcontext) = false -- otherwise
@@ -134,6 +136,7 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
   -- if ~$terminal_string_context(S, pcallcontext)
   -- if ~$closure_call_target($context_target(pcallcontext))
   -- if ~$config_string_trace_context(S, pcallcontext)
+  -- if ~$generator_context_trace_kind(S, pcallcontext)
   -- if ~$default_internal_callback_context(S, pcallcontext) /\ ~$ordinary_internal_callback_context(S, pcallcontext)
   -- if $error_context_trigger(S, pcallcontext) = eps
   -- if ~$exception_warning_context(S, pcallcontext)
@@ -146,7 +149,7 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
 dec $trace_saved(pstate, pframe*) : ptraceframe*
 def $trace_saved(S, eps) = eps
 def $trace_saved(S, pframe :: pframe_tail*) = $trace_saved(S, pframe_tail*) -- if pframe.CONTEXT = eps
-def $trace_saved(S, pframe :: pframe_tail*) = $trace_context(S, psymboltable.ENV, pframe.CONTEXT) ++ $trace_saved(S, pframe_tail*)
+def $trace_saved(S, pframe :: pframe_tail*) = $trace_context($generator_trace_scope(S, pframe.CONTEXT, pframe_tail*), psymboltable.ENV, pframe.CONTEXT) ++ $trace_saved(S, pframe_tail*)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
 dec $trace_values_roots((pkey, pvalue)*) : pnode*

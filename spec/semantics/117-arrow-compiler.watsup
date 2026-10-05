@@ -1,3 +1,4 @@
+dec $generator_syntax(pcnode) : bool
 ;; Arrow discovery follows Zend AST child order and creates real closure templates.
 dec $pparrow_variable(phpType32) : ptbytes?
 def $pparrow_variable(BYTES text) = ($base64(text))
@@ -59,6 +60,7 @@ dec $pparrow_body(ppstate, pcpath, expression) : ppstate
 dec $pparrow_return(ppstate, pcpath, text?) : ppstate
 
 def $ppdispatch(P, pcpath, NExprArrowFunction (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN b_ref) phpType16 phpType18 expression metadata, PPR) = $pparrow_begin($pparrow_outer(P, ptbytes_names*), pcpath, phpType16, ptbytes_names*, phpType18, expression, b_ref, metadata)
+  -- if ~$generator_syntax(expression)
   -- if ptbytes_names* = $pparrow_remove($pparrow_discover(expression), $pparrow_param_names(phpType16))
 
 def $pparrow_uses(P, pcpath, eps) = P

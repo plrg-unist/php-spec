@@ -348,6 +348,7 @@ dec $eval_state_valid(pstate) : bool
 dec $error_handlers_valid(pstate, perrorhandler*) : bool
 dec $exception_handlers_valid(pstate, pvalue?*) : bool
 dec $eval_compile_owners_valid(pstate) : bool
+dec $generator_state_valid(pstate) : bool
 dec $call_descriptors_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
 ;; Class history authenticates these source images and the exact function table.
@@ -402,6 +403,7 @@ def $call_descriptors_valid(S) = true
   -- if $default_caches_valid(S, S.DEFAULTCACHE)
   -- if $static_cells_valid(S, S.STATICS)
   -- if $closure_state_valid(S)
+  -- if $generator_state_valid(S)
 def $call_descriptors_valid(S) = false -- otherwise
 
 def $call_entry_check(S) = S -- if S.COMPLETION =/= NORMAL
