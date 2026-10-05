@@ -472,10 +472,13 @@ let execute value request =
   Option.iter (fun json ->
     let reporting = List.mem_assoc "error_reporting" (assoc json)
     and path = List.mem_assoc "include_path" (assoc json)
-    and display = List.mem_assoc "display_errors" (assoc json) in
+    and display = List.mem_assoc "display_errors" (assoc json)
+    and precision = List.mem_assoc "precision" (assoc json) in
+    let additional = (if display then ["display_errors"] else []) @
+                     (if precision then ["precision"] else []) in
     if reporting && path then
-      exact (["error_reporting"; "include_path"] @ if display then ["display_errors"] else []) json
-    else exact ["display_errors"] json) startup_json;
+      exact (["error_reporting"; "include_path"] @ additional) json
+    else exact (if additional = [] then ["display_errors"] else additional) json) startup_json;
   let startup = Option.bind startup_json (fun json ->
     if not (List.mem_assoc "error_reporting" (assoc json)) then None else
     let reporting = match field "error_reporting" json with
@@ -497,6 +500,14 @@ let execute value request =
       let value = V.Make.opt (T.opt (typ "preqbytes")) entry in
       check (T.opt (typ "preqbytes")) value;
       value) (List.assoc_opt "display_errors" (assoc json))) in
+  let precision = Option.bind startup_json (fun json ->
+    Option.map (fun json ->
+      let value = decode_bytes json in
+      (match Runner.Interp.eval_func "precision_ini_valid" [] [value] with
+       | Run.Pass valid when V.Get.bool valid -> ()
+       | Run.Pass _ -> fail "invalid startup precision facts"
+       | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg));
+      value) (List.assoc_opt "precision" (assoc json))) in
   Option.iter (fun facts ->
     let include_path = match startup with
       | None -> `String "Ljo="
@@ -519,16 +530,27 @@ let execute value request =
         | Some facts -> "php_request_file_run",
             file_arguments @ [import_request (module Runner) json; decode_bytes (field "cwd" facts)])
     | _ -> fail "duplicate request field" in
-  let name, arguments = match display, startup with
-    | Some entry, startup ->
+  let name, arguments = match precision, display, startup with
+    | Some raw, display, startup ->
+        (match name with
+         | "php_run" -> "php_precision_run"
+         | "php_request_run" -> "php_request_precision_run"
+         | "php_file_run" -> "php_file_precision_run"
+         | "php_request_file_run" -> "php_request_file_precision_run"
+         | _ -> assert false), arguments @ [
+           V.Make.opt (T.opt (typ "pstartup")) startup;
+           V.Make.bool (display <> None);
+           Option.value display ~default:(V.Make.opt (T.opt (typ "preqbytes")) None);
+           raw]
+    | None, Some entry, startup ->
         (match name with
          | "php_run" -> "php_display_run"
          | "php_request_run" -> "php_request_display_run"
          | "php_file_run" -> "php_file_display_run"
          | "php_request_file_run" -> "php_request_file_display_run"
          | _ -> assert false), arguments @ [V.Make.opt (T.opt (typ "pstartup")) startup; entry]
-    | None, None -> name, arguments
-    | None, Some value ->
+    | None, None, None -> name, arguments
+    | None, None, Some value ->
         (match name with
          | "php_run" -> "php_startup_run"
          | "php_request_run" -> "php_request_startup_run"

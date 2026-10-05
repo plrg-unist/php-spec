@@ -82,6 +82,13 @@ controls pass. The held fatal/shutdown source also matches at the actual231
 composition, freezing its destination after rendering and before the queue.
 Wider display/startup directives and diagnostic consumers stay open.
 
+[Live precision](coverage/semantics/precision-review.json) preserves raw startup,
+get/set/Restore and callback-time float formatting. Each parsed unit keeps its
+creation precision for folded literals and ordinary compiled operands; deferred
+initializer ASTs convert with the live value. Sixteen source/profile comparisons,
+194 supplied state checks and 12 transport controls pass at their recorded cuts.
+Changing precision during suspended eval compilation remains explicit Unsupported.
+
 [Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows
 effective CAST/FAST_CONCAT/ROPE order, retaining fetched temporaries separately
 from live variables through Stringable and warning callbacks. Nine exact source
@@ -296,8 +303,13 @@ Throws preserve callback writes; compound RHS timing and nested real-cell ingres
 remain native-grounded. Author9/224 and independent12/273 share four originals,
 giving17 unique private agreements; one current private-handler/caller-cell source
 passes.
-Wider memoized containers and earlier container/string/object producers remain
-required.
+[Container initialization and reference writes](docs/semantics/SOURCE-CONTAINER-WRITES.md)
+now stage undefined/null/false CV-rooted W/RW containers and final array-reference
+ingress. Real false-conversion protection, distinct FETCH/ASSIGN/DIM_OP paths,
+delayed source demand and typed backing through COW survive callbacks. Author12/242
+and independent21/275 share three originals, giving30 unique private agreements;
+one current private-handler/captured-cell source passes. Wider read/quiet/memoized/
+GLOBALS containers and string/object producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -529,8 +541,9 @@ then delivered after class publication. Private-final compile warnings retain
 their phase order and handler-ineligible severity. Successful collision dependency
 fills retain real typed caches and distinct import scopes. Collision expression
 errors stop the comparison, flush earlier diagnostics without handlers and render
-the pending Error before the composition fatal. Failed-link cache disposition,
-cyclic and object-bearing dependencies, and readonly storage remain required. A bounded
+the pending Error before the composition fatal. Cyclic lookups retain full imported
+constant identities and release transient failure allocations. Failed-link cache
+disposition, object-bearing dependencies and readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound

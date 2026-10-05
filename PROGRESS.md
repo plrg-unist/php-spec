@@ -7,6 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Container continuations276 now initialize undefined/null/false CV-rooted W/RW
+storage before key demand and preserve final array-reference source cells. False
+callbacks retain genuine protection and distinct FETCH/ASSIGN/DIM_OP selection;
+throwing paths keep native initialization/write/error priority. Source-backed raw
+typed DIM_OP array backing survives COW and clears on whole-cell writes without
+changing ordinary type conversion. Author12/242 and independent21/275 share three
+originals (30 unique private programs/517 assertions). One actualae0 source at851
+preserves private Owner/Child selection, captured source lifetime and live
+caller/static17. The [contract](docs/semantics/SOURCE-CONTAINER-WRITES.md) and
+[ledger](coverage/semantics/container-warning-review.json) retain the original
+loader/fixture failures and separate cuts. Wider read/quiet/memoized/unset/GLOBALS
+containers, string/object producers and complete core remain required.
+
+Live precision272 now preserves registered/raw get/set/Restore through option
+callbacks, runtime string types/conversions, nonnumeric comparisons and late trace
+formatting. Each main/eval/file unit retains creation precision for parser-folded
+literals and ordinary compiled operands; genuine constant/default/property AST
+operands instead use live precision after callbacks. Sixteen exact source/profile
+comparisons across eleven main programs retain d028/e594/73011 cuts. At73011,
+state54/39/27/74 (194 supplied checks plus12 program bindings) and transport12 pass;
+SL261 and the changed adapter jobs1 build retain their separate cuts. The actual
+ae0 parent is preserved in264 modules through focused source review, with no
+renewed execution. [Ledger](coverage/semantics/precision-review.json) retains the
+include-history and deferred-concat mismatches plus fixture failures. Changed
+precision during suspended eval compilation, Array include/eval warning ingress,
+`serialize_precision` and wider raw-float Throwable formatters remain required.
+
 Global constant callables271 now evaluate static/no-use Closures and function or
 static-method FCCs before registration. REAL lexical/called scope comes from the
 immutable source entry, including inherited include/eval scope; NAMED functions
@@ -62,8 +89,8 @@ programs/497 assertions ated6/baba/6e8. One actualc906 source at604958 retains p
 Owner/Child selection, fresh-global detachment and live caller/static17. The
 [contract](docs/semantics/SOURCE-GLOBAL-WRITES.md) and
 [ledger](coverage/semantics/globals-write-review.json) preserve the original
-multiline Unsupported and corrected native predictions. Earlier container warnings
-and wider GLOBALS/memoized consumers remain required; complete core stays open.
+multiline Unsupported and corrected native predictions. Container276 above adds
+initial W/RW storage; wider GLOBALS/memoized consumers remain required.
 
 Early-eval declaration diagnostics236 now suspend authentic compilation at each
 publication, including generic warnings before class publication. Handler throws
@@ -277,7 +304,8 @@ preservation keeps243 modules without renewing those cuts. Original compiler and
 fixture parse stops stay zero-credit in the
 [ledger](coverage/semantics/dollar-curly-review.json). The early-eval effects pin
 passes with236 at5cf39c0dd; the other four originals first pass with275 at4293f196. Wider
-interpolation and original non-object-cast/file-observer gaps remain open.
+interpolation and file-observer gaps remain open;261 separately closes the old
+non-object-cast holder pin at its recorded cutoff.
 
 Dynamic object `::class`256 evaluates one child and returns its real class name
 without a string cast. Eager parser concat keeps literal/keyword behavior; later
@@ -498,7 +526,9 @@ diagnostics and renders the pending exception before a no-trace composition fata
 Ten PHP-error sources and156 reached failure/cleanup checks pass, with ten separate
 formatter checks. Held-primary reporting uses the genuine failed-class route275;
 one actual source and112 reached replay checks pass at separate cuts. Failed-link
-cache disposition, cyclic and object-bearing dependencies remain required; traits
+cache disposition and object-bearing dependencies remain required. Direct and
+two-hop cyclic lookup errors now use full imported identities; two PHP-error
+sources and87 reached chain/cleanup checks pass at their separate cuts. Traits
 stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
@@ -826,6 +856,8 @@ failures and interrupted evidence.
   and final unset;255 adds nested unset and append, and262 adds nested coalesce
   assignment on defined CV-rooted arrays;269 adds GLOBALS W/RW name/missing-entry
   continuations with direct updates/compounds and nested array ingress.
+  Container276 adds undefined/null/false W/RW initialization and final array-reference
+  ingress; wider read/quiet/memoized/unset/append containers stay open.
   Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container
   producers and ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,

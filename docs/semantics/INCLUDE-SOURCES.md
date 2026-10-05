@@ -236,8 +236,8 @@ authenticate all four ordinary/request/file entry variants. Wider startup
 directives, INI parsing/profiles and request lifecycle remain required.
 
 [Live display237](../../coverage/semantics/display-errors-review.json) also accepts
-`display_errors` alone, or all three keys; its value is canonical base64 or JSON
-null. Absent display input retains the baseline raw `stderr`; explicit null
+`display_errors` alone, or with the reporting/path pair; its value is canonical
+base64 or JSON null. Absent display input retains the baseline raw `stderr`; explicit null
 selects stdout and a present empty string selects off, though both getters return
 empty bytes. Null is a source-defined control, without a native CLI NULL claim.
 Full case-insensitive names precede decimal-prefix/uint8 decoding. Setters preserve
@@ -247,8 +247,22 @@ seed the baseline `.:` path, while ordinary/request entries keep file facts unkn
 Ordinary diagnostics capture their live destination after handlers and retain
 output order through later mode changes. Eleven exact comparisons, 76 state
 premises and 17 transport controls cover these routes and eval/include retirement.
-Shutdown fatal freezing remains required after actual231 acceptance; its held
-native source adds no model agreement yet. Wider display/configuration stays open.
+The held shutdown fatal source also agrees after actual231 composition, with
+destination frozen after rendering and before the queue. Its distinct cut remains
+in the [shutdown ledger](../../coverage/semantics/shutdown-functions-review.json).
+Wider display/configuration stays open.
+
+[Precision272](../../coverage/semantics/precision-review.json) adds an optional
+base64 `precision` key, alone or alongside display and the complete reporting/path
+pair. It supplies effective registered bytes, so a rejected native startup `-2`
+corresponds to the registration fallback 14; JSON null is rejected. Runtime setters
+retain raw spelling, sample the old value after option callbacks and mark modified
+even when a negative update fails. Restore changes only a modified entry.
+Main, eval and opened file units capture effective precision before parsing;
+accepted and rejected histories retain it after live writes. File/request wrappers
+keep their existing path/CWD distinctions. Sixteen exact comparisons, 194 supplied
+state checks and 12 transport controls pass. Changed precision during suspended
+eval compilation and Array operand warning continuations remain required.
 
 [Diagnostic ingress217](../../coverage/semantics/reporting-diagnostics-review.json)
 fetches `E_STRICT` at runtime and dispatches its deprecation through the genuine

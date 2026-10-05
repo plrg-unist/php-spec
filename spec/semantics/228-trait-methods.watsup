@@ -721,7 +721,7 @@ def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_
 def $trait_method_call_valid(S, ptraitcall) = true
   -- if S.ORIGIN = (ptraitcall.SITE)
   -- if $origin_node(S.SOURCES, ptraitcall.SITE) = (NExprStaticCall ptraitcall.CLASS phpType20 (SEQUENCE ptraitcall.ARGUMENTS) metadata)
-  -- if $scoped_source_method(phpType20, ptraitcall.METHOD)
+  -- if $scoped_source_method_origin(S, ptraitcall.SITE, phpType20, ptraitcall.METHOD)
   -- if $scoped_selector_class(S, ptraitcall.SELECTOR) = (ptraitcall.REQUESTED)
   -- if $class_at(S.CLASSES, ptraitcall.REQUESTED) = (pclassdesc)
   -- if pclassdesc.KIND = "trait"

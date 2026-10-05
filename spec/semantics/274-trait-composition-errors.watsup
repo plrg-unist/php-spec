@@ -66,6 +66,27 @@ def $trait_collision_class_issue(F, pcpath, phpType19, phpType20) = ($ptascii("C
   -- if $class_at(F.MEMORY.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "trait"
 def $trait_collision_class_issue(F, pcpath, phpType19, phpType20) = eps -- otherwise
+
+;; An in-progress dependent constant is identified by its full selected import,
+;; following the already authenticated physical lookup chain.
+dec $trait_collision_visited(pstate, porigin, porigin, porigin*, porigin) : bool
+def $trait_collision_visited(S, porigin_scope, porigin_root, eps, porigin_target) = false
+def $trait_collision_visited(S, porigin_scope, porigin_root, porigin_site :: porigin_tail*, porigin_target) = (pclassconstantdesc.ORIGIN = porigin_target \/ $trait_collision_visited(S, pclassconstantdesc.OWNER, pclassconstantdesc.INITIALIZER, porigin_tail*, porigin_target))
+  -- if $trait_cache_below(porigin_root, porigin_site)
+  -- if $trait_cache_requested_member(S, porigin_scope, porigin_site) = (pclassconstantdesc)
+  -- if ~pclassconstantdesc.FOLDED
+def $trait_collision_visited(S, porigin_scope, porigin_root, porigin_sites*, porigin_target) = false -- otherwise
+def $trait_cache_read(F, pcpath, pclassconstantdesc, z) = $trait_collision_raise(F, pcpath, F.MEMORY, "Error", $ptascii("Cannot declare self-referencing constant ") ++ ptbytes_class ++ $ptascii("::") ++ ptbytes_member, z)
+  -- if ~pclassconstantdesc.FOLDED
+  -- if $default_cache_at(F.MEMORY.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
+  -- if $trait_recording(F, pcpath)
+  -- if F.RECORD = (pfrecorder)
+  -- if F.EXTERNAL = (S_external)
+  -- if $trait_collision_visited(S_external, pfrecorder.CLASS, pfrecorder.ROOT, F.LOOKUPS, pclassconstantdesc.ORIGIN)
+  -- if $origin_node(F.MEMORY.SOURCES, PORIGIN F.SOURCE.ID pcpath) = (NExprClassConstFetch phpType19 phpType20 metadata)
+  -- if $trait_collision_class_name(F, pcpath, phpType19) = (ptbytes_class)
+  -- if $pfclass_constant_member(phpType20, eps) = (ptbytes_member)
+
 def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $trait_collision_raise(F, pcpath, F.MEMORY, "Error", preqbytes, z)
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if $trait_recording(F, pcpath)

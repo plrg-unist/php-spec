@@ -25,8 +25,7 @@ def $declaration_image_functions((n, P) :: (n_tail, P_tail)*) = P.INSTALLED.FUNC
 
 dec $declaration_entered(pdeclaration*, nat) : bool
 dec $declaration_enter_item(pdeclaration, nat) : bool
-def $declaration_enter_item(PDENTER n porigin? z, n) = true
-def $declaration_enter_item(pdeclaration, n) = false -- otherwise
+def $declaration_enter_item(pdeclaration, n) = ($declaration_entry_input(pdeclaration, n) =/= eps)
 def $declaration_entered(eps, n) = false
 def $declaration_entered(pdeclaration :: pdeclaration_tail*, n) = true
   -- if $declaration_enter_item(pdeclaration, n)
@@ -37,7 +36,8 @@ def $declaration_files_entered(pdeclaration*, eps) = true
 def $declaration_files_entered(pdeclaration*, (SOURCEFILE n ptbytes) :: psourcefile*) = ($declaration_entered(pdeclaration*, n) /\ $declaration_files_entered(pdeclaration*, psourcefile*))
 dec $declaration_entry_site(pdeclaration*, nat) : porigin?
 def $declaration_entry_site(eps, n) = eps
-def $declaration_entry_site((PDENTER n porigin? z) :: pdeclaration*, n) = porigin?
+def $declaration_entry_site(pdeclaration :: pdeclaration_tail*, n) = porigin?
+  -- if $declaration_entry_input(pdeclaration, n) = ((porigin?, z, z_precision))
 def $declaration_entry_site(pdeclaration :: pdeclaration_tail*, n) = $declaration_entry_site(pdeclaration_tail*, n)
   -- if ~$declaration_enter_item(pdeclaration, n)
 
@@ -121,11 +121,12 @@ dec $eval_compile_history_carry(pstate, pstate) : pstate
 dec $declaration_history_compiled(pstate, pstate, (nat, ppstate)*, pdeclaration*, nat, pstate) : bool
 dec $shutdown_compiler_released(pstate, pstate) : bool
 def $declaration_history_fold(S, S_prefix, (n, P)*, eps, n_next) = $declaration_history_final(S, S_prefix)
-def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next porigin? z) :: pdeclaration*, n_next) = $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled)
+def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration_entry :: pdeclaration*, n_next) = $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled)
+  -- if $declaration_entry_input(pdeclaration_entry, n_next) = ((porigin?, z, z_precision))
   -- if $declaration_entry_binding(S, S_prefix, n_next, porigin?)
   -- if $declaration_service_available(S_prefix, porigin?)
   -- if $declaration_compiler_at((n, P)*, n_next) = (P_current)
-  -- if S_compiled = $declaration_fold($declaration_enter(S_prefix[.REPORTING = z][.COMPLETION = NORMAL][.ERRORORIGIN = eps], n_next, porigin?), P_current, P_current.PUBLICATIONS, 0, 0)
+  -- if S_compiled = $declaration_fold($declaration_enter_at(S_prefix[.REPORTING = z][.COMPLETION = NORMAL][.ERRORORIGIN = eps], n_next, porigin?, z_precision), P_current, P_current.PUBLICATIONS, 0, 0)
   -- if ~$eval_compile_unit(S, n_next)
 def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_fold(S, $eval_compile_history_carry(S_prefix, S_compiled[.COMPLETION = NORMAL][.TODO = eps]), (n, P)*, pdeclaration_tail*, $(n_next + 1))
   -- if ~$declaration_stop_terminal(S_compiled.COMPLETION) \/ $shutdown_compiler_released(S, S_compiled)
@@ -149,19 +150,24 @@ def $declaration_history_compiled(S, S_prefix, (n, P)*, pdeclaration*, n_next, S
 
 ;; A rejected dynamic unit has no accepted image; a pending segment is only
 ;; its entry. Both still consume the same fresh unit identity.
-def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next (porigin) z) :: (PDEXIT n_next PCSREJECT) :: pdeclaration*, n_next) = $declaration_history_fold(S, $declaration_exit($declaration_enter(S_prefix[.REPORTING = z], n_next, (porigin)), n_next, PCSREJECT), (n, P)*, pdeclaration*, $(n_next + 1))
+def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration_entry :: (PDEXIT n_next PCSREJECT) :: pdeclaration*, n_next) = $declaration_history_fold(S, $declaration_exit($declaration_enter_at(S_prefix[.REPORTING = z], n_next, (porigin), z_precision), n_next, PCSREJECT), (n, P)*, pdeclaration*, $(n_next + 1))
+  -- if $declaration_entry_input(pdeclaration_entry, n_next) = ((porigin_site?, z, z_precision))
+  -- if porigin_site? = (porigin)
   -- if $declaration_compiler_at((n, P)*, n_next) = eps
   -- if $failed_source_at(S.FAILEDSOURCES, n_next) = (pfailedsource)
   -- if pfailedsource.SITE = porigin
   -- if $declaration_entry_binding(S, S_prefix, n_next, (porigin))
   -- if $declaration_service_available(S_prefix, (porigin))
-def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER n_next (porigin) z) :: pdeclaration_tail*, n_next) = $declaration_history_final(S, $declaration_enter(S_prefix[.REPORTING = z], n_next, (porigin)))
+def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration_entry :: pdeclaration_tail*, n_next) = $declaration_history_final(S, $declaration_enter_at(S_prefix[.REPORTING = z], n_next, (porigin), z_precision))
+  -- if $declaration_entry_input(pdeclaration_entry, n_next) = ((porigin_site?, z, z_precision))
+  -- if porigin_site? = (porigin)
   -- if pdeclaration_tail* = eps
   -- if S.COMPLETION = SOURCE_PENDING /\ S.REPORTING = z
   -- if $declaration_compiler_at((n, P)*, n_next) = eps /\ $failed_source_at(S.FAILEDSOURCES, n_next) = eps
   -- if $declaration_entry_binding(S, S_prefix, n_next, (porigin))
   -- if $declaration_service_available(S_prefix, (porigin))
-def $declaration_history_fold(S, S_prefix, (n, P)*, (PDENTER 0 eps z) :: (PDEXIT 0 (PCSMAINREJECT program)) :: pdeclaration_tail*, 0) = $declaration_history_final(S, S_prefix)
+def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration_entry :: (PDEXIT 0 (PCSMAINREJECT program)) :: pdeclaration_tail*, 0) = $declaration_history_final(S, S_prefix)
+  -- if $declaration_entry_input(pdeclaration_entry, 0) = ((eps, z, z_precision))
   -- if pdeclaration_tail* = eps
   -- if S_prefix.DECLARATIONS = eps /\ S.SOURCES = eps /\ S.FAILEDSOURCES = eps /\ S.CLASSES = eps /\ S.FUNCTIONS = eps /\ S.CLOSURETEMPLATES = eps /\ S.CODE = eps /\ S.POOLS = eps
   -- if S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.EVALCONTEXTS = eps /\ S.FILECONTEXTS = eps /\ S.EVALBINDINGS = eps /\ S.FILEBINDINGS = eps /\ S.SERVICELEFT = eps

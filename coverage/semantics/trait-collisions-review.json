@@ -1,7 +1,7 @@
 {
   "version": 1,
   "target": "PHP8.5.10 CLI NTS64",
-  "status": "Independently accepted recording, private-final ordering, successful dependency caches and first-failure Error checkpoints; wider trait semantics remain partial.",
+  "status": "Independently accepted recording, private-final ordering, successful dependency caches and first-failure/cyclic Error checkpoints; wider trait semantics remain partial.",
   "implementation": "spec/semantics/259-trait-data-collisions.watsup",
   "semantic_revision": "c7f02b253f6d284e47ed8b6a51efbac1eb8c3f2a",
   "scope": [
@@ -114,7 +114,6 @@
   },
   "required_next": [
     "Failed-link dependency-cache disposition and object-bearing dependent values; module266 supports successful scalar/string/array fills.",
-    "Cyclic collision lookup errors and object-bearing dependencies; ordinary first-failure expression errors are recorded in the separate274 checkpoint.",
     "Readonly storage and the remaining core trait/enum obligations."
   ],
   "raw_policy": "Large originals are outside Git. Other effectful/dependency catalogue members are native preparation, not agreement; changed deferred coercion checks are explicit affected comparisons.",
@@ -517,9 +516,85 @@
       "provenance": "Reviewer .tools/trait274-error-review/identity.json and held-primary raw report/runner command/status retain current rebuilt --sl runner identity and both original preparation/replay failures."
     },
     "required_next": [
-      "Cyclic dependent lookup errors.",
       "Failed linking after successful dependency fills and object-bearing dependency values.",
       "Readonly storage and remaining trait/enum obligations."
+    ]
+  },
+  "cycle_continuation": {
+    "status": "Independently accepted direct and two-hop copied lookup cycle errors; failed-cache and object-bearing dependencies remain required.",
+    "implementation": "spec/semantics/274-trait-composition-errors.watsup",
+    "semantic_revision": "0875c3d7c6ad6f665dc0165d791b8225894e266b",
+    "composition_revision": "e02b12bbaf401dfb0404a574a29a66d12a3bb132",
+    "author_root": "/home/user/workspace/php-spec/.tools/trait-collision-cycle-274",
+    "review_root": "/home/user/workspace/php-spec/.tools/introspection-trait-cycle-review-274",
+    "scope": "Source-authenticated visited lookup chains compare full imported constant IDs; direct and recursive later-dependency cycles use the default Error/fatal route without handler entry or retained cache/Throwable/scratch owners.",
+    "source": {
+      "unique_agreements": 2,
+      "php_error": 2,
+      "catalogue": "tests/semantics/trait_data_collision_cycle_review_cases.json",
+      "cuts": [
+        {
+          "revision": "e02b12bbaf401dfb0404a574a29a66d12a3bb132",
+          "raw": ".tools/method-runtime-87j0bvg0/report.json",
+          "count": 1,
+          "selection": "recursive-imported-constant",
+          "catalogue": "tests/semantics/trait_data_collision_error_function_review_cases.json",
+          "driver_exit": 0,
+          "inputs_stable": true
+        },
+        {
+          "revision": "08e022599af52a673703509dbf67778f03918845",
+          "raw": ".tools/method-runtime-jbm7ysv4/report.json",
+          "count": 1,
+          "selection": "recursive-imported-Y-Z-Z",
+          "driver_exit": 0,
+          "inputs_stable": true
+        }
+      ]
+    },
+    "state": {
+      "revision": "08e022599af52a673703509dbf67778f03918845",
+      "protocol": "tests/semantics/trait_collision_cycle_review_protocol.py",
+      "raw": ".tools/closure-call-protocol-5htxduvv/report.json",
+      "fixtures": 1,
+      "assertions": 87,
+      "driver_exit": 0,
+      "inputs_stable": true,
+      "result": "Genuine full Y/Z lookup chain rejects source/owner/visited-tail mutations and finishes with no cache or transient Error/trace/scratch owner."
+    },
+    "compiler": {
+      "revision": "e02b12bbaf401dfb0404a574a29a66d12a3bb132",
+      "modules": 262,
+      "jobs": 1,
+      "timeout_seconds": 120,
+      "cuts": [
+        [
+          "algo",
+          ".tools/trait274-algo-zqnz42em/report.json",
+          8067225
+        ],
+        [
+          "struct",
+          ".tools/trait274-struct-jy1m617j/report.json",
+          7663271
+        ]
+      ],
+      "result": "Complete exit0/empty stderr using unchanged local tools; no old Error/cache execution renewed."
+    },
+    "actual_parent": {
+      "revision": "c36f46e773db82782483fdbce2fd21954669ed0a",
+      "candidate": "0572ed779a7f4c3b459efb0eec6a6d2e08703cfe",
+      "modules": 263,
+      "result": "Independently accepted focused current271 preservation at0572: exact263 modules and parent callable authority remain intact; no new module or old semantic renewal."
+    },
+    "provenance": {
+      "author": ".tools/trait274-cycle-prep/tools.json",
+      "review": ".tools/trait274-cycle-review/identity.json",
+      "detail": "Exact environment, commands, local tools, exits and stable raw reports remain outside Git."
+    },
+    "required_next": [
+      "Failed-link dependency-cache disposition.",
+      "Object-bearing dependency values, readonly storage and remaining trait/enum obligations."
     ]
   }
 }
