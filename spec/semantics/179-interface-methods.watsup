@@ -194,6 +194,7 @@ def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinhe
 def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited_all*) = METHOD_UNSUPPORTED "internal interface method contract"
   -- if $ptlc(ptbytes) =/= $ptascii("stringable") /\ $ptlc(ptbytes) =/= $ptascii("throwable")
   -- if ~$useriter_builtin(ptbytes)
+  -- if $ptlc(ptbytes) =/= $ptascii("arrayaccess")
 def $pil_seen_throwable(S, eps) = false
 def $pil_seen_throwable(S, (PILBUILTIN ptbytes) :: pilref_tail*) = true
   -- if $ptlc(ptbytes) = $ptascii("throwable")
@@ -238,7 +239,7 @@ def $pil_stringable_method(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptas
 def $pil_contract_issue(S, pclassdesc) = pmethodissue
   -- if $pil_method_issue(S, pclassdesc) = pmethodissue
   -- if pmethodissue =/= METHOD_OK
-def $pil_contract_issue(S, pclassdesc) = $useriter_after_issue(S, pclassdesc, $pil_stringable_issue(S, pclassdesc))
+def $pil_contract_issue(S, pclassdesc) = $arrayaccess_after_issue(S, pclassdesc, $useriter_after_issue(S, pclassdesc, $pil_stringable_issue(S, pclassdesc)))
   -- if $pil_method_issue(S, pclassdesc) = METHOD_OK
 
 def $pil_methods_valid(S, eps) = true

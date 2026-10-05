@@ -60,7 +60,7 @@ def $iterator_notice_ref(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmeth
   -- if ~$iterator_notice_parent_has(S, pclassdesc, PILBUILTIN ptbytes)
   -- if $class_constant_interface_issue(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*) = METHOD_OK
   -- if $ptlc(ptbytes) = $ptascii("iterator")
-def $iterator_notice_ref(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, ppmethodinherited*) = $iterator_notice_members(S, pclassdesc, $useriter_members(), $pil_proto_source(S, porigin, |S.CLASSES|), ppmethodinherited*)
+def $iterator_notice_ref(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*, ppmethodinherited*) = $iterator_notice_join($iterator_notice_members(S, pclassdesc, $useriter_members(), $pil_proto_source(S, porigin, |S.CLASSES|), ppmethodinherited*), $arrayaccess_notice_source(S, pclassdesc, porigin, ppmethodinherited*))
   -- if ~$iterator_notice_parent_has(S, pclassdesc, PILSOURCE ptbytes porigin)
   -- if $class_constant_interface_issue(S, pclassdesc, PILSOURCE ptbytes porigin, pilref_seen*) = METHOD_OK
   -- if $pil_method_items(S, pclassdesc, $pil_proto_source(S, porigin, |S.CLASSES|), ppmethodinherited*) = METHOD_OK
@@ -74,10 +74,10 @@ def $iterator_notice_refs(S, pclassdesc, pilref_seen*, pilref :: pilref_tail*, p
   -- if $pil_order_checked(S, pclassdesc, pilref, pilref_seen*, ppmethodinherited*) =/= METHOD_OK
 
 dec $iterator_notice_plan(pstate, pclassdesc) : pdeclnoticeplan
-def $iterator_notice_plan(S, pclassdesc) = $iterator_notice_join($iterator_notice_parent(S, pclassdesc, ppmethodinherited*), $iterator_notice_refs(S, pclassdesc, eps, pilref*, ppmethodinherited*))
+def $iterator_notice_plan(S, pclassdesc) = $iterator_notice_join($iterator_notice_join($iterator_notice_parent(S, pclassdesc, ppmethodinherited*), $arrayaccess_notice_parent(S, pclassdesc, ppmethodinherited*)), $iterator_notice_refs(S, pclassdesc, eps, pilref*, ppmethodinherited*))
   -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = (PILTARGETS pilref*)
   -- if ppmethodinherited* = $ppmethod_own(pclassdesc, pclassdesc.METHODS) ++ $pil_proto_refs(S, pilref*, |S.CLASSES|)
-def $iterator_notice_plan(S, pclassdesc) = $iterator_notice_parent(S, pclassdesc, $ppmethod_own(pclassdesc, pclassdesc.METHODS))
+def $iterator_notice_plan(S, pclassdesc) = $iterator_notice_join($iterator_notice_parent(S, pclassdesc, $ppmethod_own(pclassdesc, pclassdesc.METHODS)), $arrayaccess_notice_parent(S, pclassdesc, $ppmethod_own(pclassdesc, pclassdesc.METHODS)))
   -- if $pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = eps
 
 dec $iterator_notice_items(pdeclnotice*) : pdeclnoticeitem*

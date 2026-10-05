@@ -77,6 +77,7 @@ def $pil_abs_refs(S, pclassdesc_child, (PILBUILTIN ptbytes) :: pilref_tail*, n, 
 def $pil_abs_refs(S, pclassdesc_child, (PILBUILTIN ptbytes) :: pilref_tail*, n, pilabstract*) = $pil_abs_refs(S, pclassdesc_child, pilref_tail*, n, pilabstract*)
   -- if ($ptlc(ptbytes) =/= $ptascii("stringable") \/ (~$pil_abs_seen(pilabstract*, $ptascii("__toString")) /\ $pil_throwable_allowed(S, pclassdesc_child)))
   -- if $ptlc(ptbytes) =/= $ptascii("iterator")
+  -- if $ptlc(ptbytes) =/= $ptascii("arrayaccess")
 
 def $pil_abs_names(eps, n) = eps
 def $pil_abs_names(pilabstract :: pilabstract_tail*, 0) = $ptascii("...")
