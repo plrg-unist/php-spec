@@ -177,7 +177,7 @@ S_roots = $prune_allocations(S_done[.ENV = eps][.GLOBALTABLE = eps][.RESULT = KN
 (HOBJECT n_late) <- S_roots.ALLOCATIONS
 S_roots.USERCONSTANTS = S_done.USERCONSTANTS
 $user_constants_valid(S_roots, S_roots.USERCONSTANTS)
-$task_nodes(GLOBAL_CONSTANT_DUPLICATE porigin_decl PNULL PVSCALAR n_done [pconstantfact_before, pconstantfact_after] 1) = eps
+$task_nodes(GLOBAL_CONSTANT_DUPLICATE porigin_decl PNULL PVSCALAR n_done ([pconstantfact_before, pconstantfact_after]) 1) = eps
 ''')
 CHECKS['global-constant-prebind-throw-retry']=premises(r'''
 ptbytes_value = $user_constant_key($ptascii("GlobalPreBindRetryScope") ++ [92] ++ $ptascii("VALUE"))
