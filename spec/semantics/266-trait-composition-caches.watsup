@@ -42,6 +42,7 @@ dec $trait_cache_object_type_error(pstate) : bool
 dec $trait_cache_object_resume(pfstate, pcpath, pclassconstantdesc, int, pstate, pstate, ptraitcachecause) : pfstate
 dec $trait_cache_object_scalar_error(pcompletion) : bool
 dec $trait_cache_object_failure_context(pstate, pstate) : pstate
+dec $trait_collision_trace(pfstate, porigin, int) : ptraceframe*
 dec $trait_cache_object_demand(pfstate, pcpath, pstate, pstate, ptraitcachecause) : (porigin, int, ptraceframe*)?
 dec $trait_cache_object_exception(pfstate, pcpath, pstate, pstate, ptraitcachecause) : (pstate, ptraceframe*)
 dec $trait_cache_object_exception_at(pstate, pstate, (porigin, int, ptraceframe*)?) : (pstate, ptraceframe*)
