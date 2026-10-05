@@ -333,13 +333,13 @@ def $config_object(POBJECT n) = true
 def $config_object(pvalue) = false -- otherwise
 def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe, ptraceframe_invoke]
   -- if $config_method_receiver(S, pconfigcall)
-  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND)
+  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND)
   -- if pvalue_original* = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
   -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue_original*, 0), HASARGS true}
 def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe]
   -- if ~$config_method_receiver(S, pconfigcall)
-  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND)
+  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 dec $config_error(pstate, pconfigcall, text, preqbytes) : pstate
 def $config_error(S, pconfigcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pconfigcall.SITE)], text, preqbytes, pconfigcall.LINE, $source_trace_prefixed(S, $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))))
@@ -482,8 +482,10 @@ dec $config_ini_kind(pintrinsic) : bool
 def $config_ini_kind(pintrinsic) = ($config_ini_unary_kind(pintrinsic) \/ pintrinsic = INTRINSIC_INI_SET)
 dec $config_receive(pstate, pconfigcall) : pstate
 def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects exactly ") ++ $decimal_integer($config_required(pconfigcall.KIND)) ++ $ptascii(" argument") ++ $config_plural($config_required(pconfigcall.KIND)) ++ $ptascii(", ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
+  -- if ~$fiber_kind(pconfigcall.KIND)
   -- if |pconfigcall.SENT| =/= $config_required(pconfigcall.KIND)
 def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #") ++ $decimal_integer($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(pconfigcall.KIND, n) ++ $ptascii(") not passed"))
+  -- if ~$fiber_kind(pconfigcall.KIND)
   -- if |pconfigcall.SENT| = $config_required(pconfigcall.KIND)
   -- if $config_missing(pconfigcall.SENT, 0) = (n)
 ;; Getter values are raw INI strings, independent of effective file-path prefixes.
@@ -681,7 +683,7 @@ def $config_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError",
   -- if ~$config_object(pvalue)
   -- if ~(pvalue = PNULL /\ ~$config_strict(S, pconfigcall))
 def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"]
-  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND)
+  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND)
   -- if S.FILEINCLUDEPATH = eps
   -- if ~$config_ini_kind(pconfigcall.KIND)
 def $config_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "include_path intrinsic operand outside checked scalar domain"] -- otherwise
@@ -721,14 +723,14 @@ rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
   -- if ~$error_api_kind(pconfigcall.KIND)
-  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND)
+  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND)
   -- if S.FILEINCLUDEPATH =/= eps \/ $config_ini_kind(pconfigcall.KIND)
   -- if ~$config_string_launch(S, pconfigcall)
 rule PhpStep/config-invoke-no-file: S ~> S[.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
   -- if ~$error_api_kind(pconfigcall.KIND)
-  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND)
+  -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND)
   -- if S.FILEINCLUDEPATH = eps
   -- if ~$config_ini_kind(pconfigcall.KIND)
 rule PhpStep/config-invoke-unbound: S ~> S[.COMPLETION = UNSUPPORTED "include_path intrinsic selection has no source binding"]

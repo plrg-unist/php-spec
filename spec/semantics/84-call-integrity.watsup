@@ -295,9 +295,9 @@ def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
   -- if pcallcontext.PARAMS = (psparam.NAME)*
   -- if preqbytes* = pfunction.CVS
-  -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
-  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $interpolation_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $default_internal_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
-  -- if ~$default_ctor_context_kind(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext)
+  -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext) \/ $fiber_context_valid(S, pcallcontext)
+  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $interpolation_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $default_internal_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext) \/ $fiber_context_valid(S, pcallcontext)
+  -- if ~$default_ctor_context_kind(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext) \/ $fiber_context_valid(S, pcallcontext)
   -- if ~$destructor_context_kind(S, pcallcontext) \/ $destructor_context_valid(S, pcallcontext)
   -- if $call_arity_valid(S, pcallcontext)
   -- if $wrapper_context_valid(S, pcallcontext)
@@ -349,9 +349,10 @@ dec $error_handlers_valid(pstate, perrorhandler*) : bool
 dec $exception_handlers_valid(pstate, pvalue?*) : bool
 dec $eval_compile_owners_valid(pstate) : bool
 dec $call_descriptors_valid(pstate) : bool
+dec $call_descriptors_local_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
 ;; Class history authenticates these source images and the exact function table.
-def $call_descriptors_valid(S) = true
+def $call_descriptors_local_valid(S) = true
   -- if $startup_state_valid(S)
   -- if $display_state_valid(S)
   -- if $object_tables_valid(S)
@@ -402,7 +403,7 @@ def $call_descriptors_valid(S) = true
   -- if $default_caches_valid(S, S.DEFAULTCACHE)
   -- if $static_cells_valid(S, S.STATICS)
   -- if $closure_state_valid(S)
-def $call_descriptors_valid(S) = false -- otherwise
+def $call_descriptors_local_valid(S) = false -- otherwise
 
 def $call_entry_check(S) = S -- if S.COMPLETION =/= NORMAL
 def $call_entry_check(S) = S -- if S.COMPLETION = NORMAL /\ $scope_codes_valid(S, S.CODE) /\ $call_descriptors_valid(S)

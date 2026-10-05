@@ -211,6 +211,7 @@ def $throwable_marker(ptask) = false -- otherwise
 rule PhpStep/throw-search-discard: S ~> $return_discard(S[.TODO = (THROW_SEARCH n) :: ptask_tail*], ptask)
   -- if S.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*
   -- if ~$throwable_marker(ptask)
+  -- if ~$fiber_marker(ptask)
   -- if ~$eval_end_marker(ptask)
   -- if ~$typed_return_throw_pending(S)
   -- if ~$shutdown_render_throw_pending(S)
