@@ -409,6 +409,8 @@ def $trait_cache_object_demand(F, pcpath, S, S_next, ptraitcachecause) = ((pfrec
   -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS [porigin_site], PREFIX |F.MEMORY.DECLARATIONS|, USERPREFIX |F.MEMORY.USERCONSTANTS|}
   -- if $trait_cache_cause_selected(F.MEMORY, ptraitcachecause) = (pclassconstantdesc)
   -- if $constant_callable_published(F.MEMORY.DECLARATIONS, pclassconstantdesc.OWNER)
+  -- if S.SOURCES = F.MEMORY.SOURCES /\ S.CODE = F.MEMORY.CODE /\ S.FILES = F.MEMORY.FILES
+  -- if S.CLASSES = F.MEMORY.CLASSES /\ S.CLASSNAMES = F.MEMORY.CLASSNAMES /\ S.DECLARATIONS = F.MEMORY.DECLARATIONS
   -- if $class_constant_active(S) /\ $trait_cache_object_type_error(S)
   -- if S.CLASSCONSTANTINIT = [pclassconstantcontext]
   -- if pclassconstantcontext.DECL = pclassconstantdesc.ORIGIN /\ pclassconstantcontext.ORIGIN = (porigin_site)
