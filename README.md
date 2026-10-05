@@ -173,7 +173,9 @@ deferred runtime class-link failures.
 IteratorAggregate, ArrayAccess and other Traversable consumers remain required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
-`getReturn` and value `foreach` retain real resumer scope and traces. Delegation,
+`getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and
+traces. Inputs survive initialization; exception injection preserves ordinary
+catch/finally execution and exception identity. Delegation,
 reference yields, further call forms and forced-close/destructor behavior remain
 required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
