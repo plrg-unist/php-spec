@@ -1,0 +1,55 @@
+{
+  "scope": "Native-only real public callable initializer exceptions: original expression Error, restored typed bind TypeError, nested completed cache survival, and independent array-key TypeError with a constant-expression frame. Zero model agreement credit.",
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; exact project baseline profile.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "public-fcc-initializer-error-after-created-closure",
+      "source": "<?php\nclass P{private static function f(){}public const Y=[self::f(...),E_STRICT,DOES_NOT_EXIST][0];}\ntrait T{public static $x=P::Y;}\nset_error_handler(function(){echo \"H;\";return true;});register_shutdown_function(function(){echo \"S;\";});echo \"PRE;\";\nclass C{use T;public static $x=P::Y;}\necho \"POST;\";\n",
+      "source_sha256": "7b476f3ea6c8ec1719dcbcf483efadaf0d201d465d1709bf92b91100f556818d",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1M7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAyCldhcm5pbmc6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIkRPRVNfTk9UX0VYSVNUIiBpbiB7RklMRX06MgpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDUpOiBbY29uc3RhbnQgZXhwcmVzc2lvbl0oKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMgpGYXRhbCBlcnJvcjogQyBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-object-dependency-266/.tools/trait-public-object-init-error-native266-n5jr8m_k/report.json",
+      "native_raw_sha256": "d14df832c5af0fcba626382687457031939b4c1c1de191cbc5235c8a56b94de7"
+    },
+    {
+      "id": "public-fcc-initializer-type-error-after-created-closure",
+      "source": "<?php\nclass P{private static function f(){}public const int Y=[self::f(...),E_STRICT][0];}\ntrait T{public static $x=P::Y;}\nset_error_handler(function(){echo \"H;\";return true;});register_shutdown_function(function(){echo \"S;\";});echo \"PRE;\";\nclass C{use T;public static $x=P::Y;}\necho \"POST;\";\n",
+      "source_sha256": "a18f90230ca1908e1ef66c41f04f98d8cdabf3b808e062004ceb6d5f8e797b7e",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1M7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAyCldhcm5pbmc6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBDbG9zdXJlIHRvIGNsYXNzIGNvbnN0YW50IFA6Olkgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9OjUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSA1CkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDUK",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-object-dependency-266/.tools/trait-public-object-init-error-native266-n5jr8m_k/report.json",
+      "native_raw_sha256": "e79f2ac3a742a2bf215b6b0dfe0cd052fea57b238a3a6074d6502cf989a31fc4"
+    },
+    {
+      "id": "public-nested-fcc-initializer-error-keeps-completed-closure-cache",
+      "source": "<?php\nclass P{private static function f(){}public const Z=[static function(){echo self::class,\":\",static::class,\";\";},E_STRICT][0];public const Y=[self::Z,self::f(...),DOES_NOT_EXIST][0];}\ntrait T{public static $x=P::Y;}\nset_error_handler(function(){echo \"H;\";return true;});register_shutdown_function(function(){echo \"S;\";(P::Z)();});echo \"PRE;\";\nclass C{use T;public static $x=P::Y;}\necho \"POST;\";\n",
+      "source_sha256": "86fef17c8b0a45d3dc3f07bf26eb3203966d80093b1b73ef013c96f4264da426",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1M7UDpQOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAyCldhcm5pbmc6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIkRPRVNfTk9UX0VYSVNUIiBpbiB7RklMRX06MgpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDUpOiBbY29uc3RhbnQgZXhwcmVzc2lvbl0oKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMgpGYXRhbCBlcnJvcjogQyBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-object-dependency-266/.tools/trait-public-object-nested-init-error-native266-fjt0y0wi/report.json",
+      "native_raw_sha256": "4ff1da125401fbd8dc355ad425b8c6d022b3fcfc7476afbb0c2460bb086b666a"
+    },
+    {
+      "id": "public-fcc-array-key-type-error-keeps-constant-expression-frame",
+      "source": "<?php\nclass P{private static function f(){}public const Y=[self::f(...),[]=>E_STRICT][0];}\ntrait T{public static $x=P::Y;}\nset_error_handler(function(){echo \"H;\";return true;});register_shutdown_function(function(){echo \"S;\";});echo \"PRE;\";\nclass C{use T;public static $x=P::Y;}\necho \"POST;\";\n",
+      "source_sha256": "a03e09c38b5c64683764dd142ce34cb0668fcad2a1f25ee1ae6f6145617fdf9c",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1M7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAyCldhcm5pbmc6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFjY2VzcyBvZmZzZXQgb2YgdHlwZSBhcnJheSBvbiBhcnJheSBpbiB7RklMRX06MgpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDUpOiBbY29uc3RhbnQgZXhwcmVzc2lvbl0oKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMgpGYXRhbCBlcnJvcjogQyBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-object-init-error-review-266/.tools/trait-public-object-arraykey-init-error-native266-3krnvv1h/report.json",
+      "native_raw_sha256": "0bfdf7f38daa05cd2a9d6ea7f3c8b9a0a68693c9f5e8d9f9f7087c81c6b2c359"
+    }
+  ]
+}
