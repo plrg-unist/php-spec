@@ -424,6 +424,7 @@ dec $constant_callable_array_flow(pstate, porigin, porigin, nat, phpType13*, (pk
 dec $constant_callable_flow_key(pstate, porigin, phpType5, int) : pkey?
 dec $constant_callable_array_flow_key(pstate, porigin, phpType5, int, porigin, nat) : pkey?
 dec $trait_cache_flow_context(pstate, porigin, porigin, nat) : (pclassconstantdesc, ptraitcachecause)?
+dec $trait_cache_dim_flow(pstate, porigin, porigin, pvalueclass, nat, porigin*) : bool
 
 def $constant_callable_cache_prefix(eps, porigin) = eps
 def $constant_callable_cache_event(CCCACHE porigin porigin_trigger n) = ((porigin, n))
@@ -461,6 +462,10 @@ def $constant_callable_flow_at(S, porigin, porigin_owner, pvalueclass, n_prefix,
   -- if $origin_node(S.SOURCES, porigin) = (pcnode)
   -- if ~$constant_callable_form(pcnode) /\ ~$constant_callable_array_source(pcnode) /\ ~$constant_callable_alias_source(pcnode)
   -- if $constant_callable_foldable(pvalueclass)
+def $constant_callable_flow_at(S, porigin, porigin_owner, PVCLOSURE n porigin_site, n_prefix, porigin_seen*) = $trait_cache_dim_flow(S, porigin, porigin_owner, PVCLOSURE n porigin_site, n_prefix, porigin_seen*)
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression_base expression_key metadata)
+  -- if $trait_cache_flow_context(S, porigin, porigin_owner, n_prefix) =/= eps
 def $constant_callable_flow_at(S, porigin, porigin_owner, pvalueclass, n_prefix, porigin_seen*) = false -- otherwise
 
 def $constant_callable_array_source(NExprArray (SEQUENCE phpType13*) metadata) = true
