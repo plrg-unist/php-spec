@@ -55,8 +55,9 @@ GLOBALS reference consumers. [Coalesce/unset249](SOURCE-DIMENSION-EDITS.md) adds
 direct CV-array consumers with genuine memo operands and distinct read/write lines.
 [Nested unset and append255](SOURCE-DIMENSION-TAILS.md) preserves intermediate
 protection and late RHS demand on defined CV-rooted arrays.
+[Scalar/missing reads282](SOURCE-CONTAINER-READS.md) now stage base/key-CV and
+offset warnings without a late array lookup, with distinct quiet terminal predicates.
 Wider memoized containers and broader GLOBALS RW remain required. Object/magic
-key conversion, earlier missing
-container producers, other string/scalar diagnostics and broader reference-result
-consumers remain core obligations. Paused returns and request snapshot evidence
-remain separate.
+key conversion, string/object/ArrayAccess reads, earlier writable memoized/unset/append
+containers and broader reference-result consumers remain core obligations.
+Paused returns and request snapshot evidence remain separate.

@@ -1,0 +1,31 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; project profile. Native-only REQUESTFATAL-after-fill continuation preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Published public dependency caches survive later endogenous Error; unpublished importing-class fills retire with failed class. No model agreement yet.",
+  "cases": [
+    {
+      "id": "published-cache-survives-later-endogenous-collision-error",
+      "source": "<?php\nclass P{public const Y=E_STRICT;}\ntrait T{public static $x=self::MISSING;public static function marker(){echo \"C;\";}}\nregister_shutdown_function(function(){echo \"P:\",P::Y;try{C::marker();}catch(Error $e){echo \":U;\";}});\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\necho \"PRE;\";\nclass C{use T;public static $x=P::Y;}\necho \"POST;\";\n",
+      "source_sha256": "f653603f6f6b224221d0084fce64c2d23430723a56139248da9759b23eecb75b",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1A6MjA0ODpVOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSA3Cldhcm5pbmc6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgc2VsZjo6TUlTU0lORyBpbiB7RklMRX06MwpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDcpOiBbY29uc3RhbnQgZXhwcmVzc2lvbl0oKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMwpGYXRhbCBlcnJvcjogQyBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSA3Cg==",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-failed-cache-requestfatal-274/.tools/trait-cache-after-error-native274-9fed823v/report.json",
+      "native_raw_sha256": "a4229f835926bb5dc18152e02395a73ce5103aca806421003b4ee4525f9526e9"
+    },
+    {
+      "id": "imported-cache-retired-after-later-endogenous-collision-error",
+      "source": "<?php\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\ntrait T{public const Y=E_STRICT;public static $x=self::MISSING;public static function marker(){echo \"C;\";}}\nregister_shutdown_function(function(){try{C::marker();}catch(Error $e){echo \"U;\";}});\necho \"PRE;\";\nclass C{use T;public static $x=self::Y;}\necho \"POST;\";\n",
+      "source_sha256": "4c8024010486e02ff7c97e9025de49bea1f4fb0c06e50eae1ed50904f7cf9c93",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1U7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSA2Cldhcm5pbmc6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgc2VsZjo6TUlTU0lORyBpbiB7RklMRX06MwpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDYpOiBbY29uc3RhbnQgZXhwcmVzc2lvbl0oKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgMwpGYXRhbCBlcnJvcjogQyBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSA2Cg==",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-failed-cache-requestfatal-274/.tools/trait-cache-after-error-native274-9fed823v/report.json",
+      "native_raw_sha256": "986fc5234590a4c5a1e86e476a3f2320f31aa9c60f3d7023133629275d46451f"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Ordinary source user constants
 
-Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array and certified Closure/FCC values are supported; the constant family and full core remain partial.
+Ordinary `const` declarations and reads use the checked source compiler and runtime for the pinned PHP 8.5.10 CLI profile. Scalar/array, certified Closure/FCC and bounded user-instance NEW values are supported; the constant family and full core remain partial.
 
 ## Declaration and lookup
 
@@ -14,7 +14,7 @@ The request-local table normalizes namespace prefixes to lowercase and preserves
 
 `USERCONSTANTS` entries own their ordinary runtime values. Constant reads, array copies, nested value calls, reference sends, and temporary foreach references use the existing heap and copy-on-write machinery. The table's roots are included across active and saved frames and abrupt cleanup. A failing initializer clears pending initializer work and scratch facts while retaining existing table and request roots.
 
-Allocation provenance is a separate non-owning tree: `PVSCALAR`, `PVSTRING bool`, `PVCLOSURE` with its exact object identity, or `PVARRAY bool` with ordered keyed child classes. The flag records the source-backed non-refcounted case needed by subsequent default-receive semantics. It is not inferred from final bytes or length. Both string flags can accompany empty bytes; an allocated array can be empty. The shared empty-array class requires empty topology.
+Allocation provenance is a separate non-owning tree: `PVSCALAR`, `PVSTRING bool`, `PVCLOSURE` with its exact object identity, nonfoldable `PVINSTANCE` with object identity and NEW source, or `PVARRAY bool` with ordered keyed child classes. The flag records the source-backed non-refcounted case needed by subsequent default-receive semantics. It is not inferred from final bytes or length. Both string flags can accompany empty bytes; an allocated array can be empty. The shared empty-array class requires empty topology. Generic `PVOBJECT` is not admitted as certified global NEW.
 
 Shared compiler facts export `PCCLASS` beside existing `PCONSTANT` values. The compiler records classes while folding actual child facts. Runtime `CONSTANT_OBSERVE` records the result of actual evaluation and propagates classes through the same selected children and operations. A fully stored initializer applies direct-root string interning at declaration installation; strings inside its arrays retain their own classes. Deferred initializers preserve operation and imported-value provenance. The allocation-class contract records the pinned scanner, literal-installation, cast, concatenation, bitwise, and array distinctions.
 
@@ -31,11 +31,34 @@ source transfer; array aliases retain existing object identity.
 
 Duplicate registration suspends through the genuine warning dispatcher. Its
 continuation owns the actual discarded candidate and captures the preceding
-constant-table prefix, so callback namespace shadows cannot change that alias
-lookup. Return or throw preserves the installed binding and releases the
-candidate. Raw-trait method capture similarly suspends before allocation; its
+constant-table prefix plus its completed alias-read facts. Return or throw
+preserves the installed binding and releases the candidate. Raw-trait method
+capture similarly suspends before allocation; its
 saved source/target/publication facts authenticate resumption. Receipt metadata
 adds no roots, and successful constants remain owners after local variables die.
+
+Each nonfoldable global alias read records its full consuming `NConst`, leaf
+source, selected donor declaration, allocation class and table prefix. The
+observer checks the actual result before minting this proof. Binding and later
+row validation use each read's captured prefix, bounded by the consuming row's
+preceding table or duplicate continuation's bind prefix. A callback may therefore
+shadow a name between two operands without changing the first selection. Arrays
+still copy their containers normally. Installed rows retain filtered nonowning
+read facts; failed evaluation clears scratch facts and retry selects afresh.
+
+Global NEW uses prepared constructor phases after class-table completion. It
+allocates the selected user instance, evaluates every argument even when no
+constructor exists, then checks constructor access. Named classes and self/parent
+selectors use the immutable declaration-entry scope; inherited file/eval entries
+retain their declaring Owner rather than the caller's forwarded Child class.
+
+`CONSTANTOBJECTS` records exact object, full `NConst`, NEW source, requested class
+and publication prefix without owning the object. An incomplete birth becomes
+complete only at the authentic ended no-constructor or returned constructor
+phase, with the same live object/result and no pending saved phase. Transfer
+requires that completed identity; changing mutable fields does not change its
+authority. A throwing constructor may leave an incomplete object genuinely owned
+through GLOBALS or a CV, but cannot install it as a completed constant value.
 
 Public source-state checks bind table names and declaration tasks to actual `NConst` origins and compiler descriptors. They check unique names, valid task indexes, initializer/bind/observer ordering, declaration context, exact source-derived pooled class facts, and value/class tag and ordered array topology. Metadata adds no heap owners.
 
@@ -57,8 +80,29 @@ retains exact profiles, failures and fixture recovery. Matching8.5.10 sources ar
 `zend_register_constant`: evaluate in the executing op-array scope, then register,
 and destroy a duplicate candidate only after its warning finishes.
 
-An alias evaluated before an initializer callback publishes a namespace shadow
-still needs its own immutable transfer continuation; this is immediate required
-work. Global NEW, wider object-producing initializers, remaining builtin constant
-values and `define`/`defined` remain open. Class/default and callable consumer
-families retain their separate inventory and evidence; no complete-core claim.
+Three further exact originals pass at9619d2f57. The maintained
+`global_constant_prebind_protocol.py` passes mixed90 and retry94 AL premises at
+4262f787e, including before/after selections, wrong donor/leaf/holder/result,
+consumer-prefix bounds, failed-unit transplants and candidate collection. Original
+compile and fixture failures retain zero credit; earlier nine/341 cuts are not
+renewed.
+
+Three global NEW originals pass at17c12b379. The maintained
+`global_constant_objects_protocol.py` retains argument103 at041ce1, inherited84
+at00578e and escaped-retry87 atbc44da (274 AL premises). These check real pending
+and saved phase owners, premature completion, full declaration/source/class/
+prefix/result mutations, mutable-field identity, immutable include/eval access
+and actual GLOBALTABLE-to-MAIN-ENV ownership. Original optional-tuple and restored
+MAIN fixture failures retain zero credit. Duplicate-candidate and argument-abort
+destructor originals remain uncredited until genuine eager release is available.
+A separate cold no-constructor source passes atd2fb and80 AL premises ata1e14a2b4
+check the pending instance table, true construction marker, warning order2→4,
+fresh incomplete allocation and sole installed-constant ownership. A further
+source1/81 AL premises at97dab9f8b check Error before target allocation/receipt/
+registration, the retained pending template and fresh full declaration/NEW
+identities on same-text eval retry. The earlier cold fixture's three
+elaboration stops and one slice-length execution failure remain zero-credit;
+no runtime rules or prior source/state gates changed. Internal and
+Throwable NEW, autoload, wider object-producing initializers, remaining builtin
+constant values and `define`/`defined` remain open. Class/default and callable
+consumer families retain their separate inventory and evidence; no complete-core claim.

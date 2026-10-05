@@ -1,3 +1,4 @@
+dec $ppgenerator_body(ppstate, pcpath, statement*) : ppstate
 dec $ppclosure_template(pfunction) : bool
 dec $ppdefault_parameter(ppstate, pcpath, nat) : ppstate
 dec $ppdefault_path(pcpath, nat) : pcpath
@@ -26,7 +27,7 @@ def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE 
   -- if $ppsupported_signature(pssignature)
   -- if psparam* = pssignature.PARAMETERS
   -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
-  -- if P_body = $ppstatements(P_header, pcpath ++ [PCFIELD 5], 0, statement*)
+  -- if P_body = $ppgenerator_body(P_header, pcpath ++ [PCFIELD 5], statement*)
 def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDEFAULTREQUEST pscontinuation) = $ppdefaults_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, statement*, metadata, pscontinuation[.DIAGNOSTICS = eps])
   -- if P.COMPLETION = PPCNORMAL
 

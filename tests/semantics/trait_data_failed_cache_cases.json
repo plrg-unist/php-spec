@@ -1,0 +1,31 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; project profile. Original hard-failure cache controls, zero model credit until execution.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Published scalar dependency persists into shutdown; failed importing-class array fill is retired by source-owned rollback. The latter source alone observes the fatal, with disposal checked by its reached state fixture.",
+  "cases": [
+    {
+      "id": "published-dependent-cache-survives-failed-trait-property-composition",
+      "source": "<?php\nclass P{public const Y=E_STRICT;}\ntrait T{public static $x=P::Y;}\nregister_shutdown_function(function(){echo \"P:\",P::Y;});\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\necho \"PRE;\";\nclass C{use T;public static $x=0;}\necho \"POST;\";\n",
+      "source_sha256": "e679f5f0b6e9583fd5bd6ddc53f9f87ee8cbc1fc7188b22dc21c7433762dde49",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1A6MjA0OA==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDcKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-collision-errors-270/.tools/trait-failed-cache-native274-g2wg67_b/report.json",
+      "native_raw_sha256": "4532f188bd71844e52c0221da3ab34d667aa8920fd0afd97d1fa3e8f15ae2822"
+    },
+    {
+      "id": "imported-array-dependency-fill-survives-later-strict-collision-fatal",
+      "source": "<?php\nset_error_handler(function($n,$m,$f,$l){echo \"H\",$l,\";\";return true;});\ntrait T{public const array Y=[E_STRICT=>\"X\"];public static array $x=self::Y;}\necho \"PRE;\";\nclass C{use T;public static array $x=[2048=>\"different\"];}\necho \"POST;\";\n",
+      "source_sha256": "bc80ddbb261c8515a0f24402e4e5e3c93b48fce5ef47c7b9da37588efc0a68d8",
+      "status": "php_error",
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-effects-review-259/.tools/trait-collision-array-failed-link-native259-zwmjqsti/report.json",
+      "native_raw_sha256": "9143cc8ffa8bc617befd890d3a8da2718819a558f83a27f630ee9ddd48ae39b5"
+    }
+  ]
+}

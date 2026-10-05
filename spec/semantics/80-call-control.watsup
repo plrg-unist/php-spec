@@ -111,13 +111,18 @@ def $bind_parameters(S, psparam :: psparam_tail*, (KNOWN pvalue) :: poperand*) =
 def $bind_parameters(S, psparam :: psparam_tail*, (REFERENCE n) :: poperand*) = $bind_parameters($bind_reference(S[.CELL = n], psparam.NAME), psparam_tail*, poperand*)
   -- if psparam.BYREF
 dec $function_tasks(pstate, pfunction) : ptask*
-def $function_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$typed_fallthrough(pfunction)]
+dec $function_body_tasks(pstate, pfunction) : ptask*
+dec $function_fallthrough(pstate, pfunction) : ptask
+dec $function_generator(pstate, pfunction) : bool
+dec $generator_active(pstate) : bool
+dec $generator_return(pstate, poperand) : pstate
+def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
   -- if pfunction.ORIGIN = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
-def $function_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$typed_fallthrough(pfunction)]
+def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
   -- if pfunction.ORIGIN = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
-def $function_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$typed_fallthrough(pfunction)]
+def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
   -- if pfunction.ORIGIN = TRAIT_ORIGIN porigin_owner porigin_source ptbytes
   -- if $origin_source(porigin_source) = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, porigin_source) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
@@ -171,16 +176,21 @@ rule PhpStep/return-value-abrupt: S ~> S_value
   -- if ~$typed_return_resume_pending(S, z)
   -- if S_value = $typed_return_value(S, z)
   -- if S_value.COMPLETION =/= NORMAL
+dec $generator_loop_remove(piterator*, pgeneratorloop?) : piterator*
 dec $return_discard(pstate, ptask) : pstate
 def $return_discard(S, ORIGIN_RETURN porigin?) = S[.ORIGIN = porigin?]
 def $return_discard(S, FOREACH_NEXT n pnode statement porigin? z) = S[.ITERATORS = $iterator_remove(S.ITERATORS, n)][.ORIGIN = porigin?]
+def $return_discard(S, GENERATOR_NEXT pgeneratorop) = S[.ITERATORS = $generator_loop_remove(S.ITERATORS, pgeneratorop.LOOP)][.ORIGIN = (pgeneratorop.SITE)]
 def $return_discard(S, ptask) = S -- otherwise
 dec $return_step(pstate, poperand, porigin?, ptask*) : pstate
 def $return_step(S, poperand, porigin_source?, ptask :: ptask_tail*) = $return_discard(S[.TODO = (RETURN_UNWIND poperand porigin_source?) :: ptask_tail*], ptask)
   -- if ~$finally_transfer_marker(S, ptask)
   -- if ~$eval_end_marker(ptask)
+def $return_step(S, poperand, porigin_source?, eps) = $generator_return(S, poperand)
+  -- if $generator_active(S)
 def $return_step(S, poperand, porigin_source?, eps) = $restore_frame(S[.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
   -- if S.FRAMES =/= eps
+  -- if ~$generator_active(S)
 def $return_step(S, poperand, porigin_source?, eps) = S[.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps]
   -- if S.FRAMES = eps
 rule PhpStep/return-unwind: S ~> $return_step(S, poperand, porigin_source?, ptask_tail*)

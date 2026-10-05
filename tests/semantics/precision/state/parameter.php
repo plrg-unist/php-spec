@@ -1,0 +1,1 @@
+<?php function precisionDefaultNotice(){ini_set("precision","1tail");return true;} set_error_handler("precisionDefaultNotice"); function precisionDefault($x=E_STRICT . 12.3456789){echo $x;} precisionDefault();

@@ -1,6 +1,6 @@
 {
   "target": "PHP8.5.10 CLI NTS64, sole project-local oracle; baseline profile30719",
-  "scope": "Deferred scalar/array and certified Closure/FCC static defaults, class-owned instance templates and global const values; partial core milestone, wider object/default/constant producers and consumers remain required.",
+  "scope": "Deferred scalar/array and certified Closure/FCC static defaults, class-owned instance templates and global const values including bounded user-instance NEW; partial core milestone, wider object/default/constant producers and consumers remain required.",
   "implementation_commit": "293a764404cd83cc91569828bf6a56c081464e74",
   "implementation": [
     "spec/semantics/219-deferred-static-defaults.watsup",
@@ -16,7 +16,8 @@
     "spec/semantics/252-object-property-defaults.watsup",
     "spec/semantics/263-property-callable-creation.watsup",
     "spec/semantics/265-trait-constant-callables.watsup",
-    "spec/semantics/271-global-constant-callables.watsup"
+    "spec/semantics/271-global-constant-callables.watsup",
+    "spec/semantics/283-global-constant-objects.watsup"
   ],
   "contracts": [
     "Declaring scope; strict types with int-to-float promotion.",
@@ -40,7 +41,9 @@
     "Shared trait-constant FCC ASTs retain the first authenticated private method/global function target after partial failure. Named/method receipts keep current full declaration prefixes; METHOD captures select fresh called classes, while REAL constant Closures use their own declaring owner. Copied METHOD child evidence remains nonowning and ordinary ancestry stays exact.",
     "Global const static/no-use REAL Closure and NAMED/METHOD FCC values evaluate before registration. REAL lexical/called scope uses the immutable main/file/eval entry class, never the caller receiver or forwarded called class; NAMED functions remain unscoped.",
     "Global callable receipts authenticate full NConst/initializer/source-entry/publication and actual value/class flow. USERCONSTANTS own successful values; receipts and discarded-candidate metadata add no owners.",
-    "Duplicate registration retains its actual candidate until the warning finishes or unwinds. The continuation uses the captured USERCONSTANTS prefix, preserves the original binding and discards only the candidate. Raw-trait METHOD notices precede allocation and capture exact resume source/target/prefix."
+    "Duplicate registration retains its actual candidate until the warning finishes or unwinds. The continuation uses the captured USERCONSTANTS prefix, preserves the original binding and discards only the candidate. Raw-trait METHOD notices precede allocation and capture exact resume source/target/prefix.",
+    "Global const NEW allocates the requested user instance, evaluates all arguments including ignored no-constructor arguments, then checks constructor access using immutable main/file/eval entry scope.",
+    "Nonfoldable PVINSTANCE correlates the exact object and NEW source. Nonowning CONSTANTOBJECTS birth receipts become complete only at the genuine ended/returned phase; incomplete escaped allocations cannot transfer as completed constants, and mutable fields do not affect identity authority."
   ],
   "engine_symbols": [
     "zend_compile_prop_decl",
@@ -57,7 +60,8 @@
     "zend_do_traits_constant_binding",
     "zend_compile_const_decl",
     "ZEND_DECLARE_CONST",
-    "zend_register_constant"
+    "zend_register_constant",
+    "zend_ast_evaluate_ex: ZEND_AST_NEW"
   ],
   "artifacts": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults",
   "runtime": {
@@ -150,11 +154,12 @@
     "object_defaults": "compiler_review_14 independently accepted object/source/copy/ownership/clone authority, original nine full tuples and six335 guards at retained cuts, then nonrecursive cached-target/fresh-called/publication split, exact actual238 source and98 raw guards ata502. Inputs stable and original failures retained; no prior renewal.",
     "property_method_children": "compiler_review_14 independently accepted the historical/live authority split, exact source/fixture/recorder and two publicCLI tuples ataa899, static105 premises at9ae61 and default65 atb8d10. Original fixture stops remain zero-credit; earlier evidence retained without replay.",
     "trait_constant_callables": "compiler_review_14 independently accepted exact nonrecursive first/current receipt authority, source/fixture/runner and three raw publicCLI tuples plus58+54 AL premises at4e2d. Byte-identical122 premises passed production SL at733826c23 with det:true/cache:false and unchanged120s cap. AL timeouts/localizers retain zero-credit; earlier evidence was not replayed.",
-    "global_constant_callables": "compiler_review_14 independently accepted exact source/receipt/entry/flow/warning design, nine raw publicCLI tuples at their separate 414cb8d/5d0b8b777/92ff193f9 cuts and seven341 AL guards at21b5bc39b. Actual c01c parent/source preservation accepted; introduced274 preservation reviewed separately, without earlier evidence renewal."
+    "global_constant_callables": "compiler_review_14 independently accepted exact source/receipt/entry/flow/warning design, nine raw publicCLI tuples at their separate 414cb8d/5d0b8b777/92ff193f9 cuts and seven341 AL guards at21b5bc39b. Actual c01c parent/source preservation accepted; introduced274 preservation reviewed separately, without earlier evidence renewal.",
+    "global_constant_prebind": "compiler_review_14 independently accepted the per-child source/lookup/consumer-prefix design, three exact raw publicCLI tuples at9619d2f57 and mixed90/retry94 AL guards at4262f787e. Runtime bytes are unchanged between the source and fixture cuts; historical nine/341 were not replayed.",
+    "global_constant_objects": "compiler_review_14 independently accepted prepared global NEW phase/scope/identity rules, three exact raw publicCLI tuples at17c12b379 and argument103/inherited84/retry87 AL guards at041ce1/00578e/bc44da. Runtime bytes remain unchanged across fixture-only corrections; original failures retain zero credit. Lifecycle originals remain uncredited follow-ons. Separate cold source1 atd2fb and AL80 ata1e14a2b4 are independently accepted with runtime unchanged; original fixture stops remain zero-credit. New cold throwing/fresh-retry source1 and AL81 at97dab are independently accepted with runtime unchanged."
   },
   "required_next": [
-    "Immediate global initializer alias-shadow continuation: retain a child alias evaluated before an E_STRICT callback that publishes a namespace shadow, rather than rechecking that child against the later table at first registration.",
-    "Global NEW, other object-producing constant forms and wider callable/transfer consumers; remaining builtin constant values and define/defined protocols.",
+    "Global NEW eager duplicate/argument-abort destructor release; internal/Throwable/autoload and wider object-producing constant forms, remaining builtin constant values and define/defined protocols.",
     "Compiled/named keyword NEW now uses exact cached trait-constant METHOD receipt authority in267; the separate source1/38 cut is recorded in named-keyword-new-review.json. Wider default/callable consumers remain required.",
     "Other object-bearing default expression producers, remaining constructor/default consumers and arbitrary object transfers.",
     "Wider retained reference/update and transformed callable creation consumers; ordinary method, captured/rebound, temporary-call and cached property METHOD child scope evidence is supported.",
@@ -559,6 +564,166 @@
       "Source model-v3 retains include interpreter failure from the nullable scope tuple cast; its timing agreement remains credited separately. Narrow cast repair reran affected/unrun seven only.",
       "Native-v2 reentry second-callback prediction was false; actual single protected E_STRICT callback and outer duplicate warning retained unchanged."
     ],
-    "credit": "Nine new publicCLI SL agreements plus341 AL premises. Pre-bind alias-shadow and global NEW/wider producers remain required; no complete core claim or historical evidence renewal."
+    "credit": "Nine publicCLI SL agreements plus341 AL premises retain their original cuts. The pre-bind alias-shadow obligation is closed separately below; global NEW/wider producers remain required, with no complete-core claim or historical evidence renewal."
+  },
+  "global_constant_prebind_validation": {
+    "result": "PASS3 exact native/publicCLI normal tuples and two184 source-derived AL premises; distinct source and state cutoffs.",
+    "tested_revisions": {
+      "source3": "9619d2f57d79e41afbb3f2c45abb216bec2c8bdf",
+      "AL_mixed90_retry94": "4262f787e27e6a72f227c25f0285140799515776"
+    },
+    "scope": "First registration retains an alias read before a callback publishes a namespace shadow; mixed operands select global then local donors independently; throwing publication clears failed scratch/candidate ownership and retry reads the new shadow.",
+    "implementation": "Optional lookup facts correlate exact consuming NConst, source leaf, donor full declaration, class and captured USERCONSTANTS prefix. Installed rows and duplicate continuations retain filtered READS, bounded by their preceding/captured table. Array container copies remain ordinary; proof metadata owns no values.",
+    "reports": [
+      "reviewer14-global-constant-prebind-native-v1/report.json",
+      "global-constant-prebind-model-v1/report.json",
+      "global-constant-prebind-model-v2/report.json",
+      "global-constant-prebind-model-v3/report.json",
+      "global-constant-prebind-state-model-v1/report.json",
+      "global-constant-prebind-state-model-v2/report.json",
+      "global-constant-prebind-state-model-v3/report.json"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/global-constant-prebind-model-v3/run.py",
+      "python3 .tools/deferred-static-defaults/global-constant-prebind-state-model-v3/run.py"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "profile": "Full baseline30719; pinned project-local PHP8.5.10 CLI NTS64 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398. Existing237-capable adapter and AL runner reused; no rebuild claim.",
+    "runtime": {
+      "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "limits": "Serial publicCLI100000 steps/45s, host55s; AL guards120s, jobs1; det:true/cache:false.",
+    "completion": "All three publicCLI tuples are accepted/checked program/normal, null reason/diagnostic and exact full native exits/streams. Both AL guards return exactly true newline with empty stderr, process+cleanup0, groups empty and watched inputs unchanged.",
+    "published_fixture": "tests/semantics/global_constant_prebind_protocol.py; exact mixed/retry originals with parser-only eval service, prepared-v3 90+94=184. Checks donor/leaf/holder/result, future-prefix and failed-unit transplants, genuine constant roots and naturally discarded candidates.",
+    "preserved_failures": [
+      "Source model-v1 parse-only inline lookup PREFIX length; model-v2 compile-only forward declaration ordering. Both retain zero source execution credit.",
+      "State model-v1/v2 parse-only unparenthesized PVARRAY/task sequence arguments; same guard semantics corrected in prepared-v3. Both retain zero state credit."
+    ],
+    "credit": "Fresh3 source agreements and184 AL premises close this bounded callback-selection lane. Prior nine/341 retain their historical cuts; global NEW/wider object producers, remaining builtin values and define/defined remain required."
+  },
+  "global_constant_object_validation": {
+    "result": "PASS3 exact native/publicCLI normal tuples and three source-derived AL programs/274 premises; initial user-INSTANCE lane, separate source/state cuts.",
+    "tested_revisions": {
+      "source3": "17c12b3794da3fa77569e7ccbddaf07a9c04a6f9",
+      "AL_argument103": "041ce1f3bbd0a1071ce9a77d57f19dc13bcb3032",
+      "AL_inherited84": "00578e7065ba75a467c0ba5266d5da97f18719e1",
+      "AL_escaped_retry87": "bc44da2b567bfcfbc1757040f8d5ba02543f2c54"
+    },
+    "scope": "Named plain user INSTANCE constructors/no-constructor arguments, argument-before-private-access errors, inherited self/parent file/eval entry scope, genuine escaped incomplete allocation and fresh successful retry.",
+    "implementation": "Prepared227 phases authenticate allocation and complete only the same live object after all arguments and constructor return. CONSTANTOBJECTS retain full NConst/NEW/class/publication identity without adding roots; PVINSTANCE is nonfoldable, PVOBJECT remains rejected, and ordinary Closure/per-read transfer paths stay exact.",
+    "reports": [
+      "reviewer14-global-new-native-v1/report.json",
+      "reviewer14-global-new-native-v2/report.json",
+      "global-new-model-v1/report.json",
+      "global-new-state-model-v1/report.json",
+      "global-new-state-localize-v1/report.json",
+      "global-new-state-model-v2/report.json",
+      "global-new-state-model-v3/report.json"
+    ],
+    "commands": [
+      "python3 .tools/deferred-static-defaults/global-new-model-v1/run.py",
+      "python3 .tools/deferred-static-defaults/global-new-state-model-v1/run.py",
+      "python3 .tools/deferred-static-defaults/global-new-state-model-v2/run.py",
+      "python3 .tools/deferred-static-defaults/global-new-state-model-v3/run.py"
+    ],
+    "environment": {
+      "PATH": "/usr/bin:/bin",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "profile": "Full baseline30719; sole pinned project-local PHP8.5.10 CLI NTS64 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398.",
+    "runtime": {
+      "adapter_sha256": "1d7cebf175b60a6e2a534460ec2c4aff206cdd901e34f35f959041a49f5ac2f9",
+      "adapter_provision": "Reused accepted272 precision-capable binary from include-dev-14-precision, built atd0288bf5689520cc8de4f4f27a66d001a3ede48c; adapter/main.ml and wire.ml source-equivalent, no fresh build claim.",
+      "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "limits": "Serial publicCLI100000 steps/45s, host55s; default AL guards120s, jobs1, det:true/cache:false.",
+    "completion": "Credited publicCLI rows are accepted/checked program/normal with null reason/diagnostic and exact full native exits/streams. Credited103/84/87 AL guards return exactly true newline, empty stderr, process+cleanup0/groups empty and watched inputs unchanged. Reports with original failed phases retain those phases rather than blanket group credit.",
+    "native_selection": "Select native-v1 argument-access and inherited-entry rows plus corrected native-v2 retry. Native-v1 overall false is retained because the original fourth fixture used a global escaped CV that vanished with its GLOBALS key; that erroneous row receives no model agreement credit.",
+    "published_fixture": "tests/semantics/global_constant_objects_protocol.py; exact three originals and finite child, parser-only file/eval services.103/84/87 guard premises check real pending/saved phase owners, premature COMPLETE, foreign object/fullDECL/SITE/class/prefix/RESULT, mutable-field identity, immutable Owner-versus-Child permission and actual GLOBALTABLE-to-MAIN-ENV escape/retirement.",
+    "preserved_failures": [
+      "State-v1 inherited78 AL upcast assertion interp.ml:485, localized at the inline nullable tuple. Explicit optional bindings preserve the same scope/fullDECL checks in inherited84; no PHP discrepancy or semantic correction.",
+      "State-v2 retry81 required GLOBALTABLE Some after restore_frame_raw restored MAIN ENV. Retry87 observes the authentic ctor GLOBALTABLE before unwind and the same cell/object in restored MAIN ENV, then the distinct held CV; runtime unchanged.",
+      "Native-v1 fourth holding-CV error and warnings remain in the original report; only corrected native-v2 retry is credited."
+    ],
+    "required_followons": [
+      {
+        "source": "reviewer14-global-new-native-v1/global-new-duplicate-cleanup.php",
+        "source_sha256": "23e56c23532b2d1cbe66feac84c03c64743a4a62d909474bcf9b4b659c8e80f1",
+        "native_stdout": "C1:7:C2:9:W2:D2:1:1",
+        "model_credit": false,
+        "reason": "Duplicate candidate destructor requires genuine eager release270 after its accepted integration."
+      },
+      {
+        "source": "reviewer14-global-new-native-v3/global-new-argument-throw-cleanup.php",
+        "source_sha256": "707ed75b4a76f61ca542f7da1301097a0909993ad97148624236a547fea805f2",
+        "native_stdout": "W8192:D:F:U:W8192:N:F:U",
+        "model_credit": false,
+        "reason": "Global argument abort must run ctor/noctor candidate destructors through genuine eager release, without premature ctor-failed marking."
+      }
+    ],
+    "credit": "Initial three global NEW agreements and274 AL premises remain accepted at their separate cuts. Cold no-constructor success1/80 and failure-retry1/81 are accepted separately without runtime changes; no whole283/global NEW completeness claim. Frozen lifecycle originals, internal/Throwable/autoload and wider object producers remain required; earlier evidence is not replayed.",
+    "cold_table_validation": {
+      "result": "PASS1 exact native/publicCLI normal tuple and one source-derived AL program/80 premises; no runtime changes.",
+      "tested_revisions": {
+        "source1": "d2fb24a56352f19c049b07301435617536e3481a",
+        "AL80": "a1e14a2b444514a1c02fa2136c974765cc3a6c71"
+      },
+      "scope": "Cold plain user-instance no-constructor NEW: deferred instance-template warning at line2 precedes ignored argument warning at line4; genuine true CLASS_CONST_CONSTRUCT completes the table before allocation.",
+      "source_sha256": "0e2d9c49f9731aba4646e048246a6b736983210baf725f29ea87d5cd1e3e11bf",
+      "native_stdout": "8192:2;8192:4;2048",
+      "reports": [
+        "reviewer14-global-new-native-v4/report.json",
+        "global-new-cold-table-model-v1/report.json",
+        "global-new-cold-table-state-model-v1/report.json",
+        "global-new-cold-table-state-model-v2/report.json",
+        "global-new-cold-table-state-model-v3/report.json",
+        "global-new-cold-table-state-model-v4/report.json",
+        "global-new-cold-table-state-model-v5/report.json"
+      ],
+      "commands": [
+        "python3 .tools/deferred-static-defaults/global-new-cold-table-model-v1/run.py",
+        "python3 .tools/deferred-static-defaults/global-new-cold-table-state-model-v5/run.py"
+      ],
+      "profile_runtime_environment_limits": "Same pinned baseline30719/runtime/environment and serial source100000/45s/host55s, default AL120s/jobs1/det:true/cache:false limits as the initial283 validation above; accepted272 adapter reused without a new build claim.",
+      "published_fixture": "tests/semantics/global_constant_objects_protocol.py; appended exact native source and80 premises check pending template/full queue, completed true marker/line, no preallocation receipt, fresh incomplete candidate, premature COMPLETE rejection and sole USERCONSTANTS ownership after prune.",
+      "completion": "Source accepted/checked program/normal0 with exact native streams and null reason/diagnostic. AL80 returns exact true newline, empty stderr, process+cleanup0/groups empty, watched inputs unchanged (13.54s).",
+      "preserved_failures": [
+        "v1 elaboration: property descriptor bound inside a conjunction; sequential premises preserve the same layout check.",
+        "v2 elaboration: NEW arguments unbound inside concatenation; bind the exact source argument sequence first.",
+        "v3 elaboration: trailing task sequence unbound; bind the actual TODO suffix before the unchanged full queue equality.",
+        "v4 execution: second slice operand incorrectly used the end index; use remaining length without changing the full queue check. All four failures retain zero state credit."
+      ],
+      "credit": "Cold source1/state80 are new separate cuts. Initial3/274 and prior global callable/prebind evidence are unchanged; eager lifecycle/internal/Throwable/autoload/wider producers remain required."
+    },
+    "cold_retry_validation": {
+      "result": "PASS1 exact native/publicCLI normal tuple and one source-derived AL program/81 premises; no runtime changes or original failures.",
+      "tested_revision": "97dab9f8b51141aa004e881d3bb5520997e2abb2",
+      "scope": "Cold no-constructor NEW fails during its deferred instance template, before allocation or ignored arguments. After genuine late class publication, byte-identical eval retry uses a fresh unit/fullNConst/NEW SITE and completes the same pending template.",
+      "source_sha256": "64be7611716903cb87ad24fb215832f04781338cebddad0ecc43f2c7affef36a",
+      "native_stdout": "8192:2;F:U:8192:2;8192:1;2055",
+      "reports": [
+        "reviewer14-global-new-native-v5/report.json",
+        "global-new-cold-retry-model-v1/report.json",
+        "global-new-cold-retry-state-model-v1/report.json"
+      ],
+      "commands": [
+        "python3 .tools/deferred-static-defaults/global-new-cold-retry-model-v1/run.py",
+        "python3 .tools/deferred-static-defaults/global-new-cold-retry-state-model-v1/run.py"
+      ],
+      "profile_runtime_environment_limits": "Unchanged pinned baseline30719/runtime/environment and serial source100000/45s/host55s, default AL120s/jobs1/det:true/cache:false limits above; accepted272 adapter reused without a build claim.",
+      "published_fixture": "tests/semantics/global_constant_objects_protocol.py; one appended exact native source and81 premises. Failure allows genuine Error/trace arena objects while requiring no target INSTANCE, object receipt, fill event or constant binding; retry rejects old context/origin and cross-unit receipt fields and retains a sole installed USERCONSTANTS owner.",
+      "completion": "PublicCLI accepted/checked program/normal0, exact native full streams and null reason/diagnostic. AL81 exact true newline, empty stderr, process+cleanup0/groups empty, stable inputs (25.84s).",
+      "credit": "Only new source1/81 credited here. Initial3/274 and earlier cold1/80 retain separate cuts; eager lifecycle/internal/Throwable/autoload/wider producers remain required."
+    }
   }
 }

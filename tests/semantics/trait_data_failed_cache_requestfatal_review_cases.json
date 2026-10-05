@@ -1,0 +1,19 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; project profile; native-only REQUESTFATAL-after-cache preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Distinct published P-array cache and COW cleanup after real first-expression Error freezes the composition fatal. Native-only zero model credit.",
+  "cases": [
+    {
+      "id": "first-expression-error-after-public-array-fill-retains-cache-cow-and-no-class",
+      "source": "<?php\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\nclass P{public const array Y=[E_STRICT=>\"X\"];}\ntrait T{public static array $x=DOES_NOT_EXIST;public static function marker(){echo \"C;\";}}\nregister_shutdown_function(function(){\n $copy=P::Y;$copy[2048]=\"W\";echo \"P:\",P::Y[2048],\":\",$copy[2048],\";\";\n try{C::marker();}catch(Error $e){echo \"U;\";}\n});\necho \"PRE;\";\nclass C{use T;public static array $x=P::Y;}\necho \"POST;\";\n",
+      "source_sha256": "b8530616befdbcb5de7b1ae11e85e3f2ea10f78e4936ed0bff6719d9db4fe628",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1A6WDpXO1U7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCldhcm5pbmc6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIkRPRVNfTk9UX0VYSVNUIiBpbiB7RklMRX06MTAKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxMApGYXRhbCBlcnJvcjogQyBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxMAo=",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-failed-cache-review-274/.tools/trait-failed-public-array-error-native274-yzs7nlu9/report.json",
+      "native_raw_sha256": "3cfd6040ee42cc2d59716b8e19f0d961f98a06d016790c579a7145d8d220b209"
+    }
+  ]
+}

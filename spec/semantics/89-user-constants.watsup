@@ -10,8 +10,10 @@ dec $constant_received_class(pstate, porigin) : pvalueclass
 dec $constant_declaration(pstate, porigin) : (preqbytes, int)?
 dec $constant_initializer_valid(pstate, expression) : bool
 dec $global_constant_transfer_valid(pstate, porigin, pvalueclass, puserconstant*) : bool
+dec $global_constant_transfer_reads_valid(pstate, porigin, pvalueclass, puserconstant*, pconstantfact*) : bool
+dec $global_constant_reads(pstate, porigin) : pconstantfact*
 dec $global_constant_user_valid(pstate, puserconstant) : bool
-dec $global_constant_duplicate(pstate, porigin, preqbytes, pvalue, pvalueclass, int) : pstate
+dec $global_constant_duplicate(pstate, porigin, preqbytes, pvalue, pvalueclass, pconstantfact*, int) : pstate
 ;; Ordinary constant declarations activate after their initializer completes.
 dec $user_constant_key(preqbytes) : preqbytes
 def $user_constant_key(n*) = n* -- if ~(92 <- n*)
@@ -61,12 +63,12 @@ def $constant_declaration(S, PORIGIN n pcpath) = ((preqbytes, z))
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
 def $constant_declaration(S, porigin) = eps -- otherwise
 
-dec $constant_activate(pstate, porigin, preqbytes, pvalue, pvalueclass, int) : pstate
-def $constant_activate(S, porigin, preqbytes, pvalue, pvalueclass, z) = S[.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]]
+dec $constant_activate(pstate, porigin, preqbytes, pvalue, pvalueclass, pconstantfact*, int) : pstate
+def $constant_activate(S, porigin, preqbytes, pvalue, pvalueclass, pconstantfact_read*, z) = S[.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN porigin, VALUE pvalue, CLASS pvalueclass, READS pconstantfact_read*}]]
   -- if $source_constant_lookup(S, preqbytes) = eps
-def $constant_activate(S, porigin, preqbytes, pvalue, pvalueclass, z) = $global_constant_duplicate(S, porigin, preqbytes, pvalue, pvalueclass, z)
+def $constant_activate(S, porigin, preqbytes, pvalue, pvalueclass, pconstantfact_read*, z) = $global_constant_duplicate(S, porigin, preqbytes, pvalue, pvalueclass, pconstantfact_read*, z)
   -- if $source_constant_lookup(S, preqbytes) = (peval)
-rule PhpStep/constant-bind: S ~> $constant_activate(S_value[.CONSTCONTEXT = eps][.TODO = ptask_tail*][.RESULT = KNOWN PNULL], porigin, preqbytes, pvalue, $constant_received_class(S_value, porigin), z)
+rule PhpStep/constant-bind: S ~> $constant_activate(S_value[.CONSTCONTEXT = eps][.TODO = ptask_tail*][.RESULT = KNOWN PNULL], porigin, preqbytes, pvalue, $constant_received_class(S_value, porigin), $global_constant_reads(S_value, porigin), z)
   -- if S.TODO = (CONSTANT_BIND porigin) :: ptask_tail*
   -- if $constant_declaration(S, porigin) = ((preqbytes, z))
   -- if S_value = $resolve_at(S, S.RESULT, z)

@@ -7,10 +7,11 @@ dec $class_constant_lookup(pstate, porigin, ptbytes, nat) : pclassconstantdesc?
 ;; A unit sees only publications and cache fills preceding its own PDENTER.
 ;; The snapshot is a compiler input; its descriptors never join the new image.
 dec $class_constant_compile_enter(pdeclaration, nat) : bool
-def $class_constant_compile_enter(PDENTER n porigin? z, n) = true
-def $class_constant_compile_enter(pdeclaration, n) = false -- otherwise
+dec $declaration_entry_input(pdeclaration, nat) : (porigin?, int, int)?
+def $class_constant_compile_enter(pdeclaration, n) = ($declaration_entry_input(pdeclaration, n) =/= eps)
 dec $class_constant_compile_prefix(pdeclaration*, nat, nat) : nat?
-def $class_constant_compile_prefix((PDENTER n porigin? z) :: pdeclaration*, n, n_prefix) = (n_prefix)
+def $class_constant_compile_prefix(pdeclaration :: pdeclaration_tail*, n, n_prefix) = (n_prefix)
+  -- if $class_constant_compile_enter(pdeclaration, n)
 def $class_constant_compile_prefix(pdeclaration :: pdeclaration_tail*, n, n_prefix) = $class_constant_compile_prefix(pdeclaration_tail*, n, $(n_prefix + 1))
   -- if ~$class_constant_compile_enter(pdeclaration, n)
 def $class_constant_compile_prefix(eps, n, n_prefix) = eps
@@ -88,7 +89,7 @@ def $class_constant_desc(pclassconstantdesc :: pclassconstantdesc_tail*, ptbytes
 def $class_constant_desc(pclassconstantdesc :: pclassconstantdesc_tail*, ptbytes) = $class_constant_desc(pclassconstantdesc_tail*, ptbytes)
   -- if pclassconstantdesc.NAME =/= ptbytes
 
-def $ppclass_fold(P) = P.FOLD[.CLASSES = P.CLASSES][.CLASSCONSTANTS = P.CLASSCONSTANTS][.CLASSCONTEXT = P.CLASSCONTEXT]
+def $ppclass_fold(P) = $pfcompiler_precision(P.FOLD[.CLASSES = P.CLASSES][.CLASSCONSTANTS = P.CLASSCONSTANTS][.CLASSCONTEXT = P.CLASSCONTEXT][.CHECKPOINT = |P.PUBLICATIONS|][.DIAGNOSTIC = |P.DIAGNOSTICS|])
 dec $ppclass_constant_group(ppstate, pcpath, porigin, int, phpType18, phpType46*, pchheader, int) : ppstate
 dec $ppclass_constant_items(ppstate, pcpath, porigin, nat, int, phpType18, phpType46*, pchheader, int) : ppstate
 dec $ppclass_constant_typed(ppstate, pcpath, porigin, int, ptbytes, expression, ptresult, pchheader, int) : ppstate

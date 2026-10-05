@@ -3,7 +3,7 @@
 syntax pffact = PFFACT pcpath pvalue int
 syntax pfcontext = PFCONTEXT pcpath plenv
 syntax pfrecorder = { CLASS porigin, ROOT porigin, TABLE pclassconstantdesc* }
-syntax pfstate = { RECORD pfrecorder?, LOOKUPS porigin*, RECORDED pfdiagnostic*, CLASSES pclassdesc*, CLASSCONSTANTS pclassconstantdesc*, EXTERNAL pstate?, DEFAULT bool, CLASSFACTS (pcpath, pvalueclass)*, CONSTANT bool, FUNCTION ptbytes, CLASSCONTEXT ptcontext?, CLOSURE bool, SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
+syntax pfstate = { PARSEPRECISION int, COMPILEPRECISIONS (nat, nat, int)*?, CHECKPOINT nat, DIAGNOSTIC nat, RECORD pfrecorder?, LOOKUPS porigin*, RECORDED pfdiagnostic*, CLASSES pclassdesc*, CLASSCONSTANTS pclassconstantdesc*, EXTERNAL pstate?, DEFAULT bool, CLASSFACTS (pcpath, pvalueclass)*, CONSTANT bool, FUNCTION ptbytes, CLASSCONTEXT ptcontext?, CLOSURE bool, SOURCE pcunit, FILE ptbytes?, CWD ptbytes?, MEMORY pstate, FACTS pffact*, VALUE pvalue?, ENV plenv, CONTEXTS pfcontext*, REDIRECTS (pcpath, pcpath)*, WARNINGS (pcpath, ptbytes, int)* }
 syntax pfshape = PFMAGIC pmagic int | PFSCALAR pvalue int | PFNAME name | PFBINARY pbin expression expression
   | PFUNARY punary expression | PFDIM expression phpType5
   | PFARRAY phpType13* | PFNOT expression | PFSHORT bool expression expression
@@ -12,6 +12,8 @@ syntax pfkey = PFNO_KEY | PFKEY pvalue?
 syntax pfitem = PFITEM pvalue? pfkey bool pvalueclass? | PFSPREAD pvalue? pvalueclass?
 syntax pfbuild = PFBUILT pstate pvalueclass? | PFDEFER | PFSTATIC text | PFSTATICBYTES ptbytes
 var F : pfstate
+var epochs : (nat, nat, int)*
+var waits : (nat, nat, nat)*
 dec $trait_fold_owner(pfstate) : porigin?
 dec $trait_cache_active(pfstate) : pclassconstantdesc?
 dec $trait_cache_recording(pfstate, pcpath) : bool
@@ -50,6 +52,7 @@ dec $pfclass_insert(pvalueclass?, int, pkey?, pvalueclass?) : pvalueclass?
 dec $pfclass_spread(pvalueclass?, int, pvalueclass?) : pvalueclass?
 dec $pfclass_scalar(pvalue) : bool
 dec $pfclass_literal(expression) : pvalueclass?
+dec $pfclass_literal_at(expression, int) : pvalueclass?
 dec $pfclass_raw(metadata) : ptbytes?
 dec $pfclass_raw_entry(metadataEntry) : ptbytes?
 dec $pfclass_quoted(ptbytes) : bool
@@ -59,6 +62,7 @@ def $pfwarning_binary(pbin) = (pbin <- [LOGICALXOR, EQUAL, NOTEQUAL, LESS, LESSE
 
 dec $pfredirect((pcpath, pcpath)*, pcpath) : pcpath?
 dec $pfwarning_events(pevent*, pcpath) : (pcpath, ptbytes, int)*
+dec $pfcompiler_precision(pfstate) : pfstate
 dec $pfwarned(pfstate, pcpath, pstate) : pfstate
 dec $pftruth(pfstate, pcpath, pvalue, int) : pfstate
 dec $pfnot(pfstate, pcpath, int) : pfstate
@@ -77,7 +81,7 @@ dec $pfcontext_at(pfcontext*, pcpath) : plenv?
 dec $pfcontextualize(pfstate, pcpath) : pfstate
 
 dec $pfbegin(nat, program) : pfstate
-def $pfbegin(n, program) = { RECORD eps, LOOKUPS eps, RECORDED eps, CLASSES eps, CLASSCONSTANTS eps, EXTERNAL eps, DEFAULT false, CLASSFACTS eps, CONSTANT false, FUNCTION eps, CLASSCONTEXT eps, CLOSURE false, SOURCE $pcsource(n, program), FILE eps, CWD eps, MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
+def $pfbegin(n, program) = { PARSEPRECISION 14, COMPILEPRECISIONS eps, CHECKPOINT 0, DIAGNOSTIC 0, RECORD eps, LOOKUPS eps, RECORDED eps, CLASSES eps, CLASSCONSTANTS eps, EXTERNAL eps, DEFAULT false, CLASSFACTS eps, CONSTANT false, FUNCTION eps, CLASSCONTEXT eps, CLOSURE false, SOURCE $pcsource(n, program), FILE eps, CWD eps, MEMORY $initial_state(NORMAL), FACTS eps, VALUE eps, ENV $plempty(false), CONTEXTS eps, REDIRECTS eps, WARNINGS eps }
 dec $pfnode(expression) : pcnode
 def $pfnode(expression) = expression
 dec $pfoccurrence(pcoccurrence*, pcpath, expression) : bool
@@ -105,7 +109,15 @@ dec $pfremember(pfstate, pcpath, pvalue?, int) : pfstate
 def $pfremember(F, pcpath, eps, z) = F[.VALUE = eps]
 def $pfremember(F, pcpath, (pvalue), z) = F[.FACTS = F.FACTS ++ [PFFACT pcpath pvalue z]][.VALUE = (pvalue)][.MEMORY = F.MEMORY[.HELD = F.MEMORY.HELD ++ $value_nodes(pvalue)]]
 
+def $pfclass_literal(expression) = $pfclass_literal_at(expression, 14)
+
 dec $pfshape(expression) : pfshape
+dec $pfshape_at(pfstate, expression) : pfshape
+dec $precision_memory(pstate, int) : pstate
+def $pfshape_at(F, NExprBinaryOpConcat expression_1 expression_2 metadata) = PFSCALAR pvalue ($concat_line(metadata))
+  -- if $parser_literal_at(NExprBinaryOpConcat expression_1 expression_2 metadata, F.PARSEPRECISION) = (pvalue)
+  -- if $($concat_line(metadata) > 0)
+def $pfshape_at(F, expression) = $pfshape(expression) -- otherwise
 def $pfshape(NScalarInt (INTEGER i) metadata) = PFSCALAR (PINT i) ($source_line(metadata))
 def $pfshape(NScalarFloat (FLOAT text) metadata) = PFSCALAR (PFLOAT $hex_bits(text, 0)) ($source_line(metadata))
 def $pfshape(NScalarString (BYTES text) metadata) = PFSCALAR (PSTRING $base64(text)) ($string_line(metadata))
@@ -180,7 +192,7 @@ def $pftracked(F, pcpath, expression, z) = F
 def $pftracked(F, pcpath, expression, z) = F[.VALUE = (pvalue)]
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if $pffact(F.FACTS, pcpath) = (pvalue)
-def $pftracked(F, pcpath, expression, z) = $pfdispatch(F, pcpath, $pfshape(expression), z)
+def $pftracked(F, pcpath, expression, z) = $pfdispatch(F, pcpath, $pfshape_at(F, expression), z)
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if $pffact(F.FACTS, pcpath) = eps
   -- if $pfredirect(F.REDIRECTS, pcpath) = eps
@@ -356,7 +368,7 @@ def $pftracked(F, pcpath, expression, z) = $pfselected(F, pcpath, pcpath_target,
 
 def $pfwarning_events(eps, pcpath) = eps
 def $pfwarning_events((DIAGNOSTIC "Warning" ptbytes z) :: pevent*, pcpath) = (pcpath, ptbytes, z) :: $pfwarning_events(pevent*, pcpath)
-def $pfwarned(F, pcpath, S) = F[.MEMORY = S[.EVENTS = eps]][.WARNINGS = F.WARNINGS ++ $pfwarning_events(S.EVENTS, pcpath)][.VALUE = (pvalue)]
+def $pfwarned(F, pcpath, S) = $pfcompiler_precision(F[.MEMORY = S[.EVENTS = eps]][.WARNINGS = F.WARNINGS ++ $pfwarning_events(S.EVENTS, pcpath)][.VALUE = (pvalue)])
   -- if S.RESULT = KNOWN pvalue
   -- if F.RECORD = eps
 def $pftruth(F, pcpath, pvalue, z) = $pfwarned(F, pcpath, $truth_value(F.MEMORY, pvalue, z))
@@ -627,10 +639,10 @@ def $pfclassname_fixed(expression) = ($parser_literal(expression) =/= eps)
 def $pfclassname_fixed(phpType19) = false -- otherwise
 def $pfclassname_scope_known(F) = (~F.CLOSURE /\ ~$ptrait_context(F.CLASSCONTEXT) /\ (F.CLASSCONTEXT =/= eps \/ F.FUNCTION =/= eps))
 def $pfclassname_issue(F, expression) = ($ptascii("Illegal class name"))
-  -- if $parser_literal(expression) = (pvalue)
+  -- if $parser_literal_at(expression, F.PARSEPRECISION) = (pvalue)
   -- if $pfclass_scalar(pvalue)
 def $pfclassname_issue(F, expression) = ($ptascii("'\\") ++ ptbytes ++ $ptascii("' is an invalid class name"))
-  -- if $parser_literal(expression) = (PSTRING (92 :: ptbytes))
+  -- if $parser_literal_at(expression, F.PARSEPRECISION) = (PSTRING (92 :: ptbytes))
   -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
 def $pfclassname_issue(F, phpType19) = ($ptascii("Cannot use \"") ++ ptbytes ++ $ptascii("\" when no class scope is active"))
   -- if ptbytes = $pfclassname_keyword(phpType19)
@@ -657,7 +669,7 @@ def $pfclassname_value(F, name) = (PSTRING pnreference.RESOLVED)
   -- if $ptvalidname(ptbytes, true)
   -- if $pnqualify(F.ENV, PLCLASS, name, ptqual, ptbytes) = PNRESOLVED pnreference
 def $pfclassname_value(F, expression) = (PSTRING $pfclassname_strip(ptbytes))
-  -- if $parser_literal(expression) = (PSTRING ptbytes)
+  -- if $parser_literal_at(expression, F.PARSEPRECISION) = (PSTRING ptbytes)
   -- if $pfclassname_keyword(expression) = eps
 def $pfclassname_value(F, phpType19) = eps -- otherwise
 def $pfdispatch(F, pcpath, PFCLASSNAME phpType19, z) = F[.VALUE = eps]
@@ -737,14 +749,14 @@ def $pfclass_result(F, pcpath, expression, pvalue) = (PVSCALAR)
 def $pfclass_result(F, pcpath, expression, pvalue) = $pfclass_at(F.CLASSFACTS, pcpath_target)
   -- if ~$pfclass_scalar(pvalue)
   -- if $pfredirect(F.REDIRECTS, pcpath) = (pcpath_target)
-def $pfclass_result(F, pcpath, expression, pvalue) = $pfclass_literal(expression)
+def $pfclass_result(F, pcpath, expression, pvalue) = $pfclass_literal_at(expression, F.PARSEPRECISION)
   -- if ~$pfclass_scalar(pvalue)
   -- if $pfredirect(F.REDIRECTS, pcpath) = eps
-  -- if $pfclass_literal(expression) = (pvalueclass)
-def $pfclass_result(F, pcpath, expression, pvalue) = $pfclass_shape(F, pcpath, $pfshape(expression))
+  -- if $pfclass_literal_at(expression, F.PARSEPRECISION) = (pvalueclass)
+def $pfclass_result(F, pcpath, expression, pvalue) = $pfclass_shape(F, pcpath, $pfshape_at(F, expression))
   -- if ~$pfclass_scalar(pvalue)
   -- if $pfredirect(F.REDIRECTS, pcpath) = eps
-  -- if $pfclass_literal(expression) = eps
+  -- if $pfclass_literal_at(expression, F.PARSEPRECISION) = eps
 
 def $pfclass_shape(F, pcpath, PFBINARY pbin expression_left expression_right) = ($pvclass_binary(pbin, $pvclass_operand(pvalue_left), pvalueclass_left, $pvclass_operand(pvalue_right), pvalueclass_right))
   -- if $pffact(F.FACTS, pcpath ++ [PCFIELD 0]) = (pvalue_left)
@@ -789,18 +801,18 @@ def $pfclass_quoted(n :: ptbytes) = $(|ptbytes| <= 3)
 def $pfclass_quoted(ptbytes) = $(|ptbytes| <= 3)
   -- otherwise
 
-def $pfclass_literal(NScalarString (BYTES text) metadata) = (PVSTRING $pfclass_quoted(ptbytes))
+def $pfclass_literal_at(NScalarString (BYTES text) metadata, z_precision) = (PVSTRING $pfclass_quoted(ptbytes))
   -- if $string_kind(metadata) = (z)
   -- if z = 1 \/ z = 2
   -- if $pfclass_raw(metadata) = (ptbytes)
-def $pfclass_literal(NScalarInt (INTEGER i) metadata) = (PVSCALAR)
-def $pfclass_literal(NScalarFloat (FLOAT text) metadata) = (PVSCALAR)
-def $pfclass_literal(NExprBinaryOpConcat expression_left expression_right metadata) = ($pvclass_concat($pvclass_operand(pvalue_left), pvalueclass_left, $pvclass_operand(pvalue_right), pvalueclass_right))
-  -- if $parser_literal(expression_left) = (pvalue_left)
-  -- if $parser_literal(expression_right) = (pvalue_right)
-  -- if $pfclass_literal(expression_left) = (pvalueclass_left)
-  -- if $pfclass_literal(expression_right) = (pvalueclass_right)
-def $pfclass_literal(expression) = eps
+def $pfclass_literal_at(NScalarInt (INTEGER i) metadata, z_precision) = (PVSCALAR)
+def $pfclass_literal_at(NScalarFloat (FLOAT text) metadata, z_precision) = (PVSCALAR)
+def $pfclass_literal_at(NExprBinaryOpConcat expression_left expression_right metadata, z_precision) = ($pvclass_concat($pvclass_operand(pvalue_left), pvalueclass_left, $pvclass_operand(pvalue_right), pvalueclass_right))
+  -- if $parser_literal_at(expression_left, z_precision) = (pvalue_left)
+  -- if $parser_literal_at(expression_right, z_precision) = (pvalue_right)
+  -- if $pfclass_literal_at(expression_left, z_precision) = (pvalueclass_left)
+  -- if $pfclass_literal_at(expression_right, z_precision) = (pvalueclass_right)
+def $pfclass_literal_at(expression, z_precision) = eps
   -- otherwise
 
 
@@ -819,11 +831,11 @@ def $pfclass_shape(F, pcpath, PFMAGIC pmagic z) = (PVSTRING true)
   -- if ptbytes = eps
   -- if pmagic = MAGICPROPERTY
 
-def $pfclass_literal(NScalarString (BYTES text) metadata) = (PVSTRING $(|ptbytes| <= 1))
+def $pfclass_literal_at(NScalarString (BYTES text) metadata, z_precision) = (PVSTRING $(|ptbytes| <= 1))
   -- if $string_kind(metadata) = (z)
   -- if z = 3
   -- if $pfclass_raw(metadata) = (ptbytes)
-def $pfclass_literal(NScalarString (BYTES text) metadata) = (PVSTRING b)
+def $pfclass_literal_at(NScalarString (BYTES text) metadata, z_precision) = (PVSTRING b)
   -- if $string_kind(metadata) = (z)
   -- if z = 4
   -- if $source_token_start(metadata) = (z_start)

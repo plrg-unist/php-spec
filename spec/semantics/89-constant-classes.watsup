@@ -36,6 +36,8 @@ dec $constant_node_branches_valid(pstate, porigin, pcnode) : bool
 dec $constant_branches_at(pstate, nat, pcoccurrence*) : bool
 dec $constant_fact_pool_valid(pstate, pconstantfact) : bool
 dec $constant_quiet_class(pstate, porigin, pvalue) : pvalueclass
+dec $global_constant_observation_lookup(pstate, porigin, pvalue, pvalueclass) : pconstantlookup?
+dec $global_constant_fact_lookup_valid(pstate, porigin, pconstantfact) : bool
 ;; Actual constant-expression results carry non-owning allocation provenance.
 ;; The ordinary evaluator remains responsible for values, keys and diagnostics.
 def $constant_fact_at(eps, porigin) = eps
@@ -54,7 +56,7 @@ def $enter_constant_task(S, porigin, EVAL expression, ptask*) = $enter_compiled_
 def $enter_constant_task(S, porigin, ptask, ptask_tail*) = $enter_compiled_task(S, porigin, ptask, ptask_tail*)
   -- otherwise
 
-rule PhpStep/constant-observe: S ~> S[.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE $pvclass_operand(pvalue), CLASS $constant_class(S, porigin)})])][.TODO = ptask_tail*]
+rule PhpStep/constant-observe: S ~> S[.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE $pvclass_operand(pvalue), CLASS $constant_class(S, porigin), LOOKUP $global_constant_observation_lookup(S, porigin, pvalue, $constant_class(S, porigin))})])][.TODO = ptask_tail*]
   -- if S.TODO = (CONSTANT_OBSERVE porigin) :: ptask_tail*
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if S.RESULT = KNOWN pvalue
@@ -205,7 +207,7 @@ def $constant_expression_below(S, porigin_root, PORIGIN n pcpath) = true
 def $constant_expression_below(S, porigin_decl, porigin) = false -- otherwise
 
 def $constant_facts_valid(S, porigin, eps) = true
-def $constant_facts_valid(S, porigin, pconstantfact :: pconstantfact_tail*) = ($constant_expression_below(S, porigin, pconstantfact.ORIGIN) /\ $constant_fact_value_valid(pconstantfact) /\ $constant_fact_pool_valid(S, pconstantfact) /\ $constant_fact_at(pconstantfact_tail*, pconstantfact.ORIGIN) = eps /\ $constant_facts_valid(S, porigin, pconstantfact_tail*))
+def $constant_facts_valid(S, porigin, pconstantfact :: pconstantfact_tail*) = ($constant_expression_below(S, porigin, pconstantfact.ORIGIN) /\ $constant_fact_value_valid(pconstantfact) /\ $constant_fact_pool_valid(S, pconstantfact) /\ $global_constant_fact_lookup_valid(S, porigin, pconstantfact) /\ $constant_fact_at(pconstantfact_tail*, pconstantfact.ORIGIN) = eps /\ $constant_facts_valid(S, porigin, pconstantfact_tail*))
 
 def $constant_observer_valid(S, porigin) = $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
   -- if S.CONSTCONTEXT = (pconstantcontext)
@@ -232,8 +234,10 @@ def $constant_shape_class(S, porigin, PFARRAY phpType13*) = $constant_array_item
 def $constant_pool_classes(eps) = eps
 def $constant_pool_classes((PCCLASS pcpath pvalueclass) :: pconstant*) = (PCCLASS pcpath pvalueclass) :: $constant_pool_classes(pconstant*)
 def $constant_pool_classes((PCONSTANT pcpath pvalue) :: pconstant*) = $constant_pool_classes(pconstant*)
+def $constant_pool_classes((PCCPRECISION pcpath z) :: pconstant*) = $constant_pool_classes(pconstant*)
 def $constant_pool_values_valid(S, pconstant_all*, eps) = true
 def $constant_pool_values_valid(S, pconstant_all*, (PCONSTANT pcpath pvalue) :: pconstant*) = $constant_pool_values_valid(S, pconstant_all*, pconstant*)
+def $constant_pool_values_valid(S, pconstant_all*, (PCCPRECISION pcpath z) :: pconstant*) = $constant_pool_values_valid(S, pconstant_all*, pconstant*)
 def $constant_pool_values_valid(S, pconstant_all*, (PCCLASS pcpath pvalueclass) :: pconstant*) = true
   -- if $constant_at(pconstant_all*, pcpath) = (pvalue)
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)
@@ -345,7 +349,7 @@ def $constant_fact_pool_valid(S, pconstantfact) = (pconstantfact.CLASS = pvaluec
 def $constant_quiet_class(S, porigin, PNULL) = PVSCALAR
 def $constant_quiet_class(S, porigin, pvalue) = $constant_class(S, porigin)
   -- if pvalue =/= PNULL
-def $constant_quiet_capture(S) = S[.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin_left, VALUE $pvclass_operand(pvalue), CLASS $constant_quiet_class(S, porigin_left, pvalue)})])]
+def $constant_quiet_capture(S) = S[.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin_left, VALUE $pvclass_operand(pvalue), CLASS $constant_quiet_class(S, porigin_left, pvalue), LOOKUP eps})])]
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if S.ORIGIN = (porigin)
   -- if porigin_left = $constant_child(porigin, [PCFIELD 0])

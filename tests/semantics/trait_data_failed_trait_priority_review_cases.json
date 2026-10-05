@@ -1,0 +1,19 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; project profile; failed raw-trait-use native-only preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Raw trait self::Y is denied before any dependency fill or E_STRICT, so this is a priority counterexample and no genuine U-owned cache-retirement witness. Native-only zero model credit.",
+  "cases": [
+    {
+      "id": "raw-trait-self-constant-denial-precedes-dependency-fill",
+      "source": "<?php\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\ntrait T{public const array Y=[E_STRICT=>\"X\"];public static array $x=self::MISSING;public static function marker(){echo \"T;\";}}\nregister_shutdown_function(function(){try{U::marker();}catch(Error $e){echo \"U;\";}});\necho \"PRE;\";\ntrait U{use T;public static array $x=self::Y;}\necho \"POST;\";\n",
+      "source_sha256": "1400674a1ef509aab49d12e6d2d432c9dac7b1477414fd5b3deb3aa56806a64b",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1U7",
+      "stderr_template_base64": "V2FybmluZzogVW5jYXVnaHQgRXJyb3I6IENhbm5vdCBhY2Nlc3MgdHJhaXQgY29uc3RhbnQgc2VsZjo6WSBkaXJlY3RseSBpbiB7RklMRX06NgpTdGFjayB0cmFjZToKIzAge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDYKRmF0YWwgZXJyb3I6IFUgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIFUuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNgo=",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-failed-cache-requestfatal-review-274/.tools/trait-failed-raw-import-array-native274-jtsqlt0w/report.json",
+      "native_raw_sha256": "21e33c9b5fd4c8cbbf8760306aeb07183aa897d21a662efced64618dbe989753"
+    }
+  ]
+}

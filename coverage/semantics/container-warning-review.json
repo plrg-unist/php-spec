@@ -1,0 +1,171 @@
+{
+  "decision": "accepted within the documented bounded scope; full core remains partial",
+  "reviewer": "arguments_review_14",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned vendor source and ordinary profile",
+  "implementation": "spec/semantics/276-container-write-continuations.watsup",
+  "scope": "CV-rooted undefined/null/false W/RW initialization, false callback protection and distinct FETCH/ASSIGN/DIM_OP effects, final array-reference ingress, genuine source cells and source-backed unchecked DIM_OP array state through COW/whole-cell clearing.",
+  "limits": "Wider read/quiet/memoized/unset/append/GLOBALS containers, string/object/key producers and paused returns remain required or separately paused. Dynamic captures are runtime facts; no invented pointer owners or callback history.",
+  "behavior_contract": "docs/semantics/SOURCE-CONTAINER-WRITES.md",
+  "engine_sources": [
+    "vendor/php-src/Zend/zend_execute.c:zend_fetch_dimension_address",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_FETCH_DIM_W/RW, ZEND_ASSIGN_DIM, ZEND_ASSIGN_DIM_OP, ZEND_ASSIGN_REF",
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_assign"
+  ],
+  "runtime": {
+    "tests/semantics/profile.json": {
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+      "bytes": 352
+    },
+    ".tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "bytes": 49551712
+    },
+    "_build/default/adapter/main.exe": {
+      "sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "bytes": 29115976
+    },
+    "tests/semantics/_build/default/numeric_runner.exe": {
+      "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+      "bytes": 28628992
+    }
+  },
+  "execution": {
+    "production": "SL_mode",
+    "reached_fixtures": "AL_mode",
+    "jobs": 1,
+    "caps_seconds": {
+      "native": 45,
+      "compiler": 120,
+      "model": 90,
+      "CLI": 60,
+      "finite": 300,
+      "source_phase": 480,
+      "finite_phase": 930
+    },
+    "steps": 100000,
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING_removed": true
+    },
+    "resource_limits": "Actual resource.getrlimit values are retained in each raw context; no invented historical limits.",
+    "build": "Existing project-local executables reused; no fresh build or portability credit."
+  },
+  "author": {
+    "source_count": 12,
+    "shared_independent_originals": 3,
+    "source_cut": "7c0c745091c6c09189a957005c2ee8a2c249aab8",
+    "source_report": {
+      "path": "/home/user/workspace/php-spec/.tools/container-warning-current-21/.tools/container-warning/models-5z85szat/report.json",
+      "sha256": "932aaa409b88e0385dad341fec154b74d3a1705d9ae032d1a2de028b70b3d18f"
+    },
+    "compiler": "prepared-111ouof6 affected74 and original prepared-v85cnkm7 unchanged72; prepared-t7ghwr3f corrected96",
+    "finite": [
+      {
+        "cut": "07867ea72be4232211767c2663919d99f6b324d1",
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/container-warning-current-21/.tools/container-warning/states-xn_v5gpv/report.json",
+          "sha256": "836e53c55c8e57834ad22b86dd56636091af51e3421c553a203921af17319a2d"
+        },
+        "accepted_records": [
+          0,
+          1
+        ],
+        "assertions": [
+          74,
+          72
+        ],
+        "note": "Overall report failed only the unaccepted third classification premise; retain the two literal true original records."
+      },
+      {
+        "cut": "6a2f64922ee7d1121130e6cc589d07c3c075a768",
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/container-warning-current-21/.tools/container-warning/states-pmr5fh15/report.json",
+          "sha256": "a2feae69584f3ea34452b3b3142dd2623ebb0a667a9efa749168b4e49e24fb4e"
+        },
+        "assertions": [
+          96
+        ]
+      }
+    ],
+    "assertion_total": 242
+  },
+  "independent": {
+    "source_count": 21,
+    "fresh_source_count": 18,
+    "retained_originals": "The three exact source12 originals (illegal-key replacement, typed DIM_OP and COW/clear) remain at7c0c, without replay.",
+    "cut": "6a2f64922ee7d1121130e6cc589d07c3c075a768",
+    "preparation": {
+      "path": "/home/user/workspace/php-spec/.tools/container-warning-review-21/prepared-go45r9nr/report.json",
+      "sha256": "e26403b9fc5f0d4a9399499857034b5470e13bf6ce9bfeb926f1812e263f1ba5"
+    },
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/container-warning-review-21/own-run-tt7j0tc4/report.json",
+      "sha256": "580f835557a5a37f34d780968db5668d71a585d07bc93c26b188809c7c46d919"
+    },
+    "release": {
+      "path": "/home/user/workspace/php-spec/.tools/container-warning-review-21/own-run-tt7j0tc4/RELEASE.json",
+      "sha256": "5db9d16fedaa177acd9be6553bc0f9a4e0c9c86aef633d93843a1499a4807ff9"
+    },
+    "assertions": [
+      69,
+      72,
+      68,
+      66
+    ],
+    "assertion_total": 275
+  },
+  "unique_private_programs": 30,
+  "private_reached_assertions": 517,
+  "current_composition": {
+    "tested_cut": "8519057270917c27804a70a6a85b61c7b53d36d9",
+    "accepted_parent": "ae0aa479eb5369c879c3b42c358a12aae0ec6c9f",
+    "source": "tests/semantics/container_warning_current.php",
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/container-warning-current-21/.tools/container-warning/current-mlbrmpk7/report.json",
+      "sha256": "759fefed49d3d313571bf6caf14d76e47e95164ee36a8847431a8175c0a9d6b9"
+    },
+    "release": {
+      "path": "/home/user/workspace/php-spec/.tools/container-warning-current-21/.tools/container-warning/current-mlbrmpk7/RELEASE.json",
+      "sha256": "fcf1a6b7f276905dfc7fcaa9d548d842be156fa8555f00dea05c5a4df1832762"
+    },
+    "stdout": "H:OwnerContainerCurrent276/ChildContainerCurrent276:9;R:17:17:0;V:17;",
+    "result": "Native/model normal0, accepted+checked, identical stdout, empty stderr, no timeout, stable inputs and closed groups; model9.58s.",
+    "scope": "Parent-private FCC with Child called class, local unwrapped false target, live key mutation, captured typed source CELL after its source array retires, caller/static/introspection17. This witness does not copy the target array."
+  },
+  "publication_parent": "a692c15842769e3f282f45ea00ffd4c70319cf2d",
+  "publication_compatibility": "Actual266/268/271/274/275 preserved at testedae0; ordinary trait-free FCC uses none of their new trait/constant/internal/fatal protocols. Later272 PDENTERPRECISION/precision and initializer fields retained; BYTES CV names and literal integer/string keys keep prior results at14, with no INI/include/eval. Additive276 fields and exact current source preserved; this source review adds no execution credit.",
+  "preserved_failures": [
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/container-warning-current-21/.tools/container-warning/check-qbnwccc6",
+      "cause": "Second global task_nodes otherwise rejected at pre-execution loader; closed phase cases corrected it."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/container-warning-current-21/.tools/container-warning/prepared-ujidv7_j",
+      "cause": "First compiler fixture had untyped fresh p_tail carrier; changed to pkeywrite_tail."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/container-warning-current-21/.tools/container-warning/states-c23efohr",
+      "cause": "Selected W entry is UNINITIALIZED until its reference/write consumer, not DIRECT PNULL."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/container-warning-current-21/.tools/container-warning/states-yqv6bhsw",
+      "cause": "Secondary one-step seeker retained BUDGET; explicit NORMAL/BUDGET reach guards and NORMAL reset corrected fixture resumption."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/container-warning-current-21/.tools/container-warning/states-xn_v5gpv",
+      "cause": "Third fixture confused weak PROP_POSSIBLE classification with actual TYPEREJECT conversion; only third recompiled/rerun."
+    }
+  ],
+  "native_prediction_corrections": "Original OWN false/UNDEF handler-throw predictions incorrectly included later K/M effects; actual normal observations exclude them. The nested final-assignment original runs eager S before F/D/D, rather than the original prefix-first prediction. Original source bytes/predictions remain in native records; no native replay.",
+  "reproduction": {
+    "catalogue": "tests/semantics/container_warning_cases.py retains the exact source12 originals, including three independently authored cases.",
+    "fixtures": "tests/semantics/container_warning_protocol.py",
+    "prepare": "python3 -B tests/semantics/container_warning_prepare.py [fixture-id ...]",
+    "runtime_commands": "bin/php-semantics SOURCE --steps 100000 --timeout 60; tests/semantics/_build/default/numeric_runner.exe MODULES FIXTURE. Exact argv, cwd, environment, exits, groups and raw observations remain outside Git.",
+    "author_raw": "/home/user/workspace/php-spec/.tools/container-warning-current-21/.tools/container-warning",
+    "independent_raw": "/home/user/workspace/php-spec/.tools/container-warning-review-21",
+    "current_raw": "/home/user/workspace/php-spec/.tools/container-warning-current-21/.tools/container-warning/current-mlbrmpk7",
+    "closure": "Each yielded compiler/model/finite/outer session was awaited to explicit closure before the next producer; all reported groups empty."
+  }
+}

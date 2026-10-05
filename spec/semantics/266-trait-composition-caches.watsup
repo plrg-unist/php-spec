@@ -26,9 +26,29 @@ dec $trait_cache_new_events(pclassconstantevent*) : bool
 dec $trait_cache_parents(pclasslink*, porigin) : pclasslink*
 dec $trait_cache_interfaces(pinterfacelink*, porigin) : pinterfacelink*
 dec $trait_cache_cause_valid(pstate, porigin, ptraitcachecause) : bool
+dec $trait_cache_cause_point(pstate, ptraitcachecause) : bool
+dec $trait_cache_cause_selected(pstate, ptraitcachecause) : pclassconstantdesc?
 dec $trait_cache_event(pclassconstantevent) : (porigin, ptraitcachecause)?
 dec $trait_cache_array_classes((pkey, pvalueclass)*) : bool
 dec $trait_cache_notice_item(pstate, pclassconstantevent, porigin, nat) : pdefaultcache*
+dec $trait_cache_object_source(pstate, pclassconstantdesc) : bool
+dec $trait_cache_object_nodes(pstate, porigin, nat, pcoccurrence*) : bool
+dec $trait_cache_object_read(pfstate, pcpath, pclassconstantdesc, int) : pfstate
+dec $trait_cache_object_steps(pfstate, pcpath, pclassconstantdesc, int, pstate, ptraitcachecause) : pfstate
+dec $trait_cache_object_step(pstate, ptraitcachecause) : pstate
+dec $trait_cache_object_bind(pstate, ptraitcachecause) : pstate
+dec $trait_cache_object_binding(ptask*) : bool
+dec $trait_cache_object_lookups(pclassconstantcontext*, porigin*) : porigin*?
+dec $trait_cache_object_events(porigin, porigin, pevent*) : pfdiagnostic*?
+dec $trait_cache_object_event(porigin, porigin, pevent) : pfdiagnostic?
+dec $trait_cache_object_restore(pfstate, pstate) : pstate
+dec $trait_cache_bound_value(pstate, pclassconstantdesc, pvalueclass, nat) : bool
+dec $trait_cache_flow_events(pstate, pclassconstantevent*, porigin, porigin, nat) : (pclassconstantdesc, ptraitcachecause)?
+dec $trait_cache_flow_event(pstate, pclassconstantevent, porigin, porigin, nat) : (pclassconstantdesc, ptraitcachecause)?
+dec $trait_cache_source_key(pstate, porigin, porigin, nat) : pvalue?
+dec $trait_cache_flow_key(pstate, porigin, phpType5, int, porigin, nat) : pkey?
+dec $trait_cache_dim_source(pstate, porigin, pkey, porigin, nat) : porigin?
+dec $trait_cache_dim_items(pstate, porigin, pkey, porigin, nat, nat, phpType13*, int, porigin?) : porigin?
 
 def $trait_cache_own_constants(eps, porigin) = eps
 def $trait_cache_own_constants(pclassconstantdesc :: pclassconstantdesc_tail*, porigin) = pclassconstantdesc :: $trait_cache_own_constants(pclassconstantdesc_tail*, porigin)
@@ -195,7 +215,12 @@ def $trait_cache_read(F, pcpath, pclassconstantdesc, z) = $pfclass_constant_valu
 def $trait_cache_read(F, pcpath, pclassconstantdesc, z) = $trait_cache_bind(F, pcpath, pclassconstantdesc, z, F_value)
   -- if ~pclassconstantdesc.FOLDED
   -- if $default_cache_at(F.MEMORY.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
+  -- if ~$trait_cache_object_source(F.MEMORY, pclassconstantdesc)
   -- if $trait_cache_evaluate(F, pcpath, pclassconstantdesc, z) = (F_value)
+def $trait_cache_read(F, pcpath, pclassconstantdesc, z) = $trait_cache_object_read(F, pcpath, pclassconstantdesc, z)
+  -- if ~pclassconstantdesc.FOLDED
+  -- if $default_cache_at(F.MEMORY.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
+  -- if $trait_cache_object_source(F.MEMORY, pclassconstantdesc)
 def $trait_cache_read(F, pcpath, pclassconstantdesc, z) = F[.VALUE = eps] -- otherwise
 def $trait_cache_evaluate(F, pcpath, pclassconstantdesc, z) = (F_value)
   -- if F.RECORD = (pfrecorder)
@@ -208,7 +233,8 @@ def $trait_cache_evaluate(F, pcpath, pclassconstantdesc, z) = (F_value)
   -- if $class_at(F.MEMORY.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
   -- if $pool_at(F.MEMORY.POOLS, n) = (ppool)
   -- if ptcontext = {NAMESPACE eps, IMPORTS eps, SCOPE PTKNOWN pclassdesc.NAME pclassdesc.PARENT, POSITION PTCONSTANT, OWNER pclassdesc.NAME, MEMBER eps, FILE $call_sourcefile(F.MEMORY.FILES, pclassconstantdesc.OWNER), LINE $nabs(z)}
-  -- if F_start = $pfbegin(n, pcunit.AST)
+  -- if $source_precision(F.MEMORY, (pclassconstantdesc.INITIALIZER)) = (z_precision)
+  -- if F_start = $pfbegin(n, pcunit.AST)[.PARSEPRECISION = z_precision]
   -- if S_memory = F.MEMORY[.CONSTCONTEXT = ({ORIGIN pclassconstantdesc.ORIGIN, LINE z, FACTS eps})]
   -- if F_value = $pfprepare(F_start[.RECORD = (pfrecorder)][.LOOKUPS = porigin_lookups*][.FACTS = $trait_pool_facts(F.MEMORY, n, ppool.CONSTANTS)][.CLASSFACTS = $trait_pool_classes(ppool.CONSTANTS)][.CLASSES = F.CLASSES][.CLASSCONSTANTS = pclassdesc.CONSTANTS][.EXTERNAL = (S_external)][.DEFAULT = true][.CONSTANT = true][.CLASSCONTEXT = (ptcontext)][.FILE = ($call_sourcefile(F.MEMORY.FILES, pclassconstantdesc.INITIALIZER))][.CWD = F.CWD][.MEMORY = S_memory], pcpath_initializer, expression, $plempty(false), z)
 def $trait_cache_evaluate(F, pcpath, pclassconstantdesc, z) = eps -- otherwise
@@ -219,19 +245,112 @@ def $trait_cache_bind(F, pcpath, pclassconstantdesc, z, F_value) = $pfclass_cons
   -- if pvalue = $class_constant_typed_value(pclassconstantdesc.TYPE, pvalue_raw)
   -- if pclassconstantdesc.INITIALIZER = PORIGIN n pcpath_initializer
   -- if $pfclass_at(F_value.CLASSFACTS, pcpath_initializer) = (pvalueclass)
-  -- if $trait_cache_value_class(pvalueclass)
   -- if F.RECORD = (pfrecorder)
   -- if n_prefix = |F.MEMORY.DECLARATIONS|
   -- if n_user = |F.MEMORY.USERCONSTANTS|
   -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS F_value.LOOKUPS, PREFIX n_prefix, USERPREFIX n_user}
   -- if S_cached = F_value.MEMORY[.CONSTCONTEXT = F.MEMORY.CONSTCONTEXT][.RESULT = F.MEMORY.RESULT][.CLASSCONSTANTCACHE = F_value.MEMORY.CLASSCONSTANTCACHE ++ [{ORIGIN pclassconstantdesc.ORIGIN, VALUE pvalue, CLASS pvalueclass}]][.CLASSCONSTANTHISTORY = F_value.MEMORY.CLASSCONSTANTHISTORY ++ [CCTRAITCACHE pclassconstantdesc.ORIGIN ptraitcachecause]]
+  -- if $trait_cache_bound_value(S_cached, pclassconstantdesc, pvalueclass, n_prefix)
 def $trait_cache_bind(F, pcpath, pclassconstantdesc, z, F_value) = F[.RECORDED = F.RECORDED ++ F_value.RECORDED][.VALUE = eps] -- otherwise
+
+
+;; Published dependencies use the ordinary initializer and its real binder.
+;; Closure bodies are not evaluated here. The borrowed comparison context is
+;; restored after binding; source receipts and cache values retain the objects.
+def $trait_cache_object_source(S, pclassconstantdesc) = $trait_cache_object_nodes(S, pclassconstantdesc.INITIALIZER, n, pcunit.OCCURRENCES)
+  -- if pclassconstantdesc.INITIALIZER = PORIGIN n pcpath
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+def $trait_cache_object_source(S, pclassconstantdesc) = false -- otherwise
+def $trait_cache_object_nodes(S, porigin_root, n, eps) = false
+def $trait_cache_object_nodes(S, porigin_root, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = true
+  -- if $constant_callable_path(S, PORIGIN n pcpath, porigin_root)
+  -- if $constant_callable_form(pcnode)
+def $trait_cache_object_nodes(S, porigin_root, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $trait_cache_object_nodes(S, porigin_root, n, pcoccurrence*)
+  -- if ~$constant_callable_path(S, PORIGIN n pcpath, porigin_root) \/ ~$constant_callable_form(pcnode)
+def $trait_cache_object_read(F, pcpath, pclassconstantdesc, z) = $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S_start, ptraitcachecause)
+  -- if F.RECORD = (pfrecorder)
+  -- if $trait_recording(F, pcpath)
+  -- if $trait_fold_owner(F) = (porigin_owner)
+  -- if porigin_site = PORIGIN F.SOURCE.ID pcpath
+  -- if $origin_node(F.MEMORY.SOURCES, porigin_site) = (NExprClassConstFetch phpType19 phpType20 metadata)
+  -- if $trait_cache_requested(F.MEMORY, porigin_owner, phpType19, porigin_site) = (porigin_requested)
+  -- if $class_at(F.MEMORY.CLASSES, porigin_requested) = (pclassdesc_requested)
+  -- if $pfclass_constant_member(phpType20, eps) = (ptbytes_member)
+  -- if porigin_lookups* = F.LOOKUPS ++ [porigin_site]
+  -- if n_prefix = |F.MEMORY.DECLARATIONS|
+  -- if n_user = |F.MEMORY.USERCONSTANTS|
+  -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS porigin_lookups*, PREFIX n_prefix, USERPREFIX n_user}
+  -- if $trait_cache_cause_selected(F.MEMORY, ptraitcachecause) = (pclassconstantdesc)
+  -- if $constant_callable_published(F.MEMORY.DECLARATIONS, pclassconstantdesc.OWNER)
+  -- if F.MEMORY.CLASSCONSTANTINIT = eps
+  -- if S_base = F.MEMORY[.TODO = eps][.CONSTCONTEXT = eps][.ORIGIN = (porigin_site)]
+  -- if S_start = $class_constant_begin(S_base, pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING pclassdesc_requested.NAME)) ptbytes_member, $class_constant_message_class(S_base, pclassdesc_requested, pclassdesc_requested.NAME), z)
+def $trait_cache_object_read(F, pcpath, pclassconstantdesc, z) = F[.VALUE = eps][.MEMORY = F.MEMORY[.COMPLETION = UNSUPPORTED "unpublished trait object dependency initializer"]] -- otherwise
+
+def $trait_cache_object_binding((CLASS_CONST_BIND porigin) :: ptask*) = true
+def $trait_cache_object_binding(ptask*) = false -- otherwise
+def $trait_cache_object_lookups([pclassconstantcontext], porigin_base*) = (porigin_base*)
+def $trait_cache_object_lookups(pclassconstantcontext :: pclassconstantcontext_tail*, porigin_base*) = (porigin_previous* ++ [porigin])
+  -- if pclassconstantcontext_tail* =/= eps
+  -- if pclassconstantcontext.ORIGIN = (porigin)
+  -- if $trait_cache_object_lookups(pclassconstantcontext_tail*, porigin_base*) = (porigin_previous*)
+def $trait_cache_object_lookups(pclassconstantcontext*, porigin_base*) = eps -- otherwise
+
+def $trait_cache_object_bind(S, ptraitcachecause) = $class_constant_result($class_constant_restore(S_cached[.TODO = ptask_tail*], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
+  -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if pclassconstantcontext.DECL = porigin
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = porigin
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if S_value = $resolve_at(S, S.RESULT, pconstantcontext.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue_raw
+  -- if $class_constant_runtime_type(S_value, pclassconstantdesc.TYPE, pvalue_raw)
+  -- if pvalue = $class_constant_typed_value(pclassconstantdesc.TYPE, pvalue_raw)
+  -- if pvalueclass = $constant_class(S_value, pclassconstantdesc.INITIALIZER)
+  -- if $trait_cache_object_lookups(S.CLASSCONSTANTINIT, ptraitcachecause.LOOKUPS) = (porigin_lookups*)
+  -- if ptraitcachecause_selected = ptraitcachecause[.LOOKUPS = porigin_lookups*]
+  -- if $trait_cache_cause_selected(S_value, ptraitcachecause_selected) = (pclassconstantdesc)
+  -- if $constant_callable_published(S_value.DECLARATIONS[0:ptraitcachecause.PREFIX], pclassconstantdesc.OWNER)
+  -- if S_cached = S_value[.CLASSCONSTANTCACHE = S_value.CLASSCONSTANTCACHE ++ [{ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]][.CLASSCONSTANTHISTORY = S_value.CLASSCONSTANTHISTORY ++ [CCTRAITCACHE porigin ptraitcachecause_selected]]
+  -- if $trait_cache_bound_value(S_cached, pclassconstantdesc, pvalueclass, ptraitcachecause.PREFIX)
+def $trait_cache_object_bind(S, ptraitcachecause) = S[.COMPLETION = UNSUPPORTED "uncertified public trait object dependency binding"] -- otherwise
+def $trait_cache_object_step(S, ptraitcachecause) = $trait_cache_object_bind(S, ptraitcachecause)
+  -- if $trait_cache_object_binding(S.TODO)
+def $trait_cache_object_step(S, ptraitcachecause) = S_next
+  -- if ~$trait_cache_object_binding(S.TODO)
+  -- PhpStep: S ~> S_next
+
+def $trait_cache_object_event(porigin_owner, porigin, DIAGNOSTIC_SOURCE n text ptbytes z) = $trait_record_event(porigin_owner, porigin, DIAGNOSTIC text ptbytes z)
+  -- if $origin_source(porigin_owner) = PORIGIN n pcpath
+def $trait_cache_object_event(porigin_owner, porigin, pevent) = $trait_record_event(porigin_owner, porigin, pevent) -- otherwise
+def $trait_cache_object_events(porigin_owner, porigin, eps) = (eps)
+def $trait_cache_object_events(porigin_owner, porigin, pevent :: pevent_tail*) = (pfdiagnostic :: pfdiagnostic_tail*)
+  -- if $trait_cache_object_event(porigin_owner, porigin, pevent) = (pfdiagnostic)
+  -- if $trait_cache_object_events(porigin_owner, porigin, pevent_tail*) = (pfdiagnostic_tail*)
+def $trait_cache_object_events(porigin_owner, porigin, pevent*) = eps -- otherwise
+def $trait_cache_object_restore(F, S) = S[.TODO = F.MEMORY.TODO][.ORIGIN = F.MEMORY.ORIGIN][.CONSTCONTEXT = F.MEMORY.CONSTCONTEXT][.CLASSCONSTANTINIT = F.MEMORY.CLASSCONSTANTINIT][.RESULT = F.MEMORY.RESULT][.BASE = F.MEMORY.BASE][.HELD = F.MEMORY.HELD][.EVENTS = F.MEMORY.EVENTS]
+def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = $pfclass_constant_value(F[.MEMORY = $trait_cache_object_restore(F, S)], pcpath, pdefaultcache.VALUE, (pdefaultcache.CLASS), z)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = eps /\ S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = $trait_cache_object_steps(F[.RECORDED = F.RECORDED ++ pfdiagnostic*], pcpath, pclassconstantdesc, z, S_next[.EVENTS = eps], ptraitcachecause)
+  -- if S.COMPLETION = NORMAL /\ S.TODO =/= eps
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc_active)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $class_constant_active(S)
+  -- if $constant_callable_path(S, porigin_site, pclassconstantdesc_active.INITIALIZER) \/ $trait_cache_object_binding(S.TODO) \/ (porigin_site) = pclassconstantcontext.ORIGIN \/ porigin_site = pclassconstantdesc_active.ORIGIN
+  -- if S_next = $trait_cache_object_step(S, ptraitcachecause)
+  -- if $trait_cache_object_events(pclassconstantdesc_active.OWNER, porigin_site, S_next.EVENTS) = (pfdiagnostic*)
+def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = F[.VALUE = eps][.MEMORY = $trait_cache_object_restore(F, S)[.COMPLETION = UNSUPPORTED "public trait object dependency evaluation"]] -- otherwise
 
 def $trait_comparison_memory(ptraitdatavalue_left, TRAITVALUE S pvalue pfdiagnostic*) = (S)
   -- if ~$trait_value_error(ptraitdatavalue_left)
 def $trait_comparison_memory(TRAITVALUE S pvalue pfdiagnostic*, TRAITUNINITIALIZED) = (S)
 def $trait_comparison_memory(ptraitdatavalue_left, ptraitdatavalue_right) = eps -- otherwise
-def $trait_cache_transfer(S, (S_memory)) = $prune_allocations(S[.ARRAYS = S_memory.ARRAYS][.ALLOCATIONS = S_memory.ALLOCATIONS][.CLASSCONSTANTCACHE = S_memory.CLASSCONSTANTCACHE][.CLASSCONSTANTHISTORY = S_memory.CLASSCONSTANTHISTORY])
+def $trait_cache_transfer(S, (S_memory)) = $prune_allocations(S[.ARRAYS = S_memory.ARRAYS][.OBJECTS = S_memory.OBJECTS][.CLOSURESCOPES = S_memory.CLOSURESCOPES][.CONSTANTCLOSURES = S_memory.CONSTANTCLOSURES][.ALLOCATIONS = S_memory.ALLOCATIONS][.CLASSCONSTANTCACHE = S_memory.CLASSCONSTANTCACHE][.CLASSCONSTANTHISTORY = S_memory.CLASSCONSTANTHISTORY])
 def $trait_cache_transfer(S, eps) = S
 def $trait_cache_new_events(eps) = false
 def $trait_cache_new_events((CCTRAITCACHE porigin ptraitcachecause) :: pclassconstantevent*) = true
@@ -256,14 +375,21 @@ def $trait_cache_interfaces(pinterfacelink :: pinterfacelink_tail*, porigin) = $
 def $trait_cache_interfaces(pinterfacelink :: pinterfacelink_tail*, porigin) = pinterfacelink :: $trait_cache_interfaces(pinterfacelink_tail*, porigin)
   -- if pinterfacelink.OWNER =/= porigin
 def $trait_cache_preinherit(S, porigin) = S[.LINKEDPARENTS = $trait_cache_parents(S.LINKEDPARENTS, porigin)][.LINKEDINTERFACES = $trait_cache_interfaces(S.LINKEDINTERFACES, porigin)]
-def $trait_cache_cause_valid(S, porigin, ptraitcachecause) = true
-  -- if $(ptraitcachecause.PREFIX < |S.DECLARATIONS| /\ ptraitcachecause.USERPREFIX <= |S.USERCONSTANTS|)
+def $trait_cache_cause_point(S, ptraitcachecause) = true
   -- if $iterator_notice_publication_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = (ptraitcachecause.PREFIX)
+def $trait_cache_cause_point(S, ptraitcachecause) = false -- otherwise
+def $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if $(ptraitcachecause.PREFIX <= |S.DECLARATIONS| /\ ptraitcachecause.USERPREFIX <= |S.USERCONSTANTS|)
   -- if $class_at(S.CLASSES, ptraitcachecause.CLASS) = (pclassdesc)
   -- if S_prefix = $trait_cache_preinherit(S[.CLASSNAMES = $trait_notice_names(S, S.DECLARATIONS[0:ptraitcachecause.PREFIX])][.DECLARATIONS = S.DECLARATIONS[0:ptraitcachecause.PREFIX]][.USERCONSTANTS = S.USERCONSTANTS[0:ptraitcachecause.USERPREFIX]][.COMPLETION = NORMAL], ptraitcachecause.CLASS)
   -- if $trait_cache_table_valid(S_prefix, ptraitcachecause.CLASS, ptraitcachecause.ROOT, ptraitcachecause.TABLE)
   -- if S_table = S_prefix[.CLASSES = $trait_class_set(S_prefix.CLASSES, pclassdesc[.CONSTANTS = ptraitcachecause.TABLE])]
   -- if $trait_cache_lookups(S_table, ptraitcachecause.CLASS, ptraitcachecause.ROOT, ptraitcachecause.LOOKUPS, eps) = (pclassconstantdesc)
+def $trait_cache_cause_selected(S, ptraitcachecause) = eps -- otherwise
+def $trait_cache_cause_valid(S, porigin, ptraitcachecause) = true
+  -- if $(ptraitcachecause.PREFIX < |S.DECLARATIONS|)
+  -- if $trait_cache_cause_point(S, ptraitcachecause)
+  -- if $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
   -- if pclassconstantdesc.ORIGIN = porigin
   -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
 def $trait_cache_cause_valid(S, porigin, ptraitcachecause) = false -- otherwise
@@ -284,7 +410,87 @@ def $trait_cache_value_class(PVARRAY b (pkey, pvalueclass)*) = $trait_cache_arra
 def $trait_cache_value_class(pvalueclass) = false -- otherwise
 def $trait_cache_array_classes(eps) = true
 def $trait_cache_array_classes((pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*) = ($trait_cache_value_class(pvalueclass) /\ $trait_cache_array_classes((pkey_tail, pvalueclass_tail)*))
-def $constant_callable_cache_valid(S, pclassconstantdesc, pvalueclass, n_prefix) = ($trait_cache_cause_valid(S, pclassconstantdesc.ORIGIN, ptraitcachecause) /\ $trait_cache_value_class(pvalueclass))
+def $trait_cache_bound_value(S, pclassconstantdesc, pvalueclass, n_prefix) = true
+  -- if $trait_cache_value_class(pvalueclass)
+def $trait_cache_bound_value(S, pclassconstantdesc, pvalueclass, n_prefix) = $constant_callable_flow(S, pclassconstantdesc.INITIALIZER, pclassconstantdesc.OWNER, pvalueclass, n_prefix, eps)
+  -- if ~$trait_cache_value_class(pvalueclass)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], pclassconstantdesc.OWNER)
+def $trait_cache_bound_value(S, pclassconstantdesc, pvalueclass, n_prefix) = false -- otherwise
+
+;; Source-derived dynamic keys use the same captured declaration/user prefix
+;; as their fill. No observed key or object type alone proves this transfer.
+def $trait_cache_flow_context(S, porigin_site, porigin_owner, n_prefix) = $trait_cache_flow_events(S, S.CLASSCONSTANTHISTORY, porigin_site, porigin_owner, n_prefix)
+def $trait_cache_flow_events(S, eps, porigin_site, porigin_owner, n_prefix) = eps
+def $trait_cache_flow_events(S, pclassconstantevent :: pclassconstantevent_tail*, porigin_site, porigin_owner, n_prefix) = ((pclassconstantdesc, ptraitcachecause))
+  -- if $trait_cache_flow_event(S, pclassconstantevent, porigin_site, porigin_owner, n_prefix) = ((pclassconstantdesc, ptraitcachecause))
+def $trait_cache_flow_events(S, pclassconstantevent :: pclassconstantevent_tail*, porigin_site, porigin_owner, n_prefix) = $trait_cache_flow_events(S, pclassconstantevent_tail*, porigin_site, porigin_owner, n_prefix)
+  -- if $trait_cache_flow_event(S, pclassconstantevent, porigin_site, porigin_owner, n_prefix) = eps
+def $trait_cache_flow_event(S, CCTRAITCACHE porigin_decl ptraitcachecause, porigin_site, porigin_owner, n_prefix) = ((pclassconstantdesc, ptraitcachecause))
+  -- if ptraitcachecause.PREFIX = n_prefix
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.OWNER = porigin_owner
+  -- if $class_constant_origin(S.CLASSES, porigin_decl) = (pclassconstantdesc)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_owner)
+  -- if $constant_callable_path(S, porigin_site, pclassconstantdesc.INITIALIZER)
+def $trait_cache_flow_event(S, pclassconstantevent, porigin_site, porigin_owner, n_prefix) = eps -- otherwise
+
+def $trait_cache_source_key(S, PORIGIN n pcpath, porigin_owner, n_prefix) = F_result.VALUE
+  -- if $trait_cache_flow_context(S, PORIGIN n pcpath, porigin_owner, n_prefix) = ((pclassconstantdesc, ptraitcachecause))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $pool_at(S.POOLS, n) = (ppool)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $class_at(S.CLASSES, ptraitcachecause.CLASS) = (pclassdesc_composing)
+  -- if S_prefix = $trait_cache_preinherit(S[.CLASSNAMES = $trait_notice_names(S, S.DECLARATIONS[0:n_prefix])][.DECLARATIONS = S.DECLARATIONS[0:n_prefix]][.USERCONSTANTS = S.USERCONSTANTS[0:ptraitcachecause.USERPREFIX]][.COMPLETION = NORMAL], ptraitcachecause.CLASS)
+  -- if S_table = S_prefix[.CLASSES = $trait_class_set(S_prefix.CLASSES, pclassdesc_composing[.CONSTANTS = ptraitcachecause.TABLE])]
+  -- if ptcontext = {NAMESPACE eps, IMPORTS eps, SCOPE PTKNOWN pclassdesc.NAME pclassdesc.PARENT, POSITION PTCONSTANT, OWNER pclassdesc.NAME, MEMBER eps, FILE $call_sourcefile(S.FILES, porigin_owner), LINE $nabs($expression_line(expression))}
+  -- if $source_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if F_start = $pfbegin(n, pcunit.AST)[.PARSEPRECISION = z_precision]
+  -- if S_memory = S_table[.CONSTCONTEXT = ({ORIGIN pclassconstantdesc.ORIGIN, LINE $expression_line(expression), FACTS eps})][.REPORTING = 32767][.EVENTS = eps][.ERRORHANDLER = {CALLBACK eps, LEVELS 0}][.DISPLAYINI = ($ptascii("stderr"))]
+  -- if F_result = $pfprepare(F_start[.RECORD = ({CLASS ptraitcachecause.CLASS, ROOT ptraitcachecause.ROOT, TABLE ptraitcachecause.TABLE})][.LOOKUPS = ptraitcachecause.LOOKUPS][.FACTS = $trait_pool_facts(S_table, n, ppool.CONSTANTS)][.CLASSFACTS = $trait_pool_classes(ppool.CONSTANTS)][.CLASSES = S_table.CLASSES][.CLASSCONSTANTS = pclassdesc.CONSTANTS][.EXTERNAL = (S_table)][.DEFAULT = true][.CONSTANT = true][.CLASSCONTEXT = (ptcontext)][.FILE = ($call_sourcefile(S.FILES, PORIGIN n pcpath))][.CWD = ($call_request_cwd(S.REQUEST))][.MEMORY = S_memory], pcpath, expression, $plempty(false), $expression_line(expression))
+  -- if F_result.MEMORY.COMPLETION = NORMAL
+def $trait_cache_source_key(S, porigin, porigin_owner, n_prefix) = eps -- otherwise
+
+def $constant_callable_array_flow_key(S, porigin, phpType5, i, porigin_owner, n_prefix) = $trait_cache_flow_key(S, porigin, phpType5, i, porigin_owner, n_prefix)
+  -- if $trait_cache_flow_context(S, porigin, porigin_owner, n_prefix) =/= eps
+def $trait_cache_flow_key(S, porigin, ABSENT, i, porigin_owner, n_prefix) = ($pvclass_append_key(i))
+def $trait_cache_flow_key(S, porigin, expression, i, porigin_owner, n_prefix) = (S_key.KEY)
+  -- if $trait_cache_source_key(S, $constant_child(porigin, [PCFIELD 0]), porigin_owner, n_prefix) = (pvalue)
+  -- if S_key = $key_value($initial_state(NORMAL), pvalue, true, $expression_line(expression))
+  -- if S_key.COMPLETION = NORMAL
+def $trait_cache_flow_key(S, porigin, phpType5, i, porigin_owner, n_prefix) = eps -- otherwise
+
+;; A literal-array dimension keeps the selected source occurrence, including
+;; replacement by a later same key. Its object still needs the actual receipt.
+def $trait_cache_dim_active(S, porigin, porigin_owner, PVCLOSURE n porigin_site, n_prefix) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression_base expression_key metadata)
+  -- if $trait_cache_flow_context(S, porigin, porigin_owner, n_prefix) =/= eps
+def $trait_cache_dim_active(S, porigin, porigin_owner, pvalueclass, n_prefix) = false -- otherwise
+def $trait_cache_dim_source(S, porigin, pkey, porigin_owner, n_prefix) = $trait_cache_dim_items(S, porigin, pkey, porigin_owner, n_prefix, 0, phpType13*, $(-9223372036854775808), eps)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArray (SEQUENCE phpType13*) metadata)
+def $trait_cache_dim_source(S, porigin, pkey, porigin_owner, n_prefix) = eps -- otherwise
+def $trait_cache_dim_items(S, porigin, pkey, porigin_owner, n_prefix, n, eps, i, porigin_selected?) = porigin_selected?
+def $trait_cache_dim_items(S, porigin, pkey, porigin_owner, n_prefix, n, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, i, porigin_selected?) = $trait_cache_dim_items(S, porigin, pkey, porigin_owner, n_prefix, $(n + 1), phpType13*, $next_history(i, pkey), ($constant_child(porigin_item, [PCFIELD 1])))
+  -- if porigin_item = $constant_child(porigin, [PCFIELD 0, PCINDEX n])
+  -- if $constant_callable_array_flow_key(S, porigin_item, phpType5, i, porigin_owner, n_prefix) = (pkey)
+def $trait_cache_dim_items(S, porigin, pkey, porigin_owner, n_prefix, n, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, i, porigin_selected?) = $trait_cache_dim_items(S, porigin, pkey, porigin_owner, n_prefix, $(n + 1), phpType13*, $next_history(i, pkey_other), porigin_selected?)
+  -- if porigin_item = $constant_child(porigin, [PCFIELD 0, PCINDEX n])
+  -- if $constant_callable_array_flow_key(S, porigin_item, phpType5, i, porigin_owner, n_prefix) = (pkey_other)
+  -- if pkey_other =/= pkey
+def $trait_cache_dim_items(S, porigin, pkey, porigin_owner, n_prefix, n, phpType13*, i, porigin_selected?) = eps -- otherwise
+def $trait_cache_dim_flow(S, porigin, porigin_owner, PVCLOSURE n porigin_site, n_prefix, porigin_seen*) = $constant_callable_flow(S, porigin_selected, porigin_owner, PVCLOSURE n porigin_site, n_prefix, porigin_seen*)
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $trait_cache_flow_context(S, porigin, porigin_owner, n_prefix) =/= eps
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression_base expression_key metadata)
+  -- if $compiled_read(S, $constant_child(porigin, [PCFIELD 1])) = (pvalue_key)
+  -- if S_key = $key_value($initial_state(NORMAL), pvalue_key, true, $expression_line(expression_key))
+  -- if S_key.COMPLETION = NORMAL
+  -- if $trait_cache_dim_source(S, $constant_child(porigin, [PCFIELD 0]), S_key.KEY, porigin_owner, n_prefix) = (porigin_selected)
+def $trait_cache_dim_flow(S, porigin, porigin_owner, pvalueclass, n_prefix, porigin_seen*) = false -- otherwise
+
+def $constant_callable_cache_valid(S, pclassconstantdesc, pvalueclass, n_prefix) = ($trait_cache_cause_valid(S, pclassconstantdesc.ORIGIN, ptraitcachecause) /\ $trait_cache_bound_value(S, pclassconstantdesc, pvalueclass, n_prefix))
   -- if $trait_cache_event_at(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = (ptraitcachecause)
   -- if ptraitcachecause.PREFIX = n_prefix
 def $class_constant_history_fills(S, (CCTRAITCACHE porigin ptraitcachecause) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached* ++ [porigin], porigin_filled*, ptraitcachecause.PREFIX)

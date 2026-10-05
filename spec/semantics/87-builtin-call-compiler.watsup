@@ -67,7 +67,7 @@ def $ppbuiltin_defined(expression) = true
   -- if ~(92 <- ptbytes) /\ ~(58 <- ptbytes)
 def $ppbuiltin_defined(expression) = false -- otherwise
 def $ppbuiltin_constant(P, expression) = (pvalue)
-  -- if $parser_literal(expression) = (pvalue)
+  -- if $parser_literal_at(expression, P.FOLD.PARSEPRECISION) = (pvalue)
 def $ppbuiltin_constant(P, NExprConstFetch name metadata) = $pnfold(pnreference)
   -- if $pnresolve(P.ENV, PLCONSTANT, name) = PNRESOLVED pnreference
 def $ppbuiltin_constant(P, expression) = eps -- otherwise
@@ -109,6 +109,7 @@ def $ppbuiltin_slice(P, expression_1, expression_2) = false -- otherwise
 ;; Its error location is the last expression it actually compiled, not the outer
 ;; call location restored for ordinary call traces.
 def $ppbuiltin_operand(eps, pcpath) = eps
+def $ppbuiltin_operand((PPCPRECISION pcpath_other z) :: ppexprdone*, pcpath) = $ppbuiltin_operand(ppexprdone*, pcpath)
 def $ppbuiltin_operand((PPCEXPR pcpath n pvalue?) :: ppexprdone*, pcpath) = ((n, pvalue?))
 def $ppbuiltin_operand((PPCEXPR pcpath_other n pvalue?) :: ppexprdone*, pcpath) = $ppbuiltin_operand(ppexprdone*, pcpath)
   -- if pcpath_other =/= pcpath

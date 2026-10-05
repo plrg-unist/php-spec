@@ -61,7 +61,7 @@ def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadat
   -- if psparam* = pssignature.PARAMETERS
   -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
   -- if P_uses = $ppclosure_uses(P_header, pcpath ++ [PCFIELD 4], 0, phpType22*, (psparam.NAME)*)
-  -- if P_body = $ppstatements(P_uses, pcpath ++ [PCFIELD 6], 0, statement*)
+  -- if P_body = $ppgenerator_body(P_uses, pcpath ++ [PCFIELD 6], statement*)
 def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, PSSDEFAULTREQUEST pscontinuation) = $ppclosure_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation[.DIAGNOSTICS = eps])
   -- if P.COMPLETION = PPCNORMAL
 

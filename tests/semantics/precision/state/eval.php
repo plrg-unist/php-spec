@@ -1,0 +1,1 @@
+<?php ini_set("precision","3tail"); $x=eval("return 12.3456789 . 'L';"); ini_set("precision","1tail"); echo $x;

@@ -1,5 +1,5 @@
 ;; Pinned -n profile: exception_ignore_args=0, string_param_max_len=15,
-;; precision=14. Trace arguments are captured by value before frame teardown.
+;; Trace arguments are captured by value; float text samples live precision.
 dec $trace_hex(nat) : nat
 def $trace_hex(n) = $(48 + n) -- if $(n < 10)
 def $trace_hex(n) = $(55 + n) -- if $(n >= 10)
@@ -21,17 +21,20 @@ dec $trace_string(preqbytes) : preqbytes
 def $trace_string(n*) = [39] ++ $trace_escape(n*) ++ [39] -- if $(|n*| <= 15)
 def $trace_string(n*) = [39] ++ $trace_escape(n*[0:15]) ++ [46,46,46,39] -- if $(|n*| > 15)
 dec $trace_float(nat) : preqbytes
-def $trace_float(n) = n_out* ++ [46,48]
-  -- if n_out* = $echo_value(PFLOAT n)
-  -- if $float_decode(n) = FINITE n_sign n_exp n_mant
+dec $trace_float_precision(nat, int) : preqbytes
+dec $trace_float_suffix(fparts, preqbytes) : preqbytes
+def $trace_float(n) = $trace_float_precision(n, 14)
+def $trace_float_precision(n, z_precision) = $trace_float_suffix($float_decode(n), n_out*)
+  -- if (n_out*, b_warning) = $number_text(NFLOAT n, z_precision)
+def $trace_float_suffix(FINITE n_sign n_exp n_mant, n_out*) = n_out* ++ [46,48]
   -- if ~(46 <- n_out*)
-def $trace_float(n) = $echo_value(PFLOAT n) -- otherwise
+def $trace_float_suffix(fparts, n_out*) = n_out* -- otherwise
 dec $trace_value_text(pstate, pvalue) : preqbytes
 def $trace_value_text(S, PNULL) = $ptascii("NULL")
 def $trace_value_text(S, PBOOL true) = $ptascii("true")
 def $trace_value_text(S, PBOOL false) = $ptascii("false")
 def $trace_value_text(S, PINT z) = $decimal_integer(z)
-def $trace_value_text(S, PFLOAT n) = $trace_float(n)
+def $trace_value_text(S, PFLOAT n) = $trace_float_precision(n, $precision_value(S))
 def $trace_value_text(S, PSTRING n*) = $trace_string(n*)
 def $trace_value_text(S, PARRAY n) = $ptascii("Array")
 def $trace_value_text(S, POBJECT n) = $ptascii("Object(") ++ $object_name(S, n) ++ [41]
@@ -116,6 +119,8 @@ dec $trace_context_location(pstate, pcallcontext, porigin) : (porigin, int)
 def $trace_context_location(S, pcallcontext, porigin) = (porigin, pcallcontext.LINE) -- otherwise
 dec $exception_warning_context(pstate, pcallcontext) : bool
 dec $destructor_context_kind(pstate, pcallcontext) : bool
+dec $generator_context_trace_kind(pstate, pcallcontext) : bool
+dec $generator_trace_scope(pstate, pcallcontext?, pframe*) : pstate
 dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
 dec $default_internal_callback_context(pstate, pcallcontext) : bool
 def $default_internal_callback_context(S, pcallcontext) = false -- otherwise
@@ -134,6 +139,7 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
   -- if ~$terminal_string_context(S, pcallcontext)
   -- if ~$closure_call_target($context_target(pcallcontext))
   -- if ~$config_string_trace_context(S, pcallcontext)
+  -- if ~$generator_context_trace_kind(S, pcallcontext)
   -- if ~$default_internal_callback_context(S, pcallcontext) /\ ~$ordinary_internal_callback_context(S, pcallcontext)
   -- if $error_context_trigger(S, pcallcontext) = eps
   -- if ~$exception_warning_context(S, pcallcontext)
@@ -143,10 +149,12 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
   -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
+  -- if ~$autoload_context_kind(S, pcallcontext)
+
 dec $trace_saved(pstate, pframe*) : ptraceframe*
 def $trace_saved(S, eps) = eps
 def $trace_saved(S, pframe :: pframe_tail*) = $trace_saved(S, pframe_tail*) -- if pframe.CONTEXT = eps
-def $trace_saved(S, pframe :: pframe_tail*) = $trace_context(S, psymboltable.ENV, pframe.CONTEXT) ++ $trace_saved(S, pframe_tail*)
+def $trace_saved(S, pframe :: pframe_tail*) = $trace_context($generator_trace_scope(S, pframe.CONTEXT, pframe_tail*), psymboltable.ENV, pframe.CONTEXT) ++ $trace_saved(S, pframe_tail*)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
 dec $trace_values_roots((pkey, pvalue)*) : pnode*

@@ -151,6 +151,15 @@ later display writes. [Shutdown callbacks](SOURCE-SHUTDOWN.md) freeze the fatal
 destination after rendering and before the queue. Wider display directives,
 INI parsing/profiles and later request stages stay open.
 
+[Live precision](../../coverage/semantics/precision-review.json) separates raw
+registered/current bytes and Restore from runtime formatting and each unit's
+captured parser precision. Later eval/include parsing observes current precision;
+retired source literals retain their creation value. Suspended eval callbacks
+record ordered compiler precision epochs at actual conversion points; refreshed
+images preserve escaped tables, callback allocations and bound class data.
+Deferred AST operands instead convert with live precision. `serialize_precision`,
+wider formatter consumers and Array eval/include warning ingress remain required.
+
 Backticks remain core syntax. Their command construction/dispatch is specified;
 a finite shell service supplies explicit response bytes/failure/effects. Missing
 service yields Unsupported. Implementing the process library is outside this
@@ -209,6 +218,13 @@ adding heap roots. Ordinary writable-name fetch initializes storage without
 creating that marker; actual reference acquisition marks it. [Independent resolution](../../coverage/semantics/reference-wrapper-review.json)
 preserves the original differences and confirms intermediate FETCH/UNSET versus
 final mutation warnings. This introduces no new intrinsic or environment boundary.
+
+Ordinary scalar/missing dimension reads now retain the distinct warning and quiet
+contracts in [SOURCE-CONTAINER-READS](SOURCE-CONTAINER-READS.md). A selected scalar
+path never refetches an array supplied by a callback. Genuine evaluated operands
+own their temporaries; borrowed pointers and sampled metadata add no roots.
+This introduces no new intrinsic or environment boundary; wider producers remain
+required.
 
 Public instance methods and constructors now have the bounded compiler, linking,
 call and ownership contract in [SOURCE-METHODS](SOURCE-METHODS.md). `Closure`

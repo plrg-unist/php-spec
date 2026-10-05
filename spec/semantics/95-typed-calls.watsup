@@ -145,7 +145,8 @@ def $typed_return_line(S, z) = z -- otherwise
 
 dec $typed_return_check(pstate, int) : pstate
 dec $typed_return_checked(pstate, int, bool) : pstate
-def $typed_return_value(S, z) = $typed_return_check($resolve_at(S, S.RESULT, z), z)
+def $typed_return_value(S, z) = $resolve_at(S, S.RESULT, z) -- if $generator_active(S)
+def $typed_return_value(S, z) = $typed_return_check($resolve_at(S, S.RESULT, z), z) -- if ~$generator_active(S)
 def $typed_return_check(S, z) = $typed_return_checked(S, z, false)
 def $typed_return_checked(S, z, b_source) = S -- if S.COMPLETION =/= NORMAL
 def $typed_return_checked(S, z, b_source) = S -- if S.COMPLETION = NORMAL /\ S.CURRENT = eps

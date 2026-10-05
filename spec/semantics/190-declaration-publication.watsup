@@ -9,7 +9,7 @@ def $ppimage_gotos(P, true) = $compiled_gotos(P.GOTOS, P.LABELS)
 def $ppimage_gotos(P, false) = eps
 
 dec $ppimage(ppstate, bool) : ppinstalled?
-def $ppimage(P, b) = ({ CLASSES P.CLASSES, FUNCTIONS P.FUNCTIONS, CLOSURETEMPLATES P.CLOSURETEMPLATES, ARRAYS P.FOLD.MEMORY.ARRAYS, ALLOCATIONS P.FOLD.MEMORY.ALLOCATIONS, CONSTANTS ($export_constants((pcpath, pvalue)*) ++ $export_classes(P.FOLD.CLASSFACTS)), CODE { STRICT P.ENV.STRICT, GLOBALS P.GLOBALS, UNIT P.FOLD.SOURCE.ID, EXPRESSIONS ($compiled_operands(P, P.EXPRESSIONS) ++ $ppimage_gotos(P, b) ++ $compiled_writes(P.WRITES)), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) } })
+def $ppimage(P, b) = ({ CLASSES P.CLASSES, FUNCTIONS P.FUNCTIONS, CLOSURETEMPLATES P.CLOSURETEMPLATES, ARRAYS P.FOLD.MEMORY.ARRAYS, ALLOCATIONS P.FOLD.MEMORY.ALLOCATIONS, CONSTANTS ($export_constants((pcpath, pvalue)*) ++ $export_classes(P.FOLD.CLASSFACTS) ++ $export_precisions(P.EXPRESSIONS)), CODE { STRICT P.ENV.STRICT, GLOBALS P.GLOBALS, UNIT P.FOLD.SOURCE.ID, EXPRESSIONS ($compiled_operands(P, P.EXPRESSIONS) ++ $ppimage_gotos(P, b) ++ $compiled_writes(P.WRITES)), NAMES $compiled_names(P.NAMES), REDIRECTS $compiled_redirects(P.REDIRECTS) } })
   -- if P.COMPLETION = PPCNORMAL
   -- if P.FOLD.MEMORY.ENV = eps /\ P.FOLD.MEMORY.STORE = eps /\ P.FOLD.MEMORY.REFCELLS = eps
   -- if $ppconstants(P) = PPCCONSTANTS (pcpath, pvalue)*
@@ -29,7 +29,7 @@ dec $ppimage_declared(ppstate, porigin, ppubkind) : bool
 def $ppimage_declared(P, porigin, PPCLASS) = ($class_at(P.CLASSES, porigin) =/= eps)
 def $ppimage_declared(P, porigin, PPFUNCTION) = ($function_at(P.FUNCTIONS, porigin) =/= eps)
 
-def $ppimage_publication(P, porigin, ppubkind, true) = $ppimage_save(P[.PUBLICATIONS = P.PUBLICATIONS ++ [PPCP porigin n_diagnostics ppubkind]], false)
+def $ppimage_publication(P, porigin, ppubkind, true) = $ppimage_save($ppcompiler_precision(P[.PUBLICATIONS = P.PUBLICATIONS ++ [PPCP porigin n_diagnostics ppubkind]]), false)
   -- if P.COMPLETION = PPCNORMAL
   -- if $ppimage_unit(P)
   -- if $ppimage_declared(P, porigin, ppubkind)
@@ -38,15 +38,34 @@ def $ppimage_publication(P, porigin, ppubkind, b) = P
   -- if ~b \/ P.COMPLETION =/= PPCNORMAL \/ ~$ppimage_unit(P) \/ ~$ppimage_declared(P, porigin, ppubkind)
 
 ;; Capture transition facts at real publication sites, never in scratch links.
-def $declaration_enter(S, n, porigin?) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDENTER n porigin? S.REPORTING]]
+dec $declaration_enter_at(pstate, nat, porigin?, int) : pstate
+def $declaration_enter(S, n, porigin?) = $declaration_enter_at(S, n, porigin?, $precision_value(S))
+def $declaration_enter_at(S, n, porigin?, 14) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDENTER n porigin? S.REPORTING]]
+def $declaration_enter_at(S, n, porigin?, z_precision) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDENTERPRECISION n porigin? S.REPORTING z_precision]]
+  -- if z_precision =/= 14
+  -- if $(z_precision >= -1 /\ z_precision <= 9223372036854775807)
 def $declaration_exit(S, n, pcompilestop) = S[.DECLARATIONS = S.DECLARATIONS ++ [PDEXIT n pcompilestop]]
+
+;; Default entries keep their original spelling. Both forms are one entry event.
+def $declaration_entry_input(PDENTER n porigin? z, n) = ((porigin?, z, 14))
+def $declaration_entry_input(PDENTERPRECISION n porigin? z z_precision, n) = ((porigin?, z, z_precision))
+  -- if z_precision =/= 14
+  -- if $(z_precision >= -1 /\ z_precision <= 9223372036854775807)
+def $declaration_entry_input(pdeclaration, n) = eps -- otherwise
+def $declaration_precision(eps, n) = eps
+def $declaration_precision(pdeclaration :: pdeclaration_tail*, n) = (z_precision)
+  -- if $declaration_entry_input(pdeclaration, n) = ((porigin?, z, z_precision))
+def $declaration_precision(pdeclaration :: pdeclaration_tail*, n) = $declaration_precision(pdeclaration_tail*, n)
+  -- if $declaration_entry_input(pdeclaration, n) = eps
 
 syntax pdeclentry = (nat, porigin?, int)
 dec $declaration_open_item(pdeclaration, pdeclentry?) : pdeclentry?
 def $declaration_open_item(PDENTER n porigin? z, pdeclentry?) = ((n, porigin?, z))
+def $declaration_open_item(PDENTERPRECISION n porigin? z z_precision, pdeclentry?) = ((n, porigin?, z))
 def $declaration_open_item(PDEXIT n pcompilestop, pdeclentry?) = eps
 def $declaration_open_item(PDEVALPAUSE n n_checkpoint n_diagnostic pdeclnoticeitem*, pdeclentry?) = eps
 def $declaration_open_item(PDEVALRESUME n z, pdeclentry?) = ((n, eps, z))
+def $declaration_open_item(PDEVALRESUMEPRECISION n z z_precision, pdeclentry?) = ((n, eps, z))
 def $declaration_open_item(pdeclaration, pdeclentry?) = pdeclentry? -- otherwise
 dec $declaration_open_from(pdeclaration*, (nat, porigin?, int)?) : (nat, porigin?, int)?
 dec $declaration_open(pdeclaration*) : (nat, porigin?, int)?
@@ -71,12 +90,14 @@ def $declaration_file_unit(pfilecontext :: pfilecontext_tail*, n_depth) = $decla
 dec $declaration_context(pstate, pcallcontext?) : (porigin, porigin?, porigin?, porigin?)*
 dec $declaration_frames(pstate, pframe*) : (porigin, porigin?, porigin?, porigin?)*
 dec $declaration_cause(pstate) : pdeclcause
+dec $declaration_autoload(pstate) : pdeclautoload*
+def $declaration_autoload(S) = eps -- otherwise
 def $declaration_context(S, (pcallcontext)) = [(pcallcontext.FUNCTION, pcallcontext.CALLSITE, pcallcontext.LEXICAL_CLASS, pcallcontext.CALLED_CLASS)]
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) =/= eps
 def $declaration_context(S, pcallcontext?) = eps -- otherwise
 def $declaration_frames(S, eps) = eps
 def $declaration_frames(S, pframe :: pframe_tail*) = $declaration_context(S, pframe.CONTEXT) ++ $declaration_frames(S, pframe_tail*)
-def $declaration_cause(S) = { UNIT $pmmax($declaration_eval_unit(S.EVALCONTEXTS, |S.FRAMES|), $declaration_file_unit(S.FILECONTEXTS, |S.FRAMES|)), CALLS ($declaration_context(S, S.CURRENT) ++ $declaration_frames(S, S.FRAMES)) }
+def $declaration_cause(S) = { UNIT $pmmax($declaration_eval_unit(S.EVALCONTEXTS, |S.FRAMES|), $declaration_file_unit(S.FILECONTEXTS, |S.FRAMES|)), CALLS ($declaration_context(S, S.CURRENT) ++ $declaration_frames(S, S.FRAMES)), AUTOLOAD $declaration_autoload(S) }
 
 dec $declaration_success(pstate, pstate, porigin, ppubkind) : pstate
 def $declaration_success(S, S_published, PORIGIN n pcpath, PPCLASS) = S_published[.DECLARATIONS = S.DECLARATIONS ++ [PDECLASS n (PORIGIN n pcpath)]]

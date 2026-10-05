@@ -1,0 +1,31 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; project profile. Native-only raw-trait failed-fill preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Hard and reported-Error failures while composing a raw trait preserve already published dependency caches and leave the using trait unpublished. No model agreement yet.",
+  "cases": [
+    {
+      "id": "published-cache-survives-failed-raw-trait-composition",
+      "source": "<?php\nclass P{public const Y=E_STRICT;}\ntrait T{public static $x=P::Y;}\nregister_shutdown_function(function(){echo \"P:\",P::Y;});\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\necho \"PRE;\";\ntrait U{use T;public static $x=0;}\necho \"POST;\";\n",
+      "source_sha256": "8de63144d59debc4542467840b5dd9030fe602e834e89fc9e1f612355c6246b6",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1A6MjA0OA==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCkZhdGFsIGVycm9yOiBVIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBVLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDcKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-failed-trait-cache-274/.tools/trait-failed-using-native274-2n29q5ay/report.json",
+      "native_raw_sha256": "e798defb9f11cc574c9704385325bf149839c2b5503fb3d393ce3ed43c9ac814"
+    },
+    {
+      "id": "published-array-cache-survives-raw-trait-composition-error",
+      "source": "<?php\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\nclass P{public const array Y=[E_STRICT=>\"X\"];}\ntrait T{public static array $x=DOES_NOT_EXIST;public static function marker(){echo \"C;\";}}\nregister_shutdown_function(function(){\n $copy=P::Y;$copy[2048]=\"W\";echo \"P:\",P::Y[2048],\":\",$copy[2048],\";\";\n try{U::marker();}catch(Error $e){echo \"U;\";}\n});\necho \"PRE;\";\ntrait U{use T;public static array $x=P::Y;}\necho \"POST;\";\n",
+      "source_sha256": "be225a6029b7110f168e173a2d6565e71f3dbf8f7e30d56bff4b7efbcd1c7708",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1A6WDpXO1U7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCldhcm5pbmc6IFVuY2F1Z2h0IEVycm9yOiBVbmRlZmluZWQgY29uc3RhbnQgIkRPRVNfTk9UX0VYSVNUIiBpbiB7RklMRX06MTAKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAxMApGYXRhbCBlcnJvcjogVSBhbmQgVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgVS4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxMAo=",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-failed-trait-cache-274/.tools/trait-failed-using-native274-2n29q5ay/report.json",
+      "native_raw_sha256": "71afe970eba1c08d73ef75c75945a6e57ba74a38bb932198e12dd29fd47d21ac"
+    }
+  ]
+}

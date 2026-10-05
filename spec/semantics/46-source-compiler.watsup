@@ -1,7 +1,7 @@
 ;; Ordered ordinary compilation for the currently admitted source subset.
 syntax ppcompletion = PPCNORMAL | PPCABRUPT pcompletion | PPCNAMESPACE
 syntax ppwork = PPCWORK pcpath statement plenv nat
-syntax ppexprdone = PPCIMPLICIT pcpath ptbytes nat | PPCARROW pcpath nat | PPCLEXICAL pcpath ptbytes bool nat | PPCSTATIC pcpath ptbytes nat nat bool | PPCEXPR pcpath nat pvalue? | PPCEFFECT pcpath | PPCCALL_INIT pcpath nat | PPCPIPE_SEND pcpath int | PPCSWITCH_COMPARE pcpath int | PPCSWITCH_BOOL pcpath bool | PPCMATCH_LINE pcpath int | PPCMATCH_TABLE pcpath bool
+syntax ppexprdone = PPCIMPLICIT pcpath ptbytes nat | PPCARROW pcpath nat | PPCLEXICAL pcpath ptbytes bool nat | PPCSTATIC pcpath ptbytes nat nat bool | PPCEXPR pcpath nat pvalue? | PPCEFFECT pcpath | PPCCALL_INIT pcpath nat | PPCPIPE_SEND pcpath int | PPCSWITCH_COMPARE pcpath int | PPCSWITCH_BOOL pcpath bool | PPCMATCH_LINE pcpath int | PPCMATCH_TABLE pcpath bool | PPCPRECISION pcpath int
 syntax ppgotolabel = PPGOTOLABEL ptbytes pcpath int pcpath*
 syntax ppgotoref = PPGOTOREF ptbytes pcpath int pcpath* | PPJUMPREF pcpath int nat pcpath*
 syntax ppubkind = PPCLASS | PPFUNCTION
@@ -75,6 +75,13 @@ dec $ppstart_eval_cwd(nat, program, ptbytes, ptbytes?, ptbytes?) : ppstate
 dec $class_constant_compile_entry(pstate, nat) : pstate?
 dec $ppstart_eval_state(pstate, nat, program, ptbytes, ptbytes?, ptbytes?) : ppstate
 dec $ppstart_eval_external(nat, program, ptbytes, ptbytes?, ptbytes?, pstate?) : ppstate
+dec $ppstart_precision_external(nat, program, ptbytes, ptbytes?, ptbytes?, pstate?, int) : ppstate
+dec $ppstart_precision_epochs(nat, program, ptbytes, ptbytes?, ptbytes?, pstate?, int, (nat, nat, int)*) : ppstate
+dec $eval_precision_epochs(pdeclaration*, nat) : (nat, nat, int)*?
+dec $ppcompiler_precision(ppstate) : ppstate
+dec $pprecord_precision(ppstate, pcpath) : ppstate
+dec $export_precisions(ppexprdone*) : pconstant*
+dec $declaration_precision(pdeclaration*, nat) : int?
 dec $eval_source_ppstate(pstate, pcunit) : ppstate
 dec $ppimage_empty(nat) : ppinstalled
 dec $ppimage_save(ppstate, bool) : ppstate
@@ -82,14 +89,18 @@ dec $ppimage_publication(ppstate, porigin, ppubkind, bool) : ppstate
 def $ppstart(n, program, ptbytes) = $ppstart_cwd(n, program, ptbytes, eps)
 def $ppstart_cwd(n, program, ptbytes, ptbytes_cwd?) = $ppstart_eval_cwd(n, program, ptbytes, ptbytes_cwd?, eps)
 def $ppstart_eval_cwd(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?) = $ppstart_eval_external(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, eps)
-def $ppstart_eval_state(S, 0, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?) = $ppstart_eval_cwd(0, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?)
-def $ppstart_eval_state(S, n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?) = $ppstart_eval_external(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, (S_entry))
+def $ppstart_eval_state(S, 0, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?) = $ppstart_precision_external(0, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, eps, z_precision)
+  -- if $declaration_precision(S.DECLARATIONS, 0) = (z_precision)
+def $ppstart_eval_state(S, n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?) = $ppstart_precision_epochs(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, (S_entry), z_precision, epochs)
   -- if $(n > 0)
   -- if $class_constant_compile_entry(S, n) = (S_entry)
+  -- if $declaration_precision(S.DECLARATIONS, n) = (z_precision)
+  -- if $eval_precision_epochs(S.DECLARATIONS, n) = (epochs)
 def $ppstart_eval_state(S, n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?) = $ppunsupported($ppstart_eval_cwd(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?), "invalid class constant compilation entry")
-  -- if $(n > 0)
-  -- if $class_constant_compile_entry(S, n) = eps
-def $ppstart_eval_external(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?) = $pplexical({ CLASSES eps, CLASSCONSTANTS eps, CLOSURETEMPLATES eps, CLOSURE false, CLASSCONTEXT eps, EVALCLASS ptbytes_evalclass?, RETURNREF false, RETURNS eps, FUNCTIONS eps, GLOBALS eps, EARLY eps, PUBLICATIONS eps, INSTALLED $ppimage_empty(n), LOOPS 0, SWITCHES eps, GOTOROOT eps, LABELS eps, GOTOS eps, HEADERASSIGNED false, CVS eps, AUTOGLOBALS eps, FOLD ($pfbegin(n, program)[.FILE = (ptbytes)][.CWD = ptbytes_cwd?][.EXTERNAL = pstate_external?]), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, WRITES eps, EXPRESSIONS eps, ACCESS eps, NAMES eps, REDIRECTS eps }, $plstart(n, program, ptbytes))
+  -- if $declaration_precision(S.DECLARATIONS, n) = eps \/ ($(n > 0) /\ ($class_constant_compile_entry(S, n) = eps \/ $eval_precision_epochs(S.DECLARATIONS, n) = eps))
+def $ppstart_eval_external(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?) = $ppstart_precision_external(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?, 14)
+def $ppstart_precision_external(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?, z_precision) = $ppstart_precision_epochs(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?, z_precision, eps)
+def $ppstart_precision_epochs(n, program, ptbytes, ptbytes_cwd?, ptbytes_evalclass?, pstate_external?, z_precision, epochs) = $pplexical({ CLASSES eps, CLASSCONSTANTS eps, CLOSURETEMPLATES eps, CLOSURE false, CLASSCONTEXT eps, EVALCLASS ptbytes_evalclass?, RETURNREF false, RETURNS eps, FUNCTIONS eps, GLOBALS eps, EARLY eps, PUBLICATIONS eps, INSTALLED $ppimage_empty(n), LOOPS 0, SWITCHES eps, GOTOROOT eps, LABELS eps, GOTOS eps, HEADERASSIGNED false, CVS eps, AUTOGLOBALS eps, FOLD ($pfbegin(n, program)[.PARSEPRECISION = z_precision][.COMPILEPRECISIONS = (epochs)][.FILE = (ptbytes)][.CWD = ptbytes_cwd?][.EXTERNAL = pstate_external?][.MEMORY = $precision_memory($initial_state(NORMAL), z_precision)]), ENV $plempty(false), LOCATION { UNIT n, PATH eps, FILE ptbytes, LINE 1 }, COMPLETION PPCNORMAL, DIAGNOSTICS eps, WORK eps, WRITES eps, EXPRESSIONS eps, ACCESS eps, NAMES eps, REDIRECTS eps }, $plstart(n, program, ptbytes))
 def $pplexical(P, plresult) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $pplexical(P, PLDONE plstate pldiagnostic*) = $ppimage_save($ppgoto_finish(P[.ENV = plstate.ENV][.DIAGNOSTICS = P.DIAGNOSTICS ++ pldiagnostic*]), true)
@@ -107,7 +118,7 @@ def $ppresume(P, plstate, pcpath, statement, plenv) = P
 def $ppresume(P, plstate, pcpath, statement, plenv) = $pplexical($ppimage_save(P[.WORK = P.WORK ++ [PPCWORK pcpath statement plenv P.LOCATION.LINE]], false), $plresume(plstate, PLCOMPILED (P.LOCATION[.PATH = pcpath]) P.ENV))
   -- if P.COMPLETION = PPCNORMAL
 
-def $pplocate(P, pcpath, z) = P[.LOCATION = P.LOCATION[.PATH = pcpath][.LINE = n]]
+def $pplocate(P, pcpath, z) = $ppcompiler_precision(P[.LOCATION = P.LOCATION[.PATH = pcpath][.LINE = n]])
   -- if $(z > 0)
   -- if z = n
 def $pplocate(P, pcpath, z) = $ppunsupported(P, "missing ordinary compiler line")
@@ -119,9 +130,9 @@ def $ppcheck(P, READY) = P
 def $ppcheck(P, REJECT pcompletion) = P[.COMPLETION = PPCABRUPT pcompletion]
   -- if P.COMPLETION = PPCNORMAL
 def $ppunsupported(P, text) = P[.COMPLETION = PPCABRUPT (UNSUPPORTED text)]
-def $ppfoldresult(P, F) = P[.FOLD = F[.WARNINGS = eps]][.DIAGNOSTICS = P.DIAGNOSTICS ++ $ppfoldwarnings(F.WARNINGS, P.LOCATION)]
+def $ppfoldresult(P, F) = $ppcompiler_precision(P[.FOLD = F[.WARNINGS = eps]][.DIAGNOSTICS = P.DIAGNOSTICS ++ $ppfoldwarnings(F.WARNINGS, P.LOCATION)])
   -- if F.MEMORY.COMPLETION = NORMAL
-def $ppfoldresult(P, F) = P[.FOLD = F[.WARNINGS = eps]][.DIAGNOSTICS = P.DIAGNOSTICS ++ $ppfoldwarnings(F.WARNINGS, P.LOCATION)][.COMPLETION = PPCABRUPT F.MEMORY.COMPLETION]
+def $ppfoldresult(P, F) = $ppcompiler_precision(P[.FOLD = F[.WARNINGS = eps]][.DIAGNOSTICS = P.DIAGNOSTICS ++ $ppfoldwarnings(F.WARNINGS, P.LOCATION)][.COMPLETION = PPCABRUPT F.MEMORY.COMPLETION])
   -- if F.MEMORY.COMPLETION =/= NORMAL
 
 ;; Ordinary code generation can yield a constant operand without rewriting the AST.
@@ -153,7 +164,7 @@ def $ppexprs(P, pcpath, n, expression :: expression_tail*, ppmode) = $ppexprs($p
 def $ppunsetexprs(P, pcpath, n, eps) = P
 def $ppunsetexprs(P, pcpath, n, expression :: expression_tail*) = $ppunsetexprs($ppexpr($ppunsetcheck($pplocate(P, pcpath ++ [PCINDEX n], $expression_line(expression)), expression), pcpath ++ [PCINDEX n], expression, PPUNSET), pcpath, $(n + 1), expression_tail*)
 def $ppunsetcheck(P, NExprVariable phpType32 metadata) = $ppcheck(P, $context_error("Cannot unset $this", P.LOCATION.LINE))
-  -- if $cv_name(phpType32) = ([116,104,105,115])
+  -- if $cv_name_at(phpType32, P.FOLD.PARSEPRECISION) = ([116,104,105,115])
 def $ppunsetcheck(P, expression) = $ppupdatecheck(P, expression) -- otherwise
 
 dec $ppeffective_line(pffact*, pcpath, expression, ppmode) : int
@@ -169,7 +180,7 @@ def $ppexpr(P, pcpath, expression, ppmode) = $ppdone($ppexprbody($pplocate(P[.FO
   -- if P.COMPLETION = PPCNORMAL
 def $ppdone(P, pcpath, ppmode) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $ppdone(P, pcpath, ppmode) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR pcpath P.LOCATION.LINE P.FOLD.VALUE]][.ACCESS = P.ACCESS ++ [(pcpath, ppmode)]]
+def $ppdone(P, pcpath, ppmode) = $pprecord_precision(P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR pcpath P.LOCATION.LINE P.FOLD.VALUE]][.ACCESS = P.ACCESS ++ [(pcpath, ppmode)]], pcpath)
   -- if P.COMPLETION = PPCNORMAL
 
 def $ppexprbody(P, pcpath, expression, ppmode) = P
@@ -233,7 +244,7 @@ def $ppupdatecheck(P, expression) = $ppupdateother(P, expression) -- otherwise
 def $ppupdateother(P, expression) = $ppcheck(P, $context_error("Can't use nullsafe operator in write context", P.LOCATION.LINE))
   -- if $ppnullsafe(expression)
 def $ppupdateother(P, NExprVariable phpType32 metadata) = $ppcheck(P, $context_error("$GLOBALS can only be modified using the $GLOBALS[$name] = $value syntax", P.LOCATION.LINE))
-  -- if $cv_name(phpType32) = ([71,76,79,66,65,76,83])
+  -- if $cv_name_at(phpType32, P.FOLD.PARSEPRECISION) = ([71,76,79,66,65,76,83])
 def $ppupdateother(P, expression) = P -- otherwise
 
 dec $pptemporary_shape(pfshape) : bool
@@ -278,9 +289,9 @@ def $ppdispatch(P, pcpath, NScalarFloat (FLOAT text) metadata, PPR) = P[.FOLD = 
 def $ppdispatch(P, pcpath, NScalarString (BYTES text) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PSTRING $base64(text))]]
 def $ppdispatch(P, pcpath, NExprConstFetch name metadata, PPR) = $ppnamed(P, pcpath, $pnresolve(P.ENV, PLCONSTANT, name))
 def $ppdispatch(P, pcpath, NExprVariable phpType32 metadata, ppmode) = $ppclearvalue(P)
-  -- if ($cv_name(phpType32) = ([116,104,105,115]) \/ $cv_name(phpType32) = ([71,76,79,66,65,76,83]))
+  -- if ($cv_name_at(phpType32, P.FOLD.PARSEPRECISION) = ([116,104,105,115]) \/ $cv_name_at(phpType32, P.FOLD.PARSEPRECISION) = ([71,76,79,66,65,76,83]))
 def $ppdispatch(P, pcpath, NExprVariable phpType32 metadata, ppmode) = $ppvariable(P, pcpath, phpType32, ppmode)
-  -- if ($cv_name(phpType32) =/= ([116,104,105,115]) /\ $cv_name(phpType32) =/= ([71,76,79,66,65,76,83]))
+  -- if ($cv_name_at(phpType32, P.FOLD.PARSEPRECISION) =/= ([116,104,105,115]) /\ $cv_name_at(phpType32, P.FOLD.PARSEPRECISION) =/= ([71,76,79,66,65,76,83]))
 def $ppdispatch(P, pcpath, NExprAssign expression_1 expression_2 metadata, PPR) = $ppassign(P, pcpath, expression_1, expression_2, false)
 def $ppdispatch(P, pcpath, NExprAssignRef expression_1 expression_2 metadata, PPR) = $ppassign(P, pcpath, expression_1, expression_2, true)
 def $ppdispatch(P, pcpath, expression, PPR) = $ppbinary(P, pcpath, pbin, expression_1, expression_2)
@@ -314,9 +325,9 @@ def $ppdispatch(P, pcpath, expression, ppmode) = $ppunsupported(P, "ordinary exp
 ;; Direct CV classification is shared with the machine. A computed name is
 ;; compiled normally even though enclosing constant evaluation stops at VAR.
 def $ppvariable(P, pcpath, phpType32, ppmode) = $ppcv(P, pcpath, phpType32, ppmode)
-  -- if $cv_name(phpType32) = (n*)
+  -- if $cv_name_at(phpType32, P.FOLD.PARSEPRECISION) = (n*)
 def $ppvariable(P, pcpath, phpType32, ppmode) = $ppvarname($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, ppmode)
-  -- if $cv_name(phpType32) = eps
+  -- if $cv_name_at(phpType32, P.FOLD.PARSEPRECISION) = eps
   -- if phpType32 = expression
 def $ppvarname(P, pcpath, ppmode) = P
   -- if P.COMPLETION =/= PPCNORMAL
@@ -360,12 +371,12 @@ def $ppcompound(P, pcpath, expression_1, expression_2) = $ppclearvalue($ppassign
 def $ppvaluemode(false) = PPR
 def $ppvaluemode(true) = PPW
 def $ppassign(P, pcpath, NExprVariable phpType32 metadata, expression_2, b) = $ppcheck(P, $context_error("Cannot re-assign $this", P.LOCATION.LINE))
-  -- if $cv_name(phpType32) = ([116,104,105,115])
+  -- if $cv_name_at(phpType32, P.FOLD.PARSEPRECISION) = ([116,104,105,115])
 def $ppassign(P, pcpath, expression_1, expression_2, b) = $ppassignmentline($ppassignright($ppexpr($ppassignrefcheck($ppupdatecheck(P, expression_1), expression_2, b), pcpath ++ [PCFIELD 0], expression_1, PPW), pcpath, expression_1, expression_2, b), expression_1, b)
   -- otherwise
 ;; Reference assignment checks the original source before delayed target compilation.
 def $ppassignrefcheck(P, NExprVariable phpType32 metadata, true) = $ppcheck(P, $context_error("Cannot acquire reference to $GLOBALS", P.LOCATION.LINE))
-  -- if $cv_name(phpType32) = ([71,76,79,66,65,76,83])
+  -- if $cv_name_at(phpType32, P.FOLD.PARSEPRECISION) = ([71,76,79,66,65,76,83])
 def $ppassignrefcheck(P, expression, b) = P -- otherwise
 def $ppassignright(P, pcpath, expression_1, expression_2, b) = P
   -- if P.COMPLETION =/= PPCNORMAL
@@ -428,6 +439,7 @@ def $ppmergefacts(ppconstants, (PFFACT pcpath pvalue z) :: pffact*) = PPCINVALID
   -- if $(z <= 0)
 dec $ppmergeoperands(ppconstants, ppexprdone*) : ppconstants
 def $ppmergeoperands(ppconstants, eps) = ppconstants
+def $ppmergeoperands(ppconstants, (PPCPRECISION pcpath z) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
 def $ppmergeoperands(ppconstants, (PPCEFFECT pcpath) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
 def $ppmergeoperands(ppconstants, (PPCEXPR pcpath n eps) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
   -- if $(n > 0)
@@ -531,7 +543,7 @@ dec $ppbitnotdone(ppstate, pcpath) : ppstate
 def $pptemporary_shape(PFBITNOT expression) = true
 def $pptemporary_shape(PFCAST pcast expression) = true
 def $ppdispatch(P, pcpath, NExprBinaryOpConcat expression_1 expression_2 metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (pvalue)]]
-  -- if $pfshape(NExprBinaryOpConcat expression_1 expression_2 metadata) = PFSCALAR pvalue z
+  -- if $pfshape_at(P.FOLD, NExprBinaryOpConcat expression_1 expression_2 metadata) = PFSCALAR pvalue z
 def $ppdispatch(P, pcpath, expression_outer, PPR) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
   -- if $pfshape(expression_outer) = PFCAST pcast expression
 def $ppdispatch(P, pcpath, NExprCastVoid expression metadata, PPR) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
@@ -549,6 +561,7 @@ def $ppbitnotdone(P, pcpath) = $ppoperandresult(P, $pfbitnot(P.FOLD, pcpath, P.L
 ;; Zend emits scalar conversion diagnostics only after both operands compile.
 ;; Constant arrays retain their values for the later runtime CAST instructions.
 dec $ppconcatconstant(pfstate, pcpath, pvalue?, int) : pfstate
+dec $ppconcatoperands(ppstate, pfstate, pcpath, pvalue?, pvalue?) : ppstate
 def $ppconcatconstant(F, pcpath, (pvalue), z) = $pfwarned(F, pcpath, $stringify(F.MEMORY, pvalue, z))[.VALUE = eps]
   -- if ~$is_array_value(pvalue)
 def $ppconcatconstant(F, pcpath, pvalue?, z) = F[.VALUE = eps]
@@ -557,10 +570,14 @@ def $ppbinarydone(P, pcpath, CONCAT, pvalue_left?) = $ppoperandresult(P, F)
   -- if P.COMPLETION = PPCNORMAL
   -- if F = $pfbinary(P.FOLD, pcpath, CONCAT, pvalue_left?, P.FOLD.VALUE, P.LOCATION.LINE)
   -- if F.VALUE = (pvalue)
-def $ppbinarydone(P, pcpath, CONCAT, pvalue_left?) = $ppoperandresult(P, $ppconcatconstant($ppconcatconstant(F, pcpath, pvalue_left?, P.LOCATION.LINE), pcpath, P.FOLD.VALUE, P.LOCATION.LINE))
+def $ppbinarydone(P, pcpath, CONCAT, pvalue_left?) = $ppconcatoperands(P, F, pcpath, pvalue_left?, P.FOLD.VALUE)
   -- if P.COMPLETION = PPCNORMAL
   -- if F = $pfbinary(P.FOLD, pcpath, CONCAT, pvalue_left?, P.FOLD.VALUE, P.LOCATION.LINE)
   -- if F.VALUE = eps
+def $ppconcatoperands(P, F, pcpath, pvalue_left?, pvalue_right?) = $ppoperandresult(P_right, $ppconcatconstant(F_left, pcpath, pvalue_right?, P.LOCATION.LINE))
+  -- if P_left = $pprecord_precision(P[.FOLD = F], pcpath ++ [PCFIELD 0])
+  -- if F_left = $ppconcatconstant(F, pcpath, pvalue_left?, P.LOCATION.LINE)
+  -- if P_right = $pprecord_precision(P_left[.FOLD = F_left], pcpath ++ [PCFIELD 1])
 
 def $ppitems(P, pcpath, n, (NArrayItem ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType13*) = $ppitems($ppexpr(P, pcpath ++ [PCINDEX n, PCFIELD 1], expression, PPR), pcpath, $(n + 1), phpType13*)
   -- if P.COMPLETION = PPCNORMAL
@@ -571,7 +588,7 @@ def $ppcv(P, pcpath, phpType32, ppmode) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppcv(P, pcpath, phpType32, ppmode) = $ppglobalmark($ppcvrecord($ppautorecord($ppheader($ppclearvalue($ppcvconverted(P, phpType32)), n*, ppmode, true), n*), n*), pcpath, n*)
   -- if P.COMPLETION = PPCNORMAL
-  -- if $cv_name(phpType32) = (n*)
+  -- if $cv_name_at(phpType32, P.FOLD.PARSEPRECISION) = (n*)
 def $ppheader(P, n*, ppmode, b_cv) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppheader(P, [104,116,116,112,95,114,101,115,112,111,110,115,101,95,104,101,97,100,101,114], PPR, b_cv) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC "deprecated" "header-context" eps P.LOCATION]]
@@ -600,7 +617,7 @@ def $ppcvconverted(P, NScalarFloat (FLOAT text) metadata) = $ppoperandresult(P, 
 def $ppcvconverted(P, phpType32) = P
   -- otherwise
 def $ppnamecast(P, pcpath, ppmode, eps) = $ppclearvalue(P)
-def $ppnamecast(P, pcpath, ppmode, (pvalue)) = $ppnamecasted($ppoperandresult(P, $pfwarned(P.FOLD, P.LOCATION.PATH, $stringify(P.FOLD.MEMORY, pvalue, P.LOCATION.LINE))), pcpath, ppmode)
+def $ppnamecast(P, pcpath, ppmode, (pvalue)) = $ppnamecasted($pprecord_precision($ppoperandresult(P, $pfwarned(P.FOLD, P.LOCATION.PATH, $stringify(P.FOLD.MEMORY, pvalue, P.LOCATION.LINE))), pcpath ++ [PCFIELD 0]), pcpath, ppmode)
 def $ppnamecasted(P, pcpath, ppmode) = $ppglobalmark($ppheader($ppclearvalue($ppautorecord(P, n*)), n*, ppmode, false), pcpath, n*)
   -- if P.COMPLETION = PPCNORMAL
   -- if P.FOLD.VALUE = (PSTRING n*)
@@ -623,7 +640,7 @@ def $ppglobalname(P) = P
 def $ppglobalname(P) = $ppclearvalue(P)
   -- if P.COMPLETION = PPCNORMAL
   -- if P.FOLD.VALUE = eps
-def $ppglobalname(P) = $ppclearvalue($ppoperandresult(P, $pfwarned(P.FOLD, P.LOCATION.PATH, $stringify(P.FOLD.MEMORY, pvalue, P.LOCATION.LINE))))
+def $ppglobalname(P) = $ppclearvalue($pprecord_precision($ppoperandresult(P, $pfwarned(P.FOLD, P.LOCATION.PATH, $stringify(P.FOLD.MEMORY, pvalue, P.LOCATION.LINE))), P.LOCATION.PATH))
   -- if P.COMPLETION = PPCNORMAL
   -- if P.FOLD.VALUE = (pvalue)
 
