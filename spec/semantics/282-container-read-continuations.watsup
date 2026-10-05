@@ -11,8 +11,8 @@ dec $rcontainer_value(pstate, pcontainerread) : pvalue
 dec $rcontainer_test(pstate, pcontainerread, pvalue) : pstate
 dec $rcontainer_dispatch(pstate, pcontainerread) : pstate
 dec $rcontainer_resume(pstate, pcontainerread) : pstate
-dec $rcontainer_message(pcontainerread) : ptbytes
-dec $rcontainer_event(pcontainerread) : pevent
+dec $rcontainer_message(pstate, pcontainerread) : ptbytes
+dec $rcontainer_event(pstate, pcontainerread) : pevent
 dec $rcontainer_selector_valid(pstate, pcontainerread) : bool
 dec $rcontainer_phase_valid(pstate, pcontainerread) : bool
 dec $rcontainer_valid(pstate, pcontainerread) : bool
@@ -99,19 +99,22 @@ def $rcontainer_test(S, pcontainerread, PSTRING n_bytes*) = S_out
 def $rcontainer_test(S, pcontainerread, POBJECT n) = $throw_scalar(S, "Error", $ptascii("Cannot use object of type ") ++ $object_name(S, n) ++ $ptascii(" as array"), pcontainerread.READ.LINE)
 def $rcontainer_test(S, pcontainerread, pvalue) = $key_read_done(S, PNULL) -- otherwise
 
-def $rcontainer_message(pcontainerread) = $ptascii("Undefined variable $") ++ n_name*
+def $rcontainer_message(S, pcontainerread) = $ptascii("Undefined variable $") ++ n_name*
   -- if pcontainerread.PHASE = READ_BASE_CV n_name*
-def $rcontainer_message(pcontainerread) = $ptascii("Undefined variable $") ++ n_name*
+def $rcontainer_message(S, pcontainerread) = $ptascii("Undefined variable $") ++ n_name*
   -- if pcontainerread.PHASE = READ_KEY_CV n_name*
-def $rcontainer_message(pcontainerread) = $ptascii("Trying to access array offset on ") ++ $dimension_value_name(pvalue)
+def $rcontainer_message(S, pcontainerread) = $ptascii("Trying to access array offset on ") ++ $object_name(S, n)
+  -- if pcontainerread.PHASE = READ_OFFSET (POBJECT n)
+def $rcontainer_message(S, pcontainerread) = $ptascii("Trying to access array offset on ") ++ $dimension_value_name(pvalue)
   -- if pcontainerread.PHASE = READ_OFFSET pvalue
-def $rcontainer_event(pcontainerread) = WARNING n_name* pcontainerread.READ.LINE
+  -- if $value_type_bytes(pvalue) =/= $ptascii("object")
+def $rcontainer_event(S, pcontainerread) = WARNING n_name* pcontainerread.READ.LINE
   -- if pcontainerread.PHASE = READ_BASE_CV n_name*
-def $rcontainer_event(pcontainerread) = WARNING n_name* pcontainerread.READ.LINE
+def $rcontainer_event(S, pcontainerread) = WARNING n_name* pcontainerread.READ.LINE
   -- if pcontainerread.PHASE = READ_KEY_CV n_name*
-def $rcontainer_event(pcontainerread) = DIAGNOSTIC "Warning" $rcontainer_message(pcontainerread) pcontainerread.READ.LINE
+def $rcontainer_event(S, pcontainerread) = DIAGNOSTIC "Warning" $rcontainer_message(S, pcontainerread) pcontainerread.READ.LINE
   -- if pcontainerread.PHASE = READ_OFFSET pvalue
-def $rcontainer_dispatch(S, pcontainerread) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $rcontainer_message(pcontainerread), pcontainerread.READ.LINE, $rcontainer_event(pcontainerread), CONTAINER_READ_RESULT pcontainerread)
+def $rcontainer_dispatch(S, pcontainerread) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $rcontainer_message(S, pcontainerread), pcontainerread.READ.LINE, $rcontainer_event(S, pcontainerread), CONTAINER_READ_RESULT pcontainerread)
 
 def $rcontainer_resume(S, pcontainerread) = $rcontainer_key(S, pcontainerread)
   -- if pcontainerread.PHASE = READ_BASE_CV n_name*
@@ -193,6 +196,6 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.SITE = pcontainerread.READ.SITE
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.LINE = pcontainerread.READ.LINE
-  -- if perrorcall.MESSAGE = $rcontainer_message(pcontainerread)
-  -- if perrorcall.EVENT = $rcontainer_event(pcontainerread)
+  -- if perrorcall.MESSAGE = $rcontainer_message(S, pcontainerread)
+  -- if perrorcall.EVENT = $rcontainer_event(S, pcontainerread)
 def $task_nodes(CONTAINER_READ_RESULT pcontainerread) = $key_read_roots(pcontainerread.READ)
