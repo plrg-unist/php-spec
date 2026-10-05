@@ -286,12 +286,12 @@ def $trait_cache_object_read(F, pcpath, pclassconstantdesc, z) = F[.VALUE = eps]
 
 def $trait_cache_object_binding((CLASS_CONST_BIND porigin) :: ptask*) = true
 def $trait_cache_object_binding(ptask*) = false -- otherwise
-def $trait_cache_object_lookups([pclassconstantcontext], porigin*) = (porigin*)
-def $trait_cache_object_lookups(pclassconstantcontext :: pclassconstantcontext_tail*, porigin*) = (porigin_previous* ++ [porigin])
+def $trait_cache_object_lookups([pclassconstantcontext], porigin_base*) = (porigin_base*)
+def $trait_cache_object_lookups(pclassconstantcontext :: pclassconstantcontext_tail*, porigin_base*) = (porigin_previous* ++ [porigin])
   -- if pclassconstantcontext_tail* =/= eps
   -- if pclassconstantcontext.ORIGIN = (porigin)
-  -- if $trait_cache_object_lookups(pclassconstantcontext_tail*, porigin*) = (porigin_previous*)
-def $trait_cache_object_lookups(pclassconstantcontext*, porigin*) = eps -- otherwise
+  -- if $trait_cache_object_lookups(pclassconstantcontext_tail*, porigin_base*) = (porigin_previous*)
+def $trait_cache_object_lookups(pclassconstantcontext*, porigin_base*) = eps -- otherwise
 
 def $trait_cache_object_step(S, ptraitcachecause) = $class_constant_result($class_constant_restore(S_cached[.TODO = ptask_tail*], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
   -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
