@@ -2497,13 +2497,16 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/280-generators.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/generator_review.py",
+        "tests/semantics/generator_review_protocol.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. That prepass alone did not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json. Generator280 now admits ordinary by-value yield execution with raw keys, deferred frames and real resumer traces; 27 normal and three compiler source agreements retain e235. Separate state cuts are recorded in GENERATORS.md. Reference yields, delegation and complete lifecycle remain required."
     },
     {
       "node": "Expr_YieldFrom",
@@ -11716,41 +11719,59 @@
     {
       "id": "resumable.generator-creation",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/280-generators.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/generator_review_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/generator_review.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c"
       ],
-      "review": null
+      "review": "Generator280 eagerly receives ordinary arguments/defaults and creates an object-owned deferred frame for named functions, ordinary Closures and object methods. Source-supertype rejection and accepted one-level intersections are pinned at e235. Further creation scopes, arrow/byref generators and lifecycle remain required; see GENERATORS.md."
     },
     {
       "id": "resumable.yield",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/280-generators.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/generator_review_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/generator_review.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c"
       ],
-      "review": null
+      "review": "Generator280 executes by-value yields with cached array/reference owners and object-owned suspension frames. Twenty-seven normal and three compiler source agreements retain e235; independent state phases retain their separate cuts in GENERATORS.md. Reference yields, delegation and complete lifecycle remain required."
     },
     {
       "id": "resumable.yield-key",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/280-generators.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/generator_review_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/generator_review.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c"
       ],
-      "review": null
+      "review": "Generator280 preserves arbitrary raw keys, delayed key-CV fetch after value effects and signed64 implicit-index wrap. Source and state coverage are linked in GENERATORS.md; delegation/reference yields and destructor-sensitive replacement remain required."
     },
     {
       "id": "resumable.byref-yield",
@@ -11807,54 +11828,78 @@
     {
       "id": "resumable.get-return",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/280-generators.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/generator_review_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/generator_review.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c"
       ],
-      "review": null
+      "review": "Generator280 literal getReturn initializes a fresh generator, returns copied by-value completion only after natural close, and throws before completion without advancing a suspended yield. Ordinary declared-return coercion is bypassed. Further call forms and complete lifecycle remain required."
     },
     {
       "id": "resumable.iterator-protocol",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/280-generators.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/generator_review_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/generator_review.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c"
       ],
-      "review": null
+      "review": "Generator280 supports literal rewind/current/key/valid/next calls and value foreach with real resumer traces, cached running getters and positional over-arity effects. Source and independent frame/owner coverage are linked in GENERATORS.md. Send/throw, dynamic/nullsafe/named/unpacked calls, reference traversal and lifecycle remain required."
     },
     {
       "id": "resumable.generator-close",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/280-generators.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/generator_review_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/generator_review.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c"
       ],
-      "review": null
+      "review": "Generator280 natural completion releases the execution frame while retaining cached yield/return values and the Closure owner until object retirement. Ordinary abrupt cleanup is covered by source-derived state tests. Force-close finalizers, eager destruction and cyclic collection remain required."
     },
     {
       "id": "resumable.generator-finally",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/280-generators.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/generator_review_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/generator_review.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c"
       ],
-      "review": null
+      "review": "Generator280 uses accepted ordinary finally/unwind machinery during natural execution and completion. Started force-close and request-end pending finalizers remain explicit Unsupported controls with zero agreement; complete generator finalization remains required."
     },
     {
       "id": "resumable.Fiber-creation",
@@ -11950,15 +11995,21 @@
     {
       "id": "resumable.suspension-cleanup",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
+      "implementation": [
+        "spec/semantics/280-generators.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/generator_review_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/generator_review.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c"
       ],
-      "review": null
+      "review": "Generator280 moves one authenticated frame between the object and machine, preserving captured references and real saved resumer ownership. Source-derived state tests cover ordinary suspension/resumption and natural cleanup; force-close, destruction/GC and Fiber cleanup remain required."
     },
     {
       "id": "lifecycle.destructor-timing",
