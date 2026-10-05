@@ -214,6 +214,212 @@ CASES = {
 }
 
 
+# Complementary author checks; independent cases above retain their own cuts.
+CASES.update({'author-resumed-mask-and-shared-ini': {'source': '<?php\n'
+                                                  'error_reporting(123);\n'
+                                                  '$f = new Fiber(function () {\n'
+                                                  "    echo 'I', error_reporting(), '/', "
+                                                  "ini_get('error_reporting'), '|';\n"
+                                                  '    error_reporting(456);\n'
+                                                  '    Fiber::suspend();\n'
+                                                  "    echo 'R', error_reporting(), '/', "
+                                                  "ini_get('error_reporting'), '|';\n"
+                                                  '    return 9;\n'
+                                                  '});\n'
+                                                  '$f->start();\n'
+                                                  "echo 'O', error_reporting(), '/', "
+                                                  "ini_get('error_reporting'), '|';\n"
+                                                  'error_reporting(789);\n'
+                                                  '$f->resume();\n'
+                                                  "echo 'F', error_reporting(), '/', "
+                                                  "ini_get('error_reporting');\n",
+                                        'stage': 'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail* '
+                                                 '-- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING -- '
+                                                 'if pconfigcall.SENT = eps -- if S.REPORTING = 456 -- '
+                                                 'if S.REPORTINGINI = $ptascii("789")',
+                                        'checks': ['S.ACTIVEFIBER = (n)',
+                                                   'S.OBJECTS[n] = FIBER pfiber',
+                                                   'pfiber.STATUS = FIBER_RUNNING',
+                                                   'pfiber.VM = eps',
+                                                   'S.CURRENT = (pcallcontext)',
+                                                   '$fiber_context_valid(S, pcallcontext)',
+                                                   'S.FIBERCALLERS = [pfibercaller]',
+                                                   'pfibercaller.OBJECT = n',
+                                                   'pfibercaller.API.KIND = (INTRINSIC_FIBER_RESUME)',
+                                                   'pfibercaller.API.SENT = eps',
+                                                   'pfibercaller.API.SEQUENCE = pfiber.SEQUENCE',
+                                                   'pfibercaller.VM.GLOBAL',
+                                                   'pfibercaller.VM.TABLE = $empty_table()',
+                                                   'pfibercaller.VM.REPORTING = 789',
+                                                   'pfibercaller.VM.SILENCES = eps',
+                                                   'S.SILENCES = eps',
+                                                   'S.REPORTINGMODIFIED',
+                                                   'pfibervm_current = $fiber_vm(S)',
+                                                   'pfibervm_current.REPORTING = 456',
+                                                   'pfibervm_current.SILENCES = eps',
+                                                   'S_caller = $fiber_vm_restore(S, pfibercaller.VM)',
+                                                   'S_caller.REPORTING = 789',
+                                                   'S_caller.REPORTINGINI = $ptascii("789")',
+                                                   'S_caller.REPORTINGMODIFIED = S.REPORTINGMODIFIED',
+                                                   'S_changed = $fiber_vm_restore(S[.REPORTINGINI = '
+                                                   '$ptascii("321")], pfibercaller.VM)',
+                                                   'S_changed.REPORTING = 789',
+                                                   'S_changed.REPORTINGINI = $ptascii("321")',
+                                                   '$config_invoke_valid(S, pconfigcall)',
+                                                   '~$config_invoke_valid(S, pconfigcall[.LINE = '
+                                                   '$(pconfigcall.LINE + 1)])',
+                                                   '~$fiber_context_valid(S, pcallcontext[.LINE = 0])',
+                                                   '$call_current_valid(S)',
+                                                   '$call_frames_valid(S, S.FRAMES)',
+                                                   '$call_descriptors_valid(S)',
+                                                   '$heap_valid($heap_graph(S))',
+                                                   'S_paused = $drive(S, 0)',
+                                                   'S_paused.COMPLETION = BUDGET',
+                                                   'S_paused.REPORTING = S.REPORTING',
+                                                   'S_paused.REPORTINGINI = S.REPORTINGINI',
+                                                   'S_paused.ERRORHANDLER = S.ERRORHANDLER',
+                                                   'S_paused.ERRORHANDLERS = S.ERRORHANDLERS',
+                                                   'S_paused.FIBERCALLERS = S.FIBERCALLERS',
+                                                   'S_paused.OBJECTS = S.OBJECTS',
+                                                   'S_paused.ALLOCATIONS = S.ALLOCATIONS',
+                                                   'S_paused.FIBERSEQ = S.FIBERSEQ',
+                                                   'S_done = $drive(S, 4000)',
+                                                   '$drive(S_paused[.COMPLETION = NORMAL], 4000) = '
+                                                   'S_done',
+                                                   'S_done.COMPLETION = NORMAL',
+                                                   'S_done.TODO = eps',
+                                                   'S_done.FRAMES = eps',
+                                                   'S_done.CURRENT = eps',
+                                                   'S_done.HELD = eps',
+                                                   'S_done.ACTIVEFIBER = eps',
+                                                   'S_done.FIBERCALLERS = eps',
+                                                   '$call_descriptors_valid(S_done)',
+                                                   '$heap_valid($heap_graph(S_done))',
+                                                   'S_done.REPORTING = 789',
+                                                   'S_done.REPORTINGINI = $ptascii("789")',
+                                                   'S_done.OBJECTS[n] = FIBER pfiber_done',
+                                                   'pfiber_done.STATUS = FIBER_TERMINATED',
+                                                   'pfiber_done.VALUE = PINT 9',
+                                                   'pfiber_done.VM = eps',
+                                                   'pfiber_done.CALL = eps']},
+ 'author-parked-handler-keeps-live-replacement': {'source': '<?php\n'
+                                                            'function '
+                                                            'fiber_review_first_handler281($level, '
+                                                            '$message) {\n'
+                                                            "    echo 'H1|';\n"
+                                                            "    Fiber::suspend('wait');\n"
+                                                            "    echo 'R1|';\n"
+                                                            '    return true;\n'
+                                                            '}\n'
+                                                            'function '
+                                                            'fiber_review_second_handler281($level, '
+                                                            "$message) { echo 'H2|'; return true; }\n"
+                                                            "set_error_handler('fiber_review_first_handler281');\n"
+                                                            '$f = new Fiber(function () { echo $inside; '
+                                                            'return 3; });\n'
+                                                            "echo $f->start(), '|';\n"
+                                                            'echo '
+                                                            "(int)(set_error_handler('fiber_review_second_handler281') "
+                                                            "=== null), '|';\n"
+                                                            '$f->resume();\n'
+                                                            'echo $outside;\n'
+                                                            'restore_error_handler();\n'
+                                                            'restore_error_handler();\n'
+                                                            'echo $f->getReturn();\n',
+                                                  'stage': 'S.TODO = (CONFIG_INVOKE pconfigcall) :: '
+                                                           'ptask_tail* -- if pconfigcall.KIND = '
+                                                           'INTRINSIC_FIBER_RESUME -- if '
+                                                           'pconfigcall.OWNER = (n) -- if S.OBJECTS[n] '
+                                                           '= FIBER pfiber -- if pfiber.STATUS = '
+                                                           'FIBER_SUSPENDED',
+                                                  'checks': ['S.ACTIVEFIBER = eps',
+                                                             'S.FIBERCALLERS = eps',
+                                                             'S.CURRENT = eps',
+                                                             'S.FRAMES = eps',
+                                                             'S.ERRORHANDLER.CALLBACK = (PSTRING '
+                                                             '$ptascii("fiber_review_second_handler281"))',
+                                                             'S.ERRORHANDLERS = '
+                                                             '[perrorhandler_disabled, '
+                                                             'perrorhandler_initial]',
+                                                             'perrorhandler_disabled.CALLBACK = eps',
+                                                             'perrorhandler_initial.CALLBACK = eps',
+                                                             'pfiber.VM = (pfibervm)',
+                                                             '~pfibervm.GLOBAL',
+                                                             'pfibervm.CURRENT = (pcallcontext_handler)',
+                                                             'pfibervm.FRAMES = [pframe_callback, '
+                                                             'pframe_base]',
+                                                             'pframe_callback.TODO = '
+                                                             '(ERROR_HANDLER_RESULT perrorcall) :: '
+                                                             'ptask_callback*',
+                                                             'perrorcall.CALLBACK = PSTRING '
+                                                             '$ptascii("fiber_review_first_handler281")',
+                                                             'perrorcall.RESUME = ERROR_READ_RESULT '
+                                                             'perrorread',
+                                                             'perrorread.NAME = $ptascii("inside")',
+                                                             'pfibervm.TODO = (FIBER_CONTINUE '
+                                                             'pfiberapi) :: ptask_handler*',
+                                                             'pfiberapi.SENT = (PSTRING '
+                                                             '$ptascii("wait"))',
+                                                             'pfiberapi.OBJECT = n',
+                                                             'pfiberapi.SEQUENCE = pfiber.SEQUENCE',
+                                                             'pfiber.RAW = POBJECT n_callback',
+                                                             '$heap_owners($heap_graph(S), HOBJECT '
+                                                             'n_callback) = 2',
+                                                             '$heap_owners($heap_graph(S), HOBJECT n) = '
+                                                             '2',
+                                                             '~((HOBJECT n) <- $node_children(S, '
+                                                             'HOBJECT n))',
+                                                             '$fiber_vm_valid(S, pfibervm, (n), eps)',
+                                                             'S_view = $fiber_vm_restore(S, '
+                                                             'pfibervm)[.ACTIVEFIBER = (n)]',
+                                                             'S_view.ERRORHANDLER = S.ERRORHANDLER',
+                                                             'S_view.ERRORHANDLERS = S.ERRORHANDLERS',
+                                                             '$error_context_valid(S_view, '
+                                                             'pcallcontext_handler)',
+                                                             '~$error_context_valid(S_view, '
+                                                             'pcallcontext_handler[.ARGC = 2])',
+                                                             '~$error_context_valid(S_view, '
+                                                             'pcallcontext_handler[.LINE = 0])',
+                                                             '$fiber_continue_valid(S_view, pfiberapi)',
+                                                             '~$fiber_continue_valid(S_view, '
+                                                             'pfiberapi[.OBJECT = |S.OBJECTS|])',
+                                                             '$call_current_valid(S)',
+                                                             '$call_frames_valid(S, S.FRAMES)',
+                                                             '$call_descriptors_valid(S)',
+                                                             '$heap_valid($heap_graph(S))',
+                                                             'S_paused = $drive(S, 0)',
+                                                             'S_paused.COMPLETION = BUDGET',
+                                                             'S_paused.REPORTING = S.REPORTING',
+                                                             'S_paused.REPORTINGINI = S.REPORTINGINI',
+                                                             'S_paused.ERRORHANDLER = S.ERRORHANDLER',
+                                                             'S_paused.ERRORHANDLERS = S.ERRORHANDLERS',
+                                                             'S_paused.FIBERCALLERS = S.FIBERCALLERS',
+                                                             'S_paused.OBJECTS = S.OBJECTS',
+                                                             'S_paused.ALLOCATIONS = S.ALLOCATIONS',
+                                                             'S_paused.FIBERSEQ = S.FIBERSEQ',
+                                                             'S_done = $drive(S, 4000)',
+                                                             '$drive(S_paused[.COMPLETION = NORMAL], '
+                                                             '4000) = S_done',
+                                                             'S_done.COMPLETION = NORMAL',
+                                                             'S_done.TODO = eps',
+                                                             'S_done.FRAMES = eps',
+                                                             'S_done.CURRENT = eps',
+                                                             'S_done.HELD = eps',
+                                                             'S_done.ACTIVEFIBER = eps',
+                                                             'S_done.FIBERCALLERS = eps',
+                                                             '$call_descriptors_valid(S_done)',
+                                                             '$heap_valid($heap_graph(S_done))',
+                                                             'S_done.ERRORHANDLER.CALLBACK = eps',
+                                                             'S_done.ERRORHANDLERS = eps',
+                                                             'S_done.OBJECTS[n] = FIBER pfiber_done',
+                                                             'pfiber_done.STATUS = FIBER_TERMINATED',
+                                                             'pfiber_done.VALUE = PINT 3',
+                                                             '$heap_owners($heap_graph(S_done), HOBJECT '
+                                                             'n_callback) = 0',
+                                                             '~((HOBJECT n_callback) <- '
+                                                             'S_done.ALLOCATIONS)']}})
+
+
 def run(selected):
     assert not selected or set(selected) <= CASES.keys(), 'unknown Fiber state case'
     cases = {key: value for key, value in CASES.items() if not selected or key in selected}
