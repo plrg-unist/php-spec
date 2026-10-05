@@ -59,7 +59,7 @@ dec $source_array_line(pstate, psourceoperand) : int
 def $source_array_line(S, psourceoperand) = $class_constant_error_line(S, psourceoperand.LINE)
 
 dec $source_array_begin(pstate, poperand, porigin, int, int, ptask*) : pstate
-def $source_array_begin(S, poperand, porigin, z, n_kind, ptask_tail*) = $error_dispatch(S, 2, $ptascii("Array to string conversion"), z_warning, DIAGNOSTIC "Warning" $ptascii("Array to string conversion") z_warning, SOURCE_ARRAY_RESULT psourceoperand)
+def $source_array_begin(S, poperand, porigin, z, n_kind, ptask_tail*) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $ptascii("Array to string conversion"), z_warning, DIAGNOSTIC "Warning" $ptascii("Array to string conversion") z_warning, SOURCE_ARRAY_RESULT psourceoperand)
   -- if psourceoperand = {SITE porigin, LINE z, KIND n_kind, INPUT poperand, OWNER |S.FRAMES|, TAIL ptask_tail*}
   -- if $source_operand_valid(S, psourceoperand)
   -- if S.ORIGIN = ($source_operand_child(psourceoperand))
