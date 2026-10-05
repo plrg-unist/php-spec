@@ -712,6 +712,14 @@ def $autoload_context_valid(S, pcallcontext) = true
   -- if n_received = $call_received(1, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if (n_received = 0 /\ pcallcontext.EXTRA = [poperand]) \/ (n_received = 1 /\ pcallcontext.EXTRA = eps)
   -- if $call_sent_operands_valid(S, pcallcontext.TARGET, n_received, pcallcontext.EXTRA)
+def $reference_call_frame_site(pcallcontext, pframe) = true
+  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
+  -- if pframe.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
+  -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+  -- if pautoloadcall.RESUME = AUTO_EXPLICIT_DONE pconfigcall
+  -- if pframe.ORIGIN = (pconfigcall.SITE) /\ pautoloadcall.SITE = pconfigcall.SITE
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_CALL
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcallcontext.TARGET
 
 ;; Publication keeps only the selected callback and frozen request, not roots.
 def $autoload_declaration_capture(S, n) = [(n, pautoloadcall, pautoloadentry)]
