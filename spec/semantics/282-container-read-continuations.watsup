@@ -97,7 +97,10 @@ def $rcontainer_test(S, pcontainerread, PSTRING n_bytes*) = S_out
   -- if pcontainerread.READ.MODE = KEY_TEST b
   -- if S_out = $isset_string(S, n_bytes*, pcontainerread.READ.VALUE, b, pcontainerread.READ.LINE)
   -- if S_out.COMPLETION =/= NORMAL
+def $rcontainer_test(S, pcontainerread, POBJECT n) = S[.COMPLETION = UNSUPPORTED "ArrayAccess quiet scalar continuation requires the object protocol"]
+  -- if $class_instanceof(S, POBJECT n, $ptascii("ArrayAccess"))
 def $rcontainer_test(S, pcontainerread, POBJECT n) = $throw_scalar(S, "Error", $ptascii("Cannot use object of type ") ++ $object_name(S, n) ++ $ptascii(" as array"), pcontainerread.READ.LINE)
+  -- if ~$class_instanceof(S, POBJECT n, $ptascii("ArrayAccess"))
 def $rcontainer_test(S, pcontainerread, pvalue) = $key_read_done(S, PNULL) -- otherwise
 
 def $rcontainer_message(S, pcontainerread) = $ptascii("Undefined variable $") ++ n_name*
