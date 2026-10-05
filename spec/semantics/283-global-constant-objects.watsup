@@ -1,0 +1,239 @@
+;; Global constant AST NEW retains allocation identity independently of mutable
+;; instance fields. These receipts own no object; ordinary phases and installed
+;; USERCONSTANTS retain the actual values.
+def $global_new_site(S, PORIGIN n_unit pcpath) = true
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if $global_constant_initializer_root(pcunit, pcpath) =/= eps
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $parameter_new_prefix(phpType7*)
+def $global_new_site(S, porigin_site) = false -- otherwise
+dec $global_new_context(pstate, porigin) : (porigin, porigin?)?
+def $global_new_context(S, porigin_site) = ((porigin_decl, porigin_scope?))
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if porigin_decl = pconstantcontext.ORIGIN
+  -- if porigin_decl = PORIGIN n_unit pcpath_decl
+  -- if $global_constant_declaration_source(S.SOURCES, porigin_decl)
+  -- if $constant_declaration(S, porigin_decl) = ((preqbytes, pconstantcontext.LINE))
+  -- if $declaration_entered(S.DECLARATIONS, n_unit)
+  -- if $constant_bindings(S, S.TODO) = [porigin_decl]
+  -- if $global_constant_scope(S, n_unit) = (true, porigin_scope?)
+  -- if $global_constant_scope_published(S.DECLARATIONS, porigin_scope?)
+  -- if $constant_callable_path(S, porigin_site, $constant_child(porigin_decl, [PCFIELD 1]))
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+def $global_new_context(S, porigin_site) = eps -- otherwise
+def $global_new_active(S, porigin_site) = ($global_new_context(S, porigin_site) =/= eps)
+def $global_new_current(S) = $global_new_active(S, porigin_site)
+  -- if S.ORIGIN = (porigin_site)
+def $global_new_current(S) = false -- if S.ORIGIN = eps
+def $constant_ast_constructor_context(S, pconstantcontext) = true
+  -- if $parameter_string_site_valid(S, pconstantcontext.ORIGIN, pconstantcontext.LINE)
+  -- if $default_context_valid(S, pconstantcontext)
+def $constant_ast_constructor_context(S, pconstantcontext) = true
+  -- if $global_constant_declaration_source(S.SOURCES, pconstantcontext.ORIGIN)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $global_new_active(S, porigin_site)
+def $constant_ast_constructor_context(S, pconstantcontext) = false -- otherwise
+
+;; Only keyword selectors are deferred. Named classes retain the existing
+;; resolved compiler name; no ordinary runtime CALL_INIT authority is fabricated.
+def $ppglobal_new_deferred(P, pcpath, NName (BYTES text) metadata) = true
+  -- if $ppglobal_constant_initializer(P[.LOCATION.PATH = pcpath])
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent")]
+def $ppglobal_new_deferred(P, pcpath, name) = false -- otherwise
+def $ppnew_class_name(P, pcpath, NName (BYTES text) metadata) = $ppclass_name(P, pcpath, PNRESOLVED {ORIGINAL NName (BYTES text) metadata, KIND PLCLASS, RESOLVED $ptlc($base64(text)), FULL true, FALLBACK eps})
+  -- if $ppglobal_new_deferred(P, pcpath, NName (BYTES text) metadata)
+def $new_source_name(S, PORIGIN n_unit pcpath) = $global_constant_class_name(S, PORIGIN n_unit pcpath, porigin_scope?, name)
+  -- if $global_new_site(S, PORIGIN n_unit pcpath)
+  -- if $global_constant_scope(S, n_unit) = (true, porigin_scope?)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew name phpType6 metadata)
+def $default_new_scope(S) = porigin_scope?
+  -- if S.ORIGIN = (porigin_site)
+  -- if $global_new_context(S, porigin_site) = ((porigin_decl, porigin_scope?))
+def $default_new_scope(S) = $method_current_scope(S) -- if ~$global_new_current(S)
+def $global_new_unsupported_target(S, ptbytes) = true
+  -- if $global_new_current(S) /\ $class_internal(ptbytes)
+def $global_new_unsupported_target(S, ptbytes) = true
+  -- if $global_new_current(S) /\ ~$class_internal(ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if ~pclassdesc.ABSTRACT
+  -- if $class_throwable_kind(S, porigin_class, |S.CLASSES|) =/= eps
+def $global_new_unsupported_target(S, ptbytes) = false -- otherwise
+
+dec $global_new_scope_error(pstate, porigin) : ptbytes?
+def $global_new_scope_error(S, porigin_site) = ($ptascii("Cannot access \"") ++ $ptlc($base64(text)) ++ $ptascii("\" when no class scope is active"))
+  -- if $global_new_context(S, porigin_site) = ((porigin_decl, eps))
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent")]
+def $global_new_scope_error(S, porigin_site) = ($ptascii("Cannot access \"parent\" when current class scope has no parent"))
+  -- if $global_new_context(S, porigin_site) = ((porigin_decl, (porigin_scope)))
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+  -- if $ptlc($base64(text)) = $ptascii("parent")
+  -- if $global_constant_class_name(S, porigin_site, (porigin_scope), NName (BYTES text) metadata_name) = eps
+def $global_new_scope_error(S, porigin_site) = eps -- otherwise
+rule PhpStep/global-new-scope-error: S ~> $throw_scalar(S[.TODO = ptask_tail*], "Error", ptbytes_message, pconstantcontext.LINE)
+  -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $global_new_scope_error(S, porigin_site) = (ptbytes_message)
+
+dec $global_new_record(pconstantobject*, nat) : pconstantobject?
+def $global_new_record(eps, n_object) = eps
+def $global_new_record(pconstantobject :: pconstantobject_tail*, n_object) = (pconstantobject)
+  -- if pconstantobject.OBJECT = n_object
+def $global_new_record(pconstantobject :: pconstantobject_tail*, n_object) = $global_new_record(pconstantobject_tail*, n_object)
+  -- if pconstantobject.OBJECT =/= n_object
+dec $global_new_record_put(pconstantobject*, pconstantobject) : pconstantobject*
+def $global_new_record_put(eps, pconstantobject_new) = [pconstantobject_new]
+def $global_new_record_put(pconstantobject :: pconstantobject_tail*, pconstantobject_new) = pconstantobject_new :: pconstantobject_tail*
+  -- if pconstantobject.OBJECT = pconstantobject_new.OBJECT
+def $global_new_record_put(pconstantobject :: pconstantobject_tail*, pconstantobject_new) = pconstantobject :: $global_new_record_put(pconstantobject_tail*, pconstantobject_new)
+  -- if pconstantobject.OBJECT =/= pconstantobject_new.OBJECT
+dec $global_new_header(pstate, pconstantobject) : bool
+def $global_new_header(S, pconstantobject) = true
+  -- if $(pconstantobject.OBJECT < |S.OBJECTS|) /\ $(pconstantobject.PREFIX <= |S.DECLARATIONS|)
+  -- if S.OBJECTS[pconstantobject.OBJECT] = INSTANCE pconstantobject.CLASS
+  -- if pconstantobject.DECL = PORIGIN n_unit pcpath_decl
+  -- if $global_constant_declaration_source(S.SOURCES, pconstantobject.DECL)
+  -- if $constant_declaration(S, pconstantobject.DECL) = ((preqbytes, z))
+  -- if $declaration_entered(S.DECLARATIONS[0:pconstantobject.PREFIX], n_unit)
+  -- if $global_constant_scope(S, n_unit) = (true, porigin_scope?)
+  -- if $global_constant_scope_published(S.DECLARATIONS[0:pconstantobject.PREFIX], porigin_scope?)
+  -- if $constant_callable_path(S, pconstantobject.SITE, $constant_child(pconstantobject.DECL, [PCFIELD 1]))
+  -- if $origin_node(S.SOURCES, pconstantobject.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if $parameter_new_prefix(phpType7*)
+  -- if $global_constant_class_name(S, pconstantobject.SITE, porigin_scope?, name) = (ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (pconstantobject.CLASS)
+  -- if $class_at(S.CLASSES, pconstantobject.CLASS) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.ABSTRACT
+  -- if $constant_callable_published(S.DECLARATIONS[0:pconstantobject.PREFIX], pconstantobject.CLASS)
+def $global_new_header(S, pconstantobject) = false -- otherwise
+
+;; A completed receipt cannot replace the still-owned NEW phase for that object.
+dec $global_new_task_busy(ptask, nat) : bool
+def $global_new_task_busy(DEFAULT_NEW_ARGS pdefaultnew, n_object) = (pdefaultnew.OBJECT = n_object)
+def $global_new_task_busy(DEFAULT_NEW_SEND pdefaultnew, n_object) = (pdefaultnew.OBJECT = n_object)
+def $global_new_task_busy(DEFAULT_CTOR_ARGS pdefaultctor, n_object) = (pdefaultctor.NEW.OBJECT = n_object)
+def $global_new_task_busy(DEFAULT_CTOR_REF_RESULT pdefaultctor, n_object) = (pdefaultctor.NEW.OBJECT = n_object)
+def $global_new_task_busy(DEFAULT_CTOR_RESULT pdefaultctor, n_object) = (pdefaultctor.NEW.OBJECT = n_object)
+def $global_new_task_busy(AT porigin ptask, n_object) = $global_new_task_busy(ptask, n_object)
+def $global_new_task_busy(ERROR_HANDLER_INVOKE perrorcall, n_object) = $global_new_task_busy(perrorcall.RESUME, n_object)
+def $global_new_task_busy(ERROR_HANDLER_RESULT perrorcall, n_object) = $global_new_task_busy(perrorcall.RESUME, n_object)
+def $global_new_task_busy(ptask, n_object) = false -- otherwise
+dec $global_new_tasks_busy(ptask*, nat) : bool
+def $global_new_tasks_busy(eps, n_object) = false
+def $global_new_tasks_busy(ptask :: ptask_tail*, n_object) = ($global_new_task_busy(ptask, n_object) \/ $global_new_tasks_busy(ptask_tail*, n_object))
+dec $global_new_frames_busy(pframe*, nat) : bool
+def $global_new_frames_busy(eps, n_object) = false
+def $global_new_frames_busy(pframe :: pframe_tail*, n_object) = ($global_new_tasks_busy(pframe.TODO, n_object) \/ $global_new_frames_busy(pframe_tail*, n_object))
+dec $global_new_completed(pstate, pconstantobject) : bool
+def $global_new_completed(S, pconstantobject) = true
+  -- if pconstantobject.COMPLETE
+  -- if $global_new_header(S, pconstantobject)
+  -- if ~$global_new_tasks_busy(S.TODO, pconstantobject.OBJECT)
+  -- if ~$global_new_frames_busy(S.FRAMES, pconstantobject.OBJECT)
+def $global_new_completed(S, pconstantobject) = false -- otherwise
+def $global_new_records_valid(S, eps) = true
+def $global_new_records_valid(S, pconstantobject :: pconstantobject_tail*) = ($global_new_header(S, pconstantobject) /\ $global_new_record(pconstantobject_tail*, pconstantobject.OBJECT) = eps /\ (~pconstantobject.COMPLETE \/ $global_new_completed(S, pconstantobject)) /\ $global_new_records_valid(S, pconstantobject_tail*))
+
+def $global_new_birth(S, S_new, ptbytes, n_object) = S_new[.CONSTANTOBJECTS = S.CONSTANTOBJECTS ++ [{OBJECT n_object, SITE porigin_site, DECL porigin_decl, CLASS porigin_class, PREFIX n_prefix, COMPLETE false}]]
+  -- if S.ORIGIN = (porigin_site)
+  -- if $global_new_context(S, porigin_site) = ((porigin_decl, porigin_scope?))
+  -- if $new_source_name(S, porigin_site) = (ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_class)
+  -- if n_object = |S.OBJECTS|
+  -- if S_new.OBJECTS = S.OBJECTS ++ [INSTANCE porigin_class]
+  -- if S_new.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_object]
+  -- if S_new.RESULT = KNOWN (POBJECT n_object) /\ S_new.COMPLETION = NORMAL
+  -- if S_new.CONSTCONTEXT = S.CONSTCONTEXT /\ S_new.CONSTANTOBJECTS = S.CONSTANTOBJECTS
+  -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = eps
+  -- if n_prefix = |S.DECLARATIONS|
+  -- if $global_new_header(S_new, {OBJECT n_object, SITE porigin_site, DECL porigin_decl, CLASS porigin_class, PREFIX n_prefix, COMPLETE false})
+def $global_new_birth(S, S_new, ptbytes, n_object) = S_new -- if ~$global_new_current(S)
+def $global_new_pending(S, pdefaultnew) = true
+  -- if $global_new_context(S, pdefaultnew.SITE) = ((porigin_decl, porigin_scope?))
+  -- if $global_new_record(S.CONSTANTOBJECTS, pdefaultnew.OBJECT) = (pconstantobject)
+  -- if pconstantobject.SITE = pdefaultnew.SITE /\ pconstantobject.DECL = porigin_decl
+  -- if ~pconstantobject.COMPLETE
+  -- if $global_new_header(S, pconstantobject)
+  -- if (HOBJECT pdefaultnew.OBJECT) <- S.ALLOCATIONS
+def $global_new_pending(S, pdefaultnew) = true -- if ~$global_new_active(S, pdefaultnew.SITE)
+def $global_new_pending(S, pdefaultnew) = false -- otherwise
+dec $global_new_complete_phase(pstate, pdefaultnew) : bool
+def $global_new_complete_phase(S, pdefaultnew) = true
+  -- if S.TODO = (DEFAULT_NEW_ARGS pdefaultnew) :: ptask_tail*
+  -- if $default_new_valid(S, pdefaultnew)
+  -- if pdefaultnew.INDEX = |pdefaultnew.ARGUMENTS|
+  -- if ~$new_has_ctor(S, pdefaultnew.CLASS)
+def $global_new_complete_phase(S, pdefaultnew) = true
+  -- if S.TODO = (DEFAULT_CTOR_RESULT pdefaultctor) :: ptask_tail*
+  -- if pdefaultctor.NEW = pdefaultnew
+  -- if $default_ctor_valid(S, pdefaultctor)
+  -- if pdefaultctor.INDEX = pdefaultnew.INDEX
+def $global_new_complete_phase(S, pdefaultnew) = false -- otherwise
+def $global_new_complete(S, S_done, pdefaultnew) = S_done[.CONSTANTOBJECTS = $global_new_record_put(S.CONSTANTOBJECTS, pconstantobject[.COMPLETE = true])]
+  -- if $global_new_active(S, pdefaultnew.SITE)
+  -- if S.COMPLETION = NORMAL
+  -- if $global_new_complete_phase(S, pdefaultnew)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_done = S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT pdefaultnew.OBJECT)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $global_new_record(S.CONSTANTOBJECTS, pdefaultnew.OBJECT) = (pconstantobject)
+  -- if $global_new_pending(S, pdefaultnew)
+def $global_new_complete(S, S_done, pdefaultnew) = S_done -- if ~$global_new_active(S, pdefaultnew.SITE)
+rule PhpStep/global-new-noctor-complete: S ~> $global_new_complete(S, S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT pdefaultnew.OBJECT)][.BASE = BASE_VALUE (KNOWN PNULL)], pdefaultnew)
+  -- if S.TODO = (DEFAULT_NEW_ARGS pdefaultnew) :: ptask_tail*
+  -- if $global_new_active(S, pdefaultnew.SITE)
+  -- if $global_new_complete_phase(S, pdefaultnew)
+
+dec $global_new_value_class(pstate, porigin) : pvalueclass
+def $global_new_value_class(S, porigin_site) = PVINSTANCE n_object porigin_site
+  -- if S.RESULT = KNOWN (POBJECT n_object)
+  -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = (pconstantobject)
+  -- if pconstantobject.SITE = porigin_site
+  -- if $global_new_completed(S, pconstantobject)
+  -- if (HOBJECT n_object) <- S.ALLOCATIONS
+def $global_new_value_class(S, porigin_site) = PVOBJECT -- otherwise
+def $constant_shape_class(S, porigin_site, PFNEW phpType28 phpType6) = $global_new_value_class(S, porigin_site)
+  -- if $global_new_active(S, porigin_site)
+def $constant_value_class_valid(S, POBJECT n_object, PVINSTANCE n_original porigin_site) = true
+  -- if n_object = n_original
+  -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = (pconstantobject)
+  -- if pconstantobject.SITE = porigin_site
+  -- if $global_new_completed(S, pconstantobject)
+  -- if (HOBJECT n_object) <- S.ALLOCATIONS
+def $constant_fact_value_valid(pconstantfact) = true
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVINSTANCE n_object porigin_site
+def $constant_class_tree_valid(PVINSTANCE n_object porigin_site) = true
+def $constant_fact_truth(pconstantfact) = (true)
+  -- if pconstantfact.VALUE = eps
+  -- if pconstantfact.CLASS = PVINSTANCE n_object porigin_site
+def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVINSTANCE n_object porigin_site, puserconstant_prior*, pconstantfact_read*, porigin_seen*) = true
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = (pconstantobject)
+  -- if pconstantobject.SITE = porigin_site /\ pconstantobject.DECL = porigin_decl
+  -- if $global_new_completed(S, pconstantobject)
+
+;; Argument evaluation returns before AST NEW's constructor-failed marking.
+;; Its real object is released normally; entered/access-failed constructors keep
+;; the existing failed-construction path.
+def $global_new_argument_owned(S, pdefaultnew) = true
+  -- if $global_new_context(S, pdefaultnew.SITE) = ((porigin_decl, porigin_scope?))
+  -- if $global_new_record(S.CONSTANTOBJECTS, pdefaultnew.OBJECT) = (pconstantobject)
+  -- if pconstantobject.DECL = porigin_decl /\ pconstantobject.SITE = pdefaultnew.SITE
+  -- if ~pconstantobject.COMPLETE
+  -- if $global_new_header(S, pconstantobject)
+  -- if $constant_declaration(S, porigin_decl) = ((preqbytes, pdefaultnew.LINE))
+  -- if $new_source_name(S, pdefaultnew.SITE) = (pdefaultnew.CLASS)
+  -- if $origin_node(S.SOURCES, pdefaultnew.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if pdefaultnew.ARGUMENTS = phpType7*
+  -- if $(pdefaultnew.INDEX <= |phpType7*|)
+  -- if |pdefaultnew.VALUES| = pdefaultnew.INDEX
+  -- if (HOBJECT pdefaultnew.OBJECT) <- S.ALLOCATIONS
+def $global_new_argument_owned(S, pdefaultnew) = false -- otherwise
+def $return_discard(S, DEFAULT_NEW_ARGS pdefaultnew) = S
+  -- if $global_new_argument_owned(S, pdefaultnew)
+def $return_discard(S, DEFAULT_NEW_SEND pdefaultnew) = S
+  -- if $global_new_argument_owned(S, pdefaultnew)

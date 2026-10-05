@@ -769,9 +769,11 @@ def $constructor_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLA
 def $constructor_start(S, ptbytes, phpType7*, z) = $constructor_start_ready(S, ptbytes, phpType7*, z)
   -- if $class_constant_new_work(S, ptbytes, z) = eps
 def $noctor_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* false z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$autoload_pending(S, ptbytes)
   -- if ptask_work* = $class_constant_new_work(S, ptbytes, z)
   -- if ptask_work* =/= eps
 def $noctor_start(S, ptbytes, phpType7*, z) = $noctor_start_ready(S, ptbytes, phpType7*, z)
+  -- if ~$autoload_pending(S, ptbytes)
   -- if $class_constant_new_work(S, ptbytes, z) = eps
 rule PhpStep/class-constant-update: S ~> $class_constant_value(S[.TODO = DISCARD :: ptask_tail*], pclassconstantdesc, CLASS_CONST_UPDATE_SELECT porigin_class, pclassconstantdesc.OWNERNAME, z)
   -- if S.TODO = (CLASS_CONST_UPDATE porigin z) :: ptask_tail*
@@ -828,7 +830,7 @@ def $class_constant_constructor_task(S, ptbytes, phpType7*, b_ctor, z) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $new_source_name(S, PORIGIN n pcpath) = (ptbytes)
-  -- if b_ctor = $new_has_ctor(S, ptbytes)
+  -- if b_ctor = ($new_has_ctor(S, ptbytes) \/ $global_new_current(S))
   -- if (z = $runtime_line(S, eps, NExprNew phpType28 (SEQUENCE phpType7*) metadata) /\ (~b_ctor \/ ~$parameter_default_constructor(S, phpType28, phpType7*, metadata))) \/ (b_ctor /\ $parameter_default_new_ready(S, ptbytes, phpType7*, z))
   -- if $class_constant_constructor_ready(S, ptbytes, phpType7*, b_ctor, z)
 def $class_constant_constructor_task(S, ptbytes, phpType7*, b_ctor, z) = false -- otherwise

@@ -7,6 +7,35 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Autoload277 now implements the four required SPL control APIs with real callable
+caches, owner roots and live queue cursor/capacity behavior. Ordinary named/dynamic
+NEW and class-parent lookup suspend before arguments; lookup inherits source
+strictness/site while explicit dispatch is weak/internal. Selected names retain
+exactly one raw slash normalization. Indexed declaration certificates preserve
+loader authority after unregistering and receiver/scope retirement. Thirty-four
+sources pass at b967 and two at b440; guard cuts stay separate in the
+[ledger](coverage/semantics/autoload-review.json). Its 263 original finite premises
+pass with seven typing bindings and eight repeated setup premises. One actual
+b025/global-constant REAL loader source passes at a37. Original failures and AL
+timeouts remain retained; SL uses the existing exact runner at the same120s cap.
+Default/global-constant AST NEW, wider lookup/link consumers and complete core
+remain required; default filesystem search is excluded and returns stay paused.
+
+Scalar-container continuations282 now stage missing-base, key-CV and offset
+warnings through ordinary and quiet reads. Missing-base warnings resume with
+independent null; defined scalar pointers can change the later message type
+without creating a late array lookup. Genuine nested row/key operands retain
+real owners, and terminal isset/empty string predicates remain distinct from
+coalesce. Throws suppress later callbacks and writes. Author8/212 and independent13/272
+share one original (20 unique private programs/484 assertions). One actualb025
+source at5eefe retains private Owner/Child selection, key-temporary ownership and
+live caller/static17. The [contract](docs/semantics/SOURCE-CONTAINER-READS.md) and
+[ledger](coverage/semantics/container-read-review.json) retain separate source cuts
+and the original formatter failure. A separate stdClass transition agrees;
+the ArrayAccess control stops at the earlier interface-contract Unsupported and
+earns no guard-execution credit. Full ArrayAccess, string/object, wider base and
+GLOBALS/memoized producers remain required.
+
 Container continuations276 now initialize undefined/null/false CV-rooted W/RW
 storage before key demand and preserve final array-reference source cells. False
 callbacks retain genuine protection and distinct FETCH/ASSIGN/DIM_OP selection;
@@ -51,8 +80,20 @@ freezing later operands. Installed rows and duplicate continuations retain only
 nonowning lookup facts. Three fresh source agreements pass at9619d2f57; mixed90
 and retry94 AL premises pass at4262f787e, checking distinct selections, failed-unit
 transplants, candidate retirement and genuine constant roots. Their compile and
-fixture stops remain zero-credit. Global NEW, wider object/constant producers and
-full core remain open; return verification stays paused.
+fixture stops remain zero-credit.
+
+Global constant NEW283 now preserves raw user-instance identity through prepared
+argument and constructor phases. Every argument is evaluated, including ignored
+no-constructor arguments, before constructor access; immutable file/eval entry
+scope governs self/parent and private access. Nonowning receipts distinguish
+incomplete escaped allocations from successfully ended construction, while
+USERCONSTANTS and real GLOBALS/CV owners retain values. Three exact source tuples
+pass at17c12b379; argument103/inherited84/retry87 AL premises retain041ce1/00578e/
+bc44da cuts (274 total). The optional-tuple and restored-MAIN fixture failures
+remain zero-credit. Frozen duplicate/argument-abort destructor originals await
+genuine eager release; cold no-constructor table work has a separate native-only
+control. Internal/Throwable/autoload and wider object/constant producers remain
+required; full core stays open and return verification stays paused.
 
 Deferred runtime class-link failures275 now replay the held notice prefix and
 primary compiler fatal, retaining the genuine inner eval/include trace row.
@@ -139,7 +180,7 @@ Original preparation/eval-fixture failures remain in the [ledger](coverage/seman
 Cached constant METHODs now admit compiled/named keyword NEW through exact265
 receipt authority. One new source and38 reached premises pass at0da3, including
 unrelated lexical/called scope and history after plain-clone retirement.
-Autoload and complete core remain open; returns stay paused.
+Wider autoload consumers and complete core remain open; returns stay paused.
 
 Trait-constant callables265 retain the first shared AST method/function target,
 while named/method captures record each current publication prefix and METHOD
@@ -867,7 +908,9 @@ failures and interrupted evidence.
   assignment on defined CV-rooted arrays;269 adds GLOBALS W/RW name/missing-entry
   continuations with direct updates/compounds and nested array ingress.
   Container276 adds undefined/null/false W/RW initialization and final array-reference
-  ingress; wider read/quiet/memoized/unset/append containers stay open.
+  ingress;282 stages missing/scalar R and quiet-container warnings with genuine
+  row/key owners. Initial string/object/ArrayAccess reads, wider variable/property
+  bases and writable memoized/unset/append containers stay open.
   Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container
   producers and ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,

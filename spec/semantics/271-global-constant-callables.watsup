@@ -10,13 +10,11 @@ def $global_constant_declaration_source(pcunit*, PORIGIN n_unit pcpath_decl) = t
   -- if $origin_node(pcunit*, PORIGIN n_unit pcpath_decl) = (NConst phpType11 expression metadata)
 def $global_constant_declaration_source(pcunit*, porigin_decl) = false -- otherwise
 
-dec $ppglobal_constant_initializer(ppstate) : bool
 dec $global_constant_closure_parent(pcunit, pcpath) : bool
 def $global_constant_closure_parent(pcunit, pcpath) = true
   -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) = (pcnode)
   -- if $default_closure_node(pcnode)
 def $global_constant_closure_parent(pcunit, pcpath) = false -- otherwise
-dec $global_constant_initializer_root(pcunit, pcpath) : porigin?
 def $global_constant_initializer_root(pcunit, pcpath) = (porigin_decl)
   -- if $(|pcpath| > 0)
   -- if pcpath[$nabs($(|pcpath| - 1))] = PCFIELD 1

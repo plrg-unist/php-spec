@@ -217,6 +217,13 @@ creating that marker; actual reference acquisition marks it. [Independent resolu
 preserves the original differences and confirms intermediate FETCH/UNSET versus
 final mutation warnings. This introduces no new intrinsic or environment boundary.
 
+Ordinary scalar/missing dimension reads now retain the distinct warning and quiet
+contracts in [SOURCE-CONTAINER-READS](SOURCE-CONTAINER-READS.md). A selected scalar
+path never refetches an array supplied by a callback. Genuine evaluated operands
+own their temporaries; borrowed pointers and sampled metadata add no roots.
+This introduces no new intrinsic or environment boundary; wider producers remain
+required.
+
 Public instance methods and constructors now have the bounded compiler, linking,
 call and ownership contract in [SOURCE-METHODS](SOURCE-METHODS.md). `Closure`
 ordinary/nullsafe `__invoke` uses its internal trampoline: weak receiving,

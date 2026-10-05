@@ -402,6 +402,7 @@ def $constant_shape_class(S, porigin, PFSTOP) = $constant_callable_class(S, pori
 ;; Zend compile-time substitution cannot store any object, including one inside
 ;; an otherwise constant array. Cached objects remain runtime-only values.
 def $constant_callable_foldable(PVCLOSURE n porigin) = false
+def $constant_callable_foldable(PVINSTANCE n porigin) = false
 def $constant_callable_foldable(PVARRAY b (pkey, pvalueclass)*) = $constant_callable_classes_foldable((pkey, pvalueclass)*)
 def $constant_callable_foldable(pvalueclass) = true -- otherwise
 def $constant_callable_classes_foldable(eps) = true

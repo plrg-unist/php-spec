@@ -117,6 +117,7 @@ test-semantics: build
 	python3 tests/semantics/trait_constant_callable_protocol.py
 	python3 tests/semantics/global_constant_callable_protocol.py
 	python3 tests/semantics/global_constant_prebind_protocol.py
+	python3 tests/semantics/global_constant_objects_protocol.py
 	python3 tests/semantics/default_parameter_compiler.py
 	python3 tests/semantics/default_parameters.py
 	python3 tests/semantics/default_parameter_protocol.py
@@ -317,6 +318,15 @@ test-semantics: build
 	python3 tests/semantics/named_keyword_new_protocol.py --group recursive
 	python3 tests/semantics/named_keyword_new_protocol.py --group eval
 	python3 tests/semantics/named_keyword_new_protocol.py --group constant
+	python3 tests/semantics/autoload_sources.py
+	python3 tests/semantics/autoload_protocol.py --group method
+	python3 tests/semantics/autoload_protocol.py --group compaction_cursor
+	python3 tests/semantics/autoload_protocol.py --group compaction_finish
+	python3 tests/semantics/autoload_protocol.py --group recursion
+	python3 tests/semantics/autoload_protocol.py --group explicit
+	python3 tests/semantics/autoload_protocol.py --group traces
+	python3 tests/semantics/autoload_protocol.py --group reference
+	python3 tests/semantics/autoload_protocol.py --group retirement
 	python3 tests/semantics/class_static_selector_variants_protocol.py
 	python3 tests/semantics/class_static_selector_unwind_protocol.py
 	python3 tests/semantics/class_static_reference_protocol.py
