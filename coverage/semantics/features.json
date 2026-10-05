@@ -11867,93 +11867,149 @@
     {
       "id": "resumable.Fiber-creation",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_generators.c"
+      "implementation": [
+        "spec/semantics/281-fibers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/fiber_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/fiber_review.py",
+        "tests/semantics/fiber_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_fibers.c",
+        "docs/semantics/FIBERS.md"
+      ],
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Twenty-eight normal originals and twelve source-derived states/680 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries; the define() control has zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure."
     },
     {
       "id": "resumable.Fiber-start",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_generators.c"
+      "implementation": [
+        "spec/semantics/281-fibers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/fiber_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/fiber_review.py",
+        "tests/semantics/fiber_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_fibers.c",
+        "docs/semantics/FIBERS.md"
+      ],
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Twenty-eight normal originals and twelve source-derived states/680 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries; the define() control has zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure."
     },
     {
       "id": "resumable.Fiber-suspend",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_generators.c"
+      "implementation": [
+        "spec/semantics/281-fibers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/fiber_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/fiber_review.py",
+        "tests/semantics/fiber_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_fibers.c",
+        "docs/semantics/FIBERS.md"
+      ],
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Twenty-eight normal originals and twelve source-derived states/680 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries; the define() control has zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure."
     },
     {
       "id": "resumable.Fiber-resume",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_generators.c"
+      "implementation": [
+        "spec/semantics/281-fibers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/fiber_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/fiber_review.py",
+        "tests/semantics/fiber_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_fibers.c",
+        "docs/semantics/FIBERS.md"
+      ],
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Twenty-eight normal originals and twelve source-derived states/680 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries; the define() control has zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure."
     },
     {
       "id": "resumable.Fiber-throw",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_generators.c"
+      "implementation": [
+        "spec/semantics/281-fibers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/fiber_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/fiber_review.py",
+        "tests/semantics/fiber_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_fibers.c",
+        "docs/semantics/FIBERS.md"
+      ],
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Twenty-eight normal originals and twelve source-derived states/680 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries; the define() control has zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure."
     },
     {
       "id": "resumable.Fiber-status",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_generators.c"
+      "implementation": [
+        "spec/semantics/281-fibers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/fiber_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/fiber_review.py",
+        "tests/semantics/fiber_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_fibers.c",
+        "docs/semantics/FIBERS.md"
+      ],
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Twenty-eight normal originals and twelve source-derived states/680 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries; the define() control has zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure."
     },
     {
       "id": "resumable.Fiber-return",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_generators.c"
+      "implementation": [
+        "spec/semantics/281-fibers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/fiber_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/fiber_review.py",
+        "tests/semantics/fiber_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_fibers.c",
+        "docs/semantics/FIBERS.md"
+      ],
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Twenty-eight normal originals and twelve source-derived states/680 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries; the define() control has zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure."
     },
     {
       "id": "resumable.suspension-cleanup",

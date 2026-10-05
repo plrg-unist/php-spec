@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Fiber281 now implements live user-callback construction and direct
+start/suspend/resume/throw, status, current identity and stored returns. Callback
+selection is cached; genuine VM stacks, live reporting masks and C argument
+buffers survive suspension while globals, INI and handler registration stay
+shared. Nested waiting Fibers remain running. Twenty-eight normal originals and
+twelve source-derived states/680 conditions retain their mixed cuts. Deferred and
+literal named holes, entry-error caller provenance and raw named-buffer admission
+are checked through genuine pending continuations and malformed records. The
+allocated-Fiber argument source and null-callsite preflight state checks retain
+separate cuts. The define() setup original stays Unsupported with zero agreement.
+[The contract](docs/semantics/FIBERS.md) records raw reports and the required
+force-close, internal/reference callbacks, API entry, unpacking and initializer
+switching follow-ons. Full core stays open; returns verification remains paused.
+
 Global constant callables271 now evaluate static/no-use Closures and function or
 static-method FCCs before registration. REAL lexical/called scope comes from the
 immutable source entry, including inherited include/eval scope; NAMED functions
