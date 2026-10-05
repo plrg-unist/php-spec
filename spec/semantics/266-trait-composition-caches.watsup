@@ -368,6 +368,7 @@ def $trait_cache_object_scalar_error(pcompletion) = false -- otherwise
 def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S_next, ptraitcachecause)
   -- if S_next.COMPLETION = NORMAL
 def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = F[.VALUE = eps][.MEMORY = $prune_allocations($trait_cache_object_restore(F, S_throw)[.COMPLETION = THROWN pthrowable.KIND preqbytes z_error][.ERRORORIGIN = (porigin_owner)][.TRACE = ptraceframe*)]
+  -- if $trait_recording(F, pcpath)
   -- if $trait_cache_object_scalar_error(S_next.COMPLETION)
   -- if S_cont = $throwable_continuation(S, S_next)
   -- if ptraceframe* = $eval_exception_trace(S_cont)
