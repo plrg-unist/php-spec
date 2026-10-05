@@ -137,7 +137,7 @@ $constant_fact_at(pconstantcontext_bind.FACTS, porigin_after) = (pconstantfact_a
 pconstantfact_after.LOOKUP = (pconstantlookup_after)
 $global_constant_reads(S_bind, porigin_decl) = [pconstantfact_before, pconstantfact_after]
 pvalueclass_value = $constant_received_class(S_bind, porigin_decl)
-pvalueclass_value = PVARRAY false [(KINT 0, puserconstant_global.CLASS), (KINT 1, PVSCALAR), (KINT 2, puserconstant_late.CLASS)]
+pvalueclass_value = PVARRAY false ([(KINT 0, puserconstant_global.CLASS), (KINT 1, PVSCALAR), (KINT 2, puserconstant_late.CLASS)])
 S_bind.RESULT = KNOWN (PARRAY n_array)
 S_bind.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_global)), ENTRY (KINT 1) (DIRECT (PINT 2048)), ENTRY (KINT 2) (DIRECT (POBJECT n_late))]
 $constant_value_class_valid(S_bind, PARRAY n_array, pvalueclass_value)
