@@ -303,8 +303,13 @@ Throws preserve callback writes; compound RHS timing and nested real-cell ingres
 remain native-grounded. Author9/224 and independent12/273 share four originals,
 giving17 unique private agreements; one current private-handler/caller-cell source
 passes.
-Wider memoized containers and earlier container/string/object producers remain
-required.
+[Container initialization and reference writes](docs/semantics/SOURCE-CONTAINER-WRITES.md)
+now stage undefined/null/false CV-rooted W/RW containers and final array-reference
+ingress. Real false-conversion protection, distinct FETCH/ASSIGN/DIM_OP paths,
+delayed source demand and typed backing through COW survive callbacks. Author12/242
+and independent21/275 share three originals, giving30 unique private agreements;
+one current private-handler/captured-cell source passes. Wider read/quiet/memoized/
+GLOBALS containers and string/object producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument

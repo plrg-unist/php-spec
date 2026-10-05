@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Container continuations276 now initialize undefined/null/false CV-rooted W/RW
+storage before key demand and preserve final array-reference source cells. False
+callbacks retain genuine protection and distinct FETCH/ASSIGN/DIM_OP selection;
+throwing paths keep native initialization/write/error priority. Source-backed raw
+typed DIM_OP array backing survives COW and clears on whole-cell writes without
+changing ordinary type conversion. Author12/242 and independent21/275 share three
+originals (30 unique private programs/517 assertions). One actualae0 source at851
+preserves private Owner/Child selection, captured source lifetime and live
+caller/static17. The [contract](docs/semantics/SOURCE-CONTAINER-WRITES.md) and
+[ledger](coverage/semantics/container-warning-review.json) retain the original
+loader/fixture failures and separate cuts. Wider read/quiet/memoized/unset/GLOBALS
+containers, string/object producers and complete core remain required.
+
 Live precision272 now preserves registered/raw get/set/Restore through option
 callbacks, runtime string types/conversions, nonnumeric comparisons and late trace
 formatting. Each main/eval/file unit retains creation precision for parser-folded
@@ -71,8 +84,8 @@ programs/497 assertions ated6/baba/6e8. One actualc906 source at604958 retains p
 Owner/Child selection, fresh-global detachment and live caller/static17. The
 [contract](docs/semantics/SOURCE-GLOBAL-WRITES.md) and
 [ledger](coverage/semantics/globals-write-review.json) preserve the original
-multiline Unsupported and corrected native predictions. Earlier container warnings
-and wider GLOBALS/memoized consumers remain required; complete core stays open.
+multiline Unsupported and corrected native predictions. Container276 above adds
+initial W/RW storage; wider GLOBALS/memoized consumers remain required.
 
 Early-eval declaration diagnostics236 now suspend authentic compilation at each
 publication, including generic warnings before class publication. Handler throws
@@ -838,6 +851,8 @@ failures and interrupted evidence.
   and final unset;255 adds nested unset and append, and262 adds nested coalesce
   assignment on defined CV-rooted arrays;269 adds GLOBALS W/RW name/missing-entry
   continuations with direct updates/compounds and nested array ingress.
+  Container276 adds undefined/null/false W/RW initialization and final array-reference
+  ingress; wider read/quiet/memoized/unset/append containers stay open.
   Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container
   producers and ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
