@@ -120,6 +120,15 @@ def $global_test_stage(S, ptbytes, 13) = true
   -- if pframe.CONSTCONTEXT = (pconstantcontext)
   -- if $global_test_name(S, pconstantcontext.ORIGIN, ptbytes)
   -- if pcallcontext.TARGET = METHOD_TARGET pdefaultctor.NEW.OBJECT pdefaultctor.FUNCTION
+def $global_test_stage(S, ptbytes, 14) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = METHOD_TARGET n_object porigin_method
+  -- if S.GLOBALTABLE = (psymboltable)
+  -- if $lookup(psymboltable.ENV, $ptascii("escaped")) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.CONSTCONTEXT = (pconstantcontext)
+  -- if $global_test_name(S, pconstantcontext.ORIGIN, ptbytes)
 """
 CHECKS={}
 premises=global_protocol.premises
@@ -332,12 +341,18 @@ S_early = S_entered[.CONSTANTOBJECTS = [pconstantobject_failed[.COMPLETE = true]
 ~$global_new_records_valid(S_early, S_early.CONSTANTOBJECTS)
 $global_new_value_class(S_early, pdefaultnew_failed.SITE) = PVOBJECT
 ~$constant_value_class_valid(S_early, POBJECT pdefaultnew_failed.OBJECT, PVINSTANCE pdefaultnew_failed.OBJECT pdefaultnew_failed.SITE)
-S_caught = $global_test_find(S_entered, $ptascii("C1:F:"), 7, 2000)
+S_escaped = $global_test_find(S_entered, ptbytes_retry, 14, 1400)
+S_escaped.GLOBALTABLE = (psymboltable_escaped)
+$lookup(psymboltable_escaped.ENV, $ptascii("escaped")) = (n_escape_cell)
+S_escaped.STORE[n_escape_cell] = DEFINED (POBJECT pdefaultnew_failed.OBJECT)
+$global_new_header(S_escaped, pconstantobject_failed)
+(HOBJECT pdefaultnew_failed.OBJECT) <- $prune_allocations(S_escaped).ALLOCATIONS
+S_caught = $global_test_find(S_escaped, $ptascii("C1:F:"), 7, 2000)
 S_caught.CONSTCONTEXT = eps
 $user_constant_at(S_caught.USERCONSTANTS, ptbytes_retry) = eps
 $global_new_record(S_caught.CONSTANTOBJECTS, pdefaultnew_failed.OBJECT) = (pconstantobject_failed)
-S_caught.GLOBALTABLE = (psymboltable_caught)
-$lookup(psymboltable_caught.ENV, $ptascii("escaped")) = (n_escape_cell)
+S_caught.GLOBALTABLE = eps
+$lookup(S_caught.ENV, $ptascii("escaped")) = (n_escape_cell)
 S_caught.STORE[n_escape_cell] = DEFINED (POBJECT pdefaultnew_failed.OBJECT)
 (HOBJECT pdefaultnew_failed.OBJECT) <- $prune_allocations(S_caught).ALLOCATIONS
 pdefaultnew_failed.OBJECT <- S_caught.DESTRUCTION.CALLED
@@ -346,8 +361,8 @@ $global_new_header(S_caught, pconstantobject_failed)
 S_held = $global_test_find(S_caught, $ptascii("C1:F:U:1:"), 7, 1600)
 $lookup(S_held.ENV, $ptascii("held")) = (n_held_cell)
 S_held.STORE[n_held_cell] = DEFINED (POBJECT pdefaultnew_failed.OBJECT)
-S_held.GLOBALTABLE = (psymboltable_held)
-$lookup(psymboltable_held.ENV, $ptascii("escaped")) = eps
+S_held.GLOBALTABLE = eps
+$lookup(S_held.ENV, $ptascii("escaped")) = eps
 (HOBJECT pdefaultnew_failed.OBJECT) <- $prune_allocations(S_held).ALLOCATIONS
 S_retry = $global_test_find(S_held, ptbytes_retry, 9, 2200)
 S_retry.TODO = (DEFAULT_NEW_ARGS pdefaultnew_retry) :: ptask_retry*
