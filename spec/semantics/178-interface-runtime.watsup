@@ -215,7 +215,7 @@ def $pil_targets_valid(S, ptbytes :: ptbytes_tail*, (PILSOURCE ptbytes porigin) 
   -- if pclassdesc.KIND = "interface"
 def $pil_targets_valid(S, ptbytes :: ptbytes_tail*, (PILBUILTIN ptbytes) :: pilref_tail* ) = $pil_targets_valid(S, ptbytes_tail*, pilref_tail* )
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes)) = (INTERNAL ptbytes_key ptbytes_display "interface")
-  -- if $ptlc(ptbytes) <- [$ptascii("stringable"), $ptascii("throwable"), $ptascii("iterator"), $ptascii("traversable")]
+  -- if $ptlc(ptbytes) <- [$ptascii("stringable"), $ptascii("throwable"), $ptascii("iterator"), $ptascii("traversable"), $ptascii("arrayaccess")]
 def $pil_targets_valid(S, ptbytes*, pilref_link* ) = false -- otherwise
 
 dec $pil_entries_valid(pstate, pinterfacelink*, porigin*) : bool
