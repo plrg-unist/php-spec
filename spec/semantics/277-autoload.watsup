@@ -33,6 +33,7 @@ dec $autoload_append(pstate, pautoloadentry) : pstate
 dec $autoload_prepend(pstate, bool) : pstate
 dec $autoload_capacity_valid(nat) : bool
 dec $autoload_entry_metadata(pstate, pautoloadentry) : bool
+dec $autoload_entry_current_metadata(pstate, pautoloadentry) : bool
 dec $autoload_selected_scope(pstate, pautoloadentry, pcalltarget) : bool
 dec $autoload_resolve(pstate, pconfigcall) : pstate
 dec $autoload_new_diagnostic(pstate, preqbytes) : preqbytes
@@ -201,6 +202,7 @@ def $autoload_entry_valid(S, pautoloadentry) = true
 def $autoload_entry_valid(S, pautoloadentry) = true
   -- if $autoload_registration_valid(S, pautoloadentry.CALL)
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $autoload_entry_current_metadata(S, pautoloadentry)
   -- if S_history = $autoload_entry_history(S, pautoloadentry)
   -- if $exception_raw_selected(S_history, $autoload_raw(pautoloadentry), pautoloadentry.RAW, pcalltarget)
   -- if $target_function(S_history, pcalltarget) = (pfunction)
@@ -858,6 +860,15 @@ def $autoload_capacity_valid(0) = true
 def $autoload_capacity_valid(8) = true
 def $autoload_capacity_valid(n) = $autoload_capacity_valid($(n / 2)) -- if $(n > 8) /\ $(n \ 2) = 0
 def $autoload_capacity_valid(n) = false -- otherwise
+
+def $autoload_entry_current_metadata(S, pautoloadentry) = true
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_instance(pcalltarget) = eps
+def $autoload_entry_current_metadata(S, pautoloadentry) = true
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_instance(pcalltarget) = (n)
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS) \/ (pautoloadentry.SCOPE = $closure_scope_at(S.CLOSURESCOPES, n) /\ pautoloadentry.BINDING = $closure_binding_at(S.CLOSUREBINDINGS, n))
+def $autoload_entry_current_metadata(S, pautoloadentry) = false -- otherwise
 
 def $autoload_entry_metadata(S, pautoloadentry) = true
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
