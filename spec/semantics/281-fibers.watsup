@@ -700,9 +700,10 @@ def $fiber_start_shape(S, porigin, n, pnamedargs) = $fiber_start_prefix(S, porig
 def $fiber_start_prefix(S, porigin, 0, n_pos, pnamedargs) = (|pnamedargs.SLOTS| = n_pos /\ pnamedargs.NAMED = eps)
 def $fiber_start_prefix(S, porigin, n, n_pos, pnamedargs) = $fiber_start_prefix(S, porigin, $nabs($(n - 1)), n_pos, {SLOTS pnamedargs.SLOTS, NAMED pnamedargs.NAMED[0:$nabs($(|pnamedargs.NAMED| - 1))]})
   -- if $(n > 0)
-  -- if $intrinsic_argument(S, porigin, $nabs($(n - 1))) = ((expression, false, (ptbytes), porigin_arg, z))
+  -- if $intrinsic_argument(S, porigin, $nabs($(n - 1))) = ((expression, false, preqbytes?, porigin_arg, z))
   -- if pnamedargs.NAMED =/= eps
   -- if pnamedargs.NAMED[$nabs($(|pnamedargs.NAMED| - 1))] = (ptbytes, KNOWN pvalue)
+  -- if preqbytes? = (ptbytes)
 def $fiber_start_prefix(S, porigin, n, n_pos, pnamedargs) = $fiber_start_prefix(S, porigin, $nabs($(n - 1)), $(n_pos + 1), pnamedargs)
   -- if $(n > 0)
   -- if $intrinsic_argument(S, porigin, $nabs($(n - 1))) = ((expression, false, eps, porigin_arg, z))
