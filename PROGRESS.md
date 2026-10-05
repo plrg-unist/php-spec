@@ -493,7 +493,9 @@ diagnostics and renders the pending exception before a no-trace composition fata
 Ten PHP-error sources and156 reached failure/cleanup checks pass, with ten separate
 formatter checks. Held-primary reporting uses the genuine failed-class route275;
 one actual source and112 reached replay checks pass at separate cuts. Failed-link
-cache disposition, cyclic and object-bearing dependencies remain required; traits
+cache disposition and object-bearing dependencies remain required. Direct and
+two-hop cyclic lookup errors now use full imported identities; two PHP-error
+sources and87 reached chain/cleanup checks pass at their separate cuts. Traits
 stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
