@@ -195,6 +195,7 @@ def $global_new_value_class(S, porigin_site) = PVINSTANCE n_object porigin_site
   -- if $global_new_completed(S, pconstantobject)
   -- if (HOBJECT n_object) <- S.ALLOCATIONS
 def $global_new_value_class(S, porigin_site) = PVOBJECT -- otherwise
+def $default_cacheable(PVINSTANCE n_object porigin_site) = false
 def $constant_shape_class(S, porigin_site, PFNEW phpType28 phpType6) = $global_new_value_class(S, porigin_site)
   -- if $global_new_active(S, porigin_site)
 def $constant_value_class_valid(S, POBJECT n_object, PVINSTANCE n_original porigin_site) = true

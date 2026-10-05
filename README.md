@@ -171,6 +171,11 @@ publication, while user fatals stop it. Compiler fatal formatting retains the
 primary diagnostic through source effects, nested eval/include compilation and
 deferred runtime class-link failures.
 IteratorAggregate, ArrayAccess and other Traversable consumers remain required.
+[Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
+ordinary bodies in object-owned frames. Value yields, literal iterator methods,
+`getReturn` and value `foreach` retain real resumer scope and traces. Delegation,
+reference yields, further call forms and forced-close/destructor behavior remain
+required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.
@@ -520,8 +525,9 @@ first registration, mixed selections and throwing retry. Global `const new` now
 retains the allocated identity through argument evaluation and constructor return,
 including ignored no-constructor arguments, access errors, inherited include/eval
 scope and escaped failure/retry. Three new source agreements and 274 AL premises
-retain separate cuts. Eager destructor cleanup, cold-table continuation and wider
-object producers remain required.
+retain separate cuts. Two further cold no-constructor sources and 80/81 AL premises
+check table completion before allocation/arguments and fresh retry after failure.
+Eager destructor cleanup and wider object producers remain required.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is

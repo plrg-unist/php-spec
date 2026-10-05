@@ -32,6 +32,7 @@ def $cursor_set((CURSOR n n_old) :: (CURSOR n_table n_saved)*, n, n_position) = 
 def $cursor_set((CURSOR n_other n_old) :: (CURSOR n_table n_saved)*, n, n_position) = (CURSOR n_other n_old) :: $cursor_set((CURSOR n_table n_saved)*, n, n_position)
   -- if n_other =/= n
 
+dec $generator_iterator(piterator) : bool
 dec $iterator_lookup(piterator*, nat) : piterator?
 def $iterator_lookup(eps, n) = eps
 def $iterator_lookup((ITERATOR n n_array b (CURSOR n_table n_saved)*) :: piterator*, n) = (ITERATOR n n_array b (CURSOR n_table n_saved)*)

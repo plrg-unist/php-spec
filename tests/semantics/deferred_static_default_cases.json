@@ -2407,6 +2407,60 @@
         "zend.assertions": "1"
       },
       "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "globals283_global-new-cold-table-noctor",
+      "source": "<?php\nclass GlobalNewColdNoCtor { public int $p = E_STRICT + 0; }\nset_error_handler(static function ($level, $message, $file, $line) { echo $level, ':', $line, ';'; return true; });\nconst GLOBAL_NEW_COLD = new GlobalNewColdNoCtor(ignored: E_STRICT + 0);\nrestore_error_handler();\necho GLOBAL_NEW_COLD->p;\n",
+      "source_sha256": "0e2d9c49f9731aba4646e048246a6b736983210baf725f29ea87d5cd1e3e11bf",
+      "stdout_base64": "ODE5MjoyOzgxOTI6NDsyMDQ4",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-global-new-native-v4/report.json",
+      "native_raw_sha256": "760ec383b9eab2902467fdc919f7d483d6df01f31833c9cb49fe9aa84675e115",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    {
+      "id": "globals283_global-new-cold-table-throw-retry",
+      "source": "<?php\nclass GlobalNewColdRetry { public int $p = E_STRICT + GlobalNewColdLate::X; }\nset_error_handler(static function ($level, $message, $file, $line) { echo $level, ':', $line, ';'; return true; });\ntry { eval('const GLOBAL_NEW_COLD_RETRY = new GlobalNewColdRetry(ignored: E_STRICT + 0);'); }\ncatch (Error $e) { echo 'F:'; }\ntry { GLOBAL_NEW_COLD_RETRY; }\ncatch (Error $e) { echo 'U:'; }\neval('class GlobalNewColdLate { public const X = 7; }');\neval('const GLOBAL_NEW_COLD_RETRY = new GlobalNewColdRetry(ignored: E_STRICT + 0);');\nrestore_error_handler();\necho GLOBAL_NEW_COLD_RETRY->p;\n",
+      "source_sha256": "64be7611716903cb87ad24fb215832f04781338cebddad0ecc43f2c7affef36a",
+      "stdout_base64": "ODE5MjoyO0Y6VTo4MTkyOjI7ODE5MjoxOzIwNTU=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-deferred-static-defaults-13/.tools/deferred-static-defaults/reviewer14-global-new-native-v5/report.json",
+      "native_raw_sha256": "7d8b8b1da8e8a66a250f2027500cf14d8e0009859a3f2aff005a129699129e0a",
+      "native_profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1"
+      },
+      "native_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
     }
   ]
 }

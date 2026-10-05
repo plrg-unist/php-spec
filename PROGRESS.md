@@ -7,6 +7,26 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Generator280 creates object-owned suspended frames after eager ordinary receives.
+Value yields, literal iterator methods, `getReturn` and value foreach retain
+captured aliases, ordinary private creation scope and real resumer traces.
+Generator-specific completion bypasses ordinary declared-return coercion;
+return-supertype admission mirrors the pinned one-level intersection scan.
+Twenty-seven normal sources and three compiler rejections agree at e235d8dd1
+in separate first5 and independent25 cuts. Six lifecycle Unsupported controls
+earn no agreement. Independent source-reached carrier144/Closure154 pass at2f21,
+nested77 atd7ca and abrupt44 at6c221 (419 premises across four originals).
+Full public admission, live/suspended cursor owners, captured references and
+natural try/finally cleanup pass; failed checks remain retained. Delegation/reference
+yields, further call forms,
+changed caller scopes, force-close finalizers and destruction/GC remain required.
+Three introduced parent sources agree at9abff: constructor-created constant
+identity, deferred REAL Closure autoload and parse-folded versus live precision.
+The new constant95 state phase retains the same completed receipt through
+receive/yield/return and retirement; its noncached instance owners pass full
+public/heap admission. Original interpreter/fixture failures retain zero credit.
+[Scope and maintained tests](docs/semantics/GENERATORS.md).
+
 Autoload277 now implements the four required SPL control APIs with real callable
 caches, owner roots and live queue cursor/capacity behavior. Ordinary named/dynamic
 NEW and class-parent lookup suspend before arguments; lookup inherits source
@@ -91,8 +111,13 @@ USERCONSTANTS and real GLOBALS/CV owners retain values. Three exact source tuple
 pass at17c12b379; argument103/inherited84/retry87 AL premises retain041ce1/00578e/
 bc44da cuts (274 total). The optional-tuple and restored-MAIN fixture failures
 remain zero-credit. Frozen duplicate/argument-abort destructor originals await
-genuine eager release; cold no-constructor table work has a separate native-only
-control. Internal/Throwable/autoload and wider object/constant producers remain
+genuine eager release. Cold no-constructor table work adds source1 atd2fb and80 AL
+premises ata1e14a2b4: the instance-template warning precedes ignored arguments,
+with no allocation until table completion and no premature COMPLETE. A further
+source1/81 AL premises at97dab9f8b check failed table work before allocation and
+fresh declaration/NEW identities on same-text eval retry. The earlier cold fixture's three
+elaboration stops and one slice-length execution failure retain zero credit.
+Internal/Throwable/autoload and wider object/constant producers remain
 required; full core stays open and return verification stays paused.
 
 Deferred runtime class-link failures275 now replay the held notice prefix and
