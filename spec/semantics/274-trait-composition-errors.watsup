@@ -182,6 +182,14 @@ def $trait_comparison_complete(S, pclassdesc, ptraitdatacomparison, S_result) = 
 
 ;; The failure is rederived by275 from a real class/cause and exact rollback.
 ;; Its pure replay has no held formatter and therefore produces this snapshot.
+dec $trait_failed_cache_source(pstate, pclassdesc) : bool
+def $trait_failed_cache_source(S, pclassdesc) = true
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+def $trait_failed_cache_source(S, pclassdesc) = true
+  -- if pclassdesc.KIND = "trait"
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtTrait phpType14 phpType3 phpType23 metadata)
+def $trait_failed_cache_source(S, pclassdesc) = false -- otherwise
 def $runtime_class_replay_fatal(S_prefix, S, pclassdesc) = true
   -- if S.COMPLETION = REQUESTFATAL ptbytes_class ptbytes_message z
   -- if ptbytes_class = $ptascii("CompileError")
@@ -189,6 +197,97 @@ def $runtime_class_replay_fatal(S_prefix, S, pclassdesc) = true
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
   -- if $class_at(S_prefix.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
-  -- if $origin_node(S_prefix.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $trait_failed_cache_source(S_prefix, pclassdesc)
   -- if $trait_plan(S_prefix, pclassdesc).TRAITS =/= eps
   -- if S.ERRORORIGIN = $compiled_error_origin(S_prefix.ERRORORIGIN, STATICBYTES ptbytes_message z, n)
+;; Failed linking retires the composing class's temporary fills. Constants of
+;; already-published owners retain their real caches through request shutdown.
+dec $trait_failed_cache_class(pstate, pstate) : porigin?
+dec $trait_failed_cache_items(pstate, pstate, pclassconstantevent*, pdefaultcache*, porigin) : bool
+dec $trait_failed_cache_keep(pstate, porigin) : bool
+dec $trait_failed_cache_values(pstate, pdefaultcache*) : pdefaultcache*
+dec $trait_failed_cache_events(pstate, pclassconstantevent*) : pclassconstantevent*
+dec $trait_failed_cache_index(pdeclaration*, porigin, nat) : nat?
+dec $trait_failed_cache_item(pdeclaration) : porigin?
+
+def $trait_failed_cache_class(S, S_result) = (ptraitcachecause.CLASS)
+  -- if $(|S.CLASSCONSTANTHISTORY| < |S_result.CLASSCONSTANTHISTORY|)
+  -- if S_result.CLASSCONSTANTHISTORY[0:|S.CLASSCONSTANTHISTORY|] = S.CLASSCONSTANTHISTORY
+  -- if S_result.CLASSCONSTANTHISTORY[|S.CLASSCONSTANTHISTORY|] = CCTRAITCACHE porigin ptraitcachecause
+def $trait_failed_cache_class(S, S_result) = eps -- otherwise
+def $trait_failed_cache_items(S, S_result, eps, eps, porigin) = true
+def $trait_failed_cache_items(S, S_result, (CCTRAITCACHE porigin ptraitcachecause) :: pclassconstantevent*, pdefaultcache :: pdefaultcache_tail*, porigin_class) = $trait_failed_cache_items(S, S_result, pclassconstantevent*, pdefaultcache_tail*, porigin_class)
+  -- if ptraitcachecause.CLASS = porigin_class /\ ptraitcachecause.PREFIX = |S.DECLARATIONS| /\ ptraitcachecause.USERPREFIX = |S.USERCONSTANTS|
+  -- if $trait_cache_cause_selected(S_result, ptraitcachecause) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin /\ pdefaultcache.ORIGIN = porigin
+  -- if $class_constant_origin(S_result.CLASSES, porigin) = (pclassconstantdesc)
+  -- if ~$trait_failed_cache_keep(S, porigin) \/ $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = eps
+  -- if $trait_cache_value_class(pdefaultcache.CLASS)
+def $trait_failed_cache_items(S, S_result, pclassconstantevent*, pdefaultcache*, porigin) = false -- otherwise
+def $trait_failed_cache_ready(S, S_result) = true
+  -- if S.COMPLETION = NORMAL
+  -- if $eval_compile_fatal_current(S) = eps
+  -- if S_result.DECLARATIONS = S.DECLARATIONS /\ S_result.CLASSNAMES = S.CLASSNAMES
+  -- if $declaration_open(S.DECLARATIONS) = eps
+  -- if $trait_failed_cache_class(S, S_result) = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $runtime_class_replay_fatal(S, S_result[.CLASSES = S.CLASSES], pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
+  -- if $trait_failed_cache_source(S, pclassdesc)
+  -- if $trait_plan(S, pclassdesc).TRAITS =/= eps
+  -- if $(|S.CLASSCONSTANTCACHE| <= |S_result.CLASSCONSTANTCACHE|)
+  -- if S_result.CLASSCONSTANTCACHE[0:|S.CLASSCONSTANTCACHE|] = S.CLASSCONSTANTCACHE
+  -- if n_events = $nabs($(|S_result.CLASSCONSTANTHISTORY| - |S.CLASSCONSTANTHISTORY|))
+  -- if n_values = $nabs($(|S_result.CLASSCONSTANTCACHE| - |S.CLASSCONSTANTCACHE|))
+  -- if $trait_failed_cache_items(S, S_result, S_result.CLASSCONSTANTHISTORY[|S.CLASSCONSTANTHISTORY|:n_events], S_result.CLASSCONSTANTCACHE[|S.CLASSCONSTANTCACHE|:n_values], porigin)
+def $trait_failed_cache_ready(S, S_result) = false -- otherwise
+
+def $trait_failed_cache_keep(S, porigin) = true
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if $declaration_active_class(S, (pclassconstantdesc.OWNER))
+def $trait_failed_cache_keep(S, porigin) = false -- otherwise
+def $trait_failed_cache_values(S, eps) = eps
+def $trait_failed_cache_values(S, pdefaultcache :: pdefaultcache_tail*) = pdefaultcache :: $trait_failed_cache_values(S, pdefaultcache_tail*)
+  -- if $trait_failed_cache_keep(S, pdefaultcache.ORIGIN)
+def $trait_failed_cache_values(S, pdefaultcache :: pdefaultcache_tail*) = $trait_failed_cache_values(S, pdefaultcache_tail*)
+  -- if ~$trait_failed_cache_keep(S, pdefaultcache.ORIGIN)
+def $trait_failed_cache_events(S, eps) = eps
+def $trait_failed_cache_events(S, (CCTRAITCACHE porigin ptraitcachecause) :: pclassconstantevent*) = (CCTRAITCACHE porigin ptraitcachecause) :: $trait_failed_cache_events(S, pclassconstantevent*)
+  -- if $trait_failed_cache_keep(S, porigin)
+def $trait_failed_cache_events(S, (CCTRAITCACHE porigin ptraitcachecause) :: pclassconstantevent*) = $trait_failed_cache_events(S, pclassconstantevent*)
+  -- if ~$trait_failed_cache_keep(S, porigin)
+def $trait_failed_cache_events(S, pclassconstantevent*) = eps -- otherwise
+def $trait_failed_cache_restore(S, S_result) = $prune_allocations(S_restored)
+  -- if $trait_failed_cache_ready(S, S_result)
+  -- if $trait_failed_cache_class(S, S_result) = (porigin)
+  -- if n_events = $nabs($(|S_result.CLASSCONSTANTHISTORY| - |S.CLASSCONSTANTHISTORY|))
+  -- if n_values = $nabs($(|S_result.CLASSCONSTANTCACHE| - |S.CLASSCONSTANTCACHE|))
+  -- if S_restored = S_result[.CLASSES = S.CLASSES][.CLASSNAMES = S.CLASSNAMES][.LINKEDPARENTS = S.LINKEDPARENTS][.LINKEDINTERFACES = S.LINKEDINTERFACES][.CLASSSTATICS = S.CLASSSTATICS][.CLASSCONSTANTCACHE = S.CLASSCONSTANTCACHE ++ $trait_failed_cache_values(S, S_result.CLASSCONSTANTCACHE[|S.CLASSCONSTANTCACHE|:n_values])][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ $trait_failed_cache_events(S, S_result.CLASSCONSTANTHISTORY[|S.CLASSCONSTANTHISTORY|:n_events])][.DECLARATIONS = S.DECLARATIONS ++ [PDRTRAITCACHEFAIL porigin $declaration_cause(S)]]
+
+;; This row records a source-rederived failure, never a publication or a held
+;; primary. The real prefix separately authenticates each retained target owner.
+def $trait_failed_cache_index(eps, porigin, n) = eps
+def $trait_failed_cache_item(PDRTRAITCACHEFAIL porigin pdeclcause) = (porigin)
+def $trait_failed_cache_item(pdeclaration) = eps -- otherwise
+def $trait_failed_cache_index(pdeclaration :: pdeclaration_tail*, porigin, n) = (n)
+  -- if $trait_failed_cache_item(pdeclaration) = (porigin)
+def $trait_failed_cache_index(pdeclaration :: pdeclaration_tail*, porigin, n) = $trait_failed_cache_index(pdeclaration_tail*, porigin, $(n + 1))
+  -- if $trait_failed_cache_item(pdeclaration) =/= (porigin)
+def $trait_cache_cause_point(S, ptraitcachecause) = true
+  -- if $trait_failed_cache_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = (ptraitcachecause.PREFIX)
+  -- if $iterator_notice_publication_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = eps
+  -- if $(ptraitcachecause.PREFIX < |S.DECLARATIONS|)
+  -- if $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if $class_named($trait_notice_names(S, S.DECLARATIONS[0:ptraitcachecause.PREFIX]), $ptlc(pclassconstantdesc.OWNERNAME)) = (pclassconstantdesc.OWNER)
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRTRAITCACHEFAIL porigin pdeclcause) :: pdeclaration*, n_next) = $declaration_history_fold(S, $eval_compile_history_carry(S_prefix, S_failed[.COMPLETION = NORMAL][.TODO = eps][.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRTRAITCACHEFAIL porigin pdeclcause]]), (n, P)*, pdeclaration*, n_next)
+  -- if $declaration_open(S_prefix.DECLARATIONS) = eps
+  -- if $declaration_cause_valid(S_prefix, porigin, pdeclcause)
+  -- if ~$declaration_early(S_prefix.DECLARATIONS, porigin, PPCLASS)
+  -- if $class_at(S_prefix.CLASSES, porigin) = (pclassdesc)
+  -- if $trait_failed_cache_source(S_prefix, pclassdesc)
+  -- if S_failed = $activate_class_body(S_prefix[.COMPLETION = NORMAL], pclassdesc)
+  -- if $runtime_class_replay_fatal(S_prefix, S_failed, pclassdesc)
+  -- if $runtime_class_rollback(S_prefix, S_failed)
+  -- if S_failed.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRTRAITCACHEFAIL porigin $declaration_cause(S_prefix)]

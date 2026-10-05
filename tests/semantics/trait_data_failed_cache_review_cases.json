@@ -1,0 +1,19 @@
+{
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; project profile. Native-only failed-cache274 preparation, zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "scope": "Published public-P array cache survives hard trait-link failure, retains COW value ownership and does not publish the failing C. Native-only zero model credit.",
+  "cases": [
+    {
+      "id": "failed-trait-link-retains-public-array-cache-cow-and-no-importing-class",
+      "source": "<?php\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\nclass P{public const array Y=[E_STRICT=>\"X\"];}\ntrait T{public static array $x=P::Y;public static function marker(){echo \"C;\";}}\nregister_shutdown_function(function(){\n $copy=P::Y;$copy[2048]=\"W\";echo \"P:\",P::Y[2048],\":\",$copy[2048],\";\";\n try{C::marker();}catch(Error $e){echo \"U;\";}\n});\necho \"PRE;\";\nclass C{use T;public static array $x=[2048=>\"different\"];}\necho \"POST;\";\n",
+      "source_sha256": "b59163162c8ce31e75589c132dced2bec85051392ba8a01a90a26e87ff581dfe",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1A6WDpXO1U7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDEwClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-failed-cache-review-274/.tools/trait-failed-public-array-native274-q7_3is_h/report.json",
+      "native_raw_sha256": "70b0f63887c57eb3fe4f9fea846ea1a91b58fbcbfc19492e6871eca584147e45"
+    }
+  ]
+}

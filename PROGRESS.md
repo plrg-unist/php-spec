@@ -7,6 +7,35 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Autoload277 now implements the four required SPL control APIs with real callable
+caches, owner roots and live queue cursor/capacity behavior. Ordinary named/dynamic
+NEW and class-parent lookup suspend before arguments; lookup inherits source
+strictness/site while explicit dispatch is weak/internal. Selected names retain
+exactly one raw slash normalization. Indexed declaration certificates preserve
+loader authority after unregistering and receiver/scope retirement. Thirty-four
+sources pass at b967 and two at b440; guard cuts stay separate in the
+[ledger](coverage/semantics/autoload-review.json). Its 263 original finite premises
+pass with seven typing bindings and eight repeated setup premises. One actual
+b025/global-constant REAL loader source passes at a37. Original failures and AL
+timeouts remain retained; SL uses the existing exact runner at the same120s cap.
+Default/global-constant AST NEW, wider lookup/link consumers and complete core
+remain required; default filesystem search is excluded and returns stay paused.
+
+Scalar-container continuations282 now stage missing-base, key-CV and offset
+warnings through ordinary and quiet reads. Missing-base warnings resume with
+independent null; defined scalar pointers can change the later message type
+without creating a late array lookup. Genuine nested row/key operands retain
+real owners, and terminal isset/empty string predicates remain distinct from
+coalesce. Throws suppress later callbacks and writes. Author8/212 and independent13/272
+share one original (20 unique private programs/484 assertions). One actualb025
+source at5eefe retains private Owner/Child selection, key-temporary ownership and
+live caller/static17. The [contract](docs/semantics/SOURCE-CONTAINER-READS.md) and
+[ledger](coverage/semantics/container-read-review.json) retain separate source cuts
+and the original formatter failure. A separate stdClass transition agrees;
+the ArrayAccess control stops at the earlier interface-contract Unsupported and
+earns no guard-execution credit. Full ArrayAccess, string/object, wider base and
+GLOBALS/memoized producers remain required.
+
 Container continuations276 now initialize undefined/null/false CV-rooted W/RW
 storage before key demand and preserve final array-reference source cells. False
 callbacks retain genuine protection and distinct FETCH/ASSIGN/DIM_OP selection;
@@ -151,7 +180,7 @@ Original preparation/eval-fixture failures remain in the [ledger](coverage/seman
 Cached constant METHODs now admit compiled/named keyword NEW through exact265
 receipt authority. One new source and38 reached premises pass at0da3, including
 unrelated lexical/called scope and history after plain-clone retirement.
-Autoload and complete core remain open; returns stay paused.
+Wider autoload consumers and complete core remain open; returns stay paused.
 
 Trait-constant callables265 retain the first shared AST method/function target,
 while named/method captures record each current publication prefix and METHOD
@@ -537,11 +566,21 @@ Module274 stops copied expressions at their first Error, default-flushes prior
 diagnostics and renders the pending exception before a no-trace composition fatal.
 Ten PHP-error sources and156 reached failure/cleanup checks pass, with ten separate
 formatter checks. Held-primary reporting uses the genuine failed-class route275;
-one actual source and112 reached replay checks pass at separate cuts. Failed-link
-cache disposition and object-bearing dependencies remain required. Direct and
+one actual source and112 reached replay checks pass at separate cuts. Direct and
 two-hop cyclic lookup errors now use full imported identities; two PHP-error
-sources and87 reached chain/cleanup checks pass at their separate cuts. Traits
-stay partial.
+sources and87 reached chain/cleanup checks pass at their separate cuts. Hard failed
+links now retain dependency caches owned by already published classes and retire
+unpublished import caches with their array owners. Three PHP-error sources and194
+supplied reached restoration/history/ownership conditions pass; six generated setup
+checks are separate. A source-rederived failure marker authenticates retention
+without publishing the failed class. The same disposition after a reported
+initializer Error adds three PHP-error comparisons and188 supplied reached
+cache-cause/cleanup checks, with six generated setup checks separate. Failed raw
+trait composition adds three PHP-error comparisons and68 supplied source-kind,
+cache-owner and rollback conditions; three generated setup checks are separate.
+Direct trait-constant denial precedes dependency evaluation. Held/open compilation
+and object-bearing dependencies remain required.
+Traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
@@ -869,7 +908,9 @@ failures and interrupted evidence.
   assignment on defined CV-rooted arrays;269 adds GLOBALS W/RW name/missing-entry
   continuations with direct updates/compounds and nested array ingress.
   Container276 adds undefined/null/false W/RW initialization and final array-reference
-  ingress; wider read/quiet/memoized/unset/append containers stay open.
+  ingress;282 stages missing/scalar R and quiet-container warnings with genuine
+  row/key owners. Initial string/object/ArrayAccess reads, wider variable/property
+  bases and writable memoized/unset/append containers stay open.
   Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container
   producers and ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,
