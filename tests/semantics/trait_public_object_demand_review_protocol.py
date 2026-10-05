@@ -40,6 +40,7 @@ CHECKS = [
     'S_parse.COMPLETION = SOURCE_PENDING',
     '$call_descriptors_valid(S_parse)',
     '$class_stage(S)',
+    'S.COMPLETION = NORMAL',
     'S.CURRENT = eps',
     'S.FRAMES = eps',
     '$call_descriptors_valid(S)',
@@ -160,7 +161,8 @@ CHECKS = [
     '$trait_fold_error(F_fold) = (ptraitdataerror)',
     'PhpStep: S ~> S_failed',
     'S_failed.COMPLETION = REQUESTFATAL ($ptascii("CompileError")) ptbytes_fatal 5',
-    'S_failed.ERRORORIGIN = (porigin_c)',
+    'S_failed.ERRORORIGIN = $compiled_error_origin(S.ERRORORIGIN, STATICBYTES eps 5, 0)',
+    '$shutdown_file(S_failed) = $call_sourcefile(S.FILES, porigin_c)',
     '$class_named(S_failed.CLASSNAMES, $ptascii("c")) = eps',
     '$call_descriptors_valid(S_failed)',
     '$declaration_history_valid(S_failed)',
@@ -226,7 +228,7 @@ def main():
         'S_wait = $await(S_initial[.COMPLETION = NORMAL], 500)',
         'S_parse = $file_open_resume(S_wait, FILE_OPENED 0 ' + seq(filename) + ' ' + seq(childname) + ' ' + seq(childname) + ' ' + seq(childname) + ' ' + seq(child_path.read_bytes()) + ')',
         'S_running = $file_parse_resume(S_parse, SOURCE_ACCEPT 1 ' + seq(child_path.read_bytes()) + ' ' + child_ast + ')',
-        'S = $seek_class(S_running[.COMPLETION = NORMAL], 1000)',
+        'S = $seek_class(S_running[.COMPLETION = NORMAL], 1000)[.COMPLETION = NORMAL]',
         *CHECKS,
     ]
     fixture = out / 'test.watsup'
