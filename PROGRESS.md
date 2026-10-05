@@ -93,7 +93,9 @@ bc44da cuts (274 total). The optional-tuple and restored-MAIN fixture failures
 remain zero-credit. Frozen duplicate/argument-abort destructor originals await
 genuine eager release. Cold no-constructor table work adds source1 atd2fb and80 AL
 premises ata1e14a2b4: the instance-template warning precedes ignored arguments,
-with no allocation until table completion and no premature COMPLETE. Its three
+with no allocation until table completion and no premature COMPLETE. A further
+source1/81 AL premises at97dab9f8b check failed table work before allocation and
+fresh declaration/NEW identities on same-text eval retry. The earlier cold fixture's three
 elaboration stops and one slice-length execution failure retain zero credit.
 Internal/Throwable/autoload and wider object/constant producers remain
 required; full core stays open and return verification stays paused.

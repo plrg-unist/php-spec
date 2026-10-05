@@ -520,9 +520,9 @@ first registration, mixed selections and throwing retry. Global `const new` now
 retains the allocated identity through argument evaluation and constructor return,
 including ignored no-constructor arguments, access errors, inherited include/eval
 scope and escaped failure/retry. Three new source agreements and 274 AL premises
-retain separate cuts. A further cold no-constructor source and 80 AL premises
-check table completion before ignored arguments and allocation. Eager destructor
-cleanup and wider object producers remain required.
+retain separate cuts. Two further cold no-constructor sources and 80/81 AL premises
+check table completion before allocation/arguments and fresh retry after failure.
+Eager destructor cleanup and wider object producers remain required.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
