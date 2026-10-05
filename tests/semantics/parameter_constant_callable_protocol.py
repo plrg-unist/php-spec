@@ -101,6 +101,33 @@ SOURCES={'parameter-rebound-scope': '<?php\n'
                                      "echo ($a === $b ? 'same' : 'fresh'), ':', $a(), ':', $b();\n"
                                      "$clone = clone $a; unset($a); echo ':', $clone(), ':', "
                                      '$b();\n'}
+SOURCES.update({'parameter-global-rebound-retired-maker': '<?php\n'
+                                           'class ParameterGlobalBoundOwner {}\n'
+                                           '$maker = static function ($f = static function () { '
+                                           'return get_called_class(); }) { return $f; };\n'
+                                           '$unscoped = $maker();\n'
+                                           '$bound = $maker->bindTo(null, '
+                                           'ParameterGlobalBoundOwner::class);\n'
+                                           '$scoped = $bound();\n'
+                                           'unset($maker, $bound);\n'
+                                           "echo ($unscoped === $scoped ? 'same' : 'fresh'), ':', "
+                                           '$scoped();\n',
+ 'parameter-unscoped-fcc-forms': '<?php\n'
+                                 'function parameterUnscopedNamedFcc($v) { return $v + 1; }\n'
+                                 'class ParameterUnscopedMethodOwner {\n'
+                                 '    public static function pick() { return get_called_class(); '
+                                 '}\n'
+                                 '}\n'
+                                 '$maker = static function ($f = parameterUnscopedNamedFcc(...), '
+                                 '$g = ParameterUnscopedMethodOwner::pick(...)) { return [$f, $g]; '
+                                 '};\n'
+                                 '$first = $maker();\n'
+                                 '$second = $maker();\n'
+                                 '$clone = clone $first[1];\n'
+                                 "echo ($first[0] === $second[0] ? 'same' : 'fresh'), ':', "
+                                 "($first[1] === $second[1] ? 'same' : 'fresh'), ':';\n"
+                                 'unset($maker, $first);\n'
+                                 "echo $second[0](4), ':', $second[1](), ':', $clone();\n"})
 FILES={}
 EVALS={
     "parameter-trait-import-cache": ['class ParameterHostB { use ParameterDefaultTrait; private const NAME = "B"; }'],
@@ -173,6 +200,13 @@ def $parameter_test_stage(S, 15) = true
   -- if pcallcontext.TARGET = CLOSURE_TARGET n_source
 def $parameter_test_stage(S, 16) = true
   -- if $parameter_test_index(S, 0)
+  -- if |S.PARAMETERCLOSURES| = 2
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = eps
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n_source
+def $parameter_test_stage(S, 17) = ($parameter_test_index(S, 0) /\ $parameter_test_scope(S, $ptascii("ParameterGlobalBoundOwner")))
+def $parameter_test_stage(S, 18) = true
+  -- if $parameter_test_index(S, 1)
   -- if |S.PARAMETERCLOSURES| = 2
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.LEXICAL_CLASS = eps
@@ -562,6 +596,7 @@ $constant_callable_record(S.CONSTANTCLOSURES, n_first) = (pconstantclosure_first
 $parameter_callable_header(S, pconstantclosure_first) = (pparameterclosure_first)
 pparameterclosure_first.EVIDENCE = (PARAMETER_SOURCE n_maker)
 pparameterclosure_first.SCOPE = eps /\ pparameterclosure_first.INDEX = 0
+S.OBJECTS[n_first] = CONSTANTCLOSURE pconstantclosure_first.SITE (PARAMETERSOURCECLOSURE n_maker (REALCLOSURE pconstantclosure_first.SITE eps eps))
 $object_body(S.OBJECTS[n_maker]) = REALCLOSURE pfunction.ORIGIN pitem_maker* pstaticcell_maker*
 $parameter_callable_current_evidence(S, pfunction) = (PARAMETER_SOURCE n_maker)
 $parameter_callable_scope_valid(S, pparameterclosure_first, pfunction)
@@ -605,6 +640,7 @@ $closure_scope_at(S_done.CLOSURESCOPES, n_clone) = eps
 $closure_binding_at(S_done.CLOSUREBINDINGS, n_clone) = eps
 ~$internal_closure_object(S_done, n_clone)
 ~$parameter_callable_real_unscoped(S_done[.CONSTANTCLOSURES = eps], n_clone)
+S_done.OBJECTS[n_second] = CONSTANTCLOSURE pconstantclosure_second.SITE (PARAMETERSOURCECLOSURE n_maker_clone (REALCLOSURE pconstantclosure_second.SITE eps pstaticcell_second*))
 S_same_index = S_done[.OBJECTS[n_second] = $object_body(S_done.OBJECTS[n_second])]
 S_same_index.OBJECTS[n_second] = REALCLOSURE pconstantclosure_second.SITE eps pstaticcell_second*
 ~$parameter_callable_real_unscoped(S_same_index, n_second)
@@ -614,6 +650,105 @@ $heap_owners($heap_graph(S_done), HOBJECT n_clone) = 1
 S_roots = $prune_allocations(S_done[.ENV = eps][.GLOBALTABLE = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
 ~((HOBJECT n_clone) <- S_roots.ALLOCATIONS)
 ~((HOBJECT n_second) <- S_roots.ALLOCATIONS)
+$parameter_callable_records_valid(S_roots, S_roots.PARAMETERCLOSURES)
+''')
+
+CHECKS['parameter-global-rebound-retired-maker']=premises(r'''
+S = $parameter_test_seek(S_initial[.COMPLETION = NORMAL], 15, 1800)
+S.CURRENT = (pcallcontext)
+pcallcontext.TARGET = CLOSURE_TARGET n_maker
+$function_at(S.CLOSURETEMPLATES, pcallcontext.FUNCTION) = (pfunction)
+S.RESULT = KNOWN (POBJECT n_unscoped)
+$constant_callable_record(S.CONSTANTCLOSURES, n_unscoped) = (pconstantclosure_unscoped)
+$parameter_callable_header(S, pconstantclosure_unscoped) = (pparameterclosure_unscoped)
+pparameterclosure_unscoped.EVIDENCE = (PARAMETER_SOURCE n_maker)
+S.OBJECTS[n_unscoped] = CONSTANTCLOSURE pconstantclosure_unscoped.SITE (PARAMETERSOURCECLOSURE n_maker (REALCLOSURE pconstantclosure_unscoped.SITE eps eps))
+$parameter_callable_scope_valid(S, pparameterclosure_unscoped, pfunction)
+$parameter_callable_real_unscoped(S, n_unscoped)
+$call_descriptors_valid(S)
+S_erased = S[.OBJECTS[n_unscoped] = CONSTANTCLOSURE pconstantclosure_unscoped.SITE ($object_body(S.OBJECTS[n_unscoped]))]
+$parameter_callable_header(S_erased, pconstantclosure_unscoped) = eps
+~$parameter_callable_birth(S_erased, pconstantclosure_unscoped, pparameterclosure_unscoped)
+~$parameter_callable_scope_valid(S_erased, pparameterclosure_unscoped, pfunction)
+~$parameter_callable_real_unscoped(S_erased, n_unscoped)
+S_wrong = S[.OBJECTS[n_unscoped] = CONSTANTCLOSURE pconstantclosure_unscoped.SITE (PARAMETERSOURCECLOSURE n_unscoped ($object_body(S.OBJECTS[n_unscoped])))]
+$parameter_callable_header(S_wrong, pconstantclosure_unscoped) = eps
+S_bound = $parameter_test_seek(S, 17, 1800)
+S_bound.CURRENT = (pcallcontext_bound)
+pcallcontext_bound.TARGET = CLOSURE_TARGET n_bound
+S_bound.RESULT = KNOWN (POBJECT n_scoped)
+$constant_callable_record(S_bound.CONSTANTCLOSURES, n_scoped) = (pconstantclosure_scoped)
+$parameter_callable_header(S_bound, pconstantclosure_scoped) = (pparameterclosure_scoped)
+pparameterclosure_scoped.EVIDENCE = (PARAMETER_SCOPE pclosureevidence)
+$closure_evidence_object(pclosureevidence) = n_bound
+pparameterclosure_scoped.SCOPE = (porigin_owner)
+$closure_scope_at(S_bound.CLOSURESCOPES, n_scoped) = (pclosurescope)
+pclosurescope.LEXICAL = porigin_owner /\ pclosurescope.CALLED = porigin_owner /\ pclosurescope.RECEIVER = eps
+$parameter_callable_real_scope_valid(S_bound, pconstantclosure_scoped.SITE, pclosurescope)
+$call_descriptors_valid(S_bound)
+S_done = $global_test_finish(S_bound, 4500)
+$global_test_output(S_done.EVENTS) = $ptascii("fresh:ParameterGlobalBoundOwner")
+S_done.DEFAULTCACHE = eps
+~((HOBJECT n_maker) <- S_done.ALLOCATIONS) /\ ~((HOBJECT n_bound) <- S_done.ALLOCATIONS)
+$closure_binding_at(S_done.CLOSUREBINDINGS, n_bound) = eps
+$closure_scope_at(S_done.CLOSURESCOPES, n_bound) = eps
+$object_body(S_done.OBJECTS[n_bound]) = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
+$parameter_callable_records_valid(S_done, S_done.PARAMETERCLOSURES)
+pparameterclosure_forged = pparameterclosure_scoped[.SCOPE = eps][.EVIDENCE = (PARAMETER_SOURCE n_bound)]
+S_forged = S_done[.PARAMETERCLOSURES = [pparameterclosure_unscoped, pparameterclosure_forged]][.CLOSURESCOPES = eps]
+~$parameter_callable_scope_valid(S_forged, pparameterclosure_forged, pfunction)
+$parameter_callable_header(S_forged, pconstantclosure_scoped) = eps
+~$parameter_callable_birth(S_forged, pconstantclosure_scoped, pparameterclosure_forged)
+~$parameter_callable_real_unscoped(S_forged, n_scoped)
+$heap_owners($heap_graph(S_done), HOBJECT n_maker) = 0 /\ $heap_owners($heap_graph(S_done), HOBJECT n_bound) = 0
+$heap_owners($heap_graph(S_done), HOBJECT n_unscoped) = 1 /\ $heap_owners($heap_graph(S_done), HOBJECT n_scoped) = 1
+S_roots = $prune_allocations(S_done[.ENV = eps][.GLOBALTABLE = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
+~((HOBJECT n_unscoped) <- S_roots.ALLOCATIONS) /\ ~((HOBJECT n_scoped) <- S_roots.ALLOCATIONS)
+$parameter_callable_records_valid(S_roots, S_roots.PARAMETERCLOSURES)
+''')
+CHECKS['parameter-unscoped-fcc-forms']=premises(r'''
+S = $parameter_test_seek(S_initial[.COMPLETION = NORMAL], 15, 1800)
+S.CURRENT = (pcallcontext)
+pcallcontext.TARGET = CLOSURE_TARGET n_maker
+S.RESULT = KNOWN (POBJECT n_named)
+$constant_callable_record(S.CONSTANTCLOSURES, n_named) = (pconstantclosure_named)
+$parameter_callable_header(S, pconstantclosure_named) = (pparameterclosure_named)
+pparameterclosure_named.EVIDENCE = (PARAMETER_SOURCE n_maker)
+S.OBJECTS[n_named] = CONSTANTCLOSURE pconstantclosure_named.SITE (PARAMETERSOURCECLOSURE n_maker (NAMEDCLOSURE porigin_named))
+$constant_callable_function(S, pconstantclosure_named.SITE, pconstantclosure_named.PREFIX) = (pfunction_named)
+pfunction_named.ORIGIN = porigin_named
+$parameter_callable_birth(S, pconstantclosure_named, pparameterclosure_named)
+$call_descriptors_valid(S)
+S_method = $parameter_test_seek(S, 18, 1800)
+S_method.RESULT = KNOWN (POBJECT n_method)
+$constant_callable_record(S_method.CONSTANTCLOSURES, n_method) = (pconstantclosure_method)
+$parameter_callable_header(S_method, pconstantclosure_method) = (pparameterclosure_method)
+pparameterclosure_method.EVIDENCE = (PARAMETER_SOURCE n_maker)
+S_method.OBJECTS[n_method] = CONSTANTCLOSURE pconstantclosure_method.SITE (PARAMETERSOURCECLOSURE n_maker (METHODCLOSURE porigin_method pconstantclosure_method.SITE porigin_called eps))
+$class_method_origin(S_method.CLASSES, porigin_method) = (pmethoddesc)
+$closure_scope_at(S_method.CLOSURESCOPES, n_method) = (pclosurescope_method)
+$parameter_callable_method_live(S_method, pmethoddesc, pconstantclosure_method.SITE, porigin_called, pclosurescope_method)
+$parameter_callable_birth(S_method, pconstantclosure_method, pparameterclosure_method)
+$call_descriptors_valid(S_method)
+S_done = $global_test_finish(S_method, 4500)
+$global_test_output(S_done.EVENTS) = $ptascii("fresh:fresh:5:ParameterUnscopedMethodOwner:ParameterUnscopedMethodOwner")
+|S_done.PARAMETERCLOSURES| = 4 /\ |S_done.CONSTANTCLOSURES| = 4
+S_done.DEFAULTCACHE = eps
+~((HOBJECT n_maker) <- S_done.ALLOCATIONS) /\ ~((HOBJECT n_named) <- S_done.ALLOCATIONS) /\ ~((HOBJECT n_method) <- S_done.ALLOCATIONS)
+$parameter_callable_records_valid(S_done, S_done.PARAMETERCLOSURES)
+$parameter_callable_cached_function(S_done, pconstantclosure_named.SITE) = (pfunction_named)
+$parameter_callable_cached_method(S_done, pconstantclosure_method.SITE) = (pmethoddesc)
+$lookup(S_done.ENV, $ptascii("clone")) = (n_cell_clone)
+S_done.STORE[n_cell_clone] = DEFINED (POBJECT n_clone)
+S_done.OBJECTS[n_clone] = METHODCLOSURE porigin_method pconstantclosure_method.SITE porigin_called eps
+$constant_callable_record(S_done.CONSTANTCLOSURES, n_clone) = eps /\ $parameter_callable_record(S_done.PARAMETERCLOSURES, n_clone) = eps
+$closure_scope_at(S_done.CLOSURESCOPES, n_clone) = (pclosurescope_clone)
+$parameter_callable_method_live(S_done, pmethoddesc, pconstantclosure_method.SITE, porigin_called, pclosurescope_clone)
+~$parameter_callable_method_live(S_done[.CONSTANTCLOSURES = eps], pmethoddesc, pconstantclosure_method.SITE, porigin_called, pclosurescope_clone)
+$heap_owners($heap_graph(S_done), HOBJECT n_maker) = 0
+$heap_owners($heap_graph(S_done), HOBJECT n_clone) = 1
+S_roots = $prune_allocations(S_done[.ENV = eps][.GLOBALTABLE = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
+~((HOBJECT n_clone) <- S_roots.ALLOCATIONS)
 $parameter_callable_records_valid(S_roots, S_roots.PARAMETERCLOSURES)
 ''')
 
