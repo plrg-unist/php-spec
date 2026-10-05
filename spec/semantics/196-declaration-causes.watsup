@@ -312,7 +312,8 @@ def $declaration_closure_call_scope(S, porigin_site, porigin_scope, pdeclcalls) 
 def $declaration_closure_call_scope(S, porigin_site, porigin_scope, pdeclcalls) = false -- otherwise
 
 dec $declaration_invocation(pstate, pfunction, porigin, porigin?, porigin?, pdeclcalls) : bool
-def $declaration_invocation(S, pfunction, porigin_site, eps, eps, pdeclcalls) = $declaration_named_selection(S, pfunction, porigin_site)
+dec $declaration_compiler_callback_site(pstate, porigin) : bool
+def $declaration_invocation(S, pfunction, porigin_site, eps, eps, pdeclcalls) = ($declaration_named_selection(S, pfunction, porigin_site) \/ $declaration_compiler_callback_site(S, porigin_site))
   -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
 def $declaration_invocation(S, pfunction, porigin_site, (porigin_owner), (porigin_called), pdeclcalls) = $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls)
   -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)

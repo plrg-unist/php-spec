@@ -83,11 +83,11 @@ composition, freezing its destination after rendering and before the queue.
 Wider display/startup directives and diagnostic consumers stay open.
 
 [Live precision](coverage/semantics/precision-review.json) preserves raw startup,
-get/set/Restore and callback-time float formatting. Each parsed unit keeps its
-creation precision for folded literals and ordinary compiled operands; deferred
-initializer ASTs convert with the live value. Sixteen source/profile comparisons,
-194 supplied state checks and 12 transport controls pass at their recorded cuts.
-Changing precision during suspended eval compilation remains explicit Unsupported.
+get/set/Restore and callback-time float formatting. Parser-folded literals retain
+creation precision; later eval compiler operands follow genuine callback resume
+epochs. Deferred initializer ASTs convert with the live value. The original
+16 source/profile,194 state and12 transport cuts remain separate from later
+compiler source/state checks. Wider configuration remains required.
 
 [Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows
 effective CAST/FAST_CONCAT/ROPE order, retaining fetched temporaries separately

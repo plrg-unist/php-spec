@@ -8,7 +8,7 @@ def $global_read_source(S, pglobalread) = true
   -- if $code_expression_at_source(S, pglobalread.SITE, [PCFIELD 1]) = (pglobalread.LINE)
   -- if $origin_child((pglobalread.SITE), [PCFIELD 1]) = (porigin_key)
   -- if $compiled_read(S, porigin_key) = (pvalue)
-  -- if $source_precision(S, (porigin_key)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_key)) = (z_precision)
   -- if pglobalread.NAME = $compiled_name_bytes_at(pvalue, z_precision)
 ;; Dynamic bytes are captured runtime facts, like supplied KNOWN arguments.
 ;; Source authentication does not reconstruct their historical value after a

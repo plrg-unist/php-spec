@@ -203,7 +203,8 @@ def $trait_member_fold(S, pclassdesc, PORIGIN n pcpath) = (F_result)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if $($expression_line(expression) > 0)
-  -- if F = $pfbegin(n, pcunit.AST)
+  -- if $source_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if F = $pfbegin(n, pcunit.AST)[.PARSEPRECISION = z_precision]
   -- if porigin_member = PORIGIN n pcpath[0:$nabs($(|pcpath| - 1))]
   -- if S_memory = S[.CONSTCONTEXT = ({ORIGIN TRAIT_MEMBER_ORIGIN pclassdesc.ORIGIN porigin_member, LINE $expression_line(expression), FACTS eps})][.ORIGIN = eps][.ERRORHANDLER = {CALLBACK eps, LEVELS 0}][.ERRORFATALTRACE = eps][.DISPLAYINI = ($ptascii("stderr"))]
   -- if ptcontext = {NAMESPACE eps, IMPORTS eps, SCOPE PTKNOWN pclassdesc.NAME pclassdesc.PARENT, POSITION PTCONSTANT, OWNER pclassdesc.NAME, MEMBER eps, FILE $call_sourcefile(S.FILES, PORIGIN n pcpath), LINE $nabs($expression_line(expression))}
@@ -217,9 +218,11 @@ def $trait_pool_facts(S, n, (PCONSTANT pcpath pvalue) :: pconstant*) = (PFFACT p
 def $trait_pool_facts(S, n, (PCONSTANT pcpath pvalue) :: pconstant*) = $trait_pool_facts(S, n, pconstant*)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = eps
 def $trait_pool_facts(S, n, (PCCLASS pcpath pvalueclass) :: pconstant*) = $trait_pool_facts(S, n, pconstant*)
+def $trait_pool_facts(S, n, (PCCPRECISION pcpath z) :: pconstant*) = $trait_pool_facts(S, n, pconstant*)
 def $trait_pool_classes(eps) = eps
 def $trait_pool_classes((PCCLASS pcpath pvalueclass) :: pconstant*) = (pcpath, pvalueclass) :: $trait_pool_classes(pconstant*)
 def $trait_pool_classes((PCONSTANT pcpath pvalue) :: pconstant*) = $trait_pool_classes(pconstant*)
+def $trait_pool_classes((PCCPRECISION pcpath z) :: pconstant*) = $trait_pool_classes(pconstant*)
 
 def $trait_fold_owner(F) = (porigin_owner)
   -- if F.LOOKUPS = eps

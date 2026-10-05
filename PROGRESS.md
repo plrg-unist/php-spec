@@ -72,16 +72,33 @@ containers, string/object producers and complete core remain required.
 Live precision272 now preserves registered/raw get/set/Restore through option
 callbacks, runtime string types/conversions, nonnumeric comparisons and late trace
 formatting. Each main/eval/file unit retains creation precision for parser-folded
-literals and ordinary compiled operands; genuine constant/default/property AST
-operands instead use live precision after callbacks. Sixteen exact source/profile
-comparisons across eleven main programs retain d028/e594/73011 cuts. At73011,
+literals; compiled operands retain their conversion-point precision, while genuine
+constant/default/property AST operands instead use live precision after callbacks.
+Sixteen exact source/profile comparisons across eleven main programs retain
+d028/e594/73011 cuts. At73011,
 state54/39/27/74 (194 supplied checks plus12 program bindings) and transport12 pass;
 SL261 and the changed adapter jobs1 build retain their separate cuts. The actual
 ae0 parent is preserved in264 modules through focused source review, with no
 renewed execution. [Ledger](coverage/semantics/precision-review.json) retains the
-include-history and deferred-concat mismatches plus fixture failures. Changed
-precision during suspended eval compilation, Array include/eval warning ingress,
-`serialize_precision` and wider raw-float Throwable formatters remain required.
+include-history and deferred-concat mismatches plus fixture failures. Array
+include/eval warning ingress, `serialize_precision` and wider raw-float Throwable
+formatters remain required.
+
+Suspended eval compilation now records genuine precision resume epochs, retaining
+parser creation separately from later concat/name/fold conversion points. Image
+refresh preserves escaped earlier arrays, callback allocations and enriched bound
+class data; pending throw/exit still permit later compilation and publication.
+Nine exact source comparisons retain c9a/f03 cuts. The325 supplied state controls
+plus16 program bindings retain f03/193/da3 cuts; named compiler-handler
+class causes require the real pending notice and exact eval entry. Actual266 key
+scratch now seeds source creation precision separately from live AST evaluation;
+one new exact source and28 supplied checks plus1 binding pass at75173 in strict
+SL. Both AL timeouts and the stale-wrapper rejection remain zero-credit. The
+actual318/GEN parent retains269 modules and passes SL at66453, without renewing
+source/state cuts. Original compiler/fixture failures and the former Unsupported
+frontier remain in the
+[precision ledger](coverage/semantics/precision-review.json). Wider callback cause
+selection, formatter/provider interactions and complete core remain required.
 
 Global constant callables271 now evaluate static/no-use Closures and function or
 static-method FCCs before registration. REAL lexical/called scope comes from the

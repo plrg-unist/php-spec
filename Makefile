@@ -245,6 +245,8 @@ test-semantics: build
 	python3 tests/semantics/object_cast_protocol.py
 	python3 tests/semantics/precision_sources.py
 	python3 tests/semantics/precision_protocol.py
+	python3 tests/semantics/suspended_precision_sources.py
+	python3 tests/semantics/suspended_precision_protocol.py
 	python3 tests/semantics/noctor_compiler.py
 	python3 tests/semantics/noctor_args.py
 	python3 tests/semantics/noctor_args_protocol.py
