@@ -87,6 +87,24 @@ including every normal power-of-two boundary, decimal-decade neighbors and
 both adjacent bit patterns in shortest mode. The retained 8,826-case run took
 about 55 seconds on the development host. It does not establish every possible precision/value combination.
 
+[Live precision272](../../coverage/semantics/precision-review.json) supplies the
+current INI value to runtime string conversion, weak string types, nonnumeric
+float/string comparison and late trace argument formatting. Registered startup
+bytes, current bytes and modified-entry Restore stay distinct; rejected negative
+writes preserve bytes while marking the entry modified. Signed64 decimal-prefix
+parsing precedes the formatter's C-int narrowing. The default remains 14.
+
+Each source unit captures its effective precision before parsing. Literal folding,
+compiled float names and ordinary literal concat operands use that retained value;
+deferred constant/default/property AST operands convert when evaluated, using live
+precision after callbacks. Actual source ancestry distinguishes those expressions
+from ordinary callback code. Sixteen exact source/profile comparisons across
+eleven main programs, 194 supplied state checks plus 12 program bindings, and 12
+transport controls retain their separate tested cuts. A precision change during
+suspended eval compilation remains explicit Unsupported until later folding can
+resume authentically. `serialize_precision` and unusual raw-float Throwable
+message formatters remain required follow-ons.
+
 `04-numeric-context.watsup` supplies numeric three-way/strict comparisons,
 numeric boolean conversion with pending NaN warning, canonical integer string
 keys, and distinct explicit/implicit string casts. String float casts preserve
