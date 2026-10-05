@@ -208,3 +208,25 @@ def $global_constant_flow_at(S, porigin_site, porigin_decl, porigin_scope?, PVIN
   -- if $global_new_record(S.CONSTANTOBJECTS, n_object) = (pconstantobject)
   -- if pconstantobject.SITE = porigin_site /\ pconstantobject.DECL = porigin_decl /\ pconstantobject.COMPLETE
   -- if $global_new_header(S, pconstantobject)
+
+;; Argument evaluation returns before AST NEW's constructor-failed marking.
+;; Its real object is released normally; entered/access-failed constructors keep
+;; the existing failed-construction path.
+def $global_new_argument_owned(S, pdefaultnew) = true
+  -- if $global_new_context(S, pdefaultnew.SITE) = ((porigin_decl, porigin_scope?))
+  -- if $global_new_record(S.CONSTANTOBJECTS, pdefaultnew.OBJECT) = (pconstantobject)
+  -- if pconstantobject.DECL = porigin_decl /\ pconstantobject.SITE = pdefaultnew.SITE
+  -- if ~pconstantobject.COMPLETE
+  -- if $global_new_header(S, pconstantobject)
+  -- if $constant_declaration(S, porigin_decl) = ((preqbytes, pdefaultnew.LINE))
+  -- if $new_source_name(S, pdefaultnew.SITE) = (pdefaultnew.CLASS)
+  -- if $origin_node(S.SOURCES, pdefaultnew.SITE) = (NExprNew name (SEQUENCE phpType7*) metadata)
+  -- if pdefaultnew.ARGUMENTS = phpType7*
+  -- if $(pdefaultnew.INDEX <= |phpType7*|)
+  -- if |pdefaultnew.VALUES| = pdefaultnew.INDEX
+  -- if (HOBJECT pdefaultnew.OBJECT) <- S.ALLOCATIONS
+def $global_new_argument_owned(S, pdefaultnew) = false -- otherwise
+def $return_discard(S, DEFAULT_NEW_ARGS pdefaultnew) = S
+  -- if $global_new_argument_owned(S, pdefaultnew)
+def $return_discard(S, DEFAULT_NEW_SEND pdefaultnew) = S
+  -- if $global_new_argument_owned(S, pdefaultnew)
