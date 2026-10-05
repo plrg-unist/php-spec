@@ -26,6 +26,8 @@ dec $trait_cache_new_events(pclassconstantevent*) : bool
 dec $trait_cache_parents(pclasslink*, porigin) : pclasslink*
 dec $trait_cache_interfaces(pinterfacelink*, porigin) : pinterfacelink*
 dec $trait_cache_cause_valid(pstate, porigin, ptraitcachecause) : bool
+dec $trait_cache_cause_point(pstate, ptraitcachecause) : bool
+dec $trait_cache_cause_selected(pstate, ptraitcachecause) : pclassconstantdesc?
 dec $trait_cache_event(pclassconstantevent) : (porigin, ptraitcachecause)?
 dec $trait_cache_array_classes((pkey, pvalueclass)*) : bool
 dec $trait_cache_notice_item(pstate, pclassconstantevent, porigin, nat) : pdefaultcache*
@@ -257,14 +259,21 @@ def $trait_cache_interfaces(pinterfacelink :: pinterfacelink_tail*, porigin) = $
 def $trait_cache_interfaces(pinterfacelink :: pinterfacelink_tail*, porigin) = pinterfacelink :: $trait_cache_interfaces(pinterfacelink_tail*, porigin)
   -- if pinterfacelink.OWNER =/= porigin
 def $trait_cache_preinherit(S, porigin) = S[.LINKEDPARENTS = $trait_cache_parents(S.LINKEDPARENTS, porigin)][.LINKEDINTERFACES = $trait_cache_interfaces(S.LINKEDINTERFACES, porigin)]
-def $trait_cache_cause_valid(S, porigin, ptraitcachecause) = true
-  -- if $(ptraitcachecause.PREFIX < |S.DECLARATIONS| /\ ptraitcachecause.USERPREFIX <= |S.USERCONSTANTS|)
+def $trait_cache_cause_point(S, ptraitcachecause) = true
   -- if $iterator_notice_publication_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = (ptraitcachecause.PREFIX)
+def $trait_cache_cause_point(S, ptraitcachecause) = false -- otherwise
+def $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if $(ptraitcachecause.PREFIX <= |S.DECLARATIONS| /\ ptraitcachecause.USERPREFIX <= |S.USERCONSTANTS|)
   -- if $class_at(S.CLASSES, ptraitcachecause.CLASS) = (pclassdesc)
   -- if S_prefix = $trait_cache_preinherit(S[.CLASSNAMES = $trait_notice_names(S, S.DECLARATIONS[0:ptraitcachecause.PREFIX])][.DECLARATIONS = S.DECLARATIONS[0:ptraitcachecause.PREFIX]][.USERCONSTANTS = S.USERCONSTANTS[0:ptraitcachecause.USERPREFIX]][.COMPLETION = NORMAL], ptraitcachecause.CLASS)
   -- if $trait_cache_table_valid(S_prefix, ptraitcachecause.CLASS, ptraitcachecause.ROOT, ptraitcachecause.TABLE)
   -- if S_table = S_prefix[.CLASSES = $trait_class_set(S_prefix.CLASSES, pclassdesc[.CONSTANTS = ptraitcachecause.TABLE])]
   -- if $trait_cache_lookups(S_table, ptraitcachecause.CLASS, ptraitcachecause.ROOT, ptraitcachecause.LOOKUPS, eps) = (pclassconstantdesc)
+def $trait_cache_cause_selected(S, ptraitcachecause) = eps -- otherwise
+def $trait_cache_cause_valid(S, porigin, ptraitcachecause) = true
+  -- if $(ptraitcachecause.PREFIX < |S.DECLARATIONS|)
+  -- if $trait_cache_cause_point(S, ptraitcachecause)
+  -- if $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
   -- if pclassconstantdesc.ORIGIN = porigin
   -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
 def $trait_cache_cause_valid(S, porigin, ptraitcachecause) = false -- otherwise

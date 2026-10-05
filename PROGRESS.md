@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Container continuations276 now initialize undefined/null/false CV-rooted W/RW
+storage before key demand and preserve final array-reference source cells. False
+callbacks retain genuine protection and distinct FETCH/ASSIGN/DIM_OP selection;
+throwing paths keep native initialization/write/error priority. Source-backed raw
+typed DIM_OP array backing survives COW and clears on whole-cell writes without
+changing ordinary type conversion. Author12/242 and independent21/275 share three
+originals (30 unique private programs/517 assertions). One actualae0 source at851
+preserves private Owner/Child selection, captured source lifetime and live
+caller/static17. The [contract](docs/semantics/SOURCE-CONTAINER-WRITES.md) and
+[ledger](coverage/semantics/container-warning-review.json) retain the original
+loader/fixture failures and separate cuts. Wider read/quiet/memoized/unset/GLOBALS
+containers, string/object producers and complete core remain required.
+
 Live precision272 now preserves registered/raw get/set/Restore through option
 callbacks, runtime string types/conversions, nonnumeric comparisons and late trace
 formatting. Each main/eval/file unit retains creation precision for parser-folded
@@ -32,9 +45,14 @@ target. Nine exact source agreements retain414/5d0/92ff cuts; seven source-deriv
 AL programs/341 premises pass at21b5, checking scopes, transfer forgeries, retry,
 reentry and genuine collection. Original compile/interpreter failures remain
 zero-credit in the [ledger](coverage/semantics/deferred-static-defaults-review.json).
-Immediate next: retain an alias evaluated before an initializer callback publishes
-a namespace shadow. Global NEW, wider object/constant producers and full core
-remain open; return verification stays paused.
+Per-child alias proofs now retain the exact donor and table prefix for each
+completed read, so first registration can preserve an earlier fallback without
+freezing later operands. Installed rows and duplicate continuations retain only
+nonowning lookup facts. Three fresh source agreements pass at9619d2f57; mixed90
+and retry94 AL premises pass at4262f787e, checking distinct selections, failed-unit
+transplants, candidate retirement and genuine constant roots. Their compile and
+fixture stops remain zero-credit. Global NEW, wider object/constant producers and
+full core remain open; return verification stays paused.
 
 Deferred runtime class-link failures275 now replay the held notice prefix and
 primary compiler fatal, retaining the genuine inner eval/include trace row.
@@ -71,8 +89,8 @@ programs/497 assertions ated6/baba/6e8. One actualc906 source at604958 retains p
 Owner/Child selection, fresh-global detachment and live caller/static17. The
 [contract](docs/semantics/SOURCE-GLOBAL-WRITES.md) and
 [ledger](coverage/semantics/globals-write-review.json) preserve the original
-multiline Unsupported and corrected native predictions. Earlier container warnings
-and wider GLOBALS/memoized consumers remain required; complete core stays open.
+multiline Unsupported and corrected native predictions. Container276 above adds
+initial W/RW storage; wider GLOBALS/memoized consumers remain required.
 
 Early-eval declaration diagnostics236 now suspend authentic compilation at each
 publication, including generic warnings before class publication. Handler throws
@@ -507,11 +525,15 @@ Module274 stops copied expressions at their first Error, default-flushes prior
 diagnostics and renders the pending exception before a no-trace composition fatal.
 Ten PHP-error sources and156 reached failure/cleanup checks pass, with ten separate
 formatter checks. Held-primary reporting uses the genuine failed-class route275;
-one actual source and112 reached replay checks pass at separate cuts. Failed-link
-cache disposition and object-bearing dependencies remain required. Direct and
+one actual source and112 reached replay checks pass at separate cuts. Direct and
 two-hop cyclic lookup errors now use full imported identities; two PHP-error
-sources and87 reached chain/cleanup checks pass at their separate cuts. Traits
-stay partial.
+sources and87 reached chain/cleanup checks pass at their separate cuts. Hard failed
+links now retain dependency caches owned by already published classes and retire
+unpublished import caches with their array owners. Three PHP-error sources and194
+supplied reached restoration/history/ownership conditions pass; six generated setup
+checks are separate. A source-rederived failure marker authenticates retention
+without publishing the failed class. Error-after-fill, held/open compilation,
+raw-trait failed fills and object-bearing dependencies remain required. Traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
@@ -838,6 +860,8 @@ failures and interrupted evidence.
   and final unset;255 adds nested unset and append, and262 adds nested coalesce
   assignment on defined CV-rooted arrays;269 adds GLOBALS W/RW name/missing-entry
   continuations with direct updates/compounds and nested array ingress.
+  Container276 adds undefined/null/false W/RW initialization and final array-reference
+  ingress; wider read/quiet/memoized/unset/append containers stay open.
   Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container
   producers and ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,

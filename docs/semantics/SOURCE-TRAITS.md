@@ -119,6 +119,10 @@ A held primary fatal intercepts this failure before the inner Error reports;
 source-owned failed-class replay retains the exact class and dynamic unit origin.
 Cyclic lookup errors follow the genuine source chain and compare full imported
 constant identities, including recursion through an earlier distinct dependency.
+After a hard failed class link, caches filled for already published declaring
+owners survive rollback; fills for the unpublished importing class are retired.
+A source-rederived failure marker authenticates the original collision and public
+owner prefix without granting publication or held-primary authority.
 
 Raw trait static-property access emits `E_DEPRECATED` after lookup, access,
 table initialization and a required typed read. Quiet probes can therefore warn
@@ -176,12 +180,14 @@ The Error checkpoint adds ten PHP-error source comparisons and156 reached
 first-failure/cleanup assertions, with ten separate formatter helper checks.
 The actual275 held-primary interaction adds one source and112 replay assertions.
 Direct and two-hop cyclic lookups add two PHP-error comparisons and87 reached
-chain/cleanup assertions at separate cuts.
+chain/cleanup assertions at separate cuts. Hard failed-cache disposition adds
+three PHP-error source comparisons and194 supplied restoration/history/owner
+conditions; six generated setup checks are recorded separately.
 Other native preparations remain uncredited until implemented.
 
-Failed linking after a dependency fill and object-bearing dependency values
-remain required. The successful-cache checkpoint uses an explicit
-Unsupported boundary for those failed links.
+Dependency fills followed by a reported endogenous Error, held/open compilation,
+failed raw-trait composition and object-bearing values remain required. These
+wider failed-fill paths keep an explicit Unsupported boundary.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
 Historical reached

@@ -303,8 +303,13 @@ Throws preserve callback writes; compound RHS timing and nested real-cell ingres
 remain native-grounded. Author9/224 and independent12/273 share four originals,
 giving17 unique private agreements; one current private-handler/caller-cell source
 passes.
-Wider memoized containers and earlier container/string/object producers remain
-required.
+[Container initialization and reference writes](docs/semantics/SOURCE-CONTAINER-WRITES.md)
+now stage undefined/null/false CV-rooted W/RW containers and final array-reference
+ingress. Real false-conversion protection, distinct FETCH/ASSIGN/DIM_OP paths,
+delayed source demand and typed backing through COW survive callbacks. Author12/242
+and independent21/275 share three originals, giving30 unique private agreements;
+one current private-handler/captured-cell source passes. Wider read/quiet/memoized/
+GLOBALS containers and string/object producers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -500,8 +505,11 @@ Global `const` Closure and function/method callable values now evaluate before
 registration, retaining the genuine main/include/eval entry scope and shared
 constant ownership. Duplicate-warning callbacks hold their discarded candidate
 and captured lookup prefix; raw-trait notices precede allocation. Nine new source
-agreements and seven AL programs/341 premises pass at distinct cuts. Pre-bind
-callback alias shadows, global `new` and wider object producers remain required.
+agreements and seven AL programs/341 premises retain their distinct cuts.
+Per-child alias receipts now preserve reads before and after callback namespace
+shadows; three further source agreements and two AL programs/184 premises verify
+first registration, mixed selections and throwing retry. Global `new` and wider
+object producers remain required.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases
 can attach to a typed target, then lose only that target's constraint when it is
@@ -534,8 +542,10 @@ their phase order and handler-ineligible severity. Successful collision dependen
 fills retain real typed caches and distinct import scopes. Collision expression
 errors stop the comparison, flush earlier diagnostics without handlers and render
 the pending Error before the composition fatal. Cyclic lookups retain full imported
-constant identities and release transient failure allocations. Failed-link cache
-disposition, object-bearing dependencies and readonly storage remain required. A bounded
+constant identities and release transient failure allocations. Hard failed links
+retain caches for published owners and release unpublished import caches.
+Error-after-fill, wider failed-link contexts, object-bearing dependencies and
+readonly storage remain required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound

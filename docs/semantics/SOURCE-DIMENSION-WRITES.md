@@ -53,6 +53,8 @@ genuine abort temporaries and late RHS warning/insertion.
 and preserves the selected keyed entry through delayed RHS warning/throw.
 [Global W/RW269](SOURCE-GLOBAL-WRITES.md) adds name/missing-entry continuations
 for direct updates/compounds and nested array ingress.
-Wider memoized/GLOBALS consumers, earlier missing/scalar containers,
-string/key warnings and object/magic/computed acquisitions remain required.
+[Container276](SOURCE-CONTAINER-WRITES.md) adds undefined/null/false W/RW
+initialization and final array-reference ingress with distinct false/type/throw
+priority. Wider read/quiet/memoized/unset/GLOBALS containers, string/key warnings
+and object/magic/computed acquisitions remain required.
 Read233, snapshots226 and paused returns retain separate scope.
