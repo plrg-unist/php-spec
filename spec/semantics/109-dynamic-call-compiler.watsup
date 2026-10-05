@@ -23,7 +23,7 @@ def $ppcall_literal_reference(ptbytes, metadata) = PNRESOLVED { ORIGINAL NName (
 
 def $ppdispatch(P, pcpath, NExprFuncCall expression (SEQUENCE phpType7*) metadata, PPR) = $ppcall_literal_compile(P, pcpath, ptbytes, phpType7*, metadata)
   -- if ~$ppfirstclass(phpType7*)
-  -- if $ppcall_literal_at(expression, $precision_value(P.FOLD.MEMORY)) = (ptbytes)
+  -- if $ppcall_literal_at(expression, P.FOLD.PARSEPRECISION) = (ptbytes)
 def $ppdispatch(P, pcpath, NExprFuncCall expression (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppcall_init($ppcall_constant_name($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR), pcpath, metadata), pcpath), pcpath ++ [PCFIELD 1], 0, phpType7*, PNUNSUPPORTED "dynamic call has deferred parameter modes")
   -- if ~$ppfirstclass(phpType7*)
   -- if $ppcall_dynamic(expression)

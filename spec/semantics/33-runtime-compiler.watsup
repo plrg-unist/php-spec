@@ -1,4 +1,5 @@
 dec $compiled_argument(ppstate, pcpath) : pcodeexpr*
+dec $compiled_precision(pstate, porigin?) : int?
 ;; Ordered compilation is completed before any recorded work executes. Only
 ;; compact operand metadata is retained: compiler MEMORY is not runtime state.
 dec $code_at(pcode*, nat) : pcode?
@@ -72,7 +73,7 @@ dec $captured_name(pstate, pcpath, poperand) : poperand
 def $captured_name(S, pcpath, KNOWN pvalue) = KNOWN (PSTRING $compiled_name_bytes_at(pvalue, z_precision))
   -- if $origin_child(S.ORIGIN, pcpath) = (porigin)
   -- if $compiled_read(S, porigin) = (pvalue_original)
-  -- if $source_precision(S, (porigin)) = (z_precision)
+  -- if $compiled_precision(S, (porigin)) = (z_precision)
 def $captured_name(S, pcpath, poperand) = poperand
   -- otherwise
 
@@ -246,6 +247,7 @@ def $enter_compiled_task(S, porigin, ptask, ptask_tail*) = S[.TODO = [ptask, ORI
 dec $compiled_operands(ppstate, ppexprdone*) : pcodeexpr*
 dec $compiled_gotos(ppgotoref*, ppgotolabel*) : pcodeexpr*
 def $compiled_operands(P, eps) = eps
+def $compiled_operands(P, (PPCPRECISION pcpath z) :: ppexprdone*) = $compiled_operands(P, ppexprdone*)
 def $compiled_operands(P, (PPCEFFECT pcpath) :: ppexprdone*) = (CODEEFFECT pcpath) :: $compiled_operands(P, ppexprdone*)
 def $compiled_operands(P, (PPCEXPR pcpath n pvalue?) :: ppexprdone*) = $compiled_argument(P, pcpath) ++ [(CODEEXPR pcpath n ($ppaccess(P, pcpath) = (PPR) /\ pvalue? =/= eps))] ++ $compiled_operands(P, ppexprdone*)
 dec $compiled_names((pcpath, pnreference)*) : pcodename*

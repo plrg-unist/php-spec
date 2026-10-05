@@ -162,7 +162,7 @@
         "tests/semantics/global_constant_prebind_protocol.py",
         "tests/semantics/global_constant_objects_protocol.py"
       ],
-      "review": "User constants execute in declaration order with namespace/import/fallback lookup, allocation-class provenance and retained table ownership. Global static/no-use Closure and NAMED/METHOD FCC values use exact source-entry scope and full declaration/value flow; raw-trait notices precede allocation and duplicate warnings retain candidates. Per-child alias facts now preserve selections before/after callback shadows and fresh throwing retries. Nine earlier agreements/seven341 AL and fresh three agreements/two184 AL retain separate cuts in deferred-static-defaults-review.json. Bounded user-instance global NEW now adds three agreements and274 AL premises at distinct cuts; a separate cold no-constructor source1/80 AL verifies table-before-argument/allocation order; eager destructor release and wider object/builtin/define/defined producers remain required; status stays partial."
+      "review": "User constants execute in declaration order with namespace/import/fallback lookup, allocation-class provenance and retained table ownership. Global static/no-use Closure and NAMED/METHOD FCC values use exact source-entry scope and full declaration/value flow; raw-trait notices precede allocation and duplicate warnings retain candidates. Per-child alias facts now preserve selections before/after callback shadows and fresh throwing retries. Nine earlier agreements/seven341 AL and fresh three agreements/two184 AL retain separate cuts in deferred-static-defaults-review.json. Bounded user-instance global NEW now adds three agreements and274 AL premises at distinct cuts; a separate cold no-constructor success1/80 and failure-retry1/81 AL verify table-before-argument/allocation order and fresh eval identity; eager destructor release and wider object/builtin/define/defined producers remain required; status stays partial."
     },
     {
       "node": "DeclareItem",
@@ -939,17 +939,20 @@
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/59-concat-expressions.watsup",
-        "spec/semantics/272-live-precision.watsup"
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/ordinary.py",
-        "tests/semantics/precision_sources.py"
+        "tests/semantics/precision_sources.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open. Precision272 separates ordinary captured literal operands from live conversion below genuine deferred initializer roots, preserving callback code outside those roots. See precision-review.json; complete concat remains open.",
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open. Precision272 separates ordinary captured literal operands from live conversion below genuine deferred initializer roots, preserving callback code outside those roots. See precision-review.json; complete concat remains open. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required.",
       "helper_tests": [
-        "tests/semantics/precision_protocol.py"
+        "tests/semantics/precision_protocol.py",
+        "tests/semantics/suspended_precision_protocol.py"
       ],
       "evidence": [
         "coverage/semantics/precision-review.json"
@@ -1758,7 +1761,7 @@
         "tests/semantics/global_constant_prebind_protocol.py",
         "tests/semantics/global_constant_objects_protocol.py"
       ],
-      "review": "User constants execute in declaration order with namespace/import/fallback lookup, initializer diagnostics, duplicate handling, COW and retained table ownership. Source-backed allocation classes and conditional observations support default caching. Certified Closure/FCC values and per-child global alias selections through callback shadows retain their distinct source/state cuts in deferred-static-defaults-review.json; fresh three originals and mixed90/retry94 AL premises check the latter lane. Bounded user-instance global NEW now adds three agreements and274 AL premises at distinct cuts; a separate cold no-constructor source1/80 AL verifies table-before-argument/allocation order; eager destructor release and wider object/builtin/define/defined producers remain required; family status stays partial."
+      "review": "User constants execute in declaration order with namespace/import/fallback lookup, initializer diagnostics, duplicate handling, COW and retained table ownership. Source-backed allocation classes and conditional observations support default caching. Certified Closure/FCC values and per-child global alias selections through callback shadows retain their distinct source/state cuts in deferred-static-defaults-review.json; fresh three originals and mixed90/retry94 AL premises check the latter lane. Bounded user-instance global NEW now adds three agreements and274 AL premises at distinct cuts; a separate cold no-constructor success1/80 and failure-retry1/81 AL verify table-before-argument/allocation order and fresh eval identity; eager destructor release and wider object/builtin/define/defined producers remain required; family status stays partial."
     },
     {
       "node": "Expr_Empty",
@@ -1831,7 +1834,8 @@
         "spec/semantics/30-storage.watsup",
         "spec/semantics/184-class-constants.watsup",
         "spec/semantics/195-declaration-history.watsup",
-        "spec/semantics/272-live-precision.watsup"
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -1839,9 +1843,10 @@
         "tests/semantics/eval_execution.py",
         "tests/semantics/include_execution.py",
         "tests/semantics/eval_location_protocol.py",
-        "tests/semantics/precision_sources.py"
+        "tests/semantics/precision_sources.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This older constant-prepass evidence remains separate from reviewed dynamic-source execution. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json. Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json. Precision272 retains accepted/rejected unit creation precision through genuine history/replay; changed precision during suspended compilation stays Unsupported. See precision-review.json.",
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This older constant-prepass evidence remains separate from reviewed dynamic-source execution. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json. Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json. Precision272 retains accepted/rejected unit creation precision through genuine history/replay; genuine suspended-eval resume epochs preserve later compiler precision. See precision-review.json. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required.",
       "evidence": [
         "coverage/semantics/dynamic-eval-author.json",
         "coverage/semantics/eval-scope-followup-author.json",
@@ -1849,7 +1854,8 @@
         "coverage/semantics/precision-review.json"
       ],
       "helper_tests": [
-        "tests/semantics/precision_protocol.py"
+        "tests/semantics/precision_protocol.py",
+        "tests/semantics/suspended_precision_protocol.py"
       ]
     },
     {
@@ -2135,7 +2141,8 @@
         "spec/semantics/250-ordinary-throwable-reception.watsup",
         "spec/semantics/260-dynamic-new.watsup",
         "spec/semantics/267-named-keyword-new.watsup",
-        "spec/semantics/283-global-constant-objects.watsup"
+        "spec/semantics/283-global-constant-objects.watsup",
+        "spec/semantics/285-default-new-autoload.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -2165,9 +2172,10 @@
         "tests/semantics/dynamic_new_sources.py",
         "tests/semantics/named_keyword_new_sources.py",
         "coverage/semantics/named-keyword-new-review.json",
-        "tests/semantics/global_constant_objects_protocol.py"
+        "tests/semantics/global_constant_objects_protocol.py",
+        "tests/semantics/default_new_autoload_sources.py"
       ],
-      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Ordinary dynamic class selectors are covered below; other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class256 is covered separately in object-class-name-review.json and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload remains required (dynamic-new-review.json). Ordinary named keyword NEW267 adds actual lexical/called scope, immediate inherited constructor owners and persistent service-entry scope. Source18 normal/4 compiler and reached154 clauses at91dc retain distinct failure/preparation records in named-keyword-new-review.json; complete core stays partial. Global constant NEW283 has three exact source agreements at17c12b379 and103/84/87 AL premises at041ce1/00578e/bc44da (274 total). Nonfoldable instance identity completes only after every argument and constructor return; inherited file/eval entry scope and genuine escaped retry retain owners. A separate cold no-constructor source1/80 AL verifies table-before-argument/allocation order. Eager destructor release and internal/Throwable/autoload lanes remain required; deferred-static-defaults-review.json keeps failures and cuts separate.",
+      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Ordinary dynamic class selectors are covered below; other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class256 is covered separately in object-class-name-review.json and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload remains required (dynamic-new-review.json). Ordinary named keyword NEW267 adds actual lexical/called scope, immediate inherited constructor owners and persistent service-entry scope. Source18 normal/4 compiler and reached154 clauses at91dc retain distinct failure/preparation records in named-keyword-new-review.json; complete core stays partial. Global constant NEW283 has three exact source agreements at17c12b379 and103/84/87 AL premises at041ce1/00578e/bc44da (274 total). Nonfoldable instance identity completes only after every argument and constructor return; inherited file/eval entry scope and genuine escaped retry retain owners. A separate cold no-constructor success1/80 and failure-retry1/81 AL verify table-before-argument/allocation order and fresh eval identity. Eager destructor release and internal/Throwable/autoload lanes remain required; deferred-static-defaults-review.json keeps failures and cuts separate. Module285 adds authentic parameter-default NEW autoload with lookup before nested arguments, fresh loaded-constructor selection, declaration strictness and retained receiving/declaration owners. Nine private sources at07a78 and174 reached premises at ebb346 stay distinct from actuald57/GEN280 composition1 at24f376; global AST NEW autoload and wider consumers remain required.",
       "evidence": [
         "coverage/semantics/object-classes-review.json",
         "coverage/semantics/stdclass-review.json",
@@ -2179,7 +2187,8 @@
         "coverage/semantics/anonymous-default-new-review.json",
         "coverage/semantics/ordinary-throwable-reception-review.json",
         "coverage/semantics/dynamic-new-review.json",
-        "coverage/semantics/deferred-static-defaults-review.json"
+        "coverage/semantics/deferred-static-defaults-review.json",
+        "coverage/semantics/default-new-autoload-review.json"
       ],
       "helper_tests": [
         "tests/semantics/internal_default_constructor_protocol.py",
@@ -2188,7 +2197,8 @@
         "tests/semantics/ordinary_constructor_protocol.py",
         "tests/semantics/dynamic_new_protocol.py",
         "tests/semantics/named_keyword_new_protocol.py",
-        "tests/semantics/global_constant_objects_protocol.py"
+        "tests/semantics/global_constant_objects_protocol.py",
+        "tests/semantics/default_new_autoload_protocol.py"
       ]
     },
     {
@@ -2579,7 +2589,9 @@
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/70-quiet-coalesce.watsup",
         "spec/semantics/75-request-environment.watsup",
-        "spec/semantics/76-globals.watsup"
+        "spec/semantics/76-globals.watsup",
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -2589,9 +2601,16 @@
         "coverage/semantics/quiet-access-source.json",
         "coverage/semantics/quiet-access-review.json",
         "tests/semantics/request_environment.py",
-        "tests/semantics/globals_compiler.py"
+        "tests/semantics/globals_compiler.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
-      "review": "Historical storage review: Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure. Current addition: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
+      "review": "Historical storage review: Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure. Current addition: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required.",
+      "helper_tests": [
+        "tests/semantics/suspended_precision_protocol.py"
+      ],
+      "evidence": [
+        "coverage/semantics/precision-review.json"
+      ]
     },
     {
       "node": "Expr_Yield",
@@ -2817,7 +2836,8 @@
         "spec/semantics/227-default-constructors.watsup",
         "spec/semantics/235-internal-default-constructors.watsup",
         "spec/semantics/240-internal-default-reception.watsup",
-        "spec/semantics/245-anonymous-default-new.watsup"
+        "spec/semantics/245-anonymous-default-new.watsup",
+        "spec/semantics/285-default-new-autoload.watsup"
       ],
       "source_tests": [
         "tests/semantics/default_parameters.py",
@@ -2850,9 +2870,10 @@
         "tests/semantics/default_constructor_sources.py",
         "tests/semantics/internal_default_constructor_sources.py",
         "tests/semantics/internal_default_reception_sources.py",
-        "tests/semantics/anonymous_default_new_sources.py"
+        "tests/semantics/anonymous_default_new_sources.py",
+        "tests/semantics/default_new_autoload_sources.py"
       ],
-      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named binding, argument unpacking and complete callable/type/object protocols remain pending; no family closure. Supplied weak Stringable string parameters214 preserve caller strictness, nominal/callable priority, captured free-BYREF cells and original throws; existing property constraints reject before callbacks. Earlier214 author11 plus one historical Unsupported/state178/independent2/current source2-state46 remain distinct. Parameter authority216 now permits only the exact captured backing string after callback source mutation, with ordinary writes/binds still enforcing types and no added heap owner. Source6/state299 and independent instance rebind/throw2 at73d6 are recorded in weak-string-parameters-review.json. Module218 converts positional/named Stringable variadics and genuine constructor-free defaults in receive order, with declaring method self/parent, captured cells and no default backing authority. Source cutoffs and336 meaningful states remain separate in variadic-default-string-review.json. Internal default constructor dispatch, rebound anonymous keyword NEW, dynamic hole provenance and broader constrained conversion remain required; paused typed-return verification is untouched. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults and rebound anonymous keyword NEW remain required; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Weak-null/Stringable/lossy suspended reception and rebound anonymous keyword NEW remain required; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects and rebound anonymous keyword defaults remain required; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects and object ::class remain required; status stays partial.",
+      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Positional variadics accepted4187c887: codeb49a564c, semantic959/cee5 with expectation4d69 and timeout-only4854 bridges. Ordered typed/reference tails retain EXTRA owners, earlier alias coercions, packed collection and cleanup; native errors/traces and finite source-stage guards reviewed. Independent4 source/4state1322,20protocol372,2 exact951 state bridges; author28source/2state829/8regressions/CLI8. Named binding, argument unpacking and complete callable/type/object protocols remain pending; no family closure. Supplied weak Stringable string parameters214 preserve caller strictness, nominal/callable priority, captured free-BYREF cells and original throws; existing property constraints reject before callbacks. Earlier214 author11 plus one historical Unsupported/state178/independent2/current source2-state46 remain distinct. Parameter authority216 now permits only the exact captured backing string after callback source mutation, with ordinary writes/binds still enforcing types and no added heap owner. Source6/state299 and independent instance rebind/throw2 at73d6 are recorded in weak-string-parameters-review.json. Module218 converts positional/named Stringable variadics and genuine constructor-free defaults in receive order, with declaring method self/parent, captured cells and no default backing authority. Source cutoffs and336 meaningful states remain separate in variadic-default-string-review.json. Internal default constructor dispatch, rebound anonymous keyword NEW, dynamic hole provenance and broader constrained conversion remain required; paused typed-return verification is untouched. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults and rebound anonymous keyword NEW remain required; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Weak-null/Stringable/lossy suspended reception and rebound anonymous keyword NEW remain required; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects and rebound anonymous keyword defaults remain required; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects and object ::class remain required; status stays partial. Module285 adds authentic parameter-default NEW autoload with lookup before nested arguments, fresh loaded-constructor selection, declaration strictness and retained receiving/declaration owners. Nine private sources at07a78 and174 reached premises at ebb346 stay distinct from actuald57/GEN280 composition1 at24f376; global AST NEW autoload and wider consumers remain required.",
       "helper_tests": [
         "tests/semantics/signatures.py",
         "coverage/semantics/signatures.json",
@@ -2860,7 +2881,8 @@
         "tests/semantics/default_constructor_api_protocol.py",
         "tests/semantics/internal_default_constructor_protocol.py",
         "tests/semantics/internal_default_reception_protocol.py",
-        "tests/semantics/anonymous_default_new_protocol.py"
+        "tests/semantics/anonymous_default_new_protocol.py",
+        "tests/semantics/default_new_autoload_protocol.py"
       ],
       "evidence": [
         "coverage/semantics/weak-string-parameters-review.json",
@@ -2868,7 +2890,8 @@
         "coverage/semantics/default-constructors-review.json",
         "coverage/semantics/internal-default-constructors-review.json",
         "coverage/semantics/internal-default-reception-review.json",
-        "coverage/semantics/anonymous-default-new-review.json"
+        "coverage/semantics/anonymous-default-new-review.json",
+        "coverage/semantics/default-new-autoload-review.json"
       ]
     },
     {
@@ -3390,7 +3413,7 @@
         "tests/semantics/global_constant_prebind_protocol.py",
         "tests/semantics/global_constant_objects_protocol.py"
       ],
-      "review": "User constants execute in declaration order with namespace/import/fallback lookup, initializer diagnostics, duplicate handling, COW and retained table ownership. Source-backed allocation classes and conditional observations support default caching. Certified Closure/FCC values and per-child global alias selections through callback shadows retain their distinct source/state cuts in deferred-static-defaults-review.json; fresh three originals and mixed90/retry94 AL premises check the latter lane. Bounded user-instance global NEW now adds three agreements and274 AL premises at distinct cuts; a separate cold no-constructor source1/80 AL verifies table-before-argument/allocation order; eager destructor release and wider object/builtin/define/defined producers remain required; family status stays partial."
+      "review": "User constants execute in declaration order with namespace/import/fallback lookup, initializer diagnostics, duplicate handling, COW and retained table ownership. Source-backed allocation classes and conditional observations support default caching. Certified Closure/FCC values and per-child global alias selections through callback shadows retain their distinct source/state cuts in deferred-static-defaults-review.json; fresh three originals and mixed90/retry94 AL premises check the latter lane. Bounded user-instance global NEW now adds three agreements and274 AL premises at distinct cuts; a separate cold no-constructor success1/80 and failure-retry1/81 AL verify table-before-argument/allocation order and fresh eval identity; eager destructor release and wider object/builtin/define/defined producers remain required; family status stays partial."
     },
     {
       "node": "Stmt_Continue",
@@ -5059,23 +5082,26 @@
         "spec/semantics/03-numeric-format.watsup",
         "spec/semantics/35-scalar-operations.watsup",
         "spec/semantics/40-control.watsup",
-        "spec/semantics/272-live-precision.watsup"
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "helper_tests": [
         "tests/semantics/numeric_format.py",
         "coverage/semantics/numeric-format.json",
-        "tests/semantics/precision_protocol.py"
+        "tests/semantics/precision_protocol.py",
+        "tests/semantics/suspended_precision_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
-        "tests/semantics/precision_sources.py"
+        "tests/semantics/precision_sources.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
         "coverage/semantics/precision-review.json"
       ],
-      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending. Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending. Live272 feeds runtime conversion, weak strings, nonnumeric comparison and late trace formatting; unit capture and genuine deferred AST conversion remain distinct. Bounded source/state cuts are in precision-review.json; wider consumers remain required.",
+      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending. Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending. Live272 feeds runtime conversion, weak strings, nonnumeric comparison and late trace formatting; unit capture and genuine deferred AST conversion remain distinct. Bounded source/state cuts are in precision-review.json; wider consumers remain required. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required.",
       "observed_quirks": [
         "Pinned zend_gcvt snprintf(ndigit+1) truncates INF/-INF/NAN at precision0/1/2/3; source-backed tests and NUMERICS.md retain exact outputs. Specification agrees with engine; no intentional divergence."
       ]
@@ -5087,21 +5113,24 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/03-numeric-format.watsup",
-        "spec/semantics/272-live-precision.watsup"
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "helper_tests": [
         "tests/semantics/numeric_format.py",
         "coverage/semantics/numeric-format.json",
-        "tests/semantics/precision_protocol.py"
+        "tests/semantics/precision_protocol.py",
+        "tests/semantics/suspended_precision_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/precision_sources.py"
+        "tests/semantics/precision_sources.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
         "coverage/semantics/precision-review.json"
       ],
-      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending. Live272 now retains raw registered/current precision and modified-only Restore, including option callbacks and rejected writes; precision-review.json preserves scoped source/state/transport cuts. Wider configuration remains required."
+      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending. Live272 now retains raw registered/current precision and modified-only Restore, including option callbacks and rejected writes; precision-review.json preserves scoped source/state/transport cuts. Wider configuration remains required. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required."
     },
     {
       "id": "bytes.byte-values",
@@ -8226,7 +8255,8 @@
         "spec/semantics/235-internal-default-constructors.watsup",
         "spec/semantics/240-internal-default-reception.watsup",
         "spec/semantics/245-anonymous-default-new.watsup",
-        "spec/semantics/248-callable-receives.watsup"
+        "spec/semantics/248-callable-receives.watsup",
+        "spec/semantics/285-default-new-autoload.watsup"
       ],
       "helper_tests": [
         "tests/semantics/signatures.py",
@@ -8234,7 +8264,8 @@
         "tests/semantics/internal_default_constructor_protocol.py",
         "tests/semantics/internal_default_reception_protocol.py",
         "tests/semantics/anonymous_default_new_protocol.py",
-        "tests/semantics/callable_receive_protocol.py"
+        "tests/semantics/callable_receive_protocol.py",
+        "tests/semantics/default_new_autoload_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/default_parameters.py",
@@ -8257,7 +8288,8 @@
         "tests/semantics/internal_default_reception_sources.py",
         "tests/semantics/anonymous_default_new_sources.py",
         "tests/semantics/callable_receives.py",
-        "tests/semantics/callable_receive_cases.json"
+        "tests/semantics/callable_receive_cases.json",
+        "tests/semantics/default_new_autoload_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -8269,9 +8301,10 @@
         "coverage/semantics/internal-default-reception-review.json",
         "coverage/semantics/anonymous-default-new-review.json",
         "coverage/semantics/callable-receives-review.json",
-        "docs/semantics/CALLABLE-RECEIVES.md"
+        "docs/semantics/CALLABLE-RECEIVES.md",
+        "coverage/semantics/default-new-autoload-review.json"
       ],
-      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Weak-null/Stringable/lossy suspended reception and rebound anonymous keyword NEW remain required; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects and rebound anonymous keyword defaults remain required; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects and object ::class remain required; status stays partial. Module248 stages deprecated callable default and positional/named variadic reception in the authentic receiving frame, preserving named-hole preparation, live references, borrowed method receipts, slow scalar warnings and forced Stringable conversion. Literal defaults and exact unions retain their earlier priority; internal/return consumers remain required. Evidence cuts stay separate in callable-receives-review.json.",
+      "review": "Untyped positional defaults accepted c7cb1b44 on exact909/e25eb2b9: omitted/supplied ordering, declaration context, dropped-default compilation, cache provenance/owners and fresh omitted reference cells;130 retained source profiles,57 exact author-context replays,4 independent states/1091 assertions,6 readiness programs and12 source projections/95 assertions. Historical signature helper ac5bc703 remains linked by helper tests. At909, typed/object defaults, strict checks and remaining callable protocols were pending; NParam promotion/variadic obligations also remain open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Weak-null/Stringable/lossy suspended reception and rebound anonymous keyword NEW remain required; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects and rebound anonymous keyword defaults remain required; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects and object ::class remain required; status stays partial. Module248 stages deprecated callable default and positional/named variadic reception in the authentic receiving frame, preserving named-hole preparation, live references, borrowed method receipts, slow scalar warnings and forced Stringable conversion. Literal defaults and exact unions retain their earlier priority; internal/return consumers remain required. Evidence cuts stay separate in callable-receives-review.json. Module285 adds authentic parameter-default NEW autoload with lookup before nested arguments, fresh loaded-constructor selection, declaration strictness and retained receiving/declaration owners. Nine private sources at07a78 and174 reached premises at ebb346 stay distinct from actuald57/GEN280 composition1 at24f376; global AST NEW autoload and wider consumers remain required.",
       "planned_source_tests": [
         "tests/semantics/conformance/named-variadic.php",
         "tests/semantics/conformance/parameter-global-relative-null.php",
@@ -10431,7 +10464,7 @@
         "coverage/semantics/compound-eval-location-review.json",
         "coverage/semantics/deferred-static-defaults-review.json"
       ],
-      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure. Current reporting checkpoint admits all15 nondeprecated E_* values with exact case/namespace fallback and shadow behavior; two constant source tuples retain76a30 identity. Runtime E_STRICT diagnostic ingress217 retains selected 2048 through callback declarations and protects recursive reads while its fetch is active. Defaults/class constants cache successful values, and genuine frames save/clear/restore initializer facts. Mixed 14 author+4 independent sources/211 conditions keep their tested revisions; current 210 compilation and scoped-handler/backing/class-name source1 establish added composition separately. Compound callback/eval filename creation is addressed by the bounded compound-eval-location-review.json increment; wider constant consumers remain required. Earlier diagnostics retain reporting-diagnostics-review.json. Global callable271/per-child lookup and initial global NEW283 retain separate cuts in deferred-static-defaults-review.json. NEW adds source3/274 AL with exact incomplete-versus-ended identity and immutable entry scope; a separate cold no-constructor source1/80 AL verifies table-before-argument/allocation order; eager lifecycle/internal/Throwable/autoload and wider producers remain required, so this obligation stays partial."
+      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure. Current reporting checkpoint admits all15 nondeprecated E_* values with exact case/namespace fallback and shadow behavior; two constant source tuples retain76a30 identity. Runtime E_STRICT diagnostic ingress217 retains selected 2048 through callback declarations and protects recursive reads while its fetch is active. Defaults/class constants cache successful values, and genuine frames save/clear/restore initializer facts. Mixed 14 author+4 independent sources/211 conditions keep their tested revisions; current 210 compilation and scoped-handler/backing/class-name source1 establish added composition separately. Compound callback/eval filename creation is addressed by the bounded compound-eval-location-review.json increment; wider constant consumers remain required. Earlier diagnostics retain reporting-diagnostics-review.json. Global callable271/per-child lookup and initial global NEW283 retain separate cuts in deferred-static-defaults-review.json. NEW adds source3/274 AL with exact incomplete-versus-ended identity and immutable entry scope; a separate cold no-constructor success1/80 and failure-retry1/81 AL verify table-before-argument/allocation order and fresh eval identity; eager lifecycle/internal/Throwable/autoload and wider producers remain required, so this obligation stays partial."
     },
     {
       "id": "declarations.typed-class-constants",
@@ -11515,17 +11548,20 @@
         "spec/semantics/152-throwable-runtime.watsup",
         "spec/semantics/184-class-constants.watsup",
         "spec/semantics/195-declaration-history.watsup",
-        "spec/semantics/272-live-precision.watsup"
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "helper_tests": [
         "tests/semantics/eval_protocol.py",
         "tests/semantics/eval_location_protocol.py",
-        "tests/semantics/precision_protocol.py"
+        "tests/semantics/precision_protocol.py",
+        "tests/semantics/suspended_precision_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/eval_execution.py",
         "tests/semantics/include_execution.py",
-        "tests/semantics/precision_sources.py"
+        "tests/semantics/precision_sources.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
@@ -11534,7 +11570,7 @@
         "coverage/semantics/compound-eval-location-review.json",
         "coverage/semantics/precision-review.json"
       ],
-      "review": "Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json. Precision272 retains each actual eval parse entry across accepted/rejected history and source replay. Changed precision during suspended compilation remains explicit Unsupported and required follow-on; see precision-review.json."
+      "review": "Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json. Precision272 retains each actual eval parse entry across accepted/rejected history and source replay. Changed precision during suspended compilation remains explicit Unsupported and required follow-on; see precision-review.json. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required."
     },
     {
       "id": "dynamic.eval-scope",
@@ -12026,20 +12062,24 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/277-autoload.watsup"
+        "spec/semantics/277-autoload.watsup",
+        "spec/semantics/285-default-new-autoload.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/autoload_protocol.py"
+        "tests/semantics/autoload_protocol.py",
+        "tests/semantics/default_new_autoload_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/autoload_sources.py"
+        "tests/semantics/autoload_sources.py",
+        "tests/semantics/default_new_autoload_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/ext/spl/php_spl.c",
-        "coverage/semantics/autoload-review.json"
+        "coverage/semantics/autoload-review.json",
+        "coverage/semantics/default-new-autoload-review.json"
       ],
-      "review": "Module277 covers the four required SPL control APIs, ordinary named/dynamic NEW and class-parent lookup with real callback ownership, live queue mutations, source/internal contexts and retained declaration authority. Source36/private263 original finite premises plus typed/repeated setup and actual global-constant loader1 retain separate cuts in autoload-review.json. Parameter/global-constant AST NEW and wider class-link/lookup consumers remain required; immutable copied metadata is bounded source/class evidence, not complete value provenance."
+      "review": "Module277 covers the four required SPL control APIs, ordinary named/dynamic NEW and class-parent lookup with real callback ownership, live queue mutations, source/internal contexts and retained declaration authority. Source36/private263 original finite premises plus typed/repeated setup and actual global-constant loader1 retain separate cuts in autoload-review.json. Global-constant AST NEW and wider class-link/lookup consumers remain required; immutable copied metadata is bounded source/class evidence, not complete value provenance. Module285 adds authentic parameter-default NEW autoload with lookup before nested arguments, fresh loaded-constructor selection, declaration strictness and retained receiving/declaration owners. Nine private sources at07a78 and174 reached premises at ebb346 stay distinct from actuald57/GEN280 composition1 at24f376; global AST NEW autoload and wider consumers remain required."
     },
     {
       "id": "dynamic.autoload-dispatch",
@@ -12047,20 +12087,24 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/277-autoload.watsup"
+        "spec/semantics/277-autoload.watsup",
+        "spec/semantics/285-default-new-autoload.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/autoload_protocol.py"
+        "tests/semantics/autoload_protocol.py",
+        "tests/semantics/default_new_autoload_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/autoload_sources.py"
+        "tests/semantics/autoload_sources.py",
+        "tests/semantics/default_new_autoload_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
         "vendor/php-src/ext/spl/php_spl.c",
-        "coverage/semantics/autoload-review.json"
+        "coverage/semantics/autoload-review.json",
+        "coverage/semantics/default-new-autoload-review.json"
       ],
-      "review": "Module277 covers the four required SPL control APIs, ordinary named/dynamic NEW and class-parent lookup with real callback ownership, live queue mutations, source/internal contexts and retained declaration authority. Source36/private263 original finite premises plus typed/repeated setup and actual global-constant loader1 retain separate cuts in autoload-review.json. Parameter/global-constant AST NEW and wider class-link/lookup consumers remain required; immutable copied metadata is bounded source/class evidence, not complete value provenance."
+      "review": "Module277 covers the four required SPL control APIs, ordinary named/dynamic NEW and class-parent lookup with real callback ownership, live queue mutations, source/internal contexts and retained declaration authority. Source36/private263 original finite premises plus typed/repeated setup and actual global-constant loader1 retain separate cuts in autoload-review.json. Global-constant AST NEW and wider class-link/lookup consumers remain required; immutable copied metadata is bounded source/class evidence, not complete value provenance. Module285 adds authentic parameter-default NEW autoload with lookup before nested arguments, fresh loaded-constructor selection, declaration strictness and retained receiving/declaration owners. Nine private sources at07a78 and174 reached premises at ebb346 stay distinct from actuald57/GEN280 composition1 at24f376; global AST NEW autoload and wider consumers remain required."
     },
     {
       "id": "dynamic.shell-dispatch",
@@ -12795,18 +12839,21 @@
         "spec/semantics/76-globals.watsup",
         "spec/semantics/225-startup-ini.watsup",
         "spec/semantics/237-display-errors.watsup",
-        "spec/semantics/272-live-precision.watsup"
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "helper_tests": [
         "tests/semantics/startup_ini_protocol.py",
         "tests/semantics/display_errors_protocol.py",
-        "tests/semantics/precision_protocol.py"
+        "tests/semantics/precision_protocol.py",
+        "tests/semantics/suspended_precision_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/request_environment.py",
         "tests/semantics/startup_ini.py",
         "tests/semantics/display_errors.py",
-        "tests/semantics/precision_sources.py"
+        "tests/semantics/precision_sources.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
       "evidence": [
         "vendor/php-src/main/main.c",
@@ -12815,7 +12862,7 @@
         "coverage/semantics/display-errors-review.json",
         "coverage/semantics/precision-review.json"
       ],
-      "review": "Effective variables_order and auto_globals_jit inputs reviewed; broader configuration remains pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Registered two-slot startup225 and modified-only Restore are reviewed in startup-ini-review.json:9 exact profile comparisons/99 state/15 transport at36810, with source-equivalent221-module actual0592 preservation. Wider startup directives/parsing/profiles and lifecycle remain required. Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actualddb6/233 preservation adds no execution credit. Actual231/237 held-original fatal freezing agrees atccd900 after rendering and before queue mode writes; shutdown-functions-review.json records that separate composition. Wider display/configuration and later request stages remain required. Precision272 adds nonnullable registered bytes, raw get/set/Restore and independent optional startup transport while retaining reporting/path/display facts. Partial16 source/profile,194 supplied checks and12 transport cuts remain separate in precision-review.json."
+      "review": "Effective variables_order and auto_globals_jit inputs reviewed; broader configuration remains pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Registered two-slot startup225 and modified-only Restore are reviewed in startup-ini-review.json:9 exact profile comparisons/99 state/15 transport at36810, with source-equivalent221-module actual0592 preservation. Wider startup directives/parsing/profiles and lifecycle remain required. Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actualddb6/233 preservation adds no execution credit. Actual231/237 held-original fatal freezing agrees atccd900 after rendering and before queue mode writes; shutdown-functions-review.json records that separate composition. Wider display/configuration and later request stages remain required. Precision272 adds nonnullable registered bytes, raw get/set/Restore and independent optional startup transport while retaining reporting/path/display facts. Partial16 source/profile,194 supplied checks and12 transport cuts remain separate in precision-review.json. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required."
     },
     {
       "id": "environment.initialization",

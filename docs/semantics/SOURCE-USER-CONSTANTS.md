@@ -97,7 +97,10 @@ MAIN fixture failures retain zero credit. Duplicate-candidate and argument-abort
 destructor originals remain uncredited until genuine eager release is available.
 A separate cold no-constructor source passes atd2fb and80 AL premises ata1e14a2b4
 check the pending instance table, true construction marker, warning order2→4,
-fresh incomplete allocation and sole installed-constant ownership. Its three
+fresh incomplete allocation and sole installed-constant ownership. A further
+source1/81 AL premises at97dab9f8b check Error before target allocation/receipt/
+registration, the retained pending template and fresh full declaration/NEW
+identities on same-text eval retry. The earlier cold fixture's three
 elaboration stops and one slice-length execution failure remain zero-credit;
 no runtime rules or prior source/state gates changed. Internal and
 Throwable NEW, autoload, wider object-producing initializers, remaining builtin
