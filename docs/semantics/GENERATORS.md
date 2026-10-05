@@ -111,6 +111,14 @@ stranded resume, and doubled/misplaced search mutations reject; zero-budget
 resumption matches direct execution. Their raw record is
 `generator-effects-protocol-szlr6xpv`.
 
+One introduced source agrees on actual parent `c729a1f62`, semantic union
+`ca7da215e` and fixture `63b45bb26`: default NEW autoload changes live precision
+before eager argument/construction, while the body retains parser-folded text;
+fresh `send` retains its distinct object input and the original default return.
+Raw record `generator-effects-review-w21x2zng` keeps this cut separate.
+The actual union also passes production SL structuring with the complete main
+and a fresh adapter build (`generator-effects-actual-sl-n4ctdfq0`).
+
 `python3 tests/semantics/generator_review.py --select first-current-rewind`
 compares ordinary PHP source with the pinned native runtime.
 `python3 tests/semantics/generator_review_protocol.py --select carrier`

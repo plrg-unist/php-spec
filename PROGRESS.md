@@ -35,6 +35,8 @@ the supplied exception primary and links the initialization exception as previou
 Independent array146/finally124/initialization101 pass at fixture887f51d29,
 semantic26328 (371 conditions across three originals): actual input owners,
 exception identity, full public admission and malformed resume rejection.
+One actualc729 source at63b45/semanticca7da combines default NEW autoload,
+live/default versus parser-folded precision and fresh sent-object identity.
 The original SL structuring failure retains zero credit. Full Generator
 follow-ons remain open.
 
