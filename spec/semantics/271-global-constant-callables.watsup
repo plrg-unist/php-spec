@@ -321,6 +321,7 @@ def $closure_scope_classes_valid(S, porigin_site, pclosurescope) = true
 
 ;; Each object-bearing user-constant read retains its own lookup prefix. The
 ;; selected row is immutable; this evidence owns neither its value nor a cell.
+dec $global_constant_alias(pstate, puserconstant*, porigin) : puserconstant?
 dec $global_constant_lookup_required(pstate, porigin, pconstantfact) : bool
 def $global_constant_lookup_required(S, porigin_decl, pconstantfact) = true
   -- if $global_constant_declaration_source(S.SOURCES, porigin_decl)
@@ -400,7 +401,6 @@ def $global_constant_candidates(puserconstant_prior*, preqbytes, (preqbytes_fall
   -- if $user_constant_at(puserconstant_prior*, $user_constant_key(preqbytes)) = eps
   -- if $constant_lookup_bytes(preqbytes) = eps
 def $global_constant_candidates(puserconstant_prior*, preqbytes, preqbytes_fallback?) = eps -- otherwise
-dec $global_constant_alias(pstate, puserconstant*, porigin) : puserconstant?
 def $global_constant_alias(S, puserconstant_prior*, PORIGIN n_unit pcpath) = $global_constant_candidates(puserconstant_prior*, preqbytes, preqbytes_fallback?)
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprConstFetch name metadata)
   -- if $code_at(S.CODE, n_unit) = (pcode)
