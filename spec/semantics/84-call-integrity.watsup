@@ -173,7 +173,7 @@ def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
   -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
-def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $useriter_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
+def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $useriter_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $access_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
 def $call_selected_valid(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call)) = $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call))
 def $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_call)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_call)
 def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
@@ -190,6 +190,7 @@ def $default_internal_string_context_line_valid(S, pcallcontext) = false -- othe
 def $call_line_valid(S, (PORIGIN n pcpath), z) = true
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
+  -- if ~$access_pending_site(S, PORIGIN n pcpath)
 def $call_line_valid(S, (porigin_site), z) = true
   -- if $terminal_string_site(S, porigin_site, z)
   -- if ~$eval_compile_string_site(S, porigin_site, z)
@@ -199,6 +200,7 @@ dec $stringify_pending_site(pstate, porigin) : bool
 def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remaining*, poperand*, n_sent) = true
   -- if ~$stringify_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$useriter_pending_site(S, PORIGIN n_unit pcpath)
+  -- if ~$access_pending_site(S, PORIGIN n_unit pcpath)
   -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if ~$named_present(phpType7*)
   -- if n_index = |poperand*|
@@ -219,6 +221,7 @@ def $call_arity_valid(S, pcallcontext) = true
   -- if ~$stringify_context_kind(S, pcallcontext)
   -- if ~$error_context_kind(S, pcallcontext)
   -- if ~$useriter_context_kind(S, pcallcontext)
+  -- if ~$access_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
   -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if $named_call_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
@@ -297,7 +300,7 @@ def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if pcallcontext.PARAMS = (psparam.NAME)*
   -- if preqbytes* = pfunction.CVS
   -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext) \/ $fiber_context_valid(S, pcallcontext)
-  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $interpolation_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $default_internal_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext) \/ $fiber_context_valid(S, pcallcontext)
+  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $interpolation_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $default_internal_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext) \/ $fiber_context_valid(S, pcallcontext) \/ $access_context(S, pcallcontext)
   -- if ~$default_ctor_context_kind(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext) \/ $fiber_context_valid(S, pcallcontext)
   -- if ~$autoload_context_kind(S, pcallcontext) \/ $autoload_context_valid(S, pcallcontext)
   -- if ~$destructor_context_kind(S, pcallcontext) \/ $destructor_context_valid(S, pcallcontext)
@@ -374,6 +377,7 @@ def $call_descriptors_local_valid(S) = true
   -- if $stringify_frames_pairs_valid(S, S.FRAMES)
   -- if $stringify_chain_valid(S, S.CURRENT, S.FRAMES)
   -- if $useriter_chain_valid(S, S.CURRENT, S.FRAMES)
+  -- if $access_chain(S, S.CURRENT, S.FRAMES)
   -- if $iterator_notice_owners_valid(S.TODO, S.FRAMES)
   -- if $eval_compile_owners_valid(S)
   -- if $finally_state_valid(S)

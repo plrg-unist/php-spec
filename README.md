@@ -170,7 +170,7 @@ compilation at each publication; handler throws or exit preserve later class
 publication, while user fatals stop it. Compiler fatal formatting retains the
 primary diagnostic through source effects, nested eval/include compilation and
 deferred runtime class-link failures.
-IteratorAggregate, ArrayAccess and other Traversable consumers remain required.
+IteratorAggregate and other Traversable consumers remain required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 `getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and
@@ -322,9 +322,16 @@ selected pointers and genuine row/key temporaries. Quiet coalesce and terminal
 isset/empty preserve their different demands; throws suppress later callbacks.
 Author8/212 and independent13/272 share one original (20 unique private programs);
 one current private-handler/key-temporary/caller-cell source passes. A separate
-stdClass transition agrees; ArrayAccess still stops at the required interface
-contract and has no guard-execution credit. Initial string/object/ArrayAccess,
-wider base and GLOBALS/memoized producers remain required.
+stdClass transition agrees; the historical ArrayAccess control retains its earlier
+interface-contract Unsupported and no guard-execution credit. Initial string and
+ordinary-object reads, wider base and GLOBALS/memoized producers remain required.
+[ArrayAccess dimensions](docs/semantics/SOURCE-ARRAYACCESS.md) now admit the builtin
+contract, tentative return notices, direct reads, coalesce, isset/empty, Set and
+Unset. Genuine receiver/key/parameter owners survive callbacks; Set results read
+their original CV or real reference cell after the method. Author13/205 and
+independent20/287 share five originals (28 unique programs, including two
+declaration errors). One current private-handler/typed-cell source agrees.
+Full nested, read/write, reference and wider memoized consumers remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -570,8 +577,10 @@ Published Closure/FCC dependencies retain their real initializer scope, callable
 receipts and cache owners through successful and failed composition; array keys
 and duplicate-key selection keep source-derived proofs. Errors inside those
 initializers preserve actual Throwable fields and demand traces, retire failed
-temporary owners and keep completed nested caches. Wider initializer contexts,
-unpublished-owner births, held/open failed links and readonly storage remain
+temporary owners and keep completed nested caches. Cross-file typed constant
+demand retains the composing file, physical fetch line and expression frame. Wider
+initializer contexts, unpublished-owner births, held/open failed links and readonly
+storage remain
 required. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent

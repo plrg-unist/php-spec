@@ -1,0 +1,226 @@
+{
+  "decision": "accepted within the documented direct ArrayAccess scope; full core remains partial",
+  "reviewer": "arguments_review_14",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned vendor engine and ordinary profile",
+  "implementation": "spec/semantics/284-arrayaccess-dimensions.watsup",
+  "behavior_contract": "docs/semantics/SOURCE-ARRAYACCESS.md",
+  "scope": "Builtin interface/method/abstract contracts, inherited and indirect implementations, tentative return notices, direct R/IS/isset/empty/Set/append/Unset calls, key/value and NaN truth continuations, receiver/key/parameter ownership and post-Set CV/real-CELL result pointers.",
+  "limits": "Full nested/RW/by-reference and wider memoized ArrayAccess consumers, mixed Iterator/ArrayAccess source-interface notice ordering and wider containers remain required. Newly reachable unsupported consumers stop explicitly. Dynamic selected facts are runtime captures, not callback-history proofs. Paused return verification remains separate.",
+  "engine_sources": [
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_dimension, zend_std_write_dimension, zend_std_has_dimension, zend_std_unset_dimension",
+    "vendor/php-src/Zend/zend_interfaces.stub.php:ArrayAccess",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_FETCH_DIM_R/IS, ZEND_ASSIGN_DIM, ZEND_UNSET_DIM, ZEND_ISSET_ISEMPTY_DIM_OBJ",
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_dim, zend_compile_assign"
+  ],
+  "execution": {
+    "production": "SL_mode",
+    "reached_fixtures": "AL_mode",
+    "jobs": 1,
+    "caps_seconds": {
+      "native": 45,
+      "compiler": 120,
+      "model": 90,
+      "CLI": 60,
+      "finite": 300,
+      "source_phase": 480,
+      "finite_phase": 930
+    },
+    "steps": 100000,
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING_removed": true
+    },
+    "resource_limits": {
+      "AS": [
+        -1,
+        -1
+      ],
+      "CPU": [
+        -1,
+        -1
+      ],
+      "STACK": [
+        8388608,
+        -1
+      ],
+      "DATA": [
+        -1,
+        -1
+      ],
+      "NOFILE": [
+        1024,
+        524288
+      ],
+      "NPROC": [
+        495325,
+        495325
+      ]
+    },
+    "build": "Existing project-local binaries reused; actual-parent adapter/native/SpecTec binaries are identical to canonical. No fresh-build or portability claim. Commands, raw streams, exits, environment and before/after inputs remain in original contexts/reports."
+  },
+  "runtime": {
+    "tests/semantics/profile.json": {
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+      "bytes": 352
+    },
+    ".tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "bytes": 49551712
+    },
+    "_build/default/adapter/main.exe": {
+      "sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "bytes": 29115976
+    }
+  },
+  "author": {
+    "source_count": 13,
+    "source_cuts": [
+      {
+        "cut": "9d470b704f75796ea64a722c4be6e9288a92dcfc",
+        "count": 6,
+        "selection": "first six normal rows; overall recorder failure retained separately",
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/models-j11zt7mp/report.json",
+          "sha256": "0762d2bc0d13d4350bab63ec1e60f62a04a66d8159a8cb71c53a92e837c1612e"
+        }
+      },
+      {
+        "cut": "9d470b704f75796ea64a722c4be6e9288a92dcfc",
+        "count": 7,
+        "selection": "two native255 CompileError tuples classified php_error by accepted CLI, plus five independent normal originals",
+        "report": {
+          "path": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/models-gms0ee0f/report.json",
+          "sha256": "ef86ce9b3d77097ad20555973aa9decd33bd87f6d66b92caff25755629faa16f"
+        }
+      }
+    ],
+    "compiler": {
+      "path": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/prepared-ibl_yyxm/report.json",
+      "sha256": "95505dd42c1b1bc9ee6aed2cf96a3a4bc2f715e13b2edc930b733aefaf2808d7"
+    },
+    "compiler_cut": "9d470b704f75796ea64a722c4be6e9288a92dcfc",
+    "execution_manifest": {
+      "path": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/prepared-interface-current.json",
+      "sha256": "f29b621b1e8d44e1a81c25c8b4e39aeefff9041c3066699d5e5229ccf11ebf49"
+    },
+    "finite": {
+      "path": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/states-5nbnp7_w/report.json",
+      "sha256": "0aa5775545ec17a613d868b0778d6a9ddbd0817edfdf843f4276db205fec0728"
+    },
+    "finite_cut": "bb847d3c75b739aa49058dd33053b25b123fe05e",
+    "assertions": [
+      69,
+      61,
+      75
+    ],
+    "assertion_total": 205
+  },
+  "independent": {
+    "source_count": 20,
+    "retained_count": 5,
+    "retained_report": {
+      "path": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/models-gms0ee0f/report.json",
+      "sha256": "ef86ce9b3d77097ad20555973aa9decd33bd87f6d66b92caff25755629faa16f"
+    },
+    "retained_cut": "9d470b704f75796ea64a722c4be6e9288a92dcfc",
+    "retained_selection": [
+      "quiet-and-unset-key-u-do-not-reenter-live-array-branch",
+      "unset-key-u-false-deprecation-keeps-slow-branch-after-rebind",
+      "set-argument-array-and-embedded-cell-retire-before-result-readback",
+      "set-expression-keeps-borrowed-old-reference-cell-pointer",
+      "empty-nan-get-warning-keeps-handler-receiver-and-real-key-cell"
+    ],
+    "fresh_count": 15,
+    "fresh_and_finite_cut": "bb847d3c75b739aa49058dd33053b25b123fe05e",
+    "compiler_manifest": {
+      "path": "/home/user/workspace/php-spec/.tools/arrayaccess-review-23/prepared-r1-current.json",
+      "sha256": "3682753336816c2e135c5895ba31a1ef5bb6654b7cd3fdbcb9030a37ccf8d8bc"
+    },
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/arrayaccess-review-23/own-run-0lyy9i8c/report.json",
+      "sha256": "32b793916b75c376bae2ccbfe3b80afee45ff8f865441ec75e83fb66a27430a5"
+    },
+    "closure": {
+      "path": "/home/user/workspace/php-spec/.tools/arrayaccess-review-23/own-launch-3mut9r2e/closure.json",
+      "sha256": "c85623ac72b34236ef2958e98d6a18d123e9cbe37832e3ce3dbb6cd9bbedf560"
+    },
+    "assertions": [
+      78,
+      61,
+      64,
+      84
+    ],
+    "assertion_total": 287
+  },
+  "private_totals": {
+    "unique_programs": 28,
+    "normal": 26,
+    "declaration_errors": 2,
+    "author_independent_overlap": 5,
+    "reached_assertions": 492
+  },
+  "current_composition": {
+    "accepted_parent": "465d90115b15d85574a25846723bba3adf8c6637",
+    "tested_cut": "6ccb0c6595a2ad11ef08ca9a89781e3d6172ce61",
+    "source": "tests/semantics/arrayaccess_current.php",
+    "report": {
+      "path": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/current-1qyxil0b/report.json",
+      "sha256": "51b84b501e872b1fb6d7e6d1cdb143ce5e8b00a171a2fbb30fcd53beafcb3696"
+    },
+    "closure": {
+      "path": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/CURRENT-LAUNCH.exit.json",
+      "sha256": "c188567ceb29c86eb3bd217910b3ad7649ce7df4efb9e0dcbfffd728722e8bc1"
+    },
+    "stdout": "H:OwnerAccessCurrent284/ChildAccessCurrent284:14;S:1:13;R:17:17:0:0;",
+    "scope": "Lexical Owner-private FCC forwards Child called class, missing-key warning retires selected receiver/global aliases, inherited Set mutates the retained typed backing and expression result rereads its original real CELL. Ordinary frame release is exercised; Generator/Fiber/autoload/constant-object producer branches are inactive."
+  },
+  "publication_parent": "465d90115b15d85574a25846723bba3adf8c6637",
+  "compatibility": "Exact accepted module order plus284 once (272), canonical Fiber/autoload guards and constant-name compiled_precision authentication preserved. Reviewed284/178 bytes match accepted privatebb; only introduced shared routes were reviewed. Publication metadata and copied recovery helpers add no new execution credit.",
+  "preserved_failures": [
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/check-6_prniw4",
+      "kind": "pre-execution parser count syntax; zero credit"
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/check-6nxsyjl8",
+      "kind": "forward declaration pdeclnoticeplan; zero credit"
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/check-a0kf3pn2",
+      "kind": "duplicate access_instance declaration; zero credit"
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/models-j11zt7mp/report.json",
+      "kind": "fatal recorder expected static_rejection instead of actual php_error; exact normal six retained, only affected/unrun rows continued"
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/states-g6lgbqr3/report.json",
+      "kind": "authentic descriptor admission rejected ArrayAccess because178 omitted the builtin name; repaired one-name allowlist, original compiler bytes retained"
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess/diagnose-oldk9dbq",
+      "kind": "focused class_state_valid discriminator retained; no agreement credit"
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/arrayaccess-review-23/prepared-ob69oyfu/report.json",
+      "kind": "fourth fixture referenced nonexistent frame.ENV; only fourth corrected/compiled, original first three retained"
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/arrayaccess-review-23/own-launch-hps0_u7y",
+      "kind": "prelaunch Python import/manifest error; zero source or finite execution"
+    }
+  ],
+  "native_predictions": "Independent reentry emitted the N prefix before the nested I event, and Set received17 then expression readback observed the subsequently changed RHS19. Original predictions and unchanged sources are retained; actual pinned native bytes are the oracle.",
+  "recovery": {
+    "catalogue": "tests/semantics/arrayaccess_cases.py",
+    "reached_recipes": "tests/semantics/arrayaccess_protocol.py",
+    "compiler_command": "python3 -B tests/semantics/arrayaccess_prepare.py [fixture-id ...]",
+    "current_source": "tests/semantics/arrayaccess_current.php",
+    "raw_locations": [
+      "/home/user/workspace/php-spec/.tools/arrayaccess-current-23/.tools/arrayaccess",
+      "/home/user/workspace/php-spec/.tools/arrayaccess-review-23"
+    ],
+    "note": "Raw archives remain ignored and must be copied separately. Maintained recovery includes the original independent NaN source used by the author reached fixture; it earns no duplicate source credit."
+  }
+}

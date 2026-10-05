@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+ArrayAccess284 now admits its builtin interface contract and direct R/IS,
+isset/empty, Set/append and Unset calls. Effective inherited methods and tentative
+return notices preserve prototype order and ReturnTypeWillChange suppression.
+Receiver/key protections, entered parameter owners and borrowed result pointers
+retain native callback, reentry and exception timing, including NaN truth warnings.
+Author13/205 and independent20/287 share five originals: 28 unique private programs
+(26 normal and two declaration errors), 492 reached assertions. One actual465d
+source at6ccb preserves private Owner/Child selection, receiver retirement and
+post-Set readback through the old typed CELL. The
+[contract](docs/semantics/SOURCE-ARRAYACCESS.md) and
+[ledger](coverage/semantics/arrayaccess-review.json) retain separate source/compiler/
+state cuts and original failures. Full nested/read-write/reference and wider
+memoized consumers, plus combined Iterator/ArrayAccess notice ordering, remain
+required. Newly reachable unsupported consumers stop explicitly; paused return
+verification stays separate.
+
 Fiber281 now implements live user-callback construction and direct
 start/suspend/resume/throw, status, current identity and stored returns. Callback
 selection is cached; genuine VM stacks, live reporting masks and C argument
@@ -96,9 +112,10 @@ source at5eefe retains private Owner/Child selection, key-temporary ownership an
 live caller/static17. The [contract](docs/semantics/SOURCE-CONTAINER-READS.md) and
 [ledger](coverage/semantics/container-read-review.json) retain separate source cuts
 and the original formatter failure. A separate stdClass transition agrees;
-the ArrayAccess control stops at the earlier interface-contract Unsupported and
-earns no guard-execution credit. Full ArrayAccess, string/object, wider base and
-GLOBALS/memoized producers remain required.
+the historical ArrayAccess control retains its earlier interface-contract
+Unsupported and earns no guard-execution credit. Direct ArrayAccess is covered
+by284 above; string/ordinary-object, wider base and GLOBALS/memoized producers
+remain required.
 
 Container continuations276 now initialize undefined/null/false CV-rooted W/RW
 storage before key demand and preserve final array-reference source cells. False
@@ -676,8 +693,11 @@ now use actual Throwable fields and demand traces, keeping completed nested cach
 while retiring failed owners. Four PHP-error comparisons pass atf780; four reached
 groups pass678 supplied source/context/registry/cleanup conditions atba2/d33, with12
 generated setup checks separate. The retained handler graph survives scratch cleanup.
-Wider initializer contexts, cross-file constant demand and unpublished-owner births
-remain required. Traits stay partial.
+Cross-file constant collision typed demand now preserves the executing class file,
+physical fetch line and genuine constant-expression frame. Two PHP-error comparisons
+and one reached group/139 supplied conditions pass, with five service/setup checks
+separate. Wider initializer contexts and unpublished-owner births remain required.
+Traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
@@ -1006,8 +1026,11 @@ failures and interrupted evidence.
   continuations with direct updates/compounds and nested array ingress.
   Container276 adds undefined/null/false W/RW initialization and final array-reference
   ingress;282 stages missing/scalar R and quiet-container warnings with genuine
-  row/key owners. Initial string/object/ArrayAccess reads, wider variable/property
-  bases and writable memoized/unset/append containers stay open.
+  row/key owners. ArrayAccess284 adds the builtin contract and direct R/IS,
+  isset/empty, Set/append and Unset calls. Full nested/RW/reference and wider
+  memoized ArrayAccess consumers, combined Iterator/ArrayAccess notice ordering,
+  initial string/ordinary-object reads, wider variable/property bases and writable
+  memoized/unset/append containers stay open.
   Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container
   producers and ordinary snapshots without request facts remain open.
 - Include/configuration: wider initializer/callback/compile-warning consumers,

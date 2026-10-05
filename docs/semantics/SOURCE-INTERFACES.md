@@ -25,7 +25,12 @@ diagnostics use the selected method's source file and line, including methods
 declared by an ancestor or in an eval unit.
 
 The finite builtin model admits `Stringable` and the nominal `Throwable` root
-rule. A source class may implement `Throwable` only under an authenticated
+rule. Module284 also admits the public/nonstatic `ArrayAccess` method contract,
+mixed offset/value parameters, inherited and indirect source-interface methods,
+abstract obligations and tentative-return notices with ReturnTypeWillChange.
+[Direct dimension dispatch](SOURCE-ARRAYACCESS.md) has separate reviewed evidence;
+combined Iterator/ArrayAccess source-interface notice ordering remains required.
+A source class may implement `Throwable` only under an authenticated
 `Exception` or `Error` parent chain. Module 189 compares the seven `Throwable`
 getters and inherited `__toString`, then selects concrete
 `Exception`/`Error` constructors and `__wakeup`, plus
@@ -42,7 +47,7 @@ own final `getSeverity` precedes its inherited built-in `__wakeup` check.
 ReturnTypeWillChange attributes and serialization lifecycle invocation remain
 open. Other internal interface
 method tables and hooks (`Traversable`, `Iterator`,
-`IteratorAggregate`, `ArrayAccess`), interface constants, PHP 8.5 hooked
+`IteratorAggregate`), interface constants, PHP 8.5 hooked
 interface properties, traits and first-class interface method selectors remain
 explicit obligations. Unsupported paths are tracked separately from PHP
 agreement. The source [runtime](../../tests/semantics/interface_runtime_cases.json),
