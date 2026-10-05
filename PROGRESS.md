@@ -520,11 +520,15 @@ Module274 stops copied expressions at their first Error, default-flushes prior
 diagnostics and renders the pending exception before a no-trace composition fatal.
 Ten PHP-error sources and156 reached failure/cleanup checks pass, with ten separate
 formatter checks. Held-primary reporting uses the genuine failed-class route275;
-one actual source and112 reached replay checks pass at separate cuts. Failed-link
-cache disposition and object-bearing dependencies remain required. Direct and
+one actual source and112 reached replay checks pass at separate cuts. Direct and
 two-hop cyclic lookup errors now use full imported identities; two PHP-error
-sources and87 reached chain/cleanup checks pass at their separate cuts. Traits
-stay partial.
+sources and87 reached chain/cleanup checks pass at their separate cuts. Hard failed
+links now retain dependency caches owned by already published classes and retire
+unpublished import caches with their array owners. Three PHP-error sources and194
+supplied reached restoration/history/ownership conditions pass; six generated setup
+checks are separate. A source-rederived failure marker authenticates retention
+without publishing the failed class. Error-after-fill, held/open compilation,
+raw-trait failed fills and object-bearing dependencies remain required. Traits stay partial.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
