@@ -17,9 +17,22 @@ CASES = {
     "carrier": (b'<?php\n$cell=7;function seq(&$r){$a=[&$r];yield $a;return $a;}$g=seq($cell);$g->current();$cell=9;$g->next();echo $g->getReturn()[0];unset($g);echo "Z";', b'9Z'),
     "closure": (b'<?php\n$cell=7;$f=function(&$r){$a=[&$r];yield $a;return $a;};$g=$f($cell);unset($f);$g->current();$cell=9;$g->next();echo $g->getReturn()[0];unset($g);echo "Z";', b'9Z'),
     "nested": (b'<?php\nfunction inner(){yield [1];yield [2];}function outer(){foreach(inner() as $v){yield $v;}}foreach(outer() as $v){echo $v[0];}echo "Z";', b'12Z'),
-    "abrupt": (b'<?php\nfunction seq(){try{yield [7];throw new Exception("x");}finally{echo "F";}}$g=seq();echo $g->current()[0];try{$g->next();}catch(Exception $e){echo "E";}echo $g->valid()?"T":"N";unset($g);echo "Z";', b'7FENZ'),
+    "abrupt": (b'<?php\nfunction seq($v){try{yield [$v];throw new Exception("x");}finally{echo "F";}}$g=seq(7);echo $g->current()[0];try{$g->next();}catch(Exception $e){echo "E";}echo $g->valid()?"T":"N";unset($g);echo "Z";', b'7FENZ'),
 }
 PREFIX = r'''
+dec $generator_review_next_head(ptask) : bool
+def $generator_review_next_head(GENERATOR_NEXT pgeneratorop) = true
+def $generator_review_next_head(ptask) = false -- otherwise
+dec $generator_review_next(ptask*) : pgeneratorop?
+def $generator_review_next(eps) = eps
+def $generator_review_next((GENERATOR_NEXT pgeneratorop) :: ptask*) = (pgeneratorop)
+def $generator_review_next(ptask :: ptask_tail*) = $generator_review_next(ptask_tail*)
+  -- if ~$generator_review_next_head(ptask)
+dec $generator_review_duplicate_next(ptask*) : ptask*
+def $generator_review_duplicate_next(eps) = eps
+def $generator_review_duplicate_next((GENERATOR_NEXT pgeneratorop) :: ptask*) = (GENERATOR_NEXT pgeneratorop) :: (GENERATOR_NEXT pgeneratorop) :: ptask*
+def $generator_review_duplicate_next(ptask :: ptask_tail*) = ptask :: $generator_review_duplicate_next(ptask_tail*)
+  -- if ~$generator_review_next_head(ptask)
 dec $generator_review_phase(pstate,nat) : bool
 def $generator_review_phase(S,0) = true
   -- if S.TODO = (GENERATOR_ARGS pgeneratorop eps eps) :: ptask*
@@ -46,6 +59,12 @@ def $generator_review_phase(S,4) = true
   -- if S.OBJECTS[pgeneratorop_outer.OBJECT] = GENERATOR pgenerator_outer
   -- if pgenerator_inner.PHASE = GENERATOR_RUNNING
   -- if pgenerator_outer.PHASE = GENERATOR_RUNNING
+def $generator_review_phase(S,5) = true
+  -- if S.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask*
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_PAUSED
+  -- if pgenerator.FRAME = (pframe)
+  -- if $generator_review_next(pframe.TODO) = (pgeneratorop_inner)
 def $generator_review_phase(S,n) = false -- otherwise
 dec $generator_review_seek(pstate,nat,nat) : pstate
 def $generator_review_seek(S,n_phase,n) = S -- if S.COMPILESTOP
@@ -71,7 +90,7 @@ def $generator_review_output(pevent) = false -- otherwise
 dec $generator_review_outputs(pevent*) : ptbytes
 def $generator_review_outputs(eps) = eps
 def $generator_review_outputs((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $generator_review_outputs(pevent*)
-def $generator_review_outputs(pevent :: pevent*) = $generator_review_outputs(pevent*)
+def $generator_review_outputs(pevent :: pevent_tail*) = $generator_review_outputs(pevent_tail*)
   -- if ~$generator_review_output(pevent)
 '''
 
@@ -83,12 +102,11 @@ def seek(state, previous, phase):
             f'$generator_review_phase({state},{phase})']
 
 
-def valid(state, full=False):
-    checks = [f'$generator_state_valid({state})',
+def valid(state):
+    return [f'$call_descriptors_valid({state})', f'$generator_state_valid({state})',
               f'$call_tasks_valid({state},{state}.TODO)',
               f'$call_frames_valid({state},{state}.FRAMES)',
               f'$call_current_valid({state})', f'$heap_valid($heap_graph({state}))']
-    return ([f'$call_descriptors_valid({state})'] if full else []) + checks
 
 
 def rejected(checks, name, expression):
@@ -101,7 +119,7 @@ def assertions(checked, path, directory, name):
     initial = '$php_file_run(' + checked['fixture'] + ',0,' + driver.byte_expr(os.fsencode(path)) + ',' + driver.byte_expr(os.fsencode(directory)) + ')'
     checks = ['S_initial = ' + initial, '~S_initial.COMPILESTOP']
     if name in ('carrier', 'closure'):
-        checks += seek('S_fresh', 'S_initial', 0) + valid('S_fresh', True)
+        checks += seek('S_fresh', 'S_initial', 0) + valid('S_fresh')
         checks += r'''
 S_fresh.TODO = (GENERATOR_ARGS pgeneratorop eps eps) :: ptask_fresh*
 S_fresh.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator_fresh
@@ -174,7 +192,7 @@ S_closed.STORE[n_cell] = DEFINED (PINT 9)
             rejected(checks, 'closed_closure_target', '$generator_set(S_closed,pgeneratorop.OBJECT,pgenerator_closed[.CLOSURE = (pgeneratorop.OBJECT)])')
         previous = 'S_closed'
     elif name == 'nested':
-        checks += seek('S_nested', 'S_initial', 4) + valid('S_nested', True)
+        checks += seek('S_nested', 'S_initial', 4) + valid('S_nested')
         checks += r'''
 S_nested.FRAMES = pframe_inner :: pframe_outer :: pframe_tail*
 pframe_inner.TODO = (GENERATOR_RESUME pgeneratorop_inner) :: ptask_inner*
@@ -186,18 +204,45 @@ S_nested.OBJECTS[n_inner] = GENERATOR pgenerator_inner
 S_nested.OBJECTS[n_outer] = GENERATOR pgenerator_outer
 pgenerator_inner.FRAME = eps
 pgenerator_outer.FRAME = eps
+pgeneratorop_inner.LOOP = (pgeneratorloop_inner)
 '''.strip().splitlines()
         rejected(checks, 'nested_alias', 'S_nested[.FRAMES = pframe_inner[.TODO = (GENERATOR_RESUME pgeneratorop_inner[.OBJECT = n_outer]) :: ptask_inner*] :: pframe_outer :: pframe_tail*]')
         rejected(checks, 'nested_detached', 'S_nested[.FRAMES = pframe_inner :: pframe_outer[.TODO = ptask_outer*] :: pframe_tail*]')
-        previous = 'S_nested'
+        rejected(checks, 'cursor_alias', 'S_nested[.FRAMES = pframe_inner[.TODO = (GENERATOR_RESUME pgeneratorop_inner) :: (GENERATOR_NEXT pgeneratorop_inner[.NAME = "next"][.ADVANCE = false]) :: ptask_inner*] :: pframe_outer :: pframe_tail*]')
+        checks += ['~$call_descriptors_valid(S_bad_cursor_alias)']
+        checks += seek('S_suspended', 'S_nested', 5) + valid('S_suspended')
+        checks += r'''
+S_suspended.TODO = (GENERATOR_RESUME pgeneratorop_root) :: ptask_root*
+pgeneratorop_root.OBJECT = n_outer
+S_suspended.OBJECTS[n_outer] = GENERATOR pgenerator_suspended
+pgenerator_suspended.FRAME = (pframe_suspended)
+$generator_review_next(pframe_suspended.TODO) = (pgeneratorop_held)
+pgeneratorop_held.OBJECT = n_inner
+pgeneratorop_root.LOOP = (pgeneratorloop_root)
+pgeneratorop_held.LOOP = (pgeneratorloop_held)
+pgeneratorloop_root.ITERATOR =/= pgeneratorloop_held.ITERATOR
+'''.strip().splitlines()
+        rejected(checks, 'suspended_cursor_alias', '$generator_set(S_suspended,n_outer,pgenerator_suspended[.FRAME = (pframe_suspended[.TODO = $generator_review_duplicate_next(pframe_suspended.TODO)])])')
+        checks += ['~$call_descriptors_valid(S_bad_suspended_cursor_alias)']
+        rejected(checks, 'split_cursor_alias', 'S_suspended[.TODO = (GENERATOR_RESUME pgeneratorop_root) :: (GENERATOR_NEXT pgeneratorop_held) :: ptask_root*]')
+        checks += ['~$call_descriptors_valid(S_bad_split_cursor_alias)']
+        previous = 'S_suspended'
     else:
-        checks += seek('S_paused', 'S_initial', 2) + valid('S_paused', True)
+        checks += seek('S_paused', 'S_initial', 2) + valid('S_paused')
         checks += r'''
 S_paused.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask*
 S_paused.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator_paused
 pgenerator_paused.VALUE = (PARRAY n_array)
 pgenerator_paused.FRAME = (pframe_paused)
 $generator_finalizer_tasks(S_paused,pframe_paused.TODO)
+S_frame = $generator_frame_scope(S_paused,pframe_paused)
+$call_current_valid(S_frame)
+$call_saved_context_valid(S_frame,pframe_paused)
+~$reference_call_frames_valid(S_frame.CURRENT,S_frame.FRAMES)
+~$call_descriptors_valid(S_frame)
+S_detached_view = $generator_set(S_frame,pgeneratorop.OBJECT,pgenerator_paused[.FRAME = eps])
+$heap_valid($heap_graph(S_detached_view))
+~$call_current_valid(S_detached_view)
 '''.strip().splitlines()
         previous = 'S_paused'
     checks += [f'S_stopped = $drive_steps({previous},0)', 'S_stopped.COMPLETION = BUDGET',
