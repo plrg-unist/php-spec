@@ -206,5 +206,13 @@
     "native_stdout": "As||7",
     "native_stderr": "",
     "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-named-holes-defaults-and-entry-errors",
+    "source": "<?php\ndefine('FIBER_REVIEW_DEFAULT281', 'A');\n$f = new Fiber(function ($a = FIBER_REVIEW_DEFAULT281, $b = 'B', $c = 'C') {\n    echo func_num_args(), '/', $a, $b, $c, '|';\n    Fiber::suspend();\n    return 7;\n});\n$f->start(c: 'Z');\n$f->resume();\necho $f->getReturn(), '|';\n$missing = new Fiber(function ($a) { echo 'bad'; });\ntry { $missing->start(missing: 1); } catch (Error $e) { echo $e->getMessage(), '|'; }\necho (int)$missing->isStarted(), ':', (int)$missing->isTerminated(), '|';\ntry { $missing->getReturn(); } catch (FiberError $e) { echo $e->getMessage(), '|'; }\n$duplicate = new Fiber(function ($a) { echo 'bad'; });\ntry { $duplicate->start(1, a: 2); } catch (Error $e) { echo $e->getMessage(), '|'; }\necho (int)$duplicate->isStarted(), ':', (int)$duplicate->isTerminated();\n",
+    "source_sha256": "7f017d57097bd19d849b4885298bbc54e0b78fe4e73d8a30329dc8d72ccbc53e",
+    "native_stdout": "3/ABZ|7|Unknown named parameter $missing|1:1|Cannot get fiber return value: The fiber threw an exception|Named parameter $a overwrites previous argument|1:1",
+    "native_stderr": "",
+    "expected_model": "normal"
   }
 ]
