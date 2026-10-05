@@ -605,7 +605,8 @@ $closure_scope_at(S_done.CLOSURESCOPES, n_clone) = eps
 $closure_binding_at(S_done.CLOSUREBINDINGS, n_clone) = eps
 ~$internal_closure_object(S_done, n_clone)
 ~$parameter_callable_real_unscoped(S_done[.CONSTANTCLOSURES = eps], n_clone)
-S_same_index = S_done[.OBJECTS = $object_set(S_done.OBJECTS, n_second, $object_body(S_done.OBJECTS[n_second]))]
+S_same_index = S_done[.OBJECTS[n_second] = $object_body(S_done.OBJECTS[n_second])]
+S_same_index.OBJECTS[n_second] = REALCLOSURE pconstantclosure_second.SITE eps pstaticcell_second*
 ~$parameter_callable_real_unscoped(S_same_index, n_second)
 $heap_owners($heap_graph(S_done), HOBJECT n_maker) = 0
 $heap_owners($heap_graph(S_done), HOBJECT n_maker_clone) = 0
@@ -634,11 +635,11 @@ def main():
     else:
         watched=[Path(__file__),Path(global_protocol.__file__)]
         before={str(p):base.sha(p) for p in watched}
-        original=base.prepare
+        original=base.prepare;original_flags=base.RUNNER_FLAGS
         try:
-            base.prepare=prepare;base.run(out)
+            base.prepare=prepare;base.RUNNER_FLAGS={'parameter-rebound-scope':['--sl']};base.run(out)
         finally:
-            base.prepare=original
+            base.prepare=original;base.RUNNER_FLAGS=original_flags
         report=json.loads((out/'report.json').read_text())
         report.update(protocol_inputs=before,protocols_unchanged=before=={str(p):base.sha(p) for p in watched})
         if not report['protocols_unchanged']:report['result']='failed'
