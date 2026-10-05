@@ -257,5 +257,13 @@
     "native_stderr": "",
     "expected_model": "unsupported",
     "unsupported_reason": "Fiber switch during an initializer, source loader or Generator continuation"
+  },
+  {
+    "id": "review-fiber-separate-generator-running-with-parked-fiber",
+    "source": "<?php\nfunction fiber_separate_g281($fiber) { echo (int)$fiber->isSuspended(), '|'; yield 5; }\n$f = new Fiber(static function () { Fiber::suspend('S'); echo 'R|'; return 9; });\necho $f->start(), '|';\n$g = fiber_separate_g281($f);\necho $g->current(), '|';\n$f->resume();\necho $f->getReturn(), '|';\n",
+    "source_sha256": "96f06ecef56356f28e5cad9e24520b14a2f187eec3ded159ade751ccfd70e444",
+    "native_stdout": "S|1|5|R|9|",
+    "native_stderr": "",
+    "expected_model": "normal"
   }
 ]

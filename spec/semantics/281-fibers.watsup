@@ -795,6 +795,8 @@ def $fiber_record_valid(S, n, pfiber) = false -- otherwise
 
 def $fiber_vm_valid(S, pfibervm, n?, pfibercaller*) = true
   -- if ~pfibervm.GLOBAL \/ (pfibervm.TABLE = $empty_table() /\ pfibervm.CURRENT = eps /\ pfibervm.FRAMES = eps /\ n? = eps)
+  -- if $generator_flat_tasks(pfibervm.TODO) /\ $generator_flat_frames(pfibervm.FRAMES)
+  -- if $generator_resume_ids(pfibervm.TODO) = eps /\ $generator_saved_ids(pfibervm.FRAMES) = eps
   -- if S_view = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = n?][.FIBERCALLERS = pfibercaller*][.COMPLETION = NORMAL]
   -- if $call_descriptors_local_valid(S_view)
 def $fiber_vm_valid(S, pfibervm, n?, pfibercaller*) = false -- otherwise
@@ -833,7 +835,7 @@ def $fiber_sequences_unique(S, pnode :: pnode_tail*, n_seen*) = $fiber_sequences
   -- if ~(n <- n_seen*)
 def $fiber_sequences_unique(S, pnode*, n_seen*) = false -- otherwise
 def $fiber_state_valid(S) = ($fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps) /\ $fiber_live_records(S, S.ALLOCATIONS) /\ $fiber_sequences_unique(S, S.ALLOCATIONS, eps) /\ $(S.FIBERSEQ > 0))
-def $call_descriptors_valid(S) = ($call_descriptors_local_valid(S) /\ $fiber_state_valid(S))
+def $call_descriptors_valid(S) = ($call_descriptors_local_valid(S) /\ $generator_state_valid(S) /\ $fiber_state_valid(S))
 
 def $closure_live_object_valid(S, n) = true -- if S.OBJECTS[n] = FIBER pfiber
 def $closure_scope_complete(S, (HOBJECT n) :: pnode*) = $closure_scope_complete(S, pnode*) -- if S.OBJECTS[n] = FIBER pfiber
