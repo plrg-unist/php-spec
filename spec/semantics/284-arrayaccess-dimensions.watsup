@@ -25,6 +25,11 @@ dec $access_call(pstate, paccess, ptbytes) : pstate
 dec $access_arguments(paccess) : poperand*
 dec $access_nonobject(pstate, paccess, pvalue) : pstate
 dec $access_result(pstate, paccess, pvalue) : pstate
+dec $access_result_done(pstate, paccess, pvalue) : pstate
+dec $access_truth_consumed(paccess) : bool
+dec $access_truth_warning(pvalue) : bool
+dec $access_truth_phase(paccessphase) : bool
+dec $access_cv_phase(paccessphase) : bool
 dec $access_predicate(pstate, paccess, bool) : pstate
 dec $access_warning_name(paccess) : ptbytes
 dec $access_dispatch(pstate, paccess) : pstate
@@ -320,42 +325,67 @@ def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "ArrayAccess
   -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF
 
 ;; Call returns feed the original language consumer; there is no synthetic AST.
+def $access_truth_consumed(paccess) = true
+  -- if paccess.PHASE = ACCESS_CALL ptbytes
+  -- if ptbytes = $ptascii("offsetExists")
+  -- if paccess.MODE = ACCESS_READ KEY_IS \/ paccess.MODE = ACCESS_READ (KEY_TEST b)
+def $access_truth_consumed(paccess) = true
+  -- if paccess.PHASE = ACCESS_CALL ptbytes
+  -- if ptbytes = $ptascii("offsetGet")
+  -- if paccess.MODE = ACCESS_READ (KEY_TEST true)
+def $access_truth_consumed(paccess) = false -- otherwise
+def $access_truth_warning(PFLOAT n) = b_warning
+  -- if (b, b_warning) = $number_bool(NFLOAT n)
+def $access_truth_warning(pvalue) = false -- otherwise
+def $access_truth_phase(ACCESS_TRUTH ptbytes b) = true
+def $access_truth_phase(paccessphase) = false -- otherwise
+def $access_cv_phase(ACCESS_KEY_CV n_name*) = true
+def $access_cv_phase(ACCESS_VALUE_CV n_name*) = true
+def $access_cv_phase(paccessphase) = false -- otherwise
+
+def $access_result(S, paccess, pvalue) = $error_dispatch(S[.ORIGIN = (paccess.SITE)], 2, $ptascii("unexpected NAN value was coerced to bool"), paccess.LINE, DIAGNOSTIC "Warning" $ptascii("unexpected NAN value was coerced to bool") paccess.LINE, ACCESS_RESUME paccess[.PHASE = ACCESS_TRUTH ptbytes b][.VALUE = pvalue])
+  -- if $access_truth_consumed(paccess)
+  -- if $access_truth_warning(pvalue)
+  -- if paccess.PHASE = ACCESS_CALL ptbytes
+  -- if b = $truth(S, pvalue)
+def $access_result(S, paccess, pvalue) = $access_result_done(S, paccess, pvalue)
+  -- if ~($access_truth_consumed(paccess) /\ $access_truth_warning(pvalue))
 def $access_predicate(S, paccess, b_result) = $key_read_done(S_capture, pvalue)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
   -- if S_capture = $key_test_capture(S, b, b_result)
   -- if S_capture.RESULT = KNOWN pvalue
-def $access_result(S, paccess, pvalue) = $access_call(S, paccess, $ptascii("offsetGet"))
+def $access_result_done(S, paccess, pvalue) = $access_call(S, paccess, $ptascii("offsetGet"))
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetExists")
   -- if $truth(S, pvalue)
   -- if paccess.MODE = ACCESS_READ KEY_IS \/ paccess.MODE = ACCESS_READ (KEY_TEST true)
-def $access_result(S, paccess, pvalue) = $key_read_done(S, PNULL)
+def $access_result_done(S, paccess, pvalue) = $key_read_done(S, PNULL)
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetExists")
   -- if ~$truth(S, pvalue)
   -- if paccess.MODE = ACCESS_READ KEY_IS
-def $access_result(S, paccess, pvalue) = $access_predicate(S, paccess, ~$truth(S, pvalue))
+def $access_result_done(S, paccess, pvalue) = $access_predicate(S, paccess, ~$truth(S, pvalue))
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetExists")
   -- if ~$truth(S, pvalue)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST true)
-def $access_result(S, paccess, pvalue) = $access_predicate(S, paccess, $truth(S, pvalue))
+def $access_result_done(S, paccess, pvalue) = $access_predicate(S, paccess, $truth(S, pvalue))
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetExists")
   -- if paccess.MODE = ACCESS_READ (KEY_TEST false)
-def $access_result(S, paccess, pvalue) = $access_predicate(S, paccess, ~$truth(S, pvalue))
+def $access_result_done(S, paccess, pvalue) = $access_predicate(S, paccess, ~$truth(S, pvalue))
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetGet")
   -- if paccess.MODE = ACCESS_READ (KEY_TEST true)
-def $access_result(S, paccess, pvalue) = $key_read_done(S, pvalue)
+def $access_result_done(S, paccess, pvalue) = $key_read_done(S, pvalue)
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetGet")
   -- if paccess.MODE = ACCESS_READ KEY_R \/ paccess.MODE = ACCESS_READ KEY_IS
-def $access_result(S, paccess, pvalue) = $key_read_done(S, pvalue_result)
+def $access_result_done(S, paccess, pvalue) = $key_read_done(S, pvalue_result)
   -- if paccess.MODE = ACCESS_SET
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
   -- if S_read.RESULT = KNOWN pvalue_result
-def $access_result(S, paccess, pvalue) = $key_read_done(S, PNULL)
+def $access_result_done(S, paccess, pvalue) = $key_read_done(S, PNULL)
   -- if paccess.MODE = ACCESS_UNSET
 rule PhpStep/access-result: S ~> $access_result(S_read, paccess, pvalue)
   -- if S.TODO = (ACCESS_RESULT paccess) :: ptask_tail*
@@ -376,6 +406,10 @@ rule PhpStep/access-value-resume: S ~> $access_offset(S, paccess)
   -- if S.TODO = (ACCESS_RESUME paccess) :: ptask_tail*
   -- if paccess.PHASE = ACCESS_VALUE_CV n_name*
   -- if $access_valid(S, paccess)
+rule PhpStep/access-truth-resume: S ~> $access_result_done(S, paccess[.PHASE = ACCESS_CALL ptbytes][.VALUE = PNULL], PBOOL b)
+  -- if S.TODO = (ACCESS_RESUME paccess) :: ptask_tail*
+  -- if paccess.PHASE = ACCESS_TRUTH ptbytes b
+  -- if $access_valid(S, paccess)
 rule PhpStep/access-unset-false-resume: S ~> $key_read_done(S, PNULL)
   -- if S.TODO = (ACCESS_RESUME paccess) :: ptask_tail*
   -- if paccess.PHASE = ACCESS_UNSET_FALSE
@@ -387,7 +421,7 @@ def $access_object_roots(n?, b) = eps -- otherwise
 def $access_offset_roots(pvalue, true) = $value_nodes(pvalue)
 def $access_offset_roots(pvalue, false) = eps
 def $task_nodes(ACCESS_RESULT paccess) = $access_roots(paccess, true)
-def $task_nodes(ACCESS_RESUME paccess) = $access_roots(paccess, false)
+def $task_nodes(ACCESS_RESUME paccess) = $access_roots(paccess, $access_truth_phase(paccess.PHASE))
 def $return_discard(S, ACCESS_RESULT paccess) = S[.ORIGIN = (paccess.SITE)]
 def $return_discard(S, ACCESS_RESUME paccess) = S[.ORIGIN = (paccess.SITE)]
 
@@ -456,6 +490,11 @@ def $access_phase(paccess) = true
   -- if paccess.VALUE = PBOOL false
   -- if paccess.OBJECT = eps
 def $access_phase(paccess) = true
+  -- if paccess.PHASE = ACCESS_TRUTH ptbytes b
+  -- if paccess.VALUE = PFLOAT n
+  -- if (b, true) = $number_bool(NFLOAT n)
+  -- if $access_truth_consumed(paccess[.PHASE = ACCESS_CALL ptbytes])
+def $access_phase(paccess) = true
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if paccess.MODE = ACCESS_READ KEY_R
   -- if ptbytes = $ptascii("offsetGet")
@@ -481,7 +520,7 @@ def $access_capture_valid(paccess) = (paccess.OFFSET = PNULL /\ $access_cv_opera
   -- if paccess.LATCH
 def $access_capture_valid(paccess) = (paccess.OFFSET = pvalue)
   -- if ~paccess.LATCH
-  -- if paccess.PHASE = ACCESS_CALL ptbytes
+  -- if $access_call_phase(paccess.PHASE) \/ $access_truth_phase(paccess.PHASE)
   -- if paccess.INPUT = KNOWN pvalue
 def $access_capture_valid(paccess) = true -- otherwise
 
@@ -523,7 +562,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = ACCESS_RESUME paccess
   -- if $access_valid(S, paccess)
   -- if ~$access_call_phase(paccess.PHASE)
-  -- if paccess.PHASE =/= ACCESS_UNSET_FALSE
+  -- if $access_cv_phase(paccess.PHASE)
   -- if perrorcall.SITE = paccess.SITE
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.LINE = paccess.LINE
@@ -539,6 +578,16 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LINE = paccess.LINE
   -- if perrorcall.MESSAGE = $ptascii("Automatic conversion of false to array is deprecated")
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE paccess.LINE
+
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ACCESS_RESUME paccess
+  -- if $access_truth_phase(paccess.PHASE)
+  -- if $access_valid(S, paccess)
+  -- if perrorcall.SITE = paccess.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = paccess.LINE
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE paccess.LINE
 
 ;; Entered user calls retain the real result marker in the saved emitter frame.
 def $access_method_selected(S, paccess, METHOD_TARGET n porigin_method) = true
