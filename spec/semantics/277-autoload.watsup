@@ -41,6 +41,8 @@ dec $autoload_declaration_from(pstate, nat) : pdeclautoload*
 dec $autoload_selected_scope(pstate, pautoloadentry, pcalltarget) : bool
 dec $autoload_resolve(pstate, pconfigcall) : pstate
 dec $autoload_new_diagnostic(pstate, preqbytes) : preqbytes
+dec $autoload_new_resume(pstate, preqbytes, phpType7*, int) : ptask
+def $autoload_new_resume(S, ptbytes, phpType7*, z) = AUTO_NEW ptbytes phpType7* z z -- otherwise
 dec $autoload_bool(pstate, pconfigcall, nat, bool) : bool?
 dec $autoload_registration_receive_valid(pstate, pautoloadregistration) : bool
 dec $autoload_registration_null_valid(pstate, pautoloadregistration) : bool
@@ -538,7 +540,7 @@ def $autoload_parent_pending(S, pclassdesc) = true
 def $autoload_begin(S, porigin, ptbytes_name, ptbytes_key, z, pautoloadmode, ptask) = S[.TODO = (AUTO_NEXT {SITE porigin, NAME ptbytes_name, KEY ptbytes_key, LINE z, MODE pautoloadmode, INDEX 0, RESUME ptask}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $autoload_explicit(S, pconfigcall, ptbytes) = $autoload_begin(S[.TODO = ptask_tail*], pconfigcall.SITE, ptbytes, $ptlc(ptbytes), pconfigcall.LINE, AUTO_EXPLICIT pconfigcall, AUTO_EXPLICIT_DONE pconfigcall)
   -- if S.TODO = ptask :: ptask_tail*
-def $noctor_start(S, ptbytes, phpType7*, z) = $autoload_begin(S, porigin, $autoload_lookup_name(ptbytes), $ptlc($autoload_lookup_name(ptbytes)), z, AUTO_LOOKUP, AUTO_NEW ptbytes phpType7* z z)
+def $noctor_start(S, ptbytes, phpType7*, z) = $autoload_begin(S, porigin, $autoload_lookup_name(ptbytes), $ptlc($autoload_lookup_name(ptbytes)), z, AUTO_LOOKUP, $autoload_new_resume(S, ptbytes, phpType7*, z))
   -- if $autoload_pending(S, ptbytes)
   -- if S.ORIGIN = (porigin)
 def $activate_class(S, pclassdesc) = $autoload_begin(S[.ORIGIN = (pclassdesc.ORIGIN)], pclassdesc.ORIGIN, $autoload_lookup_name(ptbytes_parent), $ptlc($autoload_lookup_name(ptbytes_parent)), pclassdesc.LINE, AUTO_LOOKUP, AUTO_PUBLISH pclassdesc.ORIGIN)
