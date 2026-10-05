@@ -34,6 +34,9 @@ injection keeps the exact Throwable; uncaught callback exceptions cross the Fibe
 root once. Traces include waiting Fiber API frames and their original buffers.
 Callback name errors arise before a callback frame exists; their file and line
 come from the waiting `Fiber::start` caller, and the failed Fiber terminates.
+Global Generator ownership is checked on the actual machine. Parked Fiber views
+retain their own task/frame checks and exclude active Generator resume markers;
+an unrelated Generator can run while a Fiber remains suspended.
 
 The primary engine routes are `Zend/zend_fibers.c`: VM capture/restore 123–155,
 fresh entry 567–636, transfer 639–711, constructor 872–893, APIs 895–1098 and
@@ -46,6 +49,8 @@ identity and exact native/model streams. `fiber_state_review.py` seeks real
 source states in production SL mode and checks continuation ownership, malformed
 records, budget resumption and completion. Raw reports stay in ignored `.tools`.
 No engine divergence or portability claim is made by these focused results.
+Thirty normal originals, three zero-agreement Unsupported controls and thirteen
+source-derived states/782 conditions retain the mixed cuts below.
 
 | Checks | Accepted cut and raw report |
 | --- | --- |
@@ -58,7 +63,11 @@ No engine divergence or portability claim is made by these focused results.
 | Affected nested preflight state, 56 conditions | `6e053c12c`, `fiber-state-review-i4_ozv12` |
 | Reporting/INI and parked-handler states, 137 conditions | `949d94782`, `fiber-state-review-_egc0_sx` |
 | Named-default and entry-error states, 172 conditions | `6dc7900c4`, `fiber-state-review-8tppvo5a` |
+| Actual constant-NEW identity transfer and separate running Generator: two normal originals | `5b720fd10`, `fiber-review-yxlc_qs5` |
+| Initializer/autoload and active-Generator helper transfer controls: no agreement | `5b720fd10`, `fiber-review-yxlc_qs5` |
+| Separate running Generator with parked Fiber, 102 conditions | `5e81060c6`, `fiber-state-review-1pzg3rap` |
 | Module AL checks | `ae3c73e1d`, `fiber-al-hmn8wukf`, 264 modules; entry-error cut `29f6ba481`, `fiber-al-n_s2keum`; prior preflight cut `6e053c12c`, `fiber-al-csrau3ee` |
+| Actual-parent AL check, 271 modules | `5b720fd10`, `fiber-al-nu57_5eg` |
 
 Sources use 100000 steps, 60 seconds per model and a 75-second process cap;
 state checks use 4000-step seek/resume budgets and 120 seconds per case. Runs are
@@ -89,9 +98,10 @@ The affected successful original above keeps that earlier failure at zero credit
 Force-close and request/fatal cleanup, deprecated constructor callable stages,
 core internal callback bodies, reference forwarding, API callable/FCC entry,
 `start` unpacking and switching during initialization/source loading remain
-required. The first transfer domain rejects active or saved constant/default and autoload
-initialization, and active Generator execution, including switches in their helper
-calls. Their shared pending flags and parked ownership remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
+required. The first transfer domain rejects active or saved constant/default and
+autoload initialization, and active Generator execution, including switches in
+their helper calls. Their shared pending flags and parked ownership remain
+required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not
 blanket blocked at this pin. Property and broader object consumers remain tracked
 separately. Full core and paused return verification are not closed by this cut.
