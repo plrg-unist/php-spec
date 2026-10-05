@@ -51,8 +51,20 @@ freezing later operands. Installed rows and duplicate continuations retain only
 nonowning lookup facts. Three fresh source agreements pass at9619d2f57; mixed90
 and retry94 AL premises pass at4262f787e, checking distinct selections, failed-unit
 transplants, candidate retirement and genuine constant roots. Their compile and
-fixture stops remain zero-credit. Global NEW, wider object/constant producers and
-full core remain open; return verification stays paused.
+fixture stops remain zero-credit.
+
+Global constant NEW283 now preserves raw user-instance identity through prepared
+argument and constructor phases. Every argument is evaluated, including ignored
+no-constructor arguments, before constructor access; immutable file/eval entry
+scope governs self/parent and private access. Nonowning receipts distinguish
+incomplete escaped allocations from successfully ended construction, while
+USERCONSTANTS and real GLOBALS/CV owners retain values. Three exact source tuples
+pass at17c12b379; argument103/inherited84/retry87 AL premises retain041ce1/00578e/
+bc44da cuts (274 total). The optional-tuple and restored-MAIN fixture failures
+remain zero-credit. Frozen duplicate/argument-abort destructor originals await
+genuine eager release; cold no-constructor table work has a separate native-only
+control. Internal/Throwable/autoload and wider object/constant producers remain
+required; full core stays open and return verification stays paused.
 
 Deferred runtime class-link failures275 now replay the held notice prefix and
 primary compiler fatal, retaining the genuine inner eval/include trace row.

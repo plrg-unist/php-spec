@@ -148,7 +148,8 @@
         "spec/semantics/88-user-constant-compiler.watsup",
         "spec/semantics/89-user-constants.watsup",
         "spec/semantics/89-constant-classes.watsup",
-        "spec/semantics/271-global-constant-callables.watsup"
+        "spec/semantics/271-global-constant-callables.watsup",
+        "spec/semantics/283-global-constant-objects.watsup"
       ],
       "source_tests": [
         "tests/semantics/user_constants.py",
@@ -158,9 +159,10 @@
         "tests/semantics/user_constant_branch_protocol.py",
         "tests/semantics/deferred_static_default_cases.json",
         "tests/semantics/global_constant_callable_protocol.py",
-        "tests/semantics/global_constant_prebind_protocol.py"
+        "tests/semantics/global_constant_prebind_protocol.py",
+        "tests/semantics/global_constant_objects_protocol.py"
       ],
-      "review": "User constants execute in declaration order with namespace/import/fallback lookup, allocation-class provenance and retained table ownership. Global static/no-use Closure and NAMED/METHOD FCC values use exact source-entry scope and full declaration/value flow; raw-trait notices precede allocation and duplicate warnings retain candidates. Per-child alias facts now preserve selections before/after callback shadows and fresh throwing retries. Nine earlier agreements/seven341 AL and fresh three agreements/two184 AL retain separate cuts in deferred-static-defaults-review.json. Global NEW/wider object producers, remaining builtin values and define/defined remain required; status stays partial."
+      "review": "User constants execute in declaration order with namespace/import/fallback lookup, allocation-class provenance and retained table ownership. Global static/no-use Closure and NAMED/METHOD FCC values use exact source-entry scope and full declaration/value flow; raw-trait notices precede allocation and duplicate warnings retain candidates. Per-child alias facts now preserve selections before/after callback shadows and fresh throwing retries. Nine earlier agreements/seven341 AL and fresh three agreements/two184 AL retain separate cuts in deferred-static-defaults-review.json. Bounded user-instance global NEW now adds three agreements and274 AL premises at distinct cuts; eager destructor release, cold-table continuation and wider object/builtin/define/defined producers remain required; status stays partial."
     },
     {
       "node": "DeclareItem",
@@ -1722,7 +1724,8 @@
         "spec/semantics/88-user-constant-compiler.watsup",
         "spec/semantics/89-user-constants.watsup",
         "spec/semantics/89-constant-classes.watsup",
-        "spec/semantics/271-global-constant-callables.watsup"
+        "spec/semantics/271-global-constant-callables.watsup",
+        "spec/semantics/283-global-constant-objects.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -1732,9 +1735,10 @@
         "tests/semantics/user_constant_protocol.py",
         "tests/semantics/user_constant_context_protocol.py",
         "tests/semantics/user_constant_branch_protocol.py",
-        "tests/semantics/global_constant_prebind_protocol.py"
+        "tests/semantics/global_constant_prebind_protocol.py",
+        "tests/semantics/global_constant_objects_protocol.py"
       ],
-      "review": "User constants execute in declaration order with namespace/import/fallback lookup, initializer diagnostics, duplicate handling, COW and retained table ownership. Source-backed allocation classes and conditional observations support default caching. Certified Closure/FCC values and per-child global alias selections through callback shadows retain their distinct source/state cuts in deferred-static-defaults-review.json; fresh three originals and mixed90/retry94 AL premises check the latter lane. Global NEW/wider object producers, remaining builtin values and define/defined remain required; family status stays partial."
+      "review": "User constants execute in declaration order with namespace/import/fallback lookup, initializer diagnostics, duplicate handling, COW and retained table ownership. Source-backed allocation classes and conditional observations support default caching. Certified Closure/FCC values and per-child global alias selections through callback shadows retain their distinct source/state cuts in deferred-static-defaults-review.json; fresh three originals and mixed90/retry94 AL premises check the latter lane. Bounded user-instance global NEW now adds three agreements and274 AL premises at distinct cuts; eager destructor release, cold-table continuation and wider object/builtin/define/defined producers remain required; family status stays partial."
     },
     {
       "node": "Expr_Empty",
@@ -2090,7 +2094,8 @@
         "spec/semantics/245-anonymous-default-new.watsup",
         "spec/semantics/250-ordinary-throwable-reception.watsup",
         "spec/semantics/260-dynamic-new.watsup",
-        "spec/semantics/267-named-keyword-new.watsup"
+        "spec/semantics/267-named-keyword-new.watsup",
+        "spec/semantics/283-global-constant-objects.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -2119,9 +2124,10 @@
         "tests/semantics/ordinary_constructor_sources.py",
         "tests/semantics/dynamic_new_sources.py",
         "tests/semantics/named_keyword_new_sources.py",
-        "coverage/semantics/named-keyword-new-review.json"
+        "coverage/semantics/named-keyword-new-review.json",
+        "tests/semantics/global_constant_objects_protocol.py"
       ],
-      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Ordinary dynamic class selectors are covered below; other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class256 is covered separately in object-class-name-review.json and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload remains required (dynamic-new-review.json). Ordinary named keyword NEW267 adds actual lexical/called scope, immediate inherited constructor owners and persistent service-entry scope. Source18 normal/4 compiler and reached154 clauses at91dc retain distinct failure/preparation records in named-keyword-new-review.json; complete core stays partial.",
+      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Ordinary dynamic class selectors are covered below; other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class256 is covered separately in object-class-name-review.json and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload remains required (dynamic-new-review.json). Ordinary named keyword NEW267 adds actual lexical/called scope, immediate inherited constructor owners and persistent service-entry scope. Source18 normal/4 compiler and reached154 clauses at91dc retain distinct failure/preparation records in named-keyword-new-review.json; complete core stays partial. Global constant NEW283 has three exact source agreements at17c12b379 and103/84/87 AL premises at041ce1/00578e/bc44da (274 total). Nonfoldable instance identity completes only after every argument and constructor return; inherited file/eval entry scope and genuine escaped retry retain owners. Eager destructor release, cold no-constructor table work and internal/Throwable/autoload lanes remain required; deferred-static-defaults-review.json keeps failures and cuts separate.",
       "evidence": [
         "coverage/semantics/object-classes-review.json",
         "coverage/semantics/stdclass-review.json",
@@ -2132,7 +2138,8 @@
         "coverage/semantics/internal-default-reception-review.json",
         "coverage/semantics/anonymous-default-new-review.json",
         "coverage/semantics/ordinary-throwable-reception-review.json",
-        "coverage/semantics/dynamic-new-review.json"
+        "coverage/semantics/dynamic-new-review.json",
+        "coverage/semantics/deferred-static-defaults-review.json"
       ],
       "helper_tests": [
         "tests/semantics/internal_default_constructor_protocol.py",
@@ -2140,7 +2147,8 @@
         "tests/semantics/anonymous_default_new_protocol.py",
         "tests/semantics/ordinary_constructor_protocol.py",
         "tests/semantics/dynamic_new_protocol.py",
-        "tests/semantics/named_keyword_new_protocol.py"
+        "tests/semantics/named_keyword_new_protocol.py",
+        "tests/semantics/global_constant_objects_protocol.py"
       ]
     },
     {
@@ -3325,7 +3333,8 @@
         "spec/semantics/88-user-constant-compiler.watsup",
         "spec/semantics/89-user-constants.watsup",
         "spec/semantics/89-constant-classes.watsup",
-        "spec/semantics/271-global-constant-callables.watsup"
+        "spec/semantics/271-global-constant-callables.watsup",
+        "spec/semantics/283-global-constant-objects.watsup"
       ],
       "source_tests": [
         "tests/semantics/user_constants.py",
@@ -3333,9 +3342,10 @@
         "tests/semantics/user_constant_protocol.py",
         "tests/semantics/user_constant_context_protocol.py",
         "tests/semantics/user_constant_branch_protocol.py",
-        "tests/semantics/global_constant_prebind_protocol.py"
+        "tests/semantics/global_constant_prebind_protocol.py",
+        "tests/semantics/global_constant_objects_protocol.py"
       ],
-      "review": "User constants execute in declaration order with namespace/import/fallback lookup, initializer diagnostics, duplicate handling, COW and retained table ownership. Source-backed allocation classes and conditional observations support default caching. Certified Closure/FCC values and per-child global alias selections through callback shadows retain their distinct source/state cuts in deferred-static-defaults-review.json; fresh three originals and mixed90/retry94 AL premises check the latter lane. Global NEW/wider object producers, remaining builtin values and define/defined remain required; family status stays partial."
+      "review": "User constants execute in declaration order with namespace/import/fallback lookup, initializer diagnostics, duplicate handling, COW and retained table ownership. Source-backed allocation classes and conditional observations support default caching. Certified Closure/FCC values and per-child global alias selections through callback shadows retain their distinct source/state cuts in deferred-static-defaults-review.json; fresh three originals and mixed90/retry94 AL premises check the latter lane. Bounded user-instance global NEW now adds three agreements and274 AL premises at distinct cuts; eager destructor release, cold-table continuation and wider object/builtin/define/defined producers remain required; family status stays partial."
     },
     {
       "node": "Stmt_Continue",
@@ -10248,7 +10258,8 @@
         "spec/semantics/89-user-constants.watsup",
         "spec/semantics/89-constant-classes.watsup",
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/217-diagnostic-ingress.watsup"
+        "spec/semantics/217-diagnostic-ingress.watsup",
+        "spec/semantics/283-global-constant-objects.watsup"
       ],
       "helper_tests": [
         "tests/semantics/user_constant_compiler.py",
@@ -10265,7 +10276,9 @@
         "tests/semantics/user_constant_branch_protocol.py",
         "tests/semantics/reporting_cases.py",
         "tests/semantics/reporting_diagnostics_cases.py",
-        "tests/semantics/reporting_diagnostics_current.php"
+        "tests/semantics/reporting_diagnostics_current.php",
+        "tests/semantics/deferred_static_default_cases.json",
+        "tests/semantics/global_constant_objects_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -10274,9 +10287,10 @@
         "coverage/semantics/user-constant-review.json",
         "coverage/semantics/reporting-ini-review.json",
         "coverage/semantics/reporting-diagnostics-review.json",
-        "coverage/semantics/compound-eval-location-review.json"
+        "coverage/semantics/compound-eval-location-review.json",
+        "coverage/semantics/deferred-static-defaults-review.json"
       ],
-      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure. Current reporting checkpoint admits all15 nondeprecated E_* values with exact case/namespace fallback and shadow behavior; two constant source tuples retain76a30 identity. Runtime E_STRICT diagnostic ingress217 retains selected 2048 through callback declarations and protects recursive reads while its fetch is active. Defaults/class constants cache successful values, and genuine frames save/clear/restore initializer facts. Mixed 14 author+4 independent sources/211 conditions keep their tested revisions; current 210 compilation and scoped-handler/backing/class-name source1 establish added composition separately. Compound callback/eval filename creation is addressed by the bounded compound-eval-location-review.json increment; wider constant consumers remain required. Earlier diagnostics retain reporting-diagnostics-review.json."
+      "review": "Bounded user-constant declarations and namespace/import/fallback lookup execute in declaration order with initializer diagnostics, duplicate handling, COW and retained constant ownership. Source-backed nonowning allocation classes and conditional observation guards support later default caching. Independent user-constant-review.json records exact source, state/resume, class and quiet-path evidence. Defaults, class constants, constant callable/object forms, remaining builtin constant values and dynamic define/defined remain pending; no family closure. Current reporting checkpoint admits all15 nondeprecated E_* values with exact case/namespace fallback and shadow behavior; two constant source tuples retain76a30 identity. Runtime E_STRICT diagnostic ingress217 retains selected 2048 through callback declarations and protects recursive reads while its fetch is active. Defaults/class constants cache successful values, and genuine frames save/clear/restore initializer facts. Mixed 14 author+4 independent sources/211 conditions keep their tested revisions; current 210 compilation and scoped-handler/backing/class-name source1 establish added composition separately. Compound callback/eval filename creation is addressed by the bounded compound-eval-location-review.json increment; wider constant consumers remain required. Earlier diagnostics retain reporting-diagnostics-review.json. Global callable271/per-child lookup and initial global NEW283 retain separate cuts in deferred-static-defaults-review.json. NEW adds source3/274 AL with exact incomplete-versus-ended identity and immutable entry scope; eager lifecycle/cold-table/internal/Throwable/autoload and wider producers remain required, so this obligation stays partial."
     },
     {
       "id": "declarations.typed-class-constants",

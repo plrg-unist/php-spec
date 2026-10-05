@@ -508,7 +508,11 @@ and captured lookup prefix; raw-trait notices precede allocation. Nine new sourc
 agreements and seven AL programs/341 premises retain their distinct cuts.
 Per-child alias receipts now preserve reads before and after callback namespace
 shadows; three further source agreements and two AL programs/184 premises verify
-first registration, mixed selections and throwing retry. Global `new` and wider
+first registration, mixed selections and throwing retry. Global `const new` now
+retains the allocated identity through argument evaluation and constructor return,
+including ignored no-constructor arguments, access errors, inherited include/eval
+scope and escaped failure/retry. Three new source agreements and 274 AL premises
+retain separate cuts. Eager destructor cleanup, cold-table continuation and wider
 object producers remain required.
 Legal untyped static-slot getters leave ignored object/scalar/null values raw;
 used references share the real static cell across inherited scopes. Escaped aliases

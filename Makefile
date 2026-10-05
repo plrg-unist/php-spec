@@ -117,6 +117,7 @@ test-semantics: build
 	python3 tests/semantics/trait_constant_callable_protocol.py
 	python3 tests/semantics/global_constant_callable_protocol.py
 	python3 tests/semantics/global_constant_prebind_protocol.py
+	python3 tests/semantics/global_constant_objects_protocol.py
 	python3 tests/semantics/default_parameter_compiler.py
 	python3 tests/semantics/default_parameters.py
 	python3 tests/semantics/default_parameter_protocol.py
