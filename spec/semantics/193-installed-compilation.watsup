@@ -25,12 +25,17 @@ def $compilation_pool_arrays(S, parray*, n_offset, (HARRAY n_local) :: pnode*) =
 def $compilation_pool_arrays(S, parray*, n_offset, pnode*) = false -- otherwise
 
 dec $compilation_pool_valid(pstate, nat, ppinstalled) : bool
-def $compilation_pool_valid(S, n_unit, ppinstalled) = true
+dec $compilation_pool_affine(pstate, nat, ppinstalled) : bool
+def $compilation_pool_affine(S, n_unit, ppinstalled) = true
   -- if $pool_at(S.POOLS, n_unit) = (ppool)
   -- if $compilation_pool_offset(ppinstalled.CONSTANTS, ppool.CONSTANTS) = (n_offset)
   -- if ppool.CONSTANTS = $pool_shift_constants(ppinstalled.CONSTANTS, n_offset)
   -- if $compilation_pool_arrays(S, $pool_shift_arrays(ppinstalled.ARRAYS, n_offset), n_offset, ppinstalled.ALLOCATIONS)
+def $compilation_pool_affine(S, n_unit, ppinstalled) = false -- otherwise
 def $compilation_pool_valid(S, n_unit, ppinstalled) = true
+  -- if $compilation_pool_affine(S, n_unit, ppinstalled)
+def $compilation_pool_valid(S, n_unit, ppinstalled) = true
+  -- if ~$compilation_pool_affine(S, n_unit, ppinstalled)
   -- if $eval_precision_epochs(S.DECLARATIONS, n_unit) = (epochs)
   -- if epochs =/= eps
   -- if $pool_at(S.POOLS, n_unit) = (ppool)
