@@ -220,6 +220,14 @@ def $eval_compile_waiting_from(pdeclaration_resume :: pdeclaration*, pevalcompil
 def $eval_compile_waiting_from(pdeclaration :: pdeclaration_tail*, pevalcompileclaim*, n) = $eval_compile_waiting_from(pdeclaration_tail*, pevalcompileclaim*, $(n + 1))
   -- if ~$eval_compile_history_marker(pdeclaration)
 def $eval_compile_waiting(pdeclaration*) = $eval_compile_waiting_from(pdeclaration*, eps, 0)
+
+def $declaration_compiler_callback_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprEval expression metadata)
+  -- if $eval_compile_waiting(S.DECLARATIONS) = (n_unit, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*
+  -- if pdeclnoticeitem* =/= eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n_unit) = (pevalbinding)
+  -- if pevalbinding.SITE = porigin
+def $declaration_compiler_callback_site(S, porigin) = false -- otherwise
 def $eval_compile_claim_at(eps, n) = eps
 def $eval_compile_claim_at((n, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*, n) = ((n, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*))
 def $eval_compile_claim_at((n_other, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*, n) = $eval_compile_claim_at(pevalcompileclaim*, n)
