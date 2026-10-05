@@ -1,0 +1,19 @@
+{
+  "scope": "Native-only published bare Closure cache retained across failed raw-trait link, with one E_STRICT proving no reinitialization at shutdown. Zero model credit.",
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; project profile. Native-only object dependency preparation; zero model credit.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "published-private-fcc-cache-survives-failed-raw-trait-composition",
+      "source": "<?php\nclass P{\n private static function reveal(){return self::class.\"/\".get_called_class();}\n public const Closure Y=[self::reveal(...), E_STRICT][0];\n}\ntrait T{public static $x=P::Y;}\nregister_shutdown_function(function(){\n $first=P::Y;echo ($first===P::Y?\"S;\":\"D;\"),$first(),\";\";\n try{U::marker();}catch(Error $e){echo \"U;\";}\n});\nset_error_handler(function($n){echo \"H\",$n,\";\";return true;});\necho \"PRE;\";\ntrait U{use T;public static $x=0;public static function marker(){echo \"M;\";}}\necho \"POST;\";\n",
+      "source_sha256": "69e5306c196f74898a4546a7695608cfe33c45f8e710363de477c5b4c11a8d2e",
+      "status": "php_error",
+      "stdout_base64": "UFJFO1M7UC9QO1U7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSA0CkZhdGFsIGVycm9yOiBVIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBVLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDEzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-object-cache-review-274/.tools/trait-failed-public-closure-observed-native274-60hcrafq/report.json",
+      "native_raw_sha256": "ac33731b642bbfee66e648c655604ae615e99da24f496ebbef1a728ff80646a6"
+    }
+  ]
+}

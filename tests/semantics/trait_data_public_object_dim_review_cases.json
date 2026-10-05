@@ -1,0 +1,19 @@
+{
+  "scope": "Native-only public dependency literal-DIM retains the last same-key private FCC while the earlier valid receipt retires; zero model credit.",
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; project baseline profile. Native-only changed last-key DIM source transfer.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "public-fcc-dim-keeps-last-replacing-object-and-retires-earlier-receipt",
+      "source": "<?php\nclass P{\n private static function old(){echo \"OLD;\";}\n private static function selected(){echo self::class,\":\",get_called_class(),\";\";}\n public const Closure Y=[0=>self::old(...),0=>self::selected(...),E_STRICT][0];\n}\ntrait T{public static $x=P::Y;}\nset_error_handler(function($n){echo \"H;\";return true;});echo \"PRE;\";\nclass C{use T;public static $x=P::Y;}\necho \"POST;\",C::$x===P::Y?\"S;\":\"D;\";(C::$x)();\n",
+      "source_sha256": "15991e13763f7e03c6f743ceab30eb7cc78349d152d2f7984916a4ce0a26b8af",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7UE9TVDtTO1A6UDs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/introspection-trait-object-cache-review-274/.tools/trait-public-object-dim-native266-bclset48/report.json",
+      "native_raw_sha256": "2cb5b641c5a486f48c067b52fc1ac0dc56a70279e89e4a212783a0293e36ef6d"
+    }
+  ]
+}

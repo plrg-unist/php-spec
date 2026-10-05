@@ -196,7 +196,7 @@ dec $pools_nodes(ppool*) : pnode*
 dec $user_constant_roots(puserconstant*) : pnode*
 dec $shutdown_roots(pshutdownentry*) : pnode*
 dec $completion_roots(pcompletion) : pnode*
-def $machine_roots(S) = $completion_roots(S.COMPLETION) ++ $error_handler_roots(S.ERRORHANDLER) ++ $error_handler_stack_roots(S.ERRORHANDLERS) ++ $exception_handler_roots(S.EXCEPTIONHANDLER) ++ $exception_handler_stack_roots(S.EXCEPTIONHANDLERS) ++ $shutdown_roots(S.SHUTDOWN.ENTRIES) ++ $static_roots(S.STATICS) ++ $class_static_roots(S.CLASSSTATICS) ++ $instance_default_roots(S.INSTANCEDEFAULTS) ++ $class_constant_roots(S.CLASSCONSTANTCACHE) ++ $default_cache_roots(S.DEFAULTCACHE) ++ $user_constant_roots(S.USERCONSTANTS) ++ $trace_roots(S.TRACE) ++ $trace_roots(S.ERRORFATALTRACE) ++ $table_roots(S.GLOBALTABLE) ++ $frames_roots(S.FRAMES) ++ $call_context_roots(S.CURRENT) ++ $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD ++ $pools_nodes(S.POOLS) ++ $request_roots_nodes(S.HTTPROOTS)
+def $machine_roots(S) = $completion_roots(S.COMPLETION) ++ $error_handler_roots(S.ERRORHANDLER) ++ $error_handler_stack_roots(S.ERRORHANDLERS) ++ $exception_handler_roots(S.EXCEPTIONHANDLER) ++ $exception_handler_stack_roots(S.EXCEPTIONHANDLERS) ++ $autoload_roots(S.AUTOLOAD.ENTRIES) ++ $shutdown_roots(S.SHUTDOWN.ENTRIES) ++ $static_roots(S.STATICS) ++ $class_static_roots(S.CLASSSTATICS) ++ $instance_default_roots(S.INSTANCEDEFAULTS) ++ $class_constant_roots(S.CLASSCONSTANTCACHE) ++ $default_cache_roots(S.DEFAULTCACHE) ++ $user_constant_roots(S.USERCONSTANTS) ++ $trace_roots(S.TRACE) ++ $trace_roots(S.ERRORFATALTRACE) ++ $table_roots(S.GLOBALTABLE) ++ $frames_roots(S.FRAMES) ++ $call_context_roots(S.CURRENT) ++ $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD ++ $pools_nodes(S.POOLS) ++ $request_roots_nodes(S.HTTPROOTS) ++ $fiber_caller_nodes(S.FIBERCALLERS)
 
 dec $heap_graph(pstate) : hgraph
 def $heap_graph(S) = {NODES S.ALLOCATIONS, EDGES $allocation_edges(S, S.ALLOCATIONS), ROOTS $machine_roots(S)}
@@ -231,8 +231,13 @@ def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = pclosu
   -- if (HOBJECT pclosurescope.OBJECT) <- pnode*
 def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = $closure_scopes_prune(pclosurescope_tail*, pnode*)
   -- if ~((HOBJECT pclosurescope.OBJECT) <- pnode*)
-def $prune_allocations(S) = $destruction_prune(S, pnode_live*)
+dec $generator_prune_pending(pstate, pnode*) : bool
+def $prune_allocations(S) = S[.COMPLETION = UNSUPPORTED "started generator force-close finalizer"]
   -- if pnode_live* = $heap_prune($heap_graph(S)).NODES
+  -- if $generator_prune_pending(S, pnode_live*)
+def $prune_allocations(S) = $fiber_prune(S, pnode_live*)
+  -- if pnode_live* = $heap_prune($heap_graph(S)).NODES
+  -- if ~$generator_prune_pending(S, pnode_live*)
 def $prune_live(S, pnode_live*) = S[.ALLOCATIONS = pnode_live*][.CLOSURESCOPES = $closure_scopes_prune(S.CLOSURESCOPES, pnode_live*)][.CLOSUREBINDINGS = $closure_bindings_prune(S.CLOSUREBINDINGS, pnode_live*)][.OBJECTPROPS = $objectprops_prune(S.OBJECTPROPS, pnode_live*)][.OBJECTTABLES = $object_tables_prune(S.OBJECTTABLES, pnode_live*)][.PROPREFS = $proprefs_prune(S.PROPREFS, S.OBJECTPROPS, pnode_live*)][.REFCOERCIONS = $reference_coercions_prune(S.REFCOERCIONS, pnode_live*)][.CONTAINERINITS = $container_inits_prune(S.CONTAINERINITS, pnode_live*)][.PARAMETERBACKINGS = $parameter_backings_prune(S.PARAMETERBACKINGS, pnode_live*)][.ITERATORS = $iterators_prune(S.ITERATORS, pnode_live*)]
 
 ;; zend_array_dup_value unwraps singleton references, except a reference back to

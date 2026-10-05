@@ -88,3 +88,8 @@ class NarrowAccess284 implements ArrayAccess {
 }
 """, b''),
 ]
+
+# Independent original retained for the captured truth reached-state fixture.
+REACHED_SOURCES = [
+    ('empty-nan-get-warning-keeps-handler-receiver-and-real-key-cell', b"<?php\nerror_reporting(0);\nclass NanTruth284 implements ArrayAccess {\n    public function offsetExists(mixed $offset): bool { echo 'E;'; return true; }\n    public function offsetGet(mixed $offset): mixed { echo 'G;'; return NAN; }\n    public function offsetSet(mixed $offset, mixed $value): void {  }\n    public function offsetUnset(mixed $offset): void {  }\n}\n\n$cell284=9; $key284=[1,&$cell284]; $o284=new NanTruth284;\nset_error_handler(function($n,$m,$f,$line) { echo 'W:',$line,';'; unset($GLOBALS['o284'],$GLOBALS['key284'],$GLOBALS['cell284']); return true; });\n$r284=empty($o284[$key284]);\nrestore_error_handler();\necho 'R:',(int)$r284,':',(int)isset($o284),':',(int)isset($key284),':',(int)isset($cell284),';';\n", b'E;G;W:12;R:0:0:0:0;'),
+]

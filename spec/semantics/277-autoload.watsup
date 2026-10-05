@@ -1,0 +1,995 @@
+;; Required autoload controls. Registry buckets and cursors are live across calls;
+;; the raw callable and copied selection certificates are not registry owners.
+dec $autoload_callback_kind(pintrinsic) : bool
+dec $autoload_class_char(nat) : bool
+dec $autoload_class_chars(preqbytes) : bool
+dec $autoload_explicit_nodes(pautoloadmode) : pnode*
+dec $autoload_explicit_nonce(pautoloadmode) : nat?
+dec $autoload_special(pstate, pvalue) : pautoloadtarget?
+dec $autoload_registration_valid(pstate, pconfigcall) : bool
+dec $autoload_entry(pstate, pconfigcall, pautoloadtarget) : pautoloadentry
+dec $autoload_snapshot(pstate, pconfigcall, pcalltarget) : parray?
+dec $autoload_entry_history(pstate, pautoloadentry) : pstate
+dec $autoload_entry_valid(pstate, pautoloadentry) : bool
+dec $autoload_entry_live(pstate, pautoloadentry) : bool
+dec $autoload_bucket(pautoloadentry) : pautoloadentry?
+dec $autoload_entry_nodes(pautoloadentry) : pnode*
+dec $autoload_target_nodes(pautoloadtarget) : pnode*
+dec $autoload_raw(pautoloadentry) : pvalue
+dec $autoload_identity(pstate, pautoloadentry) : (porigin, nat?, porigin?, nat?)?
+dec $autoload_object_identity(pautoloadentry) : nat?
+dec $autoload_same(pstate, pautoloadentry, pautoloadentry) : bool
+dec $autoload_find(pstate, pautoloadentry?*, pautoloadentry, nat) : nat?
+dec $autoload_count(pautoloadentry?*) : nat
+dec $autoload_compact(pautoloadentry?*) : pautoloadentry?*
+dec $autoload_trim(pautoloadentry?*) : pautoloadentry?*
+dec $autoload_seek(pautoloadentry?*, nat) : nat?
+dec $autoload_store(pstate, pautoloadregistration) : pstate
+dec $autoload_register_finish(pstate, pautoloadregistration) : pstate
+dec $autoload_register_begin(pstate, pconfigcall, pautoloadtarget) : pstate
+dec $autoload_initialize(pstate) : pstate
+dec $autoload_resize(pstate) : pstate
+dec $autoload_append(pstate, pautoloadentry) : pstate
+dec $autoload_prepend(pstate, bool) : pstate
+dec $autoload_capacity_valid(nat) : bool
+dec $autoload_entry_metadata(pstate, pautoloadentry) : bool
+dec $autoload_entry_current_metadata(pstate, pautoloadentry) : bool
+dec $autoload_declaration_new(pstate, porigin, preqbytes, int, int) : bool
+dec $autoload_declaration_resume(pstate, pautoloadcall) : bool
+dec $autoload_declaration_capture(pstate, nat) : pdeclautoload*
+dec $autoload_declaration_from(pstate, nat) : pdeclautoload*
+dec $autoload_selected_scope(pstate, pautoloadentry, pcalltarget) : bool
+dec $autoload_resolve(pstate, pconfigcall) : pstate
+dec $autoload_new_diagnostic(pstate, preqbytes) : preqbytes
+dec $autoload_new_resume(pstate, preqbytes, phpType7*, int) : ptask
+def $autoload_new_resume(S, ptbytes, phpType7*, z) = AUTO_NEW ptbytes phpType7* z z -- otherwise
+dec $autoload_ordinary_new_source(pstate, porigin) : bool
+def $autoload_ordinary_new_source(S, porigin) = true -- otherwise
+dec $autoload_bool(pstate, pconfigcall, nat, bool) : bool?
+dec $autoload_registration_receive_valid(pstate, pautoloadregistration) : bool
+dec $autoload_registration_null_valid(pstate, pautoloadregistration) : bool
+dec $autoload_registration_notice_valid(pstate, pautoloadregistration) : bool
+dec $autoload_notice() : preqbytes
+dec $autoload_clear_notice() : preqbytes
+dec $autoload_null_message(pconfigcall, nat, preqbytes) : preqbytes
+dec $autoload_nullable_name(pintrinsic) : preqbytes
+dec $autoload_api_finish(pstate, pconfigcall, phandlerresolution) : pstate
+dec $autoload_unregister(pstate, pautoloadentry) : pstate
+dec $autoload_functions(pstate, pautoloadentry?*, nat, pentry*) : pstate
+dec $autoload_view(pstate, pautoloadentry) : pstate
+dec $autoload_method_receiver(pstate, pcalltarget) : pvalue
+dec $autoload_array(pstate, pentry*) : pstate
+dec $autoload_call_receive(pstate, pconfigcall) : pstate
+dec $autoload_explicit_name(pstate, pconfigcall) : preqbytes?
+dec $autoload_builtin_string(pstate, pconfigcall) : bool
+dec $autoload_explicit(pstate, pconfigcall, preqbytes) : pstate
+dec $autoload_class_name(preqbytes) : bool
+dec $autoload_lookup_name(preqbytes) : preqbytes
+dec $autoload_active_task(ptask, preqbytes) : bool
+dec $autoload_active_tasks(ptask*, preqbytes) : bool
+dec $autoload_active_frames(pframe*, preqbytes) : bool
+dec $autoload_begin(pstate, porigin, preqbytes, preqbytes, int, pautoloadmode, ptask) : pstate
+dec $autoload_call_valid(pstate, pautoloadcall) : bool
+dec $autoload_selected_valid(pstate, pautoloadcall, pautoloadentry) : bool
+dec $autoload_sent_valid(pstate, pautoloadcall, pautoloadentry, poperand) : bool
+dec $autoload_complete(pstate, pautoloadcall) : pstate
+dec $autoload_resume_valid(pstate, pautoloadcall) : bool
+dec $autoload_reference_message(pstate, pautoloadentry) : preqbytes
+dec $autoload_reference_event(pautoloadcall, preqbytes) : pevent
+dec $autoload_reference_line(pautoloadcall) : int
+dec $autoload_context_call(pcallcontext, pcallcontext?, pframe*) : (pautoloadcall, pautoloadentry, poperand)?
+dec $autoload_context_anchor(pstate, pcallcontext, pcallcontext?, pframe*) : bool
+dec $autoload_context_line(pautoloadcall) : int
+dec $autoload_context_site(pautoloadcall) : porigin?
+dec $autoload_api_entry_scope(pstate, papiquery, pautoloadentry) : bool
+dec $autoload_api_entry_tasks(ptask*) : pautoloadentry*
+dec $autoload_api_entry_task(ptask) : pautoloadentry*
+dec $autoload_api_entry_frames(pframe*) : pautoloadentry*
+dec $autoload_defined_entries(pautoloadentry?*) : pautoloadentry*
+dec $autoload_api_entry_owner(pstate, papiquery, pautoloadentry*) : bool
+
+dec $autoload_source_target(pautoloadtarget) : bool
+dec $autoload_is_bool(pvalue) : bool
+dec $autoload_remove(pautoloadentry?*, nat) : pautoloadentry?*
+dec $autoload_array_items(parray, pentry*) : parray
+dec $autoload_closure_receiver(pautoloadentry) : nat?
+def $autoload_bucket(pautoloadentry) = (pautoloadentry)
+def $autoload_source_target(AUTO_TARGET pcalltarget) = true
+def $autoload_source_target(pautoloadtarget) = false -- otherwise
+def $autoload_is_bool(PBOOL b) = true
+def $autoload_is_bool(pvalue) = false -- otherwise
+def $autoload_remove(pautoloadentry? :: pautoloadentry_tail?*, 0) = eps :: pautoloadentry_tail?*
+def $autoload_remove(pautoloadentry? :: pautoloadentry_tail?*, n) = pautoloadentry? :: $autoload_remove(pautoloadentry_tail?*, $nabs($(n - 1))) -- if $(n > 0)
+def $autoload_array_items(parray, eps) = parray
+def $autoload_array_items(parray, (ENTRY pkey pitem) :: pentry_tail*) = $autoload_array_items($array_insert(parray, pkey, pitem), pentry_tail*)
+def $autoload_closure_receiver(pautoloadentry) = pclosurescope.RECEIVER -- if pautoloadentry.SCOPE = (pclosurescope)
+def $autoload_closure_receiver(pautoloadentry) = pclosurebinding.RECEIVER -- if pautoloadentry.SCOPE = eps -- if pautoloadentry.BINDING = (pclosurebinding)
+def $autoload_closure_receiver(pautoloadentry) = eps -- if pautoloadentry.SCOPE = eps /\ pautoloadentry.BINDING = eps
+
+def $intrinsic_name(INTRINSIC_AUTO_REGISTER) = $ptascii("spl_autoload_register")
+def $intrinsic_name(INTRINSIC_AUTO_UNREGISTER) = $ptascii("spl_autoload_unregister")
+def $intrinsic_name(INTRINSIC_AUTO_FUNCTIONS) = $ptascii("spl_autoload_functions")
+def $intrinsic_name(INTRINSIC_AUTO_CALL) = $ptascii("spl_autoload_call")
+def $intrinsic_named(preqbytes) = (INTRINSIC_AUTO_REGISTER) -- if $ptlc(preqbytes) = $ptascii("spl_autoload_register")
+def $intrinsic_named(preqbytes) = (INTRINSIC_AUTO_UNREGISTER) -- if $ptlc(preqbytes) = $ptascii("spl_autoload_unregister")
+def $intrinsic_named(preqbytes) = (INTRINSIC_AUTO_FUNCTIONS) -- if $ptlc(preqbytes) = $ptascii("spl_autoload_functions")
+def $intrinsic_named(preqbytes) = (INTRINSIC_AUTO_CALL) -- if $ptlc(preqbytes) = $ptascii("spl_autoload_call")
+def $autoload_api_kind(pintrinsic) = true -- if pintrinsic <- [INTRINSIC_AUTO_REGISTER, INTRINSIC_AUTO_UNREGISTER, INTRINSIC_AUTO_FUNCTIONS, INTRINSIC_AUTO_CALL]
+def $autoload_callback_kind(pintrinsic) = (pintrinsic <- [INTRINSIC_AUTO_REGISTER, INTRINSIC_AUTO_UNREGISTER])
+def $error_api_kind(pintrinsic) = true -- if $autoload_api_kind(pintrinsic)
+def $error_api_min(INTRINSIC_AUTO_REGISTER) = 0
+def $error_api_min(INTRINSIC_AUTO_FUNCTIONS) = 0
+def $error_api_min(INTRINSIC_AUTO_UNREGISTER) = 1
+def $error_api_min(INTRINSIC_AUTO_CALL) = 1
+def $error_api_max(INTRINSIC_AUTO_REGISTER) = 3
+def $error_api_max(INTRINSIC_AUTO_FUNCTIONS) = 0
+def $error_api_max(INTRINSIC_AUTO_UNREGISTER) = 1
+def $error_api_max(INTRINSIC_AUTO_CALL) = 1
+def $config_parameter(INTRINSIC_AUTO_REGISTER, preqbytes) = (0) -- if preqbytes = $ptascii("callback")
+def $config_parameter(INTRINSIC_AUTO_REGISTER, preqbytes) = (1) -- if preqbytes = $ptascii("throw")
+def $config_parameter(INTRINSIC_AUTO_REGISTER, preqbytes) = (2) -- if preqbytes = $ptascii("prepend")
+def $config_parameter(INTRINSIC_AUTO_UNREGISTER, preqbytes) = (0) -- if preqbytes = $ptascii("callback")
+def $config_parameter(INTRINSIC_AUTO_CALL, preqbytes) = (0) -- if preqbytes = $ptascii("class")
+def $config_parameter_name(INTRINSIC_AUTO_REGISTER, 0) = $ptascii("callback")
+def $config_parameter_name(INTRINSIC_AUTO_REGISTER, 1) = $ptascii("throw")
+def $config_parameter_name(INTRINSIC_AUTO_REGISTER, 2) = $ptascii("prepend")
+def $config_parameter_name(INTRINSIC_AUTO_UNREGISTER, 0) = $ptascii("callback")
+def $config_parameter_name(INTRINSIC_AUTO_CALL, 0) = $ptascii("class")
+def $config_string_kind(INTRINSIC_AUTO_CALL) = true
+def $config_string_launch(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_CALL
+  -- if S.FILEINCLUDEPATH = eps
+  -- if $config_string_object(pconfigcall) = (n_object)
+  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
+def $config_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
+  -- if $(|pcpath_child| >= 3)
+  -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 3))]
+  -- if $intrinsic_argument(S, PORIGIN n_unit pcpath_parent, 0) = ((expression, false, preqbytes?, PORIGIN n_unit pcpath_child, z_child))
+  -- if $config_destination(INTRINSIC_AUTO_CALL, preqbytes?, 0) = (0)
+  -- if $config_destination(INTRINSIC_CHDIR, preqbytes?, 0) = eps /\ $config_destination(INTRINSIC_SET_INCLUDE_PATH, preqbytes?, 0) = eps /\ $config_destination(INTRINSIC_INI_RESTORE, preqbytes?, 0) = eps
+  -- if $intrinsic_count(S, PORIGIN n_unit pcpath_parent) = (1)
+  -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
+
+def $autoload_special(S, PSTRING ptbytes) = (AUTO_DEFAULT) -- if $ptlc($typed_callable_name(ptbytes)) = $ptascii("spl_autoload")
+def $autoload_special(S, PSTRING ptbytes) = (AUTO_ALL) -- if $ptlc($typed_callable_name(ptbytes)) = $ptascii("spl_autoload_call")
+def $autoload_special(S, POBJECT n) = (AUTO_ALL) -- if $(n < |S.OBJECTS|) -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_AUTO_CALL
+;; Intrinsic Closure values preserve the same forbidden all-loaders callback.
+def $autoload_special(S, pvalue) = eps -- otherwise
+def $autoload_raw(pautoloadentry) = $error_api_value(pautoloadentry.CALL, 0, PNULL)
+def $autoload_registration_valid(S, pconfigcall) = true
+  -- if $autoload_callback_kind(pconfigcall.KIND)
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps
+  -- if $exit_fixed(S, pconfigcall.SITE) = ((preqbytes, preqbytes_fallback?))
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pconfigcall.KIND)
+  -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
+def $autoload_registration_valid(S, pconfigcall) = true
+  -- if $autoload_callback_kind(pconfigcall.KIND)
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SELECTION = (n)
+  -- if $(n < |S.SELECTEDCALLS|)
+  -- if S.SELECTEDCALLS[n] = pselectedcall
+  -- if pselectedcall.NONCE = n /\ pselectedcall.SITE = pconfigcall.SITE
+  -- if pselectedcall.KIND = pconfigcall.KIND /\ pselectedcall.LINE = pconfigcall.LINE
+  -- if $selected_entry_source_valid(S, pselectedcall)
+def $autoload_registration_valid(S, pconfigcall) = true
+  -- if $autoload_callback_kind(pconfigcall.KIND)
+  -- if pconfigcall.OWNER = (n)
+  -- if pconfigcall.SELECTION = eps
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE pconfigcall.KIND
+  -- if ($exit_fixed(S, pconfigcall.SITE) = eps /\ $exit_dynamic_site(S, pconfigcall.SITE)) \/ $exit_method_site(S, pconfigcall.SITE)
+  -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
+def $autoload_registration_valid(S, pconfigcall) = false -- otherwise
+
+def $autoload_entry(S, pconfigcall, pautoloadtarget) = {CALL pconfigcall, CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S), RAW $autoload_snapshot(S, pconfigcall, pcalltarget), TARGET pautoloadtarget, SCOPE $consumer_producer_scope(S, pcalltarget), BINDING $consumer_producer_binding(S, pcalltarget)}
+  -- if pautoloadtarget = AUTO_TARGET pcalltarget
+def $autoload_entry(S, pconfigcall, pautoloadtarget) = {CALL pconfigcall, CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S), RAW eps, TARGET pautoloadtarget, SCOPE eps, BINDING eps}
+  -- if ~$autoload_source_target(pautoloadtarget)
+
+def $autoload_target_nodes(AUTO_TARGET pcalltarget) = $target_nodes(pcalltarget)
+def $autoload_target_nodes(pautoloadtarget) = eps -- otherwise
+def $autoload_object_identity(pautoloadentry) = (n) -- if $autoload_raw(pautoloadentry) = POBJECT n
+def $autoload_object_identity(pautoloadentry) = eps -- otherwise
+def $autoload_entry_nodes(pautoloadentry) = $autoload_target_nodes(pautoloadentry.TARGET) ++ $scoped_receiver_nodes(n_receiver?)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_instance(pcalltarget) =/= eps
+  -- if n_receiver? = $autoload_closure_receiver(pautoloadentry)
+;; An invokable raw object is retained as both receiver and original OBJECT.
+def $autoload_entry_nodes(pautoloadentry) = $autoload_target_nodes(pautoloadentry.TARGET) ++ $scoped_receiver_nodes($autoload_object_identity(pautoloadentry))
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_instance(pcalltarget) = eps
+def $autoload_entry_nodes(pautoloadentry) = eps -- if ~$autoload_source_target(pautoloadentry.TARGET)
+
+def $autoload_entry_history(S, pautoloadentry) = S_tables[.ALLOCATIONS = S_tables.ALLOCATIONS ++ $autoload_entry_nodes(pautoloadentry)]
+  -- if S_tables = S[.CLOSURESCOPES = $consumer_producer_scopes(pautoloadentry.SCOPE) ++ S.CLOSURESCOPES][.CLOSUREBINDINGS = $consumer_producer_bindings(pautoloadentry.BINDING) ++ S.CLOSUREBINDINGS]
+def $autoload_entry_valid(S, pautoloadentry) = true
+  -- if $autoload_registration_valid(S, pautoloadentry.CALL)
+  -- if pautoloadentry.TARGET = AUTO_DEFAULT
+  -- if $autoload_raw(pautoloadentry) = PNULL \/ $autoload_special(S, $autoload_raw(pautoloadentry)) = (AUTO_DEFAULT)
+  -- if pautoloadentry.RAW = eps /\ pautoloadentry.SCOPE = eps /\ pautoloadentry.BINDING = eps
+def $autoload_entry_valid(S, pautoloadentry) = true
+  -- if $autoload_registration_valid(S, pautoloadentry.CALL)
+  -- if pautoloadentry.TARGET = AUTO_ALL
+  -- if $autoload_special(S, $autoload_raw(pautoloadentry)) = (AUTO_ALL)
+  -- if pautoloadentry.RAW = eps /\ pautoloadentry.SCOPE = eps /\ pautoloadentry.BINDING = eps
+def $autoload_entry_valid(S, pautoloadentry) = true
+  -- if $autoload_registration_valid(S, pautoloadentry.CALL)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $autoload_entry_current_metadata(S, pautoloadentry)
+  -- if S_history = $autoload_entry_history(S, pautoloadentry)
+  -- if $exception_raw_selected(S_history, $autoload_raw(pautoloadentry), pautoloadentry.RAW, pcalltarget)
+  -- if $target_function(S_history, pcalltarget) = (pfunction)
+  -- if pshutdownentry = {CALL pautoloadentry.CALL, CAPTURE pautoloadentry.CAPTURE, PRODUCER pautoloadentry.PRODUCER, RAW pautoloadentry.RAW, TARGET pcalltarget, ARGS eps}
+  -- if $autoload_selected_scope(S_history, pautoloadentry, pcalltarget) \/ $consumer_api_target(pcalltarget)
+  -- if $autoload_entry_metadata(S, pautoloadentry)
+def $autoload_entry_valid(S, pautoloadentry) = false -- otherwise
+def $autoload_entry_live(S, pautoloadentry) = true
+  -- if $autoload_entry_valid(S, pautoloadentry)
+  -- if pnode* = $autoload_entry_nodes(pautoloadentry)
+  -- if (pnode <- S.ALLOCATIONS)*
+def $autoload_entry_live(S, pautoloadentry) = false -- otherwise
+def $autoload_roots(eps) = eps
+def $autoload_roots(eps :: pautoloadentry_tail?*) = $autoload_roots(pautoloadentry_tail?*)
+def $autoload_roots((pautoloadentry) :: pautoloadentry_tail?*) = $autoload_entry_nodes(pautoloadentry) ++ $autoload_roots(pautoloadentry_tail?*)
+def $autoload_defined_entries(eps) = eps
+def $autoload_defined_entries(eps :: pautoloadentry_tail?*) = $autoload_defined_entries(pautoloadentry_tail?*)
+def $autoload_defined_entries((pautoloadentry) :: pautoloadentry_tail?*) = pautoloadentry :: $autoload_defined_entries(pautoloadentry_tail?*)
+def $autoload_registry_valid(S) = true
+  -- if $autoload_capacity_valid(S.AUTOLOAD.CAPACITY)
+  -- if $(|S.AUTOLOAD.ENTRIES| <= S.AUTOLOAD.CAPACITY)
+  -- if $(S.AUTOLOAD.CAPACITY > 0) \/ S.AUTOLOAD.ENTRIES = eps
+  -- if pautoloadentry* = $autoload_defined_entries(S.AUTOLOAD.ENTRIES)
+  -- if ($autoload_entry_live(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER /\ pautoloadentry.TARGET =/= AUTO_ALL)*
+
+def $autoload_registry_valid(S) = false -- otherwise
+
+def $autoload_identity(S, pautoloadentry) = ((pfunction.ORIGIN, $target_receiver(S_history, pcalltarget), $target_called_class(S_history, pcalltarget), $autoload_object_identity(pautoloadentry)))
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if S_history = $autoload_entry_history(S, pautoloadentry)
+  -- if $target_function(S_history, pcalltarget) = (pfunction)
+def $autoload_identity(S, pautoloadentry) = eps -- if ~$autoload_source_target(pautoloadentry.TARGET)
+def $autoload_same(S, pautoloadentry_left, pautoloadentry_right) = ($autoload_identity(S, pautoloadentry_left) = $autoload_identity(S, pautoloadentry_right))
+  -- if pautoloadentry_left.TARGET = AUTO_TARGET pcalltarget_left
+  -- if pautoloadentry_right.TARGET = AUTO_TARGET pcalltarget_right
+def $autoload_same(S, pautoloadentry_left, pautoloadentry_right) = (pautoloadtarget_left = pautoloadtarget_right)
+  -- if pautoloadtarget_left = pautoloadentry_left.TARGET
+  -- if pautoloadtarget_right = pautoloadentry_right.TARGET
+  -- if ~($autoload_source_target(pautoloadtarget_left) /\ $autoload_source_target(pautoloadtarget_right))
+def $autoload_find(S, eps, pautoloadentry, n) = eps
+def $autoload_find(S, eps :: pautoloadentry_tail?*, pautoloadentry, n) = $autoload_find(S, pautoloadentry_tail?*, pautoloadentry, $(n + 1))
+def $autoload_find(S, (pautoloadentry_head) :: pautoloadentry_tail?*, pautoloadentry, n) = (n) -- if $autoload_same(S, pautoloadentry_head, pautoloadentry)
+def $autoload_find(S, (pautoloadentry_head) :: pautoloadentry_tail?*, pautoloadentry, n) = $autoload_find(S, pautoloadentry_tail?*, pautoloadentry, $(n + 1)) -- if ~$autoload_same(S, pautoloadentry_head, pautoloadentry)
+def $autoload_count(eps) = 0
+def $autoload_count(eps :: pautoloadentry_tail?*) = $autoload_count(pautoloadentry_tail?*)
+def $autoload_count((pautoloadentry) :: pautoloadentry_tail?*) = $(1 + $autoload_count(pautoloadentry_tail?*))
+def $autoload_compact(eps) = eps
+def $autoload_compact(eps :: pautoloadentry_tail?*) = $autoload_compact(pautoloadentry_tail?*)
+def $autoload_compact((pautoloadentry) :: pautoloadentry_tail?*) = $autoload_bucket(pautoloadentry) :: $autoload_compact(pautoloadentry_tail?*)
+def $autoload_trim(pautoloadentry?*) = pautoloadentry?* -- if pautoloadentry?* = eps
+def $autoload_trim(pautoloadentry?*) = $autoload_trim(pautoloadentry?*[0:n]) -- if $(|pautoloadentry?*| > 0) -- if n = $nabs($(|pautoloadentry?*| - 1)) -- if pautoloadentry?*[n] = eps
+def $autoload_trim(pautoloadentry?*) = pautoloadentry?* -- if $(|pautoloadentry?*| > 0) -- if n = $nabs($(|pautoloadentry?*| - 1)) -- if pautoloadentry?*[n] =/= eps
+def $autoload_seek(pautoloadentry?*, n) = eps -- if $(n >= |pautoloadentry?*|)
+def $autoload_seek(pautoloadentry?*, n) = (n) -- if $(n < |pautoloadentry?*|) -- if pautoloadentry?*[n] =/= eps
+def $autoload_seek(pautoloadentry?*, n) = $autoload_seek(pautoloadentry?*, $(n + 1)) -- if $(n < |pautoloadentry?*|) -- if pautoloadentry?*[n] = eps
+
+def $autoload_store(S, pautoloadregistration) = $autoload_initialize(S) -- if $autoload_find(S, S.AUTOLOAD.ENTRIES, pautoloadregistration.ENTRY, 0) =/= eps
+def $autoload_store(S, pautoloadregistration) = $autoload_prepend(S_appended, pautoloadregistration.PREPEND)
+  -- if $autoload_find(S, S.AUTOLOAD.ENTRIES, pautoloadregistration.ENTRY, 0) = eps
+  -- if S_appended = $autoload_append($autoload_resize($autoload_initialize(S)), pautoloadregistration.ENTRY)
+def $autoload_register_finish(S, pautoloadregistration) = S_registered[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pautoloadregistration.ENTRY.TARGET =/= AUTO_ALL
+  -- if S_registered = $autoload_store(S, pautoloadregistration)
+def $autoload_register_finish(S, pautoloadregistration) = $config_error($autoload_initialize(S), pautoloadregistration.ENTRY.CALL, "ValueError", $ptascii("spl_autoload_register(): Argument #1 ($callback) must not be the spl_autoload_call() function"))
+  -- if pautoloadregistration.ENTRY.TARGET = AUTO_ALL
+
+def $autoload_bool(S, pconfigcall, n, b_default) = (b) -- if $error_api_value(pconfigcall, n, PBOOL b_default) = PBOOL b
+def $autoload_bool(S, pconfigcall, n, b_default) = ($truth(S, pvalue))
+  -- if pvalue = $error_api_value(pconfigcall, n, PBOOL b_default)
+  -- if ~$autoload_is_bool(pvalue)
+  -- if ~$config_strict(S, pconfigcall)
+  -- if $typed_scalar(pvalue) \/ pvalue = PNULL
+def $autoload_bool(S, pconfigcall, n, b_default) = eps -- otherwise
+def $autoload_register_begin(S, pconfigcall, pautoloadtarget) = S[.TODO = (AUTO_REGISTER_RECEIVE {ENTRY $autoload_entry(S, pconfigcall, pautoloadtarget), INDEX 1, THROW true, PREPEND false}) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.TODO = ptask :: ptask_tail*
+def $autoload_registration_receive_valid(S, pautoloadregistration) = true
+  -- if $autoload_entry_live(S, pautoloadregistration.ENTRY)
+  -- if pautoloadregistration.ENTRY.CALL.KIND = INTRINSIC_AUTO_REGISTER
+  -- if $(1 <= pautoloadregistration.INDEX) /\ $(pautoloadregistration.INDEX <= 3)
+  -- if (pautoloadregistration.INDEX = 1 /\ pautoloadregistration.THROW) \/ ($(pautoloadregistration.INDEX > 1) /\ $autoload_bool(S, pautoloadregistration.ENTRY.CALL, 1, true) = (pautoloadregistration.THROW))
+  -- if ($(pautoloadregistration.INDEX < 3) /\ ~pautoloadregistration.PREPEND) \/ (pautoloadregistration.INDEX = 3 /\ $autoload_bool(S, pautoloadregistration.ENTRY.CALL, 2, false) = (pautoloadregistration.PREPEND))
+def $autoload_registration_receive_valid(S, pautoloadregistration) = false -- otherwise
+def $autoload_registration_null_valid(S, pautoloadregistration) = ($autoload_registration_receive_valid(S, pautoloadregistration) /\ $(pautoloadregistration.INDEX < 3) /\ $error_api_value(pautoloadregistration.ENTRY.CALL, pautoloadregistration.INDEX, PBOOL false) = PNULL /\ ~$config_strict(S, pautoloadregistration.ENTRY.CALL))
+def $autoload_registration_notice_valid(S, pautoloadregistration) = ($autoload_registration_receive_valid(S, pautoloadregistration) /\ pautoloadregistration.INDEX = 3 /\ ~pautoloadregistration.THROW)
+def $autoload_notice() = $ptascii("spl_autoload_register(): Argument #2 ($do_throw) has been ignored, spl_autoload_register() will always throw")
+def $autoload_clear_notice() = $ptascii("spl_autoload_unregister(): Using spl_autoload_call() as a callback for spl_autoload_unregister() is deprecated, to remove all registered autoloaders, call spl_autoload_unregister() for all values returned from spl_autoload_functions()")
+def $autoload_null_message(pconfigcall, n, preqbytes_type) = $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Passing null to parameter #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(pconfigcall.KIND, n) ++ $ptascii(") of type ") ++ preqbytes_type ++ $ptascii(" is deprecated")
+rule PhpStep/autoload-register-flag: S ~> S[.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration[.INDEX = $(n + 1)][.THROW = b_throw][.PREPEND = b_prepend]) :: ptask_tail*]
+  -- if S.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration) :: ptask_tail*
+  -- if $autoload_registration_receive_valid(S, pautoloadregistration)
+  -- if n = pautoloadregistration.INDEX
+  -- if $(n < 3)
+  -- if $autoload_bool(S, pautoloadregistration.ENTRY.CALL, n, n = 1) = (b)
+  -- if ~$autoload_registration_null_valid(S, pautoloadregistration)
+  -- if b_throw = ((n = 1 /\ b) \/ (n = 2 /\ pautoloadregistration.THROW))
+  -- if b_prepend = (n = 2 /\ b)
+rule PhpStep/autoload-register-flag-error: S ~> $config_error(S, pautoloadregistration.ENTRY.CALL, "TypeError", $ptascii("spl_autoload_register(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ $config_parameter_name(INTRINSIC_AUTO_REGISTER, n) ++ $ptascii(") must be of type bool, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if S.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration) :: ptask_tail*
+  -- if $autoload_registration_receive_valid(S, pautoloadregistration)
+  -- if n = pautoloadregistration.INDEX
+  -- if $(n < 3)
+  -- if $autoload_bool(S, pautoloadregistration.ENTRY.CALL, n, n = 1) = eps
+  -- if pvalue = $error_api_value(pautoloadregistration.ENTRY.CALL, n, PBOOL (n = 1))
+rule PhpStep/autoload-register-null: S ~> $error_dispatch(S, 8192, ptbytes, pautoloadregistration.ENTRY.CALL.LINE, DIAGNOSTIC "Deprecated" ptbytes pautoloadregistration.ENTRY.CALL.LINE, AUTO_REGISTER_NULL pautoloadregistration)
+  -- if S.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration) :: ptask_tail*
+  -- if $autoload_registration_null_valid(S, pautoloadregistration)
+  -- if ptbytes = $autoload_null_message(pautoloadregistration.ENTRY.CALL, pautoloadregistration.INDEX, $ptascii("bool"))
+rule PhpStep/autoload-register-null-return: S ~> S[.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration[.INDEX = $(n + 1)][.THROW = b_throw][.PREPEND = false]) :: ptask_tail*]
+  -- if S.TODO = (AUTO_REGISTER_NULL pautoloadregistration) :: ptask_tail*
+  -- if $autoload_registration_null_valid(S, pautoloadregistration)
+  -- if n = pautoloadregistration.INDEX
+  -- if b_throw = (n = 2 /\ pautoloadregistration.THROW)
+rule PhpStep/autoload-register-notice: S ~> $error_dispatch(S, 8, $autoload_notice(), pautoloadregistration.ENTRY.CALL.LINE, DIAGNOSTIC "Notice" $autoload_notice() pautoloadregistration.ENTRY.CALL.LINE, AUTO_REGISTER_NOTICE pautoloadregistration)
+  -- if S.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration) :: ptask_tail*
+  -- if $autoload_registration_notice_valid(S, pautoloadregistration)
+rule PhpStep/autoload-register-no-notice: S ~> $autoload_register_finish(S, pautoloadregistration)
+  -- if S.TODO = (AUTO_REGISTER_RECEIVE pautoloadregistration) :: ptask_tail*
+  -- if $autoload_registration_receive_valid(S, pautoloadregistration)
+  -- if pautoloadregistration.INDEX = 3 /\ pautoloadregistration.THROW
+rule PhpStep/autoload-register-notice-return: S ~> $autoload_register_finish(S, pautoloadregistration)
+  -- if S.TODO = (AUTO_REGISTER_NOTICE pautoloadregistration) :: ptask_tail*
+  -- if $autoload_registration_notice_valid(S, pautoloadregistration)
+;; SPL still installs the parsed FCC after a throwing ignored-$do_throw notice.
+def $error_read_discard(S, AUTO_REGISTER_NOTICE pautoloadregistration) = $autoload_store(S, pautoloadregistration)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $autoload_registration_notice_valid(S, pautoloadregistration)
+  -- if pautoloadregistration.ENTRY.TARGET =/= AUTO_ALL
+
+def $error_read_discard(S, AUTO_REGISTER_NOTICE pautoloadregistration) = $autoload_initialize(S)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $autoload_registration_notice_valid(S, pautoloadregistration)
+  -- if pautoloadregistration.ENTRY.TARGET = AUTO_ALL
+
+
+;; Callable parsing precedes both flag reception and the notice.
+def $autoload_resolve(S, pconfigcall) = $autoload_register_begin(S, pconfigcall, AUTO_DEFAULT)
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_REGISTER
+  -- if $error_api_value(pconfigcall, 0, PNULL) = PNULL
+def $autoload_resolve(S, pconfigcall) = $autoload_api_finish(S, pconfigcall, HANDLERRESOLVED pcalltarget)
+  -- if $error_api_value(pconfigcall, 0, PNULL) =/= PNULL
+  -- if $autoload_special(S, $error_api_value(pconfigcall, 0, PNULL)) = eps
+  -- if $error_handler_resolution(S, $error_api_value(pconfigcall, 0, PNULL)) = HANDLERRESOLVED pcalltarget
+def $autoload_resolve(S, pconfigcall) = $autoload_api_finish(S, pconfigcall, HANDLERINVALID ptbytes)
+  -- if $error_api_value(pconfigcall, 0, PNULL) =/= PNULL
+  -- if $autoload_special(S, $error_api_value(pconfigcall, 0, PNULL)) = eps
+  -- if $error_handler_resolution(S, $error_api_value(pconfigcall, 0, PNULL)) = HANDLERINVALID ptbytes
+def $autoload_resolve(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED text]
+  -- if $error_api_value(pconfigcall, 0, PNULL) =/= PNULL
+  -- if $autoload_special(S, $error_api_value(pconfigcall, 0, PNULL)) = eps
+  -- if $error_handler_resolution(S, $error_api_value(pconfigcall, 0, PNULL)) = HANDLERUNKNOWN text
+def $autoload_resolve(S, pconfigcall) = $autoload_register_begin(S, pconfigcall, pautoloadtarget)
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_REGISTER
+  -- if $autoload_special(S, $error_api_value(pconfigcall, 0, PNULL)) = (pautoloadtarget)
+def $autoload_resolve(S, pconfigcall) = S[.TODO = (AUTO_UNREGISTER $autoload_entry(S, pconfigcall, pautoloadtarget)) :: ptask_tail*]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_UNREGISTER
+  -- if $autoload_special(S, $error_api_value(pconfigcall, 0, PNULL)) = (pautoloadtarget)
+def $autoload_resolve(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("spl_autoload_unregister(): Argument #1 ($callback) must be a valid callback, no array or string given"))
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_UNREGISTER
+  -- if $error_api_value(pconfigcall, 0, PNULL) = PNULL
+
+def $autoload_api_finish(S, pconfigcall, HANDLERRESOLVED pcalltarget) = $autoload_register_begin(S, pconfigcall, AUTO_TARGET pcalltarget) -- if pconfigcall.KIND = INTRINSIC_AUTO_REGISTER
+def $autoload_api_finish(S, pconfigcall, HANDLERRESOLVED pcalltarget) = S[.TODO = (AUTO_UNREGISTER $autoload_entry(S, pconfigcall, AUTO_TARGET pcalltarget)) :: ptask_tail*] -- if pconfigcall.KIND = INTRINSIC_AUTO_UNREGISTER -- if S.TODO = ptask :: ptask_tail*
+def $autoload_api_finish(S, pconfigcall, HANDLERINVALID ptbytes) = $config_error(S, pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($callback) must be a valid callback") ++ ptbytes_null ++ $ptascii(", ") ++ ptbytes)
+  -- if ptbytes_null = $autoload_nullable_name(pconfigcall.KIND)
+def $autoload_nullable_name(INTRINSIC_AUTO_REGISTER) = $ptascii(" or null")
+def $autoload_nullable_name(INTRINSIC_AUTO_UNREGISTER) = eps
+
+def $api_registration_candidate(S, pconfigcall) = ($error_api_arity(S, pconfigcall).COMPLETION = NORMAL /\ $api_special(S, $error_api_value(pconfigcall, 0, PNULL))) -- if $autoload_callback_kind(pconfigcall.KIND)
+def $api_source_valid(S, papiquery) = true
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if $autoload_callback_kind(pconfigcall.KIND)
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $error_api_arity(S, pconfigcall).COMPLETION = NORMAL
+  -- if papiquery.VALUE = $error_api_value(pconfigcall, 0, PNULL)
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERRESOLVED pcalltarget) = $autoload_api_finish(S, pconfigcall, HANDLERRESOLVED pcalltarget) -- if $autoload_callback_kind(pconfigcall.KIND)
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERINVALID ptbytes) = $autoload_api_finish(S, pconfigcall, HANDLERINVALID ptbytes) -- if $autoload_callback_kind(pconfigcall.KIND)
+def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $config_error(S, pconfigcall, "Error", ptbytes) -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall -- if $autoload_callback_kind(pconfigcall.KIND)
+
+def $autoload_unregister(S, pautoloadentry) = S[.AUTOLOAD.ENTRIES = $autoload_trim($autoload_remove(S.AUTOLOAD.ENTRIES, n))][.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $autoload_find(S, S.AUTOLOAD.ENTRIES, pautoloadentry, 0) = (n)
+  -- if S.TODO = ptask :: ptask_tail*
+def $autoload_unregister(S, pautoloadentry) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $autoload_find(S, S.AUTOLOAD.ENTRIES, pautoloadentry, 0) = eps
+  -- if S.TODO = ptask :: ptask_tail*
+rule PhpStep/autoload-unregister: S ~> $autoload_unregister(S, pautoloadentry)
+  -- if S.TODO = (AUTO_UNREGISTER pautoloadentry) :: ptask_tail*
+  -- if $autoload_entry_live(S, pautoloadentry)
+  -- if pautoloadentry.CALL.KIND = INTRINSIC_AUTO_UNREGISTER
+  -- if pautoloadentry.TARGET =/= AUTO_ALL
+rule PhpStep/autoload-unregister-all-warning: S ~> $error_dispatch(S, 8192, $autoload_clear_notice(), pautoloadentry.CALL.LINE, DIAGNOSTIC "Deprecated" $autoload_clear_notice() pautoloadentry.CALL.LINE, AUTO_UNREGISTER_ALL pautoloadentry)
+  -- if S.TODO = (AUTO_UNREGISTER pautoloadentry) :: ptask_tail*
+  -- if $autoload_entry_valid(S, pautoloadentry)
+  -- if pautoloadentry.CALL.KIND = INTRINSIC_AUTO_UNREGISTER /\ pautoloadentry.TARGET = AUTO_ALL
+rule PhpStep/autoload-unregister-all-return: S ~> S[.AUTOLOAD.ENTRIES = eps][.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (AUTO_UNREGISTER_ALL pautoloadentry) :: ptask_tail*
+  -- if $autoload_entry_valid(S, pautoloadentry)
+  -- if pautoloadentry.CALL.KIND = INTRINSIC_AUTO_UNREGISTER /\ pautoloadentry.TARGET = AUTO_ALL
+
+;; The getters reconstruct Zend's canonical callable view from the cache.
+def $autoload_array(S, pentry*) = $allocate_array(S, $autoload_array_items($array_empty(), pentry*))
+def $autoload_view(S, pautoloadentry) = S[.RESULT = KNOWN (POBJECT n)] -- if $autoload_raw(pautoloadentry) = POBJECT n
+def $autoload_view(S, pautoloadentry) = S[.RESULT = KNOWN (PSTRING $ptascii("spl_autoload"))] -- if pautoloadentry.TARGET = AUTO_DEFAULT
+def $autoload_view(S, pautoloadentry) = S[.RESULT = KNOWN (PSTRING pfunction.NAME)]
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $autoload_object_identity(pautoloadentry) = eps
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = eps
+def $autoload_view(S, pautoloadentry) = $autoload_array(S, [ENTRY (KINT 0) (DIRECT pvalue), ENTRY (KINT 1) (DIRECT (PSTRING pmethoddesc.NAME))])
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $autoload_object_identity(pautoloadentry) = eps
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if pvalue = $autoload_method_receiver(S, pcalltarget)
+def $autoload_method_receiver(S, pcalltarget) = POBJECT n -- if $target_receiver(S, pcalltarget) = (n)
+def $autoload_method_receiver(S, pcalltarget) = PSTRING pclassdesc.NAME -- if $target_receiver(S, pcalltarget) = eps -- if $target_called_class(S, pcalltarget) = (porigin) -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+def $autoload_functions(S, eps, n, pentry*) = $autoload_array(S, pentry*)
+def $autoload_functions(S, eps :: pautoloadentry_tail?*, n, pentry*) = $autoload_functions(S, pautoloadentry_tail?*, n, pentry*)
+def $autoload_functions(S, (pautoloadentry) :: pautoloadentry_tail?*, n, pentry*) = $autoload_functions(S_value, pautoloadentry_tail?*, $(n + 1), pentry* ++ [ENTRY (KINT n) (DIRECT pvalue)])
+  -- if S_value = $autoload_view(S, pautoloadentry)
+  -- if S_value.RESULT = KNOWN pvalue
+
+rule PhpStep/autoload-config-arity: S ~> S_arity
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $autoload_api_kind(pconfigcall.KIND) /\ $config_invoke_valid(S, pconfigcall)
+  -- if S_arity = $error_api_arity(S, pconfigcall)
+  -- if S_arity.COMPLETION =/= NORMAL
+rule PhpStep/autoload-config-callback: S ~> $autoload_resolve(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $autoload_callback_kind(pconfigcall.KIND) /\ $config_invoke_valid(S, pconfigcall)
+  -- if $error_api_arity(S, pconfigcall).COMPLETION = NORMAL
+  -- if ~$api_registration_candidate(S, pconfigcall)
+rule PhpStep/autoload-config-functions: S ~> $autoload_functions(S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)], S.AUTOLOAD.ENTRIES, 0, eps)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_FUNCTIONS /\ $config_invoke_valid(S, pconfigcall)
+  -- if $error_api_arity(S, pconfigcall).COMPLETION = NORMAL
+rule PhpStep/autoload-config-call: S ~> $autoload_call_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_CALL /\ $config_invoke_valid(S, pconfigcall)
+  -- if $error_api_arity(S, pconfigcall).COMPLETION = NORMAL
+  -- if ~$config_string_launch(S, pconfigcall)
+def $autoload_call_receive(S, pconfigcall) = $autoload_explicit(S, pconfigcall, ptbytes)
+  -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
+  -- if pvalue =/= PNULL
+  -- if $config_conversion(S, pconfigcall, pvalue) = TYPEVALUE (PSTRING ptbytes)
+def $autoload_call_receive(S, pconfigcall) = $autoload_explicit(S_value, pconfigcall[.SENT = [NAMED_SENT (KNOWN (PSTRING ptbytes))]], ptbytes)
+  -- if $error_api_value(pconfigcall, 0, PNULL) = POBJECT n
+  -- if ~$config_strict(S, pconfigcall)
+  -- if ~$stringable_instance(S, n) /\ $throwable_member(S, n)
+  -- if S_value = $stringify(S, POBJECT n, pconfigcall.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING ptbytes)
+def $autoload_call_receive(S, pconfigcall) = $error_dispatch(S, 8192, ptbytes, pconfigcall.LINE, DIAGNOSTIC "Deprecated" ptbytes pconfigcall.LINE, AUTO_CALL_NULL pconfigcall)
+  -- if $error_api_value(pconfigcall, 0, PNULL) = PNULL /\ ~$config_strict(S, pconfigcall)
+  -- if ptbytes = $autoload_null_message(pconfigcall, 0, $ptascii("string"))
+def $autoload_call_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("spl_autoload_call(): Argument #1 ($class) must be of type string, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
+  -- if $config_conversion(S, pconfigcall, pvalue) = TYPEREJECT
+  -- if ~(pvalue = PNULL /\ ~$config_strict(S, pconfigcall))
+  -- if ~$autoload_builtin_string(S, pconfigcall)
+rule PhpStep/autoload-call-null-return: S ~> $autoload_explicit(S, pconfigcall, eps)
+  -- if S.TODO = (AUTO_CALL_NULL pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_CALL
+  -- if $error_api_value(pconfigcall, 0, PNULL) = PNULL /\ ~$config_strict(S, pconfigcall)
+rule PhpStep/autoload-call-string-result: S ~> $autoload_explicit(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall[.SENT = [NAMED_SENT (KNOWN (PSTRING ptbytes))]], ptbytes)
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_CALL
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+def $autoload_builtin_string(S, pconfigcall) = true
+  -- if $error_api_value(pconfigcall, 0, PNULL) = POBJECT n
+  -- if ~$config_strict(S, pconfigcall)
+  -- if ~$stringable_instance(S, n) /\ $throwable_member(S, n)
+def $autoload_builtin_string(S, pconfigcall) = false -- otherwise
+def $autoload_explicit_name(S, pconfigcall) = (ptbytes)
+  -- if $config_conversion(S, pconfigcall, $error_api_value(pconfigcall, 0, PNULL)) = TYPEVALUE (PSTRING ptbytes)
+def $autoload_explicit_name(S, pconfigcall) = (eps)
+  -- if $error_api_value(pconfigcall, 0, PNULL) = PNULL
+  -- if ~$config_strict(S, pconfigcall)
+def $autoload_explicit_name(S, pconfigcall) = eps -- otherwise
+
+;; Lookup guards live only as the exact current/saved lookup continuations.
+;; Explicit spl_autoload_call bypasses the lookup validity/recursion checks.
+def $autoload_class_name(eps) = false
+def $autoload_class_name(ptbytes) = true
+  -- if ptbytes = n :: n_tail*
+  -- if ($autoload_class_char(n) /\ $autoload_class_chars(n_tail*))
+def $autoload_class_char(n) = ($(48 <= n) /\ $(n <= 57)) \/ ($(65 <= n) /\ $(n <= 90)) \/ ($(97 <= n) /\ $(n <= 122)) \/ n = 95 \/ n = 92 \/ ($(128 <= n) /\ $(n <= 255))
+def $autoload_class_chars(eps) = true
+def $autoload_class_chars(n :: n_tail*) = ($autoload_class_char(n) /\ $autoload_class_chars(n_tail*))
+def $autoload_lookup_name(n*) = n*
+
+def $autoload_active_task(AUTO_NEXT pautoloadcall, ptbytes) = (pautoloadcall.MODE = AUTO_LOOKUP /\ pautoloadcall.KEY = ptbytes)
+def $autoload_active_task(AUTO_REFERENCE pautoloadcall pautoloadentry, ptbytes) = (pautoloadcall.MODE = AUTO_LOOKUP /\ pautoloadcall.KEY = ptbytes)
+def $autoload_active_task(AUTO_ENTER pautoloadcall pautoloadentry poperand, ptbytes) = (pautoloadcall.MODE = AUTO_LOOKUP /\ pautoloadcall.KEY = ptbytes)
+def $autoload_active_task(AUTO_RESULT pautoloadcall pautoloadentry poperand, ptbytes) = (pautoloadcall.MODE = AUTO_LOOKUP /\ pautoloadcall.KEY = ptbytes)
+def $autoload_active_task(ERROR_HANDLER_INVOKE perrorcall, ptbytes) = $autoload_active_task(perrorcall.RESUME, ptbytes)
+def $autoload_active_task(ERROR_HANDLER_RESULT perrorcall, ptbytes) = $autoload_active_task(perrorcall.RESUME, ptbytes)
+def $autoload_active_task(AT porigin ptask, ptbytes) = $autoload_active_task(ptask, ptbytes)
+def $autoload_active_task(ptask, ptbytes) = false -- otherwise
+def $autoload_active_tasks(eps, ptbytes) = false
+def $autoload_active_tasks(ptask :: ptask_tail*, ptbytes) = ($autoload_active_task(ptask, ptbytes) \/ $autoload_active_tasks(ptask_tail*, ptbytes))
+def $autoload_active_frames(eps, ptbytes) = false
+def $autoload_active_frames(pframe :: pframe_tail*, ptbytes) = ($autoload_active_tasks(pframe.TODO, ptbytes) \/ $autoload_active_frames(pframe_tail*, ptbytes))
+def $autoload_pending(S, ptbytes) = true
+  -- if ~$dynamic_new_known(S, $autoload_lookup_name(ptbytes))
+  -- if $autoload_class_name(ptbytes)
+  -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
+  -- if $(n_count > 0)
+  -- if ~$autoload_active_tasks(S.TODO, $ptlc($autoload_lookup_name(ptbytes)))
+  -- if ~$autoload_active_frames(S.FRAMES, $ptlc($autoload_lookup_name(ptbytes)))
+def $autoload_parent_pending(S, pclassdesc) = true
+  -- if S.COMPLETION = NORMAL
+  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if $autoload_pending(S, ptbytes_parent)
+
+def $autoload_begin(S, porigin, ptbytes_name, ptbytes_key, z, pautoloadmode, ptask) = S[.TODO = (AUTO_NEXT {SITE porigin, NAME ptbytes_name, KEY ptbytes_key, LINE z, MODE pautoloadmode, INDEX 0, RESUME ptask}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $autoload_explicit(S, pconfigcall, ptbytes) = $autoload_begin(S[.TODO = ptask_tail*], pconfigcall.SITE, ptbytes, $ptlc(ptbytes), pconfigcall.LINE, AUTO_EXPLICIT pconfigcall, AUTO_EXPLICIT_DONE pconfigcall)
+  -- if S.TODO = ptask :: ptask_tail*
+def $noctor_start(S, ptbytes, phpType7*, z) = $autoload_begin(S, porigin, $autoload_lookup_name(ptbytes), $ptlc($autoload_lookup_name(ptbytes)), z, AUTO_LOOKUP, $autoload_new_resume(S, ptbytes, phpType7*, z))
+  -- if $autoload_pending(S, ptbytes)
+  -- if S.ORIGIN = (porigin)
+def $activate_class(S, pclassdesc) = $autoload_begin(S[.ORIGIN = (pclassdesc.ORIGIN)], pclassdesc.ORIGIN, $autoload_lookup_name(ptbytes_parent), $ptlc($autoload_lookup_name(ptbytes_parent)), pclassdesc.LINE, AUTO_LOOKUP, AUTO_PUBLISH pclassdesc.ORIGIN)
+  -- if $autoload_parent_pending(S, pclassdesc)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+rule PhpStep/autoload-dynamic-new: S ~> $autoload_begin(S_read[.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], porigin, $autoload_lookup_name(ptbytes), $ptlc(ptbytes), z_fetch, AUTO_LOOKUP, AUTO_NEW ptbytes phpType7* z z_fetch)
+  -- if S.TODO = (DYNAMIC_NEW_CLASS z z_fetch) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew expression (SEQUENCE phpType7*) metadata)
+  -- if S_read = $resolve_at(S, S.RESULT, z_fetch)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PSTRING ptbytes_raw)
+  -- if $dynamic_new_value_name(S_read, porigin, PSTRING ptbytes_raw) = (ptbytes)
+  -- if $autoload_pending(S_read, ptbytes)
+  -- if pdynamicnew = $dynamic_new_record(S_read, porigin, PSTRING ptbytes_raw, ptbytes, z, z_fetch)
+
+;; A completed lookup selects the constructor afresh before any argument demand.
+def $autoload_complete(S, pautoloadcall) = S[.TODO = pautoloadcall.RESUME :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.TODO = ptask :: ptask_tail*
+rule PhpStep/autoload-new-resume: S ~> $constructor_start(S[.TODO = ptask_tail*], ptbytes, phpType7*, z)
+  -- if S.TODO = (AUTO_NEW ptbytes phpType7* z z_fetch) :: ptask_tail*
+  -- if $dynamic_new_known(S, ptbytes) /\ $new_has_ctor(S, ptbytes)
+rule PhpStep/autoload-new-noctor-resume: S ~> $noctor_start(S[.TODO = ptask_tail*], ptbytes, phpType7*, z)
+  -- if S.TODO = (AUTO_NEW ptbytes phpType7* z z_fetch) :: ptask_tail*
+  -- if $dynamic_new_known(S, ptbytes) /\ ~$new_has_ctor(S, ptbytes)
+rule PhpStep/autoload-new-missing: S ~> $throw_scalar(S, "Error", $ptascii("Class \"") ++ $c_string(ptbytes_raw) ++ $ptascii("\" not found"), z_fetch)
+  -- if S.TODO = (AUTO_NEW ptbytes phpType7* z z_fetch) :: ptask_tail*
+  -- if ~$dynamic_new_known(S, ptbytes)
+  -- if ptbytes_raw = $autoload_new_diagnostic(S, ptbytes)
+def $autoload_new_diagnostic(S, ptbytes) = ptbytes_raw -- if S.TODO = ptask :: (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail* -- if pdynamicnew.SOURCE = PSTRING ptbytes_raw
+def $autoload_new_diagnostic(S, ptbytes) = ptbytes -- otherwise
+rule PhpStep/autoload-publish-resume: S ~> $activate_class(S[.TODO = ptask_tail*], pclassdesc)
+  -- if S.TODO = (AUTO_PUBLISH porigin) :: ptask_tail*
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $dynamic_new_known(S, ptbytes_parent)
+rule PhpStep/autoload-publish-missing: S ~> $throw_scalar(S[.ORIGIN = (porigin)], "Error", $ptascii("Class \"") ++ ptbytes_parent ++ $ptascii("\" not found"), pclassdesc.LINE)
+  -- if S.TODO = (AUTO_PUBLISH porigin) :: ptask_tail*
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if ~$dynamic_new_known(S, ptbytes_parent)
+rule PhpStep/autoload-explicit-done: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (AUTO_EXPLICIT_DONE pconfigcall) :: ptask_tail*
+
+rule PhpStep/autoload-next-empty: S ~> $autoload_complete(S, pautoloadcall)
+  -- if S.TODO = (AUTO_NEXT pautoloadcall) :: ptask_tail*
+  -- if $autoload_call_valid(S, pautoloadcall)
+  -- if $autoload_seek(S.AUTOLOAD.ENTRIES, pautoloadcall.INDEX) = eps
+rule PhpStep/autoload-next-default: S ~> S[.COMPLETION = UNSUPPORTED "default spl_autoload filesystem search is outside core"]
+  -- if S.TODO = (AUTO_NEXT pautoloadcall) :: ptask_tail*
+  -- if $autoload_call_valid(S, pautoloadcall)
+  -- if $autoload_seek(S.AUTOLOAD.ENTRIES, pautoloadcall.INDEX) = (n)
+  -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
+  -- if pautoloadentry.TARGET = AUTO_DEFAULT
+rule PhpStep/autoload-next-value: S ~> S[.TODO = (AUTO_ENTER pautoloadcall[.INDEX = n] pautoloadentry (KNOWN (PSTRING pautoloadcall.NAME))) :: ptask_tail*]
+  -- if S.TODO = (AUTO_NEXT pautoloadcall) :: ptask_tail*
+  -- if $autoload_call_valid(S, pautoloadcall)
+  -- if $autoload_seek(S.AUTOLOAD.ENTRIES, pautoloadcall.INDEX) = (n)
+  -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if ~$call_parameter_reference(S, pcalltarget, 0)
+rule PhpStep/autoload-next-reference-warning: S ~> $error_dispatch(S, 2, ptbytes, $autoload_reference_line(pautoloadcall), $autoload_reference_event(pautoloadcall, ptbytes), AUTO_REFERENCE pautoloadcall[.INDEX = n] pautoloadentry)
+  -- if S.TODO = (AUTO_NEXT pautoloadcall) :: ptask_tail*
+  -- if $autoload_call_valid(S, pautoloadcall)
+  -- if $autoload_seek(S.AUTOLOAD.ENTRIES, pautoloadcall.INDEX) = (n)
+  -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $call_parameter_reference(S, pcalltarget, 0)
+  -- if ptbytes = $autoload_reference_message(S, pautoloadentry)
+rule PhpStep/autoload-reference-return: S ~> S_cell[.TODO = (AUTO_ENTER pautoloadcall pautoloadentry S_cell.RESULT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (AUTO_REFERENCE pautoloadcall pautoloadentry) :: ptask_tail*
+  -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
+  -- if S_cell = $call_fresh_reference(S, PSTRING pautoloadcall.NAME)
+rule PhpStep/autoload-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*], pfunction, [poperand], $autoload_context_site(pautoloadcall), $autoload_context_line(pautoloadcall)), pcalltarget), pfunction, 1, $autoload_context_site(pautoloadcall), $autoload_context_line(pautoloadcall))
+  -- if S.TODO = (AUTO_ENTER pautoloadcall pautoloadentry poperand) :: ptask_tail*
+  -- if $autoload_sent_valid(S, pautoloadcall, pautoloadentry, poperand)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_function(S, pcalltarget) = (pfunction)
+;; zend_hash_move_forward_ex first locates a valid current bucket, then advances.
+rule PhpStep/autoload-result-loaded: S ~> $autoload_complete(S, pautoloadcall)
+  -- if S.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
+  -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
+  -- if $class_internal(pautoloadcall.KEY) \/ $class_named(S.CLASSNAMES, pautoloadcall.KEY) =/= eps
+rule PhpStep/autoload-result-next: S ~> S[.TODO = (AUTO_NEXT pautoloadcall[.INDEX = $(n + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
+  -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
+  -- if ~$class_internal(pautoloadcall.KEY) /\ $class_named(S.CLASSNAMES, pautoloadcall.KEY) = eps
+  -- if $autoload_seek(S.AUTOLOAD.ENTRIES, pautoloadcall.INDEX) = (n)
+rule PhpStep/autoload-result-exhausted: S ~> $autoload_complete(S, pautoloadcall)
+  -- if S.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
+  -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
+  -- if ~$class_internal(pautoloadcall.KEY) /\ $class_named(S.CLASSNAMES, pautoloadcall.KEY) = eps
+  -- if $autoload_seek(S.AUTOLOAD.ENTRIES, pautoloadcall.INDEX) = eps
+
+def $autoload_context_site(pautoloadcall) = (pautoloadcall.SITE) -- if pautoloadcall.MODE = AUTO_LOOKUP
+def $autoload_context_site(pautoloadcall) = eps -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+def $autoload_context_line(pautoloadcall) = pautoloadcall.LINE -- if pautoloadcall.MODE = AUTO_LOOKUP
+def $autoload_context_line(pautoloadcall) = $(-1) -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+def $autoload_reference_line(pautoloadcall) = pautoloadcall.LINE -- if pautoloadcall.MODE = AUTO_LOOKUP
+def $autoload_reference_line(pautoloadcall) = 0 -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+def $autoload_reference_event(pautoloadcall, ptbytes) = DIAGNOSTIC "Warning" ptbytes pautoloadcall.LINE -- if pautoloadcall.MODE = AUTO_LOOKUP
+def $autoload_reference_event(pautoloadcall, ptbytes) = DIAGNOSTIC_INTERNAL "Warning" ptbytes 0 -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+def $autoload_reference_message(S, pautoloadentry) = $call_function_name(S, pfunction) ++ $ptascii("(): Argument #1 ($") ++ psparam.NAME ++ $ptascii(") must be passed by reference, value given")
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, 0) = (psparam)
+
+;; Public guards bind every suspended request to its real compiler/source site.
+def $autoload_resume_valid(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_NEW ptbytes phpType7* z z_fetch
+  -- if S.ORIGIN = (pautoloadcall.SITE)
+  -- if $autoload_ordinary_new_source(S, pautoloadcall.SITE)
+  -- if $origin_node(S.SOURCES, pautoloadcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
+  -- if $new_source_name(S, pautoloadcall.SITE) = (ptbytes)
+  -- if pautoloadcall.NAME = $autoload_lookup_name(ptbytes)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME)
+  -- if pautoloadcall.LINE = z_fetch
+  -- if $call_line_valid(S, (pautoloadcall.SITE), z) \/ $dynamic_new_site(S, pautoloadcall.SITE, z, z_fetch)
+  -- if z_fetch = z \/ $dynamic_new_site(S, pautoloadcall.SITE, z, z_fetch)
+def $autoload_resume_valid(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_PUBLISH porigin
+  -- if pautoloadcall.SITE = porigin /\ S.ORIGIN = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if pautoloadcall.NAME = $autoload_lookup_name(ptbytes_parent)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = pclassdesc.LINE
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+def $autoload_resume_valid(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+  -- if pautoloadcall.RESUME = AUTO_EXPLICIT_DONE pconfigcall
+  -- if pautoloadcall.SITE = pconfigcall.SITE /\ pautoloadcall.LINE = pconfigcall.LINE
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_CALL
+  -- if $autoload_explicit_name(S, pconfigcall) = (pautoloadcall.NAME)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME)
+  -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+def $autoload_resume_valid(S, pautoloadcall) = false -- otherwise
+def $autoload_call_valid(S, pautoloadcall) = ($autoload_resume_valid(S, pautoloadcall) /\ $autoload_registry_valid(S))
+def $autoload_selected_valid(S, pautoloadcall, pautoloadentry) = ($autoload_call_valid(S, pautoloadcall) /\ $autoload_entry_valid(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER)
+def $autoload_sent_valid(S, pautoloadcall, pautoloadentry, KNOWN (PSTRING ptbytes)) = ($autoload_selected_valid(S, pautoloadcall, pautoloadentry) /\ $autoload_entry_live(S, pautoloadentry) /\ ptbytes = pautoloadcall.NAME)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if ~$call_parameter_reference(S, pcalltarget, 0)
+def $autoload_sent_valid(S, pautoloadcall, pautoloadentry, REFERENCE n) = true
+  -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry) /\ $autoload_entry_live(S, pautoloadentry)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $call_parameter_reference(S, pcalltarget, 0)
+  -- if $(n < |S.STORE|) /\ n <- S.REFCELLS /\ (HCELL n) <- S.ALLOCATIONS
+  -- if S.STORE[n] = DEFINED (PSTRING pautoloadcall.NAME)
+def $autoload_sent_valid(S, pautoloadcall, pautoloadentry, poperand) = false -- otherwise
+
+;; Entered markers borrow the selected cache. CURRENT is the invocation owner.
+def $autoload_context_call(pcallcontext, (pcallcontext), pframe :: pframe_tail*) = ((pautoloadcall, pautoloadentry, poperand))
+  -- if pframe.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
+def $autoload_context_call(pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $autoload_context_call(pcallcontext, pframe.CONTEXT, pframe_tail*) -- if pcallcontext_other? =/= (pcallcontext)
+def $autoload_context_call(pcallcontext, pcallcontext_other?, pframe*) = eps -- otherwise
+def $autoload_context_kind(S, pcallcontext) = ($autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) =/= eps)
+def $autoload_context_anchor(S, pcallcontext, (pcallcontext), pframe :: pframe_tail*) = true
+  -- if pframe.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
+  -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $autoload_selected_valid(S_scope, pautoloadcall, pautoloadentry)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcallcontext.TARGET
+def $autoload_context_anchor(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $autoload_context_anchor(S, pcallcontext, pframe.CONTEXT, pframe_tail*) -- if pcallcontext_other? =/= (pcallcontext)
+def $autoload_context_anchor(S, pcallcontext, pcallcontext_other?, pframe*) = false -- otherwise
+def $autoload_context_valid(S, pcallcontext) = true
+  -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand))
+  -- if $autoload_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcallcontext.TARGET
+  -- if pcallcontext.CALLSITE = $autoload_context_site(pautoloadcall) /\ pcallcontext.LINE = $autoload_context_line(pautoloadcall)
+  -- if pcallcontext.ARGC = 1 /\ pcallcontext.WRAPPER = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if n_received = $call_received(1, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if (n_received = 0 /\ pcallcontext.EXTRA = [poperand]) \/ (n_received = 1 /\ pcallcontext.EXTRA = eps)
+  -- if $call_sent_operands_valid(S, pcallcontext.TARGET, n_received, pcallcontext.EXTRA)
+def $reference_call_frame_site(pcallcontext, pframe) = true
+  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
+  -- if pframe.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
+  -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+  -- if pautoloadcall.RESUME = AUTO_EXPLICIT_DONE pconfigcall
+  -- if pframe.ORIGIN = (pconfigcall.SITE) /\ pautoloadcall.SITE = pconfigcall.SITE
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_CALL
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcallcontext.TARGET
+
+;; Publication keeps only the selected callback and frozen request, not roots.
+def $autoload_declaration_capture(S, n) = [(n, pautoloadcall, pautoloadentry)]
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) =/= eps
+  -- if $autoload_context_valid(S, pcallcontext)
+  -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand))
+def $autoload_declaration_capture(S, n) = eps -- otherwise
+def $autoload_declaration_from(S, n) = $autoload_declaration_capture(S, n)
+  -- if S.FRAMES = eps
+def $autoload_declaration_from(S, n) = $autoload_declaration_capture(S, n) ++ $autoload_declaration_from(S_next, n_next)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if S_next = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if n_next = $(n + |$declaration_context(S, S.CURRENT)|)
+def $declaration_autoload(S) = $autoload_declaration_from(S, 0)
+def $autoload_declaration_new(S, PORIGIN n_unit pcpath, ptbytes, z, z_fetch) = true
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $call_line_valid(S, (PORIGIN n_unit pcpath), z) /\ z_fetch = z
+def $autoload_declaration_new(S, porigin, ptbytes, z, z_fetch) = true
+  -- if $dynamic_new_site(S, porigin, z, z_fetch)
+def $autoload_declaration_new(S, porigin, ptbytes, z, z_fetch) = false -- otherwise
+def $autoload_declaration_resume(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_NEW ptbytes phpType7* z z_fetch
+  -- if $autoload_ordinary_new_source(S, pautoloadcall.SITE)
+  -- if $origin_node(S.SOURCES, pautoloadcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
+  -- if $autoload_declaration_new(S, pautoloadcall.SITE, ptbytes, z, z_fetch)
+  -- if pautoloadcall.NAME = $autoload_lookup_name(ptbytes) /\ pautoloadcall.KEY = $ptlc(pautoloadcall.NAME)
+  -- if $autoload_class_name(pautoloadcall.NAME) /\ pautoloadcall.LINE = z_fetch
+def $autoload_declaration_resume(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if pautoloadcall.RESUME = AUTO_PUBLISH porigin
+  -- if pautoloadcall.SITE = porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if pautoloadcall.NAME = $autoload_lookup_name(ptbytes_parent)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME) /\ pautoloadcall.LINE = pclassdesc.LINE
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+def $autoload_declaration_resume(S, pautoloadcall) = true
+  -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+  -- if pautoloadcall.RESUME = AUTO_EXPLICIT_DONE pconfigcall
+  -- if pautoloadcall.SITE = pconfigcall.SITE /\ pautoloadcall.LINE = pconfigcall.LINE
+  -- if pconfigcall.KIND = INTRINSIC_AUTO_CALL
+  -- if $autoload_explicit_name(S, pconfigcall) = (pautoloadcall.NAME)
+  -- if pautoloadcall.KEY = $ptlc(pautoloadcall.NAME)
+  -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+def $autoload_declaration_resume(S, pautoloadcall) = false -- otherwise
+def $declaration_autoload_invocation(S, pautoloadcall, pautoloadentry, porigin_function, porigin_callsite?, porigin_lexical?, porigin_called?) = true
+  -- if porigin_callsite? = $autoload_context_site(pautoloadcall)
+  -- if $autoload_declaration_resume(S, pautoloadcall)
+  -- if $autoload_entry_valid(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if S_history = $autoload_entry_history(S, pautoloadentry)
+  -- if $target_function(S_history, pcalltarget) = (pfunction)
+  -- if pfunction.ORIGIN = porigin_function
+  -- if $target_lexical_class(S_history, pcalltarget) = porigin_lexical?
+  -- if $target_called_class(S_history, pcalltarget) = porigin_called?
+def $error_context_kind(S, pcallcontext) = true -- if $autoload_context_kind(S, pcallcontext)
+def $error_context_valid(S, pcallcontext) = true -- if $autoload_context_valid(S, pcallcontext)
+def $autoload_internal_context(S, pcallcontext) = true -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand)) -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+def $error_context_direct_trigger(S) = true -- if S.CURRENT = (pcallcontext) -- if $autoload_internal_context(S, pcallcontext)
+def $wrapper_called_suffix(S, pcallcontext) = eps -- if $autoload_internal_context(S, pcallcontext)
+def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed") -- if $autoload_internal_context(S, pcallcontext)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, pautoloadcall.SITE), LINE pautoloadcall.LINE, FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand))
+  -- if pautoloadcall.MODE = AUTO_LOOKUP
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, 1) ++ $trace_extra(S, pcallcontext.EXTRA)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}] ++ $config_trace_frames(S, pconfigcall, [PSTRING pautoloadcall.NAME])
+  -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand))
+  -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, 1) ++ $trace_extra(S, pcallcontext.EXTRA)
+
+;; Public descriptors and owners for the new continuations.
+def $call_task_valid(S, AUTO_REGISTER_RECEIVE pautoloadregistration) = $autoload_registration_receive_valid(S, pautoloadregistration)
+def $call_task_valid(S, AUTO_REGISTER_NULL pautoloadregistration) = $autoload_registration_null_valid(S, pautoloadregistration)
+def $call_task_valid(S, AUTO_REGISTER_NOTICE pautoloadregistration) = $autoload_registration_notice_valid(S, pautoloadregistration)
+def $call_task_valid(S, AUTO_UNREGISTER pautoloadentry) = ($autoload_entry_live(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_UNREGISTER)
+def $call_task_valid(S, AUTO_UNREGISTER_ALL pautoloadentry) = ($autoload_entry_valid(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_UNREGISTER /\ pautoloadentry.TARGET = AUTO_ALL)
+def $call_task_valid(S, AUTO_CALL_NULL pconfigcall) = ($config_invoke_valid(S, pconfigcall) /\ pconfigcall.KIND = INTRINSIC_AUTO_CALL /\ $error_api_value(pconfigcall, 0, PNULL) = PNULL /\ ~$config_strict(S, pconfigcall))
+def $call_task_valid(S, AUTO_NEXT pautoloadcall) = $autoload_call_valid(S, pautoloadcall)
+def $call_task_valid(S, AUTO_REFERENCE pautoloadcall pautoloadentry) = $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
+def $call_task_valid(S, AUTO_ENTER pautoloadcall pautoloadentry poperand) = $autoload_sent_valid(S, pautoloadcall, pautoloadentry, poperand)
+def $call_task_valid(S, AUTO_RESULT pautoloadcall pautoloadentry poperand) = $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
+def $call_task_valid(S, AUTO_NEW ptbytes phpType7* z z_fetch) = true -- if S.ORIGIN = (porigin) -- if $autoload_ordinary_new_source(S, porigin) -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata) -- if $new_source_name(S, porigin) = (ptbytes) -- if $call_line_valid(S, (porigin), z) \/ $dynamic_new_site(S, porigin, z, z_fetch) -- if z_fetch = z \/ $dynamic_new_site(S, porigin, z, z_fetch)
+def $call_task_valid(S, AUTO_PUBLISH porigin) = true -- if $class_at(S.CLASSES, porigin) = (pclassdesc) -- if pclassdesc.PARENT =/= eps -- if S.ORIGIN = (porigin)
+def $call_task_valid(S, AUTO_EXPLICIT_DONE pconfigcall) = ($config_invoke_valid(S, pconfigcall) /\ pconfigcall.KIND = INTRINSIC_AUTO_CALL)
+def $task_nodes(AUTO_REGISTER_RECEIVE pautoloadregistration) = $config_nodes(pautoloadregistration.ENTRY.CALL) ++ $autoload_entry_nodes(pautoloadregistration.ENTRY)
+def $task_nodes(AUTO_REGISTER_NULL pautoloadregistration) = $config_nodes(pautoloadregistration.ENTRY.CALL) ++ $autoload_entry_nodes(pautoloadregistration.ENTRY)
+def $task_nodes(AUTO_REGISTER_NOTICE pautoloadregistration) = $config_nodes(pautoloadregistration.ENTRY.CALL) ++ $autoload_entry_nodes(pautoloadregistration.ENTRY)
+def $task_nodes(AUTO_UNREGISTER pautoloadentry) = $config_nodes(pautoloadentry.CALL) ++ $autoload_entry_nodes(pautoloadentry)
+def $task_nodes(AUTO_UNREGISTER_ALL pautoloadentry) = $config_nodes(pautoloadentry.CALL)
+def $task_nodes(AUTO_CALL_NULL pconfigcall) = $config_nodes(pconfigcall)
+def $task_nodes(AUTO_NEXT pautoloadcall) = $autoload_explicit_nodes(pautoloadcall.MODE)
+def $task_nodes(AUTO_REFERENCE pautoloadcall pautoloadentry) = $autoload_explicit_nodes(pautoloadcall.MODE) ++ $autoload_entry_nodes(pautoloadentry)
+def $task_nodes(AUTO_ENTER pautoloadcall pautoloadentry poperand) = $autoload_explicit_nodes(pautoloadcall.MODE) ++ $autoload_entry_nodes(pautoloadentry) ++ $operand_nodes(poperand)
+def $task_nodes(AUTO_RESULT pautoloadcall pautoloadentry poperand) = $autoload_explicit_nodes(pautoloadcall.MODE)
+def $task_nodes(AUTO_NEW ptbytes phpType7* z z_fetch) = eps
+def $task_nodes(AUTO_PUBLISH porigin) = eps
+def $task_nodes(AUTO_EXPLICIT_DONE pconfigcall) = $config_nodes(pconfigcall)
+def $autoload_explicit_nodes(AUTO_LOOKUP) = eps
+def $autoload_explicit_nodes(AUTO_EXPLICIT pconfigcall) = $config_nodes(pconfigcall)
+def $selected_task_nonce(AUTO_REGISTER_RECEIVE pautoloadregistration) = pautoloadregistration.ENTRY.CALL.SELECTION
+def $selected_task_nonce(AUTO_REGISTER_NULL pautoloadregistration) = pautoloadregistration.ENTRY.CALL.SELECTION
+def $selected_task_nonce(AUTO_REGISTER_NOTICE pautoloadregistration) = pautoloadregistration.ENTRY.CALL.SELECTION
+def $selected_task_nonce(AUTO_UNREGISTER pautoloadentry) = pautoloadentry.CALL.SELECTION
+def $selected_task_nonce(AUTO_UNREGISTER_ALL pautoloadentry) = pautoloadentry.CALL.SELECTION
+def $selected_task_nonce(AUTO_CALL_NULL pconfigcall) = pconfigcall.SELECTION
+def $selected_task_nonce(AUTO_NEXT pautoloadcall) = $autoload_explicit_nonce(pautoloadcall.MODE)
+def $selected_task_nonce(AUTO_REFERENCE pautoloadcall pautoloadentry) = $autoload_explicit_nonce(pautoloadcall.MODE)
+def $selected_task_nonce(AUTO_ENTER pautoloadcall pautoloadentry poperand) = $autoload_explicit_nonce(pautoloadcall.MODE)
+def $selected_task_nonce(AUTO_RESULT pautoloadcall pautoloadentry poperand) = $autoload_explicit_nonce(pautoloadcall.MODE)
+def $selected_task_nonce(AUTO_EXPLICIT_DONE pconfigcall) = pconfigcall.SELECTION
+def $autoload_explicit_nonce(AUTO_LOOKUP) = eps
+def $autoload_explicit_nonce(AUTO_EXPLICIT pconfigcall) = pconfigcall.SELECTION
+
+;; Error callbacks authenticate the exact warning consumer and parsed cache.
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = AUTO_REGISTER_NOTICE pautoloadregistration
+  -- if $autoload_registration_notice_valid(S, pautoloadregistration)
+  -- if perrorcall.SITE = pautoloadregistration.ENTRY.CALL.SITE /\ S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.LEVEL = 8 /\ perrorcall.LINE = pautoloadregistration.ENTRY.CALL.LINE
+  -- if perrorcall.MESSAGE = $autoload_notice() /\ perrorcall.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE perrorcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = AUTO_REGISTER_NULL pautoloadregistration
+  -- if $autoload_registration_null_valid(S, pautoloadregistration)
+  -- if perrorcall.SITE = pautoloadregistration.ENTRY.CALL.SITE /\ S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = pautoloadregistration.ENTRY.CALL.LINE
+  -- if perrorcall.MESSAGE = $autoload_null_message(pautoloadregistration.ENTRY.CALL, pautoloadregistration.INDEX, $ptascii("bool")) /\ perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = AUTO_UNREGISTER_ALL pautoloadentry
+  -- if $call_task_valid(S, perrorcall.RESUME)
+  -- if perrorcall.SITE = pautoloadentry.CALL.SITE /\ S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = pautoloadentry.CALL.LINE
+  -- if perrorcall.MESSAGE = $autoload_clear_notice() /\ perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = AUTO_CALL_NULL pconfigcall
+  -- if $call_task_valid(S, perrorcall.RESUME)
+  -- if perrorcall.SITE = pconfigcall.SITE /\ S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $autoload_null_message(pconfigcall, 0, $ptascii("string")) /\ perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = AUTO_REFERENCE pautoloadcall pautoloadentry
+  -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
+  -- if perrorcall.SITE = pautoloadcall.SITE /\ S.ORIGIN = (perrorcall.SITE)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $call_parameter_reference(S, pcalltarget, 0)
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = $autoload_reference_line(pautoloadcall)
+  -- if perrorcall.MESSAGE = $autoload_reference_message(S, pautoloadentry) /\ perrorcall.EVENT = $autoload_reference_event(pautoloadcall, perrorcall.MESSAGE)
+def $exception_warning_resume(AUTO_REFERENCE pautoloadcall pautoloadentry) = true -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
+
+;; Deprecated callback selectors use the existing staged callable API, then
+;; validate their retained FCC against the exact registration producer.
+def $autoload_api_entry_scope(S, papiquery, pautoloadentry) = true
+  -- if pautoloadentry.TARGET = AUTO_TARGET (API_METHOD_TARGET papiquery porigin ptbytes b_static)
+  -- if papiquery.SOURCE = CONFIG_INVOKE pautoloadentry.CALL
+  -- if $autoload_registration_valid(S, pautoloadentry.CALL)
+  -- if pshutdownentry = {CALL pautoloadentry.CALL, CAPTURE pautoloadentry.CAPTURE, PRODUCER pautoloadentry.PRODUCER, RAW pautoloadentry.RAW, TARGET (API_METHOD_TARGET papiquery porigin ptbytes b_static), ARGS eps}
+  -- if $consumer_producer_capture(S, pshutdownentry)
+  -- if papiquery.SCOPE = $shutdown_capture_scope(S, pautoloadentry.CALL.SITE, pautoloadentry.CAPTURE)
+  -- if papiquery.CALLED = $consumer_capture_called(S, pautoloadentry.CALL.SITE, pautoloadentry.CAPTURE)
+  -- if $consumer_capture_this(S, pautoloadentry.CALL.SITE, pautoloadentry.CAPTURE, papiquery.THIS)
+  -- if papiquery.LINE = pautoloadentry.CALL.LINE
+  -- if $autoload_raw(pautoloadentry) = papiquery.VALUE
+  -- if $consumer_snapshot_valid(papiquery, pautoloadentry.RAW)
+def $autoload_api_entry_scope(S, papiquery, pautoloadentry) = false -- otherwise
+def $autoload_api_entry_owner(S, papiquery, eps) = false
+def $autoload_api_entry_owner(S, papiquery, pautoloadentry :: pautoloadentry_tail*) = ($autoload_api_entry_scope(S, papiquery, pautoloadentry) \/ $autoload_api_entry_owner(S, papiquery, pautoloadentry_tail*))
+def $autoload_api_entry_task(AUTO_REGISTER_RECEIVE pautoloadregistration) = [pautoloadregistration.ENTRY]
+def $autoload_api_entry_task(AUTO_REGISTER_NULL pautoloadregistration) = [pautoloadregistration.ENTRY]
+def $autoload_api_entry_task(AUTO_REGISTER_NOTICE pautoloadregistration) = [pautoloadregistration.ENTRY]
+def $autoload_api_entry_task(AUTO_UNREGISTER pautoloadentry) = [pautoloadentry]
+def $autoload_api_entry_task(AUTO_REFERENCE pautoloadcall pautoloadentry) = [pautoloadentry]
+def $autoload_api_entry_task(AUTO_ENTER pautoloadcall pautoloadentry poperand) = [pautoloadentry]
+def $autoload_api_entry_task(AUTO_RESULT pautoloadcall pautoloadentry poperand) = [pautoloadentry]
+def $autoload_api_entry_task(ERROR_HANDLER_INVOKE perrorcall) = $autoload_api_entry_task(perrorcall.RESUME)
+def $autoload_api_entry_task(ERROR_HANDLER_RESULT perrorcall) = $autoload_api_entry_task(perrorcall.RESUME)
+def $autoload_api_entry_task(ptask) = eps -- otherwise
+def $autoload_api_entry_tasks(eps) = eps
+def $autoload_api_entry_tasks(ptask :: ptask_tail*) = $autoload_api_entry_task(ptask) ++ $autoload_api_entry_tasks(ptask_tail*)
+def $autoload_api_entry_frames(eps) = eps
+def $autoload_api_entry_frames(pframe :: pframe_tail*) = $autoload_api_entry_tasks(pframe.TODO) ++ $autoload_api_entry_frames(pframe_tail*)
+def $api_target_valid(S, papiquery, porigin, ptbytes) = true
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if $autoload_callback_kind(pconfigcall.KIND)
+  -- if $autoload_api_entry_owner(S, papiquery, $autoload_defined_entries(S.AUTOLOAD.ENTRIES) ++ $autoload_api_entry_tasks(S.TODO) ++ $autoload_api_entry_frames(S.FRAMES))
+  -- if $consumer_method_valid(S, papiquery, porigin, ptbytes)
+
+;; A mixed table starts at eight buckets. Appends compact only at capacity;
+;; external HashPosition cursors are intentionally left at their old indices.
+def $autoload_initialize(S) = S[.AUTOLOAD.CAPACITY = 8] -- if S.AUTOLOAD.CAPACITY = 0
+def $autoload_initialize(S) = S -- if $(S.AUTOLOAD.CAPACITY > 0)
+def $autoload_resize(S) = S -- if $(|S.AUTOLOAD.ENTRIES| < S.AUTOLOAD.CAPACITY)
+def $autoload_resize(S) = S[.AUTOLOAD.ENTRIES = $autoload_compact(S.AUTOLOAD.ENTRIES)]
+  -- if $(|S.AUTOLOAD.ENTRIES| >= S.AUTOLOAD.CAPACITY)
+  -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
+  -- if $(|S.AUTOLOAD.ENTRIES| > n_count + (n_count / 32))
+def $autoload_resize(S) = S[.AUTOLOAD.CAPACITY = $(2 * S.AUTOLOAD.CAPACITY)]
+  -- if $(|S.AUTOLOAD.ENTRIES| >= S.AUTOLOAD.CAPACITY)
+  -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
+  -- if $(|S.AUTOLOAD.ENTRIES| <= n_count + (n_count / 32))
+def $autoload_append(S, pautoloadentry) = S[.AUTOLOAD.ENTRIES = S.AUTOLOAD.ENTRIES ++ [$autoload_bucket(pautoloadentry)]]
+def $autoload_prepend(S, b) = S -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES) -- if ~b \/ $(n_count <= 1)
+def $autoload_prepend(S, true) = S[.AUTOLOAD.ENTRIES = [$autoload_bucket(pautoloadentry)] ++ $autoload_compact(S.AUTOLOAD.ENTRIES[0:n])]
+  -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
+  -- if $(n_count > 1)
+  -- if n = $nabs($(|S.AUTOLOAD.ENTRIES| - 1))
+  -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
+def $autoload_capacity_valid(0) = true
+def $autoload_capacity_valid(8) = true
+def $autoload_capacity_valid(n) = $autoload_capacity_valid($(n / 2)) -- if $(n > 8) /\ $(n \ 2) = 0
+def $autoload_capacity_valid(n) = false -- otherwise
+
+def $autoload_entry_current_metadata(S, pautoloadentry) = true
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_instance(pcalltarget) = eps
+def $autoload_entry_current_metadata(S, pautoloadentry) = true
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_instance(pcalltarget) = (n)
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS) \/ (pautoloadentry.SCOPE = $closure_scope_at(S.CLOSURESCOPES, n) /\ pautoloadentry.BINDING = $closure_binding_at(S.CLOSUREBINDINGS, n))
+def $autoload_entry_current_metadata(S, pautoloadentry) = false -- otherwise
+
+def $autoload_entry_metadata(S, pautoloadentry) = true
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_instance(pcalltarget) = eps
+  -- if pautoloadentry.SCOPE = eps /\ pautoloadentry.BINDING = eps
+def $autoload_entry_metadata(S, pautoloadentry) = true
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_instance(pcalltarget) = (n)
+  -- if pautoloadentry.SCOPE = (pclosurescope)
+  -- if pautoloadentry.BINDING = eps
+  -- if pclosurescope.OBJECT = n
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope)
+def $autoload_entry_metadata(S, pautoloadentry) = true
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_instance(pcalltarget) = (n)
+  -- if pautoloadentry.SCOPE = (pclosurescope)
+  -- if pautoloadentry.BINDING = eps
+  -- if pclosurescope.OBJECT = n
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
+  -- if $closure_scope_row_valid($autoload_entry_history(S, pautoloadentry), pclosurescope)
+def $autoload_entry_metadata(S, pautoloadentry) = true
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_instance(pcalltarget) = (n)
+  -- if pautoloadentry.BINDING = (pclosurebinding)
+  -- if pautoloadentry.SCOPE = eps
+  -- if pclosurebinding.OBJECT = n /\ $closure_evidence_valid(S, CLOSURE_BINDING pclosurebinding)
+def $autoload_entry_metadata(S, pautoloadentry) = true
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $target_instance(pcalltarget) = (n)
+  -- if pautoloadentry.SCOPE = eps /\ pautoloadentry.BINDING = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps /\ $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+def $autoload_entry_metadata(S, pautoloadentry) = false -- otherwise
+def $autoload_selected_scope(S, pautoloadentry, HANDLER_METHOD_TARGET b_class porigin ptbytes (SCOPE_METHOD_TARGET pcalltarget pcallableaccess)) = true
+  -- if pcallableaccess.SITE = eps /\ pcallableaccess.CREATION = eps
+  -- if $consumer_capture_valid(S, pautoloadentry.CALL.SITE, pautoloadentry.CAPTURE)
+  -- if pcallableaccess.SCOPE = $shutdown_capture_scope(S, pautoloadentry.CALL.SITE, pautoloadentry.CAPTURE)
+def $autoload_selected_scope(S, pautoloadentry, pcalltarget) = true -- if ~$shutdown_scoped_target(pcalltarget)
+def $autoload_selected_scope(S, pautoloadentry, pcalltarget) = false -- otherwise
+
+def $autoload_snapshot(S, pconfigcall, API_METHOD_TARGET papiquery porigin ptbytes b_static) = $consumer_snapshot(S, papiquery)
+def $autoload_snapshot(S, pconfigcall, pcalltarget) = $shutdown_snapshot(S, $error_api_value(pconfigcall, 0, PNULL)) -- if ~$consumer_api_target(pcalltarget)

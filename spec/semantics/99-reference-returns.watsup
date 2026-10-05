@@ -41,6 +41,7 @@ def $reference_returning(S) = pfunction.SIGNATURE.BYREF
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if ~$eval_top_level(S)
+  -- if ~$generator_active(S)
 def $reference_returning(S) = false -- otherwise
 
 def $reference_empty_task(S, z) = RETURN_REF_NULL z -- if $reference_returning(S)
@@ -211,9 +212,11 @@ def $call_task_valid(S, RETURN_REF_NULL z) = $reference_return_null_valid(S, z)
 
 def $call_task_valid(S, RETURN_NULL) = ~$reference_returning(S)
 
-;; Each context's callsite is the immediate caller frame's saved source origin.
+;; Ordinary contexts match the immediate caller frame's saved source origin.
+dec $reference_call_frame_site(pcallcontext, pframe) : bool
+def $reference_call_frame_site(pcallcontext, pframe) = (pcallcontext.CALLSITE = pframe.ORIGIN) -- otherwise
 def $reference_call_frames_valid(eps, eps) = true
-def $reference_call_frames_valid((pcallcontext), pframe :: pframe_tail*) = (pcallcontext.CALLSITE = pframe.ORIGIN /\ $reference_call_frames_valid(pframe.CONTEXT, pframe_tail*))
+def $reference_call_frames_valid((pcallcontext), pframe :: pframe_tail*) = ($reference_call_frame_site(pcallcontext, pframe) /\ $reference_call_frames_valid(pframe.CONTEXT, pframe_tail*))
 def $reference_call_frames_valid(pcallcontext?, pframe*) = false -- otherwise
 
 ;; Only a leading administrative prefix can expose the current result consumer.

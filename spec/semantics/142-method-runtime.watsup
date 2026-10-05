@@ -241,6 +241,7 @@ dec $dynamic_new_entered(pstate, pcalltarget, porigin) : bool
 def $dynamic_new_entered(S, pcalltarget, porigin) = false -- otherwise
 def $constructor_source_name(S, pcalltarget, porigin) = $new_source_name(S, porigin) -- if ~$dynamic_new_entered(S, pcalltarget, porigin)
 dec $method_site_scope(pstate, porigin, porigin) : porigin?
+dec $generator_method_scope_kind(pstate, porigin, porigin) : bool
 dec $method_entered_here(pstate, porigin, porigin) : bool
 def $method_entered_here(S, porigin_method, porigin_site) = true
   -- if S.CURRENT = (pcallcontext)
@@ -249,12 +250,15 @@ def $method_entered_here(S, porigin_method, porigin_site) = true
 def $method_entered_here(S, porigin_method, porigin_site) = false -- otherwise
 def $method_site_scope(S, porigin_method, porigin_site) = $method_target_caller(S.CURRENT, S.FRAMES, porigin_method, porigin_site)
   -- if $method_entered_here(S, porigin_method, porigin_site)
+  -- if ~$generator_method_scope_kind(S, porigin_method, porigin_site)
 def $method_site_scope(S, porigin_method, PORIGIN n_unit pcpath) = $method_context_scope(S.CURRENT)
   -- if ~$method_entered_here(S, porigin_method, PORIGIN n_unit pcpath)
+  -- if ~$generator_method_scope_kind(S, porigin_method, PORIGIN n_unit pcpath)
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = pfunction?
   -- if $goto_owner_scope(S.CURRENT, pfunction?)
 def $method_site_scope(S, porigin_method, PORIGIN n_unit pcpath) = $method_frame_site_scope(S, S.FRAMES, $goto_source_owner($all_functions(S), n_unit, pcpath))
   -- if ~$method_entered_here(S, porigin_method, PORIGIN n_unit pcpath)
+  -- if ~$generator_method_scope_kind(S, porigin_method, PORIGIN n_unit pcpath)
   -- if ~$goto_owner_scope(S.CURRENT, $goto_source_owner($all_functions(S), n_unit, pcpath))
 dec $scoped_caller_frame(pcallcontext?, pframe*, porigin, porigin) : pcallcontext?
 def $scoped_caller_frame((pcallcontext), pframe :: pframe_tail*, porigin_method, porigin_site) = pframe.CONTEXT
@@ -925,6 +929,7 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpTy
   -- if ($ptlc(ptbytes_method) =/= $ptascii("__construct") \/ $scoped_internal_ctor_kind(S, phpType19, n_class*) = eps)
   -- if ($ptlc(ptbytes_method) =/= $ptascii("__tostring") \/ $scoped_internal_method_kind(S, phpType19, n_class*, ptbytes_method) = eps)
 def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ n_class* ++ $ptascii("\" not found"), z)[.TODO = eps]
+  -- if $ptlc($typed_callable_name(n_class*)) =/= $ptascii("fiber")
   -- if $class_named(S.CLASSNAMES, $ptlc(n_class*)) = eps
   -- if ($ptlc(ptbytes_method) =/= $ptascii("__construct") \/ $scoped_internal_ctor_kind(S, phpType19, n_class*) = eps)
   -- if ($ptlc(ptbytes_method) =/= $ptascii("__tostring") \/ $scoped_internal_method_kind(S, phpType19, n_class*, ptbytes_method) = eps)
@@ -1360,6 +1365,7 @@ def $wrapper_called_suffix(S, pcallcontext) = eps -- if pcallcontext.WRAPPER =/=
 def $wrapper_called_suffix(S, pcallcontext) = $ptascii(", called in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE)
   -- if pcallcontext.WRAPPER = eps
   -- if $error_context_trigger(S, pcallcontext) = eps
+  -- if ~$autoload_internal_context(S, pcallcontext)
   -- if ~$exception_warning_context(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
 dec $wrapper_values(pstate, pnamedslot*) : pvalue*
@@ -1397,6 +1403,7 @@ def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed") -- if pcallcon
 def $wrapper_passed_suffix(S, pcallcontext) = $ptascii(" passed in ") ++ $call_sourcefile(S.FILES, porigin) ++ $ptascii(" on line ") ++ $decimal_integer(pcallcontext.LINE)
   -- if pcallcontext.WRAPPER = eps
   -- if $error_context_trigger(S, pcallcontext) = eps
+  -- if ~$autoload_internal_context(S, pcallcontext)
   -- if ~$exception_warning_context(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
 

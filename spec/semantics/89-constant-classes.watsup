@@ -234,8 +234,10 @@ def $constant_shape_class(S, porigin, PFARRAY phpType13*) = $constant_array_item
 def $constant_pool_classes(eps) = eps
 def $constant_pool_classes((PCCLASS pcpath pvalueclass) :: pconstant*) = (PCCLASS pcpath pvalueclass) :: $constant_pool_classes(pconstant*)
 def $constant_pool_classes((PCONSTANT pcpath pvalue) :: pconstant*) = $constant_pool_classes(pconstant*)
+def $constant_pool_classes((PCCPRECISION pcpath z) :: pconstant*) = $constant_pool_classes(pconstant*)
 def $constant_pool_values_valid(S, pconstant_all*, eps) = true
 def $constant_pool_values_valid(S, pconstant_all*, (PCONSTANT pcpath pvalue) :: pconstant*) = $constant_pool_values_valid(S, pconstant_all*, pconstant*)
+def $constant_pool_values_valid(S, pconstant_all*, (PCCPRECISION pcpath z) :: pconstant*) = $constant_pool_values_valid(S, pconstant_all*, pconstant*)
 def $constant_pool_values_valid(S, pconstant_all*, (PCCLASS pcpath pvalueclass) :: pconstant*) = true
   -- if $constant_at(pconstant_all*, pcpath) = (pvalue)
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)

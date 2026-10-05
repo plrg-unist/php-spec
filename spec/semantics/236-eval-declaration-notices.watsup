@@ -63,6 +63,9 @@ dec $eval_compile_formatter_userfatal(pstate, pevalcompilefatal, ptask) : pstate
 dec $eval_compile_stop_result(pstate, pevalcompile) : pstate
 dec $eval_compile_formatter_hard(pstate, pevalcompilefatal, nat) : pstate
 dec $eval_compile_formatter_file_hard(pstate, pevalcompilefatal, pfilecontext, pfilecontext*) : pstate
+dec $precision_resume_input(pdeclaration) : (nat, int, int?)?
+dec $precision_resume_value(pstate, nat, nat, nat, int?) : int?
+dec $eval_compile_precision_resume(pstate, pevalcompile, ptask*) : pstate
 
 
 
@@ -212,10 +215,19 @@ def $eval_compile_claim_remove((n_other, n_checkpoint, n_diagnostic, n_ordinal, 
   -- if n_other =/= n
 def $eval_compile_waiting_from(eps, pevalcompileclaim*, n) = pevalcompileclaim*
 def $eval_compile_waiting_from((PDEVALPAUSE n_unit n_checkpoint n_diagnostic pdeclnoticeitem*) :: pdeclaration*, pevalcompileclaim*, n) = $eval_compile_waiting_from(pdeclaration*, (n_unit, n_checkpoint, n_diagnostic, n, pdeclnoticeitem*) :: pevalcompileclaim*, $(n + 1))
-def $eval_compile_waiting_from((PDEVALRESUME n_unit z) :: pdeclaration*, pevalcompileclaim*, n) = $eval_compile_waiting_from(pdeclaration*, $eval_compile_claim_remove(pevalcompileclaim*, n_unit), $(n + 1))
+def $eval_compile_waiting_from(pdeclaration_resume :: pdeclaration*, pevalcompileclaim*, n) = $eval_compile_waiting_from(pdeclaration*, $eval_compile_claim_remove(pevalcompileclaim*, n_unit), $(n + 1))
+  -- if $precision_resume_input(pdeclaration_resume) = ((n_unit, z, z_precision?))
 def $eval_compile_waiting_from(pdeclaration :: pdeclaration_tail*, pevalcompileclaim*, n) = $eval_compile_waiting_from(pdeclaration_tail*, pevalcompileclaim*, $(n + 1))
   -- if ~$eval_compile_history_marker(pdeclaration)
 def $eval_compile_waiting(pdeclaration*) = $eval_compile_waiting_from(pdeclaration*, eps, 0)
+
+def $declaration_compiler_callback_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprEval expression metadata)
+  -- if $eval_compile_waiting(S.DECLARATIONS) = (n_unit, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*
+  -- if pdeclnoticeitem* =/= eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n_unit) = (pevalbinding)
+  -- if pevalbinding.SITE = porigin
+def $declaration_compiler_callback_site(S, porigin) = false -- otherwise
 def $eval_compile_claim_at(eps, n) = eps
 def $eval_compile_claim_at((n, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*, n) = ((n, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*))
 def $eval_compile_claim_at((n_other, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*, n) = $eval_compile_claim_at(pevalcompileclaim*, n)
@@ -325,7 +337,7 @@ rule PhpStep/eval-compile-resume: S ~> $eval_compile_loop(S[.DECLARATIONS = S.DE
   -- if $eval_compile_cursor_valid(S, pevalcompile)
   -- if $eval_compile_waiting(S.DECLARATIONS) = (pevalcompile.PLAN.UNIT, pevalcompile.CHECKPOINT, pevalcompile.DIAGNOSTIC, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*
   -- if $precision_eval_resume_valid(S, pevalcompile)
-rule PhpStep/eval-compile-precision-changed: S ~> S[.COMPLETION = UNSUPPORTED "precision changed during suspended eval compilation"]
+rule PhpStep/eval-compile-precision-changed: S ~> $eval_compile_precision_resume(S, pevalcompile, ptask_tail*)
   -- if S.TODO = (EVAL_COMPILE_RESUME pevalcompile) :: ptask_tail*
   -- if $eval_compile_cursor_valid(S, pevalcompile)
   -- if $eval_compile_waiting(S.DECLARATIONS) = (pevalcompile.PLAN.UNIT, pevalcompile.CHECKPOINT, pevalcompile.DIAGNOSTIC, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*
@@ -346,10 +358,12 @@ def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration_entry :: pdecla
   -- if $declaration_service_available(S_prefix, porigin?)
   -- if $declaration_compiler_at((n, P)*, n_next) = (P_current)
   -- if S_compiled = $eval_compile_loop($declaration_enter_at(S_prefix[.REPORTING = z][.COMPLETION = NORMAL][.ERRORORIGIN = eps], n_next, porigin?, z_precision), {PLAN $eval_compile_plan(P_current), CHECKPOINT 0, DIAGNOSTIC 0, PENDING NORMAL})
-def $declaration_history_fold(S, S_prefix, (n, P)*, (PDEVALRESUME n_unit z) :: pdeclaration*, n_next) = $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled)
+def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration_resume :: pdeclaration*, n_next) = $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled)
+  -- if $precision_resume_input(pdeclaration_resume) = ((n_unit, z, z_precision?))
   -- if $eval_compile_waiting(S_prefix.DECLARATIONS) = (n_unit, n_checkpoint, n_diagnostic, n_ordinal, pdeclnoticeitem*) :: pevalcompileclaim*
+  -- if $precision_resume_value(S_prefix, n_unit, n_checkpoint, n_diagnostic, z_precision?) = (z_compiler)
   -- if $declaration_compiler_at((n, P)*, n_unit) = (P_current)
-  -- if S_compiled = $eval_compile_loop(S_prefix[.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDEVALRESUME n_unit z]][.REPORTING = z][.COMPLETION = NORMAL][.TODO = eps][.ERRORORIGIN = eps], {PLAN $eval_compile_plan(P_current), CHECKPOINT n_checkpoint, DIAGNOSTIC n_diagnostic, PENDING NORMAL})
+  -- if S_compiled = $eval_compile_loop($precision_memory(S_prefix[.DECLARATIONS = S_prefix.DECLARATIONS ++ [pdeclaration_resume]][.REPORTING = z][.COMPLETION = NORMAL][.TODO = eps][.ERRORORIGIN = eps], z_compiler), {PLAN $eval_compile_plan(P_current), CHECKPOINT n_checkpoint, DIAGNOSTIC n_diagnostic, PENDING NORMAL})
 def $declaration_history_eval_segment(S, S_prefix, (n, P)*, pdeclaration*, n_next, S_compiled) = $declaration_history_fold(S, $eval_compile_history_carry(S_prefix, S_compiled[.COMPLETION = NORMAL][.TODO = eps]), (n, P)*, pdeclaration_tail*, n_next)
   -- if S_compiled.COMPLETION = NORMAL
   -- if n_prefix = $(|S_prefix.DECLARATIONS| + 1)
@@ -570,6 +584,7 @@ def $eval_compile_fatal_current(S) = $eval_compile_fatal_frames(S.FRAMES) -- if 
 
 def $eval_compile_history_marker(PDEVALPAUSE n n_checkpoint n_diagnostic pdeclnoticeitem*) = true
 def $eval_compile_history_marker(PDEVALRESUME n z) = true
+def $eval_compile_history_marker(PDEVALRESUMEPRECISION n z z_precision) = true
 def $eval_compile_history_marker(pdeclaration) = false -- otherwise
 
 

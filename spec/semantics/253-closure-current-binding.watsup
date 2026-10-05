@@ -331,7 +331,7 @@ def $bound_fake_valid(S, n) = true
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
 def $bound_fake_valid(S, n) = false -- otherwise
 
-def $closure_static_api_kind(pintrinsic) = (pintrinsic = INTRINSIC_FROM_CALLABLE \/ pintrinsic = INTRINSIC_CLOSURE_CURRENT \/ pintrinsic = INTRINSIC_CLOSURE_BIND)
+def $closure_static_api_kind(pintrinsic) = (pintrinsic = INTRINSIC_FROM_CALLABLE \/ pintrinsic = INTRINSIC_CLOSURE_CURRENT \/ pintrinsic = INTRINSIC_CLOSURE_BIND \/ ($fiber_kind(pintrinsic) /\ $fiber_static(pintrinsic)))
 ;; Static method selection authenticates the historical Closure type only.
 ;; Its discarded receiver's captures, statics and bound object may have retired.
 def $closure_static_api_owner_valid(S, n) = true

@@ -89,7 +89,7 @@ def $class_constant_desc(pclassconstantdesc :: pclassconstantdesc_tail*, ptbytes
 def $class_constant_desc(pclassconstantdesc :: pclassconstantdesc_tail*, ptbytes) = $class_constant_desc(pclassconstantdesc_tail*, ptbytes)
   -- if pclassconstantdesc.NAME =/= ptbytes
 
-def $ppclass_fold(P) = P.FOLD[.CLASSES = P.CLASSES][.CLASSCONSTANTS = P.CLASSCONSTANTS][.CLASSCONTEXT = P.CLASSCONTEXT]
+def $ppclass_fold(P) = $pfcompiler_precision(P.FOLD[.CLASSES = P.CLASSES][.CLASSCONSTANTS = P.CLASSCONSTANTS][.CLASSCONTEXT = P.CLASSCONTEXT][.CHECKPOINT = |P.PUBLICATIONS|][.DIAGNOSTIC = |P.DIAGNOSTICS|])
 dec $ppclass_constant_group(ppstate, pcpath, porigin, int, phpType18, phpType46*, pchheader, int) : ppstate
 dec $ppclass_constant_items(ppstate, pcpath, porigin, nat, int, phpType18, phpType46*, pchheader, int) : ppstate
 dec $ppclass_constant_typed(ppstate, pcpath, porigin, int, ptbytes, expression, ptresult, pchheader, int) : ppstate

@@ -312,7 +312,8 @@ def $declaration_closure_call_scope(S, porigin_site, porigin_scope, pdeclcalls) 
 def $declaration_closure_call_scope(S, porigin_site, porigin_scope, pdeclcalls) = false -- otherwise
 
 dec $declaration_invocation(pstate, pfunction, porigin, porigin?, porigin?, pdeclcalls) : bool
-def $declaration_invocation(S, pfunction, porigin_site, eps, eps, pdeclcalls) = $declaration_named_selection(S, pfunction, porigin_site)
+dec $declaration_compiler_callback_site(pstate, porigin) : bool
+def $declaration_invocation(S, pfunction, porigin_site, eps, eps, pdeclcalls) = ($declaration_named_selection(S, pfunction, porigin_site) \/ $declaration_compiler_callback_site(S, porigin_site))
   -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
 def $declaration_invocation(S, pfunction, porigin_site, (porigin_owner), (porigin_called), pdeclcalls) = $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls)
   -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
@@ -344,17 +345,28 @@ dec $declaration_arrow_source(pcnode?) : bool
 def $declaration_arrow_source((NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)) = true
 def $declaration_arrow_source(pcnode?) = false -- otherwise
 dec $declaration_cause_owner(pstate, porigin) : pfunction?
+dec $declaration_default_new_owner(pstate, porigin) : pfunction?
+def $declaration_default_new_owner(S, porigin) = eps -- otherwise
+def $declaration_cause_owner(S, porigin) = (pfunction)
+  -- if $declaration_default_new_owner(S, porigin) = (pfunction)
 def $declaration_cause_owner(S, porigin) = (pfunction)
   -- if $origin_node(S.SOURCES, porigin) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
 def $declaration_cause_owner(S, PORIGIN n pcpath) = $goto_source_owner($all_functions(S), n, pcpath)
+  -- if $declaration_default_new_owner(S, PORIGIN n pcpath) = eps
   -- if ~$declaration_arrow_source($origin_node(S.SOURCES, PORIGIN n pcpath)) \/ $function_at(S.CLOSURETEMPLATES, PORIGIN n pcpath) = eps
 
 ;; The first global scope gives the actual executing unit. Dynamic service
 ;; boundaries then authenticate outer callers without replacing that unit.
-dec $declaration_cause_walk(pstate, porigin, pdeclcalls, nat, bool, nat) : bool
-def $declaration_cause_walk(S, PORIGIN n_site pcpath, (porigin_function, porigin_callsite?, porigin_lexical?, porigin_called?) :: pdeclcalls, n_unit, b_unit, n) = $declaration_cause_walk(S, porigin_call, pdeclcalls, n_unit, b_unit, $nabs($(n - 1)))
+dec $declaration_autoload_at(pdeclautoload*, nat) : (pautoloadcall, pautoloadentry)?
+def $declaration_autoload_at((n, pautoloadcall, pautoloadentry) :: pdeclautoload*, n) = ((pautoloadcall, pautoloadentry))
+def $declaration_autoload_at(pdeclautoload*, n) = eps -- otherwise
+dec $declaration_autoload_invocation(pstate, pautoloadcall, pautoloadentry, porigin, porigin?, porigin?, porigin?) : bool
+def $declaration_autoload_invocation(S, pautoloadcall, pautoloadentry, porigin_function, porigin_callsite?, porigin_lexical?, porigin_called?) = false -- otherwise
+dec $declaration_cause_walk(pstate, porigin, pdeclcalls, nat, bool, nat, pdeclautoload*, nat) : bool
+def $declaration_cause_walk(S, PORIGIN n_site pcpath, (porigin_function, porigin_callsite?, porigin_lexical?, porigin_called?) :: pdeclcalls, n_unit, b_unit, n, pdeclautoload*, n_call) = $declaration_cause_walk(S, porigin_call, pdeclcalls, n_unit, b_unit, $nabs($(n - 1)), pdeclautoload*, $(n_call + 1))
   -- if $(n > 0)
+  -- if $declaration_autoload_at(pdeclautoload*, n_call) = eps
   -- if porigin_callsite? = (porigin_call)
   -- if $declaration_cause_owner(S, PORIGIN n_site pcpath) = (pfunction)
   -- if $function_at($all_functions(S), porigin_function) = (pfunction_selected)
@@ -362,20 +374,28 @@ def $declaration_cause_walk(S, PORIGIN n_site pcpath, (porigin_function, porigin
   -- if $declaration_callable_available(S, pfunction_selected, n)
   -- if $declaration_active_class(S, porigin_lexical?) /\ $declaration_active_class(S, porigin_called?)
   -- if $declaration_invocation(S, pfunction_selected, porigin_call, porigin_lexical?, porigin_called?, pdeclcalls)
-def $declaration_cause_walk(S, PORIGIN 0 pcpath, eps, n_unit, b_unit, n) = true
+def $declaration_cause_walk(S, PORIGIN n_site pcpath, (porigin_function, porigin_callsite?, porigin_lexical?, porigin_called?) :: pdeclcalls, n_unit, b_unit, n, (n_call, pautoloadcall, pautoloadentry) :: pdeclautoload*, n_call) = $declaration_cause_walk(S, pautoloadcall.SITE, pdeclcalls, n_unit, b_unit, $nabs($(n - 1)), pdeclautoload*, $(n_call + 1))
+  -- if $(n > 0)
+  -- if $declaration_cause_owner(S, PORIGIN n_site pcpath) = (pfunction)
+  -- if $function_at($all_functions(S), porigin_function) = (pfunction_selected)
+  -- if $trait_source_same(pfunction, pfunction_selected)
+  -- if $declaration_callable_available(S, pfunction_selected, n)
+  -- if $declaration_active_class(S, porigin_lexical?) /\ $declaration_active_class(S, porigin_called?)
+  -- if $declaration_autoload_invocation(S, pautoloadcall, pautoloadentry, porigin_function, porigin_callsite?, porigin_lexical?, porigin_called?)
+def $declaration_cause_walk(S, PORIGIN 0 pcpath, eps, n_unit, b_unit, n, eps, n_call) = true
   -- if $(n > 0)
   -- if $declaration_cause_owner(S, PORIGIN 0 pcpath) = eps
   -- if $declaration_unit_complete(S.DECLARATIONS, 0)
   -- if b_unit \/ n_unit = 0
-def $declaration_cause_walk(S, PORIGIN n_site pcpath, pdeclcalls, n_unit, b_unit, n) = $declaration_cause_walk(S, porigin_entry, pdeclcalls, n_unit, true, $nabs($(n - 1)))
+def $declaration_cause_walk(S, PORIGIN n_site pcpath, pdeclcalls, n_unit, b_unit, n, pdeclautoload*, n_call) = $declaration_cause_walk(S, porigin_entry, pdeclcalls, n_unit, true, $nabs($(n - 1)), pdeclautoload*, n_call)
   -- if $(n > 0 /\ n_site > 0)
   -- if $declaration_cause_owner(S, PORIGIN n_site pcpath) = eps
   -- if $declaration_unit_complete(S.DECLARATIONS, n_site)
   -- if b_unit \/ n_unit = n_site
   -- if $declaration_entry_site(S.DECLARATIONS, n_site) = (porigin_entry)
   -- if $declaration_service_available(S, (porigin_entry))
-def $declaration_cause_walk(S, porigin, pdeclcalls, n_unit, b_unit, n) = false -- otherwise
+def $declaration_cause_walk(S, porigin, pdeclcalls, n_unit, b_unit, n, pdeclautoload*, n_call) = false -- otherwise
 
-def $declaration_cause_valid(S, porigin, pdeclcause) = $declaration_cause_walk(S, porigin, pdeclcause.CALLS, pdeclcause.UNIT, false, n)
+def $declaration_cause_valid(S, porigin, pdeclcause) = $declaration_cause_walk(S, porigin, pdeclcause.CALLS, pdeclcause.UNIT, false, n, pdeclcause.AUTOLOAD, 0)
   -- if $origin_node(S.SOURCES, porigin) =/= eps
   -- if n = $(|S.DECLARATIONS| + 2 * |$all_functions(S)| + |pdeclcause.CALLS| + 1)

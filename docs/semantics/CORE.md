@@ -154,9 +154,11 @@ INI parsing/profiles and later request stages stay open.
 [Live precision](../../coverage/semantics/precision-review.json) separates raw
 registered/current bytes and Restore from runtime formatting and each unit's
 captured parser precision. Later eval/include parsing observes current precision;
-retired source literals retain their creation value. Deferred AST operands instead
-convert with live precision. Changed precision during suspended eval compilation,
-`serialize_precision` and wider formatter consumers remain required.
+retired source literals retain their creation value. Suspended eval callbacks
+record ordered compiler precision epochs at actual conversion points; refreshed
+images preserve escaped tables, callback allocations and bound class data.
+Deferred AST operands instead convert with live precision. `serialize_precision`,
+wider formatter consumers and Array eval/include warning ingress remain required.
 
 Backticks remain core syntax. Their command construction/dispatch is specified;
 a finite shell service supplies explicit response bytes/failure/effects. Missing

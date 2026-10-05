@@ -156,10 +156,10 @@ def $target_called_class(S, CLOSURE_TARGET n) = eps
   -- if ~$bound_fake_object(S, n) /\ ~$internal_closure_object(S, n)
 
 dec $closure_body(pstate, pfunction) : ptask*
-def $closure_body(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$typed_fallthrough(pfunction)]
+def $closure_body(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
   -- if pfunction.ORIGIN = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata)
-def $function_tasks(S, pfunction) = [CLOSURE_RECEIVE pfunction.ORIGIN 0]
+def $function_body_tasks(S, pfunction) = [CLOSURE_RECEIVE pfunction.ORIGIN 0]
   -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
 
 dec $closure_local(pstate, ptbytes, pitem) : pstate
