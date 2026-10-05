@@ -108,11 +108,20 @@ def main():
             except (ValueError, UnicodeDecodeError):
                 observation = {}
             status = observation.get('status')
-            passed = (passed and model.get('exit') == 0 and not base64.b64decode(model['stderr']) and
-                      status == row.get('expected_model', 'normal') and
-                      all(observation.get(key) == native[key] for key in ('stdout', 'stderr')) and
-                      observation.get('exit_status') == native.get('exit'))
-        results.append({'id': row['id'], 'pass': passed, 'native_exit': native.get('exit'), 'model_status': status})
+            if row.get('expected_model') == 'unsupported':
+                passed = (passed and model.get('exit') == 1 and not base64.b64decode(model['stderr']) and
+                          status == 'unsupported' and observation.get('reason') == row['unsupported_reason'] and
+                          observation.get('events') == [] and observation.get('stdout') == '' and
+                          observation.get('stderr') == '' and 'exit_status' in observation and
+                          observation['exit_status'] is None and 'diagnostic' in observation and
+                          observation['diagnostic'] is None)
+            else:
+                passed = (passed and model.get('exit') == 0 and not base64.b64decode(model['stderr']) and
+                          status == row.get('expected_model', 'normal') and
+                          all(observation.get(key) == native[key] for key in ('stdout', 'stderr')) and
+                          observation.get('exit_status') == native.get('exit'))
+        results.append({'id': row['id'], 'pass': passed, 'native_exit': native.get('exit'), 'model_status': status,
+                        'normal_agreement': passed and status == 'normal'})
         print(row['id'], passed, status or 'native', flush=True)
     assert before == {str(path.relative_to(ROOT)): digest(path) for path in watched}, 'review inputs changed during run'
     report = {'result': 'pass' if all(row['pass'] for row in results) else 'fail',
@@ -121,7 +130,7 @@ def main():
               'compiler': {'spectec_source_commit': 'da36ac3c434cd291940293a63da64544307730a3',
                            'ocaml_switch': '5.1.0', 'semantic_mode': None if args.native_only else 'SL'},
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC'}, 'budgets': {'steps': 100000, 'model_seconds': 60, 'process_seconds': 75},
-              'results': results, 'raw': str(out)}
+              'results': results, 'normal_agreements': sum(row['normal_agreement'] for row in results), 'raw': str(out)}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(out, report['result'], flush=True)
     return report['result'] == 'pass'
