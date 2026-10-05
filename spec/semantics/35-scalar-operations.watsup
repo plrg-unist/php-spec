@@ -123,14 +123,15 @@ def $unary_apply(S, NEGATIVE, pvalue, z) = S_warned[.RESULT = KNOWN $number_valu
   -- if $coerce_number(pvalue) = COERCED pnumber b_warning
   -- if S_warned = $leading_warning(S, b_warning, z)
 
+dec $precision_value(pstate) : int
 dec $stringify(pstate, pvalue, int) : pstate
 def $stringify(S, PFLOAT n, z) = S[.RESULT = KNOWN (PSTRING n_out*)]
-  -- if (n_out*, false) = $number_text(NFLOAT n, 14)
+  -- if (n_out*, false) = $number_text(NFLOAT n, $precision_value(S))
 def $stringify(S, PFLOAT n, z) = $report_event(S[.RESULT = KNOWN (PSTRING n_out*)], DIAGNOSTIC "Warning" ([117,110,101,120,112,101,99,116,101,100,32,78,65,78,32,118,97,108,117,101,32,119,97,115,32,99,111,101,114,99,101,100,32,116,111,32,115,116,114,105,110,103]) z, 2)
-  -- if (n_out*, true) = $number_text(NFLOAT n, 14)
+  -- if (n_out*, true) = $number_text(NFLOAT n, $precision_value(S))
   -- if $(z > 0)
 def $stringify(S, PFLOAT n, z) = S[.COMPLETION = UNSUPPORTED "missing source line"]
-  -- if (n_out*, true) = $number_text(NFLOAT n, 14)
+  -- if (n_out*, true) = $number_text(NFLOAT n, $precision_value(S))
   -- if $(z <= 0)
 def $stringify(S, PSTRING n*, z) = S[.RESULT = KNOWN (PSTRING n*)]
 def $stringify(S, PINT i, z) = S[.RESULT = KNOWN (PSTRING $decimal_integer(i))]

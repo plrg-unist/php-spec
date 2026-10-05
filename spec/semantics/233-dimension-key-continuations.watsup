@@ -368,7 +368,8 @@ def $key_read_input_source(S, pkeyread) = true
   -- if pkeyread.INPUT = KNOWN (PSTRING n_name*)
   -- if $origin_child((pkeyread.SITE), [PCFIELD 1]) = (porigin_key)
   -- if $compiled_read(S, porigin_key) = (pvalue)
-  -- if n_name* = $compiled_name_bytes(pvalue)
+  -- if $source_precision(S, (porigin_key)) = (z_precision)
+  -- if n_name* = $compiled_name_bytes_at(pvalue, z_precision)
   -- if pkeyread.GLOBAL
 def $key_read_input_source(S, pkeyread) = true
   -- if $key_held_operand(pkeyread.INPUT)

@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Live precision272 now preserves registered/raw get/set/Restore through option
+callbacks, runtime string types/conversions, nonnumeric comparisons and late trace
+formatting. Each main/eval/file unit retains creation precision for parser-folded
+literals and ordinary compiled operands; genuine constant/default/property AST
+operands instead use live precision after callbacks. Sixteen exact source/profile
+comparisons across eleven main programs retain d028/e594/73011 cuts. At73011,
+state54/39/27/74 (194 supplied checks plus12 program bindings) and transport12 pass;
+SL261 and the changed adapter jobs1 build retain their separate cuts. The actual
+ae0 parent is preserved in264 modules through focused source review, with no
+renewed execution. [Ledger](coverage/semantics/precision-review.json) retains the
+include-history and deferred-concat mismatches plus fixture failures. Changed
+precision during suspended eval compilation, Array include/eval warning ingress,
+`serialize_precision` and wider raw-float Throwable formatters remain required.
+
 Global constant callables271 now evaluate static/no-use Closures and function or
 static-method FCCs before registration. REAL lexical/called scope comes from the
 immutable source entry, including inherited include/eval scope; NAMED functions
@@ -272,7 +286,8 @@ preservation keeps243 modules without renewing those cuts. Original compiler and
 fixture parse stops stay zero-credit in the
 [ledger](coverage/semantics/dollar-curly-review.json). The early-eval effects pin
 passes with236 at5cf39c0dd; the other four originals first pass with275 at4293f196. Wider
-interpolation and original non-object-cast/file-observer gaps remain open.
+interpolation and file-observer gaps remain open;261 separately closes the old
+non-object-cast holder pin at its recorded cutoff.
 
 Dynamic object `::class`256 evaluates one child and returns its real class name
 without a string cast. Eager parser concat keeps literal/keyword behavior; later
