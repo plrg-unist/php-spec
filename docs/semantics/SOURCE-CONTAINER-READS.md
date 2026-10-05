@@ -25,12 +25,13 @@ base/key callbacks suppress the remaining callbacks and later consumers,
 preserving the typed destination and the original error's previous chain.
 
 A separate terminal stdClass transition agrees with native PHP. An ArrayAccess
-transition is native-grounded, but its model stops earlier at the existing
-`internal interface method contract` Unsupported, before the key callback. The
+transition is native-grounded, but its model at the282 cut stops earlier at the
+existing `internal interface method contract` Unsupported, before the key callback. The
 attempt to reach the new guard therefore fails its control assertion and earns
 no agreement or guard-execution credit. The complementary, source-reviewed guard
-keeps ArrayAccess separate from the ordinary-object Error. Full ArrayAccess
-interface contracts and dimension dispatch remain required core work.
+keeps ArrayAccess separate from the ordinary-object Error. Module284 now admits
+the [direct ArrayAccess contract and calls](SOURCE-ARRAYACCESS.md) with distinct
+evidence; the earlier failed control keeps its original zero credit.
 
 The pinned contracts are `FETCH_DIM_R/IS`, `zend_fetch_dimension_address_read`
 and `zend_isset_dim_slow` in `vendor/php-src/Zend`. Author8 agreements include
@@ -48,6 +49,7 @@ and `container_read_protocol.py`. `python3 -B tests/semantics/container_read_pre
 tools. Production comparisons use SL_mode and reached fixtures use AL_mode,
 without a fresh-build or full-family claim.
 
-Initial string/object/ArrayAccess reads, wider variable/property base producers,
+Initial string/ordinary-object reads, full nested/RW/reference ArrayAccess,
+wider variable/property base producers,
 GLOBALS quiet/memoized/unset consumers and initial writable memoized/unset/append
 containers remain required core work. Paused return verification stays separate.
