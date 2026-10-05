@@ -1,0 +1,236 @@
+#!/usr/bin/env python3
+"""Independent source-reached Fiber continuation, ownership and admission checks."""
+import argparse
+import base64
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import tempfile
+
+from exception_handler_review import recorded
+from recorded_worker import Worker
+
+ROOT = Path(__file__).resolve().parents[2]
+SOURCES = {row['id']: row['source'] for row in json.loads(
+    Path(__file__).with_name('fiber_review_cases.json').read_text())}
+VALID = ['$call_current_valid(S)', '$call_frames_valid(S, S.FRAMES)',
+         '$call_descriptors_valid(S)', '$heap_valid($heap_graph(S))']
+DONE = ['S_done.COMPLETION = NORMAL', 'S_done.TODO = eps',
+        'S_done.FRAMES = eps', 'S_done.CURRENT = eps', 'S_done.HELD = eps',
+        'S_done.ACTIVEFIBER = eps', 'S_done.FIBERCALLERS = eps',
+        '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))']
+PAUSE = ['S_paused = $drive(S, 0)', 'S_paused.COMPLETION = BUDGET',
+         'S_paused.TODO = S.TODO', 'S_paused.FIBERCALLERS = S.FIBERCALLERS',
+         'S_paused.OBJECTS = S.OBJECTS', 'S_paused.ALLOCATIONS = S.ALLOCATIONS',
+         'S_done = $drive(S, 4000)',
+         '$drive(S_paused[.COMPLETION = NORMAL], 4000) = S_done']
+
+CASES = {
+    'start-frame-original-buffer': {
+        'source': '<?php $f=new Fiber(function(){echo func_num_args();return 7;});$f->start([3],4);echo $f->getReturn();',
+        'stage': 'S.TODO = (ARGINFO_INVOKE pargcall) :: ptask_tail* -- if S.CURRENT = (pcallcontext) -- if $fiber_context_kind(S, pcallcontext)',
+        'checks': [
+            'S.ACTIVEFIBER = (n)', 'S.OBJECTS[n] = FIBER pfiber',
+            'S.FIBERCALLERS = [pfibercaller]', 'pfibercaller.OBJECT = n',
+            'pfibercaller.PREVIOUS = eps', 'pfibercaller.VM.GLOBAL',
+            'pfibercaller.VM.TABLE = $empty_table()',
+            'pfibercaller.API.KIND = eps',
+            'pfibercaller.API.START = ({SLOTS [NAMED_SENT (KNOWN (PARRAY n_arg)), NAMED_SENT (KNOWN (PINT 4))], NAMED eps})',
+            'pcallcontext.ARGC = 2', 'pcallcontext.EXTRA = [KNOWN (PARRAY n_arg), KNOWN (PINT 4)]',
+            'pcallcontext.WRAPPER = eps', 'pcallcontext.HOLES = eps',
+            '$heap_owners($heap_graph(S), HARRAY n_arg) = 2',
+            '$heap_owners($heap_graph(S), HOBJECT n) = 2',
+            '$task_nodes(FIBER_FINISH n) = eps',
+            '$task_nodes(FIBER_WAIT pfibercaller.API) = eps',
+            '$fiber_context_valid(S, pcallcontext)',
+            '~$fiber_context_valid(S, pcallcontext[.ARGC = 1])',
+            '~$fiber_context_valid(S, pcallcontext[.EXTRA = eps])',
+            '~$fiber_context_valid(S, pcallcontext[.LINE = 0])',
+            '~$fiber_cache_valid(S, n, pfiber[.READY = false])',
+            '~$fiber_callers_valid(S, (n), [pfibercaller[.PREVIOUS = (n)]], eps)',
+            '~$fiber_callers_valid(S, (n), [pfibercaller[.API = pfibercaller.API[.SEQUENCE = S.FIBERSEQ]]], eps)',
+            *VALID, *PAUSE, *DONE,
+        ],
+    },
+    'parked-helper-stack-without-self-owner': {
+        'source': SOURCES['review-fiber-helper-call-suspension'],
+        'stage': 'S.ACTIVEFIBER = eps -- if $lookup(S.ENV, $ptascii("f")) = (n_cell) -- if S.STORE[n_cell] = DEFINED (POBJECT n) -- if S.OBJECTS[n] = FIBER pfiber -- if pfiber.STATUS = FIBER_SUSPENDED',
+        'checks': [
+            'S.FIBERCALLERS = eps', 'pfiber.VM = (pfibervm)',
+            '~pfibervm.GLOBAL', 'pfibervm.CURRENT = (pcallcontext)',
+            'pfibervm.FRAMES = [pframe_callback, pframe_base]',
+            'pfibervm.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_saved*',
+            'pfiberapi.OBJECT = n', 'pfiberapi.SENT = (PINT 4)',
+            'pfiberapi.SEQUENCE = pfiber.SEQUENCE',
+            '$task_nodes(FIBER_CONTINUE pfiberapi) = eps',
+            '~((HOBJECT n) <- $node_children(S, HOBJECT n))',
+            '$fiber_vm_valid(S, pfibervm, (n), eps)',
+            '~$fiber_vm_valid(S, pfibervm[.GLOBAL = true], (n), eps)',
+            '~$fiber_record_valid(S, n, pfiber[.SEQUENCE = S.FIBERSEQ])',
+            '~$fiber_record_valid(S, n, pfiber[.VM = (pfibervm[.TODO = ptask_saved*])])',
+            'S_view = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = (n)]',
+            '$fiber_continue_valid(S_view, pfiberapi)',
+            '~$fiber_continue_valid(S_view, pfiberapi[.OBJECT = |S.OBJECTS|])',
+            '~$fiber_continue_valid(S_view, pfiberapi[.KIND = (INTRINSIC_FIBER_RESUME)])',
+            *VALID, *PAUSE, *DONE,
+        ],
+    },
+    'nested-waiting-caller-chain': {
+        'source': SOURCES['review-fiber-nested-running-current'],
+        'stage': 'S.FIBERCALLERS = [pfibercaller_inner, pfibercaller_outer] -- if S.CURRENT = (pcallcontext) -- if $fiber_context_kind(S, pcallcontext)',
+        'checks': [
+            'S.ACTIVEFIBER = (n_inner)', 'pfibercaller_inner.OBJECT = n_inner',
+            'pfibercaller_inner.PREVIOUS = (n_outer)',
+            'pfibercaller_outer.OBJECT = n_outer', 'pfibercaller_outer.PREVIOUS = eps',
+            '~pfibercaller_inner.VM.GLOBAL', 'pfibercaller_outer.VM.GLOBAL',
+            'S.OBJECTS[n_outer] = FIBER pfiber_outer',
+            'S.OBJECTS[n_inner] = FIBER pfiber_inner',
+            'pfiber_outer.STATUS = FIBER_RUNNING', 'pfiber_inner.STATUS = FIBER_RUNNING',
+            'pfiber_outer.VM = eps', 'pfiber_inner.VM = eps',
+            'pfibercaller_inner.VM.TODO = (FIBER_WAIT pfibercaller_inner.API) :: ptask_waiting*',
+            '$fiber_callers_valid(S, (n_inner), S.FIBERCALLERS, eps)',
+            '~$fiber_callers_valid(S, (n_inner), [pfibercaller_inner[.PREVIOUS = eps], pfibercaller_outer], eps)',
+            '~$fiber_callers_valid(S, (n_inner), [pfibercaller_inner[.PREVIOUS = (n_inner)], pfibercaller_outer], eps)',
+            '~$fiber_callers_valid(S, (n_outer), S.FIBERCALLERS, eps)',
+            *VALID, *PAUSE, *DONE,
+        ],
+    },
+    'resume-frame-owns-sent-array': {
+        'source': SOURCES['review-fiber-resume-buffer-keeps-reference-shared'],
+        'stage': 'S.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_tail* -- if S.RESULT = KNOWN (PARRAY n_arg)',
+        'checks': [
+            'S.ACTIVEFIBER = (n)', 'S.OBJECTS[n] = FIBER pfiber',
+            'pfiber.STATUS = FIBER_RUNNING', 'pfiber.VM = eps',
+            'S.FIBERCALLERS = [pfibercaller]',
+            'pfibercaller.API.KIND = (INTRINSIC_FIBER_RESUME)',
+            'pfibercaller.API.SENT = (PARRAY n_arg)',
+            'pfiberapi.KIND = (INTRINSIC_FIBER_SUSPEND)', 'pfiberapi.SENT = eps',
+            '$(pfiberapi.SEQUENCE < pfibercaller.API.SEQUENCE)',
+            '$fiber_api_nodes(pfibercaller.API) = [HOBJECT n, HARRAY n_arg]',
+            '$task_nodes(FIBER_CONTINUE pfiberapi) = eps',
+            '$heap_owners($heap_graph(S), HARRAY n_arg) = 2',
+            '$heap_owners($heap_graph(S), HOBJECT n) = 2',
+            '~$fiber_continue_valid(S, pfiberapi[.SEQUENCE = pfiber.SEQUENCE])',
+            '~$fiber_continue_valid(S, pfiberapi[.SENT = (PNULL)])',
+            *VALID, *PAUSE, *DONE,
+            'S_done.EVENTS = [OUTPUT $ptascii("9"), OUTPUT $ptascii("/"), OUTPUT $ptascii("9"), OUTPUT $ptascii("|"), OUTPUT $ptascii("6")]',
+        ],
+    },
+    'frozen-private-selection-after-maker-return': {
+        'source': SOURCES['review-fiber-private-callback-cached-permission'],
+        'stage': 'S.TODO = (FIBER_ARGS pfiberstart) :: ptask_tail* -- if S.CURRENT = eps',
+        'checks': [
+            'n = pfiberstart.OBJECT', 'S.OBJECTS[n] = FIBER pfiber',
+            'pfiber.STATUS = FIBER_INIT', 'pfiber.READY',
+            'pfiber.CALL = (pconfigcall)', 'pfiber.PRODUCER = (pshutdownproducer)',
+            'pfiber.CAPTURE = (pmethodcapture)',
+            'S.FRAMES = eps', 'S.ACTIVEFIBER = eps', 'S.FIBERCALLERS = eps',
+            '$fiber_cache_valid(S, n, pfiber)',
+            '~$fiber_cache_valid(S, n, pfiber[.TARGET = eps])',
+            '~$fiber_cache_valid(S, n, pfiber[.CALL = (pconfigcall[.OWNER = (|S.OBJECTS|)])])',
+            '~$fiber_cache_valid(S, n, pfiber[.CALL = (pconfigcall[.SENT = eps])])',
+            '~$fiber_cache_valid(S, n, pfiber[.RAW = PNULL])',
+            *VALID, *PAUSE, *DONE,
+        ],
+    },
+    'uncaught-callback-crosses-root-once': {
+        'source': SOURCES['review-fiber-callback-trace-includes-start-buffer'],
+        'stage': 'S.TODO = [THROW_SEARCH n_throwable, FIBER_FINISH n]',
+        'checks': [
+            'S.ACTIVEFIBER = (n)', 'S.CURRENT = eps', 'S.FRAMES = eps',
+            'S.OBJECTS[n] = FIBER pfiber', 'pfiber.STATUS = FIBER_RUNNING',
+            'S.FIBERCALLERS = [pfibercaller]',
+            'pfibercaller.API.START = ({SLOTS [NAMED_SENT (KNOWN (PSTRING $ptascii("held")))], NAMED eps})',
+            '$throwable_member(S, n_throwable)',
+            '$call_task_valid(S, FIBER_FINISH n)',
+            '~$call_task_valid(S, FIBER_FINISH |S.OBJECTS|)',
+            *VALID, *PAUSE, *DONE,
+            'S_done.OBJECTS[n] = FIBER pfiber_done',
+            'pfiber_done.STATUS = FIBER_TERMINATED', 'pfiber_done.FAILED',
+            'pfiber_done.RAW = PNULL', 'pfiber_done.CALL = eps',
+            'pfiber_done.TARGET = eps', 'pfiber_done.ENTRY = eps', 'pfiber_done.VM = eps',
+        ],
+    },
+}
+
+
+def run(selected):
+    assert not selected or set(selected) <= CASES.keys(), 'unknown Fiber state case'
+    cases = {key: value for key, value in CASES.items() if not selected or key in selected}
+    out = Path(tempfile.mkdtemp(prefix='fiber-state-review-', dir=ROOT / '.tools'))
+    environment = dict(os.environ, LC_ALL='C', TZ='UTC')
+    environment.pop('PHP_SPEC_SCRIPT_ENCODING', None)
+    modules = [ROOT / path for path in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
+    revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+    identity_paths = [ROOT / name for name in ('.tools/php/bin/php', '.tools/php-file.so',
+        '_build/default/adapter/main.exe', 'tests/semantics/_build/default/numeric_runner.exe')]
+    identities = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest() for path in identity_paths}
+    changed = subprocess.check_output(['git', 'diff', '--name-only', 'ae0aa479eb5369c879c3b42c358a12aae0ec6c9f'], cwd=ROOT, text=True).splitlines()
+    changed += subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard', 'spec/semantics'], cwd=ROOT, text=True).splitlines()
+    watched = [Path(__file__), Path(__file__).with_name('fiber_review_cases.json'), ROOT / 'spec/semantics/modules.json']
+    watched += [ROOT / name for name in changed if name.endswith('.watsup')]
+    inputs = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest() for path in watched}
+    records = []
+    print(out, flush=True)
+    for name, case in cases.items():
+        directory = out / name
+        directory.mkdir()
+        source = directory / 'source.php'
+        source.write_text(case['source'])
+        frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d',
+                           'extension=' + str(ROOT / '.tools/php-file.so'),
+                           str(ROOT / 'frontend/worker.php')], directory / 'frontend')
+        try:
+            parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(source.read_bytes()).decode()})
+            assert parsed['accepted'], name
+        finally:
+            frontend.close()
+        adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], directory / 'adapter')
+        try:
+            checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
+            assert checked['ok'], name
+        finally:
+            adapter.close()
+        fixture = directory / 'test.watsup'
+        fixture.write_text(
+            'dec $stage(pstate) : bool\ndef $stage(S) = true -- if ' + case['stage'] + '\n'
+            'def $stage(S) = false -- otherwise\ndec $seek(pstate, nat) : pstate\n'
+            'def $seek(S, n) = S -- if $stage(S)\n'
+            'def $seek(S, n) = $seek($drive_steps(S[.COMPLETION = NORMAL], 1), $nabs($(n - 1))) '
+            '-- if ~$stage(S) -- if $(n > 0) -- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n'
+            'def $seek(S, n) = S -- if S.COMPLETION =/= NORMAL /\\ S.COMPLETION =/= BUDGET\n'
+            'dec $main() : bool\ndef $main() = true\n'
+            '  -- if S_initial = $php_run(' + checked['fixture'] + ', 0, '
+            + json.dumps(base64.b64encode(str(source).encode()).decode()) + ')\n'
+            '  -- if S = $seek(S_initial[.COMPLETION = NORMAL], 4000)[.COMPLETION = NORMAL]\n'
+            '  -- if ' + case['stage'] + '\n'
+            + ''.join('  -- if ' + clause + '\n' for clause in case['checks']))
+        process = recorded([ROOT / 'tests/semantics/_build/default/numeric_runner.exe',
+                            *modules, fixture], directory, 'model', environment, 120)
+        passed = (not process['timeout'] and process['exit'] == 0 and
+                  (directory / 'model.stdout').read_bytes() == b'true\n' and
+                  not (directory / 'model.stderr').read_bytes())
+        records.append({'id': name, 'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
+                        'assertions': len(case['checks']) + 3, 'process': process, 'passed': passed})
+        print(name, passed, flush=True)
+        if not passed:
+            print((directory / 'model.stderr').read_text()[-2500:], flush=True)
+    assert inputs == {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest() for path in watched}, 'Fiber review inputs changed during run'
+    report = {'revision': revision, 'selection': list(cases), 'records': records,
+              'identities': identities, 'inputs': inputs,
+              'compiler': {'spectec_source_commit': 'da36ac3c434cd291940293a63da64544307730a3', 'ocaml_switch': '5.1.0', 'semantic_mode': 'SL'},
+              'runtime': {'source_commit': '34308a6666b2d489c509541ea9befea9e2b42348', 'version': '8.5.10', 'sapi': 'cli', 'int_size': 8, 'zts': False},
+              'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING_removed': True},
+              'budgets': {'seek_steps': 4000, 'finish_steps': 4000, 'process_seconds': 120},
+              'raw': str(out), 'passed': all(row['passed'] for row in records)}
+    (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
+    return report['passed']
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--case', action='append')
+    args = parser.parse_args()
+    raise SystemExit(0 if run(args.case) else 1)
