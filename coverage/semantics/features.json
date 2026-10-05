@@ -939,17 +939,20 @@
         "spec/semantics/45-constant-context.watsup",
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/59-concat-expressions.watsup",
-        "spec/semantics/272-live-precision.watsup"
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
         "tests/semantics/validate.py",
         "tests/semantics/ordinary.py",
-        "tests/semantics/precision_sources.py"
+        "tests/semantics/precision_sources.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open. Precision272 separates ordinary captured literal operands from live conversion below genuine deferred initializer roots, preserving callback code outside those roots. See precision-review.json; complete concat remains open.",
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open. Precision272 separates ordinary captured literal operands from live conversion below genuine deferred initializer roots, preserving callback code outside those roots. See precision-review.json; complete concat remains open. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required.",
       "helper_tests": [
-        "tests/semantics/precision_protocol.py"
+        "tests/semantics/precision_protocol.py",
+        "tests/semantics/suspended_precision_protocol.py"
       ],
       "evidence": [
         "coverage/semantics/precision-review.json"
@@ -1831,7 +1834,8 @@
         "spec/semantics/30-storage.watsup",
         "spec/semantics/184-class-constants.watsup",
         "spec/semantics/195-declaration-history.watsup",
-        "spec/semantics/272-live-precision.watsup"
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -1839,9 +1843,10 @@
         "tests/semantics/eval_execution.py",
         "tests/semantics/include_execution.py",
         "tests/semantics/eval_location_protocol.py",
-        "tests/semantics/precision_sources.py"
+        "tests/semantics/precision_sources.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This older constant-prepass evidence remains separate from reviewed dynamic-source execution. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json. Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json. Precision272 retains accepted/rejected unit creation precision through genuine history/replay; changed precision during suspended compilation stays Unsupported. See precision-review.json.",
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This older constant-prepass evidence remains separate from reviewed dynamic-source execution. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json. Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json. Precision272 retains accepted/rejected unit creation precision through genuine history/replay; genuine suspended-eval resume epochs preserve later compiler precision. See precision-review.json. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required.",
       "evidence": [
         "coverage/semantics/dynamic-eval-author.json",
         "coverage/semantics/eval-scope-followup-author.json",
@@ -1849,7 +1854,8 @@
         "coverage/semantics/precision-review.json"
       ],
       "helper_tests": [
-        "tests/semantics/precision_protocol.py"
+        "tests/semantics/precision_protocol.py",
+        "tests/semantics/suspended_precision_protocol.py"
       ]
     },
     {
@@ -2579,7 +2585,9 @@
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/70-quiet-coalesce.watsup",
         "spec/semantics/75-request-environment.watsup",
-        "spec/semantics/76-globals.watsup"
+        "spec/semantics/76-globals.watsup",
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -2589,9 +2597,16 @@
         "coverage/semantics/quiet-access-source.json",
         "coverage/semantics/quiet-access-review.json",
         "tests/semantics/request_environment.py",
-        "tests/semantics/globals_compiler.py"
+        "tests/semantics/globals_compiler.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
-      "review": "Historical storage review: Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure. Current addition: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open."
+      "review": "Historical storage review: Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure. Current addition: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required.",
+      "helper_tests": [
+        "tests/semantics/suspended_precision_protocol.py"
+      ],
+      "evidence": [
+        "coverage/semantics/precision-review.json"
+      ]
     },
     {
       "node": "Expr_Yield",
@@ -5057,23 +5072,26 @@
         "spec/semantics/03-numeric-format.watsup",
         "spec/semantics/35-scalar-operations.watsup",
         "spec/semantics/40-control.watsup",
-        "spec/semantics/272-live-precision.watsup"
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "helper_tests": [
         "tests/semantics/numeric_format.py",
         "coverage/semantics/numeric-format.json",
-        "tests/semantics/precision_protocol.py"
+        "tests/semantics/precision_protocol.py",
+        "tests/semantics/suspended_precision_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
-        "tests/semantics/precision_sources.py"
+        "tests/semantics/precision_sources.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
         "coverage/semantics/precision-review.json"
       ],
-      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending. Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending. Live272 feeds runtime conversion, weak strings, nonnumeric comparison and late trace formatting; unit capture and genuine deferred AST conversion remain distinct. Bounded source/state cuts are in precision-review.json; wider consumers remain required.",
+      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending. Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending. Live272 feeds runtime conversion, weak strings, nonnumeric comparison and late trace formatting; unit capture and genuine deferred AST conversion remain distinct. Bounded source/state cuts are in precision-review.json; wider consumers remain required. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required.",
       "observed_quirks": [
         "Pinned zend_gcvt snprintf(ndigit+1) truncates INF/-INF/NAN at precision0/1/2/3; source-backed tests and NUMERICS.md retain exact outputs. Specification agrees with engine; no intentional divergence."
       ]
@@ -5085,21 +5103,24 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/03-numeric-format.watsup",
-        "spec/semantics/272-live-precision.watsup"
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "helper_tests": [
         "tests/semantics/numeric_format.py",
         "coverage/semantics/numeric-format.json",
-        "tests/semantics/precision_protocol.py"
+        "tests/semantics/precision_protocol.py",
+        "tests/semantics/suspended_precision_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/precision_sources.py"
+        "tests/semantics/precision_sources.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
         "coverage/semantics/precision-review.json"
       ],
-      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending. Live272 now retains raw registered/current precision and modified-only Restore, including option callbacks and rejected writes; precision-review.json preserves scoped source/state/transport cuts. Wider configuration remains required."
+      "review": "Independent reviewer: pure helper reviewed and 8826 cases repeated with stable fingerprints (commit 99ebf273); complete source/context behavior remains pending. Live272 now retains raw registered/current precision and modified-only Restore, including option callbacks and rejected writes; precision-review.json preserves scoped source/state/transport cuts. Wider configuration remains required. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required."
     },
     {
       "id": "bytes.byte-values",
@@ -11513,17 +11534,20 @@
         "spec/semantics/152-throwable-runtime.watsup",
         "spec/semantics/184-class-constants.watsup",
         "spec/semantics/195-declaration-history.watsup",
-        "spec/semantics/272-live-precision.watsup"
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "helper_tests": [
         "tests/semantics/eval_protocol.py",
         "tests/semantics/eval_location_protocol.py",
-        "tests/semantics/precision_protocol.py"
+        "tests/semantics/precision_protocol.py",
+        "tests/semantics/suspended_precision_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/eval_execution.py",
         "tests/semantics/include_execution.py",
-        "tests/semantics/precision_sources.py"
+        "tests/semantics/precision_sources.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
@@ -11532,7 +11556,7 @@
         "coverage/semantics/compound-eval-location-review.json",
         "coverage/semantics/precision-review.json"
       ],
-      "review": "Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json. Precision272 retains each actual eval parse entry across accepted/rejected history and source replay. Changed precision during suspended compilation remains explicit Unsupported and required follow-on; see precision-review.json."
+      "review": "Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json. Precision272 retains each actual eval parse entry across accepted/rejected history and source replay. Changed precision during suspended compilation remains explicit Unsupported and required follow-on; see precision-review.json. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required."
     },
     {
       "id": "dynamic.eval-scope",
@@ -12793,18 +12817,21 @@
         "spec/semantics/76-globals.watsup",
         "spec/semantics/225-startup-ini.watsup",
         "spec/semantics/237-display-errors.watsup",
-        "spec/semantics/272-live-precision.watsup"
+        "spec/semantics/272-live-precision.watsup",
+        "spec/semantics/236-eval-declaration-notices.watsup"
       ],
       "helper_tests": [
         "tests/semantics/startup_ini_protocol.py",
         "tests/semantics/display_errors_protocol.py",
-        "tests/semantics/precision_protocol.py"
+        "tests/semantics/precision_protocol.py",
+        "tests/semantics/suspended_precision_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/request_environment.py",
         "tests/semantics/startup_ini.py",
         "tests/semantics/display_errors.py",
-        "tests/semantics/precision_sources.py"
+        "tests/semantics/precision_sources.py",
+        "tests/semantics/suspended_precision_sources.py"
       ],
       "evidence": [
         "vendor/php-src/main/main.c",
@@ -12813,7 +12840,7 @@
         "coverage/semantics/display-errors-review.json",
         "coverage/semantics/precision-review.json"
       ],
-      "review": "Effective variables_order and auto_globals_jit inputs reviewed; broader configuration remains pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Registered two-slot startup225 and modified-only Restore are reviewed in startup-ini-review.json:9 exact profile comparisons/99 state/15 transport at36810, with source-equivalent221-module actual0592 preservation. Wider startup directives/parsing/profiles and lifecycle remain required. Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actualddb6/233 preservation adds no execution credit. Actual231/237 held-original fatal freezing agrees atccd900 after rendering and before queue mode writes; shutdown-functions-review.json records that separate composition. Wider display/configuration and later request stages remain required. Precision272 adds nonnullable registered bytes, raw get/set/Restore and independent optional startup transport while retaining reporting/path/display facts. Partial16 source/profile,194 supplied checks and12 transport cuts remain separate in precision-review.json."
+      "review": "Effective variables_order and auto_globals_jit inputs reviewed; broader configuration remains pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Registered two-slot startup225 and modified-only Restore are reviewed in startup-ini-review.json:9 exact profile comparisons/99 state/15 transport at36810, with source-equivalent221-module actual0592 preservation. Wider startup directives/parsing/profiles and lifecycle remain required. Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actualddb6/233 preservation adds no execution credit. Actual231/237 held-original fatal freezing agrees atccd900 after rendering and before queue mode writes; shutdown-functions-review.json records that separate composition. Wider display/configuration and later request stages remain required. Precision272 adds nonnullable registered bytes, raw get/set/Restore and independent optional startup transport while retaining reporting/path/display facts. Partial16 source/profile,194 supplied checks and12 transport cuts remain separate in precision-review.json. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required."
     },
     {
       "id": "environment.initialization",
