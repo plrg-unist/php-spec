@@ -270,6 +270,7 @@ def $property_callable_projection(S, porigin) = eps -- otherwise
 def $constant_callable_flow_at(S, porigin, porigin_owner, pvalueclass, n_prefix, porigin_seen*) = $constant_callable_flow(S, porigin_target, porigin_owner, pvalueclass, n_prefix, porigin_seen*)
   -- if $compiled_redirect(S, porigin) = eps
   -- if ~$constant_callable_foldable(pvalueclass)
+  -- if ~$trait_cache_dim_active(S, porigin, porigin_owner, pvalueclass, n_prefix)
   -- if $property_callable_projection(S, porigin) = (porigin_target)
 
 rule PhpStep/static-default-bind-transfer: S ~> $static_default_restore(S_value[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "uncertified deferred static object transfer"], pstaticdefaultcontext)

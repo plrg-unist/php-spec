@@ -462,6 +462,10 @@ def $trait_cache_flow_key(S, porigin, phpType5, i, porigin_owner, n_prefix) = ep
 
 ;; A literal-array dimension keeps the selected source occurrence, including
 ;; replacement by a later same key. Its object still needs the actual receipt.
+def $trait_cache_dim_active(S, porigin, porigin_owner, PVCLOSURE n porigin_site, n_prefix) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression_base expression_key metadata)
+  -- if $trait_cache_flow_context(S, porigin, porigin_owner, n_prefix) =/= eps
+def $trait_cache_dim_active(S, porigin, porigin_owner, pvalueclass, n_prefix) = false -- otherwise
 def $trait_cache_dim_source(S, porigin, pkey, porigin_owner, n_prefix) = $trait_cache_dim_items(S, porigin, pkey, porigin_owner, n_prefix, 0, phpType13*, $(-9223372036854775808), eps)
   -- if $origin_node(S.SOURCES, porigin) = (NExprArray (SEQUENCE phpType13*) metadata)
 def $trait_cache_dim_source(S, porigin, pkey, porigin_owner, n_prefix) = eps -- otherwise
