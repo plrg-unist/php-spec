@@ -30,6 +30,8 @@ CASES = {
     'yielded-array-alias-copy': (b'<?php\nfunction seq(&$r){$a=[&$r];yield $a;$a[0]=9;yield $a;}$r=1;$g=seq($r);$v=$g->current();$v[1]=2;$r=3;echo $g->current()[0],":",isset($g->current()[1])?"X":"N";$g->next();echo ":",$v[0],":",$g->current()[0],":",isset($g->current()[1])?"X":"N";$g->next();echo ":",$r;', b'3:N:9:9:N:9'),
     'yielded-object-retirement': (b'<?php\nclass Box {function __destruct(){echo "D";}}function seq($o){yield $o;unset($o);yield 0;}$o=new Box;$g=seq($o);unset($o);echo "C";$v=$g->current();$g->next();echo "N";unset($v);echo "V";unset($g);echo "Z";', b'CNDVZ'),
     'previous-yield-retirement-before-cv': (b'<?php\n$v=1;class Box {function __destruct(){$GLOBALS["v"]=9;echo "D";}}function seq(){global $v;yield new Box;yield $v=>$v;}$g=seq();$g->current();echo "C";$g->next();echo $g->key(),":",$g->current();', b'CD9:9'),
+    'closed-last-yield-owner': (b'<?php\nclass Box {function __destruct(){echo "D";}}function seq(){yield new Box;}$g=seq();$g->current();echo "A";$g->next();echo "B";echo $g->current()===null?"N":"X";unset($g);echo "C";', b'ABNDC'),
+    'generator-retval-skips-stringable-return': (b'<?php\nclass Str {function __toString():string {echo "X";return "str";}}function seq():Generator|string {if(false)yield 1;return new Str;}$g=seq();echo "C";echo $g->valid()?"T":"F";unset($g);echo "Z";', b'CFZ'),
 }
 UNSUPPORTED = {
     "started-finally-force-close": (b'<?php\nfunction seq(){try{echo "A";yield 1;echo "B";yield 2;}finally{echo "F";}}$g=seq();foreach($g as $v){echo $v;break;}echo "C";foreach($g as $v){echo $v;break;}echo "D";$g->next();echo $g->current();unset($g);echo "Z";', b'A1C1DB2FZ'),
