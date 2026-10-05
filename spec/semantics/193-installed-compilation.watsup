@@ -197,17 +197,17 @@ def $compilation_functions_replace(pfunction :: pfunction_tail*, n, pfunction_ne
 def $compilation_code_replace(eps, pcode) = [pcode]
 def $compilation_code_replace(pcode_old :: pcode*, pcode_new) = pcode_new :: pcode* -- if pcode_old.UNIT = pcode_new.UNIT
 def $compilation_code_replace(pcode_old :: pcode*, pcode_new) = pcode_old :: $compilation_code_replace(pcode*, pcode_new) -- if pcode_old.UNIT =/= pcode_new.UNIT
-def $compilation_live_class(pclassdesc_live*, pclassdesc_old*, pclassdesc) = (pclassdesc)
-  -- if $class_at(pclassdesc_old*, pclassdesc.ORIGIN) = (pclassdesc_old)
-  -- if $class_at(pclassdesc_live*, pclassdesc.ORIGIN) = (pclassdesc_old)
-def $compilation_live_class(pclassdesc_live*, pclassdesc_old*, pclassdesc) = (pclassdesc_live)
-  -- if $class_at(pclassdesc_old*, pclassdesc.ORIGIN) = (pclassdesc)
-  -- if $class_at(pclassdesc_live*, pclassdesc.ORIGIN) = (pclassdesc_live)
+def $compilation_live_class(pclassdesc_actual*, pclassdesc_prior*, pclassdesc) = (pclassdesc)
+  -- if $class_at(pclassdesc_prior*, pclassdesc.ORIGIN) = (pclassdesc_before)
+  -- if $class_at(pclassdesc_actual*, pclassdesc.ORIGIN) = (pclassdesc_before)
+def $compilation_live_class(pclassdesc_actual*, pclassdesc_prior*, pclassdesc) = (pclassdesc_live)
+  -- if $class_at(pclassdesc_prior*, pclassdesc.ORIGIN) = (pclassdesc)
+  -- if $class_at(pclassdesc_actual*, pclassdesc.ORIGIN) = (pclassdesc_live)
   -- if pclassdesc_live =/= pclassdesc
-def $compilation_live_class(pclassdesc_live*, pclassdesc_old*, pclassdesc) = (pclassdesc)
-  -- if $class_at(pclassdesc_old*, pclassdesc.ORIGIN) = eps
-  -- if $class_at(pclassdesc_live*, pclassdesc.ORIGIN) = eps
-def $compilation_live_class(pclassdesc_live*, pclassdesc_old*, pclassdesc) = eps -- otherwise
+def $compilation_live_class(pclassdesc_actual*, pclassdesc_prior*, pclassdesc) = (pclassdesc)
+  -- if $class_at(pclassdesc_prior*, pclassdesc.ORIGIN) = eps
+  -- if $class_at(pclassdesc_actual*, pclassdesc.ORIGIN) = eps
+def $compilation_live_class(pclassdesc_actual*, pclassdesc_prior*, pclassdesc) = eps -- otherwise
 def $compilation_live_classes(pclassdesc_live*, pclassdesc_old*, eps) = (eps)
 def $compilation_live_classes(pclassdesc_live*, pclassdesc_old*, pclassdesc :: pclassdesc_tail*) = (pclassdesc_next :: pclassdesc_next_tail*)
   -- if $compilation_live_class(pclassdesc_live*, pclassdesc_old*, pclassdesc) = (pclassdesc_next)
