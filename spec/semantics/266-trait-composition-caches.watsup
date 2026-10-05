@@ -273,7 +273,10 @@ def $trait_cache_object_read(F, pcpath, pclassconstantdesc, z) = $trait_cache_ob
   -- if $trait_cache_requested(F.MEMORY, porigin_owner, phpType19, porigin_site) = (porigin_requested)
   -- if $class_at(F.MEMORY.CLASSES, porigin_requested) = (pclassdesc_requested)
   -- if $pfclass_constant_member(phpType20, eps) = (ptbytes_member)
-  -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS F.LOOKUPS ++ [porigin_site], PREFIX |F.MEMORY.DECLARATIONS|, USERPREFIX |F.MEMORY.USERCONSTANTS|}
+  -- if porigin_lookups* = F.LOOKUPS ++ [porigin_site]
+  -- if n_prefix = |F.MEMORY.DECLARATIONS|
+  -- if n_user = |F.MEMORY.USERCONSTANTS|
+  -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS porigin_lookups*, PREFIX n_prefix, USERPREFIX n_user}
   -- if $trait_cache_cause_selected(F.MEMORY, ptraitcachecause) = (pclassconstantdesc)
   -- if $constant_callable_published(F.MEMORY.DECLARATIONS, pclassconstantdesc.OWNER)
   -- if F.MEMORY.CLASSCONSTANTINIT = eps
