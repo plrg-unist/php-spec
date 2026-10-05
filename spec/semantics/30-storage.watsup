@@ -146,6 +146,9 @@ syntax pcontainerkind = CONTAINER_FETCH | CONTAINER_ASSIGN | CONTAINER_COMPOUND
 syntax pcontainerwrite = { SITE porigin, WRITER pkeywriter, INPUT poperand, PLACE plocation, BINDING ptbytes?, LINE int, RW bool, KIND pcontainerkind, PHASE pcontainerphase }
 syntax pcontainerreadphase = READ_BASE_CV ptbytes | READ_KEY_CV ptbytes | READ_OFFSET pvalue
 syntax pcontainerread = { READ pkeyread, SELECTED poperand, PHASE pcontainerreadphase }
+syntax paccessmode = ACCESS_READ pkeymode | ACCESS_SET | ACCESS_UNSET
+syntax paccessphase = ACCESS_KEY_CV ptbytes | ACCESS_VALUE_CV ptbytes | ACCESS_UNSET_FALSE | ACCESS_TRUTH ptbytes bool | ACCESS_CALL ptbytes
+syntax paccess = { SITE porigin, TARGET porigin, LINE int, KEYLINE int, MODE paccessmode, BASE pbase, INPUT poperand, RHS poperand, SELECTED poperand, OBJECT nat?, OFFSET pvalue, VALUE pvalue, LATCH bool, OUTER bool, TASK ptask, PHASE paccessphase }
 syntax perrorcall = { SITE porigin, LEVEL int, MESSAGE nat*, LINE int, EVENT pevent, CALLBACK pvalue, TARGET pcalltarget?, RESUME ptask }
 syntax pfdiagnostic = { SITE porigin, OWNER porigin, LEVEL int, MESSAGE nat*, LINE int }
 syntax pdeclnotice = { CLASS porigin, METHOD porigin, LINE int, MESSAGE nat* }
@@ -195,7 +198,7 @@ syntax ptask = FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat
   | KEY_READ_BASE pbase pkeymode | KEY_READ_DIM poperand int pkeymode | KEY_READ_GLOBAL poperand int pkeymode | KEY_READ_RESULT pkeyread | KEY_READ_FINISH porigin ptask
   | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_GLOBAL poperand int bool | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
   | CONTAINER_WRITE_RESULT pcontainerwrite
-  | CONTAINER_READ_RESULT pcontainerread
+  | CONTAINER_READ_RESULT pcontainerread | ACCESS_RESULT paccess | ACCESS_RESUME paccess
   | KEY_COALESCE_RESULT pbase bool int | KEY_UNSET_RESULT pkeyread | KEY_UNSET_FINISH porigin pbase
   | KEY_UNSET_BASE pbase bool | KEY_UNSET_DIM poperand int bool | KEY_UNSET_FETCH_RESULT pkeyread | KEY_UNSET_NULL_RESULT pkeyread | KEY_APPEND_RESULT pappendread
   | KEY_COALESCE_RHS_RESULT pcoalesceread
@@ -951,3 +954,16 @@ dec $global_new_birth(pstate, pstate, ptbytes, nat) : pstate
 dec $global_new_pending(pstate, pdefaultnew) : bool
 dec $global_new_complete(pstate, pstate, pdefaultnew) : pstate
 dec $global_new_argument_owned(pstate, pdefaultnew) : bool
+
+;; Language-triggered ArrayAccess call and dimension admission.
+dec $arrayaccess_after_issue(pstate, pclassdesc, pmethodissue) : pmethodissue
+dec $arrayaccess_parent_publish(pstate, pstate, pclassdesc) : pstate
+dec $access_read_pending(pstate) : bool
+dec $access_dimension_pending(pstate) : bool
+dec $access_set_pending(pstate) : bool
+dec $access_unset_pending(pstate) : bool
+dec $access_pending_site(pstate, porigin) : bool
+dec $access_selected(pstate, pcalltarget, porigin) : bool
+dec $access_context_kind(pstate, pcallcontext) : bool
+dec $access_context(pstate, pcallcontext) : bool
+dec $access_chain(pstate, pcallcontext?, pframe*) : bool

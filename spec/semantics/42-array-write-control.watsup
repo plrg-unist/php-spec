@@ -8,11 +8,13 @@ rule PhpStep/array-assignment-prepare: S ~> S[.TODO = [$at_task($origin_child(S.
 rule PhpStep/array-assignment-write: S ~> S_written[.HELD = S.HELD]
   -- if S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask_tail*
   -- if ~$key_write_pending(S)
+  -- if ~$access_set_pending(S)
   -- if ~$static_string_callback_candidate(S)
   -- if S_written = $assign_array($hold_task_inputs(S), pbase, S.RESULT, z)
 rule PhpStep/array-assignment-self: S ~> S_written[.HELD = S.HELD]
   -- if S.TODO = (ASSIGN_ARRAY pbase z true) :: ptask_tail*
   -- if ~$key_write_pending(S)
+  -- if ~$access_set_pending(S)
   -- if ~$static_string_callback_candidate(S)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
