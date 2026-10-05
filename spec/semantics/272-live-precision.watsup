@@ -107,6 +107,7 @@ def $method_capture_source_name_origin(S, porigin, phpType20, preqbytes) = false
 ;; the epochs recorded after real diagnostic/publication pauses.
 dec $precision_resume_tag(pdeclaration) : bool
 dec $precision_pause_tag(pdeclaration) : bool
+dec $precision_capture(int) : int?
 dec $eval_precision_epochs_from(pdeclaration*, nat, int, (nat, nat, nat)*, (nat, nat, int)*) : (nat, nat, int)*?
 dec $compiler_epoch_value((nat, nat, int)*, nat, nat, int) : int
 dec $ppprecision_without(ppexprdone*, pcpath) : ppexprdone*
@@ -116,8 +117,8 @@ dec $eval_compile_precision_prefix(ppstate, ppstate, pevalcompile) : bool
 dec $eval_compile_precision_publications(ppinstalled, ppinstalled, pppublication*) : bool
 
 def $precision_resume_input(PDEVALRESUME n z) = ((n, z, eps))
-def $precision_resume_input(PDEVALRESUMEPRECISION n z z_precision) = ((n, z, z_precision?))
-  -- if z_precision? = (z_precision)
+def $precision_capture(z) = (z)
+def $precision_resume_input(PDEVALRESUMEPRECISION n z z_precision) = ((n, z, $precision_capture(z_precision)))
   -- if $(z_precision >= -1 /\ z_precision <= 9223372036854775807)
 def $precision_resume_input(pdeclaration) = eps -- otherwise
 def $precision_resume_tag(PDEVALRESUME n z) = true
@@ -132,8 +133,8 @@ def $eval_precision_epochs(pdeclaration*, n) = eps -- otherwise
 def $eval_precision_epochs_from(eps, n, z_current, (n_unit, n_checkpoint, n_diagnostic)*, (n_cp, n_diag, z_epoch)*) = ((n_cp, n_diag, z_epoch)*)
 def $eval_precision_epochs_from((PDEVALPAUSE n_unit n_checkpoint n_diagnostic pdeclnoticeitem*) :: pdeclaration*, n, z_current, (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*) = $eval_precision_epochs_from(pdeclaration*, n, z_current, (n_unit, n_checkpoint, n_diagnostic) :: (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*)
 def $eval_precision_epochs_from(pdeclaration_resume :: pdeclaration*, n, z_current, (n, n_checkpoint, n_diagnostic) :: (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*) = $eval_precision_epochs_from(pdeclaration*, n, z_precision, (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)* ++ [(n_checkpoint, n_diagnostic, z_precision)])
-  -- if $precision_resume_input(pdeclaration_resume) = ((n, z, z_precision?))
-  -- if z_precision? = (z_precision)
+  -- if $precision_resume_input(pdeclaration_resume) = ((n, z, z_resume?))
+  -- if z_resume? = (z_precision)
   -- if z_precision =/= z_current
 def $eval_precision_epochs_from(pdeclaration_resume :: pdeclaration*, n, z_current, (n, n_checkpoint, n_diagnostic) :: (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*) = $eval_precision_epochs_from(pdeclaration*, n, z_current, (n_wait, n_cp, n_diag)*, (n_epoch_cp, n_epoch_diag, z_epoch)*)
   -- if $precision_resume_input(pdeclaration_resume) = ((n, z, eps))
