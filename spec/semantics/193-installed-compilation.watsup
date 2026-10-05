@@ -138,12 +138,17 @@ def $compilation_refresh_arrays(S, parray*, pcompilemap_old, pcompilemap, eps) =
 def $compilation_refresh_arrays(S, parray*, pcompilemap_old, pcompilemap, (HARRAY n) :: pnode*) = $compilation_refresh_arrays(S_next, parray*, pcompilemap_old, pcompilemap_next, pnode*)
   -- if $compilation_refresh_array(S, parray*, pcompilemap_old, pcompilemap, n) = ((S_next, pcompilemap_next, n_live))
 def $compilation_refresh_arrays(S, parray*, pcompilemap_old, pcompilemap, pnode*) = eps -- otherwise
-def $compilation_reuse_table(S, eps, pcompilemap, parray) = eps
-def $compilation_reuse_table(S, (n_local, n_live) :: (n_tail_local, n_tail_live)*, pcompilemap, parray) = (n_live)
+dec $compilation_reuse_valid(pstate, pcompilemap, nat, parray) : bool
+def $compilation_reuse_valid(S, pcompilemap, n_live, parray) = true
   -- if $(n_live < |S.ARRAYS|)
   -- if S.ARRAYS[n_live] = parray
   -- if ~$compilation_map_live(pcompilemap, n_live)
-def $compilation_reuse_table(S, (n_local, n_live) :: (n_tail_local, n_tail_live)*, pcompilemap, parray) = $compilation_reuse_table(S, (n_tail_local, n_tail_live)*, pcompilemap, parray) -- otherwise
+def $compilation_reuse_valid(S, pcompilemap, n_live, parray) = false -- otherwise
+def $compilation_reuse_table(S, eps, pcompilemap, parray) = eps
+def $compilation_reuse_table(S, (n_local, n_live) :: (n_tail_local, n_tail_live)*, pcompilemap, parray) = (n_live)
+  -- if $compilation_reuse_valid(S, pcompilemap, n_live, parray)
+def $compilation_reuse_table(S, (n_local, n_live) :: (n_tail_local, n_tail_live)*, pcompilemap, parray) = $compilation_reuse_table(S, (n_tail_local, n_tail_live)*, pcompilemap, parray)
+  -- if ~$compilation_reuse_valid(S, pcompilemap, n_live, parray)
 def $compilation_refresh_table(S, pcompilemap_old, pcompilemap, n, parray) = (S, pcompilemap ++ [(n, n_live)], n_live)
   -- if $compilation_reuse_local(S, pcompilemap_old, pcompilemap, n, parray) = (n_live)
 def $compilation_refresh_table(S, pcompilemap_old, pcompilemap, n, parray) = (S[.ARRAYS = S.ARRAYS ++ [parray]][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_live]], pcompilemap ++ [(n, n_live)], n_live)
@@ -151,10 +156,12 @@ def $compilation_refresh_table(S, pcompilemap_old, pcompilemap, n, parray) = (S[
   -- if n_live = |S.ARRAYS|
 def $compilation_reuse_local(S, pcompilemap_old, pcompilemap, n, parray) = (n_live)
   -- if $compilation_map_at(pcompilemap_old, n) = (n_live)
-  -- if $(n_live < |S.ARRAYS|)
-  -- if S.ARRAYS[n_live] = parray
-  -- if ~$compilation_map_live(pcompilemap, n_live)
-def $compilation_reuse_local(S, pcompilemap_old, pcompilemap, n, parray) = $compilation_reuse_table(S, pcompilemap_old, pcompilemap, parray) -- otherwise
+  -- if $compilation_reuse_valid(S, pcompilemap, n_live, parray)
+def $compilation_reuse_local(S, pcompilemap_old, pcompilemap, n, parray) = $compilation_reuse_table(S, pcompilemap_old, pcompilemap, parray)
+  -- if $compilation_map_at(pcompilemap_old, n) = eps
+def $compilation_reuse_local(S, pcompilemap_old, pcompilemap, n, parray) = $compilation_reuse_table(S, pcompilemap_old, pcompilemap, parray)
+  -- if $compilation_map_at(pcompilemap_old, n) = (n_live)
+  -- if ~$compilation_reuse_valid(S, pcompilemap, n_live, parray)
 def $compilation_pool_replace(eps, n, pconstant*) = eps
 def $compilation_pool_replace(ppool :: ppool_tail*, n, pconstant*) = ppool[.CONSTANTS = pconstant*] :: ppool_tail* -- if ppool.UNIT = n
 def $compilation_pool_replace(ppool :: ppool_tail*, n, pconstant*) = ppool :: $compilation_pool_replace(ppool_tail*, n, pconstant*) -- if ppool.UNIT =/= n
@@ -177,22 +184,29 @@ dec $compilation_code_replace(pcode*, pcode) : pcode*
 dec $compilation_refresh_image(pstate, nat, ppinstalled, ppinstalled) : pstate
 dec $compilation_live_class(pclassdesc*, pclassdesc*, pclassdesc) : pclassdesc?
 dec $compilation_live_classes(pclassdesc*, pclassdesc*, pclassdesc*) : pclassdesc*?
+dec $compilation_unit_origin(porigin, nat) : bool
+def $compilation_unit_origin(PORIGIN n pcpath, n) = true
+def $compilation_unit_origin(porigin, n) = false -- otherwise
 def $compilation_classes_without(eps, n) = eps
 def $compilation_classes_without(pclassdesc :: pclassdesc_tail*, n) = $compilation_classes_without(pclassdesc_tail*, n)
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
-def $compilation_classes_without(pclassdesc :: pclassdesc_tail*, n) = pclassdesc :: $compilation_classes_without(pclassdesc_tail*, n) -- otherwise
+def $compilation_classes_without(pclassdesc :: pclassdesc_tail*, n) = pclassdesc :: $compilation_classes_without(pclassdesc_tail*, n)
+  -- if ~$compilation_unit_origin(pclassdesc.ORIGIN, n)
 def $compilation_functions_without(eps, n) = eps
 def $compilation_functions_without(pfunction :: pfunction_tail*, n) = $compilation_functions_without(pfunction_tail*, n)
   -- if pfunction.ORIGIN = PORIGIN n pcpath
-def $compilation_functions_without(pfunction :: pfunction_tail*, n) = pfunction :: $compilation_functions_without(pfunction_tail*, n) -- otherwise
+def $compilation_functions_without(pfunction :: pfunction_tail*, n) = pfunction :: $compilation_functions_without(pfunction_tail*, n)
+  -- if ~$compilation_unit_origin(pfunction.ORIGIN, n)
 def $compilation_classes_replace(eps, n, pclassdesc*) = pclassdesc*
 def $compilation_classes_replace(pclassdesc :: pclassdesc_tail*, n, pclassdesc_new*) = pclassdesc_new* ++ $compilation_classes_without(pclassdesc_tail*, n)
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
-def $compilation_classes_replace(pclassdesc :: pclassdesc_tail*, n, pclassdesc_new*) = pclassdesc :: $compilation_classes_replace(pclassdesc_tail*, n, pclassdesc_new*) -- otherwise
+def $compilation_classes_replace(pclassdesc :: pclassdesc_tail*, n, pclassdesc_new*) = pclassdesc :: $compilation_classes_replace(pclassdesc_tail*, n, pclassdesc_new*)
+  -- if ~$compilation_unit_origin(pclassdesc.ORIGIN, n)
 def $compilation_functions_replace(eps, n, pfunction*) = pfunction*
 def $compilation_functions_replace(pfunction :: pfunction_tail*, n, pfunction_new*) = pfunction_new* ++ $compilation_functions_without(pfunction_tail*, n)
   -- if pfunction.ORIGIN = PORIGIN n pcpath
-def $compilation_functions_replace(pfunction :: pfunction_tail*, n, pfunction_new*) = pfunction :: $compilation_functions_replace(pfunction_tail*, n, pfunction_new*) -- otherwise
+def $compilation_functions_replace(pfunction :: pfunction_tail*, n, pfunction_new*) = pfunction :: $compilation_functions_replace(pfunction_tail*, n, pfunction_new*)
+  -- if ~$compilation_unit_origin(pfunction.ORIGIN, n)
 def $compilation_code_replace(eps, pcode) = [pcode]
 def $compilation_code_replace(pcode_old :: pcode*, pcode_new) = pcode_new :: pcode* -- if pcode_old.UNIT = pcode_new.UNIT
 def $compilation_code_replace(pcode_old :: pcode*, pcode_new) = pcode_old :: $compilation_code_replace(pcode*, pcode_new) -- if pcode_old.UNIT =/= pcode_new.UNIT
