@@ -372,7 +372,9 @@ one new parent interaction agrees. Returned-child simple append309 calls Set wit
 null and preserves the selected child, latched missing RHS and original result
 pointer. Eight normal sources and two strict-SL recipes/160 premises pass at one
 private cut. The separately accepted eager/weak lifetime composition keeps typed
-old-cell readback and genuine callback/provider owners. By-reference Get, wider
+old-cell readback and genuine callback/provider owners. One new current287
+original and64 strict-SL premises also preserve readback across Fiber suspension
+and a paused Generator finalizer. By-reference Get, wider
 memoized/property/GLOBALS consumers and combined Iterator/ArrayAccess notice
 ordering remain required.
 

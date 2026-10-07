@@ -173,3 +173,15 @@ executes a selected prepared set. `arrayaccess_returned_append_current_prepare.p
 and `arrayaccess_returned_append_current_run.py PREPARED_REPORT` reproduce the
 original source/provider comparison. All inputs resolve under the project root;
 publication/compiler preparation adds no renewed execution credit.
+
+The current287 join at718b preserves installed Generator/Fiber/source fields and
+passes one new exact original plus64 strict-SL premises. Set suspends inside an
+ordinary Fiber; a paused Generator finalizer changes the old RHS cell after the
+global name is rebound. Readback returns25, the new global remains31, and the
+child retires after Set. The reached recipe rejects a heap-identical forged
+source target and checks direct/zero/one-step resumption. These are separate
+current-parent gates, with prior cuts and failures unchanged.
+
+`arrayaccess_returned_append_fiber_prepare.py` compiles that reached recipe;
+`arrayaccess_returned_append_state_run.py PREPARED_REPORT` runs it strictly.
+`arrayaccess_returned_append_fiber_run.py` compares the exact original with PHP.

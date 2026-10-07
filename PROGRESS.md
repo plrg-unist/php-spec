@@ -134,8 +134,10 @@ reference rebinding and a retained-cell append. The
 [append ledger](coverage/semantics/arrayaccess-append-review.json) keeps cuts and
 original failures separate. Final simple returned-child append309 is independently
 accepted at its private276 and actual278 cuts. The current287 composition keeps
-the canonical Generator/Fiber/source fields and is awaiting one new interaction
-gate before integration. The [returned-child ledger](coverage/semantics/arrayaccess-returned-append-review.json)
+the canonical Generator/Fiber/source fields; clean718b passes full compilation,
+one new exact Fiber Set/paused-Generator finalizer original and64 strict-SL
+premises. Independent review accepts those gates; ordered integration is pending.
+The [returned-child ledger](coverage/semantics/arrayaccess-returned-append-review.json)
 preserves eight sources/160 premises, separate lifetime/provider/compiler/warning
 cuts and zero-credit original failures. Wider producers, by-reference Get and
 complete core remain open; paused return verification stays separate.
