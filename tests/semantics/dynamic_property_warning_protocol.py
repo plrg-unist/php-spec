@@ -36,6 +36,10 @@ def $dynamic_phase(S, 4) = true
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = PROPERTY_DYNAMIC_RESULT pdynamicproperty_source
   -- if pdestructionoperation.PENDING =/= eps
+def $dynamic_phase(S, 5) = true
+  -- if S.TODO = (EXIT_INVOKE pexitcall) :: ptask_tail*
+  -- if $exit_invoke_valid(S, pexitcall)
+  -- if $property_dynamic_exit_pending(S)
 def $dynamic_phase(S, n) = false -- otherwise
 dec $dynamic_seek(pstate, nat, nat) : pstate
 def $dynamic_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -189,23 +193,36 @@ def exit_assertions(initial):
         'perrorcall.RESUME = PROPERTY_DYNAMIC_RESULT pdynamicproperty',
         '$property_dynamic_entry(S_entry, perrorcall, pdynamicproperty)',
         *seek('S_entry', 'S_body', 1),
-        'S_exit = $drive_steps(S_body, 2048)',
-        'S_exit.COMPLETION = UNSUPPORTED "dynamic property warning exit continuation"',
-        '$dynamic_output(S_exit.EVENTS) = $ptascii("warning|")',
-        'S_exit.SHUTDOWN.PHASE = SHUTDOWN_PENDING',
-        '|S_exit.SHUTDOWN.ENTRIES| = 1',
-        'S_exit.FRAMES = pframe_exit :: pframe_exit_tail*',
+        *seek('S_body', 'S_invoke', 5),
+        'S_invoke.TODO = (EXIT_INVOKE pexitcall) :: ptask_invoke_tail*',
+        'S_invoke.FRAMES = pframe_exit :: pframe_exit_tail*',
         'pframe_exit.TODO = (ERROR_HANDLER_RESULT perrorcall_exit) :: ptask_exit_tail*',
         'perrorcall_exit.RESUME = PROPERTY_DYNAMIC_RESULT pdynamicproperty',
-        'S_saved = $constant_frame_scope(S_exit, pframe_exit, pframe_exit_tail*)',
+        'S_saved = $constant_frame_scope(S_invoke, pframe_exit, pframe_exit_tail*)',
         '$property_dynamic_valid(S_saved, pdynamicproperty)',
         '$error_entered_call_valid(S_saved, perrorcall_exit)',
         '$property_dynamic_exit_tasks(S_saved, pframe_exit.TODO)',
-        '$property_dynamic_exit_pending(S_exit)',
-        '$heap_member(HOBJECT pdynamicproperty.TARGET, S_exit.ALLOCATIONS)',
-        '$objectprops_at(S_exit.OBJECTPROPS, pdynamicproperty.TARGET) = (eps)',
-        *valid('S_exit'),
-        'S_zero = $drive_steps(S_exit, 0)', 'S_zero = S_exit']
+        '$property_dynamic_exit_pending(S_invoke)',
+        '$heap_member(HOBJECT pdynamicproperty.TARGET, S_invoke.ALLOCATIONS)',
+        '$objectprops_at(S_invoke.OBJECTPROPS, pdynamicproperty.TARGET) = (eps)',
+        'S_received = $exit_receive(S_invoke[.TODO = ptask_invoke_tail*], pexitcall)',
+        'S_received.COMPLETION = EXITED 0',
+        'S_received.FRAMES = S_invoke.FRAMES',
+        '$property_dynamic_exit_pending(S_received)',
+        'S_stopped = $exit_start_unwind(S_received, 0)',
+        'S_stopped.COMPLETION = UNSUPPORTED "dynamic property warning exit continuation"',
+        'S_stopped.FRAMES = S_invoke.FRAMES',
+        'S_stopped.SHUTDOWN = S_invoke.SHUTDOWN',
+        '$dynamic_output(S_stopped.EVENTS) = $ptascii("warning|")',
+        '$property_dynamic_exit_pending(S_stopped)',
+        '$heap_valid($heap_graph(S_stopped))',
+        'S_exit = $drive_steps(S_invoke, 2048)',
+        'S_exit.COMPLETION = UNSUPPORTED "dynamic property warning exit continuation"',
+        '$dynamic_output(S_exit.EVENTS) = $ptascii("warning|")',
+        'S_exit.SHUTDOWN.PHASE = SHUTDOWN_PENDING',
+        'S_exit.SHUTDOWN.ENTRIES = S_invoke.SHUTDOWN.ENTRIES',
+        '|S_exit.SHUTDOWN.ENTRIES| = 1',
+        *valid('S_exit')]
 
 
 def main():

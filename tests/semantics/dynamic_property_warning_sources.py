@@ -22,6 +22,7 @@ CASES = {
     'dynamic-handler-retires-and-throws': b"<?php\nclass DynamicRetiredThrow18 { public function __destruct() { echo 'drop|'; } }\n$object = new DynamicRetiredThrow18();\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'warning|'; unset($GLOBALS['object']); echo 'released|';\n    throw new Exception('stop');\n});\ntry { $object->x = 7; echo 'returned|'; }\ncatch (Exception $error) { echo $error->getMessage(), '|'; }\ncatch (Error $error) { echo 'replacement|'; }\necho 'done';\n",
     'dynamic-computed-receiver': b"<?php\nclass DynamicComputedReceiver18 { public function __destruct() { echo 'drop|'; } }\n$object = new DynamicComputedReceiver18();\nfunction selected_receiver18() { return $GLOBALS['object']; }\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'warning|'; unset($GLOBALS['object']); echo 'released|'; return true;\n});\nselected_receiver18()->x = 7;\necho 'done';\n",
     'dynamic-promoted-rhs-used-result': b"<?php\nclass DynamicPlainRhsPromotedReference18 {}\n$object = new DynamicPlainRhsPromotedReference18();\n$rhs = 7;\n$replacement = 9;\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'warning|';\n    $GLOBALS['rhs'] =& $GLOBALS['replacement'];\n    return true;\n});\n$assigned = ($object->x = $rhs);\necho $assigned, '|', $object->x, '|', $rhs, '|';\n$replacement = 13;\necho $assigned, '/', $object->x, '/', $rhs, '|done';\n",
+    'dynamic-duplicate-latest-write-unset': b"<?php\nclass DynamicDuplicateLatestWriteUnset18 {}\n$object = new DynamicDuplicateLatestWriteUnset18();\nset_error_handler(function($level, $message, $file, $line) use ($object) {\n    echo 'warning|';\n    @$object->x = 2;\n    return true;\n});\n$object->x = 7;\n$object->x = 9;\nforeach ($object as $key => $value) {\n    echo $key, '=', $value, '|';\n}\nunset($object->x);\nforeach ($object as $key => $value) {\n    echo $key, '=', $value, '|';\n}\necho $object->x, '|done';\n",
 }
 EXPECTED = {
     'dynamic-reentry-table': 'warning|x=2|x=7|7|done',
@@ -34,6 +35,7 @@ EXPECTED = {
     'dynamic-handler-retires-and-throws': 'warning|released|drop|stop|done',
     'dynamic-computed-receiver': 'warning|released|drop|done',
     'dynamic-promoted-rhs-used-result': 'warning|9|9|9|9/13/13|done',
+    'dynamic-duplicate-latest-write-unset': 'warning|x=2|x=9|x=2|2|done',
 }
 BOUNDARIES = {
     'dynamic-handler-exit-shutdown': (
