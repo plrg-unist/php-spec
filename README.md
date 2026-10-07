@@ -54,7 +54,7 @@ adds constant ECHO and assignment to a literal variable name entry lines. Each l
 its original source/state cuts and failures; the installed rules add no renewed
 credit to those cuts. One new [Generator/source composition](coverage/semantics/include-source-composition-review.json)
 passes strict compilation, an exact source original and 49 reached premises.
-Wider source producers, emissions and providers remain open.
+[Nonconstant first emission](docs/semantics/SOURCE-EMISSION.md) now distinguishes ordinary CV ECHO, literal property FETCH and no-argument named-call INIT lines. The separate actual286 Generator/property cut passes one original and 70 reached entry/retirement premises. Wider source producers, emissions and providers remain open.
 
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed

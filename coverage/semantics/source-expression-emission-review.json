@@ -1,0 +1,271 @@
+{
+  "scope": "First emitted work before owned dynamic-source operand retirement: ordinary CV ECHO5, literal instance-property FETCH6 after an ordinary CV, and INIT5 for a resolved named nonbuiltin receiver with no arguments/namespace fallback. Partial core.",
+  "status": "integrated_with_retained_private_cuts",
+  "tested_revision": "9cc09e0ef2ec83134b2929a267422c0aa6deccd8",
+  "semantic_root": ".tools/source-stringable-expression-emission-314",
+  "modules": 277,
+  "basis": "Accepted authenticated276 plus first-work298/47ef;314 only adds disjoint nonconstant ECHO origin selection.",
+  "source_sha256": "658e2029b00b504462e525061c13eddd918ec792e9f54cab497081e9ffe598e4",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "compiler": {
+    "pin": "da36ac3c434cd291940293a63da64544307730a3",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "process": {
+      "exit": 0,
+      "elapsed": 3.238554000854492,
+      "timeout": false,
+      "group_after": [],
+      "cap_seconds": 300
+    },
+    "application_evaluations": 0
+  },
+  "target": "PHP8.5.10 CLI NTS64",
+  "runtime_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "_build/default/adapter/main.exe": "1d7cebf175b60a6e2a534460ec2c4aff206cdd901e34f35f959041a49f5ac2f9"
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1",
+    "include_path": ".:"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "caps_seconds": {
+    "compiler": 300,
+    "native": 30,
+    "source_model": 60,
+    "source_outer": 90,
+    "state": 90
+  },
+  "sources": {
+    "actual_harness": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-expression-emission-check-16.py",
+    "actual_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-expression-emission-run-gzp27tym/report.json",
+    "native_original": "/home/user/workspace/php-spec/.tools/include-review-16-emission/emission-native-16-uoleopsu/report.json",
+    "source_agreements": 3,
+    "application_evaluations": 3,
+    "rows": [
+      {
+        "case": "cv",
+        "process": {
+          "exit": 0,
+          "elapsed": 26.6742103099823,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "status": "normal",
+        "exit_status": 0,
+        "stdout_equal": true,
+        "stderr_equal": true
+      },
+      {
+        "case": "property",
+        "process": {
+          "exit": 0,
+          "elapsed": 27.032121419906616,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "status": "normal",
+        "exit_status": 0,
+        "stdout_equal": true,
+        "stderr_equal": true
+      },
+      {
+        "case": "call-property",
+        "process": {
+          "exit": 0,
+          "elapsed": 26.51927089691162,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "status": "normal",
+        "exit_status": 0,
+        "stdout_equal": true,
+        "stderr_equal": true
+      }
+    ],
+    "reproduce_commands": [
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case expression-cv --semantic-root .tools/source-stringable-expression-emission-314",
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case expression-property --semantic-root .tools/source-stringable-expression-emission-314",
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case expression-call-property --semantic-root .tools/source-stringable-expression-emission-314"
+    ]
+  },
+  "states": {
+    "physical_premises": 129,
+    "application_evaluations": 2,
+    "source_agreements": 0,
+    "rows": [
+      {
+        "case": "entry",
+        "actual_raw": "/home/user/workspace/php-spec/.tools/include-review-16-emission/emission-states-16-run-jw1l4b_g/report.json",
+        "binding_premises": 24,
+        "check_premises": 33,
+        "main_premises": 57,
+        "process": {
+          "exit": 0,
+          "elapsed": 42.359904527664185,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "observed": "true\n",
+        "passed": true
+      },
+      {
+        "case": "guards",
+        "actual_raw": "/home/user/workspace/php-spec/.tools/include-review-16-emission/emission-guards-bound-16-run-rn0s14p4/report.json",
+        "binding_premises": 32,
+        "check_premises": 40,
+        "main_premises": 72,
+        "process": {
+          "exit": 0,
+          "elapsed": 3.549903631210327,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "observed": "true\n",
+        "passed": true
+      }
+    ],
+    "actual_harnesses": [
+      "/home/user/workspace/php-spec/.tools/include-review-16-emission/run-emission-states-bound-16.py",
+      "/home/user/workspace/php-spec/.tools/include-review-16-emission/run-emission-guards-bound-16.py"
+    ],
+    "reproduce_command": "python3 tests/semantics/source_expression_emission_protocol.py --semantic-root .tools/source-stringable-expression-emission-314"
+  },
+  "original_fixture_stops": [
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-review-16-emission/emission-states-16-run-hn2xo1sk/report.json",
+      "application_evaluations": 0,
+      "reason": "Recursive helper otherwise elaboration; preserved before pure matching/different-path correction."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-review-16-emission/emission-states-16-run-jw1l4b_g/report.json",
+      "case": "guards",
+      "application_evaluations": 0,
+      "reason": "Literal PORIGIN path parse failure;22 list-field parentheses only, entry57 PASS retained."
+    }
+  ],
+  "freeze": {
+    "inputs_stable": true,
+    "head_stable": true,
+    "status_stable": true
+  },
+  "maintained_preparation": [
+    {
+      "case": "entry",
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-expression-emission-protocol-uth2t6j6/PREPARED.json",
+      "physical_premises": 57,
+      "application_evaluations": 0,
+      "accepted": true
+    },
+    {
+      "case": "guards",
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-expression-emission-protocol-cjph6jbw/PREPARED.json",
+      "physical_premises": 72,
+      "application_evaluations": 0,
+      "accepted": true
+    }
+  ],
+  "review": "Independent static source, actual source/native, entry/image/public/heap and matching-source guard review accepted. Five compile-only exclusions execute no runtime body.",
+  "limitations": [
+    "The original isolated277 cut requires the explicit semantic root. Canonical286 registers314 after308.",
+    "Other first emissions/producers/providers and full core/final combined/fresh offline rebuild remain required.",
+    "Prior literal/retirement/composition cuts and paused return changes were not renewed/imported. Relocating the two generator PHP files adds no fresh execution credit; canonical source1/state70 retain their own inputs."
+  ],
+  "canonical_integration": {
+    "basis": "577c2b2dedb9a13ba7c759858876928aea223305/285",
+    "tested_revision": "c54cc0ff837848dbcf5005d7f2be5238df9b3577",
+    "modules": 286,
+    "source_sha256": "658e2029b00b504462e525061c13eddd918ec792e9f54cab497081e9ffe598e4",
+    "manifest_sha256": "c8a70dca19f4b3ea3244311796924d0469316b6bb012252631eb5fefd643cd51",
+    "scope": "One fresh captured Stringable include under active nested Generator delegation; child ordinary-CV property FETCH6 precedes operand destruction, newly compiled child callback mutates the retained payload, throw keeps the old assignment result.",
+    "compiler": {
+      "actual_harness": "/home/user/workspace/php-spec/.tools/include-expression-composition-16/check-composition-16.py",
+      "raw": "/home/user/workspace/php-spec/.tools/include-expression-composition-16/composition-run-ce_o7fxw/report.json",
+      "process": {
+        "exit": 0,
+        "elapsed": 3.6967456340789795,
+        "timeout": false,
+        "group_after": [],
+        "cap_seconds": 300
+      },
+      "mode": "SL",
+      "cache": false,
+      "det": true,
+      "application_evaluations": 0
+    },
+    "source": {
+      "actual_harness": "/home/user/workspace/php-spec/.tools/include-expression-composition-16/check-composition-16.py",
+      "raw": "/home/user/workspace/php-spec/.tools/include-expression-composition-16/composition-run-ce_o7fxw/report.json",
+      "native_original": "/home/user/workspace/php-spec/.tools/include-expression-composition-16/native-dq62tte9/report.json",
+      "process": {
+        "exit": 0,
+        "elapsed": 55.51594424247742,
+        "timeout": false,
+        "group_after": [],
+        "cap_seconds": 90
+      },
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_equal": true,
+      "stderr_equal": true,
+      "source_agreements": 1,
+      "application_evaluations": 1,
+      "reproduce_command": "python3 tests/semantics/source_stringable_retirement_sources.py --case expression-generator"
+    },
+    "state": {
+      "actual_harness": "/home/user/workspace/php-spec/.tools/include-review-16-expression-composition/run-expression-state-16.py",
+      "raw": "/home/user/workspace/php-spec/.tools/include-review-16-expression-composition/expression-state-16-run-w82ujf5r/report.json",
+      "process": {
+        "exit": 0,
+        "elapsed": 69.53079533576965,
+        "timeout": false,
+        "group_after": [],
+        "cap_seconds": 90
+      },
+      "observed": "true\n",
+      "binding_premises": 35,
+      "check_premises": 35,
+      "physical_premises": 70,
+      "application_evaluations": 1,
+      "reproduce_command": "python3 tests/semantics/source_expression_emission_protocol.py --case generator"
+    },
+    "freeze": {
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true
+    },
+    "compatibility": "314 bytes and earlier source/helper obligations are unchanged; earlier private277 results retain their original inputs and gain no renewed execution credit.",
+    "maintained_preparation": {
+      "raw": "/home/user/workspace/php-spec/.tools/source-expression-emission-protocol-tilbibvp/PREPARED.json",
+      "case": "generator",
+      "physical_premises": 70,
+      "application_evaluations": 0,
+      "accepted": true
+    }
+  }
+}

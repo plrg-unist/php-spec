@@ -9,13 +9,13 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 The canonical source includes accepted ArrayAccess292/304, eager destruction270,
 WeakReference296, Fiber291/302/308, Generator289/303/310 and source operands293/298,
-with 285 modules descended from `38f1dfaa045f`. The ordered source integration
+with 286 modules descended from `38f1dfaa045f`. The ordered source integration
 preserves the final Generator eager-release bridge and Fiber cleanup guards.
 The preceding 284-module cut passes strict compilation, one exact source original and
 49 reached premises during active nested Generator delegation. Earlier accepted
 cuts retain their original inputs. Independently accepted private milestones 286, 288,
 290, 294, 295, 297, 305, 306 and 309 await ordered Git integration. Other private work
-covers 299, 300 and 301; source-emission314 remains private and unvalidated.
+covers 299, 300, 301 and auto-global emission316. Nonconstant source-emission314 is installed after Fiber308.
 Held 279 and user-paused return verification stay set aside. Complete core and the
 final combined, fresh offline rebuild remain required.
 
@@ -34,7 +34,7 @@ preserve every original cut and failure. The separate
 [first-work extension](coverage/semantics/source-stringable-first-work-review.json)
 adds constant ECHO and assignment to a literal variable name opcode lines: three original
 source agreements and 46 reached entry premises retain their accepted private cut.
-Broader producers, first emissions, checkpoints and providers remain required.
+[Nonconstant emission314](coverage/semantics/source-expression-emission-review.json) adds ordinary CV ECHO, literal property FETCH and no-argument named-call INIT lines. Its private277 source3/entry57/guards72 retain their original inputs and two zero-credit fixture stops. Actual286 passes strict compilation, one fresh nested-Generator captured-source original and independent70 entry/retirement/public/heap/image premises. The relocated maintained case prepares70 with zero applications. Broader producers, first emissions, checkpoints and providers remain required.
 The [composition ledger](coverage/semantics/include-source-composition-review.json)
 records genuine child line5/main keyword21, retained captured input after alias
 clearing, the saved Generator caller and public/heap owner/suffix controls. The
