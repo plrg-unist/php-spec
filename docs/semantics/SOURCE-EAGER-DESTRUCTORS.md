@@ -20,7 +20,10 @@ before the bound receiver.
 Ordinary frame cleanup keeps257's caller restoration, compiled-CV order and
 returned-value destinations. Interrupted operations retain only their genuine
 result, base, pending Throwable and completion owners. Their source and saved
-caller certificates add no roots. Destructor eval/include bodies reuse the
+caller certificates add no roots. An entered helper cleanup validates its
+producer against the genuine saved emitter frame. The internal destructor frame
+binds its receiver, target, source site, line and saved caller context; its caller
+origin remains separate from that site. Destructor eval/include bodies reuse the
 existing source service and histories.
 
 Exception-handler return values release before the original Throwable and before

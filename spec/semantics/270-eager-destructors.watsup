@@ -446,12 +446,36 @@ def $eager_raw_history_nodes(S, pvalue) = $value_nodes(pvalue) -- otherwise
 def $eager_cleanup_warning(ERROR_HANDLER_RESULT perrorcall) = (pdestructorcall)
   -- if perrorcall.RESUME = DESTRUCTOR_WARNING pdestructorcall
 def $eager_cleanup_warning(ptask) = eps -- otherwise
+;; Validate an entered helper cleanup against its genuine saved emitter.
+;; This is a borrowed view: the running destructor and heap are unchanged.
+dec $eager_cleanup_caller_scope(pstate, pdestructioncleanup) : pstate
+dec $eager_cleanup_saved_scope(pstate, pdestructioncleanup, pframe*) : pstate
+dec $eager_cleanup_marker(ptask*, ptask) : bool
+def $eager_cleanup_marker(eps, ptask_source) = false
+def $eager_cleanup_marker(ptask :: ptask_tail*, ptask_source) = true
+  -- if $eager_cleanup_source(ptask) = ptask_source
+def $eager_cleanup_marker(ptask :: ptask_tail*, ptask_source) = $eager_cleanup_marker(ptask_tail*, ptask_source)
+  -- if $eager_cleanup_source(ptask) =/= ptask_source
+def $eager_cleanup_caller_scope(S, pdestructioncleanup) = $eager_cleanup_saved_scope(S, pdestructioncleanup, S.FRAMES)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if S.CURRENT =/= pdestructioncleanup.CALLER \/ S.ORIGIN =/= pdestructioncleanup.ORIGIN \/ S.CONSTCONTEXT =/= pdestructioncleanup.CONSTCONTEXT
+def $eager_cleanup_caller_scope(S, pdestructioncleanup) = S -- otherwise
+def $eager_cleanup_saved_scope(S, pdestructioncleanup, pframe :: pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if pframe.CONTEXT = pdestructioncleanup.CALLER /\ pframe.ORIGIN = pdestructioncleanup.ORIGIN /\ pframe.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT
+  -- if $eager_cleanup_marker(pframe.TODO, pdestructioncleanup.SOURCE)
+def $eager_cleanup_saved_scope(S, pdestructioncleanup, pframe :: pframe_tail*) = $eager_cleanup_saved_scope(S, pdestructioncleanup, pframe_tail*)
+  -- if pframe.CONTEXT =/= pdestructioncleanup.CALLER \/ pframe.ORIGIN =/= pdestructioncleanup.ORIGIN \/ pframe.CONSTCONTEXT =/= pdestructioncleanup.CONSTCONTEXT \/ ~$eager_cleanup_marker(pframe.TODO, pdestructioncleanup.SOURCE)
+def $eager_cleanup_saved_scope(S, pdestructioncleanup, eps) = S
+;; A C destructor entry keeps its genuine caller origin separately from SITE.
+;; The recorded boundary selects this branch even for a malformed pair.
+def $reference_call_frame_site(pcallcontext, pframe) = (pcallcontext.TARGET = pdestructorcall.TARGET /\ pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (pdestructorcall.OBJECT) /\ pcallcontext.CALLSITE = pdestructorcall.SITE /\ pcallcontext.LINE = $destructor_line(pdestructorcall) /\ pframe.CONTEXT = pdestructorcall.CALLER /\ pframe.ORIGIN = pdestructorcall.ORIGIN /\ pframe.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT /\ pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps)
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
 def $eager_cleanup_history(S, pdestructioncleanup) = S_view[.CURRENT = pdestructioncleanup.CALLER][.ORIGIN = pdestructioncleanup.ORIGIN][.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT][.ALLOCATIONS = S_view.ALLOCATIONS ++ $eager_cleanup_object(S, pdestructioncleanup.SOURCE)]
-  -- if S_history = $consumer_producer_history(S, pdestructioncleanup.TARGET)
+  -- if S_history = $consumer_producer_history($eager_cleanup_caller_scope(S, pdestructioncleanup), pdestructioncleanup.TARGET)
   -- if $eager_cleanup_warning(pdestructioncleanup.SOURCE) = (pdestructorcall)
   -- if S_view = $eager_bailout_history(S_history, pdestructorcall)
 def $eager_cleanup_history(S, pdestructioncleanup) = S_history[.CURRENT = pdestructioncleanup.CALLER][.ORIGIN = pdestructioncleanup.ORIGIN][.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT][.ALLOCATIONS = S_history.ALLOCATIONS ++ $eager_cleanup_object(S, pdestructioncleanup.SOURCE)]
-  -- if S_history = $consumer_producer_history(S, pdestructioncleanup.TARGET)
+  -- if S_history = $consumer_producer_history($eager_cleanup_caller_scope(S, pdestructioncleanup), pdestructioncleanup.TARGET)
   -- if $eager_cleanup_warning(pdestructioncleanup.SOURCE) = eps
 def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if pdestructioncleanup.SOURCE = DESTRUCTOR_FATAL pdestructionfatal

@@ -30,7 +30,11 @@ The [contract](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md) keeps active destruct
 Fiber transfer, compound Stringable reception, GC, wider weak protocols, output buffers
 and later freeing open. Actual 292/304 composition passes strict-SL initialization
 and one new exact returned-object lifetime source at276, with stable inputs;
-earlier cuts gain no renewed execution credit.
+earlier cuts gain no renewed execution credit. The separately reviewed shared
+cleanup bridge authenticates helper producers in the saved caller and binds the
+internal destructor frame site. One strict-SL reached277 cut passes19 physical
+premises for authentic entry, a heap-identical site/line forgery and zero/one-step
+resumption; the oversized62/41 cuts timed out and remain unconfirmed.
 
 WeakReference296 memoizes allocated wrappers using nonowning immutable semantic
 target IDs. `get` copies a live target into a genuine strong result; destructor
