@@ -26,11 +26,34 @@ stages its bool warning while preserving the inner receiver and copied key.
 Source, method, line, constants and operand forms are authenticated; consistent
 dynamic selected facts do not claim a callback-history proof.
 
-Full nested/read-write/reference and memoized ArrayAccess consumers remain
-required core work. Their newly reachable unsupported paths stop explicitly
-instead of producing an ordinary-object error. By-reference Get results stay
-separate from the user-paused return verification. Combined Iterator/ArrayAccess
-source-interface notice ordering remains required.
+Module292 adds ordinary by-value compound assignment and writable Get
+continuations. Direct compound calls Get in read mode, applies the operator,
+then calls Set. Defined key and RHS CV wrappers are read again after Get;
+missing-CV demands before Get latch independent null. The compound result is
+the computed value. A throwing Get produces the opcode's replacement Error,
+with the original exception and its existing previous chain retained.
+
+W/RW/Unset Get fetches keep one owned temporary cell. Nonobject, nonreference
+returns emit the indirect modification Notice; returned objects continue without
+it. Array copies preserve real reference rows, and nested writes mutate the
+owned temporary or extracted real cell. Computed RHS evaluation precedes queued
+Get/Notice; delayed RHS CV demand follows Notice, and a thrown Notice suppresses
+later demand, write and unset. Pre/post updates use the fetched temporary without
+calling Set. Final nested Unset retains its borrowed ROOT/ELEMENT or reference
+selection through key warnings and reads the selected object afterwards; malformed
+pointer forms are rejected without claiming callback-history authenticity.
+
+An exposed GLOBALS reference finish is repaired in276: the converted variable
+name survives the writer, global binding ignores a function-local shadow, and
+owning keys/captured real source cells survive callbacks. A missing name CV can
+be populated by its warning handler before conversion, unlike an ArrayAccess
+key's independent-null latch. The old249 direct unset admission is restricted
+to its direct base, avoiding overlap with255's nested continuation.
+
+Nested compound append, wider memoized/property/GLOBALS ArrayAccess producers,
+by-reference Get results and combined Iterator/ArrayAccess declaration ordering
+remain required core work. Newly reachable unsupported paths stop explicitly.
+By-reference Get stays separate from the user-paused return verification.
 
 Author13 agreements comprise six normal originals, two declaration errors and
 five independent controls at9d. Independent20 retains those same five and adds
@@ -47,5 +70,25 @@ and `arrayaccess_protocol.py`. `python3 -B tests/semantics/arrayaccess_prepare.p
 [fixture-id ...]` compiles selected source-derived fixtures with the existing
 project-local tools. The maintained NaN original recovers its reached fixture;
 copying helpers and composing the publication parent adds no execution credit.
-Production comparisons use SL_mode, reached fixtures use AL_mode, and no fresh
+Earlier284 production comparisons use SL_mode and reached fixtures use AL_mode; no fresh
 build or full-family closure is claimed.
+
+The writable milestone retains34 distinct normal source agreements: author8
+and independent26, including the affected GLOBALS/Unset controls. Author223 and independent793 premises pass across13 recipes (1016 total):
+634 in AL_mode and382 in strict SL_mode.
+The [writable ledger](../../coverage/semantics/arrayaccess-write-review.json)
+records actual HEAD805 plus each tracked diff, tools, commands, limits and
+original failures. The original count-based Unset observer remains Unsupported
+with zero agreement; its separate isset/row-value companion agrees under the
+core-language observation boundary. Earlier284 gates are retained without renewal. One fresh actual38f+292/274
+source combines include conversion287, private Owner/Child selection and live
+GLOBALS RHS rebinding; algorithmic compilation, structuring and loader checks
+pass. Its original missing finite-provider input failure remains0; only the
+affected model rerun adds the explicit cwd/caller/Array certificate.
+
+Writable originals are in `arrayaccess_write_cases.py` and
+`arrayaccess_write_review_cases.py`; `arrayaccess_write_protocol.py` retains13
+source-reached recipes. `python3 -B tests/semantics/arrayaccess_write_prepare.py
+[fixture-id ...]` compiles them using the existing tools and a read-only revision
+snapshot. Compilation, source agreement and reached-state execution remain
+separate; promotion of identical recipes adds no semantic execution credit.

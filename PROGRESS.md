@@ -7,6 +7,36 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+The canonical source includes accepted ArrayAccess292 at `1d0f8ea23` (274
+modules), on baseline `38f1dfaa045f`. Independently accepted private milestones
+270, 286, 288, 289, 290, 291, 293, 294, 296, 297 and 304 await ordered Git
+integration. Other private work covers 295, 298, 299 and 300, with 301–303 in
+development. Held 279 work and user-paused return verification remain set aside;
+unaccepted return changes stay held. Full core and final combined offline
+validation remain pending. Existing behavior entries retain their tested cuts.
+
+ArrayAccess292 now handles ordinary by-value compound Get/operator/Set and
+writable Get temporaries through nested W/RW/Unset, pre/post updates and by-value
+reference consumers. Defined key/RHS CVs remain live across compound Get;
+computed RHS precedes queued Get/Notice and delayed CV demand follows Notice.
+Returning arrays preserve real-cell edges while ordinary copies stay detached;
+returned objects skip Notice, and thrown Notice suppresses later work. Direct compound Get throws
+retain the replacement Error's opcode line and original previous chain. The
+exposed276 direct GLOBALS reference finish preserves selected names/global
+routing/owners;249 direct Unset admission now excludes255 nested paths.
+Thirty-four distinct normal sources agree across retained cuts. Author 223 and
+independent 793 premises pass across 13 recipes (1016 total), with 634 in AL and
+382 in strict SL.
+The [writable ledger](coverage/semantics/arrayaccess-write-review.json) records
+actual revision/diffs, original failures and excluded count-observer0; its
+core-language companion agrees. Nested compound append, by-reference Get,
+wider memoized/property/GLOBALS producers and combined interface notice ordering
+remain required. Paused return validation remains separate. One fresh source at
+actual 38f + 292 / 274 agrees through array-include conversion287, private
+Owner/Child warning selection and live GLOBALS RHS rebinding; algorithmic,
+structuring and loader checks pass. The original missing-provider input failure
+retains zero agreement.
+
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace
 the operand. Borrowed variables gain no temporary owner; captured arrays survive

@@ -335,12 +335,15 @@ stdClass transition agrees; the historical ArrayAccess control retains its earli
 interface-contract Unsupported and no guard-execution credit. Initial string and
 ordinary-object reads, wider base and GLOBALS/memoized producers remain required.
 [ArrayAccess dimensions](docs/semantics/SOURCE-ARRAYACCESS.md) now admit the builtin
-contract, tentative return notices, direct reads, coalesce, isset/empty, Set and
-Unset. Genuine receiver/key/parameter owners survive callbacks; Set results read
-their original CV or real reference cell after the method. Author13/205 and
-independent20/287 share five originals (28 unique programs, including two
-declaration errors). One current private-handler/typed-cell source agrees.
-Full nested, read/write, reference and wider memoized consumers remain required.
+contract, tentative return notices, direct reads, coalesce, isset/empty, Set/Unset and ordinary by-value
+compound and writable Get continuations. Compound calls Get then Set with live
+key/RHS CV wrappers; nested W/RW/Unset keeps genuine temporary/real-cell owners
+through Notice, reentry and throw. Earlier284 retains28 unique programs/492
+assertions. Writable292 adds34 normal source agreements and1016 reached premises
+across13 recipes; one fresh current-parent source agrees.
+Affected GLOBALS reference finish and direct/nested Unset admission are repaired.
+Nested compound append, by-reference Get, wider memoized/property/GLOBALS
+consumers and combined Iterator/ArrayAccess notice ordering remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument

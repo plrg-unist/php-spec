@@ -1,0 +1,342 @@
+{
+  "decision": "Independently reviewed private and actual gates CLOSED/PASS; canonical integration retains their original cuts; no complete core/family claim",
+  "canonical_integration": {
+    "semantic_commit": "1d0f8ea23",
+    "source_parent": "38f1dfaa045fd38bc62c4e489936cc54a9fc8bd3",
+    "scope": "Accepted292 publication imported byte-identically; existing actual-parent compilation and source agreement retained without renewal"
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned vendor engine and ordinary profile",
+  "baseline": "38f1dfaa045fd38bc62c4e489936cc54a9fc8bd3; accepted284 evidence retained without renewal",
+  "private_root": "/home/user/workspace/php-spec/.tools/arrayaccess-writable-current-24",
+  "raw_roots": [
+    "/home/user/workspace/php-spec/.tools/arrayaccess-writable-current-24/.tools/arrayaccess-write",
+    "/home/user/workspace/php-spec/.tools/arrayaccess-writable-review-24",
+    "/home/user/workspace/php-spec/.tools/arrayaccess-writable-actual-4o4kvhyt/.tools/arrayaccess-write"
+  ],
+  "tested_head": "805a98d416041bddd6996230006bf5ba41bbc154",
+  "tested_head_tree": "9f631b3d43ff4bfd939d742fec2aa26d8e3c0ea4",
+  "tracked_diff_cuts": {
+    "order": {
+      "sha256": "d1ad2439d36692048201ccba5e8289b767cb18086e7e4f873f6a109634560167",
+      "bytes": 1336
+    },
+    "borrowed_pointers": {
+      "sha256": "860ecdc7ac9610bceb42a3062e04c2c73e1a432779460bc5e22d4d0652d18676",
+      "bytes": 4495
+    },
+    "global_root_initial": {
+      "sha256": "6aa00aa1464e370ea0e74128c0421b07dd0b49d672ed3a3f7f4b73ac83b9d998",
+      "bytes": 10234
+    },
+    "global_root_and_unset_admission": {
+      "sha256": "3b64b656c5e8cc056583fda66c55a24ccfe2ab1ed5823bce41fe81cc5d6d4f3c",
+      "bytes": 10878
+    }
+  },
+  "behavior": [
+    "Direct ordinary by-value compound Get in R mode, live key/RHS CV reread, computed result and Set; independent null for earlier missing-CV demands.",
+    "Writable Get temporary ownership, nonobject indirect Notice, array COW/real-cell extraction, returned-object continuation and pre/post update without Set.",
+    "Computed RHS precedes queued nested Get/Notice; late CV demand follows Notice; throws suppress later demand/write/Unset.",
+    "Get failure replacement Error retains original previous chain, opcode line/file and owners.",
+    "Final nested Unset borrowed ROOT/ELEMENT/REFERENCE selection, live callback replacement and categorical malformed-pointer rejection.",
+    "Affected direct GLOBALS ROOT reference finish preserves converted name, genuine global symbol table, owning key and captured source-cell lifetime.",
+    "Old249 direct Unset guard prevents overlap with255 nested admission."
+  ],
+  "remaining_core": [
+    "Nested compound append and wider memoized/property/GLOBALS ArrayAccess producers",
+    "By-reference offsetGet (user-paused returns verification remains separate)",
+    "Combined Iterator/ArrayAccess declaration-notice ordering",
+    "Stringable compound producer composition with properties288 after acceptance"
+  ],
+  "unique_normal_source_agreements": 34,
+  "maintained_sources": [
+    "tests/semantics/arrayaccess_write_cases.py:8 author originals",
+    "tests/semantics/arrayaccess_write_review_cases.py:26 independently grounded originals"
+  ],
+  "source_execution": [
+    {
+      "raw": "models-y5xy329e/report.json",
+      "diff": "d1ad2439d36692048201ccba5e8289b767cb18086e7e4f873f6a109634560167",
+      "normal_agreements": 14,
+      "phase_passed": true,
+      "failure": null,
+      "exits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "timed_out": false,
+      "groups_empty": true
+    },
+    {
+      "raw": "models-f4y13o0o/report.json",
+      "diff": "860ecdc7ac9610bceb42a3062e04c2c73e1a432779460bc5e22d4d0652d18676",
+      "normal_agreements": 11,
+      "phase_passed": false,
+      "failure": {
+        "type": "AssertionError",
+        "message": "nested-unset-alias-keeps-old-reference-after-variable-rebind"
+      },
+      "exits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "timed_out": false,
+      "groups_empty": true
+    },
+    {
+      "raw": "models-i03_xjqb/report.json",
+      "diff": "6aa00aa1464e370ea0e74128c0421b07dd0b49d672ed3a3f7f4b73ac83b9d998",
+      "normal_agreements": 1,
+      "phase_passed": false,
+      "failure": {
+        "type": "AssertionError",
+        "message": "nested-unset-ordinary-array-rereads-borrowed-element-after-warning"
+      },
+      "exits": [
+        0,
+        1
+      ],
+      "timed_out": false,
+      "groups_empty": true
+    },
+    {
+      "raw": "models-p48x3yck/report.json",
+      "diff": "3b64b656c5e8cc056583fda66c55a24ccfe2ab1ed5823bce41fe81cc5d6d4f3c",
+      "normal_agreements": 7,
+      "phase_passed": false,
+      "failure": {
+        "type": "AssertionError",
+        "message": "ordinary-array-direct-unset-float-notice-keeps-selected-key"
+      },
+      "exits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "timed_out": false,
+      "groups_empty": true
+    },
+    {
+      "raw": "models-xaj137l0/report.json",
+      "diff": "3b64b656c5e8cc056583fda66c55a24ccfe2ab1ed5823bce41fe81cc5d6d4f3c",
+      "normal_agreements": 1,
+      "phase_passed": true,
+      "failure": null,
+      "exits": [
+        0
+      ],
+      "timed_out": false,
+      "groups_empty": true
+    }
+  ],
+  "compiler": {
+    "raw": "check-q65m310p/report.json",
+    "modules": 273,
+    "stages": [
+      "algo",
+      "struct",
+      "loader"
+    ],
+    "exits": [
+      0,
+      0,
+      0
+    ],
+    "passed": true,
+    "groups_empty": true
+  },
+  "reached_states": {
+    "maintained_recipes": 13,
+    "total_premises": 1016,
+    "author_passed_premises": 223,
+    "author_raw": [
+      "states-47n81i7b/report.json:first2 pass; bad update recipe0",
+      "states-_pckto9_/report.json:corrected pre-increment false61 pass"
+    ],
+    "independent_raw": [
+      "states-nqoyu9ai/report.json:live78 and Notice80 pass; chain83 guard failure0",
+      "states-qaiys6v3/report.json:corrected chain90 pass at3b64, full guards after genuine driver normalization",
+      "states-t2g305nx/report.json:Set88 and Notice-throw75 pass; child67 AL300 timeout0; borrowedROOT unrun",
+      "child-diag-a9q3xei1/report.json:smaller genuine child Get diagnostic AL pass135.99s, actual KNOWN POBJECT and full descriptor admission",
+      "states-sl-w2_ew6im/report.json:original byte-identical child67 pass strict SL71.35s at3b64, no fixture correction",
+      "states-sl-611in0q9/report.json:ROOT79/alias80/ELEMENT75/GLOBALS81 all pass strict SL at3b64; outer340.508s exit0/no timeout/groups empty"
+    ],
+    "independent_remaining": "None; all13 source-reached recipes/1016 premises closed",
+    "preparation": [
+      "prepared-first3-selection.json:unchanged original compiler bytes",
+      "prepared-suz04kms/report.json:affected/unrun7 compiled; generator outputs declaration corrected",
+      "prepared-h5p0edtl/report.json:affected chain boundary90 compiled; other7 identical AL retained"
+    ],
+    "independent_passed_premises": 793,
+    "passed": true,
+    "modes": {
+      "AL_mode": 634,
+      "SL_mode strict/cache:false/det:true": 382
+    }
+  },
+  "runtime": {
+    "tests/semantics/profile.json": {
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+      "bytes": 352
+    },
+    ".tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "bytes": 49551712
+    },
+    "_build/default/adapter/main.exe": {
+      "sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "bytes": 29115976
+    },
+    "tests/semantics/_build/default/numeric_runner.exe": {
+      "sha256": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+      "bytes": 28628992
+    },
+    ".tools/spectec/bin/p4spectec": {
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+      "bytes": 32150944
+    },
+    ".tools/php-file.so": {
+      "sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "bytes": 26944
+    },
+    "strict_SL_reached": {
+      "path": "/home/user/workspace/php-spec/.tools/traversal-generator-delegation-14/tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "bytes": 28628992,
+      "mode": "SL_mode strict/cache:false/det:true",
+      "scope": "Original identical child67 plus first-time remaining315; all382 pass at3b64"
+    }
+  },
+  "execution": {
+    "production": "SL_mode",
+    "reached_states": "AL_mode634 premises and strict SL_mode382, explicit separate runtime/mode records; original AL300 timeout stays0",
+    "jobs": 1,
+    "caps_seconds": {
+      "native": 45,
+      "compiler": 120,
+      "model": 90,
+      "CLI": 60,
+      "finite": 300,
+      "source_phase": 480
+    },
+    "steps": 100000,
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING_removed": true
+    },
+    "resource_limits": {
+      "AS": [
+        -1,
+        -1
+      ],
+      "CPU": [
+        -1,
+        -1
+      ],
+      "STACK": [
+        8388608,
+        -1
+      ],
+      "DATA": [
+        -1,
+        -1
+      ],
+      "NOFILE": [
+        1024,
+        524288
+      ],
+      "NPROC": [
+        495325,
+        495325
+      ]
+    },
+    "commands": [
+      "python3 .tools/arrayaccess-write/check.py",
+      "python3 .tools/arrayaccess-write/run-models.py NATIVE_REPORT_OR_SELECTION_JSON ...",
+      "python3 REVIEW_ROOT/prepare-own.py [recipe-id ...]",
+      "python3 REVIEW_ROOT/run-states.py PREPARATION_REPORT",
+      "python3 -B tests/semantics/arrayaccess_write_prepare.py [recipe-id ...]",
+      "python3 REVIEW_ROOT/run-states-sl.py PREPARATION_REPORT",
+      "python3 .tools/current-model-provider.py (actual root; original compiler/native retained)"
+    ],
+    "records": "Exact argv/cwd/streams/exits/times/limits and source/native descriptors are in original context/report/launcher files. Existing local binaries reused; no rebuild/portability claim."
+  },
+  "preserved_failures": [
+    "check-obfzkq2s:forward undefined plocation diagnostic; declaration-order repair checked, original compiler exit0 is not success credit.",
+    "states-47n81i7b:update pre-increment recipe incorrectly expected INCREMENT true; corrected only affected recipe to false.",
+    "models-f4y13o0o:original GLOBALS reference target fails276 REF_ARRAY ROOT finish; later original source pass retained in models-i03_xjqb.",
+    "alias-diag-g8md5_qr:localizes old reference finish; alias-diag-nfc08545:150s timeout, no tuple captured, zero credit.",
+    "models-i03_xjqb:nested ordinary-array Unset admission overlaps old249/255; one direct-base premise repairs it.",
+    "element-diag-qfbhb0w9:actual pinned numeric binary rejects --sl as filename; source/binary option divergence, zero semantic credit.",
+    "element-diag-mmqbr7il:genuine source/write-root flags pass; BUDGET quiet-probe false flags are not NORMAL admission credit.",
+    "models-p48x3yck:original count-based observer Unsupported after D;R:, zero model agreement. CORE excludes ordinary-library count execution; distinct no-count source agrees in models-xaj137l0.",
+    "prepared-ln7plddq:entered-Set fixture compiler fails because output-dependent STAGE precedes outputs declaration; affected/unrun7 corrected, first3 compiler bytes retained.",
+    "states-nqoyu9ai:raw PhpStep chain83 checked new object before destruction_store_new registration. chain-diag-felyop61:60 other guard/heap/source flags true, only destruction_state_valid false. Corrected fixture90 keeps raw exception checks and full guards after genuine driver normalization; no semantic/admission change.",
+    "states-t2g305nx:child67 full AL fixture times out300s with empty streams; smaller actual-boundary diagnostic proves unchanged KNOWN object stage, original identical67 passes existing strict SL. No source or fixture weakening.",
+    "actual-f5rmeruz:original model omitted finite file snapshot and stopped after W:O:C; with file-provider Unsupported0. Only affected model rerun supplied exact cwd/caller/Array bytes; original native and compiler checks retained, no semantic/source changes."
+  ],
+  "native_predictions": "Actual native stdout replaces tentative expectations. Original live-RHS old-cell and missing GLOBALS-name null guesses remain false in raw records.",
+  "compatibility": "Earlier positive cuts retained; pointer guard restricts only malformed final nested Unset, GLOBALS repair handles genuine BASE_GLOBAL reference finishes, and249 guard separates direct versus nested Unset. No unrelated284/276 gate renewal.",
+  "recovery": "Raw native originals and descriptors remain outside Git; catalogue bytes recover sources. Preparation is compiler-only, execution separate. Promotions/copies and metadata changes add no semantic agreement.",
+  "actual_parent": {
+    "root": "/home/user/workspace/php-spec/.tools/arrayaccess-writable-actual-4o4kvhyt",
+    "canonical_head": "38f1dfaa045fd38bc62c4e489936cc54a9fc8bd3",
+    "modules": 274,
+    "shared_merge": "30-storage clean; accepted287 fields retained",
+    "source": "tests/semantics/arrayaccess-write-current/current.php",
+    "companion": "tests/semantics/arrayaccess-write-current/Array",
+    "validation": "CLOSED/PASS; one fresh source; original missing-provider Unsupported0 retained",
+    "compiler_native": "actual-f5rmeruz/report.json",
+    "corrected_model": "actual-provider-dgdvh5v8/report.json",
+    "stdout": "W:O:C;I;G:1;S:1:22;R:22:22:17:23:0:0;",
+    "provider": "actual-provider-dgdvh5v8/snapshot.json",
+    "source_agreements": 1,
+    "compiler_stages": [
+      "algo",
+      "struct",
+      "loader"
+    ],
+    "model_exit": 0,
+    "model_timeout": false,
+    "groups_empty": true
+  },
+  "maintained_preparation": {
+    "raw": "prepared-o7j5l_x4/report.json",
+    "scope": "Compiler-only affected merged prefixes; no numeric/native/model credit",
+    "selected_premises": [
+      67,
+      90,
+      88
+    ],
+    "passed": true,
+    "groups_empty": true
+  }
+}
