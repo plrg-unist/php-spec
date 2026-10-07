@@ -1098,11 +1098,15 @@ def main():
     else:
         original=base.prepare;original_flags=base.RUNNER_FLAGS
         try:
-            base.prepare=prepare
+            base.prepare=lambda path:[row for row in prepare(path) if row['id']!='parameter-generation-two-frontiers']
             base.RUNNER_FLAGS={name:['--sl'] for name in SOURCES}
             base.run(out)
         finally:
             base.prepare=original;base.RUNNER_FLAGS=original_flags
+        report=json.loads((out/'report.json').read_text())
+        report.update(superseded_multiple_frontier_case='parameter-generation-two-frontiers',
+                      replacement_protocol='tests/semantics/parameter_multiple_frontier_protocol.py')
+        (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
     print(out)
 
 if __name__=='__main__':main()
