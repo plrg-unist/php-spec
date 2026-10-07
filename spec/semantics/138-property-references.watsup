@@ -342,9 +342,11 @@ def $propref_coerced_agreement(S, pvalue_original, (pproptypesource_first), (pva
 def $propref_coerced_agreement(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_current, pvalue_new, pproptypesource_tail*, z) = PROP_REJECT ($propref_conflict(S, pproptypesource_first, pproptypesource_current, pvalue_original, z))
   -- if ~$strict_identical(pvalue_coerced, pvalue_new)
 
-def $write_cell_checked(S, n_cell, pvalue, z) = $reference_coercion_store(S, n_cell, DEFINED pvalue)[.RESULT = KNOWN pvalue]
+dec $gc_same_cell(pstate, pstate, nat) : pstate
+def $gc_same_cell(S, S_next, n) = S_next -- otherwise
+def $write_cell_checked(S, n_cell, pvalue, z) = $gc_same_cell(S, $reference_coercion_store(S, n_cell, DEFINED pvalue)[.RESULT = KNOWN pvalue], n_cell)
   -- if $propref_at(S.PROPREFS, n_cell) = eps
-def $write_cell_checked(S, n_cell, pvalue, z) = $reference_coercion_store(S_checked, n_cell, DEFINED pvalue_new)[.RESULT = KNOWN pvalue_new]
+def $write_cell_checked(S, n_cell, pvalue, z) = $gc_same_cell(S_checked, $reference_coercion_store(S_checked, n_cell, DEFINED pvalue_new)[.RESULT = KNOWN pvalue_new], n_cell)
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if $propref_check(S, pvalue, eps, eps, ppropref.SOURCES, z) = PROP_ACCEPT S_checked pvalue_new
 def $write_cell_checked(S, n_cell, pvalue, z) = S_checked

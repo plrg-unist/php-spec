@@ -28,6 +28,12 @@ dec $eager_operation_destination(pstate, pstate) : pstate
 dec $eager_live_slots(pstate, pnode*) : pnode*
 dec $eager_written_task(ptask) : bool
 dec $eager_operation_begin(pstate, pstate, ptask, pnode*) : pstate
+dec $gc_operation_temporary(pstate, ptask, pnode*) : pgctemporary?
+dec $gc_operation_jobs(pdestructionoperation, pnode*) : pdestructionjob*
+dec $gc_operation_metadata_valid(pstate, pdestructionoperation) : bool
+def $gc_operation_temporary(S, ptask, pnode*) = eps -- otherwise
+def $gc_operation_jobs(pdestructionoperation, pnode*) = $destruction_values(pnode*) -- otherwise
+def $gc_operation_metadata_valid(S, pdestructionoperation) = true -- otherwise
 dec $eager_operation_pending(pstate) : nat?
 dec $eager_operation_tail(pstate) : ptask*
 dec $eager_operation_value(pstate) : poperand
@@ -283,9 +289,9 @@ def $eager_operation_tail(S) = ptask*
 def $eager_operation_tail(S) = S.TODO -- otherwise
 def $eager_operation_value(S) = KNOWN PNULL -- if $eager_operation_pending(S) =/= eps
 def $eager_operation_value(S) = S.RESULT -- otherwise
-def $eager_operation_begin(S, S_source, ptask, pnode*) = $destructor_release_begin(S_marked[.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.DESTRUCTION.OPERATIONS = pdestructionoperation :: S_marked.DESTRUCTION.OPERATIONS][.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: $eager_operation_tail(S)], $destruction_values(pnode*))
+def $eager_operation_begin(S, S_source, ptask, pnode*) = $destructor_release_begin(S_marked[.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.DESTRUCTION.OPERATIONS = pdestructionoperation :: S_marked.DESTRUCTION.OPERATIONS][.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: $eager_operation_tail(S)], $gc_operation_jobs(pdestructionoperation, pnode*))
   -- if S_marked = $eager_cleanup_hold($request_fatal_state($destruction_store_new(S)), $eager_cleanup_for(S_source, ptask))
-  -- if pdestructionoperation = {VALUE $eager_operation_value(S), BASE S.BASE, CELL S.CELL, KEY S.KEY, LOCATION S.LOCATION, COMPLETION S.COMPLETION, PENDING $eager_operation_pending(S), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, SOURCE ptask, CLEANUP $eager_cleanup_for(S_source, ptask)}
+  -- if pdestructionoperation = {VALUE $eager_operation_value(S), BASE S.BASE, CELL S.CELL, KEY S.KEY, LOCATION S.LOCATION, COMPLETION S.COMPLETION, PENDING $eager_operation_pending(S), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, SOURCE ptask, CLEANUP $eager_cleanup_for(S_source, ptask), NOGC $gc_operation_temporary(S_source, ptask, pnode*)}
 
 def $destructor_operation_at(pcallcontext?, porigin?, eps) = eps
 def $destructor_operation_at(pcallcontext?, porigin?, pdestructionoperation :: pdestructionoperation_tail*) = (pdestructionoperation)
@@ -300,7 +306,7 @@ def $destructor_selected_pending(S, pdestructionframe?) = pdestructionoperation.
 def $destructor_selected_pending(S, pdestructionframe?) = $destructor_frame_pending(S, pdestructionframe?)
   -- if $destructor_operation_for(S) = eps
 
-def $destructor_operation_live(S, pdestructionoperation) = ($destructor_operational(S) /\ pdestructionoperation <- S.DESTRUCTION.OPERATIONS /\ $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ $destructor_return_operand_valid(S, pdestructionoperation.VALUE) /\ $heap_subset($base_nodes(pdestructionoperation.BASE) ++ $eager_operation_completion_roots(pdestructionoperation), S.ALLOCATIONS) /\ $eager_operation_source_valid(S, pdestructionoperation))
+def $destructor_operation_live(S, pdestructionoperation) = ($destructor_operational(S) /\ pdestructionoperation <- S.DESTRUCTION.OPERATIONS /\ $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ $destructor_return_operand_valid(S, pdestructionoperation.VALUE) /\ $heap_subset($base_nodes(pdestructionoperation.BASE) ++ $eager_operation_completion_roots(pdestructionoperation), S.ALLOCATIONS) /\ $eager_operation_source_valid(S, pdestructionoperation) /\ $gc_operation_metadata_valid(S, pdestructionoperation))
 def $destructor_operation_valid(S, pdestructionoperation) = ($destructor_operation_live(S, pdestructionoperation) /\ S.CURRENT = pdestructionoperation.CALLER /\ S.ORIGIN = pdestructionoperation.ORIGIN /\ S.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT)
 def $destructor_operations_valid(S, eps) = true
 def $destructor_operations_valid(S, pdestructionoperation :: pdestructionoperation_tail*) = ($destructor_operation_live(S, pdestructionoperation) /\ $destructor_operations_valid(S, pdestructionoperation_tail*))
@@ -355,12 +361,14 @@ def $eager_internal_source(ERROR_HANDLER_RESULT perrorcall) = true
 def $eager_internal_source(ERROR_HANDLER_CLEAN perrorcall) = true
 def $eager_internal_source(ptask) = false -- otherwise
 def $source_operand_marker(ERROR_HANDLER_CLEAN perrorcall) = $source_operand_marker(perrorcall.RESUME)
+dec $gc_source(pstate) : bool
+def $gc_source(S) = false -- otherwise
 def $destructor_source_site(S) = eps
   -- if $destructor_operation_for(S) = (pdestructionoperation)
   -- if $eager_internal_source(pdestructionoperation.SOURCE)
   -- if $destructor_user_source(S)
 def $destructor_source_site(S) = S.ORIGIN
-  -- if $destructor_user_source(S)
+  -- if $destructor_user_source(S) /\ ~$gc_source(S)
   -- if $destructor_operation_for(S) = eps \/ ~$eager_operation_internal(S)
 def $destructor_source_site(S) = eps -- if ~$destructor_user_source(S)
 def $eager_operation_internal(S) = $eager_internal_source(pdestructionoperation.SOURCE)

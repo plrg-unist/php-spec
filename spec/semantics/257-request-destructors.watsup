@@ -29,12 +29,20 @@ dec $destructor_pending_valid(pstate, nat?) : bool
 dec $destructor_return_operand_valid(pstate, poperand) : bool
 dec $destruction_store_new(pstate) : pstate
 dec $destruction_store_drop(pstate, pnode*) : pstate
+dec $gc_store_drop(pstate, pnode) : pstate
+def $gc_store_drop(S, pnode) = S -- otherwise
+dec $gc_store_retire(pstate, pnode) : pstate
+def $gc_store_retire(S, pnode) = $gc_store_drop(S, pnode) -- otherwise
 dec $destruction_node_delete(pnode*, pnode) : pnode*
 dec $destruction_nodes_delete(pnode*, pnode*) : pnode*
 dec $destruction_children(hedge*, pnode) : pnode*
 dec $destruction_release_order(hgraph) : pnode*
-dec $destruction_release_walk(hgraph, pdestructionjob*, pnode*) : pnode*
 dec $destruction_zero(hgraph, pnode*) : pnode*
+dec $gc_release_order(pstate, hgraph) : pnode*
+def $gc_release_order(S, H) = $destruction_release_order(H) -- otherwise
+dec $gc_zero(pstate, hgraph, pnode*) : pnode*
+def $gc_zero(S, H, pnode*) = $destruction_zero(H, pnode*) -- otherwise
+dec $destruction_release_walk(hgraph, pdestructionjob*, pnode*) : pnode*
 dec $destruction_values(pnode*) : pdestructionjob*
 dec $destruction_job_nodes(pdestructionjob*) : pnode*
 dec $destruction_free_job(pnode) : pdestructionjob*
@@ -49,9 +57,9 @@ def $destruction_store_new(S) = $destruction_store_new(S[.DESTRUCTION.HANDLES = 
   -- if S.DESTRUCTION.NOREUSE \/ S.DESTRUCTION.FREE = eps
 
 def $destruction_store_drop(S, eps) = S
-def $destruction_store_drop(S, (HOBJECT n) :: pnode*) = $destruction_store_drop(S[.DESTRUCTION.FREE = S.DESTRUCTION.HANDLES[n] :: S.DESTRUCTION.FREE], pnode*)
+def $destruction_store_drop(S, (HOBJECT n) :: pnode*) = $destruction_store_drop($gc_store_drop(S[.DESTRUCTION.FREE = S.DESTRUCTION.HANDLES[n] :: S.DESTRUCTION.FREE], HOBJECT n), pnode*)
 def $destruction_store_drop(S, (HCELL n) :: pnode*) = $destruction_store_drop(S, pnode*)
-def $destruction_store_drop(S, (HARRAY n) :: pnode*) = $destruction_store_drop(S, pnode*)
+def $destruction_store_drop(S, (HARRAY n) :: pnode*) = $destruction_store_drop($gc_store_drop(S, HARRAY n), pnode*)
 
 def $destruction_node_delete(eps, pnode) = eps
 def $destruction_node_delete(pnode :: pnode_tail*, pnode) = pnode_tail*
@@ -68,8 +76,13 @@ def $destruction_children((HEDGE pnode_other pnode_child) :: hedge*, pnode) = $d
 ;; precedes free_obj; the parent handle is recycled after all outgoing slots.
 def $destruction_values(eps) = eps
 def $destruction_values(pnode :: pnode_tail*) = (DESTRUCTION_VALUE pnode) :: $destruction_values(pnode_tail*)
+dec $destruction_job_node(pdestructionjob) : pnode?
+def $destruction_job_node(DESTRUCTION_VALUE pnode) = (pnode)
+def $destruction_job_node(DESTRUCTION_TEMP pnode) = (pnode)
+def $destruction_job_node(DESTRUCTION_HANDLE n) = eps
 def $destruction_job_nodes(eps) = eps
-def $destruction_job_nodes((DESTRUCTION_VALUE pnode) :: pdestructionjob*) = pnode :: $destruction_job_nodes(pdestructionjob*)
+def $destruction_job_nodes(pdestructionjob_head :: pdestructionjob*) = pnode :: $destruction_job_nodes(pdestructionjob*)
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
 def $destruction_job_nodes((DESTRUCTION_HANDLE n) :: pdestructionjob*) = $destruction_job_nodes(pdestructionjob*)
 def $destruction_free_job(HOBJECT n) = [DESTRUCTION_HANDLE n]
 def $destruction_free_job(pnode) = eps -- otherwise
@@ -79,9 +92,11 @@ def $destruction_zero(H, pnode :: pnode_tail*) = $destruction_zero(H, pnode_tail
 def $destruction_release_order(H) = $destruction_release_walk(H, $destruction_values($destruction_zero(H, H.NODES)), eps)
 def $destruction_release_walk(H, eps, pnode_done*) = pnode_done*
 def $destruction_release_walk(H, (DESTRUCTION_HANDLE n) :: pdestructionjob*, pnode_done*) = $destruction_release_walk(H, pdestructionjob*, pnode_done* ++ [HOBJECT n])
-def $destruction_release_walk(H, (DESTRUCTION_VALUE pnode) :: pdestructionjob*, pnode_done*) = $destruction_release_walk(H, pdestructionjob*, pnode_done*)
+def $destruction_release_walk(H, pdestructionjob_head :: pdestructionjob*, pnode_done*) = $destruction_release_walk(H, pdestructionjob*, pnode_done*)
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if ~(pnode <- H.NODES) \/ $($heap_owners(H[.ROOTS = H.ROOTS ++ $destruction_job_nodes(pdestructionjob*)], pnode) > 0)
-def $destruction_release_walk(H, (DESTRUCTION_VALUE pnode) :: pdestructionjob*, pnode_done*) = $destruction_release_walk(H[.NODES = pnode_live*][.EDGES = $heap_live_edges(H.EDGES, pnode_live*)], $destruction_values($destruction_children(H.EDGES, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionjob*, pnode_done*)
+def $destruction_release_walk(H, pdestructionjob_head :: pdestructionjob*, pnode_done*) = $destruction_release_walk(H[.NODES = pnode_live*][.EDGES = $heap_live_edges(H.EDGES, pnode_live*)], $destruction_values($destruction_children(H.EDGES, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionjob*, pnode_done*)
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if pnode <- H.NODES
   -- if $heap_owners(H[.ROOTS = H.ROOTS ++ $destruction_job_nodes(pdestructionjob*)], pnode) = 0
   -- if pnode_live* = $destruction_node_delete(H.NODES, pnode)
@@ -229,12 +244,12 @@ def $destruction_prune(S, pnode_live*) = S_new[.COMPLETION = UNSUPPORTED "ordina
   -- if ~$destructor_unsupported(S_new.COMPLETION)
   -- if $destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
   -- if ~$destructor_operational(S_new)
-def $destruction_prune(S, pnode_live*) = $destructor_release_begin(S_new, $destruction_values($destruction_zero($heap_graph(S_new), S_new.ALLOCATIONS)))
+def $destruction_prune(S, pnode_live*) = $destructor_release_begin(S_new, $destruction_values($gc_zero(S_new, $heap_graph(S_new), S_new.ALLOCATIONS)))
   -- if S_new = $request_fatal_state($destruction_store_new(S))
   -- if ~$destructor_unsupported(S_new.COMPLETION)
   -- if $destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
   -- if $destructor_operational(S_new)
-def $destruction_prune(S, pnode_live*) = $prune_live($destruction_store_drop(S_new, $destruction_release_order($heap_graph(S_new))), pnode_live*)
+def $destruction_prune(S, pnode_live*) = $prune_live($destruction_store_drop(S_new, $gc_release_order(S_new, $heap_graph(S_new))), pnode_live*)
   -- if S_new = $request_fatal_state($destruction_store_new(S))
   -- if ~$destructor_unsupported(S_new.COMPLETION)
   -- if ~$destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
@@ -348,15 +363,22 @@ rule PhpStep/destructor-store-done: S ~> S[.DESTRUCTION.PHASE = DESTRUCTION_DONE
   -- if $call_task_valid(S, DESTRUCTOR_STORE)
   -- if S.DESTRUCTION.INDEX = S.DESTRUCTION.NEXT
 
-;; Each VALUE is one native pending zval owner. The parallel release and call
+;; Each VALUE or TEMP is one native pending zval owner. The parallel release and call
 ;; certificates are borrowed; they add no heap owners.
 def $destructor_release_begin(S, pdestructionjob*) = S[.DESTRUCTION.RELEASES = pdestructionrelease :: S.DESTRUCTION.RELEASES][.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: S.TODO]
   -- if pdestructionrelease = {JOBS pdestructionjob*, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}
-def $destructor_release_replace(S, pdestructionrelease) = S[.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*][.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*]
+dec $gc_release_consumed(pstate, pdestructionrelease) : pstate
+dec $gc_release_metadata_valid(pstate, pdestructionrelease) : bool
+dec $gc_temporary_leaf_valid(pstate, pdestructorcall) : bool
+def $gc_release_consumed(S, pdestructionrelease) = S -- otherwise
+def $gc_release_metadata_valid(S, pdestructionrelease) = true -- otherwise
+def $gc_temporary_leaf_valid(S, pdestructorcall) = true -- otherwise
+def $destructor_release_replace(S, pdestructionrelease) = $gc_release_consumed(S[.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*][.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*], pdestructionrelease_old)
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_old) :: ptask_tail*
   -- if S.DESTRUCTION.RELEASES = pdestructionrelease_old :: pdestructionrelease_tail*
 def $destructor_jobs_valid(S, eps) = true
-def $destructor_jobs_valid(S, (DESTRUCTION_VALUE pnode) :: pdestructionjob*) = (pnode <- S.ALLOCATIONS /\ $destructor_jobs_valid(S, pdestructionjob*))
+def $destructor_jobs_valid(S, pdestructionjob_head :: pdestructionjob*) = (pnode <- S.ALLOCATIONS /\ $destructor_jobs_valid(S, pdestructionjob*))
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
 def $destructor_jobs_valid(S, (DESTRUCTION_HANDLE n) :: pdestructionjob*) = true
   -- if $(n < |S.DESTRUCTION.HANDLES|)
   -- if ~((HOBJECT n) <- S.ALLOCATIONS)
@@ -365,7 +387,7 @@ def $destructor_jobs_valid(S, (DESTRUCTION_HANDLE n) :: pdestructionjob*) = true
   -- if $destructor_handle(S, n_handle, 0) = eps
   -- if $destructor_jobs_valid(S, pdestructionjob*)
 def $destructor_jobs_valid(S, pdestructionjob*) = false -- otherwise
-def $destructor_release_live(S, pdestructionrelease) = ($destructor_operational(S) /\ pdestructionrelease <- S.DESTRUCTION.RELEASES /\ $destructor_jobs_valid(S, pdestructionrelease.JOBS))
+def $destructor_release_live(S, pdestructionrelease) = ($destructor_operational(S) /\ pdestructionrelease <- S.DESTRUCTION.RELEASES /\ $destructor_jobs_valid(S, pdestructionrelease.JOBS) /\ $gc_release_metadata_valid(S, pdestructionrelease))
 def $destructor_release_valid(S, pdestructionrelease) = ($destructor_release_live(S, pdestructionrelease) /\ S.CURRENT = pdestructionrelease.CALLER /\ S.ORIGIN = pdestructionrelease.ORIGIN /\ S.CONSTCONTEXT = pdestructionrelease.CONSTCONTEXT /\ pdestructionrelease.USER = $destructor_user_source(S))
 def $call_task_valid(S, DESTRUCTOR_RELEASE pdestructionrelease) = $destructor_release_valid(S, pdestructionrelease)
 def $task_nodes(DESTRUCTOR_RELEASE pdestructionrelease) = $destruction_job_nodes(pdestructionrelease.JOBS)
@@ -374,20 +396,22 @@ rule PhpStep/destructor-release-done: S ~> S[.TODO = ptask_tail*][.DESTRUCTION.R
   -- if S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
   -- if pdestructionrelease.JOBS = eps
-rule PhpStep/destructor-release-handle: S ~> $destructor_release_replace(S[.DESTRUCTION.FREE = S.DESTRUCTION.HANDLES[n] :: S.DESTRUCTION.FREE], pdestructionrelease[.JOBS = pdestructionjob*])
+rule PhpStep/destructor-release-handle: S ~> $destructor_release_replace($gc_store_drop(S[.DESTRUCTION.FREE = S.DESTRUCTION.HANDLES[n] :: S.DESTRUCTION.FREE], HOBJECT n), pdestructionrelease[.JOBS = pdestructionjob*])
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
   -- if pdestructionrelease.JOBS = (DESTRUCTION_HANDLE n) :: pdestructionjob*
 rule PhpStep/destructor-release-shared: S ~> S_next
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
-  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
+  -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if S_next = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if $($heap_owners($heap_graph(S_next), pnode) > 0)
 rule PhpStep/destructor-release-call: S ~> $destructor_select(S_next, n, false, (pdestructionrelease))
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
-  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionjob*
+  -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_job_node(pdestructionjob_head) = (HOBJECT n)
   -- if S_next = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if $heap_owners($heap_graph(S_next), HOBJECT n) = 0
   -- if ~(n <- S.DESTRUCTION.CALLED)
@@ -395,14 +419,16 @@ rule PhpStep/destructor-release-call: S ~> $destructor_select(S_next, n, false, 
 rule PhpStep/destructor-release-internal: S ~> $internal_destructor_enter(S, pnode, pdestructionrelease)
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
-  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
+  -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if S_unheld = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if $heap_owners($heap_graph(S_unheld), pnode) = 0
   -- if $internal_destructor_pending(S_unheld, pnode)
 rule PhpStep/destructor-release-free: S ~> $destructor_free(S_next, pnode, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
-  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
+  -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if S_next = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if $heap_owners($heap_graph(S_next), pnode) = 0
   -- if ~$destructor_uncalled_node(S_next, pnode)
@@ -412,7 +438,7 @@ def $destructor_uncalled_node(S, HOBJECT n) = (~(n <- S.DESTRUCTION.CALLED) /\ (
 def $destructor_uncalled_node(S, pnode) = false -- otherwise
 dec $weakref_pending_carrier(pstate, pnode) : bool
 def $weakref_pending_carrier(S, pnode) = false -- otherwise
-def $destructor_free(S, pnode, pdestructionrelease) = $destructor_release_replace(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, pnode)], pdestructionrelease[.JOBS = $destruction_values($node_children(S, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionrelease.JOBS])
+def $destructor_free(S, pnode, pdestructionrelease) = $destructor_release_replace($gc_store_retire(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, pnode)], pnode), pdestructionrelease[.JOBS = $destruction_values($node_children(S, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionrelease.JOBS])
   -- if ~$weakref_pending_carrier(S, pnode)
 
 def $destructor_select(S, n, b_store, pdestructionrelease?) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]][.DESTRUCTION.CALLS = pdestructorcall :: S.DESTRUCTION.CALLS][.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: S.TODO]
@@ -433,8 +459,10 @@ def $destructor_call_live(S, pdestructorcall) = true
   -- if pdestructorcall.STORE \/ $destructor_leaf_valid(S, pdestructorcall)
 def $destructor_call_live(S, pdestructorcall) = false -- otherwise
 def $destructor_leaf_valid(S, pdestructorcall) = true
+  -- if $gc_temporary_leaf_valid(S, pdestructorcall)
   -- if pdestructorcall.RELEASE = (pdestructionrelease)
-  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)) :: pdestructionjob*
+  -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_job_node(pdestructionjob_head) = (HOBJECT pdestructorcall.OBJECT)
   -- if pdestructionrelease.CALLER = pdestructorcall.CALLER /\ pdestructionrelease.ORIGIN = pdestructorcall.ORIGIN /\ pdestructionrelease.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT /\ pdestructionrelease.USER = pdestructorcall.USER
   -- if $destructor_release_live(S, pdestructionrelease[.JOBS = pdestructionjob*])
 def $destructor_leaf_valid(S, pdestructorcall) = false -- otherwise
@@ -595,7 +623,8 @@ def $destructor_saved_frames(S, pdestructorcall :: pdestructorcall_tail*) = $des
   -- if pdestructorcall.FRAME = (pdestructionframe)
 def $destructor_saved_scope(S, pdestructorcall) = S[.DESTRUCTION.CALLS = pdestructorcall_live*][.DESTRUCTION.RELEASES = $destructor_release_suffix(S.DESTRUCTION.RELEASES, pdestructionrelease[.JOBS = pdestructionjob*])][.DESTRUCTION.FRAMES = $destructor_saved_frames(S, pdestructorcall_live*)][.DESTRUCTION.OPERATIONS = $destructor_saved_operations(S, pdestructorcall_live*)]
   -- if pdestructorcall.RELEASE = (pdestructionrelease)
-  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)) :: pdestructionjob*
+  -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_job_node(pdestructionjob_head) = (HOBJECT pdestructorcall.OBJECT)
   -- if pdestructorcall_live* = $destructor_call_suffix(S.DESTRUCTION.CALLS, pdestructorcall)
 def $destructor_saved_scope(S, pdestructorcall) = S[.DESTRUCTION.CALLS = pdestructorcall_live*][.DESTRUCTION.RELEASES = eps][.DESTRUCTION.FRAMES = $destructor_saved_frames(S, pdestructorcall_live*)][.DESTRUCTION.OPERATIONS = $destructor_saved_operations(S, pdestructorcall_live*)]
   -- if pdestructorcall.STORE
@@ -783,7 +812,7 @@ def $frame_release(S, S_restored) = $destruction_store_new($destructor_frame_cle
 def $destructor_frame_staged(S) = ($destructor_operational(S) /\ S.COMPLETION = NORMAL /\ (S.TODO = eps \/ $destructor_leaving_exception(S.TODO) =/= eps) /\ S.CURRENT =/= eps /\ $destructor_frame_nodes(S) =/= eps /\ ~$generator_close_frame_active(S))
 ;; The explicit slots cover CVs/context; unrelated completed temporaries are
 ;; pruned separately. Exclude handles already freed through those slots.
-def $destructor_frame_order(S, S_restored) = pnode_done* ++ $destruction_nodes_delete($destruction_release_order(H), pnode_done*)
+def $destructor_frame_order(S, S_restored) = pnode_done* ++ $destruction_nodes_delete($gc_release_order(S_restored, H), pnode_done*)
   -- if H = $destructor_frame_graph(S, S_restored)
   -- if pnode_done* = $destruction_release_walk(H, $destruction_values($destructor_frame_nodes(S)), eps)
 

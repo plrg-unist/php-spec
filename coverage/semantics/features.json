@@ -13616,28 +13616,65 @@
     {
       "id": "lifecycle.cycles",
       "milestone": "5b",
-      "status": "pending",
-      "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "status": "partial",
+      "dependencies": [
+        "lifecycle.destructor-timing",
+        "lifecycle.weak-reference"
       ],
-      "review": null
+      "implementation": [
+        "spec/semantics/301-cycle-collection.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/257-request-destructors.watsup",
+        "spec/semantics/270-eager-destructors.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/cycle_collection_state.py",
+        "tests/semantics/cycle_collection_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/cycle_collection_sources.py",
+        "tests/semantics/cycle_collection_cases.json",
+        "tests/semantics/cycle_collection_review.py",
+        "tests/semantics/cycle_collection_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c",
+        "coverage/semantics/cycle-collection-review.json",
+        "docs/semantics/CYCLE-COLLECTION.md"
+      ],
+      "review": "Bounded ordinary explicit collection301: real potential-root slot order, consumed temporary decrements, parked handle authority, weak retirement, destructor guards and frozen per-pass counts. Original30/606 and private285-parent3/45 retain their distinct ledger cuts. Actual286-parent strict compiler/init, one captured-source retirement original and66 independent strict-SL premises pass. Actual290-parent strict291 compiler/init and one readonly self-clone/GC original pass; both real cycles retire after two destructors/count2, then count0. The larger nested-Generator original retains its90s timeout with zero agreement. Internal lifetime graphs, collector-Fiber transfer/lifecycle317, automatic thresholds, wider resurrection and request freeing remain required; no family closure."
     },
     {
       "id": "lifecycle.collection-control",
       "milestone": "5b",
-      "status": "pending",
-      "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "status": "partial",
+      "dependencies": [
+        "lifecycle.cycles"
       ],
-      "review": null
+      "implementation": [
+        "spec/semantics/301-cycle-collection.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/39-ownership.watsup",
+        "spec/semantics/257-request-destructors.watsup",
+        "spec/semantics/270-eager-destructors.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/cycle_collection_state.py",
+        "tests/semantics/cycle_collection_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/cycle_collection_sources.py",
+        "tests/semantics/cycle_collection_cases.json",
+        "tests/semantics/cycle_collection_review.py",
+        "tests/semantics/cycle_collection_review_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_gc.c",
+        "coverage/semantics/cycle-collection-review.json",
+        "docs/semantics/CYCLE-COLLECTION.md"
+      ],
+      "review": "Bounded ordinary explicit collection301: real potential-root slot order, consumed temporary decrements, parked handle authority, weak retirement, destructor guards and frozen per-pass counts. Original30/606 and private285-parent3/45 retain their distinct ledger cuts. Actual286-parent strict compiler/init, one captured-source retirement original and66 independent strict-SL premises pass. Actual290-parent strict291 compiler/init and one readonly self-clone/GC original pass; both real cycles retire after two destructors/count2, then count0. The larger nested-Generator original retains its90s timeout with zero agreement. Internal lifetime graphs, collector-Fiber transfer/lifecycle317, automatic thresholds, wider resurrection and request freeing remain required; no family closure."
     },
     {
       "id": "lifecycle.weak-reference",
@@ -13665,7 +13702,7 @@
         "vendor/php-src/Zend/zend_objects_API.c",
         "vendor/php-src/Zend/zend_objects.c"
       ],
-      "review": "Integrated module296 on reviewed270: nonowning immutable semantic target IDs, allocated-wrapper memoization and real strong get results. Resurrection remains live; actual free clears lookup before outgoing child destruction. 21 exact normal originals, 5 zero-agreement Unsupported controls and 9 reached cuts (344 physical premises) retain separate tested snapshots in weak-reference-review.json. Authentic forbidden-NEW candidates survive argument effects and validated parked stacks; actual pending-carrier retirement stops before free. Deferred construction, wider consumers, cycles/explicit GC and WeakMap remain required. Canonical292/304/270 composition separately passes strict277 initialization and one new exact weak lifetime original; earlier cuts retain their inputs and no family closure is claimed."
+      "review": "Integrated module296 on reviewed270: nonowning immutable semantic target IDs, allocated-wrapper memoization and real strong get results. Resurrection remains live; actual free clears lookup before outgoing child destruction. 21 exact normal originals, 5 zero-agreement Unsupported controls and 9 reached cuts (344 physical premises) retain separate tested snapshots in weak-reference-review.json. Authentic forbidden-NEW candidates survive argument effects and validated parked stacks; actual pending-carrier retirement stops before free. Deferred construction, wider consumers and WeakMap remain required; bounded ordinary collection301 has its own retained ledger and compositions. Canonical292/304/270 composition separately passes strict277 initialization and one new exact weak lifetime original; earlier cuts retain their inputs and no family closure is claimed."
     },
     {
       "id": "lifecycle.weak-map",
