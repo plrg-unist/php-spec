@@ -265,5 +265,668 @@
     "native_stdout": "S|1|5|R|9|",
     "native_stderr": "",
     "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-finally-skips-catch",
+    "source": "<?php\n$f = new Fiber(static function () {\n    try { echo 'A|'; Fiber::suspend(); echo 'X|'; }\n    catch (Throwable $e) { echo 'C|'; }\n    finally { echo 'F|'; }\n    echo 'T|';\n});\n$f->start(); echo 'M|'; unset($f); echo 'D|';\n",
+    "source_sha256": "207cf24df1c967e688d3a7d090aa2f392651c66d140618b01374c9c9172c1f96",
+    "native_stdout": "A|M|F|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-helper-finally-order",
+    "source": "<?php\nfunction fiber_close_helper281() {\n    try { echo 'H|'; Fiber::suspend(); echo 'X|'; }\n    finally { echo 'h|'; }\n}\n$f = new Fiber(static function () {\n    try { fiber_close_helper281(); }\n    finally { echo 'f|'; }\n    echo 'T|';\n});\n$f->start(); echo 'M|'; unset($f); echo 'D|';\n",
+    "source_sha256": "f983a5f321051547dde204ad7ee95280e9dfee244c9bd65cfe6ecd3c8db93ea0",
+    "native_stdout": "H|M|h|f|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-pending-return-finally",
+    "source": "<?php\n$f = new Fiber(static function () {\n    try {\n        try { return 7; }\n        finally { echo 'I|'; Fiber::suspend(); echo 'X|'; }\n    } finally { echo 'O|'; }\n});\n$f->start(); echo 'M|'; unset($f); echo 'D|';\n",
+    "source_sha256": "e5b0321984b15b071b79c09def441876142dbb70809b68a5cc8f4780245339f8",
+    "native_stdout": "I|M|O|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-finally-return-resurrection",
+    "source": "<?php\n$saved = null;\n$f = new Fiber(static function () {\n    try { Fiber::suspend(); }\n    finally {\n        global $saved;\n        $saved = Fiber::getCurrent();\n        echo 'F|';\n        return 7;\n    }\n});\n$f->start(); unset($f);\necho (int)$saved->isTerminated(), '|', $saved->getReturn(), '|';\nunset($saved); echo 'D|';\n",
+    "source_sha256": "1256edc9be28f114ecbd1395036581c32e1a3bfe2238acd0bffb47f209e67d20",
+    "native_stdout": "F|1|7|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-real-exception-caller-catch",
+    "source": "<?php\n$f = new Fiber(static function () {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; throw new Exception('close'); }\n});\n$f->start();\ntry { unset($f); echo 'X|'; }\ncatch (Exception $e) { echo $e->getMessage(), '|', (int)($e->getPrevious() === null), '|'; }\necho 'D|';\n",
+    "source_sha256": "ceb2dfdf035063475ba0ec6b727a46254633a44c3558150b038ff6bf7df4196c",
+    "native_stdout": "F|close|1|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-caught-replacement-continues",
+    "source": "<?php\n$f = new Fiber(static function () {\n    try {\n        try { Fiber::suspend(); }\n        finally { echo 'I|'; throw new Exception('inner'); }\n    } catch (Exception $e) { echo $e->getMessage(), '|'; }\n    finally { echo 'O|'; }\n    echo 'C|';\n    try { Fiber::suspend(); }\n    catch (FiberError $e) { echo $e->getMessage(), '|'; }\n    echo 'T|'; return 9;\n});\n$f->start(); unset($f); echo 'D|';\n",
+    "source_sha256": "9fd070e1fe6c7c1bc1001e29841f6356f1c220f9611e2093c427cca9b03ed396",
+    "native_stdout": "I|inner|O|C|Cannot suspend in a force-closed fiber|T|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-caught-suspend-preserves-graceful",
+    "source": "<?php\n$f = new Fiber(static function () {\n    try { Fiber::suspend(); }\n    finally {\n        try { Fiber::suspend(1); }\n        catch (FiberError $e) { echo $e->getMessage(), '|'; }\n        echo 'F|';\n    }\n    echo 'X|';\n});\n$f->start(); unset($f); echo 'D|';\n",
+    "source_sha256": "c1263b64a34739ca66ec78207d79fac3ef5242b2b41ca11c334eb30bbd5cbd6b",
+    "native_stdout": "Cannot suspend in a force-closed fiber|F|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-other-fiber-transfers",
+    "source": "<?php\n$g = new Fiber(static function () {\n    echo 'G|'; $x = Fiber::suspend(3); echo $x, '|'; return 8;\n});\n$f = new Fiber(static function () use ($g) {\n    try { Fiber::suspend(); }\n    finally {\n        $self = Fiber::getCurrent();\n        echo 'F|', (int)$self->isRunning(), '|', $g->start(), '|';\n        echo (int)(Fiber::getCurrent() === $self), '|';\n        $g->resume(4); echo $g->getReturn(), '|';\n    }\n});\n$f->start(); unset($f); echo 'D|';\n",
+    "source_sha256": "933902fd71771fd8648b8f1791a1f5fc963d9b46d24c101c1f67262a1f4f1356",
+    "native_stdout": "F|1|G|3|1|4|8|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-nested-close",
+    "source": "<?php\n$b = new Fiber(static function () {\n    try { Fiber::suspend(); } finally { echo 'B|'; }\n});\n$b->start();\n$a = new Fiber(static function () {\n    try { Fiber::suspend(); }\n    finally { global $b; echo 'A|'; $b = null; echo 'a|'; }\n});\n$a->start(); unset($a); echo 'D|';\n",
+    "source_sha256": "a4754f7972b9ae741883c8e7002da2dfe1f83869e958f38201618a5652bb2afc",
+    "native_stdout": "A|B|a|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-reporting-mask-shared-ini",
+    "source": "<?php\nerror_reporting(123);\n$f = new Fiber(static function () {\n    try { error_reporting(456); Fiber::suspend(); }\n    finally {\n        echo 'F', error_reporting(), '/', ini_get('error_reporting'), '|';\n        error_reporting(789);\n    }\n});\n$f->start();\necho 'M', error_reporting(), '/', ini_get('error_reporting'), '|';\nunset($f);\necho 'D', error_reporting(), '/', ini_get('error_reporting'), '|';\n",
+    "source_sha256": "9a62106b5403c67c03c63284f1a72735e51b7ee4325b3c4cac1c3d9d4b05b55c",
+    "native_stdout": "M123/456|F456/456|D123/789|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-outer-finally-exception-chain",
+    "source": "<?php\n$f = new Fiber(static function () {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; throw new Exception('close'); }\n});\n$f->start();\ntry {\n    try { throw new Exception('outer'); }\n    finally { unset($f); }\n} catch (Exception $e) {\n    echo $e->getMessage(), '|', $e->getPrevious()->getMessage(), '|';\n}\necho 'D|';\n",
+    "source_sha256": "e541aadefb34fbb64ef5d81f9d61200dad5f441fefc94f31dcb5f39bf373f653",
+    "native_stdout": "F|close|outer|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-frame-retirement-exception-chain",
+    "source": "<?php\nfunction fiber_close_retiring281() {\n    $f = new Fiber(static function () {\n        try { Fiber::suspend(); }\n        finally { echo 'F|'; throw new Exception('close'); }\n    });\n    $f->start(); throw new Exception('outer');\n}\ntry { fiber_close_retiring281(); }\ncatch (Exception $e) { echo $e->getMessage(), '|', $e->getPrevious()->getMessage(), '|'; }\necho 'D|';\n",
+    "source_sha256": "dbeb62cd660efc7acb9a531e6f7445bf8223bb5102e380b0cea8876a4dbc5cb4",
+    "native_stdout": "F|close|outer|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-last-array-owner",
+    "source": "<?php\n$f = new Fiber(static function () {\n    try { Fiber::suspend(); } finally { echo 'F|'; }\n});\n$f->start(); $hold = [$f]; unset($f); echo 'A|';\n$hold = []; echo 'D|';\n",
+    "source_sha256": "e1af70f2ed0f64b930003f702eb5b72b43a1f7c2646fd37ef1ac43e113dba240",
+    "native_stdout": "A|F|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-real-caller-trace",
+    "source": "<?php\nfunction fiber_close_trace281() {\n    $f = new Fiber(static function () {\n        try { Fiber::suspend(); }\n        finally { throw new Exception('close'); }\n    });\n    $f->start(); unset($f);\n}\ntry { fiber_close_trace281(); }\ncatch (Exception $e) {\n    $t = $e->getTrace();\n    echo (int)($e->getFile() === __FILE__), '|', $e->getLine(), '|', count($t), '|';\n    echo (int)isset($t[0]['file']), (int)isset($t[0]['line']), (int)isset($t[0]['class']), '|';\n    echo (int)isset($t[1]), '|';\n}\n",
+    "source_sha256": "c15afd95a0bfc353f0fdf7c7e76cb5d69daeebbedf1ea7ffbeddd95a00809538",
+    "native_stdout": "1|5|1|000|0|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "run_by_default": false,
+    "default_exclusion": "Original ordinary-library observer; retained as zero-agreement evidence."
+  },
+  {
+    "id": "review-fiber-close-request-shutdown-before-close",
+    "source": "<?php\nregister_shutdown_function(static function () { echo 'SH|'; });\n$f = new Fiber(static function () {\n    try { Fiber::suspend(); } finally { echo 'F|'; }\n});\n$f->start(); echo 'M|';\n",
+    "source_sha256": "62db06a75176573333e13b41214af331085ab0685c571c7b4267bcce7e178b8c",
+    "native_stdout": "M|SH|F|",
+    "native_stderr": "",
+    "expected_model": "unsupported",
+    "unsupported_reason": "force-closing a suspended Fiber",
+    "unsupported_stdout": "M|SH|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "83",
+            "72",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "review-fiber-close-request-global-reverse-order",
+    "source": "<?php\n$a = new Fiber(static function () {\n    try { Fiber::suspend(); } finally { echo 'A|'; }\n});\n$b = new Fiber(static function () {\n    try { Fiber::suspend(); } finally { echo 'B|'; }\n});\n$a->start(); $b->start();\nregister_shutdown_function(static function () { echo 'SH|'; });\necho 'M|';\n",
+    "source_sha256": "f4142960bc9864b1c367805163746cc0b41519f43022082939bbadf881b5b9c1",
+    "native_stdout": "M|SH|B|A|",
+    "native_stderr": "",
+    "expected_model": "unsupported",
+    "unsupported_reason": "force-closing a suspended Fiber",
+    "unsupported_stdout": "M|SH|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "83",
+            "72",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "review-fiber-close-shutdown-callback-eager-close",
+    "source": "<?php\n$f = new Fiber(static function () {\n    try { Fiber::suspend(); } finally { echo 'F|'; }\n});\n$f->start();\nregister_shutdown_function(static function () { global $f; $f = null; echo 'S1|'; });\nregister_shutdown_function(static function () { echo 'S2|'; });\necho 'M|';\n",
+    "source_sha256": "069190f7eb88b9cf6bf516fa2c2d1a90a0b34e898376729d0a7d622c1ed707d6",
+    "native_stdout": "M|F|S1|S2|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-request-close-switches-other-fiber",
+    "source": "<?php\n$g = new Fiber(static function () { echo 'G|'; return 3; });\n$f = new Fiber(static function () use ($g) {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; $g->start(); echo $g->getReturn(), '|'; }\n});\n$f->start(); echo 'M|';\n",
+    "source_sha256": "b8c49cfa831b8442f75a906908d91d50374b60a7954b4fa9077da4dd9ca50fd2",
+    "native_stdout": "M|F|G|3|",
+    "native_stderr": "",
+    "expected_model": "unsupported",
+    "unsupported_reason": "force-closing a suspended Fiber",
+    "unsupported_stdout": "M|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "review-fiber-close-request-object-store-order",
+    "source": "<?php\n$a = new Fiber(static function () {\n    try { Fiber::suspend(); } finally { echo 'A|'; }\n});\n$b = new Fiber(static function () {\n    try { Fiber::suspend(); } finally { echo 'B|'; }\n});\n$aa = $a; $bb = $b;\n$a->start(); $b->start();\nregister_shutdown_function(static function () { echo 'SH|'; });\necho 'M|';\n",
+    "source_sha256": "1db9d45ea9ba6de219aadb96e62a5bde6da585389b10880f58d99c335a7c2062",
+    "native_stdout": "M|SH|A|B|",
+    "native_stderr": "",
+    "expected_model": "unsupported",
+    "unsupported_reason": "Fiber destruction during request cleanup",
+    "unsupported_stdout": "M|SH|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "83",
+            "72",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "review-fiber-close-private-control-class-spelling",
+    "source": "<?php\nclass GracefulExit extends Exception {}\nclass UnwindExit extends Exception {}\n$f = new Fiber(static function () {\n    try { Fiber::suspend(); }\n    catch (GracefulExit|UnwindExit $e) { echo 'C|'; }\n    catch (Throwable $e) { echo 'T|'; }\n    finally { echo 'F|'; }\n    echo 'X|';\n});\n$f->start(); unset($f); echo 'D|';\n",
+    "source_sha256": "b80135d9a1420dafe3b29d7a7f4fdef523860ded86a10baf8a4dcf5c30503439",
+    "native_stdout": "F|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-local-child-frame-retirement",
+    "source": "<?php\n$f = new Fiber(static function () {\n    $g = new Fiber(static function () {\n        try { Fiber::suspend(); } finally { echo 'G|'; }\n    });\n    $g->start();\n    try { Fiber::suspend(); } finally { echo 'F|'; }\n});\n$f->start(); echo 'M|'; unset($f); echo 'D|';\n",
+    "source_sha256": "6180e48db357835b84bc575d2f1fc14065abd5e22ea1a389c56e83b5a0b11d0a",
+    "native_stdout": "M|F|G|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-cached-callback-last-capture",
+    "source": "<?php\nclass FiberCloseCapture291 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo $current === null ? 'N|' : (int) $current->isRunning() . '|';\n        try { Fiber::suspend(); }\n        catch (FiberError $e) { echo $e->getMessage(), '|'; }\n    }\n}\n$captured = new FiberCloseCapture291();\n$fiber = new Fiber(function () use ($captured) {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; }\n});\nunset($captured);\n$fiber->start();\nunset($fiber);\necho 'D|';\n",
+    "source_sha256": "e792060768363d4b02f3acf0eb8d173821c57630b806d5e7fb122c51eec32b30",
+    "native_stdout": "F|1|Cannot suspend in a force-closed fiber|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-cached-callback-replaces-graceful",
+    "source": "<?php\nclass FiberCloseCaptureGraceful291 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo $current === null ? 'N|' : (int) $current->isRunning() . '|';\n        throw new Exception('capture');\n    }\n}\n$captured = new FiberCloseCaptureGraceful291();\n$fiber = new Fiber(function () use ($captured) {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; }\n});\nunset($captured);\n$fiber->start();\ntry { unset($fiber); }\ncatch (Exception $e) {\n    echo $e->getMessage(), '|', (int) ($e->getPrevious() === null), '|';\n    $trace = $e->getTrace();\n    echo count($trace), '|', (int) isset($trace[0]['file']), '|';\n    echo $trace[0]['function'], '|', (int) isset($trace[1]), '|';\n}\necho 'D|';\n",
+    "source_sha256": "a45f4a3abd85a503fd5e769ed05eefc32528b6c47f93b5978574d147331cd9eb",
+    "native_stdout": "F|1|capture|1|1|0|__destruct|0|D|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "run_by_default": false,
+    "default_exclusion": "Original ordinary-library observer; retained as zero-agreement evidence."
+  },
+  {
+    "id": "review-fiber-close-cached-callback-replaces-finally",
+    "source": "<?php\nclass FiberCloseCaptureFinally291 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo $current === null ? 'N|' : (int) $current->isRunning() . '|';\n        throw new Exception('capture');\n    }\n}\n$captured = new FiberCloseCaptureFinally291();\n$fiber = new Fiber(function () use ($captured) {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; throw new Exception('finally'); }\n});\nunset($captured);\n$fiber->start();\ntry { unset($fiber); }\ncatch (Exception $e) {\n    $previous = $e->getPrevious();\n    echo $e->getMessage(), '|', $previous->getMessage(), '|';\n    echo (int) ($previous->getPrevious() === null), '|';\n    $trace = $e->getTrace();\n    echo count($trace), '|', (int) isset($trace[0]['file']), '|';\n    echo $trace[0]['function'], '|', (int) isset($trace[1]), '|';\n}\necho 'D|';\n",
+    "source_sha256": "c91fa72d4447d6dbe0347fbff108999b0ab95b709a2918766526b080787a6004",
+    "native_stdout": "F|1|capture|finally|1|1|0|__destruct|0|D|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "run_by_default": false,
+    "default_exclusion": "Original ordinary-library observer; retained as zero-agreement evidence."
+  },
+  {
+    "id": "review-fiber-close-cached-callback-retains-failed-result",
+    "source": "<?php\nclass FiberCloseReturnedObject291 {\n    public function __destruct() { echo 'R|'; }\n}\nclass FiberCloseCaptureReturn291 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo $current === null ? 'N|' : (int) $current->isRunning() . '|';\n        throw new Exception('capture');\n    }\n}\n$captured = new FiberCloseCaptureReturn291();\n$fiber = new Fiber(function () use ($captured) {\n    try { Fiber::suspend(); }\n    finally {\n        global $saved;\n        $saved = Fiber::getCurrent();\n        echo 'F|';\n        return new FiberCloseReturnedObject291();\n    }\n});\nunset($captured);\n$fiber->start();\ntry { unset($fiber); }\ncatch (Exception $e) { echo $e->getMessage(), '|'; }\necho 'M|';\ntry { $saved->getReturn(); }\ncatch (FiberError $e) { echo $e->getMessage(), '|'; }\nunset($saved);\necho 'D|';\n",
+    "source_sha256": "9e86b7430485083d3bc2ec0e9bf5423a440912b8194aa32fc1e311efd4120e8e",
+    "native_stdout": "F|1|capture|M|Cannot get fiber return value: The fiber threw an exception|R|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-cached-callback-loses-private-scope",
+    "source": "<?php\nclass FiberClosePrivateCapture291 {\n    private function __destruct() { echo 'X|'; }\n    public static function make() {\n        $captured = new self();\n        return new Fiber(static function () use ($captured) {\n            try { Fiber::suspend(); }\n            finally { echo 'F|'; }\n        });\n    }\n}\n$fiber = FiberClosePrivateCapture291::make();\n$fiber->start();\ntry { unset($fiber); }\ncatch (Error $e) { echo $e->getMessage(), '|'; }\necho 'D|';\n",
+    "source_sha256": "41feeecf6a4f9e1a26d3c0f6c5e6159bf40f7710b157725995fba5d8d78e2556",
+    "native_stdout": "F|Call to private FiberClosePrivateCapture291::__destruct() from global scope|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-cached-callback-ordered-replacements",
+    "source": "<?php\nclass FiberCloseCaptureA291 {\n    public function __destruct() { echo 'A|'; throw new Exception('A'); }\n}\nclass FiberCloseCaptureB291 {\n    public function __destruct() { echo 'B|'; throw new Exception('B'); }\n}\n$a = new FiberCloseCaptureA291();\n$b = new FiberCloseCaptureB291();\n$fiber = new Fiber(function () use ($a, $b) {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; throw new Exception('finally'); }\n});\nunset($a, $b);\n$fiber->start();\ntry { unset($fiber); }\ncatch (Exception $e) {\n    $previous = $e->getPrevious();\n    echo $e->getMessage(), '|', $previous->getMessage(), '|';\n    echo $previous->getPrevious()->getMessage(), '|';\n}\necho 'D|';\n",
+    "source_sha256": "8cf6719c22e5aa5459c3da2d83f105722fb8858881f0bc8c8c27fa14247c1243",
+    "native_stdout": "F|A|B|B|A|finally|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-cached-callback-other-fiber",
+    "source": "<?php\nclass FiberCloseCaptureTransfer291 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo 'C|', (int) $current->isRunning(), '|';\n        $other = new Fiber(static function () { echo 'G|'; return 9; });\n        $other->start();\n        echo $other->getReturn(), '|';\n        echo (int) (Fiber::getCurrent() === $current), '|';\n    }\n}\n$captured = new FiberCloseCaptureTransfer291();\n$fiber = new Fiber(function () use ($captured) {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; }\n});\nunset($captured);\n$fiber->start();\nunset($fiber);\necho 'D|';\n",
+    "source_sha256": "fced747a49c38eb63220788746d6bdea4c9b41335ac9ec36dfee548619b0ce27",
+    "native_stdout": "F|C|1|G|9|1|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-cached-callback-private-error-provenance",
+    "source": "<?php\nclass FiberClosePrivateCapture291 {\n    private function __destruct() { echo 'X|'; }\n    public static function make() {\n        $captured = new self();\n        return new Fiber(static function () use ($captured) {\n            try { Fiber::suspend(); }\n            finally { echo 'F|'; }\n        });\n    }\n}\n$fiber = FiberClosePrivateCapture291::make();\n$fiber->start();\ntry { unset($fiber); }\ncatch (Error $e) {\n    echo $e->getMessage(), '|', $e->getFile(), '|', $e->getLine(), '|';\n    echo count($e->getTrace()), '|';\n}\necho 'D|';\n",
+    "source_sha256": "538eb2e5afb202a868b99d459ee6438d93d9c815aa6c07f7572c4b78682fd145",
+    "native_stdout": "F|Call to private FiberClosePrivateCapture291::__destruct() from global scope|[no active file]|0|0|D|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "run_by_default": false,
+    "default_exclusion": "Original ordinary-library observer; retained as zero-agreement evidence."
+  },
+  {
+    "id": "review-fiber-close-cached-callback-nested-pending-order",
+    "source": "<?php\nclass FiberCloseParentCapture291 {\n    public function __destruct() {\n        echo 'S|'; throw new Exception('sibling');\n    }\n}\n$inner = new Fiber(static function () {\n    try { Fiber::suspend(); }\n    finally { echo 'I|'; throw new Exception('inner'); }\n});\n$inner->start();\n$sibling = new FiberCloseParentCapture291();\n$outer = new Fiber(function () use ($inner, $sibling) {\n    try { Fiber::suspend(); }\n    finally { echo 'O|'; throw new Exception('outer'); }\n});\nunset($inner, $sibling);\n$outer->start();\ntry { unset($outer); }\ncatch (Exception $e) {\n    echo $e->getMessage(), '|', $e->getPrevious()->getMessage(), '|',\n         $e->getPrevious()->getPrevious()->getMessage(), '|';\n}\necho 'D|';\n",
+    "source_sha256": "af35ea3f06e56b79e624fcff9c53f180007ad3bcad8d569437c4050ed901e7fa",
+    "native_stdout": "O|I|S|sibling|inner|outer|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-error-handler-result-starts-child",
+    "source": "<?php\nclass FiberCloseHandlerCapture291 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo 'C|', (int) $current->isRunning(), '|';\n        $child = new Fiber(static function () { echo 'G|'; return 9; });\n        $child->start();\n        echo $child->getReturn(), '|', (int) (Fiber::getCurrent() === $current), '|';\n    }\n}\nset_error_handler(static function () {\n    echo 'H|';\n    $captured = new FiberCloseHandlerCapture291();\n    $fiber = new Fiber(function () use ($captured) {\n        try { Fiber::suspend(); }\n        finally { echo 'F|'; }\n    });\n    unset($captured);\n    $fiber->start();\n    return $fiber;\n});\ntrigger_error('pin', E_USER_NOTICE);\nrestore_error_handler();\necho 'D|';\n",
+    "source_sha256": "2906d3d4679332e406c046e607dff6ccf443eef216d063284458348eca274508",
+    "native_stdout": "H|F|C|1|G|9|1|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-cached-callback-late-resurrection",
+    "source": "<?php\nclass FiberCloseLateCapture291 {\n    public function __destruct() {\n        global $saved;\n        $saved = Fiber::getCurrent();\n        echo 'C|', (int) $saved->isRunning(), '|', (int) $saved->isTerminated(), '|';\n        try { Fiber::suspend(); }\n        catch (FiberError $e) { echo $e->getMessage(), '|'; }\n    }\n}\n$captured = new FiberCloseLateCapture291();\n$fiber = new Fiber(function () use ($captured) {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; return 7; }\n});\nunset($captured);\n$fiber->start();\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|', $saved->getReturn(), '|';\nunset($saved);\necho 'D|';\n",
+    "source_sha256": "496b96993564a21cd6cd3a17732b49f3d7f7a2e4cae9d271b9174be950357792",
+    "native_stdout": "F|C|1|0|Cannot suspend in a force-closed fiber|M|1|7|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-cached-callback-graceful-trace-foreach",
+    "source": "<?php\nclass FiberCloseCaptureGraceful291 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo $current === null ? 'N|' : (int) $current->isRunning() . '|';\n        throw new Exception('capture');\n    }\n}\n$captured = new FiberCloseCaptureGraceful291();\n$fiber = new Fiber(function () use ($captured) {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; }\n});\nunset($captured);\n$fiber->start();\ntry { unset($fiber); }\ncatch (Exception $e) {\n    echo $e->getMessage(), '|', (int) ($e->getPrevious() === null), '|';\n    $trace = $e->getTrace();\n    $length = 0;\n    foreach ($trace as $ignored) { $length = $length + 1; }\n    echo $length, '|', (int) isset($trace[0]['file']), '|';\n    echo $trace[0]['function'], '|', (int) isset($trace[1]), '|';\n}\necho 'D|';\n",
+    "source_sha256": "133621a60f16eda522b79776672b92bce1e5c277402252ae5cd02b6fa72e26de",
+    "native_stdout": "F|1|capture|1|1|0|__destruct|0|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-cached-callback-finally-trace-foreach",
+    "source": "<?php\nclass FiberCloseCaptureFinally291 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo $current === null ? 'N|' : (int) $current->isRunning() . '|';\n        throw new Exception('capture');\n    }\n}\n$captured = new FiberCloseCaptureFinally291();\n$fiber = new Fiber(function () use ($captured) {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; throw new Exception('finally'); }\n});\nunset($captured);\n$fiber->start();\ntry { unset($fiber); }\ncatch (Exception $e) {\n    $previous = $e->getPrevious();\n    echo $e->getMessage(), '|', $previous->getMessage(), '|';\n    echo (int) ($previous->getPrevious() === null), '|';\n    $trace = $e->getTrace();\n    $length = 0;\n    foreach ($trace as $ignored) { $length = $length + 1; }\n    echo $length, '|', (int) isset($trace[0]['file']), '|';\n    echo $trace[0]['function'], '|', (int) isset($trace[1]), '|';\n}\necho 'D|';\n",
+    "source_sha256": "35b1b8612b0ec953b61dbf27059326cb7086a67c91b8ebc308f492cdfc870979",
+    "native_stdout": "F|1|capture|finally|1|1|0|__destruct|0|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-cached-callback-private-error-trace-foreach",
+    "source": "<?php\nclass FiberClosePrivateCapture291 {\n    private function __destruct() { echo 'X|'; }\n    public static function make() {\n        $captured = new self();\n        return new Fiber(static function () use ($captured) {\n            try { Fiber::suspend(); }\n            finally { echo 'F|'; }\n        });\n    }\n}\n$fiber = FiberClosePrivateCapture291::make();\n$fiber->start();\ntry { unset($fiber); }\ncatch (Error $e) {\n    echo $e->getMessage(), '|', $e->getFile(), '|', $e->getLine(), '|';\n    $trace = $e->getTrace();\n    $length = 0;\n    foreach ($trace as $ignored) { $length = $length + 1; }\n    echo $length, '|';\n}\necho 'D|';\n",
+    "source_sha256": "bac72b1b766751dd5e42a2821ad4cbc40616ff65492c7f3d0b9c218ec3a0436b",
+    "native_stdout": "F|Call to private FiberClosePrivateCapture291::__destruct() from global scope|[no active file]|0|0|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-real-caller-trace-foreach",
+    "source": "<?php\nfunction fiber_close_trace281() {\n    $f = new Fiber(static function () {\n        try { Fiber::suspend(); }\n        finally { throw new Exception('close'); }\n    });\n    $f->start(); unset($f);\n}\ntry { fiber_close_trace281(); }\ncatch (Exception $e) {\n    $t = $e->getTrace();\n    $length = 0;\n    foreach ($t as $ignored) { $length = $length + 1; }\n    echo (int)($e->getFile() === __FILE__), '|', $e->getLine(), '|', $length, '|';\n    echo (int)isset($t[0]['file']), (int)isset($t[0]['line']), (int)isset($t[0]['class']), '|';\n    echo (int)isset($t[1]), '|';\n}\n",
+    "source_sha256": "8d2fc31c0f182431e720bff139d53b0c5a1bc475c9106476f14c2ede1e99f33d",
+    "native_stdout": "1|5|1|000|0|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-close-cached-callback-child-error-trace",
+    "source": "<?php\nclass FiberCloseCaptureChildError291 {\n    public function __destruct() {\n        echo 'C|';\n        $child = new Fiber(static function () { echo 'G|'; throw new Exception('child'); });\n        $child->start();\n        echo 'X|';\n    }\n}\n$captured = new FiberCloseCaptureChildError291();\n$fiber = new Fiber(function () use ($captured) {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; throw new Exception('finally'); }\n});\nunset($captured);\n$fiber->start();\ntry { unset($fiber); }\ncatch (Exception $e) {\n    echo $e->getMessage(), '|', $e->getPrevious()->getMessage(), '|';\n    $trace = $e->getTrace();\n    $length = 0;\n    foreach ($trace as $ignored) { $length = $length + 1; }\n    echo $length, '|';\n    echo (int) isset($trace[0]['file']), (int) isset($trace[1]['file']), (int) isset($trace[2]['file']), '|';\n    echo $trace[2]['function'], '|', $trace[2]['class'], '|', (int) isset($trace[3]), '|';\n}\necho 'D|';\n",
+    "source_sha256": "7e58610564ee752643f8a0f03359480043034e93758ccce1d45dbc30b159d3f0",
+    "native_stdout": "F|C|G|child|finally|3|010|__destruct|FiberCloseCaptureChildError291|0|D|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-completed-callback-capture-suspends",
+    "source": "<?php\nclass FiberCompletedCapture291 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo 'D|', (int) $current->isRunning(), '|';\n        echo Fiber::suspend('cleanup'), '|';\n        echo 'd|';\n    }\n}\n$captured = new FiberCompletedCapture291();\n$fiber = new Fiber(function () use ($captured) { echo 'B|'; return 7; });\nunset($captured);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\necho $fiber->resume('resumed'), '|';\necho $fiber->getReturn(), '|';\nunset($fiber);\necho 'E|';\n",
+    "source_sha256": "6b5f923cd4569a9700ab9075734a2ce573e572f75f79a0bf40c1198c971cfdbd",
+    "native_stdout": "B|D|1|cleanup|1|resumed|d||7|E|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-callback-cleanup-keeps-shared-raw",
+    "source": "<?php\nclass FiberSharedRawCapture291 {\n    public function __destruct() { echo 'C|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\n$captured = new FiberSharedRawCapture291();\n$callback = function () use ($captured) { echo 'B|'; return 7; };\n$fiber = new Fiber($callback);\nunset($captured);\n$fiber->start();\necho $fiber->getReturn(), '|';\nunset($callback, $fiber);\necho 'E|';\n",
+    "source_sha256": "e8620e738bbf6c39e0de54e0eab2900cbaa4ca8dc755408b7290beffe7b65287",
+    "native_stdout": "B|7|C|N|E|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-callback-cleanup-keeps-returned-capture",
+    "source": "<?php\nclass FiberReturnedCapture291 {\n    public function __destruct() { echo 'C|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\n$captured = new FiberReturnedCapture291();\n$fiber = new Fiber(function () use ($captured) { echo 'B|'; return $captured; });\nunset($captured);\n$fiber->start();\necho (int) $fiber->isTerminated(), '|';\n$returned = $fiber->getReturn();\nunset($fiber);\necho 'F|';\nunset($returned);\necho 'E|';\n",
+    "source_sha256": "2bc0fadf8781ccc1a6adc35f16be22b9028c05cf972006e279ab84f45cfa7191",
+    "native_stdout": "B|1|F|C|N|E|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-callback-throw-pending-capture-cleanup",
+    "source": "<?php\nclass FiberThrowCapture291 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo 'C|', $current === null ? 'N|' : (int) $current->isRunning() . '|';\n    }\n}\n$captured = new FiberThrowCapture291();\n$fiber = new Fiber(function () use ($captured) { echo 'B|'; throw new Exception('body'); });\nunset($captured);\ntry { $fiber->start(); }\ncatch (Exception $e) { echo $e->getMessage(), '|'; }\nunset($fiber);\necho 'E|';\n",
+    "source_sha256": "58a3d815d46165e270c021641065eec0eabb52b7077723bd8f90f089b34f2064",
+    "native_stdout": "B|C|1|body|E|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-ordinary-return-owner-through-capture-suspension",
+    "source": "<?php\nclass FiberOrdinaryReturned302 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberOrdinaryReturnCapture302 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo 'C|', (int) $current->isRunning(), '|';\n        echo Fiber::suspend('cleanup'), '|';\n        echo (int) (Fiber::getCurrent() === $current), '|', (int) $current->isRunning(), '|';\n    }\n}\n$captured = new FiberOrdinaryReturnCapture302();\n$fiber = new Fiber(function () use ($captured) { echo 'B|'; return new FiberOrdinaryReturned302(); });\nunset($captured);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\ntry { $fiber->getReturn(); }\ncatch (FiberError $e) { echo 'P|', $e->getMessage(), '|'; }\necho $fiber->resume('resumed'), '|', (int) $fiber->isTerminated(), '|';\n$returned = $fiber->getReturn();\necho 'V|', (int) ($returned instanceof FiberOrdinaryReturned302), '|';\nunset($fiber);\necho 'F|';\nunset($returned);\necho 'E|';\n",
+    "source_sha256": "c4a49322a3d41529d810b76b9accb62420ddd556493c7d6ed74be28992c3f232",
+    "native_stdout": "B|C|1|cleanup|1|P|Cannot get fiber return value: The fiber has not returned|resumed|1|1||1|V|1|F|R|N|E|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-ordinary-body-error-capture-suspension-replacement",
+    "source": "<?php\nclass FiberOrdinaryThrowCapture302 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo 'C|', (int) $current->isRunning(), '|';\n        echo Fiber::suspend('cleanup'), '|';\n        echo (int) (Fiber::getCurrent() === $current), '|', (int) $current->isRunning(), '|';\n        throw new Exception('capture');\n    }\n}\n$captured = new FiberOrdinaryThrowCapture302();\n$fiber = new Fiber(function () use ($captured) { echo 'B|'; throw new Exception('body'); });\nunset($captured);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\ntry { $fiber->resume('resumed'); echo 'U|'; }\ncatch (Exception $e) {\n    echo 'X|', $e->getMessage(), '|', $e->getPrevious()->getMessage(), '|';\n    $n = 0; $files = ''; $functions = '';\n    foreach ($e->getTrace() as $row) {\n        $n++; $files .= isset($row['file']) ? '1' : '0';\n        $functions .= $row['function'] . '|';\n    }\n    echo $n, '|', $files, '|', $functions;\n    $n = 0; $files = '';\n    foreach ($e->getPrevious()->getTrace() as $row) {\n        $n++; $files .= isset($row['file']) ? '1' : '0';\n    }\n    echo 'p|', $n, '|', $files, '|';\n}\necho 'T|', (int) $fiber->isTerminated(), '|';\ntry { $fiber->getReturn(); }\ncatch (FiberError $e) { echo $e->getMessage(), '|'; }\nunset($fiber);\necho 'E|';\n",
+    "source_sha256": "390d0ddedf9b750cbc84eca462aa09edeefe441487df199a45d5cac73d08e2e9",
+    "native_stdout": "B|C|1|cleanup|1|resumed|1|1|X|capture|body|2|01|__destruct|resume|p|2|01|T|1|Cannot get fiber return value: The fiber threw an exception|E|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-ordinary-suspended-cleanup-force-close-keeps-return-owner",
+    "source": "<?php\nclass FiberOrdinaryCloseReturned302 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberOrdinaryCloseCapture302 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { Fiber::suspend('cleanup'); echo 'U|'; }\n        catch (Throwable $e) { echo 'H|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n            try { Fiber::suspend(); }\n            catch (FiberError $e) { echo $e->getMessage(), '|'; }\n        }\n    }\n}\n$captured = new FiberOrdinaryCloseCapture302();\n$fiber = new Fiber(function () use ($captured) { echo 'B|'; return new FiberOrdinaryCloseReturned302(); });\nunset($captured);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|';\n$returned = $saved->getReturn();\necho 'V|', (int) ($returned instanceof FiberOrdinaryCloseReturned302), '|';\nunset($saved);\necho 'F|';\nunset($returned);\necho 'E|';\n",
+    "source_sha256": "1364a78acecf36d83e47dba00cd0aa4e27550e2cdf0a96d6f729d3ae609f6c07",
+    "native_stdout": "B|C|1|cleanup|1|F|1|Cannot suspend in a force-closed fiber|M|1|V|1|F|R|N|E|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-ordinary-private-raw-capture-keeps-active-api-scope",
+    "source": "<?php\nclass FiberOrdinaryPrivateReturned302 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberOrdinaryPrivateMaker302 {\n    private function __destruct() { echo 'U|'; }\n    public function make() {\n        return new Fiber(function () { echo 'B|'; return new FiberOrdinaryPrivateReturned302(); });\n    }\n}\n$maker = new FiberOrdinaryPrivateMaker302();\n$fiber = $maker->make();\nunset($maker);\ntry { $fiber->start(); }\ncatch (Error $e) {\n    echo 'X|', $e->getMessage(), '|', (int) ($e->getFile() === __FILE__), '|', $e->getLine(), '|';\n    echo (int) ($e->getPrevious() === null), '|';\n    $n = 0; $files = ''; $functions = '';\n    foreach ($e->getTrace() as $row) {\n        $n++; $files .= isset($row['file']) ? '1' : '0';\n        $functions .= $row['function'] . '|';\n    }\n    echo $n, '|', $files, '|', $functions;\n}\necho 'T|', (int) $fiber->isTerminated(), '|';\ntry { $fiber->getReturn(); }\ncatch (FiberError $e) { echo $e->getMessage(), '|'; }\nunset($fiber);\necho 'E|';\n",
+    "source_sha256": "f3a44f515d21f7f1f31ca70e90dd27044c3a5eadc5e1d25a135e00a8b51dd7c1",
+    "native_stdout": "B|X|Call to private FiberOrdinaryPrivateMaker302::__destruct() from scope Fiber|1|14|1|1|1|start|T|1|Cannot get fiber return value: The fiber threw an exception|R|N|E|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-ordinary-suspended-body-error-close-cancels-pending",
+    "source": "<?php\nclass FiberOrdinaryCloseBodyCapture302 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { Fiber::suspend('cleanup'); echo 'U|'; }\n        catch (Throwable $e) { echo 'H|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n        }\n    }\n}\n$captured = new FiberOrdinaryCloseBodyCapture302();\n$fiber = new Fiber(function () use ($captured) { echo 'B|'; throw new Exception('body'); });\nunset($captured);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\ntry { unset($fiber); }\ncatch (Throwable $e) { echo 'X|', $e->getMessage(), '|'; }\necho 'M|', (int) $saved->isTerminated(), '|';\ntry { echo (int) ($saved->getReturn() === null), '|'; }\ncatch (FiberError $e) { echo 'Q|', $e->getMessage(), '|'; }\nunset($saved);\necho 'E|';\n",
+    "source_sha256": "416ad779982aa4e38f5ccf7f0a49fdeb98d8b6f3134fe136ceb649411997f907",
+    "native_stdout": "B|C|1|cleanup|1|F|1|M|1|0|E|",
+    "native_stderr": "Deprecated: Creation of dynamic property GracefulExit::$previous is deprecated in Unknown on line 0\n",
+    "expected_model": "unsupported",
+    "unsupported_reason": "force-closing ordinary Fiber cleanup with a protected real exception",
+    "unsupported_stdout": "B|C|1|cleanup|1|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "66",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "99",
+            "108",
+            "101",
+            "97",
+            "110",
+            "117",
+            "112"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      }
+    ],
+    "run_by_default": false,
+    "native_held": true,
+    "default_exclusion": "Held undefined-result engine witness; no fresh native experiment."
+  },
+  {
+    "id": "review-fiber-ordinary-private-raw-capture-rebinds-resume-api-scope",
+    "source": "<?php\nclass FiberOrdinaryResumePrivateReturned302 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberOrdinaryResumeFirstCapture302 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        echo Fiber::suspend('cleanup'), '|';\n    }\n}\nclass FiberOrdinaryResumePrivateMaker302 {\n    private function __destruct() { echo 'U|'; }\n    public function make($captured) {\n        return new Fiber(function () use ($captured) { echo 'B|'; return new FiberOrdinaryResumePrivateReturned302(); });\n    }\n}\n$maker = new FiberOrdinaryResumePrivateMaker302();\n$captured = new FiberOrdinaryResumeFirstCapture302();\n$fiber = $maker->make($captured);\nunset($maker, $captured);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\ntry { $fiber->resume('resumed'); }\ncatch (Error $e) {\n    echo 'X|', $e->getMessage(), '|', (int) ($e->getFile() === __FILE__), '|', $e->getLine(), '|';\n    echo (int) ($e->getPrevious() === null), '|';\n    $n = 0; $files = ''; $functions = '';\n    foreach ($e->getTrace() as $row) {\n        $n++; $files .= isset($row['file']) ? '1' : '0';\n        $functions .= $row['function'] . '|';\n    }\n    echo $n, '|', $files, '|', $functions;\n}\necho 'T|', (int) $fiber->isTerminated(), '|';\ntry { $fiber->getReturn(); }\ncatch (FiberError $e) { echo $e->getMessage(), '|'; }\nunset($fiber);\necho 'E|';\n",
+    "source_sha256": "20f5f941743130875b45c159ffc89cbe0c9daaaccdb325986a961f37ae6f2f1b",
+    "native_stdout": "B|C|1|cleanup|1|resumed|X|Call to private FiberOrdinaryResumePrivateMaker302::__destruct() from scope Fiber|1|22|1|1|1|resume|T|1|Cannot get fiber return value: The fiber threw an exception|R|N|E|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-ordinary-returned-result-survives-throw-api-cleanup-error",
+    "source": "<?php\nclass FiberOrdinaryInjectedReturned302 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberOrdinaryInjectedCapture302 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { Fiber::suspend('cleanup'); echo 'U|'; }\n        catch (Exception $e) {\n            echo 'H|', $e->getMessage(), '|';\n            throw new Exception('cleanup', 0, $e);\n        }\n    }\n}\n$captured = new FiberOrdinaryInjectedCapture302();\n$fiber = new Fiber(function () use ($captured) { echo 'B|'; return new FiberOrdinaryInjectedReturned302(); });\nunset($captured);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\ntry { $fiber->throw(new Exception('injected')); echo 'U|'; }\ncatch (Exception $e) {\n    echo 'X|', $e->getMessage(), '|', $e->getPrevious()->getMessage(), '|';\n    $n = 0; $files = ''; $functions = '';\n    foreach ($e->getTrace() as $row) {\n        $n++; $files .= isset($row['file']) ? '1' : '0';\n        $functions .= $row['function'] . '|';\n    }\n    echo $n, '|', $files, '|', $functions;\n}\necho 'T|', (int) $fiber->isTerminated(), '|';\ntry { $fiber->getReturn(); }\ncatch (FiberError $e) { echo $e->getMessage(), '|'; }\necho 'F|';\nunset($fiber);\necho 'E|';\n",
+    "source_sha256": "816735ebe2e40fc26b2d7adc41e596de27f8c00eb2f1280011198a26c8826289",
+    "native_stdout": "B|C|1|cleanup|1|H|injected|X|cleanup|injected|2|01|__destruct|throw|T|1|Cannot get fiber return value: The fiber threw an exception|F|R|N|E|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-ordinary-finish-parks-under-handler-result-cleanup",
+    "source": "<?php\nclass FiberOrdinaryParkCapture302 {\n    public function __destruct() {\n        $current = Fiber::getCurrent();\n        echo 'C|', (int) $current->isRunning(), '|';\n        $child = new Fiber(static function () { echo 'G|'; return 9; });\n        $child->start();\n        echo $child->getReturn(), '|', (int) (Fiber::getCurrent() === $current), '|';\n    }\n}\nclass FiberOrdinaryHandlerResult302 {\n    public function __destruct() {\n        echo 'O|';\n        $captured = new FiberOrdinaryParkCapture302();\n        $fiber = new Fiber(function () use ($captured) { echo 'B|'; return 7; });\n        unset($captured);\n        $fiber->start();\n        echo 'V|', $fiber->getReturn(), '|';\n        echo Fiber::getCurrent() === null ? 'N|' : 'U|';\n    }\n}\nset_error_handler(static function () { echo 'H|'; return new FiberOrdinaryHandlerResult302(); });\ntrigger_error('pin', E_USER_NOTICE);\nrestore_error_handler();\necho 'E|';\n",
+    "source_sha256": "bdaa5ea19ebca2b2ae19d68b6d4caa72d478a4328b444dc7ddd078466fb95fcc",
+    "native_stdout": "H|O|B|C|1|G|9|1|V|7|N|E|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-ordinary-null-return-availability-survives-cleanup-error",
+    "source": "<?php\nclass FiberOrdinaryNullCapture302 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        echo Fiber::suspend('cleanup'), '|';\n        throw new Exception('capture');\n    }\n}\n$captured = new FiberOrdinaryNullCapture302();\n$fiber = new Fiber(function () use ($captured) { echo 'B|'; return null; });\nunset($captured);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\ntry { $fiber->resume('resumed'); echo 'U|'; }\ncatch (Exception $e) { echo 'X|', $e->getMessage(), '|', (int) ($e->getPrevious() === null), '|'; }\necho 'T|', (int) $fiber->isTerminated(), '|';\ntry { $fiber->getReturn(); }\ncatch (FiberError $e) { echo $e->getMessage(), '|'; }\nunset($fiber);\necho 'E|';\n",
+    "source_sha256": "b4850edabf52731ea10bd84d32a033cb5e1b3222e2133e0f5a757fa58904ca03",
+    "native_stdout": "B|C|1|cleanup|1|resumed|X|capture|1|T|1|Cannot get fiber return value: The fiber threw an exception|E|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-ordinary-returned-result-close-with-earlier-capture-error",
+    "source": "<?php\nclass FiberOrdinaryProtectedReturned302 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberOrdinaryProtectedFirst302 {\n    public function __destruct() { echo 'A|'; throw new Exception('first'); }\n}\nclass FiberOrdinaryProtectedSecond302 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { Fiber::suspend('cleanup'); echo 'U|'; }\n        catch (Throwable $e) { echo 'H|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n        }\n    }\n}\n$a = new FiberOrdinaryProtectedFirst302();\n$b = new FiberOrdinaryProtectedSecond302();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return new FiberOrdinaryProtectedReturned302(); });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\ntry { unset($fiber); }\ncatch (Throwable $e) { echo 'X|', $e->getMessage(), '|'; }\necho 'M|', (int) $saved->isTerminated(), '|';\n$returned = $saved->getReturn();\necho 'V|', (int) ($returned instanceof FiberOrdinaryProtectedReturned302), '|';\nunset($saved);\necho 'F|';\nunset($returned);\necho 'E|';\n",
+    "source_sha256": "a0c626ff991abb9c84378354f1185e54d08584b2bc73b44e0f49b57265ef473c",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|M|1|V|1|F|R|N|E|",
+    "native_exit": 0,
+    "native_stderr": "Deprecated: Creation of dynamic property GracefulExit::$previous is deprecated in Unknown on line 0\n",
+    "expected_model": "unsupported",
+    "unsupported_reason": "force-closing ordinary Fiber cleanup with a protected real exception",
+    "unsupported_stdout": "B|A|C|1|cleanup|1|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "66",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "65",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "99",
+            "108",
+            "101",
+            "97",
+            "110",
+            "117",
+            "112"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      }
+    ]
   }
 ]

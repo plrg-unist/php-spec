@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A saved destructor caller at the temporary Fiber transfer boundary."""
+"""A genuine destructor caller parked by an ordinary Fiber transfer."""
 import json
 from pathlib import Path
 
@@ -30,7 +30,7 @@ runner.CASES = {
             'pfiber.STATUS = FIBER_INIT',
             '~$fiber_blocked(S)',
             '$fiber_destruction_pending(S)',
-            '~$fiber_transfer_domain(S)',
+            '$fiber_transfer_domain(S)',
             '$call_current_valid(S)', '$call_frames_valid(S, S.FRAMES)',
             '$call_descriptors_valid(S)', '$destruction_state_valid(S)',
             '$heap_valid($heap_graph(S))',
@@ -38,11 +38,30 @@ runner.CASES = {
             'S_paused = $drive(S, 0)', 'S_paused.COMPLETION = BUDGET',
             'S_paused.DESTRUCTION = S.DESTRUCTION',
             'PhpStep: S ~> S_next',
-            'S_next = S[.COMPLETION = UNSUPPORTED "Fiber switch during automatic destruction"]',
+            'S_next.COMPLETION = NORMAL',
+            'S_next.ACTIVEFIBER = (pfiberstart.OBJECT)',
+            'S_next.FIBERCALLERS = [pfibercaller]',
+            'pfibercaller.VM.CURRENT = S.CURRENT',
+            'pfibercaller.VM.FRAMES = S.FRAMES',
+            'pfibercaller.VM.DESTRUCTORCALLS = S.DESTRUCTION.CALLS',
+            'pfibercaller.VM.DESTRUCTORRELEASES = S.DESTRUCTION.RELEASES',
+            'pfibercaller.VM.DESTRUCTORFRAMES = S.DESTRUCTION.FRAMES',
+            'pfibercaller.VM.DESTRUCTOROPERATIONS = S.DESTRUCTION.OPERATIONS',
+            'pfibercaller.VM.DESTRUCTORCLEANUPS = S.DESTRUCTION.CLEANUPS',
             'S_next.ALLOCATIONS = S.ALLOCATIONS',
-            'S_next.DESTRUCTION = S.DESTRUCTION',
+            'S_next.DESTRUCTION = S.DESTRUCTION[.CALLS = eps][.RELEASES = eps][.FRAMES = eps][.OPERATIONS = eps][.CLEANUPS = eps]',
+            '$call_descriptors_valid(S_next)',
+            '$heap_valid($heap_graph(S_next))',
+            'pfibercaller_lost = pfibercaller[.VM = pfibercaller.VM[.DESTRUCTORCALLS = eps]]',
+            '~$call_descriptors_valid(S_next[.FIBERCALLERS = [pfibercaller_lost]])',
             'S_paused[.COMPLETION = NORMAL] = S',
             '$fiber_start(S_paused[.COMPLETION = NORMAL], pfiberstart) = S_next',
+            'S_done = $drive(S_next, 4000)',
+            'S_done.COMPLETION = NORMAL',
+            'S_done.TODO = eps', 'S_done.CURRENT = eps', 'S_done.FRAMES = eps',
+            'S_done.ACTIVEFIBER = eps', 'S_done.FIBERCALLERS = eps',
+            '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))',
+            'S_done.EVENTS = [OUTPUT $ptascii("M;"), OUTPUT $ptascii("D;"), OUTPUT $ptascii("F;"), OUTPUT $ptascii("T;"), OUTPUT $ptascii("E;")]',
         ],
     },
 }

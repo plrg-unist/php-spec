@@ -159,6 +159,11 @@ test-semantics: build
 	python3 tests/semantics/eager_fatal_state_review.py
 	python3 tests/semantics/eager_fatal_precision_state.py
 	python3 tests/semantics/eager_fiber_state.py
+	python3 tests/semantics/fiber_review.py
+	python3 tests/semantics/fiber_state_review.py
+	python3 tests/semantics/fiber_retirement_review.py
+	python3 tests/semantics/fiber_ordinary_state.py
+	python3 tests/semantics/fiber_ordinary_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

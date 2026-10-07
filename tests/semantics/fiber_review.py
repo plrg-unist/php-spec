@@ -28,7 +28,9 @@ def main():
     catalogue = json.loads(CASES.read_text())
     assert not args.case or set(args.case) <= {row['id'] for row in catalogue}, 'unknown Fiber review source'
     rows = [row for row in catalogue
-            if args.match in row['id'] and (not args.case or row['id'] in args.case)]
+            if args.match in row['id'] and (not args.case or row['id'] in args.case)
+            and (args.case or row.get('run_by_default', True))]
+    assert args.native_report or all(not row.get('native_held') for row in rows), 'held undefined-result native witness requires its preserved native report'
     assert rows, 'no Fiber review source selected'
     out = Path(tempfile.mkdtemp(prefix='fiber-review-', dir=ROOT / '.tools'))
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_text())
@@ -43,9 +45,13 @@ def main():
         for path in args.native_report:
             path = path.resolve()
             report = json.loads(path.read_text())
-            assert report['result'] == 'pass' and report['profile'] == profile
+            assert (report['result'] == 'pass' or
+                    (report['result'] == 'fail' and report['mode'] == 'native-only'))
+            assert report['profile'] == profile
             identities.append(report['runtime'])
             for entry in report['results']:
+                if entry['id'] not in {row['id'] for row in rows} or not entry['pass']:
+                    continue
                 assert entry['id'] not in previous, 'duplicate native source'
                 previous[entry['id']] = (path, Path(report['raw']) / entry['id'])
         assert all(value == identities[0] for value in identities)
@@ -109,9 +115,10 @@ def main():
                 observation = {}
             status = observation.get('status')
             if row.get('expected_model') == 'unsupported':
+                expected_stdout = base64.b64encode(row.get('unsupported_stdout', '').encode()).decode()
                 passed = (passed and model.get('exit') == 1 and not base64.b64decode(model['stderr']) and
                           status == 'unsupported' and observation.get('reason') == row['unsupported_reason'] and
-                          observation.get('events') == [] and observation.get('stdout') == '' and
+                          observation.get('events') == row.get('unsupported_events', []) and observation.get('stdout') == expected_stdout and
                           observation.get('stderr') == '' and 'exit_status' in observation and
                           observation['exit_status'] is None and 'diagnostic' in observation and
                           observation['diagnostic'] is None)
