@@ -340,6 +340,12 @@ test-semantics: build
 	python3 tests/semantics/instance_set_access_protocol.py --group alias
 	python3 tests/semantics/instance_set_access_protocol.py --group cv
 	python3 tests/semantics/instance_set_access_protocol.py --group recursive
+	python3 tests/semantics/dynamic_property_warning_sources.py source
+	python3 tests/semantics/dynamic_property_warning_sources.py boundary
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group reentry
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group retirement
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group pending
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group exit
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind normal
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind compiler
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind composition
