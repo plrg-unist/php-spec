@@ -209,8 +209,8 @@ def $clone_operation_valid(S, pcloneoperation) = ($clone_operation_body_valid(S,
 def $clone_callback_live(S, pcloneoperation) = ($clone_operation_valid(S, pcloneoperation) /\ pclonewindow.PHASE = CLONE_CALLBACK)
   -- if $clone_window_at(S.CLONES, pcloneoperation) = (pclonewindow)
 def $clone_callback_live(S, pcloneoperation) = false -- otherwise
-def $call_task_valid(S, CLONE_CALLBACK_ENTER pcloneoperation) = $clone_callback_live(S, pcloneoperation)
-def $call_task_valid(S, CLONE_CALLBACK_RESULT pcloneoperation) = $clone_callback_live(S, pcloneoperation)
+def $call_task_valid(S, CLONE_CALLBACK_ENTER pcloneoperation) = ($clone_callback_live(S, pcloneoperation) /\ $clone_maker_at(S.CLONEMAKERS, pcloneoperation.TARGET) = eps)
+def $call_task_valid(S, CLONE_CALLBACK_RESULT pcloneoperation) = ($clone_callback_live(S, pcloneoperation) /\ $clone_maker_at(S.CLONEMAKERS, pcloneoperation.TARGET) = ($clone_producer_receipt(pcloneoperation)))
 
 def $clone_lifecycle_start(S, n_source, porigin_site, z, eps) = $method_denied(S, pmethoddesc, pmethoddesc.NAME, $method_current_scope(S), false, z)
   -- if $clone_method(S, n_source) = (pmethoddesc)
@@ -255,9 +255,10 @@ rule PhpStep/clone-callback-expression: S ~> $clone_lifecycle_start(S_read[.RESU
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $clone_callback_value(S_read, POBJECT n)
-rule PhpStep/clone-callback-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (CLONE_CALLBACK_RESULT pcloneoperation) :: ptask_tail*], pmethoddesc.FUNCTION, eps, (pcloneoperation.SITE), pcloneoperation.LINE), METHOD_TARGET pcloneoperation.TARGET pmethoddesc.FUNCTION.ORIGIN), pmethoddesc.FUNCTION, 0, (pcloneoperation.SITE), pcloneoperation.LINE)
+rule PhpStep/clone-callback-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (CLONE_CALLBACK_RESULT pcloneoperation) :: ptask_tail*][.CLONEMAKERS = S.CLONEMAKERS ++ [{OBJECT pcloneoperation.TARGET, SELECTION $clone_producer_receipt(pcloneoperation)}]], pmethoddesc.FUNCTION, eps, (pcloneoperation.SITE), pcloneoperation.LINE), METHOD_TARGET pcloneoperation.TARGET pmethoddesc.FUNCTION.ORIGIN), pmethoddesc.FUNCTION, 0, (pcloneoperation.SITE), pcloneoperation.LINE)
   -- if S.TODO = (CLONE_CALLBACK_ENTER pcloneoperation) :: ptask_tail*
   -- if $clone_callback_live(S, pcloneoperation)
+  -- if $clone_maker_at(S.CLONEMAKERS, pcloneoperation.TARGET) = eps
   -- if $clone_method(S, pcloneoperation.TARGET) = (pmethoddesc)
 
 def $clone_callback_finish(S, pcloneoperation, ptask_tail*) = S[.TODO = ptask_tail*][.CLONES = $clone_window_delete(S.CLONES, pcloneoperation)][.RESULT = KNOWN (POBJECT pcloneoperation.TARGET)][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -305,6 +306,7 @@ def $clone_context_frame_valid(S, pcallcontext, pframe, pframe_tail*) = true
   -- if $clone_context_kind(S, pcallcontext)
   -- if pframe.TODO = (CLONE_CALLBACK_RESULT pcloneoperation) :: ptask_tail*
   -- if $clone_callback_live($constant_frame_scope(S, pframe, pframe_tail*), pcloneoperation)
+  -- if $clone_maker_at(S.CLONEMAKERS, pcloneoperation.TARGET) = ($clone_producer_receipt(pcloneoperation))
   -- if $clone_method(S, pcloneoperation.TARGET) = (pmethoddesc)
   -- if pcallcontext.TARGET = METHOD_TARGET pcloneoperation.TARGET pmethoddesc.FUNCTION.ORIGIN
   -- if pcallcontext.CALLSITE = (pcloneoperation.SITE) /\ pcallcontext.LINE = pcloneoperation.LINE
@@ -320,8 +322,24 @@ def $clone_context_valid(S, pcallcontext) = false -- otherwise
 
 ;; A cached callback keeps the selected maker and its real clone call site.
 ;; Admission remains pure after the window and the maker's heap owner retire.
+;; The genuine entry is independent of a later attached producer receipt.
+dec $clone_maker_at(pclonemaker*, nat) : pcloneproducer?
+def $clone_maker_at(eps, n) = eps
+def $clone_maker_at(pclonemaker :: pclonemaker_tail*, n) = (pclonemaker.SELECTION)
+  -- if pclonemaker.OBJECT = n
+def $clone_maker_at(pclonemaker :: pclonemaker_tail*, n) = $clone_maker_at(pclonemaker_tail*, n)
+  -- if pclonemaker.OBJECT =/= n
 def $consumer_clone_context(S, pcallcontext) = $clone_context_valid(S, pcallcontext)
   -- if $clone_context_kind(S, pcallcontext)
+dec $clone_producer_receipt(pcloneoperation) : pcloneproducer
+def $clone_producer_receipt(pcloneoperation) = {SITE pcloneoperation.SITE, NAME eps, CLOSURE eps}
+  -- if pcloneoperation.CALL = eps
+def $clone_producer_receipt(pcloneoperation) = {SITE pcloneoperation.SITE, NAME pclonecall.NAME, CLOSURE pclonecall.OWNER}
+  -- if pcloneoperation.CALL = (pclonecall)
+def $consumer_clone_receipt(S, pcallcontext) = ($clone_producer_receipt(pcloneoperation))
+  -- if $clone_context_valid(S, pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (CLONE_CALLBACK_RESULT pcloneoperation) :: ptask_tail*
 dec $consumer_clone_site_valid(pstate, porigin) : bool
 def $consumer_clone_site_valid(S, porigin) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprClone expression metadata)
@@ -330,16 +348,42 @@ def $consumer_clone_site_valid(S, porigin) = true
   -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
   -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (INTRINSIC_CLONE)
 def $consumer_clone_site_valid(S, porigin) = false -- otherwise
+dec $consumer_clone_method_site(pstate, porigin) : bool
+def $consumer_clone_method_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_capture_source_name_origin(S, porigin, phpType20, $ptascii("__invoke"))
+def $consumer_clone_method_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_capture_source_name_origin(S, porigin, phpType20, $ptascii("__invoke"))
+def $consumer_clone_method_site(S, porigin) = false -- otherwise
+dec $consumer_clone_selection_valid(pstate, pcloneproducer) : bool
+def $consumer_clone_selection_valid(S, pcloneproducer) = $consumer_clone_site_valid(S, pcloneproducer.SITE)
+  -- if pcloneproducer.NAME = eps /\ pcloneproducer.CLOSURE = eps
+def $consumer_clone_selection_valid(S, pcloneproducer) = true
+  -- if pcloneproducer.NAME = (preqbytes) /\ pcloneproducer.CLOSURE = eps
+  -- if $exit_fixed(S, pcloneproducer.SITE) = eps
+  -- if $exit_dynamic_site(S, pcloneproducer.SITE)
+  -- if $intrinsic_lookup(preqbytes, eps) = (INTRINSIC_CLONE)
+def $consumer_clone_selection_valid(S, pcloneproducer) = true
+  -- if pcloneproducer.NAME = eps /\ pcloneproducer.CLOSURE = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_CLONE
+  -- if $exit_fixed(S, pcloneproducer.SITE) = eps
+  -- if $exit_dynamic_site(S, pcloneproducer.SITE) \/ $consumer_clone_method_site(S, pcloneproducer.SITE)
+def $consumer_clone_selection_valid(S, pcloneproducer) = false -- otherwise
 def $consumer_clone_producer_valid(S, pshutdownproducer) = true
   -- if pshutdownproducer.INTERNAL
+  -- if pshutdownproducer.CLONE = (pcloneproducer)
   -- if pshutdownproducer.TARGET = METHOD_TARGET n porigin_method
+  -- if $clone_maker_at(S.CLONEMAKERS, n) = (pcloneproducer)
   -- if $clone_method(S, n) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
   -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if pshutdownproducer.SITE = (PORIGIN n_unit pcpath)
+  -- if pcloneproducer.SITE = PORIGIN n_unit pcpath
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
-  -- if $consumer_clone_site_valid(S, PORIGIN n_unit pcpath)
+  -- if $consumer_clone_selection_valid(S, pcloneproducer)
 
 def $clone_callback_selected(S, pcalltarget, porigin_site) = true
   -- if S.CURRENT = (pcallcontext)
@@ -388,7 +432,19 @@ def $clone_window_body_valid(S, pclonewindow) = $clone_updates_body_valid(S, pcl
   -- if pclonewindow.PHASE = CLONE_UPDATES
 def $clone_windows_records_valid(S, eps, n_seen*) = true
 def $clone_windows_records_valid(S, pclonewindow :: pclonewindow_tail*, n_seen*) = ($clone_window_body_valid(S, pclonewindow) /\ ~(pclonewindow.OPERATION.TARGET <- n_seen*) /\ $clone_window_keys_valid(S, pclonewindow.OPERATION.TARGET, pclonewindow.AVAILABLE, eps) /\ $clone_revisions_valid($clone_readonly_keys(S, pclonewindow.OPERATION.TARGET), pclonewindow.REVISIONS, pclonewindow.AVAILABLE) /\ $clone_window_live(S, pclonewindow.OPERATION, pclonewindow.PHASE) /\ $clone_windows_records_valid(S, pclonewindow_tail*, pclonewindow.OPERATION.TARGET :: n_seen*))
-def $clone_windows_valid(S) = $clone_windows_records_valid(S, S.CLONES, eps)
+dec $clone_makers_valid(pstate, pclonemaker*, nat*) : bool
+def $clone_makers_valid(S, eps, n_seen*) = true
+def $clone_makers_valid(S, pclonemaker :: pclonemaker_tail*, n_seen*) = true
+  -- if ~(pclonemaker.OBJECT <- n_seen*)
+  -- if $clone_method(S, pclonemaker.OBJECT) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if pclonemaker.SELECTION.SITE = PORIGIN n_unit pcpath
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $consumer_clone_selection_valid(S, pclonemaker.SELECTION)
+  -- if $clone_makers_valid(S, pclonemaker_tail*, pclonemaker.OBJECT :: n_seen*)
+def $clone_makers_valid(S, pclonemaker*, n_seen*) = false -- otherwise
+def $clone_windows_valid(S) = ($clone_windows_records_valid(S, S.CLONES, eps) /\ $clone_makers_valid(S, S.CLONEMAKERS, eps))
 
 
 def $named_context_valid(S, pcallcontext) = true

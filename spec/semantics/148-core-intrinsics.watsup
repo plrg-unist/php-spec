@@ -55,6 +55,7 @@ def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_ca
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, eps) = eps
   -- if $intrinsic_lookup(preqbytes_lookup, eps) = (pintrinsic)
+  -- if pintrinsic =/= INTRINSIC_CLONE
   -- if ~$config_dynamic_selection(S, pintrinsic, porigin)
   -- if ~$arginfo_dynamic_selection(S, pintrinsic, porigin)
 def $firstclass_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, z_init) = $intrinsic_firstclass(S, pintrinsic)
@@ -65,6 +66,7 @@ def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pva
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = eps
   -- if $intrinsic_lookup(preqbytes_lookup, preqbytes_fallback?) = (pintrinsic)
+  -- if pintrinsic =/= INTRINSIC_CLONE
   -- if ~$config_pipe_selection(S, pintrinsic, porigin)
   -- if ~$arginfo_pipe_selection(S, pintrinsic, porigin)
 def $dynamic_value(S, porigin, z_init, z_call) = $intrinsic_prepare(S, pintrinsic, z_call, (n))

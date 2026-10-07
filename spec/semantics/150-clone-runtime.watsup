@@ -130,9 +130,24 @@ def $clone_statics_compatible(pstaticcell :: pstaticcell_tail*) = ($clone_static
 ;; user pfunction descriptor or Zend evaluation is manufactured.
 def $intrinsic_name(INTRINSIC_CLONE) = $ptascii("clone")
 def $intrinsic_named(preqbytes) = (INTRINSIC_CLONE) -- if $ptlc(preqbytes) = $ptascii("clone")
-def $intrinsic_prepare(S, INTRINSIC_CLONE, z, n_owner?) = S[.TODO = (CLONE_ARGS {SITE porigin, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $intrinsic_prepare(S, INTRINSIC_CLONE, z, n_owner?) = S[.TODO = (CLONE_ARGS {SITE porigin, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, NAME eps, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.ORIGIN = (porigin)
-def $intrinsic_pipe(S, INTRINSIC_CLONE, pvalue, porigin, z, n_owner?) = S[.TODO = (CLONE_INVOKE {SITE porigin, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER n_owner?, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $intrinsic_pipe(S, INTRINSIC_CLONE, pvalue, porigin, z, n_owner?) = S[.TODO = (CLONE_INVOKE {SITE porigin, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER n_owner?, NAME eps, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $clone_selected_name(pstate, porigin, preqbytes) : preqbytes?
+def $clone_selected_name(S, porigin, preqbytes) = eps -- if $exit_fixed(S, porigin) =/= eps
+def $clone_selected_name(S, porigin, preqbytes) = (preqbytes) -- if $exit_fixed(S, porigin) = eps
+def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S_prepared[.TODO = (CLONE_ARGS pclonecall[.NAME = (preqbytes_lookup)]) :: ptask_tail*]
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, eps) = eps
+  -- if $intrinsic_lookup(preqbytes_lookup, eps) = (INTRINSIC_CLONE)
+  -- if S_prepared = $intrinsic_prepare(S, INTRINSIC_CLONE, z_call, eps)
+  -- if S_prepared.TODO = (CLONE_ARGS pclonecall) :: ptask_tail*
+def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pvalue, porigin, z_send, z_lookup, z_call) = S_prepared[.TODO = (CLONE_INVOKE pclonecall[.NAME = $clone_selected_name(S, porigin, preqbytes_lookup)]) :: ptask_tail*]
+  -- if ~$dynamic_method_scan(preqbytes_original, false, false)
+  -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = eps
+  -- if $intrinsic_lookup(preqbytes_lookup, preqbytes_fallback?) = (INTRINSIC_CLONE)
+  -- if S_prepared = $intrinsic_pipe(S, INTRINSIC_CLONE, pvalue, porigin, z_call, eps)
+  -- if S_prepared.TODO = (CLONE_INVOKE pclonecall) :: ptask_tail*
 def $clone_object(S, n_source) = $intrinsic_firstclass(S, pintrinsic)
   -- if S.OBJECTS[n_source] = INTRINSICCLOSURE pintrinsic
 
@@ -353,15 +368,19 @@ rule PhpStep/clone-updates-done: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PO
 dec $clone_selected_valid(pstate, pclonecall) : bool
 def $clone_selected_valid(S, pclonecall) = true
   -- if pclonecall.OWNER = eps
+  -- if pclonecall.NAME = eps
   -- if $exit_fixed(S, pclonecall.SITE) = ((preqbytes, preqbytes_fallback?))
   -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
   -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (INTRINSIC_CLONE)
 def $clone_selected_valid(S, pclonecall) = true
   -- if pclonecall.OWNER = eps
+  -- if pclonecall.NAME = (preqbytes)
   -- if $exit_fixed(S, pclonecall.SITE) = eps
   -- if $exit_dynamic_site(S, pclonecall.SITE)
+  -- if $intrinsic_lookup(preqbytes, eps) = (INTRINSIC_CLONE)
 def $clone_selected_valid(S, pclonecall) = true
   -- if pclonecall.OWNER = (n)
+  -- if pclonecall.NAME = eps
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_CLONE
@@ -369,6 +388,7 @@ def $clone_selected_valid(S, pclonecall) = true
   -- if $exit_dynamic_site(S, pclonecall.SITE)
 def $clone_selected_valid(S, pclonecall) = true
   -- if pclonecall.OWNER = (n)
+  -- if pclonecall.NAME = eps
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_CLONE
