@@ -85,7 +85,7 @@ rule PhpStep/file-warning-open: S ~> $error_dispatch(S, 2, n_message*, z, DIAGNO
   -- if pfilecontext.PHASE = FILE_WARNING_OPEN n_path*
   -- if n_message* = $file_warning_open_message(pfilecontext, n_path*)
   -- if z = $file_warning_line(S, pfilecontext)
-rule PhpStep/file-warning-false: S ~> S[.FILECONTEXTS = pfilecontext_tail*][.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/file-warning-false: S ~> $source_helper_result(S[.FILECONTEXTS = pfilecontext_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)], HELPER_FAILED_INCLUDE pfilecontext, ptask_tail*)
   -- if S.TODO = (FILE_WARNING_PHASE n_nonce 3) :: ptask_tail*
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if pfilecontext.NONCE = n_nonce

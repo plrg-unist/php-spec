@@ -1,0 +1,121 @@
+{
+  "scope": "Captured Stringable cleanup after actual empty eval, once skip and failed include helper completion; bounded required-core cut.",
+  "status": "independently_reviewed_private_ready",
+  "tested_revision": "5412b7b20898d8406928bbcbaaf1ee924803cb11",
+  "semantic_parent": "Reviewed ordering cut in source-stringable-ordering-review.json; earlier12/compiled42 and first4/37 retain their own cuts without renewal.",
+  "semantic_root": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-helper-returns-298",
+  "semantic_sha256": {
+    "spec/semantics/30-storage.watsup": "c2887ebd128cfa3248c1ed3ecfe8cd0354eae758ae576d9c2f0516aa83d6a167",
+    "spec/semantics/160-eval-runtime.watsup": "89fb943fd9f1fc9679856c09552a61defb5dccc954e8d2c9732aba2c026530c5",
+    "spec/semantics/171-include-runtime.watsup": "1fd354faf04f371a4cce4ae49c47839f9f5bc84150732271953892e901887abe",
+    "spec/semantics/243-file-warning-continuations.watsup": "12a1411ab03094195b6192274da04ea3ae99c2a2a44fe863882e12627025ba09",
+    "spec/semantics/298-source-stringable-lifetime.watsup": "0f8e9834e61c58a505721efd1a926bb348b238d2ef877b196e71a514c3bd881c"
+  },
+  "source_patch": {
+    "path": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-helper-reviewed-15.patch",
+    "sha256": "deed57883f93a7a948945aa522e8a239e33c94267758a30ce98cda50d9a9eaa1",
+    "files": 5
+  },
+  "target": "PHP8.5.10 CLI NTS64",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_route": "ZEND_INCLUDE_OR_EVAL copies false/true for NULL/fake op-array results before common FREE_OP1 and NEXT_OPCODE. An authentic captured operand destructor can leave its Throwable pending through assignment/echo; reporting1 executes before propagation. Helper context/path/nonce/phase remain captured; a no-unit record uses HELPER presence and canonical unused UNIT0.",
+  "runtime_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "_build/default/adapter/main.exe": "1d7cebf175b60a6e2a534460ec2c4aff206cdd901e34f35f959041a49f5ac2f9",
+    ".tools/cprefix-compiler/compiler": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "compiler": {
+    "pin": "da36ac3c434cd291940293a63da64544307730a3",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "modules": 276,
+    "exit": 0,
+    "seconds": 3.213853597640991,
+    "fresh_rebuild": false
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1",
+    "include_path": ".:"
+  },
+  "caps_seconds": {
+    "compiler": 300,
+    "native": 30,
+    "source_model": 60,
+    "source_outer": 90,
+    "state": 90
+  },
+  "source_command": "python3 .tools/source-stringable-helper-return-next/check.py",
+  "source_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-helper-return-next/model-3wz4dci7/report.json",
+  "native_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-helper-return-next/native-vm_2nxhh/report.json",
+  "source_agreements": 3,
+  "original_sources": 3,
+  "sources": [
+    {
+      "case": "empty-eval",
+      "source_sha256": "95ffdfcff28d46065ece2d49092e48215cdd77560f762218b21e06f1ab18634b",
+      "seconds": 7.516155958175659,
+      "exit_status": 0
+    },
+    {
+      "case": "once-skip",
+      "source_sha256": "816e371b8b73d835a78d9bc8d7de54e4c0e197114d94598e35de205259c41bc7",
+      "seconds": 12.470030069351196,
+      "exit_status": 0
+    },
+    {
+      "case": "missing-include",
+      "source_sha256": "8ccdfc56c50dade627ae4e3630dbf15b5c5c691e751475ceab49aae2d55eab52",
+      "seconds": 9.004223585128784,
+      "exit_status": 0
+    }
+  ],
+  "helper_reached_state": {
+    "premises": 42,
+    "bindings": 22,
+    "predicates": 20,
+    "seconds": 12.58120083808899,
+    "exit": 0,
+    "raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/helper-pending-corrected-run-pgm2frdw/report.json",
+    "scope": "Actual once warmup/provider/checked parse then second resolution reaches copiedtrue, retired input, Throwable-only root, public entry/heap and specific HELPER/UNIT/context negatives. Distinct from compiled-fast42 at the earlier ordering cut."
+  },
+  "maintained": {
+    "sources": "python3 tests/semantics/source_stringable_helper_sources.py --semantic-root .tools/source-stringable-helper-returns-298",
+    "states": "python3 tests/semantics/source_stringable_helper_protocol.py --semantic-root .tools/source-stringable-helper-returns-298",
+    "prepare_only": "python3 tests/semantics/source_stringable_helper_protocol.py --prepare-only",
+    "relocated_preparation_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-helper-protocol-8mo9x47j/PREPARED.json",
+    "relocated_application_evaluations": 0,
+    "note": "Three main sources and one provider are byte-identical. The relocated fixture preserves the accepted42 obligations with local filenames; defaults require source integration. Preparation adds no runtime agreement."
+  },
+  "preserved_zero_credit": {
+    "helper41_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/helper-pending-admission-run-tzruv_l1/report.json",
+    "helper41_failure": "The purported missing path was the main script, already recorded in INCLUDEDOPENED at startup. Original41 remains untouched/false. Corrected42 changes only that path negative and adds an explicit absence precondition; semantic inputs unchanged."
+  },
+  "required_follow_on": [
+    "first emitted opcode and final-release keyword traces",
+    "broader compiler emissions, C/VM exception checkpoints and helper/provider/parser paths",
+    "constructor property promotion required core",
+    "final combined-source and fresh copied-path network-isolated offline rebuild"
+  ],
+  "integration": "Git metadata read-only; private reviewed source/publication diffs preserved, no canonical merge/push, full-core or fresh-build claim."
+}

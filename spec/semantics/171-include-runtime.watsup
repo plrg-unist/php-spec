@@ -279,13 +279,19 @@ dec $file_once_record_open(pstate, int, preqbytes) : pstate
 def $file_once_kind(2) = true
 def $file_once_kind(4) = true
 def $file_once_kind(int) = false -- otherwise
-dec $file_once_skip(pstate, pfilecontext, pfilecontext*) : pstate
-def $file_once_skip(S, pfilecontext, pfilecontext_tail*) = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = pfilecontext.TAIL][.COMPLETION = NORMAL][.SERVICELEFT = eps][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pfilecontext.SITE)]
-def $file_open_resume_valid(S, FILE_OPEN_FAILURE n_nonce n_caller* n_requested* n_resolved* n_warning_path* n_stream*) = $file_once_skip(S, pfilecontext, pfilecontext_tail*)
+dec $file_once_skip(pstate, pfilecontext, pfilecontext*, preqbytes) : pstate
+def $file_once_skip(S, pfilecontext, pfilecontext_tail*, n_path*) = $source_helper_result(S[.FILECONTEXTS = pfilecontext_tail*][.COMPLETION = NORMAL][.SERVICELEFT = eps][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pfilecontext.SITE)], HELPER_ONCE_SKIP pfilecontext n_path*, pfilecontext.TAIL)
+dec $file_once_skip_path(pstate, preqbytes, preqbytes) : preqbytes
+def $file_once_skip_path(S, n_resolved*, n_opened*) = n_resolved*
+  -- if n_resolved* =/= eps
+  -- if n_resolved* <- S.INCLUDEDOPENED
+def $file_once_skip_path(S, n_resolved*, n_opened*) = n_opened*
+  -- if ~(n_resolved* =/= eps /\ n_resolved* <- S.INCLUDEDOPENED)
+def $file_open_resume_valid(S, FILE_OPEN_FAILURE n_nonce n_caller* n_requested* n_resolved* n_warning_path* n_stream*) = $file_once_skip(S, pfilecontext, pfilecontext_tail*, n_resolved*)
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if $file_once_kind(pfilecontext.KIND)
   -- if n_resolved* <- S.INCLUDEDOPENED
-def $file_open_resume_valid(S, FILE_OPENED n_nonce n_caller* n_requested* n_resolved* n_opened* n_bytes*) = $file_once_skip(S, pfilecontext, pfilecontext_tail*)
+def $file_open_resume_valid(S, FILE_OPENED n_nonce n_caller* n_requested* n_resolved* n_opened* n_bytes*) = $file_once_skip(S, pfilecontext, pfilecontext_tail*, $file_once_skip_path(S, n_resolved*, n_opened*))
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if $file_once_kind(pfilecontext.KIND)
   -- if ((n_resolved* =/= eps /\ n_resolved* <- S.INCLUDEDOPENED) \/ n_opened* <- S.INCLUDEDOPENED)

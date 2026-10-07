@@ -68,10 +68,12 @@ def $eval_operand(S, z) = S_read
   -- if S_read.COMPLETION =/= NORMAL
 
 dec $eval_request_start(pstate, porigin, int, ptask*) : pstate
+dec $source_helper_result(pstate, psourcehelper, ptask*) : pstate
+def $source_helper_result(S, psourcehelper, ptask_tail*) = S[.TODO = ptask_tail*] -- otherwise
 dec $eval_class_origin(pstate) : porigin?
 def $eval_class_origin(S) = pcallcontext.LEXICAL_CLASS -- if S.CURRENT = (pcallcontext)
 def $eval_class_origin(S) = eps -- otherwise
-def $eval_request_start(S, porigin, z, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $eval_request_start(S, porigin, z, ptask_tail*) = $source_helper_result(S[.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)], HELPER_EMPTY_EVAL, ptask_tail*)
   -- if $eval_site_valid(S, porigin, z)
   -- if S.RESULT = KNOWN (PSTRING eps)
 def $eval_request_start(S, porigin, z, ptask_tail*) = $declaration_enter(S, n_unit, (porigin))[.FILES = S.FILES ++ [SOURCEFILE n_unit n_file*]][.EVALCONTEXTS = pevalcontext :: S.EVALCONTEXTS][.TODO = (EVAL_AWAIT n_unit) :: ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]

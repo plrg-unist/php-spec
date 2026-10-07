@@ -343,7 +343,7 @@ rule PhpStep/source-fast-finish: S ~> S[.TODO = ptask_tail*]
 ;; FREE_OP1 runs after the constant result has been copied. Preserve the actual
 ;; eager operation and its value transfer; the source input is now documentary
 ;; and must not retain the retired captured object through later opcodes.
-def $destructor_pending_finish(S, pdestructionoperation, n_pending, (SOURCE_FAST_FINISH psourceoperand n_unit) :: ptask_tail*) = S[.SOURCEPENDING = ({OPERAND psourceoperand, UNIT n_unit, EXCEPTION n_pending, CALLER pdestructionoperation.CALLER})][.TODO = (SOURCE_FAST_FINISH psourceoperand n_unit) :: ptask_tail*][.RESULT = pdestructionoperation.VALUE][.BASE = pdestructionoperation.BASE][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION][.COMPLETION = NORMAL]
+def $destructor_pending_finish(S, pdestructionoperation, n_pending, (SOURCE_FAST_FINISH psourceoperand n_unit) :: ptask_tail*) = S[.SOURCEPENDING = ({OPERAND psourceoperand, UNIT n_unit, HELPER eps, EXCEPTION n_pending, CALLER pdestructionoperation.CALLER})][.TODO = (SOURCE_FAST_FINISH psourceoperand n_unit) :: ptask_tail*][.RESULT = pdestructionoperation.VALUE][.BASE = pdestructionoperation.BASE][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION][.COMPLETION = NORMAL]
   -- if pdestructionoperation.SOURCE = SOURCE_OPERAND_FAST psourceoperand n_unit
   -- if pdestructionoperation.VALUE = KNOWN $source_fast_value(psourceoperand)
   -- if pdestructionoperation.ORIGIN = (psourceoperand.SITE)
@@ -355,6 +355,7 @@ def $destructor_pending_finish(S, pdestructionoperation, n_pending, (SOURCE_FAST
 
 dec $source_pending_record_valid(pstate, psourcepending) : bool
 def $source_pending_record_valid(S, psourcepending) = true
+  -- if psourcepending.HELPER = eps
   -- if psourceoperand = psourcepending.OPERAND
   -- if S_owner = $source_string_owner_scope(S, psourceoperand.OWNER)
   -- if psourceoperand.OWNER = |S_owner.FRAMES|
@@ -417,3 +418,57 @@ def $source_exception_transition(S, S_next) = S_next[.SOURCEPENDING = eps][.COMP
   -- if $source_pending_checkpoint(S, S_next)
 def $source_exception_terminal(S) = S[.SOURCEPENDING = eps][.COMPLETION = THROWING psourcepending.EXCEPTION]
   -- if S.SOURCEPENDING = (psourcepending)
+
+;; Empty eval, once skips and failed includes return without an op array. Their
+;; actual helper completion copies the bool before the same final FREE_OP1.
+;; The saved file context is documentary after completion, not an input owner.
+dec $source_helper_value(psourcehelper) : pvalue
+def $source_helper_value(HELPER_EMPTY_EVAL) = PBOOL false
+def $source_helper_value(HELPER_ONCE_SKIP pfilecontext n_path*) = PBOOL true
+def $source_helper_value(HELPER_FAILED_INCLUDE pfilecontext) = PBOOL false
+
+dec $source_helper_file_context(pstate, psourceoperand, pfilecontext) : bool
+def $source_helper_file_context(S, psourceoperand, pfilecontext) = ($(pfilecontext.NONCE < S.FILESEQ) /\ pfilecontext.SITE = psourceoperand.SITE /\ pfilecontext.KIND = psourceoperand.KIND /\ pfilecontext.OWNER = psourceoperand.OWNER /\ pfilecontext.CALLER = $call_sourcefile(S.FILES, psourceoperand.SITE) /\ pfilecontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pfilecontext.TAIL = (SOURCE_OPERAND_RELEASE psourceoperand) :: psourceoperand.TAIL /\ pfilecontext.UNIT = eps /\ pfilecontext.RESOLVED = eps /\ pfilecontext.OPENED = eps /\ pfilecontext.BYTES = eps /\ $startup_bytes(pfilecontext.REQUESTED) /\ $startup_bytes(pfilecontext.CWD) /\ $startup_bytes(pfilecontext.INCLUDEPATH))
+
+dec $source_helper_context(pstate, psourceoperand, psourcehelper) : bool
+def $source_helper_context(S, psourceoperand, HELPER_EMPTY_EVAL) = (psourceoperand.KIND = 0 /\ $source_operand_site(S, psourceoperand) /\ psourceoperand.OWNER = |S.FRAMES|)
+def $source_helper_context(S, psourceoperand, HELPER_ONCE_SKIP pfilecontext n_path*) = ($source_operand_site(S, psourceoperand) /\ psourceoperand.OWNER = |S.FRAMES| /\ $source_helper_file_context(S, psourceoperand, pfilecontext) /\ $file_once_kind(psourceoperand.KIND) /\ pfilecontext.PHASE = FILE_RESOLVE_WAIT /\ $source_filename(n_path*) /\ n_path* <- S.INCLUDEDOPENED)
+def $source_helper_context(S, psourceoperand, HELPER_FAILED_INCLUDE pfilecontext) = ($source_operand_site(S, psourceoperand) /\ psourceoperand.OWNER = |S.FRAMES| /\ $source_helper_file_context(S, psourceoperand, pfilecontext) /\ $file_warning_marker(pfilecontext.PHASE, 3) /\ $file_warning_payload_valid(pfilecontext))
+
+dec $source_helper_complete(pstate, psourceoperand, psourcehelper, ptask*) : pstate
+def $source_helper_complete(S, psourceoperand, psourcehelper, ptask_tail*) = S[.TODO = (SOURCE_HELPER_RELEASE psourceoperand psourcehelper) :: ptask_tail*][.ORIGIN = (psourceoperand.SITE)]
+  -- if $source_operand_valid(S, psourceoperand)
+  -- if psourceoperand.TAIL = ptask_tail*
+  -- if $source_helper_context(S, psourceoperand, psourcehelper)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN $source_helper_value(psourcehelper)
+def $source_helper_complete(S, psourceoperand, psourcehelper, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "invalid completed source helper"] -- otherwise
+def $source_helper_result(S, psourcehelper, (SOURCE_OPERAND_RELEASE psourceoperand) :: ptask_tail*) = $source_helper_complete(S, psourceoperand, psourcehelper, ptask_tail*)
+
+def $task_nodes(SOURCE_HELPER_RELEASE psourceoperand psourcehelper) = $operand_nodes(psourceoperand.INPUT)
+def $task_nodes(SOURCE_HELPER_FINISH psourceoperand psourcehelper) = eps
+def $call_task_valid(S, SOURCE_HELPER_RELEASE psourceoperand psourcehelper) = ($source_operand_valid(S, psourceoperand) /\ $source_helper_context(S, psourceoperand, psourcehelper) /\ S.ORIGIN = (psourceoperand.SITE) /\ $source_operand_suffix(S.TODO, SOURCE_HELPER_RELEASE psourceoperand psourcehelper, psourceoperand.TAIL) /\ S.RESULT = KNOWN $source_helper_value(psourcehelper))
+def $call_task_valid(S, SOURCE_HELPER_FINISH psourceoperand psourcehelper) = ($source_helper_context(S, psourceoperand, psourcehelper) /\ S.ORIGIN = (psourceoperand.SITE) /\ $source_operand_suffix(S.TODO, SOURCE_HELPER_FINISH psourceoperand psourcehelper, psourceoperand.TAIL) /\ S.RESULT = KNOWN $source_helper_value(psourcehelper))
+rule PhpStep/source-helper-release: S ~> S[.TODO = (SOURCE_HELPER_FINISH psourceoperand psourcehelper) :: ptask_tail*]
+  -- if S.TODO = (SOURCE_HELPER_RELEASE psourceoperand psourcehelper) :: ptask_tail*
+  -- if $call_task_valid(S, SOURCE_HELPER_RELEASE psourceoperand psourcehelper)
+rule PhpStep/source-helper-finish: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (SOURCE_HELPER_FINISH psourceoperand psourcehelper) :: ptask_tail*
+  -- if $call_task_valid(S, SOURCE_HELPER_FINISH psourceoperand psourcehelper)
+
+def $destructor_pending_finish(S, pdestructionoperation, n_pending, (SOURCE_HELPER_FINISH psourceoperand psourcehelper) :: ptask_tail*) = S[.SOURCEPENDING = ({OPERAND psourceoperand, UNIT 0, HELPER (psourcehelper), EXCEPTION n_pending, CALLER pdestructionoperation.CALLER})][.TODO = (SOURCE_HELPER_FINISH psourceoperand psourcehelper) :: ptask_tail*][.RESULT = pdestructionoperation.VALUE][.BASE = pdestructionoperation.BASE][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION][.COMPLETION = NORMAL]
+  -- if pdestructionoperation.SOURCE = SOURCE_HELPER_RELEASE psourceoperand psourcehelper
+  -- if pdestructionoperation.VALUE = KNOWN $source_helper_value(psourcehelper)
+  -- if pdestructionoperation.ORIGIN = (psourceoperand.SITE)
+  -- if S.CURRENT = pdestructionoperation.CALLER
+  -- if S.SOURCEPENDING = eps
+  -- if ptask_tail* = psourceoperand.TAIL
+  -- if $source_helper_context(S, psourceoperand, psourcehelper)
+  -- if $eval_compile_pending_object(S, THROWING n_pending)
+
+dec $source_helper_pending_valid(pstate, psourcepending, psourcehelper) : bool
+def $source_helper_pending_valid(S, psourcepending, psourcehelper) = (psourcepending.UNIT = 0 /\ psourceoperand.OWNER = |S_owner.FRAMES| /\ S_owner.CURRENT = psourcepending.CALLER /\ $source_helper_context(S_owner, psourceoperand, psourcehelper) /\ $eval_compile_pending_object(S, THROWING psourcepending.EXCEPTION))
+  -- if psourceoperand = psourcepending.OPERAND
+  -- if S_owner = $source_string_owner_scope(S, psourceoperand.OWNER)
+def $source_pending_record_valid(S, psourcepending) = $source_helper_pending_valid(S, psourcepending, psourcehelper)
+  -- if psourcepending.HELPER = (psourcehelper)
