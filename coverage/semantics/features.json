@@ -1693,7 +1693,12 @@
         "spec/semantics/150-clone-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
         "spec/semantics/154-property-visibility-runtime.watsup",
-        "spec/semantics/261-object-casts.watsup"
+        "spec/semantics/261-object-casts.watsup",
+        "spec/semantics/300-readonly-clone-lifecycle.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/305-readonly-clone-updates.watsup",
+        "spec/semantics/247-handler-callable-consumers.watsup",
+        "spec/semantics/281-fibers.watsup"
       ],
       "source_tests": [
         "tests/semantics/clone_expressions.py",
@@ -1708,13 +1713,20 @@
         "tests/semantics/property_private_protocol.py",
         "tests/semantics/private_property_scope_protocol.py",
         "tests/semantics/object_cast_sources.py",
-        "tests/semantics/object_cast_protocol.py"
+        "tests/semantics/object_cast_protocol.py",
+        "tests/semantics/readonly_clone_sources.py",
+        "tests/semantics/readonly_clone_updates_sources.py",
+        "tests/semantics/readonly_clone_updates_cases.json",
+        "tests/semantics/readonly_clone_cases.json"
       ],
-      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, property hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required.",
+      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. At the earlier149/150 cut, __clone callbacks/access checks and readonly reinitialization remained open; property hooks, lazy/internal objects, Traversable unpack and wider lifecycle integration still require completion. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required. Private ready300 now validates genuine callback access/scope and object-owned readonly allowances through return/throw/exit and Fiber parking, with borrowed/TMP/intrinsic ownership distinctions. Separate20 normal/5 declaration/exit1 and264 reached controls pass with SL276/application0. Implicit Generator callbacks, destination release and broader lifecycle remain required; status stays partial. See readonly-clone-review.json. Module305 implements the second readonly update window, saved caller scope, captured Stringable conversion, alias store failure cleanup and positive physical write revisions. The accepted twelve-original/468-condition cut remains separate from later alias/source-link originals, parked-prior-write and retired-maker sources. Fixed/opcode implicit clone makers cache durable target/site/scope authority without heap owners; dynamic/FCC makers and the listed lifecycle follow-ons remain required. Current SL277 compiler stages, affected/fresh originals and independent77/151 plus author81/50 source-reached controls pass. Manual and implicit makers survive receiver retirement with distinct admission. Earlier accepted cuts remain unchanged; see readonly-clone-updates-review.json.",
       "helper_tests": [
         "tests/semantics/clone_compiler.py",
         "tests/semantics/clone_protocol.py",
-        "tests/semantics/clone_controls.py"
+        "tests/semantics/clone_controls.py",
+        "tests/semantics/readonly_clone_protocol.py",
+        "tests/semantics/readonly_clone_updates_protocol.py",
+        "tests/semantics/readonly_clone_producer_protocol.py"
       ],
       "evidence": [
         "docs/semantics/SOURCE-CLONE.md",
@@ -1722,7 +1734,10 @@
         "vendor/php-src/Zend/zend_closures.c",
         "vendor/php-src/Zend/zend_builtin_functions.c",
         "coverage/semantics/clone-review.json",
-        "coverage/semantics/property-private-review.json"
+        "coverage/semantics/property-private-review.json",
+        "coverage/semantics/readonly-clone-review.json",
+        "docs/semantics/READONLY-CLONE-UPDATES.md",
+        "coverage/semantics/readonly-clone-updates-review.json"
       ]
     },
     {
@@ -7164,25 +7179,29 @@
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/55-compound-assignment.watsup",
         "spec/semantics/242-dimension-write-continuations.watsup",
-        "spec/semantics/269-global-read-write-continuations.watsup"
+        "spec/semantics/269-global-read-write-continuations.watsup",
+        "spec/semantics/288-instance-set-access.watsup"
       ],
       "helper_tests": [
         "tests/semantics/globals_write_protocol.py",
-        "tests/semantics/globals_write_prepare.py"
+        "tests/semantics/globals_write_prepare.py",
+        "tests/semantics/instance_set_access_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/compound.py",
         "tests/semantics/compound_compiler.py",
         "tests/semantics/validate.py",
         "tests/semantics/globals_write_cases.py",
-        "tests/semantics/globals_write_current.php"
+        "tests/semantics/globals_write_current.php",
+        "tests/semantics/instance_set_access_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "coverage/semantics/globals-write-review.json",
-        "docs/semantics/SOURCE-GLOBAL-WRITES.md"
+        "docs/semantics/SOURCE-GLOBAL-WRITES.md",
+        "coverage/semantics/instance-set-access-review.json"
       ],
-      "review": "Twelve compound assignments accepted63028b5a/reports76129823 after independent2639-source raw audit and277 source/state plus324 compiler gates; see compound-review.json. Quiet coalescing assignment, objects/properties, typed references and frames remain open. Module269 adds bounded GLOBALS W/RW name/missing-entry continuations for direct updates/compound and nested array ingress. Returned missing fetches detach callback-created constrained/reentry aliases; throws preserve writes and skip late RHS. Author9/224 and independent12/273 share four originals (17 unique/497); actualc906 current604958 passes. globals-write-review.json keeps separate cuts and original multiline/native prediction corrections; earlier containers and wider GLOBALS/memoized producers remain required."
+      "review": "Twelve compound assignments accepted63028b5a/reports76129823 after independent2639-source raw audit and277 source/state plus324 compiler gates; see compound-review.json. Quiet coalescing assignment, objects/properties, typed references and frames remain open. Module269 adds bounded GLOBALS W/RW name/missing-entry continuations for direct updates/compound and nested array ingress. Returned missing fetches detach callback-created constrained/reentry aliases; throws preserve writes and skip late RHS. Author9/224 and independent12/273 share four originals (17 unique/497); actualc906 current604958 passes. globals-write-review.json keeps separate cuts and original multiline/native prediction corrections; earlier containers and wider GLOBALS/memoized producers remain required. Module288 covers backed typed asymmetric instance permissions, direct/compound/reference/dimension/unset priority, raw-object interior and object-foreach exceptions. Staged Stringable concat authenticates the initial CV address and each conversion consumer, preserving captured destinations and saved writer scope. Private34 normal/8 compiler/350 reached checks retain distinct cuts. Readonly/hooks, static Stringable compounds, writable append receivers and sole borrowed destination destruction remain required."
     },
     {
       "id": "expression.short-circuit",
@@ -9890,12 +9909,20 @@
         "spec/semantics/149-clone-compiler.watsup",
         "spec/semantics/150-clone-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/300-readonly-clone-lifecycle.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/305-readonly-clone-updates.watsup",
+        "spec/semantics/247-handler-callable-consumers.watsup",
+        "spec/semantics/281-fibers.watsup"
       ],
       "helper_tests": [
         "tests/semantics/clone_compiler.py",
         "tests/semantics/clone_protocol.py",
-        "tests/semantics/clone_controls.py"
+        "tests/semantics/clone_controls.py",
+        "tests/semantics/readonly_clone_protocol.py",
+        "tests/semantics/readonly_clone_updates_protocol.py",
+        "tests/semantics/readonly_clone_producer_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/clone_expressions.py",
@@ -9904,7 +9931,11 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/readonly_clone_sources.py",
+        "tests/semantics/readonly_clone_updates_sources.py",
+        "tests/semantics/readonly_clone_updates_cases.json",
+        "tests/semantics/readonly_clone_cases.json"
       ],
       "evidence": [
         "docs/semantics/SOURCE-CLONE.md",
@@ -9912,9 +9943,12 @@
         "vendor/php-src/Zend/zend_closures.c",
         "vendor/php-src/Zend/zend_builtin_functions.c",
         "coverage/semantics/clone-review.json",
-        "coverage/semantics/property-private-review.json"
+        "coverage/semantics/property-private-review.json",
+        "coverage/semantics/readonly-clone-review.json",
+        "docs/semantics/READONLY-CLONE-UPDATES.md",
+        "coverage/semantics/readonly-clone-updates-review.json"
       ],
-      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, property hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure. Protected update access and mangled slot/type-source copies are covered by property-visibility-review.json. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities."
+      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. At the earlier149/150 cut, __clone callbacks/access checks and readonly reinitialization remained open; property hooks, lazy/internal objects, Traversable unpack and wider lifecycle integration still require completion. Protected update access and mangled slot/type-source copies are covered by property-visibility-review.json. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Private ready300 adds genuine callback access/scope, per-object one-shot readonly allowances and exact local/saved/parked consumers. Borrowed original CVs may retire; actual temporary inputs and intrinsic SENT buffers remain owners. Separate20 normal/5 declaration/exit1 and264 reached controls pass with SL276/application0; ordinary294 gates remain closed. The callback cut covers empty updates; the later305 cut covers its independent second window and nonreplayed progress. Generator callback creation, destination-release13, force-close/hooks and wider lifecycle behavior remain open; no full-family or integration claim. See readonly-clone-review.json. Module305 implements the second readonly update window, saved caller scope, captured Stringable conversion, alias store failure cleanup and positive physical write revisions. The accepted twelve-original/468-condition cut remains separate from later alias/source-link originals, parked-prior-write and retired-maker sources. Fixed/opcode implicit clone makers cache durable target/site/scope authority without heap owners; dynamic/FCC makers and the listed lifecycle follow-ons remain required. Current SL277 compiler stages, affected/fresh originals and independent77/151 plus author81/50 source-reached controls pass. Manual and implicit makers survive receiver retirement with distinct admission. Earlier accepted cuts remain unchanged; see readonly-clone-updates-review.json."
     },
     {
       "id": "classes.clone-with-properties",
@@ -9925,12 +9959,20 @@
         "spec/semantics/149-clone-compiler.watsup",
         "spec/semantics/150-clone-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
-        "spec/semantics/154-property-visibility-runtime.watsup"
+        "spec/semantics/154-property-visibility-runtime.watsup",
+        "spec/semantics/300-readonly-clone-lifecycle.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/305-readonly-clone-updates.watsup",
+        "spec/semantics/247-handler-callable-consumers.watsup",
+        "spec/semantics/281-fibers.watsup"
       ],
       "helper_tests": [
         "tests/semantics/clone_compiler.py",
         "tests/semantics/clone_protocol.py",
-        "tests/semantics/clone_controls.py"
+        "tests/semantics/clone_controls.py",
+        "tests/semantics/readonly_clone_protocol.py",
+        "tests/semantics/readonly_clone_updates_protocol.py",
+        "tests/semantics/readonly_clone_producer_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/clone_expressions.py",
@@ -9939,7 +9981,11 @@
         "tests/semantics/property_private_cases.json",
         "tests/semantics/property_private_compiler.py",
         "tests/semantics/property_private_protocol.py",
-        "tests/semantics/private_property_scope_protocol.py"
+        "tests/semantics/private_property_scope_protocol.py",
+        "tests/semantics/readonly_clone_sources.py",
+        "tests/semantics/readonly_clone_updates_sources.py",
+        "tests/semantics/readonly_clone_updates_cases.json",
+        "tests/semantics/readonly_clone_cases.json"
       ],
       "evidence": [
         "docs/semantics/SOURCE-CLONE.md",
@@ -9947,9 +9993,12 @@
         "vendor/php-src/Zend/zend_closures.c",
         "vendor/php-src/Zend/zend_builtin_functions.c",
         "coverage/semantics/clone-review.json",
-        "coverage/semantics/property-private-review.json"
+        "coverage/semantics/property-private-review.json",
+        "coverage/semantics/readonly-clone-review.json",
+        "docs/semantics/READONLY-CLONE-UPDATES.md",
+        "coverage/semantics/readonly-clone-updates-review.json"
       ],
-      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. __clone callbacks/access checks, readonly reinitialization, property hooks, lazy/internal objects, Traversable unpack and lifecycle integration remain required; no family closure. Protected update access and mangled slot/type-source copies are covered by property-visibility-review.json. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities."
+      "review": "Bounded149/150 supports admitted ordinary objects and closures, shallow slot copies with singleton-reference unwrapping/live alias type-source duplication, capture/static/receiver ownership, positional/named/array-unpacked intrinsic binding and ordered weak property updates. Independent clone-review.json distinguishes initial62 from final14 source scopes (seven overlaps), initial11/172 from final4/64 paused scopes, and the exact installed148-module bridge. At the earlier149/150 cut, __clone callbacks/access checks and readonly reinitialization remained open; property hooks, lazy/internal objects, Traversable unpack and wider lifecycle integration still require completion. Protected update access and mangled slot/type-source copies are covered by property-visibility-review.json. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Private ready300 adds genuine callback access/scope, per-object one-shot readonly allowances and exact local/saved/parked consumers. Borrowed original CVs may retire; actual temporary inputs and intrinsic SENT buffers remain owners. Separate20 normal/5 declaration/exit1 and264 reached controls pass with SL276/application0; ordinary294 gates remain closed. The callback cut covers empty updates; the later305 cut covers its independent second window and nonreplayed progress. Generator callback creation, destination-release13, force-close/hooks and wider lifecycle behavior remain open; no full-family or integration claim. See readonly-clone-review.json. Module305 implements the second readonly update window, saved caller scope, captured Stringable conversion, alias store failure cleanup and positive physical write revisions. The accepted twelve-original/468-condition cut remains separate from later alias/source-link originals, parked-prior-write and retired-maker sources. Fixed/opcode implicit clone makers cache durable target/site/scope authority without heap owners; dynamic/FCC makers and the listed lifecycle follow-ons remain required. Current SL277 compiler stages, affected/fresh originals and independent77/151 plus author81/50 source-reached controls pass. Manual and implicit makers survive receiver retirement with distinct admission. Earlier accepted cuts remain unchanged; see readonly-clone-updates-review.json."
     },
     {
       "id": "classes.static-lookup",
@@ -10268,15 +10317,42 @@
     {
       "id": "properties.readonly",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_object_handlers.c"
+      "implementation": [
+        "spec/semantics/294-readonly-lifecycle.watsup",
+        "spec/semantics/135-property-compiler.watsup",
+        "spec/semantics/288-instance-set-access.watsup",
+        "spec/semantics/300-readonly-clone-lifecycle.watsup",
+        "spec/semantics/141-method-compiler.watsup",
+        "spec/semantics/305-readonly-clone-updates.watsup",
+        "spec/semantics/247-handler-callable-consumers.watsup",
+        "spec/semantics/281-fibers.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/readonly_lifecycle_protocol.py",
+        "tests/semantics/readonly_clone_protocol.py",
+        "tests/semantics/readonly_clone_updates_protocol.py",
+        "tests/semantics/readonly_clone_producer_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/readonly_lifecycle_sources.py",
+        "tests/semantics/readonly_lifecycle_cases.json",
+        "tests/semantics/readonly_clone_sources.py",
+        "tests/semantics/readonly_clone_updates_sources.py",
+        "tests/semantics/readonly_clone_updates_cases.json",
+        "tests/semantics/readonly_clone_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_API.c",
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "vendor/php-src/Zend/zend_object_handlers.c",
+        "coverage/semantics/readonly-clone-review.json",
+        "docs/semantics/READONLY-CLONE-UPDATES.md",
+        "coverage/semantics/readonly-clone-updates-review.json"
+      ],
+      "review": "Bounded ordinary294:39 exact normal originals,18 declaration controls, separate Fiber1,243 reached conditions and SL275. Initial scope/type priority, direct/nested updates, unset, detached object references and genuine first Stringable reentry are reviewed. readonly-lifecycle-review.json preserves that earlier cut and its failures. Destination release, Deprecated dispatch, promotions/hooks and wider conversions remain required. Private ready300 adds genuine callback access/scope, per-object one-shot readonly allowances and exact local/saved/parked consumers. Borrowed original CVs may retire; actual temporary inputs and intrinsic SENT buffers remain owners. Separate20 normal/5 declaration/exit1 and264 reached controls pass with SL276/application0; ordinary294 gates remain closed. The callback cut covers empty updates; the later305 cut covers its independent second window and nonreplayed progress. Generator callback creation, destination-release13, force-close/hooks and wider lifecycle behavior remain open; no full-family or integration claim. See readonly-clone-review.json. Module305 implements the second readonly update window, saved caller scope, captured Stringable conversion, alias store failure cleanup and positive physical write revisions. The accepted twelve-original/468-condition cut remains separate from later alias/source-link originals, parked-prior-write and retired-maker sources. Fixed/opcode implicit clone makers cache durable target/site/scope authority without heap owners; dynamic/FCC makers and the listed lifecycle follow-ons remain required. Current SL277 compiler stages, affected/fresh originals and independent77/151 plus author81/50 source-reached controls pass. Manual and implicit makers survive receiver retirement with distinct admission. Earlier accepted cuts remain unchanged; see readonly-clone-updates-review.json."
     },
     {
       "id": "properties.dynamic",
@@ -10327,15 +10403,25 @@
     {
       "id": "properties.asymmetric-instance",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_object_handlers.c"
+      "implementation": [
+        "spec/semantics/288-instance-set-access.watsup",
+        "spec/semantics/294-readonly-lifecycle.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/instance_set_access_protocol.py",
+        "tests/semantics/readonly_lifecycle_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/instance_set_access_sources.py",
+        "tests/semantics/readonly_lifecycle_sources.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_object_handlers.c",
+        "coverage/semantics/instance-set-access-review.json"
+      ],
+      "review": "Module288 covers backed typed asymmetric instance permissions, direct/compound/reference/dimension/unset priority, raw-object interior and object-foreach exceptions. Staged Stringable concat authenticates the initial CV address and each conversion consumer, preserving captured destinations and saved writer scope. Private34 normal/8 compiler/350 reached checks retain distinct cuts. Readonly/hooks, static Stringable compounds, writable append receivers and sole borrowed destination destruction remain required. MODULE294 supersedes only the historical raw-object target-reference expectation with an inaccessible setter: source references detach; target binds raise the generic overloaded-object Error. Mutable allowed-setter scopes still create real aliases. New source controls and reached31 retain the original350 result without unrelated reruns."
     },
     {
       "id": "properties.asymmetric-static",
@@ -10452,9 +10538,12 @@
         "spec/semantics/153-property-visibility-compiler.watsup",
         "spec/semantics/154-property-visibility-runtime.watsup",
         "spec/semantics/187-class-static-storage.watsup",
-        "spec/semantics/188-class-static-runtime.watsup"
+        "spec/semantics/188-class-static-runtime.watsup",
+        "spec/semantics/288-instance-set-access.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/instance_set_access_protocol.py"
+      ],
       "source_tests": [
         "tests/semantics/properties.py",
         "tests/semantics/property_visibility.py",
@@ -10467,7 +10556,8 @@
         "tests/semantics/property_private_protocol.py",
         "tests/semantics/private_property_scope_protocol.py",
         "tests/semantics/class_static_properties.py",
-        "tests/semantics/class_static_references.py"
+        "tests/semantics/class_static_references.py",
+        "tests/semantics/instance_set_access_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
@@ -10476,9 +10566,10 @@
         "coverage/semantics/property-visibility-review.json",
         "coverage/semantics/property-private-review.json",
         "docs/semantics/SOURCE-CLASS-STATICS.md",
-        "coverage/semantics/class-static-properties.json"
+        "coverage/semantics/class-static-properties.json",
+        "coverage/semantics/instance-set-access-review.json"
       ],
-      "review": "Public/protected/private property dimensions, compound writes and aliases preserve COW and typed constraints through captured physical keys. Protected resolution and scalar-error display are reviewed in property-visibility-review.json; readonly, hooks and magic remain open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). The bounded ordinary checkpoint leaves typed object-string property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access open."
+      "review": "Public/protected/private property dimensions, compound writes and aliases preserve COW and typed constraints through captured physical keys. Protected resolution and scalar-error display are reviewed in property-visibility-review.json; readonly, hooks and magic remain open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). The bounded ordinary checkpoint leaves typed object-string property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access open. Module288 covers backed typed asymmetric instance permissions, direct/compound/reference/dimension/unset priority, raw-object interior and object-foreach exceptions. Staged Stringable concat authenticates the initial CV address and each conversion consumer, preserving captured destinations and saved writer scope. Private34 normal/8 compiler/350 reached checks retain distinct cuts. Readonly/hooks, static Stringable compounds, writable append receivers and sole borrowed destination destruction remain required."
     },
     {
       "id": "properties.reference-constraints",
@@ -10502,7 +10593,8 @@
         "spec/semantics/216-parameter-backing-authority.watsup",
         "spec/semantics/218-variadic-default-string-receive.watsup",
         "spec/semantics/227-default-constructors.watsup",
-        "spec/semantics/276-container-write-continuations.watsup"
+        "spec/semantics/276-container-write-continuations.watsup",
+        "spec/semantics/288-instance-set-access.watsup"
       ],
       "helper_tests": [
         "tests/semantics/property_reference_compiler.py",
@@ -10512,7 +10604,8 @@
         "tests/semantics/default_constructor_protocol.py",
         "tests/semantics/default_constructor_api_protocol.py",
         "tests/semantics/container_warning_protocol.py",
-        "tests/semantics/container_warning_prepare.py"
+        "tests/semantics/container_warning_prepare.py",
+        "tests/semantics/instance_set_access_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/property_references.py",
@@ -10535,7 +10628,8 @@
         "tests/semantics/variadic_string_parameters_protocol.py",
         "tests/semantics/default_constructor_sources.py",
         "tests/semantics/container_warning_cases.py",
-        "tests/semantics/container_warning_current.php"
+        "tests/semantics/container_warning_current.php",
+        "tests/semantics/instance_set_access_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
@@ -10550,9 +10644,10 @@
         "coverage/semantics/variadic-default-string-review.json",
         "coverage/semantics/default-constructors-review.json",
         "coverage/semantics/container-warning-review.json",
-        "docs/semantics/SOURCE-CONTAINER-WRITES.md"
+        "docs/semantics/SOURCE-CONTAINER-WRITES.md",
+        "coverage/semantics/instance-set-access-review.json"
       ],
-      "review": "Public/protected/private reference cells carry ordered non-owning typed sources keyed by object and physical slot. Unconstrained binding coerces before detaching the old source; constrained binding is atomic, reports FIRST-source conflicts and preserves conversion effects. Self-rebinding removes/adds the source. By-reference parameter/return no-coercion rules remain separate. Nullsafe sends, overflow and clone aliases retain their reviewed bounds; readonly/hooks/magic remain open. Historical property-references-review.json and current property-visibility-review.json record separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json). Supplied weak Stringable string parameters214 preserve caller strictness, nominal/callable priority, captured free-BYREF cells and original throws; existing property constraints reject before callbacks. Earlier214 author11 plus one historical Unsupported/state178/independent2/current source2-state46 remain distinct. Parameter authority216 now permits only the exact captured backing string after callback source mutation, with ordinary writes/binds still enforcing types and no added heap owner. Source6/state299 and independent instance rebind/throw2 at73d6 are recorded in weak-string-parameters-review.json. Module218 converts positional/named Stringable variadics and genuine constructor-free defaults in receive order, with declaring method self/parent, captured cells and no default backing authority. Source cutoffs and336 meaningful states remain separate in variadic-default-string-review.json. Internal default constructor dispatch, rebound anonymous keyword NEW, dynamic hole provenance and broader constrained conversion remain required; paused typed-return verification is untouched. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults and rebound anonymous keyword NEW remain required; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Module276 adds bounded undefined/null/false W/RW initialization and array-reference ingress, genuine callback/source owners and typed DIM_OP backing transport/clear; container-warning-review.json keeps30 unique/517 and current851 separate. Wider producers remain required."
+      "review": "Public/protected/private reference cells carry ordered non-owning typed sources keyed by object and physical slot. Unconstrained binding coerces before detaching the old source; constrained binding is atomic, reports FIRST-source conflicts and preserves conversion effects. Self-rebinding removes/adds the source. By-reference parameter/return no-coercion rules remain separate. Nullsafe sends, overflow and clone aliases retain their reviewed bounds; readonly/hooks/magic remain open. Historical property-references-review.json and current property-visibility-review.json record separate evidence. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and broader asymmetric set consumers remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json). Supplied weak Stringable string parameters214 preserve caller strictness, nominal/callable priority, captured free-BYREF cells and original throws; existing property constraints reject before callbacks. Earlier214 author11 plus one historical Unsupported/state178/independent2/current source2-state46 remain distinct. Parameter authority216 now permits only the exact captured backing string after callback source mutation, with ordinary writes/binds still enforcing types and no added heap owner. Source6/state299 and independent instance rebind/throw2 at73d6 are recorded in weak-string-parameters-review.json. Module218 converts positional/named Stringable variadics and genuine constructor-free defaults in receive order, with declaring method self/parent, captured cells and no default backing authority. Source cutoffs and336 meaningful states remain separate in variadic-default-string-review.json. Internal default constructor dispatch, rebound anonymous keyword NEW, dynamic hole provenance and broader constrained conversion remain required; paused typed-return verification is untouched. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults and rebound anonymous keyword NEW remain required; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Module276 adds bounded undefined/null/false W/RW initialization and array-reference ingress, genuine callback/source owners and typed DIM_OP backing transport/clear; container-warning-review.json keeps30 unique/517 and current851 separate. Wider producers remain required. Module288 covers backed typed asymmetric instance permissions, direct/compound/reference/dimension/unset priority, raw-object interior and object-foreach exceptions. Staged Stringable concat authenticates the initial CV address and each conversion consumer, preserving captured destinations and saved writer scope. Private34 normal/8 compiler/350 reached checks retain distinct cuts. Readonly/hooks, static Stringable compounds, writable append receivers and sole borrowed destination destruction remain required."
     },
     {
       "id": "declarations.constants",

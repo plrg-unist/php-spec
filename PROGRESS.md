@@ -7,6 +7,58 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Readonly clone-with updates305 now open an independent second window, preserve
+the saved setter scope and ordered weak writes, and unwind alias/conversion
+failures while retaining committed prefixes. Received values keep positive
+physical write revisions, so a previously admitted Fiber write may later replace
+a live slot. Genuine opcode/fixed clone makers cache durable source/site/scope
+authority without extending heap lifetime. The earlier12 normal/468 unique
+conditions remain accepted; later3 alias originals, parked-prior-write1 and two
+retired/manual maker originals pass separately. New strict-SL77/151/81/50 reached
+controls and production SL277/application0 pass. The
+[contract](docs/semantics/READONLY-CLONE-UPDATES.md) and
+[ledger](coverage/semantics/readonly-clone-updates-review.json) retain failures and
+exact cuts. The native-only direct shutdown companion awaits its model gate.
+Dynamic/FCC maker sites, destination-release13, Generator callbacks,
+Deprecated dispatch, promotion/hooks/enums and wider lifecycle remain required;
+Git integration is pending.
+
+Genuine clone lifecycle300 now checks access before allocation and runs the
+selected callback with declaring/called scope. Per-object readonly allowances
+survive Fiber parking, successful writes consume them, failed conversions retain
+them, and return/throw/exit relock unused slots. Borrowed CV originals may retire;
+temporary inputs and genuine intrinsic argument buffers retain their real owners.
+On the private ordinary294 base, 20 normals, five declaration errors, one explicit
+exit and 264 reached conditions pass; SL276/application0 passes. The
+[ledger](coverage/semantics/readonly-clone-review.json) preserves original failures
+and the corrected parser/fixture boundaries. Git integration remains pending.
+The later305 cut supplies the separate nonempty update window. Destination-release13, implicit
+Generator clone creation, force-close/hooks and broader lifecycle behavior remain
+required.
+
+Backed readonly lifecycle294 now preserves first-initialization scope, initialized
+write/type priority, unset, direct/nested updates and readonly class/trait identity.
+Raw object source references detach; target reference binding fails without changing
+the slot. Genuine first Stringable conversion retains its admitted destination
+through inner initialization, same-site recursion and Fiber suspension. On the
+private a939 base, 39 ordinary normals, 18 declaration controls, separate Fiber1 and
+243 reached conditions pass; production SL275/application0 passes. The
+[ledger](coverage/semantics/readonly-lifecycle-review.json) preserves original
+failures and supersedes only288's raw-object target-reference expectation.
+The new clone callback cut is separate from these ordinary gates. Destination
+release, Deprecated dispatch, promotion/hooks and wider
+conversions remain required; Git integration is pending.
+
+Backed asymmetric instance setters288 now preserve lexical permission, called
+diagnostics and direct/indirect/reference/unset ordering. Stringable compound
+callbacks retain captured destinations, own consumers and the saved writer scope.
+Private34 normal/8 compiler/350 reached checks keep their distinct cuts; one
+actual38f1/Fiber281 source at a939 agrees after suspension and target retirement,
+and production SL274 stages/init passes. The
+[ledger](coverage/semantics/instance-set-access-review.json) preserves original
+failures and the no-owner native Fiber frontier. Readonly follow-ons/hooks/magic, static
+Stringable compounds and wider borrowed destination lifetime remain required.
+
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace
 the operand. Borrowed variables gain no temporary owner; captured arrays survive
@@ -1008,6 +1060,7 @@ The installed families compose as follows; each ledger records its scope and lim
 | Typed static properties197 | Weak simple Stringable assignment rechecks live aliases and retains paired callback owners. Current Restore/ARG/INI composition preserves full property bytes, caller arguments and normal/throw cleanup. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json). |
 | Weak string parameters214/216/218 | Fixed and positional/named variadic receives preserve caller strictness, nominal/callable precedence and captured cells; existing constraints reject before callbacks. Newly attached sources permit only the parameter-authorized backing value. Constructor-free defaults use genuine scratch cells, declaring method scope and fresh objects. Source6/state299/independent2 and variadic/default6+6/focused4/independent3/state336 retain separate cutoffs. [Parameter ledger](coverage/semantics/weak-string-parameters-review.json), [variadic/default ledger](coverage/semantics/variadic-default-string-review.json). |
 | Static setters200/201 | Backed final/asymmetric declarations normalize equivalent setters and preserve inheritance/error priority; direct and indirect consumers retain lexical access, live raw-slot checks and typed aliases. [Setter ledger](coverage/semantics/static-setter-access-review.json). |
+| Instance setters288 | Backed typed setters preserve lexical/prototype permission, called diagnostics, reference/indirect/unset priority and raw-object exceptions. Staged Stringable compound callbacks retain exact destination/consumer and saved writer scope. Private34 normal/8 compiler/350 reached premises retain distinct cuts; actual Fiber source1 and SL274 pass at a939. Static Stringable, writable append receivers and sole borrowed destination retirement remain open. [Instance ledger](coverage/semantics/instance-set-access-review.json). |
 | StaticCall reference acquisition141/142 | Getters with untyped return signatures retain scoped selection, typed and legal untyped static aliases and returned-cell cleanup. Typed REF flags preserve initialization/error priority even when discarded. Direct reference sends retain the real cell; ignored untyped getters leave raw values unchanged. Ownership/type-source and getter/borrowed-read checks keep their distinct revisions. [Reference ledger](coverage/semantics/static-method-reference-review.json). |
 | Argument introspection198/199 | Ordinary current and saved frames retain genuine named/unpacked argument views through invocation and callbacks. [Argument ledger](coverage/semantics/argument-introspection-calls-current-review.json). |
 | Object invocation and callable typing | Effective nonstatic `__invoke` lookup includes private/protected methods, retaining declaring owner, called class and receiver across argument effects and clone. Explicit access remains lexical. Callable-before-string parameters preserve dual-role objects; shared ordinary by-value return classification adds no fresh return agreement. [Publication](coverage/semantics/invoke-publication-current-review.json), [earlier invocation](coverage/semantics/source-invoke-current-review.json), [parameter reception](coverage/semantics/callable-string-current-review.json). |
@@ -1060,8 +1113,8 @@ failures and interrupted evidence.
   classification does not close them. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
 - Objects and lifetime: remaining static members, effectful trait data composition,
-  enums, hooks, readonly/instance asymmetric
-  access, traversal, output handlers and lifecycle callbacks. Static cells remain
+  enums, hooks, readonly and wider instance setter consumers,
+  traversal, output handlers and lifecycle callbacks. Static cells remain
   partial across wider producers, bind/clone, include/eval reactivation
   and GC. [Method](docs/semantics/SOURCE-METHODS.md),
   [static-property](docs/semantics/SOURCE-CLASS-STATICS.md) contracts.

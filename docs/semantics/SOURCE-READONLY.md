@@ -42,8 +42,8 @@ is superseded by the new native distinction and focused31 conditions.
 allowances through normal, throw, exit and Fiber lifetimes. Their separate300
 cut passes 20 normals, five declaration errors, one explicit exit and 264 reached
 conditions. Ordinary shallow clones without a callback keep initialized slots
-locked. Nonempty clone-with updates still require their independent second
-window; five native originals remain unrun in the model.
+locked. [Nonempty clone-with updates](READONLY-CLONE-UPDATES.md) now use their
+independent second window and retain committed prefix values through failures.
 Last-owner CV release, retained temporary receivers and conversion-throw priority
 have thirteen native-only controls, including borrowed nested receivers,
 real temporary RHS owners and an unreachable owning cycle.

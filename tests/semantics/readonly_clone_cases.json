@@ -240,6 +240,24 @@
       "expected_model_status": "explicit_exit",
       "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public public(set) readonly int $y;\n    public function __construct() { $this->x = 1; $this->y = 10; }\n    public function __clone() {\n        $GLOBALS['escaped'] = $this; echo 'C|'; exit('bye|');\n    }\n}\nregister_shutdown_function(function () {\n    try { $GLOBALS['escaped']->y = 11; } catch (Error $e) { echo $e->getMessage(), '|'; }\n    echo $GLOBALS['escaped']->x, '/', $GLOBALS['escaped']->y;\n});\n$original = new Owner(); $copy = clone $original; echo 'after';\n",
       "kind": "exit"
+    },
+    {
+      "id": "readonly-clone-created-fiber-outlives-both-objects",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\n$original = new Owner();\n$copy = clone $original;\nunset($copy, $original);\n$fiber->start();\necho 'done';\n",
+      "source_sha256": "c7df52e9dda173738854e583aab1e88ddee61ddb9a612a171c29384a3b43d1d1",
+      "kind": "normal",
+      "expected_stdout": "private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-manual-and-genuine-clone-producer-fibers",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\n$original = new Owner();\n$original->__clone();\n$manual = $fiber;\n$copy = clone $original;\nunset($copy, $original);\n$manual->start();\n$fiber->start();\necho 'done';\n",
+      "source_sha256": "4caa7c62b0b91280bb3ace1358f38d67e9e72466227299721ee384a8b954b411",
+      "kind": "normal",
+      "expected_stdout": "private|private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0
     }
   ]
 }

@@ -57,9 +57,10 @@ Protected/private properties reuse the lexical resolver and mangled slot keys de
 in [SOURCE-PROPERTY-VISIBILITY.md](SOURCE-PROPERTY-VISIBILITY.md).
 
 This is a bounded implementation for admitted ordinary objects and closures.
-Nonempty readonly `clone(..., withProperties)` updates require a separate second
-window and remain Unsupported; an empty update array uses only the callback
-window. Generator `__clone` creation/discard, property hooks, lazy objects,
+Nonempty readonly `clone(..., withProperties)` updates now use a separate second
+window with [captured conversions and write revisions](READONLY-CLONE-UPDATES.md);
+an empty update array uses only the callback window. Generator `__clone`
+creation/discard, property hooks, lazy objects,
 destructors, uncloneable internal objects, Traversable argument unpacking and
 wider lifecycle integration remain required. The two retired callback/readonly
 negative rows keep their historical results; hook/destructor controls remain.
@@ -70,6 +71,9 @@ normal originals, five declaration errors and one explicit-exit shutdown case.
 conditions across windows, three input-owner shapes and a parked Fiber.
 [The callback ledger](../../coverage/semantics/readonly-clone-review.json)
 keeps these cuts separate from ordinary294 and records SL276/application0.
+Later cached-producer controls in the
+[update ledger](../../coverage/semantics/readonly-clone-updates-review.json)
+cover parked writes and maker retirement without renewing that callback cut.
 
 Matching engine sources: `zend_compile_func_clone` and `zend_compile_clone` in
 `vendor/php-src/Zend/zend_compile.c`; `ZEND_CLONE` in `Zend/zend_vm_def.h`;
