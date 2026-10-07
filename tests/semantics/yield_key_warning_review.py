@@ -71,6 +71,16 @@ function parent321($child){try{yield from $child;echo "A|";}catch(Exception $cau
 set_error_handler("warn");$child=leaf321();$generator=parent321($child);echo "C|",$generator->current(),":",(int)$child->valid(),"|";
 unset($child);$generator->next();echo $generator->getReturn(),"Z";
 ''', b'C|W4|I1:1|12:1|L|A|F|9Z', 0),
+    'key-warning-direct-child-api-with-parked-parent': (
+        b'''<?php
+$error=new Exception("key");
+function warn($n,$m,$f,$l){echo "W",$l,"|";throw $GLOBALS["error"];}
+function leaf321(){try{yield 1;yield $missingKey=>6;}catch(Exception $caught){echo "I|";yield 12;}finally{echo "L|";}}
+function parent321($child){try{yield from $child;}catch(Throwable $caught){echo "P|";yield 5;}finally{echo "F|";}return 9;}
+set_error_handler("warn");$child=leaf321();$generator=parent321($child);echo "C|",$generator->current(),"|";
+try{$child->next();echo "X";}catch(Exception $caught){echo "O",(int)($caught===$error),"|";}echo (int)$child->valid(),"|";
+echo $generator->current(),"|";$generator->next();echo $generator->getReturn(),"Z";
+''', b'C|1|W4|O1|0|P|5|F|9Z', 0),
     'key-warning-reentrant-cache-read-and-resume-refusal': (
         b'''<?php
 function warn($n,$m,$f,$l){echo "W",$l,"|";echo $GLOBALS["generator"]->current(),":",(int)($GLOBALS["generator"]->key()===null),":",(int)$GLOBALS["generator"]->valid(),"|";try{$GLOBALS["generator"]->next();echo "X";}catch(Error $caught){echo "N|";}return true;}
