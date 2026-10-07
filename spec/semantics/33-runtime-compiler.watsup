@@ -1,4 +1,5 @@
 dec $compiled_argument(ppstate, pcpath) : pcodeexpr*
+dec $compiled_argument_access(pcpath, ppmode?) : pcodeexpr*
 dec $compiled_precision(pstate, porigin?) : int?
 ;; Ordered compilation is completed before any recorded work executes. Only
 ;; compact operand metadata is retained: compiler MEMORY is not runtime state.
@@ -249,7 +250,8 @@ dec $compiled_gotos(ppgotoref*, ppgotolabel*) : pcodeexpr*
 def $compiled_operands(P, eps) = eps
 def $compiled_operands(P, (PPCPRECISION pcpath z) :: ppexprdone*) = $compiled_operands(P, ppexprdone*)
 def $compiled_operands(P, (PPCEFFECT pcpath) :: ppexprdone*) = (CODEEFFECT pcpath) :: $compiled_operands(P, ppexprdone*)
-def $compiled_operands(P, (PPCEXPR pcpath n pvalue?) :: ppexprdone*) = $compiled_argument(P, pcpath) ++ [(CODEEXPR pcpath n ($ppaccess(P, pcpath) = (PPR) /\ pvalue? =/= eps))] ++ $compiled_operands(P, ppexprdone*)
+def $compiled_operands(P, (PPCEXPR pcpath n pvalue?) :: ppexprdone*) = $compiled_argument_access(pcpath, ppmode?) ++ [(CODEEXPR pcpath n (ppmode? = (PPR) /\ pvalue? =/= eps))] ++ $compiled_operands(P, ppexprdone*)
+  -- if ppmode? = $ppaccess(P, pcpath)
 dec $compiled_names((pcpath, pnreference)*) : pcodename*
 def $compiled_names(eps) = eps
 def $compiled_names((pcpath, pnreference) :: (pcpath_tail, pnreference_tail)*) = (CODENAME pcpath pnreference.RESOLVED pnreference.FALLBACK) :: $compiled_names((pcpath_tail, pnreference_tail)*)
@@ -314,6 +316,7 @@ def $compile_source_ready(S, P) = $declaration_compile_preflight(S, P, $declarat
 
 ;; Deferred fetch descriptors follow actual ordinary compiler access, including
 ;; variable/dimension ancestors. Name and key expressions retain read access.
-def $compiled_argument(P, pcpath) = [CODEARG pcpath]
-  -- if $ppaccess(P, pcpath) = (PPF)
-def $compiled_argument(P, pcpath) = eps -- otherwise
+def $compiled_argument(P, pcpath) = $compiled_argument_access(pcpath, $ppaccess(P, pcpath))
+def $compiled_argument_access(pcpath, ppmode?) = [CODEARG pcpath]
+  -- if ppmode? = (PPF)
+def $compiled_argument_access(pcpath, ppmode?) = eps -- otherwise
