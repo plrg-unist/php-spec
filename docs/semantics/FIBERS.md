@@ -194,14 +194,24 @@ retain zero credit. `fiber_ordinary_state.py` and `fiber_ordinary_review.py`
 maintain the authored and independent groups. Semantic review accepts this cut;
 its source is integrated without renewing the earlier evidence.
 
+Actual 270/296 composition at 279 modules passes strict-SL initialization, one exact
+destructor/helper source comparison and a 58-premise default-AL state. The state
+moves all five destructor lists, preserves the real owners and rejects a missing
+parked producer before bounded resumption. Reports `fiber-accepted-composed-sl-unyelm2e`,
+`shutdown-review-yddaops0` and `shutdown-state-review-galnzk9s` are under
+`.tools/calls-fiber-integrate-17/.tools`. The initial missing runtime-link stop
+and stale-helper elaboration failure remain zero credit; only that fixture
+observation changed to the original explicit five-list predicate.
+
 ## Protected returned results
 
 Module 308 preserves an earlier real exception when force-close interrupts a
 captured destructor after the callback returned, including a defined null. The
 private control's dynamic `previous` slot owns that real child. A nonowning pair
 records the genuine write and matches the active finish certificate or its
-authentic retiring operation; replacing the child with another older live Throwable
-does not authenticate it. The receipt adds no owner and can remain after the
+authentic retiring operation. With the captured producer payload unchanged,
+replacing the property child with another older live Throwable is rejected;
+changing only the receipt cannot authenticate the unchanged property. The receipt adds no owner and can remain after the
 control and child retire.
 
 The source-less deprecation uses the restored Fiber reporting mask and line 0.
@@ -231,8 +241,20 @@ pass separately in `fiber-state-review-gsjgh1fs` and `fiber-state-review-h8npgal
 (54 and 61 conditions). The malformed previous-child failure
 `fiber-state-review-y4jx1snr`, local/global fixture failures and missing-catalogue
 harness stop retain zero credit. Semantic review accepts this bounded 277 module cut.
-The structurally reviewed transfer 4d7875dd1 to the current parent remains unexecuted;
-canonical integration is pending.
+The 280-module composition over integrated 291/302 parent `9dd9ca8b3` passes
+strict-SL initialization, the exact defined-result original and two reached
+strict-SL groups/113 premises: previous-child/receipt rejection 36 and ordered
+control/child retirement 77. Reports `fiber-protected-composed-sl-8lnv1fpq`,
+`fiber-review-2d4l4tb7`, `fiber-state-review-1lf_0ogs` and
+`fiber-state-review-9zmisdrn` are under `.tools/calls-fiber-protected-16/.tools`.
+This separate cut does not renew or add distinct originals to the 277 counts.
+Integration onto the final composed parent remains pending.
+
+Admission checks producer and heap consistency, not reachability from the entire
+prior execution. The 32-condition diagnostic `fiber-state-review-50bdeosz` changes
+the authoritative captured-old payload and its property projection together,
+retaining the control identity, closer and terminal role. That alternative state
+is structurally admitted; the diagnostic earns zero acceptance credit.
 
 ## Required follow-ons
 

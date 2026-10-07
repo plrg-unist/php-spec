@@ -68,7 +68,7 @@ Fatal shutdown callbacks stop the remaining queue rather than restart it.
 Fiber291/302 move automatic-destruction calls, slot releases, frame cleanup,
 interrupted operations and handler cleanup with each genuine VM stack. Shared
 abandoned owners, handles and property caches remain shared. Ordinary captured
-cleanup can suspend and resume. Private module 308 adds protected real-exception cleanup
+cleanup can suspend and resume. Module 308 adds protected real-exception cleanup
 after an actual return; the body-undefined protocol, request/fatal cleanup and
 wider consumers remain required. [The Fiber contract](FIBERS.md) records the
 bounded cuts.

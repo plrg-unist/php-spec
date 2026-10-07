@@ -72,14 +72,17 @@ credit in the existing ledger. Parked running Generators, switching
 finalizers, request/terminal cleanup, GC and general user destructors remain open.
 [Scope and retained evidence](docs/semantics/GENERATOR-FIBER-CLOSE.md).
 
-Independently reviewed private module 308 extends force-close of captured cleanup
+Reviewed module 308 extends force-close of captured cleanup
 after an actual callback return: private previous ownership, source-less deprecation, restored reporting
-and shared handler registration. A nonowning protected pair rejects an older
-unrelated Throwable substituted as the child. The fixed 277 module cut passes AL,
+and shared handler registration. With its captured producer payload unchanged,
+a nonowning protected pair rejects another older Throwable substituted as the child. The fixed 277 module cut passes AL,
 fourteen distinct normal source comparisons and two precise Unsupported controls
 with zero agreement. Three authored groups/227 conditions and eleven independent
 groups/860 conditions pass, along with two affected existing schema groups.
-Private transfer 4d7875dd1 has 280 modules and is structurally reviewed but unexecuted.
+Composition over the integrated 291/302 parent `9dd9ca8b3` passes strict-SL 280
+initialization, one exact defined-result original and two reached strict-SL
+groups/113 premises. The final-parent integration remains pending; earlier cuts
+retain their own evidence.
 The original verbose-source timeout and ordinary dynamic-property warning gap
 remain required; undefined-result engine verification remains held.
 
@@ -93,8 +96,8 @@ owners. Author62 and independent60 exact sources, nineteen reached cases/1,012
 assertions and the separate fatal/actual-parent cuts retain their recorded inputs
 in the [ledger](coverage/semantics/eager-destructors-review.json). The actual Array
 warning/cleanup original now agrees and rejects a forged source-marker suffix.
-The [contract](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md) keeps active destructor
-Fiber transfer, compound Stringable reception, GC, wider weak protocols, output buffers
+The [contract](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md) keeps compound
+Stringable reception, GC, wider weak protocols, output buffers
 and later freeing open. Actual 292/304 composition passes strict-SL initialization
 and one new exact returned-object lifetime source at276, with stable inputs;
 earlier cuts gain no renewed execution credit. The separately reviewed shared
@@ -200,7 +203,10 @@ Fiber291 now force-closes ordinary suspended callbacks through an unregistered
 control: catches skip it, finally blocks run, and replacement exceptions return
 through the genuine operation or parent finish. Captured destructor retirement
 keeps its real empty internal root and ordered ownership. Five destruction
-control lists move with the VM. Twenty-nine normal close comparisons and
+control lists move with the VM. Actual 270/296 composition at 279 modules
+passes strict-SL initialization, one exact destructor/helper source comparison
+and a 58-premise default-AL state for parked lists, ownership and resumption.
+Twenty-nine normal close comparisons and
 fourteen reached states/1,037 conditions retain their private cuts; request-scan
 and ordinary-library controls earn zero agreement.
 
@@ -209,8 +215,8 @@ its definedness separate from a thrown body exception. Captured destructors may
 suspend, resume and receive public throws; stored results survive replacement
 errors even when `getReturn` rejects the failed Fiber. Fifteen targeted normal
 comparisons and twelve state groups/871 conditions retain their private cuts.
-Protected real-exception force-close remains Unsupported at this accepted cut;
-its undefined-result engine witness is held. The required internal/reference
+Module 308 adds protected cleanup after an actual return; the body-undefined
+case remains Unsupported and its engine witness is held. The required internal/reference
 callbacks, API entry, unpacking, initializer switching, request/fatal cleanup and
 GC remain open. Full core stays open; returns verification remains paused.
 
