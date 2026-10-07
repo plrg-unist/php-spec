@@ -7,9 +7,9 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-The private property/clone composition uses fixed current parent577c2b2de
-and289 modules, retaining the canonical285 source, Generator, Fiber and
-destruction fields. Its new compiler/interaction gates are not yet run;
+The private property/clone composition uses fixed current parentc54cc0ff8
+and290 modules, retaining the canonical286 source, Generator, Fiber and
+destruction fields, including source-emission314. Its new compiler/interaction gates are not yet run;
 accepted private cuts below retain their original inputs.
 
 The canonical source includes accepted ArrayAccess292/304, eager destruction270,

@@ -1,0 +1,48 @@
+;; Nested code installs the first emitted opcode before retiring its include
+;; operand. An ordinary CV emits no fetch; a literal instance property then
+;; emits FETCH_OBJ_R at the property-name line. A no-argument named user call
+;; emits INIT before that property fetch. Authored CODEEXPR/CODENAME records
+;; certify these distinct occurrences; other producers keep the old fallback.
+dec $source_emission_cv(pstate, nat, pcpath, expression) : bool
+def $source_emission_cv(S, n, pcpath, NExprVariable (BYTES text) metadata) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable (BYTES text) metadata)
+  -- if $cv_source_name(S[.ORIGIN = (PORIGIN n pcpath)], BYTES text) = (ptbytes)
+  -- if ptbytes =/= $ptascii("this") /\ ptbytes =/= $ptascii("http_response_header")
+  -- if ~$psautoglobal(ptbytes)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_cv(S, n, pcpath, expression) = false -- otherwise
+
+dec $source_echo_emission_origin(pstate, nat, pcpath, expression) : porigin?
+def $source_echo_emission_origin(S, n, pcpath, expression) = (PORIGIN n pcpath)
+  -- if $source_emission_cv(S, n, pcpath, expression)
+def $source_echo_emission_origin(S, n, pcpath, NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata) = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], expression_receiver)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_echo_emission_origin(S, n, pcpath, NExprPropertyFetch (NExprFuncCall name (SEQUENCE eps) metadata_call) (NIdentifier (BYTES text_property) metadata_property) metadata) = (PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch (NExprFuncCall name (SEQUENCE eps) metadata_call) (NIdentifier (BYTES text_property) metadata_property) metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes_name, eps))
+  -- if ~$pfunction_builtin(ptbytes_name)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_call, false))
+  -- if $(z_call > 0)
+  -- if z_call = $source_line(metadata_call)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_property, false))
+  -- if $(z_property > 0)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_echo_emission_origin(S, n, pcpath, expression) = eps -- otherwise
+
+;; This branch is disjoint from298's constant ECHO operand selection. The
+;; existing entry hook still authenticates completed compilation, the source
+;; image and the genuine SOURCE_OPERAND_ENTER suffix before using the origin.
+def $source_first_work_origin(S, n, (PPCWORK pcpath (NStmtEcho (SEQUENCE expression*) metadata) plenv n_line) :: ppwork*) = (porigin)
+  -- if expression* = expression_head :: expression_tail*
+  -- if pcpath_head = pcpath ++ [PCFIELD 0, PCINDEX 0]
+  -- if $compiled_read(S, PORIGIN n pcpath_head) = eps
+  -- if $source_echo_emission_origin(S, n, pcpath_head, expression_head) = (porigin)
