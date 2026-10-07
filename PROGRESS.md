@@ -9,8 +9,9 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 The private property/clone composition uses fixed current parentc54cc0ff8
 and290 modules, retaining the canonical286 source, Generator, Fiber and
-destruction fields, including source-emission314. Its new compiler/interaction gates are not yet run;
-accepted private cuts below retain their original inputs.
+destruction fields, including source-emission314. Its strict SL290/compiler application0 gate passes
+at f6b2cad34; two corrected native originals match, while model/reached gates
+remain unrun. Earlier private cuts below retain their original inputs.
 
 The canonical source includes accepted ArrayAccess292/304, eager destruction270,
 WeakReference296, Fiber291/302/308, Generator289/303/310 and source operands293/298,

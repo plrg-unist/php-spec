@@ -204,8 +204,8 @@
     {
       "id": "readonly-clone-produced-private-fiber-closes-generator-after-maker-retirement",
       "kind": "normal",
-      "source": "<?php\nfunction paused() {\n    try { yield 2; }\n    finally { echo 'close', (int)(Fiber::getCurrent() === $GLOBALS['fiber']), '|'; }\n}\nclass Owner {\n    public readonly string $x;\n    public function __construct() { $this->x = 'seed'; }\n    private static function tag() {\n        echo 'body|';\n        $g = paused();\n        echo $g->current(), '|';\n        unset($g);\n        echo 'after|';\n        return 7;\n    }\n    public function __clone() { $GLOBALS['fiber'] = new Fiber(self::tag(...)); }\n}\n$original = new Owner();\n$cloner = clone(...);\n$copy = $cloner($original, ['x' => 'late']);\necho $original->x, '/', $copy->x, '|';\nunset($original, $copy, $cloner);\n$GLOBALS['fiber']->start();\necho $GLOBALS['fiber']->getReturn(), '|done';\n",
-      "source_sha256": "499778b8844317305548063e57d468039e1cd09dfa6595f9e59b852d102173d8",
+      "source": "<?php\nfunction paused() {\n    try { yield 2; }\n    finally { echo 'close', (int)(Fiber::getCurrent() === $GLOBALS['fiber']), '|'; }\n}\nclass Owner {\n    public public(set) readonly string $x;\n    public function __construct() { $this->x = 'seed'; }\n    private static function tag() {\n        echo 'body|';\n        $g = paused();\n        echo $g->current(), '|';\n        unset($g);\n        echo 'after|';\n        return 7;\n    }\n    public function __clone() { $GLOBALS['fiber'] = new Fiber(self::tag(...)); }\n}\n$original = new Owner();\n$cloner = clone(...);\n$copy = $cloner($original, ['x' => 'late']);\necho $original->x, '/', $copy->x, '|';\nunset($original, $copy, $cloner);\n$GLOBALS['fiber']->start();\necho $GLOBALS['fiber']->getReturn(), '|done';\n",
+      "source_sha256": "1469f46faaeff142c32685fd9c9481f989d20ec85e2a3e2946063eeaef3be949",
       "expected_stdout": "seed/late|body|2|close1|after|7|done",
       "expected_stderr": "",
       "expected_exit_status": 0,
@@ -215,8 +215,8 @@
     {
       "id": "readonly-live-clone-window-survives-fiber-close-caller-parking",
       "kind": "normal",
-      "source": "<?php\nclass Owner {\n    public readonly string $x;\n    public function __construct() { $this->x = 'seed'; }\n    public function __clone() {\n        $fiber = new Fiber(static function () {\n            try { Fiber::suspend(); }\n            finally { echo 'close|'; }\n        });\n        $fiber->start();\n        unset($fiber);\n        $this->x = 'first';\n    }\n}\n$original = new Owner();\n$copy = clone($original, ['x' => 'late']);\necho $original->x, '/', $copy->x, '|done';\n",
-      "source_sha256": "c54dcc835c175b1783fd004ba6aa4486e176119e4323867a410a03215666849b",
+      "source": "<?php\nclass Owner {\n    public public(set) readonly string $x;\n    public function __construct() { $this->x = 'seed'; }\n    public function __clone() {\n        $fiber = new Fiber(static function () {\n            try { Fiber::suspend(); }\n            finally { echo 'close|'; }\n        });\n        $fiber->start();\n        unset($fiber);\n        $this->x = 'first';\n    }\n}\n$original = new Owner();\n$copy = clone($original, ['x' => 'late']);\necho $original->x, '/', $copy->x, '|done';\n",
+      "source_sha256": "c20c080c30853019f7e049b0aac19f5e6d605a721bc24fdda9783b01e9acdfde",
       "expected_stdout": "close|seed/late|done",
       "expected_stderr": "",
       "expected_exit_status": 0,
