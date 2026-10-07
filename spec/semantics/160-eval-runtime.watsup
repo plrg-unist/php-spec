@@ -368,8 +368,11 @@ dec $eval_trace_frame(pstate, pevalcontext) : ptraceframe
 def $eval_trace_frame(S, pevalcontext) = {FILE $call_sourcefile(S.FILES, pevalcontext.SITE), LINE $eval_site_line(S, pevalcontext.SITE), FUNCTION $ptascii("eval"), CLASS eps, TYPE eps, ARGS eps, HASARGS false}
 dec $file_trace_frame(pstate, pfilecontext) : ptraceframe
 dec $file_trace_frame_before(pstate, pfilecontext, preqbytes?) : ptraceframe
+dec $source_operand_fast_trace(pstate, pfilecontext) : bool
+def $source_operand_fast_trace(S, pfilecontext) = false -- otherwise
 def $file_trace_frame_before(S, pfilecontext, preqbytes?) = $file_trace_frame(S, pfilecontext)
   -- if ~$iterator_notice_file_flushing(S, pfilecontext)
+  -- if ~$source_operand_fast_trace(S, pfilecontext)
 dec $source_trace_file(ptraceframe*, preqbytes?) : preqbytes?
 def $source_trace_file(eps, preqbytes?) = preqbytes?
 def $source_trace_file(ptraceframe :: ptraceframe_tail*, preqbytes?) = $source_trace_file(ptraceframe_tail*, (ptraceframe.FILE))

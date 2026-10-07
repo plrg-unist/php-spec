@@ -155,7 +155,9 @@ def $source_operand_enter_valid(S, psourceoperand, n) = true
   -- if $source_operand_suffix(S.TODO, SOURCE_OPERAND_ENTER psourceoperand n, ptask_body*)
 def $source_operand_enter_valid(S, psourceoperand, n) = false -- otherwise
 def $call_task_valid(S, SOURCE_OPERAND_ENTER psourceoperand n) = $source_operand_enter_valid(S, psourceoperand, n)
-rule PhpStep/source-operand-enter: S ~> S[.TODO = ptask_tail*]
+dec $source_operand_entry_origin(pstate, psourceoperand, nat) : porigin?
+def $source_operand_entry_origin(S, psourceoperand, n) = S.ORIGIN -- otherwise
+rule PhpStep/source-operand-enter: S ~> S[.TODO = ptask_tail*][.ORIGIN = $source_operand_entry_origin(S, psourceoperand, n)]
   -- if S.TODO = (SOURCE_OPERAND_ENTER psourceoperand n) :: ptask_tail*
   -- if $call_task_valid(S, SOURCE_OPERAND_ENTER psourceoperand n)
 

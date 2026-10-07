@@ -322,7 +322,9 @@ def $destructor_operation_finish(S, pdestructionoperation) = $destructor_pending
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
   -- if pdestructionoperation.PENDING = (n)
 def $destructor_pending_finish(S, pdestructionoperation, n, ptask_tail*) = S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL] -- otherwise
-def $call_after_origin(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*]
+dec $eager_operation_validation_value(pstate, pdestructionoperation) : poperand
+def $eager_operation_validation_value(S, pdestructionoperation) = S.RESULT -- otherwise
+def $call_after_origin(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*][.RESULT = $eager_operation_validation_value(S, pdestructionoperation)]
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
 def $return_discard(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*]
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
@@ -513,6 +515,8 @@ def $eager_operation_cleanup_source(EXCEPTION_HANDLER_CLEAN pexceptioncall b, pd
 def $eager_operation_cleanup_source(ERROR_HANDLER_RESULT perrorcall, pdestructioncleanup) = (pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall /\ ~pdestructioncleanup.RELEASED)
 def $eager_operation_cleanup_source(ERROR_HANDLER_CLEAN perrorcall, pdestructioncleanup) = (pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall /\ pdestructioncleanup.RELEASED)
 def $eager_operation_cleanup_source(ptask, pdestructioncleanup) = false -- otherwise
+dec $eager_operation_source_guard(pstate, pdestructionoperation) : bool
+def $eager_operation_source_guard(S, pdestructionoperation) = true -- otherwise
 def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if $eager_internal_source(pdestructionoperation.SOURCE)
   -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
@@ -523,6 +527,7 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
 def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if ~$eager_internal_source(pdestructionoperation.SOURCE) /\ ~$eager_explicit_task(pdestructionoperation.SOURCE)
   -- if pdestructionoperation.CLEANUP = eps
+  -- if $eager_operation_source_guard(S, pdestructionoperation)
 def $eager_operation_source_valid(S, pdestructionoperation) = false -- otherwise
 
 def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, $error_trigger_trace_values(S_history, pconfigcall))

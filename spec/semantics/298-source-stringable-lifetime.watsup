@@ -472,3 +472,115 @@ def $source_helper_pending_valid(S, psourcepending, psourcehelper) = (psourcepen
   -- if S_owner = $source_string_owner_scope(S, psourceoperand.OWNER)
 def $source_pending_record_valid(S, psourcepending) = $source_helper_pending_valid(S, psourcepending, psourcehelper)
   -- if psourcepending.HELPER = (psourcehelper)
+
+;; Ordinary nested code installs its first opcode before FREE_OP1. Skip only
+;; forms already proved to emit no runtime work; a compiled constant RETURN
+;; authenticates its operand occurrence and opcode line. Wider emission forms
+;; retain their existing entry until their compiler behavior is represented.
+dec $source_first_return_origin(pstate, nat, ppwork*) : porigin?
+def $source_first_return_origin(S, n, eps) = eps
+def $source_first_return_origin(S, n, (PPCWORK pcpath statement plenv n_line) :: ppwork*) = $source_first_return_origin(S, n, ppwork*)
+  -- if $source_fast_statement(S, n, pcpath, statement)
+def $source_first_return_origin(S, n, (PPCWORK pcpath (NStmtReturn expression metadata) plenv n_line) :: ppwork*) = (porigin)
+  -- if ~$source_fast_statement(S, n, pcpath, NStmtReturn expression metadata)
+  -- if porigin = PORIGIN n (pcpath ++ [PCFIELD 0])
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if $compiled_effects(S, porigin) = eps
+  -- if $source_fast_constant(pvalue)
+def $source_first_return_origin(S, n, ppwork*) = eps -- otherwise
+def $source_operand_entry_origin(S, psourceoperand, n) = (porigin)
+  -- if $source_operand_enter_valid(S, psourceoperand, n)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if P = $declaration_compiler_state($eval_source_ppstate(S, pcunit))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $compilation_image_valid(S, pcunit, P)
+  -- if (PDEXIT n PCSCOMPLETE) <- S.DECLARATIONS
+  -- if $source_first_return_origin(S, n, P.WORK) = (porigin)
+
+;; A fast file helper has not entered a nested code frame. Reuse its single
+;; live wrapper, but omit the filename argument while the actual operand
+;; destructor is active. The saved caller certifies the completed release.
+def $source_operand_fast_trace(S, pfilecontext) = true
+  -- if pfilecontext.UNIT = (n_unit)
+  -- if S_scope = $source_string_owner_scope(S, pfilecontext.OWNER)
+  -- if S_scope.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_rest*
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = SOURCE_OPERAND_FAST psourceoperand n_unit
+  -- if psourceoperand.OWNER = pfilecontext.OWNER
+  -- if pdestructionoperation.ORIGIN = (psourceoperand.SITE)
+  -- if pdestructionoperation.CALLER = S_scope.CURRENT
+  -- if pdestructionoperation.VALUE = KNOWN $source_fast_value(psourceoperand)
+  -- if $source_operand_file_context(S.FILECONTEXTS, n_unit) = (pfilecontext)
+  -- if $source_fast_context(S_scope, psourceoperand, n_unit)
+  -- if $source_operand_suffix(S_scope.TODO, SOURCE_FAST_FINISH psourceoperand n_unit, $source_fast_end(psourceoperand, n_unit) :: psourceoperand.TAIL)
+  -- if $destructor_call_live(S, pdestructorcall)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+def $file_trace_frame_before(S, pfilecontext, preqbytes?) = $file_trace_frame(S, pfilecontext)[.ARGS = eps][.HASARGS = false]
+  -- if ~$iterator_notice_file_flushing(S, pfilecontext)
+  -- if $source_operand_fast_trace(S, pfilecontext)
+
+;; NULL/fake helpers retire their provider context before the common FREE_OP1.
+;; Their real completed eager operation still supplies the keyword wrapper.
+def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S.FILES, psourceoperand.SITE), LINE psourceoperand.LINE, FUNCTION $source_operand_keyword(psourceoperand.KIND), CLASS eps, TYPE eps, ARGS eps, HASARGS false}]
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_rest*
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = SOURCE_HELPER_RELEASE psourceoperand psourcehelper
+  -- if pdestructionoperation.VALUE = KNOWN $source_helper_value(psourcehelper)
+  -- if pdestructionoperation.ORIGIN = (psourceoperand.SITE)
+  -- if S_scope = $source_string_owner_scope(S, psourceoperand.OWNER)
+  -- if S_scope.TODO = pframe.TODO
+  -- if S_scope.ORIGIN = pframe.ORIGIN
+  -- if S_scope.CURRENT = pframe.CONTEXT
+  -- if pframe.CONTEXT = pdestructionoperation.CALLER
+  -- if $source_helper_context(S_scope, psourceoperand, psourcehelper)
+  -- if $source_operand_suffix(S_scope.TODO, SOURCE_HELPER_FINISH psourceoperand psourcehelper, psourceoperand.TAIL)
+  -- if $destructor_context_valid(S, pcallcontext)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pcallcontext.CALLSITE = pdestructorcall.SITE
+  -- if pcallcontext.LINE = $destructor_line(pdestructorcall)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+
+;; A saved caller validates future tasks after the genuine operation exit.
+;; Restore only its authenticated copied source result in that borrowed view;
+;; the live destructor RESULT, operation queue and heap keep their real state.
+def $eager_operation_validation_value(S, pdestructionoperation) = pdestructionoperation.VALUE
+  -- if pdestructionoperation.SOURCE = SOURCE_OPERAND_FAST psourceoperand n
+  -- if pdestructionoperation.VALUE = KNOWN $source_fast_value(psourceoperand)
+  -- if pdestructionoperation.ORIGIN = (psourceoperand.SITE)
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if $source_fast_context(S, psourceoperand, n)
+  -- if $source_operand_suffix(S.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, (SOURCE_FAST_FINISH psourceoperand n) :: $source_fast_end(psourceoperand, n) :: psourceoperand.TAIL)
+def $eager_operation_validation_value(S, pdestructionoperation) = pdestructionoperation.VALUE
+  -- if pdestructionoperation.SOURCE = SOURCE_HELPER_RELEASE psourceoperand psourcehelper
+  -- if pdestructionoperation.VALUE = KNOWN $source_helper_value(psourcehelper)
+  -- if pdestructionoperation.ORIGIN = (psourceoperand.SITE)
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if $source_helper_context(S, psourceoperand, psourcehelper)
+  -- if $source_operand_suffix(S.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, (SOURCE_HELPER_FINISH psourceoperand psourcehelper) :: psourceoperand.TAIL)
+
+;; Authenticate source release snapshots before considering the live RESULT.
+;; A matching live scalar cannot certify a different captured result or tail.
+dec $source_release_operation_valid(pstate, pdestructionoperation) : bool
+def $source_release_operation_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = SOURCE_OPERAND_FAST psourceoperand n
+  -- if pdestructionoperation.VALUE = KNOWN $source_fast_value(psourceoperand)
+  -- if pdestructionoperation.COMPLETION = NORMAL
+  -- if S_owner = $source_string_owner_scope(S, psourceoperand.OWNER)
+  -- if pdestructionoperation.CALLER = S_owner.CURRENT
+  -- if pdestructionoperation.ORIGIN = (psourceoperand.SITE) /\ S_owner.ORIGIN = pdestructionoperation.ORIGIN /\ S_owner.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+  -- if $source_fast_context(S_owner, psourceoperand, n)
+  -- if $source_operand_suffix(S_owner.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, (SOURCE_FAST_FINISH psourceoperand n) :: $source_fast_end(psourceoperand, n) :: psourceoperand.TAIL)
+def $source_release_operation_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = SOURCE_HELPER_RELEASE psourceoperand psourcehelper
+  -- if pdestructionoperation.VALUE = KNOWN $source_helper_value(psourcehelper)
+  -- if pdestructionoperation.COMPLETION = NORMAL
+  -- if S_owner = $source_string_owner_scope(S, psourceoperand.OWNER)
+  -- if pdestructionoperation.CALLER = S_owner.CURRENT
+  -- if pdestructionoperation.ORIGIN = (psourceoperand.SITE) /\ S_owner.ORIGIN = pdestructionoperation.ORIGIN /\ S_owner.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+  -- if $source_helper_context(S_owner, psourceoperand, psourcehelper)
+  -- if $source_operand_suffix(S_owner.TODO, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, (SOURCE_HELPER_FINISH psourceoperand psourcehelper) :: psourceoperand.TAIL)
+def $source_release_operation_valid(S, pdestructionoperation) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = $source_release_operation_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = SOURCE_OPERAND_FAST psourceoperand n
+def $eager_operation_source_guard(S, pdestructionoperation) = $source_release_operation_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = SOURCE_HELPER_RELEASE psourceoperand psourcehelper
