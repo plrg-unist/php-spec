@@ -1,0 +1,236 @@
+;; zend_fiber_execute stores its result before retiring function_name. The
+;; internal root remains on the running Fiber and may suspend in a destructor.
+;; RETURNED records native result definedness independently of a later error.
+dec $fiber_ordinary_retire(pstate, nat, pvalue, nat?, bool) : pstate
+dec $fiber_ordinary_task(pfiberfinish, bool) : ptask
+dec $fiber_ordinary_tasks(ptask*, pfiberfinish, bool) : bool
+dec $fiber_ordinary_frames(pframe*, pfiberfinish, bool) : bool
+dec $fiber_ordinary_vm(pfibervm, pfiberfinish, bool) : bool
+dec $fiber_ordinary_callers(pfibercaller*, pfiberfinish, bool) : bool
+dec $fiber_ordinary_closers(pfiberclose*, pfiberfinish, bool) : bool
+dec $fiber_ordinary_carrier(pstate, pfiberfinish) : bool
+dec $fiber_ordinary_body_pending(pstate, pfiberfinish) : bool
+dec $fiber_ordinary_suspended(pstate, pfiber, pfiberfinish) : bool
+dec $fiber_ordinary_record(pstate, nat, pfiber) : bool
+dec $fiber_ordinary_ready(pstate) : bool
+dec $fiber_ordinary_step(pstate) : pstate
+dec $fiber_ordinary_finish(pstate, pfiberfinish) : pstate
+dec $fiber_ordinary_root(pstate) : bool
+dec $fiber_resequence_tasks(ptask*, pfiberfinish, pfiberfinish) : ptask*
+dec $fiber_resequence_frames(pframe*, pfiberfinish, pfiberfinish) : pframe*
+dec $fiber_ordinary_kind_valid(pstate, pfiberfinish, bool) : bool
+dec $fiber_protected_retired(pstate, pnode*, pnode*) : bool
+dec $fiber_protected_retired_node(pstate, pnode, pnode*) : bool
+
+def $fiber_ordinary_cleanup(S, n) = true
+  -- if S.ACTIVEFIBER = (n)
+  -- if ~$fiber_close_boundary(S)
+  -- if S.CURRENT = eps
+  -- if S.FRAMES = eps
+  -- if $fiber_finish_valid(S, n)
+def $fiber_finish(S, n) = $fiber_ordinary_retire(S_read, n, pvalue, eps, true)
+  -- if $fiber_ordinary_cleanup(S, n)
+  -- if S_read = $resolve_at(S, S.RESULT, $(-1))
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+def $fiber_throw_finish(S, n, n_throwable) = $fiber_ordinary_retire(S, n, PNULL, (n_throwable), false)
+  -- if $fiber_ordinary_cleanup(S, n)
+  -- if $throwable_member(S, n_throwable)
+def $fiber_ordinary_task(pfiberfinish, true) = FIBER_RETURN_FINISH pfiberfinish
+def $fiber_ordinary_task(pfiberfinish, false) = FIBER_THROW_FINISH pfiberfinish
+def $fiber_ordinary_retire(S, n, pvalue, n_pending?, b_returned) = $destructor_release_begin(S_ready, $destruction_values($fiber_callback_nodes(pfiber)))
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiberfinish = {OBJECT n, PENDING n_pending?, SEQUENCE pfiber.SEQUENCE}
+  -- if pfiber_ready = $fiber_terminated(pfiber, pvalue, false)[.STATUS = FIBER_RUNNING][.FINISH = (pfiberfinish)][.RETURNED = b_returned]
+  -- if S_ready = $fiber_put(S[.TODO = [$fiber_ordinary_task(pfiberfinish, b_returned)]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, pfiber_ready)
+
+;; The pending owner is the unique terminal task, including across both modes.
+;; FINISH and the mode stored on the carrier are borrowed certificates.
+def $fiber_finish_extra_count(FIBER_RETURN_FINISH pfiberfinish, pfiberfinish) = 1
+def $fiber_finish_extra_count(FIBER_THROW_FINISH pfiberfinish, pfiberfinish) = 1
+def $fiber_ordinary_tasks([FIBER_RETURN_FINISH pfiberfinish], pfiberfinish, true) = true
+def $fiber_ordinary_tasks([FIBER_THROW_FINISH pfiberfinish], pfiberfinish, false) = true
+def $fiber_ordinary_tasks(ptask :: ptask_tail*, pfiberfinish, b) = $fiber_ordinary_tasks(ptask_tail*, pfiberfinish, b)
+  -- if ptask =/= FIBER_RETURN_FINISH pfiberfinish
+  -- if ptask =/= FIBER_THROW_FINISH pfiberfinish
+def $fiber_ordinary_tasks(ptask*, pfiberfinish, b) = false -- otherwise
+def $fiber_ordinary_frames(eps, pfiberfinish, b) = false
+def $fiber_ordinary_frames(pframe :: pframe_tail*, pfiberfinish, b) = ($fiber_ordinary_tasks(pframe.TODO, pfiberfinish, b) \/ $fiber_ordinary_frames(pframe_tail*, pfiberfinish, b))
+def $fiber_ordinary_vm(pfibervm, pfiberfinish, b) = ($($fiber_finish_task_count(pfibervm.TODO, pfiberfinish) + $fiber_finish_frame_count(pfibervm.FRAMES, pfiberfinish)) = 1 /\ ($fiber_ordinary_tasks(pfibervm.TODO, pfiberfinish, b) \/ $fiber_ordinary_frames(pfibervm.FRAMES, pfiberfinish, b)))
+def $fiber_ordinary_callers(eps, pfiberfinish, b) = false
+def $fiber_ordinary_callers(pfibercaller :: pfibercaller_tail*, pfiberfinish, b) = ((pfibercaller.PREVIOUS = (pfiberfinish.OBJECT) /\ $fiber_ordinary_vm(pfibercaller.VM, pfiberfinish, b)) \/ $fiber_ordinary_callers(pfibercaller_tail*, pfiberfinish, b))
+def $fiber_ordinary_closers(eps, pfiberfinish, b) = false
+def $fiber_ordinary_closers(pfiberclose :: pfiberclose_tail*, pfiberfinish, b) = ((pfiberclose.PREVIOUS = (pfiberfinish.OBJECT) /\ $fiber_ordinary_vm(pfiberclose.VM, pfiberfinish, b)) \/ $fiber_ordinary_closers(pfiberclose_tail*, pfiberfinish, b))
+def $fiber_ordinary_body_pending(S, pfiberfinish) = true
+  -- if pfiberfinish.PENDING = (n)
+  -- if $throwable_member(S, n)
+def $fiber_ordinary_body_pending(S, pfiberfinish) = false -- otherwise
+def $fiber_ordinary_carrier(S, pfiberfinish) = true
+  -- if $fiber_at(S, pfiberfinish.OBJECT) = (pfiber)
+  -- if pfiber.READY
+  -- if pfiber.CALL = eps
+  -- if pfiber.RAW = PNULL
+  -- if pfiber.TARGET = eps
+  -- if pfiber.BIRTH = eps
+  -- if pfiber.CAPTURE = eps
+  -- if pfiber.PRODUCER = eps
+  -- if pfiber.ENTRY = eps
+  -- if ~pfiber.FAILED
+  -- if ~pfiber.GRACEFUL
+  -- if pfiber.FINISH = (pfiberfinish)
+  -- if pfiber.SEQUENCE = pfiberfinish.SEQUENCE
+  -- if $(pfiber.SEQUENCE > 0)
+  -- if $(pfiber.SEQUENCE < S.FIBERSEQ)
+  -- if pfiber.RETURNED \/ pfiber.VALUE = PNULL
+  -- if pfiber.RETURNED \/ $fiber_ordinary_body_pending(S, pfiberfinish)
+  -- if $fiber_finish_pending_valid(S, pfiberfinish)
+def $fiber_ordinary_carrier(S, pfiberfinish) = false -- otherwise
+def $fiber_ordinary_suspended(S, pfiber, pfiberfinish) = true
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.VM = (pfibervm)
+  -- if ~pfibervm.GLOBAL
+  -- if pfibervm.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_tail*
+  -- if pfiberapi.OBJECT = pfiberfinish.OBJECT
+  -- if pfiberapi.SEQUENCE = pfiberfinish.SEQUENCE
+  -- if $fiber_ordinary_vm(pfibervm, pfiberfinish, pfiber.RETURNED)
+def $fiber_ordinary_suspended(S, pfiber, pfiberfinish) = false -- otherwise
+def $fiber_ordinary_finish_live(S, pfiberfinish) = true
+  -- if $fiber_ordinary_carrier(S, pfiberfinish)
+  -- if $fiber_at(S, pfiberfinish.OBJECT) = (pfiber)
+  -- if pfiber.STATUS = FIBER_RUNNING
+  -- if pfiber.VM = eps
+  -- if (S.ACTIVEFIBER = (pfiberfinish.OBJECT) /\ $fiber_ordinary_vm($fiber_vm(S), pfiberfinish, pfiber.RETURNED)) \/ $fiber_ordinary_callers(S.FIBERCALLERS, pfiberfinish, pfiber.RETURNED) \/ $fiber_ordinary_closers(S.FIBERCLOSERS, pfiberfinish, pfiber.RETURNED)
+def $fiber_ordinary_finish_live(S, pfiberfinish) = true
+  -- if $fiber_ordinary_carrier(S, pfiberfinish)
+  -- if $fiber_at(S, pfiberfinish.OBJECT) = (pfiber)
+  -- if $fiber_ordinary_suspended(S, pfiber, pfiberfinish)
+def $fiber_ordinary_record(S, n, pfiber) = true
+  -- if pfiber.FINISH = (pfiberfinish)
+  -- if pfiberfinish.OBJECT = n
+  -- if $fiber_ordinary_finish_live(S, pfiberfinish)
+  -- if pfiber.STATUS = FIBER_RUNNING
+  -- if S.ACTIVEFIBER = (n) \/ n <- $fiber_waiting_ids(S.FIBERCALLERS) \/ n <- $fiber_close_waiting_ids(S.FIBERCLOSERS)
+def $fiber_ordinary_record(S, n, pfiber) = true
+  -- if pfiber.FINISH = (pfiberfinish)
+  -- if pfiberfinish.OBJECT = n
+  -- if $fiber_ordinary_finish_live(S, pfiberfinish)
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.VM = (pfibervm)
+  -- if $fiber_vm_valid(S, pfibervm, (n), eps)
+def $fiber_ordinary_record(S, n, pfiber) = false -- otherwise
+def $fiber_record_valid(S, n, pfiber) = true -- if $fiber_ordinary_record(S, n, pfiber)
+def $fiber_ordinary_kind_valid(S, pfiberfinish, b) = ($fiber_callback_finish_valid(S, pfiberfinish) /\ pfiber.RETURNED = b)
+  -- if $fiber_at(S, pfiberfinish.OBJECT) = (pfiber)
+def $fiber_ordinary_kind_valid(S, pfiberfinish, b) = false -- otherwise
+def $call_task_valid(S, FIBER_RETURN_FINISH pfiberfinish) = $fiber_ordinary_kind_valid(S, pfiberfinish, true)
+def $call_task_valid(S, FIBER_THROW_FINISH pfiberfinish) = $fiber_ordinary_kind_valid(S, pfiberfinish, false)
+def $task_nodes(FIBER_RETURN_FINISH pfiberfinish) = $instance_roots(pfiberfinish.PENDING)
+def $task_nodes(FIBER_THROW_FINISH pfiberfinish) = $instance_roots(pfiberfinish.PENDING)
+def $fiber_marker(FIBER_RETURN_FINISH pfiberfinish) = true
+def $fiber_marker(FIBER_THROW_FINISH pfiberfinish) = true
+def $fiber_release_finish((FIBER_RETURN_FINISH pfiberfinish) :: ptask*) = (pfiberfinish)
+def $fiber_release_finish((FIBER_THROW_FINISH pfiberfinish) :: ptask*) = (pfiberfinish)
+def $fiber_finish_tasks((FIBER_RETURN_FINISH pfiberfinish) :: ptask*, pfiberfinish, pfiberfinish_new) = (FIBER_RETURN_FINISH pfiberfinish_new) :: ptask*
+def $fiber_finish_tasks((FIBER_THROW_FINISH pfiberfinish) :: ptask*, pfiberfinish, pfiberfinish_new) = (FIBER_THROW_FINISH pfiberfinish_new) :: ptask*
+def $destructor_tail_pending((FIBER_RETURN_FINISH pfiberfinish) :: ptask*) = pfiberfinish.PENDING
+def $destructor_tail_pending((FIBER_THROW_FINISH pfiberfinish) :: ptask*) = pfiberfinish.PENDING
+
+;; A public activation rebases the internal root's execute_data and renews the
+;; authentic terminal task along with its borrowed carrier stamp.
+def $fiber_resequence_tasks(eps, pfiberfinish, pfiberfinish_new) = eps
+def $fiber_resequence_tasks((FIBER_RETURN_FINISH pfiberfinish) :: ptask*, pfiberfinish, pfiberfinish_new) = (FIBER_RETURN_FINISH pfiberfinish_new) :: $fiber_resequence_tasks(ptask*, pfiberfinish, pfiberfinish_new)
+def $fiber_resequence_tasks((FIBER_THROW_FINISH pfiberfinish) :: ptask*, pfiberfinish, pfiberfinish_new) = (FIBER_THROW_FINISH pfiberfinish_new) :: $fiber_resequence_tasks(ptask*, pfiberfinish, pfiberfinish_new)
+def $fiber_resequence_tasks(ptask :: ptask_tail*, pfiberfinish, pfiberfinish_new) = ptask :: $fiber_resequence_tasks(ptask_tail*, pfiberfinish, pfiberfinish_new)
+  -- if ptask =/= FIBER_RETURN_FINISH pfiberfinish
+  -- if ptask =/= FIBER_THROW_FINISH pfiberfinish
+def $fiber_resequence_frames(eps, pfiberfinish, pfiberfinish_new) = eps
+def $fiber_resequence_frames(pframe :: pframe_tail*, pfiberfinish, pfiberfinish_new) = pframe[.TODO = $fiber_resequence_tasks(pframe.TODO, pfiberfinish, pfiberfinish_new)] :: $fiber_resequence_frames(pframe_tail*, pfiberfinish, pfiberfinish_new)
+def $fiber_reactivate(pfiber, pfibervm, n_sequence) = (pfiber[.STATUS = FIBER_RUNNING][.VM = eps][.SEQUENCE = n_sequence][.FINISH = (pfiberfinish_new)], pfibervm[.TODO = $fiber_resequence_tasks(pfibervm.TODO, pfiberfinish, pfiberfinish_new)][.FRAMES = $fiber_resequence_frames(pfibervm.FRAMES, pfiberfinish, pfiberfinish_new)])
+  -- if pfiber.FINISH = (pfiberfinish)
+  -- if $fiber_ordinary_vm(pfibervm, pfiberfinish, pfiber.RETURNED)
+  -- if pfiberfinish_new = pfiberfinish[.SEQUENCE = n_sequence]
+
+def $fiber_ordinary_ready(S) = true
+  -- if S.TODO = (FIBER_RETURN_FINISH pfiberfinish) :: ptask_tail*
+  -- if $fiber_terminal_tasks(ptask_tail*)
+  -- if $call_task_valid(S, FIBER_RETURN_FINISH pfiberfinish)
+def $fiber_ordinary_ready(S) = true
+  -- if S.TODO = (FIBER_THROW_FINISH pfiberfinish) :: ptask_tail*
+  -- if $fiber_terminal_tasks(ptask_tail*)
+  -- if $call_task_valid(S, FIBER_THROW_FINISH pfiberfinish)
+def $fiber_ordinary_ready(S) = false -- otherwise
+def $fiber_ordinary_step(S) = $fiber_ordinary_finish(S, pfiberfinish)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $fiber_release_finish([ptask]) = (pfiberfinish)
+rule PhpStep/fiber-ordinary-finish: S ~> $fiber_ordinary_step(S)
+  -- if $fiber_ordinary_ready(S)
+def $fiber_ordinary_finish(S, pfiberfinish) = $fiber_back($fiber_put(S, pfiberfinish.OBJECT, $fiber_terminated(pfiber, pfiber.VALUE, false)[.RETURNED = pfiber.RETURNED]), PNULL, false)
+  -- if $fiber_at(S, pfiberfinish.OBJECT) = (pfiber)
+  -- if pfiberfinish.PENDING = eps
+def $fiber_ordinary_finish(S, pfiberfinish) = $fiber_back($fiber_put(S, pfiberfinish.OBJECT, $fiber_terminated(pfiber, pfiber.VALUE, false)[.RETURNED = true]), PNULL, false)
+  -- if $fiber_at(S, pfiberfinish.OBJECT) = (pfiber)
+  -- if pfiber.RETURNED
+  -- if pfiberfinish.PENDING = (n)
+  -- if $fiber_graceful_for(S, pfiberfinish.OBJECT, pfiberfinish.SEQUENCE, n)
+def $fiber_ordinary_finish(S, pfiberfinish) = $fiber_back($fiber_put(S, pfiberfinish.OBJECT, $fiber_terminated(pfiber, pfiber.VALUE, true)[.RETURNED = pfiber.RETURNED]), POBJECT n, true)
+  -- if $fiber_at(S, pfiberfinish.OBJECT) = (pfiber)
+  -- if pfiberfinish.PENDING = (n)
+  -- if $throwable_member(S, n)
+
+;; Ordinary destruction still has the currently active Fiber API frame below
+;; its native root. It supplies implicit Fiber scope and actual API provenance.
+def $fiber_ordinary_root(S) = true
+  -- if S.ACTIVEFIBER = (n)
+  -- if ~$fiber_close_boundary(S)
+  -- if S.CURRENT = eps
+  -- if S.FRAMES = eps
+  -- if S.ORIGIN = eps
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.STATUS = FIBER_RUNNING
+  -- if pfiber.FINISH = (pfiberfinish)
+  -- if $fiber_ordinary_finish_live(S, pfiberfinish)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.OBJECT = n
+  -- if pfibercaller.API.SEQUENCE = pfiber.SEQUENCE
+  -- if $fiber_api_valid(S, pfibercaller.API)
+def $fiber_ordinary_root(S) = false -- otherwise
+def $destructor_private_error(S, pdestructorcall, ptbytes) = $throwable_allocate_at(S, "Error", ptbytes_message, pfibercaller.API.SITE, pfibercaller.API.LINE, $fiber_caller_trace(S))
+  -- if $fiber_ordinary_root(S)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
+  -- if ptbytes_message = $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ [32] ++ $object_name(S, pdestructorcall.OBJECT) ++ $ptascii("::__destruct() from scope Fiber")
+
+;; A protected real exception in the object-dtor wrapper invokes Zend's private
+;; GracefulExit.previous/deprecation route. Keep that UNDEF protocol explicit.
+def $fiber_close_blocked(S, n) = true
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.FINISH = (pfiberfinish)
+  -- if $fiber_ordinary_finish_live(S, pfiberfinish)
+  -- if pfiberfinish.PENDING = (n_pending)
+  -- if $throwable_member(S, n_pending)
+def $internal_destructor_enter(S, HOBJECT n, pdestructionrelease) = S[.COMPLETION = UNSUPPORTED "force-closing ordinary Fiber cleanup with a protected real exception"]
+  -- if $fiber_close_selected(S, n, pdestructionrelease)
+  -- if pdestructionrelease.USER
+  -- if $fiber_transfer_domain(S)
+  -- if $fiber_close_blocked(S, n)
+def $fiber_protected_retired(S, eps, pnode_live*) = false
+def $fiber_protected_retired(S, pnode :: pnode_tail*, pnode_live*) = ($fiber_protected_retired_node(S, pnode, pnode_live*) \/ $fiber_protected_retired(S, pnode_tail*, pnode_live*))
+def $fiber_protected_retired_node(S, HOBJECT n, pnode_live*) = (~((HOBJECT n) <- pnode_live*) /\ $heap_owners($heap_graph(S), HOBJECT n) = 0 /\ $fiber_close_blocked(S, n))
+def $fiber_protected_retired_node(S, pnode, pnode_live*) = false -- otherwise
+def $fiber_prune_protected(S, pnode_live*) = $fiber_protected_retired(S, S.ALLOCATIONS, pnode_live*)
+def $fiber_prune(S, pnode_live*) = S[.COMPLETION = UNSUPPORTED "force-closing ordinary Fiber cleanup with a protected real exception"]
+  -- if $fiber_prune_protected(S, pnode_live*)
+
+;; A filtered close control remains owned by the real ordered release. This
+;; admission is storage-only; neither catch nor pending authority is extended.
+def $fiber_retired_finish(FIBER_RETURN_FINISH pfiberfinish) = (pfiberfinish)
+def $fiber_retired_finish(FIBER_THROW_FINISH pfiberfinish) = (pfiberfinish)
+def $fiber_retired_source_valid(S, n_exit, FIBER_RETURN_FINISH pfiberfinish, pfiber) = (pfiber.RETURNED /\ ~pfiber.GRACEFUL /\ ~pfiber.FAILED)
+  -- if pfiberfinish.PENDING = eps \/ pfiberfinish.PENDING = (n_exit)
+def $fiber_retired_source_valid(S, n_exit, FIBER_RETURN_FINISH pfiberfinish, pfiber) = (pfiber.RETURNED /\ ~pfiber.GRACEFUL /\ pfiber.FAILED /\ $throwable_member(S, n))
+  -- if pfiberfinish.PENDING = (n)
+  -- if n =/= n_exit
+def $fiber_retired_source_valid(S, n_exit, FIBER_THROW_FINISH pfiberfinish, pfiber) = (~pfiber.RETURNED /\ ~pfiber.GRACEFUL /\ pfiber.FAILED /\ $throwable_member(S, n))
+  -- if pfiberfinish.PENDING = (n)
+  -- if n =/= n_exit
