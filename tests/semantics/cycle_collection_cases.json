@@ -1,0 +1,56 @@
+[
+  {
+    "id": "stdclass-selfcycle-retains-target-until-explicit-collection",
+    "source": "<?php $o=new stdClass;$o->self=$o;$w=WeakReference::create($o);unset($o);echo ($w->get()===null?\"null\":\"live\"),\"|\",gc_collect_cycles(),\"|\",($w->get()===null?\"null\":\"live\"),\"|\",gc_collect_cycles(),\"|END\";",
+    "source_sha256": "bb37fd1c41d4a1321ffcdd0ddbecebd557d22d5cc094f4dbfd8235cc4cc0cb1c",
+    "stdout": "live|1|null|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "two-node-object-cycle-counts-two-native-objects",
+    "source": "<?php $a=new stdClass;$b=new stdClass;$a->peer=$b;$b->peer=$a;$wa=WeakReference::create($a);$wb=WeakReference::create($b);unset($a,$b);echo ($wa->get()===null?\"null\":\"live\"),\"|\",($wb->get()===null?\"null\":\"live\"),\"|\",gc_collect_cycles(),\"|\",($wa->get()===null?\"null\":\"live\"),\"|\",($wb->get()===null?\"null\":\"live\"),\"|\",gc_collect_cycles(),\"|END\";",
+    "source_sha256": "4eab7c6d7015ac1dc26887aa05bc8003e04aaf4567830cfaa9b24ef575192aea",
+    "stdout": "live|live|2|null|null|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "object-user-array-cycle-excludes-property-table-proxy",
+    "source": "<?php $o=new stdClass;$o->list=[$o];$w=WeakReference::create($o);unset($o);echo ($w->get()===null?\"null\":\"live\"),\"|\",gc_collect_cycles(),\"|\",($w->get()===null?\"null\":\"live\"),\"|\",gc_collect_cycles(),\"|END\";",
+    "source_sha256": "466a363f5310b5c062f2191916a67b47c7bebc244bb6033d9fce29a559c887ee",
+    "stdout": "live|2|null|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "array-reference-cycle-counts-array-not-reference-wrapper",
+    "source": "<?php $a=[];$a[0]=&$a;unset($a);echo gc_collect_cycles(),\"|\",gc_collect_cycles(),\"|END\";",
+    "source_sha256": "d5628f3e954c97888f00f1a1f7744478516ab7e91eda3905e36a40fd75e77dd6",
+    "stdout": "1|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "disabled-automatic-gc-still-admits-explicit-collection",
+    "source": "<?php echo (gc_enabled()?\"on\":\"off\"),\"|\";gc_disable();echo (gc_enabled()?\"on\":\"off\"),\"|\";$o=new stdClass;$o->self=$o;$w=WeakReference::create($o);unset($o);echo ($w->get()===null?\"null\":\"live\"),\"|\",gc_collect_cycles(),\"|\",($w->get()===null?\"null\":\"live\"),\"|\";gc_enable();echo (gc_enabled()?\"on\":\"off\"),\"|END\";",
+    "source_sha256": "5d6f8b32f6a322cae811b18512a8b2f05cf6ec35120d497d951fb49489448634",
+    "stdout": "on|off|live|1|null|on|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "gc-api-errors-dynamic-and-first-class-owner",
+    "source": "<?php foreach([\"gc_collect_cycles\",\"gc_enable\",\"gc_disable\",\"gc_enabled\"] as $f){try{$f(1);}catch(ArgumentCountError $e){echo $e->getMessage(),\"|\";}}try{gc_collect_cycles(flag:true);}catch(Error $e){echo $e->getMessage(),\"|\";}$disable=gc_disable(...);$disable();$enabled=gc_enabled(...);echo ($enabled()?\"on\":\"off\"),\"|\";$collect=gc_collect_cycles(...);$o=new stdClass;$o->self=$o;$w=WeakReference::create($o);unset($o);echo $collect(),\"|\",($w->get()===null?\"null\":\"live\"),\"|\";$enable=gc_enable(...);$enable();echo ($enabled()?\"on\":\"off\"),\"|END\";",
+    "source_sha256": "fb25ed6becc93457b889d16d9e85eb8ba842b9dede3922bb7bedb83c96d9b5ad",
+    "stdout": "gc_collect_cycles() expects exactly 0 arguments, 1 given|gc_enable() expects exactly 0 arguments, 1 given|gc_disable() expects exactly 0 arguments, 1 given|gc_enabled() expects exactly 0 arguments, 1 given|Unknown named parameter $flag|off|1|null|on|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  }
+]

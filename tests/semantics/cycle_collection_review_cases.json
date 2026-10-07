@@ -1,0 +1,245 @@
+[
+  {
+    "id": "weak-get-strong-result-pins-selfcycle",
+    "source": "<?php\nclass Link { public $next; }\n$o = new Link();\n$o->next = $o;\n$weak = WeakReference::create($o);\nunset($o);\necho $weak->get() !== null ? \"live|\" : \"lost|\";\n$hold = $weak->get();\necho gc_collect_cycles(), \"|\";\necho $weak->get() === $hold ? \"held|\" : \"lost|\";\nunset($hold);\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"null|\" : \"live|\";\necho gc_collect_cycles(), \"|END\";\n",
+    "stdout": "live|0|held|1|null|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "3d44aa8f654dce00c4e42e6145a6c9d1d2b5ad966e806edcb0b8665617e45dc4"
+  },
+  {
+    "id": "nested-collection-during-cycle-destructor",
+    "source": "<?php\nclass Link {\n    public $next;\n    public function __destruct() {\n        global $weak;\n        echo \"D:\", $weak->get() === $this ? \"live:\" : \"lost:\";\n        echo gc_collect_cycles(), \"|\";\n    }\n}\n$o = new Link();\n$o->next = $o;\n$weak = WeakReference::create($o);\nunset($o);\necho \"before|\";\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"null|\" : \"live|\";\necho gc_collect_cycles(), \"|END\";\n",
+    "stdout": "before|D:live:0|1|null|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "157ba7845a34a695a3fb7b5cba9766285f8bdbcbb9f6d1f243b8dfe5292c0143"
+  },
+  {
+    "id": "cycle-destructor-get-resurrection-once",
+    "source": "<?php\nclass Link {\n    public $next;\n    public function __destruct() {\n        global $weak, $hold, $count;\n        $count += 1;\n        $hold = $weak->get();\n        echo \"D\", $count, \":\", $hold === $this ? \"live|\" : \"lost|\";\n    }\n}\n$count = 0;\n$hold = null;\n$o = new Link();\n$o->next = $o;\n$weak = WeakReference::create($o);\nunset($o);\necho gc_collect_cycles(), \"|\";\necho $weak->get() === $hold ? \"held|\" : \"lost|\";\nunset($hold);\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"null|\" : \"live|\";\necho $count, \"|\", gc_collect_cycles(), \"|END\";\n",
+    "stdout": "D1:live|0|held|1|null|1|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "f4a74384cf2fb039400013c74d3dde1165e676ac56dc3b5aa8a681d2d270a4b9"
+  },
+  {
+    "id": "cycle-destructors-precede-parent-free",
+    "source": "<?php\nclass ChildObject {\n    public function __destruct() {\n        global $weak;\n        echo $weak->get() === null ? \"C:null|\" : \"C:live|\";\n    }\n}\nclass ParentObject {\n    public $next;\n    public $child;\n    public function __destruct() {\n        global $weak;\n        echo $weak->get() === $this ? \"P:live|\" : \"P:lost|\";\n    }\n}\n$o = new ParentObject();\n$o->next = $o;\n$o->child = new ChildObject();\n$weak = WeakReference::create($o);\nunset($o);\necho \"before|\";\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"null|END\" : \"live|END\";\n",
+    "stdout": "before|P:live|C:live|2|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "f590b5dd645a778b28e09304ce95978ec9fccf3f4b7eded65aa743f1774a8a5f"
+  },
+  {
+    "id": "second-trace-new-destructor-cycle-is-retained",
+    "source": "<?php\nclass Later {\n    public $next;\n    public function __destruct() { echo \"L|\"; }\n}\nclass First {\n    public $next;\n    public function __destruct() {\n        global $laterWeak;\n        echo \"F|\";\n        $later = new Later();\n        $later->next = $later;\n        $laterWeak = WeakReference::create($later);\n    }\n}\n$o = new First();\n$o->next = $o;\n$weak = WeakReference::create($o);\nunset($o);\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"first-null|\" : \"first-live|\";\necho $laterWeak->get() === null ? \"later-null|\" : \"later-live|\";\necho gc_collect_cycles(), \"|\";\necho $laterWeak->get() === null ? \"later-null|END\" : \"later-live|END\";\n",
+    "stdout": "F|L|1|first-null|later-live|1|later-null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "0cffe31cd0ba02b3e83fb47f2e6658f38cc8bf2de7f03d052a746ce6a18db45f"
+  },
+  {
+    "id": "cycle-destructor-order-follows-buffer-not-allocation",
+    "source": "<?php\nclass Link {\n    public $next;\n    public $id;\n    public function __construct($id) { $this->id = $id; }\n    public function __destruct() { echo $this->id, \"|\"; }\n}\n$a = new Link(\"A\");\n$a->next = $a;\n$b = new Link(\"B\");\n$b->next = $b;\n$wa = WeakReference::create($a);\n$wb = WeakReference::create($b);\necho gc_collect_cycles(), \"|\";\nunset($b);\nunset($a);\necho gc_collect_cycles(), \"|\";\necho $wa->get() === null && $wb->get() === null ? \"null|END\" : \"live|END\";\n",
+    "stdout": "0|B|A|2|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "23efaa5f53719f28040509dac3c94bd11cc2b983ee3148d522b2fdd71999e6c8"
+  },
+  {
+    "id": "child-freed-in-cycle-destructor-not-counted-as-collected",
+    "source": "<?php\nclass ChildObject {\n    public function __destruct() {\n        global $weak;\n        echo $weak->get() === null ? \"C:null|\" : \"C:live|\";\n    }\n}\nclass ParentObject {\n    public $next;\n    public $child;\n    public function __destruct() {\n        echo \"P|\";\n        unset($this->child);\n    }\n}\n$o = new ParentObject();\n$o->next = $o;\n$o->child = new ChildObject();\n$weak = WeakReference::create($o);\nunset($o);\necho \"before|\";\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"null|END\" : \"live|END\";\n",
+    "stdout": "before|P|C:live|1|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "180ed66c6aa48167d5040805c4fc3541dcde193a633c981f960d3641661cf22c"
+  },
+  {
+    "id": "cycle-destructor-throw-retains-gc-frame-and-collects",
+    "source": "<?php\nclass Link {\n    public $next;\n    public function __destruct() {\n        global $weak;\n        echo $weak->get() === $this ? \"D:live|\" : \"D:lost|\";\n        throw new Exception(\"retire\");\n    }\n}\n$o = new Link();\n$o->next = $o;\n$weak = WeakReference::create($o);\nunset($o);\ntry {\n    gc_collect_cycles();\n} catch (Exception $e) {\n    $trace = $e->getTrace();\n    echo $e->getMessage(), \":\", $trace[0][\"function\"], \":\", $trace[1][\"function\"], \"|\";\n}\necho $weak->get() === null ? \"null|\" : \"live|\";\necho gc_collect_cycles(), \"|END\";\n",
+    "stdout": "D:live|retire:__destruct:gc_collect_cycles|null|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "c368048c359a508ed2824ef2d7d1e2bb2c1a30bc09387a36bf33fd7db8a0f5ff"
+  },
+  {
+    "id": "net-neutral-same-target-write-buffers-before-later-unset",
+    "source": "<?php\nclass Link {\n    public $next;\n    public $id;\n    public function __construct($id) { $this->id = $id; }\n    public function __destruct() { echo $this->id, \"|\"; }\n}\n$a = new Link(\"A\");\n$a->next = $a;\n$b = new Link(\"B\");\n$b->next = $b;\n$wa = WeakReference::create($a);\n$wb = WeakReference::create($b);\necho gc_collect_cycles(), \"|\";\n$a = $a;\nunset($b);\nunset($a);\necho gc_collect_cycles(), \"|\";\necho $wa->get() === null && $wb->get() === null ? \"null|END\" : \"live|END\";\n",
+    "stdout": "0|A|B|2|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "bf1d00eec698c479696c477c0bddb72ac5d6a204c2b609f252e8dde843e5f2ad"
+  },
+  {
+    "id": "zero-owner-post-dtor-target-remains-gettable-until-retrace",
+    "source": "<?php\nclass First {\n    public $next;\n    public function __destruct() {\n        echo \"A|\";\n        $this->next = null;\n    }\n}\nclass Second {\n    public $next;\n    public function __destruct() {\n        global $wa, $hold;\n        $hold = $wa->get();\n        echo $hold === null ? \"B:null|\" : \"B:live|\";\n    }\n}\n$hold = null;\n$a = new First();\n$a->next = $a;\n$b = new Second();\n$b->next = $b;\n$wa = WeakReference::create($a);\n$wb = WeakReference::create($b);\nunset($a);\nunset($b);\necho gc_collect_cycles(), \"|\";\necho $wa->get() === $hold ? \"held|\" : \"lost|\";\necho $wb->get() === null ? \"second-null|\" : \"second-live|\";\nunset($hold);\necho $wa->get() === null ? \"first-null|\" : \"first-live|\";\necho gc_collect_cycles(), \"|END\";\n",
+    "stdout": "A|B:live|1|held|second-null|first-null|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "2d75a2c03dc6a89da92cbb3b9813641e3751d555e4bf34d4a9e69ca2555826f3"
+  },
+  {
+    "id": "array-first-property-table-root-counts-shared-hashtable",
+    "source": "<?php\n$o = new stdClass();\n$o->self = $o;\n$weak = WeakReference::create($o);\n$array = (array) $o;\necho gc_collect_cycles(), \"|\";\nunset($array);\nunset($o);\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"null|END\" : \"live|END\";\n",
+    "stdout": "0|2|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "76e20c04dfe0fc275b74834714f93ad2686272c3ebc7576d87343ffe1bd73a84"
+  },
+  {
+    "id": "object-first-property-table-root-does-not-count-shared-hashtable",
+    "source": "<?php\n$o = new stdClass();\n$o->self = $o;\n$weak = WeakReference::create($o);\n$array = (array) $o;\necho gc_collect_cycles(), \"|\";\nunset($o);\nunset($array);\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"null|END\" : \"live|END\";\n",
+    "stdout": "0|1|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "1c934e641dcc3a8a323dbf3ab05ea20698e4056ee0310edb2f31e4dd6cf9845a"
+  },
+  {
+    "id": "white-target-freed-during-unrelated-destructor-retains-trace-count",
+    "source": "<?php\nclass Actor {\n    public $next;\n    public function __destruct() {\n        global $wb;\n        $target = $wb->get();\n        $target->self = null;\n        unset($target);\n        echo $wb->get() === null ? \"B:null|\" : \"B:live|\";\n    }\n}\n$a = new Actor();\n$a->next = $a;\n$b = new stdClass();\n$b->self = $b;\n$wa = WeakReference::create($a);\n$wb = WeakReference::create($b);\nunset($a);\nunset($b);\necho gc_collect_cycles(), \"|\";\necho $wa->get() === null && $wb->get() === null ? \"null|\" : \"live|\";\necho gc_collect_cycles(), \"|END\";\n",
+    "stdout": "B:null|2|null|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "c4416c7220dabeaf72a296fc5cfe137afba6bff2852269f711c845a074b54acf"
+  },
+  {
+    "id": "freed-buffer-hole-is-reused-before-later-live-slot",
+    "source": "<?php\nclass Link {\n    public $next;\n    public $id;\n    public function __construct($id) { $this->id = $id; }\n    public function __destruct() { echo $this->id, \"|\"; }\n}\n$a = new Link(\"A\");\n$a->next = $a;\n$c = new Link(\"C\");\n$c->next = $c;\n$wa = WeakReference::create($a);\n$wc = WeakReference::create($c);\necho gc_collect_cycles(), \"|\";\n$a = $a;\n$tmp = new stdClass();\n$tmp = $tmp;\n$c = $c;\nunset($tmp);\n$d = new Link(\"D\");\n$d->next = $d;\n$wd = WeakReference::create($d);\nunset($a);\nunset($c);\nunset($d);\necho gc_collect_cycles(), \"|\";\necho $wa->get() === null && $wc->get() === null && $wd->get() === null ? \"null|END\" : \"live|END\";\n",
+    "stdout": "0|A|D|C|3|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "4e2a612aa565566d99bdcebac05ccfa15fa23cb6155f8632c7e48fa556bd1958"
+  },
+  {
+    "id": "black-root-hole-is-backfilled-from-last-white-slot",
+    "source": "<?php\nclass Link {\n    public $next;\n    public $id;\n    public function __construct($id) { $this->id = $id; }\n    public function __destruct() { echo $this->id, \"|\"; }\n}\n$a = new Link(\"A\");\n$a->next = $a;\n$b = new Link(\"B\");\n$b->next = $b;\n$c = new Link(\"C\");\n$c->next = $c;\n$wa = WeakReference::create($a);\n$wb = WeakReference::create($b);\n$wc = WeakReference::create($c);\necho gc_collect_cycles(), \"|\";\n$a = $a;\n$tmp = new stdClass();\n$tmp = $tmp;\n$b = $b;\n$c = $c;\nunset($a);\nunset($b);\nunset($c);\necho gc_collect_cycles(), \"|\";\necho $wa->get() === null && $wb->get() === null && $wc->get() === null ? \"null|\" : \"live|\";\nunset($tmp);\necho \"END\";\n",
+    "stdout": "0|A|C|B|3|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "c3ca48a754504892e65d398f49ae02edb050288e4d55e0e2e576d7a2d9bff682"
+  },
+  {
+    "id": "collection-continues-after-dtor-throw-and-chains-later-error",
+    "source": "<?php\nclass Link {\n    public $next;\n    public $id;\n    public function __construct($id) { $this->id = $id; }\n    public function __destruct() {\n        echo $this->id, \"|\";\n        throw new Exception($this->id);\n    }\n}\n$a = new Link(\"A\");\n$a->next = $a;\n$b = new Link(\"B\");\n$b->next = $b;\n$wa = WeakReference::create($a);\n$wb = WeakReference::create($b);\nunset($a);\nunset($b);\ntry {\n    gc_collect_cycles();\n} catch (Exception $e) {\n    $trace = $e->getTrace();\n    echo \"catch:\", $e->getMessage(), \":prev:\", $e->getPrevious()->getMessage(), \":\", $trace[1][\"function\"], \"|\";\n}\necho $wa->get() === null && $wb->get() === null ? \"null|\" : \"live|\";\necho gc_collect_cycles(), \"|END\";\n",
+    "stdout": "A|B|catch:B:prev:A:gc_collect_cycles|null|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "3803ce959df8884ee5b42a4aea06cff52be8f46b416f4a281787080876f55d4d"
+  },
+  {
+    "id": "immutable-empty-literal-does-not-create-black-buffer-hole",
+    "source": "<?php\nclass Link {\n    public $next;\n    public $id;\n    public function __construct($id) { $this->id = $id; }\n    public function __destruct() { echo $this->id, \"|\"; }\n}\n$a = new Link(\"A\");\n$a->next = $a;\n$b = new Link(\"B\");\n$b->next = $b;\n$c = new Link(\"C\");\n$c->next = $c;\n$wa = WeakReference::create($a);\n$wb = WeakReference::create($b);\n$wc = WeakReference::create($c);\necho gc_collect_cycles(), \"|\";\n$a = $a;\n$tmp = [];\n$tmp = $tmp;\n$b = $b;\n$c = $c;\nunset($a);\nunset($b);\nunset($c);\necho gc_collect_cycles(), \"|\";\necho $wa->get() === null && $wb->get() === null && $wc->get() === null ? \"null|\" : \"live|\";\nunset($tmp);\necho \"END\";\n",
+    "stdout": "0|A|B|C|3|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "af463def6eeaf20e62fa53ebb0da0b8735bef52b1e2ddedab50908249e546af7"
+  },
+  {
+    "id": "runtime-null-array-cast-does-not-create-black-buffer-hole",
+    "source": "<?php\nclass Link {\n    public $next;\n    public $id;\n    public function __construct($id) { $this->id = $id; }\n    public function __destruct() { echo $this->id, \"|\"; }\n}\n$a = new Link(\"A\");\n$a->next = $a;\n$b = new Link(\"B\");\n$b->next = $b;\n$c = new Link(\"C\");\n$c->next = $c;\n$wa = WeakReference::create($a);\n$wb = WeakReference::create($b);\n$wc = WeakReference::create($c);\necho gc_collect_cycles(), \"|\";\n$a = $a;\n$tmp = (array)null;\n$tmp = $tmp;\n$b = $b;\n$c = $c;\nunset($a);\nunset($b);\nunset($c);\necho gc_collect_cycles(), \"|\";\necho $wa->get() === null && $wb->get() === null && $wc->get() === null ? \"null|\" : \"live|\";\nunset($tmp);\necho \"END\";\n",
+    "stdout": "0|A|B|C|3|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "6688782ebf522e9bdb011f90738fb51ed159ae0d14c55946f0e826f43af0b0ca"
+  },
+  {
+    "id": "mutated-literal-empty-array-retains-black-buffer-hole",
+    "source": "<?php\nclass Link {\n    public $next;\n    public $id;\n    public function __construct($id) { $this->id = $id; }\n    public function __destruct() { echo $this->id, \"|\"; }\n}\n$a = new Link(\"A\");\n$a->next = $a;\n$b = new Link(\"B\");\n$b->next = $b;\n$c = new Link(\"C\");\n$c->next = $c;\n$wa = WeakReference::create($a);\n$wb = WeakReference::create($b);\n$wc = WeakReference::create($c);\necho gc_collect_cycles(), \"|\";\n$a = $a;\n$tmp = [];\n$tmp[0] = 1;\nunset($tmp[0]);\n$tmp = $tmp;\n$b = $b;\n$c = $c;\nunset($a);\nunset($b);\nunset($c);\necho gc_collect_cycles(), \"|\";\necho $wa->get() === null && $wb->get() === null && $wc->get() === null ? \"null|\" : \"live|\";\nunset($tmp);\necho \"END\";\n",
+    "stdout": "0|A|C|B|3|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "7f02e5b285392977cbde5c6976f9429f587953e2d58812052f6f00ac8ea87b2b"
+  },
+  {
+    "id": "mutated-null-cast-array-retains-black-buffer-hole",
+    "source": "<?php\nclass Link {\n    public $next;\n    public $id;\n    public function __construct($id) { $this->id = $id; }\n    public function __destruct() { echo $this->id, \"|\"; }\n}\n$a = new Link(\"A\");\n$a->next = $a;\n$b = new Link(\"B\");\n$b->next = $b;\n$c = new Link(\"C\");\n$c->next = $c;\n$wa = WeakReference::create($a);\n$wb = WeakReference::create($b);\n$wc = WeakReference::create($c);\necho gc_collect_cycles(), \"|\";\n$a = $a;\n$tmp = (array)null;\n$tmp[0] = 1;\nunset($tmp[0]);\n$tmp = $tmp;\n$b = $b;\n$c = $c;\nunset($a);\nunset($b);\nunset($c);\necho gc_collect_cycles(), \"|\";\necho $wa->get() === null && $wb->get() === null && $wc->get() === null ? \"null|\" : \"live|\";\nunset($tmp);\necho \"END\";\n",
+    "stdout": "0|A|C|B|3|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "bf9b83efabdc69f8e064ca70a92a483140456af3ccced729866ea2bccf70950d"
+  },
+  {
+    "id": "immutable-null-cast-property-is-not-counted-as-cycle-garbage",
+    "source": "<?php\n$o = new stdClass();\n$o->self = $o;\n$o->empty = (array)null;\n$weak = WeakReference::create($o);\nunset($o);\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"null|\" : \"live|\";\necho gc_collect_cycles(), \"|END\";\n",
+    "stdout": "1|null|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "78d001a801bbedf5bbf039ca7f2555d04cf60dd297ee6ba8f256a2c278feb074"
+  },
+  {
+    "id": "genuine-child-cv-retirement-precedes-parent-buffer",
+    "source": "<?php\nclass ChildObject {\n    public function __destruct() {\n        global $weak;\n        echo $weak->get() === null ? \"C:null|\" : \"C:live|\";\n    }\n}\nclass ParentObject {\n    public $next;\n    public $child;\n    public function __destruct() {\n        global $weak;\n        echo $weak->get() === $this ? \"P:live|\" : \"P:lost|\";\n    }\n}\n$o = new ParentObject();\n$o->next = $o;\n$child = new ChildObject();\n$o->child = $child;\nunset($child);\n$weak = WeakReference::create($o);\nunset($o);\necho \"before|\";\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"null|END\" : \"live|END\";\n",
+    "stdout": "before|C:live|P:live|2|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "778ce735be50b3cfb6fd6f0387ce905d93fd2b92bc1afbc5eb661315aaa5b8c8"
+  },
+  {
+    "id": "discarded-temporary-child-slot-still-buffers-cycle",
+    "source": "<?php\nclass Cycle {\n    public $next;\n    public $id;\n    public function __construct($id) { $this->id = $id; }\n    public function __destruct() { echo $this->id, \"|\"; }\n}\nclass Holder {\n    public $child;\n    public function __construct($child) { $this->child = $child; }\n    public function __destruct() { echo gc_collect_cycles(), \"|\"; }\n}\n$c = new Cycle(\"C\");\n$c->next = $c;\n$a = new Cycle(\"A\");\n$a->next = $a;\n$b = new Cycle(\"B\");\n$b->next = $b;\n$wb = WeakReference::create($b);\n$wc = WeakReference::create($c);\n$wa = WeakReference::create($a);\nnew Holder($c);\n$black = new stdClass();\n$black = $black;\n$a = $a;\n$b = $b;\nunset($c);\nunset($a);\nunset($b);\necho gc_collect_cycles(), \"|\";\necho $wc->get() === null && $wa->get() === null && $wb->get() === null ? \"null|END\" : \"live|END\";\n",
+    "stdout": "0|B|C|A|3|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "d6aa83592213ed4d1ed894362e8700bbfc89ccfcc6f9cf5be2f535ae669458c0"
+  },
+  {
+    "id": "retired-parent-slot-compacts-before-child-collector-black-removal",
+    "source": "<?php\nclass RetireCycle {\n    public $next;\n    public $id;\n    public function __destruct() { echo $this->id, \"|\"; }\n}\nclass RetireChild {\n    public function __destruct() {\n        global $a, $b, $wp;\n        echo $wp->get() === null ? \"P:null|\" : \"P:live|\";\n        $hole = new stdClass();\n        $hole = $hole;\n        $a = null;\n        $live = new stdClass();\n        $live = $live;\n        $b = null;\n        unset($hole);\n        echo gc_collect_cycles(), \"|\";\n    }\n}\nclass RetireParent { public $child; }\n$p = new RetireParent();\n$p->child = new RetireChild();\n$wp = WeakReference::create($p);\n$a = new RetireCycle();\n$a->id = \"A\";\n$a->next = $a;\n$b = new RetireCycle();\n$b->id = \"B\";\n$b->next = $b;\necho gc_collect_cycles(), \"|\";\n$p = $p;\nunset($p);\necho $wp->get() === null ? \"END\" : \"P:live\";\n",
+    "stdout": "0|P:null|A|B|2|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "2657c598d862c887bf754af64c32e7a453fc2aa15e01ce01e63609d795dd2956"
+  },
+  {
+    "id": "computed-discard-paused-fiber-keeps-force-close-consumer",
+    "source": "<?php\nfunction pausedFiber301(){\n $f=new Fiber(function(){try{echo \"A|\";Fiber::suspend();}finally{echo \"F|\";}});\n $f->start();\n return $f;\n}\npausedFiber301();\necho \"END\";\n",
+    "source_sha256": "d3db792158e05ee1e73600ab7cf528bd49d407e46f8c2fc5b8b6aca332a3065c",
+    "stdout": "A|F|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "computed-discard-paused-generator-keeps-force-close-consumer",
+    "source": "<?php\nfunction sequence301(){try{echo \"A|\";yield 1;}finally{echo \"F|\";}}\nfunction pausedGenerator301(){\n $g=sequence301();\n $g->rewind();\n return $g;\n}\npausedGenerator301();\necho \"END\";\n",
+    "source_sha256": "c2f684094f693c83709a00edd1a5598703ff09b6367b4a8a1cef66a8cdc5dedb",
+    "stdout": "A|F|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "retired-parent-handle-stays-authentic-through-child-fiber-suspension",
+    "source": "<?php\nclass Parent301 {public $child;}\nclass Child301 {\n function __destruct(){\n  global $wp;\n  echo $wp->get()===null?\"P:null|\":\"P:live|\";\n  Fiber::suspend(\"hold\");\n  echo \"R|\";\n }\n}\n$f=new Fiber(function(){\n global $wp;\n $p=new Parent301();\n $p->child=new Child301();\n $wp=WeakReference::create($p);\n $p=$p;\n unset($p);\n echo \"F|\";\n});\necho $f->start(),\"|\";\necho $wp->get()===null?\"M:null|\":\"M:live|\";\n$f->resume();\necho \"END\";\n",
+    "source_sha256": "8fe600b374744f192ca79dfd2c53b0c5388cb22e60882004cf99b1d84350740c",
+    "stdout": "P:null|hold|M:null|R|F|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  }
+]

@@ -1,0 +1,274 @@
+{
+  "version": 1,
+  "target": "PHP8.5.10 CLI NTS64, error_reporting30719; ordinary private276 modules",
+  "scope": "Independently accepted bounded explicit ordinary-object/array collection; canonical composition and full core remain open.",
+  "accepted_prerequisites": {
+    "eager270_source_sha256": "d85fc9f4f1df452d90fc3f7be8a6b198cfdc9bc0e7a7524fceb51fb427aad908",
+    "weak296_source_patch_sha256": "2d86a99f0acd6b7a2faef4fddc0802971f30e2a5cb307a921db0feee07875aef",
+    "cleanup_bridge_patch_sha256": "3f0b4398739e82c26f3f91255d2f0fc8808b9a2f7f0daee14d9556e00ecec09e"
+  },
+  "tested_inputs": {
+    "test_root": ".tools/gc-current-15",
+    "source_patch": ".tools/gc-temporary-source-16.patch",
+    "source_patch_sha256": "7c0d3d15885a759dcaee4b82dd381d9c86336cdde3fe87c12603f922002cb7ba",
+    "changed_inputs": {
+      "spec/semantics/30-storage.watsup": "1f92fff88e0086ad7b66e0deabe7272546a27221654c34867df7cefff58b29d6",
+      "spec/semantics/257-request-destructors.watsup": "b08ca9b7140f49f96c92d1f8948a4634b0ab83f19aed08645acf45ac0da8bc95",
+      "spec/semantics/270-eager-destructors.watsup": "6a6651c831439381d08bfe4b97d285dd59593b32d72fdc09a5559f885b2a3e91",
+      "spec/semantics/301-cycle-collection.watsup": "9eb20ef616f1da0eae12613054d3a9c568ca2db01dcd8588a9522654f5b5a2f6",
+      "spec/semantics/296-weak-references.watsup": "ee666fd477f2d4acb28ab11007b1a1854b23e436811824eb543c3ceec7a74ec7"
+    },
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "native_runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING_removed": true
+    },
+    "strict_state_mode": "--sl",
+    "state_cap_seconds": 120,
+    "jobs": 1
+  },
+  "results": {
+    "unique_exact_normal_originals": 30,
+    "reached_cases": 14,
+    "physical_premises": 606,
+    "unsupported_agreement": 0,
+    "status": "independently accepted; cuts below retain their original inputs"
+  },
+  "cuts": [
+    {
+      "source_patch_sha256": "43dcfbb0142ee0d7d80b61b18a7244b2ff0c0e61b4892e465e7e9f8617a5f0e9",
+      "retained_originals": [
+        "stdclass-selfcycle-retains-target-until-explicit-collection",
+        "two-node-object-cycle-counts-two-native-objects",
+        "object-user-array-cycle-excludes-property-table-proxy",
+        "array-reference-cycle-counts-array-not-reference-wrapper",
+        "disabled-automatic-gc-still-admits-explicit-collection",
+        "gc-api-errors-dynamic-and-first-class-owner",
+        "weak-get-strong-result-pins-selfcycle",
+        "nested-collection-during-cycle-destructor",
+        "cycle-destructor-get-resurrection-once",
+        "immutable-empty-literal-does-not-create-black-buffer-hole",
+        "runtime-null-array-cast-does-not-create-black-buffer-hole",
+        "mutated-literal-empty-array-retains-black-buffer-hole",
+        "mutated-null-cast-array-retains-black-buffer-hole",
+        "immutable-null-cast-property-is-not-counted-as-cycle-garbage"
+      ],
+      "reached_cases": 6,
+      "physical_premises": 264,
+      "input_record": ".tools/gc-current-inputs.json",
+      "result": "Earlier independently accepted cuts retained; no renewal or relabeling as7c0d3d."
+    },
+    {
+      "source_patch_sha256": "7f8c6305b946820593de8997bd758d24523ac796757c7332fb77b091e2b59ed2",
+      "source_id": "cycle-destructors-precede-parent-free",
+      "source_report": ".tools/shutdown-review-_gdbk99o/report.json",
+      "frozen_input_report": ".tools/gc-temporary-16-parent-s5cp6jg2/report.json",
+      "initializer_report": ".tools/gc-temporary-16-init-tbksw0l3/report.json",
+      "states": [
+        {
+          "id": "discarded-property-rhs-temp-releases-one-owner-without-buffering",
+          "physical_premises": 60,
+          "report": ".tools/shutdown-state-review-tr3s_gpr/report.json"
+        }
+      ]
+    },
+    {
+      "source_patch_sha256": "403a596c1a00957fd1fad12fadcf477f6a0b6946e73a9013cde325ad93aeb9de",
+      "source_id": "genuine-child-cv-retirement-precedes-parent-buffer",
+      "source_report": ".tools/shutdown-review-_6_d76cl/report.json",
+      "states": [
+        {
+          "id": "consumed-temp-keeps-authentic-saved-destructor-leaf",
+          "physical_premises": 22,
+          "report": ".tools/shutdown-state-review-fa3aih4u/report.json"
+        },
+        {
+          "id": "retired-temp-receipt-remains-borrowed-at-operation-exit",
+          "physical_premises": 20,
+          "report": ".tools/shutdown-state-review-as24ts5v/report.json"
+        }
+      ]
+    },
+    {
+      "source_patch_sha256": "7c0d3d15885a759dcaee4b82dd381d9c86336cdde3fe87c12603f922002cb7ba",
+      "source_records": [
+        {
+          "id": "discarded-temporary-child-slot-still-buffers-cycle",
+          "report": ".tools/shutdown-review-ox1aq5nb/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-holder-m5yslngl/report.json"
+        },
+        {
+          "id": "retired-parent-slot-compacts-before-child-collector-black-removal",
+          "report": ".tools/shutdown-review-y70rxn25/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-callback-dzot3aei/report.json",
+          "native_report": ".tools/gc-retired-callback-native-16-oergyzhf/report.json"
+        },
+        {
+          "id": "second-trace-new-destructor-cycle-is-retained",
+          "report": ".tools/shutdown-review-61i4u7gg/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-source-pvkpzhre/report.json"
+        },
+        {
+          "id": "cycle-destructor-order-follows-buffer-not-allocation",
+          "report": ".tools/shutdown-review-70s_2526/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-source-5n51d_ao/report.json"
+        },
+        {
+          "id": "child-freed-in-cycle-destructor-not-counted-as-collected",
+          "report": ".tools/shutdown-review-1u2n6sh8/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-source-kcacoiqr/report.json"
+        },
+        {
+          "id": "cycle-destructor-throw-retains-gc-frame-and-collects",
+          "report": ".tools/shutdown-review-0jw_k3fp/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-source-l93xyd01/report.json"
+        },
+        {
+          "id": "net-neutral-same-target-write-buffers-before-later-unset",
+          "report": ".tools/shutdown-review-hqigs_d2/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-source-4zlmhl3y/report.json"
+        },
+        {
+          "id": "zero-owner-post-dtor-target-remains-gettable-until-retrace",
+          "report": ".tools/shutdown-review-jvq_i8g0/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-source-y1y479kp/report.json"
+        },
+        {
+          "id": "array-first-property-table-root-counts-shared-hashtable",
+          "report": ".tools/shutdown-review-5ld7bw64/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-source-be8osdqm/report.json"
+        },
+        {
+          "id": "object-first-property-table-root-does-not-count-shared-hashtable",
+          "report": ".tools/shutdown-review-9ct8nm7f/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-source-7czavcl0/report.json"
+        },
+        {
+          "id": "white-target-freed-during-unrelated-destructor-retains-trace-count",
+          "report": ".tools/shutdown-review-h7f6s_jp/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-source-b_c9v3lq/report.json"
+        },
+        {
+          "id": "freed-buffer-hole-is-reused-before-later-live-slot",
+          "report": ".tools/shutdown-review-r5t5pqk7/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-source-8d6dz0dg/report.json"
+        },
+        {
+          "id": "black-root-hole-is-backfilled-from-last-white-slot",
+          "report": ".tools/shutdown-review-prvycfc1/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-source-ycseyv9g/report.json"
+        },
+        {
+          "id": "collection-continues-after-dtor-throw-and-chains-later-error",
+          "report": ".tools/shutdown-review-iwg5m_ta/report.json",
+          "frozen_input_report": ".tools/gc-temporary-16-source-uxkrpnhr/report.json"
+        }
+      ],
+      "states": [
+        {
+          "id": "retired-object-slot-waits-for-real-child-and-handle-retirement",
+          "physical_premises": 47,
+          "report": ".tools/shutdown-state-review-e3u6ztb0/report.json"
+        },
+        {
+          "id": "later-dtor-retains-one-real-pending-error-owner",
+          "physical_premises": 46,
+          "report": ".tools/shutdown-state-review-iitaegde/report.json"
+        },
+        {
+          "id": "white-target-ordinary-free-retains-frozen-native-count",
+          "physical_premises": 41,
+          "report": ".tools/shutdown-state-review-3j5o3rch/report.json"
+        },
+        {
+          "id": "parent-root-precedes-child-after-no-gc-temporary-retirement",
+          "physical_premises": 59,
+          "report": ".tools/shutdown-state-review-57izzyph/report.json"
+        },
+        {
+          "id": "cv-child-retirement-preserves-child-first-collector-order",
+          "physical_premises": 47,
+          "report": ".tools/shutdown-state-review-1ujmeiew/report.json"
+        }
+      ],
+      "result": "All14 exact normal sources and240 physical state premises independently accepted; empty stderr, normal0/true newline, no timeouts, stable inputs."
+    }
+  ],
+  "new_rule_obligations": [
+    "Consume one real produced KNOWN temporary owner without possible-root registration; ordinary CV and outgoing VALUE decrements retain registration and multiplicity.",
+    "Authenticate local source/operand/progress and live release/exit pairing; saved destructor leaf and retired borrowed receipt remain valid without new roots.",
+    "Clear ordinary object allocation/weak lookup before child callbacks; retain a nonowning physical slot until its one genuine live/saved HANDLE completes.",
+    "Keep the retired slot in initial compaction; clear it with black slots before white compaction. Heap-identical coherent HANDLE removal rejects public/GC admission.",
+    "Retain one pending error owner and frozen counted targets; discriminate native Parent-first temporary order from Child-first CV order using heap-valid forged plans."
+  ],
+  "preserved_failures": {
+    "original_parent_order": ".tools/shutdown-review-lpjs1nav/report.json",
+    "compiler_stops_zero_credit": [
+      ".tools/gc-temporary-16-init-nh83fmqq/report.json",
+      ".tools/gc-temporary-16-init-7rc9gwua/report.json",
+      ".tools/gc-temporary-16-init-tza2iqi8/report.json"
+    ],
+    "missing_frame_bridge_leaf22_zero_credit": ".tools/shutdown-state-review-8kcda14x/report.json",
+    "early_physical_holder_hole": ".tools/shutdown-review-_7s_fl0k/report.json",
+    "original_state46_fixture_parse_zero_credit": ".tools/shutdown-state-review-kie1bjj9/report.json"
+  },
+  "recovery": {
+    "raw_reports_are_relative_to_test_root": true,
+    "source_commands": [
+      "python3 tests/semantics/cycle_collection_sources.py",
+      "python3 tests/semantics/cycle_collection_review.py --match CASE --native-report REPORT"
+    ],
+    "strict_state_command": "python3 .tools/gc-temporary-review-states-16.py --case CASE",
+    "fixture46_correction": "Only group the original out-of-range argument as GC_DTOR_RETURN pgcplan (|S_enter.OBJECTS|); original fixture/raw remain preserved."
+  },
+  "boundaries": [
+    "Automatic threshold collection",
+    "Internal lifetime graphs and collector-Fiber transfer",
+    "Initially free non-destructor resurrection and new zero-owner destructor target after retrace",
+    "Arbitrary synthetic producer reachability beyond local TEMP receipt consistency",
+    "Final canonical composition after the remaining accepted integrations",
+    "WeakMap, broader GC and fresh combined offline rebuild"
+  ],
+  "current_parent_composition": {
+    "scope": "Private285 parent plus301 (286 modules); introduced TEMP consumers and ordinary parked-HANDLE authority only. Earlier30source/606premise cuts are retained without renewal.",
+    "test_root": ".tools/gc-current285-16",
+    "parent": "577c2b2dedb9a13ba7c759858876928aea223305",
+    "source_patch_sha256": "6860dbc4e08727243ef4b81860e20b176d921004b81128126200695436cbef33",
+    "compiler_report": ".tools/gc-current285-16-compiler-9hp8dij_/report.json",
+    "initializer_report": ".tools/gc-current285-16-init-5bues6qt/report.json",
+    "sources": [
+      {
+        "id": "computed-discard-paused-fiber-keeps-force-close-consumer",
+        "native_report": ".tools/gc-current285-16-native-2hxkuirc/report.json",
+        "report": ".tools/shutdown-review-nybzt2lw/report.json",
+        "frozen_input_report": ".tools/gc-current285-16-source-6918jcim/report.json"
+      },
+      {
+        "id": "computed-discard-paused-generator-keeps-force-close-consumer",
+        "native_report": ".tools/gc-current285-16-native-w1439azv/report.json",
+        "report": ".tools/shutdown-review-qk0wzeas/report.json",
+        "frozen_input_report": ".tools/gc-current285-16-source-be9bpbtd/report.json"
+      },
+      {
+        "id": "retired-parent-handle-stays-authentic-through-child-fiber-suspension",
+        "native_report": ".tools/gc-current285-16-native-czddui3_/report.json",
+        "report": ".tools/shutdown-review-e5uqz9wr/report.json",
+        "frozen_input_report": ".tools/gc-current285-16-source-7ixwgnhq/report.json"
+      }
+    ],
+    "states": [
+      {
+        "id": "retired-parent-handle-is-authentic-in-suspended-child-vm",
+        "physical_premises": 45,
+        "report": ".tools/shutdown-state-review-u019g481/report.json",
+        "frozen_input_report": ".tools/gc-current285-16-state-onk13vqs/report.json"
+      }
+    ],
+    "preserved_compiler_failure_zero_credit": ".tools/gc-current285-16-compiler-i9oc1jbo/report.json",
+    "recovery": "python3 .tools/run-gc-current285-16.py GATE, choosing compiler, init, source or state; source uses --case ID --native-report REPORT. Frozen tools and strict-SL120/jobs1 remain explicit.",
+    "maintained_state_command": "python3 tests/semantics/cycle_collection_state_review.py --sl --case retired-parent-handle-is-authentic-in-suspended-child-vm"
+  }
+}
