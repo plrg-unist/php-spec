@@ -18,6 +18,7 @@ dec $error_handler_eligible(pstate, int) : bool
 dec $eval_compile_recorded_error(pstate, int) : bool
 dec $display_events(pstate, pevent) : pevent*
 def $report_event(S, pevent, i_level) = S[.ERRORFATALTRACE = eps][.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"]
+  -- if S.SOURCEPENDING = eps
   -- if ~$eval_compile_recorded_error(S, i_level)
   -- if $error_handler_eligible(S, i_level)
 def $report_event(S, pevent, i_level) = S[.ERRORFATALTRACE = eps][.EVENTS = S.EVENTS ++ $display_events(S, $event_source(S, pevent))]

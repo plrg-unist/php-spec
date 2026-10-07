@@ -1,0 +1,214 @@
+{
+  "scope": "Stringable source immediate compiler fatal, authenticated sole-return fast helper, and latent exception ordering at selected C error APIs; partial required core.",
+  "status": "independently_reviewed_private_ready",
+  "tested_revision": "5412b7b20898d8406928bbcbaaf1ee924803cb11",
+  "semantic_parent": "First298 lifetime/cast-pending cut in source-stringable-review.json; prior4/37 remain at that cut without renewal.",
+  "semantic_root": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-ordering-298",
+  "semantic_sha256": {
+    "spec/semantics/30-storage.watsup": "b34a1e8df3860f7149798aa803f8bdcfdd3d1166b096d1b8898371ef8a768e58",
+    "spec/semantics/39-ownership.watsup": "caf24d94e76fc3716668f12fafb625e847f60697d8402266aa7048ccfaa97524",
+    "spec/semantics/40-control.watsup": "de77150054f1960e1431133ce96caa3af4501395bba307a5143505b25e3b2b94",
+    "spec/semantics/84-call-integrity.watsup": "9e3eb7360fd5a30b0dedacf5640664f3613c145f3634e143b87e0a13ae992ed4",
+    "spec/semantics/101-error-suppression.watsup": "e8c9d481133e3151c2920a529baa670f7dec7bd52f20709f48f17550e66d317f",
+    "spec/semantics/160-eval-runtime.watsup": "46c3e4a4e7d06637c209a03e9aef666a0fb92fbe6b6fb4d52c833ebb8481aff7",
+    "spec/semantics/171-include-runtime.watsup": "03bcf351125bfa74e212935b25201db85a3cb35930a10218d593598ab84d491f",
+    "spec/semantics/172-file-context-intrinsics.watsup": "249f393066ff750f8d9b702360177d3f07b834613b0cafcf559b18ccbcea4900",
+    "spec/semantics/195-declaration-history.watsup": "78102ad975dbaf867c50829eef56191552fddf64bd88c01132cc379c1bd83883",
+    "spec/semantics/206-error-handlers.watsup": "27d839ebeedf458608048d63f63d0fb76aabd7725b37cb5396ae4fbafcd1f6a6",
+    "spec/semantics/207-error-handler-runtime.watsup": "e136ba84c548969d295c22ce24d618caf6b9bddb6140e8263018f4f21bb2c2f1",
+    "spec/semantics/236-eval-declaration-notices.watsup": "22cd2912a57a32b6c7b38270e84fea81897379fb5fb3bf444da054fb99d013d3",
+    "spec/semantics/287-source-array-operands.watsup": "9bb8c532efecbe2fb87b475241813aa52a3197f5af501bd87e0fb96d17584067",
+    "spec/semantics/298-source-stringable-lifetime.watsup": "8f8026dffa5a0e8840d08870cc87a238872b68bff2715d2bbdbd492bcffa8fae"
+  },
+  "source_patch": {
+    "path": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-ordering-reviewed-15.patch",
+    "sha256": "ac169859b4251574b63d6486276455b974e169cb271b55bd5b83de764c34a1c3",
+    "files": 14
+  },
+  "target": "PHP8.5.10 CLI NTS64",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_route": "INCLUDE_OR_EVAL copies a fake/null/sole-return result before final FREE_OP1 and NEXT_OPCODE. This cut authenticates compiled sole-return units. Captured operand destruction may leave EG(exception) pending through assignment/echo until a C helper checkpoint. Argument type/value errors suppress creation when pending; arity errors allocate and chain.",
+  "runtime_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "_build/default/adapter/main.exe": "1d7cebf175b60a6e2a534460ec2c4aff206cdd901e34f35f959041a49f5ac2f9",
+    ".tools/cprefix-compiler/compiler": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "compiler": {
+    "pin": "da36ac3c434cd291940293a63da64544307730a3",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "modules": 276,
+    "exit": 0,
+    "seconds": 3.3498051166534424,
+    "fresh_rebuild": false
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1",
+    "include_path": ".:"
+  },
+  "caps_seconds": {
+    "compiler": 300,
+    "native": 30,
+    "source_model": 60,
+    "source_outer": 90,
+    "state": 90
+  },
+  "source_command": "python3 .tools/source-stringable-ordering-check.py",
+  "source_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-ordering-run-sxwl9ara/report.json",
+  "source_agreements": 12,
+  "original_sources": 7,
+  "explicit_companions": 5,
+  "sources": [
+    {
+      "case": "pending-fatal-core",
+      "kind": "original",
+      "source_sha256": "3b1c322a1c63af490e742ac18167a64fc2d1c1206ce9cfe36f171c1d63170aa8",
+      "native_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/native-stringable-pending-fatal-jwejr965/report.json",
+      "seconds": 6.242346286773682,
+      "exit_status": 255
+    },
+    {
+      "case": "array-fast-deferred-direct",
+      "kind": "original",
+      "source_sha256": "f54706554eea549f74d7a67a4a3dadc5e46e89e7096f90864d674d1146275375",
+      "native_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/native-array-fast-8fwnjqz_/report.json",
+      "seconds": 9.139703273773193,
+      "exit_status": 0
+    },
+    {
+      "case": "strlen-fast-deferred-direct",
+      "kind": "explicit_companion",
+      "source_sha256": "1e81a39c816859b803959750f399bd6e06bbd828b169fbf020329d0d75201452",
+      "native_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/native-compiler-fold-direct-2mn05i4j/report.json",
+      "seconds": 9.544363021850586,
+      "exit_status": 0
+    },
+    {
+      "case": "count-regular-deferred-direct",
+      "kind": "explicit_companion",
+      "source_sha256": "6e4bc7c21fd8d26d712d80dcf75d35453771be4fbe102d7b1ab13ac845d088bf",
+      "native_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/native-compiler-fold-direct-2mn05i4j/report.json",
+      "seconds": 8.945994853973389,
+      "exit_status": 0
+    },
+    {
+      "case": "fast-deferred-direct",
+      "kind": "explicit_companion",
+      "source_sha256": "afe70f2372e45f31c3c4284e362ff6d015a2e7511907833f89888dd2f2441fcb",
+      "native_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/native-fast-direct-sdfab_uz/report.json",
+      "seconds": 9.290062427520752,
+      "exit_status": 0
+    },
+    {
+      "case": "regular-deferred-direct",
+      "kind": "explicit_companion",
+      "source_sha256": "9eb78e36e08c4d8448060eceae4c11cc4c40ef688d5b2f30f3674d1df93d7055",
+      "native_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/native-fast-direct-sdfab_uz/report.json",
+      "seconds": 8.707904577255249,
+      "exit_status": 0
+    },
+    {
+      "case": "scalar-fast-deferred-direct",
+      "kind": "explicit_companion",
+      "source_sha256": "8fda757c6ebbe12ec056a34b894753054de51a821951538daffb00f70891df8c",
+      "native_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/native-fast-direct-sdfab_uz/report.json",
+      "seconds": 9.41312313079834,
+      "exit_status": 0
+    },
+    {
+      "case": "fast-pending-type-error",
+      "kind": "original",
+      "source_sha256": "30ef13ec42302fe33e2850f8a6919c8d09b97b9e1cacf50f4adcabec5444f3d2",
+      "native_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/native-fast-pending-calls-c6xe4z_s/report.json",
+      "seconds": 11.2256019115448,
+      "exit_status": 0
+    },
+    {
+      "case": "fast-pending-warning-eligible",
+      "kind": "original",
+      "source_sha256": "dc3a1039f1052187d74a736ee39a095c276cd1e3f45c1963a46c6660cab456e8",
+      "native_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/native-fast-pending-calls-c6xe4z_s/report.json",
+      "seconds": 10.914374828338623,
+      "exit_status": 0
+    },
+    {
+      "case": "fast-pending-warning-ineligible",
+      "kind": "original",
+      "source_sha256": "2f191b98e7d0eb201fcc08488bafe85a1b143145e905de6291295bb6c9ff8775",
+      "native_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/native-fast-pending-calls-c6xe4z_s/report.json",
+      "seconds": 10.747243404388428,
+      "exit_status": 0
+    },
+    {
+      "case": "fast-pending-arity-error",
+      "kind": "original",
+      "source_sha256": "1be7c64eaa6475d75439dc5f8eb31ff3d23526e1ce13b1f78c0e68c946e8380b",
+      "native_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/native-fast-pending-arguments-xzujnurk/report.json",
+      "seconds": 12.33063268661499,
+      "exit_status": 0
+    },
+    {
+      "case": "fast-pending-value-error",
+      "kind": "original",
+      "source_sha256": "8c3468d5ea9d307e0011b99cb3302a858fa3a2e0b44ad3f389163e0db844a987",
+      "native_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/native-fast-pending-arguments-xzujnurk/report.json",
+      "seconds": 11.158953428268433,
+      "exit_status": 0
+    }
+  ],
+  "reached_state": {
+    "premises": 42,
+    "bindings": 22,
+    "predicates": 20,
+    "seconds": 8.7279634475708,
+    "exit": 0,
+    "raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/fast-pending-admission-run-erimixk8/report.json",
+    "scope": "Real startup, provider open and checked child parse reach captured input release; copied1, retired input, Throwable-only root, public entry, heap and8 field/binding negatives."
+  },
+  "maintained": {
+    "sources": "python3 tests/semantics/source_stringable_ordering_sources.py --semantic-root .tools/source-stringable-ordering-298",
+    "source_directory": "tests/semantics/source-stringable-ordering/",
+    "note": "Twelve main sources and six providers are byte-identical to credited originals. Relocation adds no new agreement; defaults await semantic integration.",
+    "states": "python3 tests/semantics/source_stringable_ordering_protocol.py --semantic-root .tools/source-stringable-ordering-298",
+    "prepare_only": "python3 tests/semantics/source_stringable_ordering_protocol.py --prepare-only",
+    "relocated_preparation_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-ordering-protocol-au469yd8/PREPARED.json",
+    "relocated_application_evaluations": 0
+  },
+  "preserved_zero_credit": {
+    "failed_cuts": [
+      "xd7ibmhp and w3ljse80 singleton-argument parse failures",
+      "nbdwm8uv ready recursion algorithmic-analysis failure",
+      "blcscgj8 same-unit fatal result nondeterminism"
+    ],
+    "observer_originals": "Fast/regular/scalar/strlen/count function_exists originals retain native-only zero agreement; distinct direct calls exercise required-core publication."
+  },
+  "required_follow_on": [
+    "additional emitted-code forms",
+    "helper NULL/FAKE returns and wider exception checkpoints",
+    "parser rejection and broader eval/file/once/provider behavior",
+    "constructor property promotion required core",
+    "final combined-source and fresh copied-path network-isolated offline rebuild"
+  ],
+  "integration": "Git metadata is read-only; reviewed private layered patch preserved, no canonical merge or fresh-build/full-core claim."
+}

@@ -48,7 +48,9 @@ dec $source_array_ready(pstate, int) : bool
 dec $source_read_ready(pstate) : bool
 dec $source_string_begin(pstate, poperand, nat, porigin, int, int, ptask*) : pstate
 dec $source_operand_tail(ptask*) : ptask*
-dec $source_operand_work(nat, ptask*, ptask*) : ptask*
+dec $source_fast_unit(pstate, nat) : bool
+def $source_fast_unit(S, n) = false -- otherwise
+dec $source_operand_work(pstate, nat, ptask*, ptask*) : ptask*
 dec $source_operand_contexts(pevalcontext*, nat) : pevalcontext*
 dec $source_operand_throw(nat, ptask*) : ptask*
 def $eval_callback_ready(S, z) = true
@@ -344,6 +346,8 @@ def $eval_response_valid(S, psourceresponse) = (S.COMPLETION = SOURCE_PENDING /\
 dec $eval_compile_context_phase(pevalcontext*, nat, pevalphase) : pevalcontext*
 dec $eval_compile_paused_unit(pstate, nat) : bool
 dec $source_eval_pending_context(pstate, pevalcontext) : bool
+dec $source_eval_pending_fatal(pstate, pevalcontext) : bool
+def $source_eval_pending_fatal(S, pevalcontext) = false -- otherwise
 dec $source_eval_pending_marker(pevalcontext) : bool
 def $source_eval_pending_context(S, pevalcontext) = false -- otherwise
 dec $eval_compile_result(pstate, pevalcontext, pevalcontext*, ppstate) : pstate
@@ -501,7 +505,7 @@ def $eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) = fals
 dec $eval_redeclare_class(pstate, pevalcontext, pclassdesc*, nat*, int) : bool
 def $eval_redeclare_class(S, pevalcontext, eps, n_message*, z) = false
 def $eval_redeclare_class(S, pevalcontext, pclassdesc :: pclassdesc_tail*, n_message*, z) = ($eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) \/ $eval_redeclare_class(S, pevalcontext, pclassdesc_tail*, n_message*, z))
-def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext[.PHASE = UNIT_RUN][.TAIL = $source_operand_tail(pevalcontext.TAIL)] :: pevalcontext_tail*][.TODO = $source_operand_work(pevalcontext.UNIT, $compiled_work(pevalcontext.UNIT, P.WORK) ++ [EVAL_END pevalcontext.UNIT], pevalcontext.TAIL)][.SERVICELEFT = eps][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext[.PHASE = UNIT_RUN][.TAIL = $source_operand_tail(pevalcontext.TAIL)] :: pevalcontext_tail*][.TODO = $source_operand_work(S_compiled, pevalcontext.UNIT, $compiled_work(pevalcontext.UNIT, P.WORK) ++ [EVAL_END pevalcontext.UNIT], pevalcontext.TAIL)][.SERVICELEFT = eps][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ~$source_eval_pending_marker(pevalcontext)
   -- if S_compiled.COMPLETION = NORMAL
   -- if ~$eval_compile_paused_unit(S_compiled, pevalcontext.UNIT)
@@ -520,6 +524,7 @@ def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_co
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = $eval_compile_throw(S_compiled, pevalcontext, pevalcontext_tail*, text, n_message*, z)
   -- if S_compiled.COMPLETION = THROWN text n_message* z
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPLETION = UNSUPPORTED "eval compiled source transition"]
+  -- if ~$source_eval_pending_marker(pevalcontext)
   -- if S_compiled.COMPLETION = NORMAL
   -- if P.COMPLETION =/= PPCNORMAL
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPLETION = UNSUPPORTED "eval compiled source missing code"]

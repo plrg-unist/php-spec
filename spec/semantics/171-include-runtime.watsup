@@ -330,7 +330,7 @@ def $file_parse_context_response(pfilecontext :: pfilecontext_tail*, psourceresp
 def $file_parse_response_valid(S, psourceresponse) = (S.COMPLETION = SOURCE_PENDING /\ S.SERVICELEFT =/= eps /\ $file_pending_state_valid(S) /\ $file_parse_context_response(S.FILECONTEXTS, psourceresponse) /\ $eval_response_shape(psourceresponse) /\ $call_descriptors_valid(S))
 
 dec $file_compile_result(pstate, pfilecontext, pfilecontext*, ppstate) : pstate
-def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.FILECONTEXTS = pfilecontext[.PHASE = FILE_UNIT_RUN][.TAIL = $source_operand_tail(pfilecontext.TAIL)] :: pfilecontext_tail*][.TODO = $iterator_notice_work(S_compiled.TODO, $source_operand_work(n_unit, $compiled_work(n_unit, P.WORK) ++ [FILE_END n_unit], pfilecontext.TAIL))][.SERVICELEFT = eps][.ORIGIN = (pfilecontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.INCLUDEDOPENED = $file_include_after_compile(S_compiled.INCLUDEDOPENED, n_opened*)]
+def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.FILECONTEXTS = pfilecontext[.PHASE = FILE_UNIT_RUN][.TAIL = $source_operand_tail(pfilecontext.TAIL)] :: pfilecontext_tail*][.TODO = $iterator_notice_work(S_compiled.TODO, $source_operand_work(S_compiled, n_unit, $compiled_work(n_unit, P.WORK) ++ [FILE_END n_unit], pfilecontext.TAIL))][.SERVICELEFT = eps][.ORIGIN = (pfilecontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.INCLUDEDOPENED = $file_include_after_compile(S_compiled.INCLUDEDOPENED, n_opened*)]
   -- if S_compiled.COMPLETION = NORMAL
   -- if P.COMPLETION = PPCNORMAL
   -- if pfilecontext.UNIT = (n_unit)

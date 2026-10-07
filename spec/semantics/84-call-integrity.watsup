@@ -355,10 +355,13 @@ dec $exception_handlers_valid(pstate, pvalue?*) : bool
 dec $eval_compile_owners_valid(pstate) : bool
 dec $generator_state_valid(pstate) : bool
 dec $call_descriptors_valid(pstate) : bool
+dec $source_pending_state_valid(pstate) : bool
+def $source_pending_state_valid(S) = true -- otherwise
 dec $call_descriptors_local_valid(pstate) : bool
 dec $class_state_valid(pstate) : bool
 ;; Class history authenticates these source images and the exact function table.
 def $call_descriptors_local_valid(S) = true
+  -- if $source_pending_state_valid(S)
   -- if $startup_state_valid(S)
   -- if $display_state_valid(S)
   -- if $precision_state_valid(S)

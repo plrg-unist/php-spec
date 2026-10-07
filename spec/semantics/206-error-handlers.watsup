@@ -98,9 +98,11 @@ dec $error_trigger_kind(pintrinsic) : bool
 dec $error_trigger_message(pstate, pconfigcall) : preqbytes?
 dec $error_api_error(pstate, pconfigcall, text, preqbytes) : pstate
 def $error_api_error(S, pconfigcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pconfigcall.SITE)], text, preqbytes, pconfigcall.LINE, $source_trace_prefixed(S, $config_trace_frames(S, pconfigcall, $error_trigger_trace_values(S, pconfigcall))))
+  -- if ~$pending_error_api_argument(S, pconfigcall, text)
   -- if $error_trigger_kind(pconfigcall.KIND)
   -- if $error_trigger_message(S, pconfigcall) =/= eps
 def $error_api_error(S, pconfigcall, text, preqbytes) = $config_error(S, pconfigcall, text, preqbytes)
+  -- if ~$pending_error_api_argument(S, pconfigcall, text)
   -- if ~$error_trigger_kind(pconfigcall.KIND) \/ $error_trigger_message(S, pconfigcall) = eps
 def $error_api_long(S, pconfigcall, n, pvalue) = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
   -- if ptypeconversion = $error_long_conversion(pvalue, $config_strict(S, pconfigcall))

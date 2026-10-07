@@ -148,7 +148,7 @@ def $eval_compile_finish(S, pevalcompile) = $eval_compile_stop(S[.COMPLETION = U
   -- if pevalcompile.PLAN.COMPLETION = PPCABRUPT (UNSUPPORTED text)
 def $eval_compile_finish(S, pevalcompile) = $eval_compile_stop(S[.COMPLETION = UNSUPPORTED "namespace eval compilation without diagnostic"], pevalcompile, PCSUNSUPPORTED pevalcompile.CHECKPOINT)
   -- if pevalcompile.PLAN.COMPLETION = PPCNAMESPACE
-def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = $source_operand_work(pevalcompile.PLAN.UNIT, $compiled_work(pevalcompile.PLAN.UNIT, pevalcompile.PLAN.WORK) ++ [EVAL_END pevalcompile.PLAN.UNIT], pevalcontext.TAIL)][.EVALCONTEXTS = $source_operand_contexts($eval_compile_context_phase(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT, UNIT_RUN), pevalcompile.PLAN.UNIT)][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = $source_operand_work(S, pevalcompile.PLAN.UNIT, $compiled_work(pevalcompile.PLAN.UNIT, pevalcompile.PLAN.WORK) ++ [EVAL_END pevalcompile.PLAN.UNIT], pevalcontext.TAIL)][.EVALCONTEXTS = $source_operand_contexts($eval_compile_context_phase(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT, UNIT_RUN), pevalcompile.PLAN.UNIT)][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pevalcompile.PENDING = NORMAL
   -- if $eval_context_at(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT) = (pevalcontext)
 def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = $source_compile_throw_work(n, pevalcontext.TAIL)][.EVALCONTEXTS = pevalcontext_tail*][.ORIGIN = (pevalcontext.SITE)]
@@ -340,6 +340,7 @@ rule PhpStep/eval-compile-notices-pending: S ~> $iterator_notice_throw_tail(S[.T
 
 def $eval_compile_paused_unit(S, n) = ($eval_compile_claim_at($eval_compile_waiting(S.DECLARATIONS), n) =/= eps \/ $eval_compile_cursor_at($eval_compile_cursors(S), n) =/= eps)
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext[.PHASE = EVAL_COMPILE] :: pevalcontext_tail*][.SERVICELEFT = eps]
+  -- if ~$source_eval_pending_fatal(S_compiled, pevalcontext)
   -- if S_compiled.COMPLETION = NORMAL
   -- if $eval_compile_paused_unit(S_compiled, pevalcontext.UNIT)
 dec $precision_eval_resume_valid(pstate, pevalcompile) : bool
@@ -457,6 +458,7 @@ def $eval_compile_resume_task(ptask) = false -- otherwise
 ;; source formatter uses the existing selected-method/string return machinery.
 def $eval_compile_fatal_valid(S, pevalcompilefatal) = true
   -- if $iterator_notice_link_fatal(pevalcompilefatal.COMPLETION)
+  -- if $source_compile_cursor_pending_valid(S, pevalcompilefatal.CURSOR)
   -- if $eval_compile_pending_object(S, pevalcompilefatal.CURSOR.PENDING)
   -- if (PDEXIT pevalcompilefatal.CURSOR.PLAN.UNIT (PCSLINK pevalcompilefatal.CURSOR.CHECKPOINT)) <- S.DECLARATIONS \/ (PDEXIT pevalcompilefatal.CURSOR.PLAN.UNIT PCSCOMPILER) <- S.DECLARATIONS
   -- if $eval_context_at(S.EVALCONTEXTS, pevalcompilefatal.CURSOR.PLAN.UNIT) = (pevalcontext)

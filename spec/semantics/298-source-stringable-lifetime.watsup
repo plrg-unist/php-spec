@@ -180,3 +180,240 @@ def $compile_source_work(S, n_unit, (EVAL_AWAIT n_unit) :: (SOURCE_STRING_PROPAG
   -- if $(|S.DECLARATIONS| > 0)
   -- if S.DECLARATIONS[$nabs($(|S.DECLARATIONS| - 1))] = PDEXIT n_unit PCSCOMPLETE
   -- if $eval_compile_pending_object(S, THROWING n)
+
+def $source_eval_pending_fatal(S, pevalcontext) = true
+  -- if $source_eval_pending_marker(pevalcontext)
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+  -- if pevalcompilefatal.CURSOR.PLAN.UNIT = pevalcontext.UNIT
+
+;; A pending source Throwable survives an immediate hard compiler stop. Its
+;; genuine fatal renderer is live work, not the retired parser-await task.
+def $compile_source_work(S, n_unit, (EVAL_AWAIT n_unit) :: (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: ptask_tail*) = S.TODO
+  -- if S.COMPLETION = NORMAL
+  -- if $eval_context_at(S.EVALCONTEXTS, n_unit) = (pevalcontext)
+  -- if pevalcontext.TAIL = (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: ptask_tail*
+  -- if $source_eval_pending_context(S, pevalcontext)
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+  -- if pevalcompilefatal.CURSOR.PLAN.UNIT = n_unit
+  -- if pevalcompilefatal.CURSOR.PENDING = THROWING n
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.SERVICELEFT = eps]
+  -- if pevalcontext.TAIL = (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: ptask_tail*
+  -- if S_compiled.COMPLETION = NORMAL
+  -- if $source_eval_pending_context(S_compiled, pevalcontext)
+  -- if $eval_compile_fatal_current(S_compiled) = (pevalcompilefatal)
+  -- if pevalcompilefatal.CURSOR.PLAN.UNIT = pevalcontext.UNIT
+  -- if pevalcompilefatal.CURSOR.PENDING = THROWING n
+  -- if $eval_compile_fatal_valid(S_compiled, pevalcompilefatal)
+
+;; The temporary cast receiver is released before a parser context exists.
+;; Its real destructor frame still has the surrounding zero-argument keyword.
+dec $source_string_ready_kind(ptask) : bool
+def $source_string_ready_kind(SOURCE_STRING_READY psourceoperand n n_text*) = true
+def $source_string_ready_kind(ptask) = false -- otherwise
+dec $source_string_ready_record(ptask*) : (psourceoperand, nat, preqbytes)?
+def $source_string_ready_record((SOURCE_STRING_READY psourceoperand n n_text*) :: ptask_tail*) = ((psourceoperand, n, n_text*))
+def $source_string_ready_record(ptask :: ptask_tail*) = $source_string_ready_record(ptask_tail*)
+  -- if ~$source_string_ready_kind(ptask)
+def $source_string_ready_record(eps) = eps
+
+def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S.FILES, psourceoperand.SITE), LINE psourceoperand.LINE, FUNCTION $source_operand_keyword(psourceoperand.KIND), CLASS eps, TYPE eps, ARGS eps, HASARGS false}]
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_rest*
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $source_string_ready_record(ptask_rest*) = ((psourceoperand, n_receiver, n_text*))
+  -- if pdestructionoperation.SOURCE = STRINGIFY_RESULT n_receiver porigin_child psourceoperand.LINE
+  -- if pdestructionoperation.VALUE = KNOWN (PSTRING n_text*)
+  -- if pdestructionoperation.ORIGIN = (porigin_child)
+  -- if porigin_child = $source_operand_child(psourceoperand)
+  -- if S_scope = $source_string_owner_scope(S, psourceoperand.OWNER)
+  -- if S_scope.TODO = pframe.TODO
+  -- if S_scope.ORIGIN = pframe.ORIGIN
+  -- if S_scope.CURRENT = pframe.CONTEXT
+  -- if pframe.CONTEXT = pdestructionoperation.CALLER
+  -- if $source_operand_valid(S_scope, psourceoperand)
+  -- if $source_operand_suffix(S_scope.TODO, SOURCE_STRING_READY psourceoperand n_receiver n_text*, psourceoperand.TAIL)
+  -- if $destructor_context_valid(S, pcallcontext)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pcallcontext.CALLSITE = pdestructorcall.SITE
+  -- if pcallcontext.LINE = $destructor_line(pdestructorcall)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+
+;; Zend's sole constant RETURN is the implicit file/eval return after code
+;; generation emitted no body opcodes. An explicit RETURN still emits a second
+;; implicit return and therefore takes the ordinary entered-code route.
+dec $source_fast_work(pstate, nat, ppwork*) : bool
+dec $source_fast_statement(pstate, nat, pcpath, statement) : bool
+dec $source_fast_expression(pstate, nat, pcpath, expression) : bool
+dec $source_fast_call(expression) : bool
+def $source_fast_call(NExprFuncCall phpType19 phpType6 metadata) = true
+def $source_fast_call(expression) = false -- otherwise
+dec $source_fast_constant(pvalue) : bool
+def $source_fast_constant(PNULL) = true
+def $source_fast_constant(PBOOL b) = true
+def $source_fast_constant(PINT i) = true
+def $source_fast_constant(PFLOAT n) = true
+def $source_fast_constant(PSTRING n_text*) = true
+def $source_fast_constant(PARRAY n) = true
+def $source_fast_constant(pvalue) = false -- otherwise
+def $source_fast_unit(S, n) = true
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if P = $declaration_compiler_state($eval_source_ppstate(S, pcunit))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $compilation_image_valid(S, pcunit, P)
+  -- if (PDEXIT n PCSCOMPLETE) <- S.DECLARATIONS
+  -- if $source_fast_work(S, n, P.WORK)
+def $source_fast_work(S, n, eps) = true
+def $source_fast_work(S, n, (PPCWORK pcpath statement plenv n_line) :: ppwork*) = ($source_fast_statement(S, n, pcpath, statement) /\ $source_fast_work(S, n, ppwork*))
+def $source_fast_statement(S, n, pcpath, NStmtNop metadata) = true
+def $source_fast_statement(S, n, pcpath, NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
+  -- if $function_at(S.FUNCTIONS, PORIGIN n pcpath) = (pfunction)
+  -- if pfunction.EARLY
+def $source_fast_statement(S, n, pcpath, NStmtExpression expression metadata) = $source_fast_expression(S, n, pcpath ++ [PCFIELD 0], expression)
+def $source_fast_statement(S, n, pcpath, statement) = false -- otherwise
+def $source_fast_expression(S, n, pcpath, expression) = true
+  -- if ~$source_fast_call(expression)
+  -- if $compiled_read(S, PORIGIN n pcpath) = (pvalue)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+  -- if $source_fast_constant(pvalue)
+def $source_fast_expression(S, n, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata) = true
+  -- if $ppbuiltin_arguments(phpType7*) = ([expression])
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) = $ptascii("strlen")
+  -- if $compiled_read(S, PORIGIN n (pcpath ++ [PCFIELD 1, PCINDEX 0, PCFIELD 1])) = (PSTRING ptbytes_arg)
+  -- if $compiled_effects(S, PORIGIN n (pcpath ++ [PCFIELD 1, PCINDEX 0, PCFIELD 1])) = eps
+def $source_fast_expression(S, n, pcpath, expression) = false -- otherwise
+
+dec $source_fast_end(psourceoperand, nat) : ptask
+dec $source_fast_value(psourceoperand) : pvalue
+def $source_fast_end(psourceoperand, n) = EVAL_END n -- if psourceoperand.KIND = 0
+def $source_fast_end(psourceoperand, n) = FILE_END n -- if psourceoperand.KIND =/= 0
+def $source_fast_value(psourceoperand) = PNULL -- if psourceoperand.KIND = 0
+def $source_fast_value(psourceoperand) = PINT 1 -- if psourceoperand.KIND =/= 0
+def $source_operand_work(S, n, ptask_work*, (SOURCE_OPERAND_RELEASE psourceoperand) :: ptask_tail*) = [SOURCE_OPERAND_FAST psourceoperand n, $source_fast_end(psourceoperand, n)] ++ ptask_tail*
+  -- if $source_fast_unit(S, n)
+
+dec $source_fast_context(pstate, psourceoperand, nat) : bool
+dec $source_fast_binding(pstate, psourceoperand, nat) : bool
+def $source_fast_binding(S, psourceoperand, n) = true
+  -- if psourceoperand.KIND = 0
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = (pevalbinding)
+  -- if pevalbinding.SITE = psourceoperand.SITE
+def $source_fast_binding(S, psourceoperand, n) = true
+  -- if psourceoperand.KIND =/= 0
+  -- if $file_binding_at(S.FILEBINDINGS, n) = (pfilebinding)
+  -- if pfilebinding.SITE = psourceoperand.SITE
+  -- if pfilebinding.KIND = psourceoperand.KIND
+def $source_fast_binding(S, psourceoperand, n) = false -- otherwise
+def $source_fast_context(S, psourceoperand, n) = true
+  -- if $source_operand_site(S, psourceoperand)
+  -- if psourceoperand.OWNER = |S.FRAMES|
+  -- if $source_fast_unit(S, n)
+  -- if $source_fast_binding(S, psourceoperand, n)
+  -- if psourceoperand.KIND = 0
+  -- if $eval_context_at(S.EVALCONTEXTS, n) = (pevalcontext)
+  -- if pevalcontext.PHASE = UNIT_RUN
+  -- if pevalcontext.SITE = psourceoperand.SITE
+  -- if pevalcontext.OWNER = psourceoperand.OWNER
+  -- if pevalcontext.TAIL = psourceoperand.TAIL
+def $source_fast_context(S, psourceoperand, n) = true
+  -- if $source_operand_site(S, psourceoperand)
+  -- if psourceoperand.OWNER = |S.FRAMES|
+  -- if $source_fast_unit(S, n)
+  -- if $source_fast_binding(S, psourceoperand, n)
+  -- if psourceoperand.KIND =/= 0
+  -- if $source_operand_file_context(S.FILECONTEXTS, n) = (pfilecontext)
+  -- if pfilecontext.PHASE = FILE_UNIT_RUN
+  -- if pfilecontext.SITE = psourceoperand.SITE
+  -- if pfilecontext.OWNER = psourceoperand.OWNER
+  -- if pfilecontext.KIND = psourceoperand.KIND
+  -- if pfilecontext.TAIL = psourceoperand.TAIL
+def $source_fast_context(S, psourceoperand, n) = false -- otherwise
+def $task_nodes(SOURCE_OPERAND_FAST psourceoperand n) = $operand_nodes(psourceoperand.INPUT)
+def $task_nodes(SOURCE_FAST_FINISH psourceoperand n) = eps
+def $call_task_valid(S, SOURCE_OPERAND_FAST psourceoperand n) = ($source_operand_valid(S, psourceoperand) /\ $source_fast_context(S, psourceoperand, n) /\ $source_operand_suffix(S.TODO, SOURCE_OPERAND_FAST psourceoperand n, $source_fast_end(psourceoperand, n) :: psourceoperand.TAIL))
+def $call_task_valid(S, SOURCE_FAST_FINISH psourceoperand n) = ($source_fast_context(S, psourceoperand, n) /\ $source_operand_suffix(S.TODO, SOURCE_FAST_FINISH psourceoperand n, $source_fast_end(psourceoperand, n) :: psourceoperand.TAIL) /\ S.RESULT = KNOWN $source_fast_value(psourceoperand))
+rule PhpStep/source-fast-release: S ~> S[.TODO = (SOURCE_FAST_FINISH psourceoperand n) :: ptask_tail*][.RESULT = KNOWN $source_fast_value(psourceoperand)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SOURCE_OPERAND_FAST psourceoperand n) :: ptask_tail*
+  -- if $call_task_valid(S, SOURCE_OPERAND_FAST psourceoperand n)
+rule PhpStep/source-fast-finish: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (SOURCE_FAST_FINISH psourceoperand n) :: ptask_tail*
+  -- if $call_task_valid(S, SOURCE_FAST_FINISH psourceoperand n)
+
+;; FREE_OP1 runs after the constant result has been copied. Preserve the actual
+;; eager operation and its value transfer; the source input is now documentary
+;; and must not retain the retired captured object through later opcodes.
+def $destructor_pending_finish(S, pdestructionoperation, n_pending, (SOURCE_FAST_FINISH psourceoperand n_unit) :: ptask_tail*) = S[.SOURCEPENDING = ({OPERAND psourceoperand, UNIT n_unit, EXCEPTION n_pending, CALLER pdestructionoperation.CALLER})][.TODO = (SOURCE_FAST_FINISH psourceoperand n_unit) :: ptask_tail*][.RESULT = pdestructionoperation.VALUE][.BASE = pdestructionoperation.BASE][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION][.COMPLETION = NORMAL]
+  -- if pdestructionoperation.SOURCE = SOURCE_OPERAND_FAST psourceoperand n_unit
+  -- if pdestructionoperation.VALUE = KNOWN $source_fast_value(psourceoperand)
+  -- if pdestructionoperation.ORIGIN = (psourceoperand.SITE)
+  -- if S.CURRENT = pdestructionoperation.CALLER
+  -- if S.SOURCEPENDING = eps
+  -- if ptask_tail* = $source_fast_end(psourceoperand, n_unit) :: psourceoperand.TAIL
+  -- if $source_fast_context(S, psourceoperand, n_unit)
+  -- if $eval_compile_pending_object(S, THROWING n_pending)
+
+dec $source_pending_record_valid(pstate, psourcepending) : bool
+def $source_pending_record_valid(S, psourcepending) = true
+  -- if psourceoperand = psourcepending.OPERAND
+  -- if S_owner = $source_string_owner_scope(S, psourceoperand.OWNER)
+  -- if psourceoperand.OWNER = |S_owner.FRAMES|
+  -- if S_owner.CURRENT = psourcepending.CALLER
+  -- if $source_operand_site(S_owner, psourceoperand)
+  -- if $source_fast_unit(S_owner, psourcepending.UNIT)
+  -- if $source_fast_binding(S_owner, psourceoperand, psourcepending.UNIT)
+  -- if $eval_compile_pending_object(S, THROWING psourcepending.EXCEPTION)
+def $source_pending_record_valid(S, psourcepending) = false -- otherwise
+def $source_pending_state_valid(S) = $source_pending_record_valid(S, psourcepending)
+  -- if S.SOURCEPENDING = (psourcepending)
+
+;; A latent EG(exception) suppresses eligible user error handlers while the
+;; internal function still runs. Ineligible diagnostics use the normal default.
+def $report_event(S, pevent, i) = S[.ERRORFATALTRACE = eps]
+  -- if S.SOURCEPENDING =/= eps
+  -- if ~$eval_compile_recorded_error(S, i)
+  -- if $error_handler_eligible(S, i)
+def $error_dispatch(S, i, n_message*, z, pevent, ptask_resume) = S[.TODO = ptask_resume :: ptask_tail*]
+  -- if S.SOURCEPENDING =/= eps
+  -- if ~$eval_compile_recorded_error(S, i)
+  -- if $error_handler_eligible(S, i)
+  -- if S.TODO = ptask :: ptask_tail*
+
+;; ZPP argument type/value diagnostics return without allocating when an
+;; exception is already pending. Parameter-count errors follow another engine
+;; route and retain ordinary allocation/chaining at the transition boundary.
+def $pending_error_api_argument(S, pconfigcall, text) = true
+  -- if S.SOURCEPENDING =/= eps
+  -- if $error_api_kind(pconfigcall.KIND)
+  -- if text = "TypeError" \/ text = "ValueError"
+def $config_error(S, pconfigcall, text, preqbytes) = S[.COMPLETION = THROWING psourcepending.EXCEPTION]
+  -- if S.SOURCEPENDING = (psourcepending)
+  -- if $pending_error_api_argument(S, pconfigcall, text)
+def $error_api_error(S, pconfigcall, text, preqbytes) = S[.COMPLETION = THROWING psourcepending.EXCEPTION]
+  -- if S.SOURCEPENDING = (psourcepending)
+  -- if $pending_error_api_argument(S, pconfigcall, text)
+
+;; DO_ICALL checks after the C helper has finished. Assignment and echo are
+;; separate operations and retain the copied result before this checkpoint.
+dec $source_pending_checkpoint(pstate, pstate) : bool
+def $source_pending_checkpoint(S, S_next) = true
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if S_next.TODO = ptask_tail*
+  -- if S_next.FRAMES = S.FRAMES
+  -- if S_next.CURRENT = S.CURRENT
+def $source_pending_checkpoint(S, S_next) = true
+  -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 2) :: ptask_tail*
+  -- if S_next.TODO = ptask_tail*
+def $source_pending_checkpoint(S, S_next) = true
+  -- if S.TODO = (REPORTING_LONG_RESULT pconfigcall i) :: ptask_tail*
+  -- if S_next.TODO = ptask_tail*
+def $source_pending_checkpoint(S, S_next) = false -- otherwise
+def $source_exception_transition(S, S_next) = $throwable_previous(S_next[.SOURCEPENDING = eps], n_new, psourcepending.EXCEPTION)
+  -- if S.SOURCEPENDING = (psourcepending)
+  -- if S_next.COMPLETION = THROWING n_new
+def $source_exception_transition(S, S_next) = S_next[.SOURCEPENDING = eps][.COMPLETION = THROWING psourcepending.EXCEPTION][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.SOURCEPENDING = (psourcepending)
+  -- if S_next.COMPLETION = NORMAL
+  -- if $source_pending_checkpoint(S, S_next)
+def $source_exception_terminal(S) = S[.SOURCEPENDING = eps][.COMPLETION = THROWING psourcepending.EXCEPTION]
+  -- if S.SOURCEPENDING = (psourcepending)

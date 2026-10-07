@@ -111,8 +111,9 @@ rule PhpStep/source-operand-release: S ~> S[.TODO = ptask_tail*]
 ;; before body entry. Context suffixes keep only the real caller continuation.
 def $source_operand_tail((SOURCE_OPERAND_RELEASE psourceoperand) :: ptask_tail*) = ptask_tail*
 def $source_operand_tail(ptask*) = ptask* -- otherwise
-def $source_operand_work(n, ptask_work*, (SOURCE_OPERAND_RELEASE psourceoperand) :: ptask_tail*) = (SOURCE_OPERAND_ENTER psourceoperand n) :: ptask_work* ++ ptask_tail*
-def $source_operand_work(n, ptask_work*, ptask_tail*) = ptask_work* ++ ptask_tail* -- otherwise
+def $source_operand_work(S, n, ptask_work*, (SOURCE_OPERAND_RELEASE psourceoperand) :: ptask_tail*) = (SOURCE_OPERAND_ENTER psourceoperand n) :: ptask_work* ++ ptask_tail*
+  -- if ~$source_fast_unit(S, n)
+def $source_operand_work(S, n, ptask_work*, ptask_tail*) = ptask_work* ++ ptask_tail* -- otherwise
 def $source_operand_contexts(eps, n) = eps
 def $source_operand_contexts(pevalcontext :: pevalcontext_tail*, n) = pevalcontext[.TAIL = $source_operand_tail(pevalcontext.TAIL)] :: pevalcontext_tail*
   -- if pevalcontext.UNIT = n

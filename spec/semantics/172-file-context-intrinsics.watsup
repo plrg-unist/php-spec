@@ -346,7 +346,10 @@ def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe]
   -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND) /\ ~$weakref_kind(pconfigcall.KIND)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 dec $config_error(pstate, pconfigcall, text, preqbytes) : pstate
+dec $pending_error_api_argument(pstate, pconfigcall, text) : bool
+def $pending_error_api_argument(S, pconfigcall, text) = false -- otherwise
 def $config_error(S, pconfigcall, text, preqbytes) = $throwable_allocate(S[.ORIGIN = (pconfigcall.SITE)], text, preqbytes, pconfigcall.LINE, $source_trace_prefixed(S, $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))))
+  -- if ~$pending_error_api_argument(S, pconfigcall, text)
 dec $config_plural(nat) : preqbytes
 def $config_plural(1) = eps
 def $config_plural(n) = $ptascii("s") -- otherwise
