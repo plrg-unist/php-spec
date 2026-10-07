@@ -210,12 +210,12 @@ runs pending finally bodies with real scopes, graph links and cached owners.
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
 including eager argument and frame cleanup with pending exception chains.
-[Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) privately validates eager
+[Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
 parameters, deferred captures, implicit yield/delegation returns and original
 signatures. Value warnings retain the same Throwable, cached key and closed
 Closure owner. The current default/Fiber/Stringable-eval composition passes its
 source and75 reached cleanup premises; earlier cuts retain their identities.
-Ordered Git integration remains required.
+Final294 preserves the accepted property, collection and source-emission modules.
 IteratorAggregate, reference yields, wider call forms, request/terminal cleanup
 and complete destruction/GC remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped

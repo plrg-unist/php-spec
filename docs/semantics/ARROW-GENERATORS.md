@@ -67,8 +67,8 @@ fixture and lifetime failures remain zero-credit records in
 Recovery root is `.tools/traversal-arrow-generators-sjuqxdki`, an exact child of
 accepted310 publication23031d529e4c.../276 modules. Its ignored `.tools` records
 retain source bytes, profiles, native exits, observations, checked AST fixtures,
-evaluated premises and unchanged numeric caps. No311 canonical write has occurred;
-accepted289/303/310 are separately integrated at main d56228a77/282.
+evaluated premises and unchanged numeric caps. Canonical294 integrates311 over
+accepted289/303/310, property/collection and source-emission modules.
 
 The isolated current-parent composition is
 `.tools/traversal-arrow-generators-current-286`, parent `68393cbbb` with286
@@ -93,8 +93,10 @@ clears FILECONTEXTS under the existing empty-loader transfer domain; genuine
 file-marker runtime evidence belongs to the calls pair. Frozen148 is not renewed.
 The later ARG309 join at `93e721d06`/293 is independently reviewed as statically
 compatible: shared factoring preserves its predicates and the new append arms
-do not match this original. It earns no new execution credit. Ordered Git
-integration remains required.
+do not match this original. It earns no new execution credit. Final `b216135d1`/294
+preserves316 and passes strict compilation; its auto-global emission arms are
+disjoint from this child's ordinary CV. Earlier source/state cuts retain their
+original tested parents.
 
 Maintained commands are:
 

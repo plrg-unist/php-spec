@@ -73,14 +73,14 @@ terminal cleanup, parked running Generators, switching finalizers, general user
 destructors and cyclic collection remain required; their explicit Unsupported controls earn no
 agreement. Natural return/throw/finally cleanup remains distinct from forced close.
 
-[Arrow Generators311](ARROW-GENERATORS.md) privately validate the existing capture
+[Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture
 and implicit-return routes. Eager parameters, sent results, delegation, scope and
 original signatures retain separate source/state cuts. Value-warning cleanup
 retains the same Throwable, cached key and closed Closure owner. A separate
 frozen287 default/Fiber/eval composition passes one source and148 reached
 premises. The actual292 property/collection parent separately passes the same
-source and75 reached physical-HANDLE/Arrow-close premises. Ordered Git integration
-remains required.
+source and75 reached physical-HANDLE/Arrow-close premises. Final294 passes strict
+compilation; earlier source/state cuts retain their own tested parents.
 
 Constructor-created global constant instances follow the existing noncache
 policy for object defaults. Receives, yield caches and return values retain the

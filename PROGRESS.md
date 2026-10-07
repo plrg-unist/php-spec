@@ -7,7 +7,7 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Arrow Generator311 is privately validated on frozen310/276:44 normal source
+Arrow Generator311 is integrated; its frozen310/276 cut retains44 normal source
 agreements, nine compiler rejections and10 genuine strict-SL groups with987
 setup-inclusive premises retain separate cuts; two required Unsupported controls
 earn zero agreement. Eager receives, deferred captures, implicit sent/delegated
@@ -21,14 +21,16 @@ compiler287, one native/model agreement and148 independent reached premises;
 earlier cuts retain their identities. Exact311 also composes over the actual
 `2a2e1af7c` property/collection parent at292: strict compilation, the same original
 and75 independent source-HANDLE/Arrow-close/gc/clone premises pass without
-renewing148. Ordered Git integration remains required.
+renewing148. Final294 preserves accepted ARG309/316 and passes strict compilation;
+their introduced seams are independently reviewed as compatible, with no source/state
+renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
 The canonical source includes accepted ArrayAccess292/304/309, eager destruction270,
 WeakReference296, ordinary cycle collection301, Fiber291/302/308,
-Generator289/303/310 and source operands293/298,
+Generator289/303/310/311 and source operands293/298,
 plus instance/readonly properties288/294 and clone300/305 with cached maker selection,
-with293 modules descended from `38f1dfaa045f`. The ordered integration preserves
+with294 modules descended from `38f1dfaa045f`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
