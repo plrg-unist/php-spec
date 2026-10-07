@@ -248,7 +248,16 @@ control/child retirement 77. Reports `fiber-protected-composed-sl-8lnv1fpq`,
 `fiber-review-2d4l4tb7`, `fiber-state-review-1lf_0ogs` and
 `fiber-state-review-9zmisdrn` are under `.tools/calls-fiber-protected-16/.tools`.
 This separate cut does not renew or add distinct originals to the 277 counts.
-Integration onto the final composed parent remains pending.
+The final GEN/include parent `ed7f23c67` composition, tested at `68b9ec4c4`,
+passes strict-SL 285 initialization, the same exact defined-result comparison
+and the two strict-SL groups/113 premises. Its reports
+`fiber-protected-composed-sl-c5kbvkbr`, `fiber-review-zw0a2mof`,
+`fiber-state-review-4db8u833` and `fiber-state-review-h0hyhipg` are under
+`.tools/calls-fiber-protected-composed-16/.tools`. The unchanged source and
+reviewed hooks are now integrated; neither composition adds distinct originals
+to the 277 counts. Recover the reached gates with `fiber_protected_review.py`
+selecting `private-previous-cannot-transplant-another-live-real-throwable` and
+`retiring-private-control-keeps-previous-child-and-genuine-release-count`.
 
 Admission checks producer and heap consistency, not reachability from the entire
 prior execution. The 32-condition diagnostic `fiber-state-review-50bdeosz` changes

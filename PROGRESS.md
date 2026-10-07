@@ -8,13 +8,13 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 ## Current checkpoint
 
 The canonical source includes accepted ArrayAccess292/304, eager destruction270,
-WeakReference296, Fiber291/302, Generator289/303/310 and source operands293/298,
-with 284 modules descended from `38f1dfaa045f`. The ordered source integration
+WeakReference296, Fiber291/302/308, Generator289/303/310 and source operands293/298,
+with 285 modules descended from `38f1dfaa045f`. The ordered source integration
 preserves the final Generator eager-release bridge and Fiber cleanup guards.
-Its new combined cut passes strict 284 compilation, one exact source original and
+The preceding 284-module cut passes strict compilation, one exact source original and
 49 reached premises during active nested Generator delegation. Earlier accepted
 cuts retain their original inputs. Independently accepted private milestones 286, 288,
-290, 294, 295, 297, 305, 306, 308 and 309 await ordered Git integration. Other private work
+290, 294, 295, 297, 305, 306 and 309 await ordered Git integration. Other private work
 covers 299, 300 and 301; source-emission314 remains private and unvalidated.
 Held 279 and user-paused return verification stay set aside. Complete core and the
 final combined, fresh offline rebuild remain required.
@@ -72,7 +72,7 @@ credit in the existing ledger. Parked running Generators, switching
 finalizers, request/terminal cleanup, GC and general user destructors remain open.
 [Scope and retained evidence](docs/semantics/GENERATOR-FIBER-CLOSE.md).
 
-Reviewed module 308 extends force-close of captured cleanup
+Integrated module 308 extends force-close of captured cleanup
 after an actual callback return: private previous ownership, source-less deprecation, restored reporting
 and shared handler registration. With its captured producer payload unchanged,
 a nonowning protected pair rejects another older Throwable substituted as the child. The fixed 277 module cut passes AL,
@@ -81,8 +81,9 @@ with zero agreement. Three authored groups/227 conditions and eleven independent
 groups/860 conditions pass, along with two affected existing schema groups.
 Composition over the integrated 291/302 parent `9dd9ca8b3` passes strict-SL 280
 initialization, one exact defined-result original and two reached strict-SL
-groups/113 premises. The final-parent integration remains pending; earlier cuts
-retain their own evidence.
+groups/113 premises. The final GEN/include parent `ed7f23c67` composition passes
+strict-SL 285 initialization, the same exact original and two groups/113 premises
+on tested transfer `68b9ec4c4`. Earlier cuts retain their own evidence.
 The original verbose-source timeout and ordinary dynamic-property warning gap
 remain required; undefined-result engine verification remains held.
 
