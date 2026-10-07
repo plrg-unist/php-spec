@@ -278,6 +278,7 @@ rule PhpStep/key-append-finish: S ~> $key_append_finish(S, pkeywriter)
   -- if S.ORIGIN = (pkeywriter.SITE)
   -- if S.LOCATION =/= NOWHERE
   -- if $key_writer_valid(S, pkeywriter, ptask_tail*)
+  -- if ~$access_set_pending(S)
 def $task_nodes(KEY_APPEND_RESULT pappendread) = $key_write_finish_roots(pappendread.WRITER) ++ [HARRAY pappendread.ARRAY]
 def $key_append_live(S, pappendread) = $($heap_owners($heap_prune($heap_graph(S)), HARRAY pappendread.ARRAY) > 1)
 def $key_append_insert(S, pappendread) = $literal_insert(S, n, eps, PNULL, pappendread.LINE)

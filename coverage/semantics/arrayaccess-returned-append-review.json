@@ -1,0 +1,454 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "decision": "Returned-child append309 is integrated with292 modules after independently accepted current301 compiler/new GC-source gates at79f513778. Earlier private309/actual278, current287 source1/reached64 and current291 compiler/source1 retain their recorded cuts. Exact maintained promotion adds no execution credit; independent review is arguments_review_18.",
+  "baseline": "c1d5011a0 (accepted292+304; 275 modules)",
+  "tested_revision": {
+    "head": "a0954c2dc12250cde676bb2fb26bd7e45d299ca8",
+    "tree": "c680675d0bf40b4b7215b9d422b2fda2d95aa3d5",
+    "status": ""
+  },
+  "modules": 276,
+  "semantic_diff": {
+    "sha256": "109ba66ac9d0e77ea67afd77e5347ac545c24b7851ecfd9a071de3cdab86dc7f",
+    "bytes": 5434,
+    "path": ".tools/semantic309.diff"
+  },
+  "scope": "Final simple append to an ordinary by-value returned ArrayAccess child calls offsetSet(null, value). One final writer carries genuine returned-cell/temp roots through Set. RHS CVs stay live after Get; undefined RHS latches null and pins the original child before its warning. Set result readback follows the original CV or dereferenced real CELL. Final [] source admission remains distinct from [null]. The generic242 plan excludes only255 final simple append ingress.",
+  "sources": {
+    "agreements": 8,
+    "report": ".tools/arrayaccess-returned-append/sources-b95ses0j/report.json",
+    "result": "PASS exact normal stdout/stderr/exit; stable revision/inputs and empty groups",
+    "cases": [
+      "returned-child-simple-append-live-cv-and-post-set-readback",
+      "returned-child-simple-append-keeps-old-rhs-reference-cell",
+      "returned-child-simple-append-eager-object-rhs-survives-root-retirement",
+      "returned-child-simple-append-set-throw-keeps-chain-and-source-lines",
+      "returned-child-simple-append-missing-rhs-latches-null-and-selected-child",
+      "returned-child-simple-append-missing-rhs-throw-skips-set",
+      "returned-child-final-explicit-null-keeps-dimension-source-form",
+      "returned-array-simple-append-keeps-real-row-and-late-rhs"
+    ],
+    "first_native_reuse": ".tools/arrayaccess-returned-append/sources-8u7ghe9b (identical original source/runtime/profile/cwd); other seven source cases freshly observed"
+  },
+  "reached_states": {
+    "recipes": 2,
+    "premises": 160,
+    "report": ".tools/arrayaccess-returned-append/states-h1_9y6_p/report.json",
+    "mode": "SL_mode strict/cache:false/det:true",
+    "result": "PASS true/empty stderr/exit0/no timeout/empty groups; stable clean a095 inputs",
+    "cases": {
+      "returned-simple-append-readback-keeps-old-reference-cell": 84,
+      "returned-simple-append-warning-keeps-null-and-original-child": 76
+    },
+    "elapsed_seconds": {
+      "returned-simple-append-readback-keeps-old-reference-cell": 97.85675716400146,
+      "returned-simple-append-warning-keeps-null-and-original-child": 182.0516655445099
+    },
+    "checks": "Genuine selected old CELL versus rebound CV, null latch versus callback-filled RHS, retained original child versus replacement, one embedded writer root set, exact site/line/[] source negatives and full public malformed rejection, release and one-step budget resumption."
+  },
+  "compiler": {
+    "declaration_corrected": ".tools/compiler-corrected-0bqqia1j/report.json",
+    "shared_plan_disjoint": ".tools/compiler-disjoint-5h8mgr_x/report.json",
+    "stages": "algo and struct actual multi-MB emitted specifications with expected semantic definitions, empty stderr/exit0; source/state execution is separate"
+  },
+  "promotion": {
+    "commit": "f22364215",
+    "sources": "Eight identical original source bytes and pinned native observations",
+    "recipes": "Two byte-identical independently prepared/executed recipes",
+    "maintained_preparation": ".tools/arrayaccess-returned-append/prepared-w4jdb_yb/report.json",
+    "comparisons": [
+      {
+        "id": "returned-simple-append-readback-keeps-old-reference-cell",
+        "assertions": 84,
+        "source_identical": true,
+        "fixture_identical_except_filename": true
+      },
+      {
+        "id": "returned-simple-append-warning-keeps-null-and-original-child",
+        "assertions": 76,
+        "source_identical": true,
+        "fixture_identical_except_filename": true
+      }
+    ],
+    "credit": "Compiler-only preparation and identical promotion add no new source/state execution"
+  },
+  "actual_parent": {
+    "status": "Independently accepted broad genuine interaction and strict-SL access62/entry39/handler83 at863. Earlier owner90, provider60, source4 and smaller actual retain separate tested cuts; canonical integration pending.",
+    "available_parent": "f2c415aa7 (accepted270+296+cleanup bridge; 277 modules)",
+    "candidate": "../arrayaccess-returned-append-review-26/current/current.php + Array",
+    "scope": "Accepted original278 composition at863: finite Array include, private Owner/Child warning cache, typed old-CELL RHS readback, null-key Set, eager-destructor and WeakReference child lifetime; full fresh native/model stream agrees.",
+    "prepared_revision": "b34c70f56/278 in ../arrayaccess-returned-append-actual-27",
+    "compiler_preparation": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-prepared-74wo9trz/report.json (peer accepted, compiler/frontend/provider only)",
+    "corrected_revision": "5441c6be92a22bb1d932735924fa2c73dbd5f0ae /278 in ../arrayaccess-returned-append-actual-27",
+    "normalization_bridge": "Two-line270 eager_written_task ACCESS_RESULT/MODE=ACCESS_SET recognition uses existing unused-result normalization; used results remain owned. Independent static review accepts the narrow bridge.",
+    "baseline_discrepancy": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/controls-53g3w16j/report.json: native G;S:N;C<;P;C>;R; versus normal model G;S:N;C<;C>;P;R;, genuine mismatch/zero agreement at frozen b34.",
+    "affected_sources": {
+      "agreements": 4,
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/controls-jbfnxava/report.json",
+      "result": "Independently accepted exact normal tuples, clean/stable5441 and closed groups; unused/used returned CV, direct unused CV, computed temporary RHS. TMP confirms native payload-before-child order without a second ordering edit."
+    },
+    "owner_states": {
+      "status": "PASS independently accepted",
+      "recipes": 2,
+      "compiler_preparation": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/owners-prepared-2bdv3jul/report.json",
+      "result": "Two strict-SL source-reached recipes45+45 at clean/stable5441,82.43/83.68secs,true/empty stderr/exit0/no timeout/closed groups; unused versus used result owners and budget cleanup.",
+      "premises": 90,
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/owners-states-x1a4k_yu/report.json"
+    },
+    "original_runtime": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-run-oo0rjavj/report.json: strict-SL initial6 and fresh native pass; CLI60 model timeout at65.09sec. Zero source agreement; stable inputs/clean revision/closed groups.",
+    "smaller_source": "../arrayaccess-returned-append-review-26/current-small/current.php + Array: exact preserved smaller original, fresh literal-provider include/old CELL/null Set/eager retirement/weak timing PASS at8ce.",
+    "smaller_preparation": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/small-prepared-t9611f5e/report.json: fresh frontend/provider/fixture compilation PASS, retained unchanged semantic algo/struct artifacts; no execution credit.",
+    "file_service_factor": {
+      "revision": "8cefc4fa8d26e4ca68b2a8f2ce26bc03ae3c4c68 /278",
+      "change": "171 computes unchanged full admission bool and resumed state once before dispatch; all original admission/completion/SERVICELEFT predicates retained, including existing THROWN overlap. Independent static review accepts extensional preservation.",
+      "original_diagnostic": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/phase-diagnostic-ah4esc20/report.json: execute28.74s then distinct resolve30.58s then parser continuation before total90 timeout; response-recording overhead<0.004s. Finite phase progression, no source credit."
+    },
+    "smaller_runtime": {
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-run-dgmha4n5/report.json",
+      "agreements": 1,
+      "result": "Independent exact normal native/model stream I;G:1;OD;S:N:17:1;CD;R:25:17:31:29:0:0:0; within unchanged caps; model64.14secs, initial strict-SL6 true24.71secs, stable clean8ce and closed groups."
+    },
+    "provider_state_preparation": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/provider-prepared-s5islbvt/report.json: 60 public response/nonce/caller/stale-state/parse-unit/bytes/budget checks; genuine artifact compilation PASS.",
+    "provider_states": {
+      "revision": "8cefc4fa8d26e4ca68b2a8f2ce26bc03ae3c4c68 /278",
+      "recipes": 1,
+      "premises": 60,
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/owners-states-jp_mw7pr/report.json",
+      "result": "Independent strict-SL PASS: true, empty stderr, exit0, 218.07s<300, stable clean inputs and closed groups. Full public response rejection, SERVICELEFT1 budget/replay and exact native output."
+    },
+    "broad_affected_runtime": {
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-run-cjbxb_td/report.json",
+      "revision": "8cefc4fa8 /278",
+      "credit": 0,
+      "result": "Changed171 justified one affected retry: initial6 PASS74.997s and fresh native49B pass; first execute request times out60.02s before any provider response, public65.09s, stable clean inputs/groups closed."
+    },
+    "entry_factor": {
+      "revision": "daa9be429390088af2e35ceb585a7b11bbecc8e1 /278",
+      "change": "82 scope_check and84 NORMAL call_entry compute unchanged pure scope/descriptor admission once through transient bools; all rejection priority/TODO updates and non-NORMAL behavior preserved. Independent static review and current863 entry39/source composition accepted.",
+      "compiler_preparation": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-prepared-eafy1j5e/report.json: real algo/struct artifacts PASS; no execution credit.",
+      "diagnostics": [
+        "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/phase-diagnostic-g0ks0cs1/report.json: broad execute0 reached BUDGET/no events in55.33s at8ce.",
+        "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/phase-diagnostic-kfblfvf8/report.json: same broad execute32 request60 timeout before reply; both stable/clean/closed, zero source agreement."
+      ],
+      "affected_runtime": {
+        "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-run-mvdkqb0q/report.json",
+        "credit": 0,
+        "result": "Clean daa9 initial6/native49 pass; execute56.02s, resolve26.84s and parse continuation progress before outer90 timeout. Entry39 remains unrun."
+      }
+    },
+    "handler_factor": {
+      "revision": "71642cf5e61546ab88518e4f7d23ebeebca270e9 /278",
+      "change": "207 source-reviewed four-branch handler dispatch authenticates unchanged error_call_valid once before the original guarded bodies. Current863 handler83/source composition independently accepted.",
+      "affected_runtime": {
+        "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-run-cryv5h_9/report.json",
+        "credit": 0,
+        "result": "Initial6/native49 pass; execute54.29s and resolve26.81s progress before outer90 timeout. Entry39/handler83 remain unrun."
+      }
+    },
+    "compiler_profiles": [
+      {
+        "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/function-diagnostic-a_s29z9q/report.json",
+        "credit": 0,
+        "result": "Frozen716 publicCLI60 timeout, stable/closed. Two compiler passes each about18.3s; no source agreement."
+      },
+      {
+        "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/compiler-diagnostic-0ahw942h/report.json",
+        "credit": 0,
+        "result": "Frozen716 publicCLI60 timeout, stable/closed. Overlapping ppimage50 spans total32.95s; pcsource10 total0.07s. Image emission is the measured hotspot; full-source reconstruction hypothesis rejected."
+      }
+    ],
+    "image_access_reuse": {
+      "revision": "19e571254ca0e16f85a7b254253d49cc3680e127 /278",
+      "change": "33 computes pure optional access once per operand and reuses it for unchanged CODEARG qualification and CODEEXPR read metadata; public wrapper retained. Explicit PPF equality verified in genuine algo/struct artifacts. No admission predicate removed.",
+      "focused_states": {
+        "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/owners-states-avtqqcbn/report.json",
+        "premises": 53,
+        "result": "Independently accepted strictSL/cache:false/det:true/jobs1,15.027s,true/empty stderr/exit0,stable clean19e/closed groups. Genuine PPR argument and all modes/missing/first-match/incomplete/output ordering."
+      },
+      "broad_runtime": {
+        "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-run-xz8rm6vu/report.json",
+        "status": "FAIL timeout; zero source agreement",
+        "credit": 0,
+        "result": "Clean stable19e/closed; initial6 true34.28s/native49 exact; model outer90 kill with empty observation. Execute41.06s and resolve19.95s reach parse continuation. Entry39/handler83 remain UNRUN."
+      }
+    },
+    "access_list_tail": {
+      "revision": "863b1b5d4b689737671da7b247180d78bb80b6ca /278",
+      "change": "46 whole-sequence formal and tail variable avoid repeated tuple transposition; empty, exact-head and nonmatching recursion guards remain unchanged. Genuine emitted algo/struct show whole-list binding and direct tail reuse.",
+      "measured_reason": {
+        "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/image-diagnostic-vvugxumo/report.json",
+        "credit": 0,
+        "result": "Frozen19e outer90 timeout, stable/closed. Snapshot739312 completed ppaccess_at calls cost30.584s excluding selected children; parent spans overlap and in-flight work is omitted."
+      },
+      "focused_states": {
+        "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/owners-states-w636i2gd/report.json",
+        "premises": 62,
+        "result": "Independently accepted strictSL/cache:false/det:true/jobs1,5.434s,true/empty stderr/exit0,stable clean863/closed. First53 checks preserved;9 additional recursive-prefix/duplicate-priority/nonempty-miss controls."
+      },
+      "broad_runtime": {
+        "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-run-uc4r1zgo/report.json",
+        "agreements": 1,
+        "result": "Independently accepted unchanged49-byte normal native/model stream, init6 true11.225s, public model63.404s within CLI60 per request/outer90; clean stable863/closed. Exact private Owner/Child warning selection, typed old CELL readback, null Set, eager retirement, WeakReference and finite Array provider together."
+      }
+    },
+    "entry_states": {
+      "revision": "863b1b5d4b689737671da7b247180d78bb80b6ca /278",
+      "premises": 39,
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/owners-states-7p7gdwr0/report.json",
+      "result": "Independently accepted strictSL/cache:false/det:true/jobs1,23.867s,true/empty stderr/exit0,stable clean/closed; class-method descriptor rejection, source designation rejection, exact priority, non-NORMAL bypass and zero budget."
+    },
+    "handler_states": {
+      "revision": "863b1b5d4b689737671da7b247180d78bb80b6ca /278",
+      "premises": 83,
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/owners-states-c16agc2x/report.json",
+      "result": "Independently accepted strictSL/cache:false/det:true/jobs1,138.930s<300,true/empty stderr/exit0,stable clean/closed; genuine warning admission, SITE/LINE/RESUME and installed-CALLBACK rejection before lookup, raw/one-step entry, public guards and full native49 provider finish."
+    }
+  },
+  "tools": {
+    "php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "bytes": 49551712,
+      "mode": 493,
+      "uid": 1001,
+      "gid": 1001
+    },
+    "compiler": {
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+      "bytes": 32150944,
+      "mode": 493,
+      "uid": 1001,
+      "gid": 1001
+    },
+    "adapter": {
+      "sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "bytes": 29115976,
+      "mode": 365,
+      "uid": 1001,
+      "gid": 1001
+    },
+    "php_file": {
+      "sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "bytes": 26944,
+      "mode": 509,
+      "uid": 1001,
+      "gid": 1001
+    },
+    "numeric_runner": {
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "bytes": 28628992,
+      "mode": 365,
+      "uid": 1001,
+      "gid": 1001
+    }
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "cwd": "/home/user/workspace/php-spec/.tools/arrayaccess-returned-append-current-26",
+    "PHP_SPEC_SCRIPT_ENCODING_removed": true
+  },
+  "caps": {
+    "compiler_seconds": 120,
+    "native_seconds": 45,
+    "CLI_seconds": 60,
+    "model_outer_seconds": 90,
+    "source_phase_seconds": 480,
+    "state_recipe_seconds": 300,
+    "jobs": 1
+  },
+  "commands": {
+    "sources": "python3 -B .tools/run-sources309.py",
+    "original_state_preparation": "python3 -B .tools/prepare-states309.py SOURCE_REPORT",
+    "state_execution": "python3 -B .tools/run-states309.py PREPARED_REPORT (numeric_runner --sl, cache:false/det:true)",
+    "maintained_preparation": "python3 -B tests/semantics/arrayaccess_returned_append_prepare.py [fixture-id ...]",
+    "actual_preparation": "python3 -B tests/semantics/arrayaccess_returned_append_current_prepare.py",
+    "actual_source": "python3 -B tests/semantics/arrayaccess_returned_append_current_run.py PREPARED_REPORT",
+    "selected_state_execution": "python3 -B tests/semantics/arrayaccess_returned_append_state_run.py PREPARED_REPORT",
+    "maintained_runner_build": "scripts/opam-exec.sh dune build --root tests/semantics -j 1 numeric_runner.exe",
+    "actual_gc_source": "python3 -B tests/semantics/arrayaccess_returned_append_gc_run.py"
+  },
+  "failures_preserved": [
+    {
+      "raw": ".tools/compiler-of47i741",
+      "credit": 0,
+      "reason": "Original algo/struct exit0, empty stderr and 187-byte stdout diagnostics: access_finish_task undefined. Original receipt falsely marked PASS; report.original.json retained and current report explicitly corrected to FAIL. Declaration moved before292 callers; actual emitted-artifact inspection required."
+    },
+    {
+      "report": ".tools/arrayaccess-returned-append/sources-3__z8u6u/report.json",
+      "credit": 0,
+      "reason": "Preflight rejected own untracked build reuse symlinks before native/model execution; corrected ignored build layout."
+    },
+    {
+      "report": ".tools/arrayaccess-returned-append/sources-8u7ghe9b/report.json",
+      "credit": 0,
+      "reason": "First native normal, first model runner_failure at undefined declaration; no agreement. Native original retained/reused only after source/runtime/profile identity."
+    },
+    {
+      "report": ".tools/arrayaccess-returned-append/sources-9ptmzj4g/report.json",
+      "credit": 0,
+      "reason": "Genuine nondeterminism between242 generic and255 final append prefix plans after accepted304 composition. Narrow exclusion and one fresh real-array/reference-row ingress positive repair the exposed shared route."
+    },
+    {
+      "raw": ".tools/publication309/CHECK.json",
+      "credit": 0,
+      "reason": "First draft promotion probe had reversed Python import path order; AttributeError before any semantic execution. Corrected byte-only check passed."
+    },
+    {
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/controls-53g3w16j/report.json",
+      "credit": 0,
+      "reason": "Fresh unused-CV baseline confirms nonnative copied Set-result owner; original normal mismatch retained."
+    },
+    {
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/owners-prepared-alb58r_9/report.json",
+      "credit": 0,
+      "reason": "Original untyped poperation variable produces680-byte elaboration diagnostic despite exit0; genuine artifact check correctly failed. Typed pdestructionoperation derivative only, no state execution."
+    },
+    {
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-run-oo0rjavj/report.json",
+      "credit": 0,
+      "reason": "Broad original source remains unchanged. Initial6/native pass, CLI60 model timeout; no retry or cap increase."
+    },
+    {
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-run-t5sh8c4w/report.json",
+      "credit": 0,
+      "reason": "Smaller unchanged source at5441 has initial6/native PASS but outer90 model timeout/exit-9/empty observation; distinct from broad CLI60 timeout.171 compute-once repair subsequently closes the same affected source."
+    },
+    {
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/phase-diagnostic-ah4esc20/report.json",
+      "credit": 0,
+      "reason": "New phase timing preserves source/public main/caps; resolve to parse progresses, total90 kills final parser continuation. Diagnostic proves partial finite provider cost, no source agreement."
+    },
+    {
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/provider-prepared-ksh6h8l3/report.json",
+      "credit": 0,
+      "reason": "Original60-check fixture omitted common outputs declaration;198-byte compiler diagnostic despite exit0, correctly rejected by real-artifact gate. Shared output-only prefix correction preserves60 checks; no state execution."
+    },
+    {
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-prepared-u9lxbqoh/SEMANTIC-REVIEW.json",
+      "credit": 0,
+      "reason": "b677 compiler-only artifacts succeeded but emitted optional PPF pattern lost qualification and matched any present mode. Candidate semantically rejected before runtime; explicit equality derivative retained."
+    },
+    {
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/image-prepared-lhbau2_y/report.json",
+      "credit": 0,
+      "reason": "Original independent53 fixture passed encoded text to ppstart ptbytes:1245-byte elaboration diagnostic; correct byte-list derivative preserves53 checks."
+    },
+    {
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/handler-prepared-98pe2uen/report.json",
+      "credit": 0,
+      "reason": "Duplicate PREFIX prep caused undeclared STAGE diagnostic; renderer already includes PREFIX."
+    },
+    {
+      "report": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/handler-prepared-6_1rjd9e/report.json",
+      "credit": 0,
+      "reason": "Original handler83 renderer used an if-prefixed relation directive; exact relation-directive derivative corrects fixture syntax only."
+    },
+    {
+      "raw": "../arrayaccess-returned-append-actual-27/.tools/publication-lifetime309/selection-preflight-failure.txt",
+      "credit": 0,
+      "reason": "Maintained preparation invoked with two nonexistent fixture IDs; selection assertion failed before fixture/producer start. Recorder corrected to read/use actual CASES IDs; no semantic change."
+    }
+  ],
+  "boundaries": "By-reference Get, wider memoized/property/GLOBALS producers and combined Iterator/ArrayAccess declaration ordering remain open. Dynamic selected facts require coherence without callback-history authentication. Earlier284/292/304 accepted cuts are preserved without renewal; user-paused returns verification remains separate. No fresh offline build, complete-core or family-closure claim.",
+  "evidence": "Large original commands/stdout/stderr/exit/process-group/revision artifacts remain in ignored .tools; this ledger records concise provenance and recovery commands.",
+  "coordination": {
+    "numeric_actor": "None; current292 compiler/source gates completed, inputs stable and producer groups closed. Numeric1 released to root.",
+    "canonical_writer": "ARG309 integrated under the assigned sole-writer handoff; root controls subsequent ordered integration."
+  },
+  "portable_publication": {
+    "commits": [
+      "a5aeb0126",
+      "a2e998013",
+      "4f0a03d7b"
+    ],
+    "scope": "Exact accepted source/native bytes and reviewed protocol renderers are maintained under tests/semantics. Existing compiler-only preparation and source/state runners use ROOT-relative inputs and the standard freshly buildable nested numeric runner; no review26/raw-report/ignored-recorder dependency. Path-only runner promotion is byte-identical. Compiler preparation adds no execution credit.",
+    "preparations": {
+      "current": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/actual-prepared-3byebqvm/report.json",
+      "owners": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/prepared-jq0wya4h/report.json",
+      "provider": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/provider-prepared-ztyi38o_/report.json",
+      "image": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/image-prepared-c7qko2jz/report.json",
+      "entry": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/entry-prepared-3njmopbd/report.json",
+      "handler": "../arrayaccess-returned-append-actual-27/.tools/arrayaccess-returned-append/handler-prepared-tb4qh8en/report.json"
+    },
+    "runner_confirmation": "../arrayaccess-returned-append-actual-27/.tools/publication-lifetime309/numeric-runner-promotion.json",
+    "tested_revision": "4f0a03d7b4bec339f4cca68b0a743b9002362b48 /278 (fixture/compiler-only promotion; semantic cut863 retained)"
+  },
+  "recovery_roots": "Current_parent_join report paths resolve from the canonical php-spec root and name its preserved .tools/arrayaccess-returned-append-current-parent-18 worktree. Elsewhere, .tools/ paths retain the private26 root php-spec/.tools/arrayaccess-returned-append-current-26; sibling ../arrayaccess-returned-append-actual-27 paths retain actual278 evidence. All raw artifacts/worktrees stay ignored outside Git. Maintained inputs/helpers resolve under tests/semantics in any built project root.",
+  "current_parent_join": {
+    "parent": "68393cbbb/286",
+    "semantic_commit": "6b3b4fa48/287",
+    "status": "PASS independently accepted by arguments_review_18; integrated over2a2e1af7c/291 with292 modules",
+    "scope": "Exact accepted309 guards and270 unused Set normalization; pure171/207/33/46/82/84 factors retain current Generator, Fiber, call and source-emission fields. Earlier accepted cuts are not renewed.",
+    "tested_revision": "718b3847fa79a754f16eb26458ea4fdd79ec74a1 /287, clean/stable",
+    "compiler": {
+      "report": ".tools/arrayaccess-returned-append-current-parent-18/.tools/arrayaccess-returned-append/actual-prepared-9u9q8ack/report.json",
+      "result": "PASS full algo/struct artifacts9.53MB/9.14MB, empty stderr/exit0,2.90/3.77s, stable inputs/closed groups; no source/state execution credit"
+    },
+    "source": {
+      "report": ".tools/arrayaccess-returned-append-current-parent-18/.tools/arrayaccess-returned-append/fiber-source-dngbk2m8/report.json",
+      "agreements": 1,
+      "path": "tests/semantics/arrayaccess-returned-append-current/paused-generator-fiber.php",
+      "result": "PASS fresh exact normal stdout/stderr/exit, model27.799s under unchanged CLI60/outer90; stable inputs/closed groups",
+      "stdout": "G;S:1:11;A:parked;Q:resumed:11;F;C;R:25;E:25:31:1;"
+    },
+    "reached_states": {
+      "preparation": ".tools/arrayaccess-returned-append-current-parent-18/.tools/arrayaccess-returned-append/fiber-prepared-aekdil7q/report.json",
+      "report": ".tools/arrayaccess-returned-append-current-parent-18/.tools/arrayaccess-returned-append/owners-states-fxgq0us2/report.json",
+      "recipes": 1,
+      "premises": 64,
+      "mode": "strict SL/cache:false/det:true/jobs1",
+      "result": "PASS true/empty stderr/exit0,150.560s<300, stable inputs/closed groups; genuine returned TEMP, old CELL25 versus rebound globalCELL31, active Fiber/writer roots, heap-identical final-target forgery rejection and direct/zero/one-step resumption"
+    },
+    "promotion": "1a66126ac keeps the exact source recorder/reached renderer; preparation changes only Python import/watch paths. Source and recipe identity checked; no semantic reruns. b4a5c21db adds output-store creation for a freshly built checkout; independent review and Python syntax checks cover that path-only correction without semantic reruns.",
+    "actual_parent_bridge": {
+      "parent": "cc397adf6/290 (accepted instance/readonly property and clone modules)",
+      "tested_revision": "681f755c001c7f6af8b95cdb6a0f98114e7b2648 /291, clean/stable",
+      "status": "PASS independently accepted by arguments_review_18",
+      "scope": "Exact accepted ARG semantic hunks compose beside new84 property/clone admission and270 CLONE=eps consumer certificates, retaining all four PROP modules and adding309 once.",
+      "compiler": {
+        "report": ".tools/arrayaccess-returned-append-current-parent-18/.tools/arrayaccess-returned-append/actual-prepared-b8ti5gga/report.json",
+        "result": "PASS full algo/struct9.74MB/9.35MB,2.967s/3.870s, all helper markers, empty stderr/exit0, stable inputs/closed groups; compiler-only"
+      },
+      "source": {
+        "report": ".tools/arrayaccess-returned-append-current-parent-18/.tools/arrayaccess-returned-append/fiber-source-78m1dujq/report.json",
+        "agreements": 1,
+        "result": "PASS affected same original: exact normal stdout/stderr/exit, model26.059s under unchanged CLI60/outer90/100000steps/jobs1, checked/accepted frontend, stable inputs/closed groups"
+      },
+      "retained_credit": "718b/287 source1/reached64 and all older private/actual cuts retain their original identities; this bridge does not renew64 or old gates."
+    },
+    "actual_gc_bridge": {
+      "parent": "2a2e1af7c/291 (accepted ordinary cycle collection301)",
+      "tested_revision": "79f5137786d9af9faa3a3570df3213f2cf7dcfbe /292, clean/stable",
+      "status": "PASS independently accepted by arguments_review_18",
+      "scope": "Exact accepted ARG semantic hunks preserve all HANDLE/TEMP/NOGC fields, borrowed GC buffers and301; the270 delta remains unused Set-result normalization.",
+      "compiler": {
+        "report": ".tools/arrayaccess-returned-append-current-parent-18/.tools/arrayaccess-returned-append/actual-prepared-vohj7o10/report.json",
+        "result": "PASS full algo/struct9.85MB/9.45MB,3.039s/3.851s, all helper markers, empty stderr/exit0, stable inputs/closed groups; compiler-only"
+      },
+      "source": {
+        "report": ".tools/arrayaccess-returned-append-current-parent-18/.tools/arrayaccess-returned-append/gc-source-elrx4ref/report.json",
+        "path": "tests/semantics/arrayaccess-returned-append-current/cycle-collection.php",
+        "agreements": 1,
+        "result": "PASS one new original: exact normal stdout/stderr/exit, model31.171s under unchanged CLI60/outer90/100000steps/jobs1, checked/accepted frontend, stable inputs/closed groups",
+        "stdout": "G;S:1:11;L;K:1;H:1;R:25;C;N:1;E:1:25:31;"
+      },
+      "interaction": "The first collection retires an unrelated cycle/count1 while genuine returned-child owners keep the cyclic child alive. The unrelated cycle's destructor mutates old RHS CELL25 and rebinds global RHS31 before used Set readback. A later collection retires the child/count1 and clears WeakReference.",
+      "retained_credit": "All earlier private/actual source and reached-state cuts keep their original identities. This bridge adds only the new GC source and current compiler checks; no64/160 or historical renewal."
+    }
+  }
+}

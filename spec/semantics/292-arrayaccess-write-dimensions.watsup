@@ -6,6 +6,7 @@ dec $access_compound_result(pstate, paccess, pvalue) : pstate
 dec $access_compound_set(pstate, paccess) : pstate
 dec $access_compound_replaced(pstate, nat, ptask*) : pstate
 dec $access_write_task(ptask) : bool
+dec $access_finish_task(ptask) : bool
 dec $access_write_final(ptask*) : bool
 dec $access_write_mode(pkeywriter, ptask*, bool) : paccessmode
 dec $access_write_fetch(pkeywriter, porigin) : bool
@@ -44,6 +45,7 @@ def $access_write_task(ptask) = false -- otherwise
 def $access_operand_roots(paccess) = eps -- if $access_write_task(paccess.TASK)
 def $access_operand_roots(paccess) = $base_nodes(paccess.BASE) ++ $operand_nodes(paccess.INPUT) ++ $operand_nodes(paccess.RHS)
   -- if ~$access_write_task(paccess.TASK)
+  -- if ~$access_finish_task(paccess.TASK)
 def $access_extra_roots(paccess) = $value_nodes(pvalue_left) ++ $value_nodes(paccess.VALUE)
   -- if paccess.MODE = ACCESS_COMPOUND pbin pvalue_left
   -- if paccess.PHASE = ACCESS_CALL ptbytes

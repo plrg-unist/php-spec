@@ -1,0 +1,32 @@
+;; ZEND_ASSIGN_DIM transfers the final writer into the implicit Set continuation.
+;; The owned Get result and computed RHS survive while OP_DATA CV demand is late.
+def $access_finish_task(KEY_WRITE_FINISH pkeywriter) = true
+def $access_finish_task(ptask) = false -- otherwise
+def $access_operand_roots(paccess) = $key_write_finish_roots(pkeywriter)
+  -- if paccess.TASK = KEY_WRITE_FINISH pkeywriter
+
+def $access_set_plan(S) = (paccess)
+  -- if S.TODO = (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*
+  -- if S.ORIGIN = (pkeywriter.SITE)
+  -- if pkeywriter.TASK = ASSIGN_ARRAY (BASE_APPEND pbase z_key) z b
+  -- if $key_writer_valid(S, pkeywriter, ptask_tail*)
+  -- if $location_slot(S, S.LOCATION) = DEFINED (POBJECT n)
+  -- if $access_instance(S, POBJECT n)
+  -- if $origin_child((pkeywriter.SITE), [PCFIELD 0]) = (porigin_target)
+  -- if paccess = $access_record(S, porigin_target, z, ACCESS_SET, pkeywriter.BASE, KNOWN PNULL, pkeywriter.RHS, KEY_WRITE_FINISH pkeywriter, (n), true)
+
+;; TARGET is the final [], whereas the embedded writer authenticates its prefix.
+;; Selected dynamic receiver/value facts remain captures, not history proofs.
+def $access_source(S, paccess) = true
+  -- if paccess.TASK = KEY_WRITE_FINISH pkeywriter
+  -- if paccess.MODE = ACCESS_SET
+  -- if pkeywriter.SITE = paccess.SITE
+  -- if pkeywriter.TASK = ASSIGN_ARRAY (BASE_APPEND pbase z_key) paccess.LINE b
+  -- if $key_writer_valid(S, pkeywriter, eps)
+  -- if $origin_child((paccess.SITE), [PCFIELD 0]) = (paccess.TARGET)
+  -- if $key_write_append_source(S, paccess.TARGET, paccess.LINE)
+  -- if paccess.KEYLINE = paccess.LINE
+  -- if paccess.BASE = pkeywriter.BASE
+  -- if paccess.INPUT = KNOWN PNULL
+  -- if paccess.RHS = pkeywriter.RHS
+  -- if paccess.OUTER

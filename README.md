@@ -368,9 +368,18 @@ Affected GLOBALS reference finish and direct/nested Unset admission are repaired
 Append304 adds intermediate append through returned arrays and final compound
 append to returned children, preserving copied reference cells and pending-error
 operator order. Its 49 normal sources and eight reached recipes/723 premises pass;
-one new parent interaction agrees. Final simple append to a returned ArrayAccess
-child, by-reference Get, wider memoized/property/GLOBALS
-consumers and combined Iterator/ArrayAccess notice ordering remain required.
+one new parent interaction agrees. Returned-child simple append309 calls Set with
+null and preserves the selected child, latched missing RHS and original result
+pointer. Eight normal sources and two strict-SL recipes/160 premises pass at one
+private cut. The separately accepted eager/weak lifetime composition keeps typed
+old-cell readback and genuine callback/provider owners. One new current287
+original and64 strict-SL premises also preserve readback across Fiber suspension
+and a paused Generator finalizer. The canonical292 GC interaction retains
+a cyclic returned child across collection inside Set, reads the old RHS cell
+after a collector destructor rebinds its global name, and frees the child on the
+next collection. By-reference Get, wider
+memoized/property/GLOBALS consumers and combined Iterator/ArrayAccess notice
+ordering remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument

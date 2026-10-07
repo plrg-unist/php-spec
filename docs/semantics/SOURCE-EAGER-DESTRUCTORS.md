@@ -10,7 +10,9 @@ warnings.
 Consumed slots decrement in native order. Remaining slots stay owned while an
 earlier destructor runs or throws; replacement exceptions chain through the rest
 of the loop. Assignment installs its new binding before releasing the old value.
-Used results retain their copied owner; an unused variable assignment does not.
+Used results retain their copied owner. Unused variable assignments and
+ArrayAccess Set calls have no copied opcode result; other live owners determine
+whether the RHS survives receiver or old-value destruction.
 A plain-CV property receiver is borrowed. Computed property RHS temporaries have
 the native cold versus warm write-site lifetime, separately from a used result.
 Array COW, embedded references and resurrection retain their actual owners.
