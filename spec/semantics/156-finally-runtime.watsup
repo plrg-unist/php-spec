@@ -26,6 +26,7 @@ dec $throwable_disjoint(nat*, nat*) : bool
 def $throwable_disjoint(eps, n_old*) = true
 def $throwable_disjoint(n :: n_tail*, n_old*) = (~(n <- n_old*) /\ $throwable_disjoint(n_tail*, n_old*))
 dec $throwable_previous(pstate, nat, nat) : pstate
+dec $finally_exception_previous(pstate, nat, nat) : pstate
 def $throwable_previous(S, n_new, n_old) = $throwable_set_previous_id(S, n_last, (n_old))
   -- if $throwable_chain(S, n_new, eps) = THROWCHAIN n_new_chain*
   -- if $(|n_new_chain*| > 0)
@@ -242,7 +243,7 @@ rule PhpStep/finally-replace-normal: S ~> $finally_leave_throw(S, porigin, n, pt
   -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_RESUME porigin eps) :: ptask_tail*
 rule PhpStep/finally-replace-throw: S ~> $finally_leave_throw(S_chained, porigin, n, ptask_tail*)
   -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_RESUME porigin (n_old)) :: ptask_tail*
-  -- if S_chained = $throwable_previous(S, n, n_old)
+  -- if S_chained = $finally_exception_previous(S, n, n_old)
 rule PhpStep/finally-replace-return: S ~> $finally_leave_throw(S, porigin, n, ptask_tail*)
   -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_RETURN porigin porigin_source poperand) :: ptask_tail*
 rule PhpStep/finally-replace-ref-return: S ~> $finally_leave_throw(S, porigin, n, ptask_tail*)

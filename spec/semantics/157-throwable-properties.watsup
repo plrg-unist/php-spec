@@ -158,7 +158,7 @@ def $throwable_slots_valid(S, n, pthrowable) = true
   -- if $throwable_field(S, n, "code") = PINT z_code
   -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
   -- if $throwable_field(S, n, "line") = PINT z
-  -- if $(z > 0)
+  -- if $(z > 0) \/ $fiber_root_error_source(S, n, pthrowable)
   -- if $throwable_field(S, n, "trace") = PARRAY n_trace
   -- if $(n_trace < |S.ARRAYS|)
   -- if (HARRAY n_trace) <- S.ALLOCATIONS

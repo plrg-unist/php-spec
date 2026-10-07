@@ -152,6 +152,8 @@ def $destructor_method(S, n) = eps -- otherwise
 def $destructor_classes(eps) = false
 def $destructor_classes(pclassdesc :: pclassdesc_tail*) = ($method_named(pclassdesc.METHODS, $ptascii("__destruct")) =/= eps \/ $destructor_classes(pclassdesc_tail*))
 def $destructor_active(S) = (S.DESTRUCTION.PHASE = DESTRUCTION_GLOBALS \/ S.DESTRUCTION.PHASE = DESTRUCTION_STORE)
+def $destructor_waiting(S, pnode :: pnode_tail*) = true
+  -- if $internal_destructor_pending(S, pnode)
 def $destructor_waiting(S, eps) = false
 def $destructor_waiting(S, (HOBJECT n) :: pnode*) = true
   -- if ~(n <- S.DESTRUCTION.CALLED)
@@ -237,7 +239,7 @@ def $destruction_prune(S, pnode_live*) = $prune_live($destruction_store_drop(S_n
 def $destructor_ready(S) = true
   -- if ~$eval_compile_exit_pending(S) \/ ~$exit_completion(S.COMPLETION)
   -- if S.DESTRUCTION.PHASE = DESTRUCTION_PENDING
-  -- if $destructor_classes(S.CLASSES)
+  -- if $destructor_operational(S)
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE \/ (S.SHUTDOWN.PHASE = SHUTDOWN_PENDING /\ S.SHUTDOWN.ENTRIES = eps)
   -- if $shutdown_terminal(S.COMPLETION)
   -- if S.COMPLETION =/= NORMAL \/ S.TODO = eps
@@ -326,6 +328,7 @@ rule PhpStep/destructor-store-skip: S ~> S[.DESTRUCTION.INDEX = $(S.DESTRUCTION.
   -- if $destructor_handle(S, S.DESTRUCTION.INDEX, 0) = (n)
   -- if ~(n <- S.DESTRUCTION.CALLED)
   -- if $destructor_method(S, n) = eps
+  -- if ~$internal_destructor_pending(S, HOBJECT n)
 rule PhpStep/destructor-store-past: S ~> S[.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)]
   -- if S.TODO = [DESTRUCTOR_STORE]
   -- if $call_task_valid(S, DESTRUCTOR_STORE)
@@ -386,6 +389,13 @@ rule PhpStep/destructor-release-call: S ~> $destructor_select(S_next, n, false, 
   -- if $heap_owners($heap_graph(S_next), HOBJECT n) = 0
   -- if ~(n <- S.DESTRUCTION.CALLED)
   -- if $destructor_method(S_next, n) =/= eps
+rule PhpStep/destructor-release-internal: S ~> $internal_destructor_enter(S, pnode, pdestructionrelease)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
+  -- if S_unheld = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
+  -- if $heap_owners($heap_graph(S_unheld), pnode) = 0
+  -- if $internal_destructor_pending(S_unheld, pnode)
 rule PhpStep/destructor-release-free: S ~> $destructor_free(S_next, pnode, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
@@ -393,7 +403,7 @@ rule PhpStep/destructor-release-free: S ~> $destructor_free(S_next, pnode, pdest
   -- if S_next = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if $heap_owners($heap_graph(S_next), pnode) = 0
   -- if ~$destructor_uncalled_node(S_next, pnode)
-def $destructor_uncalled_node(S, HOBJECT n) = (~(n <- S.DESTRUCTION.CALLED) /\ $destructor_method(S, n) =/= eps)
+def $destructor_uncalled_node(S, HOBJECT n) = (~(n <- S.DESTRUCTION.CALLED) /\ ($destructor_method(S, n) =/= eps \/ $internal_destructor_pending(S, HOBJECT n)))
 def $destructor_uncalled_node(S, pnode) = false -- otherwise
 dec $weakref_pending_carrier(pstate, pnode) : bool
 def $weakref_pending_carrier(S, pnode) = false -- otherwise
@@ -442,7 +452,10 @@ rule PhpStep/destructor-enter: S ~> $call_arity($target_after_enter($call_enter(
   -- if $destructor_enter_valid(S, pdestructorcall)
   -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
   -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
-rule PhpStep/destructor-private-error: S ~> $throw_scalar(S[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*], "Error", $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ [32] ++ $object_name(S, pdestructorcall.OBJECT) ++ $ptascii("::__destruct()") ++ $method_scope_suffix(S, $method_current_scope(S)), pdestructorcall.LINE)
+dec $destructor_private_error(pstate, pdestructorcall, ptbytes) : pstate
+def $destructor_private_error(S, pdestructorcall, ptbytes) = $throw_scalar(S, "Error", ptbytes, pdestructorcall.LINE)
+  -- if ~$fiber_finished_root(S)
+rule PhpStep/destructor-private-error: S ~> $destructor_private_error(S[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*], pdestructorcall, $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ [32] ++ $object_name(S, pdestructorcall.OBJECT) ++ $ptascii("::__destruct()") ++ $method_scope_suffix(S, $method_current_scope(S)))
   -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*
   -- if $destructor_enter_valid(S, pdestructorcall)
   -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
@@ -774,6 +787,7 @@ def $throw_frame_resume(S, n) = S[.TODO = (THROW_SEARCH n) :: S.TODO][.RESULT = 
 def $destructor_frame_valid(S, pdestructionframe) = ($destructor_operational(S) /\ pdestructionframe <- S.DESTRUCTION.FRAMES /\ $destructor_pending_valid(S, pdestructionframe.PENDING) /\ S.CURRENT = pdestructionframe.CALLER /\ S.ORIGIN = pdestructionframe.ORIGIN /\ S.CONSTCONTEXT = pdestructionframe.CONSTCONTEXT /\ $destructor_return_operand_valid(S, pdestructionframe.VALUE))
 def $destructor_pending_valid(S, eps) = true
 def $destructor_pending_valid(S, (n)) = $throwable_member(S, n)
+  -- if ~$fiber_graceful_live(S, n)
 def $destructor_return_operand_valid(S, poperand) = ($finally_return_operand_valid(S, poperand) /\ $heap_subset($operand_nodes(poperand), S.ALLOCATIONS))
 def $call_task_valid(S, DESTRUCTOR_FRAME_EXIT pdestructionframe) = $destructor_frame_valid(S, pdestructionframe)
 def $task_nodes(DESTRUCTOR_FRAME_EXIT pdestructionframe) = $instance_roots(pdestructionframe.PENDING) ++ $operand_nodes(pdestructionframe.VALUE)

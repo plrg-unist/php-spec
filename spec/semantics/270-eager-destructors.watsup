@@ -108,7 +108,7 @@ dec $eager_fatal_cell_history(pstate, (nat, pslot)*) : pstate
 dec $eager_fatal_handler_bounds(pstate, pdestructionhandler*) : bool
 dec $eager_fatal_cell_bounds(pstate, (nat, pslot)*) : bool
 
-def $destructor_operational(S) = (S.DESTRUCTION.PHASE =/= DESTRUCTION_DONE /\ $destructor_classes(S.CLASSES))
+def $destructor_operational(S) = (S.DESTRUCTION.PHASE =/= DESTRUCTION_DONE /\ ($destructor_classes(S.CLASSES) \/ $(S.FIBERSEQ > 1)))
 ;; A source MAIN expression is a real USER execution boundary despite having no
 ;; model pcallcontext. Synthetic C sites name methods, not compiled expressions.
 def $eager_source_origin(S, (porigin)) = true
@@ -116,7 +116,9 @@ def $eager_source_origin(S, (porigin)) = true
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) =/= eps
 def $eager_source_origin(S, porigin?) = false -- otherwise
-def $destructor_user_source(S) = (S.CURRENT =/= eps \/ $eager_source_origin(S, S.ORIGIN))
+;; A running Fiber also has an internal execute boundary after its user callback
+;; has returned; it grants no lexical class scope or source callsite.
+def $destructor_user_source(S) = (S.CURRENT =/= eps \/ S.ACTIVEFIBER =/= eps \/ $eager_source_origin(S, S.ORIGIN))
 
 def $eager_explicit_task(AT porigin ptask) = $eager_explicit_task(ptask)
 def $eager_explicit_task(DESTRUCTOR_RELEASE pdestructionrelease) = true
