@@ -1,0 +1,27 @@
+;; Literal $this emits FETCH_THIS before direct ECHO. Separately compiled
+;; nested code also emits it before a literal property read, at the inherited
+;; receiver/AST line. The opcode exists even without a runtime instance; later
+;; receiver reads/errors remain ordinary runtime work after operand retirement.
+dec $source_emission_this_fetch(pstate, nat, pcpath, expression) : bool
+def $source_emission_this_fetch(S, n, pcpath, NExprVariable (BYTES text) metadata) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable (BYTES text) metadata)
+  -- if $cv_source_name(S[.ORIGIN = (PORIGIN n pcpath)], BYTES text) = (ptbytes)
+  -- if ptbytes = $ptascii("this")
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0)
+  -- if z = $source_line(metadata)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_this_fetch(S, n, pcpath, expression) = false -- otherwise
+
+;; CV/INIT314, auto-global FETCH_R316 and FETCH_GLOBALS320 are disjoint.
+def $source_echo_emission_origin(S, n, pcpath, expression) = (PORIGIN n pcpath)
+  -- if $source_emission_this_fetch(S, n, pcpath, expression)
+def $source_echo_emission_origin(S, n, pcpath, NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata) = (PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata)
+  -- if $source_emission_this_fetch(S, n, pcpath ++ [PCFIELD 0], expression_receiver)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_property, false))
+  -- if $(z_property > 0)
+  -- if z_property = $source_line(metadata_property)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps

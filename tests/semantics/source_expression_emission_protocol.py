@@ -272,6 +272,7 @@ def run_case(case, args):
     manifest = semantic / 'spec/semantics/modules.json'
     module_names = json.loads(manifest.read_bytes())
     autoglobal = any(Path(name).name == '316-source-autoglobal-emission.watsup' for name in module_names)
+    this_fetch = any(Path(name).name == '323-source-this-emission.watsup' for name in module_names)
     watched.append(manifest)
     if not args.prepare_only:
         modules = [semantic / name for name in module_names]
@@ -342,7 +343,7 @@ def run_case(case, args):
                     '$origin_node(S_' + label + '.SOURCES, PORIGIN 0 (' + cp + ')) = (expression_' + label + ')']
                 expected = ('(PORIGIN 0 (' + (cp[:-1] + ', PCFIELD 0]' if label == 'call_property' else cp)
                             + '))' if label in ('cv', 'property', 'call_property') else 'eps')
-                if label == 'autoglobal' and autoglobal:
+                if (label == 'autoglobal' and autoglobal) or (label == 'this' and this_fetch):
                     expected = '(PORIGIN 0 (' + cp[:-1] + ', PCFIELD 0]))'
                 checks += [
                     'P_' + label + '.COMPLETION = PPCNORMAL /\\ S_' + label + '.COMPLETION = NORMAL',
