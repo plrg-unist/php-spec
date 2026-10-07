@@ -1,0 +1,160 @@
+"""Source-reached protected Fiber completion and private child ownership."""
+import argparse
+import json
+from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / 'tests/semantics'))
+import fiber_state_review as review
+from fiber_retirement_review import VALID, DONE
+
+SOURCES = {row['id']: row['source'] for row in json.loads(
+    (ROOT / 'tests/semantics/fiber_review_cases.json').read_text())}
+PAUSE = ['S_paused = $drive(S, 0)', 'S_paused.COMPLETION = BUDGET',
+         'S_paused[.COMPLETION = NORMAL] = S',
+         'S_done = $drive(S_paused[.COMPLETION = NORMAL], 4000)']
+
+CASES = {
+    'protected-previous-keeps-authentic-result-producer': {
+        'source': SOURCES['review-fiber-ordinary-returned-result-close-with-earlier-capture-error'],
+        'stage': 'S.TODO = (FIBER_PROTECTED_PREVIOUS pdestructorcall n_exit) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail* -- if $fiber_release_finish(ptask_tail*) = (pfiberfinish) -- if $fiber_at(S, pfiberfinish.OBJECT) = (pfiber)',
+        'checks': [
+            'n = pfiberfinish.OBJECT', 'pdestructorcall.PENDING = (n_old)',
+            '$throwable_field(S, n_old, "message") = PSTRING $ptascii("first")',
+            'pfiber.RETURNED', 'pfiber.VALUE = POBJECT n_result',
+            'pfiber.STATUS = FIBER_RUNNING', 'pfiber.FINISH = (pfiberfinish)',
+            'pfiberfinish.PENDING = (n_old)', 'pfiberfinish.SEQUENCE = pfiber.SEQUENCE',
+            'pfiberfinish.PROTECTED = eps',
+            'S.CURRENT = eps', 'S.FRAMES = eps', 'S.ORIGIN = eps',
+            'S.CONSTCONTEXT = eps', 'S.ACTIVEFIBER = (n)',
+            'S.FIBERCLOSERS = [pfiberclose]', 'pfiberclose.EXIT = n_exit',
+            'pfiberclose.OBJECT = n', 'pfiberclose.SEQUENCE = pfiber.SEQUENCE',
+            'S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*',
+            'pdestructorcall.USER', '~pdestructorcall.STORE',
+            'pdestructorcall.CALLER = eps', 'pdestructorcall.ORIGIN = eps',
+            'pdestructorcall.CONSTCONTEXT = eps', 'pdestructorcall.FRAME = eps',
+            'pdestructorcall.OPERATION = eps',
+            '$fiber_graceful_for(S, n, pfiber.SEQUENCE, n_exit)',
+            '~$throwable_member(S, n_exit)',
+            '$task_nodes(FIBER_PROTECTED_PREVIOUS pdestructorcall n_exit) = [HOBJECT n_exit]',
+            '$task_nodes(DESTRUCTOR_RESULT pdestructorcall) = [HOBJECT pdestructorcall.OBJECT]',
+            '$task_nodes(FIBER_RETURN_FINISH pfiberfinish) = [HOBJECT n_old]',
+            '$heap_owners($heap_graph(S), HOBJECT n_exit) = 2',
+            '$heap_owners($heap_graph(S), HOBJECT n_old) = 1',
+            '$heap_owners($heap_graph(S), HOBJECT n_result) = 1',
+            '$fiber_control_previous(S, n_exit) = eps',
+            '$node_children(S, HOBJECT n_exit) = eps',
+            '$fiber_protected_previous_valid(S, pdestructorcall, n_exit)',
+            '$call_task_valid(S, FIBER_PROTECTED_PREVIOUS pdestructorcall n_exit)',
+            '$fiber_ordinary_finish_live(S, pfiberfinish)',
+            '~$fiber_callback_finish_live(S, pfiberfinish)',
+            '~$fiber_protected_previous_valid(S[.DESTRUCTION.CALLS = eps], pdestructorcall, n_exit)',
+            '~$call_descriptors_valid(S[.DESTRUCTION.CALLS = eps])',
+            'S_no_result = S[.TODO = (FIBER_PROTECTED_PREVIOUS pdestructorcall n_exit) :: ptask_tail*]',
+            '~$call_task_valid(S_no_result, FIBER_PROTECTED_PREVIOUS pdestructorcall n_exit)',
+            '~$call_descriptors_valid(S_no_result)',
+            'S_duplicate = S[.TODO = (FIBER_PROTECTED_PREVIOUS pdestructorcall n_exit) :: (FIBER_PROTECTED_PREVIOUS pdestructorcall n_exit) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*]',
+            '~$call_task_valid(S_duplicate, FIBER_PROTECTED_PREVIOUS pdestructorcall n_exit)',
+            '~$call_descriptors_valid(S_duplicate)',
+            '~$fiber_protected_previous_valid($fiber_put(S, n, pfiber[.RETURNED = false]), pdestructorcall, n_exit)',
+            *VALID, *PAUSE, *DONE,
+            '~((HOBJECT n) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_exit) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_old) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_result) <- S_done.ALLOCATIONS)',
+        ],
+    },
+    'defined-null-private-previous-has-one-real-child-owner': {
+        'source': SOURCES['review-fiber-protected-null-result-keeps-definedness'],
+        'stage': 'S.TODO = [FIBER_RETURN_FINISH pfiberfinish] -- if S.FIBERCLOSERS = [pfiberclose] -- if pfiberfinish.PENDING = (pfiberclose.EXIT) -- if $fiber_control_previous(S, pfiberclose.EXIT) = (n_old) -- if $fiber_at(S, pfiberfinish.OBJECT) = (pfiber)',
+        'checks': [
+            'n = pfiberfinish.OBJECT', 'n_exit = pfiberclose.EXIT',
+            'pfiberfinish.PROTECTED = ((n_exit, n_old))',
+            'pfiber.RETURNED', 'pfiber.VALUE = PNULL',
+            'pfiber.STATUS = FIBER_RUNNING', '~pfiber.FAILED', '~pfiber.GRACEFUL',
+            'S.ACTIVEFIBER = (n)', 'S.CURRENT = eps', 'S.FRAMES = eps',
+            'pfiberfinish.SEQUENCE = pfiberclose.SEQUENCE',
+            '$fiber_graceful_live(S, n_exit)', '~$throwable_member(S, n_exit)',
+            '~$class_instanceof(S, POBJECT n_exit, $ptascii("Throwable"))',
+            '$throwable_member(S, n_old)',
+            '$throwable_field(S, n_old, "message") = PSTRING $ptascii("early")',
+            '$objectprops_record_at(S.OBJECTPROPS, n_exit) = (pobjectprops)',
+            'pobjectprops.MATERIALIZED',
+            'pobjectprops.SLOTS = [{DECL eps, NAME $ptascii("previous"), STATE PROP_VALUE (DIRECT (POBJECT n_old))}]',
+            '$node_children(S, HOBJECT n_exit) = [HOBJECT n_old]',
+            '$task_nodes(FIBER_RETURN_FINISH pfiberfinish) = [HOBJECT n_exit]',
+            '$heap_owners($heap_graph(S), HOBJECT n_exit) = 2',
+            '$heap_owners($heap_graph(S), HOBJECT n_old) = 1',
+            '$heap_count(HOBJECT n_old, $task_nodes(FIBER_RETURN_FINISH pfiberfinish)) = 0',
+            '$fiber_control_previous_valid(S, n_exit, n_old)',
+            '$fiber_control_properties(S, n_exit)',
+            '$property_state_valid(S)', '$fiber_ordinary_finish_live(S, pfiberfinish)',
+            'S_self = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n_exit, [{DECL eps, NAME $ptascii("previous"), STATE PROP_VALUE (DIRECT (POBJECT n_exit))}])]',
+            '~$fiber_control_previous_valid(S_self, n_exit, n_exit)',
+            '~$property_state_valid(S_self)', '~$call_descriptors_valid(S_self)',
+            'S_scalar = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, n_exit, [{DECL eps, NAME $ptascii("previous"), STATE PROP_VALUE (DIRECT (PINT 0))}])]',
+            '~$fiber_control_properties(S_scalar, n_exit)',
+            '~$property_state_valid(S_scalar)', '~$call_descriptors_valid(S_scalar)',
+            'S_no_availability = $fiber_put(S, n, pfiber[.RETURNED = false])',
+            '~$fiber_control_previous_valid(S_no_availability, n_exit, n_old)',
+            '~$call_descriptors_valid(S_no_availability)',
+            *VALID, *PAUSE, *DONE,
+            '~((HOBJECT n) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_exit) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_old) <- S_done.ALLOCATIONS)',
+        ],
+    },
+    'retiring-private-control-releases-real-child-on-caller': {
+        'source': SOURCES['review-fiber-protected-previous-child-destructs-on-caller'],
+        'stage': 'S.ACTIVEFIBER = eps -- if S.FIBERCLOSERS = eps -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail* -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT n_exit)) :: pdestructionjob* -- if $fiber_control_previous(S, n_exit) = (n_old) -- if $heap_owners($heap_graph(S), HOBJECT n_exit) = 1 -- if $fiber_retired_finish(pdestructionoperation.SOURCE) = (pfiberfinish) -- if $fiber_at(S, pfiberfinish.OBJECT) = (pfiber)',
+        'checks': [
+            'n = pfiberfinish.OBJECT', 'pfiber.RETURNED',
+            'pfiber.STATUS = FIBER_TERMINATED', 'pfiber.FINISH = eps',
+            'pfiber.VALUE = POBJECT n_result', '~pfiber.FAILED', '~pfiber.GRACEFUL',
+            'pdestructionoperation.SOURCE = FIBER_RETURN_FINISH pfiberfinish',
+            'pfiberfinish.PENDING = (n_exit)', 'pfiberfinish.SEQUENCE = pfiber.SEQUENCE',
+            'pfiberfinish.PROTECTED = ((n_exit, n_old))',
+            'S.FIBERCALLERS = eps', 'S.DESTRUCTION.CALLS = eps',
+            '$fiber_graceful_retiring(S, n_exit)', '~$fiber_graceful_live(S, n_exit)',
+            '~$throwable_live(S, n_exit)', '~$throwable_member(S, n_exit)',
+            '~$destructor_pending_valid(S, (n_exit))',
+            '$fiber_live_node_valid(S, HOBJECT n_exit)',
+            '$fiber_control_previous_valid(S, n_exit, n_old)',
+            '$heap_count(HOBJECT n_exit, $destruction_job_nodes(pdestructionrelease.JOBS)) = 1',
+            '$heap_owners($heap_graph(S), HOBJECT n_old) = 1',
+            '$heap_owners($heap_graph(S), HOBJECT n_result) = 1',
+            '$node_children(S, HOBJECT n_exit) = [HOBJECT n_old]',
+            '$object_name(S, n_old) = $ptascii("FiberProtectedError308")',
+            '$destructor_method(S, n_old) =/= eps',
+            '~(n_old <- S.DESTRUCTION.CALLED)',
+            '$destructor_release_valid(S, pdestructionrelease)',
+            '$destructor_operation_valid(S, pdestructionoperation)',
+            *VALID,
+            'S_child = $drive_steps(S, 1)',
+            '~((HOBJECT n_exit) <- S_child.ALLOCATIONS)',
+            '$fiber_finish_protected_valid(S_child, pfiberfinish)',
+            '(HOBJECT n_old) <- S_child.ALLOCATIONS',
+            '$heap_owners($heap_graph(S_child), HOBJECT n_old) = 1',
+            '$heap_owners($heap_graph(S_child), HOBJECT n_result) = 1',
+            'S_child.ACTIVEFIBER = eps', 'S_child.FIBERCLOSERS = eps',
+            '~(n_old <- S_child.DESTRUCTION.CALLED)',
+            'S_child.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_child) :: ptask_child*',
+            'pdestructionrelease_child.JOBS = (DESTRUCTION_VALUE (HOBJECT n_old)) :: pdestructionjob_child*',
+            '$call_descriptors_valid(S_child)', '$heap_valid($heap_graph(S_child))',
+            *PAUSE, *DONE,
+            '~((HOBJECT n) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_exit) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_old) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_result) <- S_done.ALLOCATIONS)',
+        ],
+    },
+}
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--case', action='append')
+    args = parser.parse_args()
+    review.CASES = CASES
+    review.__file__ = str(Path(__file__).resolve())
+    raise SystemExit(0 if review.run(args.case) else 1)

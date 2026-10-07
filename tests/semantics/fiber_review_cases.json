@@ -842,9 +842,68 @@
     "native_stdout": "B|A|C|1|cleanup|1|F|1|M|1|V|1|F|R|N|E|",
     "native_exit": 0,
     "native_stderr": "Deprecated: Creation of dynamic property GracefulExit::$previous is deprecated in Unknown on line 0\n",
+    "expected_model": "normal"
+  },
+  {
+    "id": "review-fiber-protected-defined-result-finally-replacement",
+    "source": "<?php\nclass FiberProtectedResult308 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new Exception('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n            throw new Exception('replacement');\n        }\n    }\n}\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return new FiberProtectedResult308(); });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\ntry { unset($fiber); }\ncatch (Exception $e) {\n    echo 'X|', $e->getMessage(), '|', $e->getPrevious()->getMessage(), '|';\n    $n = 0; $files = ''; $functions = '';\n    foreach ($e->getTrace() as $row) {\n        $n++; $files .= isset($row['file']) ? '1' : '0';\n        $functions .= $row['function'] . '|';\n    }\n    echo $n, '|', $files, '|', $functions;\n    $n = 0; $files = ''; $functions = '';\n    foreach ($e->getPrevious()->getTrace() as $row) {\n        $n++; $files .= isset($row['file']) ? '1' : '0';\n        $functions .= $row['function'] . '|';\n    }\n    echo 'p|', $n, '|', $files, '|', $functions;\n }\necho 'T|', (int) $saved->isTerminated(), '|';\ntry { $saved->getReturn(); }\ncatch (FiberError $e) { echo $e->getMessage(), '|'; }\necho 'F|'; unset($saved); echo 'E|';\n",
+    "source_sha256": "8ea9a44675a9915270ce738f6ef16d0828af9ab2d3465a7919c35fbb87615167",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|X|replacement|early|1|0|__destruct|p|2|01|__destruct|start|T|1|Cannot get fiber return value: The fiber threw an exception|F|R|N|E|",
+    "native_stderr": "",
+    "run_by_default": false,
+    "default_exclusion": "Unresolved original model timeout at the existing 60-second cap; retained with zero agreement."
+  },
+  {
+    "id": "review-fiber-protected-null-result-keeps-definedness",
+    "source": "<?php\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new Exception('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return null; });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|', (int) ($saved->getReturn() === null), '|';\nunset($saved); echo 'E|';\n",
+    "source_sha256": "8c55ab4e4bb36f53637492ef2b19135005d97a65954712f81eb2c0cc246dbc2e",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|M|1|1|E|",
+    "native_stderr": "Deprecated: Creation of dynamic property GracefulExit::$previous is deprecated in Unknown on line 0\n"
+  },
+  {
+    "id": "review-fiber-protected-deprecation-eligible-handler-is-skipped",
+    "source": "<?php\nclass FiberProtectedResult308 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new Exception('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\nset_error_handler(static function ($level, $message, $file, $line) {\n    echo 'D|', (int) ($level === E_DEPRECATED), '|', (int) ($file === 'Unknown'), '|', $line, '|';\n    echo (int) Fiber::getCurrent()->isRunning(), '|', $message, '|';\n    return true;\n});\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return new FiberProtectedResult308(); });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|';\n$value = $saved->getReturn();\necho 'V|', (int) ($value instanceof FiberProtectedResult308), '|';\nunset($saved); echo 'F|'; unset($value); echo 'E|';\nrestore_error_handler();\n",
+    "source_sha256": "1ccf2ed0b405048570dd8cc65c3c294326b4c5bd2f3118d21eb55de7f625b123",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|M|1|V|1|F|R|N|E|",
+    "native_stderr": ""
+  },
+  {
+    "id": "review-fiber-protected-deprecation-eligible-throwing-handler-is-skipped",
+    "source": "<?php\nclass FiberProtectedResult308 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new Exception('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\nset_error_handler(static function ($level, $message, $file, $line) {\n    echo 'D|', (int) ($level === E_DEPRECATED), '|', (int) ($file === 'Unknown'), '|', $line, '|';\n    echo (int) Fiber::getCurrent()->isRunning(), '|', $message, '|';\n    throw new Exception('handler');\n});\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return new FiberProtectedResult308(); });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\ntry { unset($fiber); }\ncatch (Exception $e) {\n    echo 'X|', $e->getMessage(), '|';\n    $previous = $e->getPrevious();\n    echo $previous === null ? 'none|' : $previous->getMessage() . '|';\n    $n = 0; $files = '';\n    foreach ($e->getTrace() as $row) { $n++; $files .= isset($row['file']) ? '1' : '0'; }\n    echo $n, '|', $files, '|';\n}\necho 'T|', (int) $saved->isTerminated(), '|';\ntry { $saved->getReturn(); }\ncatch (FiberError $e) { echo $e->getMessage(), '|'; }\necho 'F|'; unset($saved); echo 'E|';\nrestore_error_handler();\n",
+    "source_sha256": "3917300dee4f703836baf59f47db6a1b7888ffafa8da8b590a3b02410346aff0",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|T|1|F|R|N|E|",
+    "native_stderr": ""
+  },
+  {
+    "id": "review-fiber-protected-deprecation-handler-mask-excludes-level",
+    "source": "<?php\nclass FiberProtectedResult308 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new Exception('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\nset_error_handler(static function ($level, $message, $file, $line) {\n    echo 'D|', (int) ($level === E_DEPRECATED), '|', (int) ($file === 'Unknown'), '|', $line, '|';\n    echo (int) Fiber::getCurrent()->isRunning(), '|', $message, '|';\n    return true;\n}, E_WARNING);\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return new FiberProtectedResult308(); });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|';\n$value = $saved->getReturn();\necho 'V|', (int) ($value instanceof FiberProtectedResult308), '|';\nunset($saved); echo 'F|'; unset($value); echo 'E|';\nrestore_error_handler();\n",
+    "source_sha256": "661b24a1532fb4210f0b073055e0331e973191fa91cfe1141f9d810c485d31c8",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|M|1|V|1|F|R|N|E|",
+    "native_stderr": "Deprecated: Creation of dynamic property GracefulExit::$previous is deprecated in Unknown on line 0\n"
+  },
+  {
+    "id": "review-fiber-protected-deprecation-reporting-zero-no-handler",
+    "source": "<?php\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new Exception('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\nerror_reporting(0);\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return null; });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|', (int) ($saved->getReturn() === null), '|';\nunset($saved); echo 'E|';\n",
+    "source_sha256": "96c5b1b5c6665561ed0a281acad3383dadc9879ad09a014740f74361ce3f4d2d",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|M|1|1|E|",
+    "native_stderr": ""
+  },
+  {
+    "id": "review-fiber-protected-deprecation-eligible-handler-reporting-zero",
+    "source": "<?php\nclass FiberProtectedResult308 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new Exception('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\nset_error_handler(static function ($level, $message, $file, $line) {\n    echo 'D|', (int) ($level === E_DEPRECATED), '|', (int) ($file === 'Unknown'), '|', $line, '|';\n    echo (int) Fiber::getCurrent()->isRunning(), '|', $message, '|';\n    return true;\n});\nerror_reporting(0);\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return new FiberProtectedResult308(); });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|';\n$value = $saved->getReturn();\necho 'V|', (int) ($value instanceof FiberProtectedResult308), '|';\nunset($saved); echo 'F|'; unset($value); echo 'E|';\nrestore_error_handler();\n",
+    "source_sha256": "1077f0dd7f5163fd0c5a4fff34157ad2a7672cb9561f9b5a2476e949781ff34e",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|M|1|V|1|F|R|N|E|",
+    "native_stderr": ""
+  },
+  {
+    "id": "review-fiber-protected-deprecation-preserves-handler-registration",
+    "source": "<?php\nclass FiberProtectedResult308 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberProtectedWarningAfter308 {}\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new Exception('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\n$after = false; $expected = 0;\nset_error_handler(static function ($level, $message, $file, $line) {\n    global $after, $expected;\n    echo 'D|', (int) $after, '|', (int) ($level === E_DEPRECATED), '|';\n    echo (int) ($file === __FILE__), '|', (int) ($line === $expected), '|';\n    echo Fiber::getCurrent() === null ? 'N|' : 'F|';\n    return true;\n});\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return new FiberProtectedResult308(); });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|';\n$value = $saved->getReturn();\necho 'V|', (int) ($value instanceof FiberProtectedResult308), '|';\nunset($saved); echo 'F|'; unset($value); echo 'E|';\n$after = true; $probe = new FiberProtectedWarningAfter308();\n$expected = __LINE__ + 1;\n$probe->previous = 1;\necho 'Z|';\nrestore_error_handler();\n",
+    "source_sha256": "e0f0622d85523fef2b1fae605008a858ef85f779d2ce8f683561adb143c75f37",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|M|1|V|1|F|R|N|E|D|1|1|1|1|N|Z|",
+    "native_stderr": "",
     "expected_model": "unsupported",
-    "unsupported_reason": "force-closing ordinary Fiber cleanup with a protected real exception",
-    "unsupported_stdout": "B|A|C|1|cleanup|1|",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "B|A|C|1|cleanup|1|F|1|M|1|V|1|F|R|N|E|",
     "unsupported_events": [
       {
         "tag": "OUTPUT",
@@ -926,7 +985,182 @@
             "124"
           ]
         ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "70",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "70",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "82",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "78",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "69",
+            "124"
+          ]
+        ]
       }
     ]
+  },
+  {
+    "id": "review-fiber-protected-previous-child-destructs-on-caller",
+    "source": "<?php\nclass FiberProtectedResult308 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberProtectedError308 extends Exception {\n    public function __destruct() {\n        echo 'Q|', $this->getMessage(), '|', Fiber::getCurrent() === null ? 'N|' : 'F|';\n    }\n}\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new FiberProtectedError308('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return new FiberProtectedResult308(); });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|';\n$value = $saved->getReturn();\necho 'V|', (int) ($value instanceof FiberProtectedResult308), '|';\nunset($saved); echo 'F|'; unset($value); echo 'E|';\n",
+    "source_sha256": "e8023fd78ce8926e38374c09daea06198d79b787056a89740352f59a68cc6d35",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|Q|early|N|M|1|V|1|F|R|N|E|",
+    "native_stderr": "Deprecated: Creation of dynamic property GracefulExit::$previous is deprecated in Unknown on line 0\n"
+  },
+  {
+    "id": "review-fiber-protected-previous-real-chain-release-order",
+    "source": "<?php\nclass FiberProtectedResult308 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberProtectedError308 extends Exception {\n    public function __destruct() {\n        echo 'Q|', $this->getMessage(), '|', Fiber::getCurrent() === null ? 'N|' : 'F|';\n    }\n}\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new FiberProtectedError308('early', 0, new FiberProtectedError308('root')); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return new FiberProtectedResult308(); });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|';\n$value = $saved->getReturn();\necho 'V|', (int) ($value instanceof FiberProtectedResult308), '|';\nunset($saved); echo 'F|'; unset($value); echo 'E|';\n",
+    "source_sha256": "d3a04624b0e44e2a07301a9eaf07a5c17ce4918143748fa7235ac054bc9d9d4f",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|Q|early|N|Q|root|N|M|1|V|1|F|R|N|E|",
+    "native_stderr": "Deprecated: Creation of dynamic property GracefulExit::$previous is deprecated in Unknown on line 0\n"
+  },
+  {
+    "id": "review-fiber-protected-deprecation-restores-parked-reporting-mask",
+    "source": "<?php\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new Exception('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return null; });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\nerror_reporting(0);\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|', (int) ($saved->getReturn() === null), '|';\necho 'K|', (int) (error_reporting() === 0), '|';\nunset($saved); echo 'E|';\n",
+    "source_sha256": "8f63d4a12ab11e164d942971ee073b3f42cd8820a03d7d9cd8a93c7404aa8238",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|M|1|1|K|1|E|",
+    "native_stderr": "Deprecated: Creation of dynamic property GracefulExit::$previous is deprecated in Unknown on line 0\n"
+  },
+  {
+    "id": "review-fiber-protected-deprecation-uses-shared-late-handler",
+    "source": "<?php\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new Exception('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return null; });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\nset_error_handler(static function () { echo 'D|'; throw new Exception('late handler'); });\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|', (int) ($saved->getReturn() === null), '|';\nunset($saved); echo 'E|';\nrestore_error_handler();\n",
+    "source_sha256": "f711a9e6e9ad3b188d165ebff3ddff52dcf560983bf0155db8d10700eaa39bf2",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|M|1|1|E|",
+    "native_stderr": ""
+  },
+  {
+    "id": "review-fiber-protected-defined-result-finally-replacement-focused",
+    "source": "<?php\nclass FiberProtectedResult308 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new Exception('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n            throw new Exception('replacement');\n        }\n    }\n}\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return new FiberProtectedResult308(); });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\ntry { unset($fiber); }\ncatch (Exception $e) {\n    echo 'X|', $e->getMessage(), '|', $e->getPrevious()->getMessage(), '|';\n }\necho 'T|', (int) $saved->isTerminated(), '|';\ntry { $saved->getReturn(); }\ncatch (FiberError $e) { echo $e->getMessage(), '|'; }\necho 'F|'; unset($saved); echo 'E|';\n",
+    "source_sha256": "7502442e2788939cdb8051ca543ecee01e8ccc2034f91b690f27f2f4b5984098",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|X|replacement|early|T|1|Cannot get fiber return value: The fiber threw an exception|F|R|N|E|",
+    "native_stderr": "",
+    "origin": {
+      "id": "review-fiber-protected-defined-result-finally-replacement",
+      "source_sha256": "8ea9a44675a9915270ce738f6ef16d0828af9ab2d3465a7919c35fbb87615167",
+      "changes": "Remove two trace-iteration observers; preserve replacement and previous-message identity, terminated/failed Fiber return check, resurrection and returned-object release."
+    }
+  },
+  {
+    "id": "review-fiber-protected-later-capture-replaces-private-pending-control",
+    "source": "<?php\nclass FiberProtectedResult308 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberProtectedError308 extends Exception {\n    public function __destruct() { echo 'Q|', $this->getMessage(), '|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberProtectedLate308 {\n    public function __destruct() { echo 'L|'; throw new Exception('late'); }\n}\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new FiberProtectedError308('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$c = new FiberProtectedLate308();\n$fiber = new Fiber(function () use ($a, $b, $c) { echo 'B|'; return new FiberProtectedResult308(); });\nunset($a, $b, $c);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\ntry { unset($fiber); }\ncatch (Exception $e) {\n    echo 'X|', $e->getMessage(), '|', (int) ($e->getPrevious() === null), '|';\n }\necho 'T|', (int) $saved->isTerminated(), '|';\ntry { $saved->getReturn(); }\ncatch (FiberError $e) { echo $e->getMessage(), '|'; }\necho 'F|'; unset($saved); echo 'E|';\n",
+    "source_sha256": "f5e77b1c9d6706fb47d30615aea3953caae612b2a8a6bff64f67974035151369",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|L|Q|early|N|X|late|1|T|1|Cannot get fiber return value: The fiber threw an exception|F|R|N|E|",
+    "native_stderr": "Deprecated: Creation of dynamic property GracefulExit::$previous is deprecated in Unknown on line 0\n",
+    "origin": {
+      "id": "review-fiber-protected-defined-result-finally-replacement-focused",
+      "source_sha256": "7502442e2788939cdb8051ca543ecee01e8ccc2034f91b690f27f2f4b5984098",
+      "changes": "Use a destructor-bearing early Throwable; replace the middle finally throw with a third captured destructor that throws after the private previous write."
+    }
+  },
+  {
+    "id": "review-fiber-protected-handler-registration-through-supported-array-key",
+    "source": "<?php\nclass FiberProtectedResult308 {\n    public function __destruct() { echo 'R|', Fiber::getCurrent() === null ? 'N|' : 'F|'; }\n}\nclass FiberProtectedEarly308 {\n    public function __destruct() { echo 'A|'; throw new Exception('early'); }\n}\nclass FiberProtectedDelay308 {\n    public function __destruct() {\n        echo 'C|', (int) Fiber::getCurrent()->isRunning(), '|';\n        try { echo Fiber::suspend('cleanup'), '|'; }\n        finally {\n            global $saved;\n            $saved = Fiber::getCurrent();\n            echo 'F|', (int) $saved->isRunning(), '|';\n\n        }\n    }\n}\n$after = false; $expected = 0;\nset_error_handler(static function ($level, $message, $file, $line) {\n    global $after, $expected;\n    echo 'D|', (int) $after, '|', (int) ($level === E_DEPRECATED), '|';\n    echo (int) ($file === __FILE__), '|', (int) ($line === $expected), '|';\n    echo Fiber::getCurrent() === null ? 'N|' : 'F|';\n    return true;\n});\n$a = new FiberProtectedEarly308();\n$b = new FiberProtectedDelay308();\n$fiber = new Fiber(function () use ($a, $b) { echo 'B|'; return new FiberProtectedResult308(); });\nunset($a, $b);\necho $fiber->start(), '|', (int) $fiber->isSuspended(), '|';\nunset($fiber);\necho 'M|', (int) $saved->isTerminated(), '|';\n$value = $saved->getReturn();\necho 'V|', (int) ($value instanceof FiberProtectedResult308), '|';\nunset($saved); echo 'F|'; unset($value); echo 'E|';\n$after = true; $probe = []; $key = 1.5;\n$expected = __LINE__ + 1;\n$probe[$key] = 1;\necho 'Z|';\nrestore_error_handler();\n",
+    "source_sha256": "1de34c1251189ad8ef2113b80c6735651b6b0cdcc51183e359d33b02c6b1a20b",
+    "native_stdout": "B|A|C|1|cleanup|1|F|1|M|1|V|1|F|R|N|E|D|1|1|1|1|N|Z|",
+    "native_stderr": "",
+    "origin": {
+      "id": "review-fiber-protected-deprecation-preserves-handler-registration",
+      "source_sha256": "e0f0622d85523fef2b1fae605008a858ef85f779d2ce8f683561adb143c75f37",
+      "delta": "Replace only post-close unsupported dynamic-property warning with a supported defined CV-array float-key deprecation; remove its now-unused class."
+    }
   }
 ]
