@@ -52,7 +52,7 @@ dec $fiber_transfer_reason(pstate) : text
 ;; The five active destruction lists move with the real VM stack.
 def $fiber_transfer_reason(S) = "Fiber switch during an initializer, source loader or Generator continuation"
 def $fiber_transfer_context(S, eps) = true
-def $fiber_transfer_context(S, (pcallcontext)) = ~$autoload_context_kind(S, pcallcontext)
+def $fiber_transfer_context(S, (pcallcontext)) = (pcallcontext.DEFAULTRECEIVE = eps /\ ~$autoload_context_kind(S, pcallcontext))
 def $fiber_transfer_frames(S, eps) = true
 def $fiber_transfer_frames(S, pframe :: pframe_tail*) = (pframe.CONSTCONTEXT = eps /\ $generator_resume_ids(pframe.TODO) = eps /\ $fiber_transfer_context(S, pframe.CONTEXT) /\ $fiber_transfer_frames(S, pframe_tail*))
 def $fiber_transfer_domain(S) = (S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps /\ S.DIRCONTEXT = eps /\ S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ $generator_resume_ids(S.TODO) = eps /\ $fiber_transfer_context(S, S.CURRENT) /\ $fiber_transfer_frames(S, S.FRAMES))
@@ -895,10 +895,11 @@ def $fiber_sequences_unique(S, pnode*, n_seen*) = false -- otherwise
 def $fiber_state_valid(S) = ($fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps) /\ $fiber_live_records(S, S.ALLOCATIONS) /\ $fiber_sequences_unique(S, S.ALLOCATIONS, eps) /\ $(S.FIBERSEQ > 0))
 dec $weakref_state_valid(pstate) : bool
 def $weakref_state_valid(S) = true -- otherwise
+dec $parameter_receive_state_valid(pstate) : bool
 dec $clone_windows_valid(pstate) : bool
 dec $gc_state_valid(pstate) : bool
 def $gc_state_valid(S) = true -- otherwise
-def $call_descriptors_valid(S) = ($call_descriptors_local_valid(S) /\ $generator_state_valid(S) /\ $fiber_state_valid(S) /\ $weakref_state_valid(S) /\ $clone_windows_valid(S) /\ $gc_state_valid(S))
+def $call_descriptors_valid(S) = ($call_descriptors_local_valid(S) /\ $generator_state_valid(S) /\ $fiber_state_valid(S) /\ $weakref_state_valid(S) /\ $clone_windows_valid(S) /\ $gc_state_valid(S) /\ $parameter_receive_state_valid(S))
 
 def $closure_live_object_valid(S, n) = true -- if S.OBJECTS[n] = FIBER pfiber
 def $closure_scope_complete(S, (HOBJECT n) :: pnode*) = $closure_scope_complete(S, pnode*) -- if S.OBJECTS[n] = FIBER pfiber

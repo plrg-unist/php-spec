@@ -292,6 +292,7 @@ dec $call_tasks_valid(pstate, ptask*) : bool
 def $call_tasks_valid(S, eps) = true
 def $call_tasks_valid(S, ptask :: ptask_tail*) = ($call_task_valid(S, ptask) /\ $call_tasks_valid($call_after_origin(S, ptask), ptask_tail*))
 dec $call_context_valid(pstate, pcallcontext, preqbytes*) : bool
+dec $parameter_receive_context_valid(pstate, pcallcontext?) : bool
 dec $call_holes_valid(pstate, pcallcontext) : bool
 dec $default_ctor_context_kind(pstate, pcallcontext) : bool
 dec $default_ctor_context_valid(pstate, pcallcontext) : bool
@@ -314,6 +315,7 @@ def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if $call_arity_valid(S, pcallcontext)
   -- if $wrapper_context_valid(S, pcallcontext)
   -- if $call_holes_valid(S, pcallcontext)
+  -- if $parameter_receive_context_valid(S, (pcallcontext))
 def $call_context_valid(S, pcallcontext, preqbytes*) = false -- otherwise
 dec $call_current_valid(pstate) : bool
 def $call_current_valid(S) = true -- if S.CURRENT = eps /\ S.FRAMES = eps

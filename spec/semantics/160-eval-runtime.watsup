@@ -82,7 +82,7 @@ def $eval_request_start(S, porigin, z, ptask_tail*) = $declaration_enter(S, n_un
   -- if n_unit = $next_eval_unit(S.FILES)
   -- if n_file* = $eval_filename(S, porigin, z, $class_constant_location(S))
   -- if n_owner = |S.FRAMES|
-  -- if pevalcontext = {UNIT n_unit, SITE porigin, BYTES (n_byte :: n_tail*), FILE n_file*, LEXICAL_CLASS $eval_class_origin(S), OWNER n_owner, PHASE PARSER_WAIT, TAIL ptask_tail*, LOCATION $class_constant_location(S)}
+  -- if pevalcontext = {UNIT n_unit, RECEIVES $parameter_receive_registration(S), USERPREFIX (|S.USERCONSTANTS|), SITE porigin, BYTES (n_byte :: n_tail*), FILE n_file*, LEXICAL_CLASS $eval_class_origin(S), OWNER n_owner, PHASE PARSER_WAIT, TAIL ptask_tail*, LOCATION $class_constant_location(S)}
 def $eval_request_start(S, porigin, z, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "invalid eval request"]
   -- if ~$eval_site_valid(S, porigin, z)
 def $eval_request_start(S, porigin, z, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "invalid eval request"]
@@ -126,6 +126,7 @@ dec $eval_context_at(pevalcontext*, nat) : pevalcontext?
 dec $eval_binding_at(pevalbinding*, nat) : pevalbinding?
 dec $file_binding_at(pfilebinding*, nat) : pfilebinding?
 dec $eval_bindings_valid(pstate, pevalbinding*) : bool
+dec $parameter_receive_ingress_valid(pstate, pevalbinding) : bool
 dec $eval_units_bound(pstate, pcunit*) : bool
 dec $eval_binding_class_valid(pstate, porigin?) : bool
 def $eval_binding_at(eps, n) = eps
@@ -276,7 +277,7 @@ def $eval_head_context(pevalcontext_list*, pevalcontext) = false -- otherwise
 dec $eval_await_head(ptask*, nat) : bool
 def $eval_await_head((EVAL_AWAIT n) :: ptask_tail*, n) = true
 def $eval_await_head(ptask*, n) = false -- otherwise
-def $eval_context_phase_valid(S, pevalcontext) = ((pevalcontext.PHASE = PARSER_WAIT /\ $eval_head_context(S.EVALCONTEXTS, pevalcontext) /\ $eval_await_head(S.TODO, pevalcontext.UNIT) /\ pevalcontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pevalcontext.SITE) /\ pevalcontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pevalcontext.LOCATION = $class_constant_location(S) /\ $source_unit(S.SOURCES, pevalcontext.UNIT) = eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = eps /\ $eval_wait_completion(S.COMPLETION)) \/ ((pevalcontext.PHASE = UNIT_RUN \/ pevalcontext.PHASE = EVAL_COMPILE) /\ $source_unit(S.SOURCES, pevalcontext.UNIT) =/= eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = ({UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS, LOCATION pevalcontext.LOCATION}) /\ $code_at(S.CODE, pevalcontext.UNIT) =/= eps))
+def $eval_context_phase_valid(S, pevalcontext) = ((pevalcontext.PHASE = PARSER_WAIT /\ $eval_head_context(S.EVALCONTEXTS, pevalcontext) /\ $eval_await_head(S.TODO, pevalcontext.UNIT) /\ pevalcontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pevalcontext.SITE) /\ pevalcontext.LEXICAL_CLASS = $eval_class_origin(S) /\ pevalcontext.LOCATION = $class_constant_location(S) /\ pevalcontext.RECEIVES = $parameter_receive_registration(S) /\ pevalcontext.USERPREFIX = |S.USERCONSTANTS| /\ $source_unit(S.SOURCES, pevalcontext.UNIT) = eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = eps /\ $eval_wait_completion(S.COMPLETION)) \/ ((pevalcontext.PHASE = UNIT_RUN \/ pevalcontext.PHASE = EVAL_COMPILE) /\ $source_unit(S.SOURCES, pevalcontext.UNIT) =/= eps /\ $eval_binding_at(S.EVALBINDINGS, pevalcontext.UNIT) = ({UNIT pevalcontext.UNIT, RECEIVES pevalcontext.RECEIVES, USERPREFIX pevalcontext.USERPREFIX, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS, LOCATION pevalcontext.LOCATION}) /\ $code_at(S.CODE, pevalcontext.UNIT) =/= eps))
 def $eval_site_line(S, porigin) = $runtime_line(S[.ORIGIN = (porigin)][.CONSTCONTEXT = eps], [PCFIELD 0], expression)
   -- if $origin_node(S.SOURCES, porigin) = (NExprEval expression metadata)
 def $eval_site_line(S, porigin) = 0 -- otherwise
@@ -551,7 +552,7 @@ def $eval_compiler_class(S) = eps -- otherwise
 def $eval_binding_class_valid(S, eps) = true
 def $eval_binding_class_valid(S, (porigin_class)) = ($class_at(S.CLASSES, porigin_class) =/= eps)
 def $eval_bindings_valid(S, eps) = true
-def $eval_bindings_valid(S, pevalbinding :: pevalbinding_tail*) = ($(pevalbinding.UNIT > 0) /\ $eval_binding_at(pevalbinding_tail*, pevalbinding.UNIT) = eps /\ $source_unit(S.SOURCES, pevalbinding.UNIT) =/= eps /\ $eval_site_valid(S, pevalbinding.SITE, z) /\ $eval_location_valid(S, pevalbinding.UNIT, pevalbinding.LOCATION) /\ $call_sourcefile(S.FILES, PORIGIN pevalbinding.UNIT eps) = $eval_filename(S, pevalbinding.SITE, z, pevalbinding.LOCATION) /\ $eval_binding_class_valid(S, pevalbinding.CLASS) /\ $eval_bindings_valid(S, pevalbinding_tail*))
+def $eval_bindings_valid(S, pevalbinding :: pevalbinding_tail*) = ($parameter_receive_ingress_valid(S, pevalbinding) /\ $(pevalbinding.UNIT > 0) /\ $eval_binding_at(pevalbinding_tail*, pevalbinding.UNIT) = eps /\ $source_unit(S.SOURCES, pevalbinding.UNIT) =/= eps /\ $eval_site_valid(S, pevalbinding.SITE, z) /\ $eval_location_valid(S, pevalbinding.UNIT, pevalbinding.LOCATION) /\ $call_sourcefile(S.FILES, PORIGIN pevalbinding.UNIT eps) = $eval_filename(S, pevalbinding.SITE, z, pevalbinding.LOCATION) /\ $eval_binding_class_valid(S, pevalbinding.CLASS) /\ $eval_bindings_valid(S, pevalbinding_tail*))
   -- if z = $eval_site_line(S, pevalbinding.SITE)
 def $eval_units_bound(S, eps) = true
 def $eval_units_bound(S, pcunit :: pcunit_tail*) = $eval_units_bound(S, pcunit_tail*)
@@ -576,7 +577,7 @@ def $eval_source_ppstate_body(S, pcunit) = $ppstart_eval_state(S, pcunit.ID, pcu
 def $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program) = $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P)
   -- if P = $ppstart_eval_state(S, pevalcontext.UNIT, program, pevalcontext.FILE, $call_request_cwd(S.REQUEST), $eval_compiler_class(S))
   -- if ~$declaration_parser_rejects($declaration_preflight(P.FOLD.SOURCE.OCCURRENCES))
-  -- if pevalbinding = {UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS, LOCATION pevalcontext.LOCATION}
+  -- if pevalbinding = {UNIT pevalcontext.UNIT, RECEIVES pevalcontext.RECEIVES, USERPREFIX pevalcontext.USERPREFIX, SITE pevalcontext.SITE, CLASS pevalcontext.LEXICAL_CLASS, LOCATION pevalcontext.LOCATION}
   -- if S_compiled = $compile_source_append(S[.COMPLETION = NORMAL][.EVALBINDINGS = S.EVALBINDINGS ++ [pevalbinding]][.EVALCONTEXTS = pevalcontext[.PHASE = EVAL_COMPILE] :: pevalcontext_tail*], P)
 def $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program) = $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, FAILED_COMPILE, ptbytes_message, z)
   -- if $declaration_preflight($pcsource(pevalcontext.UNIT, program).OCCURRENCES) = (COMPILETHROWN ptbytes_message z)

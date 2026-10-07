@@ -63,8 +63,9 @@ def $constant_declaration(S, PORIGIN n pcpath) = ((preqbytes, z))
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
 def $constant_declaration(S, porigin) = eps -- otherwise
 
+dec $parameter_receive_registration(pstate) : preceivecut*
 dec $constant_activate(pstate, porigin, preqbytes, pvalue, pvalueclass, pconstantfact*, int) : pstate
-def $constant_activate(S, porigin, preqbytes, pvalue, pvalueclass, pconstantfact_read*, z) = S[.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN porigin, VALUE pvalue, CLASS pvalueclass, READS pconstantfact_read*}]]
+def $constant_activate(S, porigin, preqbytes, pvalue, pvalueclass, pconstantfact_read*, z) = S[.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN porigin, VALUE pvalue, CLASS pvalueclass, READS pconstantfact_read*, RECEIVES $parameter_receive_registration(S)}]]
   -- if $source_constant_lookup(S, preqbytes) = eps
 def $constant_activate(S, porigin, preqbytes, pvalue, pvalueclass, pconstantfact_read*, z) = $global_constant_duplicate(S, porigin, preqbytes, pvalue, pvalueclass, pconstantfact_read*, z)
   -- if $source_constant_lookup(S, preqbytes) = (peval)
