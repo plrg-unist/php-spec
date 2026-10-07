@@ -76,6 +76,9 @@ commands, exits, exact working-tree inputs and executed binary hashes are in eac
 report. Native preparation uses a 75-second subprocess cap. Reproduce selected
 cases with repeated `--case`
 arguments; `--native-report` reuses exact matching native originals.
+Default maintained source runs exclude the four retained `count()` originals
+and the held undefined-result engine witness. The latter accepts only its
+preserved native report; no fresh engine observation is made.
 
 Original compiler failures, the source dispatch failures in
 `fiber-review-mslnabzj`, `fiber-review-fhy6k1o_`, `fiber-review-u0pcirvf` and
@@ -93,23 +96,120 @@ The const-initialized original's first failure in `fiber-review-62uis9p4`
 preserves its successful default prefix and the missing-line error-path stop.
 The affected successful original above keeps that earlier failure at zero credit.
 
+## Ordinary force-close
+
+Module 291 implements bounded ordinary force-close on the accepted eager-release source.
+`zend_fiber_object_destroy` marks a suspended Fiber destroyed and resumes its
+stack with an unregistered graceful control. User Throwable catches skip that
+control; finally blocks may return a real value or replace it with an ordinary
+exception. The original pending release owns the Fiber while the close frame
+owns its graceful zval. Close traces stop at the callback boundary without an
+invented public API or destructor-caller row.
+
+Callback retirement transfers the raw callback to ordered release while the
+Fiber remains running and destroyed. The pending finish task owns its exception;
+the matching Fiber certificate owns nothing. Cleanup starts after the callback's
+lexical frame retires. Its stored return value survives a captured-object
+replacement exception, although `getReturn` then rejects the failed Fiber.
+A private captured destructor instead raises a source-less Error from global
+scope: `[no active file]`, line0 and an empty trace. Capture-time resurrection
+retains the terminated Fiber and its actual returned value. Replacement errors
+hand back to genuine operation, frame or parent-finish pending slots without
+discarding remaining release jobs.
+
+Captured destructor frames authenticate the empty internal root through their
+genuine result producer and terminal finish; they acquire no callback lexical
+scope. After the Fiber terminates, its private control remains valid storage only
+while the matching ordered release owns every reference. It cannot regain catch
+or pending-exception authority. Genuine two-owner cleanup retires one reference
+before freeing the control.
+
+The private combined source has 29 normal close comparisons: 25 originals and
+four supported `foreach` trace observers, across `fiber-review-m6ssczam`,
+`fiber-review-xkfv6zlp`, `fiber-review-n37exgls`, `fiber-review-3mgw86q7` and
+`fiber-review-umrupbw6`. Four original `count()` observers stop at the library
+body and earn zero agreement. The 33 native close originals include four
+request-scan witnesses with zero agreement: three reach the suspended-stack
+prune boundary, and the object-store witness now stops at its authenticated
+internal handle (`fiber-review-5hcar_aq`). Its earlier silent normal result in
+`fiber-review-n37exgls` remains a failure.
+
+The reviewed 291 cut's 275-module AL checks pass in `fiber-al-dhcopa60`. Three authored
+source-reached states/215 conditions pass in `fiber-state-review-6zo1dfo6`
+(two rows) and `fiber-state-review-5u7eeare`; the first fixture syntax failure
+remains zero credit. Eleven independent states/822 conditions pass across
+`fiber-state-review-vg04eps9` (six rows), `fiber-state-review-9zgmnvth` (three rows)
+and `fiber-state-review-bvygo02o` (two rows). The original internal-root admission
+and one-step fixture failures, the retiring-control failure in
+`fiber-state-review-wmjf7goa`, and pure diagnostic queries retain zero credit.
+`fiber_retirement_review.py` maintains these independent states. Semantic review
+accepts this cut; its source is integrated without renewing the earlier evidence.
+
+## Ordinary callback retirement
+
+Module 302 retires the raw callback on the running Fiber
+after the callback frame returns or throws. The actual result is stored before
+ordered release; a separate definedness flag distinguishes a returned null from
+a callback that threw. One terminal task owns the pending exception, while its
+matching Fiber certificate borrows it. Admission counts return, throw and
+force-close terminal kinds together and rejects duplicate or changed kinds.
+
+Captured destructors can suspend, resume or receive a public `throw`; their
+continuations, result and pending exception remain owned by the Fiber. Resume
+renews the finish certificate and saved task stamps. A replacement exception
+preserves the old real exception and the stored result, even when `getReturn`
+rejects the failed Fiber. Shared raw callbacks and returned captures keep their
+genuine owners. Ordinary private-destructor errors use the current public
+`Fiber::start`, `resume` or `throw` scope and provenance; force-close retains its
+separate source-less global root.
+
+Entered destructor frames match their genuine result producer's target,
+receiver, callsite, normalized line and saved caller scope. Their C callsite can
+differ from the saved caller origin; ordinary frame-site fallback grants no
+authority to a malformed destructor pair.
+
+Force-close of suspended cleanup preserves a result already returned by the
+body. Cleanup protecting a real exception instead stops before private-control
+injection with an explicit Unsupported boundary. Two native witnesses cover a
+pending body exception and an earlier capture exception after an object return.
+Zend links that real exception through `GracefulExit::$previous`, emits a
+dynamic-property deprecation and can expose an undefined result when the body
+never returned. That protocol remains required; these controls earn no agreement.
+
+AL checks pass for 276 modules in `fiber-ordinary-al-kjr9z54c`. Fifteen targeted
+normal comparisons pass: eight new originals, four affected ordinary controls
+and three force-close result/scope controls. The protected-real witnesses stop
+with exact output/event prefixes in `fiber-review-sz0q5k0z` and
+`fiber-review-nywumd4m`. Three authored source states/227 conditions pass in
+`fiber-state-review-__28gz97` (two rows) and `fiber-state-review-3zph8o_0`.
+The original middle timeout retains zero credit; its affected fixture checks
+whole-state zero-budget preservation and one actual completion from that paused
+state. Nine independent groups/644 conditions pass across
+`fiber-state-review-joqr1vup` (three unchanged groups) and
+`fiber-state-review-9k7ok2d8` (six affected groups). The original heavy body
+group retains every predicate across separate ownership/budget and actual
+completion phases from the same source-reached state. The earlier compiler
+syntax failure, protected-close boundary mismatch, independent combined timeout,
+frame-admission failure, fixture field-order error and pure diagnostic queries
+retain zero credit. `fiber_ordinary_state.py` and `fiber_ordinary_review.py`
+maintain the authored and independent groups. Semantic review accepts this cut;
+its source is integrated without renewing the earlier evidence.
+
 ## Required follow-ons
 
-Automatic-destruction calls and cleanup hold five stack certificate lists that
-the current Fiber snapshot does not transfer. Switching while one is active
-returns `Unsupported` with reason `Fiber switch during automatic destruction`.
-Abandoned owners, handles and write caches remain shared and do not impose that
-boundary. Normal transfer after cleanup finishes remains supported. Full transfer
-of the active destruction certificates remains required.
+Five destruction control lists move with each VM stack: calls, releases, frames,
+operations and cleanups. Object-store handles, request-pass state, abandoned
+cleanup and property caches stay shared. Request scans, fatal cleanup, GC and
+suppressed `exit` in a destroyed Fiber remain required consumers.
 
-Force-close and request/fatal cleanup, deprecated constructor callable stages,
+`getReturn` after graceful close without an actual return, request/fatal cleanup,
+deprecated constructor callable stages,
 core internal callback bodies, reference forwarding, API callable/FCC entry,
 `start` unpacking and switching during initialization/source loading remain
 required. The first transfer domain rejects active or saved constant/default and
 autoload initialization, and active Generator execution, including switches in
 their helper calls. Their shared pending flags and parked ownership remain
 required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
-their own stages. Registered shutdown callbacks and explicit source method calls
-are not blanket blocked; automatic destruction has the active-certificate boundary
-above. Property and broader object consumers remain tracked separately. Full core
-and paused return verification are not closed by this cut.
+their own stages; ordinary registered shutdown callbacks and destructors are not
+blanket blocked at this pin. Property and broader object consumers remain tracked
+separately. Full core and paused return verification are not closed by this cut.

@@ -65,11 +65,12 @@ cursor lookup separately uses its pre-resume pause claim and exact plan. A
 precision resume can change the installed image without changing that plan.
 Fatal shutdown callbacks stop the remaining queue rather than restart it.
 
-Fiber switches during active automatic-destruction calls, slot release, frame
-cleanup, interrupted operations or handler cleanup remain explicitly Unsupported.
-The shared abandoned owners, handles and property cache do not block transfer;
-ordinary Fiber calls after cleanup finishes remain admitted. Moving those five
-stack certificate lists with each Fiber VM is required follow-on work.
+Fiber291/302 move automatic-destruction calls, slot releases, frame cleanup,
+interrupted operations and handler cleanup with each genuine VM stack. Shared
+abandoned owners, handles and property caches remain shared. Ordinary captured
+cleanup can suspend and resume; protected real exceptions, request/fatal cleanup
+and wider consumers remain required. [The Fiber contract](FIBERS.md) records the
+bounded cuts.
 
 The source truth is `Zend/zend_vm_def.h` assignment/FREE_OP and leave routes,
 `Zend/zend_object_handlers.c::zend_std_write_property`,

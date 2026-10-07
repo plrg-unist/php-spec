@@ -8,11 +8,11 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 ## Current checkpoint
 
 The canonical source includes accepted ArrayAccess292 (`1d0f8ea23`) and 304
-(`0f2ecffc6`), plus reviewed eager destruction270 and WeakReference296, with 277 modules on baseline
+(`0f2ecffc6`), plus reviewed eager destruction270, WeakReference296 and Fiber291/302, with 279 modules on baseline
 `38f1dfaa045f`. Independently accepted
-private milestones 286, 288, 289, 290, 291, 293, 294 and 297 await
+private milestones 286, 288, 289, 290, 293, 294 and 297 await
 ordered Git integration. Other private work covers 295, 298, 299 and 300, with
-301–303 in development. Held 279 work and user-paused return verification remain
+301, 303 and 308 in development. Held 279 work and user-paused return verification remain
 set aside; unaccepted return changes stay held. Full core and final combined
 offline validation remain pending. Existing entries retain their tested cuts.
 
@@ -127,9 +127,25 @@ global Generator admission stays on the actual machine while parked Fiber stacks
 keep their local guards. Three Unsupported controls earn zero agreement. The
 allocated-Fiber argument source and null-callsite preflight state checks retain
 separate cuts.
-[The contract](docs/semantics/FIBERS.md) records raw reports and the required
-force-close, internal/reference callbacks, API entry, unpacking and initializer
-switching follow-ons. Full core stays open; returns verification remains paused.
+[The contract](docs/semantics/FIBERS.md) retains the exact tested cuts.
+
+Fiber291 now force-closes ordinary suspended callbacks through an unregistered
+control: catches skip it, finally blocks run, and replacement exceptions return
+through the genuine operation or parent finish. Captured destructor retirement
+keeps its real empty internal root and ordered ownership. Five destruction
+control lists move with the VM. Twenty-nine normal close comparisons and
+fourteen reached states/1,037 conditions retain their private cuts; request-scan
+and ordinary-library controls earn zero agreement.
+
+Fiber302 stores a returned result before ordinary callback retirement and keeps
+its definedness separate from a thrown body exception. Captured destructors may
+suspend, resume and receive public throws; stored results survive replacement
+errors even when `getReturn` rejects the failed Fiber. Fifteen targeted normal
+comparisons and twelve state groups/871 conditions retain their private cuts.
+Protected real-exception force-close remains Unsupported at this accepted cut;
+its undefined-result engine witness is held. The required internal/reference
+callbacks, API entry, unpacking, initializer switching, request/fatal cleanup and
+GC remain open. Full core stays open; returns verification remains paused.
 
 Generator280 creates object-owned suspended frames after eager ordinary receives.
 Value yields, literal iterator methods, `getReturn` and value foreach retain
