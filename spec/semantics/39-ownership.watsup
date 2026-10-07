@@ -234,7 +234,8 @@ def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = pclosu
 def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = $closure_scopes_prune(pclosurescope_tail*, pnode*)
   -- if ~((HOBJECT pclosurescope.OBJECT) <- pnode*)
 dec $generator_prune_pending(pstate, pnode*) : bool
-def $prune_allocations(S) = S[.COMPLETION = UNSUPPORTED "started generator force-close finalizer"]
+dec $generator_prune(pstate, pnode*) : pstate
+def $prune_allocations(S) = $generator_prune(S, pnode_live*)
   -- if pnode_live* = $heap_prune($heap_graph(S)).NODES
   -- if $generator_prune_pending(S, pnode_live*)
 def $prune_allocations(S) = $fiber_prune(S, pnode_live*)

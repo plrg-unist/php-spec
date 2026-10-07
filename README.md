@@ -186,8 +186,10 @@ ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 traces. Inputs survive initialization; exception injection preserves ordinary
 catch/finally execution and exception identity. [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
-and natural return/unwind. IteratorAggregate, reference yields, wider call forms,
-forced-close finalizers and complete destruction/GC remain required.
+and natural return/unwind. [Last-owner close](docs/semantics/GENERATOR-FORCE-CLOSE.md)
+runs pending finally bodies with real scopes, graph links and cached owners.
+IteratorAggregate, reference yields, wider call forms, request/terminal cleanup
+and complete destruction/GC remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.

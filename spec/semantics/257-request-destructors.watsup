@@ -756,18 +756,22 @@ def $frame_release(S, S_restored) = $destructor_frame_begin(S, $destruction_stor
   -- if $destructor_frame_staged(S)
   -- if ~$destructor_unused_return(S)
 
+dec $generator_close_frame_pending(pstate, pstate) : bool
+def $generator_close_frame_pending(S, S_new) = false -- otherwise
 def $frame_release(S, S_restored) = $prune_live($destruction_store_drop(S_new, $destructor_frame_order(S, S_new)), pnode_live*)
   -- if S_new = $destruction_store_new($destructor_frame_cleanup(S_restored[.DESTRUCTION.CALLED = $destructor_frame_cleanup(S).DESTRUCTION.CALLED]))
   -- if pnode_live* = $heap_prune($destructor_frame_graph(S, S_new)).NODES
   -- if ~$destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
   -- if ~$destructor_frame_staged(S)
   -- if ~$destructor_unused_return(S)
+  -- if ~$generator_close_frame_pending(S, S_new)
 def $frame_release(S, S_restored) = $destruction_store_new($destructor_frame_cleanup(S_restored[.DESTRUCTION.CALLED = $destructor_frame_cleanup(S).DESTRUCTION.CALLED]))
   -- if ~$destructor_frame_staged(S)
   -- if ~$destructor_unused_return(S)
   -- if S_new = $destruction_store_new($destructor_frame_cleanup(S_restored[.DESTRUCTION.CALLED = $destructor_frame_cleanup(S).DESTRUCTION.CALLED]))
   -- if pnode_live* = $heap_prune($destructor_frame_graph(S, S_new)).NODES
   -- if $destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
+  -- if ~$generator_close_frame_pending(S, S_new)
 def $destructor_frame_staged(S) = ($destructor_operational(S) /\ S.COMPLETION = NORMAL /\ (S.TODO = eps \/ $destructor_leaving_exception(S.TODO) =/= eps) /\ S.CURRENT =/= eps /\ $destructor_frame_nodes(S) =/= eps)
 ;; The explicit slots cover CVs/context; unrelated completed temporaries are
 ;; pruned separately. Exclude handles already freed through those slots.

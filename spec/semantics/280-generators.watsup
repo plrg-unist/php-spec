@@ -27,6 +27,7 @@ dec $generator_increment(int) : int
 dec $generator_index(int, pvalue) : int
 dec $generator_yield_line(pstate, porigin) : int
 dec $generator_suspend(pstate, porigin, poperand?) : pstate
+dec $generator_close_active(pstate) : bool
 dec $generator_values_nodes(pvalue?) : pnode*
 dec $generator_frame_nodes(pframe?) : pnode*
 dec $generator_closed_closure(pgenerator) : pnode*
@@ -406,6 +407,7 @@ rule PhpStep/generator-yield-release: S ~> $generator_set(S[.TODO = (GENERATOR_Y
 rule PhpStep/generator-yield-suspend: S ~> $generator_suspend(S, porigin, poperand?)
   -- if S.TODO = (GENERATOR_YIELD_STORE porigin poperand?) :: ptask_tail*
   -- if $generator_active(S)
+  -- if ~$generator_close_active(S)
 
 def $generator_values_nodes(eps) = eps
 def $generator_values_nodes((pvalue)) = $value_nodes(pvalue)
@@ -739,7 +741,10 @@ def $generator_retained_object(GENERATOR pgenerator, pcallcontext) = true
   -- if pgenerator.FRAME = (pframe)
   -- if pframe.CONTEXT = (pcallcontext)
 def $generator_retained_object(pobject, pcallcontext) = false -- otherwise
-def $generator_context_retained(S, pcallcontext) = ($generator_context_operation(S, pcallcontext) =/= eps \/ $generator_retained_nodes(S, S.ALLOCATIONS, pcallcontext))
+dec $generator_close_context(pstate, pcallcontext) : bool
+def $generator_close_context(S, pcallcontext) = false -- otherwise
+def $generator_close_active(S) = false -- otherwise
+def $generator_context_retained(S, pcallcontext) = ($generator_context_operation(S, pcallcontext) =/= eps \/ $generator_retained_nodes(S, S.ALLOCATIONS, pcallcontext) \/ $generator_close_context(S, pcallcontext))
 ;; Task validation views a suspended frame without inventing a caller frame.
 def $call_current_valid(S) = $call_context_valid(S, pcallcontext, S.CVS)
   -- if S.CURRENT = (pcallcontext)
@@ -810,7 +815,9 @@ def $generator_node_valid(S, HARRAY n) = true
 def $generator_node_valid(S, HCELL n) = true
 def $generator_object_valid(S, GENERATOR pgenerator) = $generator_record_valid(S, pgenerator)
 def $generator_object_valid(S, pobject) = true -- otherwise
-def $generator_state_valid(S) = ($generator_objects_valid(S, S.ALLOCATIONS) /\ $generator_owners_valid(S) /\ $generator_cursor_owners_valid(S) /\ $generator_flat_tasks(S.TODO) /\ $generator_search_valid(S, S.TODO) /\ $generator_flat_frames(S.FRAMES) /\ $generator_from_state_valid(S))
+dec $generator_close_state_valid(pstate) : bool
+def $generator_close_state_valid(S) = true -- otherwise
+def $generator_state_valid(S) = ($generator_objects_valid(S, S.ALLOCATIONS) /\ $generator_owners_valid(S) /\ $generator_cursor_owners_valid(S) /\ $generator_flat_tasks(S.TODO) /\ $generator_search_valid(S, S.TODO) /\ $generator_flat_frames(S.FRAMES) /\ $generator_from_state_valid(S) /\ $generator_close_state_valid(S))
 ;; These object-domain walkers leave Generator payload authentication to the
 ;; mandatory generator_state_valid conjunct of public call admission.
 def $closure_live_object_valid(S, n) = true
@@ -836,7 +843,10 @@ def $generator_prune_node(S, HARRAY n, pnode_live*) = false
 def $generator_prune_node(S, HCELL n, pnode_live*) = false
 def $generator_prune_nodes(S, eps, pnode_live*) = false
 def $generator_prune_nodes(S, pnode :: pnode_tail*, pnode_live*) = ($generator_prune_node(S, pnode, pnode_live*) \/ $generator_prune_nodes(S, pnode_tail*, pnode_live*))
-def $generator_prune_pending(S, pnode_live*) = ($generator_prune_nodes(S, S.ALLOCATIONS, pnode_live*) \/ (S.TODO = eps /\ S.FRAMES = eps /\ $generator_prune_nodes(S, S.ALLOCATIONS, eps)))
+dec $generator_close_dead(pstate, pnode*, pnode*) : bool
+def $generator_close_dead(S, pnode*, pnode_live*) = false -- otherwise
+def $generator_prune_pending(S, pnode_live*) = ($generator_prune_nodes(S, S.ALLOCATIONS, pnode_live*) \/ $generator_close_dead(S, S.ALLOCATIONS, pnode_live*) \/ (S.TODO = eps /\ S.FRAMES = eps /\ $generator_prune_nodes(S, S.ALLOCATIONS, eps)))
+def $generator_prune(S, pnode_live*) = S[.COMPLETION = UNSUPPORTED "started generator force-close finalizer"] -- otherwise
 
 def $generator_internal_task(GENERATOR_CREATE porigin) = true
 def $generator_internal_task(GENERATOR_ARGS pgeneratorop phpType7* poperand*) = true

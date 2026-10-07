@@ -196,10 +196,12 @@ rule PhpStep/generator-from-value: S ~> $generator_from_start(S_value, porigin, 
   -- if S_value = $resolve_at(S, S.RESULT, $generator_from_line(S, porigin))
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$generator_close_active(S)
 rule PhpStep/generator-from-value-abrupt: S ~> S_value
   -- if S.TODO = (GENERATOR_FROM_EVAL porigin) :: ptask_tail*
   -- if S_value = $resolve_at(S, S.RESULT, $generator_from_line(S, porigin))
   -- if S_value.COMPLETION =/= NORMAL
+  -- if ~$generator_close_active(S)
 def $generator_from_start(S, porigin, pvalue) = $generator_set(S[.ORIGIN = (porigin)][.TODO = (GENERATOR_FROM_NEXT n porigin) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, pgenerator[.DELEGATE = ({SITE porigin, INPUT (pvalue), POSITION 0, CURRENT eps})])
   -- if S.TODO = ptask :: ptask_tail*
   -- if n = $generator_from_active(S)

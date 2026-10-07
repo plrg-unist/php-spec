@@ -69,6 +69,8 @@ for stage in ['rewind', 'valid', 'current', 'key', 'next']:
 for name, value in [('zero', b'0.0'), ('integer-sign-bit', b'(-PHP_INT_MAX-1)')]:
     CASES['iterator-valid-nan-reference-' + name] = (CASES['iterator-valid-nan-reference-retained'][0].replace(b'$GLOBALS["nan"]=1.0;', b'$GLOBALS["nan"]=' + value + b';'), b'RVH')
 
+CASES['force-close-delegation-finally'] = (b'<?php\nfunction inner(){try{yield 1;}finally{echo "I";}}function outer(){try{yield from inner();}finally{echo "O";}}$g=outer();echo $g->current();unset($g);echo "Z";', b'1IOZ')
+
 DECLARATIONS = {
     'global-yield-from': (b'<?php\nyield from [];', b'The "yield" expression can only be used inside a function', 2),
     'byref-yield-from-source-line': (b'<?php\nfunction &seq(){\n echo "B";\n yield from [];\n}\n', b'Cannot use "yield from" inside a by-reference generator', 4),
@@ -79,14 +81,12 @@ UNSUPPORTED = {
     'generator-fiber-arrayaccess-reference-read-required': (CASES['generator-fiber-arrayaccess-value-read-and-property-aliases'][0].replace(b'function offsetGet(', b'function &offsetGet('), CASES['generator-fiber-arrayaccess-value-read-and-property-aliases'][1]),
     'generator-fiber-arrayaccess-reference-dimension-required': (b'<?php\n$key=3;\nclass Bag implements ArrayAccess {\n public $v=7;\n function offsetExists($k):bool{return true;}\n function &offsetGet($k):mixed{echo "G";return $this->v;}\n function offsetSet($k,$v):void{$this->v=$v;}\n function offsetUnset($k):void{}\n}\nclass It implements Iterator {\n public $i=0;public $b;\n function __construct($b){$this->b=$b;}\n function rewind():void{echo "R";}\n function valid():bool{echo "V";return $this->i<1;}\n function &current():mixed{echo "C";return $this->b["k"];}\n function key():mixed{echo "K";$this->b->v=9;return [&$GLOBALS["key"]];}\n function next():void{echo "N";++$this->i;}\n}\nclass Owner {\n private $p=7;\n private function seq($i){yield from $i;echo self::class,":",static::class,":",$this->p;return [$this->p,&$GLOBALS["key"]];}\n public function make($i){return $this->seq($i);}\n}\nclass Child extends Owner{}\n$o=new Child;$bag=new Bag;$it=new It($bag);\n$f=new Fiber(function($it)use($o){return $o->make($it);});\n$f->start($it);$g=$f->getReturn();unset($f,$o);\necho $g->current(),":",$g->key()[0];\n$bag->v=8;$key=4;echo ":",$g->current(),":",$g->key()[0];\n$g->next();$key=5;echo ":",$g->getReturn()[0],":",$g->getReturn()[1];\n', b'RVCGK9:3:8:4NVOwner:Child:7:7:5'),
     'aggregate-required': (iterator_source('').replace(b'class It ', b'class Inner ') + b'\nclass Aggregate implements IteratorAggregate{function getIterator():Traversable{echo "G";return new Inner;}}function seq(){yield from new Aggregate;}foreach(seq() as $v){echo $v;}', b'GRVCK10NVCK11NV'),
-    'force-close-delegation-finally': (b'<?php\nfunction inner(){try{yield 1;}finally{echo "I";}}function outer(){try{yield from inner();}finally{echo "O";}}$g=outer();echo $g->current();unset($g);echo "Z";', b'1IOZ'),
     'iterator-valid-nan-raw-type-change': (CASES['iterator-valid-nan-reference-retained'][0].replace(b'$GLOBALS["nan"]=1.0;', b'$GLOBALS["nan"]=false;'), b'RVHCK10NV'),
 }
 UNSUPPORTED_REASONS = {
     'generator-fiber-arrayaccess-reference-read-required': 'ArrayAccess by-reference result protocol',
     'generator-fiber-arrayaccess-reference-dimension-required': 'ArrayAccess read-write/reference dimension protocol',
     "aggregate-required": "internal interface method contract",
-    "force-close-delegation-finally": "started generator force-close finalizer",
     "iterator-valid-nan-raw-type-change": "yield from valid NaN raw payload type change",
 }
 

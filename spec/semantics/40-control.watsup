@@ -316,6 +316,8 @@ dec $destructor_ready(pstate) : bool
 dec $shutdown_render_ready(pstate) : bool
 dec $shutdown_render_release(pstate) : pstate
 dec $destruction_transition(pstate, pstate) : pstate
+dec $generator_close_terminal_pending(pstate) : bool
+def $generator_close_terminal_pending(S) = false -- otherwise
 dec $drive_steps(pstate, nat) : pstate
 dec $drive_checked(pstate, nat) : pstate
 def $drive_checked(S, n) = $drive_steps(S, n) -- if S.COMPLETION = NORMAL
@@ -349,6 +351,7 @@ def $drive_steps(S, n) = $prune_allocations($release_temporaries($silence_unwind
   -- if ~$shutdown_ready(S)
   -- if ~$shutdown_render_ready(S)
   -- if ~$destructor_ready(S)
+  -- if ~$generator_close_terminal_pending(S)
 def $drive_steps(S, n) = $drive_steps($start_error_unwind(S), n)
   -- if (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET /\ S.COMPLETION =/= SOURCE_PENDING)
   -- if ~S.COMPILESTOP

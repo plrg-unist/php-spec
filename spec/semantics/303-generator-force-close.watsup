@@ -1,0 +1,607 @@
+;; PHP 8.5.10 zend_generator_dtor_storage: ordinary last-owner release,
+;; input/link before finally, frame before cached value/key storage.
+
+dec $generator_close_started(pobject) : bool
+dec $generator_close_node(pstate, pnode) : bool
+dec $generator_close_pending(pcompletion, ptask*) : nat?
+dec $generator_close_without_search(ptask*, nat?) : ptask*
+dec $generator_close_begin(pstate, pdestructionjob*) : pstate
+dec $generator_close_begin_pending(pstate, pdestructionjob*, nat?) : pstate
+dec $generator_close_release(pstate, pgenrelease) : pstate
+dec $generator_close_release_end(pstate, pgenrelease) : pstate
+dec $generator_close_merge(pstate, nat?, nat?) : (pstate, nat?)
+dec $generator_close_children(pstate, pnode) : pnode*
+dec $generator_close_prepare(pstate, pgenrelease, nat) : pstate
+dec $generator_close_enter(pstate, pgenclose) : pstate
+dec $generator_close_scan(pstate, nat, porigin, ptask*) : pstate
+dec $generator_close_skip_marker(pstate, ptask, ptask*) : pstate
+dec $generator_close_loop_task(ptask) : bool
+dec $generator_close_queued_skip(pstate, pgenclose, ptask, ptask*) : pstate
+dec $generator_close_finally_enter(pstate, porigin, ptask*) : pstate
+dec $generator_close_end(pstate, nat, porigin) : pstate
+dec $generator_close_done(pstate, pgenclose) : pstate
+dec $generator_close_saved(pstate, pcallcontext?, pframe*) : pgenclose?
+dec $generator_close_context_tasks(pcallcontext, ptask*) : bool
+dec $generator_close_context_frames(pcallcontext, pframe*) : bool
+dec $generator_close_site(pstate, pgenerator, porigin) : bool
+dec $generator_close_captures_valid(pstate, pnode*) : bool
+dec $generator_close_jobs_valid(pstate, pdestructionjob*) : bool
+dec $generator_close_enter_valid(pstate, pgenclose) : bool
+dec $generator_close_done_valid(pstate, pgenclose) : bool
+dec $generator_close_frame_valid(pstate, pgenerator, pframe) : bool
+dec $generator_close_drop_claim(ptask*, nat, porigin) : ptask*
+dec $generator_close_claim(ptask) : nat*
+dec $generator_close_claims(ptask*) : nat*
+dec $generator_close_frame_claims(pframe*) : nat*
+dec $generator_close_claim_owners(pstate, pnode*, nat*) : bool
+dec $generator_close_claim_owner(pstate, pnode, nat*) : bool
+dec $generator_close_release_valid(pstate, pgenrelease) : bool
+dec $generator_close_pending_valid(pstate, nat?) : bool
+dec $generator_close_stage(pstate, pgenclosestage) : pstate
+dec $generator_close_finished(ptask*) : ptask*
+dec $generator_close_controls(ptask*) : ptask*
+dec $generator_close_scan_head(ptask*, nat, porigin) : bool
+dec $generator_close_stage_valid(pstate, pgenclose) : bool
+dec $generator_close_stages(pstate, pcallcontext?, ptask*, pframe*) : bool
+dec $generator_close_region(pstate, porigin, porigin) : bool
+dec $generator_close_plan_valid(pstate, porigin, ptask*, nat) : bool
+dec $generator_close_function(pstate, pgenerator) : bool
+dec $generator_close_body_stage(pgenclosestage) : bool
+dec $generator_close_regions(pstate, porigin) : porigin*
+dec $generator_close_regions_at(nat, pcpath, pcpath*) : porigin*
+dec $generator_close_unentered(ptask*, porigin*) : porigin*
+dec $generator_close_unentered_origin(ptask) : porigin?
+dec $generator_close_current_done_valid(pstate, ptask*) : bool
+dec $generator_close_frame_nodes(pstate, pframe) : pnode*
+dec $generator_close_selection(pstate) : pgenclose?
+dec $generator_close_selected(pstate, porigin) : bool
+dec $generator_close_original_tasks_valid(pstate, porigin, ptask*) : bool
+dec $generator_close_try_ancestor(pstate, porigin, porigin) : bool
+dec $generator_close_body_tail(ptask*, porigin) : ptask*
+dec $generator_close_terminal_tasks(ptask*) : bool
+dec $generator_close_any_started(pstate, pnode*) : bool
+dec $generator_close_forbidden(pstate, preqbytes, int, pnode*) : pstate
+
+dec $generator_close_tail(ptask*) : bool
+dec $generator_close_current(pgeneratorfrom?) : poperand?
+dec $generator_close_initial_finally(pstate, ptask) : bool
+dec $generator_close_forced_marker(ptask*, porigin) : ptask*
+dec $generator_close_control(ptask) : bool
+dec $generator_close_done_head(ptask*) : bool
+dec $generator_close_exception_nodes(nat?) : pnode*
+dec $generator_close_enter_task(ptask) : bool
+dec $generator_close_yield_node(pcnode?) : bool
+
+def $generator_close_started(GENERATOR pgenerator) = (pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_DELEGATING])
+def $generator_close_started(pobject) = false -- otherwise
+def $generator_close_node(S, HOBJECT n) = $generator_close_started(S.OBJECTS[n])
+def $generator_close_node(S, pnode) = false -- otherwise
+def $generator_close_dead(S, eps, pnode_live*) = false
+def $generator_close_dead(S, pnode :: pnode_tail*, pnode_live*) = ((~(pnode <- pnode_live*) /\ $generator_close_node(S, pnode)) \/ $generator_close_dead(S, pnode_tail*, pnode_live*))
+def $generator_finalizer_task(S, FINALLY_RETURN porigin porigin_source poperand) = true
+def $generator_finalizer_task(S, FINALLY_REF_RETURN porigin porigin_source poperand z) = true
+def $generator_finalizer_task(S, FINALLY_JUMP porigin porigin_source n_depth n_original b) = true
+def $generator_finalizer_task(S, FINALLY_GOTO porigin porigin_source pcpath_source pcpath_target) = true
+
+;; A queued decrement pins only the not-yet-released slots. Test its head with
+;; that pin excluded; other jobs and the caller's saved result remain owners.
+def $generator_close_pending(THROWING n, ptask*) = (n)
+def $generator_close_pending(pcompletion, (THROW_SEARCH n) :: ptask*) = (n) -- if pcompletion =/= THROWING n
+def $generator_close_pending(pcompletion, ptask*) = eps -- otherwise
+def $generator_close_without_search((THROW_SEARCH n) :: ptask*, (n)) = ptask*
+def $generator_close_without_search(ptask*, nat?) = ptask* -- otherwise
+def $generator_close_begin(S, pdestructionjob*) = $generator_close_begin_pending(S_materialized, pdestructionjob*, $generator_close_pending(S_materialized.COMPLETION, S_materialized.TODO))
+  -- if S_materialized = $throwable_materialize(S)
+def $generator_close_begin_pending(S, pdestructionjob*, n?) = S[.TODO = (GENERATOR_CLOSE_RELEASE {JOBS pdestructionjob*, VALUE S.RESULT, BASE S.BASE, PENDING n?, COMPLETION NORMAL}) :: $generator_close_without_search(S.TODO, n?)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+  -- if S.COMPLETION = NORMAL \/ $generator_close_pending(S.COMPLETION, eps) =/= eps
+  -- if ~$generator_close_terminal_tasks(S.TODO)
+def $generator_close_begin_pending(S, pdestructionjob*, n?) = S[.COMPLETION = UNSUPPORTED "Generator last-owner release during terminal cleanup"] -- otherwise
+def $generator_prune(S, pnode_live*) = $generator_close_begin($destruction_store_new(S), $destruction_values($destruction_zero($heap_graph(S), S.ALLOCATIONS)))
+  -- if $generator_close_dead(S, S.ALLOCATIONS, pnode_live*)
+  -- if S.ACTIVEFIBER = eps
+def $generator_prune(S, pnode_live*) = S[.COMPLETION = UNSUPPORTED "Generator force-close during active Fiber"]
+  -- if $generator_close_dead(S, S.ALLOCATIONS, pnode_live*)
+  -- if S.ACTIVEFIBER =/= eps
+def $generator_prune(S, pnode_live*) = S[.COMPLETION = UNSUPPORTED "Generator force-close at request end"]
+  -- if ~$generator_close_dead(S, S.ALLOCATIONS, pnode_live*)
+
+def $generator_close_merge(S, eps, n_old?) = (S, n_old?)
+def $generator_close_merge(S, n_new?, eps) = (S, n_new?)
+  -- if n_new? = (n)
+def $generator_close_merge(S, n_new?, (n_old)) = ($throwable_previous(S, n, n_old), n_new?)
+  -- if n_new? = (n)
+def $generator_close_release_end(S, pgenrelease) = S_chained[.TODO = (GENERATOR_CLOSE_ENTER pgenclose[.PENDING = n?]) :: ptask*][.RESULT = pgenrelease.VALUE][.BASE = pgenrelease.BASE]
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: (GENERATOR_CLOSE_ENTER pgenclose) :: ptask*
+  -- if (S_chained, n?) = $generator_close_merge(S, pgenrelease.PENDING, pgenclose.PENDING)
+def $generator_close_release_end(S, pgenrelease) = S_chained[.TODO = (GENERATOR_CLOSE_DONE pgenclose[.PENDING = n?]) :: ptask*][.RESULT = pgenrelease.VALUE][.BASE = pgenrelease.BASE]
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
+  -- if (S_chained, n?) = $generator_close_merge(S, pgenrelease.PENDING, pgenclose.PENDING)
+def $generator_close_release_end(S, pgenrelease) = S_chained[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease_outer[.PENDING = n?]) :: ptask*][.RESULT = pgenrelease.VALUE][.BASE = pgenrelease.BASE]
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: (GENERATOR_CLOSE_RELEASE pgenrelease_outer) :: ptask*
+  -- if (S_chained, n?) = $generator_close_merge(S, pgenrelease.PENDING, pgenrelease_outer.PENDING)
+def $generator_close_release_end(S, pgenrelease) = S[.TODO = ptask*][.RESULT = pgenrelease.VALUE][.BASE = pgenrelease.BASE][.COMPLETION = pgenrelease.COMPLETION]
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
+  -- if ~$generator_close_tail(ptask*)
+  -- if pgenrelease.PENDING = eps
+def $generator_close_release_end(S, pgenrelease) = S[.TODO = (THROW_SEARCH n) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
+  -- if ~$generator_close_tail(ptask*)
+  -- if pgenrelease.PENDING = (n)
+def $generator_close_tail((GENERATOR_CLOSE_ENTER pgenclose) :: ptask*) = true
+def $generator_close_tail((GENERATOR_CLOSE_DONE pgenclose) :: ptask*) = true
+def $generator_close_tail((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*) = true
+def $generator_close_tail(ptask*) = false -- otherwise
+
+def $generator_close_children(S, HOBJECT n) = $generator_closed_closure(pgenerator) ++ $generator_optional_operand_nodes($generator_close_current(pgenerator.DELEGATE)) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
+def $generator_close_children(S, HOBJECT n) = $generator_close_frame_nodes(S, pframe) ++ $generator_closed_closure(pgenerator) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN) ++ $generator_from_nodes(pgenerator.DELEGATE)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_FRESH
+  -- if pgenerator.FRAME = (pframe)
+def $generator_close_children(S, pnode) = $node_children(S, pnode) -- otherwise
+def $generator_close_current(eps) = eps
+def $generator_close_current((pgeneratorfrom)) = pgeneratorfrom.CURRENT
+def $generator_close_release(S, pgenrelease) = $generator_close_release_end(S, pgenrelease)
+  -- if pgenrelease.JOBS = eps
+def $generator_close_release(S, pgenrelease) = $destruction_store_drop(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = pdestructionjob*]) :: ptask*], [HOBJECT n])
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
+  -- if pgenrelease.JOBS = (DESTRUCTION_HANDLE n) :: pdestructionjob*
+def $generator_close_release(S, pgenrelease) = S_tail
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
+  -- if pgenrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
+  -- if S_tail = S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = pdestructionjob*]) :: ptask*]
+  -- if ~(pnode <- S.ALLOCATIONS) \/ $($heap_owners($heap_graph(S_tail), pnode) > 0)
+def $generator_close_release(S, pgenrelease) = $generator_close_prepare(S, pgenrelease[.JOBS = pdestructionjob*], n)
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
+  -- if pgenrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionjob*
+  -- if HOBJECT n <- S.ALLOCATIONS
+  -- if $heap_owners($heap_graph(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = pdestructionjob*]) :: ptask*]), HOBJECT n) = 0
+  -- if $generator_close_node(S, HOBJECT n)
+def $generator_close_release(S, pgenrelease) = S[.COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"]
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
+  -- if pgenrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
+  -- if pnode <- S.ALLOCATIONS
+  -- if $heap_owners($heap_graph(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = pdestructionjob*]) :: ptask*]), pnode) = 0
+  -- if ~$generator_close_node(S, pnode)
+  -- if $destructor_uncalled_node(S, pnode)
+def $generator_close_release(S, pgenrelease) = $prune_live(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = $destruction_values($generator_close_children(S, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionjob*]) :: ptask*], $destruction_node_delete(S.ALLOCATIONS, pnode))
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
+  -- if pgenrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
+  -- if pnode <- S.ALLOCATIONS
+  -- if $heap_owners($heap_graph(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = pdestructionjob*]) :: ptask*]), pnode) = 0
+  -- if ~$generator_close_node(S, pnode)
+  -- if ~$destructor_uncalled_node(S, pnode)
+rule PhpStep/generator-close-release: S ~> $generator_close_release(S, pgenrelease)
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
+
+;; Input release runs in the actual caller. The saved frame still owns its
+;; parameter cells and unfinished operands, independently of the graph edge.
+def $generator_close_prepare(S, pgenrelease, n) = $generator_close_begin_pending(S_detached[.TODO = (GENERATOR_CLOSE_ENTER {OBJECT n, SITE porigin, CONTEXT pcallcontext, CALLER S.CURRENT, CALLSITE S.ORIGIN, STAGE CLOSE_QUEUED, NEXT 0, FRAME (pframe), PENDING eps}) :: (GENERATOR_CLOSE_RELEASE pgenrelease[.PENDING = eps]) :: ptask_tail*], $destruction_values($generator_values_nodes($generator_from_input_of(pgenerator.DELEGATE))), pgenrelease.PENDING)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.ORIGIN = (porigin)
+  -- if pframe.CONTEXT = (pcallcontext)
+  -- if S_detached = $generator_set(S, n, pgenerator[.FRAME = eps][.PHASE = GENERATOR_CLOSING][.DELEGATE = $generator_from_closed(pgenerator.DELEGATE)])
+
+;; The helper frame is only a scoped view. It returns to the real caller
+;; before a released operand can run a nested Generator finalizer.
+def $generator_close_queued_skip(S, pgenclose, ptask, ptask_tail*) = $generator_close_begin_pending(S_restored[.TODO = (GENERATOR_CLOSE_ENTER pgenclose[.FRAME = ($generator_frame(S_skipped, S_skipped.TODO))][.PENDING = eps]) :: ptask_caller*], $destruction_values($destruction_nodes_delete($frames_roots([pframe]), $frames_roots([$generator_frame(S_skipped, S_skipped.TODO)]))), pgenclose.PENDING)
+  -- if S.TODO = (GENERATOR_CLOSE_ENTER pgenclose) :: ptask_caller*
+  -- if pgenclose.FRAME = (pframe)
+  -- if S_view = $generator_install($save_frame(S[.TODO = ptask_caller*]), pframe)
+  -- if S_skipped = $generator_close_skip_marker(S_view, ptask, ptask_tail*)
+  -- if S_restored = $restore_frame_raw(S_skipped[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
+def $generator_close_skip_marker(S, ptask, ptask_tail*) = $finally_leave(S, porigin, ptask_tail*)
+  -- if $finally_phase_of(ptask) = (n_phase)
+  -- if $finally_marker_origin(ptask) = (porigin)
+def $generator_close_skip_marker(S, ptask, ptask_tail*) = $return_discard(S[.TODO = ptask_tail*], ptask)
+  -- if $finally_phase_of(ptask) = eps
+  -- if ~$generator_close_loop_task(ptask)
+def $generator_close_skip_marker(S, GENERATOR_NEXT pgeneratorop, ptask_tail*) = $return_discard(S[.TODO = ptask_tail*], GENERATOR_RESUME pgeneratorop)
+def $generator_close_loop_task(GENERATOR_NEXT pgeneratorop) = true
+def $generator_close_loop_task(ptask) = false -- otherwise
+def $generator_close_enter(S, pgenclose) = $generator_close_queued_skip(S, pgenclose, ptask, ptask_tail*)
+  -- if pgenclose.FRAME = (pframe)
+  -- if pframe.TODO = ptask :: ptask_tail*
+  -- if ~$generator_close_initial_finally(S, ptask)
+def $generator_close_enter(S, pgenclose) = $generator_close_finally_enter(S_installed, porigin, ptask_tail*)
+  -- if S.TODO = (GENERATOR_CLOSE_ENTER pgenclose) :: ptask_caller*
+  -- if pgenclose.FRAME = (pframe)
+  -- if pframe.TODO = ptask :: ptask_tail*
+  -- if $generator_close_initial_finally(S, ptask)
+  -- if $finally_marker_origin(ptask) = (porigin)
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+  -- if S_installed = $generator_install($generator_set($save_frame(S[.TODO = (GENERATOR_CLOSE_DONE pgenclose[.FRAME = eps]) :: ptask_caller*]), pgenclose.OBJECT, pgenerator[.PHASE = GENERATOR_RUNNING]), pframe)
+def $generator_close_enter(S, pgenclose) = $generator_close_begin_pending($generator_set(S[.TODO = (GENERATOR_CLOSE_DONE pgenclose[.FRAME = eps][.STAGE = CLOSE_FINISHED][.PENDING = eps]) :: ptask*], pgenclose.OBJECT, pgenerator[.PHASE = GENERATOR_CLOSED]), $destruction_values($generator_close_frame_nodes(S, pframe)), pgenclose.PENDING)
+  -- if S.TODO = (GENERATOR_CLOSE_ENTER pgenclose) :: ptask*
+  -- if pgenclose.FRAME = (pframe)
+  -- if pframe.TODO = eps
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+def $generator_close_initial_finally(S, TRY_END porigin) = ($finally_present(S, porigin) /\ $generator_close_selected(S, porigin))
+def $generator_close_initial_finally(S, FINALLY_ONLY porigin) = $generator_close_selected(S, porigin)
+def $generator_close_initial_finally(S, ptask) = false -- otherwise
+def $generator_close_selection(S) = (pgenclose)
+  -- if S.TODO = (GENERATOR_CLOSE_ENTER pgenclose) :: ptask*
+def $generator_close_selection(S) = $generator_close_saved(S, S.CURRENT, S.FRAMES)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$generator_close_enter_task(ptask)
+def $generator_close_selection(S) = eps -- if S.TODO = eps
+def $generator_close_selected(S, porigin) = true
+  -- if $generator_close_selection(S) = (pgenclose)
+  -- if porigin_plan* = $generator_close_regions(S, pgenclose.SITE)
+  -- if $(pgenclose.NEXT < |porigin_plan*|)
+  -- if porigin_plan*[pgenclose.NEXT] = porigin
+def $generator_close_selected(S, porigin) = false -- otherwise
+def $generator_close_frame_nodes(S, pframe) = $destructor_frame_nodes($generator_frame_scope(S, pframe)) ++ $tasks_nodes(pframe.TODO) ++ pframe.HELD
+rule PhpStep/generator-close-enter: S ~> $generator_close_enter(S, pgenclose)
+  -- if S.TODO = (GENERATOR_CLOSE_ENTER pgenclose) :: ptask*
+
+;; Phase6 is the native fast-call sentinel for destruction. Normal completion
+;; searches outward; a new throw/return follows the untouched ordinary tail.
+def $generator_close_finally_enter(S, porigin, ptask*) = $generator_close_stage(S_entered[.TODO = $generator_close_forced_marker(S_entered.TODO, porigin)], CLOSE_BODY porigin)
+  -- if S_entered = $finally_enter(S, porigin, eps, ptask*)
+def $generator_close_forced_marker((FINALLY_RESUME porigin eps) :: (FINALLY_PHASE porigin 0) :: ptask*, porigin) = [GENERATOR_CLOSE_FINALLY porigin, FINALLY_PHASE porigin 6] ++ ptask*
+def $generator_close_forced_marker(ptask :: ptask_tail*, porigin) = ptask :: $generator_close_forced_marker(ptask_tail*, porigin)
+  -- if ptask =/= FINALLY_RESUME porigin eps
+def $generator_close_scan(S, n, porigin, eps) = $generator_close_end(S, n, porigin)
+def $generator_close_scan(S, n, porigin, ptask :: ptask_tail*) = $generator_close_finally_enter(S[.TODO = ptask :: ptask_tail*], porigin_final, ptask_tail*)
+  -- if $generator_close_initial_finally(S, ptask)
+  -- if $finally_marker_origin(ptask) = (porigin_final)
+def $generator_close_scan(S, n, porigin, ptask :: ptask_tail*) = S_skipped[.TODO = (GENERATOR_CLOSE_SCAN n porigin) :: S_skipped.TODO]
+  -- if ~$generator_close_initial_finally(S, ptask)
+  -- if S_skipped = $generator_close_skip_marker(S[.TODO = ptask :: ptask_tail*], ptask, ptask_tail*)
+rule PhpStep/generator-close-scan: S ~> $generator_close_scan(S, n, porigin, ptask*)
+  -- if S.TODO = (GENERATOR_CLOSE_SCAN n porigin) :: ptask*
+rule PhpStep/generator-close-finally-normal: S ~> $generator_close_stage(S_left[.TODO = (GENERATOR_CLOSE_SCAN pgenclose.OBJECT pgenclose.SITE) :: S_left.TODO], CLOSE_SCANNING)
+  -- if S.TODO = (GENERATOR_CLOSE_FINALLY porigin) :: ptask*
+  -- if $generator_close_saved(S, S.CURRENT, S.FRAMES) = (pgenclose)
+  -- if S_left = $finally_leave(S, porigin, ptask*)
+rule PhpStep/generator-close-finally-throw: S ~> $generator_close_stage($finally_leave_throw(S, porigin, n, ptask*), CLOSE_FLOW)
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_CLOSE_FINALLY porigin) :: ptask*
+def $finally_marker_origin(GENERATOR_CLOSE_FINALLY porigin) = (porigin)
+def $finally_phase_of(GENERATOR_CLOSE_FINALLY porigin) = (6)
+def $finally_resume_at(GENERATOR_CLOSE_FINALLY porigin, porigin) = true
+def $goto_saved_finally((GENERATOR_CLOSE_FINALLY porigin) :: ptask*, porigin) = GOTOTASKS ((GENERATOR_CLOSE_FINALLY porigin) :: ptask*)
+def $finally_transfer_marker(S, GENERATOR_CLOSE_FINALLY porigin) = true
+def $throwable_marker(GENERATOR_CLOSE_FINALLY porigin) = true
+def $return_step(S, poperand, (porigin_source), (GENERATOR_CLOSE_FINALLY porigin) :: ptask*) = $generator_close_stage($finally_leave_return(S, porigin, porigin_source, poperand, ptask*), CLOSE_FLOW)
+def $return_ref_step(S, poperand, z, b, porigin_source, (GENERATOR_CLOSE_FINALLY porigin) :: ptask*) = $generator_close_stage($finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b, ptask*), CLOSE_FLOW)
+
+;; The parked caller owns the close claim. Its stage independently certifies
+;; the forced marker or outward scanner in the real Generator task stream.
+def $generator_close_stage(S, CLOSE_BODY porigin) = S[.FRAMES = pframe[.TODO = (GENERATOR_CLOSE_DONE pgenclose[.STAGE = CLOSE_BODY porigin][.NEXT = $(pgenclose.NEXT + 1)]) :: ptask*] :: pframe_tail*]
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
+  -- if S.CURRENT = (pgenclose.CONTEXT)
+def $generator_close_stage(S, pgenclosestage) = S[.FRAMES = pframe[.TODO = (GENERATOR_CLOSE_DONE pgenclose[.STAGE = pgenclosestage]) :: ptask*] :: pframe_tail*]
+  -- if ~$generator_close_body_stage(pgenclosestage)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
+  -- if S.CURRENT = (pgenclose.CONTEXT)
+def $generator_close_finished((GENERATOR_CLOSE_DONE pgenclose) :: ptask*) = (GENERATOR_CLOSE_DONE pgenclose[.STAGE = CLOSE_FINISHED]) :: ptask*
+def $generator_close_finished((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*) = (GENERATOR_CLOSE_RELEASE pgenrelease) :: $generator_close_finished(ptask*)
+def $generator_close_controls(eps) = eps
+def $generator_close_controls((GENERATOR_CLOSE_FINALLY porigin) :: ptask*) = (GENERATOR_CLOSE_FINALLY porigin) :: $generator_close_controls(ptask*)
+def $generator_close_controls((GENERATOR_CLOSE_SCAN n porigin) :: ptask*) = (GENERATOR_CLOSE_SCAN n porigin) :: $generator_close_controls(ptask*)
+def $generator_close_controls(ptask :: ptask_tail*) = $generator_close_controls(ptask_tail*)
+  -- if ~$generator_close_control(ptask)
+def $generator_close_control(GENERATOR_CLOSE_FINALLY porigin) = true
+def $generator_close_control(GENERATOR_CLOSE_SCAN n porigin) = true
+def $generator_close_control(ptask) = false -- otherwise
+def $generator_close_scan_head((GENERATOR_CLOSE_SCAN n porigin) :: ptask*, n, porigin) = true
+def $generator_close_scan_head((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*, n, porigin) = $generator_close_scan_head(ptask*, n, porigin)
+def $generator_close_scan_head((GENERATOR_CLOSE_ENTER pgenclose) :: ptask*, n, porigin) = $generator_close_scan_head(ptask*, n, porigin)
+def $generator_close_scan_head((GENERATOR_CLOSE_DONE pgenclose) :: ptask*, n, porigin) = $generator_close_scan_head(ptask*, n, porigin)
+def $generator_close_scan_head(ptask*, n, porigin) = false -- otherwise
+def $generator_close_stage_valid(S, pgenclose) = true
+  -- if pgenclose.STAGE = CLOSE_BODY porigin
+  -- if porigin_plan* = $generator_close_regions(S, pgenclose.SITE)
+  -- if $(pgenclose.NEXT > 0 /\ pgenclose.NEXT <= |porigin_plan*|)
+  -- if n_previous = $(pgenclose.NEXT - 1)
+  -- if porigin_plan*[n_previous] = porigin
+  -- if $generator_close_controls(S.TODO) = [GENERATOR_CLOSE_FINALLY porigin]
+  -- if $finally_phase_at(S.TODO, GENERATOR_CLOSE_FINALLY porigin, 6)
+  -- if $generator_close_plan_valid(S, pgenclose.SITE, S.TODO, pgenclose.NEXT)
+  -- if $generator_close_original_tasks_valid(S, pgenclose.SITE, $generator_close_body_tail(S.TODO, porigin))
+def $generator_close_stage_valid(S, pgenclose) = ($generator_close_controls(S.TODO) = [GENERATOR_CLOSE_SCAN pgenclose.OBJECT pgenclose.SITE] /\ $generator_close_scan_head(S.TODO, pgenclose.OBJECT, pgenclose.SITE) /\ $generator_close_plan_valid(S, pgenclose.SITE, S.TODO, pgenclose.NEXT) /\ $generator_close_original_tasks_valid(S, pgenclose.SITE, S.TODO))
+  -- if pgenclose.STAGE = CLOSE_SCANNING
+def $generator_close_stage_valid(S, pgenclose) = ($generator_close_controls(S.TODO) = eps)
+  -- if pgenclose.STAGE = CLOSE_FLOW
+def $generator_close_stage_valid(S, pgenclose) = false -- otherwise
+def $generator_close_stages(S, pcallcontext?, ptask*, eps) = true
+def $generator_close_stages(S, (pcallcontext), ptask*, pframe :: pframe_tail*) = ($generator_close_stage_valid(S[.TODO = ptask*][.CURRENT = (pcallcontext)], pgenclose) /\ $generator_close_stages(S, pframe.CONTEXT, pframe.TODO, pframe_tail*))
+  -- if pframe.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask_caller*
+  -- if pcallcontext = pgenclose.CONTEXT
+def $generator_close_stages(S, pcallcontext?, ptask*, pframe :: pframe_tail*) = false
+  -- if pframe.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask_caller*
+  -- if pcallcontext? =/= (pgenclose.CONTEXT)
+def $generator_close_stages(S, pcallcontext?, ptask*, pframe :: pframe_tail*) = $generator_close_stages(S, pframe.CONTEXT, pframe.TODO, pframe_tail*)
+  -- if ~$generator_close_done_head(pframe.TODO)
+def $generator_close_done_head((GENERATOR_CLOSE_DONE pgenclose) :: ptask*) = true
+def $generator_close_done_head(ptask*) = false -- otherwise
+def $generator_close_body_stage(CLOSE_BODY porigin) = true
+def $generator_close_body_stage(pgenclosestage) = false -- otherwise
+def $generator_close_regions(S, PORIGIN n pcpath_site) = $generator_close_regions_at(n, pcpath_site, $ppfinally_protected(pcunit.OCCURRENCES, pcpath_site))
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+def $generator_close_regions_at(n, pcpath_site, eps) = eps
+def $generator_close_regions_at(n, pcpath_site, pcpath :: pcpath_tail*) = $generator_close_regions_at(n, pcpath_site, pcpath_tail*) ++ [PORIGIN n pcpath]
+  -- if ~$effect_below(pcpath ++ [PCFIELD 2], pcpath_site)
+def $generator_close_regions_at(n, pcpath_site, pcpath :: pcpath_tail*) = $generator_close_regions_at(n, pcpath_site, pcpath_tail*)
+  -- if $effect_below(pcpath ++ [PCFIELD 2], pcpath_site)
+def $generator_close_unentered_origin(TRY_END porigin) = (porigin)
+def $generator_close_unentered_origin(FINALLY_ONLY porigin) = (porigin)
+def $generator_close_unentered_origin(ptask) = eps -- otherwise
+def $generator_close_unentered(eps, porigin*) = eps
+def $generator_close_unentered(ptask :: ptask_tail*, porigin_plan*) = porigin :: $generator_close_unentered(ptask_tail*, porigin_plan*)
+  -- if $generator_close_unentered_origin(ptask) = (porigin)
+  -- if porigin <- porigin_plan*
+def $generator_close_unentered(ptask :: ptask_tail*, porigin*) = $generator_close_unentered(ptask_tail*, porigin*)
+  -- if $generator_close_unentered_origin(ptask) = eps
+def $generator_close_unentered(ptask :: ptask_tail*, porigin_plan*) = $generator_close_unentered(ptask_tail*, porigin_plan*)
+  -- if $generator_close_unentered_origin(ptask) = (porigin)
+  -- if ~(porigin <- porigin_plan*)
+def $generator_close_body_tail((GENERATOR_CLOSE_FINALLY porigin) :: ptask*, porigin) = ptask*
+def $generator_close_body_tail(ptask :: ptask_tail*, porigin) = $generator_close_body_tail(ptask_tail*, porigin)
+  -- if ptask =/= GENERATOR_CLOSE_FINALLY porigin
+def $generator_close_try_ancestor(S, PORIGIN n pcpath_site, PORIGIN n pcpath_try) = true
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_try) = (NStmtTryCatch phpType23 phpType65 phpType67 metadata)
+  -- if $effect_below(pcpath_try, pcpath_site)
+  -- if $ppfinally_scope(pcunit.OCCURRENCES, pcpath_try) = $ppfinally_scope(pcunit.OCCURRENCES, pcpath_site)
+def $generator_close_try_ancestor(S, porigin_site, porigin_try) = false -- otherwise
+def $generator_close_original_tasks_valid(S, porigin_site, eps) = true
+def $generator_close_original_tasks_valid(S, porigin_site, ptask :: ptask_tail*) = ($generator_close_try_ancestor(S, porigin_site, porigin_try) /\ $generator_close_original_tasks_valid(S, porigin_site, ptask_tail*))
+  -- if $finally_marker_origin(ptask) = (porigin_try)
+def $generator_close_original_tasks_valid(S, porigin_site, ptask :: ptask_tail*) = $generator_close_original_tasks_valid(S, porigin_site, ptask_tail*)
+  -- if $finally_marker_origin(ptask) = eps
+def $generator_close_current_done_valid(S, eps) = true
+def $generator_close_current_done_valid(S, (GENERATOR_CLOSE_DONE pgenclose) :: ptask*) = (pgenerator.PHASE = GENERATOR_CLOSED /\ $generator_close_current_done_valid(S, ptask*))
+  -- if $generator_object(S, pgenclose.OBJECT)
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+def $generator_close_current_done_valid(S, ptask :: ptask_tail*) = $generator_close_current_done_valid(S, ptask_tail*)
+  -- if ~$generator_close_done_head([ptask])
+def $generator_close_terminal_tasks((EXIT_UNWIND z) :: ptask*) = true
+def $generator_close_terminal_tasks((ERROR_UNWIND pcompletion) :: ptask*) = true
+def $generator_close_terminal_tasks(ptask*) = false -- otherwise
+def $generator_close_any_started(S, eps) = false
+def $generator_close_any_started(S, pnode :: pnode_tail*) = ($generator_close_node(S, pnode) \/ $generator_close_any_started(S, pnode_tail*))
+def $generator_close_terminal_pending(S) = ($generator_close_claims(S.TODO) =/= eps \/ $generator_close_frame_claims(S.FRAMES) =/= eps \/ $generator_close_any_started(S, S.ALLOCATIONS))
+  -- if S.COMPLETION = EXITED z
+def $drive_steps(S, n) = S[.COMPLETION = UNSUPPORTED "Generator force-close terminal cleanup"]
+  -- if S.COMPLETION = EXITED z
+  -- if ~S.COMPILESTOP /\ ~$eval_compile_exit_pending(S)
+  -- if $generator_close_terminal_pending(S)
+
+def $generator_close_saved(S, (pcallcontext), pframe :: pframe_tail*) = (pgenclose)
+  -- if pframe.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
+  -- if $generator_object(S, pgenclose.OBJECT)
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+  -- if pcallcontext = pgenclose.CONTEXT
+  -- if pcallcontext.FUNCTION = pgenerator.FUNCTION
+  -- if pcallcontext.INSTANCE = pgenerator.CLOSURE
+def $generator_close_saved(S, pcallcontext?, pframe*) = eps -- otherwise
+def $generator_close_active(S) = true
+  -- if $generator_close_saved(S, S.CURRENT, S.FRAMES) = (pgenclose)
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING
+def $generator_active(S) = true -- if $generator_close_active(S)
+def $generator_close_end(S, n, porigin) = $restore_frame($generator_set(S[.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps], n, pgenerator[.PHASE = GENERATOR_CLOSED]))
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+def $generator_return(S, KNOWN pvalue) = $restore_frame($generator_set(S[.TODO = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps], pgenclose.OBJECT, pgenerator[.PHASE = GENERATOR_CLOSED][.RETURN = (pvalue)]))
+  -- if $generator_close_saved(S, S.CURRENT, S.FRAMES) = (pgenclose)
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+def $generator_frame_release(S_before, S_after) = $generator_set(S_after[.TODO = $generator_close_finished(S_after.TODO)], pgenclose.OBJECT, pgenerator[.PHASE = GENERATOR_CLOSED])
+  -- if $generator_close_saved(S_before, S_before.CURRENT, S_before.FRAMES) = (pgenclose)
+  -- if S_before.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+def $generator_close_done(S, pgenclose) = $generator_close_begin_pending(S[.TODO = ptask*], [DESTRUCTION_VALUE (HOBJECT pgenclose.OBJECT)], pgenclose.PENDING)
+  -- if S.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
+rule PhpStep/generator-close-done: S ~> $generator_close_done(S, pgenclose)
+  -- if S.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
+def $generator_close_frame_pending(S, S_new) = (~$generator_close_terminal_tasks(S.TODO) /\ ($generator_close_saved(S, S.CURRENT, S.FRAMES) =/= eps \/ $generator_close_dead(S_new, S_new.ALLOCATIONS, $heap_prune($destructor_frame_graph(S, S_new)).NODES)))
+def $frame_release(S, S_restored) = $generator_close_begin_pending($destruction_store_new($destructor_frame_cleanup(S_restored)), $destruction_values($destructor_frame_nodes(S)), $generator_close_pending(S.COMPLETION, S.TODO))
+  -- if S_new = $destruction_store_new($destructor_frame_cleanup(S_restored))
+  -- if $generator_close_frame_pending(S, S_new)
+  -- if ~$destructor_frame_staged(S)
+  -- if ~$destructor_unused_return(S)
+def $throw_frame_resume(S, n) = S
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
+  -- if pgenrelease.PENDING = (n)
+
+;; The VM evaluates complex operands before either yield opcode. Ordinary
+;; YIELD rejects before delayed CV reads/cache replacement; YIELD_FROM reads first.
+;; Materialize the Error in this real frame, then release key before value.
+def $generator_close_forbidden(S, preqbytes, z, pnode*) = $generator_close_begin_pending(S_error[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL], $destruction_values(pnode*), (n))
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_error = $throwable_materialize($throw_scalar(S, "Error", preqbytes, z))
+  -- if S_error.COMPLETION = THROWING n
+rule PhpStep/generator-close-forbidden-yield: S ~> $generator_close_forbidden(S, $ptascii("Cannot yield from finally in a force-closed generator"), $generator_yield_line(S, porigin), $operand_nodes($generator_optional_operand(poperand?)) ++ $operand_nodes(S.RESULT))
+  -- if S.TODO = (GENERATOR_YIELD_DONE porigin poperand?) :: ptask*
+  -- if $generator_close_active(S)
+rule PhpStep/generator-close-forbidden-from: S ~> $generator_close_forbidden(S_read, $ptascii("Cannot use \"yield from\" in a force-closed generator"), $generator_from_line(S, porigin), $operand_nodes(S.RESULT))
+  -- if S.TODO = (GENERATOR_FROM_EVAL porigin) :: ptask*
+  -- if $generator_close_active(S)
+  -- if S_read = $resolve_at(S, S.RESULT, $generator_from_line(S, porigin))
+  -- if S_read.COMPLETION = NORMAL
+rule PhpStep/generator-close-forbidden-from-abrupt: S ~> S_read
+  -- if S.TODO = (GENERATOR_FROM_EVAL porigin) :: ptask*
+  -- if $generator_close_active(S)
+  -- if S_read = $resolve_at(S, S.RESULT, $generator_from_line(S, porigin))
+  -- if S_read.COMPLETION =/= NORMAL
+
+;; GET_OP1 for YieldFrom reads a delayed CV before the forced-close guard.
+;; Reuse the ordinary warning dispatcher, then freeze the missing-read null.
+def $error_read_shape(GENERATOR_FROM_EVAL porigin, VARIABLE n* z, pbase) = ({ORIGINAL GENERATOR_FROM_EVAL porigin, INPUT VARIABLE n* z, BASE pbase, NAME n*, LINE z, TASK GENERATOR_CLOSE_FROM porigin, RESULT KNOWN PNULL})
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = GENERATOR_FROM_EVAL porigin
+  -- if $generator_close_active(S)
+  -- if S.ORIGIN = (porigin)
+  -- if $generator_from_source_context(S, porigin)
+  -- if $error_variable_source(S, (porigin), [PCFIELD 0], perrorread.NAME)
+  -- if perrorread.LINE = $generator_from_line(S, porigin)
+rule PhpStep/generator-close-from-read-done: S ~> $throw_scalar(S, "Error", $ptascii("Cannot use \"yield from\" in a force-closed generator"), $generator_from_line(S, porigin))
+  -- if S.TODO = (GENERATOR_CLOSE_FROM porigin) :: ptask*
+  -- if $generator_close_active(S)
+def $call_task_valid(S, GENERATOR_CLOSE_FROM porigin) = ($generator_close_active(S) /\ S.ORIGIN = (porigin) /\ $generator_from_source_context(S, porigin) /\ S.RESULT = KNOWN PNULL)
+;; Zend still throws the forced Error with the warning-handler exception as
+;; previous. Exit follows its ordinary bailout and never reaches this clause.
+def $error_read_discard(S, ERROR_READ_RESULT perrorread) = $throwable_previous(S_new[.TODO = (THROW_SEARCH n_new) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL], n_new, n)
+  -- if perrorread.TASK = GENERATOR_CLOSE_FROM porigin
+  -- if $error_read_valid(S, perrorread)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if S_new = $throwable_materialize($throw_scalar(S, "Error", $ptascii("Cannot use \"yield from\" in a force-closed generator"), $generator_from_line(S, porigin)))
+  -- if S_new.COMPLETION = THROWING n_new
+
+def $task_nodes(GENERATOR_CLOSE_RELEASE pgenrelease) = $destruction_job_nodes(pgenrelease.JOBS) ++ $operand_nodes(pgenrelease.VALUE) ++ $base_nodes(pgenrelease.BASE) ++ $generator_close_exception_nodes(pgenrelease.PENDING)
+def $task_nodes(GENERATOR_CLOSE_ENTER pgenclose) = [HOBJECT pgenclose.OBJECT] ++ $generator_frame_nodes(pgenclose.FRAME) ++ $generator_close_exception_nodes(pgenclose.PENDING)
+def $task_nodes(GENERATOR_CLOSE_DONE pgenclose) = [HOBJECT pgenclose.OBJECT] ++ $generator_close_exception_nodes(pgenclose.PENDING)
+def $task_nodes(GENERATOR_CLOSE_SCAN n porigin) = eps
+def $useriter_task_ids(GENERATOR_CLOSE_ENTER pgenclose) = $useriter_tasks_ids(pframe.TODO)
+  -- if pgenclose.FRAME = (pframe)
+def $useriter_task_ids(GENERATOR_CLOSE_ENTER pgenclose) = eps
+  -- if pgenclose.FRAME = eps
+def $generator_close_exception_nodes(eps) = eps
+def $generator_close_exception_nodes((n)) = [HOBJECT n]
+def $generator_resume_id(GENERATOR_CLOSE_DONE pgenclose) = [pgenclose.OBJECT]
+  -- if pgenclose.STAGE =/= CLOSE_FINISHED
+def $generator_resume_id(GENERATOR_CLOSE_DONE pgenclose) = eps
+  -- if pgenclose.STAGE = CLOSE_FINISHED
+def $generator_resume_head((GENERATOR_CLOSE_DONE pgenclose) :: ptask*) = (pgenclose.STAGE =/= CLOSE_FINISHED)
+def $generator_resume_position((GENERATOR_CLOSE_DONE pgenclose) :: ptask*) = ($generator_resume_ids(ptask*) = eps)
+def $generator_resume_pairs(S, (pcallcontext), pframe :: pframe_tail*) = ($generator_close_done_valid($constant_frame_scope(S, pframe, pframe_tail*), pgenclose) /\ pgenerator.PHASE = GENERATOR_RUNNING /\ pcallcontext = pgenclose.CONTEXT /\ pgenerator.FUNCTION = pcallcontext.FUNCTION /\ pgenerator.CLOSURE = pcallcontext.INSTANCE /\ $generator_resume_pairs(S, pframe.CONTEXT, pframe_tail*))
+  -- if pframe.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
+  -- if pgenclose.STAGE =/= CLOSE_FINISHED
+  -- if $generator_close_saved(S, (pcallcontext), [pframe]) = (pgenclose)
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+def $generator_resume_pairs(S, pcallcontext?, pframe :: pframe_tail*) = false
+  -- if pframe.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
+  -- if pgenclose.STAGE =/= CLOSE_FINISHED
+  -- if $generator_close_saved(S, pcallcontext?, [pframe]) = eps
+
+def $generator_close_context_tasks(pcallcontext, eps) = false
+def $generator_close_context_tasks(pcallcontext, (GENERATOR_CLOSE_ENTER pgenclose) :: ptask*) = (pframe.CONTEXT = (pcallcontext) \/ $generator_close_context_tasks(pcallcontext, ptask*))
+  -- if pgenclose.FRAME = (pframe)
+def $generator_close_context_tasks(pcallcontext, ptask :: ptask_tail*) = $generator_close_context_tasks(pcallcontext, ptask_tail*) -- if ~$generator_close_enter_task(ptask)
+def $generator_close_enter_task(GENERATOR_CLOSE_ENTER pgenclose) = true
+def $generator_close_enter_task(ptask) = false -- otherwise
+def $generator_close_context_frames(pcallcontext, eps) = false
+def $generator_close_context_frames(pcallcontext, pframe :: pframe_tail*) = ($generator_close_context_tasks(pcallcontext, pframe.TODO) \/ $generator_close_context_frames(pcallcontext, pframe_tail*))
+def $generator_close_context(S, pcallcontext) = ($generator_close_saved(S, (pcallcontext), S.FRAMES) =/= eps \/ $generator_close_context_tasks(pcallcontext, S.TODO) \/ $generator_close_context_frames(pcallcontext, S.FRAMES))
+
+def $generator_close_site(S, pgenerator, PORIGIN n pcpath) = true
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
+  -- if $function_generator(S, pfunction)
+  -- if pfunction.CODE.UNIT = n
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $generator_close_yield_node($origin_node(S.SOURCES, PORIGIN n pcpath))
+def $generator_close_site(S, pgenerator, porigin) = false -- otherwise
+def $generator_close_function(S, pgenerator) = $function_generator(S, pfunction)
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
+def $generator_close_function(S, pgenerator) = false -- otherwise
+def $generator_close_region(S, PORIGIN n pcpath_site, PORIGIN n pcpath_try) = (pcpath_try <- $ppfinally_protected(pcunit.OCCURRENCES, pcpath_site))
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+def $generator_close_region(S, porigin_site, porigin_try) = false -- otherwise
+def $generator_close_plan_valid(S, porigin_site, ptask*, n_next) = true
+  -- if porigin* = $generator_close_regions(S, porigin_site)
+  -- if $(n_next <= |porigin*|)
+  -- if n_remaining = $(|porigin*| - n_next)
+  -- if $generator_close_unentered(ptask*, porigin*) = porigin*[n_next:n_remaining]
+def $generator_close_plan_valid(S, porigin_site, ptask*, n_next) = false -- otherwise
+def $generator_close_yield_node((NExprYield phpType5_key phpType5_value metadata)) = true
+def $generator_close_yield_node((NExprYieldFrom expression metadata)) = true
+def $generator_close_yield_node(pcnode?) = false -- otherwise
+def $generator_close_captures_valid(S, eps) = true
+def $generator_close_captures_valid(S, pnode :: pnode_tail*) = ((pnode <- S.ALLOCATIONS) /\ $generator_close_captures_valid(S, pnode_tail*))
+def $generator_close_jobs_valid(S, eps) = true
+def $generator_close_jobs_valid(S, (DESTRUCTION_VALUE pnode) :: pdestructionjob*) = ($generator_close_captures_valid(S, [pnode]) /\ $generator_close_jobs_valid(S, pdestructionjob*))
+def $generator_close_jobs_valid(S, (DESTRUCTION_HANDLE n) :: pdestructionjob*) = ($(n < |S.OBJECTS|) /\ ~(HOBJECT n <- S.ALLOCATIONS) /\ $generator_close_jobs_valid(S, pdestructionjob*))
+def $generator_close_pending_valid(S, eps) = true
+def $generator_close_pending_valid(S, (n)) = $throwable_live(S, n)
+def $generator_close_release_valid(S, pgenrelease) = ($generator_close_jobs_valid(S, pgenrelease.JOBS) /\ $call_reference_operand_valid(S, pgenrelease.VALUE) /\ $generator_close_captures_valid(S, $base_nodes(pgenrelease.BASE)) /\ $generator_close_pending_valid(S, pgenrelease.PENDING) /\ pgenrelease.COMPLETION = NORMAL)
+def $generator_close_drop_claim((GENERATOR_FROM_NEXT n porigin) :: ptask*, n, porigin) = ptask*
+def $generator_close_drop_claim((GENERATOR_FROM_COMPLETE n porigin n_child pvalue) :: ptask*, n, porigin) = ptask*
+def $generator_close_drop_claim(ptask*, n, porigin) = ptask* -- otherwise
+def $generator_close_frame_valid(S, pgenerator, pframe) = true
+  -- if pframe.LOCALS = (psymboltable)
+  -- if pframe.CONTEXT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pgenerator.FUNCTION /\ pcallcontext.INSTANCE = pgenerator.CLOSURE
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
+  -- if psymboltable.CVS = pfunction.CVS
+  -- if S_scope = $generator_frame_scope(S, pframe)[.FRAMES = $save_frame(S).FRAMES]
+  -- if $call_saved_context_valid(S_scope, pframe)
+  -- if $generator_close_captures_valid(S, $frames_roots([pframe]))
+  -- if $generator_flat_tasks(pframe.TODO) /\ $generator_resume_ids(pframe.TODO) = eps
+  -- if $finally_current_complete(S_scope)
+  -- if $borrowed_read_scope_valid(S_scope) /\ $object_cast_scope_valid(S_scope) /\ $constant_context_valid(S_scope)
+  -- if $silences_valid(S_scope)
+def $generator_close_frame_valid(S, pgenerator, pframe) = false -- otherwise
+def $generator_close_enter_valid(S, pgenclose) = true
+  -- if $generator_object(S, pgenclose.OBJECT) /\ (HOBJECT pgenclose.OBJECT <- S.ALLOCATIONS)
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSING /\ pgenerator.FRAME = eps /\ pgenerator.RETURN = eps
+  -- if $generator_from_input_of(pgenerator.DELEGATE) = eps
+  -- if $generator_close_site(S, pgenerator, pgenclose.SITE)
+  -- if $generator_close_pending_valid(S, pgenclose.PENDING)
+  -- if pgenclose.FRAME = (pframe)
+  -- if pframe.CONTEXT = (pgenclose.CONTEXT)
+  -- if pgenclose.STAGE = CLOSE_QUEUED /\ pgenclose.NEXT = 0
+  -- if S.CURRENT = pgenclose.CALLER /\ S.ORIGIN = pgenclose.CALLSITE
+  -- if $generator_close_frame_valid(S, pgenerator, pframe)
+  -- if $heap_owners($heap_graph(S)[.ROOTS = $destruction_node_delete($machine_roots(S), HOBJECT pgenclose.OBJECT)], HOBJECT pgenclose.OBJECT) = 0
+  -- if S_scope = $generator_frame_scope(S, pframe)[.FRAMES = $save_frame(S).FRAMES]
+  -- if $generator_close_plan_valid(S_scope, pgenclose.SITE, pframe.TODO, pgenclose.NEXT)
+  -- if $generator_close_original_tasks_valid(S_scope, pgenclose.SITE, pframe.TODO)
+  -- if $call_tasks_valid(S_scope, $generator_close_drop_claim(pframe.TODO, pgenclose.OBJECT, pgenclose.SITE))
+def $generator_close_enter_valid(S, pgenclose) = false -- otherwise
+def $generator_close_done_valid(S, pgenclose) = true
+  -- if $generator_object(S, pgenclose.OBJECT) /\ (HOBJECT pgenclose.OBJECT <- S.ALLOCATIONS)
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE <- [GENERATOR_RUNNING, GENERATOR_CLOSED]
+  -- if pgenerator.FRAME = eps /\ pgenclose.FRAME = eps
+  -- if S.CURRENT = pgenclose.CALLER /\ S.ORIGIN = pgenclose.CALLSITE
+  -- if pgenclose.CONTEXT.FUNCTION = pgenerator.FUNCTION /\ pgenclose.CONTEXT.INSTANCE = pgenerator.CLOSURE
+  -- if (pgenerator.PHASE = GENERATOR_RUNNING /\ pgenclose.STAGE =/= CLOSE_QUEUED /\ pgenclose.STAGE =/= CLOSE_FINISHED) \/ (pgenerator.PHASE = GENERATOR_CLOSED /\ pgenclose.STAGE = CLOSE_FINISHED)
+  -- if $generator_from_input_of(pgenerator.DELEGATE) = eps
+  -- if $generator_close_site(S, pgenerator, pgenclose.SITE)
+  -- if $generator_close_pending_valid(S, pgenclose.PENDING)
+def $generator_close_done_valid(S, pgenclose) = false -- otherwise
+def $generator_record_valid(S, pgenerator) = ($generator_close_function(S, pgenerator) /\ $generator_integer(pgenerator.INDEX) /\ $generator_closure_valid(S, pgenerator) /\ pgenerator.FRAME = eps /\ pgenerator.RETURN = eps /\ $generator_cache_shape(S, pgenerator) /\ $generator_from_input_of(pgenerator.DELEGATE) = eps)
+  -- if pgenerator.PHASE = GENERATOR_CLOSING
+def $call_task_valid(S, GENERATOR_CLOSE_RELEASE pgenrelease) = $generator_close_release_valid(S, pgenrelease)
+def $call_task_valid(S, GENERATOR_CLOSE_ENTER pgenclose) = $generator_close_enter_valid(S, pgenclose)
+def $call_task_valid(S, GENERATOR_CLOSE_DONE pgenclose) = $generator_close_done_valid(S, pgenclose)
+def $call_task_valid(S, GENERATOR_CLOSE_SCAN n porigin) = (pgenclose.OBJECT = n /\ pgenclose.SITE = porigin /\ pgenclose.STAGE = CLOSE_SCANNING /\ $generator_close_scan_head(S.TODO, n, porigin))
+  -- if $generator_close_saved(S, S.CURRENT, S.FRAMES) = (pgenclose)
+def $call_task_valid(S, GENERATOR_CLOSE_SCAN n porigin) = false
+  -- if $generator_close_saved(S, S.CURRENT, S.FRAMES) = eps
+def $call_task_valid(S, GENERATOR_CLOSE_FINALLY porigin) = (pgenclose.STAGE = CLOSE_BODY porigin /\ $generator_close_region(S, pgenclose.SITE, porigin) /\ $finally_resume_valid(S, porigin, eps) /\ $finally_phase_at(S.TODO, GENERATOR_CLOSE_FINALLY porigin, 6))
+  -- if $generator_close_saved(S, S.CURRENT, S.FRAMES) = (pgenclose)
+def $call_task_valid(S, GENERATOR_CLOSE_FINALLY porigin) = false
+  -- if $generator_close_saved(S, S.CURRENT, S.FRAMES) = eps
+def $generator_close_claim(GENERATOR_CLOSE_ENTER pgenclose) = [pgenclose.OBJECT]
+def $generator_close_claim(GENERATOR_CLOSE_DONE pgenclose) = [pgenclose.OBJECT]
+def $generator_close_claim(ptask) = eps -- otherwise
+def $generator_close_claims(eps) = eps
+def $generator_close_claims(ptask :: ptask_tail*) = $generator_close_claim(ptask) ++ $generator_close_claims(ptask_tail*)
+def $generator_close_frame_claims(eps) = eps
+def $generator_close_frame_claims(pframe :: pframe_tail*) = $generator_close_claims(pframe.TODO) ++ $generator_close_frame_claims(pframe_tail*)
+def $generator_close_claim_owners(S, eps, nat*) = true
+def $generator_close_claim_owners(S, pnode :: pnode_tail*, nat*) = ($generator_close_claim_owner(S, pnode, nat*) /\ $generator_close_claim_owners(S, pnode_tail*, nat*))
+def $generator_close_claim_owner(S, HOBJECT n, nat*) = ($generator_id_count(nat*, n) = 1)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSING
+def $generator_close_claim_owner(S, pnode, nat*) = true -- otherwise
+def $generator_close_state_valid(S) = ($useriter_ids_unique(nat*) /\ $generator_close_claim_owners(S, S.ALLOCATIONS, nat*) /\ $generator_close_stages(S, S.CURRENT, S.TODO, S.FRAMES) /\ $generator_close_current_done_valid(S, S.TODO))
+  -- if nat* = $generator_close_claims(S.TODO) ++ $generator_close_frame_claims(S.FRAMES)
+;; CONTEXT/CALLER/CALLSITE are borrowed certificates. The queued real frame,
+;; entered machine frame and claim object provide their owning roots.
+def $reference_call_frame_site(pcallcontext, pframe) = (pcallcontext = pgenclose.CONTEXT /\ pframe.CONTEXT = pgenclose.CALLER /\ pframe.ORIGIN = pgenclose.CALLSITE)
+  -- if pframe.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
+
+def $generator_internal_task(GENERATOR_CLOSE_RELEASE pgenrelease) = true
+def $generator_internal_task(GENERATOR_CLOSE_ENTER pgenclose) = true
+def $generator_internal_task(GENERATOR_CLOSE_DONE pgenclose) = true
+def $generator_internal_task(GENERATOR_CLOSE_SCAN n porigin) = true
+def $generator_internal_task(GENERATOR_CLOSE_FINALLY porigin) = true
+def $generator_internal_task(GENERATOR_CLOSE_FROM porigin) = true

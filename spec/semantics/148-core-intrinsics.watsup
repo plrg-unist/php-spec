@@ -175,6 +175,8 @@ def $drive_steps(S, n) = $drive_steps($exit_start_unwind(S, z), n)
   -- if S.COMPLETION = EXITED z
   -- if S.FRAMES =/= eps
   -- if ~$eval_compile_exit_pending(S)
+  -- if ~$generator_close_terminal_pending(S)
+
 rule PhpStep/exit-unwind-frame: S ~> $exit_start_unwind($restore_frame(S), z)
   -- if S.TODO = (EXIT_UNWIND z) :: ptask_tail*
   -- if S.FRAMES =/= eps

@@ -40,10 +40,12 @@ and wrapped or stranded internal tasks.
 Private source review currently records 52 normal agreements and four compiler
 rejections in separate cuts. Three exact Unsupported controls earn no agreement:
 IteratorAggregate stops at its earlier interface declaration contract, started
-force-close finalization remains required, and NaN handler changes to other raw
+force-close stops in this tested cut, and NaN handler changes to other raw
 value tags need payload history. The Aggregate control provides no acquisition
 guard execution evidence. Reference yields, complete destruction/GC and wider
 Generator call forms remain required; this milestone does not close core PHP.
+Ordinary last-owner forced close is now covered by
+[Module303](GENERATOR-FORCE-CLOSE.md); its shutdown/terminal/GC frontiers stay open.
 
 The source cuts are `generator-delegation-review-l1z91u_r` (5), `lxz1qh12` (19),
 `xv0889dc` (10), `ikge9tqx` (8), `ger2ks_r` (4 compiler), `otx8ejdq` (7), and

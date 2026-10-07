@@ -42,6 +42,8 @@ CASES = {
     'parent-deferred-autoload': (b'<?php\nfunction loader($name){echo "L";if($name==="Later"){class Later{public $x=8;}}}function seq(){echo "B";$x=new Later;yield $x->x;}$load=function($name){loader($name);};spl_autoload_register($load);$g=seq();echo "C";unset($load);echo $g->current();echo "D";', b'CBL8D'),
     'parent-fold-precision-warning': (b'<?php\nfunction notice($l,$m,$f,$n){echo "H|";ini_set("precision","5");}function seq($v){yield "L" . 1.234567;$a=false;$a[(string)$v]=7;yield $a;}set_error_handler("notice");$g=seq(1.234567);ini_set("precision","3");echo $g->current(),"|";$g->next();foreach($g->current() as $k=>$v){echo $k,":",$v,"|";}$g->next();echo "D";', b'L1.234567|H|1.23:7|D'),
 }
+CASES['started-finally-force-close'] = (b'<?php\nfunction seq(){try{echo "A";yield 1;echo "B";yield 2;}finally{echo "F";}}$g=seq();foreach($g as $v){echo $v;break;}echo "C";foreach($g as $v){echo $v;break;}echo "D";$g->next();echo $g->current();unset($g);echo "Z";', b'A1C1DB2FZ')
+
 DECLARATIONS = {
     'invalid-scalar-supertype': (b'<?php\nfunction seq():int {yield 1;}\necho "X";', b'Generator return type must be a supertype of Generator, int given', 2),
     'invalid-class-supertype': (b'<?php\nfunction seq():Countable {yield 1;}\necho "X";', b'Generator return type must be a supertype of Generator, Countable given', 2),
@@ -52,7 +54,6 @@ UNSUPPORTED = {
     'yielded-object-retirement': (b'<?php\nclass Box {function __destruct(){echo "D";}}function seq($o){yield $o;unset($o);yield 0;}$o=new Box;$g=seq($o);unset($o);echo "C";$v=$g->current();$g->next();echo "N";unset($v);echo "V";unset($g);echo "Z";', b'CNDVZ'),
     'previous-yield-retirement-before-cv': (b'<?php\n$v=1;class Box {function __destruct(){$GLOBALS["v"]=9;echo "D";}}function seq(){global $v;yield new Box;yield $v=>$v;}$g=seq();$g->current();echo "C";$g->next();echo $g->key(),":",$g->current();', b'CD9:9'),
     'closed-last-yield-owner': (b'<?php\nclass Box {function __destruct(){echo "D";}}function seq(){yield new Box;}$g=seq();$g->current();echo "A";$g->next();echo "B";echo $g->current()===null?"N":"X";unset($g);echo "C";', b'ABNDC'),
-    "started-finally-force-close": (b'<?php\nfunction seq(){try{echo "A";yield 1;echo "B";yield 2;}finally{echo "F";}}$g=seq();foreach($g as $v){echo $v;break;}echo "C";foreach($g as $v){echo $v;break;}echo "D";$g->next();echo $g->current();unset($g);echo "Z";', b'A1C1DB2FZ'),
     'request-finally-force-close': (b'<?php\nfunction seq(){try{yield 1;}finally{echo "F";}}$g=seq();echo $g->current();echo "Z";', b'1ZF'),
 }
 UNSUPPORTED_REASONS = {
@@ -60,8 +61,7 @@ UNSUPPORTED_REASONS = {
     'yielded-object-retirement': "ordinary destructor release before request stage",
     'previous-yield-retirement-before-cv': "ordinary destructor release before request stage",
     'closed-last-yield-owner': "ordinary destructor release before request stage",
-    "started-finally-force-close": "started generator force-close finalizer",
-    'request-finally-force-close': "started generator force-close finalizer",
+    'request-finally-force-close': "Generator force-close at request end",
 }
 
 

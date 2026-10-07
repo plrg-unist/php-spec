@@ -65,9 +65,11 @@ live callback references and natural owner cleanup. IteratorAggregate,
 reference yields, arrow Generators, dynamic/nullsafe
 API calls, named/unpacked API arguments, scoped static and implicit callback
 creation, and creation through changed/imported caller scope remain required.
-Started force-close finalizers, eager destruction and cyclic collection also
-remain required; their explicit Unsupported controls earn no agreement.
-Natural return/throw/finally cleanup is distinct from forced close.
+[Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
+pending finally execution and ordered input/frame/cache release. Request-end,
+terminal cleanup, active-Fiber destruction, general user destructors and cyclic
+collection remain required; their explicit Unsupported controls earn no
+agreement. Natural return/throw/finally cleanup remains distinct from forced close.
 
 Constructor-created global constant instances follow the existing noncache
 policy for object defaults. Receives, yield caches and return values retain the
