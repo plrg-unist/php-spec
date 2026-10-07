@@ -570,7 +570,9 @@ add object-owned readonly allowances through return/throw/exit and Fiber parking
 preserving borrowed versus actual temporary/intrinsic input owners. Its separate
 20 normals/five declarations/exit1 and 264 reached controls pass with SL276.
 [Nonempty readonly clone updates](docs/semantics/READONLY-CLONE-UPDATES.md) add a
-second window, captured conversions and write revisions. Last-owner destination
+second window, captured conversions and write revisions. A separate dynamic/FCC
+selection preparation has native controls; activation provenance and all new
+compiler/model gates remain open. Last-owner destination
 release, Deprecated method dispatch and promotion remain required. The new reference controls supersede one historical288 internal assertion
 without renewing the other accepted gates.
 Simple typed property assignment converts its declaration

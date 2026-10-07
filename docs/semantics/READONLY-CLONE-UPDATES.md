@@ -50,6 +50,24 @@ implicit Generator callbacks, Deprecated dispatch, promotions, hooks, enums and
 wider lifecycle behavior remain open. This slice does not complete readonly or
 clone semantics.
 
+A separate private follow-on captures the actual selected dynamic/pipe name
+before argument effects and copies only site/name/Closure identity into a maker
+receipt. Genuine callback entry records that selection independently under the
+physical maker identity; cached admission requires the exact entry after owner
+retirement. The record creates no heap owner. Immutable intrinsic Closure bodies
+and compiled sites check mismatches. Fresh uncloned manual computed-name makers
+have no genuine entry; a later activation on the same maker and site still needs
+its own provenance. At function/pipe sites, ordinary bare clone-method makers
+must match the effective object `__invoke`; saved access remains with the
+historical capture checks. The [selection originals](../../tests/semantics/readonly_clone_selection_cases.json)
+cover lifetime, manual dispatch, dynamic/FCC pipes, callee mutation during
+arguments and private autoload. The [source driver](../../tests/semantics/readonly_clone_selection_sources.py)
+regenerates exact comparisons with `--select` after numeric allocation. This
+follow-on has native preparations; activation provenance remains under review.
+Its compiler,
+source and reached-state model gates are unrun. It does not renew the frozen305
+evidence above.
+
 Matching pinned engine routes: `zend_objects_clone_obj_with` and
 `zend_objects_clone_members` in `Zend/zend_objects.c`; `zend_std_write_property`
 in `Zend/zend_object_handlers.c`; property Stringable verification in

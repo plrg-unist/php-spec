@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+The dynamic/FCC clone maker follow-on is prepared privately from frozen305
+commit367e581df. Live clone calls capture the selected name before arguments;
+cached makers retain only their own site, selected name or immutable intrinsic
+Closure identity. An independent nonowning entry binds each selection to its
+genuine physical clone maker. Receipt presence requires clone admission, including
+computed method names. Thirteen lifetime/manual, pipe, argument mutation and
+private autoload originals have pinned-native results only. Ordinary fallback roles and
+selection reuse by a later activation remain under review. New SL277,
+source and state gates are UNRUN pending a numeric allocation. The accepted305
+execution root and all earlier cuts remain unchanged. A direct private shutdown
+companion also awaits its model gate. Dynamic-property warning ingress needs an
+owned callback continuation and real destination lifetime; its preserved CALLS308
+source remains Unsupported with zero agreement.
+
 Readonly clone-with updates305 now open an independent second window, preserve
 the saved setter scope and ordered weak writes, and unwind alias/conversion
 failures while retaining committed prefixes. Received values keep positive
