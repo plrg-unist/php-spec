@@ -1,6 +1,6 @@
 {
   "scope": "Literal core auto-global FETCH_R selects its variable line before direct ECHO or a later literal property fetch at owned include operand retirement. Partial core.",
-  "status": "independently_accepted_private",
+  "status": "independently_accepted_private_and_actual_parent",
   "tested_revision": "f0a47d8f5fd1927c8fd2b78da17d6d1efb8c9c1c",
   "semantic_root": ".tools/source-autoglobal-emission-316",
   "modules": 278,
@@ -265,7 +265,50 @@
   },
   "actual_parent_integration": {
     "parent_revision": "7609ad03a2ae2a0c8697945f72287c777990c74a",
+    "tested_revision": "804c3bf49f7d9743cf5e00ec3b49a29beb1fcc93",
+    "semantic_root": "/home/user/workspace/php-spec/.tools/include-autoglobal-316-integrate-18",
     "modules": 293,
-    "status": "pending_compiler_relevant_source_and_compact_independent_gc_interaction"
+    "status": "passed_independently_reviewed",
+    "source_raw": "/home/user/workspace/php-spec/.tools/include-autoglobal-316-integrate-18/.tools/include-autoglobal-current-18/readonly-clone-current-mv22qptp/report.json",
+    "state_raw": "/home/user/workspace/php-spec/.tools/include-review-18-autoglobal-actual/actual-gc-source-state-run-a64sw2d6/report.json",
+    "compiler": {
+      "mode": "SL",
+      "cache": false,
+      "det": true,
+      "exit": 0,
+      "elapsed": 3.7345902919769287,
+      "cap_seconds": 300,
+      "application_evaluations": 0
+    },
+    "source": {
+      "source_agreements": 1,
+      "application_evaluations": 1,
+      "status": "normal",
+      "exit_status": 0,
+      "elapsed": 40.32734394073486,
+      "cap_seconds": 90,
+      "worker_timeout_seconds": 60
+    },
+    "state": {
+      "mode": "SL",
+      "cache": false,
+      "det": true,
+      "binding_premises": 30,
+      "check_premises": 17,
+      "physical_premises": 47,
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "elapsed": 19.05591607093811,
+      "cap_seconds": 90,
+      "observed": "true\n"
+    },
+    "scope": "Retains returned-child ArrayAccess309 and ordinary collector301. Genuine readonly clone-owned SOURCE_ENTER retains input, closed clone window, FETCH5/property6 and first destruction through ordinary eager release with NOGC eps; GC/public/heap admission and one resumed step pass. A heap-identical DISCARD-only NOGC receipt forged onto SOURCE_ENTER is rejected.",
+    "freeze": {
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "module_stats_stable": true
+    },
+    "credit_boundary": "The previous isolated278 source2/state90/guards72 and cc397-parent291 source1/state64 retain their own inputs. This new parent adds one relevant exact source and one focused47-premise state cut only; no earlier suite gains renewed credit."
   }
 }

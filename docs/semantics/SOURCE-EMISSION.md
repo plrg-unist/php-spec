@@ -47,5 +47,8 @@ renewed source credit. `GLOBALS`, `this`, `http_response_header`, computed names
 and broader producers remain required. A fresh cc397-parent291 readonly-clone
 source1 and independent64-premise cut pass separately. The owned include operand
 comes from a genuine readonly clone callback; the original seed stays unchanged.
-Its maintained relocation earns no refreshed execution credit. Actual292-parent
-integration remains pending, including the new ordinary collector interaction.
+Its maintained relocation earns no refreshed execution credit. The actual293 join
+retains returned-child ArrayAccess309 and collector301, passing strict compilation,
+the same exact original and47 focused source-retirement/GC/public premises. A
+heap-identical DISCARD-only NOGC receipt on genuine SOURCE_ENTER is rejected;
+earlier suites keep their original inputs and execution credit.

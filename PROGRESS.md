@@ -11,8 +11,8 @@ The canonical source includes accepted ArrayAccess292/304/309, eager destruction
 WeakReference296, ordinary cycle collection301, Fiber291/302/308,
 Generator289/303/310 and source operands293/298,
 plus instance/readonly properties288/294 and clone300/305 with cached maker selection,
-with292 modules descended from `38f1dfaa045f`. The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314.
+with293 modules descended from `38f1dfaa045f`. The ordered integration preserves
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
@@ -21,8 +21,8 @@ The preceding 284-module cut passes strict compilation, one exact source origina
 49 reached premises during active nested Generator delegation. Earlier accepted
 cuts retain their original inputs. Independently accepted private milestones286,
 290, 295, 297 and306 await ordered Git integration. Other private work covers299.
-Auto-global emission316 is independently accepted at its isolated278 cut;
-current-parent integration remains pending. Nonconstant source-emission314 is installed after Fiber308.
+Nonconstant source-emission314 is installed after Fiber308; literal auto-global316
+is integrated after reviewed current-parent composition.
 Held 279 and user-paused return verification stay set aside. Complete core and the
 final combined, fresh offline rebuild remain required.
 
@@ -71,8 +71,10 @@ stop and copied Generator-owner false fixture retain zero accepted credit.
 A separate cc397-parent291 join passes strict compilation, one genuine readonly
 clone-owned include original and independent64 entry/first-destructor premises,
 including maker-site and receiver-line counterexamples. Its two maintained
-relocations gain no refreshed execution credit; actual292-parent integration and
-wider emissions remain required.
+relocations gain no refreshed execution credit. The actual292-parent join passes
+strict293 initialization, the same exact original and independent47 source/GC/public
+premises, including a heap-identical forged NOGC receipt. Earlier cuts retain
+their own inputs; wider emissions remain required.
 
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
