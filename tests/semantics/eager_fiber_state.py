@@ -29,7 +29,7 @@ runner.CASES = {
             '$fiber_at(S, pfiberstart.OBJECT) = (pfiber)',
             'pfiber.STATUS = FIBER_INIT',
             '~$fiber_blocked(S)',
-            '$fiber_destruction_pending(S)',
+            r'(S.DESTRUCTION.CALLS =/= eps \/ S.DESTRUCTION.RELEASES =/= eps \/ S.DESTRUCTION.FRAMES =/= eps \/ S.DESTRUCTION.OPERATIONS =/= eps \/ S.DESTRUCTION.CLEANUPS =/= eps)',
             '$fiber_transfer_domain(S)',
             '$call_current_valid(S)', '$call_frames_valid(S, S.FRAMES)',
             '$call_descriptors_valid(S)', '$destruction_state_valid(S)',
