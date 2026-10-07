@@ -13,12 +13,14 @@ cached makers retain only their own site, selected name or immutable intrinsic
 Closure identity. Nonowning consumer birth keys now distinguish later activations
 through real Fiber identity, shutdown position and autoload candidate identity.
 Independent autoload bucket and selected-call stamps survive registry movement
-and removal, including retained declaration history. Independent static review
-and production SL277/application0 pass at a766a57dc. Nineteen maintained
-lifetime/manual, pipe, argument mutation, autoload and shutdown originals have
-pinned-native results; seven affected reached-state groups are prepared.
-New source and state gates are pending. Original declaration and binding failures
-retain zero model evaluations.
+and removal, including retained declaration history. Scoped autoload callbacks
+use their retained producer source rather than replaying ordinary invocation.
+Independent review, production SL277/application0 and 20 distinct lifetime/manual,
+pipe, argument mutation, autoload and shutdown originals pass at recorded cuts;
+two affected autoload repeats are separate. Seven reached-state groups (659
+prepared clauses) remain unrun. Coherent pending-candidate identity rewrites
+remain an admission boundary. The [selection ledger](coverage/semantics/readonly-clone-selection-review.json)
+preserves the failed autoload original, diagnostic and compiler corrections.
 Accepted305 semantic inputs and all earlier cuts remain unchanged. Its directly
 affected private shutdown companion now agrees exactly at367e581df and is
 published at a2cab39d0. Dynamic-property warning ingress needs an
@@ -38,7 +40,7 @@ controls and production SL277/application0 pass. The
 [ledger](coverage/semantics/readonly-clone-updates-review.json) retain failures and
 exact cuts. One directly affected private shutdown original also agrees exactly
 after both clone objects retire at its separately recorded367e581df cut.
-Dynamic/FCC maker sites, destination-release13, Generator callbacks,
+The separate dynamic/FCC follow-on above, destination-release13, Generator callbacks,
 Deprecated dispatch, promotion/hooks/enums and wider lifecycle remain required;
 Git integration is pending.
 

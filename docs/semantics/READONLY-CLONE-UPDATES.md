@@ -64,9 +64,13 @@ historical capture checks. The [selection originals](../../tests/semantics/reado
 cover lifetime, manual dispatch, dynamic/FCC pipes, callee mutation during
 arguments, private autoload and shutdown. The [source driver](../../tests/semantics/readonly_clone_selection_sources.py)
 regenerates exact comparisons with `--select` after numeric allocation. This
-follow-on has nineteen native originals and independently reviewed consumer
-birth guards. Production SL277/application0 passes at a766a57dc; seven affected
-source-reached groups are prepared. Source and state model gates are pending.
+follow-on has 20 distinct source agreements, with two affected autoload repeats
+recorded separately. Production SL277/application0 passes at 5a2de9e6f; seven
+source-reached groups (659 prepared clauses) remain unrun. Independent bucket
+and selected-call stamps authenticate stored/selected consumers; coherent
+pending-candidate identity rewrites before storage remain open. The
+[selection ledger](../../coverage/semantics/readonly-clone-selection-review.json)
+records these cuts and limits.
 The original declaration/binding failures retain zero evaluations. It does not
 renew the frozen305 evidence above.
 

@@ -571,8 +571,8 @@ preserving borrowed versus actual temporary/intrinsic input owners. Its separate
 20 normals/five declarations/exit1 and 264 reached controls pass with SL276.
 [Nonempty readonly clone updates](docs/semantics/READONLY-CLONE-UPDATES.md) add a
 second window, captured conversions and write revisions. A separate dynamic/FCC
-selection follow-on has nineteen native originals, reviewed consumer birth
-guards and a passing compiler gate; source/state validation remains pending. Last-owner destination
+selection follow-on has 20 distinct source agreements and a passing compiler gate;
+reached-state checks and pending-candidate identity admission remain open. Last-owner destination
 release, Deprecated method dispatch and promotion remain required. The new reference controls supersede one historical288 internal assertion
 without renewing the other accepted gates.
 Simple typed property assignment converts its declaration
