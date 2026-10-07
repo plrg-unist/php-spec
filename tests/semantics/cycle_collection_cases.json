@@ -52,5 +52,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "readonly-clone-reinitialized-self-slots-remain-real-cycles",
+    "source": "<?php\nclass CloneCycle301 {\n    public readonly object $self;\n    public function __construct() { $this->self = $this; }\n    public function __clone() { $this->self = $this; }\n    public function __destruct() { echo \"D|\"; }\n}\n$original = new CloneCycle301();\n$copy = clone $original;\n$weakOriginal = WeakReference::create($original);\n$weakCopy = WeakReference::create($copy);\necho $original->self === $original && $copy->self === $copy ? \"own|\" : \"wrong|\";\nunset($original, $copy);\necho $weakOriginal->get() !== null && $weakCopy->get() !== null ? \"live|\" : \"gone|\";\necho gc_collect_cycles(), \"|\";\necho $weakOriginal->get() === null && $weakCopy->get() === null ? \"gone|\" : \"live|\";\necho gc_collect_cycles(), \"|END\";\n",
+    "source_sha256": "bd784470da11bf0ffac44bfe188e8e6ea5fd26e248dcc258da890379cd180aea",
+    "stdout": "own|live|D|D|2|gone|0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
