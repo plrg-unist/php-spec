@@ -185,6 +185,7 @@ def $propref_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes porigin
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if ~ppropertydesc.READONLY
   -- if ppropertydesc.TYPE =/= eps
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue) \/ $container_init_value(S, n_cell, pvalue) \/ $parameter_backing_value(S, n_cell, pvalue)
@@ -220,6 +221,7 @@ def $propref_slot_covered(S, n_object, ppropertyslot) = $propref_source_present(
   -- if S.OBJECTS[n_object] = INSTANCE porigin_class
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if ~ppropertydesc.READONLY
   -- if ppropertydesc.TYPE =/= eps
 def $propref_slot_covered(S, n_object, ppropertyslot) = true -- otherwise
 dec $propref_slots_in_object(pstate, nat, ppropertyslot*) : bool
@@ -340,9 +342,11 @@ def $propref_coerced_agreement(S, pvalue_original, (pproptypesource_first), (pva
 def $propref_coerced_agreement(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_current, pvalue_new, pproptypesource_tail*, z) = PROP_REJECT ($propref_conflict(S, pproptypesource_first, pproptypesource_current, pvalue_original, z))
   -- if ~$strict_identical(pvalue_coerced, pvalue_new)
 
-def $write_cell_checked(S, n_cell, pvalue, z) = $reference_coercion_store(S, n_cell, DEFINED pvalue)[.RESULT = KNOWN pvalue]
+dec $gc_same_cell(pstate, pstate, nat) : pstate
+def $gc_same_cell(S, S_next, n) = S_next -- otherwise
+def $write_cell_checked(S, n_cell, pvalue, z) = $gc_same_cell(S, $reference_coercion_store(S, n_cell, DEFINED pvalue)[.RESULT = KNOWN pvalue], n_cell)
   -- if $propref_at(S.PROPREFS, n_cell) = eps
-def $write_cell_checked(S, n_cell, pvalue, z) = $reference_coercion_store(S_checked, n_cell, DEFINED pvalue_new)[.RESULT = KNOWN pvalue_new]
+def $write_cell_checked(S, n_cell, pvalue, z) = $gc_same_cell(S_checked, $reference_coercion_store(S_checked, n_cell, DEFINED pvalue_new)[.RESULT = KNOWN pvalue_new], n_cell)
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if $propref_check(S, pvalue, eps, eps, ppropref.SOURCES, z) = PROP_ACCEPT S_checked pvalue_new
 def $write_cell_checked(S, n_cell, pvalue, z) = S_checked
@@ -355,6 +359,7 @@ def $propref_attach_slot(S, n_object, ppropertyslot, n_cell) = S[.PROPREFS = $pr
   -- if S.OBJECTS[n_object] = INSTANCE porigin_class
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if ~ppropertydesc.READONLY
   -- if ppropertydesc.TYPE =/= eps
 def $propref_attach_slot(S, n_object, ppropertyslot, n_cell) = S -- otherwise
 
@@ -436,7 +441,13 @@ def $assign_property_reference(S, n_object, ptbytes, n_cell, z) = S_prepared
   -- if S_prepared = $property_bind_prepare(S, n_object, ptbytes, n_cell, z)
   -- if S_prepared.COMPLETION =/= NORMAL
 
-def $reference_acquire(S, BASE_PROPERTY pvalue ptbytes, z) = $base_acquire(S, BASE_PROPERTY pvalue ptbytes, z)
+def $reference_acquire(S, BASE_PROPERTY pvalue ptbytes, z) = S_target
+  -- if S_target = $base_acquire(S, BASE_PROPERTY pvalue ptbytes, z)
+  -- if S_target.COMPLETION =/= NORMAL
+def $reference_acquire(S, BASE_PROPERTY pvalue ptbytes, z) = $property_reference_target_check(S_target, n_object, ptbytes_key, z)
+  -- if S_target = $base_acquire(S, BASE_PROPERTY pvalue ptbytes, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.LOCATION = PROPERTY n_object ptbytes_key
 def $assign_array_reference(S, BASE_PROPERTY pvalue ptbytes, n_cell, z) = $assign_property_reference(S_target, n_object, ptbytes_key, n_cell, z)
   -- if S_target = $reference_acquire(S, BASE_PROPERTY pvalue ptbytes, z)
   -- if S_target.COMPLETION = NORMAL
@@ -592,7 +603,10 @@ def $call_task_valid(S, PROPERTY_REF_BIND_CV pbase n_name* z) = ($property_ref_b
 def $call_task_valid(S, PROPERTY_REF_FETCH z) = $property_ref_fetch_task(S, z)
 
 dec $property_reference_fetch_unshared(pstate, nat, ptbytes, int) : pstate
-def $property_reference_fetch(S, n_object, ptbytes, z) = $object_table_sync($property_reference_fetch_unshared($object_table_write(S, n_object), n_object, ptbytes, z), n_object)
+def $property_reference_fetch(S, n_object, ptbytes, z) = $property_reference_copy(S, n_object, ptbytes)
+  -- if $property_receiver_copy(S, n_object, ptbytes)
+def $property_reference_fetch(S, n_object, ptbytes, z) = $property_reference_slot(S, n_object, ptbytes, z)
+  -- if ~$property_receiver_copy(S, n_object, ptbytes)
 
 def $property_reference_fetch_unshared(S, n_object, ptbytes, z) = $reference_cell(S, n_cell)[.CELL = n_cell][.RESULT = REFERENCE n_cell]
   -- if $objectprops_record_at(S.OBJECTPROPS, n_object) = (pobjectprops)

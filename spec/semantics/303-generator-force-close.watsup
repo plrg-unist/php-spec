@@ -115,7 +115,8 @@ def $generator_destructor_pending(S, pnode) = $generator_close_node(S, pnode)
 rule PhpStep/generator-destructor-release: S ~> $generator_close_begin_pending(S_unheld, [DESTRUCTION_VALUE pnode], $destructor_selected_pending(S_unheld, $destructor_selected_frame(S_unheld)))
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*
   -- if $destructor_release_valid(S, pdestructionrelease)
-  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
+  -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if S_unheld = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if $heap_owners($heap_graph(S_unheld), pnode) = 0
   -- if $generator_destructor_pending(S_unheld, pnode)
@@ -123,7 +124,8 @@ rule PhpStep/generator-destructor-release: S ~> $generator_close_begin_pending(S
 rule PhpStep/generator-destructor-request: S ~> S[.COMPLETION = UNSUPPORTED "Generator force-close at request end"]
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*
   -- if $destructor_release_valid(S, pdestructionrelease)
-  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
+  -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if S_unheld = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if $heap_owners($heap_graph(S_unheld), pnode) = 0
   -- if $generator_destructor_pending(S_unheld, pnode)

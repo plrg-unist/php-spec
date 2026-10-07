@@ -1,0 +1,289 @@
+;; Nonempty clone-with opens a second physical-slot window after __clone.
+;; Visited entries describe completed writes; admission never repeats them.
+;; Captured readonly reception values add no owner. Physical write revisions
+;; distinguish them from later preadmitted commits. Mutable values stay live.
+dec $clone_updates_base_valid(pstate, pcloneupdate) : bool
+dec $clone_updates_valid(pstate, pcloneupdate) : bool
+dec $clone_visits_valid(pstate, nat, pentry*, pclonevisit*) : bool
+dec $clone_visit_valid(pstate, nat, pentry, pclonevisit) : bool
+dec $clone_visit_received(pstate, ptypeconversion, pvalue, int) : bool
+dec $clone_visit_source_valid(pstate, ppropertydesc, pitem, pclonevisit) : bool
+dec $clone_visit_revision_valid(pstate, nat, pclonevisit, pvalue) : bool
+dec $clone_visit_committed(pstate, nat, pkey, int) : pclonevisit
+dec $clone_visit_decl(pstate, nat, ptbytes) : ppropertyid?
+dec $clone_update_callback_access(pstate, pcloneoperation) : bool
+dec $clone_readonly_advance(pstate, pcloneupdate, ptask*, int) : pstate
+dec $clone_update_string_capture(pstate, pcloneupdate) : pcloneupdatestring?
+dec $clone_update_string_valid(pstate, pcloneupdatestring) : bool
+dec $clone_update_string_entry_valid(pitem, nat) : bool
+dec $clone_arguments_this_source(phpType7*) : bool
+dec $clone_named_this_source(phpType7*) : bool
+dec $clone_named_this_argument(phpType7) : bool
+
+;; Literal $this remains tied to the saved caller after argument capture.
+;; Mutable operands and unpacked value history remain captured CALL data.
+def $clone_arguments_this_source((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $clone_this_expression(expression)
+def $clone_arguments_this_source(phpType7*) = $clone_named_this_source(phpType7*) -- otherwise
+def $clone_named_this_source(eps) = false
+def $clone_named_this_source(phpType7 :: phpType7_tail*) = ($clone_named_this_argument(phpType7) \/ $clone_named_this_source(phpType7_tail*))
+def $clone_named_this_argument(NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata) = ($exit_argument_name(phpType3) = ($ptascii("object")) /\ $clone_this_expression(expression))
+def $clone_named_this_argument(phpType7) = false -- otherwise
+def $clone_call_arguments_source_valid(S, PCALLARGUMENTS phpType7* n_field, n) = (~$clone_arguments_this_source(phpType7*) \/ $this_receiver(S) = (n))
+
+def $clone_update_callback_access(S, pcloneoperation) = true
+  -- if $clone_method(S, pcloneoperation.TARGET) = eps
+def $clone_update_callback_access(S, pcloneoperation) = $method_accessible(S, pmethoddesc, pcloneoperation.SCOPE)
+  -- if $clone_method(S, pcloneoperation.TARGET) = (pmethoddesc)
+
+def $clone_updates_body_valid(S, pcloneoperation) = true
+  -- if pcloneoperation.CALL = (pclonecall)
+  -- if pcloneoperation.INPUT = eps
+  -- if pclonecall.SITE = pcloneoperation.SITE /\ pclonecall.LINE = pcloneoperation.LINE
+  -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT pcloneoperation.SOURCE)), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if $(pcloneoperation.SOURCE < pcloneoperation.TARGET) /\ $(pcloneoperation.TARGET < |S.OBJECTS|)
+  -- if (HOBJECT pcloneoperation.SOURCE) <- S.ALLOCATIONS
+  -- if (HOBJECT pcloneoperation.TARGET) <- S.ALLOCATIONS
+  -- if $clone_same_kind($object_body(S.OBJECTS[pcloneoperation.SOURCE]), $object_body(S.OBJECTS[pcloneoperation.TARGET]))
+  -- if $clone_readonly_updates(S, pcloneoperation.TARGET)
+  -- if $clone_update_callback_access(S, pcloneoperation)
+def $clone_updates_body_valid(S, pcloneoperation) = false -- otherwise
+
+def $clone_readonly_start(S, pcloneoperation, n_array, ptask_tail*) = S[.TODO = (CLONE_READONLY_UPDATE pcloneupdate) :: ptask_tail*][.CLONES = {OPERATION pcloneoperation, PHASE CLONE_UPDATES, AVAILABLE $clone_readonly_keys(S, pcloneoperation.TARGET), REVISIONS $clone_revisions_start($clone_readonly_keys(S, pcloneoperation.TARGET))} :: $clone_window_delete(S.CLONES, pcloneoperation)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pcloneupdate = {OPERATION pcloneoperation, ARRAY n_array, CURSOR 0, VISITED eps}
+def $task_nodes(CLONE_READONLY_UPDATE pcloneupdate) = $clone_operation_nodes(pcloneupdate.OPERATION)
+def $clone_window_task(CLONE_READONLY_UPDATE pcloneupdate, pcloneoperation, pclonephase) = (pcloneupdate.OPERATION = pcloneoperation /\ pclonephase = CLONE_UPDATES)
+def $clone_window_task_kind(CLONE_READONLY_UPDATE pcloneupdate) = true
+def $clone_drop_tasks(S, (CLONE_READONLY_UPDATE pcloneupdate) :: ptask_tail*) = $clone_drop_tasks(S[.CLONES = $clone_window_delete(S.CLONES, pcloneupdate.OPERATION)], ptask_tail*)
+def $return_discard(S, CLONE_READONLY_UPDATE pcloneupdate) = S[.CLONES = $clone_window_delete(S.CLONES, pcloneupdate.OPERATION)]
+def $call_after_origin(S, CLONE_READONLY_UPDATE pcloneupdate) = S[.CLONES = $clone_window_delete(S.CLONES, pcloneupdate.OPERATION)]
+
+def $clone_updates_base_valid(S, pcloneupdate) = true
+  -- if pcloneoperation = pcloneupdate.OPERATION
+  -- if $clone_updates_body_valid(S, pcloneoperation)
+  -- if pcloneoperation.CALL = (pclonecall)
+  -- if $clone_operation_source_valid(S, pcloneoperation)
+  -- if S.ORIGIN = (pcloneoperation.SITE) /\ $method_current_scope(S) = pcloneoperation.SCOPE
+  -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT pcloneoperation.SOURCE)), NAMED_SENT (KNOWN (PARRAY pcloneupdate.ARRAY))]
+  -- if $(pcloneupdate.ARRAY < |S.ARRAYS|)
+  -- if (HARRAY pcloneupdate.ARRAY) <- S.ALLOCATIONS
+  -- if S.ARRAYS[pcloneupdate.ARRAY].ITEMS =/= eps
+  -- if $(pcloneupdate.CURSOR <= |S.ARRAYS[pcloneupdate.ARRAY].ITEMS|)
+  -- if pcloneupdate.CURSOR = |pcloneupdate.VISITED|
+  -- if $clone_window_at(S.CLONES, pcloneoperation) = (pclonewindow)
+  -- if pclonewindow.PHASE = CLONE_UPDATES
+  -- if $clone_revisions_valid($clone_readonly_keys(S, pcloneoperation.TARGET), pclonewindow.REVISIONS, pclonewindow.AVAILABLE)
+def $clone_updates_base_valid(S, pcloneupdate) = false -- otherwise
+
+;; Pure reception compares stable DIRECT inputs without diagnostics or writes.
+;; A later alias value or captured Stringable result has no rereadable history.
+def $clone_visit_received(S, TYPEVALUE pvalue, pvalue_new, z_precision) = (pvalue = pvalue_new)
+def $clone_visit_received(S, TYPEINTEGER pvalue, PINT i, z_precision) = true
+  -- if $typed_number(pvalue) = (NINT i)
+def $clone_visit_received(S, TYPEINTEGER pvalue, PINT i, z_precision) = true
+  -- if $typed_number(pvalue) = (NFLOAT n)
+  -- if (i, castnotice*) = $float_long(n, true)
+def $clone_visit_received(S, TYPESTRING (PSTRING ptbytes), PSTRING ptbytes_new, z_precision) = (ptbytes = ptbytes_new)
+def $clone_visit_received(S, TYPESTRING (PINT i), PSTRING ptbytes, z_precision) = (ptbytes = $decimal_integer(i))
+def $clone_visit_received(S, TYPESTRING (PBOOL b), PSTRING ptbytes, z_precision) = (ptbytes = $echo_value(PBOOL b))
+def $clone_visit_received(S, TYPESTRING (PFLOAT n), PSTRING ptbytes, z_precision) = true
+  -- if (ptbytes, b_warning) = $number_text(NFLOAT n, z_precision)
+def $clone_visit_received(S, TYPEBOOL pvalue, PBOOL b, z_precision) = (b = $truth(S, pvalue))
+def $clone_visit_received(S, TYPEDEPENDENT "user object string conversion", PSTRING ptbytes, z_precision) = true
+def $clone_visit_received(S, ptypeconversion, pvalue, z_precision) = false -- otherwise
+def $clone_visit_source_valid(S, ppropertydesc, DIRECT pvalue, pclonevisit) = true
+  -- if pclonevisit.VALUE = (pvalue_new)
+  -- if $clone_visit_received(S, $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, false), pvalue_new, pclonevisit.PRECISION)
+def $clone_visit_source_valid(S, ppropertydesc, ALIAS n, pclonevisit) = true
+  -- if pclonevisit.VALUE = (pvalue)
+  -- if $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, true) = TYPEVALUE pvalue
+def $clone_visit_source_valid(S, ppropertydesc, pitem, pclonevisit) = false -- otherwise
+def $clone_visit_decl(S, n, ptbytes) = (ppropertydesc.ORIGIN)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
+def $clone_visit_decl(S, n, ptbytes) = eps -- otherwise
+
+def $clone_visit_revision_valid(S, n, pclonevisit, pvalue_current) = true
+  -- if pclonevisit.VALUE = (pvalue)
+  -- if pclonevisit.REVISION = (n_visit)
+  -- if $clone_written_revision(S.CLONES, n, pclonevisit.TARGET) = (n_current)
+  -- if $(0 < n_visit) /\ $(n_visit <= n_current)
+  -- if $(n_visit < n_current) \/ pvalue_current = pvalue
+def $clone_visit_revision_valid(S, n, pclonevisit, pvalue) = false -- otherwise
+
+def $clone_visit_valid(S, n, ENTRY pkey pitem, pclonevisit) = true
+  -- if pclonevisit.KEY = pkey
+  -- if $property_resolve(S, n, $clone_update_key(pkey)) = PROPERTY_ACCESS pclonevisit.TARGET
+  -- if $property_readonly_desc(S, n, pclonevisit.TARGET) = (ppropertydesc)
+  -- if pclonevisit.DECL = (ppropertydesc.ORIGIN)
+  -- if pclonevisit.VALUE = (pvalue)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, pclonevisit.TARGET) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue_current)
+  -- if $property_slot_valid(S, ppropertydesc, ppropertyslot)
+  -- if $clone_visit_revision_valid(S, n, pclonevisit, pvalue_current)
+  -- if ~$clone_reinitable(S, n, pclonevisit.TARGET)
+  -- if $clone_visit_source_valid(S, ppropertydesc, pitem, pclonevisit)
+def $clone_visit_valid(S, n, ENTRY pkey pitem, pclonevisit) = true
+  -- if pclonevisit.KEY = pkey
+  -- if $property_resolve(S, n, $clone_update_key(pkey)) = PROPERTY_ACCESS pclonevisit.TARGET
+  -- if $property_readonly_desc(S, n, pclonevisit.TARGET) = eps
+  -- if pclonevisit.DECL = $clone_visit_decl(S, n, pclonevisit.TARGET) /\ pclonevisit.VALUE = eps /\ pclonevisit.REVISION = eps
+def $clone_visit_valid(S, n, pentry, pclonevisit) = false -- otherwise
+def $clone_visits_valid(S, n, eps, eps) = true
+def $clone_visits_valid(S, n, pentry :: pentry_tail*, pclonevisit :: pclonevisit_tail*) = ($clone_visit_valid(S, n, pentry, pclonevisit) /\ $clone_visits_valid(S, n, pentry_tail*, pclonevisit_tail*))
+def $clone_visits_valid(S, n, pentry*, pclonevisit*) = false -- otherwise
+def $clone_updates_valid(S, pcloneupdate) = true
+  -- if $clone_updates_base_valid(S, pcloneupdate)
+  -- if $clone_visits_valid(S, pcloneupdate.OPERATION.TARGET, S.ARRAYS[pcloneupdate.ARRAY].ITEMS[0:pcloneupdate.CURSOR], pcloneupdate.VISITED)
+def $clone_updates_valid(S, pcloneupdate) = false -- otherwise
+def $call_task_valid(S, CLONE_READONLY_UPDATE pcloneupdate) = $clone_updates_valid(S, pcloneupdate)
+def $internal_property_write(S) = $clone_updates_base_valid(S, pcloneupdate)
+  -- if S.TODO = (CLONE_READONLY_UPDATE pcloneupdate) :: ptask_tail*
+
+def $clone_visit_committed(S, n, pkey, z_precision) = {KEY pkey, TARGET ptbytes, DECL (ppropertydesc.ORIGIN), VALUE (pvalue), PRECISION z_precision, REVISION (n_revision)}
+  -- if $property_resolve(S, n, $clone_update_key(pkey)) = PROPERTY_ACCESS ptbytes
+  -- if $property_readonly_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $clone_written_revision(S.CLONES, n, ptbytes) = (n_revision)
+def $clone_visit_committed(S, n, pkey, z_precision) = {KEY pkey, TARGET ptbytes, DECL ppropertyslot.DECL, VALUE eps, PRECISION z_precision, REVISION eps}
+  -- if $property_resolve(S, n, $clone_update_key(pkey)) = PROPERTY_ACCESS ptbytes
+  -- if $property_readonly_desc(S, n, ptbytes) = eps
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+def $clone_readonly_advance(S, pcloneupdate, ptask_tail*, z_precision) = S[.TODO = (CLONE_READONLY_UPDATE (pcloneupdate[.CURSOR = $(pcloneupdate.CURSOR + 1)][.VISITED = pcloneupdate.VISITED ++ [pclonevisit]])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ARRAYS[pcloneupdate.ARRAY].ITEMS[pcloneupdate.CURSOR] = ENTRY pkey pitem
+  -- if pclonevisit = $clone_visit_committed(S, pcloneupdate.OPERATION.TARGET, pkey, z_precision)
+
+rule PhpStep/readonly-clone-update: S ~> $clone_readonly_advance(S_written, pcloneupdate, ptask_tail*, $precision_value(S))
+  -- if S.TODO = (CLONE_READONLY_UPDATE pcloneupdate) :: ptask_tail*
+  -- if $clone_updates_valid(S, pcloneupdate)
+  -- if $(pcloneupdate.CURSOR < |S.ARRAYS[pcloneupdate.ARRAY].ITEMS|)
+  -- if $clone_update_string_capture(S, pcloneupdate) = eps
+  -- if pcloneupdate.OPERATION.CALL = (pclonecall)
+  -- if S_written = $clone_update_step(S, pclonecall, pcloneupdate.OPERATION.TARGET, S.ARRAYS[pcloneupdate.ARRAY].ITEMS[pcloneupdate.CURSOR])
+  -- if S_written.COMPLETION = NORMAL /\ S_written.TODO = S.TODO
+rule PhpStep/readonly-clone-update-error: S ~> S_written[.TODO = ptask_tail*][.CLONES = $clone_window_delete(S_written.CLONES, pcloneupdate.OPERATION)]
+  -- if S.TODO = (CLONE_READONLY_UPDATE pcloneupdate) :: ptask_tail*
+  -- if $clone_updates_valid(S, pcloneupdate)
+  -- if $(pcloneupdate.CURSOR < |S.ARRAYS[pcloneupdate.ARRAY].ITEMS|)
+  -- if $clone_update_string_capture(S, pcloneupdate) = eps
+  -- if pcloneupdate.OPERATION.CALL = (pclonecall)
+  -- if S_written = $clone_update_step(S, pclonecall, pcloneupdate.OPERATION.TARGET, S.ARRAYS[pcloneupdate.ARRAY].ITEMS[pcloneupdate.CURSOR])
+  -- if S_written.COMPLETION =/= NORMAL
+  -- if S_written.TODO = S.TODO
+rule PhpStep/readonly-clone-update-dependent: S ~> S_written
+  -- if S.TODO = (CLONE_READONLY_UPDATE pcloneupdate) :: ptask_tail*
+  -- if $clone_updates_valid(S, pcloneupdate)
+  -- if $(pcloneupdate.CURSOR < |S.ARRAYS[pcloneupdate.ARRAY].ITEMS|)
+  -- if $clone_update_string_capture(S, pcloneupdate) = eps
+  -- if pcloneupdate.OPERATION.CALL = (pclonecall)
+  -- if S_written = $clone_update_step(S, pclonecall, pcloneupdate.OPERATION.TARGET, S.ARRAYS[pcloneupdate.ARRAY].ITEMS[pcloneupdate.CURSOR])
+  -- if S_written.TODO =/= S.TODO
+rule PhpStep/readonly-clone-updates-done: S ~> S[.TODO = ptask_tail*][.CLONES = $clone_window_delete(S.CLONES, pcloneupdate.OPERATION)][.RESULT = KNOWN (POBJECT pcloneupdate.OPERATION.TARGET)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLONE_READONLY_UPDATE pcloneupdate) :: ptask_tail*
+  -- if $clone_updates_valid(S, pcloneupdate)
+  -- if pcloneupdate.CURSOR = |S.ARRAYS[pcloneupdate.ARRAY].ITEMS|
+
+;; The builtin admits the slot before conversion. User code receives its own
+;; lexical scope; the completed conversion resumes the saved cloning caller.
+def $clone_update_string_entry_valid(DIRECT (POBJECT n), n_object) = (n = n_object)
+def $clone_update_string_entry_valid(ALIAS n_cell, n_object) = true
+def $clone_update_string_entry_valid(pitem, n_object) = false -- otherwise
+def $clone_update_string_valid(S, pcloneupdatestring) = true
+  -- if pcloneupdate = pcloneupdatestring.UPDATE
+  -- if $clone_updates_valid(S, pcloneupdate)
+  -- if $(pcloneupdate.CURSOR < |S.ARRAYS[pcloneupdate.ARRAY].ITEMS|)
+  -- if S.ARRAYS[pcloneupdate.ARRAY].ITEMS[pcloneupdate.CURSOR] = ENTRY pkey pitem
+  -- if $property_resolve(S, pcloneupdate.OPERATION.TARGET, $clone_update_key(pkey)) = PROPERTY_ACCESS pcloneupdatestring.KEY
+  -- if $clone_visit_decl(S, pcloneupdate.OPERATION.TARGET, pcloneupdatestring.KEY) = (pcloneupdatestring.DECL)
+  -- if S.OBJECTS[pcloneupdate.OPERATION.TARGET] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), pcloneupdatestring.KEY) = (ppropertydesc)
+  -- if $class_static_set_allowed(S, ppropertydesc)
+  -- if $typed_conversion_at(S, ppropertydesc.TYPE, POBJECT pcloneupdatestring.OBJECT, false) = TYPEDEPENDENT "user object string conversion"
+  -- if $stringable_instance(S, pcloneupdatestring.OBJECT)
+  -- if $clone_update_string_entry_valid(pitem, pcloneupdatestring.OBJECT)
+def $clone_update_string_valid(S, pcloneupdatestring) = false -- otherwise
+def $clone_update_string_capture(S, pcloneupdate) = (pcloneupdatestring)
+  -- if $clone_updates_valid(S, pcloneupdate)
+  -- if $(pcloneupdate.CURSOR < |S.ARRAYS[pcloneupdate.ARRAY].ITEMS|)
+  -- if S.ARRAYS[pcloneupdate.ARRAY].ITEMS[pcloneupdate.CURSOR] = ENTRY pkey pitem
+  -- if ~$clone_update_ref(S, pitem)
+  -- if $entry_value(S, pitem) = POBJECT n_object
+  -- if $property_resolve(S, pcloneupdate.OPERATION.TARGET, $clone_update_key(pkey)) = PROPERTY_ACCESS ptbytes
+  -- if ~$property_set_denied(S, pcloneupdate.OPERATION.TARGET, ptbytes)
+  -- if $clone_visit_decl(S, pcloneupdate.OPERATION.TARGET, ptbytes) = (ppropertyid)
+  -- if pcloneupdatestring = {UPDATE pcloneupdate, KEY ptbytes, DECL ppropertyid, OBJECT n_object, PRECISION $precision_value(S)}
+  -- if $clone_update_string_valid(S, pcloneupdatestring)
+def $clone_update_string_capture(S, pcloneupdate) = eps -- otherwise
+def $task_nodes(CLONE_READONLY_STRING pcloneupdatestring) = $clone_operation_nodes(pcloneupdatestring.UPDATE.OPERATION) ++ [HOBJECT pcloneupdatestring.OBJECT]
+def $call_task_valid(S, CLONE_READONLY_STRING pcloneupdatestring) = $clone_update_string_valid(S, pcloneupdatestring)
+def $clone_window_task(CLONE_READONLY_STRING pcloneupdatestring, pcloneoperation, pclonephase) = (pcloneupdatestring.UPDATE.OPERATION = pcloneoperation /\ pclonephase = CLONE_UPDATES)
+def $clone_window_task_kind(CLONE_READONLY_STRING pcloneupdatestring) = true
+def $clone_drop_tasks(S, (CLONE_READONLY_STRING pcloneupdatestring) :: ptask_tail*) = $clone_drop_tasks(S[.CLONES = $clone_window_delete(S.CLONES, pcloneupdatestring.UPDATE.OPERATION)], ptask_tail*)
+def $return_discard(S, CLONE_READONLY_STRING pcloneupdatestring) = S[.CLONES = $clone_window_delete(S.CLONES, pcloneupdatestring.UPDATE.OPERATION)]
+def $call_after_origin(S, CLONE_READONLY_STRING pcloneupdatestring) = S[.CLONES = $clone_window_delete(S.CLONES, pcloneupdatestring.UPDATE.OPERATION)]
+def $internal_property_write(S) = $clone_updates_base_valid(S, pcloneupdatestring.UPDATE)
+  -- if S.TODO = (CLONE_READONLY_STRING pcloneupdatestring) :: ptask_tail*
+def $clone_update_string_result_task(CLONE_READONLY_STRING pcloneupdatestring) = true
+def $clone_update_string_site_valid(S, PORIGIN n pcpath, z) = true
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $exit_callable_arguments(S, PORIGIN n pcpath) = PCALLARGUMENTS phpType7* n_field
+def $stringify_source(S, porigin_site, z, CLONE_READONLY_STRING pcloneupdatestring) = ($clone_update_string_valid(S, pcloneupdatestring) /\ pcloneupdatestring.UPDATE.OPERATION.SITE = porigin_site /\ pcloneupdatestring.UPDATE.OPERATION.LINE = z)
+def $property_string_consumer_guard(S, n, CLONE_READONLY_STRING pcloneupdatestring) = (n = pcloneupdatestring.OBJECT /\ $clone_update_string_valid(S, pcloneupdatestring))
+def $property_string_result_guard(S, n, porigin_site, z) = (n = pcloneupdatestring.OBJECT /\ $stringify_source(S, porigin_site, z, CLONE_READONLY_STRING pcloneupdatestring))
+  -- if S.TODO = (STRINGIFY_RESULT n_result porigin_result z_result) :: (CLONE_READONLY_STRING pcloneupdatestring) :: ptask_tail*
+def $stringify_consumer_tail_valid(S, porigin_site, z, CLONE_READONLY_STRING pcloneupdatestring, ptask_tail*) = $stringify_source(S, porigin_site, z, CLONE_READONLY_STRING pcloneupdatestring)
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: (CLONE_READONLY_STRING pcloneupdatestring) :: ptask_tail*
+def $stringify_entered(S, (pcallcontext), pframe :: pframe_tail*, METHOD_TARGET n porigin_method, porigin_site) = true
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if pcallcontext.CALLSITE = (porigin_site) /\ pframe.ORIGIN = (porigin_site)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: (CLONE_READONLY_STRING pcloneupdatestring) :: ptask_tail*
+  -- if S_caller = $parameter_string_frame_scope(S, pframe, pframe_tail*)
+  -- if $stringify_source(S_caller, porigin_site, z, CLONE_READONLY_STRING pcloneupdatestring)
+  -- if $property_string_consumer_guard(S_caller, n, CLONE_READONLY_STRING pcloneupdatestring)
+  -- if $stringify_consumer_tail_valid(S_caller, porigin_site, z, CLONE_READONLY_STRING pcloneupdatestring, ptask_tail*)
+
+rule PhpStep/readonly-clone-update-string: S ~> $user_string_begin(S[.RESULT = KNOWN (POBJECT pcloneupdatestring.OBJECT)], pcloneupdatestring.OBJECT, pcloneupdatestring.UPDATE.OPERATION.SITE, pcloneupdatestring.UPDATE.OPERATION.LINE, CLONE_READONLY_STRING pcloneupdatestring, ptask_tail*)
+  -- if S.TODO = (CLONE_READONLY_UPDATE pcloneupdate) :: ptask_tail*
+  -- if $clone_update_string_capture(S, pcloneupdate) = (pcloneupdatestring)
+rule PhpStep/readonly-clone-update-string-result: S ~> $clone_readonly_advance(S_written, pcloneupdatestring.UPDATE, ptask_tail*, pcloneupdatestring.PRECISION)[.HELD = S.HELD]
+  -- if S.TODO = (CLONE_READONLY_STRING pcloneupdatestring) :: ptask_tail*
+  -- if $clone_update_string_valid(S, pcloneupdatestring)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_inputs = $hold_task_inputs(S)
+  -- if S_written = $object_table_sync($property_store_key_unshared($object_table_write(S_inputs, pcloneupdatestring.UPDATE.OPERATION.TARGET), pcloneupdatestring.UPDATE.OPERATION.TARGET, pcloneupdatestring.KEY, PSTRING ptbytes, pcloneupdatestring.UPDATE.OPERATION.LINE), pcloneupdatestring.UPDATE.OPERATION.TARGET)
+  -- if S_written.COMPLETION = NORMAL
+rule PhpStep/readonly-clone-update-string-error: S ~> S_error[.TODO = ptask_tail*][.CLONES = $clone_window_delete(S_error.CLONES, pcloneupdatestring.UPDATE.OPERATION)][.HELD = S.HELD]
+  -- if S.TODO = (CLONE_READONLY_STRING pcloneupdatestring) :: ptask_tail*
+  -- if $clone_update_string_valid(S, pcloneupdatestring)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_inputs = $hold_task_inputs(S)
+  -- if S_written = $object_table_sync($property_store_key_unshared($object_table_write(S_inputs, pcloneupdatestring.UPDATE.OPERATION.TARGET), pcloneupdatestring.UPDATE.OPERATION.TARGET, pcloneupdatestring.KEY, PSTRING ptbytes, pcloneupdatestring.UPDATE.OPERATION.LINE), pcloneupdatestring.UPDATE.OPERATION.TARGET)
+  -- if S_written.COMPLETION = THROWN text preqbytes z
+  -- if pcloneupdatestring.UPDATE.OPERATION.CALL = (pclonecall)
+  -- if S_error = $clone_error(S_written, pclonecall, text, preqbytes)
+
+;; A conversion inside clone() has an internal method frame followed by the
+;; real intrinsic frame, including its original argument buffer and wrapper.
+def $clone_update_string_context(S, pcallcontext) = true
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: (CLONE_READONLY_STRING pcloneupdatestring) :: ptask_tail*
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if pcallcontext.CALLSITE = (porigin_site) /\ pcallcontext.LINE = z
+  -- if S_caller = $parameter_string_frame_scope(S, pframe, pframe_tail*)
+  -- if $stringify_source(S_caller, porigin_site, z, CLONE_READONLY_STRING pcloneupdatestring)
+  -- if $property_string_consumer_guard(S_caller, n, CLONE_READONLY_STRING pcloneupdatestring)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE ($ptascii("->")), ARGS eps, HASARGS true}, ptraceframe] ++ $clone_wrapper_trace(S, pclonecall, pvalue*)
+  -- if $clone_update_string_context(S, pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: (CLONE_READONLY_STRING pcloneupdatestring) :: ptask_tail*
+  -- if pcloneupdatestring.UPDATE.OPERATION.CALL = (pclonecall)
+  -- if pvalue* = $trace_extra(S, $clone_trace_operands(pclonecall.SENT))
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclonecall.SITE), LINE pclonecall.LINE, FUNCTION $ptascii("clone"), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
+def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S_context, psymboltable.ENV, pframe.CONTEXT)
+  -- if pframe.CONTEXT = (pcallcontext)
+  -- if pframe.LOCALS = (psymboltable)
+  -- if S_context = S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*]
+  -- if $clone_update_string_context(S_context, pcallcontext)

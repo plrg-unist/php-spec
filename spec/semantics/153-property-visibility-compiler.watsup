@@ -14,13 +14,19 @@ def $ppproperty_nonfinal_inherit_message(ptbytes_child, ptbytes_parent, ppropert
 def $ppproperty_nonfinal_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = ($ptascii("Cannot redeclare ") ++ $ppproperty_static_name(ppropertydesc_parent.STATIC) ++ ptbytes_parent ++ $ptascii("::$") ++ ppropertydesc_parent.NAME ++ $ptascii(" as ") ++ $ppproperty_static_name(ppropertydesc_child.STATIC) ++ ptbytes_child ++ $ptascii("::$") ++ ppropertydesc_child.NAME)
   -- if ppropertydesc_parent.VISIBILITY =/= PROPERTY_PRIVATE
   -- if ppropertydesc_parent.STATIC =/= ppropertydesc_child.STATIC
+def $ppproperty_nonfinal_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = ($ptascii("Cannot redeclare ") ++ $ppproperty_readonly_name(ppropertydesc_parent.READONLY) ++ $ptascii("property ") ++ ptbytes_parent ++ $ptascii("::$") ++ ppropertydesc_parent.NAME ++ $ptascii(" as ") ++ $ppproperty_readonly_name(ppropertydesc_child.READONLY) ++ ptbytes_child ++ $ptascii("::$") ++ ppropertydesc_child.NAME)
+  -- if ppropertydesc_parent.VISIBILITY =/= PROPERTY_PRIVATE
+  -- if ppropertydesc_parent.STATIC = ppropertydesc_child.STATIC
+  -- if ppropertydesc_parent.READONLY =/= ppropertydesc_child.READONLY
 def $ppproperty_nonfinal_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = ($ptascii("Access level to ") ++ ptbytes_child ++ $ptascii("::$") ++ ppropertydesc_child.NAME ++ $ptascii(" must be public (as in class ") ++ ptbytes_parent ++ [41])
   -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PUBLIC
   -- if ppropertydesc_parent.STATIC = ppropertydesc_child.STATIC
+  -- if ppropertydesc_parent.READONLY = ppropertydesc_child.READONLY
   -- if ppropertydesc_child.VISIBILITY = PROPERTY_PROTECTED \/ ppropertydesc_child.VISIBILITY = PROPERTY_PRIVATE
 def $ppproperty_nonfinal_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = ($ptascii("Access level to ") ++ ptbytes_child ++ $ptascii("::$") ++ ppropertydesc_child.NAME ++ $ptascii(" must be protected (as in class ") ++ ptbytes_parent ++ $ptascii(") or weaker"))
   -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PROTECTED
   -- if ppropertydesc_parent.STATIC = ppropertydesc_child.STATIC
+  -- if ppropertydesc_parent.READONLY = ppropertydesc_child.READONLY
   -- if ppropertydesc_child.VISIBILITY = PROPERTY_PRIVATE
 def $ppproperty_nonfinal_inherit_message(ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = $ppproperty_override_message(ptbytes_child, ppropertydesc_child.NAME, ptbytes_parent, ppropertydesc_parent.TYPE, ppropertydesc_child.TYPE) -- otherwise
 def $ppproperty_static_name(true) = $ptascii("static ")

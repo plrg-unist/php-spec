@@ -1,0 +1,580 @@
+#!/usr/bin/env python3
+"""Independent source-reached explicit collection and weak lifetime checks."""
+import argparse
+import json
+from pathlib import Path
+
+import shutdown_state_review as runner
+
+SOURCES = {row['id']: row['source'] for row in json.loads(
+    Path(__file__).with_name('cycle_collection_review_cases.json').read_text())}
+EAGER_SOURCES = {row['id']: row['source'] for row in json.loads(
+    Path(__file__).with_name('eager_destructor_review_cases.json').read_text())}
+VALID = ['$gc_state_valid(S)', '$call_descriptors_valid(S)',
+         '$heap_valid($heap_graph(S))']
+
+
+def pause():
+    return ['S_paused = $drive(S, 0)', 'S_paused.COMPLETION = BUDGET',
+            'S_paused[.COMPLETION = NORMAL] = S']
+
+
+def replay():
+    return ['S_done = $drive(S, 2000)', 'S_done.COMPLETION = NORMAL',
+            '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))',
+            '$drive(S_paused[.COMPLETION = NORMAL], 2000) = S_done']
+
+
+def reject_temporary_operation(suffix, change):
+    operation = 'pdestructionoperation_bad_' + suffix
+    state = 'S_bad_' + suffix
+    return [
+        operation + ' = pdestructionoperation' + change,
+        state + ' = S[.DESTRUCTION.OPERATIONS = ' + operation + ' :: pdestructionoperation_tail*][.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT ' + operation + ') :: ptask_tail*]',
+        '$heap_graph(' + state + ') = $heap_graph(S)',
+        '~$gc_operation_metadata_valid(' + state + ', ' + operation + ')',
+        '~$call_descriptors_valid(' + state + ')',
+    ]
+
+
+CASES = {
+    'retired-parent-handle-is-authentic-in-suspended-child-vm': {
+        'source': SOURCES['retired-parent-handle-stays-authentic-through-child-fiber-suspension'],
+        'stage': 'S.ACTIVEFIBER = eps '
+                 '-- if $lookup(S.ENV, $ptascii("f")) = (n_cell) '
+                 '-- if S.STORE[n_cell] = DEFINED (POBJECT n_fiber) '
+                 '-- if S.OBJECTS[n_fiber] = FIBER pfiber '
+                 '-- if pfiber.STATUS = FIBER_SUSPENDED '
+                 '-- if pfiber.VM = (pfibervm) '
+                 '-- if pfibervm.FRAMES = pframe_saved :: pframe_tail* '
+                 '-- if pframe_saved.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail* '
+                 '-- if pdestructionrelease.JOBS = [DESTRUCTION_HANDLE n_parent] '
+                 '-- if (GC_RETIRED n_parent) <- S.GC.BUFFER '
+                 '-- if $object_name(S, n_parent) = $ptascii("Parent301")',
+        'checks': [
+            'S.FIBERCALLERS = eps',
+            'pfibervm.DESTRUCTORCALLS = pdestructorcall :: pdestructorcall_tail*',
+            'pfibervm.DESTRUCTORRELEASES = pdestructionrelease :: pdestructionrelease_tail*',
+            'pdestructorcall.RELEASE = (pdestructionrelease_original)',
+            '$gc_handle_jobs(pdestructionrelease_original.JOBS, n_parent) = 1',
+            'S_view = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = (n_fiber)][.FIBERCALLERS = eps][.COMPLETION = NORMAL]',
+            '~((HOBJECT n_parent) <- S.ALLOCATIONS)',
+            '~((HOBJECT n_parent) <- $gc_nodes(S.GC.BUFFER))',
+            '$heap_owners($heap_graph(S), HOBJECT n_parent) = 0',
+            '$($gc_handle_tasks(S, S.TODO, n_parent) + $gc_handle_frames(S, S.FRAMES, n_parent)) = 0',
+            '$($gc_handle_tasks(S_view, S_view.TODO, n_parent) + $gc_handle_frames(S_view, S_view.FRAMES, n_parent)) = 1',
+            '$gc_retired_valid(S, n_parent)',
+            '$gc_retired_valid(S_view, n_parent)',
+            '$fiber_vm_valid(S, pfibervm, (n_fiber), eps)',
+            '$gc_state_valid(S)', '$call_descriptors_valid(S)',
+            '$heap_valid($heap_graph(S))',
+            'pdestructionrelease_bad = pdestructionrelease[.JOBS = eps]',
+            'pframe_bad = pframe_saved[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease_bad) :: ptask_tail*]',
+            'pfibervm_bad = pfibervm[.FRAMES = pframe_bad :: pframe_tail*][.DESTRUCTORRELEASES = pdestructionrelease_bad :: pdestructionrelease_tail*]',
+            'S_bad = $fiber_put(S, n_fiber, pfiber[.VM = (pfibervm_bad)])',
+            '$heap_graph(S_bad) = $heap_graph(S)',
+            '$gc_handle_jobs(pdestructionrelease_original.JOBS, n_parent) = 1',
+            '~$gc_retired_valid(S_bad, n_parent)',
+            '~$call_descriptors_valid(S_bad)',
+            'S_paused = $drive(S, 0)', 'S_paused.COMPLETION = BUDGET',
+            'S_paused[.COMPLETION = NORMAL] = S',
+            'S_one_step = $drive_steps(S_paused[.COMPLETION = NORMAL], 1)',
+            'S_one_step.COMPLETION = BUDGET',
+            'S_one = S_one_step[.COMPLETION = NORMAL]',
+            '$gc_retired_valid(S_one, n_parent)',
+            '$heap_owners($heap_graph(S_one), HOBJECT n_parent) = 0',
+            '$call_descriptors_valid(S_one)', '$heap_valid($heap_graph(S_one))',
+            'S_done = $drive(S_one, 4000)', 'S_done.COMPLETION = NORMAL',
+            '~((GC_RETIRED n_parent) <- S_done.GC.BUFFER)',
+            '~((HOBJECT n_parent) <- S_done.ALLOCATIONS)',
+            '$gc_state_valid(S_done)', '$call_descriptors_valid(S_done)',
+            '$heap_valid($heap_graph(S_done))',
+        ],
+    },
+    'retired-object-slot-waits-for-real-child-and-handle-retirement': {
+        'source': SOURCES['discarded-temporary-child-slot-still-buffers-cycle'],
+        'stage': 'S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail* '
+                 '-- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT n_child)) :: (DESTRUCTION_HANDLE n_holder) :: pdestructionjob_tail* '
+                 '-- if (GC_RETIRED n_holder) <- S.GC.BUFFER '
+                 '-- if $object_name(S, n_holder) = $ptascii("Holder")',
+        'checks': [
+            'pdestructionjob_tail* = eps',
+            'S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*',
+            'S.GC.BUFFER = [GC_RETIRED n_holder]',
+            'S.GC.FREE = eps',
+            '~((HOBJECT n_holder) <- S.ALLOCATIONS)',
+            '~((HOBJECT n_holder) <- $gc_nodes(S.GC.BUFFER))',
+            '$heap_owners($heap_graph(S), HOBJECT n_holder) = 0',
+            '$heap_owners($heap_graph(S), HOBJECT n_child) = 3',
+            '$task_nodes(DESTRUCTOR_RELEASE pdestructionrelease) = [HOBJECT n_child]',
+            '$gc_buffer_valid(S, S.GC)', *VALID,
+            'pdestructionrelease_bad = pdestructionrelease[.JOBS = [DESTRUCTION_VALUE (HOBJECT n_child)]]',
+            'S_bad = S[.DESTRUCTION.RELEASES = pdestructionrelease_bad :: pdestructionrelease_tail*][.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_bad) :: ptask_tail*]',
+            '$heap_graph(S_bad) = $heap_graph(S)',
+            '$destructor_release_valid(S_bad, pdestructionrelease_bad)',
+            '~$gc_buffer_valid(S_bad, S_bad.GC)',
+            '~$call_descriptors_valid(S_bad)',
+            *pause(),
+            'S_child_step = $drive_steps(S_paused[.COMPLETION = NORMAL], 1)',
+            'S_child_step.COMPLETION = BUDGET',
+            'S_child = S_child_step[.COMPLETION = NORMAL]',
+            'S_child.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_child) :: ptask_tail*',
+            'pdestructionrelease_child.JOBS = [DESTRUCTION_HANDLE n_holder]',
+            'S_child.GC.BUFFER = [GC_RETIRED n_holder, GC_ROOT (HOBJECT n_child)]',
+            'S_child.GC.FREE = eps',
+            '$heap_owners($heap_graph(S_child), HOBJECT n_holder) = 0',
+            '$heap_owners($heap_graph(S_child), HOBJECT n_child) = 2',
+            '$gc_state_valid(S_child)', '$call_descriptors_valid(S_child)',
+            '$heap_valid($heap_graph(S_child))',
+            'S_handle_step = $drive_steps(S_child, 1)',
+            'S_handle_step.COMPLETION = BUDGET',
+            'S_handle = S_handle_step[.COMPLETION = NORMAL]',
+            'S_handle.GC.BUFFER = [GC_EMPTY, GC_ROOT (HOBJECT n_child)]',
+            'S_handle.GC.FREE = [0]',
+            '$heap_graph(S_handle) = $heap_graph(S_child)',
+            '~((HOBJECT n_holder) <- S_handle.ALLOCATIONS)',
+            '$gc_state_valid(S_handle)', '$call_descriptors_valid(S_handle)',
+            '$heap_valid($heap_graph(S_handle))',
+        ],
+    },
+    'discarded-property-rhs-temp-releases-one-owner-without-buffering': {
+        'source': SOURCES['cycle-destructors-precede-parent-free'],
+        'stage': 'S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail* '
+                 '-- if pdestructionrelease.JOBS = (DESTRUCTION_TEMP (HOBJECT n_child)) :: pdestructionjob_tail* '
+                 '-- if $object_name(S, n_child) = $ptascii("ChildObject")',
+        'checks': [
+            'S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*',
+            'S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*',
+            'pdestructionoperation.SOURCE = DISCARD',
+            'pdestructionoperation.NOGC = (pgctemporary)',
+            'pgctemporary.OPERAND = KNOWN (POBJECT n_child)',
+            'pgctemporary.PENDING',
+            '$lookup(S.ENV, $ptascii("o")) = (n_cell)',
+            'S.STORE[n_cell] = DEFINED (POBJECT n_parent)',
+            'n_child =/= n_parent',
+            '$heap_owners($heap_graph(S), HOBJECT n_child) = 2',
+            '~((HOBJECT n_child) <- $gc_nodes(S.GC.BUFFER))',
+            '$task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = eps',
+            '$gc_operation_metadata_valid(S, pdestructionoperation)', *VALID,
+            *reject_temporary_operation('operand', '[.NOGC = (pgctemporary[.OPERAND = KNOWN (POBJECT n_parent)])]'),
+            *reject_temporary_operation('missing', '[.NOGC = eps]'),
+            *reject_temporary_operation('progress', '[.NOGC = (pgctemporary[.PENDING = false])]'),
+            *reject_temporary_operation('source', '[.SOURCE = UNSET_DYNAMIC 1]'),
+            '$eager_operation_source_valid(S_bad_source, pdestructionoperation_bad_source)',
+            'pdestructionrelease_bad = pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n_child)) :: pdestructionjob_tail*]',
+            'S_bad_tag = S[.DESTRUCTION.RELEASES = pdestructionrelease_bad :: pdestructionrelease_tail*][.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_bad) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*]',
+            '$heap_graph(S_bad_tag) = $heap_graph(S)',
+            '~$gc_operation_metadata_valid(S_bad_tag, pdestructionoperation)',
+            '~$call_descriptors_valid(S_bad_tag)',
+            *pause(),
+            'S_step = $drive_steps(S_paused[.COMPLETION = NORMAL], 1)',
+            'S_step.COMPLETION = BUDGET',
+            'S_next = S_step[.COMPLETION = NORMAL]',
+            'pdestructionoperation_next = pdestructionoperation[.NOGC = (pgctemporary[.PENDING = false])]',
+            'S_next.DESTRUCTION.OPERATIONS = pdestructionoperation_next :: pdestructionoperation_tail*',
+            'S_next.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_next) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_next) :: ptask_tail*',
+            'pdestructionrelease_next.JOBS = pdestructionjob_tail*',
+            '$heap_owners($heap_graph(S_next), HOBJECT n_child) = 1',
+            '~((HOBJECT n_child) <- $gc_nodes(S_next.GC.BUFFER))',
+            '$gc_consumed_decrements(S, S_next, [HOBJECT n_child, HOBJECT n_parent, HOBJECT n_child]) = [HOBJECT n_parent, HOBJECT n_child]',
+            '$call_descriptors_valid(S_next)', '$heap_valid($heap_graph(S_next))',
+        ],
+    },
+    'consumed-temp-keeps-authentic-saved-destructor-leaf': {
+        'source': EAGER_SOURCES['main-discard-before-next-statement'],
+        'stage': 'S.CURRENT = (pcallcontext) -- if S.FRAMES = pframe :: pframe_tail* '
+                 '-- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail* '
+                 '-- if pdestructorcall.RELEASE = (pdestructionrelease) '
+                 '-- if pdestructionrelease.JOBS = (DESTRUCTION_TEMP (HOBJECT n_object)) :: pdestructionjob_tail* '
+                 '-- if pdestructorcall.OPERATION = (pdestructionoperation)',
+        'checks': [
+            'pdestructionoperation.NOGC = (pgctemporary)',
+            'pgctemporary.OPERAND = KNOWN (POBJECT n_object)',
+            '~pgctemporary.PENDING',
+            'pdestructorcall.OBJECT = n_object',
+            '$object_name(S, n_object) = $ptascii("D")',
+            '$gc_temporary_leaf_valid(S, pdestructorcall)',
+            '$destructor_leaf_valid(S, pdestructorcall)',
+            '$task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = eps',
+            *VALID,
+            '~$gc_temporary_leaf_valid(S, pdestructorcall[.OPERATION = (pdestructionoperation[.NOGC = eps])])',
+            *pause(),
+            'S_step = $drive_steps(S_paused[.COMPLETION = NORMAL], 1)',
+            'S_step.COMPLETION = BUDGET',
+            '$call_descriptors_valid(S_step[.COMPLETION = NORMAL])',
+            '$heap_valid($heap_graph(S_step))',
+        ],
+    },
+    'retired-temp-receipt-remains-borrowed-at-operation-exit': {
+        'source': EAGER_SOURCES['main-discard-before-next-statement'],
+        'stage': 'S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail* '
+                 '-- if pdestructionoperation.NOGC = (pgctemporary) '
+                 '-- if pgctemporary.OPERAND = KNOWN (POBJECT n_object) '
+                 '-- if ~((HOBJECT n_object) <- S.ALLOCATIONS)',
+        'checks': [
+            '~pgctemporary.PENDING',
+            '$gc_temporary_bounded(S, HOBJECT n_object)',
+            '$heap_owners($heap_graph(S), HOBJECT n_object) = 0',
+            '$task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = eps',
+            '$gc_operation_metadata_valid(S, pdestructionoperation)', *VALID,
+            *pause(),
+            'S_step = $drive_steps(S_paused[.COMPLETION = NORMAL], 1)',
+            'S_step.COMPLETION = BUDGET',
+            '~(pdestructionoperation <- S_step.DESTRUCTION.OPERATIONS)',
+            '~((HOBJECT n_object) <- S_step.ALLOCATIONS)',
+            '$call_descriptors_valid(S_step[.COMPLETION = NORMAL])',
+            '$heap_valid($heap_graph(S_step))',
+        ],
+    },
+    'trace-consumer-rejects-wrong-nonce-plan-and-scope': {
+        'source': SOURCES['object-first-property-table-root-does-not-count-shared-hashtable'],
+        'stage': 'S.TODO = (GC_TRACE pgccall) :: ptask_tail* '
+                 '-- if pgccall.PASS = 0 '
+                 '-- if S.GC.PLAN = eps',
+        'checks': [
+            'S.TODO = (GC_TRACE pgccall) :: ptask_tail*',
+            'S.GC.ACTIVE = (pgccall)', 'S.GC.PLAN = eps',
+            'pgccall.PASS = 0', 'pgccall.TOTAL = 0',
+            '$gc_call_live(S, pgccall)',
+            '$call_task_valid(S, GC_TRACE pgccall)', *VALID,
+            'pgccall_bad = pgccall[.NONCE = S.GC.NEXT]',
+            'S_bad_nonce = S[.GC.ACTIVE = (pgccall_bad)][.TODO = (GC_TRACE pgccall_bad) :: ptask_tail*]',
+            '$heap_valid($heap_graph(S_bad_nonce))',
+            '~$gc_call_live(S_bad_nonce, pgccall_bad)',
+            '~$call_task_valid(S_bad_nonce, GC_TRACE pgccall_bad)',
+            '~$call_descriptors_valid(S_bad_nonce)',
+            'pgcplan = $gc_plan(S, pgccall)',
+            'S_bad_plan = S[.GC.PLAN = (pgcplan)]',
+            '$heap_valid($heap_graph(S_bad_plan))',
+            '~$call_task_valid(S_bad_plan, GC_TRACE pgccall)',
+            '~$call_descriptors_valid(S_bad_plan)',
+            'S_bad_scope = S[.ORIGIN = eps]',
+            '$heap_valid($heap_graph(S_bad_scope))',
+            '~$call_task_valid(S_bad_scope, GC_TRACE pgccall)',
+            '~$call_descriptors_valid(S_bad_scope)',
+            *pause(), *replay(),
+        ],
+    },
+    'fresh-plan-retains-real-source-proxy-role-and-no-invented-dtor': {
+        'source': SOURCES['object-first-property-table-root-does-not-count-shared-hashtable'],
+        'stage': 'S.TODO = (GC_DTORS pgcplan) :: ptask_tail* '
+                 '-- if pgcplan.CANDIDATES =/= eps '
+                 '-- if |pgcplan.COUNTED| = 1 '
+                 '-- if pgcplan.DTORS = eps',
+        'checks': [
+            'S.TODO = (GC_DTORS pgcplan) :: ptask_tail*',
+            'pgcplan.INDEX = 0', 'pgcplan.DONE = eps',
+            'pgcplan.CALL.PASS = 0', 'pgcplan.CALL.TOTAL = 0',
+            'pgcplan.DTORS = eps',
+            'pgcplan.COUNTED = [HOBJECT n_target]',
+            'S.OBJECTS[n_target] = STDINSTANCE',
+            '$gc_proxy_edges(S.OBJECTTABLES, S.ALLOCATIONS) = pgcplan.PROXIES',
+            'pgcplan.PROXIES = [HEDGE (HOBJECT n_target) (HARRAY n_table)]',
+            '(HARRAY n_table) <- pgcplan.FREESET',
+            '~((HARRAY n_table) <- pgcplan.COUNTED)',
+            '$weakref_find(S, S.ALLOCATIONS, n_target) = (n_wrapper)',
+            '$weakref_get(S, n_wrapper) = POBJECT n_target',
+            '$task_nodes(GC_DTORS pgcplan) = eps',
+            '$gc_plan_valid(S, pgcplan)', *VALID,
+            'pgcplan_bad = pgcplan[.DTORS = [HOBJECT n_target]][.FREESET = $destruction_nodes_delete(pgcplan.FREESET, $heap_reach([HOBJECT n_target], eps, pgcplan.GRAPH.EDGES))]',
+            'S_bad = S[.GC.PLAN = (pgcplan_bad)][.TODO = (GC_DTORS pgcplan_bad) :: ptask_tail*]',
+            '$heap_valid($heap_graph(S_bad))',
+            '~$gc_plan_valid(S_bad, pgcplan_bad)',
+            '~$call_descriptors_valid(S_bad)',
+            '$gc_walk(pgcplan.GRAPH, eps, $gc_root_visits(pgcplan.CANDIDATES), $gc_white(pgcplan.GRAPH, pgcplan.CANDIDATES), eps, eps) = (pnode_visit*, pnode_counted*)',
+            'pgcplan_no_proxy = pgcplan[.TABLES = eps][.PROXIES = eps][.COUNTED = pnode_counted*]',
+            'S_no_proxy = S[.GC.PLAN = (pgcplan_no_proxy)][.TODO = (GC_DTORS pgcplan_no_proxy) :: ptask_tail*]',
+            '$heap_valid($heap_graph(S_no_proxy))',
+            '~$gc_plan_valid(S_no_proxy, pgcplan_no_proxy)',
+            '~$call_descriptors_valid(S_no_proxy)',
+            'S_wrapped = S_no_proxy[.TODO = (AT pgcplan.CALL.CALL.SITE (GC_DTORS pgcplan_no_proxy)) :: ptask_tail*]',
+            '$heap_valid($heap_graph(S_wrapped))',
+            '~$gc_plan_valid(S_wrapped, pgcplan_no_proxy)',
+            '~$call_descriptors_valid(S_wrapped)',
+            'S_orphan = S[.TODO = ptask_tail*]',
+            '$heap_valid($heap_graph(S_orphan))',
+            '~$gc_state_valid(S_orphan)',
+            '~$call_descriptors_valid(S_orphan)',
+            '~$gc_call_live(S, pgcplan.CALL[.NONCE = S.GC.NEXT])',
+            '~$gc_call_live(S, pgcplan.CALL[.CALL.LINE = $(pgcplan.CALL.CALL.LINE + 1)])',
+            *pause(), *replay(),
+            '~((HOBJECT n_target) <- S_done.ALLOCATIONS)',
+            '$weakref_get(S_done, n_wrapper) = PNULL',
+        ],
+    },
+    'processed-zero-owner-target-survives-until-real-retrace': {
+        'source': SOURCES['zero-owner-post-dtor-target-remains-gettable-until-retrace'],
+        'stage': 'S.TODO = (GC_DTORS pgcplan) :: ptask_tail* '
+                 '-- if pgcplan.CALL.PASS = 0 '
+                 '-- if pgcplan.INDEX = 1 '
+                 '-- if pgcplan.DONE = [HOBJECT n_target] '
+                 '-- if $heap_owners($heap_graph(S), HOBJECT n_target) = 0',
+        'checks': [
+            'S.TODO = (GC_DTORS pgcplan) :: ptask_tail*',
+            'pgcplan.CALL.PASS = 0', 'pgcplan.INDEX = 1',
+            'pgcplan.DONE = [HOBJECT n_target]',
+            'pgcplan.DTORS = [HOBJECT n_target, HOBJECT n_second]',
+            '(HOBJECT n_target) <- S.ALLOCATIONS',
+            'n_target <- S.DESTRUCTION.CALLED',
+            '~(n_second <- S.DESTRUCTION.CALLED)',
+            '$heap_owners($heap_graph(S), HOBJECT n_target) = 0',
+            '$weakref_find(S, S.ALLOCATIONS, n_target) = (n_wrapper)',
+            '$weakref_get(S, n_wrapper) = POBJECT n_target',
+            '$node_children(S, HOBJECT n_target) = eps',
+            '(HOBJECT n_target) <- $gc_keep(S)',
+            '~((HOBJECT n_target) <- $task_nodes(GC_DTORS pgcplan))',
+            '~((HOBJECT n_target) <- $heap_graph(S).ROOTS)',
+            '(HOBJECT n_target) <- $gc_prune_nodes(S)',
+            '$gc_plan_valid(S, pgcplan)', *VALID,
+            'pgcplan_bad = pgcplan[.DONE = eps]',
+            'S_bad = S[.GC.PLAN = (pgcplan_bad)][.TODO = (GC_DTORS pgcplan_bad) :: ptask_tail*]',
+            '$heap_valid($heap_graph(S_bad))',
+            '~$gc_state_valid(S_bad)',
+            '~$call_descriptors_valid(S_bad)',
+            *pause(), *replay(),
+            '~((HOBJECT n_target) <- S_done.ALLOCATIONS)',
+            '$weakref_get(S_done, n_wrapper) = PNULL',
+            '$destructor_unique(S_done.DESTRUCTION.CALLED)',
+        ],
+    },
+    'later-dtor-retains-one-real-pending-error-owner': {
+        'source': SOURCES['collection-continues-after-dtor-throw-and-chains-later-error'],
+        'stage': 'S.TODO = (GC_DTORS pgcplan) :: ptask_tail* '
+                 '-- if pgcplan.CALL.PASS = 0 '
+                 '-- if pgcplan.INDEX = 1 '
+                 '-- if pgcplan.CALL.PENDING = (n_error)',
+        'checks': [
+            'S.TODO = (GC_DTORS pgcplan) :: ptask_tail*',
+            'pgcplan.CALL.PASS = 0', 'pgcplan.INDEX = 1',
+            'pgcplan.DTORS = [HOBJECT n_first, HOBJECT n_second]',
+            'pgcplan.DONE = [HOBJECT n_first]',
+            'pgcplan.CALL.PENDING = (n_error)',
+            '$throwable_member(S, n_error)',
+            '(HOBJECT n_error) <- S.ALLOCATIONS',
+            '$task_nodes(GC_DTORS pgcplan) = [HOBJECT n_error]',
+            '$heap_count(HOBJECT n_error, $heap_graph(S).ROOTS) = 1',
+            '$heap_owners($heap_graph(S), HOBJECT n_error) = 1',
+            'n_first <- S.DESTRUCTION.CALLED',
+            '~(n_second <- S.DESTRUCTION.CALLED)',
+            '$gc_plan_valid(S, pgcplan)', *VALID,
+            'S_no_consumer = S[.TODO = ptask_tail*]',
+            '$heap_valid($heap_graph(S_no_consumer))',
+            '~$gc_state_valid(S_no_consumer)',
+            '~$call_descriptors_valid(S_no_consumer)',
+            *pause(),
+            'PhpStep: S ~> S_enter',
+            'S_enter.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: (GC_DTOR_RETURN pgcplan n_second) :: ptask_tail*',
+            'pdestructorcall.OBJECT = n_second',
+            'pdestructorcall.PENDING = (n_error)',
+            'pdestructorcall.SITE = eps',
+            '$call_task_valid(S_enter, GC_DTOR_RETURN pgcplan n_second)',
+            '~$call_task_valid(S_enter, GC_DTOR_RETURN pgcplan n_first)',
+            '~$call_task_valid(S_enter, GC_DTOR_RETURN pgcplan (|S_enter.OBJECTS|))',
+            '$heap_count(HOBJECT n_error, $heap_graph(S_enter).ROOTS) = 1',
+            '$heap_owners($heap_graph(S_enter), HOBJECT n_error) = 1',
+            '$call_descriptors_valid(S_enter)',
+            '$heap_valid($heap_graph(S_enter))',
+            *replay(),
+            'S_done.EVENTS = [OUTPUT $ptascii("A"), OUTPUT $ptascii("|"), OUTPUT $ptascii("B"), OUTPUT $ptascii("|"), OUTPUT $ptascii("catch:"), OUTPUT $ptascii("B"), OUTPUT $ptascii(":prev:"), OUTPUT $ptascii("A"), OUTPUT $ptascii(":"), OUTPUT $ptascii("gc_collect_cycles"), OUTPUT $ptascii("|"), OUTPUT $ptascii("null|"), OUTPUT $ptascii("0"), OUTPUT $ptascii("|END")]',
+            '$destructor_unique(S_done.DESTRUCTION.CALLED)',
+        ],
+    },
+    'parent-root-precedes-child-after-no-gc-temporary-retirement': {
+        'source': SOURCES['cycle-destructors-precede-parent-free'],
+        'stage': 'S.TODO = (GC_TRACE pgccall) :: ptask_tail* '
+                 '-- if pgccall.PASS = 0 -- if S.GC.NEXT = 1',
+        'checks': [
+            'S.TODO = (GC_TRACE pgccall) :: ptask_tail*',
+            '$lookup(S.ENV, $ptascii("weak")) = (n_cell)',
+            'S.STORE[n_cell] = DEFINED (POBJECT n_wrapper)',
+            'S.OBJECTS[n_wrapper] = WEAKREFERENCE (n_parent)',
+            '$weakref_get(S, n_wrapper) = POBJECT n_parent',
+            '$objectprops_at(S.OBJECTPROPS, n_parent) = (ppropertyslot_parent*)',
+            '$property_slot_at(ppropertyslot_parent*, $ptascii("child")) = (ppropertyslot_child)',
+            'ppropertyslot_child.STATE = PROP_VALUE (DIRECT (POBJECT n_child))',
+            '(HOBJECT n_child) <- S.ALLOCATIONS',
+            '$heap_owners($heap_graph(S), HOBJECT n_child) = 1',
+            '$gc_nodes(S.GC.BUFFER) = (HOBJECT n_parent) :: pnode_tail*',
+            '~((HOBJECT n_child) <- $gc_nodes(S.GC.BUFFER))',
+            '~(n_parent <- S.DESTRUCTION.CALLED)',
+            '~(n_child <- S.DESTRUCTION.CALLED)',
+            '$task_nodes(GC_TRACE pgccall) = eps', *VALID,
+            'pgcplan = $gc_plan(S, pgccall)',
+            'pgcplan.CANDIDATES = [HOBJECT n_parent, HOBJECT n_child]',
+            'pgcplan.DTORS = [HOBJECT n_parent, HOBJECT n_child]',
+            'pgcplan.COUNTED = [HOBJECT n_parent, HOBJECT n_child]',
+            'pgcplan.FREESET = eps',
+            *pause(),
+            'S_step = $drive_steps(S, 1)', 'S_step.COMPLETION = BUDGET',
+            '$drive_steps(S_paused[.COMPLETION = NORMAL], 1) = S_step',
+            'S_next = S_step[.COMPLETION = NORMAL]',
+            'S_next.TODO = (GC_DTORS pgcplan) :: ptask_tail*',
+            '$gc_plan_valid(S_next, pgcplan)',
+            '$call_descriptors_valid(S_next)',
+            '$heap_valid($heap_graph(S_next))',
+            'pgcplan_bad = pgcplan[.DTORS = [HOBJECT n_child, HOBJECT n_parent]]',
+            'S_bad = S_next[.GC.PLAN = (pgcplan_bad)][.TODO = (GC_DTORS pgcplan_bad) :: ptask_tail*]',
+            '$heap_valid($heap_graph(S_bad))',
+            '~$gc_plan_valid(S_bad, pgcplan_bad)',
+            '~$call_descriptors_valid(S_bad)',
+            'PhpStep: S_next ~> S_enter',
+            'S_enter.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: (GC_DTOR_RETURN pgcplan n_parent) :: ptask_tail*',
+            'pdestructorcall.OBJECT = n_parent',
+            'pdestructorcall.SITE = eps',
+            'n_parent <- S_enter.DESTRUCTION.CALLED',
+            '~(n_child <- S_enter.DESTRUCTION.CALLED)',
+            '$call_descriptors_valid(S_enter)',
+            '$heap_valid($heap_graph(S_enter))',
+            *replay(),
+            '$weakref_get(S_done, n_wrapper) = PNULL',
+            '~((HOBJECT n_parent) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_child) <- S_done.ALLOCATIONS)',
+            'S_done.EVENTS = [OUTPUT $ptascii("before|"), OUTPUT $ptascii("P:live|"), OUTPUT $ptascii("C:live|"), OUTPUT $ptascii("2"), OUTPUT $ptascii("|"), OUTPUT $ptascii("null|END")]',
+        ],
+    },
+    'cv-child-retirement-preserves-child-first-collector-order': {
+        'source': SOURCES['genuine-child-cv-retirement-precedes-parent-buffer'],
+        'stage': 'S.TODO = (GC_TRACE pgccall) :: ptask_tail* '
+                 '-- if pgccall.PASS = 0 -- if S.GC.NEXT = 1',
+        'checks': [
+            'S.TODO = (GC_TRACE pgccall) :: ptask_tail*',
+            '$lookup(S.ENV, $ptascii("weak")) = (n_cell)',
+            'S.STORE[n_cell] = DEFINED (POBJECT n_wrapper)',
+            'S.OBJECTS[n_wrapper] = WEAKREFERENCE (n_parent)',
+            '$objectprops_at(S.OBJECTPROPS, n_parent) = (ppropertyslot_parent*)',
+            '$property_slot_at(ppropertyslot_parent*, $ptascii("child")) = (ppropertyslot_child)',
+            'ppropertyslot_child.STATE = PROP_VALUE (DIRECT (POBJECT n_child))',
+            '$heap_owners($heap_graph(S), HOBJECT n_child) = 1',
+            '$gc_nodes(S.GC.BUFFER) = (HOBJECT n_child) :: pnode_tail*',
+            '(HOBJECT n_parent) <- pnode_tail*',
+            '$task_nodes(GC_TRACE pgccall) = eps', *VALID,
+            'pgcplan = $gc_plan(S, pgccall)',
+            'pgcplan.CANDIDATES = [HOBJECT n_child, HOBJECT n_parent]',
+            'pgcplan.DTORS = [HOBJECT n_child, HOBJECT n_parent]',
+            'pgcplan.COUNTED = [HOBJECT n_child, HOBJECT n_parent]',
+            'pgcplan.FREESET = eps',
+            *pause(),
+            'S_step = $drive_steps(S, 1)', 'S_step.COMPLETION = BUDGET',
+            '$drive_steps(S_paused[.COMPLETION = NORMAL], 1) = S_step',
+            'S_next = S_step[.COMPLETION = NORMAL]',
+            'S_next.TODO = (GC_DTORS pgcplan) :: ptask_tail*',
+            '$gc_plan_valid(S_next, pgcplan)',
+            '$call_descriptors_valid(S_next)', '$heap_valid($heap_graph(S_next))',
+            'pgcplan_bad = pgcplan[.DTORS = [HOBJECT n_parent, HOBJECT n_child]]',
+            'S_bad = S_next[.GC.PLAN = (pgcplan_bad)][.TODO = (GC_DTORS pgcplan_bad) :: ptask_tail*]',
+            '$heap_valid($heap_graph(S_bad))',
+            '~$gc_plan_valid(S_bad, pgcplan_bad)',
+            '~$call_descriptors_valid(S_bad)',
+            *replay(),
+            '$weakref_get(S_done, n_wrapper) = PNULL',
+            '~((HOBJECT n_parent) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_child) <- S_done.ALLOCATIONS)',
+            'S_done.EVENTS = [OUTPUT $ptascii("before|"), OUTPUT $ptascii("C:live|"), OUTPUT $ptascii("P:live|"), OUTPUT $ptascii("2"), OUTPUT $ptascii("|"), OUTPUT $ptascii("null|END")]',
+        ],
+    },
+    'runtime-immutable-empty-property-preserves-strong-owner-without-gc-count': {
+        'source': SOURCES['immutable-null-cast-property-is-not-counted-as-cycle-garbage'],
+        'stage': 'S.TODO = (GC_TRACE pgccall) :: ptask_tail* '
+                 '-- if pgccall.PASS = 0 -- if S.GC.NEXT = 1',
+        'checks': [
+            'S.TODO = (GC_TRACE pgccall) :: ptask_tail*',
+            '$lookup(S.ENV, $ptascii("weak")) = (n_cell)',
+            'S.STORE[n_cell] = DEFINED (POBJECT n_wrapper)',
+            'S.OBJECTS[n_wrapper] = WEAKREFERENCE (n_target)',
+            '$weakref_get(S, n_wrapper) = POBJECT n_target',
+            '$objectprops_at(S.OBJECTPROPS, n_target) = (ppropertyslot_all*)',
+            '$property_slot_at(ppropertyslot_all*, $ptascii("empty")) = (ppropertyslot)',
+            'ppropertyslot.STATE = PROP_VALUE (DIRECT (PARRAY n_array))',
+            '(HARRAY n_array) <- S.ALLOCATIONS',
+            'S.ARRAYS[n_array] = $array_empty()',
+            'n_array <- S.GC.IMMUTABLE',
+            '~$gc_literal_empty_pools(S, S.POOLS, n_array)',
+            '$gc_immutable_array(S, n_array)',
+            '$heap_owners($heap_graph(S), HARRAY n_array) = 1',
+            '(HARRAY n_array) <- $heap_reach([HOBJECT n_target], eps, $heap_graph(S).EDGES)',
+            '~((HARRAY n_array) <- $heap_graph(S).ROOTS)',
+            '~((HARRAY n_array) <- $gc_graph(S).NODES)',
+            '$heap_valid($gc_graph(S))',
+            '~$gc_possible_root(S, HARRAY n_array)',
+            '$gc_decrement(S, S.GC, HARRAY n_array) = S.GC',
+            '$task_nodes(GC_TRACE pgccall) = eps', *VALID,
+            'S_bad_root = S[.GC = $gc_buffer_add(S.GC, HARRAY n_array)]',
+            '$heap_valid($heap_graph(S_bad_root))',
+            '~$gc_state_valid(S_bad_root)',
+            '~$call_descriptors_valid(S_bad_root)',
+            'S_bad_range = S[.GC.IMMUTABLE = S.GC.IMMUTABLE ++ [|S.ARRAYS|]]',
+            '$heap_valid($heap_graph(S_bad_range))',
+            '~$gc_state_valid(S_bad_range)',
+            '~$call_descriptors_valid(S_bad_range)',
+            *pause(),
+            'S_step = $drive_steps(S, 1)', 'S_step.COMPLETION = BUDGET',
+            '$drive_steps(S_paused[.COMPLETION = NORMAL], 1) = S_step',
+            'S_next = S_step[.COMPLETION = NORMAL]',
+            'S_next.TODO = (GC_DTORS pgcplan) :: ptask_tail*',
+            'pgcplan.COUNTED = [HOBJECT n_target]',
+            '~((HARRAY n_array) <- pgcplan.GRAPH.NODES)',
+            '~((HARRAY n_array) <- pgcplan.CANDIDATES)',
+            '~((HARRAY n_array) <- pgcplan.FREESET)',
+            '$call_descriptors_valid(S_next)',
+            '$heap_valid($heap_graph(S_next))',
+            *replay(),
+            '$weakref_get(S_done, n_wrapper) = PNULL',
+            '~((HARRAY n_array) <- S_done.ALLOCATIONS)',
+            'n_array <- S_done.GC.IMMUTABLE',
+            'S_done.EVENTS = [OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("null|"), OUTPUT $ptascii("0"), OUTPUT $ptascii("|END")]',
+        ],
+    },
+    'white-target-ordinary-free-retains-frozen-native-count': {
+        'source': SOURCES['white-target-freed-during-unrelated-destructor-retains-trace-count'],
+        'stage': 'S.TODO = (GC_FREE pgcplan) :: ptask_tail* '
+                 '-- if pgcplan.CALL.PASS = 0 '
+                 '-- if pgcplan.DONE = [HOBJECT n_actor] '
+                 '-- if pgcplan.COUNTED = [HOBJECT n_actor, HOBJECT n_target] '
+                 '-- if ~((HOBJECT n_target) <- S.ALLOCATIONS)',
+        'checks': [
+            'S.TODO = (GC_FREE pgcplan) :: ptask_tail*',
+            'pgcplan.CALL.PASS = 0', 'pgcplan.CALL.TOTAL = 0',
+            'pgcplan.DTORS = [HOBJECT n_actor]',
+            'pgcplan.INDEX = 1', 'pgcplan.DONE = [HOBJECT n_actor]',
+            'pgcplan.COUNTED = [HOBJECT n_actor, HOBJECT n_target]',
+            '(HOBJECT n_actor) <- S.ALLOCATIONS',
+            '~((HOBJECT n_target) <- S.ALLOCATIONS)',
+            '(HOBJECT n_target) <- pgcplan.FREESET',
+            '|$heap_intersect(pgcplan.COUNTED, pgcplan.FREESET)| = 1',
+            '$weakref_find(S, S.ALLOCATIONS, n_actor) = (n_actor_wrapper)',
+            '$weakref_find(S, S.ALLOCATIONS, n_target) = (n_target_wrapper)',
+            '$weakref_get(S, n_actor_wrapper) = POBJECT n_actor',
+            '$weakref_get(S, n_target_wrapper) = PNULL',
+            '$call_task_valid(S, GC_FREE pgcplan)', *VALID,
+            *pause(),
+            'S_next = $gc_free(S, pgcplan)',
+            'S_next.TODO = (GC_TRACE pgccall_next) :: ptask_tail*',
+            'pgccall_next.PASS = 1', 'pgccall_next.TOTAL = 1',
+            'S_next.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED',
+            '$call_descriptors_valid(S_next)',
+            '$heap_valid($heap_graph(S_next))',
+            '$weakref_get(S_next, n_target_wrapper) = PNULL',
+            *replay(),
+            '~((HOBJECT n_actor) <- S_done.ALLOCATIONS)',
+            '$weakref_get(S_done, n_actor_wrapper) = PNULL',
+            'S_done.EVENTS = [OUTPUT $ptascii("B:null|"), OUTPUT $ptascii("2"), OUTPUT $ptascii("|"), OUTPUT $ptascii("null|"), OUTPUT $ptascii("0"), OUTPUT $ptascii("|END")]',
+        ],
+    },
+}
+
+runner.CASES = CASES
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--case', action='append')
+    parser.add_argument('--sl', action='store_true', help='use the strict structural interpreter')
+    args = parser.parse_args()
+    if args.sl:
+        recorded = runner.recorded
+
+        def recorded_sl(command, directory, stem, environment, cap):
+            return recorded([command[0], '--sl', *command[1:]],
+                            directory, stem, environment, cap)
+
+        runner.recorded = recorded_sl
+    raise SystemExit(0 if runner.run(args.case) else 1)

@@ -164,6 +164,10 @@ def $call_registry_valid(pfunction_registry*, (preqbytes, porigin)*) = false -- 
 dec $call_candidate(preqbytes, preqbytes, preqbytes?) : bool
 def $call_candidate(preqbytes_name, preqbytes_primary, eps) = ($ptlc(preqbytes_name) = $ptlc(preqbytes_primary))
 def $call_candidate(preqbytes_name, preqbytes_primary, (preqbytes_fallback)) = ($ptlc(preqbytes_name) = $ptlc(preqbytes_primary) \/ $ptlc(preqbytes_name) = $ptlc(preqbytes_fallback))
+dec $clone_callback_selected(pstate, pcalltarget, porigin) : bool
+dec $clone_context_kind(pstate, pcallcontext) : bool
+dec $clone_context_valid(pstate, pcallcontext) : bool
+dec $clone_chain_valid(pstate, pcallcontext?, pframe*) : bool
 dec $call_selected_valid(pstate, pcalltarget, porigin?) : bool
 def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
@@ -173,7 +177,7 @@ def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
   -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
-def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $useriter_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $access_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $generator_from_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
+def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $useriter_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $access_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $generator_from_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $clone_callback_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
 def $call_selected_valid(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call)) = $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call))
 def $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_call)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_call)
 def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
@@ -181,6 +185,8 @@ dec $call_line_valid(pstate, porigin?, int) : bool
 dec $eval_compile_string_site(pstate, porigin, int) : bool
 dec $static_string_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
 dec $static_string_context_line_valid(pstate, pcallcontext) : bool
+dec $property_string_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
+dec $property_string_context_line_valid(pstate, pcallcontext) : bool
 dec $interpolation_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
 dec $interpolation_context_line_valid(pstate, pcallcontext) : bool
 dec $default_internal_string_pending_line_valid(pstate, pcalltarget, porigin?, int) : bool
@@ -222,6 +228,7 @@ def $call_arity_valid(S, pcallcontext) = true
   -- if ~$error_context_kind(S, pcallcontext)
   -- if ~$useriter_context_kind(S, pcallcontext)
   -- if ~$access_context_kind(S, pcallcontext)
+  -- if ~$clone_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
   -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if $named_call_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
@@ -275,7 +282,7 @@ def $call_task_valid(S, ERROR_UNWIND pcompletion) = (S.TODO = [ERROR_UNWIND pcom
 def $call_task_valid(S, AT porigin ptask) = $call_task_valid(S[.ORIGIN = (porigin)], ptask)
 def $call_task_valid(S, CALL_REF_PREP pcalltarget_function n porigin?) = $call_reference_task_valid(S, pcalltarget_function, n, porigin?)
 def $call_task_valid(S, CALL_REF_FETCH pcalltarget_function n porigin?) = $call_reference_task_valid(S, pcalltarget_function, n, porigin?)
-def $call_task_valid(S, CALL_ARGS pcalltarget_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, pcalltarget_function, porigin?) /\ ($call_line_valid(S, porigin?, z) \/ $concat_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $interpolation_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $typed_return_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $config_string_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $static_string_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $default_internal_string_pending_line_valid(S, pcalltarget_function, porigin?, z)) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 0) /\ $call_sent_operands_valid(S, pcalltarget_function, 0, poperand*))
+def $call_task_valid(S, CALL_ARGS pcalltarget_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, pcalltarget_function, porigin?) /\ ($call_line_valid(S, porigin?, z) \/ $concat_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $interpolation_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $typed_return_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $config_string_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $static_string_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $property_string_pending_line_valid(S, pcalltarget_function, porigin?, z) \/ $default_internal_string_pending_line_valid(S, pcalltarget_function, porigin?, z)) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 0) /\ $call_sent_operands_valid(S, pcalltarget_function, 0, poperand*))
 def $call_task_valid(S, CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z) = ($call_selected_valid(S, pcalltarget_function, porigin?) /\ $call_line_valid(S, porigin?, z) /\ $call_arguments_valid(S, porigin?, n, phpType7*, poperand*, 1) /\ $call_sent_operands_valid(S, pcalltarget_function, 0, poperand*))
 def $call_task_valid(S, ptask) = true -- otherwise
 dec $call_after_origin(pstate, ptask) : pstate
@@ -300,7 +307,7 @@ def $call_context_valid(S, pcallcontext, preqbytes*) = true
   -- if pcallcontext.PARAMS = (psparam.NAME)*
   -- if preqbytes* = pfunction.CVS
   -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext) \/ $fiber_context_valid(S, pcallcontext)
-  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $interpolation_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $default_internal_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext) \/ $fiber_context_valid(S, pcallcontext) \/ $access_context(S, pcallcontext)
+  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE) \/ $concat_context_line_valid(S, pcallcontext) \/ $interpolation_context_line_valid(S, pcallcontext) \/ $typed_return_context_line_valid(S, pcallcontext) \/ $config_string_context_line_valid(S, pcallcontext) \/ $static_string_context_line_valid(S, pcallcontext) \/ $property_string_context_line_valid(S, pcallcontext) \/ $default_internal_string_context_line_valid(S, pcallcontext) \/ $error_context_valid(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext) \/ $fiber_context_valid(S, pcallcontext) \/ $access_context(S, pcallcontext) \/ $clone_context_valid(S, pcallcontext)
   -- if ~$default_ctor_context_kind(S, pcallcontext) \/ $default_ctor_context_valid(S, pcallcontext) \/ $fiber_context_valid(S, pcallcontext)
   -- if ~$autoload_context_kind(S, pcallcontext) \/ $autoload_context_valid(S, pcallcontext)
   -- if ~$destructor_context_kind(S, pcallcontext) \/ $destructor_context_valid(S, pcallcontext)
@@ -382,6 +389,7 @@ def $call_descriptors_scoped_valid(S_live, S) = true
   -- if $call_frames_valid(S, S.FRAMES)
   -- if $stringify_frames_pairs_valid(S, S.FRAMES)
   -- if $stringify_chain_valid(S, S.CURRENT, S.FRAMES)
+  -- if $clone_chain_valid(S, S.CURRENT, S.FRAMES)
   -- if $useriter_chain_valid(S, S.CURRENT, S.FRAMES)
   -- if $access_chain(S, S.CURRENT, S.FRAMES)
   -- if $iterator_notice_owners_valid(S.TODO, S.FRAMES)

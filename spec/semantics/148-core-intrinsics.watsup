@@ -55,6 +55,7 @@ def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_ca
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, eps) = eps
   -- if $intrinsic_lookup(preqbytes_lookup, eps) = (pintrinsic)
+  -- if pintrinsic =/= INTRINSIC_CLONE
   -- if ~$config_dynamic_selection(S, pintrinsic, porigin)
   -- if ~$arginfo_dynamic_selection(S, pintrinsic, porigin)
 def $firstclass_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, z_init) = $intrinsic_firstclass(S, pintrinsic)
@@ -65,6 +66,7 @@ def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pva
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, preqbytes_fallback?) = eps
   -- if $intrinsic_lookup(preqbytes_lookup, preqbytes_fallback?) = (pintrinsic)
+  -- if pintrinsic =/= INTRINSIC_CLONE
   -- if ~$config_pipe_selection(S, pintrinsic, porigin)
   -- if ~$arginfo_pipe_selection(S, pintrinsic, porigin)
 def $dynamic_value(S, porigin, z_init, z_call) = $intrinsic_prepare(S, pintrinsic, z_call, (n))
@@ -168,7 +170,8 @@ rule PhpStep/exit-invoke: S ~> $exit_receive(S[.TODO = ptask_tail*], pexitcall)
 ;; Request globals/statics remain roots for the future shutdown protocol.
 def $exit_completion(EXITED z) = true
 def $exit_completion(pcompletion) = false -- otherwise
-def $exit_start_unwind(S, z) = $file_warning_drop_scope($error_release_iterators($silence_unwind(S)))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = [EXIT_UNWIND z]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+dec $clone_exit_drop(pstate) : pstate
+def $exit_start_unwind(S, z) = $clone_exit_drop($file_warning_drop_scope($error_release_iterators($silence_unwind(S))))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = [EXIT_UNWIND z]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
   -- if ~$fiber_closing(S, S.ACTIVEFIBER)
 dec $eval_compile_exit_pending(pstate) : bool
 def $drive_steps(S, n) = $drive_steps($exit_start_unwind(S, z), n)

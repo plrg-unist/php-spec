@@ -1,0 +1,149 @@
+{
+  "scope": "Genuine nonempty readonly clone-with update originals; separate cuts and exclusions are recorded in readonly-clone-updates-review.json",
+  "cases": [
+    {
+      "id": "readonly-clone-with-public-set-relocks",
+      "source": "<?php\ndeclare(strict_types=1);\nclass Owner {\n    public public(set) readonly int $x; public public(set) readonly int $y;\n    public function __construct() { $this->x = 1; $this->y = 2; }\n}\n$o = new Owner(); $copy = clone($o, ['x' => '3']);\necho $o->x, '/', $copy->x, '/', $copy->x === 3 ? 'int|' : 'wrong|';\ntry { $copy->y = 4; } catch (Error $e) { echo $e->getMessage(), '|'; }\necho $copy->y;\n",
+      "source_sha256": "a0e0e7ceed422f3b90c155dc6f3b1a2eef56b632d04a1992babeb00d7642016a",
+      "kind": "normal",
+      "expected_stdout": "1/3/int|Cannot modify readonly property Owner::$y|2",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-set-scope",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function copied() { return clone($this, ['x' => 2]); }\n}\n$o = new Owner();\ntry { $denied = clone($o, ['x' => 2]); } catch (Error $e) { echo $e->getMessage(), '|'; }\n$copy = $o->copied(); echo $o->x, '/', $copy->x;\n",
+      "source_sha256": "753f4e5737ab170b59a145b4a5b2c83e57ba579559bcb20344b5a879e94ffa13",
+      "kind": "normal",
+      "expected_stdout": "Cannot modify protected(set) readonly property Owner::$x from global scope|1/2",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-second-window",
+      "source": "<?php\nclass Owner {\n    public public(set) readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone() { $this->x = 2; echo 'C|', $this->x, '|'; }\n}\n$o = new Owner(); $copy = clone($o, ['x' => 3]);\necho $o->x, '/', $copy->x, '|';\ntry { $copy->x = 4; } catch (Error $e) { echo $e->getMessage(); }\n",
+      "source_sha256": "1a68aafcf1f1f3839d3cf00c15ba74ca3e9fb9a7605a041cc76b4fd77b090b4f",
+      "kind": "normal",
+      "expected_stdout": "C|2|1/3|Cannot modify readonly property Owner::$x",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-abrupt-relocks-unused",
+      "source": "<?php\nclass Owner {\n    public public(set) readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone() { $GLOBALS['leaked'] = $this; }\n    public function put() { $this->x = 2; }\n}\n$o = new Owner();\ntry { $copy = clone($o, ['x' => 'bad']); } catch (TypeError $e) { echo $e->getMessage(), '|'; }\ntry { $leaked->put(); } catch (Error $e) { echo $e->getMessage(), '|'; }\necho $o->x, '/', $leaked->x, '/', isset($copy) ? 'bound' : 'gone';\n",
+      "source_sha256": "345bc662e842c769e83633a57d2c043cfac14771f10554fa06eb02f66f7f6fda",
+      "kind": "normal",
+      "expected_stdout": "Cannot assign string to property Owner::$x of type int|Cannot modify readonly property Owner::$x|1/1/gone",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-abrupt-retains-prefix",
+      "source": "<?php\nclass Owner {\n    public public(set) readonly int $x; public public(set) readonly int $y;\n    public function __construct() { $this->x = 1; $this->y = 3; }\n    public function __clone() { $GLOBALS['leaked'] = $this; }\n    public function put() { $this->y = 4; }\n}\n$o = new Owner();\ntry { $copy = clone($o, ['x' => 2, 'y' => 'bad']); }\ncatch (TypeError $e) { echo $e->getMessage(), '|'; }\ntry { $leaked->put(); } catch (Error $e) { echo $e->getMessage(), '|'; }\necho $o->x, '/', $o->y, '/', $leaked->x, '/', $leaked->y, '/', isset($copy) ? 'bound' : 'gone';\n",
+      "source_sha256": "a7266ec26df6738b9a607e858ba88743b2646fd575d3d889cd4711951fb0d9c3",
+      "kind": "normal",
+      "expected_stdout": "Cannot assign string to property Owner::$y of type int|Cannot modify readonly property Owner::$y|1/3/2/3/gone",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-state-clone-with-update-window",
+      "source": "<?php\ndeclare(strict_types=1);\nclass Owner {\n    public public(set) readonly int $x;\n    public public(set) readonly int $y;\n    public public(set) readonly int $z;\n    public function __construct() { $this->x = 1; $this->y = 3; $this->z = 5; }\n    public function __clone() { $this->z = 6; echo 'C|', $this->z, '|'; }\n}\n$original = new Owner(); $other = new Owner();\n$copy = clone($original, ['x' => '2', 'y' => '4']);\necho $original->x, '/', $original->y, '/', $original->z, '/',\n     $copy->x, '/', $copy->y, '/', $copy->z, '/',\n     $other->x, '/', $other->y, '/', $other->z, '|';\ntry { $copy->z = 7; } catch (Error $e) { echo $e->getMessage(); }\n",
+      "source_sha256": "2d5a0c4d6be7ed1c43f18826d88ea68760d01a935c5c0decf762388ad50fce98",
+      "kind": "normal",
+      "expected_stdout": "C|6|1/3/5/2/4/6/1/3/5|Cannot modify readonly property Owner::$z",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-stringable-saved-set-scope",
+      "source": "<?php\ndeclare(strict_types=1);\nclass Owner {\n    public readonly string $x;\n    public function __construct() { $this->x = 'seed'; }\n    public function __clone() { $GLOBALS['escaped'] = $this; }\n    public function copied() { return clone($this, ['x' => new Box()]); }\n}\nclass Box {\n    public function __toString(): string {\n        echo 'T|';\n        try { $GLOBALS['escaped']->x = 'inner'; }\n        catch (Error $e) { echo $e->getMessage(), '|'; }\n        return 'outer';\n    }\n}\n$original = new Owner(); $copy = $original->copied();\necho $original->x, '/', $copy->x;\n",
+      "source_sha256": "7be63ba4920343e82ed1d307bc225ff0f2aa99ab23abd67ac05d343b27c9dc28",
+      "kind": "normal",
+      "expected_stdout": "T|Cannot modify protected(set) readonly property Owner::$x from scope Box|seed/outer",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-stringable-inner-consumes-window",
+      "source": "<?php\ndeclare(strict_types=1);\nclass Owner {\n    public readonly string $x;\n    public function __construct() { $this->x = 'seed'; }\n    public function __clone() { $GLOBALS['escaped'] = $this; }\n    public function copied() { return clone($this, ['x' => new Box()]); }\n    public function put(string $value) { $this->x = $value; }\n}\nclass Box {\n    public function __toString(): string {\n        echo 'T|';\n        $GLOBALS['escaped']->put('inner');\n        try { $GLOBALS['escaped']->put('twice'); }\n        catch (Error $e) {\n            $trace = $e->getTrace();\n            echo $e->getMessage(), '|', $trace[0]['function'], '/',\n                 $trace[1]['function'], '/', $trace[2]['function'], '|';\n        }\n        return 'outer';\n    }\n}\n$original = new Owner(); $copy = $original->copied();\necho $original->x, '/', $copy->x;\n",
+      "source_sha256": "0caac79bbf9e080527ff1ff1c3836a30d97cd5a07aa32fd0e7ccefd11128e828",
+      "kind": "normal",
+      "expected_stdout": "T|Cannot modify readonly property Owner::$x|put/__toString/clone|seed/outer",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-stringable-fiber-window",
+      "source": "<?php\ndeclare(strict_types=1);\nclass Owner {\n    public readonly string $x;\n    public function __construct() { $this->x = 'seed'; }\n    public function __clone() { $GLOBALS['escaped'] = $this; }\n    public function copied() { return clone($this, ['x' => new Box()]); }\n    public function put(string $value) { $this->x = $value; }\n}\nclass Box {\n    public function __toString(): string {\n        echo 'T|';\n        Fiber::suspend('pause');\n        return 'outer';\n    }\n}\n$original = new Owner();\n$fiber = new Fiber(function () use ($original) {\n    $copy = $original->copied(); echo $copy->x;\n});\necho $fiber->start(), '|';\n$escaped->put('inner'); echo $escaped->x, '|';\n$fiber->resume();\ntry { $escaped->put('late'); } catch (Error $e) { echo '|', $e->getMessage(); }\n",
+      "source_sha256": "a4ef1f720fd282e554b70a0b528a403321ba93dd832a2c5cbc25696e327a4e46",
+      "kind": "normal",
+      "expected_stdout": "T|pause|inner|outer|Cannot modify readonly property Owner::$x",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-mutable-visit-unset",
+      "source": "<?php\ndeclare(strict_types=1);\nclass Owner {\n    public readonly string $x;\n    public string $mutable = 'seed';\n    public function __construct() { $this->x = 'seed'; }\n    public function __clone() { $GLOBALS['escaped'] = $this; }\n    public function copied() {\n        return clone($this, ['mutable' => 'changed', 'x' => new Box()]);\n    }\n}\nclass Box {\n    public function __toString(): string {\n        echo 'T|';\n        unset($GLOBALS['escaped']->mutable);\n        return 'outer';\n    }\n}\n$original = new Owner(); $copy = $original->copied();\necho $original->mutable, '/', $copy->x, '/', isset($copy->mutable) ? 'present' : 'gone';\n",
+      "source_sha256": "031190f403cb14b98a35ceec41a6d4241edacc724dece79679deeae1fff10732",
+      "kind": "normal",
+      "expected_stdout": "T|seed/outer/gone",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-inherited-stringable-throw-relocks",
+      "source": "<?php\ndeclare(strict_types=1);\nclass Owner {\n    public readonly string $x;\n    public readonly int $y;\n    public function __construct() { $this->x = 'seed'; $this->y = 1; }\n    public function __clone() { $GLOBALS['escaped'] = $this; }\n    public function copied() { return clone($this, ['y' => 2, 'x' => new Box()]); }\n    public function putX(string $value) { $this->x = $value; }\n    public function putY(int $value) { $this->y = $value; }\n}\nclass BaseBox {\n    public function __toString(): string { echo 'T|'; throw new Exception('stop'); }\n}\nclass Box extends BaseBox {}\n$original = new Owner();\ntry { $copy = $original->copied(); }\ncatch (Exception $e) {\n    $trace = $e->getTrace();\n    echo $e->getMessage(), '|', $trace[0]['class'], '/',\n         $trace[0]['function'], '/', $trace[1]['function'], '|';\n}\ntry { $escaped->putX('late'); } catch (Error $e) { echo $e->getMessage(), '|'; }\ntry { $escaped->putY(3); } catch (Error $e) { echo $e->getMessage(), '|'; }\necho $original->y, '/', $escaped->y, '/', $escaped->x, '/', isset($copy) ? 'bound' : 'gone';\n",
+      "source_sha256": "c0ad434a4b0446c19213b156303ebc50f46a701f8c34c015aba704ce6e552626",
+      "kind": "normal",
+      "expected_stdout": "T|stop|BaseBox/__toString/clone|Cannot modify readonly property Owner::$x|Cannot modify readonly property Owner::$y|1/2/seed/gone",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-core-reference-identity",
+      "source": "<?php\ndeclare(strict_types=1);\nclass Owner {\n    public public(set) readonly int $x;\n    public function __construct() { $this->x = 1; }\n}\n$original = new Owner();\n$value = '2'; $updates = ['x' => &$value];\ntry { $copy = clone($original, $updates); }\ncatch (Error $e) {\n    $trace = $e->getTrace();\n    echo $e->getMessage(), '|', $trace[0]['function'], '|';\n}\nunset($value);\n$copy = clone($original, $updates);\necho $original->x, '/', $copy->x, '/', ($copy->x === 2 ? 'int' : 'other');\n",
+      "source_sha256": "c81182590f06f305ed7faceaf6072cf0a57044ad0df0f32b3b408af966bdebac",
+      "kind": "normal",
+      "expected_stdout": "Cannot assign by reference when cloning with updated properties|clone|1/2/int",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-mutable-stringable-alias-failure",
+      "source": "<?php\nclass Owner {\n    public readonly int $z;\n    public string|int $x = 1;\n    public int $y = 1;\n    public function __construct() { $this->z = 1; $this->x =& $this->y; }\n    public function __clone() { $GLOBALS['escaped'] = $this; }\n    public function copied() { return clone($this, ['x' => new Box()]); }\n}\nclass Box {\n    public function __toString(): string { echo 'T|'; return 'outer'; }\n}\n$original = new Owner();\ntry { $copy = $original->copied(); }\ncatch (TypeError $e) { $trace = $e->getTrace(); echo $e->getMessage(), '|', $trace[0]['function'], '|'; }\necho $original->x, '/', $escaped->x, '/', $escaped->y, '/', isset($copy) ? 'bound' : 'gone';\n",
+      "source_sha256": "93a46c08ea27b6f62f8f01f804a284b73314cc182f45ce9f3685271787be0c62",
+      "kind": "normal",
+      "expected_stdout": "T|Cannot assign string to reference held by property Owner::$y of type int|clone|1/1/1/gone",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-mutable-stringable-alias-this",
+      "source": "<?php\nclass Owner {\n    public readonly int $z;\n    public string|int $x = 1;\n    public int $y = 1;\n    public function __construct() { $this->z = 1; $this->x =& $this->y; }\n    public function __clone() { $GLOBALS['escaped'] = $this; }\n    public function copied() { return clone($this, ['x' => new Box()]); }\n}\nclass Box {\n    public function __toString(): string { echo 'T|'; return 'outer'; }\n}\n$other = new Owner(); $original = new Owner();\ntry { $copy = $original->copied(); }\ncatch (TypeError $e) { $trace = $e->getTrace(); echo $e->getMessage(), '|', $trace[0]['function'], '|'; }\necho $original->x, '/', $escaped->x, '/', $escaped->y, '/', isset($copy) ? 'bound' : 'gone';\n",
+      "source_sha256": "18850484f083c0509780bdc53e70a0679e60d7c618f827529bdb11cf574c4cf6",
+      "kind": "normal",
+      "expected_stdout": "T|Cannot assign string to reference held by property Owner::$y of type int|clone|1/1/1/gone",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-named-mutable-stringable-alias-this",
+      "source": "<?php\nclass Owner {\n    public readonly int $z;\n    public string|int $x = 1;\n    public int $y = 1;\n    public function __construct() { $this->z = 1; $this->x =& $this->y; }\n    public function __clone() { $GLOBALS['escaped'] = $this; }\n    public function copied() { return clone(withProperties: ['x' => new Box()], object: $this); }\n}\nclass Box {\n    public function __toString(): string { echo 'T|'; return 'outer'; }\n}\n$other = new Owner(); $original = new Owner();\ntry { $copy = $original->copied(); }\ncatch (TypeError $e) { $trace = $e->getTrace(); echo $e->getMessage(), '|', $trace[0]['function'], '|'; }\necho $original->x, '/', $escaped->x, '/', $escaped->y, '/', isset($copy) ? 'bound' : 'gone';\n",
+      "source_sha256": "f1e3c712dbee06aed0754ec7d90579a610f15e16d9b0acb4901a741e96b7e4b5",
+      "kind": "normal",
+      "expected_stdout": "T|Cannot assign string to reference held by property Owner::$y of type int|clone|1/1/1/gone",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    },
+    {
+      "id": "readonly-clone-with-parked-prior-write-changes-receipt",
+      "source": "<?php\nclass Owner {\n    public readonly string $x;\n    public readonly string $y;\n    public function __construct() { $this->x = 'seed'; $this->y = 'seed-y'; }\n    public function __clone() {\n        $GLOBALS['escaped'] = $this;\n        $GLOBALS['pending'] = new Fiber(static function () { $GLOBALS['escaped']->delayed(); });\n        $GLOBALS['pending']->start();\n    }\n    public function delayed() { $this->x = new PendingX(); }\n    public function copied() { return clone($this, ['x' => 'first', 'y' => new BoxY()]); }\n}\nclass PendingX {\n    public function __toString(): string { echo 'P|'; Fiber::suspend(); return 'late'; }\n}\nclass BoxY {\n    public function __toString(): string { echo 'Y|'; $GLOBALS['pending']->resume(); return 'done'; }\n}\n$original = new Owner();\n$copy = $original->copied();\necho $original->x, '/', $copy->x, '/', $copy->y;\n",
+      "source_sha256": "ee7b59f06cc62705f14401739e9cd25351ae1f302ee96bc4a315aa70a21d8976",
+      "kind": "normal",
+      "expected_stdout": "P|Y|seed/late/done",
+      "expected_stderr": "",
+      "expected_exit_status": 0
+    }
+  ]
+}

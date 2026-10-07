@@ -6,7 +6,8 @@ sources agree; nine reached cuts pass 344 physical premises. Five Unsupported
 controls earn zero agreement. The [ledger](../../coverage/semantics/weak-reference-review.json)
 keeps their separate tested snapshots. Canonical292/304/270 composition separately
 passes strict277 initialization and one exact returned-object weak lifetime source;
-cyclic collection and WeakMap remain required lifecycle work.
+bounded ordinary cyclic collection is covered separately by
+[module301](CYCLE-COLLECTION.md). Wider collection and WeakMap remain required.
 
 A successful wrapper records an immutable semantic object ID. The target adds
 no ownership edge. `create` returns the same allocated wrapper for a target,

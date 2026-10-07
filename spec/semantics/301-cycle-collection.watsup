@@ -1,0 +1,796 @@
+;; Zend/zend_gc.c: potential roots are a slot buffer, not allocation order.
+;; Collection plans and snapshots are borrowed. Only the current destructor's
+;; extra collector ADDREF and a pending Throwable are real continuation owners.
+dec $gc_nodes(pgcslot*) : pnode*
+dec $gc_physical_nodes(pgcslot*) : pnode*
+dec $gc_slot_set(pgcslot*, nat, pgcslot) : pgcslot*
+dec $gc_slot_find(pgcslot*, pnode, nat) : nat?
+dec $gc_retired_find(pgcslot*, nat, nat) : nat?
+dec $gc_buffer_add(pgc, pnode) : pgc
+dec $gc_buffer_remove(pgc, pnode) : pgc
+dec $gc_buffer_remove_nodes(pgc, pnode*) : pgc
+dec $gc_buffer_drop(pgc, pnode) : pgc
+dec $gc_buffer_drop_nodes(pgc, pnode*) : pgc
+dec $gc_buffer_retire(pgc, nat) : pgc
+dec $gc_buffer_add_nodes(pgc, pnode*) : pgc
+dec $gc_compact_slots(pgcslot*) : pgcslot*
+dec $gc_compact_tail(pgcslot*) : pgcslot*
+dec $gc_slot_reverse(pgcslot*) : pgcslot*
+dec $gc_compact_back(pgcslot*) : pgcslot*
+dec $gc_compact(pgc) : pgc
+dec $gc_proxy(pstate, nat) : bool
+dec $gc_proxy_tables(pobjecttable*, pnode*, nat) : bool
+dec $gc_ordinary_node(pstate, pnode) : bool
+dec $gc_ordinary_nodes(pstate, pnode*) : bool
+dec $gc_decrement(pstate, pgc, pnode) : pgc
+dec $gc_decrements(pstate, pgc, pnode*) : pgc
+dec $gc_same_location(pstate, pstate) : pnode*
+dec $gc_same_property(pstate, pstate, nat, ptbytes) : pnode*
+dec $gc_visit(hgraph, pnode*, pnode*, pnode*) : pnode*
+dec $gc_visit_children(pnode*) : pnode*
+dec $gc_reverse(pnode*) : pnode*
+dec $gc_white(hgraph, pnode*) : pnode*
+dec $gc_collectable(pstate, pnode*, pnode*) : pnode*
+dec $gc_uncalled(pstate, pnode*) : pnode*
+dec $gc_plan(pstate, pgccall) : pgcplan
+dec $gc_call_scope(pstate, pgccall) : pstate
+dec $gc_call_live(pstate, pgccall) : bool
+dec $gc_trace_valid(pstate, pgccall) : bool
+dec $gc_return_valid(pstate, pgcplan, nat) : bool
+dec $gc_scope_valid(pstate, pgccall) : bool
+dec $gc_plan_live(pstate, pgcplan) : bool
+dec $gc_plan_valid(pstate, pgcplan) : bool
+dec $gc_done_prefix(pstate, pgcplan) : bool
+dec $gc_active_valid(pstate) : bool
+dec $gc_buffer_valid(pstate, pgc) : bool
+dec $gc_slots_valid(pstate, pgcslot*, nat*, nat) : bool
+dec $gc_buffer_unique(pgcslot*) : bool
+dec $gc_retired_valid(pstate, nat) : bool
+dec $gc_handle_jobs(pdestructionjob*, nat) : nat
+dec $gc_handle_task(pstate, ptask, nat) : nat
+dec $gc_handle_tasks(pstate, ptask*, nat) : nat
+dec $gc_handle_frames(pstate, pframe*, nat) : nat
+dec $gc_handle_vm(pstate, pfibervm, nat?, nat) : nat
+dec $gc_handle_fiber(pstate, pnode, nat) : nat
+dec $gc_handle_fibers(pstate, pnode*, nat) : nat
+dec $gc_handle_callers(pstate, pfibercaller*, nat) : nat
+dec $gc_handle_closers(pstate, pfiberclose*, nat) : nat
+dec $gc_handle_all(pstate, nat) : nat
+dec $gc_begin(pstate, pconfigcall) : pstate
+dec $gc_receive(pstate, pconfigcall) : pstate
+dec $gc_simple_done(pstate, pvalue) : pstate
+dec $gc_replace(pstate, pgcplan, ptask) : pstate
+dec $gc_trace(pstate, pgccall) : pstate
+dec $gc_dtor_begin(pstate, pgcplan, nat) : pstate
+dec $gc_dtor_done(pstate, pgcplan, nat) : pstate
+dec $gc_free(pstate, pgcplan) : pstate
+dec $gc_finish(pstate, pgccall) : pstate
+dec $gc_pending_tasks(ptask*, pgcplan, pgcplan) : ptask*
+dec $gc_dtor_anchor(pstate, pdestructorcall) : (pgcplan, nat)?
+dec $gc_dtor_anchor_tasks(ptask*, nat) : (pgcplan, nat)?
+dec $gc_dtor_anchor_frames(pframe*, nat) : (pgcplan, nat)?
+dec $gc_keep(pstate) : pnode*
+dec $gc_retained(hgraph, pnode*, pnode*) : pnode*
+dec $gc_prune_graph(hgraph, pnode*) : hgraph
+dec $gc_release_walk(pstate, hgraph, pdestructionjob*, pnode*) : pnode*
+dec $gc_nested_boundary(pstate, pgcplan) : bool
+dec $gc_proxy_edges(pobjecttable*, pnode*) : hedge*
+dec $gc_proxy_edges_valid(hgraph, hedge*) : bool
+dec $gc_root_visits(pnode*) : pgcvisit*
+dec $gc_child_visits(pnode, pnode*, hedge*) : pgcvisit*
+dec $gc_visit_reverse(pgcvisit*) : pgcvisit*
+dec $gc_visit_order(pgcvisit*) : pgcvisit*
+dec $gc_walk(hgraph, hedge*, pgcvisit*, pnode*, pnode*, pnode*) : (pnode*, pnode*)
+dec $gc_count_visit(pnode, bool) : pnode*
+dec $gc_free_order(pgcplan, pnode*) : pnode*
+dec $gc_called_subset(nat*, nat*) : bool
+dec $gc_uncalled_snapshot(pstate, pnode*, nat*) : pnode*
+dec $gc_steps_valid(pstate, pnode*, pgcprogress*) : bool
+dec $gc_step_done(pgcprogress*) : pnode*
+dec $gc_tables_valid(pstate, pobjecttable*, pnode*) : bool
+dec $gc_snapshot_valid(pstate, pgcplan) : bool
+dec $gc_fresh_tasks(ptask*, pgcplan) : bool
+dec $gc_consumer_count(ptask*, pgccall) : nat
+dec $gc_task_consumer(ptask, pgccall) : nat
+dec $gc_consumer_frame_count(pframe*, pgccall) : nat
+dec $gc_plan_consumer_count(ptask*, pgcplan) : nat
+dec $gc_task_plan_consumer(ptask, pgcplan) : nat
+dec $gc_plan_frame_count(pframe*, pgcplan) : nat
+dec $gc_literal_empty_constant(pstate, nat, pconstant, nat) : bool
+dec $gc_literal_empty_constants(pstate, nat, pconstant*, nat) : bool
+dec $gc_literal_empty_pools(pstate, ppool*, nat) : bool
+dec $gc_immutable_array(pstate, nat) : bool
+dec $gc_possible_root(pstate, pnode) : bool
+dec $gc_immutable_flag_valid(pstate, nat) : bool
+dec $gc_immutable_flags_valid(pstate, nat*) : bool
+dec $gc_graph_node(pstate, pnode) : bool
+dec $gc_graph_nodes(pstate, pnode*) : pnode*
+dec $gc_graph(pstate) : hgraph
+dec $gc_transition_done(pstate, pstate, pgc) : pstate
+dec $gc_terminal_park(pstate, pgcplan) : bool
+
+def $gc_kind(pintrinsic) = (pintrinsic <- [INTRINSIC_GC_COLLECT, INTRINSIC_GC_ENABLE, INTRINSIC_GC_DISABLE, INTRINSIC_GC_ENABLED])
+def $intrinsic_name(INTRINSIC_GC_COLLECT) = $ptascii("gc_collect_cycles")
+def $intrinsic_name(INTRINSIC_GC_ENABLE) = $ptascii("gc_enable")
+def $intrinsic_name(INTRINSIC_GC_DISABLE) = $ptascii("gc_disable")
+def $intrinsic_name(INTRINSIC_GC_ENABLED) = $ptascii("gc_enabled")
+def $intrinsic_named(ptbytes) = (INTRINSIC_GC_COLLECT) -- if $ptlc(ptbytes) = $ptascii("gc_collect_cycles")
+def $intrinsic_named(ptbytes) = (INTRINSIC_GC_ENABLE) -- if $ptlc(ptbytes) = $ptascii("gc_enable")
+def $intrinsic_named(ptbytes) = (INTRINSIC_GC_DISABLE) -- if $ptlc(ptbytes) = $ptascii("gc_disable")
+def $intrinsic_named(ptbytes) = (INTRINSIC_GC_ENABLED) -- if $ptlc(ptbytes) = $ptascii("gc_enabled")
+def $config_kind(pintrinsic) = true -- if $gc_kind(pintrinsic)
+def $config_required(pintrinsic) = 0 -- if $gc_kind(pintrinsic)
+def $config_receive(S, pconfigcall) = $gc_receive(S, pconfigcall)
+  -- if $gc_kind(pconfigcall.KIND) /\ pconfigcall.SENT = eps
+rule PhpStep/gc-config-invoke: S ~> $config_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
+  -- if $gc_kind(pconfigcall.KIND) /\ $config_invoke_valid(S, pconfigcall)
+
+def $gc_nodes(eps) = eps
+def $gc_nodes(GC_EMPTY :: pgcslot*) = $gc_nodes(pgcslot*)
+def $gc_nodes((GC_ROOT pnode) :: pgcslot*) = pnode :: $gc_nodes(pgcslot*)
+def $gc_nodes((GC_RETIRED n) :: pgcslot*) = $gc_nodes(pgcslot*)
+def $gc_physical_nodes(eps) = eps
+def $gc_physical_nodes(GC_EMPTY :: pgcslot*) = $gc_physical_nodes(pgcslot*)
+def $gc_physical_nodes((GC_ROOT pnode) :: pgcslot*) = pnode :: $gc_physical_nodes(pgcslot*)
+def $gc_physical_nodes((GC_RETIRED n) :: pgcslot*) = (HOBJECT n) :: $gc_physical_nodes(pgcslot*)
+def $gc_slot_set(pgcslot_old :: pgcslot_tail*, 0, pgcslot) = pgcslot :: pgcslot_tail*
+def $gc_slot_set(pgcslot_old :: pgcslot_tail*, n, pgcslot) = pgcslot_old :: $gc_slot_set(pgcslot_tail*, $nabs($(n - 1)), pgcslot) -- if $(n > 0)
+def $gc_slot_find(eps, pnode, n) = eps
+def $gc_slot_find((GC_ROOT pnode) :: pgcslot*, pnode, n) = (n)
+def $gc_slot_find(pgcslot :: pgcslot_tail*, pnode, n) = $gc_slot_find(pgcslot_tail*, pnode, $(n + 1)) -- if pgcslot =/= GC_ROOT pnode
+def $gc_retired_find(eps, n_object, n) = eps
+def $gc_retired_find((GC_RETIRED n_object) :: pgcslot*, n_object, n) = (n)
+def $gc_retired_find(pgcslot :: pgcslot_tail*, n_object, n) = $gc_retired_find(pgcslot_tail*, n_object, $(n + 1)) -- if pgcslot =/= GC_RETIRED n_object
+def $gc_buffer_add(pgc, pnode) = pgc -- if $gc_slot_find(pgc.BUFFER, pnode, 0) =/= eps
+def $gc_buffer_add(pgc, pnode) = pgc[.BUFFER = $gc_slot_set(pgc.BUFFER, n, GC_ROOT pnode)][.FREE = nat*]
+  -- if $gc_slot_find(pgc.BUFFER, pnode, 0) = eps
+  -- if pgc.FREE = n :: nat*
+def $gc_buffer_add(pgc, pnode) = pgc[.BUFFER = pgc.BUFFER ++ [GC_ROOT pnode]]
+  -- if $gc_slot_find(pgc.BUFFER, pnode, 0) = eps /\ pgc.FREE = eps
+def $gc_buffer_remove(pgc, pnode) = pgc[.BUFFER = $gc_slot_set(pgc.BUFFER, n, GC_EMPTY)][.FREE = n :: pgc.FREE]
+  -- if $gc_slot_find(pgc.BUFFER, pnode, 0) = (n)
+def $gc_buffer_remove(pgc, pnode) = pgc -- if $gc_slot_find(pgc.BUFFER, pnode, 0) = eps
+def $gc_buffer_remove_nodes(pgc, eps) = pgc
+def $gc_buffer_remove_nodes(pgc, pnode :: pnode_tail*) = $gc_buffer_remove_nodes($gc_buffer_remove(pgc, pnode), pnode_tail*)
+def $gc_buffer_drop(pgc, HOBJECT n_object) = $gc_buffer_remove(pgc[.BUFFER = $gc_slot_set(pgc.BUFFER, n, GC_EMPTY)][.FREE = n :: pgc.FREE], HOBJECT n_object)
+  -- if $gc_retired_find(pgc.BUFFER, n_object, 0) = (n)
+def $gc_buffer_drop(pgc, pnode) = $gc_buffer_remove(pgc, pnode) -- otherwise
+def $gc_buffer_drop_nodes(pgc, eps) = pgc
+def $gc_buffer_drop_nodes(pgc, pnode :: pnode_tail*) = $gc_buffer_drop_nodes($gc_buffer_drop(pgc, pnode), pnode_tail*)
+def $gc_buffer_retire(pgc, n_object) = pgc[.BUFFER = $gc_slot_set(pgc.BUFFER, n, GC_RETIRED n_object)]
+  -- if $gc_slot_find(pgc.BUFFER, HOBJECT n_object, 0) = (n)
+def $gc_buffer_retire(pgc, n_object) = pgc -- otherwise
+def $gc_buffer_add_nodes(pgc, eps) = pgc
+def $gc_buffer_add_nodes(pgc, pnode :: pnode_tail*) = $gc_buffer_add_nodes($gc_buffer_add(pgc, pnode), pnode_tail*)
+def $gc_store_drop(S, pnode) = S[.GC = $gc_buffer_drop(S.GC, pnode)]
+;; free_obj logically retires the object before its child decrements. Its
+;; physical buffer slot stays occupied until the trailing store HANDLE release.
+def $gc_store_retire(S, HOBJECT n) = S[.GC = $gc_buffer_retire(S.GC, n)]
+def $gc_prune_buffer(S, pnode_live*) = $gc_buffer_remove_nodes(S.GC, $destruction_nodes_delete(S.ALLOCATIONS, pnode_live*))
+;; zend_gc.c backfills a front hole from the last live slot. It is not a stable
+;; filter; FREE is then reset and the high-water index shrinks to the live count.
+def $gc_compact_slots(eps) = eps
+def $gc_compact_slots((GC_ROOT pnode) :: pgcslot*) = (GC_ROOT pnode) :: $gc_compact_slots(pgcslot*)
+def $gc_compact_slots((GC_RETIRED n) :: pgcslot*) = (GC_RETIRED n) :: $gc_compact_slots(pgcslot*)
+def $gc_compact_slots(GC_EMPTY :: pgcslot*) = $gc_compact_tail(pgcslot*)
+def $gc_slot_reverse(eps) = eps
+def $gc_slot_reverse(pgcslot :: pgcslot_tail*) = $gc_slot_reverse(pgcslot_tail*) ++ [pgcslot]
+def $gc_compact_tail(pgcslot*) = $gc_compact_back($gc_slot_reverse(pgcslot*))
+def $gc_compact_back(eps) = eps
+def $gc_compact_back(GC_EMPTY :: pgcslot*) = $gc_compact_back(pgcslot*)
+def $gc_compact_back((GC_ROOT pnode) :: pgcslot*) = (GC_ROOT pnode) :: $gc_compact_slots($gc_slot_reverse(pgcslot*))
+def $gc_compact_back((GC_RETIRED n) :: pgcslot*) = (GC_RETIRED n) :: $gc_compact_slots($gc_slot_reverse(pgcslot*))
+def $gc_compact(pgc) = pgc[.BUFFER = $gc_compact_slots(pgc.BUFFER)][.FREE = eps]
+
+;; Object property tables may be visited through the backing-storage path or
+;; as a genuine array root. Preserve that physical visit role when counting.
+def $gc_proxy_tables(eps, pnode*, n) = false
+def $gc_proxy_tables(pobjecttable :: pobjecttable_tail*, pnode*, n) = true
+  -- if pobjecttable.TABLE = n /\ (HOBJECT pobjecttable.OBJECT) <- pnode*
+def $gc_proxy_tables(pobjecttable :: pobjecttable_tail*, pnode*, n) = $gc_proxy_tables(pobjecttable_tail*, pnode*, n)
+  -- if pobjecttable.TABLE =/= n \/ ~((HOBJECT pobjecttable.OBJECT) <- pnode*)
+def $gc_proxy(S, n) = $gc_proxy_tables(S.OBJECTTABLES, S.ALLOCATIONS, n)
+;; A table visited through get_gc has no count; the identical physical array
+;; visited first as a buffered array root does. Snapshot the actual visit role.
+def $gc_proxy_edges(eps, pnode*) = eps
+def $gc_proxy_edges(pobjecttable :: pobjecttable_tail*, pnode*) = (HEDGE (HOBJECT pobjecttable.OBJECT) (HARRAY pobjecttable.TABLE)) :: $gc_proxy_edges(pobjecttable_tail*, pnode*)
+  -- if (HOBJECT pobjecttable.OBJECT) <- pnode*
+def $gc_proxy_edges(pobjecttable :: pobjecttable_tail*, pnode*) = $gc_proxy_edges(pobjecttable_tail*, pnode*)
+  -- if ~((HOBJECT pobjecttable.OBJECT) <- pnode*)
+def $gc_proxy_edges_valid(H, eps) = true
+def $gc_proxy_edges_valid(H, (HEDGE (HOBJECT n_object) (HARRAY n_array)) :: hedge*) = ((HEDGE (HOBJECT n_object) (HARRAY n_array)) <- H.EDGES /\ $gc_proxy_edges_valid(H, hedge*))
+def $gc_proxy_edges_valid(H, hedge*) = false -- otherwise
+def $gc_root_visits(eps) = eps
+def $gc_root_visits(pnode :: pnode_tail*) = (GC_VISIT pnode true) :: $gc_root_visits(pnode_tail*)
+def $gc_child_visits(pnode_parent, eps, hedge_proxy*) = eps
+def $gc_child_visits(pnode_parent, pnode :: pnode_tail*, hedge_proxy*) = (GC_VISIT pnode (~((HEDGE pnode_parent pnode) <- hedge_proxy*))) :: $gc_child_visits(pnode_parent, pnode_tail*, hedge_proxy*)
+def $gc_visit_reverse(eps) = eps
+def $gc_visit_reverse(pgcvisit :: pgcvisit_tail*) = $gc_visit_reverse(pgcvisit_tail*) ++ [pgcvisit]
+def $gc_visit_order(eps) = eps
+def $gc_visit_order(pgcvisit :: pgcvisit_tail*) = pgcvisit :: $gc_visit_reverse(pgcvisit_tail*)
+def $gc_count_visit(HCELL n, b) = eps
+def $gc_count_visit(HOBJECT n, false) = eps
+def $gc_count_visit(HARRAY n, false) = eps
+def $gc_count_visit(HOBJECT n, true) = [HOBJECT n]
+def $gc_count_visit(HARRAY n, true) = [HARRAY n]
+def $gc_walk(H, hedge_proxy*, eps, pnode_white*, pnode_seen*, pnode_counted*) = (pnode_seen*, pnode_counted*)
+def $gc_walk(H, hedge_proxy*, (GC_VISIT pnode b) :: pgcvisit*, pnode_white*, pnode_seen*, pnode_counted*) = $gc_walk(H, hedge_proxy*, pgcvisit*, pnode_white*, pnode_seen*, pnode_counted*)
+  -- if ~(pnode <- pnode_white*) \/ pnode <- pnode_seen*
+def $gc_walk(H, hedge_proxy*, (GC_VISIT pnode b) :: pgcvisit*, pnode_white*, pnode_seen*, pnode_counted*) = $gc_walk(H, hedge_proxy*, $gc_visit_order($gc_child_visits(pnode, $heap_children(pnode, H.EDGES), hedge_proxy*)) ++ pgcvisit*, pnode_white*, pnode_seen* ++ [pnode], pnode_counted* ++ $gc_count_visit(pnode, b))
+  -- if pnode <- pnode_white* /\ ~(pnode <- pnode_seen*)
+def $gc_free_order(pgcplan, pnode_live*) = $heap_intersect(pgcplan.CANDIDATES, pnode_free*) ++ $destruction_nodes_delete(pnode_free*, pgcplan.CANDIDATES)
+  -- if pnode_free* = $heap_intersect(pgcplan.FREESET, pnode_live*)
+def $gc_ordinary_node(S, HCELL n) = true
+def $gc_ordinary_node(S, HARRAY n) = true
+def $gc_ordinary_node(S, HOBJECT n) = true
+  -- if S.OBJECTS[n] = STDINSTANCE \/ $weakref_object(S.OBJECTS[n])
+def $gc_ordinary_node(S, HOBJECT n) = true -- if S.OBJECTS[n] = INSTANCE porigin
+def $gc_ordinary_node(S, pnode) = false -- otherwise
+def $gc_ordinary_nodes(S, eps) = true
+def $gc_ordinary_nodes(S, pnode :: pnode_tail*) = ($gc_ordinary_node(S, pnode) /\ $gc_ordinary_nodes(S, pnode_tail*))
+
+;; zend_try_ct_eval_array uses zend_empty_array only for an empty literal.
+;; Runtime null casts share that immutable empty value; real empty copies and
+;; compile-time cast tables retain their separate mutable allocation.
+;; Partial and redirected folded children retain their original pool facts.
+def $gc_literal_empty_constant(S, n_unit, PCONSTANT pcpath (PARRAY n), n) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprArray (SEQUENCE eps) metadata)
+def $gc_literal_empty_constant(S, n_unit, pconstant, n) = false -- otherwise
+def $gc_literal_empty_constants(S, n_unit, eps, n) = false
+def $gc_literal_empty_constants(S, n_unit, pconstant :: pconstant_tail*, n) = ($gc_literal_empty_constant(S, n_unit, pconstant, n) \/ $gc_literal_empty_constants(S, n_unit, pconstant_tail*, n))
+def $gc_literal_empty_pools(S, eps, n) = false
+def $gc_literal_empty_pools(S, ppool :: ppool_tail*, n) = ($gc_literal_empty_constants(S, ppool.UNIT, ppool.CONSTANTS, n) \/ $gc_literal_empty_pools(S, ppool_tail*, n))
+def $gc_immutable_array(S, n) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if S.ARRAYS[n] = $array_empty()
+  -- if n <- S.GC.IMMUTABLE \/ $gc_literal_empty_pools(S, S.POOLS, n)
+def $gc_immutable_array(S, n) = false -- otherwise
+def $gc_possible_root(S, HOBJECT n) = true -- if $(n < |S.OBJECTS|)
+def $gc_possible_root(S, HARRAY n) = (~$gc_immutable_array(S, n)) -- if $(n < |S.ARRAYS|)
+def $gc_possible_root(S, pnode) = false -- otherwise
+def $allocate_immutable_empty(S) = S_next[.GC.IMMUTABLE = S.GC.IMMUTABLE ++ [n]]
+  -- if S_next = $allocate_array(S, $array_empty())
+  -- if S_next.RESULT = KNOWN (PARRAY n)
+def $array_immutable(S, n) = $gc_immutable_array(S, n)
+def $gc_immutable_flag_valid(S, n) = true
+  -- if $(n < |S.ARRAYS|)
+  -- if S.ARRAYS[n] = $array_empty()
+def $gc_immutable_flag_valid(S, n) = false -- otherwise
+def $gc_immutable_flags_valid(S, eps) = true
+def $gc_immutable_flags_valid(S, n :: nat*) = ($gc_immutable_flag_valid(S, n) /\ $gc_immutable_flags_valid(S, nat*))
+;; Non-refcounted immutable table values are absent from Zend get_gc's graph.
+;; Their virtual logical containers remain in the ordinary ownership graph.
+def $gc_graph_node(S, HARRAY n) = (~$gc_immutable_array(S, n))
+def $gc_graph_node(S, pnode) = true -- otherwise
+def $gc_graph_nodes(S, eps) = eps
+def $gc_graph_nodes(S, pnode :: pnode_tail*) = pnode :: $gc_graph_nodes(S, pnode_tail*) -- if $gc_graph_node(S, pnode)
+def $gc_graph_nodes(S, pnode :: pnode_tail*) = $gc_graph_nodes(S, pnode_tail*) -- if ~$gc_graph_node(S, pnode)
+def $gc_graph(S) = H[.NODES = pnode*][.ROOTS = $heap_intersect(H.ROOTS, pnode*)][.EDGES = $heap_live_edges(H.EDGES, pnode*)]
+  -- if H = $heap_graph(S)
+  -- if pnode* = $gc_graph_nodes(S, H.NODES)
+
+;; A still-live reference decrement checks its referent, just like
+;; gc_check_possible_root. Plain CV cells expand only when their slot retires.
+def $gc_decrement(S, pgc, HCELL n) = $gc_decrements(S, pgc, $node_children(S, HCELL n))
+  -- if n <- S.REFCELLS \/ ~((HCELL n) <- S.ALLOCATIONS)
+def $gc_decrement(S, pgc, HCELL n) = pgc
+  -- if ~(n <- S.REFCELLS) /\ (HCELL n) <- S.ALLOCATIONS
+def $gc_decrement(S, pgc, pnode) = $gc_buffer_add(pgc, pnode)
+  -- if pnode <- S.ALLOCATIONS
+  -- if $gc_possible_root(S, pnode)
+def $gc_decrement(S, pgc, pnode) = pgc -- otherwise
+def $gc_decrements(S, pgc, eps) = pgc
+def $gc_decrements(S, pgc, pnode :: pnode_tail*) = $gc_decrements(S, $gc_decrement(S, pgc, pnode), pnode_tail*)
+def $gc_same_cell(S, S_next, n) = S_next[.GC = $gc_decrements(S_next, S_next.GC, $value_nodes(pvalue))]
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if S_next.STORE[n] = DEFINED pvalue
+def $gc_same_property(S, S_next, n, ptbytes) = $item_nodes(pitem)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_tail*)
+  -- if $objectprops_at(S_next.OBJECTPROPS, n) = (ppropertyslot_next_tail*)
+  -- if $property_slot_at(ppropertyslot_tail*, ptbytes) = (ppropertyslot)
+  -- if $property_slot_at(ppropertyslot_next_tail*, ptbytes) = (ppropertyslot_next)
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if ppropertyslot_next.STATE = PROP_VALUE pitem
+def $gc_same_property(S, S_next, n, ptbytes) = eps -- otherwise
+def $gc_same_location(S, S_next) = $gc_same_property(S, S_next, n, ptbytes)
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY (POBJECT n) ptbytes) z b) :: ptask*
+  -- if S_next.COMPLETION = NORMAL
+def $gc_same_location(S, S_next) = $item_nodes(pitem)
+  -- if S.TODO = (ASSIGN_ARRAY pbase z b) :: ptask*
+  -- if S_next.COMPLETION = NORMAL
+  -- if S_next.LOCATION = ELEMENT n pkey
+  -- if $(n < |S.ARRAYS|)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (pitem)
+  -- if $entry_lookup(S_next.ARRAYS[n].ITEMS, pkey) = (pitem)
+def $gc_same_location(S, S_next) = eps -- otherwise
+def $gc_transition_done(S, S_done, pgc_new) = S_done[.GC = pgc_new][.COMPLETION = UNSUPPORTED "automatic cycle collection threshold"]
+  -- if S_done.COMPLETION = NORMAL /\ pgc_new.ENABLED /\ pgc_new.ACTIVE = eps
+  -- if $(|pgc_new.BUFFER| > 10000) /\ $(|pgc_new.BUFFER| > |S.GC.BUFFER|)
+def $gc_transition_done(S, S_done, pgc_new) = S_done[.GC = pgc_new] -- otherwise
+;; FREE_OP(TMP/VAR) decrements its one consumed temporary without adding a
+;; possible root. The producer receipt is borrowed; the TEMP job is the owner.
+;; Outgoing child slots are always generated as ordinary VALUE jobs.
+syntax pgctemporarypair = (pdestructionoperation, pdestructionrelease)
+dec $gc_temporary_node(poperand) : pnode?
+dec $gc_temporary_source(pstate, porigin?) : bool
+dec $gc_temporary_expression(expression) : bool
+dec $gc_temporary_bounded(pstate, pnode) : bool
+dec $gc_temporary_jobs(pnode*, pnode) : pdestructionjob*
+dec $gc_temporary_nodes(pdestructionjob*) : pnode*
+dec $gc_temporary_tasks(ptask*) : pgctemporarypair*
+dec $gc_temporary_frames(pframe*) : pgctemporarypair*
+dec $gc_temporary_pairs(pstate) : pgctemporarypair*
+dec $gc_temporary_release(pgctemporarypair*, pdestructionoperation) : pdestructionrelease?
+dec $gc_temporary_operation(pgctemporarypair*, pdestructionrelease) : pdestructionoperation?
+dec $gc_temporary_pending(pdestructionrelease?, pgctemporary) : bool
+dec $gc_temporary_leaf_receipt(pstate, pdestructionoperation?, pnode) : bool
+dec $gc_temporary_metadata_valid(pstate, pdestructionoperation) : bool
+dec $gc_temporary_release_metadata_valid(pstate, pdestructionrelease) : bool
+dec $gc_consumed_decrements(pstate, pstate, pnode*) : pnode*
+
+def $gc_temporary_node(KNOWN (POBJECT n)) = (HOBJECT n)
+def $gc_temporary_node(KNOWN (PARRAY n)) = (HARRAY n)
+def $gc_temporary_node(poperand) = eps -- otherwise
+def $gc_temporary_expression(NExprVariable phpType32 metadata) = false
+def $gc_temporary_expression(expression) = true -- otherwise
+def $gc_temporary_source(S, (porigin)) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtExpression expression metadata)
+  -- if $gc_temporary_expression(expression)
+def $gc_temporary_source(S, porigin?) = false -- otherwise
+def $gc_temporary_bounded(S, HOBJECT n) = $(n < |S.OBJECTS|)
+def $gc_temporary_bounded(S, HARRAY n) = $(n < |S.ARRAYS|)
+def $gc_temporary_bounded(S, pnode) = false -- otherwise
+def $gc_operation_temporary(S, DISCARD, pnode_slots*) = ({OPERAND S.RESULT, PENDING true})
+  -- if $gc_temporary_source(S, S.ORIGIN)
+  -- if $gc_temporary_node(S.RESULT) = (pnode)
+  -- if pnode <- pnode_slots*
+def $gc_temporary_jobs(pnode :: pnode_tail*, pnode) = (DESTRUCTION_TEMP pnode) :: $destruction_values(pnode_tail*)
+def $gc_temporary_jobs(pnode_other :: pnode_tail*, pnode) = (DESTRUCTION_VALUE pnode_other) :: $gc_temporary_jobs(pnode_tail*, pnode)
+  -- if pnode_other =/= pnode
+def $gc_temporary_jobs(eps, pnode) = eps
+def $gc_operation_jobs(pdestructionoperation, pnode_slots*) = $gc_temporary_jobs(pnode_slots*, pnode)
+  -- if pdestructionoperation.NOGC = (pgctemporary)
+  -- if pgctemporary.PENDING
+  -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
+def $gc_temporary_nodes(eps) = eps
+def $gc_temporary_nodes((DESTRUCTION_TEMP pnode) :: pdestructionjob*) = pnode :: $gc_temporary_nodes(pdestructionjob*)
+def $gc_temporary_nodes((DESTRUCTION_VALUE pnode) :: pdestructionjob*) = $gc_temporary_nodes(pdestructionjob*)
+def $gc_temporary_nodes((DESTRUCTION_HANDLE n) :: pdestructionjob*) = $gc_temporary_nodes(pdestructionjob*)
+;; Only an adjacent release/EXIT pair records the producer. Frame views keep
+;; this same pair while an earlier release job runs a destructor body.
+def $gc_temporary_tasks(eps) = eps
+def $gc_temporary_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*) = (pdestructionoperation, pdestructionrelease) :: $gc_temporary_tasks(ptask*)
+def $gc_temporary_tasks(ptask*) = $gc_temporary_tasks(ptask*[1:$nabs($(|ptask*| - 1))]) -- otherwise
+def $gc_temporary_frames(eps) = eps
+def $gc_temporary_frames(pframe :: pframe_tail*) = $gc_temporary_tasks(pframe.TODO) ++ $gc_temporary_frames(pframe_tail*)
+def $gc_temporary_pairs(S) = $gc_temporary_tasks(S.TODO) ++ $gc_temporary_frames(S.FRAMES)
+def $gc_temporary_release(eps, pdestructionoperation) = eps
+def $gc_temporary_release((pdestructionoperation, pdestructionrelease) :: pgctemporarypair*, pdestructionoperation) = (pdestructionrelease)
+def $gc_temporary_release((pdestructionoperation_other, pdestructionrelease) :: pgctemporarypair*, pdestructionoperation) = $gc_temporary_release(pgctemporarypair*, pdestructionoperation)
+  -- if pdestructionoperation_other =/= pdestructionoperation
+def $gc_temporary_operation(eps, pdestructionrelease) = eps
+def $gc_temporary_operation((pdestructionoperation, pdestructionrelease) :: pgctemporarypair*, pdestructionrelease) = (pdestructionoperation)
+def $gc_temporary_operation((pdestructionoperation, pdestructionrelease_other) :: pgctemporarypair*, pdestructionrelease) = $gc_temporary_operation(pgctemporarypair*, pdestructionrelease)
+  -- if pdestructionrelease_other =/= pdestructionrelease
+def $gc_temporary_pending((pdestructionrelease), pgctemporary) = ($gc_temporary_nodes(pdestructionrelease.JOBS) = [pnode])
+  -- if pgctemporary.PENDING
+  -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
+def $gc_temporary_pending((pdestructionrelease), pgctemporary) = ($gc_temporary_nodes(pdestructionrelease.JOBS) = eps)
+  -- if ~pgctemporary.PENDING
+def $gc_temporary_pending(eps, pgctemporary) = ~pgctemporary.PENDING
+def $gc_temporary_pending(pdestructionrelease?, pgctemporary) = false -- otherwise
+;; Each extension has one shared otherwise default. The collector dispatches
+;; to its own total validator so a forged receipt returns false, not fallback.
+def $gc_operation_metadata_valid(S, pdestructionoperation) = $gc_temporary_metadata_valid(S, pdestructionoperation)
+def $gc_release_metadata_valid(S, pdestructionrelease) = $gc_temporary_release_metadata_valid(S, pdestructionrelease)
+;; The live receipt and saved original call head agree on type and target.
+;; Retired operand IDs remain bounded lookup evidence, never graph roots.
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.NOGC = (pgctemporary)
+  -- if pdestructionoperation.SOURCE = DISCARD /\ pdestructionoperation.CLEANUP = eps
+  -- if $gc_temporary_source(S, pdestructionoperation.ORIGIN)
+  -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
+  -- if $gc_temporary_bounded(S, pnode)
+  -- if $gc_temporary_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), pgctemporary)
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.NOGC = eps
+  -- if $gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation) = (pdestructionrelease)
+  -- if $gc_temporary_nodes(pdestructionrelease.JOBS) = eps
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.NOGC = eps
+  -- if $gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation) = eps
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = false -- otherwise
+def $gc_temporary_release_metadata_valid(S, pdestructionrelease) = $gc_operation_metadata_valid(S, pdestructionoperation)
+  -- if $gc_temporary_operation($gc_temporary_pairs(S), pdestructionrelease) = (pdestructionoperation)
+  -- if pdestructionoperation.CALLER = pdestructionrelease.CALLER /\ pdestructionoperation.ORIGIN = pdestructionrelease.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = pdestructionrelease.CONSTCONTEXT
+def $gc_temporary_release_metadata_valid(S, pdestructionrelease) = ($gc_temporary_nodes(pdestructionrelease.JOBS) = eps)
+  -- if $gc_temporary_operation($gc_temporary_pairs(S), pdestructionrelease) = eps
+def $gc_temporary_release_metadata_valid(S, pdestructionrelease) = false -- otherwise
+def $gc_temporary_leaf_receipt(S, (pdestructionoperation), pnode) = true
+  -- if pdestructionoperation.NOGC = (pgctemporary)
+  -- if ~pgctemporary.PENDING
+  -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
+  -- if $gc_operation_metadata_valid(S, pdestructionoperation)
+def $gc_temporary_leaf_receipt(S, pdestructionoperation?, pnode) = false -- otherwise
+def $gc_temporary_leaf_valid(S, pdestructorcall) = $gc_temporary_leaf_receipt(S, pdestructorcall.OPERATION, pnode)
+  -- if pdestructorcall.RELEASE = (pdestructionrelease)
+  -- if pdestructionrelease.JOBS = (DESTRUCTION_TEMP pnode) :: pdestructionjob*
+;; Flip the borrowed progress and actual EXIT together before destructor_select
+;; captures its OPERATION. The one TEMP owner is removed by the usual release.
+def $gc_release_consumed(S, pdestructionrelease_old) = S[.DESTRUCTION.OPERATIONS = pdestructionoperation_new :: pdestructionoperation_tail*][.TODO = $destructor_operation_tasks(S.TODO, pdestructionoperation, pdestructionoperation_new)]
+  -- if pdestructionrelease_old.JOBS = (DESTRUCTION_TEMP pnode) :: pdestructionjob*
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.NOGC = (pgctemporary)
+  -- if pgctemporary.PENDING /\ $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
+  -- if pdestructionoperation_new = pdestructionoperation[.NOGC = (pgctemporary[.PENDING = false])]
+def $gc_consumed_decrements(S, S_next, pnode_decrements*) = $destruction_node_delete(pnode_decrements*, pnode)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*
+  -- if pdestructionrelease.JOBS = (DESTRUCTION_TEMP pnode) :: pdestructionjob*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.NOGC = (pgctemporary)
+  -- if pgctemporary.PENDING /\ $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
+  -- if pdestructionoperation[.NOGC = (pgctemporary[.PENDING = false])] <- S_next.DESTRUCTION.OPERATIONS
+def $gc_consumed_decrements(S, S_next, pnode*) = pnode* -- otherwise
+
+def $gc_transition(S, S_next) = $gc_transition_done(S, S_done, pgc_new)
+  -- if S_done = $prune_allocations(S_next)
+  -- if pgc_live = $gc_buffer_remove_nodes(S_done.GC, $destruction_nodes_delete(S.ALLOCATIONS, S_done.ALLOCATIONS))
+  -- if pnode_removed* = $eager_removed($eager_owner_order(S), $machine_roots(S_done) ++ $eager_edge_nodes($heap_graph(S_done).EDGES))
+  -- if pgc_new = $gc_decrements(S_done, pgc_live, $gc_same_location(S, S_next) ++ $gc_consumed_decrements(S, S_done, pnode_removed*))
+
+def $gc_reverse(eps) = eps
+def $gc_reverse(pnode :: pnode_tail*) = $gc_reverse(pnode_tail*) ++ [pnode]
+def $gc_visit_children(eps) = eps
+def $gc_visit_children(pnode :: pnode_tail*) = pnode :: $gc_reverse(pnode_tail*)
+;; collect_white takes the first child as a tail call, stacking remaining
+;; children in source order. Pop order is consequently first, then reverse rest.
+def $gc_visit(H, eps, pnode_white*, pnode_seen*) = pnode_seen*
+def $gc_visit(H, pnode :: pnode_work*, pnode_white*, pnode_seen*) = $gc_visit(H, pnode_work*, pnode_white*, pnode_seen*)
+  -- if ~(pnode <- pnode_white*) \/ pnode <- pnode_seen*
+def $gc_visit(H, pnode :: pnode_work*, pnode_white*, pnode_seen*) = $gc_visit(H, $gc_visit_children($heap_children(pnode, H.EDGES)) ++ pnode_work*, pnode_white*, pnode_seen* ++ [pnode])
+  -- if pnode <- pnode_white* /\ ~(pnode <- pnode_seen*)
+def $gc_white(H, pnode_roots*) = $destruction_nodes_delete($heap_reach(pnode_roots*, eps, H.EDGES), $heap_reach(H.ROOTS, eps, H.EDGES))
+def $gc_collectable(S, eps, pnode_counted*) = eps
+def $gc_collectable(S, (HCELL n) :: pnode*, pnode_counted*) = $gc_collectable(S, pnode*, pnode_counted*)
+def $gc_collectable(S, (HARRAY n) :: pnode*, pnode_counted*) = $gc_collectable(S, pnode*, pnode_counted*)
+  -- if $gc_proxy(S, n) /\ ~((HARRAY n) <- pnode_counted*)
+def $gc_collectable(S, (HOBJECT n) :: pnode*, pnode_counted*) = (HOBJECT n) :: $gc_collectable(S, pnode*, pnode_counted*)
+def $gc_collectable(S, (HARRAY n) :: pnode*, pnode_counted*) = (HARRAY n) :: $gc_collectable(S, pnode*, pnode_counted*)
+  -- if ~$gc_proxy(S, n) \/ (HARRAY n) <- pnode_counted*
+def $gc_uncalled(S, eps) = eps
+def $gc_uncalled(S, pnode :: pnode_tail*) = pnode :: $gc_uncalled(S, pnode_tail*) -- if $destructor_uncalled_node(S, pnode)
+def $gc_uncalled(S, pnode :: pnode_tail*) = $gc_uncalled(S, pnode_tail*) -- if ~$destructor_uncalled_node(S, pnode)
+def $gc_called_subset(eps, nat*) = true
+def $gc_called_subset(n :: nat_old*, nat*) = (n <- nat* /\ $gc_called_subset(nat_old*, nat*))
+def $gc_uncalled_snapshot(S, eps, nat*) = eps
+def $gc_uncalled_snapshot(S, (HOBJECT n) :: pnode*, nat*) = (HOBJECT n) :: $gc_uncalled_snapshot(S, pnode*, nat*)
+  -- if ~(n <- nat*) /\ $destructor_method(S, n) =/= eps
+def $gc_uncalled_snapshot(S, (HOBJECT n) :: pnode*, nat*) = $gc_uncalled_snapshot(S, pnode*, nat*)
+  -- if n <- nat* \/ $destructor_method(S, n) = eps
+def $gc_uncalled_snapshot(S, (HCELL n) :: pnode*, nat*) = $gc_uncalled_snapshot(S, pnode*, nat*)
+def $gc_uncalled_snapshot(S, (HARRAY n) :: pnode*, nat*) = $gc_uncalled_snapshot(S, pnode*, nat*)
+def $gc_steps_valid(S, eps, eps) = true
+def $gc_steps_valid(S, (HOBJECT n) :: pnode*, (GC_CALLED (HOBJECT n)) :: pgcprogress*) = (n <- S.DESTRUCTION.CALLED /\ $gc_steps_valid(S, pnode*, pgcprogress*))
+def $gc_steps_valid(S, pnode :: pnode_tail*, (GC_SKIPPED pnode) :: pgcprogress*) = $gc_steps_valid(S, pnode_tail*, pgcprogress*)
+  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode)
+def $gc_steps_valid(S, pnode*, pgcprogress*) = false -- otherwise
+def $gc_step_done(eps) = eps
+def $gc_step_done((GC_CALLED pnode) :: pgcprogress*) = pnode :: $gc_step_done(pgcprogress*)
+def $gc_step_done((GC_SKIPPED pnode) :: pgcprogress*) = $gc_step_done(pgcprogress*)
+def $gc_tables_valid(S, eps, pnode*) = true
+def $gc_tables_valid(S, pobjecttable :: pobjecttable_tail*, pnode*) = ($(pobjecttable.OBJECT < |S.OBJECTS|) /\ $(pobjecttable.TABLE < |S.ARRAYS|) /\ (HOBJECT pobjecttable.OBJECT) <- pnode* /\ (HARRAY pobjecttable.TABLE) <- pnode* /\ $gc_tables_valid(S, pobjecttable_tail*, pnode*))
+def $gc_plan(S, pgccall) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, INDEX 0, STEPS eps, DONE eps}
+  -- if H = $gc_graph(S)
+  -- if hedge_proxy* = $gc_proxy_edges(S.OBJECTTABLES, H.NODES)
+  -- if pgc_start = $gc_compact(S.GC)
+  -- if pnode_white* = $gc_white(H, $gc_nodes(pgc_start.BUFFER))
+  -- if pgc_black_removed = $gc_compact($gc_buffer_drop_nodes(pgc_start, $destruction_nodes_delete($gc_physical_nodes(pgc_start.BUFFER), pnode_white*)))
+  -- if (pnode_visit*, pnode_counted*) = $gc_walk(H, hedge_proxy*, $gc_root_visits($gc_nodes(pgc_black_removed.BUFFER)), pnode_white*, eps, eps)
+  -- if pgc_white = $gc_buffer_add_nodes(pgc_black_removed, $gc_collectable(S, pnode_visit*, pnode_counted*))
+  -- if pnode_candidates* = $gc_nodes(pgc_white.BUFFER)
+  -- if pnode_dtors* = $gc_uncalled(S, pnode_candidates*)
+  -- if pnode_protected* = $heap_reach(pnode_dtors*, eps, H.EDGES)
+  -- if pnode_free* = $destruction_nodes_delete(pnode_visit*, pnode_protected*)
+
+def $gc_call_scope(S, pgccall) = S[.CURRENT = pgccall.CALLER][.ORIGIN = pgccall.ORIGIN][.CONSTCONTEXT = pgccall.CONSTCONTEXT]
+;; Inspect actual continuations only. Plans, ACTIVE and historical snapshots
+;; carry no authority or ownership without their one live VM consumer.
+def $gc_consumer_count(eps, pgccall) = 0
+def $gc_consumer_count(ptask :: ptask_tail*, pgccall) = $($gc_task_consumer(ptask, pgccall) + $gc_consumer_count(ptask_tail*, pgccall))
+def $gc_task_consumer(AT porigin ptask, pgccall) = $gc_task_consumer(ptask, pgccall)
+def $gc_task_consumer(GC_TRACE pgccall_task, pgccall) = 1 -- if pgccall_task = pgccall
+def $gc_task_consumer(GC_DTORS pgcplan, pgccall) = 1 -- if pgcplan.CALL = pgccall
+def $gc_task_consumer(GC_DTOR_RETURN pgcplan n, pgccall) = 1 -- if pgcplan.CALL = pgccall
+def $gc_task_consumer(GC_FREE pgcplan, pgccall) = 1 -- if pgcplan.CALL = pgccall
+def $gc_task_consumer(ptask, pgccall) = 0 -- otherwise
+def $gc_consumer_frame_count(eps, pgccall) = 0
+def $gc_consumer_frame_count(pframe :: pframe_tail*, pgccall) = $($gc_consumer_count(pframe.TODO, pgccall) + $gc_consumer_frame_count(pframe_tail*, pgccall))
+def $gc_plan_consumer_count(eps, pgcplan) = 0
+def $gc_plan_consumer_count(ptask :: ptask_tail*, pgcplan) = $($gc_task_plan_consumer(ptask, pgcplan) + $gc_plan_consumer_count(ptask_tail*, pgcplan))
+def $gc_task_plan_consumer(AT porigin ptask, pgcplan) = $gc_task_plan_consumer(ptask, pgcplan)
+def $gc_task_plan_consumer(GC_DTORS pgcplan_task, pgcplan) = 1 -- if pgcplan_task = pgcplan
+def $gc_task_plan_consumer(GC_DTOR_RETURN pgcplan_task n, pgcplan) = 1 -- if pgcplan_task = pgcplan
+def $gc_task_plan_consumer(GC_FREE pgcplan_task, pgcplan) = 1 -- if pgcplan_task = pgcplan
+def $gc_task_plan_consumer(GC_TRACE pgccall, pgcplan) = 1
+  -- if pgccall = pgcplan.CALL /\ pgccall.PASS = 1 /\ pgcplan.INDEX = |pgcplan.DTORS|
+def $gc_task_plan_consumer(ptask, pgcplan) = 0 -- otherwise
+def $gc_plan_frame_count(eps, pgcplan) = 0
+def $gc_plan_frame_count(pframe :: pframe_tail*, pgcplan) = $($gc_plan_consumer_count(pframe.TODO, pgcplan) + $gc_plan_frame_count(pframe_tail*, pgcplan))
+def $gc_fresh_tasks((GC_DTORS pgcplan) :: ptask*, pgcplan) = true -- if pgcplan.INDEX = 0
+def $gc_fresh_tasks((GC_FREE pgcplan) :: ptask*, pgcplan) = true -- if pgcplan.INDEX = 0
+def $gc_fresh_tasks((AT porigin ptask) :: ptask_tail*, pgcplan) = $gc_fresh_tasks(ptask :: ptask_tail*, pgcplan)
+def $gc_fresh_tasks(ptask*, pgcplan) = false -- otherwise
+def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S, pgcplan.CALL)) -- if $gc_fresh_tasks(S.TODO, pgcplan)
+def $gc_snapshot_valid(S, pgcplan) = $gc_tables_valid(S, pgcplan.TABLES, pgcplan.GRAPH.NODES) -- if ~$gc_fresh_tasks(S.TODO, pgcplan)
+def $gc_call_live(S, pgccall) = true
+  -- if S.GC.ACTIVE = (pgccall) /\ $(pgccall.NONCE < S.GC.NEXT)
+  -- if pgccall.CALL.KIND = INTRINSIC_GC_COLLECT /\ pgccall.CALL.SENT = eps
+  -- if pgccall.ORIGIN = (pgccall.CALL.SITE) /\ $(pgccall.PASS <= 1)
+  -- if $config_invoke_valid($gc_call_scope(S, pgccall), pgccall.CALL)
+  -- if $destructor_pending_valid(S, pgccall.PENDING)
+  -- if pgccall.PASS =/= 0 \/ pgccall.TOTAL = 0
+  -- if $($gc_consumer_count(S.TODO, pgccall) + $gc_consumer_frame_count(S.FRAMES, pgccall)) = 1
+def $gc_call_live(S, pgccall) = false -- otherwise
+def $gc_scope_valid(S, pgccall) = ($gc_call_live(S, pgccall) /\ S.CURRENT = pgccall.CALLER /\ S.ORIGIN = pgccall.ORIGIN /\ S.CONSTCONTEXT = pgccall.CONSTCONTEXT)
+def $gc_done_prefix(S, pgcplan) = true
+  -- if $(pgcplan.INDEX <= |pgcplan.DTORS|)
+  -- if |pgcplan.STEPS| = pgcplan.INDEX
+  -- if $gc_steps_valid(S, pgcplan.DTORS[0:pgcplan.INDEX], pgcplan.STEPS)
+  -- if pgcplan.DONE = $gc_step_done(pgcplan.STEPS)
+  -- if $heap_unique(pgcplan.DONE)
+  -- if $heap_subset(pgcplan.DONE, pgcplan.DTORS[0:pgcplan.INDEX])
+  -- if $gc_uncalled(S, pgcplan.DONE) = eps
+def $gc_done_prefix(S, pgcplan) = false -- otherwise
+def $gc_plan_live(S, pgcplan) = true
+  -- if S.GC.PLAN = (pgcplan) /\ $gc_call_live(S, pgcplan.CALL)
+  -- if $heap_valid(pgcplan.GRAPH) /\ $heap_unique(pgcplan.CANDIDATES)
+  -- if pgcplan.CANDIDATES = $gc_nodes(pgcplan.BUFFER)
+  -- if $gc_nodes(pgcplan.BUFFER) = $gc_physical_nodes(pgcplan.BUFFER)
+  -- if $heap_subset(pgcplan.CANDIDATES, pgcplan.GRAPH.NODES)
+  -- if $destructor_unique(pgcplan.CALLED) /\ $destructor_numbers_valid(pgcplan.CALLED, |S.OBJECTS|)
+  -- if $gc_called_subset(pgcplan.CALLED, S.DESTRUCTION.CALLED)
+  -- if pgcplan.DTORS = $gc_uncalled_snapshot(S, pgcplan.CANDIDATES, pgcplan.CALLED)
+  -- if $heap_unique(pgcplan.FREESET) /\ $heap_subset(pgcplan.FREESET, pgcplan.GRAPH.NODES)
+  -- if pgcplan.FREESET = $destruction_nodes_delete($gc_visit(pgcplan.GRAPH, pgcplan.CANDIDATES, $gc_white(pgcplan.GRAPH, pgcplan.CANDIDATES), eps), $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
+  -- if pgcplan.PROXIES = $gc_proxy_edges(pgcplan.TABLES, pgcplan.GRAPH.NODES)
+  -- if $gc_proxy_edges_valid(pgcplan.GRAPH, pgcplan.PROXIES)
+  -- if $gc_snapshot_valid(S, pgcplan)
+  -- if $($gc_plan_consumer_count(S.TODO, pgcplan) + $gc_plan_frame_count(S.FRAMES, pgcplan)) = 1
+  -- if $gc_walk(pgcplan.GRAPH, pgcplan.PROXIES, $gc_root_visits(pgcplan.CANDIDATES), $gc_white(pgcplan.GRAPH, pgcplan.CANDIDATES), eps, eps) = (pnode_visit*, pgcplan.COUNTED)
+  -- if $gc_done_prefix(S, pgcplan)
+def $gc_plan_live(S, pgcplan) = false -- otherwise
+def $gc_plan_valid(S, pgcplan) = ($gc_plan_live(S, pgcplan) /\ $gc_scope_valid(S, pgcplan.CALL))
+
+;; Retired slots carry no heap owner or traversable node. The existing genuine
+;; release continuation authenticates their occupied physical storage window.
+def $gc_handle_jobs(eps, n) = 0
+def $gc_handle_jobs((DESTRUCTION_HANDLE n) :: pdestructionjob*, n) = $(1 + $gc_handle_jobs(pdestructionjob*, n))
+def $gc_handle_jobs(pdestructionjob :: pdestructionjob_tail*, n) = $gc_handle_jobs(pdestructionjob_tail*, n)
+  -- if pdestructionjob =/= DESTRUCTION_HANDLE n
+def $gc_handle_task(S, AT porigin ptask, n) = $gc_handle_task(S, ptask, n)
+def $gc_handle_task(S, DESTRUCTOR_RELEASE pdestructionrelease, n) = $gc_handle_jobs(pdestructionrelease.JOBS, n)
+  -- if $destructor_release_live(S, pdestructionrelease)
+def $gc_handle_task(S, ptask, n) = 0 -- otherwise
+def $gc_handle_tasks(S, eps, n) = 0
+def $gc_handle_tasks(S, ptask :: ptask_tail*, n) = $($gc_handle_task(S, ptask, n) + $gc_handle_tasks(S, ptask_tail*, n))
+def $gc_handle_frames(S, eps, n) = 0
+def $gc_handle_frames(S, pframe :: pframe_tail*, n) = $($gc_handle_tasks(S, pframe.TODO, n) + $gc_handle_frames(S, pframe_tail*, n))
+;; Saved VMs carry actual release tasks, unlike borrowed call/history copies.
+;; Exclude the already-restored active view when local VM admission rechecks it.
+def $gc_handle_vm(S, pfibervm, n_active?, n) = $($gc_handle_tasks(S_view, S_view.TODO, n) + $gc_handle_frames(S_view, S_view.FRAMES, n))
+  -- if n_active? =/= S.ACTIVEFIBER
+  -- if S_view = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = n_active?][.COMPLETION = NORMAL]
+def $gc_handle_vm(S, pfibervm, n_active?, n) = 0 -- otherwise
+def $gc_handle_fiber(S, HOBJECT n_fiber, n) = $gc_handle_vm(S, pfibervm, (n_fiber), n)
+  -- if $fiber_at(S, n_fiber) = (pfiber)
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.VM = (pfibervm)
+def $gc_handle_fiber(S, pnode, n) = 0 -- otherwise
+def $gc_handle_fibers(S, eps, n) = 0
+def $gc_handle_fibers(S, pnode :: pnode_carriers*, n) = $($gc_handle_fiber(S, pnode, n) + $gc_handle_fibers(S, pnode_carriers*, n))
+def $gc_handle_callers(S, eps, n) = 0
+def $gc_handle_callers(S, pfibercaller :: pfibercaller_tail*, n) = $($gc_handle_vm(S, pfibercaller.VM, pfibercaller.PREVIOUS, n) + $gc_handle_callers(S, pfibercaller_tail*, n))
+def $gc_handle_closers(S, eps, n) = 0
+def $gc_handle_closers(S, pfiberclose :: pfiberclose_tail*, n) = $($gc_handle_vm(S, pfiberclose.VM, pfiberclose.PREVIOUS, n) + $gc_handle_closers(S, pfiberclose_tail*, n))
+def $gc_handle_all(S, n) = $($gc_handle_tasks(S, S.TODO, n) + $gc_handle_frames(S, S.FRAMES, n) + $gc_handle_fibers(S, S.ALLOCATIONS, n) + $gc_handle_callers(S, S.FIBERCALLERS, n) + $gc_handle_closers(S, S.FIBERCLOSERS, n))
+def $gc_retired_valid(S, n) = ($destructor_jobs_valid(S, [DESTRUCTION_HANDLE n]) /\ $gc_handle_all(S, n) = 1)
+def $gc_buffer_unique(pgcslot*) = $heap_unique($gc_physical_nodes(pgcslot*))
+def $gc_slots_valid(S, eps, nat*, n) = true
+def $gc_slots_valid(S, GC_EMPTY :: pgcslot*, nat*, n) = (n <- nat* /\ $gc_slots_valid(S, pgcslot*, nat*, $(n + 1)))
+def $gc_slots_valid(S, (GC_ROOT pnode) :: pgcslot*, nat*, n) = (~(n <- nat*) /\ pnode <- S.ALLOCATIONS /\ $gc_possible_root(S, pnode) /\ $gc_slots_valid(S, pgcslot*, nat*, $(n + 1)))
+def $gc_slots_valid(S, (GC_RETIRED n_object) :: pgcslot*, nat*, n) = (~(n <- nat*) /\ $gc_retired_valid(S, n_object) /\ $gc_slots_valid(S, pgcslot*, nat*, $(n + 1)))
+def $gc_buffer_valid(S, pgc) = ($gc_buffer_unique(pgc.BUFFER) /\ $destructor_unique(pgc.FREE) /\ $destructor_numbers_valid(pgc.FREE, |pgc.BUFFER|) /\ $gc_slots_valid(S, pgc.BUFFER, pgc.FREE, 0))
+def $gc_active_valid(S) = (S.GC.PLAN = eps)
+  -- if S.GC.ACTIVE = eps
+def $gc_active_valid(S) = $gc_call_live(S, pgccall)
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if S.GC.PLAN = eps
+def $gc_active_valid(S) = $gc_plan_live(S, pgcplan)
+  -- if S.GC.PLAN = (pgcplan)
+def $gc_active_valid(S) = false -- otherwise
+def $gc_state_valid(S) = ($destructor_unique(S.GC.IMMUTABLE) /\ $gc_immutable_flags_valid(S, S.GC.IMMUTABLE) /\ $gc_buffer_valid(S, S.GC) /\ $gc_active_valid(S))
+
+def $gc_simple_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.TODO = ptask :: ptask_tail*
+def $gc_receive(S, pconfigcall) = $gc_simple_done(S, PBOOL S.GC.ENABLED) -- if pconfigcall.KIND = INTRINSIC_GC_ENABLED
+def $gc_receive(S, pconfigcall) = $gc_simple_done(S[.GC.ENABLED = true], PNULL) -- if pconfigcall.KIND = INTRINSIC_GC_ENABLE
+def $gc_receive(S, pconfigcall) = $gc_simple_done(S[.GC.ENABLED = false], PNULL) -- if pconfigcall.KIND = INTRINSIC_GC_DISABLE
+def $gc_receive(S, pconfigcall) = $gc_simple_done(S, PINT 0)
+  -- if pconfigcall.KIND = INTRINSIC_GC_COLLECT /\ S.GC.ACTIVE =/= eps
+def $gc_receive(S, pconfigcall) = $gc_begin(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_GC_COLLECT /\ S.GC.ACTIVE = eps
+def $gc_begin(S, pconfigcall) = S[.GC.NEXT = $(S.GC.NEXT + 1)][.GC.ACTIVE = (pgccall)][.TODO = (GC_TRACE pgccall) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
+  -- if pgccall = {NONCE S.GC.NEXT, CALL pconfigcall, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, PASS 0, TOTAL 0, PENDING eps}
+def $task_nodes(GC_TRACE pgccall) = $instance_roots(pgccall.CALL.OWNER) ++ $instance_roots(pgccall.PENDING)
+def $task_nodes(GC_DTORS pgcplan) = $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)
+def $task_nodes(GC_DTOR_RETURN pgcplan n) = [HOBJECT n] ++ $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)
+def $task_nodes(GC_FREE pgcplan) = $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)
+def $eager_explicit_task(GC_TRACE pgccall) = true
+def $eager_explicit_task(GC_DTORS pgcplan) = true
+def $eager_explicit_task(GC_DTOR_RETURN pgcplan n) = true
+def $eager_explicit_task(GC_FREE pgcplan) = true
+def $gc_trace_valid(S, pgccall) = true
+  -- if $gc_scope_valid(S, pgccall)
+  -- if S.GC.PLAN = eps
+def $gc_trace_valid(S, pgccall) = true
+  -- if $gc_scope_valid(S, pgccall)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_plan_live(S, pgcplan)
+  -- if pgcplan.CALL = pgccall /\ pgccall.PASS = 1 /\ pgcplan.INDEX = |pgcplan.DTORS|
+def $gc_trace_valid(S, pgccall) = false -- otherwise
+def $call_task_valid(S, GC_TRACE pgccall) = $gc_trace_valid(S, pgccall)
+def $call_task_valid(S, GC_DTORS pgcplan) = $gc_plan_valid(S, pgcplan)
+def $call_task_valid(S, GC_FREE pgcplan) = ($gc_plan_valid(S, pgcplan) /\ pgcplan.INDEX = |pgcplan.DTORS|)
+def $gc_return_valid(S, pgcplan, n) = true
+  -- if $gc_plan_valid(S, pgcplan)
+  -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
+  -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n
+  -- if (HOBJECT n) <- S.ALLOCATIONS /\ n <- S.DESTRUCTION.CALLED
+def $gc_return_valid(S, pgcplan, n) = false -- otherwise
+def $call_task_valid(S, GC_DTOR_RETURN pgcplan n) = $gc_return_valid(S, pgcplan, n)
+def $gc_replace(S, pgcplan, ptask) = S[.GC.PLAN = (pgcplan)][.GC.ACTIVE = (pgcplan.CALL)][.TODO = ptask :: ptask_tail*]
+  -- if S.TODO = ptask_old :: ptask_tail*
+def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "cycle collection of internal lifetime graph"]
+  -- if pgcplan = $gc_plan(S, pgccall)
+  -- if ~$gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES)) /\ pgcplan.CANDIDATES =/= eps
+def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "cycle collector destructor Fiber transfer"]
+  -- if pgcplan = $gc_plan(S, pgccall)
+  -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
+  -- if S.ACTIVEFIBER =/= eps /\ pgcplan.DTORS =/= eps
+def $gc_trace(S, pgccall) = $gc_replace(S[.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps], pgcplan, GC_DTORS pgcplan)
+  -- if pgcplan = $gc_plan(S, pgccall)
+  -- if pgcplan.CANDIDATES = eps \/ $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
+  -- if S.ACTIVEFIBER = eps \/ pgcplan.DTORS = eps
+rule PhpStep/gc-trace: S ~> $gc_trace(S, pgccall)
+  -- if S.TODO = (GC_TRACE pgccall) :: ptask*
+  -- if $call_task_valid(S, GC_TRACE pgccall)
+rule PhpStep/gc-dtors-done: S ~> S[.TODO = (GC_FREE pgcplan) :: ptask*]
+  -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
+  -- if $gc_plan_valid(S, pgcplan) /\ pgcplan.INDEX = |pgcplan.DTORS|
+rule PhpStep/gc-dtor-skip: S ~> $gc_replace(S, pgcplan_next, GC_DTORS pgcplan_next)
+  -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
+  -- if $gc_plan_valid(S, pgcplan) /\ $(pgcplan.INDEX < |pgcplan.DTORS|)
+  -- if pnode = pgcplan.DTORS[pgcplan.INDEX]
+  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode)
+  -- if pgcplan_next = pgcplan[.INDEX = $(pgcplan.INDEX + 1)][.STEPS = pgcplan.STEPS ++ [GC_SKIPPED pnode]]
+rule PhpStep/gc-dtor-enter: S ~> $gc_dtor_begin(S, pgcplan, n)
+  -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
+  -- if $gc_plan_valid(S, pgcplan) /\ $(pgcplan.INDEX < |pgcplan.DTORS|)
+  -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n
+  -- if (HOBJECT n) <- S.ALLOCATIONS /\ $destructor_uncalled_node(S, HOBJECT n)
+def $gc_dtor_begin(S, pgcplan, n) = $destructor_select(S[.TODO = (GC_DTOR_RETURN pgcplan n) :: ptask*], n, false, eps)
+  -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
+rule PhpStep/gc-dtor-return: S ~> $gc_dtor_done(S, pgcplan, n)
+  -- if S.TODO = (GC_DTOR_RETURN pgcplan n) :: ptask*
+  -- if $call_task_valid(S, GC_DTOR_RETURN pgcplan n)
+def $gc_dtor_done(S, pgcplan, n) = $gc_replace(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pgcplan_next, GC_DTORS pgcplan_next)
+  -- if pgcplan_next = pgcplan[.INDEX = $(pgcplan.INDEX + 1)][.STEPS = pgcplan.STEPS ++ [GC_CALLED (HOBJECT n)]][.DONE = pgcplan.DONE ++ [HOBJECT n]]
+
+;; No user callback remains in the ordinary white free phase. Dispose that
+;; genuine closed graph atomically, preserving store/buffer free order in pure
+;; loops. The reference-cell cascade is ordinary zero-owner pruning, not count.
+def $gc_nested_boundary(S, pgcplan) = ($heap_intersect(pgcplan.FREESET, $heap_reach($machine_roots(S), eps, $heap_graph(S).EDGES)) =/= eps)
+def $gc_terminal_park(S, pgcplan) = (pgcplan.CALL.PASS = 1 /\ $destruction_zero($heap_graph(S), $heap_intersect(pgcplan.DONE, S.ALLOCATIONS)) =/= eps)
+def $gc_free(S, pgcplan) = S[.COMPLETION = UNSUPPORTED "resurrection of non-destructor garbage during collection"]
+  -- if $gc_nested_boundary(S, pgcplan)
+def $gc_free(S, pgcplan) = S[.COMPLETION = UNSUPPORTED "zero-owner destructor garbage after collector retrace"]
+  -- if ~$gc_nested_boundary(S, pgcplan) /\ $gc_terminal_park(S, pgcplan)
+def $gc_free(S, pgcplan) = S_next[.TODO = (GC_TRACE pgccall_next) :: ptask*][.GC.ACTIVE = (pgccall_next)][.GC.PLAN = (pgcplan[.CALL = pgccall_next])]
+  -- if ~$gc_nested_boundary(S, pgcplan) /\ ~$gc_terminal_park(S, pgcplan)
+  -- if S.TODO = (GC_FREE pgcplan) :: ptask*
+  -- if pnode_free* = $gc_free_order(pgcplan, S.ALLOCATIONS)
+  -- if pnode_live* = $destruction_nodes_delete(S.ALLOCATIONS, pnode_free*)
+  -- if S_dropped = $prune_live($destruction_store_drop(S, pnode_free*), pnode_live*)
+  -- if S_next = S_dropped[.GC = $gc_compact($gc_buffer_remove_nodes(S_dropped.GC, $destruction_nodes_delete(S.ALLOCATIONS, pnode_live*)))]
+  -- if pgccall_next = pgcplan.CALL[.TOTAL = $(pgcplan.CALL.TOTAL + |$heap_intersect(pgcplan.COUNTED, pgcplan.FREESET)|)][.PASS = 1]
+  -- if pgcplan.DTORS =/= eps /\ pgcplan.CALL.PASS = 0
+def $gc_free(S, pgcplan) = $gc_finish(S_next, pgccall_next)
+  -- if ~$gc_nested_boundary(S, pgcplan) /\ ~$gc_terminal_park(S, pgcplan)
+  -- if S.TODO = (GC_FREE pgcplan) :: ptask*
+  -- if pnode_free* = $gc_free_order(pgcplan, S.ALLOCATIONS)
+  -- if pnode_live* = $destruction_nodes_delete(S.ALLOCATIONS, pnode_free*)
+  -- if S_dropped = $prune_live($destruction_store_drop(S, pnode_free*), pnode_live*)
+  -- if S_next = S_dropped[.GC = $gc_compact($gc_buffer_remove_nodes(S_dropped.GC, $destruction_nodes_delete(S.ALLOCATIONS, pnode_live*)))]
+  -- if pgccall_next = pgcplan.CALL[.TOTAL = $(pgcplan.CALL.TOTAL + |$heap_intersect(pgcplan.COUNTED, pgcplan.FREESET)|)]
+  -- if pgcplan.DTORS = eps \/ pgcplan.CALL.PASS = 1
+rule PhpStep/gc-free: S ~> $gc_free(S, pgcplan)
+  -- if S.TODO = (GC_FREE pgcplan) :: ptask*
+  -- if $call_task_valid(S, GC_FREE pgcplan)
+def $gc_finish(S, pgccall) = S[.GC.ACTIVE = eps][.GC.PLAN = eps][.TODO = ptask_tail*][.RESULT = KNOWN (PINT pgccall.TOTAL)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pgccall.PENDING = eps
+def $gc_finish(S, pgccall) = S[.GC.ACTIVE = eps][.GC.PLAN = eps][.TODO = (THROW_SEARCH n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pgccall.PENDING = (n)
+
+;; Bare GC_DELREF after dtor_obj differs from OBJ_RELEASE. Keep the exact
+;; processed-prefix closure allocated until retrace without adding heap roots.
+def $gc_keep(S) = $heap_reach($heap_intersect(pgcplan.DONE ++ pgcplan.FREESET, S.ALLOCATIONS), eps, $heap_graph(S).EDGES)
+  -- if S.GC.PLAN = (pgcplan)
+def $gc_keep(S) = eps -- otherwise
+def $gc_retained(H, eps, pnode_keep*) = eps
+def $gc_retained(H, pnode :: pnode_tail*, pnode_keep*) = pnode :: $gc_retained(H, pnode_tail*, pnode_keep*)
+  -- if pnode <- pnode_keep* \/ $($heap_owners(H, pnode) > 0)
+def $gc_retained(H, pnode :: pnode_tail*, pnode_keep*) = $gc_retained(H, pnode_tail*, pnode_keep*)
+  -- if ~(pnode <- pnode_keep*) /\ $heap_owners(H, pnode) = 0
+def $gc_prune_graph(H, pnode_keep*) = H[.EDGES = $heap_live_edges(H.EDGES, H.NODES)]
+  -- if $gc_retained(H, H.NODES, pnode_keep*) = H.NODES
+def $gc_prune_graph(H, pnode_keep*) = $gc_prune_graph(H[.NODES = pnode_live*], pnode_keep*)
+  -- if pnode_live* = $gc_retained(H, H.NODES, pnode_keep*)
+  -- if pnode_live* =/= H.NODES
+def $gc_prune_nodes(S) = $gc_prune_graph($heap_graph(S), $gc_keep(S)).NODES -- if S.GC.ACTIVE =/= eps
+def $gc_zero(S, H, eps) = eps
+def $gc_zero(S, H, pnode :: pnode_tail*) = pnode :: $gc_zero(S, H, pnode_tail*) -- if $heap_owners(H, pnode) = 0 /\ ~(pnode <- $gc_keep(S))
+def $gc_zero(S, H, pnode :: pnode_tail*) = $gc_zero(S, H, pnode_tail*) -- if $($heap_owners(H, pnode) > 0) \/ pnode <- $gc_keep(S)
+def $gc_release_walk(S, H, eps, pnode_done*) = pnode_done*
+def $gc_release_walk(S, H, (DESTRUCTION_HANDLE n) :: pdestructionjob*, pnode_done*) = $gc_release_walk(S, H, pdestructionjob*, pnode_done* ++ [HOBJECT n])
+def $gc_release_walk(S, H, pdestructionjob_head :: pdestructionjob*, pnode_done*) = $gc_release_walk(S, H, pdestructionjob*, pnode_done*)
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
+  -- if ~(pnode <- H.NODES) \/ pnode <- $gc_keep(S) \/ $($heap_owners(H[.ROOTS = H.ROOTS ++ $destruction_job_nodes(pdestructionjob*)], pnode) > 0)
+def $gc_release_walk(S, H, pdestructionjob_head :: pdestructionjob*, pnode_done*) = $gc_release_walk(S, H[.NODES = pnode_live*][.EDGES = $heap_live_edges(H.EDGES, pnode_live*)], $destruction_values($destruction_children(H.EDGES, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionjob*, pnode_done*)
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
+  -- if pnode <- H.NODES /\ ~(pnode <- $gc_keep(S))
+  -- if $heap_owners(H[.ROOTS = H.ROOTS ++ $destruction_job_nodes(pdestructionjob*)], pnode) = 0
+  -- if pnode_live* = $destruction_node_delete(H.NODES, pnode)
+def $gc_release_order(S, H) = $gc_release_walk(S, H, $destruction_values($gc_zero(S, H, H.NODES)), eps)
+
+def $gc_dtor_anchor_tasks((GC_DTOR_RETURN pgcplan n) :: ptask*, n) = ((pgcplan, n))
+def $gc_dtor_anchor_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*, n) = $gc_dtor_anchor_tasks(ptask*, n)
+def $gc_dtor_anchor_tasks((DESTRUCTOR_RESULT pdestructorcall) :: ptask*, n) = $gc_dtor_anchor_tasks(ptask*, n)
+def $gc_dtor_anchor_tasks((DESTRUCTOR_ENTER pdestructorcall) :: ptask*, n) = $gc_dtor_anchor_tasks(ptask*, n)
+def $gc_dtor_anchor_tasks((THROW_SEARCH n_error) :: ptask*, n) = $gc_dtor_anchor_tasks(ptask*, n)
+def $gc_dtor_anchor_tasks(ptask*, n) = eps -- otherwise
+def $gc_dtor_anchor_frames(eps, n) = eps
+def $gc_dtor_anchor_frames(pframe :: pframe_tail*, n) = ((pgcplan, n)) -- if $gc_dtor_anchor_tasks(pframe.TODO, n) = ((pgcplan, n))
+def $gc_dtor_anchor_frames(pframe :: pframe_tail*, n) = $gc_dtor_anchor_frames(pframe_tail*, n) -- if $gc_dtor_anchor_tasks(pframe.TODO, n) = eps
+def $gc_dtor_anchor(S, pdestructorcall) = ((pgcplan, n)) -- if $gc_dtor_anchor_tasks(S.TODO, pdestructorcall.OBJECT) = ((pgcplan, n))
+def $gc_dtor_anchor(S, pdestructorcall) = $gc_dtor_anchor_frames(S.FRAMES, pdestructorcall.OBJECT) -- if $gc_dtor_anchor_tasks(S.TODO, pdestructorcall.OBJECT) = eps
+def $destructor_leaf_valid(S, pdestructorcall) = true
+  -- if pdestructorcall.RELEASE = eps /\ pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+  -- if $gc_dtor_anchor(S, pdestructorcall) = ((pgcplan, n))
+  -- if n = pdestructorcall.OBJECT /\ $gc_plan_live(S, pgcplan)
+  -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
+  -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n
+  -- if pgcplan.CALL.CALLER = pdestructorcall.CALLER /\ pgcplan.CALL.ORIGIN = pdestructorcall.ORIGIN /\ pgcplan.CALL.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT
+def $gc_source(S) = true
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_plan_valid(S, pgcplan)
+  -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
+  -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n
+  -- if $gc_dtor_anchor_tasks(S.TODO, n) = ((pgcplan, n)) \/ $gc_dtor_anchor_frames(S.FRAMES, n) = ((pgcplan, n))
+def $destructor_source_site(S) = eps -- if $gc_source(S)
+def $destructor_tail_pending((GC_DTOR_RETURN pgcplan n) :: ptask*) = pgcplan.CALL.PENDING
+def $gc_pending_tasks((GC_DTOR_RETURN pgcplan n) :: ptask*, pgcplan, pgcplan_new) = (GC_DTOR_RETURN pgcplan_new n) :: ptask*
+def $gc_pending_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*, pgcplan, pgcplan_new) = (DESTRUCTOR_RELEASE pdestructionrelease) :: $gc_pending_tasks(ptask*, pgcplan, pgcplan_new)
+def $destructor_resume_pending(S, pdestructorcall) = S[.TODO = $gc_pending_tasks(ptask*, pgcplan, pgcplan_new)][.GC.PLAN = (pgcplan_new)][.GC.ACTIVE = (pgcplan_new.CALL)]
+  -- if pdestructorcall.RELEASE = eps /\ pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+  -- if S.TODO = (THROW_SEARCH n_error) :: ptask*
+  -- if $gc_dtor_anchor(S, pdestructorcall) = ((pgcplan, n))
+  -- if $gc_plan_live(S, pgcplan)
+  -- if pgcplan_new = pgcplan[.CALL.PENDING = (n_error)]
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S, pgcplan.CALL.CALL, eps)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if $gc_dtor_anchor(S, pdestructorcall) = ((pgcplan, n))
+  -- if $gc_plan_live(S, pgcplan)

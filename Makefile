@@ -170,6 +170,10 @@ test-semantics: build
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
 	python3 tests/semantics/weak_reference_state_review.py
+	python3 tests/semantics/cycle_collection_sources.py
+	python3 tests/semantics/cycle_collection_state.py
+	python3 tests/semantics/cycle_collection_review.py
+	python3 tests/semantics/cycle_collection_state_review.py --sl
 	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
 	python3 tests/semantics/scoped_callables_protocol.py
@@ -282,6 +286,8 @@ test-semantics: build
 	python3 tests/semantics/source_stringable_retirement_sources.py --case first-eval
 	python3 tests/semantics/source_stringable_retirement_protocol.py --case entry
 	python3 tests/semantics/source_stringable_retirement_sources.py --case generator-source
+	python3 tests/semantics/source_stringable_retirement_sources.py --case expression-cycle-direct
+	python3 tests/semantics/source_expression_emission_protocol.py --case collector
 	python3 tests/semantics/source_stringable_retirement_protocol.py --case composition
 	python3 tests/semantics/noctor_compiler.py
 	python3 tests/semantics/noctor_args.py
@@ -321,6 +327,51 @@ test-semantics: build
 	python3 tests/semantics/static_set_compiler.py
 	python3 tests/semantics/static_set_access.py
 	python3 tests/semantics/static_set_access_protocol.py
+	python3 tests/semantics/instance_set_access_sources.py
+	python3 tests/semantics/instance_set_access_protocol.py --group permission
+	python3 tests/semantics/instance_set_access_protocol.py --group interiors
+	python3 tests/semantics/instance_set_access_protocol.py --group increment
+	python3 tests/semantics/instance_set_access_protocol.py --group private
+	python3 tests/semantics/instance_set_access_protocol.py --group alias
+	python3 tests/semantics/instance_set_access_protocol.py --group cv
+	python3 tests/semantics/instance_set_access_protocol.py --group recursive
+	python3 tests/semantics/readonly_lifecycle_sources.py --kind normal
+	python3 tests/semantics/readonly_lifecycle_sources.py --kind compiler
+	python3 tests/semantics/readonly_lifecycle_sources.py --kind composition
+	python3 tests/semantics/readonly_lifecycle_protocol.py --group reentry
+	python3 tests/semantics/readonly_lifecycle_protocol.py --group detached
+	python3 tests/semantics/readonly_lifecycle_protocol.py --group recursive
+	python3 tests/semantics/readonly_lifecycle_protocol.py --group affected-reference
+	python3 tests/semantics/readonly_clone_sources.py --kind normal
+	python3 tests/semantics/readonly_clone_sources.py --kind compiler
+	python3 tests/semantics/readonly_clone_sources.py --kind exit
+	python3 tests/semantics/readonly_clone_protocol.py --group window
+	python3 tests/semantics/readonly_clone_protocol.py --group borrowed
+	python3 tests/semantics/readonly_clone_protocol.py --group intrinsic
+	python3 tests/semantics/readonly_clone_protocol.py --group temporary
+	python3 tests/semantics/readonly_clone_protocol.py --group fiber
+	python3 tests/semantics/readonly_clone_updates_sources.py --kind normal
+	python3 tests/semantics/readonly_clone_updates_protocol.py --group window
+	python3 tests/semantics/readonly_clone_updates_protocol.py --group abrupt
+	python3 tests/semantics/readonly_clone_updates_protocol.py --group stringable_guards
+	python3 tests/semantics/readonly_clone_updates_protocol.py --group stringable_continuation
+	python3 tests/semantics/readonly_clone_updates_protocol.py --group mutable
+	python3 tests/semantics/readonly_clone_updates_protocol.py --group fiber
+	python3 tests/semantics/readonly_clone_updates_protocol.py --group inherited_throw_trace
+	python3 tests/semantics/readonly_clone_updates_protocol.py --group inherited_throw_frontier
+	python3 tests/semantics/readonly_clone_updates_protocol.py --group alias_this
+	python3 tests/semantics/readonly_clone_updates_protocol.py --group named_this
+	python3 tests/semantics/readonly_clone_producer_protocol.py --group cache --sl
+	python3 tests/semantics/readonly_clone_producer_protocol.py --group revisions --sl
+	python3 tests/semantics/readonly_clone_selection_sources.py
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group consumer-birth --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group computed-name-birth --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group reused-maker-birth --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group private-manual-birth-positive --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group shared-origin-positive --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group autoload-birth --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group keyword-shutdown-birth --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group closer-window --sl
 	python3 tests/semantics/user_string_parameters.py
 	python3 tests/semantics/user_string_parameters_protocol.py
 	python3 tests/semantics/variadic_string_parameters.py

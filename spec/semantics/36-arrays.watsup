@@ -42,7 +42,14 @@ def $array_replace(parray_old :: parray_tail*, n, parray) = parray_old :: $array
   -- if $(n > 0)
   -- if $(n - 1) = n_next
 
+;; Empty runtime constants use a noncollectable table. The GC module carries
+;; that flag separately from logical ownership; ordinary table builders do not.
 dec $allocate_array(pstate, parray) : pstate
+dec $allocate_immutable_empty(pstate) : pstate
+def $allocate_immutable_empty(S) = $allocate_array(S, $array_empty()) -- otherwise
+dec $array_immutable(pstate, nat) : bool
+def $array_immutable(S, n) = false -- otherwise
+
 def $allocate_array(S, parray) = S[.ARRAYS = S.ARRAYS ++ [parray]][.RESULT = KNOWN (PARRAY n)][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n]]
   -- if n = |S.ARRAYS|
 

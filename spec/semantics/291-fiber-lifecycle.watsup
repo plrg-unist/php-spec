@@ -154,7 +154,8 @@ def $fiber_close_valid(S, pfiberclose) = true
   -- if $(pfiberclose.SUSPEND.SEQUENCE < pfiberclose.SEQUENCE)
   -- if $fiber_api_valid(S, pfiberclose.SUSPEND)
   -- if $fiber_graceful_live(S, pfiberclose.EXIT)
-  -- if pfiberclose.RELEASE.JOBS = (DESTRUCTION_VALUE (HOBJECT pfiberclose.OBJECT)) :: pdestructionjob*
+  -- if pfiberclose.RELEASE.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_job_node(pdestructionjob_head) = (HOBJECT pfiberclose.OBJECT)
   -- if pfiberclose.VM.TODO = (DESTRUCTOR_RELEASE pfiberclose.RELEASE) :: ptask*
   -- if pfiberclose.VM.DESTRUCTORRELEASES = pfiberclose.RELEASE :: pdestructionrelease*
   -- if $destructor_release_valid($fiber_close_source(S, pfiberclose), pfiberclose.RELEASE)
@@ -202,7 +203,8 @@ rule PhpStep/fiber-request-store: S ~> S[.COMPLETION = UNSUPPORTED "Fiber destru
 def $fiber_close_selected(S, n, pdestructionrelease) = true
   -- if $internal_destructor_pending(S, HOBJECT n)
   -- if $destructor_release_valid(S, pdestructionrelease)
-  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionjob*
+  -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_job_node(pdestructionjob_head) = (HOBJECT n)
   -- if S_unheld = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if $heap_owners($heap_graph(S_unheld), HOBJECT n) = 0
 def $fiber_close_selected(S, n, pdestructionrelease) = false -- otherwise

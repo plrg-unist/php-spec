@@ -27,7 +27,7 @@ def $cast_value(S, CASTFLOAT, PINT i, z) = S[.RESULT = KNOWN (PFLOAT $float_of_i
 def $cast_value(S, CASTFLOAT, pvalue, z) = S[.RESULT = KNOWN (PFLOAT $float_of_int($cast_truth_int(S, pvalue)))]
   -- if $cast_truth_kind(pvalue)
 def $cast_value(S, CASTARRAY, PARRAY n, z) = S[.RESULT = KNOWN (PARRAY n)]
-def $cast_value(S, CASTARRAY, PNULL, z) = $allocate_array(S, $array_empty())
+def $cast_value(S, CASTARRAY, PNULL, z) = $allocate_immutable_empty(S)
 def $cast_value(S, CASTARRAY, PUNDEFINED, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) UNINITIALIZED]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array($objectprops_mark(S, n), $property_cast_array(ppropertyslot*))
   -- if S.OBJECTS[n] = INSTANCE porigin
