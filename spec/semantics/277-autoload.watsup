@@ -27,6 +27,12 @@ dec $autoload_seek(pautoloadentry?*, nat) : nat?
 dec $autoload_store(pstate, pautoloadregistration) : pstate
 dec $autoload_register_finish(pstate, pautoloadregistration) : pstate
 dec $autoload_register_begin(pstate, pconfigcall, pautoloadtarget) : pstate
+dec $autoload_unregister_begin(pstate, pconfigcall, pautoloadtarget) : pstate
+dec $autoload_birth_valid(pstate, pautoloadentry) : bool
+dec $autoload_births_unique(pautoloadentry?*, nat*) : bool
+dec $autoload_births_match(pautoloadentry?*, nat?*) : bool
+dec $autoload_births_compact(pautoloadentry?*, nat?*) : nat?*
+dec $autoload_births_remove(nat?*, nat) : nat?*
 dec $autoload_initialize(pstate) : pstate
 dec $autoload_resize(pstate) : pstate
 dec $autoload_append(pstate, pautoloadentry) : pstate
@@ -182,9 +188,9 @@ def $autoload_registration_valid(S, pconfigcall) = true
   -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
 def $autoload_registration_valid(S, pconfigcall) = false -- otherwise
 
-def $autoload_entry(S, pconfigcall, pautoloadtarget) = {CALL pconfigcall, CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S), RAW $autoload_snapshot(S, pconfigcall, pcalltarget), TARGET pautoloadtarget, SCOPE $consumer_producer_scope(S, pcalltarget), BINDING $consumer_producer_binding(S, pcalltarget)}
+def $autoload_entry(S, pconfigcall, pautoloadtarget) = {CALL pconfigcall, BIRTH eps, CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S), RAW $autoload_snapshot(S, pconfigcall, pcalltarget), TARGET pautoloadtarget, SCOPE $consumer_producer_scope(S, pcalltarget), BINDING $consumer_producer_binding(S, pcalltarget)}
   -- if pautoloadtarget = AUTO_TARGET pcalltarget
-def $autoload_entry(S, pconfigcall, pautoloadtarget) = {CALL pconfigcall, CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S), RAW eps, TARGET pautoloadtarget, SCOPE eps, BINDING eps}
+def $autoload_entry(S, pconfigcall, pautoloadtarget) = {CALL pconfigcall, BIRTH eps, CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S), RAW eps, TARGET pautoloadtarget, SCOPE eps, BINDING eps}
   -- if ~$autoload_source_target(pautoloadtarget)
 
 def $autoload_target_nodes(AUTO_TARGET pcalltarget) = $target_nodes(pcalltarget)
@@ -203,24 +209,33 @@ def $autoload_entry_nodes(pautoloadentry) = eps -- if ~$autoload_source_target(p
 
 def $autoload_entry_history(S, pautoloadentry) = S_tables[.ALLOCATIONS = S_tables.ALLOCATIONS ++ $autoload_entry_nodes(pautoloadentry)]
   -- if S_tables = S[.CLOSURESCOPES = $consumer_producer_scopes(pautoloadentry.SCOPE) ++ S.CLOSURESCOPES][.CLOSUREBINDINGS = $consumer_producer_bindings(pautoloadentry.BINDING) ++ S.CLOSUREBINDINGS]
+def $autoload_birth_valid(S, pautoloadentry) = true
+  -- if $autoload_births_match(S.AUTOLOAD.ENTRIES, S.AUTOLOAD.BIRTHS)
+  -- if pautoloadentry.BIRTH = (n)
+  -- if $(n < S.AUTOSEQ)
+  -- if $consumer_clone_birth_valid(S, pautoloadentry.CALL, pautoloadentry.BIRTH, pautoloadentry.PRODUCER)
+def $autoload_birth_valid(S, pautoloadentry) = false -- otherwise
 def $autoload_entry_valid(S, pautoloadentry) = true
+  -- if $autoload_birth_valid(S, pautoloadentry)
   -- if $autoload_registration_valid(S, pautoloadentry.CALL)
   -- if pautoloadentry.TARGET = AUTO_DEFAULT
   -- if $autoload_raw(pautoloadentry) = PNULL \/ $autoload_special(S, $autoload_raw(pautoloadentry)) = (AUTO_DEFAULT)
   -- if pautoloadentry.RAW = eps /\ pautoloadentry.SCOPE = eps /\ pautoloadentry.BINDING = eps
 def $autoload_entry_valid(S, pautoloadentry) = true
+  -- if $autoload_birth_valid(S, pautoloadentry)
   -- if $autoload_registration_valid(S, pautoloadentry.CALL)
   -- if pautoloadentry.TARGET = AUTO_ALL
   -- if $autoload_special(S, $autoload_raw(pautoloadentry)) = (AUTO_ALL)
   -- if pautoloadentry.RAW = eps /\ pautoloadentry.SCOPE = eps /\ pautoloadentry.BINDING = eps
 def $autoload_entry_valid(S, pautoloadentry) = true
+  -- if $autoload_birth_valid(S, pautoloadentry)
   -- if $autoload_registration_valid(S, pautoloadentry.CALL)
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
   -- if $autoload_entry_current_metadata(S, pautoloadentry)
   -- if S_history = $autoload_entry_history(S, pautoloadentry)
   -- if $exception_raw_selected(S_history, $autoload_raw(pautoloadentry), pautoloadentry.RAW, pcalltarget)
   -- if $target_function(S_history, pcalltarget) = (pfunction)
-  -- if pshutdownentry = {CALL pautoloadentry.CALL, CAPTURE pautoloadentry.CAPTURE, PRODUCER pautoloadentry.PRODUCER, RAW pautoloadentry.RAW, TARGET pcalltarget, ARGS eps}
+  -- if pshutdownentry = {CALL pautoloadentry.CALL, BIRTH pautoloadentry.BIRTH, CAPTURE pautoloadentry.CAPTURE, PRODUCER pautoloadentry.PRODUCER, RAW pautoloadentry.RAW, TARGET pcalltarget, ARGS eps}
   -- if $autoload_selected_scope(S_history, pautoloadentry, pcalltarget) \/ $consumer_api_target(pcalltarget)
   -- if $autoload_entry_metadata(S, pautoloadentry)
 def $autoload_entry_valid(S, pautoloadentry) = false -- otherwise
@@ -235,7 +250,25 @@ def $autoload_roots((pautoloadentry) :: pautoloadentry_tail?*) = $autoload_entry
 def $autoload_defined_entries(eps) = eps
 def $autoload_defined_entries(eps :: pautoloadentry_tail?*) = $autoload_defined_entries(pautoloadentry_tail?*)
 def $autoload_defined_entries((pautoloadentry) :: pautoloadentry_tail?*) = pautoloadentry :: $autoload_defined_entries(pautoloadentry_tail?*)
+def $autoload_births_unique(eps, n_seen*) = true
+def $autoload_births_unique(eps :: pautoloadentry_tail?*, n_seen*) = $autoload_births_unique(pautoloadentry_tail?*, n_seen*)
+def $autoload_births_unique((pautoloadentry) :: pautoloadentry_tail?*, n_seen*) = true
+  -- if pautoloadentry.BIRTH = (n)
+  -- if ~(n <- n_seen*)
+  -- if $autoload_births_unique(pautoloadentry_tail?*, n :: n_seen*)
+def $autoload_births_unique(pautoloadentry?*, n_seen*) = false -- otherwise
+def $autoload_births_match(eps, eps) = true
+def $autoload_births_match(eps :: pautoloadentry_tail?*, eps :: n_birth_tail?*) = $autoload_births_match(pautoloadentry_tail?*, n_birth_tail?*)
+def $autoload_births_match((pautoloadentry) :: pautoloadentry_tail?*, (n) :: n_birth_tail?*) = (pautoloadentry.BIRTH = (n) /\ $autoload_births_match(pautoloadentry_tail?*, n_birth_tail?*))
+def $autoload_births_match(pautoloadentry?*, n_birth?*) = false -- otherwise
+def $autoload_births_compact(eps, eps) = eps
+def $autoload_births_compact(eps :: pautoloadentry_tail?*, n_birth? :: n_birth_tail?*) = $autoload_births_compact(pautoloadentry_tail?*, n_birth_tail?*)
+def $autoload_births_compact((pautoloadentry) :: pautoloadentry_tail?*, n_birth? :: n_birth_tail?*) = n_birth? :: $autoload_births_compact(pautoloadentry_tail?*, n_birth_tail?*)
+def $autoload_births_remove(n_birth? :: n_birth_tail?*, 0) = eps :: n_birth_tail?*
+def $autoload_births_remove(n_birth? :: n_birth_tail?*, n) = n_birth? :: $autoload_births_remove(n_birth_tail?*, $nabs($(n - 1))) -- if $(n > 0)
 def $autoload_registry_valid(S) = true
+  -- if $autoload_births_match(S.AUTOLOAD.ENTRIES, S.AUTOLOAD.BIRTHS)
+  -- if $autoload_births_unique(S.AUTOLOAD.ENTRIES, eps)
   -- if $autoload_capacity_valid(S.AUTOLOAD.CAPACITY)
   -- if $(|S.AUTOLOAD.ENTRIES| <= S.AUTOLOAD.CAPACITY)
   -- if $(S.AUTOLOAD.CAPACITY > 0) \/ S.AUTOLOAD.ENTRIES = eps
@@ -291,7 +324,14 @@ def $autoload_bool(S, pconfigcall, n, b_default) = ($truth(S, pvalue))
   -- if ~$config_strict(S, pconfigcall)
   -- if $typed_scalar(pvalue) \/ pvalue = PNULL
 def $autoload_bool(S, pconfigcall, n, b_default) = eps -- otherwise
-def $autoload_register_begin(S, pconfigcall, pautoloadtarget) = S[.TODO = (AUTO_REGISTER_RECEIVE {ENTRY $autoload_entry(S, pconfigcall, pautoloadtarget), INDEX 1, THROW true, PREPEND false}) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.TODO = ptask :: ptask_tail*
+def $autoload_register_begin(S, pconfigcall, pautoloadtarget) = S_birth[.AUTOSEQ = $(S.AUTOSEQ + 1)][.TODO = (AUTO_REGISTER_RECEIVE {ENTRY pautoloadentry, INDEX 1, THROW true, PREPEND false}) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_birth = $consumer_clone_birth_record(S, pconfigcall, S.AUTOSEQ)
+  -- if pautoloadentry = $autoload_entry(S, pconfigcall, pautoloadtarget)[.BIRTH = (S.AUTOSEQ)]
+def $autoload_unregister_begin(S, pconfigcall, pautoloadtarget) = S_birth[.AUTOSEQ = $(S.AUTOSEQ + 1)][.TODO = (AUTO_UNREGISTER pautoloadentry) :: ptask_tail*]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_birth = $consumer_clone_birth_record(S, pconfigcall, S.AUTOSEQ)
+  -- if pautoloadentry = $autoload_entry(S, pconfigcall, pautoloadtarget)[.BIRTH = (S.AUTOSEQ)]
 def $autoload_registration_receive_valid(S, pautoloadregistration) = true
   -- if $autoload_entry_live(S, pautoloadregistration.ENTRY)
   -- if pautoloadregistration.ENTRY.CALL.KIND = INTRINSIC_AUTO_REGISTER
@@ -372,7 +412,7 @@ def $autoload_resolve(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED text]
 def $autoload_resolve(S, pconfigcall) = $autoload_register_begin(S, pconfigcall, pautoloadtarget)
   -- if pconfigcall.KIND = INTRINSIC_AUTO_REGISTER
   -- if $autoload_special(S, $error_api_value(pconfigcall, 0, PNULL)) = (pautoloadtarget)
-def $autoload_resolve(S, pconfigcall) = S[.TODO = (AUTO_UNREGISTER $autoload_entry(S, pconfigcall, pautoloadtarget)) :: ptask_tail*]
+def $autoload_resolve(S, pconfigcall) = $autoload_unregister_begin(S, pconfigcall, pautoloadtarget)
   -- if S.TODO = ptask :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_AUTO_UNREGISTER
   -- if $autoload_special(S, $error_api_value(pconfigcall, 0, PNULL)) = (pautoloadtarget)
@@ -381,7 +421,7 @@ def $autoload_resolve(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError
   -- if $error_api_value(pconfigcall, 0, PNULL) = PNULL
 
 def $autoload_api_finish(S, pconfigcall, HANDLERRESOLVED pcalltarget) = $autoload_register_begin(S, pconfigcall, AUTO_TARGET pcalltarget) -- if pconfigcall.KIND = INTRINSIC_AUTO_REGISTER
-def $autoload_api_finish(S, pconfigcall, HANDLERRESOLVED pcalltarget) = S[.TODO = (AUTO_UNREGISTER $autoload_entry(S, pconfigcall, AUTO_TARGET pcalltarget)) :: ptask_tail*] -- if pconfigcall.KIND = INTRINSIC_AUTO_UNREGISTER -- if S.TODO = ptask :: ptask_tail*
+def $autoload_api_finish(S, pconfigcall, HANDLERRESOLVED pcalltarget) = $autoload_unregister_begin(S, pconfigcall, AUTO_TARGET pcalltarget) -- if pconfigcall.KIND = INTRINSIC_AUTO_UNREGISTER
 def $autoload_api_finish(S, pconfigcall, HANDLERINVALID ptbytes) = $config_error(S, pconfigcall, "TypeError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($callback) must be a valid callback") ++ ptbytes_null ++ $ptascii(", ") ++ ptbytes)
   -- if ptbytes_null = $autoload_nullable_name(pconfigcall.KIND)
 def $autoload_nullable_name(INTRINSIC_AUTO_REGISTER) = $ptascii(" or null")
@@ -398,9 +438,11 @@ def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERRESOLVED pcalltarge
 def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERINVALID ptbytes) = $autoload_api_finish(S, pconfigcall, HANDLERINVALID ptbytes) -- if $autoload_callback_kind(pconfigcall.KIND)
 def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $config_error(S, pconfigcall, "Error", ptbytes) -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall -- if $autoload_callback_kind(pconfigcall.KIND)
 
-def $autoload_unregister(S, pautoloadentry) = S[.AUTOLOAD.ENTRIES = $autoload_trim($autoload_remove(S.AUTOLOAD.ENTRIES, n))][.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $autoload_unregister(S, pautoloadentry) = S[.AUTOLOAD.ENTRIES = pautoloadentry_new?*][.AUTOLOAD.BIRTHS = n_birth?*[0:|pautoloadentry_new?*|]][.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $autoload_find(S, S.AUTOLOAD.ENTRIES, pautoloadentry, 0) = (n)
   -- if S.TODO = ptask :: ptask_tail*
+  -- if pautoloadentry_new?* = $autoload_trim($autoload_remove(S.AUTOLOAD.ENTRIES, n))
+  -- if n_birth?* = $autoload_births_remove(S.AUTOLOAD.BIRTHS, n)
 def $autoload_unregister(S, pautoloadentry) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $autoload_find(S, S.AUTOLOAD.ENTRIES, pautoloadentry, 0) = eps
   -- if S.TODO = ptask :: ptask_tail*
@@ -413,7 +455,7 @@ rule PhpStep/autoload-unregister-all-warning: S ~> $error_dispatch(S, 8192, $aut
   -- if S.TODO = (AUTO_UNREGISTER pautoloadentry) :: ptask_tail*
   -- if $autoload_entry_valid(S, pautoloadentry)
   -- if pautoloadentry.CALL.KIND = INTRINSIC_AUTO_UNREGISTER /\ pautoloadentry.TARGET = AUTO_ALL
-rule PhpStep/autoload-unregister-all-return: S ~> S[.AUTOLOAD.ENTRIES = eps][.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/autoload-unregister-all-return: S ~> S[.AUTOLOAD.ENTRIES = eps][.AUTOLOAD.BIRTHS = eps][.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (AUTO_UNREGISTER_ALL pautoloadentry) :: ptask_tail*
   -- if $autoload_entry_valid(S, pautoloadentry)
   -- if pautoloadentry.CALL.KIND = INTRINSIC_AUTO_UNREGISTER /\ pautoloadentry.TARGET = AUTO_ALL
@@ -539,7 +581,7 @@ def $autoload_parent_pending(S, pclassdesc) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
   -- if $autoload_pending(S, ptbytes_parent)
 
-def $autoload_begin(S, porigin, ptbytes_name, ptbytes_key, z, pautoloadmode, ptask) = S[.TODO = (AUTO_NEXT {SITE porigin, NAME ptbytes_name, KEY ptbytes_key, LINE z, MODE pautoloadmode, INDEX 0, RESUME ptask}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $autoload_begin(S, porigin, ptbytes_name, ptbytes_key, z, pautoloadmode, ptask) = S[.TODO = (AUTO_NEXT {SITE porigin, NAME ptbytes_name, KEY ptbytes_key, LINE z, MODE pautoloadmode, INDEX 0, BIRTH eps, RESUME ptask}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $autoload_explicit(S, pconfigcall, ptbytes) = $autoload_begin(S[.TODO = ptask_tail*], pconfigcall.SITE, ptbytes, $ptlc(ptbytes), pconfigcall.LINE, AUTO_EXPLICIT pconfigcall, AUTO_EXPLICIT_DONE pconfigcall)
   -- if S.TODO = ptask :: ptask_tail*
 def $noctor_start(S, ptbytes, phpType7*, z) = $autoload_begin(S, porigin, $autoload_lookup_name(ptbytes), $ptlc($autoload_lookup_name(ptbytes)), z, AUTO_LOOKUP, $autoload_new_resume(S, ptbytes, phpType7*, z))
@@ -588,23 +630,27 @@ rule PhpStep/autoload-explicit-done: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN
 
 rule PhpStep/autoload-next-empty: S ~> $autoload_complete(S, pautoloadcall)
   -- if S.TODO = (AUTO_NEXT pautoloadcall) :: ptask_tail*
+  -- if pautoloadcall.BIRTH = eps
   -- if $autoload_call_valid(S, pautoloadcall)
   -- if $autoload_seek(S.AUTOLOAD.ENTRIES, pautoloadcall.INDEX) = eps
 rule PhpStep/autoload-next-default: S ~> S[.COMPLETION = UNSUPPORTED "default spl_autoload filesystem search is outside core"]
   -- if S.TODO = (AUTO_NEXT pautoloadcall) :: ptask_tail*
+  -- if pautoloadcall.BIRTH = eps
   -- if $autoload_call_valid(S, pautoloadcall)
   -- if $autoload_seek(S.AUTOLOAD.ENTRIES, pautoloadcall.INDEX) = (n)
   -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
   -- if pautoloadentry.TARGET = AUTO_DEFAULT
-rule PhpStep/autoload-next-value: S ~> S[.TODO = (AUTO_ENTER pautoloadcall[.INDEX = n] pautoloadentry (KNOWN (PSTRING pautoloadcall.NAME))) :: ptask_tail*]
+rule PhpStep/autoload-next-value: S ~> S[.TODO = (AUTO_ENTER pautoloadcall[.INDEX = n][.BIRTH = S.AUTOLOAD.BIRTHS[n]] pautoloadentry (KNOWN (PSTRING pautoloadcall.NAME))) :: ptask_tail*]
   -- if S.TODO = (AUTO_NEXT pautoloadcall) :: ptask_tail*
+  -- if pautoloadcall.BIRTH = eps
   -- if $autoload_call_valid(S, pautoloadcall)
   -- if $autoload_seek(S.AUTOLOAD.ENTRIES, pautoloadcall.INDEX) = (n)
   -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
   -- if ~$call_parameter_reference(S, pcalltarget, 0)
-rule PhpStep/autoload-next-reference-warning: S ~> $error_dispatch(S, 2, ptbytes, $autoload_reference_line(pautoloadcall), $autoload_reference_event(pautoloadcall, ptbytes), AUTO_REFERENCE pautoloadcall[.INDEX = n] pautoloadentry)
+rule PhpStep/autoload-next-reference-warning: S ~> $error_dispatch(S, 2, ptbytes, $autoload_reference_line(pautoloadcall), $autoload_reference_event(pautoloadcall, ptbytes), AUTO_REFERENCE pautoloadcall[.INDEX = n][.BIRTH = S.AUTOLOAD.BIRTHS[n]] pautoloadentry)
   -- if S.TODO = (AUTO_NEXT pautoloadcall) :: ptask_tail*
+  -- if pautoloadcall.BIRTH = eps
   -- if $autoload_call_valid(S, pautoloadcall)
   -- if $autoload_seek(S.AUTOLOAD.ENTRIES, pautoloadcall.INDEX) = (n)
   -- if S.AUTOLOAD.ENTRIES[n] = (pautoloadentry)
@@ -625,7 +671,7 @@ rule PhpStep/autoload-result-loaded: S ~> $autoload_complete(S, pautoloadcall)
   -- if S.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
   -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
   -- if $class_internal(pautoloadcall.KEY) \/ $class_named(S.CLASSNAMES, pautoloadcall.KEY) =/= eps
-rule PhpStep/autoload-result-next: S ~> S[.TODO = (AUTO_NEXT pautoloadcall[.INDEX = $(n + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/autoload-result-next: S ~> S[.TODO = (AUTO_NEXT pautoloadcall[.INDEX = $(n + 1)][.BIRTH = eps]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
   -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
   -- if ~$class_internal(pautoloadcall.KEY) /\ $class_named(S.CLASSNAMES, pautoloadcall.KEY) = eps
@@ -681,7 +727,7 @@ def $autoload_resume_valid(S, pautoloadcall) = true
   -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
 def $autoload_resume_valid(S, pautoloadcall) = false -- otherwise
 def $autoload_call_valid(S, pautoloadcall) = ($autoload_resume_valid(S, pautoloadcall) /\ $autoload_registry_valid(S))
-def $autoload_selected_valid(S, pautoloadcall, pautoloadentry) = ($autoload_call_valid(S, pautoloadcall) /\ $autoload_entry_valid(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER)
+def $autoload_selected_valid(S, pautoloadcall, pautoloadentry) = ($autoload_call_valid(S, pautoloadcall) /\ $autoload_entry_valid(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER /\ pautoloadcall.BIRTH = pautoloadentry.BIRTH /\ pautoloadcall.BIRTH =/= eps)
 def $autoload_sent_valid(S, pautoloadcall, pautoloadentry, KNOWN (PSTRING ptbytes)) = ($autoload_selected_valid(S, pautoloadcall, pautoloadentry) /\ $autoload_entry_live(S, pautoloadentry) /\ ptbytes = pautoloadcall.NAME)
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
   -- if ~$call_parameter_reference(S, pcalltarget, 0)
@@ -776,6 +822,7 @@ def $declaration_autoload_invocation(S, pautoloadcall, pautoloadentry, porigin_f
   -- if porigin_callsite? = $autoload_context_site(pautoloadcall)
   -- if $autoload_declaration_resume(S, pautoloadcall)
   -- if $autoload_entry_valid(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER
+  -- if pautoloadcall.BIRTH = pautoloadentry.BIRTH /\ pautoloadcall.BIRTH =/= eps
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
   -- if S_history = $autoload_entry_history(S, pautoloadentry)
   -- if $target_function(S_history, pcalltarget) = (pfunction)
@@ -808,7 +855,7 @@ def $call_task_valid(S, AUTO_REGISTER_NOTICE pautoloadregistration) = $autoload_
 def $call_task_valid(S, AUTO_UNREGISTER pautoloadentry) = ($autoload_entry_live(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_UNREGISTER)
 def $call_task_valid(S, AUTO_UNREGISTER_ALL pautoloadentry) = ($autoload_entry_valid(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_UNREGISTER /\ pautoloadentry.TARGET = AUTO_ALL)
 def $call_task_valid(S, AUTO_CALL_NULL pconfigcall) = ($config_invoke_valid(S, pconfigcall) /\ pconfigcall.KIND = INTRINSIC_AUTO_CALL /\ $error_api_value(pconfigcall, 0, PNULL) = PNULL /\ ~$config_strict(S, pconfigcall))
-def $call_task_valid(S, AUTO_NEXT pautoloadcall) = $autoload_call_valid(S, pautoloadcall)
+def $call_task_valid(S, AUTO_NEXT pautoloadcall) = ($autoload_call_valid(S, pautoloadcall) /\ pautoloadcall.BIRTH = eps)
 def $call_task_valid(S, AUTO_REFERENCE pautoloadcall pautoloadentry) = $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
 def $call_task_valid(S, AUTO_ENTER pautoloadcall pautoloadentry poperand) = $autoload_sent_valid(S, pautoloadcall, pautoloadentry, poperand)
 def $call_task_valid(S, AUTO_RESULT pautoloadcall pautoloadentry poperand) = $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
@@ -885,7 +932,7 @@ def $autoload_api_entry_scope(S, papiquery, pautoloadentry) = true
   -- if pautoloadentry.TARGET = AUTO_TARGET (API_METHOD_TARGET papiquery porigin ptbytes b_static)
   -- if papiquery.SOURCE = CONFIG_INVOKE pautoloadentry.CALL
   -- if $autoload_registration_valid(S, pautoloadentry.CALL)
-  -- if pshutdownentry = {CALL pautoloadentry.CALL, CAPTURE pautoloadentry.CAPTURE, PRODUCER pautoloadentry.PRODUCER, RAW pautoloadentry.RAW, TARGET (API_METHOD_TARGET papiquery porigin ptbytes b_static), ARGS eps}
+  -- if pshutdownentry = {CALL pautoloadentry.CALL, BIRTH pautoloadentry.BIRTH, CAPTURE pautoloadentry.CAPTURE, PRODUCER pautoloadentry.PRODUCER, RAW pautoloadentry.RAW, TARGET (API_METHOD_TARGET papiquery porigin ptbytes b_static), ARGS eps}
   -- if $consumer_producer_capture(S, pshutdownentry)
   -- if papiquery.SCOPE = $shutdown_capture_scope(S, pautoloadentry.CALL.SITE, pautoloadentry.CAPTURE)
   -- if papiquery.CALLED = $consumer_capture_called(S, pautoloadentry.CALL.SITE, pautoloadentry.CAPTURE)
@@ -921,7 +968,7 @@ def $api_target_valid(S, papiquery, porigin, ptbytes) = true
 def $autoload_initialize(S) = S[.AUTOLOAD.CAPACITY = 8] -- if S.AUTOLOAD.CAPACITY = 0
 def $autoload_initialize(S) = S -- if $(S.AUTOLOAD.CAPACITY > 0)
 def $autoload_resize(S) = S -- if $(|S.AUTOLOAD.ENTRIES| < S.AUTOLOAD.CAPACITY)
-def $autoload_resize(S) = S[.AUTOLOAD.ENTRIES = $autoload_compact(S.AUTOLOAD.ENTRIES)]
+def $autoload_resize(S) = S[.AUTOLOAD.ENTRIES = $autoload_compact(S.AUTOLOAD.ENTRIES)][.AUTOLOAD.BIRTHS = $autoload_births_compact(S.AUTOLOAD.ENTRIES, S.AUTOLOAD.BIRTHS)]
   -- if $(|S.AUTOLOAD.ENTRIES| >= S.AUTOLOAD.CAPACITY)
   -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
   -- if $(|S.AUTOLOAD.ENTRIES| > n_count + (n_count / 32))
@@ -929,9 +976,9 @@ def $autoload_resize(S) = S[.AUTOLOAD.CAPACITY = $(2 * S.AUTOLOAD.CAPACITY)]
   -- if $(|S.AUTOLOAD.ENTRIES| >= S.AUTOLOAD.CAPACITY)
   -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
   -- if $(|S.AUTOLOAD.ENTRIES| <= n_count + (n_count / 32))
-def $autoload_append(S, pautoloadentry) = S[.AUTOLOAD.ENTRIES = S.AUTOLOAD.ENTRIES ++ [$autoload_bucket(pautoloadentry)]]
+def $autoload_append(S, pautoloadentry) = S[.AUTOLOAD.ENTRIES = S.AUTOLOAD.ENTRIES ++ [$autoload_bucket(pautoloadentry)]][.AUTOLOAD.BIRTHS = S.AUTOLOAD.BIRTHS ++ [pautoloadentry.BIRTH]]
 def $autoload_prepend(S, b) = S -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES) -- if ~b \/ $(n_count <= 1)
-def $autoload_prepend(S, true) = S[.AUTOLOAD.ENTRIES = [$autoload_bucket(pautoloadentry)] ++ $autoload_compact(S.AUTOLOAD.ENTRIES[0:n])]
+def $autoload_prepend(S, true) = S[.AUTOLOAD.ENTRIES = [$autoload_bucket(pautoloadentry)] ++ $autoload_compact(S.AUTOLOAD.ENTRIES[0:n])][.AUTOLOAD.BIRTHS = [S.AUTOLOAD.BIRTHS[n]] ++ $autoload_births_compact(S.AUTOLOAD.ENTRIES[0:n], S.AUTOLOAD.BIRTHS[0:n])]
   -- if n_count = $autoload_count(S.AUTOLOAD.ENTRIES)
   -- if $(n_count > 1)
   -- if n = $nabs($(|S.AUTOLOAD.ENTRIES| - 1))

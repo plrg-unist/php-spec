@@ -255,7 +255,7 @@ rule PhpStep/clone-callback-expression: S ~> $clone_lifecycle_start(S_read[.RESU
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $clone_callback_value(S_read, POBJECT n)
-rule PhpStep/clone-callback-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (CLONE_CALLBACK_RESULT pcloneoperation) :: ptask_tail*][.CLONEMAKERS = S.CLONEMAKERS ++ [{OBJECT pcloneoperation.TARGET, SELECTION $clone_producer_receipt(pcloneoperation)}]], pmethoddesc.FUNCTION, eps, (pcloneoperation.SITE), pcloneoperation.LINE), METHOD_TARGET pcloneoperation.TARGET pmethoddesc.FUNCTION.ORIGIN), pmethoddesc.FUNCTION, 0, (pcloneoperation.SITE), pcloneoperation.LINE)
+rule PhpStep/clone-callback-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (CLONE_CALLBACK_RESULT pcloneoperation) :: ptask_tail*][.CLONEMAKERS = S.CLONEMAKERS ++ [{OBJECT pcloneoperation.TARGET, SELECTION $clone_producer_receipt(pcloneoperation), CONSUMERS eps}]], pmethoddesc.FUNCTION, eps, (pcloneoperation.SITE), pcloneoperation.LINE), METHOD_TARGET pcloneoperation.TARGET pmethoddesc.FUNCTION.ORIGIN), pmethoddesc.FUNCTION, 0, (pcloneoperation.SITE), pcloneoperation.LINE)
   -- if S.TODO = (CLONE_CALLBACK_ENTER pcloneoperation) :: ptask_tail*
   -- if $clone_callback_live(S, pcloneoperation)
   -- if $clone_maker_at(S.CLONEMAKERS, pcloneoperation.TARGET) = eps
@@ -329,6 +329,51 @@ def $clone_maker_at(pclonemaker :: pclonemaker_tail*, n) = (pclonemaker.SELECTIO
   -- if pclonemaker.OBJECT = n
 def $clone_maker_at(pclonemaker :: pclonemaker_tail*, n) = $clone_maker_at(pclonemaker_tail*, n)
   -- if pclonemaker.OBJECT =/= n
+;; Consumer identity is independent of the attached maker receipt. A later
+;; manual activation of the same object/site cannot claim an earlier birth.
+dec $clone_consumer_kind(pintrinsic) : bool
+def $clone_consumer_kind(pintrinsic) = (pintrinsic <- [INTRINSIC_FIBER_CONSTRUCT, INTRINSIC_REGISTER_SHUTDOWN_FUNCTION, INTRINSIC_AUTO_REGISTER, INTRINSIC_AUTO_UNREGISTER])
+dec $clone_consumer_same(pcloneconsumer, pintrinsic, nat) : bool
+def $clone_consumer_same(pcloneconsumer, pintrinsic, n) = (pcloneconsumer.ID = n /\ (pcloneconsumer.KIND = pintrinsic \/ (pcloneconsumer.KIND <- [INTRINSIC_AUTO_REGISTER, INTRINSIC_AUTO_UNREGISTER] /\ pintrinsic <- [INTRINSIC_AUTO_REGISTER, INTRINSIC_AUTO_UNREGISTER])))
+dec $clone_consumer_at(pcloneconsumer*, pintrinsic, nat) : pcloneconsumer?
+def $clone_consumer_at(eps, pintrinsic, n) = eps
+def $clone_consumer_at(pcloneconsumer :: pcloneconsumer_tail*, pintrinsic, n) = (pcloneconsumer)
+  -- if $clone_consumer_same(pcloneconsumer, pintrinsic, n)
+def $clone_consumer_at(pcloneconsumer :: pcloneconsumer_tail*, pintrinsic, n) = $clone_consumer_at(pcloneconsumer_tail*, pintrinsic, n)
+  -- if ~$clone_consumer_same(pcloneconsumer, pintrinsic, n)
+dec $clone_consumer_maker_at(pclonemaker*, pintrinsic, nat) : pclonemaker?
+def $clone_consumer_maker_at(eps, pintrinsic, n) = eps
+def $clone_consumer_maker_at(pclonemaker :: pclonemaker_tail*, pintrinsic, n) = (pclonemaker)
+  -- if $clone_consumer_at(pclonemaker.CONSUMERS, pintrinsic, n) =/= eps
+def $clone_consumer_maker_at(pclonemaker :: pclonemaker_tail*, pintrinsic, n) = $clone_consumer_maker_at(pclonemaker_tail*, pintrinsic, n)
+  -- if $clone_consumer_at(pclonemaker.CONSUMERS, pintrinsic, n) = eps
+dec $clone_consumer_append(pclonemaker*, nat, pcloneconsumer) : pclonemaker*
+def $clone_consumer_append(eps, n, pcloneconsumer) = eps
+def $clone_consumer_append(pclonemaker :: pclonemaker_tail*, n, pcloneconsumer) = pclonemaker[.CONSUMERS = pclonemaker.CONSUMERS ++ [pcloneconsumer]] :: pclonemaker_tail*
+  -- if pclonemaker.OBJECT = n
+def $clone_consumer_append(pclonemaker :: pclonemaker_tail*, n, pcloneconsumer) = pclonemaker :: $clone_consumer_append(pclonemaker_tail*, n, pcloneconsumer)
+  -- if pclonemaker.OBJECT =/= n
+def $consumer_clone_birth_record(S, pconfigcall, n) = S[.CLONEMAKERS = $clone_consumer_append(S.CLONEMAKERS, n_maker, {KIND pconfigcall.KIND, ID n, SITE pconfigcall.SITE})]
+  -- if $clone_consumer_kind(pconfigcall.KIND)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $clone_context_valid(S, pcallcontext)
+  -- if pcallcontext.TARGET = METHOD_TARGET n_maker porigin_method
+dec $clone_consumer_birth_valid(pstate, pconfigcall, nat?, pshutdownproducer?) : bool
+def $consumer_clone_birth_valid(S, pconfigcall, n?, pshutdownproducer?) = $clone_consumer_birth_valid(S, pconfigcall, n?, pshutdownproducer?)
+  -- if $clone_consumer_kind(pconfigcall.KIND)
+def $clone_consumer_birth_valid(S, pconfigcall, (n), (pshutdownproducer)) = true
+  -- if $clone_consumer_maker_at(S.CLONEMAKERS, pconfigcall.KIND, n) = (pclonemaker)
+  -- if $clone_consumer_at(pclonemaker.CONSUMERS, pconfigcall.KIND, n) = (pcloneconsumer)
+  -- if pcloneconsumer.KIND = pconfigcall.KIND /\ pcloneconsumer.SITE = pconfigcall.SITE
+  -- if pshutdownproducer.INTERNAL /\ pshutdownproducer.CLONE = (pclonemaker.SELECTION)
+  -- if pshutdownproducer.TARGET = METHOD_TARGET pclonemaker.OBJECT porigin_method
+  -- if $consumer_clone_producer_valid(S, pshutdownproducer)
+def $clone_consumer_birth_valid(S, pconfigcall, (n), (pshutdownproducer)) = true
+  -- if $clone_consumer_maker_at(S.CLONEMAKERS, pconfigcall.KIND, n) = eps
+  -- if pshutdownproducer.CLONE = eps
+def $clone_consumer_birth_valid(S, pconfigcall, (n), eps) = ($clone_consumer_maker_at(S.CLONEMAKERS, pconfigcall.KIND, n) = eps)
+def $clone_consumer_birth_valid(S, pconfigcall, eps, eps) = (pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION)
+def $clone_consumer_birth_valid(S, pconfigcall, n?, pshutdownproducer?) = false -- otherwise
 def $consumer_clone_context(S, pcallcontext) = $clone_context_valid(S, pcallcontext)
   -- if $clone_context_kind(S, pcallcontext)
 dec $consumer_clone_function_site(pstate, porigin?) : bool
@@ -449,6 +494,45 @@ def $clone_window_body_valid(S, pclonewindow) = $clone_updates_body_valid(S, pcl
 def $clone_windows_records_valid(S, eps, n_seen*) = true
 def $clone_windows_records_valid(S, pclonewindow :: pclonewindow_tail*, n_seen*) = ($clone_window_body_valid(S, pclonewindow) /\ ~(pclonewindow.OPERATION.TARGET <- n_seen*) /\ $clone_window_keys_valid(S, pclonewindow.OPERATION.TARGET, pclonewindow.AVAILABLE, eps) /\ $clone_revisions_valid($clone_readonly_keys(S, pclonewindow.OPERATION.TARGET), pclonewindow.REVISIONS, pclonewindow.AVAILABLE) /\ $clone_window_live(S, pclonewindow.OPERATION, pclonewindow.PHASE) /\ $clone_windows_records_valid(S, pclonewindow_tail*, pclonewindow.OPERATION.TARGET :: n_seen*))
 dec $clone_makers_valid(pstate, pclonemaker*, nat*) : bool
+dec $clone_consumer_key_valid(pstate, pcloneconsumer) : bool
+def $clone_consumer_key_valid(S, pcloneconsumer) = true
+  -- if pcloneconsumer.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $(pcloneconsumer.ID < |S.OBJECTS|)
+  -- if S.OBJECTS[pcloneconsumer.ID] = FIBER pfiber
+def $clone_consumer_key_valid(S, pcloneconsumer) = true
+  -- if pcloneconsumer.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+  -- if $(pcloneconsumer.ID < |S.SHUTDOWN.ENTRIES|)
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[pcloneconsumer.ID]
+  -- if pshutdownentry.BIRTH = (pcloneconsumer.ID)
+  -- if pshutdownentry.CALL.KIND = pcloneconsumer.KIND /\ pshutdownentry.CALL.SITE = pcloneconsumer.SITE
+def $clone_consumer_key_valid(S, pcloneconsumer) = true
+  -- if pcloneconsumer.KIND <- [INTRINSIC_AUTO_REGISTER, INTRINSIC_AUTO_UNREGISTER]
+  -- if $(pcloneconsumer.ID < S.AUTOSEQ)
+def $clone_consumer_key_valid(S, pcloneconsumer) = false -- otherwise
+dec $clone_consumers_valid(pstate, pcloneconsumer*, pfunction) : bool
+def $clone_consumers_valid(S, eps, pfunction) = true
+def $clone_consumers_valid(S, pcloneconsumer :: pcloneconsumer_tail*, pfunction) = true
+  -- if $clone_consumer_key_valid(S, pcloneconsumer)
+  -- if pcloneconsumer.SITE = PORIGIN n_unit pcpath
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_source)
+  -- if $trait_source_same(pfunction_source, pfunction)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $clone_consumers_valid(S, pcloneconsumer_tail*, pfunction)
+def $clone_consumers_valid(S, pcloneconsumer*, pfunction) = false -- otherwise
+dec $clone_consumer_keys(pclonemaker*) : pcloneconsumer*
+def $clone_consumer_keys(eps) = eps
+def $clone_consumer_keys(pclonemaker :: pclonemaker_tail*) = pclonemaker.CONSUMERS ++ $clone_consumer_keys(pclonemaker_tail*)
+dec $clone_consumer_keys_unique(pcloneconsumer*, pcloneconsumer*) : bool
+def $clone_consumer_keys_unique(eps, pcloneconsumer_seen*) = true
+def $clone_consumer_keys_unique(pcloneconsumer :: pcloneconsumer_tail*, pcloneconsumer_seen*) = ($clone_consumer_at(pcloneconsumer_seen*, pcloneconsumer.KIND, pcloneconsumer.ID) = eps /\ $clone_consumer_keys_unique(pcloneconsumer_tail*, pcloneconsumer :: pcloneconsumer_seen*))
+dec $clone_shutdown_births_valid(pstate, pshutdownentry*, nat) : bool
+def $clone_shutdown_births_valid(S, eps, n) = true
+def $clone_shutdown_births_valid(S, pshutdownentry :: pshutdownentry_tail*, n) = true
+  -- if pshutdownentry.BIRTH = (n) \/ (pshutdownentry.BIRTH = eps /\ pshutdownentry.PRODUCER = eps)
+  -- if $consumer_clone_birth_valid(S, pshutdownentry.CALL, (n), pshutdownentry.PRODUCER)
+  -- if $clone_shutdown_births_valid(S, pshutdownentry_tail*, $(n + 1))
+def $clone_shutdown_births_valid(S, pshutdownentry*, n) = false -- otherwise
 def $clone_makers_valid(S, eps, n_seen*) = true
 def $clone_makers_valid(S, pclonemaker :: pclonemaker_tail*, n_seen*) = true
   -- if ~(pclonemaker.OBJECT <- n_seen*)
@@ -458,9 +542,10 @@ def $clone_makers_valid(S, pclonemaker :: pclonemaker_tail*, n_seen*) = true
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
   -- if $consumer_clone_selection_valid(S, pclonemaker.SELECTION)
+  -- if $clone_consumers_valid(S, pclonemaker.CONSUMERS, pmethoddesc.FUNCTION)
   -- if $clone_makers_valid(S, pclonemaker_tail*, pclonemaker.OBJECT :: n_seen*)
 def $clone_makers_valid(S, pclonemaker*, n_seen*) = false -- otherwise
-def $clone_windows_valid(S) = ($clone_windows_records_valid(S, S.CLONES, eps) /\ $clone_makers_valid(S, S.CLONEMAKERS, eps))
+def $clone_windows_valid(S) = ($clone_windows_records_valid(S, S.CLONES, eps) /\ $clone_makers_valid(S, S.CLONEMAKERS, eps) /\ $clone_consumer_keys_unique($clone_consumer_keys(S.CLONEMAKERS), eps) /\ $clone_shutdown_births_valid(S, S.SHUTDOWN.ENTRIES, 0))
 
 
 def $named_context_valid(S, pcallcontext) = true

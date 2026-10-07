@@ -258,7 +258,7 @@ def $fiber_receive_value(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "
   -- if $fiber_at(S, n) = (pfiber)
   -- if ~pfiber.READY
   -- if $target_function(S, pcalltarget) = eps
-def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done($fiber_put(S, n, pfiber[.READY = true][.CALL = (pconfigcall)][.RAW = pvalue][.TARGET = (pcalltarget)][.BIRTH = $dynamic_new_find(S, S.TODO, pconfigcall.SITE)][.CAPTURE = $consumer_capture_current(S, pconfigcall.SITE)][.PRODUCER = $consumer_producer_current(S)]), PNULL)
+def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done($fiber_put(S_birth, n, pfiber[.READY = true][.CALL = (pconfigcall)][.RAW = pvalue][.TARGET = (pcalltarget)][.BIRTH = $dynamic_new_find(S, S.TODO, pconfigcall.SITE)][.CAPTURE = $consumer_capture_current(S, pconfigcall.SITE)][.PRODUCER = $consumer_producer_current(S)]), PNULL)
   -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
   -- if ~$api_special(S, pvalue)
   -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
@@ -266,6 +266,7 @@ def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done($fiber_put(S, n, 
   -- if $fiber_at(S, n) = (pfiber)
   -- if ~pfiber.READY
   -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if S_birth = $consumer_clone_birth_record(S, pconfigcall, n)
 
 def $fiber_producer_view(S, eps) = S
 def $fiber_producer_view(S, (pshutdownproducer)) = $consumer_producer_history(S, pshutdownproducer)
@@ -274,11 +275,13 @@ def $fiber_scope_target(HANDLER_METHOD_TARGET b porigin ptbytes (SCOPE_METHOD_TA
 def $fiber_scope_target(pcalltarget) = eps -- otherwise
 def $fiber_producer_valid(S, pfiber) = true
   -- if pfiber.CALL = (pconfigcall)
+  -- if $consumer_clone_birth_valid(S, pconfigcall, pconfigcall.OWNER, pfiber.PRODUCER)
   -- if pfiber.PRODUCER = eps
   -- if pfiber.CAPTURE = eps
   -- if $consumer_capture_function(S, pconfigcall.SITE, eps) = eps
 def $fiber_producer_valid(S, pfiber) = true
   -- if pfiber.CALL = (pconfigcall)
+  -- if $consumer_clone_birth_valid(S, pconfigcall, pconfigcall.OWNER, pfiber.PRODUCER)
   -- if pfiber.PRODUCER = (pshutdownproducer)
   -- if $consumer_producer_snapshot(pshutdownproducer)
   -- if $consumer_producer_site(pfiber.CAPTURE, pshutdownproducer.SITE)
