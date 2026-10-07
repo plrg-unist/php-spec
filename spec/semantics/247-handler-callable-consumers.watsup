@@ -29,6 +29,8 @@ dec $consumer_clone_context(pstate, pcallcontext) : bool
 def $consumer_clone_context(S, pcallcontext) = false -- otherwise
 dec $consumer_clone_receipt(pstate, pcallcontext) : pcloneproducer?
 def $consumer_clone_receipt(S, pcallcontext) = eps -- otherwise
+dec $consumer_producer_ordinary_at(pstate, pshutdownproducer) : bool
+def $consumer_producer_ordinary_at(S, pshutdownproducer) = true -- otherwise
 dec $consumer_clone_producer_valid(pstate, pshutdownproducer) : bool
 def $consumer_clone_producer_valid(S, pshutdownproducer) = false -- otherwise
 dec $consumer_string_target(pstate, pcalltarget) : bool
@@ -286,7 +288,7 @@ def $consumer_producer_capture(S, pshutdownentry) = true
   -- if $trait_source_same(pfunction_source, pfunction)
   -- if $shutdown_capture_scope(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) = $target_lexical_class(S_history, pshutdownproducer.TARGET)
   -- if $consumer_capture_called(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) = $target_called_class(S_history, pshutdownproducer.TARGET)
-  -- if (~pshutdownproducer.INTERNAL /\ $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal_at(S_history, pshutdownproducer))
+  -- if (~pshutdownproducer.INTERNAL /\ $consumer_producer_ordinary_at(S_history, pshutdownproducer) /\ $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal_at(S_history, pshutdownproducer))
   -- if pshutdownentry.TARGET = API_METHOD_TARGET papiquery porigin ptbytes b_static
   -- if papiquery.THIS = $target_receiver(S_history, pshutdownproducer.TARGET)
   -- if pshutdownentry.CAPTURE = eps \/ $consumer_producer_function(pshutdownentry.CAPTURE, pfunction.ORIGIN)

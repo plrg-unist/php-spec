@@ -289,7 +289,7 @@ def $fiber_producer_valid(S, pfiber) = true
   -- if $trait_source_same(pfunction_source, pfunction)
   -- if $fiber_scope(S, pfiber) = $target_lexical_class(S_history, pshutdownproducer.TARGET)
   -- if $consumer_capture_called(S, pconfigcall.SITE, pfiber.CAPTURE) = $target_called_class(S_history, pshutdownproducer.TARGET)
-  -- if (~pshutdownproducer.INTERNAL /\ $consumer_capture_valid(S, pconfigcall.SITE, pfiber.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal_at(S_history, pshutdownproducer))
+  -- if (~pshutdownproducer.INTERNAL /\ $consumer_producer_ordinary_at(S_history, pshutdownproducer) /\ $consumer_capture_valid(S, pconfigcall.SITE, pfiber.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal_at(S_history, pshutdownproducer))
   -- if pfiber.CAPTURE = eps \/ $consumer_producer_function(pfiber.CAPTURE, pfunction.ORIGIN)
 def $fiber_producer_valid(S, pfiber) = false -- otherwise
 def $fiber_dynamic_birth_site(S, porigin) = true
