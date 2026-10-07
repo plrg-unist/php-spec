@@ -837,8 +837,10 @@ Generator and unfinished callback interactions remain open. Live
 [Fiber transfers](docs/semantics/FIBERS.md) now retain separate VM continuations,
 shared globals and handlers, cached callbacks and original C argument buffers.
 Ordinary force-close and callback retirement preserve captured destructor stacks,
-pending exceptions and already stored returns. Protected real-exception cleanup,
-request/fatal cleanup and wider Fiber consumers remain required.
+pending exceptions and already stored returns. Protected cleanup after an actual
+return retains the earlier real exception and restored reporting/handler behavior.
+The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
+remain required.
 
 [Called-class introspection](docs/semantics/CALLED-CLASS.md) now implements
 `get_called_class()` through inherited/forwarded methods, source Closure binding,

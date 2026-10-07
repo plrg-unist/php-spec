@@ -169,12 +169,11 @@ differ from the saved caller origin; ordinary frame-site fallback grants no
 authority to a malformed destructor pair.
 
 Force-close of suspended cleanup preserves a result already returned by the
-body. Cleanup protecting a real exception instead stops before private-control
-injection with an explicit Unsupported boundary. Two native witnesses cover a
-pending body exception and an earlier capture exception after an object return.
-Zend links that real exception through `GracefulExit::$previous`, emits a
-dynamic-property deprecation and can expose an undefined result when the body
-never returned. That protocol remains required; these controls earn no agreement.
+body. The accepted302 cut stopped before private-control injection when cleanup
+protected a real exception. Module 308 extends the returned-result branch below.
+The body-throw witness remains an exact Unsupported boundary: the body never
+returned, and its undefined-result protocol remains required. Its native witness
+is held and its preserved comparison earns zero agreement.
 
 AL checks pass for 276 modules in `fiber-ordinary-al-kjr9z54c`. Fifteen targeted
 normal comparisons pass: eight new originals, four affected ordinary controls
@@ -194,6 +193,46 @@ frame-admission failure, fixture field-order error and pure diagnostic queries
 retain zero credit. `fiber_ordinary_state.py` and `fiber_ordinary_review.py`
 maintain the authored and independent groups. Semantic review accepts this cut;
 its source is integrated without renewing the earlier evidence.
+
+## Protected returned results
+
+Module 308 preserves an earlier real exception when force-close interrupts a
+captured destructor after the callback returned, including a defined null. The
+private control's dynamic `previous` slot owns that real child. A nonowning pair
+records the genuine write and matches the active finish certificate or its
+authentic retiring operation; replacing the child with another older live Throwable
+does not authenticate it. The receipt adds no owner and can remain after the
+control and child retire.
+
+The source-less deprecation uses the restored Fiber reporting mask and line 0.
+An eligible shared handler remains unentered while private control is pending;
+its registration survives. A finally replacement filters private control and
+links the old real exception directly. A later captured destructor can replace
+pending control after the previous write. In these witnesses, the original
+control and child release on the restored caller before the caller reads the
+stored result; a child destructor can itself observe that terminated Fiber.
+
+Source 63766192, patch e67cb587 over the accepted302 base, passes AL for 277 modules
+in `fiber-protected-al-fjcnvo8u` and fourteen distinct normal comparisons.
+The source reports are indexed outside Git in
+`.tools/calls-fiber-current-14/.tools/fiber-protected-308-prep-16/source-results.json`.
+The earlier body-throw control and the ordinary post-close dynamic-property
+warning have exact Unsupported comparisons in `fiber-review-u2nd8y53` and
+`fiber-review-___3cc1r`, with zero agreement. The original verbose finally source
+timed out at the existing 60 second cap in `fiber-review-dms99xrd`; the distinct focused
+source passes in `fiber-review-fi2ylmf3`. The original dynamic-property warning
+failure remains `fiber-review-8bkqxy08`; its distinct array-key warning companion
+passes in `fiber-review-abok_36q`. Both gaps remain required follow-ons.
+Three authored source groups/227 conditions and eleven independent groups/860
+conditions pass. Their exact reports are indexed beside the source results in
+`state-results.json`; `fiber_protected_state.py` and `fiber_protected_review.py`
+maintain identical source/check data. The two schema-affected existing groups
+pass separately in `fiber-state-review-gsjgh1fs` and `fiber-state-review-h8npgal7`
+(54 and 61 conditions). The malformed previous-child failure
+`fiber-state-review-y4jx1snr`, local/global fixture failures and missing-catalogue
+harness stop retain zero credit. Semantic review accepts this bounded 277 module cut.
+The structurally reviewed transfer 4d7875dd1 to the current parent remains unexecuted;
+canonical integration is pending.
 
 ## Required follow-ons
 

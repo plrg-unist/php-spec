@@ -72,6 +72,17 @@ credit in the existing ledger. Parked running Generators, switching
 finalizers, request/terminal cleanup, GC and general user destructors remain open.
 [Scope and retained evidence](docs/semantics/GENERATOR-FIBER-CLOSE.md).
 
+Independently reviewed private module 308 extends force-close of captured cleanup
+after an actual callback return: private previous ownership, source-less deprecation, restored reporting
+and shared handler registration. A nonowning protected pair rejects an older
+unrelated Throwable substituted as the child. The fixed 277 module cut passes AL,
+fourteen distinct normal source comparisons and two precise Unsupported controls
+with zero agreement. Three authored groups/227 conditions and eleven independent
+groups/860 conditions pass, along with two affected existing schema groups.
+Private transfer 4d7875dd1 has 280 modules and is structurally reviewed but unexecuted.
+The original verbose-source timeout and ordinary dynamic-property warning gap
+remain required; undefined-result engine verification remains held.
+
 Ordinary eager destruction270 releases consumed slots in native order, retaining
 pending owners through callbacks, throws and resurrection. MAIN preserves source
 permission and catch/trace behavior; used results, borrowed CV receivers and
