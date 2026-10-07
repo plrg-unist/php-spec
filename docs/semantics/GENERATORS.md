@@ -62,7 +62,7 @@ admission and ownership checks use actual source-reached states.
 Array, source Iterator and Generator graph delegation are covered by
 [Module289](GENERATOR-DELEGATION.md), including shared progress, return transfer,
 live callback references and natural owner cleanup. IteratorAggregate,
-reference yields, arrow Generators, dynamic/nullsafe
+reference yields, dynamic/nullsafe
 API calls, named/unpacked API arguments, scoped static and implicit callback
 creation, and creation through changed/imported caller scope remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
@@ -72,6 +72,13 @@ to the active Fiber stack while preserving real parked caller owners. Request-en
 terminal cleanup, parked running Generators, switching finalizers, general user
 destructors and cyclic collection remain required; their explicit Unsupported controls earn no
 agreement. Natural return/throw/finally cleanup remains distinct from forced close.
+
+[Arrow Generators311](ARROW-GENERATORS.md) privately validate the existing capture
+and implicit-return routes. Eager parameters, sent results, delegation, scope and
+original signatures retain separate source/state cuts. Value-warning cleanup
+retains the same Throwable, cached key and closed Closure owner. A separate
+frozen287 default/Fiber/eval composition passes one source and148 reached
+premises; latest-parent join and ordered Git integration remain required.
 
 Constructor-created global constant instances follow the existing noncache
 policy for object defaults. Receives, yield caches and return values retain the

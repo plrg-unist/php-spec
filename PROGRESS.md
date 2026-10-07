@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Arrow Generator311 is privately validated on frozen310/276:44 normal source
+agreements, nine compiler rejections and10 genuine strict-SL groups with987
+setup-inclusive premises retain separate cuts; two required Unsupported controls
+earn zero agreement. Eager receives, deferred captures, implicit sent/delegated
+returns and original signatures use accepted280/95/118. Value warnings freeze
+null before delayed keys; throwing handlers install the closed Closure owner
+before eager frame retirement. The frozen286 parent is privately composed
+with exact311 and maintained fixtures at287 modules. One fresh original combines
+an eager NEW default, active Fiber, temporary Stringable eval CV ECHO entry and
+last-owner child close. Its scoped source/Fiber validator repair passes strict
+compiler287, one native/model agreement and148 independent reached premises;
+earlier cuts retain their identities. Latest-parent cleanup/property composition
+and ordered Git integration remain required. [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
+
 The canonical source includes accepted ArrayAccess292/304, eager destruction270,
 WeakReference296, Fiber291/302/308, Generator289/303/310 and source operands293/298,
 with 286 modules descended from `38f1dfaa045f`. The ordered source integration
