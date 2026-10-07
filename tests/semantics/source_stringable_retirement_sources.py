@@ -22,7 +22,8 @@ CASES = {'regular': 'deferred-regular.php',
          'expression-cv': 'cv-child.php', 'expression-property': 'property-child.php',
          'expression-call-property': 'call-property-child.php',
          'expression-generator': 'generator-expression-child.php',
-         'expression-cycle-collection': 'generator-expression-child.php'}
+         'expression-cycle-collection': 'generator-expression-child.php',
+         'expression-cycle-direct': 'generator-expression-child.php'}
 
 b64 = lambda value: base64.b64encode(value).decode()
 
