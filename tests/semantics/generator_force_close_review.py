@@ -6,10 +6,23 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import struct
+import sys
 import tempfile
 from generator_review import run
 
 ROOT = Path(__file__).resolve().parents[2]
+REQUEST_CASES = set()
+
+# Existing FD198 transport: primitive request inputs, no PHP evaluation.
+REQUEST_EXEC = '''import os,sys
+fd=os.open(sys.argv[-1],os.O_RDONLY)
+os.dup2(fd,198,inheritable=True)
+if fd!=198: os.close(fd)
+os.chdir(sys.argv[-3])
+env=dict(os.environ,LD_PRELOAD=sys.argv[-2])
+os.execve(sys.argv[1],sys.argv[1:-3],env)
+'''
 CASES = {'graph-temporary-child': (b'<?php\nfunction inner(){try{yield 1;}finally{echo "I";}}function outer(){try{yield from inner();}finally{echo'
                            b' "O";}}$g=outer();echo $g->current();unset($g);echo "Z";\n',
                            b'1IOZ',
@@ -228,6 +241,7 @@ UNSUPPORTED = {'request-end-required': (b'<?php\nfunction seq(){try{yield 1;}fin
 WATCHED = [
     "spec/semantics/30-storage.watsup",
     "spec/semantics/39-ownership.watsup", "spec/semantics/40-control.watsup",
+    "spec/semantics/80-call-control.watsup",
     "spec/semantics/148-core-intrinsics.watsup", "spec/semantics/257-request-destructors.watsup",
     "spec/semantics/280-generators.watsup", "spec/semantics/289-generator-delegation.watsup",
     "spec/semantics/303-generator-force-close.watsup", "spec/semantics/modules.json",
@@ -247,6 +261,8 @@ def main():
     args = parser.parse_args()
     names = args.select.split(",") if args.select else list(CASES) + list(DECLARATIONS) + list(UNSUPPORTED)
     assert names and len(names) == len(set(names)) and all(n in CASES or n in DECLARATIONS or n in UNSUPPORTED for n in names)
+    if set(names) & REQUEST_CASES:
+        WATCHED.extend(["native/request_clock.c", "scripts/build-request-provider.sh", ".tools/request-clock.so"])
     profile = json.loads((ROOT / "tests/semantics/profile.json").read_text())
     php = ROOT / ".tools/php/bin/php"
     flags = [v for key, value in profile.items() for v in ["-d", f"{key}={value}"]]
@@ -277,7 +293,25 @@ def main():
             path.write_bytes(source)
             row = {"id": name, "source_sha256": hashlib.sha256(source).hexdigest(), "model_status": "UNRUN"}
             report["records"].append(row)
-            native = run([str(php), "-n", *flags, str(path)], case / "native", 10)
+            native_command = [str(php), "-n", *flags, str(path)]
+            model_command = [str(ROOT / "bin/php-semantics"), str(path), "--steps", "100000", "--timeout", "60"]
+            if name in REQUEST_CASES:
+                b64 = lambda value: base64.b64encode(value).decode()
+                request = {"env": [[b64(b"LC_ALL"), b64(b"C")], [b64(b"TZ"), b64(b"UTC")]],
+                           "argv": [b64(os.fsencode(path))], "file": b64(os.fsencode(path)),
+                           "seconds": "1700000000", "microseconds": 125000,
+                           "variables": b64(b"EGPCS"), "jit": True, "cwd": b64(os.fsencode(ROOT))}
+                context, payload = case / "request.json", case / "request-input.bin"
+                context.write_text(json.dumps(request) + "\n")
+                entries = [base64.b64decode(k) + b"=" + base64.b64decode(v) for k, v in request["env"]]
+                payload.write_bytes(b"PHPRQ001" + struct.pack("<qII", int(request["seconds"]), request["microseconds"], len(entries))
+                                    + b"".join(struct.pack("<I", len(e)) + e for e in entries))
+                native_command[-1:-1] = ["-d", "variables_order=EGPCS", "-d", "auto_globals_jit=1"]
+                native_command = [sys.executable, "-c", REQUEST_EXEC, *native_command,
+                                  str(ROOT), str(ROOT / ".tools/request-clock.so"), str(payload)]
+                model_command += ["--request-context", str(context)]
+                row.update(request=request, request_profile={**profile, "variables_order": "EGPCS", "auto_globals_jit": "1"})
+            native = run(native_command, case / "native", 10)
             row.update(native_exit=native.returncode, native_stdout=base64.b64encode(native.stdout).decode(), native_stderr=base64.b64encode(native.stderr).decode())
             if name in DECLARATIONS:
                 message, line = DECLARATIONS[name][1:]
@@ -288,7 +322,7 @@ def main():
                 expected_exit = CASES[name][2] if name in CASES else UNSUPPORTED[name][3]
                 assert native.returncode == expected_exit and not native.stderr and native.stdout == expected, (name, native)
             if args.mode == "full":
-                model = run([str(ROOT / "bin/php-semantics"), str(path), "--steps", "100000", "--timeout", "60"], case / "model", 90)
+                model = run(model_command, case / "model", 90)
                 row["model_exit"] = model.returncode
                 assert not model.stderr, (name, model.stderr)
                 observation = json.loads(model.stdout)
