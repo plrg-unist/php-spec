@@ -83,10 +83,12 @@ rule PhpStep/compound-prepare: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, 
 rule PhpStep/compound-apply: S ~> S_updated[.HELD = S.HELD]
   -- if S.TODO = (COMPOUND_APPLY pbin pbase false z) :: ptask_tail*
   -- if ~$key_write_pending(S)
+  -- if ~$access_compound_pending(S)
   -- if S_updated = $compound_target($hold_task_inputs(S), pbin, pbase, S.RESULT, z)
 rule PhpStep/compound-self: S ~> S_updated[.HELD = S.HELD]
   -- if S.TODO = (COMPOUND_APPLY pbin pbase true z) :: ptask_tail*
   -- if ~$key_write_pending(S)
+  -- if ~$access_compound_pending(S)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_updated = $compound_target($hold_task_inputs(S_read), pbin, pbase, S_read.RESULT, z)

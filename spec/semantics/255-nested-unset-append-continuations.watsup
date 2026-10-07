@@ -30,7 +30,7 @@ def $key_unset_nested_context(S, porigin_root, pbase, porigin) = true
   -- if $key_write_site(S, porigin_root, false, porigin, false)
 def $key_unset_nested_context(S, porigin_root, pbase, porigin) = false -- otherwise
 def $key_unset_pending(S) = true
-  -- if $error_handler_eligible(S, 2) \/ $error_handler_eligible(S, 8192)
+  -- if $error_handler_eligible(S, 2) \/ $error_handler_eligible(S, 8192) \/ $access_unset_walk(S)
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if ~$key_edit_direct_base(S.BASE)
@@ -47,8 +47,9 @@ rule PhpStep/key-unset-cv: S ~> S_found[.TODO = ptask_tail*][.RESULT = KNOWN PNU
   -- if S_found = $find_name(S, n_name*, z, false)
 def $task_nodes(KEY_UNSET_BASE pbase b) = eps
 def $task_nodes(KEY_UNSET_DIM poperand z b) = eps
-def $key_unset_fetch_done(S, plocation) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = plocation]
+def $key_unset_fetch_done(S, plocation) = $access_fetch_release(S_out, plocation)
   -- if S.TODO = ptask :: ptask_tail*
+  -- if S_out = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = plocation]
 def $key_unset_dimension(S, poperand, z, b) = $key_unset_dispatch(S_array, pkeyread)
   -- if b
   -- if $key_write_array_slot($location_slot(S, S.LOCATION))
@@ -108,6 +109,7 @@ def $key_unset_dimension(S, poperand, z, false) = S_out[.HELD = S.HELD][.RESULT 
   -- if S_out = $unset_intermediate($hold_task_inputs(S), pvalue, S.LOCATION, poperand, z)
 rule PhpStep/key-unset-dimension: S ~> $key_unset_dimension(S, poperand, z, b)
   -- if S.TODO = (KEY_UNSET_DIM poperand z b) :: ptask_tail*
+  -- if ~$access_unset_dimension_pending(S)
 def $key_unset_fetch_value(S, pkeyread) = $key_unset_fetch_dispatch(S, pkeyread[.PHASE = KEY_NULL])
   -- if pkeyread.VALUE = PNULL
 def $key_unset_fetch_value(S, pkeyread) = $key_unset_fetch_dispatch(S, pkeyread[.PHASE = KEY_FLOAT castnotice castnotice_tail*][.KEY = KINT i])

@@ -1,11 +1,11 @@
 ;; Names designate cells. Rebinding a name changes its cell, not the old cell's value.
 syntax pslot = UNDEFINED | DEFINED pvalue
 syntax pbinding = BIND nat* nat
-syntax poperand = KNOWN pvalue | VARIABLE nat* int | REFERENCE nat
 syntax porigin = PORIGIN nat pcpath | TRAIT_ORIGIN porigin porigin ptbytes | TRAIT_MEMBER_ORIGIN porigin porigin
 syntax ppropertyid = porigin | INTERNAL_PROPERTY text ptbytes
 syntax plocation = ROOT nat | ELEMENT nat pkey | PROPERTY nat ptbytes | CLASS_STATIC ppropertyid | NOWHERE
-syntax pbase = BASE_VALUE poperand | BASE_GLOBAL poperand int | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int | BASE_PLACE porigin plocation | BASE_PROPERTY pvalue ptbytes | BASE_PROPERTY_PENDING pbase poperand int | BASE_CHAIN_PROPERTY pvalue ptbytes int | BASE_CLASS_STATIC porigin ptbytes | BASE_CLASS_STATIC_PENDING poperand poperand | BASE_SHORT
+syntax poperand = KNOWN pvalue | VARIABLE nat* int | REFERENCE nat | BORROWED plocation
+syntax pbase = BASE_VALUE poperand | BASE_GLOBAL poperand int | BASE_NAME poperand int | BASE_DIM pbase poperand int | BASE_APPEND pbase int | BASE_PLACE porigin plocation | BASE_RETURNED porigin nat | BASE_PROPERTY pvalue ptbytes | BASE_PROPERTY_PENDING pbase poperand int | BASE_CHAIN_PROPERTY pvalue ptbytes int | BASE_CLASS_STATIC porigin ptbytes | BASE_CLASS_STATIC_PENDING poperand poperand | BASE_SHORT
 syntax pnode = HCELL nat | HARRAY nat | HOBJECT nat
 syntax pvstage = PVFOLD | PVEXEC
 syntax pvalueclass = PVSCALAR | PVSTRING bool | PVARRAY bool (pkey, pvalueclass)* | PVCLOSURE nat porigin | PVOBJECT | PVINSTANCE nat porigin
@@ -146,8 +146,8 @@ syntax pcontainerkind = CONTAINER_FETCH | CONTAINER_ASSIGN | CONTAINER_COMPOUND
 syntax pcontainerwrite = { SITE porigin, WRITER pkeywriter, INPUT poperand, PLACE plocation, BINDING ptbytes?, LINE int, RW bool, KIND pcontainerkind, PHASE pcontainerphase }
 syntax pcontainerreadphase = READ_BASE_CV ptbytes | READ_KEY_CV ptbytes | READ_OFFSET pvalue
 syntax pcontainerread = { READ pkeyread, SELECTED poperand, PHASE pcontainerreadphase }
-syntax paccessmode = ACCESS_READ pkeymode | ACCESS_SET | ACCESS_UNSET
-syntax paccessphase = ACCESS_KEY_CV ptbytes | ACCESS_VALUE_CV ptbytes | ACCESS_UNSET_FALSE | ACCESS_TRUTH ptbytes bool | ACCESS_CALL ptbytes
+syntax paccessmode = ACCESS_READ pkeymode | ACCESS_SET | ACCESS_UNSET | ACCESS_COMPOUND pbin pvalue | ACCESS_FETCH bool bool
+syntax paccessphase = ACCESS_KEY_CV ptbytes | ACCESS_VALUE_CV ptbytes | ACCESS_UNSET_FALSE | ACCESS_TRUTH ptbytes bool | ACCESS_CALL ptbytes | ACCESS_NOTICE
 syntax paccess = { SITE porigin, TARGET porigin, LINE int, KEYLINE int, MODE paccessmode, BASE pbase, INPUT poperand, RHS poperand, SELECTED poperand, OBJECT nat?, OFFSET pvalue, VALUE pvalue, LATCH bool, OUTER bool, TASK ptask, PHASE paccessphase }
 syntax perrorcall = { SITE porigin, LEVEL int, MESSAGE nat*, LINE int, EVENT pevent, CALLBACK pvalue, TARGET pcalltarget?, RESUME ptask }
 syntax pfdiagnostic = { SITE porigin, OWNER porigin, LEVEL int, MESSAGE nat*, LINE int }
@@ -969,3 +969,25 @@ dec $access_selected(pstate, pcalltarget, porigin) : bool
 dec $access_context_kind(pstate, pcallcontext) : bool
 dec $access_context(pstate, pcallcontext) : bool
 dec $access_chain(pstate, pcallcontext?, pframe*) : bool
+dec $access_write_base(pstate, pbase) : bool
+dec $access_write_pending(pstate) : bool
+dec $access_unset_walk(pstate) : bool
+dec $access_write_dimension_pending(pstate) : bool
+dec $access_unset_dimension_pending(pstate) : bool
+dec $access_has_returned(pbase) : bool
+dec $access_path_base(pkeywriter, plocation) : pbase
+dec $access_fetch_release(pstate, plocation) : pstate
+dec $access_operand_roots(paccess) : pnode*
+dec $access_extra_roots(paccess) : pnode*
+dec $access_inner_phase(paccessphase) : bool
+dec $access_done(pstate, paccess, pvalue) : pstate
+dec $access_compound_value(pstate, paccess) : pstate
+dec $access_compound_discard(pstate, paccess) : pstate
+dec $access_compound_mode(paccessmode) : bool
+dec $access_value_mode(paccessmode) : bool
+dec $access_compound_selected(paccess) : bool
+dec $access_borrowed_selected(pstate, paccess) : bool
+dec $access_compound_pending(pstate) : bool
+dec $access_two_arguments(paccess) : bool
+dec $access_reference_temporary(pstate, pkeywriter) : bool
+dec $access_terminal_pending(pstate) : bool

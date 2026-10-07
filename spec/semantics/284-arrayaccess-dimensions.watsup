@@ -239,8 +239,11 @@ def $access_key(S, paccess) = $access_key_done(S, paccess)
   -- if ~$error_missing_operand(S, paccess.INPUT)
 def $access_key_done(S, paccess) = $access_value(S, paccess)
   -- if paccess.MODE = ACCESS_SET
+def $access_key_done(S, paccess) = $access_compound_value(S, paccess)
+  -- if $access_compound_mode(paccess.MODE)
 def $access_key_done(S, paccess) = $access_offset(S, paccess)
   -- if paccess.MODE =/= ACCESS_SET
+  -- if ~$access_compound_mode(paccess.MODE)
 ;; The RHS pointer is dereferenced before invoking offsetSet. Its later readback
 ;; can observe a changed value in the same CV or the originally selected CELL.
 def $access_value(S, paccess) = $access_dispatch(S, paccess[.PHASE = ACCESS_VALUE_CV n_name*][.SELECTED = KNOWN PNULL][.VALUE = PNULL])
@@ -309,8 +312,8 @@ def $access_nonobject(S, paccess, pvalue) = S_out
 def $access_nonobject(S, paccess, PBOOL false) = $error_dispatch(S[.ORIGIN = (paccess.SITE)], 8192, $ptascii("Automatic conversion of false to array is deprecated"), paccess.LINE, DIAGNOSTIC "Deprecated" $ptascii("Automatic conversion of false to array is deprecated") paccess.LINE, ACCESS_RESUME paccess[.PHASE = ACCESS_UNSET_FALSE][.VALUE = PBOOL false])
   -- if paccess.MODE = ACCESS_UNSET
 
-def $access_arguments(paccess) = [KNOWN paccess.OFFSET, KNOWN paccess.VALUE] -- if paccess.MODE = ACCESS_SET
-def $access_arguments(paccess) = [KNOWN paccess.OFFSET] -- if paccess.MODE =/= ACCESS_SET
+def $access_arguments(paccess) = [KNOWN paccess.OFFSET, KNOWN paccess.VALUE] -- if $access_two_arguments(paccess)
+def $access_arguments(paccess) = [KNOWN paccess.OFFSET] -- if ~$access_two_arguments(paccess)
 def $access_call(S, paccess, ptbytes) = S[.TODO = (CALL_ARGS (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) eps (|poperand*|) poperand* (paccess.SITE) paccess.LINE) :: (ACCESS_RESULT paccess[.PHASE = ACCESS_CALL ptbytes]) :: ptask_tail*][.ORIGIN = (paccess.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if paccess.OBJECT = (n)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
@@ -382,11 +385,11 @@ def $access_result_done(S, paccess, pvalue) = $key_read_done(S, pvalue)
   -- if paccess.PHASE = ACCESS_CALL ptbytes
   -- if ptbytes = $ptascii("offsetGet")
   -- if paccess.MODE = ACCESS_READ KEY_R \/ paccess.MODE = ACCESS_READ KEY_IS
-def $access_result_done(S, paccess, pvalue) = $key_read_done(S, pvalue_result)
+def $access_result_done(S, paccess, pvalue) = $access_done(S, paccess, pvalue_result)
   -- if paccess.MODE = ACCESS_SET
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
   -- if S_read.RESULT = KNOWN pvalue_result
-def $access_result_done(S, paccess, pvalue) = $key_read_done(S, PNULL)
+def $access_result_done(S, paccess, pvalue) = $access_done(S, paccess, PNULL)
   -- if paccess.MODE = ACCESS_UNSET
 rule PhpStep/access-result: S ~> $access_result(S_read, paccess, pvalue)
   -- if S.TODO = (ACCESS_RESULT paccess) :: ptask_tail*
@@ -416,15 +419,15 @@ rule PhpStep/access-unset-false-resume: S ~> $key_read_done(S, PNULL)
   -- if paccess.PHASE = ACCESS_UNSET_FALSE
   -- if $access_valid(S, paccess)
 
-def $access_roots(paccess, b_inner) = $base_nodes(paccess.BASE) ++ $operand_nodes(paccess.INPUT) ++ $operand_nodes(paccess.RHS) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) ++ $access_object_roots(paccess.OBJECT, b_inner) ++ $access_offset_roots(paccess.OFFSET, b_inner)
+def $access_roots(paccess, b_inner) = $access_operand_roots(paccess) ++ $access_extra_roots(paccess) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) ++ $access_object_roots(paccess.OBJECT, b_inner) ++ $access_offset_roots(paccess.OFFSET, b_inner)
 def $access_object_roots((n), true) = [HOBJECT n]
 def $access_object_roots(n?, b) = eps -- otherwise
 def $access_offset_roots(pvalue, true) = $value_nodes(pvalue)
 def $access_offset_roots(pvalue, false) = eps
 def $task_nodes(ACCESS_RESULT paccess) = $access_roots(paccess, true)
-def $task_nodes(ACCESS_RESUME paccess) = $access_roots(paccess, $access_truth_phase(paccess.PHASE))
-def $return_discard(S, ACCESS_RESULT paccess) = S[.ORIGIN = (paccess.SITE)]
-def $return_discard(S, ACCESS_RESUME paccess) = S[.ORIGIN = (paccess.SITE)]
+def $task_nodes(ACCESS_RESUME paccess) = $access_roots(paccess, $access_inner_phase(paccess.PHASE))
+def $return_discard(S, ACCESS_RESULT paccess) = $access_compound_discard(S[.ORIGIN = (paccess.SITE)], paccess)
+def $return_discard(S, ACCESS_RESUME paccess) = $access_compound_discard(S[.ORIGIN = (paccess.SITE)], paccess)
 
 ;; Source certificates bind the implicit protocol to its original DIM consumer.
 def $access_base_source(S, paccess) = $key_read_owners_source(S, {SITE paccess.TARGET, GLOBAL false, MODE KEY_R, INPUT paccess.INPUT, VALUE PNULL, BASE pvalue, OWNERS paccess.BASE, LINE paccess.KEYLINE, PHASE KEY_NULL, KEY KSTRING eps, NAME eps})
@@ -481,7 +484,7 @@ def $access_phase(paccess) = true
   -- if paccess.VALUE = PNULL
 def $access_phase(paccess) = true
   -- if paccess.PHASE = ACCESS_VALUE_CV n_name*
-  -- if paccess.MODE = ACCESS_SET
+  -- if $access_value_mode(paccess.MODE)
   -- if paccess.RHS = VARIABLE n_name* z
   -- if paccess.SELECTED = KNOWN PNULL
   -- if paccess.VALUE = PNULL
@@ -545,6 +548,8 @@ def $access_valid(S, paccess) = true
   -- if $access_phase(paccess)
   -- if $access_capture_valid(paccess)
   -- if $access_selected_valid(paccess)
+  -- if $access_compound_selected(paccess)
+  -- if $access_borrowed_selected(S, paccess)
   -- if ~paccess.OUTER \/ paccess.OBJECT =/= eps
   -- if ~($access_call_phase(paccess.PHASE) \/ $access_truth_phase(paccess.PHASE)) \/ paccess.OBJECT =/= eps
   -- if paccess.OBJECT = eps \/ $access_object_valid(S, paccess.OBJECT)

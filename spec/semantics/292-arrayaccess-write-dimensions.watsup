@@ -1,0 +1,513 @@
+;; Ordinary by-value Get results: DIM_OP retains its rv through Set, whereas
+;; FETCH_W/RW/UNSET releases the std handler before the indirect Notice.
+dec $access_compound_plan(pstate) : paccess?
+dec $access_compound_base(pbase) : (pbase, poperand)?
+dec $access_compound_result(pstate, paccess, pvalue) : pstate
+dec $access_compound_set(pstate, paccess) : pstate
+dec $access_compound_replaced(pstate, nat, ptask*) : pstate
+dec $access_write_task(ptask) : bool
+dec $access_write_final(ptask*) : bool
+dec $access_write_mode(pkeywriter, ptask*, bool) : paccessmode
+dec $access_write_fetch(pkeywriter, porigin) : bool
+dec $access_write_end(ptask*) : ptask*
+dec $access_write_record(pstate, poperand, int, bool) : paccess
+dec $access_unset_record(pstate, poperand, int, bool) : paccess
+dec $access_location_operand(pstate, porigin, plocation) : poperand
+dec $access_notice_message(pstate, paccess) : ptbytes
+dec $access_get_result(pstate, paccess, pvalue) : pstate
+dec $access_get_done(pstate, paccess, pvalue) : pstate
+dec $access_cut_base(pbase, porigin, porigin, pbase) : pbase
+dec $access_cut_tasks(ptask*, porigin, pbase) : ptask*
+dec $access_returned_valid(pstate, nat) : bool
+dec $access_original_writer(pstate, pkeywriter) : pkeywriter?
+dec $access_parent_cell(pbase, porigin, porigin) : nat?
+dec $access_parent_tasks(ptask*, porigin) : nat?
+dec $access_fetch_releases(ptask*, porigin) : bool
+dec $access_extract(pstate, pitem, porigin) : pstate
+dec $access_release_selected(pstate, plocation, porigin) : pstate
+dec $access_result_object(pvalue) : bool
+dec $access_write_site(pkeywriter, paccessmode, porigin) : porigin
+dec $access_binary_state(pstate, paccess, pvalue) : pstate
+dec $access_terminal_value(pstate, pkeywriter, poperand, int) : pstate
+dec $access_borrowed_operand_valid(pstate, poperand) : bool
+
+def $access_compound_mode(ACCESS_COMPOUND pbin pvalue) = true
+def $access_compound_mode(paccessmode) = false -- otherwise
+def $access_value_mode(paccessmode) = (paccessmode = ACCESS_SET \/ $access_compound_mode(paccessmode))
+def $access_inner_phase(paccessphase) = $access_truth_phase(paccessphase)
+
+;; The finish task owns original operands during a walker. A standalone DIM_OP
+;; instead transfers those operands into its access carrier exactly once.
+def $access_write_task(KEY_WRITE_DIM poperand z b) = true
+def $access_write_task(KEY_UNSET_DIM poperand z b) = true
+def $access_write_task(ptask) = false -- otherwise
+def $access_operand_roots(paccess) = eps -- if $access_write_task(paccess.TASK)
+def $access_operand_roots(paccess) = $base_nodes(paccess.BASE) ++ $operand_nodes(paccess.INPUT) ++ $operand_nodes(paccess.RHS)
+  -- if ~$access_write_task(paccess.TASK)
+def $access_extra_roots(paccess) = $value_nodes(pvalue_left) ++ $value_nodes(paccess.VALUE)
+  -- if paccess.MODE = ACCESS_COMPOUND pbin pvalue_left
+  -- if paccess.PHASE = ACCESS_CALL ptbytes
+  -- if ptbytes = $ptascii("offsetSet")
+def $access_extra_roots(paccess) = $value_nodes(paccess.VALUE)
+  -- if paccess.PHASE = ACCESS_NOTICE
+def $access_extra_roots(paccess) = eps -- otherwise
+
+;; Defined OP_DATA CVs stay as CV pointers through Get; an undefined CV is
+;; latched to the independent null returned by zval_undefined_cv.
+def $access_compound_value(S, paccess) = $access_dispatch(S, paccess[.PHASE = ACCESS_VALUE_CV n_name*][.SELECTED = KNOWN PNULL])
+  -- if paccess.RHS = VARIABLE n_name* z
+  -- if $error_missing_operand(S, paccess.RHS)
+def $access_compound_value(S, paccess) = $access_offset(S, paccess[.SELECTED = paccess.RHS])
+  -- if ~$error_missing_operand(S, paccess.RHS)
+def $access_live(S, paccess) = $access_call(S, paccess, $ptascii("offsetGet"))
+  -- if $access_compound_mode(paccess.MODE)
+def $access_live(S, paccess) = $access_call(S, paccess, $ptascii("offsetGet"))
+  -- if paccess.MODE = ACCESS_FETCH b_unset b_rw
+def $access_two_arguments(paccess) = true -- if paccess.MODE = ACCESS_SET
+def $access_two_arguments(paccess) = true
+  -- if $access_compound_mode(paccess.MODE)
+  -- if paccess.PHASE = ACCESS_CALL ptbytes
+  -- if ptbytes = $ptascii("offsetSet")
+def $access_two_arguments(paccess) = false -- otherwise
+
+def $access_compound_base(BASE_DIM pbase poperand z) = ((pbase, poperand))
+def $access_compound_base(BASE_APPEND pbase z) = ((pbase, KNOWN PNULL))
+def $access_compound_base(pbase) = eps -- otherwise
+def $access_compound_plan(S) = (paccess)
+  -- if S.TODO = (COMPOUND_APPLY pbin pbase b z) :: ptask_tail*
+  -- if ~b
+  -- if S.ORIGIN = (porigin)
+  -- if $access_compound_base(pbase) = ((BASE_VALUE poperand_base, poperand))
+  -- if S_base = $quiet_operand(S, poperand_base)
+  -- if S_base.RESULT = KNOWN (POBJECT n)
+  -- if $access_instance(S, POBJECT n)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if paccess = $access_record(S, porigin_target, z, ACCESS_COMPOUND pbin PNULL, BASE_VALUE poperand_base, poperand, S.RESULT, COMPOUND_APPLY pbin pbase b z, (n), true)
+def $access_compound_plan(S) = eps -- otherwise
+def $access_compound_pending(S) = ($access_compound_plan(S) =/= eps)
+rule PhpStep/access-compound-start: S ~> $access_key(S, paccess)
+  -- if $access_compound_plan(S) = (paccess)
+
+def $access_binary_state(S, paccess, pvalue_left) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.HELD = S.HELD ++ $access_operand_roots(paccess) ++ $access_object_roots(paccess.OBJECT, true) ++ $value_nodes(pvalue_left)]
+  -- if S.TODO = ptask :: ptask_tail*
+def $access_compound_result(S, paccess, pvalue_left) = $access_compound_set(S_binary[.TODO = S.TODO][.HELD = S.HELD][.RESULT = KNOWN PNULL], paccess[.MODE = ACCESS_COMPOUND pbin pvalue_left][.VALUE = pvalue_result][.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+  -- if paccess.MODE = ACCESS_COMPOUND pbin PNULL
+  -- if S_work = $access_binary_state(S, paccess, pvalue_left)
+  -- if S_rhs = $quiet_operand(S_work, paccess.SELECTED)
+  -- if S_rhs.RESULT = KNOWN pvalue_right
+  -- if S_binary = $binary_apply(S_rhs[.RESULT = KNOWN PNULL], pbin, pvalue_left, pvalue_right, paccess.LINE)
+  -- if S_binary.COMPLETION = NORMAL
+  -- if S_binary.RESULT = KNOWN pvalue_result
+def $access_compound_result(S, paccess, pvalue_left) = S_binary[.HELD = S.HELD]
+  -- if paccess.MODE = ACCESS_COMPOUND pbin PNULL
+  -- if S_work = $access_binary_state(S, paccess, pvalue_left)
+  -- if S_rhs = $quiet_operand(S_work, paccess.SELECTED)
+  -- if S_rhs.RESULT = KNOWN pvalue_right
+  -- if S_binary = $binary_apply(S_rhs[.RESULT = KNOWN PNULL], pbin, pvalue_left, pvalue_right, paccess.LINE)
+  -- if S_binary.COMPLETION =/= NORMAL
+def $access_compound_set(S, paccess) = $access_call(S, paccess[.OFFSET = PNULL], $ptascii("offsetSet")) -- if paccess.LATCH
+def $access_compound_set(S, paccess) = $access_call(S[.RESULT = KNOWN PNULL], paccess[.OFFSET = pvalue], $ptascii("offsetSet"))
+  -- if ~paccess.LATCH
+  -- if S_key = $quiet_operand(S, paccess.INPUT)
+  -- if S_key.RESULT = KNOWN pvalue
+def $access_result_done(S, paccess, pvalue) = $access_compound_result(S, paccess, pvalue)
+  -- if $access_compound_mode(paccess.MODE)
+  -- if paccess.PHASE = ACCESS_CALL ptbytes
+  -- if ptbytes = $ptascii("offsetGet")
+def $access_result_done(S, paccess, pvalue) = $access_done(S, paccess, paccess.VALUE)
+  -- if $access_compound_mode(paccess.MODE)
+  -- if paccess.PHASE = ACCESS_CALL ptbytes
+  -- if ptbytes = $ptascii("offsetSet")
+
+;; A read_dimension NULL after a pending DIM_OP error calls
+;; zend_use_object_as_array, replacing that error at the original opcode line.
+def $access_compound_discard(S, paccess) = $access_compound_replaced($throwable_materialize($throw_scalar(S[.ORIGIN = (paccess.SITE)], "Error", $ptascii("Cannot use object of type ") ++ $object_name(S, n) ++ $ptascii(" as array"), paccess.LINE)), n_old, ptask_tail*)
+  -- if $access_compound_mode(paccess.MODE)
+  -- if paccess.PHASE =/= ACCESS_CALL $ptascii("offsetSet")
+  -- if paccess.OBJECT = (n)
+  -- if S.TODO = (THROW_SEARCH n_old) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+def $access_compound_discard(S, paccess) = S -- otherwise
+def $access_compound_replaced(S, n_old, ptask_tail*) = $throwable_begin($throwable_previous(S[.TODO = ptask_tail*], n_new, n_old))
+  -- if S.COMPLETION = THROWING n_new
+def $access_compound_replaced(S, n_old, ptask_tail*) = S -- otherwise
+def $error_read_discard(S, ACCESS_RESUME paccess) = $access_compound_discard(S[.ORIGIN = (paccess.SITE)], paccess)
+
+;; Admit the delayed walker without requiring a registered warning handler.
+;; Its earlier DIM_PATH route stays excluded when an AA prefix is present.
+def $access_write_base(S, pbase) = true -- if $access_probe(S, pbase)
+def $access_write_base(S, BASE_DIM pbase poperand z) = $access_write_base(S, pbase)
+  -- if ~$access_probe(S, BASE_DIM pbase poperand z)
+def $access_write_base(S, BASE_APPEND pbase z) = $access_write_base(S, pbase)
+  -- if ~$access_probe(S, BASE_APPEND pbase z)
+def $access_write_base(S, pbase) = false -- otherwise
+def $key_write_root(S, BASE_VALUE (VARIABLE n_name* z)) = true
+  -- if S_read = $quiet_operand(S, VARIABLE n_name* z)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $access_instance(S, pvalue)
+def $container_write_root(S, BASE_VALUE (VARIABLE n_name* z)) = true
+  -- if S_read = $quiet_operand(S, VARIABLE n_name* z)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $access_instance(S, pvalue)
+def $access_write_pending(S) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$key_write_path_task(ptask)
+  -- if $access_write_base(S, $key_write_task_base(ptask, S.BASE, S.RESULT))
+def $access_write_pending(S) = false -- otherwise
+def $access_write_final((ORIGIN_RETURN porigin?) :: ptask_tail*) = $access_write_final(ptask_tail*)
+def $access_write_final((KEY_WRITE_FINISH pkeywriter) :: ptask_tail*) = true
+def $access_write_final(ptask*) = false -- otherwise
+def $access_write_mode(pkeywriter, ptask*, b) = ACCESS_SET
+  -- if $access_write_final(ptask*)
+  -- if pkeywriter.TASK = ASSIGN_ARRAY pbase z b_self
+  -- if ~$key_append_task(pkeywriter.TASK)
+def $access_write_mode(pkeywriter, ptask*, b) = ACCESS_COMPOUND pbin PNULL
+  -- if $access_write_final(ptask*)
+  -- if pkeywriter.TASK = COMPOUND_APPLY pbin pbase b_self z
+def $access_write_mode(pkeywriter, ptask*, b) = ACCESS_FETCH false b -- otherwise
+def $access_write_fetch(pkeywriter, porigin) = false
+  -- if pkeywriter.TARGET = porigin
+  -- if pkeywriter.TASK = ASSIGN_ARRAY pbase z b
+  -- if ~$key_append_task(pkeywriter.TASK)
+def $access_write_fetch(pkeywriter, porigin) = false
+  -- if pkeywriter.TARGET = porigin
+  -- if pkeywriter.TASK = COMPOUND_APPLY pbin pbase b z
+def $access_write_fetch(pkeywriter, porigin) = true -- otherwise
+def $access_write_dimension_pending(S) = true
+  -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue
+  -- if $access_instance(S, pvalue)
+  -- if $container_writer(ptask_tail*) =/= eps
+def $access_write_dimension_pending(S) = false -- otherwise
+def $access_write_record(S, poperand, z, b) = paccess
+  -- if S.ORIGIN = (porigin_target)
+  -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
+  -- if $container_writer(ptask_tail*) = (pkeywriter)
+  -- if $location_slot(S, S.LOCATION) = DEFINED (POBJECT n)
+  -- if paccessmode = $access_write_mode(pkeywriter, ptask_tail*, b)
+  -- if porigin = $access_write_site(pkeywriter, paccessmode, porigin_target)
+  -- if paccess = $access_record(S[.ORIGIN = (porigin)], porigin_target, z, paccessmode, BASE_VALUE (KNOWN PNULL), poperand, pkeywriter.RHS, KEY_WRITE_DIM poperand z b, (n), true)
+def $access_write_site(pkeywriter, ACCESS_FETCH b_unset b_rw, porigin) = porigin
+def $access_write_site(pkeywriter, paccessmode, porigin) = pkeywriter.SITE -- otherwise
+rule PhpStep/access-write-dimension: S ~> $access_key(S, $access_write_record(S, poperand, z, b))
+  -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
+  -- if $access_write_dimension_pending(S)
+
+def $access_unset_walk(S) = ($access_write_base(S, S.BASE) /\ ~$key_edit_direct_base(S.BASE))
+def $access_unset_dimension_pending(S) = true
+  -- if S.TODO = (KEY_UNSET_DIM poperand z b) :: ptask_tail*
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue
+  -- if $access_instance(S, pvalue)
+def $access_unset_dimension_pending(S) = false -- otherwise
+def $access_location_operand(S, porigin, ROOT n) = $rcontainer_selected(S, VARIABLE n_name* z)
+  -- if $container_binding(S, porigin, ROOT n) = (n_name*)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $code_expression_at_source(S, porigin_base, eps) = (z)
+def $access_location_operand(S, porigin, ROOT n) = BORROWED (ROOT n)
+  -- if $container_binding(S, porigin, ROOT n) = eps
+def $access_location_operand(S, porigin, ELEMENT n pkey) = REFERENCE n_cell
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
+def $access_location_operand(S, porigin, ELEMENT n pkey) = BORROWED (ELEMENT n pkey)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (DIRECT pvalue)
+def $quiet_operand(S, BORROWED plocation) = S[.RESULT = KNOWN pvalue]
+  -- if $location_slot(S, plocation) = DEFINED pvalue
+def $quiet_operand(S, BORROWED plocation) = S[.RESULT = KNOWN PNULL]
+  -- if $location_slot(S, plocation) = UNDEFINED
+;; Final nested Unset borrows a real row or extracted VAR. Its location must
+;; be in range; this does not assert a callback-history proof for the capture.
+def $access_borrowed_operand_valid(S, BORROWED (ROOT n)) = $(n < |S.STORE|)
+def $access_borrowed_operand_valid(S, BORROWED (ELEMENT n pkey)) = $(n < |S.ARRAYS|)
+def $access_borrowed_operand_valid(S, REFERENCE n) = $call_reference_operand_valid(S, REFERENCE n)
+def $access_borrowed_operand_valid(S, poperand) = false -- otherwise
+def $access_borrowed_selected(S, paccess) = $access_borrowed_operand_valid(S, paccess.SELECTED)
+  -- if paccess.MODE = ACCESS_UNSET
+  -- if paccess.TASK = KEY_UNSET_DIM poperand z true
+def $access_borrowed_selected(S, paccess) = true -- otherwise
+def $access_unset_record(S, poperand, z, false) = $access_record(S, porigin, z, ACCESS_FETCH true false, BASE_VALUE (KNOWN PNULL), poperand, KNOWN PNULL, KEY_UNSET_DIM poperand z false, (n), true)
+  -- if S.ORIGIN = (porigin)
+  -- if $location_slot(S, S.LOCATION) = DEFINED (POBJECT n)
+def $access_unset_record(S, poperand, z, true) = paccess[.SELECTED = $access_location_operand(S, porigin, S.LOCATION)]
+  -- if S.ORIGIN = (porigin)
+  -- if paccess = $access_record(S, porigin, z, ACCESS_UNSET, BASE_VALUE (KNOWN PNULL), poperand, KNOWN PNULL, KEY_UNSET_DIM poperand z true, eps, false)
+rule PhpStep/access-unset-dimension: S ~> $access_key(S, $access_unset_record(S, poperand, z, b))
+  -- if S.TODO = (KEY_UNSET_DIM poperand z b) :: ptask_tail*
+  -- if $access_unset_dimension_pending(S)
+
+def $access_notice_message(S, paccess) = $ptascii("Indirect modification of overloaded element of ") ++ $object_name(S, n) ++ $ptascii(" has no effect")
+  -- if paccess.OBJECT = (n)
+def $access_get_result(S, paccess, pvalue) = $error_dispatch(S[.RESULT = KNOWN PNULL][.ORIGIN = (paccess.SITE)], 8, $access_notice_message(S, paccess), paccess.LINE, DIAGNOSTIC "Notice" $access_notice_message(S, paccess) paccess.LINE, ACCESS_RESUME paccess[.PHASE = ACCESS_NOTICE][.VALUE = pvalue])
+  -- if ~$access_result_object(pvalue)
+def $access_get_result(S, paccess, pvalue) = $access_get_done(S, paccess, pvalue)
+  -- if $access_result_object(pvalue)
+def $access_result_object(POBJECT n) = true
+def $access_result_object(pvalue) = false -- otherwise
+def $access_result_done(S, paccess, pvalue) = $access_get_result(S, paccess, pvalue)
+  -- if paccess.MODE = ACCESS_FETCH b_unset b_rw
+def $access_get_done(S, paccess, pvalue) = S[.TODO = $access_cut_tasks(ptask_tail*, paccess.TARGET, BASE_RETURNED paccess.TARGET n)][.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.ORIGIN = (paccess.TARGET)][.LOCATION = ROOT n][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if n = |S.STORE|
+rule PhpStep/access-notice-resume: S ~> $access_get_done(S, paccess, paccess.VALUE)
+  -- if S.TODO = (ACCESS_RESUME paccess) :: ptask_tail*
+  -- if paccess.PHASE = ACCESS_NOTICE
+  -- if $access_valid(S, paccess)
+
+def $access_write_end((ORIGIN_RETURN porigin?) :: ptask_tail*) = $access_write_end(ptask_tail*)
+def $access_write_end((KEY_WRITE_FINISH pkeywriter) :: ptask_tail*) = ptask_tail*
+def $access_done(S, paccess, pvalue) = S[.TODO = $access_write_end(ptask_tail*)][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if paccess.TASK = KEY_WRITE_DIM poperand z b
+def $access_done(S, paccess, pvalue) = $key_read_done(S, pvalue) -- otherwise
+
+;; Owned Get VARs are explicit zvals, distinct from borrowed INDIRECT rows.
+def $base_nodes(BASE_RETURNED porigin n) = [HCELL n]
+def $base_acquire(S, BASE_RETURNED porigin n, z) = S[.LOCATION = ROOT n]
+def $rw_base(S, BASE_RETURNED porigin n, pstringfetch, z) = S[.LOCATION = ROOT n]
+def $base_find(S, BASE_RETURNED porigin n, z) = S[.LOCATION = ROOT n]
+def $quiet_base(S, BASE_RETURNED porigin n, z) = $quiet_operand(S, REFERENCE n)
+def $access_has_returned(BASE_RETURNED porigin n) = true
+def $access_has_returned(BASE_DIM pbase poperand z) = $access_has_returned(pbase)
+def $access_has_returned(BASE_APPEND pbase z) = $access_has_returned(pbase)
+def $access_has_returned(pbase) = false -- otherwise
+def $key_write_captured_base(BASE_RETURNED porigin n) = true
+def $key_write_root(S, BASE_RETURNED porigin n) = $access_returned_valid(S, n)
+def $key_tail_chain(BASE_RETURNED porigin n) = true
+def $access_returned_valid(S, n) = true
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if $(n < |S.STORE|)
+  -- if n <- S.REFCELLS \/ $heap_owners($heap_prune($heap_graph(S)), HCELL n) = 1
+def $access_returned_valid(S, n) = false -- otherwise
+def $key_write_base_source(S, porigin, BASE_RETURNED porigin n) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if $access_returned_valid(S, n)
+def $access_path_base(pkeywriter, ROOT n) = BASE_RETURNED pkeywriter.TARGET n
+  -- if pkeywriter.BASE = BASE_RETURNED pkeywriter.TARGET n
+def $access_path_base(pkeywriter, plocation) = BASE_PLACE pkeywriter.TARGET plocation -- otherwise
+
+def $access_cut_base(pbase, porigin, porigin, pbase_new) = pbase_new
+def $access_cut_base(BASE_DIM pbase poperand z, porigin_root, porigin, pbase_new) = BASE_DIM $access_cut_base(pbase, porigin_child, porigin, pbase_new) poperand z
+  -- if porigin_root =/= porigin
+  -- if $origin_child((porigin_root), [PCFIELD 0]) = (porigin_child)
+def $access_cut_tasks((KEY_WRITE_FINISH pkeywriter) :: ptask_tail*, porigin, pbase_new) = (KEY_WRITE_FINISH pkeywriter[.BASE = $access_cut_base(pkeywriter.BASE, pkeywriter.TARGET, porigin, pbase_new)][.TEMP = eps]) :: ptask_tail*
+def $access_cut_tasks((KEY_UNSET_FINISH porigin_root pbase) :: ptask_tail*, porigin, pbase_new) = (KEY_UNSET_FINISH porigin_root $access_cut_base(pbase, porigin_root, porigin, pbase_new)) :: ptask_tail*
+def $access_cut_tasks(ptask :: ptask_tail*, porigin, pbase_new) = ptask :: $access_cut_tasks(ptask_tail*, porigin, pbase_new)
+  -- if ~$key_write_finish_task(ptask)
+  -- if ~$key_unset_finish_task(ptask)
+
+;; FREE_VAR_PTR_AND_EXTRACT_RESULT_IF_NECESSARY releases the old VAR. If its
+;; array dies, the selected row becomes another genuine owned VAR instead.
+def $access_parent_cell(BASE_RETURNED porigin n, porigin, porigin) = (n)
+def $access_parent_cell(BASE_DIM pbase poperand z, porigin_root, porigin) = $access_parent_cell(pbase, porigin_child, porigin)
+  -- if porigin_root =/= porigin
+  -- if $origin_child((porigin_root), [PCFIELD 0]) = (porigin_child)
+def $access_parent_cell(pbase, porigin_root, porigin) = eps -- otherwise
+def $access_parent_tasks((KEY_WRITE_FINISH pkeywriter) :: ptask_tail*, porigin) = $access_parent_cell(pkeywriter.BASE, pkeywriter.TARGET, porigin)
+def $access_parent_tasks((KEY_UNSET_FINISH porigin_root pbase) :: ptask_tail*, porigin) = $access_parent_cell(pbase, porigin_root, porigin)
+def $access_parent_tasks(ptask :: ptask_tail*, porigin) = $access_parent_tasks(ptask_tail*, porigin)
+  -- if ~$key_write_finish_task(ptask)
+  -- if ~$key_unset_finish_task(ptask)
+def $access_parent_tasks(eps, porigin) = eps
+def $access_fetch_releases((KEY_WRITE_FINISH pkeywriter) :: ptask_tail*, porigin) = ~($key_write_direct_task(pkeywriter.TASK) /\ pkeywriter.TARGET = porigin)
+def $access_fetch_releases((KEY_UNSET_FINISH porigin_root pbase) :: ptask_tail*, porigin) = true
+def $access_fetch_releases(ptask :: ptask_tail*, porigin) = $access_fetch_releases(ptask_tail*, porigin)
+  -- if ~$key_write_finish_task(ptask)
+  -- if ~$key_unset_finish_task(ptask)
+def $access_fetch_releases(eps, porigin) = false
+def $access_fetch_release(S, plocation) = $access_release_selected(S, plocation, porigin)
+  -- if S.ORIGIN = (porigin)
+  -- if $access_fetch_releases(S.TODO, porigin)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_parent)
+  -- if $access_parent_tasks(S.TODO, porigin_parent) =/= eps
+def $access_fetch_release(S, plocation) = S -- otherwise
+def $access_release_selected(S, ELEMENT n pkey, porigin) = S_cut
+  -- if S_cut = S[.TODO = $access_cut_tasks(S.TODO, porigin, BASE_PLACE porigin (ELEMENT n pkey))]
+  -- if $($heap_owners($heap_prune($heap_graph(S_cut)), HARRAY n) > 0)
+def $access_release_selected(S, ELEMENT n pkey, porigin) = $access_extract(S_cut, pitem, porigin)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (pitem)
+  -- if S_cut = S[.TODO = $access_cut_tasks(S.TODO, porigin, BASE_PLACE porigin (ELEMENT n pkey))]
+  -- if $heap_owners($heap_prune($heap_graph(S_cut)), HARRAY n) = 0
+def $access_release_selected(S, NOWHERE, porigin) = $access_extract(S, DIRECT PNULL, porigin)
+def $access_release_selected(S, plocation, porigin) = S -- otherwise
+def $access_extract(S, ALIAS n, porigin) = S[.TODO = $access_cut_tasks(S.TODO, porigin, BASE_RETURNED porigin n)][.LOCATION = ROOT n]
+def $access_extract(S, DIRECT pvalue, porigin) = S[.TODO = $access_cut_tasks(S.TODO, porigin, BASE_RETURNED porigin n)][.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.LOCATION = ROOT n]
+  -- if n = |S.STORE|
+def $access_extract(S, UNINITIALIZED, porigin) = S[.TODO = $access_cut_tasks(S.TODO, porigin, BASE_RETURNED porigin n)][.STORE = S.STORE ++ [UNDEFINED]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]][.LOCATION = ROOT n]
+  -- if n = |S.STORE|
+
+;; ASSIGN_REF's target must be INDIRECT. Its source demand still occurs before
+;; the native invalid-target Error, unlike acquisition of a detached reference.
+def $access_reference_temporary(S, pkeywriter) = true
+  -- if $reference_write_task(pkeywriter.TASK)
+  -- if pkeywriter.BASE = BASE_RETURNED pkeywriter.TARGET n
+  -- if S.LOCATION = ROOT n
+def $access_reference_temporary(S, pkeywriter) = false -- otherwise
+rule PhpStep/access-reference-temporary: S ~> S[.LOCATION = NOWHERE]
+  -- if S.TODO = (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*
+  -- if S.ORIGIN = (pkeywriter.SITE)
+  -- if $key_writer_valid(S, pkeywriter, ptask_tail*)
+  -- if $access_reference_temporary(S, pkeywriter)
+
+;; A final string/scalar consumer keeps its own existing error kind. Earlier
+;; FETCHes continue to use the nested kind; string warning producers stay open.
+def $access_terminal_pending(S) = true
+  -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
+  -- if $access_write_final(ptask_tail*)
+  -- if $container_writer(ptask_tail*) = (pkeywriter)
+  -- if $access_has_returned(pkeywriter.BASE)
+  -- if ~$key_write_array_slot($location_slot(S, S.LOCATION))
+  -- if ~$container_slot($location_slot(S, S.LOCATION))
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue
+  -- if ~$access_instance(S, pvalue)
+def $access_terminal_pending(S) = false -- otherwise
+def $access_terminal_value(S, pkeywriter, poperand, z) = $assign_dimension(S, (poperand), pkeywriter.RHS, z, $key_write_line(pkeywriter.TASK))
+  -- if pkeywriter.TASK = ASSIGN_ARRAY pbase z_write b
+def $access_terminal_value(S, pkeywriter, poperand, z) = $compound_operands($compound_dimension(S, (poperand), z), pbin, pkeywriter.RHS, z)
+  -- if pkeywriter.TASK = COMPOUND_APPLY pbin pbase b z_write
+def $access_terminal_value(S, pkeywriter, poperand, z) = S_place
+  -- if pkeywriter.TASK = UPDATE_PREP pupdate b z_update
+  -- if S_place = $rw_dimension(S, (poperand), STRINGINCDEC, z)
+  -- if S_place.COMPLETION =/= NORMAL
+def $access_terminal_value(S, pkeywriter, poperand, z) = $update_location(S_place, pupdate, b, z_update)
+  -- if pkeywriter.TASK = UPDATE_PREP pupdate b z_update
+  -- if S_place = $rw_dimension(S, (poperand), STRINGINCDEC, z)
+  -- if S_place.COMPLETION = NORMAL
+def $access_terminal_value(S, pkeywriter, poperand, z) = $dimension_location(S, (poperand), STRINGREFERENCE, z)
+  -- if $key_write_reference_task(pkeywriter.TASK) \/ $reference_write_task(pkeywriter.TASK) \/ $key_write_named_task(pkeywriter.TASK)
+rule PhpStep/access-terminal-dimension: S ~> S_out[.TODO = $access_write_end(ptask_tail*)][.ORIGIN = (pkeywriter.SITE)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
+  -- if $access_terminal_pending(S)
+  -- if $container_writer(ptask_tail*) = (pkeywriter)
+  -- if S_out = $access_terminal_value(S, pkeywriter, poperand, z)
+
+;; Certificates bind opcode, original consumer and fixed operands. Selected
+;; dynamic object/value identities remain runtime captures, not history proofs.
+def $access_original_writer(S, pkeywriter) = (pkeywriter_original)
+  -- if $key_write_writer(S, pkeywriter.SITE, pkeywriter.TASK, $key_write_task_base(pkeywriter.TASK, pkeywriter.BASE, pkeywriter.RHS), pkeywriter.RHS) = (pkeywriter_original)
+  -- if pkeywriter_original.TARGET = pkeywriter.TARGET
+  -- if $key_writer_base_source(S, pkeywriter_original)
+def $access_original_writer(S, pkeywriter) = eps -- otherwise
+def $key_writer_valid(S, pkeywriter, ptask*) = true
+  -- if $access_original_writer(S, pkeywriter) = (pkeywriter_original)
+  -- if $access_has_returned(pkeywriter.BASE) \/ pkeywriter.BASE =/= pkeywriter_original.BASE
+  -- if $key_writer_base_source(S, pkeywriter)
+  -- if $key_write_rhs_source(S, pkeywriter)
+  -- if $key_write_temporary_valid(S, pkeywriter)
+  -- if ~$key_write_path_task(pkeywriter.TASK) \/ $key_write_path_kind(ptask*) =/= eps
+def $key_write_compound_line(S, porigin, porigin_target, BASE_APPEND pbase z, z) = ($code_expression_at_source(S, porigin_target, [PCFIELD 0]) = (z))
+
+def $access_source(S, paccess) = true
+  -- if paccess.MODE = ACCESS_COMPOUND pbin pvalue_left
+  -- if paccess.TASK = COMPOUND_APPLY pbin pbase b paccess.LINE
+  -- if $access_compound_base(pbase) = ((paccess.BASE, paccess.INPUT))
+  -- if $key_write_writer(S, paccess.SITE, paccess.TASK, pbase, paccess.RHS) = (pkeywriter)
+  -- if pkeywriter.TARGET = paccess.TARGET
+  -- if $access_base_source(S, paccess)
+  -- if $key_write_rhs_source(S, pkeywriter)
+  -- if paccess.OUTER
+  -- if paccess.KEYLINE = paccess.LINE
+def $access_source(S, paccess) = true
+  -- if paccess.TASK = KEY_WRITE_DIM paccess.INPUT paccess.LINE b
+  -- if $container_writer(S.TODO) = (pkeywriter)
+  -- if $key_write_context(S, S.TODO, paccess.TARGET, b)
+  -- if $key_write_input_source(S, paccess.TARGET, paccess.INPUT, paccess.KEYLINE, false)
+  -- if paccess.KEYLINE = paccess.LINE
+  -- if paccess.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if paccess.RHS = pkeywriter.RHS
+  -- if paccess.OUTER
+  -- if paccess.MODE = ACCESS_FETCH false b
+  -- if $access_write_fetch(pkeywriter, paccess.TARGET)
+  -- if paccess.SITE = paccess.TARGET
+def $access_source(S, paccess) = true
+  -- if paccess.TASK = KEY_WRITE_DIM paccess.INPUT paccess.LINE b
+  -- if $container_writer(S.TODO) = (pkeywriter)
+  -- if $key_write_context(S, S.TODO, paccess.TARGET, b)
+  -- if pkeywriter.TARGET = paccess.TARGET
+  -- if $key_write_input_source(S, paccess.TARGET, paccess.INPUT, paccess.KEYLINE, false)
+  -- if paccess.KEYLINE = paccess.LINE
+  -- if paccess.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if paccess.RHS = pkeywriter.RHS
+  -- if paccess.OUTER
+  -- if paccess.SITE = pkeywriter.SITE
+  -- if paccess.MODE = ACCESS_SET
+  -- if pkeywriter.TASK = ASSIGN_ARRAY pbase z b_self
+  -- if ~$key_append_task(pkeywriter.TASK)
+def $access_source(S, paccess) = true
+  -- if paccess.TASK = KEY_WRITE_DIM paccess.INPUT paccess.LINE b
+  -- if $container_writer(S.TODO) = (pkeywriter)
+  -- if $key_write_context(S, S.TODO, paccess.TARGET, b)
+  -- if pkeywriter.TARGET = paccess.TARGET
+  -- if $key_write_input_source(S, paccess.TARGET, paccess.INPUT, paccess.KEYLINE, false)
+  -- if paccess.KEYLINE = paccess.LINE
+  -- if paccess.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if paccess.RHS = pkeywriter.RHS
+  -- if paccess.OUTER
+  -- if paccess.SITE = pkeywriter.SITE
+  -- if paccess.MODE = ACCESS_COMPOUND pbin pvalue_left
+  -- if pkeywriter.TASK = COMPOUND_APPLY pbin pbase b_self z
+def $access_source(S, paccess) = true
+  -- if paccess.TASK = KEY_UNSET_DIM paccess.INPUT paccess.LINE false
+  -- if $key_unset_fetch_context(S, S.TODO, paccess.TARGET)
+  -- if $key_write_input_source(S, paccess.TARGET, paccess.INPUT, paccess.KEYLINE, false)
+  -- if paccess.KEYLINE = paccess.LINE
+  -- if paccess.SITE = paccess.TARGET
+  -- if paccess.MODE = ACCESS_FETCH true false
+  -- if paccess.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if paccess.RHS = KNOWN PNULL
+  -- if paccess.OUTER
+def $access_source(S, paccess) = true
+  -- if paccess.TASK = KEY_UNSET_DIM paccess.INPUT paccess.LINE true
+  -- if $key_unset_context(S, S.TODO, paccess.TARGET)
+  -- if $key_write_input_source(S, paccess.TARGET, paccess.INPUT, paccess.KEYLINE, false)
+  -- if paccess.KEYLINE = paccess.LINE
+  -- if paccess.SITE = paccess.TARGET
+  -- if paccess.MODE = ACCESS_UNSET
+  -- if paccess.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if paccess.RHS = KNOWN PNULL
+  -- if ~paccess.OUTER
+
+def $access_phase(paccess) = true
+  -- if paccess.MODE = ACCESS_COMPOUND pbin PNULL
+  -- if paccess.PHASE = ACCESS_CALL ptbytes
+  -- if ptbytes = $ptascii("offsetGet")
+  -- if paccess.VALUE = PNULL
+def $access_phase(paccess) = true
+  -- if $access_compound_mode(paccess.MODE)
+  -- if paccess.PHASE = ACCESS_CALL ptbytes
+  -- if ptbytes = $ptascii("offsetSet")
+def $access_phase(paccess) = true
+  -- if paccess.MODE = ACCESS_FETCH b_unset b_rw
+  -- if paccess.PHASE = ACCESS_CALL ptbytes
+  -- if ptbytes = $ptascii("offsetGet")
+  -- if paccess.VALUE = PNULL
+def $access_phase(paccess) = true
+  -- if paccess.MODE = ACCESS_FETCH b_unset b_rw
+  -- if paccess.PHASE = ACCESS_NOTICE
+  -- if ~$access_result_object(paccess.VALUE)
+def $access_compound_selected(paccess) = true
+  -- if ~$access_compound_mode(paccess.MODE)
+def $access_compound_selected(paccess) = true
+  -- if paccess.MODE = ACCESS_COMPOUND pbin PNULL
+  -- if $access_cv_phase(paccess.PHASE)
+  -- if paccess.SELECTED = KNOWN PNULL
+def $access_compound_selected(paccess) = true
+  -- if $access_compound_mode(paccess.MODE)
+  -- if $access_call_phase(paccess.PHASE)
+  -- if paccess.SELECTED = paccess.RHS
+def $access_compound_selected(paccess) = true
+  -- if $access_compound_mode(paccess.MODE)
+  -- if $access_call_phase(paccess.PHASE)
+  -- if paccess.RHS = VARIABLE n_name* z
+  -- if paccess.SELECTED = KNOWN PNULL
+def $access_compound_selected(paccess) = false -- otherwise
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ACCESS_RESUME paccess
+  -- if paccess.PHASE = ACCESS_NOTICE
+  -- if $access_valid(S, paccess)
+  -- if perrorcall.SITE = paccess.SITE
+  -- if perrorcall.LEVEL = 8
+  -- if perrorcall.LINE = paccess.LINE
+  -- if perrorcall.MESSAGE = $access_notice_message(S, paccess)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE paccess.LINE
+def $access_context_node(pcnode, ptbytes) = (ptbytes <- [$ptascii("offsetget"), $ptascii("offsetset")])
+  -- if $key_write_op(pcnode) =/= eps
+def $access_context_node(pcnode, ptbytes) = (ptbytes = $ptascii("offsetget"))
+  -- if $key_write_update(pcnode) =/= eps

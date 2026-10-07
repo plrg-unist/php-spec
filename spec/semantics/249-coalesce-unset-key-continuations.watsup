@@ -149,6 +149,7 @@ def $key_unset_pending(S) = true
   -- if $error_handler_eligible(S, 2) \/ $error_handler_eligible(S, 8192)
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
   -- if S.ORIGIN = (porigin)
+  -- if $key_edit_direct_base(S.BASE)
   -- if $key_unset_source(S, porigin, S.BASE)
   -- if $key_coalesce_root(S, S.BASE)
 def $key_unset_pending(S) = false -- otherwise

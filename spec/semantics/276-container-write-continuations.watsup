@@ -44,6 +44,8 @@ dec $container_throw_effect(pstate, pcontainerwrite, bool) : pstate
 dec $container_throw_lookup(pstate, pcontainerwrite) : pstate
 dec $reference_write_task(ptask) : bool
 dec $reference_write_finish(pstate, pkeywriter) : pstate
+dec $reference_global_valid(pstate, pkeywriter, ptbytes) : bool
+dec $reference_global_finish(pstate, pkeywriter, ptbytes) : pstate
 
 def $container_slot(UNDEFINED) = true
 def $container_slot(DEFINED PNULL) = true
@@ -322,6 +324,51 @@ def $key_write_writer(S, porigin, REF_ARRAY_CV pbase n_name* z, pbase, poperand)
   -- if $origin_node(S.SOURCES, porigin_target) = (NExprArrayDimFetch expression phpType5 metadata_dim)
   -- if $code_expression_at_source(S, porigin_target, eps) = (z)
 def $key_write_no_rhs(REF_ARRAY_CV pbase n_name* z) = true
+
+;; GLOBALS fetches a named variable rather than an array row. Keep the selected
+;; name through ORIGIN_RETURN; repeating conversion could warn or select a new CV.
+def $key_write_global_done(S, n_name*) = $key_write_done(S, S.LOCATION)[.RESULT = KNOWN (PSTRING n_name*)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.LOCATION = ROOT n
+  -- if $container_writer(S.TODO) = (pkeywriter)
+  -- if pkeywriter.BASE = BASE_GLOBAL poperand z
+  -- if $reference_write_task(pkeywriter.TASK)
+  -- if S.ORIGIN = (pkeywriter.TARGET)
+def $reference_global_pending(S) = true
+  -- if S.TODO = (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*
+  -- if pkeywriter.BASE = BASE_GLOBAL poperand z
+  -- if $reference_write_task(pkeywriter.TASK)
+def $reference_global_pending(S) = false -- otherwise
+def $reference_global_valid(S, pkeywriter, n_name*) = true
+  -- if pkeywriter.BASE = BASE_GLOBAL poperand z
+  -- if $reference_write_task(pkeywriter.TASK)
+  -- if $key_writer_valid(S, pkeywriter, eps)
+  -- if $key_global_selected(S, poperand, n_name*)
+  -- if S.LOCATION = ROOT n
+  -- if S_global = $global_table_view(S)
+  -- if $lookup(S_global.ENV, n_name*) = (n)
+  -- if $(n < |S.STORE|)
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if $call_reference_operand_valid(S, pkeywriter.RHS)
+def $reference_global_valid(S, pkeywriter, n_name*) = false -- otherwise
+def $reference_global_finish(S, pkeywriter, n_name*) = $global_bind_name(S[.CELL = n_source], n_name*)
+  -- if pkeywriter.TASK = REF_ARRAY pbase n_source z
+def $reference_global_finish(S, pkeywriter, n_name*) = $global_bind_name(S_source, n_name*)
+  -- if pkeywriter.TASK = REF_ARRAY_CV pbase n_source* z
+  -- if S_source = $acquire_name(S, n_source*)
+  -- if S_source.COMPLETION = NORMAL
+def $reference_global_finish(S, pkeywriter, n_name*) = S_source
+  -- if pkeywriter.TASK = REF_ARRAY_CV pbase n_source* z
+  -- if S_source = $acquire_name(S, n_source*)
+  -- if S_source.COMPLETION =/= NORMAL
+rule PhpStep/reference-global-finish: S ~> S_bound[.HELD = S.HELD]
+  -- if S.TODO = (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*
+  -- if $reference_global_pending(S)
+  -- if S.ORIGIN = (pkeywriter.SITE)
+  -- if S.RESULT = KNOWN (PSTRING n_name*)
+  -- if $reference_global_valid(S, pkeywriter, n_name*)
+  -- if S_bound = $reference_global_finish($hold_task_inputs(S), pkeywriter, n_name*)
+
 def $reference_write_finish(S, pkeywriter) = $bind_element_reference(S, n_array, pkey, n_source)
   -- if pkeywriter.TASK = REF_ARRAY pbase n_source z
   -- if S.LOCATION = ELEMENT n_array pkey

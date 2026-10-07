@@ -53,6 +53,8 @@ dec $key_write_global(pstate, poperand, int, bool) : pstate
 dec $key_write_global_value(pstate, poperand, pvalue, int, bool) : pstate
 dec $key_write_global_name(pstate, poperand, nat*, int, bool) : pstate
 dec $global_rw_key_name(pstate, poperand, nat*, int) : pstate
+dec $key_write_global_done(pstate, ptbytes) : pstate
+dec $reference_global_pending(pstate) : bool
 dec $key_write_missing_selection(pstate, pkeywrite) : bool
 dec $key_write_shape(pkeywrite) : bool
 dec $key_write_site(pstate, porigin, bool, porigin, bool) : bool
@@ -205,12 +207,15 @@ def $key_write_plan(S) = (pkeywriter)
   -- if $key_write_path_kind(ptask_tail*) =/= eps
   -- if $key_write_writer(S, porigin, DIM_PATH pbase z, BASE_DIM pbase S.RESULT z, S.RESULT) = (pkeywriter)
   -- if $key_write_root(S, pbase)
+  -- if ~$access_write_base(S, pbase)
   -- if $key_write_path_kind(ptask_tail*) = (false) \/ ~$key_write_global_root(pbase)
   -- if $key_write_base_source(S, porigin, pkeywriter.BASE)
 def $key_write_plan(S) = eps -- otherwise
 def $key_write_pending(S) = true
   -- if S.TODO = ptask :: ptask_tail*
-  -- if $error_handler_eligible(S, 2) \/ $error_handler_eligible(S, 8192) \/ $key_write_captured_base($key_write_task_base(ptask, S.BASE, S.RESULT))
+  -- if $error_handler_eligible(S, 2) \/ $error_handler_eligible(S, 8192) \/ $key_write_captured_base($key_write_task_base(ptask, S.BASE, S.RESULT)) \/ $access_write_pending(S)
+  -- if ~$access_set_pending(S)
+  -- if ~$access_compound_pending(S)
   -- if $key_write_plan(S) =/= eps
 def $key_write_pending(S) = false -- otherwise
 def $key_write_self(ASSIGN_ARRAY pbase z b) = b
@@ -252,8 +257,9 @@ def $task_nodes(KEY_WRITE_RESULT pkeywrite) = $value_nodes(pkeywrite.READ.BASE)
   -- if ~pkeywrite.READ.GLOBAL
 def $task_nodes(KEY_WRITE_RESULT pkeywrite) = eps -- if pkeywrite.READ.GLOBAL
 
-def $key_write_done(S, plocation) = S[.TODO = ptask_tail*][.LOCATION = plocation][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $key_write_done(S, plocation) = $access_fetch_release(S_out, plocation)
   -- if S.TODO = ptask :: ptask_tail*
+  -- if S_out = S[.TODO = ptask_tail*][.LOCATION = plocation][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 rule PhpStep/key-write-derived-base: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), KEY_WRITE_BASE pbase b), KEY_WRITE_DIM poperand z b] ++ ptask_tail*]
   -- if S.TODO = (KEY_WRITE_BASE (BASE_DIM pbase poperand z) b) :: ptask_tail*
 rule PhpStep/key-write-cv-base: S ~> S_place[.TODO = ptask_tail*][.RESULT = KNOWN PNULL]
@@ -304,6 +310,8 @@ rule PhpStep/key-write-dimension: S ~> $key_write_dimension(S, poperand, z, b)
   -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
   -- if ~$key_write_array_init($location_slot(S, S.LOCATION))
   -- if ~$container_write_pending(S)
+  -- if ~$access_write_dimension_pending(S)
+  -- if ~$access_terminal_pending(S)
 rule PhpStep/key-write-initialize-dimension: S ~> S_array[.RESULT = KNOWN PNULL]
   -- if S.TODO = (KEY_WRITE_DIM poperand z b) :: ptask_tail*
   -- if $key_write_array_init($location_slot(S, S.LOCATION))
@@ -387,8 +395,9 @@ def $key_write_global_value(S, poperand, pvalue, z, b) = $key_write_global_name(
   -- if ~$key_is_array(pvalue)
   -- if S_name = $stringify(S, pvalue, z)
   -- if S_name.RESULT = KNOWN (PSTRING n_name*)
-def $key_write_global_name(S, poperand, n_name*, z, false) = $key_write_done(S_place, S_place.LOCATION)
+def $key_write_global_name(S, poperand, n_name*, z, false) = $key_write_global_done(S_place, n_name*)
   -- if S_place = $global_location(S, n_name*, z)
+def $key_write_global_done(S, n_name*) = $key_write_done(S, S.LOCATION) -- otherwise
 def $key_write_global_name(S, poperand, n_name*, z, true) = $global_rw_key_name(S, poperand, n_name*, z)
 rule PhpStep/key-write-global: S ~> $key_write_global(S, poperand, z, b)
   -- if S.TODO = (KEY_WRITE_GLOBAL poperand z b) :: ptask_tail*
@@ -436,6 +445,7 @@ def $key_write_rhs_source(S, pkeywriter) = true
 def $key_write_rhs_source(S, pkeywriter) = false -- otherwise
 def $key_writer_valid(S, pkeywriter, ptask*) = true
   -- if ~$key_append_task(pkeywriter.TASK)
+  -- if ~$access_has_returned(pkeywriter.BASE)
   -- if $key_write_writer(S, pkeywriter.SITE, pkeywriter.TASK, pkeywriter.BASE, pkeywriter.RHS) = (pkeywriter[.TEMP = eps])
   -- if $key_write_target_base(pkeywriter.BASE)
   -- if ~$key_write_mode(pkeywriter.TASK, ptask*) \/ ~$key_write_global_root(pkeywriter.BASE) \/ ~$key_write_path_task(pkeywriter.TASK)
@@ -528,7 +538,7 @@ def $key_write_update_null(S, pupdate, b_post, z) = S_changed -- if S_changed = 
 def $key_write_update_null(S, pupdate, true, z) = S_changed[.RESULT = KNOWN PNULL]
   -- if S_changed = $update_value(S, pupdate, PNULL, z)
   -- if S_changed.COMPLETION = NORMAL
-def $key_write_finish(S, pkeywriter) = S[.BASE = BASE_PLACE pkeywriter.TARGET S.LOCATION][.RESULT = KNOWN PNULL]
+def $key_write_finish(S, pkeywriter) = S[.BASE = $access_path_base(pkeywriter, S.LOCATION)][.RESULT = KNOWN PNULL]
   -- if pkeywriter.TASK = DIM_PATH pbase z
 def $key_write_finish(S, pkeywriter) = $key_write_reference(S)
   -- if $key_write_reference_task(pkeywriter.TASK)
@@ -576,6 +586,8 @@ rule PhpStep/key-write-finish: S ~> S_out[.HELD = S.HELD]
   -- if S.TODO = (KEY_WRITE_FINISH pkeywriter) :: ptask_tail*
   -- if ~$key_append_task(pkeywriter.TASK)
   -- if ~$key_coalesce_rhs_pending(S, pkeywriter)
+  -- if ~$access_reference_temporary(S, pkeywriter)
+  -- if ~$reference_global_pending(S)
   -- if S.ORIGIN = (pkeywriter.SITE)
   -- if $key_writer_valid(S, pkeywriter, ptask_tail*)
   -- if S_out = $key_write_finish($hold_task_inputs(S), pkeywriter)
