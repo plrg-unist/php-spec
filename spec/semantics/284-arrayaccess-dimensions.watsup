@@ -13,6 +13,7 @@ dec $arrayaccess_notice_method(pstate, pclassdesc, pclassdesc, pmethoddesc, pmch
 dec $arrayaccess_notice_members(pstate, pclassdesc, ptbytes*, ppmethodinherited*, ppmethodinherited*) : pdeclnoticeplan
 dec $access_base(pstate, pbase) : bool
 dec $access_probe(pstate, pbase) : bool
+dec $access_has_append(pbase) : bool
 dec $access_record(pstate, porigin, int, paccessmode, pbase, poperand, poperand, ptask, nat?, bool) : paccess
 dec $access_dimension(pstate, poperand, int, pkeymode) : pstate
 dec $access_set_plan(pstate) : paccess?
@@ -705,6 +706,7 @@ def $access_read_object(n, pkeymode) = (n) -- if ~$key_test_mode(pkeymode)
 ;; This admission probe performs no user call and retains no roots. Any observed
 ;; diagnostic belongs to the real KEY_READ_BASE execution, not to this predicate.
 def $access_probe(S, pbase) = true
+  -- if ~$access_has_append(pbase)
   -- if S_probe = $quiet_base(S, pbase, $(-1))
   -- if S_probe.COMPLETION = NORMAL
   -- if S_probe.RESULT = KNOWN pvalue

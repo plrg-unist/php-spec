@@ -3,6 +3,8 @@
 ;; again, while DIM_OP retains its allocated table. Only that warning protection
 ;; is an owner here; the original KEY_WRITE_FINISH owns operands and temporaries.
 dec $container_slot(pslot) : bool
+dec $container_append(pstate, pcontainerwrite) : bool
+dec $key_write_append_selected(pstate, int, bool) : pstate
 dec $container_writer(ptask*) : pkeywriter?
 dec $container_kind(pkeywriter, porigin) : pcontainerkind
 dec $container_binding(pstate, porigin, plocation) : ptbytes?
@@ -118,6 +120,7 @@ def $container_initialize(S, pcontainerwrite, b_false) = $container_after_init(S
 def $container_after_init(S, pcontainerwrite, true) = $container_dispatch(S[.RESULT = KNOWN PNULL], pcontainerwrite[.PLACE = S.LOCATION][.PHASE = CONTAINER_FALSE n])
   -- if S.RESULT = KNOWN (PARRAY n)
 def $container_after_init(S, pcontainerwrite, false) = $key_write_selected(S, pcontainerwrite.INPUT, pcontainerwrite.LINE, pcontainerwrite.RW)
+  -- if ~$container_append(S, pcontainerwrite)
 
 rule PhpStep/container-write-undefined-rw: S ~> $container_dispatch(S, $container_record(S, poperand, z, true, CONTAINER_CV n_name*))
   -- if S.TODO = (KEY_WRITE_DIM poperand z true) :: ptask_tail*
@@ -157,11 +160,14 @@ def $container_live(S, pcontainerwrite) = $($heap_owners($heap_prune($heap_graph
 def $container_live(S, pcontainerwrite) = true -- otherwise
 def $container_release(S, pcontainerwrite) = S[.TODO = (KEY_WRITE_DIM pcontainerwrite.INPUT pcontainerwrite.LINE pcontainerwrite.RW) :: ptask_tail*]
   -- if S.TODO = (CONTAINER_WRITE_RESULT pcontainerwrite) :: ptask_tail*
+  -- if ~$container_append(S, pcontainerwrite)
 def $container_selected(S, pcontainerwrite) = $key_write_selected(S_current[.RESULT = KNOWN (PARRAY n)], pcontainerwrite.INPUT, pcontainerwrite.LINE, pcontainerwrite.RW)
+  -- if ~$container_append(S, pcontainerwrite)
   -- if pcontainerwrite.KIND = CONTAINER_FETCH
   -- if S_current = $container_current(S, pcontainerwrite)
   -- if $location_slot(S_current, S_current.LOCATION) = DEFINED (PARRAY n)
 def $container_selected(S, pcontainerwrite) = $key_write_selected(S_current, pcontainerwrite.INPUT, pcontainerwrite.LINE, pcontainerwrite.RW)
+  -- if ~$container_append(S, pcontainerwrite)
   -- if pcontainerwrite.KIND = CONTAINER_ASSIGN
   -- if S_place = $container_current(S, pcontainerwrite)
   -- if S_current = $location_array(S_place, S_place.LOCATION, pcontainerwrite.LINE)
@@ -172,6 +178,7 @@ def $container_selected(S, pcontainerwrite) = S_current
   -- if S_current = $location_array(S_place, S_place.LOCATION, pcontainerwrite.LINE)
   -- if S_current.COMPLETION =/= NORMAL
 def $container_selected(S, pcontainerwrite) = $key_write_selected(S[.LOCATION = pcontainerwrite.PLACE][.RESULT = KNOWN (PARRAY n)], pcontainerwrite.INPUT, pcontainerwrite.LINE, pcontainerwrite.RW)
+  -- if ~$container_append(S, pcontainerwrite)
   -- if pcontainerwrite.KIND = CONTAINER_COMPOUND
   -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
 def $container_expired(S, pcontainerwrite) = $container_dispatch(S, pcontainerwrite[.PHASE = CONTAINER_KEY_CV n_name*])
@@ -276,6 +283,7 @@ def $container_throw_effect(S, pcontainerwrite, true) = S_place
 def $container_throw_effect(S, pcontainerwrite, true) = $container_throw_lookup(S[.LOCATION = pcontainerwrite.PLACE][.RESULT = KNOWN (PARRAY n)], pcontainerwrite)
   -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
   -- if pcontainerwrite.KIND = CONTAINER_COMPOUND
+  -- if ~$container_append(S, pcontainerwrite)
 def $container_throw_effect(S, pcontainerwrite, true) = S_written
   -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
   -- if pcontainerwrite.KIND = CONTAINER_ASSIGN

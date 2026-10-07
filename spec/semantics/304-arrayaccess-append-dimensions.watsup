@@ -1,0 +1,237 @@
+;; [] is an append operation on a returned array, but a null offset for an
+;; ArrayAccess callback. Keep that distinction through delayed W/RW fetches.
+dec $key_write_append_source(pstate, porigin, int) : bool
+dec $key_write_append_task_valid(pstate, int, bool) : bool
+dec $key_write_append_place_valid(pstate, plocation) : bool
+dec $access_append_record(pstate, int, bool) : paccess
+dec $key_write_append_dimension(pstate, int, bool) : pstate
+dec $key_append_pending_view(pstate) : pstate
+dec $key_append_pending_conversion(pstate, pbin, pvalue, int) : pstate?
+dec $key_append_pending_binary(pstate, pbin, pvalue, int) : pstate
+dec $key_append_pending_finish(pstate, pstate, pbin, pvalue) : pstate
+
+;; Appending never quietly selects an existing row during ingress probing.
+def $access_has_append(BASE_APPEND pbase z) = true
+def $access_has_append(BASE_DIM pbase poperand z) = $access_has_append(pbase)
+def $access_has_append(pbase) = false -- otherwise
+
+def $key_write_target_base(BASE_APPEND pbase z) = true
+def $key_write_captured_base(BASE_APPEND pbase z) = $key_write_captured_base(pbase)
+def $key_write_global_root(BASE_APPEND pbase z) = $key_write_global_root(pbase)
+def $key_write_root(S, BASE_APPEND pbase z) = $key_write_root(S, pbase)
+def $container_write_root(S, BASE_APPEND pbase z) = $container_write_root(S, pbase)
+def $key_tail_chain(BASE_APPEND pbase z) = $key_tail_chain(pbase)
+def $key_write_aborted_base(BASE_APPEND pbase z, porigin) = $key_write_aborted_base(pbase, porigin)
+def $key_write_has_aborted_base(BASE_APPEND pbase z) = $key_write_has_aborted_base(pbase)
+def $key_write_append_source(S, porigin, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression ABSENT metadata)
+  -- if ~$ppglobals_base(expression)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z)
+def $key_write_append_source(S, porigin, z) = false -- otherwise
+def $key_write_base_source(S, porigin, BASE_APPEND pbase z) = true
+  -- if $key_write_append_source(S, porigin, z)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $key_write_base_source(S, porigin_base, pbase)
+
+def $access_cut_base(BASE_APPEND pbase z, porigin_root, porigin, pbase_new) = BASE_APPEND $access_cut_base(pbase, porigin_child, porigin, pbase_new) z
+  -- if porigin_root =/= porigin
+  -- if $origin_child((porigin_root), [PCFIELD 0]) = (porigin_child)
+def $access_parent_cell(BASE_APPEND pbase z, porigin_root, porigin) = $access_parent_cell(pbase, porigin_child, porigin)
+  -- if porigin_root =/= porigin
+  -- if $origin_child((porigin_root), [PCFIELD 0]) = (porigin_child)
+def $key_append_cut(S, porigin_root, BASE_APPEND pbase z, porigin) = BASE_APPEND $key_append_cut(S, porigin_child, pbase, porigin) z
+  -- if porigin_root =/= porigin
+  -- if $origin_child((porigin_root), [PCFIELD 0]) = (porigin_child)
+
+def $task_nodes(KEY_WRITE_APPEND z b) = eps
+def $key_write_append_task_valid(S, z, b) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $key_write_append_source(S, porigin, z)
+  -- if $key_write_context(S, S.TODO, porigin, b)
+def $key_write_append_task_valid(S, z, b) = false -- otherwise
+def $call_task_valid(S, KEY_WRITE_APPEND z b) = $key_write_append_task_valid(S, z, b)
+rule PhpStep/key-write-append-base: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), KEY_WRITE_BASE pbase b), KEY_WRITE_APPEND z b] ++ ptask_tail*]
+  -- if S.TODO = (KEY_WRITE_BASE (BASE_APPEND pbase z) b) :: ptask_tail*
+
+;; The final writer still owns RHS/base operands once; append tasks borrow it.
+def $access_write_task(KEY_WRITE_APPEND z b) = true
+def $access_append_record(S, z, b) = paccess
+  -- if S.ORIGIN = (porigin_target)
+  -- if S.TODO = (KEY_WRITE_APPEND z b) :: ptask_tail*
+  -- if $container_writer(ptask_tail*) = (pkeywriter)
+  -- if $location_slot(S, S.LOCATION) = DEFINED (POBJECT n)
+  -- if paccessmode = $access_write_mode(pkeywriter, ptask_tail*, b)
+  -- if porigin = $access_write_site(pkeywriter, paccessmode, porigin_target)
+  -- if paccess = $access_record(S[.ORIGIN = (porigin)], porigin_target, z, paccessmode, BASE_VALUE (KNOWN PNULL), KNOWN PNULL, pkeywriter.RHS, KEY_WRITE_APPEND z b, (n), true)
+rule PhpStep/access-write-append: S ~> $access_key(S, $access_append_record(S, z, b))
+  -- if S.TODO = (KEY_WRITE_APPEND z b) :: ptask_tail*
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue
+  -- if $access_instance(S, pvalue)
+  -- if $container_writer(ptask_tail*) =/= eps
+def $access_done(S, paccess, pvalue) = S[.TODO = $access_write_end(ptask_tail*)][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if paccess.TASK = KEY_WRITE_APPEND z b
+def $access_source(S, paccess) = true
+  -- if paccess.TASK = KEY_WRITE_APPEND paccess.LINE b
+  -- if $container_writer(S.TODO) = (pkeywriter)
+  -- if $key_write_context(S, S.TODO, paccess.TARGET, b)
+  -- if $key_write_append_source(S, paccess.TARGET, paccess.LINE)
+  -- if paccess.KEYLINE = paccess.LINE
+  -- if paccess.INPUT = KNOWN PNULL
+  -- if paccess.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if paccess.RHS = pkeywriter.RHS
+  -- if paccess.OUTER
+  -- if paccess.MODE = ACCESS_FETCH false b
+  -- if $access_write_fetch(pkeywriter, paccess.TARGET)
+  -- if paccess.SITE = paccess.TARGET
+def $access_source(S, paccess) = true
+  -- if paccess.TASK = KEY_WRITE_APPEND paccess.LINE b
+  -- if $container_writer(S.TODO) = (pkeywriter)
+  -- if $key_write_context(S, S.TODO, paccess.TARGET, b)
+  -- if $key_write_append_source(S, paccess.TARGET, paccess.LINE)
+  -- if paccess.KEYLINE = paccess.LINE
+  -- if paccess.INPUT = KNOWN PNULL
+  -- if paccess.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if paccess.RHS = pkeywriter.RHS
+  -- if paccess.OUTER
+  -- if pkeywriter.TARGET = paccess.TARGET
+  -- if pkeywriter.TASK = COMPOUND_APPLY pbin pbase b_self z
+  -- if paccess.MODE = ACCESS_COMPOUND pbin pvalue_left
+  -- if paccess.SITE = pkeywriter.SITE
+
+;; Array append does not perform a missing-key lookup, including in RW mode.
+def $key_write_append_selected(S, z, true) = $key_write_done(S_place, S_place.LOCATION)
+  -- if S_place = $rw_array_dimension(S, eps, z)
+def $key_write_append_selected(S, z, false) = $key_write_done(S_place, S_place.LOCATION)
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if S_place = $append_location(S, n, z)
+def $key_write_append_dimension(S, z, b) = S_array
+  -- if S_array = $location_array(S, S.LOCATION, z)
+  -- if S_array.COMPLETION =/= NORMAL
+def $key_write_append_dimension(S, z, b) = $key_write_append_selected(S_array, z, b)
+  -- if S_array = $location_array(S, S.LOCATION, z)
+  -- if S_array.COMPLETION = NORMAL
+rule PhpStep/key-write-append-array: S ~> $key_write_append_dimension(S, z, b)
+  -- if S.TODO = (KEY_WRITE_APPEND z b) :: ptask_tail*
+  -- if ~$container_slot($location_slot(S, S.LOCATION))
+  -- if $key_write_array_slot($location_slot(S, S.LOCATION))
+rule PhpStep/key-write-append-scalar: S ~> S_place
+  -- if S.TODO = (KEY_WRITE_APPEND z b) :: ptask_tail*
+  -- if ~$container_slot($location_slot(S, S.LOCATION))
+  -- if ~$key_write_array_slot($location_slot(S, S.LOCATION))
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue
+  -- if ~$access_instance(S, pvalue)
+  -- if S_place = $dimension_location(S, eps, STRINGNESTED, z)
+
+;; Reuse false-conversion protection. Its null INPUT is an authenticated append
+;; sentinel, never an array key: each continuation inserts the next index.
+def $container_append(S, pcontainerwrite) = (pcontainerwrite.INPUT = KNOWN PNULL /\ $key_write_append_source(S, pcontainerwrite.SITE, pcontainerwrite.LINE))
+rule PhpStep/container-write-append-undefined-rw: S ~> $container_dispatch(S, $container_record(S, KNOWN PNULL, z, true, CONTAINER_CV n_name*))
+  -- if S.TODO = (KEY_WRITE_APPEND z true) :: ptask_tail*
+  -- if S.LOCATION =/= NOWHERE
+  -- if $location_slot(S, S.LOCATION) = UNDEFINED
+  -- if S.ORIGIN = (porigin)
+  -- if $container_binding(S, porigin, S.LOCATION) = (n_name*)
+rule PhpStep/container-write-append: S ~> $container_initialize(S, pcontainerwrite, b_false)
+  -- if S.TODO = (KEY_WRITE_APPEND z b) :: ptask_tail*
+  -- if S.LOCATION =/= NOWHERE
+  -- if $container_slot($location_slot(S, S.LOCATION))
+  -- if S.ORIGIN = (porigin)
+  -- if ~$container_undefined_rw(S, porigin, b)
+  -- if pcontainerwrite = $container_record(S, KNOWN PNULL, z, b, CONTAINER_KEY_CV eps)
+  -- if b_false = ($container_false($location_slot(S, S.LOCATION)) /\ (pcontainerwrite.KIND =/= CONTAINER_FETCH \/ ~$location_reference(S, S.LOCATION)))
+def $container_after_init(S, pcontainerwrite, false) = $key_write_append_selected(S, pcontainerwrite.LINE, pcontainerwrite.RW)
+  -- if $container_append(S, pcontainerwrite)
+def $container_release(S, pcontainerwrite) = S[.TODO = (KEY_WRITE_APPEND pcontainerwrite.LINE pcontainerwrite.RW) :: ptask_tail*]
+  -- if S.TODO = (CONTAINER_WRITE_RESULT pcontainerwrite) :: ptask_tail*
+  -- if $container_append(S, pcontainerwrite)
+def $container_selected(S, pcontainerwrite) = $key_write_append_selected(S_current[.RESULT = KNOWN (PARRAY n)], pcontainerwrite.LINE, pcontainerwrite.RW)
+  -- if $container_append(S, pcontainerwrite)
+  -- if pcontainerwrite.KIND = CONTAINER_FETCH
+  -- if S_current = $container_current(S, pcontainerwrite)
+  -- if $location_slot(S_current, S_current.LOCATION) = DEFINED (PARRAY n)
+def $container_selected(S, pcontainerwrite) = $key_write_append_selected(S_current, pcontainerwrite.LINE, pcontainerwrite.RW)
+  -- if $container_append(S, pcontainerwrite)
+  -- if pcontainerwrite.KIND = CONTAINER_ASSIGN
+  -- if S_place = $container_current(S, pcontainerwrite)
+  -- if S_current = $location_array(S_place, S_place.LOCATION, pcontainerwrite.LINE)
+  -- if S_current.COMPLETION = NORMAL
+def $container_selected(S, pcontainerwrite) = $key_write_append_selected(S[.LOCATION = pcontainerwrite.PLACE][.RESULT = KNOWN (PARRAY n)], pcontainerwrite.LINE, pcontainerwrite.RW)
+  -- if $container_append(S, pcontainerwrite)
+  -- if pcontainerwrite.KIND = CONTAINER_COMPOUND
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+def $container_throw_lookup(S, pcontainerwrite) = $append_location(S, n, pcontainerwrite.LINE)
+  -- if $container_append(S, pcontainerwrite)
+  -- if S.RESULT = KNOWN (PARRAY n)
+
+;; DIM_OP continues within its opcode after a false-conversion handler throws.
+;; The new row and late CV demand precede the pending binary operation. Zend's
+;; call API skips an eligible error callback while an exception is pending;
+;; default reporting still applies to ineligible levels. This local view keeps
+;; the real callable rooted and restores the request configuration on return.
+def $key_append_pending_view(S) = S[.ERRORHANDLER.CALLBACK = eps][.REPORTING = $long_and(S.REPORTING, $long_not(S.ERRORHANDLER.LEVELS))][.HELD = S.HELD ++ $error_handler_roots(S.ERRORHANDLER)]
+  -- if S.ERRORHANDLER.CALLBACK =/= eps
+def $key_append_pending_view(S) = S -- if S.ERRORHANDLER.CALLBACK = eps
+;; Numeric conversion has its own exception checkpoints. A leading-number
+;; warning aborts arithmetic; integer conversion of a double always checks the
+;; pending error, whereas an exact integer/float string can return directly.
+def $key_append_pending_conversion(S, pbin, pvalue, z) = ($leading_warning(S, true, z)[.RESULT = KNOWN PNULL])
+  -- if $arithmetic_operator(pbin) \/ pbin = POWER
+  -- if $coerce_number(pvalue) = COERCED pnumber true
+def $key_append_pending_conversion(S, pbin, PFLOAT n, z) = ($integer_coerce(S, PFLOAT n, z)[.RESULT = KNOWN PNULL])
+  -- if $integer_operator(pbin)
+def $key_append_pending_conversion(S, pbin, PSTRING ptbytes, z) = ($leading_warning(S, true, z)[.RESULT = KNOWN PNULL])
+  -- if $integer_operator(pbin)
+  -- if $string_long(ptbytes) = STRINT i strcastnotice*
+  -- if LEADINGNUMBER <- strcastnotice*
+def $key_append_pending_conversion(S, pbin, PSTRING ptbytes, z) = ($integer_coerce(S, PSTRING ptbytes, z)[.RESULT = KNOWN PNULL])
+  -- if $integer_operator(pbin)
+  -- if $string_long(ptbytes) = STRINT i strcastnotice*
+  -- if ~(LEADINGNUMBER <- strcastnotice*)
+  -- if strcastnotice* =/= eps
+;; Core object try-string casts keep the pending exception. A known __toString
+;; call is skipped by the same call API, so no user body/return runs here.
+def $key_append_pending_conversion(S, CONCAT, POBJECT n, z) = (S[.RESULT = KNOWN PNULL])
+def $key_append_pending_conversion(S, pbin, pvalue, z) = eps -- otherwise
+def $key_append_pending_binary(S, pbin, pvalue, z) = S_converted[.ERRORHANDLER = S.ERRORHANDLER][.REPORTING = S.REPORTING][.HELD = S.HELD]
+  -- if $key_append_pending_conversion($key_append_pending_view(S), pbin, pvalue, z) = (S_converted)
+def $key_append_pending_binary(S, pbin, pvalue, z) = $key_append_pending_finish(S, S_binary[.ERRORHANDLER = S.ERRORHANDLER][.REPORTING = S.REPORTING][.HELD = S.HELD], pbin, pvalue)
+  -- if $key_append_pending_conversion($key_append_pending_view(S), pbin, pvalue, z) = eps
+  -- if S_binary = $binary_apply($key_append_pending_view(S)[.RESULT = KNOWN PNULL], pbin, PNULL, pvalue, z)
+def $key_append_pending_finish(S, S_binary, pbin, pvalue) = $location_write(S_binary, S.LOCATION, pvalue_result)
+  -- if S_binary.COMPLETION = NORMAL
+  -- if S_binary.RESULT = KNOWN pvalue_result
+  -- if ~(pbin = CONCAT /\ $key_is_array(pvalue))
+;; Array try-string conversion warns, then aborts because the old error remains.
+def $key_append_pending_finish(S, S_binary, CONCAT, PARRAY n) = S_binary[.RESULT = KNOWN PNULL]
+  -- if S_binary.COMPLETION = NORMAL
+;; zend_binop_error preserves the existing exception; divide/modulo/negative
+;; shifts instead throw a new primary with the old chain as its previous value.
+def $key_append_pending_finish(S, S_binary, pbin, pvalue) = S_binary[.COMPLETION = NORMAL][.RESULT = KNOWN PNULL]
+  -- if S_binary.COMPLETION = THROWN "TypeError" preqbytes z
+def $key_append_pending_finish(S, S_binary, pbin, pvalue) = $access_compound_replaced($throwable_materialize(S_binary), n_old, ptask_tail*)
+  -- if S_binary.COMPLETION = THROWN text preqbytes z
+  -- if text = "DivisionByZeroError" \/ text = "ArithmeticError"
+  -- if S.TODO = (THROW_SEARCH n_old) :: ptask_tail*
+def $key_append_pending_finish(S, S_binary, pbin, pvalue) = S_binary -- otherwise
+def $container_throw_effect(S, pcontainerwrite, true) = $key_append_pending_binary(S_right[.ORIGIN = (pcontainerwrite.WRITER.SITE)], pbin, pvalue_right, z)
+  -- if $container_append(S, pcontainerwrite)
+  -- if pcontainerwrite.PHASE = CONTAINER_FALSE n
+  -- if pcontainerwrite.KIND = CONTAINER_COMPOUND
+  -- if pcontainerwrite.WRITER.TASK = COMPOUND_APPLY pbin pbase b_self z
+  -- if S_place = $rw_array_dimension(S[.LOCATION = pcontainerwrite.PLACE][.RESULT = KNOWN (PARRAY n)], eps, pcontainerwrite.LINE)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_right = $quiet_operand(S_place, pcontainerwrite.WRITER.RHS)
+  -- if S_right.RESULT = KNOWN pvalue_right
+def $key_write_append_place_valid(S, ROOT n) = $(n < |S.STORE|)
+def $key_write_append_place_valid(S, ELEMENT n pkey) = $(n < |S.ARRAYS|)
+def $key_write_append_place_valid(S, plocation) = false -- otherwise
+def $container_valid(S, pcontainerwrite) = true
+  -- if S.ORIGIN = (pcontainerwrite.SITE)
+  -- if $container_writer(S.TODO) = (pcontainerwrite.WRITER)
+  -- if $key_write_context(S, S.TODO, pcontainerwrite.SITE, pcontainerwrite.RW)
+  -- if $container_append(S, pcontainerwrite)
+  -- if pcontainerwrite.KIND = $container_kind(pcontainerwrite.WRITER, pcontainerwrite.SITE)
+  -- if $container_binding_source(S, pcontainerwrite)
+  -- if $key_write_append_place_valid(S, pcontainerwrite.PLACE)
+  -- if $container_phase_valid(S, pcontainerwrite)

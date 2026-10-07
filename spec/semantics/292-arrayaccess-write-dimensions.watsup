@@ -406,6 +406,8 @@ def $access_source(S, paccess) = true
   -- if paccess.KEYLINE = paccess.LINE
 def $access_source(S, paccess) = true
   -- if paccess.TASK = KEY_WRITE_DIM paccess.INPUT paccess.LINE b
+  -- if $origin_node(S.SOURCES, paccess.TARGET) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if phpType5 =/= ABSENT
   -- if $container_writer(S.TODO) = (pkeywriter)
   -- if $key_write_context(S, S.TODO, paccess.TARGET, b)
   -- if $key_write_input_source(S, paccess.TARGET, paccess.INPUT, paccess.KEYLINE, false)
@@ -418,6 +420,8 @@ def $access_source(S, paccess) = true
   -- if paccess.SITE = paccess.TARGET
 def $access_source(S, paccess) = true
   -- if paccess.TASK = KEY_WRITE_DIM paccess.INPUT paccess.LINE b
+  -- if $origin_node(S.SOURCES, paccess.TARGET) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if phpType5 =/= ABSENT
   -- if $container_writer(S.TODO) = (pkeywriter)
   -- if $key_write_context(S, S.TODO, paccess.TARGET, b)
   -- if pkeywriter.TARGET = paccess.TARGET
@@ -432,6 +436,8 @@ def $access_source(S, paccess) = true
   -- if ~$key_append_task(pkeywriter.TASK)
 def $access_source(S, paccess) = true
   -- if paccess.TASK = KEY_WRITE_DIM paccess.INPUT paccess.LINE b
+  -- if $origin_node(S.SOURCES, paccess.TARGET) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if phpType5 =/= ABSENT
   -- if $container_writer(S.TODO) = (pkeywriter)
   -- if $key_write_context(S, S.TODO, paccess.TARGET, b)
   -- if pkeywriter.TARGET = paccess.TARGET
