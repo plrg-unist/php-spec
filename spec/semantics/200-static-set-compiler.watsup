@@ -38,6 +38,7 @@ dec $ppproperty_set_narrowed(ppropertydesc, ppropertydesc) : bool
 def $ppproperty_set_narrowed(ppropertydesc_parent, ppropertydesc_child) = $($ppproperty_visibility_rank(ppropertyvisibility) > $ppproperty_visibility_rank($ppproperty_effective_set(ppropertydesc_parent)))
   -- if ppropertydesc_parent.VISIBILITY =/= PROPERTY_PRIVATE
   -- if ppropertydesc_parent.STATIC = ppropertydesc_child.STATIC
+  -- if ppropertydesc_parent.READONLY = ppropertydesc_child.READONLY
   -- if ppropertydesc_child.SETVISIBILITY = (ppropertyvisibility)
 def $ppproperty_set_narrowed(ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
 dec $ppproperty_set_name(ppropertyvisibility?) : ptbytes

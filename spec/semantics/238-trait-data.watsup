@@ -393,15 +393,16 @@ def $trait_data_property_items(S, pclassdesc, pclassdesc_trait, ppropertydesc ::
 def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_fatal(S, pclassdesc, $ptascii("Readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot use trait with a non-readonly property ") ++ pclassdesc_trait.NAME ++ $ptascii("::$") ++ ppropertydesc.NAME)
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = eps
   -- if pclassdesc.READONLY
+  -- if ~ppropertydesc.READONLY
 def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc[.PROPERTIES = pclassdesc.PROPERTIES ++ [$trait_data_property(pclassdesc, ppropertydesc)]])]
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = eps
-  -- if ~pclassdesc.READONLY
+  -- if ~pclassdesc.READONLY \/ ppropertydesc.READONLY
 def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc_prior)
-  -- if ppropertydesc_prior.VISIBILITY =/= ppropertydesc.VISIBILITY \/ ppropertydesc_prior.STATIC =/= ppropertydesc.STATIC
+  -- if ppropertydesc_prior.VISIBILITY =/= ppropertydesc.VISIBILITY \/ ppropertydesc_prior.STATIC =/= ppropertydesc.STATIC \/ ppropertydesc_prior.READONLY =/= ppropertydesc.READONLY
 def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, $trait_data_types(S, pclassdesc, $trait_property_source_type(S, ppropertydesc_prior), pclassdesc_trait, ppropertydesc.TYPE, false, $trait_property_source_fast_equal(S, ppropertydesc_prior, ppropertydesc)))
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc_prior)
-  -- if ppropertydesc_prior.VISIBILITY = ppropertydesc.VISIBILITY /\ ppropertydesc_prior.STATIC = ppropertydesc.STATIC
+  -- if ppropertydesc_prior.VISIBILITY = ppropertydesc.VISIBILITY /\ ppropertydesc_prior.STATIC = ppropertydesc.STATIC /\ ppropertydesc_prior.READONLY = ppropertydesc.READONLY
 def $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATABAD) = $trait_data_property_error(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*)
 def $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAUNKNOWN text) = S[.COMPLETION = UNSUPPORTED text]
 def $trait_data_property_checked(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, TRAITDATAOK) = $trait_data_property_values(S, pclassdesc, pclassdesc_trait, ppropertydesc, ppropertydesc_prior, pclassdesc_prior*, $trait_data_compare_left(S, pclassdesc, ppropertydesc_prior, ppropertydesc, $trait_property_value(S, pclassdesc, ppropertydesc_prior)))

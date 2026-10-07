@@ -1,0 +1,227 @@
+{
+  "scope": "Private dynamic/FCC clone selection and consumer-birth follow-on; production SL277 and 20 distinct source originals pass at recorded cuts; seven state groups pending; current/selected autoload identity checks exclude coherent pending-candidate identity rewrites",
+  "cases": [
+    {
+      "id": "readonly-clone-dynamic-string-maker-survives-selector-change",
+      "source_sha256": "75088811476ab78ac5ad3bf2e61a84b997ed4d683e4fc3adf2d3c383302e8ac7",
+      "kind": "normal",
+      "expected_stdout": "private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\n$original = new Owner();\n$cloner = 'clone';\n$copy = $cloner($original, []);\n$cloner = 'unrelated';\nunset($copy, $original);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-clone-fcc-maker-survives-selector-retirement",
+      "source_sha256": "d7c9a12a8c3d2c6f703759027db3a0c83ece00a16d0838bfc2a8b4865f192076",
+      "kind": "normal",
+      "expected_stdout": "private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\n$original = new Owner();\n$cloner = clone(...);\n$copy = $cloner($original, []);\nunset($cloner, $copy, $original);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-manual-dynamic-clone-maker-retires",
+      "source_sha256": "8bb6f41cf6cbeefc826bce1cd857b8a87fddaec9b7a0512b86dc818c09b79ab0",
+      "kind": "normal",
+      "expected_stdout": "private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\n$original = new Owner();\n$cloner = [$original, '__clone'];\n$cloner();\nunset($cloner, $original);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-manual-fcc-clone-maker-retires",
+      "source_sha256": "fd0a1b658923e8c85600a35ca5591158b01911cb6664580430f24ef0d1120c7c",
+      "kind": "normal",
+      "expected_stdout": "private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\n$original = new Owner();\n$cloner = $original->__clone(...);\n$cloner();\nunset($cloner, $original);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-manual-computed-clone-maker-retires",
+      "source_sha256": "b3a720a4e6335455172ac3cf32e27d75d91dcc4c6f5edb2086681bb0e35d65ba",
+      "kind": "normal",
+      "expected_stdout": "private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\n$original = new Owner();\n$cloner = clone(...);\n$original->{'__clone'}();\nunset($original);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-clone-dynamic-selector-changes-during-arguments",
+      "source_sha256": "a6b0e465801eb7cb7ff138d7b11aaf469161884c366faa6e7f5e46173e94931a",
+      "kind": "normal",
+      "expected_stdout": "arg|changed|private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\nfunction operand($value) {\n    $GLOBALS['cloner'] = 'unrelated';\n    echo 'arg|';\n    return $value;\n}\n$original = new Owner();\n$cloner = 'clone';\n$copy = $cloner(operand($original), []);\nif ($cloner === 'unrelated') { echo 'changed|'; }\nunset($copy, $original, $cloner);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-clone-fcc-selector-retires-during-arguments",
+      "source_sha256": "dfb2152d1bdb18c3d66c459b8137f0df4c70ba6fdb9b26c554f5a3fbac0df741",
+      "kind": "normal",
+      "expected_stdout": "arg|changed|private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\nfunction operand($value) {\n    $GLOBALS['cloner'] = null;\n    echo 'arg|';\n    return $value;\n}\n$original = new Owner();\n$cloner = clone(...);\n$copy = $cloner(operand($original), []);\nif ($cloner === null) { echo 'changed|'; }\nunset($copy, $original, $cloner);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-dynamic-clone-created-private-autoload-after-retirement",
+      "kind": "normal",
+      "source_sha256": "b8225365dbabc6666c9b1439a6351e785ac587126add1a7b2b3dc54d0d28beb0",
+      "expected_stdout": "Later|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function load($name) {\n        echo $name . '|';\n        eval('class Later {}');\n    }\n    public function __clone() {\n        spl_autoload_register([self::class, 'load']);\n    }\n}\n$original = new Owner();\n$entry = 'clone';\n$copy = $entry($original);\n$entry = 'other';\nunset($copy, $original);\n$later = new Later();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-manual-computed-name-clone-maker-retires",
+      "source_sha256": "caa9f3a45d67d623504c87668acb2c9cf2f7f4e9285e2b2d09f197431b2809fe",
+      "kind": "normal",
+      "expected_stdout": "private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\n$original = new Owner();\n$cloner = clone(...);\n$method = '__clone';\n$original->{$method}();\n$method = 'unrelated';\nunset($original);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-manual-clone-maker-reuses-genuine-selection",
+      "source_sha256": "03139561de8d5e911858f201b9128e88192b39430d44583ba9b6e9dbd3846478",
+      "kind": "normal",
+      "expected_stdout": "private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['copy'] = $this;\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\nfunction invoke($receiver, $method, $operand) {\n    $receiver->{$method}($operand);\n}\n$original = new Owner();\n$cloner = clone(...);\ninvoke($cloner, '__invoke', $original);\ninvoke($copy, '__clone', $original);\nunset($copy, $original, $cloner);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-clone-dynamic-pipe-maker-survives-selector-change",
+      "source_sha256": "d602d3d81399e9cec1e29a43dc700d656b041565221ba6a3381840eb695058be",
+      "kind": "normal",
+      "expected_stdout": "private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\n$original = new Owner();\n$cloner = 'clone';\n$copy = $original |> $cloner;\n$cloner = 'unrelated';\nunset($copy, $original);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-clone-fcc-pipe-maker-survives-selector-retirement",
+      "source_sha256": "8c44a48989ece1d451142bda0d2509a5b4494b83e33a87b856fc0ff023600507",
+      "kind": "normal",
+      "expected_stdout": "private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\n$original = new Owner();\n$cloner = clone(...);\n$copy = $original |> $cloner;\nunset($cloner, $copy, $original);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-private-manual-clone-fiber-after-retirement",
+      "source_sha256": "2b955e601e722949d77271e4791ff34f37bbed7bc2643bbf4bc34bf72c4a07c5",
+      "kind": "normal",
+      "expected_stdout": "private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    private function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n    public function arm() { $this->__clone(); }\n}\n$original = new Owner();\n$original->arm();\nunset($original);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-manual-clone-autoload-reregisters-after-genuine-selection",
+      "source_sha256": "4ef5c3290e2cea4eaa76fbf386010816640f82aadeb0da1a72f816dd81b9bae7",
+      "kind": "normal",
+      "expected_stdout": "Later|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function load($name) {\n        echo $name . '|';\n        eval('class Later {}');\n    }\n    public function __clone() {\n        $GLOBALS['copy'] = $this;\n        spl_autoload_register([self::class, 'load']);\n    }\n    public static function forget() {\n        spl_autoload_unregister([self::class, 'load']);\n    }\n}\nfunction invoke($receiver, $method, $operand) {\n    $receiver->{$method}($operand);\n}\n$original = new Owner();\n$cloner = clone(...);\ninvoke($cloner, '__invoke', $original);\ninvoke($copy, '__clone', $original);\nOwner::forget();\ninvoke($copy, '__clone', $original);\nunset($copy, $original, $cloner);\n$later = new Later();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-selected-manual-clone-autoload-publishes-after-unregister",
+      "source_sha256": "623432a491392b582f05dff4dc446ad465710ea47a1d4cbdc8422de7cb627838",
+      "kind": "normal",
+      "expected_stdout": "Later|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nfunction publish_later() { class Later {} }\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function load($name) {\n        spl_autoload_unregister([self::class, 'load']);\n        echo $name . '|';\n        publish_later();\n    }\n    public function __clone() {\n        $GLOBALS['copy'] = $this;\n        spl_autoload_register([self::class, 'load']);\n    }\n    public static function forget() {\n        spl_autoload_unregister([self::class, 'load']);\n    }\n}\nfunction invoke($receiver, $method, $operand) {\n    $receiver->{$method}($operand);\n}\n$original = new Owner();\n$cloner = clone(...);\ninvoke($cloner, '__invoke', $original);\ninvoke($copy, '__clone', $original);\nOwner::forget();\ninvoke($copy, '__clone', $original);\nunset($copy, $original, $cloner);\n$later = new Later();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-selected-manual-clone-autoload-unregisters-after-genuine-selection",
+      "source_sha256": "76bba56446cd3b6f9c3d9a1d44e7cd704ac0c011ab8667a365f0b0167de6eaef",
+      "kind": "normal",
+      "expected_stdout": "Later|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function load($name) {\n        spl_autoload_unregister([self::class, 'load']);\n        echo $name . '|';\n        eval('class Later {}');\n    }\n    public function __clone() {\n        $GLOBALS['copy'] = $this;\n        spl_autoload_register([self::class, 'load']);\n    }\n    public static function forget() {\n        spl_autoload_unregister([self::class, 'load']);\n    }\n}\nfunction invoke($receiver, $method, $operand) {\n    $receiver->{$method}($operand);\n}\n$original = new Owner();\n$cloner = clone(...);\ninvoke($cloner, '__invoke', $original);\ninvoke($copy, '__clone', $original);\nOwner::forget();\ninvoke($copy, '__clone', $original);\nunset($copy, $original, $cloner);\n$later = new Later();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-manual-invoke-shares-trait-clone-origin-after-retirement",
+      "source_sha256": "fa5815cf2431221281cf8a8761bcfa0b7234578731bfbfc0f4179a0d9d8b9a90",
+      "kind": "normal",
+      "expected_stdout": "private|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\ntrait Maker {\n    public function __clone() {\n        $GLOBALS['fiber'] = new Fiber(static function () { self::tag(); });\n    }\n}\nclass Owner {\n    use Maker { __clone as __invoke; }\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n}\n$original = new Owner();\n$original();\nunset($original);\n$fiber->start();\necho 'done';\n"
+    },
+    {
+      "id": "readonly-dynamic-clone-created-private-shutdown-after-retirement",
+      "source_sha256": "71c834afd58dff041f0974ab30070556f90f5d35b0ba91cbc4244a5fc9ebb8b9",
+      "kind": "normal",
+      "expected_stdout": "done|private|",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        register_shutdown_function(self::tag(...));\n    }\n}\n$original = new Owner();\n$cloner = 'clone';\n$copy = $cloner($original, []);\n$cloner = 'unrelated';\nunset($copy, $original);\necho 'done|';\n"
+    },
+    {
+      "id": "readonly-dynamic-clone-created-private-shutdown-array-after-retirement",
+      "source_sha256": "b4a3895ec7a3fd6610fb15ded131a24e59deda5604cba5d79860d5b35c1befe6",
+      "kind": "normal",
+      "expected_stdout": "done|private|",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        register_shutdown_function([self::class, 'tag']);\n    }\n}\n$original = new Owner();\n$cloner = 'clone';\n$copy = $cloner($original, []);\n$cloner = 'unrelated';\nunset($copy, $original);\necho 'done|';\n"
+    },
+    {
+      "id": "readonly-dynamic-clone-created-private-keyword-shutdown-after-retirement",
+      "source_sha256": "337f29167cd8851c3f4bc6919b56d05078556ce8de39e4d003d74b8be619ac09",
+      "kind": "normal",
+      "expected_stdout": "done|private|",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private static function tag() { echo 'private|'; }\n    public function __clone() {\n        @register_shutdown_function('self::tag');\n    }\n}\n$original = new Owner();\n$cloner = 'clone';\n$copy = $cloner($original, []);\n$cloner = 'unrelated';\nunset($copy, $original);\necho 'done|';\n"
+    },
+    {
+      "id": "readonly-clone-produced-private-fiber-closes-generator-after-maker-retirement",
+      "kind": "normal",
+      "source": "<?php\nfunction paused() {\n    try { yield 2; }\n    finally { echo 'close', (int)(Fiber::getCurrent() === $GLOBALS['fiber']), '|'; }\n}\nclass Owner {\n    public public(set) readonly string $x;\n    public function __construct() { $this->x = 'seed'; }\n    private static function tag() {\n        echo 'body|';\n        $g = paused();\n        echo $g->current(), '|';\n        unset($g);\n        echo 'after|';\n        return 7;\n    }\n    public function __clone() { $GLOBALS['fiber'] = new Fiber(self::tag(...)); }\n}\n$original = new Owner();\n$cloner = clone(...);\n$copy = $cloner($original, ['x' => 'late']);\necho $original->x, '/', $copy->x, '|';\nunset($original, $copy, $cloner);\n$GLOBALS['fiber']->start();\necho $GLOBALS['fiber']->getReturn(), '|done';\n",
+      "source_sha256": "1469f46faaeff142c32685fd9c9481f989d20ec85e2a3e2946063eeaef3be949",
+      "expected_stdout": "seed/late|body|2|close1|after|7|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "purpose": "Current310 closes the actual local paused Generator while a private Fiber born in a genuine FCC clone runs after maker/selector retirement; preserved callback cache and new close fields must compose with readonly second-window writes."
+    },
+    {
+      "id": "readonly-live-clone-window-survives-fiber-close-caller-parking",
+      "kind": "normal",
+      "source": "<?php\nclass Owner {\n    public public(set) readonly string $x;\n    public function __construct() { $this->x = 'seed'; }\n    public function __clone() {\n        $fiber = new Fiber(static function () {\n            try { Fiber::suspend(); }\n            finally { echo 'close|'; }\n        });\n        $fiber->start();\n        unset($fiber);\n        $this->x = 'first';\n    }\n}\n$original = new Owner();\n$copy = clone($original, ['x' => 'late']);\necho $original->x, '/', $copy->x, '|done';\n",
+      "source_sha256": "c20c080c30853019f7e049b0aac19f5e6d605a721bc24fdda9783b01e9acdfde",
+      "expected_stdout": "close|seed/late|done",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "purpose": "Current302 parks the live __clone caller VM in FIBERCLOSERS during actual last-owner Fiber close; a first-window write and independent second-window write follow natural restoration without a synthetic state provider."
+    }
+  ]
+}

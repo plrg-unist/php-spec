@@ -408,7 +408,7 @@ rule PhpStep/destructor-prequeue-finish: S ~> $shutdown_queue_begin(S, pcompleti
 ;; C helper selection is borrowed after its target owners are decremented.
 ;; Reuse the durable target/scope snapshots and pure historical lookup view;
 ;; neither this certificate nor the active cleanup stack contributes heap roots.
-def $eager_cleanup_target(S, pcalltarget) = {TARGET pcalltarget, SITE eps, SCOPE $consumer_producer_scope(S, pcalltarget), BINDING $consumer_producer_binding(S, pcalltarget), INTERNAL true}
+def $eager_cleanup_target(S, pcalltarget) = {TARGET pcalltarget, SITE eps, SCOPE $consumer_producer_scope(S, pcalltarget), BINDING $consumer_producer_binding(S, pcalltarget), INTERNAL true, CLONE eps}
 def $eager_cleanup_source_target(EXCEPTION_HANDLER_RESULT pexceptioncall) = pexceptioncall.TARGET
 def $eager_cleanup_source_target(ERROR_HANDLER_RESULT perrorcall) = perrorcall.TARGET
 def $eager_cleanup_source_target(DESTRUCTOR_RESULT pdestructorcall) = (pdestructorcall.TARGET)
@@ -488,14 +488,14 @@ def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal)
 def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if $consumer_producer_snapshot(pdestructioncleanup.TARGET)
-  -- if pdestructioncleanup.TARGET.SITE = eps /\ pdestructioncleanup.TARGET.INTERNAL
+  -- if pdestructioncleanup.TARGET.SITE = eps /\ pdestructioncleanup.TARGET.INTERNAL /\ pdestructioncleanup.TARGET.CLONE = eps
   -- if $eager_cleanup_source_target(pdestructioncleanup.SOURCE) = (pdestructioncleanup.TARGET.TARGET)
   -- if pdestructioncleanup.SOURCE = EXCEPTION_HANDLER_RESULT pexceptioncall
   -- if pdestructioncleanup.CALLER = eps /\ pdestructioncleanup.ORIGIN = eps /\ pdestructioncleanup.CONSTCONTEXT = eps
   -- if $exception_result_valid($eager_cleanup_history(S, pdestructioncleanup), pexceptioncall)
 def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if $consumer_producer_snapshot(pdestructioncleanup.TARGET)
-  -- if pdestructioncleanup.TARGET.SITE = eps /\ pdestructioncleanup.TARGET.INTERNAL
+  -- if pdestructioncleanup.TARGET.SITE = eps /\ pdestructioncleanup.TARGET.INTERNAL /\ pdestructioncleanup.TARGET.CLONE = eps
   -- if $eager_cleanup_source_target(pdestructioncleanup.SOURCE) = (pdestructioncleanup.TARGET.TARGET)
   -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
   -- if $error_entered_call_valid($eager_cleanup_history(S, pdestructioncleanup), perrorcall)
