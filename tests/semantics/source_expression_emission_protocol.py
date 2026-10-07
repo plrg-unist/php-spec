@@ -173,13 +173,88 @@ GENERATOR_PREMISES = ['  -- if regenerated_source_binding',
  '  -- if ~$compilation_image_valid(S_bad_line, pcunit, P)',
  '  -- if $source_operand_entry_origin(S_bad_line, psourceoperand, n_unit) = S_bad_line.ORIGIN',
  '  -- if $call_entry_check(S_bad_line).COMPLETION = UNSUPPORTED "invalid compiled function descriptor"']
-
+COLLECTOR_HELPERS = r'''dec $expression_comp_review_reached(pstate) : bool
+def $expression_comp_review_reached(S) = true
+  -- if S.TODO = (GC_DTOR_RETURN pgcplan n) :: ptask*
+  -- if $object_name(S, n) = $ptascii("DirectCycle301")
+def $expression_comp_review_reached(S) = false -- otherwise
+dec $expression_comp_review_seek(pstate, nat) : pstate
+def $expression_comp_review_seek(S, n) = S -- if $expression_comp_review_reached(S)
+def $expression_comp_review_seek(S, n) = S
+  -- if ~$expression_comp_review_reached(S)
+  -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
+def $expression_comp_review_seek(S, 0) = S -- if ~$expression_comp_review_reached(S)
+def $expression_comp_review_seek(S, n) = $expression_comp_review_seek($drive_steps(S[.COMPLETION = NORMAL], 1), $nabs($(n - 1)))
+  -- if ~$expression_comp_review_reached(S)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if $(n > 0)
+'''
+COLLECTOR_BINDINGS = GENERATOR_PREMISES[:11] + ['  -- if ' + line for line in [
+    '$operand_nodes(psourceoperand.INPUT) = [HOBJECT n_operand]',
+    '$source_operand_entry_origin(S_entry, psourceoperand, n_unit) = (porigin_work)',
+    'S_reached = $expression_comp_review_seek(S_entry, 700)',
+    'S_reached.COMPLETION = NORMAL \\/ S_reached.COMPLETION = BUDGET',
+    'S = S_reached[.COMPLETION = NORMAL]',
+    'S.TODO = (GC_DTOR_RETURN pgcplan n_cycle) :: ptask_tail*',
+    'S.CURRENT = (pcallcontext)',
+    '$destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)',
+    'pdestructorcall.OPERATION = (pdestructionoperation)',
+    'pdestructionoperation.SOURCE = SOURCE_OPERAND_ENTER psourceoperand n_unit',
+    'S_owner = $source_string_owner_scope(S, psourceoperand.OWNER)',
+    '$global_quiet_name(S, $ptascii("mixed_weak_301")).RESULT = KNOWN (POBJECT n_weak)',
+    'pgcplan_bad_caller = pgcplan[.CALL.CALLER = eps]',
+    'S_bad_caller = S[.GC.PLAN = (pgcplan_bad_caller)][.GC.ACTIVE = (pgcplan_bad_caller.CALL)][.TODO = (GC_DTOR_RETURN pgcplan_bad_caller n_cycle) :: ptask_tail*]',
+    'pgcplan_bad_count = pgcplan[.COUNTED = eps]',
+    'S_bad_count = S[.GC.PLAN = (pgcplan_bad_count)][.TODO = (GC_DTOR_RETURN pgcplan_bad_count n_cycle) :: ptask_tail*]',
+    'S_duplicate = S[.TODO = (GC_DTOR_RETURN pgcplan n_cycle) :: (GC_DTORS pgcplan) :: ptask_tail*]',
+    'S_bad_owner = S_entry[.FILECONTEXTS = [S_entry.FILECONTEXTS[0][.OWNER = $(psourceoperand.OWNER + 1)]]]',
+]]
+COLLECTOR_CHECKS = ['  -- if ' + line for line in [
+    '$property_current_line(S_entry[.ORIGIN = (porigin_work)]) = 6',
+    '$source_operand_enter_valid(S_entry, psourceoperand, n_unit)',
+    'S_entry.CURRENT = eps /\\ S_owner.CURRENT = eps',
+    'pdestructionoperation.ORIGIN = (porigin_work)',
+    'pdestructionoperation.CALLER = S_entry.CURRENT /\\ S_owner.CURRENT = S_entry.CURRENT',
+    'S.SOURCEPENDING = eps /\\ S.ACTIVEFIBER = eps',
+    'pgcplan.CALL.CALLER = S.CURRENT /\\ pgcplan.CALL.PENDING = eps',
+    'pgcplan.DTORS = [HOBJECT n_cycle] /\\ pgcplan.COUNTED = [HOBJECT n_cycle]',
+    'pgcplan.INDEX = 0 /\\ n_cycle <- S.DESTRUCTION.CALLED',
+    '$task_nodes(GC_DTOR_RETURN pgcplan n_cycle) = [HOBJECT n_cycle]',
+    '$heap_owners($heap_graph(S), HOBJECT n_cycle) = 2',
+    '(HOBJECT n_operand) <- $machine_roots(S)',
+    '$weakref_get(S, n_weak) = POBJECT n_cycle',
+    '$gc_state_valid(S) /\\ $call_entry_check(S) = S /\\ $heap_valid($heap_graph(S))',
+    '$heap_graph(S_bad_caller) = $heap_graph(S)',
+    '~$gc_plan_valid(S_bad_caller, pgcplan_bad_caller) /\\ ~$call_descriptors_valid(S_bad_caller)',
+    '$heap_graph(S_bad_count) = $heap_graph(S)',
+    '~$gc_plan_valid(S_bad_count, pgcplan_bad_count) /\\ ~$call_descriptors_valid(S_bad_count)',
+    '$heap_graph(S_duplicate) = $heap_graph(S)',
+    '~$gc_plan_valid(S_duplicate, pgcplan) /\\ ~$call_descriptors_valid(S_duplicate)',
+    '$heap_graph(S_bad_owner) = $heap_graph(S_entry)',
+    '~$source_operand_enter_valid(S_bad_owner, psourceoperand, n_unit)',
+    '$call_entry_check(S_bad_owner).COMPLETION = UNSUPPORTED "invalid compiled function descriptor"',
+    'S_paused = $drive(S, 0)',
+    'S_paused.COMPLETION = BUDGET /\\ S_paused[.COMPLETION = NORMAL] = S',
+    'S_step = $drive_steps(S, 1)',
+    'S_step.COMPLETION = BUDGET /\\ $drive_steps(S_paused[.COMPLETION = NORMAL], 1) = S_step',
+    'S_next = S_step[.COMPLETION = NORMAL]',
+    'S_next.GC.PLAN = (pgcplan_next)',
+    'pgcplan_next.INDEX = 1 /\\ pgcplan_next.DONE = [HOBJECT n_cycle]',
+    '$heap_owners($heap_graph(S_next), HOBJECT n_cycle) = 1 /\\ $weakref_get(S_next, n_weak) = POBJECT n_cycle',
+    '$gc_state_valid(S_next) /\\ $call_descriptors_valid(S_next) /\\ $heap_valid($heap_graph(S_next))',
+    'S_done = $drive(S_next, 2500)',
+    'S_done.COMPLETION = NORMAL /\\ S_done.GC.ACTIVE = eps /\\ S_done.GC.PLAN = eps /\\ S_done.SOURCEPENDING = eps',
+    '~((HOBJECT n_cycle) <- S_done.ALLOCATIONS) /\\ ~((HOBJECT n_operand) <- S_done.ALLOCATIONS)',
+    '$weakref_get(S_done, n_weak) = PNULL',
+    '$gc_state_valid(S_done) /\\ $call_descriptors_valid(S_done) /\\ $heap_valid($heap_graph(S_done))',
+]]
+COLLECTOR_PREMISES = COLLECTOR_BINDINGS + COLLECTOR_CHECKS
 
 def run_case(case, args):
     recorder.ROOT = ROOT
     semantic = args.semantic_root.resolve()
     files = ([SOURCES / 'expression-call-property.php', SOURCES / 'call-property-child.php']
-             if case == 'entry' else [SOURCES / 'expression-generator.php', SOURCES / 'generator-expression-child.php'] if case == 'generator' else [SOURCES / name for name in GUARD_FILES.values()])
+             if case == 'entry' else [SOURCES / ('expression-cycle-direct.php' if case == 'collector' else 'expression-generator.php'), SOURCES / 'generator-expression-child.php'] if case in ('generator', 'collector') else [SOURCES / name for name in GUARD_FILES.values()])
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     b64 = lambda value: base64.b64encode(value).decode()
     seq = lambda value: '(' + str(list(value)) + ')'
@@ -205,7 +280,7 @@ def run_case(case, args):
     revision, status = git('rev-parse', 'HEAD'), git('status', '--short')
     out = Path(tempfile.mkdtemp(prefix='source-expression-emission-protocol-', dir=ROOT / '.tools'))
     print(out, flush=True)
-    counts = {'entry': (24, 33), 'guards': (32, 40), 'generator': (35, 35)}[case]
+    counts = {'entry': (24, 33), 'guards': (32, 40), 'generator': (35, 35), 'collector': (len(COLLECTOR_BINDINGS), len(COLLECTOR_CHECKS))}[case]
     report = {'revision': revision, 'working_tree_status': status, 'semantic_root': str(semantic),
               'case': case, 'inputs': before, 'profile': profile, 'mode': 'SL', 'cache': False, 'det': True,
               'compiler_pin': 'da36ac3c434cd291940293a63da64544307730a3',
@@ -217,7 +292,7 @@ def run_case(case, args):
         try:
             parsed = []
             for index, source in enumerate(files):
-                request = {'op': 'parse', 'source': b64(source.read_bytes())} if case in ('entry', 'generator') and index == 0 else {
+                request = {'op': 'parse', 'source': b64(source.read_bytes())} if case in ('entry', 'generator', 'collector') and index == 0 else {
                     'op': 'parse-file', 'id': '0', 'mode': 'file', 'profile': 'cli-raw-85',
                     'requested': b64(bytes(source)), 'resolved': b64(bytes(source)),
                     'opened': b64(bytes(source)), 'source': b64(source.read_bytes())}
@@ -232,14 +307,14 @@ def run_case(case, args):
         finally:
             checker.close()
         (out / 'checked.json').write_text(json.dumps(checked) + '\n')
-        if case in ('entry', 'generator'):
+        if case in ('entry', 'generator', 'collector'):
             source, child = files
             label = 'emission_review' if case == 'entry' else 'expression_comp_review'
             fixture = ('dec $' + label + '_program() : program\ndef $' + label + '_program() = '
                        + checked[0]['fixture'] + '\n')
             fixture += ('dec $' + label + '_child() : program\ndef $' + label + '_child() = '
-                        + checked[1]['fixture'] + '\n' + (ENTRY_HELPERS if case == 'entry' else GENERATOR_HELPERS))
-            premises = list(ENTRY_PREMISES if case == 'entry' else GENERATOR_PREMISES)
+                        + checked[1]['fixture'] + '\n' + (ENTRY_HELPERS if case == 'entry' else COLLECTOR_HELPERS if case == 'collector' else GENERATOR_HELPERS))
+            premises = list(ENTRY_PREMISES if case == 'entry' else COLLECTOR_PREMISES if case == 'collector' else GENERATOR_PREMISES)
             premises[0] = ('  -- if S_open = $php_file_startup_run($' + label + '_program(), 10000, $base64('
                            + json.dumps(b64(bytes(source))) + '), $base64(' + json.dumps(b64(bytes(ROOT)))
                            + '), {REPORTING ($ptascii("30719")), INCLUDEPATH $ptascii(".:")})')
@@ -281,7 +356,7 @@ def run_case(case, args):
         if args.prepare_only:
             report['passed'] = True
         else:
-            process = recorder.recorded([str(runner), '--sl', *map(str, modules), str(test)], out / 'admission', 90)
+            process = recorder.recorded([str(runner), '--sl', *map(str, modules), str(test)], out / 'admission', 120 if case == 'collector' else 90)
             stdout, stderr = ((out / ('admission' + suffix)).read_bytes() for suffix in ('.stdout', '.stderr'))
             report['application_evaluations'] = int(process['exit'] == 0 and stdout in (b'true\n', b'false\n'))
             report.update(process=process, observed=stdout.decode(errors='replace'), stderr=stderr.decode(errors='replace'))
@@ -298,7 +373,7 @@ def run_case(case, args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--prepare-only', action='store_true')
-    parser.add_argument('--case', choices=('entry', 'guards', 'generator'))
+    parser.add_argument('--case', choices=('entry', 'guards', 'generator', 'collector'))
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args()
     return all(run_case(case, args) for case in ((args.case,) if args.case else ('entry', 'guards')))

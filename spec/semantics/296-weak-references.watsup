@@ -247,6 +247,8 @@ def $ctor_pair_target(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = (n)
   -- if S.OBJECTS[n] = WEAKREFERENCE eps
 
 ;; Failed NEW retains its original candidate only in the actual throw release.
+;; These failed-NEW/carrier producers emit VALUE jobs; successful DISCARD
+;; temporary qualification cannot create a TEMP job on this path.
 dec $weakref_failed_release(pstate, nat, pdestructionrelease) : bool
 def $weakref_failed_release(S, n, pdestructionrelease) = true
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
