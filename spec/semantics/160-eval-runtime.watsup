@@ -46,6 +46,7 @@ dec $eval_operand(pstate, int) : pstate
 dec $eval_callback_ready(pstate, int) : bool
 dec $source_array_ready(pstate, int) : bool
 dec $source_read_ready(pstate) : bool
+dec $source_string_begin(pstate, poperand, nat, porigin, int, int, ptask*) : pstate
 dec $source_operand_tail(ptask*) : ptask*
 dec $source_operand_work(nat, ptask*, ptask*) : ptask*
 dec $source_operand_contexts(pevalcontext*, nat) : pevalcontext*
@@ -89,7 +90,7 @@ rule PhpStep/eval-expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [
   -- if S.TODO = (EVAL (NExprEval expression metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if z = $runtime_line(S, [PCFIELD 0], expression)
-rule PhpStep/eval-request-object: S ~> $user_string_begin(S_read, n, porigin_child, z, EVAL_REQUEST porigin_parent z, ptask_tail*)
+rule PhpStep/eval-request-object: S ~> $source_string_begin(S_read, S.RESULT, n, porigin_parent, z, 0, ptask_tail*)
   -- if S.TODO = (EVAL_REQUEST porigin_parent z) :: ptask_tail*
   -- if S.ORIGIN = (porigin_child)
   -- if $eval_operand_site_valid(S, porigin_parent, porigin_child, z)
@@ -342,6 +343,9 @@ def $eval_response_valid(S, psourceresponse) = (S.COMPLETION = SOURCE_PENDING /\
 
 dec $eval_compile_context_phase(pevalcontext*, nat, pevalphase) : pevalcontext*
 dec $eval_compile_paused_unit(pstate, nat) : bool
+dec $source_eval_pending_context(pstate, pevalcontext) : bool
+dec $source_eval_pending_marker(pevalcontext) : bool
+def $source_eval_pending_context(S, pevalcontext) = false -- otherwise
 dec $eval_compile_result(pstate, pevalcontext, pevalcontext*, ppstate) : pstate
 dec $eval_compile_throw_source(pstate, pevalcontext, text, nat*, int) : bool
 def $eval_compile_throw_source(S, pevalcontext, "Error", n_message*, z) = true
@@ -498,6 +502,7 @@ dec $eval_redeclare_class(pstate, pevalcontext, pclassdesc*, nat*, int) : bool
 def $eval_redeclare_class(S, pevalcontext, eps, n_message*, z) = false
 def $eval_redeclare_class(S, pevalcontext, pclassdesc :: pclassdesc_tail*, n_message*, z) = ($eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) \/ $eval_redeclare_class(S, pevalcontext, pclassdesc_tail*, n_message*, z))
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext[.PHASE = UNIT_RUN][.TAIL = $source_operand_tail(pevalcontext.TAIL)] :: pevalcontext_tail*][.TODO = $source_operand_work(pevalcontext.UNIT, $compiled_work(pevalcontext.UNIT, P.WORK) ++ [EVAL_END pevalcontext.UNIT], pevalcontext.TAIL)][.SERVICELEFT = eps][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$source_eval_pending_marker(pevalcontext)
   -- if S_compiled.COMPLETION = NORMAL
   -- if ~$eval_compile_paused_unit(S_compiled, pevalcontext.UNIT)
   -- if P.COMPLETION = PPCNORMAL
@@ -568,11 +573,13 @@ dec $eval_resume_valid(pstate, psourceresponse) : pstate
 def $eval_resume_valid(S, SOURCE_ACCEPT n n_bytes* program) = $eval_resume_accepted(S, pevalcontext, pevalcontext_tail*, program)
   -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
 def $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, pfailedkind, n_message*, z) = S_object[.EVALCONTEXTS = pevalcontext_tail*][.TODO = $source_operand_throw(n_object, pevalcontext.TAIL)][.ORIGIN = (pevalcontext.SITE)][.SERVICELEFT = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.CONSTCONTEXT = eps]
+  -- if ~$source_eval_pending_marker(pevalcontext)
   -- if pfailedsource = {UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, BYTES pevalcontext.BYTES, FILE pevalcontext.FILE, ISFILE false, KIND pfailedkind, MESSAGE n_message*, LINE z, LOCATION pevalcontext.LOCATION}
   -- if S_failed = $declaration_exit(S, pevalcontext.UNIT, PCSREJECT)[.FAILEDSOURCES = pfailedsource :: S.FAILEDSOURCES][.ORIGIN = (PORIGIN pevalcontext.UNIT eps)][.COMPLETION = THROWN $failed_source_kind(pfailedkind) n_message* z]
   -- if S_object = $throwable_allocate_at(S_failed, $failed_source_kind(pfailedkind), n_message*, PORIGIN pevalcontext.UNIT eps, z, $eval_exception_trace(S_failed))
   -- if S_object.COMPLETION = THROWING n_object
 def $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, pfailedkind, n_message*, z) = S_object[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps]
+  -- if ~$source_eval_pending_marker(pevalcontext)
   -- if pfailedsource = {UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, BYTES pevalcontext.BYTES, FILE pevalcontext.FILE, ISFILE false, KIND pfailedkind, MESSAGE n_message*, LINE z, LOCATION pevalcontext.LOCATION}
   -- if S_failed = $declaration_exit(S, pevalcontext.UNIT, PCSREJECT)[.FAILEDSOURCES = pfailedsource :: S.FAILEDSOURCES][.ORIGIN = (PORIGIN pevalcontext.UNIT eps)][.COMPLETION = THROWN $failed_source_kind(pfailedkind) n_message* z]
   -- if S_object = $throwable_allocate_at(S_failed, $failed_source_kind(pfailedkind), n_message*, PORIGIN pevalcontext.UNIT eps, z, $eval_exception_trace(S_failed))

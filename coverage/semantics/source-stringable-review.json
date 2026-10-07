@@ -1,0 +1,133 @@
+{
+  "scope": "Stringable source ownership and successful post-cast destructor throw before eval compilation; bounded first298 cut, all core/source obligations remain partial.",
+  "status": "independently_reviewed_private_ready",
+  "tested_revision": "5412b7b20898d8406928bbcbaaf1ee924803cb11",
+  "semantic_parent": "reviewed275 cleanup projection and genuine destructor-frame correction,270 c1bb1b19fff39eb3c8f023c2de0d4c341f623554f0dee5b597c2a4fab48c6269",
+  "semantic_root": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-lifetime-298",
+  "semantic_sha256": {
+    "spec/semantics/30-storage.watsup": "6d31a39c8b8d493cd4e9e35c3cdfb22cf709114f39e05224f9deda165d9bffb2",
+    "spec/semantics/160-eval-runtime.watsup": "4e38e0d0b730c9569106c34c92879953bca1cb6ba3c8ed80973d9998e26713aa",
+    "spec/semantics/168-user-string-runtime.watsup": "e4d0df31ed44d82190b744f8b3e411f81231098ca6a3376b49fb37743cd0049a",
+    "spec/semantics/171-include-runtime.watsup": "516defeb52fbbf9e531ca83c448f838ff32dede6eb21a9319bcaee0f0972db26",
+    "spec/semantics/236-eval-declaration-notices.watsup": "d0929753a7b0dd530614815be70f3835266692b4427680fa056dcf2e06d627c2",
+    "spec/semantics/270-eager-destructors.watsup": "47484d348e90f0c610cdbb3c92b9b7116eb3b1dc9cfd5ac89ec4989395318774",
+    "spec/semantics/298-source-stringable-lifetime.watsup": "08427cd09e20db71b01e5cc2c245c61c92fbdaff3ddfcaf2db828218b8249e09",
+    "spec/semantics/modules.json": "321394d18eef7d52c8b80c8db7fce418ba82e049c216f9c4cf6496d581e1d37e"
+  },
+  "source_patch": {
+    "path": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-lifetime-reviewed-15.patch",
+    "sha256": "e80cc0dde8dbd1d52ea80981f750688d1894a3d238934ca22b5684f804e568fb",
+    "files": 8
+  },
+  "target": "PHP8.5.10 CLI NTS64",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_route": "zend_std_cast_object_tostring keeps its selected receiver independently; ZEND_INCLUDE_OR_EVAL runs the helper before checking EG(exception). Successful bytes survive cast-receiver destruction; eval still compiles and publishes while preserving that pending Throwable. Ordinary empty include produces ValueError(previous D); eval/once retain D.",
+  "runtime_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "_build/default/adapter/main.exe": "1d7cebf175b60a6e2a534460ec2c4aff206cdd901e34f35f959041a49f5ac2f9",
+    ".tools/cprefix-compiler/compiler": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "profile": "tests/semantics/profile.json plus include_path=.:, startup reporting30719; no file-provider facts for this cut",
+  "compiler": {
+    "pin": "da36ac3c434cd291940293a63da64544307730a3",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "modules": 276,
+    "exit": 0,
+    "seconds": 3.1452584266662598,
+    "fresh_rebuild": false
+  },
+  "caps_seconds": {
+    "native": 30,
+    "source_model": 60,
+    "source_outer": 90,
+    "compiler": 300,
+    "state": 90
+  },
+  "accepted": {
+    "source_agreements": 4,
+    "original_sources": 1,
+    "explicit_companions": 3,
+    "sources": [
+      {
+        "case": "eval-lifetime",
+        "kind": "original",
+        "source_sha256": "7e8338656e1ecbb4530a98720fcf52beff9f016c5f58d3d8aeaf51bb2901adde",
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-cast-run-m13oosx4/report.json",
+        "seconds": 19.93071150779724,
+        "exit": 0
+      },
+      {
+        "case": "reference-unpromoted",
+        "kind": "explicit_companion",
+        "source_sha256": "b511fdd11a9667eb45eec0bf77cc4fa155ace9f7cb8ce7b8564f0c3e4b079423",
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-cast-run-czm7v0h2/report.json",
+        "seconds": 27.88438129425049,
+        "exit": 0
+      },
+      {
+        "case": "pending-empty-unpromoted",
+        "kind": "explicit_companion",
+        "source_sha256": "7e2e3e15cb7d59052b3c661fe2f59203c676e4e7861e03d51a7c0e6eb18ee24c",
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-cast-run-czm7v0h2/report.json",
+        "seconds": 14.751708030700684,
+        "exit": 0
+      },
+      {
+        "case": "borrowed-throw-direct",
+        "kind": "explicit_companion",
+        "source_sha256": "4dd4365b72795c3d27233d8035c8781a596f52ae1f2a981a9fe68b1fc46b8e16",
+        "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-cast-run-czm7v0h2/report.json",
+        "seconds": 8.073734521865845,
+        "exit": 0
+      }
+    ],
+    "state_premises": 37,
+    "state_raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/pending-admission-run-jl20rdkd/report.json",
+    "state_seconds": 8.528364658355713,
+    "state_scope": "17 genuine reached bindings plus20 predicates at original eval line12 and one actual parser-await transition; borrowed Throwable roots, public entry, bytes/site/owner/kind/suffix/liveness/missing and first-bad marker controls. Observer line13 remains unreached."
+  },
+  "maintained": {
+    "sources": "python3 tests/semantics/source_stringable_sources.py --semantic-root .tools/source-stringable-lifetime-298",
+    "states": "python3 tests/semantics/source_stringable_protocol.py --semantic-root .tools/source-stringable-lifetime-298",
+    "prepare_only": "python3 tests/semantics/source_stringable_protocol.py --prepare-only",
+    "relocated_preparation_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-protocol-ul0ot123/PREPARED.json",
+    "relocated_application_evaluations": 0,
+    "note": "Default paths target the repository semantic root after source integration. Maintained originals are byte-identical; helper relocation adds no renewed source/state agreement."
+  },
+  "preserved_zero_credit": {
+    "promotion_originals": "reference-lifetime22 Unsupported before output; pending-empty22 unchanged/native-only known same promotion prerequisite. Constructor promotion remains required core.",
+    "observer_original": "borrowed-throw15 reaches correct T|D|C:DTOR| prefix then Unsupported registered builtin call on function_exists; that ordinary observer is outside CORE. Distinct direct-call companion proves publication.",
+    "failed_cuts": [
+      "c1zd3z2q parse record-length binder",
+      "b56dvefc moved declaration absent",
+      "yk2d_okr duplicate declaration",
+      "thwk7417 noninvertible final event binder",
+      "qp0sftmm noninvertible trace binder",
+      "grfr6nsi nondeterministic Stringable consumer and captured-frame owner scope",
+      "_e1c6i0h original observer Unsupported"
+    ],
+    "unused_state_preparations": [
+      "go6167hc wrong selector11",
+      "139a inline count binder"
+    ]
+  },
+  "required_follow_on": [
+    "authenticated compiler sole-opcode fast return and latent exception checkpoint ordering",
+    "immediate pending compiler fatal transport and pre-parser destructor keyword trace",
+    "parser rejection and wider eval/provider/once interactions",
+    "additional emitted-code forms, helper-null/fake returns and broader captured Stringable consumers",
+    "constructor property promotion under required core",
+    "final combined-source and fresh copied-path network-isolated offline rebuild"
+  ],
+  "integration": "Git metadata is read-only. Private source patch and publication diff remain preserved; no canonical merge/push or full-core/fresh-build claim."
+}

@@ -2,6 +2,12 @@ syntax pevalcompileplan = { UNIT nat, PUBLICATIONS pppublication*, DIAGNOSTICS p
 syntax pevalcompile = { PLAN pevalcompileplan, CHECKPOINT nat, DIAGNOSTIC nat, PENDING pcompletion }
 syntax pevalcompileclaim = (nat, nat, nat, nat, pdeclnoticeitem*)
 syntax pevalcompilefatal = { CURSOR pevalcompile, COMPLETION pcompletion, ORIGIN porigin?, PREFIX pdeclnoticeitem* }
+dec $source_compile_cursor_pending_valid(pstate, pevalcompile) : bool
+def $source_compile_cursor_pending_valid(S, pevalcompile) = true -- otherwise
+dec $source_compile_initial_pending(pstate, nat) : pcompletion
+dec $source_compile_throw_work(nat, ptask*) : ptask*
+def $source_compile_initial_pending(S, n) = NORMAL -- otherwise
+def $source_compile_throw_work(n, ptask_tail*) = (THROW_SEARCH n) :: ptask_tail* -- otherwise
 dec $eval_compile_plan(ppstate) : pevalcompileplan
 dec $eval_compile_limit(pevalcompile) : nat
 dec $eval_compile_checkpoint(pstate, pppublication) : pstate
@@ -75,11 +81,15 @@ dec $eval_compile_precision_resume(pstate, pevalcompile, ptask*) : pstate
 ;; The cursor stores source metadata, never a saved machine/heap state.
 def $eval_compile_plan(P) = {UNIT P.FOLD.SOURCE.ID, PUBLICATIONS P.PUBLICATIONS, DIAGNOSTICS P.DIAGNOSTICS, WORK P.WORK, COMPLETION P.COMPLETION}
 def $eval_compile_unit(S, n) = ($eval_binding_at(S.EVALBINDINGS, n) =/= eps)
-def $declaration_compile(S, P) = $eval_compile_loop(S_installed[.TODO = [EVAL_COMPILE_END P.FOLD.SOURCE.ID] ++ pevalcontext.TAIL], {PLAN $eval_compile_plan(P), CHECKPOINT 0, DIAGNOSTIC 0, PENDING NORMAL})
+def $declaration_compile(S, P) = $eval_compile_loop(S_installed[.TODO = [EVAL_COMPILE_END P.FOLD.SOURCE.ID] ++ pevalcontext.TAIL], {PLAN $eval_compile_plan(P), CHECKPOINT 0, DIAGNOSTIC 0, PENDING $source_compile_initial_pending(S, P.FOLD.SOURCE.ID)})
   -- if $eval_compile_unit(S, P.FOLD.SOURCE.ID)
   -- if $eval_context_at(S.EVALCONTEXTS, P.FOLD.SOURCE.ID) = (pevalcontext)
   -- if S_installed = $declaration_install(S, P.FOLD.SOURCE, P.INSTALLED)
   -- if S_installed.COMPLETION = NORMAL
+  -- if ~$declaration_unsupported($source_compile_initial_pending(S, P.FOLD.SOURCE.ID))
+def $declaration_compile(S, P) = S[.COMPLETION = UNSUPPORTED text]
+  -- if $eval_compile_unit(S, P.FOLD.SOURCE.ID)
+  -- if $source_compile_initial_pending(S, P.FOLD.SOURCE.ID) = UNSUPPORTED text
 def $declaration_compile(S, P) = $declaration_compile_result(S, P)
   -- if ~$eval_compile_unit(S, P.FOLD.SOURCE.ID)
 def $declaration_compile(S, P) = $declaration_stop(S_installed, P, PCSUNSUPPORTED 0)
@@ -141,7 +151,7 @@ def $eval_compile_finish(S, pevalcompile) = $eval_compile_stop(S[.COMPLETION = U
 def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = $source_operand_work(pevalcompile.PLAN.UNIT, $compiled_work(pevalcompile.PLAN.UNIT, pevalcompile.PLAN.WORK) ++ [EVAL_END pevalcompile.PLAN.UNIT], pevalcontext.TAIL)][.EVALCONTEXTS = $source_operand_contexts($eval_compile_context_phase(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT, UNIT_RUN), pevalcompile.PLAN.UNIT)][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pevalcompile.PENDING = NORMAL
   -- if $eval_context_at(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT) = (pevalcontext)
-def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = (THROW_SEARCH n) :: pevalcontext.TAIL][.EVALCONTEXTS = pevalcontext_tail*][.ORIGIN = (pevalcontext.SITE)]
+def $eval_compile_finish_completion(S, pevalcompile) = S[.TODO = $source_compile_throw_work(n, pevalcontext.TAIL)][.EVALCONTEXTS = pevalcontext_tail*][.ORIGIN = (pevalcontext.SITE)]
   -- if pevalcompile.PENDING = THROWING n
   -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
   -- if pevalcontext.UNIT = pevalcompile.PLAN.UNIT
@@ -239,6 +249,7 @@ def $eval_compile_cursor_valid(S, pevalcompile) = true
   -- if $eval_compile_claim_at($eval_compile_waiting(S.DECLARATIONS), pevalcompile.PLAN.UNIT) = ((pevalcompile.PLAN.UNIT, pevalcompile.CHECKPOINT, pevalcompile.DIAGNOSTIC, n_ordinal, pdeclnoticeitem*))
   -- if $(pevalcompile.CHECKPOINT <= |pevalcompile.PLAN.PUBLICATIONS| /\ pevalcompile.DIAGNOSTIC <= |pevalcompile.PLAN.DIAGNOSTICS|)
   -- if pevalcompile.PENDING = NORMAL \/ $exit_completion(pevalcompile.PENDING) \/ $eval_compile_pending_object(S, pevalcompile.PENDING)
+  -- if $source_compile_cursor_pending_valid(S, pevalcompile)
 def $eval_compile_cursor_valid(S, pevalcompile) = false -- otherwise
 def $eval_compile_pending_object(S, THROWING n) = ($throwable_member(S, n) /\ (HOBJECT n) <- S.ALLOCATIONS)
 def $eval_compile_pending_object(S, pcompletion) = false -- otherwise

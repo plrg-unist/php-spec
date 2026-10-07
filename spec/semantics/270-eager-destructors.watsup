@@ -37,6 +37,7 @@ dec $destructor_operation_valid(pstate, pdestructionoperation) : bool
 dec $destructor_operation_live(pstate, pdestructionoperation) : bool
 dec $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation) : ptask*
 dec $destructor_operation_finish(pstate, pdestructionoperation) : pstate
+dec $destructor_pending_finish(pstate, pdestructionoperation, nat, ptask*) : pstate
 
 dec $eager_operation_internal(pstate) : bool
 dec $eager_abandoned_owner(ptask) : pnode*
@@ -316,10 +317,11 @@ def $destructor_operation_finish(S, pdestructionoperation) = S_done
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
   -- if pdestructionoperation.PENDING = eps
   -- if S_done = $eager_cleanup_finish(S, pdestructionoperation)[.TODO = ptask_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*][.RESULT = pdestructionoperation.VALUE][.BASE = pdestructionoperation.BASE][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION][.COMPLETION = pdestructionoperation.COMPLETION]
-def $destructor_operation_finish(S, pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.TODO = (THROW_SEARCH n) :: ptask_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+def $destructor_operation_finish(S, pdestructionoperation) = $destructor_pending_finish($eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*], pdestructionoperation, n, ptask_tail*)
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
   -- if pdestructionoperation.PENDING = (n)
+def $destructor_pending_finish(S, pdestructionoperation, n, ptask_tail*) = S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL] -- otherwise
 def $call_after_origin(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*]
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
 def $return_discard(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*]

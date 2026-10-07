@@ -57,7 +57,7 @@ def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.FILESEQ = $(n_n
 def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "file provider requires fixed cwd"]
   -- if S.FILECWD = eps \/ S.FILEINCLUDEPATH = eps
   -- if ~$file_empty_operand(S, n_kind)
-rule PhpStep/file-request-object: S ~> $user_string_begin(S_read, n, porigin_child, z, FILE_REQUEST porigin_parent z n_kind, ptask_tail*)
+rule PhpStep/file-request-object: S ~> $source_string_begin(S_read, S.RESULT, n, porigin_parent, z, n_kind, ptask_tail*)
   -- if S.TODO = (FILE_REQUEST porigin_parent z n_kind) :: ptask_tail*
   -- if S.ORIGIN = (porigin_child)
   -- if $file_operand_site_valid(S, porigin_parent, porigin_child, z, n_kind)

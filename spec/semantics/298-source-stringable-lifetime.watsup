@@ -1,0 +1,182 @@
+;; Draft298: original source ownership is distinct from the cast receiver.
+;; Native zend_std_cast_object_tostring has its own GC_ADDREF/release pair.
+;; STRINGIFY_RESULT keeps that cast receiver; these tasks keep only INPUT.
+;; The selected receiver id in RESULT is documentary, not another owner.
+
+def $source_operand_input(S, psourceoperand) = true
+  -- if psourceoperand.INPUT = KNOWN (POBJECT n)
+  -- if $origin_node(S.SOURCES, $source_operand_child(psourceoperand)) = (expression)
+  -- if $reference_cv(expression) = eps
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+
+dec $source_string_receiver(pstate, psourceoperand, nat) : bool
+
+def $source_string_begin(S, poperand, n, porigin, z, n_kind, ptask_tail*) = $user_string_begin(S, n, $source_operand_child(psourceoperand), z, SOURCE_STRING_RESULT psourceoperand n, ptask_tail*)
+  -- if n_owner = |S.FRAMES|
+  -- if psourceoperand = {SITE porigin, LINE z, KIND n_kind, INPUT poperand, OWNER n_owner, TAIL ptask_tail*}
+  -- if $source_operand_valid(S, psourceoperand)
+  -- if S.ORIGIN = ($source_operand_child(psourceoperand))
+  -- if $stringable_instance(S, n)
+  -- if $source_string_receiver(S, psourceoperand, n)
+def $source_string_begin(S, poperand, n, porigin, z, int, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "invalid source Stringable operand"] -- otherwise
+
+def $source_string_receiver(S, psourceoperand, n) = true
+  -- if psourceoperand.INPUT = VARIABLE n_name* z
+def $source_string_receiver(S, psourceoperand, n) = true
+  -- if psourceoperand.INPUT = KNOWN (POBJECT n)
+def $source_string_receiver(S, psourceoperand, n) = true
+  -- if psourceoperand.INPUT = REFERENCE n_cell
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
+def $source_string_receiver(S, psourceoperand, n) = false -- otherwise
+
+def $stringify_source(S, porigin, z, SOURCE_STRING_RESULT psourceoperand n) = ($source_operand_valid(S, psourceoperand) /\ porigin = $source_operand_child(psourceoperand) /\ z = psourceoperand.LINE)
+def $stringify_source_consumer(SOURCE_STRING_RESULT psourceoperand n) = true
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if pframe.TODO = (STRINGIFY_RESULT n_receiver porigin z) :: (SOURCE_STRING_RESULT psourceoperand n_selected) :: ptask_tail*
+def $stringify_consumer_tail_valid(S, porigin, z, SOURCE_STRING_RESULT psourceoperand n, ptask_tail*) = ($stringify_source(S, porigin, z, SOURCE_STRING_RESULT psourceoperand n) /\ psourceoperand.TAIL = ptask_tail*)
+def $stringify_consumer_receiver_valid(S, n, SOURCE_STRING_RESULT psourceoperand n_selected) = (n = n_selected)
+def $task_nodes(SOURCE_STRING_RESULT psourceoperand n) = $operand_nodes(psourceoperand.INPUT)
+def $call_task_valid(S, SOURCE_STRING_RESULT psourceoperand n) = ($source_operand_valid(S, psourceoperand) /\ S.ORIGIN = ($source_operand_child(psourceoperand)) /\ $source_operand_suffix(S.TODO, SOURCE_STRING_RESULT psourceoperand n, psourceoperand.TAIL))
+
+;; Capture returned bytes before dropping the cast receiver. Its destructor can
+;; throw after a successful string return; READY survives as the pending owner.
+def $stringify_return_state(S, SOURCE_STRING_RESULT psourceoperand n, n_text*, ptask_tail*) = S[.TODO = (SOURCE_STRING_READY psourceoperand n n_text*) :: ptask_tail*][.RESULT = KNOWN (PSTRING n_text*)][.BASE = BASE_VALUE (KNOWN (PSTRING n_text*))]
+  -- if $call_task_valid(S, SOURCE_STRING_RESULT psourceoperand n)
+def $task_nodes(SOURCE_STRING_READY psourceoperand n n_text*) = $operand_nodes(psourceoperand.INPUT)
+def $call_task_valid(S, SOURCE_STRING_READY psourceoperand n n_text*) = ($source_operand_valid(S, psourceoperand) /\ S.ORIGIN = ($source_operand_child(psourceoperand)) /\ $source_operand_suffix(S.TODO, SOURCE_STRING_READY psourceoperand n n_text*, psourceoperand.TAIL))
+
+dec $source_string_request(pstate, psourceoperand, preqbytes) : pstate
+def $source_string_request(S, psourceoperand, n_text*) = $eval_request_start(S[.RESULT = KNOWN (PSTRING n_text*)], psourceoperand.SITE, psourceoperand.LINE, (SOURCE_OPERAND_RELEASE psourceoperand) :: psourceoperand.TAIL)
+  -- if psourceoperand.KIND = 0
+def $source_string_request(S, psourceoperand, n_text*) = $file_request_start(S[.RESULT = KNOWN (PSTRING n_text*)], psourceoperand.SITE, psourceoperand.LINE, psourceoperand.KIND, (SOURCE_OPERAND_RELEASE psourceoperand) :: psourceoperand.TAIL)
+  -- if psourceoperand.KIND =/= 0
+rule PhpStep/source-string-ready: S ~> $source_string_request(S, psourceoperand, n_text*)
+  -- if S.TODO = (SOURCE_STRING_READY psourceoperand n n_text*) :: ptask_tail*
+  -- if $call_task_valid(S, SOURCE_STRING_READY psourceoperand n n_text*)
+
+
+;; A successful __toString keeps its returned bytes when dropping the cast
+;; receiver throws. The generic destructor operation binds that receiver before
+;; it is retired; the documentary id is never read back from the mutable input.
+def $destructor_pending_finish(S, pdestructionoperation, n_pending, (SOURCE_STRING_READY psourceoperand n_receiver n_text*) :: ptask_tail*) = S[.TODO = (SOURCE_STRING_PENDING psourceoperand n_text* n_pending) :: ptask_tail*][.RESULT = pdestructionoperation.VALUE][.BASE = pdestructionoperation.BASE][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION][.COMPLETION = NORMAL]
+  -- if pdestructionoperation.SOURCE = STRINGIFY_RESULT n_receiver porigin_child psourceoperand.LINE
+  -- if porigin_child = $source_operand_child(psourceoperand)
+  -- if pdestructionoperation.ORIGIN = (porigin_child)
+  -- if pdestructionoperation.VALUE = KNOWN (PSTRING n_text*)
+  -- if psourceoperand.TAIL = ptask_tail*
+  -- if $source_operand_valid(S, psourceoperand)
+
+dec $source_string_pending_valid(pstate, psourceoperand, preqbytes, nat) : bool
+def $source_string_pending_valid(S, psourceoperand, n_text*, n) = ($source_operand_valid(S, psourceoperand) /\ S.ORIGIN = ($source_operand_child(psourceoperand)) /\ $source_operand_suffix(S.TODO, SOURCE_STRING_PENDING psourceoperand n_text* n, psourceoperand.TAIL) /\ $eval_compile_pending_object(S, THROWING n))
+def $task_nodes(SOURCE_STRING_PENDING psourceoperand n_text* n) = (HOBJECT n) :: $operand_nodes(psourceoperand.INPUT)
+def $call_task_valid(S, SOURCE_STRING_PENDING psourceoperand n_text* n) = $source_string_pending_valid(S, psourceoperand, n_text*, n)
+
+dec $source_string_pending_request(pstate, psourceoperand, preqbytes, nat) : pstate
+def $source_string_pending_request(S, psourceoperand, n_text*, n) = $eval_request_start(S[.RESULT = KNOWN (PSTRING n_text*)][.ORIGIN = (psourceoperand.SITE)], psourceoperand.SITE, psourceoperand.LINE, (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: psourceoperand.TAIL)
+  -- if psourceoperand.KIND = 0
+;; USE_PATH checks the already pending exception before opening/compiling the
+;; stream. Empty ordinary paths raise ValueError before that check; once guards
+;; the pending exception during resolution and retains it even for empty bytes.
+def $source_string_pending_request(S, psourceoperand, eps, n) = $throwable_previous(S_new, n_new, n)[.COMPLETION = NORMAL][.TODO = (THROW_SEARCH n_new) :: psourceoperand.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if psourceoperand.KIND = 1 \/ psourceoperand.KIND = 3
+  -- if S_new = $throwable_allocate(S, "ValueError", $ptascii("Path must not be empty"), psourceoperand.LINE, $eval_exception_trace(S))
+  -- if S_new.COMPLETION = THROWING n_new
+def $source_string_pending_request(S, psourceoperand, n_text*, n) = S[.TODO = (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: psourceoperand.TAIL][.ORIGIN = (psourceoperand.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if psourceoperand.KIND =/= 0
+  -- if n_text* =/= eps \/ (psourceoperand.KIND = 2 \/ psourceoperand.KIND = 4)
+rule PhpStep/source-string-pending-request: S ~> $source_string_pending_request(S, psourceoperand, n_text*, n)
+  -- if S.TODO = (SOURCE_STRING_PENDING psourceoperand n_text* n) :: ptask_tail*
+  -- if $source_string_pending_valid(S, psourceoperand, n_text*, n)
+
+def $task_nodes(SOURCE_STRING_PROPAGATE psourceoperand n_text* n) = (HOBJECT n) :: $operand_nodes(psourceoperand.INPUT)
+def $call_task_valid(S, SOURCE_STRING_PROPAGATE psourceoperand n_text* n) = ($source_operand_valid(S, psourceoperand) /\ S.ORIGIN = (psourceoperand.SITE) /\ $source_operand_suffix(S.TODO, SOURCE_STRING_PROPAGATE psourceoperand n_text* n, psourceoperand.TAIL) /\ $eval_compile_pending_object(S, THROWING n))
+rule PhpStep/source-string-propagate: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: ptask_tail*
+  -- if $call_task_valid(S, SOURCE_STRING_PROPAGATE psourceoperand n_text* n)
+
+;; Initialize the existing chronological eval compiler with the pending object
+;; only when the genuine parser context owns these exact bytes and caller tail.
+def $source_eval_pending_marker(pevalcontext) = true
+  -- if pevalcontext.TAIL = (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: ptask_tail*
+def $source_eval_pending_marker(pevalcontext) = false -- otherwise
+
+dec $source_string_owner_scope(pstate, nat) : pstate
+dec $source_string_saved_scope(pstate, pframe*, nat) : pstate
+def $source_string_owner_scope(S, n_owner) = S -- if n_owner = |S.FRAMES|
+def $source_string_owner_scope(S, n_owner) = $source_string_saved_scope(S, S.FRAMES, n_owner)
+  -- if n_owner =/= |S.FRAMES|
+def $source_string_saved_scope(S, pframe :: pframe_tail*, n_owner) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if n_owner = |pframe_tail*|
+def $source_string_saved_scope(S, pframe :: pframe_tail*, n_owner) = $source_string_saved_scope(S, pframe_tail*, n_owner)
+  -- if n_owner =/= |pframe_tail*|
+def $source_string_saved_scope(S, eps, n_owner) = S[.TODO = eps]
+
+def $source_eval_pending_context(S, pevalcontext) = (psourceoperand.KIND = 0 /\ pevalcontext.SITE = psourceoperand.SITE /\ pevalcontext.OWNER = psourceoperand.OWNER /\ pevalcontext.BYTES = n_text* /\ psourceoperand.TAIL = ptask_tail* /\ $(pevalcontext.OWNER <= |S.FRAMES|) /\ $source_operand_valid(S_owner, psourceoperand) /\ $source_operand_suffix(S_owner.TODO, SOURCE_STRING_PROPAGATE psourceoperand n_text* n, ptask_tail*) /\ $eval_compile_pending_object(S, THROWING n))
+  -- if pevalcontext.TAIL = (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: ptask_tail*
+  -- if S_owner = $source_string_owner_scope(S, pevalcontext.OWNER)
+dec $source_compile_pending_value(pstate, pevalcontext, nat) : pcompletion
+def $source_compile_pending_value(S, pevalcontext, n) = THROWING n
+  -- if $source_eval_pending_context(S, pevalcontext)
+def $source_compile_pending_value(S, pevalcontext, n) = UNSUPPORTED "invalid pending source compiler context"
+  -- if ~$source_eval_pending_context(S, pevalcontext)
+def $source_compile_initial_pending(S, n_unit) = $source_compile_pending_value(S, pevalcontext, n)
+  -- if $eval_context_at(S.EVALCONTEXTS, n_unit) = (pevalcontext)
+  -- if pevalcontext.TAIL = (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: ptask_tail*
+def $source_compile_cursor_pending_valid(S, pevalcompile) = ($source_eval_pending_context(S, pevalcontext) /\ pevalcompile.PENDING = THROWING n)
+  -- if $eval_context_at(S.EVALCONTEXTS, pevalcompile.PLAN.UNIT) = (pevalcontext)
+  -- if pevalcontext.TAIL = (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: ptask_tail*
+def $source_compile_throw_work(n, (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: ptask_tail*) = (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: ptask_tail*
+def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.SERVICELEFT = eps]
+  -- if $source_eval_pending_context(S_compiled, pevalcontext)
+  -- if S_compiled.COMPLETION = NORMAL
+  -- if ~$eval_compile_paused_unit(S_compiled, pevalcontext.UNIT)
+  -- if S_compiled.TODO = pevalcontext.TAIL
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $code_at(S_compiled.CODE, pevalcontext.UNIT) =/= eps
+
+;; zend_throw_exception_internal leaves an existing pending exception in place
+;; after parser rejection. The rejected source still records its actual bytes
+;; and parser classification; it creates no new ParseError object.
+def $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, pfailedkind, n_message*, z) = $declaration_exit(S, pevalcontext.UNIT, PCSREJECT)[.FAILEDSOURCES = pfailedsource :: S.FAILEDSOURCES][.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.ORIGIN = (pevalcontext.SITE)][.SERVICELEFT = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $source_eval_pending_context(S, pevalcontext)
+  -- if pfailedsource = {UNIT pevalcontext.UNIT, SITE pevalcontext.SITE, BYTES pevalcontext.BYTES, FILE pevalcontext.FILE, ISFILE false, KIND pfailedkind, MESSAGE n_message*, LINE z, LOCATION pevalcontext.LOCATION}
+
+;; Replacing the generic request consumer preserves its original pre-parser
+;; source frame during the implicit __toString call.
+def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S.FILES, psourceoperand.SITE), LINE psourceoperand.LINE, FUNCTION $source_operand_keyword(psourceoperand.KIND), CLASS eps, TYPE eps, ARGS eps, HASARGS false}]
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z) :: (SOURCE_STRING_RESULT psourceoperand n) :: ptask_tail*
+  -- if S_scope = $source_string_owner_scope(S, psourceoperand.OWNER)
+  -- if S_scope.TODO = pframe.TODO
+  -- if S_scope.ORIGIN = pframe.ORIGIN
+  -- if S_scope.CURRENT = pframe.CONTEXT
+  -- if $stringify_context_kind(S, pcallcontext)
+  -- if $stringify_context_frame_valid(S_scope, pcallcontext, pframe)
+  -- if psourceoperand.TAIL = ptask_tail*
+  -- if psourceoperand.LINE = z
+  -- if pcallcontext.CALLSITE = ($source_operand_child(psourceoperand))
+  -- if pcallcontext.LINE = psourceoperand.LINE
+  -- if pframe.ORIGIN = pcallcontext.CALLSITE
+  -- if porigin_child = $source_operand_child(psourceoperand)
+
+def $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, pfailedkind, n_message*, z) = S[.COMPLETION = UNSUPPORTED "invalid pending source parser context"]
+  -- if $source_eval_pending_marker(pevalcontext)
+  -- if ~$source_eval_pending_context(S, pevalcontext)
+
+;; compile_source_append preserves a completed pending helper result instead of
+;; reinstating its old parser-await task. A paused/fatal compiler uses its own
+;; existing continuation and does not satisfy this exact completed head.
+def $compile_source_work(S, n_unit, (EVAL_AWAIT n_unit) :: (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: ptask_tail*) = S.TODO
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (SOURCE_STRING_PROPAGATE psourceoperand n_text* n) :: ptask_tail*
+  -- if psourceoperand.TAIL = ptask_tail*
+  -- if psourceoperand.KIND = 0
+  -- if $source_operand_valid(S, psourceoperand)
+  -- if S.ORIGIN = (psourceoperand.SITE)
+  -- if $eval_context_at(S.EVALCONTEXTS, n_unit) = eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n_unit) = (pevalbinding)
+  -- if pevalbinding.SITE = psourceoperand.SITE
+  -- if $code_at(S.CODE, n_unit) =/= eps
+  -- if $(|S.DECLARATIONS| > 0)
+  -- if S.DECLARATIONS[$nabs($(|S.DECLARATIONS| - 1))] = PDEXIT n_unit PCSCOMPLETE
+  -- if $eval_compile_pending_object(S, THROWING n)
