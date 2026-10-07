@@ -50,6 +50,8 @@ dec $clone_windows_records_valid(pstate, pclonewindow*, nat*) : bool
 dec $clone_window_body_valid(pstate, pclonewindow) : bool
 dec $clone_updates_body_valid(pstate, pcloneoperation) : bool
 dec $clone_readonly_start(pstate, pcloneoperation, nat, ptask*) : pstate
+dec $clone_maker_at(pclonemaker*, nat) : pcloneproducer?
+dec $clone_producer_receipt(pcloneoperation) : pcloneproducer
 
 def $clone_method(S, n) = $effective_method(S, porigin_class, $ptascii("__clone"), |S.CLASSES|)
   -- if $(n < |S.OBJECTS|)
@@ -323,7 +325,6 @@ def $clone_context_valid(S, pcallcontext) = false -- otherwise
 ;; A cached callback keeps the selected maker and its real clone call site.
 ;; Admission remains pure after the window and the maker's heap owner retire.
 ;; The genuine entry is independent of a later attached producer receipt.
-dec $clone_maker_at(pclonemaker*, nat) : pcloneproducer?
 def $clone_maker_at(eps, n) = eps
 def $clone_maker_at(pclonemaker :: pclonemaker_tail*, n) = (pclonemaker.SELECTION)
   -- if pclonemaker.OBJECT = n
@@ -392,7 +393,6 @@ def $consumer_producer_ordinary_at(S, pshutdownproducer) = $consumer_clone_objec
   -- if $clone_method(S, n) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
   -- if $consumer_clone_function_site(S, pshutdownproducer.SITE)
-dec $clone_producer_receipt(pcloneoperation) : pcloneproducer
 def $clone_producer_receipt(pcloneoperation) = {SITE pcloneoperation.SITE, NAME eps, CLOSURE eps}
   -- if pcloneoperation.CALL = eps
 def $clone_producer_receipt(pcloneoperation) = {SITE pcloneoperation.SITE, NAME pclonecall.NAME, CLOSURE pclonecall.OWNER}
