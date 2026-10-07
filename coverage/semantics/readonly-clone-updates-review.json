@@ -43,10 +43,24 @@
     },
     "maintained_counts": {
       "updates_normal": 16,
-      "callback_normal": 22,
+      "callback_normal": 23,
       "callback_compiler_historical": 5,
       "callback_exit_historical": 1,
       "contract": "These tables combine distinct accepted cuts; later publication does not renew earlier source tests."
+    },
+    "direct_private_shutdown_normal": {
+      "case": "readonly-clone-created-private-shutdown-outlives-both-objects",
+      "source_sha256": "26c25c77204fee377cd43d569122206de35b05285b1d3674dea51b2459cec5ad",
+      "expected_stdout": "done|private|",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "normal",
+      "seconds": 4.87766089849174,
+      "tested_git_checkpoint": "367e581df9ef00fbc4b7cc2db6bffc1460ff0fad",
+      "source_agreement_credit": 1,
+      "raw_report": ".tools/property-readonly-review16/clone-private-shutdown-source1-attempt1/report.json",
+      "native_preparation_report": ".tools/property-readonly-review16/native-clone-private-shutdown-source1-attempt1/report.json",
+      "result": "Exact normal source agreement; model exit0/reasonnull/diagnosticnull/empty process stderr, workers0 and unchanged inputs."
     }
   },
   "current_compiler": {
@@ -61,7 +75,7 @@
     "raw_report": ".tools/property-readonly-clone-updates-preparation16/sl-clone-producer277-attempt1/report.json"
   },
   "identity": {
-    "git_checkpoint": "57bc716fd for current compiler/two originals/reviewer groups; 16d017664 for author81/50; explicit raw input hashes authoritative",
+    "git_checkpoint": "57bc716fd for current compiler/two originals/reviewer groups; 16d017664 for author81/50; explicit raw input hashes authoritative; 367e581df for direct private shutdown companion",
     "tree_kind": "partial private execution copy; explicit complete ordered-module hashes in raw reports identify executed inputs",
     "ordered_semantic_inputs_sha256": {
       "spec/semantics/30-storage.watsup": "095cbabea39a7610a44369d9803d154f8684c0c31045d4b37a204f90466b5af6",
@@ -103,7 +117,6 @@
     }
   ],
   "remaining": [
-    "direct private shutdown callback made by implicit clone: pinned-native normal PASS; model-unrun awaiting a fresh root allocation; not in passing maintained rows",
     "dynamic/FCC clone maker cached callbacks: two pinned-native retirement originals model-unrun; required core support or explicit Unsupported admission",
     "destination receiver release13; implicit Generator clone creation/discard1",
     "Deprecated dispatch, promotion, hooks, enums and wider lifecycle/typed conversion",
@@ -176,16 +189,6 @@
     }
   ],
   "native_only_preparation": [
-    {
-      "case": "readonly-clone-created-private-shutdown-outlives-both-objects",
-      "source_sha256": "26c25c77204fee377cd43d569122206de35b05285b1d3674dea51b2459cec5ad",
-      "native_stdout": "done|private|",
-      "native_stderr": "",
-      "native_exit_status": 0,
-      "raw_report": ".tools/property-readonly-review16/native-clone-private-shutdown-source1-attempt1/report.json",
-      "model_status": "UNRUN",
-      "agreement_credit": 0
-    },
     {
       "cases": [
         "readonly-clone-dynamic-string-created-fiber-retired",

@@ -43,9 +43,9 @@ the accepted twelve-source/468-condition cut from later alias, revision and
 cached-producer checks. Earlier failures, excluded library observers and
 interrupted runs retain zero agreement credit.
 
-Dynamic/FCC clone maker sites require durable selected-call evidence or explicit
-Unsupported admission; they are required core follow-ons. A direct private
-shutdown callback companion is native-only and awaits its model gate. Receiver-release,
+One direct private shutdown callback original also agrees exactly after both
+clone objects retire at the separately recorded367e581df cut. Dynamic/FCC clone
+maker sites are required core follow-ons. Receiver-release,
 implicit Generator callbacks, Deprecated dispatch, promotions, hooks, enums and
 wider lifecycle behavior remain open. This slice does not complete readonly or
 clone semantics.
@@ -53,20 +53,22 @@ clone semantics.
 A separate private follow-on captures the actual selected dynamic/pipe name
 before argument effects and copies only site/name/Closure identity into a maker
 receipt. Genuine callback entry records that selection independently under the
-physical maker identity; cached admission requires the exact entry after owner
-retirement. The record creates no heap owner. Immutable intrinsic Closure bodies
-and compiled sites check mismatches. Fresh uncloned manual computed-name makers
-have no genuine entry; a later activation on the same maker and site still needs
-its own provenance. At function/pipe sites, ordinary bare clone-method makers
+physical maker identity. Consumer birth keys bind actual Fiber objects, shutdown
+positions and autoload candidates to that entry. Autoload registry bucket stamps
+and selected-call stamps distinguish fresh manual registrations after removal;
+genuine selected snapshots and declaration history retain their own stamps. These records create no heap
+owner. Immutable intrinsic Closure bodies and compiled sites check mismatches.
+At function/pipe sites, ordinary bare clone-method makers
 must match the effective object `__invoke`; saved access remains with the
 historical capture checks. The [selection originals](../../tests/semantics/readonly_clone_selection_cases.json)
 cover lifetime, manual dispatch, dynamic/FCC pipes, callee mutation during
-arguments and private autoload. The [source driver](../../tests/semantics/readonly_clone_selection_sources.py)
+arguments, private autoload and shutdown. The [source driver](../../tests/semantics/readonly_clone_selection_sources.py)
 regenerates exact comparisons with `--select` after numeric allocation. This
-follow-on has native preparations; activation provenance remains under review.
-Its compiler,
-source and reached-state model gates are unrun. It does not renew the frozen305
-evidence above.
+follow-on has nineteen native originals and independently reviewed consumer
+birth guards. Production SL277/application0 passes at a766a57dc; seven affected
+source-reached groups are prepared. Source and state model gates are pending.
+The original declaration/binding failures retain zero evaluations. It does not
+renew the frozen305 evidence above.
 
 Matching pinned engine routes: `zend_objects_clone_obj_with` and
 `zend_objects_clone_members` in `Zend/zend_objects.c`; `zend_std_write_property`

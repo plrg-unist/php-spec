@@ -10,14 +10,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 The dynamic/FCC clone maker follow-on is prepared privately from frozen305
 commit367e581df. Live clone calls capture the selected name before arguments;
 cached makers retain only their own site, selected name or immutable intrinsic
-Closure identity. An independent nonowning entry binds each selection to its
-genuine physical clone maker. Receipt presence requires clone admission, including
-computed method names. Thirteen lifetime/manual, pipe, argument mutation and
-private autoload originals have pinned-native results only. Ordinary fallback roles and
-selection reuse by a later activation remain under review. New SL277,
-source and state gates are UNRUN pending a numeric allocation. The accepted305
-execution root and all earlier cuts remain unchanged. A direct private shutdown
-companion also awaits its model gate. Dynamic-property warning ingress needs an
+Closure identity. Nonowning consumer birth keys now distinguish later activations
+through real Fiber identity, shutdown position and autoload candidate identity.
+Independent autoload bucket and selected-call stamps survive registry movement
+and removal, including retained declaration history. Independent static review
+and production SL277/application0 pass at a766a57dc. Nineteen maintained
+lifetime/manual, pipe, argument mutation, autoload and shutdown originals have
+pinned-native results; seven affected reached-state groups are prepared.
+New source and state gates are pending. Original declaration and binding failures
+retain zero model evaluations.
+Accepted305 semantic inputs and all earlier cuts remain unchanged. Its directly
+affected private shutdown companion now agrees exactly at367e581df and is
+published at a2cab39d0. Dynamic-property warning ingress needs an
 owned callback continuation and real destination lifetime; its preserved CALLS308
 source remains Unsupported with zero agreement.
 
@@ -32,7 +36,8 @@ retired/manual maker originals pass separately. New strict-SL77/151/81/50 reache
 controls and production SL277/application0 pass. The
 [contract](docs/semantics/READONLY-CLONE-UPDATES.md) and
 [ledger](coverage/semantics/readonly-clone-updates-review.json) retain failures and
-exact cuts. The native-only direct shutdown companion awaits its model gate.
+exact cuts. One directly affected private shutdown original also agrees exactly
+after both clone objects retire at its separately recorded367e581df cut.
 Dynamic/FCC maker sites, destination-release13, Generator callbacks,
 Deprecated dispatch, promotion/hooks/enums and wider lifecycle remain required;
 Git integration is pending.
