@@ -243,11 +243,11 @@ dec $gc_prune_buffer(pstate, pnode*) : pgc
 def $gc_prune_buffer(S, pnode*) = S.GC -- otherwise
 dec $generator_prune_pending(pstate, pnode*) : bool
 dec $generator_prune(pstate, pnode*) : pstate
-def $prune_allocations(S) = $generator_prune(S, pnode_live*)
-  -- if pnode_live* = $gc_prune_nodes(S)
+dec $prune_allocations_live(pstate, pnode*) : pstate
+def $prune_allocations(S) = $prune_allocations_live(S, $gc_prune_nodes(S))
+def $prune_allocations_live(S, pnode_live*) = $generator_prune(S, pnode_live*)
   -- if $generator_prune_pending(S, pnode_live*)
-def $prune_allocations(S) = $fiber_prune(S, pnode_live*)
-  -- if pnode_live* = $gc_prune_nodes(S)
+def $prune_allocations_live(S, pnode_live*) = $fiber_prune(S, pnode_live*)
   -- if ~$generator_prune_pending(S, pnode_live*)
 def $prune_live(S, pnode_live*) = S[.GC = $gc_prune_buffer(S, pnode_live*)][.ALLOCATIONS = pnode_live*][.CLOSURESCOPES = $closure_scopes_prune(S.CLOSURESCOPES, pnode_live*)][.CLOSUREBINDINGS = $closure_bindings_prune(S.CLOSUREBINDINGS, pnode_live*)][.OBJECTPROPS = $objectprops_prune(S.OBJECTPROPS, pnode_live*)][.OBJECTTABLES = $object_tables_prune(S.OBJECTTABLES, pnode_live*)][.PROPREFS = $proprefs_prune(S.PROPREFS, S.OBJECTPROPS, pnode_live*)][.REFCOERCIONS = $reference_coercions_prune(S.REFCOERCIONS, pnode_live*)][.CONTAINERINITS = $container_inits_prune(S.CONTAINERINITS, pnode_live*)][.PARAMETERBACKINGS = $parameter_backings_prune(S.PARAMETERBACKINGS, pnode_live*)][.ITERATORS = $iterators_prune(S.ITERATORS, pnode_live*)]
 
