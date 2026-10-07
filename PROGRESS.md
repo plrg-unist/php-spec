@@ -27,10 +27,10 @@ renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
 The canonical source includes accepted ArrayAccess292/304/309, eager destruction270,
-WeakReference296, ordinary cycle collection301, Fiber291/302/308,
+WeakReference296, ordinary cycle collection301, Fiber291/302/308/313,
 Generator289/303/310/311 and source operands293/298,
 plus instance/readonly properties288/294 and clone300/305 with cached maker selection,
-with294 modules descended from `38f1dfaa045f`. The ordered integration preserves
+with295 modules descended from `38f1dfaa045f`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
@@ -371,6 +371,17 @@ Module 308 adds protected cleanup after an actual return; the body-undefined
 case remains Unsupported and its engine witness is held. The required internal/reference
 callbacks, API entry, unpacking, initializer switching, request/fatal cleanup and
 GC remain open. Full core stays open; returns verification remains paused.
+
+Fiber313 supports cached string `error_reporting` callbacks with weak C receives,
+owned arguments and an authenticated borrowed result tail. Handler suspension and
+receiver retirement retain warning producers, resumer traces and internal scope.
+The latest294-parent join preserves GC, returned-child append, source emission and
+Arrow rules; strict295 compilation and one new explicit-request GC/autoglobal-eval
+original pass independent review. The [ledger](coverage/semantics/fiber-core-callbacks-review.json)
+preserves prior source/state cuts and separates bounded public checks from the
+unconfirmed rich whole-source/full63 runs. Wider internal/FCC/reference callbacks,
+initialization, request/fatal/GC consumers and complete core remain required;
+the final fresh offline rebuild is outstanding and returns verification stays paused.
 
 Generator280 creates object-owned suspended frames after eager ordinary receives.
 Value yields, literal iterator methods, `getReturn` and value foreach retain

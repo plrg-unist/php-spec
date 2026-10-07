@@ -889,6 +889,10 @@ shared globals and handlers, cached callbacks and original C argument buffers.
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
+Internal `error_reporting` callbacks retain weak C receives, owned arguments,
+warning producers and real resumer/destructor traces through handler suspension.
+The [callback ledger](coverage/semantics/fiber-core-callbacks-review.json) separates
+bounded state checks from unconfirmed rich whole-source execution.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 
