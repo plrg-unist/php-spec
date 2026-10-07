@@ -8817,22 +8817,36 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/117-arrow-compiler.watsup",
-        "spec/semantics/118-arrows.watsup"
+        "spec/semantics/118-arrows.watsup",
+        "spec/semantics/280-generators.watsup",
+        "spec/semantics/311-arrow-generators.watsup",
+        "spec/semantics/80-call-control.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/arrow_generator_protocol.py",
+        "tests/semantics/arrow_generator_review_protocol.py",
+        "tests/semantics/arrow_generator_warning_review_protocol.py",
+        "tests/semantics/arrow_generator_globals_role_review_protocol.py",
+        "tests/semantics/arrow_generator_integration_protocol.py"
+      ],
       "source_tests": [
         "tests/semantics/arrows.py",
         "tests/semantics/arrows_protocol.py",
         "tests/semantics/arrows_state.py",
-        "tests/semantics/arrow_compiler.py"
+        "tests/semantics/arrow_compiler.py",
+        "tests/semantics/arrow_generator_prepare.py",
+        "tests/semantics/arrow_generator_review.py",
+        "tests/semantics/arrow_generator_integration.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
-        "coverage/semantics/arrows-review.json"
+        "coverage/semantics/arrows-review.json",
+        "docs/semantics/ARROW-GENERATORS.md",
+        "coverage/semantics/arrow-generator-review.json"
       ],
-      "review": "Arrow117/118 on1026/0ec5 reuses real closure instances with source-derived implicit captures, completed undefined snapshots, fresh invocation locals and authenticated expression returns. The exact one-test partition bridge preserves five measured365a gates; arrows-review.json binds32 sources (23 normal,7 PHP errors,2 static rejections),20 compiler phases/223 projections,26 protocol/264,13 regressions including the separate explicit-closure suppression source, existing closure protocol20/217, author493 unique dense assertions in9 partitions (960 executed premises), independent dense4/731 and32 complete old1017 response bridges. Exact original-context32 model-only replays are separate from fresh maintained profiles. Actual never-reference-demand and named-only suppression-guard failures are preserved with narrow source-aware corrections. Ordinary objects, class-bound scope, method/bind/clone/first-class/Closure services, cycle collection and dynamic-source lifetime remain required; no family closure or refreshed broad integration claim.",
+      "review": "Arrow117/118 on1026/0ec5 reuses real closure instances with source-derived implicit captures, completed undefined snapshots, fresh invocation locals and authenticated expression returns. The exact one-test partition bridge preserves five measured365a gates; arrows-review.json binds32 sources (23 normal,7 PHP errors,2 static rejections),20 compiler phases/223 projections,26 protocol/264,13 regressions including the separate explicit-closure suppression source, existing closure protocol20/217, author493 unique dense assertions in9 partitions (960 executed premises), independent dense4/731 and32 complete old1017 response bridges. Exact original-context32 model-only replays are separate from fresh maintained profiles. Actual never-reference-demand and named-only suppression-guard failures are preserved with narrow source-aware corrections. Ordinary objects, class-bound scope, method/bind/clone/first-class/Closure services, cycle collection and dynamic-source lifetime remain required; no family closure or refreshed broad integration claim. Arrow Generator311 is privately validated on frozen310: eager receives, deferred captures, sent/delegated implicit returns, original signatures and lexical/receiver scope use accepted280/95/118. Value-CV warnings freeze null before delayed keys; handler throws retain the same Throwable/key and install the closed Closure owner before frame retirement. Separate cuts cover44 normal sources, nine compiler rejections and10 genuine strict-SL programs/groups with987 setup-inclusive premises; two required Unsupported controls and original failures earn zero agreement. Literal GLOBALS uses a matching explicit-request profile and array-only cached-key role. Frozen68393/286+311 composition separately passes compiler287, the fresh default/Fiber/Stringable-eval source and148 independent reached premises. Latest-parent join and ordered Git integration remain required. Key-warning ingress, reference yields and wider lifecycle stay required; paused generic returns remain excluded.",
       "planned_source_tests": [
         "tests/semantics/conformance/closure-capture.php"
       ]
@@ -12700,18 +12714,32 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/280-generators.watsup"
+        "spec/semantics/280-generators.watsup",
+        "spec/semantics/117-arrow-compiler.watsup",
+        "spec/semantics/118-arrows.watsup",
+        "spec/semantics/311-arrow-generators.watsup",
+        "spec/semantics/80-call-control.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/generator_review_protocol.py"
+        "tests/semantics/generator_review_protocol.py",
+        "tests/semantics/arrow_generator_protocol.py",
+        "tests/semantics/arrow_generator_review_protocol.py",
+        "tests/semantics/arrow_generator_warning_review_protocol.py",
+        "tests/semantics/arrow_generator_globals_role_review_protocol.py",
+        "tests/semantics/arrow_generator_integration_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/generator_review.py"
+        "tests/semantics/generator_review.py",
+        "tests/semantics/arrow_generator_prepare.py",
+        "tests/semantics/arrow_generator_review.py",
+        "tests/semantics/arrow_generator_integration.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_generators.c"
+        "vendor/php-src/Zend/zend_generators.c",
+        "docs/semantics/ARROW-GENERATORS.md",
+        "coverage/semantics/arrow-generator-review.json"
       ],
-      "review": "Generator280 eagerly receives ordinary arguments/defaults and creates an object-owned deferred frame for named functions, ordinary Closures and object methods. Source-supertype rejection and accepted one-level intersections are pinned at e235. Further creation scopes, arrow/byref generators and lifecycle remain required; see GENERATORS.md."
+      "review": "Generator280 eagerly receives ordinary arguments/defaults and creates an object-owned deferred frame for named functions, ordinary Closures and object methods. Source-supertype rejection and accepted one-level intersections are pinned at e235. Further creation scopes, byref generators and lifecycle remain required; see GENERATORS.md. Arrow Generator311 is privately validated on frozen310: eager receives, deferred captures, sent/delegated implicit returns, original signatures and lexical/receiver scope use accepted280/95/118. Value-CV warnings freeze null before delayed keys; handler throws retain the same Throwable/key and install the closed Closure owner before frame retirement. Separate cuts cover44 normal sources, nine compiler rejections and10 genuine strict-SL programs/groups with987 setup-inclusive premises; two required Unsupported controls and original failures earn zero agreement. Literal GLOBALS uses a matching explicit-request profile and array-only cached-key role. Frozen68393/286+311 composition separately passes compiler287, the fresh default/Fiber/Stringable-eval source and148 independent reached premises. Latest-parent join and ordered Git integration remain required. Key-warning ingress, reference yields and wider lifecycle stay required; paused generic returns remain excluded."
     },
     {
       "id": "resumable.yield",

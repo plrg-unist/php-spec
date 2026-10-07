@@ -532,6 +532,7 @@ test-semantics: build
 	python3 tests/semantics/arrow_generator_warning_review_protocol.py --mode check --sl
 	python3 tests/semantics/arrow_generator_globals_role_review_protocol.py --mode check --sl
 	python3 tests/semantics/arrow_generator_integration.py --mode full
+	python3 tests/semantics/arrow_generator_integration_protocol.py --mode check --sl
 	python3 tests/semantics/iterator_declaration_notices.py
 	python3 tests/semantics/eval_declaration_notices_protocol.py
 	python3 tests/semantics/runtime_formatter_protocol.py
