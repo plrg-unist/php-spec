@@ -11,7 +11,7 @@ def $throwable_key(text_base, text_field) = [0] ++ $ptascii(text_base) ++ [0] ++
 def $throwable_key(text_base, text_field) = [0, 42, 0] ++ $ptascii(text_field) -- otherwise
 
 dec $throwable_descriptor(text, text, ppropertyvisibility, ptbranch*, ppropdefault) : ppropertydesc
-def $throwable_descriptor(text_base, text_field, ppropertyvisibility, ptbranch*, ppropdefault) = {ORIGIN INTERNAL_PROPERTY text_base $ptascii(text_field), NAME $ptascii(text_field), KEY $throwable_key(text_base, text_field), VISIBILITY ppropertyvisibility, SETVISIBILITY eps, FINAL false, STATIC false, TYPE ptbranch*, DEFAULT ppropdefault, LINE 0}
+def $throwable_descriptor(text_base, text_field, ppropertyvisibility, ptbranch*, ppropdefault) = {ORIGIN INTERNAL_PROPERTY text_base $ptascii(text_field), NAME $ptascii(text_field), KEY $throwable_key(text_base, text_field), VISIBILITY ppropertyvisibility, SETVISIBILITY eps, FINAL false, STATIC false, READONLY false, TYPE ptbranch*, DEFAULT ppropdefault, LINE 0}
 dec $throwable_line_default(text) : ppropdefault
 def $throwable_line_default("Error") = PROP_UNINITIALIZED
 def $throwable_line_default("Exception") = PROP_LITERAL (PINT 0)

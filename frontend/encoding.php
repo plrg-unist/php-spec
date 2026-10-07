@@ -64,6 +64,8 @@ function parseWithEncoding(PhpParser\Parser &$parser, string $source, bool $chec
     } catch (PhpParser\Error $error) {
         if ($error->getRawMessage() !== 'Cannot use the final modifier on an abstract class member'
             && $error->getRawMessage() !== 'Constructor __construct() cannot be static'
+            && !(str_starts_with($error->getRawMessage(), 'Clone method ')
+                && str_ends_with($error->getRawMessage(), '() cannot be static'))
             && $error->getRawMessage() !== 'Namespace declaration statement has to be the very first statement in the script'
             && !(str_starts_with($error->getRawMessage(), 'Method ')
                 && str_ends_with($error->getRawMessage(), '() cannot be readonly'))) throw $error;
@@ -75,6 +77,7 @@ function parseWithEncoding(PhpParser\Parser &$parser, string $source, bool $chec
         foreach ($errors->getErrors() as $retryError) {
             if (!isFinalAbstractMethodError($retryError, $ast)
                 && !isStaticConstructorError($retryError, $ast)
+                && !isStaticCloneError($retryError, $ast)
                 && !isReadonlyMethodError($retryError, $ast)
                 && !($ast !== null
                     && $retryError->getRawMessage() === 'Namespace declaration statement has to be the very first statement in the script'
@@ -124,6 +127,30 @@ function isStaticConstructorError(PhpParser\Error $error, ?array $ast): bool {
         if ($node instanceof PhpParser\Node\Stmt\ClassMethod
             && ($node->flags & PhpParser\Modifiers::STATIC)
             && strcasecmp($node->name->name, '__construct') === 0
+            && $node->getStartTokenPos() <= $position
+            && $position < $node->name->getStartTokenPos()) return true;
+        foreach ($node->getSubNodeNames() as $name) {
+            $child = $node->$name;
+            if ($child instanceof PhpParser\Node) $pending[] = $child;
+            elseif (is_array($child)) foreach ($child as $item) if ($item instanceof PhpParser\Node) $pending[] = $item;
+        }
+    }
+    return false;
+}
+
+// Static __clone is parsed by Zend and rejected by its ordered compiler checks.
+function isStaticCloneError(PhpParser\Error $error, ?array $ast): bool {
+    if ($ast === null) return false;
+    $position = $error->getAttributes()['startTokenPos'] ?? null;
+    if ($position === null) return false;
+    $pending = $ast;
+    while ($pending !== []) {
+        $node = array_pop($pending);
+        if (!$node instanceof PhpParser\Node) continue;
+        if ($node instanceof PhpParser\Node\Stmt\ClassMethod
+            && $error->getRawMessage() === "Clone method {$node->name->name}() cannot be static"
+            && ($node->flags & PhpParser\Modifiers::STATIC)
+            && strcasecmp($node->name->name, '__clone') === 0
             && $node->getStartTokenPos() <= $position
             && $position < $node->name->getStartTokenPos()) return true;
         foreach ($node->getSubNodeNames() as $name) {

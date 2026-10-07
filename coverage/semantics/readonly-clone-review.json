@@ -1,0 +1,129 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "status": "independently reviewed private callback slice; Git integration pending",
+  "base": {
+    "revision": "a93985b63bbee83d31bc2303108ac7b782a679b5",
+    "ordinary294_sha256": "2d71635e423cfb3d126328af2c8405b2629cd2f612bbff297964a5beefdf06f2",
+    "root": ".tools/property-readonly-clone15",
+    "kind": "private filesystem copy; no new HEAD or rebuild claim"
+  },
+  "behavior": [
+    "genuine clone access before allocation, declaring/called scope and intrinsic denied-access trace",
+    "per-object physical readonly keys, successful-write consumption, type-failure preservation and unset flag distinction",
+    "normal/throw/exit relock, manual calls closed and parked Fiber permission consumption",
+    "borrowed CV source may retire; genuine temporary input and intrinsic SENT buffer retain actual owners",
+    "own exact operation/target/current-frame authentication with bounded mutable input history"
+  ],
+  "closed": {
+    "normal_originals": 20,
+    "declaration_errors": 5,
+    "explicit_exit_shutdown": 1,
+    "source_reached_groups": {
+      "window": 130,
+      "borrowed": 28,
+      "intrinsic": 31,
+      "temporary": 32,
+      "fiber": 43
+    },
+    "sl": {
+      "modules": 276,
+      "application_evaluations": 0,
+      "cache": false,
+      "determinism_check": true,
+      "stages": "exact parse/elaborate/algorithmic-analysis-and-guards/structure-final/runner-init",
+      "exit_status": 0,
+      "stderr": ""
+    }
+  },
+  "identity": {
+    "semantic_inputs_sha256": {
+      "spec/semantics/30-storage.watsup": "ed9d389d7fda9ab8f0147949c16aab96476b2ddecf351725e83a75d918574277",
+      "spec/semantics/40-control.watsup": "8b18888191d9b4d880e6dc0b736b993e3d784ad75c13cdbf5f21eb14fa6759b0",
+      "spec/semantics/84-call-integrity.watsup": "cd0fff5ec43ed7a2b2998f84d8e9474dc63431b9f3c6a4b4787a3e53394c905a",
+      "spec/semantics/105-named-arguments.watsup": "0b6dc7adfcf5891afcd78076910c67226d87d93aadc8c3dfd5faa4bd6a2b8003",
+      "spec/semantics/108-call-unpack.watsup": "f7165277c6568397d23c75d902ea38c749f6280181d2f44a0206d0148d6a0a65",
+      "spec/semantics/136-property-runtime.watsup": "3a2660ae658c5edc3ade861ae859157987a90222a5d63b551e9f5e7bc1be9798",
+      "spec/semantics/141-method-compiler.watsup": "b25877101fa95abad425e7cf6ae15cf47816c51369007ee7168d3df1e27aed5e",
+      "spec/semantics/148-core-intrinsics.watsup": "dcb7bc87ba410053c960d09739f4fdfa46a45fbafafb399e64d0f7ec0a6e6ec9",
+      "spec/semantics/150-clone-runtime.watsup": "2a4bcb38be021b05c968d3be8538cd3db65c519573b92b602a1c5bce50fde6c4",
+      "spec/semantics/281-fibers.watsup": "a2568357074e2803b85ae8f808caa04125da7185c5c731257342cee5ec9f5747",
+      "spec/semantics/294-readonly-lifecycle.watsup": "4a30fa035c309b596831fdec42cb2b122ce32d05473b771217c12aa92d9b9ec1",
+      "spec/semantics/300-readonly-clone-lifecycle.watsup": "8fa112bfe15e200e54d26cbabe3aa0a56f76b0d3cb6542d6170f9b9269e13dd4",
+      "frontend/encoding.php": "b01a90334db2aabc252292675f07828ddd1ad5c9f5e88d2816ea3e1298e6e9ff"
+    },
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "GIT_OPTIONAL_LOCKS": "0"
+    },
+    "jobs": 1,
+    "caps_seconds": {
+      "native": 30,
+      "model_process": 90,
+      "model_cli": 60,
+      "numeric": 120,
+      "sl": 120,
+      "outer": 420
+    }
+  },
+  "evidence": {
+    "raw_root": ".tools/property-readonly-clone-preparation15",
+    "source_reports": [
+      "normal-first5-attempt1",
+      "normal-next5-attempt1",
+      "normal-last7-attempt1",
+      "compiler5-attempt1 (first2 only)",
+      "compiler3-affected-attempt2",
+      "introduced-normal3-exit1-attempt1"
+    ],
+    "state_reports": [
+      "state-window130-attempt2",
+      "state-borrowed28-attempt1",
+      "state-intrinsic31-attempt1",
+      "state-temporary32-attempt1",
+      "state-fiber43-attempt1"
+    ],
+    "sl_report": "sl-attempt4",
+    "exact_contract": "accepted frontend/checked program, null reason, exact normal/explicit_exit/static_rejection category, complete native stdout/stderr, CompileError class/line; state exact true newline; frozen inputs and no workers",
+    "recovery": "Raw commands, working deltas, immutable case/fixture copies, source hashes, process records and stdout/stderr are under each listed report. Maintained sources and builders retain original bytes/checks; no raw archive is committed."
+  },
+  "corrections": [
+    "Preserve three initial DSL preflight failures with zero agreement; only executable binding/default forms changed.",
+    "Preserve static-__clone PHP-Parser rejection; main-source collecting retry accepts only the real static method/header diagnostic. Affected3 declaration controls resumed; earlier2 and17 normals were not replayed.",
+    "Preserve first window fixture parse failure0; exactly three missing outer brackets corrected in130 clauses and independently reviewed.",
+    "One-argument clone($original) is a bare opcode spelling, not intrinsic SENT ownership coverage; genuine clone($original, []) owns that source control.",
+    "Retire only obsolete callback/ordinary-readonly Unsupported rows from maintained clone controls; their original historical results remain unchanged."
+  ],
+  "remaining": [
+    "destination-release13 including borrowed nested pointers, temporary receiver/RHS owners, exception priority and unreachable cycle",
+    "implicit Generator __clone creation/discard (native original model0)",
+    "file/eval static-clone parser compatibility, force-close, hooks/lazy/internal classes/Traversable and wider lifecycle/typed conversion behavior"
+  ],
+  "publication": {
+    "source_table": "tests/semantics/readonly_clone_cases.json",
+    "source_runner": "tests/semantics/readonly_clone_sources.py",
+    "state_builders": "tests/semantics/readonly_clone_protocol.py",
+    "obsolete_controls": "tests/semantics/clone_controls.py",
+    "review": "Independent semantics, raw outcomes and maintained publication parity accepted. No runtime renewal for publication."
+  },
+  "follow_on": "The later private305 second-window and durable producer cut is recorded in readonly-clone-updates-review.json; this callback ledger retains its original sources, hashes, results and failures."
+}

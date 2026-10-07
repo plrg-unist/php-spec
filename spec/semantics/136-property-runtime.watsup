@@ -1,3 +1,14 @@
+dec $property_readonly_desc(pstate, nat, ptbytes) : ppropertydesc?
+dec $property_readonly_written(pstate, nat, ptbytes) : bool
+dec $clone_reinitable(pstate, nat, ptbytes) : bool
+dec $clone_write_committed(pstate, nat, ptbytes) : pstate
+dec $clone_unset_committed(pstate, nat, ptbytes, ppropstate) : pstate
+dec $property_readonly_error(pstate, nat, ptbytes, ptbytes, int) : pstate
+dec $property_receiver_copy(pstate, nat, ptbytes) : bool
+dec $property_reference_copy(pstate, nat, ptbytes) : pstate
+dec $property_reference_slot(pstate, nat, ptbytes, int) : pstate
+dec $property_reference_target_check(pstate, nat, ptbytes, int) : pstate
+dec $property_foreach_reference(pstate, nat, ptbytes, int) : pstate
 ;; Class descriptors are source facts; each owned object has mutable slots.
 dec $property_replace(ppropertydesc*, ppropertydesc) : ppropertydesc*
 def $property_replace(eps, ppropertydesc) = [ppropertydesc]
@@ -196,6 +207,7 @@ def $property_slot_valid(S, ppropertydesc, ppropertyslot) = true
   -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
   -- if ppropertyslot.NAME = ppropertydesc.KEY
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+  -- if ~ppropertydesc.READONLY
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if n_cell <- S.REFCELLS
   -- if (HCELL n_cell) <- S.ALLOCATIONS
@@ -342,7 +354,19 @@ def $property_alias(PROP_VALUE (ALIAS n)) = true
 def $property_alias(ppropstate) = false -- otherwise
 dec $property_bind_typed(pstate, nat, ptbytes) : bool
 dec $property_store_key_unshared(pstate, nat, ptbytes, pvalue, int) : pstate
+dec $property_set_check(pstate, nat, ptbytes, ptbytes, int) : pstate
+def $property_set_check(S, n, ptbytes, ptbytes_operation, z) = S -- otherwise
+dec $property_set_denied(pstate, nat, ptbytes) : bool
+def $property_set_denied(S, n, ptbytes) = false -- otherwise
+dec $property_instance_indirect_check(pstate, nat, ptbytes, bool, int) : pstate
+def $property_instance_indirect_check(S, n, ptbytes, b_object, z) = S -- otherwise
+dec $property_unset_indirect_check(pstate, nat, ptbytes, int) : pstate
+def $property_unset_indirect_check(S, n, ptbytes, z) = S -- otherwise
+def $property_reference_check(S, n, ptbytes, z) = $property_instance_indirect_check(S, n, ptbytes, true, z)
+def $property_store_key(S, n, ptbytes, pvalue, z) = $property_set_check(S, n, ptbytes, $ptascii("modify"), z)
+  -- if $property_set_denied(S, n, ptbytes)
 def $property_store_key(S, n, ptbytes, pvalue, z) = $object_table_sync($property_store_key_unshared($object_table_write(S, n), n, ptbytes, pvalue, z), n)
+  -- if ~$property_set_denied(S, n, ptbytes)
 ;; Declared types convert before the live alias checks its other type sources.
 def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $write_cell_checked(S, n_cell, pvalue, z)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
@@ -371,7 +395,7 @@ def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $write_cell_checked
   -- if $objectprops_record_at(S_converted.OBJECTPROPS, n) = (pobjectprops_new)
   -- if $property_slot_at(pobjectprops_new.SLOTS, ptbytes) = (ppropertyslot_new)
   -- if ppropertyslot_new.STATE = PROP_VALUE (ALIAS n_cell)
-def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = S_converted[.OBJECTPROPS = $objectprops_set(S_converted.OBJECTPROPS, n, $property_slot_set(pobjectprops_new.SLOTS, ptbytes, PROP_VALUE (DIRECT pvalue_new)))][.RESULT = KNOWN pvalue_new]
+def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $clone_write_committed(S_converted[.OBJECTPROPS = $objectprops_set(S_converted.OBJECTPROPS, n, $property_slot_set(pobjectprops_new.SLOTS, ptbytes, PROP_VALUE (DIRECT pvalue_new)))][.RESULT = KNOWN pvalue_new], n, ptbytes)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
@@ -453,7 +477,7 @@ def $isset_base(S, BASE_PROPERTY pvalue ptbytes, b, z) = S[.RESULT = KNOWN (PBOO
   -- if $stdclass_raw_undefined(S, pvalue, ptbytes)
 def $isset_base(S, BASE_PROPERTY pvalue ptbytes, b, z) = $isset_simple(S, BASE_PROPERTY pvalue ptbytes, b, z)
   -- if ~$stdclass_raw_undefined(S, pvalue, ptbytes)
-def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $object_table_write(S, n)[.LOCATION = PROPERTY n ptbytes_key]
+def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_instance_indirect_check($object_table_write(S, n)[.LOCATION = PROPERTY n ptbytes_key], n, ptbytes_key, true, z)
   -- if $class_plain_instance(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
 def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_access_error(S, n, ptbytes, z)
@@ -464,12 +488,16 @@ def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.COMPLETION = UNS
   -- if ~$throwable_object(S, n)
 def $base_acquire(S, BASE_PROPERTY pvalue ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Attempt to modify property \"") ++ $c_string(ptbytes) ++ $ptascii("\" on ") ++ $typed_given(S, pvalue), z)
   -- if $type_bytes(pvalue) =/= $ptascii("object")
+def $location_write(S, PROPERTY n ptbytes, pvalue) = $property_set_check(S, n, ptbytes, $ptascii("modify"), $property_current_line(S))
+  -- if $property_set_denied(S, n, ptbytes)
 def $location_write(S, PROPERTY n ptbytes, pvalue) = $write_cell_checked(S, n_cell, pvalue, $property_current_line(S))
+  -- if ~$property_set_denied(S, n, ptbytes)
   -- if $update_alias_cell(S, PROPERTY n ptbytes) = (n_cell)
 def $location_write(S, PROPERTY n ptbytes, pvalue) = $property_store_key(S, n, ptbytes, pvalue, $property_current_line(S))
+  -- if ~$property_set_denied(S, n, ptbytes)
   -- if $update_alias_cell(S, PROPERTY n ptbytes) = eps
 def $location_reference(S, PROPERTY n ptbytes) = false
-def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_quiet_key($object_table_write(S, n)[.LOCATION = PROPERTY n ptbytes_key], POBJECT n, ptbytes_key, z)
+def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_unset_indirect_check($property_quiet_key($object_table_write(S, n)[.LOCATION = PROPERTY n ptbytes_key], POBJECT n, ptbytes_key, z), n, ptbytes_key, z)
   -- if $class_plain_instance(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
 def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.LOCATION = NOWHERE][.RESULT = KNOWN PNULL]
@@ -499,13 +527,17 @@ def $assign_array(S, BASE_PROPERTY pvalue ptbytes, poperand, z) = $throw_scalar(
 
 dec $property_unset_key(pstate, pvalue, ptbytes, int) : pstate
 dec $property_unset_key_unshared(pstate, pvalue, ptbytes, int) : pstate
-def $property_unset_key(S, pvalue, ptbytes, z) = $object_table_sync_value($property_unset_key_unshared($object_table_write_value(S, pvalue), pvalue, ptbytes, z), pvalue)
-def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL]
+def $property_unset_key(S, POBJECT n, ptbytes, z) = $property_set_check(S, n, ptbytes, $ptascii("unset"), z)
+  -- if $property_set_denied(S, n, ptbytes)
+def $property_unset_key(S, POBJECT n, ptbytes, z) = $object_table_sync_value($property_unset_key_unshared($object_table_write_value(S, POBJECT n), POBJECT n, ptbytes, z), POBJECT n)
+  -- if ~$property_set_denied(S, n, ptbytes)
+def $property_unset_key(S, pvalue, ptbytes, z) = $object_table_sync_value($property_unset_key_unshared($object_table_write_value(S, pvalue), pvalue, ptbytes, z), pvalue) -- otherwise
+def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = $clone_unset_committed(S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL], n, ptbytes, ppropertyslot.STATE)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = (ppropertyid)
   -- if S_detached = $propref_detach_slot(S, n, ppropertyslot)
-def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL]
+def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = $clone_unset_committed(S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL], n, ptbytes, ppropertyslot.STATE)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = eps

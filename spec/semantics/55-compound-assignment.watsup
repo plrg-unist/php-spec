@@ -43,9 +43,15 @@ def $compound_value(S, ADD, PARRAY n_1, PARRAY n_2, z) = $array_union(S_written,
 def $compound_value(S, pbin, pvalue_1, pvalue_2, z) = $binary_apply(S, pbin, pvalue_1, pvalue_2, z) -- otherwise
 
 dec $compound_store(pstate, pstate) : pstate
+dec $compound_string_pending(pstate) : bool
+def $compound_string_pending(S) = false -- otherwise
 def $compound_store(S, S_changed) = S_changed -- if S_changed.COMPLETION =/= NORMAL
+def $compound_store(S, S_changed) = S_changed
+  -- if S_changed.COMPLETION = NORMAL
+  -- if $compound_string_pending(S_changed)
 def $compound_store(S, S_changed) = $location_write(S_changed, S.LOCATION, pvalue)
   -- if S_changed.COMPLETION = NORMAL
+  -- if ~$compound_string_pending(S_changed)
   -- if S_changed.RESULT = KNOWN pvalue
 
 dec $compound_operands(pstate, pbin, poperand, int) : pstate
