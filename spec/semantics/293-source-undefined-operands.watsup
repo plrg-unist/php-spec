@@ -1,0 +1,143 @@
+;; INCLUDE_OR_EVAL reads an undefined CV before calling zend_include_or_eval.
+;; The returned uninitialized zval is fixed even if the warning defines the CV.
+def $source_read_ready(S) = true
+  -- if S.TODO = (EVAL_REQUEST porigin z) :: ptask_tail*
+  -- if $error_missing_operand(S, S.RESULT)
+def $source_read_ready(S) = true
+  -- if S.TODO = (FILE_REQUEST porigin z n_kind) :: ptask_tail*
+  -- if $error_missing_operand(S, S.RESULT)
+def $source_read_ready(S) = false -- otherwise
+
+dec $source_read_valid(pstate, psourceoperand) : bool
+def $source_read_valid(S, psourceoperand) = ($source_operand_valid(S, psourceoperand) /\ S.ORIGIN = ($source_operand_child(psourceoperand)) /\ $source_operand_suffix(S.TODO, SOURCE_READ_RESULT psourceoperand, psourceoperand.TAIL))
+  -- if psourceoperand.INPUT = VARIABLE n_name* z
+def $source_read_valid(S, psourceoperand) = false -- otherwise
+dec $source_read_begin(pstate, porigin, int, int, ptask*) : pstate
+def $source_read_begin(S, porigin, z, n_kind, ptask_tail*) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $ptascii("Undefined variable $") ++ n_name*, z_warning, WARNING n_name* z_warning, SOURCE_READ_RESULT psourceoperand)
+  -- if S.RESULT = VARIABLE n_name* z_input
+  -- if n_owner = |S.FRAMES|
+  -- if psourceoperand = {SITE porigin, LINE z, KIND n_kind, INPUT S.RESULT, OWNER n_owner, TAIL ptask_tail*}
+  -- if $source_operand_valid(S, psourceoperand)
+  -- if S.ORIGIN = ($source_operand_child(psourceoperand))
+  -- if z_warning = $source_array_line(S, psourceoperand)
+def $source_read_begin(S, porigin, z, int, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "invalid source variable operand"] -- otherwise
+
+rule PhpStep/eval-undefined-operand: S ~> $source_read_begin(S, porigin, z, 0, ptask_tail*)
+  -- if S.TODO = (EVAL_REQUEST porigin z) :: ptask_tail*
+  -- if $source_read_ready(S)
+rule PhpStep/file-undefined-operand: S ~> $source_read_begin(S, porigin, z, n_kind, ptask_tail*)
+  -- if S.TODO = (FILE_REQUEST porigin z n_kind) :: ptask_tail*
+  -- if $source_read_ready(S)
+
+dec $source_read_request(psourceoperand) : ptask
+def $source_read_request(psourceoperand) = EVAL_REQUEST psourceoperand.SITE psourceoperand.LINE
+  -- if psourceoperand.KIND = 0
+def $source_read_request(psourceoperand) = FILE_REQUEST psourceoperand.SITE psourceoperand.LINE psourceoperand.KIND
+  -- if psourceoperand.KIND =/= 0
+rule PhpStep/source-read-result: S ~> S[.TODO = $source_read_request(psourceoperand) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SOURCE_READ_RESULT psourceoperand) :: ptask_tail*
+  -- if $source_read_valid(S, psourceoperand)
+def $call_task_valid(S, SOURCE_READ_RESULT psourceoperand) = $source_read_valid(S, psourceoperand)
+def $task_nodes(SOURCE_READ_RESULT psourceoperand) = eps
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = SOURCE_READ_RESULT psourceoperand
+  -- if $source_read_valid(S, psourceoperand)
+  -- if psourceoperand.INPUT = VARIABLE n_name* z_input
+  -- if perrorcall.SITE = $source_operand_child(psourceoperand)
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = $source_array_line(S, psourceoperand)
+  -- if perrorcall.MESSAGE = $ptascii("Undefined variable $") ++ n_name*
+  -- if perrorcall.EVENT = WARNING n_name* perrorcall.LINE
+
+;; Ordinary include/require still call the stream opener with the fixed empty
+;; operand after a handler throws. Its ValueError chains the pending Throwable.
+;; Once/eval and a preceding dynamic FETCH_R retain the original exception.
+dec $source_read_empty_throw(pstate, psourceoperand) : bool
+def $source_read_empty_throw(S, psourceoperand) = ($source_operand_valid(S, psourceoperand) /\ S.ORIGIN = ($source_operand_child(psourceoperand)) /\ $throwable_member(S, n) /\ (HOBJECT n) <- S.ALLOCATIONS)
+  -- if psourceoperand.KIND = 1 \/ psourceoperand.KIND = 3
+  -- if psourceoperand.INPUT = VARIABLE n_name* z_input
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if ptask_tail* = psourceoperand.TAIL
+def $source_read_empty_throw(S, psourceoperand) = false -- otherwise
+def $error_read_discard(S, SOURCE_READ_RESULT psourceoperand) = $throwable_previous(S_new, n_new, n)[.COMPLETION = NORMAL][.TODO = (THROW_SEARCH n_new) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $source_read_empty_throw(S, psourceoperand)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S_new = $throwable_allocate(S, "ValueError", $ptascii("Path must not be empty"), psourceoperand.LINE, $eval_exception_trace(S))
+  -- if S_new.COMPLETION = THROWING n_new
+
+;; A computed variable operand uses FETCH_R before the keyword opcode. Bind its
+;; actual following request, but do not add a pre-parser keyword trace frame.
+dec $source_name_tail(pstate, psourceoperand) : bool
+def $source_name_tail(S, psourceoperand) = true
+  -- if psourceoperand.TAIL = (ORIGIN_RETURN (psourceoperand.SITE)) :: (AT porigin_child (EVAL_REQUEST psourceoperand.SITE psourceoperand.LINE)) :: ptask_tail*
+  -- if psourceoperand.KIND = 0
+  -- if porigin_child = $source_operand_child(psourceoperand)
+def $source_name_tail(S, psourceoperand) = true
+  -- if psourceoperand.TAIL = (ORIGIN_RETURN (psourceoperand.SITE)) :: (AT porigin_child (FILE_REQUEST psourceoperand.SITE psourceoperand.LINE psourceoperand.KIND)) :: ptask_tail*
+  -- if psourceoperand.KIND =/= 0
+  -- if porigin_child = $source_operand_child(psourceoperand)
+def $source_name_tail(S, psourceoperand) = false -- otherwise
+dec $source_name_site(pstate, psourceoperand, int) : bool
+def $source_name_site(S, psourceoperand, z) = true
+  -- if $source_operand_site(S, psourceoperand)
+  -- if S.ORIGIN = ($source_operand_child(psourceoperand))
+  -- if $origin_node(S.SOURCES, $source_operand_child(psourceoperand)) = (NExprVariable phpType32 metadata)
+  -- if phpType32 = expression
+  -- if $cv_source_name(S, phpType32) = eps
+  -- if $code_expression_at_source(S, $source_operand_child(psourceoperand), [PCFIELD 0]) = (z)
+  -- if psourceoperand.OWNER = |S.FRAMES|
+  -- if $source_name_tail(S, psourceoperand)
+  -- if psourceoperand.INPUT = KNOWN (PSTRING n_name*)
+  -- if $startup_bytes(n_name*)
+  -- if ~$this_name(n_name*) /\ ~$psautoglobal(n_name*)
+def $source_name_site(S, psourceoperand, z) = false -- otherwise
+dec $source_name_request(ptask) : (porigin, int, int)?
+def $source_name_request(EVAL_REQUEST porigin z) = ((porigin, z, 0))
+def $source_name_request(FILE_REQUEST porigin z n_kind) = ((porigin, z, n_kind))
+def $source_name_request(ptask) = eps -- otherwise
+dec $source_name_plan(pstate) : psourceoperand?
+def $source_name_plan(S) = (psourceoperand)
+  -- if S.TODO = (NAME_READ z) :: ptask_tail*
+  -- if ptask_tail* = (ORIGIN_RETURN (porigin)) :: (AT porigin_child ptask_request) :: ptask_after*
+  -- if $source_name_request(ptask_request) = ((porigin, z_request, n_kind))
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+  -- if n_owner = |S.FRAMES|
+  -- if psourceoperand = {SITE porigin, LINE z_request, KIND n_kind, INPUT S_name.RESULT, OWNER n_owner, TAIL ptask_tail*}
+  -- if $source_name_site(S, psourceoperand, z)
+  -- if $error_missing_operand(S_name, VARIABLE n_name* z)
+def $source_name_plan(S) = eps -- otherwise
+def $source_name_pending(S) = ($source_name_plan(S) =/= eps)
+dec $source_name_valid(pstate, psourceoperand, int) : bool
+def $source_name_valid(S, psourceoperand, z) = ($source_name_site(S, psourceoperand, z) /\ $source_operand_suffix(S.TODO, SOURCE_NAME_RESULT psourceoperand z, psourceoperand.TAIL))
+rule PhpStep/source-name-warning: S ~> $error_dispatch(S_name[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $ptascii("Undefined variable $") ++ n_name*, z_warning, WARNING n_name* z_warning, SOURCE_NAME_RESULT psourceoperand z)
+  -- if S.TODO = (NAME_READ z) :: ptask_tail*
+  -- if $source_name_plan(S) = (psourceoperand)
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
+  -- if psourceoperand.INPUT = KNOWN (PSTRING n_name*)
+  -- if z_warning = $class_constant_error_line(S, z)
+rule PhpStep/source-name-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SOURCE_NAME_RESULT psourceoperand z) :: ptask_tail*
+  -- if $source_name_valid(S, psourceoperand, z)
+def $call_task_valid(S, SOURCE_NAME_RESULT psourceoperand z) = $source_name_valid(S, psourceoperand, z)
+def $task_nodes(SOURCE_NAME_RESULT psourceoperand z) = eps
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = SOURCE_NAME_RESULT psourceoperand z
+  -- if $source_name_valid(S, psourceoperand, z)
+  -- if psourceoperand.INPUT = KNOWN (PSTRING n_name*)
+  -- if perrorcall.SITE = $source_operand_child(psourceoperand)
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = $class_constant_error_line(S, z)
+  -- if perrorcall.MESSAGE = $ptascii("Undefined variable $") ++ n_name*
+  -- if perrorcall.EVENT = WARNING n_name* perrorcall.LINE
+
+def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S.FILES, psourceoperand.SITE), LINE psourceoperand.LINE, FUNCTION $source_operand_keyword(psourceoperand.KIND), CLASS eps, TYPE eps, ARGS eps, HASARGS false}]
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = SOURCE_READ_RESULT psourceoperand
+  -- if perrorcall.TARGET = (pcallcontext.TARGET)
+  -- if pcallcontext.CALLSITE = (perrorcall.SITE)
+  -- if $error_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)
+  -- if S_scope = S[.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO]
+  -- if $source_operand_site(S_scope, psourceoperand)
+  -- if psourceoperand.TAIL = ptask_tail*

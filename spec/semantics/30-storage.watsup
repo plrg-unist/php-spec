@@ -260,7 +260,7 @@ syntax ptask = FIBER_RETURN_FINISH pfiberfinish | FIBER_THROW_FINISH pfiberfinis
   | CLASS_CONST_SELECTED pstaticselection ptbytes int
   | METHOD_PREP phpType20 phpType7* bool bool int | METHOD_NAME poperand phpType7* int | METHOD_RESULT | CTOR_RESULT nat
   | INTERPOLATE_COLLECT porigin nat poperand* | INTERPOLATE_CAPTURE porigin nat poperand* | INTERPOLATE_NEXT pinterpolation | INTERPOLATE_CONVERT pinterpolation | INTERPOLATE_RESOLVE pinterpolation nat* | INTERPOLATE_ARRAY_RESULT pinterpolation poperand | INTERPOLATE_AFTER pinterpolation | INTERPOLATE_FINISH porigin
-  | SOURCE_ARRAY_RESULT psourceoperand | SOURCE_OPERAND_RELEASE psourceoperand | SOURCE_OPERAND_ENTER psourceoperand nat | SOURCE_OPERAND_THROW psourceoperand nat
+  | SOURCE_ARRAY_RESULT psourceoperand | SOURCE_READ_RESULT psourceoperand | SOURCE_NAME_RESULT psourceoperand int | SOURCE_OPERAND_RELEASE psourceoperand | SOURCE_OPERAND_ENTER psourceoperand nat | SOURCE_OPERAND_THROW psourceoperand nat
   | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | STRINGIFY_RESULT nat porigin int | TERMINAL_STRING nat | PRINT_EMIT porigin int | CLONE_RESULT porigin int | NAME_READ int
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int

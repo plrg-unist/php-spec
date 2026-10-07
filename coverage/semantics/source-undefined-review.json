@@ -1,0 +1,142 @@
+{
+  "scope": "Undefined direct-CV eval/include operands and missing-variable fetches with completed computed names; bounded real handler continuations before keyword/provider work.",
+  "status": "independently_reviewed_bounded_runtime_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_revision": "5412b7b20898d8406928bbcbaaf1ee924803cb11",
+  "working_delta": "Two otherwise-int binder corrections in171/293; later test selection, separately compared private-state companion and maintained review relocation. Git metadata is read-only; original commits/diffs remain preserved and no canonical merge is claimed.",
+  "semantic_sha256": {
+    "spec/semantics/171-include-runtime.watsup": "50f9402307f946dffafcb001997f10543324ba3b86c39bb5fb49b5f4efb7ae88",
+    "spec/semantics/293-source-undefined-operands.watsup": "c3a52d9f42cd1f898c7612c5a656383dd701055f5966f6097c45fff303e4974a"
+  },
+  "contract": [
+    "Real207 warning ingress precedes keyword conversion. Direct undefined CV returns fixed uninitialized null despite callback replacement/deletion, with borrowed storage and no added object/array roots.",
+    "Direct include/require handler throw still enters empty-path handling: new ValueError Path must not be empty links the live pending handler Throwable as previous. Eval/once and earlier computed FETCH_R preserve that Throwable and create no provider nonce.",
+    "Completed computed names retain conversion effects and raw NUL bytes. Their warning runs before the keyword, so only direct CV adds the compiled child-line zero-argument pre-parser keyword frame.",
+    "Child/source/code, keyword kind/line, owner, captured input and exact caller tail authenticate pending, entered, returned and throw-discard continuations; low-level direct helper metadata fallback does not waive full public compiled admission."
+  ],
+  "primary_engine": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c:zend_compile_include_or_eval",
+      "Zend/zend_execute.c:zval_undefined_cv",
+      "Zend/zend_execute.c:zend_include_or_eval",
+      "Zend/zend_vm_def.h:ZEND_INCLUDE_OR_EVAL",
+      "main/streams/streams.c:_php_stream_open_wrapper_ex"
+    ],
+    "route": "GET_OP1_ZVAL_PTR calls zval_undefined_cv, which warns then returns EG(uninitialized_zval). zend_include_or_eval runs before the VM checks EG(exception); ordinary empty stream paths raise ValueError, while once guards the pending exception after resolve."
+  },
+  "compiler": {
+    "pin": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "mode": "SL",
+    "modules": 274,
+    "cache": false,
+    "det": true,
+    "stages": "parse/elaborate/IL-check/translate/AL-check/structuring/init all pass; application evaluations0",
+    "fresh_rebuild": false
+  },
+  "runtime_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    ".tools/cprefix-compiler/compiler": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "_build/default/adapter/main.exe": "1d7cebf175b60a6e2a534460ec2c4aff206cdd901e34f35f959041a49f5ac2f9",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent"
+  },
+  "profile": "tests/semantics/profile.json plus include_path=.:; authentic startup reporting30719/path header. Only file-empty normal once operations use one version2 empty requested/open_failure fact under callback-path.",
+  "caps_seconds": {
+    "native": 30,
+    "source_model": 60,
+    "source_outer": 90,
+    "author_numeric": 90,
+    "review_numeric": 120,
+    "unsupported_model": 30,
+    "unsupported_outer": 45
+  },
+  "jobs": 1,
+  "accepted": {
+    "full_source_agreements": 8,
+    "original_sources": 7,
+    "separately_compared_derivatives": 1,
+    "author_originals": [
+      "eval-mutation",
+      "file-empty",
+      "eval-throw",
+      "eval-nohandler"
+    ],
+    "derivative": "private-state.php preserves all76 physical lines and six phases of private-source.php; only trace-printing foreach/getTrace lines5-8 are blank. It agrees separately in40.10s, and confers no full model credit on the original.",
+    "independent_originals": [
+      "computed-mutation",
+      "empty-defined",
+      "throw-family"
+    ],
+    "author_state_groups": {
+      "direct": 55,
+      "empty": 33,
+      "throw-include": 29,
+      "throw-once": 16,
+      "throw-dynamic": 26,
+      "dynamic": 35,
+      "nohandler": 18
+    },
+    "author_reached_premises": 212,
+    "author_distinct_premises": 198,
+    "repeated_throw_setup": 14,
+    "state_attribution": "Original direct55/empty33 cut remains accepted unchanged. Remaining124 selected premises pass on private-state:29/16/26/35/18; earlier rich-source include29/once16 also passed but add no distinct current credit.",
+    "independent_state_groups": {
+      "direct": 55,
+      "dynamic": 49
+    },
+    "result": "Native/model original byte streams exact, frontend accepted and checked program, normal0/reason-null. Strict SL state stdout true/newline, empty stderr, exit0/no timeout. Inputs/head stable; launchers reaped and owned groups empty."
+  },
+  "unsupported_control": {
+    "source": "tests/semantics/source-undefined-review/undefined-name.php",
+    "native": "Eligible E_WARNING handler sees missingName and throws before the final variable lookup.",
+    "model": "Unsupported: error-handler ingress requires a producer continuation",
+    "cli_exit": 1,
+    "agreement": 0,
+    "classification": "Original recorder incorrectly expected exit0, so its failure is preserved. Offline exit1 classification corrected the control without an engine rerun; maintained harness expects exit1."
+  },
+  "raw_ignored": {
+    "author_root": ".tools/include-dev-14-array-ingress",
+    "compile": ".tools/source-cv-compile-d6b0xpmr/report.json",
+    "native5": ".tools/source-undefined-native-xtwl2rfe/report.json",
+    "original_sources4_and_timeout": ".tools/source-undefined-sources-5k8oolqu/report.json",
+    "derivative_source": ".tools/source-undefined-sources-sao6ddxi/report.json",
+    "original_direct_empty_and_throw_timeout": ".tools/source-undefined-protocol-hxajltnp/report.json",
+    "original_split_include_once_and_dynamic_timeout": ".tools/source-undefined-protocol-vm0nef3l/report.json",
+    "original_dynamic_timeout": ".tools/source-undefined-protocol-_uh2d6cf/report.json",
+    "derivative_remaining124": ".tools/source-undefined-protocol-133ubvpu/report.json",
+    "review_sources": ".tools/include-review-15-source-cv/model-dfkzi1cf/report.json",
+    "review_states": ".tools/include-review-15-source-cv/states-kdfvrn8l/report.json",
+    "review_control": ".tools/include-review-15-source-cv/undefined-name-control-8s3b764n/report.json",
+    "review_control_classification": ".tools/include-review-15-source-cv/undefined-name-control-8s3b764n/classification.json",
+    "maintained_review_syntax_preparation": ".tools/source-undefined-review-bt224sr2/report.json"
+  },
+  "preserved_failures": [
+    "Compiler source-cv-compile-elucm6fy rejects non-pure otherwise fallback. Two int wildcard binder corrections precede d6b0xpmr; original has zero application credit.",
+    "Unchanged private-source.php full trace-output source times out at model60s. Native exact0 is retained; source agreement0. Original combined throw57 and computed dynamic35, and split dynamicthrow26, time out at numeric90s with no completed result.",
+    "Reviewer direct51 states-rchidm1i returned false due to an overstrong low-level CODE-erasure expectation. Probe-code-vaxcc7lj returns helper/public (true,false); corrected direct55 tests actual public rejection and cleared TODO, and passes with dynamic49.",
+    "Native missing-name producer is outside completed-name293 scope; its explicit Unsupported control and original wrong-exit recorder failure remain zero agreement."
+  ],
+  "maintained": {
+    "sources": "tests/semantics/source_undefined_sources.py; default four originals plus separately compared private-state. Optional --case private-source retains the original trace-output source.",
+    "state": "tests/semantics/source_undefined_protocol.py; default seven groups use private-state only for throw/computed checks. Optional --private-source private-source and --group throw preserve original inputs/predicates. Selection/count/source labels distinguish each report.",
+    "review": "tests/semantics/source_undefined_review.py; three originals/direct55/dynamic49/Unsupported control, independently maintained source/state/control modes.",
+    "relocation": "Four review PHP originals are byte-identical; predicate lists match corrected reached originals. Syntax-only preparation confirms direct55/dynamic49 with stable inputs/head and grants no renewed model credit.",
+    "commands": [
+      "env LC_ALL=C TZ=UTC python3 tests/semantics/source_undefined_sources.py",
+      "env LC_ALL=C TZ=UTC python3 tests/semantics/source_undefined_protocol.py",
+      "env LC_ALL=C TZ=UTC python3 tests/semantics/source_undefined_review.py"
+    ]
+  },
+  "remaining": [
+    "Missing/effectful name producers before completed-name fetch, full parser/source-provider and dynamic-source consumers",
+    "Captured Stringable lifetime, fast constant-return boundaries and destructor/source interactions after accepted EX270 composition",
+    "Complete core and final combined/fresh copied-path network-isolated offline rebuild; returns_verify remains paused"
+  ]
+}

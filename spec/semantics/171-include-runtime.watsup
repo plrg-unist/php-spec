@@ -36,8 +36,17 @@ dec $file_include_path(preqbytes?) : preqbytes?
 def $file_include_path(eps) = eps
 def $file_include_path((preqbytes)) = ($c_string(preqbytes))
 dec $file_request_start(pstate, porigin, int, int, ptask*) : pstate
+dec $file_empty_operand(pstate, int) : bool
+def $file_empty_operand(S, n_kind) = true
+  -- if S.RESULT = KNOWN (PSTRING eps)
+  -- if n_kind = 1 \/ n_kind = 3
+def $file_empty_operand(S, int) = false -- otherwise
+def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = $throw_scalar(S, "ValueError", $ptascii("Path must not be empty"), z)
+  -- if $file_site_valid(S, porigin, z, n_kind)
+  -- if $file_empty_operand(S, n_kind)
 def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.FILESEQ = $(n_nonce + 1)][.FILECONTEXTS = pfilecontext :: S.FILECONTEXTS][.TODO = (FILE_RESOLVE_AWAIT n_nonce) :: ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
   -- if $file_site_valid(S, porigin, z, n_kind)
+  -- if ~$file_empty_operand(S, n_kind)
   -- if S.FILECWD = (preqbytes_cwd)
   -- if $file_include_path(S.FILEINCLUDEPATH) = (preqbytes_include_path)
   -- if S.RESULT = KNOWN (PSTRING n_requested*)
@@ -47,6 +56,7 @@ def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.FILESEQ = $(n_n
   -- if pfilecontext = {NONCE n_nonce, SITE porigin, CALLER n_caller*, REQUESTED n_requested*, CWD preqbytes_cwd, INCLUDEPATH preqbytes_include_path, KIND n_kind, LEXICAL_CLASS $eval_class_origin(S), OWNER n_owner, PHASE FILE_RESOLVE_WAIT, TAIL ptask_tail*, UNIT eps, RESOLVED eps, OPENED eps, BYTES eps}
 def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "file provider requires fixed cwd"]
   -- if S.FILECWD = eps \/ S.FILEINCLUDEPATH = eps
+  -- if ~$file_empty_operand(S, n_kind)
 rule PhpStep/file-request-object: S ~> $user_string_begin(S_read, n, porigin_child, z, FILE_REQUEST porigin_parent z n_kind, ptask_tail*)
   -- if S.TODO = (FILE_REQUEST porigin_parent z n_kind) :: ptask_tail*
   -- if S.ORIGIN = (porigin_child)
@@ -59,12 +69,14 @@ rule PhpStep/file-request: S ~> $file_request_start(S_value, porigin, z, n_kind,
   -- if S.TODO = (FILE_REQUEST porigin z n_kind) :: ptask_tail*
   -- if ~$eval_callback_ready(S, z)
   -- if ~$source_array_ready(S, z)
+  -- if ~$source_read_ready(S)
   -- if S_value = $eval_operand(S, z)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/file-request-abrupt: S ~> S_value
   -- if S.TODO = (FILE_REQUEST porigin z n_kind) :: ptask_tail*
   -- if ~$eval_callback_ready(S, z)
   -- if ~$source_array_ready(S, z)
+  -- if ~$source_read_ready(S)
   -- if S_value = $eval_operand(S, z)
   -- if S_value.COMPLETION =/= NORMAL
 def $call_task_valid(S, FILE_REQUEST porigin z n_kind) = $file_operand_site_valid(S, porigin, porigin_child, z, n_kind)

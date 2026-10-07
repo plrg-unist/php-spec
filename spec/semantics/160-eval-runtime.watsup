@@ -45,6 +45,7 @@ def $eval_string_result(pvalue) = false -- otherwise
 dec $eval_operand(pstate, int) : pstate
 dec $eval_callback_ready(pstate, int) : bool
 dec $source_array_ready(pstate, int) : bool
+dec $source_read_ready(pstate) : bool
 dec $source_operand_tail(ptask*) : ptask*
 dec $source_operand_work(nat, ptask*, ptask*) : ptask*
 dec $source_operand_contexts(pevalcontext*, nat) : pevalcontext*
@@ -100,12 +101,14 @@ rule PhpStep/eval-request: S ~> $eval_request_start(S_value, porigin, z, ptask_t
   -- if S.TODO = (EVAL_REQUEST porigin z) :: ptask_tail*
   -- if ~$eval_callback_ready(S, z)
   -- if ~$source_array_ready(S, z)
+  -- if ~$source_read_ready(S)
   -- if S_value = $eval_operand(S, z)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/eval-request-abrupt: S ~> S_value
   -- if S.TODO = (EVAL_REQUEST porigin z) :: ptask_tail*
   -- if ~$eval_callback_ready(S, z)
   -- if ~$source_array_ready(S, z)
+  -- if ~$source_read_ready(S)
   -- if S_value = $eval_operand(S, z)
   -- if S_value.COMPLETION =/= NORMAL
 
