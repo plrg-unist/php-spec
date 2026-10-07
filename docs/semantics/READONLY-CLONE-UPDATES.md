@@ -53,8 +53,10 @@ clone semantics.
 A separate private follow-on captures the actual selected dynamic/pipe name
 before argument effects and copies only site/name/Closure identity into a maker
 receipt. Genuine callback entry records that selection independently under the
-physical maker identity. Consumer birth keys bind actual Fiber objects, shutdown
-positions and autoload candidates to that entry. Autoload registry bucket stamps
+physical maker identity; its immediate marker distinguishes implicit computed
+calls from manual calls, with disjoint source-selection guards. Consumer birth
+keys bind actual Fiber objects, shutdown positions and autoload candidates to
+that entry. Autoload registry bucket stamps
 and selected-call stamps distinguish fresh manual registrations after removal;
 genuine selected snapshots and declaration history retain their own stamps. These records create no heap
 owner. Immutable intrinsic Closure bodies and compiled sites check mismatches.
@@ -64,14 +66,18 @@ historical capture checks. The [selection originals](../../tests/semantics/reado
 cover lifetime, manual dispatch, dynamic/FCC pipes, callee mutation during
 arguments, private autoload and shutdown. The [source driver](../../tests/semantics/readonly_clone_selection_sources.py)
 regenerates exact comparisons with `--select` after numeric allocation. This
-follow-on has 20 distinct source agreements, with two affected autoload repeats
-recorded separately. Production SL277/application0 passes at 5a2de9e6f; seven
-source-reached groups (659 prepared clauses) remain unrun. Independent bucket
+follow-on has 20 distinct source agreements, with three affected repeats
+recorded separately. Production SL277/application0 passes at e74802804; seven
+source-reached groups have 665 accepted clauses at their recorded cuts. The
+[state builder](../../tests/semantics/readonly_clone_selection_protocol.py)
+recreates nine exact checked programs and all accepted clauses;
+`--group GROUP --prepare` checks preparation, and `--group GROUP --sl` evaluates
+one group after numeric allocation. Independent bucket
 and selected-call stamps authenticate stored/selected consumers; coherent
 pending-candidate identity rewrites before storage remain open. The
 [selection ledger](../../coverage/semantics/readonly-clone-selection-review.json)
-records these cuts and limits.
-The original declaration/binding failures retain zero evaluations. It does not
+records these cuts and limits. Original compiler, fixture and runtime failures
+remain preserved; prepare-only parity adds no model credit. This follow-on does not
 renew the frozen305 evidence above.
 
 Matching pinned engine routes: `zend_objects_clone_obj_with` and

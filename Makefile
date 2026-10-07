@@ -323,6 +323,14 @@ test-semantics: build
 	python3 tests/semantics/readonly_clone_updates_protocol.py --group named_this
 	python3 tests/semantics/readonly_clone_producer_protocol.py --group cache --sl
 	python3 tests/semantics/readonly_clone_producer_protocol.py --group revisions --sl
+	python3 tests/semantics/readonly_clone_selection_sources.py
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group consumer-birth --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group computed-name-birth --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group reused-maker-birth --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group private-manual-birth-positive --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group shared-origin-positive --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group autoload-birth --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group keyword-shutdown-birth --sl
 	python3 tests/semantics/user_string_parameters.py
 	python3 tests/semantics/user_string_parameters_protocol.py
 	python3 tests/semantics/variadic_string_parameters.py

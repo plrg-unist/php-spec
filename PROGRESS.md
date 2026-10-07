@@ -7,20 +7,24 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-The dynamic/FCC clone maker follow-on is prepared privately from frozen305
+The dynamic/FCC clone maker follow-on is validated privately from frozen305
 commit367e581df. Live clone calls capture the selected name before arguments;
 cached makers retain only their own site, selected name or immutable intrinsic
-Closure identity. Nonowning consumer birth keys now distinguish later activations
-through real Fiber identity, shutdown position and autoload candidate identity.
+Closure identity. An immediate genuine callback marker admits computed selectors;
+the source-selection alternatives remain disjoint. Nonowning consumer birth keys
+distinguish later activations through real Fiber identity, shutdown position and
+autoload candidate identity.
 Independent autoload bucket and selected-call stamps survive registry movement
 and removal, including retained declaration history. Scoped autoload callbacks
 use their retained producer source rather than replaying ordinary invocation.
-Independent review, production SL277/application0 and 20 distinct lifetime/manual,
-pipe, argument mutation, autoload and shutdown originals pass at recorded cuts;
-two affected autoload repeats are separate. Seven reached-state groups (659
-prepared clauses) remain unrun. Coherent pending-candidate identity rewrites
-remain an admission boundary. The [selection ledger](coverage/semantics/readonly-clone-selection-review.json)
-preserves the failed autoload original, diagnostic and compiler corrections.
+Independent review, production SL277/application0, 20 distinct lifetime/manual,
+pipe, argument mutation, autoload and shutdown originals, and 665 clauses across
+seven reached-state groups pass at recorded cuts; three affected source repeats
+are separate. Maintained builders recreate nine checked programs with exact
+accepted clause/prefix parity; preparation adds no model credit. Coherent
+pending-candidate identity rewrites remain an admission boundary. The
+[selection ledger](coverage/semantics/readonly-clone-selection-review.json)
+preserves original failures, scoped repairs and regeneration commands.
 Accepted305 semantic inputs and all earlier cuts remain unchanged. Its directly
 affected private shutdown companion now agrees exactly at367e581df and is
 published at a2cab39d0. Dynamic-property warning ingress needs an
