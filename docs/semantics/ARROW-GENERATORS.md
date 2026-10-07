@@ -91,7 +91,10 @@ slot or public rejection is claimed. Arrow Closure last ownership, new gc/clone
 validation and actual close/budget resumption pass. The parked projection also
 clears FILECONTEXTS under the existing empty-loader transfer domain; genuine
 file-marker runtime evidence belongs to the calls pair. Frozen148 is not renewed.
-Ordered Git integration remains required.
+The later ARG309 join at `93e721d06`/293 is independently reviewed as statically
+compatible: shared factoring preserves its predicates and the new append arms
+do not match this original. It earns no new execution credit. Ordered Git
+integration remains required.
 
 Maintained commands are:
 
