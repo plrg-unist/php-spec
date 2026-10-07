@@ -92,12 +92,35 @@ The first causal branch admits regular fixed-key arrays in named functions with
 one source-derived potential emitter. Ten exact normal originals pass across
 v9/v10. All15 genuine state groups/1170 premises pass across v10 prefix134,
 v11 five555 and v13 nine481; the existing37 reporting checks pass separately.
-Five controls reject unsupported routes and earn zero native agreement.
-Multiple emitters, parked Fibers, object/null-key/outside-eval and wider producers
-remain required. The ledger keeps these cuts distinct from accepted295/286.
+At the306 cut five controls rejected unsupported routes and earned zero native
+agreement. The312 increment below adds bounded multiple emitters; parked Fibers,
+object/null-key/outside-eval and wider producers remain required. The ledger
+keeps these cuts distinct from accepted295/286.
 Current295 main selects eight quiet originals and two object boundaries;306
 replaces four superseded causal Unsupported tails. Historical sources and checks
 remain unchanged, including full fourteen-fixture preparation.
+
+Multiple-frontier defaults312 derive each borrowed read's prefix from preceding
+source effects and genuine eval/registration cuts. Several declarations in one
+callback share a frontier; warm or pre-shadowed potential emitters add no fabricated
+cuts. Earlier failed-birth publications form the next retry's initial prefix.
+A second-site throw preserves the first FCC's physical cache while leaving the
+second cold, and every successful evaluation still creates fresh Closures.
+Nested entry can warm both sites before the outer continuation. A pre-shadowed
+E_STRICT reads user17 without a notice; shadowing during its notice preserves
+the already selected2048. The rules add no heap owners or duplicate history logs.
+The contract assumes real suspended-frame/eval histories; counterexamples keep
+those histories fixed while changing read prefixes, payloads or publication copies.
+
+Eight current normal originals and eight source-reached state groups/761 premises
+pass, including unchanged-value stale/future prefixes and existing-birth owner
+transplants. Seven native originals retain the preliminary cut; the minimized
+warm source renews its exact native/model tuple. The original full warm source's
+two host55 timeouts and valid bind diagnostic earn zero agreement credit.
+Compiler277 passes separately. Current306 main delegates only its historical
+two-frontier control to312, retaining all fifteen archival preparations and data.
+Parked Fiber, object, null-key, outside-eval and broader producer obligations stay
+open; this is a private bounded increment.
 
 Accepted on exact909/e25eb2b9: code1fce6586, compiler2b247d81, runtime8151b96d and
 [independent reviewc7cb1b44](../../coverage/semantics/default-parameter-review.json).

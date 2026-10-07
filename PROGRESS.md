@@ -178,14 +178,27 @@ actual 38f + 292 / 274 agrees through array-include conversion287, private
 Owner/Child warning selection and live GLOBALS RHS rebinding; algorithmic,
 structuring and loader checks pass. The original missing-provider input failure
 retains zero agreement.
+Private multiple-frontier defaults312 retain genuine handler/eval cuts for each
+source effect, exact intermediate read prefixes, partial FCC-cache retry and
+nested warming. Eight exact normals pass across retained cold v1 and seven v3
+sources; native seven preliminary plus minimized warm v3 preserve exact tuples.
+Strict277 at v2 and all eight genuine state groups/761 premises at v3 pass.
+The two original warm host55 timeouts and actual all-true bind diagnostic retain
+zero agreement credit. Catalogue133 preserves prior125. Current306 dispatch
+delegates only its old two-frontier boundary to312; archival data stays unchanged.
+The [ledger](coverage/semantics/deferred-static-defaults-review.json) records cuts.
+Independent review accepts the bounded milestone; canonical integration is pending.
+No actor or canonical writer is held.
+Parked Fibers, object/null-key/outside-eval and wider producers remain required.
+
 Private parameter alias causality306 preserves callback reads, retries, nested
 reentry and captured deprecated values through dense nonowning receive births
 and source-derived parent/frontier/eval cuts. Ten exact normal originals pass
 across v9/v10. Strict SL276, all15 genuine state groups/1170 premises and the
 37-check reporting interface pass on distinct cuts: prefix134 at v10, five555
-at v11 and nine481 at v13. Five controls reject unsupported multiemitter,
+at v11 and nine481 at v13. At that cut five controls rejected multiemitter,
 parked Fiber, object/null-key and outside-eval routes with zero native agreement;
-these and wider producers remain required. Catalogue125 preserves prior115.
+312 above supplies the bounded multiemitter paths. Catalogue125 preserves prior115.
 The [ledger](coverage/semantics/deferred-static-defaults-review.json) retains
 original failures, runtime identities and concise recovery. Independent review
 accepts this bounded increment; canonical integration is pending. No numeric
@@ -201,8 +214,8 @@ zero native agreement. The unchanged private42 passes SL after its retained AL t
 [The ledger](coverage/semantics/deferred-static-defaults-review.json) binds actual
 module/runtime hashes and distinct failed/corrected cuts. Global alias admission
 is bounded to callback-free initializers and quiet values/facts. The306 slice
-above adds bounded effectful read/registration causality; multiple
-emitters, suspended Fibers and wider producers remain open. Historical
+above adds bounded effectful read/registration causality;312 adds bounded multiple
+emitters. Suspended Fibers and wider producers remain open. Historical
 catalogue115 and protocol sources retain exact native bytes. Canonical
 integration is pending.
 

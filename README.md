@@ -848,10 +848,17 @@ core remain required; canonical integration is pending.
 Private parameter alias causality306 preserves callback reads and registrations
 through genuine receive generations, nested reentry, retries and deprecated-value
 capture. Ten normal originals,15 genuine state groups/1170 premises and37 existing
-reporting checks pass at distinct cuts. Five controls reject unsupported routes
-with zero native agreement; wider effectful producers remain required.
+reporting checks pass at distinct cuts. At the306 cut five controls rejected
+unsupported routes with zero native agreement;312 adds bounded multiple frontiers.
+Wider effectful producers remain required.
 Current295 dispatch retains eight quiet originals/two object controls;306 replaces
 its four former causal Unsupported fixtures without changing archival checks.
+Private multiple-frontier defaults312 preserve intermediate reads across distinct
+callbacks, partial cache retry, nested cache warming and deprecated pre-shadowing.
+Eight exact normal originals and eight genuine state groups/761 premises pass;
+the strict compiler277 gate retains its separate cut. Current306 dispatch delegates
+its former two-frontier control to312. Parked Fibers, object/null-key/outside-eval
+producers and wider initializer forms remain required; integration is pending.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
