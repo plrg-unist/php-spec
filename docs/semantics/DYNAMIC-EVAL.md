@@ -30,6 +30,16 @@ wrong identity, valid response and replay rejection. Its full Generator/Fiber
 default-retry original still times out at the unchanged 55-second host cap and
 earns no source agreement. Raw results remain in `.tools/defaults-composition/model-v9`.
 
+The separate actual-parent296 gate passes the same73 and persistent public
+controls. A diagnostic on the unchanged retry original measures true second
+response certification in2.456s and source resumption in0.135s, then times out
+inside the continuation drive. That partial execution earns zero source
+agreement; raw stages remain in `.tools/defaults-composition/request-stages-v1`.
+A later bounded step trace passes throw/catch/new receive/bind, then stops in GC;
+293 completed GC transitions take27.843s versus294 execution steps5.491s.
+Its raw trace stays in `.tools/defaults-composition/drive-boundary-v2`, with zero
+source agreement and unchanged caps.
+
 The trusted worker is the source-to-AST authority. The adapter's direct
 `resume_eval` endpoint checks response identity and AST type but cannot prove
 that an arbitrary client-supplied AST came from those bytes. Source-agreement

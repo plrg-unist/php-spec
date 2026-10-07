@@ -25,6 +25,20 @@ and auto-global emission316. Nonconstant source-emission314 is installed after F
 Held 279 and user-paused return verification stay set aside. Complete core and the
 final combined, fresh offline rebuild remain required.
 
+Private default composition over canonical `7609ad03a` preserves ARG309, PROP
+and GC301 fields and adds286/295/306/312 (296 modules). Strict initialization,
+73 eval/saved budget and ownership predicates and persistent wrong-id/valid/replay
+controls pass. The earlier 227 Generator/Fiber default-state predicates keep
+their distinct old290 cut; the new231 remain UNRUN. The unchanged full retry
+original still times out at host55 with zero agreement. Exact request-stage
+timing certifies the second response true and compiles it quickly. The following
+bounded trace completes throw/catch/new receive/bind, then times out inside GC:
+293 completed GC transitions take27.843s versus294 execution steps5.491s.
+The active-directory versus parked-VM projection fix passes strict296 compile,
+one exact real Stringable/Fiber chdir source and73 owner/log/marker controls.
+The original72 fixture elaboration stop retains zero runtime credit. No canonical
+integration, whole-default source agreement or offline rebuild is claimed.
+
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
 frozen per-pass counts. Its original30/606 and private285-parent3/45 retain their

@@ -546,6 +546,7 @@ test-semantics: build
 	python3 tests/semantics/include_mutable_protocol.py
 	python3 tests/semantics/include_ini_prefix_protocol.py
 	python3 tests/semantics/include_chdir_protocol.py
+	python3 tests/semantics/fiber_chdir_scope_protocol.py
 	python3 tests/semantics/include_chdir_pipe_protocol.py
 	python3 tests/semantics/include_chdir_warning_protocol.py
 	python3 tests/semantics/include_chdir_adapter_protocol.py

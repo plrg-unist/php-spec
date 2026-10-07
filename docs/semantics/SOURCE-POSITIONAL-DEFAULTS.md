@@ -126,3 +126,17 @@ Accepted on exact909/e25eb2b9: code1fce6586, compiler2b247d81, runtime8151b96d a
 [independent reviewc7cb1b44](../../coverage/semantics/default-parameter-review.json).
 The [compiler contract](DEFAULT-PARAMETER-COMPILER.md) specifies source projection;
 the [successor handoff](DEFAULTS-REVIEWER-HANDOFF.md) retains remaining obligations.
+
+The private actual-parent296 composition preserves current property, clone,
+ArrayAccess and collector state. Its scoped parked-VM source checks authenticate
+live eval/class contexts and exclude saved loader markers; file contexts are
+cleared only in the validation view. The original v5 cut passes120 live and107
+retry predicates. Later compute-once bind/response changes retain those results
+as historical evidence; their231 default predicates remain UNRUN. Current
+eval31/saved42 predicates and a separate persistent public response gate pass,
+while the full retry source still exceeds host55.
+A genuine Stringable chdir inside an active Fiber now agrees with native PHP,
+and73 live owner/log plus parked marker controls pass; SOURCEPENDING is empty
+on that lane. The original72 elaboration stop stays zero. The separate default
+retry trace passes throw/catch/new receive/bind before timing out in GC and earns
+zero source agreement. Full default composition and wider producers remain open.

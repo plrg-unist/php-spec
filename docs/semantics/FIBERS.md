@@ -38,6 +38,16 @@ Global Generator ownership is checked on the actual machine. Parked Fiber views
 retain their own task/frame checks and exclude active Generator resume markers;
 an unrelated Generator can run while a Fiber remains suspended.
 
+Private scoped descriptor validation checks shared live eval/class/directory
+contexts on the active VM. Its parked validation view clears loader contexts
+and separately rejects direct, wrapped and saved-frame markers; VM restoration
+itself is unchanged. On the actual296 composition, a real Stringable chdir
+inside a running Fiber agrees with native PHP. The maintained
+`fiber_chdir_scope_protocol.py` has73 reached owner/log/marker/retirement predicates:
+all pass on the corrected fixture, while the original72 elaboration failure
+keeps zero runtime credit. This lane has SOURCEPENDING empty; broader source
+helper and transfer domains remain required.
+
 The primary engine routes are `Zend/zend_fibers.c`: VM capture/restore 123–155,
 fresh entry 567–636, transfer 639–711, constructor 872–893, APIs 895–1098 and
 object destruction 769–816.
