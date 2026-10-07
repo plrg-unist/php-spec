@@ -97,7 +97,7 @@ syntax pconfigcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot
 ;; Zend retains the raw callable, not the registration-time function cache.
 syntax perrorhandler = { CALLBACK pvalue?, LEVELS int }
 syntax phandlerresolution = HANDLERRESOLVED pcalltarget | HANDLERINVALID ptbytes | HANDLERUNKNOWN text
-syntax pgeneratorop, pgeneratorloop, pgenerator, pgeneratorphase
+syntax pgeneratorop, pgeneratorloop, pgenerator, pgeneratorphase, pgeneratorfrom
 syntax ptask, pdircontext, perrorread, perrorcall, pdeclnoticebatch, pevalcompile, pevalcompileplan, pevalcompilefatal, pbindwarning
 syntax papiclass = { REQUESTED porigin, CALLED porigin, RECEIVER nat?, STRICT bool }
 syntax papiclassresult = API_CLASS papiclass | API_CLASS_INVALID ptbytes | API_CLASS_UNKNOWN text
@@ -193,7 +193,7 @@ syntax psourceoperand = { SITE porigin, LINE int, KIND int, INPUT poperand, OWNE
 syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat }
 syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat }
-syntax ptask = FIBER_RETURN_FINISH pfiberfinish | FIBER_THROW_FINISH pfiberfinish | FIBER_CALLBACK_FINISH pfiberfinish | FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat pnamedargs | FIBER_FINISH nat | FIBER_WAIT pfiberapi | FIBER_CONTINUE pfiberapi | GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
+syntax ptask = FIBER_RETURN_FINISH pfiberfinish | FIBER_THROW_FINISH pfiberfinish | FIBER_CALLBACK_FINISH pfiberfinish | FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat pnamedargs | FIBER_FINISH nat | FIBER_WAIT pfiberapi | FIBER_CONTINUE pfiberapi | GENERATOR_FROM_EVAL porigin | GENERATOR_FROM_NEXT nat porigin | GENERATOR_FROM_RESULT nat porigin nat | GENERATOR_FROM_CALLBACK nat porigin text | GENERATOR_FROM_VALID nat porigin poperand | GENERATOR_FROM_COMPLETE nat porigin nat pvalue | GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
   | AUTO_NEXT pautoloadcall | AUTO_REFERENCE pautoloadcall pautoloadentry | AUTO_ENTER pautoloadcall pautoloadentry poperand | AUTO_RESULT pautoloadcall pautoloadentry poperand
   | AUTO_NEW preqbytes phpType7* int int | AUTO_PUBLISH porigin | AUTO_EXPLICIT_DONE pconfigcall
   | AUTO_DEFAULT_NEW preqbytes phpType7* porigin int
@@ -310,8 +310,9 @@ syntax pfibercaller = { OBJECT nat, PREVIOUS nat?, VM pfibervm, API pfiberapi }
 ;; Internal object destruction has a distinct waiting C frame, with no API row.
 syntax pfiberclose = { OBJECT nat, PREVIOUS nat?, CALLERS nat, VM pfibervm, RELEASE pdestructionrelease, SUSPEND pfiberapi, EXIT nat, SEQUENCE nat }
 syntax pfiber = { READY bool, CALL pconfigcall?, RAW pvalue, TARGET pcalltarget?, BIRTH pdynamicnew?, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer?, ENTRY pnamedargs?, FINISH pfiberfinish?, STATUS pfiberstatus, VM pfibervm?, VALUE pvalue, RETURNED bool, FAILED bool, GRACEFUL bool, SEQUENCE nat }
-syntax pgeneratorphase = GENERATOR_FRESH | GENERATOR_PAUSED | GENERATOR_RUNNING | GENERATOR_CLOSED
-syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, INDEX int, VALUE pvalue?, KEY pvalue?, RETURN pvalue?, CLOSURE nat? }
+syntax pgeneratorphase = GENERATOR_FRESH | GENERATOR_PAUSED | GENERATOR_RUNNING | GENERATOR_CLOSED | GENERATOR_DELEGATING
+syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, INDEX int, VALUE pvalue?, KEY pvalue?, RETURN pvalue?, CLOSURE nat?, DELEGATE pgeneratorfrom? }
+syntax pgeneratorfrom = { SITE porigin, INPUT pvalue?, POSITION nat, CURRENT poperand? }
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }
 syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue* }
 syntax pobject = WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
@@ -1032,3 +1033,13 @@ dec $fiber_throw_finish(pstate, nat, nat) : pstate
 dec $fiber_graceful_for(pstate, nat, nat, nat) : bool
 dec $fiber_finish_pending_valid(pstate, pfiberfinish) : bool
 dec $fiber_throw_pending_valid(pstate, nat, nat) : bool
+
+dec $generator_from_statements(statement*) : bool
+dec $generator_from_site(pstate, porigin) : bool
+dec $generator_from_nodes(pgeneratorfrom?) : pnode*
+dec $generator_from_closed(pgeneratorfrom?) : pgeneratorfrom?
+dec $generator_cache_present(pstate, nat) : bool
+dec $generator_cached_value(pstate, nat, bool) : pvalue
+dec $generator_cache_shape(pstate, pgenerator) : bool
+dec $generator_from_state_valid(pstate) : bool
+dec $generator_from_selected(pstate, pcalltarget, porigin) : bool

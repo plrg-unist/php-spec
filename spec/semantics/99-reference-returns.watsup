@@ -1,6 +1,7 @@
 dec $reference_origin_parent(porigin, nat) : (porigin, pcpath)?
 dec $reference_call_used(pstate, porigin) : bool
 dec $reference_return_used(pstate) : bool
+dec $reference_callback_used(pstate, pcallcontext) : bool?
 dec $reference_verifies(pstate) : bool
 dec $reference_return_fetch(pstate, pbase, int) : pstate
 dec $reference_cv_base(pbase) : bool
@@ -31,11 +32,16 @@ def $reference_call_used(S, porigin) = false
   -- if n_field = 0 \/ n_field = 2 \/ (n_field = 1 /\ $(n_index + 1 < |expression*|))
 def $reference_call_used(S, porigin) = true -- otherwise
 
+def $reference_return_used(S) = b
+  -- if S.CURRENT = (pcallcontext)
+  -- if $reference_callback_used(S, pcallcontext) = (b)
 def $reference_return_used(S) = $reference_call_used(S, porigin)
   -- if S.CURRENT = (pcallcontext)
   -- if ~$closure_call_target($context_target(pcallcontext))
   -- if pcallcontext.CALLSITE = (porigin)
+  -- if $reference_callback_used(S, pcallcontext) = eps
 def $reference_return_used(S) = true -- otherwise
+def $reference_callback_used(S, pcallcontext) = eps -- otherwise
 
 def $reference_returning(S) = pfunction.SIGNATURE.BYREF
   -- if S.CURRENT = (pcallcontext)

@@ -173,7 +173,7 @@ def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
   -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
-def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $useriter_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $access_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
+def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $useriter_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $access_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $generator_from_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
 def $call_selected_valid(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call)) = $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call))
 def $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_call)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_call)
 def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise

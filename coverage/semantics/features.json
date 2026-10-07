@@ -12566,15 +12566,23 @@
     {
       "id": "resumable.yield-from",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_generators.c"
+      "implementation": [
+        "spec/semantics/289-generator-delegation.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/generator_delegation_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/generator_delegation_review.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c",
+        "vendor/php-src/Zend/zend_interfaces.c",
+        "vendor/php-src/Zend/zend_operators.h"
+      ],
+      "review": "Generator289 implements arrays, source Iterators and shared/nested Generator graphs with live raw caches, input forwarding, natural return transfer and authenticated callback scopes. Independent52 normal/4 compiler agreements retain separate source cuts in GENERATOR-DELEGATION.md; three exact Unsupported controls earn zero. Ten source-derived protocol programs pass12 finite groups/618 reached conditions across separate AL/SL cuts, including source bindings and repeated setup. Original failures retain zero; actual38f1/273+289 compiles274 modules and adds one normal Fiber/property-based ArrayAccess/current reference interaction; two new bounded ingress/owner groups pass87 setup-inclusive premises in a separate actual SL cut. Original reference-dimension/property-ingress failures and the reached byref-getter boundary retain zero agreement. This source does not execute287 eval/include warning continuations. IteratorAggregate acquisition, broader APIs, reference yields, force-close/destruction/GC and other NaN-handler raw payload tags remain required."
     },
     {
       "id": "resumable.send",

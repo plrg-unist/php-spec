@@ -59,7 +59,10 @@ frame scopes, Closure targets and one real saved resumer per running Generator.
 Internal continuations cannot hide in source wrappers or branches. Public
 admission and ownership checks use actual source-reached states.
 
-Delegation, reference yields, arrow Generators, dynamic/nullsafe
+Array, source Iterator and Generator graph delegation are covered by
+[Module289](GENERATOR-DELEGATION.md), including shared progress, return transfer,
+live callback references and natural owner cleanup. IteratorAggregate,
+reference yields, arrow Generators, dynamic/nullsafe
 API calls, named/unpacked API arguments, scoped static and implicit callback
 creation, and creation through changed/imported caller scope remain required.
 Started force-close finalizers, eager destruction and cyclic collection also

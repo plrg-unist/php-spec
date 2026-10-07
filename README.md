@@ -184,9 +184,10 @@ IteratorAggregate and other Traversable consumers remain required.
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 `getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and
 traces. Inputs survive initialization; exception injection preserves ordinary
-catch/finally execution and exception identity. Delegation,
-reference yields, further call forms and forced-close/destructor behavior remain
-required.
+catch/finally execution and exception identity. [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
+adds arrays, source Iterators and shared Generator graphs with live raw caches
+and natural return/unwind. IteratorAggregate, reference yields, wider call forms,
+forced-close finalizers and complete destruction/GC remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
 broader class-constant contexts remain unfinished.

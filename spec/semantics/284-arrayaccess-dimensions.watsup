@@ -169,6 +169,7 @@ def $access_base(S, BASE_DIM pbase poperand z) = true
 def $access_base(S, BASE_DIM pbase poperand z) = $access_probe(S, BASE_DIM pbase poperand z)
   -- if ~$access_base(S, pbase)
 def $access_base(S, BASE_GLOBAL poperand z) = $access_probe(S, BASE_GLOBAL poperand z)
+def $access_base(S, BASE_PROPERTY pvalue ptbytes) = $access_probe(S, BASE_PROPERTY pvalue ptbytes)
 def $access_base(S, pbase) = false -- otherwise
 def $access_read_pending(S) = true
   -- if S.ORIGIN = (porigin)
