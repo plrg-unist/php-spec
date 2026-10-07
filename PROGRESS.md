@@ -132,9 +132,13 @@ actual 38f + accepted 292 + 304 / 275 agrees through include conversion,
 private Owner/Child selection, GLOBALS
 reference rebinding and a retained-cell append. The
 [append ledger](coverage/semantics/arrayaccess-append-review.json) keeps cuts and
-original failures separate. Final simple append to a returned ArrayAccess child
-is the next required 309 slice; wider producers, by-reference Get and complete
-core remain open. Paused return verification stays separate.
+original failures separate. Final simple returned-child append309 is independently
+accepted at its private276 and actual278 cuts. The current287 composition keeps
+the canonical Generator/Fiber/source fields and is awaiting one new interaction
+gate before integration. The [returned-child ledger](coverage/semantics/arrayaccess-returned-append-review.json)
+preserves eight sources/160 premises, separate lifetime/provider/compiler/warning
+cuts and zero-credit original failures. Wider producers, by-reference Get and
+complete core remain open; paused return verification stays separate.
 
 ArrayAccess292 now handles ordinary by-value compound Get/operator/Set and
 writable Get temporaries through nested W/RW/Unset, pre/post updates and by-value
@@ -150,7 +154,7 @@ independent 793 premises pass across 13 recipes (1016 total), with 634 in AL and
 382 in strict SL.
 The [writable ledger](coverage/semantics/arrayaccess-write-review.json) records
 actual revision/diffs, original failures and excluded count-observer0; its
-core-language companion agrees. Final simple child append, by-reference Get,
+core-language companion agrees. By-reference Get,
 wider memoized/property/GLOBALS producers and combined interface notice ordering
 remain required. Paused return validation remains separate. One fresh source at
 actual 38f + 292 / 274 agrees through array-include conversion287, private
@@ -1210,7 +1214,7 @@ failures and interrupted evidence.
   row/key owners. ArrayAccess284 adds the builtin contract and direct R/IS,
   isset/empty, Set/append and Unset calls. Writable292 adds direct compound and
   ordinary nested W/RW/Unset Get; append304 adds intermediate and compound append.
-  Final simple child append, by-reference Get, wider memoized ArrayAccess consumers
+  By-reference Get, wider memoized ArrayAccess consumers
   and combined Iterator/ArrayAccess notice ordering,
   initial string/ordinary-object reads, wider variable/property bases and writable
   memoized/unset/append containers stay open.

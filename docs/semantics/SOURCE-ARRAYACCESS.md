@@ -58,6 +58,15 @@ rows are extracted. Copies of real reference cells detach only when their actual
 owners permit it, including permanent literal-pool roots. Append and explicit-null
 dimension tasks retain distinct source forms at public admission.
 
+Module309 adds final simple append to a returned ArrayAccess child. The final
+writer transfers into Set with a null key, retaining its genuine returned-cell
+owner and the selected child until the call finishes. Missing RHS demand keeps
+captured null when its handler populates the CV or replaces the global child;
+handler throws suppress Set. Post-Set result readback uses the original CV or
+already dereferenced real cell. The final empty dimension is authenticated from
+the assignment site, independently of the writer's prefix occurrence. Final
+simple append uses255's dedicated prefix plan, avoiding overlap with242.
+
 False-conversion handler throws still permit the DIM_OP's row insertion, late CV
 sample and binary operation. A successful numeric result can be written while the
 old error remains pending; divide/modulo by zero or negative shift instead installs
@@ -67,8 +76,8 @@ handlers are skipped by Zend's pending-exception call API; ineligible or absent
 handlers retain default reporting. Object concat skips method execution and keeps
 the pending error, so this branch uses no live Stringable return producer.
 
-Final simple append to a returned ArrayAccess child, wider memoized/property/GLOBALS
-ArrayAccess producers, by-reference Get results and combined Iterator/ArrayAccess declaration ordering
+Wider memoized/property/GLOBALS ArrayAccess producers, by-reference Get results
+and combined Iterator/ArrayAccess declaration ordering
 remain required core work. Newly reachable unsupported paths stop explicitly.
 By-reference Get stays separate from the user-paused return verification.
 
@@ -128,3 +137,39 @@ substitute that filename. `arrayaccess_append_protocol.py` and
 `python3 -B tests/semantics/arrayaccess_append_prepare.py [fixture-id ...]`
 compiles their merged helper prefix; three affected prefix checks are preparation
 only and do not renew the 723 executed premises.
+
+Returned-child simple append309 adds eight normal source agreements and two
+genuine strict-SL recipes/160 premises at `a0954c2dc`/276. Source-form and public
+admission negatives, retained old RHS cells, null latches, original-child owners
+and one-step budget resumption are executed. The
+[ledger](../../coverage/semantics/arrayaccess-returned-append-review.json) keeps
+the original compiler/recorder and shared-plan nondeterminism failures at zero
+credit. Composition with270/296 agrees through used and unused CV/computed RHS
+ownership, old typed-cell readback, private callback selection and finite file
+services. Four lifetime controls and90 ownership premises retain their5441 cut;
+one smaller original and60 provider premises retain their8ce cut. The unchanged
+broad original and three strict-SL groups/184 premises pass at863. Earlier cuts
+retain their existing evidence.
+
+`arrayaccess_returned_append_cases.py` and
+`arrayaccess_returned_append_review_cases.py` preserve all eight source bytes and
+native observations. `arrayaccess_returned_append_protocol.py` retains the two
+executed recipes. `python3 -B tests/semantics/arrayaccess_returned_append_prepare.py
+[fixture-id ...]` compiles them; identical promotion and maintained compiler
+preparation add no semantic execution credit.
+
+The shared compiler and file-service factors evaluate unchanged pure work once.
+Access-list lookup binds and passes the whole tail, preserving first-match order
+without rebuilding tuple lists at every recursive step. All public source,
+descriptor, callback and response guards remain. Original timeouts and the
+rejected optional-mode pattern keep zero credit.
+
+Build the maintained strict runner with `scripts/opam-exec.sh dune build --root
+tests/semantics -j 1 numeric_runner.exe`. The `*_lifetime_protocol.py`,
+`*_provider_protocol.py`, `*_image_protocol.py`, `*_entry_protocol.py` and
+`*_handler_protocol.py` files retain the reached checks. Their preparation scripts
+only compile fixtures; `arrayaccess_returned_append_state_run.py PREPARED_REPORT`
+executes a selected prepared set. `arrayaccess_returned_append_current_prepare.py`
+and `arrayaccess_returned_append_current_run.py PREPARED_REPORT` reproduce the
+original source/provider comparison. All inputs resolve under the project root;
+publication/compiler preparation adds no renewed execution credit.
