@@ -95,6 +95,13 @@ strict293 initialization, the same exact original and independent47 source/GC/pu
 premises, including a heap-identical forged NOGC receipt. Earlier cuts retain
 their own inputs; wider emissions remain required.
 
+[Literal GLOBALS emission320](coverage/semantics/source-globals-emission-review.json)
+is independently accepted at private294: strict compilation, four exact originals
+and67 independent entry/image/no-snapshot/runtime-name premises. Genuine
+FETCH5 precedes later direct Array Warning5 or property-on-array Warning6; the
+parenthesized entry retains FETCH6/property8. Relocations add no execution credit.
+Actual-parent integration and broader first emissions remain pending.
+
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
 The accepted private52 normal/four compiler agreements and618 reached premises,
