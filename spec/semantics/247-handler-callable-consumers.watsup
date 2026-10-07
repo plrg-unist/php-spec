@@ -24,6 +24,11 @@ dec $consumer_producer_tables(pstate, pshutdownproducer) : pstate
 dec $consumer_producer_nodes(pshutdownproducer) : pnode*
 dec $consumer_producer_capture(pstate, pshutdownentry) : bool
 dec $consumer_producer_internal(pstate, pcalltarget) : bool
+dec $consumer_producer_internal_at(pstate, pshutdownproducer) : bool
+dec $consumer_clone_context(pstate, pcallcontext) : bool
+def $consumer_clone_context(S, pcallcontext) = false -- otherwise
+dec $consumer_clone_producer_valid(pstate, pshutdownproducer) : bool
+def $consumer_clone_producer_valid(S, pshutdownproducer) = false -- otherwise
 dec $consumer_string_target(pstate, pcalltarget) : bool
 dec $consumer_producer_receiver(pclosurescope?) : nat?
 dec $consumer_producer_bound_receiver(pclosurebinding?) : nat?
@@ -247,7 +252,7 @@ def $consumer_capture_valid(S, porigin, (pmethodcapture)) = true
 ;; A C-selected maker may retire its old registry and Closure before the new
 ;; queue entry runs. Keep only its immutable target and scope/binding records.
 ;; Reconstruction below is for pure lookups and creates no heap owners.
-def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SITE pcallcontext.CALLSITE, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext) \/ $stringify_context_kind(S, pcallcontext) \/ $fiber_context_kind(S, pcallcontext))})
+def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SITE pcallcontext.CALLSITE, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext) \/ $stringify_context_kind(S, pcallcontext) \/ $fiber_context_kind(S, pcallcontext) \/ $consumer_clone_context(S, pcallcontext))})
   -- if S.CURRENT = (pcallcontext)
 def $consumer_producer_current(S) = eps -- if S.CURRENT = eps
 def $consumer_producer_scope(S, pcalltarget) = $closure_scope_at(S.CLOSURESCOPES, n)
@@ -279,7 +284,7 @@ def $consumer_producer_capture(S, pshutdownentry) = true
   -- if $trait_source_same(pfunction_source, pfunction)
   -- if $shutdown_capture_scope(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) = $target_lexical_class(S_history, pshutdownproducer.TARGET)
   -- if $consumer_capture_called(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) = $target_called_class(S_history, pshutdownproducer.TARGET)
-  -- if (~pshutdownproducer.INTERNAL /\ $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal(S_history, pshutdownproducer.TARGET))
+  -- if (~pshutdownproducer.INTERNAL /\ $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal_at(S_history, pshutdownproducer))
   -- if pshutdownentry.TARGET = API_METHOD_TARGET papiquery porigin ptbytes b_static
   -- if papiquery.THIS = $target_receiver(S_history, pshutdownproducer.TARGET)
   -- if pshutdownentry.CAPTURE = eps \/ $consumer_producer_function(pshutdownentry.CAPTURE, pfunction.ORIGIN)
@@ -292,6 +297,7 @@ dec $consumer_destructor_target(pstate, pcalltarget) : bool
 def $consumer_producer_internal(S, pcalltarget) = ($handler_method_tag(pcalltarget) \/ $consumer_producer_named(pcalltarget) \/ $consumer_string_target(S, pcalltarget) \/ $consumer_destructor_target(S, pcalltarget))
   -- if $target_instance(pcalltarget) = eps
 def $consumer_producer_internal(S, pcalltarget) = true -- if $target_instance(pcalltarget) =/= eps
+def $consumer_producer_internal_at(S, pshutdownproducer) = ($consumer_producer_internal(S, pshutdownproducer.TARGET) \/ $consumer_clone_producer_valid(S, pshutdownproducer))
 def $consumer_string_target(S, METHOD_TARGET n porigin) = true
   -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__tostring")

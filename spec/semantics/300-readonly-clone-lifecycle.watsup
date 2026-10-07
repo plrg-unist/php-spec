@@ -317,6 +317,30 @@ def $clone_context_valid(S, pcallcontext) = true
   -- if $clone_context_kind(S, pcallcontext)
   -- if $clone_context_frame_valid(S, pcallcontext, pframe, pframe_tail*)
 def $clone_context_valid(S, pcallcontext) = false -- otherwise
+
+;; A cached callback keeps the selected maker and its real clone call site.
+;; Admission remains pure after the window and the maker's heap owner retire.
+def $consumer_clone_context(S, pcallcontext) = $clone_context_valid(S, pcallcontext)
+  -- if $clone_context_kind(S, pcallcontext)
+dec $consumer_clone_site_valid(pstate, porigin) : bool
+def $consumer_clone_site_valid(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprClone expression metadata)
+def $consumer_clone_site_valid(S, porigin) = true
+  -- if $exit_fixed(S, porigin) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (INTRINSIC_CLONE)
+def $consumer_clone_site_valid(S, porigin) = false -- otherwise
+def $consumer_clone_producer_valid(S, pshutdownproducer) = true
+  -- if pshutdownproducer.INTERNAL
+  -- if pshutdownproducer.TARGET = METHOD_TARGET n porigin_method
+  -- if $clone_method(S, n) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if pshutdownproducer.SITE = (PORIGIN n_unit pcpath)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $consumer_clone_site_valid(S, PORIGIN n_unit pcpath)
+
 def $clone_callback_selected(S, pcalltarget, porigin_site) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = pcalltarget /\ pcallcontext.CALLSITE = (porigin_site)
