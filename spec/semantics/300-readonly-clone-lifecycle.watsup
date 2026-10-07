@@ -300,12 +300,18 @@ def $clone_context_kind(S, pcallcontext) = true
   -- if $clone_method(S, n) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
   -- if ~$method_call_selected(S, pcallcontext.TARGET, porigin_site)
+def $clone_context_kind(S, pcallcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (CLONE_CALLBACK_RESULT pcloneoperation) :: ptask_tail*
+  -- if $clone_method(S, pcloneoperation.TARGET) = (pmethoddesc)
+  -- if pcallcontext.TARGET = METHOD_TARGET pcloneoperation.TARGET pmethoddesc.FUNCTION.ORIGIN
+  -- if pcallcontext.CALLSITE = (pcloneoperation.SITE)
 def $clone_context_kind(S, pcallcontext) = false -- otherwise
 
 def $clone_context_frame_valid(S, pcallcontext, pframe, pframe_tail*) = true
   -- if ~$clone_context_kind(S, pcallcontext) /\ ~$clone_frame_marker(pframe)
 def $clone_context_frame_valid(S, pcallcontext, pframe, pframe_tail*) = true
-  -- if $clone_context_kind(S, pcallcontext)
   -- if pframe.TODO = (CLONE_CALLBACK_RESULT pcloneoperation) :: ptask_tail*
   -- if $clone_callback_live($constant_frame_scope(S, pframe, pframe_tail*), pcloneoperation)
   -- if $clone_maker_at(S.CLONEMAKERS, pcloneoperation.TARGET) = ($clone_producer_receipt(pcloneoperation))
