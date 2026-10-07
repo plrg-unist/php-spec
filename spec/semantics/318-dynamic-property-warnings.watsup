@@ -1,0 +1,233 @@
+;; zend_deprecated_dynamic_property owns the receiver across zend_error, then
+;; releases that owner before zend_hash_add_new, even with a pending exception.
+;; The resumed insertion uses the live table and may append a duplicate bucket.
+dec $property_dynamic_message(pstate, pdynamicproperty) : ptbytes
+def $property_dynamic_message(S, pdynamicproperty) = $ptascii("Creation of dynamic property ") ++ $object_name(S, pdynamicproperty.TARGET) ++ $ptascii("::$") ++ $c_string(pdynamicproperty.KEY) ++ $ptascii(" is deprecated")
+
+dec $property_dynamic_site(pstate, porigin, int) : bool
+def $property_dynamic_site(S, PORIGIN n pcpath, z) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprAssign (NExprPropertyFetch expression (NIdentifier (BYTES text) metadata_name) metadata_target) expression_rhs metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_assignment, b_assignment))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z, b_target))
+def $property_dynamic_site(S, porigin, z) = false -- otherwise
+
+;; Plain CVs retain their mutable slot, including a wrapper installed by the
+;; handler. A preexisting reference was dereferenced before write_property and
+;; therefore keeps its old payload pointer without acquiring another owner.
+dec $property_dynamic_selected(pstate, poperand) : poperand
+def $property_dynamic_selected(S, VARIABLE ptbytes z) = BORROWED (ROOT n)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if n <- S.REFCELLS
+def $property_dynamic_selected(S, REFERENCE n) = BORROWED (ROOT n)
+def $property_dynamic_selected(S, poperand) = poperand -- otherwise
+dec $property_dynamic_selection(pstate, pdynamicproperty) : bool
+def $property_dynamic_selection(S, pdynamicproperty) = true
+  -- if pdynamicproperty.RHS = VARIABLE ptbytes z
+  -- if pdynamicproperty.SELECTED = VARIABLE ptbytes z
+def $property_dynamic_selection(S, pdynamicproperty) = true
+  -- if pdynamicproperty.RHS = VARIABLE ptbytes z
+  -- if pdynamicproperty.SELECTED = BORROWED (ROOT n)
+  -- if $(n < |S.STORE|)
+  -- if n <- S.REFCELLS
+def $property_dynamic_selection(S, pdynamicproperty) = true
+  -- if pdynamicproperty.RHS = REFERENCE n
+  -- if pdynamicproperty.SELECTED = BORROWED (ROOT n)
+def $property_dynamic_selection(S, pdynamicproperty) = true
+  -- if pdynamicproperty.RHS = KNOWN pvalue
+  -- if pdynamicproperty.SELECTED = KNOWN pvalue
+def $property_dynamic_selection(S, pdynamicproperty) = false -- otherwise
+
+dec $property_dynamic_valid(pstate, pdynamicproperty) : bool
+def $property_dynamic_valid(S, pdynamicproperty) = true
+  -- if S.ORIGIN = (pdynamicproperty.SITE)
+  -- if $property_dynamic_site(S, pdynamicproperty.SITE, pdynamicproperty.LINE)
+  -- if $origin_node(S.SOURCES, pdynamicproperty.SITE) = (NExprAssign expression_target expression_rhs metadata)
+  -- if expression_target = NExprPropertyFetch expression_receiver (NIdentifier (BYTES text) metadata_name) metadata_target
+  -- if pdynamicproperty.KEY = $base64(text)
+  -- if pdynamicproperty.SELF = $assignment_self(expression_target, expression_rhs)
+  -- if $property_pending_source_base(S[.ORIGIN = $origin_child((pdynamicproperty.SITE), [PCFIELD 0])], pdynamicproperty.BASE, expression_target)
+  -- if $property_string_address(S, pdynamicproperty.BASE, pdynamicproperty.TARGET, pdynamicproperty.KEY)
+  -- if $property_string_this(S, expression_target, pdynamicproperty.TARGET)
+  -- if $code_expression_at_source(S, pdynamicproperty.SITE, [PCFIELD 1]) = (z_rhs)
+  -- if $key_write_input_source(S, pdynamicproperty.SITE, pdynamicproperty.RHS, z_rhs, false)
+  -- if $property_dynamic_selection(S, pdynamicproperty)
+  -- if $(pdynamicproperty.TARGET < |S.OBJECTS|)
+  -- if S.OBJECTS[pdynamicproperty.TARGET] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if ~pclassdesc.READONLY
+  -- if ~$class_origin_matches(S, porigin_class, $ptascii("stdClass"), |S.CLASSES|)
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), pdynamicproperty.KEY) = eps
+  -- if $heap_subset($base_nodes(pdynamicproperty.BASE) ++ $operand_nodes(pdynamicproperty.RHS), S.ALLOCATIONS)
+  -- if $destructor_pending_valid(S, pdynamicproperty.PENDING)
+def $property_dynamic_valid(S, pdynamicproperty) = false -- otherwise
+
+dec $property_dynamic_capture(pstate, pbase, int, bool) : pdynamicproperty?
+def $property_dynamic_capture(S, pbase, z, b) = (pdynamicproperty)
+  -- if $error_handler_eligible(S, 8192)
+  -- if S.SOURCEPENDING = eps
+  -- if S.ORIGIN = (porigin_site)
+  -- if $property_dynamic_site(S, porigin_site, z)
+  -- if S_base = $property_string_base(S, pbase, z)
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.BASE = BASE_PROPERTY (POBJECT n_target) ptbytes
+  -- if $property_resolve(S_base, n_target, ptbytes) = PROPERTY_ACCESS ptbytes_key
+  -- if $objectprops_record_at(S_base.OBJECTPROPS, n_target) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes_key) = eps
+  -- if S_read = $resolve_at(S_base, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if pdynamicproperty = {SITE porigin_site, BASE pbase, TARGET n_target, KEY ptbytes_key, RHS S.RESULT, SELECTED $property_dynamic_selected(S_read, S.RESULT), LINE z, SELF b, PENDING eps}
+  -- if $heap_member(HOBJECT n_target, S_read.ALLOCATIONS)
+  -- if $property_dynamic_valid(S_read, pdynamicproperty)
+def $property_dynamic_capture(S, pbase, z, b) = eps -- otherwise
+def $property_dynamic_warning_pending(S) = true
+  -- if S.TODO = (ASSIGN_ARRAY pbase z b) :: ptask_tail*
+  -- if $property_dynamic_capture(S, pbase, z, b) = (pdynamicproperty)
+def $property_dynamic_warning_pending(S) = false -- otherwise
+
+;; Before entry the selecting operands are still available in the caller. The
+;; entered callback then keeps the captured destination through its effects.
+dec $property_dynamic_entry(pstate, perrorcall, pdynamicproperty) : bool
+def $property_dynamic_entry(S, perrorcall, pdynamicproperty) = true
+  -- if perrorcall.TARGET = eps
+  -- if $property_dynamic_capture(S[.RESULT = pdynamicproperty.RHS][.BASE = pdynamicproperty.BASE], pdynamicproperty.BASE, pdynamicproperty.LINE, pdynamicproperty.SELF) = (pdynamicproperty)
+def $property_dynamic_entry(S, perrorcall, pdynamicproperty) = true
+  -- if perrorcall.TARGET =/= eps
+def $property_dynamic_entry(S, perrorcall, pdynamicproperty) = false -- otherwise
+
+rule PhpStep/dynamic-property-warning: S ~> $error_dispatch($objectprops_mark(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pdynamicproperty.TARGET), 8192, $property_dynamic_message(S, pdynamicproperty), z, DIAGNOSTIC "Deprecated" $property_dynamic_message(S, pdynamicproperty) z, PROPERTY_DYNAMIC_RESULT pdynamicproperty)
+  -- if S.TODO = (ASSIGN_ARRAY pbase z b) :: ptask_tail*
+  -- if $property_dynamic_capture(S, pbase, z, b) = (pdynamicproperty)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = PROPERTY_DYNAMIC_RESULT pdynamicproperty
+  -- if $property_dynamic_valid(S, pdynamicproperty)
+  -- if $property_dynamic_entry(S, perrorcall, pdynamicproperty)
+  -- if pdynamicproperty.PENDING = eps
+  -- if perrorcall.SITE = pdynamicproperty.SITE
+  -- if perrorcall.LINE = pdynamicproperty.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.MESSAGE = $property_dynamic_message(S, pdynamicproperty)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $call_task_valid(S, PROPERTY_DYNAMIC_RESULT pdynamicproperty) = ($property_dynamic_valid(S, pdynamicproperty) /\ $heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS))
+def $call_task_valid(S, PROPERTY_DYNAMIC_INSERT pdynamicproperty) = $property_dynamic_valid(S, pdynamicproperty)
+def $task_nodes(PROPERTY_DYNAMIC_RESULT pdynamicproperty) = [HOBJECT pdynamicproperty.TARGET] ++ $base_nodes(pdynamicproperty.BASE) ++ $operand_nodes(pdynamicproperty.RHS) ++ $instance_roots(pdynamicproperty.PENDING)
+def $task_nodes(PROPERTY_DYNAMIC_INSERT pdynamicproperty) = $base_nodes(pdynamicproperty.BASE) ++ $operand_nodes(pdynamicproperty.RHS) ++ $instance_roots(pdynamicproperty.PENDING)
+def $source_operand_marker(PROPERTY_DYNAMIC_RESULT pdynamicproperty) = ASSIGN_ARRAY pdynamicproperty.BASE pdynamicproperty.LINE pdynamicproperty.SELF
+def $source_operand_marker(PROPERTY_DYNAMIC_INSERT pdynamicproperty) = ASSIGN_ARRAY pdynamicproperty.BASE pdynamicproperty.LINE pdynamicproperty.SELF
+
+;; The warning's C owner is released before the insertion. Generic eager
+;; cleanup executes a now-unowned receiver's destructor at this boundary.
+rule PhpStep/dynamic-property-release: S ~> S[.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*]
+  -- if S.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty) :: ptask_tail*
+  -- if $call_task_valid(S, PROPERTY_DYNAMIC_RESULT pdynamicproperty)
+def $error_read_discard(S, PROPERTY_DYNAMIC_RESULT pdynamicproperty) = S[.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty[.PENDING = (n)]) :: ptask_tail*]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $property_dynamic_valid(S, pdynamicproperty)
+def $eager_operation_pending(S) = pdynamicproperty.PENDING
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty) :: ptask_tail*
+def $eager_operation_pending(S) = pdynamicproperty.PENDING
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
+def $eager_operation_tail(S) = (PROPERTY_DYNAMIC_RESULT pdynamicproperty[.PENDING = eps]) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty) :: ptask_tail*
+  -- if pdynamicproperty.PENDING =/= eps
+def $eager_operation_tail(S) = (PROPERTY_DYNAMIC_INSERT pdynamicproperty[.PENDING = eps]) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
+  -- if pdynamicproperty.PENDING =/= eps
+def $eager_operation_source_guard(S, pdestructionoperation) = $property_dynamic_valid(S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT], pdynamicproperty)
+  -- if pdestructionoperation.SOURCE = PROPERTY_DYNAMIC_RESULT pdynamicproperty
+def $destructor_pending_finish(S, pdestructionoperation, n, (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*) = S[.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty[.PENDING = (n)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+  -- if pdestructionoperation.SOURCE = PROPERTY_DYNAMIC_RESULT pdynamicproperty_source
+  -- if pdynamicproperty = pdynamicproperty_source[.PENDING = eps]
+def $destructor_pending_finish(S, pdestructionoperation, n, (PROPERTY_DYNAMIC_RESULT pdynamicproperty) :: ptask_tail*) = S[.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty[.PENDING = (n)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH n_original
+  -- if pdestructionoperation.ORIGIN = (pdynamicproperty.SITE)
+  -- if pdynamicproperty.PENDING = eps
+  -- if $property_dynamic_valid(S, pdynamicproperty)
+
+dec $property_dynamic_item(pstate, pdynamicproperty) : (pitem, poperand)?
+def $property_dynamic_item(S, pdynamicproperty) = (ALIAS n, KNOWN pvalue)
+  -- if pdynamicproperty.SELECTED = VARIABLE ptbytes z
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if n <- S.REFCELLS
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if (HCELL n) <- S.ALLOCATIONS
+def $property_dynamic_item(S, pdynamicproperty) = (DIRECT pvalue, KNOWN pvalue)
+  -- if pdynamicproperty.SELECTED = VARIABLE ptbytes z
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if ~(n <- S.REFCELLS)
+  -- if S.STORE[n] = DEFINED pvalue
+def $property_dynamic_item(S, pdynamicproperty) = (DIRECT pvalue, KNOWN pvalue)
+  -- if pdynamicproperty.SELECTED = BORROWED (ROOT n)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if (HCELL n) <- S.ALLOCATIONS
+def $property_dynamic_item(S, pdynamicproperty) = (DIRECT pvalue, KNOWN pvalue)
+  -- if pdynamicproperty.SELECTED = KNOWN pvalue
+def $property_dynamic_item(S, pdynamicproperty) = eps -- otherwise
+dec $property_dynamic_finish(pstate, pdynamicproperty, poperand) : pstate
+def $property_dynamic_finish(S, pdynamicproperty, poperand) = S[.TODO = ptask_tail*][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
+  -- if pdynamicproperty.PENDING = eps
+def $property_dynamic_finish(S, pdynamicproperty, poperand) = S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
+  -- if pdynamicproperty.PENDING = (n)
+rule PhpStep/dynamic-property-insert: S ~> $property_dynamic_finish(S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, pdynamicproperty.TARGET, pobjectprops.SLOTS ++ [{DECL eps, NAME pdynamicproperty.KEY, STATE PROP_VALUE pitem}])], pdynamicproperty, poperand)
+  -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
+  -- if $property_dynamic_valid(S, pdynamicproperty)
+  -- if $heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS)
+  -- if $objectprops_record_at(S.OBJECTPROPS, pdynamicproperty.TARGET) = (pobjectprops)
+  -- if $property_dynamic_item(S, pdynamicproperty) = (pitem, poperand)
+rule PhpStep/dynamic-property-rhs-expired: S ~> S[.COMPLETION = UNSUPPORTED "dynamic property warning RHS pointer lifetime or undefined CV"]
+  -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
+  -- if $property_dynamic_valid(S, pdynamicproperty)
+  -- if $heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS)
+  -- if $property_dynamic_item(S, pdynamicproperty) = eps
+rule PhpStep/dynamic-property-receiver-released: S ~> $throw_scalar($property_dynamic_finish(S, pdynamicproperty, KNOWN PNULL), "Error", $ptascii("Cannot create dynamic property ") ++ $object_name(S, pdynamicproperty.TARGET) ++ $ptascii("::$") ++ $c_string(pdynamicproperty.KEY), pdynamicproperty.LINE)
+  -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
+  -- if $property_dynamic_valid(S, pdynamicproperty)
+  -- if ~$heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS)
+  -- if pdynamicproperty.PENDING = eps
+rule PhpStep/dynamic-property-receiver-released-pending: S ~> $property_dynamic_finish(S, pdynamicproperty, KNOWN PNULL)
+  -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
+  -- if $property_dynamic_valid(S, pdynamicproperty)
+  -- if ~$heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS)
+  -- if pdynamicproperty.PENDING = (n)
+
+;; PHP's UnwindExit can still return through write_property before shutdown.
+;; Stop at the real exit ingress while the authenticated producer is present.
+dec $property_dynamic_exit_marker(ptask) : bool
+def $property_dynamic_exit_marker(PROPERTY_DYNAMIC_RESULT pdynamicproperty) = true
+def $property_dynamic_exit_marker(PROPERTY_DYNAMIC_INSERT pdynamicproperty) = true
+def $property_dynamic_exit_marker(ERROR_HANDLER_INVOKE perrorcall) = $property_dynamic_exit_marker(perrorcall.RESUME)
+def $property_dynamic_exit_marker(ERROR_HANDLER_RESULT perrorcall) = $property_dynamic_exit_marker(perrorcall.RESUME)
+def $property_dynamic_exit_marker(ERROR_HANDLER_CLEAN perrorcall) = $property_dynamic_exit_marker(perrorcall.RESUME)
+def $property_dynamic_exit_marker(ptask) = false -- otherwise
+dec $property_dynamic_exit_tasks(pstate, ptask*) : bool
+def $property_dynamic_exit_tasks(S, eps) = false
+def $property_dynamic_exit_tasks(S, ptask :: ptask_tail*) = true
+  -- if $property_dynamic_exit_marker(ptask)
+  -- if $call_task_valid(S, ptask)
+def $property_dynamic_exit_tasks(S, ptask :: ptask_tail*) = $property_dynamic_exit_tasks($call_after_origin(S, ptask), ptask_tail*)
+  -- if ~($property_dynamic_exit_marker(ptask) /\ $call_task_valid(S, ptask))
+dec $property_dynamic_exit_frames(pstate, pframe*) : bool
+def $property_dynamic_exit_frames(S, eps) = false
+def $property_dynamic_exit_frames(S, pframe :: pframe_tail*) = ($property_dynamic_exit_tasks($constant_frame_scope(S, pframe, pframe_tail*), pframe.TODO) \/ $property_dynamic_exit_frames(S, pframe_tail*))
+def $property_dynamic_exit_pending(S) = ($property_dynamic_exit_tasks(S, S.TODO) \/ $property_dynamic_exit_frames(S, S.FRAMES))
+def $exit_start_unwind(S, z) = S[.COMPLETION = UNSUPPORTED "dynamic property warning exit continuation"]
+  -- if ~$fiber_closing(S, S.ACTIVEFIBER)
+  -- if $property_dynamic_exit_pending(S)
+
+;; Physical by-value object foreach already walks SLOTS. The old by-name
+;; reference path and generic array key consumers need their own bucket rules.
+def $property_duplicate_table(S, n) = ~$property_unique_names(ppropertyslot*)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+def $property_duplicate_table(S, n) = false -- otherwise
+def $cast_value(S, CASTARRAY, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "array cast of duplicate dynamic property buckets"]
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_duplicate_table(S, n)
+def $property_foreach_reference(S, n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "reference foreach of duplicate dynamic property buckets"]
+  -- if $property_duplicate_table(S, n)

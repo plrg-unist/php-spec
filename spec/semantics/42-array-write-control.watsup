@@ -1,6 +1,7 @@
 dec $acquired_reference_operand(pstate, pbase) : poperand
 dec $static_string_callback_candidate(pstate) : bool
 dec $property_string_callback_candidate(pstate) : bool
+dec $property_dynamic_warning_pending(pstate) : bool
 rule PhpStep/array-assignment: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP (NExprArrayDimFetch expression_base phpType5 metadata_dim)), ASSIGN_PREP (NExprArrayDimFetch expression_base phpType5 metadata_dim) expression] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprAssign (NExprArrayDimFetch expression_base phpType5 metadata_dim) expression metadata)) :: ptask_tail*
 rule PhpStep/array-assignment-prepare: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), ASSIGN_ARRAY S.BASE $runtime_line(S, [PCFIELD 0], expression_target) $assignment_self(expression_target, expression)] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
@@ -12,6 +13,7 @@ rule PhpStep/array-assignment-write: S ~> S_written[.HELD = S.HELD]
   -- if ~$access_set_pending(S)
   -- if ~$static_string_callback_candidate(S)
   -- if ~$property_string_callback_candidate(S)
+  -- if ~$property_dynamic_warning_pending(S)
   -- if S_written = $assign_array($hold_task_inputs(S), pbase, S.RESULT, z)
 rule PhpStep/array-assignment-self: S ~> S_written[.HELD = S.HELD]
   -- if S.TODO = (ASSIGN_ARRAY pbase z true) :: ptask_tail*
@@ -19,6 +21,7 @@ rule PhpStep/array-assignment-self: S ~> S_written[.HELD = S.HELD]
   -- if ~$access_set_pending(S)
   -- if ~$static_string_callback_candidate(S)
   -- if ~$property_string_callback_candidate(S)
+  -- if ~$property_dynamic_warning_pending(S)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_written = $assign_array($hold_task_inputs(S_read), pbase, S_read.RESULT, z)

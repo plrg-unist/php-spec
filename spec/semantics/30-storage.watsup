@@ -40,6 +40,7 @@ syntax pproptypesource = OBJECT_PROP_SOURCE nat ptbytes ppropertyid | CLASS_PROP
 syntax ppropref = { CELL nat, SOURCES pproptypesource* }
 syntax prefcoercion = { CELL nat, SITE porigin, LINE int, VALUE ptbytes }
 syntax ppropertystring = { SITE porigin, BASE pbase, TARGET nat, KEY ptbytes, DECL ppropertyid, RHS poperand, OBJECT nat, LINE int }
+syntax pdynamicproperty = { SITE porigin, BASE pbase, TARGET nat, KEY ptbytes, RHS poperand, SELECTED poperand, LINE int, SELF bool, PENDING nat? }
 syntax pstaticstring = { SITE porigin, CLASS porigin, DECL ppropertyid, NAME ptbytes, OBJECT nat, RHS poperand, LINE int }
 syntax pparameterstring = { FUNCTION porigin, INDEX nat, CELL nat, OBJECT nat, LINE int }
 syntax pvariadicstring = { FUNCTION porigin, INDEX nat, ELEMENT nat, NAMED bool, OPERAND poperand, OBJECT nat, LINE int }
@@ -252,6 +253,7 @@ syntax ptask = GC_TRACE pgccall | GC_DTORS pgcplan | GC_DTOR_RETURN pgcplan nat 
   | TRAIT_DATA_SEED pdeclnoticeitem* | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
   | TYPE_RETURN_THROW nat porigin int
   | PROPERTY_STRING_RESULT ppropertystring | STATIC_STRING_RESULT pstaticstring | STATIC_STRING_CAPTURE pstaticstring
+  | PROPERTY_DYNAMIC_RESULT pdynamicproperty | PROPERTY_DYNAMIC_INSERT pdynamicproperty
   | PARAMETER_STRING_RESULT pparameterstring
   | API_CALLABLE_RESULT papiquery nat
   | DEFAULT_STRING_RESULT pparameterstring | VARIADIC_STRING_RESULT pvariadicstring
