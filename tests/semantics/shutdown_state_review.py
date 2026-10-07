@@ -443,6 +443,9 @@ def run(selected):
         finally:
             frontend.close()
             adapter.close()
+        initial = ('$php_startup_run(' if 'startup' in case else '$php_run(') + checked['fixture'] + ', 0, '
+        initial += json.dumps(base64.b64encode(str(source).encode()).decode())
+        initial += (', ' + case['startup'] if 'startup' in case else '') + ')'
         fixture = directory / 'test.watsup'
         fixture.write_text(
             'dec $stage(pstate) : bool\ndef $stage(S) = true -- if ' + case['stage'] + '\n'
@@ -462,8 +465,7 @@ def run(selected):
             + 'def $seek(S, n) = S -- if S.COMPLETION =/= NORMAL /\\ S.COMPLETION =/= BUDGET'
             + (' /\\ S.COMPLETION =/= SOURCE_PENDING /\\ ~$shutdown_ready(S)' if reply else '') + '\n'
             'dec $main() : bool\ndef $main() = true\n'
-            '  -- if S_initial = $php_run(' + checked['fixture'] + ', 0, '
-            + json.dumps(base64.b64encode(str(source).encode()).decode()) + ')\n'
+            '  -- if S_initial = ' + initial + '\n'
             '  -- if S = $seek(S_initial[.COMPLETION = NORMAL], 2000)[.COMPLETION = NORMAL]\n'
             '  -- if ' + case['stage'] + '\n'
             + ''.join('  -- ' + ('' if clause.startswith('PhpStep:') else 'if ') + clause + '\n'

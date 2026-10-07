@@ -71,10 +71,11 @@ python3 tests/semantics/destructor_state.py
 ```
 
 Stage2 DONE retains the remaining native owners for later request phases;
-shutdown registrations are not freed here. Ordinary eager last-owner destruction
-before stage2, including the original uncaught Throwable release before stage1,
-returns precise Unsupported instead of moving its effects into this stage.
+shutdown registrations are not freed here. Module270 supplies
+[ordinary eager destruction and original Throwable release before stage1](SOURCE-EAGER-DESTRUCTORS.md).
+The earlier257 release controls retain their original zero-agreement cut;
+their maintained source expectations now use270's supported behavior.
 The existing PHP-Parser static-destructor rejection is a zero-agreement frontend
-control. Eager destruction, cycles/GC, output buffering, registration release and
+control. Cycles/GC, output buffering, registration release and
 final request cleanup are required next work; this increment does not establish
 complete request lifecycle or complete core.

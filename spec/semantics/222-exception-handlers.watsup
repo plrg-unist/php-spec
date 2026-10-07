@@ -229,7 +229,8 @@ rule PhpStep/exception-handler-special: S ~> $api_begin(S, EXCEPTION_HANDLER_INV
   -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
   -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
   -- if $exception_deprecated_raw(S, pexceptioncall.CALLBACK)
-rule PhpStep/exception-handler-finish: S ~> $exception_handler_restore(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = pexceptioncall.ORIGIN][.TRACE = eps][.ERRORORIGIN = eps])
+dec $exception_handler_finish(pstate, pexceptioncall) : pstate
+rule PhpStep/exception-handler-finish: S ~> $exception_handler_finish(S, pexceptioncall)
   -- if S.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask_tail*
   -- if $exception_result_valid(S, pexceptioncall)
   -- if S.CURRENT = eps

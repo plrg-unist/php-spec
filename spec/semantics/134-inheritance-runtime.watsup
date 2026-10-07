@@ -51,7 +51,7 @@ dec $class_constant_link_error(pstate, porigin, ptbytes, int) : pstate
 dec $method_link_state(pstate, pclassdesc, porigin) : pstate
 def $method_link_state(S, pclassdesc, porigin_parent) = S[.CLASSNAMES = S.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), pclassdesc.ORIGIN)]][.LINKEDPARENTS = S.LINKEDPARENTS ++ [CLASSLINK pclassdesc.ORIGIN (SOURCE_PARENT porigin_parent)]]
 
-def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend final class ") ++ pclassdesc_parent.NAME) pclassdesc.LINE]
+def $activate_parented_class(S, pclassdesc, ptbytes_parent) = S[.COMPLETION = STATICBYTES ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot extend final class ") ++ pclassdesc_parent.NAME) pclassdesc.LINE][.TRACE = $eval_exception_trace(S)]
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "class"

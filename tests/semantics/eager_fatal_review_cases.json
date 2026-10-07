@@ -1,0 +1,121 @@
+[
+  {
+    "id": "terminal-userfatal-retains-c-receiver-handles",
+    "source": "<?php class P extends Exception{function __destruct(){echo \"P;\";}}class E extends Exception{function __destruct(){echo \"E;\";trigger_error(\"fatal\",E_USER_ERROR);}}class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}set_exception_handler(static function($e){echo \"H;\";unset($GLOBALS[\"p\"]);});register_shutdown_function(static function(){echo \"S;\";$GLOBALS[\"born\"]=[new D(\"a\"),new D(\"b\")];});$p=new P(\"previous\");throw new E(\"original\",0,$p);",
+    "source_sha256": "daa609cbba100c67fee3a91b6983da716007452478e797c8eae94ba2e28dae52",
+    "stdout": "H;E;S;D:a;D:b;",
+    "stderr": "Deprecated: Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead in {file} on line 1\nFatal error: fatal in {file} on line 1\nStack trace:\n#0 {file}(1): trigger_error('fatal', 256)\n#1 [internal function]: E->__destruct()\n#2 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "terminal-compilestop-retains-c-receiver-handles",
+    "source": "<?php class P extends Exception{function __destruct(){echo \"P;\";}}class E extends Exception{function __destruct(){echo \"E;\";eval(\"class Bad extends Exception{protected function __wakeup(){}}\");}}class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}set_exception_handler(static function($e){echo \"H;\";unset($GLOBALS[\"p\"]);});register_shutdown_function(static function(){echo \"S;\";$GLOBALS[\"born\"]=[new D(\"a\"),new D(\"b\")];});$p=new P(\"previous\");throw new E(\"original\",0,$p);",
+    "source_sha256": "1494724a15287b467e4b943f56dde109b6867a3b827e41180ce699c5270e642a",
+    "stdout": "H;E;S;D:a;D:b;",
+    "stderr": "Warning: The magic method Bad::__wakeup() must have public visibility in {file}(1) : eval()'d code on line 1\nFatal error: Access level to Bad::__wakeup() must be public (as in class Exception) in {file}(1) : eval()'d code on line 1\nStack trace:\n#0 [internal function]: E->__destruct()\n#1 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "main-userfatal-retains-destructor-c-receiver-handles",
+    "source": "<?php class P extends Exception{function __destruct(){echo \"P;\";}}class E extends Exception{function __destruct(){echo \"E;\";unset($GLOBALS[\"p\"]);trigger_error(\"fatal\",E_USER_ERROR);}}class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}register_shutdown_function(static function(){echo \"S;\";$GLOBALS[\"born\"]=[new D(\"a\"),new D(\"b\")];});$p=new P(\"previous\");$e=new E(\"original\",0,$p);echo \"M;\";unset($e);",
+    "source_sha256": "337cbef03a7dc94d0cb6679b3b8b9ace0b4b249bdcb067eff51e9190143be868",
+    "stdout": "M;E;S;D:a;D:b;",
+    "stderr": "Deprecated: Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead in {file} on line 1\nFatal error: fatal in {file} on line 1\nStack trace:\n#0 {file}(1): trigger_error('fatal', 256)\n#1 {file}(1): E->__destruct()\n#2 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "fatal-helper-retains-two-local-object-handles",
+    "source": "<?php class P{function __destruct(){echo \"P;\";}}class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}function fail_now(){$a=new P;$b=new P;trigger_error(\"fatal\",E_USER_ERROR);}register_shutdown_function(static function(){echo \"S;\";$GLOBALS[\"born\"]=[new D(\"a\"),new D(\"b\")];});echo \"M;\";fail_now();",
+    "source_sha256": "c4ad657e751ad20dd82275b667cc2b056e94a830fcc954ae5a4cd8dd54cbc506",
+    "stdout": "M;S;D:a;D:b;",
+    "stderr": "Deprecated: Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead in {file} on line 1\nFatal error: fatal in {file} on line 1\nStack trace:\n#0 {file}(1): trigger_error('fatal', 256)\n#1 {file}(1): fail_now()\n#2 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "invalid-terminal-handler-retains-original-before-selection",
+    "source": "<?php class P extends Exception{function __destruct(){echo \"P;\";}}class E extends Exception{function __destruct(){echo \"E;\";}}class C{static function h($e){}}class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}$m=\"h\";set_exception_handler([\"C\",&$m]);$m=\"gone\";register_shutdown_function(static function(){echo \"S;\";$a=new D(\"a\");unset($GLOBALS[\"p\"]);$GLOBALS[\"born\"]=[$a,new D(\"b\")];});$p=new P(\"previous\");throw new E(\"original\",0,$p);",
+    "source_sha256": "4f3e5eaa884ac06b56daa657adca761052889431492ce95cd232f4954438b50c",
+    "stdout": "S;D:a;D:b;",
+    "stderr": "Fatal error: Invalid callback C::gone, class C does not have a method \"gone\" in Unknown on line 0\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "fatal-helper-retains-saved-running-eval-marker",
+    "source": "<?php class P{function __destruct(){echo \"P;\";}}class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}function fail_now(){$a=new P;$b=new P;trigger_error(\"fatal\",E_USER_ERROR);}register_shutdown_function(static function(){echo \"S;\";$GLOBALS[\"born\"]=[new D(\"a\"),new D(\"b\")];});echo \"M;\";eval(\"fail_now();\");",
+    "source_sha256": "5dccbdcfc6543aca92c4c0d2fbe0678b19db4c16eab4d6865ad88cdebd5f6efe",
+    "stdout": "M;S;D:a;D:b;",
+    "stderr": "Deprecated: Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead in {file} on line 1\nFatal error: fatal in {file} on line 1\nStack trace:\n#0 {file}(1): trigger_error('fatal', 256)\n#1 {file}(1) : eval()'d code(1): fail_now()\n#2 {file}(1): eval()\n#3 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "function-redeclare-fatal-retains-live-local-handles",
+    "source": "<?php class P{function __destruct(){echo \"P;\";}}class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}function taken(){}function fail_now(){$a=new P;$b=new P;if(true){function taken(){}}}register_shutdown_function(static function(){echo \"S;\";$GLOBALS[\"born\"]=[new D(\"a\"),new D(\"b\")];});echo \"M;\";fail_now();",
+    "source_sha256": "79547bac99c044f41642eac58e6dede03bdc3bd42a90d98870033a8b7b5f890d",
+    "stdout": "M;S;D:a;D:b;",
+    "stderr": "Fatal error: Cannot redeclare function taken() (previously declared in {file}:1) in {file} on line 1\nStack trace:\n#0 {file}(1): fail_now()\n#1 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "runtime-inheritance-compile-fatal-retains-local-handles",
+    "source": "<?php final class Base{}class P{function __destruct(){echo \"P;\";}}class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}function fail_now(){$a=new P;$b=new P;if(true){class Child extends Base{}}}register_shutdown_function(static function(){echo \"S;\";$GLOBALS[\"born\"]=[new D(\"a\"),new D(\"b\")];});echo \"M;\";fail_now();",
+    "source_sha256": "eb24b4a291b34ad8da6247f3f2ffb82b37e0521a4010ebbf049d54ea05831516",
+    "stdout": "M;S;D:a;D:b;",
+    "stderr": "Fatal error: Class Child cannot extend final class Base in {file} on line 1\nStack trace:\n#0 {file}(1): fail_now()\n#1 {main}\n",
+    "exit": 255,
+    "status": "php_error",
+    "php_status": "error"
+  },
+  {
+    "id": "autoload-runtime-compile-fatal-retains-local-handles",
+    "source": "<?php class P{function __destruct(){echo \"P;\";}}class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}function fail_now(){$a=new P;$b=new P;if(true){class Child extends Base{}}}spl_autoload_register(static function($name){echo \"L;\";final class Base{}});register_shutdown_function(static function(){echo \"S;\";$GLOBALS[\"born\"]=[new D(\"a\"),new D(\"b\")];});echo \"M;\";fail_now();",
+    "source_sha256": "d0c4102764cf598cc3c83aeb4ab2725edb011149aa00f91b02dac26104d16039",
+    "stdout": "M;L;S;D:a;D:b;",
+    "stderr": "Fatal error: Class Child cannot extend final class Base in {file} on line 1\nStack trace:\n#0 {file}(1): fail_now()\n#1 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "compiler-fatal-retains-owners-through-later-runtime-publication",
+    "source": "<?php class P extends Exception{function __destruct(){echo \"P;\";}}class E extends Exception{function __destruct(){echo \"E;\";eval(\"class Bad extends Exception{protected function __wakeup(){}}\");}}class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}set_exception_handler(static function($e){echo \"H;\";unset($GLOBALS[\"p\"]);});register_shutdown_function(static function(){echo \"S;\";if(true){function after_fatal(){}}after_fatal();$GLOBALS[\"born\"]=[new D(\"a\"),new D(\"b\")];});$p=new P(\"previous\");throw new E(\"original\",0,$p);",
+    "source_sha256": "7714b4c6bc3fdc47bdbda2bfdbe7005c6cf024a61241499ebfeb6dade0377a15",
+    "stdout": "H;E;S;D:a;D:b;",
+    "stderr": "Warning: The magic method Bad::__wakeup() must have public visibility in {file}(1) : eval()'d code on line 1\nFatal error: Access level to Bad::__wakeup() must be public (as in class Exception) in {file}(1) : eval()'d code on line 1\nStack trace:\n#0 [internal function]: E->__destruct()\n#1 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "compiler-fatal-retains-old-plan-after-method-precision-warning",
+    "source": "<?php class P extends Exception{function __destruct(){echo \"P;\";}}class E extends Exception{function __destruct(){echo \"E;\";eval(\"\\$unused=(12.3456789+0).'L';class Bad extends Exception{protected function __wakeup(){}public function later(){return (12.3456789+0).'L';}}\");}}class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}set_error_handler(static function($n){echo \"W:\",$n,\";\";ini_set(\"precision\",\"1\");return true;});set_exception_handler(static function($e){echo \"H;\";unset($GLOBALS[\"p\"]);});register_shutdown_function(static function(){echo \"S:\",ini_get(\"precision\"),\";\";if(true){function after_fatal(){}}after_fatal();$GLOBALS[\"born\"]=[new D(\"a\"),new D(\"b\")];});$p=new P(\"previous\");throw new E(\"original\",0,$p);",
+    "source_sha256": "594cdeeacfdebf420d3f1a91115d0a29f4f897a26b50bda7ba87724f109b0f07",
+    "stdout": "H;E;W:2;S:1;D:a;D:b;",
+    "stderr": "Fatal error: Access level to Bad::__wakeup() must be public (as in class Exception) in {file}(1) : eval()'d code on line 1\nStack trace:\n#0 [internal function]: E->__destruct()\n#1 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "fiber-start-inside-destructor-helper-boundary",
+    "source": "<?php function inner($f){$f->start();}class C{function __destruct(){echo \"D;\";inner($GLOBALS[\"f\"]);echo \"T;\";}}$f=new Fiber(static function(){echo \"F;\";});$c=new C;echo \"M;\";unset($c);echo \"E;\";",
+    "stdout": "M;D;F;T;E;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "Fiber switch during automatic destruction",
+    "source_sha256": "712999341492490f1de01553a22e5243706058321b5e48d9ba489ea2c2a5fa96"
+  },
+  {
+    "id": "fiber-start-after-eager-destructor-finishes",
+    "source": "<?php class C{function __destruct(){echo \"D;\";}}$f=new Fiber(static function(){echo \"F;\";});$c=new C;echo \"M;\";unset($c);$f->start();echo \"T;\";",
+    "stdout": "M;D;F;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "1b7070b45e3bd92fb906510c2eb58711f049e473148755f04e682e62b8e6c9e4"
+  }
+]

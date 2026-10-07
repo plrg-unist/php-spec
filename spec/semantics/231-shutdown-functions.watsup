@@ -33,6 +33,8 @@ dec $shutdown_frozen(pcompletion) : bool
 dec $shutdown_terminal(pcompletion) : bool
 dec $shutdown_abort_frames(pstate) : pstate
 dec $shutdown_clean(pstate) : pstate
+dec $shutdown_clean_frames(pstate) : pstate
+dec $shutdown_terminal_clean(pstate, pstate) : pstate
 dec $shutdown_begin(pstate) : pstate
 dec $shutdown_stop(pstate) : pstate
 dec $request_fatal_state(pstate) : pstate
@@ -165,6 +167,9 @@ dec $shutdown_render_message_prefix(preqbytes) : preqbytes
 dec $shutdown_render_value(pvalue) : preqbytes
 dec $shutdown_render_path(pstate, nat, nat, nat*) : bool
 dec $shutdown_compiler_snapshot(pcompletion) : pcompletion?
+dec $eager_fatal_compiler_at(pdestructioncleanup*, pstate) : bool
+dec $shutdown_compiler_queue_released(pstate, pstate) : bool
+dec $shutdown_compiler_destructors_released(pstate, pstate) : bool
 
 ;; Registration facts stay valid after subsequent selections or maker retirement.
 def $shutdown_registration_valid(S, pconfigcall) = true
@@ -301,12 +306,16 @@ def $shutdown_ready(S) = true
 def $shutdown_ready(S) = false -- otherwise
 def $shutdown_abort_frames(S) = $shutdown_abort_frames($restore_frame($file_warning_drop_scope(S))) -- if S.FRAMES =/= eps
 def $shutdown_abort_frames(S) = $file_warning_drop_scope(S) -- if S.FRAMES = eps
-def $shutdown_clean(S) = $eval_compile_unwind($shutdown_render_release($error_release_iterators($release_temporaries($silence_unwind($shutdown_abort_frames(S))))[.CURRENT = eps][.TODO = eps][.CONSTCONTEXT = eps][.OBJECTCAST = eps][.HELD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.COMPILESTOP = false][.TRACE = eps][.ERRORFATALTRACE = eps][.ERRORORIGIN = eps]))
-def $shutdown_begin(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_RUNNING][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps][.SHUTDOWN.COMPLETION = S_report.COMPLETION][.COMPLETION = NORMAL][.TODO = [SHUTDOWN_SEND 0 0 eps]]
+dec $destruction_abort(pstate, pstate) : pstate
+def $shutdown_clean_frames(S) = $eval_compile_unwind($shutdown_render_release($error_release_iterators($release_temporaries($silence_unwind($shutdown_abort_frames(S))))[.CURRENT = eps][.TODO = eps][.CONSTCONTEXT = eps][.OBJECTCAST = eps][.HELD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.COMPILESTOP = false][.TRACE = eps][.ERRORFATALTRACE = eps][.ERRORORIGIN = eps]))
+def $shutdown_clean(S) = $destruction_abort(S, $shutdown_clean_frames(S))
+def $shutdown_terminal_clean(S, S_report) = $shutdown_clean(S_report) -- otherwise
+dec $shutdown_prequeue(pstate, pstate, pcompletion) : pstate
+def $shutdown_begin(S) = $shutdown_prequeue(S, S_clean, S_report.COMPLETION)
   -- if S_report = $shutdown_freeze(S)
-  -- if S_clean = $shutdown_clean(S_report)
+  -- if S_clean = $shutdown_terminal_clean(S, S_report)
 def $shutdown_stop(S) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps]
-  -- if S_clean = $shutdown_clean($shutdown_freeze(S))
+  -- if S_clean = $shutdown_terminal_clean(S, $shutdown_freeze(S))
 def $drive_steps(S, n) = $drive_steps($prune_allocations($shutdown_begin(S)), n)
   -- if $shutdown_ready(S)
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_PENDING
@@ -767,13 +776,14 @@ def $shutdown_compiler_snapshot(FATAL ptbytes z) = (REQUESTFATAL $ptascii("Error
 def $shutdown_compiler_snapshot(STATICBYTES ptbytes z) = (REQUESTFATAL $ptascii("CompileError") ptbytes z)
 def $shutdown_compiler_snapshot(STATICERROR text z) = (REQUESTFATAL $ptascii("CompileError") $ptascii(text) z)
 def $shutdown_compiler_snapshot(pcompletion) = eps -- otherwise
-def $shutdown_compiler_released(S, S_compiled) = true
+def $shutdown_compiler_queue_released(S, S_compiled) = true
   -- if ~S.COMPILESTOP
   -- if S.SHUTDOWN.PHASE <- [SHUTDOWN_RUNNING, SHUTDOWN_DONE]
   -- if S.SHUTDOWN.ENTRIES =/= eps
   -- if $shutdown_state_valid(S)
   -- if $shutdown_compiler_snapshot(S_compiled.COMPLETION) = (pcompletion)
   -- if S.SHUTDOWN.COMPLETION = pcompletion \/ (S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.COMPLETION = pcompletion)
-def $shutdown_compiler_released(S, S_compiled) = false -- otherwise
+def $shutdown_compiler_queue_released(S, S_compiled) = false -- otherwise
+def $shutdown_compiler_released(S, S_compiled) = ($shutdown_compiler_queue_released(S, S_compiled) \/ $shutdown_compiler_destructors_released(S, S_compiled) \/ (S.COMPILESTOP /\ $eager_fatal_compiler_at(S.DESTRUCTION.ABANDONED, S_compiled)))
 
 def $shutdown_freeze(S) = $shutdown_freeze_marked($request_fatal_state(S))

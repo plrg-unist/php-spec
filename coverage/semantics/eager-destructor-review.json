@@ -1,0 +1,231 @@
+{
+  "actor": "exceptions_review_14",
+  "scope": "Ordinary eager zero-owner destruction, callback return cleanup and frozen original Throwable release before request stage1",
+  "baseline": "23c196ddf8b68dc822c8123ce8d40e395a19c0a2",
+  "actual_accepted_parent": "a692c15842769e3f282f45ea00ffd4c70319cf2d",
+  "semantic_revision": "06db57619f580f691ea28c8d0bf207590d1b9f0d",
+  "runtime": "PHP8.5.10 CLI NTS64",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "environment": {
+    "profile": "tests/semantics/profile.json",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed",
+    "native_cap_seconds": 30,
+    "source_cap_seconds": "75 outer/60 inner",
+    "state_cap_seconds": 120,
+    "jobs": 1
+  },
+  "raw_root": ".tools/eager-destructor-review-current-14/.tools",
+  "sources": {
+    "revision": "affda95d57f6bf3c9b07a21133d2ff6d8b0af5cb",
+    "catalogue": "tests/semantics/eager_destructor_review_cases.json",
+    "runner": "tests/semantics/eager_destructor_review.py",
+    "report": "shutdown-review-zxh5ldw8/report.json",
+    "immutable_native_reports_reused": 17,
+    "exact_stdout_stderr_php_exit_status_agreements": 60,
+    "expected_unsupported_controls": 1,
+    "unsupported": {
+      "id": "property-compound-cv-receiver-dies-in-old-destructor",
+      "reason": "user object string conversion",
+      "model_cli_exit": 1,
+      "agreement_credit": 0
+    },
+    "runner_exit": 0,
+    "accepted_model_cli_exit": 0,
+    "timeouts": false,
+    "passed": true
+  },
+  "reached_states": {
+    "runner": "tests/semantics/eager_destructor_state_review.py",
+    "distinct": 19,
+    "assertions_including_setup": 1012,
+    "cuts": [
+      {
+        "revision": "affda95d57f6bf3c9b07a21133d2ff6d8b0af5cb",
+        "report": "shutdown-state-review-fx09drss/report.json",
+        "report_passed": false,
+        "passed_states": [
+          "terminal-bailout-retains-two-receiver-counts",
+          "terminal-exit-retains-two-receiver-counts",
+          "terminal-visibility-warning-retains-one-receiver-count",
+          "main-source-unset-before-entry",
+          "main-private-denial-remains-catchable",
+          "binary-left-free-keeps-right-owner"
+        ],
+        "assertions_including_setup": 346
+      },
+      {
+        "revision": "c2c43dd2ed4ff4c405ef84f0652abecb5b94e1ce",
+        "report": "shutdown-state-review-gx299zjr/report.json",
+        "report_passed": false,
+        "passed_states": [
+          "binary-replacement-before-second-drop",
+          "binary-right-cv-remains-borrowed",
+          "used-write-owns-copied-result",
+          "unused-write-has-no-copied-result",
+          "property-holder-dies-with-rhs-temp-retained",
+          "error-retval-internal-trace-real-main-caller",
+          "retired-exception-selection-before-original-release",
+          "retired-exception-original-after-own-release"
+        ],
+        "assertions_including_setup": 387
+      },
+      {
+        "revision": "4b25f8022db0a53c7c0d3e6f58532d4f5ff6e197",
+        "report": "shutdown-state-review-5yexnf5d/report.json",
+        "report_passed": true,
+        "passed_states": [
+          "retval-bailout-keeps-unreleased-original-c-count",
+          "frozen-empty-queue-precedes-global-pass",
+          "cold-used-property-keeps-opdata-and-result-copy",
+          "warm-unused-property-moves-tmp-before-old-release",
+          "terminal-visibility-warning-exit-retains-one-receiver-count"
+        ],
+        "assertions_including_setup": 279
+      }
+    ],
+    "covered": "Exact per-slot, used/unused, cold/warm property and borrowed-CV owners; real MAIN catch/trace scope; replacement chain continuation; retired handler lookup evidence; abandoned receiver counts2/1; empty prequeue and frozen fatal; current/saved descriptors; forged context/site/target/membership negatives; budget pause and exact replay",
+    "runner_exits": [
+      1,
+      1,
+      0
+    ],
+    "passed_state_cli_exit": 0,
+    "passed_state_stdout": "true",
+    "passed_state_stderr": "empty",
+    "timeouts": false,
+    "passed": true
+  },
+  "fixture_corrections": [
+    {
+      "failed_report": "shutdown-state-review-fx09drss/report.json",
+      "state": "binary-replacement-before-second-drop",
+      "cause": "The final request stage removes the caught global e and its chain; a fixture expected it still bound",
+      "tests_only_commit": "c2c43dd2ed4ff4c405ef84f0652abecb5b94e1ce",
+      "resolution": "Check retirement and exact completed events; only this and not-yet-run states continued"
+    },
+    {
+      "failed_report": "shutdown-state-review-gx299zjr/report.json",
+      "state": "retval-bailout-keeps-unreleased-original-c-count",
+      "cause": "The fixture predated the public retval destructor bailout and expected only EH-original1, omitting authentic retval-receiver2",
+      "tests_only_commit": "4b25f8022db0a53c7c0d3e6f58532d4f5ff6e197",
+      "resolution": "Authenticate both borrowed records and exact three roots, then continue only this and remaining states"
+    }
+  ],
+  "implementation_review": "06db preserves accepted a692. Shutdown cleanup wraps accepted eval_compile_unwind and OBJECTCAST clearing in destruction_abort; initialization keeps OBJECTTABLES/PRECISION/OBJECTCAST. Both eval-compile-exit readiness guards remain. STDINSTANCE table children retain one HARRAY owner. The new267 private-maker source agrees at the actual parent; old private baseline Unsupported has no credit.",
+  "inspected_author_packets": {
+    "actor": "exceptions_dev_14",
+    "review": "Independent source and decoded stdout/stderr/exit inspection; no additional reviewer execution credit",
+    "raw_root": ".tools/destructors-current-14/.tools",
+    "reports": [
+      "shutdown-review-mbeqgcsj/report.json",
+      "shutdown-review-ddi1t_9f/report.json",
+      "shutdown-review-gphth1e3/report.json"
+    ],
+    "covered": "Authentic abandoned C counts, unhandled throw/graceful exit and private-warning exit, handler return/raw-array cleanup, and preserved inner user formatter; only exact passing records accepted"
+  },
+  "compiler_and_commands": "Source report retains compiler/adapter/numeric/runtime identities and every argv/exit. Production SL is exercised by the source runner; reached assertions run the recorded numeric fixture command. For native reuse, give each distinct native.reused_from from the source report to eager_destructor_review.py with --native-report. State cuts list exact passing --case selections; mixed reports remain failed overall. No metadata rerun or archive audit.",
+  "remaining": "The original60+US/19/1012 and new2/198 reviewer cuts are closed. Actual precision epoch-prefix and Fiber boundary author checks remain separate actor credit. Fiber switches with active automatic-destruction stacks, broader null-C callback declarations, compound property Stringable reception, GC, WeakReference/WeakMap, output buffers, shutdown/abandoned-zval freeing and complete core remain required. Paused return verification is not resumed; old257/222/231/247 evidence is not renewed.",
+  "fatal_bailout_follow_on": {
+    "scope": "Retain active and saved VM frame/value/base owners before fatal structural cleanup; authenticate interrupted source callbacks and exact raw compiler history after later shutdown publication",
+    "actor": "exceptions_review_14",
+    "reviewed_semantic_cut": "7bf23e106d227781180269c805a2ea886530a92c",
+    "runner": "tests/semantics/eager_fatal_state_review.py",
+    "distinct_logical_checkpoints": 2,
+    "unique_assertions_including_original_setup": 198,
+    "helper_assertions": 98,
+    "compiler_unique_assertions": 100,
+    "physical_subrun_assertions": 248,
+    "repeated_setup_excluded_from_credit": 50,
+    "cuts": [
+      {
+        "id": "fatal-helper-retains-local-cells-before-cleanup",
+        "revision": "a6be6da22e541858ed9d3cb876f97526d8126c00",
+        "report": "shutdown-state-review-k6wdosa1/report.json",
+        "assertions": 98,
+        "report_passed": false,
+        "selected_record_passed": true,
+        "note": "Only this passing record is accepted; the compiler record in this mixed report failed."
+      },
+      {
+        "id": "serviced-compiler-fatal-binds-original-producer-cursor-auth",
+        "revision": "f44f9da822ad48e0042c801f12029a3fb2974c55",
+        "report": "shutdown-state-review-fustwoci/report.json",
+        "assertions": 69,
+        "selected_record_passed": true
+      },
+      {
+        "id": "serviced-compiler-fatal-binds-original-producer-publication-owners",
+        "revision": "7bf23e106d227781180269c805a2ea886530a92c",
+        "report": "shutdown-state-review-_25zc1p9/report.json",
+        "assertions": 51,
+        "selected_record_passed": true
+      },
+      {
+        "id": "serviced-compiler-fatal-binds-original-producer-budget-replay",
+        "revision": "1e35f3d6625bc8ff20f187b3be34291cec042f63",
+        "report": "shutdown-state-review-wr8dfcvo/report.json",
+        "assertions": 30,
+        "selected_record_passed": true
+      }
+    ],
+    "covered": "Exact local-cell and receiver2/previous1 owners, source versus C scope, borrowed handler/context bounds and membership, raw fatal message/mask, compiler cursor/checkpoint/diagnostic/PLAN forgery, later declaration publication and UNIT/lexical/function negatives, completed owners/events, exact zero-budget resumed whole-state identity",
+    "passing_cli_exit": 0,
+    "passing_stdout": "true",
+    "passing_stderr": "empty",
+    "passing_timeouts": false,
+    "state_cap_seconds": 120,
+    "jobs": 1,
+    "preserved_failures": [
+      {
+        "reports": [
+          "shutdown-state-review-asve8uu6/report.json",
+          "shutdown-state-review-ecb1cn_f/report.json"
+        ],
+        "cause": "Fatal historical lookup needed NORMAL completion; structural fatal cleanup needed to retire live eval/file contexts while preserving borrowed history."
+      },
+      {
+        "reports": [
+          "shutdown-state-review-80vfbzpb/report.json",
+          "shutdown-state-review-4kb1wg2u/report.json"
+        ],
+        "cause": "Combined compiler authentication/publication checks exceeded the fixed120 cap; same assertions were split into meaningful groups."
+      },
+      {
+        "report": "eager-fatal-publication-guard-6y5z8p1e/report.json",
+        "cause": "Authentic shutdown callback declaration cause with null C callsite was missing; exact retained shutdown entry now authenticates it."
+      },
+      {
+        "reports": [
+          "shutdown-state-review-p1w1srug/report.json",
+          "shutdown-state-review-_hri_c57/report.json",
+          "shutdown-state-review-9bvhosp_/report.json"
+        ],
+        "cause": "Compiler-release clauses overlapped; attempted otherwise disjointness violated purity. One dispatcher now preserves the unchanged queue, stage2 and exact fatal-snapshot predicates."
+      },
+      {
+        "report": "shutdown-state-review-yltq8zvl/report.json",
+        "cause": "Duplicating the identical completed drive exceeded120. Exact restored whole-state identity is stronger than the prior output equality and entails deterministic replay with one completed continuation. Timeout retains zero credit."
+      }
+    ],
+    "implementation_review": "VM roots are installed before restore/prune; MAIN globals remain owned once. Historical callback arrays/cells, registry/context rows and source stacks are borrowed. Lookup restores the exact pre-resume compiler claim, while source PLAN and full live chronological replay are separately authenticated. The null-C declaration-cause arm is limited to retained genuine shutdown entries. The reviewer old-parent decoder/signature adaptations are not imported into the actual candidate.",
+    "inspected_author_packets": {
+      "actor": "exceptions_dev_14",
+      "review": "Independent source and whole decoded stream/status/exit inspection; no reviewer execution credit",
+      "raw_root": ".tools/destructors-current-14/.tools",
+      "reports": [
+        "shutdown-review-vmvbq0z7/report.json",
+        "shutdown-review-eybo_p_p/report.json",
+        "shutdown-review-8y8qquwt/report.json",
+        "shutdown-review-tl06o5v2/report.json",
+        "shutdown-review-mnuy5kkt/report.json",
+        "shutdown-review-wf9o3qu_/report.json",
+        "shutdown-review-xqgskhjq/report.json"
+      ],
+      "covered": "Six fatal follow-ons, existing275 control, conditional function trace, runtime STATIC/autoload trace, later runtime publication and precision image refresh, post-cleanup Fiber switch. The inside-destructor Fiber source is precise Unsupported with zero agreement."
+    },
+    "source_only_preservation": "Actual Fiber/Generator descriptor wrappers and owning FIBERCALLERS remain; frame restoration preserves its existing fields. Array287 retains the captured INPUT owner through warning/compiler services and drops it at its original ENTER/THROW marker. Its newly enabled destructor interaction remains a separate affected check after installation.",
+    "passed": true
+  }
+}

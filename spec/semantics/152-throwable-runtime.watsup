@@ -63,7 +63,7 @@ def $throwable_types(text, (PTBRANCH ptatom*) :: ptbranch*) = ($throwable_atoms(
 def $typed_object_exact(S, ptbranch*, POBJECT n) = $throwable_types(pthrowable.KIND, ptbranch*)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
 
-def $node_children(S, HOBJECT n) = $property_slot_nodes(ppropertyslot*)
+def $node_children(S, HOBJECT n) = $property_release_nodes(ppropertyslot*)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $completion_roots(THROWING n) = [HOBJECT n]

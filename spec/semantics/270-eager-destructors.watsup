@@ -1,0 +1,983 @@
+;; Ordinary zval decrements use the same slot loop and once-only object marks as
+;; request stage2. The consumed operation supplies native decrement order; a
+;; heap-wide allocation-order scan cannot order two independent temporaries.
+dec $eager_source_origin(pstate, porigin?) : bool
+dec $eager_explicit_task(ptask) : bool
+dec $eager_edge_nodes(hedge*) : pnode*
+dec $eager_owner_order(pstate) : pnode*
+dec $eager_task_inputs(pstate, ptask) : pnode*
+dec $eager_base_inputs(pstate, ptask) : pnode*
+dec $eager_cv_property(pstate) : bool
+dec $eager_property_write(pstate) : (porigin, pobject)?
+dec $eager_property_class(pobject) : bool
+dec $eager_property_class_valid(pstate, pobject) : bool
+dec $eager_property_cache_at((porigin, pobject)*, porigin) : pobject?
+dec $eager_property_cache_set((porigin, pobject)*, porigin, pobject) : (porigin, pobject)*
+dec $eager_property_cache_store(pstate, pstate) : pstate
+dec $eager_property_warm(pstate) : bool
+dec $eager_property_rhs_cv(pstate) : bool
+dec $eager_property_pending_nodes(pstate, pstate) : pnode*
+dec $eager_property_unused(pstate, pstate) : bool
+dec $eager_destination_value(pstate, pstate) : pstate
+dec $eager_assignment_source(pcnode) : bool
+dec $eager_property_finish_task(ptask) : bool
+dec $eager_removed(pnode*, pnode*) : pnode*
+dec $eager_slots(pstate, pstate) : pnode*
+dec $eager_unused_assignment(pstate, pstate) : bool
+dec $eager_operation_destination(pstate, pstate) : pstate
+dec $eager_live_slots(pstate, pnode*) : pnode*
+dec $eager_written_task(ptask) : bool
+dec $eager_operation_begin(pstate, pstate, ptask, pnode*) : pstate
+dec $eager_operation_pending(pstate) : nat?
+dec $eager_operation_tail(pstate) : ptask*
+dec $eager_operation_value(pstate) : poperand
+dec $eager_operation_completion_roots(pdestructionoperation) : pnode*
+dec $destructor_operation_at(pcallcontext?, porigin?, pdestructionoperation*) : pdestructionoperation?
+dec $destructor_operation_valid(pstate, pdestructionoperation) : bool
+dec $destructor_operation_live(pstate, pdestructionoperation) : bool
+dec $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation) : ptask*
+dec $destructor_operation_finish(pstate, pdestructionoperation) : pstate
+
+dec $eager_operation_internal(pstate) : bool
+dec $eager_abandoned_owner(ptask) : pnode*
+dec $eager_cleanup_target(pstate, pcalltarget) : pshutdownproducer
+dec $eager_cleanup_source_target(ptask) : pcalltarget?
+dec $eager_cleanup_record(pstate, ptask) : pdestructioncleanup
+dec $eager_cleanup_find(pdestructioncleanup*, ptask) : pdestructioncleanup?
+dec $eager_cleanup_for(pstate, ptask) : pdestructioncleanup?
+dec $eager_cleanup_hold(pstate, pdestructioncleanup?) : pstate
+dec $eager_cleanup_finish(pstate, pdestructionoperation) : pstate
+dec $eager_cleanup_final(ptask) : bool
+dec $eager_cleanup_source(ptask) : ptask
+dec $eager_cleanup_history(pstate, pdestructioncleanup) : pstate
+dec $eager_cleanup_warning(ptask) : pdestructorcall?
+dec $eager_cleanup_object(pstate, ptask) : pnode*
+dec $eager_raw_history_nodes(pstate, pvalue) : pnode*
+dec $eager_cleanup_valid(pstate, pdestructioncleanup) : bool
+dec $eager_operation_source_valid(pstate, pdestructionoperation) : bool
+dec $eager_operation_cleanup_source(ptask, pdestructioncleanup) : bool
+dec $eager_bailout_source(pstate) : ptask?
+dec $eager_bailout_unwind(pstate) : bool
+dec $eager_bailout_error(pstate) : perrorcall?
+dec $eager_bailout_error_scope(pstate) : pstate
+dec $eager_bailout_call(ptask) : pdestructorcall?
+dec $eager_bailout_transfer(pstate, pstate, ptask) : pstate
+dec $eager_bailout_history(pstate, pdestructorcall) : pstate
+dec $eager_bailout_release(pdestructionrelease?) : pdestructionrelease*
+dec $eager_bailout_frame(pdestructionframe?) : pdestructionframe*
+dec $eager_bailout_operation(pdestructionoperation?) : pdestructionoperation*
+dec $eager_bailout_cleanup(pdestructionoperation?) : pdestructioncleanup*
+dec $eager_bailout_extra(pdestructorcall) : pnode*
+dec $eager_bailout_release_nodes(pdestructionrelease?) : pnode*
+dec $eager_bailout_frame_nodes(pdestructionframe?) : pnode*
+dec $eager_bailout_operation_nodes(pdestructionoperation?) : pnode*
+dec $exception_cleanup_valid(pstate, pexceptioncall, bool) : bool
+dec $error_cleanup_valid(pstate, perrorcall) : bool
+dec $eager_fatal_frame(pstate) : pframe
+dec $eager_fatal_global(pstate) : psymboltable
+dec $eager_fatal_target(pstate) : pcalltarget?
+dec $eager_fatal_ready(pstate, pcompletion) : bool
+dec $eager_fatal_clean(pstate, pstate, pcompletion) : pstate
+dec $eager_fatal_begin(pstate, pstate) : pstate
+dec $eager_fatal_history(pstate, pdestructionfatal) : pstate
+dec $eager_fatal_lookup_completion(pdestructionfatal) : pcompletion
+dec $eager_fatal_cursor_history(pstate, pdestructionfatal) : pstate
+dec $eager_fatal_cursor_plans_valid(pstate, pevalcompile*) : bool
+dec $eager_fatal_resume_prefix(pdeclaration*, nat) : pdeclaration*?
+dec $eager_fatal_resume_head(pdeclaration, nat, pdeclaration*?) : pdeclaration*?
+dec $eager_fatal_resume_row(pdeclaration, nat) : bool
+dec $eager_fatal_scope(pstate, pdestructionfatal) : pstate
+dec $eager_fatal_nodes(pdestructionfatal) : pnode*
+dec $eager_fatal_valid(pstate, pdestructioncleanup, pdestructionfatal) : bool
+dec $eager_fatal_source_valid(pstate, pcompletion) : bool
+dec $eager_fatal_replay(pstate) : pstate?
+dec $eager_fatal_compiler_valid(pstate, pdestructioncleanup, pdestructionfatal) : bool
+dec $shutdown_declaration_scope(pstate, pshutdownentry*, porigin, porigin?, porigin?) : bool
+dec $shutdown_declaration_entry(pstate, pshutdownentry, porigin, porigin?, porigin?) : bool
+dec $eager_fatal_compiler_item(pdestructioncleanup, pstate) : bool
+dec $eager_fatal_reported(pstate, pcompletion) : bool
+dec $eager_fatal_internal_task(ptask) : bool
+dec $eager_fatal_handler(pstate, pvalue) : pdestructionhandler
+dec $eager_fatal_handler_cells(pstate, pentry*) : (nat, pslot)*
+dec $eager_fatal_handler_task(pstate, ptask) : pdestructionhandler*
+dec $eager_fatal_handler_tasks(pstate, ptask*) : pdestructionhandler*
+dec $eager_fatal_handler_frames(pstate, pframe*) : pdestructionhandler*
+dec $eager_fatal_handler_history(pstate, pdestructionhandler*) : pstate
+dec $eager_fatal_handler_row(pstate, pdestructionhandler) : pstate
+dec $eager_fatal_cell_history(pstate, (nat, pslot)*) : pstate
+dec $eager_fatal_handler_bounds(pstate, pdestructionhandler*) : bool
+dec $eager_fatal_cell_bounds(pstate, (nat, pslot)*) : bool
+
+def $destructor_operational(S) = (S.DESTRUCTION.PHASE =/= DESTRUCTION_DONE /\ $destructor_classes(S.CLASSES))
+;; A source MAIN expression is a real USER execution boundary despite having no
+;; model pcallcontext. Synthetic C sites name methods, not compiled expressions.
+def $eager_source_origin(S, (porigin)) = true
+  -- if $origin_source(porigin) = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) =/= eps
+def $eager_source_origin(S, porigin?) = false -- otherwise
+def $destructor_user_source(S) = (S.CURRENT =/= eps \/ $eager_source_origin(S, S.ORIGIN))
+
+def $eager_explicit_task(AT porigin ptask) = $eager_explicit_task(ptask)
+def $eager_explicit_task(DESTRUCTOR_RELEASE pdestructionrelease) = true
+def $eager_explicit_task(DESTRUCTOR_ENTER pdestructorcall) = true
+def $eager_explicit_task(DESTRUCTOR_RESULT pdestructorcall) = true
+def $eager_explicit_task(DESTRUCTOR_WARNING pdestructorcall) = true
+def $eager_explicit_task(DESTRUCTOR_FRAME_EXIT pdestructionframe) = true
+def $eager_explicit_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = true
+def $eager_explicit_task(DESTRUCTOR_GLOBALS) = true
+def $eager_explicit_task(DESTRUCTOR_STORE) = true
+def $eager_explicit_task(ptask) = false -- otherwise
+
+def $eager_edge_nodes(eps) = eps
+def $eager_edge_nodes((HEDGE pnode_from pnode_to) :: hedge*) = pnode_to :: $eager_edge_nodes(hedge*)
+;; Changed cells/slots are decremented before consumed operand temporaries.
+;; In particular BINARY_RIGHT owns OP1 in its task and OP2 in RESULT.
+def $eager_owner_order(S) = $eager_edge_nodes($heap_graph(S).EDGES) ++ $eager_task_inputs(S, ptask) ++ $operand_nodes(S.RESULT) ++ $eager_base_inputs(S, ptask) ++ $machine_roots(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
+  -- if S.TODO = ptask :: ptask_tail*
+;; ASSIGN_OBJ keeps OP_DATA's RHS but the plain CV receiver is borrowed.
+;; Its completed BASE cache must not become an extra owner across GC(old slot).
+def $eager_cv_property(S) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text) metadata_cv) phpType20 metadata_property)
+def $eager_cv_property(S) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $eager_assignment_source(pcnode)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+  -- if $origin_node(S.SOURCES, porigin_target) = (NExprPropertyFetch (NExprVariable (BYTES text) metadata_cv) phpType20 metadata_property)
+def $eager_cv_property(S) = false -- otherwise
+def $eager_assignment_source(NExprAssign expression_target expression_rhs metadata) = true
+def $eager_assignment_source(pcnode) = ($key_write_op(pcnode) =/= eps) -- otherwise
+def $eager_property_finish_task(ASSIGN_ARRAY pbase z b) = true
+def $eager_property_finish_task(UNSET_ARRAY) = true
+def $eager_property_finish_task(COMPOUND_APPLY pbin pbase b z) = true
+def $eager_property_finish_task(ptask) = false -- otherwise
+def $eager_task_inputs(S, ptask) = eps
+  -- if $eager_property_finish_task(ptask) /\ $eager_cv_property(S)
+def $eager_task_inputs(S, ptask) = $task_nodes(ptask) -- otherwise
+def $eager_base_inputs(S, ptask) = eps
+  -- if $eager_property_finish_task(ptask) /\ $eager_cv_property(S)
+def $eager_base_inputs(S, ptask) = $base_nodes(S.BASE) -- otherwise
+;; ASSIGN_OBJ's cache is per opcode and holds only its most recent class.
+;; Cold standard writes retain OP_DATA while freeing the old slot; warmed fast
+;; TMP writes transfer it into the property before that decrement.
+def $eager_property_class(INSTANCE porigin) = true
+def $eager_property_class(STDINSTANCE) = true
+def $eager_property_class(pobject) = false -- otherwise
+def $eager_property_class_valid(S, INSTANCE porigin) = ($class_at(S.CLASSES, porigin) =/= eps)
+def $eager_property_class_valid(S, STDINSTANCE) = true
+def $eager_property_class_valid(S, pobject) = false -- otherwise
+def $eager_property_write(S) = ((porigin, S.OBJECTS[n]))
+  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY (POBJECT n) ptbytes) z b) :: ptask*
+  -- if $(n < |S.OBJECTS|)
+  -- if $eager_property_class(S.OBJECTS[n])
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text) metadata_name) metadata_property) expression_rhs metadata)
+def $eager_property_write(S) = eps -- otherwise
+def $eager_property_cache_at(eps, porigin) = eps
+def $eager_property_cache_at((porigin, pobject) :: (porigin_tail, pobject_tail)*, porigin) = (pobject)
+def $eager_property_cache_at((porigin_other, pobject) :: (porigin_tail, pobject_tail)*, porigin) = $eager_property_cache_at((porigin_tail, pobject_tail)*, porigin)
+  -- if porigin_other =/= porigin
+def $eager_property_cache_set(eps, porigin, pobject) = [(porigin, pobject)]
+def $eager_property_cache_set((porigin, pobject_old) :: (porigin_tail, pobject_tail)*, porigin, pobject) = (porigin, pobject) :: (porigin_tail, pobject_tail)*
+def $eager_property_cache_set((porigin_other, pobject_old) :: (porigin_tail, pobject_tail)*, porigin, pobject) = (porigin_other, pobject_old) :: $eager_property_cache_set((porigin_tail, pobject_tail)*, porigin, pobject)
+  -- if porigin_other =/= porigin
+def $eager_property_cache_store(S, S_next) = S_next[.DESTRUCTION.PROPCACHE = $eager_property_cache_set(S_next.DESTRUCTION.PROPCACHE, porigin, pobject)]
+  -- if $eager_property_write(S) = ((porigin, pobject))
+  -- if ~$destructor_unsupported(S_next.COMPLETION)
+def $eager_property_cache_store(S, S_next) = S_next -- otherwise
+def $eager_property_warm(S) = true
+  -- if $eager_property_write(S) = ((porigin, pobject))
+  -- if $eager_property_cache_at(S.DESTRUCTION.PROPCACHE, porigin) = (pobject)
+def $eager_property_warm(S) = false -- otherwise
+def $eager_property_rhs_cv(S) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign expression_target (NExprVariable (BYTES text) metadata_rhs) metadata)
+def $eager_property_rhs_cv(S) = false -- otherwise
+def $eager_property_unused(S, S_next) = true
+  -- if $eager_property_write(S) =/= eps
+  -- if S_next.COMPLETION = NORMAL
+  -- if $destructor_return_discarded(S_next.TODO)
+def $eager_property_unused(S, S_next) = false -- otherwise
+def $eager_property_pending_nodes(S, S_next) = $operand_nodes(S.RESULT)
+  -- if $eager_property_write(S) =/= eps
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_next.TODO = ptask_tail* /\ S_next.COMPLETION = NORMAL
+  -- if ~$eager_property_warm(S) /\ ~$eager_property_rhs_cv(S)
+  -- if ~$destructor_return_discarded(S_next.TODO)
+  -- if $operand_nodes(S_next.RESULT) = $operand_nodes(S.RESULT)
+def $eager_property_pending_nodes(S, S_next) = eps -- otherwise
+def $eager_property_caches_valid(S, eps) = true
+def $eager_property_caches_valid(S, (porigin, pobject) :: (porigin_tail, pobject_tail)*) = true
+  -- if $eager_property_cache_at((porigin_tail, pobject_tail)*, porigin) = eps
+  -- if $eager_property_class_valid(S, pobject)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text) metadata_name) metadata_property) expression_rhs metadata)
+  -- if $eager_source_origin(S, (porigin))
+  -- if $eager_property_caches_valid(S, (porigin_tail, pobject_tail)*)
+def $eager_property_caches_valid(S, (porigin, pobject)*) = false -- otherwise
+
+def $eager_removed(eps, pnode*) = eps
+def $eager_removed(pnode :: pnode_old*, pnode_new*) = $eager_removed(pnode_old*, $destruction_node_delete(pnode_new*, pnode))
+  -- if pnode <- pnode_new*
+def $eager_removed(pnode :: pnode_old*, pnode_new*) = pnode :: $eager_removed(pnode_old*, pnode_new*)
+  -- if ~(pnode <- pnode_new*)
+def $eager_slots(S, S_next) = $eager_live_slots(S_next, $eager_removed($eager_owner_order(S), $machine_roots(S_next) ++ $eager_edge_nodes($heap_graph(S_next).EDGES))) ++ $eager_property_pending_nodes(S, S_next)
+def $eager_live_slots(S, eps) = eps
+def $eager_live_slots(S, pnode :: pnode_tail*) = pnode :: $eager_live_slots(S, pnode_tail*) -- if pnode <- S.ALLOCATIONS
+def $eager_live_slots(S, pnode :: pnode_tail*) = $eager_live_slots(S, pnode_tail*) -- if ~(pnode <- S.ALLOCATIONS)
+
+def $eager_written_task(WRITE_NAME n* z) = true
+def $eager_written_task(ptask) = false -- otherwise
+;; Unused assignments have no copied opcode result. The installed binding owns
+;; the RHS; an old-value destructor can remove it and destroy that value now.
+def $eager_unused_assignment(S, S_next) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $eager_written_task(ptask)
+  -- if S_next.COMPLETION = NORMAL
+  -- if $destructor_return_discarded(S_next.TODO)
+def $eager_unused_assignment(S, S_next) = false -- otherwise
+
+def $destruction_transition(S, S_next) = $eager_fatal_begin(S, S_next)
+  -- if $eager_fatal_ready(S, S_next.COMPLETION)
+def $destruction_transition(S, S_next) = $eager_bailout_transfer(S, S_next, ptask)
+  -- if ~$eager_fatal_ready(S, S_next.COMPLETION)
+  -- if $eager_bailout_source(S) = (ptask)
+def $destruction_transition(S, S_next) = $eager_operation_begin(S_out, S, ptask, pnode*)
+  -- if ~$eager_fatal_ready(S, S_next.COMPLETION)
+  -- if $eager_bailout_source(S) = eps
+  -- if $destructor_operational(S_next)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$eager_explicit_task(ptask)
+  -- if S_next.COMPLETION =/= BUDGET /\ S_next.COMPLETION =/= SOURCE_PENDING /\ ~$destructor_unsupported(S_next.COMPLETION)
+  -- if S_out = $eager_operation_destination(S, S_next)
+  -- if pnode* = $eager_slots(S, S_out)
+  -- if pnode* =/= eps
+def $destruction_transition(S, S_next) = $eager_operation_destination(S, S_next)
+  -- otherwise
+def $eager_destination_value(S, S_next) = S_next[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $eager_unused_assignment(S, S_next)
+def $eager_destination_value(S, S_next) = S_next[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $eager_property_unused(S, S_next)
+  -- if $eager_property_warm(S) \/ $eager_property_rhs_cv(S)
+def $eager_destination_value(S, S_next) = S_next[.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $eager_property_finish_task(ptask) /\ $eager_cv_property(S)
+  -- if ~$eager_property_unused(S, S_next) \/ (~$eager_property_warm(S) /\ ~$eager_property_rhs_cv(S))
+def $eager_destination_value(S, S_next) = S_next -- otherwise
+def $eager_operation_destination(S, S_next) = $eager_property_cache_store(S, $eager_destination_value(S, S_next))
+
+def $eager_operation_pending(S) = (n) -- if S.COMPLETION = THROWING n
+def $eager_operation_pending(S) = (n)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if S.COMPLETION = NORMAL
+def $eager_operation_pending(S) = eps -- otherwise
+def $eager_operation_tail(S) = ptask*
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if S.COMPLETION = NORMAL
+def $eager_operation_tail(S) = S.TODO -- otherwise
+def $eager_operation_value(S) = KNOWN PNULL -- if $eager_operation_pending(S) =/= eps
+def $eager_operation_value(S) = S.RESULT -- otherwise
+def $eager_operation_begin(S, S_source, ptask, pnode*) = $destructor_release_begin(S_marked[.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.DESTRUCTION.OPERATIONS = pdestructionoperation :: S_marked.DESTRUCTION.OPERATIONS][.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: $eager_operation_tail(S)], $destruction_values(pnode*))
+  -- if S_marked = $eager_cleanup_hold($request_fatal_state($destruction_store_new(S)), $eager_cleanup_for(S_source, ptask))
+  -- if pdestructionoperation = {VALUE $eager_operation_value(S), BASE S.BASE, CELL S.CELL, KEY S.KEY, LOCATION S.LOCATION, COMPLETION S.COMPLETION, PENDING $eager_operation_pending(S), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, SOURCE ptask, CLEANUP $eager_cleanup_for(S_source, ptask)}
+
+def $destructor_operation_at(pcallcontext?, porigin?, eps) = eps
+def $destructor_operation_at(pcallcontext?, porigin?, pdestructionoperation :: pdestructionoperation_tail*) = (pdestructionoperation)
+  -- if pdestructionoperation.CALLER = pcallcontext? /\ pdestructionoperation.ORIGIN = porigin?
+def $destructor_operation_at(pcallcontext?, porigin?, pdestructionoperation :: pdestructionoperation_tail*) = $destructor_operation_at(pcallcontext?, porigin?, pdestructionoperation_tail*)
+  -- if pdestructionoperation.CALLER =/= pcallcontext? \/ pdestructionoperation.ORIGIN =/= porigin?
+def $destructor_operation_for(S) = $destructor_operation_at(S.CURRENT, S.ORIGIN, S.DESTRUCTION.OPERATIONS)
+def $destructor_selected_frame(S) = eps -- if $destructor_operation_for(S) =/= eps
+def $destructor_selected_frame(S) = $destructor_frame_for(S.CURRENT, S.DESTRUCTION.FRAMES) -- if $destructor_operation_for(S) = eps
+def $destructor_selected_pending(S, pdestructionframe?) = pdestructionoperation.PENDING
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+def $destructor_selected_pending(S, pdestructionframe?) = $destructor_frame_pending(S, pdestructionframe?)
+  -- if $destructor_operation_for(S) = eps
+
+def $destructor_operation_live(S, pdestructionoperation) = ($destructor_operational(S) /\ pdestructionoperation <- S.DESTRUCTION.OPERATIONS /\ $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ $destructor_return_operand_valid(S, pdestructionoperation.VALUE) /\ $heap_subset($base_nodes(pdestructionoperation.BASE) ++ $eager_operation_completion_roots(pdestructionoperation), S.ALLOCATIONS) /\ $eager_operation_source_valid(S, pdestructionoperation))
+def $destructor_operation_valid(S, pdestructionoperation) = ($destructor_operation_live(S, pdestructionoperation) /\ S.CURRENT = pdestructionoperation.CALLER /\ S.ORIGIN = pdestructionoperation.ORIGIN /\ S.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT)
+def $destructor_operations_valid(S, eps) = true
+def $destructor_operations_valid(S, pdestructionoperation :: pdestructionoperation_tail*) = ($destructor_operation_live(S, pdestructionoperation) /\ $destructor_operations_valid(S, pdestructionoperation_tail*))
+def $call_task_valid(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $destructor_operation_valid(S, pdestructionoperation)
+def $eager_operation_completion_roots(pdestructionoperation) = $completion_roots(pdestructionoperation.COMPLETION)
+  -- if pdestructionoperation.PENDING = eps
+def $eager_operation_completion_roots(pdestructionoperation) = $instance_roots(pdestructionoperation.PENDING)
+  -- if pdestructionoperation.PENDING =/= eps
+def $task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $operand_nodes(pdestructionoperation.VALUE) ++ $base_nodes(pdestructionoperation.BASE) ++ $eager_operation_completion_roots(pdestructionoperation)
+rule PhpStep/destructor-operation-finish: S ~> $destructor_operation_finish(S, pdestructionoperation)
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+def $destructor_operation_finish(S, pdestructionoperation) = S_done
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.PENDING = eps
+  -- if S_done = $eager_cleanup_finish(S, pdestructionoperation)[.TODO = ptask_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*][.RESULT = pdestructionoperation.VALUE][.BASE = pdestructionoperation.BASE][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION][.COMPLETION = pdestructionoperation.COMPLETION]
+def $destructor_operation_finish(S, pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.TODO = (THROW_SEARCH n) :: ptask_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.PENDING = (n)
+def $call_after_origin(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*]
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+def $return_discard(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*]
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+def $destructor_call_pending_valid(S, pdestructorcall) = true
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructorcall.FRAME = eps
+  -- if $destructor_operation_live(S, pdestructionoperation)
+  -- if pdestructionoperation.CALLER = pdestructorcall.CALLER /\ pdestructionoperation.ORIGIN = pdestructorcall.ORIGIN
+  -- if pdestructionoperation.PENDING = pdestructorcall.PENDING
+
+def $destructor_operation_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*, pdestructionoperation, pdestructionoperation_new) = (DESTRUCTOR_RELEASE pdestructionrelease) :: $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation_new)
+def $destructor_operation_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*, pdestructionoperation, pdestructionoperation_new) = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_new) :: ptask*
+def $destructor_resume_pending(S, pdestructorcall) = S[.TODO = $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation_new)][.DESTRUCTION.OPERATIONS = pdestructionoperation_new :: pdestructionoperation_tail*]
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if pdestructionoperation_new = pdestructionoperation[.PENDING = (n)]
+
+;; Trace callsites and executed USER scope are distinct. A returned zval from a
+;; C API is decremented at an internal site while MAIN may still catch its Error.
+dec $eager_internal_source(ptask) : bool
+dec $destructor_operation_suffix(pdestructionoperation*, pdestructionoperation) : pdestructionoperation*
+def $eager_internal_source(EXCEPTION_HANDLER_RESULT pexceptioncall) = true
+def $eager_internal_source(EXCEPTION_HANDLER_CLEAN pexceptioncall b) = true
+def $eager_internal_source(ERROR_HANDLER_RESULT perrorcall) = true
+def $eager_internal_source(ERROR_HANDLER_CLEAN perrorcall) = true
+def $eager_internal_source(ptask) = false -- otherwise
+def $source_operand_marker(ERROR_HANDLER_CLEAN perrorcall) = $source_operand_marker(perrorcall.RESUME)
+def $destructor_source_site(S) = eps
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+  -- if $eager_internal_source(pdestructionoperation.SOURCE)
+  -- if $destructor_user_source(S)
+def $destructor_source_site(S) = S.ORIGIN
+  -- if $destructor_user_source(S)
+  -- if $destructor_operation_for(S) = eps \/ ~$eager_operation_internal(S)
+def $destructor_source_site(S) = eps -- if ~$destructor_user_source(S)
+def $eager_operation_internal(S) = $eager_internal_source(pdestructionoperation.SOURCE)
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+def $eager_operation_internal(S) = false -- otherwise
+def $destructor_boundary_valid(S, pdestructorcall) = true
+  -- if S_view = S[.CURRENT = pdestructorcall.CALLER][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
+  -- if pdestructorcall.USER = $destructor_user_source(S_view)
+  -- if pdestructorcall.SITE = $destructor_source_site(S_view)
+  -- if pdestructorcall.LINE = $property_current_line(S_view)
+def $destructor_boundary_valid(S, pdestructorcall) = false -- otherwise
+
+def $destructor_operation_suffix(eps, pdestructionoperation) = eps
+def $destructor_operation_suffix(pdestructionoperation :: pdestructionoperation_tail*, pdestructionoperation) = pdestructionoperation :: pdestructionoperation_tail*
+def $destructor_operation_suffix(pdestructionoperation_other :: pdestructionoperation_tail*, pdestructionoperation) = $destructor_operation_suffix(pdestructionoperation_tail*, pdestructionoperation)
+  -- if pdestructionoperation_other =/= pdestructionoperation
+def $destructor_saved_operations(S, eps) = eps
+def $destructor_saved_operations(S, pdestructorcall :: pdestructorcall_tail*) = $destructor_saved_operations(S, pdestructorcall_tail*)
+  -- if pdestructorcall.OPERATION = eps
+def $destructor_saved_operations(S, pdestructorcall :: pdestructorcall_tail*) = $destructor_operation_suffix(S.DESTRUCTION.OPERATIONS, pdestructionoperation)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+
+;; The fatal bytes and reporting/destination decision are already immutable.
+;; OBJ_RELEASE(ex) occurs before request stage1, so its destructor may append a
+;; callback to the queue that is about to start.
+dec $eager_terminal_object(pcompletion) : nat?
+dec $shutdown_queue_begin(pstate, pcompletion) : pstate
+def $eager_terminal_object(UNCAUGHT n) = (n)
+def $eager_terminal_object(UNCAUGHT_RENDERED n ptbytes) = (n)
+def $eager_terminal_object(pcompletion) = eps -- otherwise
+def $shutdown_prequeue(S, S_clean, pcompletion) = $destructor_release_begin(S_clean[.DESTRUCTION.COMPLETION = pcompletion][.COMPLETION = NORMAL][.TODO = [DESTRUCTOR_PREQUEUE pcompletion]], [DESTRUCTION_VALUE (HOBJECT n)])
+  -- if $destructor_operational(S_clean)
+  -- if $eager_terminal_object(S.COMPLETION) = (n)
+def $shutdown_prequeue(S, S_clean, pcompletion) = $shutdown_queue_begin(S_clean, pcompletion)
+  -- otherwise
+def $shutdown_queue_begin(S, pcompletion) = S[.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps][.SHUTDOWN.COMPLETION = pcompletion][.COMPLETION = pcompletion][.TODO = eps]
+  -- if S.SHUTDOWN.ENTRIES = eps
+def $shutdown_queue_begin(S, pcompletion) = S[.SHUTDOWN.PHASE = SHUTDOWN_RUNNING][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps][.SHUTDOWN.COMPLETION = pcompletion][.COMPLETION = NORMAL][.TODO = [SHUTDOWN_SEND 0 0 eps]]
+  -- if S.SHUTDOWN.ENTRIES =/= eps
+def $call_task_valid(S, DESTRUCTOR_PREQUEUE pcompletion) = ($shutdown_task_scope(S) /\ S.ORIGIN = eps /\ S.SHUTDOWN.PHASE = SHUTDOWN_PENDING /\ $shutdown_frozen(pcompletion) /\ S.DESTRUCTION.COMPLETION = pcompletion)
+def $task_nodes(DESTRUCTOR_PREQUEUE pcompletion) = eps
+rule PhpStep/destructor-prequeue-finish: S ~> $shutdown_queue_begin(S, pcompletion)
+  -- if S.TODO = (DESTRUCTOR_PREQUEUE pcompletion) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, DESTRUCTOR_PREQUEUE pcompletion)
+
+;; C helper selection is borrowed after its target owners are decremented.
+;; Reuse the durable target/scope snapshots and pure historical lookup view;
+;; neither this certificate nor the active cleanup stack contributes heap roots.
+def $eager_cleanup_target(S, pcalltarget) = {TARGET pcalltarget, SITE eps, SCOPE $consumer_producer_scope(S, pcalltarget), BINDING $consumer_producer_binding(S, pcalltarget), INTERNAL true}
+def $eager_cleanup_source_target(EXCEPTION_HANDLER_RESULT pexceptioncall) = pexceptioncall.TARGET
+def $eager_cleanup_source_target(ERROR_HANDLER_RESULT perrorcall) = perrorcall.TARGET
+def $eager_cleanup_source_target(DESTRUCTOR_RESULT pdestructorcall) = (pdestructorcall.TARGET)
+def $eager_cleanup_source_target(DESTRUCTOR_WARNING pdestructorcall) = (pdestructorcall.TARGET)
+def $eager_cleanup_source_target(ptask) = eps -- otherwise
+def $eager_cleanup_record(S, ptask) = {SOURCE ptask, TARGET $eager_cleanup_target(S, pcalltarget), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, RELEASED false}
+  -- if $eager_cleanup_source_target(ptask) = (pcalltarget)
+  -- if $eager_bailout_call(ptask) = eps
+def $eager_cleanup_record(S, ptask) = {SOURCE ptask, TARGET $eager_cleanup_target(S, pdestructorcall.TARGET), CALLER pdestructorcall.CALLER, ORIGIN pdestructorcall.ORIGIN, CONSTCONTEXT pdestructorcall.CONSTCONTEXT, RELEASED false}
+  -- if $eager_bailout_call(ptask) = (pdestructorcall)
+def $eager_cleanup_source(EXCEPTION_HANDLER_CLEAN pexceptioncall b) = EXCEPTION_HANDLER_RESULT pexceptioncall
+def $eager_cleanup_source(ERROR_HANDLER_CLEAN perrorcall) = ERROR_HANDLER_RESULT perrorcall
+def $eager_cleanup_source(ptask) = ptask -- otherwise
+def $eager_cleanup_find(eps, ptask) = eps
+def $eager_cleanup_find(pdestructioncleanup :: pdestructioncleanup_tail*, ptask) = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ptask
+def $eager_cleanup_find(pdestructioncleanup :: pdestructioncleanup_tail*, ptask) = $eager_cleanup_find(pdestructioncleanup_tail*, ptask)
+  -- if pdestructioncleanup.SOURCE =/= ptask
+def $eager_cleanup_for(S, ERROR_HANDLER_CLEAN perrorcall) = (pdestructioncleanup[.RELEASED = true])
+  -- if $eager_cleanup_find(S.DESTRUCTION.CLEANUPS, ERROR_HANDLER_RESULT perrorcall) = (pdestructioncleanup)
+def $eager_cleanup_for(S, ptask) = $eager_cleanup_find(S.DESTRUCTION.CLEANUPS, $eager_cleanup_source(ptask))
+  -- otherwise
+def $eager_cleanup_hold(S, eps) = S
+def $eager_cleanup_hold(S, (pdestructioncleanup)) = S -- if pdestructioncleanup <- S.DESTRUCTION.CLEANUPS
+def $eager_cleanup_hold(S, (pdestructioncleanup)) = S[.DESTRUCTION.CLEANUPS = pdestructioncleanup :: S.DESTRUCTION.CLEANUPS]
+  -- if ~(pdestructioncleanup <- S.DESTRUCTION.CLEANUPS)
+def $eager_cleanup_final(EXCEPTION_HANDLER_CLEAN pexceptioncall b) = true
+def $eager_cleanup_final(ERROR_HANDLER_CLEAN perrorcall) = true
+def $eager_cleanup_final(ptask) = false -- otherwise
+def $eager_cleanup_finish(S, pdestructionoperation) = S[.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*]
+  -- if $eager_cleanup_final(pdestructionoperation.SOURCE)
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+def $eager_cleanup_finish(S, pdestructionoperation) = S -- otherwise
+def $eager_cleanup_object(S, EXCEPTION_HANDLER_RESULT pexceptioncall) = [HOBJECT pexceptioncall.OBJECT] ++ $eager_raw_history_nodes(S, pexceptioncall.CALLBACK)
+def $eager_cleanup_object(S, ERROR_HANDLER_RESULT perrorcall) = $eager_raw_history_nodes(S, perrorcall.CALLBACK)
+def $eager_cleanup_object(S, ptask) = eps -- otherwise
+def $eager_raw_history_nodes(S, PARRAY n) = [HARRAY n] ++ $node_children(S, HARRAY n)
+  -- if $(n < |S.ARRAYS|)
+def $eager_raw_history_nodes(S, pvalue) = $value_nodes(pvalue) -- otherwise
+def $eager_cleanup_warning(ERROR_HANDLER_RESULT perrorcall) = (pdestructorcall)
+  -- if perrorcall.RESUME = DESTRUCTOR_WARNING pdestructorcall
+def $eager_cleanup_warning(ptask) = eps -- otherwise
+def $eager_cleanup_history(S, pdestructioncleanup) = S_view[.CURRENT = pdestructioncleanup.CALLER][.ORIGIN = pdestructioncleanup.ORIGIN][.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT][.ALLOCATIONS = S_view.ALLOCATIONS ++ $eager_cleanup_object(S, pdestructioncleanup.SOURCE)]
+  -- if S_history = $consumer_producer_history(S, pdestructioncleanup.TARGET)
+  -- if $eager_cleanup_warning(pdestructioncleanup.SOURCE) = (pdestructorcall)
+  -- if S_view = $eager_bailout_history(S_history, pdestructorcall)
+def $eager_cleanup_history(S, pdestructioncleanup) = S_history[.CURRENT = pdestructioncleanup.CALLER][.ORIGIN = pdestructioncleanup.ORIGIN][.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT][.ALLOCATIONS = S_history.ALLOCATIONS ++ $eager_cleanup_object(S, pdestructioncleanup.SOURCE)]
+  -- if S_history = $consumer_producer_history(S, pdestructioncleanup.TARGET)
+  -- if $eager_cleanup_warning(pdestructioncleanup.SOURCE) = eps
+def $eager_cleanup_valid(S, pdestructioncleanup) = true
+  -- if pdestructioncleanup.SOURCE = DESTRUCTOR_FATAL pdestructionfatal
+  -- if $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal)
+def $eager_cleanup_valid(S, pdestructioncleanup) = true
+  -- if $consumer_producer_snapshot(pdestructioncleanup.TARGET)
+  -- if pdestructioncleanup.TARGET.SITE = eps /\ pdestructioncleanup.TARGET.INTERNAL
+  -- if $eager_cleanup_source_target(pdestructioncleanup.SOURCE) = (pdestructioncleanup.TARGET.TARGET)
+  -- if pdestructioncleanup.SOURCE = EXCEPTION_HANDLER_RESULT pexceptioncall
+  -- if pdestructioncleanup.CALLER = eps /\ pdestructioncleanup.ORIGIN = eps /\ pdestructioncleanup.CONSTCONTEXT = eps
+  -- if $exception_result_valid($eager_cleanup_history(S, pdestructioncleanup), pexceptioncall)
+def $eager_cleanup_valid(S, pdestructioncleanup) = true
+  -- if $consumer_producer_snapshot(pdestructioncleanup.TARGET)
+  -- if pdestructioncleanup.TARGET.SITE = eps /\ pdestructioncleanup.TARGET.INTERNAL
+  -- if $eager_cleanup_source_target(pdestructioncleanup.SOURCE) = (pdestructioncleanup.TARGET.TARGET)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if $error_entered_call_valid($eager_cleanup_history(S, pdestructioncleanup), perrorcall)
+def $eager_cleanup_valid(S, pdestructioncleanup) = true
+  -- if $eager_bailout_call(pdestructioncleanup.SOURCE) = (pdestructorcall)
+  -- if pdestructioncleanup.TARGET = $eager_cleanup_target(S, pdestructorcall.TARGET)
+  -- if pdestructioncleanup.CALLER = eps /\ pdestructioncleanup.ORIGIN = pdestructorcall.ORIGIN /\ pdestructioncleanup.CONSTCONTEXT = eps
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+  -- if $destructor_call_live($eager_bailout_history(S, pdestructorcall), pdestructorcall)
+  -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
+  -- if ($method_accessible(S, pmethoddesc, eps) /\ pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall) \/ (~$method_accessible(S, pmethoddesc, eps) /\ pdestructioncleanup.SOURCE = DESTRUCTOR_WARNING pdestructorcall)
+def $eager_cleanup_valid(S, pdestructioncleanup) = false -- otherwise
+def $eager_cleanups_valid(S, eps) = true
+def $eager_cleanups_valid(S, pdestructioncleanup :: pdestructioncleanup_tail*) = ($eager_cleanup_valid(S, pdestructioncleanup) /\ $eager_cleanups_valid(S, pdestructioncleanup_tail*))
+def $eager_operation_cleanup_source(EXCEPTION_HANDLER_RESULT pexceptioncall, pdestructioncleanup) = (pdestructioncleanup.SOURCE = EXCEPTION_HANDLER_RESULT pexceptioncall /\ ~pdestructioncleanup.RELEASED)
+def $eager_operation_cleanup_source(EXCEPTION_HANDLER_CLEAN pexceptioncall b, pdestructioncleanup) = (pdestructioncleanup.SOURCE = EXCEPTION_HANDLER_RESULT pexceptioncall /\ pdestructioncleanup.RELEASED = b)
+def $eager_operation_cleanup_source(ERROR_HANDLER_RESULT perrorcall, pdestructioncleanup) = (pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall /\ ~pdestructioncleanup.RELEASED)
+def $eager_operation_cleanup_source(ERROR_HANDLER_CLEAN perrorcall, pdestructioncleanup) = (pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall /\ pdestructioncleanup.RELEASED)
+def $eager_operation_cleanup_source(ptask, pdestructioncleanup) = false -- otherwise
+def $eager_operation_source_valid(S, pdestructionoperation) = true
+  -- if $eager_internal_source(pdestructionoperation.SOURCE)
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup <- S.DESTRUCTION.CLEANUPS
+  -- if $eager_cleanup_valid(S, pdestructioncleanup)
+  -- if $eager_operation_cleanup_source(pdestructionoperation.SOURCE, pdestructioncleanup)
+  -- if pdestructioncleanup.CALLER = pdestructionoperation.CALLER /\ pdestructioncleanup.ORIGIN = pdestructionoperation.ORIGIN /\ pdestructioncleanup.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+def $eager_operation_source_valid(S, pdestructionoperation) = true
+  -- if ~$eager_internal_source(pdestructionoperation.SOURCE) /\ ~$eager_explicit_task(pdestructionoperation.SOURCE)
+  -- if pdestructionoperation.CLEANUP = eps
+def $eager_operation_source_valid(S, pdestructionoperation) = false -- otherwise
+
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, $error_trigger_trace_values(S_history, pconfigcall))
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = ERROR_TRIGGER_PHASE pconfigcall n
+  -- if S_history = $eager_cleanup_history(S, pdestructioncleanup)
+def $destructor_trace_suffix(S, pcallcontext) = eps -- otherwise
+
+;; zend_user_exception_handler releases the helper retval and original exception
+;; before restoring the raw handler. A body/destructor replacement remains live.
+def $exception_handler_finish(S, pexceptioncall) = $eager_operation_begin(S_clean, S_clean, EXCEPTION_HANDLER_RESULT pexceptioncall, $error_selected_roots(pexceptioncall.TARGET) ++ $operand_nodes(S.RESULT))
+  -- if S.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask*
+  -- if $destructor_operational(S)
+  -- if pdestructioncleanup = $eager_cleanup_record(S, EXCEPTION_HANDLER_RESULT pexceptioncall)
+  -- if S_clean = S[.TODO = (EXCEPTION_HANDLER_CLEAN pexceptioncall false) :: ptask*][.DESTRUCTION.CLEANUPS = pdestructioncleanup :: S.DESTRUCTION.CLEANUPS][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.TRACE = eps][.ERRORORIGIN = eps]
+def $exception_handler_finish(S, pexceptioncall) = $exception_handler_restore(S[.TODO = ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = pexceptioncall.ORIGIN][.TRACE = eps][.ERRORORIGIN = eps])
+  -- if S.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask*
+  -- if ~$destructor_operational(S)
+def $task_nodes(EXCEPTION_HANDLER_CLEAN pexceptioncall false) = [HOBJECT pexceptioncall.OBJECT]
+def $task_nodes(EXCEPTION_HANDLER_CLEAN pexceptioncall true) = eps
+def $exception_cleanup_valid(S, pexceptioncall, b) = true
+  -- if $exception_task_scope(S) /\ S.ORIGIN = eps
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = EXCEPTION_HANDLER_RESULT pexceptioncall /\ pdestructioncleanup.RELEASED = b
+  -- if $eager_cleanup_valid(S, pdestructioncleanup)
+  -- if b \/ ((HOBJECT pexceptioncall.OBJECT) <- S.ALLOCATIONS /\ $throwable_member(S, pexceptioncall.OBJECT))
+def $exception_cleanup_valid(S, pexceptioncall, b) = false -- otherwise
+def $call_task_valid(S, EXCEPTION_HANDLER_CLEAN pexceptioncall b) = $exception_cleanup_valid(S, pexceptioncall, b)
+rule PhpStep/exception-handler-release-original: S ~> $destructor_release_begin(S[.TODO = (EXCEPTION_HANDLER_CLEAN pexceptioncall true) :: ptask*][.DESTRUCTION.CLEANUPS = pdestructioncleanup[.RELEASED = true] :: pdestructioncleanup_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [DESTRUCTION_VALUE (HOBJECT pexceptioncall.OBJECT)])
+  -- if S.TODO = (EXCEPTION_HANDLER_CLEAN pexceptioncall false) :: ptask*
+  -- if $exception_cleanup_valid(S, pexceptioncall, false)
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+rule PhpStep/exception-handler-restore-after-release: S ~> $exception_handler_restore(S[.TODO = ptask*][.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*][.ORIGIN = pexceptioncall.ORIGIN])
+  -- if S.TODO = (EXCEPTION_HANDLER_CLEAN pexceptioncall true) :: ptask*
+  -- if $exception_cleanup_valid(S, pexceptioncall, true)
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+def $call_after_origin(S, EXCEPTION_HANDLER_CLEAN pexceptioncall b) = S[.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*][.ORIGIN = pexceptioncall.ORIGIN]
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = EXCEPTION_HANDLER_RESULT pexceptioncall
+
+;; zend_error likewise drops its retval while the old raw handler is disabled.
+;; Unlike the terminal exception handler, a genuine MAIN caller can catch a throw.
+def $error_handler_finish(S, perrorcall) = $eager_operation_begin(S_clean, S_clean, ERROR_HANDLER_RESULT perrorcall, $error_selected_roots(perrorcall.TARGET) ++ $operand_nodes(S.RESULT))
+  -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask*
+  -- if $destructor_operational(S)
+  -- if pdestructioncleanup = $eager_cleanup_record(S, ERROR_HANDLER_RESULT perrorcall)
+  -- if S_clean = S[.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask*][.DESTRUCTION.CLEANUPS = pdestructioncleanup :: S.DESTRUCTION.CLEANUPS][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $error_handler_finish(S, perrorcall) = $error_handler_restore(S[.TODO = perrorcall.RESUME :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], perrorcall.CALLBACK)
+  -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask*
+  -- if ~$destructor_operational(S)
+def $task_nodes(ERROR_HANDLER_CLEAN perrorcall) = $value_nodes(perrorcall.CALLBACK) ++ $task_nodes(perrorcall.RESUME)
+def $error_cleanup_valid(S, perrorcall) = true
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if ~pdestructioncleanup.RELEASED
+  -- if $eager_cleanup_valid(S, pdestructioncleanup)
+  -- if S.CURRENT = pdestructioncleanup.CALLER /\ S.ORIGIN = pdestructioncleanup.ORIGIN /\ S.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT
+  -- if $error_call_valid(S, perrorcall)
+def $error_cleanup_valid(S, perrorcall) = false -- otherwise
+def $call_task_valid(S, ERROR_HANDLER_CLEAN perrorcall) = $error_cleanup_valid(S, perrorcall)
+rule PhpStep/error-handler-restore-after-retval: S ~> $error_handler_restore(S[.TODO = perrorcall.RESUME :: ptask*][.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], perrorcall.CALLBACK)
+  -- if S.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask*
+  -- if $error_cleanup_valid(S, perrorcall)
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+def $call_after_origin(S, ERROR_HANDLER_CLEAN perrorcall) = S[.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*]
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $return_discard(S, ERROR_HANDLER_CLEAN perrorcall) = $error_read_discard($error_handler_restore($identity_read_discard(S[.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*], perrorcall.RESUME), perrorcall.CALLBACK), perrorcall.RESUME)
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+
+;; A bailout retains the unreleased C zval count, not an extra selected receiver.
+;; Keep its authenticated cleanup record until the later store/free stages.
+dec $eager_abandoned_entries(pdestructioncleanup*) : pdestructioncleanup*
+def $eager_abandoned_entries(eps) = eps
+def $eager_abandoned_entries(pdestructioncleanup :: pdestructioncleanup_tail*) = pdestructioncleanup :: $eager_abandoned_entries(pdestructioncleanup_tail*)
+  -- if ~pdestructioncleanup.RELEASED
+def $eager_abandoned_entries(pdestructioncleanup :: pdestructioncleanup_tail*) = $eager_abandoned_entries(pdestructioncleanup_tail*)
+  -- if pdestructioncleanup.RELEASED
+def $eager_abandoned_roots(eps) = eps
+def $eager_abandoned_roots(pdestructioncleanup :: pdestructioncleanup_tail*) = $eager_abandoned_owner(pdestructioncleanup.SOURCE) ++ $eager_abandoned_roots(pdestructioncleanup_tail*)
+def $eager_abandoned_owner(EXCEPTION_HANDLER_RESULT pexceptioncall) = [HOBJECT pexceptioncall.OBJECT]
+def $eager_abandoned_owner(ERROR_HANDLER_RESULT perrorcall) = $value_nodes(perrorcall.CALLBACK)
+def $eager_abandoned_owner(DESTRUCTOR_RESULT pdestructorcall) = [HOBJECT pdestructorcall.OBJECT, HOBJECT pdestructorcall.OBJECT] ++ $eager_bailout_extra(pdestructorcall)
+def $eager_abandoned_owner(DESTRUCTOR_WARNING pdestructorcall) = [HOBJECT pdestructorcall.OBJECT] ++ $eager_bailout_extra(pdestructorcall)
+def $eager_abandoned_owner(DESTRUCTOR_FATAL pdestructionfatal) = $eager_fatal_nodes(pdestructionfatal)
+def $eager_abandoned_owner(ptask) = eps -- otherwise
+def $eager_abandoned_valid(S, eps) = true
+def $eager_abandoned_valid(S, pdestructioncleanup :: pdestructioncleanup_tail*) = (~pdestructioncleanup.RELEASED /\ $eager_cleanup_valid(S, pdestructioncleanup) /\ $heap_subset($eager_abandoned_owner(pdestructioncleanup.SOURCE), S.ALLOCATIONS) /\ $eager_abandoned_valid(S, pdestructioncleanup_tail*))
+def $destruction_abort(S, S_clean) = S_clean[.DESTRUCTION.ABANDONED = S_clean.DESTRUCTION.ABANDONED ++ $eager_abandoned_entries(S.DESTRUCTION.CLEANUPS)][.DESTRUCTION.CLEANUPS = eps][.DESTRUCTION.CALLS = eps][.DESTRUCTION.RELEASES = eps][.DESTRUCTION.FRAMES = eps][.DESTRUCTION.OPERATIONS = eps]
+
+;; A null-C throw or exit cannot return through objects_destroy_object/store_del.
+;; Their two receiver counts survive the bailout; visibility warnings occur
+;; before the inner ADDREF and retain only the store wrapper's one count.
+def $eager_bailout_call(DESTRUCTOR_RESULT pdestructorcall) = (pdestructorcall)
+def $eager_bailout_call(DESTRUCTOR_WARNING pdestructorcall) = (pdestructorcall)
+def $eager_bailout_call(ptask) = eps -- otherwise
+def $eager_bailout_unwind(S) = true
+  -- if S.TODO = (EXIT_UNWIND z) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $exit_unwind_valid(S, z)
+def $eager_bailout_unwind(S) = false -- otherwise
+def $eager_bailout_source(S) = (DESTRUCTOR_RESULT pdestructorcall)
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ ~pdestructorcall.USER
+  -- if $destructor_result_valid(S, pdestructorcall)
+  -- if ~$exception_dispatch_ready(S)
+def $eager_bailout_source(S) = (DESTRUCTOR_WARNING pdestructorcall)
+  -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = DESTRUCTOR_WARNING pdestructorcall
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ ~pdestructorcall.USER
+  -- if $error_entered_call_valid(S, perrorcall)
+  -- if ~$exception_dispatch_ready(S)
+def $eager_bailout_source(S) = (DESTRUCTOR_RESULT pdestructorcall)
+  -- if $eager_bailout_unwind(S)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe_tail* = eps
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_saved*
+  -- if ~pdestructorcall.USER /\ pframe.CONTEXT = eps
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if $destructor_context_valid(S, pcallcontext)
+def $eager_bailout_source(S) = (DESTRUCTOR_WARNING pdestructorcall)
+  -- if $eager_bailout_unwind(S)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe_tail* = eps
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_saved*
+  -- if perrorcall.RESUME = DESTRUCTOR_WARNING pdestructorcall
+  -- if ~pdestructorcall.USER /\ pframe.CONTEXT = eps
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if $error_context_valid(S, pcallcontext)
+def $eager_bailout_source(S) = eps -- otherwise
+def $eager_bailout_error(S) = (perrorcall)
+  -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+def $eager_bailout_error(S) = (perrorcall)
+  -- if $eager_bailout_unwind(S)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_saved*
+def $eager_bailout_error(S) = eps -- otherwise
+def $eager_bailout_error_scope(S) = $constant_frame_scope(S, pframe, eps)
+  -- if $eager_bailout_unwind(S)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe_tail* = eps
+def $eager_bailout_error_scope(S) = S -- otherwise
+def $eager_bailout_transfer(S, S_next, ptask) = S_clean[.DESTRUCTION.ABANDONED = S_clean.DESTRUCTION.ABANDONED ++ [$eager_cleanup_record(S, ptask)] ++ [$eager_cleanup_record($eager_bailout_error_scope(S), ERROR_HANDLER_RESULT perrorcall)]]
+  -- if $eager_bailout_error(S) = (perrorcall)
+  -- if S_clean = $destruction_abort(S, S_next)
+def $eager_bailout_transfer(S, S_next, ptask) = S_clean[.DESTRUCTION.ABANDONED = S_clean.DESTRUCTION.ABANDONED ++ [$eager_cleanup_record(S, ptask)]]
+  -- if S_clean = $destruction_abort(S, S_next)
+  -- if $eager_bailout_error(S) = eps
+
+;; This lookup view authenticates retired selection records without reviving
+;; their continuations or creating owners beyond the actual abandoned zvals.
+def $eager_bailout_history(S, pdestructorcall) = S[.CURRENT = pdestructorcall.CALLER][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT][.TODO = [DESTRUCTOR_RESULT pdestructorcall]][.DESTRUCTION.PHASE = DESTRUCTION_STORE][.DESTRUCTION.INDEX = $(S.DESTRUCTION.HANDLES[pdestructorcall.OBJECT] + 1)][.DESTRUCTION.CALLS = pdestructorcall :: S.DESTRUCTION.CALLS][.DESTRUCTION.RELEASES = $eager_bailout_release(pdestructorcall.RELEASE) ++ S.DESTRUCTION.RELEASES][.DESTRUCTION.FRAMES = $eager_bailout_frame(pdestructorcall.FRAME) ++ S.DESTRUCTION.FRAMES][.DESTRUCTION.OPERATIONS = $eager_bailout_operation(pdestructorcall.OPERATION) ++ S.DESTRUCTION.OPERATIONS][.DESTRUCTION.CLEANUPS = $eager_bailout_cleanup(pdestructorcall.OPERATION) ++ S.DESTRUCTION.CLEANUPS]
+def $eager_bailout_release((pdestructionrelease)) = [pdestructionrelease[.JOBS = pdestructionjob*]]
+  -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+def $eager_bailout_release(eps) = eps
+def $eager_bailout_frame((pdestructionframe)) = [pdestructionframe]
+def $eager_bailout_frame(eps) = eps
+def $eager_bailout_operation((pdestructionoperation)) = [pdestructionoperation]
+def $eager_bailout_operation(eps) = eps
+def $eager_bailout_cleanup((pdestructionoperation)) = [pdestructioncleanup]
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+def $eager_bailout_cleanup(pdestructionoperation?) = eps -- otherwise
+def $eager_bailout_extra(pdestructorcall) = $eager_bailout_release_nodes(pdestructorcall.RELEASE) ++ $eager_bailout_frame_nodes(pdestructorcall.FRAME) ++ $eager_bailout_operation_nodes(pdestructorcall.OPERATION) ++ $instance_roots(pdestructorcall.PENDING)
+def $eager_bailout_release_nodes((pdestructionrelease)) = $destruction_job_nodes(pdestructionjob*)
+  -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+def $eager_bailout_release_nodes(eps) = eps
+def $eager_bailout_frame_nodes((pdestructionframe)) = $operand_nodes(pdestructionframe.VALUE)
+def $eager_bailout_frame_nodes(eps) = eps
+def $eager_bailout_operation_nodes((pdestructionoperation)) = $operand_nodes(pdestructionoperation.VALUE) ++ $base_nodes(pdestructionoperation.BASE)
+def $eager_bailout_operation_nodes(eps) = eps
+
+;; php_error_cb's bailout skips the whole live VM stack, not just the last
+;; destructor's two C receiver decrements. Global bindings remain in the real
+;; global table; the historical GLOBAL/DESTRUCTION fields below are borrowed.
+def $eager_fatal_frame(S) = {SILENCES S.SILENCES, LOCALS ($active_table(S)), TODO S.TODO, ORIGIN S.ORIGIN, HELD S.HELD, CONTEXT S.CURRENT, BORROWEDREAD S.BORROWEDREAD, OBJECTCAST S.OBJECTCAST, CONSTCONTEXT S.CONSTCONTEXT}
+  -- if S.CURRENT =/= eps
+def $eager_fatal_frame(S) = {SILENCES S.SILENCES, LOCALS eps, TODO S.TODO, ORIGIN S.ORIGIN, HELD S.HELD, CONTEXT eps, BORROWEDREAD S.BORROWEDREAD, OBJECTCAST S.OBJECTCAST, CONSTCONTEXT S.CONSTCONTEXT}
+  -- if S.CURRENT = eps
+def $eager_fatal_global(S) = psymboltable -- if S.GLOBALTABLE = (psymboltable)
+def $eager_fatal_global(S) = $active_table(S) -- if S.GLOBALTABLE = eps
+def $eager_fatal_target(S) = (pcallcontext.TARGET) -- if S.CURRENT = (pcallcontext)
+def $eager_fatal_target(S) = pcalltarget?
+  -- if S.CURRENT = eps
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pcalltarget? = $eager_cleanup_source_target(ptask)
+  -- if pcalltarget? =/= eps
+def $eager_fatal_target(S) = S.ORIGIN
+  -- if S.CURRENT = eps
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $eager_cleanup_source_target(ptask) = eps
+  -- if S.ORIGIN =/= eps
+def $eager_fatal_target(S) = S.ORIGIN -- if S.CURRENT = eps /\ S.TODO = eps
+;; This is a historical source token for an unselected C callback, never a
+;; callable or a source caller. Its actual invoke task supplies authentication.
+def $eager_fatal_target(S) = (PORIGIN 0 eps)
+  -- if S.CURRENT = eps /\ S.ORIGIN = eps
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $eager_cleanup_source_target(ptask) = eps
+  -- if $eager_fatal_internal_task(ptask)
+  -- if $source_unit(S.SOURCES, 0) =/= eps
+def $eager_fatal_target(S) = eps -- otherwise
+def $eager_fatal_reported(S, pcompletion) = true
+  -- if $eval_compile_fatal_current(S) = (pevalcompilefatal)
+  -- if $eval_compile_fatal_valid(S, pevalcompilefatal)
+  -- if $shutdown_compiler_snapshot(pevalcompilefatal.COMPLETION) = (pcompletion)
+  -- if S.ORIGIN = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+def $eager_fatal_reported(S, pcompletion) = false -- otherwise
+def $eager_fatal_ready(S, pcompletion) = (($destructor_bailout(pcompletion) \/ $eager_fatal_reported(S, pcompletion)) /\ $eager_fatal_target(S) =/= eps /\ ($frames_roots($eager_fatal_frame(S) :: S.FRAMES) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE)) =/= eps)
+def $eager_fatal_nodes(pdestructionfatal) = $frames_roots(pdestructionfatal.FRAME :: pdestructionfatal.FRAMES) ++ $operand_nodes(pdestructionfatal.VALUE) ++ $base_nodes(pdestructionfatal.BASE)
+;; Handler registries and callback array/reference rows are borrowed lookup
+;; evidence. Later queue writes cannot alter the interrupted selection input.
+def $eager_fatal_handler(S, PARRAY n) = {VALUE PARRAY n, ARRAY (S.ARRAYS[n]), CELLS $eager_fatal_handler_cells(S, S.ARRAYS[n].ITEMS)}
+  -- if $(n < |S.ARRAYS|)
+def $eager_fatal_handler(S, pvalue) = {VALUE pvalue, ARRAY eps, CELLS eps} -- otherwise
+def $eager_fatal_handler_cells(S, eps) = eps
+def $eager_fatal_handler_cells(S, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = (n, S.STORE[n]) :: $eager_fatal_handler_cells(S, pentry_tail*)
+  -- if $(n < |S.STORE|)
+def $eager_fatal_handler_cells(S, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = $eager_fatal_handler_cells(S, pentry_tail*)
+  -- if $(n >= |S.STORE|)
+def $eager_fatal_handler_cells(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = $eager_fatal_handler_cells(S, pentry_tail*)
+def $eager_fatal_handler_cells(S, (ENTRY pkey UNINITIALIZED) :: pentry_tail*) = $eager_fatal_handler_cells(S, pentry_tail*)
+def $eager_fatal_handler_task(S, EXCEPTION_HANDLER_INVOKE pexceptioncall) = [$eager_fatal_handler(S, pexceptioncall.CALLBACK)]
+def $eager_fatal_handler_task(S, EXCEPTION_HANDLER_RESULT pexceptioncall) = [$eager_fatal_handler(S, pexceptioncall.CALLBACK)]
+def $eager_fatal_handler_task(S, ERROR_HANDLER_INVOKE perrorcall) = $eager_fatal_handler(S, perrorcall.CALLBACK) :: $eager_fatal_handler_task(S, perrorcall.RESUME)
+def $eager_fatal_handler_task(S, ERROR_HANDLER_RESULT perrorcall) = $eager_fatal_handler(S, perrorcall.CALLBACK) :: $eager_fatal_handler_task(S, perrorcall.RESUME)
+def $eager_fatal_handler_task(S, API_CALLABLE_RESULT papiquery n) = $eager_fatal_handler_task(S, papiquery.SOURCE)
+def $eager_fatal_handler_task(S, ptask) = eps -- otherwise
+def $eager_fatal_handler_tasks(S, eps) = eps
+def $eager_fatal_handler_tasks(S, ptask :: ptask_tail*) = $eager_fatal_handler_task(S, ptask) ++ $eager_fatal_handler_tasks(S, ptask_tail*)
+def $eager_fatal_handler_frames(S, eps) = eps
+def $eager_fatal_handler_frames(S, pframe :: pframe_tail*) = $eager_fatal_handler_tasks(S, pframe.TODO) ++ $eager_fatal_handler_frames(S, pframe_tail*)
+def $eager_fatal_handler_history(S, eps) = S
+def $eager_fatal_handler_history(S, pdestructionhandler :: pdestructionhandler_tail*) = $eager_fatal_handler_history($eager_fatal_handler_row(S, pdestructionhandler), pdestructionhandler_tail*)
+def $eager_fatal_handler_row(S, pdestructionhandler) = $eager_fatal_cell_history(S[.ARRAYS = $array_replace(S.ARRAYS, n, parray)], pdestructionhandler.CELLS)
+  -- if pdestructionhandler.VALUE = PARRAY n
+  -- if pdestructionhandler.ARRAY = (parray)
+def $eager_fatal_handler_row(S, pdestructionhandler) = S -- otherwise
+def $eager_fatal_cell_history(S, eps) = S
+def $eager_fatal_cell_history(S, (n, pslot) :: (n_tail, pslot_tail)*) = $eager_fatal_cell_history(S[.STORE[n] = pslot], (n_tail, pslot_tail)*)
+def $eager_fatal_cell_bounds(S, eps) = true
+def $eager_fatal_cell_bounds(S, (n, pslot) :: (n_tail, pslot_tail)*) = ($(n < |S.STORE|) /\ $eager_fatal_cell_bounds(S, (n_tail, pslot_tail)*))
+def $eager_fatal_handler_bounds(S, eps) = true
+def $eager_fatal_handler_bounds(S, pdestructionhandler :: pdestructionhandler_tail*) = true
+  -- if pdestructionhandler.VALUE = PARRAY n
+  -- if $(n < |S.ARRAYS|)
+  -- if pdestructionhandler.ARRAY =/= eps
+  -- if $eager_fatal_cell_bounds(S, pdestructionhandler.CELLS)
+  -- if $eager_fatal_handler_bounds(S, pdestructionhandler_tail*)
+def $eager_fatal_handler_bounds(S, pdestructionhandler :: pdestructionhandler_tail*) = true
+  -- if ~$is_array_value(pdestructionhandler.VALUE)
+  -- if pdestructionhandler.ARRAY = eps /\ pdestructionhandler.CELLS = eps
+  -- if $eager_fatal_handler_bounds(S, pdestructionhandler_tail*)
+def $eager_fatal_handler_bounds(S, pdestructionhandler*) = false -- otherwise
+;; The fatal record retains the interrupted source lookup rows. With all VM
+;; continuations gone, those eval/file rows are no longer active runtime owners.
+def $eager_fatal_clean(S, S_report, pcompletion) = S_clean[.EVALCONTEXTS = eps][.FILECONTEXTS = eps][.DESTRUCTION.CLEANUPS = eps][.DESTRUCTION.CALLS = eps][.DESTRUCTION.RELEASES = eps][.DESTRUCTION.FRAMES = eps][.DESTRUCTION.OPERATIONS = eps]
+  -- if $eager_fatal_target(S) = (pcalltarget)
+  -- if pdestructionfatal = {FRAME $eager_fatal_frame(S), FRAMES S.FRAMES, GLOBAL $eager_fatal_global(S), VALUE S.RESULT, BASE S.BASE, DESTRUCTION S.DESTRUCTION, SHUTDOWN S.SHUTDOWN, ERRORHANDLER S.ERRORHANDLER, ERRORHANDLERS S.ERRORHANDLERS, EXCEPTIONHANDLER S.EXCEPTIONHANDLER, EXCEPTIONHANDLERS S.EXCEPTIONHANDLERS, HANDLERS $eager_fatal_handler_frames(S, $eager_fatal_frame(S) :: S.FRAMES), EVALCONTEXTS S.EVALCONTEXTS, FILECONTEXTS S.FILECONTEXTS, DECLARATIONS S_report.DECLARATIONS, COMPLETION pcompletion, FROZEN S_report.COMPLETION, ERRORORIGIN S_report.ERRORORIGIN, TRACE S_report.TRACE, ERRORTRACE S_report.ERRORFATALTRACE, COMPILESTOP S_report.COMPILESTOP, REPORTING S.REPORTING}
+  -- if pdestructioncleanup = {SOURCE DESTRUCTOR_FATAL pdestructionfatal, TARGET $eager_cleanup_target(S, pcalltarget), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, RELEASED false}
+  -- if S_clean = $shutdown_clean_frames(S_report[.DESTRUCTION.CALLED = $destructor_all(0, |S_report.OBJECTS|)][.DESTRUCTION.ABANDONED = S_report.DESTRUCTION.ABANDONED ++ [pdestructioncleanup]])
+def $shutdown_terminal_clean(S, S_report) = $eager_fatal_clean(S, S_report, S.COMPLETION)
+  -- if $eager_fatal_ready(S, S.COMPLETION)
+def $eager_fatal_begin(S, S_next) = $shutdown_queue_begin(S_clean, S_report.COMPLETION)
+  -- if S_report = $shutdown_freeze(S_next)
+  -- if S_clean = $eager_fatal_clean(S, S_report, S_next.COMPLETION)
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_PENDING
+def $eager_fatal_begin(S, S_next) = S_clean[.SHUTDOWN.PHASE = SHUTDOWN_DONE][.SHUTDOWN.SENT = eps][.SHUTDOWN.RECEIVED = eps]
+  -- if S_report = $shutdown_freeze(S_next)
+  -- if S_clean = $eager_fatal_clean(S, S_report, S_next.COMPLETION)
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING
+def $eager_fatal_begin(S, S_next) = S_clean[.DESTRUCTION.PHASE = DESTRUCTION_DONE][.DESTRUCTION.CALLED = $destructor_all(0, |S_clean.OBJECTS|)]
+  -- if S_report = $shutdown_freeze(S_next)
+  -- if S_clean = $eager_fatal_clean(S, S_report, S_next.COMPLETION)
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE
+
+;; Restore only a lookup view of the interrupted stack. Live store handles can
+;; grow when later shutdown callbacks allocate objects; the saved control stack
+;; neither replaces that store nor creates another owner of the global table.
+def $eager_fatal_scope(S, pdestructionfatal) = $set_active_table(S[.GLOBALTABLE = (pdestructionfatal.GLOBAL)], psymboltable)
+  -- if pdestructionfatal.FRAME.LOCALS = (psymboltable)
+def $eager_fatal_scope(S, pdestructionfatal) = $set_active_table(S[.GLOBALTABLE = eps], pdestructionfatal.GLOBAL)
+  -- if pdestructionfatal.FRAME.LOCALS = eps
+;; Source task reception runs in the pre-producer NORMAL state; compiler
+;; replay keeps its stopped completion. The raw fatal tuple stays in the record.
+def $eager_fatal_lookup_completion(pdestructionfatal) = pdestructionfatal.COMPLETION
+  -- if pdestructionfatal.COMPILESTOP
+def $eager_fatal_lookup_completion(pdestructionfatal) = NORMAL
+  -- if ~pdestructionfatal.COMPILESTOP
+;; A failed resume has consumed its pause claim. Lookup restores only that
+;; exact pre-resume prefix; compiler proof still replays the full failed prefix.
+def $eager_fatal_resume_row(pdeclaration, n) = true
+  -- if $precision_resume_input(pdeclaration) = ((n, z, z_precision?))
+def $eager_fatal_resume_row(pdeclaration, n) = false -- otherwise
+def $eager_fatal_resume_prefix(eps, n) = eps
+def $eager_fatal_resume_prefix(pdeclaration :: pdeclaration_tail*, n) = $eager_fatal_resume_head(pdeclaration, n, $eager_fatal_resume_prefix(pdeclaration_tail*, n))
+def $eager_fatal_resume_head(pdeclaration, n, (pdeclaration_prefix*)) = (pdeclaration :: pdeclaration_prefix*)
+def $eager_fatal_resume_head(pdeclaration, n, eps) = (eps)
+  -- if $eager_fatal_resume_row(pdeclaration, n)
+def $eager_fatal_resume_head(pdeclaration, n, eps) = eps
+  -- if ~$eager_fatal_resume_row(pdeclaration, n)
+def $eager_fatal_cursor_history(S, pdestructionfatal) = S[.DECLARATIONS = pdeclaration_prefix*]
+  -- if pdestructionfatal.COMPILESTOP
+  -- if pdestructionfatal.FRAME.TODO = (EVAL_COMPILE_RESUME pevalcompile) :: ptask_tail*
+  -- if $eager_fatal_resume_prefix(pdestructionfatal.DECLARATIONS, pevalcompile.PLAN.UNIT) = (pdeclaration_prefix*)
+def $eager_fatal_cursor_history(S, pdestructionfatal) = S -- otherwise
+;; A retired cursor can precede a precision image refresh. Its plan is proved
+;; from that source prefix; live compiler images use the full chronology below.
+def $eager_fatal_cursor_plans_valid(S, eps) = true
+def $eager_fatal_cursor_plans_valid(S, pevalcompile :: pevalcompile_tail*) = $eager_fatal_cursor_plans_valid(S, pevalcompile_tail*)
+  -- if $source_unit(S.SOURCES, pevalcompile.PLAN.UNIT) = (pcunit)
+  -- if P_old = $declaration_compiler_state($eval_source_ppstate(S, pcunit))
+  -- if pevalcompile.PLAN = $eval_compile_plan(P_old)
+def $eager_fatal_cursor_plans_valid(S, pevalcompile*) = false -- otherwise
+def $eager_fatal_history(S, pdestructionfatal) = $eager_fatal_cursor_history($eager_fatal_scope($eager_fatal_handler_history(S_view, pdestructionfatal.HANDLERS), pdestructionfatal), pdestructionfatal)
+  -- if pframe = pdestructionfatal.FRAME
+  -- if S_view = S[.CURRENT = pframe.CONTEXT][.FRAMES = pdestructionfatal.FRAMES][.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST][.CONSTCONTEXT = pframe.CONSTCONTEXT][.RESULT = pdestructionfatal.VALUE][.BASE = pdestructionfatal.BASE][.DESTRUCTION = pdestructionfatal.DESTRUCTION][.DESTRUCTION.HANDLES = S.DESTRUCTION.HANDLES][.DESTRUCTION.FREE = S.DESTRUCTION.FREE][.DESTRUCTION.NEXT = S.DESTRUCTION.NEXT][.SHUTDOWN = pdestructionfatal.SHUTDOWN][.ERRORHANDLER = pdestructionfatal.ERRORHANDLER][.ERRORHANDLERS = pdestructionfatal.ERRORHANDLERS][.EXCEPTIONHANDLER = pdestructionfatal.EXCEPTIONHANDLER][.EXCEPTIONHANDLERS = pdestructionfatal.EXCEPTIONHANDLERS][.EVALCONTEXTS = pdestructionfatal.EVALCONTEXTS][.FILECONTEXTS = pdestructionfatal.FILECONTEXTS][.COMPLETION = $eager_fatal_lookup_completion(pdestructionfatal)][.ERRORORIGIN = pdestructionfatal.ERRORORIGIN][.TRACE = pdestructionfatal.TRACE][.ERRORFATALTRACE = pdestructionfatal.ERRORTRACE][.COMPILESTOP = pdestructionfatal.COMPILESTOP][.REPORTING = pdestructionfatal.REPORTING]
+def $eager_fatal_source_valid(S, USERFATAL ptbytes z b) = true
+  -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 1) :: ptask_tail*
+  -- if $error_trigger_level(S, pconfigcall) = (256)
+  -- if $error_trigger_message(S, pconfigcall) = (ptbytes)
+  -- if z = pconfigcall.LINE
+  -- if b = ($long_and(S.REPORTING, 256) =/= 0)
+def $eager_fatal_source_valid(S, USERFATAL ptbytes z b) = true
+  -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if perrorcall.LEVEL = 256 /\ perrorcall.MESSAGE = ptbytes /\ perrorcall.LINE = z
+  -- if $error_entered_call_valid(S, perrorcall)
+  -- if b = ($long_and(S.REPORTING, 256) =/= 0)
+def $eager_fatal_internal_task(EXCEPTION_HANDLER_INVOKE pexceptioncall) = true
+def $eager_fatal_internal_task(ERROR_HANDLER_INVOKE perrorcall) = true
+def $eager_fatal_internal_task(API_CALLABLE_RESULT papiquery n) = true
+def $eager_fatal_internal_task(ptask) = false -- otherwise
+;; Reuse the actual pure producer behind each admitted fatal step. Validation
+;; rederives its payload without invoking the small-step relation recursively.
+def $eager_fatal_replay(S) = ($activate_class(S[.TODO = ptask_tail*], pclassdesc))
+  -- if S.TODO = (STMT (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
+def $eager_fatal_replay(S) = ($activate_class(S[.TODO = ptask_tail*], pclassdesc))
+  -- if S.TODO = (STMT (NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
+def $eager_fatal_replay(S) = ($activate_class(S[.TODO = ptask_tail*], pclassdesc))
+  -- if S.TODO = (STMT (NStmtTrait phpType14 phpType3 phpType23 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtTrait phpType14 phpType3 phpType23 metadata)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
+def $eager_fatal_replay(S) = ($activate_function(S[.TODO = ptask_tail*], pfunction))
+  -- if S.TODO = (STMT (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if ~$declaration_early(S.DECLARATIONS, porigin, PPFUNCTION)
+def $eager_fatal_replay(S) = ($activate_class(S[.TODO = ptask_tail*], pclassdesc))
+  -- if S.TODO = (AUTO_PUBLISH porigin) :: ptask_tail*
+  -- if $call_task_valid(S, AUTO_PUBLISH porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $dynamic_new_known(S, ptbytes_parent)
+def $eager_fatal_replay(S) = ($consumer_exception_invalid(S, pexceptioncall, ptbytes))
+  -- if S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: ptask_tail*
+  -- if $call_task_valid(S, EXCEPTION_HANDLER_INVOKE pexceptioncall)
+  -- if ~$exception_deprecated_raw(S, pexceptioncall.CALLBACK)
+  -- if $error_handler_resolution(S, pexceptioncall.CALLBACK) = HANDLERINVALID ptbytes
+def $eager_fatal_replay(S) = (S[.TODO = eps][.COMPLETION = INTERNALFATAL ($ptascii("Invalid callback ") ++ $error_callback_name(S, perrorcall.CALLBACK) ++ $ptascii(", ") ++ ptbytes) ($long_and(S.REPORTING, 1) =/= 0)][.TRACE = eps][.ORIGIN = eps][.ERRORORIGIN = eps])
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if $exception_warning_resume(perrorcall.RESUME)
+  -- if $call_task_valid(S, ERROR_HANDLER_INVOKE perrorcall)
+  -- if $exception_task_scope(S)
+  -- if $error_handler_resolution(S, perrorcall.CALLBACK) = HANDLERINVALID ptbytes
+def $eager_fatal_replay(S) = ($api_after_class(S, papiquery))
+  -- if S.TODO = (API_CALLABLE_RESULT papiquery 0) :: ptask_tail*
+  -- if $call_task_valid(S, API_CALLABLE_RESULT papiquery 0)
+def $eager_fatal_replay(S) = ($api_after_method(S, papiquery))
+  -- if S.TODO = (API_CALLABLE_RESULT papiquery 1) :: ptask_tail*
+  -- if $call_task_valid(S, API_CALLABLE_RESULT papiquery 1)
+def $eager_fatal_replay(S) = eps -- otherwise
+def $eager_fatal_source_valid(S, INTERNALFATAL ptbytes b) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $eager_fatal_internal_task(ptask)
+  -- if $eager_fatal_replay(S[.COMPLETION = NORMAL][.COMPILESTOP = false]) = (S_result)
+  -- if S_result.COMPLETION = INTERNALFATAL ptbytes b
+def $eager_fatal_source_valid(S, FATAL ptbytes z) = true
+  -- if ~S.COMPILESTOP
+  -- if $eager_fatal_replay(S[.COMPLETION = NORMAL]) = (S_result)
+  -- if S_result.COMPLETION = FATAL ptbytes z /\ S_result.ERRORORIGIN = S.ERRORORIGIN
+def $eager_fatal_source_valid(S, STATICBYTES ptbytes z) = true
+  -- if ~S.COMPILESTOP
+  -- if $eager_fatal_replay(S[.COMPLETION = NORMAL]) = (S_result)
+  -- if S_result.COMPLETION = STATICBYTES ptbytes z /\ S_result.ERRORORIGIN = S.ERRORORIGIN
+def $eager_fatal_source_valid(S, REQUESTFATAL ptbytes_class ptbytes z) = true
+  -- if $eager_fatal_reported(S, REQUESTFATAL ptbytes_class ptbytes z)
+  -- if $eager_fatal_replay(S[.COMPLETION = NORMAL]) = (S_result)
+  -- if S_result.COMPLETION = REQUESTFATAL ptbytes_class ptbytes z
+  -- if $runtime_class_report_valid(S_result)
+def $eager_fatal_source_valid(S, pcompletion) = false -- otherwise
+
+;; Compiler replay must compare this exact raw tuple/prefix. Ambient frozen
+;; queue completions are disabled in this proof view, avoiding a validation
+;; cycle through shutdown_compiler_released and destruction_state_valid.
+;; The queue keeps selected entries through DONE. They authenticate a callback's
+;; null-C declaration cause without inventing a source invocation or new owner.
+def $shutdown_declaration_scope(S, eps, porigin_function, porigin_lexical?, porigin_called?) = false
+def $shutdown_declaration_scope(S, pshutdownentry :: pshutdownentry_tail*, porigin_function, porigin_lexical?, porigin_called?) = ($shutdown_declaration_entry(S, pshutdownentry, porigin_function, porigin_lexical?, porigin_called?) \/ $shutdown_declaration_scope(S, pshutdownentry_tail*, porigin_function, porigin_lexical?, porigin_called?))
+def $shutdown_declaration_entry(S, pshutdownentry, porigin_function, porigin_lexical?, porigin_called?) = true
+  -- if $shutdown_entry_valid(S, pshutdownentry)
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if pfunction.ORIGIN = porigin_function
+  -- if $target_lexical_class(S, pshutdownentry.TARGET) = porigin_lexical?
+  -- if $target_called_class(S, pshutdownentry.TARGET) = porigin_called?
+def $shutdown_declaration_entry(S, pshutdownentry, porigin_function, porigin_lexical?, porigin_called?) = false -- otherwise
+def $declaration_cause_walk(S, PORIGIN n_site pcpath, [(porigin_function, eps, porigin_lexical?, porigin_called?)], n_unit, b_unit, n, eps, n_call) = true
+  -- if $(n > 0)
+  -- if b_unit \/ n_unit = 0
+  -- if $declaration_cause_owner(S, PORIGIN n_site pcpath) = (pfunction)
+  -- if $function_at($all_functions(S), porigin_function) = (pfunction_selected)
+  -- if $trait_source_same(pfunction, pfunction_selected)
+  -- if $declaration_callable_available(S, pfunction_selected, n)
+  -- if $declaration_active_class(S, porigin_lexical?) /\ $declaration_active_class(S, porigin_called?)
+  -- if $shutdown_declaration_scope(S, S.SHUTDOWN.ENTRIES, porigin_function, porigin_lexical?, porigin_called?)
+def $eager_fatal_compiler_at(eps, S_compiled) = false
+def $eager_fatal_compiler_at(pdestructioncleanup :: pdestructioncleanup_tail*, S_compiled) = ($eager_fatal_compiler_item(pdestructioncleanup, S_compiled) \/ $eager_fatal_compiler_at(pdestructioncleanup_tail*, S_compiled))
+def $eager_fatal_compiler_item(pdestructioncleanup, S_compiled) = true
+  -- if pdestructioncleanup.SOURCE = DESTRUCTOR_FATAL pdestructionfatal
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructionfatal.COMPLETION = S_compiled.COMPLETION /\ pdestructionfatal.ERRORORIGIN = S_compiled.ERRORORIGIN
+  -- if pdestructionfatal.DECLARATIONS = S_compiled.DECLARATIONS
+  -- if $shutdown_compiler_snapshot(S_compiled.COMPLETION) = (pdestructionfatal.FROZEN)
+def $eager_fatal_compiler_item(pdestructioncleanup, S_compiled) = false -- otherwise
+def $eager_fatal_compiler_valid(S, pdestructioncleanup, pdestructionfatal) = true
+  -- if pdestructionfatal.COMPILESTOP
+  -- if $(|pdestructionfatal.DECLARATIONS| <= |S.DECLARATIONS|)
+  -- if pdestructionfatal.DECLARATIONS = S.DECLARATIONS[0:|pdestructionfatal.DECLARATIONS|]
+  -- if $shutdown_compiler_snapshot(pdestructionfatal.COMPLETION) = (pdestructionfatal.FROZEN)
+  -- if S_history = $eager_fatal_history(S, pdestructionfatal)
+  -- if $eager_fatal_cursor_plans_valid(S_history, $eval_compile_cursors(S_history))
+  -- if S_proof = S_history[.DECLARATIONS = S.DECLARATIONS][.TODO = eps][.FRAMES = eps][.COMPLETION = pdestructionfatal.COMPLETION][.COMPILESTOP = pdestructionfatal.COMPILESTOP][.DESTRUCTION.PHASE = DESTRUCTION_PENDING][.DESTRUCTION.ABANDONED = [pdestructioncleanup]][.SHUTDOWN.PHASE = SHUTDOWN_PENDING][.SHUTDOWN.COMPLETION = NORMAL]
+  -- if $declaration_history_valid(S_proof)
+def $eager_fatal_compiler_valid(S, pdestructioncleanup, pdestructionfatal) = false -- otherwise
+def $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal) = true
+  -- if pdestructioncleanup.SOURCE = DESTRUCTOR_FATAL pdestructionfatal
+  -- if pdestructioncleanup <- S.DESTRUCTION.ABANDONED
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructioncleanup.CALLER = pdestructionfatal.FRAME.CONTEXT /\ pdestructioncleanup.ORIGIN = pdestructionfatal.FRAME.ORIGIN /\ pdestructioncleanup.CONSTCONTEXT = pdestructionfatal.FRAME.CONSTCONTEXT
+  -- if $consumer_producer_snapshot(pdestructioncleanup.TARGET)
+  -- if pdestructioncleanup.TARGET.SITE = eps /\ pdestructioncleanup.TARGET.INTERNAL
+  -- if (pdestructionfatal.FRAME.CONTEXT = eps /\ pdestructionfatal.FRAME.LOCALS = eps) \/ (pdestructionfatal.FRAME.CONTEXT =/= eps /\ pdestructionfatal.FRAME.LOCALS =/= eps)
+  -- if $heap_subset($eager_fatal_nodes(pdestructionfatal), S.ALLOCATIONS)
+  -- if $eager_fatal_handler_bounds(S, pdestructionfatal.HANDLERS)
+  -- if S_history = $eager_fatal_history(S, pdestructionfatal)
+  -- if pdestructionfatal.HANDLERS = $eager_fatal_handler_frames(S_history, pdestructionfatal.FRAME :: pdestructionfatal.FRAMES)
+  -- if $eager_fatal_target(S_history) = (pdestructioncleanup.TARGET.TARGET)
+  -- if pdestructioncleanup.TARGET = $eager_cleanup_target(S_history, pdestructioncleanup.TARGET.TARGET)
+  -- if $call_current_valid(S_history) /\ $call_frames_valid(S_history, S_history.FRAMES)
+  -- if $call_tasks_valid(S_history, S_history.TODO) /\ $destruction_state_valid(S_history) /\ $shutdown_state_valid(S_history)
+  -- if $eager_fatal_source_valid(S_history, pdestructionfatal.COMPLETION) \/ $eager_fatal_compiler_valid(S, pdestructioncleanup, pdestructionfatal)
+  -- if $shutdown_freeze_marked(S_history[.COMPLETION = pdestructionfatal.COMPLETION]).COMPLETION = pdestructionfatal.FROZEN
+  -- if $shutdown_frozen(pdestructionfatal.FROZEN)
+  -- if $call_reference_operand_valid(S_history, pdestructionfatal.VALUE)
+def $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal) = false -- otherwise
+;; This tag is historical evidence only, never an executable continuation.
+def $call_task_valid(S, DESTRUCTOR_FATAL pdestructionfatal) = false
+
+;; zend_object_std_dtor releases the dynamic hash before declared property slots.
+;; Reading/casting still uses the original slot layout; only decrement order changes.
+dec $property_release_partition(ppropertyslot*, bool) : pnode*
+def $property_release_nodes(ppropertyslot*) = $property_release_partition(ppropertyslot*, true) ++ $property_release_partition(ppropertyslot*, false)
+def $property_release_partition(eps, b) = eps
+def $property_release_partition(ppropertyslot :: ppropertyslot_tail*, b) = $property_slot_nodes([ppropertyslot]) ++ $property_release_partition(ppropertyslot_tail*, b)
+  -- if (ppropertyslot.DECL = eps) = b
+def $property_release_partition(ppropertyslot :: ppropertyslot_tail*, b) = $property_release_partition(ppropertyslot_tail*, b)
+  -- if (ppropertyslot.DECL = eps) =/= b

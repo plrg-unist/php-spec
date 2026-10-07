@@ -182,7 +182,7 @@ rule PhpStep/instanceof-class-abrupt: S ~> S_value[.TODO = eps]
   -- if S_value = $resolve_at(S, S.RESULT, z)
   -- if S_value.COMPLETION =/= NORMAL
 
-def $node_children(S, HOBJECT n) = $property_slot_nodes(ppropertyslot*)
+def $node_children(S, HOBJECT n) = $property_release_nodes(ppropertyslot*)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $node_children(S, HOBJECT n) = eps

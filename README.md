@@ -376,8 +376,20 @@ before callee restoration; C callback returns retain their separate destination.
 [Author checks](coverage/semantics/destructors-review.json) retain78 source
 agreements and303 reached assertions at their actual cuts;
 [independent review](coverage/semantics/destructor-review.json) retains64
-agreements, two Unsupported controls and548 reached assertions. Eager destruction
-before this stage, GC, output buffers and later request cleanup remain required.
+agreements, two Unsupported controls and548 reached assertions at that original
+cut. [Ordinary eager destruction](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md) now
+reuses the release loop with native operation order, used/unused result owners
+and real MAIN permission. Handler return cleanup precedes restoration; frozen
+original Throwable release precedes the queue. Author62 and independent60 exact
+source agreements keep their separate cuts; nineteen reached cases pass1,012
+assertions. Seven additional fatal sources retain live VM owners through bailout;
+two independent logical checkpoints pass198 unique assertions. Introduced runtime
+class, autoload, precision and Fiber checks retain separate cuts in the
+[author ledger](coverage/semantics/eager-destructors-review.json).
+The actual Array operand warning/cleanup interaction now matches the original
+lifetime stream and rejects a forged source-marker suffix in reached states.
+Active automatic-destruction Fiber transfer, compound Stringable reception, GC,
+output buffers and later request cleanup remain required.
 Full core and a fresh combined offline rebuild remain required.
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)

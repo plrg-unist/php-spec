@@ -1,0 +1,567 @@
+[
+  {
+    "id": "main-unset-removes-binding-first",
+    "source": "<?php class D{function __destruct(){echo isset($GLOBALS[\"d\"])?\"bound;\":\"gone;\";}}$d=new D;echo \"M;\";unset($d);echo \"T;\";",
+    "source_sha256": "ab3bae54728b570c872e8c6c2329c483c66f5da9d5704f71e345cd391840d3d6",
+    "stdout": "M;gone;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "main-private-error-caught",
+    "source": "<?php class C{private function __destruct(){echo \"bad;\";}}$c=new C;try{unset($c);}catch(Error $e){echo $e->getMessage(),\";\";}echo \"T;\";",
+    "source_sha256": "a1a67f113a157d7160f8ad19b18a3e7e92fd9f8c45f85990f90f785f17f6f8cb",
+    "stdout": "Call to private C::__destruct() from global scope;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "main-discard-before-next-statement",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}echo \"M;\";new D(\"tmp\");echo \"T;\";",
+    "source_sha256": "d13a12b3cb08f831339af3b49a7beba829642c6579d8427ee3b6f8f48b4b5878",
+    "stdout": "M;D:tmp;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "binary-independent-drops-left-first",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}function take($k){$r=$GLOBALS[$k];unset($GLOBALS[$k]);return $r;}$b=new D(\"b\");$a=new D(\"a\");echo \"M;\";take(\"a\")===take(\"b\");echo \"T;\";",
+    "source_sha256": "bec1aaf2ae9704a61d28565f68830b17d9889ec0ef259158f0fe64fca5c25e12",
+    "stdout": "M;D:a;D:b;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "main-replace-installs-new-binding",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\":\",isset($GLOBALS[\"x\"])?$GLOBALS[\"x\"]->id:\"gone\",\";\";}}$x=new D(\"old\");$x=new D(\"new\");echo \"T;\";unset($x);",
+    "source_sha256": "03ff69e009c5418015364aaba1eea5f0e2767473e22ec69603031e6eb6567c10",
+    "stdout": "D:old:new;T;D:new:gone;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "main-resurrection-once",
+    "source": "<?php class D{public $id=\"kept\";function __destruct(){echo \"D;\";$GLOBALS[\"saved\"]=$this;}}$d=new D;unset($d);echo $saved->id,\";\";unset($saved);echo \"T;\";",
+    "source_sha256": "dc269fd678150a5352dbbb8338a7e29dd2ef03ca016c8481ea05aaa3279da594",
+    "stdout": "D;kept;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "main-array-repeated-slot-order",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}$s=new D(\"shared\");$m=new D(\"middle\");$box=[$s,$m,$s];unset($s,$m);echo \"M;\";unset($box);echo \"T;\";",
+    "source_sha256": "eeafb0ffb30f33a206bc2821a21b4ed84f5f232906ae46f9eec2a1a10fcbe902",
+    "stdout": "M;D:middle;D:shared;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "main-unset-throw-caught-source-trace",
+    "source": "<?php\nclass D{function __destruct(){throw new Exception(\"dtor\");}}\n$d=new D;\ntry{unset($d);}catch(Throwable $e){$t=$e->getTrace();echo $e->getMessage(),\":\",$t[0][\"line\"],\":\",$t[0][\"function\"],\";\";}\necho \"T;\";",
+    "source_sha256": "90f0d38128dbba6bc78fcdf8b20bf5d0cb69bed7a69eaa029f1c55acee3d710e",
+    "stdout": "dtor:4:__destruct;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "private-class-main-drop-allowed",
+    "source": "<?php class C{private function __destruct(){echo \"D:C;\";}static function drop(){ $x=new C;unset($x);echo \"inside;\";}}C::drop();echo \"T;\";",
+    "source_sha256": "a483cd2a12233e2f1ab2ccb5948e7e060f1444f247fe9289bd2a1f8b52967751",
+    "stdout": "D:C;inside;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "frame-restore-main-private-error",
+    "source": "<?php class C{private function __destruct(){echo \"bad;\";}}function f(){$x=new C;echo \"F;\";}try{f();}catch(Error $e){echo $e->getMessage(),\";\";}echo \"T;\";",
+    "source_sha256": "8fdc112befcf9417b3bb5d2e88032c3b9607a9085ba2c2b9c3a7a48308a45d93",
+    "stdout": "F;Call to private C::__destruct() from global scope;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "frame-pending-throw-replacement-chain",
+    "source": "<?php class D{function __destruct(){echo \"D;\";throw new Exception(\"child\");}}function f(){$d=new D;throw new Exception(\"parent\");}try{f();}catch(Throwable $e){echo $e->getMessage(),\":\",$e->getPrevious()->getMessage(),\";\";}echo \"T;\";",
+    "source_sha256": "fa875453c8cb7c522d57fba489dad054604c1554cad8f3cc68bd9ce4eb48ed44",
+    "stdout": "D;child:parent;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "unused-return-private-live-callee",
+    "source": "<?php class C{private function __destruct(){echo \"D:C;\";}static function get(){echo \"F;\";return new C;}}C::get();echo \"T;\";",
+    "source_sha256": "beb84e147848bf424f16b6e79546db1744dd7585695902e910caa485aea4f368",
+    "stdout": "F;D:C;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "eager-exit-runs-queue-skips-tail",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}class E{function __destruct(){echo \"E;\";exit(7);}}register_shutdown_function(function(){echo \"S;\";});$a=new D(\"late\");$e=new E;echo \"M;\";unset($e);echo \"bad;\";",
+    "source_sha256": "4fa75d8dc217c8d37381790261883984c4354d4eb75f958bfc1e70b8fa8acfcf",
+    "stdout": "M;E;S;D:late;",
+    "stderr": "",
+    "exit": 7,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "eager-throw-enters-exception-handler",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}class E{function __destruct(){echo \"E;\";throw new Exception(\"dtor\");}}set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});register_shutdown_function(function(){echo \"S;\";});$a=new D(\"late\");$e=new E;unset($e);echo \"bad;\";",
+    "source_sha256": "cdfa90e3c9419f4d883bf1e65e965ddf8fcb6c3562b8ed2f1c23e702c4aa8131",
+    "stdout": "E;H:dtor;S;D:late;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "main-array-cow-final-container",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=[new D(\"a\"),new D(\"b\")];$b=$a;unset($a);echo \"K;\";unset($b);echo \"T;\";",
+    "source_sha256": "07fb67c9af4d50fb5a02cb27ed07d862e1dce14e8f6350db74738d2ce286796c",
+    "stdout": "K;D:a;D:b;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "main-reference-replacement-and-last-wrapper",
+    "source": "<?php class D{public $id;public $hold=null;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}$a=new D(\"old\");$r=&$a;$a=new D(\"new\");unset($a);echo \"K;\";unset($r);echo \"T;\";",
+    "source_sha256": "cca16486eb09c4d4c53107784ce5066862a7197807c3d41a7a6df89901f3c1a1",
+    "stdout": "D:old;K;D:new;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "property-replace-throw-keeps-new-value",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";if($this->id===\"old\")throw new Exception(\"drop\");}}class B{public $child=null;}$b=new B;$b->child=new D(\"old\");try{$b->child=new D(\"new\");}catch(Throwable $e){echo \"C:\",$b->child->id,\";\";}unset($b);echo \"T;\";",
+    "source_sha256": "9bc7648a9f9a6834721d2b1b731fa88250981f45ac7da6d3bbdcdea749aa47c4",
+    "stdout": "D:old;C:new;D:new;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "terminal-original-drop-before-queue",
+    "source": "<?php class E extends Exception{function __destruct(){echo \"E;\";}}register_shutdown_function(function(){echo \"S;\";});throw new E(\"original\");",
+    "source_sha256": "563257e2fab62117a3eff792322624b60ab4cf87c96db2435bbf9c3583c1b8d5",
+    "stdout": "E;S;",
+    "stderr": "Fatal error: Uncaught E: original in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "terminal-original-global-owner-delays",
+    "source": "<?php class E extends Exception{function __destruct(){echo \"E;\";}}register_shutdown_function(function(){echo \"S;\";});$e=new E(\"original\");throw $e;",
+    "source_sha256": "a3011338e13b42e9d254556e72efd859e493ec5e90e45ba8efb2025d0241c902",
+    "stdout": "S;E;",
+    "stderr": "Fatal error: Uncaught E: original in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "terminal-drop-appends-queue",
+    "source": "<?php class E extends Exception{function __destruct(){echo \"E;\";register_shutdown_function(function(){echo \"A;\";});}}register_shutdown_function(function(){echo \"S;\";});throw new E(\"original\");",
+    "source_sha256": "fc186a8c756a98d00bb273c710fdfcbed35a0796c75076fbc4085b3fc36d423f",
+    "stdout": "E;S;A;",
+    "stderr": "Fatal error: Uncaught E: original in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "terminal-drop-exit-overrides-status",
+    "source": "<?php class E extends Exception{function __destruct(){echo \"E;\";exit(7);}}register_shutdown_function(function(){echo \"S;\";});throw new E(\"original\");",
+    "source_sha256": "49f4de2e714656f0e25f1ba0718a381f295d853075c367f2f5886d6910627f99",
+    "stdout": "E;S;",
+    "stderr": "Fatal error: Uncaught E: original in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\n",
+    "exit": 7,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "terminal-private-destructor-null-c-warning",
+    "source": "<?php class E extends Exception{private function __destruct(){echo \"bad;\";}}register_shutdown_function(function(){echo \"S;\";});throw new E(\"original\");",
+    "source_sha256": "1e7996debf3d0854042a1ad2baf248e043c52ef57d0820268b01241edb8c1baf",
+    "stdout": "S;",
+    "stderr": "Fatal error: Uncaught E: original in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\nWarning: Call to private E::__destruct() from global scope during shutdown ignored in Unknown on line 0\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "handled-original-drop-nested-handler",
+    "source": "<?php class E extends Exception{function __destruct(){echo \"E;\";throw new Exception(\"inner\");}}set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});register_shutdown_function(function(){echo \"S;\";});throw new E(\"original\");",
+    "source_sha256": "b00a63bb2e0b874a113e24e762625f196a4de5b2cb5c01e997ff6e8cdd851842",
+    "stdout": "H:original;E;S;",
+    "stderr": "Fatal error: Uncaught Exception: inner in {file}:1\nStack trace:\n#0 [internal function]: E->__destruct()\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "terminal-previous-chain-drop-order",
+    "source": "<?php class P extends Exception{function __destruct(){echo \"P;\";}}class E extends Exception{function __destruct(){echo \"E;\";}}register_shutdown_function(function(){echo \"S;\";});throw new E(\"original\",0,new P(\"previous\"));",
+    "source_sha256": "aff992104bf889154358b5bb8d93c302278678e1d542eaf1acca9d1c4deefc8e",
+    "stdout": "E;P;S;",
+    "stderr": "Fatal error: Uncaught P: previous in {file}:1\nStack trace:\n#0 {main}\n\nNext E: original in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "terminal-freeze-before-drop-mutation",
+    "source": "<?php class E extends Exception{function __toString(){return \"Frozen\";}function __destruct(){echo \"E;\";ini_set(\"display_errors\",\"0\");error_reporting(0);}}register_shutdown_function(function(){echo \"S;\";});throw new E(\"original\");",
+    "source_sha256": "3966727085305e6f29e8ae5c672bd0756e221b101c37b1a92cddc8fb4356195e",
+    "stdout": "E;S;",
+    "stderr": "Fatal error: Uncaught Frozen\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "unused-assignment-no-rhs-extra-owner",
+    "source": "<?php class R{function __destruct(){echo \"R;\";}}class A{function __destruct(){echo \"A;\";unset($GLOBALS[\"x\"]);echo \"Aend;\";}}$x=new A;echo \"M;\";$x=new R;echo \"T;\";",
+    "source_sha256": "3654461fdf165bb3962f2dceeab05c26ca9f5d2db0587bb8f6ef6e79583dbaf7",
+    "stdout": "M;A;R;Aend;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "used-assignment-retains-rhs-result",
+    "source": "<?php class R{function __destruct(){echo \"R;\";}}class A{function __destruct(){echo \"A;\";unset($GLOBALS[\"x\"]);echo \"Aend;\";}}$x=new A;echo \"M;\";$r=($x=new R);echo \"T;\";unset($r);",
+    "source_sha256": "d996d09e52ab077210917fd409f1ea3b9b52662f1dafab0c9bea9af5b6e6ebf4",
+    "stdout": "M;A;Aend;T;R;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "binary-left-throw-keeps-right-drop",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";throw new Exception($this->id);}}function take($k){$r=$GLOBALS[$k];unset($GLOBALS[$k]);return $r;}$b=new D(\"b\");$a=new D(\"a\");try{take(\"a\")===take(\"b\");}catch(Throwable $e){echo \"C:\",$e->getMessage(),\":\",$e->getPrevious()->getMessage(),\";\";}echo \"T;\";",
+    "source_sha256": "8a63bcfec3cf9904ec2bf8053d56cacbeeecabaaf3fad8ae40f9a481bc743eaa",
+    "stdout": "D:a;D:b;C:b:a;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "array-release-continues-after-first-throw",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";throw new Exception($this->id);}}$box=[new D(\"a\"),new D(\"b\")];try{unset($box);}catch(Throwable $e){echo \"C:\",$e->getMessage(),\":\",$e->getPrevious()->getMessage(),\";\";}echo \"T;\";",
+    "source_sha256": "8092bdfe2c25f0788f370f2f90c49c17f8d4247a96b3aea9d5e7c0c89fb184b9",
+    "stdout": "D:a;D:b;C:b:a;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "terminal-original-drop-second-fatal",
+    "source": "<?php class E extends Exception{function __destruct(){echo \"E;\";throw new Exception(\"inner\");}}register_shutdown_function(function(){echo \"S;\";});throw new E(\"original\");",
+    "source_sha256": "f0d3ba5d223d39fcb18d55a0f1f44ae2a761bacc4c55272f651730b35296a7e3",
+    "stdout": "E;S;",
+    "stderr": "Fatal error: Uncaught E: original in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\nFatal error: Uncaught Exception: inner in {file}:1\nStack trace:\n#0 [internal function]: E->__destruct()\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "exception-handler-retval-drops-before-handler-restore",
+    "source": "<?php class R{function __destruct(){echo \"R;\";throw new Exception(\"retval\");}}class E extends Exception{function __destruct(){echo \"E;\";}}set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";return new R;});register_shutdown_function(function(){echo \"S;\";});throw new E(\"original\");",
+    "source_sha256": "7a4b9e6bd9fd3c23a2f73d5ff6b9f54b5c46efed047b23969d8fda0221ba0b55",
+    "stdout": "H:original;R;S;E;",
+    "stderr": "Fatal error: Uncaught Exception: retval in {file}:1\nStack trace:\n#0 [internal function]: R->__destruct()\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "terminal-render-installs-handler-before-original-drop",
+    "source": "<?php class E extends Exception{function __toString(){set_exception_handler(function($e){echo \"H:\",$e->getMessage(),\";\";});return \"Frozen\";}function __destruct(){echo \"E;\";throw new Exception(\"inner\");}}register_shutdown_function(function(){echo \"S;\";});throw new E(\"original\");",
+    "source_sha256": "c8675377b776d3803ac7f94fc641559ada9bb26d6717cfae7e69f14207f13ec9",
+    "stdout": "S;E;H:inner;",
+    "stderr": "Fatal error: Uncaught Frozen\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "terminal-static-render-handler-before-original-drop",
+    "source": "<?php class E extends Exception{function __toString(){set_exception_handler(static function($e){echo \"H:\",$e->getMessage(),\";\";});return \"Frozen\";}function __destruct(){echo \"E;\";throw new Exception(\"inner\");}}register_shutdown_function(function(){echo \"S;\";});throw new E(\"original\");",
+    "source_sha256": "9f25190bf8466a61e70d00963920e0d4d321d25048bdb497f256f73c09d20eb3",
+    "stdout": "E;H:inner;S;",
+    "stderr": "Fatal error: Uncaught Frozen\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "main-throw-preserves-other-global-owner",
+    "source": "<?php class K{public $id=\"kept\";function __destruct(){echo \"K;\";}}class D{function __destruct(){echo \"D;\";throw new Exception(\"drop\");}}$keep=new K;$d=new D;try{unset($d);}catch(Throwable $e){echo \"C:\",$keep->id,\";\";}echo \"T;\";unset($keep);",
+    "source_sha256": "c53e655e912dbb6ee5bf6162ec89b337d1a2165bb1118138f0aca018845a0684",
+    "stdout": "D;C:kept;T;K;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "nested-private-destructor-registers-shutdown",
+    "source": "<?php class C{private function __destruct(){echo \"D;\";register_shutdown_function(\"self::h\");}private static function h(){echo \"H:\",get_called_class(),\";\";}static function drop(){ $x=new static;unset($x);}}class L extends C{}C::drop();echo \"T;\";",
+    "source_sha256": "d64ad0e11b225fd76edf8a5047b62d208b0ddcbc6d8cdd6cb0be06beed45ee8c",
+    "stdout": "D;T;H:C;",
+    "stderr": "Deprecated: Use of \"self\" in callables is deprecated in {file} on line 1\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "ordinary-destructor-eval-service-resumes",
+    "source": "<?php class D{function __destruct(){echo \"D;\";eval('echo \"E;\";');echo \"R;\";}}$d=new D;unset($d);echo \"T;\";",
+    "source_sha256": "02af3d906d4ed855d2537b24ec5742b4c0287074ca70cf6521bb4027b6d542f7",
+    "stdout": "D;E;R;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "eval-main-destructor-throw-caught-outside",
+    "source": "<?php class D{function __destruct(){throw new Exception(\"drop\");}}$d=new D;try{eval('unset($d);echo \"bad;\";');}catch(Throwable $e){echo \"C:\",$e->getMessage(),\";\";}echo \"T;\";",
+    "source_sha256": "452e31aa36f0cf906ad196a9a311585f27a943c2aec12705318419834158168a",
+    "stdout": "C:drop;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "error-handler-retval-drop-before-handler-restore",
+    "source": "<?php class R{function __destruct(){echo \"R;\";trigger_error(\"nested\",E_USER_NOTICE);}}function w($n,$m,$f,$l){echo \"W;\";return new R;}set_error_handler(\"w\");trigger_error(\"outer\",E_USER_NOTICE);echo \"T;\";",
+    "source_sha256": "bdd7417750a8e43e2cca4c7ebe75b445bfc08be73a594ed70bc3cf4ca89bcc97",
+    "stdout": "W;R;T;",
+    "stderr": "Notice: nested in {file} on line 1\n",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "error-handler-replacement-retval-before-old-receiver",
+    "source": "<?php class R{function __destruct(){echo \"R;\";}}class H{function w($n,$m,$f,$l){echo \"W;\";set_error_handler(\"next_handler\");return new R;}function __destruct(){echo \"H;\";}}function next_handler($n,$m,$f,$l){echo \"N;\";return true;}$h=new H;set_error_handler([$h,\"w\"]);unset($h);trigger_error(\"outer\",E_USER_NOTICE);echo \"T;\";",
+    "source_sha256": "9f3c42924fae5522860e4703c707cc18febf21eea7b83dc1299496c2568172a5",
+    "stdout": "W;R;H;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "object-dynamic-properties-before-declared-slots",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}class B extends stdClass{public $declared=null;}$b=new B;$b->declared=new D(\"declared\");$b->dynamic=new D(\"dynamic\");echo \"M;\";unset($b);echo \"T;\";",
+    "source_sha256": "c82b3bb811bb75fcba8125b7fd56e61efa0068d102feae84967c5bef31cc1067",
+    "stdout": "M;D:dynamic;D:declared;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "closure-captured-values-before-bound-receiver",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}class C{function make($x){return function()use($x){};}function __destruct(){echo \"C;\";}}$c=new C;$d=new D(\"capture\");$f=$c->make($d);unset($c,$d);echo \"M;\";unset($f);echo \"T;\";",
+    "source_sha256": "160dd99096ecf2d69d83d45aeb56f4dd701666df7022d6fcd29164d17936b9c1",
+    "stdout": "M;D:capture;C;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "destructor-fixed-default-argument-rejection",
+    "source": "<?php class R{function __destruct(){echo \"R;\";}}class D{function __destruct($x=new R){echo \"D:\",func_num_args(),\";\";}}$d=new D;unset($d);echo \"T;\";",
+    "source_sha256": "9d618105c8c333c549fff7e6b766a413db8412762741a1d10480c4b35dfae0d5",
+    "stdout": "",
+    "stderr": "Fatal error: Method D::__destruct() cannot take arguments in {file} on line 1\nStack trace:\n#0 {main}\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "ordinary-release-recycles-handle-before-request-store",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\";\";}}$dead=new D(\"old\");$box=[new D(\"middle\")];unset($dead);$box[]=new D(\"new\");register_shutdown_function(function(){echo \"S;\";});echo \"M;\";",
+    "source_sha256": "926768e575253201a181d983139c991ca021337a728f86e6b4fa230d1aeaad3d",
+    "stdout": "D:old;M;S;D:new;D:middle;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "typeerror-trace-owner-delays-argument-destructor",
+    "source": "<?php class D{function __destruct(){echo \"D;\";throw new Exception(\"drop\");}}function f(int $x){echo \"bad;\";}try{f(new D);}catch(Throwable $e){echo \"C:\",get_class($e),\";\";}echo \"K;\";try{unset($e);}catch(Throwable $drop){echo \"R:\",$drop->getMessage(),\":\",$drop->getPrevious()===null?\"none\":\"previous\",\";\";}echo \"T;\";",
+    "source_sha256": "8c2b56589e2610db8ba378f6622bc43fa9b4bae5f9603db19e10ac090b06a024",
+    "stdout": "C:TypeError;K;D;R:drop:none;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "error-handler-retval-internal-trace-main-catch",
+    "source": "<?php class R{function __destruct(){echo \"R;\";throw new Exception(\"ret\");}}function w($n,$m,$f,$l){echo \"W;\";return new R;}set_error_handler(\"w\");try{trigger_error(\"outer\",E_USER_NOTICE);}catch(Throwable $e){$t=$e->getTrace();echo \"C:\",$e->getMessage(),\":\",isset($t[0][\"file\"])?\"source\":\"internal\",\":\",$t[0][\"function\"],\":\",isset($t[1][\"function\"])?$t[1][\"function\"]:\"none\",\";\";}echo \"T;\";",
+    "source_sha256": "7cad424bcca30d1a52753647ce38cad807595da3c54904d506f07d31462bf7dd",
+    "stdout": "W;R;C:ret:internal:__destruct:trigger_error;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "error-handler-retval-private-denial-main-catch",
+    "source": "<?php class R{private function __destruct(){echo \"bad;\";}}function w($n,$m,$f,$l){echo \"W;\";return new R;}set_error_handler(\"w\");try{trigger_error(\"outer\",E_USER_NOTICE);}catch(Throwable $e){echo \"C:\",get_class($e),\":\",$e->getMessage(),\";\";}echo \"T;\";",
+    "source_sha256": "bfcf713b7f81d3f9430d99ea94b0694dbf6b4407b5be7792b3f71f0bcb7d1dc3",
+    "stdout": "W;C:Error:Call to private R::__destruct() from global scope;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "unused-property-assignment-does-not-own-cv-receiver",
+    "source": "<?php class R{function __destruct(){echo \"R;\";}}class A{function __destruct(){echo \"A;\";unset($GLOBALS[\"b\"]);echo \"Aend;\";}}class B{public $child=null;}$b=new B;$b->child=new A;echo \"M;\";$b->child=new R;echo \"T;\";",
+    "source_sha256": "e5fca50cbf5d614bb90a5812b4e5ea2f6d2da8425aa25ea05b6fb15d67076a49",
+    "stdout": "M;A;Aend;R;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "used-property-assignment-owns-result-not-cv-receiver",
+    "source": "<?php class R{function __destruct(){echo \"R;\";}}class A{function __destruct(){echo \"A;\";unset($GLOBALS[\"b\"]);echo \"Aend;\";}}class B{public $child=null;}$b=new B;$b->child=new A;echo \"M;\";$r=($b->child=new R);echo \"T;\";unset($r);",
+    "source_sha256": "2fe55b09d45ec188e049bcabd0f64eb860f87c87e271ae7b16f2f518febe1ca7",
+    "stdout": "M;A;Aend;T;R;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "property-rhs-temp-survives-cv-receiver-drop",
+    "source": "<?php class R{function __destruct(){echo \"R;\";}}class A{function __destruct(){echo \"A;\";unset($GLOBALS[\"b\"]);echo \"Aend;\";}}class B{public $child=null;function __destruct(){echo \"B;\";}}$b=new B;$b->child=new A;echo \"M;\";$b->child=new R;echo \"T;\";",
+    "source_sha256": "b668f023dbbdce719b36e0c29992bd3a6841c52bc8690eff7795442724d7e432",
+    "stdout": "M;A;B;Aend;R;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "terminal-original-empty-queue-before-stage2",
+    "source": "<?php class G{function __destruct(){echo \"G;\";}}class E extends Exception{function __destruct(){echo \"E;\";}}$g=new G;throw new E(\"original\");",
+    "source_sha256": "72d2dc87d83b7082ea5915d88a0a16bae19d1112d6784e572881ab3eae26e901",
+    "stdout": "E;G;",
+    "stderr": "Fatal error: Uncaught E: original in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "property-unset-cv-receiver-dies-in-old-destructor",
+    "source": "<?php class A{function __destruct(){echo \"A;\";unset($GLOBALS[\"b\"]);echo \"Aend;\";}}class B{public $child=null;function __destruct(){echo \"B;\";}}$b=new B;$b->child=new A;echo \"M;\";unset($b->child);echo \"T;\";",
+    "source_sha256": "050dda9e623cfa9fcbedcbd302f3987135adfcbbf9c716265710235ccc8620c1",
+    "stdout": "M;A;B;Aend;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "property-compound-cv-receiver-dies-in-old-destructor",
+    "source": "<?php class A{function __toString(){echo \"V;\";return \"a\";}function __destruct(){echo \"A;\";unset($GLOBALS[\"b\"]);echo \"Aend;\";}}class B{public $child=null;function __destruct(){echo \"B;\";}}$b=new B;$b->child=new A;echo \"M;\";$b->child.=\"x\";echo \"T;\";",
+    "source_sha256": "ec405ca37870e9db9c644703bb41c0690f598f4b70e6104e46af7eed8b4b565a",
+    "stdout": "M;V;A;B;Aend;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "user object string conversion"
+  },
+  {
+    "id": "same-property-site-cold-and-warm-unused",
+    "source": "<?php class R{function __destruct(){echo \"R;\";}}class A{function __destruct(){echo \"A;\";unset($GLOBALS[\"b\"]);echo \"Aend;\";}}class B{public $child=null;function __destruct(){echo \"B;\";}}for($i=0;$i<2;$i++){$b=new B;$b->child=new A;echo \"I:\",$i,\";\";$b->child=new R;echo \"T;\";}",
+    "source_sha256": "d93573700813755de3956c56f9a442c8be424dd2ac57d90140365de2004a390e",
+    "stdout": "I:0;A;B;Aend;R;T;I:1;A;B;R;Aend;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "same-property-site-cold-and-warm-used",
+    "source": "<?php class R{function __destruct(){echo \"R;\";}}class A{function __destruct(){echo \"A;\";unset($GLOBALS[\"b\"]);echo \"Aend;\";}}class B{public $child=null;function __destruct(){echo \"B;\";}}for($i=0;$i<2;$i++){$b=new B;$b->child=new A;echo \"I:\",$i,\";\";$r=($b->child=new R);echo \"T;\";unset($r);}",
+    "source_sha256": "085d04287ebf9680a63e5205c88d0b2fb13751b0016eb2c42a7a7be3f8a8a8c2",
+    "stdout": "I:0;A;B;Aend;T;R;I:1;A;B;Aend;T;R;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "error-handler-array-replacement-drops-raw-container",
+    "source": "<?php class R{function __destruct(){echo \"R;\";}}class H{function w($n,$m,$f,$l){echo \"W;\";set_error_handler(function($n,$m,$f,$l){return true;});return new R;}function __destruct(){echo \"H;\";}}set_error_handler([new H,\"w\"]);trigger_error(\"outer\",E_USER_NOTICE);echo \"T;\";",
+    "source_sha256": "34f89562035dba7758c4110af8c8a7fdd8005f15acecc5a091ab0c602761b608",
+    "stdout": "W;R;T;H;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "binary-right-cv-borrowed-during-left-destructor",
+    "source": "<?php class A{function __destruct(){echo \"A;\";unset($GLOBALS[\"x\"]);echo \"Aend;\";}}class R{function __destruct(){echo \"R;\";}}$x=new R;echo \"M;\";(new A)===$x;echo \"T;\";",
+    "source_sha256": "da6cb6c255ea55e62de1791a6890e7b28e2238a32a50b8dc5215bbad5931afa6",
+    "stdout": "M;A;R;Aend;T;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "terminal-destructor-bailout-keeps-previous-owner",
+    "source": "<?php class P extends Exception{function __destruct(){echo \"P;\";}}class E extends Exception{function __destruct(){echo \"E;\";throw new Exception(\"inner\");}}set_exception_handler(static function($e){echo \"H;\";});register_shutdown_function(static function(){echo \"S;\";});throw new E(\"original\",0,new P(\"previous\"));",
+    "source_sha256": "ec4353930904a52192433761b67e926a2d1948194db89eedcda73e61108a7f24",
+    "stdout": "H;E;S;P;",
+    "stderr": "Fatal error: Uncaught Exception: inner in {file}:1\nStack trace:\n#0 [internal function]: E->__destruct()\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "terminal-destructor-exit-keeps-previous-owner",
+    "source": "<?php class P extends Exception{function __destruct(){echo \"P;\";}}class E extends Exception{function __destruct(){echo \"E;\";exit(7);}}set_exception_handler(static function($e){echo \"H;\";});register_shutdown_function(static function(){echo \"S;\";});throw new E(\"original\",0,new P(\"previous\"));",
+    "source_sha256": "5710c762f675106a42401b5f6cb1e22fe80e4d73536192e66520b912d59d7b8b",
+    "stdout": "H;E;S;P;",
+    "stderr": "",
+    "exit": 7,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "terminal-private-warning-bailout-keeps-previous-owner",
+    "source": "<?php class P extends Exception{function __destruct(){echo \"P;\";}}class E extends Exception{private function __destruct(){echo \"bad;\";}}set_error_handler(static function($n,$m,$f,$l){echo \"W;\";throw new Exception(\"warning\");});register_shutdown_function(static function(){echo \"S;\";});throw new E(\"original\",0,new P(\"previous\"));",
+    "source_sha256": "0b85ae5722568e3f91b5677982b278996f690a9690ade5749fa6a7b783ae6b0b",
+    "stdout": "W;S;P;",
+    "stderr": "Fatal error: Uncaught P: previous in {file}:1\nStack trace:\n#0 {main}\n\nNext E: original in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\nFatal error: Uncaught Exception: warning in {file}:1\nStack trace:\n#0 [internal function]: {closure:{file}:1}(2, 'Call to private...', 'Unknown', 0)\n#1 {main}\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "terminal-destructor-bailout-renders-override-before-queue",
+    "source": "<?php class P extends Exception{function __destruct(){echo \"P;\";}}class R extends Exception{function __toString(){echo \"V;\";return \"rendered\";}}class E extends Exception{function __destruct(){echo \"E;\";throw new R(\"inner\");}}set_exception_handler(static function($e){echo \"H;\";});register_shutdown_function(static function(){echo \"S;\";});throw new E(\"original\",0,new P(\"previous\"));",
+    "source_sha256": "85f246fe5c8b97c12fa44dd3e7a98ed8f2ee884937f1ebf207a156bcd151a990",
+    "stdout": "H;E;V;S;P;",
+    "stderr": "Fatal error: Uncaught rendered\n  thrown in {file} on line 1\n",
+    "exit": 255,
+    "status": "php_error"
+  },
+  {
+    "id": "terminal-private-warning-exit-keeps-previous-owner",
+    "source": "<?php class P extends Exception{function __destruct(){echo \"P;\";}}class E extends Exception{private function __destruct(){echo \"bad;\";}}set_error_handler(static function($n,$m,$f,$l){echo \"W;\";exit(7);});register_shutdown_function(static function(){echo \"S;\";});throw new E(\"original\",0,new P(\"previous\"));",
+    "source_sha256": "a8933cb4cdfa1b4835d4cfe3261b2c1f1161682265f87a45b9496a2e81e74667",
+    "stdout": "W;S;P;",
+    "stderr": "Fatal error: Uncaught P: previous in {file}:1\nStack trace:\n#0 {main}\n\nNext E: original in {file}:1\nStack trace:\n#0 {main}\n  thrown in {file} on line 1\n",
+    "exit": 7,
+    "status": "explicit_exit"
+  },
+  {
+    "id": "returned-arrayaccess-child-eager-retirement",
+    "source": "<?php\nerror_reporting(0);\nclass InnerObject292 implements ArrayAccess {\n    public function __destruct() { echo \"D:inner;\"; }\n    public function offsetExists(mixed $offset): bool { return false; }\n    public function offsetGet(mixed $offset): mixed { return null; }\n    public function offsetSet(mixed $offset,mixed $value): void { echo 'S:',$offset,':',$value,';'; $GLOBALS['written292']=$value; }\n    public function offsetUnset(mixed $offset): void {}\n}\nclass OuterObject292 implements ArrayAccess {\n    public function __destruct() { echo \"D:outer;\"; }\n    public function offsetExists(mixed $offset): bool { return false; }\n    public function offsetGet(mixed $offset): mixed { echo 'G;'; $inner=$GLOBALS['inner292']; unset($GLOBALS['inner292'],$GLOBALS['o292']); return $inner; }\n    public function offsetSet(mixed $offset, mixed $value): void { echo 'WRONGSET;'; }\n    public function offsetUnset(mixed $offset): void { echo 'WRONGUNSET;'; }\n}\n\n$inner292=new InnerObject292; $o292=new OuterObject292;\nset_error_handler(function($n,$m) { echo 'WRONGNOTICE;'; return true; },8);\n$r292=($o292[1][7]=13);\nrestore_error_handler();\necho 'R:',$r292,':',$written292,':',(int)isset($inner292),':',(int)isset($o292),';';\n",
+    "stdout": "G;D:outer;S:7:13;D:inner;R:13:13:0:0;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "b27406196d21ea6caaadd258315c1fe7ad305863835274401b9d626da7a56ce0",
+    "derived_from": {
+      "path": "tests/semantics/arrayaccess_write_review_cases.py",
+      "id": "nested-returned-object-survives-both-global-retirements",
+      "source_sha256": "fb0c6de81351580bb6dc79e78ddec1f456f8694a8278d33ca9991542830e6e74",
+      "changes": "Adds only echoing Inner and Outer destructors to the accepted returned-object ownership source."
+    }
+  }
+]

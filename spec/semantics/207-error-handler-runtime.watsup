@@ -192,7 +192,8 @@ rule PhpStep/error-handler-fallback: S ~> $error_fallback_finish($error_default(
   -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
   -- if S.RESULT = KNOWN (PBOOL false)
-rule PhpStep/error-handler-handled: S ~> $error_handler_restore(S[.TODO = perrorcall.RESUME :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], perrorcall.CALLBACK)
+dec $error_handler_finish(pstate, perrorcall) : pstate
+rule PhpStep/error-handler-handled: S ~> $error_handler_finish(S, perrorcall)
   -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
   -- if S.RESULT = KNOWN pvalue

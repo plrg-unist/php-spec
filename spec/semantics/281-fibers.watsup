@@ -48,11 +48,18 @@ def $fiber_vm_restore(S, pfibervm) = $set_active_table(S[.GLOBALTABLE = $fiber_v
 def $fiber_fresh_vm(S, n, pnamedargs) = $set_active_table(S[.GLOBALTABLE = ($fiber_globals(S))][.TODO = [FIBER_ENTER n pnamedargs, FIBER_FINISH n]][.ORIGIN = eps][.CURRENT = eps][.FRAMES = eps][.HELD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.CELL = 0][.KEY = KINT 0][.LOCATION = ROOT 0][.REPORTING = $reporting_ini_mask(S.REPORTINGINI)][.SILENCES = eps][.BORROWEDREAD = eps][.OBJECTCAST = eps][.CONSTCONTEXT = eps][.TRACE = eps][.ERRORFATALTRACE = eps][.ERRORORIGIN = eps], $empty_table())
 dec $fiber_transfer_context(pstate, pcallcontext?) : bool
 dec $fiber_transfer_frames(pstate, pframe*) : bool
+dec $fiber_destruction_pending(pstate) : bool
+dec $fiber_transfer_reason(pstate) : text
+;; These stack certificates must move with the VM before a destruction callback
+;; can switch Fibers. Shared abandoned owners, handles and write caches do not.
+def $fiber_destruction_pending(S) = (S.DESTRUCTION.CALLS =/= eps \/ S.DESTRUCTION.RELEASES =/= eps \/ S.DESTRUCTION.FRAMES =/= eps \/ S.DESTRUCTION.OPERATIONS =/= eps \/ S.DESTRUCTION.CLEANUPS =/= eps)
+def $fiber_transfer_reason(S) = "Fiber switch during automatic destruction" -- if $fiber_destruction_pending(S)
+def $fiber_transfer_reason(S) = "Fiber switch during an initializer, source loader or Generator continuation" -- if ~$fiber_destruction_pending(S)
 def $fiber_transfer_context(S, eps) = true
 def $fiber_transfer_context(S, (pcallcontext)) = ~$autoload_context_kind(S, pcallcontext)
 def $fiber_transfer_frames(S, eps) = true
 def $fiber_transfer_frames(S, pframe :: pframe_tail*) = (pframe.CONSTCONTEXT = eps /\ $generator_resume_ids(pframe.TODO) = eps /\ $fiber_transfer_context(S, pframe.CONTEXT) /\ $fiber_transfer_frames(S, pframe_tail*))
-def $fiber_transfer_domain(S) = (S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps /\ S.DIRCONTEXT = eps /\ S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ $generator_resume_ids(S.TODO) = eps /\ $fiber_transfer_context(S, S.CURRENT) /\ $fiber_transfer_frames(S, S.FRAMES))
+def $fiber_transfer_domain(S) = (~$fiber_destruction_pending(S) /\ S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps /\ S.DIRCONTEXT = eps /\ S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ $generator_resume_ids(S.TODO) = eps /\ $fiber_transfer_context(S, S.CURRENT) /\ $fiber_transfer_frames(S, S.FRAMES))
 
 ;; Fixed-signature Fiber methods reuse CONFIG's by-value SEND and named slots.
 def $fiber_kind(INTRINSIC_FIBER_CONSTRUCT) = true
@@ -382,7 +389,7 @@ def $fiber_receive_value(S, pconfigcall, pvalue) = $config_error(S, pconfigcall,
   -- if pconfigcall.OWNER = (n)
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.STATUS =/= FIBER_SUSPENDED
-def $fiber_receive_value(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "Fiber switch during an initializer, source loader or Generator continuation"]
+def $fiber_receive_value(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED $fiber_transfer_reason(S)]
   -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW, INTRINSIC_FIBER_SUSPEND]
   -- if pconfigcall.KIND =/= INTRINSIC_FIBER_THROW \/ $class_instanceof(S, pvalue, $ptascii("Throwable"))
   -- if pconfigcall.KIND =/= INTRINSIC_FIBER_SUSPEND \/ S.ACTIVEFIBER =/= eps
@@ -459,7 +466,7 @@ def $fiber_start(S, pfiberstart) = $throw_scalar(S, "FiberError", $ptascii("Cann
   -- if ~$fiber_blocked(S)
   -- if $fiber_at(S, pfiberstart.OBJECT) = (pfiber)
   -- if pfiber.STATUS =/= FIBER_INIT
-def $fiber_start(S, pfiberstart) = S[.COMPLETION = UNSUPPORTED "Fiber switch during an initializer, source loader or Generator continuation"]
+def $fiber_start(S, pfiberstart) = S[.COMPLETION = UNSUPPORTED $fiber_transfer_reason(S)]
   -- if ~$fiber_blocked(S)
   -- if $fiber_at(S, pfiberstart.OBJECT) = (pfiber)
   -- if pfiber.STATUS = FIBER_INIT

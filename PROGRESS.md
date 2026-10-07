@@ -8,12 +8,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 ## Current checkpoint
 
 The canonical source includes accepted ArrayAccess292 (`1d0f8ea23`) and 304
-(`0f2ecffc6`), with 275 modules on baseline `38f1dfaa045f`. Independently accepted
-private milestones 270, 286, 288, 289, 290, 291, 293, 294, 296 and 297 await
+(`0f2ecffc6`), plus reviewed eager destruction270, with 276 modules on baseline
+`38f1dfaa045f`. Independently accepted
+private milestones 286, 288, 289, 290, 291, 293, 294, 296 and 297 await
 ordered Git integration. Other private work covers 295, 298, 299 and 300, with
 301–303 in development. Held 279 work and user-paused return verification remain
 set aside; unaccepted return changes stay held. Full core and final combined
 offline validation remain pending. Existing entries retain their tested cuts.
+
+Ordinary eager destruction270 releases consumed slots in native order, retaining
+pending owners through callbacks, throws and resurrection. MAIN preserves source
+permission and catch/trace behavior; used results, borrowed CV receivers and
+cold/warm property RHS temporaries retain their native lifetimes. Handler returns
+and the original Throwable release before handler restoration and queue entry;
+fatal diagnostics freeze before release, while bailout retains real VM and C
+owners. Author62 and independent60 exact sources, nineteen reached cases/1,012
+assertions and the separate fatal/actual-parent cuts retain their recorded inputs
+in the [ledger](coverage/semantics/eager-destructors-review.json). The actual Array
+warning/cleanup original now agrees and rejects a forged source-marker suffix.
+The [contract](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md) keeps active destructor
+Fiber transfer, compound Stringable reception, GC, weak references, output buffers
+and later freeing open. Actual 292/304 composition passes strict-SL initialization
+and one new exact returned-object lifetime source at276, with stable inputs;
+earlier cuts gain no renewed execution credit.
 
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and
 supports final compound append, including null-key Get/Set on returned children.
@@ -386,8 +403,8 @@ a4fc parent;264/262/266 preservation is source-reviewed without old-cut renewal.
 [Contract](docs/semantics/SOURCE-DESTRUCTORS.md),
 [author record](coverage/semantics/destructors-review.json),
 [independent ledger](coverage/semantics/destructor-review.json).
-Ordinary eager destruction and original Throwable release before stage1 are
-explicit Unsupported dependencies for the next phase. GC, output buffering,
+The earlier eager/prequeue Unsupported controls retain their original257 cut;
+270 now supplies those releases. GC, output buffering,
 queue freeing and final cleanup remain required; complete core stays open.
 
 REAL binding264 now resolves scope before ordered static, `$this`-unbind and
@@ -650,8 +667,8 @@ recorded revision, and production stages pass on the accepted fe51 parent.
 [author/composition record](coverage/semantics/shutdown-functions-review.json),
 [independent ledger](coverage/semantics/shutdown-function-review.json).
 Keyword/compound ingress now uses the staged247 consumers below. Request-stage
-destructors are covered separately above; eager destruction, GC, output buffers
-and queue release remain required.
+destructors and ordinary eager releases are covered separately above; GC, output
+buffers and queue release remain required.
 
 Internal default reception240 now suspends weak-null and lossy integer warnings
 through real error dispatch and invokes genuine Stringable callbacks in formal

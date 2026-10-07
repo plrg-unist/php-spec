@@ -95,6 +95,13 @@ The affected successful original above keeps that earlier failure at zero credit
 
 ## Required follow-ons
 
+Automatic-destruction calls and cleanup hold five stack certificate lists that
+the current Fiber snapshot does not transfer. Switching while one is active
+returns `Unsupported` with reason `Fiber switch during automatic destruction`.
+Abandoned owners, handles and write caches remain shared and do not impose that
+boundary. Normal transfer after cleanup finishes remains supported. Full transfer
+of the active destruction certificates remains required.
+
 Force-close and request/fatal cleanup, deprecated constructor callable stages,
 core internal callback bodies, reference forwarding, API callable/FCC entry,
 `start` unpacking and switching during initialization/source loading remain
@@ -102,6 +109,7 @@ required. The first transfer domain rejects active or saved constant/default and
 autoload initialization, and active Generator execution, including switches in
 their helper calls. Their shared pending flags and parked ownership remain
 required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
-their own stages; ordinary registered shutdown callbacks and destructors are not
-blanket blocked at this pin. Property and broader object consumers remain tracked
-separately. Full core and paused return verification are not closed by this cut.
+their own stages. Registered shutdown callbacks and explicit source method calls
+are not blanket blocked; automatic destruction has the active-certificate boundary
+above. Property and broader object consumers remain tracked separately. Full core
+and paused return verification are not closed by this cut.

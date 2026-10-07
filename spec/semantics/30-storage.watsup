@@ -125,11 +125,24 @@ syntax pshutdownphase = SHUTDOWN_PENDING | SHUTDOWN_RUNNING | SHUTDOWN_DONE
 syntax pdestructionphase = DESTRUCTION_PENDING | DESTRUCTION_GLOBALS | DESTRUCTION_STORE | DESTRUCTION_DONE
 syntax pcallcontext
 syntax pconstantcontext
+syntax pobject
+syntax pframe
+syntax psymboltable
+syntax pdestruction
+syntax pshutdown
+syntax pevalcontext
+syntax pfilecontext
+syntax pdeclaration
+syntax ptraceframe
 syntax pdestructionjob = DESTRUCTION_VALUE pnode | DESTRUCTION_HANDLE nat
-syntax pdestructionrelease = {JOBS pdestructionjob*, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
+syntax pdestructionrelease = {JOBS pdestructionjob*, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool}
 syntax pdestructionframe = {PENDING nat?, VALUE poperand, CALLER pcallcontext?, FUNCTION porigin, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
-syntax pdestructorcall = {OBJECT nat, TARGET pcalltarget, STORE bool, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, LINE int, RELEASE pdestructionrelease?, FRAME pdestructionframe?, PENDING nat?}
-syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED nat*, PHASE pdestructionphase, NAMES nat**, PASS nat**, COUNT nat, INDEX nat, COMPLETION pcompletion, RELEASES pdestructionrelease*, CALLS pdestructorcall*, FRAMES pdestructionframe*}
+syntax pdestructioncleanup = {SOURCE ptask, TARGET pshutdownproducer, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, RELEASED bool}
+syntax pdestructionhandler = {VALUE pvalue, ARRAY parray?, CELLS (nat, pslot)*}
+syntax pdestructionfatal = {FRAME pframe, FRAMES pframe*, GLOBAL psymboltable, VALUE poperand, BASE pbase, DESTRUCTION pdestruction, SHUTDOWN pshutdown, ERRORHANDLER perrorhandler, ERRORHANDLERS perrorhandler*, EXCEPTIONHANDLER pvalue?, EXCEPTIONHANDLERS pvalue?*, HANDLERS pdestructionhandler*, EVALCONTEXTS pevalcontext*, FILECONTEXTS pfilecontext*, DECLARATIONS pdeclaration*, COMPLETION pcompletion, FROZEN pcompletion, ERRORORIGIN porigin?, TRACE ptraceframe*, ERRORTRACE ptraceframe*, COMPILESTOP bool, REPORTING int}
+syntax pdestructionoperation = {VALUE poperand, BASE pbase, CELL nat, KEY pkey, LOCATION plocation, COMPLETION pcompletion, PENDING nat?, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, SOURCE ptask, CLEANUP pdestructioncleanup?}
+syntax pdestructorcall = {OBJECT nat, TARGET pcalltarget, STORE bool, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool, SITE porigin?, LINE int, RELEASE pdestructionrelease?, FRAME pdestructionframe?, OPERATION pdestructionoperation?, PENDING nat?}
+syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED nat*, PHASE pdestructionphase, NAMES nat**, PASS nat**, COUNT nat, INDEX nat, COMPLETION pcompletion, RELEASES pdestructionrelease*, CALLS pdestructorcall*, FRAMES pdestructionframe*, OPERATIONS pdestructionoperation*, CLEANUPS pdestructioncleanup*, ABANDONED pdestructioncleanup*, PROPCACHE (porigin, pobject)*}
 syntax pshutdownrenderphase = SHUTDOWN_RENDER_MESSAGE | SHUTDOWN_RENDER_TRACE | SHUTDOWN_RENDER_RETURN | SHUTDOWN_RENDER_DONE
 syntax pshutdownrender = { ROOT nat, CURRENT nat, SEEN nat*, TEXT nat*, MESSAGE nat*, ROOTMESSAGE nat*, PENDING nat?, PHASE pshutdownrenderphase }
 syntax pshutdown = { ENTRIES pshutdownentry*, INDEX nat, PHASE pshutdownphase, SENT poperand*, RECEIVED poperand*, RENDER pshutdownrender?, COMPLETION pcompletion }
@@ -189,6 +202,9 @@ syntax ptask = FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat
   | CALLABLE_SCALAR_RESULT ptask poperand pvalue int
   | CALLABLE_STRING_RESULT ptask poperand nat nat int
   | DESTRUCTOR_GLOBALS | DESTRUCTOR_STORE | DESTRUCTOR_RELEASE pdestructionrelease | DESTRUCTOR_ENTER pdestructorcall | DESTRUCTOR_RESULT pdestructorcall | DESTRUCTOR_WARNING pdestructorcall | DESTRUCTOR_FRAME_EXIT pdestructionframe
+  | DESTRUCTOR_OPERATION_EXIT pdestructionoperation
+  | DESTRUCTOR_PREQUEUE pcompletion | EXCEPTION_HANDLER_CLEAN pexceptioncall bool | ERROR_HANDLER_CLEAN perrorcall
+  | DESTRUCTOR_FATAL pdestructionfatal
   | SHUTDOWN_RENDER pshutdownrender | SHUTDOWN_SEND nat nat poperand* | SHUTDOWN_REFERENCE nat nat poperand* | SHUTDOWN_ENTER nat poperand* | SHUTDOWN_RESULT nat poperand*
   | DEFAULT_INTERNAL_CTOR_RECEIVE pdefaultinternal | DEFAULT_INTERNAL_CTOR_WARNING pdefaultinternal pvalue | DEFAULT_INTERNAL_CTOR_STRING pdefaultinternal
   | ORDINARY_CTOR_RECEIVE pordinaryinternal | ORDINARY_CTOR_WARNING pordinaryinternal pvalue | ORDINARY_CTOR_STRING pordinaryinternal
@@ -434,6 +450,7 @@ dec $property_hash_count(ppropertyslot*) : nat
 dec $objectprops_mark(pstate, nat) : pstate
 dec $objectprops_materialized(pobjectprops*, nat) : bool
 dec $property_slot_nodes(ppropertyslot*) : pnode*
+dec $property_release_nodes(ppropertyslot*) : pnode*
 dec $property_cast_array(ppropertyslot*) : parray
 dec $property_entries(ppropertyslot*) : pentry*
 dec $property_next(pstate, nat, ppropertyslot*, nat, nat) : (ptbytes, pitem, nat)?

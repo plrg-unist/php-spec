@@ -12718,7 +12718,7 @@
         "vendor/php-src/Zend/zend_fibers.c",
         "docs/semantics/FIBERS.md"
       ],
-      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure."
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Module270 explicitly rejects switching while an automatic-destruction call/release/frame/operation/handler-cleanup certificate is active; normal transfer after cleanup remains admitted. Full per-Fiber transfer of those five lists remains required."
     },
     {
       "id": "resumable.Fiber-suspend",
@@ -12739,7 +12739,7 @@
         "vendor/php-src/Zend/zend_fibers.c",
         "docs/semantics/FIBERS.md"
       ],
-      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure."
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Module270 explicitly rejects switching while an automatic-destruction call/release/frame/operation/handler-cleanup certificate is active; normal transfer after cleanup remains admitted. Full per-Fiber transfer of those five lists remains required."
     },
     {
       "id": "resumable.Fiber-resume",
@@ -12760,7 +12760,7 @@
         "vendor/php-src/Zend/zend_fibers.c",
         "docs/semantics/FIBERS.md"
       ],
-      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure."
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Module270 explicitly rejects switching while an automatic-destruction call/release/frame/operation/handler-cleanup certificate is active; normal transfer after cleanup remains admitted. Full per-Fiber transfer of those five lists remains required."
     },
     {
       "id": "resumable.Fiber-throw",
@@ -12781,7 +12781,7 @@
         "vendor/php-src/Zend/zend_fibers.c",
         "docs/semantics/FIBERS.md"
       ],
-      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure."
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Force-close, internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Module270 explicitly rejects switching while an automatic-destruction call/release/frame/operation/handler-cleanup certificate is active; normal transfer after cleanup remains admitted. Full per-Fiber transfer of those five lists remains required."
     },
     {
       "id": "resumable.Fiber-status",
@@ -12858,18 +12858,28 @@
         "spec/semantics/83-call-traces.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/161-throwable-constructors.watsup",
-        "spec/semantics/247-handler-callable-consumers.watsup"
+        "spec/semantics/247-handler-callable-consumers.watsup",
+        "spec/semantics/270-eager-destructors.watsup"
       ],
       "helper_tests": [
         "tests/semantics/destructor_state.py",
-        "tests/semantics/destructor_state_review.py"
+        "tests/semantics/destructor_state_review.py",
+        "tests/semantics/eager_destructor_state_review.py",
+        "tests/semantics/eager_fatal_state_review.py",
+        "tests/semantics/eager_fatal_precision_state.py",
+        "tests/semantics/eager_fiber_state.py"
       ],
       "source_tests": [
         "tests/semantics/destructors.py",
         "tests/semantics/destructor_cases.json",
         "tests/semantics/destructor_request.py",
         "tests/semantics/destructor_review.py",
-        "tests/semantics/destructor_review_cases.json"
+        "tests/semantics/destructor_review_cases.json",
+        "tests/semantics/eager_destructor_review.py",
+        "tests/semantics/eager_destructor_review_cases.json",
+        "tests/semantics/eager_fatal_review.py",
+        "tests/semantics/eager_fatal_review_cases.json",
+        "tests/semantics/source-arrays/core/lifetime-pending.php"
       ],
       "evidence": [
         "vendor/php-src/main/main.c",
@@ -12879,9 +12889,12 @@
         "vendor/php-src/Zend/zend_vm_def.h",
         "docs/semantics/SOURCE-DESTRUCTORS.md",
         "coverage/semantics/destructors-review.json",
-        "coverage/semantics/destructor-review.json"
+        "coverage/semantics/destructor-review.json",
+        "docs/semantics/SOURCE-EAGER-DESTRUCTORS.md",
+        "coverage/semantics/eager-destructors-review.json",
+        "coverage/semantics/eager-destructor-review.json"
       ],
-      "review": "Module257 implements request stage2 after shutdown callbacks: repeated reverse direct globals, ascending reusable live native handles, once marks, temporary receiver ownership and ordered outgoing-slot release. Explicit request facts preserve startup argc insertion; absent facts keep the existing request environment Unsupported, while dormant CVs remain admissible. Author78 exact sources/seven reached states303 premises and independent64 sources/twelve states548 premises retain separate revisions; two earlier-release controls and the static-destructor frontend control have zero agreement credit. Ordinary eager destruction, GC and later request freeing remain required."
+      "review": "Module257 implements request stage2 after shutdown callbacks: repeated reverse direct globals, ascending reusable live native handles, once marks, temporary receiver ownership and ordered outgoing-slot release. Explicit request facts preserve startup argc insertion; absent facts keep the existing request environment Unsupported, while dormant CVs remain admissible. Author78 exact sources/seven reached states303 premises and independent64 sources/twelve states548 premises retain separate revisions; two earlier-release controls and the static-destructor frontend control had zero agreement at that original cut. Module270 now supplies ordinary last-owner and prequeue original-Throwable release in native consumed-slot order, with actual source MAIN versus terminal-C permission. Author62 and independent60 exact source agreements retain separate cuts; nineteen reached cases pass1,012 assertions. Seven additional fatal source agreements and one actual275 producer control retain separate cuts; two independent logical fatal checkpoints pass198 unique assertions at their separate cuts. Compound Stringable reception, GC and later request freeing remain required. Active automatic-destruction Fiber transfer stays explicitly Unsupported until its five stack certificate lists move with the VM; shared abandoned owners alone do not block ordinary transfer. Actual38f Array warning cleanup retains the first source marker and exact suffix; the formerly native-only lifetime original now matches its whole stream at4924 plus the reviewed270 rule. One reached interaction passes separate file28/startup24 cuts; overlapping premises are not summed (eager-destructors-review.json)."
     },
     {
       "id": "lifecycle.destructor-reentry",
@@ -12897,18 +12910,25 @@
         "spec/semantics/83-call-traces.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/161-throwable-constructors.watsup",
-        "spec/semantics/247-handler-callable-consumers.watsup"
+        "spec/semantics/247-handler-callable-consumers.watsup",
+        "spec/semantics/270-eager-destructors.watsup"
       ],
       "helper_tests": [
         "tests/semantics/destructor_state.py",
-        "tests/semantics/destructor_state_review.py"
+        "tests/semantics/destructor_state_review.py",
+        "tests/semantics/eager_destructor_state_review.py",
+        "tests/semantics/eager_fatal_state_review.py"
       ],
       "source_tests": [
         "tests/semantics/destructors.py",
         "tests/semantics/destructor_cases.json",
         "tests/semantics/destructor_request.py",
         "tests/semantics/destructor_review.py",
-        "tests/semantics/destructor_review_cases.json"
+        "tests/semantics/destructor_review_cases.json",
+        "tests/semantics/eager_destructor_review.py",
+        "tests/semantics/eager_destructor_review_cases.json",
+        "tests/semantics/eager_fatal_review.py",
+        "tests/semantics/eager_fatal_review_cases.json"
       ],
       "evidence": [
         "vendor/php-src/main/main.c",
@@ -12918,9 +12938,12 @@
         "vendor/php-src/Zend/zend_vm_def.h",
         "docs/semantics/SOURCE-DESTRUCTORS.md",
         "coverage/semantics/destructors-review.json",
-        "coverage/semantics/destructor-review.json"
+        "coverage/semantics/destructor-review.json",
+        "docs/semantics/SOURCE-EAGER-DESTRUCTORS.md",
+        "coverage/semantics/eager-destructors-review.json",
+        "coverage/semantics/eager-destructor-review.json"
       ],
-      "review": "Request-stage callbacks mark before entry, preserve exact temporary receiver/current or saved caller, and suspend per-slot release loops without inventing roots. Nested private permission uses the genuine USER scope; the outer C pass warns in Unknown0. Handled throws continue, unhandled/exit stops, explicit method calls do not mark, and failed automatic construction stays ineligible. Earlier eager release and cycle-collection reentry remain required; source and reached evidence is bounded by the destructor ledgers."
+      "review": "Request-stage callbacks mark before entry, preserve exact temporary receiver/current or saved caller, and suspend per-slot release loops without inventing roots. Nested private permission uses the genuine USER scope; the outer C pass warns in Unknown0. Handled throws continue, unhandled/exit stops, explicit method calls do not mark, and failed automatic construction stays ineligible. 270 extends the same once marks and pending-owner loop to ordinary eager release, including authentic null-C abandoned counts on fatal/exit. Cycle-collection reentry remains required; source and reached evidence is bounded by the destructor ledgers."
     },
     {
       "id": "lifecycle.shutdown-registration",
@@ -12937,13 +12960,16 @@
         "spec/semantics/178-interface-runtime.watsup",
         "spec/semantics/179-interface-methods.watsup",
         "spec/semantics/247-handler-callable-consumers.watsup",
-        "spec/semantics/257-request-destructors.watsup"
+        "spec/semantics/257-request-destructors.watsup",
+        "spec/semantics/270-eager-destructors.watsup"
       ],
       "helper_tests": [
         "tests/semantics/shutdown_state_review.py",
         "tests/semantics/shutdown_render_state.py",
         "tests/semantics/callback_api_scope_check.py",
-        "tests/semantics/callback_api_state_review.py"
+        "tests/semantics/callback_api_state_review.py",
+        "tests/semantics/eager_destructor_state_review.py",
+        "tests/semantics/eager_fatal_state_review.py"
       ],
       "source_tests": [
         "tests/semantics/shutdown_functions.py",
@@ -12954,7 +12980,11 @@
         "tests/semantics/display_errors/freeze.php",
         "tests/semantics/callback_api_review.py",
         "tests/semantics/callback_api_review_cases.json",
-        "tests/semantics/callback_api_composition_cases.json"
+        "tests/semantics/callback_api_composition_cases.json",
+        "tests/semantics/eager_destructor_review.py",
+        "tests/semantics/eager_destructor_review_cases.json",
+        "tests/semantics/eager_fatal_review.py",
+        "tests/semantics/eager_fatal_review_cases.json"
       ],
       "evidence": [
         "vendor/php-src/ext/standard/basic_functions.c",
@@ -12967,9 +12997,12 @@
         "coverage/semantics/callback-api-consumer-review.json",
         "docs/semantics/SOURCE-DESTRUCTORS.md",
         "coverage/semantics/destructors-review.json",
-        "coverage/semantics/destructor-review.json"
+        "coverage/semantics/destructor-review.json",
+        "docs/semantics/SOURCE-EAGER-DESTRUCTORS.md",
+        "coverage/semantics/eager-destructors-review.json",
+        "coverage/semantics/eager-destructor-review.json"
       ],
-      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Module247 caches keyword/compound selections after the real API warnings and pins the retired maker target/callsite/scope without new roots. Wider callable dependencies and later destructor/GC/output/free phases remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls. Request-stage destructors257 follow the queue and are reviewed separately; shutdown entries remain owned until later freeing."
+      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Module247 caches keyword/compound selections after the real API warnings and pins the retired maker target/callsite/scope without new roots. Wider callable dependencies and later GC/output/free phases remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls. Request-stage destructors257 follow the queue and are reviewed separately; shutdown entries remain owned until later freeing. Module270 freezes diagnostics before original-Throwable release, so that destructor may append queue entries; retained global/capture owners delay it normally."
     },
     {
       "id": "lifecycle.shutdown-order",
@@ -12985,11 +13018,14 @@
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/178-interface-runtime.watsup",
         "spec/semantics/179-interface-methods.watsup",
-        "spec/semantics/257-request-destructors.watsup"
+        "spec/semantics/257-request-destructors.watsup",
+        "spec/semantics/270-eager-destructors.watsup"
       ],
       "helper_tests": [
         "tests/semantics/shutdown_state_review.py",
-        "tests/semantics/shutdown_render_state.py"
+        "tests/semantics/shutdown_render_state.py",
+        "tests/semantics/eager_destructor_state_review.py",
+        "tests/semantics/eager_fatal_state_review.py"
       ],
       "source_tests": [
         "tests/semantics/shutdown_functions.py",
@@ -12997,7 +13033,11 @@
         "tests/semantics/shutdown_review.py",
         "tests/semantics/shutdown_review_cases.json",
         "tests/semantics/display_errors.py",
-        "tests/semantics/display_errors/freeze.php"
+        "tests/semantics/display_errors/freeze.php",
+        "tests/semantics/eager_destructor_review.py",
+        "tests/semantics/eager_destructor_review_cases.json",
+        "tests/semantics/eager_fatal_review.py",
+        "tests/semantics/eager_fatal_review_cases.json"
       ],
       "evidence": [
         "vendor/php-src/ext/standard/basic_functions.c",
@@ -13008,9 +13048,12 @@
         "coverage/semantics/shutdown-function-review.json",
         "docs/semantics/SOURCE-DESTRUCTORS.md",
         "coverage/semantics/destructors-review.json",
-        "coverage/semantics/destructor-review.json"
+        "coverage/semantics/destructor-review.json",
+        "docs/semantics/SOURCE-EAGER-DESTRUCTORS.md",
+        "coverage/semantics/eager-destructors-review.json",
+        "coverage/semantics/eager-destructor-review.json"
       ],
-      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Wider callable dependencies, eager destruction, GC, output and later freeing remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls. Request-stage destructors257 follow the queue and are reviewed separately; shutdown entries remain owned until later freeing."
+      "review": "231 caches accepted ordinary source callable families and copied arguments after all SEND effects, preserving private/rebound permission, selected receivers and embedded array references. Ordered weak C calls run after normal/exit/fatal and serviced compiler stops; append, handled throw, callback exit, authentic warning continuation, exact original/converted arguments and ownership remain distinct. Diagnostics freeze after renderer callbacks and before queue entry. Wider callable dependencies, GC, output and later freeing remain required; queue entries stay owned through DONE and complete request cleanup is not claimed. User formatter overrides use existing176 calls; handled throws retain the original C continuation, and actual237 destinations freeze after rendering. Author29 source tuples and three/149 state checks retain separate cuts; independent coverage is recorded in its ledger. Actual228 caches retired imported-maker permission; actual240 default effects keep their owners. Runtime/compile severity is captured before callback reporting writes, with distinct native mask controls. Request-stage destructors257 follow the queue and are reviewed separately; shutdown entries remain owned until later freeing. Module270 orders frozen fatal emission, original-Throwable release, then stage1; native abandoned C receiver owners survive bailout into stage2."
     },
     {
       "id": "lifecycle.exit-unwind",
@@ -13104,18 +13147,25 @@
         "spec/semantics/83-call-traces.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/161-throwable-constructors.watsup",
-        "spec/semantics/247-handler-callable-consumers.watsup"
+        "spec/semantics/247-handler-callable-consumers.watsup",
+        "spec/semantics/270-eager-destructors.watsup"
       ],
       "helper_tests": [
         "tests/semantics/destructor_state.py",
-        "tests/semantics/destructor_state_review.py"
+        "tests/semantics/destructor_state_review.py",
+        "tests/semantics/eager_destructor_state_review.py",
+        "tests/semantics/eager_fatal_state_review.py"
       ],
       "source_tests": [
         "tests/semantics/destructors.py",
         "tests/semantics/destructor_cases.json",
         "tests/semantics/destructor_request.py",
         "tests/semantics/destructor_review.py",
-        "tests/semantics/destructor_review_cases.json"
+        "tests/semantics/destructor_review_cases.json",
+        "tests/semantics/eager_destructor_review.py",
+        "tests/semantics/eager_destructor_review_cases.json",
+        "tests/semantics/eager_fatal_review.py",
+        "tests/semantics/eager_fatal_review_cases.json"
       ],
       "evidence": [
         "vendor/php-src/main/main.c",
@@ -13125,9 +13175,12 @@
         "vendor/php-src/Zend/zend_vm_def.h",
         "docs/semantics/SOURCE-DESTRUCTORS.md",
         "coverage/semantics/destructors-review.json",
-        "coverage/semantics/destructor-review.json"
+        "coverage/semantics/destructor-review.json",
+        "docs/semantics/SOURCE-EAGER-DESTRUCTORS.md",
+        "coverage/semantics/eager-destructors-review.json",
+        "coverage/semantics/eager-destructor-review.json"
       ],
-      "review": "Request-stage resurrection retains the object with a once-only automatic mark; later direct/store scans do not invoke it again. Failed automatic construction also suppresses escaped objects. The native-pinned resurrection-once source is independently compared within the64-source cut. Ordinary eager resurrection and GC-cycle interactions remain required."
+      "review": "Request-stage resurrection retains the object with a once-only automatic mark; later direct/store scans do not invoke it again. Failed automatic construction also suppresses escaped objects. The native-pinned resurrection-once source is independently compared within the64-source cut. 270 now applies the once-only mark to ordinary eager resurrection; source effects and pending owners remain authentic. GC-cycle interactions remain required."
     },
     {
       "id": "lifecycle.exception-cleanup",
@@ -13143,18 +13196,27 @@
         "spec/semantics/83-call-traces.watsup",
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/161-throwable-constructors.watsup",
-        "spec/semantics/247-handler-callable-consumers.watsup"
+        "spec/semantics/247-handler-callable-consumers.watsup",
+        "spec/semantics/270-eager-destructors.watsup"
       ],
       "helper_tests": [
         "tests/semantics/destructor_state.py",
-        "tests/semantics/destructor_state_review.py"
+        "tests/semantics/destructor_state_review.py",
+        "tests/semantics/eager_destructor_state_review.py",
+        "tests/semantics/eager_fatal_state_review.py",
+        "tests/semantics/eager_fatal_precision_state.py",
+        "tests/semantics/eager_fiber_state.py"
       ],
       "source_tests": [
         "tests/semantics/destructors.py",
         "tests/semantics/destructor_cases.json",
         "tests/semantics/destructor_request.py",
         "tests/semantics/destructor_review.py",
-        "tests/semantics/destructor_review_cases.json"
+        "tests/semantics/destructor_review_cases.json",
+        "tests/semantics/eager_destructor_review.py",
+        "tests/semantics/eager_destructor_review_cases.json",
+        "tests/semantics/eager_fatal_review.py",
+        "tests/semantics/eager_fatal_review_cases.json"
       ],
       "evidence": [
         "vendor/php-src/main/main.c",
@@ -13164,9 +13226,12 @@
         "vendor/php-src/Zend/zend_vm_def.h",
         "docs/semantics/SOURCE-DESTRUCTORS.md",
         "coverage/semantics/destructors-review.json",
-        "coverage/semantics/destructor-review.json"
+        "coverage/semantics/destructor-review.json",
+        "docs/semantics/SOURCE-EAGER-DESTRUCTORS.md",
+        "coverage/semantics/eager-destructors-review.json",
+        "coverage/semantics/eager-destructor-review.json"
       ],
-      "review": "Within request stage2, ordinary frame leaves restore the authentic caller before ordered compiled-CV cleanup, then extras before receiver/Closure. Pending and assigned-return values remain owned; replacement destructor throws chain and become pending for remaining slots. Ignored by-value ordinary/automatic-constructor return temporaries instead release before callee restoration; C helper returns stay retained. Source-service histories and exact current/saved continuations are checked. General cleanup before stage2 and original uncaught Throwable release before stage1 remain explicit required dependencies; paused return verification is not resumed."
+      "review": "Within request stage2, ordinary frame leaves restore the authentic caller before ordered compiled-CV cleanup, then extras before receiver/Closure. Pending and assigned-return values remain owned; replacement destructor throws chain and become pending for remaining slots. Ignored by-value ordinary/automatic-constructor return temporaries instead release before callee restoration; C helper returns stay retained. Source-service histories and exact current/saved continuations are checked. 270 now stages ordinary operation cleanup, handler retval/old-exception release before restoration and original uncaught Throwable release after frozen emission but before stage1. Used results and cold/warm property RHS temporaries retain native owners. Wider Stringable consumers and later GC/free remain required; paused return verification is not resumed. Engine fatal bailout retains current/saved VM owners before structural cleanup, with borrowed source/handler/eval evidence and captured reporting; final abandoned-owner freeing remains open. Active automatic-destruction Fiber transfer stays explicitly Unsupported until its five stack certificate lists move with the VM; shared abandoned owners alone do not block ordinary transfer."
     },
     {
       "id": "lifecycle.ticks",

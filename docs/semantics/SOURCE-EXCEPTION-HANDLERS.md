@@ -54,8 +54,10 @@ terminal selection through the shared221 API. Registration keeps raw values;
 terminal deprecations use the genuine null caller and `Unknown:0`. Warning
 callbacks may mutate referenced methods, restore or replace handlers, throw or
 exit; the original selected continuation and Throwable remain authenticated.
-Wider magic/autoload/internal callbacks and the destructor/GC/output request phases
-remain open. Ordered shutdown callback entry is implemented by module231. Shared207 error-handler reference-return bodies and temporary-value
+Module270 releases returned values and the original Throwable before restoring
+the old handler, preserving genuine callback state during destructor effects.
+Wider magic/autoload/internal callbacks and GC/output/free request phases remain
+open. Ordered shutdown callback entry is implemented by module231. Shared207 error-handler reference-return bodies and temporary-value
 reference returns retain their existing Unsupported boundaries; accepted local
 variable reference returns are ignored correctly by this exception callback.
 This milestone does not close complete core.

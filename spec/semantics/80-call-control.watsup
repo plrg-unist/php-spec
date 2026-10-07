@@ -37,6 +37,7 @@ def $callable_at((preqbytes_name, porigin) :: (preqbytes_tail, porigin_tail)*, p
   -- if preqbytes_name =/= preqbytes
 dec $activate_function(pstate, pfunction) : pstate
 dec $activate_function_body(pstate, pfunction) : pstate
+dec $eval_exception_trace(pstate) : ptraceframe*
 dec $declaration_function_success(pstate, pstate, pfunction) : pstate
 dec $declaration_early(pdeclaration*, porigin, ppubkind) : bool
 def $activate_function(S, pfunction) = $declaration_function_success(S, $activate_function_body(S, pfunction), pfunction)
@@ -45,10 +46,10 @@ def $activate_function_body(S, pfunction) = S[.CALLABLES = S.CALLABLES ++ [($ptl
   -- if S.COMPLETION = NORMAL
   -- if ~$pfunction_builtin(pfunction.NAME)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = eps
-def $activate_function_body(S, pfunction) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare function ") ++ pfunction.NAME ++ $ptascii("()")) pfunction.LINE]
+def $activate_function_body(S, pfunction) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare function ") ++ pfunction.NAME ++ $ptascii("()")) pfunction.LINE][.TRACE = $eval_exception_trace(S)]
   -- if S.COMPLETION = NORMAL
   -- if $pfunction_builtin(pfunction.NAME)
-def $activate_function_body(S, pfunction) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare function ") ++ pfunction.NAME ++ $ptascii("() (previously declared in ") ++ $call_sourcefile(S.FILES, pfunction_old.ORIGIN) ++ [58] ++ $ntunsigned(pfunction_old.LINE) ++ [41]) pfunction.LINE]
+def $activate_function_body(S, pfunction) = S[.COMPLETION = FATAL ($ptascii("Cannot redeclare function ") ++ pfunction.NAME ++ $ptascii("() (previously declared in ") ++ $call_sourcefile(S.FILES, pfunction_old.ORIGIN) ++ [58] ++ $ntunsigned(pfunction_old.LINE) ++ [41]) pfunction.LINE][.TRACE = $eval_exception_trace(S)]
   -- if S.COMPLETION = NORMAL
   -- if ~$pfunction_builtin(pfunction.NAME)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin)

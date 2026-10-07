@@ -192,12 +192,13 @@ dec $error_handler_stack_roots(perrorhandler*) : pnode*
 dec $class_constant_roots(pdefaultcache*) : pnode*
 dec $exception_handler_roots(pvalue?) : pnode*
 dec $exception_handler_stack_roots(pvalue?*) : pnode*
+dec $eager_abandoned_roots(pdestructioncleanup*) : pnode*
 dec $machine_roots(pstate) : pnode*
 dec $pools_nodes(ppool*) : pnode*
 dec $user_constant_roots(puserconstant*) : pnode*
 dec $shutdown_roots(pshutdownentry*) : pnode*
 dec $completion_roots(pcompletion) : pnode*
-def $machine_roots(S) = $completion_roots(S.COMPLETION) ++ $error_handler_roots(S.ERRORHANDLER) ++ $error_handler_stack_roots(S.ERRORHANDLERS) ++ $exception_handler_roots(S.EXCEPTIONHANDLER) ++ $exception_handler_stack_roots(S.EXCEPTIONHANDLERS) ++ $autoload_roots(S.AUTOLOAD.ENTRIES) ++ $shutdown_roots(S.SHUTDOWN.ENTRIES) ++ $static_roots(S.STATICS) ++ $class_static_roots(S.CLASSSTATICS) ++ $instance_default_roots(S.INSTANCEDEFAULTS) ++ $class_constant_roots(S.CLASSCONSTANTCACHE) ++ $default_cache_roots(S.DEFAULTCACHE) ++ $user_constant_roots(S.USERCONSTANTS) ++ $trace_roots(S.TRACE) ++ $trace_roots(S.ERRORFATALTRACE) ++ $table_roots(S.GLOBALTABLE) ++ $frames_roots(S.FRAMES) ++ $call_context_roots(S.CURRENT) ++ $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD ++ $pools_nodes(S.POOLS) ++ $request_roots_nodes(S.HTTPROOTS) ++ $fiber_caller_nodes(S.FIBERCALLERS)
+def $machine_roots(S) = $eager_abandoned_roots(S.DESTRUCTION.ABANDONED) ++ $completion_roots(S.COMPLETION) ++ $error_handler_roots(S.ERRORHANDLER) ++ $error_handler_stack_roots(S.ERRORHANDLERS) ++ $exception_handler_roots(S.EXCEPTIONHANDLER) ++ $exception_handler_stack_roots(S.EXCEPTIONHANDLERS) ++ $autoload_roots(S.AUTOLOAD.ENTRIES) ++ $shutdown_roots(S.SHUTDOWN.ENTRIES) ++ $static_roots(S.STATICS) ++ $class_static_roots(S.CLASSSTATICS) ++ $instance_default_roots(S.INSTANCEDEFAULTS) ++ $class_constant_roots(S.CLASSCONSTANTCACHE) ++ $default_cache_roots(S.DEFAULTCACHE) ++ $user_constant_roots(S.USERCONSTANTS) ++ $trace_roots(S.TRACE) ++ $trace_roots(S.ERRORFATALTRACE) ++ $table_roots(S.GLOBALTABLE) ++ $frames_roots(S.FRAMES) ++ $call_context_roots(S.CURRENT) ++ $environment_nodes(S.ENV) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE) ++ $tasks_nodes(S.TODO) ++ S.HELD ++ $pools_nodes(S.POOLS) ++ $request_roots_nodes(S.HTTPROOTS) ++ $fiber_caller_nodes(S.FIBERCALLERS)
 
 dec $heap_graph(pstate) : hgraph
 def $heap_graph(S) = {NODES S.ALLOCATIONS, EDGES $allocation_edges(S, S.ALLOCATIONS), ROOTS $machine_roots(S)}
