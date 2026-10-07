@@ -113,6 +113,7 @@ def $call_task_valid(S, PROPERTY_DYNAMIC_RESULT pdynamicproperty) = ($property_d
 def $call_task_valid(S, PROPERTY_DYNAMIC_INSERT pdynamicproperty) = ($property_dynamic_valid(S, pdynamicproperty) /\ (pdynamicproperty.RETIRED \/ $heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS)))
 def $task_nodes(PROPERTY_DYNAMIC_RESULT pdynamicproperty) = [HOBJECT pdynamicproperty.TARGET] ++ $base_nodes(pdynamicproperty.BASE) ++ $operand_nodes(pdynamicproperty.RHS) ++ $instance_roots(pdynamicproperty.PENDING)
 def $task_nodes(PROPERTY_DYNAMIC_INSERT pdynamicproperty) = $base_nodes(pdynamicproperty.BASE) ++ $operand_nodes(pdynamicproperty.RHS) ++ $instance_roots(pdynamicproperty.PENDING)
+def $eager_written_task(PROPERTY_DYNAMIC_INSERT pdynamicproperty) = true
 def $source_operand_marker(PROPERTY_DYNAMIC_RESULT pdynamicproperty) = ASSIGN_ARRAY pdynamicproperty.BASE pdynamicproperty.LINE pdynamicproperty.SELF
 def $source_operand_marker(PROPERTY_DYNAMIC_INSERT pdynamicproperty) = ASSIGN_ARRAY pdynamicproperty.BASE pdynamicproperty.LINE pdynamicproperty.SELF
 
