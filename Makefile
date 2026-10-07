@@ -166,6 +166,11 @@ test-semantics: build
 	python3 tests/semantics/fiber_ordinary_review.py
 	python3 tests/semantics/fiber_protected_state.py
 	python3 tests/semantics/fiber_protected_review.py
+	python3 tests/semantics/fiber_core_state.py
+	python3 tests/semantics/fiber_core_review.py
+	python3 tests/semantics/fiber_core_integration_protocol.py
+	python3 tests/semantics/fiber_core_file_review.py
+	python3 tests/semantics/fiber_core_latest_sources.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
