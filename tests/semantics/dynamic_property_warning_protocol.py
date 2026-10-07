@@ -12,11 +12,11 @@ import dynamic_property_warning_sources as sources
 cross = sources.cross
 ROOT = sources.ROOT
 PREFIX = r'''
+dec $dynamic_is_output(pevent) : bool
 dec $dynamic_output(pevent*) : ptbytes
 def $dynamic_output(eps) = eps
 def $dynamic_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $dynamic_output(pevent*)
 def $dynamic_output(pevent :: pevent_tail*) = $dynamic_output(pevent_tail*) -- if ~$dynamic_is_output(pevent)
-dec $dynamic_is_output(pevent) : bool
 def $dynamic_is_output(OUTPUT ptbytes) = true
 def $dynamic_is_output(pevent) = false -- otherwise
 dec $dynamic_phase(pstate, nat) : bool
