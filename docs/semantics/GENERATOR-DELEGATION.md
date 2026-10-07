@@ -98,6 +98,10 @@ identify that 274-module copy. PHP is pinned
 to 8.5.10 CLI NTS 64-bit, `LC_ALL=C`, `TZ=UTC`; source caps are 60/90 seconds and numeric
 checks use 300 seconds with one serial actor.
 
+The actual282 merge preserves the newer call, destruction and Fiber fields.
+[Introduced composition checks](GENERATOR-FIBER-CLOSE.md) cover delegation close
+through a warning handler and replacement previous chain; private cuts stay separate.
+
 `python3 tests/semantics/generator_delegation_review.py --select iterator-valid-nan-reference-zero`
 compares the complete native/model tuple.
 `python3 tests/semantics/generator_delegation_protocol.py --mode check --sl --select iterator-rebind-cache`

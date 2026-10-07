@@ -22,7 +22,8 @@ without changing the active Fiber.
 Fiber switches while a Generator or close frame is running remain explicit
 Unsupported. Parked running Generators, suspension from a finalizer, terminal
 cleanup, request-end close, cyclic collection and general user destructors remain
-required. Held IteratorAggregate work and user-paused return validation are not
+required. Pending eager releases without an operation or frame carrier also
+remain Unsupported. Held IteratorAggregate work and user-paused return validation are not
 dependencies of this increment.
 
 The target is PHP 8.5.10 CLI NTS 64-bit, the baseline profile including
@@ -58,8 +59,24 @@ Raw records are under `.tools/traversal-generator-fiber-close-t3bnnzuc/.tools`.
 The parent is the exact accepted303 publication over actual289, with275 modules.
 Run records bind its composition, changed inputs, runtime/compiler identities,
 commands, exits and source outcomes. Canonical integration preserves the newer
-call, destruction and Fiber fields; introduced compiler/source composition checks
-are pending. Full-core and final combined validation remain open.
+call, destruction and Fiber fields at282 modules. Its introduced strict compiler
+cut passes in main `.tools/generator-integration-compile-35yfqpjw`: complete
+9,011,908-byte output, exit0 and empty stderr. Five distinct new normal sources
+check private Owner/Child ArrayAccess finalizers, received argument owners,
+delegated cleanup handlers and pending operation/frame exceptions. Separate
+affected cuts pass the two promoted ordinary-close sources; request-end remains
+precise Unsupported with zero agreement. One genuine strict-SL frame-release
+program passes189 setup-inclusive premises in
+`.tools/generator-force-close-protocol-fwza61ff`, including remaining owners,
+previous identity, public/heap admission, malformed controls and exact
+zero-budget/direct resumption from the live restoration state.
+
+The [ledger](../../coverage/semantics/generator-fiber-close-review.json) identifies
+the separate source cuts and compatibility of the two unchanged earlier successes.
+The original skipped-finalizer and lost-previous discrepancies, plus the stale
+saved-frame fixture projection failure, remain raw with zero credit. Private
+campaigns retain their original cuts and gain no renewed execution credit.
+Full-core and final combined validation remain open.
 
 `python3 tests/semantics/generator_fiber_close_prepare.py --mode full` compares
 the author's complete native/model tuples at source60/outer90 seconds.
@@ -69,3 +86,7 @@ caching disabled and encountered determinism checking enabled.
 `python3 tests/semantics/generator_fiber_close_review.py --mode full` and
 `python3 tests/semantics/generator_fiber_close_review_protocol.py --sl` maintain
 the independent source and state selections at the same caps.
+`python3 tests/semantics/generator_integration_review.py --mode full` maintains
+the five introduced normal sources, and
+`python3 tests/semantics/generator_eager_close_review_protocol.py --mode check --sl`
+maintains the new reached frame-release program at the same caps and jobs1.

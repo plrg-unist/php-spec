@@ -18,6 +18,13 @@ order and key-before-value cleanup after a forbidden keyed yield. It can close
 other started Generators through ordinary reference/array/object edges. General
 user destructors remain an explicit dependency; this is not cyclic collection.
 
+Ordinary eager slot release enters the same close walk before generic object
+freeing. The actual operation or frame keeps its remaining release jobs and
+pending Throwable while finally runs. Closing-Generator frame restoration takes
+priority over ordinary eager CV staging; a replacement exception returns to the
+outer release carrier, so later slots still release before propagation. Pending
+eager releases without an operation or frame carrier remain Unsupported.
+
 Forced entry skips the unfinished body and its catches. Already-entered finally
 return/throw/break/goto outcomes release their held values in the actual caller
 before proceeding outwards. Normal finally completion skips the ordinary body
@@ -76,7 +83,8 @@ not. The final compiler `generator-force-close-compile-6s5b2q2l` produces
 8,662,573 bytes of complete structured output with empty stderr and exit0.
 Private validation reuses the maintained binaries and grants no new offline
 rebuild or final combined-core credit. Canonical integration preserves the newer
-eager-destruction and Fiber clauses; introduced composition checks follow with310.
+eager-destruction and Fiber clauses; the bounded actual282 composition passes the
+[introduced compiler, source and state checks](GENERATOR-FIBER-CLOSE.md).
 Original Unsupported observations for the two now-admitted last-owner sources
 remain in their earlier cuts. Request-end close retains its precise Unsupported
 reason and earns zero agreement.
