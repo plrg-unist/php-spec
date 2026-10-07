@@ -180,7 +180,10 @@ ordinary Fiber; a paused Generator finalizer changes the old RHS cell after the
 global name is rebound. Readback returns25, the new global remains31, and the
 child retires after Set. The reached recipe rejects a heap-identical forged
 source target and checks direct/zero/one-step resumption. These are separate
-current-parent gates, with prior cuts and failures unchanged.
+current-parent gates, with prior cuts and failures unchanged. The actual291
+bridge overcc397 preserves new PROP call/cleanup schemas and matches the same
+original;64 retains its287 cut. Compiler stages and source agreement keep separate
+records in the ledger.
 
 `arrayaccess_returned_append_fiber_prepare.py` compiles that reached recipe;
 `arrayaccess_returned_append_state_run.py PREPARED_REPORT` runs it strictly.
