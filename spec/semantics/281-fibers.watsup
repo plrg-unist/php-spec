@@ -969,8 +969,11 @@ def $fiber_retired_node(S, HOBJECT n, pnode_live*) = true
 def $fiber_retired_node(S, pnode, pnode_live*) = false -- otherwise
 dec $fiber_prune_protected(pstate, pnode*) : bool
 def $fiber_prune_protected(S, pnode_live*) = false -- otherwise
+dec $fiber_prune_ordered(pstate, pnode*) : bool
+def $fiber_prune_ordered(S, pnode_live*) = false -- otherwise
 def $fiber_prune(S, pnode_live*) = S[.COMPLETION = UNSUPPORTED "force-closing a suspended Fiber"]
   -- if $fiber_retired_stack(S, S.ALLOCATIONS, pnode_live*)
   -- if ~$fiber_prune_protected(S, pnode_live*)
+  -- if ~$fiber_prune_ordered(S, pnode_live*)
 def $fiber_prune(S, pnode_live*) = $destruction_prune(S, pnode_live*)
-  -- if ~$fiber_retired_stack(S, S.ALLOCATIONS, pnode_live*)
+  -- if ~$fiber_retired_stack(S, S.ALLOCATIONS, pnode_live*) \/ $fiber_prune_ordered(S, pnode_live*)

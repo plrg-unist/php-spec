@@ -40,7 +40,7 @@ def $fiber_ordinary_task(pfiberfinish, true) = FIBER_RETURN_FINISH pfiberfinish
 def $fiber_ordinary_task(pfiberfinish, false) = FIBER_THROW_FINISH pfiberfinish
 def $fiber_ordinary_retire(S, n, pvalue, n_pending?, b_returned) = $destructor_release_begin(S_ready, $destruction_values($fiber_callback_nodes(pfiber)))
   -- if $fiber_at(S, n) = (pfiber)
-  -- if pfiberfinish = {OBJECT n, PENDING n_pending?, SEQUENCE pfiber.SEQUENCE}
+  -- if pfiberfinish = {OBJECT n, PENDING n_pending?, SEQUENCE pfiber.SEQUENCE, PROTECTED eps}
   -- if pfiber_ready = $fiber_terminated(pfiber, pvalue, false)[.STATUS = FIBER_RUNNING][.FINISH = (pfiberfinish)][.RETURNED = b_returned]
   -- if S_ready = $fiber_put(S[.TODO = [$fiber_ordinary_task(pfiberfinish, b_returned)]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, pfiber_ready)
 
@@ -84,6 +84,7 @@ def $fiber_ordinary_carrier(S, pfiberfinish) = true
   -- if pfiber.RETURNED \/ pfiber.VALUE = PNULL
   -- if pfiber.RETURNED \/ $fiber_ordinary_body_pending(S, pfiberfinish)
   -- if $fiber_finish_pending_valid(S, pfiberfinish)
+  -- if $fiber_finish_protected_valid(S, pfiberfinish)
 def $fiber_ordinary_carrier(S, pfiberfinish) = false -- otherwise
 def $fiber_ordinary_suspended(S, pfiber, pfiberfinish) = true
   -- if pfiber.STATUS = FIBER_SUSPENDED
@@ -209,6 +210,7 @@ def $fiber_close_blocked(S, n) = true
   -- if $fiber_ordinary_finish_live(S, pfiberfinish)
   -- if pfiberfinish.PENDING = (n_pending)
   -- if $throwable_member(S, n_pending)
+  -- if ~$fiber_protected_close_ready(S, n)
 def $internal_destructor_enter(S, HOBJECT n, pdestructionrelease) = S[.COMPLETION = UNSUPPORTED "force-closing ordinary Fiber cleanup with a protected real exception"]
   -- if $fiber_close_selected(S, n, pdestructionrelease)
   -- if pdestructionrelease.USER
@@ -228,9 +230,12 @@ def $fiber_retired_finish(FIBER_RETURN_FINISH pfiberfinish) = (pfiberfinish)
 def $fiber_retired_finish(FIBER_THROW_FINISH pfiberfinish) = (pfiberfinish)
 def $fiber_retired_source_valid(S, n_exit, FIBER_RETURN_FINISH pfiberfinish, pfiber) = (pfiber.RETURNED /\ ~pfiber.GRACEFUL /\ ~pfiber.FAILED)
   -- if pfiberfinish.PENDING = eps \/ pfiberfinish.PENDING = (n_exit)
+  -- if $fiber_finish_protected_valid(S, pfiberfinish)
 def $fiber_retired_source_valid(S, n_exit, FIBER_RETURN_FINISH pfiberfinish, pfiber) = (pfiber.RETURNED /\ ~pfiber.GRACEFUL /\ pfiber.FAILED /\ $throwable_member(S, n))
   -- if pfiberfinish.PENDING = (n)
   -- if n =/= n_exit
+  -- if $fiber_finish_protected_valid(S, pfiberfinish)
 def $fiber_retired_source_valid(S, n_exit, FIBER_THROW_FINISH pfiberfinish, pfiber) = (~pfiber.RETURNED /\ ~pfiber.GRACEFUL /\ pfiber.FAILED /\ $throwable_member(S, n))
   -- if pfiberfinish.PENDING = (n)
   -- if n =/= n_exit
+  -- if $fiber_finish_protected_valid(S, pfiberfinish)

@@ -23,6 +23,10 @@ dec $fiber_finish_task_count(ptask*, pfiberfinish) : nat
 dec $fiber_finish_extra_count(ptask, pfiberfinish) : nat
 dec $fiber_ordinary_finish_live(pstate, pfiberfinish) : bool
 dec $fiber_close_blocked(pstate, nat) : bool
+dec $fiber_protected_close_ready(pstate, nat) : bool
+dec $fiber_control_children(pstate, nat) : pnode*
+dec $fiber_control_properties(pstate, nat) : bool
+dec $fiber_finish_protected_valid(pstate, pfiberfinish) : bool
 dec $fiber_retired_finish(ptask) : pfiberfinish?
 dec $fiber_retired_source_valid(pstate, nat, ptask, pfiber) : bool
 dec $fiber_finish_pending_graceful(pstate, pfiberfinish) : bool
@@ -98,18 +102,22 @@ def $fiber_graceful_retiring(S, n) = true
   -- if n_owners = $heap_count(HOBJECT n, $destruction_job_nodes(pdestructionrelease.JOBS))
   -- if $(n_owners > 0) /\ $heap_owners($heap_graph(S), HOBJECT n) = n_owners
 def $fiber_graceful_retiring(S, n) = false -- otherwise
-def $fiber_retired_pending_valid(S, n_exit, pfiberfinish, pfiber) = (~pfiber.FAILED /\ ~pfiber.GRACEFUL)
+def $fiber_retired_pending_valid(S, n_exit, pfiberfinish, pfiber) = (~pfiber.FAILED /\ ~pfiber.GRACEFUL /\ $fiber_finish_protected_valid(S, pfiberfinish))
   -- if pfiberfinish.PENDING = eps
-def $fiber_retired_pending_valid(S, n_exit, pfiberfinish, pfiber) = (~pfiber.FAILED /\ pfiber.GRACEFUL)
+def $fiber_retired_pending_valid(S, n_exit, pfiberfinish, pfiber) = (~pfiber.FAILED /\ pfiber.GRACEFUL /\ $fiber_finish_protected_valid(S, pfiberfinish))
   -- if pfiberfinish.PENDING = (n_exit)
-def $fiber_retired_pending_valid(S, n_exit, pfiberfinish, pfiber) = (pfiber.FAILED /\ ~pfiber.GRACEFUL /\ $throwable_member(S, n))
+def $fiber_retired_pending_valid(S, n_exit, pfiberfinish, pfiber) = (pfiber.FAILED /\ ~pfiber.GRACEFUL /\ $throwable_member(S, n) /\ $fiber_finish_protected_valid(S, pfiberfinish))
   -- if pfiberfinish.PENDING = (n)
   -- if n =/= n_exit
 def $fiber_retired_finish(FIBER_CALLBACK_FINISH pfiberfinish) = (pfiberfinish)
 def $fiber_retired_finish(ptask) = eps -- otherwise
 def $fiber_retired_source_valid(S, n_exit, FIBER_CALLBACK_FINISH pfiberfinish, pfiber) = $fiber_retired_pending_valid(S, n_exit, pfiberfinish, pfiber)
 def $fiber_retired_source_valid(S, n_exit, ptask, pfiber) = false -- otherwise
-def $node_children(S, HOBJECT n) = eps
+def $fiber_control_children(S, n) = eps -- otherwise
+def $fiber_control_properties(S, n) = ($objectprops_at(S.OBJECTPROPS, n) = eps) -- otherwise
+def $fiber_protected_close_ready(S, n) = false -- otherwise
+def $fiber_finish_protected_valid(S, pfiberfinish) = (pfiberfinish.PROTECTED = eps) -- otherwise
+def $node_children(S, HOBJECT n) = $fiber_control_children(S, n)
   -- if S.OBJECTS[n] = FIBERGRACEFUL n_fiber n_sequence
 def $class_instanceof(S, POBJECT n, ptbytes) = false
   -- if S.OBJECTS[n] = FIBERGRACEFUL n_fiber n_sequence
@@ -124,7 +132,7 @@ def $closure_scope_complete(S, (HOBJECT n) :: pnode*) = $closure_scope_complete(
   -- if S.OBJECTS[n] = FIBERGRACEFUL n_fiber n_sequence
 def $property_live_complete(S, (HOBJECT n) :: pnode*) = $property_live_complete(S, pnode*)
   -- if S.OBJECTS[n] = FIBERGRACEFUL n_fiber n_sequence
-  -- if $objectprops_at(S.OBJECTPROPS, n) = eps
+  -- if $fiber_control_properties(S, n)
 
 ;; zend_exception_set_previous drops an old internal exit. VM finalizer
 ;; replacement also discards the old exception when the new control is an exit.
@@ -267,7 +275,7 @@ def $fiber_throw_finish(S, n_fiber, n_throwable) = $fiber_callback_retire(S, n_f
   -- if $throwable_member(S, n_throwable)
 def $fiber_callback_retire(S, n, pvalue, n_pending?) = $destructor_release_begin(S_ready, $destruction_values($fiber_callback_nodes(pfiber)))
   -- if $fiber_at(S, n) = (pfiber)
-  -- if pfiberfinish = {OBJECT n, PENDING n_pending?, SEQUENCE pfiber.SEQUENCE}
+  -- if pfiberfinish = {OBJECT n, PENDING n_pending?, SEQUENCE pfiber.SEQUENCE, PROTECTED eps}
   -- if pfiber_ready = $fiber_terminated(pfiber, pvalue, false)[.STATUS = FIBER_RUNNING][.FINISH = (pfiberfinish)][.RETURNED = (n_pending? = eps)]
   -- if S_ready = $fiber_put(S[.TODO = [FIBER_CALLBACK_FINISH pfiberfinish]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, pfiber_ready)
 
@@ -300,6 +308,7 @@ def $fiber_callback_finish_live(S, pfiberfinish) = true
   -- if $(pfiber.SEQUENCE > 0) /\ $(pfiber.SEQUENCE < S.FIBERSEQ)
   -- if $fiber_closing(S, (pfiberfinish.OBJECT))
   -- if $fiber_finish_pending_valid(S, pfiberfinish)
+  -- if $fiber_finish_protected_valid(S, pfiberfinish)
   -- if ~$fiber_finish_pending_graceful(S, pfiberfinish) \/ (~pfiber.RETURNED /\ pfiber.VALUE = PNULL)
   -- if (S.ACTIVEFIBER = (pfiberfinish.OBJECT) /\ $fiber_finishing_vm($fiber_vm(S), pfiberfinish)) \/ $fiber_finishing_callers(S.FIBERCALLERS, pfiberfinish) \/ $fiber_finishing_closers(S.FIBERCLOSERS, pfiberfinish)
 def $fiber_callback_finish_live(S, pfiberfinish) = false -- otherwise

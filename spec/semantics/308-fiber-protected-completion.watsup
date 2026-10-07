@@ -1,0 +1,166 @@
+;; zend_objects_destroy_object protects the old real exception while its
+;; captured destructor runs. A returned Fiber result is already defined when
+;; force-close replaces that exception with the private graceful control.
+dec $fiber_protected_frames(pstate, pframe*, pfiberfinish) : bool
+dec $fiber_protected_frame(pstate, pframe, pfiberfinish) : bool
+dec $fiber_protected_retired_ready(pstate, pnode*, pnode*) : bool
+dec $fiber_protected_retired_ready_node(pstate, pnode, pnode*) : bool
+dec $fiber_protected_previous_valid(pstate, pdestructorcall, nat) : bool
+dec $fiber_protected_previous_ready(pstate) : bool
+dec $fiber_protected_previous_step(pstate) : pstate
+dec $fiber_protected_previous_warning(pstate) : pstate
+dec $fiber_control_previous(pstate, nat) : nat?
+dec $fiber_control_previous_valid(pstate, nat, nat) : bool
+dec $fiber_protected_receipt(pstate, pfiberfinish) : (nat, nat)?
+dec $fiber_control_previous_receipt(pstate, nat, nat) : bool
+
+def $fiber_protected_close_ready(S, n) = true
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.STATUS = FIBER_SUSPENDED /\ pfiber.RETURNED
+  -- if pfiber.FINISH = (pfiberfinish)
+  -- if pfiber.VM = (pfibervm)
+  -- if pfiberfinish.PENDING = (n_old)
+  -- if $throwable_member(S, n_old)
+  -- if $fiber_ordinary_finish_live(S, pfiberfinish)
+  -- if S_vm = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = (n)]
+  -- if $fiber_protected_frames(S_vm, pfibervm.FRAMES, pfiberfinish)
+def $fiber_protected_frames(S, eps, pfiberfinish) = false
+def $fiber_protected_frames(S, pframe :: pframe_tail*, pfiberfinish) = ($fiber_protected_frame(S, pframe, pfiberfinish) \/ $fiber_protected_frames(S, pframe_tail*, pfiberfinish))
+def $fiber_protected_frame(S, pframe, pfiberfinish) = true
+  -- if pframe.CONTEXT = eps /\ pframe.LOCALS = ($empty_table())
+  -- if pframe.ORIGIN = eps /\ pframe.CONSTCONTEXT = eps
+  -- if pframe.SILENCES = eps /\ pframe.HELD = eps
+  -- if pframe.BORROWEDREAD = eps /\ pframe.OBJECTCAST = eps
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if pdestructorcall.USER /\ ~pdestructorcall.STORE
+  -- if pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.PENDING = pfiberfinish.PENDING
+  -- if $fiber_release_finish(ptask_tail*) = (pfiberfinish)
+  -- if $destructor_result_valid(S[.TODO = pframe.TODO][.CURRENT = eps][.FRAMES = eps][.ORIGIN = eps][.CONSTCONTEXT = eps], pdestructorcall)
+def $fiber_protected_frame(S, pframe, pfiberfinish) = false -- otherwise
+
+;; Pruning does not collect a suspended VM. It delegates only authenticated
+;; defined-result carriers to the existing ordered zero-owner release producer.
+def $fiber_prune_ordered(S, pnode_live*) = ($fiber_retired_stack(S, S.ALLOCATIONS, pnode_live*) /\ $fiber_protected_retired_ready(S, S.ALLOCATIONS, pnode_live*) /\ $destructor_operational(S) /\ $destructor_user_source(S))
+def $fiber_protected_retired_ready(S, eps, pnode_live*) = true
+def $fiber_protected_retired_ready(S, pnode :: pnode_tail*, pnode_live*) = ($fiber_protected_retired_ready_node(S, pnode, pnode_live*) /\ $fiber_protected_retired_ready(S, pnode_tail*, pnode_live*))
+def $fiber_protected_retired_ready_node(S, HOBJECT n, pnode_live*) = ($heap_owners($heap_graph(S), HOBJECT n) = 0 /\ $fiber_protected_close_ready(S, n))
+  -- if S.OBJECTS[n] = FIBER pfiber
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if ~((HOBJECT n) <- pnode_live*)
+def $fiber_protected_retired_ready_node(S, pnode, pnode_live*) = true -- otherwise
+
+;; Retain the actual result/call producer across the previous-property write.
+;; The new task owns C; RETURN_FINISH still owns the protected old exception.
+def $fiber_protected_previous_needed(S, pdestructorcall) = $fiber_protected_previous_valid(S[.TODO = (FIBER_PROTECTED_PREVIOUS pdestructorcall n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*], pdestructorcall, n)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+def $return_discard(S, DESTRUCTOR_RESULT pdestructorcall) = S[.TODO = (FIBER_PROTECTED_PREVIOUS pdestructorcall n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*]
+  -- if $fiber_protected_previous_needed(S, pdestructorcall)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+def $fiber_protected_previous_valid(S, pdestructorcall, n) = true
+  -- if S.TODO = (FIBER_PROTECTED_PREVIOUS pdestructorcall n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.ORIGIN = eps /\ S.CONSTCONTEXT = eps
+  -- if pdestructorcall.USER /\ ~pdestructorcall.STORE
+  -- if pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.PENDING = (n_old)
+  -- if $throwable_member(S, n_old)
+  -- if $(n_old < n)
+  -- if $fiber_release_finish(ptask_tail*) = (pfiberfinish)
+  -- if pdestructorcall.PENDING = pfiberfinish.PENDING
+  -- if S.ACTIVEFIBER = (pfiberfinish.OBJECT) /\ $fiber_close_boundary(S)
+  -- if $fiber_at(S, pfiberfinish.OBJECT) = (pfiber)
+  -- if pfiber.RETURNED
+  -- if $fiber_ordinary_finish_live(S, pfiberfinish)
+  -- if $fiber_graceful_for(S, pfiberfinish.OBJECT, pfiberfinish.SEQUENCE, n)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = eps
+  -- if $destructor_result_valid(S[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*], pdestructorcall)
+def $fiber_protected_previous_valid(S, pdestructorcall, n) = false -- otherwise
+def $call_task_valid(S, FIBER_PROTECTED_PREVIOUS pdestructorcall n) = $fiber_protected_previous_valid(S, pdestructorcall, n)
+def $task_nodes(FIBER_PROTECTED_PREVIOUS pdestructorcall n) = [HOBJECT n]
+def $call_after_origin(S, FIBER_PROTECTED_PREVIOUS pdestructorcall n) = S[.TODO = ptask_tail*]
+  -- if S.TODO = (FIBER_PROTECTED_PREVIOUS pdestructorcall n) :: ptask_tail*
+def $destructor_call_tail((FIBER_PROTECTED_PREVIOUS pdestructorcall n) :: ptask_tail*, pdestructorcall) = $destructor_call_tail(ptask_tail*, pdestructorcall)
+def $fiber_protected_previous_ready(S) = true
+  -- if S.TODO = (FIBER_PROTECTED_PREVIOUS pdestructorcall n) :: ptask_tail*
+  -- if $fiber_protected_previous_valid(S, pdestructorcall, n)
+def $fiber_protected_previous_ready(S) = false -- otherwise
+rule PhpStep/fiber-protected-previous: S ~> $fiber_protected_previous_step(S)
+  -- if $fiber_protected_previous_ready(S)
+
+;; zend_call_function returns SUCCESS/UNDEF without entering a registered
+;; handler while EG(exception) is C. An eligible handler suppresses fallback;
+;; its registration survives. The default report uses Unknown:0 before copy.
+def $fiber_protected_previous_warning(S) = S[.ERRORFATALTRACE = eps]
+  -- if $error_handler_eligible(S, 8192)
+def $fiber_protected_previous_warning(S) = $error_default(S[.ERRORFATALTRACE = eps], DIAGNOSTIC_INTERNAL "Deprecated" $ptascii("Creation of dynamic property GracefulExit::$previous is deprecated") 0, 8192)
+  -- if ~$error_handler_eligible(S, 8192)
+def $fiber_protected_previous_step(S) = $destructor_resume_pending(S_receipted[.DESTRUCTION.CALLS = pdestructorcall_tail*], pdestructorcall)
+  -- if S.TODO = (FIBER_PROTECTED_PREVIOUS pdestructorcall n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if pdestructorcall.PENDING = (n_old)
+  -- if S_reported = $fiber_protected_previous_warning(S)
+  -- if S_stored = S_reported[.OBJECTPROPS = S_reported.OBJECTPROPS ++ [{OBJECT n, SLOTS ([{DECL eps, NAME $ptascii("previous"), STATE PROP_VALUE (DIRECT (POBJECT n_old))}]), MATERIALIZED true}]][.TODO = (THROW_SEARCH n) :: ptask_tail*]
+  -- if $fiber_release_finish(ptask_tail*) = (pfiberfinish)
+  -- if $fiber_at(S_stored, pfiberfinish.OBJECT) = (pfiber)
+  -- if pfiberfinish_new = pfiberfinish[.PROTECTED = ((n, n_old))]
+  -- if S_receipted = $fiber_put(S_stored[.TODO = (THROW_SEARCH n) :: $fiber_finish_tasks(ptask_tail*, pfiberfinish, pfiberfinish_new)], pfiberfinish.OBJECT, pfiber[.FINISH = (pfiberfinish_new)])
+
+;; The terminal receipt borrows the actual control and old exception IDs. It
+;; survives a later replacement throw without adding another child owner.
+def $fiber_protected_receipt(S, pfiberfinish) = ((n, n_old))
+  -- if pfiberfinish.PROTECTED = ((n, n_old))
+  -- if $(n < |S.OBJECTS|) /\ $(n_old < n)
+  -- if S.OBJECTS[n] = FIBERGRACEFUL pfiberfinish.OBJECT pfiberfinish.SEQUENCE
+def $fiber_protected_receipt(S, pfiberfinish) = eps -- otherwise
+def $fiber_finish_protected_valid(S, pfiberfinish) = true
+  -- if $fiber_protected_receipt(S, pfiberfinish) = ((n, n_old))
+  -- if $fiber_graceful_for(S, pfiberfinish.OBJECT, pfiberfinish.SEQUENCE, n)
+  -- if $fiber_control_previous(S, n) = (n_old)
+  -- if $throwable_member(S, n_old)
+def $fiber_finish_protected_valid(S, pfiberfinish) = true
+  -- if $fiber_protected_receipt(S, pfiberfinish) = ((n, n_old))
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.SOURCE = FIBER_RETURN_FINISH pfiberfinish
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS) \/ ($fiber_control_previous(S, n) = (n_old) /\ $throwable_member(S, n_old))
+def $fiber_control_previous_receipt(S, n, n_old) = true
+  -- if S.OBJECTS[n] = FIBERGRACEFUL n_fiber n_sequence
+  -- if $fiber_at(S, n_fiber) = (pfiber)
+  -- if pfiber.FINISH = (pfiberfinish)
+  -- if pfiberfinish.PROTECTED = ((n, n_old))
+  -- if $fiber_finish_protected_valid(S, pfiberfinish)
+def $fiber_control_previous_receipt(S, n, n_old) = true
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.SOURCE = FIBER_RETURN_FINISH pfiberfinish
+  -- if pfiberfinish.PROTECTED = ((n, n_old))
+  -- if $fiber_finish_protected_valid(S, pfiberfinish)
+def $fiber_control_previous_receipt(S, n, n_old) = false -- otherwise
+
+;; C.previous is an ordinary child owner while C is live or being freed. It
+;; does not register the private class or make C catchable/user-accessible.
+def $fiber_control_previous(S, n) = (n_old)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = ([{DECL eps, NAME $ptascii("previous"), STATE PROP_VALUE (DIRECT (POBJECT n_old))}])
+def $fiber_control_previous(S, n) = eps -- otherwise
+def $fiber_control_previous_valid(S, n, n_old) = true
+  -- if $(n < |S.OBJECTS|) /\ $(n_old < n)
+  -- if S.OBJECTS[n] = FIBERGRACEFUL n_fiber n_sequence
+  -- if $fiber_control_previous(S, n) = (n_old)
+  -- if $fiber_control_previous_receipt(S, n, n_old)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if pobjectprops.MATERIALIZED
+  -- if (HOBJECT n_old) <- S.ALLOCATIONS /\ $throwable_member(S, n_old)
+  -- if $fiber_at(S, n_fiber) = (pfiber)
+  -- if pfiber.RETURNED /\ ~pfiber.GRACEFUL
+  -- if pfiber.SEQUENCE = n_sequence
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS) \/ $fiber_graceful_live(S, n) \/ $fiber_graceful_retiring(S, n)
+def $fiber_control_previous_valid(S, n, n_old) = false -- otherwise
+def $fiber_control_properties(S, n) = $fiber_control_previous_valid(S, n, n_old)
+  -- if $fiber_control_previous(S, n) = (n_old)
+def $fiber_control_children(S, n) = [HOBJECT n_old]
+  -- if $fiber_control_previous(S, n) = (n_old)
+def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($fiber_control_previous_valid(S, pobjectprops.OBJECT, n_old) /\ $objectprops_at(pobjectprops_tail*, pobjectprops.OBJECT) = eps /\ $objectprops_valid(S, pobjectprops_tail*))
+  -- if $(pobjectprops.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pobjectprops.OBJECT] = FIBERGRACEFUL n_fiber n_sequence
+  -- if $fiber_control_previous(S, pobjectprops.OBJECT) = (n_old)
