@@ -76,7 +76,7 @@ def $property_dynamic_capture(S, pbase, z, b) = (pdynamicproperty)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes_key) = eps
   -- if S_read = $resolve_at(S_base, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
-  -- if pdynamicproperty = {SITE porigin_site, BASE pbase, TARGET n_target, KEY ptbytes_key, RHS S.RESULT, SELECTED $property_dynamic_selected(S_read, S.RESULT), LINE z, SELF b, PENDING eps}
+  -- if pdynamicproperty = {SITE porigin_site, BASE pbase, TARGET n_target, KEY ptbytes_key, RHS S.RESULT, SELECTED $property_dynamic_selected(S_read, S.RESULT), LINE z, SELF b, RETIRED false, PENDING eps}
   -- if $heap_member(HOBJECT n_target, S_read.ALLOCATIONS)
   -- if $property_dynamic_valid(S_read, pdynamicproperty)
 def $property_dynamic_capture(S, pbase, z, b) = eps -- otherwise
@@ -102,14 +102,15 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = PROPERTY_DYNAMIC_RESULT pdynamicproperty
   -- if $property_dynamic_valid(S, pdynamicproperty)
   -- if $property_dynamic_entry(S, perrorcall, pdynamicproperty)
+  -- if ~pdynamicproperty.RETIRED
   -- if pdynamicproperty.PENDING = eps
   -- if perrorcall.SITE = pdynamicproperty.SITE
   -- if perrorcall.LINE = pdynamicproperty.LINE
   -- if perrorcall.LEVEL = 8192
   -- if perrorcall.MESSAGE = $property_dynamic_message(S, pdynamicproperty)
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
-def $call_task_valid(S, PROPERTY_DYNAMIC_RESULT pdynamicproperty) = ($property_dynamic_valid(S, pdynamicproperty) /\ $heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS))
-def $call_task_valid(S, PROPERTY_DYNAMIC_INSERT pdynamicproperty) = $property_dynamic_valid(S, pdynamicproperty)
+def $call_task_valid(S, PROPERTY_DYNAMIC_RESULT pdynamicproperty) = ($property_dynamic_valid(S, pdynamicproperty) /\ ~pdynamicproperty.RETIRED /\ $heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS))
+def $call_task_valid(S, PROPERTY_DYNAMIC_INSERT pdynamicproperty) = ($property_dynamic_valid(S, pdynamicproperty) /\ (pdynamicproperty.RETIRED \/ $heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS)))
 def $task_nodes(PROPERTY_DYNAMIC_RESULT pdynamicproperty) = [HOBJECT pdynamicproperty.TARGET] ++ $base_nodes(pdynamicproperty.BASE) ++ $operand_nodes(pdynamicproperty.RHS) ++ $instance_roots(pdynamicproperty.PENDING)
 def $task_nodes(PROPERTY_DYNAMIC_INSERT pdynamicproperty) = $base_nodes(pdynamicproperty.BASE) ++ $operand_nodes(pdynamicproperty.RHS) ++ $instance_roots(pdynamicproperty.PENDING)
 def $source_operand_marker(PROPERTY_DYNAMIC_RESULT pdynamicproperty) = ASSIGN_ARRAY pdynamicproperty.BASE pdynamicproperty.LINE pdynamicproperty.SELF
@@ -117,13 +118,15 @@ def $source_operand_marker(PROPERTY_DYNAMIC_INSERT pdynamicproperty) = ASSIGN_AR
 
 ;; The warning's C owner is released before the insertion. Generic eager
 ;; cleanup executes a now-unowned receiver's destructor at this boundary.
-rule PhpStep/dynamic-property-release: S ~> S[.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*]
+;; GC_DELREF's zero decision survives resurrection during that destructor.
+rule PhpStep/dynamic-property-release: S ~> S[.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty[.RETIRED = ($heap_owners($heap_graph(S), HOBJECT pdynamicproperty.TARGET) = 1)]) :: ptask_tail*]
   -- if S.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty) :: ptask_tail*
   -- if $call_task_valid(S, PROPERTY_DYNAMIC_RESULT pdynamicproperty)
 def $error_read_discard(S, PROPERTY_DYNAMIC_RESULT pdynamicproperty) = S[.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty[.PENDING = (n)]) :: ptask_tail*]
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $property_dynamic_valid(S, pdynamicproperty)
+  -- if ~pdynamicproperty.RETIRED
 def $eager_operation_pending(S) = pdynamicproperty.PENDING
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty) :: ptask_tail*
@@ -138,15 +141,16 @@ def $eager_operation_tail(S) = (PROPERTY_DYNAMIC_INSERT pdynamicproperty[.PENDIN
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
   -- if pdynamicproperty.PENDING =/= eps
-def $eager_operation_source_guard(S, pdestructionoperation) = $property_dynamic_valid(S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT], pdynamicproperty)
+def $eager_operation_source_guard(S, pdestructionoperation) = ($property_dynamic_valid(S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT], pdynamicproperty) /\ ~pdynamicproperty.RETIRED)
   -- if pdestructionoperation.SOURCE = PROPERTY_DYNAMIC_RESULT pdynamicproperty
 def $destructor_pending_finish(S, pdestructionoperation, n, (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*) = S[.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty[.PENDING = (n)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
   -- if pdestructionoperation.SOURCE = PROPERTY_DYNAMIC_RESULT pdynamicproperty_source
-  -- if pdynamicproperty = pdynamicproperty_source[.PENDING = eps]
+  -- if pdynamicproperty = pdynamicproperty_source[.PENDING = eps][.RETIRED = pdynamicproperty.RETIRED]
 def $destructor_pending_finish(S, pdestructionoperation, n, (PROPERTY_DYNAMIC_RESULT pdynamicproperty) :: ptask_tail*) = S[.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty[.PENDING = (n)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
   -- if pdestructionoperation.SOURCE = THROW_SEARCH n_original
   -- if pdestructionoperation.ORIGIN = (pdynamicproperty.SITE)
   -- if pdynamicproperty.PENDING = eps
+  -- if ~pdynamicproperty.RETIRED
   -- if $property_dynamic_valid(S, pdynamicproperty)
 
 dec $property_dynamic_item(pstate, pdynamicproperty) : (pitem, poperand)?
@@ -178,23 +182,25 @@ def $property_dynamic_finish(S, pdynamicproperty, poperand) = S[.TODO = (THROW_S
 rule PhpStep/dynamic-property-insert: S ~> $property_dynamic_finish(S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, pdynamicproperty.TARGET, pobjectprops.SLOTS ++ [{DECL eps, NAME pdynamicproperty.KEY, STATE PROP_VALUE pitem}])], pdynamicproperty, poperand)
   -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
   -- if $property_dynamic_valid(S, pdynamicproperty)
+  -- if ~pdynamicproperty.RETIRED
   -- if $heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS)
   -- if $objectprops_record_at(S.OBJECTPROPS, pdynamicproperty.TARGET) = (pobjectprops)
   -- if $property_dynamic_item(S, pdynamicproperty) = (pitem, poperand)
 rule PhpStep/dynamic-property-rhs-expired: S ~> S[.COMPLETION = UNSUPPORTED "dynamic property warning RHS pointer lifetime or undefined CV"]
   -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
   -- if $property_dynamic_valid(S, pdynamicproperty)
+  -- if ~pdynamicproperty.RETIRED
   -- if $heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS)
   -- if $property_dynamic_item(S, pdynamicproperty) = eps
 rule PhpStep/dynamic-property-receiver-released: S ~> $throw_scalar($property_dynamic_finish(S, pdynamicproperty, KNOWN PNULL), "Error", $ptascii("Cannot create dynamic property ") ++ $object_name(S, pdynamicproperty.TARGET) ++ $ptascii("::$") ++ $c_string(pdynamicproperty.KEY), pdynamicproperty.LINE)
   -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
   -- if $property_dynamic_valid(S, pdynamicproperty)
-  -- if ~$heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS)
+  -- if pdynamicproperty.RETIRED
   -- if pdynamicproperty.PENDING = eps
 rule PhpStep/dynamic-property-receiver-released-pending: S ~> $property_dynamic_finish(S, pdynamicproperty, KNOWN PNULL)
   -- if S.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_tail*
   -- if $property_dynamic_valid(S, pdynamicproperty)
-  -- if ~$heap_member(HOBJECT pdynamicproperty.TARGET, S.ALLOCATIONS)
+  -- if pdynamicproperty.RETIRED
   -- if pdynamicproperty.PENDING = (n)
 
 ;; PHP's UnwindExit can still return through write_property before shutdown.
