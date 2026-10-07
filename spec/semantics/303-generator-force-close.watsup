@@ -6,6 +6,7 @@ dec $generator_close_node(pstate, pnode) : bool
 dec $generator_close_pending(pcompletion, ptask*) : nat?
 dec $generator_close_without_search(ptask*, nat?) : ptask*
 dec $generator_close_begin(pstate, pdestructionjob*) : pstate
+dec $generator_fiber_close(pstate) : pstate
 dec $generator_close_begin_pending(pstate, pdestructionjob*, nat?) : pstate
 dec $generator_close_release(pstate, pgenrelease) : pstate
 dec $generator_close_release_end(pstate, pgenrelease) : pstate
@@ -99,7 +100,7 @@ def $generator_close_begin_pending(S, pdestructionjob*, n?) = S[.COMPLETION = UN
 def $generator_prune(S, pnode_live*) = $generator_close_begin($destruction_store_new(S), $destruction_values($destruction_zero($heap_graph(S), S.ALLOCATIONS)))
   -- if $generator_close_dead(S, S.ALLOCATIONS, pnode_live*)
   -- if S.ACTIVEFIBER = eps
-def $generator_prune(S, pnode_live*) = S[.COMPLETION = UNSUPPORTED "Generator force-close during active Fiber"]
+def $generator_prune(S, pnode_live*) = $generator_fiber_close(S)
   -- if $generator_close_dead(S, S.ALLOCATIONS, pnode_live*)
   -- if S.ACTIVEFIBER =/= eps
 def $generator_prune(S, pnode_live*) = S[.COMPLETION = UNSUPPORTED "Generator force-close at request end"]

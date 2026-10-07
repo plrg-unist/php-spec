@@ -1,0 +1,4 @@
+;; PHP 8.5.10 zend_generator_dtor_storage defers the path currently executing
+;; in a Fiber, not an unrelated paused Generator released by active Fiber code.
+;; Existing Fiber transfer guards reject parking running Generator/close frames.
+def $generator_fiber_close(S) = $generator_close_begin($destruction_store_new(S), $destruction_values($destruction_zero($heap_graph(S), S.ALLOCATIONS)))

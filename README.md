@@ -188,6 +188,8 @@ catch/finally execution and exception identity. [Delegation](docs/semantics/GENE
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. [Last-owner close](docs/semantics/GENERATOR-FORCE-CLOSE.md)
 runs pending finally bodies with real scopes, graph links and cached owners.
+[Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
+identity and genuine parked owners throughout ordinary Generator release.
 IteratorAggregate, reference yields, wider call forms, request/terminal cleanup
 and complete destruction/GC remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped

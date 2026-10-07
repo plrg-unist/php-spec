@@ -1,0 +1,190 @@
+{
+  "status": "pass",
+  "scope": "Ordinary last-owner paused-Generator close inside an active Fiber, preserving the accepted303 close walk and all existing Fiber transfer guards.",
+  "target": {
+    "php": "8.5.10",
+    "sapi": "cli",
+    "zts": false,
+    "int_bytes": 8,
+    "profile": "tests/semantics/profile.json",
+    "error_reporting": "30719",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "tested_cut": {
+    "root": "/home/user/workspace/php-spec/.tools/traversal-generator-fiber-close-t3bnnzuc",
+    "parent": "/home/user/workspace/php-spec/.tools/traversal-generator-force-close-xa0fu1q3",
+    "parent_modules": 275,
+    "modules": 276,
+    "accepted303_publication_sha256": "f159ad6ce278c1e8ed2b504a5a01e2b9a206cb7d76bce690095b814261bc77e2",
+    "changed_inputs": {
+      "spec/semantics/modules.json": "b2e5daaed2034268b3ca7aae8b04bb038fde6fe823617f24fc514c5ead3dccdb",
+      "spec/semantics/303-generator-force-close.watsup": "e912099e7c4edd9ab088e52bbdc1e40a82fbd075f40c24877745309f7dd7cf3b",
+      "spec/semantics/310-generator-fiber-close.watsup": "4e9853978256cdd1555db4f9ed6b0d94fbe8026ca1333f3527eadc3e0fbf971d",
+      ".tools/base.json": "6f944191f38a319c5a241535ccf76b013625e596fead4d9b04dc5b9b6452f298",
+      ".tools/parent-composition.json": "76153b9ceff3a66024ba18ad6aded8c852bff8930a9b956f61fd659881c5bd38"
+    }
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_dtor_storage",
+    "vendor/php-src/Zend/zend_generators.c::check_node_running_in_fiber",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_resume",
+    "vendor/php-src/Zend/zend_fibers.c::zend_fiber_capture_vm_state",
+    "vendor/php-src/Zend/zend_fibers.c::zend_fiber_restore_vm_state"
+  ],
+  "author": {
+    "compiler": {
+      "record": ".tools/generator-fiber-close-compile-ofc83xvg/report.json",
+      "result": "pass",
+      "exit": 0,
+      "module_count": 276,
+      "stdout_bytes": 8662688,
+      "stderr_bytes": 0,
+      "cap_seconds": 90
+    },
+    "source": {
+      "record": ".tools/generator-force-close-review-x3fqiglh/report.json",
+      "result": "pass",
+      "normal_agreements": 14,
+      "required_unsupported_controls": 4,
+      "controls_agreements": 0,
+      "model_cap_seconds": 60,
+      "outer_cap_seconds": 90
+    },
+    "state": {
+      "result": "pass",
+      "backend": "strict_sl",
+      "programs": 4,
+      "groups": 4,
+      "setup_inclusive_premises": 318,
+      "cap_seconds_per_group": 300,
+      "records": [
+        {
+          "record": ".tools/generator-force-close-protocol-b74shves/report.json",
+          "selection": [
+            "active-claim"
+          ],
+          "premises": 91
+        },
+        {
+          "record": ".tools/generator-force-close-protocol-tneflgf_/report.json",
+          "selection": [
+            "resumed-claim",
+            "caller-pending",
+            "waiting-owner"
+          ],
+          "premises": 227
+        }
+      ],
+      "checks": "Genuine source-reached queued/entered claims, current/resumed Fiber identity and owners, pending previous chain, parked caller roots, heap-valid malformed admission, exact zero-budget and direct/resumed completion."
+    }
+  },
+  "independent": {
+    "status": "pass",
+    "source": {
+      "script": "tests/semantics/generator_fiber_close_review.py",
+      "record": ".tools/generator-force-close-review-c_zqu45e/report.json",
+      "normal_agreements": 12,
+      "controls_agreements": 0,
+      "model_cap_seconds": 60,
+      "outer_cap_seconds": 90
+    },
+    "state": {
+      "script": "tests/semantics/generator_fiber_close_review_protocol.py",
+      "result": "pass",
+      "backend": "strict_sl",
+      "programs": 4,
+      "groups": 4,
+      "setup_inclusive_premises": 351,
+      "cap_seconds_per_group": 300,
+      "records": [
+        {
+          "record": ".tools/generator-force-close-protocol-ca1mv41y/report.json",
+          "selection": [
+            "queued-body"
+          ],
+          "premises": 90
+        },
+        {
+          "record": ".tools/generator-force-close-protocol-hcby0kxg/report.json",
+          "selection": [
+            "nested-callers",
+            "parked-owner",
+            "pending-chain"
+          ],
+          "premises": 261
+        }
+      ],
+      "checks": "Genuine queued/body and nested caller chains, other suspended Fiber owner, pending close/previous chain, exact public/heap admission, heap-valid malformed records and zero-budget/direct/resumed normal completion."
+    }
+  },
+  "preserved_failures": [
+    {
+      "record": ".tools/generator-fiber-close-compile-36om73hu/report.json",
+      "category": "declaration_order",
+      "description": "p4boot exit0 with187 bytes reporting undefined forward helper; recorded failure, declaration moved before303 use.",
+      "agreement_credit": 0
+    }
+  ],
+  "preparation": [
+    {
+      "record": ".tools/generator-force-close-review-fkslsvpm/report.json",
+      "mode": "native",
+      "model_agreements": 0
+    },
+    {
+      "record": ".tools/generator-force-close-protocol-gmct7cws/report.json",
+      "mode": "fixtures",
+      "state_execution_credit": 0
+    },
+    {
+      "record": "/home/user/workspace/php-spec/.tools/traversal-review-310/initial-owner-alias-observations/report.json",
+      "mode": "native",
+      "disposition": "Original local global-alias unsets preserve the true global owner; observations corrected narrowly, no semantic failure.",
+      "model_agreements": 0
+    },
+    {
+      "record": "/home/user/workspace/php-spec/.tools/traversal-review-310/corrected-global-deletion/report.json",
+      "mode": "native_recorder_failure",
+      "native_exit_statuses": [
+        1,
+        1
+      ],
+      "disposition": "Relative output-path recorder failure; preserved, no semantic agreement.",
+      "model_agreements": 0
+    },
+    {
+      "record": "/home/user/workspace/php-spec/.tools/traversal-review-310/corrected-global-deletion-absolute/report.json",
+      "mode": "native",
+      "disposition": "Affected absolute recorder-path correction before independent source execution.",
+      "model_agreements": 0
+    }
+  ],
+  "remaining": [
+    "Parked running Generators",
+    "Fiber suspension or switches from Generator finalizers",
+    "Terminal cleanup and request-end close",
+    "Cyclic collection and general user destructors",
+    "Broader Generator/reference APIs",
+    "Final combined execution and copied-path offline rebuild"
+  ],
+  "integration": "Canonical merge preserves installed call/destruction/Fiber fields; introduced compiler/source composition checks are pending. Original private cuts remain distinct. Held279 and user-paused return verification remain excluded.",
+  "recovery": "Author and independent model records are under the tested private root .tools. The three independent native preparation/failure records are separately under main project .tools/traversal-review-310. Maintained scripts reproduce the finite scope with the recorded profile and caps, jobs1.",
+  "totals": {
+    "normal_source_agreements": 26,
+    "required_unsupported_controls": 4,
+    "unsupported_agreements": 0,
+    "state_programs": 8,
+    "state_groups": 8,
+    "physical_premises_including_setup": 669,
+    "counts_keep_separate_cuts": true
+  },
+  "final_review": {
+    "reviewer": "traversal_review_17",
+    "decision": "accepted_bounded_semantics_and_static_publication",
+    "reviewed_diff_sha256": "7f11f809aeacc9a55c496275f2e77fa73147569067db885029deb7f9561d49fa",
+    "metadata_followup": "Reviewer explicitly accepted adding the three precise native preparation paths without semantic renewal."
+  }
+}

@@ -500,6 +500,10 @@ test-semantics: build
 	python3 tests/semantics/generator_delegation_protocol.py --mode check --sl
 	python3 tests/semantics/generator_force_close_review.py --mode full
 	python3 tests/semantics/generator_force_close_protocol.py --mode check --sl
+	python3 tests/semantics/generator_fiber_close_prepare.py --mode full
+	python3 tests/semantics/generator_fiber_close_review.py --mode full
+	python3 tests/semantics/generator_fiber_close_protocol.py --mode check --sl
+	python3 tests/semantics/generator_fiber_close_review_protocol.py --sl
 	python3 tests/semantics/iterator_declaration_notices.py
 	python3 tests/semantics/eval_declaration_notices_protocol.py
 	python3 tests/semantics/runtime_formatter_protocol.py

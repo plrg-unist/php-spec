@@ -54,7 +54,8 @@ across `generator-force-close-review-rlbhdmu_` (first16), `78yejgzi`
 (remaining22 plus compiler2) and `k7mcky3f` (introduced foreach2). Five exact
 Unsupported controls earn no agreement: request-end close, a self-cache cycle,
 bare finalizer exit, exit with a started local child and warning-handler exit.
-Request-end, terminal cleanup, active-Fiber destruction, cyclic GC, user
+Module310 separately covers ordinary paused-Generator release inside an active
+Fiber. Request-end, terminal cleanup, parked running Generators, cyclic GC, user
 destructors and broader Generator/reference APIs remain required.
 
 Eight ordinary source programs pass in eleven finite state groups: 88 reached

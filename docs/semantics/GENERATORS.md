@@ -66,9 +66,11 @@ reference yields, arrow Generators, dynamic/nullsafe
 API calls, named/unpacked API arguments, scoped static and implicit callback
 creation, and creation through changed/imported caller scope remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
-pending finally execution and ordered input/frame/cache release. Request-end,
-terminal cleanup, active-Fiber destruction, general user destructors and cyclic
-collection remain required; their explicit Unsupported controls earn no
+pending finally execution and ordered input/frame/cache release.
+[Module310](GENERATOR-FIBER-CLOSE.md) extends ordinary paused-Generator release
+to the active Fiber stack while preserving real parked caller owners. Request-end,
+terminal cleanup, parked running Generators, switching finalizers, general user
+destructors and cyclic collection remain required; their explicit Unsupported controls earn no
 agreement. Natural return/throw/finally cleanup remains distinct from forced close.
 
 Constructor-created global constant instances follow the existing noncache

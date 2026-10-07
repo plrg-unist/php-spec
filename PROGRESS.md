@@ -8,11 +8,11 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 ## Current checkpoint
 
 The canonical source includes accepted ArrayAccess292 (`1d0f8ea23`) and 304
-(`0f2ecffc6`), plus reviewed eager destruction270, WeakReference296, Fiber291/302 and Generator289/303, with 281 modules on baseline
+(`0f2ecffc6`), plus reviewed eager destruction270, WeakReference296, Fiber291/302 and Generator289/303/310, with 282 modules on baseline
 `38f1dfaa045f`. Independently accepted
 private milestones 286, 288, 290, 293, 294 and 297 await
 ordered Git integration. Other private work covers 295, 298, 299 and 300, with
-301 and 308 in development; independently accepted310 awaits the next Generator integration. Held 279 work and user-paused return verification remain
+301 and 308 in development. Held 279 work and user-paused return verification remain
 set aside; unaccepted return changes stay held. Full core and final combined
 offline validation remain pending. Existing entries retain their tested cuts.
 
@@ -26,12 +26,21 @@ wider lifecycle/API behavior remain required. [Scope and retained evidence](docs
 
 Generator303 now runs ordinary last-owner finalizers, releasing delegation links
 before finally and retaining authentic frame, scope, cursor and cached owners
-through ordered storage cleanup. Its private40 normal/two compiler agreements
-and569 reached premises across eight programs/eleven groups retain separate
+through ordered storage cleanup. Its private 40 normal/two compiler agreements
+and 569 reached premises across eight programs/eleven groups retain separate
 original cuts. Canonical integration preserves the installed eager-destruction
 and Fiber clauses; introduced composition checks follow with310. Request-end,
 terminal, GC and user-destructor paths remain required.
 [Scope and retained evidence](docs/semantics/GENERATOR-FORCE-CLOSE.md).
+
+Generator310 permits ordinary paused-Generator last-owner close inside an active
+Fiber, preserving current identity, parked callers and genuine frame/cache owners.
+Its accepted private 26 normal sources and eight strict-SL programs/groups with
+669 reached physical premises retain their original cuts; four precise required
+Unsupported controls earn zero agreement. Canonical integration awaits introduced
+compiler/source composition checks. Parked running Generators, switching
+finalizers, request/terminal cleanup, GC and general user destructors remain open.
+[Scope and retained evidence](docs/semantics/GENERATOR-FIBER-CLOSE.md).
 
 Ordinary eager destruction270 releases consumed slots in native order, retaining
 pending owners through callbacks, throws and resurrection. MAIN preserves source
