@@ -23,6 +23,15 @@ set_error_handler("warn");$generator=seq();echo $generator->current(),":",$gener
 $generator->next();echo $generator->current(),":",(int)($generator->key()===null),"|";
 $generator->next();echo $generator->current(),":",$generator->key();
 ''', b'4:3|W3|6:1|7:4', 0),
+    'value-warning-then-key-warning-share-yield-opcode': (
+        b'''<?php
+function warn($n,$m,$f,$l){echo $m,"@",$l,"|";return true;}
+set_error_handler("warn");$arrow=fn()=>yield
+    $missingKey=>
+    $missingValue;
+$generator=$arrow();unset($arrow);echo "C|",(int)($generator->current()===null),":",(int)($generator->key()===null),"|";
+$generator->send(9);echo $generator->getReturn();
+''', b'C|Undefined variable $missingValue@5|Undefined variable $missingKey@5|1:1|9', 0),
     'key-warning-owns-value-during-reference-overwrite': (
         b'''<?php
 class Payload321 {function __destruct(){echo "P|";}}
@@ -44,6 +53,18 @@ try{$generator->current();echo "X";}catch(Exception $caught){echo (int)($caught=
 echo (int)($weak->get()!==null),":",(int)($weakArrow->get()!==null),":",(int)($generator->current()===null),":",(int)$generator->valid(),"|";
 unset($generator);echo (int)($weak->get()===null),":",(int)($weakArrow->get()===null),"Z";
 ''', b'C|W6|1:1|1:1:1:0|P|1:1Z', 0),
+    'key-warning-delegated-arrow-keeps-closed-cache-owners': (
+        b'''<?php
+class Payload321 {function __destruct(){echo "V|";}}
+function payload321(){$payload=new Payload321;$GLOBALS["weak"]=WeakReference::create($payload);return $payload;}
+$error=new Exception("key");
+function warn($n,$m,$f,$l){echo "W",$l,"|";throw $GLOBALS["error"];}
+$arrow=fn()=>yield $missingKey=>payload321();$weakArrow=WeakReference::create($arrow);
+function parent321($child){try{yield from $child;}catch(Exception $caught){echo "E",(int)($caught===$GLOBALS["error"]),"|";yield 5;}finally{echo "F|";}return 9;}
+set_error_handler("warn");$child=$arrow();$generator=parent321($child);unset($arrow,$child);echo "C|";
+echo $generator->current(),":",(int)($weak->get()!==null),":",(int)($weakArrow->get()!==null),"|";
+$generator->next();echo $generator->getReturn(),":",(int)($weak->get()===null),":",(int)($weakArrow->get()===null),"Z";
+''', b'C|W6|E1|5:1:1|F|V|9:1:1Z', 0),
     'key-warning-throw-skips-own-catch-and-finally': (
         b'''<?php
 $error=new Exception("key");
@@ -71,6 +92,15 @@ function parent321($child){try{yield from $child;echo "A|";}catch(Exception $cau
 set_error_handler("warn");$child=leaf321();$generator=parent321($child);echo "C|",$generator->current(),":",(int)$child->valid(),"|";
 unset($child);$generator->next();echo $generator->getReturn(),"Z";
 ''', b'C|W4|I1:1|12:1|L|A|F|9Z', 0),
+    'value-warning-delegated-child-catch-suppresses-key-warning': (
+        b'''<?php
+$error=new Exception("value");
+function warn($n,$m,$f,$l){echo $m,"@",$l,"|";throw $GLOBALS["error"];}
+function leaf321(){try{yield $missingKey=>$missingValue;}catch(Exception $caught){echo "I",(int)($caught===$GLOBALS["error"]),":",(int)($caught->getPrevious()===null),"|";yield 12;}finally{echo "L|";}return 7;}
+function parent321($child){try{yield from $child;echo "A|";}catch(Exception $caught){echo "P|";yield 5;}finally{echo "F|";}return 9;}
+set_error_handler("warn");$child=leaf321();$generator=parent321($child);echo "C|",$generator->current(),":",(int)$child->valid(),"|";
+unset($child);$generator->next();echo $generator->getReturn(),"Z";
+''', b'C|Undefined variable $missingValue@4|I1:1|12:1|L|A|F|9Z', 0),
     'key-warning-direct-child-api-with-parked-parent': (
         b'''<?php
 $error=new Exception("key");
@@ -107,6 +137,7 @@ def main():
         'spec/semantics/296-weak-references.watsup',
         'spec/semantics/310-generator-fiber-close.watsup',
         'spec/semantics/311-arrow-generators.watsup',
+        'spec/semantics/321-yield-key-warning.watsup',
         'tests/semantics/yield_key_warning_review.py',
     ]
     return driver.main()
