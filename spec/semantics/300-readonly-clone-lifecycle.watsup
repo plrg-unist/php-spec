@@ -421,12 +421,14 @@ dec $consumer_clone_selection_valid(pstate, pcloneproducer) : bool
 def $consumer_clone_selection_valid(S, pcloneproducer) = $consumer_clone_site_valid(S, pcloneproducer.SITE)
   -- if pcloneproducer.NAME = eps /\ pcloneproducer.CLOSURE = eps
 def $consumer_clone_selection_valid(S, pcloneproducer) = true
-  -- if pcloneproducer.NAME = (preqbytes) /\ pcloneproducer.CLOSURE = eps
+  -- if pcloneproducer.NAME = (preqbytes)
+  -- if pcloneproducer.CLOSURE = eps
   -- if $exit_fixed(S, pcloneproducer.SITE) = eps
   -- if $exit_dynamic_site(S, pcloneproducer.SITE)
   -- if $intrinsic_lookup(preqbytes, eps) = (INTRINSIC_CLONE)
 def $consumer_clone_selection_valid(S, pcloneproducer) = true
-  -- if pcloneproducer.NAME = eps /\ pcloneproducer.CLOSURE = (n)
+  -- if pcloneproducer.NAME = eps
+  -- if pcloneproducer.CLOSURE = (n)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_CLONE
   -- if $exit_fixed(S, pcloneproducer.SITE) = eps
