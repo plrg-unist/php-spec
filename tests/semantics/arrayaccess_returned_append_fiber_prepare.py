@@ -22,7 +22,9 @@ def revision():
 before = revision()
 assert not before['status']
 source = ROOT / 'tests/semantics/arrayaccess-returned-append-current/paused-generator-fiber.php'
-out = Path(tempfile.mkdtemp(prefix='fiber-prepared-', dir=ROOT / '.tools/arrayaccess-returned-append'))
+store = ROOT / '.tools/arrayaccess-returned-append'
+store.mkdir(exist_ok=True)
+out = Path(tempfile.mkdtemp(prefix='fiber-prepared-', dir=store))
 print(out, flush=True)
 modules = [str(ROOT / path) for path in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
 paths = [Path(path) for path in modules] + [source, Path(__file__), ROOT / 'tests/semantics/arrayaccess_returned_append_fiber_protocol.py',
